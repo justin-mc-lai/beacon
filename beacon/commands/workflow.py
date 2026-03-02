@@ -2,34 +2,108 @@
 import typer
 from typing import Optional
 from pathlib import Path
+import subprocess
+import sys
 
 app = typer.Typer(name="workflow", help="Full product workflow")
+
+
+def run_beacon_command(args: list, project_root: Path) -> int:
+    """Run a beacon subcommand"""
+    cmd = [sys.executable, "-m", "beacon"] + args
+    result = subprocess.run(
+        cmd,
+        cwd=project_root,
+        capture_output=True,
+        text=True
+    )
+    return result.returncode
+
+
+def ensure_output_dirs(project_root: Path, version: str = "latest"):
+    """Ensure output directories exist - supports both docs/beacon and docs/product"""
+    dirs = [
+        # Beacon primary directories
+        project_root / "docs" / "beacon" / version / "user-story",
+        project_root / "docs" / "beacon" / version / "prd",
+        project_root / "docs" / "beacon" / version / "qa" / "test-cases",
+        # PTK compatibility directories
+        project_root / "docs" / "product" / version / "user-story",
+        project_root / "docs" / "product" / version / "prd",
+        project_root / "docs" / "product" / version / "qa" / "test-cases",
+        # State directory
+        project_root / ".beacon" / "state",
+    ]
+    for d in dirs:
+        d.mkdir(parents=True, exist_ok=True)
 
 
 @app.command()
 def start(
     feature: str = typer.Argument(..., help="Feature name"),
     project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
+    version: str = typer.Option("latest", "--version", "-v", help="Version"),
+    auto: bool = typer.Option(False, "--auto", "-a", help="Auto-run all stages"),
+    skip: Optional[str] = typer.Option(None, "--skip", "-s", help="Skip stages (e.g., think,user-story)"),
 ):
     """Start full product workflow"""
     project_root = Path(project) if project else Path.cwd()
 
+    # Ensure directories exist
+    ensure_output_dirs(project_root, version)
+
     typer.echo(f"Starting Beacon Workflow: {feature}")
     typer.echo(f"Project: {project_root}")
+    typer.echo(f"Version: {version}")
     typer.echo("\n" + "=" * 50)
     typer.echo("WORKFLOW STAGES")
     typer.echo("=" * 50)
-    typer.echo("1. think    - Product thinking (vNext)")
-    typer.echo("2. user-story - Generate user stories")
-    typer.echo("3. prd      - Generate PRD")
-    typer.echo("4. test-case - Generate test cases")
-    typer.echo("5. gate     - Run gate checks")
-    typer.echo("\nUse --help for each stage")
+
+    stages = [
+        ("think", "Product thinking (vNext)", "beacon think start"),
+        ("user-story", "Generate user stories", "beacon user-story create"),
+        ("prd", "Generate PRD", "beacon prd create"),
+        ("test-case", "Generate test cases", "beacon test-case create"),
+    ]
+
+    # Parse skip list
+    skip_stages = set(skip.split(",")) if skip else set()
+
+    for i, (stage, desc, cmd) in enumerate(stages, 1):
+        if stage in skip_stages:
+            typer.echo(f"{i}. {stage:12} - {desc} [SKIPPED]")
+            continue
+
+        typer.echo(f"{i}. {stage:12} - {desc}")
+
+        if auto:
+            typer.echo(f"    → Running: {cmd} {feature}")
+            # Run the command
+            if stage == "think":
+                run_beacon_command(["think", "start", feature], project_root)
+            elif stage == "user-story":
+                run_beacon_command(["user-story", "create", feature], project_root)
+            elif stage == "prd":
+                run_beacon_command(["prd", "create", feature], project_root)
+            elif stage == "test-case":
+                run_beacon_command(["test-case", "create", feature], project_root)
+            typer.echo(f"    ✓ {stage} completed")
+
+    typer.echo("\n" + "=" * 50)
+    typer.echo("WORKFLOW COMPLETE")
+    typer.echo("=" * 50)
+
+    if not auto:
+        typer.echo("\nUse --auto to run all stages automatically")
+        typer.echo("Or run stages individually:")
+        for stage, _, cmd in stages:
+            typer.echo(f"  beacon {cmd.split(' ', 1)[1]} {feature}")
 
 
 @app.command()
 def status(
     project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
+    version: str = typer.Option("latest", "--version", "-v", help="Version"),
 ):
     """Show workflow status"""
     project_root = Path(project) if project else Path.cwd()
@@ -37,12 +111,44 @@ def status(
     typer.echo("Beacon Workflow Status")
     typer.echo("=" * 40)
 
+    # Check docs/beacon first, fallback to docs/product
+    beacon_dir = project_root / "docs" / "beacon" / version
+    product_dir = project_root / "docs" / "product" / version
+
+    # Determine which docs dir to use
+    if beacon_dir.exists():
+        docs_dir = beacon_dir
+        docs_type = "beacon"
+    elif product_dir.exists():
+        docs_dir = product_dir
+        docs_type = "product"
+    else:
+        docs_dir = beacon_dir  # Use beacon as default
+        docs_type = "beacon"
+
+    typer.echo(f"Using: docs/{docs_type}/{version}")
+
     # Check each stage
-    stages = ["think", "user-story", "prd", "test-case"]
-    for stage in stages:
-        stage_dir = project_root / "docs" / "product" / "latest" / stage.replace("-", "-")
-        if stage_dir.exists() and list(stage_dir.glob("*.md")):
-            typer.echo(f"✓ {stage}: Completed")
+    stages = [
+        ("think", ".beacon/state/think-progress.json"),
+        ("user-story", "user-story"),
+        ("prd", "prd"),
+        ("test-case", "qa/test-cases"),
+    ]
+
+    for stage, path in stages:
+        stage_path = docs_dir / path
+        if stage_path.exists():
+            if stage_path.is_file():
+                typer.echo(f"✓ {stage}: Completed")
+            elif stage_path.is_dir():
+                files = list(stage_path.glob("*.md"))
+                if files:
+                    typer.echo(f"✓ {stage}: Completed ({len(files)} files)")
+                else:
+                    typer.echo(f"○ {stage}: Started (empty)")
+            else:
+                typer.echo(f"○ {stage}: Not started")
         else:
             typer.echo(f"○ {stage}: Not started")
 
@@ -51,6 +157,7 @@ def status(
 def gate(
     stage: Optional[str] = typer.Argument(None, help="Stage to check (think/user-story/prd/test-case/release)"),
     project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
+    version: str = typer.Option("latest", "--version", "-v", help="Version"),
 ):
     """Run gate checks for stages"""
     project_root = Path(project) if project else Path.cwd()
@@ -59,6 +166,24 @@ def gate(
 
     typer.echo("Beacon Gate Check")
     typer.echo("=" * 50)
+
+    # Check docs/beacon first, fallback to docs/product
+    beacon_dir = project_root / "docs" / "beacon" / version
+    product_dir = project_root / "docs" / "product" / version
+
+    if beacon_dir.exists():
+        docs_dir = beacon_dir
+        docs_type = "beacon"
+    elif product_dir.exists():
+        docs_dir = product_dir
+        docs_type = "product"
+    else:
+        docs_dir = beacon_dir  # Use beacon as default
+        docs_type = "beacon"
+
+    typer.echo(f"Checking: docs/{docs_type}/{version}")
+
+    all_passed = True
 
     for s in stages:
         typer.echo(f"\n--- {s.upper()} Gate ---")
@@ -70,31 +195,112 @@ def gate(
                 typer.echo("✓ PASS: Think session exists")
             else:
                 typer.echo("✗ FAIL: No think session found")
+                all_passed = False
 
         elif s == "user-story":
-            us_dir = project_root / "docs" / "product" / "latest" / "user-story"
+            us_dir = docs_dir / "user-story"
             if us_dir.exists() and list(us_dir.glob("*.md")):
                 typer.echo("✓ PASS: User stories exist")
             else:
                 typer.echo("✗ FAIL: No user stories found")
+                all_passed = False
 
         elif s == "prd":
-            prd_dir = project_root / "docs" / "product" / "latest" / "prd"
+            prd_dir = docs_dir / "prd"
             if prd_dir.exists() and list(prd_dir.glob("*.md")):
                 typer.echo("✓ PASS: PRD exists")
             else:
                 typer.echo("✗ FAIL: No PRD found")
+                all_passed = False
 
         elif s == "test-case":
-            tc_dir = project_root / "docs" / "product" / "latest" / "qa" / "test-cases"
+            tc_dir = docs_dir / "qa" / "test-cases"
             if tc_dir.exists() and list(tc_dir.glob("*.md")):
                 typer.echo("✓ PASS: Test cases exist")
             else:
                 typer.echo("✗ FAIL: No test cases found")
+                all_passed = False
 
         elif s == "release":
             typer.echo("⚠ WARN: Release gate requires smoke tests")
             typer.echo("Run: beacon auto-test --type smoke")
+
+    typer.echo("\n" + "=" * 50)
+    if all_passed:
+        typer.echo("GATE RESULT: PASS")
+    else:
+        typer.echo("GATE RESULT: FAIL")
+
+
+@app.command()
+def run(
+    command: str = typer.Argument(..., help="Command to run (think/user-story/prd/test-case/analyze/brainstorm/etc)"),
+    feature: Optional[str] = typer.Argument(None, help="Feature name"),
+    project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
+    version: str = typer.Option("latest", "--version", "-v", help="Version"),
+    options: Optional[str] = typer.Option(None, "--options", "-o", help="Additional options as JSON string"),
+):
+    """Run any beacon subcommand from workflow"""
+    project_root = Path(project) if project else Path.cwd()
+
+    # Map command names to actual commands
+    command_map = {
+        "think": "think",
+        "user-story": "user-story",
+        "user_story": "user-story",
+        "prd": "prd",
+        "test-case": "test-case",
+        "test_case": "test-case",
+        "analyze": "analyze",
+        "brainstorm": "brainstorm",
+        "design": "design",
+        "jtbd": "jtbd",
+        "kano": "kano",
+        "moscow": "moscow",
+        "roadmap": "roadmap",
+        "persona": "persona",
+        "version": "version",
+        "doctor": "doctor",
+        "status": "status",
+        "report": "report",
+        "debug": "debug",
+        "auto-test": "auto-test",
+        "auto_test": "auto-test",
+        "release": "release",
+        "api-design": "api-design",
+        "api_design": "api-design",
+        "data-dictionary": "data-dictionary",
+        "data_dictionary": "data-dictionary",
+        "ui-spec": "ui-spec",
+        "ui_spec": "ui-spec",
+        "wireframe": "wireframe",
+        "save": "save",
+        "recall": "recall",
+        "remember": "remember",
+        "team": "team",
+    }
+
+    cmd = command_map.get(command.lower(), command)
+
+    typer.echo(f"Running: beacon {cmd}" + (f" {feature}" if feature else ""))
+    typer.echo(f"Project: {project_root}")
+
+    # Build the command
+    full_cmd = [cmd]
+    if feature:
+        full_cmd.append(feature)
+
+    # Run the command
+    result = subprocess.run(
+        [sys.executable, "-m", "beacon"] + full_cmd,
+        cwd=project_root,
+    )
+
+    if result.returncode == 0:
+        typer.echo(f"\n✓ Command completed successfully")
+    else:
+        typer.echo(f"\n✗ Command failed with code {result.returncode}")
+        raise typer.Exit(result.returncode)
 
 
 if __name__ == "__main__":

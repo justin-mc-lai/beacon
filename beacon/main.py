@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Beacon CLI - Main entry point"""
 import typer
 from typing import Optional
@@ -96,6 +95,12 @@ app.add_typer(recall_app, name="recall")
 app.add_typer(remember_app, name="remember")
 app.add_typer(team_app, name="team")
 app.add_typer(ralph_bridge_app, name="ralph-bridge")
+
+
+@app.command()
+def version():
+    """Show beacon version"""
+    typer.echo("Beacon CLI v1.0.0")
 
 
 if __name__ == "__main__":
