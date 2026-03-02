@@ -8,6 +8,7 @@ from pathlib import Path
 import typer
 
 from beacon.utils.runtime import newest_run_id, read_json
+from beacon.utils.workflow_memory import compute_memory_metrics
 
 app = typer.Typer(
     name="status",
@@ -27,6 +28,7 @@ def _status_impl(board: bool, verbose: bool, project_root: str) -> int:
     latest = newest_run_id(root)
     latest_state = read_json(root / ".beacon" / "runs" / latest / "state.json", {}) if latest else {}
     terminal_status = str(latest_state.get("status", "unknown")) if isinstance(latest_state, dict) else "unknown"
+    memory_metrics = compute_memory_metrics(root, latest if latest else None)
 
     payload = {
         "team": {"known_teams": team_count},
@@ -34,6 +36,7 @@ def _status_impl(board: bool, verbose: bool, project_root: str) -> int:
         "bridge": {"known_bridges": bridge_count},
         "test": {"has_progress": bool(progress)},
         "run": {"latest_run_id": latest or ""},
+        "memory": memory_metrics,
     }
 
     if board:
@@ -42,8 +45,12 @@ def _status_impl(board: bool, verbose: bool, project_root: str) -> int:
         typer.echo(f"- gate.terminal_status: {terminal_status}")
         typer.echo(f"- bridge.known_bridges: {bridge_count}")
         typer.echo(f"- test.has_progress: {bool(progress)}")
+        typer.echo(f"- memory.closure_complete: {memory_metrics.get('closure_complete')}")
+        typer.echo(f"- memory.writebacks: {memory_metrics.get('writebacks')}")
+        typer.echo(f"- memory.recall_injections: {memory_metrics.get('recall_injections')}")
         if verbose:
             typer.echo(f"- run.latest_run_id: {latest or 'none'}")
+            typer.echo(f"- memory.missing_closure_stages: {memory_metrics.get('missing_closure_stages')}")
     else:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
     return 0
@@ -73,4 +80,3 @@ def show_status(
 
 if __name__ == "__main__":
     app()
-

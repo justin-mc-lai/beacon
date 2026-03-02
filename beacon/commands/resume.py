@@ -8,6 +8,7 @@ from pathlib import Path
 import typer
 
 from beacon.utils.runtime import load_run_state
+from beacon.utils.workflow_memory import compute_memory_metrics
 
 app = typer.Typer(
     name="resume",
@@ -24,6 +25,8 @@ def _resume_impl(run_id: str, project_root: str) -> int:
     if not state:
         typer.echo(f"Run not found: {run_id}", err=True)
         return 2
+    state = dict(state)
+    state["memory_metrics"] = compute_memory_metrics(root, run_id)
     typer.echo(json.dumps(state, ensure_ascii=False, indent=2))
     return 0
 

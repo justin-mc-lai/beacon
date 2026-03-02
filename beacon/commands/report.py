@@ -9,6 +9,7 @@ from typing import Any
 import typer
 
 from beacon.utils.runtime import load_run_state, newest_run_id, now_iso, write_json
+from beacon.utils.workflow_memory import compute_memory_metrics
 
 app = typer.Typer(
     name="report",
@@ -35,6 +36,18 @@ def _human_summary(machine: dict[str, Any]) -> str:
             lines.append(f"- {key}: `{value}`")
     else:
         lines.append("- (none)")
+    memory_metrics = machine.get("memory_metrics")
+    if isinstance(memory_metrics, dict):
+        lines.extend(
+            [
+                "",
+                "## Memory Loop",
+                f"- closure_complete: `{memory_metrics.get('closure_complete')}`",
+                f"- recall_injections: `{memory_metrics.get('recall_injections')}`",
+                f"- writebacks: `{memory_metrics.get('writebacks')}`",
+                f"- feedback_assimilations: `{memory_metrics.get('feedback_assimilations')}`",
+            ]
+        )
     return "\n".join(lines) + "\n"
 
 
@@ -58,6 +71,7 @@ def _build_machine_payload(project_root: Path, run_id: str) -> dict[str, Any]:
             "artifacts": {},
             "deviations": [],
             "confirmations": [],
+            "memory_metrics": compute_memory_metrics(project_root, None if resolved == "latest" else resolved),
             "generated_at": now_iso(),
         }
 
@@ -74,6 +88,7 @@ def _build_machine_payload(project_root: Path, run_id: str) -> dict[str, Any]:
         "artifacts": state.get("artifacts", {}),
         "deviations": state.get("deviations", []),
         "confirmations": state.get("confirmations", []),
+        "memory_metrics": compute_memory_metrics(project_root, resolved),
         "generated_at": now_iso(),
     }
 
@@ -124,4 +139,3 @@ def generate(
 
 if __name__ == "__main__":
     app()
-
