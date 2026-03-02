@@ -1,4 +1,5 @@
 """Beacon workflow command - Full product workflow"""
+import json
 import typer
 from typing import Optional
 from pathlib import Path
@@ -67,8 +68,26 @@ def _stage_output_candidates(project_root: Path, stage: str, feature: str, versi
         return [
             project_root / "docs" / "product" / "latest" / "qa" / "test-cases" / f"{slug}.md",
             project_root / "docs" / "beacon" / version / "qa" / "test-cases" / f"{slug}.md",
+            project_root / "docs" / "product" / version / "qa" / "test-cases" / f"{slug}.ac-test-matrix.json",
+            project_root / "docs" / "product" / "latest" / "qa" / "test-cases" / f"{slug}.ac-test-matrix.json",
+        ]
+    if stage == "implementation":
+        return [project_root / ".beacon" / "state" / f"implementation-{slug}.json"]
+    if stage == "verify":
+        return [
+            project_root / ".beacon" / "auto-test-status.json",
         ]
     return []
+
+
+def _matrix_path_candidates(project_root: Path, feature: str, version: str) -> list[Path]:
+    slug = _slug(feature)
+    return [
+        project_root / "docs" / "product" / version / "qa" / "test-cases" / f"{slug}.ac-test-matrix.json",
+        project_root / "docs" / "beacon" / version / "qa" / "test-cases" / f"{slug}.ac-test-matrix.json",
+        project_root / "docs" / "product" / "latest" / "qa" / "test-cases" / f"{slug}.ac-test-matrix.json",
+        project_root / "docs" / "beacon" / "latest" / "qa" / "test-cases" / f"{slug}.ac-test-matrix.json",
+    ]
 
 
 @app.command()
@@ -78,6 +97,22 @@ def start(
     version: str = typer.Option("latest", "--version", "-v", help="Version"),
     auto: bool = typer.Option(False, "--auto", "-a", help="Auto-run all stages"),
     skip: Optional[str] = typer.Option(None, "--skip", "-s", help="Skip stages (e.g., think,user-story)"),
+    implementation_command: Optional[str] = typer.Option(
+        None,
+        "--implementation-command",
+        help="Implementation stage command override",
+    ),
+    verify_scope: str = typer.Option("all", "--verify-scope", help="Verify scope: ui/api-curl/unit/smoke/all"),
+    verify_config: Optional[str] = typer.Option(None, "--verify-config", help="Verify config path"),
+    verify_ui_command: Optional[str] = typer.Option(None, "--verify-ui-command", help="Verify UI command"),
+    verify_api_curl_command: Optional[str] = typer.Option(None, "--verify-api-curl-command", help="Verify API curl command"),
+    verify_unit_command: Optional[str] = typer.Option(None, "--verify-unit-command", help="Verify unit command"),
+    verify_smoke_command: Optional[str] = typer.Option(None, "--verify-smoke-command", help="Verify smoke command"),
+    verify_require_ui_actions: bool = typer.Option(
+        True,
+        "--verify-require-ui-actions/--no-verify-require-ui-actions",
+        help="Require key UI action evidence in verify stage.",
+    ),
 ):
     """Start full product workflow"""
     project_root = Path(project) if project else Path.cwd()
@@ -113,7 +148,9 @@ def start(
         ("think", "Product thinking (vNext)", "beacon think start"),
         ("user-story", "Generate user stories", "beacon user-story create"),
         ("prd", "Generate PRD", "beacon prd create"),
-        ("test-case", "Generate test cases", "beacon test-case create"),
+        ("test-case", "Generate executable test matrix", "beacon test-case create"),
+        ("implementation", "Align code implementation with docs", "beacon run workflow"),
+        ("verify", "Run multi-layer tests and gate closure", "beacon auto-test create"),
     ]
 
     # Parse skip list
@@ -168,7 +205,67 @@ def start(
                 )
             elif stage == "test-case":
                 rc = run_beacon_command(
-                    ["test-case", "create", feature, "--project", str(project_root)],
+                    ["test-case", "create", feature, "--project", str(project_root), "--version", version],
+                    project_root,
+                    extra_env=stage_env,
+                )
+            elif stage == "implementation":
+                if implementation_command:
+                    env = os.environ.copy()
+                    env.update(stage_env)
+                    shell_result = subprocess.run(
+                        implementation_command,
+                        cwd=project_root,
+                        shell=True,
+                        text=True,
+                        env=env,
+                    )
+                    rc = shell_result.returncode
+                else:
+                    marker = project_root / ".beacon" / "state" / f"implementation-{_slug(feature)}.json"
+                    marker.parent.mkdir(parents=True, exist_ok=True)
+                    marker.write_text(
+                        json.dumps(
+                            {
+                                "feature": feature,
+                                "version": version,
+                                "status": "completed",
+                                "source": "workflow.start",
+                                "note": "default implementation stage marker; use --implementation-command for real code execution",
+                            },
+                            ensure_ascii=False,
+                            indent=2,
+                        ),
+                        encoding="utf-8",
+                    )
+                    rc = 0
+            elif stage == "verify":
+                verify_args = [
+                    "auto-test",
+                    "create",
+                    verify_scope,
+                    "--project",
+                    str(project_root),
+                ]
+                if verify_config:
+                    verify_args.extend(["--config", verify_config])
+                if verify_ui_command:
+                    verify_args.extend(["--ui-command", verify_ui_command])
+                if verify_api_curl_command:
+                    verify_args.extend(["--api-curl-command", verify_api_curl_command])
+                if verify_unit_command:
+                    verify_args.extend(["--unit-command", verify_unit_command])
+                if verify_smoke_command:
+                    verify_args.extend(["--smoke-command", verify_smoke_command])
+                if verify_require_ui_actions:
+                    verify_args.append("--require-ui-actions")
+                for matrix_path in _matrix_path_candidates(project_root, feature, version):
+                    if matrix_path.exists():
+                        verify_args.extend(["--matrix-path", str(matrix_path)])
+                        break
+
+                rc = run_beacon_command(
+                    verify_args,
                     project_root,
                     extra_env=stage_env,
                 )
@@ -291,15 +388,21 @@ def status(
         ("user-story", "user-story"),
         ("prd", "prd"),
         ("test-case", "qa/test-cases"),
+        ("implementation", ".beacon/state"),
+        ("verify", ".beacon/auto-test-status.json"),
     ]
 
     for stage, path in stages:
         stage_path = project_root / path if stage == "think" else docs_dir / path
+        if stage in {"implementation", "verify"}:
+            stage_path = project_root / path
         if stage_path.exists():
             if stage_path.is_file():
                 typer.echo(f"✓ {stage}: Completed")
             elif stage_path.is_dir():
-                files = list(stage_path.glob("*.md"))
+                files = list(stage_path.glob("*.md")) + list(stage_path.glob("*/state.json"))
+                if stage == "implementation":
+                    files.extend(list(stage_path.glob("implementation-*.json")))
                 if files:
                     typer.echo(f"✓ {stage}: Completed ({len(files)} files)")
                 else:
@@ -312,14 +415,21 @@ def status(
 
 @app.command()
 def gate(
-    stage: Optional[str] = typer.Argument(None, help="Stage to check (think/user-story/prd/test-case/release)"),
+    stage: Optional[str] = typer.Argument(
+        None,
+        help="Stage to check (think/user-story/prd/test-case/implementation/verify/release)",
+    ),
     project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
     version: str = typer.Option("latest", "--version", "-v", help="Version"),
 ):
     """Run gate checks for stages"""
     project_root = Path(project) if project else Path.cwd()
 
-    stages = ["think", "user-story", "prd", "test-case", "release"] if not stage else [stage]
+    stages = (
+        ["think", "user-story", "prd", "test-case", "release"]
+        if not stage
+        else [stage]
+    )
 
     typer.echo("Beacon Gate Check")
     typer.echo("=" * 50)
@@ -378,9 +488,38 @@ def gate(
                 typer.echo("✗ FAIL: No test cases found")
                 all_passed = False
 
+        elif s == "implementation":
+            marker_dir = project_root / ".beacon" / "state"
+            has_marker = marker_dir.exists() and any(marker_dir.glob("implementation-*.json"))
+            if has_marker:
+                typer.echo("✓ PASS: Implementation run artifacts exist")
+            else:
+                typer.echo("✗ FAIL: No implementation run artifacts found")
+                all_passed = False
+
+        elif s == "verify":
+            verify_file = project_root / ".beacon" / "auto-test-status.json"
+            if not verify_file.exists():
+                typer.echo("✗ FAIL: No verify artifact found (.beacon/auto-test-status.json)")
+                all_passed = False
+            else:
+                data = {}
+                try:
+                    import json as _json
+
+                    data = _json.loads(verify_file.read_text(encoding="utf-8"))
+                except Exception:
+                    data = {}
+                status_value = str(data.get("status", "")).lower()
+                if status_value == "passed":
+                    typer.echo("✓ PASS: Verify tests passed")
+                else:
+                    typer.echo(f"✗ FAIL: Verify status is {status_value or 'unknown'}")
+                    all_passed = False
+
         elif s == "release":
             typer.echo("⚠ WARN: Release gate requires smoke tests")
-            typer.echo("Run: beacon auto-test --type smoke")
+            typer.echo("Run: beacon auto-test create smoke")
 
     typer.echo("\n" + "=" * 50)
     if all_passed:

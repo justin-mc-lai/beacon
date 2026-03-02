@@ -53,6 +53,9 @@ REASON_CODES = [
     "memory_lifecycle_missing",
     "memory_evidence_missing",
     "memory_feedback_unsynced",
+    "test_execution_missing",
+    "test_key_actions_missing",
+    "ac_tc_evidence_chain_broken",
 ]
 
 # Workflow stages
@@ -666,6 +669,186 @@ def check_memory_closure(project_root: Path, mode: GateMode, stage: str) -> List
     return issues
 
 
+def _candidate_matrix_paths(project_root: Path) -> list[Path]:
+    paths = []
+    for base in (
+        project_root / "docs" / "product",
+        project_root / "docs" / "beacon",
+    ):
+        if not base.exists():
+            continue
+        paths.extend(sorted(base.glob("*/qa/test-cases/*.ac-test-matrix.json")))
+        paths.extend(sorted(base.glob("latest/qa/test-cases/*.ac-test-matrix.json")))
+    # Keep insertion order unique
+    seen: set[str] = set()
+    unique: list[Path] = []
+    for p in paths:
+        key = str(p)
+        if key in seen:
+            continue
+        seen.add(key)
+        unique.append(p)
+    return unique
+
+
+def check_test_execution_integrity(project_root: Path, mode: GateMode, stage: str) -> List[Dict[str, Any]]:
+    """Check execution integrity for test-case/release stage."""
+    issues: list[dict[str, Any]] = []
+    if stage not in {"test-case", "release"}:
+        return issues
+    if mode not in {GateMode.STRICT, GateMode.DEBUG}:
+        return issues
+
+    status_path = project_root / ".beacon" / "auto-test-status.json"
+    if not status_path.exists():
+        issues.append(
+            {
+                "reason_code": "test_execution_missing",
+                "severity": "critical",
+                "message": "auto-test status artifact missing (.beacon/auto-test-status.json)",
+                "blocked": True,
+            }
+        )
+        return issues
+
+    try:
+        status_data = json.loads(status_path.read_text(encoding="utf-8"))
+    except Exception:  # noqa: BLE001
+        issues.append(
+            {
+                "reason_code": "test_execution_missing",
+                "severity": "critical",
+                "message": "auto-test status artifact is invalid JSON",
+                "blocked": True,
+            }
+        )
+        return issues
+
+    execution = status_data.get("execution")
+    layers = execution.get("layers") if isinstance(execution, dict) else None
+    if not isinstance(layers, list) or not layers:
+        issues.append(
+            {
+                "reason_code": "test_execution_missing",
+                "severity": "critical",
+                "message": "no execution layers found in auto-test status",
+                "blocked": True,
+            }
+        )
+        return issues
+
+    not_executed = [
+        item.get("layer")
+        for item in layers
+        if str(item.get("status", "")).lower() in {"not_executed", "skipped"}
+    ]
+    if not_executed:
+        issues.append(
+            {
+                "reason_code": "test_execution_missing",
+                "severity": "critical",
+                "message": f"some selected test layers were not executed: {not_executed}",
+                "blocked": True,
+            }
+        )
+
+    key_guard = status_data.get("key_action_guard")
+    if isinstance(key_guard, dict) and key_guard.get("required"):
+        missing_actions = key_guard.get("missing_actions")
+        if isinstance(missing_actions, list) and missing_actions:
+            issues.append(
+                {
+                    "reason_code": "test_key_actions_missing",
+                    "severity": "critical",
+                    "message": f"missing required UI key action evidence: {missing_actions}",
+                    "blocked": True,
+                }
+            )
+
+    matrix_path = None
+    matrix_report = execution.get("matrix_report") if isinstance(execution, dict) else None
+    if isinstance(matrix_report, dict) and matrix_report.get("matrix_path"):
+        matrix_path = Path(str(matrix_report.get("matrix_path")))
+    if matrix_path is None:
+        candidates = _candidate_matrix_paths(project_root)
+        matrix_path = candidates[0] if candidates else None
+
+    if matrix_path is None or not matrix_path.exists():
+        issues.append(
+            {
+                "reason_code": "ac_tc_evidence_chain_broken",
+                "severity": "critical",
+                "message": "AC/TC executable matrix is missing",
+                "blocked": True,
+            }
+        )
+        return issues
+
+    try:
+        matrix_data = json.loads(matrix_path.read_text(encoding="utf-8"))
+    except Exception:  # noqa: BLE001
+        issues.append(
+            {
+                "reason_code": "ac_tc_evidence_chain_broken",
+                "severity": "critical",
+                "message": f"matrix JSON invalid: {matrix_path}",
+                "blocked": True,
+            }
+        )
+        return issues
+
+    entries = matrix_data.get("entries")
+    if not isinstance(entries, list) or not entries:
+        issues.append(
+            {
+                "reason_code": "ac_tc_evidence_chain_broken",
+                "severity": "critical",
+                "message": f"matrix entries missing/empty: {matrix_path}",
+                "blocked": True,
+            }
+        )
+        return issues
+
+    required_fields = {"ac_id", "tc_id", "layer", "evidence_path"}
+    malformed = [
+        idx + 1 for idx, item in enumerate(entries)
+        if not isinstance(item, dict) or not required_fields.issubset(set(item.keys()))
+    ]
+    if malformed:
+        issues.append(
+            {
+                "reason_code": "ac_tc_evidence_chain_broken",
+                "severity": "critical",
+                "message": f"matrix entries malformed: {malformed[:10]}",
+                "blocked": True,
+            }
+        )
+        return issues
+
+    executed_layers = {str(item.get("layer")) for item in layers if str(item.get("status")) == "passed"}
+    chain_broken = []
+    for item in entries:
+        layer = str(item.get("layer"))
+        if layer not in executed_layers:
+            chain_broken.append(item.get("tc_id"))
+            continue
+        evidence = Path(str(item.get("evidence_path")))
+        evidence_file = evidence if evidence.is_absolute() else project_root / evidence
+        if not evidence_file.exists():
+            chain_broken.append(item.get("tc_id"))
+    if chain_broken:
+        issues.append(
+            {
+                "reason_code": "ac_tc_evidence_chain_broken",
+                "severity": "critical",
+                "message": f"AC→TC→evidence chain broken for test cases: {chain_broken[:10]}",
+                "blocked": True,
+            }
+        )
+
+    return issues
+
+
 def run_gate_checks(
     stage: str,
     mode: GateMode,
@@ -704,6 +887,11 @@ def run_gate_checks(
         if mode == GateMode.DEBUG:
             typer.echo(f"[DEBUG] Checking memory closure...")
         all_issues.extend(check_memory_closure(project_root, mode, stage))
+
+    if mode == GateMode.STRICT or mode == GateMode.DEBUG:
+        if mode == GateMode.DEBUG:
+            typer.echo(f"[DEBUG] Checking test execution integrity...")
+        all_issues.extend(check_test_execution_integrity(project_root, mode, stage))
 
     # Determine blocked status
     blocked_issues = [i for i in all_issues if i.get("blocked", False)]

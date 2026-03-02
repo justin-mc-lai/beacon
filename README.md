@@ -25,10 +25,10 @@ Beacon 是面向 AI 时代的智能产品工作流工具，帮助团队将「需
 
 Beacon 从 product-toolkit (PTK) 升级而来，是 PTK 的 Python/Typer 重构版本：
 
-- **CLI**: `beacon` 命令（原有 `ptk` 别名兼容）
+- **CLI**: 默认使用 `beacon-<subcommand>`（兼容 `beacon <subcommand>` 与 `ptk <subcommand>`）
 - **文档**: `docs/beacon/` 为主，`docs/product/` 为 PTK 兼容
 - **状态**: `.beacon/` 目录（原有 `.ptk/` 别名兼容）
-- **Skill**: `/beacon:` 触发（原有 `/product-toolkit:` 别名兼容）
+- **Skill**: 默认使用 `beacon-<subcommand>` 触发（`/beacon:` 仅在支持该语法的平台可用）
 
 ### v1.0.0 功能特性（PTK 对齐增强）
 
@@ -58,23 +58,25 @@ pip install -e .
 
 ### 2.2 5 个核心命令速览
 
+> 命令规则定案：统一采用 `beacon-<subcommand>`，例如 `beacon-think`、`beacon-workflow`。
+
 ```bash
 # 1. 启动完整工作流
-beacon workflow start "用户登录功能"
+beacon-workflow start "用户登录功能"
 
 # 2. 产品思考
-beacon think start "用户登录优化"
-beacon think confirm "用户需要社交登录"
-beacon think question "是否需要支持企业SSO?" --priority high --blocking
+beacon-think start "用户登录优化"
+beacon-think confirm "用户需要社交登录"
+beacon-think question "是否需要支持企业SSO?" --priority high --blocking
 
 # 3. 生成用户故事
-beacon user-story create "用户登录"
+beacon-user-story create "用户登录"
 
 # 4. 生成 PRD
-beacon prd create "用户登录"
+beacon-prd create "用户登录"
 
 # 5. 生成测试用例
-beacon test-case create "用户登录"
+beacon-test-case create "用户登录"
 ```
 
 ### 2.3 完整示例：做一个"用户登录"功能
@@ -82,32 +84,32 @@ beacon test-case create "用户登录"
 ```bash
 # === 步骤 1: 产品思考 ===
 # 启动思考会话，探索需求细节
-beacon think start "用户登录功能"
-beacon think confirm "用户需要账号密码登录"
-beacon think confirm "用户需要社交账号登录（Google/GitHub）"
-beacon think question "是否需要支持企业 SSO?" --priority high --blocking
-beacon think question "登录会话有效期多长?" --priority medium
+beacon-think start "用户登录功能"
+beacon-think confirm "用户需要账号密码登录"
+beacon-think confirm "用户需要社交账号登录（Google/GitHub）"
+beacon-think question "是否需要支持企业 SSO?" --priority high --blocking
+beacon-think question "登录会话有效期多长?" --priority medium
 
 # 查看思考进度
-beacon think status
+beacon-think status
 
 # 生成思考总结
-beacon think summarize
+beacon-think summarize
 
 # === 步骤 2: 生成用户故事 ===
-beacon user-story create "用户登录"
+beacon-user-story create "用户登录"
 
 # === 步骤 3: 生成 PRD ===
-beacon prd create "用户登录"
+beacon-prd create "用户登录"
 
 # === 步骤 4: 生成测试用例 ===
-beacon test-case create "用户登录" --type all
+beacon-test-case create "用户登录" --type all
 
 # === 步骤 5: 检查工作流状态 ===
-beacon workflow status
+beacon-workflow status
 
 # === 步骤 6: 运行门控检查 ===
-beacon workflow gate
+beacon-workflow gate
 ```
 
 ---
@@ -117,19 +119,21 @@ beacon workflow gate
 ### 3.1 工作流阶段
 
 ```
-┌─────────┐   ┌────────────┐   ┌──────┐   ┌───────────┐   ┌──────┐
-│  Think  │ → │ User Story │ → │ PRD  │ → │ Test Case │ → │ Gate │
-└─────────┘   └────────────┘   └──────┘   └───────────┘   └──────┘
-   需求澄清    用户故事        需求文档     测试用例        交付门控
+┌─────────┐   ┌────────────┐   ┌──────┐   ┌───────────┐   ┌────────────────┐   ┌────────┐   ┌──────┐
+│  Think  │ → │ User Story │ → │ PRD  │ → │ Test Case │ → │ Implementation │ → │ Verify │ → │ Gate │
+└─────────┘   └────────────┘   └──────┘   └───────────┘   └────────────────┘   └────────┘   └──────┘
+   需求澄清    用户故事        需求文档     测试矩阵         对齐实现开发编码        多层测试     交付门控
 ```
 
 | 阶段 | 命令 | 产出 |
 |------|------|------|
-| Think | `beacon think *` | 确认事实、开放问题、冲突记录 |
-| User Story | `beacon user-story *` | 用户故事文档 |
-| PRD | `beacon prd *` | 产品需求文档 |
-| Test Case | `beacon test-case *` | 测试用例文档 |
-| Gate | `beacon workflow gate` | Pass / Blocked / Cancelled |
+| Think | `beacon-think *` | 确认事实、开放问题、冲突记录 |
+| User Story | `beacon-user-story *` | 用户故事文档 |
+| PRD | `beacon-prd *` | 产品需求文档 |
+| Test Case | `beacon-test-case *` | 测试用例文档 + AC 可执行矩阵 |
+| Implementation | `beacon-workflow start --auto` | 实现阶段执行记录 |
+| Verify | `beacon-auto-test create *` | 多层真实执行证据 |
+| Gate | `beacon-workflow gate` | Pass / Blocked / Cancelled |
 
 ### 3.2 文档输出结构
 
@@ -158,7 +162,8 @@ beacon workflow gate
 | Think | 收敛门 | 无 `blocking=true` 的未决项 |
 | User Story | AC门 | 七维 AC 完整 |
 | PRD | 风险门 | critical/high 冲突已解决 |
-| Test Case | 覆盖门 | AC→TC 覆盖矩阵完整 |
+| Test Case | 覆盖门 | AC→TC 覆盖矩阵完整且可执行 |
+| Verify | 执行门 | UI/API/Unit/Smoke 真实执行，关键动作证据完整 |
 | Release | 测试门 | 冒烟测试 100% 通过 |
 
 ---
@@ -167,27 +172,36 @@ beacon workflow gate
 
 ### 4.1 工作流命令
 
-#### `beacon workflow`
+#### `beacon-workflow`
 
 完整产品工作流管理。
 
 ```bash
 # 启动工作流
-beacon workflow start <feature>
-beacon workflow start "用户登录" --auto          # 自动执行所有阶段
-beacon workflow start "用户登录" --skip think    # 跳过 think 阶段
+beacon-workflow start <feature>
+beacon-workflow start "用户登录" --auto          # 自动执行所有阶段
+beacon-workflow start "用户登录" --skip think    # 跳过 think 阶段
+
+# 自动模式（新增 implementation / verify 阶段）
+beacon-workflow start "用户登录" --auto \
+  --implementation-command "python -m pytest -q tests/test_login_flow.py" \
+  --verify-scope all \
+  --verify-ui-command "python -m pytest -q -k ui" \
+  --verify-api-curl-command "bash -lc 'curl -fsS http://127.0.0.1:8000/health'" \
+  --verify-unit-command "python -m pytest -q -k unit" \
+  --verify-smoke-command "python -m pytest -q -m smoke"
 
 # 查看状态
-beacon workflow status
-beacon workflow status --version v1.0.0
+beacon-workflow status
+beacon-workflow status --version v1.0.0
 
 # 门控检查
-beacon workflow gate
-beacon workflow gate think        # 只检查 think 阶段
+beacon-workflow gate
+beacon-workflow gate think        # 只检查 think 阶段
 
 # 运行任意子命令
-beacon workflow run kano "功能A"
-beacon workflow run analyze
+beacon-workflow run kano "功能A"
+beacon-workflow run analyze
 ```
 
 | 子命令 | 说明 |
@@ -197,50 +211,55 @@ beacon workflow run analyze
 | `gate` | 运行阶段门控检查 |
 | `run` | 运行任意 beacon 子命令 |
 
-#### `beacon gate`
+#### `beacon-gate`
 
 门控检查工具。
 
 ```bash
 # 检查所有阶段
-beacon gate
+beacon-gate
 
 # 检查指定阶段
-beacon gate think
-beacon gate user-story
-beacon gate prd
-beacon gate test-case
-beacon gate release
+beacon-gate think
+beacon-gate user-story
+beacon-gate prd
+beacon-gate test-case
+beacon-gate release
+
+# strict/debug 模式下会阻断以下测试可信性问题：
+# - 未执行即失败（test_execution_missing）
+# - 关键动作缺失即失败（test_key_actions_missing）
+# - AC→TC→执行证据链断裂即失败（ac_tc_evidence_chain_broken）
 ```
 
 ---
 
 ### 4.2 思考命令
 
-#### `beacon think`
+#### `beacon-think`
 
 产品思考 vNext — 使用苏格拉底式提问探索需求。
 
 ```bash
 # 启动思考会话
-beacon think start "用户登录优化"
+beacon-think start "用户登录优化"
 
 # 查看状态
-beacon think status
+beacon-think status
 
 # 确认事实
-beacon think confirm "用户需要社交登录"
+beacon-think confirm "用户需要社交登录"
 
 # 添加问题
-beacon think question "是否需要企业SSO?" --priority high --blocking
-beacon think question "会话有效期?" --priority medium
+beacon-think question "是否需要企业SSO?" --priority high --blocking
+beacon-think question "会话有效期?" --priority medium
 
 # 记录冲突
-beacon think conflict semantic "安全和易用性冲突"
-beacon think conflict boundary "边界条件定义不清"
+beacon-think conflict semantic "安全和易用性冲突"
+beacon-think conflict boundary "边界条件定义不清"
 
 # 生成总结
-beacon think summarize
+beacon-think summarize
 ```
 
 | 子命令 | 说明 | 参数 |
@@ -256,226 +275,238 @@ beacon think summarize
 
 ### 4.3 文档命令
 
-#### `beacon user-story`
+#### `beacon-user-story`
 
 用户故事生成与管理。
 
 ```bash
 # 生成用户故事
-beacon user-story create "用户登录"
+beacon-user-story create "用户登录"
 
 # 列出已有用户故事
-beacon user-story list
+beacon-user-story list
 ```
 
-#### `beacon prd`
+#### `beacon-prd`
 
 PRD（产品需求文档）生成与管理。
 
 ```bash
 # 生成 PRD
-beacon prd create "用户登录"
+beacon-prd create "用户登录"
 
 # 列出已有 PRD
-beacon prd list
+beacon-prd list
 ```
 
-#### `beacon test-case`
+#### `beacon-test-case`
 
 测试用例生成与管理。
 
 ```bash
 # 生成测试用例
-beacon test-case create "用户登录"
-beacon test-case create "用户登录" --type smoke   # 只生成冒烟测试
-beacon test-case create "用户登录" --type new     # 新功能测试
-beacon test-case create "用户登录" --type all     # 全部测试
+beacon-test-case create "用户登录"
+beacon-test-case create "用户登录" --type smoke   # 只生成冒烟测试
+beacon-test-case create "用户登录" --type new     # 新功能测试
+beacon-test-case create "用户登录" --type all     # 全部测试
+
+# 产出包含：
+# 1) docs/product/<version>/qa/test-cases/<feature>.md
+# 2) docs/product/<version>/qa/test-cases/<feature>.ac-test-matrix.json
+#    每条包含 layer / command / assertion / evidence_path（AC->TC 可执行矩阵）
 
 # 列出已有测试用例
-beacon test-case list
+beacon-test-case list
 
 # 门控检查
-beacon test-case gate "用户登录"
+beacon-test-case gate "用户登录"
 ```
 
 ---
 
 ### 4.4 分析命令
 
-#### `beacon analyze`
+#### `beacon-analyze`
 
 需求分析。
 
 ```bash
-beacon analyze
-beacon analyze --feature "用户登录"
+beacon-analyze
+beacon-analyze --feature "用户登录"
 ```
 
-#### `beacon brainstorm`
+#### `beacon-brainstorm`
 
 头脑风暴模式。
 
 ```bash
-beacon brainstorm "用户登录"
-beacon brainstorm "用户登录" --mode creative
+beacon-brainstorm "用户登录"
+beacon-brainstorm "用户登录" --mode creative
 ```
 
-#### `beacon design`
+#### `beacon-design`
 
 设计阶段。
 
 ```bash
-beacon design "用户登录"
-beacon design "用户登录" --type ui
+beacon-design "用户登录"
+beacon-design "用户登录" --type ui
 ```
 
-#### `beacon jtbd`
+#### `beacon-jtbd`
 
 Jobs-to-be-Done 分析。
 
 ```bash
-beacon jtbd "用户登录"
+beacon-jtbd "用户登录"
 ```
 
-#### `beacon kano`
+#### `beacon-kano`
 
 KANO 模型分析 — 需求分类（基本型、期望型、兴奋型）。
 
 ```bash
-beacon kano "用户登录"
-beacon kano "用户登录" --add "社交登录"
-beacon kano "用户登录" --list
+beacon-kano "用户登录"
+beacon-kano "用户登录" --add "社交登录"
+beacon-kano "用户登录" --list
 ```
 
-#### `beacon moscow`
+#### `beacon-moscow`
 
 MoSCoW 优先级划分 — Must/Should/Could/Won't。
 
 ```bash
-beacon moscow "用户登录"
-beacon moscow "用户登录" --add "账号密码" must
-beacon moscow "用户登录" --add "社交登录" should
+beacon-moscow "用户登录"
+beacon-moscow "用户登录" --add "账号密码" must
+beacon-moscow "用户登录" --add "社交登录" should
 ```
 
-#### `beacon roadmap`
+#### `beacon-roadmap`
 
 路线图规划。
 
 ```bash
-beacon roadmap
-beacon roadmap v2.0.0
-beacon roadmap --timeline 2026-Q1,2026-Q2
+beacon-roadmap
+beacon-roadmap v2.0.0
+beacon-roadmap --timeline 2026-Q1,2026-Q2
 ```
 
-#### `beacon persona`
+#### `beacon-persona`
 
 用户画像。
 
 ```bash
-beacon persona "用户登录"
-beacon persona list
+beacon-persona "用户登录"
+beacon-persona list
 ```
 
-#### `beacon version`
+#### `beacon-version`
 
 版本管理。
 
 ```bash
-beacon version create v2.0.0
-beacon version list
-beacon version current
+beacon-version create v2.0.0
+beacon-version list
+beacon-version current
 ```
 
-#### `beacon evolution-summary`
+#### `beacon-evolution-summary`
 
 版本演进总结。
 
 ```bash
-beacon evolution-summary v1.0.0
+beacon-evolution-summary v1.0.0
 ```
 
 ---
 
 ### 4.5 运维命令
 
-#### `beacon doctor`
+#### `beacon-doctor`
 
 环境诊断与修复。
 
 ```bash
-beacon doctor
-beacon doctor --fix
+beacon-doctor
+beacon-doctor --fix
 ```
 
-#### `beacon status`
+#### `beacon-status`
 
 状态面板。
 
 ```bash
-beacon status
-beacon status --verbose
+beacon-status
+beacon-status --verbose
 ```
 
-#### `beacon report`
+#### `beacon-report`
 
 生成报告。
 
 ```bash
-beacon report
-beacon report --format json
-beacon report v1.0.0
+beacon-report
+beacon-report --format json
+beacon-report v1.0.0
 ```
 
-#### `beacon debug`
+#### `beacon-debug`
 
 调试模式。
 
 ```bash
-beacon debug
-beacon debug --trace
+beacon-debug
+beacon-debug --trace
 ```
 
-#### `beacon feedback`
+#### `beacon-feedback`
 
 测试反馈同步。
 
 ```bash
-beacon feedback
-beacon feedback --sync
+beacon-feedback
+beacon-feedback --sync
 ```
 
-#### `beacon resume`
+#### `beacon-resume`
 
 恢复会话。
 
 ```bash
-beacon resume
-beacon resume session-123
+beacon-resume
+beacon-resume session-123
 ```
 
-#### `beacon init`
+#### `beacon-init`
 
 项目初始化。
 
 ```bash
-beacon init
-beacon init --template minimal
+beacon-init
+beacon-init --template minimal
 ```
 
 ---
 
 ### 4.6 测试与发布命令
 
-#### `beacon auto-test`
+#### `beacon-auto-test`
 
 自动化测试。
 
 ```bash
 # 启动一次自动测试（写入 .beacon/auto-test-status.json）
-beacon auto-test create ui --project .
+beacon-auto-test create ui --project .
+
+# 多层真实执行（ui/api-curl/unit/smoke）
+beacon-auto-test create all --project . \
+  --ui-command "python -m pytest -q -k ui" \
+  --api-curl-command "bash -lc 'curl -fsS http://127.0.0.1:8000/health'" \
+  --unit-command "python -m pytest -q -k unit" \
+  --smoke-command "python -m pytest -q -m smoke"
 
 # UI 防假通过校验（PTK 对齐）
-beacon auto-test create ui \
+beacon-auto-test create ui \
   --project . \
   --expectation success \
   --target-url /admin/dashboard \
@@ -483,16 +514,37 @@ beacon auto-test create ui \
   --ui-assertion "url_contains:/admin/dashboard"
 
 # strict 下无断言直接 blocked
-beacon auto-test create ui \
+beacon-auto-test create ui \
   --project . \
   --expectation success \
   --target-url /admin/dashboard \
   --origin-url /admin/dashboard \
   --strict-ui-assertion
 
+# 关键动作证据校验（缺任一项即失败）
+beacon-auto-test create ui \
+  --project . \
+  --expectation success \
+  --target-url /dashboard \
+  --origin-url /dashboard \
+  --require-ui-actions \
+  --ui-action-evidence "login=.beacon/evidence/ui/login.json" \
+  --ui-action-evidence "register=.beacon/evidence/ui/register.json" \
+  --ui-action-evidence "browse=.beacon/evidence/ui/browse.json" \
+  --ui-action-evidence "submit-form=.beacon/evidence/ui/submit-form.json"
+
+# 结合 AC 矩阵回写执行证据（生成 evidence_path 文件）
+beacon-auto-test create all \
+  --project . \
+  --matrix-path docs/product/latest/qa/test-cases/用户登录.ac-test-matrix.json \
+  --layer-command "ui=python -m pytest -q -k ui" \
+  --layer-command "api-curl=bash -lc 'curl -fsS http://127.0.0.1:8000/health'" \
+  --layer-command "unit=python -m pytest -q -k unit" \
+  --layer-command "smoke=python -m pytest -q -m smoke"
+
 # 查看测试状态
-beacon auto-test status --project .
-beacon auto-test status --project . --json
+beacon-auto-test status --project .
+beacon-auto-test status --project . --json
 ```
 
 常见 `ui_guard.reason_code`：
@@ -501,121 +553,126 @@ beacon auto-test status --project . --json
 - `ui_origin_target_unknown`
 - `ui_assertion_missing_strict`
 
-#### `beacon test-progress`
+新增与交付可信相关的 gate reason_code（strict/debug）：
+- `test_execution_missing`
+- `test_key_actions_missing`
+- `ac_tc_evidence_chain_broken`
+
+#### `beacon-test-progress`
 
 测试进度跟踪。
 
 ```bash
-beacon test-progress
-beacon test-progress --verbose
+beacon-test-progress
+beacon-test-progress --verbose
 ```
 
-#### `beacon release`
+#### `beacon-release`
 
 发布流程。
 
 ```bash
-beacon release v1.0.0
-beacon release v1.0.0 --dry-run
+beacon-release v1.0.0
+beacon-release v1.0.0 --dry-run
 ```
 
 ---
 
 ### 4.7 技术设计命令
 
-#### `beacon api-design`
+#### `beacon-api-design`
 
 API 设计。
 
 ```bash
-beacon api-design "用户登录"
-beacon api-design "用户登录" --format openapi
+beacon-api-design "用户登录"
+beacon-api-design "用户登录" --format openapi
 ```
 
-#### `beacon data-dictionary`
+#### `beacon-data-dictionary`
 
 数据字典。
 
 ```bash
-beacon data-dictionary
-beacon data-dictionary "用户"
+beacon-data-dictionary
+beacon-data-dictionary "用户"
 ```
 
 ---
 
 ### 4.8 设计协作命令
 
-#### `beacon ui-spec`
+#### `beacon-ui-spec`
 
 UI 规范。
 
 ```bash
-beacon ui-spec "用户登录"
-beacon ui-spec "用户登录" --theme dark
+beacon-ui-spec "用户登录"
+beacon-ui-spec "用户登录" --theme dark
 ```
 
-#### `beacon wireframe`
+#### `beacon-wireframe`
 
 线框图。
 
 ```bash
-beacon wireframe "登录页面"
-beacon wireframe "登录页面" --export png
+beacon-wireframe "登录页面"
+beacon-wireframe "登录页面" --export png
 ```
 
 ---
 
 ### 4.9 记忆系统命令
 
-#### `beacon save`
+#### `beacon-save`
 
 保存上下文。
 
 ```bash
-beacon save "当前思考"
-beacon save "当前思考" --tags work,login
+beacon-save "当前思考"
+beacon-save "当前思考" --tags work,login
 ```
 
-#### `beacon recall`
+#### `beacon-recall`
 
 召回上下文。
 
 ```bash
-beacon recall
-beacon recall "当前思考"
-beacon recall --tag work
+beacon-recall
+beacon-recall "当前思考"
+beacon-recall --tag work
 ```
 
-#### `beacon remember`
+#### `beacon-remember`
 
 长期记忆。
 
 ```bash
-beacon remember "用户偏好"
-beacon remember list
+beacon-remember "用户偏好"
+beacon-remember list
 ```
 
 ---
 
 ### 4.10 协作命令
 
-#### `beacon team`
+#### `beacon-team`
 
 团队模式。
 
 ```bash
-beacon team start
-beacon team add @user1
-beacon team status
+beacon-team start
+beacon-team add @user1
+beacon-team status
 ```
 
-#### `beacon ralph-bridge`
+#### `beacon-ralph-bridge`
 
 Ralph 桥接。
 
 ```bash
-beacon ralph-bridge connect
-beacon ralph-bridge status
+beacon-ralph-bridge connect
+beacon-ralph-bridge status
 ```
 
 ---
@@ -626,53 +683,53 @@ beacon ralph-bridge status
 
 ```bash
 # 方式一：手动分步执行
-beacon think start "点赞功能"
-beacon think confirm "用户需要对内容点赞"
-beacon think summarize
-beacon user-story create "点赞功能"
-beacon prd create "点赞功能"
-beacon test-case create "点赞功能"
-beacon workflow gate
+beacon-think start "点赞功能"
+beacon-think confirm "用户需要对内容点赞"
+beacon-think summarize
+beacon-user-story create "点赞功能"
+beacon-prd create "点赞功能"
+beacon-test-case create "点赞功能"
+beacon-workflow gate
 
 # 方式二：自动执行
-beacon workflow start "点赞功能" --auto
+beacon-workflow start "点赞功能" --auto
 ```
 
 ### 5.2 KANO 需求优先级
 
 ```bash
 # 1. 启动 KANO 分析
-beacon kano "用户登录"
+beacon-kano "用户登录"
 
 # 2. 添加需求并分类
-beacon kano "用户登录" --add "账号密码" must
-beacon kano "用户登录" --add "社交登录" should
-beacon kano "用户登录" --add "生物识别" could
-beacon kano "用户登录" --add "语音登录" wont
+beacon-kano "用户登录" --add "账号密码" must
+beacon-kano "用户登录" --add "社交登录" should
+beacon-kano "用户登录" --add "生物识别" could
+beacon-kano "用户登录" --add "语音登录" wont
 
 # 3. 查看分析结果
-beacon kano "用户登录" --list
+beacon-kano "用户登录" --list
 
 # 4. 生成报告
-beacon kano "用户登录" --report
+beacon-kano "用户登录" --report
 ```
 
 ### 5.3 团队协作
 
 ```bash
 # 1. 启动团队会话
-beacon team start "登录功能评审"
+beacon-team start "登录功能评审"
 
 # 2. 添加团队成员
-beacon team add @product-manager
-beacon team add @developer
-beacon team add @qa
+beacon-team add @product-manager
+beacon-team add @developer
+beacon-team add @qa
 
 # 3. 记录讨论
-beacon save "登录功能评审结论" --tags team,login
+beacon-save "登录功能评审结论" --tags team,login
 
 # 4. 生成会议纪要
-beacon report --type meeting
+beacon-report --type meeting
 ```
 
 ---
@@ -792,7 +849,7 @@ pip install --upgrade beacon-cli
 ```bash
 beacon --version
 # 或
-beacon version current
+beacon-version current
 ```
 
 ### Q3: 如何迁移 PTK 数据？
@@ -815,11 +872,11 @@ Beacon 自动兼容 PTK 目录结构。如需迁移：
 beacon --help
 
 # 查看子命令帮助
-beacon workflow --help
-beacon think --help
+beacon-workflow --help
+beacon-think --help
 
 # 运行环境诊断
-beacon doctor
+beacon-doctor
 ```
 
 ---
