@@ -6,7 +6,23 @@ app = typer.Typer(
     name="beacon",
     help="Beacon - AI Product Workflow Toolkit",
     add_completion=False,
+    no_args_is_help=True,
 )
+
+
+@app.callback(invoke_without_command=True)
+def _main_callback(
+    version_flag: bool = typer.Option(
+        False,
+        "--version",
+        "-V",
+        is_eager=True,
+        help="Show beacon version and exit",
+    )
+):
+    if version_flag:
+        typer.echo("Beacon CLI v1.0.0")
+        raise typer.Exit()
 
 
 # Import and register commands
@@ -97,10 +113,18 @@ app.add_typer(team_app, name="team")
 app.add_typer(ralph_bridge_app, name="ralph-bridge")
 
 
-@app.command()
-def version():
-    """Show beacon version"""
-    typer.echo("Beacon CLI v1.0.0")
+@app.command("work")
+def work_alias(
+    feature: str = typer.Argument(..., help="Feature name"),
+    project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
+    version: str = typer.Option("latest", "--version", "-v", help="Version"),
+    auto: bool = typer.Option(False, "--auto", "-a", help="Auto-run all stages"),
+    skip: Optional[str] = typer.Option(None, "--skip", "-s", help="Skip stages"),
+):
+    """Alias of `workflow start` for PTK/Skill compatibility."""
+    from beacon.commands.workflow import start as workflow_start
+
+    workflow_start(feature=feature, project=project, version=version, auto=auto, skip=skip)
 
 
 if __name__ == "__main__":

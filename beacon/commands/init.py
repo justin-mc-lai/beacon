@@ -1,8 +1,119 @@
-"""Beacon init command"""
-import typer
+"""Beacon init command."""
+
+from __future__ import annotations
+
+import json
+from pathlib import Path
 from typing import Optional
 
-app = typer.Typer(name="init", help="Initialize Beacon project")
+import typer
+
+from beacon.utils.runtime import now_iso, write_json
+
+app = typer.Typer(
+    name="init",
+    help="Initialize Beacon project",
+    invoke_without_command=True,
+    no_args_is_help=False,
+)
+
+
+def _write_if_apply(path: Path, content: str, apply: bool) -> str:
+    if apply:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(content, encoding="utf-8")
+        return "created"
+    return "planned"
+
+
+def _init_impl(
+    project_root: str,
+    dry_run: bool,
+    force: bool,
+    with_claude: bool,
+    with_agents: bool,
+) -> int:
+    root = Path(project_root) if project_root else Path.cwd()
+    apply = not dry_run
+    version = "v1.0.0"
+    actions: list[dict[str, str]] = []
+
+    docs_paths = [
+        root / "docs" / "beacon" / version,
+        root / "docs" / "beacon" / version / "prd",
+        root / "docs" / "beacon" / version / "user-story",
+        root / "docs" / "beacon" / version / "qa" / "test-cases",
+        root / "docs" / "beacon" / version / "execution",
+        root / "docs" / "product" / version,
+        root / "docs" / "product" / version / "prd",
+        root / "docs" / "product" / version / "user-story",
+        root / "docs" / "product" / version / "qa" / "test-cases",
+        root / "docs" / "product" / version / "execution",
+    ]
+    for p in docs_paths:
+        if apply:
+            p.mkdir(parents=True, exist_ok=True)
+        actions.append({"scope": "docs", "action": "created" if apply else "planned", "path": str(p.relative_to(root))})
+
+    if with_claude:
+        status = _write_if_apply(root / "CLAUDE.md", "# CLAUDE\n\n<!-- BEACON-MANAGED -->\n", apply)
+        actions.append({"scope": "base", "action": status, "path": "CLAUDE.md"})
+    if with_agents:
+        status = _write_if_apply(root / "AGENTS.md", "# AGENTS\n\n<!-- BEACON-MANAGED -->\n", apply)
+        actions.append({"scope": "base", "action": status, "path": "AGENTS.md"})
+
+    if apply:
+        (root / ".beacon").mkdir(parents=True, exist_ok=True)
+
+    payload = {
+        "schema_version": "1.0",
+        "command": "beacon init",
+        "version": version,
+        "project_root": str(root),
+        "dry_run": dry_run,
+        "force": force,
+        "status": "completed",
+        "started_at": now_iso(),
+        "ended_at": now_iso(),
+        "actions": actions,
+        "conflicts": [],
+    }
+
+    report_dir = root / "docs" / "beacon" / version / "execution"
+    report_json = report_dir / "init-report.json"
+    report_md = report_dir / "init-report.md"
+    if apply:
+        write_json(report_json, payload)
+        report_md.write_text("# Beacon Init Report\n\n- status: completed\n", encoding="utf-8")
+    payload["report_files"] = {
+        "json": str(report_json.relative_to(root)),
+        "markdown": str(report_md.relative_to(root)),
+        "written": apply,
+    }
+
+    typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    return 0
+
+
+@app.callback(invoke_without_command=True)
+def init_callback(
+    ctx: typer.Context,
+    project_root: Optional[str] = typer.Option("", "--project", "--project-root", "-p", help="Project root path"),
+    dry_run: bool = typer.Option(False, "--dry-run/--apply", help="Preview or apply"),
+    force: bool = typer.Option(False, "--force", help="Force append managed blocks"),
+    with_claude: bool = typer.Option(True, "--with-claude/--without-claude", help="Manage CLAUDE.md"),
+    with_agents: bool = typer.Option(True, "--with-agents/--without-agents", help="Manage AGENTS.md"),
+):
+    """Initialize project directly (PTK flat syntax compatibility)."""
+    if ctx.invoked_subcommand is None:
+        code = _init_impl(
+            project_root=project_root or "",
+            dry_run=dry_run,
+            force=force,
+            with_claude=with_claude,
+            with_agents=with_agents,
+        )
+        raise typer.Exit(code=code)
 
 
 @app.command()
@@ -13,12 +124,18 @@ def run(
     with_claude: bool = typer.Option(True, "--with-claude/--without-claude", help="Manage CLAUDE.md"),
     with_agents: bool = typer.Option(True, "--with-agents/--without-agents", help="Manage AGENTS.md"),
 ):
-    """Initialize Beacon project structure"""
-    action = "Would create" if dry_run else "Creating"
-    typer.echo(f"{action} Beacon project structure at: {project_root or '.'}")
+    """Initialize Beacon project structure."""
+    code = _init_impl(
+        project_root=project_root or "",
+        dry_run=dry_run,
+        force=force,
+        with_claude=with_claude,
+        with_agents=with_agents,
+    )
+    raise typer.Exit(code=code)
 
 
-@app.command()
+@app.command("init-project")
 def init_project(
     project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
     dry_run: bool = typer.Option(True, "--dry-run/--apply", help="Preview or apply"),
@@ -26,10 +143,17 @@ def init_project(
     with_claude: bool = typer.Option(True, "--with-claude/--without-claude", help="Manage CLAUDE.md"),
     with_agents: bool = typer.Option(True, "--with-agents/--without-agents", help="Manage AGENTS.md"),
 ):
-    """Initialize Beacon project structure (alias)"""
-    action = "Would create" if dry_run else "Creating"
-    typer.echo(f"{action} Beacon project structure at: {project_root or '.'}")
+    """Initialize Beacon project structure (alias)."""
+    code = _init_impl(
+        project_root=project_root,
+        dry_run=dry_run,
+        force=force,
+        with_claude=with_claude,
+        with_agents=with_agents,
+    )
+    raise typer.Exit(code=code)
 
 
 if __name__ == "__main__":
     app()
+
