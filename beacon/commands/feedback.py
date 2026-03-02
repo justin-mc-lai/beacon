@@ -7,7 +7,9 @@ from pathlib import Path
 
 import typer
 
+from beacon.utils.memory import append_memory_entry
 from beacon.utils.runtime import load_run_state, newest_run_id, now_iso, write_json
+from beacon.utils.workflow_memory import append_lifecycle_event
 
 app = typer.Typer(name="feedback", help="Feedback operations")
 
@@ -37,10 +39,46 @@ def sync(
         ],
     }
     write_json(out_file, payload)
+
+    rel_feedback_path = str(out_file.relative_to(root))
+    assimilated = 0
+    for row in payload.get("feedback", []):
+        if not isinstance(row, dict):
+            continue
+        note = str(row.get("note", "")).strip()
+        if not note:
+            continue
+        append_memory_entry(
+            project_root=root,
+            mem_type="insight",
+            text=f"[feedback:{target}] {note}",
+            source_session_id=target,
+            source="feedback.sync",
+            evidence_ref=[rel_feedback_path],
+            confidence=0.7,
+            tags=["feedback", "workflow-loop"],
+        )
+        assimilated += 1
+    if assimilated > 0:
+        append_lifecycle_event(
+            root,
+            run_id=target,
+            stage="feedback",
+            event="feedback_memory_assimilated",
+            source="feedback.sync",
+            evidence_ref=[rel_feedback_path],
+            details={"count": assimilated},
+        )
+
     typer.echo(f"Syncing feedback for run: {target}")
-    typer.echo(json.dumps({"synced": str(out_file), "run_id": target}, ensure_ascii=False, indent=2))
+    typer.echo(
+        json.dumps(
+            {"synced": str(out_file), "run_id": target, "memory_assimilated": assimilated},
+            ensure_ascii=False,
+            indent=2,
+        )
+    )
 
 
 if __name__ == "__main__":
     app()
-
