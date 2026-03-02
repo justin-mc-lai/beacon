@@ -1,3 +1,8 @@
+---
+name: beacon
+description: AI Product Workflow Toolkit for product thinking, user stories, PRDs, test cases, and release workflows
+---
+
 # Beacon - AI Product Workflow Toolkit
 
 > **Skill Version**: v1.0.0
