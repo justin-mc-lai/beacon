@@ -7,7 +7,7 @@ import sys
 import os
 
 from beacon.utils.runtime import generate_run_id, now_iso, save_run_state
-from beacon.utils.workflow_memory import append_lifecycle_event, write_stage_context
+from beacon.utils.workflow_memory import append_lifecycle_event, write_stage_context, record_stage_writeback
 
 app = typer.Typer(name="workflow", help="Full product workflow")
 
@@ -190,6 +190,14 @@ def start(
                     source="workflow.start",
                     evidence_ref=evidence,
                     details={"exit_code": rc},
+                )
+                record_stage_writeback(
+                    project_root,
+                    run_id=run_id,
+                    stage=stage,
+                    feature=feature,
+                    evidence_ref=evidence,
+                    status="completed",
                 )
             else:
                 typer.echo(f"    ✗ {stage} failed (exit={rc})")
