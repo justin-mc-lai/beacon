@@ -92,8 +92,8 @@ def create(
     return story
 
 
-@app.command()
-def list(
+@app.command("list")
+def list_stories(
     project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
 ):
     """List all user stories"""

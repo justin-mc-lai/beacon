@@ -118,8 +118,8 @@ def generate_regression_tests(feature: str) -> str:
 | TC-005 | No breaking changes | Related feature A, B | ⏳ |"""
 
 
-@app.command()
-def list(
+@app.command("list")
+def list_tests(
     project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
 ):
     """List all test cases"""

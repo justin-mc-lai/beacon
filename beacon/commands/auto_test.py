@@ -10,7 +10,7 @@ app = typer.Typer(name="auto-test", help="Automated testing")
 
 @app.command()
 def create(
-    scope: str = typer.Argument(..., help="Test scope: unit/integration/e2e/all"),
+    scope: str = typer.Argument("all", help="Test scope: unit/integration/e2e/all"),
     project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
     config: Optional[str] = typer.Option(None, "--config", "-c", help="Test config file"),
     verbose: bool = typer.Option(False, "--verbose", "-v", help="Verbose output"),

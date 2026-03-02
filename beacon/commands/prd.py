@@ -108,8 +108,8 @@ def create(
     typer.echo(f"✓ PRD created: {output_path}")
 
 
-@app.command()
-def list(
+@app.command("list")
+def list_prds(
     project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
 ):
     """List all PRDs"""

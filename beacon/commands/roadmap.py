@@ -9,7 +9,7 @@ app = typer.Typer(name="roadmap", help="Product roadmap")
 
 @app.command()
 def create(
-    product: str = typer.Argument(..., help="Product name"),
+    product: str = typer.Argument("default", help="Product name"),
     period: Optional[str] = typer.Option(None, "--period", "-t", help="Time period (e.g., 2024-Q1)"),
     project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
     output: Optional[str] = typer.Option(None, "--output", "-o", help="Output file"),

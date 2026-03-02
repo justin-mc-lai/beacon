@@ -9,7 +9,7 @@ app = typer.Typer(name="moscow", help="MoSCoW prioritization")
 
 @app.command()
 def create(
-    feature: str = typer.Argument(..., help="Feature or requirement for prioritization"),
+    feature: str = typer.Argument("default", help="Feature or requirement for prioritization"),
     project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
     output: Optional[str] = typer.Option(None, "--output", "-o", help="Output file"),
 ):

@@ -10,21 +10,6 @@ app = typer.Typer(
 )
 
 
-@app.callback()
-def main_callback(
-    version: Optional[str] = typer.Option(
-        None,
-        "--version",
-        "-V",
-        help="Show version and exit",
-    ),
-):
-    """Beacon - AI Product Workflow Toolkit"""
-    if version:
-        typer.echo("Beacon v1.0.0")
-        raise typer.Exit()
-
-
 # Import and register commands
 from beacon.commands.run import app as run_app
 from beacon.commands.doctor import app as doctor_app
