@@ -8,7 +8,9 @@ from enum import Enum
 import hashlib
 import os
 
+from beacon.utils.memory import load_memory_entries
 from beacon.utils.memory import scope_memory_paths
+from beacon.utils.workflow_memory import compute_memory_metrics, load_lifecycle_events
 
 app = typer.Typer(name="gate", help="Run gate checks for workflow stages")
 
@@ -48,6 +50,9 @@ REASON_CODES = [
     "gate_consistency_conflict",
     "scope_guard_violation",
     "scope_guard_confirmation_pending",
+    "memory_lifecycle_missing",
+    "memory_evidence_missing",
+    "memory_feedback_unsynced",
 ]
 
 # Workflow stages
@@ -588,6 +593,79 @@ def check_scope_guard(project_root: Path, mode: GateMode) -> List[Dict[str, Any]
     return issues
 
 
+def check_memory_closure(project_root: Path, mode: GateMode, stage: str) -> List[Dict[str, Any]]:
+    """Check workflow memory closure for release-stage strict gates."""
+    issues = []
+    if mode != GateMode.STRICT or stage != "release":
+        return issues
+
+    events = load_lifecycle_events(project_root)
+    if not events:
+        issues.append(
+            {
+                "reason_code": "memory_lifecycle_missing",
+                "severity": "critical",
+                "message": "workflow lifecycle memory events are missing",
+                "blocked": True,
+            }
+        )
+        return issues
+
+    metrics = compute_memory_metrics(project_root)
+    target_run_id = metrics.get("run_id")
+    run_events = load_lifecycle_events(project_root, run_id=target_run_id) if target_run_id else events
+    if not metrics.get("closure_complete", False):
+        missing = metrics.get("missing_closure_stages", [])
+        issues.append(
+            {
+                "reason_code": "memory_lifecycle_missing",
+                "severity": "critical",
+                "message": f"workflow memory closure is incomplete: missing stages={missing}",
+                "blocked": True,
+                "details": {"missing_stages": missing, "run_id": target_run_id},
+            }
+        )
+
+    bad_evidence = []
+    for item in run_events:
+        if not isinstance(item, dict):
+            continue
+        event = str(item.get("event", ""))
+        if event not in {"stage_finished", "memory_writeback", "feedback_memory_assimilated"}:
+            continue
+        refs = item.get("evidence_ref")
+        if not isinstance(refs, list) or not refs:
+            bad_evidence.append(item.get("event_id"))
+    if bad_evidence:
+        issues.append(
+            {
+                "reason_code": "memory_evidence_missing",
+                "severity": "critical",
+                "message": f"memory lifecycle events missing evidence_ref: {len(bad_evidence)}",
+                "blocked": True,
+                "details": {"event_ids": bad_evidence[:10], "run_id": target_run_id},
+            }
+        )
+
+    feedback_dir = project_root / ".beacon" / "state" / "requirement-feedback"
+    feedback_files = list(feedback_dir.glob("*.json")) if feedback_dir.exists() else []
+    if feedback_files:
+        memory_items = load_memory_entries(project_root)
+        has_feedback_memory = any(str(item.get("source", "")) == "feedback.sync" for item in memory_items)
+        has_feedback_event = any(str(item.get("event", "")) == "feedback_memory_assimilated" for item in run_events)
+        if not has_feedback_memory or not has_feedback_event:
+            issues.append(
+                {
+                    "reason_code": "memory_feedback_unsynced",
+                    "severity": "high",
+                    "message": "requirement-feedback exists but feedback memory assimilation is missing",
+                    "blocked": True,
+                }
+            )
+
+    return issues
+
+
 def run_gate_checks(
     stage: str,
     mode: GateMode,
@@ -621,6 +699,11 @@ def run_gate_checks(
         if mode == GateMode.DEBUG:
             typer.echo(f"[DEBUG] Checking scope guard...")
         all_issues.extend(check_scope_guard(project_root, mode))
+
+    if mode == GateMode.STRICT or mode == GateMode.DEBUG:
+        if mode == GateMode.DEBUG:
+            typer.echo(f"[DEBUG] Checking memory closure...")
+        all_issues.extend(check_memory_closure(project_root, mode, stage))
 
     # Determine blocked status
     blocked_issues = [i for i in all_issues if i.get("blocked", False)]
