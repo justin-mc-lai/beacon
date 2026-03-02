@@ -4,21 +4,25 @@ from typing import Optional
 from pathlib import Path
 import subprocess
 import sys
+import os
 
 from beacon.utils.runtime import generate_run_id, now_iso, save_run_state
-from beacon.utils.workflow_memory import append_lifecycle_event
+from beacon.utils.workflow_memory import append_lifecycle_event, write_stage_context
 
 app = typer.Typer(name="workflow", help="Full product workflow")
 
 
-def run_beacon_command(args: list, project_root: Path) -> int:
+def run_beacon_command(args: list, project_root: Path, extra_env: Optional[dict[str, str]] = None) -> int:
     """Run a beacon subcommand"""
     cmd = [sys.executable, "-m", "beacon.main"] + args
+    env = os.environ.copy()
+    env.update(extra_env or {})
     result = subprocess.run(
         cmd,
         cwd=project_root,
         capture_output=True,
-        text=True
+        text=True,
+        env=env,
     )
     return result.returncode
 
@@ -129,18 +133,45 @@ def start(
             source="workflow.start",
             details={"feature": feature, "version": version},
         )
+        context_path = write_stage_context(
+            project_root,
+            run_id=run_id,
+            stage=stage,
+            feature=feature,
+        )
 
         if auto:
             typer.echo(f"    → Running: {cmd} {feature}")
+            stage_env = {
+                "BEACON_WORKFLOW_RUN_ID": run_id,
+                "BEACON_WORKFLOW_STAGE": stage,
+                "BEACON_STAGE_CONTEXT_PATH": str(context_path),
+            }
             # Run the command
             if stage == "think":
-                rc = run_beacon_command(["think", "start", feature, "--project", str(project_root)], project_root)
+                rc = run_beacon_command(
+                    ["think", "start", feature, "--project", str(project_root)],
+                    project_root,
+                    extra_env=stage_env,
+                )
             elif stage == "user-story":
-                rc = run_beacon_command(["user-story", "create", feature, "--project", str(project_root)], project_root)
+                rc = run_beacon_command(
+                    ["user-story", "create", feature, "--project", str(project_root)],
+                    project_root,
+                    extra_env=stage_env,
+                )
             elif stage == "prd":
-                rc = run_beacon_command(["prd", "create", feature, "--project", str(project_root)], project_root)
+                rc = run_beacon_command(
+                    ["prd", "create", feature, "--project", str(project_root)],
+                    project_root,
+                    extra_env=stage_env,
+                )
             elif stage == "test-case":
-                rc = run_beacon_command(["test-case", "create", feature, "--project", str(project_root)], project_root)
+                rc = run_beacon_command(
+                    ["test-case", "create", feature, "--project", str(project_root)],
+                    project_root,
+                    extra_env=stage_env,
+                )
             else:
                 rc = 1
 

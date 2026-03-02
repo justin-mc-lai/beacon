@@ -3,6 +3,7 @@ import typer
 from typing import Optional
 import json
 from pathlib import Path
+import os
 
 app = typer.Typer(name="think", help="Product thinking vNext")
 
@@ -61,6 +62,14 @@ def start(
     data = session.load_progress()
     data["topic"] = topic
     data["round"] = 1
+    context_path = os.environ.get("BEACON_STAGE_CONTEXT_PATH", "").strip()
+    if context_path:
+        data["memory_context_path"] = context_path
+        try:
+            ctx_data = json.loads(Path(context_path).read_text(encoding="utf-8"))
+            data["memory_context_recall_count"] = len(ctx_data.get("memory_recall", []))
+        except Exception:
+            data["memory_context_recall_count"] = 0
     session.save_progress(data)
 
     typer.echo(f"\nRound 1: Let's explore '{topic}'")

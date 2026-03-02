@@ -4,6 +4,7 @@ from typing import Optional
 import json
 from pathlib import Path
 from datetime import datetime
+import os
 
 app = typer.Typer(name="user-story", help="Generate user stories")
 
@@ -49,6 +50,7 @@ def create(
     story = generate_user_story(feature, project_root)
 
     # Generate markdown
+    memory_context_path = os.environ.get("BEACON_STAGE_CONTEXT_PATH", "").strip()
     md_content = f"""# User Story: {story['title']}
 
 ## Story
@@ -82,6 +84,7 @@ def create(
 | Story Points | {story['story_points']} |
 | Status | {story['status']} |
 | Created | {story['created_at']} |
+| Memory Context | {memory_context_path or 'N/A'} |
 """
 
     output_path = Path(output) if output else project_root / "docs" / "product" / "latest" / "user-story" / f"{feature.lower().replace(' ', '-')}.md"

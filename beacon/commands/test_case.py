@@ -3,6 +3,7 @@ import typer
 from typing import Optional
 from pathlib import Path
 from datetime import datetime
+import os
 
 app = typer.Typer(name="test-case", help="Generate test cases")
 
@@ -20,6 +21,8 @@ def create(
     # Generate test cases based on type
     test_cases = generate_test_cases(feature, test_type)
 
+    memory_context_path = os.environ.get("BEACON_STAGE_CONTEXT_PATH", "").strip()
+
     md_content = f"""# Test Cases: {feature}
 
 ## Overview
@@ -27,6 +30,7 @@ def create(
 **Feature**: {feature}
 **Test Type**: {test_type.upper()}
 **Generated**: {datetime.now().strftime('%Y-%m-%d %H:%M')}
+**Memory Context**: {memory_context_path or 'N/A'}
 
 ---
 

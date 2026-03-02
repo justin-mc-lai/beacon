@@ -3,6 +3,7 @@ import typer
 from typing import Optional
 from pathlib import Path
 from datetime import datetime
+import os
 
 app = typer.Typer(name="prd", help="Generate Product Requirements Document")
 
@@ -15,6 +16,8 @@ def create(
 ):
     """Create a PRD"""
     project_root = Path(project) if project else Path.cwd()
+
+    memory_context_path = os.environ.get("BEACON_STAGE_CONTEXT_PATH", "").strip()
 
     md_content = f"""# PRD: {feature}
 
@@ -99,6 +102,7 @@ def create(
 **Created**: {datetime.now().strftime('%Y-%m-%d')}
 **Version**: 1.0.0
 **Status**: Draft
+**Memory Context**: {memory_context_path or 'N/A'}
 """
 
     output_path = Path(output) if output else project_root / "docs" / "product" / "latest" / "prd" / f"{feature.lower().replace(' ', '-')}.md"
