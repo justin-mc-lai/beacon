@@ -1,117 +1,135 @@
-"""Beacon remember command - Knowledge memory"""
-import typer
-from typing import Optional
-from pathlib import Path
+"""Beacon remember command - PTK-aligned memory envelope."""
+
+from __future__ import annotations
+
 import json
-from datetime import datetime
+from pathlib import Path
+from typing import Optional
+
+import typer
+
+from beacon.utils.memory import (
+    append_memory_entry,
+    load_memory_entries,
+    normalize_memory_type,
+    search_memory_entries,
+)
 
 app = typer.Typer(name="remember", help="Knowledge memory management")
-
-
-MEMORY_FILE = "memory.json"
-
-
-def get_memory_path(project_root: Path) -> Path:
-    """Get memory file path"""
-    return project_root / ".beacon" / MEMORY_FILE
-
-
-def load_memory(project_root: Path) -> dict:
-    """Load memory data"""
-    memory_path = get_memory_path(project_root)
-    if memory_path.exists():
-        return json.loads(memory_path.read_text())
-    return {"entries": []}
-
-
-def save_memory(project_root: Path, memory: dict):
-    """Save memory data"""
-    memory_path = get_memory_path(project_root)
-    memory_path.parent.mkdir(parents=True, exist_ok=True)
-    memory_path.write_text(json.dumps(memory, indent=2, ensure_ascii=False))
 
 
 @app.command()
 def add(
     content: str = typer.Argument(..., help="Memory content to add"),
-    tag: Optional[str] = typer.Option(None, "--tag", "-t", help="Tag for the memory"),
+    tag: list[str] = typer.Option([], "--tag", "-t", help="Tag for the memory (repeatable)"),
+    memory_type: str = typer.Option(
+        "insight",
+        "--type",
+        "-y",
+        help="Memory type: insight/decision/vocabulary",
+    ),
+    source_session_id: str = typer.Option("manual", "--source-session-id", help="Source session id"),
+    source: str = typer.Option("remember", "--source", help="Human-readable source"),
+    evidence_ref: list[str] = typer.Option([], "--evidence-ref", help="Evidence reference (repeatable)"),
+    confidence: float = typer.Option(0.8, "--confidence", min=0.0, max=1.0, help="Confidence [0,1]"),
     project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
 ):
-    """Add a new memory"""
+    """Add a memory entry with unified memory envelope metadata."""
     project_root = Path(project) if project else Path.cwd()
-    memory = load_memory(project_root)
+    try:
+        normalized_type = normalize_memory_type(memory_type)
+    except ValueError as exc:
+        typer.echo(str(exc), err=True)
+        raise typer.Exit(code=2)
 
-    entry = {
-        "id": len(memory["entries"]) + 1,
-        "content": content,
-        "tag": tag,
-        "created_at": datetime.now().isoformat(),
-    }
+    entry = append_memory_entry(
+        project_root=project_root,
+        mem_type=normalized_type,
+        text=content,
+        source_session_id=source_session_id,
+        source=source,
+        evidence_ref=evidence_ref,
+        confidence=confidence,
+        tags=tag,
+    )
 
-    memory["entries"].append(entry)
-    save_memory(project_root, memory)
-
-    typer.echo(f"✓ Memory added (ID: {entry['id']})")
-    if tag:
-        typer.echo(f"  Tag: {tag}")
+    typer.echo("✓ Memory added")
+    typer.echo(f"  memory_id: {entry['memory_id']}")
+    typer.echo(f"  type: {entry['type']}")
+    if entry.get("tags"):
+        typer.echo(f"  tags: {', '.join(entry['tags'])}")
 
 
 @app.command()
 def search(
-    query: str = typer.Argument(..., help="Search query"),
+    query: str = typer.Argument("", help="Search query (empty means all)"),
+    memory_type: str = typer.Option("", "--type", "-y", help="Filter: insight/decision/vocabulary"),
     project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
     limit: int = typer.Option(10, "--limit", "-n", help="Max results"),
+    json_output: bool = typer.Option(False, "--json", help="JSON output"),
 ):
-    """Search memories"""
+    """Search memories with source/evidence/session context."""
     project_root = Path(project) if project else Path.cwd()
-    memory = load_memory(project_root)
+    normalized_type = None
+    if memory_type:
+        try:
+            normalized_type = normalize_memory_type(memory_type)
+        except ValueError as exc:
+            typer.echo(str(exc), err=True)
+            raise typer.Exit(code=2)
 
-    if not memory["entries"]:
+    results = search_memory_entries(
+        project_root=project_root,
+        query=query,
+        mem_type=normalized_type,
+        limit=limit,
+    )
+
+    if json_output:
+        typer.echo(json.dumps(results, ensure_ascii=False, indent=2))
+        return
+
+    if not results:
         typer.echo("No memories found")
         return
 
-    # Search in content and tags
-    query_lower = query.lower()
-    results = [
-        e for e in memory["entries"]
-        if query_lower in e.get("content", "").lower() or
-           (e.get("tag") and query_lower in e["tag"].lower())
-    ]
-
-    if not results:
-        typer.echo(f"No results for '{query}'")
-        return
-
     typer.echo(f"Found {len(results)} result(s):")
-    for entry in results[:limit]:
-        typer.echo(f"\n  ID: {entry['id']}")
-        if entry.get("tag"):
-            typer.echo(f"  Tag: {entry['tag']}")
-        typer.echo(f"  Content: {entry['content'][:100]}...")
-        typer.echo(f"  Created: {entry['created_at']}")
+    for entry in results:
+        typer.echo(f"\n- {entry.get('memory_id', '<unknown>')} [{entry.get('type', 'unknown')}]")
+        typer.echo(f"  content: {entry.get('content', '')[:160]}")
+        typer.echo(f"  source_session_id: {entry.get('source_session_id', 'manual')}")
+        typer.echo(f"  source: {entry.get('source', 'remember')}")
+        typer.echo(f"  confidence: {entry.get('confidence', 0.0)}")
+        refs = entry.get("evidence_ref", [])
+        if isinstance(refs, list) and refs:
+            typer.echo(f"  evidence_ref: {', '.join(str(x) for x in refs)}")
 
 
 @app.command("list")
 def _list(
     project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
-    tag: Optional[str] = typer.Option(None, "--tag", "-t", help="Filter by tag"),
+    memory_type: str = typer.Option("", "--type", "-y", help="Filter by type"),
 ):
-    """List all memories"""
+    """List all memories."""
     project_root = Path(project) if project else Path.cwd()
-    memory = load_memory(project_root)
+    normalized_type = None
+    if memory_type:
+        try:
+            normalized_type = normalize_memory_type(memory_type)
+        except ValueError as exc:
+            typer.echo(str(exc), err=True)
+            raise typer.Exit(code=2)
 
-    entries = memory["entries"]
-    if tag:
-        entries = [e for e in entries if e.get("tag") == tag]
-
+    entries = load_memory_entries(project_root=project_root, mem_type=normalized_type)
     if not entries:
         typer.echo("No memories found")
         return
 
     typer.echo(f"Memories ({len(entries)} total):")
     for entry in entries:
-        tag_str = f" [#{entry.get('tag')}]" if entry.get("tag") else ""
-        typer.echo(f"  {entry['id']}. {entry['content'][:60]}...{tag_str}")
+        tags = entry.get("tags", [])
+        tag_text = f" [{', '.join(tags)}]" if isinstance(tags, list) and tags else ""
+        typer.echo(f"- {entry.get('memory_id')} ({entry.get('type')}) {entry.get('content', '')[:60]}{tag_text}")
 
 
 if __name__ == "__main__":

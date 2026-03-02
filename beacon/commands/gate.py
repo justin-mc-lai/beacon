@@ -8,6 +8,8 @@ from enum import Enum
 import hashlib
 import os
 
+from beacon.utils.memory import scope_memory_paths
+
 app = typer.Typer(name="gate", help="Run gate checks for workflow stages")
 
 # Gate modes
@@ -137,6 +139,18 @@ def check_boundaries(project_root: Path, mode: GateMode) -> List[Dict[str, Any]]
         if mode == GateMode.DEBUG:
             typer.echo(f"  [DEBUG] {issue['reason_code']}: {issue['message']}")
 
+    # Minimal schema validation (non-empty markdown)
+    if boundaries_path.exists():
+        content = boundaries_path.read_text(encoding="utf-8", errors="ignore").strip()
+        if not content or "#" not in content:
+            issue = {
+                "reason_code": "boundaries_schema_invalid",
+                "severity": "critical" if mode == GateMode.STRICT else "high",
+                "message": f"boundaries.md appears empty/invalid markdown: {boundaries_path}",
+                "blocked": mode == GateMode.STRICT,
+            }
+            issues.append(issue)
+
     return issues
 
 
@@ -171,6 +185,51 @@ def check_terminal_artifact(project_root: Path, mode: GateMode) -> List[Dict[str
                     "blocked": mode == GateMode.STRICT,
                 }
                 issues.append(issue)
+
+        # Basic traceability contract validation
+        traceability = terminal_data.get("traceability")
+        if "traceability" in terminal_data and not isinstance(traceability, dict):
+            issue = {
+                "reason_code": "terminal_schema_invalid",
+                "severity": "critical" if mode == GateMode.STRICT else "high",
+                "message": "terminal.json field `traceability` must be an object",
+                "blocked": mode == GateMode.STRICT,
+            }
+            issues.append(issue)
+        elif isinstance(traceability, dict):
+            ac_to_tc = traceability.get("ac_to_tc")
+            if "ac_to_tc" in traceability and not ac_to_tc:
+                issue = {
+                    "reason_code": "ac_tc_mapping_gap",
+                    "severity": "critical" if mode == GateMode.STRICT else "high",
+                    "message": "traceability.ac_to_tc is empty",
+                    "blocked": mode == GateMode.STRICT,
+                }
+                issues.append(issue)
+
+            evidence_refs = traceability.get("evidence_refs")
+            if "evidence_refs" in traceability:
+                if not isinstance(evidence_refs, list) or not evidence_refs:
+                    issue = {
+                        "reason_code": "terminal_evidence_missing",
+                        "severity": "critical" if mode == GateMode.STRICT else "high",
+                        "message": "traceability.evidence_refs is missing/empty",
+                        "blocked": mode == GateMode.STRICT,
+                    }
+                    issues.append(issue)
+                else:
+                    bad_style = [
+                        ref for ref in evidence_refs
+                        if isinstance(ref, str) and (ref.startswith("/") or "\\" in ref)
+                    ]
+                    if bad_style:
+                        issue = {
+                            "reason_code": "evidence_ref_path_style_inconsistent",
+                            "severity": "medium",
+                            "message": f"traceability.evidence_refs contains non-project-relative paths: {bad_style[:3]}",
+                            "blocked": False,
+                        }
+                        issues.append(issue)
 
         # Check status validity
         valid_statuses = ["Pass", "Blocked", "Cancelled"]
@@ -227,8 +286,34 @@ def check_evidence_chain(project_root: Path, mode: GateMode) -> List[Dict[str, A
             "blocked": mode == GateMode.STRICT,
         }
         issues.append(issue)
-    elif mode == GateMode.DEBUG:
-        typer.echo(f"  [DEBUG] raw-command-log.jsonl exists")
+    else:
+        raw_invalid_count = 0
+        has_any = False
+        with raw_log_path.open("r", encoding="utf-8", errors="ignore") as f:
+            for idx, line in enumerate(f, start=1):
+                line = line.strip()
+                if not line:
+                    continue
+                has_any = True
+                try:
+                    payload = json.loads(line)
+                    if not isinstance(payload, dict):
+                        raw_invalid_count += 1
+                except Exception:
+                    raw_invalid_count += 1
+        if not has_any or raw_invalid_count > 0:
+            issue = {
+                "reason_code": "raw_command_log_invalid",
+                "severity": "high",
+                "message": (
+                    "raw-command-log must be JSONL with object lines"
+                    + (f"; invalid_lines={raw_invalid_count}" if raw_invalid_count else "; file is empty")
+                ),
+                "blocked": mode == GateMode.STRICT,
+            }
+            issues.append(issue)
+        elif mode == GateMode.DEBUG:
+            typer.echo(f"  [DEBUG] raw-command-log.jsonl valid")
 
     # Check evidence-manifest
     manifest_path = get_evidence_manifest_path(project_root)
@@ -243,20 +328,33 @@ def check_evidence_chain(project_root: Path, mode: GateMode) -> List[Dict[str, A
     else:
         try:
             manifest = json.loads(manifest_path.read_text())
-            # Check manifest structure
-            if "entries" not in manifest:
+            # Check manifest structure (兼容 entries/items)
+            entries = manifest.get("entries")
+            if entries is None:
+                entries = manifest.get("items")
+            if not isinstance(entries, list):
                 issue = {
                     "reason_code": "evidence_sha256_manifest_invalid",
                     "severity": "high",
-                    "message": "evidence-manifest missing 'entries' field",
+                    "message": "evidence-manifest missing list field: entries/items",
                     "blocked": mode == GateMode.STRICT,
                 }
                 issues.append(issue)
+                entries = []
             elif mode == GateMode.DEBUG:
-                typer.echo(f"  [DEBUG] evidence-manifest.json valid with {len(manifest.get('entries', []))} entries")
+                typer.echo(f"  [DEBUG] evidence-manifest.json valid with {len(entries)} entries")
 
             # Check integrity
-            for entry in manifest.get("entries", []):
+            for entry in entries:
+                if not isinstance(entry, dict):
+                    issue = {
+                        "reason_code": "evidence_sha256_manifest_incomplete",
+                        "severity": "medium",
+                        "message": f"evidence-manifest entry is not object: {entry}",
+                        "blocked": False,
+                    }
+                    issues.append(issue)
+                    continue
                 if "sha256" not in entry or "path" not in entry:
                     issue = {
                         "reason_code": "evidence_sha256_manifest_incomplete",
@@ -267,8 +365,19 @@ def check_evidence_chain(project_root: Path, mode: GateMode) -> List[Dict[str, A
                     issues.append(issue)
                     continue
 
+                rel_path = str(entry.get("path", ""))
+                if rel_path.startswith("/") or "\\" in rel_path:
+                    issue = {
+                        "reason_code": "evidence_ref_path_style_inconsistent",
+                        "severity": "medium",
+                        "message": f"evidence path should be project-relative POSIX style: {rel_path}",
+                        "blocked": False,
+                    }
+                    issues.append(issue)
+                    continue
+
                 # Verify file exists and hash matches
-                file_path = project_root / entry["path"]
+                file_path = project_root / rel_path
                 if file_path.exists():
                     file_hash = hashlib.sha256(file_path.read_bytes()).hexdigest()
                     if file_hash != entry["sha256"]:
@@ -279,6 +388,14 @@ def check_evidence_chain(project_root: Path, mode: GateMode) -> List[Dict[str, A
                             "blocked": mode == GateMode.STRICT,
                         }
                         issues.append(issue)
+                else:
+                    issue = {
+                        "reason_code": "evidence_sha256_manifest_mismatch",
+                        "severity": "critical" if mode == GateMode.STRICT else "high",
+                        "message": f"evidence file missing: {rel_path}",
+                        "blocked": mode == GateMode.STRICT,
+                    }
+                    issues.append(issue)
 
         except json.JSONDecodeError as e:
             issue = {
@@ -299,8 +416,88 @@ def check_evidence_chain(project_root: Path, mode: GateMode) -> List[Dict[str, A
             "blocked": False,
         }
         issues.append(issue)
+    else:
+        try:
+            report_data = json.loads(report_path.read_text(encoding="utf-8"))
+            if not isinstance(report_data, dict):
+                raise ValueError("gate-report root is not object")
+            for field in ("stage", "mode", "status"):
+                if field not in report_data:
+                    issues.append(
+                        {
+                            "reason_code": "gate_consistency_report_invalid",
+                            "severity": "high",
+                            "message": f"gate-report missing required field: {field}",
+                            "blocked": mode == GateMode.STRICT,
+                        }
+                    )
+
+            report_status = report_data.get("status")
+            valid_statuses = {"Pass", "Blocked", "Cancelled", "Conditional-Pass"}
+            if report_status and report_status not in valid_statuses:
+                issues.append(
+                    {
+                        "reason_code": "gate_consistency_report_invalid",
+                        "severity": "high",
+                        "message": f"gate-report invalid status: {report_status}",
+                        "blocked": mode == GateMode.STRICT,
+                    }
+                )
+
+            report_issues = report_data.get("issues")
+            if report_issues is not None and not isinstance(report_issues, list):
+                issues.append(
+                    {
+                        "reason_code": "gate_consistency_report_invalid",
+                        "severity": "high",
+                        "message": "gate-report issues must be a list",
+                        "blocked": mode == GateMode.STRICT,
+                    }
+                )
+            elif isinstance(report_issues, list):
+                report_blocked = any(bool(item.get("blocked")) for item in report_issues if isinstance(item, dict))
+                if report_status == "Pass" and report_blocked:
+                    issues.append(
+                        {
+                            "reason_code": "gate_consistency_report_mismatch",
+                            "severity": "high",
+                            "message": "gate-report status=Pass but contains blocked issues",
+                            "blocked": mode == GateMode.STRICT,
+                        }
+                    )
+                if report_status == "Blocked" and not report_blocked:
+                    issues.append(
+                        {
+                            "reason_code": "gate_consistency_conflict",
+                            "severity": "high",
+                            "message": "gate-report status=Blocked but no blocked issues in report",
+                            "blocked": mode == GateMode.STRICT,
+                        }
+                    )
+        except Exception as e:
+            issues.append(
+                {
+                    "reason_code": "gate_consistency_report_invalid",
+                    "severity": "high",
+                    "message": f"gate-report invalid JSON/schema: {e}",
+                    "blocked": mode == GateMode.STRICT,
+                }
+            )
 
     return issues
+
+
+def _read_scope_items(path: Path) -> List[Dict[str, Any]]:
+    if not path.exists():
+        return []
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        items = payload.get("items")
+        if isinstance(items, list):
+            return [i for i in items if isinstance(i, dict)]
+    except Exception:
+        return []
+    return []
 
 
 def check_scope_guard(project_root: Path, mode: GateMode) -> List[Dict[str, Any]]:
@@ -343,6 +540,50 @@ def check_scope_guard(project_root: Path, mode: GateMode) -> List[Dict[str, Any]
 
         except json.JSONDecodeError:
             pass
+    else:
+        # PTK-style scope memory fallback
+        deviations_path, confirmations_path = scope_memory_paths(project_root)
+        deviations = _read_scope_items(deviations_path)
+        confirmations = _read_scope_items(confirmations_path)
+
+        high_deviation_ids = {
+            str(item.get("id"))
+            for item in deviations
+            if item.get("risk") == "high" or item.get("type") == "out-of-scope"
+        }
+        confirmed_ids = {
+            str(item.get("deviation_id"))
+            for item in confirmations
+            if str(item.get("status")) == "confirmed"
+        }
+        pending_ids = {
+            str(item.get("deviation_id"))
+            for item in confirmations
+            if str(item.get("status")) != "confirmed"
+        }
+        unconfirmed_high = sorted(x for x in high_deviation_ids if x and x not in confirmed_ids)
+
+        if unconfirmed_high:
+            issues.append(
+                {
+                    "reason_code": "scope_guard_violation",
+                    "severity": "critical",
+                    "message": f"Found {len(unconfirmed_high)} unconfirmed high-risk scope deviations",
+                    "blocked": True,
+                    "details": unconfirmed_high,
+                }
+            )
+
+        if pending_ids or unconfirmed_high:
+            issues.append(
+                {
+                    "reason_code": "scope_guard_confirmation_pending",
+                    "severity": "high",
+                    "message": "Scope Guard confirmation not completed",
+                    "blocked": True,
+                    "details": sorted(pending_ids) if pending_ids else unconfirmed_high,
+                }
+            )
 
     return issues
 
@@ -352,9 +593,12 @@ def run_gate_checks(
     mode: GateMode,
     project_root: Path,
     force: bool = False,
+    config: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
     """Run all gate checks for a stage"""
     all_issues = []
+    gate_config = config or load_gate_config(project_root)
+    scope_guard_enabled = bool(gate_config.get("scope_guard_enabled", True))
 
     if mode == GateMode.DRY_RUN:
         typer.echo("[DRY-RUN] Running checks without blocking...")
@@ -373,7 +617,7 @@ def run_gate_checks(
         typer.echo(f"[DEBUG] Checking evidence chain...")
     all_issues.extend(check_evidence_chain(project_root, mode))
 
-    if mode == GateMode.STRICT or mode == GateMode.DEBUG:
+    if (mode == GateMode.STRICT or mode == GateMode.DEBUG) and scope_guard_enabled:
         if mode == GateMode.DEBUG:
             typer.echo(f"[DEBUG] Checking scope guard...")
         all_issues.extend(check_scope_guard(project_root, mode))
@@ -464,8 +708,8 @@ def _run_check_command(
     return 2 if result["status"] == "Blocked" else 0
 
 
-@app.command()
-def list(
+@app.command("list")
+def list_checks(
     project_root: Optional[str] = typer.Option("", "--project-root", "-p", help="Project root path"),
 ):
     """List all gate checks"""

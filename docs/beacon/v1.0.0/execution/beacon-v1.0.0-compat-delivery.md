@@ -42,6 +42,11 @@
 - 新增 `beacon/__main__.py`，支持 `python -m beacon`。
 - `pyproject.toml` 新增 `ptk = "beacon.main:app"` 别名入口。
 
+### 2.6 三层防线（PTK 对齐）
+- **Gate 门控**：`gate` strict 下完成边界/终态/证据/一致性/scope guard 联动校验，`scope_guard_enabled` 配置生效。
+- **证据驱动**：补强 `raw-command-log`、`evidence-manifest(entries/items)`、`gate-report` 结构与 hash/一致性校验。
+- **记忆体约束**：补齐 PTK 风格 memory envelope；strict run 支持 `--proposal` + `--confirm A|B|C`，高风险未确认直接 Blocked，并落盘 scope memory。
+
 ## 3. xfail 消灭与自动化补测
 
 > 本轮兼容用例已去除 xfail，按真实通过标准执行。
@@ -52,10 +57,17 @@
 - `tests/test_compat_workflow_paths.py`
 - `tests/test_compat_gate_evidence.py`
 - `tests/test_compat_regression_docs_examples.py`
+- `tests/test_memory_envelope.py`
+- `tests/test_run_strict_scope_memory.py`
+- `tests/test_gate_evidence_strict_contract.py`
 
 ### 3.2 结果
 - 兼容专项：`30 passed`
-- 全量测试：`122 passed`
+- 全量测试：`129 passed`
+
+### 3.3 PTK workflow 补充文档
+- 新增：`docs/beacon/v1.0.0/execution/ptk-workflow-bootstrap.md`
+- 记录 PTK run/report 实跑结果（run_id：`run-20260302T081044842Z-9dd5`）及三层防线对齐状态。
 
 ## 4. 执行命令（可直接复现）
 
@@ -108,5 +120,5 @@ cd /Users/apple/Developer/Personal/my_skill
 
 - Team Runtime：`terminal / Pass`
 - 兼容测试：`30 passed`
-- 全量测试：`122 passed`
+- 全量测试：`129 passed`
 - Beacon v1.0.0：满足完整交付条件。

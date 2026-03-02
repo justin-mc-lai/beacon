@@ -4,6 +4,8 @@ from typing import Optional
 from pathlib import Path
 import json
 
+from beacon.utils.memory import load_memory_entries, normalize_memory_type, search_memory_entries
+
 app = typer.Typer(name="recall", help="Restore saved session")
 
 
@@ -69,6 +71,48 @@ def _list(
             typer.echo(f"    Created: {created}")
         except Exception:
             typer.echo(f"  - {session.stem}")
+
+
+@app.command("memory")
+def memory(
+    query: str = typer.Argument("", help="Search query (empty means list recent)"),
+    memory_type: str = typer.Option("", "--type", "-y", help="Filter: insight/decision/vocabulary"),
+    limit: int = typer.Option(10, "--limit", "-n", help="Max results"),
+    project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
+    json_output: bool = typer.Option(False, "--json", help="JSON output"),
+):
+    """Recall memory entries with source/evidence/session context."""
+    project_root = Path(project) if project else Path.cwd()
+    normalized_type = None
+    if memory_type:
+        try:
+            normalized_type = normalize_memory_type(memory_type)
+        except ValueError as exc:
+            typer.echo(str(exc), err=True)
+            raise typer.Exit(code=2)
+
+    if query:
+        results = search_memory_entries(project_root, query, mem_type=normalized_type, limit=limit)
+    else:
+        results = load_memory_entries(project_root, mem_type=normalized_type)[: max(0, limit)]
+
+    if json_output:
+        typer.echo(json.dumps(results, ensure_ascii=False, indent=2))
+        return
+
+    if not results:
+        typer.echo("No memory entries found")
+        return
+
+    typer.echo(f"Memory entries ({len(results)}):")
+    for item in results:
+        typer.echo(f"- {item.get('memory_id', '<unknown>')} [{item.get('type', 'unknown')}]")
+        typer.echo(f"  content: {item.get('content', '')[:160]}")
+        typer.echo(f"  source_session_id: {item.get('source_session_id', 'manual')}")
+        typer.echo(f"  source: {item.get('source', 'remember')}")
+        refs = item.get("evidence_ref", [])
+        if isinstance(refs, list) and refs:
+            typer.echo(f"  evidence_ref: {', '.join(str(x) for x in refs)}")
 
 
 if __name__ == "__main__":
