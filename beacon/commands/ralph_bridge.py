@@ -5,6 +5,9 @@ from pathlib import Path
 import json
 from datetime import datetime
 
+from beacon.utils.memory import append_memory_entry
+from beacon.utils.workflow_memory import append_lifecycle_event
+
 app = typer.Typer(name="ralph-bridge", help="Ralph bridge for OMC integration")
 
 
@@ -60,6 +63,25 @@ def start(
     state["started_at"] = datetime.now().isoformat()
 
     save_ralph_state(project_root, state)
+    append_memory_entry(
+        project_root=project_root,
+        mem_type="insight",
+        text=f"[ralph-bridge.start] mode={mode}",
+        source_session_id="ralph-bridge",
+        source="ralph-bridge.start",
+        evidence_ref=[str(get_ralph_path(project_root).relative_to(project_root))],
+        confidence=0.7,
+        tags=["ralph-bridge", "workflow-loop"],
+    )
+    append_lifecycle_event(
+        project_root,
+        run_id="ralph-bridge",
+        stage="ralph-bridge",
+        event="bridge_decision_recorded",
+        source="ralph-bridge.start",
+        evidence_ref=[str(get_ralph_path(project_root).relative_to(project_root))],
+        details={"mode": mode, "active": True},
+    )
 
     typer.echo(f"✓ Ralph bridge started")
     typer.echo(f"  Mode: {mode}")
@@ -106,6 +128,25 @@ def stop(
     state["active"] = False
     state["ended_at"] = datetime.now().isoformat()
     save_ralph_state(project_root, state)
+    append_memory_entry(
+        project_root=project_root,
+        mem_type="decision",
+        text="[ralph-bridge.stop] bridge stopped",
+        source_session_id="ralph-bridge",
+        source="ralph-bridge.stop",
+        evidence_ref=[str(get_ralph_path(project_root).relative_to(project_root))],
+        confidence=0.8,
+        tags=["ralph-bridge", "workflow-loop"],
+    )
+    append_lifecycle_event(
+        project_root,
+        run_id="ralph-bridge",
+        stage="ralph-bridge",
+        event="bridge_decision_recorded",
+        source="ralph-bridge.stop",
+        evidence_ref=[str(get_ralph_path(project_root).relative_to(project_root))],
+        details={"active": False},
+    )
 
     typer.echo("✓ Ralph bridge stopped")
 

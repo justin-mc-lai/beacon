@@ -7,7 +7,7 @@ from pathlib import Path
 
 import typer
 
-from beacon.utils.memory import append_memory_entry
+from beacon.utils.memory import append_memory_entry, load_memory_entries
 from beacon.utils.runtime import load_run_state, newest_run_id, now_iso, write_json
 from beacon.utils.workflow_memory import append_lifecycle_event
 
@@ -42,22 +42,37 @@ def sync(
 
     rel_feedback_path = str(out_file.relative_to(root))
     assimilated = 0
+    existing = load_memory_entries(root)
+    existing_keys = {
+        (
+            str(item.get("source_session_id", "")),
+            str(item.get("source", "")),
+            str(item.get("content", "")),
+        )
+        for item in existing
+        if isinstance(item, dict)
+    }
     for row in payload.get("feedback", []):
         if not isinstance(row, dict):
             continue
         note = str(row.get("note", "")).strip()
         if not note:
             continue
+        content = f"[feedback:{target}] {note}"
+        key = (target, "feedback.sync", content)
+        if key in existing_keys:
+            continue
         append_memory_entry(
             project_root=root,
             mem_type="insight",
-            text=f"[feedback:{target}] {note}",
+            text=content,
             source_session_id=target,
             source="feedback.sync",
             evidence_ref=[rel_feedback_path],
             confidence=0.7,
             tags=["feedback", "workflow-loop"],
         )
+        existing_keys.add(key)
         assimilated += 1
     if assimilated > 0:
         append_lifecycle_event(

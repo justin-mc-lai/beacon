@@ -1,10 +1,15 @@
 """Beacon team command - Team collaboration with state machine"""
+from __future__ import annotations
+
 import typer
 from typing import Optional, List, Dict, Any
 from pathlib import Path
 import json
 from datetime import datetime
 from enum import Enum
+
+from beacon.utils.memory import append_memory_entry
+from beacon.utils.workflow_memory import append_lifecycle_event
 
 app = typer.Typer(name="team", help="Team collaboration management")
 
@@ -77,6 +82,42 @@ def save_team_state(project_root: Path, team_name: str, state: dict):
     state_file.write_text(json.dumps(state, indent=2, ensure_ascii=False))
 
 
+def _record_team_memory(
+    project_root: Path,
+    team_name: str,
+    event: str,
+    note: str,
+    *,
+    evidence_ref: list[str] | None = None,
+    details: dict[str, Any] | None = None,
+):
+    """Best-effort team decision memory capture."""
+    try:
+        refs = [str(x) for x in (evidence_ref or []) if str(x).strip()]
+        append_memory_entry(
+            project_root=project_root,
+            mem_type="decision",
+            text=f"[team:{team_name}] {note}",
+            source_session_id=f"team:{team_name}",
+            source=f"team.{event}",
+            evidence_ref=refs,
+            confidence=0.75,
+            tags=["team", "workflow-loop", event],
+        )
+        append_lifecycle_event(
+            project_root,
+            run_id=f"team:{team_name}",
+            stage="team",
+            event=event,
+            source=f"team.{event}",
+            evidence_ref=refs,
+            details=details or {},
+        )
+    except Exception:
+        # Do not break team workflow because of memory write errors.
+        return
+
+
 def generate_handoff_report(project_root: Path, team_name: str, from_state: str, to_state: str, state: dict):
     """Generate handoff report"""
     handoff_dir = project_root / ".beacon" / "handoffs"
@@ -145,6 +186,14 @@ def advance_state(project_root: Path, team_name: str, state: dict, new_state: st
         state["ended_at"] = datetime.now().isoformat()
         typer.echo(f"Team {team_name} reached terminal state")
         typer.echo(f"Terminal Status: {state.get('terminal_status', 'N/A')}")
+        _record_team_memory(
+            project_root,
+            team_name,
+            "team_terminal_reached",
+            f"terminal_status={state.get('terminal_status', 'Unknown')}",
+            evidence_ref=[str(get_team_state_file(project_root, team_name).relative_to(project_root))],
+            details={"terminal_status": state.get("terminal_status"), "state": state.get("state")},
+        )
 
     save_team_state(project_root, team_name, state)
     return state
@@ -203,6 +252,14 @@ def start(
     ]
 
     save_team_state(project_root, team_name, state)
+    _record_team_memory(
+        project_root,
+        team_name,
+        "team_started",
+        f"team started runtime={runtime} members={members}",
+        evidence_ref=[str(get_team_state_file(project_root, team_name).relative_to(project_root))],
+        details={"runtime": runtime, "members": members, "state": state.get("state")},
+    )
 
     typer.echo(f"Team started: {team_name}")
     typer.echo(f"  Task: {task}")
@@ -390,6 +447,14 @@ def review(
     }
 
     save_team_state(project_root, team, state)
+    _record_team_memory(
+        project_root,
+        team,
+        "team_review_submitted",
+        f"review gate={gate_type} status={status} reviewer={reviewer}",
+        evidence_ref=[str(get_team_state_file(project_root, team).relative_to(project_root))],
+        details={"gate_type": gate_type, "status": status, "reviewer": reviewer},
+    )
 
     typer.echo(f"Review gate updated: {gate_type} = {status} (reviewer: {reviewer})")
 
@@ -431,6 +496,14 @@ def evaluate(
         if state.get("state") == TeamState.TEAM_VERIFY.value:
             state = advance_state(project_root, team, state, TeamState.TEAM_FIX.value)
             typer.echo(f"Team advanced to: {TeamState.TEAM_FIX.value}")
+        _record_team_memory(
+            project_root,
+            team,
+            "team_evaluation",
+            f"evaluation blocked critical_open={critical_open} high_open={high_open}",
+            evidence_ref=[str(get_team_state_file(project_root, team).relative_to(project_root))],
+            details={"status": "blocked", "critical_open": critical_open, "high_open": high_open},
+        )
     else:
         typer.echo(f"Evaluation: PASS")
         typer.echo(f"  All critical/high issues resolved")
@@ -439,6 +512,14 @@ def evaluate(
         if state.get("state") == TeamState.TEAM_VERIFY.value:
             state["terminal_status"] = TerminalStatus.PASS.value
             state = advance_state(project_root, team, state, TeamState.TERMINAL.value)
+        _record_team_memory(
+            project_root,
+            team,
+            "team_evaluation",
+            "evaluation pass critical/high issues resolved",
+            evidence_ref=[str(get_team_state_file(project_root, team).relative_to(project_root))],
+            details={"status": "pass", "critical_open": critical_open, "high_open": high_open},
+        )
 
 
 @app.command()
@@ -484,6 +565,14 @@ def stop(
     state["ended_at"] = datetime.now().isoformat()
 
     save_team_state(project_root, team, state)
+    _record_team_memory(
+        project_root,
+        team,
+        "team_stopped",
+        f"team stopped terminal_status={status.value}",
+        evidence_ref=[str(get_team_state_file(project_root, team).relative_to(project_root))],
+        details={"terminal_status": status.value},
+    )
 
     typer.echo(f"Team {team} stopped")
     typer.echo(f"  Terminal Status: {status.value}")
