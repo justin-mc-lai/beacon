@@ -30,6 +30,17 @@ Beacon 从 product-toolkit (PTK) 升级而来，是 PTK 的 Python/Typer 重构�
 - **状态**: `.beacon/` 目录（原有 `.ptk/` 别名兼容）
 - **Skill**: `/beacon:` 触发（原有 `/product-toolkit:` 别名兼容）
 
+### v1.0.0 功能特性（PTK 对齐增强）
+
+1. **三层防线**：Gate 门控 + 证据驱动 + 记忆体约束，默认 strict-by-default。
+2. **PTK 兼容命令**：保留扁平命令体验，兼容 `auto-test`、`work`、`report --machine` 等常见用法。
+3. **工作流记忆闭环**：阶段开始/结束自动沉淀 memory，支持 recall 注入与 feedback 反哺。
+4. **UI 防假通过强校验（auto-test）**：
+   - `expectation=success` 且 `origin != target` -> `failed`
+   - `expectation=error` 命中重定向/错误证据 -> `passed`
+   - strict 下无显式 UI assertion -> `blocked`
+5. **可审计交付**：运行态/报告/终态产物可追溯，支持 Gate reason code 级别定位。
+
 ---
 
 ## 2. 快速开始
@@ -460,11 +471,35 @@ beacon init --template minimal
 自动化测试。
 
 ```bash
-beacon auto-test
-beacon auto-test --type smoke
-beacon auto-test --type regression
-beacon auto-test --type all
+# 启动一次自动测试（写入 .beacon/auto-test-status.json）
+beacon auto-test create ui --project .
+
+# UI 防假通过校验（PTK 对齐）
+beacon auto-test create ui \
+  --project . \
+  --expectation success \
+  --target-url /admin/dashboard \
+  --origin-url /admin/login \
+  --ui-assertion "url_contains:/admin/dashboard"
+
+# strict 下无断言直接 blocked
+beacon auto-test create ui \
+  --project . \
+  --expectation success \
+  --target-url /admin/dashboard \
+  --origin-url /admin/dashboard \
+  --strict-ui-assertion
+
+# 查看测试状态
+beacon auto-test status --project .
+beacon auto-test status --project . --json
 ```
+
+常见 `ui_guard.reason_code`：
+- `ui_expectation_success_mismatch`
+- `ui_expectation_error_redirect`
+- `ui_origin_target_unknown`
+- `ui_assertion_missing_strict`
 
 #### `beacon test-progress`
 
