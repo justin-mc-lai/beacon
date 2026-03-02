@@ -47,6 +47,26 @@
 - **证据驱动**：补强 `raw-command-log`、`evidence-manifest(entries/items)`、`gate-report` 结构与 hash/一致性校验。
 - **记忆体约束**：补齐 PTK 风格 memory envelope；strict run 支持 `--proposal` + `--confirm A|B|C`，高风险未确认直接 Blocked，并落盘 scope memory。
 
+### 2.7 `auto_test` UI 防假通过强校验（PTK v3.8.1 对齐）
+- 新增 PTK 风格 UI guard 判定（`beacon/commands/auto_test.py`）：
+  - `expectation=success` 且 `origin != target` => `failed`（防错页误通过）
+  - `expectation=error` 且重定向/错误关键词命中 => `passed`
+  - `origin` 不可判定 => `blocked`（`ui_origin_target_unknown`）
+  - strict 下无显式 UI assertion => `blocked`（`ui_assertion_missing_strict`）
+- `auto-test create` 新增参数：
+  - `--expectation`
+  - `--target-url`
+  - `--origin-url`
+  - `--snapshot-file` / `--snapshot-text`
+  - `--ui-assertion`（可重复）
+  - `--strict-ui-assertion`
+- 结果写入 `.beacon/auto-test-status.json` 的 `ui_guard` 字段，包含：
+  - `status`
+  - `reason_code`
+  - `origin_vs_target`
+  - `detail`
+  - `assertion_count`
+
 ## 3. xfail 消灭与自动化补测
 
 > 本轮兼容用例已去除 xfail，按真实通过标准执行。
@@ -57,13 +77,14 @@
 - `tests/test_compat_workflow_paths.py`
 - `tests/test_compat_gate_evidence.py`
 - `tests/test_compat_regression_docs_examples.py`
+- `tests/test_auto_test_ui_false_positive_guard.py`
 - `tests/test_memory_envelope.py`
 - `tests/test_run_strict_scope_memory.py`
 - `tests/test_gate_evidence_strict_contract.py`
 
 ### 3.2 结果
-- 兼容专项：`30 passed`
-- 全量测试：`129 passed`
+- 兼容专项（含 UI 防假通过）：`35 passed`
+- 全量测试：`141 passed`
 
 ### 3.3 PTK workflow 补充文档
 - 新增：`docs/beacon/v1.0.0/execution/ptk-workflow-bootstrap.md`
@@ -79,7 +100,8 @@ python3 -m pytest -q \
   tests/test_compat_behavior_contract.py \
   tests/test_compat_workflow_paths.py \
   tests/test_compat_gate_evidence.py \
-  tests/test_compat_regression_docs_examples.py
+  tests/test_compat_regression_docs_examples.py \
+  tests/test_auto_test_ui_false_positive_guard.py
 ```
 
 ### 4.2 全量回归
@@ -119,6 +141,6 @@ cd /Users/apple/Developer/Personal/my_skill
 ## 5. 最终验收
 
 - Team Runtime：`terminal / Pass`
-- 兼容测试：`30 passed`
-- 全量测试：`129 passed`
+- 兼容测试：`35 passed`
+- 全量测试：`141 passed`
 - Beacon v1.0.0：满足完整交付条件。
