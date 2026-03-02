@@ -10,7 +10,7 @@ app = typer.Typer(name="workflow", help="Full product workflow")
 
 def run_beacon_command(args: list, project_root: Path) -> int:
     """Run a beacon subcommand"""
-    cmd = [sys.executable, "-m", "beacon"] + args
+    cmd = [sys.executable, "-m", "beacon.main"] + args
     result = subprocess.run(
         cmd,
         cwd=project_root,
@@ -80,14 +80,21 @@ def start(
             typer.echo(f"    → Running: {cmd} {feature}")
             # Run the command
             if stage == "think":
-                run_beacon_command(["think", "start", feature], project_root)
+                rc = run_beacon_command(["think", "start", feature, "--project", str(project_root)], project_root)
             elif stage == "user-story":
-                run_beacon_command(["user-story", "create", feature], project_root)
+                rc = run_beacon_command(["user-story", "create", feature, "--project", str(project_root)], project_root)
             elif stage == "prd":
-                run_beacon_command(["prd", "create", feature], project_root)
+                rc = run_beacon_command(["prd", "create", feature, "--project", str(project_root)], project_root)
             elif stage == "test-case":
-                run_beacon_command(["test-case", "create", feature], project_root)
-            typer.echo(f"    ✓ {stage} completed")
+                rc = run_beacon_command(["test-case", "create", feature, "--project", str(project_root)], project_root)
+            else:
+                rc = 1
+
+            if rc == 0:
+                typer.echo(f"    ✓ {stage} completed")
+            else:
+                typer.echo(f"    ✗ {stage} failed (exit={rc})")
+                raise typer.Exit(rc)
 
     typer.echo("\n" + "=" * 50)
     typer.echo("WORKFLOW COMPLETE")
@@ -116,12 +123,17 @@ def status(
     product_dir = project_root / "docs" / "product" / version
 
     # Determine which docs dir to use
-    if beacon_dir.exists():
+    beacon_has_docs = beacon_dir.exists() and any(beacon_dir.rglob("*.md"))
+    product_has_docs = product_dir.exists() and any(product_dir.rglob("*.md"))
+    if beacon_has_docs:
         docs_dir = beacon_dir
         docs_type = "beacon"
-    elif product_dir.exists():
+    elif product_has_docs:
         docs_dir = product_dir
         docs_type = "product"
+    elif beacon_dir.exists():
+        docs_dir = beacon_dir
+        docs_type = "beacon"
     else:
         docs_dir = beacon_dir  # Use beacon as default
         docs_type = "beacon"
@@ -137,7 +149,7 @@ def status(
     ]
 
     for stage, path in stages:
-        stage_path = docs_dir / path
+        stage_path = project_root / path if stage == "think" else docs_dir / path
         if stage_path.exists():
             if stage_path.is_file():
                 typer.echo(f"✓ {stage}: Completed")
@@ -292,7 +304,7 @@ def run(
 
     # Run the command
     result = subprocess.run(
-        [sys.executable, "-m", "beacon"] + full_cmd,
+        [sys.executable, "-m", "beacon.main"] + full_cmd,
         cwd=project_root,
     )
 

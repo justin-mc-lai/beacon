@@ -97,11 +97,34 @@ def get_raw_command_log_path(project_root: Path) -> Path:
     return project_root / ".beacon" / "raw-command-log.jsonl"
 
 
+def _execution_file_candidates(project_root: Path, version: str, filename: str) -> list[Path]:
+    """Return ordered candidate paths for execution artifacts.
+
+    Order preserves backward compatibility:
+    1) legacy docs/<version>/execution
+    2) docs/product/<version>/execution
+    3) docs/beacon/<version>/execution
+    """
+    return [
+        project_root / "docs" / version / "execution" / filename,
+        project_root / "docs" / "product" / version / "execution" / filename,
+        project_root / "docs" / "beacon" / version / "execution" / filename,
+    ]
+
+
+def _resolve_existing_execution_file(project_root: Path, version: str, filename: str) -> Path:
+    candidates = _execution_file_candidates(project_root, version, filename)
+    for path in candidates:
+        if path.exists():
+            return path
+    return candidates[0]
+
+
 def check_boundaries(project_root: Path, mode: GateMode) -> List[Dict[str, Any]]:
     """Check boundaries.md exists"""
     issues = []
     version = os.environ.get("BEACON_VERSION", "v1.0.0")
-    boundaries_path = project_root / "docs" / version / "execution" / "boundaries.md"
+    boundaries_path = _resolve_existing_execution_file(project_root, version, "boundaries.md")
 
     if not boundaries_path.exists():
         issue = {
@@ -121,7 +144,7 @@ def check_terminal_artifact(project_root: Path, mode: GateMode) -> List[Dict[str
     """Check terminal.json exists and is valid"""
     issues = []
     version = os.environ.get("BEACON_VERSION", "v1.0.0")
-    terminal_path = project_root / "docs" / version / "execution" / "terminal.json"
+    terminal_path = _resolve_existing_execution_file(project_root, version, "terminal.json")
 
     if not terminal_path.exists():
         issue = {
@@ -386,6 +409,61 @@ def run_gate_checks(
     }
 
 
+def _run_check_command(
+    stage: str,
+    strict: bool = False,
+    mode: Optional[str] = None,
+    json_output: bool = False,
+    force: bool = False,
+    project_root: str = "",
+) -> int:
+    """Shared gate check execution."""
+    gate_mode = GateMode.STRICT if strict else GateMode.NORMAL
+    if mode:
+        try:
+            gate_mode = GateMode(mode)
+        except ValueError:
+            typer.echo(f"Error: Invalid mode '{mode}'. Use strict/normal/debug/dry-run")
+            return 1
+
+    root = Path(project_root) if project_root else Path.cwd()
+    config = load_gate_config(root)
+    if not strict and not mode and "mode" in config:
+        try:
+            gate_mode = GateMode(config["mode"])
+        except ValueError:
+            pass
+
+    if gate_mode == GateMode.DEBUG:
+        typer.echo(f"[DEBUG] Gate Check: {stage}")
+        typer.echo(f"[DEBUG] Mode: {gate_mode.value}")
+    else:
+        typer.echo(f"Gate Check: {stage}")
+        typer.echo(f"Mode: {gate_mode.value.upper()}")
+
+    result = run_gate_checks(stage, gate_mode, root, force)
+    if json_output:
+        typer.echo(json.dumps(result, indent=2, ensure_ascii=False))
+    else:
+        if result["status"] == "Blocked":
+            typer.echo(f"Status: {typer.style('BLOCKED', fg=typer.colors.RED)}")
+            typer.echo(f"Issues found: {result['blocked_count']}")
+            for issue in result["issues"]:
+                if issue.get("blocked"):
+                    typer.echo(f"  - {issue['reason_code']}: {issue['message']}")
+        else:
+            status_color = typer.colors.GREEN if not force else typer.colors.YELLOW
+            status_text = "PASS" + (" (forced)" if force else "")
+            typer.echo(f"Status: {typer.style(status_text, fg=status_color)}")
+
+        if result["issues"] and not result["blocked_count"]:
+            typer.echo(f"Warnings: {len(result['issues'])}")
+            for issue in result["issues"]:
+                typer.echo(f"  - {issue['reason_code']}: {issue['message']}")
+
+    return 2 if result["status"] == "Blocked" else 0
+
+
 @app.command()
 def list(
     project_root: Optional[str] = typer.Option("", "--project-root", "-p", help="Project root path"),
@@ -417,61 +495,15 @@ def check(
     project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
 ):
     """Run gate checks for workflow stages"""
-    # Determine mode
-    gate_mode = GateMode.STRICT if strict else GateMode.NORMAL
-    if mode:
-        try:
-            gate_mode = GateMode(mode)
-        except ValueError:
-            typer.echo(f"Error: Invalid mode '{mode}'. Use strict/normal/debug/dry-run")
-            raise typer.Exit(1)
-
-    # Get project root
-    root = Path(project_root) if project_root else Path.cwd()
-
-    # Load config
-    config = load_gate_config(root)
-
-    # Override mode from config if not explicitly set
-    if not strict and not mode and "mode" in config:
-        try:
-            gate_mode = GateMode(config["mode"])
-        except ValueError:
-            pass
-
-    if gate_mode == GateMode.DEBUG:
-        typer.echo(f"[DEBUG] Gate Check: {stage}")
-        typer.echo(f"[DEBUG] Mode: {gate_mode.value}")
-    else:
-        typer.echo(f"Gate Check: {stage}")
-        typer.echo(f"Mode: {gate_mode.value.upper()}")
-
-    # Run checks
-    result = run_gate_checks(stage, gate_mode, root, force)
-
-    # Output
-    if json_output:
-        typer.echo(json.dumps(result, indent=2, ensure_ascii=False))
-    else:
-        if result["status"] == "Blocked":
-            typer.echo(f"Status: {typer.style('BLOCKED', fg=typer.colors.RED)}")
-            typer.echo(f"Issues found: {result['blocked_count']}")
-            for issue in result["issues"]:
-                if issue.get("blocked"):
-                    typer.echo(f"  - {issue['reason_code']}: {issue['message']}")
-        else:
-            status_color = typer.colors.GREEN if not force else typer.colors.YELLOW
-            status_text = "PASS" + (" (forced)" if force else "")
-            typer.echo(f"Status: {typer.style(status_text, fg=status_color)}")
-
-        if result["issues"] and not result["blocked_count"]:
-            typer.echo(f"Warnings: {len(result['issues'])}")
-            for issue in result["issues"]:
-                typer.echo(f"  - {issue['reason_code']}: {issue['message']}")
-
-    # Exit code
-    if result["status"] == "Blocked":
-        raise typer.Exit(2)
+    code = _run_check_command(
+        stage=stage,
+        strict=strict,
+        mode=mode,
+        json_output=json_output,
+        force=force,
+        project_root=project_root,
+    )
+    raise typer.Exit(code)
 
 
 @app.command()
@@ -520,6 +552,111 @@ def status(
     if risk_path.exists():
         risks = json.loads(risk_path.read_text())
         typer.echo(f"  Active Risks: {len(risks)}")
+
+
+@app.command("think")
+def check_think(
+    strict: bool = typer.Option(False, "--strict", help="Enable strict mode"),
+    mode: Optional[str] = typer.Option(None, "--mode", help="Gate mode: strict/normal/debug/dry-run"),
+    json_output: bool = typer.Option(False, "--json", help="JSON output"),
+    force: bool = typer.Option(False, "--force", help="Force pass with risk logging"),
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+):
+    """Flat syntax compatibility for `gate think`."""
+    raise typer.Exit(
+        _run_check_command(
+            stage="think",
+            strict=strict,
+            mode=mode,
+            json_output=json_output,
+            force=force,
+            project_root=project_root,
+        )
+    )
+
+
+@app.command("user-story")
+def check_user_story(
+    strict: bool = typer.Option(False, "--strict", help="Enable strict mode"),
+    mode: Optional[str] = typer.Option(None, "--mode", help="Gate mode: strict/normal/debug/dry-run"),
+    json_output: bool = typer.Option(False, "--json", help="JSON output"),
+    force: bool = typer.Option(False, "--force", help="Force pass with risk logging"),
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+):
+    """Flat syntax compatibility for `gate user-story`."""
+    raise typer.Exit(
+        _run_check_command(
+            stage="user-story",
+            strict=strict,
+            mode=mode,
+            json_output=json_output,
+            force=force,
+            project_root=project_root,
+        )
+    )
+
+
+@app.command("prd")
+def check_prd(
+    strict: bool = typer.Option(False, "--strict", help="Enable strict mode"),
+    mode: Optional[str] = typer.Option(None, "--mode", help="Gate mode: strict/normal/debug/dry-run"),
+    json_output: bool = typer.Option(False, "--json", help="JSON output"),
+    force: bool = typer.Option(False, "--force", help="Force pass with risk logging"),
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+):
+    """Flat syntax compatibility for `gate prd`."""
+    raise typer.Exit(
+        _run_check_command(
+            stage="prd",
+            strict=strict,
+            mode=mode,
+            json_output=json_output,
+            force=force,
+            project_root=project_root,
+        )
+    )
+
+
+@app.command("test-case")
+def check_test_case(
+    strict: bool = typer.Option(False, "--strict", help="Enable strict mode"),
+    mode: Optional[str] = typer.Option(None, "--mode", help="Gate mode: strict/normal/debug/dry-run"),
+    json_output: bool = typer.Option(False, "--json", help="JSON output"),
+    force: bool = typer.Option(False, "--force", help="Force pass with risk logging"),
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+):
+    """Flat syntax compatibility for `gate test-case`."""
+    raise typer.Exit(
+        _run_check_command(
+            stage="test-case",
+            strict=strict,
+            mode=mode,
+            json_output=json_output,
+            force=force,
+            project_root=project_root,
+        )
+    )
+
+
+@app.command("release")
+def check_release(
+    strict: bool = typer.Option(False, "--strict", help="Enable strict mode"),
+    mode: Optional[str] = typer.Option(None, "--mode", help="Gate mode: strict/normal/debug/dry-run"),
+    json_output: bool = typer.Option(False, "--json", help="JSON output"),
+    force: bool = typer.Option(False, "--force", help="Force pass with risk logging"),
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+):
+    """Flat syntax compatibility for `gate release`."""
+    raise typer.Exit(
+        _run_check_command(
+            stage="release",
+            strict=strict,
+            mode=mode,
+            json_output=json_output,
+            force=force,
+            project_root=project_root,
+        )
+    )
 
 
 if __name__ == "__main__":
