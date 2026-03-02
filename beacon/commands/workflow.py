@@ -5,6 +5,9 @@ from pathlib import Path
 import subprocess
 import sys
 
+from beacon.utils.runtime import generate_run_id, now_iso, save_run_state
+from beacon.utils.workflow_memory import append_lifecycle_event
+
 app = typer.Typer(name="workflow", help="Full product workflow")
 
 
@@ -38,6 +41,32 @@ def ensure_output_dirs(project_root: Path, version: str = "latest"):
         d.mkdir(parents=True, exist_ok=True)
 
 
+def _slug(text: str) -> str:
+    return (text or "").strip().lower().replace(" ", "-")
+
+
+def _stage_output_candidates(project_root: Path, stage: str, feature: str, version: str) -> list[Path]:
+    slug = _slug(feature)
+    if stage == "think":
+        return [project_root / ".beacon" / "state" / "think-progress.json"]
+    if stage == "user-story":
+        return [
+            project_root / "docs" / "product" / "latest" / "user-story" / f"{slug}.md",
+            project_root / "docs" / "beacon" / version / "user-story" / f"{slug}.md",
+        ]
+    if stage == "prd":
+        return [
+            project_root / "docs" / "product" / "latest" / "prd" / f"{slug}.md",
+            project_root / "docs" / "beacon" / version / "prd" / f"{slug}.md",
+        ]
+    if stage == "test-case":
+        return [
+            project_root / "docs" / "product" / "latest" / "qa" / "test-cases" / f"{slug}.md",
+            project_root / "docs" / "beacon" / version / "qa" / "test-cases" / f"{slug}.md",
+        ]
+    return []
+
+
 @app.command()
 def start(
     feature: str = typer.Argument(..., help="Feature name"),
@@ -51,10 +80,27 @@ def start(
 
     # Ensure directories exist
     ensure_output_dirs(project_root, version)
+    run_id = generate_run_id(project_root)
+    started_at = now_iso()
+    save_run_state(
+        project_root,
+        run_id,
+        {
+            "run_id": run_id,
+            "workflow": "workflow.start",
+            "mode": "auto" if auto else "manual",
+            "feature": feature,
+            "version": version,
+            "status": "running",
+            "started_at": started_at,
+            "events": [{"event": "workflow_started", "ts": started_at}],
+        },
+    )
 
     typer.echo(f"Starting Beacon Workflow: {feature}")
     typer.echo(f"Project: {project_root}")
     typer.echo(f"Version: {version}")
+    typer.echo(f"Run ID: {run_id}")
     typer.echo("\n" + "=" * 50)
     typer.echo("WORKFLOW STAGES")
     typer.echo("=" * 50)
@@ -75,6 +121,14 @@ def start(
             continue
 
         typer.echo(f"{i}. {stage:12} - {desc}")
+        append_lifecycle_event(
+            project_root,
+            run_id=run_id,
+            stage=stage,
+            event="stage_started",
+            source="workflow.start",
+            details={"feature": feature, "version": version},
+        )
 
         if auto:
             typer.echo(f"    → Running: {cmd} {feature}")
@@ -92,13 +146,65 @@ def start(
 
             if rc == 0:
                 typer.echo(f"    ✓ {stage} completed")
+                evidence = [
+                    str(path.relative_to(project_root))
+                    for path in _stage_output_candidates(project_root, stage, feature, version)
+                    if path.exists()
+                ]
+                append_lifecycle_event(
+                    project_root,
+                    run_id=run_id,
+                    stage=stage,
+                    event="stage_finished",
+                    source="workflow.start",
+                    evidence_ref=evidence,
+                    details={"exit_code": rc},
+                )
             else:
                 typer.echo(f"    ✗ {stage} failed (exit={rc})")
+                append_lifecycle_event(
+                    project_root,
+                    run_id=run_id,
+                    stage=stage,
+                    event="stage_failed",
+                    source="workflow.start",
+                    details={"exit_code": rc},
+                )
+                save_run_state(
+                    project_root,
+                    run_id,
+                    {
+                        "run_id": run_id,
+                        "workflow": "workflow.start",
+                        "mode": "auto",
+                        "feature": feature,
+                        "version": version,
+                        "status": "blocked",
+                        "reason": f"{stage}_failed",
+                        "started_at": started_at,
+                        "ended_at": now_iso(),
+                    },
+                )
                 raise typer.Exit(rc)
 
     typer.echo("\n" + "=" * 50)
     typer.echo("WORKFLOW COMPLETE")
     typer.echo("=" * 50)
+    save_run_state(
+        project_root,
+        run_id,
+        {
+            "run_id": run_id,
+            "workflow": "workflow.start",
+            "mode": "auto" if auto else "manual",
+            "feature": feature,
+            "version": version,
+            "status": "completed",
+            "reason": "ok",
+            "started_at": started_at,
+            "ended_at": now_iso(),
+        },
+    )
 
     if not auto:
         typer.echo("\nUse --auto to run all stages automatically")
