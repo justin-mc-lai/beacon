@@ -1,0 +1,152 @@
+{
+  "run_id": "run-20260303T075105Z-0748",
+  "workflow": "workflow.start",
+  "mode": "manual",
+  "status": "planned",
+  "reason": "awaiting_continue",
+  "events": [
+    {
+      "event": "workflow_started",
+      "ts": "2026-03-03T07:51:05.100300+00:00"
+    },
+    {
+      "event": "workflow_planned",
+      "ts": "2026-03-03T07:51:05.103311+00:00"
+    }
+  ],
+  "llm_prompts": [
+    {
+      "ts": "2026-03-03T07:51:05.100309+00:00",
+      "source": "workflow.next-stage-inference",
+      "model": "beacon-rule-llm-v1",
+      "prompt": "Project workflow inference. feature=demo-feature; version=v1.0.1; run_id=run-20260303T075105Z-0748; context=workflow.start. Determine next executable stage.",
+      "completion": "Predicted next_stage=think. Reasoning policy: lifecycle closure order (think->user-story->prd->test-case->implementation->verify).",
+      "prompt_tokens": 11,
+      "completion_tokens": 8
+    }
+  ],
+  "token_usage": {
+    "prompt_tokens": 11,
+    "completion_tokens": 8
+  },
+  "tool_calls": [
+    {
+      "name": "workflow.next_stage.predict",
+      "args": {
+        "next_stage": "think"
+      }
+    }
+  ],
+  "artifacts": {},
+  "deviations": [],
+  "confirmations": [],
+  "memory_metrics": {
+    "run_id": "run-20260303T075105Z-0748",
+    "lifecycle_events_total": 188,
+    "run_lifecycle_events": 1,
+    "recall_injections": 0,
+    "writebacks": 0,
+    "feedback_assimilations": 0,
+    "closure_complete": false,
+    "missing_closure_stages": [
+      "think",
+      "user-story",
+      "prd",
+      "test-case",
+      "implementation",
+      "verify"
+    ],
+    "next_stage": "think"
+  },
+  "coverage_metrics": {
+    "version": "v1.0.1",
+    "feature": "",
+    "planned_story": 2,
+    "implemented_story": 0,
+    "story_coverage": 0.0,
+    "total_ac": 8,
+    "tested_ac": 0,
+    "ac_coverage": 0.0,
+    "total_tc": 23,
+    "executed_tc": 0,
+    "tc_coverage": 0.0,
+    "full_coverage": false,
+    "matrix_errors": []
+  },
+  "workflow_progress": {
+    "run_id": "run-20260303T075105Z-0748",
+    "version": "v1.0.1",
+    "feature": "demo-feature",
+    "closure_complete": false,
+    "next_stage": "think",
+    "missing_closure_stages": [
+      "think",
+      "user-story",
+      "prd",
+      "test-case",
+      "implementation",
+      "verify"
+    ],
+    "stages": {
+      "think": {
+        "status": "not_started",
+        "has_started": false,
+        "has_context": false,
+        "has_finished": false,
+        "has_writeback": false,
+        "has_failed": false,
+        "event_count": 0
+      },
+      "user-story": {
+        "status": "not_started",
+        "has_started": false,
+        "has_context": false,
+        "has_finished": false,
+        "has_writeback": false,
+        "has_failed": false,
+        "event_count": 0
+      },
+      "prd": {
+        "status": "not_started",
+        "has_started": false,
+        "has_context": false,
+        "has_finished": false,
+        "has_writeback": false,
+        "has_failed": false,
+        "event_count": 0
+      },
+      "test-case": {
+        "status": "not_started",
+        "has_started": false,
+        "has_context": false,
+        "has_finished": false,
+        "has_writeback": false,
+        "has_failed": false,
+        "event_count": 0
+      },
+      "implementation": {
+        "status": "not_started",
+        "has_started": false,
+        "has_context": false,
+        "has_finished": false,
+        "has_writeback": false,
+        "has_failed": false,
+        "event_count": 0
+      },
+      "verify": {
+        "status": "not_started",
+        "has_started": false,
+        "has_context": false,
+        "has_finished": false,
+        "has_writeback": false,
+        "has_failed": false,
+        "event_count": 0
+      }
+    }
+  },
+  "filters": {
+    "version": "v1.0.1",
+    "feature": ""
+  },
+  "generated_at": "2026-03-03T07:51:05.164277+00:00"
+}

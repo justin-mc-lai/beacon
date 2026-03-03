@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 from datetime import datetime
 from pathlib import Path
@@ -184,6 +185,7 @@ def evaluate_ui_false_positive_guard(
     snapshot_text: str,
     strict_ui_assertion: bool,
     assertion_count: int,
+    allow_unknown_skip: bool = False,
 ) -> dict:
     expectation_norm = (expectation or "").strip().lower()
     target_norm = _normalize_url(target_url)
@@ -226,7 +228,9 @@ def evaluate_ui_false_positive_guard(
     if expectation_norm in {"", "unknown"}:
         if strict_ui_assertion:
             return outcome("blocked", "ui_expectation_unknown_strict")
-        return outcome("passed", "ui_expectation_unknown_skipped")
+        if allow_unknown_skip:
+            return outcome("passed", "ui_expectation_unknown_skipped")
+        return outcome("blocked", "ui_real_execution_required")
 
     if expectation_norm == "success":
         if origin_vs_target == "match":
@@ -407,6 +411,7 @@ def create(
 
     typer.echo(f"Running automated tests: {scope}")
     typer.echo(f"Project: {project_root}")
+    debug_mode = str(os.environ.get("BEACON_DEBUG", "")).strip().lower() in {"1", "true", "yes", "on"}
 
     scope_norm = (scope or "").strip().lower()
     selected_layers = _resolve_layers(scope_norm)
@@ -461,6 +466,7 @@ def create(
             snapshot_text=snapshot_payload,
             strict_ui_assertion=strict_ui_assertion,
             assertion_count=len(ui_assertions),
+            allow_unknown_skip=debug_mode,
         )
         test_status["ui_guard"] = ui_guard
 

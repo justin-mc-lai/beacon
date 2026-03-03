@@ -117,7 +117,7 @@ app.add_typer(ralph_bridge_app, name="ralph-bridge")
 def work_alias(
     feature: str = typer.Argument(..., help="Feature name"),
     project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
-    version: str = typer.Option("latest", "--version", "-v", help="Version"),
+    version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
     auto: bool = typer.Option(False, "--auto", "-a", help="Auto-run all stages"),
     skip: Optional[str] = typer.Option(None, "--skip", "-s", help="Skip stages"),
 ):

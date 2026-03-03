@@ -34,7 +34,7 @@ Beacon 是基于 Python Typer 构建的 AI 产品工作流工具，采用分层�
 1. **分层解耦** - CLI、Skill、Commands、Utils 各自独立
 2. **模块化** - 每个命令模块单独文件
 3. **可扩展** - 新增命令只需添加模块文件
-4. **兼容性** - 支持 PTK 别名，双入口运行
+4. **兼容性** - 命令统一为 Beacon，目录保留历史兼容
 
 ---
 
@@ -103,7 +103,7 @@ beacon/
 │   │       ├── qa/test-cases/
 │   │       ├── execution/
 │   │       └── architecture/
-│   └── product/             # PTK 兼容文档
+│   └── product/             # 历史 PTK 兼容文档
 │       └── v1.0.0/
 ├── .beacon/                 # 状态持久化
 │   ├── state/               # 会话状态
@@ -243,7 +243,7 @@ class TestCase:
 
 ## 6. 兼容性设计
 
-### 6.1 双入口支持
+### 6.1 统一入口（CLI + Skill）
 
 ```
 # 方式1: beacon CLI
@@ -257,16 +257,16 @@ beacon workflow start <feature>
 
 ```
 docs/beacon/v1.0.0/     # Beacon 专用
-docs/product/v1.0.0/    # PTK 兼容
+docs/product/v1.0.0/    # 历史 PTK 兼容
 .beacon/                # Beacon 状态
-.ptk/                   # PTK 兼容 (可选)
+.ptk/                   # 历史 PTK 兼容 (可选)
 ```
 
-### 6.3 PTK 别名
+### 6.3 历史 PTK 别名（已下线）
 
-在 PTK 项目中使用:
+迁移自历史 PTK 的项目请统一使用:
 ```bash
-ptk workflow start <feature>  # 等价于 beacon workflow start
+beacon workflow start <feature>  # 统一命令入口
 ```
 
 ---

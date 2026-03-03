@@ -6,14 +6,13 @@ from pathlib import Path
 from datetime import datetime
 import os
 
+from beacon.utils.versioning import resolve_target_version
+
 app = typer.Typer(name="user-story", help="Generate user stories")
 
 
 def generate_user_story(topic: str, project_root: Path) -> dict:
     """Generate user story structure"""
-    output_dir = project_root / "docs" / "product" / "latest" / "user-story"
-    output_dir.mkdir(parents=True, exist_ok=True)
-
     # User story template
     story = {
         "title": topic,
@@ -42,10 +41,12 @@ def generate_user_story(topic: str, project_root: Path) -> dict:
 def create(
     feature: str = typer.Argument(..., help="Feature name"),
     project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
+    version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
     output: Optional[str] = typer.Option(None, "--output", "-o", help="Output file"),
 ):
     """Create a user story"""
     project_root = Path(project) if project else Path.cwd()
+    resolved_version = resolve_target_version(project_root, version)
 
     story = generate_user_story(feature, project_root)
 
@@ -87,9 +88,20 @@ def create(
 | Memory Context | {memory_context_path or 'N/A'} |
 """
 
-    output_path = Path(output) if output else project_root / "docs" / "product" / "latest" / "user-story" / f"{feature.lower().replace(' ', '-')}.md"
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    output_path.write_text(md_content)
+    slug = feature.lower().replace(' ', '-')
+    if output:
+        output_path = Path(output)
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(md_content)
+    else:
+        output_paths = [
+            project_root / "docs" / "product" / resolved_version / "user-story" / f"{slug}.md",
+            project_root / "docs" / "beacon" / resolved_version / "user-story" / f"{slug}.md",
+        ]
+        for output_path in output_paths:
+            output_path.parent.mkdir(parents=True, exist_ok=True)
+            output_path.write_text(md_content)
+        output_path = output_paths[0]
 
     typer.echo(f"✓ User story created: {output_path}")
     return story
@@ -98,18 +110,26 @@ def create(
 @app.command("list")
 def list_stories(
     project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
+    version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
 ):
     """List all user stories"""
     project_root = Path(project) if project else Path.cwd()
-    stories_dir = project_root / "docs" / "product" / "latest" / "user-story"
-
-    if not stories_dir.exists():
+    resolved_version = resolve_target_version(project_root, version)
+    roots = [
+        project_root / "docs" / "product" / resolved_version / "user-story",
+        project_root / "docs" / "beacon" / resolved_version / "user-story",
+    ]
+    stories = []
+    for stories_dir in roots:
+        if stories_dir.exists():
+            stories.extend(stories_dir.glob("*.md"))
+    if not stories:
         typer.echo("No user stories found")
         return
-
-    stories = list(stories_dir.glob("*.md"))
-    typer.echo(f"User Stories ({len(stories)} found):")
-    for story in stories:
+    # de-duplicate by filename
+    unique = {p.name: p for p in stories}
+    typer.echo(f"User Stories ({len(unique)} found):")
+    for story in sorted(unique.values(), key=lambda p: p.name):
         typer.echo(f"  - {story.name}")
 
 

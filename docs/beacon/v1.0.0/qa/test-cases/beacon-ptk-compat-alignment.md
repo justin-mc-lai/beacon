@@ -1,4 +1,4 @@
-# Test Cases: Beacon 与 PTK 功能对齐补测方案
+# Test Cases: Beacon 命令口径统一补测方案（沿用原文件名）
 
 **版本**: v1.0.0  
 **来源**: `user-story/beacon-ptk-compat-alignment.md`  
@@ -34,8 +34,8 @@
 | TC-A-010 | P0 | `beacon gate think --json` | 可执行，结构化输出 |
 | TC-A-011 | P0 | `beacon gate check think --json` | 与 TC-A-010 等价 |
 | TC-A-012 | P1 | `beacon work <feature>` | 等价 workflow 入口 |
-| TC-A-013 | P0 | `ptk status --board`（安装后） | 与 `beacon status --board` 等价 |
-| TC-A-014 | P0 | `ptk doctor --json`（安装后） | 与 `beacon doctor --json` 等价 |
+| TC-A-013 | P0 | `beacon status --board` | 状态面板输出完整 |
+| TC-A-014 | P0 | `beacon doctor --json` | JSON 输出结构正确 |
 | TC-A-015 | P1 | `beacon --version` | 版本输出符合约定 |
 
 ---
@@ -115,7 +115,7 @@
 
 ---
 
-## 8. 推荐执行顺序（PTK 风格）
+## 8. 推荐执行顺序（Beacon 统一命令风格）
 
 1. 先跑 P0 的 A/B/C/D 用例。
 2. P0 全绿后再跑 E 组与 P1。

@@ -226,7 +226,7 @@ Beacon 从 product-toolkit 升级而来，是面向 AI 时代的智能产品工�
 
 ## 7. 目录结构
 
-### 7.1 文档输出（兼容 PTK）
+### 7.1 文档输出（兼容历史目录）
 
 ```
 项目根目录/
@@ -237,7 +237,7 @@ Beacon 从 product-toolkit 升级而来，是面向 AI 时代的智能产品工�
 │   │       ├── user-story/
 │   │       ├── qa/test-cases/
 │   │       └── execution/
-│   └── product/                   # PTK 兼容
+│   └── product/                   # 历史目录兼容
 │       └── v1.0.0/
 │           ├── prd/
 │           ├── user-story/
@@ -287,6 +287,35 @@ Beacon 从 product-toolkit 升级而来，是面向 AI 时代的智能产品工�
 - AC→TC 映射缺失
 - boundaries.md 或 terminal.json 关键字段缺失
 - 架构关键产物缺失
+- Story→AC→TC→Code→Evidence 任一断链（traceability broken）
+- 仅启发式命中且无真实执行证据（heuristic pass）
+- evidence 文件不存在、不可解析或不可审计（evidence not verifiable）
+- MVP 预算超限且未确认（mvp_scope_drift）
+
+---
+
+## 10. v1.0.1 补充方案（MVS 最小可验证切片）
+
+本节作为 v1.0.0 文档补充基线，落地方案以  
+`docs/beacon/v1.0.1/research/beacon-fidelity-mvp-solution.md` 为准。
+
+### 10.1 设计原则（新增）
+
+1. Story-first + MVP-first：按用户故事做小粒度切片交付
+2. 全链路绑定：Story → AC → TC → Code → Evidence
+3. 防假通过：无真实执行证据一律 Block
+4. 覆盖率门槛：story/ac/tc coverage 未满覆盖不允许 release-pass
+5. 防过度设计：MVP 预算超限触发 `mvp_scope_drift`
+6. 记忆体演进：成功/失败模式写回 memory，用于下轮最小改动建议
+
+### 10.2 最小门控扩展（新增）
+
+- 推荐 reason codes：
+  - `traceability_broken`
+  - `evidence_not_verifiable`
+  - `heuristic_pass_detected`
+  - `mvp_scope_drift`
+- Gate strict/debug 模式下，以上 reason code 默认阻断发布。
 
 ---
 

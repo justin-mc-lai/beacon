@@ -5,6 +5,8 @@ from pathlib import Path
 from datetime import datetime
 import os
 
+from beacon.utils.versioning import resolve_target_version
+
 app = typer.Typer(name="prd", help="Generate Product Requirements Document")
 
 
@@ -12,10 +14,12 @@ app = typer.Typer(name="prd", help="Generate Product Requirements Document")
 def create(
     feature: str = typer.Argument(..., help="Feature name"),
     project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
+    version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
     output: Optional[str] = typer.Option(None, "--output", "-o", help="Output file"),
 ):
     """Create a PRD"""
     project_root = Path(project) if project else Path.cwd()
+    resolved_version = resolve_target_version(project_root, version)
 
     memory_context_path = os.environ.get("BEACON_STAGE_CONTEXT_PATH", "").strip()
 
@@ -100,14 +104,25 @@ def create(
 ---
 
 **Created**: {datetime.now().strftime('%Y-%m-%d')}
-**Version**: 1.0.0
+**Version**: {resolved_version}
 **Status**: Draft
 **Memory Context**: {memory_context_path or 'N/A'}
 """
 
-    output_path = Path(output) if output else project_root / "docs" / "product" / "latest" / "prd" / f"{feature.lower().replace(' ', '-')}.md"
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    output_path.write_text(md_content)
+    slug = feature.lower().replace(' ', '-')
+    if output:
+        output_path = Path(output)
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(md_content)
+    else:
+        output_paths = [
+            project_root / "docs" / "product" / resolved_version / "prd" / f"{slug}.md",
+            project_root / "docs" / "beacon" / resolved_version / "prd" / f"{slug}.md",
+        ]
+        for output_path in output_paths:
+            output_path.parent.mkdir(parents=True, exist_ok=True)
+            output_path.write_text(md_content)
+        output_path = output_paths[0]
 
     typer.echo(f"✓ PRD created: {output_path}")
 
@@ -115,18 +130,25 @@ def create(
 @app.command("list")
 def list_prds(
     project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
+    version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
 ):
     """List all PRDs"""
     project_root = Path(project) if project else Path.cwd()
-    prds_dir = project_root / "docs" / "product" / "latest" / "prd"
-
-    if not prds_dir.exists():
+    resolved_version = resolve_target_version(project_root, version)
+    roots = [
+        project_root / "docs" / "product" / resolved_version / "prd",
+        project_root / "docs" / "beacon" / resolved_version / "prd",
+    ]
+    prds = []
+    for prds_dir in roots:
+        if prds_dir.exists():
+            prds.extend(prds_dir.glob("*.md"))
+    if not prds:
         typer.echo("No PRDs found")
         return
-
-    prds = list(prds_dir.glob("*.md"))
-    typer.echo(f"PRDs ({len(prds)} found):")
-    for prd in prds:
+    unique = {p.name: p for p in prds}
+    typer.echo(f"PRDs ({len(unique)} found):")
+    for prd in sorted(unique.values(), key=lambda p: p.name):
         typer.echo(f"  - {prd.name}")
 
 

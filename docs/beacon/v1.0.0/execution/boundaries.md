@@ -67,7 +67,7 @@
 
 ## Dependencies
 
-- PTK v3.7.0 成熟能力作为基础
+- 历史 PTK v3.7.0 成熟能力作为基础（命令层已统一 Beacon）
 - Claude Code / Codex 环境
 - Python 3.8+ / Typer
 

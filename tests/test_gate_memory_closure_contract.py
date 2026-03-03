@@ -44,7 +44,7 @@ def _seed_complete_lifecycle(project_root: Path, *, with_evidence: bool = True) 
     memory_dir.mkdir(parents=True, exist_ok=True)
     refs = ["docs/product/v1.0.0/execution/boundaries.md"] if with_evidence else []
     items = []
-    for stage in ("think", "user-story", "prd", "test-case"):
+    for stage in ("think", "user-story", "prd", "test-case", "implementation", "verify"):
         items.extend(
             [
                 {
@@ -103,6 +103,28 @@ def _seed_complete_lifecycle(project_root: Path, *, with_evidence: bool = True) 
     )
 
 
+def _append_release_event(project_root: Path, *, with_evidence: bool = True) -> None:
+    lifecycle_path = project_root / ".beacon" / "memory" / "workflow-lifecycle.json"
+    payload = json.loads(lifecycle_path.read_text(encoding="utf-8"))
+    items = payload.get("items", [])
+    refs = ["docs/product/v1.0.0/execution/boundaries.md"] if with_evidence else []
+    items.append(
+        {
+            "event_id": "release-recorded",
+            "run_id": "release:v1.2.3",
+            "stage": "release",
+            "event": "release_decision_recorded",
+            "source": "release.create",
+            "source_session_id": "release:v1.2.3",
+            "evidence_ref": refs,
+            "ts": "2026-01-01T00:00:05Z",
+            "details": {"action": "create", "version": "v1.2.3"},
+        }
+    )
+    payload["items"] = items
+    lifecycle_path.write_text(json.dumps(payload), encoding="utf-8")
+
+
 def _gate_release_payload(project_root: Path) -> dict:
     result = _invoke(
         ["gate", "check", "release", "--mode", "strict", "--json", "--project-root", str(project_root)]
@@ -141,3 +163,19 @@ def test_gate_release_should_flag_feedback_unsynced(tmp_path: Path):
     reason_codes = {item["reason_code"] for item in payload["issues"]}
     assert "memory_feedback_unsynced" in reason_codes
 
+
+def test_gate_release_should_flag_release_memory_profile_missing(tmp_path: Path):
+    _write_core_gate_artifacts(tmp_path)
+    _seed_complete_lifecycle(tmp_path, with_evidence=True)
+    payload = _gate_release_payload(tmp_path)
+    reason_codes = {item["reason_code"] for item in payload["issues"]}
+    assert "release_memory_profile_invalid" in reason_codes
+
+
+def test_gate_release_should_accept_release_memory_profile_with_evidence(tmp_path: Path):
+    _write_core_gate_artifacts(tmp_path)
+    _seed_complete_lifecycle(tmp_path, with_evidence=True)
+    _append_release_event(tmp_path, with_evidence=True)
+    payload = _gate_release_payload(tmp_path)
+    reason_codes = {item["reason_code"] for item in payload["issues"]}
+    assert "release_memory_profile_invalid" not in reason_codes

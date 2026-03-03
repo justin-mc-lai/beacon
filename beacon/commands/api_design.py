@@ -5,6 +5,8 @@ from pathlib import Path
 from datetime import datetime
 import json
 
+from beacon.utils.versioning import resolve_target_version
+
 app = typer.Typer(name="api-design", help="API design documentation")
 
 
@@ -17,6 +19,7 @@ def create(
 ):
     """Generate API design document"""
     project_root = Path(project) if project else Path.cwd()
+    resolved_version = resolve_target_version(project_root, None)
 
     api_doc = f"""# API Design: {name}
 
@@ -96,7 +99,11 @@ curl -X {method} \\
 ```
 
 """
-    output_path = Path(output) if output else project_root / "docs" / "product" / "latest" / "api" / f"{name.lower()}.md"
+    output_path = (
+        Path(output)
+        if output
+        else project_root / "docs" / "product" / resolved_version / "api" / f"{name.lower()}.md"
+    )
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(api_doc)
 
@@ -109,7 +116,8 @@ def list(
 ):
     """List existing API designs"""
     project_root = Path(project) if project else Path.cwd()
-    api_dir = project_root / "docs" / "product" / "latest" / "api"
+    resolved_version = resolve_target_version(project_root, None)
+    api_dir = project_root / "docs" / "product" / resolved_version / "api"
 
     if not api_dir.exists():
         typer.echo("No API designs found")

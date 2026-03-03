@@ -10,7 +10,7 @@
 
 ### 1.1 背景
 
-Beacon Gate 从 PTK gate Skill 升级而来，是交付门控检查的核心组件。在产品工作流中，需要明确的终态判定来确保交付质量。
+Beacon Gate 从历史 PTK gate Skill 升级而来，是交付门控检查的核心组件。当前命令入口统一为 Beacon。
 
 ### 1.2 目标
 

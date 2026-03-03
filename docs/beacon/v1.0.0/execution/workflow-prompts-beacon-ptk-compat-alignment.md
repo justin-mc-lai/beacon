@@ -1,4 +1,4 @@
-# Workflow Prompts: Beacon↔PTK 兼容改造执行命令（按 PTK 工作流）
+# Workflow Prompts: Beacon 命令统一与历史目录兼容改造（沿用原文件名）
 
 > 项目根目录：`/Users/apple/Developer/Personal/my_skill/beacon`
 
@@ -8,9 +8,9 @@
 
 ```bash
 cd /Users/apple/Developer/Personal/my_skill/beacon
-./beacon-cli think start "Beacon 与 PTK 功能对齐改造"
-./beacon-cli think confirm "Beacon 是 PTK 的重构版本"
-./beacon-cli think question "是否要求 ptk 二进制别名安装后可直接使用?" --priority high --blocking
+./beacon-cli think start "Beacon 命令口径统一改造（保留目录兼容）"
+./beacon-cli think confirm "命令层统一使用 Beacon，历史 PTK 仅保留目录兼容"
+./beacon-cli think question "是否确认命令层仅保留 beacon 入口?" --priority high --blocking
 ./beacon-cli think summarize
 ```
 
@@ -20,7 +20,7 @@ cd /Users/apple/Developer/Personal/my_skill/beacon
 
 ```bash
 cd /Users/apple/Developer/Personal/my_skill/beacon
-./beacon-cli user-story create "Beacon PTK 兼容改造" \
+./beacon-cli user-story create "Beacon 命令统一改造" \
   --output docs/beacon/v1.0.0/user-story/beacon-ptk-compat-alignment.md
 ```
 
@@ -30,7 +30,7 @@ cd /Users/apple/Developer/Personal/my_skill/beacon
 
 ```bash
 cd /Users/apple/Developer/Personal/my_skill/beacon
-./beacon-cli prd create "Beacon PTK 兼容改造" \
+./beacon-cli prd create "Beacon 命令统一改造" \
   --output docs/beacon/v1.0.0/prd/beacon-ptk-compat-alignment.md
 ```
 
@@ -40,7 +40,7 @@ cd /Users/apple/Developer/Personal/my_skill/beacon
 
 ```bash
 cd /Users/apple/Developer/Personal/my_skill/beacon
-./beacon-cli test-case create "Beacon PTK 兼容改造" --type all \
+./beacon-cli test-case create "Beacon 命令统一改造" --type all \
   --output docs/beacon/v1.0.0/qa/test-cases/beacon-ptk-compat-alignment.md
 ```
 
@@ -87,7 +87,7 @@ python3 -m pytest -q \
 
 ---
 
-## 7) 目标验收命令集（PTK 核心 10 命令）
+## 7) 目标验收命令集（Beacon 核心 10 命令）
 
 > 改造完成后，以下命令均应通过：
 

@@ -1,16 +1,16 @@
-# User Story: Beacon 与 PTK 功能对齐改造
+# User Story: Beacon 命令口径统一与历史 PTK 目录兼容（沿用原文件名）
 
 **版本**: v1.0.0  
 **状态**: Draft  
-**目标**: 让 Beacon 成为 PTK 的无缝重构版本（命令语法、行为、产物、状态一致）
+**目标**: 命令口径统一为 Beacon；历史 PTK 仅保留目录/状态兼容（`.ptk`、`docs/product`）
 
 ---
 
-## US-COMP-001: CLI 语法兼容
+## US-COMP-001: CLI 命令口径统一
 
-**作为** PTK 现有用户  
-**我希望** 继续使用原有 PTK 命令语法  
-**以便** 无迁移成本切换到 Beacon
+**作为** 迁移自历史 PTK 的现有用户  
+**我希望** 使用统一的 Beacon 命令语法  
+**以便** 降低迁移复杂度并统一执行入口
 
 ### AC
 
@@ -19,17 +19,17 @@
 | AC-001 | `beacon status --board` 可直接执行（无需 `show-status` 子命令） |
 | AC-002 | `beacon doctor --json` 可直接执行（无需 `diagnose` 子命令） |
 | AC-003 | `beacon report --human latest` / `--machine latest` 可直接执行 |
-| AC-004 | `beacon debug watch` / `beacon feedback sync latest` / `beacon resume <run_id>` 与 PTK 语法一致 |
+| AC-004 | `beacon debug watch` / `beacon feedback sync latest` / `beacon resume <run_id>` 按 Beacon 语法一致可执行 |
 | AC-005 | 支持 `beacon gate think --json` 与 `beacon gate check think --json` 双语法 |
 | AC-006 | 支持 `beacon work` 作为 `workflow` 别名 |
-| AC-007 | 安装后同时提供 `beacon` 与 `ptk` 两个入口 |
+| AC-007 | 安装后仅提供 `beacon` 入口（`ptk` 命令已下线） |
 
 ---
 
 ## US-COMP-002: run/status/report/debug/resume/feedback 行为兼容
 
 **作为** 研发与 QA  
-**我希望** Beacon 的核心命令行为与 PTK 对齐  
+**我希望** Beacon 的核心命令行为按统一契约稳定执行  
 **以便** 现有自动化脚本无需改写
 
 ### AC
@@ -48,7 +48,7 @@
 ## US-COMP-003: init/doctor/upgrade 行为兼容
 
 **作为** 项目维护者  
-**我希望** 初始化、诊断与升级流程和 PTK 一致  
+**我希望** 初始化、诊断与升级流程遵循 Beacon 统一契约  
 **以便** 新老项目都能统一治理
 
 ### AC
@@ -84,7 +84,7 @@
 ## US-COMP-005: 目录与状态兼容（双读双写）
 
 **作为** 运维与审计人员  
-**我希望** Beacon 与 PTK 的目录/状态格式可兼容  
+**我希望** Beacon 与历史 PTK 的目录/状态格式可兼容  
 **以便** 历史数据可复用
 
 ### AC
@@ -101,7 +101,7 @@
 ## US-COMP-006: Gate 与证据链兼容
 
 **作为** 交付负责人  
-**我希望** Gate 规则、reason codes、证据链与 PTK 约束一致  
+**我希望** Gate 规则、reason codes、证据链遵循统一约束（继承历史有效规则）  
 **以便** 交付判定可信可审计
 
 ### AC
@@ -127,7 +127,7 @@
 | AC ID | 验收标准 |
 |---|---|
 | AC-001 | README 示例命令可直接执行 |
-| AC-002 | SKILL 中宣称的别名（如 `beacon work`、`ptk ...`）可执行 |
+| AC-002 | SKILL 中宣称的命令入口（如 `beacon work` / `beacon-work`）可执行 |
 | AC-003 | `--json` 参数名、命令参数名与实际输出一致 |
 | AC-004 | 版本信息（CLI/文档/skill）一致 |
 

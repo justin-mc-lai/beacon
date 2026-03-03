@@ -1,0 +1,48 @@
+{
+  "schema_version": "1.0",
+  "name": "anti-overdesign-min-rules",
+  "applies_to": ["test-case", "release"],
+  "mode": ["strict", "debug"],
+  "reason_codes": [
+    "traceability_broken",
+    "evidence_not_verifiable",
+    "heuristic_pass_detected",
+    "multi_source_truth_conflict"
+  ],
+  "rules": [
+    {
+      "id": "R1",
+      "when": "story_id/ac_id/tc_id/impl_ref/evidence_ref missing",
+      "reason_code": "traceability_broken",
+      "blocked": true,
+      "severity": "critical"
+    },
+    {
+      "id": "R2",
+      "when": "evidence_ref file missing or invalid",
+      "reason_code": "evidence_not_verifiable",
+      "blocked": true,
+      "severity": "critical"
+    },
+    {
+      "id": "R3",
+      "when": "pass inferred from heuristic only without execution artifact",
+      "reason_code": "heuristic_pass_detected",
+      "blocked": true,
+      "severity": "critical"
+    },
+    {
+      "id": "R4",
+      "when": "same run/object has conflicting status across sources",
+      "reason_code": "multi_source_truth_conflict",
+      "blocked": true,
+      "severity": "critical"
+    }
+  ],
+  "metrics": {
+    "trace_coverage": "linked_tc / total_tc",
+    "evidence_valid_rate": "valid_evidence / required_evidence",
+    "heuristic_pass_count": 0,
+    "orphan_node_count": 0
+  }
+}

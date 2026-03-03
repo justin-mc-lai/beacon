@@ -1,12 +1,12 @@
-# Beacon v1.0.0 对齐 PTK `auto_test` UI 防假通过强校验
+# Beacon v1.0.0 `auto_test` UI 防假通过强校验（继承历史规则）
 
 ## 1. 核验结论（2026-03-02）
 
-已核验 PTK 项目 `auto_test` 的 UI 防假通过加固，并将核心能力补齐到 Beacon v1.0.0。
+已核验历史方案中的 `auto_test` UI 防假通过加固，并将核心能力补齐到 Beacon v1.0.0。
 
-## 2. PTK 核验来源
+## 2. 历史核验来源
 
-在以下文件中确认了本轮 PTK 侧新增/约束：
+在以下文件中确认了本轮历史方案侧新增/约束：
 
 - `product-toolkit/scripts/auto_test.sh`
   - 新增 `evaluate_ui_assertion`（基于 expectation + origin/target + snapshot 关键词）
@@ -73,7 +73,7 @@
 4. origin 缺失 -> blocked
 5. CLI `auto-test create` 产出状态与 reason code
 
-## 6. 执行命令（PTK workflow 风格）
+## 6. 执行命令（Beacon 统一命令风格）
 
 ```bash
 cd /Users/apple/Developer/Personal/my_skill/beacon

@@ -4,6 +4,8 @@ from typing import Optional
 from pathlib import Path
 from datetime import datetime
 
+from beacon.utils.versioning import resolve_target_version
+
 app = typer.Typer(name="jtbd", help="Jobs-to-be-Done framework")
 
 
@@ -15,6 +17,7 @@ def create(
 ):
     """Create a JTBD analysis document"""
     project_root = Path(project) if project else Path.cwd()
+    resolved_version = resolve_target_version(project_root, None)
 
     md_content = f"""# JTBD 分析: {product}
 
@@ -117,7 +120,11 @@ def create(
 **Status**: Draft
 """
 
-    output_path = Path(output) if output else project_root / "docs" / "product" / "latest" / "jtbd" / f"{product.lower().replace(' ', '-')}.md"
+    output_path = (
+        Path(output)
+        if output
+        else project_root / "docs" / "product" / resolved_version / "jtbd" / f"{product.lower().replace(' ', '-')}.md"
+    )
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(md_content)
 
@@ -130,7 +137,8 @@ def list(
 ):
     """List all JTBD analyses"""
     project_root = Path(project) if project else Path.cwd()
-    jtbd_dir = project_root / "docs" / "product" / "latest" / "jtbd"
+    resolved_version = resolve_target_version(project_root, None)
+    jtbd_dir = project_root / "docs" / "product" / resolved_version / "jtbd"
 
     if not jtbd_dir.exists():
         typer.echo("No JTBD analyses found")

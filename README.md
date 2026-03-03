@@ -21,25 +21,36 @@ Beacon 是面向 AI 时代的智能产品工作流工具，帮助团队将「需
 | **交付确定性** | 明确的终态判定（Pass / Blocked / Cancelled） |
 | **证据可信** | 完整证据链，支持审计与复盘 |
 
-### 与 PTK 的关系
+### 与历史 PTK 的关系（背景）
 
-Beacon 从 product-toolkit (PTK) 升级而来，是 PTK 的 Python/Typer 重构版本：
+Beacon 从 product-toolkit（历史 PTK）升级而来。当前命令口径已统一到 Beacon：仅保留 `beacon` 命令入口，历史 PTK 仅作背景说明。
 
-- **CLI**: 默认使用 `beacon-<subcommand>`（兼容 `beacon <subcommand>` 与 `ptk <subcommand>`）
-- **文档**: `docs/beacon/` 为主，`docs/product/` 为 PTK 兼容
+- **CLI**: 统一使用 `beacon-<subcommand>`（兼容 `beacon <subcommand>`）
+- **文档**: `docs/beacon/` 为主，`docs/product/` 为历史 PTK 兼容
 - **状态**: `.beacon/` 目录（原有 `.ptk/` 别名兼容）
+- **兼容策略**: 仅保留目录兼容（`.ptk`、`docs/product`），命令口径统一为 `beacon`
 - **Skill**: 默认使用 `beacon-<subcommand>` 触发（`/beacon:` 仅在支持该语法的平台可用）
 
-### v1.0.0 功能特性（PTK 对齐增强）
+### v1.0.0 功能特性（命令口径统一为 Beacon）
 
 1. **三层防线**：Gate 门控 + 证据驱动 + 记忆体约束，默认 strict-by-default。
-2. **PTK 兼容命令**：保留扁平命令体验，兼容 `auto-test`、`work`、`report --machine` 等常见用法。
+2. **扁平命令体验**：保留 `auto-test`、`work`、`report --machine` 等常见用法，统一通过 Beacon 命令执行。
 3. **工作流记忆闭环**：阶段开始/结束自动沉淀 memory，支持 recall 注入与 feedback 反哺。
 4. **UI 防假通过强校验（auto-test）**：
    - `expectation=success` 且 `origin != target` -> `failed`
    - `expectation=error` 命中重定向/错误证据 -> `passed`
    - strict 下无显式 UI assertion -> `blocked`
 5. **可审计交付**：运行态/报告/终态产物可追溯，支持 Gate reason code 级别定位。
+
+### v1.0.1 最小补齐（MVP 不失真）
+
+1. **Verify 终态硬条件**：`verify` 仅在 `.beacon/auto-test-status.json.status=passed` 时闭环，否则 workflow 直接 `blocked`。
+2. **UI 无真实执行默认阻断**：非 debug（`BEACON_DEBUG` 未开启）下，`expectation=unknown` 不再放行，统一 `blocked(ui_real_execution_required)`。
+3. **版本落盘统一**：`think/user-story/prd/test-case/report` 全链路支持 `--version`，并同步写入 `docs/beacon/<version>`（兼容镜像到 `docs/product/<version>`）。
+4. **Coverage 强校验接入 gate**：输出 `story/ac/tc` 覆盖指标，strict/debug 在 `test-case/release` 阶段未满覆盖直接 `coverage_incomplete`。
+5. **Workflow 终态下一步选择器**：完成/阻断后固定输出 OMC / OMX / Beacon Team 三选一路径，避免“结束后无下一步”。
+
+📘 详细说明见：[Beacon 功能说明与闭环流程（v1.0.1）](./docs/beacon/v1.0.1/execution/beacon-feature-closure-guide.md)
 
 ---
 
@@ -135,6 +146,28 @@ beacon-workflow gate
 | Verify | `beacon-auto-test create *` | 多层真实执行证据 |
 | Gate | `beacon-workflow gate` | Pass / Blocked / Cancelled |
 
+### 3.1.1 工作流生命周期（Lifecycle）与记忆体
+
+Beacon 的 workflow 生命周期主链为 6 阶段：
+
+`think → user-story → prd → test-case → implementation → verify`
+
+每个阶段在记忆体中会写入 4 类事件（完成态闭环）：
+
+1. `stage_started`
+2. `stage_context_injected`（recall 注入）
+3. `stage_finished`
+4. `memory_writeback`（写回 insight/decision）
+
+阶段状态判定：
+
+- `not_started`：无事件
+- `in_progress`：仅有部分事件
+- `completed`：4 类事件齐全
+- `failed`：存在 `stage_failed`
+
+> v1.0.1 起，`beacon-workflow start --auto=false` 只写 `workflow_planned`，不再提前写阶段 started/context，避免“未执行却显示已开始”的失真。
+
 ### 3.2 文档输出结构
 
 ```
@@ -145,7 +178,7 @@ beacon-workflow gate
 │   │       ├── prd/
 │   │       ├── user-story/
 │   │       └── qa/test-cases/
-│   └── product/                   # PTK 兼容
+│   └── product/                   # 历史 PTK 兼容
 │       └── v1.0.0/
 │           └── ...
 ├── .beacon/                      # 状态目录
@@ -182,6 +215,11 @@ beacon-workflow start <feature>
 beacon-workflow start "用户登录" --auto          # 自动执行所有阶段
 beacon-workflow start "用户登录" --skip think    # 跳过 think 阶段
 
+# 基于记忆体进度续跑（v1.0.1）
+beacon-workflow continue --version v1.0.1               # 自动定位 next_stage，执行一步
+beacon-workflow continue --version v1.0.1 --auto        # 从 next_stage 一路补齐到 verify
+beacon-workflow continue --run-id run-xxxx --auto       # 指定 run_id 续跑
+
 # 自动模式（新增 implementation / verify 阶段）
 beacon-workflow start "用户登录" --auto \
   --implementation-command "python -m pytest -q tests/test_login_flow.py" \
@@ -191,9 +229,14 @@ beacon-workflow start "用户登录" --auto \
   --verify-unit-command "python -m pytest -q -k unit" \
   --verify-smoke-command "python -m pytest -q -m smoke"
 
+# 仅计划，不执行阶段（manual）
+beacon-workflow start "用户登录" --version v1.0.1
+# 说明：manual 模式只写 workflow_planned，不写 stage_started/context
+
 # 查看状态
 beacon-workflow status
 beacon-workflow status --version v1.0.0
+beacon-workflow status --version v1.0.1 --feature "用户登录"
 
 # 门控检查
 beacon-workflow gate
@@ -207,9 +250,14 @@ beacon-workflow run analyze
 | 子命令 | 说明 |
 |--------|------|
 | `start` | 启动完整产品工作流 |
+| `continue` | 按记忆体生命周期自动续跑下一阶段（或全链路补齐） |
 | `status` | 显示工作流各阶段状态 |
 | `gate` | 运行阶段门控检查 |
 | `run` | 运行任意 beacon 子命令 |
+
+说明：
+- `verify` 阶段会执行“终态硬校验”：缺失状态文件、JSON 非法、或 `status!=passed` 均判定失败。
+- workflow 完成/阻断时会输出 `NEXT STEP SELECTOR`（OMC / OMX / Beacon Team + 继续命令）。
 
 #### `beacon-gate`
 
@@ -230,6 +278,7 @@ beacon-gate release
 # - 未执行即失败（test_execution_missing）
 # - 关键动作缺失即失败（test_key_actions_missing）
 # - AC→TC→执行证据链断裂即失败（ac_tc_evidence_chain_broken）
+# - 覆盖不完整即失败（coverage_incomplete）
 ```
 
 ---
@@ -407,7 +456,7 @@ beacon-persona list
 ```bash
 beacon-version create v2.0.0
 beacon-version list
-beacon-version current
+beacon-version create "用户登录" --bump patch
 ```
 
 #### `beacon-evolution-summary`
@@ -438,6 +487,7 @@ beacon-doctor --fix
 ```bash
 beacon-status
 beacon-status --verbose
+beacon-status --board --version v1.0.1 --feature "用户登录"
 ```
 
 #### `beacon-report`
@@ -446,8 +496,9 @@ beacon-status --verbose
 
 ```bash
 beacon-report
-beacon-report --format json
-beacon-report v1.0.0
+beacon-report --machine
+beacon-report --machine --version v1.0.0
+beacon-report --machine --version v1.0.1 --feature "用户登录"
 ```
 
 #### `beacon-debug`
@@ -505,7 +556,7 @@ beacon-auto-test create all --project . \
   --unit-command "python -m pytest -q -k unit" \
   --smoke-command "python -m pytest -q -m smoke"
 
-# UI 防假通过校验（PTK 对齐）
+# UI 防假通过校验（继承历史规则）
 beacon-auto-test create ui \
   --project . \
   --expectation success \
@@ -520,6 +571,11 @@ beacon-auto-test create ui \
   --target-url /admin/dashboard \
   --origin-url /admin/dashboard \
   --strict-ui-assertion
+
+# 非 debug 下，UI expectation=unknown 默认 blocked（防假通过）
+beacon-auto-test create ui --project . --expectation unknown
+# 若仅调试启发式行为，可显式开启：
+BEACON_DEBUG=1 beacon-auto-test create ui --project . --expectation unknown
 
 # 关键动作证据校验（缺任一项即失败）
 beacon-auto-test create ui \
@@ -536,7 +592,7 @@ beacon-auto-test create ui \
 # 结合 AC 矩阵回写执行证据（生成 evidence_path 文件）
 beacon-auto-test create all \
   --project . \
-  --matrix-path docs/product/latest/qa/test-cases/用户登录.ac-test-matrix.json \
+  --matrix-path docs/product/v1.0.1/qa/test-cases/用户登录.ac-test-matrix.json \
   --layer-command "ui=python -m pytest -q -k ui" \
   --layer-command "api-curl=bash -lc 'curl -fsS http://127.0.0.1:8000/health'" \
   --layer-command "unit=python -m pytest -q -k unit" \
@@ -557,6 +613,7 @@ beacon-auto-test status --project . --json
 - `test_execution_missing`
 - `test_key_actions_missing`
 - `ac_tc_evidence_chain_broken`
+- `coverage_incomplete`
 
 #### `beacon-test-progress`
 
@@ -662,7 +719,7 @@ beacon-remember list
 
 ```bash
 beacon-team start
-beacon-team add @user1
+beacon-team status
 beacon-team status
 ```
 
@@ -720,16 +777,16 @@ beacon-kano "用户登录" --report
 # 1. 启动团队会话
 beacon-team start "登录功能评审"
 
-# 2. 添加团队成员
-beacon-team add @product-manager
-beacon-team add @developer
-beacon-team add @qa
+# 2. 推进团队评审状态
+beacon-team status
+beacon-team review spec pass --reviewer pm
+beacon-team review quality pass --reviewer qa
 
 # 3. 记录讨论
 beacon-save "登录功能评审结论" --tags team,login
 
 # 4. 生成会议纪要
-beacon-report --type meeting
+beacon-team report --format both
 ```
 
 ---
@@ -740,13 +797,35 @@ beacon-report --type meeting
 
 ```
 .beacon/
+├── runs/
+│   └── run-*/state.json               # 每次 workflow run 的状态（feature/version/mode/events）
 ├── state/
 │   ├── think-progress.json    # 思考会话状态
-│   └── workflow-state.json   # 工作流状态
-├── memory/                    # 长期记忆
-│   └── ...
+│   └── workflow-memory/<run_id>/      # 阶段 recall 注入上下文
+├── memory/
+│   ├── workflow-lifecycle.json        # 生命周期事件主文件
+│   ├── workflow-lifecycle.index.json  # 去重索引
+│   ├── workflow-lifecycle.schema.json # schema
+│   ├── project-insights.json          # insight 写回
+│   └── decisions.json                 # decision 写回
 └── config.yaml               # 配置文件
 ```
+
+### 6.4 记忆体使用（workflow + memory）
+
+推荐路径：
+
+1. `beacon-workflow start "<feature>" --version <vX.Y.Z>`（manual 仅计划）
+2. `beacon-workflow continue --version <vX.Y.Z>`（执行 next_stage）
+3. `beacon-workflow continue --version <vX.Y.Z> --auto`（补齐到 verify）
+4. `beacon-status --board --version <vX.Y.Z>` 查看 `next_stage/closure_complete`
+5. `beacon-report --machine --version <vX.Y.Z>` 导出可审计进度
+
+定位口径：
+
+- 优先按 `run_id`
+- 否则按 `version + feature` 定位 workflow run
+- 再回退到最新 workflow run
 
 ### 6.2 配置文件
 
@@ -757,7 +836,7 @@ version: "1.0.0"
 # 文档输出目录
 docs:
   primary: "docs/beacon"      # 主要目录
-  compatibility: "docs/product"  # PTK 兼容
+  compatibility: "docs/product"  # 历史 PTK 兼容
 
 # 工作流配置
 workflow:
@@ -803,7 +882,7 @@ beacon/
 │   └── utils/
 ├── docs/
 │   ├── beacon/               # Beacon 文档
-│   └── product/             # PTK 兼容
+│   └── product/             # 历史 PTK 兼容
 ├── references/               # 参考文档
 │   ├── socratic-questioning.md
 │   └── acceptance-criteria.md
@@ -849,15 +928,15 @@ pip install --upgrade beacon-cli
 ```bash
 beacon --version
 # 或
-beacon-version current
+beacon-version list
 ```
 
-### Q3: 如何迁移 PTK 数据？
+### Q3: 如何迁移历史 PTK 数据？
 
-Beacon 自动兼容 PTK 目录结构。如需迁移：
+Beacon 保留历史 PTK 目录兼容（仅目录层）。如需迁移：
 
 ```bash
-# PTK 数据位于 .ptk/，Beacon 使用 .beacon/
+# 历史 PTK 数据位于 .ptk/，Beacon 使用 .beacon/
 # 两者自动兼容，无需手动迁移
 ```
 
@@ -883,13 +962,14 @@ beacon-doctor
 
 ## 9. 相关链接
 
-- **文档**: [docs/beacon/](./docs/beacon/v1.0.0/)
-- **PRD**: [PRD](./docs/beacon/v1.0.0/prd/beacon-core.md)
-- **用户故事**: [User Story](./docs/beacon/v1.0.0/user-story/beacon-core.md)
-- **测试用例**: [Test Cases](./docs/beacon/v1.0.0/qa/test-cases/beacon-core.md)
-- **架构设计**: [Architecture](./docs/beacon/v1.0.0/architecture/beacon-v1.0.0-design.md)
+- **文档入口（v1.0.1）**: [docs/beacon/v1.0.1/](./docs/beacon/v1.0.1/)
+- **功能与闭环说明**: [Beacon 功能说明与闭环流程](./docs/beacon/v1.0.1/execution/beacon-feature-closure-guide.md)
+- **命令-产物-证据速查表**: [beacon-command-artifact-evidence-cheatsheet.md](./docs/beacon/v1.0.1/execution/beacon-command-artifact-evidence-cheatsheet.md)
+- **研究方案（MVS）**: [beacon-fidelity-mvp-solution.md](./docs/beacon/v1.0.1/research/beacon-fidelity-mvp-solution.md)
+- **反过度设计规范**: [anti-overdesign-min-spec.md](./docs/beacon/v1.0.1/research/anti-overdesign-min-spec.md)
+- **生命周期调整**: [workflow-memory-lifecycle-adjustment.md](./docs/beacon/v1.0.1/execution/workflow-memory-lifecycle-adjustment.md)
 
 ---
 
-**版本**: v1.0.0
-**最后更新**: 2026-03-02
+**版本**: v1.0.1
+**最后更新**: 2026-03-03

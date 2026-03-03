@@ -4,6 +4,8 @@ from typing import Optional
 from pathlib import Path
 from datetime import datetime
 
+from beacon.utils.versioning import resolve_target_version
+
 app = typer.Typer(name="wireframe", help="Wireframe/Storyboard design")
 
 
@@ -15,6 +17,7 @@ def create(
 ):
     """Create a Wireframe description document"""
     project_root = Path(project) if project else Path.cwd()
+    resolved_version = resolve_target_version(project_root, None)
 
     md_content = f"""# Wireframe: {name}
 
@@ -143,7 +146,11 @@ def create(
 - **Version**: 1.0.0
 """
 
-    output_path = Path(output) if output else project_root / "docs" / "product" / "latest" / "design" / f"wireframe-{name.lower().replace(' ', '-')}.md"
+    output_path = (
+        Path(output)
+        if output
+        else project_root / "docs" / "product" / resolved_version / "design" / f"wireframe-{name.lower().replace(' ', '-')}.md"
+    )
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(md_content)
 
@@ -156,7 +163,8 @@ def _list(
 ):
     """List all Wireframe documents"""
     project_root = Path(project) if project else Path.cwd()
-    design_dir = project_root / "docs" / "product" / "latest" / "design"
+    resolved_version = resolve_target_version(project_root, None)
+    design_dir = project_root / "docs" / "product" / resolved_version / "design"
 
     if not design_dir.exists():
         typer.echo("No Wireframe documents found")

@@ -1,8 +1,8 @@
-# Beacon v1.0.0：PTK Workflow 补充记录（三层防线）
+# Beacon v1.0.0：历史 Workflow 补充记录（三层防线）
 
 ## 1) 执行目的
 
-按 PTK 工作流先补齐 Beacon v1.0.0 文档，并对齐三层防线：
+按历史工作流先补齐 Beacon v1.0.0 文档，并对齐三层防线：
 
 1. Gate 门控  
 2. 证据驱动  
@@ -13,17 +13,17 @@
 ```bash
 cd /Users/apple/Developer/Personal/my_skill/beacon
 
-# PTK workflow dry-run（强制将 PTK root 指向 beacon 项目）
-PTK_ROOT_OVERRIDE=$(pwd) python3 ../product-toolkit/scripts/ptk_cli.py --version v1.0.0 run workflow --mode dry-run
+# Beacon workflow dry-run
+python3 -m beacon.main run workflow --mode dry-run --version v1.0.0
 
-# PTK summary（human + machine）
-PTK_ROOT_OVERRIDE=$(pwd) python3 ../product-toolkit/scripts/ptk_cli.py --version v1.0.0 report --human latest
-PTK_ROOT_OVERRIDE=$(pwd) python3 ../product-toolkit/scripts/ptk_cli.py --version v1.0.0 report --machine latest
+# Beacon summary（human + machine）
+python3 -m beacon.main report latest --human
+python3 -m beacon.main report latest --machine
 ```
 
 ## 3) 执行结果快照
 
-- PTK run_id: `run-20260302T081044842Z-9dd5`
+- 历史 run_id: `run-20260302T081044842Z-9dd5`
 - route: `workflow`
 - mode: `dry-run`
 - status: `completed`
@@ -37,7 +37,7 @@ PTK_ROOT_OVERRIDE=$(pwd) python3 ../product-toolkit/scripts/ptk_cli.py --version
 ### A. Gate 门控
 
 - `beacon gate` 严格模式对齐 `Pass/Blocked` 终态语义。
-- 支持并覆盖 PTK 常用 reason code 校验（边界、终态、证据、一致性、scope guard）。
+- 支持并覆盖历史常用 reason code 校验（边界、终态、证据、一致性、scope guard）。
 - `scope_guard_enabled` 配置开关生效（`gate-config.json`）。
 
 ### B. 证据驱动
@@ -51,7 +51,7 @@ PTK_ROOT_OVERRIDE=$(pwd) python3 ../product-toolkit/scripts/ptk_cli.py --version
 
 ### C. 记忆体约束
 
-- 新增 PTK 风格 memory envelope：
+- 新增统一 memory envelope（继承历史结构）：
   - `.beacon/memory/project-insights.json`
   - `.beacon/memory/decisions.json`
   - `.beacon/memory/vocabulary.json`

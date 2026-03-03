@@ -8,8 +8,10 @@ from enum import Enum
 import hashlib
 import os
 
+from beacon.utils.coverage import compute_coverage_metrics
 from beacon.utils.memory import load_memory_entries
 from beacon.utils.memory import scope_memory_paths
+from beacon.utils.versioning import resolve_target_version
 from beacon.utils.workflow_memory import compute_memory_metrics, load_lifecycle_events
 
 app = typer.Typer(name="gate", help="Run gate checks for workflow stages")
@@ -53,9 +55,12 @@ REASON_CODES = [
     "memory_lifecycle_missing",
     "memory_evidence_missing",
     "memory_feedback_unsynced",
+    "release_memory_profile_invalid",
+    "memory_run_selector_drift",
     "test_execution_missing",
     "test_key_actions_missing",
     "ac_tc_evidence_chain_broken",
+    "coverage_incomplete",
 ]
 
 # Workflow stages
@@ -122,6 +127,11 @@ def _execution_file_candidates(project_root: Path, version: str, filename: str) 
     ]
 
 
+def _resolved_gate_version(project_root: Path) -> str:
+    requested = str(os.environ.get("BEACON_VERSION", "") or "").strip()
+    return resolve_target_version(project_root, requested or None)
+
+
 def _resolve_existing_execution_file(project_root: Path, version: str, filename: str) -> Path:
     candidates = _execution_file_candidates(project_root, version, filename)
     for path in candidates:
@@ -133,7 +143,7 @@ def _resolve_existing_execution_file(project_root: Path, version: str, filename:
 def check_boundaries(project_root: Path, mode: GateMode) -> List[Dict[str, Any]]:
     """Check boundaries.md exists"""
     issues = []
-    version = os.environ.get("BEACON_VERSION", "v1.0.0")
+    version = _resolved_gate_version(project_root)
     boundaries_path = _resolve_existing_execution_file(project_root, version, "boundaries.md")
 
     if not boundaries_path.exists():
@@ -165,7 +175,7 @@ def check_boundaries(project_root: Path, mode: GateMode) -> List[Dict[str, Any]]
 def check_terminal_artifact(project_root: Path, mode: GateMode) -> List[Dict[str, Any]]:
     """Check terminal.json exists and is valid"""
     issues = []
-    version = os.environ.get("BEACON_VERSION", "v1.0.0")
+    version = _resolved_gate_version(project_root)
     terminal_path = _resolve_existing_execution_file(project_root, version, "terminal.json")
 
     if not terminal_path.exists():
@@ -669,6 +679,99 @@ def check_memory_closure(project_root: Path, mode: GateMode, stage: str) -> List
     return issues
 
 
+def check_release_memory_profile(project_root: Path, mode: GateMode, stage: str) -> List[Dict[str, Any]]:
+    """Check release-specific memory profile without polluting workflow closure contract."""
+    issues: list[dict[str, Any]] = []
+    if stage != "release":
+        return issues
+    if mode not in {GateMode.STRICT, GateMode.DEBUG}:
+        return issues
+
+    events = load_lifecycle_events(project_root)
+    if not events:
+        # Keep missing-lifecycle diagnosis centralized in check_memory_closure.
+        return issues
+
+    metrics = compute_memory_metrics(project_root)
+    selected_run_id = str(metrics.get("run_id", "") or "")
+
+    # Guard default selector drift: when workflow run exists, selection should prefer it.
+    workflow_run_exists = any(
+        isinstance(item, dict)
+        and str(item.get("run_id", "")).startswith("run-")
+        and str(item.get("event", "")) == "stage_started"
+        for item in events
+    )
+    if workflow_run_exists and (not selected_run_id.startswith("run-")):
+        issues.append(
+            {
+                "reason_code": "memory_run_selector_drift",
+                "severity": "critical",
+                "message": (
+                    "default memory metrics selected non-workflow run_id while workflow run exists: "
+                    f"{selected_run_id or 'N/A'}"
+                ),
+                "blocked": True,
+                "details": {"selected_run_id": selected_run_id},
+            }
+        )
+
+    release_events = [
+        item
+        for item in events
+        if isinstance(item, dict)
+        and str(item.get("stage", "")) == "release"
+        and str(item.get("event", "")) == "release_decision_recorded"
+    ]
+    if not release_events:
+        issues.append(
+            {
+                "reason_code": "release_memory_profile_invalid",
+                "severity": "critical",
+                "message": "release stage missing release_decision_recorded memory event",
+                "blocked": True,
+            }
+        )
+        return issues
+
+    refs: list[str] = []
+    for item in release_events:
+        evidence_ref = item.get("evidence_ref")
+        if isinstance(evidence_ref, list):
+            refs.extend([str(x) for x in evidence_ref if str(x).strip()])
+    refs = sorted(set(refs))
+
+    if not refs:
+        issues.append(
+            {
+                "reason_code": "release_memory_profile_invalid",
+                "severity": "critical",
+                "message": "release_decision_recorded events exist but evidence_ref is empty",
+                "blocked": True,
+            }
+        )
+        return issues
+
+    missing_refs = []
+    for ref in refs:
+        p = Path(ref)
+        full = p if p.is_absolute() else project_root / p
+        if not full.exists():
+            missing_refs.append(ref)
+    if missing_refs:
+        issues.append(
+            {
+                "reason_code": "release_memory_profile_invalid",
+                "severity": "critical",
+                "message": f"release memory evidence files missing: {missing_refs[:10]}",
+                "blocked": True,
+                "details": {"missing_refs": missing_refs[:10]},
+            }
+        )
+
+    return issues
+
+
 def _candidate_matrix_paths(project_root: Path) -> list[Path]:
     paths = []
     for base in (
@@ -678,7 +781,6 @@ def _candidate_matrix_paths(project_root: Path) -> list[Path]:
         if not base.exists():
             continue
         paths.extend(sorted(base.glob("*/qa/test-cases/*.ac-test-matrix.json")))
-        paths.extend(sorted(base.glob("latest/qa/test-cases/*.ac-test-matrix.json")))
     # Keep insertion order unique
     seen: set[str] = set()
     unique: list[Path] = []
@@ -849,6 +951,36 @@ def check_test_execution_integrity(project_root: Path, mode: GateMode, stage: st
     return issues
 
 
+def check_coverage_metrics(project_root: Path, mode: GateMode, stage: str) -> List[Dict[str, Any]]:
+    """Check story/ac/tc coverage metrics and block non-full coverage in strict/debug."""
+    issues: list[dict[str, Any]] = []
+    if stage not in {"test-case", "release"}:
+        return issues
+    if mode not in {GateMode.STRICT, GateMode.DEBUG}:
+        return issues
+
+    version = _resolved_gate_version(project_root)
+    metrics = compute_coverage_metrics(project_root, version=version)
+    if metrics.get("full_coverage"):
+        return issues
+
+    issues.append(
+        {
+            "reason_code": "coverage_incomplete",
+            "severity": "critical",
+            "message": (
+                "coverage is incomplete: "
+                f"story={metrics.get('implemented_story')}/{metrics.get('planned_story')}, "
+                f"ac={metrics.get('tested_ac')}/{metrics.get('total_ac')}, "
+                f"tc={metrics.get('executed_tc')}/{metrics.get('total_tc')}"
+            ),
+            "blocked": True,
+            "details": metrics,
+        }
+    )
+    return issues
+
+
 def run_gate_checks(
     stage: str,
     mode: GateMode,
@@ -890,8 +1022,17 @@ def run_gate_checks(
 
     if mode == GateMode.STRICT or mode == GateMode.DEBUG:
         if mode == GateMode.DEBUG:
+            typer.echo(f"[DEBUG] Checking release memory profile...")
+        all_issues.extend(check_release_memory_profile(project_root, mode, stage))
+
+    if mode == GateMode.STRICT or mode == GateMode.DEBUG:
+        if mode == GateMode.DEBUG:
             typer.echo(f"[DEBUG] Checking test execution integrity...")
         all_issues.extend(check_test_execution_integrity(project_root, mode, stage))
+    if mode == GateMode.STRICT or mode == GateMode.DEBUG:
+        if mode == GateMode.DEBUG:
+            typer.echo(f"[DEBUG] Checking coverage metrics...")
+        all_issues.extend(check_coverage_metrics(project_root, mode, stage))
 
     # Determine blocked status
     blocked_issues = [i for i in all_issues if i.get("blocked", False)]
@@ -994,7 +1135,7 @@ def list_checks(
     for mode in GateMode:
         typer.echo(f"  - {mode.value}")
     typer.echo("")
-    typer.echo("Reason Codes (25 total):")
+    typer.echo(f"Reason Codes ({len(REASON_CODES)} total):")
     for code in REASON_CODES:
         typer.echo(f"  - {code}")
 

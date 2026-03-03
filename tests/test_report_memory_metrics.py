@@ -11,6 +11,14 @@ from beacon.main import app
 
 
 runner = CliRunner()
+VERIFY_PASS_ARGS = [
+    "--implementation-command",
+    "python3 -c \"print('impl')\"",
+    "--verify-scope",
+    "unit",
+    "--verify-unit-command",
+    "python3 -c \"print('ok')\"",
+]
 
 
 def _invoke(args: list[str]):
@@ -24,8 +32,15 @@ def _latest_run_id(project_root: Path) -> str:
     return runs[-1]
 
 
+def _extract_run_id(output: str) -> str:
+    for line in output.splitlines():
+        if line.startswith("Run ID:"):
+            return line.split(":", 1)[1].strip()
+    return ""
+
+
 def test_report_status_resume_should_expose_memory_metrics(tmp_path: Path):
-    result = _invoke(["workflow", "start", "Metrics Feature", "--auto", "--project", str(tmp_path)])
+    result = _invoke(["workflow", "start", "Metrics Feature", "--auto", "--project", str(tmp_path), *VERIFY_PASS_ARGS])
     assert result.exit_code == 0
     run_id = _latest_run_id(tmp_path)
 
@@ -34,12 +49,89 @@ def test_report_status_resume_should_expose_memory_metrics(tmp_path: Path):
     payload = json.loads(machine.stdout)
     assert "memory_metrics" in payload
     assert isinstance(payload["memory_metrics"], dict)
+    assert "coverage_metrics" in payload
 
     board = _invoke(["status", "--board", "--project-root", str(tmp_path)])
     assert board.exit_code == 0
     assert "memory.closure_complete" in board.stdout
+    assert "coverage.story" in board.stdout
 
     resumed = _invoke(["resume", run_id, "--project-root", str(tmp_path)])
     assert resumed.exit_code == 0
     resumed_payload = json.loads(resumed.stdout)
     assert "memory_metrics" in resumed_payload
+
+
+def test_memory_metrics_default_run_should_prefer_workflow_run_over_release_run(tmp_path: Path):
+    result = _invoke(["workflow", "start", "Metrics Feature", "--auto", "--project", str(tmp_path), *VERIFY_PASS_ARGS])
+    assert result.exit_code == 0
+
+    # Add a later release event run-id to emulate mixed lifecycle streams.
+    release = _invoke(["release", "create", "v1.2.3", "--project", str(tmp_path)])
+    assert release.exit_code == 0
+
+    machine = _invoke(["report", "--project-root", str(tmp_path), "--machine", "latest"])
+    assert machine.exit_code == 0
+    payload = json.loads(machine.stdout)
+    metrics = payload.get("memory_metrics", {})
+    selected = str(metrics.get("run_id", ""))
+    assert selected.startswith("run-"), f"expected workflow run-id, got {selected}"
+
+
+def test_report_should_support_version_filtered_memory_progress(tmp_path: Path):
+    run_a = _invoke(
+        ["workflow", "start", "Feature A", "--auto", "--version", "v1.0.0", "--project", str(tmp_path)]
+        + VERIFY_PASS_ARGS
+    )
+    assert run_a.exit_code == 0
+    run_a_id = _extract_run_id(run_a.stdout) or _latest_run_id(tmp_path)
+
+    run_b = _invoke(
+        ["workflow", "start", "Feature B", "--auto", "--version", "v1.0.1", "--project", str(tmp_path)]
+        + VERIFY_PASS_ARGS
+    )
+    assert run_b.exit_code == 0
+    run_b_id = _extract_run_id(run_b.stdout) or _latest_run_id(tmp_path)
+
+    machine = _invoke(
+        ["report", "--project-root", str(tmp_path), "--machine", "--version", "v1.0.0", "latest"]
+    )
+    assert machine.exit_code == 0
+    payload = json.loads(machine.stdout)
+    assert payload.get("workflow_progress", {}).get("version") == "v1.0.0"
+    if run_a_id and run_b_id and run_a_id != run_b_id:
+        assert payload.get("run_id") == run_a_id
+
+
+def test_status_board_should_show_next_stage_with_version_filter(tmp_path: Path):
+    result = _invoke(["workflow", "start", "Feature C", "--project", str(tmp_path), "--version", "v2.0.0"])
+    assert result.exit_code == 0
+
+    board = _invoke(["status", "--board", "--project-root", str(tmp_path), "--version", "v2.0.0"])
+    assert board.exit_code == 0
+    assert "memory.next_stage: think" in board.stdout
+
+
+def test_report_should_write_summary_into_requested_version_execution_dir(tmp_path: Path):
+    started = _invoke(
+        [
+            "workflow",
+            "start",
+            "Report Version",
+            "--auto",
+            "--project",
+            str(tmp_path),
+            "--version",
+            "v2.3.4",
+            *VERIFY_PASS_ARGS,
+        ]
+    )
+    assert started.exit_code == 0
+
+    machine = _invoke(["report", "--project-root", str(tmp_path), "--machine", "--version", "v2.3.4", "latest"])
+    assert machine.exit_code == 0
+
+    summary_path = tmp_path / "docs" / "beacon" / "v2.3.4" / "execution" / "summary.json"
+    legacy_path = tmp_path / "docs" / "beacon" / "v1.0.0" / "execution" / "summary.json"
+    assert summary_path.exists()
+    assert not legacy_path.exists()

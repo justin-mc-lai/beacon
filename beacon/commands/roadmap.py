@@ -4,6 +4,8 @@ from typing import Optional
 from pathlib import Path
 from datetime import datetime
 
+from beacon.utils.versioning import resolve_target_version
+
 app = typer.Typer(name="roadmap", help="Product roadmap")
 
 
@@ -16,6 +18,7 @@ def create(
 ):
     """Create a product roadmap document"""
     project_root = Path(project) if project else Path.cwd()
+    resolved_version = resolve_target_version(project_root, None)
     period_str = period if period else datetime.now().strftime('%Y-Q%m')
 
     md_content = f"""# 产品路线图: {product}
@@ -107,7 +110,11 @@ Q2 -----------------------
 **Status**: Draft
 """
 
-    output_path = Path(output) if output else project_root / "docs" / "product" / "latest" / "roadmap" / f"{product.lower().replace(' ', '-')}.md"
+    output_path = (
+        Path(output)
+        if output
+        else project_root / "docs" / "product" / resolved_version / "roadmap" / f"{product.lower().replace(' ', '-')}.md"
+    )
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(md_content)
 
@@ -120,7 +127,8 @@ def list(
 ):
     """List all product roadmaps"""
     project_root = Path(project) if project else Path.cwd()
-    roadmap_dir = project_root / "docs" / "product" / "latest" / "roadmap"
+    resolved_version = resolve_target_version(project_root, None)
+    roadmap_dir = project_root / "docs" / "product" / resolved_version / "roadmap"
 
     if not roadmap_dir.exists():
         typer.echo("No product roadmaps found")

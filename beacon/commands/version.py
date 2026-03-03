@@ -4,6 +4,8 @@ from typing import Optional
 from pathlib import Path
 from datetime import datetime
 
+from beacon.utils.versioning import resolve_target_version
+
 app = typer.Typer(name="version", help="Product version planning")
 
 
@@ -17,6 +19,7 @@ def create(
 ):
     """Create a version planning document"""
     project_root = Path(project) if project else Path.cwd()
+    resolved_version = resolve_target_version(project_root, None)
 
     # Determine version
     version_str = version if version else "1.0.0"
@@ -91,7 +94,11 @@ def create(
 **Status**: Draft
 """
 
-    output_path = Path(output) if output else project_root / "docs" / "product" / "latest" / "version" / f"{feature.lower().replace(' ', '-')}.md"
+    output_path = (
+        Path(output)
+        if output
+        else project_root / "docs" / "product" / resolved_version / "version" / f"{feature.lower().replace(' ', '-')}.md"
+    )
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(md_content)
 
@@ -104,7 +111,8 @@ def list(
 ):
     """List all version planning documents"""
     project_root = Path(project) if project else Path.cwd()
-    version_dir = project_root / "docs" / "product" / "latest" / "version"
+    resolved_version = resolve_target_version(project_root, None)
+    version_dir = project_root / "docs" / "product" / resolved_version / "version"
 
     if not version_dir.exists():
         typer.echo("No version planning documents found")

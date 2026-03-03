@@ -1,0 +1,89 @@
+{
+  "schema_version": "1.0",
+  "feature": "workflow-memory-lifecycle-alignment",
+  "version": "v1.0.1",
+  "generated_at": "2026-03-03T00:00:00Z",
+  "entries": [
+    {
+      "tc_id": "TC-001",
+      "ac_id": "AC-001",
+      "layer": "unit",
+      "command": "python -m pytest -q tests/test_workflow_memory_lifecycle.py",
+      "assertion": "6-stage closure complete",
+      "evidence_path": ".beacon/evidence/test-results/workflow-memory-lifecycle-alignment/TC-001.json",
+      "status": "pending"
+    },
+    {
+      "tc_id": "TC-002",
+      "ac_id": "AC-002",
+      "layer": "unit",
+      "command": "python -m pytest -q tests/test_gate_memory_closure_contract.py",
+      "assertion": "release event does not corrupt workflow closure",
+      "evidence_path": ".beacon/evidence/test-results/workflow-memory-lifecycle-alignment/TC-002.json",
+      "status": "pending"
+    },
+    {
+      "tc_id": "TC-003",
+      "ac_id": "AC-003",
+      "layer": "unit",
+      "command": "python -m pytest -q tests/test_report_memory_metrics.py",
+      "assertion": "default run_id selects workflow run",
+      "evidence_path": ".beacon/evidence/test-results/workflow-memory-lifecycle-alignment/TC-003.json",
+      "status": "pending"
+    },
+    {
+      "tc_id": "TC-004",
+      "ac_id": "AC-004",
+      "layer": "unit",
+      "command": "python -m pytest -q tests/test_report_memory_metrics.py",
+      "assertion": "explicit run_id remains compatible",
+      "evidence_path": ".beacon/evidence/test-results/workflow-memory-lifecycle-alignment/TC-004.json",
+      "status": "pending"
+    },
+    {
+      "tc_id": "TC-005",
+      "ac_id": "AC-005",
+      "layer": "unit",
+      "command": "python -m pytest -q tests/test_gate_memory_closure_contract.py",
+      "assertion": "release profile missing evidence blocks",
+      "evidence_path": ".beacon/evidence/test-results/workflow-memory-lifecycle-alignment/TC-005.json",
+      "status": "pending"
+    },
+    {
+      "tc_id": "TC-006",
+      "ac_id": "AC-006",
+      "layer": "unit",
+      "command": "python -m pytest -q tests/test_workflow_memory_lifecycle.py",
+      "assertion": "fixture upgraded to 6 stages",
+      "evidence_path": ".beacon/evidence/test-results/workflow-memory-lifecycle-alignment/TC-006.json",
+      "status": "pending"
+    },
+    {
+      "tc_id": "TC-007",
+      "ac_id": "AC-007",
+      "layer": "unit",
+      "command": "python -m pytest -q tests/test_gate_memory_closure_contract.py",
+      "assertion": "gate fixture upgraded to 6 stages",
+      "evidence_path": ".beacon/evidence/test-results/workflow-memory-lifecycle-alignment/TC-007.json",
+      "status": "pending"
+    },
+    {
+      "tc_id": "TC-008",
+      "ac_id": "AC-008",
+      "layer": "smoke",
+      "command": "python -m pytest -q tests/test_gate_memory_closure_contract.py",
+      "assertion": "release profile passes with valid evidence",
+      "evidence_path": ".beacon/evidence/test-results/workflow-memory-lifecycle-alignment/TC-008.json",
+      "status": "pending"
+    },
+    {
+      "tc_id": "TC-009",
+      "ac_id": "AC-008",
+      "layer": "smoke",
+      "command": "python -m pytest -q tests/test_gate_memory_closure_contract.py",
+      "assertion": "release profile blocks on invalid evidence",
+      "evidence_path": ".beacon/evidence/test-results/workflow-memory-lifecycle-alignment/TC-009.json",
+      "status": "pending"
+    }
+  ]
+}

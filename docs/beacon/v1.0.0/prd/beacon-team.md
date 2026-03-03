@@ -10,7 +10,7 @@
 
 ### 1.1 背景
 
-Beacon Team 从 PTK team Skill 升级而来，是多代理协作的核心组件。支持 N 个协调代理的并行工作，实现高效团队协作。
+Beacon Team 从历史 PTK team Skill 升级而来，是多代理协作的核心组件。当前命令入口统一为 Beacon，支持 N 个协调代理并行工作。
 
 ### 1.2 目标
 

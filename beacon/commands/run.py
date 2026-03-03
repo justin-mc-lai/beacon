@@ -7,6 +7,7 @@ from typing import Any, Optional
 
 import typer
 
+from beacon.utils.llm_loop import build_next_stage_trace, merge_token_usage
 from beacon.utils.memory import append_scope_items
 from beacon.utils.runtime import (
     append_jsonl,
@@ -15,6 +16,7 @@ from beacon.utils.runtime import (
     run_events_path,
     save_run_state,
 )
+from beacon.utils.versioning import resolve_target_version
 
 app = typer.Typer(name="run", help="Run Beacon workflow")
 
@@ -110,6 +112,7 @@ def _run_workflow_impl(
         return 2
 
     root = Path(project_root) if project_root else Path.cwd()
+    resolved_version = resolve_target_version(root, version)
     run_id = generate_run_id(root)
     events_file = run_events_path(root, run_id)
     events: list[dict[str, Any]] = []
@@ -127,15 +130,20 @@ def _run_workflow_impl(
         }
     )
     append_jsonl(events_file, events[-1])
+    llm_trace = build_next_stage_trace(
+        feature=feature or normalized_type,
+        version=resolved_version,
+        run_id=run_id,
+        next_stage="workflow" if normalized_type == "workflow" else normalized_type,
+        context="run.workflow.dispatch",
+    )
 
     # Compatibility behavior:
     # strict mode requires an existing user-story artifact in product/beacon docs.
     if mode == "strict":
         story_candidates = [
-            root / "docs" / "product" / version / "user-story",
-            root / "docs" / "beacon" / version / "user-story",
-            root / "docs" / "product" / "latest" / "user-story",
-            root / "docs" / "beacon" / "latest" / "user-story",
+            root / "docs" / "product" / resolved_version / "user-story",
+            root / "docs" / "beacon" / resolved_version / "user-story",
         ]
         has_story = any(path.exists() and any(path.glob("*.md")) for path in story_candidates)
         if not has_story:
@@ -158,8 +166,8 @@ def _run_workflow_impl(
                 "started_at": started,
                 "ended_at": now_iso(),
                 "events": events,
-                "llm_prompts": [],
-                "token_usage": {"prompt_tokens": 0, "completion_tokens": 0},
+                "llm_prompts": [llm_trace],
+                "token_usage": merge_token_usage({}, llm_trace),
                 "tool_calls": [],
                 "artifacts": {"events": str(events_file.relative_to(root))},
                 "deviations": deviations,
@@ -170,7 +178,7 @@ def _run_workflow_impl(
                 typer.echo(f'{{"run_id":"{run_id}","status":"blocked","reason":"missing_user_story_for_strict_mode"}}')
             else:
                 typer.echo(f"Running {normalized_type} in {mode} mode")
-                typer.echo(f"Feature: {feature}, Version: {version}")
+                typer.echo(f"Feature: {feature}, Version: {resolved_version}")
                 typer.echo("Strict mode: enabled")
                 typer.echo("Blocked: missing user-story artifact for strict mode")
             return 2
@@ -211,8 +219,8 @@ def _run_workflow_impl(
                 "started_at": started,
                 "ended_at": now_iso(),
                 "events": events,
-                "llm_prompts": [],
-                "token_usage": {"prompt_tokens": 0, "completion_tokens": 0},
+                "llm_prompts": [llm_trace],
+                "token_usage": merge_token_usage({}, llm_trace),
                 "tool_calls": [{"name": "scope_guard.record", "args": {"deviations": len(deviations)}}],
                 "artifacts": {
                     "events": str(events_file.relative_to(root)),
@@ -227,7 +235,7 @@ def _run_workflow_impl(
                 typer.echo(f'{{"run_id":"{run_id}","status":"blocked","reason":"awaiting_human_confirmation"}}')
             else:
                 typer.echo(f"Running {normalized_type} in {mode} mode")
-                typer.echo(f"Feature: {feature}, Version: {version}")
+                typer.echo(f"Feature: {feature}, Version: {resolved_version}")
                 typer.echo("Strict mode: enabled")
                 typer.echo("Blocked: high-risk scope proposal needs confirmation (A/B/C)")
             return 2
@@ -254,8 +262,8 @@ def _run_workflow_impl(
         "started_at": started,
         "ended_at": now_iso(),
         "events": events,
-        "llm_prompts": [],
-        "token_usage": {"prompt_tokens": 0, "completion_tokens": 0},
+        "llm_prompts": [llm_trace],
+        "token_usage": merge_token_usage({}, llm_trace),
         "tool_calls": [{"name": "router.dispatch", "args": {"workflow": normalized_type}}],
         "artifacts": {
             "events": str(events_file.relative_to(root)),
@@ -271,7 +279,7 @@ def _run_workflow_impl(
         typer.echo(f'{{"run_id":"{run_id}","status":"completed","reason":"{state["reason"]}"}}')
     else:
         typer.echo(f"Running {normalized_type} in {mode} mode")
-        typer.echo(f"Feature: {feature}, Version: {version}")
+        typer.echo(f"Feature: {feature}, Version: {resolved_version}")
         if strict:
             typer.echo("Strict mode: enabled")
     return 0
@@ -282,7 +290,7 @@ def workflow(
     workflow_type: str = typer.Argument("workflow", help="Workflow type: workflow/team/auto-test"),
     mode: str = typer.Option("normal", "--mode", "-m", help="Run mode: normal/debug/strict/dry-run/replay"),
     feature: str = typer.Option("", "--feature", "-f", help="Feature name"),
-    version: str = typer.Option("v1.0.0", "--version", "-v", help="Version"),
+    version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
     strict: bool = typer.Option(False, "--strict", help="Enable strict mode"),
     proposal: list[str] = typer.Option([], "--proposal", help="Optional scope proposal (repeatable)"),
     confirm: Optional[str] = typer.Option(None, "--confirm", help="Human confirmation choice for high-risk scope (A/B/C)"),

@@ -6,6 +6,7 @@ from datetime import datetime
 import json
 
 from beacon.utils.memory import append_memory_entry
+from beacon.utils.versioning import resolve_target_version
 from beacon.utils.workflow_memory import append_lifecycle_event
 
 app = typer.Typer(name="release", help="Release checklist")
@@ -19,6 +20,7 @@ def create(
 ):
     """Create release checklist"""
     project_root = Path(project) if project else Path.cwd()
+    resolved_version = resolve_target_version(project_root, version)
 
     release_content = f"""# Release Checklist: {version}
 
@@ -60,9 +62,18 @@ def create(
 ## Notes
 
 """
-    output_path = Path(output) if output else project_root / "docs" / "product" / "latest" / "release" / f"v{version.lstrip('v')}.md"
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    output_path.write_text(release_content)
+    output_paths = (
+        [Path(output)]
+        if output
+        else [
+            project_root / "docs" / "beacon" / resolved_version / "release" / f"{resolved_version}.md",
+            project_root / "docs" / "product" / resolved_version / "release" / f"{resolved_version}.md",
+        ]
+    )
+    for output_path in output_paths:
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(release_content)
+    output_path = output_paths[0]
 
     rel = str(output_path.relative_to(project_root))
     append_memory_entry(

@@ -4,6 +4,8 @@ from typing import Optional
 from pathlib import Path
 from datetime import datetime
 
+from beacon.utils.versioning import resolve_target_version
+
 app = typer.Typer(name="data-dictionary", help="Data dictionary")
 
 
@@ -15,6 +17,7 @@ def create(
 ):
     """Generate data dictionary"""
     project_root = Path(project) if project else Path.cwd()
+    resolved_version = resolve_target_version(project_root, None)
 
     dict_content = f"""# Data Dictionary: {name}
 
@@ -63,7 +66,11 @@ Describe the purpose and scope of this data dictionary.
 - Add any additional notes here
 
 """
-    output_path = Path(output) if output else project_root / "docs" / "product" / "latest" / "data-dictionary" / f"{name.lower()}.md"
+    output_path = (
+        Path(output)
+        if output
+        else project_root / "docs" / "product" / resolved_version / "data-dictionary" / f"{name.lower()}.md"
+    )
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(dict_content)
 
@@ -76,7 +83,8 @@ def list(
 ):
     """List existing data dictionaries"""
     project_root = Path(project) if project else Path.cwd()
-    dict_dir = project_root / "docs" / "product" / "latest" / "data-dictionary"
+    resolved_version = resolve_target_version(project_root, None)
+    dict_dir = project_root / "docs" / "product" / resolved_version / "data-dictionary"
 
     if not dict_dir.exists():
         typer.echo("No data dictionaries found")

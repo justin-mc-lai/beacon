@@ -1,14 +1,14 @@
-# Beacon v1.0.0 兼容改造与交付验收（PTK 对齐）
+# Beacon v1.0.0 兼容改造与交付验收（命令统一 + 目录兼容）
 
 ## 1. 交付结论
 
-- 目标：Beacon 作为 PTK 重构版本，完成 v1.0.0 功能对齐与兼容补测自动化。
+- 目标：完成 Beacon 命令统一与历史目录兼容的 v1.0.0 交付与补测自动化。
 - 结果：已完成核心兼容改造；兼容回归用例全通过；全量测试通过。
 - 当前状态：可完整交付使用。
 
 ## 2. 已完成的兼容改造点
 
-### 2.1 CLI 语法兼容（PTK 扁平命令）
+### 2.1 CLI 语法统一（Beacon 扁平命令）
 - 支持 `doctor --json`（保留 `doctor diagnose`）。
 - 支持 `status --board`。
 - 支持 `report --human latest` / `report --machine latest`。
@@ -40,15 +40,15 @@
 
 ### 2.5 入口与兼容别名
 - 新增 `beacon/__main__.py`，支持 `python -m beacon`。
-- `pyproject.toml` 新增 `ptk = "beacon.main:app"` 别名入口。
+- `pyproject.toml` 统一保留 `beacon` 入口；目录层继续兼容 `.ptk` / `docs/product`。
 
-### 2.6 三层防线（PTK 对齐）
+### 2.6 三层防线（继承历史规则）
 - **Gate 门控**：`gate` strict 下完成边界/终态/证据/一致性/scope guard 联动校验，`scope_guard_enabled` 配置生效。
 - **证据驱动**：补强 `raw-command-log`、`evidence-manifest(entries/items)`、`gate-report` 结构与 hash/一致性校验。
-- **记忆体约束**：补齐 PTK 风格 memory envelope；strict run 支持 `--proposal` + `--confirm A|B|C`，高风险未确认直接 Blocked，并落盘 scope memory。
+- **记忆体约束**：补齐统一 memory envelope（继承历史结构）；strict run 支持 `--proposal` + `--confirm A|B|C`，高风险未确认直接 Blocked，并落盘 scope memory。
 
-### 2.7 `auto_test` UI 防假通过强校验（PTK v3.8.1 对齐）
-- 新增 PTK 风格 UI guard 判定（`beacon/commands/auto_test.py`）：
+### 2.7 `auto_test` UI 防假通过强校验（继承历史规则）
+- 新增统一 UI guard 判定（`beacon/commands/auto_test.py`，继承历史规则）：
   - `expectation=success` 且 `origin != target` => `failed`（防错页误通过）
   - `expectation=error` 且重定向/错误关键词命中 => `passed`
   - `origin` 不可判定 => `blocked`（`ui_origin_target_unknown`）
@@ -86,9 +86,9 @@
 - 兼容专项（含 UI 防假通过）：`35 passed`
 - 全量测试：`141 passed`
 
-### 3.3 PTK workflow 补充文档
+### 3.3 历史 workflow 补充文档
 - 新增：`docs/beacon/v1.0.0/execution/ptk-workflow-bootstrap.md`
-- 记录 PTK run/report 实跑结果（run_id：`run-20260302T081044842Z-9dd5`）及三层防线对齐状态。
+- 记录历史 run/report 实跑结果（run_id：`run-20260302T081044842Z-9dd5`）及三层防线对齐状态。
 
 ## 4. 执行命令（可直接复现）
 
@@ -110,7 +110,7 @@ cd /Users/apple/Developer/Personal/my_skill/beacon
 python3 -m pytest -q
 ```
 
-### 4.3 PTK 团队工作流（本次执行方式）
+### 4.3 历史团队工作流（本次执行方式）
 ```bash
 cd /Users/apple/Developer/Personal/my_skill
 

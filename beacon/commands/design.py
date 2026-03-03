@@ -4,6 +4,8 @@ from typing import Optional
 from pathlib import Path
 from datetime import datetime
 
+from beacon.utils.versioning import resolve_target_version
+
 app = typer.Typer(name="design", help="Design Thinking methodology")
 
 
@@ -15,6 +17,7 @@ def create(
 ):
     """Create a Design Thinking document"""
     project_root = Path(project) if project else Path.cwd()
+    resolved_version = resolve_target_version(project_root, None)
 
     md_content = f"""# Design Thinking: {feature}
 
@@ -118,7 +121,11 @@ Design Thinking (第0轮，可选)
 **Status**: Draft
 """
 
-    output_path = Path(output) if output else project_root / "docs" / "product" / "latest" / "design" / f"{feature.lower().replace(' ', '-')}.md"
+    output_path = (
+        Path(output)
+        if output
+        else project_root / "docs" / "product" / resolved_version / "design" / f"{feature.lower().replace(' ', '-')}.md"
+    )
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(md_content)
 
@@ -131,7 +138,8 @@ def list(
 ):
     """List all Design Thinking documents"""
     project_root = Path(project) if project else Path.cwd()
-    design_dir = project_root / "docs" / "product" / "latest" / "design"
+    resolved_version = resolve_target_version(project_root, None)
+    design_dir = project_root / "docs" / "product" / resolved_version / "design"
 
     if not design_dir.exists():
         typer.echo("No Design Thinking documents found")

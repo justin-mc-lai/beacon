@@ -9,6 +9,7 @@ from typing import Optional
 import typer
 
 from beacon.utils.runtime import now_iso, write_json
+from beacon.utils.versioning import resolve_target_version
 
 app = typer.Typer(
     name="init",
@@ -35,7 +36,7 @@ def _init_impl(
 ) -> int:
     root = Path(project_root) if project_root else Path.cwd()
     apply = not dry_run
-    version = "v1.0.0"
+    version = resolve_target_version(root, None)
     actions: list[dict[str, str]] = []
 
     docs_paths = [
@@ -156,4 +157,3 @@ def init_project(
 
 if __name__ == "__main__":
     app()
-

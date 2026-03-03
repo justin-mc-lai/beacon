@@ -1,0 +1,48 @@
+{
+  "schema_version": "1.0",
+  "name": "workflow-memory-lifecycle-alignment-v1.0.1",
+  "applies_to": ["test-case", "release"],
+  "mode": ["strict", "debug"],
+  "requirements": [
+    "workflow closure stages include think,user-story,prd,test-case,implementation,verify",
+    "release memory validated by dedicated profile function",
+    "compute_memory_metrics defaults to workflow run selection",
+    "workflow_memory and gate_memory_closure fixtures aligned to 6 stages"
+  ],
+  "reason_codes": [
+    "memory_lifecycle_missing",
+    "memory_evidence_missing",
+    "release_memory_profile_invalid",
+    "memory_run_selector_drift"
+  ],
+  "rules": [
+    {
+      "id": "WM-001",
+      "when": "workflow run missing any required lifecycle stage events",
+      "reason_code": "memory_lifecycle_missing",
+      "blocked": true,
+      "severity": "critical"
+    },
+    {
+      "id": "WM-002",
+      "when": "stage_finished/memory_writeback events missing evidence_ref",
+      "reason_code": "memory_evidence_missing",
+      "blocked": true,
+      "severity": "critical"
+    },
+    {
+      "id": "WM-003",
+      "when": "release check executed without dedicated release memory profile",
+      "reason_code": "release_memory_profile_invalid",
+      "blocked": true,
+      "severity": "critical"
+    },
+    {
+      "id": "WM-004",
+      "when": "default metrics selector picks non-workflow run while workflow run exists",
+      "reason_code": "memory_run_selector_drift",
+      "blocked": true,
+      "severity": "high"
+    }
+  ]
+}

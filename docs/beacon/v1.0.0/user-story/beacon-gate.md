@@ -1,7 +1,7 @@
 # User Story: Beacon Gate v1.0.0 门控检查
 
 **版本**: v1.0.0
-**来源**: PTK gate Skill 对齐
+**来源**: 历史 PTK gate Skill 对齐（命令层已统一 Beacon）
 **状态**: Draft
 
 ---

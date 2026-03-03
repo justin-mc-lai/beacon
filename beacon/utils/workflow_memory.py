@@ -1,7 +1,7 @@
 """Workflow lifecycle memory helpers.
 
 This module builds a PTK-style memory loop for the default workflow path:
-think -> user-story -> prd -> test-case.
+think -> user-story -> prd -> test-case -> implementation -> verify.
 """
 
 from __future__ import annotations
@@ -12,12 +12,12 @@ from pathlib import Path
 from typing import Any
 
 from beacon.utils.memory import append_memory_entry, load_memory_entries
-from beacon.utils.runtime import now_iso
+from beacon.utils.runtime import load_run_state, now_iso, runs_dir
 
 LIFECYCLE_FILE = "workflow-lifecycle.json"
 LIFECYCLE_INDEX_FILE = "workflow-lifecycle.index.json"
 LIFECYCLE_SCHEMA_FILE = "workflow-lifecycle.schema.json"
-WORKFLOW_STAGES = ("think", "user-story", "prd", "test-case")
+WORKFLOW_STAGES = ("think", "user-story", "prd", "test-case", "implementation", "verify")
 
 _LIFECYCLE_SCHEMA = {
     "schema_version": "1.0",
@@ -318,9 +318,173 @@ def _latest_run_id_from_events(events: list[dict[str, Any]]) -> str | None:
     return str(ordered[-1].get("run_id", "") or "") or None
 
 
-def compute_memory_metrics(project_root: Path, run_id: str | None = None) -> dict[str, Any]:
+def _slug(text: str) -> str:
+    return (text or "").strip().lower().replace(" ", "-")
+
+
+def resolve_workflow_run_id(
+    project_root: Path,
+    *,
+    run_id: str | None = None,
+    version: str | None = None,
+    feature: str | None = None,
+) -> str | None:
+    """Resolve workflow run-id by explicit id or version/feature filters.
+
+    Priority:
+    1. explicit run_id (if exists)
+    2. latest workflow.start run matching version/feature
+    """
+    if run_id:
+        if load_run_state(project_root, run_id):
+            return run_id
+        if load_lifecycle_events(project_root, run_id=run_id):
+            return run_id
+        return None
+
+    versions_filter = (version or "").strip()
+    feature_filter = _slug(feature or "")
+    candidates: list[tuple[str, str]] = []
+
+    for run_dir in runs_dir(project_root).iterdir():
+        if not run_dir.is_dir():
+            continue
+        rid = run_dir.name
+        if not rid.startswith("run-"):
+            continue
+        state = load_run_state(project_root, rid)
+        if not isinstance(state, dict):
+            continue
+        if str(state.get("workflow", "")) != "workflow.start":
+            continue
+        if versions_filter and str(state.get("version", "")) != versions_filter:
+            continue
+        if feature_filter and _slug(str(state.get("feature", ""))) != feature_filter:
+            continue
+        ts = str(state.get("ended_at") or state.get("started_at") or rid)
+        candidates.append((rid, ts))
+
+    if not candidates:
+        return None
+    # ISO timestamps and run-id lexical order are both monotonic enough for our scope.
+    candidates.sort(key=lambda x: x[1])
+    return candidates[-1][0]
+
+
+def _select_default_run_id(events: list[dict[str, Any]]) -> str | None:
+    """Prefer recent workflow run-id over generic latest event run-id.
+
+    Rationale:
+    - release/team/bridge events can be written after workflow completion
+    - those run_ids (e.g. release:v1.2.3) should not become default target for
+      workflow closure metrics
+    """
+    if not events:
+        return None
+
+    workflow_event_names = {"stage_started", "stage_context_injected", "stage_finished", "memory_writeback"}
+    latest_workflow_ts_by_run: dict[str, str] = {}
+    for item in events:
+        if not isinstance(item, dict):
+            continue
+        run_id = str(item.get("run_id", "") or "")
+        stage = str(item.get("stage", "") or "")
+        event = str(item.get("event", "") or "")
+        ts = str(item.get("ts", "") or "")
+        if not run_id.startswith("run-"):
+            continue
+        if stage not in WORKFLOW_STAGES or event not in workflow_event_names:
+            continue
+        prev = latest_workflow_ts_by_run.get(run_id, "")
+        if ts >= prev:
+            latest_workflow_ts_by_run[run_id] = ts
+
+    if latest_workflow_ts_by_run:
+        return sorted(latest_workflow_ts_by_run.items(), key=lambda x: x[1])[-1][0]
+
+    return _latest_run_id_from_events(events)
+
+
+def compute_workflow_progress(
+    project_root: Path,
+    *,
+    run_id: str | None = None,
+    version: str | None = None,
+    feature: str | None = None,
+) -> dict[str, Any]:
+    """Compute workflow stage-level progress from lifecycle events."""
+    target_run_id = resolve_workflow_run_id(
+        project_root,
+        run_id=run_id,
+        version=version,
+        feature=feature,
+    )
+    events = load_lifecycle_events(project_root, run_id=target_run_id) if target_run_id else []
+    stage_status: dict[str, dict[str, Any]] = {}
+
+    for stage in WORKFLOW_STAGES:
+        stage_events = [e for e in events if str(e.get("stage", "")) == stage]
+        names = {str(e.get("event", "")) for e in stage_events}
+        has_started = "stage_started" in names
+        has_context = "stage_context_injected" in names
+        has_finished = "stage_finished" in names
+        has_writeback = "memory_writeback" in names
+        has_failed = "stage_failed" in names
+
+        if has_failed:
+            status = "failed"
+        elif has_started and has_context and has_finished and has_writeback:
+            status = "completed"
+        elif has_started or has_context or has_finished or has_writeback:
+            status = "in_progress"
+        else:
+            status = "not_started"
+
+        stage_status[stage] = {
+            "status": status,
+            "has_started": has_started,
+            "has_context": has_context,
+            "has_finished": has_finished,
+            "has_writeback": has_writeback,
+            "has_failed": has_failed,
+            "event_count": len(stage_events),
+        }
+
+    ordered = [stage for stage in WORKFLOW_STAGES if stage_status[stage]["status"] != "completed"]
+    next_stage = ordered[0] if ordered else None
+    missing_stages = [stage for stage in WORKFLOW_STAGES if stage_status[stage]["status"] != "completed"]
+    closure_complete = len(missing_stages) == 0 and bool(target_run_id)
+
+    run_state = load_run_state(project_root, target_run_id) if target_run_id else None
+    run_feature = str(run_state.get("feature", "")) if isinstance(run_state, dict) else ""
+    run_version = str(run_state.get("version", "")) if isinstance(run_state, dict) else ""
+
+    return {
+        "run_id": target_run_id,
+        "version": run_version,
+        "feature": run_feature,
+        "closure_complete": closure_complete,
+        "next_stage": next_stage,
+        "missing_closure_stages": missing_stages,
+        "stages": stage_status,
+    }
+
+
+def compute_memory_metrics(
+    project_root: Path,
+    run_id: str | None = None,
+    *,
+    version: str | None = None,
+    feature: str | None = None,
+) -> dict[str, Any]:
     events = load_lifecycle_events(project_root)
-    target_run_id = run_id or _latest_run_id_from_events(events)
+    filtered_run_id = resolve_workflow_run_id(
+        project_root,
+        run_id=run_id,
+        version=version,
+        feature=feature,
+    )
+    target_run_id = filtered_run_id or _select_default_run_id(events)
     run_events = [e for e in events if not target_run_id or e.get("run_id") == target_run_id]
 
     writebacks = [e for e in run_events if e.get("event") == "memory_writeback"]
@@ -340,6 +504,7 @@ def compute_memory_metrics(project_root: Path, run_id: str | None = None) -> dic
         if not (has_start and has_finish and has_recall and has_writeback):
             missing_stages.append(stage)
 
+    progress = compute_workflow_progress(project_root, run_id=target_run_id)
     return {
         "run_id": target_run_id,
         "lifecycle_events_total": len(events),
@@ -349,5 +514,5 @@ def compute_memory_metrics(project_root: Path, run_id: str | None = None) -> dic
         "feedback_assimilations": len(feedback_items),
         "closure_complete": len(missing_stages) == 0 and bool(target_run_id),
         "missing_closure_stages": missing_stages,
+        "next_stage": progress.get("next_stage"),
     }
-

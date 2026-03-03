@@ -4,6 +4,8 @@ from typing import Optional
 from pathlib import Path
 from datetime import datetime
 
+from beacon.utils.versioning import resolve_target_version
+
 app = typer.Typer(name="ui-spec", help="UI Design Specification")
 
 
@@ -15,6 +17,7 @@ def create(
 ):
     """Create a UI Design Specification document"""
     project_root = Path(project) if project else Path.cwd()
+    resolved_version = resolve_target_version(project_root, None)
 
     md_content = f"""# UI Design Specification: {name}
 
@@ -133,7 +136,11 @@ UI设计规范文档，定义界面视觉、交互和组件标准。
 - **Version**: 1.0.0
 """
 
-    output_path = Path(output) if output else project_root / "docs" / "product" / "latest" / "design" / f"ui-spec-{name.lower().replace(' ', '-')}.md"
+    output_path = (
+        Path(output)
+        if output
+        else project_root / "docs" / "product" / resolved_version / "design" / f"ui-spec-{name.lower().replace(' ', '-')}.md"
+    )
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(md_content)
 
@@ -146,7 +153,8 @@ def _list(
 ):
     """List all UI Design Specifications"""
     project_root = Path(project) if project else Path.cwd()
-    design_dir = project_root / "docs" / "product" / "latest" / "design"
+    resolved_version = resolve_target_version(project_root, None)
+    design_dir = project_root / "docs" / "product" / resolved_version / "design"
 
     if not design_dir.exists():
         typer.echo("No UI Specification documents found")

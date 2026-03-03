@@ -11,6 +11,8 @@ from typing import Optional
 
 import typer
 
+from beacon.utils.versioning import resolve_target_version
+
 app = typer.Typer(name="test-case", help="Generate test cases")
 
 
@@ -22,8 +24,6 @@ def _candidate_doc_paths(project_root: Path, version: str, category: str, slug: 
     return [
         project_root / "docs" / "product" / version / category / f"{slug}.md",
         project_root / "docs" / "beacon" / version / category / f"{slug}.md",
-        project_root / "docs" / "product" / "latest" / category / f"{slug}.md",
-        project_root / "docs" / "beacon" / "latest" / category / f"{slug}.md",
     ]
 
 
@@ -135,21 +135,22 @@ def generate_test_cases(feature: str, test_type: str) -> list:
 def create(
     feature: str = typer.Argument(..., help="Feature name"),
     test_type: str = typer.Option("all", "--type", "-t", help="Test type: smoke/new/regression/all"),
-    version: str = typer.Option("latest", "--version", "-v", help="Version"),
+    version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
     project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
     output: Optional[str] = typer.Option(None, "--output", "-o", help="Output file"),
 ):
     """Create test cases and executable AC matrix."""
     project_root = Path(project) if project else Path.cwd()
+    resolved_version = resolve_target_version(project_root, version)
     feature_slug = _slug(feature)
     memory_context_path = os.environ.get("BEACON_STAGE_CONTEXT_PATH", "").strip()
 
     # Read ACs from existing user-story/prd docs
     us_path, us_content = _read_first_existing(
-        _candidate_doc_paths(project_root, version, "user-story", feature_slug)
+        _candidate_doc_paths(project_root, resolved_version, "user-story", feature_slug)
     )
     prd_path, prd_content = _read_first_existing(
-        _candidate_doc_paths(project_root, version, "prd", feature_slug)
+        _candidate_doc_paths(project_root, resolved_version, "prd", feature_slug)
     )
     ac_items = _extract_ac_items(us_content, f"user-story:{us_path}" if us_path else "user-story:missing")
     ac_items.extend(_extract_ac_items(prd_content, f"prd:{prd_path}" if prd_path else "prd:missing"))
@@ -178,7 +179,7 @@ def create(
         "schema_version": "1.0",
         "feature": feature,
         "feature_slug": feature_slug,
-        "version": version,
+        "version": resolved_version,
         "generated_at": datetime.now().isoformat(),
         "entries": entries,
     }
@@ -186,7 +187,7 @@ def create(
     output_path = (
         Path(output)
         if output
-        else project_root / "docs" / "product" / version / "qa" / "test-cases" / f"{feature_slug}.md"
+        else project_root / "docs" / "product" / resolved_version / "qa" / "test-cases" / f"{feature_slug}.md"
     )
     output_path.parent.mkdir(parents=True, exist_ok=True)
     matrix_path = output_path.with_name(f"{feature_slug}.ac-test-matrix.json")
@@ -204,7 +205,7 @@ def create(
 
 **Feature**: {feature}
 **Test Type**: {test_type.upper()}
-**Version**: {version}
+**Version**: {resolved_version}
 **Generated**: {datetime.now().strftime('%Y-%m-%d %H:%M')}
 **Memory Context**: {memory_context_path or 'N/A'}
 **AC Matrix JSON**: {matrix_path}
@@ -227,6 +228,17 @@ def create(
 """
 
     output_path.write_text(md_content, encoding="utf-8")
+    if not output:
+        # Keep beacon docs path in sync with product docs path.
+        beacon_output_path = project_root / "docs" / "beacon" / resolved_version / "qa" / "test-cases" / f"{feature_slug}.md"
+        beacon_output_path.parent.mkdir(parents=True, exist_ok=True)
+        beacon_output_path.write_text(md_content, encoding="utf-8")
+
+        beacon_matrix_path = beacon_output_path.with_name(f"{feature_slug}.ac-test-matrix.json")
+        beacon_matrix_path.write_text(
+            json.dumps(matrix_payload, ensure_ascii=False, indent=2),
+            encoding="utf-8",
+        )
 
     typer.echo(f"✓ Test cases created: {output_path}")
     typer.echo(f"✓ AC matrix created: {matrix_path}")
@@ -237,11 +249,12 @@ def create(
 @app.command("list")
 def list_tests(
     project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
-    version: str = typer.Option("latest", "--version", "-v", help="Version"),
+    version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
 ):
     """List all test cases."""
     project_root = Path(project) if project else Path.cwd()
-    test_dir = project_root / "docs" / "product" / version / "qa" / "test-cases"
+    resolved_version = resolve_target_version(project_root, version)
+    test_dir = project_root / "docs" / "product" / resolved_version / "qa" / "test-cases"
 
     if not test_dir.exists():
         typer.echo("No test cases found")
@@ -257,16 +270,17 @@ def list_tests(
 def gate(
     feature: str = typer.Argument(..., help="Feature to check"),
     project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
-    version: str = typer.Option("latest", "--version", "-v", help="Version"),
+    version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
 ):
     """Run gate check for AC matrix coverage."""
     project_root = Path(project) if project else Path.cwd()
+    resolved_version = resolve_target_version(project_root, version)
 
     typer.echo(f"\nTest Coverage Gate: {feature}")
     typer.echo("=" * 40)
 
     slug = _slug(feature)
-    test_dir = project_root / "docs" / "product" / version / "qa" / "test-cases"
+    test_dir = project_root / "docs" / "product" / resolved_version / "qa" / "test-cases"
     test_file = test_dir / f"{slug}.md"
     matrix_file = test_dir / f"{slug}.ac-test-matrix.json"
 

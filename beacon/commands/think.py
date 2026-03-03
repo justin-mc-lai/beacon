@@ -5,32 +5,44 @@ import json
 from pathlib import Path
 import os
 
+from beacon.utils.versioning import resolve_target_version
+
 app = typer.Typer(name="think", help="Product thinking vNext")
 
 
 class ThinkSession:
     """Manages think vNext session state"""
 
-    def __init__(self, project_root: Path):
+    def __init__(self, project_root: Path, version: str = "v1.0.0"):
         self.project_root = project_root
+        self.version = (version or "v1.0.0").strip() or "v1.0.0"
         self.state_dir = project_root / ".beacon" / "state"
         self.state_dir.mkdir(parents=True, exist_ok=True)
-        self.progress_file = self.state_dir / "think-progress.json"
+        self.versioned_dir = self.state_dir / "think-progress"
+        self.versioned_dir.mkdir(parents=True, exist_ok=True)
+        self.legacy_progress_file = self.state_dir / "think-progress.json"
+        self.progress_file = self.versioned_dir / f"{self.version}.json"
 
     def load_progress(self) -> dict:
         if self.progress_file.exists():
             return json.loads(self.progress_file.read_text())
+        if self.legacy_progress_file.exists():
+            return json.loads(self.legacy_progress_file.read_text())
         return {
             "round": 0,
             "confirmed_facts": [],
             "assumptions": [],
             "conflicts": [],
             "open_questions": [],
-            "round_summaries": []
+            "round_summaries": [],
+            "version": self.version,
         }
 
     def save_progress(self, data: dict):
+        data["version"] = self.version
         self.progress_file.write_text(json.dumps(data, indent=2))
+        # Keep compatibility with legacy readers.
+        self.legacy_progress_file.write_text(json.dumps(data, indent=2))
 
     def add_fact(self, fact: str):
         data = self.load_progress()
@@ -50,10 +62,11 @@ class ThinkSession:
 def start(
     topic: str = typer.Argument(..., help="Product topic to analyze"),
     project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
+    version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
 ):
     """Start a new think session"""
     project_root = Path(project) if project else Path.cwd()
-    session = ThinkSession(project_root)
+    session = ThinkSession(project_root, version=resolve_target_version(project_root, version))
 
     typer.echo(f"Starting think session for: {topic}")
     typer.echo(f"Project root: {project_root}")
@@ -79,10 +92,11 @@ def start(
 @app.command()
 def status(
     project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
+    version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
 ):
     """Show current think session status"""
     project_root = Path(project) if project else Path.cwd()
-    session = ThinkSession(project_root)
+    session = ThinkSession(project_root, version=resolve_target_version(project_root, version))
     data = session.get_status()
 
     typer.echo(f"Think Session Status")
@@ -99,10 +113,11 @@ def status(
 def confirm(
     fact: str = typer.Argument(..., help="Confirmed fact"),
     project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
+    version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
 ):
     """Confirm a fact"""
     project_root = Path(project) if project else Path.cwd()
-    session = ThinkSession(project_root)
+    session = ThinkSession(project_root, version=resolve_target_version(project_root, version))
     session.add_fact(fact)
     typer.echo(f"Confirmed: {fact}")
 
@@ -113,10 +128,11 @@ def question(
     priority: str = typer.Option("medium", "--priority", help="Priority: high/medium/low"),
     blocking: bool = typer.Option(False, "--blocking", help="Is this blocking?"),
     project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
+    version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
 ):
     """Add an open question"""
     project_root = Path(project) if project else Path.cwd()
-    session = ThinkSession(project_root)
+    session = ThinkSession(project_root, version=resolve_target_version(project_root, version))
 
     q_data = {
         "id": len(session.get_status().get("open_questions", [])) + 1,
@@ -135,10 +151,11 @@ def conflict(
     description: str = typer.Argument(..., help="Conflict description"),
     severity: str = typer.Option("high", "--severity", help="Severity: critical/high/medium/low"),
     project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
+    version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
 ):
     """Record a conflict"""
     project_root = Path(project) if project else Path.cwd()
-    session = ThinkSession(project_root)
+    session = ThinkSession(project_root, version=resolve_target_version(project_root, version))
 
     data = session.load_progress()
     data["conflicts"].append({
@@ -154,10 +171,11 @@ def conflict(
 @app.command()
 def summarize(
     project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
+    version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
 ):
     """Generate round summary"""
     project_root = Path(project) if project else Path.cwd()
-    session = ThinkSession(project_root)
+    session = ThinkSession(project_root, version=resolve_target_version(project_root, version))
     data = session.get_status()
 
     typer.echo("\n" + "=" * 50)

@@ -4,6 +4,8 @@ from typing import Optional
 from pathlib import Path
 from datetime import datetime
 
+from beacon.utils.versioning import resolve_target_version
+
 app = typer.Typer(name="moscow", help="MoSCoW prioritization")
 
 
@@ -15,6 +17,7 @@ def create(
 ):
     """Create a MoSCoW prioritization document"""
     project_root = Path(project) if project else Path.cwd()
+    resolved_version = resolve_target_version(project_root, None)
 
     md_content = f"""# MoSCoW 优先级排序: {feature}
 
@@ -92,7 +95,11 @@ def create(
 **Status**: Draft
 """
 
-    output_path = Path(output) if output else project_root / "docs" / "product" / "latest" / "moscow" / f"{feature.lower().replace(' ', '-')}.md"
+    output_path = (
+        Path(output)
+        if output
+        else project_root / "docs" / "product" / resolved_version / "moscow" / f"{feature.lower().replace(' ', '-')}.md"
+    )
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(md_content)
 
@@ -105,7 +112,8 @@ def list(
 ):
     """List all MoSCoW documents"""
     project_root = Path(project) if project else Path.cwd()
-    moscow_dir = project_root / "docs" / "product" / "latest" / "moscow"
+    resolved_version = resolve_target_version(project_root, None)
+    moscow_dir = project_root / "docs" / "product" / resolved_version / "moscow"
 
     if not moscow_dir.exists():
         typer.echo("No MoSCoW documents found")

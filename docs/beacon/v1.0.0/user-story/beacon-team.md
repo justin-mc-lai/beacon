@@ -1,7 +1,7 @@
 # User Story: Beacon Team v1.0.0 团队协作
 
 **版本**: v1.0.0
-**来源**: PTK team Skill 对齐
+**来源**: 历史 PTK team Skill 对齐（命令层已统一 Beacon）
 **状态**: Draft
 
 ---

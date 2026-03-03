@@ -95,3 +95,37 @@ def test_auto_test_create_persists_ui_guard_status(tmp_path: Path):
     payload = json.loads(status_file.read_text(encoding="utf-8"))
     assert payload["status"] == "failed"
     assert payload["ui_guard"]["reason_code"] == "ui_expectation_success_mismatch"
+
+
+def test_ui_unknown_without_real_command_should_block_by_default(tmp_path: Path):
+    cmd = [
+        "auto-test",
+        "create",
+        "ui",
+        "--project",
+        str(tmp_path),
+    ]
+    result = runner.invoke(app, cmd)
+    assert result.exit_code == 0
+
+    status_file = tmp_path / ".beacon" / "auto-test-status.json"
+    payload = json.loads(status_file.read_text(encoding="utf-8"))
+    assert payload["status"] == "blocked"
+    assert payload["ui_guard"]["reason_code"] == "ui_real_execution_required"
+
+
+def test_ui_unknown_without_real_command_can_pass_in_debug_mode(tmp_path: Path):
+    cmd = [
+        "auto-test",
+        "create",
+        "ui",
+        "--project",
+        str(tmp_path),
+    ]
+    result = runner.invoke(app, cmd, env={"BEACON_DEBUG": "1"})
+    assert result.exit_code == 0
+
+    status_file = tmp_path / ".beacon" / "auto-test-status.json"
+    payload = json.loads(status_file.read_text(encoding="utf-8"))
+    assert payload["status"] == "passed"
+    assert payload["ui_guard"]["reason_code"] == "ui_expectation_unknown_skipped"
