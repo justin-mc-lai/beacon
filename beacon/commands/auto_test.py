@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import os
 import subprocess
+import hashlib
 from datetime import datetime
 from pathlib import Path
 from typing import Optional
@@ -34,7 +35,8 @@ NEGATIVE_KEYWORDS = (
     "异常",
 )
 
-LAYER_NAMES = ("ui", "api-curl", "unit", "smoke")
+LAYER_NAMES = ("ui", "api-curl", "unit", "smoke", "visual")
+DEFAULT_ALL_LAYERS = ("ui", "api-curl", "unit", "smoke")
 
 DEFAULT_REQUIRED_UI_ACTIONS = ("login", "register", "browse", "submit-form")
 
@@ -138,6 +140,8 @@ def _parse_ui_action_evidence(items: list[str] | None) -> dict[str, str]:
 def _resolve_layers(scope: str) -> list[str]:
     normalized = (scope or "all").strip().lower().replace("_", "-")
     if normalized == "all":
+        return list(DEFAULT_ALL_LAYERS)
+    if normalized in {"full", "all-with-visual", "all+visual"}:
         return list(LAYER_NAMES)
     if normalized in LAYER_NAMES:
         return [normalized]
@@ -145,6 +149,8 @@ def _resolve_layers(scope: str) -> list[str]:
         return ["api-curl"]
     if normalized == "e2e":
         return ["ui", "smoke"]
+    if normalized == "regression":
+        return ["smoke", "visual"]
     if normalized == "api":
         return ["api-curl"]
     return [normalized]
@@ -292,6 +298,90 @@ def _run_layer_command(
     return payload
 
 
+def _collect_files(root: Path) -> dict[str, str]:
+    if not root.exists():
+        return {}
+    files: dict[str, str] = {}
+    for path in sorted(root.rglob("*")):
+        if not path.is_file():
+            continue
+        rel = str(path.relative_to(root))
+        files[rel] = hashlib.sha256(path.read_bytes()).hexdigest()
+    return files
+
+
+def _run_visual_comparison(
+    *,
+    project_root: Path,
+    layer_dir: Path,
+    baseline_dir: str,
+    current_dir: str,
+    threshold: float,
+) -> dict:
+    baseline_root = Path(baseline_dir)
+    current_root = Path(current_dir)
+    if not baseline_root.is_absolute():
+        baseline_root = project_root / baseline_root
+    if not current_root.is_absolute():
+        current_root = project_root / current_root
+
+    baseline_manifest = _collect_files(baseline_root)
+    current_manifest = _collect_files(current_root)
+
+    all_keys = sorted(set(baseline_manifest.keys()) | set(current_manifest.keys()))
+    mismatches: list[dict[str, str]] = []
+    for key in all_keys:
+        left = baseline_manifest.get(key)
+        right = current_manifest.get(key)
+        if left == right:
+            continue
+        reason = "changed"
+        if left is None:
+            reason = "added"
+        elif right is None:
+            reason = "removed"
+        mismatches.append(
+            {
+                "file": key,
+                "reason": reason,
+                "baseline_sha256": left or "",
+                "current_sha256": right or "",
+            }
+        )
+
+    total = max(len(all_keys), 1)
+    mismatch_ratio = float(len(mismatches)) / float(total)
+    status = "passed" if mismatch_ratio <= max(0.0, threshold) else "failed"
+
+    layer_dir.mkdir(parents=True, exist_ok=True)
+    baseline_manifest_path = layer_dir / "baseline-manifest.json"
+    current_manifest_path = layer_dir / "current-manifest.json"
+    diff_summary_path = layer_dir / "visual-diff-summary.json"
+    baseline_manifest_path.write_text(json.dumps(baseline_manifest, ensure_ascii=False, indent=2), encoding="utf-8")
+    current_manifest_path.write_text(json.dumps(current_manifest, ensure_ascii=False, indent=2), encoding="utf-8")
+    diff_payload = {
+        "status": status,
+        "baseline_dir": str(baseline_root),
+        "current_dir": str(current_root),
+        "threshold": threshold,
+        "total_files": len(all_keys),
+        "mismatch_count": len(mismatches),
+        "mismatch_ratio": round(mismatch_ratio, 4),
+        "mismatches": mismatches,
+        "generated_at": datetime.now().isoformat(),
+    }
+    diff_summary_path.write_text(json.dumps(diff_payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    return {
+        "status": status,
+        "report": diff_payload,
+        "evidence_ref": [
+            str(baseline_manifest_path.relative_to(project_root)),
+            str(current_manifest_path.relative_to(project_root)),
+            str(diff_summary_path.relative_to(project_root)),
+        ],
+    }
+
+
 def _merge_status_from_layers(layer_results: list[dict]) -> str:
     statuses = [str(item.get("status", "unknown")) for item in layer_results]
     if any(status == "blocked" for status in statuses):
@@ -357,7 +447,7 @@ def _write_matrix_evidence(
 
 @app.command()
 def create(
-    scope: str = typer.Argument("all", help="Test scope: ui/api-curl/unit/smoke/all"),
+    scope: str = typer.Argument("all", help="Test scope: ui/api-curl/unit/smoke/visual/all/full"),
     project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
     config: Optional[str] = typer.Option(None, "--config", "-c", help="Test config file"),
     expectation: str = typer.Option("unknown", "--expectation", help="UI expectation: success/error/unknown"),
@@ -379,6 +469,22 @@ def create(
     api_curl_command: Optional[str] = typer.Option(None, "--api-curl-command", help="Real API curl command"),
     unit_command: Optional[str] = typer.Option(None, "--unit-command", help="Real unit test command"),
     smoke_command: Optional[str] = typer.Option(None, "--smoke-command", help="Real smoke test command"),
+    visual_command: Optional[str] = typer.Option(None, "--visual-command", help="Real visual regression command"),
+    visual_baseline_dir: Optional[str] = typer.Option(
+        None,
+        "--visual-baseline-dir",
+        help="Visual baseline directory for file hash comparison",
+    ),
+    visual_current_dir: Optional[str] = typer.Option(
+        None,
+        "--visual-current-dir",
+        help="Visual current directory for file hash comparison",
+    ),
+    visual_threshold: float = typer.Option(
+        0.0,
+        "--visual-threshold",
+        help="Allowed visual mismatch ratio [0,1]",
+    ),
     layer_command: Optional[list[str]] = typer.Option(
         None,
         "--layer-command",
@@ -415,6 +521,8 @@ def create(
 
     scope_norm = (scope or "").strip().lower()
     selected_layers = _resolve_layers(scope_norm)
+    if visual_threshold < 0 or visual_threshold > 1:
+        raise typer.BadParameter("--visual-threshold must be between 0 and 1")
     run_id = datetime.now().strftime("run-%Y%m%dT%H%M%S%f")
     evidence_root = project_root / ".beacon" / "evidence" / "auto-test" / run_id
     evidence_root.mkdir(parents=True, exist_ok=True)
@@ -424,6 +532,7 @@ def create(
         "api-curl": api_curl_command or "",
         "unit": unit_command or "",
         "smoke": smoke_command or "",
+        "visual": visual_command or "",
     }
     # config defaults < cli explicit overrides
     for layer, cmd in _load_layer_commands_from_config(config).items():
@@ -476,7 +585,46 @@ def create(
         command = str(commands.get(layer, "")).strip()
         if command:
             result = _run_layer_command(layer=layer, command=command, project_root=project_root, layer_dir=layer_dir)
+            if (
+                layer == "visual"
+                and visual_baseline_dir
+                and visual_current_dir
+                and str(result.get("status")) == "passed"
+            ):
+                comparison = _run_visual_comparison(
+                    project_root=project_root,
+                    layer_dir=layer_dir,
+                    baseline_dir=visual_baseline_dir,
+                    current_dir=visual_current_dir,
+                    threshold=visual_threshold,
+                )
+                result["visual_compare"] = comparison["report"]
+                result["evidence_ref"] = list(dict.fromkeys(result.get("evidence_ref", []) + comparison["evidence_ref"]))
+                if comparison["status"] != "passed":
+                    result["status"] = "failed"
+                    result["reason_code"] = "visual_diff_exceeded_threshold"
             layer_results.append(result)
+            continue
+
+        if layer == "visual" and visual_baseline_dir and visual_current_dir:
+            comparison = _run_visual_comparison(
+                project_root=project_root,
+                layer_dir=layer_dir,
+                baseline_dir=visual_baseline_dir,
+                current_dir=visual_current_dir,
+                threshold=visual_threshold,
+            )
+            layer_results.append(
+                {
+                    "layer": "visual",
+                    "status": comparison["status"],
+                    "reason_code": "visual_compare_only",
+                    "command": None,
+                    "exit_code": None,
+                    "evidence_ref": comparison["evidence_ref"],
+                    "visual_compare": comparison["report"],
+                }
+            )
             continue
 
         if layer == "ui" and ui_guard is not None:

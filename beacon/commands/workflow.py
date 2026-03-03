@@ -9,6 +9,7 @@ import sys
 import os
 
 from beacon.utils.llm_loop import build_next_stage_trace, merge_token_usage
+from beacon.utils.memory import append_memory_entry
 from beacon.utils.runtime import (
     append_jsonl,
     generate_run_id,
@@ -211,6 +212,61 @@ def _write_workflow_terminal_artifacts(
     )
     _update_evidence_manifest(project_root, written_refs + [".beacon/gate-report.json"])
 
+    release_evidence_refs = sorted(
+        set(
+            written_refs
+            + [
+                ".beacon/gate-report.json",
+                f".beacon/runs/{run_id}/state.json",
+                ".beacon/raw-command-log.jsonl",
+                ".beacon/auto-test-status.json",
+            ]
+        )
+    )
+    append_memory_entry(
+        project_root=project_root,
+        mem_type="decision",
+        text=f"[workflow.release-profile] run={run_id} status={workflow_status} reason={reason}",
+        source_session_id=run_id,
+        source="workflow.release-profile",
+        evidence_ref=release_evidence_refs,
+        confidence=0.82,
+        tags=["release", "workflow-loop", workflow_status],
+    )
+    append_lifecycle_event(
+        project_root,
+        run_id=f"release:{version}",
+        stage="release",
+        event="release_decision_recorded",
+        source="workflow.release-profile",
+        evidence_ref=release_evidence_refs,
+        details={
+            "workflow_run_id": run_id,
+            "feature": feature,
+            "version": version,
+            "status": workflow_status,
+            "reason": reason,
+        },
+    )
+
+
+def _sync_terminal_manifest(project_root: Path, *, version: str, run_id: str) -> None:
+    refs = [
+        f".beacon/runs/{run_id}/state.json",
+        ".beacon/raw-command-log.jsonl",
+        ".beacon/auto-test-status.json",
+        ".beacon/gate-report.json",
+    ]
+    for root in (
+        project_root / "docs" / "beacon" / version / "execution",
+        project_root / "docs" / "product" / version / "execution",
+    ):
+        for name in ("boundaries.md", "terminal.json", "summary.json", "summary.md"):
+            path = root / name
+            if path.exists():
+                refs.append(str(path.relative_to(project_root)))
+    _update_evidence_manifest(project_root, refs)
+
 
 def run_beacon_command(
     args: list,
@@ -265,35 +321,38 @@ def _slug(text: str) -> str:
 
 def _stage_output_candidates(project_root: Path, stage: str, feature: str, version: str) -> list[Path]:
     slug = _slug(feature)
+    common = [project_root / ".beacon" / "raw-command-log.jsonl"]
     if stage == "think":
         return [
             project_root / ".beacon" / "state" / "think-progress" / f"{version}.json",
             project_root / ".beacon" / "state" / "think-progress.json",
-        ]
+        ] + common
     if stage == "user-story":
         return [
             project_root / "docs" / "product" / version / "user-story" / f"{slug}.md",
             project_root / "docs" / "beacon" / version / "user-story" / f"{slug}.md",
-        ]
+        ] + common
     if stage == "prd":
         return [
             project_root / "docs" / "product" / version / "prd" / f"{slug}.md",
             project_root / "docs" / "beacon" / version / "prd" / f"{slug}.md",
-        ]
+        ] + common
     if stage == "test-case":
         return [
             project_root / "docs" / "product" / version / "qa" / "test-cases" / f"{slug}.md",
             project_root / "docs" / "beacon" / version / "qa" / "test-cases" / f"{slug}.md",
             project_root / "docs" / "product" / version / "qa" / "test-cases" / f"{slug}.ac-test-matrix.json",
             project_root / "docs" / "beacon" / version / "qa" / "test-cases" / f"{slug}.ac-test-matrix.json",
-        ]
+        ] + common
     if stage == "implementation":
-        return [project_root / ".beacon" / "raw-command-log.jsonl"]
+        return [
+            project_root / ".beacon" / "state" / f"implementation-{slug}.json",
+        ] + common
     if stage == "verify":
         return [
             project_root / ".beacon" / "auto-test-status.json",
-        ]
-    return []
+        ] + common
+    return common
 
 
 def _matrix_path_candidates(project_root: Path, feature: str, version: str) -> list[Path]:
@@ -407,6 +466,21 @@ def _execute_stage(
                 command=implementation_command,
                 exit_code=rc,
             )
+            if rc == 0:
+                marker = project_root / ".beacon" / "state" / f"implementation-{_slug(feature)}.json"
+                write_json(
+                    marker,
+                    {
+                        "schema_version": "1.0",
+                        "run_id": run_id,
+                        "stage": "implementation",
+                        "feature": feature,
+                        "version": version,
+                        "command": implementation_command,
+                        "status": "completed",
+                        "generated_at": now_iso(),
+                    },
+                )
         else:
             rc = 1
             failure_details = {
@@ -618,6 +692,7 @@ def start(
                     reason=f"{stage}_failed",
                 )
                 save_run_state(project_root, run_id, blocked)
+                _sync_terminal_manifest(project_root, version=resolved_version, run_id=run_id)
                 _print_next_step_selector(project_root=project_root, version=resolved_version, run_id=run_id, feature=feature)
                 raise typer.Exit(rc)
         else:
@@ -641,6 +716,7 @@ def start(
             reason="ok",
         )
         save_run_state(project_root, run_id, completed)
+        _sync_terminal_manifest(project_root, version=resolved_version, run_id=run_id)
         _print_next_step_selector(project_root=project_root, version=resolved_version, run_id=run_id, feature=feature)
     else:
         append_lifecycle_event(
@@ -783,6 +859,7 @@ def continue_workflow(  # noqa: A003
                 reason=f"{stage}_failed",
             )
             save_run_state(project_root, resolved_run_id, blocked)
+            _sync_terminal_manifest(project_root, version=run_version, run_id=resolved_run_id)
             typer.echo(f"    ✗ {stage} failed (exit={rc})")
             _print_next_step_selector(
                 project_root=project_root,
@@ -820,6 +897,7 @@ def continue_workflow(  # noqa: A003
             workflow_status="completed",
             reason="ok",
         )
+        _sync_terminal_manifest(project_root, version=run_version, run_id=resolved_run_id)
         typer.echo("✓ Workflow closure complete")
         _print_next_step_selector(
             project_root=project_root,

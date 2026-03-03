@@ -1,4 +1,28 @@
 #!/usr/bin/env bash
 # Beacon CLI entry point
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Keep local package root first and drop known conflicting skill mirrors.
+if [[ -n "${PYTHONPATH:-}" ]]; then
+  IFS=':' read -r -a _parts <<< "${PYTHONPATH}"
+  _clean_parts=()
+  for _p in "${_parts[@]}"; do
+    case "${_p}" in
+      *"/.claude/skills"|*"/.claude/skills/beacon")
+        continue
+        ;;
+      *)
+        _clean_parts+=("${_p}")
+        ;;
+    esac
+  done
+  if ((${#_clean_parts[@]} > 0)); then
+    export PYTHONPATH="${SCRIPT_DIR}:$(IFS=:; echo "${_clean_parts[*]}")"
+  else
+    export PYTHONPATH="${SCRIPT_DIR}"
+  fi
+else
+  export PYTHONPATH="${SCRIPT_DIR}"
+fi
+
 exec python3 -m beacon.main "$@"

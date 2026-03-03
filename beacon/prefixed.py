@@ -77,7 +77,7 @@ def build_prefixed_args(prog_name: str, argv: list[str]) -> list[str]:
 
 def invoke_beacon_app(args: list[str], prog_name: str) -> None:
     """Invoke the main beacon typer app."""
-    from beacon.main import app
+    from .main import app
 
     app(args=args, prog_name=prog_name)
 

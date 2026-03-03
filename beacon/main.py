@@ -1,6 +1,36 @@
-"""Beacon CLI - Main entry point"""
-import typer
+"""Beacon CLI - Main entry point."""
+
+from __future__ import annotations
+
+import sys
+from pathlib import Path
 from typing import Optional
+
+import typer
+
+
+def _pin_beacon_import_path() -> None:
+    """Ensure imports resolve from the same package root as this module.
+
+    This guards against mixed PYTHONPATH environments where multiple `beacon`
+    project roots exist (e.g., editable install + skills mirror).
+    """
+    package_dir = Path(__file__).resolve().parent
+    package_root = str(package_dir.parent)
+
+    # Always prioritize current package root.
+    sys.path = [package_root, *[p for p in sys.path if p != package_root]]
+
+    # Force package __path__ to this concrete directory only.
+    pkg = sys.modules.get("beacon")
+    if pkg is not None and hasattr(pkg, "__path__"):
+        try:
+            pkg.__path__ = [str(package_dir)]
+        except Exception:  # noqa: BLE001
+            pass
+
+
+_pin_beacon_import_path()
 
 app = typer.Typer(
     name="beacon",
@@ -26,48 +56,48 @@ def _main_callback(
 
 
 # Import and register commands
-from beacon.commands.run import app as run_app
-from beacon.commands.doctor import app as doctor_app
-from beacon.commands.gate import app as gate_app
-from beacon.commands.init import app as init_app
-from beacon.commands.status import app as status_app
-from beacon.commands.report import app as report_app
-from beacon.commands.debug import app as debug_app
-from beacon.commands.feedback import app as feedback_app
-from beacon.commands.resume import app as resume_app
-from beacon.commands.think import app as think_app
-from beacon.commands.user_story import app as user_story_app
-from beacon.commands.prd import app as prd_app
-from beacon.commands.test_case import app as test_case_app
-from beacon.commands.workflow import app as workflow_app
+from .commands.run import app as run_app
+from .commands.doctor import app as doctor_app
+from .commands.gate import app as gate_app
+from .commands.init import app as init_app
+from .commands.status import app as status_app
+from .commands.report import app as report_app
+from .commands.debug import app as debug_app
+from .commands.feedback import app as feedback_app
+from .commands.resume import app as resume_app
+from .commands.think import app as think_app
+from .commands.user_story import app as user_story_app
+from .commands.prd import app as prd_app
+from .commands.test_case import app as test_case_app
+from .commands.workflow import app as workflow_app
 
 # Planning & Analysis commands
-from beacon.commands.analyze import app as analyze_app
-from beacon.commands.brainstorm import app as brainstorm_app
-from beacon.commands.design import app as design_app
-from beacon.commands.jtbd import app as jtbd_app
-from beacon.commands.version import app as version_app
-from beacon.commands.roadmap import app as roadmap_app
-from beacon.commands.persona import app as persona_app
-from beacon.commands.kano import app as kano_app
-from beacon.commands.moscow import app as moscow_app
-from beacon.commands.evolution_summary import app as evolution_summary_app
+from .commands.analyze import app as analyze_app
+from .commands.brainstorm import app as brainstorm_app
+from .commands.design import app as design_app
+from .commands.jtbd import app as jtbd_app
+from .commands.version import app as version_app
+from .commands.roadmap import app as roadmap_app
+from .commands.persona import app as persona_app
+from .commands.kano import app as kano_app
+from .commands.moscow import app as moscow_app
+from .commands.evolution_summary import app as evolution_summary_app
 
 # Testing & Release commands
-from beacon.commands.auto_test import app as auto_test_app
-from beacon.commands.test_progress import app as test_progress_app
-from beacon.commands.release import app as release_app
-from beacon.commands.api_design import app as api_design_app
-from beacon.commands.data_dictionary import app as data_dictionary_app
+from .commands.auto_test import app as auto_test_app
+from .commands.test_progress import app as test_progress_app
+from .commands.release import app as release_app
+from .commands.api_design import app as api_design_app
+from .commands.data_dictionary import app as data_dictionary_app
 
 # Design & Collaboration commands
-from beacon.commands.ui_spec import app as ui_spec_app
-from beacon.commands.wireframe import app as wireframe_app
-from beacon.commands.save import app as save_app
-from beacon.commands.recall import app as recall_app
-from beacon.commands.remember import app as remember_app
-from beacon.commands.team import app as team_app
-from beacon.commands.ralph_bridge import app as ralph_bridge_app
+from .commands.ui_spec import app as ui_spec_app
+from .commands.wireframe import app as wireframe_app
+from .commands.save import app as save_app
+from .commands.recall import app as recall_app
+from .commands.remember import app as remember_app
+from .commands.team import app as team_app
+from .commands.ralph_bridge import app as ralph_bridge_app
 
 app.add_typer(run_app, name="run")
 app.add_typer(doctor_app, name="doctor")
@@ -122,7 +152,7 @@ def work_alias(
     skip: Optional[str] = typer.Option(None, "--skip", "-s", help="Skip stages"),
 ):
     """Alias of `workflow start` for PTK/Skill compatibility."""
-    from beacon.commands.workflow import start as workflow_start
+    from .commands.workflow import start as workflow_start
 
     workflow_start(feature=feature, project=project, version=version, auto=auto, skip=skip)
 

@@ -75,7 +75,8 @@ def _infer_layer_from_ac(text: str) -> str:
         return "api-curl"
     if any(x in t for x in ("单元", "unit", "函数", "边界", "error", "异常", "校验", "security")):
         return "unit"
-    return "smoke"
+    # Default to unit for deterministic commandability in minimal setups.
+    return "unit"
 
 
 def _default_command_for_layer(layer: str) -> str:

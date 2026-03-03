@@ -50,6 +50,15 @@ Beacon 从 product-toolkit（历史 PTK）升级而来。当前命令口径已�
 4. **Coverage 强校验接入 gate**：输出 `story/ac/tc` 覆盖指标，strict/debug 在 `test-case/release` 阶段未满覆盖直接 `coverage_incomplete`。
 5. **Workflow 终态下一步选择器**：完成/阻断后固定输出 OMC / OMX / Beacon Team 三选一路径，避免“结束后无下一步”。
 
+### 对齐增强（2026-03-03）
+
+1. **Workflow ↔ Gate strict 一致性修复**：终态自动补齐 release-profile memory、implementation marker、manifest 同步，`workflow start --auto` 与 strict gate 结果一致。
+2. **CLI/Skill 单一事实源**：`SKILL.md` 命令表由 `beacon/prefixed.py::SUPPORTED_SUBCOMMANDS` 自动同步（`scripts/sync_skill_commands.py`）。
+3. **版本治理增强**：`beacon version create` 支持 `--base-version + --bump`，并自动写入版本元数据用于追溯。
+4. **演进总结真实化**：`beacon evolution-summary create` 汇总真实 run/memory/coverage/evidence 差异，不再输出模板 TBD。
+5. **可选真实 LLM 编排**：设置 `BEACON_LLM_MODE=real` + `BEACON_LLM_API_KEY` 后，next-stage 推理可走真实模型；失败自动回退规则模式。
+6. **Visual 回归能力**：`auto-test` 新增 `visual` 层与目录哈希对比能力，支持阈值判定。
+
 📘 详细说明见：[Beacon 功能说明与闭环流程（v1.0.1）](./docs/beacon/v1.0.1/execution/beacon-feature-closure-guide.md)
 
 ---
@@ -454,9 +463,15 @@ beacon-persona list
 版本管理。
 
 ```bash
-beacon-version create v2.0.0
+# 自动沿用当前最大语义版本
+beacon-version create "用户登录"
+
+# 从指定基线 bump（推荐）
+beacon-version create "用户登录" --base-version v1.0.1 --bump minor
+
+# 手动指定目标版本
+beacon-version create "用户登录" --version v2.0.0
 beacon-version list
-beacon-version create "用户登录" --bump patch
 ```
 
 #### `beacon-evolution-summary`
@@ -464,7 +479,8 @@ beacon-version create "用户登录" --bump patch
 版本演进总结。
 
 ```bash
-beacon-evolution-summary v1.0.0
+beacon-evolution-summary create v1.0.1 --previous v1.0.0
+beacon-evolution-summary create auto --json
 ```
 
 ---
@@ -555,6 +571,12 @@ beacon-auto-test create all --project . \
   --api-curl-command "bash -lc 'curl -fsS http://127.0.0.1:8000/health'" \
   --unit-command "python -m pytest -q -k unit" \
   --smoke-command "python -m pytest -q -m smoke"
+
+# Visual 回归（目录哈希比对）
+beacon-auto-test create visual --project . \
+  --visual-baseline-dir .beacon/visual/baseline \
+  --visual-current-dir .beacon/visual/current \
+  --visual-threshold 0.02
 
 # UI 防假通过校验（继承历史规则）
 beacon-auto-test create ui \

@@ -7,35 +7,115 @@ description: AI Product Workflow Toolkit for product thinking, user stories, PRD
 
 > **Skill Version**: v1.0.0
 > **CLI Version**: v1.0.0
-> **Last Updated**: 2026-03-02
+> **Last Updated**: 2026-03-03
 
 Beacon 是 AI 产品工作流工具包，提供需求澄清、用户故事、PRD、测试用例、技术方案与发布清单的完整工作流。
 
-## 关键词触发
-
-默认使用 `beacon-<subcommand>` 触发技能（避免与其他技能同名命令冲突）：
-
-| 关键词 | 技能 |
-|--------|------|
-| `beacon-think` | 产品思考 vNext |
-| `beacon-work` | 一键工作流 |
-| `beacon-workflow` | 一键工作流 |
-| `beacon-doctor` | 环境/版本检查 |
-| `beacon-status` | 状态面板 |
-| `beacon-report` | 测试/版本报告 |
-| `beacon-run` | 运行工作流 |
-| `beacon-gate` | 门控检查 |
-| `beacon-debug` | 调试模式 |
-| `beacon-feedback` | 测试反馈同步 |
-| `beacon-resume` | 恢复会话 |
+## 命令触发（CLI/Skill 单一事实源）
 
 **命令口径（统一）**：
 - `beacon-<subcommand>`（推荐）
 - `beacon <subcommand>`（兼容）
 - 脚本方式（兼容）：`python3 -m beacon.main <subcommand> ...`
-- **不要使用**：`python -m beacon.think ...` / `python3 -m beacon.think ...`（历史写法，易报 `No module named beacon.think`）
+- 历史模块入口（兼容）：`python3 -m beacon.think ...`（保留兼容，但不作为推荐入口）
 
 > 注意：对外建议与“下一步”提示统一使用 `beacon` 前缀，不再推荐历史 PTK 命令（`ptk`）；目录仍保持兼容（`.ptk`、`docs/product`）。
+
+命令清单由 `beacon/prefixed.py::SUPPORTED_SUBCOMMANDS` 自动生成，使用：
+
+```bash
+python3 scripts/sync_skill_commands.py
+```
+
+或校验：
+
+```bash
+python3 scripts/sync_skill_commands.py --check
+```
+
+<!-- AUTO-COMMANDS:START -->
+### 可触发关键词（自动同步）
+
+| 关键词 | 对应子命令 |
+|--------|------------|
+| `beacon-analyze` | `analyze` |
+| `beacon-api-design` | `api-design` |
+| `beacon-auto-test` | `auto-test` |
+| `beacon-brainstorm` | `brainstorm` |
+| `beacon-data-dictionary` | `data-dictionary` |
+| `beacon-debug` | `debug` |
+| `beacon-design` | `design` |
+| `beacon-doctor` | `doctor` |
+| `beacon-evolution-summary` | `evolution-summary` |
+| `beacon-feedback` | `feedback` |
+| `beacon-gate` | `gate` |
+| `beacon-init` | `init` |
+| `beacon-jtbd` | `jtbd` |
+| `beacon-kano` | `kano` |
+| `beacon-moscow` | `moscow` |
+| `beacon-prd` | `prd` |
+| `beacon-ralph-bridge` | `ralph-bridge` |
+| `beacon-recall` | `recall` |
+| `beacon-release` | `release` |
+| `beacon-remember` | `remember` |
+| `beacon-report` | `report` |
+| `beacon-resume` | `resume` |
+| `beacon-roadmap` | `roadmap` |
+| `beacon-run` | `run` |
+| `beacon-save` | `save` |
+| `beacon-status` | `status` |
+| `beacon-team` | `team` |
+| `beacon-test-case` | `test-case` |
+| `beacon-test-progress` | `test-progress` |
+| `beacon-think` | `think` |
+| `beacon-ui-spec` | `ui-spec` |
+| `beacon-user-story` | `user-story` |
+| `beacon-version` | `version` |
+| `beacon-wireframe` | `wireframe` |
+| `beacon-work` | `work` |
+| `beacon-workflow` | `workflow` |
+
+### 完整子命令清单（自动同步）
+
+| 子命令 | 推荐触发 |
+|-------|----------|
+| `analyze` | `beacon-analyze` |
+| `api-design` | `beacon-api-design` |
+| `auto-test` | `beacon-auto-test` |
+| `brainstorm` | `beacon-brainstorm` |
+| `data-dictionary` | `beacon-data-dictionary` |
+| `debug` | `beacon-debug` |
+| `design` | `beacon-design` |
+| `doctor` | `beacon-doctor` |
+| `evolution-summary` | `beacon-evolution-summary` |
+| `feedback` | `beacon-feedback` |
+| `gate` | `beacon-gate` |
+| `init` | `beacon-init` |
+| `jtbd` | `beacon-jtbd` |
+| `kano` | `beacon-kano` |
+| `moscow` | `beacon-moscow` |
+| `prd` | `beacon-prd` |
+| `ralph-bridge` | `beacon-ralph-bridge` |
+| `recall` | `beacon-recall` |
+| `release` | `beacon-release` |
+| `remember` | `beacon-remember` |
+| `report` | `beacon-report` |
+| `resume` | `beacon-resume` |
+| `roadmap` | `beacon-roadmap` |
+| `run` | `beacon-run` |
+| `save` | `beacon-save` |
+| `status` | `beacon-status` |
+| `team` | `beacon-team` |
+| `test-case` | `beacon-test-case` |
+| `test-progress` | `beacon-test-progress` |
+| `think` | `beacon-think` |
+| `ui-spec` | `beacon-ui-spec` |
+| `user-story` | `beacon-user-story` |
+| `version` | `beacon-version` |
+| `wireframe` | `beacon-wireframe` |
+| `work` | `beacon-work` |
+| `workflow` | `beacon-workflow` |
+<!-- AUTO-COMMANDS:END -->
 
 ### CLI 调用示例（think）
 
@@ -46,22 +126,6 @@ Beacon 是 AI 产品工作流工具包，提供需求澄清、用户故事、PRD
 # 兼容
 python3 -m beacon.main think start "分析 xxx 业务闭环" --project /abs/path/to/project
 ```
-
-## 子命令
-
-| 子命令 | 说明 |
-|-------|------|
-| `beacon-think [问题]` | 产品思考 vNext |
-| `beacon-workflow [功能]` | 一键产品工作流 |
-| `beacon-user-story [功能]` | 生成用户故事 |
-| `beacon-prd [功能]` | 生成 PRD |
-| `beacon-test-case [功能]` | 生成测试用例 |
-| `beacon-doctor` | 环境诊断 |
-| `beacon-status` | 状态面板 |
-| `beacon-report [版本]` | 生成报告 |
-| `beacon-gate [阶段]` | 门控检查 |
-| `beacon-debug` | 调试模式 |
-| `beacon-feedback` | 反馈同步 |
 
 ## Gate 检查
 

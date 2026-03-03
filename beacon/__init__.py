@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Beacon CLI - AI Product Workflow Toolkit"""
 
-from beacon.commands import (
+from .commands import (
     run,
     doctor,
     gate,

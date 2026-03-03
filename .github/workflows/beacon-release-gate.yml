@@ -1,0 +1,97 @@
+name: beacon-release-gate
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+    tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      run_release:
+        description: "Run release publish job after gate passes"
+        required: false
+        type: boolean
+        default: false
+
+concurrency:
+  group: beacon-release-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  preflight-gate:
+    name: Preflight Gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: pyproject.toml
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .
+
+      - name: Run preflight gate
+        run: bash scripts/ci/preflight_gate.sh
+
+      - name: Upload preflight artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: beacon-preflight-artifacts
+          path: .artifacts/preflight
+          if-no-files-found: warn
+
+  release:
+    name: Release Publish
+    needs: preflight-gate
+    runs-on: ubuntu-latest
+    if: >
+      needs.preflight-gate.result == 'success' &&
+      (
+        startsWith(github.ref, 'refs/tags/v') ||
+        (github.event_name == 'workflow_dispatch' && inputs.run_release)
+      )
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: pyproject.toml
+
+      - name: Build package
+        run: |
+          python -m pip install --upgrade pip
+          pip install build twine
+          python -m build
+
+      - name: Upload dist artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: beacon-dist
+          path: dist/*
+          if-no-files-found: error
+
+      - name: Publish to PyPI
+        if: startsWith(github.ref, 'refs/tags/v') && secrets.PYPI_API_TOKEN != ''
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+        run: python -m twine upload dist/*
+
+      - name: Skip publish (no token)
+        if: startsWith(github.ref, 'refs/tags/v') && secrets.PYPI_API_TOKEN == ''
+        run: |
+          echo "PYPI_API_TOKEN is empty; skip publish."
+          exit 1

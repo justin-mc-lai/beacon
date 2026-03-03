@@ -1,14 +1,14 @@
 """Beacon CLI commands package"""
 
-from beacon.commands.run import app as run
-from beacon.commands.doctor import app as doctor
-from beacon.commands.gate import app as gate
-from beacon.commands.init import app as init
-from beacon.commands.status import app as status
-from beacon.commands.report import app as report
-from beacon.commands.debug import app as debug
-from beacon.commands.feedback import app as feedback
-from beacon.commands.resume import app as resume
+from .run import app as run
+from .doctor import app as doctor
+from .gate import app as gate
+from .init import app as init
+from .status import app as status
+from .report import app as report
+from .debug import app as debug
+from .feedback import app as feedback
+from .resume import app as resume
 
 __all__ = [
     "run",
