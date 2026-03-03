@@ -6,6 +6,7 @@ import json
 
 from typer.testing import CliRunner
 
+from beacon import __toolkit_version__
 from beacon.main import app
 
 
@@ -67,4 +68,4 @@ def test_work_alias_should_exist():
 def test_global_version_flag_should_work():
     result = _invoke(["--version"])
     assert result.exit_code == 0
-    assert "v1.0.0" in result.stdout.lower()
+    assert __toolkit_version__.lower() in result.stdout.lower()

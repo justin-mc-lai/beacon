@@ -5,8 +5,8 @@ description: AI Product Workflow Toolkit for product thinking, user stories, PRD
 
 # Beacon - AI Product Workflow Toolkit
 
-> **Skill Version**: v1.0.0
-> **CLI Version**: v1.0.0
+> **Skill Version**: v1.0.1
+> **CLI Version**: v1.0.1
 > **Last Updated**: 2026-03-03
 
 Beacon 是 AI 产品工作流工具包，提供需求澄清、用户故事、PRD、测试用例、技术方案与发布清单的完整工作流。
@@ -157,4 +157,4 @@ docs/product/{version}/
 
 ---
 
-**版本**: v1.0.0
+**版本**: v1.0.1

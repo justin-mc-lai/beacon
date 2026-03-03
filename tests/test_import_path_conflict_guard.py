@@ -9,6 +9,7 @@ from pathlib import Path
 
 import beacon
 from beacon import main as beacon_main
+from beacon import __toolkit_version__
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -69,4 +70,4 @@ def test_beacon_cli_should_work_when_pythonpath_has_conflicting_skill_root(tmp_p
         text=True,
     )
     assert result.returncode == 0, result.stderr
-    assert "Beacon CLI v1.0.0" in result.stdout
+    assert f"Beacon CLI {__toolkit_version__}" in result.stdout
