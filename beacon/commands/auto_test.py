@@ -1237,12 +1237,12 @@ def create(
     require_junit: bool = typer.Option(
         False,
         "--require-junit",
-        help="Require junit.xml evidence for passed layers.",
+        help="Require junit.xml evidence for passed layers (QA9 scope defaults to required).",
     ),
     require_assertion_count: bool = typer.Option(
         False,
         "--require-assertion-count",
-        help="Require assertion_count > 0 for passed layers.",
+        help="Require assertion_count > 0 for passed layers (QA9 scope defaults to required).",
     ),
     rerun_flaky: int = typer.Option(
         0,
@@ -1304,8 +1304,11 @@ def create(
     debug_mode = str(os.environ.get("BEACON_DEBUG", "")).strip().lower() in {"1", "true", "yes", "on"}
 
     scope_norm = (scope or "").strip().lower()
+    is_qa9_scope = normalize_qa_type(scope_norm) == "qa9"
+    effective_require_junit = bool(require_junit) or is_qa9_scope
+    effective_require_assertion_count = bool(require_assertion_count) or is_qa9_scope
     selected_layers = _resolve_layers(scope_norm)
-    if normalize_qa_type(scope_norm) == "qa9":
+    if is_qa9_scope:
         selected_layers = parse_qa_types(qa_types, profile=qa_profile)
     if visual_threshold < 0 or visual_threshold > 1:
         raise typer.BadParameter("--visual-threshold must be between 0 and 1")
@@ -1350,7 +1353,7 @@ def create(
     active_matrix_path = matrix_path
     qa9_matrix_payload: dict[str, Any] | None = None
     qa9_matrix_resolve_path = qa_matrix_path or matrix_path
-    if normalize_qa_type(scope_norm) == "qa9" and qa9_matrix_resolve_path:
+    if is_qa9_scope and qa9_matrix_resolve_path:
         loaded = _load_qa9_matrix(Path(qa9_matrix_resolve_path))
         if loaded.get("payload"):
             qa9_matrix_payload = loaded["payload"]
@@ -1382,7 +1385,7 @@ def create(
     if not compat_required_pairs and compat_browsers_list and compat_devices_list:
         compat_required_pairs = _expand_pairs(compat_browsers_list, compat_devices_list)
 
-    if normalize_qa_type(scope_norm) == "qa9":
+    if is_qa9_scope:
         for layer in selected_layers:
             if not commands.get(layer):
                 commands[layer] = default_command_for_qa_type(layer, ui_runner=ui_runner)
@@ -1399,12 +1402,16 @@ def create(
             "layers": [],
         },
     }
-    if normalize_qa_type(scope_norm) == "qa9":
+    if is_qa9_scope:
         test_status["qa9"] = {
             "qa_profile": qa_profile,
             "qa_types": selected_layers,
             "qa_matrix_path": active_matrix_path or "",
             "ui_runner": ui_runner,
+            "quality_requirements": {
+                "require_junit": effective_require_junit,
+                "require_assertion_count": effective_require_assertion_count,
+            },
             "compatibility": {
                 "browsers": compat_browsers_list,
                 "devices": compat_devices_list,
@@ -1561,7 +1568,7 @@ def create(
     execution_payload["layers"] = layer_results
     execution_payload["ui_action_evidence"] = ui_action_map
 
-    if normalize_qa_type(scope_norm) == "qa9" and isinstance(test_status.get("qa9"), dict):
+    if is_qa9_scope and isinstance(test_status.get("qa9"), dict):
         compat_block = test_status["qa9"].get("compatibility")
         if isinstance(compat_block, dict) and "compatibility" in selected_layers:
             compat_layer = next(
@@ -1616,7 +1623,7 @@ def create(
         execution_payload["matrix_report"] = matrix_report
         active_matrix_obj = Path(active_matrix_path)
         if (
-            normalize_qa_type(scope_norm) == "qa9"
+            is_qa9_scope
             and active_matrix_obj.name.endswith(".qa9-matrix.json")
         ):
             legacy_matrix_path = active_matrix_obj.with_name(
@@ -1658,8 +1665,8 @@ def create(
     required_file_issues = _collect_required_file_issues(
         project_root=project_root,
         layer_results=layer_results,
-        require_junit=require_junit,
-        require_assertion_count=require_assertion_count,
+        require_junit=effective_require_junit,
+        require_assertion_count=effective_require_assertion_count,
     )
     if required_file_issues:
         test_status["quality_issues"].extend(required_file_issues)

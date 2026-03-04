@@ -12,6 +12,14 @@ from beacon.main import app
 
 runner = CliRunner()
 
+PASS_WITH_JUNIT_AND_ASSERT = (
+    "python3 -c \"import os,pathlib; "
+    "p=pathlib.Path(os.environ.get('BEACON_JUNIT_PATH','.beacon/junit.xml')); "
+    "p.parent.mkdir(parents=True,exist_ok=True); "
+    "p.write_text('<testsuite tests=\\\"1\\\" failures=\\\"0\\\"></testsuite>', encoding='utf-8'); "
+    "print('BEACON_ASSERTIONS=1')\""
+)
+
 
 def _extract_json_from_stdout(text: str) -> dict:
     start = text.find("{")
@@ -72,7 +80,7 @@ def test_auto_test_qa9_should_execute_and_write_matrix_evidence(tmp_path: Path):
                 "ac_id": "AC-001",
                 "qa_type": "unit",
                 "automation": "auto",
-                "command": "python3 -c \"print('1 passed')\"",
+                "command": PASS_WITH_JUNIT_AND_ASSERT,
                 "assertion": "unit assertion",
                 "evidence_path": ".beacon/evidence/test-results/qa9-feature/{run_id}/TC-001.json",
                 "status": "pending",
@@ -82,7 +90,7 @@ def test_auto_test_qa9_should_execute_and_write_matrix_evidence(tmp_path: Path):
                 "ac_id": "AC-002",
                 "qa_type": "interface",
                 "automation": "auto",
-                "command": "python3 -c \"print('1 passed')\"",
+                "command": PASS_WITH_JUNIT_AND_ASSERT,
                 "assertion": "interface assertion",
                 "evidence_path": ".beacon/evidence/test-results/qa9-feature/{run_id}/TC-002.json",
                 "status": "pending",
@@ -136,3 +144,24 @@ def test_gate_check_release_should_report_qa9_matrix_missing(tmp_path: Path):
     reason_codes = {item.get("reason_code") for item in payload.get("issues", [])}
     assert "qa9_matrix_missing" in reason_codes
 
+
+def test_gate_check_json_should_output_pure_json_without_prefix(tmp_path: Path):
+    result = runner.invoke(
+        app,
+        [
+            "gate",
+            "check",
+            "release",
+            "--mode",
+            "strict",
+            "--qa-policy",
+            "qa9-strict",
+            "--json",
+            "--project-root",
+            str(tmp_path),
+        ],
+    )
+    assert result.exit_code == 2, result.stdout
+    assert result.stdout.lstrip().startswith("{"), result.stdout
+    payload = json.loads(result.stdout)
+    assert payload.get("stage") == "release"

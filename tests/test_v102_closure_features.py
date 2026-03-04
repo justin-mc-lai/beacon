@@ -12,6 +12,14 @@ from beacon.main import app
 
 runner = CliRunner()
 
+PASS_WITH_JUNIT_AND_ASSERT = (
+    "python3 -c \"import os,pathlib; "
+    "p=pathlib.Path(os.environ.get('BEACON_JUNIT_PATH','.beacon/junit.xml')); "
+    "p.parent.mkdir(parents=True,exist_ok=True); "
+    "p.write_text('<testsuite tests=\\\"1\\\" failures=\\\"0\\\"></testsuite>', encoding='utf-8'); "
+    "print('BEACON_ASSERTIONS=1')\""
+)
+
 
 def _extract_json_payload(stdout: str) -> dict:
     start = stdout.find("{")
@@ -111,7 +119,7 @@ def test_auto_test_should_backfill_qa9_summary_and_sync_progress(tmp_path: Path)
                 "ac_id": "AC-001",
                 "qa_type": "unit",
                 "automation": "auto",
-                "command": "python3 -c \"print('1 passed')\"",
+                "command": PASS_WITH_JUNIT_AND_ASSERT,
                 "assertion": "unit assertion",
                 "evidence_path": ".beacon/evidence/test-results/qa9-feature/{run_id}/TC-001.json",
                 "status": "pending",
@@ -121,7 +129,7 @@ def test_auto_test_should_backfill_qa9_summary_and_sync_progress(tmp_path: Path)
                 "ac_id": "AC-002",
                 "qa_type": "interface",
                 "automation": "auto",
-                "command": "python3 -c \"print('1 passed')\"",
+                "command": PASS_WITH_JUNIT_AND_ASSERT,
                 "assertion": "interface assertion",
                 "evidence_path": ".beacon/evidence/test-results/qa9-feature/{run_id}/TC-002.json",
                 "status": "pending",
@@ -260,3 +268,30 @@ def test_gate_should_block_expired_waiver_and_missing_pair_execution(tmp_path: P
     assert "manual_waiver_unapproved" in reason_codes
     assert "compatibility_execution_missing" in reason_codes
 
+
+def test_workflow_auto_should_allow_missing_implementation_command_with_builtin_noop(tmp_path: Path):
+    result = runner.invoke(
+        app,
+        [
+            "workflow",
+            "start",
+            "workflow-noop",
+            "--project",
+            str(tmp_path),
+            "--version",
+            "v1.0.2",
+            "--auto",
+            "--verify-scope",
+            "unit",
+            "--verify-unit-command",
+            "python3 -c \"print('BEACON_ASSERTIONS=1')\"",
+        ],
+    )
+    assert result.exit_code == 0, result.stdout
+    assert "implementation completed" in result.stdout
+
+    run_dir = tmp_path / ".beacon" / "runs"
+    state_files = list(run_dir.glob("*/state.json"))
+    assert state_files
+    payload = json.loads(state_files[0].read_text(encoding="utf-8"))
+    assert payload.get("status") == "completed"

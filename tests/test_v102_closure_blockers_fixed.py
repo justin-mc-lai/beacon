@@ -135,6 +135,43 @@ def test_assertion_count_should_not_accept_plain_print_passed(tmp_path: Path):
     assert "assertion_count_zero_pass" in codes
 
 
+def test_qa9_should_enforce_junit_and_assertion_even_without_flags(tmp_path: Path):
+    matrix_path = _write_matrix(
+        tmp_path,
+        qa_types=["unit"],
+        entries=[
+            {
+                "tc_id": "TC-001",
+                "ac_id": "AC-001",
+                "qa_type": "unit",
+                "automation": "auto",
+                "command": "python3 -c \"print('1 passed')\"",
+                "assertion": "unit assertion",
+                "evidence_path": ".beacon/evidence/test-results/closure/{run_id}/TC-001.json",
+                "status": "pending",
+            }
+        ],
+    )
+
+    result = runner.invoke(
+        app,
+        [
+            "auto-test",
+            "create",
+            "qa9",
+            "--project",
+            str(tmp_path),
+            "--qa-matrix-path",
+            str(matrix_path),
+        ],
+    )
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads((tmp_path / ".beacon" / "auto-test-status.json").read_text(encoding="utf-8"))
+    codes = {str(item.get("reason_code")) for item in payload.get("quality_issues", []) if isinstance(item, dict)}
+    assert payload["status"] == "failed"
+    assert "assertion_count_zero_pass" in codes or "junit_missing_or_invalid" in codes
+
+
 def test_compatibility_should_require_real_pair_evidence(tmp_path: Path):
     matrix_path = _write_matrix(
         tmp_path,
@@ -226,4 +263,3 @@ def test_tc_backfill_should_use_tc_level_execution_not_only_layer_rollup(tmp_pat
     assert status_by_tc.get("TC-002") == "failed"
     assert int(summary.get("failed", 0) or 0) == 1
     assert payload.get("status") == "failed"
-

@@ -1752,12 +1752,13 @@ def _run_check_command(
         except ValueError:
             pass
 
-    if gate_mode == GateMode.DEBUG:
-        typer.echo(f"[DEBUG] Gate Check: {stage}")
-        typer.echo(f"[DEBUG] Mode: {gate_mode.value}")
-    else:
-        typer.echo(f"Gate Check: {stage}")
-        typer.echo(f"Mode: {gate_mode.value.upper()}")
+    if not json_output:
+        if gate_mode == GateMode.DEBUG:
+            typer.echo(f"[DEBUG] Gate Check: {stage}")
+            typer.echo(f"[DEBUG] Mode: {gate_mode.value}")
+        else:
+            typer.echo(f"Gate Check: {stage}")
+            typer.echo(f"Mode: {gate_mode.value.upper()}")
 
     result = run_gate_checks(
         stage,

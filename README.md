@@ -573,6 +573,9 @@ beacon-auto-test create qa9 --project . \
   --require-junit \
   --require-assertion-count
 
+# 说明：qa9 scope 默认已强制 assertion_count + junit 校验；
+# 上述两个参数保留为显式声明，方便脚本可读性与审计。
+
 # 多层真实执行（ui/api-curl/unit/smoke）
 beacon-auto-test create all --project . \
   --ui-command "python -m pytest -q -k ui" \
