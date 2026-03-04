@@ -11,6 +11,16 @@ from typing import Optional
 
 import typer
 
+from beacon.utils.qa9 import (
+    QA9_TYPES,
+    build_qa_strategy,
+    build_qa_llm_plan,
+    default_assertion_for_qa_type,
+    default_command_for_qa_type,
+    normalize_qa_type,
+    parse_qa_types,
+    to_legacy_layer,
+)
 from beacon.utils.versioning import resolve_target_version
 
 app = typer.Typer(name="test-case", help="Generate test cases")
@@ -80,21 +90,143 @@ def _infer_layer_from_ac(text: str) -> str:
 
 
 def _default_command_for_layer(layer: str) -> str:
-    return {
-        "ui": "python -m pytest -q -k ui",
-        "api-curl": "bash -lc 'curl -sS http://127.0.0.1:8000/health'",
-        "unit": "python -m pytest -q -k unit",
-        "smoke": "python -m pytest -q -m smoke",
-    }.get(layer, "python -m pytest -q")
+    qa_type = normalize_qa_type(layer)
+    return default_command_for_qa_type(qa_type)
 
 
 def _default_assertion_for_layer(layer: str) -> str:
+    qa_type = normalize_qa_type(layer)
+    return default_assertion_for_qa_type(qa_type)
+
+
+def _default_priority_for_qa_type(qa_type: str) -> str:
     return {
-        "ui": "UI assertion + key action evidence",
-        "api-curl": "HTTP status=2xx and response schema valid",
-        "unit": "All assertions pass",
-        "smoke": "Critical path pass",
-    }.get(layer, "assertion defined")
+        "functional": "P0",
+        "smoke": "P0",
+        "unit": "P0",
+        "interface": "P0",
+        "contract": "P1",
+        "integration": "P1",
+        "regression": "P1",
+        "exception": "P1",
+        "compatibility": "P1",
+    }.get(qa_type, "P2")
+
+
+def _build_qa_requirements(qa_types: list[str], qa_applicability: Optional[dict[str, str]] = None) -> list[dict]:
+    qa_set = set(qa_types)
+    applicability_map = qa_applicability or {}
+    out: list[dict] = []
+    for qa_type in QA9_TYPES:
+        selected = qa_type in qa_set
+        applicability = str(applicability_map.get(qa_type) or ("required" if selected else "conditional")).strip().lower()
+        if applicability not in {"required", "conditional", "na"}:
+            applicability = "required" if selected else "conditional"
+        required = selected and applicability == "required"
+        out.append(
+            {
+                "qa_type": qa_type,
+                "required": bool(required),
+                "automation_required": bool(required),
+                "min_cases": 1 if required else 0,
+                "applicability": applicability,
+                "waiver": {
+                    "ticket": "",
+                    "approved_by": "",
+                    "expires_at": "",
+                },
+            }
+        )
+    return out
+
+
+def _build_qa9_entries(
+    *,
+    feature: str,
+    feature_slug: str,
+    ac_items: list[dict],
+    qa_types: list[str],
+    ui_runner: str = "playwright",
+    command_baseline: Optional[dict[str, str]] = None,
+) -> list[dict]:
+    entries: list[dict] = []
+    if not ac_items:
+        ac_items = [{"ac_id": "AC-001", "text": f"{feature} core flow works", "source": "fallback"}]
+
+    qa_pool = list(qa_types) or list(QA9_TYPES)
+    baseline = command_baseline or {}
+    present_types: set[str] = set()
+    idx = 0
+
+    # Rule 1: each AC must map to at least one executable TC.
+    for ac_idx, ac in enumerate(ac_items, start=1):
+        inferred = normalize_qa_type(_infer_layer_from_ac(ac.get("text", "")))
+        qa_type = inferred if inferred in qa_pool else qa_pool[(ac_idx - 1) % len(qa_pool)]
+        idx += 1
+        tc_id = f"TC-{idx:03d}"
+        command = str(baseline.get(qa_type) or "").strip() or default_command_for_qa_type(qa_type, ui_runner=ui_runner)
+        present_types.add(qa_type)
+        entries.append(
+            {
+                "tc_id": tc_id,
+                "ac_id": ac.get("ac_id", "AC-001"),
+                "layer": to_legacy_layer(qa_type),
+                "qa_type": qa_type,
+                "title": f"{feature} {qa_type} :: {str(ac.get('text', '')).strip()[:80]}",
+                "priority": _default_priority_for_qa_type(qa_type),
+                "automation": "auto",
+                "command": command,
+                "assertion": default_assertion_for_qa_type(qa_type),
+                "evidence_path": f".beacon/evidence/test-results/{feature_slug}/{{run_id}}/{tc_id}.json",
+                "required_files": ["command.txt", "stdout.log", "stderr.log", "result.json", "junit.xml"],
+                "status": "pending",
+                "source": ac.get("source", ""),
+            }
+        )
+
+    # Rule 2: required qa_types must be fully covered.
+    for qa_type in qa_pool:
+        if qa_type in present_types:
+            continue
+        idx += 1
+        ac = ac_items[(idx - 1) % len(ac_items)]
+        tc_id = f"TC-{idx:03d}"
+        command = str(baseline.get(qa_type) or "").strip() or default_command_for_qa_type(qa_type, ui_runner=ui_runner)
+        entries.append(
+            {
+                "tc_id": tc_id,
+                "ac_id": ac.get("ac_id", "AC-001"),
+                "layer": to_legacy_layer(qa_type),
+                "qa_type": qa_type,
+                "title": f"{feature} {qa_type} coverage",
+                "priority": _default_priority_for_qa_type(qa_type),
+                "automation": "auto",
+                "command": command,
+                "assertion": default_assertion_for_qa_type(qa_type),
+                "evidence_path": f".beacon/evidence/test-results/{feature_slug}/{{run_id}}/{tc_id}.json",
+                "required_files": ["command.txt", "stdout.log", "stderr.log", "result.json", "junit.xml"],
+                "status": "pending",
+                "source": ac.get("source", ""),
+            }
+        )
+    return entries
+
+
+def _load_think_progress(project_root: Path, version: str) -> dict:
+    candidates = [
+        project_root / ".beacon" / "state" / "think-progress" / f"{version}.json",
+        project_root / ".beacon" / "state" / "think-progress.json",
+    ]
+    for path in candidates:
+        if not path.exists():
+            continue
+        try:
+            payload = json.loads(path.read_text(encoding="utf-8"))
+        except Exception:  # noqa: BLE001
+            continue
+        if isinstance(payload, dict):
+            return payload
+    return {}
 
 
 def generate_test_cases(feature: str, test_type: str) -> list:
@@ -139,6 +271,41 @@ def create(
     version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
     project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
     output: Optional[str] = typer.Option(None, "--output", "-o", help="Output file"),
+    qa_profile: str = typer.Option(
+        "web-full",
+        "--qa-profile",
+        help="QA profile: web-core/web-full/custom",
+    ),
+    qa_types: Optional[list[str]] = typer.Option(
+        None,
+        "--qa-types",
+        help="QA types list (comma-separated or repeatable), default follows profile.",
+    ),
+    llm_auto: bool = typer.Option(
+        True,
+        "--llm-auto/--no-llm-auto",
+        help="Enable LLM dynamic QA planning.",
+    ),
+    llm_mode: str = typer.Option(
+        "auto",
+        "--llm-mode",
+        help="LLM mode: rule/real/auto",
+    ),
+    automation_target_rate: float = typer.Option(
+        0.85,
+        "--automation-target-rate",
+        help="Target automation coverage rate [0,1].",
+    ),
+    matrix_output: Optional[str] = typer.Option(
+        None,
+        "--matrix-output",
+        help="QA9 matrix output file path (*.qa9-matrix.json).",
+    ),
+    ui_runner: str = typer.Option(
+        "",
+        "--ui-runner",
+        help="UI runner for QA9 command generation: playwright/cypress/browser-use/agent-browser",
+    ),
 ):
     """Create test cases and executable AC matrix."""
     project_root = Path(project) if project else Path.cwd()
@@ -185,6 +352,75 @@ def create(
         "entries": entries,
     }
 
+    qa_types_resolved = parse_qa_types(qa_types, profile=qa_profile)
+    think_progress = _load_think_progress(project_root, resolved_version)
+    think_strategy = think_progress.get("qa_strategy") if isinstance(think_progress, dict) else None
+    strategy = think_strategy if isinstance(think_strategy, dict) else {}
+    strategy_ui_runner = str(strategy.get("ui_runner") or "").strip()
+    resolved_ui_runner = str(ui_runner or strategy_ui_runner or "playwright").strip().lower()
+    if not resolved_ui_runner:
+        resolved_ui_runner = "playwright"
+    explicit_ui_runner = bool(str(ui_runner or "").strip())
+    if not strategy:
+        strategy = build_qa_strategy(
+            project_root=project_root,
+            qa_types=qa_types_resolved,
+            ui_runner=resolved_ui_runner,
+        )
+    command_baseline = strategy.get("command_baseline") if isinstance(strategy, dict) else {}
+    if not isinstance(command_baseline, dict):
+        command_baseline = {}
+    for qa_type in qa_types_resolved:
+        command_baseline.setdefault(
+            qa_type,
+            default_command_for_qa_type(qa_type, ui_runner=resolved_ui_runner),
+        )
+    if explicit_ui_runner:
+        for qa_type in ("functional", "compatibility"):
+            if qa_type in qa_types_resolved:
+                command_baseline[qa_type] = default_command_for_qa_type(qa_type, ui_runner=resolved_ui_runner)
+    if automation_target_rate < 0 or automation_target_rate > 1:
+        raise typer.BadParameter("--automation-target-rate must be between 0 and 1")
+    qa9_entries = _build_qa9_entries(
+        feature=feature,
+        feature_slug=feature_slug,
+        ac_items=ac_items,
+        qa_types=qa_types_resolved,
+        ui_runner=resolved_ui_runner,
+        command_baseline=command_baseline,
+    )
+    qa9_payload = {
+        "schema_version": "1.0.2",
+        "feature": feature,
+        "feature_slug": feature_slug,
+        "version": resolved_version,
+        "qa_profile": qa_profile,
+        "qa_types": qa_types_resolved,
+        "llm_plan": build_qa_llm_plan(
+            project_root=project_root,
+            llm_auto=llm_auto,
+            llm_mode=llm_mode,
+            qa_types=qa_types_resolved,
+        ),
+        "qa_strategy": strategy,
+        "qa_requirements": _build_qa_requirements(
+            qa_types_resolved,
+            qa_applicability=strategy.get("qa_applicability") if isinstance(strategy, dict) else None,
+        ),
+        "automation_target_rate": automation_target_rate,
+        "entries": qa9_entries,
+        "compatibility_matrix": {
+            "browsers": ["chromium", "firefox", "webkit"],
+            "devices": ["desktop", "iphone14"],
+            "required_pairs": [
+                {"browser": "chromium", "device": "desktop"},
+                {"browser": "firefox", "device": "desktop"},
+                {"browser": "webkit", "device": "desktop"},
+            ],
+        },
+        "generated_at": datetime.now().isoformat(),
+    }
+
     output_path = (
         Path(output)
         if output
@@ -193,6 +429,13 @@ def create(
     output_path.parent.mkdir(parents=True, exist_ok=True)
     matrix_path = output_path.with_name(f"{feature_slug}.ac-test-matrix.json")
     matrix_path.write_text(json.dumps(matrix_payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    qa9_matrix_path = (
+        Path(matrix_output)
+        if matrix_output
+        else output_path.with_name(f"{feature_slug}.qa9-matrix.json")
+    )
+    qa9_matrix_path.parent.mkdir(parents=True, exist_ok=True)
+    qa9_matrix_path.write_text(json.dumps(qa9_payload, ensure_ascii=False, indent=2), encoding="utf-8")
 
     md_rows = "\n".join(
         f"| {x['ac_id']} | {x['tc_id']} | {x['layer']} | `{x['command']}` | {x['assertion']} | `{x['evidence_path']}` |"
@@ -210,6 +453,7 @@ def create(
 **Generated**: {datetime.now().strftime('%Y-%m-%d %H:%M')}
 **Memory Context**: {memory_context_path or 'N/A'}
 **AC Matrix JSON**: {matrix_path}
+**QA9 Matrix JSON**: {qa9_matrix_path}
 
 ---
 
@@ -241,10 +485,19 @@ def create(
             encoding="utf-8",
         )
 
+        beacon_qa9_path = beacon_output_path.with_name(f"{feature_slug}.qa9-matrix.json")
+        beacon_qa9_path.write_text(
+            json.dumps(qa9_payload, ensure_ascii=False, indent=2),
+            encoding="utf-8",
+        )
+
     typer.echo(f"✓ Test cases created: {output_path}")
     typer.echo(f"✓ AC matrix created: {matrix_path}")
+    typer.echo(f"✓ QA9 matrix created: {qa9_matrix_path}")
     typer.echo(f"  Type: {test_type}")
     typer.echo(f"  Entries: {len(entries)}")
+    typer.echo(f"  QA9 Entries: {len(qa9_entries)}")
+    typer.echo(f"  QA Runner: {resolved_ui_runner}")
 
 
 @app.command("list")

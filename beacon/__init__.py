@@ -13,8 +13,8 @@ from .commands import (
     resume,
 )
 
-__version__ = "1.0.1"
-__toolkit_version__ = "v1.0.1"
+__version__ = "1.0.2"
+__toolkit_version__ = "v1.0.2"
 
 
 def create_app():

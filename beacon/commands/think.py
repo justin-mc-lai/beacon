@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 import os
 
+from beacon.utils.qa9 import build_qa_strategy, parse_qa_types
 from beacon.utils.versioning import resolve_target_version
 
 app = typer.Typer(name="think", help="Product thinking vNext")
@@ -63,6 +64,21 @@ def start(
     topic: str = typer.Argument(..., help="Product topic to analyze"),
     project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
     version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
+    qa_profile: str = typer.Option(
+        "web-full",
+        "--qa-profile",
+        help="QA profile used for strategy generation: web-core/web-full/custom",
+    ),
+    qa_types: Optional[list[str]] = typer.Option(
+        None,
+        "--qa-types",
+        help="Optional QA types for strategy generation (comma-separated or repeatable).",
+    ),
+    ui_runner: str = typer.Option(
+        "playwright",
+        "--ui-runner",
+        help="Preferred UI runner: playwright/cypress/browser-use/agent-browser",
+    ),
 ):
     """Start a new think session"""
     project_root = Path(project) if project else Path.cwd()
@@ -75,6 +91,14 @@ def start(
     data = session.load_progress()
     data["topic"] = topic
     data["round"] = 1
+    resolved_qa_types = parse_qa_types(qa_types, profile=qa_profile)
+    data["qa_strategy"] = build_qa_strategy(
+        project_root=project_root,
+        qa_types=resolved_qa_types,
+        ui_runner=ui_runner,
+    )
+    data["qa_profile"] = qa_profile
+    data["qa_types"] = resolved_qa_types
     context_path = os.environ.get("BEACON_STAGE_CONTEXT_PATH", "").strip()
     if context_path:
         data["memory_context_path"] = context_path
@@ -86,6 +110,13 @@ def start(
     session.save_progress(data)
 
     typer.echo(f"\nRound 1: Let's explore '{topic}'")
+    qa_strategy = data.get("qa_strategy", {})
+    if isinstance(qa_strategy, dict):
+        typer.echo(
+            "QA strategy ready: "
+            f"{qa_strategy.get('project_type', 'unknown')} | "
+            f"runner={qa_strategy.get('ui_runner', ui_runner)}"
+        )
     typer.echo("Please answer the following questions:\n")
 
 
@@ -107,6 +138,10 @@ def status(
     typer.echo(f"Assumptions: {len(data.get('assumptions', []))}")
     typer.echo(f"Conflicts: {len(data.get('conflicts', []))}")
     typer.echo(f"Open Questions: {len(data.get('open_questions', []))}")
+    qa_strategy = data.get("qa_strategy")
+    if isinstance(qa_strategy, dict):
+        typer.echo(f"QA Project Type: {qa_strategy.get('project_type', 'unknown')}")
+        typer.echo(f"QA Runner: {qa_strategy.get('ui_runner', 'N/A')}")
 
 
 @app.command()

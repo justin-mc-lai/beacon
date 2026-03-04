@@ -343,6 +343,8 @@ def _stage_output_candidates(project_root: Path, stage: str, feature: str, versi
             project_root / "docs" / "beacon" / version / "qa" / "test-cases" / f"{slug}.md",
             project_root / "docs" / "product" / version / "qa" / "test-cases" / f"{slug}.ac-test-matrix.json",
             project_root / "docs" / "beacon" / version / "qa" / "test-cases" / f"{slug}.ac-test-matrix.json",
+            project_root / "docs" / "product" / version / "qa" / "test-cases" / f"{slug}.qa9-matrix.json",
+            project_root / "docs" / "beacon" / version / "qa" / "test-cases" / f"{slug}.qa9-matrix.json",
         ] + common
     if stage == "implementation":
         return [
@@ -360,6 +362,14 @@ def _matrix_path_candidates(project_root: Path, feature: str, version: str) -> l
     return [
         project_root / "docs" / "product" / version / "qa" / "test-cases" / f"{slug}.ac-test-matrix.json",
         project_root / "docs" / "beacon" / version / "qa" / "test-cases" / f"{slug}.ac-test-matrix.json",
+    ]
+
+
+def _qa9_matrix_path_candidates(project_root: Path, feature: str, version: str) -> list[Path]:
+    slug = _slug(feature)
+    return [
+        project_root / "docs" / "product" / version / "qa" / "test-cases" / f"{slug}.qa9-matrix.json",
+        project_root / "docs" / "beacon" / version / "qa" / "test-cases" / f"{slug}.qa9-matrix.json",
     ]
 
 
@@ -388,6 +398,13 @@ def _execute_stage(
     verify_unit_command: Optional[str],
     verify_smoke_command: Optional[str],
     verify_require_ui_actions: bool,
+    verify_qa_profile: str,
+    verify_qa_types: Optional[list[str]],
+    verify_qa_matrix_path: Optional[str],
+    verify_ui_runner: str,
+    verify_compat_browsers: Optional[str],
+    verify_compat_devices: Optional[str],
+    verify_require_fresh_evidence: bool,
 ) -> int:
     """Execute one workflow stage and write lifecycle events."""
     failure_details: dict[str, Any] = {}
@@ -490,7 +507,12 @@ def _execute_stage(
             }
     elif stage == "verify":
         verify_scope_norm = (verify_scope or "all").strip().lower()
-        require_ui_actions_effective = verify_require_ui_actions and verify_scope_norm in {"ui", "all"}
+        require_ui_actions_effective = verify_require_ui_actions and verify_scope_norm in {
+            "ui",
+            "all",
+            "functional",
+            "qa9",
+        }
         verify_args = [
             "auto-test",
             "create",
@@ -508,12 +530,33 @@ def _execute_stage(
             verify_args.extend(["--unit-command", verify_unit_command])
         if verify_smoke_command:
             verify_args.extend(["--smoke-command", verify_smoke_command])
+        if verify_scope_norm == "qa9":
+            verify_args.extend(["--qa-profile", verify_qa_profile])
+            if verify_qa_types:
+                for item in verify_qa_types:
+                    verify_args.extend(["--qa-types", item])
+            if verify_ui_runner:
+                verify_args.extend(["--ui-runner", verify_ui_runner])
+            if verify_compat_browsers:
+                verify_args.extend(["--compat-browsers", verify_compat_browsers])
+            if verify_compat_devices:
+                verify_args.extend(["--compat-devices", verify_compat_devices])
+            if verify_require_fresh_evidence:
+                verify_args.append("--require-fresh-evidence")
         if require_ui_actions_effective:
             verify_args.append("--require-ui-actions")
-        for matrix_path in _matrix_path_candidates(project_root, feature, version):
-            if matrix_path.exists():
-                verify_args.extend(["--matrix-path", str(matrix_path)])
-                break
+        if verify_qa_matrix_path and verify_scope_norm == "qa9":
+            verify_args.extend(["--qa-matrix-path", verify_qa_matrix_path])
+        else:
+            if verify_scope_norm == "qa9":
+                for matrix_path in _qa9_matrix_path_candidates(project_root, feature, version):
+                    if matrix_path.exists():
+                        verify_args.extend(["--qa-matrix-path", str(matrix_path)])
+                        break
+            for matrix_path in _matrix_path_candidates(project_root, feature, version):
+                if matrix_path.exists():
+                    verify_args.extend(["--matrix-path", str(matrix_path)])
+                    break
         result = run_beacon_command(
             verify_args,
             project_root,
@@ -596,7 +639,7 @@ def start(
         "--implementation-command",
         help="Implementation stage command override",
     ),
-    verify_scope: str = typer.Option("all", "--verify-scope", help="Verify scope: ui/api-curl/unit/smoke/all"),
+    verify_scope: str = typer.Option("all", "--verify-scope", help="Verify scope: ui/api-curl/unit/smoke/all/qa9"),
     verify_config: Optional[str] = typer.Option(None, "--verify-config", help="Verify config path"),
     verify_ui_command: Optional[str] = typer.Option(None, "--verify-ui-command", help="Verify UI command"),
     verify_api_curl_command: Optional[str] = typer.Option(None, "--verify-api-curl-command", help="Verify API curl command"),
@@ -606,6 +649,41 @@ def start(
         False,
         "--verify-require-ui-actions/--no-verify-require-ui-actions",
         help="Require key UI action evidence in verify stage.",
+    ),
+    verify_qa_profile: str = typer.Option(
+        "web-full",
+        "--verify-qa-profile",
+        help="Verify QA profile for qa9 scope: web-core/web-full/custom",
+    ),
+    verify_qa_types: Optional[list[str]] = typer.Option(
+        None,
+        "--verify-qa-types",
+        help="Verify QA types for qa9 scope (comma-separated or repeatable).",
+    ),
+    verify_qa_matrix_path: Optional[str] = typer.Option(
+        None,
+        "--verify-qa-matrix-path",
+        help="Verify QA9 matrix path (*.qa9-matrix.json).",
+    ),
+    verify_ui_runner: str = typer.Option(
+        "playwright",
+        "--verify-ui-runner",
+        help="Verify UI runner for qa9: playwright/cypress/browser-use/agent-browser/midscene",
+    ),
+    verify_compat_browsers: Optional[str] = typer.Option(
+        None,
+        "--verify-compat-browsers",
+        help="Verify compatibility browsers list (comma-separated).",
+    ),
+    verify_compat_devices: Optional[str] = typer.Option(
+        None,
+        "--verify-compat-devices",
+        help="Verify compatibility devices list (comma-separated).",
+    ),
+    verify_require_fresh_evidence: bool = typer.Option(
+        False,
+        "--verify-require-fresh-evidence/--no-verify-require-fresh-evidence",
+        help="Verify stage requires current run fresh evidence for matrix artifacts.",
     ),
 ):
     """Start full product workflow"""
@@ -673,6 +751,13 @@ def start(
                 verify_unit_command=verify_unit_command,
                 verify_smoke_command=verify_smoke_command,
                 verify_require_ui_actions=verify_require_ui_actions,
+                verify_qa_profile=verify_qa_profile,
+                verify_qa_types=verify_qa_types,
+                verify_qa_matrix_path=verify_qa_matrix_path,
+                verify_ui_runner=verify_ui_runner,
+                verify_compat_browsers=verify_compat_browsers,
+                verify_compat_devices=verify_compat_devices,
+                verify_require_fresh_evidence=verify_require_fresh_evidence,
             )
             if rc == 0:
                 typer.echo(f"    ✓ {stage} completed")
@@ -752,7 +837,7 @@ def continue_workflow(  # noqa: A003
         "--implementation-command",
         help="Implementation stage command override",
     ),
-    verify_scope: str = typer.Option("all", "--verify-scope", help="Verify scope: ui/api-curl/unit/smoke/all"),
+    verify_scope: str = typer.Option("all", "--verify-scope", help="Verify scope: ui/api-curl/unit/smoke/all/qa9"),
     verify_config: Optional[str] = typer.Option(None, "--verify-config", help="Verify config path"),
     verify_ui_command: Optional[str] = typer.Option(None, "--verify-ui-command", help="Verify UI command"),
     verify_api_curl_command: Optional[str] = typer.Option(None, "--verify-api-curl-command", help="Verify API curl command"),
@@ -762,6 +847,41 @@ def continue_workflow(  # noqa: A003
         False,
         "--verify-require-ui-actions/--no-verify-require-ui-actions",
         help="Require key UI action evidence in verify stage.",
+    ),
+    verify_qa_profile: str = typer.Option(
+        "web-full",
+        "--verify-qa-profile",
+        help="Verify QA profile for qa9 scope: web-core/web-full/custom",
+    ),
+    verify_qa_types: Optional[list[str]] = typer.Option(
+        None,
+        "--verify-qa-types",
+        help="Verify QA types for qa9 scope (comma-separated or repeatable).",
+    ),
+    verify_qa_matrix_path: Optional[str] = typer.Option(
+        None,
+        "--verify-qa-matrix-path",
+        help="Verify QA9 matrix path (*.qa9-matrix.json).",
+    ),
+    verify_ui_runner: str = typer.Option(
+        "playwright",
+        "--verify-ui-runner",
+        help="Verify UI runner for qa9: playwright/cypress/browser-use/agent-browser/midscene",
+    ),
+    verify_compat_browsers: Optional[str] = typer.Option(
+        None,
+        "--verify-compat-browsers",
+        help="Verify compatibility browsers list (comma-separated).",
+    ),
+    verify_compat_devices: Optional[str] = typer.Option(
+        None,
+        "--verify-compat-devices",
+        help="Verify compatibility devices list (comma-separated).",
+    ),
+    verify_require_fresh_evidence: bool = typer.Option(
+        False,
+        "--verify-require-fresh-evidence/--no-verify-require-fresh-evidence",
+        help="Verify stage requires current run fresh evidence for matrix artifacts.",
     ),
 ):
     """Continue workflow from memory lifecycle progress and execute next stage(s)."""
@@ -843,6 +963,13 @@ def continue_workflow(  # noqa: A003
             verify_unit_command=verify_unit_command,
             verify_smoke_command=verify_smoke_command,
             verify_require_ui_actions=verify_require_ui_actions,
+            verify_qa_profile=verify_qa_profile,
+            verify_qa_types=verify_qa_types,
+            verify_qa_matrix_path=verify_qa_matrix_path,
+            verify_ui_runner=verify_ui_runner,
+            verify_compat_browsers=verify_compat_browsers,
+            verify_compat_devices=verify_compat_devices,
+            verify_require_fresh_evidence=verify_require_fresh_evidence,
         )
         if rc != 0:
             blocked = load_run_state(project_root, resolved_run_id) or working_state

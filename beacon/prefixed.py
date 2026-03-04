@@ -26,6 +26,7 @@ SUPPORTED_SUBCOMMANDS = (
     "jtbd",
     "kano",
     "moscow",
+    "persona",
     "prd",
     "ralph-bridge",
     "recall",

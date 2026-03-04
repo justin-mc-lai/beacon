@@ -51,7 +51,7 @@ def _main_callback(
     )
 ):
     if version_flag:
-        typer.echo("Beacon CLI v1.0.1")
+        typer.echo("Beacon CLI v1.0.2")
         raise typer.Exit()
 
 
