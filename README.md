@@ -565,6 +565,14 @@ beacon-init --template minimal
 # 启动一次自动测试（写入 .beacon/auto-test-status.json）
 beacon-auto-test create ui --project .
 
+# QA9 全链路执行（支持 playwright/cypress/browser-use/agent-browser/midscene）
+beacon-auto-test create qa9 --project . \
+  --qa-matrix-path docs/beacon/v1.0.2/qa/test-cases/qa9-llm-adaptive-automation-closure.qa9-matrix.json \
+  --ui-runner browser-use \
+  --require-fresh-evidence \
+  --require-junit \
+  --require-assertion-count
+
 # 多层真实执行（ui/api-curl/unit/smoke）
 beacon-auto-test create all --project . \
   --ui-command "python -m pytest -q -k ui" \
@@ -623,6 +631,9 @@ beacon-auto-test create all \
 # 查看测试状态
 beacon-auto-test status --project .
 beacon-auto-test status --project . --json
+
+# 导入 qa-use 平台执行结果到 Beacon
+beacon-auto-test import-qa-use .beacon/qa-use-export.json --project .
 ```
 
 常见 `ui_guard.reason_code`：
@@ -637,13 +648,25 @@ beacon-auto-test status --project . --json
 - `ac_tc_evidence_chain_broken`
 - `coverage_incomplete`
 
+一键严格验收（QA9）：
+
+```bash
+make qa9-strict-acceptance
+# 或
+bash scripts/ci/qa9_strict_acceptance.sh
+```
+
 #### `beacon-test-progress`
 
 测试进度跟踪。
 
 ```bash
-beacon-test-progress
-beacon-test-progress --verbose
+# 从 auto-test 状态自动同步
+beacon-test-progress sync --project .
+
+# 展示（可选先同步）
+beacon-test-progress show --project .
+beacon-test-progress show --project . --sync --json
 ```
 
 #### `beacon-release`
