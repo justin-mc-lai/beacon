@@ -1,7 +1,7 @@
 """Workflow lifecycle memory helpers.
 
 This module builds a PTK-style memory loop for the default workflow path:
-think -> user-story -> prd -> test-case -> implementation -> verify.
+think -> user-story -> prd -> test-case -> implementation -> verify -> gate.
 """
 
 from __future__ import annotations
@@ -17,7 +17,24 @@ from beacon.utils.runtime import load_run_state, now_iso, runs_dir
 LIFECYCLE_FILE = "workflow-lifecycle.json"
 LIFECYCLE_INDEX_FILE = "workflow-lifecycle.index.json"
 LIFECYCLE_SCHEMA_FILE = "workflow-lifecycle.schema.json"
-WORKFLOW_STAGES = ("think", "user-story", "prd", "test-case", "implementation", "verify")
+WORKFLOW_STAGES = ("think", "user-story", "prd", "test-case", "implementation", "verify", "gate")
+
+_ALLOW_REPEAT_EVENTS = {
+    # stage retry trace
+    "stage_started",
+    "stage_skipped",
+    "stage_context_injected",
+    "stage_finished",
+    "stage_failed",
+    "memory_writeback",
+    # interactive HUD lifecycle
+    "hud_rendered",
+    "next_step_prompted",
+    "human_checkpoint_confirmed",
+    "human_checkpoint_rejected",
+    "workflow_paused",
+    "feedback_apply_triggered",
+}
 
 _LIFECYCLE_SCHEMA = {
     "schema_version": "1.0",
@@ -50,6 +67,9 @@ _LIFECYCLE_SCHEMA = {
                     "source_session_id": {"type": "string"},
                     "evidence_ref": {"type": "array", "items": {"type": "string"}},
                     "ts": {"type": "string"},
+                    "attempt_id": {"type": "string"},
+                    "attempt_seq": {"type": "integer"},
+                    "supersedes_event_id": {"type": "string"},
                     "details": {"type": "object"},
                 },
             },
@@ -150,8 +170,46 @@ def append_lifecycle_event(
         dedupe_keys = []
 
     refs = [str(x) for x in (evidence_ref or []) if str(x).strip()]
+
+    stage_events = [
+        item
+        for item in items
+        if isinstance(item, dict) and item.get("run_id") == run_id and item.get("stage") == stage
+    ]
+    latest_attempt_seq = 0
+    for item in stage_events:
+        value = item.get("attempt_seq")
+        try:
+            seq = int(value)
+        except Exception:  # noqa: BLE001
+            seq = 0
+        if seq > latest_attempt_seq:
+            latest_attempt_seq = seq
+    explicit_attempt_seq = None
+    if details and isinstance(details, dict) and "attempt_seq" in details:
+        try:
+            explicit_attempt_seq = int(details.get("attempt_seq"))
+        except Exception:  # noqa: BLE001
+            explicit_attempt_seq = None
+
+    attempt_seq = 0
+    if stage in WORKFLOW_STAGES:
+        if explicit_attempt_seq is not None and explicit_attempt_seq > 0:
+            attempt_seq = explicit_attempt_seq
+        elif event == "stage_started":
+            attempt_seq = latest_attempt_seq + 1 if latest_attempt_seq > 0 else 1
+        else:
+            attempt_seq = latest_attempt_seq if latest_attempt_seq > 0 else 1
+    attempt_id = f"{stage}@attempt-{attempt_seq}" if attempt_seq > 0 and stage in WORKFLOW_STAGES else None
+
+    supersedes_event_id = None
+    if stage in WORKFLOW_STAGES and event == "stage_started":
+        if stage_events:
+            supersedes_event_id = str(stage_events[-1].get("event_id", "") or "") or None
+    if details and isinstance(details, dict) and details.get("supersedes_event_id"):
+        supersedes_event_id = str(details.get("supersedes_event_id"))
     key = _dedupe_key(run_id=run_id, stage=stage, event=event, evidence_ref=refs, source=source)
-    if key in dedupe_keys:
+    if event not in _ALLOW_REPEAT_EVENTS and key in dedupe_keys:
         # Return existing latest event with same dedupe key.
         for item in reversed(items):
             if (
@@ -173,6 +231,11 @@ def append_lifecycle_event(
         "ts": now_iso(),
         "details": details or {},
     }
+    if attempt_id:
+        payload["attempt_id"] = attempt_id
+        payload["attempt_seq"] = attempt_seq
+    if supersedes_event_id:
+        payload["supersedes_event_id"] = supersedes_event_id
     items.append(payload)
     dedupe_keys.append(key)
 
@@ -422,20 +485,48 @@ def compute_workflow_progress(
     events = load_lifecycle_events(project_root, run_id=target_run_id) if target_run_id else []
     stage_status: dict[str, dict[str, Any]] = {}
 
+    def _seq(item: dict[str, Any]) -> int:
+        try:
+            return int(item.get("attempt_seq"))
+        except Exception:  # noqa: BLE001
+            return 0
+
     for stage in WORKFLOW_STAGES:
         stage_events = [e for e in events if str(e.get("stage", "")) == stage]
-        names = {str(e.get("event", "")) for e in stage_events}
+        stage_events.sort(key=lambda x: str(x.get("ts", "")))
+        has_skipped_any = any(str(e.get("event", "")) == "stage_skipped" for e in stage_events)
+        latest_attempt_seq = 0
+        for item in stage_events:
+            seq = _seq(item)
+            if seq > latest_attempt_seq:
+                latest_attempt_seq = seq
+        if latest_attempt_seq > 0:
+            latest_attempt_events = [item for item in stage_events if _seq(item) == latest_attempt_seq]
+        else:
+            latest_attempt_events = stage_events
+
+        names = {str(e.get("event", "")) for e in latest_attempt_events}
         has_started = "stage_started" in names
         has_context = "stage_context_injected" in names
         has_finished = "stage_finished" in names
         has_writeback = "memory_writeback" in names
         has_failed = "stage_failed" in names
+        has_skipped = "stage_skipped" in names or (has_skipped_any and not latest_attempt_events)
+        failure_events = [e for e in stage_events if str(e.get("event", "")) == "stage_failed"]
+        latest_failure_ts = str(failure_events[-1].get("ts", "")) if failure_events else ""
+        completion_events = [
+            e for e in latest_attempt_events if str(e.get("event", "")) in {"stage_finished", "memory_writeback"}
+        ]
+        latest_completion_ts = str(completion_events[-1].get("ts", "")) if completion_events else ""
 
-        if has_failed:
-            status = "failed"
-        elif has_started and has_context and has_finished and has_writeback:
+        completed_by_contract = has_started and has_context and has_finished and has_writeback
+        if completed_by_contract:
             status = "completed"
-        elif has_started or has_context or has_finished or has_writeback:
+        elif has_failed:
+            status = "failed"
+        elif has_skipped and not has_started and not has_finished and not has_writeback:
+            status = "skipped"
+        elif latest_attempt_events:
             status = "in_progress"
         else:
             status = "not_started"
@@ -447,6 +538,12 @@ def compute_workflow_progress(
             "has_finished": has_finished,
             "has_writeback": has_writeback,
             "has_failed": has_failed,
+            "has_skipped": has_skipped,
+            "attempt_seq": latest_attempt_seq or None,
+            "attempt_id": f"{stage}@attempt-{latest_attempt_seq}" if latest_attempt_seq > 0 else None,
+            "retry_count": max(0, (latest_attempt_seq - 1)) if latest_attempt_seq > 0 else len(failure_events),
+            "latest_failure_ts": latest_failure_ts or None,
+            "latest_completion_ts": latest_completion_ts or None,
             "event_count": len(stage_events),
         }
 
@@ -454,6 +551,17 @@ def compute_workflow_progress(
     next_stage = ordered[0] if ordered else None
     missing_stages = [stage for stage in WORKFLOW_STAGES if stage_status[stage]["status"] != "completed"]
     closure_complete = len(missing_stages) == 0 and bool(target_run_id)
+
+    gate_report = project_root / ".beacon" / "gate-report.json"
+    gate_status = "unknown"
+    gate_pass = False
+    if gate_report.exists():
+        try:
+            gate_payload = json.loads(gate_report.read_text(encoding="utf-8"))
+        except Exception:  # noqa: BLE001
+            gate_payload = {}
+        gate_status = str(gate_payload.get("status", "")).strip() or "unknown"
+        gate_pass = gate_status.lower() == "pass"
 
     run_state = load_run_state(project_root, target_run_id) if target_run_id else None
     run_feature = str(run_state.get("feature", "")) if isinstance(run_state, dict) else ""
@@ -466,6 +574,8 @@ def compute_workflow_progress(
         "closure_complete": closure_complete,
         "next_stage": next_stage,
         "missing_closure_stages": missing_stages,
+        "gate_status": gate_status,
+        "gate_pass": gate_pass,
         "stages": stage_status,
     }
 

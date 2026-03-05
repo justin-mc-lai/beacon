@@ -139,10 +139,12 @@ beacon-workflow gate
 ### 3.1 工作流阶段
 
 ```
-┌─────────┐   ┌────────────┐   ┌──────┐   ┌───────────┐   ┌────────────────┐   ┌────────┐   ┌──────┐
-│  Think  │ → │ User Story │ → │ PRD  │ → │ Test Case │ → │ Implementation │ → │ Verify │ → │ Gate │
-└─────────┘   └────────────┘   └──────┘   └───────────┘   └────────────────┘   └────────┘   └──────┘
-   需求澄清    用户故事        需求文档     测试矩阵         对齐实现开发编码        多层测试     交付门控
+┌─────────┐   ┌────────────┐   ┌──────┐   ┌───────────┐   ┌────────────────┐   ┌────────┐
+│  Think  │ → │ User Story │ → │ PRD  │ → │ Test Case │ → │ Implementation │ → │ Verify │
+└─────────┘   └────────────┘   └──────┘   └───────────┘   └────────────────┘   └────────┘
+   需求澄清    用户故事        需求文档     测试矩阵         对齐实现开发编码        多层测试
+
+Verify 后由 gate/release 进行治理判定（不在 workflow 主状态机 6 阶段内）。
 ```
 
 | 阶段 | 命令 | 产出 |
@@ -153,7 +155,7 @@ beacon-workflow gate
 | Test Case | `beacon-test-case *` | 测试用例文档 + AC 可执行矩阵 |
 | Implementation | `beacon-workflow start --auto` | 实现阶段执行记录 |
 | Verify | `beacon-auto-test create *` | 多层真实执行证据 |
-| Gate | `beacon-workflow gate` | Pass / Blocked / Cancelled |
+| Gate（治理） | `beacon-gate check release` / `beacon-workflow gate` | Pass / Blocked / Conditional-Pass（治理判定） |
 
 ### 3.1.1 工作流生命周期（Lifecycle）与记忆体
 
@@ -192,6 +194,7 @@ Beacon 的 workflow 生命周期主链为 6 阶段：
 │           └── ...
 ├── .beacon/                      # 状态目录
 │   ├── state/
+│   │   ├── think-progress/<version>.json
 │   │   └── think-progress.json
 │   └── memory/
 └── beacon (CLI 入口)
@@ -211,6 +214,9 @@ Beacon 的 workflow 生命周期主链为 6 阶段：
 ---
 
 ## 4. 命令参考
+
+> 说明：本节按当前实现（v1.0.2 代码）更新。  
+> 全量子命令契约见：`docs/beacon/v1.0.3/execution/v1.0.3-command-contracts-as-implemented.md`
 
 ### 4.1 工作流命令
 
@@ -386,29 +392,31 @@ beacon-test-case gate "用户登录"
 
 #### `beacon-analyze`
 
-需求分析。
+竞品分析文档（模板生成）。
 
 ```bash
-beacon-analyze
-beacon-analyze --feature "用户登录"
+beacon-analyze create "抖音" --project .
+beacon-analyze list --project .
 ```
 
 #### `beacon-brainstorm`
 
-头脑风暴模式。
+七维发散模板（模板生成）。
+
+> 注意：七维发散在 `brainstorm`，`think` 是收敛记录会话。
 
 ```bash
-beacon-brainstorm "用户登录"
-beacon-brainstorm "用户登录" --mode creative
+beacon-brainstorm create "用户登录" --project .
+beacon-brainstorm list --project .
 ```
 
 #### `beacon-design`
 
-设计阶段。
+Design Thinking 文档（模板生成）。
 
 ```bash
-beacon-design "用户登录"
-beacon-design "用户登录" --type ui
+beacon-design create "用户登录" --project .
+beacon-design list --project .
 ```
 
 #### `beacon-jtbd`
@@ -416,7 +424,8 @@ beacon-design "用户登录" --type ui
 Jobs-to-be-Done 分析。
 
 ```bash
-beacon-jtbd "用户登录"
+beacon-jtbd create "用户登录" --project .
+beacon-jtbd list --project .
 ```
 
 #### `beacon-kano`
@@ -424,9 +433,8 @@ beacon-jtbd "用户登录"
 KANO 模型分析 — 需求分类（基本型、期望型、兴奋型）。
 
 ```bash
-beacon-kano "用户登录"
-beacon-kano "用户登录" --add "社交登录"
-beacon-kano "用户登录" --list
+beacon-kano create "用户登录" --project .
+beacon-kano list --project .
 ```
 
 #### `beacon-moscow`
@@ -434,9 +442,8 @@ beacon-kano "用户登录" --list
 MoSCoW 优先级划分 — Must/Should/Could/Won't。
 
 ```bash
-beacon-moscow "用户登录"
-beacon-moscow "用户登录" --add "账号密码" must
-beacon-moscow "用户登录" --add "社交登录" should
+beacon-moscow create "用户登录" --project .
+beacon-moscow list --project .
 ```
 
 #### `beacon-roadmap`
@@ -444,9 +451,8 @@ beacon-moscow "用户登录" --add "社交登录" should
 路线图规划。
 
 ```bash
-beacon-roadmap
-beacon-roadmap v2.0.0
-beacon-roadmap --timeline 2026-Q1,2026-Q2
+beacon-roadmap create "电商平台" --period 2026-Q2 --project .
+beacon-roadmap list --project .
 ```
 
 #### `beacon-persona`
@@ -454,8 +460,8 @@ beacon-roadmap --timeline 2026-Q1,2026-Q2
 用户画像。
 
 ```bash
-beacon-persona "用户登录"
-beacon-persona list
+beacon-persona create "电商消费者" --project .
+beacon-persona list --project .
 ```
 
 #### `beacon-version`
@@ -480,7 +486,7 @@ beacon-version list
 
 ```bash
 beacon-evolution-summary create v1.0.1 --previous v1.0.0
-beacon-evolution-summary create auto --json
+beacon-evolution-summary create auto --json --project .
 ```
 
 ---
@@ -494,6 +500,7 @@ beacon-evolution-summary create auto --json
 ```bash
 beacon-doctor
 beacon-doctor --fix
+beacon-doctor diagnose --json
 ```
 
 #### `beacon-status`
@@ -504,6 +511,7 @@ beacon-doctor --fix
 beacon-status
 beacon-status --verbose
 beacon-status --board --version v1.0.1 --feature "用户登录"
+beacon-status show-status --board --project-root .
 ```
 
 #### `beacon-report`
@@ -515,15 +523,16 @@ beacon-report
 beacon-report --machine
 beacon-report --machine --version v1.0.0
 beacon-report --machine --version v1.0.1 --feature "用户登录"
+beacon-report generate latest --machine --project-root .
 ```
 
 #### `beacon-debug`
 
-调试模式。
+运行事件调试（watch）。
 
 ```bash
-beacon-debug
-beacon-debug --trace
+beacon-debug watch --project-root .
+beacon-debug watch run-20260305T030217Z-3c72 --follow --tail 50 --project-root .
 ```
 
 #### `beacon-feedback`
@@ -531,17 +540,17 @@ beacon-debug --trace
 测试反馈同步。
 
 ```bash
-beacon-feedback
-beacon-feedback --sync
+beacon-feedback sync latest --project-root .
+beacon-feedback sync run-20260305T030217Z-3c72 --project-root .
 ```
 
 #### `beacon-resume`
 
-恢复会话。
+恢复/查看 run 状态（必须传 run_id）。
 
 ```bash
-beacon-resume
-beacon-resume session-123
+beacon-resume run-20260305T030217Z-3c72 --project-root .
+beacon-resume restore run-20260305T030217Z-3c72 --project-root .
 ```
 
 #### `beacon-init`
@@ -550,7 +559,9 @@ beacon-resume session-123
 
 ```bash
 beacon-init
-beacon-init --template minimal
+beacon-init --dry-run
+beacon-init --apply --project .
+beacon-init run --dry-run --project .
 ```
 
 ---
@@ -677,8 +688,8 @@ beacon-test-progress show --project . --sync --json
 发布流程。
 
 ```bash
-beacon-release v1.0.0
-beacon-release v1.0.0 --dry-run
+beacon-release create v1.0.0 --project .
+beacon-release check v1.0.0 --project .
 ```
 
 ---
@@ -690,8 +701,8 @@ beacon-release v1.0.0 --dry-run
 API 设计。
 
 ```bash
-beacon-api-design "用户登录"
-beacon-api-design "用户登录" --format openapi
+beacon-api-design create "login" --method POST --project .
+beacon-api-design list --project .
 ```
 
 #### `beacon-data-dictionary`
@@ -699,8 +710,8 @@ beacon-api-design "用户登录" --format openapi
 数据字典。
 
 ```bash
-beacon-data-dictionary
-beacon-data-dictionary "用户"
+beacon-data-dictionary create "user" --project .
+beacon-data-dictionary list --project .
 ```
 
 ---
@@ -712,8 +723,8 @@ beacon-data-dictionary "用户"
 UI 规范。
 
 ```bash
-beacon-ui-spec "用户登录"
-beacon-ui-spec "用户登录" --theme dark
+beacon-ui-spec create "用户登录" --project .
+beacon-ui-spec list --project .
 ```
 
 #### `beacon-wireframe`
@@ -721,8 +732,8 @@ beacon-ui-spec "用户登录" --theme dark
 线框图。
 
 ```bash
-beacon-wireframe "登录页面"
-beacon-wireframe "登录页面" --export png
+beacon-wireframe create "登录页面" --project .
+beacon-wireframe list --project .
 ```
 
 ---
@@ -734,18 +745,18 @@ beacon-wireframe "登录页面" --export png
 保存上下文。
 
 ```bash
-beacon-save "当前思考"
-beacon-save "当前思考" --tags work,login
+beacon-save run "当前思考" --project .
+beacon-save run --project .
 ```
 
 #### `beacon-recall`
 
-召回上下文。
+召回会话/记忆。
 
 ```bash
-beacon-recall
-beacon-recall "当前思考"
-beacon-recall --tag work
+beacon-recall list --project .
+beacon-recall run "当前思考" --project .
+beacon-recall memory "登录" --type insight --limit 5 --project .
 ```
 
 #### `beacon-remember`
@@ -753,8 +764,9 @@ beacon-recall --tag work
 长期记忆。
 
 ```bash
-beacon-remember "用户偏好"
-beacon-remember list
+beacon-remember add "用户偏好：支持社交登录" --type insight --tag login --project .
+beacon-remember search "社交登录" --project .
+beacon-remember list --project .
 ```
 
 ---
@@ -766,9 +778,11 @@ beacon-remember list
 团队模式。
 
 ```bash
-beacon-team start
+beacon-team start "登录功能交付" --runtime file --members 3 --project .
 beacon-team status
-beacon-team status
+beacon-team review spec pass --reviewer pm --project .
+beacon-team review quality pass --reviewer qa --project .
+beacon-team report --format both --project .
 ```
 
 #### `beacon-ralph-bridge`
@@ -776,8 +790,9 @@ beacon-team status
 Ralph 桥接。
 
 ```bash
-beacon-ralph-bridge connect
+beacon-ralph-bridge start work --project .
 beacon-ralph-bridge status
+beacon-ralph-bridge stop --project .
 ```
 
 ---
@@ -803,38 +818,31 @@ beacon-workflow start "点赞功能" --auto
 ### 5.2 KANO 需求优先级
 
 ```bash
-# 1. 启动 KANO 分析
-beacon-kano "用户登录"
+# 1. 生成 KANO 分析文档（模板）
+beacon-kano create "用户登录" --project .
+beacon-kano list --project .
 
-# 2. 添加需求并分类
-beacon-kano "用户登录" --add "账号密码" must
-beacon-kano "用户登录" --add "社交登录" should
-beacon-kano "用户登录" --add "生物识别" could
-beacon-kano "用户登录" --add "语音登录" wont
-
-# 3. 查看分析结果
-beacon-kano "用户登录" --list
-
-# 4. 生成报告
-beacon-kano "用户登录" --report
+# 2. 生成 MoSCoW 优先级文档（模板）
+beacon-moscow create "用户登录" --project .
+beacon-moscow list --project .
 ```
 
 ### 5.3 团队协作
 
 ```bash
 # 1. 启动团队会话
-beacon-team start "登录功能评审"
+beacon-team start "登录功能评审" --project .
 
 # 2. 推进团队评审状态
-beacon-team status
-beacon-team review spec pass --reviewer pm
-beacon-team review quality pass --reviewer qa
+beacon-team status --project .
+beacon-team review spec pass --reviewer pm --project .
+beacon-team review quality pass --reviewer qa --project .
 
 # 3. 记录讨论
-beacon-save "登录功能评审结论" --tags team,login
+beacon-save run "登录功能评审结论" --project .
 
 # 4. 生成会议纪要
-beacon-team report --format both
+beacon-team report --format both --project .
 ```
 
 ---
@@ -848,7 +856,8 @@ beacon-team report --format both
 ├── runs/
 │   └── run-*/state.json               # 每次 workflow run 的状态（feature/version/mode/events）
 ├── state/
-│   ├── think-progress.json    # 思考会话状态
+│   ├── think-progress/<version>.json   # 思考会话状态（版本化）
+│   ├── think-progress.json             # 兼容副本
 │   └── workflow-memory/<run_id>/      # 阶段 recall 注入上下文
 ├── memory/
 │   ├── workflow-lifecycle.json        # 生命周期事件主文件
@@ -1010,14 +1019,15 @@ beacon-doctor
 
 ## 9. 相关链接
 
-- **文档入口（v1.0.1）**: [docs/beacon/v1.0.1/](./docs/beacon/v1.0.1/)
+- **文档入口（v1.0.3）**: [docs/beacon/v1.0.3/](./docs/beacon/v1.0.3/)
 - **功能与闭环说明**: [Beacon 功能说明与闭环流程](./docs/beacon/v1.0.1/execution/beacon-feature-closure-guide.md)
 - **命令-产物-证据速查表**: [beacon-command-artifact-evidence-cheatsheet.md](./docs/beacon/v1.0.1/execution/beacon-command-artifact-evidence-cheatsheet.md)
+- **命令契约（实现对齐）**: [v1.0.3-command-contracts-as-implemented.md](./docs/beacon/v1.0.3/execution/v1.0.3-command-contracts-as-implemented.md)
 - **研究方案（MVS）**: [beacon-fidelity-mvp-solution.md](./docs/beacon/v1.0.1/research/beacon-fidelity-mvp-solution.md)
 - **反过度设计规范**: [anti-overdesign-min-spec.md](./docs/beacon/v1.0.1/research/anti-overdesign-min-spec.md)
 - **生命周期调整**: [workflow-memory-lifecycle-adjustment.md](./docs/beacon/v1.0.1/execution/workflow-memory-lifecycle-adjustment.md)
 
 ---
 
-**版本**: v1.0.1
-**最后更新**: 2026-03-03
+**版本**: v1.0.2
+**最后更新**: 2026-03-05

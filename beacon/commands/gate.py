@@ -1636,8 +1636,10 @@ def run_gate_checks(
     all_issues = []
     gate_config = config or load_gate_config(project_root)
     scope_guard_enabled = bool(gate_config.get("scope_guard_enabled", True))
+    requested_mode = mode
+    dry_run_effective = requested_mode == GateMode.DRY_RUN
 
-    if mode == GateMode.DRY_RUN:
+    if dry_run_effective:
         typer.echo("[DRY-RUN] Running checks without blocking...")
         mode = GateMode.DEBUG  # Use debug mode for dry-run
 
@@ -1696,6 +1698,10 @@ def run_gate_checks(
     blocked_issues = [i for i in all_issues if i.get("blocked", False)]
     is_blocked = len(blocked_issues) > 0
 
+    if dry_run_effective:
+        # dry-run semantics: never block pipeline, always exit 0.
+        is_blocked = False
+
     # Handle force mode
     if is_blocked and force:
         is_blocked = False
@@ -1715,11 +1721,12 @@ def run_gate_checks(
 
     return {
         "stage": stage,
-        "mode": mode.value,
+        "mode": requested_mode.value,
         "status": "Blocked" if is_blocked else "Pass",
         "issues": all_issues,
         "blocked_count": len(blocked_issues),
         "force": force,
+        "dry_run": dry_run_effective,
     }
 
 
@@ -1782,9 +1789,13 @@ def _run_check_command(
         else:
             status_color = typer.colors.GREEN if not force else typer.colors.YELLOW
             status_text = "PASS" + (" (forced)" if force else "")
+            if result.get("dry_run"):
+                status_text += " (dry-run)"
             typer.echo(f"Status: {typer.style(status_text, fg=status_color)}")
+            if result.get("dry_run") and result.get("blocked_count", 0):
+                typer.echo(f"Dry-run detected {result['blocked_count']} would-block issues.")
 
-        if result["issues"] and not result["blocked_count"]:
+        if result["issues"] and (not result["blocked_count"] or result.get("dry_run")):
             typer.echo(f"Warnings: {len(result['issues'])}")
             for issue in result["issues"]:
                 typer.echo(f"  - {issue['reason_code']}: {issue['message']}")

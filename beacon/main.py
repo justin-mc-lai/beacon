@@ -51,7 +51,7 @@ def _main_callback(
     )
 ):
     if version_flag:
-        typer.echo("Beacon CLI v1.0.2")
+        typer.echo("Beacon CLI v1.0.3")
         raise typer.Exit()
 
 
@@ -64,7 +64,7 @@ from .commands.status import app as status_app
 from .commands.report import app as report_app
 from .commands.debug import app as debug_app
 from .commands.feedback import app as feedback_app
-from .commands.resume import app as resume_app
+from .commands.resume import resume_entry
 from .commands.think import app as think_app
 from .commands.user_story import app as user_story_app
 from .commands.prd import app as prd_app
@@ -107,7 +107,6 @@ app.add_typer(status_app, name="status")
 app.add_typer(report_app, name="report")
 app.add_typer(debug_app, name="debug")
 app.add_typer(feedback_app, name="feedback")
-app.add_typer(resume_app, name="resume")
 app.add_typer(think_app, name="think")
 app.add_typer(user_story_app, name="user-story")
 app.add_typer(prd_app, name="prd")
@@ -141,6 +140,7 @@ app.add_typer(recall_app, name="recall")
 app.add_typer(remember_app, name="remember")
 app.add_typer(team_app, name="team")
 app.add_typer(ralph_bridge_app, name="ralph-bridge")
+app.command("resume")(resume_entry)
 
 
 @app.command("work")

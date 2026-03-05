@@ -20,6 +20,7 @@ v1.0.2 聚焦 **QA9 + LLM 自适应测试闭环**，面向 AI Agent Skill 与 We
 - `execution/v1.0.2-human-ai-collaboration-playbook.md`
 - `execution/v1.0.2-one-page-runbook.md`
 - `execution/v1.0.2-reason-code-action-cheatsheet.md`
+- `release/v1.0.2-release-consistency.md`
 - `user-story/qa9-llm-adaptive-automation-closure.md`
 - `prd/qa9-llm-adaptive-automation-closure.md`
 - `research/qa-framework-adapter-comparison.md`

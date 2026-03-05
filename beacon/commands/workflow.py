@@ -1,4 +1,6 @@
 """Beacon workflow command - Full product workflow"""
+from __future__ import annotations
+
 import hashlib
 import json
 import typer
@@ -7,7 +9,9 @@ from pathlib import Path
 import subprocess
 import sys
 import os
+import signal
 
+from beacon.utils.coverage import compute_coverage_metrics
 from beacon.utils.llm_loop import build_next_stage_trace, merge_token_usage
 from beacon.utils.memory import append_memory_entry
 from beacon.utils.runtime import (
@@ -36,7 +40,18 @@ WORKFLOW_STAGES = [
     ("test-case", "Generate executable test matrix", "beacon test-case create"),
     ("implementation", "Align code implementation with docs", "beacon run workflow"),
     ("verify", "Run multi-layer tests and gate closure", "beacon auto-test create"),
+    ("gate", "Run gate readiness and closure check", "beacon gate check release"),
 ]
+
+INTERACTIVE_ACTIONS: dict[str, str] = {
+    "1": "single-step",
+    "2": "auto-run",
+    "3": "show-blockers",
+    "4": "feedback-apply",
+    "5": "pause",
+    "6": "abort",
+}
+EXECUTION_ACTIONS = {"single-step", "auto-run", "feedback-apply"}
 
 
 def _print_next_step_selector(project_root: Path, version: str, run_id: str, feature: str) -> None:
@@ -200,6 +215,7 @@ def _write_workflow_terminal_artifacts(
                 "blocked": True,
             }
         )
+    coverage = compute_coverage_metrics(project_root, version=version, feature=feature)
     write_json(
         project_root / ".beacon" / "gate-report.json",
         {
@@ -207,6 +223,12 @@ def _write_workflow_terminal_artifacts(
             "mode": "strict",
             "status": gate_status,
             "issues": gate_issues,
+            "coverage": {
+                "full_coverage": bool(coverage.get("full_coverage")),
+                "story_coverage": coverage.get("story_coverage"),
+                "ac_coverage": coverage.get("ac_coverage"),
+                "tc_coverage": coverage.get("tc_coverage"),
+            },
             "updated_at": now_iso(),
         },
     )
@@ -354,6 +376,10 @@ def _stage_output_candidates(project_root: Path, stage: str, feature: str, versi
         return [
             project_root / ".beacon" / "auto-test-status.json",
         ] + common
+    if stage == "gate":
+        return [
+            project_root / ".beacon" / "gate-report.json",
+        ] + common
     return common
 
 
@@ -382,6 +408,286 @@ def _append_run_event(state: dict[str, Any], event: str, **details: Any) -> None
     events.append(payload)
     state["events"] = events
 
+
+def _effective_interactive_mode(interactive: Optional[bool]) -> bool:
+    if isinstance(interactive, bool):
+        return interactive
+    try:
+        return bool(sys.stdin.isatty() and sys.stdout.isatty())
+    except Exception:  # noqa: BLE001
+        return False
+
+
+def _workflow_hud_snapshot_path(project_root: Path, run_id: str) -> Path:
+    return project_root / ".beacon" / "state" / "workflow-hud" / f"{run_id}.json"
+
+
+def _load_json_dict(path: Path) -> dict[str, Any]:
+    if not path.exists():
+        return {}
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:  # noqa: BLE001
+        return {}
+    return data if isinstance(data, dict) else {}
+
+
+def _read_auto_test_status(project_root: Path) -> str:
+    payload = _load_json_dict(project_root / ".beacon" / "auto-test-status.json")
+    status = str(payload.get("status", "")).strip().lower()
+    return status or "unknown"
+
+
+def _build_latest_reason_codes(progress: dict[str, Any]) -> list[str]:
+    stage_map = progress.get("stages", {})
+    if not isinstance(stage_map, dict):
+        return []
+    out: list[str] = []
+    for stage, payload in stage_map.items():
+        if not isinstance(payload, dict):
+            continue
+        if str(payload.get("status", "")) == "failed":
+            out.append(f"{stage}_failed")
+    return out
+
+
+def _render_workflow_hud(
+    *,
+    project_root: Path,
+    run_id: str,
+    feature: str,
+    version: str,
+    mode: str,
+    progress: dict[str, Any],
+    show_text: bool = True,
+) -> dict[str, Any]:
+    stage_status = progress.get("stages", {}) if isinstance(progress.get("stages"), dict) else {}
+    missing = progress.get("missing_closure_stages", [])
+    if not isinstance(missing, list):
+        missing = []
+    think_state = _load_json_dict(project_root / ".beacon" / "state" / "think-progress" / f"{version}.json")
+    open_questions = think_state.get("open_questions", [])
+    conflicts = think_state.get("conflicts", [])
+    memory_metrics = {
+        "recall_injections": 0,
+        "writebacks": 0,
+        "feedback_assimilations": 0,
+    }
+    try:
+        from beacon.utils.workflow_memory import compute_memory_metrics  # local import to avoid cycle in tests
+
+        mm = compute_memory_metrics(project_root, run_id=run_id)
+        memory_metrics = {
+            "recall_injections": int(mm.get("recall_injections", 0) or 0),
+            "writebacks": int(mm.get("writebacks", 0) or 0),
+            "feedback_assimilations": int(mm.get("feedback_assimilations", 0) or 0),
+        }
+    except Exception:  # noqa: BLE001
+        pass
+
+    coverage = compute_coverage_metrics(project_root, version=version, feature=feature)
+    gate_payload = _load_json_dict(project_root / ".beacon" / "gate-report.json")
+    gate_status = str(gate_payload.get("status", "")).strip().lower() if gate_payload else ""
+    auto_test_status = _read_auto_test_status(project_root)
+    gate_ready = (
+        str(progress.get("next_stage") or "none") in {"gate", "none"}
+        and auto_test_status == "passed"
+    )
+
+    hud_payload = {
+        "schema_version": "1.0",
+        "run_id": run_id,
+        "feature": feature,
+        "version": version,
+        "mode": mode,
+        "workflow_progress": {
+            "next_stage": str(progress.get("next_stage") or "none"),
+            "closure_complete": bool(progress.get("closure_complete")),
+            "missing_closure_stages": missing,
+        },
+        "stage_status": {
+            stage: str((stage_status.get(stage) or {}).get("status", "not_started"))
+            for stage, _, _ in WORKFLOW_STAGES
+        },
+        "blockers": {
+            "blocking_open_questions": len(open_questions) if isinstance(open_questions, list) else 0,
+            "critical_conflicts": len(conflicts) if isinstance(conflicts, list) else 0,
+            "latest_reason_codes": _build_latest_reason_codes(progress),
+        },
+        "quality": {
+            "gate_ready": gate_ready,
+            "gate_status": gate_status or "unknown",
+            "auto_test_status": auto_test_status,
+            "coverage_full": bool(coverage.get("full_coverage")),
+        },
+        "memory": memory_metrics,
+        "generated_at": now_iso(),
+    }
+
+    snapshot = _workflow_hud_snapshot_path(project_root, run_id)
+    write_json(snapshot, hud_payload)
+    append_lifecycle_event(
+        project_root,
+        run_id=run_id,
+        stage="workflow",
+        event="hud_rendered",
+        source="workflow.hud",
+        evidence_ref=[str(snapshot.relative_to(project_root))],
+        details={
+            "next_stage": hud_payload["workflow_progress"]["next_stage"],
+            "closure_complete": hud_payload["workflow_progress"]["closure_complete"],
+        },
+    )
+
+    if show_text:
+        typer.echo("\n" + "=" * 56)
+        typer.echo("WORKFLOW HUD")
+        typer.echo("=" * 56)
+        typer.echo(f"run_id       : {run_id}")
+        typer.echo(f"feature      : {feature}")
+        typer.echo(f"version      : {version}")
+        typer.echo(f"mode         : {mode}")
+        typer.echo(f"next_stage   : {hud_payload['workflow_progress']['next_stage']}")
+        typer.echo(f"closure      : {hud_payload['workflow_progress']['closure_complete']}")
+        typer.echo(f"missing      : {hud_payload['workflow_progress']['missing_closure_stages']}")
+        typer.echo(f"auto_test    : {hud_payload['quality']['auto_test_status']}")
+        typer.echo(f"gate_status  : {hud_payload['quality']['gate_status']}")
+        typer.echo(f"coverage_full: {hud_payload['quality']['coverage_full']}")
+    return hud_payload
+
+
+def _print_interactive_menu() -> None:
+    typer.echo("\n[Next Step]")
+    typer.echo("1) 执行 next_stage（single-step）")
+    typer.echo("2) 自动补齐到 gate（auto-run）")
+    typer.echo("3) 查看阻塞详情（reason_code/open_questions/conflicts）")
+    typer.echo("4) 执行反馈修订（feedback extract+apply）")
+    typer.echo("5) 暂停并保存（pause）")
+    typer.echo("6) 退出（abort）")
+
+
+def _write_interaction_memory(
+    *,
+    project_root: Path,
+    run_id: str,
+    action: str,
+    accepted: bool,
+    hud_snapshot_rel: str | None = None,
+    reason_codes: list[str] | None = None,
+) -> None:
+    refs = [x for x in [hud_snapshot_rel] if x]
+    details = {
+        "action": action,
+        "accepted": accepted,
+        "reason_codes": reason_codes or [],
+    }
+    event_name = "human_checkpoint_confirmed" if accepted else "human_checkpoint_rejected"
+    append_lifecycle_event(
+        project_root,
+        run_id=run_id,
+        stage="workflow",
+        event=event_name,
+        source="workflow.interactive",
+        evidence_ref=refs,
+        details=details,
+    )
+    append_memory_entry(
+        project_root=project_root,
+        mem_type="decision",
+        text=f"[workflow.interactive] action={action} accepted={accepted}",
+        source_session_id=run_id,
+        source="workflow.interactive",
+        evidence_ref=refs,
+        confidence=0.8 if accepted else 0.7,
+        tags=["workflow", "interactive", "checkpoint", action],
+    )
+
+
+def _resolve_action_with_timeout(
+    *,
+    run_id: str,
+    project_root: Path,
+    confirm_timeout: int,
+    on_timeout: str,
+) -> str:
+    default_action = "pause"
+    normalized = str(on_timeout or "pause").strip().lower()
+    if normalized not in {"pause", "continue", "abort"}:
+        normalized = "pause"
+    action_map = {"pause": "pause", "continue": "single-step", "abort": "abort"}
+
+    raw_choice = _input_with_timeout("Select action [1-6]: ", confirm_timeout)
+    if raw_choice is None:
+        resolved = action_map[normalized]
+        append_lifecycle_event(
+            project_root,
+            run_id=run_id,
+            stage="workflow",
+            event="workflow_paused",
+            source="workflow.interactive",
+            details={"reason": "timeout_or_no_input", "on_timeout": normalized, "resolved_action": resolved},
+        )
+        return resolved or default_action
+    raw_choice = str(raw_choice).strip()
+    action = INTERACTIVE_ACTIONS.get(raw_choice)
+    if not action:
+        typer.echo("Invalid choice. default -> pause")
+        return "pause"
+    return action
+
+
+def _input_with_timeout(prompt: str, timeout_sec: int) -> str | None:
+    timeout = max(1, int(timeout_sec))
+    if os.name == "nt":
+        try:
+            return input(prompt)
+        except EOFError:
+            return None
+
+    def _raise_timeout(_signum, _frame):  # type: ignore[no-untyped-def]
+        raise TimeoutError
+
+    previous = signal.getsignal(signal.SIGALRM)
+    try:
+        signal.signal(signal.SIGALRM, _raise_timeout)
+        signal.alarm(timeout)
+        try:
+            value = input(prompt)
+        except EOFError:
+            return None
+        return value
+    except TimeoutError:
+        return None
+    finally:
+        signal.alarm(0)
+        signal.signal(signal.SIGALRM, previous)
+
+
+def _confirm_action(action: str, *, confirm_timeout: int) -> bool:
+    if action not in EXECUTION_ACTIONS:
+        return True
+    choice = _input_with_timeout("Confirm? (y/N): ", confirm_timeout)
+    if choice is None:
+        return False
+    choice = str(choice).strip().lower()
+    return choice in {"y", "yes"}
+
+
+def _pause_workflow_state(project_root: Path, run_id: str, state: dict[str, Any], reason: str = "manual_pause") -> None:
+    paused = dict(state)
+    paused["status"] = "paused"
+    paused["reason"] = reason
+    paused["paused_at"] = now_iso()
+    _append_run_event(paused, "workflow_paused", reason=reason)
+    save_run_state(project_root, run_id, paused)
+    append_lifecycle_event(
+        project_root,
+        run_id=run_id,
+        stage="workflow",
+        event="workflow_paused",
+        source="workflow.interactive",
+        details={"reason": reason},
+    )
 
 def _execute_stage(
     *,
@@ -595,6 +901,42 @@ def _execute_stage(
                         "verify_status": verify_status or "unknown",
                         "reason": "verify_not_passed",
                     }
+    elif stage == "gate":
+        verify_payload = _load_json_dict(project_root / ".beacon" / "auto-test-status.json")
+        verify_status = str(verify_payload.get("status", "")).strip().lower()
+        coverage = compute_coverage_metrics(project_root, version=version, feature=feature)
+        gate_status = "Pass" if verify_status == "passed" else "Blocked"
+        issues: list[dict[str, Any]] = []
+        if verify_status != "passed":
+            issues.append(
+                {
+                    "reason_code": "verify_not_passed",
+                    "severity": "critical",
+                    "message": f"verify status is {verify_status or 'unknown'}",
+                    "blocked": True,
+                }
+            )
+        gate_payload = {
+            "stage": "release",
+            "mode": "strict",
+            "status": gate_status,
+            "issues": issues,
+            "coverage": {
+                "full_coverage": bool(coverage.get("full_coverage")),
+                "story_coverage": coverage.get("story_coverage"),
+                "ac_coverage": coverage.get("ac_coverage"),
+                "tc_coverage": coverage.get("tc_coverage"),
+            },
+            "updated_at": now_iso(),
+        }
+        write_json(project_root / ".beacon" / "gate-report.json", gate_payload)
+        rc = 0 if gate_status == "Pass" else 1
+        if rc != 0:
+            failure_details = {
+                "exit_code": rc,
+                "reason": "gate_blocked",
+                "gate_status": gate_status,
+            }
     else:
         rc = 1
 
@@ -641,6 +983,27 @@ def start(
     version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
     auto: bool = typer.Option(False, "--auto", "-a", help="Auto-run all stages"),
     skip: Optional[str] = typer.Option(None, "--skip", "-s", help="Skip stages (e.g., think,user-story)"),
+    interactive: Optional[bool] = typer.Option(
+        None,
+        "--interactive/--no-interactive",
+        help="Interactive mode (default: auto detect TTY)",
+    ),
+    hud: bool = typer.Option(
+        True,
+        "--hud/--no-hud",
+        help="Render workflow HUD before execution.",
+    ),
+    confirm_timeout: int = typer.Option(
+        60,
+        "--confirm-timeout",
+        min=1,
+        help="Interactive confirm timeout in seconds (EOF fallback).",
+    ),
+    on_timeout: str = typer.Option(
+        "pause",
+        "--on-timeout",
+        help="Timeout behavior: pause|continue|abort",
+    ),
     implementation_command: Optional[str] = typer.Option(
         None,
         "--implementation-command",
@@ -735,82 +1098,152 @@ def start(
     typer.echo("\n" + "=" * 50)
     typer.echo("WORKFLOW STAGES")
     typer.echo("=" * 50)
+    interactive_mode = _effective_interactive_mode(interactive)
+    mode_label = "interactive" if interactive_mode else "non_interactive"
+    stage_order = [name for name, _, _ in WORKFLOW_STAGES]
+    pending_stages = [stage for stage in stage_order if stage not in skip_stages]
+    hud_snapshot_rel: str | None = None
 
-    for i, (stage, desc, cmd) in enumerate(WORKFLOW_STAGES, 1):
-        if stage in skip_stages:
-            typer.echo(f"{i}. {stage:12} - {desc} [SKIPPED]")
-            continue
+    if hud:
+        hud_payload = _render_workflow_hud(
+            project_root=project_root,
+            run_id=run_id,
+            feature=feature,
+            version=resolved_version,
+            mode=mode_label,
+            progress=compute_workflow_progress(project_root, run_id=run_id),
+            show_text=True,
+        )
+        hud_snapshot_rel = str(_workflow_hud_snapshot_path(project_root, run_id).relative_to(project_root))
+    else:
+        hud_payload = {}
 
-        if auto:
-            typer.echo(f"{i}. {stage:12} - {desc}")
-            typer.echo(f"    → Running: {cmd} {feature}")
-            rc = _execute_stage(
+    run_auto = bool(auto)
+    run_single_stage: Optional[str] = None
+    if auto and interactive_mode:
+        while True:
+            _print_interactive_menu()
+            append_lifecycle_event(
+                project_root,
+                run_id=run_id,
+                stage="workflow",
+                event="next_step_prompted",
+                source="workflow.interactive",
+                evidence_ref=[x for x in [hud_snapshot_rel] if x],
+                details={"timeout_sec": confirm_timeout, "on_timeout": on_timeout},
+            )
+            action = _resolve_action_with_timeout(
+                run_id=run_id,
+                project_root=project_root,
+                confirm_timeout=confirm_timeout,
+                on_timeout=on_timeout,
+            )
+            if action == "show-blockers":
+                blockers = hud_payload.get("blockers", {}) if isinstance(hud_payload, dict) else {}
+                typer.echo(
+                    f"Blockers => open_questions={blockers.get('blocking_open_questions', 0)}, "
+                    f"conflicts={blockers.get('critical_conflicts', 0)}, "
+                    f"reason_codes={blockers.get('latest_reason_codes', [])}"
+                )
+                continue
+            if action == "feedback-apply":
+                append_lifecycle_event(
+                    project_root,
+                    run_id=run_id,
+                    stage="workflow",
+                    event="feedback_apply_triggered",
+                    source="workflow.interactive",
+                    evidence_ref=[x for x in [hud_snapshot_rel] if x],
+                    details={"action": action},
+                )
+                _write_interaction_memory(
+                    project_root=project_root,
+                    run_id=run_id,
+                    action=action,
+                    accepted=True,
+                    hud_snapshot_rel=hud_snapshot_rel,
+                    reason_codes=(hud_payload.get("blockers", {}) or {}).get("latest_reason_codes", []),
+                )
+                run_beacon_command(
+                    ["feedback", "sync", run_id, "--project-root", str(project_root)],
+                    project_root,
+                    run_id=run_id,
+                    stage="workflow",
+                )
+                if hud:
+                    hud_payload = _render_workflow_hud(
+                        project_root=project_root,
+                        run_id=run_id,
+                        feature=feature,
+                        version=resolved_version,
+                        mode=mode_label,
+                        progress=compute_workflow_progress(project_root, run_id=run_id),
+                        show_text=True,
+                    )
+                continue
+            if action == "pause":
+                _write_interaction_memory(
+                    project_root=project_root,
+                    run_id=run_id,
+                    action=action,
+                    accepted=True,
+                    hud_snapshot_rel=hud_snapshot_rel,
+                )
+                _pause_workflow_state(project_root, run_id, base_state, reason="interactive_pause")
+                typer.echo("Workflow paused.")
+                return
+            if action == "abort":
+                _write_interaction_memory(
+                    project_root=project_root,
+                    run_id=run_id,
+                    action=action,
+                    accepted=True,
+                    hud_snapshot_rel=hud_snapshot_rel,
+                )
+                aborted = dict(base_state)
+                aborted["status"] = "aborted"
+                aborted["reason"] = "interactive_abort"
+                aborted["ended_at"] = now_iso()
+                _append_run_event(aborted, "workflow_aborted")
+                save_run_state(project_root, run_id, aborted)
+                typer.echo("Workflow aborted.")
+                raise typer.Exit(1)
+            accepted = _confirm_action(action, confirm_timeout=confirm_timeout)
+            _write_interaction_memory(
                 project_root=project_root,
                 run_id=run_id,
-                stage=stage,
-                feature=feature,
-                version=resolved_version,
-                implementation_command=implementation_command,
-                verify_scope=verify_scope,
-                verify_config=verify_config,
-                verify_ui_command=verify_ui_command,
-                verify_api_curl_command=verify_api_curl_command,
-                verify_unit_command=verify_unit_command,
-                verify_smoke_command=verify_smoke_command,
-                verify_require_ui_actions=verify_require_ui_actions,
-                verify_qa_profile=verify_qa_profile,
-                verify_qa_types=verify_qa_types,
-                verify_qa_matrix_path=verify_qa_matrix_path,
-                verify_ui_runner=verify_ui_runner,
-                verify_compat_browsers=verify_compat_browsers,
-                verify_compat_devices=verify_compat_devices,
-                verify_require_fresh_evidence=verify_require_fresh_evidence,
+                action=action,
+                accepted=accepted,
+                hud_snapshot_rel=hud_snapshot_rel,
+                reason_codes=(hud_payload.get("blockers", {}) or {}).get("latest_reason_codes", []),
             )
-            if rc == 0:
-                typer.echo(f"    ✓ {stage} completed")
+            if not accepted:
+                typer.echo("Action rejected. choose again.")
+                continue
+            if action == "single-step":
+                run_auto = False
+                run_single_stage = pending_stages[0] if pending_stages else None
             else:
-                typer.echo(f"    ✗ {stage} failed (exit={rc})")
-                blocked = dict(base_state)
-                blocked["status"] = "blocked"
-                blocked["reason"] = f"{stage}_failed"
-                blocked["ended_at"] = now_iso()
-                _append_run_event(blocked, "workflow_blocked", stage=stage, exit_code=rc)
-                _write_workflow_terminal_artifacts(
-                    project_root=project_root,
-                    version=resolved_version,
-                    run_id=run_id,
-                    feature=feature,
-                    workflow_status="blocked",
-                    reason=f"{stage}_failed",
-                )
-                save_run_state(project_root, run_id, blocked)
-                _sync_terminal_manifest(project_root, version=resolved_version, run_id=run_id)
-                _print_next_step_selector(project_root=project_root, version=resolved_version, run_id=run_id, feature=feature)
-                raise typer.Exit(rc)
+                run_auto = True
+            break
+
+    for i, (stage, desc, _) in enumerate(WORKFLOW_STAGES, 1):
+        if stage in skip_stages:
+            typer.echo(f"{i}. {stage:12} - {desc} [SKIPPED]")
+            append_lifecycle_event(
+                project_root,
+                run_id=run_id,
+                stage=stage,
+                event="stage_skipped",
+                source="workflow.start",
+                details={"feature": feature, "version": resolved_version},
+            )
+        elif run_auto or run_single_stage == stage:
+            typer.echo(f"{i}. {stage:12} - {desc}")
         else:
             typer.echo(f"{i}. {stage:12} - {desc} [PENDING]")
 
-    if auto:
-        typer.echo("\n" + "=" * 50)
-        typer.echo("WORKFLOW COMPLETE")
-        typer.echo("=" * 50)
-        completed = dict(base_state)
-        completed["status"] = "completed"
-        completed["reason"] = "ok"
-        completed["ended_at"] = now_iso()
-        _append_run_event(completed, "workflow_completed")
-        _write_workflow_terminal_artifacts(
-            project_root=project_root,
-            version=resolved_version,
-            run_id=run_id,
-            feature=feature,
-            workflow_status="completed",
-            reason="ok",
-        )
-        save_run_state(project_root, run_id, completed)
-        _sync_terminal_manifest(project_root, version=resolved_version, run_id=run_id)
-        _print_next_step_selector(project_root=project_root, version=resolved_version, run_id=run_id, feature=feature)
-    else:
+    if not auto and not run_single_stage:
         append_lifecycle_event(
             project_root,
             run_id=run_id,
@@ -830,6 +1263,101 @@ def start(
             f"  beacon workflow continue --project {project_root} --version {resolved_version} --run-id {run_id}"
         )
         _print_next_step_selector(project_root=project_root, version=resolved_version, run_id=run_id, feature=feature)
+        return
+
+    if run_single_stage:
+        execution_sequence = [run_single_stage]
+    elif run_auto:
+        execution_sequence = [stage for stage in stage_order if stage not in skip_stages]
+    else:
+        execution_sequence = []
+
+    for stage in execution_sequence:
+        typer.echo(f"    → Running: {stage}")
+        rc = _execute_stage(
+            project_root=project_root,
+            run_id=run_id,
+            stage=stage,
+            feature=feature,
+            version=resolved_version,
+            implementation_command=implementation_command,
+            verify_scope=verify_scope,
+            verify_config=verify_config,
+            verify_ui_command=verify_ui_command,
+            verify_api_curl_command=verify_api_curl_command,
+            verify_unit_command=verify_unit_command,
+            verify_smoke_command=verify_smoke_command,
+            verify_require_ui_actions=verify_require_ui_actions,
+            verify_qa_profile=verify_qa_profile,
+            verify_qa_types=verify_qa_types,
+            verify_qa_matrix_path=verify_qa_matrix_path,
+            verify_ui_runner=verify_ui_runner,
+            verify_compat_browsers=verify_compat_browsers,
+            verify_compat_devices=verify_compat_devices,
+            verify_require_fresh_evidence=verify_require_fresh_evidence,
+        )
+        if rc == 0:
+            typer.echo(f"    ✓ {stage} completed")
+            continue
+        typer.echo(f"    ✗ {stage} failed (exit={rc})")
+        blocked = load_run_state(project_root, run_id) or dict(base_state)
+        blocked["status"] = "blocked"
+        blocked["reason"] = f"{stage}_failed"
+        blocked["ended_at"] = now_iso()
+        _append_run_event(blocked, "workflow_blocked", stage=stage, exit_code=rc)
+        save_run_state(project_root, run_id, blocked)
+        _write_workflow_terminal_artifacts(
+            project_root=project_root,
+            version=resolved_version,
+            run_id=run_id,
+            feature=feature,
+            workflow_status="blocked",
+            reason=f"{stage}_failed",
+        )
+        _sync_terminal_manifest(project_root, version=resolved_version, run_id=run_id)
+        _print_next_step_selector(project_root=project_root, version=resolved_version, run_id=run_id, feature=feature)
+        raise typer.Exit(rc)
+
+    final_progress = compute_workflow_progress(project_root, run_id=run_id)
+    final_state = load_run_state(project_root, run_id) or dict(base_state)
+    closure_complete = bool(final_progress.get("closure_complete"))
+    gate_pass = bool(final_progress.get("gate_pass"))
+
+    if closure_complete and gate_pass:
+        typer.echo("\n" + "=" * 50)
+        typer.echo("WORKFLOW COMPLETE")
+        typer.echo("=" * 50)
+        final_state["status"] = "completed"
+        final_state["reason"] = "ok"
+        final_state["ended_at"] = now_iso()
+        _append_run_event(final_state, "workflow_completed")
+        save_run_state(project_root, run_id, final_state)
+        _write_workflow_terminal_artifacts(
+            project_root=project_root,
+            version=resolved_version,
+            run_id=run_id,
+            feature=feature,
+            workflow_status="completed",
+            reason="ok",
+        )
+        _sync_terminal_manifest(project_root, version=resolved_version, run_id=run_id)
+        _print_next_step_selector(project_root=project_root, version=resolved_version, run_id=run_id, feature=feature)
+        return
+
+    final_state["status"] = "running"
+    final_state["reason"] = "partial_progress"
+    _append_run_event(
+        final_state,
+        "workflow_partial",
+        missing_stages=final_progress.get("missing_closure_stages", []),
+        gate_pass=gate_pass,
+    )
+    save_run_state(project_root, run_id, final_state)
+    typer.echo(
+        "○ Workflow partial: "
+        f"missing={final_progress.get('missing_closure_stages', [])}, "
+        f"gate_pass={gate_pass}"
+    )
 
 
 @app.command("continue")
@@ -838,7 +1366,28 @@ def continue_workflow(  # noqa: A003
     version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
     feature: Optional[str] = typer.Option(None, "--feature", "-f", help="Feature filter"),
     run_id: Optional[str] = typer.Option(None, "--run-id", help="Explicit run id"),
-    auto: bool = typer.Option(False, "--auto", "-a", help="Continue until verify"),
+    auto: bool = typer.Option(False, "--auto", "-a", help="Continue until gate"),
+    interactive: Optional[bool] = typer.Option(
+        None,
+        "--interactive/--no-interactive",
+        help="Interactive mode (default: auto detect TTY)",
+    ),
+    hud: bool = typer.Option(
+        True,
+        "--hud/--no-hud",
+        help="Render workflow HUD before execution.",
+    ),
+    confirm_timeout: int = typer.Option(
+        60,
+        "--confirm-timeout",
+        min=1,
+        help="Interactive confirm timeout in seconds (EOF fallback).",
+    ),
+    on_timeout: str = typer.Option(
+        "pause",
+        "--on-timeout",
+        help="Timeout behavior: pause|continue|abort",
+    ),
     implementation_command: Optional[str] = typer.Option(
         None,
         "--implementation-command",
@@ -913,41 +1462,173 @@ def continue_workflow(  # noqa: A003
         raise typer.Exit(2)
 
     progress = compute_workflow_progress(project_root, run_id=resolved_run_id)
-    if progress.get("closure_complete"):
+    if progress.get("closure_complete") and progress.get("gate_pass"):
         typer.echo(f"✓ Workflow already complete: {resolved_run_id}")
         return
 
-    next_stage = str(progress.get("next_stage") or "")
-    if not next_stage:
-        typer.echo("✗ Cannot resolve next stage from memory progress")
-        raise typer.Exit(2)
-    trace = build_next_stage_trace(
-        feature=run_feature,
-        version=run_version,
-        run_id=resolved_run_id,
-        next_stage=next_stage,
-        context="workflow.continue",
-    )
-
-    stage_order = [name for name, _, _ in WORKFLOW_STAGES]
-    start_idx = stage_order.index(next_stage) if next_stage in stage_order else 0
-    if auto:
-        stage_sequence = stage_order[start_idx:]
+    mode_interactive = _effective_interactive_mode(interactive)
+    mode_label = "interactive" if mode_interactive else "non_interactive"
+    if hud:
+        hud_payload = _render_workflow_hud(
+            project_root=project_root,
+            run_id=resolved_run_id,
+            feature=run_feature,
+            version=run_version,
+            mode=mode_label,
+            progress=progress,
+            show_text=True,
+        )
+        hud_snapshot_rel = str(_workflow_hud_snapshot_path(project_root, resolved_run_id).relative_to(project_root))
     else:
-        stage_sequence = [next_stage]
+        hud_payload = {}
+        hud_snapshot_rel = None
+
+    next_stage = str(progress.get("next_stage") or "")
+    stage_order = [name for name, _, _ in WORKFLOW_STAGES]
+    if not next_stage and stage_order:
+        next_stage = stage_order[0]
+
+    run_auto = bool(auto)
+    run_single_stage: Optional[str] = None
+
+    if mode_interactive:
+        while True:
+            _print_interactive_menu()
+            append_lifecycle_event(
+                project_root,
+                run_id=resolved_run_id,
+                stage="workflow",
+                event="next_step_prompted",
+                source="workflow.interactive",
+                evidence_ref=[x for x in [hud_snapshot_rel] if x],
+                details={"timeout_sec": confirm_timeout, "on_timeout": on_timeout},
+            )
+            action = _resolve_action_with_timeout(
+                run_id=resolved_run_id,
+                project_root=project_root,
+                confirm_timeout=confirm_timeout,
+                on_timeout=on_timeout,
+            )
+            if action == "show-blockers":
+                blockers = hud_payload.get("blockers", {}) if isinstance(hud_payload, dict) else {}
+                typer.echo(
+                    f"Blockers => open_questions={blockers.get('blocking_open_questions', 0)}, "
+                    f"conflicts={blockers.get('critical_conflicts', 0)}, "
+                    f"reason_codes={blockers.get('latest_reason_codes', [])}"
+                )
+                continue
+            if action == "feedback-apply":
+                append_lifecycle_event(
+                    project_root,
+                    run_id=resolved_run_id,
+                    stage="workflow",
+                    event="feedback_apply_triggered",
+                    source="workflow.interactive",
+                    evidence_ref=[x for x in [hud_snapshot_rel] if x],
+                    details={"action": action},
+                )
+                _write_interaction_memory(
+                    project_root=project_root,
+                    run_id=resolved_run_id,
+                    action=action,
+                    accepted=True,
+                    hud_snapshot_rel=hud_snapshot_rel,
+                    reason_codes=(hud_payload.get("blockers", {}) or {}).get("latest_reason_codes", []),
+                )
+                run_beacon_command(
+                    ["feedback", "sync", resolved_run_id, "--project-root", str(project_root)],
+                    project_root,
+                    run_id=resolved_run_id,
+                    stage="workflow",
+                )
+                if hud:
+                    progress = compute_workflow_progress(project_root, run_id=resolved_run_id)
+                    hud_payload = _render_workflow_hud(
+                        project_root=project_root,
+                        run_id=resolved_run_id,
+                        feature=run_feature,
+                        version=run_version,
+                        mode=mode_label,
+                        progress=progress,
+                        show_text=True,
+                    )
+                continue
+            if action == "pause":
+                _write_interaction_memory(
+                    project_root=project_root,
+                    run_id=resolved_run_id,
+                    action=action,
+                    accepted=True,
+                    hud_snapshot_rel=hud_snapshot_rel,
+                )
+                _pause_workflow_state(project_root, resolved_run_id, state, reason="interactive_pause")
+                typer.echo("Workflow paused.")
+                return
+            if action == "abort":
+                _write_interaction_memory(
+                    project_root=project_root,
+                    run_id=resolved_run_id,
+                    action=action,
+                    accepted=True,
+                    hud_snapshot_rel=hud_snapshot_rel,
+                )
+                aborted = dict(state)
+                aborted["status"] = "aborted"
+                aborted["reason"] = "interactive_abort"
+                aborted["ended_at"] = now_iso()
+                _append_run_event(aborted, "workflow_aborted")
+                save_run_state(project_root, resolved_run_id, aborted)
+                typer.echo("Workflow aborted.")
+                raise typer.Exit(1)
+            accepted = _confirm_action(action, confirm_timeout=confirm_timeout)
+            _write_interaction_memory(
+                project_root=project_root,
+                run_id=resolved_run_id,
+                action=action,
+                accepted=accepted,
+                hud_snapshot_rel=hud_snapshot_rel,
+                reason_codes=(hud_payload.get("blockers", {}) or {}).get("latest_reason_codes", []),
+            )
+            if not accepted:
+                typer.echo("Action rejected. choose again.")
+                continue
+            if action == "single-step":
+                run_auto = False
+                run_single_stage = str(progress.get("next_stage") or next_stage or "")
+            else:
+                run_auto = True
+            break
 
     typer.echo(f"Continuing workflow run: {resolved_run_id}")
     typer.echo(f"Feature: {run_feature}")
     typer.echo(f"Version: {run_version}")
-    typer.echo(f"Next stage: {next_stage}")
-    typer.echo(f"Mode: {'auto' if auto else 'single-step'}")
+    typer.echo(f"Next stage: {next_stage or 'none'}")
+    typer.echo(f"Mode: {'auto' if run_auto else 'single-step'}")
+
+    if not next_stage and not run_auto and not run_single_stage:
+        typer.echo("✗ Cannot resolve next stage from memory progress")
+        raise typer.Exit(2)
+
+    trace = build_next_stage_trace(
+        feature=run_feature,
+        version=run_version,
+        run_id=resolved_run_id,
+        next_stage=next_stage or "none",
+        context="workflow.continue",
+    )
 
     working_state = dict(state)
     working_state["status"] = "running"
     working_state.setdefault("started_at", now_iso())
     _append_llm_trace(working_state, trace)
-    _append_run_event(working_state, "workflow_continue_started", next_stage=next_stage, auto=auto)
+    _append_run_event(working_state, "workflow_continue_started", next_stage=next_stage, auto=run_auto)
     save_run_state(project_root, resolved_run_id, working_state)
+
+    if run_single_stage:
+        stage_sequence = [run_single_stage]
+    else:
+        start_idx = stage_order.index(next_stage) if next_stage in stage_order else 0
+        stage_sequence = stage_order[start_idx:] if run_auto else [next_stage]
 
     for stage in stage_sequence:
         stage_progress = compute_workflow_progress(project_root, run_id=resolved_run_id)
@@ -984,6 +1665,7 @@ def continue_workflow(  # noqa: A003
             blocked["reason"] = f"{stage}_failed"
             blocked["ended_at"] = now_iso()
             _append_run_event(blocked, "workflow_continue_blocked", stage=stage, exit_code=rc)
+            save_run_state(project_root, resolved_run_id, blocked)
             _write_workflow_terminal_artifacts(
                 project_root=project_root,
                 version=run_version,
@@ -992,7 +1674,6 @@ def continue_workflow(  # noqa: A003
                 workflow_status="blocked",
                 reason=f"{stage}_failed",
             )
-            save_run_state(project_root, resolved_run_id, blocked)
             _sync_terminal_manifest(project_root, version=run_version, run_id=resolved_run_id)
             typer.echo(f"    ✗ {stage} failed (exit={rc})")
             _print_next_step_selector(
@@ -1005,24 +1686,37 @@ def continue_workflow(  # noqa: A003
         typer.echo(f"    ✓ {stage} completed")
 
         refreshed = compute_workflow_progress(project_root, run_id=resolved_run_id)
-        if not auto:
+        if not run_auto:
             missing = refreshed.get("missing_closure_stages", [])
             current = load_run_state(project_root, resolved_run_id) or working_state
-            current["status"] = "running" if missing else "completed"
-            current["reason"] = "partial_progress" if missing else "ok"
-            if not missing:
+            gate_pass = bool(refreshed.get("gate_pass"))
+            should_complete = not missing and gate_pass
+            current["status"] = "completed" if should_complete else "running"
+            current["reason"] = "ok" if should_complete else "partial_progress"
+            if should_complete:
                 current["ended_at"] = now_iso()
             _append_run_event(current, "workflow_continue_step_done", stage=stage, missing_stages=missing)
             save_run_state(project_root, resolved_run_id, current)
+            if should_complete:
+                _write_workflow_terminal_artifacts(
+                    project_root=project_root,
+                    version=run_version,
+                    run_id=resolved_run_id,
+                    feature=run_feature,
+                    workflow_status="completed",
+                    reason="ok",
+                )
+                _sync_terminal_manifest(project_root, version=run_version, run_id=resolved_run_id)
             return
 
     final_progress = compute_workflow_progress(project_root, run_id=resolved_run_id)
     final_state = load_run_state(project_root, resolved_run_id) or working_state
-    if final_progress.get("closure_complete"):
+    if final_progress.get("closure_complete") and final_progress.get("gate_pass"):
         final_state["status"] = "completed"
         final_state["reason"] = "ok"
         final_state["ended_at"] = now_iso()
         _append_run_event(final_state, "workflow_continue_completed")
+        save_run_state(project_root, resolved_run_id, final_state)
         _write_workflow_terminal_artifacts(
             project_root=project_root,
             version=run_version,
@@ -1046,12 +1740,53 @@ def continue_workflow(  # noqa: A003
             final_state,
             "workflow_continue_partial",
             missing_stages=final_progress.get("missing_closure_stages", []),
+            gate_pass=bool(final_progress.get("gate_pass")),
         )
         typer.echo(
             "○ Workflow partially continued; missing stages: "
-            f"{final_progress.get('missing_closure_stages', [])}"
+            f"{final_progress.get('missing_closure_stages', [])}, "
+            f"gate_pass={bool(final_progress.get('gate_pass'))}"
         )
     save_run_state(project_root, resolved_run_id, final_state)
+
+
+@app.command("hud")
+def hud_command(
+    project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
+    version: str = typer.Option("auto", "--version", "-v", help="Version filter"),
+    feature: Optional[str] = typer.Option(None, "--feature", "-f", help="Feature filter"),
+    run_id: Optional[str] = typer.Option(None, "--run-id", help="Explicit run id"),
+    json_output: bool = typer.Option(False, "--json", help="Output HUD as JSON only"),
+):
+    """Render workflow HUD snapshot without stage execution."""
+    project_root = Path(project) if project else Path.cwd()
+    version_raw = (version or "").strip().lower()
+    version_filter = None if version_raw in {"", "auto", "latest"} else resolve_target_version(project_root, version)
+    resolved_run_id = resolve_workflow_run_id(
+        project_root,
+        run_id=run_id,
+        version=version_filter,
+        feature=feature,
+    )
+    if not resolved_run_id:
+        typer.echo("✗ No workflow run found for HUD")
+        raise typer.Exit(2)
+
+    state = load_run_state(project_root, resolved_run_id) or {}
+    run_feature = str(state.get("feature", "") or feature or "").strip()
+    run_version = str(state.get("version", "") or resolve_target_version(project_root, version)).strip()
+    progress = compute_workflow_progress(project_root, run_id=resolved_run_id)
+    payload = _render_workflow_hud(
+        project_root=project_root,
+        run_id=resolved_run_id,
+        feature=run_feature,
+        version=run_version,
+        mode="non_interactive",
+        progress=progress,
+        show_text=not json_output,
+    )
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
 
 
 @app.command()
@@ -1098,6 +1833,7 @@ def status(
         ("test-case", "qa/test-cases"),
         ("implementation", ".beacon/state"),
         ("verify", ".beacon/auto-test-status.json"),
+        ("gate", ".beacon/gate-report.json"),
     ]
 
     for stage, path in stages:
@@ -1109,7 +1845,7 @@ def status(
             stage_path = next((p for p in candidates if p.exists()), candidates[-1])
         else:
             stage_path = docs_dir / path
-        if stage in {"implementation", "verify"}:
+        if stage in {"implementation", "verify", "gate"}:
             stage_path = project_root / path
         if stage_path.exists():
             if stage_path.is_file():
@@ -1141,11 +1877,12 @@ def status(
         typer.echo(f"feature: {progress.get('feature')}")
     if progress.get("version"):
         typer.echo(f"version: {progress.get('version')}")
-    for stage in ("think", "user-story", "prd", "test-case", "implementation", "verify"):
+    for stage in ("think", "user-story", "prd", "test-case", "implementation", "verify", "gate"):
         item = progress.get("stages", {}).get(stage, {})
         typer.echo(f"{stage:12}: {item.get('status', 'not_started')}")
     typer.echo(f"next_stage   : {progress.get('next_stage') or 'none'}")
     typer.echo(f"closure_complete: {bool(progress.get('closure_complete'))}")
+    typer.echo(f"gate_pass    : {bool(progress.get('gate_pass'))}")
     typer.echo(f"missing_stages : {progress.get('missing_closure_stages', [])}")
 
 

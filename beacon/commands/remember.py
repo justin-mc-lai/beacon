@@ -26,12 +26,19 @@ def add(
         "insight",
         "--type",
         "-y",
-        help="Memory type: insight/decision/vocabulary",
+        help="Memory type: insight/decision/vocabulary/feedback",
     ),
     source_session_id: str = typer.Option("manual", "--source-session-id", help="Source session id"),
     source: str = typer.Option("remember", "--source", help="Human-readable source"),
     evidence_ref: list[str] = typer.Option([], "--evidence-ref", help="Evidence reference (repeatable)"),
     confidence: float = typer.Option(0.8, "--confidence", min=0.0, max=1.0, help="Confidence [0,1]"),
+    upsert: bool = typer.Option(
+        False,
+        "--upsert/--no-upsert",
+        help="Upsert by content_hash + source_session_id + source",
+    ),
+    revision_of: str = typer.Option("", "--revision-of", help="Previous memory_id to supersede"),
+    reason_code: list[str] = typer.Option([], "--reason-code", help="Reason code tag (repeatable)"),
     project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
 ):
     """Add a memory entry with unified memory envelope metadata."""
@@ -51,6 +58,9 @@ def add(
         evidence_ref=evidence_ref,
         confidence=confidence,
         tags=tag,
+        upsert=upsert,
+        revision_of=revision_of or None,
+        reason_codes=reason_code or None,
     )
 
     typer.echo("✓ Memory added")
@@ -66,6 +76,17 @@ def search(
     memory_type: str = typer.Option("", "--type", "-y", help="Filter: insight/decision/vocabulary"),
     project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
     limit: int = typer.Option(10, "--limit", "-n", help="Max results"),
+    mode: str = typer.Option(
+        "hybrid",
+        "--mode",
+        help="Search mode: keyword|semantic|hybrid",
+    ),
+    layer: str = typer.Option(
+        "detail",
+        "--layer",
+        help="Result layer: index|timeline|detail",
+    ),
+    ids: str = typer.Option("", "--ids", help="Comma-separated memory ids for detail recall"),
     json_output: bool = typer.Option(False, "--json", help="JSON output"),
 ):
     """Search memories with source/evidence/session context."""
@@ -83,6 +104,9 @@ def search(
         query=query,
         mem_type=normalized_type,
         limit=limit,
+        mode=mode,
+        layer=layer,
+        ids=[x.strip() for x in ids.split(",") if x.strip()],
     )
 
     if json_output:

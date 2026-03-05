@@ -106,24 +106,89 @@ def check(
 ):
     """Check release conditions"""
     project_root = Path(project) if project else Path.cwd()
+    resolved_version = resolve_target_version(project_root, version)
 
-    typer.echo(f"Checking release conditions for v{version}")
+    typer.echo(f"Checking release conditions for {resolved_version}")
     typer.echo("=" * 40)
 
-    # Simulated checks
-    checks = [
-        ("Tests passing", True),
-        ("Code coverage >= 80%", True),
-        ("No critical bugs", True),
-        ("Security scan", True),
-    ]
+    auto_test_path = project_root / ".beacon" / "auto-test-status.json"
+    gate_report_path = project_root / ".beacon" / "gate-report.json"
+    manifest_path = project_root / ".beacon" / "evidence-manifest.json"
+    coverage_summary_path = project_root / ".beacon" / "coverage-summary.json"
+
+    checks: list[tuple[str, bool, str]] = []
+    evidence_refs: list[str] = []
+
+    auto_test_ok = False
+    auto_test_status = "missing"
+    if auto_test_path.exists():
+        try:
+            auto_test_payload = json.loads(auto_test_path.read_text(encoding="utf-8"))
+        except Exception:  # noqa: BLE001
+            auto_test_payload = {}
+        auto_test_status = str(auto_test_payload.get("status", "")).strip().lower() or "unknown"
+        auto_test_ok = auto_test_status == "passed"
+        evidence_refs.append(str(auto_test_path.relative_to(project_root)))
+    checks.append(("auto-test status passed", auto_test_ok, f"status={auto_test_status}"))
+
+    gate_ok = False
+    gate_status = "missing"
+    gate_coverage_full: Optional[bool] = None
+    if gate_report_path.exists():
+        try:
+            gate_payload = json.loads(gate_report_path.read_text(encoding="utf-8"))
+        except Exception:  # noqa: BLE001
+            gate_payload = {}
+        gate_status = str(gate_payload.get("status", "")).strip()
+        gate_ok = gate_status.lower() == "pass"
+        coverage_payload = gate_payload.get("coverage")
+        if isinstance(coverage_payload, dict) and "full_coverage" in coverage_payload:
+            gate_coverage_full = bool(coverage_payload.get("full_coverage"))
+        evidence_refs.append(str(gate_report_path.relative_to(project_root)))
+    checks.append(("gate report pass", gate_ok, f"status={gate_status or 'unknown'}"))
+
+    manifest_ok = False
+    manifest_entries = 0
+    if manifest_path.exists():
+        try:
+            manifest_payload = json.loads(manifest_path.read_text(encoding="utf-8"))
+        except Exception:  # noqa: BLE001
+            manifest_payload = {}
+        entries = manifest_payload.get("entries")
+        if isinstance(entries, list):
+            manifest_entries = len(entries)
+            manifest_ok = manifest_entries > 0
+        evidence_refs.append(str(manifest_path.relative_to(project_root)))
+    checks.append(("evidence manifest present", manifest_ok, f"entries={manifest_entries}"))
+
+    coverage_ok = False
+    coverage_detail = "missing"
+    if coverage_summary_path.exists():
+        try:
+            coverage_payload = json.loads(coverage_summary_path.read_text(encoding="utf-8"))
+        except Exception:  # noqa: BLE001
+            coverage_payload = {}
+        rate = coverage_payload.get("coverage_rate")
+        if isinstance(rate, (int, float)):
+            coverage_ok = float(rate) >= 0.8
+            coverage_detail = f"coverage_rate={float(rate):.4f}"
+        elif "full_coverage" in coverage_payload:
+            coverage_ok = bool(coverage_payload.get("full_coverage"))
+            coverage_detail = f"full_coverage={coverage_ok}"
+        evidence_refs.append(str(coverage_summary_path.relative_to(project_root)))
+    elif gate_coverage_full is not None:
+        coverage_ok = bool(gate_coverage_full)
+        coverage_detail = f"gate_report.coverage.full_coverage={coverage_ok}"
+    checks.append(("coverage artifact ready", coverage_ok, coverage_detail))
 
     all_passed = True
-    for check_name, passed in checks:
+    failed_checks: list[str] = []
+    for check_name, passed, detail in checks:
         status = "✓ PASS" if passed else "✗ FAIL"
-        typer.echo(f"{status}: {check_name}")
+        typer.echo(f"{status}: {check_name} ({detail})")
         if not passed:
             all_passed = False
+            failed_checks.append(check_name)
 
     if all_passed:
         typer.echo("\n✓ Release conditions met")
@@ -135,10 +200,10 @@ def check(
     append_memory_entry(
         project_root=project_root,
         mem_type="decision",
-        text=f"[release.check] version={version} status={status}",
+        text=f"[release.check] version={resolved_version} status={status}",
         source_session_id=f"release:{version}",
         source="release.check",
-        evidence_ref=[],
+        evidence_ref=sorted(set(evidence_refs)),
         confidence=0.75,
         tags=["release", "gate", status],
     )
@@ -148,8 +213,13 @@ def check(
         stage="release",
         event="release_decision_recorded",
         source="release.check",
-        evidence_ref=[],
-        details={"action": "check", "version": version, "status": status},
+        evidence_ref=sorted(set(evidence_refs)),
+        details={
+            "action": "check",
+            "version": resolved_version,
+            "status": status,
+            "failed_checks": failed_checks,
+        },
     )
     if not all_passed:
         raise typer.Exit(1)

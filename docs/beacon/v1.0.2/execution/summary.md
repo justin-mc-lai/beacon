@@ -1,19 +1,19 @@
 # Beacon Human Summary
 
-- Run ID: `run-20260304T142351939287`
+- Run ID: `run-20260304T162452Z-e3cd`
 - Workflow: `workflow.start`
-- Mode: `normal`
-- Status: **completed**
+- Mode: `manual`
+- Status: **planned**
 
 ## Artifacts
 - (none)
 
 ## Memory Loop
-- closure_complete: `True`
-- recall_injections: `6`
-- writebacks: `6`
+- closure_complete: `False`
+- recall_injections: `0`
+- writebacks: `0`
 - feedback_assimilations: `0`
-- next_stage: `None`
+- next_stage: `think`
 
 ## Coverage
 - story: `1/1`

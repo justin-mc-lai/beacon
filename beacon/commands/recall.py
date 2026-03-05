@@ -76,8 +76,11 @@ def _list(
 @app.command("memory")
 def memory(
     query: str = typer.Argument("", help="Search query (empty means list recent)"),
-    memory_type: str = typer.Option("", "--type", "-y", help="Filter: insight/decision/vocabulary"),
+    memory_type: str = typer.Option("", "--type", "-y", help="Filter: insight/decision/vocabulary/feedback"),
     limit: int = typer.Option(10, "--limit", "-n", help="Max results"),
+    mode: str = typer.Option("hybrid", "--mode", help="Search mode: keyword|semantic|hybrid"),
+    layer: str = typer.Option("detail", "--layer", help="Recall layer: index|timeline|detail"),
+    ids: str = typer.Option("", "--ids", help="Comma-separated memory ids"),
     project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
     json_output: bool = typer.Option(False, "--json", help="JSON output"),
 ):
@@ -92,9 +95,32 @@ def memory(
             raise typer.Exit(code=2)
 
     if query:
-        results = search_memory_entries(project_root, query, mem_type=normalized_type, limit=limit)
+        results = search_memory_entries(
+            project_root,
+            query,
+            mem_type=normalized_type,
+            limit=limit,
+            mode=mode,
+            layer=layer,
+            ids=[x.strip() for x in ids.split(",") if x.strip()],
+        )
     else:
-        results = load_memory_entries(project_root, mem_type=normalized_type)[: max(0, limit)]
+        all_rows = load_memory_entries(project_root, mem_type=normalized_type)
+        if ids:
+            allow = {x.strip() for x in ids.split(",") if x.strip()}
+            all_rows = [item for item in all_rows if str(item.get("memory_id", "")) in allow]
+        if layer in {"index", "timeline"}:
+            results = search_memory_entries(
+                project_root,
+                "",
+                mem_type=normalized_type,
+                limit=limit,
+                mode=mode,
+                layer=layer,
+                ids=[x.strip() for x in ids.split(",") if x.strip()],
+            )
+        else:
+            results = all_rows[: max(0, limit)]
 
     if json_output:
         typer.echo(json.dumps(results, ensure_ascii=False, indent=2))

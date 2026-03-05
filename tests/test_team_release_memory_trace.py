@@ -42,6 +42,32 @@ def _load_memory_sources(project_root: Path) -> list[str]:
     return sources
 
 
+def _seed_release_artifacts(project_root: Path) -> None:
+    beacon_dir = project_root / ".beacon"
+    beacon_dir.mkdir(parents=True, exist_ok=True)
+    (beacon_dir / "auto-test-status.json").write_text(
+        json.dumps({"status": "passed", "updated_at": "2026-03-05T00:00:00Z"}),
+        encoding="utf-8",
+    )
+    (beacon_dir / "gate-report.json").write_text(
+        json.dumps(
+            {
+                "stage": "release",
+                "mode": "strict",
+                "status": "Pass",
+                "issues": [],
+                "coverage": {"full_coverage": True},
+                "updated_at": "2026-03-05T00:00:00Z",
+            }
+        ),
+        encoding="utf-8",
+    )
+    (beacon_dir / "evidence-manifest.json").write_text(
+        json.dumps({"entries": [{"path": ".beacon/auto-test-status.json", "sha256": "x"}]}),
+        encoding="utf-8",
+    )
+
+
 def test_team_release_and_bridge_should_leave_memory_trace(tmp_path: Path):
     started = _invoke(["team", "start", "Lifecycle Memory Delivery", "--members", "3", "--project", str(tmp_path)])
     assert started.exit_code == 0
@@ -56,6 +82,7 @@ def test_team_release_and_bridge_should_leave_memory_trace(tmp_path: Path):
     assert _invoke(["team", "evaluate", "0", "0", "--team", team_name, "--project", str(tmp_path)]).exit_code == 0
 
     assert _invoke(["release", "create", "v1.2.3", "--project", str(tmp_path)]).exit_code == 0
+    _seed_release_artifacts(tmp_path)
     assert _invoke(["release", "check", "v1.2.3", "--project", str(tmp_path)]).exit_code == 0
 
     assert _invoke(["ralph-bridge", "start", "work", "--project", str(tmp_path)]).exit_code == 0
@@ -74,4 +101,3 @@ def test_team_release_and_bridge_should_leave_memory_trace(tmp_path: Path):
     events = lifecycle.get("items", [])
     assert any(item.get("event") == "team_review_submitted" for item in events if isinstance(item, dict))
     assert any(item.get("event") == "release_decision_recorded" for item in events if isinstance(item, dict))
-

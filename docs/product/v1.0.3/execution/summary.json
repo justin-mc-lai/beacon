@@ -1,0 +1,209 @@
+{
+  "run_id": "run-20260305T053921Z-ba66",
+  "workflow": "workflow.start",
+  "mode": "manual",
+  "status": "planned",
+  "reason": "awaiting_continue",
+  "events": [
+    {
+      "event": "workflow_started",
+      "ts": "2026-03-05T05:39:21.247059+00:00"
+    },
+    {
+      "event": "workflow_planned",
+      "ts": "2026-03-05T05:39:21.260232+00:00"
+    }
+  ],
+  "llm_prompts": [
+    {
+      "ts": "2026-03-05T05:39:21.247070+00:00",
+      "source": "workflow.next-stage-inference",
+      "inference_mode": "rule",
+      "model": "beacon-rule-llm-v1",
+      "prompt": "Project workflow inference. feature=登录功能; version=v1.0.3; run_id=run-20260305T053921Z-ba66; context=workflow.start. Determine next executable stage.",
+      "completion": "Predicted next_stage=think. Reasoning policy: lifecycle closure order (think->user-story->prd->test-case->implementation->verify).",
+      "next_stage": "think",
+      "prompt_tokens": 11,
+      "completion_tokens": 8
+    }
+  ],
+  "token_usage": {
+    "prompt_tokens": 11,
+    "completion_tokens": 8
+  },
+  "tool_calls": [
+    {
+      "name": "workflow.next_stage.predict",
+      "args": {
+        "next_stage": "think"
+      }
+    }
+  ],
+  "artifacts": {},
+  "deviations": [],
+  "confirmations": [],
+  "memory_metrics": {
+    "run_id": "run-20260305T053921Z-ba66",
+    "lifecycle_events_total": 222,
+    "run_lifecycle_events": 2,
+    "recall_injections": 0,
+    "writebacks": 0,
+    "feedback_assimilations": 0,
+    "closure_complete": false,
+    "missing_closure_stages": [
+      "think",
+      "user-story",
+      "prd",
+      "test-case",
+      "implementation",
+      "verify",
+      "gate"
+    ],
+    "next_stage": "think"
+  },
+  "coverage_metrics": {
+    "version": "v1.0.3",
+    "feature": "",
+    "planned_story": 1,
+    "implemented_story": 0,
+    "story_coverage": 0.0,
+    "total_ac": 10,
+    "tested_ac": 0,
+    "ac_coverage": 0.0,
+    "total_tc": 28,
+    "executed_tc": 0,
+    "tc_coverage": 0.0,
+    "full_coverage": false,
+    "matrix_errors": []
+  },
+  "workflow_progress": {
+    "run_id": "run-20260305T053921Z-ba66",
+    "version": "v1.0.3",
+    "feature": "登录功能",
+    "closure_complete": false,
+    "next_stage": "think",
+    "missing_closure_stages": [
+      "think",
+      "user-story",
+      "prd",
+      "test-case",
+      "implementation",
+      "verify",
+      "gate"
+    ],
+    "gate_status": "Pass",
+    "gate_pass": true,
+    "stages": {
+      "think": {
+        "status": "not_started",
+        "has_started": false,
+        "has_context": false,
+        "has_finished": false,
+        "has_writeback": false,
+        "has_failed": false,
+        "has_skipped": false,
+        "attempt_seq": null,
+        "attempt_id": null,
+        "retry_count": 0,
+        "latest_failure_ts": null,
+        "latest_completion_ts": null,
+        "event_count": 0
+      },
+      "user-story": {
+        "status": "not_started",
+        "has_started": false,
+        "has_context": false,
+        "has_finished": false,
+        "has_writeback": false,
+        "has_failed": false,
+        "has_skipped": false,
+        "attempt_seq": null,
+        "attempt_id": null,
+        "retry_count": 0,
+        "latest_failure_ts": null,
+        "latest_completion_ts": null,
+        "event_count": 0
+      },
+      "prd": {
+        "status": "not_started",
+        "has_started": false,
+        "has_context": false,
+        "has_finished": false,
+        "has_writeback": false,
+        "has_failed": false,
+        "has_skipped": false,
+        "attempt_seq": null,
+        "attempt_id": null,
+        "retry_count": 0,
+        "latest_failure_ts": null,
+        "latest_completion_ts": null,
+        "event_count": 0
+      },
+      "test-case": {
+        "status": "not_started",
+        "has_started": false,
+        "has_context": false,
+        "has_finished": false,
+        "has_writeback": false,
+        "has_failed": false,
+        "has_skipped": false,
+        "attempt_seq": null,
+        "attempt_id": null,
+        "retry_count": 0,
+        "latest_failure_ts": null,
+        "latest_completion_ts": null,
+        "event_count": 0
+      },
+      "implementation": {
+        "status": "not_started",
+        "has_started": false,
+        "has_context": false,
+        "has_finished": false,
+        "has_writeback": false,
+        "has_failed": false,
+        "has_skipped": false,
+        "attempt_seq": null,
+        "attempt_id": null,
+        "retry_count": 0,
+        "latest_failure_ts": null,
+        "latest_completion_ts": null,
+        "event_count": 0
+      },
+      "verify": {
+        "status": "not_started",
+        "has_started": false,
+        "has_context": false,
+        "has_finished": false,
+        "has_writeback": false,
+        "has_failed": false,
+        "has_skipped": false,
+        "attempt_seq": null,
+        "attempt_id": null,
+        "retry_count": 0,
+        "latest_failure_ts": null,
+        "latest_completion_ts": null,
+        "event_count": 0
+      },
+      "gate": {
+        "status": "not_started",
+        "has_started": false,
+        "has_context": false,
+        "has_finished": false,
+        "has_writeback": false,
+        "has_failed": false,
+        "has_skipped": false,
+        "attempt_seq": null,
+        "attempt_id": null,
+        "retry_count": 0,
+        "latest_failure_ts": null,
+        "latest_completion_ts": null,
+        "event_count": 0
+      }
+    }
+  },
+  "filters": {
+    "version": "v1.0.3",
+    "feature": ""
+  },
+  "generated_at": "2026-03-05T06:21:25.223492+00:00"
+}

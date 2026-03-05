@@ -10,11 +10,11 @@ from .commands import (
     report,
     debug,
     feedback,
-    resume,
 )
+from .commands.resume import resume_entry
 
-__version__ = "1.0.2"
-__toolkit_version__ = "v1.0.2"
+__version__ = "1.0.3"
+__toolkit_version__ = "v1.0.3"
 
 
 def create_app():
@@ -51,7 +51,7 @@ def create_app():
     app.add_typer(report, name="report")
     app.add_typer(debug, name="debug")
     app.add_typer(feedback, name="feedback")
-    app.add_typer(resume, name="resume")
+    app.command("resume")(resume_entry)
 
     return app
 
