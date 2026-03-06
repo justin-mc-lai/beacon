@@ -19,6 +19,9 @@ app = typer.Typer(
     no_args_is_help=False,
 )
 
+MIXED_CONFIDENCE_CAP = 0.59
+MIXED_CONFIDENCE_EPSILON = 0.005
+
 
 def _execute_recommended_command(args: list[str]) -> dict[str, Any]:
     from beacon.main import app as beacon_app
@@ -73,14 +76,35 @@ def _execution_block_reason(
 ) -> str:
     boundary_state = _resolve_boundary_state(plan)
     confidence = float(plan.get("confidence", 0.0) or 0.0)
+    mixed_only_low_confidence = _is_mixed_only_low_confidence(plan=plan, min_confidence=min_confidence)
 
     if boundary_state == "out_of_scope":
         return "outside-beacon-boundary"
     if boundary_state == "mixed_need_confirm" and not allow_mixed:
         return "mixed-boundary-needs-confirmation"
     if confidence < min_confidence and not allow_low_confidence:
+        if allow_mixed and mixed_only_low_confidence:
+            return ""
         return "low-confidence"
     return ""
+
+
+def _is_mixed_only_low_confidence(*, plan: dict[str, Any], min_confidence: float) -> bool:
+    """Whether low confidence is likely caused by mixed-boundary confidence clamping only."""
+    if _resolve_boundary_state(plan) != "mixed_need_confirm":
+        return False
+    if min_confidence <= MIXED_CONFIDENCE_CAP:
+        return False
+
+    confidence = float(plan.get("confidence", 0.0) or 0.0)
+    if confidence + MIXED_CONFIDENCE_EPSILON < MIXED_CONFIDENCE_CAP:
+        return False
+
+    boundary = plan.get("boundary", {}) if isinstance(plan, dict) else {}
+    boundary_reason = str(boundary.get("reason", "")).strip()
+    route_reason = str(plan.get("reason", "")).strip()
+    marker = "mixed_request("
+    return marker in boundary_reason or marker in route_reason
 
 
 def _optimize_impl(
@@ -94,6 +118,7 @@ def _optimize_impl(
     allow_mixed: bool,
     allow_low_confidence: bool,
     min_confidence: Optional[float],
+    policy_context: Optional[dict[str, Any]] = None,
 ) -> int:
     root = Path(project_root) if project_root else Path.cwd()
     plan = optimize_prompt_to_plan(
@@ -104,6 +129,23 @@ def _optimize_impl(
     )
 
     effective_min_confidence = _resolve_min_confidence(plan, min_confidence)
+    mixed_low_confidence_waived = bool(
+        execute
+        and allow_mixed
+        and not allow_low_confidence
+        and _is_mixed_only_low_confidence(plan=plan, min_confidence=effective_min_confidence)
+    )
+    execution_request: dict[str, Any] = {
+        "execute_requested": bool(execute),
+        "allow_mixed": bool(allow_mixed),
+        "allow_low_confidence": bool(allow_low_confidence),
+        "min_confidence": round(effective_min_confidence, 2),
+        "mixed_low_confidence_waived": mixed_low_confidence_waived,
+    }
+    if isinstance(policy_context, dict):
+        execution_request.update({k: v for k, v in policy_context.items() if v is not None})
+    plan["execution_request"] = execution_request
+
     blocked_reason = ""
     if execute:
         blocked_reason = _execution_block_reason(
@@ -119,6 +161,7 @@ def _optimize_impl(
                 "boundary_state": _resolve_boundary_state(plan),
                 "min_confidence": round(effective_min_confidence, 2),
                 "confidence": float(plan.get("confidence", 0.0) or 0.0),
+                "mixed_low_confidence_waived": mixed_low_confidence_waived,
             }
             exit_code = 2
         else:
@@ -156,10 +199,17 @@ def _optimize_impl(
         typer.echo(f"command     : {plan.get('recommended_command')}")
         typer.echo(f"min_conf    : {round(effective_min_confidence, 2)}")
         typer.echo(f"boundary    : {_resolve_boundary_state(plan)}")
+        request = plan.get("execution_request", {})
+        strategy = str(request.get("strategy", "")).strip()
+        if strategy:
+            typer.echo(f"strategy    : {strategy}")
         for hint in plan.get("risk_hints", []):
             typer.echo(f"- risk: {hint}")
         for hint in plan.get("boundary_hints", []):
             typer.echo(f"- boundary: {hint}")
+        safety_note = str(request.get("safety_note", "")).strip()
+        if safety_note:
+            typer.echo(f"- safety: {safety_note}")
         if execute:
             executed = plan.get("executed", {})
             if executed.get("blocked"):

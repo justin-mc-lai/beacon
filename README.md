@@ -25,11 +25,11 @@ Beacon 是面向 AI 时代的智能产品工作流工具，帮助团队将「需
 
 Beacon 从 product-toolkit（历史 PTK）升级而来。当前命令口径已统一到 Beacon：仅保留 `beacon` 命令入口，历史 PTK 仅作背景说明。
 
-- **CLI**: 统一使用 `beacon-<subcommand>`（兼容 `beacon <subcommand>`）
+- **CLI**: 推荐使用 `beacon <subcommand>`（`beacon-<subcommand>` 为可选别名）
 - **文档**: `docs/beacon/` 为主，`docs/product/` 为历史 PTK 兼容
 - **状态**: `.beacon/` 目录（原有 `.ptk/` 别名兼容）
 - **兼容策略**: 仅保留目录兼容（`.ptk`、`docs/product`），命令口径统一为 `beacon`
-- **Skill**: 默认使用 `beacon-<subcommand>` 触发（`/beacon:` 仅在支持该语法的平台可用）
+- **Skill**: 推荐使用 `beacon <subcommand>` 触发（支持前缀别名时可用 `beacon-<subcommand>`；`/beacon:` 仅在支持该语法的平台可用）
 
 ### v1.0.0 功能特性（命令口径统一为 Beacon）
 
@@ -59,7 +59,7 @@ Beacon 从 product-toolkit（历史 PTK）升级而来。当前命令口径已�
 5. **可选真实 LLM 编排**：设置 `BEACON_LLM_MODE=real` + `BEACON_LLM_API_KEY` 后，next-stage 推理可走真实模型；失败自动回退规则模式。
 6. **Visual 回归能力**：`auto-test` 新增 `visual` 层与目录哈希对比能力，支持阈值判定。
 
-📘 详细说明见：[Beacon 功能说明与闭环流程（v1.0.1）](./docs/beacon/v1.0.1/execution/beacon-feature-closure-guide.md)
+📘 详细说明见：[Beacon v1.0.3 命令契约（按实现对齐）](./docs/beacon/v1.0.3/execution/v1.0.3-command-contracts-as-implemented.md)
 
 ---
 
@@ -76,60 +76,70 @@ cd beacon
 pip install -e .
 ```
 
-### 2.2 5 个核心命令速览
+### 2.2 推荐触发方式（避免命令入口混淆）
 
-> 命令规则定案：统一采用 `beacon-<subcommand>`，例如 `beacon-think`、`beacon-workflow`。
+| 场景 | 推荐写法 | 说明 |
+|------|----------|------|
+| 通用（本地/CI/文档） | `beacon <subcommand> ...` | 最稳定，和 `doctor setup` 默认安装结果一致 |
+| 仅执行过 `beacon doctor setup` | `beacon <subcommand> ...` 或 `beacon-cli <subcommand> ...` | `setup` 只安装 `beacon` / `beacon-cli` 两个启动器 |
+| 通过 `pip install beacon-cli` 或 `pip install -e .` 安装 | `beacon <subcommand> ...`（可选 `beacon-<subcommand>`） | 前缀命令是否可用取决于安装的 console scripts |
+
+> 结论：文档与自动化脚本建议统一写 `beacon <subcommand>`，避免环境差异导致 `beacon-<subcommand>` 不存在。
+
+### 2.3 5 个核心命令速览
+
+> 示例统一使用推荐写法：`beacon <subcommand>`。
 
 ```bash
 # 1. 启动完整工作流
-beacon-workflow start "用户登录功能"
+beacon workflow start "用户登录功能"
 
 # 2. 产品思考
-beacon-think start "用户登录优化"
-beacon-think confirm "用户需要社交登录"
-beacon-think question "是否需要支持企业SSO?" --priority high --blocking
+beacon think start "用户登录优化"
+beacon think confirm "用户需要社交登录"
+beacon think question "是否需要支持企业SSO?" --priority high --blocking
 
 # 3. 生成用户故事
-beacon-user-story create "用户登录"
+beacon user-story create "用户登录"
 
 # 4. 生成 PRD
-beacon-prd create "用户登录"
+beacon prd create "用户登录"
 
 # 5. 生成测试用例
-beacon-test-case create "用户登录"
+beacon test-case create "用户登录"
 ```
 
-### 2.3 完整示例：做一个"用户登录"功能
+### 2.4 完整示例：做一个"用户登录"功能
 
 ```bash
 # === 步骤 1: 产品思考 ===
 # 启动思考会话，探索需求细节
-beacon-think start "用户登录功能"
-beacon-think confirm "用户需要账号密码登录"
-beacon-think confirm "用户需要社交账号登录（Google/GitHub）"
-beacon-think question "是否需要支持企业 SSO?" --priority high --blocking
-beacon-think question "登录会话有效期多长?" --priority medium
+beacon think start "用户登录功能"
+beacon think confirm "用户需要账号密码登录"
+beacon think confirm "用户需要社交账号登录（Google/GitHub）"
+beacon think question "是否需要支持企业 SSO?" --priority high --blocking
+beacon think question "登录会话有效期多长?" --priority medium
 
 # 查看思考进度
-beacon-think status
+beacon think status
 
 # 生成思考总结
-beacon-think summarize
+beacon think summarize
 
 # === 步骤 2: 生成用户故事 ===
-beacon-user-story create "用户登录"
+beacon user-story create "用户登录"
 
 # === 步骤 3: 生成 PRD ===
-beacon-prd create "用户登录"
+beacon prd create "用户登录"
 
 # === 步骤 4: 生成测试用例 ===
-beacon-test-case create "用户登录" --type all
+beacon test-case create "用户登录" --type all
 
 # === 步骤 5: 检查工作流状态 ===
-beacon-workflow status
+beacon workflow status
 
 # === 步骤 6: 运行门控检查 ===
-beacon-workflow gate
+beacon workflow gate
 ```
 
 ---
@@ -138,14 +148,10 @@ beacon-workflow gate
 
 ### 3.1 工作流阶段
 
-```
-┌─────────┐   ┌────────────┐   ┌──────┐   ┌───────────┐   ┌────────────────┐   ┌────────┐
-│  Think  │ → │ User Story │ → │ PRD  │ → │ Test Case │ → │ Implementation │ → │ Verify │
-└─────────┘   └────────────┘   └──────┘   └───────────┘   └────────────────┘   └────────┘
-   需求澄清    用户故事        需求文档     测试矩阵         对齐实现开发编码        多层测试
+`Think → User Story → PRD → Test Case → Implementation → Verify → Gate`
 
-Verify 后由 gate/release 进行治理判定（不在 workflow 主状态机 6 阶段内）。
-```
+- **workflow 主状态机是 7 阶段（含 gate）**。
+- **release 不在 workflow 主状态机内**，用于发布前最终核查（读取 gate/auto-test/coverage/evidence 工件）。
 
 | 阶段 | 命令 | 产出 |
 |------|------|------|
@@ -155,13 +161,13 @@ Verify 后由 gate/release 进行治理判定（不在 workflow 主状态机 6 �
 | Test Case | `beacon-test-case *` | 测试用例文档 + AC 可执行矩阵 |
 | Implementation | `beacon-workflow start --auto` | 实现阶段执行记录 |
 | Verify | `beacon-auto-test create *` | 多层真实执行证据 |
-| Gate（治理） | `beacon-gate check release` / `beacon-workflow gate` | Pass / Blocked / Conditional-Pass（治理判定） |
+| Gate（治理） | `beacon gate check release` / `beacon workflow gate` | Pass / Blocked / Conditional-Pass（治理判定） |
 
 ### 3.1.1 工作流生命周期（Lifecycle）与记忆体
 
-Beacon 的 workflow 生命周期主链为 6 阶段：
+Beacon 的 workflow 生命周期主链为 7 阶段：
 
-`think → user-story → prd → test-case → implementation → verify`
+`think → user-story → prd → test-case → implementation → verify → gate`
 
 每个阶段在记忆体中会写入 4 类事件（完成态闭环）：
 
@@ -176,6 +182,8 @@ Beacon 的 workflow 生命周期主链为 6 阶段：
 - `in_progress`：仅有部分事件
 - `completed`：4 类事件齐全
 - `failed`：存在 `stage_failed`
+
+workflow 仅在 `closure_complete=true && gate_pass=true` 时写入 `completed`。
 
 > v1.0.1 起，`beacon-workflow start --auto=false` 只写 `workflow_planned`，不再提前写阶段 started/context，避免“未执行却显示已开始”的失真。
 
@@ -232,10 +240,10 @@ beacon-workflow start "用户登录" --skip think    # 跳过 think 阶段
 
 # 基于记忆体进度续跑（v1.0.1）
 beacon-workflow continue --version v1.0.1               # 自动定位 next_stage，执行一步
-beacon-workflow continue --version v1.0.1 --auto        # 从 next_stage 一路补齐到 verify
+beacon-workflow continue --version v1.0.1 --auto        # 从 next_stage 一路补齐到 gate
 beacon-workflow continue --run-id run-xxxx --auto       # 指定 run_id 续跑
 
-# 自动模式（新增 implementation / verify 阶段）
+# 自动模式（含 implementation / verify / gate 阶段）
 beacon-workflow start "用户登录" --auto \
   --implementation-command "python -m pytest -q tests/test_login_flow.py" \
   --verify-scope all \
@@ -316,7 +324,8 @@ beacon-prompt optimize "检查当前项目发布是否可放行" --json
 # 一键执行推荐命令
 beacon-prompt optimize "做一次环境诊断并修复 beacon 命令不可用问题" --execute
 
-# mixed/out-of-scope/低置信度默认阻断执行（可显式放开）
+# mixed/out-of-scope/低置信度默认阻断执行（按需显式放开）
+# 说明：mixed 场景通常先加 --allow-mixed；若仍低置信度再加 --allow-low-confidence
 beacon-prompt optimize "先检查 gate 再直接写代码上线" --execute --allow-mixed
 beacon-prompt optimize "看下这个需求怎么做" --execute --allow-low-confidence
 ```
@@ -324,24 +333,40 @@ beacon-prompt optimize "看下这个需求怎么做" --execute --allow-low-confi
 执行策略（默认）：
 - `boundary.state = in_scope` 且 `confidence >= threshold` 才允许 `--execute`
 - `boundary.state = mixed_need_confirm` 时阻断（除非 `--allow-mixed`）
-- `boundary.state = out_of_scope` 时阻断
+- `boundary.state = out_of_scope` 时始终阻断（不受 `--allow-mixed` / `--allow-low-confidence` 影响）
+- `confidence < threshold` 时阻断（除非 `--allow-low-confidence`）
+- `--allow-mixed` 与 `--allow-low-confidence` **通常独立**；当 mixed 的低置信度仅由边界压降（`<=0.59`）引起时，`--allow-mixed` 可直接放行执行
+
+> 实现细节：mixed 请求会被边界守卫压低到 `confidence <= 0.59`；默认阈值 `0.62`。  
+> 因此 mixed 请求通常会触发“边界确认”闸门；若仍命中低置信度，可追加 `--allow-low-confidence` 或调低 `--min-confidence`。
 
 可选项目级路由配置：`.beacon/intent-router.json`
 - `confidence_threshold`: 执行阈值（0~1）
 - `intent_keywords`: 追加意图关键词
 - `intent_command_templates`: 覆盖意图到命令模板（如将 `status` 路由改为 `workflow status`）
 
+提示词直达能力边界（当前实现）：
+- **可直达路由意图**：`think`、`user-story`、`prd`、`test-case`、`workflow`、`run`、`status`、`resume`、`team`、`gate`、`release`、`doctor`、`analyze`、`api-design`、`data-dictionary`、`design`、`jtbd`、`persona`、`roadmap`、`ui-spec`、`wireframe`、`version`、`test-progress`、`feedback`、`remember`、`recall`、`save`、`report`、`init`、`auto-test`
+- **doctor 特例**：语句含 setup/install/uninstall 时可分别路由到 `doctor setup` / `doctor uninstall`
+- **越界请求**：会被标记 `outside-boundary`，默认仅回落到状态类建议命令，不执行工程实现/部署动作
+- **建议显式子命令场景**：需要精确参数或高风险动作时，请直接写子命令（如 `workflow continue --run-id ...`、`gate check release --profile ...`、`release create/check <version>`、`doctor setup --bin-dir ...`）
+
 #### `beacon-ask`
 
-自然语言直达入口（默认执行，带安全闸）。
+自然语言直达入口（默认 plan-only，显式执行带安全闸）。
 
 ```bash
-# 默认执行（带边界/置信度闸门）
+# 默认仅生成计划，不执行
 beacon-ask "做一次环境诊断并输出结果" --json
 
-# 仅生成计划，不执行
-beacon-ask "请生成用户故事并关联验收标准" --plan-only
+# 显式执行（带边界/置信度闸门）
+beacon-ask "请生成用户故事并关联验收标准" --execute --json
 ```
+
+说明：
+- `beacon-ask` 等价于 `beacon-prompt optimize <goal>` 的直达入口（默认不执行）。
+- 若需要实际执行，显式添加 `--execute`。
+- 与 `beacon-prompt --execute` 使用同一套安全闸门和阻断原因。
 
 ---
 
@@ -577,6 +602,9 @@ beacon-doctor uninstall
 # 预览卸载
 beacon-doctor uninstall --dry-run --json
 ```
+
+> 重要：`beacon doctor setup` 仅安装 `beacon` 与 `beacon-cli` 启动器，不会额外创建 `beacon-<subcommand>` 前缀命令。
+> 如需使用 `beacon-think` / `beacon-workflow` 等前缀命令，请通过 `pip install beacon-cli`（或 `pip install -e .`）安装 console scripts。
 
 常见参数：
 
@@ -971,8 +999,8 @@ beacon-team report --format both --project .
 
 1. `beacon-workflow start "<feature>" --version <vX.Y.Z>`（manual 仅计划）
 2. `beacon-workflow continue --version <vX.Y.Z>`（执行 next_stage）
-3. `beacon-workflow continue --version <vX.Y.Z> --auto`（补齐到 verify）
-4. `beacon-status --board --version <vX.Y.Z>` 查看 `next_stage/closure_complete`
+3. `beacon-workflow continue --version <vX.Y.Z> --auto`（补齐到 gate）
+4. `beacon-status --board --version <vX.Y.Z>` 查看 `next_stage/closure_complete/gate_pass`
 5. `beacon-report --machine --version <vX.Y.Z>` 导出可审计进度
 
 定位口径：
@@ -1105,11 +1133,11 @@ Beacon 保留历史 PTK 目录兼容（仅目录层）。如需迁移：
 beacon --help
 
 # 查看子命令帮助
-beacon-workflow --help
-beacon-think --help
+beacon workflow --help
+beacon think --help
 
 # 运行环境诊断
-beacon-doctor
+beacon doctor
 ```
 
 ### Q6: 终端提示 `beacon not found` 怎么办？
@@ -1117,19 +1145,25 @@ beacon-doctor
 先用 doctor 一键安装启动器：
 
 ```bash
-beacon-doctor setup
+beacon doctor setup
 ```
 
 如果需要先检查安装目标目录：
 
 ```bash
-beacon-doctor setup --dry-run --json
+beacon doctor setup --dry-run --json
 ```
 
 如果需要移除安装：
 
 ```bash
-beacon-doctor uninstall
+beacon doctor uninstall
+```
+
+如果 `beacon` 本体也不可用，可先用 Python 入口兜底：
+
+```bash
+python3 -m beacon.main doctor setup
 ```
 
 ---
@@ -1137,9 +1171,10 @@ beacon-doctor uninstall
 ## 9. 相关链接
 
 - **文档入口（v1.0.3）**: [docs/beacon/v1.0.3/](./docs/beacon/v1.0.3/)
+- **版本摘要（v1.0.3）**: [SUMMARY.md](./docs/beacon/v1.0.3/SUMMARY.md)
 - **整体架构蓝图（功能规划 + 边界）**: [v1.0.3-overall-architecture-blueprint.md](./docs/beacon/v1.0.3/execution/v1.0.3-overall-architecture-blueprint.md)
-- **功能与闭环说明**: [Beacon 功能说明与闭环流程](./docs/beacon/v1.0.1/execution/beacon-feature-closure-guide.md)
-- **命令-产物-证据速查表**: [beacon-command-artifact-evidence-cheatsheet.md](./docs/beacon/v1.0.1/execution/beacon-command-artifact-evidence-cheatsheet.md)
+- **功能与闭环说明（历史 v1.0.1）**: [Beacon 功能说明与闭环流程](./docs/beacon/v1.0.1/execution/beacon-feature-closure-guide.md)
+- **命令-产物-证据速查表（历史 v1.0.1）**: [beacon-command-artifact-evidence-cheatsheet.md](./docs/beacon/v1.0.1/execution/beacon-command-artifact-evidence-cheatsheet.md)
 - **命令契约（实现对齐）**: [v1.0.3-command-contracts-as-implemented.md](./docs/beacon/v1.0.3/execution/v1.0.3-command-contracts-as-implemented.md)
 - **研究方案（MVS）**: [beacon-fidelity-mvp-solution.md](./docs/beacon/v1.0.1/research/beacon-fidelity-mvp-solution.md)
 - **反过度设计规范**: [anti-overdesign-min-spec.md](./docs/beacon/v1.0.1/research/anti-overdesign-min-spec.md)

@@ -8,6 +8,7 @@ from pathlib import Path
 from typer.testing import CliRunner
 
 from beacon.main import app
+from beacon.utils.intent_router import optimize_prompt_to_plan
 
 
 runner = CliRunner()
@@ -177,9 +178,132 @@ def test_prompt_optimize_should_write_router_history_event(tmp_path: Path):
     assert payload.get("intent") == "doctor"
 
 
-def test_ask_command_should_route_and_execute_by_default(tmp_path: Path):
-    result = _invoke(["ask", "做一次环境诊断", "--project-root", str(tmp_path), "--json"])
+def test_ask_command_should_route_plan_only_by_default(tmp_path: Path):
+    result = _invoke(["ask", "做一次环境诊断并执行健康检查", "--project-root", str(tmp_path), "--json"])
+    assert result.exit_code == 0
+    payload = json.loads(result.stdout)
+    assert payload.get("intent") == "doctor"
+    assert payload.get("executed") in (None, {})
+
+
+def test_ask_command_should_execute_when_flag_enabled(tmp_path: Path):
+    result = _invoke(
+        ["ask", "做一次环境诊断并执行健康检查", "--project-root", str(tmp_path), "--execute", "--json"]
+    )
     assert result.exit_code == 0
     payload = json.loads(result.stdout)
     assert payload.get("intent") == "doctor"
     assert payload.get("executed", {}).get("exit_code") == 0
+
+
+def test_intent_router_should_not_route_install_upgrade_text_to_user_story(tmp_path: Path):
+    plan = optimize_prompt_to_plan(
+        "升级安装beacon",
+        project_root=tmp_path,
+        router_mode="rule",
+    )
+    assert plan.get("intent") != "user-story"
+    assert plan.get("recommended_args", [None])[0] != "user-story"
+
+
+def test_prompt_optimize_execute_allow_mixed_should_not_be_blocked_by_low_confidence(tmp_path: Path):
+    result = _invoke(
+        [
+            "prompt",
+            "optimize",
+            "请先检查 gate 状态并直接写代码修复线上 bug",
+            "--project-root",
+            str(tmp_path),
+            "--execute",
+            "--allow-mixed",
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0
+    payload = json.loads(result.stdout)
+    assert payload.get("boundary", {}).get("state") == "mixed_need_confirm"
+    assert float(payload.get("confidence", 0.0) or 0.0) < float(
+        payload.get("execution_policy", {}).get("min_confidence", 0.62)
+    )
+    executed = payload.get("executed", {})
+    assert executed.get("blocked") is not True
+    assert executed.get("exit_code") == 0
+
+
+def test_ask_allow_mixed_should_not_require_allow_low_confidence(tmp_path: Path):
+    result = _invoke(
+        [
+            "ask",
+            "请先检查 gate 状态并直接写代码修复线上 bug",
+            "--project-root",
+            str(tmp_path),
+            "--execute",
+            "--allow-mixed",
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0
+    payload = json.loads(result.stdout)
+    assert payload.get("boundary", {}).get("state") == "mixed_need_confirm"
+    executed = payload.get("executed", {})
+    assert executed.get("blocked") is not True
+    assert executed.get("exit_code") == 0
+
+
+def test_prompt_optimize_continue_workflow_should_prioritize_resume_intent(tmp_path: Path):
+    result = _invoke(
+        [
+            "prompt",
+            "optimize",
+            "继续上次workflow",
+            "--project-root",
+            str(tmp_path),
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0
+    payload = json.loads(result.stdout)
+    assert payload.get("intent") == "resume"
+    args = payload.get("recommended_args", [])
+    assert args
+    assert args[0] in {"resume", "workflow"}
+    assert "continue" in args or "resume" in args
+
+
+def test_intent_router_should_detect_english_out_of_scope_boundaries(tmp_path: Path):
+    prompts = [
+        "deploy to kubernetes",
+        "fix production bug",
+        "database migration",
+    ]
+    for goal in prompts:
+        plan = optimize_prompt_to_plan(goal, project_root=tmp_path, router_mode="rule")
+        assert plan.get("intent") == "outside-boundary"
+        assert plan.get("boundary", {}).get("state") == "out_of_scope"
+        assert plan.get("boundary", {}).get("in_scope") is False
+
+
+def test_prompt_optimize_should_route_high_frequency_command_prompts(tmp_path: Path):
+    samples = {
+        "请做竞品分析": "analyze",
+        "请给我一份 api design 草案": "api-design",
+        "输出一个 ui spec 文档": "ui-spec",
+        "画一个移动端 wireframe": "wireframe",
+        "创建用户 persona": "persona",
+    }
+
+    for goal, expected_intent in samples.items():
+        result = _invoke(
+            [
+                "prompt",
+                "optimize",
+                goal,
+                "--project-root",
+                str(tmp_path),
+                "--json",
+            ]
+        )
+        assert result.exit_code == 0
+        payload = json.loads(result.stdout)
+        assert payload.get("intent") == expected_intent
+        assert payload.get("recommended_args", [None])[0] == expected_intent

@@ -25,22 +25,65 @@ SUPPORTED_INTENTS = (
     "gate",
     "release",
     "doctor",
+    "analyze",
+    "api-design",
+    "data-dictionary",
+    "design",
+    "jtbd",
+    "persona",
+    "roadmap",
+    "ui-spec",
+    "wireframe",
+    "version",
+    "test-progress",
+    "feedback",
+    "remember",
+    "recall",
+    "save",
+    "report",
+    "init",
+    "auto-test",
     "outside-boundary",
 )
 
 DEFAULT_INTENT_KEYWORDS: dict[str, tuple[str, ...]] = {
     "think": ("think", "需求", "澄清", "梳理", "分析需求", "brainstorm", "方案"),
-    "user-story": ("user story", "user-story", "用户故事", "故事", "验收标准", "ac"),
-    "prd": ("prd", "需求文档", "产品文档", "spec", "规格", "文档"),
-    "test-case": ("test-case", "测试用例", "测试矩阵", "验收测试", "ac->tc", "qa"),
+    "user-story": ("user story", "user-story", "用户故事", "验收标准", "ac"),
+    "prd": ("prd", "需求文档", "产品文档", "spec", "规格说明", "prd 文档"),
+    "test-case": ("test-case", "test case", "测试用例", "测试矩阵", "验收测试", "ac->tc", "qa"),
     "workflow": ("workflow", "工作流", "主链", "阶段流程", "全流程"),
     "run": ("run", "执行模式", "dry-run", "strict", "debug 模式", "运行流程"),
     "status": ("status", "状态", "看板", "进度", "当前进展", "workflow status"),
-    "resume": ("resume", "续跑", "继续", "恢复", "continue", "接着跑"),
+    "resume": ("resume", "续跑", "继续", "恢复", "continue", "接着跑", "继续上次", "继续 workflow"),
     "team": ("team", "多人协作", "并行执行", "executor", "协同"),
     "gate": ("gate", "放行", "门禁", "准入", "验收门"),
     "release": ("release", "发布", "上线", "回滚", "发版"),
-    "doctor": ("doctor", "诊断", "健康检查", "setup", "install", "uninstall", "环境检查"),
+    "doctor": ("doctor", "诊断", "环境诊断", "健康检查", "环境检查", "setup", "install", "uninstall", "安装", "升级"),
+    "analyze": ("analyze", "竞品", "竞品分析", "竞争分析", "对标分析", "competitor analysis", "benchmark"),
+    "api-design": ("api-design", "api design", "接口设计", "api 设计", "openapi", "endpoint design", "接口文档"),
+    "data-dictionary": (
+        "data-dictionary",
+        "data dictionary",
+        "数据字典",
+        "字段字典",
+        "字段定义",
+        "schema dictionary",
+    ),
+    "design": ("design", "design thinking", "设计思维", "同理心", "ideate", "prototype"),
+    "jtbd": ("jtbd", "jobs to be done", "job to be done", "工作待完成", "用户任务分析"),
+    "persona": ("persona", "用户画像", "用户角色", "目标用户画像", "人物画像"),
+    "roadmap": ("roadmap", "路线图", "产品规划", "里程碑规划", "版本路线图"),
+    "ui-spec": ("ui-spec", "ui spec", "ui 规范", "界面规范", "设计规范", "design token"),
+    "wireframe": ("wireframe", "线框图", "低保真", "页面草图", "原型草图", "mockup"),
+    "version": ("version", "版本规划", "版本计划", "版本迭代", "semver"),
+    "test-progress": ("test-progress", "test progress", "测试进度", "测试结果汇总", "回归进度"),
+    "feedback": ("feedback", "反馈同步", "反馈闭环", "测试反馈", "用户反馈"),
+    "remember": ("remember", "记住", "记忆", "记下来", "写入记忆", "保存记忆"),
+    "recall": ("recall", "回忆", "检索记忆", "记忆检索", "查看记忆", "memory search"),
+    "save": ("save", "保存会话", "保存状态", "存档会话", "session save"),
+    "report": ("report", "运行报告", "执行报告", "总结报告", "报告"),
+    "init": ("init", "初始化", "初始化项目", "创建 beacon 项目", "bootstrap"),
+    "auto-test": ("auto-test", "自动测试", "自动化测试", "回归测试", "冒烟测试", "qa 执行"),
 }
 
 # Keep public name for backward compatibility with tests/importers.
@@ -53,9 +96,20 @@ OUTSIDE_BOUNDARY_KEYWORDS = (
     "编码实现",
     "实现接口",
     "fix bug",
+    "fix production bug",
     "修复线上",
+    "线上故障",
     "数据库迁移",
+    "database migration",
+    "db migration",
+    "schema migration",
     "deploy production",
+    "deploy to production",
+    "release to production",
+    "deploy to kubernetes",
+    "deploy kubernetes",
+    "deploy to k8s",
+    "kubernetes deployment",
     "terraform",
     "k8s",
     "上线脚本",
@@ -100,8 +154,62 @@ DEFAULT_INTENT_COMMAND_TEMPLATES: dict[str, Any] = {
     "doctor": ["doctor", "--project-root", "{project_root}"],
     "doctor:setup": ["doctor", "setup"],
     "doctor:uninstall": ["doctor", "uninstall"],
+    "analyze": ["analyze", "create", "{feature}", "--project", "{project_root}"],
+    "api-design": ["api-design", "create", "{feature}", "--project", "{project_root}"],
+    "data-dictionary": ["data-dictionary", "create", "{feature}", "--project", "{project_root}"],
+    "design": ["design", "create", "{feature}", "--project", "{project_root}"],
+    "jtbd": ["jtbd", "create", "{feature}", "--project", "{project_root}"],
+    "persona": ["persona", "create", "{feature}", "--project", "{project_root}"],
+    "roadmap": ["roadmap", "create", "{feature}", "--project", "{project_root}"],
+    "ui-spec": ["ui-spec", "create", "{feature}", "--project", "{project_root}"],
+    "wireframe": ["wireframe", "create", "{feature}", "--project", "{project_root}"],
+    "version": ["version", "create", "{feature}", "--project", "{project_root}", "--version", "{version}"],
+    "test-progress": ["test-progress", "show", "--project", "{project_root}"],
+    "feedback": ["feedback", "sync", "latest", "--project-root", "{project_root}"],
+    "remember": ["remember", "add", "{feature}", "--project", "{project_root}"],
+    "recall": ["recall", "memory", "{feature}", "--project", "{project_root}"],
+    "save": ["save", "run", "--project", "{project_root}"],
+    "report": ["report", "generate", "latest", "--project-root", "{project_root}"],
+    "init": ["init", "--project-root", "{project_root}", "--dry-run"],
+    "auto-test": ["auto-test", "create", "all", "--project", "{project_root}", "--version", "{version}"],
     "outside-boundary": ["status", "--board", "--project-root", "{project_root}"],
 }
+
+INTENT_PRIORITY: dict[str, int] = {
+    "resume": 120,
+    "workflow": 100,
+    "status": 95,
+    "run": 90,
+    "gate": 85,
+    "release": 85,
+    "doctor": 85,
+    "auto-test": 85,
+    "test-progress": 84,
+    "report": 84,
+    "feedback": 83,
+    "init": 82,
+    "save": 82,
+    "remember": 82,
+    "recall": 82,
+    "team": 80,
+    "analyze": 79,
+    "api-design": 79,
+    "data-dictionary": 79,
+    "design": 79,
+    "jtbd": 79,
+    "persona": 79,
+    "roadmap": 79,
+    "ui-spec": 79,
+    "wireframe": 79,
+    "version": 79,
+    "user-story": 70,
+    "prd": 70,
+    "test-case": 70,
+    "think": 10,
+}
+
+RESUME_ACTION_KEYWORDS = ("resume", "continue", "恢复", "继续", "续跑", "接着")
+RESUME_CONTEXT_KEYWORDS = ("workflow", "工作流", "上次", "上一轮", "previous", "last", "run-")
 
 
 class _SafeFormatMap(dict[str, str]):
@@ -153,7 +261,20 @@ def _safe_float(value: Any, fallback: float) -> float:
 
 
 def _keyword_hits(text: str, tokens: tuple[str, ...]) -> list[str]:
-    return [token for token in tokens if token and token in text]
+    normalized_text = _normalize_text(text)
+    return [token for token in tokens if _match_token(normalized_text, token)]
+
+
+def _match_token(text: str, token: str) -> bool:
+    token_norm = re.sub(r"\s+", " ", _normalize_text(token))
+    if not token_norm:
+        return False
+    if re.search(r"[\u4e00-\u9fff]", token_norm):
+        return token_norm in text
+    if re.fullmatch(r"[a-z0-9\- ]+", token_norm):
+        pattern = r"(?<![a-z0-9-])" + re.escape(token_norm).replace(r"\ ", r"\s+") + r"(?![a-z0-9-])"
+        return re.search(pattern, text) is not None
+    return token_norm in text
 
 
 def _merge_keywords(overrides: Any) -> dict[str, tuple[str, ...]]:
@@ -247,8 +368,20 @@ def _rule_route(goal: str, *, intent_keywords: dict[str, tuple[str, ...]]) -> di
             continue
         scores[intent] += len(_keyword_hits(text, keywords))
 
-    ranked = sorted(scores.items(), key=lambda item: item[1], reverse=True)
+    if "resume" in scores:
+        resume_action_hits = _keyword_hits(text, RESUME_ACTION_KEYWORDS)
+        resume_context_hits = _keyword_hits(text, RESUME_CONTEXT_KEYWORDS)
+        if resume_action_hits and resume_context_hits:
+            scores["resume"] += 2
+
+    ranked = sorted(
+        scores.items(),
+        key=lambda item: (item[1], INTENT_PRIORITY.get(item[0], 0)),
+        reverse=True,
+    )
     best_intent, best_score = ranked[0] if ranked else ("think", 0)
+    if best_score <= 0:
+        best_intent = "think"
     second_score = ranked[1][1] if len(ranked) > 1 else 0
 
     confidence = 0.45
@@ -282,10 +415,10 @@ def _llm_route(goal: str) -> dict[str, Any]:
     model = str(os.environ.get("BEACON_LLM_MODEL", "gpt-4o-mini")).strip()
     timeout_s = float(str(os.environ.get("BEACON_LLM_TIMEOUT", "8")).strip() or "8")
 
+    intent_choices = "|".join(SUPPORTED_INTENTS)
     system_prompt = (
         "You are a beacon CLI intent router. Return compact JSON: "
-        '{"intent":"think|user-story|prd|test-case|workflow|run|status|resume|team|gate|release|doctor|outside-boundary",'
-        '"confidence":0.0,"reason":"...","stage_hint":"think|user-story|prd|test-case|release"}'
+        + f'{{"intent":"{intent_choices}","confidence":0.0,"reason":"...","stage_hint":"think|user-story|prd|test-case|release"}}'
     )
     body = {
         "model": model,
@@ -340,14 +473,14 @@ def _apply_boundary_guard(
     outside_boundary_keywords: tuple[str, ...],
 ) -> dict[str, Any]:
     text = _normalize_text(goal)
-    outside_hits = [token for token in outside_boundary_keywords if token in text]
+    outside_hits = _keyword_hits(text, outside_boundary_keywords)
 
     all_inside_tokens: list[str] = []
     for intent, tokens in intent_keywords.items():
         if intent == "outside-boundary":
             continue
         all_inside_tokens.extend(tokens)
-    inside_hits = [token for token in all_inside_tokens if token in text]
+    inside_hits = _keyword_hits(text, tuple(all_inside_tokens))
 
     boundary_state = "in_scope"
     boundary_reason = "in_scope"
