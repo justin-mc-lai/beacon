@@ -495,12 +495,56 @@ beacon-evolution-summary create auto --json --project .
 
 #### `beacon-doctor`
 
-环境诊断与修复。
+环境诊断、版本兼容检查与 CLI 安装管理。
+
+`beacon-doctor`（或 `beacon doctor`）会：
+
+1. 展示当前真实运行的 Beacon skill/CLI 版本来源（非硬编码）  
+2. 识别目标项目最新迭代版本（docs 扫描 + PTK 历史回退）  
+3. 检测迭代物料与当前 skill 的不兼容项，并输出修复建议
+
+常用诊断命令：
 
 ```bash
 beacon-doctor
 beacon-doctor --fix
 beacon-doctor diagnose --json
+beacon-doctor diagnose --strict --project-root .
+```
+
+一键安装/卸载 CLI 启动器（`beacon` / `beacon-cli`）：
+
+```bash
+# 预览安装（不落盘）
+beacon-doctor setup --dry-run --json
+
+# 安装到默认可写 PATH 目录（推荐）
+beacon-doctor setup
+
+# 指定安装目录（例如 ~/.local/bin）
+beacon-doctor setup --bin-dir ~/.local/bin
+
+# 卸载 doctor 管理的启动器
+beacon-doctor uninstall
+
+# 预览卸载
+beacon-doctor uninstall --dry-run --json
+```
+
+常见参数：
+
+- `--bin-dir`: 指定安装/卸载目录
+- `--dry-run`: 仅预览，不写入文件
+- `--force`: 覆盖或移除非 doctor 管理的同名文件
+- `--json`: 机器可读输出（CI/自动化推荐）
+
+> 建议首次使用先执行 `beacon-doctor setup --dry-run --json`，确认目标路径后再正式安装。
+
+安装后可验证：
+
+```bash
+which beacon
+beacon --help
 ```
 
 #### `beacon-status`
@@ -1013,6 +1057,26 @@ beacon-think --help
 
 # 运行环境诊断
 beacon-doctor
+```
+
+### Q6: 终端提示 `beacon not found` 怎么办？
+
+先用 doctor 一键安装启动器：
+
+```bash
+beacon-doctor setup
+```
+
+如果需要先检查安装目标目录：
+
+```bash
+beacon-doctor setup --dry-run --json
+```
+
+如果需要移除安装：
+
+```bash
+beacon-doctor uninstall
 ```
 
 ---

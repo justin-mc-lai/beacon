@@ -4,10 +4,12 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from typing import Any
 
 import typer
 
-from beacon.utils.runtime import now_iso
+from beacon.utils.doctor_diagnostics import build_doctor_payload, collect_runtime_info
+from beacon.utils.doctor_setup import install_launchers, resolve_bin_dir, uninstall_launchers
 
 app = typer.Typer(
     name="doctor",
@@ -17,80 +19,99 @@ app = typer.Typer(
 )
 
 
-def _doctor_impl(json_output: bool, project_root: str, fix: bool, upgrade: bool) -> int:
+def _print_doctor_report(payload: dict[str, Any]) -> None:
+    typer.echo("Beacon Doctor - Environment Diagnostics")
+    typer.echo("=" * 40)
+    for item in payload.get("checks", []):
+        status = str(item.get("status", "WARN")).upper()
+        icon = "✓" if status == "PASS" else ("⚠" if status == "WARN" else "✗")
+        typer.echo(f"{icon} {status}: {item.get('name')} ({item.get('detail')})")
+
+    runtime = payload.get("runtime", {})
+    typer.echo("\nRuntime")
+    typer.echo("-" * 40)
+    typer.echo(f"active_skill_path : {runtime.get('active_skill_path', '')}")
+    typer.echo(f"cli_entry         : {runtime.get('cli_entry', '')}")
+    typer.echo(f"package_version   : {runtime.get('package_version', '')}")
+    typer.echo(f"toolkit_version   : {runtime.get('toolkit_version', '')}")
+    typer.echo(f"skill_md_version  : {runtime.get('skill_md_version', '')}")
+    typer.echo(f"version_consistent: {runtime.get('version_consistent', False)}")
+
+    project = payload.get("project", {})
+    typer.echo("\nProject Iteration")
+    typer.echo("-" * 40)
+    typer.echo(f"project_root      : {project.get('project_root', '')}")
+    typer.echo(f"latest_iteration  : {project.get('latest_iteration_version', '')}")
+    typer.echo(f"version_source    : {project.get('version_source', '')}")
+    typer.echo(f"available_versions: {project.get('available_versions', [])}")
+
+    incompatibilities = payload.get("incompatibilities", [])
+    typer.echo("\nCompatibility")
+    typer.echo("-" * 40)
+    if not incompatibilities:
+        typer.echo("✓ PASS: no incompatibilities detected")
+    else:
+        for item in incompatibilities:
+            typer.echo(
+                f"⚠ {str(item.get('severity', 'medium')).upper()} "
+                f"{item.get('code', '')}: {item.get('summary', '')}"
+            )
+    typer.echo(f"\nOverall: {payload.get('overall', 'WARN')}")
+
+
+def _doctor_impl(json_output: bool, project_root: str, fix: bool, upgrade: bool, strict: bool) -> int:
     root = Path(project_root) if project_root else Path.cwd()
-    checks: list[dict[str, str]] = []
 
     if upgrade:
         typer.echo("Beacon doctor upgrade flow (compat mode)")
         typer.echo("Tip: use `beacon init --apply` after upgrade checks.")
         return 0
 
-    if not root.exists():
-        payload = {
-            "schema_version": "1.0",
-            "beacon_version": "v1.0.0",
-            "project_root": str(root),
-            "overall": "BLOCKED",
-            "checks": [{"name": "project_root", "status": "FAIL", "detail": "project root not found"}],
-            "generated_at": now_iso(),
-        }
-        if json_output:
-            typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
-        else:
-            typer.echo("Beacon Doctor: BLOCKED")
-            typer.echo(f"- FAIL: project_root ({root})")
-        return 2
+    if fix and root.exists():
+        (root / ".beacon").mkdir(parents=True, exist_ok=True)
+        (root / "docs").mkdir(parents=True, exist_ok=True)
+        (root / "skills").mkdir(parents=True, exist_ok=True)
 
-    beacon_dir = root / ".beacon"
-    docs_dir = root / "docs"
-    skills_dir = root / "skills"
-
-    if beacon_dir.exists():
-        checks.append({"name": "beacon_directory", "status": "PASS", "detail": ".beacon"})
-    else:
-        checks.append({"name": "beacon_directory", "status": "WARN", "detail": ".beacon missing"})
-        if fix:
-            beacon_dir.mkdir(parents=True, exist_ok=True)
-
-    if docs_dir.exists():
-        checks.append({"name": "docs_directory", "status": "PASS", "detail": "docs"})
-    else:
-        checks.append({"name": "docs_directory", "status": "WARN", "detail": "docs missing"})
-        if fix:
-            docs_dir.mkdir(parents=True, exist_ok=True)
-
-    if skills_dir.exists():
-        checks.append({"name": "skills_directory", "status": "PASS", "detail": "skills"})
-    else:
-        checks.append({"name": "skills_directory", "status": "WARN", "detail": "skills missing"})
-
-    overall = "PASS"
-    if any(item["status"] == "FAIL" for item in checks):
-        overall = "BLOCKED"
-    elif any(item["status"] == "WARN" for item in checks):
-        overall = "WARN"
-
-    payload = {
-        "schema_version": "1.0",
-        "beacon_version": "v1.0.0",
-        "project_root": str(root),
-        "overall": overall,
-        "checks": checks,
-        "generated_at": now_iso(),
-    }
+    payload = build_doctor_payload(root, strict=strict)
 
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
     else:
-        typer.echo("Beacon Doctor - Environment Diagnostics")
-        typer.echo("=" * 40)
-        for item in checks:
-            icon = "✓" if item["status"] == "PASS" else ("⚠" if item["status"] == "WARN" else "✗")
-            typer.echo(f"{icon} {item['status']}: {item['name']} ({item['detail']})")
-        typer.echo(f"Overall: {overall}")
+        _print_doctor_report(payload)
 
-    return 2 if overall == "BLOCKED" else 0
+    return 2 if payload.get("overall") == "BLOCKED" else 0
+
+
+def _resolve_launcher_source(launcher_source: str) -> Path:
+    if launcher_source:
+        return Path(launcher_source).expanduser().resolve()
+    runtime = collect_runtime_info()
+    candidate = Path(str(runtime.get("launcher_path", "")).strip())
+    if candidate.exists():
+        return candidate
+    return (Path(__file__).resolve().parents[2] / "beacon-cli").resolve()
+
+
+def _print_action_result(title: str, result: dict[str, Any]) -> None:
+    typer.echo(title)
+    typer.echo("=" * len(title))
+    if result.get("error"):
+        typer.echo(f"✗ {result['error']}")
+    if result.get("installed") is not None:
+        typer.echo(f"installed: {len(result.get('installed', []))}")
+        for path in result.get("installed", []):
+            typer.echo(f"  - {path}")
+    if result.get("removed") is not None:
+        typer.echo(f"removed: {len(result.get('removed', []))}")
+        for path in result.get("removed", []):
+            typer.echo(f"  - {path}")
+    skipped = result.get("skipped", [])
+    if skipped:
+        typer.echo(f"skipped: {len(skipped)}")
+        for path in skipped:
+            typer.echo(f"  - {path}")
+    for warning in result.get("warnings", []):
+        typer.echo(f"⚠ {warning}")
 
 
 @app.callback(invoke_without_command=True)
@@ -100,10 +121,19 @@ def doctor_callback(
     project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
     fix: bool = typer.Option(False, "--fix", "-f", help="Auto-fix issues"),
     upgrade: bool = typer.Option(False, "--upgrade", "-u", help="Interactive upgrade"),
+    strict: bool = typer.Option(False, "--strict", help="Treat high-severity incompatibilities as BLOCKED"),
 ):
     """Run diagnostics directly (PTK flat syntax compatibility)."""
     if ctx.invoked_subcommand is None:
-        raise typer.Exit(code=_doctor_impl(json_output=json_output, project_root=project_root, fix=fix, upgrade=upgrade))
+        raise typer.Exit(
+            code=_doctor_impl(
+                json_output=json_output,
+                project_root=project_root,
+                fix=fix,
+                upgrade=upgrade,
+                strict=strict,
+            )
+        )
 
 
 @app.command("diagnose")
@@ -112,9 +142,82 @@ def diagnose(
     project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
     fix: bool = typer.Option(False, "--fix", "-f", help="Auto-fix issues"),
     upgrade: bool = typer.Option(False, "--upgrade", "-u", help="Interactive upgrade"),
+    strict: bool = typer.Option(False, "--strict", help="Treat high-severity incompatibilities as BLOCKED"),
 ):
     """Run Beacon diagnostics and health checks."""
-    raise typer.Exit(code=_doctor_impl(json_output=json_output, project_root=project_root, fix=fix, upgrade=upgrade))
+    raise typer.Exit(
+        code=_doctor_impl(
+            json_output=json_output,
+            project_root=project_root,
+            fix=fix,
+            upgrade=upgrade,
+            strict=strict,
+        )
+    )
+
+
+@app.command("setup")
+def setup(
+    bin_dir: str = typer.Option("", "--bin-dir", help="Install directory for launchers"),
+    launcher_source: str = typer.Option("", "--launcher-source", help="Path to beacon-cli launcher source"),
+    dry_run: bool = typer.Option(False, "--dry-run", help="Preview without writing files"),
+    force: bool = typer.Option(False, "--force", help="Overwrite unmanaged launchers"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Install `beacon` and `beacon-cli` launchers to system PATH directory."""
+    resolved_bin_dir = resolve_bin_dir(bin_dir).resolve()
+    source = _resolve_launcher_source(launcher_source)
+
+    result = install_launchers(
+        bin_dir=resolved_bin_dir,
+        launcher_source=source,
+        force=force,
+        dry_run=dry_run,
+    )
+    status = "BLOCKED" if result.get("error") else "PASS"
+    payload = {
+        "schema_version": "2.0",
+        "action": "setup",
+        "status": status,
+        "result": result,
+    }
+
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        _print_action_result("Beacon Doctor Setup", result)
+
+    raise typer.Exit(2 if status == "BLOCKED" else 0)
+
+
+@app.command("uninstall")
+def uninstall(
+    bin_dir: str = typer.Option("", "--bin-dir", help="Launcher directory to clean"),
+    dry_run: bool = typer.Option(False, "--dry-run", help="Preview without deleting files"),
+    force: bool = typer.Option(False, "--force", help="Remove unmanaged launchers too"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Uninstall launchers created by `beacon doctor setup`."""
+    resolved_bin_dir = resolve_bin_dir(bin_dir).resolve()
+
+    result = uninstall_launchers(
+        bin_dir=resolved_bin_dir,
+        force=force,
+        dry_run=dry_run,
+    )
+    payload = {
+        "schema_version": "2.0",
+        "action": "uninstall",
+        "status": "PASS",
+        "result": result,
+    }
+
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        _print_action_result("Beacon Doctor Uninstall", result)
+
+    raise typer.Exit(0)
 
 
 if __name__ == "__main__":
