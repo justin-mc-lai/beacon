@@ -1,0 +1,136 @@
+{
+  "schema_version": "1.0",
+  "feature": "debug-feedback-loop",
+  "version": "v1.1.0",
+  "generated_at": "2026-03-06T00:00:00Z",
+  "entries": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-001",
+      "layer": "integration",
+      "command": "python3 -m pytest -q tests/test_v110_debug_feedback_pipeline.py::test_debug_raw_collector_should_create_jsonl --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "运行 ask/prompt/workflow 后，生成 .beacon/state/debug-feedback/<run_id>.jsonl",
+      "evidence_path": ".beacon/evidence/test-results/debug-feedback-loop/TC-001.json"
+    },
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-002",
+      "layer": "unit",
+      "command": "python3 -m pytest -q tests/test_v110_debug_feedback_pipeline.py::test_debug_raw_event_should_include_required_fields --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "raw event 必含 goal/intent/confidence/boundary_state/block_reason/command/exit_code/source/ts",
+      "evidence_path": ".beacon/evidence/test-results/debug-feedback-loop/TC-002.json"
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-003",
+      "layer": "integration",
+      "command": "python3 -m pytest -q tests/test_v110_debug_feedback_pipeline.py::test_collectors_should_cover_all_sources --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "ask/prompt/workflow/run/gate/team 均可写入 debug 事件",
+      "evidence_path": ".beacon/evidence/test-results/debug-feedback-loop/TC-003.json"
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-004",
+      "layer": "unit",
+      "command": "python3 -m pytest -q tests/test_v110_debug_attribution.py::test_attribution_should_generate_reason_codes --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "raw->candidate 自动归因成功，并落 feedback-candidates",
+      "evidence_path": ".beacon/evidence/test-results/debug-feedback-loop/TC-004.json"
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-005",
+      "layer": "unit",
+      "command": "python3 -m pytest -q tests/test_v110_debug_attribution.py::test_candidate_override_should_be_tracked --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "人工 override 可追踪，保留原始 reason_code 轨迹",
+      "evidence_path": ".beacon/evidence/test-results/debug-feedback-loop/TC-005.json"
+    },
+    {
+      "ac_id": "AC-005",
+      "tc_id": "TC-006",
+      "layer": "integration",
+      "command": "python3 -m pytest -q tests/test_v110_debug_feedback_pipeline.py::test_feedback_sync_should_assimilate_debug_candidates --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "feedback sync 可消费 debug candidates 并写入 memory-v1",
+      "evidence_path": ".beacon/evidence/test-results/debug-feedback-loop/TC-006.json"
+    },
+    {
+      "ac_id": "AC-006",
+      "tc_id": "TC-007",
+      "layer": "unit",
+      "command": "python3 -m pytest -q tests/test_v110_memory_revision.py::test_debug_feedback_memory_should_support_upsert_and_revision --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "debug feedback 写入 memory 支持 upsert/revision_of/superseded_by",
+      "evidence_path": ".beacon/evidence/test-results/debug-feedback-loop/TC-007.json"
+    },
+    {
+      "ac_id": "AC-007",
+      "tc_id": "TC-008",
+      "layer": "unit",
+      "command": "python3 -m pytest -q tests/test_v110_prompt_catalog.py::test_prompt_catalog_should_cover_routable_intents --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "提示词清单覆盖所有直达 intents",
+      "evidence_path": ".beacon/evidence/test-results/debug-feedback-loop/TC-008.json"
+    },
+    {
+      "ac_id": "AC-008",
+      "tc_id": "TC-009",
+      "layer": "unit",
+      "command": "python3 -m pytest -q tests/test_v110_prompt_catalog.py::test_non_routable_commands_should_have_explicit_fallbacks --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "非直达命令均给出显式 fallback",
+      "evidence_path": ".beacon/evidence/test-results/debug-feedback-loop/TC-009.json"
+    },
+    {
+      "ac_id": "AC-009",
+      "tc_id": "TC-010",
+      "layer": "integration",
+      "command": "python3 -m pytest -q tests/test_v110_bridge_execution.py::test_bridge_should_be_hint_only_by_default --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "workflow 终态默认仅提示 OMC/OMX/team，不执行程序桥接",
+      "evidence_path": ".beacon/evidence/test-results/debug-feedback-loop/TC-010.json"
+    },
+    {
+      "ac_id": "AC-009",
+      "tc_id": "TC-011",
+      "layer": "integration",
+      "command": "python3 -m pytest -q tests/test_v110_bridge_execution.py::test_bridge_should_execute_when_flag_enabled --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "显式桥接开关开启后可执行 OMC/OMX 调用",
+      "evidence_path": ".beacon/evidence/test-results/debug-feedback-loop/TC-011.json"
+    },
+    {
+      "ac_id": "AC-010",
+      "tc_id": "TC-012",
+      "layer": "integration",
+      "command": "python3 -m pytest -q tests/test_v110_bridge_execution.py::test_bridge_result_should_be_written_to_memory_and_lifecycle --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "bridge 结果写入 memory + lifecycle 且 evidence_ref 可追溯",
+      "evidence_path": ".beacon/evidence/test-results/debug-feedback-loop/TC-012.json"
+    },
+    {
+      "ac_id": "AC-011",
+      "tc_id": "TC-013",
+      "layer": "unit",
+      "command": "python3 -m pytest -q tests/test_v110_spec_fingerprint.py::test_fingerprint_should_cover_user_story_prd_test_case --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "spec fingerprint 覆盖 user-story/prd/test-case",
+      "evidence_path": ".beacon/evidence/test-results/debug-feedback-loop/TC-013.json"
+    },
+    {
+      "ac_id": "AC-012",
+      "tc_id": "TC-014",
+      "layer": "integration",
+      "command": "python3 -m pytest -q tests/test_v110_gate_spec_consistency.py::test_gate_should_block_on_fingerprint_mismatch --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "gate strict 在 fingerprint 与实现证据不一致时 blocked",
+      "evidence_path": ".beacon/evidence/test-results/debug-feedback-loop/TC-014.json"
+    },
+    {
+      "ac_id": "AC-013",
+      "tc_id": "TC-015",
+      "layer": "integration",
+      "command": "python3 -m pytest -q tests/test_v110_docs_examples_contract.py::test_docs_examples_should_be_executable --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "README/SKILL 样例命令可执行",
+      "evidence_path": ".beacon/evidence/test-results/debug-feedback-loop/TC-015.json"
+    },
+    {
+      "ac_id": "AC-014",
+      "tc_id": "TC-016",
+      "layer": "integration",
+      "command": "python3 -m pytest -q tests/test_v110_report_consistency.py::test_report_write_summary_should_include_consistency_snapshot --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "report --write-summary 输出一致性审计快照",
+      "evidence_path": ".beacon/evidence/test-results/debug-feedback-loop/TC-016.json"
+    }
+  ]
+}
