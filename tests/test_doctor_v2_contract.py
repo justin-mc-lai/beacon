@@ -113,6 +113,28 @@ def test_doctor_should_flag_material_version_ahead_of_runtime(tmp_path: Path):
     assert "COMP-204" in codes
 
 
+def test_doctor_should_detect_installed_skill_copy_version_drift(monkeypatch, tmp_path: Path):
+    _prepare_basic_project(tmp_path)
+
+    fake_home = tmp_path / "home"
+    monkeypatch.setenv("HOME", str(fake_home))
+    skill_layout = {
+        fake_home / ".agents" / "skills" / "beacon" / "SKILL.md": "Skill Version: v1.0.3\n",
+        fake_home / ".codex" / "skills" / "beacon" / "SKILL.md": "Skill Version: v1.0.2\n",
+        fake_home / ".claude" / "skills" / "beacon" / "SKILL.md": "Skill Version: v1.0.1\n",
+    }
+    for path, content in skill_layout.items():
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(content, encoding="utf-8")
+
+    result = _invoke(["doctor", "--json", "--project-root", str(tmp_path)])
+    assert result.exit_code == 0
+    payload = json.loads(result.stdout)
+    incompatibilities = payload.get("incompatibilities", [])
+    codes = {item.get("code") for item in incompatibilities}
+    assert "COMP-206" in codes
+
+
 def test_doctor_setup_should_install_beacon_launchers(tmp_path: Path):
     bin_dir = tmp_path / "bin"
 

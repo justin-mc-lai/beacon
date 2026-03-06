@@ -5,9 +5,9 @@ description: AI Product Workflow Toolkit for product thinking, user stories, PRD
 
 # Beacon - AI Product Workflow Toolkit
 
-> **Skill Version**: v1.0.2
-> **CLI Version**: v1.0.2
-> **Last Updated**: 2026-03-04
+> **Skill Version**: v1.0.3
+> **CLI Version**: v1.0.3
+> **Last Updated**: 2026-03-06
 
 Beacon 是 AI 产品工作流工具包，提供需求澄清、用户故事、PRD、测试用例、技术方案与发布清单的完整工作流。
 
@@ -38,6 +38,7 @@ python3 scripts/sync_skill_commands.py --check
 
 | 关键词 | 对应子命令 |
 |--------|------------|
+| `beacon-ask` | `ask` |
 | `beacon-analyze` | `analyze` |
 | `beacon-api-design` | `api-design` |
 | `beacon-auto-test` | `auto-test` |
@@ -54,6 +55,7 @@ python3 scripts/sync_skill_commands.py --check
 | `beacon-kano` | `kano` |
 | `beacon-moscow` | `moscow` |
 | `beacon-persona` | `persona` |
+| `beacon-prompt` | `prompt` |
 | `beacon-prd` | `prd` |
 | `beacon-ralph-bridge` | `ralph-bridge` |
 | `beacon-recall` | `recall` |
@@ -80,6 +82,7 @@ python3 scripts/sync_skill_commands.py --check
 
 | 子命令 | 推荐触发 |
 |-------|----------|
+| `ask` | `beacon-ask` |
 | `analyze` | `beacon-analyze` |
 | `api-design` | `beacon-api-design` |
 | `auto-test` | `beacon-auto-test` |
@@ -96,6 +99,7 @@ python3 scripts/sync_skill_commands.py --check
 | `kano` | `beacon-kano` |
 | `moscow` | `beacon-moscow` |
 | `persona` | `beacon-persona` |
+| `prompt` | `beacon-prompt` |
 | `prd` | `beacon-prd` |
 | `ralph-bridge` | `beacon-ralph-bridge` |
 | `recall` | `beacon-recall` |
@@ -159,4 +163,4 @@ docs/product/{version}/
 
 ---
 
-**版本**: v1.0.2
+**版本**: v1.0.3

@@ -25,6 +25,12 @@ class GateMode(str, Enum):
     DRY_RUN = "dry-run"
 
 
+class GateProfile(str, Enum):
+    AUTO = "auto"
+    STAGE_LOCAL = "stage-local"
+    RELEASE_GLOBAL = "release-global"
+
+
 # Standard reason codes (25 codes)
 REASON_CODES = [
     "blocking_open_question_exists",
@@ -96,6 +102,144 @@ WORKFLOW_STAGES = ["think", "user-story", "prd", "test-case", "release"]
 
 # Gate configuration file
 GATE_CONFIG_FILE = "gate-config.json"
+DEFAULT_GATE_CONFIG: Dict[str, Any] = {
+    "strict_default": True,
+    "mode": "strict",
+    "warn_on_force": True,
+    "log_risks": True,
+    "scope_guard_enabled": True,
+}
+
+
+def resolve_gate_mode(*, strict: bool, mode: Optional[str], project_root: Path) -> tuple[GateMode, Dict[str, Any]]:
+    """Resolve effective gate mode with CLI flags + config fallback."""
+    gate_mode = GateMode.STRICT if strict else GateMode.NORMAL
+    if mode:
+        try:
+            gate_mode = GateMode(mode)
+        except ValueError as exc:
+            raise ValueError(f"Invalid mode '{mode}'. Use strict/normal/debug/dry-run") from exc
+
+    config = load_gate_config(project_root)
+    if not strict and not mode and "mode" in config:
+        try:
+            gate_mode = GateMode(config["mode"])
+        except ValueError:
+            pass
+    return gate_mode, config
+
+
+@app.callback(invoke_without_command=True)
+def gate_callback(  # noqa: PLR0913
+    ctx: typer.Context,
+    strict: bool = typer.Option(False, "--strict", help="Enable strict mode"),
+    mode: Optional[str] = typer.Option(None, "--mode", help="Gate mode: strict/normal/debug/dry-run"),
+    profile: str = typer.Option(
+        "auto",
+        "--profile",
+        help="Gate profile: auto/stage-local/release-global.",
+    ),
+    json_output: bool = typer.Option(False, "--json", help="JSON output"),
+    force: bool = typer.Option(False, "--force", help="Force pass with risk logging"),
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    qa_policy: str = typer.Option("legacy", "--qa-policy", help="QA policy: legacy/qa9-core/qa9-strict"),
+    min_automation_rate: float = typer.Option(
+        0.85,
+        "--min-automation-rate",
+        help="Minimum automation coverage rate for QA9 policy.",
+    ),
+    require_qa_types: Optional[list[str]] = typer.Option(
+        None,
+        "--require-qa-types",
+        help="Required QA types list (comma-separated or repeatable).",
+    ),
+    require_compat_matrix: bool = typer.Option(
+        False,
+        "--require-compat-matrix",
+        help="Require compatibility matrix checks.",
+    ),
+    version: Optional[str] = typer.Option(
+        None,
+        "--version",
+        "-v",
+        help="Target docs version (default: resolve from env/latest)",
+    ),
+):
+    """Default gate behavior: run checks for all workflow stages."""
+    if ctx.invoked_subcommand is not None:
+        return
+
+    root = Path(project_root) if project_root else Path.cwd()
+    try:
+        gate_mode, gate_config = resolve_gate_mode(strict=strict, mode=mode, project_root=root)
+    except ValueError as exc:
+        typer.echo(f"Error: {exc}")
+        raise typer.Exit(code=1)
+    compat_required = bool(require_compat_matrix)
+    if str(qa_policy or "").strip().lower() == "qa9-strict":
+        compat_required = True
+
+    stage_results: list[dict[str, Any]] = []
+    for stage in WORKFLOW_STAGES:
+        result = run_gate_checks(
+            stage,
+            gate_mode,
+            root,
+            force,
+            config=gate_config,
+            qa_policy=qa_policy,
+            min_automation_rate=min_automation_rate,
+            require_qa_types=require_qa_types,
+            require_compat_matrix=compat_required,
+            version=version,
+            profile=profile,
+        )
+        stage_results.append(result)
+
+    blocked = [item for item in stage_results if item.get("status") == "Blocked"]
+    warned = [item for item in stage_results if item.get("status") == "Warn"]
+    if blocked:
+        overall_status = "Blocked"
+    elif warned:
+        overall_status = "Warn"
+    else:
+        overall_status = "Pass"
+
+    payload = {
+        "mode": gate_mode.value,
+        "profile": profile,
+        "status": overall_status,
+        "stage_count": len(stage_results),
+        "blocked_stages": [item.get("stage") for item in blocked],
+        "warn_stages": [item.get("stage") for item in warned],
+        "results": stage_results,
+    }
+
+    if json_output:
+        typer.echo(json.dumps(payload, indent=2, ensure_ascii=False))
+    else:
+        color = (
+            typer.colors.RED
+            if overall_status == "Blocked"
+            else typer.colors.YELLOW if overall_status == "Warn" else typer.colors.GREEN
+        )
+        typer.echo(f"Gate status: {typer.style(overall_status.upper(), fg=color)}")
+        for item in stage_results:
+            stage_status = str(item.get("status", "Unknown")).upper()
+            typer.echo(f"  - {item.get('stage')}: {stage_status} ({len(item.get('issues', []))} issues)")
+
+    raise typer.Exit(code=2 if overall_status == "Blocked" else 0)
+
+
+def resolve_gate_profile(stage: str, profile: Optional[str]) -> GateProfile:
+    raw = str(profile or "auto").strip().lower().replace("_", "-")
+    if raw in {"", "auto"}:
+        return GateProfile.RELEASE_GLOBAL if stage == "release" else GateProfile.STAGE_LOCAL
+    if raw in {"stage-local", "stage", "local"}:
+        return GateProfile.STAGE_LOCAL
+    if raw in {"release-global", "global", "release"}:
+        return GateProfile.RELEASE_GLOBAL
+    raise ValueError(f"Invalid gate profile '{profile}'. Use auto/stage-local/release-global")
 
 
 def get_gate_config_path(project_root: Path) -> Path:
@@ -107,15 +251,24 @@ def load_gate_config(project_root: Path) -> Dict[str, Any]:
     """Load gate configuration"""
     config_path = get_gate_config_path(project_root)
     if config_path.exists():
-        return json.loads(config_path.read_text())
-    # Default configuration
-    return {
-        "strict_default": True,
-        "mode": "strict",
-        "warn_on_force": True,
-        "log_risks": True,
-        "scope_guard_enabled": True,
-    }
+        try:
+            loaded = json.loads(config_path.read_text(encoding="utf-8"))
+        except Exception as exc:  # noqa: BLE001
+            typer.echo(
+                f"[gate] warning: invalid {config_path.name}; fallback to defaults ({exc})",
+                err=True,
+            )
+            return dict(DEFAULT_GATE_CONFIG)
+        if not isinstance(loaded, dict):
+            typer.echo(
+                f"[gate] warning: invalid {config_path.name} root type; fallback to defaults",
+                err=True,
+            )
+            return dict(DEFAULT_GATE_CONFIG)
+        merged = dict(DEFAULT_GATE_CONFIG)
+        merged.update(loaded)
+        return merged
+    return dict(DEFAULT_GATE_CONFIG)
 
 
 def save_gate_config(project_root: Path, config: Dict[str, Any]):
@@ -155,8 +308,10 @@ def _execution_file_candidates(project_root: Path, version: str, filename: str) 
     ]
 
 
-def _resolved_gate_version(project_root: Path) -> str:
-    requested = str(os.environ.get("BEACON_VERSION", "") or "").strip()
+def _resolved_gate_version(project_root: Path, requested_version: Optional[str] = None) -> str:
+    requested = str(requested_version or "").strip()
+    if not requested:
+        requested = str(os.environ.get("BEACON_VERSION", "") or "").strip()
     return resolve_target_version(project_root, requested or None)
 
 
@@ -168,10 +323,10 @@ def _resolve_existing_execution_file(project_root: Path, version: str, filename:
     return candidates[0]
 
 
-def check_boundaries(project_root: Path, mode: GateMode) -> List[Dict[str, Any]]:
+def check_boundaries(project_root: Path, mode: GateMode, version: Optional[str] = None) -> List[Dict[str, Any]]:
     """Check boundaries.md exists"""
     issues = []
-    version = _resolved_gate_version(project_root)
+    version = _resolved_gate_version(project_root, version)
     boundaries_path = _resolve_existing_execution_file(project_root, version, "boundaries.md")
 
     if not boundaries_path.exists():
@@ -200,10 +355,10 @@ def check_boundaries(project_root: Path, mode: GateMode) -> List[Dict[str, Any]]
     return issues
 
 
-def check_terminal_artifact(project_root: Path, mode: GateMode) -> List[Dict[str, Any]]:
+def check_terminal_artifact(project_root: Path, mode: GateMode, version: Optional[str] = None) -> List[Dict[str, Any]]:
     """Check terminal.json exists and is valid"""
     issues = []
-    version = _resolved_gate_version(project_root)
+    version = _resolved_gate_version(project_root, version)
     terminal_path = _resolve_existing_execution_file(project_root, version, "terminal.json")
 
     if not terminal_path.exists():
@@ -1591,7 +1746,13 @@ def check_test_execution_integrity(project_root: Path, mode: GateMode, stage: st
     return issues
 
 
-def check_coverage_metrics(project_root: Path, mode: GateMode, stage: str) -> List[Dict[str, Any]]:
+def check_coverage_metrics(
+    project_root: Path,
+    mode: GateMode,
+    stage: str,
+    *,
+    version: Optional[str] = None,
+) -> List[Dict[str, Any]]:
     """Check story/ac/tc coverage metrics and block non-full coverage in strict/debug."""
     issues: list[dict[str, Any]] = []
     if stage not in {"test-case", "release"}:
@@ -1599,7 +1760,7 @@ def check_coverage_metrics(project_root: Path, mode: GateMode, stage: str) -> Li
     if mode not in {GateMode.STRICT, GateMode.DEBUG}:
         return issues
 
-    version = _resolved_gate_version(project_root)
+    version = _resolved_gate_version(project_root, version)
     metrics = compute_coverage_metrics(project_root, version=version)
     if metrics.get("full_coverage"):
         return issues
@@ -1631,6 +1792,8 @@ def run_gate_checks(
     min_automation_rate: float = 0.85,
     require_qa_types: Optional[list[str]] = None,
     require_compat_matrix: bool = False,
+    version: Optional[str] = None,
+    profile: str = "auto",
 ) -> Dict[str, Any]:
     """Run all gate checks for a stage"""
     all_issues = []
@@ -1638,61 +1801,62 @@ def run_gate_checks(
     scope_guard_enabled = bool(gate_config.get("scope_guard_enabled", True))
     requested_mode = mode
     dry_run_effective = requested_mode == GateMode.DRY_RUN
+    resolved_profile = resolve_gate_profile(stage, profile)
 
     if dry_run_effective:
         typer.echo("[DRY-RUN] Running checks without blocking...")
         mode = GateMode.DEBUG  # Use debug mode for dry-run
 
-    # Run checks
-    if mode == GateMode.DEBUG:
-        typer.echo(f"[DEBUG] Checking boundaries...")
-    all_issues.extend(check_boundaries(project_root, mode))
+    run_stage_local = resolved_profile in {GateProfile.STAGE_LOCAL, GateProfile.RELEASE_GLOBAL}
+    run_release_global = resolved_profile == GateProfile.RELEASE_GLOBAL
 
-    if mode == GateMode.DEBUG:
-        typer.echo(f"[DEBUG] Checking terminal artifact...")
-    all_issues.extend(check_terminal_artifact(project_root, mode))
+    if run_stage_local:
+        if mode == GateMode.DEBUG:
+            typer.echo("[DEBUG] [stage-local] Checking boundaries...")
+        all_issues.extend(check_boundaries(project_root, mode, version))
 
-    if mode == GateMode.DEBUG:
-        typer.echo(f"[DEBUG] Checking evidence chain...")
-    all_issues.extend(check_evidence_chain(project_root, mode))
+        if (mode == GateMode.STRICT or mode == GateMode.DEBUG) and scope_guard_enabled:
+            if mode == GateMode.DEBUG:
+                typer.echo("[DEBUG] [stage-local] Checking scope guard...")
+            all_issues.extend(check_scope_guard(project_root, mode))
 
-    if (mode == GateMode.STRICT or mode == GateMode.DEBUG) and scope_guard_enabled:
-        if mode == GateMode.DEBUG:
-            typer.echo(f"[DEBUG] Checking scope guard...")
-        all_issues.extend(check_scope_guard(project_root, mode))
-
-    if mode == GateMode.STRICT or mode == GateMode.DEBUG:
-        if mode == GateMode.DEBUG:
-            typer.echo(f"[DEBUG] Checking memory closure...")
-        all_issues.extend(check_memory_closure(project_root, mode, stage))
-
-    if mode == GateMode.STRICT or mode == GateMode.DEBUG:
-        if mode == GateMode.DEBUG:
-            typer.echo(f"[DEBUG] Checking release memory profile...")
-        all_issues.extend(check_release_memory_profile(project_root, mode, stage))
-
-    if mode == GateMode.STRICT or mode == GateMode.DEBUG:
-        if mode == GateMode.DEBUG:
-            typer.echo(f"[DEBUG] Checking test execution integrity...")
-        all_issues.extend(check_test_execution_integrity(project_root, mode, stage))
-    if mode == GateMode.STRICT or mode == GateMode.DEBUG:
-        if mode == GateMode.DEBUG:
-            typer.echo(f"[DEBUG] Checking coverage metrics...")
-        all_issues.extend(check_coverage_metrics(project_root, mode, stage))
-    if mode == GateMode.STRICT or mode == GateMode.DEBUG:
-        if mode == GateMode.DEBUG:
-            typer.echo(f"[DEBUG] Checking QA9 policy...")
-        all_issues.extend(
-            check_qa9_policy(
-                project_root,
-                mode,
-                stage,
-                qa_policy=qa_policy,
-                min_automation_rate=min_automation_rate,
-                require_qa_types=require_qa_types or list(QA9_TYPES),
-                require_compat_matrix=require_compat_matrix,
+        if mode == GateMode.STRICT or mode == GateMode.DEBUG:
+            if mode == GateMode.DEBUG:
+                typer.echo("[DEBUG] [stage-local] Checking test execution integrity...")
+            all_issues.extend(check_test_execution_integrity(project_root, mode, stage))
+            if mode == GateMode.DEBUG:
+                typer.echo("[DEBUG] [stage-local] Checking coverage metrics...")
+            all_issues.extend(check_coverage_metrics(project_root, mode, stage, version=version))
+            if mode == GateMode.DEBUG:
+                typer.echo("[DEBUG] [stage-local] Checking QA9 policy...")
+            all_issues.extend(
+                check_qa9_policy(
+                    project_root,
+                    mode,
+                    stage,
+                    qa_policy=qa_policy,
+                    min_automation_rate=min_automation_rate,
+                    require_qa_types=require_qa_types or list(QA9_TYPES),
+                    require_compat_matrix=require_compat_matrix,
+                )
             )
-        )
+
+    if run_release_global:
+        if mode == GateMode.DEBUG:
+            typer.echo("[DEBUG] [release-global] Checking terminal artifact...")
+        all_issues.extend(check_terminal_artifact(project_root, mode, version))
+
+        if mode == GateMode.DEBUG:
+            typer.echo("[DEBUG] [release-global] Checking evidence chain...")
+        all_issues.extend(check_evidence_chain(project_root, mode))
+
+        if mode == GateMode.STRICT or mode == GateMode.DEBUG:
+            if mode == GateMode.DEBUG:
+                typer.echo("[DEBUG] [release-global] Checking memory closure...")
+            all_issues.extend(check_memory_closure(project_root, mode, stage))
+            if mode == GateMode.DEBUG:
+                typer.echo("[DEBUG] [release-global] Checking release memory profile...")
+            all_issues.extend(check_release_memory_profile(project_root, mode, stage))
 
     # Determine blocked status
     blocked_issues = [i for i in all_issues if i.get("blocked", False)]
@@ -1719,10 +1883,15 @@ def run_gate_checks(
         risk_log_path.parent.mkdir(parents=True, exist_ok=True)
         risk_log_path.write_text(json.dumps(risks, indent=2, ensure_ascii=False))
 
+    if dry_run_effective:
+        status = "Pass"
+    else:
+        status = "Blocked" if is_blocked else ("Warn" if all_issues else "Pass")
     return {
         "stage": stage,
         "mode": requested_mode.value,
-        "status": "Blocked" if is_blocked else "Pass",
+        "profile": resolved_profile.value,
+        "status": status,
         "issues": all_issues,
         "blocked_count": len(blocked_issues),
         "force": force,
@@ -1734,6 +1903,7 @@ def _run_check_command(
     stage: str,
     strict: bool = False,
     mode: Optional[str] = None,
+    profile: str = "auto",
     json_output: bool = False,
     force: bool = False,
     project_root: str = "",
@@ -1741,23 +1911,15 @@ def _run_check_command(
     min_automation_rate: float = 0.85,
     require_qa_types: Optional[list[str]] = None,
     require_compat_matrix: bool = False,
+    version: Optional[str] = None,
 ) -> int:
     """Shared gate check execution."""
-    gate_mode = GateMode.STRICT if strict else GateMode.NORMAL
-    if mode:
-        try:
-            gate_mode = GateMode(mode)
-        except ValueError:
-            typer.echo(f"Error: Invalid mode '{mode}'. Use strict/normal/debug/dry-run")
-            return 1
-
     root = Path(project_root) if project_root else Path.cwd()
-    config = load_gate_config(root)
-    if not strict and not mode and "mode" in config:
-        try:
-            gate_mode = GateMode(config["mode"])
-        except ValueError:
-            pass
+    try:
+        gate_mode, _ = resolve_gate_mode(strict=strict, mode=mode, project_root=root)
+    except ValueError as exc:
+        typer.echo(f"Error: {exc}")
+        return 1
 
     if not json_output:
         if gate_mode == GateMode.DEBUG:
@@ -1766,17 +1928,29 @@ def _run_check_command(
         else:
             typer.echo(f"Gate Check: {stage}")
             typer.echo(f"Mode: {gate_mode.value.upper()}")
+            try:
+                resolved_profile = resolve_gate_profile(stage, profile)
+                typer.echo(f"Profile: {resolved_profile.value.upper()}")
+            except ValueError as exc:
+                typer.echo(f"Error: {exc}")
+                return 1
 
-    result = run_gate_checks(
-        stage,
-        gate_mode,
-        root,
-        force,
-        qa_policy=qa_policy,
-        min_automation_rate=min_automation_rate,
-        require_qa_types=require_qa_types,
-        require_compat_matrix=require_compat_matrix,
-    )
+    try:
+        result = run_gate_checks(
+            stage,
+            gate_mode,
+            root,
+            force,
+            qa_policy=qa_policy,
+            min_automation_rate=min_automation_rate,
+            require_qa_types=require_qa_types,
+            require_compat_matrix=require_compat_matrix,
+            version=version,
+            profile=profile,
+        )
+    except ValueError as exc:
+        typer.echo(f"Error: {exc}")
+        return 1
     if json_output:
         typer.echo(json.dumps(result, indent=2, ensure_ascii=False))
     else:
@@ -1787,8 +1961,12 @@ def _run_check_command(
                 if issue.get("blocked"):
                     typer.echo(f"  - {issue['reason_code']}: {issue['message']}")
         else:
-            status_color = typer.colors.GREEN if not force else typer.colors.YELLOW
-            status_text = "PASS" + (" (forced)" if force else "")
+            is_warn = result["status"] == "Warn"
+            if force:
+                status_color = typer.colors.YELLOW
+            else:
+                status_color = typer.colors.YELLOW if is_warn else typer.colors.GREEN
+            status_text = ("WARN" if is_warn else "PASS") + (" (forced)" if force else "")
             if result.get("dry_run"):
                 status_text += " (dry-run)"
             typer.echo(f"Status: {typer.style(status_text, fg=status_color)}")
@@ -1818,6 +1996,10 @@ def list_checks(
     for mode in GateMode:
         typer.echo(f"  - {mode.value}")
     typer.echo("")
+    typer.echo("Gate Profiles:")
+    for profile in GateProfile:
+        typer.echo(f"  - {profile.value}")
+    typer.echo("")
     typer.echo(f"Reason Codes ({len(REASON_CODES)} total):")
     for code in REASON_CODES:
         typer.echo(f"  - {code}")
@@ -1828,6 +2010,11 @@ def check(
     stage: str = typer.Argument("think", help="Workflow stage: think/user-story/prd/test-case/release"),
     strict: bool = typer.Option(False, "--strict", help="Enable strict mode"),
     mode: Optional[str] = typer.Option(None, "--mode", help="Gate mode: strict/normal/debug/dry-run"),
+    profile: str = typer.Option(
+        "auto",
+        "--profile",
+        help="Gate profile: auto/stage-local/release-global.",
+    ),
     json_output: bool = typer.Option(False, "--json", help="JSON output"),
     force: bool = typer.Option(False, "--force", help="Force pass with risk logging"),
     team: str = typer.Option("", "--team", "-t", help="Team name"),
@@ -1848,6 +2035,12 @@ def check(
         "--require-compat-matrix",
         help="Require compatibility matrix checks.",
     ),
+    version: Optional[str] = typer.Option(
+        None,
+        "--version",
+        "-v",
+        help="Target docs version (default: resolve from env/latest)",
+    ),
 ):
     """Run gate checks for workflow stages"""
     compat_required = bool(require_compat_matrix)
@@ -1857,6 +2050,7 @@ def check(
         stage=stage,
         strict=strict,
         mode=mode,
+        profile=profile,
         json_output=json_output,
         force=force,
         project_root=project_root,
@@ -1864,6 +2058,7 @@ def check(
         min_automation_rate=min_automation_rate,
         require_qa_types=require_qa_types,
         require_compat_matrix=compat_required,
+        version=version,
     )
     raise typer.Exit(code)
 
@@ -1920,6 +2115,7 @@ def status(
 def check_think(
     strict: bool = typer.Option(False, "--strict", help="Enable strict mode"),
     mode: Optional[str] = typer.Option(None, "--mode", help="Gate mode: strict/normal/debug/dry-run"),
+    profile: str = typer.Option("auto", "--profile", help="Gate profile: auto/stage-local/release-global."),
     json_output: bool = typer.Option(False, "--json", help="JSON output"),
     force: bool = typer.Option(False, "--force", help="Force pass with risk logging"),
     project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
@@ -1930,6 +2126,7 @@ def check_think(
             stage="think",
             strict=strict,
             mode=mode,
+            profile=profile,
             json_output=json_output,
             force=force,
             project_root=project_root,
@@ -1941,6 +2138,7 @@ def check_think(
 def check_user_story(
     strict: bool = typer.Option(False, "--strict", help="Enable strict mode"),
     mode: Optional[str] = typer.Option(None, "--mode", help="Gate mode: strict/normal/debug/dry-run"),
+    profile: str = typer.Option("auto", "--profile", help="Gate profile: auto/stage-local/release-global."),
     json_output: bool = typer.Option(False, "--json", help="JSON output"),
     force: bool = typer.Option(False, "--force", help="Force pass with risk logging"),
     project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
@@ -1951,6 +2149,7 @@ def check_user_story(
             stage="user-story",
             strict=strict,
             mode=mode,
+            profile=profile,
             json_output=json_output,
             force=force,
             project_root=project_root,
@@ -1962,6 +2161,7 @@ def check_user_story(
 def check_prd(
     strict: bool = typer.Option(False, "--strict", help="Enable strict mode"),
     mode: Optional[str] = typer.Option(None, "--mode", help="Gate mode: strict/normal/debug/dry-run"),
+    profile: str = typer.Option("auto", "--profile", help="Gate profile: auto/stage-local/release-global."),
     json_output: bool = typer.Option(False, "--json", help="JSON output"),
     force: bool = typer.Option(False, "--force", help="Force pass with risk logging"),
     project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
@@ -1972,6 +2172,7 @@ def check_prd(
             stage="prd",
             strict=strict,
             mode=mode,
+            profile=profile,
             json_output=json_output,
             force=force,
             project_root=project_root,
@@ -1983,6 +2184,7 @@ def check_prd(
 def check_test_case(
     strict: bool = typer.Option(False, "--strict", help="Enable strict mode"),
     mode: Optional[str] = typer.Option(None, "--mode", help="Gate mode: strict/normal/debug/dry-run"),
+    profile: str = typer.Option("auto", "--profile", help="Gate profile: auto/stage-local/release-global."),
     json_output: bool = typer.Option(False, "--json", help="JSON output"),
     force: bool = typer.Option(False, "--force", help="Force pass with risk logging"),
     project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
@@ -1993,6 +2195,7 @@ def check_test_case(
             stage="test-case",
             strict=strict,
             mode=mode,
+            profile=profile,
             json_output=json_output,
             force=force,
             project_root=project_root,
@@ -2004,6 +2207,7 @@ def check_test_case(
 def check_release(
     strict: bool = typer.Option(False, "--strict", help="Enable strict mode"),
     mode: Optional[str] = typer.Option(None, "--mode", help="Gate mode: strict/normal/debug/dry-run"),
+    profile: str = typer.Option("auto", "--profile", help="Gate profile: auto/stage-local/release-global."),
     json_output: bool = typer.Option(False, "--json", help="JSON output"),
     force: bool = typer.Option(False, "--force", help="Force pass with risk logging"),
     project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
@@ -2014,6 +2218,7 @@ def check_release(
             stage="release",
             strict=strict,
             mode=mode,
+            profile=profile,
             json_output=json_output,
             force=force,
             project_root=project_root,

@@ -176,6 +176,7 @@ def _report_impl(
     machine: bool,
     version: str,
     feature: str,
+    write_summary: bool,
 ) -> int:
     root = Path(project_root) if project_root else Path.cwd()
     version_filter = (
@@ -195,16 +196,17 @@ def _report_impl(
         root / "docs" / "beacon" / report_version / "execution",
         root / "docs" / "product" / report_version / "execution",
     ]
-    for exec_dir in exec_dirs:
-        exec_dir.mkdir(parents=True, exist_ok=True)
-        summary_json = exec_dir / "summary.json"
-        summary_md = exec_dir / "summary.md"
-        write_json(summary_json, payload)
-        summary_md.write_text(_human_summary(payload), encoding="utf-8")
+    if write_summary:
+        for exec_dir in exec_dirs:
+            exec_dir.mkdir(parents=True, exist_ok=True)
+            summary_json = exec_dir / "summary.json"
+            summary_md = exec_dir / "summary.md"
+            write_json(summary_json, payload)
+            summary_md.write_text(_human_summary(payload), encoding="utf-8")
 
     emit_human = human or not machine
     if emit_human:
-        typer.echo((exec_dirs[0] / "summary.md").read_text(encoding="utf-8"), nl=False)
+        typer.echo(_human_summary(payload), nl=False)
     else:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
     return 0
@@ -219,6 +221,11 @@ def report_callback(
     project_root: str = typer.Option("", "--project-root", help="Project root path"),
     version: str = typer.Option("", "--version", "-v", help="Version filter"),
     feature: str = typer.Option("", "--feature", "-f", help="Feature filter"),
+    write_summary: bool = typer.Option(
+        False,
+        "--write-summary",
+        help="Write summary.{json,md} into docs/*/<version>/execution (disabled by default).",
+    ),
 ):
     """Generate report directly (PTK flat syntax compatibility)."""
     if ctx.invoked_subcommand is None:
@@ -229,6 +236,7 @@ def report_callback(
             machine=machine,
             version=version,
             feature=feature,
+            write_summary=write_summary,
         )
         raise typer.Exit(code=code)
 
@@ -240,6 +248,11 @@ def generate(
     project_root: str = typer.Option("", "--project-root", help="Project root path"),
     version: str = typer.Option("", "--version", "-v", help="Version filter"),
     feature: str = typer.Option("", "--feature", "-f", help="Feature filter"),
+    write_summary: bool = typer.Option(
+        False,
+        "--write-summary",
+        help="Write summary.{json,md} into docs/*/<version>/execution (disabled by default).",
+    ),
 ):
     """Generate run report (nested compatibility)."""
     code = _report_impl(
@@ -249,6 +262,7 @@ def generate(
         machine=not human,
         version=version,
         feature=feature,
+        write_summary=write_summary,
     )
     raise typer.Exit(code=code)
 

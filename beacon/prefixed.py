@@ -11,6 +11,7 @@ import typer
 PREFIX = "beacon-"
 
 SUPPORTED_SUBCOMMANDS = (
+    "ask",
     "analyze",
     "api-design",
     "auto-test",
@@ -27,6 +28,7 @@ SUPPORTED_SUBCOMMANDS = (
     "kano",
     "moscow",
     "persona",
+    "prompt",
     "prd",
     "ralph-bridge",
     "recall",

@@ -418,7 +418,8 @@ def resolve_workflow_run_id(
         state = load_run_state(project_root, rid)
         if not isinstance(state, dict):
             continue
-        if str(state.get("workflow", "")) != "workflow.start":
+        workflow_name = str(state.get("workflow", ""))
+        if workflow_name not in {"workflow.start", "workflow"}:
             continue
         if versions_filter and str(state.get("version", "")) != versions_filter:
             continue
@@ -552,20 +553,21 @@ def compute_workflow_progress(
     missing_stages = [stage for stage in WORKFLOW_STAGES if stage_status[stage]["status"] != "completed"]
     closure_complete = len(missing_stages) == 0 and bool(target_run_id)
 
-    gate_report = project_root / ".beacon" / "gate-report.json"
-    gate_status = "unknown"
-    gate_pass = False
-    if gate_report.exists():
-        try:
-            gate_payload = json.loads(gate_report.read_text(encoding="utf-8"))
-        except Exception:  # noqa: BLE001
-            gate_payload = {}
-        gate_status = str(gate_payload.get("status", "")).strip() or "unknown"
-        gate_pass = gate_status.lower() == "pass"
-
     run_state = load_run_state(project_root, target_run_id) if target_run_id else None
     run_feature = str(run_state.get("feature", "")) if isinstance(run_state, dict) else ""
     run_version = str(run_state.get("version", "")) if isinstance(run_state, dict) else ""
+    gate_stage_status = str(stage_status.get("gate", {}).get("status", "not_started"))
+    gate_status = "unknown"
+    gate_pass = False
+    if gate_stage_status == "completed":
+        gate_status = "Pass"
+        gate_pass = True
+    elif gate_stage_status == "failed":
+        gate_status = "Blocked"
+    elif gate_stage_status == "skipped":
+        gate_status = "Skipped"
+    elif gate_stage_status in {"in_progress", "not_started"}:
+        gate_status = "unknown"
 
     return {
         "run_id": target_run_id,

@@ -280,7 +280,7 @@ def _run_workflow_impl(
     else:
         typer.echo(f"Running {normalized_type} in {mode} mode")
         typer.echo(f"Feature: {feature}, Version: {resolved_version}")
-        if strict:
+        if strict or mode == "strict":
             typer.echo("Strict mode: enabled")
     return 0
 
@@ -302,12 +302,16 @@ def workflow(
         typer.echo("Invalid --confirm, expected A/B/C", err=True)
         raise typer.Exit(code=2)
 
+    effective_mode = mode
+    if strict and mode != "strict":
+        effective_mode = "strict"
+
     code = _run_workflow_impl(
         workflow_type=workflow_type,
-        mode=mode,
+        mode=effective_mode,
         feature=feature,
         version=version,
-        strict=strict,
+        strict=(strict or effective_mode == "strict"),
         json_output=json_output,
         project_root=project_root,
         proposals=proposal,

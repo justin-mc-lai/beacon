@@ -215,7 +215,7 @@ Beacon 的 workflow 生命周期主链为 6 阶段：
 
 ## 4. 命令参考
 
-> 说明：本节按当前实现（v1.0.2 代码）更新。  
+> 说明：本节按当前实现（v1.0.3 代码）更新。  
 > 全量子命令契约见：`docs/beacon/v1.0.3/execution/v1.0.3-command-contracts-as-implemented.md`
 
 ### 4.1 工作流命令
@@ -289,11 +289,58 @@ beacon-gate prd
 beacon-gate test-case
 beacon-gate release
 
+# 显式指定门控画像
+beacon-gate check think --profile stage-local
+beacon-gate check release --profile release-global
+
 # strict/debug 模式下会阻断以下测试可信性问题：
 # - 未执行即失败（test_execution_missing）
 # - 关键动作缺失即失败（test_key_actions_missing）
 # - AC→TC→执行证据链断裂即失败（ac_tc_evidence_chain_broken）
 # - 覆盖不完整即失败（coverage_incomplete）
+```
+
+> `--profile auto`（默认）：非 release 阶段使用 `stage-local`，release 阶段使用 `release-global`。
+
+#### `beacon-prompt`
+
+自然语言意图路由 + 提示词优化（AI Agent Skill 触发增强）。
+
+```bash
+# 生成规范化命令计划（不执行）
+beacon-prompt optimize "请帮我做登录需求澄清并进入测试验收"
+
+# JSON 机器输出
+beacon-prompt optimize "检查当前项目发布是否可放行" --json
+
+# 一键执行推荐命令
+beacon-prompt optimize "做一次环境诊断并修复 beacon 命令不可用问题" --execute
+
+# mixed/out-of-scope/低置信度默认阻断执行（可显式放开）
+beacon-prompt optimize "先检查 gate 再直接写代码上线" --execute --allow-mixed
+beacon-prompt optimize "看下这个需求怎么做" --execute --allow-low-confidence
+```
+
+执行策略（默认）：
+- `boundary.state = in_scope` 且 `confidence >= threshold` 才允许 `--execute`
+- `boundary.state = mixed_need_confirm` 时阻断（除非 `--allow-mixed`）
+- `boundary.state = out_of_scope` 时阻断
+
+可选项目级路由配置：`.beacon/intent-router.json`
+- `confidence_threshold`: 执行阈值（0~1）
+- `intent_keywords`: 追加意图关键词
+- `intent_command_templates`: 覆盖意图到命令模板（如将 `status` 路由改为 `workflow status`）
+
+#### `beacon-ask`
+
+自然语言直达入口（默认执行，带安全闸）。
+
+```bash
+# 默认执行（带边界/置信度闸门）
+beacon-ask "做一次环境诊断并输出结果" --json
+
+# 仅生成计划，不执行
+beacon-ask "请生成用户故事并关联验收标准" --plan-only
 ```
 
 ---
@@ -568,7 +615,10 @@ beacon-report --machine
 beacon-report --machine --version v1.0.0
 beacon-report --machine --version v1.0.1 --feature "用户登录"
 beacon-report generate latest --machine --project-root .
+beacon-report --machine --version v1.0.1 --write-summary
 ```
+
+> 默认无落盘副作用；仅在显式传 `--write-summary` 时写入 `docs/*/<version>/execution/summary.{json,md}`。
 
 #### `beacon-debug`
 
@@ -619,6 +669,9 @@ beacon-init run --dry-run --project .
 ```bash
 # 启动一次自动测试（写入 .beacon/auto-test-status.json）
 beacon-auto-test create ui --project .
+
+# 绑定到指定版本上下文（避免 run/version 漂移）
+beacon-auto-test create ui --project . --version v1.0.3
 
 # QA9 全链路执行（支持 playwright/cypress/browser-use/agent-browser/midscene）
 beacon-auto-test create qa9 --project . \
@@ -1094,5 +1147,5 @@ beacon-doctor uninstall
 
 ---
 
-**版本**: v1.0.2
-**最后更新**: 2026-03-05
+**版本**: v1.0.3
+**最后更新**: 2026-03-06

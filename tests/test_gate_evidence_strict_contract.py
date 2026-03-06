@@ -37,8 +37,21 @@ def _write_base_artifacts(project_root: Path) -> None:
     (beacon_state / "evidence-manifest.json").write_text(json.dumps(manifest), encoding="utf-8")
 
 
-def _gate_json(tmp_path: Path) -> dict:
-    result = _invoke(["gate", "check", "think", "--mode", "strict", "--json", "--project-root", str(tmp_path)])
+def _gate_json(tmp_path: Path, *, profile: str = "release-global") -> dict:
+    result = _invoke(
+        [
+            "gate",
+            "check",
+            "think",
+            "--mode",
+            "strict",
+            "--profile",
+            profile,
+            "--json",
+            "--project-root",
+            str(tmp_path),
+        ]
+    )
     assert result.stdout
     start = result.stdout.find("{")
     assert start >= 0
@@ -84,6 +97,23 @@ def test_gate_scope_guard_should_read_pending_items_from_memory_scope(tmp_path: 
     assert "scope_guard_confirmation_pending" in reason_codes
 
 
+def test_gate_stage_local_profile_should_skip_release_global_evidence_checks(tmp_path: Path):
+    _write_base_artifacts(tmp_path)
+
+    (tmp_path / ".beacon" / "raw-command-log.jsonl").write_text("not-jsonl\n", encoding="utf-8")
+    (tmp_path / ".beacon" / "evidence-manifest.json").write_text(
+        json.dumps({"entries": [{"path": "docs/product/v1.0.0/execution/missing.md", "sha256": "deadbeef"}]}),
+        encoding="utf-8",
+    )
+    (tmp_path / ".beacon" / "gate-report.json").write_text("{}", encoding="utf-8")
+
+    payload = _gate_json(tmp_path, profile="stage-local")
+    reason_codes = {item["reason_code"] for item in payload["issues"]}
+    assert "raw_command_log_invalid" not in reason_codes
+    assert "evidence_sha256_manifest_mismatch" not in reason_codes
+    assert "gate_consistency_report_invalid" not in reason_codes
+
+
 def test_gate_should_honor_scope_guard_enabled_false(tmp_path: Path):
     _write_base_artifacts(tmp_path)
 
@@ -108,4 +138,3 @@ def test_gate_should_honor_scope_guard_enabled_false(tmp_path: Path):
     reason_codes = {item["reason_code"] for item in payload["issues"]}
     assert "scope_guard_violation" not in reason_codes
     assert "scope_guard_confirmation_pending" not in reason_codes
-

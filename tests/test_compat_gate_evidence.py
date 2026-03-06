@@ -43,6 +43,39 @@ def test_gate_flat_stage_syntax_should_work(tmp_path: Path):
     assert "No such command" not in result.stdout
 
 
+def test_gate_root_should_run_all_stages(tmp_path: Path):
+    result = _invoke(["gate", "--json", "--project-root", str(tmp_path)])
+    assert result.exit_code in (0, 2)
+    payload = json.loads(result.stdout)
+    assert payload.get("stage_count") == 5
+    assert len(payload.get("results", [])) == 5
+
+
+def test_gate_normal_mode_should_emit_warn_when_non_blocking_issues_exist(tmp_path: Path):
+    result = _invoke(["gate", "check", "think", "--mode", "normal", "--json", "--project-root", str(tmp_path)])
+    assert result.exit_code == 0
+    start = result.stdout.find("{")
+    payload = json.loads(result.stdout[start:])
+    assert payload["status"] == "Warn"
+    assert len(payload.get("issues", [])) >= 1
+
+
+def test_gate_auto_profile_should_default_to_stage_local_for_non_release_stage(tmp_path: Path):
+    beacon_state = tmp_path / ".beacon"
+    beacon_state.mkdir(parents=True, exist_ok=True)
+    (beacon_state / "raw-command-log.jsonl").write_text("not-jsonl\n", encoding="utf-8")
+    (beacon_state / "evidence-manifest.json").write_text('{"entries":[]}', encoding="utf-8")
+    (beacon_state / "gate-report.json").write_text("{}", encoding="utf-8")
+
+    result = _invoke(["gate", "check", "think", "--mode", "strict", "--json", "--project-root", str(tmp_path)])
+    assert result.exit_code in (0, 2)
+    start = result.stdout.find("{")
+    payload = json.loads(result.stdout[start:])
+    reason_codes = {item["reason_code"] for item in payload.get("issues", [])}
+    assert payload.get("profile") == "stage-local"
+    assert "raw_command_log_invalid" not in reason_codes
+
+
 def test_gate_should_honor_docs_product_execution_path(tmp_path: Path):
     version = "v1.0.0"
     execution = tmp_path / "docs" / "product" / version / "execution"

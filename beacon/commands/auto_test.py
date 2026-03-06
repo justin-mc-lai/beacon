@@ -23,6 +23,7 @@ from beacon.utils.qa9 import (
     to_legacy_layer,
 )
 from beacon.utils.runtime import append_jsonl, now_iso, write_json
+from beacon.utils.versioning import resolve_target_version
 
 app = typer.Typer(name="auto-test", help="Automated testing")
 
@@ -94,7 +95,13 @@ def _append_raw_command_log(
     append_jsonl(_raw_command_log_path(project_root), payload)
 
 
-def _update_evidence_manifest(project_root: Path, evidence_refs: list[str]) -> None:
+def _update_evidence_manifest(
+    project_root: Path,
+    evidence_refs: list[str],
+    *,
+    run_id: str | None = None,
+    version: str | None = None,
+) -> None:
     manifest_path = project_root / ".beacon" / "evidence-manifest.json"
     manifest_rel = str(manifest_path.relative_to(project_root))
     payload: dict[str, Any] = {}
@@ -131,14 +138,18 @@ def _update_evidence_manifest(project_root: Path, evidence_refs: list[str]) -> N
             "sha256": hashlib.sha256(full.read_bytes()).hexdigest(),
             "updated_at": now_iso(),
         }
-    write_json(
-        manifest_path,
-        {
-            "schema_version": "1.0",
-            "entries": list(by_path.values()),
-            "updated_at": now_iso(),
-        },
-    )
+    output_payload: dict[str, Any] = {
+        "schema_version": "1.0",
+        "entries": list(by_path.values()),
+        "updated_at": now_iso(),
+    }
+    next_run_id = str(run_id or payload.get("run_id") or "").strip()
+    next_version = str(version or payload.get("version") or "").strip()
+    if next_run_id:
+        output_payload["run_id"] = next_run_id
+    if next_version:
+        output_payload["version"] = next_version
+    write_json(manifest_path, output_payload)
 
 
 def _normalize_execution_layer(value: str | None) -> str:
@@ -1171,6 +1182,11 @@ def _collect_required_file_issues(
 def create(
     scope: str = typer.Argument("all", help="Test scope: ui/api-curl/unit/smoke/visual/all/full"),
     project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
+    version: str = typer.Option(
+        "auto",
+        "--version",
+        help="Target docs/version context (auto=largest docs semver).",
+    ),
     config: Optional[str] = typer.Option(None, "--config", "-c", help="Test config file"),
     expectation: str = typer.Option("unknown", "--expectation", help="UI expectation: success/error/unknown"),
     target_url: Optional[str] = typer.Option(None, "--target-url", help="UI target URL/path"),
@@ -1298,6 +1314,7 @@ def create(
 ):
     """Run automated tests and persist unified evidence."""
     project_root = Path(project) if project else Path.cwd()
+    resolved_version = resolve_target_version(project_root, version)
 
     typer.echo(f"Running automated tests: {scope}")
     typer.echo(f"Project: {project_root}")
@@ -1394,10 +1411,13 @@ def create(
         "scope": scope,
         "timestamp": datetime.now().isoformat(),
         "project": str(project_root),
+        "version": resolved_version,
+        "run_id": run_id,
         "status": "running",
         "selected_layers": selected_layers,
         "execution": {
             "run_id": run_id,
+            "version": resolved_version,
             "evidence_dir": str(evidence_root.relative_to(project_root)),
             "layers": [],
         },
@@ -1783,6 +1803,8 @@ def create(
             "mode": "strict",
             "status": gate_status,
             "issues": gate_issues,
+            "run_id": run_id,
+            "version": resolved_version,
             "updated_at": now_iso(),
         },
     )
@@ -1805,12 +1827,17 @@ def create(
             str(_raw_command_log_path(project_root).relative_to(project_root)),
         ]
     )
-    _update_evidence_manifest(project_root, manifest_refs)
+    _update_evidence_manifest(project_root, manifest_refs, run_id=run_id, version=resolved_version)
 
     signature_chain_ref = _write_evidence_signature_chain(project_root, run_id=run_id, summary_path=summary_path)
     execution_payload.setdefault("artifacts", []).append(signature_chain_ref)
     status_file.write_text(json.dumps(test_status, ensure_ascii=False, indent=2), encoding="utf-8")
-    _update_evidence_manifest(project_root, [signature_chain_ref, str(status_file.relative_to(project_root))])
+    _update_evidence_manifest(
+        project_root,
+        [signature_chain_ref, str(status_file.relative_to(project_root))],
+        run_id=run_id,
+        version=resolved_version,
+    )
 
     typer.echo("✓ Test execution started")
     typer.echo(f"  Scope: {scope}")
@@ -1891,6 +1918,7 @@ def import_qa_use(
 ):
     """Import qa-use suite/testRun results into Beacon auto-test status."""
     project_root = Path(project) if project else Path.cwd()
+    resolved_version = resolve_target_version(project_root, "auto")
     source = Path(input_file)
     if not source.exists():
         raise typer.BadParameter(f"input file not found: {source}")
@@ -1940,10 +1968,13 @@ def import_qa_use(
         "scope": scope,
         "timestamp": datetime.now().isoformat(),
         "project": str(project_root),
+        "version": resolved_version,
+        "run_id": run_id,
         "status": "failed" if has_failed else "passed",
         "selected_layers": [str(item.get("layer")) for item in layers],
         "execution": {
             "run_id": run_id,
+            "version": resolved_version,
             "source": "qa-use",
             "evidence_dir": "",
             "layers": layers,

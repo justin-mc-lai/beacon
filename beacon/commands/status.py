@@ -35,8 +35,6 @@ def _status_impl(
     bridge_count = len([p for p in bridge_root.glob("*") if p.is_dir()]) if bridge_root.exists() else 0
     progress = read_json(root / ".beacon" / "test-progress.json", {})
     latest = newest_run_id(root)
-    latest_state = read_json(root / ".beacon" / "runs" / latest / "state.json", {}) if latest else {}
-    terminal_status = str(latest_state.get("status", "unknown")) if isinstance(latest_state, dict) else "unknown"
     version_filter = resolve_target_version(root, version) if version and version.strip() else resolve_target_version(root, None)
     feature_filter = feature.strip() if feature and feature.strip() else None
     explicit_run_filter = run_id.strip() if run_id and run_id.strip() else None
@@ -53,6 +51,13 @@ def _status_impl(
         version=version_filter,
         feature=feature_filter,
     )
+    resolved_run_id = str(workflow_progress.get("run_id", "") or "")
+    selected_state = (
+        read_json(root / ".beacon" / "runs" / resolved_run_id / "state.json", {})
+        if resolved_run_id
+        else {}
+    )
+    terminal_status = str(selected_state.get("status", "unknown")) if isinstance(selected_state, dict) else "unknown"
     coverage_version = (
         version_filter
         or str(workflow_progress.get("version", "") or "").strip()
@@ -69,7 +74,10 @@ def _status_impl(
         "gate": {"terminal_status": terminal_status},
         "bridge": {"known_bridges": bridge_count},
         "test": {"has_progress": bool(progress)},
-        "run": {"latest_run_id": latest or ""},
+        "run": {
+            "latest_run_id": latest or "",
+            "selected_run_id": resolved_run_id,
+        },
         "memory": memory_metrics,
         "coverage": coverage_metrics,
         "workflow_progress": workflow_progress,
@@ -96,6 +104,7 @@ def _status_impl(
         typer.echo(f"- coverage.full: {coverage_metrics.get('full_coverage')}")
         if verbose:
             typer.echo(f"- run.latest_run_id: {latest or 'none'}")
+            typer.echo(f"- run.selected_run_id: {resolved_run_id or 'none'}")
             typer.echo(f"- memory.missing_closure_stages: {memory_metrics.get('missing_closure_stages')}")
             typer.echo(f"- workflow.run_id: {workflow_progress.get('run_id') or 'none'}")
             typer.echo(f"- workflow.version: {workflow_progress.get('version') or 'none'}")

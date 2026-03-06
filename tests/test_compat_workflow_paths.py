@@ -68,6 +68,7 @@ def test_workflow_gate_should_pass_when_required_artifacts_exist(tmp_path: Path)
     state = tmp_path / ".beacon" / "state"
     state.mkdir(parents=True, exist_ok=True)
     (state / "think-progress.json").write_text('{"topic":"x"}', encoding="utf-8")
+    (tmp_path / ".beacon" / "gate-config.json").write_text('{"mode":"normal"}', encoding="utf-8")
 
     result = _invoke(["workflow", "gate", "--project", str(tmp_path), "--version", "v1.0.0"])
     assert result.exit_code == 0

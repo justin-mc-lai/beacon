@@ -45,8 +45,17 @@ def _load_memory_sources(project_root: Path) -> list[str]:
 def _seed_release_artifacts(project_root: Path) -> None:
     beacon_dir = project_root / ".beacon"
     beacon_dir.mkdir(parents=True, exist_ok=True)
+    run_id = "run-20260305T000000000000"
     (beacon_dir / "auto-test-status.json").write_text(
-        json.dumps({"status": "passed", "updated_at": "2026-03-05T00:00:00Z"}),
+        json.dumps(
+            {
+                "status": "passed",
+                "run_id": run_id,
+                "version": "v1.2.3",
+                "execution": {"run_id": run_id, "version": "v1.2.3"},
+                "updated_at": "2026-03-05T00:00:00Z",
+            }
+        ),
         encoding="utf-8",
     )
     (beacon_dir / "gate-report.json").write_text(
@@ -56,6 +65,8 @@ def _seed_release_artifacts(project_root: Path) -> None:
                 "mode": "strict",
                 "status": "Pass",
                 "issues": [],
+                "run_id": run_id,
+                "version": "v1.2.3",
                 "coverage": {"full_coverage": True},
                 "updated_at": "2026-03-05T00:00:00Z",
             }
@@ -63,7 +74,13 @@ def _seed_release_artifacts(project_root: Path) -> None:
         encoding="utf-8",
     )
     (beacon_dir / "evidence-manifest.json").write_text(
-        json.dumps({"entries": [{"path": ".beacon/auto-test-status.json", "sha256": "x"}]}),
+        json.dumps(
+            {
+                "run_id": run_id,
+                "version": "v1.2.3",
+                "entries": [{"path": ".beacon/auto-test-status.json", "sha256": "x"}],
+            }
+        ),
         encoding="utf-8",
     )
 

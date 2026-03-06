@@ -250,7 +250,8 @@ class TestBeaconWorkflow:
     def test_workflow_gate(self, tmp_path):
         """Test workflow gate"""
         result = runner.invoke(app, ["workflow", "gate", "--project", str(tmp_path)])
-        assert result.exit_code == 0
+        assert result.exit_code == 2
+        assert "GATE RESULT: FAIL" in result.stdout
 
 
 class TestBeaconAnalyze:

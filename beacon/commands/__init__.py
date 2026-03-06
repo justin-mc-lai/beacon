@@ -8,6 +8,8 @@ from .status import app as status
 from .report import app as report
 from .debug import app as debug
 from .feedback import app as feedback
+from .ask import ask_entry as ask
+from .prompt import app as prompt
 from .resume import app as resume
 
 __all__ = [
@@ -19,5 +21,7 @@ __all__ = [
     "report",
     "debug",
     "feedback",
+    "ask",
+    "prompt",
     "resume",
 ]

@@ -112,7 +112,13 @@ def _log_raw_command(
     )
 
 
-def _update_evidence_manifest(project_root: Path, evidence_refs: list[str]) -> None:
+def _update_evidence_manifest(
+    project_root: Path,
+    evidence_refs: list[str],
+    *,
+    run_id: str | None = None,
+    version: str | None = None,
+) -> None:
     manifest_path = project_root / ".beacon" / "evidence-manifest.json"
     payload = {}
     if manifest_path.exists():
@@ -142,7 +148,17 @@ def _update_evidence_manifest(project_root: Path, evidence_refs: list[str]) -> N
             "sha256": hashlib.sha256(full.read_bytes()).hexdigest(),
             "updated_at": now_iso(),
         }
-    write_json(manifest_path, {"entries": list(by_path.values()), "updated_at": now_iso()})
+    next_run_id = str(run_id or payload.get("run_id") or "").strip()
+    next_version = str(version or payload.get("version") or "").strip()
+    output_payload: dict[str, Any] = {
+        "entries": list(by_path.values()),
+        "updated_at": now_iso(),
+    }
+    if next_run_id:
+        output_payload["run_id"] = next_run_id
+    if next_version:
+        output_payload["version"] = next_version
+    write_json(manifest_path, output_payload)
 
 
 def _write_workflow_terminal_artifacts(
@@ -223,6 +239,8 @@ def _write_workflow_terminal_artifacts(
             "mode": "strict",
             "status": gate_status,
             "issues": gate_issues,
+            "run_id": run_id,
+            "version": version,
             "coverage": {
                 "full_coverage": bool(coverage.get("full_coverage")),
                 "story_coverage": coverage.get("story_coverage"),
@@ -232,7 +250,12 @@ def _write_workflow_terminal_artifacts(
             "updated_at": now_iso(),
         },
     )
-    _update_evidence_manifest(project_root, written_refs + [".beacon/gate-report.json"])
+    _update_evidence_manifest(
+        project_root,
+        written_refs + [".beacon/gate-report.json"],
+        run_id=run_id,
+        version=version,
+    )
 
     release_evidence_refs = sorted(
         set(
@@ -287,7 +310,7 @@ def _sync_terminal_manifest(project_root: Path, *, version: str, run_id: str) ->
             path = root / name
             if path.exists():
                 refs.append(str(path.relative_to(project_root)))
-    _update_evidence_manifest(project_root, refs)
+    _update_evidence_manifest(project_root, refs, run_id=run_id, version=version)
 
 
 def run_beacon_command(
@@ -832,6 +855,8 @@ def _execute_stage(
             verify_scope,
             "--project",
             str(project_root),
+            "--version",
+            version,
         ]
         if verify_config:
             verify_args.extend(["--config", verify_config])
@@ -921,6 +946,8 @@ def _execute_stage(
             "mode": "strict",
             "status": gate_status,
             "issues": issues,
+            "run_id": run_id,
+            "version": version,
             "coverage": {
                 "full_coverage": bool(coverage.get("full_coverage")),
                 "story_coverage": coverage.get("story_coverage"),
@@ -946,7 +973,7 @@ def _execute_stage(
             for path in _stage_output_candidates(project_root, stage, feature, version)
             if path.exists()
         ]
-        _update_evidence_manifest(project_root, evidence)
+        _update_evidence_manifest(project_root, evidence, run_id=run_id, version=version)
         append_lifecycle_event(
             project_root,
             run_id=run_id,
@@ -1895,7 +1922,7 @@ def gate(
     project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
     version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
 ):
-    """Run gate checks for stages"""
+    """Run gate checks for stages (delegates to `beacon gate check`)."""
     project_root = Path(project) if project else Path.cwd()
     resolved_version = resolve_target_version(project_root, version)
 
@@ -1905,102 +1932,27 @@ def gate(
         else [stage]
     )
 
-    typer.echo("Beacon Gate Check")
+    typer.echo("Beacon Workflow Gate (delegating to beacon gate check)")
     typer.echo("=" * 50)
+    typer.echo(f"Target version: {resolved_version}")
 
-    # Check docs/beacon first, fallback to docs/product
-    beacon_dir = project_root / "docs" / "beacon" / resolved_version
-    product_dir = project_root / "docs" / "product" / resolved_version
+    from .gate import _run_check_command
 
-    if beacon_dir.exists():
-        docs_dir = beacon_dir
-        docs_type = "beacon"
-    elif product_dir.exists():
-        docs_dir = product_dir
-        docs_type = "product"
-    else:
-        docs_dir = beacon_dir  # Use beacon as default
-        docs_type = "beacon"
-
-    typer.echo(f"Checking: docs/{docs_type}/{resolved_version}")
-
-    all_passed = True
-
+    highest_exit = 0
     for s in stages:
         typer.echo(f"\n--- {s.upper()} Gate ---")
-
-        if s == "think":
-            # Check think progress
-            state_file = project_root / ".beacon" / "state" / "think-progress" / f"{resolved_version}.json"
-            legacy_state_file = project_root / ".beacon" / "state" / "think-progress.json"
-            if state_file.exists() or legacy_state_file.exists():
-                typer.echo("✓ PASS: Think session exists")
-            else:
-                typer.echo("✗ FAIL: No think session found")
-                all_passed = False
-
-        elif s == "user-story":
-            us_dir = docs_dir / "user-story"
-            if us_dir.exists() and list(us_dir.glob("*.md")):
-                typer.echo("✓ PASS: User stories exist")
-            else:
-                typer.echo("✗ FAIL: No user stories found")
-                all_passed = False
-
-        elif s == "prd":
-            prd_dir = docs_dir / "prd"
-            if prd_dir.exists() and list(prd_dir.glob("*.md")):
-                typer.echo("✓ PASS: PRD exists")
-            else:
-                typer.echo("✗ FAIL: No PRD found")
-                all_passed = False
-
-        elif s == "test-case":
-            tc_dir = docs_dir / "qa" / "test-cases"
-            if tc_dir.exists() and list(tc_dir.glob("*.md")):
-                typer.echo("✓ PASS: Test cases exist")
-            else:
-                typer.echo("✗ FAIL: No test cases found")
-                all_passed = False
-
-        elif s == "implementation":
-            marker_dir = project_root / ".beacon" / "state"
-            has_marker = marker_dir.exists() and any(marker_dir.glob("implementation-*.json"))
-            if has_marker:
-                typer.echo("✓ PASS: Implementation run artifacts exist")
-            else:
-                typer.echo("✗ FAIL: No implementation run artifacts found")
-                all_passed = False
-
-        elif s == "verify":
-            verify_file = project_root / ".beacon" / "auto-test-status.json"
-            if not verify_file.exists():
-                typer.echo("✗ FAIL: No verify artifact found (.beacon/auto-test-status.json)")
-                all_passed = False
-            else:
-                data = {}
-                try:
-                    import json as _json
-
-                    data = _json.loads(verify_file.read_text(encoding="utf-8"))
-                except Exception:
-                    data = {}
-                status_value = str(data.get("status", "")).lower()
-                if status_value == "passed":
-                    typer.echo("✓ PASS: Verify tests passed")
-                else:
-                    typer.echo(f"✗ FAIL: Verify status is {status_value or 'unknown'}")
-                    all_passed = False
-
-        elif s == "release":
-            typer.echo("⚠ WARN: Release gate requires smoke tests")
-            typer.echo("Run: beacon auto-test create smoke")
+        code = _run_check_command(
+            stage=s,
+            project_root=str(project_root),
+            version=resolved_version,
+        )
+        if code != 0:
+            highest_exit = max(highest_exit, code)
 
     typer.echo("\n" + "=" * 50)
-    if all_passed:
-        typer.echo("GATE RESULT: PASS")
-    else:
-        typer.echo("GATE RESULT: FAIL")
+    typer.echo("GATE RESULT: PASS" if highest_exit == 0 else "GATE RESULT: FAIL")
+    if highest_exit != 0:
+        raise typer.Exit(highest_exit)
 
 
 @app.command()
@@ -2054,13 +2006,68 @@ def run(
 
     cmd = command_map.get(command.lower(), command)
 
-    typer.echo(f"Running: beacon {cmd}" + (f" {feature}" if feature else ""))
-    typer.echo(f"Project: {project_root}")
+    def _parse_options(raw: Optional[str]) -> list[str]:
+        if not raw:
+            return []
+        try:
+            parsed = json.loads(raw)
+        except Exception as exc:  # noqa: BLE001
+            raise typer.BadParameter(f"--options must be valid JSON: {exc}") from exc
 
-    # Build the command
+        if isinstance(parsed, list):
+            return [str(item) for item in parsed if str(item).strip()]
+
+        if not isinstance(parsed, dict):
+            raise typer.BadParameter("--options JSON must be object or array")
+
+        option_args: list[str] = []
+
+        raw_args = parsed.get("args")
+        if isinstance(raw_args, list):
+            option_args.extend(str(item) for item in raw_args if str(item).strip())
+        elif isinstance(raw_args, str) and raw_args.strip():
+            option_args.append(raw_args.strip())
+
+        for key, value in parsed.items():
+            if key == "args" or value is None:
+                continue
+            flag = f"--{str(key).strip().replace('_', '-')}"
+            if isinstance(value, bool):
+                if value:
+                    option_args.append(flag)
+                continue
+            if isinstance(value, list):
+                for item in value:
+                    option_args.extend([flag, str(item)])
+                continue
+            option_args.extend([flag, str(value)])
+        return option_args
+
+    passthrough_subcommands: dict[str, set[str]] = {
+        "think": {"start", "status", "confirm", "question", "conflict", "summarize"},
+        "user-story": {"create", "list"},
+        "prd": {"create", "list"},
+        "test-case": {"create", "list", "show"},
+    }
+    default_action_map: dict[str, str] = {
+        "think": "start",
+        "user-story": "create",
+        "prd": "create",
+        "test-case": "create",
+    }
+
+    feature_token = str(feature or "").strip()
     full_cmd = [cmd]
-    if feature:
-        full_cmd.append(feature)
+    if feature_token:
+        known = passthrough_subcommands.get(cmd, set())
+        if feature_token in known:
+            full_cmd.append(feature_token)
+        elif cmd in default_action_map:
+            full_cmd.extend([default_action_map[cmd], feature_token])
+        else:
+            full_cmd.append(feature_token)
+
+    extra_args = _parse_options(options)
     versioned_commands = {
         "think",
         "user-story",
@@ -2072,6 +2079,11 @@ def run(
     }
     if cmd in versioned_commands:
         full_cmd.extend(["--version", resolved_version])
+    if extra_args:
+        full_cmd.extend(extra_args)
+
+    typer.echo(f"Running: beacon {' '.join(full_cmd)}")
+    typer.echo(f"Project: {project_root}")
 
     # Run the command
     result = subprocess.run(

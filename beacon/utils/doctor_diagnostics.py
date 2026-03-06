@@ -303,6 +303,34 @@ def _stale_ptk_references(project_root: Path) -> list[str]:
     return sorted(set(stale))
 
 
+def _collect_install_copy_versions(runtime_skill_version: str) -> dict[str, Any]:
+    install_paths = {
+        "agents": Path.home() / ".agents" / "skills" / "beacon" / "SKILL.md",
+        "codex": Path.home() / ".codex" / "skills" / "beacon" / "SKILL.md",
+        "claude": Path.home() / ".claude" / "skills" / "beacon" / "SKILL.md",
+    }
+    versions: dict[str, str] = {}
+    evidence: list[str] = []
+    for channel, path in install_paths.items():
+        if path.exists():
+            versions[channel] = _read_skill_version(path)
+            evidence.append(f"{channel}:{versions[channel] or 'unknown'} ({path})")
+        else:
+            versions[channel] = ""
+            evidence.append(f"{channel}:missing ({path})")
+
+    resolved_runtime = _normalize(runtime_skill_version)
+    existing_versions = {v for v in versions.values() if v}
+    mismatched_with_runtime = any(v != resolved_runtime for v in existing_versions) if resolved_runtime else False
+    drift_detected = len(existing_versions) > 1 or mismatched_with_runtime
+
+    return {
+        "versions": versions,
+        "evidence": evidence,
+        "drift_detected": drift_detected,
+    }
+
+
 def collect_compatibility_checks(
     *,
     project_root: Path,
@@ -333,6 +361,7 @@ def collect_compatibility_checks(
     runtime_skill_version = _normalize(
         str(runtime.get("toolkit_version") or runtime.get("package_version") or "")
     )
+    install_copy_versions = _collect_install_copy_versions(runtime_skill_version)
     material_version = _normalize(version)
     material_ahead_of_runtime = False
     if _is_semver(runtime_skill_version) and _is_semver(material_version):
@@ -421,6 +450,17 @@ def collect_compatibility_checks(
                 "Update `SKILL.md` version declaration to the active runtime version.",
             ],
         },
+        "installed_skill_copy_drift": {
+            "status": "WARN" if install_copy_versions.get("drift_detected") else "PASS",
+            "severity": "medium",
+            "summary": "Installed beacon skill copies (agents/codex/claude) should stay on one runtime version.",
+            "evidence": install_copy_versions.get("evidence", []),
+            "impact": "Version drift across local skill copies can cause trigger mismatch and inconsistent behavior.",
+            "repair": [
+                "Sync ~/.agents/skills/beacon, ~/.codex/skills/beacon, ~/.claude/skills/beacon to the same version.",
+                "Reinstall/update launchers with `beacon doctor setup` if CLI entry mismatch persists.",
+            ],
+        },
     }
     return checks
 
@@ -435,6 +475,7 @@ def _compatibility_checks_to_incompatibilities(
         "stale_ptk_version_refs": "COMP-203",
         "material_skill_semver_compatibility": "COMP-204",
         "legacy_skill_trigger_syntax": "COMP-205",
+        "installed_skill_copy_drift": "COMP-206",
     }
     items: list[dict[str, Any]] = []
     for name, check in compatibility_checks.items():
@@ -536,6 +577,7 @@ def build_doctor_payload(project_root: Path, *, strict: bool = False) -> dict[st
             },
             "legacy_skill_trigger_syntax": {"status": "UNKNOWN", "severity": "medium", "summary": "project root unavailable"},
             "runtime_version_consistency": {"status": "UNKNOWN", "severity": "medium", "summary": "project root unavailable"},
+            "installed_skill_copy_drift": {"status": "UNKNOWN", "severity": "medium", "summary": "project root unavailable"},
         }
         return {
             "schema_version": "2.0",

@@ -40,8 +40,17 @@ def test_release_check_should_require_real_artifacts(tmp_path: Path):
 
     beacon_dir = tmp_path / ".beacon"
     beacon_dir.mkdir(parents=True, exist_ok=True)
+    run_id = "run-20260305T000000000000"
     (beacon_dir / "auto-test-status.json").write_text(
-        json.dumps({"status": "passed", "updated_at": "2026-03-05T00:00:00Z"}),
+        json.dumps(
+            {
+                "status": "passed",
+                "run_id": run_id,
+                "version": "v1.2.3",
+                "execution": {"run_id": run_id, "version": "v1.2.3"},
+                "updated_at": "2026-03-05T00:00:00Z",
+            }
+        ),
         encoding="utf-8",
     )
     (beacon_dir / "gate-report.json").write_text(
@@ -51,6 +60,8 @@ def test_release_check_should_require_real_artifacts(tmp_path: Path):
                 "mode": "strict",
                 "status": "Pass",
                 "issues": [],
+                "run_id": run_id,
+                "version": "v1.2.3",
                 "coverage": {"full_coverage": True},
                 "updated_at": "2026-03-05T00:00:00Z",
             }
@@ -58,9 +69,14 @@ def test_release_check_should_require_real_artifacts(tmp_path: Path):
         encoding="utf-8",
     )
     (beacon_dir / "evidence-manifest.json").write_text(
-        json.dumps({"entries": [{"path": ".beacon/auto-test-status.json", "sha256": "x"}]}),
+        json.dumps(
+            {
+                "run_id": run_id,
+                "version": "v1.2.3",
+                "entries": [{"path": ".beacon/auto-test-status.json", "sha256": "x"}],
+            }
+        ),
         encoding="utf-8",
     )
     passed = _invoke(["release", "check", "v1.2.3", "--project", str(tmp_path)])
     assert passed.exit_code == 0
-

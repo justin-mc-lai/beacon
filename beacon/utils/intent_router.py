@@ -1,0 +1,545 @@
+"""Natural-language intent router for Beacon skill commands."""
+
+from __future__ import annotations
+
+import json
+import os
+import re
+import shlex
+from pathlib import Path
+from typing import Any
+from urllib import request
+
+from beacon.utils.runtime import now_iso
+
+SUPPORTED_INTENTS = (
+    "think",
+    "user-story",
+    "prd",
+    "test-case",
+    "workflow",
+    "run",
+    "status",
+    "resume",
+    "team",
+    "gate",
+    "release",
+    "doctor",
+    "outside-boundary",
+)
+
+DEFAULT_INTENT_KEYWORDS: dict[str, tuple[str, ...]] = {
+    "think": ("think", "需求", "澄清", "梳理", "分析需求", "brainstorm", "方案"),
+    "user-story": ("user story", "user-story", "用户故事", "故事", "验收标准", "ac"),
+    "prd": ("prd", "需求文档", "产品文档", "spec", "规格", "文档"),
+    "test-case": ("test-case", "测试用例", "测试矩阵", "验收测试", "ac->tc", "qa"),
+    "workflow": ("workflow", "工作流", "主链", "阶段流程", "全流程"),
+    "run": ("run", "执行模式", "dry-run", "strict", "debug 模式", "运行流程"),
+    "status": ("status", "状态", "看板", "进度", "当前进展", "workflow status"),
+    "resume": ("resume", "续跑", "继续", "恢复", "continue", "接着跑"),
+    "team": ("team", "多人协作", "并行执行", "executor", "协同"),
+    "gate": ("gate", "放行", "门禁", "准入", "验收门"),
+    "release": ("release", "发布", "上线", "回滚", "发版"),
+    "doctor": ("doctor", "诊断", "健康检查", "setup", "install", "uninstall", "环境检查"),
+}
+
+# Keep public name for backward compatibility with tests/importers.
+INTENT_KEYWORDS = DEFAULT_INTENT_KEYWORDS
+
+STAGE_HINTS = ("think", "user-story", "prd", "test-case", "release")
+
+OUTSIDE_BOUNDARY_KEYWORDS = (
+    "写代码",
+    "编码实现",
+    "实现接口",
+    "fix bug",
+    "修复线上",
+    "数据库迁移",
+    "deploy production",
+    "terraform",
+    "k8s",
+    "上线脚本",
+)
+
+RELEASE_CREATE_KEYWORDS = ("create", "生成", "准备", "清单")
+DOCTOR_SETUP_KEYWORDS = ("setup", "install", "安装")
+DOCTOR_UNINSTALL_KEYWORDS = ("uninstall", "卸载")
+
+ROUTER_CONFIG_FILE = "intent-router.json"
+DEFAULT_CONFIDENCE_THRESHOLD = 0.62
+
+DEFAULT_INTENT_COMMAND_TEMPLATES: dict[str, Any] = {
+    "think": ["think", "start", "{feature}", "--project", "{project_root}", "--version", "{version}"],
+    "user-story": [
+        "user-story",
+        "create",
+        "{feature}",
+        "--project",
+        "{project_root}",
+        "--version",
+        "{version}",
+    ],
+    "prd": ["prd", "create", "{feature}", "--project", "{project_root}", "--version", "{version}"],
+    "test-case": [
+        "test-case",
+        "create",
+        "{feature}",
+        "--project",
+        "{project_root}",
+        "--version",
+        "{version}",
+    ],
+    "workflow": ["workflow", "start", "{feature}", "--project", "{project_root}", "--version", "{version}"],
+    "run": ["run", "workflow", "--feature", "{feature}", "--version", "{version}", "--project-root", "{project_root}"],
+    "status": ["status", "--board", "--project-root", "{project_root}"],
+    "resume": ["workflow", "continue", "--project", "{project_root}", "--version", "{version}"],
+    "team": ["team", "status", "--project", "{project_root}"],
+    "gate": ["gate", "check", "{stage}", "--project-root", "{project_root}", "--profile", "auto"],
+    "release:create": ["release", "create", "latest", "--project", "{project_root}"],
+    "release:check": ["release", "check", "latest", "--project", "{project_root}"],
+    "doctor": ["doctor", "--project-root", "{project_root}"],
+    "doctor:setup": ["doctor", "setup"],
+    "doctor:uninstall": ["doctor", "uninstall"],
+    "outside-boundary": ["status", "--board", "--project-root", "{project_root}"],
+}
+
+
+class _SafeFormatMap(dict[str, str]):
+    def __missing__(self, key: str) -> str:
+        return "{" + key + "}"
+
+
+def _normalize_text(text: str) -> str:
+    return str(text or "").strip().lower().replace("_", "-")
+
+
+def _extract_feature(goal: str) -> str:
+    text = str(goal or "").strip()
+    if not text:
+        return "Untitled Feature"
+    text = re.sub(r"^(请|帮我|帮忙|需要|现在|请你)\s*", "", text, flags=re.IGNORECASE)
+    text = re.sub(r"^(create|generate|build|run)\s+", "", text, flags=re.IGNORECASE)
+    text = text.strip("：:。.! ")
+    return text[:80] if text else "Untitled Feature"
+
+
+def _extract_stage_hint(goal: str) -> str:
+    text = _normalize_text(goal)
+    for stage in STAGE_HINTS:
+        if stage in text:
+            return stage
+    if "需求" in text:
+        return "think"
+    if "测试" in text:
+        return "test-case"
+    if "发布" in text or "上线" in text:
+        return "release"
+    return "release"
+
+
+def _extract_run_id(goal: str) -> str:
+    matched = re.search(r"\b(run-[a-z0-9\-]+)\b", _normalize_text(goal))
+    if matched:
+        return matched.group(1)
+    return ""
+
+
+def _safe_float(value: Any, fallback: float) -> float:
+    try:
+        number = float(value)
+    except Exception:  # noqa: BLE001
+        return fallback
+    return number
+
+
+def _keyword_hits(text: str, tokens: tuple[str, ...]) -> list[str]:
+    return [token for token in tokens if token and token in text]
+
+
+def _merge_keywords(overrides: Any) -> dict[str, tuple[str, ...]]:
+    merged: dict[str, tuple[str, ...]] = {k: tuple(v) for k, v in DEFAULT_INTENT_KEYWORDS.items()}
+    if not isinstance(overrides, dict):
+        return merged
+
+    for intent, values in overrides.items():
+        normalized_intent = _normalize_text(str(intent))
+        if normalized_intent not in SUPPORTED_INTENTS:
+            continue
+        if not isinstance(values, (list, tuple)):
+            continue
+        extras: list[str] = []
+        for item in values:
+            token = _normalize_text(str(item))
+            if token:
+                extras.append(token)
+        if not extras:
+            continue
+        base = list(merged.get(normalized_intent, ()))
+        for token in extras:
+            if token not in base:
+                base.append(token)
+        merged[normalized_intent] = tuple(base)
+
+    return merged
+
+
+def _merge_outside_keywords(overrides: Any) -> tuple[str, ...]:
+    merged = list(OUTSIDE_BOUNDARY_KEYWORDS)
+    if isinstance(overrides, (list, tuple)):
+        for item in overrides:
+            token = _normalize_text(str(item))
+            if token and token not in merged:
+                merged.append(token)
+    return tuple(merged)
+
+
+def _load_router_config(project_root: Path) -> dict[str, Any]:
+    config_path = Path(project_root) / ".beacon" / ROUTER_CONFIG_FILE
+    config_raw: dict[str, Any] = {}
+    if config_path.exists():
+        try:
+            loaded = json.loads(config_path.read_text(encoding="utf-8"))
+            if isinstance(loaded, dict):
+                config_raw = loaded
+        except Exception:  # noqa: BLE001
+            config_raw = {}
+
+    threshold = max(
+        0.0,
+        min(
+            1.0,
+            _safe_float(config_raw.get("confidence_threshold"), DEFAULT_CONFIDENCE_THRESHOLD),
+        ),
+    )
+
+    return {
+        "config_path": str(config_path),
+        "config_loaded": bool(config_raw),
+        "confidence_threshold": threshold,
+        "intent_keywords": _merge_keywords(config_raw.get("intent_keywords")),
+        "outside_boundary_keywords": _merge_outside_keywords(config_raw.get("outside_boundary_keywords")),
+        "intent_command_templates": {
+            **DEFAULT_INTENT_COMMAND_TEMPLATES,
+            **(
+                config_raw.get("intent_command_templates")
+                if isinstance(config_raw.get("intent_command_templates"), dict)
+                else {}
+            ),
+        },
+    }
+
+
+def _rule_route(goal: str, *, intent_keywords: dict[str, tuple[str, ...]]) -> dict[str, Any]:
+    text = _normalize_text(goal)
+    if not text:
+        return {
+            "intent": "think",
+            "confidence": 0.35,
+            "reason": "empty_input_default_to_think",
+            "router_mode": "rule",
+        }
+
+    scores: dict[str, int] = {
+        name: 0 for name in intent_keywords if name in SUPPORTED_INTENTS and name != "outside-boundary"
+    }
+    for intent, keywords in intent_keywords.items():
+        if intent not in scores:
+            continue
+        scores[intent] += len(_keyword_hits(text, keywords))
+
+    ranked = sorted(scores.items(), key=lambda item: item[1], reverse=True)
+    best_intent, best_score = ranked[0] if ranked else ("think", 0)
+    second_score = ranked[1][1] if len(ranked) > 1 else 0
+
+    confidence = 0.45
+    if best_score > 0:
+        confidence = min(0.95, 0.55 + 0.12 * best_score - 0.05 * second_score)
+
+    return {
+        "intent": best_intent if best_score > 0 else "think",
+        "confidence": round(confidence, 2),
+        "reason": f"keyword_rule(best={best_intent},score={best_score})",
+        "router_mode": "rule",
+    }
+
+
+def _should_use_llm(mode: str) -> bool:
+    mode_norm = _normalize_text(mode)
+    if mode_norm == "rule":
+        return False
+    if mode_norm == "llm":
+        return True
+    env_mode = _normalize_text(os.environ.get("BEACON_INTENT_ROUTER_MODE", ""))
+    return env_mode in {"llm", "real", "api", "auto"}
+
+
+def _llm_route(goal: str) -> dict[str, Any]:
+    api_key = str(os.environ.get("BEACON_LLM_API_KEY", "")).strip()
+    if not api_key:
+        raise RuntimeError("BEACON_LLM_API_KEY missing")
+
+    api_base = str(os.environ.get("BEACON_LLM_API_BASE", "https://api.openai.com/v1")).strip().rstrip("/")
+    model = str(os.environ.get("BEACON_LLM_MODEL", "gpt-4o-mini")).strip()
+    timeout_s = float(str(os.environ.get("BEACON_LLM_TIMEOUT", "8")).strip() or "8")
+
+    system_prompt = (
+        "You are a beacon CLI intent router. Return compact JSON: "
+        '{"intent":"think|user-story|prd|test-case|workflow|run|status|resume|team|gate|release|doctor|outside-boundary",'
+        '"confidence":0.0,"reason":"...","stage_hint":"think|user-story|prd|test-case|release"}'
+    )
+    body = {
+        "model": model,
+        "temperature": 0.1,
+        "messages": [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": f"input={goal}"},
+        ],
+    }
+    req = request.Request(
+        url=f"{api_base}/chat/completions",
+        method="POST",
+        data=json.dumps(body).encode("utf-8"),
+        headers={"Content-Type": "application/json", "Authorization": f"Bearer {api_key}"},
+    )
+    with request.urlopen(req, timeout=timeout_s) as resp:
+        payload = json.loads(resp.read().decode("utf-8"))
+
+    content = ""
+    choices = payload.get("choices")
+    if isinstance(choices, list) and choices:
+        first = choices[0] if isinstance(choices[0], dict) else {}
+        message = first.get("message") if isinstance(first, dict) else {}
+        if isinstance(message, dict):
+            content = str(message.get("content", "")).strip()
+
+    parsed: dict[str, Any] = {}
+    try:
+        parsed = json.loads(content) if content else {}
+    except Exception:  # noqa: BLE001
+        parsed = {}
+
+    intent = str(parsed.get("intent", "")).strip().lower()
+    if intent not in SUPPORTED_INTENTS:
+        intent = "think"
+    confidence = float(parsed.get("confidence", 0.5) or 0.5)
+    confidence = max(0.0, min(1.0, confidence))
+    return {
+        "intent": intent,
+        "confidence": round(confidence, 2),
+        "reason": str(parsed.get("reason", "")).strip() or "llm_route",
+        "stage_hint": str(parsed.get("stage_hint", "")).strip().lower(),
+        "router_mode": "llm",
+    }
+
+
+def _apply_boundary_guard(
+    goal: str,
+    route: dict[str, Any],
+    *,
+    intent_keywords: dict[str, tuple[str, ...]],
+    outside_boundary_keywords: tuple[str, ...],
+) -> dict[str, Any]:
+    text = _normalize_text(goal)
+    outside_hits = [token for token in outside_boundary_keywords if token in text]
+
+    all_inside_tokens: list[str] = []
+    for intent, tokens in intent_keywords.items():
+        if intent == "outside-boundary":
+            continue
+        all_inside_tokens.extend(tokens)
+    inside_hits = [token for token in all_inside_tokens if token in text]
+
+    boundary_state = "in_scope"
+    boundary_reason = "in_scope"
+    if outside_hits and inside_hits:
+        boundary_state = "mixed_need_confirm"
+        boundary_reason = f"mixed_request(outside={outside_hits[:3]},inside={inside_hits[:3]})"
+    elif outside_hits:
+        boundary_state = "out_of_scope"
+        boundary_reason = f"outside_boundary_keywords={outside_hits[:3]}"
+
+    route = dict(route)
+    if boundary_state == "out_of_scope":
+        route["intent"] = "outside-boundary"
+        route["confidence"] = max(float(route.get("confidence", 0.0)), 0.88)
+        route["reason"] = f"{route.get('reason', '')};{boundary_reason}".strip(";")
+    elif boundary_state == "mixed_need_confirm":
+        route["confidence"] = min(float(route.get("confidence", 0.0) or 0.0), 0.59)
+        route["reason"] = f"{route.get('reason', '')};{boundary_reason}".strip(";")
+
+    route["boundary"] = {
+        "state": boundary_state,
+        "in_scope": boundary_state == "in_scope",
+        "reason": boundary_reason,
+        "outside_hits": outside_hits[:5],
+        "inside_hits": inside_hits[:5],
+    }
+    return route
+
+
+def _select_template_key(intent: str, goal: str) -> str:
+    text = _normalize_text(goal)
+    if intent == "release":
+        if any(token in text for token in RELEASE_CREATE_KEYWORDS):
+            return "release:create"
+        return "release:check"
+    if intent == "doctor":
+        if any(token in text for token in DOCTOR_UNINSTALL_KEYWORDS):
+            return "doctor:uninstall"
+        if any(token in text for token in DOCTOR_SETUP_KEYWORDS):
+            return "doctor:setup"
+    return intent
+
+
+def _render_template(template: Any, *, context: dict[str, str]) -> list[str]:
+    formatter = _SafeFormatMap(context)
+    if isinstance(template, str):
+        rendered = template.format_map(formatter)
+        try:
+            return [part for part in shlex.split(rendered) if part]
+        except Exception:  # noqa: BLE001
+            return [rendered]
+
+    if isinstance(template, (list, tuple)):
+        rendered_items = []
+        for item in template:
+            value = str(item).format_map(formatter).strip()
+            if value:
+                rendered_items.append(value)
+        return rendered_items
+
+    return []
+
+
+def _build_command_plan(
+    *,
+    intent: str,
+    goal: str,
+    project_root: Path,
+    version: str,
+    stage_hint: str,
+    command_templates: dict[str, Any],
+) -> tuple[list[str], str]:
+    feature = _extract_feature(goal)
+    root_text = str(project_root)
+    version_text = str(version or "auto").strip() or "auto"
+    stage = stage_hint if stage_hint in STAGE_HINTS else _extract_stage_hint(goal)
+    context = {
+        "intent": intent,
+        "goal": str(goal),
+        "feature": feature,
+        "project_root": root_text,
+        "version": version_text,
+        "stage": stage,
+        "stage_hint": stage_hint or stage,
+        "run_id": _extract_run_id(goal),
+    }
+
+    template_key = _select_template_key(intent, goal)
+    template = command_templates.get(template_key) or command_templates.get(intent)
+    args = _render_template(template, context=context)
+
+    if not args:
+        args = ["status", "--board", "--project-root", root_text]
+
+    command = "beacon " + " ".join(shlex.quote(item) for item in args)
+    return args, command
+
+
+def optimize_prompt_to_plan(
+    goal: str,
+    *,
+    project_root: Path,
+    version: str = "auto",
+    router_mode: str = "auto",
+) -> dict[str, Any]:
+    """Route natural language prompt to a normalized beacon command plan."""
+    root = Path(project_root)
+    router_config = _load_router_config(root)
+
+    route = _rule_route(goal, intent_keywords=router_config["intent_keywords"])
+    if _should_use_llm(router_mode):
+        try:
+            route = _llm_route(goal)
+        except Exception as exc:  # noqa: BLE001
+            route = dict(route)
+            route["router_mode"] = "rule-fallback"
+            route["reason"] = f"{route.get('reason', '')};llm_error={exc}".strip(";")
+
+    route = _apply_boundary_guard(
+        goal,
+        route,
+        intent_keywords=router_config["intent_keywords"],
+        outside_boundary_keywords=router_config["outside_boundary_keywords"],
+    )
+
+    intent = str(route.get("intent", "think"))
+    if intent not in SUPPORTED_INTENTS:
+        intent = "think"
+    stage_hint = str(route.get("stage_hint", "")).strip().lower()
+    args, command = _build_command_plan(
+        intent=intent,
+        goal=goal,
+        project_root=root,
+        version=version,
+        stage_hint=stage_hint,
+        command_templates=router_config["intent_command_templates"],
+    )
+
+    confidence = float(route.get("confidence", 0.0) or 0.0)
+    boundary = route.get("boundary", {"state": "in_scope", "in_scope": True, "reason": "in_scope"})
+    boundary_state = str(boundary.get("state", "in_scope"))
+    min_confidence = float(router_config["confidence_threshold"])
+
+    risk_hints: list[str] = []
+    if intent in {"gate", "release"}:
+        risk_hints.append("This command may affect release/go-live decision artifacts.")
+    if confidence < min_confidence:
+        risk_hints.append(
+            f"Intent confidence is low ({round(confidence, 2)} < {round(min_confidence, 2)}); manual confirmation required before execution."
+        )
+
+    boundary_hints: list[str] = []
+    if boundary_state == "out_of_scope":
+        boundary_hints.append("Request is outside Beacon scope (workflow/governance tooling).")
+        boundary_hints.append("Use Beacon for requirement/test/release artifacts, not production coding/deploy steps.")
+    elif boundary_state == "mixed_need_confirm":
+        boundary_hints.append("Mixed request detected: contains Beacon tasks and out-of-scope implementation/deploy actions.")
+        boundary_hints.append("Split prompt into Beacon governance intent and non-Beacon engineering intent.")
+
+    fallback = {
+        "strategy": "clarify_and_preview" if confidence < min_confidence else "direct_execute_safe",
+        "next_commands": [
+            f"beacon status --board --project-root {shlex.quote(str(root))}",
+            f"beacon workflow status --project {shlex.quote(str(root))}",
+        ],
+    }
+
+    execution_policy = {
+        "min_confidence": round(min_confidence, 2),
+        "boundary_state": boundary_state,
+        "requires_confirmation": boundary_state == "mixed_need_confirm" or confidence < min_confidence,
+        "allow_execute": boundary_state == "in_scope" and confidence >= min_confidence,
+    }
+
+    return {
+        "schema_version": "1.1",
+        "ts": now_iso(),
+        "input_goal": goal,
+        "intent": intent,
+        "confidence": round(confidence, 2),
+        "router_mode": route.get("router_mode", "rule"),
+        "reason": route.get("reason", ""),
+        "boundary": boundary,
+        "recommended_subcommand": args[0] if args else "",
+        "recommended_args": args,
+        "recommended_command": command,
+        "risk_hints": risk_hints,
+        "boundary_hints": boundary_hints,
+        "fallback": fallback,
+        "execution_policy": execution_policy,
+        "router_config": {
+            "config_loaded": bool(router_config.get("config_loaded")),
+            "config_path": str(router_config.get("config_path", "")),
+        },
+    }
