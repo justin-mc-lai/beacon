@@ -16,6 +16,7 @@ v1.0.3 聚焦 **工作流闭环热修复（迭代一版）**：
 - `research/workflow-closure-hotfix-iteration-1.md`
 - `execution/v1.0.3-beacon-memory-v1-redesign.md`
 - `execution/v1.0.3-beacon-version-evolution-blueprint.md`
+- `execution/v1.0.3-overall-architecture-blueprint.md`
 - `execution/v1.0.3-workflow-interactive-hud-design.md`
 - `prd/beacon-memory-v1-redesign.md`
 - `user-story/beacon-memory-v1-redesign.md`

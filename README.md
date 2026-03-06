@@ -1084,6 +1084,7 @@ beacon-doctor uninstall
 ## 9. 相关链接
 
 - **文档入口（v1.0.3）**: [docs/beacon/v1.0.3/](./docs/beacon/v1.0.3/)
+- **整体架构蓝图（功能规划 + 边界）**: [v1.0.3-overall-architecture-blueprint.md](./docs/beacon/v1.0.3/execution/v1.0.3-overall-architecture-blueprint.md)
 - **功能与闭环说明**: [Beacon 功能说明与闭环流程](./docs/beacon/v1.0.1/execution/beacon-feature-closure-guide.md)
 - **命令-产物-证据速查表**: [beacon-command-artifact-evidence-cheatsheet.md](./docs/beacon/v1.0.1/execution/beacon-command-artifact-evidence-cheatsheet.md)
 - **命令契约（实现对齐）**: [v1.0.3-command-contracts-as-implemented.md](./docs/beacon/v1.0.3/execution/v1.0.3-command-contracts-as-implemented.md)
