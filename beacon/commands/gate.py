@@ -1879,12 +1879,13 @@ def check_spec_consistency(
                 expected_hash = baseline_hash
                 verdict["expected_spec_fingerprint"] = baseline_hash
     else:
+        missing_baseline_blocked = mode == GateMode.STRICT
         issues.append(
             {
                 "reason_code": "baseline_snapshot_missing",
-                "severity": "warning",
+                "severity": "critical" if missing_baseline_blocked else "warning",
                 "message": f"baseline snapshot missing for version={resolved_version}",
-                "blocked": False,
+                "blocked": missing_baseline_blocked,
             }
         )
 

@@ -725,6 +725,48 @@ def _load_json_dict(path: Path) -> dict[str, Any]:
     return data if isinstance(data, dict) else {}
 
 
+def _consume_change_impact_task(project_root: Path, *, run_id: str, stage: str) -> None:
+    task_map = {
+        "user-story": "regenerate-user_story",
+        "prd": "regenerate-prd",
+        "test-case": "regenerate-test_case",
+    }
+    target_task = task_map.get(str(stage or "").strip())
+    if not target_task:
+        return
+    impact_path = project_root / ".beacon" / "state" / "change-impact" / f"{run_id}.json"
+    payload = _load_json_dict(impact_path)
+    tasks = payload.get("tasks")
+    if not isinstance(tasks, list):
+        return
+
+    changed = False
+    for item in tasks:
+        if not isinstance(item, dict):
+            continue
+        if str(item.get("task", "")).strip() != target_task:
+            continue
+        if str(item.get("status", "pending")).strip().lower() == "completed":
+            continue
+        item["status"] = "completed"
+        item["completed_at"] = now_iso()
+        item["completed_by_stage"] = stage
+        changed = True
+
+    if not changed:
+        return
+
+    pending = [
+        item
+        for item in tasks
+        if isinstance(item, dict)
+        and str(item.get("status", "pending")).strip().lower() != "completed"
+    ]
+    payload["doc_chain_update_required"] = bool(pending)
+    payload["updated_at"] = now_iso()
+    write_json(impact_path, payload)
+
+
 def _read_auto_test_status(project_root: Path) -> str:
     payload = _load_json_dict(project_root / ".beacon" / "auto-test-status.json")
     status = str(payload.get("status", "")).strip().lower()
@@ -1279,6 +1321,11 @@ def _execute_stage(
         rc = 1
 
     if rc == 0:
+        _consume_change_impact_task(
+            project_root,
+            run_id=run_id,
+            stage=stage,
+        )
         evidence = [
             str(path.relative_to(project_root))
             for path in _stage_output_candidates(project_root, stage, feature, version)
@@ -1651,6 +1698,13 @@ def start(
         typer.echo("Run next step:")
         typer.echo(
             f"  beacon workflow continue --project {project_root} --version {resolved_version} --run-id {run_id}"
+        )
+        _record_v110_baseline(
+            project_root=project_root,
+            run_id=run_id,
+            version=resolved_version,
+            feature=feature,
+            workflow_status="planned",
         )
         _print_next_step_selector(project_root=project_root, version=resolved_version, run_id=run_id, feature=feature)
         return
@@ -2325,6 +2379,14 @@ def continue_workflow(  # noqa: A003
                         bridge_targets=bridge_targets,
                         bridge_timeout=bridge_timeout,
                     )
+            else:
+                _record_v110_baseline(
+                    project_root=project_root,
+                    run_id=resolved_run_id,
+                    version=run_version,
+                    feature=run_feature,
+                    workflow_status="running",
+                )
             return
 
     final_progress = compute_workflow_progress(project_root, run_id=resolved_run_id)

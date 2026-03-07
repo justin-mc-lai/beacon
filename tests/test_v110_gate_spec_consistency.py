@@ -142,3 +142,45 @@ def test_gate_should_emit_doc_impl_verdict_and_reason_codes(tmp_path: Path):
     assert verdict.get("expected_spec_fingerprint") == expected_hash
     assert verdict.get("actual_spec_fingerprint") == expected_hash
     assert verdict.get("status") in {"pass", "warn"}
+
+
+def test_gate_strict_should_block_when_baseline_missing(tmp_path: Path):
+    _seed_docs(tmp_path)
+    fp = generate_spec_fingerprint(tmp_path, run_id="run-doc-fp-003", version="v1.1.0")
+    expected_hash = str(fp.get("fingerprint_hash", ""))
+    assert expected_hash
+
+    (tmp_path / ".beacon").mkdir(parents=True, exist_ok=True)
+    (tmp_path / ".beacon" / "auto-test-status.json").write_text(
+        json.dumps(
+            {
+                "status": "passed",
+                "execution": {
+                    "run_id": "run-auto-003",
+                    "layers": [],
+                    "spec_fingerprint": {"fingerprint_hash": expected_hash},
+                },
+            },
+            ensure_ascii=False,
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+
+    result = _invoke([
+        "gate",
+        "check",
+        "release",
+        "--strict",
+        "--project-root",
+        str(tmp_path),
+        "--version",
+        "v1.1.0",
+        "--json",
+    ])
+    assert result.exit_code == 2
+    payload = json.loads(result.stdout)
+    issues = [item for item in payload.get("issues", []) if isinstance(item, dict)]
+    missing_issue = next((item for item in issues if item.get("reason_code") == "baseline_snapshot_missing"), None)
+    assert missing_issue is not None
+    assert bool(missing_issue.get("blocked")) is True

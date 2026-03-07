@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 from pathlib import Path
 from typing import Any
 
@@ -69,12 +70,43 @@ def _load_json(path: Path) -> dict[str, Any]:
 
 def _latest_baseline(project_root: Path, version: str) -> dict[str, Any]:
     root = _baseline_root(project_root, version)
+    latest_path = root / "latest.json"
+    latest_payload = _load_json(latest_path)
+    if latest_payload:
+        return latest_payload
     if not root.exists():
         return {}
-    snapshots = sorted([p for p in root.glob("*.json") if p.is_file()])
+    snapshots = sorted(
+        [
+            p
+            for p in root.glob("*.json")
+            if p.is_file() and p.name != "latest.json"
+        ]
+    )
     if not snapshots:
         return {}
     return _load_json(snapshots[-1])
+
+
+def _next_baseline_id(project_root: Path, *, version: str, run_id: str) -> tuple[str, int]:
+    root = _baseline_root(project_root, version)
+    root.mkdir(parents=True, exist_ok=True)
+    pattern = re.compile(rf"^bl-{re.escape(run_id)}-(\d+)\.json$")
+    max_seq = 0
+    for path in root.glob(f"bl-{run_id}-*.json"):
+        if not path.is_file():
+            continue
+        matched = pattern.match(path.name)
+        if not matched:
+            continue
+        try:
+            seq = int(matched.group(1))
+        except ValueError:
+            continue
+        if seq > max_seq:
+            max_seq = seq
+    next_seq = max_seq + 1
+    return f"bl-{run_id}-{next_seq:03d}", next_seq
 
 
 def generate_spec_fingerprint(
@@ -142,10 +174,15 @@ def record_baseline_snapshot(
             if str(previous_fp.get(key, "")) != str(current_fp.get(key, "")):
                 changed_layers.append(key)
 
-    baseline_id = f"bl-{run_id}"
+    baseline_id, baseline_seq = _next_baseline_id(
+        project_root,
+        version=resolved_version,
+        run_id=run_id,
+    )
     payload = {
         "schema_version": "1.0",
         "baseline_id": baseline_id,
+        "baseline_seq": baseline_seq,
         "run_id": run_id,
         "version": resolved_version,
         "feature": feature,
@@ -158,7 +195,7 @@ def record_baseline_snapshot(
             "doc_chain_update_required": bool(changed_layers),
         },
         "risk_flags": ["spec_impl_drift_detected"] if changed_layers and workflow_status != "completed" else [],
-        "revision_of": previous_id or None,
+        "revision_of": previous_id if previous_id and previous_id != baseline_id else None,
     }
     if not payload["revision_of"]:
         payload.pop("revision_of", None)

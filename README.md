@@ -59,7 +59,9 @@ Beacon 从 product-toolkit（历史 PTK）升级而来。当前命令口径已�
 5. **可选真实 LLM 编排**：设置 `BEACON_LLM_MODE=real` + `BEACON_LLM_API_KEY` 后，next-stage 推理可走真实模型；失败自动回退规则模式。
 6. **Visual 回归能力**：`auto-test` 新增 `visual` 层与目录哈希对比能力，支持阈值判定。
 
-📘 详细说明见：[Beacon v1.0.3 命令契约（按实现对齐）](./docs/beacon/v1.0.3/execution/v1.0.3-command-contracts-as-implemented.md)
+📘 详细说明见：
+- [Beacon v1.0.3 命令契约（按实现对齐）](./docs/beacon/v1.0.3/execution/v1.0.3-command-contracts-as-implemented.md)
+- [Beacon v1.1.0 子命令功能说明蓝图（含边界）](./docs/beacon/v1.1.0/execution/v1.1.0-subcommand-capability-blueprint.md)
 
 ---
 
@@ -225,6 +227,7 @@ workflow 仅在 `closure_complete=true && gate_pass=true` 时写入 `completed`�
 
 > 说明：本节按当前实现（v1.0.3 代码）更新。  
 > 全量子命令契约见：`docs/beacon/v1.0.3/execution/v1.0.3-command-contracts-as-implemented.md`
+> 子命令功能蓝图（含边界）见：`docs/beacon/v1.1.0/execution/v1.1.0-subcommand-capability-blueprint.md`
 
 ### 4.1 工作流命令
 

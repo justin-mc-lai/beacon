@@ -32,6 +32,67 @@ def _all_debug_events(root: Path) -> list[dict]:
     return out
 
 
+def test_debug_raw_collector_should_create_jsonl(tmp_path: Path):
+    enable = _invoke([
+        "debug",
+        "enable",
+        "--project-root",
+        str(tmp_path),
+        "--run-id",
+        "run-debug-raw-001",
+        "--no-sync-history",
+    ])
+    assert enable.exit_code == 0
+
+    ask = _invoke(["ask", "请做一次环境诊断", "--project-root", str(tmp_path), "--json"])
+    assert ask.exit_code == 0
+
+    target = tmp_path / ".beacon" / "state" / "debug-feedback" / "run-debug-raw-001.jsonl"
+    assert target.exists()
+    lines = [line for line in target.read_text(encoding="utf-8").splitlines() if line.strip()]
+    assert len(lines) >= 1
+
+
+def test_debug_raw_event_should_include_required_fields(tmp_path: Path):
+    capture = _invoke([
+        "debug",
+        "capture",
+        "请检查 gate",
+        "--project-root",
+        str(tmp_path),
+        "--run-id",
+        "run-debug-raw-002",
+        "--intent",
+        "gate",
+        "--confidence",
+        "0.58",
+        "--boundary-state",
+        "in_scope",
+        "--block-reason",
+        "low-confidence",
+        "--recommended-command",
+        "beacon gate check release",
+        "--json",
+    ])
+    assert capture.exit_code == 0
+
+    target = tmp_path / ".beacon" / "state" / "debug-feedback" / "run-debug-raw-002.jsonl"
+    payload = json.loads(target.read_text(encoding="utf-8").splitlines()[-1])
+    required = {
+        "goal",
+        "intent",
+        "confidence",
+        "boundary_state",
+        "block_reason",
+        "recommended_command",
+        "executed",
+        "exit_code",
+        "source",
+        "ts",
+    }
+    assert required.issubset(set(payload.keys()))
+
+
 def test_collectors_should_cover_all_sources(tmp_path: Path):
     enable = _invoke([
         "debug",
