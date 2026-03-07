@@ -24,6 +24,18 @@
 ### US-006 持续变更下文档-实现强一致
 作为质量负责人，我希望每轮变更都校验 spec 与实现证据一致，避免漂移。
 
+### US-007 滚动基线快照
+作为版本负责人，我希望每轮迭代沉淀 baseline snapshot（含 fingerprint 与差异摘要），以便跟踪需求演进轨迹。
+
+### US-008 变更触发重生成闭环
+作为 PM/QA，我希望需求变更后自动提示或触发 PRD/用户故事/测试矩阵更新任务，以便快速恢复一致性。
+
+### US-009 OMC/OMX Skill 联通提示词模板
+作为一线开发者，我希望拿到可直接执行的跨工具提示词模板，以便通过 team 方式完成闭环交付。
+
+### US-010 记忆体治理与可观测
+作为平台维护者，我希望看到 memory 分层健康度指标与异常告警，以便避免噪声堆积。
+
 ## Acceptance Criteria
 
 | AC ID | User Story | Description | Priority |
@@ -42,6 +54,14 @@
 | AC-012 | US-006 | gate strict 校验 fingerprint 与实现证据一致，不一致则 blocked | Must |
 | AC-013 | US-006 | docs-example CI 可执行校验（README/SKILL 命令样例） | Must |
 | AC-014 | US-006 | `report --write-summary` 能输出可审计一致性摘要 | Should |
+| AC-015 | US-007 | 每轮 workflow 结束生成 baseline snapshot，并关联上一轮 revision | Must |
+| AC-016 | US-007 | baseline snapshot 包含：fingerprint、open_questions、delta_summary、risk_flags | Must |
+| AC-017 | US-008 | 侦测到需求变更时，自动生成“待更新文档链”任务清单（US/PRD/TC） | Must |
+| AC-018 | US-008 | gate strict 输出 doc-impl 一致性 verdict 与 mismatch reason_code | Must |
+| AC-019 | US-009 | 输出“Beacon + OMC + OMX + Team”全链路提示词模板包 | Must |
+| AC-020 | US-009 | `prompt optimize` 支持生成边界安全的推荐命令组合（含 fallback） | Should |
+| AC-021 | US-010 | 记忆体三层（raw/candidate/durable）提供 retention 与 dedup 健康指标 | Must |
+| AC-022 | US-010 | report summary 输出 baseline drift 与 memory assimilation KPI | Should |
 
 ## Blocking Semantics
 

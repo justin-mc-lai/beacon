@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "feature": "debug-feedback-loop",
   "version": "v1.1.0",
-  "generated_at": "2026-03-06T00:00:00Z",
+  "generated_at": "2026-03-07T00:00:00Z",
   "entries": [
     {
       "ac_id": "AC-001",
@@ -131,6 +131,70 @@
       "command": "python3 -m pytest -q tests/test_v110_report_consistency.py::test_report_write_summary_should_include_consistency_snapshot --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
       "assertion": "report --write-summary 输出一致性审计快照",
       "evidence_path": ".beacon/evidence/test-results/debug-feedback-loop/TC-016.json"
+    },
+    {
+      "ac_id": "AC-015",
+      "tc_id": "TC-017",
+      "layer": "integration",
+      "command": "python3 -m pytest -q tests/test_v110_rolling_baseline.py::test_baseline_snapshot_should_persist_per_iteration --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "每轮 workflow 结束后生成 baseline snapshot",
+      "evidence_path": ".beacon/evidence/test-results/debug-feedback-loop/TC-017.json"
+    },
+    {
+      "ac_id": "AC-016",
+      "tc_id": "TC-018",
+      "layer": "unit",
+      "command": "python3 -m pytest -q tests/test_v110_rolling_baseline.py::test_baseline_snapshot_should_include_required_fields --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "baseline snapshot 含 fingerprint/open_questions/delta_summary/risk_flags/revision_of",
+      "evidence_path": ".beacon/evidence/test-results/debug-feedback-loop/TC-018.json"
+    },
+    {
+      "ac_id": "AC-017",
+      "tc_id": "TC-019",
+      "layer": "integration",
+      "command": "python3 -m pytest -q tests/test_v110_change_impact.py::test_spec_change_should_enqueue_doc_chain_updates --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "检测到需求变更后生成 US/PRD/TC 待更新任务",
+      "evidence_path": ".beacon/evidence/test-results/debug-feedback-loop/TC-019.json"
+    },
+    {
+      "ac_id": "AC-018",
+      "tc_id": "TC-020",
+      "layer": "integration",
+      "command": "python3 -m pytest -q tests/test_v110_gate_spec_consistency.py::test_gate_should_emit_doc_impl_verdict_and_reason_codes --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "gate strict 输出 doc-impl verdict 与 mismatch reason_code",
+      "evidence_path": ".beacon/evidence/test-results/debug-feedback-loop/TC-020.json"
+    },
+    {
+      "ac_id": "AC-019",
+      "tc_id": "TC-021",
+      "layer": "unit",
+      "command": "python3 -m pytest -q tests/test_v110_prompt_catalog.py::test_prompt_catalog_should_include_omc_omx_team_templates --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "提示词模板包覆盖 Beacon+OMC+OMX+Team 全链路",
+      "evidence_path": ".beacon/evidence/test-results/debug-feedback-loop/TC-021.json"
+    },
+    {
+      "ac_id": "AC-020",
+      "tc_id": "TC-022",
+      "layer": "unit",
+      "command": "python3 -m pytest -q tests/test_v110_prompt_optimize.py::test_prompt_optimize_should_output_boundary_safe_command_pack --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "prompt optimize 输出推荐命令 + fallback + 风险提醒",
+      "evidence_path": ".beacon/evidence/test-results/debug-feedback-loop/TC-022.json"
+    },
+    {
+      "ac_id": "AC-021",
+      "tc_id": "TC-023",
+      "layer": "integration",
+      "command": "python3 -m pytest -q tests/test_v110_memory_governance.py::test_memory_layers_should_expose_retention_and_dedup_metrics --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "记忆体三层输出 retention 与 dedup 健康指标",
+      "evidence_path": ".beacon/evidence/test-results/debug-feedback-loop/TC-023.json"
+    },
+    {
+      "ac_id": "AC-022",
+      "tc_id": "TC-024",
+      "layer": "integration",
+      "command": "python3 -m pytest -q tests/test_v110_report_consistency.py::test_report_should_include_baseline_drift_and_memory_kpi --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "report summary 输出 baseline drift 与 memory assimilation KPI",
+      "evidence_path": ".beacon/evidence/test-results/debug-feedback-loop/TC-024.json"
     }
   ]
 }
