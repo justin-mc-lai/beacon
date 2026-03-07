@@ -8,6 +8,11 @@ import json
 from datetime import datetime
 from enum import Enum
 
+from beacon.utils.debug_feedback import (
+    append_debug_event_memory,
+    append_debug_feedback_event,
+    is_debug_mode_enabled,
+)
 from beacon.utils.memory import append_memory_entry
 from beacon.utils.workflow_memory import append_lifecycle_event
 
@@ -115,6 +120,46 @@ def _record_team_memory(
         )
     except Exception:
         # Do not break team workflow because of memory write errors.
+        return
+
+
+def _record_team_debug_event(
+    project_root: Path,
+    *,
+    source: str,
+    goal: str,
+    note: str,
+    run_id: str,
+    block_reason: str = "",
+    exit_code: int | None = None,
+    extra: dict[str, Any] | None = None,
+) -> None:
+    if not is_debug_mode_enabled(project_root):
+        return
+    try:
+        debug_run_id, debug_path, payload = append_debug_feedback_event(
+            project_root,
+            run_id=run_id,
+            source=source,
+            goal=goal,
+            intent="team",
+            confidence=0.9 if not block_reason else 0.55,
+            boundary_state="in_scope",
+            block_reason=block_reason,
+            recommended_command=f"beacon team {source.split('.')[-1]} ...",
+            executed=True,
+            exit_code=exit_code,
+            note=note,
+            extra=extra or {},
+        )
+        append_debug_event_memory(
+            project_root,
+            run_id=debug_run_id,
+            event_payload=payload,
+            evidence_path=debug_path,
+            source=source,
+        )
+    except Exception:
         return
 
 
@@ -267,6 +312,15 @@ def start(
     typer.echo(f"  Members: {members}")
     typer.echo(f"  State: {state['state']}")
     typer.echo(f"  Time: {state['started_at']}")
+    _record_team_debug_event(
+        project_root,
+        source="team.start",
+        goal=task,
+        note="team-started",
+        run_id=f"team:{team_name}",
+        exit_code=0,
+        extra={"runtime": runtime, "members": members},
+    )
 
 
 @app.command()
@@ -457,6 +511,16 @@ def review(
     )
 
     typer.echo(f"Review gate updated: {gate_type} = {status} (reviewer: {reviewer})")
+    _record_team_debug_event(
+        project_root,
+        source="team.review",
+        goal=state.get("task", team),
+        note=f"{gate_type}:{status}",
+        run_id=f"team:{team}",
+        exit_code=0 if status == "pass" else 1,
+        block_reason="" if status == "pass" else f"{gate_type}_review_failed",
+        extra={"gate_type": gate_type, "reviewer": reviewer},
+    )
 
 
 @app.command()
@@ -504,6 +568,16 @@ def evaluate(
             evidence_ref=[str(get_team_state_file(project_root, team).relative_to(project_root))],
             details={"status": "blocked", "critical_open": critical_open, "high_open": high_open},
         )
+        _record_team_debug_event(
+            project_root,
+            source="team.evaluate",
+            goal=state.get("task", team),
+            note="evaluation-blocked",
+            run_id=f"team:{team}",
+            exit_code=1,
+            block_reason="team_evaluation_blocked",
+            extra={"critical_open": critical_open, "high_open": high_open},
+        )
     else:
         typer.echo(f"Evaluation: PASS")
         typer.echo(f"  All critical/high issues resolved")
@@ -519,6 +593,15 @@ def evaluate(
             "evaluation pass critical/high issues resolved",
             evidence_ref=[str(get_team_state_file(project_root, team).relative_to(project_root))],
             details={"status": "pass", "critical_open": critical_open, "high_open": high_open},
+        )
+        _record_team_debug_event(
+            project_root,
+            source="team.evaluate",
+            goal=state.get("task", team),
+            note="evaluation-pass",
+            run_id=f"team:{team}",
+            exit_code=0,
+            extra={"critical_open": critical_open, "high_open": high_open},
         )
 
 

@@ -57,3 +57,50 @@ def test_feedback_sync_should_assimilate_to_memory_and_dedupe(tmp_path: Path):
     ]
     assert len(events) == 1, "feedback lifecycle event should be deduped"
 
+
+def test_feedback_apply_override_should_preserve_original_reason_trace(tmp_path: Path):
+    run_id = "run-override-001"
+    _prepare_run(tmp_path, run_id)
+
+    candidate_dir = tmp_path / ".beacon" / "state" / "feedback-candidates"
+    candidate_dir.mkdir(parents=True, exist_ok=True)
+    candidate_file = candidate_dir / f"{run_id}.json"
+    candidate_file.write_text(
+        json.dumps(
+            {
+                "schema_version": "1.0",
+                "run_id": run_id,
+                "feedback": [
+                    {
+                        "reason_code": "low-confidence",
+                        "note": "router confidence below threshold",
+                    }
+                ],
+            },
+            ensure_ascii=False,
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+
+    result = _invoke(
+        [
+            "feedback",
+            "apply",
+            run_id,
+            "--project-root",
+            str(tmp_path),
+            "--override",
+            "low-confidence:router_false_positive",
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0
+    payload = json.loads(result.stdout)
+    items = payload.get("items", [])
+    assert items
+    assert items[0].get("reason_code") == "router_false_positive"
+    assert items[0].get("original_reason_code") == "low-confidence"
+    trace = items[0].get("override_trace", {})
+    assert trace.get("from") == "low-confidence"
+    assert trace.get("to") == "router_false_positive"

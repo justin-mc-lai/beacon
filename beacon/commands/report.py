@@ -11,6 +11,11 @@ import typer
 from beacon.utils.coverage import compute_coverage_metrics
 from beacon.utils.runtime import load_run_state, newest_run_id, now_iso, write_json
 from beacon.utils.versioning import resolve_target_version
+from beacon.utils.v110_baseline import load_latest_spec_fingerprint
+from beacon.utils.v110_metrics import (
+    compute_baseline_drift_metrics,
+    compute_memory_governance_metrics,
+)
 from beacon.utils.workflow_memory import (
     compute_memory_metrics,
     compute_workflow_progress,
@@ -44,6 +49,9 @@ def _human_summary(machine: dict[str, Any]) -> str:
         lines.append("- (none)")
     memory_metrics = machine.get("memory_metrics")
     coverage = machine.get("coverage_metrics")
+    memory_governance = machine.get("memory_governance")
+    baseline_drift = machine.get("baseline_drift")
+    consistency_snapshot = machine.get("consistency_snapshot")
     if isinstance(memory_metrics, dict):
         lines.extend(
             [
@@ -67,7 +75,84 @@ def _human_summary(machine: dict[str, Any]) -> str:
                 f"- full_coverage: `{coverage.get('full_coverage')}`",
             ]
         )
+    if isinstance(memory_governance, dict):
+        lines.extend(
+            [
+                "",
+                "## Memory Governance",
+                f"- raw_debug_events: `{memory_governance.get('raw_debug_events')}`",
+                f"- candidate_files: `{memory_governance.get('candidate_files')}`",
+                f"- apply_reports: `{memory_governance.get('apply_reports')}`",
+                f"- unsynced_candidates: `{memory_governance.get('unsynced_candidates')}`",
+                f"- lifecycle_dedupe_keys: `{memory_governance.get('lifecycle_dedupe_keys')}`",
+            ]
+        )
+    if isinstance(baseline_drift, dict):
+        lines.extend(
+            [
+                "",
+                "## Baseline Drift",
+                f"- has_baseline: `{baseline_drift.get('has_baseline')}`",
+                f"- baseline_id: `{baseline_drift.get('baseline_id')}`",
+                f"- revision_of: `{baseline_drift.get('revision_of')}`",
+                f"- changed_layers: `{baseline_drift.get('changed_layers')}`",
+                f"- doc_chain_update_required: `{baseline_drift.get('doc_chain_update_required')}`",
+            ]
+        )
+    if isinstance(consistency_snapshot, dict):
+        lines.extend(
+            [
+                "",
+                "## Consistency Snapshot",
+                f"- status: `{consistency_snapshot.get('status')}`",
+                f"- expected_spec_fingerprint: `{consistency_snapshot.get('expected_spec_fingerprint')}`",
+                f"- actual_spec_fingerprint: `{consistency_snapshot.get('actual_spec_fingerprint')}`",
+                f"- reason_codes: `{consistency_snapshot.get('reason_codes')}`",
+            ]
+        )
     return "\n".join(lines) + "\n"
+
+
+def _compute_consistency_snapshot(project_root: Path, *, version: str) -> dict[str, Any]:
+    fingerprint_payload = load_latest_spec_fingerprint(project_root, version=version)
+    expected_hash = str(fingerprint_payload.get("fingerprint_hash", "")).strip()
+    status_path = project_root / ".beacon" / "auto-test-status.json"
+    status_data: dict[str, Any] = {}
+    if status_path.exists():
+        try:
+            loaded = json.loads(status_path.read_text(encoding="utf-8"))
+            if isinstance(loaded, dict):
+                status_data = loaded
+        except Exception:  # noqa: BLE001
+            status_data = {}
+
+    execution = status_data.get("execution")
+    actual_hash = ""
+    if isinstance(execution, dict):
+        spec_fp = execution.get("spec_fingerprint")
+        if isinstance(spec_fp, dict):
+            actual_hash = str(spec_fp.get("fingerprint_hash", "")).strip()
+    if not actual_hash:
+        actual_hash = str(status_data.get("spec_fingerprint_hash", "")).strip()
+
+    reason_codes: list[str] = []
+    status = "pass"
+    if expected_hash and actual_hash and expected_hash != actual_hash:
+        status = "blocked"
+        reason_codes.append("spec_impl_drift_detected")
+    elif expected_hash and not actual_hash:
+        status = "warn"
+        reason_codes.append("execution_fingerprint_missing")
+    elif not expected_hash:
+        status = "warn"
+        reason_codes.append("spec_fingerprint_missing")
+
+    return {
+        "status": status,
+        "expected_spec_fingerprint": expected_hash,
+        "actual_spec_fingerprint": actual_hash,
+        "reason_codes": reason_codes,
+    }
 
 
 def _build_machine_payload(
@@ -98,6 +183,7 @@ def _build_machine_payload(
             or str(progress.get("version", "")).strip()
             or resolve_target_version(project_root, None)
         )
+        consistency_snapshot = _compute_consistency_snapshot(project_root, version=coverage_version)
         return {
             "run_id": resolved,
             "workflow": "workflow",
@@ -122,6 +208,9 @@ def _build_machine_payload(
                 version=coverage_version,
                 feature=feature,
             ),
+            "memory_governance": compute_memory_governance_metrics(project_root),
+            "baseline_drift": compute_baseline_drift_metrics(project_root, version=coverage_version),
+            "consistency_snapshot": consistency_snapshot,
             "workflow_progress": progress,
             "filters": {"version": version or "", "feature": feature or ""},
             "generated_at": now_iso(),
@@ -139,6 +228,7 @@ def _build_machine_payload(
         or str(state.get("version", "")).strip()
         or resolve_target_version(project_root, None)
     )
+    consistency_snapshot = _compute_consistency_snapshot(project_root, version=coverage_version)
     return {
         "run_id": resolved,
         "workflow": state.get("workflow", "workflow"),
@@ -163,6 +253,9 @@ def _build_machine_payload(
             version=coverage_version,
             feature=feature,
         ),
+        "memory_governance": compute_memory_governance_metrics(project_root),
+        "baseline_drift": compute_baseline_drift_metrics(project_root, version=coverage_version),
+        "consistency_snapshot": consistency_snapshot,
         "workflow_progress": progress,
         "filters": {"version": version or "", "feature": feature or ""},
         "generated_at": now_iso(),

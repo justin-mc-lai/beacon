@@ -7,7 +7,12 @@ from typing import Any, Optional
 
 import typer
 
-from beacon.utils.debug_feedback import save_debug_mode_state
+from beacon.utils.debug_feedback import (
+    append_debug_event_memory,
+    append_debug_feedback_event,
+    is_debug_mode_enabled,
+    save_debug_mode_state,
+)
 from beacon.utils.llm_loop import build_next_stage_trace, merge_token_usage
 from beacon.utils.memory import append_scope_items
 from beacon.utils.runtime import (
@@ -131,6 +136,39 @@ def _run_workflow_impl(
             )
         except Exception:  # noqa: BLE001
             pass
+
+    def _capture_debug(status: str, *, reason: str = "", exit_code: int | None = None) -> None:
+        if not (mode == "debug" or is_debug_mode_enabled(root)):
+            return
+        try:
+            debug_run_id, debug_path, payload = append_debug_feedback_event(
+                root,
+                run_id=run_id,
+                source="run.workflow",
+                goal=feature or normalized_type,
+                intent="run",
+                confidence=0.92 if status == "completed" else 0.55,
+                boundary_state="in_scope",
+                block_reason=reason,
+                recommended_command=f"beacon run workflow --mode {mode} --project-root {root}",
+                executed=True,
+                exit_code=exit_code,
+                note=status,
+                extra={
+                    "workflow_type": normalized_type,
+                    "mode": mode,
+                    "strict": bool(strict),
+                },
+            )
+            append_debug_event_memory(
+                root,
+                run_id=debug_run_id,
+                event_payload=payload,
+                evidence_path=debug_path,
+                source="debug.run.workflow",
+            )
+        except Exception:
+            return
     events.append(
         {
             "event": "run_started",
@@ -192,6 +230,7 @@ def _run_workflow_impl(
                 typer.echo(f"Feature: {feature}, Version: {resolved_version}")
                 typer.echo("Strict mode: enabled")
                 typer.echo("Blocked: missing user-story artifact for strict mode")
+            _capture_debug("blocked", reason="missing_user_story_for_strict_mode", exit_code=2)
             return 2
 
         deviations, confirmations, has_pending_high = _record_scope_memory(
@@ -249,6 +288,7 @@ def _run_workflow_impl(
                 typer.echo(f"Feature: {feature}, Version: {resolved_version}")
                 typer.echo("Strict mode: enabled")
                 typer.echo("Blocked: high-risk scope proposal needs confirmation (A/B/C)")
+            _capture_debug("blocked", reason="awaiting_human_confirmation", exit_code=2)
             return 2
 
     final_event = (
@@ -293,6 +333,7 @@ def _run_workflow_impl(
         typer.echo(f"Feature: {feature}, Version: {resolved_version}")
         if strict or mode == "strict":
             typer.echo("Strict mode: enabled")
+    _capture_debug("completed", reason="", exit_code=0)
     return 0
 
 

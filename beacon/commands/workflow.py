@@ -12,6 +12,11 @@ import os
 import signal
 
 from beacon.utils.coverage import compute_coverage_metrics
+from beacon.utils.debug_feedback import (
+    append_debug_event_memory,
+    append_debug_feedback_event,
+    is_debug_mode_enabled,
+)
 from beacon.utils.llm_loop import build_next_stage_trace, merge_token_usage
 from beacon.utils.memory import append_memory_entry
 from beacon.utils.runtime import (
@@ -23,6 +28,7 @@ from beacon.utils.runtime import (
     write_json,
 )
 from beacon.utils.versioning import resolve_target_version
+from beacon.utils.v110_baseline import record_baseline_snapshot
 from beacon.utils.workflow_memory import (
     append_lifecycle_event,
     compute_workflow_progress,
@@ -54,6 +60,52 @@ INTERACTIVE_ACTIONS: dict[str, str] = {
 EXECUTION_ACTIONS = {"single-step", "auto-run", "feedback-apply"}
 
 
+def _bridge_execution_dir(project_root: Path, run_id: str) -> Path:
+    return project_root / ".beacon" / "bridge" / run_id
+
+
+def _record_debug_feedback(
+    *,
+    project_root: Path,
+    source: str,
+    goal: str,
+    intent: str,
+    confidence: float = 1.0,
+    boundary_state: str = "in_scope",
+    block_reason: str = "",
+    recommended_command: str = "",
+    executed: bool = False,
+    exit_code: int | None = None,
+    note: str = "",
+    run_id: str | None = None,
+    extra: dict[str, Any] | None = None,
+) -> None:
+    if not is_debug_mode_enabled(project_root):
+        return
+    target_run_id, out_path, payload = append_debug_feedback_event(
+        project_root,
+        source=source,
+        goal=goal,
+        intent=intent,
+        confidence=confidence,
+        boundary_state=boundary_state,
+        block_reason=block_reason,
+        recommended_command=recommended_command,
+        executed=executed,
+        exit_code=exit_code,
+        note=note,
+        run_id=run_id,
+        extra=extra,
+    )
+    append_debug_event_memory(
+        project_root,
+        run_id=target_run_id,
+        event_payload=payload,
+        evidence_path=out_path,
+        source=source,
+    )
+
+
 def _print_next_step_selector(project_root: Path, version: str, run_id: str, feature: str) -> None:
     """Show selectable next-step prompts after workflow terminal states."""
     typer.echo("\n" + "=" * 50)
@@ -77,6 +129,195 @@ def _print_next_step_selector(project_root: Path, version: str, run_id: str, fea
     typer.echo(
         f'   beacon workflow continue --project "{project_root}" --version "{version}" --run-id "{run_id}" --auto'
     )
+
+
+def _record_v110_baseline(
+    *,
+    project_root: Path,
+    run_id: str,
+    version: str,
+    feature: str,
+    workflow_status: str,
+) -> None:
+    baseline = record_baseline_snapshot(
+        project_root,
+        run_id=run_id,
+        version=version,
+        feature=feature,
+        workflow_status=workflow_status,
+    )
+    refs = [
+        baseline.get("fingerprint_path", ""),
+        baseline.get("baseline_path", ""),
+        baseline.get("change_impact_path", ""),
+    ]
+    refs = [x for x in refs if x]
+    append_lifecycle_event(
+        project_root,
+        run_id=run_id,
+        stage="workflow",
+        event="baseline_snapshot_recorded",
+        source="workflow.v110.baseline",
+        evidence_ref=refs,
+        details={
+            "baseline_id": str((baseline.get("baseline") or {}).get("baseline_id", "")),
+            "changed_layers": ((baseline.get("baseline") or {}).get("delta_summary") or {}).get("changed_layers", []),
+        },
+    )
+    append_memory_entry(
+        project_root=project_root,
+        mem_type="insight",
+        text=f"[workflow.v110.baseline] run={run_id} status={workflow_status}",
+        source_session_id=run_id,
+        source="workflow.v110.baseline",
+        evidence_ref=refs,
+        confidence=0.8,
+        tags=["v110", "baseline", workflow_status],
+    )
+
+
+def _execute_bridge_actions(
+    *,
+    project_root: Path,
+    version: str,
+    run_id: str,
+    feature: str,
+    bridge_targets: str,
+    bridge_timeout: int,
+) -> dict[str, Any]:
+    targets = [x.strip().lower() for x in str(bridge_targets or "").split(",") if x.strip()]
+    if not targets:
+        targets = ["omc", "omx", "team"]
+
+    actions: list[dict[str, Any]] = []
+    for target in targets:
+        if target == "omc":
+            cmd = [
+                "omc",
+                "run",
+                "--project-root",
+                str(project_root),
+                "--task",
+                f"继续推进 {feature}（version={version}, run_id={run_id}）",
+            ]
+        elif target == "omx":
+            cmd = [
+                "omx",
+                "run",
+                "--project-root",
+                str(project_root),
+                "--task",
+                f"执行 {feature} 的下一轮迭代（version={version}, run_id={run_id}）",
+            ]
+        elif target == "team":
+            cmd = [
+                sys.executable,
+                "-m",
+                "beacon.main",
+                "team",
+                "start",
+                f"{feature} 交付协作",
+                "--runtime",
+                "file",
+                "--project",
+                str(project_root),
+            ]
+        else:
+            continue
+
+        try:
+            result = subprocess.run(
+                cmd,
+                cwd=project_root,
+                capture_output=True,
+                text=True,
+                timeout=max(10, int(bridge_timeout)),
+            )
+            actions.append(
+                {
+                    "target": target,
+                    "command": cmd,
+                    "exit_code": int(result.returncode),
+                    "stdout": result.stdout,
+                    "stderr": result.stderr,
+                }
+            )
+        except FileNotFoundError as exc:
+            actions.append(
+                {
+                    "target": target,
+                    "command": cmd,
+                    "exit_code": 127,
+                    "stdout": "",
+                    "stderr": str(exc),
+                }
+            )
+        except Exception as exc:  # noqa: BLE001
+            actions.append(
+                {
+                    "target": target,
+                    "command": cmd,
+                    "exit_code": 1,
+                    "stdout": "",
+                    "stderr": f"{type(exc).__name__}: {exc}",
+                }
+            )
+
+    success_count = len([item for item in actions if int(item.get("exit_code", 1)) == 0])
+    payload = {
+        "schema_version": "1.0",
+        "run_id": run_id,
+        "version": version,
+        "feature": feature,
+        "targets": targets,
+        "executed_at": now_iso(),
+        "results": actions,
+        "summary": {
+            "executed": len(actions),
+            "success": success_count,
+            "failed": len(actions) - success_count,
+        },
+    }
+    out_dir = _bridge_execution_dir(project_root, run_id)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    out_file = out_dir / "bridge-execution.json"
+    write_json(out_file, payload)
+    rel = str(out_file.relative_to(project_root))
+
+    append_memory_entry(
+        project_root=project_root,
+        mem_type="decision",
+        text=f"[workflow.bridge] run={run_id} executed={len(actions)} success={success_count}",
+        source_session_id=run_id,
+        source="workflow.bridge.execute",
+        evidence_ref=[rel],
+        confidence=0.76,
+        tags=["bridge", "workflow", "omc-omx-team"],
+    )
+    append_lifecycle_event(
+        project_root,
+        run_id=run_id,
+        stage="workflow",
+        event="bridge_execution_recorded",
+        source="workflow.bridge.execute",
+        evidence_ref=[rel],
+        details=payload["summary"],
+    )
+    _record_debug_feedback(
+        project_root=project_root,
+        source="workflow.bridge.execute",
+        goal=f"{feature} bridge execute",
+        intent="workflow",
+        confidence=0.9,
+        boundary_state="in_scope",
+        recommended_command="bridge execution via workflow",
+        executed=True,
+        exit_code=0 if success_count == len(actions) else 1,
+        note="bridge-executed",
+        run_id=run_id,
+        extra={"targets": targets, "summary": payload["summary"]},
+    )
+    return payload
 
 
 def _append_llm_trace(state: dict[str, Any], trace: dict[str, Any]) -> None:
@@ -1082,6 +1323,22 @@ def start(
         "--verify-require-fresh-evidence/--no-verify-require-fresh-evidence",
         help="Verify stage requires current run fresh evidence for matrix artifacts.",
     ),
+    bridge_execute: bool = typer.Option(
+        False,
+        "--bridge-execute/--no-bridge-execute",
+        help="Execute OMC/OMX/team bridge actions on workflow terminal state.",
+    ),
+    bridge_targets: str = typer.Option(
+        "omc,omx,team",
+        "--bridge-targets",
+        help="Bridge execution targets: comma-separated subset of omc,omx,team.",
+    ),
+    bridge_timeout: int = typer.Option(
+        120,
+        "--bridge-timeout",
+        min=10,
+        help="Per-bridge command timeout in seconds when --bridge-execute is enabled.",
+    ),
 ):
     """Start full product workflow"""
     project_root = Path(project) if project else Path.cwd()
@@ -1116,6 +1373,20 @@ def start(
         project_root,
         run_id,
         base_state,
+    )
+    _record_debug_feedback(
+        project_root=project_root,
+        source="workflow.start",
+        goal=feature,
+        intent="workflow",
+        confidence=0.92,
+        boundary_state="in_scope",
+        recommended_command="beacon workflow start ...",
+        executed=True,
+        exit_code=0,
+        note=f"auto={auto}",
+        run_id=run_id,
+        extra={"version": resolved_version, "auto": bool(auto)},
     )
 
     typer.echo(f"Starting Beacon Workflow: {feature}")
@@ -1342,6 +1613,22 @@ def start(
             reason=f"{stage}_failed",
         )
         _sync_terminal_manifest(project_root, version=resolved_version, run_id=run_id)
+        _record_v110_baseline(
+            project_root=project_root,
+            run_id=run_id,
+            version=resolved_version,
+            feature=feature,
+            workflow_status="blocked",
+        )
+        if bridge_execute:
+            _execute_bridge_actions(
+                project_root=project_root,
+                version=resolved_version,
+                run_id=run_id,
+                feature=feature,
+                bridge_targets=bridge_targets,
+                bridge_timeout=bridge_timeout,
+            )
         _print_next_step_selector(project_root=project_root, version=resolved_version, run_id=run_id, feature=feature)
         raise typer.Exit(rc)
 
@@ -1368,6 +1655,22 @@ def start(
             reason="ok",
         )
         _sync_terminal_manifest(project_root, version=resolved_version, run_id=run_id)
+        _record_v110_baseline(
+            project_root=project_root,
+            run_id=run_id,
+            version=resolved_version,
+            feature=feature,
+            workflow_status="completed",
+        )
+        if bridge_execute:
+            _execute_bridge_actions(
+                project_root=project_root,
+                version=resolved_version,
+                run_id=run_id,
+                feature=feature,
+                bridge_targets=bridge_targets,
+                bridge_timeout=bridge_timeout,
+            )
         _print_next_step_selector(project_root=project_root, version=resolved_version, run_id=run_id, feature=feature)
         return
 
@@ -1380,6 +1683,13 @@ def start(
         gate_pass=gate_pass,
     )
     save_run_state(project_root, run_id, final_state)
+    _record_v110_baseline(
+        project_root=project_root,
+        run_id=run_id,
+        version=resolved_version,
+        feature=feature,
+        workflow_status="running",
+    )
     typer.echo(
         "○ Workflow partial: "
         f"missing={final_progress.get('missing_closure_stages', [])}, "
@@ -1466,6 +1776,22 @@ def continue_workflow(  # noqa: A003
         "--verify-require-fresh-evidence/--no-verify-require-fresh-evidence",
         help="Verify stage requires current run fresh evidence for matrix artifacts.",
     ),
+    bridge_execute: bool = typer.Option(
+        False,
+        "--bridge-execute/--no-bridge-execute",
+        help="Execute OMC/OMX/team bridge actions on workflow terminal state.",
+    ),
+    bridge_targets: str = typer.Option(
+        "omc,omx,team",
+        "--bridge-targets",
+        help="Bridge execution targets: comma-separated subset of omc,omx,team.",
+    ),
+    bridge_timeout: int = typer.Option(
+        120,
+        "--bridge-timeout",
+        min=10,
+        help="Per-bridge command timeout in seconds when --bridge-execute is enabled.",
+    ),
 ):
     """Continue workflow from memory lifecycle progress and execute next stage(s)."""
     project_root = Path(project) if project else Path.cwd()
@@ -1487,6 +1813,20 @@ def continue_workflow(  # noqa: A003
     if not run_feature:
         typer.echo("✗ Workflow run is missing feature metadata")
         raise typer.Exit(2)
+    _record_debug_feedback(
+        project_root=project_root,
+        source="workflow.continue",
+        goal=run_feature,
+        intent="resume",
+        confidence=0.9,
+        boundary_state="in_scope",
+        recommended_command="beacon workflow continue ...",
+        executed=True,
+        exit_code=0,
+        note=f"auto={auto}",
+        run_id=resolved_run_id,
+        extra={"version": run_version, "auto": bool(auto)},
+    )
 
     progress = compute_workflow_progress(project_root, run_id=resolved_run_id)
     if progress.get("closure_complete") and progress.get("gate_pass"):
@@ -1702,6 +2042,22 @@ def continue_workflow(  # noqa: A003
                 reason=f"{stage}_failed",
             )
             _sync_terminal_manifest(project_root, version=run_version, run_id=resolved_run_id)
+            _record_v110_baseline(
+                project_root=project_root,
+                run_id=resolved_run_id,
+                version=run_version,
+                feature=run_feature,
+                workflow_status="blocked",
+            )
+            if bridge_execute:
+                _execute_bridge_actions(
+                    project_root=project_root,
+                    version=run_version,
+                    run_id=resolved_run_id,
+                    feature=run_feature,
+                    bridge_targets=bridge_targets,
+                    bridge_timeout=bridge_timeout,
+                )
             typer.echo(f"    ✗ {stage} failed (exit={rc})")
             _print_next_step_selector(
                 project_root=project_root,
@@ -1734,6 +2090,22 @@ def continue_workflow(  # noqa: A003
                     reason="ok",
                 )
                 _sync_terminal_manifest(project_root, version=run_version, run_id=resolved_run_id)
+                _record_v110_baseline(
+                    project_root=project_root,
+                    run_id=resolved_run_id,
+                    version=run_version,
+                    feature=run_feature,
+                    workflow_status="completed",
+                )
+                if bridge_execute:
+                    _execute_bridge_actions(
+                        project_root=project_root,
+                        version=run_version,
+                        run_id=resolved_run_id,
+                        feature=run_feature,
+                        bridge_targets=bridge_targets,
+                        bridge_timeout=bridge_timeout,
+                    )
             return
 
     final_progress = compute_workflow_progress(project_root, run_id=resolved_run_id)
@@ -1753,6 +2125,22 @@ def continue_workflow(  # noqa: A003
             reason="ok",
         )
         _sync_terminal_manifest(project_root, version=run_version, run_id=resolved_run_id)
+        _record_v110_baseline(
+            project_root=project_root,
+            run_id=resolved_run_id,
+            version=run_version,
+            feature=run_feature,
+            workflow_status="completed",
+        )
+        if bridge_execute:
+            _execute_bridge_actions(
+                project_root=project_root,
+                version=run_version,
+                run_id=resolved_run_id,
+                feature=run_feature,
+                bridge_targets=bridge_targets,
+                bridge_timeout=bridge_timeout,
+            )
         typer.echo("✓ Workflow closure complete")
         _print_next_step_selector(
             project_root=project_root,
@@ -1773,6 +2161,13 @@ def continue_workflow(  # noqa: A003
             "○ Workflow partially continued; missing stages: "
             f"{final_progress.get('missing_closure_stages', [])}, "
             f"gate_pass={bool(final_progress.get('gate_pass'))}"
+        )
+        _record_v110_baseline(
+            project_root=project_root,
+            run_id=resolved_run_id,
+            version=run_version,
+            feature=run_feature,
+            workflow_status="running",
         )
     save_run_state(project_root, resolved_run_id, final_state)
 

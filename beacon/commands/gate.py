@@ -9,10 +9,19 @@ import hashlib
 import os
 
 from beacon.utils.coverage import compute_coverage_metrics
+from beacon.utils.debug_feedback import (
+    append_debug_event_memory,
+    append_debug_feedback_event,
+    is_debug_mode_enabled,
+)
 from beacon.utils.memory import load_memory_entries
 from beacon.utils.memory import scope_memory_paths
 from beacon.utils.qa9 import QA9_TYPES, normalize_qa_type, parse_qa_types
 from beacon.utils.versioning import resolve_target_version
+from beacon.utils.v110_baseline import (
+    load_latest_baseline_snapshot,
+    load_latest_spec_fingerprint,
+)
 from beacon.utils.workflow_memory import compute_memory_metrics, load_lifecycle_events
 
 app = typer.Typer(name="gate", help="Run gate checks for workflow stages")
@@ -95,6 +104,9 @@ REASON_CODES = [
     "report_result_mismatch",
     "flaky_rate_exceeded",
     "manual_waiver_unapproved",
+    "spec_impl_drift_detected",
+    "baseline_snapshot_missing",
+    "baseline_revision_broken",
 ]
 
 # Workflow stages
@@ -1782,6 +1794,173 @@ def check_coverage_metrics(
     return issues
 
 
+def _parse_semver_tuple(value: str) -> tuple[int, int, int]:
+    raw = str(value or "").strip().lower()
+    if raw.startswith("v"):
+        raw = raw[1:]
+    parts = raw.split(".")
+    numbers: list[int] = []
+    for part in parts[:3]:
+        digits = "".join(ch for ch in part if ch.isdigit())
+        if not digits:
+            numbers.append(0)
+        else:
+            numbers.append(int(digits))
+    while len(numbers) < 3:
+        numbers.append(0)
+    return (numbers[0], numbers[1], numbers[2])
+
+
+def _is_v110_consistency_enabled(project_root: Path, *, version: Optional[str]) -> tuple[bool, str]:
+    resolved_version = _resolved_gate_version(project_root, version)
+    baseline_latest = project_root / ".beacon" / "state" / "baselines" / resolved_version / "latest.json"
+    fingerprint_latest = project_root / ".beacon" / "state" / "spec-fingerprints" / resolved_version / "latest.json"
+    status_path = project_root / ".beacon" / "auto-test-status.json"
+    has_status_fingerprint = False
+    if status_path.exists():
+        try:
+            status_payload = json.loads(status_path.read_text(encoding="utf-8"))
+        except Exception:  # noqa: BLE001
+            status_payload = {}
+        if isinstance(status_payload, dict):
+            execution = status_payload.get("execution")
+            if isinstance(execution, dict):
+                spec_fp = execution.get("spec_fingerprint")
+                if isinstance(spec_fp, dict) and str(spec_fp.get("fingerprint_hash", "")).strip():
+                    has_status_fingerprint = True
+            if not has_status_fingerprint and str(status_payload.get("spec_fingerprint_hash", "")).strip():
+                has_status_fingerprint = True
+
+    if _parse_semver_tuple(resolved_version) < (1, 1, 0):
+        return baseline_latest.exists() or fingerprint_latest.exists() or has_status_fingerprint, resolved_version
+
+    return baseline_latest.exists() or fingerprint_latest.exists() or has_status_fingerprint, resolved_version
+
+
+def check_spec_consistency(
+    project_root: Path,
+    mode: GateMode,
+    stage: str,
+    *,
+    version: Optional[str] = None,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    issues: list[dict[str, Any]] = []
+    enabled, resolved_version = _is_v110_consistency_enabled(project_root, version=version)
+    verdict: dict[str, Any] = {
+        "enabled": enabled,
+        "version": resolved_version,
+        "status": "not_applicable",
+        "baseline_present": False,
+        "baseline_id": "",
+        "expected_spec_fingerprint": "",
+        "actual_spec_fingerprint": "",
+        "reason_codes": [],
+    }
+    if stage not in {"test-case", "release"}:
+        return issues, verdict
+    if mode not in {GateMode.STRICT, GateMode.DEBUG}:
+        return issues, verdict
+    if not enabled:
+        return issues, verdict
+
+    verdict["status"] = "pass"
+    baseline = load_latest_baseline_snapshot(project_root, version=resolved_version)
+    fingerprint = load_latest_spec_fingerprint(project_root, version=resolved_version)
+    expected_hash = str(fingerprint.get("fingerprint_hash", "")).strip()
+    verdict["expected_spec_fingerprint"] = expected_hash
+
+    if baseline:
+        verdict["baseline_present"] = True
+        verdict["baseline_id"] = str(baseline.get("baseline_id", "") or "")
+        baseline_fp = baseline.get("spec_fingerprint")
+        if isinstance(baseline_fp, dict):
+            baseline_hash = str(baseline_fp.get("fingerprint_hash", "") or "").strip()
+            if baseline_hash and not expected_hash:
+                expected_hash = baseline_hash
+                verdict["expected_spec_fingerprint"] = baseline_hash
+    else:
+        issues.append(
+            {
+                "reason_code": "baseline_snapshot_missing",
+                "severity": "warning",
+                "message": f"baseline snapshot missing for version={resolved_version}",
+                "blocked": False,
+            }
+        )
+
+    baseline_root = project_root / ".beacon" / "state" / "baselines" / resolved_version
+    baseline_files = sorted(
+        [
+            p
+            for p in baseline_root.glob("*.json")
+            if p.is_file() and p.name != "latest.json"
+        ]
+    )
+    if len(baseline_files) >= 2:
+        baseline_id = str(baseline.get("baseline_id", "") or "")
+        revision_of = str(baseline.get("revision_of", "") or "")
+        if baseline_id and not revision_of:
+            issues.append(
+                {
+                    "reason_code": "baseline_revision_broken",
+                    "severity": "critical",
+                    "message": f"baseline {baseline_id} missing revision_of chain",
+                    "blocked": True,
+                }
+            )
+
+    status_path = project_root / ".beacon" / "auto-test-status.json"
+    status_data: dict[str, Any] = {}
+    if status_path.exists():
+        try:
+            loaded = json.loads(status_path.read_text(encoding="utf-8"))
+            status_data = loaded if isinstance(loaded, dict) else {}
+        except Exception:  # noqa: BLE001
+            status_data = {}
+    execution = status_data.get("execution")
+    actual_hash = ""
+    if isinstance(execution, dict):
+        spec_fp = execution.get("spec_fingerprint")
+        if isinstance(spec_fp, dict):
+            actual_hash = str(spec_fp.get("fingerprint_hash", "") or "").strip()
+    if not actual_hash:
+        actual_hash = str(status_data.get("spec_fingerprint_hash", "") or "").strip()
+    verdict["actual_spec_fingerprint"] = actual_hash
+
+    if expected_hash and actual_hash and expected_hash != actual_hash:
+        issues.append(
+            {
+                "reason_code": "spec_impl_drift_detected",
+                "severity": "critical",
+                "message": (
+                    "spec fingerprint mismatch between docs and execution evidence "
+                    f"(expected={expected_hash[:12]}, actual={actual_hash[:12]})"
+                ),
+                "blocked": True,
+            }
+        )
+    elif expected_hash and not actual_hash:
+        issues.append(
+            {
+                "reason_code": "spec_impl_drift_detected",
+                "severity": "critical",
+                "message": "execution evidence missing spec fingerprint hash",
+                "blocked": True,
+            }
+        )
+
+    reason_codes = [str(item.get("reason_code", "")).strip() for item in issues if isinstance(item, dict)]
+    reason_codes = [code for code in reason_codes if code]
+    verdict["reason_codes"] = reason_codes
+    if any(bool(item.get("blocked")) for item in issues):
+        verdict["status"] = "blocked"
+    elif issues:
+        verdict["status"] = "warn"
+    else:
+        verdict["status"] = "pass"
+    return issues, verdict
+
+
 def run_gate_checks(
     stage: str,
     mode: GateMode,
@@ -1841,6 +2020,12 @@ def run_gate_checks(
                 )
             )
 
+    doc_impl_verdict: dict[str, Any] = {
+        "enabled": False,
+        "status": "not_applicable",
+        "reason_codes": [],
+    }
+
     if run_release_global:
         if mode == GateMode.DEBUG:
             typer.echo("[DEBUG] [release-global] Checking terminal artifact...")
@@ -1857,6 +2042,15 @@ def run_gate_checks(
             if mode == GateMode.DEBUG:
                 typer.echo("[DEBUG] [release-global] Checking release memory profile...")
             all_issues.extend(check_release_memory_profile(project_root, mode, stage))
+            if mode == GateMode.DEBUG:
+                typer.echo("[DEBUG] [release-global] Checking spec-doc consistency...")
+            consistency_issues, doc_impl_verdict = check_spec_consistency(
+                project_root,
+                mode,
+                stage,
+                version=version,
+            )
+            all_issues.extend(consistency_issues)
 
     # Determine blocked status
     blocked_issues = [i for i in all_issues if i.get("blocked", False)]
@@ -1893,6 +2087,7 @@ def run_gate_checks(
         "profile": resolved_profile.value,
         "status": status,
         "issues": all_issues,
+        "doc_impl_verdict": doc_impl_verdict,
         "blocked_count": len(blocked_issues),
         "force": force,
         "dry_run": dry_run_effective,
@@ -1977,6 +2172,44 @@ def _run_check_command(
             typer.echo(f"Warnings: {len(result['issues'])}")
             for issue in result["issues"]:
                 typer.echo(f"  - {issue['reason_code']}: {issue['message']}")
+
+    if is_debug_mode_enabled(root):
+        blocked = result["status"] == "Blocked"
+        reason_codes = [
+            str(item.get("reason_code", "")).strip()
+            for item in result.get("issues", [])
+            if isinstance(item, dict)
+        ]
+        reason_codes = [code for code in reason_codes if code]
+        block_reason = ",".join(reason_codes[:5]) if blocked else ""
+        try:
+            debug_run_id, debug_path, debug_event = append_debug_feedback_event(
+                root,
+                source="gate.check",
+                goal=f"gate:{stage}",
+                intent="gate",
+                confidence=1.0 if not blocked else 0.55,
+                boundary_state="in_scope",
+                block_reason=block_reason,
+                recommended_command=f"beacon gate check {stage} --project-root {root}",
+                executed=True,
+                exit_code=2 if blocked else 0,
+                note=result["status"].lower(),
+                extra={
+                    "mode": gate_mode.value,
+                    "profile": profile,
+                    "doc_impl_verdict": result.get("doc_impl_verdict", {}),
+                },
+            )
+            append_debug_event_memory(
+                root,
+                run_id=debug_run_id,
+                event_payload=debug_event,
+                evidence_path=debug_path,
+                source="debug.gate.check",
+            )
+        except Exception:
+            pass
 
     return 2 if result["status"] == "Blocked" else 0
 

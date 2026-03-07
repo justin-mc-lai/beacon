@@ -24,6 +24,7 @@ from beacon.utils.qa9 import (
 )
 from beacon.utils.runtime import append_jsonl, now_iso, write_json
 from beacon.utils.versioning import resolve_target_version
+from beacon.utils.v110_baseline import generate_spec_fingerprint, load_latest_spec_fingerprint
 
 app = typer.Typer(name="auto-test", help="Automated testing")
 
@@ -1407,18 +1408,33 @@ def create(
             if not commands.get(layer):
                 commands[layer] = default_command_for_qa_type(layer, ui_runner=ui_runner)
 
+    spec_fingerprint_payload = load_latest_spec_fingerprint(project_root, version=resolved_version)
+    if not str(spec_fingerprint_payload.get("fingerprint_hash", "")).strip():
+        spec_fingerprint_payload = generate_spec_fingerprint(
+            project_root,
+            run_id=run_id,
+            version=resolved_version,
+        )
+    spec_fingerprint_hash = str(spec_fingerprint_payload.get("fingerprint_hash", "")).strip()
+
     test_status: dict = {
         "scope": scope,
         "timestamp": datetime.now().isoformat(),
         "project": str(project_root),
         "version": resolved_version,
         "run_id": run_id,
+        "spec_fingerprint_hash": spec_fingerprint_hash,
         "status": "running",
         "selected_layers": selected_layers,
         "execution": {
             "run_id": run_id,
             "version": resolved_version,
             "evidence_dir": str(evidence_root.relative_to(project_root)),
+            "spec_fingerprint": {
+                "fingerprint_hash": spec_fingerprint_hash,
+                "version": resolved_version,
+                "generated_at": str(spec_fingerprint_payload.get("generated_at", "")),
+            },
             "layers": [],
         },
     }
@@ -1964,12 +1980,21 @@ def import_qa_use(
     layers = [layer_rollup[key] for key in sorted(layer_rollup.keys())]
     has_failed = any(str(item.get("status")) == "failed" for item in layers)
     run_id = datetime.now().strftime("run-%Y%m%dT%H%M%S%f")
+    spec_fingerprint_payload = load_latest_spec_fingerprint(project_root, version=resolved_version)
+    if not str(spec_fingerprint_payload.get("fingerprint_hash", "")).strip():
+        spec_fingerprint_payload = generate_spec_fingerprint(
+            project_root,
+            run_id=run_id,
+            version=resolved_version,
+        )
+    spec_fingerprint_hash = str(spec_fingerprint_payload.get("fingerprint_hash", "")).strip()
     status_payload = {
         "scope": scope,
         "timestamp": datetime.now().isoformat(),
         "project": str(project_root),
         "version": resolved_version,
         "run_id": run_id,
+        "spec_fingerprint_hash": spec_fingerprint_hash,
         "status": "failed" if has_failed else "passed",
         "selected_layers": [str(item.get("layer")) for item in layers],
         "execution": {
@@ -1977,6 +2002,11 @@ def import_qa_use(
             "version": resolved_version,
             "source": "qa-use",
             "evidence_dir": "",
+            "spec_fingerprint": {
+                "fingerprint_hash": spec_fingerprint_hash,
+                "version": resolved_version,
+                "generated_at": str(spec_fingerprint_payload.get("generated_at", "")),
+            },
             "layers": layers,
             "import_source": str(source),
             "suite": suite if isinstance(suite, dict) else {},

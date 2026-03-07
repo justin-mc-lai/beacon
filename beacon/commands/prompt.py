@@ -9,12 +9,13 @@ from typing import Any, Optional
 import typer
 from typer.testing import CliRunner
 
+from beacon.prefixed import SUPPORTED_SUBCOMMANDS
 from beacon.utils.debug_feedback import (
     append_debug_event_memory,
     append_debug_feedback_event,
     is_debug_mode_enabled,
 )
-from beacon.utils.intent_router import optimize_prompt_to_plan
+from beacon.utils.intent_router import SUPPORTED_INTENTS, optimize_prompt_to_plan
 from beacon.utils.runtime import now_iso
 
 app = typer.Typer(
@@ -70,6 +71,66 @@ def _append_router_history(project_root: Path, event: dict[str, Any]) -> None:
     history_path.parent.mkdir(parents=True, exist_ok=True)
     with history_path.open("a", encoding="utf-8") as handle:
         handle.write(json.dumps(event, ensure_ascii=False) + "\n")
+
+
+def _build_boundary_safe_command_pack(plan: dict[str, Any], project_root: Path, goal: str) -> dict[str, Any]:
+    boundary_state = _resolve_boundary_state(plan)
+    fallback = plan.get("fallback", {}) if isinstance(plan, dict) else {}
+    next_commands = fallback.get("next_commands") if isinstance(fallback, dict) else []
+    safe_fallback = [str(cmd).strip() for cmd in (next_commands or []) if str(cmd).strip()]
+    plan_only = f'beacon ask {json.dumps(goal, ensure_ascii=False)} --project-root {project_root} --plan-only --json'
+    if plan_only not in safe_fallback:
+        safe_fallback.insert(0, plan_only)
+    blocked_paths: list[str] = []
+    if boundary_state in {"mixed_need_confirm", "out_of_scope"}:
+        blocked_paths.append("execution_disabled_until_prompt_split_or_manual_confirmation")
+    return {
+        "recommended_command": str(plan.get("recommended_command", "")).strip(),
+        "fallback_commands": safe_fallback,
+        "boundary_state": boundary_state,
+        "risk_hints": [str(item) for item in plan.get("risk_hints", []) if str(item).strip()],
+        "boundary_hints": [str(item) for item in plan.get("boundary_hints", []) if str(item).strip()],
+        "blocked_execute_paths": blocked_paths,
+    }
+
+
+def _build_prompt_catalog(project_root: Path, version: str) -> dict[str, Any]:
+    routable_intents = sorted([intent for intent in SUPPORTED_INTENTS if intent != "outside-boundary"])
+    non_routable = sorted(
+        [
+            cmd
+            for cmd in SUPPORTED_SUBCOMMANDS
+            if cmd not in set(routable_intents)
+        ]
+    )
+    fallback_map: dict[str, str] = {}
+    for cmd in non_routable:
+        if cmd == "work":
+            fallback_map[cmd] = f"beacon workflow start <feature> --project {project_root} --version {version}"
+        elif cmd in {"ask", "prompt"}:
+            fallback_map[cmd] = f"beacon {cmd} <goal> --project-root {project_root} --plan-only --json"
+        else:
+            fallback_map[cmd] = f"beacon {cmd} --help"
+
+    bridge_templates = [
+        f'beacon ask "继续上次workflow并评估阻塞项" --project-root {project_root} --plan-only --json',
+        f'beacon workflow continue --project {project_root} --version {version} --auto --interactive --hud',
+        f'omc run --project-root {project_root} --task "继续推进 <feature>（version={version}）"',
+        f'omx run --project-root {project_root} --task "执行 <feature> 下一轮迭代（version={version}）"',
+        f'beacon team start "<feature> 交付协作" --runtime tmux --project {project_root}',
+        f"beacon feedback sync latest --project-root {project_root}",
+        f"beacon gate check release --mode strict --project-root {project_root}",
+    ]
+    return {
+        "schema_version": "1.0",
+        "generated_at": now_iso(),
+        "project_root": str(project_root),
+        "version": version,
+        "routable_intents": routable_intents,
+        "non_routable_commands": non_routable,
+        "fallback_commands": fallback_map,
+        "omc_omx_team_templates": bridge_templates,
+    }
 
 
 def _execution_block_reason(
@@ -150,6 +211,7 @@ def _optimize_impl(
     if isinstance(policy_context, dict):
         execution_request.update({k: v for k, v in policy_context.items() if v is not None})
     plan["execution_request"] = execution_request
+    plan["boundary_safe_command_pack"] = _build_boundary_safe_command_pack(plan, root, goal)
 
     blocked_reason = ""
     if execute:
@@ -355,6 +417,34 @@ def optimize(
             min_confidence=min_confidence,
         )
     )
+
+
+@app.command("catalog")
+def catalog(
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    version: str = typer.Option("auto", "--version", help="Version context for templates."),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Output prompt catalog (routable intents + explicit fallback commands)."""
+    root = Path(project_root) if project_root else Path.cwd()
+    payload = _build_prompt_catalog(root, version=version)
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        return
+
+    typer.echo("Beacon Prompt Catalog")
+    typer.echo("=" * 24)
+    typer.echo(f"routable_intents({len(payload['routable_intents'])}):")
+    for intent in payload["routable_intents"]:
+        typer.echo(f"- {intent}")
+    typer.echo("")
+    typer.echo(f"non_routable_commands({len(payload['non_routable_commands'])}):")
+    for cmd in payload["non_routable_commands"]:
+        typer.echo(f"- {cmd} => {payload['fallback_commands'].get(cmd, '')}")
+    typer.echo("")
+    typer.echo("OMC/OMX/Team templates:")
+    for item in payload["omc_omx_team_templates"]:
+        typer.echo(f"- {item}")
 
 
 if __name__ == "__main__":
