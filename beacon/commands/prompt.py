@@ -9,6 +9,11 @@ from typing import Any, Optional
 import typer
 from typer.testing import CliRunner
 
+from beacon.utils.debug_feedback import (
+    append_debug_event_memory,
+    append_debug_feedback_event,
+    is_debug_mode_enabled,
+)
 from beacon.utils.intent_router import optimize_prompt_to_plan
 from beacon.utils.runtime import now_iso
 
@@ -187,6 +192,50 @@ def _optimize_impl(
         else None,
     }
     _append_router_history(root, event)
+
+    if is_debug_mode_enabled(root):
+        try:
+            debug_run_id, debug_path, debug_event = append_debug_feedback_event(
+                root,
+                source="prompt.optimize",
+                goal=goal,
+                intent=str(plan.get("intent", "")),
+                confidence=float(plan.get("confidence", 0.0) or 0.0),
+                boundary_state=_resolve_boundary_state(plan),
+                block_reason=blocked_reason,
+                recommended_command=str(plan.get("recommended_command", "")),
+                executed=bool(execute and not blocked_reason),
+                exit_code=(
+                    int(plan.get("executed", {}).get("exit_code", 0) or 0)
+                    if execute and not blocked_reason
+                    else None
+                ),
+                note="captured-by-debug-mode",
+                extra={
+                    "router_mode": str(plan.get("router_mode", "")),
+                    "execute_requested": bool(execute),
+                    "allow_mixed": bool(allow_mixed),
+                    "allow_low_confidence": bool(allow_low_confidence),
+                    "min_confidence": round(effective_min_confidence, 2),
+                },
+            )
+            append_debug_event_memory(
+                root,
+                run_id=debug_run_id,
+                event_payload=debug_event,
+                evidence_path=debug_path,
+                source="debug.prompt.optimize",
+            )
+            plan["debug_feedback"] = {
+                "enabled": True,
+                "run_id": debug_run_id,
+                "path": str(debug_path.relative_to(root)),
+            }
+        except Exception as exc:  # noqa: BLE001
+            plan["debug_feedback"] = {
+                "enabled": True,
+                "error": f"{type(exc).__name__}: {exc}",
+            }
 
     if json_output:
         typer.echo(json.dumps(plan, ensure_ascii=False, indent=2))

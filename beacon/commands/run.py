@@ -7,6 +7,7 @@ from typing import Any, Optional
 
 import typer
 
+from beacon.utils.debug_feedback import save_debug_mode_state
 from beacon.utils.llm_loop import build_next_stage_trace, merge_token_usage
 from beacon.utils.memory import append_scope_items
 from beacon.utils.runtime import (
@@ -120,6 +121,16 @@ def _run_workflow_impl(
     confirmations: list[dict[str, Any]] = []
 
     started = now_iso()
+    if mode == "debug":
+        try:
+            save_debug_mode_state(
+                root,
+                enabled=True,
+                run_id=run_id,
+                source="run.workflow.debug",
+            )
+        except Exception:  # noqa: BLE001
+            pass
     events.append(
         {
             "event": "run_started",
