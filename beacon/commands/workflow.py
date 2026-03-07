@@ -16,6 +16,7 @@ from beacon.utils.debug_feedback import (
     append_debug_event_memory,
     append_debug_feedback_event,
     is_debug_mode_enabled,
+    load_debug_mode_state,
 )
 from beacon.utils.llm_loop import build_next_stage_trace, merge_token_usage
 from beacon.utils.memory import append_memory_entry
@@ -682,6 +683,34 @@ def _effective_interactive_mode(interactive: Optional[bool]) -> bool:
         return False
 
 
+def _parse_semver_tuple(value: str) -> tuple[int, int, int]:
+    raw = str(value or "").strip().lower()
+    if raw.startswith("v"):
+        raw = raw[1:]
+    parts = raw.split(".")
+    numbers: list[int] = []
+    for part in parts[:3]:
+        digits = "".join(ch for ch in part if ch.isdigit())
+        numbers.append(int(digits) if digits else 0)
+    while len(numbers) < 3:
+        numbers.append(0)
+    return (numbers[0], numbers[1], numbers[2])
+
+
+def _requires_hud_double_confirmation(version: str) -> bool:
+    return _parse_semver_tuple(version) >= (1, 1, 0)
+
+
+def _resolve_hud_enforcement(*, version: str, hud_requested: bool, command_name: str) -> bool:
+    if _requires_hud_double_confirmation(version):
+        if not hud_requested:
+            typer.echo(
+                f"ℹ {command_name}: v1.1.0+ enforces HUD display; ignoring --no-hud."
+            )
+        return True
+    return bool(hud_requested)
+
+
 def _workflow_hud_snapshot_path(project_root: Path, run_id: str) -> Path:
     return project_root / ".beacon" / "state" / "workflow-hud" / f"{run_id}.json"
 
@@ -758,6 +787,12 @@ def _render_workflow_hud(
         and auto_test_status == "passed"
     )
 
+    debug_state = load_debug_mode_state(project_root)
+    debug_payload = {
+        "enabled": bool(debug_state.get("enabled", False)),
+        "run_id": str(debug_state.get("run_id", "") or ""),
+    }
+
     hud_payload = {
         "schema_version": "1.0",
         "run_id": run_id,
@@ -785,6 +820,7 @@ def _render_workflow_hud(
             "coverage_full": bool(coverage.get("full_coverage")),
         },
         "memory": memory_metrics,
+        "debug": debug_payload,
         "generated_at": now_iso(),
     }
 
@@ -817,6 +853,10 @@ def _render_workflow_hud(
         typer.echo(f"auto_test    : {hud_payload['quality']['auto_test_status']}")
         typer.echo(f"gate_status  : {hud_payload['quality']['gate_status']}")
         typer.echo(f"coverage_full: {hud_payload['quality']['coverage_full']}")
+        typer.echo(
+            f"debug_mode   : {hud_payload['debug']['enabled']} "
+            f"(run_id={hud_payload['debug']['run_id'] or '-'})"
+        )
     return hud_payload
 
 
@@ -838,6 +878,8 @@ def _write_interaction_memory(
     accepted: bool,
     hud_snapshot_rel: str | None = None,
     reason_codes: list[str] | None = None,
+    feature: str = "",
+    version: str = "",
 ) -> None:
     refs = [x for x in [hud_snapshot_rel] if x]
     details = {
@@ -864,6 +906,26 @@ def _write_interaction_memory(
         evidence_ref=refs,
         confidence=0.8 if accepted else 0.7,
         tags=["workflow", "interactive", "checkpoint", action],
+    )
+    _record_debug_feedback(
+        project_root=project_root,
+        source="workflow.interactive.prompt-op",
+        goal=feature or f"workflow-run:{run_id}",
+        intent="workflow",
+        confidence=0.86 if accepted else 0.45,
+        boundary_state="in_scope",
+        block_reason="" if accepted else "workflow_confirmation_rejected",
+        recommended_command=f"interactive-action:{action}",
+        executed=bool(accepted),
+        exit_code=0 if accepted else None,
+        note=f"action={action};accepted={accepted}",
+        run_id=run_id,
+        extra={
+            "action": action,
+            "accepted": bool(accepted),
+            "reason_codes": reason_codes or [],
+            "version": version,
+        },
     )
 
 
@@ -935,6 +997,14 @@ def _confirm_action(action: str, *, confirm_timeout: int) -> bool:
         return False
     choice = str(choice).strip().lower()
     return choice in {"y", "yes"}
+
+
+def _confirm_second_execution_interactive(*, confirm_timeout: int) -> bool:
+    choice = _input_with_timeout("Second confirm (type EXECUTE): ", confirm_timeout)
+    if choice is None:
+        return False
+    normalized = str(choice).strip().upper()
+    return normalized in {"EXECUTE", "Y", "YES"}
 
 
 def _pause_workflow_state(project_root: Path, run_id: str, state: dict[str, Any], reason: str = "manual_pause") -> None:
@@ -1259,7 +1329,17 @@ def start(
     hud: bool = typer.Option(
         True,
         "--hud/--no-hud",
-        help="Render workflow HUD before execution.",
+        help="Render workflow HUD before execution (v1.1.0+ always on).",
+    ),
+    confirm_execute: bool = typer.Option(
+        False,
+        "--confirm-execute",
+        help="Non-interactive first confirmation for execution (required in v1.1.0+).",
+    ),
+    confirm_execute_second: bool = typer.Option(
+        False,
+        "--confirm-execute-second",
+        help="Non-interactive second confirmation for execution (required in v1.1.0+).",
     ),
     confirm_timeout: int = typer.Option(
         60,
@@ -1343,6 +1423,12 @@ def start(
     """Start full product workflow"""
     project_root = Path(project) if project else Path.cwd()
     resolved_version = resolve_target_version(project_root, version)
+    effective_hud = _resolve_hud_enforcement(
+        version=resolved_version,
+        hud_requested=bool(hud),
+        command_name="workflow start",
+    )
+    force_double_confirmation = _requires_hud_double_confirmation(resolved_version)
 
     # Ensure directories exist
     ensure_output_dirs(project_root, resolved_version)
@@ -1402,7 +1488,7 @@ def start(
     pending_stages = [stage for stage in stage_order if stage not in skip_stages]
     hud_snapshot_rel: str | None = None
 
-    if hud:
+    if effective_hud:
         hud_payload = _render_workflow_hud(
             project_root=project_root,
             run_id=run_id,
@@ -1468,7 +1554,7 @@ def start(
                     run_id=run_id,
                     stage="workflow",
                 )
-                if hud:
+                if effective_hud:
                     hud_payload = _render_workflow_hud(
                         project_root=project_root,
                         run_id=run_id,
@@ -1486,6 +1572,8 @@ def start(
                     action=action,
                     accepted=True,
                     hud_snapshot_rel=hud_snapshot_rel,
+                    feature=feature,
+                    version=resolved_version,
                 )
                 _pause_workflow_state(project_root, run_id, base_state, reason="interactive_pause")
                 typer.echo("Workflow paused.")
@@ -1497,6 +1585,8 @@ def start(
                     action=action,
                     accepted=True,
                     hud_snapshot_rel=hud_snapshot_rel,
+                    feature=feature,
+                    version=resolved_version,
                 )
                 aborted = dict(base_state)
                 aborted["status"] = "aborted"
@@ -1514,6 +1604,8 @@ def start(
                 accepted=accepted,
                 hud_snapshot_rel=hud_snapshot_rel,
                 reason_codes=(hud_payload.get("blockers", {}) or {}).get("latest_reason_codes", []),
+                feature=feature,
+                version=resolved_version,
             )
             if not accepted:
                 typer.echo("Action rejected. choose again.")
@@ -1569,6 +1661,56 @@ def start(
         execution_sequence = [stage for stage in stage_order if stage not in skip_stages]
     else:
         execution_sequence = []
+
+    if force_double_confirmation and execution_sequence:
+        if interactive_mode:
+            second_ok = _confirm_second_execution_interactive(confirm_timeout=confirm_timeout)
+            _write_interaction_memory(
+                project_root=project_root,
+                run_id=run_id,
+                action="second-confirm",
+                accepted=second_ok,
+                hud_snapshot_rel=hud_snapshot_rel,
+                feature=feature,
+                version=resolved_version,
+            )
+            if not second_ok:
+                _pause_workflow_state(project_root, run_id, base_state, reason="second_confirmation_rejected")
+                typer.echo("Workflow paused: second confirmation rejected.")
+                return
+        else:
+            first_ok = bool(confirm_execute)
+            second_ok = bool(confirm_execute_second)
+            _write_interaction_memory(
+                project_root=project_root,
+                run_id=run_id,
+                action="non-interactive-confirm-1",
+                accepted=first_ok,
+                hud_snapshot_rel=hud_snapshot_rel,
+                feature=feature,
+                version=resolved_version,
+            )
+            _write_interaction_memory(
+                project_root=project_root,
+                run_id=run_id,
+                action="non-interactive-confirm-2",
+                accepted=second_ok,
+                hud_snapshot_rel=hud_snapshot_rel,
+                feature=feature,
+                version=resolved_version,
+            )
+            if not (first_ok and second_ok):
+                _pause_workflow_state(
+                    project_root,
+                    run_id,
+                    base_state,
+                    reason="non_interactive_double_confirmation_required",
+                )
+                typer.echo(
+                    "✗ v1.1.0+ workflow execution requires HUD + double confirmation. "
+                    "Use --confirm-execute --confirm-execute-second in non-interactive mode."
+                )
+                raise typer.Exit(2)
 
     for stage in execution_sequence:
         typer.echo(f"    → Running: {stage}")
@@ -1712,7 +1854,17 @@ def continue_workflow(  # noqa: A003
     hud: bool = typer.Option(
         True,
         "--hud/--no-hud",
-        help="Render workflow HUD before execution.",
+        help="Render workflow HUD before execution (v1.1.0+ always on).",
+    ),
+    confirm_execute: bool = typer.Option(
+        False,
+        "--confirm-execute",
+        help="Non-interactive first confirmation for execution (required in v1.1.0+).",
+    ),
+    confirm_execute_second: bool = typer.Option(
+        False,
+        "--confirm-execute-second",
+        help="Non-interactive second confirmation for execution (required in v1.1.0+).",
     ),
     confirm_timeout: int = typer.Option(
         60,
@@ -1813,6 +1965,12 @@ def continue_workflow(  # noqa: A003
     if not run_feature:
         typer.echo("✗ Workflow run is missing feature metadata")
         raise typer.Exit(2)
+    effective_hud = _resolve_hud_enforcement(
+        version=run_version,
+        hud_requested=bool(hud),
+        command_name="workflow continue",
+    )
+    force_double_confirmation = _requires_hud_double_confirmation(run_version)
     _record_debug_feedback(
         project_root=project_root,
         source="workflow.continue",
@@ -1835,7 +1993,7 @@ def continue_workflow(  # noqa: A003
 
     mode_interactive = _effective_interactive_mode(interactive)
     mode_label = "interactive" if mode_interactive else "non_interactive"
-    if hud:
+    if effective_hud:
         hud_payload = _render_workflow_hud(
             project_root=project_root,
             run_id=resolved_run_id,
@@ -1908,7 +2066,7 @@ def continue_workflow(  # noqa: A003
                     run_id=resolved_run_id,
                     stage="workflow",
                 )
-                if hud:
+                if effective_hud:
                     progress = compute_workflow_progress(project_root, run_id=resolved_run_id)
                     hud_payload = _render_workflow_hud(
                         project_root=project_root,
@@ -1927,6 +2085,8 @@ def continue_workflow(  # noqa: A003
                     action=action,
                     accepted=True,
                     hud_snapshot_rel=hud_snapshot_rel,
+                    feature=run_feature,
+                    version=run_version,
                 )
                 _pause_workflow_state(project_root, resolved_run_id, state, reason="interactive_pause")
                 typer.echo("Workflow paused.")
@@ -1938,6 +2098,8 @@ def continue_workflow(  # noqa: A003
                     action=action,
                     accepted=True,
                     hud_snapshot_rel=hud_snapshot_rel,
+                    feature=run_feature,
+                    version=run_version,
                 )
                 aborted = dict(state)
                 aborted["status"] = "aborted"
@@ -1955,6 +2117,8 @@ def continue_workflow(  # noqa: A003
                 accepted=accepted,
                 hud_snapshot_rel=hud_snapshot_rel,
                 reason_codes=(hud_payload.get("blockers", {}) or {}).get("latest_reason_codes", []),
+                feature=run_feature,
+                version=run_version,
             )
             if not accepted:
                 typer.echo("Action rejected. choose again.")
@@ -1996,6 +2160,61 @@ def continue_workflow(  # noqa: A003
     else:
         start_idx = stage_order.index(next_stage) if next_stage in stage_order else 0
         stage_sequence = stage_order[start_idx:] if run_auto else [next_stage]
+
+    if force_double_confirmation and stage_sequence:
+        if mode_interactive:
+            second_ok = _confirm_second_execution_interactive(confirm_timeout=confirm_timeout)
+            _write_interaction_memory(
+                project_root=project_root,
+                run_id=resolved_run_id,
+                action="second-confirm",
+                accepted=second_ok,
+                hud_snapshot_rel=hud_snapshot_rel,
+                feature=run_feature,
+                version=run_version,
+            )
+            if not second_ok:
+                _pause_workflow_state(
+                    project_root,
+                    resolved_run_id,
+                    working_state,
+                    reason="second_confirmation_rejected",
+                )
+                typer.echo("Workflow paused: second confirmation rejected.")
+                return
+        else:
+            first_ok = bool(confirm_execute)
+            second_ok = bool(confirm_execute_second)
+            _write_interaction_memory(
+                project_root=project_root,
+                run_id=resolved_run_id,
+                action="non-interactive-confirm-1",
+                accepted=first_ok,
+                hud_snapshot_rel=hud_snapshot_rel,
+                feature=run_feature,
+                version=run_version,
+            )
+            _write_interaction_memory(
+                project_root=project_root,
+                run_id=resolved_run_id,
+                action="non-interactive-confirm-2",
+                accepted=second_ok,
+                hud_snapshot_rel=hud_snapshot_rel,
+                feature=run_feature,
+                version=run_version,
+            )
+            if not (first_ok and second_ok):
+                _pause_workflow_state(
+                    project_root,
+                    resolved_run_id,
+                    working_state,
+                    reason="non_interactive_double_confirmation_required",
+                )
+                typer.echo(
+                    "✗ v1.1.0+ workflow execution requires HUD + double confirmation. "
+                    "Use --confirm-execute --confirm-execute-second in non-interactive mode."
+                )
+                raise typer.Exit(2)
 
     for stage in stage_sequence:
         stage_progress = compute_workflow_progress(project_root, run_id=resolved_run_id)

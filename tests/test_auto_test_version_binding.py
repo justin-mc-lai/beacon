@@ -55,6 +55,8 @@ def test_workflow_verify_should_pass_run_version_to_auto_test(tmp_path: Path):
             "unit",
             "--verify-unit-command",
             "python3 -c \"print('ok')\"",
+            "--confirm-execute",
+            "--confirm-execute-second",
         ]
     )
     assert result.exit_code == 0

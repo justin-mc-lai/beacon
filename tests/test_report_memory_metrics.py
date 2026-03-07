@@ -116,6 +116,7 @@ def test_status_should_use_same_resolved_run_for_terminal_status_and_progress(tm
     run_a = _invoke(
         ["workflow", "start", "Stable Feature", "--auto", "--version", "v3.0.0", "--project", str(tmp_path)]
         + VERIFY_PASS_ARGS
+        + ["--confirm-execute", "--confirm-execute-second"]
     )
     assert run_a.exit_code == 0
 
@@ -139,6 +140,8 @@ def test_report_should_write_summary_into_requested_version_execution_dir(tmp_pa
             str(tmp_path),
             "--version",
             "v2.3.4",
+            "--confirm-execute",
+            "--confirm-execute-second",
             *VERIFY_PASS_ARGS,
         ]
     )
@@ -175,6 +178,8 @@ def test_report_default_mode_should_not_write_summary_files(tmp_path: Path):
             str(tmp_path),
             "--version",
             "v2.5.0",
+            "--confirm-execute",
+            "--confirm-execute-second",
             *VERIFY_PASS_ARGS,
         ]
     )

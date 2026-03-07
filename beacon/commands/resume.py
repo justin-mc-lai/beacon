@@ -55,6 +55,16 @@ def resume_entry(  # noqa: PLR0913
         help="Interactive mode (default: auto detect TTY)",
     ),
     hud: bool = typer.Option(True, "--hud/--no-hud", help="Render workflow HUD before execution"),
+    confirm_execute: bool = typer.Option(
+        False,
+        "--confirm-execute",
+        help="Non-interactive first confirmation for workflow execution (v1.1.0+).",
+    ),
+    confirm_execute_second: bool = typer.Option(
+        False,
+        "--confirm-execute-second",
+        help="Non-interactive second confirmation for workflow execution (v1.1.0+).",
+    ),
     confirm_timeout: int = typer.Option(60, "--confirm-timeout", min=1, help="Confirm timeout seconds"),
     on_timeout: str = typer.Option("pause", "--on-timeout", help="Timeout behavior: pause|continue|abort"),
 ):
@@ -81,6 +91,8 @@ def resume_entry(  # noqa: PLR0913
             auto=auto,
             interactive=interactive,
             hud=hud,
+            confirm_execute=confirm_execute,
+            confirm_execute_second=confirm_execute_second,
             confirm_timeout=confirm_timeout,
             on_timeout=on_timeout,
             implementation_command=None,
@@ -134,6 +146,16 @@ def _compat_resume_callback(
         help="Interactive mode (default: auto detect TTY)",
     ),
     hud: bool = typer.Option(True, "--hud/--no-hud", help="Render workflow HUD before execution"),
+    confirm_execute: bool = typer.Option(
+        False,
+        "--confirm-execute",
+        help="Non-interactive first confirmation for workflow execution (v1.1.0+).",
+    ),
+    confirm_execute_second: bool = typer.Option(
+        False,
+        "--confirm-execute-second",
+        help="Non-interactive second confirmation for workflow execution (v1.1.0+).",
+    ),
     confirm_timeout: int = typer.Option(60, "--confirm-timeout", min=1, help="Confirm timeout seconds"),
     on_timeout: str = typer.Option("pause", "--on-timeout", help="Timeout behavior: pause|continue|abort"),
 ):
@@ -148,6 +170,8 @@ def _compat_resume_callback(
         auto=auto,
         interactive=interactive,
         hud=hud,
+        confirm_execute=confirm_execute,
+        confirm_execute_second=confirm_execute_second,
         confirm_timeout=confirm_timeout,
         on_timeout=on_timeout,
     )
