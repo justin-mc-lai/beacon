@@ -8,6 +8,7 @@ import shutil
 from pathlib import Path
 from typing import Any
 
+from beacon.utils.context_files import inspect_context_file
 from beacon.utils.runtime import now_iso
 from beacon.utils.versioning import discover_versions, normalize_version
 from beacon.utils.workflow_memory import compute_workflow_progress
@@ -23,6 +24,8 @@ _INIT_TOOLKIT_VERSION_RE = re.compile(r'^__toolkit_version__\s*=\s*"([^"]+)"\s*$
 _LEGACY_TRIGGER_RE = re.compile(r"/beacon:[a-z0-9-]+", re.IGNORECASE)
 _SEMVER_RE = re.compile(r"^v?(\d+)\.(\d+)\.(\d+)$")
 _SEMVER_SEARCH_RE = re.compile(r"v?\d+\.\d+\.\d+")
+
+_CONTEXT_FILES = ("AGENTS.md", "CLAUDE.md")
 
 
 def _semver_key(version: str) -> tuple[int, int, int]:
@@ -331,6 +334,66 @@ def _collect_install_copy_versions(runtime_skill_version: str) -> dict[str, Any]
     }
 
 
+def _context_file_map(project_root: Path) -> dict[str, Path]:
+    return {name: project_root / name for name in _CONTEXT_FILES}
+
+
+def _collect_context_file_presence(
+    context_files: dict[str, Path],
+    inspections: dict[str, dict[str, Any]],
+) -> tuple[bool, list[str]]:
+    missing = [str(context_files[name]) for name, info in inspections.items() if not bool(info.get("exists"))]
+    present = [str(context_files[name]) for name, info in inspections.items() if bool(info.get("exists"))]
+    evidence = [f"missing={missing}", f"present={present}"]
+    return (not missing, evidence)
+
+
+def _collect_managed_block_integrity(
+    context_files: dict[str, Path],
+    inspections: dict[str, dict[str, Any]],
+) -> tuple[bool, list[str]]:
+    evidence: list[str] = []
+    broken = []
+    for name, info in inspections.items():
+        if not bool(info.get("exists")):
+            continue
+        marker_integrity = str(info.get("marker_integrity", "missing"))
+        evidence.append(f"{name}: integrity={marker_integrity} ({context_files[name]})")
+        if marker_integrity != "ok":
+            broken.append(name)
+    return (not broken, evidence)
+
+
+def _collect_managed_block_version_drift(
+    inspections: dict[str, dict[str, Any]],
+) -> tuple[bool, list[str]]:
+    versions: dict[str, str] = {}
+    drifted: list[str] = []
+    unknown: list[str] = []
+    evidence: list[str] = []
+
+    for name, info in inspections.items():
+        if not bool(info.get("exists")):
+            continue
+        managed_version = str(info.get("managed_version") or "")
+        versions[name] = managed_version
+        version_drift = info.get("version_drift")
+        evidence.append(
+            f"{name}: managed_version={managed_version or 'missing'}, version_drift={version_drift}"
+        )
+        if version_drift is True:
+            drifted.append(name)
+        elif version_drift is None:
+            unknown.append(name)
+
+    version_set = {v for v in versions.values() if v}
+    version_consistent = len(version_set) <= 1
+    drift = bool(drifted or unknown) or not version_consistent
+    evidence.append(f"version_set={sorted(version_set)}")
+
+    return (not drift, evidence)
+
+
 def collect_compatibility_checks(
     *,
     project_root: Path,
@@ -361,6 +424,22 @@ def collect_compatibility_checks(
     runtime_skill_version = _normalize(
         str(runtime.get("toolkit_version") or runtime.get("package_version") or "")
     )
+    context_files = _context_file_map(project_root)
+    context_inspections = {
+        name: inspect_context_file(path, runtime_skill_version)
+        for name, path in context_files.items()
+    }
+    context_presence_ok, context_presence_evidence = _collect_context_file_presence(
+        context_files,
+        context_inspections,
+    )
+    managed_integrity_ok, managed_integrity_evidence = _collect_managed_block_integrity(
+        context_files,
+        context_inspections,
+    )
+    managed_versions_ok, managed_versions_evidence = _collect_managed_block_version_drift(
+        context_inspections,
+    )
     install_copy_versions = _collect_install_copy_versions(runtime_skill_version)
     material_version = _normalize(version)
     material_ahead_of_runtime = False
@@ -368,6 +447,40 @@ def collect_compatibility_checks(
         material_ahead_of_runtime = _semver_key(material_version) > _semver_key(runtime_skill_version)
 
     checks: dict[str, dict[str, Any]] = {
+        "context_files_presence": {
+            "status": "PASS" if context_presence_ok else "FAIL",
+            # High because missing context control files disables policy/runtime guidance propagation.
+            "severity": "high",
+            "summary": "Project root should include required context files (AGENTS.md, CLAUDE.md).",
+            "evidence": context_presence_evidence,
+            "impact": "Missing context files can break policy inheritance and runtime instruction consistency.",
+            "repair": [
+                "Create missing context files at project root: AGENTS.md and CLAUDE.md.",
+                "Bootstrap managed content with `beacon doctor setup-context --project-root .`.",
+            ],
+        },
+        "managed_block_integrity": {
+            "status": "PASS" if managed_integrity_ok else "FAIL",
+            "severity": "high",
+            "summary": "Managed marker blocks in context files should be well-formed and balanced.",
+            "evidence": managed_integrity_evidence,
+            "impact": "Malformed markers can break automated upgrades and runtime overlay injection.",
+            "repair": [
+                "Fix unmatched/misordered managed markers in AGENTS.md and CLAUDE.md.",
+                "Run `beacon doctor setup-context --project-root . --force` to repair managed blocks.",
+            ],
+        },
+        "managed_block_version_drift": {
+            "status": "PASS" if managed_versions_ok else "WARN",
+            "severity": "medium",
+            "summary": "Context managed block version markers should align across files and runtime.",
+            "evidence": managed_versions_evidence,
+            "impact": "Version marker drift causes ambiguous operator guidance and compatibility assumptions.",
+            "repair": [
+                "Normalize AGENTS.md and CLAUDE.md managed block versions to one semver.",
+                "Prefer the active runtime version when updating managed block version markers.",
+            ],
+        },
         "runless_docs_only": {
             "status": "FAIL" if docs_have_progress and not run_id else "PASS",
             "severity": "high",
@@ -476,6 +589,9 @@ def _compatibility_checks_to_incompatibilities(
         "material_skill_semver_compatibility": "COMP-204",
         "legacy_skill_trigger_syntax": "COMP-205",
         "installed_skill_copy_drift": "COMP-206",
+        "context_files_presence": "COMP-207",
+        "managed_block_integrity": "COMP-208",
+        "managed_block_version_drift": "COMP-209",
     }
     items: list[dict[str, Any]] = []
     for name, check in compatibility_checks.items():
@@ -567,6 +683,13 @@ def build_doctor_payload(project_root: Path, *, strict: bool = False) -> dict[st
     normalized_root = Path(project_root)
     if not normalized_root.exists():
         compatibility_checks = {
+            "context_files_presence": {"status": "UNKNOWN", "severity": "high", "summary": "project root unavailable"},
+            "managed_block_integrity": {"status": "UNKNOWN", "severity": "high", "summary": "project root unavailable"},
+            "managed_block_version_drift": {
+                "status": "UNKNOWN",
+                "severity": "medium",
+                "summary": "project root unavailable",
+            },
             "runless_docs_only": {"status": "UNKNOWN", "severity": "high", "summary": "project root unavailable"},
             "status_memory_divergence": {"status": "UNKNOWN", "severity": "high", "summary": "project root unavailable"},
             "stale_ptk_version_refs": {"status": "UNKNOWN", "severity": "medium", "summary": "project root unavailable"},

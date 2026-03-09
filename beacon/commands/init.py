@@ -19,11 +19,13 @@ app = typer.Typer(
 )
 
 
-def _write_if_apply(path: Path, content: str, apply: bool) -> str:
+def _write_if_apply(path: Path, content: str, apply: bool, force: bool = False) -> str:
+    if path.exists() and not force:
+        return "unchanged" if apply else "planned"
     if apply:
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(content, encoding="utf-8")
-        return "created"
+        return "created" if not force else "refreshed"
     return "planned"
 
 
@@ -33,6 +35,7 @@ def _init_impl(
     force: bool,
     with_claude: bool,
     with_agents: bool,
+    with_context_guidance: bool,
 ) -> int:
     root = Path(project_root) if project_root else Path.cwd()
     apply = not dry_run
@@ -56,12 +59,51 @@ def _init_impl(
             p.mkdir(parents=True, exist_ok=True)
         actions.append({"scope": "docs", "action": "created" if apply else "planned", "path": str(p.relative_to(root))})
 
-    if with_claude:
-        status = _write_if_apply(root / "CLAUDE.md", "# CLAUDE\n\n<!-- BEACON-MANAGED -->\n", apply)
-        actions.append({"scope": "base", "action": status, "path": "CLAUDE.md"})
-    if with_agents:
-        status = _write_if_apply(root / "AGENTS.md", "# AGENTS\n\n<!-- BEACON-MANAGED -->\n", apply)
-        actions.append({"scope": "base", "action": status, "path": "AGENTS.md"})
+    if with_context_guidance and (with_claude or with_agents):
+        from beacon.utils.context_files import setup_context_files
+
+        context_setup = setup_context_files(
+            project_root=root,
+            runtime_version=version,
+            dry_run=dry_run,
+            force=force,
+            with_claude=with_claude,
+            with_agents=with_agents,
+        )
+        for entry in context_setup.get("actions", []):
+            action = dict(entry)
+            action_name = str(action.pop("action", "updated"))
+            path_value = str(action.pop("path", ""))
+            file_name = str(action.get("file", ""))
+            try:
+                rel_path = str(Path(path_value).relative_to(root)) if path_value else ""
+            except Exception:  # noqa: BLE001
+                rel_path = path_value
+            if apply and rel_path:
+                file_path = root / rel_path
+                if file_path.exists():
+                    current = file_path.read_text(encoding="utf-8")
+                    normalized = current.rstrip("\n") + "\n"
+                    if normalized != current:
+                        file_path.write_text(normalized, encoding="utf-8")
+                        action_name = "updated" if action_name in {"unchanged", "created"} else action_name
+            actions.append(
+                {
+                    "scope": "context",
+                    "action": action_name,
+                    "path": rel_path,
+                    "context_setup": "true",
+                    "target_file": file_name,
+                    **{str(k): str(v) for k, v in action.items()},
+                }
+            )
+    else:
+        if with_claude:
+            status = _write_if_apply(root / "CLAUDE.md", "# CLAUDE\n\n<!-- BEACON-MANAGED -->\n", apply, force=False)
+            actions.append({"scope": "base", "action": status, "path": "CLAUDE.md"})
+        if with_agents:
+            status = _write_if_apply(root / "AGENTS.md", "# AGENTS\n\n<!-- BEACON-MANAGED -->\n", apply, force=False)
+            actions.append({"scope": "base", "action": status, "path": "AGENTS.md"})
 
     if apply:
         (root / ".beacon").mkdir(parents=True, exist_ok=True)
@@ -73,6 +115,7 @@ def _init_impl(
         "project_root": str(root),
         "dry_run": dry_run,
         "force": force,
+        "with_context_guidance": with_context_guidance,
         "status": "completed",
         "started_at": now_iso(),
         "ended_at": now_iso(),
@@ -104,6 +147,11 @@ def init_callback(
     force: bool = typer.Option(False, "--force", help="Force append managed blocks"),
     with_claude: bool = typer.Option(True, "--with-claude/--without-claude", help="Manage CLAUDE.md"),
     with_agents: bool = typer.Option(True, "--with-agents/--without-agents", help="Manage AGENTS.md"),
+    with_context_guidance: bool = typer.Option(
+        True,
+        "--with-context-guidance/--without-context-guidance",
+        help="Manage context guidance blocks in CLAUDE.md/AGENTS.md",
+    ),
 ):
     """Initialize project directly (PTK flat syntax compatibility)."""
     if ctx.invoked_subcommand is None:
@@ -113,6 +161,7 @@ def init_callback(
             force=force,
             with_claude=with_claude,
             with_agents=with_agents,
+            with_context_guidance=with_context_guidance,
         )
         raise typer.Exit(code=code)
 
@@ -124,6 +173,11 @@ def run(
     force: bool = typer.Option(False, "--force", help="Force append managed blocks"),
     with_claude: bool = typer.Option(True, "--with-claude/--without-claude", help="Manage CLAUDE.md"),
     with_agents: bool = typer.Option(True, "--with-agents/--without-agents", help="Manage AGENTS.md"),
+    with_context_guidance: bool = typer.Option(
+        True,
+        "--with-context-guidance/--without-context-guidance",
+        help="Manage context guidance blocks in CLAUDE.md/AGENTS.md",
+    ),
 ):
     """Initialize Beacon project structure."""
     code = _init_impl(
@@ -132,6 +186,7 @@ def run(
         force=force,
         with_claude=with_claude,
         with_agents=with_agents,
+        with_context_guidance=with_context_guidance,
     )
     raise typer.Exit(code=code)
 
@@ -143,6 +198,11 @@ def init_project(
     force: bool = typer.Option(False, "--force", help="Force append managed blocks"),
     with_claude: bool = typer.Option(True, "--with-claude/--without-claude", help="Manage CLAUDE.md"),
     with_agents: bool = typer.Option(True, "--with-agents/--without-agents", help="Manage AGENTS.md"),
+    with_context_guidance: bool = typer.Option(
+        True,
+        "--with-context-guidance/--without-context-guidance",
+        help="Manage context guidance blocks in CLAUDE.md/AGENTS.md",
+    ),
 ):
     """Initialize Beacon project structure (alias)."""
     code = _init_impl(
@@ -151,6 +211,7 @@ def init_project(
         force=force,
         with_claude=with_claude,
         with_agents=with_agents,
+        with_context_guidance=with_context_guidance,
     )
     raise typer.Exit(code=code)
 

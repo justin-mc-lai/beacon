@@ -8,6 +8,7 @@ from typing import Any
 
 import typer
 
+from beacon.utils.context_files import setup_context_files, verify_context_files
 from beacon.utils.doctor_diagnostics import build_doctor_payload, collect_runtime_info
 from beacon.utils.doctor_setup import install_launchers, resolve_bin_dir, uninstall_launchers
 
@@ -71,6 +72,16 @@ def _doctor_impl(json_output: bool, project_root: str, fix: bool, upgrade: bool,
         (root / ".beacon").mkdir(parents=True, exist_ok=True)
         (root / "docs").mkdir(parents=True, exist_ok=True)
         (root / "skills").mkdir(parents=True, exist_ok=True)
+        runtime = collect_runtime_info()
+        runtime_version = str(runtime.get("toolkit_version") or runtime.get("package_version") or "v1.0.0")
+        setup_context_files(
+            project_root=root,
+            runtime_version=runtime_version,
+            dry_run=False,
+            force=False,
+            with_claude=True,
+            with_agents=True,
+        )
 
     payload = build_doctor_payload(root, strict=strict)
 
@@ -220,6 +231,84 @@ def uninstall(
     raise typer.Exit(0)
 
 
+@app.command("setup-context")
+def setup_context(
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    dry_run: bool = typer.Option(False, "--dry-run", help="Preview without writing files"),
+    force: bool = typer.Option(False, "--force", help="Append managed blocks when markers are missing"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+    with_claude: bool = typer.Option(True, "--with-claude/--without-claude", help="Manage CLAUDE.md"),
+    with_agents: bool = typer.Option(True, "--with-agents/--without-agents", help="Manage AGENTS.md"),
+):
+    """Create or refresh managed Beacon context blocks in CLAUDE.md/AGENTS.md."""
+    root = Path(project_root) if project_root else Path.cwd()
+    runtime = collect_runtime_info()
+    runtime_version = str(runtime.get("toolkit_version") or runtime.get("package_version") or "v1.0.0")
+    result = setup_context_files(
+        project_root=root,
+        runtime_version=runtime_version,
+        dry_run=dry_run,
+        force=force,
+        with_claude=with_claude,
+        with_agents=with_agents,
+    )
+    payload = {
+        "schema_version": "2.0",
+        "action": "setup-context",
+        "status": "PASS",
+        "result": result,
+    }
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo("Beacon Doctor Context Setup")
+        typer.echo("=" * 27)
+        for item in result.get("actions", []):
+            typer.echo(f"- {item.get('file')}: {item.get('action')} ({item.get('merge_mode')})")
+        typer.echo(f"Overall: {payload.get('status')}")
+
+    raise typer.Exit(code=0)
+
+
+@app.command("verify-context")
+def verify_context(
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    strict: bool = typer.Option(False, "--strict", help="Treat warnings as blocked"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Verify managed Beacon context blocks in CLAUDE.md/AGENTS.md."""
+    root = Path(project_root) if project_root else Path.cwd()
+    runtime = collect_runtime_info()
+    runtime_version = str(runtime.get("toolkit_version") or runtime.get("package_version") or "v1.0.0")
+    result = verify_context_files(
+        project_root=root,
+        runtime_version=runtime_version,
+        strict=strict,
+    )
+    status_map = {"pass": "PASS", "warn": "WARN", "fail": "BLOCKED"}
+    payload = {
+        "schema_version": "2.0",
+        "action": "verify-context",
+        "status": status_map.get(str(result.get("status", "warn")).lower(), "WARN"),
+        "result": result,
+    }
+    if strict and payload["status"] == "WARN":
+        payload["status"] = "BLOCKED"
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo("Beacon Doctor Context Verify")
+        typer.echo("=" * 28)
+        for item in result.get("checks", []):
+            item_status = status_map.get(str(item.get("status", "warn")).lower(), "WARN")
+            typer.echo(
+                f"- {item_status}: {item.get('name')} "
+                f"({json.dumps(item.get('details', {}), ensure_ascii=False)})"
+            )
+        typer.echo(f"Overall: {payload.get('status')}")
+
+    raise typer.Exit(code=2 if payload.get("status") == "BLOCKED" else 0)
+
+
 if __name__ == "__main__":
     app()
-
