@@ -4,7 +4,7 @@
 - Feature: beacon-strict-config-governance
 - Final regression command: `not-run`
 - Final regression result: **unknown**
-- Release gate evidence run_id: `run-20260313T151536200878`
+- Release gate evidence run_id: `run-20260313T175323460171`
 
 > This audit is a **snapshot document**. Refresh it after any new full-regression or release-gate run so the counts and evidence links stay current.
 
