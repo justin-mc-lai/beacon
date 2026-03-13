@@ -19,7 +19,7 @@ def _invoke(args: list[str]):
 
 
 def _write_core_gate_artifacts(project_root: Path) -> None:
-    execution = project_root / "docs" / "product" / "v1.0.0" / "execution"
+    execution = project_root / "docs" / "beacon" / "v1.0.0" / "execution"
     execution.mkdir(parents=True, exist_ok=True)
     (execution / "boundaries.md").write_text("# boundaries\n", encoding="utf-8")
     (execution / "terminal.json").write_text('{"status":"Pass","traceability":{}}', encoding="utf-8")
@@ -34,7 +34,7 @@ def _write_core_gate_artifacts(project_root: Path) -> None:
 
     sha = hashlib.sha256((execution / "boundaries.md").read_bytes()).hexdigest()
     (beacon_state / "evidence-manifest.json").write_text(
-        json.dumps({"entries": [{"path": "docs/product/v1.0.0/execution/boundaries.md", "sha256": sha}]}),
+        json.dumps({"entries": [{"path": "docs/beacon/v1.0.0/execution/boundaries.md", "sha256": sha}]}),
         encoding="utf-8",
     )
 
@@ -42,7 +42,7 @@ def _write_core_gate_artifacts(project_root: Path) -> None:
 def _seed_complete_lifecycle(project_root: Path, *, with_evidence: bool = True) -> None:
     memory_dir = project_root / ".beacon" / "memory"
     memory_dir.mkdir(parents=True, exist_ok=True)
-    refs = ["docs/product/v1.0.0/execution/boundaries.md"] if with_evidence else []
+    refs = ["docs/beacon/v1.0.0/execution/boundaries.md"] if with_evidence else []
     items = []
     for stage in ("think", "user-story", "prd", "test-case", "implementation", "verify"):
         items.extend(
@@ -107,7 +107,7 @@ def _append_release_event(project_root: Path, *, with_evidence: bool = True) -> 
     lifecycle_path = project_root / ".beacon" / "memory" / "workflow-lifecycle.json"
     payload = json.loads(lifecycle_path.read_text(encoding="utf-8"))
     items = payload.get("items", [])
-    refs = ["docs/product/v1.0.0/execution/boundaries.md"] if with_evidence else []
+    refs = ["docs/beacon/v1.0.0/execution/boundaries.md"] if with_evidence else []
     items.append(
         {
             "event_id": "release-recorded",

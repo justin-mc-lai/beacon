@@ -379,6 +379,11 @@ def _update_evidence_manifest(
         for item in entries
         if isinstance(item, dict) and str(item.get("path", "")).strip()
     }
+    by_path = {
+        ref_path: item
+        for ref_path, item in by_path.items()
+        if (project_root / ref_path).exists() and (project_root / ref_path).is_file()
+    }
     for ref in evidence_refs:
         ref_path = str(ref or "").strip()
         if not ref_path:
@@ -405,10 +410,7 @@ def _update_evidence_manifest(
 
 
 def _execution_roots(project_root: Path, version: str) -> list[Path]:
-    return [
-        project_root / "docs" / "beacon" / version / "execution",
-        project_root / "docs" / "product" / version / "execution",
-    ]
+    return [project_root / "docs" / "beacon" / version / "execution"]
 
 
 def _git_command(project_root: Path, *args: str) -> str:
@@ -506,7 +508,6 @@ def _build_execution_config_payload(
         "status": "completed" if workflow_status == "completed" else "draft",
         "strict_mode": True,
         "source_of_truth_root": f"docs/beacon/{version}",
-        "compat_mirror_root": f"docs/product/{version}",
         "resolved_project": {
             "workspace_root": str(project_root.parent),
             "project_name": project_root.name,
@@ -516,8 +517,7 @@ def _build_execution_config_payload(
         },
         "docs": {
             "source_root": f"docs/beacon/{version}",
-            "compat_root": f"docs/product/{version}",
-            "write_mode": "source_only_with_compat_mirror",
+            "write_mode": "source_only",
         },
         "implementation": {
             "root": str(project_root),
@@ -593,7 +593,6 @@ def _build_execution_source_payload(
         "status": "completed" if workflow_status == "completed" else "draft",
         "source_of_truth": True,
         "source_of_truth_root": f"docs/beacon/{version}",
-        "compat_mirror_root": f"docs/product/{version}",
         "project_name": project_root.name,
         "project_root": str(project_root),
         "workspace_root": str(project_root.parent),
@@ -769,7 +768,6 @@ def _build_execution_delivery_manifest_payload(
         "run_id": run_id,
         "generated_at": now_iso(),
         "source_of_truth_root": f"docs/beacon/{version}",
-        "compat_mirror_root": f"docs/product/{version}",
         "delivery_status": "completed" if strict_delivery_ready else "draft",
         "strict_delivery_ready": strict_delivery_ready,
         "reason_codes": sorted(set(x for x in reason_codes if x)),
@@ -793,7 +791,7 @@ def _build_execution_delivery_manifest_payload(
         "notes": [
             "多项目/多仓库交付范围必须通过 affected_projects 显式声明。",
             f"Current workflow status snapshot: {workflow_status}.",
-            "compat 镜像存在，但不是人工维护主源。",
+            "execution artifacts are emitted only under docs/beacon.",
         ],
     }
 
@@ -872,12 +870,6 @@ def _write_execution_governance_artifacts(
                 f"docs/beacon/{version}/execution/git-alignment.json",
                 f"docs/beacon/{version}/execution/delivery-manifest.json",
                 f"docs/beacon/{version}/execution/change-impact.json",
-                f"docs/product/{version}/execution/boundaries.md",
-                f"docs/product/{version}/execution/config.json",
-                f"docs/product/{version}/execution/source.json",
-                f"docs/product/{version}/execution/git-alignment.json",
-                f"docs/product/{version}/execution/delivery-manifest.json",
-                f"docs/product/{version}/execution/change-impact.json",
             ]
         )
     )
@@ -893,10 +885,7 @@ def _write_workflow_terminal_artifacts(
     workflow_status: str,
     reason: str,
 ) -> None:
-    exec_roots = [
-        project_root / "docs" / "beacon" / version / "execution",
-        project_root / "docs" / "product" / version / "execution",
-    ]
+    exec_roots = [project_root / "docs" / "beacon" / version / "execution"]
     status_value = "Pass" if workflow_status == "completed" else "Blocked"
     evidence_refs = [
         f".beacon/runs/{run_id}/state.json",
@@ -1077,19 +1066,12 @@ def run_beacon_command(
 
 
 def ensure_output_dirs(project_root: Path, version: str = "v1.0.0"):
-    """Ensure canonical docs roots exist and keep compat mirror directories available."""
+    """Ensure canonical Beacon docs roots exist."""
     dirs = [
-        # Canonical Beacon directories
         project_root / "docs" / "beacon" / version / "user-story",
         project_root / "docs" / "beacon" / version / "prd",
         project_root / "docs" / "beacon" / version / "qa" / "test-cases",
         project_root / "docs" / "beacon" / version / "execution",
-        # PTK compatibility mirror directories
-        project_root / "docs" / "product" / version / "user-story",
-        project_root / "docs" / "product" / version / "prd",
-        project_root / "docs" / "product" / version / "qa" / "test-cases",
-        project_root / "docs" / "product" / version / "execution",
-        # State directory
         project_root / ".beacon" / "state",
     ]
     for d in dirs:
@@ -1111,21 +1093,16 @@ def _stage_output_candidates(project_root: Path, stage: str, feature: str, versi
     if stage == "user-story":
         return [
             project_root / "docs" / "beacon" / version / "user-story" / f"{slug}.md",
-            project_root / "docs" / "product" / version / "user-story" / f"{slug}.md",
         ] + common
     if stage == "prd":
         return [
             project_root / "docs" / "beacon" / version / "prd" / f"{slug}.md",
-            project_root / "docs" / "product" / version / "prd" / f"{slug}.md",
         ] + common
     if stage == "test-case":
         return [
             project_root / "docs" / "beacon" / version / "qa" / "test-cases" / f"{slug}.md",
-            project_root / "docs" / "product" / version / "qa" / "test-cases" / f"{slug}.md",
             project_root / "docs" / "beacon" / version / "qa" / "test-cases" / f"{slug}.ac-test-matrix.json",
-            project_root / "docs" / "product" / version / "qa" / "test-cases" / f"{slug}.ac-test-matrix.json",
             project_root / "docs" / "beacon" / version / "qa" / "test-cases" / f"{slug}.qa9-matrix.json",
-            project_root / "docs" / "product" / version / "qa" / "test-cases" / f"{slug}.qa9-matrix.json",
         ] + common
     if stage == "implementation":
         return [
@@ -1146,7 +1123,6 @@ def _matrix_path_candidates(project_root: Path, feature: str, version: str) -> l
     slug = _slug(feature)
     return [
         project_root / "docs" / "beacon" / version / "qa" / "test-cases" / f"{slug}.ac-test-matrix.json",
-        project_root / "docs" / "product" / version / "qa" / "test-cases" / f"{slug}.ac-test-matrix.json",
     ]
 
 
@@ -1154,7 +1130,6 @@ def _qa9_matrix_path_candidates(project_root: Path, feature: str, version: str) 
     slug = _slug(feature)
     return [
         project_root / "docs" / "beacon" / version / "qa" / "test-cases" / f"{slug}.qa9-matrix.json",
-        project_root / "docs" / "product" / version / "qa" / "test-cases" / f"{slug}.qa9-matrix.json",
     ]
 
 
@@ -3070,25 +3045,12 @@ def status(
     typer.echo("Beacon Workflow Status")
     typer.echo("=" * 40)
 
-    # Check docs/beacon first, fallback to docs/product
     beacon_dir = project_root / "docs" / "beacon" / resolved_version
-    product_dir = project_root / "docs" / "product" / resolved_version
-
-    # Determine which docs dir to use
     beacon_has_docs = beacon_dir.exists() and any(beacon_dir.rglob("*.md"))
-    product_has_docs = product_dir.exists() and any(product_dir.rglob("*.md"))
-    if beacon_has_docs:
+    docs_dir = beacon_dir
+    docs_type = "beacon"
+    if not beacon_has_docs and not beacon_dir.exists():
         docs_dir = beacon_dir
-        docs_type = "beacon"
-    elif product_has_docs:
-        docs_dir = product_dir
-        docs_type = "product"
-    elif beacon_dir.exists():
-        docs_dir = beacon_dir
-        docs_type = "beacon"
-    else:
-        docs_dir = beacon_dir  # Use beacon as default
-        docs_type = "beacon"
 
     typer.echo(f"Using: docs/{docs_type}/{resolved_version}")
 

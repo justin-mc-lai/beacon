@@ -236,10 +236,7 @@ def render_acceptance_audit_markdown(payload: dict[str, Any]) -> str:
 
 def write_acceptance_audit(project_root: Path, payload: dict[str, Any]) -> dict[str, str]:
     version = str(payload.get("version", "") or "")
-    execution_roots = [
-        project_root / "docs" / "beacon" / version / "execution",
-        project_root / "docs" / "product" / version / "execution",
-    ]
+    execution_roots = [project_root / "docs" / "beacon" / version / "execution"]
     written: dict[str, str] = {}
     markdown = render_acceptance_audit_markdown(payload)
     for root in execution_roots:
@@ -282,6 +279,11 @@ def _update_evidence_manifest(
         str(item.get("path")): item
         for item in entries
         if isinstance(item, dict) and str(item.get("path", "")).strip()
+    }
+    by_path = {
+        ref_path: item
+        for ref_path, item in by_path.items()
+        if (project_root / ref_path).exists() and (project_root / ref_path).is_file()
     }
     for ref in evidence_refs:
         ref_path = str(ref or "").strip()

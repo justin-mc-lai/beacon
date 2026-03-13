@@ -2,46 +2,30 @@
 
 from __future__ import annotations
 
-import re
 from pathlib import Path
 
 from beacon import __version__
-from beacon.prefixed import SUPPORTED_SUBCOMMANDS
-
 
 ROOT = Path(__file__).resolve().parents[1]
 PYPROJECT = ROOT / "pyproject.toml"
 
 
-def _read_pyproject() -> tuple[str, set[str]]:
+def _read_pyproject() -> str:
     text = PYPROJECT.read_text(encoding="utf-8")
-
-    version_match = re.search(r'^version\s*=\s*"([^"]+)"', text, flags=re.MULTILINE)
-    assert version_match, "pyproject.toml missing [project].version"
-    version = version_match.group(1)
-
-    script_keys = set(
-        re.findall(
-            r'^(beacon-[a-z0-9\-]+)\s*=\s*"beacon\.prefixed:main"',
-            text,
-            flags=re.MULTILINE,
-        )
-    )
-    return version, script_keys
+    needle = 'version = "'
+    for line in text.splitlines():
+        stripped = line.strip()
+        if stripped.startswith(needle):
+            return stripped[len(needle) : -1]
+    raise AssertionError("pyproject.toml missing [project].version")
 
 
 def test_pyproject_version_should_match_runtime_version():
-    pyproject_version, _ = _read_pyproject()
+    pyproject_version = _read_pyproject()
     assert pyproject_version == __version__
 
 
-def test_prefixed_scripts_should_cover_all_supported_subcommands():
-    _, script_keys = _read_pyproject()
-    expected = {f"beacon-{name}" for name in SUPPORTED_SUBCOMMANDS}
-
-    missing = sorted(expected - script_keys)
-    extra = sorted(script_keys - expected)
-
-    assert not missing, f"missing prefixed script entries: {missing}"
-    assert not extra, f"unexpected prefixed script entries: {extra}"
-
+def test_pyproject_should_not_expose_prefixed_console_scripts():
+    text = PYPROJECT.read_text(encoding="utf-8")
+    assert "beacon.prefixed:main" not in text
+    assert "\nbeacon-think = " not in text

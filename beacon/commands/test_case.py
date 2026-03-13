@@ -31,10 +31,7 @@ def _slug(text: str) -> str:
 
 
 def _candidate_doc_paths(project_root: Path, version: str, category: str, slug: str) -> list[Path]:
-    return [
-        project_root / "docs" / "product" / version / category / f"{slug}.md",
-        project_root / "docs" / "beacon" / version / category / f"{slug}.md",
-    ]
+    return [project_root / "docs" / "beacon" / version / category / f"{slug}.md"]
 
 
 def _read_first_existing(paths: list[Path]) -> tuple[Path | None, str]:
@@ -424,7 +421,7 @@ def create(
     output_path = (
         Path(output)
         if output
-        else project_root / "docs" / "product" / resolved_version / "qa" / "test-cases" / f"{feature_slug}.md"
+        else project_root / "docs" / "beacon" / resolved_version / "qa" / "test-cases" / f"{feature_slug}.md"
     )
     output_path.parent.mkdir(parents=True, exist_ok=True)
     matrix_path = output_path.with_name(f"{feature_slug}.ac-test-matrix.json")
@@ -473,23 +470,6 @@ def create(
 """
 
     output_path.write_text(md_content, encoding="utf-8")
-    if not output:
-        # Keep beacon docs path in sync with product docs path.
-        beacon_output_path = project_root / "docs" / "beacon" / resolved_version / "qa" / "test-cases" / f"{feature_slug}.md"
-        beacon_output_path.parent.mkdir(parents=True, exist_ok=True)
-        beacon_output_path.write_text(md_content, encoding="utf-8")
-
-        beacon_matrix_path = beacon_output_path.with_name(f"{feature_slug}.ac-test-matrix.json")
-        beacon_matrix_path.write_text(
-            json.dumps(matrix_payload, ensure_ascii=False, indent=2),
-            encoding="utf-8",
-        )
-
-        beacon_qa9_path = beacon_output_path.with_name(f"{feature_slug}.qa9-matrix.json")
-        beacon_qa9_path.write_text(
-            json.dumps(qa9_payload, ensure_ascii=False, indent=2),
-            encoding="utf-8",
-        )
 
     typer.echo(f"✓ Test cases created: {output_path}")
     typer.echo(f"✓ AC matrix created: {matrix_path}")
@@ -508,7 +488,7 @@ def list_tests(
     """List all test cases."""
     project_root = Path(project) if project else Path.cwd()
     resolved_version = resolve_target_version(project_root, version)
-    test_dir = project_root / "docs" / "product" / resolved_version / "qa" / "test-cases"
+    test_dir = project_root / "docs" / "beacon" / resolved_version / "qa" / "test-cases"
 
     if not test_dir.exists():
         typer.echo("No test cases found")
@@ -534,7 +514,7 @@ def gate(
     typer.echo("=" * 40)
 
     slug = _slug(feature)
-    test_dir = project_root / "docs" / "product" / resolved_version / "qa" / "test-cases"
+    test_dir = project_root / "docs" / "beacon" / resolved_version / "qa" / "test-cases"
     test_file = test_dir / f"{slug}.md"
     matrix_file = test_dir / f"{slug}.ac-test-matrix.json"
 

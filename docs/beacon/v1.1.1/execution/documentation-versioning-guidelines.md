@@ -7,7 +7,6 @@
 ## 单一事实源
 
 - `docs/beacon/<version>/`：canonical source
-- `docs/product/<version>/`：compat mirror
 - `.beacon/`：runtime state and evidence
 - `README.md`：只描述**当前发布线**
 
@@ -52,7 +51,7 @@ docs/beacon/<version>/
    - `CLAUDE.md`
 3. 更新 `README.md` 当前发布线口径
 4. 生成 acceptance audit
-5. 校验 canonical/mirror 一致性
+5. 校验 `docs/beacon` 与运行时证据一致性
 
 ## 推荐命令
 
@@ -65,7 +64,7 @@ beacon report latest acceptance-audit --project-root . --version <version> --fea
 
 ## 禁止项
 
-- 不要把 `docs/product` 写成主文档源
+- 不要重新引入 `docs/product` 作为交付树
 - 不要把历史版本写成 README 当前能力说明
 - 不要手工维护 acceptance audit 统计数字
 - 不要在 README 中混用多代“当前版本”描述

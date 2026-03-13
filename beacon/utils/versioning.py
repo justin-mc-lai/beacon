@@ -36,10 +36,7 @@ def _iter_version_names(root: Path) -> Iterable[str]:
 
 def discover_versions(project_root: Path) -> list[str]:
     candidates: set[str] = set()
-    for base in (
-        project_root / "docs" / "beacon",
-        project_root / "docs" / "product",
-    ):
+    for base in (project_root / "docs" / "beacon",):
         for name in _iter_version_names(base):
             normalized = normalize_version(name)
             if normalized:
@@ -73,4 +70,3 @@ def resolve_target_version(
     if normalized:
         return normalized
     return largest_version(project_root, fallback=fallback)
-

@@ -5,7 +5,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-from beacon.prefixed import SUPPORTED_SUBCOMMANDS
+from beacon.command_catalog import SUPPORTED_SUBCOMMANDS
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -20,16 +20,16 @@ def _auto_block(text: str) -> str:
     return text[start:end]
 
 
-def test_skill_should_list_all_prefixed_commands_from_single_source():
+def test_skill_should_list_all_canonical_commands_from_single_source():
     text = SKILL_PATH.read_text(encoding="utf-8")
     block = _auto_block(text)
 
-    keyword_pairs = re.findall(r"\| `beacon-([^`]+)` \| `([^`]+)` \|", block)
+    keyword_pairs = re.findall(r"\| `beacon ([^`]+)` \| `([^`]+)` \|", block)
     assert keyword_pairs
     assert [left for left, _ in keyword_pairs] == list(SUPPORTED_SUBCOMMANDS)
     assert [right for _, right in keyword_pairs] == list(SUPPORTED_SUBCOMMANDS)
 
-    subcommand_pairs = re.findall(r"\| `([^`]+)` \| `beacon-([^`]+)` \|", block)
+    subcommand_pairs = re.findall(r"\| `([^`]+)` \| `beacon ([^`]+)` \|", block)
     assert subcommand_pairs
     assert [left for left, _ in subcommand_pairs] == list(SUPPORTED_SUBCOMMANDS)
     assert [right for _, right in subcommand_pairs] == list(SUPPORTED_SUBCOMMANDS)

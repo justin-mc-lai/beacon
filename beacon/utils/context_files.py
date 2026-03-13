@@ -68,17 +68,11 @@ def build_claude_guidance_body(runtime_version: str) -> str:
         "## Requirement materials and docs paths\n"
         f"- Runtime target version: `{runtime_version}`\n"
         "- `docs/beacon/<version>/` is the canonical source of truth.\n"
-        "- `docs/product/<version>/` is a compatibility mirror, not the primary authoring surface.\n"
         "- `docs/beacon/<version>/SUMMARY.md`\n"
         "- `docs/beacon/<version>/prd/`\n"
         "- `docs/beacon/<version>/user-story/`\n"
         "- `docs/beacon/<version>/qa/test-cases/`\n"
         "- `docs/beacon/<version>/execution/`\n"
-        "- `docs/product/<version>/SUMMARY.md` (compat mirror)\n"
-        "- `docs/product/<version>/prd/` (compat mirror)\n"
-        "- `docs/product/<version>/user-story/` (compat mirror)\n"
-        "- `docs/product/<version>/qa/test-cases/` (compat mirror)\n"
-        "- `docs/product/<version>/execution/` (compat mirror)\n"
     )
 
 
@@ -94,8 +88,6 @@ def build_agents_guidance_body(runtime_version: str) -> str:
         "## Beacon requirement-material usage\n"
         f"- Runtime target version: `{runtime_version}`\n"
         "- Use `docs/beacon/<version>/` as the canonical delivery tree.\n"
-        "- Treat `docs/product/<version>/` as a compatibility mirror.\n"
-        "- Keep canonical + compatibility artifacts aligned when mirror output is generated.\n"
         "- Prioritize `prd`, `user-story`, `qa/test-cases`, and `execution` artifacts.\n"
         "- If context blocks are missing/corrupted, run:\n"
         "  - `beacon doctor setup-context --project-root .`\n"

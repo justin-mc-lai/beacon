@@ -119,12 +119,10 @@ def test_report_acceptance_audit_should_write_generated_artifacts(tmp_path: Path
 
     beacon_md = tmp_path / "docs" / "beacon" / "v1.1.1" / "execution" / "acceptance-regression-audit.md"
     beacon_json = tmp_path / "docs" / "beacon" / "v1.1.1" / "execution" / "acceptance-regression-audit.json"
-    product_md = tmp_path / "docs" / "product" / "v1.1.1" / "execution" / "acceptance-regression-audit.md"
     manifest = json.loads((tmp_path / ".beacon" / "evidence-manifest.json").read_text(encoding="utf-8"))
     assert beacon_md.exists()
     assert beacon_json.exists()
-    assert product_md.exists()
     assert "5 passed in 0.12s" in beacon_md.read_text(encoding="utf-8")
     manifest_paths = {str(item.get("path")) for item in manifest.get("entries", []) if isinstance(item, dict)}
     assert "docs/beacon/v1.1.1/execution/acceptance-regression-audit.md" in manifest_paths
-    assert "docs/product/v1.1.1/execution/acceptance-regression-audit.md" in manifest_paths
+    assert "docs/product/v1.1.1/execution/acceptance-regression-audit.md" not in manifest_paths

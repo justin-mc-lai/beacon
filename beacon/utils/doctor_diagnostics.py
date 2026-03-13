@@ -197,14 +197,11 @@ def detect_iteration_versions(project_root: Path) -> dict[str, Any]:
 
 def _docs_dir_for_version(project_root: Path, version: str) -> Path:
     beacon_dir = project_root / "docs" / "beacon" / version
-    product_dir = project_root / "docs" / "product" / version
     if beacon_dir.exists() and any(beacon_dir.rglob("*.md")):
         return beacon_dir
-    if product_dir.exists() and any(product_dir.rglob("*.md")):
-        return product_dir
     if beacon_dir.exists():
         return beacon_dir
-    return product_dir
+    return beacon_dir
 
 
 def compute_artifact_stage_view(project_root: Path, version: str) -> dict[str, str]:
@@ -543,7 +540,7 @@ def collect_compatibility_checks(
             "evidence": legacy_refs[:10],
             "impact": "Legacy trigger syntax may not work in modern runtime environments.",
             "repair": [
-                "Replace `/beacon:workflow` style commands with `beacon-workflow` or `beacon workflow`.",
+                "Replace `/beacon:workflow` style commands with `beacon workflow`.",
                 "Add a migration note in docs for supported trigger syntax.",
             ],
         },

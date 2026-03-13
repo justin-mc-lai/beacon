@@ -72,8 +72,8 @@ def test_test_case_create_generates_ac_matrix(tmp_path: Path):
     feature = "Login Feature"
     slug = "login-feature"
 
-    us_dir = tmp_path / "docs" / "product" / "v1.0.0" / "user-story"
-    prd_dir = tmp_path / "docs" / "product" / "v1.0.0" / "prd"
+    us_dir = tmp_path / "docs" / "beacon" / "v1.0.0" / "user-story"
+    prd_dir = tmp_path / "docs" / "beacon" / "v1.0.0" / "prd"
     us_dir.mkdir(parents=True, exist_ok=True)
     prd_dir.mkdir(parents=True, exist_ok=True)
     (us_dir / f"{slug}.md").write_text(
@@ -88,7 +88,7 @@ def test_test_case_create_generates_ac_matrix(tmp_path: Path):
     result = runner.invoke(app, ["test-case", "create", feature, "--project", str(tmp_path), "--version", "v1.0.0"])
     assert result.exit_code == 0
 
-    matrix_path = tmp_path / "docs" / "product" / "v1.0.0" / "qa" / "test-cases" / f"{slug}.ac-test-matrix.json"
+    matrix_path = tmp_path / "docs" / "beacon" / "v1.0.0" / "qa" / "test-cases" / f"{slug}.ac-test-matrix.json"
     payload = json.loads(matrix_path.read_text(encoding="utf-8"))
     assert isinstance(payload.get("entries"), list)
     assert len(payload["entries"]) >= 3

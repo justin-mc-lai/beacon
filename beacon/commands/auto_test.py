@@ -125,6 +125,11 @@ def _update_evidence_manifest(
             and str(item.get("path", "")).strip() != manifest_rel
         )
     }
+    by_path = {
+        ref_path: item
+        for ref_path, item in by_path.items()
+        if (project_root / ref_path).exists() and (project_root / ref_path).is_file()
+    }
     for ref in evidence_refs:
         ref_path = str(ref or "").strip()
         if not ref_path:

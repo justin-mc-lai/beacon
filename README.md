@@ -17,13 +17,11 @@ Beacon 当前单一发布口径是 **v1.1.1**。
 - **CLI 入口**：`beacon <subcommand>`
 - **当前包版本**：`1.1.1`
 - **文档主源**：`docs/beacon/<version>/`
-- **兼容镜像**：`docs/product/<version>/`
 - **状态目录**：`.beacon/`
 
 当前主口径：
 
 - `docs/beacon/` 是唯一维护的信息源（source of truth）
-- `docs/product/` 仅作历史 PTK 兼容视图；在实现层继续作为 compat mirror 保留
 - 新生成的 AGENTS / CLAUDE managed block 也遵循以上口径
 
 如果你只记一条：
@@ -183,7 +181,6 @@ docs/beacon/<version>/execution/
 
 - `docs/beacon/v1.1.1/execution/boundaries.md`
 - `docs/beacon/v1.1.1/execution/acceptance-regression-audit.md`
-- `docs/product/v1.1.1/execution/acceptance-regression-audit.md`（compat mirror）
 
 ---
 
@@ -216,44 +213,10 @@ beacon report latest acceptance-audit \
 这个命令会生成：
 
 - `docs/beacon/v1.1.1/execution/acceptance-regression-audit.{md,json}`
-- `docs/product/v1.1.1/execution/acceptance-regression-audit.{md,json}`
 
 ---
 
-## 6. 兼容说明（附录）
-
-以下能力仍保留，但都属于**兼容层**，不是当前主口径：
-
-### 6.1 docs/product
-
-- `docs/product/<version>/` 仍会存在
-- 它的职责是 **compat mirror**
-- 不应该再被当作主编辑面或主文档来源
-
-### 6.2 历史 PTK
-
-- `.ptk/` 与 `.beacon/` 仍有兼容读取能力
-- 当前主状态目录以 `.beacon/` 为准
-
-### 6.3 prefixed commands
-
-可选兼容别名仍存在：
-
-```bash
-beacon-think
-beacon-workflow
-beacon-test-case
-```
-
-但对外推荐仍是：
-
-```bash
-beacon <subcommand>
-```
-
----
-
-## 7. 后续迭代版本文档编写约定
+## 6. 后续迭代版本文档编写约定
 
 后续版本（如 `v1.1.2`、`v1.2.0`）继续沿用下面这套方案。
 
@@ -295,7 +258,6 @@ docs/beacon/<version>/
    - `CLAUDE.md`
 2. 更新当前版本 README 口径
 3. 生成/刷新当前版本 acceptance audit
-4. 验证 `docs/beacon` canonical 与 `docs/product` compat mirror 一致性
 
 ### 后续版本推荐沿用的命令
 
@@ -315,7 +277,7 @@ beacon report latest acceptance-audit \
 
 ---
 
-## 8. 相关链接
+## 7. 相关链接
 
 - **当前边界定义（v1.1.1）**: [boundaries.md](./docs/beacon/v1.1.1/execution/boundaries.md)
 - **当前验收回归审计（v1.1.1）**: [acceptance-regression-audit.md](./docs/beacon/v1.1.1/execution/acceptance-regression-audit.md)

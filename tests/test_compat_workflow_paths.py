@@ -22,26 +22,26 @@ def _invoke(args: list[str]):
     return runner.invoke(app, args)
 
 
-def test_ensure_output_dirs_creates_dual_docs_roots(tmp_path: Path):
+def test_ensure_output_dirs_creates_canonical_docs_root_only(tmp_path: Path):
     ensure_output_dirs(tmp_path, "v1.0.0")
     assert (tmp_path / "docs" / "beacon" / "v1.0.0" / "user-story").exists()
-    assert (tmp_path / "docs" / "product" / "v1.0.0" / "user-story").exists()
+    assert not (tmp_path / "docs" / "product").exists()
     assert (tmp_path / ".beacon" / "state").exists()
 
 
-def test_stage_output_candidates_should_prefer_beacon_docs_before_compat_mirror(tmp_path: Path):
+def test_stage_output_candidates_should_only_use_beacon_docs(tmp_path: Path):
     candidates = _stage_output_candidates(tmp_path, "test-case", "登录功能", "v1.1.1")
     assert candidates[0] == tmp_path / "docs" / "beacon" / "v1.1.1" / "qa" / "test-cases" / "登录功能.md"
-    assert candidates[1] == tmp_path / "docs" / "product" / "v1.1.1" / "qa" / "test-cases" / "登录功能.md"
-    assert candidates[2] == tmp_path / "docs" / "beacon" / "v1.1.1" / "qa" / "test-cases" / "登录功能.ac-test-matrix.json"
+    assert all("docs/product" not in str(path) for path in candidates)
+    assert candidates[1] == tmp_path / "docs" / "beacon" / "v1.1.1" / "qa" / "test-cases" / "登录功能.ac-test-matrix.json"
 
 
-def test_matrix_candidate_lists_should_prioritize_beacon_source_of_truth(tmp_path: Path):
+def test_matrix_candidate_lists_should_only_return_beacon_paths(tmp_path: Path):
     ac_candidates = _matrix_path_candidates(tmp_path, "登录功能", "v1.1.1")
     qa9_candidates = _qa9_matrix_path_candidates(tmp_path, "登录功能", "v1.1.1")
 
-    assert ac_candidates[0] == tmp_path / "docs" / "beacon" / "v1.1.1" / "qa" / "test-cases" / "登录功能.ac-test-matrix.json"
-    assert qa9_candidates[0] == tmp_path / "docs" / "beacon" / "v1.1.1" / "qa" / "test-cases" / "登录功能.qa9-matrix.json"
+    assert ac_candidates == [tmp_path / "docs" / "beacon" / "v1.1.1" / "qa" / "test-cases" / "登录功能.ac-test-matrix.json"]
+    assert qa9_candidates == [tmp_path / "docs" / "beacon" / "v1.1.1" / "qa" / "test-cases" / "登录功能.qa9-matrix.json"]
 
 
 def test_workflow_auto_should_materialize_stage_outputs(tmp_path: Path):
@@ -67,8 +67,8 @@ def test_workflow_auto_should_materialize_stage_outputs(tmp_path: Path):
     assert artifacts, "workflow auto should create artifacts, but none were generated"
 
 
-def test_workflow_status_should_detect_product_docs_when_beacon_empty(tmp_path: Path):
-    us_dir = tmp_path / "docs" / "product" / "v1.0.0" / "user-story"
+def test_workflow_status_should_detect_beacon_docs(tmp_path: Path):
+    us_dir = tmp_path / "docs" / "beacon" / "v1.0.0" / "user-story"
     us_dir.mkdir(parents=True, exist_ok=True)
     (us_dir / "feature-a.md").write_text("# ok\n", encoding="utf-8")
 
@@ -78,7 +78,7 @@ def test_workflow_status_should_detect_product_docs_when_beacon_empty(tmp_path: 
 
 
 def test_workflow_gate_should_pass_when_required_artifacts_exist(tmp_path: Path):
-    root = tmp_path / "docs" / "product" / "v1.0.0"
+    root = tmp_path / "docs" / "beacon" / "v1.0.0"
     (root / "user-story").mkdir(parents=True, exist_ok=True)
     (root / "prd").mkdir(parents=True, exist_ok=True)
     (root / "qa" / "test-cases").mkdir(parents=True, exist_ok=True)

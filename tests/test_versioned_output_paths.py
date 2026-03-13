@@ -34,16 +34,9 @@ def test_user_story_prd_and_test_case_should_write_to_versioned_docs_roots(tmp_p
     assert tc.exit_code == 0
 
     slug = "versioned-feature"
-    assert (tmp_path / "docs" / "product" / "v3.2.1" / "user-story" / f"{slug}.md").exists()
     assert (tmp_path / "docs" / "beacon" / "v3.2.1" / "user-story" / f"{slug}.md").exists()
-    assert (tmp_path / "docs" / "product" / "v3.2.1" / "prd" / f"{slug}.md").exists()
     assert (tmp_path / "docs" / "beacon" / "v3.2.1" / "prd" / f"{slug}.md").exists()
-    assert (tmp_path / "docs" / "product" / "v3.2.1" / "qa" / "test-cases" / f"{slug}.md").exists()
     assert (tmp_path / "docs" / "beacon" / "v3.2.1" / "qa" / "test-cases" / f"{slug}.md").exists()
-    assert (
-        tmp_path / "docs" / "product" / "v3.2.1" / "qa" / "test-cases" / f"{slug}.ac-test-matrix.json"
-    ).exists()
     assert (
         tmp_path / "docs" / "beacon" / "v3.2.1" / "qa" / "test-cases" / f"{slug}.ac-test-matrix.json"
     ).exists()
-

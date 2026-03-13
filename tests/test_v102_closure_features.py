@@ -52,7 +52,7 @@ def test_think_start_should_emit_qa_strategy(tmp_path: Path):
 def test_test_case_create_should_map_each_ac_and_cover_required_qa_types(tmp_path: Path):
     feature = "QA9 closure"
     slug = "qa9-closure"
-    us_dir = tmp_path / "docs" / "product" / "v1.0.2" / "user-story"
+    us_dir = tmp_path / "docs" / "beacon" / "v1.0.2" / "user-story"
     us_dir.mkdir(parents=True, exist_ok=True)
     (us_dir / f"{slug}.md").write_text(
         "\n".join(
@@ -83,7 +83,7 @@ def test_test_case_create_should_map_each_ac_and_cover_required_qa_types(tmp_pat
         ],
     )
     assert result.exit_code == 0, result.stdout
-    qa9_path = tmp_path / "docs" / "product" / "v1.0.2" / "qa" / "test-cases" / f"{slug}.qa9-matrix.json"
+    qa9_path = tmp_path / "docs" / "beacon" / "v1.0.2" / "qa" / "test-cases" / f"{slug}.qa9-matrix.json"
     payload = json.loads(qa9_path.read_text(encoding="utf-8"))
     entries = payload["entries"]
     qa_types = payload["qa_types"]
@@ -95,7 +95,7 @@ def test_test_case_create_should_map_each_ac_and_cover_required_qa_types(tmp_pat
 
 
 def test_auto_test_should_backfill_qa9_summary_and_sync_progress(tmp_path: Path):
-    matrix_path = tmp_path / "docs" / "product" / "v1.0.2" / "qa" / "test-cases" / "qa9-feature.qa9-matrix.json"
+    matrix_path = tmp_path / "docs" / "beacon" / "v1.0.2" / "qa" / "test-cases" / "qa9-feature.qa9-matrix.json"
     matrix_path.parent.mkdir(parents=True, exist_ok=True)
     matrix_payload = {
         "schema_version": "1.0.2",

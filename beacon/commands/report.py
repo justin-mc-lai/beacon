@@ -291,10 +291,7 @@ def _report_impl(
         or str(payload.get("filters", {}).get("version", "")).strip()
         or resolve_target_version(root, None)
     )
-    exec_dirs = [
-        root / "docs" / "beacon" / report_version / "execution",
-        root / "docs" / "product" / report_version / "execution",
-    ]
+    exec_dirs = [root / "docs" / "beacon" / report_version / "execution"]
     if write_summary:
         for exec_dir in exec_dirs:
             exec_dir.mkdir(parents=True, exist_ok=True)
@@ -323,7 +320,7 @@ def report_callback(
     write_summary: bool = typer.Option(
         False,
         "--write-summary",
-        help="Write summary.{json,md} into docs/*/<version>/execution (disabled by default).",
+        help="Write summary.{json,md} into docs/beacon/<version>/execution (disabled by default).",
     ),
 ):
     """Generate report directly (PTK flat syntax compatibility)."""
@@ -350,7 +347,7 @@ def generate(
     write_summary: bool = typer.Option(
         False,
         "--write-summary",
-        help="Write summary.{json,md} into docs/*/<version>/execution (disabled by default).",
+        help="Write summary.{json,md} into docs/beacon/<version>/execution (disabled by default).",
     ),
 ):
     """Generate run report (nested compatibility)."""
@@ -374,7 +371,7 @@ def acceptance_audit(
     run_regression: bool = typer.Option(False, "--run-regression", help="Run regression command before building audit."),
     regression_command: str = typer.Option("python3 -m pytest -q", "--regression-command", help="Command used when --run-regression is enabled."),
     json_output: bool = typer.Option(False, "--json", help="Output JSON instead of markdown."),
-    write_output: bool = typer.Option(True, "--write/--no-write", help="Write acceptance audit into docs/*/<version>/execution."),
+    write_output: bool = typer.Option(True, "--write/--no-write", help="Write acceptance audit into docs/beacon/<version>/execution."),
 ):
     """Generate deterministic acceptance regression audit artifacts."""
     root = Path(project_root) if project_root else Path.cwd()

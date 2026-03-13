@@ -320,18 +320,8 @@ def get_raw_command_log_path(project_root: Path) -> Path:
 
 
 def _execution_file_candidates(project_root: Path, version: str, filename: str) -> list[Path]:
-    """Return ordered candidate paths for execution artifacts.
-
-    Order preserves backward compatibility:
-    1) legacy docs/<version>/execution
-    2) docs/product/<version>/execution
-    3) docs/beacon/<version>/execution
-    """
-    return [
-        project_root / "docs" / version / "execution" / filename,
-        project_root / "docs" / "product" / version / "execution" / filename,
-        project_root / "docs" / "beacon" / version / "execution" / filename,
-    ]
+    """Return canonical execution artifact path under docs/beacon."""
+    return [project_root / "docs" / "beacon" / version / "execution" / filename]
 
 
 def _resolved_gate_version(project_root: Path, requested_version: Optional[str] = None) -> str:
@@ -985,7 +975,13 @@ def check_release_memory_profile(project_root: Path, mode: GateMode, stage: str,
         evidence_ref = item.get("evidence_ref")
         if isinstance(evidence_ref, list):
             refs.extend([str(x) for x in evidence_ref if str(x).strip()])
-    refs = sorted(set(refs))
+    normalized_refs: list[str] = []
+    for ref in refs:
+        if ref.startswith("docs/product/"):
+            normalized_refs.append(ref.replace("docs/product/", "docs/beacon/", 1))
+        else:
+            normalized_refs.append(ref)
+    refs = sorted(set(normalized_refs))
 
     if not refs:
         issues.append(

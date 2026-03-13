@@ -9,7 +9,7 @@ from typing import Any, Optional
 import typer
 from typer.testing import CliRunner
 
-from beacon.prefixed import SUPPORTED_SUBCOMMANDS
+from beacon.command_catalog import SUPPORTED_SUBCOMMANDS
 from beacon.utils.debug_feedback import (
     append_debug_event_memory,
     append_debug_feedback_event,

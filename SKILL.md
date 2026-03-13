@@ -15,13 +15,12 @@ Beacon 是 AI 产品工作流工具包，提供需求澄清、用户故事、PRD
 
 **命令口径（统一）**：
 - `beacon <subcommand>`（推荐）
-- `beacon-<subcommand>`（可选兼容别名，取决于安装方式）
 - 脚本方式（兼容）：`python3 -m beacon.main <subcommand> ...`
 - 历史模块入口（兼容）：`python3 -m beacon.think ...`（保留兼容，但不作为推荐入口）
 
-> 注意：对外建议与“下一步”提示统一使用 `beacon` 前缀，不再推荐历史 PTK 命令（`ptk`）；目录仍保持兼容（`.ptk`、`docs/product`）。
+> 注意：对外建议统一使用 `beacon <subcommand>`；历史 PTK 仅保留背景说明。
 
-命令清单由 `beacon/prefixed.py::SUPPORTED_SUBCOMMANDS` 自动生成，使用：
+命令清单由 `beacon/command_catalog.py::SUPPORTED_SUBCOMMANDS` 自动生成，使用：
 
 ```bash
 python3 scripts/sync_skill_commands.py
@@ -38,89 +37,89 @@ python3 scripts/sync_skill_commands.py --check
 
 | 关键词 | 对应子命令 |
 |--------|------------|
-| `beacon-ask` | `ask` |
-| `beacon-analyze` | `analyze` |
-| `beacon-api-design` | `api-design` |
-| `beacon-auto-test` | `auto-test` |
-| `beacon-brainstorm` | `brainstorm` |
-| `beacon-data-dictionary` | `data-dictionary` |
-| `beacon-debug` | `debug` |
-| `beacon-design` | `design` |
-| `beacon-doctor` | `doctor` |
-| `beacon-evolution-summary` | `evolution-summary` |
-| `beacon-feedback` | `feedback` |
-| `beacon-gate` | `gate` |
-| `beacon-init` | `init` |
-| `beacon-jtbd` | `jtbd` |
-| `beacon-kano` | `kano` |
-| `beacon-moscow` | `moscow` |
-| `beacon-persona` | `persona` |
-| `beacon-prompt` | `prompt` |
-| `beacon-prd` | `prd` |
-| `beacon-ralph-bridge` | `ralph-bridge` |
-| `beacon-recall` | `recall` |
-| `beacon-release` | `release` |
-| `beacon-remember` | `remember` |
-| `beacon-report` | `report` |
-| `beacon-resume` | `resume` |
-| `beacon-roadmap` | `roadmap` |
-| `beacon-run` | `run` |
-| `beacon-save` | `save` |
-| `beacon-status` | `status` |
-| `beacon-team` | `team` |
-| `beacon-test-case` | `test-case` |
-| `beacon-test-progress` | `test-progress` |
-| `beacon-think` | `think` |
-| `beacon-ui-spec` | `ui-spec` |
-| `beacon-user-story` | `user-story` |
-| `beacon-version` | `version` |
-| `beacon-wireframe` | `wireframe` |
-| `beacon-work` | `work` |
-| `beacon-workflow` | `workflow` |
+| `beacon ask` | `ask` |
+| `beacon analyze` | `analyze` |
+| `beacon api-design` | `api-design` |
+| `beacon auto-test` | `auto-test` |
+| `beacon brainstorm` | `brainstorm` |
+| `beacon data-dictionary` | `data-dictionary` |
+| `beacon debug` | `debug` |
+| `beacon design` | `design` |
+| `beacon doctor` | `doctor` |
+| `beacon evolution-summary` | `evolution-summary` |
+| `beacon feedback` | `feedback` |
+| `beacon gate` | `gate` |
+| `beacon init` | `init` |
+| `beacon jtbd` | `jtbd` |
+| `beacon kano` | `kano` |
+| `beacon moscow` | `moscow` |
+| `beacon persona` | `persona` |
+| `beacon prompt` | `prompt` |
+| `beacon prd` | `prd` |
+| `beacon ralph-bridge` | `ralph-bridge` |
+| `beacon recall` | `recall` |
+| `beacon release` | `release` |
+| `beacon remember` | `remember` |
+| `beacon report` | `report` |
+| `beacon resume` | `resume` |
+| `beacon roadmap` | `roadmap` |
+| `beacon run` | `run` |
+| `beacon save` | `save` |
+| `beacon status` | `status` |
+| `beacon team` | `team` |
+| `beacon test-case` | `test-case` |
+| `beacon test-progress` | `test-progress` |
+| `beacon think` | `think` |
+| `beacon ui-spec` | `ui-spec` |
+| `beacon user-story` | `user-story` |
+| `beacon version` | `version` |
+| `beacon wireframe` | `wireframe` |
+| `beacon work` | `work` |
+| `beacon workflow` | `workflow` |
 
 ### 完整子命令清单（自动同步）
 
 | 子命令 | 推荐触发 |
 |-------|----------|
-| `ask` | `beacon-ask` |
-| `analyze` | `beacon-analyze` |
-| `api-design` | `beacon-api-design` |
-| `auto-test` | `beacon-auto-test` |
-| `brainstorm` | `beacon-brainstorm` |
-| `data-dictionary` | `beacon-data-dictionary` |
-| `debug` | `beacon-debug` |
-| `design` | `beacon-design` |
-| `doctor` | `beacon-doctor` |
-| `evolution-summary` | `beacon-evolution-summary` |
-| `feedback` | `beacon-feedback` |
-| `gate` | `beacon-gate` |
-| `init` | `beacon-init` |
-| `jtbd` | `beacon-jtbd` |
-| `kano` | `beacon-kano` |
-| `moscow` | `beacon-moscow` |
-| `persona` | `beacon-persona` |
-| `prompt` | `beacon-prompt` |
-| `prd` | `beacon-prd` |
-| `ralph-bridge` | `beacon-ralph-bridge` |
-| `recall` | `beacon-recall` |
-| `release` | `beacon-release` |
-| `remember` | `beacon-remember` |
-| `report` | `beacon-report` |
-| `resume` | `beacon-resume` |
-| `roadmap` | `beacon-roadmap` |
-| `run` | `beacon-run` |
-| `save` | `beacon-save` |
-| `status` | `beacon-status` |
-| `team` | `beacon-team` |
-| `test-case` | `beacon-test-case` |
-| `test-progress` | `beacon-test-progress` |
-| `think` | `beacon-think` |
-| `ui-spec` | `beacon-ui-spec` |
-| `user-story` | `beacon-user-story` |
-| `version` | `beacon-version` |
-| `wireframe` | `beacon-wireframe` |
-| `work` | `beacon-work` |
-| `workflow` | `beacon-workflow` |
+| `ask` | `beacon ask` |
+| `analyze` | `beacon analyze` |
+| `api-design` | `beacon api-design` |
+| `auto-test` | `beacon auto-test` |
+| `brainstorm` | `beacon brainstorm` |
+| `data-dictionary` | `beacon data-dictionary` |
+| `debug` | `beacon debug` |
+| `design` | `beacon design` |
+| `doctor` | `beacon doctor` |
+| `evolution-summary` | `beacon evolution-summary` |
+| `feedback` | `beacon feedback` |
+| `gate` | `beacon gate` |
+| `init` | `beacon init` |
+| `jtbd` | `beacon jtbd` |
+| `kano` | `beacon kano` |
+| `moscow` | `beacon moscow` |
+| `persona` | `beacon persona` |
+| `prompt` | `beacon prompt` |
+| `prd` | `beacon prd` |
+| `ralph-bridge` | `beacon ralph-bridge` |
+| `recall` | `beacon recall` |
+| `release` | `beacon release` |
+| `remember` | `beacon remember` |
+| `report` | `beacon report` |
+| `resume` | `beacon resume` |
+| `roadmap` | `beacon roadmap` |
+| `run` | `beacon run` |
+| `save` | `beacon save` |
+| `status` | `beacon status` |
+| `team` | `beacon team` |
+| `test-case` | `beacon test-case` |
+| `test-progress` | `beacon test-progress` |
+| `think` | `beacon think` |
+| `ui-spec` | `beacon ui-spec` |
+| `user-story` | `beacon user-story` |
+| `version` | `beacon version` |
+| `wireframe` | `beacon wireframe` |
+| `work` | `beacon work` |
+| `workflow` | `beacon workflow` |
 <!-- AUTO-COMMANDS:END -->
 
 ### CLI 调用示例（think）
@@ -154,8 +153,6 @@ docs/beacon/{version}/
 ├── execution/boundaries.md
 └── execution/terminal.json
 
-# compat mirror（自动同步，非人工维护）
-docs/product/{version}/...
 ```
 
 ## 参考文档

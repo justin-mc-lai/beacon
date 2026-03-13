@@ -94,14 +94,9 @@ def create(
         output_path.parent.mkdir(parents=True, exist_ok=True)
         output_path.write_text(md_content)
     else:
-        output_paths = [
-            project_root / "docs" / "product" / resolved_version / "user-story" / f"{slug}.md",
-            project_root / "docs" / "beacon" / resolved_version / "user-story" / f"{slug}.md",
-        ]
-        for output_path in output_paths:
-            output_path.parent.mkdir(parents=True, exist_ok=True)
-            output_path.write_text(md_content)
-        output_path = output_paths[0]
+        output_path = project_root / "docs" / "beacon" / resolved_version / "user-story" / f"{slug}.md"
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(md_content)
 
     typer.echo(f"✓ User story created: {output_path}")
     return story
@@ -115,10 +110,7 @@ def list_stories(
     """List all user stories"""
     project_root = Path(project) if project else Path.cwd()
     resolved_version = resolve_target_version(project_root, version)
-    roots = [
-        project_root / "docs" / "product" / resolved_version / "user-story",
-        project_root / "docs" / "beacon" / resolved_version / "user-story",
-    ]
+    roots = [project_root / "docs" / "beacon" / resolved_version / "user-story"]
     stories = []
     for stories_dir in roots:
         if stories_dir.exists():

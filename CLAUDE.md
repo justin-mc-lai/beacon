@@ -20,15 +20,9 @@ This file is Beacon-managed runtime guidance.
 ## Requirement materials and docs paths
 - Runtime target version: `v1.1.1`
 - `docs/beacon/<version>/` is the canonical source of truth.
-- `docs/product/<version>/` is a compatibility mirror, not the primary authoring surface.
 - `docs/beacon/<version>/SUMMARY.md`
 - `docs/beacon/<version>/prd/`
 - `docs/beacon/<version>/user-story/`
 - `docs/beacon/<version>/qa/test-cases/`
 - `docs/beacon/<version>/execution/`
-- `docs/product/<version>/SUMMARY.md` (compat mirror)
-- `docs/product/<version>/prd/` (compat mirror)
-- `docs/product/<version>/user-story/` (compat mirror)
-- `docs/product/<version>/qa/test-cases/` (compat mirror)
-- `docs/product/<version>/execution/` (compat mirror)
 <!-- BEACON:END -->

@@ -8,7 +8,7 @@ from pathlib import Path
 from typer.testing import CliRunner
 
 from beacon.main import app
-from beacon.prefixed import SUPPORTED_SUBCOMMANDS
+from beacon.command_catalog import SUPPORTED_SUBCOMMANDS
 from beacon.utils.intent_router import SUPPORTED_INTENTS
 
 runner = CliRunner()

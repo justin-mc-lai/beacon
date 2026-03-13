@@ -51,7 +51,7 @@ class TestGate:
 
     def test_check_boundaries_exists(self, tmp_path):
         """Test boundaries check when file exists"""
-        docs_dir = tmp_path / "docs" / "v1.0.0" / "execution"
+        docs_dir = tmp_path / "docs" / "beacon" / "v1.0.0" / "execution"
         docs_dir.mkdir(parents=True)
         (docs_dir / "boundaries.md").write_text("# Boundaries")
 
@@ -66,7 +66,7 @@ class TestGate:
 
     def test_check_terminal_invalid_status(self, tmp_path):
         """Test terminal check with invalid status"""
-        docs_dir = tmp_path / "docs" / "v1.0.0" / "execution"
+        docs_dir = tmp_path / "docs" / "beacon" / "v1.0.0" / "execution"
         docs_dir.mkdir(parents=True)
         terminal = {"status": "InvalidStatus", "traceability": {}}
         (docs_dir / "terminal.json").write_text(json.dumps(terminal))
@@ -77,7 +77,7 @@ class TestGate:
 
     def test_check_terminal_blocking_question(self, tmp_path):
         """Test terminal check with blocking open question"""
-        docs_dir = tmp_path / "docs" / "v1.0.0" / "execution"
+        docs_dir = tmp_path / "docs" / "beacon" / "v1.0.0" / "execution"
         docs_dir.mkdir(parents=True)
         terminal = {
             "status": "Pass",

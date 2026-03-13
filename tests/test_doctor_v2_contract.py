@@ -43,9 +43,9 @@ def test_doctor_json_should_report_runtime_real_versions(tmp_path: Path):
 
 def test_doctor_should_detect_latest_iteration_version_from_docs(tmp_path: Path):
     _prepare_basic_project(tmp_path)
-    (tmp_path / "docs" / "product" / "v1.0.0").mkdir(parents=True, exist_ok=True)
-    (tmp_path / "docs" / "product" / "v1.2.0").mkdir(parents=True, exist_ok=True)
-    (tmp_path / "docs" / "product" / "v1.2.0" / "SUMMARY.md").write_text("# latest\n", encoding="utf-8")
+    (tmp_path / "docs" / "beacon" / "v1.0.0").mkdir(parents=True, exist_ok=True)
+    (tmp_path / "docs" / "beacon" / "v1.2.0").mkdir(parents=True, exist_ok=True)
+    (tmp_path / "docs" / "beacon" / "v1.2.0" / "SUMMARY.md").write_text("# latest\n", encoding="utf-8")
 
     result = _invoke(["doctor", "--json", "--project-root", str(tmp_path)])
     assert result.exit_code == 0
@@ -60,9 +60,9 @@ def test_doctor_should_detect_material_incompatibilities(tmp_path: Path):
     _prepare_basic_project(tmp_path)
     version = "v1.0.0"
 
-    us_dir = tmp_path / "docs" / "product" / version / "user-story"
-    prd_dir = tmp_path / "docs" / "product" / version / "prd"
-    tc_dir = tmp_path / "docs" / "product" / version / "qa" / "test-cases"
+    us_dir = tmp_path / "docs" / "beacon" / version / "user-story"
+    prd_dir = tmp_path / "docs" / "beacon" / version / "prd"
+    tc_dir = tmp_path / "docs" / "beacon" / version / "qa" / "test-cases"
     us_dir.mkdir(parents=True, exist_ok=True)
     prd_dir.mkdir(parents=True, exist_ok=True)
     tc_dir.mkdir(parents=True, exist_ok=True)
@@ -102,8 +102,8 @@ def test_doctor_should_detect_material_incompatibilities(tmp_path: Path):
 
 def test_doctor_should_flag_material_version_ahead_of_runtime(tmp_path: Path):
     _prepare_basic_project(tmp_path)
-    (tmp_path / "docs" / "product" / "v9.9.9").mkdir(parents=True, exist_ok=True)
-    (tmp_path / "docs" / "product" / "v9.9.9" / "SUMMARY.md").write_text("# future\n", encoding="utf-8")
+    (tmp_path / "docs" / "beacon" / "v9.9.9").mkdir(parents=True, exist_ok=True)
+    (tmp_path / "docs" / "beacon" / "v9.9.9" / "SUMMARY.md").write_text("# future\n", encoding="utf-8")
 
     result = _invoke(["doctor", "--json", "--project-root", str(tmp_path)])
     assert result.exit_code == 0
