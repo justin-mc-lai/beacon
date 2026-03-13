@@ -19,8 +19,8 @@ def _invoke(args: list[str]):
 
 def test_readme_contains_core_command_examples():
     text = (ROOT / "README.md").read_text(encoding="utf-8")
-    assert "beacon-workflow start" in text
-    assert "beacon-think start" in text
+    assert "beacon workflow start" in text
+    assert "beacon think start" in text
 
 
 def test_documented_think_start_example_is_executable(tmp_path: Path):

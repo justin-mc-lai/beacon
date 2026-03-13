@@ -107,6 +107,20 @@ REASON_CODES = [
     "spec_impl_drift_detected",
     "baseline_snapshot_missing",
     "baseline_revision_broken",
+    "execution_config_missing",
+    "execution_config_schema_invalid",
+    "source_info_missing",
+    "source_info_schema_invalid",
+    "git_alignment_missing",
+    "git_alignment_schema_invalid",
+    "git_alignment_blocked",
+    "delivery_manifest_missing",
+    "delivery_manifest_schema_invalid",
+    "affected_projects_empty",
+    "affected_project_git_ref_missing",
+    "change_impact_missing",
+    "change_impact_schema_invalid",
+    "change_impact_open_tasks",
 ]
 
 # Workflow stages
@@ -801,7 +815,7 @@ def check_scope_guard(project_root: Path, mode: GateMode) -> List[Dict[str, Any]
     return issues
 
 
-def check_memory_closure(project_root: Path, mode: GateMode, stage: str) -> List[Dict[str, Any]]:
+def check_memory_closure(project_root: Path, mode: GateMode, stage: str, version: Optional[str] = None) -> List[Dict[str, Any]]:
     """Check workflow memory closure for release-stage strict gates."""
     issues = []
     if mode != GateMode.STRICT or stage != "release":
@@ -819,7 +833,8 @@ def check_memory_closure(project_root: Path, mode: GateMode, stage: str) -> List
         )
         return issues
 
-    metrics = compute_memory_metrics(project_root)
+    contract_run_id = _resolve_release_contract_run_id(project_root, version=version)
+    metrics = compute_memory_metrics(project_root, run_id=contract_run_id or None, version=version)
     target_run_id = metrics.get("run_id")
     run_events = load_lifecycle_events(project_root, run_id=target_run_id) if target_run_id else events
     if not metrics.get("closure_complete", False):
@@ -874,7 +889,42 @@ def check_memory_closure(project_root: Path, mode: GateMode, stage: str) -> List
     return issues
 
 
-def check_release_memory_profile(project_root: Path, mode: GateMode, stage: str) -> List[Dict[str, Any]]:
+def _resolve_release_contract_run_id(project_root: Path, version: Optional[str] = None) -> str:
+    resolved_version = _resolved_gate_version(project_root, version)
+    terminal_path = _resolve_existing_execution_file(project_root, resolved_version, "terminal.json")
+    payload, status = _load_json_file(terminal_path)
+    if status != "ok" or not isinstance(payload, dict):
+        return ""
+    run_id = str(payload.get("run_id", "") or "").strip()
+    return run_id if run_id.startswith("run-") else ""
+
+
+def _load_run_scoped_spec_fingerprint(project_root: Path, *, version: str, run_id: str) -> dict[str, Any]:
+    if not run_id:
+        return {}
+    path = project_root / ".beacon" / "state" / "spec-fingerprints" / version / f"{run_id}.json"
+    return _load_json_file(path)[0] or {}
+
+
+def _load_run_scoped_baseline(project_root: Path, *, version: str, run_id: str) -> dict[str, Any]:
+    if not run_id:
+        return {}
+    root = project_root / ".beacon" / "state" / "baselines" / version
+    if not root.exists():
+        return {}
+    matches = sorted(
+        [
+            path
+            for path in root.glob(f"bl-{run_id}-*.json")
+            if path.is_file() and path.name != "latest.json"
+        ]
+    )
+    if not matches:
+        return {}
+    return _load_json_file(matches[-1])[0] or {}
+
+
+def check_release_memory_profile(project_root: Path, mode: GateMode, stage: str, version: Optional[str] = None) -> List[Dict[str, Any]]:
     """Check release-specific memory profile without polluting workflow closure contract."""
     issues: list[dict[str, Any]] = []
     if stage != "release":
@@ -887,7 +937,8 @@ def check_release_memory_profile(project_root: Path, mode: GateMode, stage: str)
         # Keep missing-lifecycle diagnosis centralized in check_memory_closure.
         return issues
 
-    metrics = compute_memory_metrics(project_root)
+    contract_run_id = _resolve_release_contract_run_id(project_root, version=version)
+    metrics = compute_memory_metrics(project_root, run_id=contract_run_id or None, version=version)
     selected_run_id = str(metrics.get("run_id", "") or "")
 
     # Guard default selector drift: when workflow run exists, selection should prefer it.
@@ -963,6 +1014,190 @@ def check_release_memory_profile(project_root: Path, mode: GateMode, stage: str)
                 "details": {"missing_refs": missing_refs[:10]},
             }
         )
+
+    return issues
+
+
+def _load_json_file(path: Path) -> tuple[Optional[Dict[str, Any]], str]:
+    if not path.exists():
+        return None, "missing"
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except Exception as exc:  # noqa: BLE001
+        return None, f"invalid_json:{exc}"
+    if not isinstance(payload, dict):
+        return None, "invalid_root"
+    return payload, "ok"
+
+
+def check_delivery_execution_artifacts(project_root: Path, mode: GateMode, stage: str, version: Optional[str] = None) -> List[Dict[str, Any]]:
+    """Check execution-layer delivery governance artifacts."""
+    issues: list[dict[str, Any]] = []
+    if stage != "release":
+        return issues
+    if mode not in {GateMode.STRICT, GateMode.DEBUG}:
+        return issues
+
+    resolved_version = _resolved_gate_version(project_root, version)
+    if _parse_semver_tuple(resolved_version) < (1, 1, 1):
+        return issues
+
+    def _required_json(name: str, missing_code: str, invalid_code: str) -> Optional[Dict[str, Any]]:
+        path = _resolve_existing_execution_file(project_root, resolved_version, name)
+        payload, status = _load_json_file(path)
+        if payload is None:
+            issues.append(
+                {
+                    "reason_code": missing_code if status == "missing" else invalid_code,
+                    "severity": "critical",
+                    "message": f"{name} {status}: {path}",
+                    "blocked": True,
+                }
+            )
+            return None
+        return payload
+
+    config_payload = _required_json("config.json", "execution_config_missing", "execution_config_schema_invalid")
+    if isinstance(config_payload, dict):
+        missing = [
+            key
+            for key in ("resolved_project", "docs", "implementation", "source_info", "git", "research", "delivery")
+            if key not in config_payload
+        ]
+        if missing:
+            issues.append(
+                {
+                    "reason_code": "execution_config_schema_invalid",
+                    "severity": "critical",
+                    "message": f"config.json missing keys: {missing}",
+                    "blocked": True,
+                }
+            )
+
+    source_payload = _required_json("source.json", "source_info_missing", "source_info_schema_invalid")
+    if isinstance(source_payload, dict):
+        missing = [
+            key
+            for key in ("project_name", "project_root", "workspace_root", "repo_url", "branch", "commit", "run_id", "version")
+            if key not in source_payload
+        ]
+        if missing:
+            issues.append(
+                {
+                    "reason_code": "source_info_schema_invalid",
+                    "severity": "critical",
+                    "message": f"source.json missing keys: {missing}",
+                    "blocked": True,
+                }
+            )
+
+    git_payload = _required_json("git-alignment.json", "git_alignment_missing", "git_alignment_schema_invalid")
+    if isinstance(git_payload, dict):
+        missing = [key for key in ("git_refs", "alignment", "version_ref", "blocked") if key not in git_payload]
+        if missing:
+            issues.append(
+                {
+                    "reason_code": "git_alignment_schema_invalid",
+                    "severity": "critical",
+                    "message": f"git-alignment.json missing keys: {missing}",
+                    "blocked": True,
+                }
+            )
+        elif bool(git_payload.get("blocked")):
+            issues.append(
+                {
+                    "reason_code": "git_alignment_blocked",
+                    "severity": "critical",
+                    "message": f"git alignment blocked: {git_payload.get('reason_codes', [])}",
+                    "blocked": True,
+                }
+            )
+
+    manifest_payload = _required_json("delivery-manifest.json", "delivery_manifest_missing", "delivery_manifest_schema_invalid")
+    if isinstance(manifest_payload, dict):
+        affected_projects = manifest_payload.get("affected_projects")
+        if not isinstance(affected_projects, list) or not affected_projects:
+            issues.append(
+                {
+                    "reason_code": "affected_projects_empty",
+                    "severity": "critical",
+                    "message": "delivery-manifest.json affected_projects missing/empty",
+                    "blocked": True,
+                }
+            )
+        else:
+            required_project_fields = {
+                "name",
+                "project_root",
+                "repo_url",
+                "change_scope",
+                "changed_layers",
+                "base_branch",
+                "target_branch",
+                "current_branch",
+                "commit",
+                "tag",
+                "worktree_path",
+            }
+            missing_refs: list[dict[str, Any]] = []
+            for idx, item in enumerate(affected_projects):
+                if not isinstance(item, dict):
+                    missing_refs.append({"index": idx, "missing": sorted(required_project_fields)})
+                    continue
+                missing = sorted(field for field in required_project_fields if field not in item or item.get(field) is None)
+                if missing:
+                    missing_refs.append({"index": idx, "missing": missing})
+            if missing_refs:
+                issues.append(
+                    {
+                        "reason_code": "affected_project_git_ref_missing",
+                        "severity": "critical",
+                        "message": f"delivery-manifest.json affected_projects missing fields: {missing_refs[:5]}",
+                        "blocked": True,
+                    }
+                )
+
+    change_payload = _required_json("change-impact.json", "change_impact_missing", "change_impact_schema_invalid")
+    if isinstance(change_payload, dict):
+        missing = [
+            key
+            for key in ("changed_layers", "tasks", "research_converged", "main_chain_converged", "delivery_manifest_ready")
+            if key not in change_payload
+        ]
+        if missing:
+            issues.append(
+                {
+                    "reason_code": "change_impact_schema_invalid",
+                    "severity": "critical",
+                    "message": f"change-impact.json missing keys: {missing}",
+                    "blocked": True,
+                }
+            )
+        tasks = change_payload.get("tasks")
+        if not isinstance(tasks, list):
+            issues.append(
+                {
+                    "reason_code": "change_impact_schema_invalid",
+                    "severity": "critical",
+                    "message": "change-impact.json tasks missing/invalid",
+                    "blocked": True,
+                }
+            )
+        else:
+            pending = [
+                str(item.get("task", ""))
+                for item in tasks
+                if isinstance(item, dict) and str(item.get("status", "pending")).strip().lower() != "completed"
+            ]
+            if pending:
+                issues.append(
+                    {
+                        "reason_code": "change_impact_open_tasks",
+                        "severity": "critical",
+                        "message": f"change-impact.json has pending tasks: {pending}",
+                        "blocked": True,
+                    }
+                )
 
     return issues
 
@@ -1864,8 +2099,13 @@ def check_spec_consistency(
         return issues, verdict
 
     verdict["status"] = "pass"
-    baseline = load_latest_baseline_snapshot(project_root, version=resolved_version)
-    fingerprint = load_latest_spec_fingerprint(project_root, version=resolved_version)
+    contract_run_id = _resolve_release_contract_run_id(project_root, version=resolved_version)
+    baseline = _load_run_scoped_baseline(project_root, version=resolved_version, run_id=contract_run_id)
+    if not baseline:
+        baseline = load_latest_baseline_snapshot(project_root, version=resolved_version)
+    fingerprint = _load_run_scoped_spec_fingerprint(project_root, version=resolved_version, run_id=contract_run_id)
+    if not fingerprint:
+        fingerprint = load_latest_spec_fingerprint(project_root, version=resolved_version)
     expected_hash = str(fingerprint.get("fingerprint_hash", "")).strip()
     verdict["expected_spec_fingerprint"] = expected_hash
 
@@ -1890,10 +2130,12 @@ def check_spec_consistency(
         )
 
     baseline_root = project_root / ".beacon" / "state" / "baselines" / resolved_version
+    baseline_run_id = str(baseline.get("run_id", "") or "").strip()
+    baseline_pattern = f"bl-{baseline_run_id}-*.json" if baseline_run_id else "*.json"
     baseline_files = sorted(
         [
             p
-            for p in baseline_root.glob("*.json")
+            for p in baseline_root.glob(baseline_pattern)
             if p.is_file() and p.name != "latest.json"
         ]
     )
@@ -2036,13 +2278,17 @@ def run_gate_checks(
             typer.echo("[DEBUG] [release-global] Checking evidence chain...")
         all_issues.extend(check_evidence_chain(project_root, mode))
 
+        if mode == GateMode.DEBUG:
+            typer.echo("[DEBUG] [release-global] Checking delivery execution artifacts...")
+        all_issues.extend(check_delivery_execution_artifacts(project_root, mode, stage, version))
+
         if mode == GateMode.STRICT or mode == GateMode.DEBUG:
             if mode == GateMode.DEBUG:
                 typer.echo("[DEBUG] [release-global] Checking memory closure...")
-            all_issues.extend(check_memory_closure(project_root, mode, stage))
+            all_issues.extend(check_memory_closure(project_root, mode, stage, version))
             if mode == GateMode.DEBUG:
                 typer.echo("[DEBUG] [release-global] Checking release memory profile...")
-            all_issues.extend(check_release_memory_profile(project_root, mode, stage))
+            all_issues.extend(check_release_memory_profile(project_root, mode, stage, version))
             if mode == GateMode.DEBUG:
                 typer.echo("[DEBUG] [release-global] Checking spec-doc consistency...")
             consistency_issues, doc_impl_verdict = check_spec_consistency(

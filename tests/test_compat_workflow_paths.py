@@ -6,7 +6,12 @@ from pathlib import Path
 
 from typer.testing import CliRunner
 
-from beacon.commands.workflow import ensure_output_dirs
+from beacon.commands.workflow import (
+    _matrix_path_candidates,
+    _qa9_matrix_path_candidates,
+    _stage_output_candidates,
+    ensure_output_dirs,
+)
 from beacon.main import app
 
 
@@ -22,6 +27,21 @@ def test_ensure_output_dirs_creates_dual_docs_roots(tmp_path: Path):
     assert (tmp_path / "docs" / "beacon" / "v1.0.0" / "user-story").exists()
     assert (tmp_path / "docs" / "product" / "v1.0.0" / "user-story").exists()
     assert (tmp_path / ".beacon" / "state").exists()
+
+
+def test_stage_output_candidates_should_prefer_beacon_docs_before_compat_mirror(tmp_path: Path):
+    candidates = _stage_output_candidates(tmp_path, "test-case", "登录功能", "v1.1.1")
+    assert candidates[0] == tmp_path / "docs" / "beacon" / "v1.1.1" / "qa" / "test-cases" / "登录功能.md"
+    assert candidates[1] == tmp_path / "docs" / "product" / "v1.1.1" / "qa" / "test-cases" / "登录功能.md"
+    assert candidates[2] == tmp_path / "docs" / "beacon" / "v1.1.1" / "qa" / "test-cases" / "登录功能.ac-test-matrix.json"
+
+
+def test_matrix_candidate_lists_should_prioritize_beacon_source_of_truth(tmp_path: Path):
+    ac_candidates = _matrix_path_candidates(tmp_path, "登录功能", "v1.1.1")
+    qa9_candidates = _qa9_matrix_path_candidates(tmp_path, "登录功能", "v1.1.1")
+
+    assert ac_candidates[0] == tmp_path / "docs" / "beacon" / "v1.1.1" / "qa" / "test-cases" / "登录功能.ac-test-matrix.json"
+    assert qa9_candidates[0] == tmp_path / "docs" / "beacon" / "v1.1.1" / "qa" / "test-cases" / "登录功能.qa9-matrix.json"
 
 
 def test_workflow_auto_should_materialize_stage_outputs(tmp_path: Path):

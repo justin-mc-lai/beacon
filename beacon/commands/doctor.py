@@ -11,6 +11,7 @@ import typer
 from beacon.utils.context_files import setup_context_files, verify_context_files
 from beacon.utils.doctor_diagnostics import build_doctor_payload, collect_runtime_info
 from beacon.utils.doctor_setup import install_launchers, resolve_bin_dir, uninstall_launchers
+from beacon.utils.material_audit import build_delivery_audit, build_material_audit
 
 app = typer.Typer(
     name="doctor",
@@ -123,6 +124,42 @@ def _print_action_result(title: str, result: dict[str, Any]) -> None:
             typer.echo(f"  - {path}")
     for warning in result.get("warnings", []):
         typer.echo(f"⚠ {warning}")
+
+
+def _print_verification_result(title: str, result: dict[str, Any]) -> None:
+    typer.echo(title)
+    typer.echo("=" * len(title))
+    for item in result.get("checks", []):
+        status = str(item.get("status", "warn")).upper()
+        typer.echo(f"- {status}: {item.get('name')} ({json.dumps(item.get('details', {}), ensure_ascii=False)})")
+    typer.echo(f"Overall: {str(result.get('status', 'warn')).upper()}")
+
+
+def _single_check_payload(
+    *,
+    action: str,
+    project_root: Path,
+    version: str | None,
+    strict: bool,
+    check: dict[str, Any],
+) -> dict[str, Any]:
+    status = str(check.get("status", "warn")).lower()
+    blocked = status == "fail" or (strict and status == "warn")
+    return {
+        "schema_version": "2.0",
+        "action": action,
+        "status": "BLOCKED" if blocked else status.upper(),
+        "result": {
+            "schema_version": "1.0",
+            "action": action,
+            "project_root": str(project_root),
+            "version": version or "",
+            "strict": strict,
+            "status": "fail" if blocked else status,
+            "ok": not blocked,
+            "checks": [check],
+        },
+    }
 
 
 @app.callback(invoke_without_command=True)
@@ -308,6 +345,158 @@ def verify_context(
         typer.echo(f"Overall: {payload.get('status')}")
 
     raise typer.Exit(code=2 if payload.get("status") == "BLOCKED" else 0)
+
+
+@app.command("verify-materials")
+def verify_materials(
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    version: str = typer.Option("", "--version", "-v", help="Target docs version"),
+    strict: bool = typer.Option(False, "--strict", help="Treat warnings as blocked"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Verify version material completeness for research/main-chain artifacts."""
+    root = Path(project_root) if project_root else Path.cwd()
+    result = build_material_audit(root, version=version or None, strict=strict)
+    payload = {
+        "schema_version": "2.0",
+        "action": "verify-materials",
+        "status": str(result.get("status", "warn")).upper(),
+        "result": result,
+    }
+    if strict and payload["status"] == "WARN":
+        payload["status"] = "BLOCKED"
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        _print_verification_result("Beacon Doctor Materials Verify", result)
+    raise typer.Exit(code=2 if payload.get("status") in {"FAIL", "BLOCKED"} else 0)
+
+
+@app.command("verify-delivery")
+def verify_delivery(
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    version: str = typer.Option("", "--version", "-v", help="Target docs version"),
+    strict: bool = typer.Option(False, "--strict", help="Treat warnings as blocked"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Verify execution-layer delivery artifacts for a version."""
+    root = Path(project_root) if project_root else Path.cwd()
+    result = build_delivery_audit(root, version=version or None, strict=strict)
+    payload = {
+        "schema_version": "2.0",
+        "action": "verify-delivery",
+        "status": str(result.get("status", "warn")).upper(),
+        "result": result,
+    }
+    if strict and payload["status"] == "WARN":
+        payload["status"] = "BLOCKED"
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        _print_verification_result("Beacon Doctor Delivery Verify", result)
+    raise typer.Exit(code=2 if payload.get("status") in {"FAIL", "BLOCKED"} else 0)
+
+
+@app.command("verify-config")
+def verify_config(
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    version: str = typer.Option("", "--version", "-v", help="Target docs version"),
+    strict: bool = typer.Option(False, "--strict", help="Treat warnings as blocked"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Verify execution config/source metadata artifacts for a version."""
+    root = Path(project_root) if project_root else Path.cwd()
+    audit = build_delivery_audit(root, version=version or None, strict=strict)
+    target_checks = [
+        item
+        for item in audit.get("checks", [])
+        if str(item.get("name")) in {"execution_required_files_present", "execution_config_schema", "execution_source_schema"}
+    ]
+    worst = "pass"
+    for item in target_checks:
+        status = str(item.get("status", "pass")).lower()
+        if status == "fail":
+            worst = "fail"
+            break
+        if status == "warn":
+            worst = "warn"
+    merged_check = {
+        "name": "verify_config",
+        "status": worst,
+        "details": {"checks": target_checks},
+    }
+    payload = _single_check_payload(
+        action="verify-config",
+        project_root=root,
+        version=version or None,
+        strict=strict,
+        check=merged_check,
+    )
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        _print_verification_result("Beacon Doctor Config Verify", payload["result"])
+    raise typer.Exit(code=2 if payload.get("status") == "BLOCKED" else 0)
+
+
+@app.command("verify-git-alignment")
+def verify_git_alignment(
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    version: str = typer.Option("", "--version", "-v", help="Target docs version"),
+    strict: bool = typer.Option(False, "--strict", help="Treat warnings as blocked"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Verify execution git-alignment artifact for a version."""
+    root = Path(project_root) if project_root else Path.cwd()
+    audit = build_delivery_audit(root, version=version or None, strict=strict)
+    check = next(
+        (item for item in audit.get("checks", []) if str(item.get("name")) == "execution_git_alignment_schema"),
+        {"name": "execution_git_alignment_schema", "status": "fail", "details": {"missing": True}},
+    )
+    payload = _single_check_payload(
+        action="verify-git-alignment",
+        project_root=root,
+        version=version or None,
+        strict=strict,
+        check=check,
+    )
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        _print_verification_result("Beacon Doctor Git Alignment Verify", payload["result"])
+    raise typer.Exit(code=2 if payload.get("status") == "BLOCKED" else 0)
+
+
+@app.command("setup-agent-md")
+def setup_agent_md(
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    dry_run: bool = typer.Option(False, "--dry-run", help="Preview without writing files"),
+    force: bool = typer.Option(False, "--force", help="Append managed blocks when markers are missing"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Alias of setup-context focused on agent initialization markdown files."""
+    setup_context(
+        project_root=project_root,
+        dry_run=dry_run,
+        force=force,
+        json_output=json_output,
+        with_claude=True,
+        with_agents=True,
+    )
+
+
+@app.command("verify-agent-md")
+def verify_agent_md(
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    strict: bool = typer.Option(False, "--strict", help="Treat warnings as blocked"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Alias of verify-context focused on agent initialization markdown files."""
+    verify_context(
+        project_root=project_root,
+        strict=strict,
+        json_output=json_output,
+    )
 
 
 if __name__ == "__main__":

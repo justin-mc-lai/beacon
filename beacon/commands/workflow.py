@@ -11,6 +11,7 @@ import sys
 import os
 import signal
 
+from beacon import __toolkit_version__
 from beacon.utils.coverage import compute_coverage_metrics
 from beacon.utils.debug_feedback import (
     append_debug_event_memory,
@@ -403,6 +404,486 @@ def _update_evidence_manifest(
     write_json(manifest_path, output_payload)
 
 
+def _execution_roots(project_root: Path, version: str) -> list[Path]:
+    return [
+        project_root / "docs" / "beacon" / version / "execution",
+        project_root / "docs" / "product" / version / "execution",
+    ]
+
+
+def _git_command(project_root: Path, *args: str) -> str:
+    try:
+        result = subprocess.run(
+            ["git", *args],
+            cwd=project_root,
+            capture_output=True,
+            text=True,
+            timeout=5,
+        )
+    except Exception:  # noqa: BLE001
+        return ""
+    if result.returncode != 0:
+        return ""
+    return str(result.stdout or "").strip()
+
+
+def _git_metadata(project_root: Path, version: str) -> dict[str, Any]:
+    current_branch = _git_command(project_root, "rev-parse", "--abbrev-ref", "HEAD")
+    current_commit = _git_command(project_root, "rev-parse", "HEAD")
+    repo_url = _git_command(project_root, "remote", "get-url", "origin")
+    current_tag = _git_command(project_root, "describe", "--tags", "--exact-match")
+    target_branch = f"beacon/{version}"
+    branch_prefix = "beacon/"
+    branch_matches_target = bool(current_branch and current_branch == target_branch)
+    branch_has_required_prefix = bool(current_branch and current_branch.startswith(branch_prefix))
+    tag_matches_version = bool(current_tag and current_tag == version)
+    version_ref_satisfied = branch_matches_target or tag_matches_version
+    reason_codes: list[str] = []
+    if not branch_matches_target:
+        reason_codes.append("git_branch_target_mismatch")
+    if not branch_has_required_prefix:
+        reason_codes.append("git_branch_prefix_mismatch")
+    if not version_ref_satisfied:
+        reason_codes.append("git_version_ref_not_satisfied")
+    return {
+        "repo_url": repo_url,
+        "base_branch": "main",
+        "target_branch": target_branch,
+        "current_branch": current_branch,
+        "current_commit": current_commit,
+        "current_tag": current_tag,
+        "worktree_path": str(project_root),
+        "version_ref": version,
+        "allowed_refs": ["tag", "branch"],
+        "enforce_branch_prefix": branch_prefix,
+        "branch_matches_target": branch_matches_target,
+        "branch_has_required_prefix": branch_has_required_prefix,
+        "tag_matches_version": tag_matches_version,
+        "version_ref_satisfied": version_ref_satisfied,
+        "reason_codes": reason_codes,
+        "blocked": not version_ref_satisfied,
+    }
+
+
+def _existing_research_docs(project_root: Path, version: str) -> list[str]:
+    research_dir = project_root / "docs" / "beacon" / version / "research"
+    if not research_dir.exists():
+        return []
+    return sorted(str(path.relative_to(project_root)) for path in research_dir.glob("*.md") if path.is_file())
+
+
+def _main_chain_refs(project_root: Path, version: str, feature: str) -> list[str]:
+    slug = _slug(feature)
+    refs = [
+        project_root / "docs" / "beacon" / version / "user-story" / f"{slug}.md",
+        project_root / "docs" / "beacon" / version / "prd" / f"{slug}.md",
+        project_root / "docs" / "beacon" / version / "qa" / "test-cases" / f"{slug}.md",
+        project_root / "docs" / "beacon" / version / "qa" / "test-cases" / f"{slug}.ac-test-matrix.json",
+        project_root / "docs" / "beacon" / version / "qa" / "test-cases" / f"{slug}.qa9-matrix.json",
+    ]
+    return [str(path.relative_to(project_root)) for path in refs if path.exists()]
+
+
+def _load_change_impact_state(project_root: Path, run_id: str) -> dict[str, Any]:
+    return _load_json_dict(project_root / ".beacon" / "state" / "change-impact" / f"{run_id}.json")
+
+
+def _build_execution_config_payload(
+    *,
+    project_root: Path,
+    version: str,
+    run_id: str,
+    feature: str,
+    workflow_status: str,
+) -> dict[str, Any]:
+    git_meta = _git_metadata(project_root, version)
+    return {
+        "schema_version": "1.0",
+        "version": version,
+        "feature": feature,
+        "run_id": run_id,
+        "generated_at": now_iso(),
+        "status": "completed" if workflow_status == "completed" else "draft",
+        "strict_mode": True,
+        "source_of_truth_root": f"docs/beacon/{version}",
+        "compat_mirror_root": f"docs/product/{version}",
+        "resolved_project": {
+            "workspace_root": str(project_root.parent),
+            "project_name": project_root.name,
+            "project_root": str(project_root),
+            "resolved_by": "cli_or_cwd",
+            "resolution_order": ["cli", "env", "cwd", "default"],
+        },
+        "docs": {
+            "source_root": f"docs/beacon/{version}",
+            "compat_root": f"docs/product/{version}",
+            "write_mode": "source_only_with_compat_mirror",
+        },
+        "implementation": {
+            "root": str(project_root),
+            "include_paths": ["beacon", "tests"],
+            "exclude_paths": ["dist", "node_modules", ".beacon"],
+        },
+        "source_info": {
+            "enabled": True,
+            "output": f"docs/beacon/{version}/execution/source.json",
+            "include_git": True,
+            "fields": [
+                "project_name",
+                "project_root",
+                "workspace_root",
+                "repo_url",
+                "branch",
+                "commit",
+                "tag",
+                "run_id",
+                "version",
+                "timestamp",
+            ],
+        },
+        "git": {
+            "version_policy": "strict",
+            "version_ref": version,
+            "allowed_refs": git_meta["allowed_refs"],
+            "enforce_branch_prefix": git_meta["enforce_branch_prefix"],
+            "base_branch": git_meta["base_branch"],
+            "target_branch": git_meta["target_branch"],
+            "current_branch": git_meta["current_branch"],
+            "current_commit": git_meta["current_commit"],
+            "current_tag": git_meta["current_tag"],
+        },
+        "research": {
+            "root": f"docs/beacon/{version}/research",
+            "sync_to_compat": False,
+            "allowed_types": ["brainstorm", "analysis", "research", "architecture", "compare", "convergence"],
+            "convergence_rule": "research -> user-story / prd -> test-case",
+        },
+        "delivery": {
+            "manifest_output": f"docs/beacon/{version}/execution/delivery-manifest.json",
+            "change_impact_output": f"docs/beacon/{version}/execution/change-impact.json",
+            "boundaries_output": f"docs/beacon/{version}/execution/boundaries.md",
+            "config_output": f"docs/beacon/{version}/execution/config.json",
+            "source_output": f"docs/beacon/{version}/execution/source.json",
+            "git_alignment_output": f"docs/beacon/{version}/execution/git-alignment.json",
+            "terminal_output": f"docs/beacon/{version}/execution/terminal.json",
+        },
+        "notes": [
+            "Execution config snapshot generated by workflow.",
+            f"Runtime toolkit version: {__toolkit_version__}",
+            f"Workflow status snapshot: {workflow_status}",
+        ],
+    }
+
+
+def _build_execution_source_payload(
+    *,
+    project_root: Path,
+    version: str,
+    run_id: str,
+    feature: str,
+    workflow_status: str,
+) -> dict[str, Any]:
+    git_meta = _git_metadata(project_root, version)
+    return {
+        "schema_version": "1.0",
+        "version": version,
+        "feature": feature,
+        "run_id": run_id,
+        "generated_at": now_iso(),
+        "status": "completed" if workflow_status == "completed" else "draft",
+        "source_of_truth": True,
+        "source_of_truth_root": f"docs/beacon/{version}",
+        "compat_mirror_root": f"docs/product/{version}",
+        "project_name": project_root.name,
+        "project_root": str(project_root),
+        "workspace_root": str(project_root.parent),
+        "repo_url": git_meta["repo_url"],
+        "branch": git_meta["current_branch"],
+        "commit": git_meta["current_commit"],
+        "tag": git_meta["current_tag"],
+        "timestamp": now_iso(),
+        "runtime": {
+            "active_skill_path": str(project_root),
+            "toolkit_version": __toolkit_version__,
+            "cli_entry": "python -m beacon.main",
+        },
+        "inputs": {
+            "research_docs": _existing_research_docs(project_root, version),
+            "main_chain_docs": _main_chain_refs(project_root, version, feature),
+        },
+        "notes": [
+            "Source metadata is intended for execution traceability and delivery audit.",
+            "Research artifacts are inputs; user-story/prd/test-case are the workflow main chain.",
+        ],
+    }
+
+
+def _build_execution_git_alignment_payload(project_root: Path, version: str, run_id: str, feature: str) -> dict[str, Any]:
+    git_meta = _git_metadata(project_root, version)
+    return {
+        "schema_version": "1.0",
+        "version": version,
+        "feature": feature,
+        "run_id": run_id,
+        "generated_at": now_iso(),
+        "status": "pass" if not git_meta["blocked"] else "warn",
+        "strict_required": True,
+        "repo_url": git_meta["repo_url"],
+        "version_ref": git_meta["version_ref"],
+        "allowed_refs": git_meta["allowed_refs"],
+        "enforce_branch_prefix": git_meta["enforce_branch_prefix"],
+        "git_refs": {
+            "base_branch": git_meta["base_branch"],
+            "target_branch": git_meta["target_branch"],
+            "current_branch": git_meta["current_branch"],
+            "commit": git_meta["current_commit"],
+            "tag": git_meta["current_tag"],
+            "worktree_path": git_meta["worktree_path"],
+        },
+        "alignment": {
+            "branch_matches_target": git_meta["branch_matches_target"],
+            "branch_has_required_prefix": git_meta["branch_has_required_prefix"],
+            "tag_matches_version": git_meta["tag_matches_version"],
+            "version_ref_satisfied": git_meta["version_ref_satisfied"],
+        },
+        "reason_codes": git_meta["reason_codes"],
+        "blocked": git_meta["blocked"],
+        "notes": [
+            "Git alignment is validated against target branch or exact version tag.",
+            "This artifact is intended for doctor verify-git-alignment and delivery gate checks.",
+        ],
+    }
+
+
+def _build_execution_change_impact_payload(
+    *,
+    project_root: Path,
+    version: str,
+    run_id: str,
+    feature: str,
+    workflow_status: str,
+) -> dict[str, Any]:
+    base = _load_change_impact_state(project_root, run_id)
+    changed_layers = base.get("changed_layers") if isinstance(base.get("changed_layers"), list) else []
+    tasks = base.get("tasks") if isinstance(base.get("tasks"), list) else []
+    completion_refs = {
+        "regenerate-user_story": project_root / "docs" / "beacon" / version / "user-story" / f"{_slug(feature)}.md",
+        "regenerate-prd": project_root / "docs" / "beacon" / version / "prd" / f"{_slug(feature)}.md",
+        "regenerate-test_case": project_root / "docs" / "beacon" / version / "qa" / "test-cases" / f"{_slug(feature)}.md",
+    }
+    for item in tasks:
+        if not isinstance(item, dict):
+            continue
+        task_name = str(item.get("task", "")).strip()
+        evidence_path = completion_refs.get(task_name)
+        if not evidence_path or not evidence_path.exists():
+            continue
+        if str(item.get("status", "pending")).strip().lower() == "completed":
+            continue
+        item["status"] = "completed"
+        item["owner"] = project_root.name
+        item["evidence"] = str(evidence_path.relative_to(project_root))
+    task_names = {str(item.get("task", "")) for item in tasks if isinstance(item, dict)}
+    for task_name, evidence in (
+        ("publish-config-draft", f"docs/beacon/{version}/execution/config.json"),
+        ("publish-source-draft", f"docs/beacon/{version}/execution/source.json"),
+        ("publish-git-alignment-draft", f"docs/beacon/{version}/execution/git-alignment.json"),
+    ):
+        if task_name not in task_names:
+            tasks.append(
+                {
+                    "task": task_name,
+                    "status": "completed",
+                    "owner": project_root.name,
+                    "evidence": evidence,
+                }
+            )
+    research_converged = bool(_existing_research_docs(project_root, version))
+    main_chain_refs = _main_chain_refs(project_root, version, feature)
+    main_chain_converged = len(main_chain_refs) >= 5
+    pending_tasks = [
+        str(item.get("task", ""))
+        for item in tasks
+        if isinstance(item, dict) and str(item.get("status", "pending")).strip().lower() != "completed"
+    ]
+    doc_chain_update_required = bool(pending_tasks) if tasks else bool(base.get("doc_chain_update_required", bool(changed_layers)))
+    return {
+        "schema_version": "1.0",
+        "version": version,
+        "feature": feature,
+        "run_id": run_id,
+        "generated_at": now_iso(),
+        "baseline_run_id": str(base.get("run_id", "") or run_id),
+        "affected_projects": [project_root.name],
+        "doc_chain_update_required": doc_chain_update_required,
+        "changed_layers": changed_layers or ["research", "user-story", "prd", "test-case", "execution"],
+        "tasks": tasks,
+        "research_converged": research_converged,
+        "main_chain_converged": main_chain_converged,
+        "delivery_manifest_ready": True,
+        "full_delivery_closed": workflow_status == "completed" and not pending_tasks,
+        "pending_blockers": pending_tasks,
+        "notes": [
+            "Change impact is derived from baseline snapshots and enriched with delivery draft tasks.",
+            "Full closure still depends on implementation / verify / gate completion.",
+        ],
+    }
+
+
+def _build_execution_delivery_manifest_payload(
+    *,
+    project_root: Path,
+    version: str,
+    run_id: str,
+    feature: str,
+    workflow_status: str,
+    change_impact: dict[str, Any],
+    git_alignment: dict[str, Any],
+) -> dict[str, Any]:
+    source_docs = _existing_research_docs(project_root, version)
+    main_chain_docs = _main_chain_refs(project_root, version, feature)
+    deliverables = [
+        *({"type": "research", "path": ref, "status": "completed"} for ref in source_docs),
+        *(
+            {
+                "type": "user-story" if "/user-story/" in ref else "prd" if "/prd/" in ref else "test-case" if ref.endswith(".md") else "ac-matrix" if ref.endswith(".ac-test-matrix.json") else "qa9-matrix",
+                "path": ref,
+                "status": "completed",
+            }
+            for ref in main_chain_docs
+        ),
+        {"type": "boundaries", "path": f"docs/beacon/{version}/execution/boundaries.md", "status": "completed"},
+        {"type": "delivery-manifest", "path": f"docs/beacon/{version}/execution/delivery-manifest.json", "status": "completed"},
+        {"type": "change-impact", "path": f"docs/beacon/{version}/execution/change-impact.json", "status": "completed"},
+        {"type": "config", "path": f"docs/beacon/{version}/execution/config.json", "status": "completed"},
+        {"type": "source", "path": f"docs/beacon/{version}/execution/source.json", "status": "completed"},
+        {"type": "git-alignment", "path": f"docs/beacon/{version}/execution/git-alignment.json", "status": "completed"},
+    ]
+    strict_delivery_ready = workflow_status == "completed" and not bool(git_alignment.get("blocked")) and bool(change_impact.get("full_delivery_closed"))
+    reason_codes = list(git_alignment.get("reason_codes", []))
+    reason_codes.extend(change_impact.get("pending_blockers", []))
+    return {
+        "schema_version": "1.0",
+        "version": version,
+        "feature": feature,
+        "run_id": run_id,
+        "generated_at": now_iso(),
+        "source_of_truth_root": f"docs/beacon/{version}",
+        "compat_mirror_root": f"docs/product/{version}",
+        "delivery_status": "completed" if strict_delivery_ready else "draft",
+        "strict_delivery_ready": strict_delivery_ready,
+        "reason_codes": sorted(set(x for x in reason_codes if x)),
+        "affected_projects": [
+            {
+                "name": project_root.name,
+                "project_root": str(project_root),
+                "repo_url": git_alignment.get("repo_url", ""),
+                "change_scope": "docs_governance" if workflow_status != "completed" else "workflow_delivery",
+                "changed_layers": change_impact.get("changed_layers", []),
+                "base_branch": (git_alignment.get("git_refs") or {}).get("base_branch", ""),
+                "target_branch": (git_alignment.get("git_refs") or {}).get("target_branch", ""),
+                "current_branch": (git_alignment.get("git_refs") or {}).get("current_branch", ""),
+                "commit": (git_alignment.get("git_refs") or {}).get("commit", ""),
+                "tag": (git_alignment.get("git_refs") or {}).get("tag", ""),
+                "worktree_path": (git_alignment.get("git_refs") or {}).get("worktree_path", ""),
+                "alignment_status": "aligned" if not bool(git_alignment.get("blocked")) else "recorded_pending_alignment",
+            }
+        ],
+        "deliverables": deliverables,
+        "notes": [
+            "多项目/多仓库交付范围必须通过 affected_projects 显式声明。",
+            f"Current workflow status snapshot: {workflow_status}.",
+            "compat 镜像存在，但不是人工维护主源。",
+        ],
+    }
+
+
+def _write_execution_governance_artifacts(
+    *,
+    project_root: Path,
+    version: str,
+    run_id: str,
+    feature: str,
+    workflow_status: str,
+) -> None:
+    config_payload = _build_execution_config_payload(
+        project_root=project_root,
+        version=version,
+        run_id=run_id,
+        feature=feature,
+        workflow_status=workflow_status,
+    )
+    source_payload = _build_execution_source_payload(
+        project_root=project_root,
+        version=version,
+        run_id=run_id,
+        feature=feature,
+        workflow_status=workflow_status,
+    )
+    git_alignment_payload = _build_execution_git_alignment_payload(project_root, version, run_id, feature)
+    change_impact_payload = _build_execution_change_impact_payload(
+        project_root=project_root,
+        version=version,
+        run_id=run_id,
+        feature=feature,
+        workflow_status=workflow_status,
+    )
+    delivery_manifest_payload = _build_execution_delivery_manifest_payload(
+        project_root=project_root,
+        version=version,
+        run_id=run_id,
+        feature=feature,
+        workflow_status=workflow_status,
+        change_impact=change_impact_payload,
+        git_alignment=git_alignment_payload,
+    )
+
+    for exec_root in _execution_roots(project_root, version):
+        exec_root.mkdir(parents=True, exist_ok=True)
+        boundaries_path = exec_root / "boundaries.md"
+        if not boundaries_path.exists():
+            boundaries_path.write_text(
+                "\n".join(
+                    [
+                        f"# Workflow Boundaries ({version})",
+                        "",
+                        f"- run_id: {run_id}",
+                        f"- feature: {feature}",
+                        f"- workflow_status: {workflow_status}",
+                        "- guardrail: workflow/gate consume only main-chain docs; research is input-only.",
+                    ]
+                )
+                + "\n",
+                encoding="utf-8",
+            )
+        write_json(exec_root / "config.json", config_payload)
+        write_json(exec_root / "source.json", source_payload)
+        write_json(exec_root / "git-alignment.json", git_alignment_payload)
+        write_json(exec_root / "change-impact.json", change_impact_payload)
+        write_json(exec_root / "delivery-manifest.json", delivery_manifest_payload)
+    evidence_refs = sorted(
+        set(
+            _existing_research_docs(project_root, version)
+            + _main_chain_refs(project_root, version, feature)
+            + [
+                f"docs/beacon/{version}/execution/boundaries.md",
+                f"docs/beacon/{version}/execution/config.json",
+                f"docs/beacon/{version}/execution/source.json",
+                f"docs/beacon/{version}/execution/git-alignment.json",
+                f"docs/beacon/{version}/execution/delivery-manifest.json",
+                f"docs/beacon/{version}/execution/change-impact.json",
+                f"docs/product/{version}/execution/boundaries.md",
+                f"docs/product/{version}/execution/config.json",
+                f"docs/product/{version}/execution/source.json",
+                f"docs/product/{version}/execution/git-alignment.json",
+                f"docs/product/{version}/execution/delivery-manifest.json",
+                f"docs/product/{version}/execution/change-impact.json",
+            ]
+        )
+    )
+    _update_evidence_manifest(project_root, evidence_refs, run_id=run_id, version=version)
+
+
 def _write_workflow_terminal_artifacts(
     *,
     project_root: Path,
@@ -428,21 +909,22 @@ def _write_workflow_terminal_artifacts(
         root.mkdir(parents=True, exist_ok=True)
         boundaries = root / "boundaries.md"
         terminal = root / "terminal.json"
-        boundaries.write_text(
-            "\n".join(
-                [
-                    f"# Workflow Boundaries ({version})",
-                    "",
-                    f"- run_id: {run_id}",
-                    f"- feature: {feature}",
-                    f"- workflow_status: {workflow_status}",
-                    f"- reason: {reason}",
-                    "- guardrail: implementation stage requires explicit command execution",
-                ]
+        if not boundaries.exists():
+            boundaries.write_text(
+                "\n".join(
+                    [
+                        f"# Workflow Boundaries ({version})",
+                        "",
+                        f"- run_id: {run_id}",
+                        f"- feature: {feature}",
+                        f"- workflow_status: {workflow_status}",
+                        f"- reason: {reason}",
+                        "- guardrail: implementation stage requires explicit command execution",
+                    ]
+                )
+                + "\n",
+                encoding="utf-8",
             )
-            + "\n",
-            encoding="utf-8",
-        )
         terminal_payload = {
             "schema_version": "1.0",
             "version": version,
@@ -548,7 +1030,17 @@ def _sync_terminal_manifest(project_root: Path, *, version: str, run_id: str) ->
         project_root / "docs" / "beacon" / version / "execution",
         project_root / "docs" / "product" / version / "execution",
     ):
-        for name in ("boundaries.md", "terminal.json", "summary.json", "summary.md"):
+        for name in (
+            "boundaries.md",
+            "terminal.json",
+            "summary.json",
+            "summary.md",
+            "config.json",
+            "source.json",
+            "git-alignment.json",
+            "delivery-manifest.json",
+            "change-impact.json",
+        ):
             path = root / name
             if path.exists():
                 refs.append(str(path.relative_to(project_root)))
@@ -585,16 +1077,18 @@ def run_beacon_command(
 
 
 def ensure_output_dirs(project_root: Path, version: str = "v1.0.0"):
-    """Ensure output directories exist - supports both docs/beacon and docs/product"""
+    """Ensure canonical docs roots exist and keep compat mirror directories available."""
     dirs = [
-        # Beacon primary directories
+        # Canonical Beacon directories
         project_root / "docs" / "beacon" / version / "user-story",
         project_root / "docs" / "beacon" / version / "prd",
         project_root / "docs" / "beacon" / version / "qa" / "test-cases",
-        # PTK compatibility directories
+        project_root / "docs" / "beacon" / version / "execution",
+        # PTK compatibility mirror directories
         project_root / "docs" / "product" / version / "user-story",
         project_root / "docs" / "product" / version / "prd",
         project_root / "docs" / "product" / version / "qa" / "test-cases",
+        project_root / "docs" / "product" / version / "execution",
         # State directory
         project_root / ".beacon" / "state",
     ]
@@ -616,22 +1110,22 @@ def _stage_output_candidates(project_root: Path, stage: str, feature: str, versi
         ] + common
     if stage == "user-story":
         return [
-            project_root / "docs" / "product" / version / "user-story" / f"{slug}.md",
             project_root / "docs" / "beacon" / version / "user-story" / f"{slug}.md",
+            project_root / "docs" / "product" / version / "user-story" / f"{slug}.md",
         ] + common
     if stage == "prd":
         return [
-            project_root / "docs" / "product" / version / "prd" / f"{slug}.md",
             project_root / "docs" / "beacon" / version / "prd" / f"{slug}.md",
+            project_root / "docs" / "product" / version / "prd" / f"{slug}.md",
         ] + common
     if stage == "test-case":
         return [
-            project_root / "docs" / "product" / version / "qa" / "test-cases" / f"{slug}.md",
             project_root / "docs" / "beacon" / version / "qa" / "test-cases" / f"{slug}.md",
-            project_root / "docs" / "product" / version / "qa" / "test-cases" / f"{slug}.ac-test-matrix.json",
+            project_root / "docs" / "product" / version / "qa" / "test-cases" / f"{slug}.md",
             project_root / "docs" / "beacon" / version / "qa" / "test-cases" / f"{slug}.ac-test-matrix.json",
-            project_root / "docs" / "product" / version / "qa" / "test-cases" / f"{slug}.qa9-matrix.json",
+            project_root / "docs" / "product" / version / "qa" / "test-cases" / f"{slug}.ac-test-matrix.json",
             project_root / "docs" / "beacon" / version / "qa" / "test-cases" / f"{slug}.qa9-matrix.json",
+            project_root / "docs" / "product" / version / "qa" / "test-cases" / f"{slug}.qa9-matrix.json",
         ] + common
     if stage == "implementation":
         return [
@@ -651,16 +1145,16 @@ def _stage_output_candidates(project_root: Path, stage: str, feature: str, versi
 def _matrix_path_candidates(project_root: Path, feature: str, version: str) -> list[Path]:
     slug = _slug(feature)
     return [
-        project_root / "docs" / "product" / version / "qa" / "test-cases" / f"{slug}.ac-test-matrix.json",
         project_root / "docs" / "beacon" / version / "qa" / "test-cases" / f"{slug}.ac-test-matrix.json",
+        project_root / "docs" / "product" / version / "qa" / "test-cases" / f"{slug}.ac-test-matrix.json",
     ]
 
 
 def _qa9_matrix_path_candidates(project_root: Path, feature: str, version: str) -> list[Path]:
     slug = _slug(feature)
     return [
-        project_root / "docs" / "product" / version / "qa" / "test-cases" / f"{slug}.qa9-matrix.json",
         project_root / "docs" / "beacon" / version / "qa" / "test-cases" / f"{slug}.qa9-matrix.json",
+        project_root / "docs" / "product" / version / "qa" / "test-cases" / f"{slug}.qa9-matrix.json",
     ]
 
 
@@ -1507,6 +2001,13 @@ def start(
         run_id,
         base_state,
     )
+    _write_execution_governance_artifacts(
+        project_root=project_root,
+        version=resolved_version,
+        run_id=run_id,
+        feature=feature,
+        workflow_status="running" if auto else "planned",
+    )
     _record_debug_feedback(
         project_root=project_root,
         source="workflow.start",
@@ -1706,6 +2207,13 @@ def start(
             feature=feature,
             workflow_status="planned",
         )
+        _write_execution_governance_artifacts(
+            project_root=project_root,
+            version=resolved_version,
+            run_id=run_id,
+            feature=feature,
+            workflow_status="planned",
+        )
         _print_next_step_selector(project_root=project_root, version=resolved_version, run_id=run_id, feature=feature)
         return
 
@@ -1816,6 +2324,13 @@ def start(
             feature=feature,
             workflow_status="blocked",
         )
+        _write_execution_governance_artifacts(
+            project_root=project_root,
+            version=resolved_version,
+            run_id=run_id,
+            feature=feature,
+            workflow_status="blocked",
+        )
         if bridge_execute:
             _execute_bridge_actions(
                 project_root=project_root,
@@ -1858,6 +2373,13 @@ def start(
             feature=feature,
             workflow_status="completed",
         )
+        _write_execution_governance_artifacts(
+            project_root=project_root,
+            version=resolved_version,
+            run_id=run_id,
+            feature=feature,
+            workflow_status="completed",
+        )
         if bridge_execute:
             _execute_bridge_actions(
                 project_root=project_root,
@@ -1883,6 +2405,13 @@ def start(
         project_root=project_root,
         run_id=run_id,
         version=resolved_version,
+        feature=feature,
+        workflow_status="running",
+    )
+    _write_execution_governance_artifacts(
+        project_root=project_root,
+        version=resolved_version,
+        run_id=run_id,
         feature=feature,
         workflow_status="running",
     )
@@ -2322,6 +2851,13 @@ def continue_workflow(  # noqa: A003
                 feature=run_feature,
                 workflow_status="blocked",
             )
+            _write_execution_governance_artifacts(
+                project_root=project_root,
+                version=run_version,
+                run_id=resolved_run_id,
+                feature=run_feature,
+                workflow_status="blocked",
+            )
             if bridge_execute:
                 _execute_bridge_actions(
                     project_root=project_root,
@@ -2370,6 +2906,13 @@ def continue_workflow(  # noqa: A003
                     feature=run_feature,
                     workflow_status="completed",
                 )
+                _write_execution_governance_artifacts(
+                    project_root=project_root,
+                    version=run_version,
+                    run_id=resolved_run_id,
+                    feature=run_feature,
+                    workflow_status="completed",
+                )
                 if bridge_execute:
                     _execute_bridge_actions(
                         project_root=project_root,
@@ -2384,6 +2927,13 @@ def continue_workflow(  # noqa: A003
                     project_root=project_root,
                     run_id=resolved_run_id,
                     version=run_version,
+                    feature=run_feature,
+                    workflow_status="running",
+                )
+                _write_execution_governance_artifacts(
+                    project_root=project_root,
+                    version=run_version,
+                    run_id=resolved_run_id,
                     feature=run_feature,
                     workflow_status="running",
                 )
@@ -2410,6 +2960,13 @@ def continue_workflow(  # noqa: A003
             project_root=project_root,
             run_id=resolved_run_id,
             version=run_version,
+            feature=run_feature,
+            workflow_status="completed",
+        )
+        _write_execution_governance_artifacts(
+            project_root=project_root,
+            version=run_version,
+            run_id=resolved_run_id,
             feature=run_feature,
             workflow_status="completed",
         )
@@ -2447,6 +3004,13 @@ def continue_workflow(  # noqa: A003
             project_root=project_root,
             run_id=resolved_run_id,
             version=run_version,
+            feature=run_feature,
+            workflow_status="running",
+        )
+        _write_execution_governance_artifacts(
+            project_root=project_root,
+            version=run_version,
+            run_id=resolved_run_id,
             feature=run_feature,
             workflow_status="running",
         )

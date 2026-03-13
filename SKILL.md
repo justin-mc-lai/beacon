@@ -5,17 +5,17 @@ description: AI Product Workflow Toolkit for product thinking, user stories, PRD
 
 # Beacon - AI Product Workflow Toolkit
 
-> **Skill Version**: v1.0.3
-> **CLI Version**: v1.0.3
-> **Last Updated**: 2026-03-06
+> **Skill Version**: v1.1.1
+> **CLI Version**: v1.1.1
+> **Last Updated**: 2026-03-13
 
 Beacon 是 AI 产品工作流工具包，提供需求澄清、用户故事、PRD、测试用例、技术方案与发布清单的完整工作流。
 
 ## 命令触发（CLI/Skill 单一事实源）
 
 **命令口径（统一）**：
-- `beacon-<subcommand>`（推荐）
-- `beacon <subcommand>`（兼容）
+- `beacon <subcommand>`（推荐）
+- `beacon-<subcommand>`（可选兼容别名，取决于安装方式）
 - 脚本方式（兼容）：`python3 -m beacon.main <subcommand> ...`
 - 历史模块入口（兼容）：`python3 -m beacon.think ...`（保留兼容，但不作为推荐入口）
 
@@ -127,7 +127,7 @@ python3 scripts/sync_skill_commands.py --check
 
 ```bash
 # 推荐
-./beacon-cli think start "分析 xxx 业务闭环" --project /abs/path/to/project
+beacon think start "分析 xxx 业务闭环" --project /abs/path/to/project
 
 # 兼容
 python3 -m beacon.main think start "分析 xxx 业务闭环" --project /abs/path/to/project
@@ -146,13 +146,16 @@ python3 -m beacon.main think start "分析 xxx 业务闭环" --project /abs/path
 ## 输出目录
 
 ```
-docs/product/{version}/
+docs/beacon/{version}/
 ├── SUMMARY.md
 ├── prd/{feature}.md
 ├── user-story/{feature}.md
 ├── qa/test-cases/{feature}.md
 ├── execution/boundaries.md
 └── execution/terminal.json
+
+# compat mirror（自动同步，非人工维护）
+docs/product/{version}/...
 ```
 
 ## 参考文档
@@ -163,4 +166,4 @@ docs/product/{version}/
 
 ---
 
-**版本**: v1.0.3
+**版本**: v1.1.1

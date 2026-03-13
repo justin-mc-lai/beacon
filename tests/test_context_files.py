@@ -124,6 +124,10 @@ def test_setup_context_files_should_create_both_files_with_markers(tmp_path: Pat
         assert MANAGED_BLOCK_START in content
         assert MANAGED_BLOCK_END in content
         assert "BEACON:VERSION:v1.2.3" in content
+    assert "docs/beacon/<version>/` is the canonical source of truth" in claude
+    assert "docs/product/<version>/` is a compatibility mirror" in claude
+    assert "Use `docs/beacon/<version>/` as the canonical delivery tree." in agents
+    assert "Treat `docs/product/<version>/` as a compatibility mirror." in agents
 
 
 def test_verify_context_files_should_return_expected_checks_and_statuses(tmp_path: Path):
