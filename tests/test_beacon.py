@@ -503,6 +503,15 @@ class TestBeaconWireframe:
         assert result.exit_code == 0
 
 
+class TestBeaconPrototype:
+    """Test prototype command"""
+
+    def test_prototype_help(self):
+        """Test prototype help"""
+        result = runner.invoke(app, ["prototype", "--help"])
+        assert result.exit_code == 0
+
+
 class TestBeaconSave:
     """Test save command"""
 

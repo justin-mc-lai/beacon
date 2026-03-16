@@ -45,11 +45,18 @@ WORKFLOW_STAGES = [
     ("think", "Product thinking (vNext)", "beacon think start"),
     ("user-story", "Generate user stories", "beacon user-story create"),
     ("prd", "Generate PRD", "beacon prd create"),
+    ("prototype", "Generate static UI prototype", "beacon prototype create"),
     ("test-case", "Generate executable test matrix", "beacon test-case create"),
     ("implementation", "Align code implementation with docs", "beacon run workflow"),
     ("verify", "Run multi-layer tests and gate closure", "beacon auto-test create"),
     ("gate", "Run gate readiness and closure check", "beacon gate check release"),
 ]
+
+
+def _workflow_stages(*, prototype_enabled: bool) -> list[tuple[str, str, str]]:
+    if prototype_enabled:
+        return list(WORKFLOW_STAGES)
+    return [stage for stage in WORKFLOW_STAGES if stage[0] != "prototype"]
 
 INTERACTIVE_ACTIONS: dict[str, str] = {
     "1": "single-step",
@@ -1070,6 +1077,7 @@ def ensure_output_dirs(project_root: Path, version: str = "v1.0.0"):
     dirs = [
         project_root / "docs" / "beacon" / version / "user-story",
         project_root / "docs" / "beacon" / version / "prd",
+        project_root / "docs" / "beacon" / version / "prototype",
         project_root / "docs" / "beacon" / version / "qa" / "test-cases",
         project_root / "docs" / "beacon" / version / "execution",
         project_root / ".beacon" / "state",
@@ -1097,6 +1105,13 @@ def _stage_output_candidates(project_root: Path, stage: str, feature: str, versi
     if stage == "prd":
         return [
             project_root / "docs" / "beacon" / version / "prd" / f"{slug}.md",
+        ] + common
+    if stage == "prototype":
+        return [
+            project_root / "docs" / "beacon" / version / "prototype" / slug / "index.html",
+            project_root / "docs" / "beacon" / version / "prototype" / slug / "manifest.json",
+            project_root / "docs" / "beacon" / version / "prototype" / slug / "source-map.json",
+            project_root / "docs" / "beacon" / version / "prototype" / slug / "freeze.json",
         ] + common
     if stage == "test-case":
         return [
@@ -1317,7 +1332,7 @@ def _render_workflow_hud(
         },
         "stage_status": {
             stage: str((stage_status.get(stage) or {}).get("status", "not_started"))
-            for stage, _, _ in WORKFLOW_STAGES
+            for stage in list(progress.get("workflow_stages", []) or [name for name, _, _ in WORKFLOW_STAGES])
         },
         "blockers": {
             "blocking_open_questions": len(open_questions) if isinstance(open_questions, list) else 0,
@@ -1606,6 +1621,24 @@ def _execute_stage(
             extra_env=stage_env,
         )
         rc = int(result.returncode)
+    elif stage == "prototype":
+        result = run_beacon_command(
+            ["prototype", "create", feature, "--project", str(project_root), "--version", version],
+            project_root,
+            run_id=run_id,
+            stage=stage,
+            extra_env=stage_env,
+        )
+        rc = int(result.returncode)
+        if rc == 0:
+            freeze_result = run_beacon_command(
+                ["prototype", "freeze", feature, "--project", str(project_root), "--version", version],
+                project_root,
+                run_id=run_id,
+                stage=stage,
+                extra_env=stage_env,
+            )
+            rc = int(freeze_result.returncode)
     elif stage == "test-case":
         result = run_beacon_command(
             ["test-case", "create", feature, "--project", str(project_root), "--version", version],
@@ -1868,6 +1901,11 @@ def start(
         "--on-timeout",
         help="Timeout behavior: pause|continue|abort",
     ),
+    with_prototype: bool = typer.Option(
+        False,
+        "--with-prototype/--no-with-prototype",
+        help="Include optional prototype stage for UI visualization flows.",
+    ),
     implementation_command: Optional[str] = typer.Option(
         None,
         "--implementation-command",
@@ -1964,6 +2002,7 @@ def start(
         "mode": "auto" if auto else "manual",
         "feature": feature,
         "version": resolved_version,
+        "prototype_enabled": bool(with_prototype),
         "status": "running" if auto else "planned",
         "started_at": started_at,
         "events": [{"event": "workflow_started", "ts": started_at}],
@@ -2007,7 +2046,7 @@ def start(
     typer.echo("=" * 50)
     interactive_mode = _effective_interactive_mode(interactive)
     mode_label = "interactive" if interactive_mode else "non_interactive"
-    stage_order = [name for name, _, _ in WORKFLOW_STAGES]
+    stage_order = [name for name, _, _ in _workflow_stages(prototype_enabled=bool(with_prototype))]
     pending_stages = [stage for stage in stage_order if stage not in skip_stages]
     hud_snapshot_rel: str | None = None
 
@@ -2140,7 +2179,8 @@ def start(
                 run_auto = True
             break
 
-    for i, (stage, desc, _) in enumerate(WORKFLOW_STAGES, 1):
+    display_stages = _workflow_stages(prototype_enabled=bool(with_prototype))
+    for i, (stage, desc, _) in enumerate(display_stages, 1):
         if stage in skip_stages:
             typer.echo(f"{i}. {stage:12} - {desc} [SKIPPED]")
             append_lifecycle_event(
@@ -2435,6 +2475,11 @@ def continue_workflow(  # noqa: A003
         "--on-timeout",
         help="Timeout behavior: pause|continue|abort",
     ),
+    with_prototype: Optional[bool] = typer.Option(
+        None,
+        "--with-prototype/--no-with-prototype",
+        help="Override whether this workflow run includes the optional prototype stage.",
+    ),
     implementation_command: Optional[str] = typer.Option(
         None,
         "--implementation-command",
@@ -2518,6 +2563,8 @@ def continue_workflow(  # noqa: A003
         raise typer.Exit(2)
 
     state = load_run_state(project_root, resolved_run_id) or {}
+    if isinstance(with_prototype, bool):
+        state["prototype_enabled"] = with_prototype
     run_feature = str(state.get("feature", "") or feature or "").strip()
     run_version = str(state.get("version", "") or resolve_target_version(project_root, version)).strip()
     if not run_feature:
@@ -2567,7 +2614,8 @@ def continue_workflow(  # noqa: A003
         hud_snapshot_rel = None
 
     next_stage = str(progress.get("next_stage") or "")
-    stage_order = [name for name, _, _ in WORKFLOW_STAGES]
+    prototype_enabled = bool(state.get("prototype_enabled"))
+    stage_order = [name for name, _, _ in _workflow_stages(prototype_enabled=prototype_enabled)]
     if not next_stage and stage_order:
         next_stage = stage_order[0]
 
@@ -3106,7 +3154,7 @@ def status(
         typer.echo(f"feature: {progress.get('feature')}")
     if progress.get("version"):
         typer.echo(f"version: {progress.get('version')}")
-    for stage in ("think", "user-story", "prd", "test-case", "implementation", "verify", "gate"):
+    for stage in progress.get("workflow_stages", ["think", "user-story", "prd", "test-case", "implementation", "verify", "gate"]):
         item = progress.get("stages", {}).get(stage, {})
         typer.echo(f"{stage:12}: {item.get('status', 'not_started')}")
     typer.echo(f"next_stage   : {progress.get('next_stage') or 'none'}")
@@ -3119,7 +3167,7 @@ def status(
 def gate(
     stage: Optional[str] = typer.Argument(
         None,
-        help="Stage to check (think/user-story/prd/test-case/implementation/verify/release)",
+        help="Stage to check (think/user-story/prd/prototype/test-case/implementation/verify/release)",
     ),
     project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
     version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
@@ -3129,7 +3177,7 @@ def gate(
     resolved_version = resolve_target_version(project_root, version)
 
     stages = (
-        ["think", "user-story", "prd", "test-case", "release"]
+        ["think", "user-story", "prd", "prototype", "test-case", "release"]
         if not stage
         else [stage]
     )
@@ -3198,6 +3246,7 @@ def run(
         "data-dictionary": "data-dictionary",
         "data_dictionary": "data-dictionary",
         "ui-spec": "ui-spec",
+        "prototype": "prototype",
         "ui_spec": "ui-spec",
         "wireframe": "wireframe",
         "save": "save",

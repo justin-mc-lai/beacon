@@ -10,12 +10,12 @@
 
 ## 1. 当前版本是什么
 
-Beacon 当前单一发布口径是 **v1.1.1**。
+Beacon 当前单一发布口径是 **v1.1.2**。
 
-> 当前发布线：`v1.1.1`
+> 当前发布线：`v1.1.2`
 
 - **CLI 入口**：`beacon <subcommand>`
-- **当前包版本**：`1.1.1`
+- **当前包版本**：`1.1.2`
 - **文档主源**：`docs/beacon/<version>/`
 - **状态目录**：`.beacon/`
 
@@ -26,7 +26,7 @@ Beacon 当前单一发布口径是 **v1.1.1**。
 
 如果你只记一条：
 
-> **Beacon 现在是 v1.1.1，写文档看 `docs/beacon`，执行命令用 `beacon <subcommand>`。**
+> **Beacon 现在是 v1.1.2，写文档看 `docs/beacon`，执行命令用 `beacon <subcommand>`。**
 
 ---
 
@@ -36,7 +36,7 @@ Beacon 当前单一发布口径是 **v1.1.1**。
 
 Beacon 当前负责：
 
-1. **需求主链编排**：`think → user-story → prd → test-case → implementation → verify → gate`
+1. **需求主链编排**：`think → user-story → prd → [prototype] → test-case → implementation → verify → gate`
 2. **自动化测试与门禁治理**：`auto-test`、`gate`、`release`
 3. **证据闭环**：coverage、manifest、spec consistency、memory closure、delivery artifacts
 4. **记忆与反馈**：`remember`、`recall`、`feedback`、`resume`、`report`
@@ -51,12 +51,12 @@ Beacon 默认**不负责**：
 - 直接做数据库迁移/部署执行
 - 让 `research` 直接替代正式交付主链
 
-### 当前发布线摘要（v1.1.1）
+### 当前发布线摘要（v1.1.2）
 
-- **完整主链工作流**：`think → user-story → prd → test-case → implementation → verify → gate`
+- **完整主链工作流**：`think → user-story → prd → [prototype] → test-case → implementation → verify → gate`
 - **严格交付治理**：release gate 校验 memory closure、spec consistency、evidence manifest、coverage、delivery artifacts
 - **自动化测试闭环**：`auto-test` 支持多层执行证据、QA9、compatibility pair evidence、coverage 回写
-- **验收报告可生成**：`beacon report latest acceptance-audit ...`
+- **UI Prototype 生命周期**：支持 `prototype create / preview / freeze / status / list`，默认栈为 Bootstrap 5.3.x
 
 ---
 
@@ -119,8 +119,8 @@ beacon auto-test create all --project . \
 
 # QA9 / 当前版本矩阵
 beacon auto-test create qa9 --project . \
-  --version v1.1.1 \
-  --qa-matrix-path docs/beacon/v1.1.1/qa/test-cases/beacon-strict-config-governance.qa9-matrix.json \
+  --version v1.1.2 \
+  --qa-matrix-path docs/beacon/v1.1.2/qa/test-cases/beacon-ui-prototype-lifecycle.qa9-matrix.json \
   --ui-runner browser-use \
   --require-fresh-evidence \
   --require-junit \
@@ -132,8 +132,8 @@ beacon auto-test create qa9 --project . \
 ```bash
 beacon doctor
 beacon doctor setup --dry-run --json
-beacon status --board --version v1.1.1
-beacon report --machine --version v1.1.1
+beacon status --board --version v1.1.2
+beacon report --machine --version v1.1.2
 ```
 
 ---
@@ -177,10 +177,10 @@ docs/beacon/<version>/execution/
 └── runs/
 ```
 
-### 当前验收工件（v1.1.1）
+### 当前验收工件（v1.1.2）
 
-- `docs/beacon/v1.1.1/execution/boundaries.md`
-- `docs/beacon/v1.1.1/execution/acceptance-regression-audit.md`
+- `docs/beacon/v1.1.2/execution/boundaries.md`
+- `docs/beacon/v1.1.2/execution/acceptance-regression-audit.md`
 
 ---
 
@@ -193,10 +193,10 @@ docs/beacon/<version>/execution/
 python3 -m pytest -q
 
 # 当前 release gate
-beacon gate check release --project-root . --version v1.1.1
+beacon gate check release --project-root . --version v1.1.2
 
 # 当前 release check
-beacon release check v1.1.1 --project .
+beacon release check v1.1.2 --project .
 ```
 
 ### 自动生成验收审计
@@ -204,15 +204,15 @@ beacon release check v1.1.1 --project .
 ```bash
 beacon report latest acceptance-audit \
   --project-root . \
-  --version v1.1.1 \
-  --feature beacon-strict-config-governance \
+  --version v1.1.2 \
+  --feature beacon-ui-prototype-lifecycle \
   --run-regression \
   --write
 ```
 
 这个命令会生成：
 
-- `docs/beacon/v1.1.1/execution/acceptance-regression-audit.{md,json}`
+- `docs/beacon/v1.1.2/execution/acceptance-regression-audit.{md,json}`
 
 ---
 
@@ -273,18 +273,18 @@ beacon report latest acceptance-audit \
 
 ### 详细策略文档
 
-- [v1.1.1 文档版本化与编写策略](./docs/beacon/v1.1.1/execution/documentation-versioning-guidelines.md)
+- [v1.1.2 文档版本化与编写策略](./docs/beacon/v1.1.2/execution/documentation-versioning-guidelines.md)
 
 ---
 
 ## 7. 相关链接
 
-- **当前边界定义（v1.1.1）**: [boundaries.md](./docs/beacon/v1.1.1/execution/boundaries.md)
-- **当前验收回归审计（v1.1.1）**: [acceptance-regression-audit.md](./docs/beacon/v1.1.1/execution/acceptance-regression-audit.md)
+- **当前边界定义（v1.1.2）**: [boundaries.md](./docs/beacon/v1.1.2/execution/boundaries.md)
+- **当前验收回归审计（v1.1.2）**: [acceptance-regression-audit.md](./docs/beacon/v1.1.2/execution/acceptance-regression-audit.md)
 - **当前子命令能力蓝图**: [v1.1.0-subcommand-capability-blueprint.md](./docs/beacon/v1.1.0/execution/v1.1.0-subcommand-capability-blueprint.md)
-- **文档版本化与编写策略**: [documentation-versioning-guidelines.md](./docs/beacon/v1.1.1/execution/documentation-versioning-guidelines.md)
+- **文档版本化与编写策略**: [documentation-versioning-guidelines.md](./docs/beacon/v1.1.2/execution/documentation-versioning-guidelines.md)
 
 ---
 
-**版本**: v1.1.1
+**版本**: v1.1.2
 **最后更新**: 2026-03-13

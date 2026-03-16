@@ -1,5 +1,5 @@
 <!-- BEACON:START -->
-<!-- BEACON:VERSION:v1.1.1 -->
+<!-- BEACON:VERSION:v1.1.2 -->
 # CLAUDE.md
 
 This file is Beacon-managed runtime guidance.
@@ -18,7 +18,7 @@ This file is Beacon-managed runtime guidance.
 - `beacon status --verbose`
 
 ## Requirement materials and docs paths
-- Runtime target version: `v1.1.1`
+- Runtime target version: `v1.1.2`
 - `docs/beacon/<version>/` is the canonical source of truth.
 - `docs/beacon/<version>/SUMMARY.md`
 - `docs/beacon/<version>/prd/`

@@ -20,6 +20,7 @@ SUPPORTED_SUBCOMMANDS = (
     "kano",
     "moscow",
     "persona",
+    "prototype",
     "prompt",
     "prd",
     "ralph-bridge",

@@ -1,5 +1,5 @@
 <!-- BEACON:START -->
-<!-- BEACON:VERSION:v1.1.1 -->
+<!-- BEACON:VERSION:v1.1.2 -->
 # AGENTS.md
 
 This file is Beacon-managed agent operation guidance.
@@ -10,7 +10,7 @@ This file is Beacon-managed agent operation guidance.
 - Preserve user-authored sections outside Beacon managed blocks.
 
 ## Beacon requirement-material usage
-- Runtime target version: `v1.1.1`
+- Runtime target version: `v1.1.2`
 - Use `docs/beacon/<version>/` as the canonical delivery tree.
 - Prioritize `prd`, `user-story`, `qa/test-cases`, and `execution` artifacts.
 - If context blocks are missing/corrupted, run:

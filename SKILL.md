@@ -5,9 +5,9 @@ description: AI Product Workflow Toolkit for product thinking, user stories, PRD
 
 # Beacon - AI Product Workflow Toolkit
 
-> **Skill Version**: v1.1.1
-> **CLI Version**: v1.1.1
-> **Last Updated**: 2026-03-13
+> **Skill Version**: v1.1.2
+> **CLI Version**: v1.1.2
+> **Last Updated**: 2026-03-16
 
 Beacon 是 AI 产品工作流工具包，提供需求澄清、用户故事、PRD、测试用例、技术方案与发布清单的完整工作流。
 
@@ -54,6 +54,7 @@ python3 scripts/sync_skill_commands.py --check
 | `beacon kano` | `kano` |
 | `beacon moscow` | `moscow` |
 | `beacon persona` | `persona` |
+| `beacon prototype` | `prototype` |
 | `beacon prompt` | `prompt` |
 | `beacon prd` | `prd` |
 | `beacon ralph-bridge` | `ralph-bridge` |
@@ -98,6 +99,7 @@ python3 scripts/sync_skill_commands.py --check
 | `kano` | `beacon kano` |
 | `moscow` | `beacon moscow` |
 | `persona` | `beacon persona` |
+| `prototype` | `beacon prototype` |
 | `prompt` | `beacon prompt` |
 | `prd` | `beacon prd` |
 | `ralph-bridge` | `beacon ralph-bridge` |
@@ -163,4 +165,4 @@ docs/beacon/{version}/
 
 ---
 
-**版本**: v1.1.1
+**版本**: v1.1.2

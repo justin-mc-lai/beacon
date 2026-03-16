@@ -17,6 +17,7 @@ from beacon.utils.debug_feedback import (
 from beacon.utils.memory import load_memory_entries
 from beacon.utils.memory import scope_memory_paths
 from beacon.utils.qa9 import QA9_TYPES, normalize_qa_type, parse_qa_types
+from beacon.utils.prototype_support import prototype_status, version_requires_prototype
 from beacon.utils.versioning import resolve_target_version
 from beacon.utils.v110_baseline import (
     load_latest_baseline_snapshot,
@@ -121,6 +122,12 @@ REASON_CODES = [
     "change_impact_missing",
     "change_impact_schema_invalid",
     "change_impact_open_tasks",
+    "prototype_missing",
+    "prototype_not_frozen",
+    "prototype_stale",
+    "prototype_source_untraceable",
+    "prototype_ui_contract_failed",
+    "prototype_accessibility_contract_failed",
 ]
 
 # Workflow stages
@@ -1011,6 +1018,66 @@ def check_release_memory_profile(project_root: Path, mode: GateMode, stage: str,
             }
         )
 
+    return issues
+
+
+def check_prototype_contract(
+    project_root: Path,
+    mode: GateMode,
+    stage: str,
+    version: Optional[str] = None,
+) -> List[Dict[str, Any]]:
+    """Check prototype lifecycle artifacts for UI-visualization workflows."""
+    if stage not in {"prototype", "release"}:
+        return []
+    resolved_version = resolve_target_version(project_root, version)
+    if not version_requires_prototype(project_root, resolved_version):
+        return []
+
+    proto_root = project_root / "docs" / "beacon" / resolved_version / "prototype"
+    if not proto_root.exists():
+        return [{
+            "reason_code": "prototype_missing",
+            "blocked": True,
+            "message": f"prototype directory missing for UI visualization version {resolved_version}",
+        }]
+
+    issues: list[dict[str, Any]] = []
+    feature_dirs = [path for path in proto_root.iterdir() if path.is_dir()]
+    if not feature_dirs:
+        return [{
+            "reason_code": "prototype_missing",
+            "blocked": True,
+            "message": f"prototype directory is empty for UI visualization version {resolved_version}",
+        }]
+
+    for feature_dir in sorted(feature_dirs):
+        payload = prototype_status(project_root, resolved_version, feature_dir.name)
+        if payload.get("status") == "missing":
+            issues.append({
+                "reason_code": "prototype_missing",
+                "blocked": True,
+                "message": f"prototype artifacts missing for feature {feature_dir.name}",
+            })
+            continue
+        if not payload.get("recorded_source_fingerprints"):
+            issues.append({
+                "reason_code": "prototype_source_untraceable",
+                "blocked": True,
+                "message": f"prototype freeze/source metadata missing for feature {feature_dir.name}",
+            })
+        if payload.get("status") == "draft":
+            issues.append({
+                "reason_code": "prototype_not_frozen",
+                "blocked": True,
+                "message": f"prototype not frozen for feature {feature_dir.name}",
+            })
+        if payload.get("status") == "stale":
+            issues.append({
+                "reason_code": "prototype_stale",
+                "blocked": True,
+                "message": f"prototype stale for feature {feature_dir.name}",
+            })
     return issues
 
 
@@ -2242,6 +2309,7 @@ def run_gate_checks(
             if mode == GateMode.DEBUG:
                 typer.echo("[DEBUG] [stage-local] Checking test execution integrity...")
             all_issues.extend(check_test_execution_integrity(project_root, mode, stage))
+            all_issues.extend(check_prototype_contract(project_root, mode, stage, version))
             if mode == GateMode.DEBUG:
                 typer.echo("[DEBUG] [stage-local] Checking coverage metrics...")
             all_issues.extend(check_coverage_metrics(project_root, mode, stage, version=version))
@@ -2277,6 +2345,7 @@ def run_gate_checks(
         if mode == GateMode.DEBUG:
             typer.echo("[DEBUG] [release-global] Checking delivery execution artifacts...")
         all_issues.extend(check_delivery_execution_artifacts(project_root, mode, stage, version))
+        all_issues.extend(check_prototype_contract(project_root, mode, stage, version))
 
         if mode == GateMode.STRICT or mode == GateMode.DEBUG:
             if mode == GateMode.DEBUG:
@@ -2467,6 +2536,7 @@ def list_checks(
     typer.echo("Workflow Stages:")
     for stage in WORKFLOW_STAGES:
         typer.echo(f"  - {stage}")
+    typer.echo("  - prototype")
     typer.echo("")
     typer.echo("Gate Modes:")
     for mode in GateMode:
@@ -2483,7 +2553,7 @@ def list_checks(
 
 @app.command()
 def check(
-    stage: str = typer.Argument("think", help="Workflow stage: think/user-story/prd/test-case/release"),
+    stage: str = typer.Argument("think", help="Workflow stage: think/user-story/prd/prototype/test-case/release"),
     strict: bool = typer.Option(False, "--strict", help="Enable strict mode"),
     mode: Optional[str] = typer.Option(None, "--mode", help="Gate mode: strict/normal/debug/dry-run"),
     profile: str = typer.Option(
@@ -2669,6 +2739,29 @@ def check_test_case(
     raise typer.Exit(
         _run_check_command(
             stage="test-case",
+            strict=strict,
+            mode=mode,
+            profile=profile,
+            json_output=json_output,
+            force=force,
+            project_root=project_root,
+        )
+    )
+
+
+@app.command("prototype")
+def check_prototype(
+    strict: bool = typer.Option(False, "--strict", help="Enable strict mode"),
+    mode: Optional[str] = typer.Option(None, "--mode", help="Gate mode: strict/normal/debug/dry-run"),
+    profile: str = typer.Option("auto", "--profile", help="Gate profile: auto/stage-local/release-global."),
+    json_output: bool = typer.Option(False, "--json", help="JSON output"),
+    force: bool = typer.Option(False, "--force", help="Force pass with risk logging"),
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+):
+    """Flat syntax compatibility for `gate prototype`."""
+    raise typer.Exit(
+        _run_check_command(
+            stage="prototype",
             strict=strict,
             mode=mode,
             profile=profile,

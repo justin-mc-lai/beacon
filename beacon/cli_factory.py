@@ -69,6 +69,7 @@ def build_app(*, package_version: str) -> typer.Typer:
     # Design & Collaboration commands
     from .commands.ui_spec import app as ui_spec_app
     from .commands.wireframe import app as wireframe_app
+    from .commands.prototype import app as prototype_app
     from .commands.save import app as save_app
     from .commands.recall import app as recall_app
     from .commands.remember import app as remember_app
@@ -112,6 +113,7 @@ def build_app(*, package_version: str) -> typer.Typer:
     # Design & Collaboration commands
     app.add_typer(ui_spec_app, name="ui-spec")
     app.add_typer(wireframe_app, name="wireframe")
+    app.add_typer(prototype_app, name="prototype")
     app.add_typer(save_app, name="save")
     app.add_typer(recall_app, name="recall")
     app.add_typer(remember_app, name="remember")

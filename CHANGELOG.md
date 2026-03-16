@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.2] - 2026-03-16
+
+### Added
+
+- Added `beacon prototype` command group for static single-page UI reference prototypes.
+- Added prototype lifecycle governance artifacts: `manifest.json`, `source-map.json`, `freeze.json`.
+- Added optional workflow `prototype` stage with gate enforcement for UI visualization requirements.
+- Added v1.1.2 requirement materials, boundaries, current-version summary, acceptance audit, and execution docs.
+- Added prototype-focused contract tests and current-version docs assertions.
+
+### Changed
+
+- Upgraded current release line, runtime metadata, and managed guidance to **v1.1.2**.
+- Default prototype stack is now formally fixed to Bootstrap 5.3.x + Bootstrap Icons + Beacon Theme CSS + Alpine.js.
+- Prompt routing now recognizes prototype requests as a first-class intent.
+- Workflow/gate/report/status surfaces now understand optional prototype lifecycle state.
+
+### Verified
+
+- Full regression: `python3 -m pytest -q` → `378 passed`
+
 ## [1.0.4] - 2026-03-09
 
 ### Added

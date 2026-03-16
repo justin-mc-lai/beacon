@@ -102,6 +102,8 @@ def _status_impl(
         typer.echo(f"- coverage.ac: {coverage_metrics.get('tested_ac')}/{coverage_metrics.get('total_ac')}")
         typer.echo(f"- coverage.tc: {coverage_metrics.get('executed_tc')}/{coverage_metrics.get('total_tc')}")
         typer.echo(f"- coverage.full: {coverage_metrics.get('full_coverage')}")
+        if workflow_progress.get("stages", {}).get("prototype"):
+            typer.echo(f"- workflow.prototype: {workflow_progress.get('stages', {}).get('prototype', {}).get('status')}")
         if verbose:
             typer.echo(f"- run.latest_run_id: {latest or 'none'}")
             typer.echo(f"- run.selected_run_id: {resolved_run_id or 'none'}")

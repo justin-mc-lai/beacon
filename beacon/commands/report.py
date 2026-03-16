@@ -70,6 +70,9 @@ def _human_summary(machine: dict[str, Any]) -> str:
                 f"- next_stage: `{machine.get('workflow_progress', {}).get('next_stage')}`",
             ]
         )
+        prototype_state = ((machine.get("workflow_progress", {}) or {}).get("stages", {}) or {}).get("prototype")
+        if isinstance(prototype_state, dict):
+            lines.append(f"- prototype_status: `{prototype_state.get('status')}`")
     if isinstance(coverage, dict):
         lines.extend(
             [
