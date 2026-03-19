@@ -1,0 +1,56 @@
+{
+  "run_id": "run-20260319T150225Z-00b7",
+  "workflow": "workflow",
+  "workflow_input": "workflow",
+  "mode": "dry-run",
+  "status": "completed",
+  "reason": "dry-run",
+  "started_at": "2026-03-19T15:02:25.274559+00:00",
+  "ended_at": "2026-03-19T15:02:25.275368+00:00",
+  "events": [
+    {
+      "event": "run_started",
+      "run_id": "run-20260319T150225Z-00b7",
+      "mode": "dry-run",
+      "workflow_route": "workflow",
+      "ts": "2026-03-19T15:02:25.274559+00:00"
+    },
+    {
+      "event": "dry_run_completed",
+      "run_id": "run-20260319T150225Z-00b7",
+      "ts": "2026-03-19T15:02:25.274976+00:00"
+    }
+  ],
+  "llm_prompts": [
+    {
+      "ts": "2026-03-19T15:02:25.274969+00:00",
+      "source": "workflow.next-stage-inference",
+      "inference_mode": "rule",
+      "model": "beacon-rule-llm-v1",
+      "prompt": "Project workflow inference. feature=demo; version=v1.1.3; run_id=run-20260319T150225Z-00b7; context=run.workflow.dispatch. Determine next executable stage.",
+      "completion": "Predicted next_stage=none. Reasoning policy: lifecycle closure order (think->user-story->prd->test-case->implementation->verify).",
+      "next_stage": "none",
+      "prompt_tokens": 11,
+      "completion_tokens": 8
+    }
+  ],
+  "token_usage": {
+    "prompt_tokens": 11,
+    "completion_tokens": 8
+  },
+  "tool_calls": [
+    {
+      "name": "router.dispatch",
+      "args": {
+        "workflow": "workflow"
+      }
+    }
+  ],
+  "artifacts": {
+    "events": ".beacon/runs/run-20260319T150225Z-00b7/events.jsonl",
+    "scope_deviations": null,
+    "scope_confirmations": null
+  },
+  "deviations": [],
+  "confirmations": []
+}

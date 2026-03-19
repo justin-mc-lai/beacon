@@ -1,0 +1,46 @@
+{
+  "run_id": "run-20260319T150225Z-2a3c",
+  "workflow": "workflow.start",
+  "mode": "manual",
+  "feature": "demo-feature",
+  "version": "v1.1.3",
+  "prototype_enabled": true,
+  "status": "planned",
+  "started_at": "2026-03-19T15:02:25.931621+00:00",
+  "events": [
+    {
+      "event": "workflow_started",
+      "ts": "2026-03-19T15:02:25.931621+00:00"
+    },
+    {
+      "event": "workflow_planned",
+      "ts": "2026-03-19T15:02:26.159078+00:00"
+    }
+  ],
+  "llm_prompts": [
+    {
+      "ts": "2026-03-19T15:02:25.931632+00:00",
+      "source": "workflow.next-stage-inference",
+      "inference_mode": "rule",
+      "model": "beacon-rule-llm-v1",
+      "prompt": "Project workflow inference. feature=demo-feature; version=v1.1.3; run_id=run-20260319T150225Z-2a3c; context=workflow.start. Determine next executable stage.",
+      "completion": "Predicted next_stage=think. Reasoning policy: lifecycle closure order (think->user-story->prd->test-case->implementation->verify).",
+      "next_stage": "think",
+      "prompt_tokens": 11,
+      "completion_tokens": 8
+    }
+  ],
+  "token_usage": {
+    "prompt_tokens": 11,
+    "completion_tokens": 8
+  },
+  "tool_calls": [
+    {
+      "name": "workflow.next_stage.predict",
+      "args": {
+        "next_stage": "think"
+      }
+    }
+  ],
+  "reason": "awaiting_continue"
+}
