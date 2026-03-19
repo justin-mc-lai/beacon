@@ -58,6 +58,7 @@ def test_prototype_command_should_expose_help():
     assert result.exit_code == 0
     assert "create" in result.stdout
     assert "freeze" in result.stdout
+    assert "review" in result.stdout
 
 
 @pytest.mark.skipif(not PROTOTYPE_ENABLED, reason="prototype command not yet registered")
@@ -95,7 +96,7 @@ def test_workflow_stages_and_gate_reason_codes_should_cover_prototype_contract()
 
 
 @pytest.mark.skipif(not PROTOTYPE_ENABLED, reason="prototype command not yet registered")
-def test_prototype_create_should_write_static_single_page_artifacts(tmp_path: Path):
+def test_prototype_create_should_write_contract_driven_artifacts(tmp_path: Path):
     version = "v1.1.2"
     slug = "demo-ui-feature"
     us_dir = tmp_path / "docs" / "beacon" / version / "user-story"
@@ -103,10 +104,45 @@ def test_prototype_create_should_write_static_single_page_artifacts(tmp_path: Pa
     us_dir.mkdir(parents=True, exist_ok=True)
     prd_dir.mkdir(parents=True, exist_ok=True)
     (us_dir / f"{slug}.md").write_text(
-        "# User Story\n\nui_visualization_required: true\n", encoding="utf-8"
+        """# User Story
+
+prototype_archetype: dashboard
+target_user: ops lead
+theme_mood: trusted
+theme_primary: #2563eb
+theme_secondary: #111827
+brand_keywords: trust, delivery, visibility
+surface_style: elevated-clean
+sections: Overview, Queue, Escalations
+navigation: Overview, Queue, Escalations
+primary_entry: Overview
+primary_exit: Escalations
+primary_cta: Review blockers
+secondary_cta: Export report
+jump_map: Overview->Queue: Review pending blockers; Queue->Escalations: Escalate failures
+modal_map: Review blockers modal
+drawer_map: Escalation drawer
+tab_map: Overview, Queue, States
+states: empty, loading, error, success, blocked
+""",
+        encoding="utf-8",
     )
     (prd_dir / f"{slug}.md").write_text(
-        "# PRD\n\nprototype_ui_kit: bootstrap-5.3.x\n", encoding="utf-8"
+        """# PRD
+
+prototype_archetype: dashboard
+theme_mood: trusted
+theme_primary: #1d4ed8
+theme_secondary: #0f172a
+sections: Overview, Queue, Escalations
+navigation: Overview, Queue, Escalations
+primary_entry: Overview
+primary_exit: Escalations
+primary_cta: Review blockers
+jump_map: Overview->Queue: Review pending blockers; Queue->Escalations: Escalate failures
+states: empty, loading, error, success, blocked
+""",
+        encoding="utf-8",
     )
 
     result = runner.invoke(
@@ -116,44 +152,55 @@ def test_prototype_create_should_write_static_single_page_artifacts(tmp_path: Pa
     assert result.exit_code == 0, result.stdout
 
     proto_dir = tmp_path / "docs" / "beacon" / version / "prototype" / slug
-    assert (proto_dir / "index.html").exists()
-    assert (proto_dir / "manifest.json").exists()
-    assert (proto_dir / "source-map.json").exists()
-    assert (proto_dir / "freeze.json").exists()
+    for name in [
+        "index.html",
+        "manifest.json",
+        "source-map.json",
+        "freeze.json",
+        "prototype-brief.json",
+        "theme.json",
+        "navigation-map.json",
+        "interaction-map.json",
+    ]:
+        assert (proto_dir / name).exists(), name
 
     html = (proto_dir / "index.html").read_text(encoding="utf-8")
     assert "bootstrap" in html.lower()
-    assert "alpine" in html.lower() or "x-data" in html.lower()
+    assert "Review blockers" in html
+    assert "Queue" in html
 
 
 @pytest.mark.skipif(not PROTOTYPE_ENABLED, reason="prototype command not yet registered")
-def test_prototype_preview_status_and_list_should_work_after_create(tmp_path: Path):
+def test_prototype_review_command_should_write_reports(tmp_path: Path):
     version = "v1.1.2"
     slug = "demo-ui-feature"
     us_dir = tmp_path / "docs" / "beacon" / version / "user-story"
     prd_dir = tmp_path / "docs" / "beacon" / version / "prd"
     us_dir.mkdir(parents=True, exist_ok=True)
     prd_dir.mkdir(parents=True, exist_ok=True)
-    (us_dir / f"{slug}.md").write_text("# User Story\n", encoding="utf-8")
-    (prd_dir / f"{slug}.md").write_text("# PRD\n", encoding="utf-8")
-    create = runner.invoke(
-        app,
-        ["prototype", "create", "Demo UI Feature", "--project", str(tmp_path), "--version", version],
-    )
+    for directory in (us_dir, prd_dir):
+        (directory / f"{slug}.md").write_text(
+            """prototype_archetype: dashboard
+target_user: ops lead
+theme_mood: trusted
+theme_primary: #2563eb
+theme_secondary: #111827
+sections: Overview, Queue, Escalations
+navigation: Overview, Queue, Escalations
+primary_entry: Overview
+primary_exit: Escalations
+primary_cta: Review blockers
+jump_map: Overview->Queue: Review pending blockers; Queue->Escalations: Escalate failures
+states: empty, loading, error, success, blocked
+""",
+            encoding="utf-8",
+        )
+    create = runner.invoke(app, ["prototype", "create", "Demo UI Feature", "--project", str(tmp_path), "--version", version])
     assert create.exit_code == 0
-
-    preview = runner.invoke(
-        app,
-        ["prototype", "preview", "Demo UI Feature", "--project", str(tmp_path), "--version", version],
-    )
-    assert preview.exit_code == 0
-
-    status = runner.invoke(
-        app,
-        ["prototype", "status", "Demo UI Feature", "--project", str(tmp_path), "--version", version],
-    )
-    assert status.exit_code == 0
-
-    listing = runner.invoke(app, ["prototype", "list", "--project", str(tmp_path), "--version", version])
-    assert listing.exit_code == 0
-    assert slug in listing.stdout or "Demo UI Feature" in listing.stdout
+    review = runner.invoke(app, ["prototype", "review", "Demo UI Feature", "--project", str(tmp_path), "--version", version, "--json"])
+    assert review.exit_code == 0
+    payload = json.loads(review.stdout)
+    assert payload.get("overall_status") == "pass"
+    proto_dir = tmp_path / "docs" / "beacon" / version / "prototype" / slug
+    assert (proto_dir / "prototype-review.json").exists()
+    assert (proto_dir / "prototype-review.md").exists()

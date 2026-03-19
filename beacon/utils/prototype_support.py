@@ -27,6 +27,11 @@ def prototype_paths(project_root: Path, version: str, feature: str) -> dict[str,
         "manifest": root / "manifest.json",
         "source_map": root / "source-map.json",
         "freeze": root / "freeze.json",
+        "theme": root / "theme.json",
+        "navigation_map": root / "navigation-map.json",
+        "interaction_map": root / "interaction-map.json",
+        "review_json": root / "prototype-review.json",
+        "review_md": root / "prototype-review.md",
     }
 
 
@@ -76,6 +81,13 @@ def prototype_status(project_root: Path, version: str, feature: str) -> dict[str
     frozen = str(freeze.get("status", "")).strip().lower() == "frozen"
     stale = False
     recorded_source = freeze.get("source_fingerprints")
+    if isinstance(recorded_source, dict):
+        normalized_source = dict(recorded_source)
+        if "user-story" in normalized_source and "user_story" not in normalized_source:
+            normalized_source["user_story"] = normalized_source["user-story"]
+        if "user_story" in normalized_source and "user-story" not in normalized_source:
+            normalized_source["user-story"] = normalized_source["user_story"]
+        recorded_source = normalized_source
     if isinstance(recorded_source, dict) and recorded_source and current:
         stale = any(str(recorded_source.get(key, "")) != value for key, value in current.items())
     if stale:
@@ -93,6 +105,13 @@ def prototype_status(project_root: Path, version: str, feature: str) -> dict[str
         "frozen": frozen,
         "stale": stale,
         "ui_kit": str((manifest or freeze).get("ui_kit", "") or PROTOTYPE_UI_KIT),
+        "review_status": str((manifest or freeze).get("review_status", "") or _read_json(paths["review_json"]).get("overall_status", "missing")),
+        "gate_ready": bool(
+            exists
+            and str((manifest or freeze).get("review_status", "") or _read_json(paths["review_json"]).get("overall_status", "missing")) == "pass"
+            and status == "frozen"
+        ),
+        "files": {key: path for key, path in paths.items()},
         "paths": {key: str(path) for key, path in paths.items()},
         "source_fingerprints": current,
         "recorded_source_fingerprints": recorded_source if isinstance(recorded_source, dict) else {},
@@ -121,4 +140,3 @@ def version_requires_prototype(project_root: Path, version: str) -> bool:
             if any(pattern.search(text) for pattern in _UI_REQUIRED_PATTERNS):
                 return True
     return False
-

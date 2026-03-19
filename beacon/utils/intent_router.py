@@ -18,37 +18,80 @@ SUPPORTED_INTENTS = (
     "prd",
     "test-case",
     "workflow",
-    "run",
     "status",
     "resume",
-    "team",
     "gate",
     "release",
     "doctor",
-    "analyze",
-    "api-design",
-    "data-dictionary",
-    "design",
-    "jtbd",
-    "persona",
-    "roadmap",
-    "ui-spec",
     "prototype",
-    "wireframe",
     "version",
     "test-progress",
     "feedback",
     "remember",
     "recall",
-    "save",
     "report",
     "init",
     "auto-test",
+    "debug",
+    "analyze",
+    "api-design",
+    "brainstorm",
+    "data-dictionary",
+    "design",
+    "jtbd",
+    "kano",
+    "moscow",
+    "persona",
+    "roadmap",
+    "ui-spec",
+    "wireframe",
+    "run",
+    "team",
     "outside-boundary",
 )
 
+DEFAULT_ROUTABLE_INTENTS = (
+    "think",
+    "user-story",
+    "prd",
+    "test-case",
+    "workflow",
+    "status",
+    "resume",
+    "gate",
+    "release",
+    "doctor",
+    "prototype",
+    "version",
+    "test-progress",
+    "feedback",
+    "remember",
+    "recall",
+    "report",
+    "init",
+    "auto-test",
+    "debug",
+)
+
+EXPLICIT_ONLY_COMMAND_HINTS: dict[str, tuple[str, ...]] = {
+    "analyze": ("beacon analyze",),
+    "api-design": ("beacon api-design",),
+    "brainstorm": ("beacon brainstorm",),
+    "data-dictionary": ("beacon data-dictionary",),
+    "design": ("beacon design",),
+    "jtbd": ("beacon jtbd",),
+    "kano": ("beacon kano",),
+    "moscow": ("beacon moscow",),
+    "persona": ("beacon persona",),
+    "roadmap": ("beacon roadmap",),
+    "ui-spec": ("beacon ui-spec",),
+    "wireframe": ("beacon wireframe",),
+    "run": ("beacon run",),
+    "team": ("beacon team",),
+}
+
 DEFAULT_INTENT_KEYWORDS: dict[str, tuple[str, ...]] = {
-    "think": ("think", "需求", "澄清", "梳理", "分析需求", "brainstorm", "方案"),
+    "think": ("think", "需求", "澄清", "梳理", "分析需求", "方案"),
     "user-story": ("user story", "user-story", "用户故事", "验收标准", "ac"),
     "prd": ("prd", "需求文档", "产品文档", "spec", "规格说明", "prd 文档"),
     "test-case": ("test-case", "test case", "测试用例", "测试矩阵", "验收测试", "ac->tc", "qa"),
@@ -318,6 +361,14 @@ def _merge_outside_keywords(overrides: Any) -> tuple[str, ...]:
     return tuple(merged)
 
 
+def _explicit_intent_override(goal: str) -> str:
+    normalized = _normalize_text(goal)
+    for intent, hints in EXPLICIT_ONLY_COMMAND_HINTS.items():
+        if any(_match_token(normalized, hint) for hint in hints):
+            return intent
+    return ""
+
+
 def _load_router_config(project_root: Path) -> dict[str, Any]:
     config_path = Path(project_root) / ".beacon" / ROUTER_CONFIG_FILE
     config_raw: dict[str, Any] = {}
@@ -364,8 +415,17 @@ def _rule_route(goal: str, *, intent_keywords: dict[str, tuple[str, ...]]) -> di
             "router_mode": "rule",
         }
 
+    explicit_intent = _explicit_intent_override(goal)
+    if explicit_intent:
+        return {
+            "intent": explicit_intent,
+            "confidence": 0.9,
+            "reason": f"explicit_command_hint(intent={explicit_intent})",
+            "router_mode": "rule",
+        }
+
     scores: dict[str, int] = {
-        name: 0 for name in intent_keywords if name in SUPPORTED_INTENTS and name != "outside-boundary"
+        name: 0 for name in intent_keywords if name in DEFAULT_ROUTABLE_INTENTS
     }
     for intent, keywords in intent_keywords.items():
         if intent not in scores:

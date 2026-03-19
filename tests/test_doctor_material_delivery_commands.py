@@ -20,17 +20,25 @@ def _seed_materials(root: Path, *, version: str = "v1.1.1", feature: str = "feat
     us_dir = root / "docs" / "beacon" / version / "user-story"
     prd_dir = root / "docs" / "beacon" / version / "prd"
     tc_dir = root / "docs" / "beacon" / version / "qa" / "test-cases"
-    for directory in (research_dir, us_dir, prd_dir, tc_dir):
+    release_dir = root / "docs" / "beacon" / version / "release"
+    for directory in (research_dir, us_dir, prd_dir, tc_dir, release_dir):
         directory.mkdir(parents=True, exist_ok=True)
+    (root / "docs" / "beacon" / version / "SUMMARY.md").write_text("# summary\n", encoding="utf-8")
     (research_dir / "brainstorm-sample.md").write_text("# brainstorm\n", encoding="utf-8")
     (us_dir / f"{feature}.md").write_text("# User Story\n", encoding="utf-8")
     (prd_dir / f"{feature}.md").write_text("# PRD\n", encoding="utf-8")
     (tc_dir / f"{feature}.md").write_text("# Test Cases\n", encoding="utf-8")
+    (release_dir / f"{version}.md").write_text("# Release\n", encoding="utf-8")
     (tc_dir / f"{feature}.ac-test-matrix.json").write_text(json.dumps({"entries": []}, ensure_ascii=False), encoding="utf-8")
     (tc_dir / f"{feature}.qa9-matrix.json").write_text(json.dumps({"entries": []}, ensure_ascii=False), encoding="utf-8")
 
 
 def _seed_delivery(root: Path, *, version: str = "v1.1.1", pending_task: bool = False) -> None:
+    (root / "docs" / "beacon" / version / "SUMMARY.md").parent.mkdir(parents=True, exist_ok=True)
+    (root / "docs" / "beacon" / version / "SUMMARY.md").write_text("# summary\n", encoding="utf-8")
+    release_dir = root / "docs" / "beacon" / version / "release"
+    release_dir.mkdir(parents=True, exist_ok=True)
+    (release_dir / f"{version}.md").write_text("# Release\n", encoding="utf-8")
     exec_dir = root / "docs" / "beacon" / version / "execution"
     exec_dir.mkdir(parents=True, exist_ok=True)
     (exec_dir / "boundaries.md").write_text("# Boundaries\n", encoding="utf-8")
@@ -171,3 +179,46 @@ def test_doctor_verify_git_alignment_should_block_when_git_alignment_is_blocked(
     assert result.exit_code == 2
     payload = json.loads(result.stdout)
     assert payload.get("status") == "BLOCKED"
+
+
+def test_doctor_verify_materials_should_block_when_summary_or_release_missing(tmp_path: Path):
+    _seed_materials(tmp_path)
+    (tmp_path / "docs" / "beacon" / "v1.1.1" / "SUMMARY.md").unlink()
+    release_doc = tmp_path / "docs" / "beacon" / "v1.1.1" / "release" / "v1.1.1.md"
+    release_doc.unlink()
+
+    result = _invoke(["doctor", "verify-materials", "--project-root", str(tmp_path), "--version", "v1.1.1", "--strict", "--json"])
+    assert result.exit_code == 2
+    payload = json.loads(result.stdout)
+    checks = {item["name"]: item for item in payload["result"]["checks"]}
+    assert checks["formal_summary_present"]["status"] == "fail"
+    assert checks["formal_release_present"]["status"] == "fail"
+
+
+def test_doctor_verify_materials_should_use_v113_minimum_closure_without_research_or_qa9(tmp_path: Path):
+    version = "v1.1.3"
+    root = tmp_path / "docs" / "beacon" / version
+    (root / "user-story").mkdir(parents=True, exist_ok=True)
+    (root / "prd").mkdir(parents=True, exist_ok=True)
+    (root / "qa" / "test-cases").mkdir(parents=True, exist_ok=True)
+    (root / "release").mkdir(parents=True, exist_ok=True)
+    (root / "execution").mkdir(parents=True, exist_ok=True)
+    (root / "SUMMARY.md").write_text("# summary\n", encoding="utf-8")
+    (root / "execution" / "boundaries.md").write_text("# Boundaries\n", encoding="utf-8")
+    (root / "user-story" / "feature.md").write_text("# User Story\n", encoding="utf-8")
+    (root / "prd" / "feature.md").write_text("# PRD\n", encoding="utf-8")
+    (root / "qa" / "test-cases" / "feature.md").write_text("# Test Cases\n", encoding="utf-8")
+    (root / "qa" / "test-cases" / "feature.ac-test-matrix.json").write_text(
+        json.dumps({"entries": []}, ensure_ascii=False),
+        encoding="utf-8",
+    )
+    (root / "release" / f"{version}.md").write_text("# Release\n", encoding="utf-8")
+
+    result = _invoke(["doctor", "verify-materials", "--project-root", str(tmp_path), "--version", version, "--strict", "--json"])
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    checks = {item["name"]: item for item in payload["result"]["checks"]}
+    assert payload.get("status") == "PASS"
+    assert checks["research_directory_present"]["status"] == "pass"
+    assert checks["research_documents_present"]["status"] == "pass"
+    assert checks["formal_boundaries_present"]["status"] == "pass"

@@ -4,7 +4,16 @@ import json
 from pathlib import Path
 from typing import Any
 
-from beacon.utils.versioning import resolve_target_version
+from beacon.utils.versioning import normalize_version, resolve_target_version
+
+
+def _parse_semver_tuple(value: str | None) -> tuple[int, int, int]:
+    normalized = normalize_version(value) or "v0.0.0"
+    try:
+        major, minor, patch = normalized.lstrip("v").split(".")
+        return (int(major), int(minor), int(patch))
+    except Exception:  # noqa: BLE001
+        return (0, 0, 0)
 
 
 def _read_json(path: Path) -> dict[str, Any] | None:
@@ -34,27 +43,42 @@ def _feature_names(directory: Path) -> set[str]:
 def build_material_audit(project_root: Path | str, *, version: str | None = None, strict: bool = False) -> dict[str, Any]:
     root = Path(project_root)
     resolved_version = resolve_target_version(root, version)
+    requires_minimum_closure = _parse_semver_tuple(resolved_version) >= (1, 1, 3)
     source_root = root / "docs" / "beacon" / resolved_version
     research_dir = source_root / "research"
     us_dir = source_root / "user-story"
     prd_dir = source_root / "prd"
     tc_dir = source_root / "qa" / "test-cases"
+    release_dir = source_root / "release"
+    boundaries_file = source_root / "execution" / "boundaries.md"
+    summary_file = source_root / "SUMMARY.md"
 
     checks: list[dict[str, Any]] = []
     research_docs = sorted(str(path.relative_to(root)) for path in research_dir.glob("*.md")) if research_dir.exists() else []
     checks.append(
         {
             "name": "research_directory_present",
-            "status": "pass" if research_dir.exists() else "fail",
-            "details": {"path": str(research_dir.relative_to(root)), "exists": research_dir.exists()},
+            "status": "pass" if requires_minimum_closure or research_dir.exists() else "fail",
+            "details": {
+                "path": str(research_dir.relative_to(root)),
+                "exists": research_dir.exists(),
+                "required": not requires_minimum_closure,
+            },
         }
     )
-    research_status = "pass" if research_docs else ("fail" if strict else "warn")
+    if requires_minimum_closure:
+        research_status = "pass"
+    else:
+        research_status = "pass" if research_docs else ("fail" if strict else "warn")
     checks.append(
         {
             "name": "research_documents_present",
             "status": research_status,
-            "details": {"count": len(research_docs), "documents": research_docs},
+            "details": {
+                "count": len(research_docs),
+                "documents": research_docs,
+                "required": not requires_minimum_closure,
+            },
         }
     )
 
@@ -73,7 +97,7 @@ def build_material_audit(project_root: Path | str, *, version: str | None = None
             missing.append("test-case")
         if not (tc_dir / f"{name}.ac-test-matrix.json").exists():
             missing.append("ac-test-matrix")
-        if not (tc_dir / f"{name}.qa9-matrix.json").exists():
+        if not requires_minimum_closure and not (tc_dir / f"{name}.qa9-matrix.json").exists():
             missing.append("qa9-matrix")
         if missing:
             missing_by_feature[name] = missing
@@ -92,6 +116,34 @@ def build_material_audit(project_root: Path | str, *, version: str | None = None
                 "features": feature_names,
                 "missing_by_feature": missing_by_feature,
             },
+        }
+    )
+
+    checks.append(
+        {
+            "name": "formal_summary_present",
+            "status": "pass" if summary_file.exists() else "fail",
+            "details": {"path": str(summary_file.relative_to(root)), "exists": summary_file.exists()},
+        }
+    )
+    checks.append(
+        {
+            "name": "formal_boundaries_present",
+            "status": "pass" if (boundaries_file.exists() or not requires_minimum_closure) else "fail",
+            "details": {
+                "path": str(boundaries_file.relative_to(root)),
+                "exists": boundaries_file.exists(),
+                "required": requires_minimum_closure,
+            },
+        }
+    )
+
+    release_docs = sorted(str(path.relative_to(root)) for path in release_dir.glob("*.md")) if release_dir.exists() else []
+    checks.append(
+        {
+            "name": "formal_release_present",
+            "status": "pass" if release_docs else "fail",
+            "details": {"count": len(release_docs), "documents": release_docs},
         }
     )
 

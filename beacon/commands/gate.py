@@ -128,10 +128,16 @@ REASON_CODES = [
     "prototype_source_untraceable",
     "prototype_ui_contract_failed",
     "prototype_accessibility_contract_failed",
+    "prototype_theme_contract_missing",
+    "prototype_navigation_contract_missing",
+    "prototype_interaction_contract_missing",
+    "prototype_review_missing",
+    "prototype_review_failed",
+    "formal_package_closure_missing",
 ]
 
-# Workflow stages
-WORKFLOW_STAGES = ["think", "user-story", "prd", "test-case", "release"]
+# Default gate evaluation stages
+GATE_STAGES = ["think", "user-story", "prd", "test-case", "release"]
 
 # Gate configuration file
 GATE_CONFIG_FILE = "gate-config.json"
@@ -213,7 +219,7 @@ def gate_callback(  # noqa: PLR0913
         compat_required = True
 
     stage_results: list[dict[str, Any]] = []
-    for stage in WORKFLOW_STAGES:
+    for stage in GATE_STAGES:
         result = run_gate_checks(
             stage,
             gate_mode,
@@ -982,13 +988,7 @@ def check_release_memory_profile(project_root: Path, mode: GateMode, stage: str,
         evidence_ref = item.get("evidence_ref")
         if isinstance(evidence_ref, list):
             refs.extend([str(x) for x in evidence_ref if str(x).strip()])
-    normalized_refs: list[str] = []
-    for ref in refs:
-        if ref.startswith("docs/product/"):
-            normalized_refs.append(ref.replace("docs/product/", "docs/beacon/", 1))
-        else:
-            normalized_refs.append(ref)
-    refs = sorted(set(normalized_refs))
+    refs = sorted(set(refs))
 
     if not refs:
         issues.append(
@@ -1077,6 +1077,28 @@ def check_prototype_contract(
                 "reason_code": "prototype_stale",
                 "blocked": True,
                 "message": f"prototype stale for feature {feature_dir.name}",
+            })
+        files = payload.get("files", {})
+        required_contracts = {
+            "theme": "prototype_theme_contract_missing",
+            "navigation_map": "prototype_navigation_contract_missing",
+            "interaction_map": "prototype_interaction_contract_missing",
+            "review_json": "prototype_review_missing",
+            "review_md": "prototype_review_missing",
+        }
+        for key, reason_code in required_contracts.items():
+            file_path = files.get(key)
+            if not file_path or not Path(file_path).exists():
+                issues.append({
+                    "reason_code": reason_code,
+                    "blocked": True,
+                    "message": f"{key} missing for feature {feature_dir.name}",
+                })
+        if payload.get("review_status") == "fail":
+            issues.append({
+                "reason_code": "prototype_review_failed",
+                "blocked": True,
+                "message": f"prototype review failed for feature {feature_dir.name}",
             })
     return issues
 
@@ -1265,45 +1287,55 @@ def check_delivery_execution_artifacts(project_root: Path, mode: GateMode, stage
     return issues
 
 
+def check_formal_version_package_closure(
+    project_root: Path,
+    mode: GateMode,
+    stage: str,
+    version: Optional[str] = None,
+) -> List[Dict[str, Any]]:
+    """Ensure formal Beacon version packages satisfy the minimum closure contract."""
+    issues: list[dict[str, Any]] = []
+    if stage != "release":
+        return issues
+    if mode not in {GateMode.STRICT, GateMode.DEBUG}:
+        return issues
+
+    resolved_version = _resolved_gate_version(project_root, version)
+    root = project_root / "docs" / "beacon" / resolved_version
+    required = {
+        "SUMMARY.md": (root / "SUMMARY.md").exists(),
+        "execution/boundaries.md": (root / "execution" / "boundaries.md").exists(),
+        "prd/": (root / "prd").exists() and any((root / "prd").glob("*.md")),
+        "user-story/": (root / "user-story").exists() and any((root / "user-story").glob("*.md")),
+        "qa/test-cases/": (root / "qa" / "test-cases").exists() and any((root / "qa" / "test-cases").glob("*.md")),
+        "release/": (root / "release").exists() and any((root / "release").glob("*.md")),
+    }
+    missing = [name for name, ok in required.items() if not ok]
+    if missing:
+        issues.append(
+            {
+                "reason_code": "formal_package_closure_missing",
+                "severity": "critical",
+                "message": f"formal Beacon version package incomplete for {resolved_version}: missing {missing}",
+                "blocked": True,
+                "details": {"version": resolved_version, "missing": missing},
+            }
+        )
+    return issues
+
+
 def _candidate_matrix_paths(project_root: Path) -> list[Path]:
-    paths = []
-    for base in (
-        project_root / "docs" / "product",
-        project_root / "docs" / "beacon",
-    ):
-        if not base.exists():
-            continue
-        paths.extend(sorted(base.glob("*/qa/test-cases/*.ac-test-matrix.json")))
-    # Keep insertion order unique
-    seen: set[str] = set()
-    unique: list[Path] = []
-    for p in paths:
-        key = str(p)
-        if key in seen:
-            continue
-        seen.add(key)
-        unique.append(p)
-    return unique
+    root = project_root / "docs" / "beacon"
+    if not root.exists():
+        return []
+    return sorted(root.glob("*/qa/test-cases/*.ac-test-matrix.json"))
 
 
 def _candidate_qa9_matrix_paths(project_root: Path) -> list[Path]:
-    paths = []
-    for base in (
-        project_root / "docs" / "product",
-        project_root / "docs" / "beacon",
-    ):
-        if not base.exists():
-            continue
-        paths.extend(sorted(base.glob("*/qa/test-cases/*.qa9-matrix.json")))
-    seen: set[str] = set()
-    unique: list[Path] = []
-    for p in paths:
-        key = str(p)
-        if key in seen:
-            continue
-        seen.add(key)
-        unique.append(p)
-    return unique
+    root = project_root / "docs" / "beacon"
+    if not root.exists():
+        return []
+    return sorted(root.glob("*/qa/test-cases/*.qa9-matrix.json"))
 
 
 def _is_non_empty_text(value: Any) -> bool:
@@ -2345,6 +2377,7 @@ def run_gate_checks(
         if mode == GateMode.DEBUG:
             typer.echo("[DEBUG] [release-global] Checking delivery execution artifacts...")
         all_issues.extend(check_delivery_execution_artifacts(project_root, mode, stage, version))
+        all_issues.extend(check_formal_version_package_closure(project_root, mode, stage, version))
         all_issues.extend(check_prototype_contract(project_root, mode, stage, version))
 
         if mode == GateMode.STRICT or mode == GateMode.DEBUG:
@@ -2534,7 +2567,7 @@ def list_checks(
     typer.echo("Available Gate Checks:")
     typer.echo("")
     typer.echo("Workflow Stages:")
-    for stage in WORKFLOW_STAGES:
+    for stage in GATE_STAGES:
         typer.echo(f"  - {stage}")
     typer.echo("  - prototype")
     typer.echo("")

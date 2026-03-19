@@ -21,7 +21,6 @@ def _safe_ratio(numerator: int, denominator: int) -> float:
 
 def _story_files(project_root: Path, version: str, feature: str | None = None) -> list[Path]:
     roots = [
-        project_root / "docs" / "product" / version / "user-story",
         project_root / "docs" / "beacon" / version / "user-story",
     ]
     out: list[Path] = []
@@ -41,7 +40,6 @@ def _story_files(project_root: Path, version: str, feature: str | None = None) -
 
 def _matrix_files(project_root: Path, version: str, feature: str | None = None) -> list[Path]:
     roots = [
-        project_root / "docs" / "product" / version / "qa" / "test-cases",
         project_root / "docs" / "beacon" / version / "qa" / "test-cases",
     ]
     out: list[Path] = []

@@ -1,0 +1,75 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-prototype-professional-ui-generation",
+  "version": "v1.1.3",
+  "overall_status": "pass",
+  "contract_summary": {
+    "prototype_archetype": "admin-workbench",
+    "target_user": "product manager",
+    "primary_cta": "Review prototype contract",
+    "states": [
+      "empty",
+      "loading",
+      "error",
+      "success",
+      "review-needed"
+    ]
+  },
+  "checks": [
+    {
+      "name": "contract_resolved",
+      "status": "pass",
+      "message": "Prototype Contract resolved from PRD + User Story."
+    },
+    {
+      "name": "required_artifacts_present",
+      "status": "pass",
+      "message": "All contract artifacts should exist.",
+      "details": {
+        "missing": []
+      }
+    },
+    {
+      "name": "navigation_contract_present",
+      "status": "pass",
+      "message": "navigation-map.json should exist."
+    },
+    {
+      "name": "interaction_contract_present",
+      "status": "pass",
+      "message": "interaction-map.json should exist."
+    },
+    {
+      "name": "theme_contract_present",
+      "status": "pass",
+      "message": "theme.json should exist."
+    },
+    {
+      "name": "primary_cta_rendered",
+      "status": "pass",
+      "message": "Primary CTA should be rendered in HTML."
+    },
+    {
+      "name": "jump_targets_rendered",
+      "status": "pass",
+      "message": "Jump targets should appear in generated HTML."
+    },
+    {
+      "name": "accessibility_basics",
+      "status": "pass",
+      "message": "Generated HTML should include core accessibility markers.",
+      "details": {
+        "required_tokens": [
+          "aria-label",
+          "prefers-reduced-motion",
+          ":focus-visible"
+        ]
+      }
+    },
+    {
+      "name": "generic_shell_avoided",
+      "status": "pass",
+      "message": "Generated HTML should avoid the previous generic shell placeholders."
+    }
+  ]
+}

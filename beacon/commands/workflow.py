@@ -47,7 +47,7 @@ WORKFLOW_STAGES = [
     ("prd", "Generate PRD", "beacon prd create"),
     ("prototype", "Generate static UI prototype", "beacon prototype create"),
     ("test-case", "Generate executable test matrix", "beacon test-case create"),
-    ("implementation", "Align code implementation with docs", "beacon run workflow"),
+    ("implementation", "Align external implementation with docs", "<external implementation command>"),
     ("verify", "Run multi-layer tests and gate closure", "beacon auto-test create"),
     ("gate", "Run gate readiness and closure check", "beacon gate check release"),
 ]
@@ -1024,7 +1024,6 @@ def _sync_terminal_manifest(project_root: Path, *, version: str, run_id: str) ->
     ]
     for root in (
         project_root / "docs" / "beacon" / version / "execution",
-        project_root / "docs" / "product" / version / "execution",
     ):
         for name in (
             "boundaries.md",
@@ -1074,16 +1073,24 @@ def run_beacon_command(
 
 def ensure_output_dirs(project_root: Path, version: str = "v1.0.0"):
     """Ensure canonical Beacon docs roots exist."""
+    base = project_root / "docs" / "beacon" / version
     dirs = [
-        project_root / "docs" / "beacon" / version / "user-story",
-        project_root / "docs" / "beacon" / version / "prd",
-        project_root / "docs" / "beacon" / version / "prototype",
-        project_root / "docs" / "beacon" / version / "qa" / "test-cases",
-        project_root / "docs" / "beacon" / version / "execution",
+        base / "user-story",
+        base / "prd",
+        base / "prototype",
+        base / "qa" / "test-cases",
+        base / "execution",
+        base / "release",
         project_root / ".beacon" / "state",
     ]
     for d in dirs:
         d.mkdir(parents=True, exist_ok=True)
+    summary = base / "SUMMARY.md"
+    if not summary.exists():
+        summary.write_text(f"# Beacon {version} Summary\n", encoding="utf-8")
+    release_stub = base / "release" / f"{version}.md"
+    if not release_stub.exists():
+        release_stub.write_text(f"# Release: {version}\n", encoding="utf-8")
 
 
 def _slug(text: str) -> str:
@@ -1111,6 +1118,12 @@ def _stage_output_candidates(project_root: Path, stage: str, feature: str, versi
             project_root / "docs" / "beacon" / version / "prototype" / slug / "index.html",
             project_root / "docs" / "beacon" / version / "prototype" / slug / "manifest.json",
             project_root / "docs" / "beacon" / version / "prototype" / slug / "source-map.json",
+            project_root / "docs" / "beacon" / version / "prototype" / slug / "prototype-brief.json",
+            project_root / "docs" / "beacon" / version / "prototype" / slug / "theme.json",
+            project_root / "docs" / "beacon" / version / "prototype" / slug / "navigation-map.json",
+            project_root / "docs" / "beacon" / version / "prototype" / slug / "interaction-map.json",
+            project_root / "docs" / "beacon" / version / "prototype" / slug / "prototype-review.json",
+            project_root / "docs" / "beacon" / version / "prototype" / slug / "prototype-review.md",
             project_root / "docs" / "beacon" / version / "prototype" / slug / "freeze.json",
         ] + common
     if stage == "test-case":
@@ -1631,6 +1644,15 @@ def _execute_stage(
         )
         rc = int(result.returncode)
         if rc == 0:
+            review_result = run_beacon_command(
+                ["prototype", "review", feature, "--project", str(project_root), "--version", version],
+                project_root,
+                run_id=run_id,
+                stage=stage,
+                extra_env=stage_env,
+            )
+            rc = int(review_result.returncode)
+        if rc == 0:
             freeze_result = run_beacon_command(
                 ["prototype", "freeze", feature, "--project", str(project_root), "--version", version],
                 project_root,
@@ -1657,11 +1679,16 @@ def _execute_stage(
                 resolved_implementation_command = env_command
                 command_source = "env"
         if not resolved_implementation_command:
-            # Keep workflow one-command runnable for runbook/newcomers.
-            resolved_implementation_command = (
-                "python3 -c \"print('BEACON_IMPLEMENTATION_NOOP=1')\""
+            typer.echo("Blocked: implementation stage requires explicit external command execution")
+            _log_raw_command(
+                project_root,
+                run_id=run_id,
+                stage=stage,
+                command="<missing implementation command>",
+                exit_code=2,
             )
-            command_source = "builtin-noop"
+            rc = 2
+            return rc
 
         env = os.environ.copy()
         env.update(stage_env)

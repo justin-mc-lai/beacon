@@ -9,7 +9,7 @@ from typer.testing import CliRunner
 
 from beacon.main import app
 from beacon.command_catalog import SUPPORTED_SUBCOMMANDS
-from beacon.utils.intent_router import SUPPORTED_INTENTS
+from beacon.utils.intent_router import DEFAULT_ROUTABLE_INTENTS, SUPPORTED_INTENTS
 
 runner = CliRunner()
 
@@ -32,8 +32,11 @@ def test_prompt_catalog_should_cover_routable_intents(tmp_path: Path):
     payload = json.loads(result.stdout)
 
     routable = set(payload.get("routable_intents", []))
-    expected = {intent for intent in SUPPORTED_INTENTS if intent != "outside-boundary"}
+    expected = set(DEFAULT_ROUTABLE_INTENTS)
     assert routable == expected
+
+    explicit_only = set(payload.get("explicit_only_intents", []))
+    assert explicit_only == {intent for intent in SUPPORTED_INTENTS if intent not in expected and intent != "outside-boundary"}
 
 
 def test_non_routable_commands_should_have_explicit_fallbacks(tmp_path: Path):
@@ -50,7 +53,8 @@ def test_non_routable_commands_should_have_explicit_fallbacks(tmp_path: Path):
     payload = json.loads(result.stdout)
 
     routable = set(payload.get("routable_intents", []))
-    expected_non_routable = sorted([cmd for cmd in SUPPORTED_SUBCOMMANDS if cmd not in routable])
+    explicit_only = set(payload.get("explicit_only_intents", []))
+    expected_non_routable = sorted([cmd for cmd in SUPPORTED_SUBCOMMANDS if cmd not in routable and cmd not in explicit_only])
     assert payload.get("non_routable_commands", []) == expected_non_routable
 
     fallback = payload.get("fallback_commands", {})

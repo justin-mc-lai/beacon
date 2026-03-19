@@ -8,6 +8,7 @@ from pathlib import Path
 import typer
 
 from beacon.utils.coverage import compute_coverage_metrics
+from beacon.utils.material_audit import build_material_audit
 from beacon.utils.runtime import newest_run_id, read_json
 from beacon.utils.versioning import resolve_target_version
 from beacon.utils.workflow_memory import compute_memory_metrics, compute_workflow_progress
@@ -68,6 +69,12 @@ def _status_impl(
         version=coverage_version,
         feature=feature_filter,
     )
+    material_audit = build_material_audit(root, version=coverage_version, strict=False)
+    source_of_truth = {
+        "root": f"docs/beacon/{coverage_version}",
+        "runtime_state_root": ".beacon",
+        "formal_package_closure": material_audit.get("status", "unknown"),
+    }
 
     payload = {
         "team": {"known_teams": team_count},
@@ -80,6 +87,7 @@ def _status_impl(
         },
         "memory": memory_metrics,
         "coverage": coverage_metrics,
+        "source_of_truth": source_of_truth,
         "workflow_progress": workflow_progress,
         "filters": {
             "version": version_filter or "",
@@ -102,6 +110,8 @@ def _status_impl(
         typer.echo(f"- coverage.ac: {coverage_metrics.get('tested_ac')}/{coverage_metrics.get('total_ac')}")
         typer.echo(f"- coverage.tc: {coverage_metrics.get('executed_tc')}/{coverage_metrics.get('total_tc')}")
         typer.echo(f"- coverage.full: {coverage_metrics.get('full_coverage')}")
+        typer.echo(f"- source_of_truth.root: {source_of_truth.get('root')}")
+        typer.echo(f"- source_of_truth.formal_package_closure: {source_of_truth.get('formal_package_closure')}")
         if workflow_progress.get("stages", {}).get("prototype"):
             typer.echo(f"- workflow.prototype: {workflow_progress.get('stages', {}).get('prototype', {}).get('status')}")
         if verbose:

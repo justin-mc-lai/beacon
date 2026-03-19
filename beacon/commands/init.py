@@ -47,12 +47,8 @@ def _init_impl(
         root / "docs" / "beacon" / version / "prd",
         root / "docs" / "beacon" / version / "user-story",
         root / "docs" / "beacon" / version / "qa" / "test-cases",
+        root / "docs" / "beacon" / version / "release",
         root / "docs" / "beacon" / version / "execution",
-        root / "docs" / "product" / version,
-        root / "docs" / "product" / version / "prd",
-        root / "docs" / "product" / version / "user-story",
-        root / "docs" / "product" / version / "qa" / "test-cases",
-        root / "docs" / "product" / version / "execution",
     ]
     for p in docs_paths:
         if apply:
@@ -107,6 +103,21 @@ def _init_impl(
 
     if apply:
         (root / ".beacon").mkdir(parents=True, exist_ok=True)
+
+    summary_path = root / "docs" / "beacon" / version / "SUMMARY.md"
+    summary_content = "# Beacon Summary\n\n- status: draft\n"
+    summary_status = _write_if_apply(summary_path, summary_content, apply, force=False)
+    actions.append({"scope": "docs", "action": summary_status, "path": str(summary_path.relative_to(root))})
+
+    boundaries_path = root / "docs" / "beacon" / version / "execution" / "boundaries.md"
+    boundaries_content = "# Boundaries\n\n- status: draft\n"
+    boundaries_status = _write_if_apply(boundaries_path, boundaries_content, apply, force=False)
+    actions.append({"scope": "docs", "action": boundaries_status, "path": str(boundaries_path.relative_to(root))})
+
+    release_path = root / "docs" / "beacon" / version / "release" / f"{version}.md"
+    release_content = f"# Release: {version}\n"
+    release_status = _write_if_apply(release_path, release_content, apply, force=False)
+    actions.append({"scope": "docs", "action": release_status, "path": str(release_path.relative_to(root))})
 
     payload = {
         "schema_version": "1.0",

@@ -15,7 +15,7 @@ from beacon.utils.debug_feedback import (
     append_debug_feedback_event,
     is_debug_mode_enabled,
 )
-from beacon.utils.intent_router import SUPPORTED_INTENTS, optimize_prompt_to_plan
+from beacon.utils.intent_router import DEFAULT_ROUTABLE_INTENTS, SUPPORTED_INTENTS, optimize_prompt_to_plan
 from beacon.utils.runtime import now_iso
 
 app = typer.Typer(
@@ -95,12 +95,15 @@ def _build_boundary_safe_command_pack(plan: dict[str, Any], project_root: Path, 
 
 
 def _build_prompt_catalog(project_root: Path, version: str) -> dict[str, Any]:
-    routable_intents = sorted([intent for intent in SUPPORTED_INTENTS if intent != "outside-boundary"])
+    routable_intents = sorted(DEFAULT_ROUTABLE_INTENTS)
+    explicit_only_intents = sorted(
+        [intent for intent in SUPPORTED_INTENTS if intent not in set(DEFAULT_ROUTABLE_INTENTS) and intent != "outside-boundary"]
+    )
     non_routable = sorted(
         [
             cmd
             for cmd in SUPPORTED_SUBCOMMANDS
-            if cmd not in set(routable_intents)
+            if cmd not in set(routable_intents) and cmd not in set(explicit_only_intents)
         ]
     )
     fallback_map: dict[str, str] = {}
@@ -127,6 +130,7 @@ def _build_prompt_catalog(project_root: Path, version: str) -> dict[str, Any]:
         "project_root": str(project_root),
         "version": version,
         "routable_intents": routable_intents,
+        "explicit_only_intents": explicit_only_intents,
         "non_routable_commands": non_routable,
         "fallback_commands": fallback_map,
         "omc_omx_team_templates": bridge_templates,

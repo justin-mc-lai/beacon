@@ -165,8 +165,19 @@ def test_auto_test_should_backfill_qa9_summary_and_sync_progress(tmp_path: Path)
 
 
 def test_gate_should_block_expired_waiver_and_missing_pair_execution(tmp_path: Path):
-    matrix_path = tmp_path / "docs" / "product" / "v1.0.2" / "qa" / "test-cases" / "qa9-feature.qa9-matrix.json"
+    root = tmp_path / "docs" / "beacon" / "v1.0.2"
+    (root / "execution").mkdir(parents=True, exist_ok=True)
+    (root / "execution" / "boundaries.md").write_text("# Boundaries\n", encoding="utf-8")
+    (root / "prd").mkdir(parents=True, exist_ok=True)
+    (root / "user-story").mkdir(parents=True, exist_ok=True)
+    (root / "release").mkdir(parents=True, exist_ok=True)
+    (root / "SUMMARY.md").write_text("# Summary\n", encoding="utf-8")
+    (root / "prd" / "qa9-feature.md").write_text("# PRD\n", encoding="utf-8")
+    (root / "user-story" / "qa9-feature.md").write_text("# US\n", encoding="utf-8")
+    (root / "release" / "v1.0.2.md").write_text("# Release\n", encoding="utf-8")
+    matrix_path = root / "qa" / "test-cases" / "qa9-feature.qa9-matrix.json"
     matrix_path.parent.mkdir(parents=True, exist_ok=True)
+    (matrix_path.parent / "qa9-feature.md").write_text("# Test Cases\n", encoding="utf-8")
     matrix_payload = {
         "schema_version": "1.0.2",
         "feature": "QA9 Feature",
@@ -269,7 +280,7 @@ def test_gate_should_block_expired_waiver_and_missing_pair_execution(tmp_path: P
     assert "compatibility_execution_missing" in reason_codes
 
 
-def test_workflow_auto_should_allow_missing_implementation_command_with_builtin_noop(tmp_path: Path):
+def test_workflow_auto_should_require_explicit_implementation_command(tmp_path: Path):
     result = runner.invoke(
         app,
         [
@@ -287,11 +298,5 @@ def test_workflow_auto_should_allow_missing_implementation_command_with_builtin_
             "python3 -c \"print('BEACON_ASSERTIONS=1')\"",
         ],
     )
-    assert result.exit_code == 0, result.stdout
-    assert "implementation completed" in result.stdout
-
-    run_dir = tmp_path / ".beacon" / "runs"
-    state_files = list(run_dir.glob("*/state.json"))
-    assert state_files
-    payload = json.loads(state_files[0].read_text(encoding="utf-8"))
-    assert payload.get("status") == "completed"
+    assert result.exit_code == 2, result.stdout
+    assert "implementation stage requires explicit external command execution" in result.stdout

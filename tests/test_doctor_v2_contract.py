@@ -135,6 +135,19 @@ def test_doctor_should_detect_installed_skill_copy_version_drift(monkeypatch, tm
     assert "COMP-206" in codes
 
 
+def test_doctor_should_flag_version_root_semantics_drift(tmp_path: Path):
+    _prepare_basic_project(tmp_path)
+    (tmp_path / "docs" / "beacon" / "v1.2.1-feature-a").mkdir(parents=True, exist_ok=True)
+    (tmp_path / "docs" / "beacon" / "v1.2.1-feature-b").mkdir(parents=True, exist_ok=True)
+
+    result = _invoke(["doctor", "--json", "--project-root", str(tmp_path)])
+    assert result.exit_code == 0
+    payload = json.loads(result.stdout)
+    incompatibilities = payload.get("incompatibilities", [])
+    codes = {item.get("code") for item in incompatibilities}
+    assert "COMP-210" in codes
+
+
 def test_doctor_setup_should_install_beacon_launchers(tmp_path: Path):
     bin_dir = tmp_path / "bin"
 

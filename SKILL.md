@@ -1,15 +1,15 @@
 ---
 name: beacon
-description: AI Product Workflow Toolkit for product thinking, user stories, PRDs, test cases, and release workflows
+description: Evidence-first Product Workflow Kernel for product thinking, user stories, PRDs, test cases, and release workflows
 ---
 
-# Beacon - AI Product Workflow Toolkit
+# Beacon - Evidence-first Product Workflow Kernel
 
-> **Skill Version**: v1.1.2
-> **CLI Version**: v1.1.2
-> **Last Updated**: 2026-03-16
+> **Skill Version**: v1.1.3
+> **CLI Version**: v1.1.3
+> **Last Updated**: 2026-03-19
 
-Beacon 是 AI 产品工作流工具包，提供需求澄清、用户故事、PRD、测试用例、技术方案与发布清单的完整工作流。
+Beacon 是 AI 产品工作流内核，提供需求澄清、用户故事、PRD、测试用例、证据闭环与发布门禁的统一工作流。
 
 ## 命令触发（CLI/Skill 单一事实源）
 
@@ -18,7 +18,7 @@ Beacon 是 AI 产品工作流工具包，提供需求澄清、用户故事、PRD
 - 脚本方式（兼容）：`python3 -m beacon.main <subcommand> ...`
 - 历史模块入口（兼容）：`python3 -m beacon.think ...`（保留兼容，但不作为推荐入口）
 
-> 注意：对外建议统一使用 `beacon <subcommand>`；历史 PTK 仅保留背景说明。
+> 注意：对外建议统一使用 `beacon <subcommand>`；正式交付文档统一读取 `docs/beacon/<version>/`。
 
 命令清单由 `beacon/command_catalog.py::SUPPORTED_SUBCOMMANDS` 自动生成，使用：
 
@@ -62,6 +62,7 @@ python3 scripts/sync_skill_commands.py --check
 | `beacon release` | `release` |
 | `beacon remember` | `remember` |
 | `beacon report` | `report` |
+| `beacon review` | `review` |
 | `beacon resume` | `resume` |
 | `beacon roadmap` | `roadmap` |
 | `beacon run` | `run` |
@@ -107,6 +108,7 @@ python3 scripts/sync_skill_commands.py --check
 | `release` | `beacon release` |
 | `remember` | `beacon remember` |
 | `report` | `beacon report` |
+| `review` | `beacon review` |
 | `resume` | `beacon resume` |
 | `roadmap` | `beacon roadmap` |
 | `run` | `beacon run` |
@@ -124,14 +126,14 @@ python3 scripts/sync_skill_commands.py --check
 | `workflow` | `beacon workflow` |
 <!-- AUTO-COMMANDS:END -->
 
-### CLI 调用示例（think）
+### CLI 调用示例（workflow）
 
 ```bash
 # 推荐
-beacon think start "分析 xxx 业务闭环" --project /abs/path/to/project
+beacon workflow start "Beacon v1.1.3 边界收口" --project /abs/path/to/project --version v1.1.3
 
 # 兼容
-python3 -m beacon.main think start "分析 xxx 业务闭环" --project /abs/path/to/project
+python3 -m beacon.main workflow start "Beacon v1.1.3 边界收口" --project /abs/path/to/project --version v1.1.3
 ```
 
 ## Gate 检查
@@ -142,7 +144,7 @@ python3 -m beacon.main think start "分析 xxx 业务闭环" --project /abs/path
 | user-story | AC门 | 七维 AC 完整 |
 | prd | 风险门 | critical/high 冲突已解决 |
 | test-case | 覆盖门 | AC→TC 覆盖矩阵完整 |
-| release | 测试门 | 冒烟测试 100% 通过 |
+| release | 放行门 | formal package / delivery / evidence / gate contract 通过 |
 
 ## 输出目录
 
@@ -152,17 +154,18 @@ docs/beacon/{version}/
 ├── prd/{feature}.md
 ├── user-story/{feature}.md
 ├── qa/test-cases/{feature}.md
+├── release/{version}.md
 ├── execution/boundaries.md
 └── execution/terminal.json
-
 ```
 
 ## 参考文档
 
-- `references/socratic-questioning.md`
+- `docs/beacon/v1.1.3/SUMMARY.md`
+- `docs/beacon/v1.1.3/execution/boundaries.md`
 - `references/acceptance-criteria.md`
 - `references/user-story-mapping.md`
 
 ---
 
-**版本**: v1.1.2
+**版本**: v1.1.3

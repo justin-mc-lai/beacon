@@ -20,7 +20,7 @@ def test_docs_examples_should_be_executable(tmp_path: Path):
     readme = Path(__file__).resolve().parents[1] / "README.md"
     text = readme.read_text(encoding="utf-8")
     assert "beacon workflow start" in text
-    assert "prompt optimize" in text
+    assert "beacon ask" in text
 
     catalog = _invoke([
         "prompt",

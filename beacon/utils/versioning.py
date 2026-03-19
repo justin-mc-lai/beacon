@@ -11,6 +11,7 @@ from pathlib import Path
 from typing import Iterable
 
 _SEMVER = re.compile(r"^v?(\d+)\.(\d+)\.(\d+)$")
+_RELEASE_LINE = re.compile(r"^v?(\d+)\.(\d+)\.(\d+)(?:[.-].+)?$")
 
 
 def normalize_version(value: str | None) -> str | None:
@@ -20,6 +21,17 @@ def normalize_version(value: str | None) -> str | None:
     match = _SEMVER.match(raw)
     if not match:
         return raw
+    major, minor, patch = match.groups()
+    return f"v{int(major)}.{int(minor)}.{int(patch)}"
+
+
+def release_line_key(value: str | None) -> str | None:
+    raw = str(value or "").strip()
+    if not raw:
+        return None
+    match = _RELEASE_LINE.match(raw)
+    if not match:
+        return None
     major, minor, patch = match.groups()
     return f"v{int(major)}.{int(minor)}.{int(patch)}"
 
@@ -69,4 +81,6 @@ def resolve_target_version(
     normalized = normalize_version(requested)
     if normalized:
         return normalized
-    return largest_version(project_root, fallback=fallback)
+    raise ValueError(
+        f"Invalid version '{requested}'. Beacon v1.1.3 formal version roots must use semver like v1.2.3."
+    )

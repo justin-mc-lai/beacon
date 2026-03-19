@@ -10,7 +10,7 @@ from typing import Any
 
 from beacon.utils.context_files import inspect_context_file
 from beacon.utils.runtime import now_iso
-from beacon.utils.versioning import discover_versions, normalize_version
+from beacon.utils.versioning import discover_versions, normalize_version, release_line_key
 from beacon.utils.workflow_memory import compute_workflow_progress
 
 _SKILL_VERSION_PATTERNS = (
@@ -254,7 +254,6 @@ def _scan_legacy_skill_syntax(project_root: Path, version: str) -> list[str]:
     evidence: list[str] = []
     doc_roots = [
         project_root / "docs" / "beacon" / version,
-        project_root / "docs" / "product" / version,
     ]
     for root in doc_roots:
         if not root.exists():
@@ -269,6 +268,28 @@ def _scan_legacy_skill_syntax(project_root: Path, version: str) -> list[str]:
                     if len(evidence) >= 10:
                         return evidence
     return evidence
+
+
+def _version_root_semantics_drift(project_root: Path) -> list[str]:
+    docs_root = project_root / "docs" / "beacon"
+    if not docs_root.exists():
+        return []
+    by_release_line: dict[str, list[str]] = {}
+    invalid: list[str] = []
+    for child in docs_root.iterdir():
+        if not child.is_dir():
+            continue
+        key = release_line_key(child.name)
+        if not key:
+            invalid.append(f"{child}: invalid formal version root")
+            continue
+        by_release_line.setdefault(key, []).append(child.name)
+    drift: list[str] = []
+    for release_line, names in sorted(by_release_line.items()):
+        unique = sorted(set(names))
+        if len(unique) > 1:
+            drift.append(f"{docs_root}: release_line={release_line} has multiple roots {unique}")
+    return sorted(set(invalid + drift))
 
 
 def _stale_ptk_references(project_root: Path) -> list[str]:
@@ -418,6 +439,7 @@ def collect_compatibility_checks(
 
     stale_refs = _stale_ptk_references(project_root)
     legacy_refs = _scan_legacy_skill_syntax(project_root, version)
+    version_root_drift = _version_root_semantics_drift(project_root)
     runtime_skill_version = _normalize(
         str(runtime.get("toolkit_version") or runtime.get("package_version") or "")
     )
@@ -519,6 +541,17 @@ def collect_compatibility_checks(
                 "Regenerate coverage artifacts for retained version entries.",
             ],
         },
+        "version_root_semantics": {
+            "status": "FAIL" if version_root_drift else "PASS",
+            "severity": "high",
+            "summary": "Formal Beacon version roots should map one release line to one canonical directory.",
+            "evidence": version_root_drift[:10],
+            "impact": "Multiple roots per release line blur release-package semantics and break source-of-truth discovery.",
+            "repair": [
+                "Collapse each release line to a single canonical docs/beacon/<version>/ root.",
+                "Remove version roots that encode themes/suffixes instead of formal semver versions.",
+            ],
+        },
         "material_skill_semver_compatibility": {
             "status": "FAIL" if material_ahead_of_runtime else "PASS",
             "severity": "high",
@@ -589,6 +622,7 @@ def _compatibility_checks_to_incompatibilities(
         "context_files_presence": "COMP-207",
         "managed_block_integrity": "COMP-208",
         "managed_block_version_drift": "COMP-209",
+        "version_root_semantics": "COMP-210",
     }
     items: list[dict[str, Any]] = []
     for name, check in compatibility_checks.items():

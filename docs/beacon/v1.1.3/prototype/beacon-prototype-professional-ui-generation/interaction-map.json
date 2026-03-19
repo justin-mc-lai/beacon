@@ -1,0 +1,40 @@
+{
+  "ctas": [
+    {
+      "label": "Review prototype contract",
+      "kind": "primary"
+    },
+    {
+      "label": "Freeze approved prototype",
+      "kind": "secondary"
+    }
+  ],
+  "states": [
+    "empty",
+    "loading",
+    "error",
+    "success",
+    "review-needed"
+  ],
+  "jump_map": [
+    {
+      "from": "Overview",
+      "to": "Contract",
+      "why": "Inspect structured contract"
+    },
+    {
+      "from": "Contract",
+      "to": "Review",
+      "why": "Validate completeness"
+    }
+  ],
+  "modal_map": [],
+  "drawer_map": [],
+  "tab_map": [],
+  "form_actions": [
+    {
+      "label": "Review prototype contract",
+      "action": "Review"
+    }
+  ]
+}

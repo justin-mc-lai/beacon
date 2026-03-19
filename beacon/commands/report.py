@@ -17,6 +17,7 @@ from beacon.utils.acceptance_audit import (
     write_acceptance_audit,
 )
 from beacon.utils.versioning import resolve_target_version
+from beacon.utils.material_audit import build_material_audit
 from beacon.utils.v110_baseline import load_latest_spec_fingerprint
 from beacon.utils.v110_metrics import (
     compute_baseline_drift_metrics,
@@ -220,6 +221,11 @@ def _build_machine_payload(
             "memory_governance": compute_memory_governance_metrics(project_root),
             "baseline_drift": compute_baseline_drift_metrics(project_root, version=coverage_version),
             "consistency_snapshot": consistency_snapshot,
+            "source_of_truth": {
+                "root": f"docs/beacon/{coverage_version}",
+                "runtime_state_root": ".beacon",
+                "formal_package_closure": build_material_audit(project_root, version=coverage_version, strict=False).get("status", "unknown"),
+            },
             "workflow_progress": progress,
             "filters": {"version": version or "", "feature": feature or ""},
             "generated_at": now_iso(),
@@ -265,6 +271,11 @@ def _build_machine_payload(
         "memory_governance": compute_memory_governance_metrics(project_root),
         "baseline_drift": compute_baseline_drift_metrics(project_root, version=coverage_version),
         "consistency_snapshot": consistency_snapshot,
+        "source_of_truth": {
+            "root": f"docs/beacon/{coverage_version}",
+            "runtime_state_root": ".beacon",
+            "formal_package_closure": build_material_audit(project_root, version=coverage_version, strict=False).get("status", "unknown"),
+        },
         "workflow_progress": progress,
         "filters": {"version": version or "", "feature": feature or ""},
         "generated_at": now_iso(),

@@ -322,19 +322,14 @@ def create(
             typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
         return
 
-    output_paths = [
-        project_root / "docs" / "beacon" / resolved_version / "SUMMARY.md",
-        project_root / "docs" / "product" / resolved_version / "SUMMARY.md",
-    ]
-    for output_path in output_paths:
-        output_path.parent.mkdir(parents=True, exist_ok=True)
-        output_path.write_text(markdown, encoding="utf-8")
+    output_path = project_root / "docs" / "beacon" / resolved_version / "SUMMARY.md"
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(markdown, encoding="utf-8")
 
     state_json = project_root / ".beacon" / "state" / "evolution-summary" / f"{resolved_version}.json"
     write_json(state_json, payload)
 
-    typer.echo(f"✓ Version evolution summary created: {output_paths[0]}")
-    typer.echo(f"✓ Version evolution summary created: {output_paths[1]}")
+    typer.echo(f"✓ Version evolution summary created: {output_path}")
     typer.echo(f"✓ Evolution summary state created: {state_json}")
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
@@ -347,10 +342,8 @@ def list_summaries(
     """List all version evolution summaries."""
     project_root = Path(project) if project else Path.cwd()
     summaries: dict[str, Path] = {}
-    for docs_type in ("beacon", "product"):
-        root = project_root / "docs" / docs_type
-        if not root.exists():
-            continue
+    root = project_root / "docs" / "beacon"
+    if root.exists():
         for version_dir in root.iterdir():
             if not version_dir.is_dir():
                 continue

@@ -110,6 +110,29 @@ def _default_priority_for_qa_type(qa_type: str) -> str:
     }.get(qa_type, "P2")
 
 
+def _load_prototype_contract_artifacts(project_root: Path, version: str, feature_slug: str) -> tuple[dict, dict]:
+    proto_root = project_root / "docs" / "beacon" / version / "prototype" / feature_slug
+    navigation = {}
+    interaction = {}
+    nav_path = proto_root / "navigation-map.json"
+    interaction_path = proto_root / "interaction-map.json"
+    if nav_path.exists():
+        try:
+            payload = json.loads(nav_path.read_text(encoding="utf-8"))
+            if isinstance(payload, dict):
+                navigation = payload
+        except Exception:  # noqa: BLE001
+            navigation = {}
+    if interaction_path.exists():
+        try:
+            payload = json.loads(interaction_path.read_text(encoding="utf-8"))
+            if isinstance(payload, dict):
+                interaction = payload
+        except Exception:  # noqa: BLE001
+            interaction = {}
+    return navigation, interaction
+
+
 def _build_qa_requirements(qa_types: list[str], qa_applicability: Optional[dict[str, str]] = None) -> list[dict]:
     qa_set = set(qa_types)
     applicability_map = qa_applicability or {}
@@ -340,6 +363,42 @@ def create(
             }
         )
 
+    prototype_navigation, prototype_interaction = _load_prototype_contract_artifacts(
+        project_root, resolved_version, feature_slug
+    )
+    synthetic_idx = len(entries)
+    ac_anchor = ac_items[0]["ac_id"] if ac_items else "AC-001"
+    for jump in prototype_navigation.get("jump_map", []) or []:
+        synthetic_idx += 1
+        tc_id = f"TC-{synthetic_idx:03d}"
+        entries.append(
+            {
+                "tc_id": tc_id,
+                "ac_id": ac_anchor,
+                "layer": "ui",
+                "command": "python3 -c \"print('prototype-jump-check')\"",
+                "assertion": f"jump {jump.get('from', '')} -> {jump.get('to', '')} is represented",
+                "evidence_path": f".beacon/evidence/test-results/{feature_slug}/{tc_id}.json",
+                "status": "pending",
+                "source": "prototype:navigation-map",
+            }
+        )
+    for state_name in prototype_interaction.get("states", []) or []:
+        synthetic_idx += 1
+        tc_id = f"TC-{synthetic_idx:03d}"
+        entries.append(
+            {
+                "tc_id": tc_id,
+                "ac_id": ac_anchor,
+                "layer": "ui",
+                "command": "python3 -c \"print('prototype-state-check')\"",
+                "assertion": f"state {state_name} is represented in prototype",
+                "evidence_path": f".beacon/evidence/test-results/{feature_slug}/{tc_id}.json",
+                "status": "pending",
+                "source": "prototype:interaction-map",
+            }
+        )
+
     matrix_payload = {
         "schema_version": "1.0",
         "feature": feature,
@@ -451,6 +510,8 @@ def create(
 **Memory Context**: {memory_context_path or 'N/A'}
 **AC Matrix JSON**: {matrix_path}
 **QA9 Matrix JSON**: {qa9_matrix_path}
+**Prototype Navigation Contract**: {bool(prototype_navigation)}
+**Prototype Interaction Contract**: {bool(prototype_interaction)}
 
 ---
 

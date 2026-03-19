@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 from typer.testing import CliRunner
@@ -39,4 +40,3 @@ def test_workflow_start_without_prototype_should_keep_default_stage_chain(tmp_pa
     run_id = _latest_run_id(tmp_path)
     progress = compute_workflow_progress(tmp_path, run_id=run_id)
     assert "prototype" not in progress.get("workflow_stages", [])
-
