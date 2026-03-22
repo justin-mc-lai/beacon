@@ -3,7 +3,7 @@ name: beacon
 description: Use when you need Beacon's evidence-first product workflow through a standard skill package that delegates to beacon CLI commands and scripts.
 metadata:
   author: Beacon CLI
-  version: "1.1.4"
+  version: "1.1.5"
   organization: Beacon
   date: March 2026
   abstract: Standard skill package wrapper for Beacon CLI workflow, implement, review, and release operations.
@@ -32,7 +32,7 @@ Use this skill when:
 
 ## How to Use
 
-1. Read the current version package under [`../../docs/beacon/v1.1.4/`](../../docs/beacon/v1.1.4/SUMMARY.md)
+1. Read the current version package under [`../../docs/beacon/v1.1.5/`](../../docs/beacon/v1.1.5/SUMMARY.md)
 2. Use the wrapper script:
 
 ```bash
@@ -45,6 +45,7 @@ bash skills/beacon/scripts/run_beacon.sh workflow --help
 ```bash
 bash skills/beacon/scripts/run_beacon.sh skill list
 bash skills/beacon/scripts/run_beacon.sh implement list-runners --json
+bash skills/beacon/scripts/run_beacon.sh doctor repair-package --version v1.1.5 --json
 ```
 
 ## Examples

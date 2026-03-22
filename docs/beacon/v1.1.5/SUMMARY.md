@@ -1,7 +1,7 @@
 # Beacon v1.1.5 Summary
 
 **主题**: 人机协作分层、memory 投影收口、`.machine` 机器面迁移  
-**状态**: Requirement Materials Only  
+**状态**: Implemented and Release-Ready  
 **日期**: 2026-03-20
 
 ---
@@ -49,9 +49,10 @@ v1.1.5 聚焦一个核心问题：
 
 ## 版本说明
 
-- 本稿是 v1.1.5 需求物料，不代表 Beacon 运行时已经完成 v1.1.5 实现；
-- 本版允许破坏性版本演进；
-- 本版不讨论长期兼容方案，只讨论 v1.1.5 规范与 `doctor` 的修复职责。
+- Beacon runtime 已切换到 `v1.1.5`；
+- `.machine` 已成为正式机器读取面；
+- `doctor repair-package` 已具备修复旧包结构到 v1.1.5 分层规范的能力；
+- 本版允许破坏性版本演进，不保留 compatibility-first 路径。
 
 ### LLM / Skill 提示词文档
 - `docs/beacon/v1.1.5/user-story/beacon-llm-skill-prompt-first-principles.md`
@@ -68,20 +69,21 @@ v1.1.5 聚焦一个核心问题：
 - `docs/beacon/v1.1.5/execution/keep-discard-policy.md`
 - `docs/beacon/v1.1.5/execution/drift-auditor-minimum-loop.md`
 
-## 实现准备度判断
+## 当前实现结论
 
 基于当前仓库状态，`v1.1.5` 的结论应明确为：
 
-- **需求物料已经足够开工**
-- **运行时代码尚未达到 v1.1.5**
-- **可以实现，但不能直接视为可发布版本**
+- **人机分层已落地**
+- **prompt first-principles contract 已进入运行时输出**
+- **eval-lab skeleton 已落地到 `.beacon/state/eval-lab/`**
+- **release / gate 已形成 v1.1.5 闭环**
 
 当前判断依据：
 
-1. `v1.1.5` 已经是仓库里最大的版本目录，`auto` 会优先解析到它；
-2. Beacon 当前 runtime 管理口径仍停在 `v1.1.4`；
-3. `v1.1.5` 的 materials 已齐，但 delivery / gate 还没有闭环；
-4. 因此 `v1.1.5` 现在应被视为 **requirements-ready, implementation-pending**。
+1. `v1.1.5` 已是当前 runtime release line；
+2. `doctor repair-package --version v1.1.5` 可修复旧结构到 `.machine`；
+3. `release check v1.1.5` 与 `gate check release --version v1.1.5` 均可通过；
+4. 因此 `v1.1.5` 现在应被视为 **implemented, release-ready**。
 
 ## 安全实现结论
 

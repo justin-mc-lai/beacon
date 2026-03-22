@@ -12,6 +12,8 @@ from beacon.utils.context_files import setup_context_files, verify_context_files
 from beacon.utils.doctor_diagnostics import build_doctor_payload, collect_runtime_info
 from beacon.utils.doctor_setup import install_launchers, resolve_bin_dir, uninstall_launchers
 from beacon.utils.material_audit import build_delivery_audit, build_material_audit
+from beacon.utils.v115_delivery import repair_v115_delivery_package
+from beacon.utils.versioning import resolve_target_version
 
 app = typer.Typer(
     name="doctor",
@@ -83,6 +85,8 @@ def _doctor_impl(json_output: bool, project_root: str, fix: bool, upgrade: bool,
             with_claude=True,
             with_agents=True,
         )
+        target_version = resolve_target_version(root, "latest-docs")
+        repair_v115_delivery_package(root, version=target_version, apply=True)
 
     payload = build_doctor_payload(root, strict=strict)
 
@@ -395,6 +399,30 @@ def verify_delivery(
     else:
         _print_verification_result("Beacon Doctor Delivery Verify", result)
     raise typer.Exit(code=2 if payload.get("status") in {"FAIL", "BLOCKED"} else 0)
+
+
+@app.command("repair-package")
+def repair_package(
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    version: str = typer.Option("latest-docs", "--version", "-v", help="Target docs version"),
+    dry_run: bool = typer.Option(False, "--dry-run", help="Preview without writing files"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Repair a delivery package into the v1.1.5 human/machine layered layout."""
+    root = Path(project_root) if project_root else Path.cwd()
+    result = repair_v115_delivery_package(root, version=version, apply=not dry_run)
+    payload = {
+        "schema_version": "2.0",
+        "action": "repair-package",
+        "status": "PASS",
+        "result": result,
+    }
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        _print_action_result("Beacon Doctor Repair Package", {"installed": [], "removed": [], "skipped": [], "warnings": []})
+        typer.echo(json.dumps(result, ensure_ascii=False, indent=2))
+    raise typer.Exit(code=0)
 
 
 @app.command("verify-config")

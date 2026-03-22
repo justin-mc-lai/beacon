@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.5] - 2026-03-23
+
+### Added
+
+- Added v1.1.5 human/machine layering helpers in `beacon.utils.v115_delivery`.
+- Added `beacon doctor repair-package` to migrate execution and QA machine artifacts into `.machine` and create human-primary indexes.
+- Added v1.1.5 prompt first-principles contract output and clarification gate payloads.
+- Added eval-lab skeleton bootstrap under `.beacon/state/eval-lab/`.
+- Added v1.1.5 release evidence refresh path and machine execution terminal artifact.
+
+### Changed
+
+- Promoted Beacon runtime/package release line to `v1.1.5`.
+- Updated current README / SKILL / CLAUDE / AGENTS guidance to point at v1.1.5 as the active release.
+- Closed v1.1.5 release and strict gate checks with synchronized evidence, coverage, and spec fingerprints.
+
+### Verified
+
+- Full regression: `python3 -m pytest -q` → `438 passed`
+- Release readiness: `python3 -m beacon.main release check v1.1.5 --project .`
+- Gate closure: `python3 -m beacon.main gate check release --project-root . --version v1.1.5 --json`
+
 ## [1.1.4] - 2026-03-22
 
 ### Added

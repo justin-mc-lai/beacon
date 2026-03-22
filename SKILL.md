@@ -5,9 +5,9 @@ description: Evidence-first Product Workflow Kernel for product thinking, user s
 
 # Beacon - Evidence-first Product Workflow Kernel
 
-> **Skill Version**: v1.1.4
-> **CLI Version**: v1.1.4
-> **Last Updated**: 2026-03-19
+> **Skill Version**: v1.1.5
+> **CLI Version**: v1.1.5
+> **Last Updated**: 2026-03-23
 
 Beacon 是 AI 产品工作流内核，提供需求澄清、用户故事、PRD、测试用例、证据闭环与发布门禁的统一工作流。
 
@@ -135,10 +135,10 @@ python3 scripts/sync_skill_commands.py --check
 
 ```bash
 # 推荐
-beacon workflow start "Beacon v1.1.4 implement/skill 交付" --project /abs/path/to/project --version v1.1.4
+beacon workflow start "Beacon v1.1.5 layered delivery" --project /abs/path/to/project --version v1.1.5
 
 # 兼容
-python3 -m beacon.main workflow start "Beacon v1.1.4 implement/skill 交付" --project /abs/path/to/project --version v1.1.4
+python3 -m beacon.main workflow start "Beacon v1.1.5 layered delivery" --project /abs/path/to/project --version v1.1.5
 ```
 
 ## Gate 检查
@@ -160,25 +160,28 @@ docs/beacon/{version}/
 ├── user-story/{feature}.md
 ├── qa/test-cases/{feature}.md
 ├── release/{version}.md
+├── execution/index.md
 ├── execution/boundaries.md
-└── execution/terminal.json
+└── .machine/execution/terminal.json
 ```
 
 ## 参考文档
 
-- `docs/beacon/v1.1.4/SUMMARY.md`
-- `docs/beacon/v1.1.4/execution/boundaries.md`
-- `docs/beacon/v1.1.4/execution/skill-subcommand-design.md`
-- `docs/beacon/v1.1.4/execution/latest-feature-usage-guide.md`
-- `docs/beacon/v1.1.4/execution/real-project-recipes.md`
-- `docs/beacon/v1.1.4/execution/faq-and-troubleshooting.md`
-- `docs/beacon/v1.1.4/execution/beacon-vs-openspec-gsd-comparison.md`
-- `docs/beacon/v1.1.4/execution/skill-standard-alignment.md`
-- `docs/beacon/v1.1.4/release/version-evolution-changelog.md`
+- `docs/beacon/v1.1.5/SUMMARY.md`
+- `docs/beacon/v1.1.5/execution/boundaries.md`
+- `docs/beacon/v1.1.5/execution/index.md`
+- `docs/beacon/v1.1.5/execution/human-machine-collaboration-norm.md`
+- `docs/beacon/v1.1.5/execution/memory-architecture-and-projection.md`
+- `docs/beacon/v1.1.5/execution/doctor-repair-scope.md`
+- `docs/beacon/v1.1.5/execution/safe-implementation-plan.md`
+- `docs/beacon/v1.1.5/execution/eval-lab-benchmark-surface.md`
+- `docs/beacon/v1.1.5/execution/keep-discard-policy.md`
+- `docs/beacon/v1.1.5/execution/drift-auditor-minimum-loop.md`
+- `docs/beacon/v1.1.5/release/v1.1.5.md`
 - `skills/beacon/SKILL.md`
 - `references/acceptance-criteria.md`
 - `references/user-story-mapping.md`
 
 ---
 
-**版本**: v1.1.4
+**版本**: v1.1.5

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Beacon package exports."""
 
-__version__ = "1.1.4"
-__toolkit_version__ = "v1.1.4"
+__version__ = "1.1.5"
+__toolkit_version__ = "v1.1.5"
 
 
 def create_app():

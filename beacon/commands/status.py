@@ -7,6 +7,7 @@ from pathlib import Path
 
 import typer
 
+from beacon.utils.artifact_paths import machine_root, uses_machine_surface
 from beacon.utils.coverage import compute_coverage_metrics
 from beacon.utils.material_audit import build_material_audit
 from beacon.utils.runtime import newest_run_id, read_json
@@ -72,6 +73,12 @@ def _status_impl(
     material_audit = build_material_audit(root, version=coverage_version, strict=False)
     source_of_truth = {
         "root": f"docs/beacon/{coverage_version}",
+        "human_root": f"docs/beacon/{coverage_version}",
+        "machine_root": (
+            str(machine_root(root, coverage_version).relative_to(root))
+            if uses_machine_surface(coverage_version)
+            else ""
+        ),
         "runtime_state_root": ".beacon",
         "formal_package_closure": material_audit.get("status", "unknown"),
     }
@@ -111,6 +118,8 @@ def _status_impl(
         typer.echo(f"- coverage.tc: {coverage_metrics.get('executed_tc')}/{coverage_metrics.get('total_tc')}")
         typer.echo(f"- coverage.full: {coverage_metrics.get('full_coverage')}")
         typer.echo(f"- source_of_truth.root: {source_of_truth.get('root')}")
+        if source_of_truth.get("machine_root"):
+            typer.echo(f"- source_of_truth.machine_root: {source_of_truth.get('machine_root')}")
         typer.echo(f"- source_of_truth.formal_package_closure: {source_of_truth.get('formal_package_closure')}")
         if workflow_progress.get("stages", {}).get("prototype"):
             typer.echo(f"- workflow.prototype: {workflow_progress.get('stages', {}).get('prototype', {}).get('status')}")

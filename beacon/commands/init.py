@@ -8,7 +8,9 @@ from typing import Optional
 
 import typer
 
+from beacon.utils.artifact_paths import machine_execution_dir, machine_qa_dir, uses_machine_surface
 from beacon.utils.runtime import now_iso, write_json
+from beacon.utils.v115_delivery import ensure_eval_lab_skeleton, ensure_human_primary_indexes
 from beacon.utils.versioning import resolve_target_version
 
 app = typer.Typer(
@@ -31,6 +33,7 @@ def _write_if_apply(path: Path, content: str, apply: bool, force: bool = False) 
 
 def _init_impl(
     project_root: str,
+    version: str,
     dry_run: bool,
     force: bool,
     with_claude: bool,
@@ -39,7 +42,7 @@ def _init_impl(
 ) -> int:
     root = Path(project_root) if project_root else Path.cwd()
     apply = not dry_run
-    version = resolve_target_version(root, None)
+    version = resolve_target_version(root, version or None)
     actions: list[dict[str, str]] = []
 
     docs_paths = [
@@ -50,6 +53,13 @@ def _init_impl(
         root / "docs" / "beacon" / version / "release",
         root / "docs" / "beacon" / version / "execution",
     ]
+    if uses_machine_surface(version):
+        docs_paths.extend(
+            [
+                machine_execution_dir(root, version),
+                machine_qa_dir(root, version),
+            ]
+        )
     for p in docs_paths:
         if apply:
             p.mkdir(parents=True, exist_ok=True)
@@ -119,6 +129,24 @@ def _init_impl(
     release_status = _write_if_apply(release_path, release_content, apply, force=False)
     actions.append({"scope": "docs", "action": release_status, "path": str(release_path.relative_to(root))})
 
+    if uses_machine_surface(version):
+        actions.extend(
+            {
+                "scope": "docs",
+                "action": item["action"],
+                "path": item["path"],
+            }
+            for item in ensure_human_primary_indexes(root, version=version, apply=apply)
+        )
+        actions.extend(
+            {
+                "scope": "state",
+                "action": item["action"],
+                "path": item["path"],
+            }
+            for item in ensure_eval_lab_skeleton(root, apply=apply)
+        )
+
     payload = {
         "schema_version": "1.0",
         "command": "beacon init",
@@ -154,6 +182,7 @@ def _init_impl(
 def init_callback(
     ctx: typer.Context,
     project_root: Optional[str] = typer.Option("", "--project", "--project-root", "-p", help="Project root path"),
+    version: str = typer.Option("auto", "--version", "-v", help="Target docs version"),
     dry_run: bool = typer.Option(False, "--dry-run/--apply", help="Preview or apply"),
     force: bool = typer.Option(False, "--force", help="Force append managed blocks"),
     with_claude: bool = typer.Option(True, "--with-claude/--without-claude", help="Manage CLAUDE.md"),
@@ -168,6 +197,7 @@ def init_callback(
     if ctx.invoked_subcommand is None:
         code = _init_impl(
             project_root=project_root or "",
+            version=version,
             dry_run=dry_run,
             force=force,
             with_claude=with_claude,
@@ -180,6 +210,7 @@ def init_callback(
 @app.command()
 def run(
     project_root: Optional[str] = typer.Option("", "--project", "-p", help="Project root path"),
+    version: str = typer.Option("auto", "--version", "-v", help="Target docs version"),
     dry_run: bool = typer.Option(False, "--dry-run/--apply", help="Preview or apply"),
     force: bool = typer.Option(False, "--force", help="Force append managed blocks"),
     with_claude: bool = typer.Option(True, "--with-claude/--without-claude", help="Manage CLAUDE.md"),
@@ -193,6 +224,7 @@ def run(
     """Initialize Beacon project structure."""
     code = _init_impl(
         project_root=project_root or "",
+        version=version,
         dry_run=dry_run,
         force=force,
         with_claude=with_claude,
@@ -205,6 +237,7 @@ def run(
 @app.command("init-project")
 def init_project(
     project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    version: str = typer.Option("auto", "--version", "-v", help="Target docs version"),
     dry_run: bool = typer.Option(True, "--dry-run/--apply", help="Preview or apply"),
     force: bool = typer.Option(False, "--force", help="Force append managed blocks"),
     with_claude: bool = typer.Option(True, "--with-claude/--without-claude", help="Manage CLAUDE.md"),
@@ -218,6 +251,7 @@ def init_project(
     """Initialize Beacon project structure (alias)."""
     code = _init_impl(
         project_root=project_root,
+        version=version,
         dry_run=dry_run,
         force=force,
         with_claude=with_claude,

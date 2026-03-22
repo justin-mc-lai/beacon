@@ -26,11 +26,11 @@ def test_standard_skill_package_should_have_frontmatter_and_metadata():
 
     metadata = json.loads((ROOT / "skills" / "beacon" / "metadata.json").read_text(encoding="utf-8"))
     assert metadata["name"] == "beacon"
-    assert metadata["version"] == "1.1.4"
+    assert metadata["version"] == "1.1.5"
 
 
 def test_standard_skill_wrapper_script_should_launch_beacon_version():
     script = ROOT / "skills" / "beacon" / "scripts" / "run_beacon.sh"
     result = subprocess.run(["bash", str(script), "--version"], cwd=ROOT, capture_output=True, text=True)
     assert result.returncode == 0, result.stdout + result.stderr
-    assert "Beacon CLI v1.1.4" in result.stdout
+    assert "Beacon CLI v1.1.5" in result.stdout

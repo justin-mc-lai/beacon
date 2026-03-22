@@ -9,12 +9,12 @@
 
 ## 1. 当前版本是什么
 
-Beacon 当前单一发布口径是 **v1.1.4**。
+Beacon 当前单一发布口径是 **v1.1.5**。
 
-> 当前发布线：`v1.1.4`
+> 当前发布线：`v1.1.5`
 
 - **CLI 入口**：`beacon <subcommand>`
-- **当前包版本**：`1.1.4`
+- **当前包版本**：`1.1.5`
 - **文档主源**：`docs/beacon/<version>/`
 - **状态目录**：`.beacon/`
 
@@ -26,7 +26,7 @@ Beacon 当前单一发布口径是 **v1.1.4**。
 
 如果你只记一条：
 
-> **Beacon 现在是 v1.1.4，写文档看 `docs/beacon`，执行命令用 `beacon <subcommand>`。**
+> **Beacon 现在是 v1.1.5，写文档看 `docs/beacon`，执行命令用 `beacon <subcommand>`。**
 
 ---
 
@@ -53,11 +53,15 @@ Beacon 默认**不负责**：
 - issue tracker 轮询、workspace 调度、agent scheduler
 - 在 core 内维护完整 PM 模板大全
 
-### 当前发布线摘要（v1.1.4）
+### 当前发布线摘要（v1.1.5）
 
 - **完整主链工作流**：`think → user-story → prd → [prototype] → test-case → implementation → verify → gate`
 - **实现适配层**：新增 `skill` / `implement`，支持 runner + skill adapter
 - **标准 Skill 包**：新增 `skills/beacon/`，通过脚本包装触发 Beacon CLI
+- **人机分层闭环**：`docs/beacon/<version>/execution/` 保持 Markdown-first，人类主读；`docs/beacon/<version>/.machine/` 作为机器正式读取面
+- **doctor repair-package**：支持把旧 execution / QA JSON 迁到 `.machine` 并补人类主入口索引
+- **prompt first-principles contract**：`prompt catalog / optimize` 暴露 reading order、clarification gate、progressive disclosure、doctor role
+- **eval-lab skeleton**：`.beacon/state/eval-lab/` 提供 benchmark surface、editable surface、keep/discard skeleton
 - **release 语义**：`release` 是 post-gate action，不属于 workflow 内部阶段
 - **单一事实源**：`docs/beacon/<version>/` 优先于 `.beacon/`
 - **版本包最小闭环**：`SUMMARY / execution / prd / user-story / qa/test-cases / release`
@@ -84,33 +88,34 @@ beacon <subcommand> ...
 
 ```bash
 # 1) 启动需求主链
-beacon workflow start "Beacon v1.1.4 implement/skill 交付" --project . --version v1.1.4
+beacon workflow start "Beacon v1.1.5 layered delivery" --project . --version v1.1.5
 
 # 2) 生成主链文档
-beacon think start "Beacon v1.1.4 implement/skill 交付" --project . --version v1.1.4
-beacon user-story create "Beacon v1.1.4 implement/skill 交付" --project . --version v1.1.4
-beacon prd create "Beacon v1.1.4 implement/skill 交付" --project . --version v1.1.4
-beacon test-case create "Beacon v1.1.4 implement/skill 交付" --project . --version v1.1.4
+beacon think start "Beacon v1.1.5 layered delivery" --project . --version v1.1.5
+beacon user-story create "Beacon v1.1.5 layered delivery" --project . --version v1.1.5
+beacon prd create "Beacon v1.1.5 layered delivery" --project . --version v1.1.5
+beacon test-case create "Beacon v1.1.5 layered delivery" --project . --version v1.1.5
 
 # 2.5) 配置并执行实现适配
 beacon skill list
 beacon implement list-runners --json
-beacon implement run "Beacon implement/skill 交付" --runner omx --json
+beacon doctor repair-package --project-root . --version v1.1.5 --json
+beacon implement run "Beacon layered delivery" --runner omx --json
 
 # 2.6) 标准 skill + script 触发
 bash skills/beacon/scripts/run_beacon.sh --version
 bash skills/beacon/scripts/run_beacon.sh skill list
 
 # 3) 状态 / 验收
-beacon status --board --project-root . --version v1.1.4
-beacon gate check release --project-root . --version v1.1.4
+beacon status --board --project-root . --version v1.1.5
+beacon gate check release --project-root . --version v1.1.5
 ```
 
 ### 自然语言入口
 
 ```bash
 # 默认只生成计划，不执行
-beacon ask "请帮我梳理 Beacon v1.1.4 的交付闭环" --plan-only --json
+beacon ask "请帮我梳理 Beacon v1.1.5 的人机分层交付闭环" --plan-only --json
 
 # 显式执行（带边界/置信度闸门）
 beacon ask "请生成用户故事并给出验收标准" --execute --json
@@ -120,9 +125,9 @@ beacon ask "请生成用户故事并给出验收标准" --execute --json
 
 ```bash
 beacon doctor --project-root . --json
-beacon doctor verify-materials --project-root . --version v1.1.4 --json
-beacon doctor verify-delivery --project-root . --version v1.1.4 --json
-beacon report --machine latest --project-root . --version v1.1.4
+beacon doctor verify-materials --project-root . --version v1.1.5 --json
+beacon doctor verify-delivery --project-root . --version v1.1.5 --json
+beacon report --machine latest --project-root . --version v1.1.5
 ```
 
 ---
@@ -148,6 +153,10 @@ docs/beacon/<version>/
 ```text
 docs/beacon/<version>/execution/
 ├── boundaries.md
+├── index.md
+└── human-facing markdown docs
+
+docs/beacon/<version>/.machine/execution/
 ├── delivery-manifest.json
 ├── change-impact.json
 ├── config.json
@@ -168,19 +177,20 @@ docs/beacon/<version>/execution/
 └── runs/
 ```
 
-### 当前验收工件（v1.1.4）
+### 当前验收工件（v1.1.5）
 
-- `docs/beacon/v1.1.4/SUMMARY.md`
-- `docs/beacon/v1.1.4/execution/boundaries.md`
-- `docs/beacon/v1.1.4/execution/skill-subcommand-design.md`
-- `docs/beacon/v1.1.4/execution/implement-cli-design.md`
-- `docs/beacon/v1.1.4/execution/latest-feature-usage-guide.md`
-- `docs/beacon/v1.1.4/execution/real-project-recipes.md`
-- `docs/beacon/v1.1.4/execution/faq-and-troubleshooting.md`
-- `docs/beacon/v1.1.4/execution/beacon-vs-openspec-gsd-comparison.md`
-- `docs/beacon/v1.1.4/execution/skill-standard-alignment.md`
-- `docs/beacon/v1.1.4/release/version-evolution-changelog.md`
-- `docs/beacon/v1.1.4/release/v1.1.4.md`
+- `docs/beacon/v1.1.5/SUMMARY.md`
+- `docs/beacon/v1.1.5/execution/index.md`
+- `docs/beacon/v1.1.5/execution/boundaries.md`
+- `docs/beacon/v1.1.5/execution/human-machine-collaboration-norm.md`
+- `docs/beacon/v1.1.5/execution/memory-architecture-and-projection.md`
+- `docs/beacon/v1.1.5/execution/doctor-repair-scope.md`
+- `docs/beacon/v1.1.5/execution/safe-implementation-plan.md`
+- `docs/beacon/v1.1.5/execution/eval-lab-benchmark-surface.md`
+- `docs/beacon/v1.1.5/execution/keep-discard-policy.md`
+- `docs/beacon/v1.1.5/execution/drift-auditor-minimum-loop.md`
+- `docs/beacon/v1.1.5/release/v1.1.5.md`
+- `docs/beacon/v1.1.5/.machine/execution/terminal.json`
 
 ---
 
@@ -190,27 +200,27 @@ docs/beacon/<version>/execution/
 
 ```bash
 python3 -m pytest -q
-beacon doctor verify-materials --project-root . --version v1.1.4 --json
-beacon doctor verify-delivery --project-root . --version v1.1.4 --json
-beacon gate check release --project-root . --version v1.1.4 --json
-beacon release check v1.1.4 --project .
+beacon doctor verify-materials --project-root . --version v1.1.5 --json
+beacon doctor verify-delivery --project-root . --version v1.1.5 --json
+beacon gate check release --project-root . --version v1.1.5 --json
+beacon release check v1.1.5 --project .
 ```
 
 ### 自动生成验收审计
 
 ```bash
-beacon report latest acceptance-audit   --project-root .   --version v1.1.4   --feature beacon-implement-skill-runner   --write
+beacon report latest acceptance-audit   --project-root .   --version v1.1.5   --feature beacon-human-machine-artifact-layering   --write
 ```
 
 这个命令会生成：
 
-- `docs/beacon/v1.1.4/execution/acceptance-regression-audit.{md,json}`
+- `docs/beacon/v1.1.5/execution/acceptance-regression-audit.{md,json}`
 
 ---
 
 ## 6. 后续迭代版本文档编写约定
 
-后续版本（如 `v1.1.4`、`v1.2.0`）继续沿用下面这套方案。
+后续版本（如 `v1.1.5`、`v1.2.0`）继续沿用下面这套方案。
 
 ### README 编写原则
 
@@ -255,17 +265,17 @@ docs/beacon/<version>/
 
 ### 当前发布线参考文档
 
-- [v1.1.4 Summary](./docs/beacon/v1.1.4/SUMMARY.md)
-- [v1.1.4 Boundaries](./docs/beacon/v1.1.4/execution/boundaries.md)
-- [v1.1.4 Skill Subcommand Design](./docs/beacon/v1.1.4/execution/skill-subcommand-design.md)
-- [v1.1.4 Latest Feature Usage Guide](./docs/beacon/v1.1.4/execution/latest-feature-usage-guide.md)
-- [v1.1.4 Real Project Recipes](./docs/beacon/v1.1.4/execution/real-project-recipes.md)
-- [v1.1.4 FAQ / Troubleshooting](./docs/beacon/v1.1.4/execution/faq-and-troubleshooting.md)
-- [v1.1.4 Beacon vs OpenSpec / GSD / GSD-2](./docs/beacon/v1.1.4/execution/beacon-vs-openspec-gsd-comparison.md)
-- [v1.1.4 Skill Standard Alignment](./docs/beacon/v1.1.4/execution/skill-standard-alignment.md)
-- [v1.1.4 Version Evolution Changelog](./docs/beacon/v1.1.4/release/version-evolution-changelog.md)
-- [v1.1.4 Release Stub](./docs/beacon/v1.1.4/release/v1.1.4.md)
+- [v1.1.5 Summary](./docs/beacon/v1.1.5/SUMMARY.md)
+- [v1.1.5 Boundaries](./docs/beacon/v1.1.5/execution/boundaries.md)
+- [v1.1.5 Execution Index](./docs/beacon/v1.1.5/execution/index.md)
+- [v1.1.5 Human-Machine Collaboration Norm](./docs/beacon/v1.1.5/execution/human-machine-collaboration-norm.md)
+- [v1.1.5 Memory Architecture and Projection](./docs/beacon/v1.1.5/execution/memory-architecture-and-projection.md)
+- [v1.1.5 Doctor Repair Scope](./docs/beacon/v1.1.5/execution/doctor-repair-scope.md)
+- [v1.1.5 Safe Implementation Plan](./docs/beacon/v1.1.5/execution/safe-implementation-plan.md)
+- [v1.1.5 Eval Lab Benchmark Surface](./docs/beacon/v1.1.5/execution/eval-lab-benchmark-surface.md)
+- [v1.1.5 Keep-Discard Policy](./docs/beacon/v1.1.5/execution/keep-discard-policy.md)
+- [v1.1.5 Release Stub](./docs/beacon/v1.1.5/release/v1.1.5.md)
 
 ---
 
-**版本**: v1.1.4
+**版本**: v1.1.5

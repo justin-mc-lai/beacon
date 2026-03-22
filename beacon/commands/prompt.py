@@ -17,6 +17,8 @@ from beacon.utils.debug_feedback import (
 )
 from beacon.utils.intent_router import DEFAULT_ROUTABLE_INTENTS, SUPPORTED_INTENTS, optimize_prompt_to_plan
 from beacon.utils.runtime import now_iso
+from beacon.utils.v115_delivery import build_first_principles_contract
+from beacon.utils.versioning import resolve_target_version
 
 app = typer.Typer(
     name="prompt",
@@ -95,6 +97,7 @@ def _build_boundary_safe_command_pack(plan: dict[str, Any], project_root: Path, 
 
 
 def _build_prompt_catalog(project_root: Path, version: str) -> dict[str, Any]:
+    resolved_version = resolve_target_version(project_root, version)
     routable_intents = sorted(DEFAULT_ROUTABLE_INTENTS)
     explicit_only_intents = sorted(
         [intent for intent in SUPPORTED_INTENTS if intent not in set(DEFAULT_ROUTABLE_INTENTS) and intent != "outside-boundary"]
@@ -109,7 +112,7 @@ def _build_prompt_catalog(project_root: Path, version: str) -> dict[str, Any]:
     fallback_map: dict[str, str] = {}
     for cmd in non_routable:
         if cmd == "work":
-            fallback_map[cmd] = f"beacon workflow start <feature> --project {project_root} --version {version}"
+            fallback_map[cmd] = f"beacon workflow start <feature> --project {project_root} --version {resolved_version}"
         elif cmd in {"ask", "prompt"}:
             fallback_map[cmd] = f"beacon {cmd} <goal> --project-root {project_root} --plan-only --json"
         else:
@@ -117,9 +120,9 @@ def _build_prompt_catalog(project_root: Path, version: str) -> dict[str, Any]:
 
     bridge_templates = [
         f'beacon ask "继续上次workflow并评估阻塞项" --project-root {project_root} --plan-only --json',
-        f'beacon workflow continue --project {project_root} --version {version} --auto --interactive --hud',
-        f'omc run --project-root {project_root} --task "继续推进 <feature>（version={version}）"',
-        f'omx exec --full-auto --cd {project_root} --skip-git-repo-check "执行 <feature> 下一轮迭代（version={version}）"',
+        f'beacon workflow continue --project {project_root} --version {resolved_version} --auto --interactive --hud',
+        f'omc run --project-root {project_root} --task "继续推进 <feature>（version={resolved_version}）"',
+        f'omx exec --full-auto --cd {project_root} --skip-git-repo-check "执行 <feature> 下一轮迭代（version={resolved_version}）"',
         f'beacon team start "<feature> 交付协作" --runtime tmux --project {project_root}',
         f"beacon feedback sync latest --project-root {project_root}",
         f"beacon gate check release --mode strict --project-root {project_root}",
@@ -128,12 +131,13 @@ def _build_prompt_catalog(project_root: Path, version: str) -> dict[str, Any]:
         "schema_version": "1.0",
         "generated_at": now_iso(),
         "project_root": str(project_root),
-        "version": version,
+        "version": resolved_version,
         "routable_intents": routable_intents,
         "explicit_only_intents": explicit_only_intents,
         "non_routable_commands": non_routable,
         "fallback_commands": fallback_map,
         "omc_omx_team_templates": bridge_templates,
+        "first_principles_contract": build_first_principles_contract(project_root, version=resolved_version),
     }
 
 
@@ -191,10 +195,11 @@ def _optimize_impl(
     policy_context: Optional[dict[str, Any]] = None,
 ) -> int:
     root = Path(project_root) if project_root else Path.cwd()
+    resolved_version = resolve_target_version(root, version)
     plan = optimize_prompt_to_plan(
         goal,
         project_root=root,
-        version=version,
+        version=resolved_version,
         router_mode=router_mode,
     )
 
@@ -216,6 +221,16 @@ def _optimize_impl(
         execution_request.update({k: v for k, v in policy_context.items() if v is not None})
     plan["execution_request"] = execution_request
     plan["boundary_safe_command_pack"] = _build_boundary_safe_command_pack(plan, root, goal)
+    plan["first_principles_contract"] = build_first_principles_contract(root, version=resolved_version)
+    confidence = float(plan.get("confidence", 0.0) or 0.0)
+    plan["clarification_gate"] = {
+        "required": bool(
+            _resolve_boundary_state(plan) != "in_scope"
+            or confidence < effective_min_confidence
+            or len(str(goal).strip()) <= 6
+        ),
+        "reason": "boundary_or_low_confidence_or_goal_underspecified",
+    }
 
     blocked_reason = ""
     if execute:
@@ -314,6 +329,7 @@ def _optimize_impl(
         typer.echo(f"command     : {plan.get('recommended_command')}")
         typer.echo(f"min_conf    : {round(effective_min_confidence, 2)}")
         typer.echo(f"boundary    : {_resolve_boundary_state(plan)}")
+        typer.echo(f"clarify     : {plan.get('clarification_gate', {}).get('required')}")
         request = plan.get("execution_request", {})
         strategy = str(request.get("strategy", "")).strip()
         if strategy:
