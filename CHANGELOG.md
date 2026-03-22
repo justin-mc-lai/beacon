@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.4] - 2026-03-22
+
+### Added
+
+- Added `implement` command group with adapter-driven runner resolution, request/result contracts, and implementation summary outputs.
+- Added `skill` command group for adapter detection, registration, preference, and environment diagnostics.
+- Added v1.1.4 release materials under `docs/beacon/v1.1.4/` covering implement design, runner config, recipes, FAQ, and release notes.
+- Added current-release evidence refresh flow to regenerate `.beacon` release artifacts from the v1.1.4 requirement materials and verification commands.
+
+### Changed
+
+- Standardized public package/install naming to `beacon` across packaging metadata and README install instructions.
+- Removed `pytest` from runtime dependencies and moved build/test tooling into `dev` extras.
+- Refreshed v1.1.4 QA matrices and release artifacts to reference the real verification suite and current release run metadata.
+
+### Verified
+
+- Full regression: `python3 -m pytest -q` → `421 passed`
+- Package build: `python3 -m pip wheel . --no-deps -w /tmp/beacon-dist`
+- Release readiness: `python3 -m beacon.main release check v1.1.4 --project .`
+- Gate closure: `python3 -m beacon.main gate check release --project-root . --version v1.1.4 --json`
+
 ## [1.1.2] - 2026-03-16
 
 ### Added
@@ -58,4 +80,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Verify with `beacon doctor verify-context --project-root . --strict`.
 - If markers were edited manually or corrupted, run:
   - `beacon doctor setup-context --project-root . --force`
-

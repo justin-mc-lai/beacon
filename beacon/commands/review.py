@@ -8,6 +8,7 @@ from typing import Any, Optional
 
 import typer
 
+from beacon.utils.artifact_paths import qa_matrix_candidates
 from beacon.utils.coverage import compute_coverage_metrics
 from beacon.utils.material_audit import build_material_audit
 from beacon.utils.prototype_utils import evaluate_prototype_status
@@ -30,9 +31,10 @@ def _feature_paths(project_root: Path, version: str, feature: str) -> dict[str, 
         "user_story": base / "user-story" / f"{slug}.md",
         "prd": base / "prd" / f"{slug}.md",
         "test_case": base / "qa" / "test-cases" / f"{slug}.md",
-        "ac_matrix": base / "qa" / "test-cases" / f"{slug}.ac-test-matrix.json",
+        "ac_matrix": qa_matrix_candidates(project_root, version, slug, "ac-test-matrix")[0],
         "prototype_dir": base / "prototype" / slug,
         "implementation_marker": project_root / ".beacon" / "state" / f"implementation-{slug}.json",
+        "implementation_summary": base / "execution" / f"implementation-summary-{slug}.json",
     }
 
 
@@ -138,6 +140,22 @@ def review_spec(
                 }
             )
 
+    implementation_summary = {}
+    if paths["implementation_summary"].exists():
+        try:
+            loaded_summary = json.loads(paths["implementation_summary"].read_text(encoding="utf-8"))
+            if isinstance(loaded_summary, dict):
+                implementation_summary = loaded_summary
+        except Exception:  # noqa: BLE001
+            implementation_summary = {}
+    artifact_updates = implementation_summary.get("artifact_updates") if isinstance(implementation_summary, dict) else {}
+    if isinstance(artifact_updates, dict):
+        for artifact, value in artifact_updates.items():
+            if isinstance(value, dict) and bool(value.get("required")):
+                recommendations.append(
+                    f"Update `{artifact}` after implementation: {value.get('reason', 'implementation summary requested writeback')}"
+                )
+
     status = "pass"
     if any(item.get("severity") == "critical" for item in issues):
         status = "fail"
@@ -154,6 +172,7 @@ def review_spec(
         "status": status,
         "issues": issues,
         "recommendations": recommendations,
+        "artifact_updates": artifact_updates if isinstance(artifact_updates, dict) else {},
     }
     artifact_name = f"review-spec-{_slug(feature)}"
     payload["artifacts"] = _write_review_artifacts(

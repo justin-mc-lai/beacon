@@ -2,20 +2,19 @@
 
 > Evidence-first Product Workflow Kernel — 把需求澄清、用户故事、PRD、测试用例、执行证据与 gate/release 收敛到一个可审计闭环。
 
-[![PyPI version](https://img.shields.io/pypi/v/beacon-cli)](https://pypi.org/project/beacon-cli/)
-[![Python](https://img.shields.io/python/pyversions/beacon-cli)](https://pypi.org/project/beacon-cli/)
-[![License](https://img.shields.io/pypi/l/beacon-cli)](./LICENSE)
+[![PyPI version](https://img.shields.io/pypi/v/beacon)](https://pypi.org/project/beacon/)
+[![Python](https://img.shields.io/pypi/pyversions/beacon)](https://pypi.org/project/beacon/)
 
 ---
 
 ## 1. 当前版本是什么
 
-Beacon 当前单一发布口径是 **v1.1.3**。
+Beacon 当前单一发布口径是 **v1.1.4**。
 
-> 当前发布线：`v1.1.3`
+> 当前发布线：`v1.1.4`
 
 - **CLI 入口**：`beacon <subcommand>`
-- **当前包版本**：`1.1.3`
+- **当前包版本**：`1.1.4`
 - **文档主源**：`docs/beacon/<version>/`
 - **状态目录**：`.beacon/`
 
@@ -27,7 +26,7 @@ Beacon 当前单一发布口径是 **v1.1.3**。
 
 如果你只记一条：
 
-> **Beacon 现在是 v1.1.3，写文档看 `docs/beacon`，执行命令用 `beacon <subcommand>`。**
+> **Beacon 现在是 v1.1.4，写文档看 `docs/beacon`，执行命令用 `beacon <subcommand>`。**
 
 ---
 
@@ -54,9 +53,11 @@ Beacon 默认**不负责**：
 - issue tracker 轮询、workspace 调度、agent scheduler
 - 在 core 内维护完整 PM 模板大全
 
-### 当前发布线摘要（v1.1.3）
+### 当前发布线摘要（v1.1.4）
 
 - **完整主链工作流**：`think → user-story → prd → [prototype] → test-case → implementation → verify → gate`
+- **实现适配层**：新增 `skill` / `implement`，支持 runner + skill adapter
+- **标准 Skill 包**：新增 `skills/beacon/`，通过脚本包装触发 Beacon CLI
 - **release 语义**：`release` 是 post-gate action，不属于 workflow 内部阶段
 - **单一事实源**：`docs/beacon/<version>/` 优先于 `.beacon/`
 - **版本包最小闭环**：`SUMMARY / execution / prd / user-story / qa/test-cases / release`
@@ -68,9 +69,9 @@ Beacon 默认**不负责**：
 ### 安装
 
 ```bash
-pip install beacon-cli
+pip install beacon
 # 或
-cd beacon && pip install -e .
+cd beacon && pip install -e ".[dev]"
 ```
 
 ### 当前推荐命令风格
@@ -83,24 +84,33 @@ beacon <subcommand> ...
 
 ```bash
 # 1) 启动需求主链
-beacon workflow start "Beacon v1.1.3 边界收口" --project . --version v1.1.3
+beacon workflow start "Beacon v1.1.4 implement/skill 交付" --project . --version v1.1.4
 
 # 2) 生成主链文档
-beacon think start "Beacon v1.1.3 边界收口" --project . --version v1.1.3
-beacon user-story create "Beacon v1.1.3 边界收口" --project . --version v1.1.3
-beacon prd create "Beacon v1.1.3 边界收口" --project . --version v1.1.3
-beacon test-case create "Beacon v1.1.3 边界收口" --project . --version v1.1.3
+beacon think start "Beacon v1.1.4 implement/skill 交付" --project . --version v1.1.4
+beacon user-story create "Beacon v1.1.4 implement/skill 交付" --project . --version v1.1.4
+beacon prd create "Beacon v1.1.4 implement/skill 交付" --project . --version v1.1.4
+beacon test-case create "Beacon v1.1.4 implement/skill 交付" --project . --version v1.1.4
+
+# 2.5) 配置并执行实现适配
+beacon skill list
+beacon implement list-runners --json
+beacon implement run "Beacon implement/skill 交付" --runner omx --json
+
+# 2.6) 标准 skill + script 触发
+bash skills/beacon/scripts/run_beacon.sh --version
+bash skills/beacon/scripts/run_beacon.sh skill list
 
 # 3) 状态 / 验收
-beacon status --board --project-root . --version v1.1.3
-beacon gate check release --project-root . --version v1.1.3
+beacon status --board --project-root . --version v1.1.4
+beacon gate check release --project-root . --version v1.1.4
 ```
 
 ### 自然语言入口
 
 ```bash
 # 默认只生成计划，不执行
-beacon ask "请帮我梳理 Beacon v1.1.3 的交付闭环" --plan-only --json
+beacon ask "请帮我梳理 Beacon v1.1.4 的交付闭环" --plan-only --json
 
 # 显式执行（带边界/置信度闸门）
 beacon ask "请生成用户故事并给出验收标准" --execute --json
@@ -110,9 +120,9 @@ beacon ask "请生成用户故事并给出验收标准" --execute --json
 
 ```bash
 beacon doctor --project-root . --json
-beacon doctor verify-materials --project-root . --version v1.1.3 --json
-beacon doctor verify-delivery --project-root . --version v1.1.3 --json
-beacon report --machine latest --project-root . --version v1.1.3
+beacon doctor verify-materials --project-root . --version v1.1.4 --json
+beacon doctor verify-delivery --project-root . --version v1.1.4 --json
+beacon report --machine latest --project-root . --version v1.1.4
 ```
 
 ---
@@ -158,12 +168,19 @@ docs/beacon/<version>/execution/
 └── runs/
 ```
 
-### 当前验收工件（v1.1.3）
+### 当前验收工件（v1.1.4）
 
-- `docs/beacon/v1.1.3/SUMMARY.md`
-- `docs/beacon/v1.1.3/execution/boundaries.md`
-- `docs/beacon/v1.1.3/execution/readme-rewrite-draft.md`
-- `docs/beacon/v1.1.3/release/v1.1.3.md`
+- `docs/beacon/v1.1.4/SUMMARY.md`
+- `docs/beacon/v1.1.4/execution/boundaries.md`
+- `docs/beacon/v1.1.4/execution/skill-subcommand-design.md`
+- `docs/beacon/v1.1.4/execution/implement-cli-design.md`
+- `docs/beacon/v1.1.4/execution/latest-feature-usage-guide.md`
+- `docs/beacon/v1.1.4/execution/real-project-recipes.md`
+- `docs/beacon/v1.1.4/execution/faq-and-troubleshooting.md`
+- `docs/beacon/v1.1.4/execution/beacon-vs-openspec-gsd-comparison.md`
+- `docs/beacon/v1.1.4/execution/skill-standard-alignment.md`
+- `docs/beacon/v1.1.4/release/version-evolution-changelog.md`
+- `docs/beacon/v1.1.4/release/v1.1.4.md`
 
 ---
 
@@ -173,27 +190,27 @@ docs/beacon/<version>/execution/
 
 ```bash
 python3 -m pytest -q
-beacon doctor verify-materials --project-root . --version v1.1.3 --json
-beacon doctor verify-delivery --project-root . --version v1.1.3 --json
-beacon gate check release --project-root . --version v1.1.3 --json
-beacon release check v1.1.3 --project .
+beacon doctor verify-materials --project-root . --version v1.1.4 --json
+beacon doctor verify-delivery --project-root . --version v1.1.4 --json
+beacon gate check release --project-root . --version v1.1.4 --json
+beacon release check v1.1.4 --project .
 ```
 
 ### 自动生成验收审计
 
 ```bash
-beacon report latest acceptance-audit   --project-root .   --version v1.1.3   --feature beacon-vnext-boundary-consolidation   --write
+beacon report latest acceptance-audit   --project-root .   --version v1.1.4   --feature beacon-implement-skill-runner   --write
 ```
 
 这个命令会生成：
 
-- `docs/beacon/v1.1.3/execution/acceptance-regression-audit.{md,json}`
+- `docs/beacon/v1.1.4/execution/acceptance-regression-audit.{md,json}`
 
 ---
 
 ## 6. 后续迭代版本文档编写约定
 
-后续版本（如 `v1.1.3`、`v1.2.0`）继续沿用下面这套方案。
+后续版本（如 `v1.1.4`、`v1.2.0`）继续沿用下面这套方案。
 
 ### README 编写原则
 
@@ -230,6 +247,7 @@ docs/beacon/<version>/
    - `pyproject.toml`
    - `beacon/__init__.py`
    - `SKILL.md`
+   - `skills/beacon/SKILL.md`
    - `AGENTS.md`
    - `CLAUDE.md`
 2. 更新当前版本 README 口径
@@ -237,11 +255,17 @@ docs/beacon/<version>/
 
 ### 当前发布线参考文档
 
-- [v1.1.3 Summary](./docs/beacon/v1.1.3/SUMMARY.md)
-- [v1.1.3 Boundaries](./docs/beacon/v1.1.3/execution/boundaries.md)
-- [v1.1.3 CLI Layering Plan](./docs/beacon/v1.1.3/execution/cli-layering-refactor-plan.md)
-- [v1.1.3 Release Stub](./docs/beacon/v1.1.3/release/v1.1.3.md)
+- [v1.1.4 Summary](./docs/beacon/v1.1.4/SUMMARY.md)
+- [v1.1.4 Boundaries](./docs/beacon/v1.1.4/execution/boundaries.md)
+- [v1.1.4 Skill Subcommand Design](./docs/beacon/v1.1.4/execution/skill-subcommand-design.md)
+- [v1.1.4 Latest Feature Usage Guide](./docs/beacon/v1.1.4/execution/latest-feature-usage-guide.md)
+- [v1.1.4 Real Project Recipes](./docs/beacon/v1.1.4/execution/real-project-recipes.md)
+- [v1.1.4 FAQ / Troubleshooting](./docs/beacon/v1.1.4/execution/faq-and-troubleshooting.md)
+- [v1.1.4 Beacon vs OpenSpec / GSD / GSD-2](./docs/beacon/v1.1.4/execution/beacon-vs-openspec-gsd-comparison.md)
+- [v1.1.4 Skill Standard Alignment](./docs/beacon/v1.1.4/execution/skill-standard-alignment.md)
+- [v1.1.4 Version Evolution Changelog](./docs/beacon/v1.1.4/release/version-evolution-changelog.md)
+- [v1.1.4 Release Stub](./docs/beacon/v1.1.4/release/v1.1.4.md)
 
 ---
 
-**版本**: v1.1.3
+**版本**: v1.1.4

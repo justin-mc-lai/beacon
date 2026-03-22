@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.0",
+  "run_id": "run-v114-release",
+  "feature": "Beacon implement skill runner",
+  "feature_slug": "beacon-implement-skill-runner",
+  "version": "v1.1.4",
+  "runner": "omx",
+  "adapter_type": "command-skill",
+  "skill": "$workflows-work",
+  "status": "completed",
+  "summary": "v1.1.4 implement/skill runner capability verified for public release.",
+  "changed_files": [
+    "beacon/commands/implement.py",
+    "beacon/utils/implement_adapters.py",
+    "beacon/commands/workflow.py"
+  ],
+  "verification": [
+    {
+      "command": "python3 -m pytest -q tests/test_v114_implement_command.py",
+      "status": "passed"
+    },
+    {
+      "command": "python3 -m pytest -q tests/test_v114_workflow_implement_integration.py",
+      "status": "passed"
+    },
+    {
+      "command": "python3 -m beacon.main implement list-runners --project-root . --json",
+      "status": "passed"
+    },
+    {
+      "command": "python3 -m beacon.main implement run \"Beacon implement skill runner\" --runner omx --project-root . --version v1.1.4 --dry-run",
+      "status": "passed"
+    }
+  ],
+  "artifact_updates": {
+    "user-story": {
+      "required": false,
+      "reason": "release evidence aligned"
+    },
+    "prd": {
+      "required": false,
+      "reason": "release evidence aligned"
+    },
+    "test-case": {
+      "required": false,
+      "reason": "release evidence aligned"
+    },
+    "prototype": {
+      "required": false,
+      "reason": "not part of v1.1.4 scope"
+    }
+  },
+  "request_path": ".beacon/implement/run-v114-release/request.json",
+  "result_path": ".beacon/evidence/release-prep/run-v114-release/functional/result.json",
+  "stdout_path": ".beacon/evidence/release-prep/run-v114-release/functional/stdout.log",
+  "stderr_path": ".beacon/evidence/release-prep/run-v114-release/functional/stderr.log",
+  "implementation_marker": ".beacon/state/implementation-beacon-implement-skill-runner.json",
+  "generated_at": "2026-03-22T13:21:48.659574+00:00"
+}

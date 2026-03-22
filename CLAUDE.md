@@ -1,5 +1,5 @@
 <!-- BEACON:START -->
-<!-- BEACON:VERSION:v1.1.2 -->
+<!-- BEACON:VERSION:v1.1.4 -->
 # CLAUDE.md
 
 This file is Beacon-managed runtime guidance.
@@ -14,15 +14,19 @@ This file is Beacon-managed runtime guidance.
 - `beacon doctor setup-context --project-root .`
 - `beacon doctor verify-context --project-root . --strict`
 - `beacon workflow start "<feature>" --version <version> --project-root .`
+- `beacon skill list`
+- `beacon implement list-runners --json`
+- `beacon implement run "<feature>" --version <version> --runner <runner>`
 - `beacon workflow --help`
 - `beacon status --verbose`
 
 ## Requirement materials and docs paths
-- Runtime target version: `v1.1.2`
+- Runtime target version: `v1.1.4`
 - `docs/beacon/<version>/` is the canonical source of truth.
 - `docs/beacon/<version>/SUMMARY.md`
 - `docs/beacon/<version>/prd/`
 - `docs/beacon/<version>/user-story/`
 - `docs/beacon/<version>/qa/test-cases/`
 - `docs/beacon/<version>/execution/`
+- Prefer `beacon skill` / `beacon implement` for implementation adapter setup and execution.
 <!-- BEACON:END -->

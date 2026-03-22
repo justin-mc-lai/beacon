@@ -12,6 +12,7 @@ from typing import Iterable
 
 _SEMVER = re.compile(r"^v?(\d+)\.(\d+)\.(\d+)$")
 _RELEASE_LINE = re.compile(r"^v?(\d+)\.(\d+)\.(\d+)(?:[.-].+)?$")
+_TOOLKIT_VERSION = re.compile(r'__toolkit_version__\s*=\s*"(?P<version>v\d+\.\d+\.\d+)"')
 
 
 def normalize_version(value: str | None) -> str | None:
@@ -69,6 +70,24 @@ def largest_version(project_root: Path, *, fallback: str = "v1.0.0") -> str:
     return versions[-1]
 
 
+def current_runtime_release_version(project_root: Path) -> str | None:
+    init_file = project_root / "beacon" / "__init__.py"
+    if not init_file.exists():
+        return None
+    try:
+        text = init_file.read_text(encoding="utf-8")
+    except Exception:  # noqa: BLE001
+        return None
+    match = _TOOLKIT_VERSION.search(text)
+    if not match:
+        return None
+    version = normalize_version(match.group("version"))
+    if not version:
+        return None
+    versions = set(discover_versions(project_root))
+    return version if version in versions else None
+
+
 def resolve_target_version(
     project_root: Path,
     requested: str | None,
@@ -76,11 +95,13 @@ def resolve_target_version(
     fallback: str = "v1.0.0",
 ) -> str:
     raw = str(requested or "").strip().lower()
-    if raw in {"", "auto", "latest"}:
+    if raw in {"latest-docs", "planned"}:
         return largest_version(project_root, fallback=fallback)
+    if raw in {"", "auto", "latest"}:
+        return current_runtime_release_version(project_root) or largest_version(project_root, fallback=fallback)
     normalized = normalize_version(requested)
     if normalized:
         return normalized
     raise ValueError(
-        f"Invalid version '{requested}'. Beacon v1.1.3 formal version roots must use semver like v1.2.3."
+        f"Invalid version '{requested}'. Use semver like v1.2.3, or one of: auto/latest, latest-docs/planned."
     )

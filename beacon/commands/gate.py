@@ -8,6 +8,7 @@ from enum import Enum
 import hashlib
 import os
 
+from beacon.utils.artifact_paths import execution_file_candidates
 from beacon.utils.coverage import compute_coverage_metrics
 from beacon.utils.debug_feedback import (
     append_debug_event_memory,
@@ -334,7 +335,7 @@ def get_raw_command_log_path(project_root: Path) -> Path:
 
 def _execution_file_candidates(project_root: Path, version: str, filename: str) -> list[Path]:
     """Return canonical execution artifact path under docs/beacon."""
-    return [project_root / "docs" / "beacon" / version / "execution" / filename]
+    return execution_file_candidates(project_root, version, filename)
 
 
 def _resolved_gate_version(project_root: Path, requested_version: Optional[str] = None) -> str:
@@ -1328,14 +1329,20 @@ def _candidate_matrix_paths(project_root: Path) -> list[Path]:
     root = project_root / "docs" / "beacon"
     if not root.exists():
         return []
-    return sorted(root.glob("*/qa/test-cases/*.ac-test-matrix.json"))
+    return sorted(
+        list(root.glob("*/.machine/qa/*.ac-test-matrix.json"))
+        + list(root.glob("*/qa/test-cases/*.ac-test-matrix.json"))
+    )
 
 
 def _candidate_qa9_matrix_paths(project_root: Path) -> list[Path]:
     root = project_root / "docs" / "beacon"
     if not root.exists():
         return []
-    return sorted(root.glob("*/qa/test-cases/*.qa9-matrix.json"))
+    return sorted(
+        list(root.glob("*/.machine/qa/*.qa9-matrix.json"))
+        + list(root.glob("*/qa/test-cases/*.qa9-matrix.json"))
+    )
 
 
 def _is_non_empty_text(value: Any) -> bool:

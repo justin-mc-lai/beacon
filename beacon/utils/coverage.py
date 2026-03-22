@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 from typing import Any
 
+from beacon.utils.artifact_paths import machine_qa_dir, qa_docs_dir, uses_machine_surface
 from beacon.utils.versioning import resolve_target_version
 
 
@@ -39,9 +40,10 @@ def _story_files(project_root: Path, version: str, feature: str | None = None) -
 
 
 def _matrix_files(project_root: Path, version: str, feature: str | None = None) -> list[Path]:
-    roots = [
-        project_root / "docs" / "beacon" / version / "qa" / "test-cases",
-    ]
+    roots = []
+    if uses_machine_surface(version):
+        roots.append(machine_qa_dir(project_root, version))
+    roots.append(qa_docs_dir(project_root, version))
     out: list[Path] = []
     for root in roots:
         if not root.exists():
@@ -52,7 +54,7 @@ def _matrix_files(project_root: Path, version: str, feature: str | None = None) 
         out = [p for p in out if p.name == f"{target}.ac-test-matrix.json"]
     unique: dict[str, Path] = {}
     for path in out:
-        unique[path.name] = path
+        unique.setdefault(path.name, path)
     return sorted(unique.values(), key=lambda p: p.name)
 
 

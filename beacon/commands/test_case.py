@@ -11,6 +11,7 @@ from typing import Optional
 
 import typer
 
+from beacon.utils.artifact_paths import qa_docs_dir, qa_matrix_output, uses_machine_surface
 from beacon.utils.qa9 import (
     QA9_TYPES,
     build_qa_strategy,
@@ -483,12 +484,13 @@ def create(
         else project_root / "docs" / "beacon" / resolved_version / "qa" / "test-cases" / f"{feature_slug}.md"
     )
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    matrix_path = output_path.with_name(f"{feature_slug}.ac-test-matrix.json")
+    matrix_path = qa_matrix_output(project_root, resolved_version, feature_slug, "ac-test-matrix")
+    matrix_path.parent.mkdir(parents=True, exist_ok=True)
     matrix_path.write_text(json.dumps(matrix_payload, ensure_ascii=False, indent=2), encoding="utf-8")
     qa9_matrix_path = (
         Path(matrix_output)
         if matrix_output
-        else output_path.with_name(f"{feature_slug}.qa9-matrix.json")
+        else qa_matrix_output(project_root, resolved_version, feature_slug, "qa9-matrix")
     )
     qa9_matrix_path.parent.mkdir(parents=True, exist_ok=True)
     qa9_matrix_path.write_text(json.dumps(qa9_payload, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -531,6 +533,22 @@ def create(
 """
 
     output_path.write_text(md_content, encoding="utf-8")
+    if uses_machine_surface(resolved_version):
+        index_path = output_path.parent / "index.md"
+        if not index_path.exists():
+            index_path.write_text(
+                "\n".join(
+                    [
+                        f"# QA Test Case Index ({resolved_version})",
+                        "",
+                        "- Human-readable QA markdown lives in this directory.",
+                        f"- Machine QA matrices live under `docs/beacon/{resolved_version}/.machine/qa/`.",
+                        f"- Current feature: `{feature_slug}`",
+                    ]
+                )
+                + "\n",
+                encoding="utf-8",
+            )
 
     typer.echo(f"✓ Test cases created: {output_path}")
     typer.echo(f"✓ AC matrix created: {matrix_path}")
@@ -549,7 +567,7 @@ def list_tests(
     """List all test cases."""
     project_root = Path(project) if project else Path.cwd()
     resolved_version = resolve_target_version(project_root, version)
-    test_dir = project_root / "docs" / "beacon" / resolved_version / "qa" / "test-cases"
+    test_dir = qa_docs_dir(project_root, resolved_version)
 
     if not test_dir.exists():
         typer.echo("No test cases found")
@@ -575,9 +593,9 @@ def gate(
     typer.echo("=" * 40)
 
     slug = _slug(feature)
-    test_dir = project_root / "docs" / "beacon" / resolved_version / "qa" / "test-cases"
+    test_dir = qa_docs_dir(project_root, resolved_version)
     test_file = test_dir / f"{slug}.md"
-    matrix_file = test_dir / f"{slug}.ac-test-matrix.json"
+    matrix_file = qa_matrix_output(project_root, resolved_version, slug, "ac-test-matrix")
 
     if not test_file.exists():
         typer.echo(f"✗ FAIL: Test file not found: {test_file}")

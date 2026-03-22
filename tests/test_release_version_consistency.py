@@ -29,3 +29,11 @@ def test_pyproject_should_not_expose_prefixed_console_scripts():
     text = PYPROJECT.read_text(encoding="utf-8")
     assert "beacon.prefixed:main" not in text
     assert "\nbeacon-think = " not in text
+
+
+def test_pyproject_should_not_ship_pytest_as_runtime_dependency():
+    text = PYPROJECT.read_text(encoding="utf-8")
+    project_section = text.split("[project.optional-dependencies]", 1)[0]
+    assert '"pytest>=' not in project_section
+    assert "[project.optional-dependencies]" in text
+    assert "dev = [" in text

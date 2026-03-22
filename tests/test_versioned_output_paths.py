@@ -38,5 +38,5 @@ def test_user_story_prd_and_test_case_should_write_to_versioned_docs_roots(tmp_p
     assert (tmp_path / "docs" / "beacon" / "v3.2.1" / "prd" / f"{slug}.md").exists()
     assert (tmp_path / "docs" / "beacon" / "v3.2.1" / "qa" / "test-cases" / f"{slug}.md").exists()
     assert (
-        tmp_path / "docs" / "beacon" / "v3.2.1" / "qa" / "test-cases" / f"{slug}.ac-test-matrix.json"
+        tmp_path / "docs" / "beacon" / "v3.2.1" / ".machine" / "qa" / f"{slug}.ac-test-matrix.json"
     ).exists()

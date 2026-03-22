@@ -20,6 +20,8 @@ echo "ACPT_DIR=${ACPT_DIR}" | tee "${ARTIFACT_ROOT}/sandbox.txt"
 echo "== [4/7] P0 gate consistency (workflow --auto -> strict release gate) =="
 python3 -m beacon.main workflow start "Preflight Delivery" \
   --auto \
+  --confirm-execute \
+  --confirm-execute-second \
   --project "${ACPT_DIR}" \
   --version v1.1.0 \
   --implementation-command 'python3 -c "print(\"impl\")"' \

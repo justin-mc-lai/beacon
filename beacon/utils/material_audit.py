@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 from typing import Any
 
+from beacon.utils.artifact_paths import execution_file_candidates, qa_matrix_candidates
 from beacon.utils.versioning import normalize_version, resolve_target_version
 
 
@@ -37,7 +38,7 @@ def _status_from_checks(checks: list[dict[str, Any]]) -> str:
 def _feature_names(directory: Path) -> set[str]:
     if not directory.exists():
         return set()
-    return {path.stem for path in directory.glob("*.md") if path.is_file()}
+    return {path.stem for path in directory.glob("*.md") if path.is_file() and path.stem != "index"}
 
 
 def build_material_audit(project_root: Path | str, *, version: str | None = None, strict: bool = False) -> dict[str, Any]:
@@ -95,9 +96,11 @@ def build_material_audit(project_root: Path | str, *, version: str | None = None
             missing.append("prd")
         if name not in tc_features:
             missing.append("test-case")
-        if not (tc_dir / f"{name}.ac-test-matrix.json").exists():
+        if not any(path.exists() for path in qa_matrix_candidates(root, resolved_version, name, "ac-test-matrix")):
             missing.append("ac-test-matrix")
-        if not requires_minimum_closure and not (tc_dir / f"{name}.qa9-matrix.json").exists():
+        if not requires_minimum_closure and not any(
+            path.exists() for path in qa_matrix_candidates(root, resolved_version, name, "qa9-matrix")
+        ):
             missing.append("qa9-matrix")
         if missing:
             missing_by_feature[name] = missing
@@ -174,7 +177,11 @@ def build_delivery_audit(project_root: Path | str, *, version: str | None = None
         "source.json",
         "git-alignment.json",
     ]
-    missing = [name for name in required_files if not (exec_dir / name).exists()]
+    missing = [
+        name
+        for name in required_files
+        if not any(path.exists() for path in execution_file_candidates(root, resolved_version, name))
+    ]
     checks.append(
         {
             "name": "execution_required_files_present",
@@ -183,7 +190,10 @@ def build_delivery_audit(project_root: Path | str, *, version: str | None = None
         }
     )
 
-    config_payload = _read_json(exec_dir / "config.json")
+    config_payload = next(
+        (_read_json(path) for path in execution_file_candidates(root, resolved_version, "config.json") if path.exists()),
+        None,
+    )
     config_missing = []
     for key in ("resolved_project", "docs", "implementation", "source_info", "git", "research", "delivery"):
         if not isinstance(config_payload, dict) or key not in config_payload:
@@ -196,7 +206,10 @@ def build_delivery_audit(project_root: Path | str, *, version: str | None = None
         }
     )
 
-    source_payload = _read_json(exec_dir / "source.json")
+    source_payload = next(
+        (_read_json(path) for path in execution_file_candidates(root, resolved_version, "source.json") if path.exists()),
+        None,
+    )
     source_missing = []
     for key in ("project_name", "project_root", "workspace_root", "repo_url", "branch", "commit", "run_id", "version"):
         if not isinstance(source_payload, dict) or key not in source_payload:
@@ -209,7 +222,10 @@ def build_delivery_audit(project_root: Path | str, *, version: str | None = None
         }
     )
 
-    git_payload = _read_json(exec_dir / "git-alignment.json")
+    git_payload = next(
+        (_read_json(path) for path in execution_file_candidates(root, resolved_version, "git-alignment.json") if path.exists()),
+        None,
+    )
     git_missing = []
     for key in ("git_refs", "alignment", "version_ref", "blocked"):
         if not isinstance(git_payload, dict) or key not in git_payload:
@@ -229,7 +245,10 @@ def build_delivery_audit(project_root: Path | str, *, version: str | None = None
         }
     )
 
-    manifest_payload = _read_json(exec_dir / "delivery-manifest.json")
+    manifest_payload = next(
+        (_read_json(path) for path in execution_file_candidates(root, resolved_version, "delivery-manifest.json") if path.exists()),
+        None,
+    )
     manifest_missing = []
     affected_projects = []
     if not isinstance(manifest_payload, dict):
@@ -269,7 +288,10 @@ def build_delivery_audit(project_root: Path | str, *, version: str | None = None
         }
     )
 
-    change_payload = _read_json(exec_dir / "change-impact.json")
+    change_payload = next(
+        (_read_json(path) for path in execution_file_candidates(root, resolved_version, "change-impact.json") if path.exists()),
+        None,
+    )
     change_missing = []
     pending_tasks: list[str] = []
     if not isinstance(change_payload, dict):
@@ -293,12 +315,13 @@ def build_delivery_audit(project_root: Path | str, *, version: str | None = None
         }
     )
 
-    terminal_path = exec_dir / "terminal.json"
+    terminal_path = execution_file_candidates(root, resolved_version, "terminal.json")[0]
+    terminal_exists = any(path.exists() for path in execution_file_candidates(root, resolved_version, "terminal.json"))
     checks.append(
         {
             "name": "terminal_artifact_presence",
-            "status": "pass" if terminal_path.exists() else "warn",
-            "details": {"exists": terminal_path.exists(), "path": str(terminal_path.relative_to(root))},
+            "status": "pass" if terminal_exists else "warn",
+            "details": {"exists": terminal_exists, "path": str(terminal_path.relative_to(root))},
         }
     )
 

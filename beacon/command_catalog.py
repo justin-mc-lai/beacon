@@ -16,6 +16,8 @@ CORE_COMMANDS = (
 
 SUPPORT_COMMANDS = (
     "ask",
+    "skill",
+    "implement",
     "status",
     "report",
     "review",
@@ -75,6 +77,7 @@ SUPPORTED_SUBCOMMANDS = (
     "evolution-summary",
     "feedback",
     "gate",
+    "implement",
     "init",
     "jtbd",
     "kano",
@@ -93,6 +96,7 @@ SUPPORTED_SUBCOMMANDS = (
     "roadmap",
     "run",
     "save",
+    "skill",
     "status",
     "team",
     "test-case",

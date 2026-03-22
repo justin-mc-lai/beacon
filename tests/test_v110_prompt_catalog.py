@@ -77,7 +77,7 @@ def test_prompt_catalog_should_include_omc_omx_team_templates(tmp_path: Path):
 
     templates = "\n".join(payload.get("omc_omx_team_templates", []))
     assert "omc run" in templates
-    assert "omx run" in templates
+    assert "omx exec" in templates
     assert "beacon team start" in templates
 
 

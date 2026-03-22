@@ -119,7 +119,7 @@ def _build_prompt_catalog(project_root: Path, version: str) -> dict[str, Any]:
         f'beacon ask "继续上次workflow并评估阻塞项" --project-root {project_root} --plan-only --json',
         f'beacon workflow continue --project {project_root} --version {version} --auto --interactive --hud',
         f'omc run --project-root {project_root} --task "继续推进 <feature>（version={version}）"',
-        f'omx run --project-root {project_root} --task "执行 <feature> 下一轮迭代（version={version}）"',
+        f'omx exec --full-auto --cd {project_root} --skip-git-repo-check "执行 <feature> 下一轮迭代（version={version}）"',
         f'beacon team start "<feature> 交付协作" --runtime tmux --project {project_root}',
         f"beacon feedback sync latest --project-root {project_root}",
         f"beacon gate check release --mode strict --project-root {project_root}",

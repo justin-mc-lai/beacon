@@ -61,6 +61,8 @@ def build_app(*, package_version: str) -> typer.Typer:
     from .commands.status import app as status_app
     from .commands.report import app as report_app
     from .commands.review import app as review_app
+    from .commands.skill import app as skill_app
+    from .commands.implement import app as implement_app
     from .commands.debug import app as debug_app
     from .commands.feedback import app as feedback_app
     from .commands.ask import ask_entry
@@ -108,6 +110,8 @@ def build_app(*, package_version: str) -> typer.Typer:
     app.add_typer(status_app, name="status")
     app.add_typer(report_app, name="report")
     app.add_typer(review_app, name="review")
+    app.add_typer(skill_app, name="skill")
+    app.add_typer(implement_app, name="implement")
     app.add_typer(debug_app, name="debug")
     app.add_typer(feedback_app, name="feedback")
     app.add_typer(prompt_app, name="prompt", hidden=True)

@@ -75,7 +75,8 @@ def run_regression_command(project_root: Path, command: str) -> dict[str, Any]:
 
 
 def _iter_exec_matrix_paths(project_root: Path) -> list[Path]:
-    return sorted((project_root / "docs" / "beacon").glob(f"v*/qa/test-cases/{_EXEC_MATRIX}"))
+    root = project_root / "docs" / "beacon"
+    return sorted(list(root.glob(f"v*/qa/test-cases/{_EXEC_MATRIX}")) + list(root.glob(f"v*/.machine/qa/{_EXEC_MATRIX}")))
 
 
 def _feature_from_matrix(path: Path) -> str:
@@ -94,9 +95,10 @@ def _matrix_entry_count(path: Path) -> int:
 def collect_executable_specs(project_root: Path) -> list[dict[str, Any]]:
     specs: list[dict[str, Any]] = []
     for path in _iter_exec_matrix_paths(project_root):
+        version_name = path.parents[2].name if path.parents[1].name != ".machine" else path.parents[3].name
         specs.append(
             {
-                "version": path.parents[2].name,
+                "version": version_name,
                 "feature": _feature_from_matrix(path),
                 "entries": _matrix_entry_count(path),
                 "path": str(path.relative_to(project_root)),

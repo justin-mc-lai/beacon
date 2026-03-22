@@ -5,8 +5,8 @@ description: Evidence-first Product Workflow Kernel for product thinking, user s
 
 # Beacon - Evidence-first Product Workflow Kernel
 
-> **Skill Version**: v1.1.3
-> **CLI Version**: v1.1.3
+> **Skill Version**: v1.1.4
+> **CLI Version**: v1.1.4
 > **Last Updated**: 2026-03-19
 
 Beacon 是 AI 产品工作流内核，提供需求澄清、用户故事、PRD、测试用例、证据闭环与发布门禁的统一工作流。
@@ -19,6 +19,7 @@ Beacon 是 AI 产品工作流内核，提供需求澄清、用户故事、PRD、
 - 历史模块入口（兼容）：`python3 -m beacon.think ...`（保留兼容，但不作为推荐入口）
 
 > 注意：对外建议统一使用 `beacon <subcommand>`；正式交付文档统一读取 `docs/beacon/<version>/`。
+> 标准 skill 包目录位于 `skills/beacon/`；根 `SKILL.md` 保留为兼容入口。
 
 命令清单由 `beacon/command_catalog.py::SUPPORTED_SUBCOMMANDS` 自动生成，使用：
 
@@ -49,6 +50,7 @@ python3 scripts/sync_skill_commands.py --check
 | `beacon evolution-summary` | `evolution-summary` |
 | `beacon feedback` | `feedback` |
 | `beacon gate` | `gate` |
+| `beacon implement` | `implement` |
 | `beacon init` | `init` |
 | `beacon jtbd` | `jtbd` |
 | `beacon kano` | `kano` |
@@ -67,6 +69,7 @@ python3 scripts/sync_skill_commands.py --check
 | `beacon roadmap` | `roadmap` |
 | `beacon run` | `run` |
 | `beacon save` | `save` |
+| `beacon skill` | `skill` |
 | `beacon status` | `status` |
 | `beacon team` | `team` |
 | `beacon test-case` | `test-case` |
@@ -95,6 +98,7 @@ python3 scripts/sync_skill_commands.py --check
 | `evolution-summary` | `beacon evolution-summary` |
 | `feedback` | `beacon feedback` |
 | `gate` | `beacon gate` |
+| `implement` | `beacon implement` |
 | `init` | `beacon init` |
 | `jtbd` | `beacon jtbd` |
 | `kano` | `beacon kano` |
@@ -113,6 +117,7 @@ python3 scripts/sync_skill_commands.py --check
 | `roadmap` | `beacon roadmap` |
 | `run` | `beacon run` |
 | `save` | `beacon save` |
+| `skill` | `beacon skill` |
 | `status` | `beacon status` |
 | `team` | `beacon team` |
 | `test-case` | `beacon test-case` |
@@ -130,10 +135,10 @@ python3 scripts/sync_skill_commands.py --check
 
 ```bash
 # 推荐
-beacon workflow start "Beacon v1.1.3 边界收口" --project /abs/path/to/project --version v1.1.3
+beacon workflow start "Beacon v1.1.4 implement/skill 交付" --project /abs/path/to/project --version v1.1.4
 
 # 兼容
-python3 -m beacon.main workflow start "Beacon v1.1.3 边界收口" --project /abs/path/to/project --version v1.1.3
+python3 -m beacon.main workflow start "Beacon v1.1.4 implement/skill 交付" --project /abs/path/to/project --version v1.1.4
 ```
 
 ## Gate 检查
@@ -161,11 +166,19 @@ docs/beacon/{version}/
 
 ## 参考文档
 
-- `docs/beacon/v1.1.3/SUMMARY.md`
-- `docs/beacon/v1.1.3/execution/boundaries.md`
+- `docs/beacon/v1.1.4/SUMMARY.md`
+- `docs/beacon/v1.1.4/execution/boundaries.md`
+- `docs/beacon/v1.1.4/execution/skill-subcommand-design.md`
+- `docs/beacon/v1.1.4/execution/latest-feature-usage-guide.md`
+- `docs/beacon/v1.1.4/execution/real-project-recipes.md`
+- `docs/beacon/v1.1.4/execution/faq-and-troubleshooting.md`
+- `docs/beacon/v1.1.4/execution/beacon-vs-openspec-gsd-comparison.md`
+- `docs/beacon/v1.1.4/execution/skill-standard-alignment.md`
+- `docs/beacon/v1.1.4/release/version-evolution-changelog.md`
+- `skills/beacon/SKILL.md`
 - `references/acceptance-criteria.md`
 - `references/user-story-mapping.md`
 
 ---
 
-**版本**: v1.1.3
+**版本**: v1.1.4
