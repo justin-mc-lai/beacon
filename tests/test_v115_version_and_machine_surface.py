@@ -6,6 +6,7 @@ from pathlib import Path
 from typer.testing import CliRunner
 
 from beacon.main import app
+from beacon.utils.artifact_paths import uses_machine_surface
 from beacon.utils.coverage import compute_coverage_metrics
 from beacon.utils.versioning import resolve_target_version
 
@@ -64,12 +65,41 @@ def test_resolve_target_version_auto_should_prefer_current_runtime_release(tmp_p
     assert resolve_target_version(tmp_path, "v1.1.5") == "v1.1.5"
 
 
+def test_machine_surface_should_follow_toolkit_version_not_delivery_version():
+    assert uses_machine_surface("v0.0.1") is True
+
+
 def test_user_story_without_version_should_use_current_runtime_release(tmp_path: Path):
     _seed_release_repo(tmp_path)
     result = _invoke(["user-story", "create", "Runtime Default Feature", "--project", str(tmp_path)])
     assert result.exit_code == 0, result.stdout
     assert (tmp_path / "docs" / "beacon" / "v1.1.4" / "user-story" / "runtime-default-feature.md").exists()
     assert not (tmp_path / "docs" / "beacon" / "v1.1.5" / "user-story" / "runtime-default-feature.md").exists()
+
+
+def test_project_release_v001_should_still_write_machine_surface_artifacts(tmp_path: Path):
+    _seed_release_repo(tmp_path)
+    feature = "Project Delivery Feature"
+    slug = feature.lower().replace(" ", "-")
+    base = tmp_path / "docs" / "beacon" / "v0.0.1"
+    (base / "user-story").mkdir(parents=True, exist_ok=True)
+    (base / "prd").mkdir(parents=True, exist_ok=True)
+    (base / "release").mkdir(parents=True, exist_ok=True)
+    (base / "execution").mkdir(parents=True, exist_ok=True)
+    (base / "user-story" / f"{slug}.md").write_text("# Story\n\n| AC ID | Description |\n| --- | --- |\n| AC-001 | flow works |\n", encoding="utf-8")
+    (base / "prd" / f"{slug}.md").write_text("# PRD\n", encoding="utf-8")
+    (base / "release" / "v0.0.1.md").write_text("# Release v0.0.1\n", encoding="utf-8")
+
+    init_result = _invoke(["init", "--project-root", str(tmp_path), "--version", "v0.0.1", "--apply"])
+    assert init_result.exit_code == 0, init_result.stdout
+    assert (base / ".machine" / "execution").exists()
+    assert (base / ".machine" / "qa").exists()
+
+    case_result = _invoke(["test-case", "create", feature, "--project", str(tmp_path), "--version", "v0.0.1"])
+    assert case_result.exit_code == 0, case_result.stdout
+    assert (base / "qa" / "test-cases" / f"{slug}.md").exists()
+    assert (base / ".machine" / "qa" / f"{slug}.ac-test-matrix.json").exists()
+    assert (base / ".machine" / "qa" / f"{slug}.qa9-matrix.json").exists()
 
 
 def test_v115_test_case_should_write_machine_matrices_and_human_markdown(tmp_path: Path):

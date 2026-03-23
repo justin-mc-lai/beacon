@@ -8,6 +8,7 @@ from pathlib import Path
 
 from typer.testing import CliRunner
 
+from beacon.utils.artifact_paths import execution_file_output
 from beacon.main import app
 
 
@@ -93,9 +94,7 @@ def test_release_gate_should_prefer_terminal_run_when_newer_incomplete_run_exist
     )
     assert start.exit_code == 0
 
-    terminal = json.loads(
-        (tmp_path / "docs" / "beacon" / "v1.0.0" / "execution" / "terminal.json").read_text(encoding="utf-8")
-    )
+    terminal = json.loads(execution_file_output(tmp_path, "v1.0.0", "terminal.json").read_text(encoding="utf-8"))
     contract_run_id = str(terminal["run_id"])
 
     lifecycle_path = tmp_path / ".beacon" / "memory" / "workflow-lifecycle.json"

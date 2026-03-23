@@ -5,6 +5,7 @@ from pathlib import Path
 
 from typer.testing import CliRunner
 
+from beacon.utils.artifact_paths import execution_file_output
 from beacon.main import app
 
 
@@ -34,8 +35,7 @@ def test_workflow_start_should_materialize_execution_governance_files(tmp_path: 
         ]
     )
     assert result.exit_code == 0, result.stdout
-    exec_dir = tmp_path / "docs" / "beacon" / "v1.1.1" / "execution"
     for name in ("config.json", "source.json", "git-alignment.json"):
-        assert (exec_dir / name).exists()
-    config = json.loads((exec_dir / "config.json").read_text(encoding="utf-8"))
+        assert execution_file_output(tmp_path, "v1.1.1", name).exists()
+    config = json.loads(execution_file_output(tmp_path, "v1.1.1", "config.json").read_text(encoding="utf-8"))
     assert config["strict_mode"] is True

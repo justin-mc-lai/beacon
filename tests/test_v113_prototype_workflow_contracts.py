@@ -5,6 +5,7 @@ from pathlib import Path
 
 from typer.testing import CliRunner
 
+from beacon.utils.artifact_paths import qa_matrix_output
 from beacon.main import app
 from beacon.commands.gate import GateMode, check_prototype_contract
 
@@ -64,11 +65,8 @@ def test_test_case_should_consume_prototype_contract_maps(tmp_path: Path):
     _invoke(["prototype", "create", feature, "--project", str(tmp_path), "--version", version])
     tc = _invoke(["test-case", "create", feature, "--project", str(tmp_path), "--version", version])
     assert tc.exit_code == 0
-    matrix = json.loads(
-        (tmp_path / "docs" / "beacon" / version / "qa" / "test-cases" / "ops-console.ac-test-matrix.json").read_text(
-            encoding="utf-8"
-        )
-    )
+    matrix_path = qa_matrix_output(tmp_path, version, "ops-console", "ac-test-matrix")
+    matrix = json.loads(matrix_path.read_text(encoding="utf-8"))
     sources = {item.get("source") for item in matrix.get("entries", [])}
     assert "prototype:navigation-map" in sources
     assert "prototype:interaction-map" in sources

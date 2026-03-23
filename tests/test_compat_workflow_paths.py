@@ -12,6 +12,7 @@ from beacon.commands.workflow import (
     _stage_output_candidates,
     ensure_output_dirs,
 )
+from beacon.utils.artifact_paths import machine_qa_file, qa_docs_file
 from beacon.main import app
 
 
@@ -33,15 +34,22 @@ def test_stage_output_candidates_should_only_use_beacon_docs(tmp_path: Path):
     candidates = _stage_output_candidates(tmp_path, "test-case", "登录功能", "v1.1.1")
     assert candidates[0] == tmp_path / "docs" / "beacon" / "v1.1.1" / "qa" / "test-cases" / "登录功能.md"
     assert all("docs/product" not in str(path) for path in candidates)
-    assert candidates[1] == tmp_path / "docs" / "beacon" / "v1.1.1" / "qa" / "test-cases" / "登录功能.ac-test-matrix.json"
+    assert candidates[1] == machine_qa_file(tmp_path, "v1.1.1", "登录功能.ac-test-matrix.json")
+    assert candidates[2] == machine_qa_file(tmp_path, "v1.1.1", "登录功能.qa9-matrix.json")
 
 
 def test_matrix_candidate_lists_should_only_return_beacon_paths(tmp_path: Path):
     ac_candidates = _matrix_path_candidates(tmp_path, "登录功能", "v1.1.1")
     qa9_candidates = _qa9_matrix_path_candidates(tmp_path, "登录功能", "v1.1.1")
 
-    assert ac_candidates == [tmp_path / "docs" / "beacon" / "v1.1.1" / "qa" / "test-cases" / "登录功能.ac-test-matrix.json"]
-    assert qa9_candidates == [tmp_path / "docs" / "beacon" / "v1.1.1" / "qa" / "test-cases" / "登录功能.qa9-matrix.json"]
+    assert ac_candidates == [
+        machine_qa_file(tmp_path, "v1.1.1", "登录功能.ac-test-matrix.json"),
+        qa_docs_file(tmp_path, "v1.1.1", "登录功能.ac-test-matrix.json"),
+    ]
+    assert qa9_candidates == [
+        machine_qa_file(tmp_path, "v1.1.1", "登录功能.qa9-matrix.json"),
+        qa_docs_file(tmp_path, "v1.1.1", "登录功能.qa9-matrix.json"),
+    ]
 
 
 def test_workflow_auto_should_materialize_stage_outputs(tmp_path: Path):

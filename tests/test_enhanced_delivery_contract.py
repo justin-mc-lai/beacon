@@ -7,6 +7,7 @@ from pathlib import Path
 
 from typer.testing import CliRunner
 
+from beacon.utils.artifact_paths import qa_matrix_output
 from beacon.commands.gate import GateMode, check_test_execution_integrity
 from beacon.main import app
 
@@ -88,7 +89,7 @@ def test_test_case_create_generates_ac_matrix(tmp_path: Path):
     result = runner.invoke(app, ["test-case", "create", feature, "--project", str(tmp_path), "--version", "v1.0.0"])
     assert result.exit_code == 0
 
-    matrix_path = tmp_path / "docs" / "beacon" / "v1.0.0" / "qa" / "test-cases" / f"{slug}.ac-test-matrix.json"
+    matrix_path = qa_matrix_output(tmp_path, "v1.0.0", slug, "ac-test-matrix")
     payload = json.loads(matrix_path.read_text(encoding="utf-8"))
     assert isinstance(payload.get("entries"), list)
     assert len(payload["entries"]) >= 3

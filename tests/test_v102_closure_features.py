@@ -7,6 +7,7 @@ from pathlib import Path
 
 from typer.testing import CliRunner
 
+from beacon.utils.artifact_paths import qa_matrix_output
 from beacon.main import app
 
 
@@ -83,7 +84,7 @@ def test_test_case_create_should_map_each_ac_and_cover_required_qa_types(tmp_pat
         ],
     )
     assert result.exit_code == 0, result.stdout
-    qa9_path = tmp_path / "docs" / "beacon" / "v1.0.2" / "qa" / "test-cases" / f"{slug}.qa9-matrix.json"
+    qa9_path = qa_matrix_output(tmp_path, "v1.0.2", slug, "qa9-matrix")
     payload = json.loads(qa9_path.read_text(encoding="utf-8"))
     entries = payload["entries"]
     qa_types = payload["qa_types"]
@@ -95,7 +96,7 @@ def test_test_case_create_should_map_each_ac_and_cover_required_qa_types(tmp_pat
 
 
 def test_auto_test_should_backfill_qa9_summary_and_sync_progress(tmp_path: Path):
-    matrix_path = tmp_path / "docs" / "beacon" / "v1.0.2" / "qa" / "test-cases" / "qa9-feature.qa9-matrix.json"
+    matrix_path = qa_matrix_output(tmp_path, "v1.0.2", "qa9-feature", "qa9-matrix")
     matrix_path.parent.mkdir(parents=True, exist_ok=True)
     matrix_payload = {
         "schema_version": "1.0.2",
@@ -175,9 +176,10 @@ def test_gate_should_block_expired_waiver_and_missing_pair_execution(tmp_path: P
     (root / "prd" / "qa9-feature.md").write_text("# PRD\n", encoding="utf-8")
     (root / "user-story" / "qa9-feature.md").write_text("# US\n", encoding="utf-8")
     (root / "release" / "v1.0.2.md").write_text("# Release\n", encoding="utf-8")
-    matrix_path = root / "qa" / "test-cases" / "qa9-feature.qa9-matrix.json"
+    matrix_path = qa_matrix_output(tmp_path, "v1.0.2", "qa9-feature", "qa9-matrix")
     matrix_path.parent.mkdir(parents=True, exist_ok=True)
-    (matrix_path.parent / "qa9-feature.md").write_text("# Test Cases\n", encoding="utf-8")
+    (root / "qa" / "test-cases").mkdir(parents=True, exist_ok=True)
+    (root / "qa" / "test-cases" / "qa9-feature.md").write_text("# Test Cases\n", encoding="utf-8")
     matrix_payload = {
         "schema_version": "1.0.2",
         "feature": "QA9 Feature",

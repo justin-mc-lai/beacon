@@ -5,6 +5,7 @@ from pathlib import Path
 
 from typer.testing import CliRunner
 
+from beacon.utils.artifact_paths import qa_matrix_output
 from beacon.main import app
 
 
@@ -44,7 +45,9 @@ def test_review_spec_should_write_formal_review_artifacts(tmp_path: Path):
     (root / "user-story" / f"{slug}.md").write_text("# User Story\n", encoding="utf-8")
     (root / "prd" / f"{slug}.md").write_text("# PRD\n", encoding="utf-8")
     (root / "qa" / "test-cases" / f"{slug}.md").write_text("# Test Cases\n", encoding="utf-8")
-    (root / "qa" / "test-cases" / f"{slug}.ac-test-matrix.json").write_text('{"entries":[]}', encoding="utf-8")
+    matrix_path = qa_matrix_output(tmp_path, version, slug, "ac-test-matrix")
+    matrix_path.parent.mkdir(parents=True, exist_ok=True)
+    matrix_path.write_text('{"entries":[]}', encoding="utf-8")
     impl = tmp_path / ".beacon" / "state"
     impl.mkdir(parents=True, exist_ok=True)
     (impl / f"implementation-{slug}.json").write_text("{}", encoding="utf-8")
@@ -56,4 +59,3 @@ def test_review_spec_should_write_formal_review_artifacts(tmp_path: Path):
     assert payload["status"] == "pass"
     assert (root / "execution" / f"review-spec-{slug}.json").exists()
     assert (root / "execution" / f"review-spec-{slug}.md").exists()
-

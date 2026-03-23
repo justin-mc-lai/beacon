@@ -5,6 +5,7 @@ from pathlib import Path
 
 from typer.testing import CliRunner
 
+from beacon.utils.artifact_paths import execution_file_output
 from beacon.main import app
 
 
@@ -43,13 +44,13 @@ def test_workflow_start_should_write_v111_execution_governance_artifacts(tmp_pat
         "delivery-manifest.json",
         "change-impact.json",
     ):
-        assert (exec_dir / name).exists(), name
+        assert execution_file_output(tmp_path, "v1.1.1", name).exists(), name
 
-    manifest = json.loads((exec_dir / "delivery-manifest.json").read_text(encoding="utf-8"))
+    manifest = json.loads(execution_file_output(tmp_path, "v1.1.1", "delivery-manifest.json").read_text(encoding="utf-8"))
     assert manifest.get("affected_projects")
     assert any(item.get("type") == "config" for item in manifest.get("deliverables", []))
 
-    change_impact = json.loads((exec_dir / "change-impact.json").read_text(encoding="utf-8"))
+    change_impact = json.loads(execution_file_output(tmp_path, "v1.1.1", "change-impact.json").read_text(encoding="utf-8"))
     tasks = {str(item.get("task", "")) for item in change_impact.get("tasks", []) if isinstance(item, dict)}
     assert "publish-config-draft" in tasks
     assert "publish-source-draft" in tasks

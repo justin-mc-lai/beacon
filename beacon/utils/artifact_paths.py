@@ -1,9 +1,16 @@
-"""Version-aware artifact path helpers."""
+"""Version-aware artifact path helpers.
+
+Project delivery version and Beacon runtime/toolkit version are distinct:
+
+- delivery version controls where artifacts are written
+- toolkit version controls whether newer artifact layout features are enabled
+"""
 
 from __future__ import annotations
 
 from pathlib import Path
 
+from beacon import __toolkit_version__
 from beacon.utils.versioning import normalize_version
 
 
@@ -16,8 +23,12 @@ def _semver_tuple(version: str | None) -> tuple[int, int, int]:
         return (0, 0, 0)
 
 
-def uses_machine_surface(version: str | None) -> bool:
-    return _semver_tuple(version) >= (1, 1, 5)
+def active_toolkit_version(runtime_version: str | None = None, *, fallback_version: str | None = None) -> str | None:
+    return normalize_version(runtime_version or __toolkit_version__ or fallback_version)
+
+
+def uses_machine_surface(version: str | None, *, runtime_version: str | None = None) -> bool:
+    return _semver_tuple(active_toolkit_version(runtime_version, fallback_version=version)) >= (1, 1, 5)
 
 
 def version_root(project_root: Path, version: str) -> Path:
