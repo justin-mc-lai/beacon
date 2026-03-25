@@ -11,6 +11,7 @@ import typer
 from beacon.utils.artifact_paths import qa_matrix_candidates
 from beacon.utils.coverage import compute_coverage_metrics
 from beacon.utils.material_audit import build_material_audit
+from beacon.utils.project_skills import evaluate_project_profile_gate
 from beacon.utils.prototype_utils import evaluate_prototype_status
 from beacon.utils.runtime import now_iso
 from beacon.utils.story_state import load_story_state
@@ -264,6 +265,23 @@ def review_quality(
             }
         )
 
+    project_gate = evaluate_project_profile_gate(project_root, version=resolved_version, feature=feature)
+    if project_gate.get("status") == "blocked":
+        for gate_issue in project_gate.get("issues", []):
+            if not isinstance(gate_issue, dict):
+                continue
+            issues.append(
+                {
+                    "reason_code": str(gate_issue.get("reason_code", "required_evidence_missing")),
+                    "severity": "critical",
+                    "message": str(gate_issue.get("message", "project profile evidence gate blocked")),
+                }
+            )
+        if project_gate.get("profile_id"):
+            recommendations.append(
+                f"Run `beacon verify run \"{feature}\" --project \"{project_root}\" --version {resolved_version} --profile {project_gate.get('profile_id')}` to satisfy project-specific verification."
+            )
+
     gate_ready = not any(item.get("severity") == "critical" for item in issues)
     status = "pass" if gate_ready and not issues else ("fail" if not gate_ready else "warn")
 
@@ -278,6 +296,7 @@ def review_quality(
         "gate_ready": gate_ready,
         "verify_status": verify_status,
         "prototype_gate_ready": prototype_gate_ready,
+        "project_profile_gate": project_gate,
         "issues": issues,
         "recommendations": recommendations,
     }
@@ -330,6 +349,22 @@ def review_accept(
             evidence_ref=[str(auto_test_path.relative_to(project_root))],
         )
     try:
+        project_gate = evaluate_project_profile_gate(project_root, version=resolved_version, feature=feature)
+        if project_gate.get("status") == "blocked":
+            payload = {
+                "schema_version": "1.0",
+                "feature": feature,
+                "version": resolved_version,
+                "status": "blocked",
+                "reason": "project_profile_gate_blocked",
+                "issues": project_gate.get("issues", []),
+                "profile_id": project_gate.get("profile_id", ""),
+            }
+            if json_output:
+                typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+            else:
+                typer.echo("✗ Review accept blocked: project profile evidence gate failed")
+            raise typer.Exit(2)
         result = record_acceptance_writeback(project_root, version=resolved_version, feature=feature, accepted_by=reviewer)
         payload = {
             "schema_version": "1.0",

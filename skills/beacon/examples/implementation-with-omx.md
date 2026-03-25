@@ -4,8 +4,8 @@ This example focuses on **adapter-driven implementation** using the Beacon skill
 
 Read first:
 
-- [`../../../docs/beacon/v1.1.6/COMMANDS.md`](../../../docs/beacon/v1.1.6/COMMANDS.md)
-- [`../../../docs/beacon/v1.1.6/execution/command-reference.md`](../../../docs/beacon/v1.1.6/execution/command-reference.md)
+- [`../../../docs/beacon/v1.1.7/COMMANDS.md`](../../../docs/beacon/v1.1.7/COMMANDS.md)
+- [`../../../docs/beacon/v1.1.7/execution/command-reference.md`](../../../docs/beacon/v1.1.7/execution/command-reference.md)
 
 ```bash
 # 1) Inspect skill adapters and preferred runner
@@ -18,9 +18,9 @@ bash skills/beacon/scripts/run_beacon.sh skill prefer omx --project-root . --sco
 
 # 3) Run implementation through OMX (dry-run first)
 bash skills/beacon/scripts/run_beacon.sh implement run \
-  "Beacon v1.1.6 layered delivery" \
+  "Beacon v1.1.7 layered delivery" \
   --project . \
-  --version v1.1.6 \
+  --version v1.1.7 \
   --runner omx \
   --dry-run \
   --json
@@ -28,17 +28,17 @@ bash skills/beacon/scripts/run_beacon.sh implement run \
 # 4) Inspect implementation status
 bash skills/beacon/scripts/run_beacon.sh implement status \
   --project-root . \
-  --version v1.1.6
+  --version v1.1.7
 
 # 5) After implementation, run review and release checks
 bash skills/beacon/scripts/run_beacon.sh review spec \
-  "Beacon v1.1.6 layered delivery" \
+  "Beacon v1.1.7 layered delivery" \
   --project . \
-  --version v1.1.6 \
+  --version v1.1.7 \
   --json
 bash skills/beacon/scripts/run_beacon.sh review quality \
-  "Beacon v1.1.6 layered delivery" \
+  "Beacon v1.1.7 layered delivery" \
   --project . \
-  --version v1.1.6 \
+  --version v1.1.7 \
   --json
 ```

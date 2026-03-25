@@ -16,10 +16,12 @@ from beacon.utils.implement_adapters import (
     project_config_path,
     resolve_default_runner,
 )
+from beacon.utils.project_skills import bind_feature_profile, list_skill_registry
 from beacon.utils.runtime import now_iso
 from beacon.utils.skill_config import load_yaml_like, write_yaml_like
 
 app = typer.Typer(name="skill", help="Manage Beacon implementation skill adapters")
+registry_app = typer.Typer(name="registry", help="Inspect Beacon multi-skill registry")
 
 
 def _resolve_scope_path(project_root: Path, scope: str) -> Path:
@@ -100,6 +102,24 @@ def _doctor_adapter(adapter_id: str, payload: dict[str, Any], project_root: Path
         "issues": issues,
         "status": "pass" if detected and not issues else ("warn" if detected else "fail"),
     }
+
+
+@registry_app.command("list")
+def registry_list(
+    project_root: str = typer.Option("", "--project-root", "--project", "-p", help="Project root path"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
+):
+    """List builtin + external project skills known to Beacon."""
+    root = Path(project_root) if project_root else Path.cwd()
+    rows = list_skill_registry(root)
+    payload = {"schema_version": "1.0", "skills": rows}
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        return
+    typer.echo("Beacon Skill Registry")
+    typer.echo("=" * 22)
+    for row in rows:
+        typer.echo(f"- {row['id']} ({row['kind']}) detected={row['detected']}")
 
 
 @app.command("detect")
@@ -230,6 +250,30 @@ def register(
     typer.echo(f"✓ Registered adapter `{adapter_id}` in {path}")
 
 
+@app.command("bind")
+def bind(
+    feature: str = typer.Argument(..., help="Feature name"),
+    profile: str = typer.Option(..., "--profile", help="Project profile id"),
+    version: str = typer.Option("auto", "--version", "-v", help="Target version"),
+    project_root: str = typer.Option("", "--project-root", "--project", "-p", help="Project root path"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
+):
+    """Bind a feature to a project profile for skill-aware verification/orchestration."""
+    root = Path(project_root) if project_root else Path.cwd()
+    path = bind_feature_profile(root, version=version, feature=feature, profile_id=profile)
+    payload = {
+        "schema_version": "1.0",
+        "status": "bound",
+        "feature": feature,
+        "profile_id": profile,
+        "binding_path": str(path.relative_to(root)),
+    }
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        return
+    typer.echo(f"✓ bound `{feature}` to profile `{profile}`")
+
+
 @app.command("prefer")
 def prefer(
     adapter_id: str = typer.Argument(..., help="Adapter id to prefer"),
@@ -290,3 +334,6 @@ def doctor(
         typer.echo(f"- {item['status'].upper()}: {item['adapter_id']} :: {', '.join(item['issues']) or 'ok'}")
     if status == "fail":
         raise typer.Exit(2)
+
+
+app.add_typer(registry_app, name="registry")

@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any
 
 from beacon.utils.coverage import compute_coverage_metrics
+from beacon.utils.project_skills import evaluate_project_profile_gate, resolve_profile_for_feature
 from beacon.utils.revision_state import load_revision_state
 from beacon.utils.runtime import load_run_state
 from beacon.utils.scoring import (
@@ -45,7 +46,7 @@ def _infer_current_stage(*, revision_state: dict[str, Any], workflow_progress: d
     return delivery or str(revision_state.get("doc_status", "") or "draft")
 
 
-def _blocking_reasons(*, revision_state: dict[str, Any], workflow_progress: dict[str, Any], coverage: dict[str, Any]) -> list[str]:
+def _blocking_reasons(*, revision_state: dict[str, Any], workflow_progress: dict[str, Any], coverage: dict[str, Any], profile_gate: dict[str, Any] | None = None) -> list[str]:
     reasons: list[str] = []
     delivery_status = str(revision_state.get("delivery_status", "") or "")
     if str(revision_state.get("doc_status", "") or "draft") != "frozen":
@@ -59,15 +60,36 @@ def _blocking_reasons(*, revision_state: dict[str, Any], workflow_progress: dict
         reasons.append("missing_user_story")
     if delivery_status == "blocked":
         reasons.append("workflow_blocked")
+    gate_issues = profile_gate.get("issues", []) if isinstance(profile_gate, dict) and isinstance(profile_gate.get("issues"), list) else []
+    for item in gate_issues:
+        if not isinstance(item, dict):
+            continue
+        code = str(item.get("reason_code", "") or "").strip()
+        if code:
+            reasons.append(code)
     return sorted(set(reasons))
 
 
-def _next_step(*, revision_state: dict[str, Any], workflow_progress: dict[str, Any], blocked: bool, blocking_reasons: list[str], feature: str, version: str, project_root: Path) -> dict[str, str]:
+def _next_step(*, revision_state: dict[str, Any], workflow_progress: dict[str, Any], blocked: bool, blocking_reasons: list[str], feature: str, version: str, project_root: Path, profile_gate: dict[str, Any] | None = None, profile: dict[str, Any] | None = None) -> dict[str, str]:
     quoted_feature = json.dumps(feature, ensure_ascii=False)
     base = f'--project-root {project_root} --version {version}'
     next_stage = str(workflow_progress.get("next_stage", "") or "")
     run_id = str(workflow_progress.get("run_id", "") or "")
     if blocked:
+        if "contract_drift" in blocking_reasons:
+            return {
+                "action": "contract-drift-fix",
+                "reason": "project-specific contract drift detected between docs, implementation, or downstream service",
+                "command": f"beacon doctor advise --project-root {project_root} --version {version} --feature {quoted_feature}",
+            }
+        if "required_case_missing" in blocking_reasons or "required_evidence_missing" in blocking_reasons:
+            profile_id = str((profile or {}).get("profile_id", "") or (profile_gate or {}).get("profile_id", "") or "")
+            profile_arg = f" --profile {profile_id}" if profile_id else ""
+            return {
+                "action": "verify-run",
+                "reason": "project profile requires missing verification evidence before accept",
+                "command": f"beacon verify run {quoted_feature} {base}{profile_arg}",
+            }
         if "revision_superseded" in blocking_reasons or "change_request_pending" in blocking_reasons:
             return {
                 "action": "reopen",
@@ -116,6 +138,13 @@ def _next_step(*, revision_state: dict[str, Any], workflow_progress: dict[str, A
         }
 
     if delivery_status in {"implemented", "verifying", "verified"} or next_stage == "verify":
+        profile_id = str((profile or {}).get("profile_id", "") or "")
+        if profile_id:
+            return {
+                "action": "verify-run",
+                "reason": "project profile is configured; run profile-backed verification before quality review",
+                "command": f"beacon verify run {quoted_feature} {base} --profile {profile_id}",
+            }
         return {
             "action": "review-quality",
             "reason": "implementation exists; next step is verification/review closure",
@@ -170,7 +199,9 @@ def build_help_payload(
     coverage = compute_coverage_metrics(project_root, version=resolved_version, feature=feature_name or None)
     auto_test = _auto_test_status(project_root)
     story_summary = summarize_story_items(story_state)
-    blocking = _blocking_reasons(revision_state=revision_state, workflow_progress=workflow_progress, coverage=coverage)
+    profile = resolve_profile_for_feature(project_root, version=resolved_version, feature=feature_name, explicit_profile=None)
+    profile_gate = evaluate_project_profile_gate(project_root, version=resolved_version, feature=feature_name) if profile else {}
+    blocking = _blocking_reasons(revision_state=revision_state, workflow_progress=workflow_progress, coverage=coverage, profile_gate=profile_gate)
     blocked = bool(blocking)
     current_stage = _infer_current_stage(revision_state=revision_state, workflow_progress=workflow_progress)
     next_step = _next_step(
@@ -181,6 +212,8 @@ def build_help_payload(
         feature=feature_name,
         version=resolved_version,
         project_root=project_root,
+        profile_gate=profile_gate,
+        profile=profile,
     )
     scores = {
         "test_score": compute_test_score(coverage, auto_test_status=auto_test, story_summary=story_summary),
@@ -207,4 +240,6 @@ def build_help_payload(
         "story_summary": story_summary,
         "workflow_progress": workflow_progress,
         "run_state": load_run_state(project_root, resolved_run_id) if resolved_run_id else None,
+        "project_profile": {"profile_id": str((profile or {}).get("profile_id", "") or ""), "project": str((profile or {}).get("project", "") or "")} if profile else None,
+        "project_gate": profile_gate,
     }

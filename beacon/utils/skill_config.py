@@ -54,7 +54,7 @@ class _Parser:
         if current_indent < indent:
             return {}
         stripped = line[current_indent:]
-        if stripped.startswith("- "):
+        if stripped == "-" or stripped.startswith("- "):
             return self._parse_sequence(indent)
         return self._parse_mapping(indent)
 
@@ -72,7 +72,7 @@ class _Parser:
                     f"Unexpected indentation at line {self.index + 1}: {line!r}"
                 )
             stripped = line[current_indent:]
-            if stripped.startswith("- "):
+            if stripped == "-" or stripped.startswith("- "):
                 break
             if ":" not in stripped:
                 raise SkillConfigError(
@@ -113,9 +113,9 @@ class _Parser:
                     f"Unexpected indentation at line {self.index + 1}: {line!r}"
                 )
             stripped = line[current_indent:]
-            if not stripped.startswith("- "):
+            if stripped != "-" and not stripped.startswith("- "):
                 break
-            remainder = stripped[2:].strip()
+            remainder = "" if stripped == "-" else stripped[2:].strip()
             self.index += 1
             if not remainder:
                 next_line = self._peek()

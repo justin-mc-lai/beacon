@@ -3,7 +3,7 @@ name: beacon
 description: Use when you need Beacon's evidence-first product workflow through a standard skill package that delegates to beacon CLI commands and scripts.
 metadata:
   author: Beacon CLI
-  version: "1.1.6"
+  version: "1.1.7"
   organization: Beacon
   date: March 2026
   abstract: Standard skill package wrapper for Beacon CLI workflow, implement, review, and release operations.
@@ -34,23 +34,23 @@ Use this skill when:
 
 ## How to Use
 
-1. Read the current version package under [`../../docs/beacon/v1.1.6/`](../../docs/beacon/v1.1.6/SUMMARY.md)
+1. Read the current version package under [`../../docs/beacon/v1.1.7/`](../../docs/beacon/v1.1.7/SUMMARY.md)
 2. Use the command docs hub when you need the right level of operator guidance:
 
-- [Commands hub](../../docs/beacon/v1.1.6/COMMANDS.md)
-- [10-minute quickstart](../../docs/beacon/v1.1.6/getting-started-10-minutes.md)
-- [README-style command guide](../../docs/beacon/v1.1.6/execution/command-guide-readme.md)
-- [Scenario quick reference](../../docs/beacon/v1.1.6/execution/scenario-quick-reference.md)
-- [Full command reference](../../docs/beacon/v1.1.6/execution/command-reference.md)
-- [Bilingual command guide](../../docs/beacon/v1.1.6/execution/command-reference-bilingual.md)
+- [Commands hub](../../docs/beacon/v1.1.7/COMMANDS.md)
+- [10-minute quickstart](../../docs/beacon/v1.1.7/getting-started-10-minutes.md)
+- [README-style command guide](../../docs/beacon/v1.1.7/execution/command-guide-readme.md)
+- [Scenario quick reference](../../docs/beacon/v1.1.7/execution/scenario-quick-reference.md)
+- [Full command reference](../../docs/beacon/v1.1.7/execution/command-reference.md)
+- [Bilingual command guide](../../docs/beacon/v1.1.7/execution/command-reference-bilingual.md)
 3. Use the wrapper script:
 
 ```bash
 bash skills/beacon/scripts/run_beacon.sh --version
 bash skills/beacon/scripts/run_beacon.sh workflow --help
 bash skills/beacon/scripts/run_beacon.sh help --project-root . --json
-bash skills/beacon/scripts/run_beacon.sh freeze "My Feature" --project-root . --version v1.1.6
-bash skills/beacon/scripts/run_beacon.sh reopen "My Feature" --project-root . --version v1.1.6 --reason change-request
+bash skills/beacon/scripts/run_beacon.sh freeze "My Feature" --project-root . --version v1.1.7
+bash skills/beacon/scripts/run_beacon.sh reopen "My Feature" --project-root . --version v1.1.7 --reason change-request
 ```
 
 4. For implementation adapters and lifecycle navigation:
@@ -59,7 +59,7 @@ bash skills/beacon/scripts/run_beacon.sh reopen "My Feature" --project-root . --
 bash skills/beacon/scripts/run_beacon.sh skill list
 bash skills/beacon/scripts/run_beacon.sh implement list-runners --json
 bash skills/beacon/scripts/run_beacon.sh help --project-root . --feature "My Feature" --json
-bash skills/beacon/scripts/run_beacon.sh doctor repair-package --version v1.1.6 --json
+bash skills/beacon/scripts/run_beacon.sh doctor repair-package --version v1.1.7 --json
 ```
 
 
@@ -72,7 +72,8 @@ When the user asks "what should I do next", "why am I blocked", or wants to cont
 3. If help indicates the revision is not frozen, run `beacon freeze ...` before implementation.
 4. If help/doctor indicates the current revision is superseded or a change request is pending, run `beacon reopen ...`.
 5. If blocked or inconsistent, run `beacon doctor --project-root <root> --json` or `beacon doctor advise ...`.
-6. Only then route into `freeze`, `implement`, `review`, `verify`, or `release` actions.
+6. If the project has a profile / project-specific skill path, prefer `beacon verify run ... --profile <profile>` before trying to accept.
+7. Only then route into `freeze`, `implement`, `review`, `verify`, `orchestrate`, or `release` actions.
 
 Example: `beacon help --project-root . --json`
 
@@ -90,7 +91,7 @@ See:
 
 - [Sections index](./references/_sections.md)
 - [Usage rules](./references/usage-rules.md)
-- [Commands hub](../../docs/beacon/v1.1.6/COMMANDS.md)
-- [10-minute quickstart](../../docs/beacon/v1.1.6/getting-started-10-minutes.md)
+- [Commands hub](../../docs/beacon/v1.1.7/COMMANDS.md)
+- [10-minute quickstart](../../docs/beacon/v1.1.7/getting-started-10-minutes.md)
 - [Skill development standard](../../../docs/skill-development-standards.md)
 - [Root compatibility skill](../../SKILL.md)
