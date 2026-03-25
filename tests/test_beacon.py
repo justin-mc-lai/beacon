@@ -30,6 +30,15 @@ class TestBeaconCore:
         assert "Beacon" in result.stdout
 
 
+class TestBeaconHelp:
+    """Test help command"""
+
+    def test_help_command_help(self):
+        """Test help command help"""
+        result = runner.invoke(app, ["help", "--help"])
+        assert result.exit_code == 0
+
+
 class TestBeaconDoctor:
     """Test doctor command"""
 

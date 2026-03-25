@@ -13,6 +13,8 @@ from beacon.utils.coverage import compute_coverage_metrics
 from beacon.utils.material_audit import build_material_audit
 from beacon.utils.prototype_utils import evaluate_prototype_status
 from beacon.utils.runtime import now_iso
+from beacon.utils.story_state import load_story_state
+from beacon.utils.writeback import record_acceptance_writeback, record_verification_writeback
 from beacon.utils.versioning import resolve_target_version
 
 app = typer.Typer(name="review", help="Formal implementation-stage review actions")
@@ -292,3 +294,66 @@ def review_quality(
         return
     typer.echo(f"✓ Review quality complete: {status}")
     typer.echo(f"✓ Review report: {paths['execution'] / f'{artifact_name}.md'}")
+
+
+@app.command("accept")
+def review_accept(
+    feature: str = typer.Argument(..., help="Feature name"),
+    project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
+    version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
+    reviewer: str = typer.Option("qa", "--reviewer", help="Acceptance actor"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON payload"),
+):
+    """Formally accept current active revision after verify evidence passes."""
+    project_root = Path(project) if project else Path.cwd()
+    resolved_version = resolve_target_version(project_root, version)
+    story = load_story_state(project_root, version=resolved_version, feature=feature, create_if_missing=True) or {}
+    items = [item for item in story.get("items", []) if isinstance(item, dict)]
+    ac_ids = [str(item.get("id", "")) for item in items if str(item.get("kind", "")) == "ac"]
+    test_ids = [str(item.get("id", "")) for item in items if str(item.get("kind", "")) == "test"]
+    auto_test_path = project_root / ".beacon" / "auto-test-status.json"
+    verify_passed = False
+    if auto_test_path.exists():
+        try:
+            auto_payload = json.loads(auto_test_path.read_text(encoding="utf-8"))
+        except Exception:  # noqa: BLE001
+            auto_payload = {}
+        verify_passed = str(auto_payload.get("status", "")).lower() == "passed"
+    if verify_passed:
+        record_verification_writeback(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            run_id="review.accept",
+            verified_item_ids=[*ac_ids, *test_ids],
+            failed_item_ids=[],
+            evidence_ref=[str(auto_test_path.relative_to(project_root))],
+        )
+    try:
+        result = record_acceptance_writeback(project_root, version=resolved_version, feature=feature, accepted_by=reviewer)
+        payload = {
+            "schema_version": "1.0",
+            "feature": feature,
+            "version": resolved_version,
+            "status": "accepted",
+            "reviewer": reviewer,
+            "story_status": result.get("story", {}).get("status", ""),
+            "revision_status": result.get("revision", {}).get("delivery_status", ""),
+        }
+        if json_output:
+            typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+            return
+        typer.echo(f"✓ Review accept complete: {payload['status']}")
+    except ValueError as exc:
+        payload = {
+            "schema_version": "1.0",
+            "feature": feature,
+            "version": resolved_version,
+            "status": "blocked",
+            "reason": str(exc),
+        }
+        if json_output:
+            typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        else:
+            typer.echo(f"✗ Review accept blocked: {exc}")
+        raise typer.Exit(2)

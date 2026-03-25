@@ -13,6 +13,7 @@ from beacon.utils.material_audit import build_material_audit
 from beacon.utils.runtime import newest_run_id, read_json
 from beacon.utils.versioning import resolve_target_version
 from beacon.utils.workflow_memory import compute_memory_metrics, compute_workflow_progress
+from beacon.utils.help_support import build_help_payload
 
 app = typer.Typer(
     name="status",
@@ -83,6 +84,9 @@ def _status_impl(
         "formal_package_closure": material_audit.get("status", "unknown"),
     }
 
+    target_feature = feature_filter or str(workflow_progress.get("feature", "") or "")
+    help_payload = build_help_payload(root, version=coverage_version, feature=target_feature, run_id=resolved_run_id or None) if target_feature else {}
+
     payload = {
         "team": {"known_teams": team_count},
         "gate": {"terminal_status": terminal_status},
@@ -94,6 +98,15 @@ def _status_impl(
         },
         "memory": memory_metrics,
         "coverage": coverage_metrics,
+        "scores": help_payload.get("scores", {}),
+        "revision": {
+            "revision_id": help_payload.get("revision_id", ""),
+            "doc_status": help_payload.get("doc_status", ""),
+            "delivery_status": help_payload.get("delivery_status", ""),
+            "blocked": help_payload.get("blocked", False),
+            "blocking_reasons": help_payload.get("blocking_reasons", []),
+        },
+        "next_step": help_payload.get("next_step", {}),
         "source_of_truth": source_of_truth,
         "workflow_progress": workflow_progress,
         "filters": {
@@ -117,6 +130,11 @@ def _status_impl(
         typer.echo(f"- coverage.ac: {coverage_metrics.get('tested_ac')}/{coverage_metrics.get('total_ac')}")
         typer.echo(f"- coverage.tc: {coverage_metrics.get('executed_tc')}/{coverage_metrics.get('total_tc')}")
         typer.echo(f"- coverage.full: {coverage_metrics.get('full_coverage')}")
+        if payload.get("scores"):
+            typer.echo(f"- score.test: {payload.get('scores', {}).get('test_score')}")
+            typer.echo(f"- score.closure: {payload.get('scores', {}).get('closure_score')}")
+            typer.echo(f"- score.readiness: {payload.get('scores', {}).get('readiness_score')}")
+            typer.echo(f"- score.quality: {payload.get('scores', {}).get('quality_score')}")
         typer.echo(f"- source_of_truth.root: {source_of_truth.get('root')}")
         if source_of_truth.get("machine_root"):
             typer.echo(f"- source_of_truth.machine_root: {source_of_truth.get('machine_root')}")
@@ -130,6 +148,10 @@ def _status_impl(
             typer.echo(f"- workflow.run_id: {workflow_progress.get('run_id') or 'none'}")
             typer.echo(f"- workflow.version: {workflow_progress.get('version') or 'none'}")
             typer.echo(f"- workflow.feature: {workflow_progress.get('feature') or 'none'}")
+            typer.echo(f"- revision.id: {payload.get('revision', {}).get('revision_id') or 'none'}")
+            typer.echo(f"- revision.doc_status: {payload.get('revision', {}).get('doc_status') or 'none'}")
+            typer.echo(f"- revision.delivery_status: {payload.get('revision', {}).get('delivery_status') or 'none'}")
+            typer.echo(f"- next_step.action: {payload.get('next_step', {}).get('action') or 'none'}")
     else:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
     return 0

@@ -12,6 +12,7 @@ from typing import Any, Optional
 import typer
 
 from beacon.utils.artifact_paths import qa_matrix_candidates
+from beacon.utils.implement_native import run_native_implementation
 from beacon.utils.implement_adapters import (
     build_default_task_prompt,
     detect_adapter,
@@ -272,6 +273,62 @@ def run_implement_stage(  # noqa: PLR0913
     }
 
     adapter_type = str(adapter.get("adapter_type", "")).strip()
+    if adapter_type == "native":
+        native_mode = str(adapter.get("mode", "single") or "single")
+        result_payload = run_native_implementation(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            run_id=run_id,
+            mode=native_mode,
+        )
+        if str(result_payload.get("status", "")).strip().lower() != "completed":
+            payload = {
+                **base_state,
+                "status": "failed",
+                "reason_code": str(result_payload.get("reason_code", "native_runner_failed") or "native_runner_failed"),
+                "result": result_payload,
+            }
+            write_json(state_path, payload)
+            return 2, payload
+        summary_paths = _summary_paths(project_root, resolved_version, feature)
+        marker = project_root / ".beacon" / "state" / f"implementation-{feature_slug}.json"
+        write_json(marker, {
+            "schema_version": "1.0",
+            "run_id": run_id,
+            "feature": feature,
+            "feature_slug": feature_slug,
+            "version": resolved_version,
+            "runner": adapter_id,
+            "skill": rendered_skill,
+            "status": "completed",
+            "generated_at": now_iso(),
+        })
+        summary_payload = {
+            **base_state,
+            "run_id": run_id,
+            "feature": feature,
+            "feature_slug": feature_slug,
+            "version": resolved_version,
+            "runner": adapter_id,
+            "adapter_type": adapter_type,
+            "skill": rendered_skill,
+            "status": "completed",
+            "summary": str(result_payload.get("summary", "")),
+            "changed_files": result_payload.get("changed_files", []),
+            "verification": result_payload.get("verification", []),
+            "artifact_updates": result_payload.get("artifact_updates", {}),
+            "implementation_marker": str(marker.relative_to(project_root)),
+            "generated_at": now_iso(),
+        }
+        for key, value in result_payload.items():
+            if key in summary_payload:
+                continue
+            summary_payload[key] = value
+        write_json(summary_paths["json"], summary_payload)
+        _write_text(summary_paths["md"], _render_summary_markdown(summary_payload))
+        write_json(state_path, summary_payload)
+        return 0, summary_payload
     if adapter_type in {"handoff", "claude-skill"}:
         request_md = project_root / (request_md_path or Path(f".beacon/implement/{run_id}/request.md"))
         _write_text(request_md, task_prompt + "\n")

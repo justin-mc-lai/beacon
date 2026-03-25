@@ -100,7 +100,7 @@ def test_doctor_should_detect_material_incompatibilities(tmp_path: Path):
     assert "COMP-205" in codes  # legacy trigger syntax
 
 
-def test_doctor_should_flag_material_version_ahead_of_runtime(tmp_path: Path):
+def test_doctor_should_not_treat_project_iteration_version_as_runtime_incompatibility(tmp_path: Path):
     _prepare_basic_project(tmp_path)
     (tmp_path / "docs" / "beacon" / "v9.9.9").mkdir(parents=True, exist_ok=True)
     (tmp_path / "docs" / "beacon" / "v9.9.9" / "SUMMARY.md").write_text("# future\n", encoding="utf-8")
@@ -109,8 +109,45 @@ def test_doctor_should_flag_material_version_ahead_of_runtime(tmp_path: Path):
     assert result.exit_code == 0
     payload = json.loads(result.stdout)
     incompatibilities = payload.get("incompatibilities", [])
+    names = {item.get("name") for item in incompatibilities}
+    assert payload.get("project", {}).get("latest_iteration_version") == "v9.9.9"
+    assert "material_skill_semver_compatibility" not in names
+
+
+def test_doctor_should_accept_formal_delivery_package_without_workflow_lifecycle_run(tmp_path: Path):
+    _prepare_basic_project(tmp_path)
+    version = "v1.3.0"
+    base = tmp_path / "docs" / "beacon" / version
+
+    (base / "user-story").mkdir(parents=True, exist_ok=True)
+    (base / "prd").mkdir(parents=True, exist_ok=True)
+    (base / "qa" / "test-cases").mkdir(parents=True, exist_ok=True)
+    (base / ".machine" / "execution").mkdir(parents=True, exist_ok=True)
+
+    (base / "user-story" / "feature.md").write_text("# us\n", encoding="utf-8")
+    (base / "prd" / "feature.md").write_text("# prd\n", encoding="utf-8")
+    (base / "qa" / "test-cases" / "feature.md").write_text("# tc\n", encoding="utf-8")
+    (base / ".machine" / "execution" / "source.json").write_text(
+        json.dumps({"run_id": "run-v1.3.0-doc-upgrade", "status": "completed"}, ensure_ascii=False),
+        encoding="utf-8",
+    )
+    (base / ".machine" / "execution" / "delivery-manifest.json").write_text(
+        json.dumps({"run_id": "run-v1.3.0-doc-upgrade", "delivery_status": "completed"}, ensure_ascii=False),
+        encoding="utf-8",
+    )
+    (base / ".machine" / "execution" / "terminal.json").write_text(
+        json.dumps({"run_id": "run-v1.3.0-doc-upgrade", "status": "Pass"}, ensure_ascii=False),
+        encoding="utf-8",
+    )
+
+    result = _invoke(["doctor", "--json", "--project-root", str(tmp_path)])
+    assert result.exit_code == 0
+    payload = json.loads(result.stdout)
+    incompatibilities = payload.get("incompatibilities", [])
     codes = {item.get("code") for item in incompatibilities}
-    assert "COMP-204" in codes
+
+    assert "COMP-201" not in codes
+    assert "COMP-202" not in codes
 
 
 def test_doctor_should_detect_installed_skill_copy_version_drift(monkeypatch, tmp_path: Path):
@@ -135,10 +172,23 @@ def test_doctor_should_detect_installed_skill_copy_version_drift(monkeypatch, tm
     assert "COMP-206" in codes
 
 
-def test_doctor_should_flag_version_root_semantics_drift(tmp_path: Path):
+def test_doctor_should_allow_multiple_suffixed_iteration_roots_without_canonical_collision(tmp_path: Path):
     _prepare_basic_project(tmp_path)
     (tmp_path / "docs" / "beacon" / "v1.2.1-feature-a").mkdir(parents=True, exist_ok=True)
     (tmp_path / "docs" / "beacon" / "v1.2.1-feature-b").mkdir(parents=True, exist_ok=True)
+
+    result = _invoke(["doctor", "--json", "--project-root", str(tmp_path)])
+    assert result.exit_code == 0
+    payload = json.loads(result.stdout)
+    incompatibilities = payload.get("incompatibilities", [])
+    codes = {item.get("code") for item in incompatibilities}
+    assert "COMP-210" not in codes
+
+
+def test_doctor_should_flag_version_root_semantics_drift_when_canonical_and_suffixed_roots_mix(tmp_path: Path):
+    _prepare_basic_project(tmp_path)
+    (tmp_path / "docs" / "beacon" / "v1.2.1").mkdir(parents=True, exist_ok=True)
+    (tmp_path / "docs" / "beacon" / "v1.2.1-feature-a").mkdir(parents=True, exist_ok=True)
 
     result = _invoke(["doctor", "--json", "--project-root", str(tmp_path)])
     assert result.exit_code == 0
@@ -206,3 +256,26 @@ def test_resolve_bin_dir_should_skip_transient_path_entries(monkeypatch, tmp_pat
     monkeypatch.setenv("PATH", f"{transient}{os.pathsep}{preferred}")
     resolved = resolve_bin_dir()
     assert resolved.resolve() == preferred.resolve()
+
+
+def test_doctor_advise_should_report_next_step_and_scores(tmp_path: Path):
+    _prepare_basic_project(tmp_path)
+    result = _invoke(["doctor", "advise", "--json", "--project-root", str(tmp_path), "--feature", "My Feature"])
+    assert result.exit_code in {0, 2}
+    payload = json.loads(result.stdout)
+    assert payload.get("action") == "advise"
+    assert isinstance(payload.get("scores"), dict)
+    assert "test_score" in payload.get("scores", {})
+    assert isinstance(payload.get("next_step"), dict)
+    assert payload.get("next_step", {}).get("command")
+
+
+def test_doctor_advise_should_prefer_context_repair_when_context_missing(tmp_path: Path):
+    # project root exists but managed context files do not
+    (tmp_path / ".beacon").mkdir(parents=True, exist_ok=True)
+    result = _invoke(["doctor", "advise", "--json", "--project-root", str(tmp_path), "--feature", "My Feature"])
+    assert result.exit_code in {0, 2}
+    payload = json.loads(result.stdout)
+    next_step = payload.get("next_step", {})
+    assert isinstance(next_step, dict)
+    assert "doctor" in str(next_step.get("command", ""))

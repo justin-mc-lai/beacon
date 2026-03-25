@@ -10,7 +10,7 @@
 
 1. **单仓应用项目**
 2. **非 git / 内容型项目**
-3. **`slow-wp` 这类 WordPress 主题项目**
+3. **`milemon` 这类 WordPress 主题项目**
 4. **`rolo` 这类多服务 workspace 项目**
 
 如果你只想知道一句话：
@@ -167,11 +167,11 @@ implementation:
 
 ---
 
-## 5. Recipe 3：`slow-wp`（WordPress 主题项目）
+## 5. Recipe 3：`milemon`（WordPress 主题项目）
 
 ### 项目特征
 
-`slow-wp` 是一个：
+`milemon` 是一个：
 
 - WordPress + WooCommerce 主题项目
 - 当前根目录不是严格 git repo
@@ -180,7 +180,7 @@ implementation:
 
 ### Beacon 最佳定位
 
-Beacon 在 `slow-wp` 中不是“重新做需求”，而是：
+Beacon 在 `milemon` 中不是“重新做需求”，而是：
 
 > **把已有需求物料变成 implement-ready slices，并驱动 theme 开发闭环。**
 
@@ -200,14 +200,14 @@ Beacon 在 `slow-wp` 中不是“重新做需求”，而是：
 
 ### 推荐配置实践
 
-`slow-wp` 当前推荐配置源可以放在 workspace 根，再由项目内 `beacon.config.yaml` 指向它。
+`milemon` 当前推荐配置源可以放在 workspace 根，再由项目内 `beacon.config.yaml` 指向它。
 
 #### 例子
 
 ```text
 my_skill/
 ├── beacon.config.yaml
-└── slow-wp/
+└── milemon/
     └── beacon.config.yaml -> ../beacon.config.yaml
 ```
 
@@ -215,7 +215,7 @@ my_skill/
 
 ```bash
 beacon implement run theme-shell-foundation \
-  --project-root /abs/path/to/slow-wp \
+  --project-root /abs/path/to/milemon \
   --version v0.1.0 \
   --runner omx \
   --dry-run \
@@ -393,7 +393,7 @@ rolo-dev = service impl / gateway / swagger / sql / uat
 | --- | --- | --- |
 | 单仓应用 | 直接 implement + review + gate | 把所有 feature 挤成一个超大实现任务 |
 | 非 git 内容项目 | 切 slice 后 implement | 直接拿大 PRD 整包跑实现 |
-| `slow-wp` | 主题 slice + omx implement | 直接实现整个 WooCommerce 站点 |
+| `milemon` | 主题 slice + omx implement | 直接实现整个 WooCommerce 站点 |
 | `rolo` | delivery standard + service-slice + review | 在 workspace 根目录直接跨服务改代码 |
 
 ---

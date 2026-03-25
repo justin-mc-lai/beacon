@@ -27,7 +27,7 @@ from beacon.utils.debug_feedback import (
 )
 from beacon.utils.llm_loop import build_next_stage_trace, merge_token_usage
 from beacon.utils.memory import append_memory_entry
-from beacon.utils.implement_adapters import resolve_default_runner
+from beacon.utils.implement_adapters import load_beacon_config_file, project_config_path
 from beacon.utils.runtime import (
     append_jsonl,
     generate_run_id,
@@ -64,6 +64,11 @@ def _workflow_stages(*, prototype_enabled: bool) -> list[tuple[str, str, str]]:
     if prototype_enabled:
         return list(WORKFLOW_STAGES)
     return [stage for stage in WORKFLOW_STAGES if stage[0] != "prototype"]
+
+
+
+def _repo_root() -> Path:
+    return Path(__file__).resolve().parents[2]
 
 INTERACTIVE_ACTIONS: dict[str, str] = {
     "1": "single-step",
@@ -1073,13 +1078,22 @@ def run_beacon_command(
     stage: str,
     extra_env: Optional[dict[str, str]] = None,
 ) -> subprocess.CompletedProcess[str]:
-    """Run a beacon subcommand"""
+    """Run a beacon subcommand.
+
+    The workflow executor runs subcommands from the target project root, which may be
+    outside the Beacon repository. Ensure the current repository root is injected into
+    PYTHONPATH so `python -m beacon.main` resolves the in-repo package consistently in
+    tests and local development.
+    """
     cmd = [sys.executable, "-m", "beacon.main"] + args
     env = os.environ.copy()
     env.update(extra_env or {})
+    repo_root = str(Path(__file__).resolve().parents[2])
+    existing = str(env.get("PYTHONPATH", "")).strip()
+    env["PYTHONPATH"] = repo_root if not existing else os.pathsep.join([repo_root, existing])
     result = subprocess.run(
         cmd,
-        cwd=project_root,
+        cwd=_repo_root(),
         capture_output=True,
         text=True,
         env=env,
@@ -1194,6 +1208,8 @@ def _effective_interactive_mode(interactive: Optional[bool]) -> bool:
     if isinstance(interactive, bool):
         return interactive
     try:
+        if sys.stdin is not sys.__stdin__ or sys.stdout is not sys.__stdout__:
+            return False
         return bool(sys.stdin.isatty() and sys.stdout.isatty())
     except Exception:  # noqa: BLE001
         return False
@@ -1215,6 +1231,26 @@ def _parse_semver_tuple(value: str) -> tuple[int, int, int]:
 
 def _requires_hud_double_confirmation(version: str) -> bool:
     return _parse_semver_tuple(version) >= (1, 1, 0)
+
+
+def _resolve_workflow_default_runner(project_root: Path, version: str) -> str:
+    """Resolve workflow implementation runner from project-local config only.
+
+    Workflow should remain deterministic per project. Global user config must not
+    silently change historical workflow behavior for older release lines.
+    """
+    config = load_beacon_config_file(project_config_path(project_root))
+    skill_section = config.get("skill") if isinstance(config.get("skill"), dict) else {}
+    implementation_section = config.get("implementation") if isinstance(config.get("implementation"), dict) else {}
+    preferred = str(skill_section.get("preferred", "")).strip()
+    if preferred:
+        return preferred
+    default_runner = str(implementation_section.get("default_runner", "")).strip()
+    if default_runner:
+        return default_runner
+    if _parse_semver_tuple(version) >= (1, 1, 6):
+        return "native-single"
+    return ""
 
 
 def _resolve_hud_enforcement(*, version: str, hud_requested: bool, command_name: str) -> bool:
@@ -1731,7 +1767,7 @@ def _execute_stage(
                 )
         else:
             if not resolved_runner:
-                resolved_runner = str(resolve_default_runner(project_root) or "").strip()
+                resolved_runner = _resolve_workflow_default_runner(project_root, version)
             if resolved_runner:
                 from beacon.commands.implement import run_implement_stage
 
@@ -3470,9 +3506,14 @@ def run(
     typer.echo(f"Project: {project_root}")
 
     # Run the command
+    env = os.environ.copy()
+    repo_root = str(_repo_root())
+    existing_pythonpath = str(env.get("PYTHONPATH", "")).strip()
+    env["PYTHONPATH"] = repo_root if not existing_pythonpath else os.pathsep.join([repo_root, existing_pythonpath])
     result = subprocess.run(
         [sys.executable, "-m", "beacon.main"] + full_cmd,
         cwd=project_root,
+        env=env,
     )
 
     if result.returncode == 0:

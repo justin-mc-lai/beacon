@@ -5,9 +5,9 @@ description: Evidence-first Product Workflow Kernel for product thinking, user s
 
 # Beacon - Evidence-first Product Workflow Kernel
 
-> **Skill Version**: v1.1.5
-> **CLI Version**: v1.1.5
-> **Last Updated**: 2026-03-23
+> **Skill Version**: v1.1.6
+> **CLI Version**: v1.1.6
+> **Last Updated**: 2026-03-24
 
 Beacon 是 AI 产品工作流内核，提供需求澄清、用户故事、PRD、测试用例、证据闭环与发布门禁的统一工作流。
 
@@ -49,6 +49,8 @@ python3 scripts/sync_skill_commands.py --check
 | `beacon doctor` | `doctor` |
 | `beacon evolution-summary` | `evolution-summary` |
 | `beacon feedback` | `feedback` |
+| `beacon freeze` | `freeze` |
+| `beacon help` | `help` |
 | `beacon gate` | `gate` |
 | `beacon implement` | `implement` |
 | `beacon init` | `init` |
@@ -62,6 +64,7 @@ python3 scripts/sync_skill_commands.py --check
 | `beacon ralph-bridge` | `ralph-bridge` |
 | `beacon recall` | `recall` |
 | `beacon release` | `release` |
+| `beacon reopen` | `reopen` |
 | `beacon remember` | `remember` |
 | `beacon report` | `report` |
 | `beacon review` | `review` |
@@ -97,6 +100,8 @@ python3 scripts/sync_skill_commands.py --check
 | `doctor` | `beacon doctor` |
 | `evolution-summary` | `beacon evolution-summary` |
 | `feedback` | `beacon feedback` |
+| `freeze` | `beacon freeze` |
+| `help` | `beacon help` |
 | `gate` | `beacon gate` |
 | `implement` | `beacon implement` |
 | `init` | `beacon init` |
@@ -110,6 +115,7 @@ python3 scripts/sync_skill_commands.py --check
 | `ralph-bridge` | `beacon ralph-bridge` |
 | `recall` | `beacon recall` |
 | `release` | `beacon release` |
+| `reopen` | `beacon reopen` |
 | `remember` | `beacon remember` |
 | `report` | `beacon report` |
 | `review` | `beacon review` |
@@ -135,10 +141,10 @@ python3 scripts/sync_skill_commands.py --check
 
 ```bash
 # 推荐
-beacon workflow start "Beacon v1.1.5 layered delivery" --project /abs/path/to/project --version v1.1.5
+beacon workflow start "Beacon v1.1.6 layered delivery" --project /abs/path/to/project --version v1.1.6
 
 # 兼容
-python3 -m beacon.main workflow start "Beacon v1.1.5 layered delivery" --project /abs/path/to/project --version v1.1.5
+python3 -m beacon.main workflow start "Beacon v1.1.6 layered delivery" --project /abs/path/to/project --version v1.1.6
 ```
 
 ## Gate 检查
@@ -167,21 +173,21 @@ docs/beacon/{version}/
 
 ## 参考文档
 
-- `docs/beacon/v1.1.5/SUMMARY.md`
-- `docs/beacon/v1.1.5/execution/boundaries.md`
-- `docs/beacon/v1.1.5/execution/index.md`
-- `docs/beacon/v1.1.5/execution/human-machine-collaboration-norm.md`
-- `docs/beacon/v1.1.5/execution/memory-architecture-and-projection.md`
-- `docs/beacon/v1.1.5/execution/doctor-repair-scope.md`
-- `docs/beacon/v1.1.5/execution/safe-implementation-plan.md`
-- `docs/beacon/v1.1.5/execution/eval-lab-benchmark-surface.md`
-- `docs/beacon/v1.1.5/execution/keep-discard-policy.md`
-- `docs/beacon/v1.1.5/execution/drift-auditor-minimum-loop.md`
-- `docs/beacon/v1.1.5/release/v1.1.5.md`
+- `docs/beacon/v1.1.6/SUMMARY.md`
+- `docs/beacon/v1.1.6/execution/boundaries.md`
+- `docs/beacon/v1.1.6/execution/index.md`
+- `docs/beacon/v1.1.6/execution/human-machine-collaboration-norm.md`
+- `docs/beacon/v1.1.6/execution/memory-architecture-and-projection.md`
+- `docs/beacon/v1.1.6/execution/doctor-repair-scope.md`
+- `docs/beacon/v1.1.6/execution/safe-implementation-plan.md`
+- `docs/beacon/v1.1.6/execution/eval-lab-benchmark-surface.md`
+- `docs/beacon/v1.1.6/execution/keep-discard-policy.md`
+- `docs/beacon/v1.1.6/execution/drift-auditor-minimum-loop.md`
+- `docs/beacon/v1.1.6/release/v1.1.6.md`
 - `skills/beacon/SKILL.md`
 - `references/acceptance-criteria.md`
 - `references/user-story-mapping.md`
 
 ---
 
-**版本**: v1.1.5
+**版本**: v1.1.6

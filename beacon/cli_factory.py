@@ -56,6 +56,8 @@ def build_app(*, package_version: str) -> typer.Typer:
     # Import and register commands
     from .commands.run import app as run_app
     from .commands.doctor import app as doctor_app
+    from .commands.freeze import freeze_entry
+    from .commands.reopen import reopen_entry
     from .commands.gate import app as gate_app
     from .commands.init import app as init_app
     from .commands.status import app as status_app
@@ -65,6 +67,7 @@ def build_app(*, package_version: str) -> typer.Typer:
     from .commands.implement import app as implement_app
     from .commands.debug import app as debug_app
     from .commands.feedback import app as feedback_app
+    from .commands.help import help_entry
     from .commands.ask import ask_entry
     from .commands.prompt import app as prompt_app
     from .commands.resume import resume_entry
@@ -105,6 +108,8 @@ def build_app(*, package_version: str) -> typer.Typer:
 
     app.add_typer(run_app, name="run", hidden=True)
     app.add_typer(doctor_app, name="doctor")
+    app.command("freeze")(freeze_entry)
+    app.command("reopen")(reopen_entry)
     app.add_typer(gate_app, name="gate")
     app.add_typer(init_app, name="init")
     app.add_typer(status_app, name="status")
@@ -114,6 +119,7 @@ def build_app(*, package_version: str) -> typer.Typer:
     app.add_typer(implement_app, name="implement")
     app.add_typer(debug_app, name="debug")
     app.add_typer(feedback_app, name="feedback")
+    app.command("help")(help_entry)
     app.add_typer(prompt_app, name="prompt", hidden=True)
     app.add_typer(think_app, name="think")
     app.add_typer(user_story_app, name="user-story")

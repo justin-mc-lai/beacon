@@ -85,7 +85,7 @@ omx exec --full-auto --cd "{project_root}" --skip-git-repo-check "{task_prompt}"
 说明：
 - `omx exec` 是 OMX 当前稳定的非交互执行入口；
 - `--cd` 让 Codex 以项目根目录作为工作根；
-- `--skip-git-repo-check` 允许 slow-wp 这类未初始化 git 的工作目录也能执行；
+- `--skip-git-repo-check` 允许 milemon 这类未初始化 git 的工作目录也能执行；
 - `--full-auto` 用于提高非交互 implement 场景的实战可用性。
 
 ### 5.3 任务提示（示意）

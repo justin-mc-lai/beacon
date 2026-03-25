@@ -1,15 +1,59 @@
 # Beacon Skill Example
 
+This example focuses on the **basic workflow path** in v1.1.6:
+
+1. start from the command docs hub
+2. use the wrapper script
+3. start a workflow
+4. generate the core workflow artifacts
+5. inspect status / next stage
+
+Read first:
+
+- [`../../../docs/beacon/v1.1.6/COMMANDS.md`](../../../docs/beacon/v1.1.6/COMMANDS.md)
+- [`../../../docs/beacon/v1.1.6/getting-started-10-minutes.md`](../../../docs/beacon/v1.1.6/getting-started-10-minutes.md)
+
+Related focused examples:
+
+- [`release-readiness.md`](./release-readiness.md)
+- [`implementation-with-omx.md`](./implementation-with-omx.md)
+
 ```bash
-# Version
+# 0) Check Beacon version through the skill wrapper
 bash skills/beacon/scripts/run_beacon.sh --version
 
-# List adapters
-bash skills/beacon/scripts/run_beacon.sh skill list
+# 1) Natural-language planning
+bash skills/beacon/scripts/run_beacon.sh ask \
+  "Create a release-ready requirement package for Beacon v1.1.6 layered delivery" \
+  --project-root . \
+  --version v1.1.6 \
+  --plan-only --json
 
-# Start workflow
-bash skills/beacon/scripts/run_beacon.sh workflow start "Beacon v1.1.4 skill standard alignment" --project . --version v1.1.4
+# 2) Start the workflow
+bash skills/beacon/scripts/run_beacon.sh workflow start \
+  "Beacon v1.1.6 layered delivery" \
+  --project . \
+  --version v1.1.6
 
-# Run implementation with OMX
-bash skills/beacon/scripts/run_beacon.sh implement run "Beacon v1.1.4 skill standard alignment" --project . --version v1.1.4 --runner omx --dry-run --json
+# 3) Generate the main-chain artifacts
+bash skills/beacon/scripts/run_beacon.sh think start \
+  "Beacon v1.1.6 layered delivery" \
+  --project . \
+  --version v1.1.6
+bash skills/beacon/scripts/run_beacon.sh user-story create \
+  "Beacon v1.1.6 layered delivery" \
+  --project . \
+  --version v1.1.6
+bash skills/beacon/scripts/run_beacon.sh prd create \
+  "Beacon v1.1.6 layered delivery" \
+  --project . \
+  --version v1.1.6
+bash skills/beacon/scripts/run_beacon.sh test-case create \
+  "Beacon v1.1.6 layered delivery" \
+  --project . \
+  --version v1.1.6
+
+# 4) Inspect status / next stage
+bash skills/beacon/scripts/run_beacon.sh status --board --project-root . --version v1.1.6
+bash skills/beacon/scripts/run_beacon.sh workflow status --project . --version v1.1.6
 ```

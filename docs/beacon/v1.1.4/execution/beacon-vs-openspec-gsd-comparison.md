@@ -204,7 +204,7 @@ Beacon 后续必须明确支持：
 - 多服务项目 → service-slice implement
 - 非 git 内容项目 → content/theme slice implement
 
-这点在 `slow-wp` / `rolo` 中已经验证有效。
+这点在 `milemon` / `rolo` 中已经验证有效。
 
 ## 5.4 固化四：execution / release 标准件
 

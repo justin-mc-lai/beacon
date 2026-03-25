@@ -9,8 +9,9 @@ from typing import Any
 import typer
 
 from beacon.utils.context_files import setup_context_files, verify_context_files
-from beacon.utils.doctor_diagnostics import build_doctor_payload, collect_runtime_info
+from beacon.utils.doctor_diagnostics import build_doctor_payload, build_doctor_advice_payload, collect_runtime_info
 from beacon.utils.doctor_setup import install_launchers, resolve_bin_dir, uninstall_launchers
+from beacon.utils.help_navigation import build_doctor_advise_payload
 from beacon.utils.material_audit import build_delivery_audit, build_material_audit
 from beacon.utils.v115_delivery import repair_v115_delivery_package
 from beacon.utils.versioning import resolve_target_version
@@ -129,6 +130,42 @@ def _print_action_result(title: str, result: dict[str, Any]) -> None:
     for warning in result.get("warnings", []):
         typer.echo(f"⚠ {warning}")
 
+
+def _print_advise_result(payload: dict[str, Any]) -> None:
+    typer.echo("Beacon Doctor - Advice")
+    typer.echo("=" * 24)
+    typer.echo(f"feature         : {payload.get('feature') or 'N/A'}")
+    typer.echo(f"version         : {payload.get('version') or 'N/A'}")
+    typer.echo(f"run_id          : {payload.get('run_id') or 'N/A'}")
+    typer.echo(f"revision_id     : {payload.get('revision_id') or 'N/A'}")
+    typer.echo(f"current_stage   : {payload.get('current_stage') or 'N/A'}")
+    typer.echo(f"doc_status      : {payload.get('doc_status') or 'N/A'}")
+    typer.echo(f"delivery_status : {payload.get('delivery_status') or 'N/A'}")
+    typer.echo(f"blocked         : {bool(payload.get('blocked'))}")
+
+    scores = payload.get('scores') if isinstance(payload.get('scores'), dict) else {}
+    typer.echo("\nScores")
+    typer.echo("-" * 24)
+    for key in ("test_score", "closure_score", "readiness_score", "quality_score"):
+        typer.echo(f"- {key}: {scores.get(key, 0)}")
+
+    next_step = payload.get('next_step') if isinstance(payload.get('next_step'), dict) else {}
+    typer.echo("\nRecommended Action")
+    typer.echo("-" * 24)
+    typer.echo(f"- action : {next_step.get('action', 'none')}")
+    typer.echo(f"- why    : {next_step.get('reason', '')}")
+    typer.echo(f"- command: {next_step.get('command', '')}")
+
+    diagnosis = payload.get('diagnosis') if isinstance(payload.get('diagnosis'), list) else []
+    typer.echo("\nDiagnosis")
+    typer.echo("-" * 24)
+    if diagnosis:
+        for item in diagnosis:
+            if not isinstance(item, dict):
+                continue
+            typer.echo(f"- {item.get('severity', 'medium')}: {item.get('code', '')} {item.get('summary', '')}")
+    else:
+        typer.echo("- none")
 
 def _print_verification_result(title: str, result: dict[str, Any]) -> None:
     typer.echo(title)
@@ -529,3 +566,28 @@ def verify_agent_md(
 
 if __name__ == "__main__":
     app()
+
+
+@app.command("advise")
+def advise(
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    version: str = typer.Option("", "--version", "-v", help="Target docs version"),
+    feature: str = typer.Option("", "--feature", "-f", help="Feature filter"),
+    run_id: str = typer.Option("", "--run-id", help="Run id filter"),
+    strict: bool = typer.Option(False, "--strict", help="Treat warnings as blocked"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Diagnose blockers and suggest the safest next action."""
+    root = Path(project_root) if project_root else Path.cwd()
+    payload = build_doctor_advise_payload(
+        root,
+        version=version or None,
+        feature=feature or None,
+        run_id=run_id or None,
+        strict=strict,
+    )
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        _print_advise_result(payload)
+    raise typer.Exit(code=2 if payload.get("status") == "BLOCKED" else 0)

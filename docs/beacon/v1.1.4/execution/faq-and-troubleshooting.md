@@ -412,7 +412,7 @@ SKILL.md       = compatibility mirror
 
 ---
 
-## 16. FAQ：slow-wp 这类项目为什么要在 workspace 根放配置
+## 16. FAQ：milemon 这类项目为什么要在 workspace 根放配置
 
 因为有些项目希望：
 
@@ -424,7 +424,7 @@ SKILL.md       = compatibility mirror
 ```text
 my_skill/
 ├── beacon.config.yaml
-└── slow-wp/
+└── milemon/
     └── beacon.config.yaml -> ../beacon.config.yaml
 ```
 

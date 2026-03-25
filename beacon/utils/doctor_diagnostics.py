@@ -8,6 +8,7 @@ import shutil
 from pathlib import Path
 from typing import Any
 
+from beacon.utils.artifact_paths import execution_file_candidates
 from beacon.utils.context_files import inspect_context_file
 from beacon.utils.runtime import now_iso
 from beacon.utils.versioning import discover_versions, normalize_version, release_line_key
@@ -287,9 +288,65 @@ def _version_root_semantics_drift(project_root: Path) -> list[str]:
     drift: list[str] = []
     for release_line, names in sorted(by_release_line.items()):
         unique = sorted(set(names))
-        if len(unique) > 1:
+        canonical_root = release_line
+        has_canonical_root = canonical_root in unique
+        if has_canonical_root and len(unique) > 1:
             drift.append(f"{docs_root}: release_line={release_line} has multiple roots {unique}")
     return sorted(set(invalid + drift))
+
+
+def _load_delivery_package_provenance(project_root: Path, version: str) -> dict[str, Any]:
+    payloads: dict[str, dict[str, Any]] = {}
+    evidence: list[str] = []
+
+    for filename in ("source.json", "delivery-manifest.json", "terminal.json"):
+        for candidate in execution_file_candidates(project_root, version, filename):
+            if not candidate.exists():
+                continue
+            try:
+                payload = json.loads(candidate.read_text(encoding="utf-8"))
+            except Exception:  # noqa: BLE001
+                continue
+            if not isinstance(payload, dict):
+                continue
+            payloads[filename] = {
+                "path": str(candidate.relative_to(project_root)),
+                "payload": payload,
+            }
+            evidence.append(f"{filename}={candidate.relative_to(project_root)}")
+            break
+
+    run_ids = sorted(
+        {
+            _normalize(str(item.get("payload", {}).get("run_id", "")).strip()) or str(item.get("payload", {}).get("run_id", "")).strip()
+            for item in payloads.values()
+            if str(item.get("payload", {}).get("run_id", "")).strip()
+        }
+    )
+    source_payload = payloads.get("source.json", {}).get("payload", {}) if payloads.get("source.json") else {}
+    manifest_payload = payloads.get("delivery-manifest.json", {}).get("payload", {}) if payloads.get("delivery-manifest.json") else {}
+    terminal_payload = payloads.get("terminal.json", {}).get("payload", {}) if payloads.get("terminal.json") else {}
+
+    has_formal_package = bool(
+        payloads.get("source.json") and (payloads.get("delivery-manifest.json") or payloads.get("terminal.json"))
+    )
+    delivery_status = str(
+        manifest_payload.get("delivery_status")
+        or terminal_payload.get("status")
+        or source_payload.get("status")
+        or ""
+    ).strip()
+    if run_ids:
+        evidence.append(f"package_run_ids={run_ids}")
+    if delivery_status:
+        evidence.append(f"package_status={delivery_status}")
+
+    return {
+        "has_formal_package": has_formal_package,
+        "run_ids": run_ids,
+        "delivery_status": delivery_status,
+        "evidence": evidence,
+    }
 
 
 def _stale_ptk_references(project_root: Path) -> list[str]:
@@ -440,6 +497,7 @@ def collect_compatibility_checks(
     stale_refs = _stale_ptk_references(project_root)
     legacy_refs = _scan_legacy_skill_syntax(project_root, version)
     version_root_drift = _version_root_semantics_drift(project_root)
+    delivery_provenance = _load_delivery_package_provenance(project_root, version)
     runtime_skill_version = _normalize(
         str(runtime.get("toolkit_version") or runtime.get("package_version") or "")
     )
@@ -460,10 +518,13 @@ def collect_compatibility_checks(
         context_inspections,
     )
     install_copy_versions = _collect_install_copy_versions(runtime_skill_version)
-    material_version = _normalize(version)
-    material_ahead_of_runtime = False
-    if _is_semver(runtime_skill_version) and _is_semver(material_version):
-        material_ahead_of_runtime = _semver_key(material_version) > _semver_key(runtime_skill_version)
+    docs_backed_by_delivery_package = docs_have_progress and not run_id and bool(delivery_provenance.get("has_formal_package"))
+    runless_docs_only_status = "PASS"
+    if docs_have_progress and not run_id and not docs_backed_by_delivery_package:
+        runless_docs_only_status = "FAIL"
+    status_memory_comparable = bool(run_id)
+    if not status_memory_comparable:
+        divergent = []
 
     checks: dict[str, dict[str, Any]] = {
         "context_files_presence": {
@@ -501,24 +562,29 @@ def collect_compatibility_checks(
             ],
         },
         "runless_docs_only": {
-            "status": "FAIL" if docs_have_progress and not run_id else "PASS",
+            "status": runless_docs_only_status,
             "severity": "high",
             "summary": "Docs artifacts should be backed by workflow lifecycle run data.",
             "evidence": [
                 f"version={version}",
                 f"artifact_stages={completed_doc_stages}",
                 f"memory_run_id={run_id or 'N/A'}",
+                *delivery_provenance.get("evidence", []),
             ],
-            "impact": "Progress appears in docs but cannot be audited end-to-end.",
+            "impact": (
+                "Progress appears in docs but cannot be audited end-to-end."
+                if runless_docs_only_status == "FAIL"
+                else "Docs have formal delivery-package provenance even though workflow lifecycle memory is absent."
+            ),
             "repair": [
-                "Run `beacon workflow start \"<feature>\" --version <version>`.",
+                "Run `beacon workflow start \"<feature>\" --version <version>` if workflow-lifecycle audit is required.",
                 "Continue workflow until `.beacon/runs/<run_id>/state.json` and lifecycle events exist.",
             ],
         },
         "status_memory_divergence": {
-            "status": "FAIL" if divergent else "PASS",
+            "status": "FAIL" if status_memory_comparable and divergent else "PASS",
             "severity": "high",
-            "summary": "Docs/status stages should align with workflow memory closure stages.",
+            "summary": "Docs/status stages should align with workflow memory closure stages when lifecycle memory exists.",
             "evidence": [
                 f"run_id={run_id or 'N/A'}",
                 f"divergent_stages={divergent}",
@@ -550,20 +616,6 @@ def collect_compatibility_checks(
             "repair": [
                 "Collapse each release line to a single canonical docs/beacon/<version>/ root.",
                 "Remove version roots that encode themes/suffixes instead of formal semver versions.",
-            ],
-        },
-        "material_skill_semver_compatibility": {
-            "status": "FAIL" if material_ahead_of_runtime else "PASS",
-            "severity": "high",
-            "summary": "Latest project iteration version should not be ahead of active beacon skill version.",
-            "evidence": [
-                f"latest_iteration_version={material_version or version}",
-                f"runtime_skill_version={runtime_skill_version or 'N/A'}",
-            ],
-            "impact": "Material authored for newer iterations can require unsupported doctor/workflow behavior.",
-            "repair": [
-                "Upgrade beacon skill/cli to a version >= latest iteration version.",
-                "Or downgrade/normalize project material version to match supported runtime.",
             ],
         },
         "legacy_skill_trigger_syntax": {
@@ -616,7 +668,6 @@ def _compatibility_checks_to_incompatibilities(
         "runless_docs_only": "COMP-201",
         "status_memory_divergence": "COMP-202",
         "stale_ptk_version_refs": "COMP-203",
-        "material_skill_semver_compatibility": "COMP-204",
         "legacy_skill_trigger_syntax": "COMP-205",
         "installed_skill_copy_drift": "COMP-206",
         "context_files_presence": "COMP-207",
@@ -724,11 +775,6 @@ def build_doctor_payload(project_root: Path, *, strict: bool = False) -> dict[st
             "runless_docs_only": {"status": "UNKNOWN", "severity": "high", "summary": "project root unavailable"},
             "status_memory_divergence": {"status": "UNKNOWN", "severity": "high", "summary": "project root unavailable"},
             "stale_ptk_version_refs": {"status": "UNKNOWN", "severity": "medium", "summary": "project root unavailable"},
-            "material_skill_semver_compatibility": {
-                "status": "UNKNOWN",
-                "severity": "high",
-                "summary": "project root unavailable",
-            },
             "legacy_skill_trigger_syntax": {"status": "UNKNOWN", "severity": "medium", "summary": "project root unavailable"},
             "runtime_version_consistency": {"status": "UNKNOWN", "severity": "medium", "summary": "project root unavailable"},
             "installed_skill_copy_drift": {"status": "UNKNOWN", "severity": "medium", "summary": "project root unavailable"},
@@ -825,3 +871,34 @@ def build_doctor_payload(project_root: Path, *, strict: bool = False) -> dict[st
 def build_doctor_diagnostics(project_root: Path, *, strict: bool = False) -> dict[str, Any]:
     """Compatibility alias for doctor v2 payload builder."""
     return build_doctor_payload(project_root, strict=strict)
+
+
+
+def build_doctor_advice_payload(
+    project_root: Path,
+    *,
+    version: str = "auto",
+    feature: str | None = None,
+    run_id: str | None = None,
+    strict: bool = False,
+) -> dict[str, Any]:
+    """Combine diagnostics with stage-aware navigation advice."""
+    from beacon.utils.help_support import build_help_payload
+    diagnostics = build_doctor_payload(project_root, strict=strict)
+    navigator = build_help_payload(project_root, version=version, feature=feature, run_id=run_id)
+    incompatibilities = diagnostics.get("incompatibilities", []) if isinstance(diagnostics.get("incompatibilities"), list) else []
+    blocked_reasons = list(navigator.get("blocking_reasons", []))
+    if incompatibilities:
+        blocked_reasons.extend(str(item.get("code", "")) for item in incompatibilities if isinstance(item, dict) and str(item.get("status", "")).upper() in {"FAIL", "BLOCKED", "WARN"})
+    blocked_reasons = sorted({reason for reason in blocked_reasons if str(reason).strip()})
+    return {
+        "schema_version": "1.0",
+        "feature": navigator.get("feature", ""),
+        "version": navigator.get("version", version),
+        "current_stage": navigator.get("current_stage", ""),
+        "blocked": bool(blocked_reasons) or diagnostics.get("overall") == "BLOCKED",
+        "blocking_reasons": blocked_reasons,
+        "next_step": navigator.get("next_step", {}),
+        "scores": navigator.get("scores", {}),
+        "diagnostics": diagnostics,
+    }

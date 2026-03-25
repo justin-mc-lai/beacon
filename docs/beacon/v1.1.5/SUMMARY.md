@@ -39,6 +39,8 @@ v1.1.5 聚焦一个核心问题：
 
 ### 执行层文档
 - `docs/beacon/v1.1.5/execution/boundaries.md`
+- `docs/beacon/v1.1.5/execution/command-reference.md`
+- `docs/beacon/v1.1.5/execution/scenario-quick-reference.md`
 - `docs/beacon/v1.1.5/execution/human-machine-collaboration-norm.md`
 - `docs/beacon/v1.1.5/execution/memory-architecture-and-projection.md`
 - `docs/beacon/v1.1.5/execution/doctor-repair-scope.md`
@@ -84,6 +86,23 @@ v1.1.5 聚焦一个核心问题：
 2. `doctor repair-package --version v1.1.5` 可修复旧结构到 `.machine`；
 3. `release check v1.1.5` 与 `gate check release --version v1.1.5` 均可通过；
 4. 因此 `v1.1.5` 现在应被视为 **implemented, release-ready**。
+
+## 当前操作文档入口
+
+新增的人类主读操作入口：
+
+- `docs/beacon/v1.1.5/COMMANDS.md`
+- `docs/beacon/v1.1.5/getting-started-10-minutes.md`
+- `docs/beacon/v1.1.5/execution/command-reference.md`
+- `docs/beacon/v1.1.5/execution/scenario-quick-reference.md`
+- `docs/beacon/v1.1.5/execution/command-guide-readme.md`
+- `docs/beacon/v1.1.5/execution/command-reference-bilingual.md`
+
+适用场景：
+
+- 查完整命令树与命令分层；
+- 快速判断“某种典型场景应该用什么命令”；
+- 复用 v1.1.5 推荐命令写法与常用示例。
 
 ## 安全实现结论
 
