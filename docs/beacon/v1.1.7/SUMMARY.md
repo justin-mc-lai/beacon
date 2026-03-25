@@ -46,6 +46,25 @@ Beacon v1.1.7 已具备：
 - 用 skill 编排 UAT / gateway / pipeline / SQL / logs 的执行器
 - 自动把“必须跑过的测试场景”变成 accept 前的阻断条件
 
+## 为什么要用 Rolo 做样板
+
+Rolo 代表了一类 Beacon 过去最容易漏掉的真实项目：
+
+- 多服务
+- 多环境（local / UAT / pipeline）
+- 有统一网关口径
+- 真实验收依赖 skill（如 `rolo-dev`）
+- 文档 / 前端 / 下游服务很容易出现合同漂移
+
+因此 v1.1.7 不只是“支持外部 skill”，而是要让 Beacon 能把：
+
+- 项目 skill
+- 编排节点
+- 必跑场景
+- 证据门禁
+
+都纳入正式 accept 语义。
+
 ---
 
 ## v1.1.7 期望结果

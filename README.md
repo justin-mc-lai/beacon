@@ -69,6 +69,37 @@ Beacon 默认**不负责**：
 - **单一事实源**：`docs/beacon/<version>/` 优先于 `.beacon/`
 - **版本包最小闭环**：`SUMMARY / execution / prd / user-story / qa/test-cases / release`
 
+### v1.1.7 为什么重要
+
+v1.1.7 相比 v1.1.6 的核心新增，不是单纯补命令，而是补：
+
+- **项目级 profile**
+- **项目特定 skill 接入**
+- **verify / orchestration 编排**
+- **required evidence / must-run case gate**
+
+也就是让 Beacon 开始回答：
+
+> “这个项目真正该怎么验？”  
+> 而不只是“通用工作流理论上该怎么验？”
+
+像 Rolo 这类多服务项目，可以通过 profile 把：
+
+- `verify`
+- `delivery`
+- `debug`
+- `pipeline`
+
+绑定到外部项目 skill（例如 `rolo-dev`），再把：
+
+- UAT pipeline
+- gateway smoke
+- interface verify
+- logs / SQL evidence
+- 核心业务必跑用例
+
+正式纳入 accept gate。
+
 ---
 
 ## 3. 当前推荐命令
@@ -111,6 +142,13 @@ beacon gate check release --project-root . --version v1.1.7 --json
 - `docs/beacon/v1.1.7/execution/command-reference.md`：完整命令树与命令说明
 - `docs/beacon/v1.1.7/execution/command-reference-bilingual.md`：中英双语版
 
+如果你关注 v1.1.7 新增的项目级能力，请优先读：
+
+- `docs/beacon/v1.1.7/version/beacon-v1.1.7-project-skill-orchestration.md`
+- `docs/beacon/v1.1.7/prd/beacon-project-skill-orchestration.md`
+- `docs/beacon/v1.1.7/user-story/beacon-project-skill-orchestration.md`
+- `docs/beacon/v1.1.7/qa/test-cases/beacon-project-skill-orchestration.md`
+
 ### 最小工作流
 
 ```bash
@@ -142,6 +180,24 @@ bash skills/beacon/scripts/run_beacon.sh skill list
 beacon status --board --project-root . --version v1.1.7
 beacon gate check release --project-root . --version v1.1.7
 ```
+
+### v1.1.7 project-aware 示例（以 Rolo 思路为例）
+
+```bash
+beacon profile create rolo rolo-uat --example rolo-uat --json
+beacon skill bind "KZFJ-1110 启动页营销内容配置" --profile rolo-uat --version v1.1.7
+beacon verify run "KZFJ-1110 启动页营销内容配置" \
+  --project . \
+  --version v1.1.7 \
+  --profile rolo-uat \
+  --json
+```
+
+这个模式适合：
+
+- 多服务项目
+- 需要 UAT / pipeline / gateway / SQL / logs 联合验收
+- 需要 Beacon 在 accept 前阻断“关键 case 没跑”的场景
 
 ### 自然语言入口
 

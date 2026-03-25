@@ -481,6 +481,32 @@ beacon doctor advise --project-root . --version v1.1.7 --feature "<feature>" --j
 - 当前评分怎样
 - 修复后建议执行什么
 
+如果项目绑定了 profile，它还应该帮助你识别：
+
+- 当前是否存在 `required_evidence_missing`
+- 当前是否存在 `required_case_missing`
+- 当前是否存在 `contract_drift`
+
+也就是说，v1.1.7 的 `doctor advise` 不再只是“环境诊断”，还开始承担项目级验收阻断解释。
+
+---
+
+## 10.4 `verify run`
+
+当项目需要走特定 skill 验收时，使用：
+
+```bash
+beacon verify run "<feature>" --project-root . --version v1.1.7 --profile "<profile>" --json
+```
+
+它适合：
+
+- 多服务项目
+- UAT / pipeline / gateway / logs / SQL 联动验证
+- 希望把外部项目 skill 纳入 Beacon 验收链路
+
+对像 Rolo 这样的项目，`verify run` 是 v1.1.7 最关键的新入口之一。
+
 ---
 
 ## 11. reopen 的正确用法
