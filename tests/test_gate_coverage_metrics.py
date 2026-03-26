@@ -11,8 +11,8 @@ from beacon.commands.gate import GateMode, check_coverage_metrics
 def test_gate_should_block_when_story_ac_tc_coverage_is_incomplete(tmp_path: Path, monkeypatch):
     version = "v1.0.1"
     monkeypatch.setenv("BEACON_VERSION", version)
-    story_dir = tmp_path / "docs" / "product" / version / "user-story"
-    matrix_dir = tmp_path / "docs" / "product" / version / "qa" / "test-cases"
+    story_dir = tmp_path / "docs" / "beacon" / version / "user-story"
+    matrix_dir = tmp_path / "docs" / "beacon" / version / "qa" / "test-cases"
     story_dir.mkdir(parents=True, exist_ok=True)
     matrix_dir.mkdir(parents=True, exist_ok=True)
     (story_dir / "feature-a.md").write_text("# story\n", encoding="utf-8")
@@ -36,8 +36,8 @@ def test_gate_should_block_when_story_ac_tc_coverage_is_incomplete(tmp_path: Pat
 def test_gate_should_pass_coverage_check_when_story_ac_tc_all_fully_covered(tmp_path: Path, monkeypatch):
     version = "v1.0.1"
     monkeypatch.setenv("BEACON_VERSION", version)
-    story_dir = tmp_path / "docs" / "product" / version / "user-story"
-    matrix_dir = tmp_path / "docs" / "product" / version / "qa" / "test-cases"
+    story_dir = tmp_path / "docs" / "beacon" / version / "user-story"
+    matrix_dir = tmp_path / "docs" / "beacon" / version / "qa" / "test-cases"
     evidence_path = tmp_path / ".beacon" / "evidence" / "test-results" / "feature-a" / "TC-001.json"
     impl_path = tmp_path / ".beacon" / "state" / "implementation-feature-a.json"
     story_dir.mkdir(parents=True, exist_ok=True)

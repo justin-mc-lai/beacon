@@ -7,6 +7,8 @@ from datetime import datetime
 import os
 
 from beacon.utils.versioning import resolve_target_version
+from beacon.utils.story_state import ensure_story_state
+from beacon.utils.revision_state import load_revision_state
 
 app = typer.Typer(name="user-story", help="Generate user stories")
 
@@ -62,20 +64,13 @@ def create(
 
 ## Acceptance Criteria
 
-### Functionality
-{chr(10).join(f"- [ ] {ac}" for ac in story['acceptance_criteria']['functionality']) or "- [ ] TBD"}
-
-### Data
-{chr(10).join(f"- [ ] {ac}" for ac in story['acceptance_criteria']['data']) or "- [ ] TBD"}
-
-### User Experience
-{chr(10).join(f"- [ ] {ac}" for ac in story['acceptance_criteria']['ux']) or "- [ ] TBD"}
-
-### Performance
-{chr(10).join(f"- [ ] {ac}" for ac in story['acceptance_criteria']['performance']) or "- [ ] TBD"}
-
-### Security
-{chr(10).join(f"- [ ] {ac}" for ac in story['acceptance_criteria']['security']) or "- [ ] TBD"}
+- [ ] AC-001 正向流程: {chr(10).join(story['acceptance_criteria']['functionality']) or "TBD"}
+- [ ] AC-002 数据要求: {chr(10).join(story['acceptance_criteria']['data']) or "TBD"}
+- [ ] AC-003 用户体验: {chr(10).join(story['acceptance_criteria']['ux']) or "TBD"}
+- [ ] AC-004 性能要求: {chr(10).join(story['acceptance_criteria']['performance']) or "TBD"}
+- [ ] AC-005 安全要求: {chr(10).join(story['acceptance_criteria']['security']) or "TBD"}
+- [ ] AC-006 兼容性: {chr(10).join(story['acceptance_criteria']['compatibility']) or "TBD"}
+- [ ] AC-007 错误处理: {chr(10).join(story['acceptance_criteria']['error_handling']) or "TBD"}
 
 ## Metadata
 
@@ -94,14 +89,12 @@ def create(
         output_path.parent.mkdir(parents=True, exist_ok=True)
         output_path.write_text(md_content)
     else:
-        output_paths = [
-            project_root / "docs" / "product" / resolved_version / "user-story" / f"{slug}.md",
-            project_root / "docs" / "beacon" / resolved_version / "user-story" / f"{slug}.md",
-        ]
-        for output_path in output_paths:
-            output_path.parent.mkdir(parents=True, exist_ok=True)
-            output_path.write_text(md_content)
-        output_path = output_paths[0]
+        output_path = project_root / "docs" / "beacon" / resolved_version / "user-story" / f"{slug}.md"
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(md_content)
+
+    ensure_story_state(project_root, resolved_version, feature)
+    load_revision_state(project_root, version=resolved_version, feature=feature, create_if_missing=True)
 
     typer.echo(f"✓ User story created: {output_path}")
     return story
@@ -115,10 +108,7 @@ def list_stories(
     """List all user stories"""
     project_root = Path(project) if project else Path.cwd()
     resolved_version = resolve_target_version(project_root, version)
-    roots = [
-        project_root / "docs" / "product" / resolved_version / "user-story",
-        project_root / "docs" / "beacon" / resolved_version / "user-story",
-    ]
+    roots = [project_root / "docs" / "beacon" / resolved_version / "user-story"]
     stories = []
     for stories_dir in roots:
         if stories_dir.exists():

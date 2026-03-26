@@ -1,0 +1,594 @@
+{
+  "schema_version": "1.0.2",
+  "feature": "beacon-implement-skill-runner",
+  "feature_slug": "beacon-implement-skill-runner",
+  "version": "v1.1.4",
+  "qa_profile": "web-full",
+  "qa_types": [
+    "unit",
+    "interface",
+    "contract",
+    "integration",
+    "smoke",
+    "functional",
+    "regression",
+    "exception",
+    "compatibility"
+  ],
+  "llm_plan": {
+    "mode": "rule",
+    "model": "beacon-rule-llm-v1",
+    "project_scan": {
+      "language": "python",
+      "framework": "python-app",
+      "frontend": "unknown",
+      "api_spec_refs": [],
+      "risk_points": [
+        "runner config precedence",
+        "external skill contract drift",
+        "implementation evidence completeness",
+        "artifact writeback consistency"
+      ]
+    },
+    "project_type": "ai-agent-skill",
+    "generated_at": "2026-03-20T12:00:00",
+    "prompt_ref": "beacon.qa9.llm.plan.v1.0.2",
+    "skip_reason": "",
+    "qa_types": [
+      "unit",
+      "interface",
+      "contract",
+      "integration",
+      "smoke",
+      "functional",
+      "regression",
+      "exception",
+      "compatibility"
+    ]
+  },
+  "qa_strategy": {
+    "schema_version": "1.0.2",
+    "generated_at": "2026-03-20T12:00:00",
+    "project_type": "ai-agent-skill",
+    "project_scan": {
+      "language": "python",
+      "framework": "python-app",
+      "frontend": "unknown",
+      "api_spec_refs": [],
+      "risk_points": [
+        "runner config precedence",
+        "external skill contract drift",
+        "implementation evidence completeness",
+        "artifact writeback consistency"
+      ]
+    },
+    "qa_applicability": {
+      "unit": "required",
+      "interface": "conditional",
+      "contract": "required",
+      "integration": "required",
+      "smoke": "required",
+      "functional": "conditional",
+      "regression": "required",
+      "exception": "required",
+      "compatibility": "conditional"
+    },
+    "qa_required_types": [
+      "unit",
+      "contract",
+      "integration",
+      "smoke",
+      "regression",
+      "exception"
+    ],
+    "runner_policy": {
+      "functional": {
+        "primary": "omx",
+        "fallback": [
+          "playwright",
+          "agent-browser"
+        ]
+      },
+      "compatibility": {
+        "primary": "pytest",
+        "fallback": [
+          "playwright"
+        ]
+      },
+      "api_layers": {
+        "interface": "pytest",
+        "contract": "pytest",
+        "integration": "pytest"
+      }
+    },
+    "command_baseline": {
+      "unit": "python3 -m pytest -q tests/test_v114_implement_command.py --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "interface": "python3 -m pytest -q tests/test_implement_cli_api.py --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "contract": "python3 -m pytest -q tests/test_v114_implement_command.py --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "integration": "python3 -m pytest -q tests/test_v114_workflow_implement_integration.py --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "smoke": "python3 -m beacon.main implement list-runners",
+      "functional": "python3 -m beacon.main implement run beacon-implement-skill-runner --runner omx --project . --version v1.1.4 --dry-run",
+      "regression": "python3 -m pytest -q -k implement --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "exception": "python3 -m pytest -q tests/test_v114_implement_command.py --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "compatibility": "python3 -m pytest -q tests/test_implement_runner_compat.py --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\""
+    },
+    "ui_runner": "omx"
+  },
+  "qa_requirements": [
+    {
+      "qa_type": "unit",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "interface",
+      "required": false,
+      "automation_required": false,
+      "min_cases": 0,
+      "applicability": "conditional",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "contract",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "integration",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "smoke",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "functional",
+      "required": false,
+      "automation_required": false,
+      "min_cases": 0,
+      "applicability": "conditional",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "regression",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "exception",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "compatibility",
+      "required": false,
+      "automation_required": false,
+      "min_cases": 0,
+      "applicability": "conditional",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    }
+  ],
+  "automation_target_rate": 0.85,
+  "entries": [
+    {
+      "tc_id": "TC-001",
+      "ac_id": "AC-001",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-implement-skill-runner unit :: Command Surface",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v114_implement_command.py --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Beacon exposes top-level implement command group",
+      "evidence_path": ".beacon/evidence/test-results/beacon-implement-skill-runner/TC-001.json",
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.1.4/user-story/beacon-implement-skill-runner.md"
+    },
+    {
+      "tc_id": "TC-002",
+      "ac_id": "AC-002",
+      "layer": "smoke",
+      "qa_type": "smoke",
+      "title": "beacon-implement-skill-runner smoke :: Subcommands",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m beacon.main implement list-runners",
+      "assertion": "Implement group exposes run/status/list-runners subcommands",
+      "evidence_path": ".beacon/evidence/test-results/beacon-implement-skill-runner/TC-002.json",
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.1.4/user-story/beacon-implement-skill-runner.md"
+    },
+    {
+      "tc_id": "TC-003",
+      "ac_id": "AC-003",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-implement-skill-runner unit :: Runner Model",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v114_implement_command.py --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "implement run accepts --runner and does not hardcode OMX",
+      "evidence_path": ".beacon/evidence/test-results/beacon-implement-skill-runner/TC-003.json",
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.1.4/user-story/beacon-implement-skill-runner.md"
+    },
+    {
+      "tc_id": "TC-004",
+      "ac_id": "AC-004",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-implement-skill-runner contract :: Config Priority",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v114_implement_command.py --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Runner resolution follows CLI > project > global > default priority",
+      "evidence_path": ".beacon/evidence/test-results/beacon-implement-skill-runner/TC-004.json",
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.1.4/user-story/beacon-implement-skill-runner.md"
+    },
+    {
+      "tc_id": "TC-005",
+      "ac_id": "AC-005",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-implement-skill-runner contract :: User-defined Skill",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v114_implement_command.py --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Project config can register custom implementation runners/skills",
+      "evidence_path": ".beacon/evidence/test-results/beacon-implement-skill-runner/TC-005.json",
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.1.4/user-story/beacon-implement-skill-runner.md"
+    },
+    {
+      "tc_id": "TC-006",
+      "ac_id": "AC-006",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-implement-skill-runner integration :: OMX Example",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v114_workflow_implement_integration.py --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "OMX runner assembles Beacon artifacts into executable implementation task input",
+      "evidence_path": ".beacon/evidence/test-results/beacon-implement-skill-runner/TC-006.json",
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.1.4/user-story/beacon-implement-skill-runner.md"
+    },
+    {
+      "tc_id": "TC-007",
+      "ac_id": "AC-007",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-implement-skill-runner contract :: Request Contract",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v114_implement_command.py --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "implement run writes structured request.json with source-of-truth and artifact paths",
+      "evidence_path": ".beacon/evidence/test-results/beacon-implement-skill-runner/TC-007.json",
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.1.4/user-story/beacon-implement-skill-runner.md"
+    },
+    {
+      "tc_id": "TC-008",
+      "ac_id": "AC-008",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-implement-skill-runner contract :: Result Contract",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v114_implement_command.py --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Beacon validates structured result.json from external runner",
+      "evidence_path": ".beacon/evidence/test-results/beacon-implement-skill-runner/TC-008.json",
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.1.4/user-story/beacon-implement-skill-runner.md"
+    },
+    {
+      "tc_id": "TC-009",
+      "ac_id": "AC-009",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-implement-skill-runner integration :: Runtime Evidence",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v114_workflow_implement_integration.py --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "implement runtime emits stdout/stderr/command/request/result evidence",
+      "evidence_path": ".beacon/evidence/test-results/beacon-implement-skill-runner/TC-009.json",
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.1.4/user-story/beacon-implement-skill-runner.md"
+    },
+    {
+      "tc_id": "TC-010",
+      "ac_id": "AC-010",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-implement-skill-runner integration :: Implementation Marker",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v114_workflow_implement_integration.py --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Successful implement run writes .beacon/state/implementation-<feature>.json",
+      "evidence_path": ".beacon/evidence/test-results/beacon-implement-skill-runner/TC-010.json",
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.1.4/user-story/beacon-implement-skill-runner.md"
+    },
+    {
+      "tc_id": "TC-011",
+      "ac_id": "AC-011",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-implement-skill-runner integration :: Execution Summary",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v114_workflow_implement_integration.py --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Beacon writes implementation-summary JSON and Markdown under execution/",
+      "evidence_path": ".beacon/evidence/test-results/beacon-implement-skill-runner/TC-011.json",
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.1.4/user-story/beacon-implement-skill-runner.md"
+    },
+    {
+      "tc_id": "TC-012",
+      "ac_id": "AC-012",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-implement-skill-runner integration :: Workflow Integration",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v114_workflow_implement_integration.py --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Workflow implementation stage can delegate to beacon implement run",
+      "evidence_path": ".beacon/evidence/test-results/beacon-implement-skill-runner/TC-012.json",
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.1.4/user-story/beacon-implement-skill-runner.md"
+    },
+    {
+      "tc_id": "TC-013",
+      "ac_id": "AC-013",
+      "layer": "regression",
+      "qa_type": "regression",
+      "title": "beacon-implement-skill-runner regression :: Backward Compatibility",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k implement --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Missing runner config preserves legacy implementation_command path and Blocked fallback",
+      "evidence_path": ".beacon/evidence/test-results/beacon-implement-skill-runner/TC-013.json",
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.1.4/user-story/beacon-implement-skill-runner.md"
+    },
+    {
+      "tc_id": "TC-014",
+      "ac_id": "AC-014",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-implement-skill-runner integration :: Spec Writeback",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v114_workflow_implement_integration.py --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "implement completion can trigger review spec for artifact update assessment",
+      "evidence_path": ".beacon/evidence/test-results/beacon-implement-skill-runner/TC-014.json",
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.1.4/user-story/beacon-implement-skill-runner.md"
+    },
+    {
+      "tc_id": "TC-015",
+      "ac_id": "AC-015",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-implement-skill-runner integration :: Quality Writeback",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v114_workflow_implement_integration.py --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "implement completion can trigger review quality for gate-ready assessment",
+      "evidence_path": ".beacon/evidence/test-results/beacon-implement-skill-runner/TC-015.json",
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.1.4/user-story/beacon-implement-skill-runner.md"
+    },
+    {
+      "tc_id": "TC-016",
+      "ac_id": "AC-016",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-implement-skill-runner contract :: Artifact Update Semantics",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v114_implement_command.py --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Runner result supports artifact_updates for user-story/prd/test-case/prototype",
+      "evidence_path": ".beacon/evidence/test-results/beacon-implement-skill-runner/TC-016.json",
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.1.4/user-story/beacon-implement-skill-runner.md"
+    },
+    {
+      "tc_id": "TC-017",
+      "ac_id": "AC-017",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-implement-skill-runner unit :: Source of Truth",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v114_implement_command.py --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "docs/beacon remains long-term truth source while .beacon/implement is runtime only",
+      "evidence_path": ".beacon/evidence/test-results/beacon-implement-skill-runner/TC-017.json",
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.1.4/user-story/beacon-implement-skill-runner.md"
+    },
+    {
+      "tc_id": "TC-018",
+      "ac_id": "AC-018",
+      "layer": "exception",
+      "qa_type": "exception",
+      "title": "beacon-implement-skill-runner exception :: Boundary",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v114_implement_command.py --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Implement stays adapter-scoped and does not expand into scheduler/orchestrator behavior",
+      "evidence_path": ".beacon/evidence/test-results/beacon-implement-skill-runner/TC-018.json",
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.1.4/user-story/beacon-implement-skill-runner.md"
+    },
+    {
+      "tc_id": "TC-019",
+      "ac_id": "AC-019",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-implement-skill-runner unit :: Runner Types",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v114_implement_command.py --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Runner registry supports at least command and command-skill types",
+      "evidence_path": ".beacon/evidence/test-results/beacon-implement-skill-runner/TC-019.json",
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.1.4/user-story/beacon-implement-skill-runner.md"
+    },
+    {
+      "tc_id": "TC-020",
+      "ac_id": "AC-020",
+      "layer": "functional",
+      "qa_type": "functional",
+      "title": "beacon-implement-skill-runner functional :: Task Prompt Assembly",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m beacon.main implement run beacon-implement-skill-runner --runner omx --project . --version v1.1.4 --dry-run",
+      "assertion": "Beacon assembles feature artifact context into runner task prompt payload",
+      "evidence_path": ".beacon/evidence/test-results/beacon-implement-skill-runner/TC-020.json",
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.1.4/user-story/beacon-implement-skill-runner.md"
+    },
+    {
+      "tc_id": "TC-021",
+      "ac_id": "AC-021",
+      "layer": "exception",
+      "qa_type": "exception",
+      "title": "beacon-implement-skill-runner exception :: Result Validation",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v114_implement_command.py --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Missing or invalid runner result fails with explicit reason codes",
+      "evidence_path": ".beacon/evidence/test-results/beacon-implement-skill-runner/TC-021.json",
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.1.4/user-story/beacon-implement-skill-runner.md"
+    },
+    {
+      "tc_id": "TC-022",
+      "ac_id": "AC-022",
+      "layer": "smoke",
+      "qa_type": "smoke",
+      "title": "beacon-implement-skill-runner smoke :: Reviewability",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m beacon.main implement list-runners",
+      "assertion": "implement status shows runner/run/request/result/marker/review state",
+      "evidence_path": ".beacon/evidence/test-results/beacon-implement-skill-runner/TC-022.json",
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.1.4/user-story/beacon-implement-skill-runner.md"
+    },
+    {
+      "tc_id": "TC-023",
+      "ac_id": "AC-023",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-implement-skill-runner contract :: Config Model",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v114_implement_command.py --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "implementation.runners.<id> schema includes type/command/args/env/timeout/result_file",
+      "evidence_path": ".beacon/evidence/test-results/beacon-implement-skill-runner/TC-023.json",
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.1.4/user-story/beacon-implement-skill-runner.md"
+    },
+    {
+      "tc_id": "TC-024",
+      "ac_id": "AC-024",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-implement-skill-runner integration :: OMX Skill Binding",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v114_workflow_implement_integration.py --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "OMX runner supports configured skill prefix and task template binding",
+      "evidence_path": ".beacon/evidence/test-results/beacon-implement-skill-runner/TC-024.json",
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.1.4/user-story/beacon-implement-skill-runner.md"
+    },
+    {
+      "tc_id": "TC-025",
+      "ac_id": "AC-025",
+      "layer": "exception",
+      "qa_type": "exception",
+      "title": "beacon-implement-skill-runner exception :: Reason Codes",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v114_implement_command.py --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Runner failure paths emit stable reason codes",
+      "evidence_path": ".beacon/evidence/test-results/beacon-implement-skill-runner/TC-025.json",
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.1.4/user-story/beacon-implement-skill-runner.md"
+    },
+    {
+      "tc_id": "TC-026",
+      "ac_id": "AC-026",
+      "layer": "regression",
+      "qa_type": "regression",
+      "title": "beacon-implement-skill-runner regression :: Draft Stage",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k implement --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "v1.1.4 materials explicitly describe draft-stage semantics for implement capability",
+      "evidence_path": ".beacon/evidence/test-results/beacon-implement-skill-runner/TC-026.json",
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.1.4/user-story/beacon-implement-skill-runner.md"
+    }
+  ]
+}

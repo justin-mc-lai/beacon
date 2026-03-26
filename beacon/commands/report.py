@@ -10,7 +10,14 @@ import typer
 
 from beacon.utils.coverage import compute_coverage_metrics
 from beacon.utils.runtime import load_run_state, newest_run_id, now_iso, write_json
+from beacon.utils.acceptance_audit import (
+    build_acceptance_audit_payload,
+    render_acceptance_audit_markdown,
+    run_regression_command,
+    write_acceptance_audit,
+)
 from beacon.utils.versioning import resolve_target_version
+from beacon.utils.material_audit import build_material_audit
 from beacon.utils.v110_baseline import load_latest_spec_fingerprint
 from beacon.utils.v110_metrics import (
     compute_baseline_drift_metrics,
@@ -64,6 +71,9 @@ def _human_summary(machine: dict[str, Any]) -> str:
                 f"- next_stage: `{machine.get('workflow_progress', {}).get('next_stage')}`",
             ]
         )
+        prototype_state = ((machine.get("workflow_progress", {}) or {}).get("stages", {}) or {}).get("prototype")
+        if isinstance(prototype_state, dict):
+            lines.append(f"- prototype_status: `{prototype_state.get('status')}`")
     if isinstance(coverage, dict):
         lines.extend(
             [
@@ -211,6 +221,11 @@ def _build_machine_payload(
             "memory_governance": compute_memory_governance_metrics(project_root),
             "baseline_drift": compute_baseline_drift_metrics(project_root, version=coverage_version),
             "consistency_snapshot": consistency_snapshot,
+            "source_of_truth": {
+                "root": f"docs/beacon/{coverage_version}",
+                "runtime_state_root": ".beacon",
+                "formal_package_closure": build_material_audit(project_root, version=coverage_version, strict=False).get("status", "unknown"),
+            },
             "workflow_progress": progress,
             "filters": {"version": version or "", "feature": feature or ""},
             "generated_at": now_iso(),
@@ -256,6 +271,11 @@ def _build_machine_payload(
         "memory_governance": compute_memory_governance_metrics(project_root),
         "baseline_drift": compute_baseline_drift_metrics(project_root, version=coverage_version),
         "consistency_snapshot": consistency_snapshot,
+        "source_of_truth": {
+            "root": f"docs/beacon/{coverage_version}",
+            "runtime_state_root": ".beacon",
+            "formal_package_closure": build_material_audit(project_root, version=coverage_version, strict=False).get("status", "unknown"),
+        },
         "workflow_progress": progress,
         "filters": {"version": version or "", "feature": feature or ""},
         "generated_at": now_iso(),
@@ -285,10 +305,7 @@ def _report_impl(
         or str(payload.get("filters", {}).get("version", "")).strip()
         or resolve_target_version(root, None)
     )
-    exec_dirs = [
-        root / "docs" / "beacon" / report_version / "execution",
-        root / "docs" / "product" / report_version / "execution",
-    ]
+    exec_dirs = [root / "docs" / "beacon" / report_version / "execution"]
     if write_summary:
         for exec_dir in exec_dirs:
             exec_dir.mkdir(parents=True, exist_ok=True)
@@ -317,7 +334,7 @@ def report_callback(
     write_summary: bool = typer.Option(
         False,
         "--write-summary",
-        help="Write summary.{json,md} into docs/*/<version>/execution (disabled by default).",
+        help="Write summary.{json,md} into docs/beacon/<version>/execution (disabled by default).",
     ),
 ):
     """Generate report directly (PTK flat syntax compatibility)."""
@@ -344,7 +361,7 @@ def generate(
     write_summary: bool = typer.Option(
         False,
         "--write-summary",
-        help="Write summary.{json,md} into docs/*/<version>/execution (disabled by default).",
+        help="Write summary.{json,md} into docs/beacon/<version>/execution (disabled by default).",
     ),
 ):
     """Generate run report (nested compatibility)."""
@@ -358,6 +375,44 @@ def generate(
         write_summary=write_summary,
     )
     raise typer.Exit(code=code)
+
+
+@app.command("acceptance-audit")
+def acceptance_audit(
+    project_root: str = typer.Option("", "--project-root", help="Project root path"),
+    version: str = typer.Option("", "--version", "-v", help="Version filter"),
+    feature: str = typer.Option("", "--feature", "-f", help="Feature name"),
+    run_regression: bool = typer.Option(False, "--run-regression", help="Run regression command before building audit."),
+    regression_command: str = typer.Option("python3 -m pytest -q", "--regression-command", help="Command used when --run-regression is enabled."),
+    json_output: bool = typer.Option(False, "--json", help="Output JSON instead of markdown."),
+    write_output: bool = typer.Option(True, "--write/--no-write", help="Write acceptance audit into docs/beacon/<version>/execution."),
+):
+    """Generate deterministic acceptance regression audit artifacts."""
+    root = Path(project_root) if project_root else Path.cwd()
+    resolved_version = resolve_target_version(root, version)
+    feature_name = feature.strip() if feature and feature.strip() else ""
+
+    regression_payload = None
+    if run_regression:
+        regression_payload = run_regression_command(root, regression_command)
+
+    payload = build_acceptance_audit_payload(
+        root,
+        version=resolved_version,
+        feature=feature_name,
+        regression=regression_payload,
+    )
+    if write_output:
+        written = write_acceptance_audit(root, payload)
+        payload["artifacts"] = sorted(written.keys())
+
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo(render_acceptance_audit_markdown(payload), nl=False)
+
+    blocked = bool(run_regression and regression_payload and regression_payload.get("status") != "pass")
+    raise typer.Exit(2 if blocked else 0)
 
 
 if __name__ == "__main__":

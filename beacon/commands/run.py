@@ -187,11 +187,9 @@ def _run_workflow_impl(
         context="run.workflow.dispatch",
     )
 
-    # Compatibility behavior:
-    # strict mode requires an existing user-story artifact in product/beacon docs.
+    # Strict mode requires an existing canonical Beacon user-story artifact.
     if mode == "strict":
         story_candidates = [
-            root / "docs" / "product" / resolved_version / "user-story",
             root / "docs" / "beacon" / resolved_version / "user-story",
         ]
         has_story = any(path.exists() and any(path.glob("*.md")) for path in story_candidates)

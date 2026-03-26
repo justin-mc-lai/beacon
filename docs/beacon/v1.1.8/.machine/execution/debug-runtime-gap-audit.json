@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0",
+  "version": "v1.1.8",
+  "feature": "beacon-debug-runtime-feedback-loop",
+  "generated_at": "2026-03-26T08:00:00+00:00",
+  "status": "warn",
+  "audited_files": [
+    "beacon/commands/debug.py",
+    "beacon/utils/debug_feedback.py",
+    "beacon/commands/run.py"
+  ],
+  "findings": [
+    {
+      "id": "DBG-001",
+      "severity": "high",
+      "reason_code": "debug_runtime_feedback_missing",
+      "summary": "Current debug pipeline is centered on prompt/router/run events and does not define a canonical project-facing .beacon/debug directory for version-iteration inputs."
+    },
+    {
+      "id": "DBG-002",
+      "severity": "high",
+      "reason_code": "debug_feedback_target_missing",
+      "summary": "Current debug events do not distinguish beacon-core / beacon-skill / project-skill / workflow-docs / runner-adapter as feedback targets."
+    },
+    {
+      "id": "DBG-003",
+      "severity": "medium",
+      "reason_code": "debug_issue_harvest_missing",
+      "summary": "Current debug capture does not aggregate runtime friction into issue/idea artifacts that can feed the next Beacon version plan."
+    }
+  ]
+}

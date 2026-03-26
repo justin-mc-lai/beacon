@@ -115,14 +115,9 @@ def create(
         output_path.parent.mkdir(parents=True, exist_ok=True)
         output_path.write_text(md_content)
     else:
-        output_paths = [
-            project_root / "docs" / "product" / resolved_version / "prd" / f"{slug}.md",
-            project_root / "docs" / "beacon" / resolved_version / "prd" / f"{slug}.md",
-        ]
-        for output_path in output_paths:
-            output_path.parent.mkdir(parents=True, exist_ok=True)
-            output_path.write_text(md_content)
-        output_path = output_paths[0]
+        output_path = project_root / "docs" / "beacon" / resolved_version / "prd" / f"{slug}.md"
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(md_content)
 
     typer.echo(f"✓ PRD created: {output_path}")
 
@@ -135,10 +130,7 @@ def list_prds(
     """List all PRDs"""
     project_root = Path(project) if project else Path.cwd()
     resolved_version = resolve_target_version(project_root, version)
-    roots = [
-        project_root / "docs" / "product" / resolved_version / "prd",
-        project_root / "docs" / "beacon" / resolved_version / "prd",
-    ]
+    roots = [project_root / "docs" / "beacon" / resolved_version / "prd"]
     prds = []
     for prds_dir in roots:
         if prds_dir.exists():

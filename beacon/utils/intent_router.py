@@ -18,39 +18,85 @@ SUPPORTED_INTENTS = (
     "prd",
     "test-case",
     "workflow",
-    "run",
     "status",
     "resume",
-    "team",
     "gate",
     "release",
     "doctor",
-    "analyze",
-    "api-design",
-    "data-dictionary",
-    "design",
-    "jtbd",
-    "persona",
-    "roadmap",
-    "ui-spec",
-    "wireframe",
+    "prototype",
     "version",
     "test-progress",
     "feedback",
     "remember",
     "recall",
-    "save",
     "report",
     "init",
+    "qa",
     "auto-test",
+    "debug",
+    "analyze",
+    "api-design",
+    "brainstorm",
+    "data-dictionary",
+    "design",
+    "jtbd",
+    "kano",
+    "moscow",
+    "persona",
+    "roadmap",
+    "ui-spec",
+    "wireframe",
+    "run",
+    "team",
     "outside-boundary",
 )
 
+DEFAULT_ROUTABLE_INTENTS = (
+    "think",
+    "user-story",
+    "prd",
+    "test-case",
+    "workflow",
+    "status",
+    "resume",
+    "gate",
+    "release",
+    "doctor",
+    "prototype",
+    "version",
+    "test-progress",
+    "feedback",
+    "remember",
+    "recall",
+    "report",
+    "init",
+    "qa",
+    "auto-test",
+    "debug",
+)
+
+EXPLICIT_ONLY_COMMAND_HINTS: dict[str, tuple[str, ...]] = {
+    "analyze": ("beacon analyze",),
+    "api-design": ("beacon api-design",),
+    "brainstorm": ("beacon brainstorm",),
+    "data-dictionary": ("beacon data-dictionary",),
+    "design": ("beacon design",),
+    "jtbd": ("beacon jtbd",),
+    "kano": ("beacon kano",),
+    "moscow": ("beacon moscow",),
+    "persona": ("beacon persona",),
+    "roadmap": ("beacon roadmap",),
+    "ui-spec": ("beacon ui-spec",),
+    "wireframe": ("beacon wireframe",),
+    "run": ("beacon run",),
+    "team": ("beacon team",),
+}
+
 DEFAULT_INTENT_KEYWORDS: dict[str, tuple[str, ...]] = {
-    "think": ("think", "需求", "澄清", "梳理", "分析需求", "brainstorm", "方案"),
+    "think": ("think", "需求", "澄清", "梳理", "分析需求", "方案"),
     "user-story": ("user story", "user-story", "用户故事", "验收标准", "ac"),
     "prd": ("prd", "需求文档", "产品文档", "spec", "规格说明", "prd 文档"),
-    "test-case": ("test-case", "test case", "测试用例", "测试矩阵", "验收测试", "ac->tc", "qa"),
+    "test-case": ("test-case", "test case", "测试用例", "测试矩阵", "验收测试", "ac->tc"),
     "workflow": ("workflow", "工作流", "主链", "阶段流程", "全流程"),
     "run": ("run", "执行模式", "dry-run", "strict", "debug 模式", "运行流程"),
     "status": ("status", "状态", "看板", "进度", "当前进展", "workflow status"),
@@ -69,11 +115,12 @@ DEFAULT_INTENT_KEYWORDS: dict[str, tuple[str, ...]] = {
         "字段定义",
         "schema dictionary",
     ),
-    "design": ("design", "design thinking", "设计思维", "同理心", "ideate", "prototype"),
+    "design": ("design", "design thinking", "设计思维", "同理心", "ideate"),
     "jtbd": ("jtbd", "jobs to be done", "job to be done", "工作待完成", "用户任务分析"),
     "persona": ("persona", "用户画像", "用户角色", "目标用户画像", "人物画像"),
     "roadmap": ("roadmap", "路线图", "产品规划", "里程碑规划", "版本路线图"),
     "ui-spec": ("ui-spec", "ui spec", "ui 规范", "界面规范", "设计规范", "design token"),
+    "prototype": ("prototype", "交互原型", "可点击原型", "ui 原型", "单页原型", "html prototype"),
     "wireframe": ("wireframe", "线框图", "低保真", "页面草图", "原型草图", "mockup"),
     "version": ("version", "版本规划", "版本计划", "版本迭代", "semver"),
     "test-progress": ("test-progress", "test progress", "测试进度", "测试结果汇总", "回归进度"),
@@ -83,6 +130,7 @@ DEFAULT_INTENT_KEYWORDS: dict[str, tuple[str, ...]] = {
     "save": ("save", "保存会话", "保存状态", "存档会话", "session save"),
     "report": ("report", "运行报告", "执行报告", "总结报告", "报告"),
     "init": ("init", "初始化", "初始化项目", "创建 beacon 项目", "bootstrap"),
+    "qa": ("qa", "验收", "qa", "浏览器验收", "测试验收", "登录态测试"),
     "auto-test": ("auto-test", "自动测试", "自动化测试", "回归测试", "冒烟测试", "qa 执行"),
 }
 
@@ -162,6 +210,7 @@ DEFAULT_INTENT_COMMAND_TEMPLATES: dict[str, Any] = {
     "persona": ["persona", "create", "{feature}", "--project", "{project_root}"],
     "roadmap": ["roadmap", "create", "{feature}", "--project", "{project_root}"],
     "ui-spec": ["ui-spec", "create", "{feature}", "--project", "{project_root}"],
+    "prototype": ["prototype", "create", "{feature}", "--project", "{project_root}", "--version", "{version}"],
     "wireframe": ["wireframe", "create", "{feature}", "--project", "{project_root}"],
     "version": ["version", "create", "{feature}", "--project", "{project_root}", "--version", "{version}"],
     "test-progress": ["test-progress", "show", "--project", "{project_root}"],
@@ -171,6 +220,7 @@ DEFAULT_INTENT_COMMAND_TEMPLATES: dict[str, Any] = {
     "save": ["save", "run", "--project", "{project_root}"],
     "report": ["report", "generate", "latest", "--project-root", "{project_root}"],
     "init": ["init", "--project-root", "{project_root}", "--dry-run"],
+    "qa": ["qa", "run", "all", "--project", "{project_root}", "--version", "{version}"],
     "auto-test": ["auto-test", "create", "all", "--project", "{project_root}", "--version", "{version}"],
     "outside-boundary": ["status", "--board", "--project-root", "{project_root}"],
 }
@@ -183,6 +233,7 @@ INTENT_PRIORITY: dict[str, int] = {
     "gate": 85,
     "release": 85,
     "doctor": 85,
+    "qa": 86,
     "auto-test": 85,
     "test-progress": 84,
     "report": 84,
@@ -200,6 +251,7 @@ INTENT_PRIORITY: dict[str, int] = {
     "persona": 79,
     "roadmap": 79,
     "ui-spec": 79,
+    "prototype": 79,
     "wireframe": 79,
     "version": 79,
     "user-story": 70,
@@ -314,6 +366,14 @@ def _merge_outside_keywords(overrides: Any) -> tuple[str, ...]:
     return tuple(merged)
 
 
+def _explicit_intent_override(goal: str) -> str:
+    normalized = _normalize_text(goal)
+    for intent, hints in EXPLICIT_ONLY_COMMAND_HINTS.items():
+        if any(_match_token(normalized, hint) for hint in hints):
+            return intent
+    return ""
+
+
 def _load_router_config(project_root: Path) -> dict[str, Any]:
     config_path = Path(project_root) / ".beacon" / ROUTER_CONFIG_FILE
     config_raw: dict[str, Any] = {}
@@ -360,8 +420,17 @@ def _rule_route(goal: str, *, intent_keywords: dict[str, tuple[str, ...]]) -> di
             "router_mode": "rule",
         }
 
+    explicit_intent = _explicit_intent_override(goal)
+    if explicit_intent:
+        return {
+            "intent": explicit_intent,
+            "confidence": 0.9,
+            "reason": f"explicit_command_hint(intent={explicit_intent})",
+            "router_mode": "rule",
+        }
+
     scores: dict[str, int] = {
-        name: 0 for name in intent_keywords if name in SUPPORTED_INTENTS and name != "outside-boundary"
+        name: 0 for name in intent_keywords if name in DEFAULT_ROUTABLE_INTENTS
     }
     for intent, keywords in intent_keywords.items():
         if intent not in scores:

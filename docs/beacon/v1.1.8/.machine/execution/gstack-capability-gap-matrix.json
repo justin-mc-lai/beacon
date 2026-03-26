@@ -1,0 +1,92 @@
+{
+  "schema_version": "1.0",
+  "version": "v1.1.8",
+  "source_repo": "oss-sync/agents/agent-skills/gstack",
+  "generated_at": "2026-03-26T10:00:00+00:00",
+  "summary": {
+    "beacon_stronger_in": [
+      "requirements lifecycle governance",
+      "versioned docs/beacon/<version> materials",
+      "machine-backed requirement truth",
+      "project profile / orchestration / evidence gate abstraction"
+    ],
+    "gstack_stronger_in": [
+      "persistent browser daemon runtime",
+      "qa as primary user surface",
+      "login-state and session import/governance",
+      "runtime feedback flowing back into tool evolution"
+    ],
+    "highest_priority_for_beacon": [
+      "qa primary surface + auto-test alias",
+      "session/login-state governance",
+      "runtime debug feedback harvest",
+      "browser evidence as formal gate input"
+    ]
+  },
+  "entries": [
+    {
+      "capability": "persistent_browser_daemon",
+      "gstack_sources": [
+        "ARCHITECTURE.md",
+        "browse/src/server.ts",
+        "browse/src/browser-manager.ts"
+      ],
+      "beacon_current_state": "runner abstraction only; no canonical persistent browser runtime surface",
+      "gap_level": "high",
+      "recommended_v118_direction": "Define stateful browser runtime as QA design primitive, not just runner flag"
+    },
+    {
+      "capability": "qa_primary_surface",
+      "gstack_sources": [
+        "qa/SKILL.md",
+        "README.md"
+      ],
+      "beacon_current_state": "user-facing testing surface still centered on auto-test",
+      "gap_level": "high",
+      "recommended_v118_direction": "Make qa the primary surface and preserve auto-test as compatibility alias"
+    },
+    {
+      "capability": "session_login_state_governance",
+      "gstack_sources": [
+        "setup-browser-cookies/SKILL.md",
+        "browse/src/cookie-import-browser.ts",
+        "browse/src/cookie-picker-routes.ts"
+      ],
+      "beacon_current_state": "no first-class session/login-state schema or canonical session directory",
+      "gap_level": "high",
+      "recommended_v118_direction": "Introduce .beacon/qa/sessions plus cookies/storage/profile/session manifest model"
+    },
+    {
+      "capability": "runtime_feedback_to_product_iteration",
+      "gstack_sources": [
+        "SKILL.md",
+        "scripts/analytics.ts",
+        "scripts/eval-watch.ts"
+      ],
+      "beacon_current_state": "debug centered on prompt/router/run capture without issue/idea harvest",
+      "gap_level": "high",
+      "recommended_v118_direction": "Extend into .beacon/debug with feedback_target, issue aggregation, and idea export"
+    },
+    {
+      "capability": "browser_evidence_for_acceptance",
+      "gstack_sources": [
+        "BROWSER.md",
+        "browse/src/commands.ts"
+      ],
+      "beacon_current_state": "browser runner evidence not yet a formal first-class review/gate input",
+      "gap_level": "medium",
+      "recommended_v118_direction": "Formalize screenshot/video/network/session refs as review/gate evidence"
+    },
+    {
+      "capability": "command_docs_tests_single_source_of_truth",
+      "gstack_sources": [
+        "browse/src/commands.ts",
+        "scripts/gen-skill-docs.ts",
+        "test/skill-validation.test.ts"
+      ],
+      "beacon_current_state": "command catalog exists, but qa migration and docs/runtime alignment still incomplete",
+      "gap_level": "medium",
+      "recommended_v118_direction": "Unify qa command surface across catalog, docs, aliases, and test coverage"
+    }
+  ]
+}

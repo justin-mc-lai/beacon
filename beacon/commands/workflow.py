@@ -11,6 +11,13 @@ import sys
 import os
 import signal
 
+from beacon import __toolkit_version__
+from beacon.utils.artifact_paths import (
+    execution_file_output,
+    human_execution_dir,
+    qa_matrix_candidates,
+    uses_machine_surface,
+)
 from beacon.utils.coverage import compute_coverage_metrics
 from beacon.utils.debug_feedback import (
     append_debug_event_memory,
@@ -20,6 +27,7 @@ from beacon.utils.debug_feedback import (
 )
 from beacon.utils.llm_loop import build_next_stage_trace, merge_token_usage
 from beacon.utils.memory import append_memory_entry
+from beacon.utils.implement_adapters import load_beacon_config_file, project_config_path
 from beacon.utils.runtime import (
     append_jsonl,
     generate_run_id,
@@ -44,11 +52,23 @@ WORKFLOW_STAGES = [
     ("think", "Product thinking (vNext)", "beacon think start"),
     ("user-story", "Generate user stories", "beacon user-story create"),
     ("prd", "Generate PRD", "beacon prd create"),
+    ("prototype", "Generate static UI prototype", "beacon prototype create"),
     ("test-case", "Generate executable test matrix", "beacon test-case create"),
-    ("implementation", "Align code implementation with docs", "beacon run workflow"),
+    ("implementation", "Align external implementation with docs", "<external implementation command>"),
     ("verify", "Run multi-layer tests and gate closure", "beacon auto-test create"),
     ("gate", "Run gate readiness and closure check", "beacon gate check release"),
 ]
+
+
+def _workflow_stages(*, prototype_enabled: bool) -> list[tuple[str, str, str]]:
+    if prototype_enabled:
+        return list(WORKFLOW_STAGES)
+    return [stage for stage in WORKFLOW_STAGES if stage[0] != "prototype"]
+
+
+
+def _repo_root() -> Path:
+    return Path(__file__).resolve().parents[2]
 
 INTERACTIVE_ACTIONS: dict[str, str] = {
     "1": "single-step",
@@ -119,8 +139,8 @@ def _print_next_step_selector(project_root: Path, version: str, run_id: str, fea
     )
     typer.echo("2) OMX 路径（长任务执行）")
     typer.echo(
-        f'   omx run --project-root "{project_root}" '
-        f'--task "执行 {feature} 的下一轮迭代（version={version}, run_id={run_id}）"'
+        f'   omx exec --full-auto --cd "{project_root}" --skip-git-repo-check '
+        f'"执行 {feature} 的下一轮迭代（version={version}, run_id={run_id}）"'
     )
     typer.echo("3) Beacon Team 协作模式")
     typer.echo(
@@ -378,6 +398,11 @@ def _update_evidence_manifest(
         for item in entries
         if isinstance(item, dict) and str(item.get("path", "")).strip()
     }
+    by_path = {
+        ref_path: item
+        for ref_path, item in by_path.items()
+        if (project_root / ref_path).exists() and (project_root / ref_path).is_file()
+    }
     for ref in evidence_refs:
         ref_path = str(ref or "").strip()
         if not ref_path:
@@ -403,6 +428,489 @@ def _update_evidence_manifest(
     write_json(manifest_path, output_payload)
 
 
+def _execution_roots(project_root: Path, version: str) -> list[Path]:
+    return [project_root / "docs" / "beacon" / version / "execution"]
+
+
+def _git_command(project_root: Path, *args: str) -> str:
+    try:
+        result = subprocess.run(
+            ["git", *args],
+            cwd=project_root,
+            capture_output=True,
+            text=True,
+            timeout=5,
+        )
+    except Exception:  # noqa: BLE001
+        return ""
+    if result.returncode != 0:
+        return ""
+    return str(result.stdout or "").strip()
+
+
+def _git_metadata(project_root: Path, version: str) -> dict[str, Any]:
+    current_branch = _git_command(project_root, "rev-parse", "--abbrev-ref", "HEAD")
+    current_commit = _git_command(project_root, "rev-parse", "HEAD")
+    repo_url = _git_command(project_root, "remote", "get-url", "origin")
+    current_tag = _git_command(project_root, "describe", "--tags", "--exact-match")
+    target_branch = f"beacon/{version}"
+    branch_prefix = "beacon/"
+    branch_matches_target = bool(current_branch and current_branch == target_branch)
+    branch_has_required_prefix = bool(current_branch and current_branch.startswith(branch_prefix))
+    tag_matches_version = bool(current_tag and current_tag == version)
+    version_ref_satisfied = branch_matches_target or tag_matches_version
+    reason_codes: list[str] = []
+    if not branch_matches_target:
+        reason_codes.append("git_branch_target_mismatch")
+    if not branch_has_required_prefix:
+        reason_codes.append("git_branch_prefix_mismatch")
+    if not version_ref_satisfied:
+        reason_codes.append("git_version_ref_not_satisfied")
+    return {
+        "repo_url": repo_url,
+        "base_branch": "main",
+        "target_branch": target_branch,
+        "current_branch": current_branch,
+        "current_commit": current_commit,
+        "current_tag": current_tag,
+        "worktree_path": str(project_root),
+        "version_ref": version,
+        "allowed_refs": ["tag", "branch"],
+        "enforce_branch_prefix": branch_prefix,
+        "branch_matches_target": branch_matches_target,
+        "branch_has_required_prefix": branch_has_required_prefix,
+        "tag_matches_version": tag_matches_version,
+        "version_ref_satisfied": version_ref_satisfied,
+        "reason_codes": reason_codes,
+        "blocked": not version_ref_satisfied,
+    }
+
+
+def _existing_research_docs(project_root: Path, version: str) -> list[str]:
+    research_dir = project_root / "docs" / "beacon" / version / "research"
+    if not research_dir.exists():
+        return []
+    return sorted(str(path.relative_to(project_root)) for path in research_dir.glob("*.md") if path.is_file())
+
+
+def _main_chain_refs(project_root: Path, version: str, feature: str) -> list[str]:
+    slug = _slug(feature)
+    refs = [
+        project_root / "docs" / "beacon" / version / "user-story" / f"{slug}.md",
+        project_root / "docs" / "beacon" / version / "prd" / f"{slug}.md",
+        project_root / "docs" / "beacon" / version / "qa" / "test-cases" / f"{slug}.md",
+        qa_matrix_candidates(project_root, version, slug, "ac-test-matrix")[0],
+        qa_matrix_candidates(project_root, version, slug, "qa9-matrix")[0],
+    ]
+    return [str(path.relative_to(project_root)) for path in refs if path.exists()]
+
+
+def _load_change_impact_state(project_root: Path, run_id: str) -> dict[str, Any]:
+    return _load_json_dict(project_root / ".beacon" / "state" / "change-impact" / f"{run_id}.json")
+
+
+def _build_execution_config_payload(
+    *,
+    project_root: Path,
+    version: str,
+    run_id: str,
+    feature: str,
+    workflow_status: str,
+) -> dict[str, Any]:
+    git_meta = _git_metadata(project_root, version)
+    return {
+        "schema_version": "1.0",
+        "version": version,
+        "feature": feature,
+        "run_id": run_id,
+        "generated_at": now_iso(),
+        "status": "completed" if workflow_status == "completed" else "draft",
+        "strict_mode": True,
+        "source_of_truth_root": f"docs/beacon/{version}",
+        "resolved_project": {
+            "workspace_root": str(project_root.parent),
+            "project_name": project_root.name,
+            "project_root": str(project_root),
+            "resolved_by": "cli_or_cwd",
+            "resolution_order": ["cli", "env", "cwd", "default"],
+        },
+        "docs": {
+            "source_root": f"docs/beacon/{version}",
+            "write_mode": "source_only",
+        },
+        "implementation": {
+            "root": str(project_root),
+            "include_paths": ["beacon", "tests"],
+            "exclude_paths": ["dist", "node_modules", ".beacon"],
+        },
+        "source_info": {
+            "enabled": True,
+            "output": str(execution_file_output(project_root, version, "source.json").relative_to(project_root)),
+            "include_git": True,
+            "fields": [
+                "project_name",
+                "project_root",
+                "workspace_root",
+                "repo_url",
+                "branch",
+                "commit",
+                "tag",
+                "run_id",
+                "version",
+                "timestamp",
+            ],
+        },
+        "git": {
+            "version_policy": "strict",
+            "version_ref": version,
+            "allowed_refs": git_meta["allowed_refs"],
+            "enforce_branch_prefix": git_meta["enforce_branch_prefix"],
+            "base_branch": git_meta["base_branch"],
+            "target_branch": git_meta["target_branch"],
+            "current_branch": git_meta["current_branch"],
+            "current_commit": git_meta["current_commit"],
+            "current_tag": git_meta["current_tag"],
+        },
+        "research": {
+            "root": f"docs/beacon/{version}/research",
+            "sync_to_compat": False,
+            "allowed_types": ["brainstorm", "analysis", "research", "architecture", "compare", "convergence"],
+            "convergence_rule": "research -> user-story / prd -> test-case",
+        },
+        "delivery": {
+            "manifest_output": str(execution_file_output(project_root, version, "delivery-manifest.json").relative_to(project_root)),
+            "change_impact_output": str(execution_file_output(project_root, version, "change-impact.json").relative_to(project_root)),
+            "boundaries_output": f"docs/beacon/{version}/execution/boundaries.md",
+            "config_output": str(execution_file_output(project_root, version, "config.json").relative_to(project_root)),
+            "source_output": str(execution_file_output(project_root, version, "source.json").relative_to(project_root)),
+            "git_alignment_output": str(execution_file_output(project_root, version, "git-alignment.json").relative_to(project_root)),
+            "terminal_output": str(execution_file_output(project_root, version, "terminal.json").relative_to(project_root)),
+        },
+        "notes": [
+            "Execution config snapshot generated by workflow.",
+            f"Runtime toolkit version: {__toolkit_version__}",
+            f"Workflow status snapshot: {workflow_status}",
+        ],
+    }
+
+
+def _build_execution_source_payload(
+    *,
+    project_root: Path,
+    version: str,
+    run_id: str,
+    feature: str,
+    workflow_status: str,
+) -> dict[str, Any]:
+    git_meta = _git_metadata(project_root, version)
+    return {
+        "schema_version": "1.0",
+        "version": version,
+        "feature": feature,
+        "run_id": run_id,
+        "generated_at": now_iso(),
+        "status": "completed" if workflow_status == "completed" else "draft",
+        "source_of_truth": True,
+        "source_of_truth_root": f"docs/beacon/{version}",
+        "project_name": project_root.name,
+        "project_root": str(project_root),
+        "workspace_root": str(project_root.parent),
+        "repo_url": git_meta["repo_url"],
+        "branch": git_meta["current_branch"],
+        "commit": git_meta["current_commit"],
+        "tag": git_meta["current_tag"],
+        "timestamp": now_iso(),
+        "runtime": {
+            "active_skill_path": str(project_root),
+            "toolkit_version": __toolkit_version__,
+            "cli_entry": "python -m beacon.main",
+        },
+        "inputs": {
+            "research_docs": _existing_research_docs(project_root, version),
+            "main_chain_docs": _main_chain_refs(project_root, version, feature),
+        },
+        "notes": [
+            "Source metadata is intended for execution traceability and delivery audit.",
+            "Research artifacts are inputs; user-story/prd/test-case are the workflow main chain.",
+        ],
+    }
+
+
+def _build_execution_git_alignment_payload(project_root: Path, version: str, run_id: str, feature: str) -> dict[str, Any]:
+    git_meta = _git_metadata(project_root, version)
+    return {
+        "schema_version": "1.0",
+        "version": version,
+        "feature": feature,
+        "run_id": run_id,
+        "generated_at": now_iso(),
+        "status": "pass" if not git_meta["blocked"] else "warn",
+        "strict_required": True,
+        "repo_url": git_meta["repo_url"],
+        "version_ref": git_meta["version_ref"],
+        "allowed_refs": git_meta["allowed_refs"],
+        "enforce_branch_prefix": git_meta["enforce_branch_prefix"],
+        "git_refs": {
+            "base_branch": git_meta["base_branch"],
+            "target_branch": git_meta["target_branch"],
+            "current_branch": git_meta["current_branch"],
+            "commit": git_meta["current_commit"],
+            "tag": git_meta["current_tag"],
+            "worktree_path": git_meta["worktree_path"],
+        },
+        "alignment": {
+            "branch_matches_target": git_meta["branch_matches_target"],
+            "branch_has_required_prefix": git_meta["branch_has_required_prefix"],
+            "tag_matches_version": git_meta["tag_matches_version"],
+            "version_ref_satisfied": git_meta["version_ref_satisfied"],
+        },
+        "reason_codes": git_meta["reason_codes"],
+        "blocked": git_meta["blocked"],
+        "notes": [
+            "Git alignment is validated against target branch or exact version tag.",
+            "This artifact is intended for doctor verify-git-alignment and delivery gate checks.",
+        ],
+    }
+
+
+def _build_execution_change_impact_payload(
+    *,
+    project_root: Path,
+    version: str,
+    run_id: str,
+    feature: str,
+    workflow_status: str,
+) -> dict[str, Any]:
+    base = _load_change_impact_state(project_root, run_id)
+    changed_layers = base.get("changed_layers") if isinstance(base.get("changed_layers"), list) else []
+    tasks = base.get("tasks") if isinstance(base.get("tasks"), list) else []
+    completion_refs = {
+        "regenerate-user_story": project_root / "docs" / "beacon" / version / "user-story" / f"{_slug(feature)}.md",
+        "regenerate-prd": project_root / "docs" / "beacon" / version / "prd" / f"{_slug(feature)}.md",
+        "regenerate-test_case": project_root / "docs" / "beacon" / version / "qa" / "test-cases" / f"{_slug(feature)}.md",
+    }
+    for item in tasks:
+        if not isinstance(item, dict):
+            continue
+        task_name = str(item.get("task", "")).strip()
+        evidence_path = completion_refs.get(task_name)
+        if not evidence_path or not evidence_path.exists():
+            continue
+        if str(item.get("status", "pending")).strip().lower() == "completed":
+            continue
+        item["status"] = "completed"
+        item["owner"] = project_root.name
+        item["evidence"] = str(evidence_path.relative_to(project_root))
+    task_names = {str(item.get("task", "")) for item in tasks if isinstance(item, dict)}
+    for task_name, evidence in (
+        ("publish-config-draft", str(execution_file_output(project_root, version, "config.json").relative_to(project_root))),
+        ("publish-source-draft", str(execution_file_output(project_root, version, "source.json").relative_to(project_root))),
+        ("publish-git-alignment-draft", str(execution_file_output(project_root, version, "git-alignment.json").relative_to(project_root))),
+    ):
+        if task_name not in task_names:
+            tasks.append(
+                {
+                    "task": task_name,
+                    "status": "completed",
+                    "owner": project_root.name,
+                    "evidence": evidence,
+                }
+            )
+    research_converged = bool(_existing_research_docs(project_root, version))
+    main_chain_refs = _main_chain_refs(project_root, version, feature)
+    main_chain_converged = len(main_chain_refs) >= 5
+    pending_tasks = [
+        str(item.get("task", ""))
+        for item in tasks
+        if isinstance(item, dict) and str(item.get("status", "pending")).strip().lower() != "completed"
+    ]
+    doc_chain_update_required = bool(pending_tasks) if tasks else bool(base.get("doc_chain_update_required", bool(changed_layers)))
+    return {
+        "schema_version": "1.0",
+        "version": version,
+        "feature": feature,
+        "run_id": run_id,
+        "generated_at": now_iso(),
+        "baseline_run_id": str(base.get("run_id", "") or run_id),
+        "affected_projects": [project_root.name],
+        "doc_chain_update_required": doc_chain_update_required,
+        "changed_layers": changed_layers or ["research", "user-story", "prd", "test-case", "execution"],
+        "tasks": tasks,
+        "research_converged": research_converged,
+        "main_chain_converged": main_chain_converged,
+        "delivery_manifest_ready": True,
+        "full_delivery_closed": workflow_status == "completed" and not pending_tasks,
+        "pending_blockers": pending_tasks,
+        "notes": [
+            "Change impact is derived from baseline snapshots and enriched with delivery draft tasks.",
+            "Full closure still depends on implementation / verify / gate completion.",
+        ],
+    }
+
+
+def _build_execution_delivery_manifest_payload(
+    *,
+    project_root: Path,
+    version: str,
+    run_id: str,
+    feature: str,
+    workflow_status: str,
+    change_impact: dict[str, Any],
+    git_alignment: dict[str, Any],
+) -> dict[str, Any]:
+    source_docs = _existing_research_docs(project_root, version)
+    main_chain_docs = _main_chain_refs(project_root, version, feature)
+    deliverables = [
+        *({"type": "research", "path": ref, "status": "completed"} for ref in source_docs),
+        *(
+            {
+                "type": "user-story" if "/user-story/" in ref else "prd" if "/prd/" in ref else "test-case" if ref.endswith(".md") else "ac-matrix" if ref.endswith(".ac-test-matrix.json") else "qa9-matrix",
+                "path": ref,
+                "status": "completed",
+            }
+            for ref in main_chain_docs
+        ),
+        {"type": "boundaries", "path": f"docs/beacon/{version}/execution/boundaries.md", "status": "completed"},
+        {"type": "delivery-manifest", "path": str(execution_file_output(project_root, version, "delivery-manifest.json").relative_to(project_root)), "status": "completed"},
+        {"type": "change-impact", "path": str(execution_file_output(project_root, version, "change-impact.json").relative_to(project_root)), "status": "completed"},
+        {"type": "config", "path": str(execution_file_output(project_root, version, "config.json").relative_to(project_root)), "status": "completed"},
+        {"type": "source", "path": str(execution_file_output(project_root, version, "source.json").relative_to(project_root)), "status": "completed"},
+        {"type": "git-alignment", "path": str(execution_file_output(project_root, version, "git-alignment.json").relative_to(project_root)), "status": "completed"},
+    ]
+    strict_delivery_ready = workflow_status == "completed" and not bool(git_alignment.get("blocked")) and bool(change_impact.get("full_delivery_closed"))
+    reason_codes = list(git_alignment.get("reason_codes", []))
+    reason_codes.extend(change_impact.get("pending_blockers", []))
+    return {
+        "schema_version": "1.0",
+        "version": version,
+        "feature": feature,
+        "run_id": run_id,
+        "generated_at": now_iso(),
+        "source_of_truth_root": f"docs/beacon/{version}",
+        "delivery_status": "completed" if strict_delivery_ready else "draft",
+        "strict_delivery_ready": strict_delivery_ready,
+        "reason_codes": sorted(set(x for x in reason_codes if x)),
+        "affected_projects": [
+            {
+                "name": project_root.name,
+                "project_root": str(project_root),
+                "repo_url": git_alignment.get("repo_url", ""),
+                "change_scope": "docs_governance" if workflow_status != "completed" else "workflow_delivery",
+                "changed_layers": change_impact.get("changed_layers", []),
+                "base_branch": (git_alignment.get("git_refs") or {}).get("base_branch", ""),
+                "target_branch": (git_alignment.get("git_refs") or {}).get("target_branch", ""),
+                "current_branch": (git_alignment.get("git_refs") or {}).get("current_branch", ""),
+                "commit": (git_alignment.get("git_refs") or {}).get("commit", ""),
+                "tag": (git_alignment.get("git_refs") or {}).get("tag", ""),
+                "worktree_path": (git_alignment.get("git_refs") or {}).get("worktree_path", ""),
+                "alignment_status": "aligned" if not bool(git_alignment.get("blocked")) else "recorded_pending_alignment",
+            }
+        ],
+        "deliverables": deliverables,
+        "notes": [
+            "多项目/多仓库交付范围必须通过 affected_projects 显式声明。",
+            f"Current workflow status snapshot: {workflow_status}.",
+            "execution artifacts are emitted only under docs/beacon.",
+        ],
+    }
+
+
+def _write_execution_governance_artifacts(
+    *,
+    project_root: Path,
+    version: str,
+    run_id: str,
+    feature: str,
+    workflow_status: str,
+) -> None:
+    config_payload = _build_execution_config_payload(
+        project_root=project_root,
+        version=version,
+        run_id=run_id,
+        feature=feature,
+        workflow_status=workflow_status,
+    )
+    source_payload = _build_execution_source_payload(
+        project_root=project_root,
+        version=version,
+        run_id=run_id,
+        feature=feature,
+        workflow_status=workflow_status,
+    )
+    git_alignment_payload = _build_execution_git_alignment_payload(project_root, version, run_id, feature)
+    change_impact_payload = _build_execution_change_impact_payload(
+        project_root=project_root,
+        version=version,
+        run_id=run_id,
+        feature=feature,
+        workflow_status=workflow_status,
+    )
+    delivery_manifest_payload = _build_execution_delivery_manifest_payload(
+        project_root=project_root,
+        version=version,
+        run_id=run_id,
+        feature=feature,
+        workflow_status=workflow_status,
+        change_impact=change_impact_payload,
+        git_alignment=git_alignment_payload,
+    )
+
+    exec_root = human_execution_dir(project_root, version)
+    exec_root.mkdir(parents=True, exist_ok=True)
+    boundaries_path = exec_root / "boundaries.md"
+    if not boundaries_path.exists():
+        boundaries_path.write_text(
+            "\n".join(
+                [
+                    f"# Workflow Boundaries ({version})",
+                    "",
+                    f"- run_id: {run_id}",
+                    f"- feature: {feature}",
+                    f"- workflow_status: {workflow_status}",
+                    "- guardrail: workflow/gate consume only main-chain docs; research is input-only.",
+                ]
+            )
+            + "\n",
+            encoding="utf-8",
+        )
+    if uses_machine_surface(version):
+        index_path = exec_root / "index.md"
+        if not index_path.exists():
+            index_path.write_text(
+                "\n".join(
+                    [
+                        f"# Execution Index ({version})",
+                        "",
+                        "- Human primary execution docs live here.",
+                        f"- Machine execution artifacts live under `docs/beacon/{version}/.machine/execution/`.",
+                        "- Start with `boundaries.md` for the human-facing contract.",
+                    ]
+                )
+                + "\n",
+                encoding="utf-8",
+            )
+    write_json(execution_file_output(project_root, version, "config.json"), config_payload)
+    write_json(execution_file_output(project_root, version, "source.json"), source_payload)
+    write_json(execution_file_output(project_root, version, "git-alignment.json"), git_alignment_payload)
+    write_json(execution_file_output(project_root, version, "change-impact.json"), change_impact_payload)
+    write_json(execution_file_output(project_root, version, "delivery-manifest.json"), delivery_manifest_payload)
+    evidence_refs = sorted(
+        set(
+            _existing_research_docs(project_root, version)
+            + _main_chain_refs(project_root, version, feature)
+            + [
+                f"docs/beacon/{version}/execution/boundaries.md",
+                str(execution_file_output(project_root, version, "config.json").relative_to(project_root)),
+                str(execution_file_output(project_root, version, "source.json").relative_to(project_root)),
+                str(execution_file_output(project_root, version, "git-alignment.json").relative_to(project_root)),
+                str(execution_file_output(project_root, version, "delivery-manifest.json").relative_to(project_root)),
+                str(execution_file_output(project_root, version, "change-impact.json").relative_to(project_root)),
+            ]
+        )
+    )
+    _update_evidence_manifest(project_root, evidence_refs, run_id=run_id, version=version)
+
+
 def _write_workflow_terminal_artifacts(
     *,
     project_root: Path,
@@ -412,10 +920,7 @@ def _write_workflow_terminal_artifacts(
     workflow_status: str,
     reason: str,
 ) -> None:
-    exec_roots = [
-        project_root / "docs" / "beacon" / version / "execution",
-        project_root / "docs" / "product" / version / "execution",
-    ]
+    exec_roots = [human_execution_dir(project_root, version)]
     status_value = "Pass" if workflow_status == "completed" else "Blocked"
     evidence_refs = [
         f".beacon/runs/{run_id}/state.json",
@@ -427,22 +932,23 @@ def _write_workflow_terminal_artifacts(
     for root in exec_roots:
         root.mkdir(parents=True, exist_ok=True)
         boundaries = root / "boundaries.md"
-        terminal = root / "terminal.json"
-        boundaries.write_text(
-            "\n".join(
-                [
-                    f"# Workflow Boundaries ({version})",
-                    "",
-                    f"- run_id: {run_id}",
-                    f"- feature: {feature}",
-                    f"- workflow_status: {workflow_status}",
-                    f"- reason: {reason}",
-                    "- guardrail: implementation stage requires explicit command execution",
-                ]
+        terminal = execution_file_output(project_root, version, "terminal.json")
+        if not boundaries.exists():
+            boundaries.write_text(
+                "\n".join(
+                    [
+                        f"# Workflow Boundaries ({version})",
+                        "",
+                        f"- run_id: {run_id}",
+                        f"- feature: {feature}",
+                        f"- workflow_status: {workflow_status}",
+                        f"- reason: {reason}",
+                        "- guardrail: implementation stage requires explicit command execution",
+                    ]
+                )
+                + "\n",
+                encoding="utf-8",
             )
-            + "\n",
-            encoding="utf-8",
-        )
         terminal_payload = {
             "schema_version": "1.0",
             "version": version,
@@ -546,9 +1052,18 @@ def _sync_terminal_manifest(project_root: Path, *, version: str, run_id: str) ->
     ]
     for root in (
         project_root / "docs" / "beacon" / version / "execution",
-        project_root / "docs" / "product" / version / "execution",
     ):
-        for name in ("boundaries.md", "terminal.json", "summary.json", "summary.md"):
+        for name in (
+            "boundaries.md",
+            "terminal.json",
+            "summary.json",
+            "summary.md",
+            "config.json",
+            "source.json",
+            "git-alignment.json",
+            "delivery-manifest.json",
+            "change-impact.json",
+        ):
             path = root / name
             if path.exists():
                 refs.append(str(path.relative_to(project_root)))
@@ -563,13 +1078,22 @@ def run_beacon_command(
     stage: str,
     extra_env: Optional[dict[str, str]] = None,
 ) -> subprocess.CompletedProcess[str]:
-    """Run a beacon subcommand"""
+    """Run a beacon subcommand.
+
+    The workflow executor runs subcommands from the target project root, which may be
+    outside the Beacon repository. Ensure the current repository root is injected into
+    PYTHONPATH so `python -m beacon.main` resolves the in-repo package consistently in
+    tests and local development.
+    """
     cmd = [sys.executable, "-m", "beacon.main"] + args
     env = os.environ.copy()
     env.update(extra_env or {})
+    repo_root = str(Path(__file__).resolve().parents[2])
+    existing = str(env.get("PYTHONPATH", "")).strip()
+    env["PYTHONPATH"] = repo_root if not existing else os.pathsep.join([repo_root, existing])
     result = subprocess.run(
         cmd,
-        cwd=project_root,
+        cwd=_repo_root(),
         capture_output=True,
         text=True,
         env=env,
@@ -585,21 +1109,25 @@ def run_beacon_command(
 
 
 def ensure_output_dirs(project_root: Path, version: str = "v1.0.0"):
-    """Ensure output directories exist - supports both docs/beacon and docs/product"""
+    """Ensure canonical Beacon docs roots exist."""
+    base = project_root / "docs" / "beacon" / version
     dirs = [
-        # Beacon primary directories
-        project_root / "docs" / "beacon" / version / "user-story",
-        project_root / "docs" / "beacon" / version / "prd",
-        project_root / "docs" / "beacon" / version / "qa" / "test-cases",
-        # PTK compatibility directories
-        project_root / "docs" / "product" / version / "user-story",
-        project_root / "docs" / "product" / version / "prd",
-        project_root / "docs" / "product" / version / "qa" / "test-cases",
-        # State directory
+        base / "user-story",
+        base / "prd",
+        base / "prototype",
+        base / "qa" / "test-cases",
+        base / "execution",
+        base / "release",
         project_root / ".beacon" / "state",
     ]
     for d in dirs:
         d.mkdir(parents=True, exist_ok=True)
+    summary = base / "SUMMARY.md"
+    if not summary.exists():
+        summary.write_text(f"# Beacon {version} Summary\n", encoding="utf-8")
+    release_stub = base / "release" / f"{version}.md"
+    if not release_stub.exists():
+        release_stub.write_text(f"# Release: {version}\n", encoding="utf-8")
 
 
 def _slug(text: str) -> str:
@@ -616,22 +1144,30 @@ def _stage_output_candidates(project_root: Path, stage: str, feature: str, versi
         ] + common
     if stage == "user-story":
         return [
-            project_root / "docs" / "product" / version / "user-story" / f"{slug}.md",
             project_root / "docs" / "beacon" / version / "user-story" / f"{slug}.md",
         ] + common
     if stage == "prd":
         return [
-            project_root / "docs" / "product" / version / "prd" / f"{slug}.md",
             project_root / "docs" / "beacon" / version / "prd" / f"{slug}.md",
+        ] + common
+    if stage == "prototype":
+        return [
+            project_root / "docs" / "beacon" / version / "prototype" / slug / "index.html",
+            project_root / "docs" / "beacon" / version / "prototype" / slug / "manifest.json",
+            project_root / "docs" / "beacon" / version / "prototype" / slug / "source-map.json",
+            project_root / "docs" / "beacon" / version / "prototype" / slug / "prototype-brief.json",
+            project_root / "docs" / "beacon" / version / "prototype" / slug / "theme.json",
+            project_root / "docs" / "beacon" / version / "prototype" / slug / "navigation-map.json",
+            project_root / "docs" / "beacon" / version / "prototype" / slug / "interaction-map.json",
+            project_root / "docs" / "beacon" / version / "prototype" / slug / "prototype-review.json",
+            project_root / "docs" / "beacon" / version / "prototype" / slug / "prototype-review.md",
+            project_root / "docs" / "beacon" / version / "prototype" / slug / "freeze.json",
         ] + common
     if stage == "test-case":
         return [
-            project_root / "docs" / "product" / version / "qa" / "test-cases" / f"{slug}.md",
             project_root / "docs" / "beacon" / version / "qa" / "test-cases" / f"{slug}.md",
-            project_root / "docs" / "product" / version / "qa" / "test-cases" / f"{slug}.ac-test-matrix.json",
-            project_root / "docs" / "beacon" / version / "qa" / "test-cases" / f"{slug}.ac-test-matrix.json",
-            project_root / "docs" / "product" / version / "qa" / "test-cases" / f"{slug}.qa9-matrix.json",
-            project_root / "docs" / "beacon" / version / "qa" / "test-cases" / f"{slug}.qa9-matrix.json",
+            qa_matrix_candidates(project_root, version, slug, "ac-test-matrix")[0],
+            qa_matrix_candidates(project_root, version, slug, "qa9-matrix")[0],
         ] + common
     if stage == "implementation":
         return [
@@ -650,18 +1186,12 @@ def _stage_output_candidates(project_root: Path, stage: str, feature: str, versi
 
 def _matrix_path_candidates(project_root: Path, feature: str, version: str) -> list[Path]:
     slug = _slug(feature)
-    return [
-        project_root / "docs" / "product" / version / "qa" / "test-cases" / f"{slug}.ac-test-matrix.json",
-        project_root / "docs" / "beacon" / version / "qa" / "test-cases" / f"{slug}.ac-test-matrix.json",
-    ]
+    return qa_matrix_candidates(project_root, version, slug, "ac-test-matrix")
 
 
 def _qa9_matrix_path_candidates(project_root: Path, feature: str, version: str) -> list[Path]:
     slug = _slug(feature)
-    return [
-        project_root / "docs" / "product" / version / "qa" / "test-cases" / f"{slug}.qa9-matrix.json",
-        project_root / "docs" / "beacon" / version / "qa" / "test-cases" / f"{slug}.qa9-matrix.json",
-    ]
+    return qa_matrix_candidates(project_root, version, slug, "qa9-matrix")
 
 
 def _append_run_event(state: dict[str, Any], event: str, **details: Any) -> None:
@@ -678,6 +1208,8 @@ def _effective_interactive_mode(interactive: Optional[bool]) -> bool:
     if isinstance(interactive, bool):
         return interactive
     try:
+        if sys.stdin is not sys.__stdin__ or sys.stdout is not sys.__stdout__:
+            return False
         return bool(sys.stdin.isatty() and sys.stdout.isatty())
     except Exception:  # noqa: BLE001
         return False
@@ -699,6 +1231,26 @@ def _parse_semver_tuple(value: str) -> tuple[int, int, int]:
 
 def _requires_hud_double_confirmation(version: str) -> bool:
     return _parse_semver_tuple(version) >= (1, 1, 0)
+
+
+def _resolve_workflow_default_runner(project_root: Path, version: str) -> str:
+    """Resolve workflow implementation runner from project-local config only.
+
+    Workflow should remain deterministic per project. Global user config must not
+    silently change historical workflow behavior for older release lines.
+    """
+    config = load_beacon_config_file(project_config_path(project_root))
+    skill_section = config.get("skill") if isinstance(config.get("skill"), dict) else {}
+    implementation_section = config.get("implementation") if isinstance(config.get("implementation"), dict) else {}
+    preferred = str(skill_section.get("preferred", "")).strip()
+    if preferred:
+        return preferred
+    default_runner = str(implementation_section.get("default_runner", "")).strip()
+    if default_runner:
+        return default_runner
+    if _parse_semver_tuple(version) >= (1, 1, 6):
+        return "native-single"
+    return ""
 
 
 def _resolve_hud_enforcement(*, version: str, hud_requested: bool, command_name: str) -> bool:
@@ -848,7 +1400,7 @@ def _render_workflow_hud(
         },
         "stage_status": {
             stage: str((stage_status.get(stage) or {}).get("status", "not_started"))
-            for stage, _, _ in WORKFLOW_STAGES
+            for stage in list(progress.get("workflow_stages", []) or [name for name, _, _ in WORKFLOW_STAGES])
         },
         "blockers": {
             "blocking_open_questions": len(open_questions) if isinstance(open_questions, list) else 0,
@@ -1073,6 +1625,8 @@ def _execute_stage(
     feature: str,
     version: str,
     implementation_command: Optional[str],
+    implementation_runner: Optional[str],
+    implementation_skill: Optional[str],
     verify_scope: str,
     verify_config: Optional[str],
     verify_ui_command: Optional[str],
@@ -1137,6 +1691,33 @@ def _execute_stage(
             extra_env=stage_env,
         )
         rc = int(result.returncode)
+    elif stage == "prototype":
+        result = run_beacon_command(
+            ["prototype", "create", feature, "--project", str(project_root), "--version", version],
+            project_root,
+            run_id=run_id,
+            stage=stage,
+            extra_env=stage_env,
+        )
+        rc = int(result.returncode)
+        if rc == 0:
+            review_result = run_beacon_command(
+                ["prototype", "review", feature, "--project", str(project_root), "--version", version],
+                project_root,
+                run_id=run_id,
+                stage=stage,
+                extra_env=stage_env,
+            )
+            rc = int(review_result.returncode)
+        if rc == 0:
+            freeze_result = run_beacon_command(
+                ["prototype", "freeze", feature, "--project", str(project_root), "--version", version],
+                project_root,
+                run_id=run_id,
+                stage=stage,
+                extra_env=stage_env,
+            )
+            rc = int(freeze_result.returncode)
     elif stage == "test-case":
         result = run_beacon_command(
             ["test-case", "create", feature, "--project", str(project_root), "--version", version],
@@ -1149,51 +1730,117 @@ def _execute_stage(
     elif stage == "implementation":
         resolved_implementation_command = str(implementation_command or "").strip()
         command_source = "cli"
-        if not resolved_implementation_command:
-            env_command = str(os.environ.get("BEACON_IMPLEMENTATION_COMMAND", "")).strip()
-            if env_command:
-                resolved_implementation_command = env_command
-                command_source = "env"
-        if not resolved_implementation_command:
-            # Keep workflow one-command runnable for runbook/newcomers.
-            resolved_implementation_command = (
-                "python3 -c \"print('BEACON_IMPLEMENTATION_NOOP=1')\""
+        resolved_runner = str(implementation_runner or "").strip()
+        if resolved_implementation_command:
+            env = os.environ.copy()
+            env.update(stage_env)
+            shell_result = subprocess.run(
+                resolved_implementation_command,
+                cwd=project_root,
+                shell=True,
+                text=True,
+                env=env,
             )
-            command_source = "builtin-noop"
+            rc = shell_result.returncode
+            _log_raw_command(
+                project_root,
+                run_id=run_id,
+                stage=stage,
+                command=resolved_implementation_command,
+                exit_code=rc,
+            )
+            if rc == 0:
+                marker = project_root / ".beacon" / "state" / f"implementation-{_slug(feature)}.json"
+                write_json(
+                    marker,
+                    {
+                        "schema_version": "1.0",
+                        "run_id": run_id,
+                        "stage": "implementation",
+                        "feature": feature,
+                        "version": version,
+                        "command": resolved_implementation_command,
+                        "command_source": command_source,
+                        "status": "completed",
+                        "generated_at": now_iso(),
+                    },
+                )
+        else:
+            if not resolved_runner:
+                resolved_runner = _resolve_workflow_default_runner(project_root, version)
+            if resolved_runner:
+                from beacon.commands.implement import run_implement_stage
 
-        env = os.environ.copy()
-        env.update(stage_env)
-        shell_result = subprocess.run(
-            resolved_implementation_command,
-            cwd=project_root,
-            shell=True,
-            text=True,
-            env=env,
-        )
-        rc = shell_result.returncode
-        _log_raw_command(
-            project_root,
-            run_id=run_id,
-            stage=stage,
-            command=resolved_implementation_command,
-            exit_code=rc,
-        )
-        if rc == 0:
-            marker = project_root / ".beacon" / "state" / f"implementation-{_slug(feature)}.json"
-            write_json(
-                marker,
-                {
-                    "schema_version": "1.0",
-                    "run_id": run_id,
-                    "stage": "implementation",
-                    "feature": feature,
-                    "version": version,
-                    "command": resolved_implementation_command,
-                    "command_source": command_source,
-                    "status": "completed",
-                    "generated_at": now_iso(),
-                },
-            )
+                rc, implement_payload = run_implement_stage(
+                    feature=feature,
+                    project_root=project_root,
+                    version=version,
+                    run_id_override=run_id,
+                    runner=resolved_runner,
+                    skill=implementation_skill,
+                    dry_run=False,
+                    auto_review_spec=True,
+                    auto_review_quality=False,
+                )
+                if rc != 0 or str(implement_payload.get("status", "")).strip().lower() != "completed":
+                    failure_details = {
+                        "reason_code": str(implement_payload.get("reason_code", "") or "implement_execution_failed"),
+                        "runner": resolved_runner,
+                        "payload": implement_payload,
+                    }
+                    rc = 2
+                else:
+                    rc = 0
+            else:
+                env_command = str(os.environ.get("BEACON_IMPLEMENTATION_COMMAND", "")).strip()
+                if env_command:
+                    resolved_implementation_command = env_command
+                    command_source = "env"
+                if not resolved_implementation_command:
+                    typer.echo("Blocked: implementation stage requires explicit external command execution")
+                    _log_raw_command(
+                        project_root,
+                        run_id=run_id,
+                        stage=stage,
+                        command="<missing implementation command>",
+                        exit_code=2,
+                    )
+                    rc = 2
+                    failure_details = {"reason": "missing_implementation_command"}
+                else:
+                    env = os.environ.copy()
+                    env.update(stage_env)
+                    shell_result = subprocess.run(
+                        resolved_implementation_command,
+                        cwd=project_root,
+                        shell=True,
+                        text=True,
+                        env=env,
+                    )
+                    rc = shell_result.returncode
+                    _log_raw_command(
+                        project_root,
+                        run_id=run_id,
+                        stage=stage,
+                        command=resolved_implementation_command,
+                        exit_code=rc,
+                    )
+                    if rc == 0:
+                        marker = project_root / ".beacon" / "state" / f"implementation-{_slug(feature)}.json"
+                        write_json(
+                            marker,
+                            {
+                                "schema_version": "1.0",
+                                "run_id": run_id,
+                                "stage": "implementation",
+                                "feature": feature,
+                                "version": version,
+                                "command": resolved_implementation_command,
+                                "command_source": command_source,
+                                "status": "completed",
+                                "generated_at": now_iso(),
+                            },
+                        )
     elif stage == "verify":
         verify_scope_norm = (verify_scope or "all").strip().lower()
         require_ui_actions_effective = verify_require_ui_actions and verify_scope_norm in {
@@ -1399,10 +2046,25 @@ def start(
         "--on-timeout",
         help="Timeout behavior: pause|continue|abort",
     ),
+    with_prototype: bool = typer.Option(
+        False,
+        "--with-prototype/--no-with-prototype",
+        help="Include optional prototype stage for UI visualization flows.",
+    ),
     implementation_command: Optional[str] = typer.Option(
         None,
         "--implementation-command",
         help="Implementation stage command override",
+    ),
+    implementation_runner: Optional[str] = typer.Option(
+        None,
+        "--implementation-runner",
+        help="Implementation stage runner override",
+    ),
+    implementation_skill: Optional[str] = typer.Option(
+        None,
+        "--implementation-skill",
+        help="Implementation stage skill override for skill-capable runners",
     ),
     verify_scope: str = typer.Option("all", "--verify-scope", help="Verify scope: ui/api-curl/unit/smoke/all/qa9"),
     verify_config: Optional[str] = typer.Option(None, "--verify-config", help="Verify config path"),
@@ -1495,6 +2157,7 @@ def start(
         "mode": "auto" if auto else "manual",
         "feature": feature,
         "version": resolved_version,
+        "prototype_enabled": bool(with_prototype),
         "status": "running" if auto else "planned",
         "started_at": started_at,
         "events": [{"event": "workflow_started", "ts": started_at}],
@@ -1506,6 +2169,13 @@ def start(
         project_root,
         run_id,
         base_state,
+    )
+    _write_execution_governance_artifacts(
+        project_root=project_root,
+        version=resolved_version,
+        run_id=run_id,
+        feature=feature,
+        workflow_status="running" if auto else "planned",
     )
     _record_debug_feedback(
         project_root=project_root,
@@ -1531,7 +2201,7 @@ def start(
     typer.echo("=" * 50)
     interactive_mode = _effective_interactive_mode(interactive)
     mode_label = "interactive" if interactive_mode else "non_interactive"
-    stage_order = [name for name, _, _ in WORKFLOW_STAGES]
+    stage_order = [name for name, _, _ in _workflow_stages(prototype_enabled=bool(with_prototype))]
     pending_stages = [stage for stage in stage_order if stage not in skip_stages]
     hud_snapshot_rel: str | None = None
 
@@ -1664,7 +2334,8 @@ def start(
                 run_auto = True
             break
 
-    for i, (stage, desc, _) in enumerate(WORKFLOW_STAGES, 1):
+    display_stages = _workflow_stages(prototype_enabled=bool(with_prototype))
+    for i, (stage, desc, _) in enumerate(display_stages, 1):
         if stage in skip_stages:
             typer.echo(f"{i}. {stage:12} - {desc} [SKIPPED]")
             append_lifecycle_event(
@@ -1703,6 +2374,13 @@ def start(
             project_root=project_root,
             run_id=run_id,
             version=resolved_version,
+            feature=feature,
+            workflow_status="planned",
+        )
+        _write_execution_governance_artifacts(
+            project_root=project_root,
+            version=resolved_version,
+            run_id=run_id,
             feature=feature,
             workflow_status="planned",
         )
@@ -1775,6 +2453,8 @@ def start(
             feature=feature,
             version=resolved_version,
             implementation_command=implementation_command,
+            implementation_runner=implementation_runner,
+            implementation_skill=implementation_skill,
             verify_scope=verify_scope,
             verify_config=verify_config,
             verify_ui_command=verify_ui_command,
@@ -1813,6 +2493,13 @@ def start(
             project_root=project_root,
             run_id=run_id,
             version=resolved_version,
+            feature=feature,
+            workflow_status="blocked",
+        )
+        _write_execution_governance_artifacts(
+            project_root=project_root,
+            version=resolved_version,
+            run_id=run_id,
             feature=feature,
             workflow_status="blocked",
         )
@@ -1858,6 +2545,13 @@ def start(
             feature=feature,
             workflow_status="completed",
         )
+        _write_execution_governance_artifacts(
+            project_root=project_root,
+            version=resolved_version,
+            run_id=run_id,
+            feature=feature,
+            workflow_status="completed",
+        )
         if bridge_execute:
             _execute_bridge_actions(
                 project_root=project_root,
@@ -1883,6 +2577,13 @@ def start(
         project_root=project_root,
         run_id=run_id,
         version=resolved_version,
+        feature=feature,
+        workflow_status="running",
+    )
+    _write_execution_governance_artifacts(
+        project_root=project_root,
+        version=resolved_version,
+        run_id=run_id,
         feature=feature,
         workflow_status="running",
     )
@@ -1931,10 +2632,25 @@ def continue_workflow(  # noqa: A003
         "--on-timeout",
         help="Timeout behavior: pause|continue|abort",
     ),
+    with_prototype: Optional[bool] = typer.Option(
+        None,
+        "--with-prototype/--no-with-prototype",
+        help="Override whether this workflow run includes the optional prototype stage.",
+    ),
     implementation_command: Optional[str] = typer.Option(
         None,
         "--implementation-command",
         help="Implementation stage command override",
+    ),
+    implementation_runner: Optional[str] = typer.Option(
+        None,
+        "--implementation-runner",
+        help="Implementation stage runner override",
+    ),
+    implementation_skill: Optional[str] = typer.Option(
+        None,
+        "--implementation-skill",
+        help="Implementation stage skill override for skill-capable runners",
     ),
     verify_scope: str = typer.Option("all", "--verify-scope", help="Verify scope: ui/api-curl/unit/smoke/all/qa9"),
     verify_config: Optional[str] = typer.Option(None, "--verify-config", help="Verify config path"),
@@ -2014,6 +2730,8 @@ def continue_workflow(  # noqa: A003
         raise typer.Exit(2)
 
     state = load_run_state(project_root, resolved_run_id) or {}
+    if isinstance(with_prototype, bool):
+        state["prototype_enabled"] = with_prototype
     run_feature = str(state.get("feature", "") or feature or "").strip()
     run_version = str(state.get("version", "") or resolve_target_version(project_root, version)).strip()
     if not run_feature:
@@ -2063,7 +2781,8 @@ def continue_workflow(  # noqa: A003
         hud_snapshot_rel = None
 
     next_stage = str(progress.get("next_stage") or "")
-    stage_order = [name for name, _, _ in WORKFLOW_STAGES]
+    prototype_enabled = bool(state.get("prototype_enabled"))
+    stage_order = [name for name, _, _ in _workflow_stages(prototype_enabled=prototype_enabled)]
     if not next_stage and stage_order:
         next_stage = stage_order[0]
 
@@ -2284,6 +3003,8 @@ def continue_workflow(  # noqa: A003
             feature=run_feature,
             version=run_version,
             implementation_command=implementation_command,
+            implementation_runner=implementation_runner,
+            implementation_skill=implementation_skill,
             verify_scope=verify_scope,
             verify_config=verify_config,
             verify_ui_command=verify_ui_command,
@@ -2319,6 +3040,13 @@ def continue_workflow(  # noqa: A003
                 project_root=project_root,
                 run_id=resolved_run_id,
                 version=run_version,
+                feature=run_feature,
+                workflow_status="blocked",
+            )
+            _write_execution_governance_artifacts(
+                project_root=project_root,
+                version=run_version,
+                run_id=resolved_run_id,
                 feature=run_feature,
                 workflow_status="blocked",
             )
@@ -2370,6 +3098,13 @@ def continue_workflow(  # noqa: A003
                     feature=run_feature,
                     workflow_status="completed",
                 )
+                _write_execution_governance_artifacts(
+                    project_root=project_root,
+                    version=run_version,
+                    run_id=resolved_run_id,
+                    feature=run_feature,
+                    workflow_status="completed",
+                )
                 if bridge_execute:
                     _execute_bridge_actions(
                         project_root=project_root,
@@ -2384,6 +3119,13 @@ def continue_workflow(  # noqa: A003
                     project_root=project_root,
                     run_id=resolved_run_id,
                     version=run_version,
+                    feature=run_feature,
+                    workflow_status="running",
+                )
+                _write_execution_governance_artifacts(
+                    project_root=project_root,
+                    version=run_version,
+                    run_id=resolved_run_id,
                     feature=run_feature,
                     workflow_status="running",
                 )
@@ -2410,6 +3152,13 @@ def continue_workflow(  # noqa: A003
             project_root=project_root,
             run_id=resolved_run_id,
             version=run_version,
+            feature=run_feature,
+            workflow_status="completed",
+        )
+        _write_execution_governance_artifacts(
+            project_root=project_root,
+            version=run_version,
+            run_id=resolved_run_id,
             feature=run_feature,
             workflow_status="completed",
         )
@@ -2447,6 +3196,13 @@ def continue_workflow(  # noqa: A003
             project_root=project_root,
             run_id=resolved_run_id,
             version=run_version,
+            feature=run_feature,
+            workflow_status="running",
+        )
+        _write_execution_governance_artifacts(
+            project_root=project_root,
+            version=run_version,
+            run_id=resolved_run_id,
             feature=run_feature,
             workflow_status="running",
         )
@@ -2506,25 +3262,12 @@ def status(
     typer.echo("Beacon Workflow Status")
     typer.echo("=" * 40)
 
-    # Check docs/beacon first, fallback to docs/product
     beacon_dir = project_root / "docs" / "beacon" / resolved_version
-    product_dir = project_root / "docs" / "product" / resolved_version
-
-    # Determine which docs dir to use
     beacon_has_docs = beacon_dir.exists() and any(beacon_dir.rglob("*.md"))
-    product_has_docs = product_dir.exists() and any(product_dir.rglob("*.md"))
-    if beacon_has_docs:
+    docs_dir = beacon_dir
+    docs_type = "beacon"
+    if not beacon_has_docs and not beacon_dir.exists():
         docs_dir = beacon_dir
-        docs_type = "beacon"
-    elif product_has_docs:
-        docs_dir = product_dir
-        docs_type = "product"
-    elif beacon_dir.exists():
-        docs_dir = beacon_dir
-        docs_type = "beacon"
-    else:
-        docs_dir = beacon_dir  # Use beacon as default
-        docs_type = "beacon"
 
     typer.echo(f"Using: docs/{docs_type}/{resolved_version}")
 
@@ -2580,7 +3323,7 @@ def status(
         typer.echo(f"feature: {progress.get('feature')}")
     if progress.get("version"):
         typer.echo(f"version: {progress.get('version')}")
-    for stage in ("think", "user-story", "prd", "test-case", "implementation", "verify", "gate"):
+    for stage in progress.get("workflow_stages", ["think", "user-story", "prd", "test-case", "implementation", "verify", "gate"]):
         item = progress.get("stages", {}).get(stage, {})
         typer.echo(f"{stage:12}: {item.get('status', 'not_started')}")
     typer.echo(f"next_stage   : {progress.get('next_stage') or 'none'}")
@@ -2593,7 +3336,7 @@ def status(
 def gate(
     stage: Optional[str] = typer.Argument(
         None,
-        help="Stage to check (think/user-story/prd/test-case/implementation/verify/release)",
+        help="Stage to check (think/user-story/prd/prototype/test-case/implementation/verify/release)",
     ),
     project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
     version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
@@ -2603,7 +3346,7 @@ def gate(
     resolved_version = resolve_target_version(project_root, version)
 
     stages = (
-        ["think", "user-story", "prd", "test-case", "release"]
+        ["think", "user-story", "prd", "prototype", "test-case", "release"]
         if not stage
         else [stage]
     )
@@ -2672,6 +3415,7 @@ def run(
         "data-dictionary": "data-dictionary",
         "data_dictionary": "data-dictionary",
         "ui-spec": "ui-spec",
+        "prototype": "prototype",
         "ui_spec": "ui-spec",
         "wireframe": "wireframe",
         "save": "save",
@@ -2762,9 +3506,14 @@ def run(
     typer.echo(f"Project: {project_root}")
 
     # Run the command
+    env = os.environ.copy()
+    repo_root = str(_repo_root())
+    existing_pythonpath = str(env.get("PYTHONPATH", "")).strip()
+    env["PYTHONPATH"] = repo_root if not existing_pythonpath else os.pathsep.join([repo_root, existing_pythonpath])
     result = subprocess.run(
         [sys.executable, "-m", "beacon.main"] + full_cmd,
         cwd=project_root,
+        env=env,
     )
 
     if result.returncode == 0:

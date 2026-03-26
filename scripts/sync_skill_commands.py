@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Sync SKILL.md command tables from beacon.prefixed.SUPPORTED_SUBCOMMANDS."""
+"""Sync SKILL.md command tables from beacon.command_catalog.SUPPORTED_SUBCOMMANDS."""
 
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from beacon.prefixed import SUPPORTED_SUBCOMMANDS  # noqa: E402
+from beacon.command_catalog import SUPPORTED_SUBCOMMANDS  # noqa: E402
 
 START_MARKER = "<!-- AUTO-COMMANDS:START -->"
 END_MARKER = "<!-- AUTO-COMMANDS:END -->"
@@ -25,7 +25,7 @@ def _build_table_block() -> str:
         "|--------|------------|",
     ]
     for command in SUPPORTED_SUBCOMMANDS:
-        lines.append(f"| `beacon-{command}` | `{command}` |")
+        lines.append(f"| `beacon {command}` | `{command}` |")
     lines.extend(
         [
             "",
@@ -36,7 +36,7 @@ def _build_table_block() -> str:
         ]
     )
     for command in SUPPORTED_SUBCOMMANDS:
-        lines.append(f"| `{command}` | `beacon-{command}` |")
+        lines.append(f"| `{command}` | `beacon {command}` |")
     return "\n".join(lines).rstrip()
 
 

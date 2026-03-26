@@ -18,7 +18,7 @@ def _invoke(args: list[str]):
 
 
 def _prepare_user_story(project_root: Path, version: str = "v1.0.0") -> None:
-    story_dir = project_root / "docs" / "product" / version / "user-story"
+    story_dir = project_root / "docs" / "beacon" / version / "user-story"
     story_dir.mkdir(parents=True, exist_ok=True)
     (story_dir / "feature.md").write_text("# story\n", encoding="utf-8")
 
@@ -91,4 +91,3 @@ def test_run_strict_should_pass_when_high_risk_scope_confirmed(tmp_path: Path):
     confirmations = tmp_path / ".beacon" / "memory" / "scope" / "confirmations.json"
     conf = json.loads(confirmations.read_text(encoding="utf-8"))
     assert any(item.get("status") == "confirmed" and item.get("decision") == "A" for item in conf.get("items", []))
-

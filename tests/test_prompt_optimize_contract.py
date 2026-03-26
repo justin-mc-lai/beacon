@@ -283,13 +283,39 @@ def test_intent_router_should_detect_english_out_of_scope_boundaries(tmp_path: P
         assert plan.get("boundary", {}).get("in_scope") is False
 
 
-def test_prompt_optimize_should_route_high_frequency_command_prompts(tmp_path: Path):
+def test_prompt_optimize_should_default_non_core_labs_prompts_back_to_think(tmp_path: Path):
+    samples = [
+        "请做竞品分析",
+        "请给我一份 api design 草案",
+        "输出一个 ui spec 文档",
+        "画一个移动端 wireframe",
+        "创建用户 persona",
+    ]
+
+    for goal in samples:
+        result = _invoke(
+            [
+                "prompt",
+                "optimize",
+                goal,
+                "--project-root",
+                str(tmp_path),
+                "--json",
+            ]
+        )
+        assert result.exit_code == 0
+        payload = json.loads(result.stdout)
+        assert payload.get("intent") not in {"analyze", "api-design", "ui-spec", "wireframe", "persona"}
+        assert payload.get("recommended_args", [None])[0] not in {"analyze", "api-design", "ui-spec", "wireframe", "persona"}
+
+
+def test_prompt_optimize_should_route_explicit_lab_command_hints(tmp_path: Path):
     samples = {
-        "请做竞品分析": "analyze",
-        "请给我一份 api design 草案": "api-design",
-        "输出一个 ui spec 文档": "ui-spec",
-        "画一个移动端 wireframe": "wireframe",
-        "创建用户 persona": "persona",
+        "beacon analyze 抖音": "analyze",
+        "beacon api-design 订单接口": "api-design",
+        "beacon ui-spec 会员中心": "ui-spec",
+        "beacon wireframe 登录页": "wireframe",
+        "beacon persona 核心用户": "persona",
     }
 
     for goal, expected_intent in samples.items():

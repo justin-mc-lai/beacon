@@ -11,6 +11,7 @@ from typing import Optional
 
 import typer
 
+from beacon.utils.artifact_paths import qa_docs_dir, qa_matrix_output, uses_machine_surface
 from beacon.utils.qa9 import (
     QA9_TYPES,
     build_qa_strategy,
@@ -31,10 +32,7 @@ def _slug(text: str) -> str:
 
 
 def _candidate_doc_paths(project_root: Path, version: str, category: str, slug: str) -> list[Path]:
-    return [
-        project_root / "docs" / "product" / version / category / f"{slug}.md",
-        project_root / "docs" / "beacon" / version / category / f"{slug}.md",
-    ]
+    return [project_root / "docs" / "beacon" / version / category / f"{slug}.md"]
 
 
 def _read_first_existing(paths: list[Path]) -> tuple[Path | None, str]:
@@ -111,6 +109,29 @@ def _default_priority_for_qa_type(qa_type: str) -> str:
         "exception": "P1",
         "compatibility": "P1",
     }.get(qa_type, "P2")
+
+
+def _load_prototype_contract_artifacts(project_root: Path, version: str, feature_slug: str) -> tuple[dict, dict]:
+    proto_root = project_root / "docs" / "beacon" / version / "prototype" / feature_slug
+    navigation = {}
+    interaction = {}
+    nav_path = proto_root / "navigation-map.json"
+    interaction_path = proto_root / "interaction-map.json"
+    if nav_path.exists():
+        try:
+            payload = json.loads(nav_path.read_text(encoding="utf-8"))
+            if isinstance(payload, dict):
+                navigation = payload
+        except Exception:  # noqa: BLE001
+            navigation = {}
+    if interaction_path.exists():
+        try:
+            payload = json.loads(interaction_path.read_text(encoding="utf-8"))
+            if isinstance(payload, dict):
+                interaction = payload
+        except Exception:  # noqa: BLE001
+            interaction = {}
+    return navigation, interaction
 
 
 def _build_qa_requirements(qa_types: list[str], qa_applicability: Optional[dict[str, str]] = None) -> list[dict]:
@@ -343,6 +364,42 @@ def create(
             }
         )
 
+    prototype_navigation, prototype_interaction = _load_prototype_contract_artifacts(
+        project_root, resolved_version, feature_slug
+    )
+    synthetic_idx = len(entries)
+    ac_anchor = ac_items[0]["ac_id"] if ac_items else "AC-001"
+    for jump in prototype_navigation.get("jump_map", []) or []:
+        synthetic_idx += 1
+        tc_id = f"TC-{synthetic_idx:03d}"
+        entries.append(
+            {
+                "tc_id": tc_id,
+                "ac_id": ac_anchor,
+                "layer": "ui",
+                "command": "python3 -c \"print('prototype-jump-check')\"",
+                "assertion": f"jump {jump.get('from', '')} -> {jump.get('to', '')} is represented",
+                "evidence_path": f".beacon/evidence/test-results/{feature_slug}/{tc_id}.json",
+                "status": "pending",
+                "source": "prototype:navigation-map",
+            }
+        )
+    for state_name in prototype_interaction.get("states", []) or []:
+        synthetic_idx += 1
+        tc_id = f"TC-{synthetic_idx:03d}"
+        entries.append(
+            {
+                "tc_id": tc_id,
+                "ac_id": ac_anchor,
+                "layer": "ui",
+                "command": "python3 -c \"print('prototype-state-check')\"",
+                "assertion": f"state {state_name} is represented in prototype",
+                "evidence_path": f".beacon/evidence/test-results/{feature_slug}/{tc_id}.json",
+                "status": "pending",
+                "source": "prototype:interaction-map",
+            }
+        )
+
     matrix_payload = {
         "schema_version": "1.0",
         "feature": feature,
@@ -424,15 +481,16 @@ def create(
     output_path = (
         Path(output)
         if output
-        else project_root / "docs" / "product" / resolved_version / "qa" / "test-cases" / f"{feature_slug}.md"
+        else project_root / "docs" / "beacon" / resolved_version / "qa" / "test-cases" / f"{feature_slug}.md"
     )
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    matrix_path = output_path.with_name(f"{feature_slug}.ac-test-matrix.json")
+    matrix_path = qa_matrix_output(project_root, resolved_version, feature_slug, "ac-test-matrix")
+    matrix_path.parent.mkdir(parents=True, exist_ok=True)
     matrix_path.write_text(json.dumps(matrix_payload, ensure_ascii=False, indent=2), encoding="utf-8")
     qa9_matrix_path = (
         Path(matrix_output)
         if matrix_output
-        else output_path.with_name(f"{feature_slug}.qa9-matrix.json")
+        else qa_matrix_output(project_root, resolved_version, feature_slug, "qa9-matrix")
     )
     qa9_matrix_path.parent.mkdir(parents=True, exist_ok=True)
     qa9_matrix_path.write_text(json.dumps(qa9_payload, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -454,6 +512,8 @@ def create(
 **Memory Context**: {memory_context_path or 'N/A'}
 **AC Matrix JSON**: {matrix_path}
 **QA9 Matrix JSON**: {qa9_matrix_path}
+**Prototype Navigation Contract**: {bool(prototype_navigation)}
+**Prototype Interaction Contract**: {bool(prototype_interaction)}
 
 ---
 
@@ -473,23 +533,22 @@ def create(
 """
 
     output_path.write_text(md_content, encoding="utf-8")
-    if not output:
-        # Keep beacon docs path in sync with product docs path.
-        beacon_output_path = project_root / "docs" / "beacon" / resolved_version / "qa" / "test-cases" / f"{feature_slug}.md"
-        beacon_output_path.parent.mkdir(parents=True, exist_ok=True)
-        beacon_output_path.write_text(md_content, encoding="utf-8")
-
-        beacon_matrix_path = beacon_output_path.with_name(f"{feature_slug}.ac-test-matrix.json")
-        beacon_matrix_path.write_text(
-            json.dumps(matrix_payload, ensure_ascii=False, indent=2),
-            encoding="utf-8",
-        )
-
-        beacon_qa9_path = beacon_output_path.with_name(f"{feature_slug}.qa9-matrix.json")
-        beacon_qa9_path.write_text(
-            json.dumps(qa9_payload, ensure_ascii=False, indent=2),
-            encoding="utf-8",
-        )
+    if uses_machine_surface(resolved_version):
+        index_path = output_path.parent / "index.md"
+        if not index_path.exists():
+            index_path.write_text(
+                "\n".join(
+                    [
+                        f"# QA Test Case Index ({resolved_version})",
+                        "",
+                        "- Human-readable QA markdown lives in this directory.",
+                        f"- Machine QA matrices live under `docs/beacon/{resolved_version}/.machine/qa/`.",
+                        f"- Current feature: `{feature_slug}`",
+                    ]
+                )
+                + "\n",
+                encoding="utf-8",
+            )
 
     typer.echo(f"✓ Test cases created: {output_path}")
     typer.echo(f"✓ AC matrix created: {matrix_path}")
@@ -508,7 +567,7 @@ def list_tests(
     """List all test cases."""
     project_root = Path(project) if project else Path.cwd()
     resolved_version = resolve_target_version(project_root, version)
-    test_dir = project_root / "docs" / "product" / resolved_version / "qa" / "test-cases"
+    test_dir = qa_docs_dir(project_root, resolved_version)
 
     if not test_dir.exists():
         typer.echo("No test cases found")
@@ -534,9 +593,9 @@ def gate(
     typer.echo("=" * 40)
 
     slug = _slug(feature)
-    test_dir = project_root / "docs" / "product" / resolved_version / "qa" / "test-cases"
+    test_dir = qa_docs_dir(project_root, resolved_version)
     test_file = test_dir / f"{slug}.md"
-    matrix_file = test_dir / f"{slug}.ac-test-matrix.json"
+    matrix_file = qa_matrix_output(project_root, resolved_version, slug, "ac-test-matrix")
 
     if not test_file.exists():
         typer.echo(f"✗ FAIL: Test file not found: {test_file}")

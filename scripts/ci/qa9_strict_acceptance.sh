@@ -29,18 +29,11 @@ python3 -m beacon.main test-case create "${FEATURE}" \
   --llm-auto \
   --llm-mode auto
 
-if [[ ! -f "${QA_MATRIX_PATH}" ]]; then
-  alt="${PROJECT_ROOT}/docs/product/${VERSION}/qa/test-cases/${FEATURE_SLUG}.qa9-matrix.json"
-  if [[ -f "${alt}" ]]; then
-    QA_MATRIX_PATH="${alt}"
-  fi
-fi
-
 echo "QA_MATRIX_PATH=${QA_MATRIX_PATH}"
 test -f "${QA_MATRIX_PATH}"
 
 # Bootstrap minimal story + implementation marker for strict coverage gates.
-mkdir -p "${PROJECT_ROOT}/docs/beacon/${VERSION}/user-story" "${PROJECT_ROOT}/docs/product/${VERSION}/user-story"
+mkdir -p "${PROJECT_ROOT}/docs/beacon/${VERSION}/user-story"
 cat > "${PROJECT_ROOT}/docs/beacon/${VERSION}/user-story/${FEATURE_SLUG}.md" <<EOF
 # User Story: ${FEATURE}
 
@@ -48,8 +41,6 @@ cat > "${PROJECT_ROOT}/docs/beacon/${VERSION}/user-story/${FEATURE_SLUG}.md" <<E
 | --- | --- |
 | AC-001 | ${FEATURE} should complete core flow |
 EOF
-cp "${PROJECT_ROOT}/docs/beacon/${VERSION}/user-story/${FEATURE_SLUG}.md" \
-   "${PROJECT_ROOT}/docs/product/${VERSION}/user-story/${FEATURE_SLUG}.md"
 mkdir -p "${PROJECT_ROOT}/.beacon/state"
 cat > "${PROJECT_ROOT}/.beacon/state/implementation-${FEATURE_SLUG}.json" <<EOF
 {"feature":"${FEATURE}","version":"${VERSION}","status":"completed"}

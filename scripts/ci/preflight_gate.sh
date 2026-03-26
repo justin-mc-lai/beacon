@@ -20,6 +20,8 @@ echo "ACPT_DIR=${ACPT_DIR}" | tee "${ARTIFACT_ROOT}/sandbox.txt"
 echo "== [4/7] P0 gate consistency (workflow --auto -> strict release gate) =="
 python3 -m beacon.main workflow start "Preflight Delivery" \
   --auto \
+  --confirm-execute \
+  --confirm-execute-second \
   --project "${ACPT_DIR}" \
   --version v1.1.0 \
   --implementation-command 'python3 -c "print(\"impl\")"' \
@@ -56,7 +58,6 @@ python3 -m beacon.main version create "Version Governance Check" \
   | tee "${ARTIFACT_ROOT}/version-create.out"
 
 test -f "${ACPT_DIR}/docs/beacon/v1.1.0/version/version-governance-check.md"
-test -f "${ACPT_DIR}/docs/product/v1.1.0/version/version-governance-check.md"
 test -f "${ACPT_DIR}/.beacon/state/version-plans/v1.1.0/version-governance-check.json"
 
 python3 -m beacon.main evolution-summary create v1.1.0 \
@@ -65,9 +66,8 @@ python3 -m beacon.main evolution-summary create v1.1.0 \
   | tee "${ARTIFACT_ROOT}/evolution-summary.out"
 
 test -f "${ACPT_DIR}/docs/beacon/v1.1.0/SUMMARY.md"
-test -f "${ACPT_DIR}/docs/product/v1.1.0/SUMMARY.md"
 test -f "${ACPT_DIR}/.beacon/state/evolution-summary/v1.1.0.json"
-! grep -q "TBD" "${ACPT_DIR}/docs/product/v1.1.0/SUMMARY.md"
+! grep -q "TBD" "${ACPT_DIR}/docs/beacon/v1.1.0/SUMMARY.md"
 
 echo "== [6/7] P2 visual regression gate (pass then fail) =="
 python3 - "${ACPT_DIR}" <<'PY'

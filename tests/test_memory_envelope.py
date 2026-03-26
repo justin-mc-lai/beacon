@@ -30,7 +30,7 @@ def test_remember_add_should_write_envelope_fields(tmp_path: Path):
             "--source",
             "workflow",
             "--evidence-ref",
-            "docs/product/v1.0.0/execution/terminal.json",
+            "docs/beacon/v1.0.0/execution/terminal.json",
             "--tag",
             "ptk",
             "--tag",
@@ -107,4 +107,3 @@ def test_recall_memory_should_filter_by_type(tmp_path: Path):
     payload = json.loads(result.stdout)
     assert len(payload) == 1
     assert payload[0]["type"] == "decision"
-

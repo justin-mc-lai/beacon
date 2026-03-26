@@ -76,7 +76,7 @@ def test_gate_auto_profile_should_default_to_stage_local_for_non_release_stage(t
     assert "raw_command_log_invalid" not in reason_codes
 
 
-def test_gate_should_honor_docs_product_execution_path(tmp_path: Path):
+def test_gate_should_ignore_removed_docs_product_execution_path(tmp_path: Path):
     version = "v1.0.0"
     execution = tmp_path / "docs" / "product" / version / "execution"
     execution.mkdir(parents=True, exist_ok=True)
@@ -92,8 +92,7 @@ def test_gate_should_honor_docs_product_execution_path(tmp_path: Path):
     start = result.stdout.find("{")
     payload = json.loads(result.stdout[start:])
     reason_codes = {i["reason_code"] for i in payload["issues"]}
-    assert "boundaries_missing" not in reason_codes
-    assert "terminal_artifact_missing" not in reason_codes
+    assert "boundaries_missing" in reason_codes
 
 
 def test_reason_code_catalog_contains_core_expected_items():

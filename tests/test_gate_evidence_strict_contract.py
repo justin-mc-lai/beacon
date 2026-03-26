@@ -19,7 +19,7 @@ def _invoke(args: list[str]):
 
 
 def _write_base_artifacts(project_root: Path) -> None:
-    execution = project_root / "docs" / "product" / "v1.0.0" / "execution"
+    execution = project_root / "docs" / "beacon" / "v1.0.0" / "execution"
     execution.mkdir(parents=True, exist_ok=True)
     (execution / "boundaries.md").write_text("# boundaries\n", encoding="utf-8")
     (execution / "terminal.json").write_text('{"status":"Pass","traceability":{}}', encoding="utf-8")
@@ -33,7 +33,7 @@ def _write_base_artifacts(project_root: Path) -> None:
     )
 
     sha = hashlib.sha256((execution / "boundaries.md").read_bytes()).hexdigest()
-    manifest = {"entries": [{"path": "docs/product/v1.0.0/execution/boundaries.md", "sha256": sha}]}
+    manifest = {"entries": [{"path": "docs/beacon/v1.0.0/execution/boundaries.md", "sha256": sha}]}
     (beacon_state / "evidence-manifest.json").write_text(json.dumps(manifest), encoding="utf-8")
 
 
@@ -64,7 +64,7 @@ def test_gate_strict_should_report_evidence_contract_failures(tmp_path: Path):
     # Break raw log + manifest + gate report contract
     (tmp_path / ".beacon" / "raw-command-log.jsonl").write_text("not-jsonl\n", encoding="utf-8")
     (tmp_path / ".beacon" / "evidence-manifest.json").write_text(
-        json.dumps({"entries": [{"path": "docs/product/v1.0.0/execution/missing.md", "sha256": "deadbeef"}]}),
+        json.dumps({"entries": [{"path": "docs/beacon/v1.0.0/execution/missing.md", "sha256": "deadbeef"}]}),
         encoding="utf-8",
     )
     (tmp_path / ".beacon" / "gate-report.json").write_text("{}", encoding="utf-8")
@@ -102,7 +102,7 @@ def test_gate_stage_local_profile_should_skip_release_global_evidence_checks(tmp
 
     (tmp_path / ".beacon" / "raw-command-log.jsonl").write_text("not-jsonl\n", encoding="utf-8")
     (tmp_path / ".beacon" / "evidence-manifest.json").write_text(
-        json.dumps({"entries": [{"path": "docs/product/v1.0.0/execution/missing.md", "sha256": "deadbeef"}]}),
+        json.dumps({"entries": [{"path": "docs/beacon/v1.0.0/execution/missing.md", "sha256": "deadbeef"}]}),
         encoding="utf-8",
     )
     (tmp_path / ".beacon" / "gate-report.json").write_text("{}", encoding="utf-8")

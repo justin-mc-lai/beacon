@@ -1,7 +1,8 @@
 [project]
 name = "beacon"
-version = "1.0.3"
-description = "Beacon - AI Product Workflow Toolkit"
+version = "1.1.8"
+description = "Beacon - Evidence-first Product Workflow Kernel"
+readme = "README.md"
 requires-python = ">=3.9"
 dependencies = [
     "typer>=0.12.0",
@@ -9,51 +10,31 @@ dependencies = [
     "rich>=13.0.0",
     "pydantic>=2.0.0",
     "shellingham>=1.5.0",
-    "pytest>=7.0.0",
+]
+keywords = ["cli", "product-workflow", "requirements", "prd", "qa", "release"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Software Development :: Quality Assurance",
+    "Topic :: Software Development :: Testing",
 ]
 
 [project.scripts]
 beacon = "beacon.main:app"
 ptk = "beacon.main:app"
-beacon-analyze = "beacon.prefixed:main"
-beacon-ask = "beacon.prefixed:main"
-beacon-api-design = "beacon.prefixed:main"
-beacon-auto-test = "beacon.prefixed:main"
-beacon-brainstorm = "beacon.prefixed:main"
-beacon-data-dictionary = "beacon.prefixed:main"
-beacon-debug = "beacon.prefixed:main"
-beacon-design = "beacon.prefixed:main"
-beacon-doctor = "beacon.prefixed:main"
-beacon-evolution-summary = "beacon.prefixed:main"
-beacon-feedback = "beacon.prefixed:main"
-beacon-gate = "beacon.prefixed:main"
-beacon-init = "beacon.prefixed:main"
-beacon-jtbd = "beacon.prefixed:main"
-beacon-kano = "beacon.prefixed:main"
-beacon-moscow = "beacon.prefixed:main"
-beacon-persona = "beacon.prefixed:main"
-beacon-prompt = "beacon.prefixed:main"
-beacon-prd = "beacon.prefixed:main"
-beacon-ralph-bridge = "beacon.prefixed:main"
-beacon-recall = "beacon.prefixed:main"
-beacon-release = "beacon.prefixed:main"
-beacon-remember = "beacon.prefixed:main"
-beacon-report = "beacon.prefixed:main"
-beacon-resume = "beacon.prefixed:main"
-beacon-roadmap = "beacon.prefixed:main"
-beacon-run = "beacon.prefixed:main"
-beacon-save = "beacon.prefixed:main"
-beacon-status = "beacon.prefixed:main"
-beacon-team = "beacon.prefixed:main"
-beacon-test-case = "beacon.prefixed:main"
-beacon-test-progress = "beacon.prefixed:main"
-beacon-think = "beacon.prefixed:main"
-beacon-ui-spec = "beacon.prefixed:main"
-beacon-user-story = "beacon.prefixed:main"
-beacon-version = "beacon.prefixed:main"
-beacon-wireframe = "beacon.prefixed:main"
-beacon-work = "beacon.prefixed:main"
-beacon-workflow = "beacon.prefixed:main"
+
+[project.optional-dependencies]
+dev = [
+    "build>=1.2.0",
+    "pytest>=7.0.0",
+]
 
 [build-system]
 requires = ["setuptools>=61.0"]
@@ -64,4 +45,4 @@ include = ["beacon*"]
 
 [tool.beacon]
 name = "beacon"
-description = "AI Product Workflow Toolkit - Think, Design, Build, Test"
+description = "Evidence-first Product Workflow Kernel - Think, Specify, Verify, Gate"

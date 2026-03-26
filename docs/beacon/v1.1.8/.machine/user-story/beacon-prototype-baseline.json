@@ -1,0 +1,764 @@
+{
+  "schema_version": "1.0",
+  "feature": "Beacon Prototype Baseline",
+  "feature_slug": "beacon-prototype-baseline",
+  "version": "v1.1.8",
+  "current_revision_id": "R1",
+  "lifecycle_status": "accepted",
+  "updated_at": "2026-03-26T17:00:00+00:00",
+  "revisions": [
+    {
+      "revision_id": "R1",
+      "feature_slug": "beacon-prototype-baseline",
+      "source_revision_id": null,
+      "reason": "design-only",
+      "doc_status": "frozen",
+      "delivery_status": "accepted",
+      "baseline_hash": "sha256:1f121a74b78b46dc5795c8302e74a3ebb760cf43678318e0834eceef8ff2ead1",
+      "superseded_by": null,
+      "created_at": "2026-03-26T00:00:00+00:00",
+      "frozen_at": "2026-03-26T02:53:16.959608+00:00",
+      "accepted_at": "2026-03-26T17:00:00+00:00",
+      "accepted_by": "release.v118"
+    }
+  ],
+  "stories": [
+    {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "Beacon Prototype Baseline",
+      "priority": "high",
+      "status": "accepted",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "Baseline",
+          "text": "Beacon 定义正式的 `prototype baseline` 概念，而不是只依赖 `freeze.json`",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260326T025346Z-4fe4",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-26T17:00:00+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "Baseline",
+          "text": "baseline 至少包含 surface、state、breakpoint、theme token、motion/effect、screenshot reference",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260326T025346Z-4fe4",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-26T17:00:00+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "Baseline",
+          "text": "baseline 缺少关键 surface/state/token 时必须 fail-fast",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260326T025346Z-4fe4",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-26T17:00:00+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "Binding",
+          "text": "Beacon 支持 implementation binding manifest",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260326T025346Z-4fe4",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-26T17:00:00+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "Binding",
+          "text": "每个 surface 可绑定 route/url、code path、selector、state hook、evidence capture plan",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260326T025346Z-4fe4",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-26T17:00:00+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "Adapter",
+          "text": "binding 设计支持多 adapter，不写死为 WordPress",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260326T025346Z-4fe4",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-26T17:00:00+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "Token Mapping",
+          "text": "prototype 的主题色/排版/间距/圆角/阴影/动效可映射到真实实现 token",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260326T025346Z-4fe4",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-26T17:00:00+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "Verify",
+          "text": "Beacon 支持 `prototype verify-impl` 的正式概念",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260326T025346Z-4fe4",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-26T17:00:00+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-009",
+          "kind": "ac",
+          "theme": "Verify Layers",
+          "text": "verify-impl 至少覆盖 visual / semantic / interaction / token / effect 五层差异",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260326T025346Z-4fe4",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-26T17:00:00+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-010",
+          "kind": "ac",
+          "theme": "Drift Reason",
+          "text": "Beacon 对 drift 输出明确 reason code，而不是模糊描述",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260326T025346Z-4fe4",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-26T17:00:00+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-011",
+          "kind": "ac",
+          "theme": "Gate",
+          "text": "启用 prototype baseline 治理时，quality/accept 必须消费 verify-impl 结果",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260326T025346Z-4fe4",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-26T17:00:00+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-012",
+          "kind": "ac",
+          "theme": "Missing Binding",
+          "text": "surface 未绑定或证据缺失时，不得误判“按原型落地”",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260326T025346Z-4fe4",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-26T17:00:00+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-013",
+          "kind": "ac",
+          "theme": "Debug",
+          "text": "Beacon 支持 prototype debug watch/fix/rerun 闭环",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260326T025346Z-4fe4",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-26T17:00:00+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-014",
+          "kind": "ac",
+          "theme": "Debug Evidence",
+          "text": "debug 输出包含 surface、severity、expected、actual、code paths、rerun command",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260326T025346Z-4fe4",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-26T17:00:00+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-015",
+          "kind": "ac",
+          "theme": "Lifecycle",
+          "text": "baseline 生命周期至少包含 Draft / Reviewed / Frozen / Bound / Implementing / Verified / Accepted",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260326T025346Z-4fe4",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-26T17:00:00+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-016",
+          "kind": "ac",
+          "theme": "Reopen",
+          "text": "baseline 在任意阶段变更后可 reopen/rewrite，并产生新的 revision 闭环",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260326T025346Z-4fe4",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-26T17:00:00+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-017",
+          "kind": "ac",
+          "theme": "Milemon",
+          "text": "Milemon 可作为真实样板，表达 prototype 与 `front-page.php` / `header.php` / `style.css` / `woocommerce/*` 的绑定",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260326T025346Z-4fe4",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-26T17:00:00+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-018",
+          "kind": "ac",
+          "theme": "Theme Example",
+          "text": "Milemon 样板中可表达 `theme.json` 到 `assets/css/design-tokens.css` 的 token mapping",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260326T025346Z-4fe4",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-26T17:00:00+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-019",
+          "kind": "ac",
+          "theme": "Generality",
+          "text": "能力设计保持通用，可扩展到 React/Vue/static-html 项目",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260326T025346Z-4fe4",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-26T17:00:00+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-020",
+          "kind": "ac",
+          "theme": "Design Scope",
+          "text": "v1.1.8 当前为 design-only 版本，先冻结需求结构，不宣称功能已实现",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260326T025346Z-4fe4",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-26T17:00:00+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-021",
+          "kind": "ac",
+          "theme": "Aesthetic Baseline",
+          "text": "baseline 必须包含设计方向、字体组合、配色层级、版面密度、CTA 语气等最小审美基线",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260326T025346Z-4fe4",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-26T17:00:00+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-022",
+          "kind": "ac",
+          "theme": "Web Guideline",
+          "text": "prototype 默认生成结果必须覆盖 skip link、semantic landmark、heading hierarchy、icon `aria-hidden`、表单语义、visible focus 等 Web UI 最小规范",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260326T025346Z-4fe4",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-26T17:00:00+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-023",
+          "kind": "ac",
+          "theme": "Anti-Generic",
+          "text": "finalized baseline / review 需要显式识别 generic CTA、过度模板化 card shell、弱字体人格等“丑但没坏”的退化风险",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260326T025346Z-4fe4",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-26T17:00:00+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Audit current prototype generator against frontend-design and web-design-guidelines baselines",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260326T025346Z-4fe4",
+          "verified_by_run_id": null,
+          "accepted_at": "2026-03-26T17:00:00+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "TASK-002",
+          "kind": "task",
+          "text": "Define prototype baseline, implementation binding, verify-impl, debug loop, and aesthetic baseline pack",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260326T025346Z-4fe4",
+          "verified_by_run_id": null,
+          "accepted_at": "2026-03-26T17:00:00+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify TC-001 — 从已 freeze 的 prototype 生成 baseline manifest",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-26T17:00:00+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-001"
+          ]
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify TC-002 — baseline 缺少关键 surface/state/token",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-26T17:00:00+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-003"
+          ]
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify TC-003 — 为 feature 生成 implementation binding manifest",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-26T17:00:00+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-004",
+            "AC-005"
+          ]
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify TC-004 — 使用 WordPress adapter 绑定 Milemon 首页/详情页",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-26T17:00:00+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-017"
+          ]
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify TC-005 — 使用非 WordPress adapter",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-26T17:00:00+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-019"
+          ]
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify TC-006 — prototype theme token 映射到实现 token",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-26T17:00:00+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-007",
+            "AC-018"
+          ]
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify TC-007 — 运行 `prototype verify-impl`",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-26T17:00:00+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-008"
+          ]
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify TC-008 — 视觉结构与 baseline 不一致",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-26T17:00:00+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-010"
+          ]
+        },
+        {
+          "id": "TEST-009",
+          "kind": "test",
+          "text": "Verify TC-009 — 标题/语义结构/required selector 缺失",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-26T17:00:00+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-022"
+          ]
+        },
+        {
+          "id": "TEST-010",
+          "kind": "test",
+          "text": "Verify TC-010 — CTA / jump / modal / state 无法触发",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-26T17:00:00+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-009"
+          ]
+        },
+        {
+          "id": "TEST-011",
+          "kind": "test",
+          "text": "Verify TC-011 — 主题色/设计 token 与 baseline 映射不符",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-26T17:00:00+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-007"
+          ]
+        },
+        {
+          "id": "TEST-012",
+          "kind": "test",
+          "text": "Verify TC-012 — hover/focus/motion/effect 未按 baseline 落地",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-26T17:00:00+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-009"
+          ]
+        },
+        {
+          "id": "TEST-013",
+          "kind": "test",
+          "text": "Verify TC-013 — surface 未绑定就执行 verify-impl",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-26T17:00:00+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-012"
+          ]
+        },
+        {
+          "id": "TEST-014",
+          "kind": "test",
+          "text": "Verify TC-014 — 启用 prototype baseline 治理时未做 verify-impl",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-26T17:00:00+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-011"
+          ]
+        },
+        {
+          "id": "TEST-015",
+          "kind": "test",
+          "text": "Verify TC-015 — baseline stale / binding stale",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-26T17:00:00+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-016"
+          ]
+        },
+        {
+          "id": "TEST-016",
+          "kind": "test",
+          "text": "Verify TC-016 — 开启 `prototype debug --watch`",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-26T17:00:00+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-013"
+          ]
+        },
+        {
+          "id": "TEST-017",
+          "kind": "test",
+          "text": "Verify TC-017 — 修复后 rerun verify-impl",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-26T17:00:00+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-013"
+          ]
+        },
+        {
+          "id": "TEST-018",
+          "kind": "test",
+          "text": "Verify TC-018 — baseline 在 Verified 后被重写",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-26T17:00:00+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-016"
+          ]
+        },
+        {
+          "id": "TEST-019",
+          "kind": "test",
+          "text": "Verify TC-019 — Milemon `site-visual-system` 可绑定全站 token 与关键模板",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-26T17:00:00+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-018"
+          ]
+        },
+        {
+          "id": "TEST-020",
+          "kind": "test",
+          "text": "Verify TC-020 — Milemon 首页 hero / 顶栏 / 业务闭环卡片与 baseline 对比",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-26T17:00:00+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-017"
+          ]
+        },
+        {
+          "id": "TEST-021",
+          "kind": "test",
+          "text": "Verify TC-021 — 非 UI / 非 baseline 治理 feature",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-26T17:00:00+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-020"
+          ]
+        },
+        {
+          "id": "TEST-022",
+          "kind": "test",
+          "text": "Verify TC-022 — v1.1.8 当前仅为设计方案",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-26T17:00:00+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-020"
+          ]
+        },
+        {
+          "id": "TEST-023",
+          "kind": "test",
+          "text": "Verify TC-023 — 基于 `frontend-design` 审计当前 prototype generator",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-26T17:00:00+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-023"
+          ]
+        },
+        {
+          "id": "TEST-024",
+          "kind": "test",
+          "text": "Verify TC-024 — 基于 `web-design-guidelines` 审计当前 prototype shell",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-26T17:00:00+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-022"
+          ]
+        },
+        {
+          "id": "TEST-025",
+          "kind": "test",
+          "text": "Verify TC-025 — baseline manifest 包含 aesthetic baseline pack",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-26T17:00:00+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-021"
+          ]
+        },
+        {
+          "id": "TEST-026",
+          "kind": "test",
+          "text": "Verify TC-026 — finalized review 可识别 generic CTA 与模板化 card shell 退化",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-26T17:00:00+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-023"
+          ]
+        }
+      ],
+      "feature": "beacon-prototype-baseline",
+      "feature_slug": "beacon-prototype-baseline",
+      "version": "v1.1.8",
+      "last_changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/memory/decisions.json",
+        ".beacon/memory/feedback.json",
+        ".beacon/memory/memory-v1.json",
+        ".beacon/memory/project-insights.json",
+        ".beacon/memory/vocabulary.json",
+        ".beacon/memory/workflow-lifecycle.index.json",
+        ".beacon/memory/workflow-lifecycle.json",
+        ".beacon/raw-command-log.jsonl",
+        ".beacon/state/baselines/v1.1.4/latest.json",
+        ".beacon/state/baselines/v1.1.5/latest.json",
+        ".beacon/state/spec-fingerprints/v1.1.4/latest.json",
+        ".beacon/state/spec-fingerprints/v1.1.5/latest.json",
+        ".omc/state/idle-notif-cooldown.json",
+        ".omc/state/last-tool-error.json",
+        "SKILL.md",
+        "beacon/cli_factory.py",
+        "beacon/command_catalog.py",
+        "beacon/commands/auto_test.py",
+        "beacon/commands/debug.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/init.py",
+        "beacon/utils/context_files.py",
+        "beacon/utils/debug_feedback.py",
+        "beacon/utils/help_support.py",
+        "beacon/utils/intent_router.py",
+        "docs/beacon/v1.1.1/.machine/execution/change-impact.json",
+        "docs/beacon/v1.1.1/.machine/execution/config.json",
+        "docs/beacon/v1.1.1/.machine/execution/delivery-manifest.json",
+        "docs/beacon/v1.1.1/.machine/execution/git-alignment.json",
+        "docs/beacon/v1.1.1/.machine/execution/source.json",
+        "docs/beacon/v1.1.6/.machine/execution/change-impact.json",
+        "docs/beacon/v1.1.6/.machine/execution/config.json",
+        "docs/beacon/v1.1.6/.machine/execution/delivery-manifest.json",
+        "docs/beacon/v1.1.6/.machine/execution/git-alignment.json",
+        "docs/beacon/v1.1.6/.machine/execution/source.json",
+        "docs/beacon/v1.1.7/.machine/execution/beacon-native-implement-lifecycle-closure.revision.json",
+        "docs/beacon/v1.1.7/.machine/execution/change-impact.json",
+        "docs/beacon/v1.1.7/.machine/execution/config.json",
+        "docs/beacon/v1.1.7/.machine/execution/delivery-manifest.json",
+        "docs/beacon/v1.1.7/.machine/execution/git-alignment.json",
+        "docs/beacon/v1.1.7/.machine/execution/source.json",
+        "docs/beacon/v1.1.7/.machine/execution/terminal.json",
+        "docs/beacon/v1.1.7/.machine/qa/beacon-native-implement-lifecycle-closure.ac-test-matrix.json",
+        "docs/beacon/v1.1.7/.machine/user-story/beacon-native-implement-lifecycle-closure.json",
+        "docs/beacon/v1.1.7/SUMMARY.md",
+        "docs/beacon/v1.1.7/execution/index.md",
+        "tests/test_docs_current_contract.py",
+        "tests/test_v113_command_layering.py",
+        "tests/test_v117_project_skill_orchestration.py"
+      ],
+      "verification_evidence": [
+        ".beacon/auto-test-status.json"
+      ],
+      "accepted_at": "2026-03-26T17:00:00+00:00",
+      "accepted_by": "release.v118"
+    }
+  ]
+}

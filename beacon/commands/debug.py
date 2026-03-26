@@ -12,13 +12,17 @@ import typer
 from beacon.utils.debug_feedback import (
     append_debug_event_memory,
     append_debug_feedback_event,
+    debug_ideas_dir,
+    debug_index_path,
+    debug_issues_dir,
+    debug_root,
     debug_feedback_path,
     load_debug_mode_state,
     resolve_debug_run_id,
     save_debug_mode_state,
 )
 from beacon.utils.intent_router import DEFAULT_CONFIDENCE_THRESHOLD, ROUTER_CONFIG_FILE
-from beacon.utils.runtime import newest_run_id, run_events_path
+from beacon.utils.runtime import newest_run_id, now_iso, run_events_path, write_json
 
 app = typer.Typer(name="debug", help="Debug helpers")
 confidence_app = typer.Typer(name="confidence", help="Prompt confidence threshold controls.")
@@ -281,6 +285,137 @@ def sync_prompts(
     typer.echo(f"- run_id: {payload['run_id']}")
     typer.echo(f"- imported: {payload['imported']}")
     typer.echo(f"- path: {payload['path']}")
+
+
+@app.command("project-feed")
+def project_feed(
+    feature: str = typer.Argument("", help="Optional feature slug filter"),
+    project_root: str = typer.Option("", "--project-root", help="Project root path"),
+    json_output: bool = typer.Option(False, "--json", help="JSON output"),
+):
+    """Show canonical project-facing debug feedback events."""
+    root = Path(project_root) if project_root else Path.cwd()
+    debug_index = debug_index_path(root)
+    payload = {"root": str(debug_root(root).relative_to(root)), "feature": feature, "runs": []}
+    if debug_index.exists():
+        try:
+            loaded = json.loads(debug_index.read_text(encoding="utf-8"))
+        except Exception:  # noqa: BLE001
+            loaded = {}
+        if isinstance(loaded, dict):
+            payload["runs"] = list(loaded.get("runs", []))
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        return
+    typer.echo("Beacon Debug Project Feed")
+    typer.echo(f"- root: {payload['root']}")
+    typer.echo(f"- runs: {len(payload['runs'])}")
+
+
+@app.command("harvest")
+def harvest(
+    project_root: str = typer.Option("", "--project-root", help="Project root path"),
+    json_output: bool = typer.Option(False, "--json", help="JSON output"),
+):
+    """Harvest canonical debug events into issue records."""
+    root = Path(project_root) if project_root else Path.cwd()
+    runs_root = debug_root(root) / "runs"
+    issues_root = debug_issues_dir(root)
+    issues_root.mkdir(parents=True, exist_ok=True)
+    groups: dict[tuple[str, str], list[dict[str, Any]]] = {}
+    for events_path in sorted(runs_root.glob("*/events.jsonl")) if runs_root.exists() else []:
+        for line in events_path.read_text(encoding="utf-8").splitlines():
+            if not line.strip():
+                continue
+            try:
+                event = json.loads(line)
+            except Exception:  # noqa: BLE001
+                continue
+            if not isinstance(event, dict):
+                continue
+            key = (
+                str(event.get("feedback_target", "beacon-core") or "beacon-core"),
+                str(event.get("reason_code", "runtime_feedback") or "runtime_feedback"),
+            )
+            groups.setdefault(key, []).append(event)
+    issues = []
+    for (target, reason_code), events in sorted(groups.items()):
+        issue_id = f"{target}--{reason_code}".replace("/", "-")
+        payload = {
+            "schema_version": "1.0",
+            "issue_id": issue_id,
+            "feedback_target": target,
+            "reason_code": reason_code,
+            "count": len(events),
+            "latest_event_at": str(events[-1].get("ts", "") if events else ""),
+            "sample": str(events[0].get("friction_summary", "") if events else ""),
+            "suggested_capability": str(events[0].get("suggested_capability", "") if events else ""),
+            "run_ids": sorted({str(item.get("run_id", "")) for item in events if str(item.get("run_id", ""))}),
+        }
+        path = issues_root / f"{issue_id}.json"
+        path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        issues.append(payload)
+    index_payload = {
+        "schema_version": "1.0",
+        "generated_at": now_iso(),
+        "issue_count": len(issues),
+        "issues": issues,
+    }
+    write_json(debug_index_path(root), {**(json.loads(debug_index_path(root).read_text(encoding="utf-8")) if debug_index_path(root).exists() else {}), "issues": issues, "issue_count": len(issues), "generated_at": now_iso()})
+    if json_output:
+        typer.echo(json.dumps(index_payload, ensure_ascii=False, indent=2))
+        return
+    typer.echo(f"✓ Debug issues harvested: {len(issues)}")
+
+
+@app.command("export-ideas")
+def export_ideas(
+    project_root: str = typer.Option("", "--project-root", help="Project root path"),
+    json_output: bool = typer.Option(False, "--json", help="JSON output"),
+):
+    """Export harvested issues into markdown idea seeds."""
+    root = Path(project_root) if project_root else Path.cwd()
+    issues_root = debug_issues_dir(root)
+    ideas_root = debug_ideas_dir(root)
+    ideas_root.mkdir(parents=True, exist_ok=True)
+    idea_paths: list[str] = []
+    for issue_file in sorted(issues_root.glob("*.json")) if issues_root.exists() else []:
+        try:
+            issue = json.loads(issue_file.read_text(encoding="utf-8"))
+        except Exception:  # noqa: BLE001
+            continue
+        if not isinstance(issue, dict):
+            continue
+        idea_path = ideas_root / f"{issue_file.stem}.md"
+        idea_path.write_text(
+            "\n".join(
+                [
+                    f"# {issue.get('issue_id', issue_file.stem)}",
+                    "",
+                    f"- feedback_target: `{issue.get('feedback_target', '')}`",
+                    f"- reason_code: `{issue.get('reason_code', '')}`",
+                    f"- count: `{issue.get('count', 0)}`",
+                    "",
+                    "## Sample Friction",
+                    str(issue.get("sample", "")),
+                    "",
+                    "## Suggested Capability",
+                    str(issue.get("suggested_capability", "")),
+                    "",
+                    "## Run IDs",
+                    *[f"- `{run_id}`" for run_id in issue.get("run_ids", []) if str(run_id).strip()],
+                    "",
+                ]
+            )
+            + "\n",
+            encoding="utf-8",
+        )
+        idea_paths.append(str(idea_path.relative_to(root)))
+    payload = {"idea_count": len(idea_paths), "ideas": idea_paths}
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        return
+    typer.echo(f"✓ Debug ideas exported: {len(idea_paths)}")
 
 
 @app.command("capture")

@@ -7,6 +7,7 @@ from pathlib import Path
 
 from typer.testing import CliRunner
 
+from beacon.utils.artifact_paths import qa_matrix_output
 from beacon.main import app
 
 
@@ -31,8 +32,8 @@ def test_test_case_create_should_generate_qa9_matrix(tmp_path: Path):
     feature = "QA9 Feature"
     slug = "qa9-feature"
 
-    us_dir = tmp_path / "docs" / "product" / "v1.0.2" / "user-story"
-    prd_dir = tmp_path / "docs" / "product" / "v1.0.2" / "prd"
+    us_dir = tmp_path / "docs" / "beacon" / "v1.0.2" / "user-story"
+    prd_dir = tmp_path / "docs" / "beacon" / "v1.0.2" / "prd"
     us_dir.mkdir(parents=True, exist_ok=True)
     prd_dir.mkdir(parents=True, exist_ok=True)
     (us_dir / f"{slug}.md").write_text("| ID | 标准 |\n| AC-001 | 功能工作 |\n", encoding="utf-8")
@@ -44,7 +45,7 @@ def test_test_case_create_should_generate_qa9_matrix(tmp_path: Path):
     )
     assert result.exit_code == 0, result.stdout
 
-    qa9_path = tmp_path / "docs" / "product" / "v1.0.2" / "qa" / "test-cases" / f"{slug}.qa9-matrix.json"
+    qa9_path = qa_matrix_output(tmp_path, "v1.0.2", slug, "qa9-matrix")
     payload = json.loads(qa9_path.read_text(encoding="utf-8"))
     assert payload["schema_version"] == "1.0.2"
     assert len(payload["qa_types"]) == 9
@@ -54,7 +55,7 @@ def test_test_case_create_should_generate_qa9_matrix(tmp_path: Path):
 
 
 def test_auto_test_qa9_should_execute_and_write_matrix_evidence(tmp_path: Path):
-    matrix_path = tmp_path / "docs" / "product" / "v1.0.2" / "qa" / "test-cases" / "qa9-feature.qa9-matrix.json"
+    matrix_path = qa_matrix_output(tmp_path, "v1.0.2", "qa9-feature", "qa9-matrix")
     matrix_path.parent.mkdir(parents=True, exist_ok=True)
     matrix_payload = {
         "schema_version": "1.0.2",

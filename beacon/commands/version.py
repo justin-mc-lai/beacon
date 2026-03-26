@@ -88,7 +88,6 @@ def _slug(text: str) -> str:
 def _version_plan_roots(project_root: Path, version: str) -> list[Path]:
     return [
         project_root / "docs" / "beacon" / version / "version",
-        project_root / "docs" / "product" / version / "version",
     ]
 
 

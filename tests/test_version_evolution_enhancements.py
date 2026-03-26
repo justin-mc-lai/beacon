@@ -34,7 +34,7 @@ def test_version_create_with_bump_should_write_dual_docs_and_metadata(tmp_path: 
 
     slug = "search-upgrade"
     assert (tmp_path / "docs" / "beacon" / "v1.1.0" / "version" / f"{slug}.md").exists()
-    assert (tmp_path / "docs" / "product" / "v1.1.0" / "version" / f"{slug}.md").exists()
+    assert not (tmp_path / "docs" / "product" / "v1.1.0" / "version" / f"{slug}.md").exists()
 
     meta_path = tmp_path / ".beacon" / "state" / "version-plans" / "v1.1.0" / f"{slug}.json"
     payload = json.loads(meta_path.read_text(encoding="utf-8"))
@@ -45,9 +45,9 @@ def test_version_create_with_bump_should_write_dual_docs_and_metadata(tmp_path: 
 
 def test_evolution_summary_should_use_real_artifacts_not_tbd(tmp_path: Path):
     # previous/current stories
-    prev_us = tmp_path / "docs" / "product" / "v1.0.0" / "user-story"
-    curr_us = tmp_path / "docs" / "product" / "v1.0.1" / "user-story"
-    curr_tc = tmp_path / "docs" / "product" / "v1.0.1" / "qa" / "test-cases"
+    prev_us = tmp_path / "docs" / "beacon" / "v1.0.0" / "user-story"
+    curr_us = tmp_path / "docs" / "beacon" / "v1.0.1" / "user-story"
+    curr_tc = tmp_path / "docs" / "beacon" / "v1.0.1" / "qa" / "test-cases"
     prev_us.mkdir(parents=True, exist_ok=True)
     curr_us.mkdir(parents=True, exist_ok=True)
     curr_tc.mkdir(parents=True, exist_ok=True)
@@ -112,7 +112,7 @@ def test_evolution_summary_should_use_real_artifacts_not_tbd(tmp_path: Path):
     )
     assert result.exit_code == 0
 
-    summary_text = (tmp_path / "docs" / "product" / "v1.0.1" / "SUMMARY.md").read_text(encoding="utf-8")
+    summary_text = (tmp_path / "docs" / "beacon" / "v1.0.1" / "SUMMARY.md").read_text(encoding="utf-8")
     assert "TBD" not in summary_text
     assert "当前故事总数" in summary_text
     assert "运行闭环状态" in summary_text

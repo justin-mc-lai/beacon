@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0",
+  "version": "v1.1.8",
+  "feature": "beacon-qa-command-browser-acceptance",
+  "generated_at": "2026-03-26T08:00:00+00:00",
+  "status": "warn",
+  "audited_files": [
+    "beacon/command_catalog.py",
+    "beacon/cli_factory.py",
+    "beacon/commands/auto_test.py",
+    "beacon/adapters/browser_use_runner.py"
+  ],
+  "findings": [
+    {
+      "id": "QA-001",
+      "severity": "high",
+      "reason_code": "qa_primary_surface_missing",
+      "summary": "Canonical command surface still exposes auto-test instead of qa."
+    },
+    {
+      "id": "QA-002",
+      "severity": "high",
+      "reason_code": "qa_session_persistence_missing",
+      "summary": "Current auto-test command has no first-class session/login-state schema or .beacon/qa/sessions governance surface."
+    },
+    {
+      "id": "QA-003",
+      "severity": "medium",
+      "reason_code": "browser_runner_integration_shallow",
+      "summary": "browser-use adapter remains conservative and fallback-driven; agent-browser/browser-use are not yet formal first-class QA orchestration surfaces."
+    },
+    {
+      "id": "QA-004",
+      "severity": "medium",
+      "reason_code": "qa_delta_evolution_missing",
+      "summary": "Current auto-test create/status model does not define requirement-delta-aware QA evolution from PRD/user-story/test-case changes."
+    }
+  ]
+}

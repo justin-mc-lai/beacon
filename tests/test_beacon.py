@@ -30,6 +30,15 @@ class TestBeaconCore:
         assert "Beacon" in result.stdout
 
 
+class TestBeaconHelp:
+    """Test help command"""
+
+    def test_help_command_help(self):
+        """Test help command help"""
+        result = runner.invoke(app, ["help", "--help"])
+        assert result.exit_code == 0
+
+
 class TestBeaconDoctor:
     """Test doctor command"""
 
@@ -500,6 +509,15 @@ class TestBeaconWireframe:
     def test_wireframe_create(self, tmp_path):
         """Test wireframe create"""
         result = runner.invoke(app, ["wireframe", "create", "登录页面", "--project", str(tmp_path)])
+        assert result.exit_code == 0
+
+
+class TestBeaconPrototype:
+    """Test prototype command"""
+
+    def test_prototype_help(self):
+        """Test prototype help"""
+        result = runner.invoke(app, ["prototype", "--help"])
         assert result.exit_code == 0
 
 

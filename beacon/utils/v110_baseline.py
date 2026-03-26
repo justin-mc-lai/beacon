@@ -8,6 +8,7 @@ import re
 from pathlib import Path
 from typing import Any
 
+from beacon.utils.artifact_paths import machine_qa_dir, uses_machine_surface
 from beacon.utils.runtime import now_iso, write_json
 from beacon.utils.versioning import resolve_target_version
 
@@ -25,12 +26,20 @@ def _find_layer_files(project_root: Path, *, version: str, layer: str) -> list[P
     rel = rel_map[layer]
     out: list[Path] = []
     for root_name in ("beacon", "product"):
-        base = project_root / "docs" / root_name / version / rel
-        if not base.exists():
-            continue
         if layer == "test_case":
-            files = sorted(base.glob("*.ac-test-matrix.json"))
+            bases: list[Path] = []
+            if root_name == "beacon" and uses_machine_surface(version):
+                bases.append(machine_qa_dir(project_root, version))
+            bases.append(project_root / "docs" / root_name / version / rel)
+            files = []
+            for base in bases:
+                if not base.exists():
+                    continue
+                files.extend(sorted(base.glob("*.ac-test-matrix.json")))
         else:
+            base = project_root / "docs" / root_name / version / rel
+            if not base.exists():
+                continue
             files = sorted(base.glob("*.md"))
         out.extend([f for f in files if f.is_file()])
     dedup: dict[str, Path] = {}

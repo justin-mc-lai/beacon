@@ -7,10 +7,13 @@ from pathlib import Path
 
 import typer
 
+from beacon.utils.artifact_paths import machine_root, uses_machine_surface
 from beacon.utils.coverage import compute_coverage_metrics
+from beacon.utils.material_audit import build_material_audit
 from beacon.utils.runtime import newest_run_id, read_json
-from beacon.utils.versioning import resolve_target_version
+from beacon.utils.versioning import describe_project_version_context, resolve_target_version
 from beacon.utils.workflow_memory import compute_memory_metrics, compute_workflow_progress
+from beacon.utils.help_support import build_help_payload
 
 app = typer.Typer(
     name="status",
@@ -68,6 +71,22 @@ def _status_impl(
         version=coverage_version,
         feature=feature_filter,
     )
+    material_audit = build_material_audit(root, version=coverage_version, strict=False)
+    version_context = describe_project_version_context(root, docs_version=coverage_version or None)
+    source_of_truth = {
+        "root": f"docs/beacon/{coverage_version}",
+        "human_root": f"docs/beacon/{coverage_version}",
+        "machine_root": (
+            str(machine_root(root, coverage_version).relative_to(root))
+            if uses_machine_surface(coverage_version)
+            else ""
+        ),
+        "runtime_state_root": ".beacon",
+        "formal_package_closure": material_audit.get("status", "unknown"),
+    }
+
+    target_feature = feature_filter or str(workflow_progress.get("feature", "") or "")
+    help_payload = build_help_payload(root, version=coverage_version, feature=target_feature, run_id=resolved_run_id or None) if target_feature else {}
 
     payload = {
         "team": {"known_teams": team_count},
@@ -80,6 +99,21 @@ def _status_impl(
         },
         "memory": memory_metrics,
         "coverage": coverage_metrics,
+        "scores": help_payload.get("scores", {}),
+        "revision": {
+            "revision_id": help_payload.get("revision_id", ""),
+            "doc_status": help_payload.get("doc_status", ""),
+            "delivery_status": help_payload.get("delivery_status", ""),
+            "blocked": help_payload.get("blocked", False),
+            "blocking_reasons": help_payload.get("blocking_reasons", []),
+        },
+        "next_step": help_payload.get("next_step", {}),
+        "version_context": {
+            **version_context,
+            "docs_version": coverage_version,
+            "runtime_version": str(version_context.get("runtime_version", "") or help_payload.get("runtime_version", "")),
+        },
+        "source_of_truth": source_of_truth,
         "workflow_progress": workflow_progress,
         "filters": {
             "version": version_filter or "",
@@ -102,6 +136,21 @@ def _status_impl(
         typer.echo(f"- coverage.ac: {coverage_metrics.get('tested_ac')}/{coverage_metrics.get('total_ac')}")
         typer.echo(f"- coverage.tc: {coverage_metrics.get('executed_tc')}/{coverage_metrics.get('total_tc')}")
         typer.echo(f"- coverage.full: {coverage_metrics.get('full_coverage')}")
+        typer.echo(f"- version.docs: {payload.get('version_context', {}).get('docs_version')}")
+        typer.echo(f"- version.runtime: {payload.get('version_context', {}).get('runtime_version')}")
+        if payload.get("version_context", {}).get("context_managed_version"):
+            typer.echo(f"- version.context: {payload.get('version_context', {}).get('context_managed_version')}")
+        if payload.get("scores"):
+            typer.echo(f"- score.test: {payload.get('scores', {}).get('test_score')}")
+            typer.echo(f"- score.closure: {payload.get('scores', {}).get('closure_score')}")
+            typer.echo(f"- score.readiness: {payload.get('scores', {}).get('readiness_score')}")
+            typer.echo(f"- score.quality: {payload.get('scores', {}).get('quality_score')}")
+        typer.echo(f"- source_of_truth.root: {source_of_truth.get('root')}")
+        if source_of_truth.get("machine_root"):
+            typer.echo(f"- source_of_truth.machine_root: {source_of_truth.get('machine_root')}")
+        typer.echo(f"- source_of_truth.formal_package_closure: {source_of_truth.get('formal_package_closure')}")
+        if workflow_progress.get("stages", {}).get("prototype"):
+            typer.echo(f"- workflow.prototype: {workflow_progress.get('stages', {}).get('prototype', {}).get('status')}")
         if verbose:
             typer.echo(f"- run.latest_run_id: {latest or 'none'}")
             typer.echo(f"- run.selected_run_id: {resolved_run_id or 'none'}")
@@ -109,6 +158,12 @@ def _status_impl(
             typer.echo(f"- workflow.run_id: {workflow_progress.get('run_id') or 'none'}")
             typer.echo(f"- workflow.version: {workflow_progress.get('version') or 'none'}")
             typer.echo(f"- workflow.feature: {workflow_progress.get('feature') or 'none'}")
+            typer.echo(f"- version.docs_source: {payload.get('version_context', {}).get('docs_version_source') or 'none'}")
+            typer.echo(f"- version.runtime_source: {payload.get('version_context', {}).get('runtime_version_source') or 'none'}")
+            typer.echo(f"- revision.id: {payload.get('revision', {}).get('revision_id') or 'none'}")
+            typer.echo(f"- revision.doc_status: {payload.get('revision', {}).get('doc_status') or 'none'}")
+            typer.echo(f"- revision.delivery_status: {payload.get('revision', {}).get('delivery_status') or 'none'}")
+            typer.echo(f"- next_step.action: {payload.get('next_step', {}).get('action') or 'none'}")
     else:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
     return 0

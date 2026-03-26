@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.0",
+  "version": "v1.1.1",
+  "feature": "beacon-strict-config-governance",
+  "run_id": "run-acceptance-change-impact",
+  "generated_at": "2026-03-25T00:01:13.675151+00:00",
+  "status": "warn",
+  "strict_required": true,
+  "repo_url": "https://github.com/justin-mc-lai/beacon.git",
+  "version_ref": "v1.1.1",
+  "allowed_refs": [
+    "tag",
+    "branch"
+  ],
+  "enforce_branch_prefix": "beacon/",
+  "git_refs": {
+    "base_branch": "main",
+    "target_branch": "beacon/v1.1.1",
+    "current_branch": "fix/toolkit-machine-surface-decoupling",
+    "commit": "0450bdbe9770509b852258d2c41c37d73112753a",
+    "tag": "",
+    "worktree_path": "/Users/apple/Developer/Personal/products/beacon"
+  },
+  "alignment": {
+    "branch_matches_target": false,
+    "branch_has_required_prefix": false,
+    "tag_matches_version": false,
+    "version_ref_satisfied": false
+  },
+  "reason_codes": [
+    "git_branch_target_mismatch",
+    "git_branch_prefix_mismatch",
+    "git_version_ref_not_satisfied"
+  ],
+  "blocked": true,
+  "notes": [
+    "Git alignment is validated against target branch or exact version tag.",
+    "This artifact is intended for doctor verify-git-alignment and delivery gate checks."
+  ]
+}

@@ -1,7 +1,7 @@
 """Workflow lifecycle memory helpers.
 
 This module builds a PTK-style memory loop for the default workflow path:
-think -> user-story -> prd -> test-case -> implementation -> verify -> gate.
+think -> user-story -> prd -> [prototype] -> test-case -> implementation -> verify -> gate.
 """
 
 from __future__ import annotations
@@ -18,6 +18,7 @@ LIFECYCLE_FILE = "workflow-lifecycle.json"
 LIFECYCLE_INDEX_FILE = "workflow-lifecycle.index.json"
 LIFECYCLE_SCHEMA_FILE = "workflow-lifecycle.schema.json"
 WORKFLOW_STAGES = ("think", "user-story", "prd", "test-case", "implementation", "verify", "gate")
+OPTIONAL_WORKFLOW_STAGES = ("prototype",)
 
 _ALLOW_REPEAT_EVENTS = {
     # stage retry trace
@@ -80,6 +81,25 @@ _LIFECYCLE_SCHEMA = {
 
 def _memory_root(project_root: Path) -> Path:
     return project_root / ".beacon" / "memory"
+
+
+def workflow_stages_for_run(
+    project_root: Path,
+    *,
+    run_id: str | None = None,
+    run_state: dict[str, Any] | None = None,
+    events: list[dict[str, Any]] | None = None,
+) -> tuple[str, ...]:
+    state = run_state if isinstance(run_state, dict) else (load_run_state(project_root, run_id) if run_id else None)
+    seen_events = events if isinstance(events, list) else (load_lifecycle_events(project_root, run_id=run_id) if run_id else [])
+    prototype_enabled = bool((state or {}).get("prototype_enabled"))
+    prototype_seen = any(
+        isinstance(item, dict) and str(item.get("stage", "")) == "prototype"
+        for item in seen_events
+    )
+    if prototype_enabled or prototype_seen:
+        return ("think", "user-story", "prd", "prototype", "test-case", "implementation", "verify", "gate")
+    return WORKFLOW_STAGES
 
 
 def lifecycle_path(project_root: Path) -> Path:
@@ -193,17 +213,17 @@ def append_lifecycle_event(
             explicit_attempt_seq = None
 
     attempt_seq = 0
-    if stage in WORKFLOW_STAGES:
+    if stage in WORKFLOW_STAGES or stage in OPTIONAL_WORKFLOW_STAGES:
         if explicit_attempt_seq is not None and explicit_attempt_seq > 0:
             attempt_seq = explicit_attempt_seq
         elif event == "stage_started":
             attempt_seq = latest_attempt_seq + 1 if latest_attempt_seq > 0 else 1
         else:
             attempt_seq = latest_attempt_seq if latest_attempt_seq > 0 else 1
-    attempt_id = f"{stage}@attempt-{attempt_seq}" if attempt_seq > 0 and stage in WORKFLOW_STAGES else None
+    attempt_id = f"{stage}@attempt-{attempt_seq}" if attempt_seq > 0 and (stage in WORKFLOW_STAGES or stage in OPTIONAL_WORKFLOW_STAGES) else None
 
     supersedes_event_id = None
-    if stage in WORKFLOW_STAGES and event == "stage_started":
+    if (stage in WORKFLOW_STAGES or stage in OPTIONAL_WORKFLOW_STAGES) and event == "stage_started":
         if stage_events:
             supersedes_event_id = str(stage_events[-1].get("event_id", "") or "") or None
     if details and isinstance(details, dict) and details.get("supersedes_event_id"):
@@ -457,7 +477,7 @@ def _select_default_run_id(events: list[dict[str, Any]]) -> str | None:
         ts = str(item.get("ts", "") or "")
         if not run_id.startswith("run-"):
             continue
-        if stage not in WORKFLOW_STAGES or event not in workflow_event_names:
+        if stage not in WORKFLOW_STAGES + OPTIONAL_WORKFLOW_STAGES or event not in workflow_event_names:
             continue
         prev = latest_workflow_ts_by_run.get(run_id, "")
         if ts >= prev:
@@ -485,6 +505,8 @@ def compute_workflow_progress(
     )
     events = load_lifecycle_events(project_root, run_id=target_run_id) if target_run_id else []
     stage_status: dict[str, dict[str, Any]] = {}
+    run_state = load_run_state(project_root, target_run_id) if target_run_id else None
+    workflow_stages = workflow_stages_for_run(project_root, run_id=target_run_id, run_state=run_state, events=events)
 
     def _seq(item: dict[str, Any]) -> int:
         try:
@@ -492,7 +514,7 @@ def compute_workflow_progress(
         except Exception:  # noqa: BLE001
             return 0
 
-    for stage in WORKFLOW_STAGES:
+    for stage in workflow_stages:
         stage_events = [e for e in events if str(e.get("stage", "")) == stage]
         stage_events.sort(key=lambda x: str(x.get("ts", "")))
         has_skipped_any = any(str(e.get("event", "")) == "stage_skipped" for e in stage_events)
@@ -548,12 +570,11 @@ def compute_workflow_progress(
             "event_count": len(stage_events),
         }
 
-    ordered = [stage for stage in WORKFLOW_STAGES if stage_status[stage]["status"] != "completed"]
+    ordered = [stage for stage in workflow_stages if stage_status[stage]["status"] != "completed"]
     next_stage = ordered[0] if ordered else None
-    missing_stages = [stage for stage in WORKFLOW_STAGES if stage_status[stage]["status"] != "completed"]
+    missing_stages = [stage for stage in workflow_stages if stage_status[stage]["status"] != "completed"]
     closure_complete = len(missing_stages) == 0 and bool(target_run_id)
 
-    run_state = load_run_state(project_root, target_run_id) if target_run_id else None
     run_feature = str(run_state.get("feature", "")) if isinstance(run_state, dict) else ""
     run_version = str(run_state.get("version", "")) if isinstance(run_state, dict) else ""
     gate_stage_status = str(stage_status.get("gate", {}).get("status", "not_started"))
@@ -579,6 +600,7 @@ def compute_workflow_progress(
         "gate_status": gate_status,
         "gate_pass": gate_pass,
         "stages": stage_status,
+        "workflow_stages": list(workflow_stages),
     }
 
 
@@ -606,9 +628,11 @@ def compute_memory_metrics(
     finishes = {(e.get("stage"), e.get("event")) for e in run_events if e.get("event") == "stage_finished"}
     writeback_stages = {e.get("stage") for e in writebacks}
     recall_stages = {e.get("stage") for e in recalls}
+    progress = compute_workflow_progress(project_root, run_id=target_run_id)
 
     missing_stages: list[str] = []
-    for stage in WORKFLOW_STAGES:
+    workflow_stages = tuple(progress.get("workflow_stages", []) or WORKFLOW_STAGES)
+    for stage in workflow_stages:
         has_start = (stage, "stage_started") in starts
         has_finish = (stage, "stage_finished") in finishes
         has_recall = stage in recall_stages
@@ -616,7 +640,6 @@ def compute_memory_metrics(
         if not (has_start and has_finish and has_recall and has_writeback):
             missing_stages.append(stage)
 
-    progress = compute_workflow_progress(project_root, run_id=target_run_id)
     return {
         "run_id": target_run_id,
         "lifecycle_events_total": len(events),

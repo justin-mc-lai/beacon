@@ -24,6 +24,8 @@ def test_setup_context_creates_context_files_with_beacon_markers(tmp_path: Path)
     payload = json.loads(result.stdout)
     assert payload.get("action") == "setup-context"
     assert payload.get("status") == "PASS"
+    assert payload.get("docs_version") == "v1.0.0"
+    assert payload.get("runtime_version") == "v1.1.8"
     result_payload = payload.get("result", {})
 
     claude = (tmp_path / "CLAUDE.md").read_text(encoding="utf-8")
@@ -53,6 +55,8 @@ def test_verify_context_reports_pass_after_setup_context(tmp_path: Path):
     assert verify.exit_code == 0
     payload = json.loads(verify.stdout)
     assert payload.get("status") == "PASS"
+    assert payload.get("docs_version") == "v1.0.0"
+    assert payload.get("runtime_version") == "v1.1.8"
     checks = payload.get("result", {}).get("checks", [])
     assert all(item.get("status") == "pass" for item in checks)
 

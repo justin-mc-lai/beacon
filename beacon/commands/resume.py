@@ -9,6 +9,7 @@ from typing import Optional
 import typer
 
 from beacon.commands.workflow import continue_workflow
+from beacon.utils.material_audit import build_material_audit
 from beacon.utils.runtime import load_run_state
 from beacon.utils.workflow_memory import compute_memory_metrics
 
@@ -21,6 +22,13 @@ def _resume_impl(run_id: str, project_root: str) -> int:
         return 2
     payload = dict(state)
     payload["memory_metrics"] = compute_memory_metrics(root, run_id)
+    version = str(payload.get("version", "") or "").strip()
+    if version:
+        payload["source_of_truth"] = {
+            "root": f"docs/beacon/{version}",
+            "runtime_state_root": ".beacon",
+            "formal_package_closure": build_material_audit(root, version=version, strict=False).get("status", "unknown"),
+        }
     typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
     return 0
 

@@ -91,7 +91,6 @@ def create(
         if output
         else [
             project_root / "docs" / "beacon" / resolved_version / "release" / f"{resolved_version}.md",
-            project_root / "docs" / "product" / resolved_version / "release" / f"{resolved_version}.md",
         ]
     )
     for output_path in output_paths:

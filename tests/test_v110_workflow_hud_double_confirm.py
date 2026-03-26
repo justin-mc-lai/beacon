@@ -68,6 +68,8 @@ def test_v110_non_interactive_start_should_execute_with_double_confirmation_flag
             "--no-interactive",
             "--skip",
             SKIP_ALL_BUT_IMPLEMENTATION,
+            "--implementation-command",
+            "python3 -c \"print('impl')\"",
             "--confirm-execute",
             "--confirm-execute-second",
         ]
@@ -157,6 +159,8 @@ def test_debug_mode_should_capture_workflow_interactive_prompt_operations(tmp_pa
             "--interactive",
             "--skip",
             SKIP_ALL_BUT_IMPLEMENTATION,
+            "--implementation-command",
+            "python3 -c \"print('impl')\"",
         ],
         input_text="1\ny\nEXECUTE\n",
     )
