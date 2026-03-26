@@ -1,0 +1,83 @@
+{
+  "schema_version": "1.0",
+  "version": "v1.1.8",
+  "feature": "beacon-prototype-baseline",
+  "run_id": "plan-v118-prototype-baseline",
+  "generated_at": "2026-03-26T00:00:00+00:00",
+  "status": "warn",
+  "audit_basis": [
+    "frontend-design",
+    "web-design-guidelines"
+  ],
+  "guideline_sources": {
+    "frontend_design": "/Users/apple/.codex/skills/frontend-design/SKILL.md",
+    "web_design_guidelines": "https://raw.githubusercontent.com/vercel-labs/web-interface-guidelines/main/command.md"
+  },
+  "audited_files": [
+    "beacon/utils/prototype_utils.py",
+    "beacon/commands/prototype.py"
+  ],
+  "findings": [
+    {
+      "id": "FD-001",
+      "severity": "high",
+      "reason_code": "prototype_aesthetic_regression",
+      "file": "beacon/utils/prototype_utils.py",
+      "line_start": 253,
+      "line_end": 257,
+      "summary": "Typography defaults remain Inter Display / Inter / JetBrains Mono, which is too generic for a frozen prototype baseline.",
+      "recommended_fix": "Require font_pair and design_direction in baseline and stop treating generic typography as a pass state."
+    },
+    {
+      "id": "FD-002",
+      "severity": "high",
+      "reason_code": "prototype_aesthetic_regression",
+      "file": "beacon/utils/prototype_utils.py",
+      "line_start": 341,
+      "line_end": 395,
+      "summary": "Archetype renderers rely on repeated Bootstrap card/list/table shells, so outputs are structurally useful but visually bland.",
+      "recommended_fix": "Add aesthetic baseline pack fields for composition rules, hero pattern, surface density, and CTA tone."
+    },
+    {
+      "id": "WDG-001",
+      "severity": "medium",
+      "reason_code": "prototype_ui_guideline_gap",
+      "file": "beacon/utils/prototype_utils.py",
+      "line_start": 374,
+      "line_end": 374,
+      "summary": "Form input example lacks name, autocomplete, and explicit type.",
+      "recommended_fix": "Promote form semantics into the default shell baseline and review checks."
+    },
+    {
+      "id": "WDG-002",
+      "severity": "medium",
+      "reason_code": "prototype_ui_guideline_gap",
+      "file": "beacon/utils/prototype_utils.py",
+      "line_start": 443,
+      "line_end": 493,
+      "summary": "Prototype shell still misses skip link, decorative icon aria-hidden, explicit tab semantics, and scroll-margin-top anchor strategy.",
+      "recommended_fix": "Make Web UI baseline fields first-class in prototype review and verify-impl schemas."
+    },
+    {
+      "id": "FD-003",
+      "severity": "medium",
+      "reason_code": "prototype_aesthetic_regression",
+      "file": "beacon/utils/prototype_utils.py",
+      "line_start": 338,
+      "line_end": 339,
+      "summary": "Fallback CTA copy uses Continue / Learn More, which is too generic for a credible product-facing prototype.",
+      "recommended_fix": "Flag generic CTA fallbacks during review unless explicitly declared in requirement contract."
+    }
+  ],
+  "conclusion": {
+    "aesthetic_baseline_ready": false,
+    "web_ui_baseline_ready": false,
+    "baseline_binding_ready": false,
+    "summary": "Current prototype generator is functionally usable but still too generic to be treated as a strong frozen visual baseline.",
+    "next_actions": [
+      "Define aesthetic baseline pack in v1.1.8 PRD/user-story/QA",
+      "Add machine-backed draft artifacts for baseline/binding/verify/debug",
+      "Treat generic typography, generic CTA copy, and missing Web UI semantics as reviewable gaps"
+    ]
+  }
+}

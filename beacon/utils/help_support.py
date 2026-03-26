@@ -1,4 +1,4 @@
-"""Stage-aware help/navigator support helpers for Beacon v1.1.6."""
+"""Stage-aware help/navigator support helpers for Beacon v1.1.7."""
 
 from __future__ import annotations
 
@@ -130,6 +130,28 @@ def _next_step(*, revision_state: dict[str, Any], workflow_progress: dict[str, A
             "command": f"beacon implement run {quoted_feature} {base} --runner native-single",
         }
 
+    if profile:
+        profile_id = str((profile or {}).get("profile_id", "") or "")
+        gate_status = str((profile_gate or {}).get("status", "") or "")
+        if delivery_status in {"implemented", "verifying", "verified"}:
+            if gate_status == "blocked":
+                return {
+                    "action": "verify-run",
+                    "reason": "project profile still has missing evidence or required cases",
+                    "command": f"beacon verify run {quoted_feature} {base} --profile {profile_id}",
+                }
+            return {
+                "action": "review-quality",
+                "reason": "project profile verification evidence is satisfied; move into formal quality review",
+                "command": f"beacon review quality {quoted_feature} {base}",
+            }
+        if delivery_status in {"accepted"}:
+            return {
+                "action": "release-check",
+                "reason": "accepted revision can move to release readiness evaluation",
+                "command": f"beacon gate check release --project-root {project_root} --version {version}",
+            }
+
     if not run_id:
         return {
             "action": "workflow-start",
@@ -138,13 +160,6 @@ def _next_step(*, revision_state: dict[str, Any], workflow_progress: dict[str, A
         }
 
     if delivery_status in {"implemented", "verifying", "verified"} or next_stage == "verify":
-        profile_id = str((profile or {}).get("profile_id", "") or "")
-        if profile_id:
-            return {
-                "action": "verify-run",
-                "reason": "project profile is configured; run profile-backed verification before quality review",
-                "command": f"beacon verify run {quoted_feature} {base} --profile {profile_id}",
-            }
         return {
             "action": "review-quality",
             "reason": "implementation exists; next step is verification/review closure",

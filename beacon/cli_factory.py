@@ -94,6 +94,7 @@ def build_app(*, package_version: str) -> typer.Typer:
 
     # Testing & Release commands
     from .commands.auto_test import app as auto_test_app
+    from .commands.qa import app as qa_app
     from .commands.test_progress import app as test_progress_app
     from .commands.release import app as release_app
     from .commands.api_design import app as api_design_app
@@ -147,6 +148,7 @@ def build_app(*, package_version: str) -> typer.Typer:
 
     # Testing & Release commands
     app.add_typer(auto_test_app, name="auto-test")
+    app.add_typer(qa_app, name="qa")
     app.add_typer(test_progress_app, name="test-progress")
     app.add_typer(release_app, name="release")
     app.add_typer(api_design_app, name="api-design", hidden=True)

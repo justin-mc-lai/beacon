@@ -178,6 +178,24 @@ def test_help_should_be_profile_aware_and_recommend_verify_run(tmp_path: Path):
     assert "beacon verify run" in payload["next_step"]["command"]
 
 
+def test_help_should_recommend_review_quality_after_profile_verify_passes(tmp_path: Path):
+    _seed_docs(tmp_path)
+    _write_demo_profile(tmp_path)
+    _invoke(["skill", "bind", FEATURE, "--profile", "demo", "--project-root", str(tmp_path), "--version", VERSION])
+    _invoke(["freeze", FEATURE, "--project", str(tmp_path), "--version", VERSION])
+    _invoke(["implement", "run", FEATURE, "--project", str(tmp_path), "--version", VERSION, "--runner", "native-single"])
+    (tmp_path / ".beacon").mkdir(parents=True, exist_ok=True)
+    (tmp_path / ".beacon" / "auto-test-status.json").write_text(json.dumps({"status": "passed", "summary": {"blocked": 0}}), encoding="utf-8")
+    _invoke(["verify", "run", FEATURE, "--project-root", str(tmp_path), "--version", VERSION, "--json"])
+
+    result = _invoke(["help", "--project-root", str(tmp_path), "--version", VERSION, "--feature", FEATURE, "--json"])
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["blocked"] is False
+    assert payload["next_step"]["action"] == "review-quality"
+    assert "beacon review quality" in payload["next_step"]["command"]
+
+
 def test_review_accept_should_block_when_project_required_cases_missing(tmp_path: Path):
     _seed_docs(tmp_path)
     _write_demo_profile(tmp_path)

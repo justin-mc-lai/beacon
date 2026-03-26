@@ -31,6 +31,7 @@ SUPPORTED_INTENTS = (
     "recall",
     "report",
     "init",
+    "qa",
     "auto-test",
     "debug",
     "analyze",
@@ -69,6 +70,7 @@ DEFAULT_ROUTABLE_INTENTS = (
     "recall",
     "report",
     "init",
+    "qa",
     "auto-test",
     "debug",
 )
@@ -94,7 +96,7 @@ DEFAULT_INTENT_KEYWORDS: dict[str, tuple[str, ...]] = {
     "think": ("think", "需求", "澄清", "梳理", "分析需求", "方案"),
     "user-story": ("user story", "user-story", "用户故事", "验收标准", "ac"),
     "prd": ("prd", "需求文档", "产品文档", "spec", "规格说明", "prd 文档"),
-    "test-case": ("test-case", "test case", "测试用例", "测试矩阵", "验收测试", "ac->tc", "qa"),
+    "test-case": ("test-case", "test case", "测试用例", "测试矩阵", "验收测试", "ac->tc"),
     "workflow": ("workflow", "工作流", "主链", "阶段流程", "全流程"),
     "run": ("run", "执行模式", "dry-run", "strict", "debug 模式", "运行流程"),
     "status": ("status", "状态", "看板", "进度", "当前进展", "workflow status"),
@@ -128,6 +130,7 @@ DEFAULT_INTENT_KEYWORDS: dict[str, tuple[str, ...]] = {
     "save": ("save", "保存会话", "保存状态", "存档会话", "session save"),
     "report": ("report", "运行报告", "执行报告", "总结报告", "报告"),
     "init": ("init", "初始化", "初始化项目", "创建 beacon 项目", "bootstrap"),
+    "qa": ("qa", "验收", "qa", "浏览器验收", "测试验收", "登录态测试"),
     "auto-test": ("auto-test", "自动测试", "自动化测试", "回归测试", "冒烟测试", "qa 执行"),
 }
 
@@ -217,6 +220,7 @@ DEFAULT_INTENT_COMMAND_TEMPLATES: dict[str, Any] = {
     "save": ["save", "run", "--project", "{project_root}"],
     "report": ["report", "generate", "latest", "--project-root", "{project_root}"],
     "init": ["init", "--project-root", "{project_root}", "--dry-run"],
+    "qa": ["qa", "run", "all", "--project", "{project_root}", "--version", "{version}"],
     "auto-test": ["auto-test", "create", "all", "--project", "{project_root}", "--version", "{version}"],
     "outside-boundary": ["status", "--board", "--project-root", "{project_root}"],
 }
@@ -229,6 +233,7 @@ INTENT_PRIORITY: dict[str, int] = {
     "gate": 85,
     "release": 85,
     "doctor": 85,
+    "qa": 86,
     "auto-test": 85,
     "test-progress": 84,
     "report": 84,

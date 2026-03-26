@@ -9,13 +9,13 @@
 
 ## 1. 当前版本是什么
 
-Beacon 当前单一发布口径是 **v1.1.7**。
+Beacon 当前单一发布口径是 **v1.1.8**。
 
-> 当前发布线：`v1.1.7`
+> 当前发布线：`v1.1.8`
 
 - **CLI 入口**：`beacon <subcommand>`
 - **标准 skill 包**：`skills/beacon/`
-- **当前包版本**：`1.1.7`
+- **当前包版本**：`1.1.8`
 - **文档主源**：`docs/beacon/<version>/`
 - **状态目录**：`.beacon/`
 
@@ -27,7 +27,7 @@ Beacon 当前单一发布口径是 **v1.1.7**。
 
 如果你只记一条：
 
-> **Beacon 现在是 v1.1.7，写文档看 `docs/beacon`，执行命令用 `beacon <subcommand>`。**
+> **Beacon 现在是 v1.1.8，写文档看 `docs/beacon`，执行命令用 `beacon <subcommand>`。**
 
 ---
 
@@ -54,7 +54,16 @@ Beacon 默认**不负责**：
 - issue tracker 轮询、workspace 调度、agent scheduler
 - 在 core 内维护完整 PM 模板大全
 
-### 当前发布线摘要（v1.1.7）
+### 当前发布线摘要（v1.1.8）
+
+- **五线并行闭环**：`init / prototype / implement / qa / debug`
+- **QA 主入口**：新增 `beacon qa`，保留 `auto-test` 兼容别名
+- **实现技术归档**：`implement` 现在会额外生成 `technical-implementation-<feature>.{md,json}`
+- **项目接管入口**：`init` 支持 `--project-mode greenfield|takeover`，生成 onboarding / architecture / version blueprint
+- **运行时反馈闭环**：`debug` 支持 project feed / harvest / export-ideas，落盘 `.beacon/debug/`
+- **正式验收**：v1.1.8 五条设计线已完成 `freeze -> implement(native-team) -> review accept -> review spec`
+
+### 上一发布线摘要（v1.1.7）
 
 - **完整主链工作流**：`think → user-story → prd → [prototype] → test-case → implementation → verify → gate`
 - **revision 生命周期闭环**：新增 `freeze` / `reopen`，支持 frozen baseline、supersede 与 reopen
@@ -69,7 +78,23 @@ Beacon 默认**不负责**：
 - **单一事实源**：`docs/beacon/<version>/` 优先于 `.beacon/`
 - **版本包最小闭环**：`SUMMARY / execution / prd / user-story / qa/test-cases / release`
 
-### v1.1.7 为什么重要
+### v1.1.8 为什么重要
+
+v1.1.8 相比 v1.1.7 的核心新增，是把 Beacon 从“需求/执行内核”继续推进成“项目接管内核”：
+
+- `qa` 主入口与 session 治理
+- runtime debug 反馈回流产品演进
+- implement 技术归档
+- init 渐进式披露与架构主文档
+- prototype / implement / qa / debug / init 五线联动
+
+你现在可以从这些入口阅读 v1.1.8：
+
+- `docs/beacon/v1.1.8/SUMMARY.md`
+- `docs/beacon/v1.1.8/execution/index.md`
+- `docs/beacon/v1.1.8/release/v1.1.8.md`
+
+### v1.1.7 为什么重要（历史）
 
 v1.1.7 相比 v1.1.6 的核心新增，不是单纯补命令，而是补：
 

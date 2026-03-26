@@ -16,6 +16,6 @@
 
 ## Notes
 
-- v1.1.7 当前是 planned version，不是 released package。
+- v1.1.7 当前已经是 current release line。
 - 本版聚焦：project skill profile / multi-skill / orchestration / evidence gate。
 - 真实样板项目使用 Rolo，但设计必须保持通用。

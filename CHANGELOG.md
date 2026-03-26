@@ -7,6 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.8] - 2026-03-26
+
+### Added
+
+- Added `beacon qa` as the primary QA/testing surface while preserving `auto-test` compatibility.
+- Added canonical QA runtime helpers under `.beacon/qa/`, including session manifest persistence and current-session tracking.
+- Added canonical debug runtime feedback surfaces under `.beacon/debug/`, plus issue harvest and idea export flows.
+- Added technical implementation archive outputs under `docs/beacon/<version>/.machine/execution/technical-implementation-*.json` and matching Markdown projections.
+- Added project onboarding outputs for `init`: architecture blueprint, version evolution blueprint, implementation archive index, and project lifecycle onboarding.
+- Added v1.1.8 tests for init onboarding, QA primary surface, debug runtime feedback, and implement technical archive.
+
+### Changed
+
+- Promoted Beacon runtime/package release line to `v1.1.8`.
+- Updated managed AGENTS / CLAUDE guidance to target `v1.1.8` and include progressive disclosure order.
+- Updated command catalog, CLI surface, intent routing, and skill docs to expose `qa`.
+- Closed the five v1.1.8 design tracks through freeze → native-team implement → review accept → spec review closure.
+
+### Verified
+
+- v1.1.8 targeted/contract checks: `25 passed`
+- regression slices: `56 passed`
+- full regression: `python3 -m pytest -q` → `475 passed`
+- formal spec review closure: `review-spec-v118-design-lines.json` → `5/5 pass`
+
 ## [1.1.5] - 2026-03-23
 
 ### Added

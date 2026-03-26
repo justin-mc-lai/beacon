@@ -22,6 +22,7 @@ from beacon.utils.qa9 import (
     parse_qa_types,
     to_legacy_layer,
 )
+from beacon.utils.qa_runtime import load_qa_status, write_qa_status
 from beacon.utils.runtime import append_jsonl, now_iso, write_json
 from beacon.utils.versioning import resolve_target_version
 from beacon.utils.v110_baseline import generate_spec_fingerprint, load_latest_spec_fingerprint
@@ -1802,9 +1803,7 @@ def create(
     )
     execution_payload.setdefault("artifacts", []).append(flaky_history_ref)
 
-    status_file = project_root / ".beacon" / "auto-test-status.json"
-    status_file.parent.mkdir(parents=True, exist_ok=True)
-    status_file.write_text(json.dumps(test_status, ensure_ascii=False, indent=2), encoding="utf-8")
+    status_paths = write_qa_status(project_root, test_status)
 
     gate_report_path = project_root / ".beacon" / "gate-report.json"
     gate_issues = [
@@ -1843,7 +1842,8 @@ def create(
     manifest_refs.extend(
         [
             str(summary_path.relative_to(project_root)),
-            str(status_file.relative_to(project_root)),
+            status_paths["legacy"],
+            status_paths["canonical"],
             str(gate_report_path.relative_to(project_root)),
             str(_raw_command_log_path(project_root).relative_to(project_root)),
         ]
@@ -1852,10 +1852,10 @@ def create(
 
     signature_chain_ref = _write_evidence_signature_chain(project_root, run_id=run_id, summary_path=summary_path)
     execution_payload.setdefault("artifacts", []).append(signature_chain_ref)
-    status_file.write_text(json.dumps(test_status, ensure_ascii=False, indent=2), encoding="utf-8")
+    status_paths = write_qa_status(project_root, test_status)
     _update_evidence_manifest(
         project_root,
-        [signature_chain_ref, str(status_file.relative_to(project_root))],
+        [signature_chain_ref, status_paths["legacy"], status_paths["canonical"]],
         run_id=run_id,
         version=resolved_version,
     )
@@ -1863,7 +1863,8 @@ def create(
     typer.echo("✓ Test execution started")
     typer.echo(f"  Scope: {scope}")
     typer.echo(f"  Layers: {', '.join(selected_layers)}")
-    typer.echo(f"  Status file: {status_file}")
+    typer.echo(f"  QA status: {project_root / status_paths['canonical']}")
+    typer.echo(f"  Legacy status: {project_root / status_paths['legacy']}")
     typer.echo(f"  Evidence: {evidence_root}")
     if ui_guard_requested and isinstance(ui_guard, dict):
         typer.echo(f"  UI Guard: {ui_guard.get('status')} ({ui_guard.get('reason_code')})")
@@ -1885,13 +1886,10 @@ def status(
 ):
     """View test status."""
     project_root = Path(project) if project else Path.cwd()
-    status_file = project_root / ".beacon" / "auto-test-status.json"
-
-    if not status_file.exists():
+    status_data = load_qa_status(project_root)
+    if not status_data:
         typer.echo("No test status found. Run 'beacon auto-test create' first.")
         return
-
-    status_data = json.loads(status_file.read_text(encoding="utf-8"))
 
     if json_output:
         typer.echo(json.dumps(status_data, indent=2, ensure_ascii=False))
@@ -2019,10 +2017,8 @@ def import_qa_use(
         "quality_issues": [],
     }
 
-    status_file = project_root / ".beacon" / "auto-test-status.json"
-    status_file.parent.mkdir(parents=True, exist_ok=True)
-    status_file.write_text(json.dumps(status_payload, ensure_ascii=False, indent=2), encoding="utf-8")
-    typer.echo(f"✓ qa-use results imported: {status_file}")
+    status_paths = write_qa_status(project_root, status_payload)
+    typer.echo(f"✓ qa-use results imported: {project_root / status_paths['canonical']}")
     typer.echo(f"  Layers: {', '.join(status_payload['selected_layers']) or '-'}")
     typer.echo(f"  Status: {status_payload['status']}")
 

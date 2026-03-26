@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-project-skill-orchestration",
+  "feature_slug": "beacon-project-skill-orchestration",
+  "version": "v1.1.7",
+  "generated_at": "2026-03-25T01:00:00+00:00",
+  "entries": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-001",
+      "layer": "contract",
+      "command": "python3 -m pytest -q tests/test_v117_project_skill_orchestration.py",
+      "assertion": "skill registry and profile example work",
+      "evidence_path": ".beacon/evidence/test-results/beacon-project-skill-orchestration/TC-001.json",
+      "status": "passed"
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-002",
+      "layer": "contract",
+      "command": "python3 -m pytest -q tests/test_v117_project_skill_orchestration.py",
+      "assertion": "project profile and binding resolve correctly",
+      "evidence_path": ".beacon/evidence/test-results/beacon-project-skill-orchestration/TC-002.json",
+      "status": "passed"
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-003",
+      "layer": "integration",
+      "command": "python3 -m pytest -q tests/test_v117_project_skill_orchestration.py",
+      "assertion": "verify run executes orchestration graph",
+      "evidence_path": ".beacon/evidence/test-results/beacon-project-skill-orchestration/TC-003.json",
+      "status": "passed"
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-004",
+      "layer": "review",
+      "command": "python3 -m pytest -q tests/test_v117_project_skill_orchestration.py",
+      "assertion": "accept blocks when required project evidence is missing",
+      "evidence_path": ".beacon/evidence/test-results/beacon-project-skill-orchestration/TC-004.json",
+      "status": "passed"
+    },
+    {
+      "ac_id": "AC-005",
+      "tc_id": "TC-005",
+      "layer": "diagnosis",
+      "command": "python3 -m pytest -q tests/test_v117_project_skill_orchestration.py",
+      "assertion": "doctor advise surfaces contract drift",
+      "evidence_path": ".beacon/evidence/test-results/beacon-project-skill-orchestration/TC-005.json",
+      "status": "passed"
+    }
+  ]
+}

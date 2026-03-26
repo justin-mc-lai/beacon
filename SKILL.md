@@ -5,9 +5,9 @@ description: Evidence-first Product Workflow Kernel for product thinking, user s
 
 # Beacon - Evidence-first Product Workflow Kernel
 
-> **Skill Version**: v1.1.7
-> **CLI Version**: v1.1.7
-> **Last Updated**: 2026-03-24
+> **Skill Version**: v1.1.8
+> **CLI Version**: v1.1.8
+> **Last Updated**: 2026-03-26
 
 Beacon 是 AI 产品工作流内核，提供需求澄清、用户故事、PRD、测试用例、证据闭环与发布门禁的统一工作流。
 
@@ -42,6 +42,7 @@ python3 scripts/sync_skill_commands.py --check
 | `beacon analyze` | `analyze` |
 | `beacon api-design` | `api-design` |
 | `beacon auto-test` | `auto-test` |
+| `beacon qa` | `qa` |
 | `beacon brainstorm` | `brainstorm` |
 | `beacon data-dictionary` | `data-dictionary` |
 | `beacon debug` | `debug` |
@@ -62,6 +63,7 @@ python3 scripts/sync_skill_commands.py --check
 | `beacon prompt` | `prompt` |
 | `beacon profile` | `profile` |
 | `beacon prd` | `prd` |
+| `beacon qa` | `qa` |
 | `beacon orchestrate` | `orchestrate` |
 | `beacon ralph-bridge` | `ralph-bridge` |
 | `beacon recall` | `recall` |
@@ -96,6 +98,7 @@ python3 scripts/sync_skill_commands.py --check
 | `analyze` | `beacon analyze` |
 | `api-design` | `beacon api-design` |
 | `auto-test` | `beacon auto-test` |
+| `qa` | `beacon qa` |
 | `brainstorm` | `beacon brainstorm` |
 | `data-dictionary` | `beacon data-dictionary` |
 | `debug` | `beacon debug` |
@@ -116,6 +119,7 @@ python3 scripts/sync_skill_commands.py --check
 | `prompt` | `beacon prompt` |
 | `profile` | `beacon profile` |
 | `prd` | `beacon prd` |
+| `qa` | `beacon qa` |
 | `orchestrate` | `beacon orchestrate` |
 | `ralph-bridge` | `beacon ralph-bridge` |
 | `recall` | `beacon recall` |
@@ -147,10 +151,10 @@ python3 scripts/sync_skill_commands.py --check
 
 ```bash
 # 推荐
-beacon workflow start "Beacon v1.1.7 layered delivery" --project /abs/path/to/project --version v1.1.7
+beacon workflow start "Beacon v1.1.8 release line" --project /abs/path/to/project --version v1.1.8
 
 # 兼容
-python3 -m beacon.main workflow start "Beacon v1.1.7 layered delivery" --project /abs/path/to/project --version v1.1.7
+python3 -m beacon.main workflow start "Beacon v1.1.8 release line" --project /abs/path/to/project --version v1.1.8
 ```
 
 ## Gate 检查
@@ -179,21 +183,16 @@ docs/beacon/{version}/
 
 ## 参考文档
 
-- `docs/beacon/v1.1.7/SUMMARY.md`
-- `docs/beacon/v1.1.7/execution/boundaries.md`
-- `docs/beacon/v1.1.7/execution/index.md`
-- `docs/beacon/v1.1.7/execution/human-machine-collaboration-norm.md`
-- `docs/beacon/v1.1.7/execution/memory-architecture-and-projection.md`
-- `docs/beacon/v1.1.7/execution/doctor-repair-scope.md`
-- `docs/beacon/v1.1.7/execution/safe-implementation-plan.md`
-- `docs/beacon/v1.1.7/execution/eval-lab-benchmark-surface.md`
-- `docs/beacon/v1.1.7/execution/keep-discard-policy.md`
-- `docs/beacon/v1.1.7/execution/drift-auditor-minimum-loop.md`
-- `docs/beacon/v1.1.7/release/v1.1.7.md`
+- `docs/beacon/v1.1.8/SUMMARY.md`
+- `docs/beacon/v1.1.8/execution/index.md`
+- `docs/beacon/v1.1.8/execution/technical-implementation-archive-blueprint.md`
+- `docs/beacon/v1.1.8/execution/init-architecture-blueprint-main-doc.md`
+- `docs/beacon/v1.1.8/research/gstack-gap-analysis.md`
+- `docs/beacon/v1.1.8/release/v1.1.8.md`
 - `skills/beacon/SKILL.md`
 - `references/acceptance-criteria.md`
 - `references/user-story-mapping.md`
 
 ---
 
-**版本**: v1.1.7
+**版本**: v1.1.8

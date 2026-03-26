@@ -1,5 +1,5 @@
 <!-- BEACON:START -->
-<!-- BEACON:VERSION:v1.1.7 -->
+<!-- BEACON:VERSION:v1.1.8 -->
 # AGENTS.md
 
 This file is Beacon-managed agent operation guidance.
@@ -10,10 +10,16 @@ This file is Beacon-managed agent operation guidance.
 - Preserve user-authored sections outside Beacon managed blocks.
 
 ## Beacon requirement-material usage
-- Runtime target version: `v1.1.7`
+- Runtime target version: `v1.1.8`
 - Use `docs/beacon/<version>/` as the canonical delivery tree.
-- Prioritize `SUMMARY`, `execution`, `prd`, `user-story`, `qa/test-cases`, and `release` artifacts.
-- Prefer `docs/beacon/<version>/` over `.beacon/` for current release truth.
+- Read progressively in this order:
+  1. `docs/beacon/<version>/SUMMARY.md`
+  2. `docs/beacon/<version>/execution/index.md`
+  3. `docs/beacon/<version>/execution/architecture-blueprint.md`
+  4. `docs/beacon/<version>/prd/`, `user-story/`, `qa/test-cases/`
+  5. `docs/beacon/<version>/.machine/`
+- For greenfield projects: start with architecture blueprint, then enter think → user-story → prd.
+- For takeover projects: document current-state architecture, service map, constraints, and version timeline before new implementation.
 - If context blocks are missing/corrupted, run:
   - `beacon doctor setup-context --project-root .`
   - `beacon doctor verify-context --project-root . --strict`

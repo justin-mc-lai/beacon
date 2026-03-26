@@ -23,6 +23,7 @@ from beacon.utils.implement_adapters import (
     resolve_default_runner,
 )
 from beacon.utils.runtime import generate_run_id, now_iso, write_json
+from beacon.utils.story_state import load_story_state
 from beacon.utils.versioning import resolve_target_version
 
 app = typer.Typer(name="implement", help="Run implementation via configured skill adapters")
@@ -61,6 +62,30 @@ def _summary_paths(project_root: Path, version: str, feature: str) -> dict[str, 
         "json": execution_dir / f"implementation-summary-{slug}.json",
         "md": execution_dir / f"implementation-summary-{slug}.md",
     }
+
+
+def _technical_archive_paths(project_root: Path, version: str, feature: str) -> dict[str, Path]:
+    slug = _slug(feature)
+    execution_dir = project_root / "docs" / "beacon" / version / "execution"
+    machine_execution_dir = project_root / "docs" / "beacon" / version / ".machine" / "execution"
+    return {
+        "md": execution_dir / f"technical-implementation-{slug}.md",
+        "json": machine_execution_dir / f"technical-implementation-{slug}.json",
+    }
+
+
+def _git_commit(project_root: Path) -> str:
+    try:
+        result = subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            cwd=project_root,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+    except Exception:  # noqa: BLE001
+        return ""
+    return result.stdout.strip() if result.returncode == 0 else ""
 
 
 def _write_text(path: Path, content: str) -> None:
@@ -107,6 +132,141 @@ def _render_summary_markdown(payload: dict[str, Any]) -> str:
                 lines.append(f"- `{key}`: {value}")
     else:
         lines.append("- none")
+    return "\n".join(lines) + "\n"
+
+
+def _normalize_list(value: Any) -> list[Any]:
+    return list(value) if isinstance(value, list) else []
+
+
+def _modules_from_changed_files(changed_files: list[str]) -> list[str]:
+    modules: set[str] = set()
+    for item in changed_files:
+        text = str(item).strip()
+        if not text:
+            continue
+        parts = text.split("/")
+        if len(parts) >= 2:
+            modules.add("/".join(parts[:2]))
+        elif parts:
+            modules.add(parts[0])
+    return sorted(modules)
+
+
+def _technical_archive_payload(
+    *,
+    project_root: Path,
+    version: str,
+    feature: str,
+    run_id: str,
+    runner: str,
+    skill: str,
+    request_path: str,
+    result_path: str,
+    stdout_path: str,
+    stderr_path: str,
+    result_payload: dict[str, Any],
+) -> dict[str, Any]:
+    slug = _slug(feature)
+    changed_files = [str(x) for x in _normalize_list(result_payload.get("changed_files")) if str(x).strip()]
+    additions = [str(x) for x in _normalize_list(result_payload.get("additions")) if str(x).strip()]
+    modifications = [str(x) for x in _normalize_list(result_payload.get("modifications")) if str(x).strip()]
+    deletions = [str(x) for x in _normalize_list(result_payload.get("deletions")) if str(x).strip()]
+    refactors = [str(x) for x in _normalize_list(result_payload.get("refactors")) if str(x).strip()]
+    services = _normalize_list(result_payload.get("services"))
+    payload = {
+        "schema_version": "1.0",
+        "feature": feature,
+        "feature_slug": slug,
+        "version": version,
+        "revision_id": "",
+        "run_id": run_id,
+        "implemented_at": now_iso(),
+        "runner": runner,
+        "skill": skill,
+        "profile_id": str(result_payload.get("profile_id", "") or ""),
+        "git_commit": _git_commit(project_root),
+        "services": services,
+        "implementation_scope_summary": str(result_payload.get("summary", "") or ""),
+        "business_goal_summary": str(result_payload.get("business_goal_summary", "") or str(result_payload.get("summary", "") or "")),
+        "acceptance_scope": _normalize_list(result_payload.get("acceptance_scope")),
+        "changed_files": changed_files,
+        "modules_touched": _modules_from_changed_files(changed_files),
+        "additions": additions,
+        "modifications": modifications,
+        "deletions": deletions,
+        "refactors": refactors,
+        "data_operations": _normalize_list(result_payload.get("data_operations")),
+        "db_changes": result_payload.get("db_changes") if isinstance(result_payload.get("db_changes"), dict) else {"none": True, "new_tables": [], "altered_tables": [], "indexes": [], "migrations": []},
+        "cache_changes": _normalize_list(result_payload.get("cache_changes")),
+        "event_contract_changes": _normalize_list(result_payload.get("event_contract_changes")),
+        "api_changes": result_payload.get("api_changes") if isinstance(result_payload.get("api_changes"), dict) else {"none": True, "new_endpoints": [], "changed_endpoints": [], "removed_endpoints": []},
+        "external_integrations": _normalize_list(result_payload.get("external_integrations")),
+        "queue_or_job_changes": _normalize_list(result_payload.get("queue_or_job_changes")),
+        "cron_changes": _normalize_list(result_payload.get("cron_changes")),
+        "config_changes": _normalize_list(result_payload.get("config_changes")),
+        "env_changes": _normalize_list(result_payload.get("env_changes")),
+        "feature_flags": _normalize_list(result_payload.get("feature_flags")),
+        "deployment_notes": _normalize_list(result_payload.get("deployment_notes")),
+        "verification": _normalize_list(result_payload.get("verification")),
+        "known_risks": _normalize_list(result_payload.get("known_risks")),
+        "rollback_notes": _normalize_list(result_payload.get("rollback_notes")),
+        "compatibility_notes": _normalize_list(result_payload.get("compatibility_notes")),
+        "artifact_updates": result_payload.get("artifact_updates") if isinstance(result_payload.get("artifact_updates"), dict) else {},
+        "traceability": {
+            "request_path": request_path,
+            "result_path": result_path,
+            "stdout_path": stdout_path,
+            "stderr_path": stderr_path,
+        },
+    }
+    return payload
+
+
+def _render_technical_archive_markdown(payload: dict[str, Any]) -> str:
+    def _render_section(title: str, items: list[Any]) -> list[str]:
+        lines = ["", f"## {title}"]
+        if not items:
+            lines.append("- none")
+            return lines
+        for item in items:
+            lines.append(f"- {item}")
+        return lines
+
+    lines = [
+        "# Beacon Technical Implementation Archive",
+        "",
+        f"- feature: `{payload.get('feature')}`",
+        f"- feature_slug: `{payload.get('feature_slug')}`",
+        f"- version: `{payload.get('version')}`",
+        f"- run_id: `{payload.get('run_id')}`",
+        f"- runner: `{payload.get('runner')}`",
+        f"- profile_id: `{payload.get('profile_id')}`",
+        f"- git_commit: `{payload.get('git_commit')}`",
+        "",
+        "## Traceability",
+        f"- request_path: `{payload.get('traceability', {}).get('request_path', '')}`",
+        f"- result_path: `{payload.get('traceability', {}).get('result_path', '')}`",
+        f"- stdout_path: `{payload.get('traceability', {}).get('stdout_path', '')}`",
+        f"- stderr_path: `{payload.get('traceability', {}).get('stderr_path', '')}`",
+    ]
+    lines.extend(_render_section("Services", [str(x) for x in payload.get("services", [])]))
+    lines.extend(_render_section("Changed Files", [f"`{x}`" for x in payload.get("changed_files", [])]))
+    lines.extend(_render_section("Modules Touched", [f"`{x}`" for x in payload.get("modules_touched", [])]))
+    lines.extend(_render_section("Additions", payload.get("additions", [])))
+    lines.extend(_render_section("Modifications", payload.get("modifications", [])))
+    lines.extend(_render_section("Deletions", payload.get("deletions", [])))
+    lines.extend(_render_section("Refactors", payload.get("refactors", [])))
+    lines.extend(_render_section("Data Operations", payload.get("data_operations", [])))
+    lines.extend(_render_section("Config Changes", payload.get("config_changes", [])))
+    lines.extend(_render_section("Env Changes", payload.get("env_changes", [])))
+    lines.extend(_render_section("Feature Flags", payload.get("feature_flags", [])))
+    lines.extend(_render_section("Queue / Job Changes", payload.get("queue_or_job_changes", [])))
+    lines.extend(_render_section("Known Risks", payload.get("known_risks", [])))
+    lines.extend(_render_section("Rollback Notes", payload.get("rollback_notes", [])))
+    lines.extend(_render_section("Verification", [str(item) for item in payload.get("verification", [])]))
+    lines.extend(["", "## DB Changes", json.dumps(payload.get("db_changes", {}), ensure_ascii=False, indent=2)])
+    lines.extend(["", "## API Changes", json.dumps(payload.get("api_changes", {}), ensure_ascii=False, indent=2)])
     return "\n".join(lines) + "\n"
 
 
@@ -292,6 +452,8 @@ def run_implement_stage(  # noqa: PLR0913
             write_json(state_path, payload)
             return 2, payload
         summary_paths = _summary_paths(project_root, resolved_version, feature)
+        archive_paths = _technical_archive_paths(project_root, resolved_version, feature)
+        story_state = load_story_state(project_root, version=resolved_version, feature=feature, create_if_missing=True) or {}
         marker = project_root / ".beacon" / "state" / f"implementation-{feature_slug}.json"
         write_json(marker, {
             "schema_version": "1.0",
@@ -319,14 +481,35 @@ def run_implement_stage(  # noqa: PLR0913
             "verification": result_payload.get("verification", []),
             "artifact_updates": result_payload.get("artifact_updates", {}),
             "implementation_marker": str(marker.relative_to(project_root)),
+            "technical_archive": {
+                "json": str(archive_paths["json"].relative_to(project_root)),
+                "md": str(archive_paths["md"].relative_to(project_root)),
+            },
             "generated_at": now_iso(),
         }
         for key, value in result_payload.items():
             if key in summary_payload:
                 continue
             summary_payload[key] = value
+        technical_payload = _technical_archive_payload(
+            project_root=project_root,
+            version=resolved_version,
+            feature=feature,
+            run_id=run_id,
+            runner=adapter_id,
+            skill=rendered_skill,
+            request_path=str(request_path),
+            result_path=str(result_path),
+            stdout_path="",
+            stderr_path="",
+            result_payload=result_payload,
+        )
+        current_revision_id = str(story_state.get("current_revision_id", "") or "")
+        technical_payload["revision_id"] = current_revision_id
         write_json(summary_paths["json"], summary_payload)
         _write_text(summary_paths["md"], _render_summary_markdown(summary_payload))
+        write_json(archive_paths["json"], technical_payload)
+        _write_text(archive_paths["md"], _render_technical_archive_markdown(technical_payload))
         write_json(state_path, summary_payload)
         return 0, summary_payload
     if adapter_type in {"handoff", "claude-skill"}:
@@ -480,6 +663,8 @@ def run_implement_stage(  # noqa: PLR0913
         review_quality_info = {"exit_code": rc, "payload": payload}
 
     summary_paths = _summary_paths(project_root, resolved_version, feature)
+    archive_paths = _technical_archive_paths(project_root, resolved_version, feature)
+    story_state = load_story_state(project_root, version=resolved_version, feature=feature, create_if_missing=True) or {}
     summary_payload = {
         "schema_version": "1.0",
         "run_id": run_id,
@@ -499,12 +684,32 @@ def run_implement_stage(  # noqa: PLR0913
         "stdout_path": str(stdout_path),
         "stderr_path": str(stderr_path),
         "implementation_marker": str(marker.relative_to(project_root)),
+        "technical_archive": {
+            "json": str(archive_paths["json"].relative_to(project_root)),
+            "md": str(archive_paths["md"].relative_to(project_root)),
+        },
         "review_spec": review_spec_info,
         "review_quality": review_quality_info,
         "generated_at": now_iso(),
     }
     write_json(summary_paths["json"], summary_payload)
     _write_text(summary_paths["md"], _render_summary_markdown(summary_payload))
+    technical_payload = _technical_archive_payload(
+        project_root=project_root,
+        version=resolved_version,
+        feature=feature,
+        run_id=run_id,
+        runner=adapter_id,
+        skill=rendered_skill,
+        request_path=str(request_path),
+        result_path=str(result_path),
+        stdout_path=str(stdout_path),
+        stderr_path=str(stderr_path),
+        result_payload=result_payload,
+    )
+    technical_payload["revision_id"] = str(story_state.get("current_revision_id", "") or "")
+    write_json(archive_paths["json"], technical_payload)
+    _write_text(archive_paths["md"], _render_technical_archive_markdown(technical_payload))
 
     payload = {**base_state, **summary_payload}
     write_json(state_path, payload)

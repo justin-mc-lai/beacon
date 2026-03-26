@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "version": "v1.1.8",
+  "feature": "beacon-init-progressive-architecture-blueprint",
+  "generated_at": "2026-03-26T14:00:00+00:00",
+  "status": "warn",
+  "audited_files": [
+    "beacon/commands/init.py",
+    "beacon/utils/context_files.py",
+    "docs/beacon/v1.0.3/execution/v1.0.3-overall-architecture-blueprint.md"
+  ],
+  "findings": [
+    {
+      "id": "INIT-001",
+      "severity": "high",
+      "reason_code": "progressive_disclosure_missing",
+      "summary": "Current AGENTS managed block is too minimal and does not define a progressive disclosure reading order for technical users or agents."
+    },
+    {
+      "id": "INIT-002",
+      "severity": "high",
+      "reason_code": "architecture_blueprint_generation_missing",
+      "summary": "Current init creates directories and indexes but does not generate architecture-blueprint.md or version-evolution-blueprint.md as first-class technical entry docs."
+    },
+    {
+      "id": "INIT-003",
+      "severity": "medium",
+      "reason_code": "project_mode_semantics_missing",
+      "summary": "Current init does not distinguish greenfield and takeover project initialization semantics."
+    },
+    {
+      "id": "INIT-004",
+      "severity": "high",
+      "reason_code": "project_onboarding_state_missing",
+      "summary": "Current init flow does not yet materialize a project-onboarding state file or lifecycle adoption level to express how deeply Beacon has taken over project development."
+    }
+  ]
+}

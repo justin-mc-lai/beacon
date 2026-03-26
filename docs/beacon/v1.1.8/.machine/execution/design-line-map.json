@@ -1,0 +1,120 @@
+{
+  "schema_version": "1.0",
+  "version": "v1.1.8",
+  "generated_at": "2026-03-26T16:00:00+00:00",
+  "status": "implemented-and-release-ready",
+  "design_tracks": [
+    {
+      "id": "init-progressive-architecture-blueprint",
+      "phase": "project-onboarding",
+      "role": "entry",
+      "depends_on": [],
+      "feeds_into": [
+        "prototype-baseline",
+        "implement-technical-architecture-archive",
+        "qa-command-browser-acceptance",
+        "debug-runtime-feedback-loop"
+      ],
+      "primary_outputs": [
+        "AGENTS progressive disclosure",
+        "project lifecycle onboarding",
+        "architecture blueprint",
+        "version evolution blueprint",
+        "project onboarding state"
+      ]
+    },
+    {
+      "id": "prototype-baseline",
+      "phase": "delivery-baseline",
+      "role": "ui-contract",
+      "depends_on": [
+        "init-progressive-architecture-blueprint"
+      ],
+      "feeds_into": [
+        "implement-technical-architecture-archive",
+        "qa-command-browser-acceptance"
+      ],
+      "primary_outputs": [
+        "prototype baseline",
+        "implementation binding",
+        "verify-impl contract",
+        "prototype debug loop"
+      ]
+    },
+    {
+      "id": "implement-technical-architecture-archive",
+      "phase": "implementation",
+      "role": "technical-trace",
+      "depends_on": [
+        "init-progressive-architecture-blueprint",
+        "prototype-baseline"
+      ],
+      "feeds_into": [
+        "qa-command-browser-acceptance",
+        "debug-runtime-feedback-loop"
+      ],
+      "primary_outputs": [
+        "technical implementation archive",
+        "machine execution archive",
+        "implementation archive index"
+      ]
+    },
+    {
+      "id": "qa-command-browser-acceptance",
+      "phase": "verification",
+      "role": "acceptance-evidence",
+      "depends_on": [
+        "init-progressive-architecture-blueprint",
+        "prototype-baseline",
+        "implement-technical-architecture-archive"
+      ],
+      "feeds_into": [
+        "debug-runtime-feedback-loop"
+      ],
+      "primary_outputs": [
+        "qa primary surface",
+        "session governance",
+        "browser acceptance evidence",
+        "gate-compatible verification state"
+      ]
+    },
+    {
+      "id": "debug-runtime-feedback-loop",
+      "phase": "iteration-feedback",
+      "role": "evolution-input",
+      "depends_on": [
+        "init-progressive-architecture-blueprint",
+        "implement-technical-architecture-archive",
+        "qa-command-browser-acceptance"
+      ],
+      "feeds_into": [
+        "next-version-planning"
+      ],
+      "primary_outputs": [
+        "runtime feedback",
+        "debug issues",
+        "debug ideas",
+        "version iteration inputs"
+      ]
+    }
+  ],
+  "recommended_execution_order": [
+    "init-progressive-architecture-blueprint",
+    "qa-command-browser-acceptance",
+    "debug-runtime-feedback-loop",
+    "implement-technical-architecture-archive",
+    "prototype-baseline"
+  ],
+  "project_takeover_chain": [
+    "init",
+    "project-onboarding",
+    "prototype",
+    "implement",
+    "qa",
+    "gate",
+    "release",
+    "debug-feedback",
+    "next-version"
+  ],
+  "release_line": "v1.1.8"
+}

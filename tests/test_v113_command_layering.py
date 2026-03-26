@@ -19,6 +19,7 @@ def test_command_catalog_should_expose_layered_groups():
         "prototype",
         "test-case",
         "workflow",
+        "qa",
         "auto-test",
         "gate",
         "release",

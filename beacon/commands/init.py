@@ -36,6 +36,7 @@ def _init_impl(
     version: str,
     dry_run: bool,
     force: bool,
+    project_mode: str,
     with_claude: bool,
     with_agents: bool,
     with_context_guidance: bool,
@@ -43,6 +44,10 @@ def _init_impl(
     root = Path(project_root) if project_root else Path.cwd()
     apply = not dry_run
     version = resolve_target_version(root, version or None)
+    project_mode = str(project_mode or "greenfield").strip().lower()
+    if project_mode not in {"greenfield", "takeover"}:
+        typer.echo(json.dumps({"status": "failed", "reason_code": "invalid_project_mode", "project_mode": project_mode}, ensure_ascii=False, indent=2))
+        return 2
     actions: list[dict[str, str]] = []
 
     docs_paths = [
@@ -124,6 +129,45 @@ def _init_impl(
     boundaries_status = _write_if_apply(boundaries_path, boundaries_content, apply, force=False)
     actions.append({"scope": "docs", "action": boundaries_status, "path": str(boundaries_path.relative_to(root))})
 
+    architecture_path = root / "docs" / "beacon" / version / "execution" / "architecture-blueprint.md"
+    architecture_content = (
+        "# Architecture Blueprint\n\n"
+        f"- status: draft\n- project_mode: {project_mode}\n\n"
+        "## Scope\n- system positioning\n- module/service map\n- data flow\n- boundaries\n"
+    )
+    architecture_status = _write_if_apply(architecture_path, architecture_content, apply, force=False)
+    actions.append({"scope": "docs", "action": architecture_status, "path": str(architecture_path.relative_to(root))})
+
+    version_blueprint_path = root / "docs" / "beacon" / version / "execution" / "version-evolution-blueprint.md"
+    version_blueprint_content = (
+        "# Version Evolution Blueprint\n\n"
+        f"- status: draft\n- version: {version}\n- project_mode: {project_mode}\n\n"
+        "## Capability Map\n- planned\n- implemented\n- deprecated\n"
+    )
+    version_blueprint_status = _write_if_apply(version_blueprint_path, version_blueprint_content, apply, force=False)
+    actions.append({"scope": "docs", "action": version_blueprint_status, "path": str(version_blueprint_path.relative_to(root))})
+
+    archive_index_path = root / "docs" / "beacon" / version / "execution" / "implementation-archive-index.md"
+    archive_index_content = (
+        "# Implementation Archive Index\n\n"
+        "- status: draft\n"
+        "- technical implementation archives will be listed here by feature.\n"
+    )
+    archive_index_status = _write_if_apply(archive_index_path, archive_index_content, apply, force=False)
+    actions.append({"scope": "docs", "action": archive_index_status, "path": str(archive_index_path.relative_to(root))})
+
+    onboarding_doc_path = root / "docs" / "beacon" / version / "execution" / "project-lifecycle-onboarding.md"
+    onboarding_doc_content = (
+        "# Project Lifecycle Onboarding\n\n"
+        f"- project_mode: `{project_mode}`\n"
+        "- lifecycle_adoption_level: `2`\n"
+        "- recommended reading order:\n"
+        "  1. SUMMARY.md\n  2. execution/index.md\n  3. execution/architecture-blueprint.md\n"
+        "  4. prd/ user-story/ qa/test-cases/\n  5. .machine/\n"
+    )
+    onboarding_doc_status = _write_if_apply(onboarding_doc_path, onboarding_doc_content, apply, force=False)
+    actions.append({"scope": "docs", "action": onboarding_doc_status, "path": str(onboarding_doc_path.relative_to(root))})
+
     release_path = root / "docs" / "beacon" / version / "release" / f"{version}.md"
     release_content = f"# Release: {version}\n"
     release_status = _write_if_apply(release_path, release_content, apply, force=False)
@@ -147,10 +191,29 @@ def _init_impl(
             for item in ensure_eval_lab_skeleton(root, apply=apply)
         )
 
+    onboarding_state_path = root / ".beacon" / "state" / "project-onboarding.json"
+    onboarding_state = {
+        "schema_version": "1.0",
+        "project_mode": project_mode,
+        "lifecycle_adoption_level": 2,
+        "runtime_version": version,
+        "architecture_blueprint_ready": apply or architecture_path.exists(),
+        "version_blueprint_ready": apply or version_blueprint_path.exists(),
+        "implementation_archive_enabled": False,
+        "qa_managed": False,
+        "gate_managed": False,
+        "next_recommended_stage": "think" if project_mode == "greenfield" else "architecture-current-state",
+        "updated_at": now_iso(),
+    }
+    if apply:
+        write_json(onboarding_state_path, onboarding_state)
+    actions.append({"scope": "state", "action": "created" if apply else "planned", "path": str(onboarding_state_path.relative_to(root))})
+
     payload = {
         "schema_version": "1.0",
         "command": "beacon init",
         "version": version,
+        "project_mode": project_mode,
         "project_root": str(root),
         "dry_run": dry_run,
         "force": force,
@@ -183,6 +246,7 @@ def init_callback(
     ctx: typer.Context,
     project_root: Optional[str] = typer.Option("", "--project", "--project-root", "-p", help="Project root path"),
     version: str = typer.Option("auto", "--version", "-v", help="Target docs version"),
+    project_mode: str = typer.Option("greenfield", "--project-mode", help="Project mode: greenfield|takeover"),
     dry_run: bool = typer.Option(False, "--dry-run/--apply", help="Preview or apply"),
     force: bool = typer.Option(False, "--force", help="Force append managed blocks"),
     with_claude: bool = typer.Option(True, "--with-claude/--without-claude", help="Manage CLAUDE.md"),
@@ -200,6 +264,7 @@ def init_callback(
             version=version,
             dry_run=dry_run,
             force=force,
+            project_mode=project_mode,
             with_claude=with_claude,
             with_agents=with_agents,
             with_context_guidance=with_context_guidance,
@@ -211,6 +276,7 @@ def init_callback(
 def run(
     project_root: Optional[str] = typer.Option("", "--project", "-p", help="Project root path"),
     version: str = typer.Option("auto", "--version", "-v", help="Target docs version"),
+    project_mode: str = typer.Option("greenfield", "--project-mode", help="Project mode: greenfield|takeover"),
     dry_run: bool = typer.Option(False, "--dry-run/--apply", help="Preview or apply"),
     force: bool = typer.Option(False, "--force", help="Force append managed blocks"),
     with_claude: bool = typer.Option(True, "--with-claude/--without-claude", help="Manage CLAUDE.md"),
@@ -227,6 +293,7 @@ def run(
         version=version,
         dry_run=dry_run,
         force=force,
+        project_mode=project_mode,
         with_claude=with_claude,
         with_agents=with_agents,
         with_context_guidance=with_context_guidance,
@@ -238,6 +305,7 @@ def run(
 def init_project(
     project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
     version: str = typer.Option("auto", "--version", "-v", help="Target docs version"),
+    project_mode: str = typer.Option("greenfield", "--project-mode", help="Project mode: greenfield|takeover"),
     dry_run: bool = typer.Option(True, "--dry-run/--apply", help="Preview or apply"),
     force: bool = typer.Option(False, "--force", help="Force append managed blocks"),
     with_claude: bool = typer.Option(True, "--with-claude/--without-claude", help="Manage CLAUDE.md"),
@@ -254,6 +322,7 @@ def init_project(
         version=version,
         dry_run=dry_run,
         force=force,
+        project_mode=project_mode,
         with_claude=with_claude,
         with_agents=with_agents,
         with_context_guidance=with_context_guidance,

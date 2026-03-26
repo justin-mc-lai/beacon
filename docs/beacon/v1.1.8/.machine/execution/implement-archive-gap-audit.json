@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "version": "v1.1.8",
+  "feature": "beacon-implement-technical-architecture-archive",
+  "generated_at": "2026-03-26T13:00:00+00:00",
+  "status": "warn",
+  "audited_files": [
+    "beacon/commands/implement.py",
+    "docs/beacon/v1.1.4/prd/beacon-implement-skill-runner.md",
+    "docs/beacon/v1.1.4/execution/implementation-architecture-map.md"
+  ],
+  "findings": [
+    {
+      "id": "IMP-001",
+      "severity": "high",
+      "reason_code": "technical_archive_missing",
+      "summary": "Current implement flow writes implementation-summary but has no formal technical-implementation archive for engineers and takeover maintainers."
+    },
+    {
+      "id": "IMP-002",
+      "severity": "high",
+      "reason_code": "db_api_config_granularity_missing",
+      "summary": "Current implementation summary tracks changed_files / verification / artifact_updates but not CRUD, DB schema, API, config, env, queue/job, or rollback detail."
+    },
+    {
+      "id": "IMP-003",
+      "severity": "medium",
+      "reason_code": "multi_service_archive_missing",
+      "summary": "Current implement artifacts are not structured for multi-service technical archive views."
+    },
+    {
+      "id": "IMP-004",
+      "severity": "high",
+      "reason_code": "three_layer_traceability_missing",
+      "summary": "Current implement surface does not yet formalize runtime raw / machine archive / human archive three-layer mapping or the stable traceability keys needed for long-term archive retrieval."
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 # Beacon v1.1.7 Summary
 
 **主题**: 项目特定 skill profile、多 skill 内建能力、编排式 verify / accept gate  
-**状态**: Planned  
+**状态**: Implemented and Release-Ready  
 **日期**: 2026-03-25
 
 ---
@@ -18,7 +18,7 @@ v1.1.7 的目标不是继续补单点命令，而是补上 Beacon 在真实多�
 - 真实下游 STS 服务只支持 `JPG/PNG/PDF`；
 - 结果出现“文档通过、页面看似完成、UAT 实际失败”的合同漂移。
 
-因此 v1.1.7 需要新增：
+因此 v1.1.7 新增并已落地：
 
 1. **Beacon 内置 multi-skill 能力**
 2. **Project Profile / Project Skill Adapter**
@@ -29,9 +29,9 @@ v1.1.7 的目标不是继续补单点命令，而是补上 Beacon 在真实多�
 
 ---
 
-## 本版核心问题定义
+## 当前结论
 
-Beacon v1.1.7 已具备：
+Beacon v1.1.7 当前已经具备：
 
 - lifecycle closure
 - freeze / reopen
@@ -39,12 +39,13 @@ Beacon v1.1.7 已具备：
 - help / doctor advise / status / scoring
 - formal review accept
 
-但还缺少：
-
-- 按项目接入特定执行 skill 的标准机制
-- 按项目定义“真实验收路径”的 profile
-- 用 skill 编排 UAT / gateway / pipeline / SQL / logs 的执行器
-- 自动把“必须跑过的测试场景”变成 accept 前的阻断条件
+- multi-skill registry
+- project-specific profile
+- feature/stage skill binding
+- skill-backed orchestration
+- required evidence / must-run case gate
+- contract drift diagnosis
+- Rolo profile example（保持通用设计）
 
 ## 为什么要用 Rolo 做样板
 
