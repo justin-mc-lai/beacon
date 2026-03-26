@@ -20,12 +20,16 @@
 | TC-005 | contract | init 生成 `version-evolution-blueprint.md` | 版本演进蓝图存在 |
 | TC-006 | contract | init 生成 `project-lifecycle-onboarding.md` | 生命周期接管入口文档存在 |
 | TC-007 | contract | init 生成 `implementation-archive-index.md` | implement 技术归档索引存在 |
-| TC-008 | contract | init 设计支持 `.beacon/state/project-onboarding.json` | onboarding state 与 adoption level 语义明确 |
-| TC-009 | readability | 技术接手场景查看 architecture blueprint | 能快速理解系统结构与边界 |
-| TC-010 | readability | 技术查看 version blueprint | 能理解当前版与前后版本关系 |
-| TC-011 | lifecycle | 项目接管级别可表达 | 可区分 context_only/docs_managed/.../full_lifecycle_managed |
-| TC-012 | compatibility | 不破坏现有 managed context / doctor 机制 | 兼容现有 context block 体系 |
-| TC-013 | scope | 当前 v1.1.8 为设计线 | 文档明确 design-only，不误报已实现 |
+| TC-008 | contract | docs version / runtime version 分离 | `--version auto --runtime-version v1.1.8` 时，docs 落项目自身版本线，context 落 v1.1.8 |
+| TC-009 | contract | init 设计支持 `.beacon/state/project-onboarding.json` | onboarding state 与 adoption level 语义明确 |
+| TC-010 | readability | 技术接手场景查看 architecture blueprint | 能快速理解系统结构与边界 |
+| TC-011 | readability | 技术查看 version blueprint | 能理解当前版与前后版本关系 |
+| TC-012 | lifecycle | 项目接管级别可表达 | 可区分 context_only/docs_managed/.../full_lifecycle_managed |
+| TC-013 | compatibility | 不破坏现有 managed context / doctor 机制 | 兼容现有 context block 体系 |
+| TC-014 | contract | `resolve_target_version(auto)` 优先吃 onboarding docs_version | stray runtime 同名目录不会再抢占 docs line |
+| TC-015 | contract | status/help/doctor 输出双版本 | 明确输出 `docs_version` / `runtime_version` / `context_managed_version` |
+| TC-016 | diagnostics | doctor 检测 docs/runtime 分离漂移 | 能发现 runtime 同名 docs root 或分离语义异常 |
+| TC-017 | scope | 当前 v1.1.8 为设计线 | 文档明确 design-only，不误报已实现 |
 
 ## 样板场景
 
@@ -44,6 +48,17 @@
 ### 场景 D：生命周期接管判断
 - 项目已经 init 过，但还没启用 implement/qa/gate 全链
 - 预期：通过 onboarding state 能看出当前 adoption level 与下一步建议
+
+### 场景 E：老项目接入新 Beacon
+- 项目自身当前文档线是 `v0.1.0` 或 `v1.3.2`
+- 运行 Beacon runtime 是 `v1.1.8`
+- 预期：不会错误创建 `docs/beacon/v1.1.8/` 空版本线
+
+### 场景 F：项目里误出现 runtime 同名 docs root
+- onboarding docs line 是 `v0.1.0`
+- runtime line 是 `v1.1.8`
+- 目录里却出现 `docs/beacon/v1.1.8/`
+- 预期：doctor 给出可疑漂移告警，status/help 仍坚持使用 `v0.1.0`
 
 ## 执行语义
 

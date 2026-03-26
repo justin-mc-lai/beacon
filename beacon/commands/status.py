@@ -11,7 +11,7 @@ from beacon.utils.artifact_paths import machine_root, uses_machine_surface
 from beacon.utils.coverage import compute_coverage_metrics
 from beacon.utils.material_audit import build_material_audit
 from beacon.utils.runtime import newest_run_id, read_json
-from beacon.utils.versioning import resolve_target_version
+from beacon.utils.versioning import describe_project_version_context, resolve_target_version
 from beacon.utils.workflow_memory import compute_memory_metrics, compute_workflow_progress
 from beacon.utils.help_support import build_help_payload
 
@@ -72,6 +72,7 @@ def _status_impl(
         feature=feature_filter,
     )
     material_audit = build_material_audit(root, version=coverage_version, strict=False)
+    version_context = describe_project_version_context(root, docs_version=coverage_version or None)
     source_of_truth = {
         "root": f"docs/beacon/{coverage_version}",
         "human_root": f"docs/beacon/{coverage_version}",
@@ -107,6 +108,11 @@ def _status_impl(
             "blocking_reasons": help_payload.get("blocking_reasons", []),
         },
         "next_step": help_payload.get("next_step", {}),
+        "version_context": {
+            **version_context,
+            "docs_version": coverage_version,
+            "runtime_version": str(version_context.get("runtime_version", "") or help_payload.get("runtime_version", "")),
+        },
         "source_of_truth": source_of_truth,
         "workflow_progress": workflow_progress,
         "filters": {
@@ -130,6 +136,10 @@ def _status_impl(
         typer.echo(f"- coverage.ac: {coverage_metrics.get('tested_ac')}/{coverage_metrics.get('total_ac')}")
         typer.echo(f"- coverage.tc: {coverage_metrics.get('executed_tc')}/{coverage_metrics.get('total_tc')}")
         typer.echo(f"- coverage.full: {coverage_metrics.get('full_coverage')}")
+        typer.echo(f"- version.docs: {payload.get('version_context', {}).get('docs_version')}")
+        typer.echo(f"- version.runtime: {payload.get('version_context', {}).get('runtime_version')}")
+        if payload.get("version_context", {}).get("context_managed_version"):
+            typer.echo(f"- version.context: {payload.get('version_context', {}).get('context_managed_version')}")
         if payload.get("scores"):
             typer.echo(f"- score.test: {payload.get('scores', {}).get('test_score')}")
             typer.echo(f"- score.closure: {payload.get('scores', {}).get('closure_score')}")
@@ -148,6 +158,8 @@ def _status_impl(
             typer.echo(f"- workflow.run_id: {workflow_progress.get('run_id') or 'none'}")
             typer.echo(f"- workflow.version: {workflow_progress.get('version') or 'none'}")
             typer.echo(f"- workflow.feature: {workflow_progress.get('feature') or 'none'}")
+            typer.echo(f"- version.docs_source: {payload.get('version_context', {}).get('docs_version_source') or 'none'}")
+            typer.echo(f"- version.runtime_source: {payload.get('version_context', {}).get('runtime_version_source') or 'none'}")
             typer.echo(f"- revision.id: {payload.get('revision', {}).get('revision_id') or 'none'}")
             typer.echo(f"- revision.doc_status: {payload.get('revision', {}).get('doc_status') or 'none'}")
             typer.echo(f"- revision.delivery_status: {payload.get('revision', {}).get('delivery_status') or 'none'}")

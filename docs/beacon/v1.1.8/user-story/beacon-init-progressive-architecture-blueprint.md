@@ -27,6 +27,15 @@
 ### US-006: init 初始化项目生命周期接管基线
 作为 Beacon 使用者，我希望 init 不只建文档，还能初始化项目的生命周期接管状态，以便 Beacon 后续真正接管项目开发。
 
+### US-007: init 区分项目文档版本与 Beacon 运行时版本
+作为 Beacon 使用者，我希望项目 docs 版本线和 Beacon runtime 版本分离，以便老项目能接入最新 Beacon，而不会误创建错误的项目版本目录。
+
+### US-008: status / help / doctor 显式展示双版本上下文
+作为 Beacon 使用者，我希望导航和诊断面同时展示 docs_version 与 runtime_version，以便我知道自己在看哪条项目线、运行哪条 Beacon 线。
+
+### US-009: doctor 主动发现版本分离漂移
+作为 Beacon 使用者，我希望 doctor 能主动发现 docs/runtime 重新耦合、context marker 漂移和 runtime 同名 docs root 误建，以便问题在扩散前就被发现。
+
 ## Acceptance Criteria
 
 | AC ID | Theme | Description |
@@ -38,11 +47,14 @@
 | AC-005 | Version Blueprint | init 生成 `execution/version-evolution-blueprint.md` |
 | AC-006 | Onboarding Doc | init 生成 `execution/project-lifecycle-onboarding.md` |
 | AC-007 | Archive Index | init 生成 `execution/implementation-archive-index.md` |
-| AC-008 | Adoption State | init 设计支持 `.beacon/state/project-onboarding.json` 与 `lifecycle_adoption_level` |
-| AC-009 | Technical Readability | 技术架构蓝图适合技术查看，不只是产品文案 |
-| AC-010 | Evolution Readability | 版本蓝图能够支持版本递进对照 |
-| AC-011 | Context Compatibility | 新设计不破坏现有 managed block / doctor context 机制 |
-| AC-012 | Design Scope | v1.1.8 当前先冻结 init 增强设计，不宣称已实现 |
+| AC-008 | Version Separation | init 支持 `docs_version` 与 `runtime_version` 语义分离 |
+| AC-009 | Adoption State | init 设计支持 `.beacon/state/project-onboarding.json` 与 `lifecycle_adoption_level` |
+| AC-010 | Technical Readability | 技术架构蓝图适合技术查看，不只是产品文案 |
+| AC-011 | Evolution Readability | 版本蓝图能够支持版本递进对照 |
+| AC-012 | Context Compatibility | 新设计不破坏现有 managed block / doctor context 机制 |
+| AC-013 | Dual-Version Navigation | status/help/doctor 显式输出 `docs_version` / `runtime_version` / `context_managed_version` |
+| AC-014 | Drift Detection | doctor 能识别 docs/runtime 分离漂移与 runtime 同名 docs root 可疑误建 |
+| AC-015 | Design Scope | v1.1.8 当前先冻结 init 增强设计，不宣称已实现 |
 
 ## 风险与提醒
 
@@ -50,3 +62,6 @@
 - 若没有 architecture blueprint，接手项目仍要靠口口相传或自己翻代码
 - 若没有 version blueprint，版本递进关系会越来越模糊
 - 若没有 onboarding state 与 adoption level，Beacon 很难判断项目到底被接管到什么深度
+- 若不分离 docs version 与 runtime version，老项目接入最新 Beacon 时会错误生成新的项目版本线
+- 若 status/help/doctor 不显式展示双版本，使用者仍会把 docs line 和 Beacon runtime line 混淆
+- 若 doctor 不主动发现漂移，错误目录和错误 context marker 可能再次沉积到项目中

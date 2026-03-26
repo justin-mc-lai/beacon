@@ -90,6 +90,10 @@ def test_help_payload_should_recommend_freeze_then_implement_then_quality(tmp_pa
 
     # Draft state -> freeze
     payload = build_help_payload(tmp_path, version=VERSION, feature=FEATURE)
+    assert payload["docs_version"] == VERSION
+    assert payload["runtime_version"] == "v1.1.8"
+    assert payload["version_context"]["docs_version"] == VERSION
+    assert payload["version_context"]["runtime_version"] == "v1.1.8"
     assert payload["next_step"]["action"] == "freeze"
     assert payload["blocked"] is True
     assert "revision_not_frozen" in payload["blocking_reasons"]

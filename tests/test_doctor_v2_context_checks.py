@@ -14,6 +14,7 @@ from beacon.utils.context_files import (
     build_default_agents_managed_block,
     build_default_claude_managed_block,
 )
+from beacon.utils.runtime import write_json
 
 
 runner = CliRunner()
@@ -91,3 +92,33 @@ def test_clean_managed_files_should_not_trigger_new_context_incompatibilities(tm
     assert "context_files_presence" not in names
     assert "managed_block_integrity" not in names
     assert "managed_block_version_drift" not in names
+
+
+def test_doctor_should_report_dual_versions_and_warn_on_suspicious_runtime_named_docs_root(tmp_path: Path):
+    _prepare_basic_project(tmp_path)
+    docs_root = tmp_path / "docs" / "beacon"
+    (docs_root / "v0.1.0" / "execution").mkdir(parents=True, exist_ok=True)
+    (docs_root / "v1.1.8" / "execution").mkdir(parents=True, exist_ok=True)
+    (docs_root / "v1.1.8" / "SUMMARY.md").write_text("# Beacon Summary\n", encoding="utf-8")
+    write_json(
+        tmp_path / ".beacon" / "state" / "project-onboarding.json",
+        {
+            "schema_version": "1.0",
+            "docs_version": "v0.1.0",
+            "runtime_version": "v1.1.8",
+        },
+    )
+    agents, claude = _managed_context("v1.1.8")
+    (tmp_path / "AGENTS.md").write_text(agents, encoding="utf-8")
+    (tmp_path / "CLAUDE.md").write_text(claude, encoding="utf-8")
+
+    result = _invoke(["doctor", "--json", "--project-root", str(tmp_path)])
+    assert result.exit_code == 0
+    payload = json.loads(result.stdout)
+
+    assert payload["docs_version"] == "v0.1.0"
+    assert payload["runtime_version"] == "v1.1.8"
+    assert payload["project"]["active_docs_version"] == "v0.1.0"
+    assert payload["project"]["active_runtime_version"] == "v1.1.8"
+    assert "docs_runtime_separation_integrity" not in _incompatibility_names(payload)
+    assert "suspicious_runtime_named_docs_root" in _incompatibility_names(payload)

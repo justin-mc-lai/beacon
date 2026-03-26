@@ -45,5 +45,8 @@ def test_status_should_report_v115_machine_root(tmp_path: Path):
     assert result.exit_code == 0, result.stdout
     payload = json.loads(result.stdout)
     source = payload["source_of_truth"]
+    version_context = payload["version_context"]
     assert source["root"] == "docs/beacon/v1.1.5"
     assert source["machine_root"] == "docs/beacon/v1.1.5/.machine"
+    assert version_context["docs_version"] == "v1.1.5"
+    assert version_context["runtime_version"] == "v1.1.8"

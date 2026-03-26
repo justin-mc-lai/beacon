@@ -17,6 +17,31 @@
 3. `AGENTS.md` 主入口里，Beacon 应该如何做渐进式披露，避免 agent/技术一下子掉进细节里？
 4. 项目是否应有一份技术架构主文档和版本演进蓝图，作为后续实现、验收、接手的对照面？
 
+### 1.1 必须区分“项目 docs version”和“Beacon runtime version”
+
+这是这条设计线的关键约束之一：
+
+- **项目 docs version**
+  - 决定写到哪个 `docs/beacon/<version>/`
+  - 应该跟随项目自身的业务/交付版本线
+
+- **Beacon runtime version**
+  - 决定 `AGENTS.md / CLAUDE.md` 中 Beacon managed guidance 的版本标记
+  - 应该跟随当前安装/使用的 Beacon 工具版本
+
+两者不能混为一谈。
+
+否则会出现错误场景：
+
+- 用户只是想用最新 Beacon `v1.1.8` 初始化一个老项目
+- 结果系统错误地在项目里创建了 `docs/beacon/v1.1.8/`
+- 但这个 `v1.1.8` 并不是项目自己的业务版本
+
+所以 v1.1.8 必须明确支持：
+
+- `--version`：项目 docs version
+- `--runtime-version`：Beacon runtime version
+
 ## 2. 第一性原理结论
 
 ### 2.1 init 不只是“建目录”
@@ -30,6 +55,7 @@
 - **技术阅读顺序定义器**
 - **架构蓝图初始落盘器**
 - **生命周期接管基线初始化器**
+- **项目版本线与 Beacon 运行时版本的分离器**
 
 ### 2.2 AGENTS.md 主入口需要渐进式披露
 
@@ -127,6 +153,84 @@ Beacon 应明确：
 - `--project-mode greenfield`
 - `--project-mode takeover`
 
+## 5.1.1 版本语义分离
+
+建议 `init` 支持：
+
+- `--version <docs_version>`
+- `--runtime-version <beacon_runtime_version>`
+
+默认规则：
+
+- `--version auto`
+  - 解析项目已有 `docs/beacon/` 的最新项目版本线
+- `--runtime-version`
+  - 默认使用当前 Beacon toolkit version
+
+例如：
+
+```bash
+python3 -m beacon.main init \
+  --project /path/to/project \
+  --version auto \
+  --runtime-version v1.1.8 \
+  --project-mode takeover \
+  --apply
+```
+
+其含义应是：
+
+- 文档落到项目自己的版本线
+- context guidance 使用 Beacon `v1.1.8`
+
+## 5.1.2 版本解析与导航必须全链路使用双解析器
+
+除了 `init`，v1.1.8 还必须把版本语义推进到运行期：
+
+- `resolve_docs_version()`
+  - 只负责解析项目 docs line
+  - `auto` 优先读取 `.beacon/state/project-onboarding.json.docs_version`
+
+- `resolve_runtime_version()`
+  - 只负责解析 Beacon runtime line
+  - 默认跟随当前 Beacon toolkit version
+
+兼容别名：
+
+- `resolve_target_version()`
+  - 仍保留
+  - 但内部必须等价于 `resolve_docs_version()`
+
+这样才能确保：
+
+- 后续 `status/help/workflow/...` 不会再因为误扫到某个 runtime 同名目录而漂移
+- docs line 与 runtime line 可以独立演进
+
+## 5.1.3 status / help / doctor 必须显式输出双版本
+
+以下导航面必须同时展示：
+
+- `docs_version`
+- `runtime_version`
+- `context_managed_version`
+
+原因是 Beacon 需要回答：
+
+- 当前我在操作哪条项目 docs 线？
+- 当前我运行的是哪条 Beacon runtime 线？
+- 当前项目的 managed context marker 写入的是哪条线？
+
+## 5.1.4 doctor 必须有版本分离漂移检查
+
+doctor 需要新增至少以下能力：
+
+- 检查 onboarding 中 `docs_version` / `runtime_version` 是否完整
+- 检查 context managed marker 是否与 runtime 线一致
+- 检查是否出现“runtime 同名 docs root”误建
+- 检查 docs line 与 runtime line 是否再次被混用
+
+这类问题应作为兼容性诊断的一等问题，而不是只靠人工发现
+
 ### Greenfield
 适合：
 - 新项目
@@ -187,6 +291,8 @@ docs/beacon/<version>/execution/
 
 ### `project-lifecycle-onboarding.md`
 至少包含：
+- `docs_version`
+- `runtime_version`
 - 当前项目模式（greenfield / takeover）
 - 当前接管级别
 - 已启用的 Beacon stage
@@ -220,6 +326,7 @@ docs/beacon/<version>/execution/
 
 - `project_mode`
 - `lifecycle_adoption_level`
+- `docs_version`
 - `runtime_version`
 - `architecture_blueprint_ready`
 - `version_blueprint_ready`
@@ -257,48 +364,70 @@ docs/beacon/<version>/execution/
 
 init 设计上必须支持 greenfield / takeover 两类模式。
 
-### FR-002 init 生成技术架构蓝图主文档
+### FR-002 init 必须区分 docs version 与 runtime version
+
+设计上必须支持：
+
+- `--version` 只控制项目文档版本线
+- `--runtime-version` 只控制 Beacon managed runtime guidance 版本
+
+### FR-003 init 生成技术架构蓝图主文档
 
 至少生成：
 - `execution/architecture-blueprint.md`
 - `execution/version-evolution-blueprint.md`
 
-### FR-003 init 生成 implement 技术归档索引
+### FR-004 init 生成 implement 技术归档索引
 
 至少生成：
 - `execution/implementation-archive-index.md`
 
-### FR-004 init 生成 lifecycle onboarding 文档
+### FR-005 init 生成 lifecycle onboarding 文档
 
 至少生成：
 - `execution/project-lifecycle-onboarding.md`
 
-### FR-005 AGENTS 主入口补齐渐进式披露
+### FR-006 AGENTS 主入口补齐渐进式披露
 
 managed AGENTS block 必须明确技术/agent 的推荐阅读顺序。
 
-### FR-006 AGENTS 主入口区分 greenfield / takeover
+### FR-007 AGENTS 主入口区分 greenfield / takeover
 
 同一套 Beacon guidance 中应给出两类项目的不同入口建议。
 
-### FR-007 architecture blueprint 必须适合技术查看
+### FR-008 architecture blueprint 必须适合技术查看
 
 文档必须是技术可消费的，不是纯产品描述。
 
-### FR-008 version blueprint 必须表达递进版本演进
+### FR-009 version blueprint 必须表达递进版本演进
 
 能够对照当前版 / 上一版 / 下一版方向。
 
-### FR-009 init 必须表达 lifecycle adoption level
+### FR-010 init 必须表达 lifecycle adoption level
 
 设计上必须支持接管级别语义，而不是只表达“是否 init 过”。
 
-### FR-010 init 必须落盘 project onboarding state
+### FR-011 init 必须落盘 project onboarding state
 
 至少支持：
 - `.beacon/state/project-onboarding.json`
 
-### FR-011 当前版本先冻结设计语义
+### FR-012 status/help/doctor 输出双版本上下文
+
+至少应显式输出：
+
+- `docs_version`
+- `runtime_version`
+- `context_managed_version`
+
+### FR-013 doctor 增加版本分离漂移检查
+
+至少支持：
+
+- `docs_runtime_separation_integrity`
+- runtime 同名 docs root 可疑检测
+
+### FR-014 当前版本先冻结设计语义
 
 v1.1.8 当前只冻结 init 的增强设计，不宣称已实现。
 

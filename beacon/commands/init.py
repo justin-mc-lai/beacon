@@ -11,7 +11,7 @@ import typer
 from beacon.utils.artifact_paths import machine_execution_dir, machine_qa_dir, uses_machine_surface
 from beacon.utils.runtime import now_iso, write_json
 from beacon.utils.v115_delivery import ensure_eval_lab_skeleton, ensure_human_primary_indexes
-from beacon.utils.versioning import resolve_target_version
+from beacon.utils.versioning import resolve_docs_version, resolve_runtime_version
 
 app = typer.Typer(
     name="init",
@@ -37,13 +37,15 @@ def _init_impl(
     dry_run: bool,
     force: bool,
     project_mode: str,
+    runtime_version: str,
     with_claude: bool,
     with_agents: bool,
     with_context_guidance: bool,
 ) -> int:
     root = Path(project_root) if project_root else Path.cwd()
     apply = not dry_run
-    version = resolve_target_version(root, version or None)
+    docs_version = resolve_docs_version(root, version or None)
+    effective_runtime_version = resolve_runtime_version(root, runtime_version)
     project_mode = str(project_mode or "greenfield").strip().lower()
     if project_mode not in {"greenfield", "takeover"}:
         typer.echo(json.dumps({"status": "failed", "reason_code": "invalid_project_mode", "project_mode": project_mode}, ensure_ascii=False, indent=2))
@@ -51,18 +53,18 @@ def _init_impl(
     actions: list[dict[str, str]] = []
 
     docs_paths = [
-        root / "docs" / "beacon" / version,
-        root / "docs" / "beacon" / version / "prd",
-        root / "docs" / "beacon" / version / "user-story",
-        root / "docs" / "beacon" / version / "qa" / "test-cases",
-        root / "docs" / "beacon" / version / "release",
-        root / "docs" / "beacon" / version / "execution",
+        root / "docs" / "beacon" / docs_version,
+        root / "docs" / "beacon" / docs_version / "prd",
+        root / "docs" / "beacon" / docs_version / "user-story",
+        root / "docs" / "beacon" / docs_version / "qa" / "test-cases",
+        root / "docs" / "beacon" / docs_version / "release",
+        root / "docs" / "beacon" / docs_version / "execution",
     ]
-    if uses_machine_surface(version):
+    if uses_machine_surface(docs_version, runtime_version=effective_runtime_version):
         docs_paths.extend(
             [
-                machine_execution_dir(root, version),
-                machine_qa_dir(root, version),
+                machine_execution_dir(root, docs_version),
+                machine_qa_dir(root, docs_version),
             ]
         )
     for p in docs_paths:
@@ -75,7 +77,7 @@ def _init_impl(
 
         context_setup = setup_context_files(
             project_root=root,
-            runtime_version=version,
+            runtime_version=effective_runtime_version,
             dry_run=dry_run,
             force=force,
             with_claude=with_claude,
@@ -119,17 +121,17 @@ def _init_impl(
     if apply:
         (root / ".beacon").mkdir(parents=True, exist_ok=True)
 
-    summary_path = root / "docs" / "beacon" / version / "SUMMARY.md"
+    summary_path = root / "docs" / "beacon" / docs_version / "SUMMARY.md"
     summary_content = "# Beacon Summary\n\n- status: draft\n"
     summary_status = _write_if_apply(summary_path, summary_content, apply, force=False)
     actions.append({"scope": "docs", "action": summary_status, "path": str(summary_path.relative_to(root))})
 
-    boundaries_path = root / "docs" / "beacon" / version / "execution" / "boundaries.md"
+    boundaries_path = root / "docs" / "beacon" / docs_version / "execution" / "boundaries.md"
     boundaries_content = "# Boundaries\n\n- status: draft\n"
     boundaries_status = _write_if_apply(boundaries_path, boundaries_content, apply, force=False)
     actions.append({"scope": "docs", "action": boundaries_status, "path": str(boundaries_path.relative_to(root))})
 
-    architecture_path = root / "docs" / "beacon" / version / "execution" / "architecture-blueprint.md"
+    architecture_path = root / "docs" / "beacon" / docs_version / "execution" / "architecture-blueprint.md"
     architecture_content = (
         "# Architecture Blueprint\n\n"
         f"- status: draft\n- project_mode: {project_mode}\n\n"
@@ -138,16 +140,16 @@ def _init_impl(
     architecture_status = _write_if_apply(architecture_path, architecture_content, apply, force=False)
     actions.append({"scope": "docs", "action": architecture_status, "path": str(architecture_path.relative_to(root))})
 
-    version_blueprint_path = root / "docs" / "beacon" / version / "execution" / "version-evolution-blueprint.md"
+    version_blueprint_path = root / "docs" / "beacon" / docs_version / "execution" / "version-evolution-blueprint.md"
     version_blueprint_content = (
         "# Version Evolution Blueprint\n\n"
-        f"- status: draft\n- version: {version}\n- project_mode: {project_mode}\n\n"
+        f"- status: draft\n- version: {docs_version}\n- runtime_version: {effective_runtime_version}\n- project_mode: {project_mode}\n\n"
         "## Capability Map\n- planned\n- implemented\n- deprecated\n"
     )
     version_blueprint_status = _write_if_apply(version_blueprint_path, version_blueprint_content, apply, force=False)
     actions.append({"scope": "docs", "action": version_blueprint_status, "path": str(version_blueprint_path.relative_to(root))})
 
-    archive_index_path = root / "docs" / "beacon" / version / "execution" / "implementation-archive-index.md"
+    archive_index_path = root / "docs" / "beacon" / docs_version / "execution" / "implementation-archive-index.md"
     archive_index_content = (
         "# Implementation Archive Index\n\n"
         "- status: draft\n"
@@ -156,9 +158,11 @@ def _init_impl(
     archive_index_status = _write_if_apply(archive_index_path, archive_index_content, apply, force=False)
     actions.append({"scope": "docs", "action": archive_index_status, "path": str(archive_index_path.relative_to(root))})
 
-    onboarding_doc_path = root / "docs" / "beacon" / version / "execution" / "project-lifecycle-onboarding.md"
+    onboarding_doc_path = root / "docs" / "beacon" / docs_version / "execution" / "project-lifecycle-onboarding.md"
     onboarding_doc_content = (
         "# Project Lifecycle Onboarding\n\n"
+        f"- docs_version: `{docs_version}`\n"
+        f"- runtime_version: `{effective_runtime_version}`\n"
         f"- project_mode: `{project_mode}`\n"
         "- lifecycle_adoption_level: `2`\n"
         "- recommended reading order:\n"
@@ -168,19 +172,19 @@ def _init_impl(
     onboarding_doc_status = _write_if_apply(onboarding_doc_path, onboarding_doc_content, apply, force=False)
     actions.append({"scope": "docs", "action": onboarding_doc_status, "path": str(onboarding_doc_path.relative_to(root))})
 
-    release_path = root / "docs" / "beacon" / version / "release" / f"{version}.md"
-    release_content = f"# Release: {version}\n"
+    release_path = root / "docs" / "beacon" / docs_version / "release" / f"{docs_version}.md"
+    release_content = f"# Release: {docs_version}\n"
     release_status = _write_if_apply(release_path, release_content, apply, force=False)
     actions.append({"scope": "docs", "action": release_status, "path": str(release_path.relative_to(root))})
 
-    if uses_machine_surface(version):
+    if uses_machine_surface(docs_version, runtime_version=effective_runtime_version):
         actions.extend(
             {
                 "scope": "docs",
                 "action": item["action"],
                 "path": item["path"],
             }
-            for item in ensure_human_primary_indexes(root, version=version, apply=apply)
+            for item in ensure_human_primary_indexes(root, version=docs_version, apply=apply)
         )
         actions.extend(
             {
@@ -196,7 +200,8 @@ def _init_impl(
         "schema_version": "1.0",
         "project_mode": project_mode,
         "lifecycle_adoption_level": 2,
-        "runtime_version": version,
+        "docs_version": docs_version,
+        "runtime_version": effective_runtime_version,
         "architecture_blueprint_ready": apply or architecture_path.exists(),
         "version_blueprint_ready": apply or version_blueprint_path.exists(),
         "implementation_archive_enabled": False,
@@ -212,7 +217,9 @@ def _init_impl(
     payload = {
         "schema_version": "1.0",
         "command": "beacon init",
-        "version": version,
+        "docs_version": docs_version,
+        "version": docs_version,
+        "runtime_version": effective_runtime_version,
         "project_mode": project_mode,
         "project_root": str(root),
         "dry_run": dry_run,
@@ -225,7 +232,7 @@ def _init_impl(
         "conflicts": [],
     }
 
-    report_dir = root / "docs" / "beacon" / version / "execution"
+    report_dir = root / "docs" / "beacon" / docs_version / "execution"
     report_json = report_dir / "init-report.json"
     report_md = report_dir / "init-report.md"
     if apply:
@@ -245,7 +252,8 @@ def _init_impl(
 def init_callback(
     ctx: typer.Context,
     project_root: Optional[str] = typer.Option("", "--project", "--project-root", "-p", help="Project root path"),
-    version: str = typer.Option("auto", "--version", "-v", help="Target docs version"),
+    version: str = typer.Option("auto", "--version", "-v", help="Target project docs version (auto=project latest docs semver)"),
+    runtime_version: str = typer.Option("auto", "--runtime-version", help="Beacon runtime version for managed context guidance (default: active toolkit version)"),
     project_mode: str = typer.Option("greenfield", "--project-mode", help="Project mode: greenfield|takeover"),
     dry_run: bool = typer.Option(False, "--dry-run/--apply", help="Preview or apply"),
     force: bool = typer.Option(False, "--force", help="Force append managed blocks"),
@@ -265,6 +273,7 @@ def init_callback(
             dry_run=dry_run,
             force=force,
             project_mode=project_mode,
+            runtime_version=runtime_version,
             with_claude=with_claude,
             with_agents=with_agents,
             with_context_guidance=with_context_guidance,
@@ -275,7 +284,8 @@ def init_callback(
 @app.command()
 def run(
     project_root: Optional[str] = typer.Option("", "--project", "-p", help="Project root path"),
-    version: str = typer.Option("auto", "--version", "-v", help="Target docs version"),
+    version: str = typer.Option("auto", "--version", "-v", help="Target project docs version (auto=project latest docs semver)"),
+    runtime_version: str = typer.Option("auto", "--runtime-version", help="Beacon runtime version for managed context guidance (default: active toolkit version)"),
     project_mode: str = typer.Option("greenfield", "--project-mode", help="Project mode: greenfield|takeover"),
     dry_run: bool = typer.Option(False, "--dry-run/--apply", help="Preview or apply"),
     force: bool = typer.Option(False, "--force", help="Force append managed blocks"),
@@ -294,6 +304,7 @@ def run(
         dry_run=dry_run,
         force=force,
         project_mode=project_mode,
+        runtime_version=runtime_version,
         with_claude=with_claude,
         with_agents=with_agents,
         with_context_guidance=with_context_guidance,
@@ -304,7 +315,8 @@ def run(
 @app.command("init-project")
 def init_project(
     project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
-    version: str = typer.Option("auto", "--version", "-v", help="Target docs version"),
+    version: str = typer.Option("auto", "--version", "-v", help="Target project docs version (auto=project latest docs semver)"),
+    runtime_version: str = typer.Option("auto", "--runtime-version", help="Beacon runtime version for managed context guidance (default: active toolkit version)"),
     project_mode: str = typer.Option("greenfield", "--project-mode", help="Project mode: greenfield|takeover"),
     dry_run: bool = typer.Option(True, "--dry-run/--apply", help="Preview or apply"),
     force: bool = typer.Option(False, "--force", help="Force append managed blocks"),
@@ -323,6 +335,7 @@ def init_project(
         dry_run=dry_run,
         force=force,
         project_mode=project_mode,
+        runtime_version=runtime_version,
         with_claude=with_claude,
         with_agents=with_agents,
         with_context_guidance=with_context_guidance,

@@ -17,7 +17,7 @@ from beacon.utils.scoring import (
     compute_test_score,
 )
 from beacon.utils.story_state import load_story_state, summarize_story_items, feature_slug
-from beacon.utils.versioning import resolve_target_version
+from beacon.utils.versioning import describe_project_version_context, resolve_docs_version
 from beacon.utils.workflow_memory import compute_workflow_progress, resolve_workflow_run_id
 
 
@@ -199,7 +199,8 @@ def build_help_payload(
     feature: str | None = None,
     run_id: str | None = None,
 ) -> dict[str, Any]:
-    resolved_version = resolve_target_version(project_root, version)
+    version_context = describe_project_version_context(project_root, docs_version=version or None)
+    resolved_version = str(version_context.get("docs_version", "") or resolve_docs_version(project_root, version))
     feature_name = feature or ""
     revision_state = load_revision_state(project_root, version=resolved_version, feature=feature_name, create_if_missing=False)
     story_state = load_story_state(
@@ -238,6 +239,9 @@ def build_help_payload(
     }
     return {
         "schema_version": "1.0",
+        "docs_version": resolved_version,
+        "runtime_version": str(version_context.get("runtime_version", "") or ""),
+        "version_context": version_context,
         "feature": feature_name,
         "feature_slug": feature_slug(feature_name),
         "version": resolved_version,

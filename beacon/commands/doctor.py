@@ -14,7 +14,7 @@ from beacon.utils.doctor_setup import install_launchers, resolve_bin_dir, uninst
 from beacon.utils.help_navigation import build_doctor_advise_payload
 from beacon.utils.material_audit import build_delivery_audit, build_material_audit
 from beacon.utils.v115_delivery import repair_v115_delivery_package
-from beacon.utils.versioning import resolve_target_version
+from beacon.utils.versioning import describe_project_version_context, resolve_target_version
 
 app = typer.Typer(
     name="doctor",
@@ -46,8 +46,13 @@ def _print_doctor_report(payload: dict[str, Any]) -> None:
     typer.echo("\nProject Iteration")
     typer.echo("-" * 40)
     typer.echo(f"project_root      : {project.get('project_root', '')}")
-    typer.echo(f"latest_iteration  : {project.get('latest_iteration_version', '')}")
-    typer.echo(f"version_source    : {project.get('version_source', '')}")
+    typer.echo(f"docs_version      : {project.get('active_docs_version', project.get('latest_iteration_version', ''))}")
+    typer.echo(f"runtime_version   : {project.get('active_runtime_version', '')}")
+    typer.echo(f"context_version   : {project.get('context_managed_version', '')}")
+    typer.echo(f"docs_source       : {project.get('version_source', '')}")
+    typer.echo(f"runtime_source    : {project.get('runtime_version_source', '')}")
+    typer.echo(f"onboarding_docs   : {project.get('onboarding_docs_version', '')}")
+    typer.echo(f"onboarding_runtime: {project.get('onboarding_runtime_version', '')}")
     typer.echo(f"available_versions: {project.get('available_versions', [])}")
 
     incompatibilities = payload.get("incompatibilities", [])
@@ -135,7 +140,9 @@ def _print_advise_result(payload: dict[str, Any]) -> None:
     typer.echo("Beacon Doctor - Advice")
     typer.echo("=" * 24)
     typer.echo(f"feature         : {payload.get('feature') or 'N/A'}")
-    typer.echo(f"version         : {payload.get('version') or 'N/A'}")
+    typer.echo(f"docs_version    : {payload.get('docs_version') or payload.get('version') or 'N/A'}")
+    typer.echo(f"runtime_version : {payload.get('runtime_version') or 'N/A'}")
+    typer.echo(f"context_version : {payload.get('context_managed_version') or 'N/A'}")
     typer.echo(f"run_id          : {payload.get('run_id') or 'N/A'}")
     typer.echo(f"revision_id     : {payload.get('revision_id') or 'N/A'}")
     typer.echo(f"current_stage   : {payload.get('current_stage') or 'N/A'}")
@@ -322,6 +329,7 @@ def setup_context(
     root = Path(project_root) if project_root else Path.cwd()
     runtime = collect_runtime_info()
     runtime_version = str(runtime.get("toolkit_version") or runtime.get("package_version") or "v1.0.0")
+    version_context = describe_project_version_context(root, runtime_version=runtime_version)
     result = setup_context_files(
         project_root=root,
         runtime_version=runtime_version,
@@ -334,6 +342,9 @@ def setup_context(
         "schema_version": "2.0",
         "action": "setup-context",
         "status": "PASS",
+        "docs_version": version_context.get("docs_version", ""),
+        "runtime_version": runtime_version,
+        "version_context": version_context,
         "result": result,
     }
     if json_output:
@@ -341,6 +352,8 @@ def setup_context(
     else:
         typer.echo("Beacon Doctor Context Setup")
         typer.echo("=" * 27)
+        typer.echo(f"docs_version: {payload.get('docs_version')}")
+        typer.echo(f"runtime_version: {payload.get('runtime_version')}")
         for item in result.get("actions", []):
             typer.echo(f"- {item.get('file')}: {item.get('action')} ({item.get('merge_mode')})")
         typer.echo(f"Overall: {payload.get('status')}")
@@ -358,6 +371,7 @@ def verify_context(
     root = Path(project_root) if project_root else Path.cwd()
     runtime = collect_runtime_info()
     runtime_version = str(runtime.get("toolkit_version") or runtime.get("package_version") or "v1.0.0")
+    version_context = describe_project_version_context(root, runtime_version=runtime_version)
     result = verify_context_files(
         project_root=root,
         runtime_version=runtime_version,
@@ -368,6 +382,9 @@ def verify_context(
         "schema_version": "2.0",
         "action": "verify-context",
         "status": status_map.get(str(result.get("status", "warn")).lower(), "WARN"),
+        "docs_version": version_context.get("docs_version", ""),
+        "runtime_version": runtime_version,
+        "version_context": version_context,
         "result": result,
     }
     if strict and payload["status"] == "WARN":
@@ -377,6 +394,8 @@ def verify_context(
     else:
         typer.echo("Beacon Doctor Context Verify")
         typer.echo("=" * 28)
+        typer.echo(f"docs_version: {payload.get('docs_version')}")
+        typer.echo(f"runtime_version: {payload.get('runtime_version')}")
         for item in result.get("checks", []):
             item_status = status_map.get(str(item.get("status", "warn")).lower(), "WARN")
             typer.echo(

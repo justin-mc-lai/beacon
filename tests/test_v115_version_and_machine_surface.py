@@ -8,7 +8,8 @@ from typer.testing import CliRunner
 from beacon.main import app
 from beacon.utils.artifact_paths import uses_machine_surface
 from beacon.utils.coverage import compute_coverage_metrics
-from beacon.utils.versioning import resolve_target_version
+from beacon.utils.runtime import write_json
+from beacon.utils.versioning import resolve_docs_version, resolve_runtime_version, resolve_target_version
 
 
 runner = CliRunner()
@@ -63,6 +64,36 @@ def test_resolve_target_version_auto_should_prefer_current_runtime_release(tmp_p
     assert resolve_target_version(tmp_path, None) == "v1.1.4"
     assert resolve_target_version(tmp_path, "latest-docs") == "v1.1.5"
     assert resolve_target_version(tmp_path, "v1.1.5") == "v1.1.5"
+
+
+def test_resolve_target_version_auto_should_prefer_onboarding_docs_version(tmp_path: Path):
+    _seed_release_repo(tmp_path)
+    (tmp_path / ".beacon" / "state").mkdir(parents=True, exist_ok=True)
+    write_json(
+        tmp_path / ".beacon" / "state" / "project-onboarding.json",
+        {
+            "schema_version": "1.0",
+            "docs_version": "v0.1.0",
+            "runtime_version": "v1.1.8",
+        },
+    )
+
+    assert resolve_docs_version(tmp_path, "auto") == "v0.1.0"
+    assert resolve_target_version(tmp_path, "auto") == "v0.1.0"
+
+
+def test_resolve_runtime_version_auto_should_follow_active_toolkit_version(tmp_path: Path):
+    (tmp_path / ".beacon" / "state").mkdir(parents=True, exist_ok=True)
+    write_json(
+        tmp_path / ".beacon" / "state" / "project-onboarding.json",
+        {
+            "schema_version": "1.0",
+            "docs_version": "v0.1.0",
+            "runtime_version": "v9.9.9",
+        },
+    )
+
+    assert resolve_runtime_version(tmp_path, "auto") == "v1.1.8"
 
 
 def test_machine_surface_should_follow_toolkit_version_not_delivery_version():

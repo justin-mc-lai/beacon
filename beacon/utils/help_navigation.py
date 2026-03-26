@@ -62,6 +62,13 @@ def build_doctor_advise_payload(project_root: Path, *, version: str | None = Non
         "action": "advise",
         "status": status,
         "feature": help_payload.get("feature", ""),
+        "docs_version": help_payload.get("docs_version", help_payload.get("version", "")),
+        "runtime_version": help_payload.get("runtime_version", ""),
+        "context_managed_version": (
+            help_payload.get("version_context", {}).get("context_managed_version", "")
+            if isinstance(help_payload.get("version_context"), dict)
+            else ""
+        ),
         "version": help_payload.get("version", ""),
         "run_id": help_payload.get("run_id", ""),
         "revision_id": help_payload.get("revision_id", ""),
