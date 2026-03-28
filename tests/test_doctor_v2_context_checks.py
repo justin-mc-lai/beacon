@@ -96,19 +96,20 @@ def test_clean_managed_files_should_not_trigger_new_context_incompatibilities(tm
 
 def test_doctor_should_report_dual_versions_and_warn_on_suspicious_runtime_named_docs_root(tmp_path: Path):
     _prepare_basic_project(tmp_path)
+    runtime_version = str(__toolkit_version__)
     docs_root = tmp_path / "docs" / "beacon"
     (docs_root / "v0.1.0" / "execution").mkdir(parents=True, exist_ok=True)
-    (docs_root / "v1.1.8" / "execution").mkdir(parents=True, exist_ok=True)
-    (docs_root / "v1.1.8" / "SUMMARY.md").write_text("# Beacon Summary\n", encoding="utf-8")
+    (docs_root / runtime_version / "execution").mkdir(parents=True, exist_ok=True)
+    (docs_root / runtime_version / "SUMMARY.md").write_text("# Beacon Summary\n", encoding="utf-8")
     write_json(
         tmp_path / ".beacon" / "state" / "project-onboarding.json",
         {
             "schema_version": "1.0",
             "docs_version": "v0.1.0",
-            "runtime_version": "v1.1.8",
+            "runtime_version": runtime_version,
         },
     )
-    agents, claude = _managed_context("v1.1.8")
+    agents, claude = _managed_context(runtime_version)
     (tmp_path / "AGENTS.md").write_text(agents, encoding="utf-8")
     (tmp_path / "CLAUDE.md").write_text(claude, encoding="utf-8")
 
@@ -117,8 +118,8 @@ def test_doctor_should_report_dual_versions_and_warn_on_suspicious_runtime_named
     payload = json.loads(result.stdout)
 
     assert payload["docs_version"] == "v0.1.0"
-    assert payload["runtime_version"] == "v1.1.8"
+    assert payload["runtime_version"] == runtime_version
     assert payload["project"]["active_docs_version"] == "v0.1.0"
-    assert payload["project"]["active_runtime_version"] == "v1.1.8"
+    assert payload["project"]["active_runtime_version"] == runtime_version
     assert "docs_runtime_separation_integrity" not in _incompatibility_names(payload)
     assert "suspicious_runtime_named_docs_root" in _incompatibility_names(payload)
