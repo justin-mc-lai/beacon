@@ -8,11 +8,18 @@ from typing import Any, Optional
 
 import typer
 
+from beacon.utils.artifact_update_obligations import (
+    blocking_obligations,
+    load_artifact_update_obligations,
+    update_artifact_update_obligation,
+)
 from beacon.utils.artifact_paths import qa_matrix_candidates
 from beacon.utils.coverage import compute_coverage_metrics
+from beacon.utils.learning_loop import requirement_rewrite_input_path
 from beacon.utils.material_audit import build_material_audit
 from beacon.utils.project_skills import evaluate_project_profile_gate
 from beacon.utils.prototype_utils import evaluate_prototype_status
+from beacon.utils.qa_runtime import load_qa_status
 from beacon.utils.runtime import now_iso
 from beacon.utils.story_state import load_story_state
 from beacon.utils.writeback import record_acceptance_writeback, record_verification_writeback
@@ -158,6 +165,17 @@ def review_spec(
                 recommendations.append(
                     f"Update `{artifact}` after implementation: {value.get('reason', 'implementation summary requested writeback')}"
                 )
+    rewrite_input = requirement_rewrite_input_path(project_root, version=resolved_version, feature=feature)
+    if rewrite_input.exists():
+        try:
+            learning_input = json.loads(rewrite_input.read_text(encoding="utf-8"))
+        except Exception:  # noqa: BLE001
+            learning_input = {}
+        rewrite_targets = learning_input.get("rewrite_targets") if isinstance(learning_input, dict) else {}
+        if isinstance(rewrite_targets, dict):
+            for section in ("prd", "test_case", "version_research"):
+                for item in rewrite_targets.get(section, []) if isinstance(rewrite_targets.get(section), list) else []:
+                    recommendations.append(f"[{section}] {item}")
 
     status = "pass"
     if any(item.get("severity") == "critical" for item in issues):
@@ -207,6 +225,7 @@ def review_quality(
     recommendations: list[str] = []
 
     auto_test_status_path = project_root / ".beacon" / "auto-test-status.json"
+    qa_status = load_qa_status(project_root)
     verify_status = "missing"
     if auto_test_status_path.exists():
         try:
@@ -226,6 +245,32 @@ def review_quality(
             }
         )
         recommendations.append("Run or refresh verify/auto-test evidence before quality review.")
+    evidence_done = bool(qa_status.get("evidence_done", False)) if isinstance(qa_status, dict) and qa_status else verify_status == "passed"
+    if not evidence_done:
+        issues.append(
+            {
+                "reason_code": "evidence_not_closed",
+                "severity": "critical",
+                "message": "implementation_done may be true but evidence_done is still false",
+            }
+        )
+        recommendations.append("Close feature QA evidence and writeback obligations before quality review passes.")
+
+    obligations = load_artifact_update_obligations(project_root, feature=feature)
+    open_obligations = [
+        item
+        for item in blocking_obligations(obligations)
+        if str(item.get("artifact", "")).strip().lower() != "review_quality"
+    ]
+    if open_obligations:
+        issues.append(
+            {
+                "reason_code": "artifact_updates_pending",
+                "severity": "critical",
+                "message": f"artifact update obligations still open: {[item.get('artifact') for item in open_obligations]}",
+            }
+        )
+        recommendations.append("Resolve artifact writeback obligations before treating quality review as gate-ready.")
 
     material_audit = build_material_audit(project_root, version=resolved_version, strict=False)
     if str(material_audit.get("status", "fail")).lower() == "fail":
@@ -299,6 +344,8 @@ def review_quality(
         "project_profile_gate": project_gate,
         "issues": issues,
         "recommendations": recommendations,
+        "evidence_done": evidence_done,
+        "artifact_update_obligations": obligations,
     }
     artifact_name = f"review-quality-{_slug(feature)}"
     payload["artifacts"] = _write_review_artifacts(
@@ -307,6 +354,14 @@ def review_quality(
         execution_dir=paths["execution"],
         artifact_name=artifact_name,
     )
+    if gate_ready:
+        update_artifact_update_obligation(
+            project_root,
+            feature=feature,
+            artifact="review_quality",
+            status="completed",
+            note="review quality passed and gate_ready=true",
+        )
 
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
@@ -348,6 +403,23 @@ def review_accept(
             failed_item_ids=[],
             evidence_ref=[str(auto_test_path.relative_to(project_root))],
         )
+    obligations = load_artifact_update_obligations(project_root, feature=feature)
+    pending_non_acceptance = blocking_obligations(obligations)
+    enforce_v119_obligations = tuple(int(part) for part in resolved_version.lstrip("v").split(".")[:3]) >= (1, 1, 9)
+    if enforce_v119_obligations and pending_non_acceptance:
+        payload = {
+            "schema_version": "1.0",
+            "feature": feature,
+            "version": resolved_version,
+            "status": "blocked",
+            "reason": "artifact_updates_pending",
+            "issues": pending_non_acceptance,
+        }
+        if json_output:
+            typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        else:
+            typer.echo("✗ Review accept blocked: unresolved artifact update obligations")
+        raise typer.Exit(2)
     try:
         project_gate = evaluate_project_profile_gate(project_root, version=resolved_version, feature=feature)
         if project_gate.get("status") == "blocked":
@@ -375,6 +447,13 @@ def review_accept(
             "story_status": result.get("story", {}).get("status", ""),
             "revision_status": result.get("revision", {}).get("delivery_status", ""),
         }
+        update_artifact_update_obligation(
+            project_root,
+            feature=feature,
+            artifact="acceptance",
+            status="completed",
+            note=f"accepted by {reviewer}",
+        )
         if json_output:
             typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
             return
@@ -392,3 +471,27 @@ def review_accept(
         else:
             typer.echo(f"✗ Review accept blocked: {exc}")
         raise typer.Exit(2)
+
+
+@app.command("writeback")
+def review_writeback(
+    feature: str = typer.Argument(..., help="Feature name"),
+    artifact: str = typer.Argument(..., help="Artifact obligation name"),
+    project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
+    status: str = typer.Option("completed", "--status", help="New obligation status"),
+    note: str = typer.Option("", "--note", help="Writeback note"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON payload"),
+):
+    """Resolve or update a formal artifact writeback obligation."""
+    project_root = Path(project) if project else Path.cwd()
+    payload = update_artifact_update_obligation(
+        project_root,
+        feature=feature,
+        artifact=artifact,
+        status=status,
+        note=note,
+    )
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        return
+    typer.echo(f"✓ Artifact writeback updated: {artifact} -> {status}")

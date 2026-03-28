@@ -11,7 +11,7 @@ from typing import Optional
 
 import typer
 
-from beacon.utils.artifact_paths import qa_docs_dir, qa_matrix_output, uses_machine_surface
+from beacon.utils.artifact_paths import qa_docs_dir, qa_matrix_candidates, qa_matrix_output, uses_machine_surface
 from beacon.utils.qa9 import (
     QA9_TYPES,
     build_qa_strategy,
@@ -22,7 +22,8 @@ from beacon.utils.qa9 import (
     parse_qa_types,
     to_legacy_layer,
 )
-from beacon.utils.versioning import resolve_target_version
+from beacon.utils.story_scenarios import expand_story_scenarios, write_story_scenario_map
+from beacon.utils.versioning import discover_versions, resolve_target_version
 
 app = typer.Typer(name="test-case", help="Generate test cases")
 
@@ -132,6 +133,46 @@ def _load_prototype_contract_artifacts(project_root: Path, version: str, feature
         except Exception:  # noqa: BLE001
             interaction = {}
     return navigation, interaction
+
+
+def _story_sequence_for_feature(project_root: Path, version: str, feature_slug: str, *, fallback_entries: list[dict]) -> list[dict]:
+    machine_story = project_root / "docs" / "beacon" / version / ".machine" / "user-story" / f"{feature_slug}.json"
+    if machine_story.exists():
+        try:
+            payload = json.loads(machine_story.read_text(encoding="utf-8"))
+        except Exception:  # noqa: BLE001
+            payload = {}
+        if isinstance(payload, dict):
+            active_revision = str(payload.get("current_revision_id") or "")
+            for story in payload.get("stories", []):
+                if not isinstance(story, dict) or str(story.get("revision_id") or "") != active_revision:
+                    continue
+                items = story.get("items") if isinstance(story.get("items"), list) else []
+                rows = [
+                    {
+                        "ac_id": str(item.get("id") or ""),
+                        "theme": str(item.get("theme") or ""),
+                        "text": str(item.get("text") or ""),
+                    }
+                    for item in items
+                    if isinstance(item, dict) and str(item.get("kind") or "") == "ac" and str(item.get("id") or "").strip()
+                ]
+                if rows:
+                    return rows
+
+    us_path, us_content = _read_first_existing(_candidate_doc_paths(project_root, version, "user-story", feature_slug))
+    ac_items = _extract_ac_items(us_content, f"user-story:{us_path}" if us_path else "user-story:missing")
+    if ac_items:
+        return [{"ac_id": item["ac_id"], "theme": str(item.get("source") or ""), "text": str(item.get("text") or "")} for item in ac_items]
+    return [
+        {
+            "ac_id": str(item.get("ac_id") or ""),
+            "theme": str(item.get("layer") or item.get("qa_type") or ""),
+            "text": str(item.get("assertion") or ""),
+        }
+        for item in fallback_entries
+        if isinstance(item, dict) and str(item.get("ac_id") or "").strip()
+    ]
 
 
 def _build_qa_requirements(qa_types: list[str], qa_applicability: Optional[dict[str, str]] = None) -> list[dict]:
@@ -250,6 +291,169 @@ def _load_think_progress(project_root: Path, version: str) -> dict:
     return {}
 
 
+def _load_existing_qa9_payload(project_root: Path, version: str, feature_slug: str) -> dict:
+    for path in qa_matrix_candidates(project_root, version, feature_slug, "qa9-matrix"):
+        if not path.exists():
+            continue
+        try:
+            payload = json.loads(path.read_text(encoding="utf-8"))
+        except Exception:  # noqa: BLE001
+            payload = {}
+        if isinstance(payload, dict) and isinstance(payload.get("entries"), list):
+            return payload
+    return {}
+
+
+def _normalize_existing_qa9_entries(
+    *,
+    feature: str,
+    feature_slug: str,
+    entries: list[dict],
+    ac_items: list[dict],
+    ui_runner: str,
+) -> list[dict]:
+    normalized: list[dict] = []
+    ac_seed = ac_items or [{"ac_id": "AC-001", "text": f"{feature} core flow works", "source": "fallback"}]
+    for index, item in enumerate(entries, start=1):
+        if not isinstance(item, dict):
+            continue
+        ac = ac_seed[(index - 1) % len(ac_seed)]
+        qa_type = normalize_qa_type(
+            str(item.get("qa_type") or item.get("type") or item.get("layer") or _infer_layer_from_ac(str(ac.get("text") or "")))
+        )
+        if qa_type not in QA9_TYPES:
+            qa_type = normalize_qa_type(_infer_layer_from_ac(str(ac.get("text") or "")))
+        if qa_type not in QA9_TYPES:
+            qa_type = "contract"
+        tc_id = str(item.get("tc_id") or item.get("id") or f"TC-{index:03d}").strip() or f"TC-{index:03d}"
+        normalized.append(
+            {
+                "tc_id": tc_id,
+                "ac_id": str(item.get("ac_id") or ac.get("ac_id") or f"AC-{index:03d}").strip() or f"AC-{index:03d}",
+                "layer": str(item.get("layer") or to_legacy_layer(qa_type)),
+                "qa_type": qa_type,
+                "title": str(item.get("title") or f"{feature} {qa_type} :: {str(item.get('assertion') or ac.get('text') or '').strip()[:80]}"),
+                "priority": str(item.get("priority") or _default_priority_for_qa_type(qa_type)),
+                "automation": str(item.get("automation") or "auto"),
+                "command": str(item.get("command") or "").strip() or default_command_for_qa_type(qa_type, ui_runner=ui_runner),
+                "assertion": str(item.get("assertion") or default_assertion_for_qa_type(qa_type)),
+                "evidence_path": str(item.get("evidence_path") or f".beacon/evidence/test-results/{feature_slug}/{{run_id}}/{tc_id}.json"),
+                "required_files": item.get("required_files") if isinstance(item.get("required_files"), list) else ["command.txt", "stdout.log", "stderr.log", "result.json", "junit.xml"],
+                "status": str(item.get("status") or "pending"),
+                "source": str(item.get("source") or ac.get("source") or "qa9:existing"),
+            }
+        )
+    return normalized
+
+
+def _build_story_scenario_payload(
+    *,
+    project_root: Path,
+    version: str,
+    feature: str,
+    expansion_profile: str,
+    scenario_depth: str,
+    ui_runner: str,
+) -> tuple[dict, str]:
+    feature_slug = _slug(feature)
+    us_path, us_content = _read_first_existing(
+        _candidate_doc_paths(project_root, version, "user-story", feature_slug)
+    )
+    prd_path, prd_content = _read_first_existing(
+        _candidate_doc_paths(project_root, version, "prd", feature_slug)
+    )
+    ac_items = _extract_ac_items(us_content, f"user-story:{us_path}" if us_path else "user-story:missing")
+    ac_items.extend(_extract_ac_items(prd_content, f"prd:{prd_path}" if prd_path else "prd:missing"))
+    if not ac_items:
+        ac_items = [{"ac_id": "AC-001", "text": f"{feature} core flow works", "source": "fallback"}]
+    existing_qa9_payload = _load_existing_qa9_payload(project_root, version, feature_slug)
+    existing_entries = (
+        [item for item in existing_qa9_payload.get("entries", []) if isinstance(item, dict)]
+        if isinstance(existing_qa9_payload.get("entries"), list)
+        else []
+    )
+    display_feature = str(existing_qa9_payload.get("feature") or feature).strip() or feature
+    resolved_ui_runner = str(ui_runner or "").strip().lower()
+
+    if existing_entries:
+        if not resolved_ui_runner:
+            strategy = existing_qa9_payload.get("qa_strategy") if isinstance(existing_qa9_payload.get("qa_strategy"), dict) else {}
+            resolved_ui_runner = str(
+                strategy.get("ui_runner")
+                or existing_qa9_payload.get("ui_runner")
+                or "playwright"
+            ).strip().lower()
+        qa9_entries = _normalize_existing_qa9_entries(
+            feature=display_feature,
+            feature_slug=feature_slug,
+            entries=existing_entries,
+            ac_items=ac_items,
+            ui_runner=resolved_ui_runner or "playwright",
+        )
+    else:
+        think_progress = _load_think_progress(project_root, version)
+        think_strategy = think_progress.get("qa_strategy") if isinstance(think_progress, dict) else None
+        strategy = think_strategy if isinstance(think_strategy, dict) else {}
+        strategy_ui_runner = str(strategy.get("ui_runner") or "").strip().lower()
+        resolved_ui_runner = resolved_ui_runner or strategy_ui_runner or "playwright"
+        qa_types_resolved = parse_qa_types(None, profile="web-full")
+        if not strategy:
+            strategy = build_qa_strategy(
+                project_root=project_root,
+                qa_types=qa_types_resolved,
+                ui_runner=resolved_ui_runner,
+            )
+        command_baseline = strategy.get("command_baseline") if isinstance(strategy, dict) else {}
+        if not isinstance(command_baseline, dict):
+            command_baseline = {}
+        for qa_type in qa_types_resolved:
+            command_baseline.setdefault(
+                qa_type,
+                default_command_for_qa_type(qa_type, ui_runner=resolved_ui_runner),
+            )
+        qa9_entries = _build_qa9_entries(
+            feature=display_feature,
+            feature_slug=feature_slug,
+            ac_items=ac_items,
+            qa_types=qa_types_resolved,
+            ui_runner=resolved_ui_runner,
+            command_baseline=command_baseline,
+        )
+
+    story_sequence = _story_sequence_for_feature(
+        project_root,
+        version,
+        feature_slug,
+        fallback_entries=qa9_entries,
+    )
+    scenario_payload = expand_story_scenarios(
+        feature=feature,
+        version=version,
+        story_sequence=story_sequence,
+        entries=qa9_entries,
+        expansion_profile=expansion_profile,
+        scenario_depth=scenario_depth,
+        ui_runner=resolved_ui_runner or "playwright",
+    )
+    scenario_payload["feature"] = display_feature
+    return scenario_payload, (resolved_ui_runner or "playwright")
+
+
+def _feature_slugs_for_version(project_root: Path, version: str) -> list[str]:
+    root = project_root / "docs" / "beacon" / version / "user-story"
+    if not root.exists():
+        return []
+    return sorted(path.stem for path in root.glob("*.md") if path.is_file() and path.stem != "index")
+
+
+def _versions_for_prefix(project_root: Path, version_prefix: str) -> list[str]:
+    normalized_prefix = str(version_prefix or "").strip().lower()
+    versions = discover_versions(project_root)
+    if not normalized_prefix:
+        return versions
+    return [version for version in versions if version.lower().startswith(normalized_prefix)]
+
+
 def generate_test_cases(feature: str, test_type: str) -> list:
     """Generate legacy test case structure (kept for compatibility)."""
     cases = []
@@ -283,6 +487,89 @@ def generate_test_cases(feature: str, test_type: str) -> list:
         )
 
     return cases
+
+
+@app.command("story-scenarios")
+def story_scenarios(
+    feature: str = typer.Argument("", help="Feature name/slug. Omit with --all-features."),
+    version: str = typer.Option("auto", "--version", "-v", help="Version"),
+    version_prefix: str = typer.Option("", "--version-prefix", help="Generate across versions with matching prefix, e.g. v1.1."),
+    project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
+    all_features: bool = typer.Option(False, "--all-features", help="Generate for all features in selected version(s)."),
+    skip_existing: bool = typer.Option(True, "--skip-existing/--force", help="Skip features with existing story-scenario-map."),
+    expansion_profile: str = typer.Option("pua-web", "--expansion-profile", help="Scenario expansion profile."),
+    scenario_depth: str = typer.Option("standard", "--scenario-depth", help="Scenario expansion depth."),
+    ui_runner: str = typer.Option("", "--ui-runner", help="UI runner override for generated browser scenarios."),
+    json_output: bool = typer.Option(False, "--json", help="JSON output"),
+):
+    """Generate story-scenario-map artifacts for one feature or batch across versions."""
+    project_root = Path(project) if project else Path.cwd()
+    if not all_features and not str(feature or "").strip():
+        raise typer.BadParameter("feature is required unless --all-features is set")
+
+    if version_prefix.strip():
+        target_versions = _versions_for_prefix(project_root, version_prefix)
+    else:
+        target_versions = [resolve_target_version(project_root, version)]
+
+    results: list[dict[str, object]] = []
+    for resolved_version in target_versions:
+        target_features = _feature_slugs_for_version(project_root, resolved_version) if all_features else [feature]
+        for feature_name in target_features:
+            path = qa_matrix_output(project_root, resolved_version, _slug(feature_name), "story-scenario-map")
+            if skip_existing and path.exists():
+                results.append(
+                    {
+                        "version": resolved_version,
+                        "feature": feature_name,
+                        "path": str(path.relative_to(project_root)),
+                        "status": "skipped",
+                    }
+                )
+                continue
+            scenario_payload, resolved_ui_runner = _build_story_scenario_payload(
+                project_root=project_root,
+                version=resolved_version,
+                feature=feature_name,
+                expansion_profile=expansion_profile,
+                scenario_depth=scenario_depth,
+                ui_runner=ui_runner,
+            )
+            written_path = write_story_scenario_map(
+                project_root,
+                version=resolved_version,
+                feature=feature_name,
+                payload=scenario_payload,
+            )
+            results.append(
+                {
+                    "version": resolved_version,
+                    "feature": feature_name,
+                    "path": str(written_path.relative_to(project_root)),
+                    "status": "generated",
+                    "ui_runner": resolved_ui_runner,
+                    "scenario_count": len(scenario_payload.get("scenarios", [])) if isinstance(scenario_payload.get("scenarios"), list) else 0,
+                }
+            )
+
+    payload = {
+        "version_prefix": version_prefix,
+        "versions": target_versions,
+        "generated_count": len([item for item in results if item.get("status") == "generated"]),
+        "skipped_count": len([item for item in results if item.get("status") == "skipped"]),
+        "results": results,
+    }
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        return
+
+    typer.echo("Story scenario map generation")
+    typer.echo(f"- versions: {', '.join(target_versions) or '-'}")
+    typer.echo(f"- generated: {payload['generated_count']}")
+    typer.echo(f"- skipped: {payload['skipped_count']}")
+    for item in results:
+        marker = "✓" if item.get("status") == "generated" else "-"
+        typer.echo(f"{marker} {item.get('version')} {item.get('feature')} -> {item.get('path')}")
 
 
 @app.command()
@@ -321,6 +608,16 @@ def create(
         None,
         "--matrix-output",
         help="QA9 matrix output file path (*.qa9-matrix.json).",
+    ),
+    expansion_profile: str = typer.Option(
+        "pua-web",
+        "--expansion-profile",
+        help="Scenario expansion profile for story-native QA planning.",
+    ),
+    scenario_depth: str = typer.Option(
+        "standard",
+        "--scenario-depth",
+        help="Scenario expansion depth: minimal/standard/deep.",
     ),
     ui_runner: str = typer.Option(
         "",
@@ -477,6 +774,21 @@ def create(
         },
         "generated_at": datetime.now().isoformat(),
     }
+    story_sequence = _story_sequence_for_feature(
+        project_root,
+        resolved_version,
+        feature_slug,
+        fallback_entries=qa9_entries,
+    )
+    scenario_payload = expand_story_scenarios(
+        feature=feature,
+        version=resolved_version,
+        story_sequence=story_sequence,
+        entries=qa9_entries,
+        expansion_profile=expansion_profile,
+        scenario_depth=scenario_depth,
+        ui_runner=resolved_ui_runner,
+    )
 
     output_path = (
         Path(output)
@@ -494,6 +806,12 @@ def create(
     )
     qa9_matrix_path.parent.mkdir(parents=True, exist_ok=True)
     qa9_matrix_path.write_text(json.dumps(qa9_payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    scenario_map_path = write_story_scenario_map(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        payload=scenario_payload,
+    )
 
     md_rows = "\n".join(
         f"| {x['ac_id']} | {x['tc_id']} | {x['layer']} | `{x['command']}` | {x['assertion']} | `{x['evidence_path']}` |"
@@ -512,6 +830,7 @@ def create(
 **Memory Context**: {memory_context_path or 'N/A'}
 **AC Matrix JSON**: {matrix_path}
 **QA9 Matrix JSON**: {qa9_matrix_path}
+**Story Scenario Map JSON**: {scenario_map_path}
 **Prototype Navigation Contract**: {bool(prototype_navigation)}
 **Prototype Interaction Contract**: {bool(prototype_interaction)}
 
@@ -553,9 +872,11 @@ def create(
     typer.echo(f"✓ Test cases created: {output_path}")
     typer.echo(f"✓ AC matrix created: {matrix_path}")
     typer.echo(f"✓ QA9 matrix created: {qa9_matrix_path}")
+    typer.echo(f"✓ Story scenario map created: {scenario_map_path}")
     typer.echo(f"  Type: {test_type}")
     typer.echo(f"  Entries: {len(entries)}")
     typer.echo(f"  QA9 Entries: {len(qa9_entries)}")
+    typer.echo(f"  Scenario Entries: {len(scenario_payload.get('scenarios', []))}")
     typer.echo(f"  QA Runner: {resolved_ui_runner}")
 
 

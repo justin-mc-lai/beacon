@@ -8,7 +8,9 @@ from enum import Enum
 import hashlib
 import os
 
+from beacon.utils.artifact_update_obligations import load_artifact_update_obligations
 from beacon.utils.artifact_paths import execution_file_candidates
+from beacon.utils.control_plane import build_resume_contract
 from beacon.utils.coverage import compute_coverage_metrics
 from beacon.utils.debug_feedback import (
     append_debug_event_memory,
@@ -18,6 +20,8 @@ from beacon.utils.debug_feedback import (
 from beacon.utils.memory import load_memory_entries
 from beacon.utils.memory import scope_memory_paths
 from beacon.utils.qa9 import QA9_TYPES, normalize_qa_type, parse_qa_types
+from beacon.utils.qa_runtime import load_qa_status
+from beacon.utils.exhaustiveness import load_exhaustiveness_report
 from beacon.utils.prototype_support import prototype_status, version_requires_prototype
 from beacon.utils.versioning import resolve_target_version
 from beacon.utils.v110_baseline import (
@@ -55,6 +59,12 @@ REASON_CODES = [
     "evidence_ref_path_style_inconsistent",
     "arch_artifact_missing",
     "ownership_boundary_unclear",
+    "control_plane_recovery_open",
+    "checkpoint_contract_missing",
+    "feature_qa_missing",
+    "evidence_not_closed",
+    "learning_input_missing",
+    "artifact_updates_pending",
     "api_contract_drift",
     "nfr_budget_unproven",
     "evidence_integrity_missing",
@@ -100,6 +110,11 @@ REASON_CODES = [
     "execution_fingerprint_missing",
     "execution_fingerprint_mismatch",
     "evidence_replay_detected",
+    "story_exhaustiveness_missing",
+    "story_exhaustiveness_below_threshold",
+    "browser_replay_missing",
+    "browser_evidence_incomplete",
+    "required_scenario_family_missing",
     "evidence_timestamp_out_of_window",
     "assertion_count_zero_pass",
     "junit_missing_or_invalid",
@@ -605,6 +620,13 @@ def check_evidence_chain(project_root: Path, mode: GateMode) -> List[Dict[str, A
                         "blocked": False,
                     }
                     issues.append(issue)
+                    continue
+                if (
+                    rel_path.startswith(".beacon/state/spec-fingerprints/")
+                    or rel_path.startswith(".beacon/state/baselines/")
+                ) and rel_path.endswith("/latest.json"):
+                    # rolling pointers are validated separately by spec-consistency;
+                    # do not fail release gate on mutable alias hash drift here.
                     continue
 
                 # Verify file exists and hash matches
@@ -1320,6 +1342,163 @@ def check_formal_version_package_closure(
                 "message": f"formal Beacon version package incomplete for {resolved_version}: missing {missing}",
                 "blocked": True,
                 "details": {"version": resolved_version, "missing": missing},
+            }
+        )
+    return issues
+
+
+def check_v119_control_learning_contract(
+    project_root: Path,
+    mode: GateMode,
+    stage: str,
+    version: Optional[str] = None,
+) -> List[Dict[str, Any]]:
+    issues: list[dict[str, Any]] = []
+    if stage != "release":
+        return issues
+    if mode not in {GateMode.STRICT, GateMode.DEBUG}:
+        return issues
+    resolved_version = _resolved_gate_version(project_root, version)
+    if _parse_semver_tuple(resolved_version) != (1, 1, 9):
+        return issues
+
+    contract_run_id = _resolve_release_contract_run_id(project_root, version=resolved_version)
+    control_plane = build_resume_contract(project_root, run_id=contract_run_id or None)
+    if int(control_plane.get("failure_streak", 0) or 0) > 0:
+        issues.append(
+            {
+                "reason_code": "control_plane_recovery_open",
+                "severity": "critical",
+                "message": (
+                    "control plane still has an active failure streak "
+                    f"(level={control_plane.get('escalation_level')}, stage={control_plane.get('last_failed_stage')})"
+                ),
+                "blocked": True,
+            }
+        )
+    if int(control_plane.get("failure_streak", 0) or 0) > 0 and not str(control_plane.get("checkpoint_ref", "") or "").strip():
+        issues.append(
+            {
+                "reason_code": "checkpoint_contract_missing",
+                "severity": "critical",
+                "message": "control plane escalation is active but no checkpoint/resume contract was recorded",
+                "blocked": True,
+            }
+        )
+
+    qa_status = load_qa_status(project_root)
+    if not qa_status:
+        issues.append(
+            {
+                "reason_code": "feature_qa_missing",
+                "severity": "critical",
+                "message": "v1.1.9 release requires canonical feature-aware QA status",
+                "blocked": True,
+            }
+        )
+        return issues
+
+    if str(qa_status.get("status", "")).strip().lower() != "passed":
+        issues.append(
+            {
+                "reason_code": "verify_not_passed",
+                "severity": "critical",
+                "message": f"qa status is {qa_status.get('status')}",
+                "blocked": True,
+            }
+        )
+    if not bool(qa_status.get("evidence_done", False)):
+        issues.append(
+            {
+                "reason_code": "evidence_not_closed",
+                "severity": "critical",
+                "message": "qa status exists but evidence_done is false",
+                "blocked": True,
+            }
+        )
+
+    feature_name = str(qa_status.get("feature", "") or "").strip()
+    if feature_name:
+        obligations = load_artifact_update_obligations(project_root, feature=feature_name)
+        open_items = [
+            item
+            for item in obligations.get("obligations", [])
+            if isinstance(item, dict) and str(item.get("status", "open")).strip().lower() == "open"
+        ]
+        if open_items:
+            issues.append(
+                {
+                    "reason_code": "artifact_updates_pending",
+                    "severity": "critical",
+                    "message": f"artifact writeback obligations still open: {[item.get('artifact') for item in open_items]}",
+                    "blocked": True,
+                }
+            )
+        exhaustiveness = load_exhaustiveness_report(project_root, feature=feature_name)
+        if not exhaustiveness:
+            issues.append(
+                {
+                    "reason_code": "story_exhaustiveness_missing",
+                    "severity": "critical",
+                    "message": "feature QA is present but no exhaustiveness report was recorded",
+                    "blocked": True,
+                }
+            )
+        else:
+            score = float(exhaustiveness.get("score", 0.0) or 0.0)
+            threshold = float(exhaustiveness.get("threshold", 0.8) or 0.8)
+            if score < threshold:
+                issues.append(
+                    {
+                        "reason_code": "story_exhaustiveness_below_threshold",
+                        "severity": "critical",
+                        "message": f"story exhaustiveness score {score} < {threshold}",
+                        "blocked": True,
+                    }
+                )
+            missing_axes = exhaustiveness.get("missing_axes") if isinstance(exhaustiveness.get("missing_axes"), list) else []
+            if missing_axes:
+                issues.append(
+                    {
+                        "reason_code": "required_scenario_family_missing",
+                        "severity": "critical",
+                        "message": f"story exhaustiveness missing axes: {missing_axes}",
+                        "blocked": True,
+                    }
+                )
+            missing_replay = exhaustiveness.get("missing_replay_scenarios") if isinstance(exhaustiveness.get("missing_replay_scenarios"), list) else []
+            if missing_replay:
+                issues.append(
+                    {
+                        "reason_code": "browser_replay_missing",
+                        "severity": "critical",
+                        "message": f"browser scenarios missing deterministic replay: {missing_replay[:10]}",
+                        "blocked": True,
+                    }
+                )
+            missing_browser_evidence = exhaustiveness.get("missing_browser_evidence_scenarios") if isinstance(exhaustiveness.get("missing_browser_evidence_scenarios"), list) else []
+            if missing_browser_evidence:
+                issues.append(
+                    {
+                        "reason_code": "browser_evidence_incomplete",
+                        "severity": "critical",
+                        "message": f"browser scenarios missing evidence pack: {missing_browser_evidence[:10]}",
+                        "blocked": True,
+                    }
+                )
+
+    learning_required = [
+        project_root / ".beacon" / "state" / "learning" / "execution-baseline.json",
+        project_root / ".beacon" / "state" / "eval-lab" / "benchmark-corpus.json",
+    ]
+    missing_learning = [str(path.relative_to(project_root)) for path in learning_required if not path.exists()]
+    if missing_learning:
+        issues.append(
+            {
+                "reason_code": "learning_input_missing",
+                "severity": "critical",
+                "message": f"learning plane artifacts missing: {missing_learning}",
+                "blocked": True,
             }
         )
     return issues
@@ -2385,6 +2564,7 @@ def run_gate_checks(
             typer.echo("[DEBUG] [release-global] Checking delivery execution artifacts...")
         all_issues.extend(check_delivery_execution_artifacts(project_root, mode, stage, version))
         all_issues.extend(check_formal_version_package_closure(project_root, mode, stage, version))
+        all_issues.extend(check_v119_control_learning_contract(project_root, mode, stage, version))
         all_issues.extend(check_prototype_contract(project_root, mode, stage, version))
 
         if mode == GateMode.STRICT or mode == GateMode.DEBUG:

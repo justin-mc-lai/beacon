@@ -19,6 +19,12 @@ from beacon.utils.artifact_paths import (
     uses_machine_surface,
 )
 from beacon.utils.coverage import compute_coverage_metrics
+from beacon.utils.control_plane import (
+    build_resume_contract,
+    exhaustion_for_run,
+    record_stage_failure,
+    record_stage_success,
+)
 from beacon.utils.debug_feedback import (
     append_debug_event_memory,
     append_debug_feedback_event,
@@ -28,6 +34,7 @@ from beacon.utils.debug_feedback import (
 from beacon.utils.llm_loop import build_next_stage_trace, merge_token_usage
 from beacon.utils.memory import append_memory_entry
 from beacon.utils.implement_adapters import load_beacon_config_file, project_config_path
+from beacon.utils.qa9 import normalize_qa_type, parse_qa_types
 from beacon.utils.runtime import (
     append_jsonl,
     generate_run_id,
@@ -417,6 +424,13 @@ def _update_evidence_manifest(
         }
     next_run_id = str(run_id or payload.get("run_id") or "").strip()
     next_version = str(version or payload.get("version") or "").strip()
+    existing_version = str(payload.get("version") or "").strip()
+    if existing_version and next_version and _parse_semver_tuple(existing_version) > _parse_semver_tuple(next_version):
+        next_version = existing_version
+        next_run_id = str(payload.get("run_id") or "").strip() or next_run_id
+    existing_run_id = str(payload.get("run_id") or "").strip()
+    if existing_version == next_version and existing_run_id.startswith("run-v") and existing_run_id.endswith("release"):
+        next_run_id = existing_run_id
     output_payload: dict[str, Any] = {
         "entries": list(by_path.values()),
         "updated_at": now_iso(),
@@ -823,6 +837,16 @@ def _write_execution_governance_artifacts(
     feature: str,
     workflow_status: str,
 ) -> None:
+    existing_source = _load_json_dict(execution_file_output(project_root, version, "source.json"))
+    existing_run_id = str(existing_source.get("run_id", "") or "")
+    if (
+        project_root.resolve() == _repo_root().resolve()
+        and str(version).strip() == str(__toolkit_version__).strip()
+        and existing_run_id.startswith("run-v")
+        and existing_run_id.endswith("release")
+        and existing_run_id != str(run_id).strip()
+    ):
+        return
     config_payload = _build_execution_config_payload(
         project_root=project_root,
         version=version,
@@ -927,6 +951,13 @@ def _write_workflow_terminal_artifacts(
         ".beacon/raw-command-log.jsonl",
         ".beacon/auto-test-status.json",
     ]
+    resume_contract = build_resume_contract(project_root, run_id=run_id)
+    checkpoint_ref = str(resume_contract.get("checkpoint_ref", "") or "")
+    if checkpoint_ref:
+        evidence_refs.append(checkpoint_ref)
+    exhaustion_ref = ".beacon/state/exhaustion.json"
+    if (project_root / exhaustion_ref).exists():
+        evidence_refs.append(exhaustion_ref)
 
     written_refs: list[str] = []
     for root in exec_roots:
@@ -956,6 +987,12 @@ def _write_workflow_terminal_artifacts(
             "feature": feature,
             "status": status_value,
             "reason": reason,
+            "control_plane": {
+                "failure_streak": int(resume_contract.get("failure_streak", 0) or 0),
+                "escalation_level": str(resume_contract.get("escalation_level", "E0") or "E0"),
+                "required_next_action": str(resume_contract.get("required_next_action", "continue_current_plan") or "continue_current_plan"),
+                "checkpoint_ref": checkpoint_ref,
+            },
             "traceability": {
                 "evidence_refs": evidence_refs,
             },
@@ -1386,6 +1423,7 @@ def _render_workflow_hud(
         "enabled": bool(debug_state.get("enabled", False)),
         "run_id": str(debug_state.get("run_id", "") or ""),
     }
+    control_payload = exhaustion_for_run(project_root, run_id=run_id)
 
     hud_payload = {
         "schema_version": "1.0",
@@ -1415,6 +1453,12 @@ def _render_workflow_hud(
         },
         "memory": memory_metrics,
         "debug": debug_payload,
+        "control_plane": {
+            "failure_streak": int(control_payload.get("failure_streak", 0) or 0),
+            "escalation_level": str(control_payload.get("escalation_level", "E0") or "E0"),
+            "required_next_action": str(control_payload.get("required_next_action", "continue_current_plan") or "continue_current_plan"),
+            "last_failed_stage": str(control_payload.get("last_failed_stage", "") or ""),
+        },
         "generated_at": now_iso(),
     }
 
@@ -1450,6 +1494,11 @@ def _render_workflow_hud(
         typer.echo(
             f"debug_mode   : {hud_payload['debug']['enabled']} "
             f"(run_id={hud_payload['debug']['run_id'] or '-'})"
+        )
+        typer.echo(
+            f"control      : streak={hud_payload['control_plane']['failure_streak']} "
+            f"level={hud_payload['control_plane']['escalation_level']} "
+            f"next={hud_payload['control_plane']['required_next_action']}"
         )
     return hud_payload
 
@@ -1644,6 +1693,8 @@ def _execute_stage(
 ) -> int:
     """Execute one workflow stage and write lifecycle events."""
     failure_details: dict[str, Any] = {}
+    attempted_strategy = stage
+    recommended_resume_command = f'beacon resume continue --run-id {run_id} --project-root "{project_root}"'
     append_lifecycle_event(
         project_root,
         run_id=run_id,
@@ -1731,6 +1782,7 @@ def _execute_stage(
         resolved_implementation_command = str(implementation_command or "").strip()
         command_source = "cli"
         resolved_runner = str(implementation_runner or "").strip()
+        attempted_strategy = f"implementation:{resolved_runner or 'command'}"
         if resolved_implementation_command:
             env = os.environ.copy()
             env.update(stage_env)
@@ -1796,6 +1848,7 @@ def _execute_stage(
                 if env_command:
                     resolved_implementation_command = env_command
                     command_source = "env"
+                    attempted_strategy = "implementation:env-command"
                 if not resolved_implementation_command:
                     typer.echo("Blocked: implementation stage requires explicit external command execution")
                     _log_raw_command(
@@ -1842,6 +1895,7 @@ def _execute_stage(
                             },
                         )
     elif stage == "verify":
+        attempted_strategy = f"verify:{(verify_scope or 'all').strip().lower()}"
         verify_scope_norm = (verify_scope or "all").strip().lower()
         require_ui_actions_effective = verify_require_ui_actions and verify_scope_norm in {
             "ui",
@@ -1849,7 +1903,16 @@ def _execute_stage(
             "functional",
             "qa9",
         }
+        feature_qa_mode = _parse_semver_tuple(version) == (1, 1, 9)
         verify_args = [
+            "qa",
+            "run",
+            feature,
+            "--project",
+            str(project_root),
+            "--version",
+            version,
+        ] if feature_qa_mode else [
             "auto-test",
             "create",
             verify_scope,
@@ -1873,6 +1936,9 @@ def _execute_stage(
             if verify_qa_types:
                 for item in verify_qa_types:
                     verify_args.extend(["--qa-types", item])
+            elif feature_qa_mode:
+                for item in parse_qa_types(None, profile=verify_qa_profile):
+                    verify_args.extend(["--qa-types", item])
             if verify_ui_runner:
                 verify_args.extend(["--ui-runner", verify_ui_runner])
             if verify_compat_browsers:
@@ -1881,6 +1947,8 @@ def _execute_stage(
                 verify_args.extend(["--compat-devices", verify_compat_devices])
             if verify_require_fresh_evidence:
                 verify_args.append("--require-fresh-evidence")
+        elif feature_qa_mode:
+            verify_args.extend(["--qa-types", normalize_qa_type(verify_scope_norm)])
         if require_ui_actions_effective:
             verify_args.append("--require-ui-actions")
         if verify_qa_matrix_path and verify_scope_norm == "qa9":
@@ -1927,6 +1995,7 @@ def _execute_stage(
                         "reason": "verify_not_passed",
                     }
     elif stage == "gate":
+        attempted_strategy = "gate:release-strict"
         verify_payload = _load_json_dict(project_root / ".beacon" / "auto-test-status.json")
         verify_status = str(verify_payload.get("status", "")).strip().lower()
         coverage = compute_coverage_metrics(project_root, version=version, feature=feature)
@@ -1968,6 +2037,7 @@ def _execute_stage(
         rc = 1
 
     if rc == 0:
+        record_stage_success(project_root, run_id=run_id, stage=stage)
         _consume_change_impact_task(
             project_root,
             run_id=run_id,
@@ -1997,13 +2067,31 @@ def _execute_stage(
             status="completed",
         )
     else:
+        reason_code = str(
+            failure_details.get("reason_code")
+            or failure_details.get("reason")
+            or f"{stage}_failed"
+        ).strip()
+        checkpoint_payload = record_stage_failure(
+            project_root,
+            run_id=run_id,
+            stage=stage,
+            attempted_strategy=attempted_strategy,
+            reason_code=reason_code,
+            current_blocker=str(failure_details.get("reason") or reason_code or stage),
+            evidence_gap=failure_details.get("evidence_gap") if isinstance(failure_details.get("evidence_gap"), list) else None,
+            next_hypothesis=str(failure_details.get("next_hypothesis") or ""),
+            recommended_command=recommended_resume_command,
+            details=failure_details or {"exit_code": rc},
+        )
         append_lifecycle_event(
             project_root,
             run_id=run_id,
             stage=stage,
             event="stage_failed",
             source="workflow.start",
-            details=failure_details or {"exit_code": rc},
+            evidence_ref=[str(checkpoint_payload.get("latest_checkpoint_ref") or checkpoint_payload.get("latest_checkpoint_ref", ""))] if str(checkpoint_payload.get("latest_checkpoint_ref", "")).strip() else [],
+            details={**(failure_details or {"exit_code": rc}), "escalation_level": checkpoint_payload.get("escalation_level")},
         )
     return rc
 
@@ -2757,6 +2845,21 @@ def continue_workflow(  # noqa: A003
         run_id=resolved_run_id,
         extra={"version": run_version, "auto": bool(auto)},
     )
+    resume_contract = build_resume_contract(project_root, run_id=resolved_run_id)
+    checkpoint_ref = str(resume_contract.get("checkpoint_ref", "") or "")
+    append_lifecycle_event(
+        project_root,
+        run_id=resolved_run_id,
+        stage="workflow",
+        event="resume_contract_restored",
+        source="workflow.continue",
+        evidence_ref=[checkpoint_ref] if checkpoint_ref else [],
+        details={
+            "failure_streak": resume_contract.get("failure_streak", 0),
+            "escalation_level": resume_contract.get("escalation_level", "E0"),
+            "required_next_action": resume_contract.get("required_next_action", "continue_current_plan"),
+        },
+    )
 
     progress = compute_workflow_progress(project_root, run_id=resolved_run_id)
     if progress.get("closure_complete") and progress.get("gate_pass"):
@@ -2908,6 +3011,14 @@ def continue_workflow(  # noqa: A003
     typer.echo(f"Version: {run_version}")
     typer.echo(f"Next stage: {next_stage or 'none'}")
     typer.echo(f"Mode: {'auto' if run_auto else 'single-step'}")
+    if int(resume_contract.get("failure_streak", 0) or 0) > 0:
+        typer.echo(
+            f"Resume contract: streak={resume_contract.get('failure_streak')} "
+            f"level={resume_contract.get('escalation_level')} "
+            f"next={resume_contract.get('required_next_action')}"
+        )
+        typer.echo(f"  hypothesis: {resume_contract.get('next_hypothesis') or '-'}")
+        typer.echo(f"  blocker   : {resume_contract.get('current_blocker') or '-'}")
 
     if not next_stage and not run_auto and not run_single_stage:
         typer.echo("✗ Cannot resolve next stage from memory progress")

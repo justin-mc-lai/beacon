@@ -1,14 +1,24 @@
 from __future__ import annotations
 
+import re
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
+CURRENT_RELEASE = "v1.1.9"
+
+
+def _section(text: str, start_heading: str, end_heading: str | None = None) -> str:
+    start = text.index(start_heading)
+    if end_heading is None:
+        return text[start:]
+    end = text.index(end_heading, start)
+    return text[start:end]
 
 
 def test_readme_should_describe_current_release_line_and_canonical_docs_root():
     text = (ROOT / 'README.md').read_text(encoding='utf-8')
-    assert '当前发布线：`v1.1.8`' in text
+    assert f'当前发布线：`{CURRENT_RELEASE}`' in text
     assert '`docs/beacon/` 是唯一维护的信息源' in text
     assert '`.beacon/` 是运行时状态，不替代正式交付文档' in text
     assert 'pypi.org/project/beacon/' in text
@@ -22,10 +32,10 @@ def test_readme_should_describe_current_release_line_and_canonical_docs_root():
     assert 'beacon-think start' not in text
     assert 'docs/product/' not in text
     assert '### Quick Start / 30-second path' in text
-    assert '### v1.1.8 为什么重要' in text
-    assert 'docs/beacon/v1.1.8/release/v1.1.8.md' in text or 'docs/beacon/v1.1.8/SUMMARY.md' in text
+    assert f'### {CURRENT_RELEASE} 为什么重要' in text
+    assert f'docs/beacon/{CURRENT_RELEASE}/release/{CURRENT_RELEASE}.md' in text or f'docs/beacon/{CURRENT_RELEASE}/SUMMARY.md' in text
     assert '### Command Docs / 命令文档入口' in text
-    assert 'docs/beacon/v1.1.8/SUMMARY.md' in text or 'docs/beacon/v1.1.8/execution/index.md' in text
+    assert f'docs/beacon/{CURRENT_RELEASE}/SUMMARY.md' in text or f'docs/beacon/{CURRENT_RELEASE}/execution/index.md' in text
     for heading in [
         '## 1. 当前版本是什么',
         '## 2. 当前能力边界',
@@ -37,10 +47,27 @@ def test_readme_should_describe_current_release_line_and_canonical_docs_root():
         assert heading in text
 
 
+def test_readme_current_usage_sections_should_not_reference_older_release_lines():
+    text = (ROOT / 'README.md').read_text(encoding='utf-8')
+    current_sections = _section(text, '## 3. 当前推荐命令', '## 6. 后续迭代版本文档编写约定')
+    assert CURRENT_RELEASE in current_sections
+    assert 'v1.1.7' not in current_sections
+
+
+def test_readme_current_release_doc_links_should_exist():
+    text = (ROOT / 'README.md').read_text(encoding='utf-8')
+    current_sections = _section(text, '## 3. 当前推荐命令', '## 6. 后续迭代版本文档编写约定')
+    matches = re.findall(r'`(docs/beacon/' + re.escape(CURRENT_RELEASE) + r'/[^`{}]+)`', current_sections)
+    assert matches, 'README current sections should link to current release docs'
+    for rel_path in matches:
+        path = ROOT / rel_path
+        assert path.exists(), f'missing README doc link target: {rel_path}'
+
+
 def test_skill_should_prefer_beacon_subcommand_and_docs_beacon_output():
     text = (ROOT / 'SKILL.md').read_text(encoding='utf-8')
-    assert 'Skill Version**: v1.1.8' in text
-    assert 'CLI Version**: v1.1.8' in text
+    assert f'Skill Version**: {CURRENT_RELEASE}' in text
+    assert f'CLI Version**: {CURRENT_RELEASE}' in text
     assert '- `beacon <subcommand>`（推荐）' in text
     assert 'docs/beacon/{version}/' in text
     assert 'skills/beacon/' in text
@@ -49,8 +76,8 @@ def test_skill_should_prefer_beacon_subcommand_and_docs_beacon_output():
 
 def test_claude_should_align_to_current_runtime_version():
     text = (ROOT / 'CLAUDE.md').read_text(encoding='utf-8')
-    assert '<!-- BEACON:VERSION:v1.1.8 -->' in text
-    assert 'Runtime target version: `v1.1.8`' in text
+    assert f'<!-- BEACON:VERSION:{CURRENT_RELEASE} -->' in text
+    assert f'Runtime target version: `{CURRENT_RELEASE}`' in text
     assert '`docs/beacon/<version>/` is the canonical source of truth.' in text
     assert '`beacon skill list`' in text
     assert '`beacon implement list-runners --json`' in text

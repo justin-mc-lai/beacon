@@ -1,0 +1,641 @@
+{
+  "schema_version": "1.0",
+  "feature": "Beacon 闭环控制层、恢复层与学习层增强（v1.1.9）",
+  "feature_slug": "beacon-closure-control-learning-overlay",
+  "version": "v1.1.9",
+  "current_revision_id": "R1",
+  "lifecycle_status": "frozen",
+  "updated_at": "2026-03-27T14:30:00+00:00",
+  "revisions": [
+    {
+      "revision_id": "R1",
+      "feature_slug": "beacon-closure-control-learning-overlay",
+      "source_revision_id": null,
+      "reason": "design-freeze",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:99f206a6ca1aec54c8b558ebf2ae79a4ba24cdf49b778a65b576d2fe236a7cc4",
+      "superseded_by": null,
+      "created_at": "2026-03-27T14:30:00+00:00",
+      "frozen_at": "2026-03-27T14:30:00+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    }
+  ],
+  "stories": [
+    {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "Beacon 闭环控制层、恢复层与学习层增强（v1.1.9）",
+      "priority": "high",
+      "status": "frozen",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "Overlay Strategy",
+          "text": "v1.1.9 明确以 overlay 方式增强现有主链，而非新造平行 lifecycle",
+          "required": true,
+          "status": "frozen",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "Delivery Plane",
+          "text": "文档明确沿用 `workflow / implement / qa / review / gate / release / debug` 作为 delivery plane",
+          "required": true,
+          "status": "frozen",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "Exhaustion State",
+          "text": "debug 支持 failure_streak / escalation_level / required_next_action 一类语义",
+          "required": true,
+          "status": "frozen",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "Checkpoint Resume",
+          "text": "resume 语义包含 tried approaches / excluded causes / next hypothesis / evidence gap",
+          "required": true,
+          "status": "frozen",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "Completion Split",
+          "text": "Beacon 明确区分 `implementation_done` 与 `evidence_done`",
+          "required": true,
+          "status": "frozen",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "Delta QA",
+          "text": "Beacon 定义 requirement / implementation / evidence 变化后的 targeted rerun 语义",
+          "required": true,
+          "status": "frozen",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "Trace Contract",
+          "text": "Beacon 冻结 requirement → implementation → evidence 三层 trace contract",
+          "required": true,
+          "status": "frozen",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "Artifact Updates",
+          "text": "`artifact_updates` 被定义为正式 writeback obligation",
+          "required": true,
+          "status": "frozen",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-009",
+          "kind": "ac",
+          "theme": "Archive Feedback",
+          "text": "`technical-implementation-*` 能作为 requirement rewrite / version research 输入",
+          "required": true,
+          "status": "frozen",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-010",
+          "kind": "ac",
+          "theme": "Debug Feedback",
+          "text": "`debug harvest` 能作为 issue / idea / baseline uplift 输入",
+          "required": true,
+          "status": "frozen",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-011",
+          "kind": "ac",
+          "theme": "Evo Boundary",
+          "text": "Beacon 定义 evo harness 输入与 keep/discard 纪律，但不承诺整仓自治",
+          "required": true,
+          "status": "frozen",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-012",
+          "kind": "ac",
+          "theme": "Stability",
+          "text": "v1.1.9 不破坏 v1.1.8 现有主命令面和发布线语义",
+          "required": true,
+          "status": "frozen",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-013",
+          "kind": "ac",
+          "theme": "Design Scope",
+          "text": "当前 v1.1.9 先冻结设计物料，不误报已实现",
+          "required": true,
+          "status": "frozen",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-014",
+          "kind": "ac",
+          "theme": "Skill Roles",
+          "text": "root `SKILL.md` 与 `skills/beacon/SKILL.md` 明确主文档 / 辅文档角色",
+          "required": true,
+          "status": "frozen",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-015",
+          "kind": "ac",
+          "theme": "Skill Structure",
+          "text": "两份 skill 文档遵循统一固定结构模板，不再自由漂移",
+          "required": true,
+          "status": "frozen",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-016",
+          "kind": "ac",
+          "theme": "Operator Clarity",
+          "text": "skill 文档能清晰说明发布线、产品定位、workflow 模型、推荐阅读、命令入口、导航规则与故障排查",
+          "required": true,
+          "status": "frozen",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-017",
+          "kind": "ac",
+          "theme": "Port Anti-Drift",
+          "text": "anti-drift requirement 明确覆盖 CLI / README / skill / runtime / installed copies / managed blocks",
+          "required": true,
+          "status": "frozen",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-018",
+          "kind": "ac",
+          "theme": "Baseline Canonicalization",
+          "text": "baseline / fingerprint / drift contract 明确 canonical source 与 projection 边界",
+          "required": true,
+          "status": "frozen",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-019",
+          "kind": "ac",
+          "theme": "QA Feature-aware Entry",
+          "text": "`qa run <feature>` 被定义为正式目标语义，而非仅 scope-driven alias",
+          "required": true,
+          "status": "frozen",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-020",
+          "kind": "ac",
+          "theme": "Story-Sequential QA",
+          "text": "QA requirement 明确支持按 user-story / AC 顺序依次验证",
+          "required": true,
+          "status": "frozen",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-021",
+          "kind": "ac",
+          "theme": "Per-item Writeback",
+          "text": "QA/verification 最终需要支持 AC / TEST item 粒度 writeback，而不只是整体通过汇总",
+          "required": true,
+          "status": "frozen",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-022",
+          "kind": "ac",
+          "theme": "QA Evolve",
+          "text": "`qa evolve` 进入正式 requirement scope，用于 delta-aware rerun",
+          "required": true,
+          "status": "frozen",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Freeze v1.1.9 overlay requirement materials into machine-consumable story and QA artifacts",
+          "required": true,
+          "status": "frozen",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify TC-001 — 读取 v1.1.9 PRD / US / execution docs",
+          "required": true,
+          "status": "frozen",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-001"
+          ],
+          "source_tc_id": "TC-001"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify TC-002 — 对照现有 Beacon 主命令面",
+          "required": true,
+          "status": "frozen",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-002"
+          ],
+          "source_tc_id": "TC-002"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify TC-003 — 定义 debug exhaustion state",
+          "required": true,
+          "status": "frozen",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-003"
+          ],
+          "source_tc_id": "TC-003"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify TC-004 — 中断后 resume / continue",
+          "required": true,
+          "status": "frozen",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-004"
+          ],
+          "source_tc_id": "TC-004"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify TC-005 — 实现完成但未补证据",
+          "required": true,
+          "status": "frozen",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-005"
+          ],
+          "source_tc_id": "TC-005"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify TC-006 — 需求或实现变化后执行 QA",
+          "required": true,
+          "status": "frozen",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-006"
+          ],
+          "source_tc_id": "TC-006"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify TC-007 — requirement → implementation → evidence 对齐",
+          "required": true,
+          "status": "frozen",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-007"
+          ],
+          "source_tc_id": "TC-007"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify TC-008 — implement / review 产出 artifact_updates",
+          "required": true,
+          "status": "frozen",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-008"
+          ],
+          "source_tc_id": "TC-008"
+        },
+        {
+          "id": "TEST-009",
+          "kind": "test",
+          "text": "Verify TC-009 — technical archive 进入 version/requirement rewrite 输入",
+          "required": true,
+          "status": "frozen",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-009"
+          ],
+          "source_tc_id": "TC-009"
+        },
+        {
+          "id": "TEST-010",
+          "kind": "test",
+          "text": "Verify TC-010 — debug harvest 进入 issue / idea / baseline uplift",
+          "required": true,
+          "status": "frozen",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-010"
+          ],
+          "source_tc_id": "TC-010"
+        },
+        {
+          "id": "TEST-011",
+          "kind": "test",
+          "text": "Verify TC-011 — evo harness 边界检查",
+          "required": true,
+          "status": "frozen",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-011"
+          ],
+          "source_tc_id": "TC-011"
+        },
+        {
+          "id": "TEST-012",
+          "kind": "test",
+          "text": "Verify TC-012 — 对照 v1.1.8 发布线语义",
+          "required": true,
+          "status": "frozen",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-012"
+          ],
+          "source_tc_id": "TC-012"
+        },
+        {
+          "id": "TEST-013",
+          "kind": "test",
+          "text": "Verify TC-013 — 当前 v1.1.9 是否误报已实现",
+          "required": true,
+          "status": "frozen",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-013"
+          ],
+          "source_tc_id": "TC-013"
+        },
+        {
+          "id": "TEST-014",
+          "kind": "test",
+          "text": "Verify TC-014 — 读取 root `SKILL.md` 与 `skills/beacon/SKILL.md`",
+          "required": true,
+          "status": "frozen",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-014"
+          ],
+          "source_tc_id": "TC-014"
+        },
+        {
+          "id": "TEST-015",
+          "kind": "test",
+          "text": "Verify TC-015 — 对照两份 skill 文档 section",
+          "required": true,
+          "status": "frozen",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-015"
+          ],
+          "source_tc_id": "TC-015"
+        },
+        {
+          "id": "TEST-016",
+          "kind": "test",
+          "text": "Verify TC-016 — 用户从任一 skill 入口进入",
+          "required": true,
+          "status": "frozen",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-016"
+          ],
+          "source_tc_id": "TC-016"
+        },
+        {
+          "id": "TEST-017",
+          "kind": "test",
+          "text": "Verify TC-017 — 对照 CLI / README / root skill / packaged skill / runtime state / installed copies / managed blocks",
+          "required": true,
+          "status": "frozen",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-017"
+          ],
+          "source_tc_id": "TC-017"
+        },
+        {
+          "id": "TEST-018",
+          "kind": "test",
+          "text": "Verify TC-018 — 对照 `revision_state` / `story_state` / `v110_baseline`",
+          "required": true,
+          "status": "frozen",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-018"
+          ],
+          "source_tc_id": "TC-018"
+        },
+        {
+          "id": "TEST-019",
+          "kind": "test",
+          "text": "Verify TC-019 — 以 `qa run <feature>` 为目标语义审查需求",
+          "required": true,
+          "status": "frozen",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-019"
+          ],
+          "source_tc_id": "TC-019"
+        },
+        {
+          "id": "TEST-020",
+          "kind": "test",
+          "text": "Verify TC-020 — 审查“实现完成后依次验证用户故事/AC”能力",
+          "required": true,
+          "status": "frozen",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-020"
+          ],
+          "source_tc_id": "TC-020"
+        },
+        {
+          "id": "TEST-021",
+          "kind": "test",
+          "text": "Verify TC-021 — 审查 `qa evolve`",
+          "required": true,
+          "status": "frozen",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-021"
+          ],
+          "source_tc_id": "TC-021"
+        },
+        {
+          "id": "TEST-022",
+          "kind": "test",
+          "text": "Verify TC-022 — 对照 verification/accept writeback",
+          "required": true,
+          "status": "frozen",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-022"
+          ],
+          "source_tc_id": "TC-022"
+        }
+      ]
+    }
+  ]
+}

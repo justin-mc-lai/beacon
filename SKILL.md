@@ -1,15 +1,288 @@
 ---
 name: beacon
+version: 1.1.9
 description: Evidence-first Product Workflow Kernel for product thinking, user stories, PRDs, test cases, and release workflows
 ---
 
 # Beacon - Evidence-first Product Workflow Kernel
 
-> **Skill Version**: v1.1.8
-> **CLI Version**: v1.1.8
+> **Skill Version**: v1.1.9
+> **CLI Version**: v1.1.9
 > **Last Updated**: 2026-03-26
 
 Beacon 是 AI 产品工作流内核，提供需求澄清、用户故事、PRD、测试用例、证据闭环与发布门禁的统一工作流。
+
+## 文档角色与固定结构模板
+
+### 文档角色
+
+- `SKILL.md`（root）= **主文档 / product primary**
+  - 面向人类与通用 skill reader 的完整产品说明入口
+  - 负责讲清楚 Beacon 是什么、适合谁、怎么上手、怎么读 docs、怎么排障
+- `skills/beacon/SKILL.md` = **辅文档 / package supplementary**
+  - 面向标准 `skills/<name>/` 目录的包装入口
+  - 必须镜像主文档的核心结构，但允许更短、更偏 wrapper/operator 视角
+
+### 主辅同步规则
+
+1. 任何产品定位、版本口径、workflow 主模型变化，必须同时更新 root 与 packaged skill。
+2. 如果两者发生冲突：
+   - **产品内容以 root `SKILL.md` 为准**
+   - **标准 skill 打包入口以 `skills/beacon/SKILL.md` 为准**
+3. packaged skill 不是自由发挥版；它必须按主文档的固定结构做缩写镜像。
+
+### 固定结构模板
+
+为避免后续继续漂移，两个 skill 文档都必须稳定覆盖以下 **结构槽位**（允许在 packaged 版本里做压缩或合并，但不能缺项）：
+
+1. 当前版本 / 发布线
+2. 产品定位（Beacon 是什么）
+3. 适合谁 / 不适合谁
+4. Quick Start / 快速上手
+5. Workflow Model / 主工作流模型
+6. Current Product Surfaces / 当前产品面
+7. Why This Skill Matters / 为什么重要
+8. Recommended Reading Order / 推荐阅读顺序
+9. Common Usage Modes / 常见使用场景
+10. Command Surface / How to Use / 命令入口
+11. Lifecycle Navigation Rules / 阶段导航规则
+12. Docs / Troubleshooting / Examples / References
+
+后续若新增 section，应优先挂到以上 12 段中的一个，而不是随意插入新层级。
+
+## 当前版本与发布线
+
+- **当前发布线**：`v1.1.9`
+- **当前包版本**：`1.1.9`
+- **最新已落地实现线**：`v1.1.9`（control / recovery / learning overlay 已在仓内落地，并有实现测试覆盖）
+- **下一规划线**：`v1.1.10`（QA 置信度 / closure outcome / autoresearch 训练闭环）
+
+如果你只记一条：
+
+> **正式包版本仍是 `v1.1.9`，但最新已落地实现能力请同时阅读 `docs/beacon/v1.1.9/`；下一轮规划看 `docs/beacon/v1.1.10/`。**
+
+## Beacon 到底是什么
+
+Beacon 不是单一命令，也不是“帮你写几份 PM 文档”的模板集合。
+
+它更像一个面向 AI/人协作的软件交付内核，把下面这些东西收敛到同一套版本化材料中：
+
+- 需求澄清（think / ask）
+- 用户故事（user-story）
+- PRD（prd）
+- 测试用例与验收覆盖（test-case / qa）
+- 实现摘要与技术归档（implement / review）
+- gate / release 放行治理
+- memory / status / report / resume 等恢复与观测面
+
+一句话说：
+
+> **Beacon 是把“需求 → 实现 → 证据 → gate / release”压成可审计闭环的 CLI 内核。**
+
+## 这套 skill 适合谁
+
+### 适合
+- 想把需求、测试、实现、发布统一到一套版本化材料里的 AI 产品团队
+- 想让 Agent 在项目里遵循固定 lifecycle，而不是每次从空白 prompt 开始的人
+- 想做 evidence-first / machine-backed truth / gate-driven release 的项目
+- 正在做项目接管、feature delivery、release readiness、version planning 的团队
+
+### 不适合
+- 只想让工具直接写业务代码，不关心 requirement material / verification / release governance 的场景
+- 只需要一个简单模板生成器，不需要 lifecycle / traceability / gate 的场景
+- 把 Beacon 当成通用运维平台、部署平台或浏览器自动化平台本体的场景
+
+## 10 分钟快速上手
+
+### 最短路径
+
+```bash
+beacon workflow start "My feature" --project . --version v1.1.9
+beacon think start "My feature" --project . --version v1.1.9
+beacon user-story create "My feature" --project . --version v1.1.9
+beacon prd create "My feature" --project . --version v1.1.9
+beacon test-case create "My feature" --project . --version v1.1.9
+beacon help --project-root . --version v1.1.9 --feature "My feature" --json
+```
+
+### 如果你已经有实现与验证链
+
+```bash
+beacon implement list-runners --json
+beacon implement run "My feature" --project . --version v1.1.9 --runner auto --json
+beacon qa run "My feature" --project . --version v1.1.9 --json
+beacon review quality "My feature" --project . --version v1.1.9 --json
+beacon gate check release --project-root . --version v1.1.9 --json
+```
+
+### 如果你只想看当前该做什么
+
+```bash
+beacon status --board --project-root . --version v1.1.9
+beacon help --project-root . --version v1.1.9 --feature "My feature" --json
+```
+
+## Beacon 的主工作流模型
+
+Beacon 当前的标准主链是：
+
+```text
+think
+→ user-story
+→ prd
+→ [prototype]
+→ test-case
+→ implementation
+→ verify / qa
+→ gate
+→ release
+```
+
+其中：
+
+- `docs/beacon/<version>/` 是**正式版本包**
+- `.beacon/` 是**运行时状态**
+- `execution/` 是**人类主读执行面**
+- `.machine/` 是**机器正式读取面**
+
+这也是 Beacon 与普通 prompt 模板最大的区别：
+
+> **它不是只生成内容，而是要求内容、执行、证据、放行都对齐。**
+
+## 当前产品面（v1.1.9）
+
+当前正式发布线的几个关键能力面：
+
+1. **完整需求主链**
+   - `workflow / think / user-story / prd / test-case`
+2. **项目接管入口**
+   - `init`
+3. **实现技术归档**
+   - `implement`
+   - `technical-implementation-*`
+4. **Feature-aware QA 与状态化验收**
+   - `qa run <feature>`
+   - `qa evolve <feature>`
+   - `qa session`
+   - `story-exhaustive`
+5. **Debug / Recovery / Control Plane**
+   - `debug`
+   - `resume`
+   - control / exhaustion / checkpoint semantics
+6. **Review / Gate / Release / Learning 治理**
+   - `review`
+   - `gate`
+   - `release`
+   - `release scorecard`
+   - keep/discard + evo harness
+
+## 为什么这套 skill 重要
+
+如果没有 Beacon，很多团队会把这些东西拆散在：
+
+- 对话记录里
+- 临时文档里
+- 实现日志里
+- QA 表格里
+- release 口头结论里
+
+Beacon 的价值在于把它们重新并成同一个系统：
+
+```text
+requirement material
+→ implementation result
+→ verification evidence
+→ gate decision
+→ release readiness
+```
+
+这也是为什么 Beacon skill 不只是命令包装，而是一个**产品工作流入口**。
+
+## 推荐阅读顺序
+
+1. `docs/beacon/v1.1.9/SUMMARY.md`
+2. `docs/beacon/v1.1.9/execution/index.md`
+3. `docs/beacon/v1.1.9/execution/architecture-blueprint.md`
+4. `docs/beacon/v1.1.9/execution/closure-loop-blueprint.md`
+5. `docs/beacon/v1.1.9/release/v1.1.9.md`
+
+如果你关注下一版探索，再看：
+
+1. `docs/beacon/v1.1.9/SUMMARY.md`
+2. `docs/beacon/v1.1.9/execution/closure-loop-blueprint.md`
+3. `docs/beacon/v1.1.9/prd/beacon-closure-control-learning-overlay.md`
+4. `docs/beacon/v1.1.9/release/v1.1.9.md`
+
+如果你关注下一轮 QA 精准度 / 自动训练增强，再看：
+
+1. `docs/beacon/v1.1.10/SUMMARY.md`
+2. `docs/beacon/v1.1.10/prd/beacon-qa-confidence-autoresearch-closure.md`
+3. `docs/beacon/v1.1.10/execution/qa-confidence-data-contract.md`
+4. `docs/beacon/v1.1.10/execution/qa-confidence-implementation-phasing.md`
+
+## 常见使用场景
+
+### 场景 A：从 0 到 1 建需求包
+- 用 `workflow` 启主链
+- 生成 think / user-story / prd / test-case
+- 用 `help` 看下一步
+
+### 场景 B：已经有 feature，想进入实现与验收
+- 用 `implement`
+- 用 `qa`
+- 用 `review quality`
+- 用 `gate`
+
+### 场景 C：项目接管 / 多人协作
+- 用 `init`
+- 用 `project lifecycle onboarding`
+- 用 `status / report / resume`
+
+### 场景 D：版本迭代与闭环复盘
+- 用 `report / release / evolution-summary / version`
+- 读取 `docs/beacon/<version>/execution/` 与 `.machine/`
+
+## 命令入口（Command Surface）
+
+主入口：
+
+- `beacon <subcommand>`
+
+兼容入口：
+
+- `python3 -m beacon.main <subcommand>`
+- `bash skills/beacon/scripts/run_beacon.sh <subcommand> ...`
+
+## 阶段导航规则
+
+当你不确定当前 feature 下一步该做什么时，优先按下面顺序走：
+
+1. `beacon status --board --project-root . --version <version>`
+2. `beacon help --project-root . --version <version> --feature "<feature>" --json`
+3. 如果 revision 未冻结，先 `beacon freeze ...`
+4. 如果 revision 已 superseded 或 change request 未处理，先 `beacon reopen ...`
+5. 如果状态不一致或卡住，运行 `beacon doctor --project-root . --json`
+
+不要在 Beacon 已经能计算下一步时靠猜。
+
+## 文档入口与故障排查
+
+### 文档入口
+- `docs/beacon/v1.1.9/SUMMARY.md`
+- `docs/beacon/v1.1.9/execution/index.md`
+- `docs/beacon/v1.1.9/release/v1.1.9.md`
+- `docs/beacon/v1.1.9/SUMMARY.md`（下一轮探索）
+
+### 常见问题
+- 不确定当前阶段下一步做什么：
+  - `beacon help --project-root . --version v1.1.9 --feature "<feature>" --json`
+- 觉得材料状态不一致：
+  - `beacon doctor --project-root . --json`
+  - `beacon doctor verify-materials --project-root . --version v1.1.9 --json`
+- 不确定 release/gate 是否已闭环：
+  - `beacon gate check release --project-root . --version v1.1.9 --json`
+- 想看当前全局状态：
+  - `beacon status --board --project-root . --version v1.1.9`
 
 ## 命令触发（CLI/Skill 单一事实源）
 
@@ -151,10 +424,10 @@ python3 scripts/sync_skill_commands.py --check
 
 ```bash
 # 推荐
-beacon workflow start "Beacon v1.1.8 release line" --project /abs/path/to/project --version v1.1.8
+beacon workflow start "Beacon v1.1.9 release line" --project /abs/path/to/project --version v1.1.9
 
 # 兼容
-python3 -m beacon.main workflow start "Beacon v1.1.8 release line" --project /abs/path/to/project --version v1.1.8
+python3 -m beacon.main workflow start "Beacon v1.1.9 release line" --project /abs/path/to/project --version v1.1.9
 ```
 
 ## Gate 检查
@@ -183,16 +456,17 @@ docs/beacon/{version}/
 
 ## 参考文档
 
-- `docs/beacon/v1.1.8/SUMMARY.md`
-- `docs/beacon/v1.1.8/execution/index.md`
-- `docs/beacon/v1.1.8/execution/technical-implementation-archive-blueprint.md`
-- `docs/beacon/v1.1.8/execution/init-architecture-blueprint-main-doc.md`
-- `docs/beacon/v1.1.8/research/gstack-gap-analysis.md`
-- `docs/beacon/v1.1.8/release/v1.1.8.md`
+- `docs/beacon/v1.1.9/SUMMARY.md`
+- `docs/beacon/v1.1.9/execution/index.md`
+- `docs/beacon/v1.1.9/execution/architecture-blueprint.md`
+- `docs/beacon/v1.1.9/execution/closure-loop-blueprint.md`
+- `docs/beacon/v1.1.9/research/beacon-pua-exhaustiveness-layer-analysis.md`
+- `docs/beacon/v1.1.9/research/beacon-karpathy-autoresearch-evo-analysis.md`
+- `docs/beacon/v1.1.9/release/v1.1.9.md`
 - `skills/beacon/SKILL.md`
 - `references/acceptance-criteria.md`
 - `references/user-story-mapping.md`
 
 ---
 
-**版本**: v1.1.8
+**版本**: v1.1.9

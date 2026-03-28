@@ -9,13 +9,13 @@
 
 ## 1. 当前版本是什么
 
-Beacon 当前单一发布口径是 **v1.1.8**。
+Beacon 当前单一发布口径是 **v1.1.9**。
 
-> 当前发布线：`v1.1.8`
+> 当前发布线：`v1.1.9`
 
 - **CLI 入口**：`beacon <subcommand>`
 - **标准 skill 包**：`skills/beacon/`
-- **当前包版本**：`1.1.8`
+- **当前包版本**：`1.1.9`
 - **文档主源**：`docs/beacon/<version>/`
 - **状态目录**：`.beacon/`
 
@@ -27,7 +27,7 @@ Beacon 当前单一发布口径是 **v1.1.8**。
 
 如果你只记一条：
 
-> **Beacon 现在是 v1.1.8，写文档看 `docs/beacon`，执行命令用 `beacon <subcommand>`。**
+> **Beacon 现在是 v1.1.9，写文档看 `docs/beacon`，执行命令用 `beacon <subcommand>`。**
 
 ---
 
@@ -54,14 +54,15 @@ Beacon 默认**不负责**：
 - issue tracker 轮询、workspace 调度、agent scheduler
 - 在 core 内维护完整 PM 模板大全
 
-### 当前发布线摘要（v1.1.8）
+### 当前发布线摘要（v1.1.9）
 
-- **五线并行闭环**：`init / prototype / implement / qa / debug`
-- **QA 主入口**：新增 `beacon qa`，保留 `auto-test` 兼容别名
-- **实现技术归档**：`implement` 现在会额外生成 `technical-implementation-<feature>.{md,json}`
-- **项目接管入口**：`init` 支持 `--project-mode greenfield|takeover`，生成 onboarding / architecture / version blueprint
-- **运行时反馈闭环**：`debug` 支持 project feed / harvest / export-ideas，落盘 `.beacon/debug/`
-- **正式验收**：v1.1.8 五条设计线已完成 `freeze -> implement(native-team) -> review accept -> review spec`
+- **control / recovery / learning overlay 已落地**：在既有 delivery kernel 之上正式引入 control plane
+- **feature-aware QA**：支持 `beacon qa run <feature>` 与 `beacon qa evolve <feature>`
+- **story-exhaustive 验证**：browser-relevant AC 可展开为 scenario families，并按 story / AC / scenario 顺序执行
+- **completion split**：正式区分 `implementation_done` 与 `evidence_done`
+- **browser evidence chain**：正式生成 browser evidence pack，并接入 session / replay / runner artifacts
+- **release scorecard**：release/report/status 可统一消费 gate / QA / exhaustiveness / learning signal
+- **learning-plane skeleton**：keep/discard、benchmark corpus、evo harness contract 与 experiment scorecard 已落地
 
 ### 上一发布线摘要（v1.1.7）
 
@@ -78,21 +79,22 @@ Beacon 默认**不负责**：
 - **单一事实源**：`docs/beacon/<version>/` 优先于 `.beacon/`
 - **版本包最小闭环**：`SUMMARY / execution / prd / user-story / qa/test-cases / release`
 
-### v1.1.8 为什么重要
+### v1.1.9 为什么重要
 
-v1.1.8 相比 v1.1.7 的核心新增，是把 Beacon 从“需求/执行内核”继续推进成“项目接管内核”：
+v1.1.9 相比 v1.1.8 的核心新增，不是再堆一条新功能线，而是把 Beacon 从“可交付”推进成“更抗失败、可恢复、可学习”的闭环内核：
 
-- `qa` 主入口与 session 治理
-- runtime debug 反馈回流产品演进
-- implement 技术归档
-- init 渐进式披露与架构主文档
-- prototype / implement / qa / debug / init 五线联动
+- `qa run <feature>` / `qa evolve <feature>`
+- `story-scenario-map` + `story-exhaustive`
+- `implementation_done` / `evidence_done`
+- browser evidence pack + replay-aware gate
+- release scorecard + learning scorecard
+- keep/discard + evo harness skeleton
 
-你现在可以从这些入口阅读 v1.1.8：
+你现在可以从这些入口阅读 v1.1.9：
 
-- `docs/beacon/v1.1.8/SUMMARY.md`
-- `docs/beacon/v1.1.8/execution/index.md`
-- `docs/beacon/v1.1.8/release/v1.1.8.md`
+- `docs/beacon/v1.1.9/SUMMARY.md`
+- `docs/beacon/v1.1.9/execution/index.md`
+- `docs/beacon/v1.1.9/release/v1.1.9.md`
 
 ### v1.1.7 为什么重要（历史）
 
@@ -145,75 +147,78 @@ beacon <subcommand> ...
 
 ### Quick Start / 30-second path
 
-如果你只想用最短路径快速跑通 Beacon v1.1.7，先执行：
+如果你只想用最短路径快速跑通 Beacon v1.1.9，先执行：
 
 ```bash
-beacon ask "Create a release-ready requirement package" --project-root . --version v1.1.7 --plan-only --json
-beacon workflow start "Beacon v1.1.7 layered delivery" --project . --version v1.1.7
-beacon doctor verify-materials --project-root . --version v1.1.7 --json
-beacon gate check release --project-root . --version v1.1.7 --json
+beacon ask "Create a release-ready requirement package" --project-root . --version v1.1.9 --plan-only --json
+beacon workflow start "Beacon v1.1.9 project takeover baseline" --project . --version v1.1.9
+beacon doctor verify-materials --project-root . --version v1.1.9 --json
+beacon gate check release --project-root . --version v1.1.9 --json
 ```
 
 如果你想继续读完整命令文档，请看下面的 Command Docs 入口。
 
 ### Command Docs / 命令文档入口
 
-如果你想按不同深度阅读 v1.1.7 的命令文档，建议从这里进入：
+如果你想按当前发布线阅读 v1.1.9 文档，建议从这里进入：
 
-- `docs/beacon/v1.1.7/COMMANDS.md`：命令文档总入口
-- `docs/beacon/v1.1.7/getting-started-10-minutes.md`：新手 10 分钟上手教程
-- `docs/beacon/v1.1.7/execution/command-guide-readme.md`：README 风格命令指南
-- `docs/beacon/v1.1.7/execution/scenario-quick-reference.md`：按典型场景整理的速查表
-- `docs/beacon/v1.1.7/execution/command-reference.md`：完整命令树与命令说明
-- `docs/beacon/v1.1.7/execution/command-reference-bilingual.md`：中英双语版
+- `docs/beacon/v1.1.9/SUMMARY.md`：当前版本总览
+- `docs/beacon/v1.1.9/execution/index.md`：执行面索引与推荐阅读顺序
+- `docs/beacon/v1.1.9/execution/architecture-blueprint.md`：架构蓝图主文档
+- `docs/beacon/v1.1.9/execution/closure-loop-blueprint.md`：闭环蓝图主文档
+- `docs/beacon/v1.1.9/execution/evo-harness-contract.md`：学习面/evo 合同
+- `docs/beacon/v1.1.9/release/v1.1.9.md`：当前发布说明
 
-如果你关注 v1.1.7 新增的项目级能力，请优先读：
+如果你关注 v1.1.9 当前单条闭环增强线，请优先读：
 
-- `docs/beacon/v1.1.7/version/beacon-v1.1.7-project-skill-orchestration.md`
-- `docs/beacon/v1.1.7/prd/beacon-project-skill-orchestration.md`
-- `docs/beacon/v1.1.7/user-story/beacon-project-skill-orchestration.md`
-- `docs/beacon/v1.1.7/qa/test-cases/beacon-project-skill-orchestration.md`
+- `docs/beacon/v1.1.9/prd/beacon-closure-control-learning-overlay.md`
+- `docs/beacon/v1.1.9/user-story/beacon-closure-control-learning-overlay.md`
+- `docs/beacon/v1.1.9/qa/test-cases/beacon-closure-control-learning-overlay.md`
+- `docs/beacon/v1.1.9/research/beacon-pua-exhaustiveness-layer-analysis.md`
+- `docs/beacon/v1.1.9/research/beacon-karpathy-autoresearch-evo-analysis.md`
 
 ### 最小工作流
 
 ```bash
 # 1) 启动需求主链
-beacon workflow start "Beacon v1.1.7 layered delivery" --project . --version v1.1.7
+beacon workflow start "Beacon v1.1.9 project takeover baseline" --project . --version v1.1.9
 
 # 2) 生成主链文档
-beacon think start "Beacon v1.1.7 layered delivery" --project . --version v1.1.7
-beacon user-story create "Beacon v1.1.7 layered delivery" --project . --version v1.1.7
-beacon prd create "Beacon v1.1.7 layered delivery" --project . --version v1.1.7
-beacon test-case create "Beacon v1.1.7 layered delivery" --project . --version v1.1.7
+beacon think start "Beacon v1.1.9 project takeover baseline" --project . --version v1.1.9
+beacon user-story create "Beacon v1.1.9 project takeover baseline" --project . --version v1.1.9
+beacon prd create "Beacon v1.1.9 project takeover baseline" --project . --version v1.1.9
+beacon test-case create "Beacon v1.1.9 project takeover baseline" --project . --version v1.1.9
 
 # 2.5) 配置并执行实现适配
 beacon skill list
 beacon skill registry list --json
 beacon profile create demo demo --json
-beacon skill bind "Beacon layered delivery" --profile demo --version v1.1.7
+beacon skill bind "Beacon v1.1.9 project takeover baseline" --profile demo --version v1.1.9
 beacon implement list-runners --json
-beacon doctor repair-package --project-root . --version v1.1.7 --json
-beacon implement run "Beacon layered delivery" --runner omx --json
-beacon verify run "Beacon layered delivery" --profile demo --json
-beacon orchestrate run "Beacon layered delivery" --profile demo --dry-run --json
+beacon doctor repair-package --project-root . --version v1.1.9 --json
+beacon implement run "Beacon v1.1.9 project takeover baseline" --runner omx --json
+beacon qa run "Beacon v1.1.9 project takeover baseline" --profile demo --json
+beacon verify run "Beacon v1.1.9 project takeover baseline" --profile demo --json
+beacon orchestrate run "Beacon v1.1.9 project takeover baseline" --profile demo --dry-run --json
 
 # 2.6) 标准 skill + script 触发
 bash skills/beacon/scripts/run_beacon.sh --version
 bash skills/beacon/scripts/run_beacon.sh skill list
 
 # 3) 状态 / 验收
-beacon status --board --project-root . --version v1.1.7
-beacon gate check release --project-root . --version v1.1.7
+beacon status --board --project-root . --version v1.1.9
+beacon qa status --project .
+beacon gate check release --project-root . --version v1.1.9
 ```
 
-### v1.1.7 project-aware 示例（以 Rolo 思路为例）
+### v1.1.9 project-aware 示例（以 Rolo 思路为例）
 
 ```bash
 beacon profile create rolo rolo-uat --example rolo-uat --json
-beacon skill bind "KZFJ-1110 启动页营销内容配置" --profile rolo-uat --version v1.1.7
+beacon skill bind "KZFJ-1110 启动页营销内容配置" --profile rolo-uat --version v1.1.9
 beacon verify run "KZFJ-1110 启动页营销内容配置" \
   --project . \
-  --version v1.1.7 \
+  --version v1.1.9 \
   --profile rolo-uat \
   --json
 ```
@@ -228,7 +233,7 @@ beacon verify run "KZFJ-1110 启动页营销内容配置" \
 
 ```bash
 # 默认只生成计划，不执行
-beacon ask "请帮我梳理 Beacon v1.1.7 的人机分层交付闭环" --plan-only --json
+beacon ask "请帮我梳理 Beacon v1.1.9 的项目接管闭环" --plan-only --json
 
 # 显式执行（带边界/置信度闸门）
 beacon ask "请生成用户故事并给出验收标准" --execute --json
@@ -238,9 +243,9 @@ beacon ask "请生成用户故事并给出验收标准" --execute --json
 
 ```bash
 beacon doctor --project-root . --json
-beacon doctor verify-materials --project-root . --version v1.1.7 --json
-beacon doctor verify-delivery --project-root . --version v1.1.7 --json
-beacon report --machine latest --project-root . --version v1.1.7
+beacon doctor verify-materials --project-root . --version v1.1.9 --json
+beacon doctor verify-delivery --project-root . --version v1.1.9 --json
+beacon report --machine latest --project-root . --version v1.1.9
 ```
 
 ---
@@ -290,24 +295,22 @@ docs/beacon/<version>/.machine/execution/
 └── runs/
 ```
 
-### 当前验收工件（v1.1.7）
+### 当前验收工件（v1.1.9）
 
-- `docs/beacon/v1.1.7/SUMMARY.md`
-- `docs/beacon/v1.1.7/execution/index.md`
-- `docs/beacon/v1.1.7/execution/boundaries.md`
-- `docs/beacon/v1.1.7/execution/human-machine-collaboration-norm.md`
-- `docs/beacon/v1.1.7/execution/memory-architecture-and-projection.md`
-- `docs/beacon/v1.1.7/execution/doctor-repair-scope.md`
-- `docs/beacon/v1.1.7/execution/safe-implementation-plan.md`
-- `docs/beacon/v1.1.7/execution/eval-lab-benchmark-surface.md`
-- `docs/beacon/v1.1.7/execution/keep-discard-policy.md`
-- `docs/beacon/v1.1.7/execution/drift-auditor-minimum-loop.md`
-- `docs/beacon/v1.1.7/release/v1.1.7.md`
-- `docs/beacon/v1.1.7/.machine/execution/terminal.json`
-- `docs/beacon/v1.1.7/version/beacon-v1.1.7-project-skill-orchestration.md`
-- `docs/beacon/v1.1.7/prd/beacon-project-skill-orchestration.md`
-- `docs/beacon/v1.1.7/user-story/beacon-project-skill-orchestration.md`
-- `docs/beacon/v1.1.7/qa/test-cases/beacon-project-skill-orchestration.md`
+- `docs/beacon/v1.1.9/SUMMARY.md`
+- `docs/beacon/v1.1.9/execution/index.md`
+- `docs/beacon/v1.1.9/execution/architecture-blueprint.md`
+- `docs/beacon/v1.1.9/execution/closure-loop-blueprint.md`
+- `docs/beacon/v1.1.9/execution/evo-harness-contract.md`
+- `docs/beacon/v1.1.9/execution/evo-scorecard-contract.md`
+- `docs/beacon/v1.1.9/release/v1.1.9.md`
+- `docs/beacon/v1.1.9/.machine/execution/beacon-closure-control-learning-overlay.revision.json`
+- `docs/beacon/v1.1.9/.machine/user-story/beacon-closure-control-learning-overlay.json`
+- `docs/beacon/v1.1.9/.machine/qa/beacon-closure-control-learning-overlay.ac-test-matrix.json`
+- `docs/beacon/v1.1.9/.machine/qa/beacon-closure-control-learning-overlay.story-scenario-map.json`
+- `docs/beacon/v1.1.9/prd/beacon-closure-control-learning-overlay.md`
+- `docs/beacon/v1.1.9/user-story/beacon-closure-control-learning-overlay.md`
+- `docs/beacon/v1.1.9/qa/test-cases/beacon-closure-control-learning-overlay.md`
 
 ---
 
@@ -317,27 +320,24 @@ docs/beacon/<version>/.machine/execution/
 
 ```bash
 python3 -m pytest -q
-beacon doctor verify-materials --project-root . --version v1.1.7 --json
-beacon doctor verify-delivery --project-root . --version v1.1.7 --json
-beacon gate check release --project-root . --version v1.1.7 --json
-beacon release check v1.1.7 --project .
+beacon doctor verify-materials --project-root . --version v1.1.9 --json
+beacon doctor verify-delivery --project-root . --version v1.1.9 --json
+beacon gate check release --project-root . --version v1.1.9 --json
+beacon release check v1.1.9 --project .
 ```
 
 ### 自动生成验收审计
 
 ```bash
-beacon report latest acceptance-audit   --project-root .   --version v1.1.7   --feature beacon-human-machine-artifact-layering   --write
+beacon release scorecard v1.1.9 --project . --json
+beacon report --human latest --project-root . --version v1.1.9
 ```
-
-这个命令会生成：
-
-- `docs/beacon/v1.1.7/execution/acceptance-regression-audit.{md,json}`
 
 ---
 
 ## 6. 后续迭代版本文档编写约定
 
-后续版本（如 `v1.1.7`、`v1.2.0`）继续沿用下面这套方案。
+后续版本（如 `v1.1.9`、`v1.2.0`）继续沿用下面这套方案。
 
 ### README 编写原则
 
@@ -382,17 +382,14 @@ docs/beacon/<version>/
 
 ### 当前发布线参考文档
 
-- [v1.1.7 Summary](./docs/beacon/v1.1.7/SUMMARY.md)
-- [v1.1.7 Boundaries](./docs/beacon/v1.1.7/execution/boundaries.md)
-- [v1.1.7 Execution Index](./docs/beacon/v1.1.7/execution/index.md)
-- [v1.1.7 Human-Machine Collaboration Norm](./docs/beacon/v1.1.7/execution/human-machine-collaboration-norm.md)
-- [v1.1.7 Memory Architecture and Projection](./docs/beacon/v1.1.7/execution/memory-architecture-and-projection.md)
-- [v1.1.7 Doctor Repair Scope](./docs/beacon/v1.1.7/execution/doctor-repair-scope.md)
-- [v1.1.7 Safe Implementation Plan](./docs/beacon/v1.1.7/execution/safe-implementation-plan.md)
-- [v1.1.7 Eval Lab Benchmark Surface](./docs/beacon/v1.1.7/execution/eval-lab-benchmark-surface.md)
-- [v1.1.7 Keep-Discard Policy](./docs/beacon/v1.1.7/execution/keep-discard-policy.md)
-- [v1.1.7 Release Stub](./docs/beacon/v1.1.7/release/v1.1.7.md)
+- [v1.1.9 Summary](./docs/beacon/v1.1.9/SUMMARY.md)
+- [v1.1.9 Execution Index](./docs/beacon/v1.1.9/execution/index.md)
+- [v1.1.9 Architecture Blueprint](./docs/beacon/v1.1.9/execution/architecture-blueprint.md)
+- [v1.1.9 Closure Loop Blueprint](./docs/beacon/v1.1.9/execution/closure-loop-blueprint.md)
+- [v1.1.9 Evo Harness Contract](./docs/beacon/v1.1.9/execution/evo-harness-contract.md)
+- [v1.1.9 Evo Scorecard Contract](./docs/beacon/v1.1.9/execution/evo-scorecard-contract.md)
+- [v1.1.9 Release Notes](./docs/beacon/v1.1.9/release/v1.1.9.md)
 
 ---
 
-**版本**: v1.1.7
+**版本**: v1.1.9

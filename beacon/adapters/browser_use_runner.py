@@ -13,6 +13,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+from beacon.adapters.browser_runner_common import load_task, write_runner_artifacts
+
 
 def _inject_pytest_junit_arg(command: str) -> str:
     cmd = str(command or "").strip()
@@ -46,6 +48,7 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--mode", default="functional", choices=["functional", "compatibility"])
     parser.add_argument("--task", default="", help="Natural language task for browser-use.")
+    parser.add_argument("--task-file", default="", help="Compiled browser task json path.")
     parser.add_argument(
         "--fallback-cmd",
         default="",
@@ -55,18 +58,43 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     project_root = Path(args.project_root).resolve()
-    task = str(args.task or "").strip()
-    fallback_cmd = str(args.fallback_cmd or "").strip()
+    layer_dir_value = str(os.environ.get("BEACON_LAYER_DIR", "")).strip()
+    layer_dir = Path(layer_dir_value) if layer_dir_value else None
+    task_file = str(args.task_file or os.environ.get("BEACON_BROWSER_TASK_FILE", "")).strip()
+    task, task_payload = load_task(str(args.task or ""), task_file)
+    fallback_cmd = str(args.fallback_cmd or os.environ.get("BEACON_BROWSER_FALLBACK_CMD", "")).strip()
 
     try:
         import browser_use  # type: ignore # noqa: F401
     except Exception:
         if fallback_cmd:
             print(f"[browser-use-adapter] browser-use unavailable, fallback: {fallback_cmd}")
+            write_runner_artifacts(
+                layer_dir=layer_dir,
+                project_root=project_root,
+                runner="browser-use",
+                task_file=task_file,
+                task_text=task,
+                task_payload=task_payload,
+                mode=args.mode,
+                status="fallback-browser-use-unavailable",
+                fallback_cmd=fallback_cmd,
+            )
             return _run_fallback(fallback_cmd, cwd=project_root)
         print(
             "[browser-use-adapter] browser-use package is unavailable and no --fallback-cmd provided. "
             "Provide --functional-command/--compatibility-command with a real executable command."
+        )
+        write_runner_artifacts(
+            layer_dir=layer_dir,
+            project_root=project_root,
+            runner="browser-use",
+            task_file=task_file,
+            task_text=task,
+            task_payload=task_payload,
+            mode=args.mode,
+            status="browser-use-unavailable",
+            fallback_cmd=fallback_cmd,
         )
         return 2
 
@@ -74,10 +102,32 @@ def main(argv: list[str] | None = None) -> int:
     if not task:
         if fallback_cmd:
             print(f"[browser-use-adapter] no task configured, fallback: {fallback_cmd}")
+            write_runner_artifacts(
+                layer_dir=layer_dir,
+                project_root=project_root,
+                runner="browser-use",
+                task_file=task_file,
+                task_text="",
+                task_payload=task_payload,
+                mode=args.mode,
+                status="fallback-no-task",
+                fallback_cmd=fallback_cmd,
+            )
             return _run_fallback(fallback_cmd, cwd=project_root)
         print(
             "[browser-use-adapter] browser-use detected but --task missing. "
             "Set BEACON_BROWSER_USE_TASK via custom command wrapper or pass deterministic fallback."
+        )
+        write_runner_artifacts(
+            layer_dir=layer_dir,
+            project_root=project_root,
+            runner="browser-use",
+            task_file=task_file,
+            task_text="",
+            task_payload=task_payload,
+            mode=args.mode,
+            status="missing-task",
+            fallback_cmd=fallback_cmd,
         )
         return 2
 
@@ -85,8 +135,30 @@ def main(argv: list[str] | None = None) -> int:
     # To stay deterministic in Beacon core, we delegate to explicit fallback command when present.
     if fallback_cmd:
         print(f"[browser-use-adapter] task accepted ({args.mode}), delegated fallback: {fallback_cmd}")
+        write_runner_artifacts(
+            layer_dir=layer_dir,
+            project_root=project_root,
+            runner="browser-use",
+            task_file=task_file,
+            task_text=task,
+            task_payload=task_payload,
+            mode=args.mode,
+            status="fallback-executed",
+            fallback_cmd=fallback_cmd,
+        )
         return _run_fallback(fallback_cmd, cwd=project_root)
 
+    write_runner_artifacts(
+        layer_dir=layer_dir,
+        project_root=project_root,
+        runner="browser-use",
+        task_file=task_file,
+        task_text=task,
+        task_payload=task_payload,
+        mode=args.mode,
+        status="task-only",
+        fallback_cmd=fallback_cmd,
+    )
     print(
         "[browser-use-adapter] task configured but no explicit runner command provided. "
         "Use --fallback-cmd or pass --functional-command/--compatibility-command in Beacon."

@@ -9,6 +9,7 @@ from typing import Any
 import typer
 
 from beacon.utils.coverage import compute_coverage_metrics
+from beacon.utils.control_plane import build_resume_contract
 from beacon.utils.runtime import load_run_state, newest_run_id, now_iso, write_json
 from beacon.utils.acceptance_audit import (
     build_acceptance_audit_payload,
@@ -18,6 +19,9 @@ from beacon.utils.acceptance_audit import (
 )
 from beacon.utils.versioning import resolve_target_version
 from beacon.utils.material_audit import build_material_audit
+from beacon.utils.learning_loop import load_keep_discard_engine
+from beacon.utils.qa_runtime import load_qa_status
+from beacon.utils.release_scorecard import build_release_scorecard, summarize_release_scorecard
 from beacon.utils.v110_baseline import load_latest_spec_fingerprint
 from beacon.utils.v110_metrics import (
     compute_baseline_drift_metrics,
@@ -38,6 +42,7 @@ app = typer.Typer(
 
 
 def _human_summary(machine: dict[str, Any]) -> str:
+    release_summary = summarize_release_scorecard(machine.get("release_scorecard"))
     lines = [
         "# Beacon Human Summary",
         "",
@@ -45,6 +50,21 @@ def _human_summary(machine: dict[str, Any]) -> str:
         f"- Workflow: `{machine.get('workflow', 'workflow')}`",
         f"- Mode: `{machine.get('mode', 'normal')}`",
         f"- Status: **{machine.get('status', 'unknown')}**",
+        f"- Release Ready: `{release_summary.get('release_ready')}`",
+        f"- Release Gate: `{release_summary.get('gate_status')}`",
+        f"- QA Status: `{release_summary.get('qa_status')}`",
+        f"- QA Mode: `{release_summary.get('qa_execution_mode')}`",
+        "",
+        "## Release Readiness",
+        f"- release_ready: `{release_summary.get('release_ready')}`",
+        f"- gate_status: `{release_summary.get('gate_status')}`",
+        f"- gate_blocked_count: `{release_summary.get('gate_blocked_count')}`",
+        f"- qa_status: `{release_summary.get('qa_status')}`",
+        f"- qa_execution_mode: `{release_summary.get('qa_execution_mode')}`",
+        f"- qa_evidence_done: `{release_summary.get('qa_evidence_done')}`",
+        f"- main_kpi: `{release_summary.get('main_kpi')}`",
+        f"- main_kpi_score: `{release_summary.get('main_kpi_score')}`",
+        f"- keep/review/discard: `{release_summary.get('decision_keep')}/{release_summary.get('decision_review')}/{release_summary.get('decision_discard')}`",
         "",
         "## Artifacts",
     ]
@@ -59,6 +79,10 @@ def _human_summary(machine: dict[str, Any]) -> str:
     memory_governance = machine.get("memory_governance")
     baseline_drift = machine.get("baseline_drift")
     consistency_snapshot = machine.get("consistency_snapshot")
+    control_plane = machine.get("control_plane")
+    qa_status = machine.get("qa_status")
+    learning_plane = machine.get("learning_plane")
+    release_scorecard = machine.get("release_scorecard")
     if isinstance(memory_metrics, dict):
         lines.extend(
             [
@@ -119,6 +143,43 @@ def _human_summary(machine: dict[str, Any]) -> str:
                 f"- actual_spec_fingerprint: `{consistency_snapshot.get('actual_spec_fingerprint')}`",
                 f"- reason_codes: `{consistency_snapshot.get('reason_codes')}`",
             ]
+        )
+    if isinstance(control_plane, dict):
+        lines.extend(
+            [
+                "",
+                "## Control Plane",
+                f"- failure_streak: `{control_plane.get('failure_streak')}`",
+                f"- escalation_level: `{control_plane.get('escalation_level')}`",
+                f"- required_next_action: `{control_plane.get('required_next_action')}`",
+                f"- current_blocker: `{control_plane.get('current_blocker')}`",
+            ]
+        )
+    if isinstance(qa_status, dict) and qa_status:
+        lines.extend(
+            [
+                "",
+                "## QA Closure",
+                f"- feature: `{qa_status.get('feature')}`",
+                f"- status: `{qa_status.get('status')}`",
+                f"- evidence_done: `{qa_status.get('evidence_done')}`",
+            ]
+        )
+    if isinstance(learning_plane, dict):
+        decision_summary = learning_plane.get("decision_summary", {}) if isinstance(learning_plane.get("decision_summary"), dict) else {}
+        if decision_summary:
+            lines.extend(
+                [
+                    "",
+                    "## Keep / Discard Engine",
+                    f"- keep: `{decision_summary.get('keep')}`",
+                    f"- review: `{decision_summary.get('review')}`",
+                    f"- discard: `{decision_summary.get('discard')}`",
+                ]
+            )
+    if isinstance(release_scorecard, dict) and release_scorecard and release_summary.get("exhaustiveness_status"):
+        lines.append(
+            f"- exhaustiveness: `{release_summary.get('exhaustiveness_status')}` score=`{release_summary.get('exhaustiveness_score')}` threshold=`{release_summary.get('exhaustiveness_threshold')}`"
         )
     return "\n".join(lines) + "\n"
 
@@ -221,6 +282,10 @@ def _build_machine_payload(
             "memory_governance": compute_memory_governance_metrics(project_root),
             "baseline_drift": compute_baseline_drift_metrics(project_root, version=coverage_version),
             "consistency_snapshot": consistency_snapshot,
+            "control_plane": build_resume_contract(project_root, run_id=None if resolved == "latest" else resolved),
+            "qa_status": load_qa_status(project_root),
+            "learning_plane": load_keep_discard_engine(project_root),
+            "release_scorecard": build_release_scorecard(project_root, version=coverage_version),
             "source_of_truth": {
                 "root": f"docs/beacon/{coverage_version}",
                 "runtime_state_root": ".beacon",
@@ -271,6 +336,10 @@ def _build_machine_payload(
         "memory_governance": compute_memory_governance_metrics(project_root),
         "baseline_drift": compute_baseline_drift_metrics(project_root, version=coverage_version),
         "consistency_snapshot": consistency_snapshot,
+        "control_plane": build_resume_contract(project_root, run_id=resolved),
+        "qa_status": load_qa_status(project_root),
+        "learning_plane": load_keep_discard_engine(project_root),
+        "release_scorecard": build_release_scorecard(project_root, version=coverage_version),
         "source_of_truth": {
             "root": f"docs/beacon/{coverage_version}",
             "runtime_state_root": ".beacon",

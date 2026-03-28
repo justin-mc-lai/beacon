@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 from typing import Any
 
+from beacon.utils.control_plane import build_resume_contract
 from beacon.utils.coverage import compute_coverage_metrics
 from beacon.utils.project_skills import evaluate_project_profile_gate, resolve_profile_for_feature
 from beacon.utils.revision_state import load_revision_state
@@ -46,7 +47,7 @@ def _infer_current_stage(*, revision_state: dict[str, Any], workflow_progress: d
     return delivery or str(revision_state.get("doc_status", "") or "draft")
 
 
-def _blocking_reasons(*, revision_state: dict[str, Any], workflow_progress: dict[str, Any], coverage: dict[str, Any], profile_gate: dict[str, Any] | None = None) -> list[str]:
+def _blocking_reasons(*, revision_state: dict[str, Any], workflow_progress: dict[str, Any], coverage: dict[str, Any], profile_gate: dict[str, Any] | None = None, control_plane: dict[str, Any] | None = None) -> list[str]:
     reasons: list[str] = []
     delivery_status = str(revision_state.get("delivery_status", "") or "")
     if str(revision_state.get("doc_status", "") or "draft") != "frozen":
@@ -67,15 +68,25 @@ def _blocking_reasons(*, revision_state: dict[str, Any], workflow_progress: dict
         code = str(item.get("reason_code", "") or "").strip()
         if code:
             reasons.append(code)
+    if isinstance(control_plane, dict) and int(control_plane.get("failure_streak", 0) or 0) > 0:
+        reasons.append("control_plane_escalation_active")
     return sorted(set(reasons))
 
 
-def _next_step(*, revision_state: dict[str, Any], workflow_progress: dict[str, Any], blocked: bool, blocking_reasons: list[str], feature: str, version: str, project_root: Path, profile_gate: dict[str, Any] | None = None, profile: dict[str, Any] | None = None) -> dict[str, str]:
+def _next_step(*, revision_state: dict[str, Any], workflow_progress: dict[str, Any], blocked: bool, blocking_reasons: list[str], feature: str, version: str, project_root: Path, profile_gate: dict[str, Any] | None = None, profile: dict[str, Any] | None = None, control_plane: dict[str, Any] | None = None) -> dict[str, str]:
     quoted_feature = json.dumps(feature, ensure_ascii=False)
     base = f'--project-root {project_root} --version {version}'
     next_stage = str(workflow_progress.get("next_stage", "") or "")
     run_id = str(workflow_progress.get("run_id", "") or "")
     if blocked:
+        if "control_plane_escalation_active" in blocking_reasons and isinstance(control_plane, dict):
+            run_id = str(control_plane.get("run_id", "") or "")
+            run_arg = f" {run_id}" if run_id else ""
+            return {
+                "action": "debug-recover",
+                "reason": "control plane recorded an active failure streak that requires structured recovery before retry",
+                "command": f"beacon debug recover{run_arg} --project-root {project_root}",
+            }
         if "contract_drift" in blocking_reasons:
             return {
                 "action": "contract-drift-fix",
@@ -217,7 +228,14 @@ def build_help_payload(
     story_summary = summarize_story_items(story_state)
     profile = resolve_profile_for_feature(project_root, version=resolved_version, feature=feature_name, explicit_profile=None)
     profile_gate = evaluate_project_profile_gate(project_root, version=resolved_version, feature=feature_name) if profile else {}
-    blocking = _blocking_reasons(revision_state=revision_state, workflow_progress=workflow_progress, coverage=coverage, profile_gate=profile_gate)
+    control_plane = build_resume_contract(project_root, run_id=resolved_run_id or None)
+    blocking = _blocking_reasons(
+        revision_state=revision_state,
+        workflow_progress=workflow_progress,
+        coverage=coverage,
+        profile_gate=profile_gate,
+        control_plane=control_plane,
+    )
     blocked = bool(blocking)
     current_stage = _infer_current_stage(revision_state=revision_state, workflow_progress=workflow_progress)
     next_step = _next_step(
@@ -230,6 +248,7 @@ def build_help_payload(
         project_root=project_root,
         profile_gate=profile_gate,
         profile=profile,
+        control_plane=control_plane,
     )
     scores = {
         "test_score": compute_test_score(coverage, auto_test_status=auto_test, story_summary=story_summary),
@@ -255,6 +274,7 @@ def build_help_payload(
         "next_step": next_step,
         "scores": {k: v.get("score") if isinstance(v, dict) else v for k, v in scores.items()},
         "score_details": scores,
+        "control_plane": control_plane,
         "coverage": coverage,
         "story_summary": story_summary,
         "workflow_progress": workflow_progress,

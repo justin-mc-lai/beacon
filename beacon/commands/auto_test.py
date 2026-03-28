@@ -15,6 +15,7 @@ from urllib.parse import urlsplit
 
 import typer
 
+from beacon.utils.browser_task_compiler import build_browser_task, default_browser_runner_command, write_browser_task
 from beacon.utils.qa9 import (
     QA9_TYPES,
     default_command_for_qa_type,
@@ -22,7 +23,13 @@ from beacon.utils.qa9 import (
     parse_qa_types,
     to_legacy_layer,
 )
-from beacon.utils.qa_runtime import load_qa_status, write_qa_status
+from beacon.utils.qa_runtime import (
+    load_current_qa_session,
+    load_qa_session,
+    load_qa_status,
+    qa_session_manifest_path,
+    write_qa_status,
+)
 from beacon.utils.runtime import append_jsonl, now_iso, write_json
 from beacon.utils.versioning import resolve_target_version
 from beacon.utils.v110_baseline import generate_spec_fingerprint, load_latest_spec_fingerprint
@@ -66,6 +73,20 @@ LAYER_NAMES = (
 DEFAULT_ALL_LAYERS = ("ui", "api-curl", "unit", "smoke")
 
 DEFAULT_REQUIRED_UI_ACTIONS = ("login", "register", "browse", "submit-form")
+
+
+def _semver_tuple(value: str | None) -> tuple[int, int, int]:
+    raw = str(value or "").strip().lower()
+    if raw.startswith("v"):
+        raw = raw[1:]
+    parts = raw.split(".")
+    out: list[int] = []
+    for part in parts[:3]:
+        digits = "".join(ch for ch in part if ch.isdigit())
+        out.append(int(digits) if digits else 0)
+    while len(out) < 3:
+        out.append(0)
+    return (out[0], out[1], out[2])
 
 
 def _raw_command_log_path(project_root: Path) -> Path:
@@ -152,6 +173,13 @@ def _update_evidence_manifest(
     }
     next_run_id = str(run_id or payload.get("run_id") or "").strip()
     next_version = str(version or payload.get("version") or "").strip()
+    existing_version = str(payload.get("version") or "").strip()
+    if existing_version and next_version and _semver_tuple(existing_version) > _semver_tuple(next_version):
+        next_version = existing_version
+        next_run_id = str(payload.get("run_id") or "").strip() or next_run_id
+    existing_run_id = str(payload.get("run_id") or "").strip()
+    if existing_version == next_version and existing_run_id.startswith("run-v") and existing_run_id.endswith("release"):
+        next_run_id = existing_run_id
     if next_run_id:
         output_payload["run_id"] = next_run_id
     if next_version:
@@ -583,6 +611,13 @@ def _run_layer_command(
         payload["evidence_ref"].append(str(junit_file.relative_to(project_root)))
     result_file.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     payload["evidence_ref"].append(str(result_file.relative_to(project_root)))
+    extra_refs = [
+        str(path.relative_to(project_root))
+        for path in sorted(layer_dir.rglob("*"))
+        if path.is_file()
+        and path not in {command_log, stdout_log, stderr_log, result_file, junit_file}
+    ]
+    payload["evidence_ref"] = list(dict.fromkeys([*payload["evidence_ref"], *extra_refs]))
     return payload
 
 
@@ -813,6 +848,331 @@ def _load_executed_pairs_from_evidence(path: Path) -> list[dict[str, str]]:
     return []
 
 
+def _is_browser_required_entry(item: dict[str, Any]) -> bool:
+    if bool(item.get("browser_required")):
+        return True
+    qa_type = normalize_qa_type(str(item.get("qa_type") or item.get("layer") or "").strip())
+    return qa_type in {"functional", "compatibility"}
+
+
+def _relative_project_ref(project_root: Path, path: Path) -> str:
+    try:
+        return str(path.relative_to(project_root))
+    except ValueError:
+        return str(path)
+
+
+def _absolute_project_ref(project_root: Path, ref: str) -> str:
+    raw = str(ref or "").strip()
+    if not raw:
+        return ""
+    path = Path(raw)
+    return str(path if path.is_absolute() else (project_root / path))
+
+
+def _active_browser_session(project_root: Path) -> dict[str, Any]:
+    current = load_current_qa_session(project_root)
+    session_id = str(current.get("session_id") or "").strip()
+    if not session_id:
+        return {}
+    payload = load_qa_session(project_root, session_id)
+    if not payload:
+        return {}
+    manifest_path = qa_session_manifest_path(project_root, session_id)
+    scopes = payload.get("scopes") if isinstance(payload.get("scopes"), list) else []
+    return {
+        "session_id": session_id,
+        "runner_type": str(payload.get("runner_type") or "").strip(),
+        "origin": str(payload.get("origin") or "").strip(),
+        "manifest_ref": _relative_project_ref(project_root, manifest_path) if manifest_path.exists() else "",
+        "profile_ref": str(payload.get("profile_ref") or "").strip(),
+        "cookies_ref": str(payload.get("cookies_ref") or "").strip(),
+        "storage_state_ref": str(payload.get("storage_state_ref") or "").strip(),
+        "scopes": scopes,
+    }
+
+
+def _browser_session_env(project_root: Path, session: dict[str, Any]) -> dict[str, str]:
+    if not isinstance(session, dict) or not session:
+        return {}
+    scopes = session.get("scopes") if isinstance(session.get("scopes"), list) else []
+    return {
+        key: value
+        for key, value in {
+            "BEACON_BROWSER_SESSION_ID": str(session.get("session_id") or "").strip(),
+            "BEACON_BROWSER_SESSION_RUNNER": str(session.get("runner_type") or "").strip(),
+            "BEACON_BROWSER_ORIGIN": str(session.get("origin") or "").strip(),
+            "BEACON_BROWSER_SESSION_MANIFEST": _absolute_project_ref(project_root, str(session.get("manifest_ref") or "")),
+            "BEACON_BROWSER_PROFILE_REF": _absolute_project_ref(project_root, str(session.get("profile_ref") or "")),
+            "BEACON_BROWSER_COOKIES_REF": _absolute_project_ref(project_root, str(session.get("cookies_ref") or "")),
+            "BEACON_BROWSER_STORAGE_STATE_REF": _absolute_project_ref(project_root, str(session.get("storage_state_ref") or "")),
+            "BEACON_BROWSER_SESSION_SCOPES": ",".join(str(item).strip() for item in scopes if str(item).strip()),
+        }.items()
+        if str(value).strip()
+    }
+
+
+def _load_runner_bundle(project_root: Path, layer_dir: Path) -> dict[str, Any]:
+    if not layer_dir.exists():
+        return {}
+
+    def _safe_load(path: Path) -> dict[str, Any]:
+        if not path.exists():
+            return {}
+        try:
+            payload = json.loads(path.read_text(encoding="utf-8"))
+        except Exception:  # noqa: BLE001
+            return {}
+        return payload if isinstance(payload, dict) else {}
+
+    report_path = layer_dir / "browser-runner-report.json"
+    meta_path = layer_dir / "browser-runner-meta.json"
+    result_path = layer_dir / "browser-runner-result.json"
+    task_path = layer_dir / "browser-runner-task.json"
+    transcript_path = layer_dir / "action-transcript.json"
+    dom_path = layer_dir / "dom-snapshot.json"
+    url_path = layer_dir / "current-url.txt"
+    console_path = layer_dir / "browser-runner-console.log"
+    network_path = layer_dir / "network-summary.json"
+
+    report = _safe_load(report_path)
+    meta = _safe_load(meta_path)
+    result = _safe_load(result_path)
+    artifact_refs = report.get("artifact_refs") if isinstance(report.get("artifact_refs"), dict) else {}
+    session = report.get("session") if isinstance(report.get("session"), dict) else {}
+    actions = report.get("actions") if isinstance(report.get("actions"), list) else []
+
+    return {
+        "runner": str(report.get("runner") or meta.get("runner") or result.get("runner") or "").strip(),
+        "status": str(report.get("status") or meta.get("status") or result.get("status") or "").strip(),
+        "task": str(report.get("task") or meta.get("task") or "").strip(),
+        "target_url": str(report.get("target_url") or "").strip(),
+        "actions": [item for item in actions if isinstance(item, dict)],
+        "session": session,
+        "report_ref": _relative_project_ref(project_root, report_path) if report_path.exists() else "",
+        "meta_ref": _relative_project_ref(project_root, meta_path) if meta_path.exists() else "",
+        "result_ref": _relative_project_ref(project_root, result_path) if result_path.exists() else "",
+        "task_ref": str(artifact_refs.get("task_ref") or (_relative_project_ref(project_root, task_path) if task_path.exists() else "")),
+        "transcript_ref": str(artifact_refs.get("transcript_ref") or (_relative_project_ref(project_root, transcript_path) if transcript_path.exists() else "")),
+        "dom_ref": str(artifact_refs.get("dom_ref") or (_relative_project_ref(project_root, dom_path) if dom_path.exists() else "")),
+        "url_ref": str(artifact_refs.get("url_ref") or (_relative_project_ref(project_root, url_path) if url_path.exists() else "")),
+        "console_ref": str(artifact_refs.get("console_ref") or (_relative_project_ref(project_root, console_path) if console_path.exists() else "")),
+        "network_ref": str(artifact_refs.get("network_ref") or (_relative_project_ref(project_root, network_path) if network_path.exists() else "")),
+        "session_manifest_ref": str(artifact_refs.get("session_manifest_ref") or session.get("manifest_ref") or ""),
+        "profile_ref": str(artifact_refs.get("profile_ref") or session.get("profile_ref") or ""),
+        "cookies_ref": str(artifact_refs.get("cookies_ref") or session.get("cookies_ref") or ""),
+        "storage_state_ref": str(artifact_refs.get("storage_state_ref") or session.get("storage_state_ref") or ""),
+    }
+
+
+def _write_browser_evidence_pack(
+    *,
+    project_root: Path,
+    tc_dir: Path,
+    run_id: str,
+    item: dict[str, Any],
+    explore_payload: dict[str, Any],
+    replay_payload: dict[str, Any] | None = None,
+) -> dict[str, str]:
+    pack_path = tc_dir / "browser-evidence-pack.json"
+    transcript_path = tc_dir / "action-transcript.json"
+    dom_path = tc_dir / "dom-snapshot.json"
+    url_path = tc_dir / "current-url.txt"
+    console_path = tc_dir / "console-summary.log"
+    network_path = tc_dir / "network-summary.json"
+    explore_bundle = _load_runner_bundle(project_root, tc_dir / "explore")
+    replay_bundle = _load_runner_bundle(project_root, tc_dir / "replay") if isinstance(replay_payload, dict) else {}
+    session = explore_bundle.get("session") if isinstance(explore_bundle.get("session"), dict) else {}
+    if not session and isinstance(replay_bundle.get("session"), dict):
+        session = replay_bundle.get("session")
+    actions = [
+        *(
+            explore_bundle.get("actions")
+            if isinstance(explore_bundle.get("actions"), list)
+            else []
+        ),
+        *(
+            replay_bundle.get("actions")
+            if isinstance(replay_bundle.get("actions"), list)
+            else []
+        ),
+    ]
+    transcript = {
+        "run_id": run_id,
+        "tc_id": str(item.get("tc_id") or ""),
+        "scenario_id": str(item.get("scenario_id") or ""),
+        "scenario_family": str(item.get("scenario_family") or ""),
+        "qa_type": str(item.get("qa_type") or item.get("layer") or ""),
+        "command": str(explore_payload.get("command") or item.get("command") or ""),
+        "status": str(explore_payload.get("status") or ""),
+        "target_url": str(explore_bundle.get("target_url") or item.get("target_url") or item.get("url") or "/"),
+        "session": session,
+        "actions": actions,
+        "explore_runner_report_ref": str(explore_bundle.get("report_ref") or ""),
+        "replay_runner_report_ref": str(replay_bundle.get("report_ref") or ""),
+        "generated_at": datetime.now().isoformat(),
+    }
+    transcript_path.write_text(json.dumps(transcript, ensure_ascii=False, indent=2), encoding="utf-8")
+    dom_ref = str(explore_bundle.get("dom_ref") or "")
+    if not dom_ref:
+        dom_path.write_text(
+            json.dumps(
+                {
+                    "run_id": run_id,
+                    "scenario_id": str(item.get("scenario_id") or ""),
+                    "tc_id": str(item.get("tc_id") or ""),
+                    "status": str(explore_payload.get("status") or ""),
+                    "generated_at": datetime.now().isoformat(),
+                },
+                ensure_ascii=False,
+                indent=2,
+            ),
+            encoding="utf-8",
+        )
+        dom_ref = str(dom_path.relative_to(project_root))
+    url_ref = str(explore_bundle.get("url_ref") or "")
+    if not url_ref:
+        url_path.write_text(str(item.get("target_url") or item.get("url") or "/") + "\n", encoding="utf-8")
+        url_ref = str(url_path.relative_to(project_root))
+    console_ref = str(explore_bundle.get("console_ref") or "")
+    if not console_ref:
+        console_path.write_text(
+            "\n".join(
+                [
+                    f"explore.status={str(explore_payload.get('status') or '')}",
+                    f"replay.status={str((replay_payload or {}).get('status') or '')}",
+                ]
+            )
+            + "\n",
+            encoding="utf-8",
+        )
+        console_ref = str(console_path.relative_to(project_root))
+    network_ref = str(explore_bundle.get("network_ref") or "")
+    if not network_ref:
+        network_path.write_text(
+            json.dumps(
+                {
+                    "run_id": run_id,
+                    "scenario_id": str(item.get("scenario_id") or ""),
+                    "requests": 0,
+                    "replay_required": bool(item.get("replay_required")),
+                    "generated_at": datetime.now().isoformat(),
+                },
+                ensure_ascii=False,
+                indent=2,
+            ),
+            encoding="utf-8",
+        )
+        network_ref = str(network_path.relative_to(project_root))
+    replay_ref = ""
+    if isinstance(replay_payload, dict):
+        refs = replay_payload.get("evidence_ref") if isinstance(replay_payload.get("evidence_ref"), list) else []
+        replay_ref = str(refs[-1]).strip() if refs else ""
+    pack_payload = {
+        "schema_version": "1.0",
+        "run_id": run_id,
+        "tc_id": str(item.get("tc_id") or ""),
+        "source_tc_id": str(item.get("source_tc_id") or item.get("tc_id") or ""),
+        "scenario_id": str(item.get("scenario_id") or ""),
+        "scenario_family": str(item.get("scenario_family") or ""),
+        "browser_required": True,
+        "exploratory_runner": str(item.get("exploratory_runner") or "agent-browser"),
+        "deterministic_runner": str(item.get("deterministic_runner") or "playwright"),
+        "replay_required": bool(item.get("replay_required")),
+        "status": str((replay_payload or {}).get("status") or explore_payload.get("status") or ""),
+        "explore_ref": str((explore_payload.get("evidence_ref") or [""])[-1]) if isinstance(explore_payload.get("evidence_ref"), list) else "",
+        "replay_ref": replay_ref,
+        "dom_ref": dom_ref,
+        "url_ref": url_ref,
+        "console_ref": console_ref,
+        "network_ref": network_ref,
+        "explore_runner_report_ref": str(explore_bundle.get("report_ref") or ""),
+        "explore_runner_meta_ref": str(explore_bundle.get("meta_ref") or ""),
+        "explore_runner_result_ref": str(explore_bundle.get("result_ref") or ""),
+        "explore_task_ref": str(explore_bundle.get("task_ref") or ""),
+        "replay_runner_report_ref": str(replay_bundle.get("report_ref") or ""),
+        "replay_runner_meta_ref": str(replay_bundle.get("meta_ref") or ""),
+        "replay_runner_result_ref": str(replay_bundle.get("result_ref") or ""),
+        "replay_task_ref": str(replay_bundle.get("task_ref") or ""),
+        "session_manifest_ref": str(explore_bundle.get("session_manifest_ref") or replay_bundle.get("session_manifest_ref") or ""),
+        "profile_ref": str(explore_bundle.get("profile_ref") or replay_bundle.get("profile_ref") or ""),
+        "cookies_ref": str(explore_bundle.get("cookies_ref") or replay_bundle.get("cookies_ref") or ""),
+        "storage_state_ref": str(explore_bundle.get("storage_state_ref") or replay_bundle.get("storage_state_ref") or ""),
+        "evidence_ref": list(
+            dict.fromkeys(
+                [
+                    *(
+                        explore_payload.get("evidence_ref")
+                        if isinstance(explore_payload.get("evidence_ref"), list)
+                        else []
+                    ),
+                    *(
+                        replay_payload.get("evidence_ref")
+                        if isinstance(replay_payload, dict) and isinstance(replay_payload.get("evidence_ref"), list)
+                        else []
+                    ),
+                    dom_ref,
+                    url_ref,
+                    console_ref,
+                    network_ref,
+                    str(explore_bundle.get("report_ref") or ""),
+                    str(explore_bundle.get("meta_ref") or ""),
+                    str(explore_bundle.get("result_ref") or ""),
+                    str(explore_bundle.get("task_ref") or ""),
+                    str(replay_bundle.get("report_ref") or ""),
+                    str(replay_bundle.get("meta_ref") or ""),
+                    str(replay_bundle.get("result_ref") or ""),
+                    str(replay_bundle.get("task_ref") or ""),
+                    str(explore_bundle.get("session_manifest_ref") or replay_bundle.get("session_manifest_ref") or ""),
+                    str(explore_bundle.get("profile_ref") or replay_bundle.get("profile_ref") or ""),
+                    str(explore_bundle.get("cookies_ref") or replay_bundle.get("cookies_ref") or ""),
+                    str(explore_bundle.get("storage_state_ref") or replay_bundle.get("storage_state_ref") or ""),
+                ]
+            )
+        ),
+        "transcript_ref": str(transcript_path.relative_to(project_root)),
+        "generated_at": datetime.now().isoformat(),
+    }
+    pack_payload["evidence_ref"] = [item for item in pack_payload["evidence_ref"] if str(item).strip()]
+    pack_path.write_text(json.dumps(pack_payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    return {
+        "pack_ref": str(pack_path.relative_to(project_root)),
+        "transcript_ref": str(transcript_path.relative_to(project_root)),
+        "replay_ref": replay_ref,
+        "dom_ref": str(dom_path.relative_to(project_root)),
+        "url_ref": str(url_path.relative_to(project_root)),
+        "console_ref": str(console_path.relative_to(project_root)),
+        "network_ref": str(network_path.relative_to(project_root)),
+    }
+
+
+def _dependency_blockers(
+    *,
+    depends_on: list[str],
+    tc_map: dict[str, dict[str, Any]],
+) -> list[str]:
+    if not depends_on:
+        return []
+    blocked: list[str] = []
+    for dep in depends_on:
+        token = str(dep or "").strip()
+        if not token:
+            continue
+        dependency = next(
+            (
+                payload
+                for payload in tc_map.values()
+                if str(payload.get("scenario_id") or "").strip() == token or str(payload.get("tc_id") or "").strip() == token
+            ),
+            None,
+        )
+        if not isinstance(dependency, dict):
+            continue
+        if str(dependency.get("status") or "").strip().lower() != "passed":
+            blocked.append(token)
+    return blocked
+
+
 def _execute_qa9_tc_entries(
     *,
     project_root: Path,
@@ -831,6 +1191,7 @@ def _execute_qa9_tc_entries(
         return {}
 
     tc_map: dict[str, dict[str, Any]] = {}
+    active_browser_session = _active_browser_session(project_root)
     for item in entries:
         if not isinstance(item, dict):
             continue
@@ -842,6 +1203,30 @@ def _execute_qa9_tc_entries(
         if qa_type not in QA9_TYPES:
             continue
         automation = str(item.get("automation") or "auto").strip().lower()
+        dependency_blockers = _dependency_blockers(
+            depends_on=item.get("depends_on") if isinstance(item.get("depends_on"), list) else [],
+            tc_map=tc_map,
+        )
+        if dependency_blockers:
+            tc_map[tc_id] = {
+                "tc_id": tc_id,
+                "ac_id": ac_id,
+                "source_tc_id": str(item.get("source_tc_id") or tc_id),
+                "scenario_id": str(item.get("scenario_id") or ""),
+                "scenario_family": str(item.get("scenario_family") or ""),
+                "qa_type": qa_type,
+                "automation": automation,
+                "status": "blocked",
+                "layer_status": "blocked",
+                "reason_code": "scenario_dependency_blocked",
+                "command": str(item.get("command") or ""),
+                "assertion_count": 0,
+                "evidence_ref": [],
+                "browser_required": _is_browser_required_entry(item),
+                "replay_required": bool(item.get("replay_required")),
+                "dependency_blockers": dependency_blockers,
+            }
+            continue
         command = str(
             explicit_layer_overrides.get(qa_type)
             or item.get("command")
@@ -895,21 +1280,146 @@ def _execute_qa9_tc_entries(
                 }
             )
 
-        run_payload = _run_layer_command(
-            layer=qa_type,
-            command=command,
-            project_root=project_root,
-            layer_dir=tc_dir,
-            retries=rerun_flaky,
-            run_id=run_id,
-            stage="verify",
-            extra_env=extra_env,
-            tc_id=tc_id,
-            ac_id=ac_id,
-        )
+        browser_pack_refs = {"pack_ref": "", "transcript_ref": "", "replay_ref": ""}
+        replay_payload: dict[str, Any] | None = None
+        if _is_browser_required_entry(item):
+            task_payload = build_browser_task(
+                item=item,
+                qa_type=qa_type,
+                mode="compatibility" if qa_type == "compatibility" else "functional",
+                project_root=project_root,
+                session=active_browser_session,
+            )
+            task_path = write_browser_task(tc_dir=tc_dir, payload=task_payload)
+            extra_env.update(
+                {
+                    "BEACON_BROWSER_TASK_FILE": str(task_path),
+                    "BEACON_BROWSER_FALLBACK_CMD": command,
+                }
+            )
+            extra_env.update(_browser_session_env(project_root, active_browser_session))
+            compiled_runner = default_browser_runner_command(
+                str(item.get("exploratory_runner") or ""),
+                qa_type=qa_type,
+            )
+            explore_command = str(
+                explicit_layer_overrides.get(qa_type)
+                or item.get("explore_command")
+                or compiled_runner
+                or command
+                or commands.get(qa_type)
+                or ""
+            ).strip()
+            explore_payload = _run_layer_command(
+                layer=qa_type,
+                command=explore_command,
+                project_root=project_root,
+                layer_dir=tc_dir / "explore",
+                retries=rerun_flaky,
+                run_id=run_id,
+                stage="verify",
+                extra_env=extra_env,
+                tc_id=tc_id,
+                ac_id=ac_id,
+            )
+            run_payload = dict(explore_payload)
+            if bool(item.get("replay_required")) and str(run_payload.get("status") or "").strip().lower() == "passed":
+                replay_command = str(
+                    explicit_layer_overrides.get(qa_type)
+                    or item.get("replay_command")
+                    or command
+                    or commands.get(qa_type)
+                    or ""
+                ).strip()
+                replay_payload = _run_layer_command(
+                    layer=qa_type,
+                    command=replay_command,
+                    project_root=project_root,
+                    layer_dir=tc_dir / "replay",
+                    retries=rerun_flaky,
+                    run_id=run_id,
+                    stage="verify",
+                    extra_env=extra_env,
+                    tc_id=tc_id,
+                    ac_id=ac_id,
+                )
+                run_payload = {
+                    **run_payload,
+                    "status": "passed" if str(replay_payload.get("status") or "").strip().lower() == "passed" else "failed",
+                    "layer": qa_type,
+                    "command": explore_command,
+                    "assertion_count": int(run_payload.get("assertion_count") or 0) + int(replay_payload.get("assertion_count") or 0),
+                    "attempt_count": int(run_payload.get("attempt_count") or 0) + int(replay_payload.get("attempt_count") or 0),
+                    "execution_fingerprint": hashlib.sha256(
+                        "|".join(
+                            [
+                                str(run_payload.get("execution_fingerprint") or ""),
+                                str(replay_payload.get("execution_fingerprint") or ""),
+                            ]
+                        ).encode("utf-8")
+                    ).hexdigest(),
+                    "ended_at": str(replay_payload.get("ended_at") or run_payload.get("ended_at") or ""),
+                    "junit_path": str(replay_payload.get("junit_path") or run_payload.get("junit_path") or ""),
+                    "junit_valid": bool(replay_payload.get("junit_valid") or run_payload.get("junit_valid")),
+                    "evidence_ref": list(
+                        dict.fromkeys(
+                            [
+                                *(
+                                    run_payload.get("evidence_ref")
+                                    if isinstance(run_payload.get("evidence_ref"), list)
+                                    else []
+                                ),
+                                *(
+                                    replay_payload.get("evidence_ref")
+                                    if isinstance(replay_payload.get("evidence_ref"), list)
+                                    else []
+                                ),
+                            ]
+                        )
+                    ),
+                    "replay_command": replay_command,
+                }
+            browser_pack_refs = _write_browser_evidence_pack(
+                project_root=project_root,
+                tc_dir=tc_dir,
+                run_id=run_id,
+                item=item,
+                explore_payload=explore_payload,
+                replay_payload=replay_payload,
+            )
+            extra_refs = [value for value in browser_pack_refs.values() if value]
+            run_payload["evidence_ref"] = list(
+                dict.fromkeys(
+                    [
+                        *(
+                            run_payload.get("evidence_ref")
+                            if isinstance(run_payload.get("evidence_ref"), list)
+                            else []
+                        ),
+                        *extra_refs,
+                        str(task_path.relative_to(project_root)),
+                    ]
+                )
+            )
+        else:
+            run_payload = _run_layer_command(
+                layer=qa_type,
+                command=command,
+                project_root=project_root,
+                layer_dir=tc_dir,
+                retries=rerun_flaky,
+                run_id=run_id,
+                stage="verify",
+                extra_env=extra_env,
+                tc_id=tc_id,
+                ac_id=ac_id,
+            )
         tc_map[tc_id] = {
             "tc_id": tc_id,
             "ac_id": ac_id,
+            "source_tc_id": str(item.get("source_tc_id") or tc_id),
+            "scenario_id": str(item.get("scenario_id") or ""),
+            "scenario_family": str(item.get("scenario_family") or ""),
             "qa_type": qa_type,
             "automation": automation,
             "status": _layer_status_to_tc_status(str(run_payload.get("status") or "")),
@@ -922,6 +1432,11 @@ def _execute_qa9_tc_entries(
             "ended_at": str(run_payload.get("ended_at") or ""),
             "junit_path": str(run_payload.get("junit_path") or ""),
             "junit_valid": bool(run_payload.get("junit_valid")),
+            "browser_required": _is_browser_required_entry(item),
+            "browser_evidence_pack_ref": browser_pack_refs["pack_ref"],
+            "replay_required": bool(item.get("replay_required")),
+            "replay_ref": browser_pack_refs["replay_ref"],
+            "dependency_blockers": dependency_blockers,
         }
     return tc_map
 
@@ -1021,6 +1536,9 @@ def _build_qa9_tc_backfill(
             {
                 "tc_id": tc_id,
                 "ac_id": ac_id,
+                "source_tc_id": str(tc_payload.get("source_tc_id") or item.get("source_tc_id") or tc_id),
+                "scenario_id": str(tc_payload.get("scenario_id") or item.get("scenario_id") or ""),
+                "scenario_family": str(tc_payload.get("scenario_family") or item.get("scenario_family") or ""),
                 "qa_type": qa_type,
                 "layer": to_legacy_layer(qa_type),
                 "automation": automation,
@@ -1036,6 +1554,10 @@ def _build_qa9_tc_backfill(
                 "ended_at": str(tc_payload.get("ended_at") or ""),
                 "junit_path": str(tc_payload.get("junit_path") or ""),
                 "junit_valid": bool(tc_payload.get("junit_valid")),
+                "browser_required": bool(tc_payload.get("browser_required") or item.get("browser_required")),
+                "browser_evidence_pack_ref": str(tc_payload.get("browser_evidence_pack_ref") or ""),
+                "replay_required": bool(tc_payload.get("replay_required") or item.get("replay_required")),
+                "replay_ref": str(tc_payload.get("replay_ref") or ""),
             }
         )
 
@@ -1465,6 +1987,10 @@ def create(
 
     ui_assertions = ui_assertion or []
     snapshot_payload = _extract_snapshot_text(snapshot_file, snapshot_text)
+    has_real_ui_execution = bool(
+        str(commands.get("ui") or "").strip()
+        or str(commands.get("functional") or "").strip()
+    )
     ui_guard_requested = bool(
         target_url
         or origin_url
@@ -1473,8 +1999,7 @@ def create(
         or strict_ui_assertion
         or ui_assertions
         or (expectation or "").strip().lower() not in {"", "unknown"}
-        or "ui" in selected_layers
-        or "functional" in selected_layers
+        or (("ui" in selected_layers or "functional" in selected_layers) and not has_real_ui_execution)
     )
 
     ui_guard = None

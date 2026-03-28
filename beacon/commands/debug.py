@@ -5,10 +5,17 @@ from __future__ import annotations
 import json
 import time
 from pathlib import Path
-from typing import Any
+from typing import Any, Optional
 
 import typer
 
+from beacon.utils.control_plane import (
+    append_recovery_checkpoint,
+    build_resume_contract,
+    exhaustion_for_run,
+    load_recovery_checkpoint,
+    record_stage_failure,
+)
 from beacon.utils.debug_feedback import (
     append_debug_event_memory,
     append_debug_feedback_event,
@@ -22,11 +29,16 @@ from beacon.utils.debug_feedback import (
     save_debug_mode_state,
 )
 from beacon.utils.intent_router import DEFAULT_CONFIDENCE_THRESHOLD, ROUTER_CONFIG_FILE
+from beacon.utils.learning_loop import refresh_learning_loop
 from beacon.utils.runtime import newest_run_id, now_iso, run_events_path, write_json
 
 app = typer.Typer(name="debug", help="Debug helpers")
 confidence_app = typer.Typer(name="confidence", help="Prompt confidence threshold controls.")
+checkpoint_app = typer.Typer(name="checkpoint", help="Checkpoint / resume contract helpers.")
+exhaustion_app = typer.Typer(name="exhaustion", help="Failure streak / escalation state helpers.")
 app.add_typer(confidence_app, name="confidence")
+app.add_typer(checkpoint_app, name="checkpoint")
+app.add_typer(exhaustion_app, name="exhaustion")
 
 
 def _router_config_path(project_root: Path) -> Path:
@@ -185,12 +197,15 @@ def debug_status(
     state = load_debug_mode_state(root)
     run_id = str(state.get("run_id", "") or "") or resolve_debug_run_id(root, run_id="")
     config = _load_router_config(root)
+    resume_contract = build_resume_contract(root, run_id=run_id)
     payload = {
         "enabled": bool(state.get("enabled", False)),
         "run_id": run_id,
         "debug_feedback_path": str(debug_feedback_path(root, run_id).relative_to(root)),
         "prompt_history_path": str(_prompt_history_path(root).relative_to(root)),
         "confidence_threshold": round(_to_float(config.get("confidence_threshold"), DEFAULT_CONFIDENCE_THRESHOLD), 2),
+        "exhaustion": exhaustion_for_run(root, run_id=run_id),
+        "resume_contract": resume_contract,
     }
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
@@ -361,11 +376,14 @@ def harvest(
         "issue_count": len(issues),
         "issues": issues,
     }
+    learning_payload = refresh_learning_loop(root)
+    index_payload["learning"] = learning_payload
     write_json(debug_index_path(root), {**(json.loads(debug_index_path(root).read_text(encoding="utf-8")) if debug_index_path(root).exists() else {}), "issues": issues, "issue_count": len(issues), "generated_at": now_iso()})
     if json_output:
         typer.echo(json.dumps(index_payload, ensure_ascii=False, indent=2))
         return
     typer.echo(f"✓ Debug issues harvested: {len(issues)}")
+    typer.echo(f"- learning.execution_baseline: {learning_payload.get('execution_baseline')}")
 
 
 @app.command("export-ideas")
@@ -452,6 +470,17 @@ def capture_prompt(
         evidence_path=out_path,
         source="debug.capture",
     )
+    if block_reason.strip():
+        record_stage_failure(
+            root,
+            run_id=target_run_id,
+            stage=intent or "debug",
+            attempted_strategy=recommended_command or intent or "debug.capture",
+            reason_code=block_reason,
+            current_blocker=note or goal,
+            recommended_command=recommended_command,
+            details={"source": "debug.capture"},
+        )
     result = {
         "run_id": target_run_id,
         "path": str(out_path.relative_to(root)),
@@ -463,6 +492,89 @@ def capture_prompt(
     typer.echo("✓ Prompt captured into debug feedback")
     typer.echo(f"- run_id: {result['run_id']}")
     typer.echo(f"- path: {result['path']}")
+
+
+@checkpoint_app.command("save")
+def checkpoint_save(
+    run_id: str = typer.Argument(..., help="Workflow/debug run id"),
+    stage: str = typer.Option("debug", "--stage", help="Stage name"),
+    attempted_strategy: str = typer.Option("", "--attempted-strategy", help="Current attempted strategy"),
+    excluded_cause: Optional[list[str]] = typer.Option(None, "--excluded-cause", help="Excluded cause (repeatable)"),
+    next_hypothesis: str = typer.Option("", "--next-hypothesis", help="Next hypothesis"),
+    evidence_gap: Optional[list[str]] = typer.Option(None, "--evidence-gap", help="Evidence gap (repeatable)"),
+    current_blocker: str = typer.Option("", "--current-blocker", help="Current blocker summary"),
+    reason_code: str = typer.Option("", "--reason-code", help="Reason code"),
+    recommended_command: str = typer.Option("", "--recommended-command", help="Recommended next command"),
+    project_root: str = typer.Option("", "--project-root", help="Project root path"),
+    json_output: bool = typer.Option(False, "--json", help="JSON output"),
+):
+    """Persist a structured recovery checkpoint."""
+    root = Path(project_root) if project_root else Path.cwd()
+    payload = append_recovery_checkpoint(
+        root,
+        run_id=run_id,
+        stage=stage,
+        attempted_strategy=attempted_strategy or stage,
+        excluded_causes=list(excluded_cause or []),
+        next_hypothesis=next_hypothesis,
+        evidence_gap=list(evidence_gap or []),
+        current_blocker=current_blocker,
+        reason_code=reason_code,
+        recommended_command=recommended_command,
+    )
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        return
+    typer.echo(f"✓ Checkpoint saved: {payload['checkpoint_id']}")
+    typer.echo(f"- path: {payload['path']}")
+
+
+@checkpoint_app.command("show")
+def checkpoint_show(
+    run_id: str = typer.Argument("", help="Run id (default latest)"),
+    project_root: str = typer.Option("", "--project-root", help="Project root path"),
+    json_output: bool = typer.Option(False, "--json", help="JSON output"),
+):
+    """Show the latest recovery checkpoint."""
+    root = Path(project_root) if project_root else Path.cwd()
+    payload = load_recovery_checkpoint(root, run_id=run_id or None)
+    if not payload:
+        typer.echo("No checkpoint found.", err=True)
+        raise typer.Exit(2)
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        return
+    typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+
+
+@exhaustion_app.command("show")
+def exhaustion_show(
+    run_id: str = typer.Argument("", help="Run id (default latest)"),
+    project_root: str = typer.Option("", "--project-root", help="Project root path"),
+    json_output: bool = typer.Option(False, "--json", help="JSON output"),
+):
+    """Show failure streak / escalation state for a run."""
+    root = Path(project_root) if project_root else Path.cwd()
+    payload = exhaustion_for_run(root, run_id=run_id or None)
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        return
+    typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+
+
+@app.command("recover")
+def recover(
+    run_id: str = typer.Argument("", help="Run id (default latest)"),
+    project_root: str = typer.Option("", "--project-root", help="Project root path"),
+    json_output: bool = typer.Option(False, "--json", help="JSON output"),
+):
+    """Render the structured resume contract used by v1.1.9 control plane."""
+    root = Path(project_root) if project_root else Path.cwd()
+    payload = build_resume_contract(root, run_id=run_id or None)
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        return
+    typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
 
 
 @confidence_app.command("show")

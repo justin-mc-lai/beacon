@@ -1,5 +1,5 @@
 <!-- BEACON:START -->
-<!-- BEACON:VERSION:v1.1.8 -->
+<!-- BEACON:VERSION:v1.1.9 -->
 # AGENTS.md
 
 This file is Beacon-managed agent operation guidance.
@@ -10,7 +10,7 @@ This file is Beacon-managed agent operation guidance.
 - Preserve user-authored sections outside Beacon managed blocks.
 
 ## Beacon requirement-material usage
-- Runtime target version: `v1.1.8`
+- Runtime target version: `v1.1.9`
 - Use `docs/beacon/<version>/` as the canonical delivery tree.
 - Read progressively in this order:
   1. `docs/beacon/<version>/SUMMARY.md`

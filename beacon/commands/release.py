@@ -6,6 +6,7 @@ from datetime import datetime
 import json
 
 from beacon.utils.memory import append_memory_entry
+from beacon.utils.release_scorecard import build_release_scorecard
 from beacon.utils.versioning import resolve_target_version
 from beacon.utils.workflow_memory import append_lifecycle_event
 
@@ -301,6 +302,49 @@ def check(
     )
     if not all_passed:
         raise typer.Exit(1)
+
+
+@app.command()
+def scorecard(
+    version: str = typer.Argument(..., help="Release version"),
+    project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
+    json_output: bool = typer.Option(False, "--json", help="JSON output"),
+):
+    """Show a release scorecard combining gate, QA, exhaustiveness, and learning signals."""
+    project_root = Path(project) if project else Path.cwd()
+    payload = build_release_scorecard(project_root, version=version)
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        return
+
+    typer.echo(f"Release Scorecard: {payload['version']}")
+    typer.echo("=" * 40)
+    typer.echo(f"Release ready: {payload['release_ready']}")
+    typer.echo(f"Gate: {payload['gate']['status']} (blocked={payload['gate']['blocked_count']})")
+    typer.echo(
+        f"QA: {payload['qa']['status']} evidence_done={payload['qa']['evidence_done']} mode={payload['qa']['execution_mode']}"
+    )
+    exhaustiveness = payload.get("exhaustiveness", {})
+    if isinstance(exhaustiveness, dict) and exhaustiveness:
+        typer.echo(
+            f"Exhaustiveness: status={exhaustiveness.get('status')} score={exhaustiveness.get('score')} threshold={exhaustiveness.get('threshold')}"
+        )
+        typer.echo(f"Missing axes: {', '.join(exhaustiveness.get('missing_axes', [])) or '-'}")
+    decision_summary = payload.get("learning_scorecard", {}).get("decision_summary", {}) if isinstance(payload.get("learning_scorecard"), dict) else {}
+    typer.echo(
+        "Learning scorecard: "
+        f"keep={decision_summary.get('keep', 0)} "
+        f"review={decision_summary.get('review', 0)} "
+        f"discard={decision_summary.get('discard', 0)}"
+    )
+    latest_experiment = payload.get("latest_experiment", {})
+    if isinstance(latest_experiment, dict) and latest_experiment:
+        typer.echo(
+            "Latest experiment: "
+            f"run_id={latest_experiment.get('run_id', '-')} "
+            f"main_kpi_score={latest_experiment.get('main_kpi_score', '-')} "
+            f"delta={((latest_experiment.get('score_delta') or {}).get('main_kpi_score', '-'))}"
+        )
 
 
 if __name__ == "__main__":

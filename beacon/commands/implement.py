@@ -12,6 +12,7 @@ from typing import Any, Optional
 import typer
 
 from beacon.utils.artifact_paths import qa_matrix_candidates
+from beacon.utils.artifact_update_obligations import write_artifact_update_obligations
 from beacon.utils.implement_native import run_native_implementation
 from beacon.utils.implement_adapters import (
     build_default_task_prompt,
@@ -22,6 +23,7 @@ from beacon.utils.implement_adapters import (
     resolve_adapter,
     resolve_default_runner,
 )
+from beacon.utils.learning_loop import write_requirement_rewrite_input
 from beacon.utils.runtime import generate_run_id, now_iso, write_json
 from beacon.utils.story_state import load_story_state
 from beacon.utils.versioning import resolve_target_version
@@ -506,10 +508,36 @@ def run_implement_stage(  # noqa: PLR0913
         )
         current_revision_id = str(story_state.get("current_revision_id", "") or "")
         technical_payload["revision_id"] = current_revision_id
-        write_json(summary_paths["json"], summary_payload)
-        _write_text(summary_paths["md"], _render_summary_markdown(summary_payload))
         write_json(archive_paths["json"], technical_payload)
         _write_text(archive_paths["md"], _render_technical_archive_markdown(technical_payload))
+        learning_payload = write_requirement_rewrite_input(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            archive_payload=technical_payload,
+            archive_path=str(archive_paths["json"].relative_to(project_root)),
+        )
+        obligations = write_artifact_update_obligations(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            run_id=run_id,
+            updates=result_payload.get("artifact_updates") if isinstance(result_payload.get("artifact_updates"), dict) else {},
+            technical_archive_path=str(archive_paths["json"].relative_to(project_root)),
+        )
+        summary_payload["artifact_writeback_obligations"] = str(
+            (
+                project_root
+                / ".beacon"
+                / "state"
+                / "artifact-update-obligations"
+                / f"{feature_slug}.json"
+            ).relative_to(project_root)
+        )
+        summary_payload["artifact_writeback_open_count"] = int(obligations.get("open_count", 0) or 0)
+        summary_payload["requirement_rewrite_input"] = str(learning_payload.get("path", "") or "")
+        write_json(summary_paths["json"], summary_payload)
+        _write_text(summary_paths["md"], _render_summary_markdown(summary_payload))
         write_json(state_path, summary_payload)
         return 0, summary_payload
     if adapter_type in {"handoff", "claude-skill"}:
@@ -692,8 +720,6 @@ def run_implement_stage(  # noqa: PLR0913
         "review_quality": review_quality_info,
         "generated_at": now_iso(),
     }
-    write_json(summary_paths["json"], summary_payload)
-    _write_text(summary_paths["md"], _render_summary_markdown(summary_payload))
     technical_payload = _technical_archive_payload(
         project_root=project_root,
         version=resolved_version,
@@ -710,6 +736,34 @@ def run_implement_stage(  # noqa: PLR0913
     technical_payload["revision_id"] = str(story_state.get("current_revision_id", "") or "")
     write_json(archive_paths["json"], technical_payload)
     _write_text(archive_paths["md"], _render_technical_archive_markdown(technical_payload))
+    learning_payload = write_requirement_rewrite_input(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        archive_payload=technical_payload,
+        archive_path=str(archive_paths["json"].relative_to(project_root)),
+    )
+    obligations = write_artifact_update_obligations(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        run_id=run_id,
+        updates=result_payload.get("artifact_updates") if isinstance(result_payload.get("artifact_updates"), dict) else {},
+        technical_archive_path=str(archive_paths["json"].relative_to(project_root)),
+    )
+    summary_payload["artifact_writeback_obligations"] = str(
+        (
+            project_root
+            / ".beacon"
+            / "state"
+            / "artifact-update-obligations"
+            / f"{feature_slug}.json"
+        ).relative_to(project_root)
+    )
+    summary_payload["artifact_writeback_open_count"] = int(obligations.get("open_count", 0) or 0)
+    summary_payload["requirement_rewrite_input"] = str(learning_payload.get("path", "") or "")
+    write_json(summary_paths["json"], summary_payload)
+    _write_text(summary_paths["md"], _render_summary_markdown(summary_payload))
 
     payload = {**base_state, **summary_payload}
     write_json(state_path, payload)

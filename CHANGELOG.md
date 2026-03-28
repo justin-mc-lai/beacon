@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.9] - 2026-03-28
+
+### Added
+
+- Added feature-aware QA closure surfaces around `beacon qa run <feature>` and `beacon qa evolve <feature>`.
+- Added story-scenario-map generation across the v1.1.x requirement line, including browser-relevant scenario-family expansion.
+- Added browser runner artifact normalization via shared runner helpers and richer browser evidence packs (session/task/report refs).
+- Added release scorecard summarization into report/status main human surfaces.
+- Added v1.1.9 release note and v1.1.10 planning docs for QA confidence / autoresearch closure.
+
+### Changed
+
+- Promoted Beacon runtime/package release line to `v1.1.9`.
+- Updated managed AGENTS / CLAUDE guidance to target `v1.1.9`.
+- Updated root/package skill docs and examples to treat `v1.1.9` as the current line and `v1.1.10` as the next planning line.
+- Corrected v1.1.9 docs from exploration-only wording to implemented/verified wording where implementation has landed.
+
+### Verified
+
+- v1.1.9 targeted slice: `python3 -m pytest -q tests/test_v119_feature_qa_closure.py tests/test_v119_keep_discard_engine.py tests/test_v119_debug_control_plane.py tests/test_v119_release_scorecard_and_browser_compiler.py tests/test_v119_story_exhaustive_browser_qa.py tests/test_v119_requirement_materials.py` → `25 passed`
+- docs/skill/version alignment slice: `python3 -m pytest -q tests/test_docs_current_contract.py::test_skill_should_prefer_beacon_subcommand_and_docs_beacon_output tests/test_skill_standard_layout.py tests/test_v119_requirement_materials.py` → `13 passed`
+- broader regression slice: `python3 -m pytest -q tests/test_report_memory_metrics.py tests/test_v118_qa_primary_surface.py tests/test_v119_release_scorecard_and_browser_compiler.py tests/test_v119_story_exhaustive_browser_qa.py tests/test_v119_requirement_materials.py tests/test_beacon.py` → `99 passed`
+
 ## [1.1.8] - 2026-03-26
 
 ### Added

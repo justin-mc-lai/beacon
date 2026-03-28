@@ -11,6 +11,7 @@ from typing import Any, Optional
 
 import typer
 
+from beacon.utils.learning_loop import run_evo_experiment
 from beacon.utils.runtime import now_iso, write_json
 from beacon.utils.versioning import discover_versions, normalize_version, resolve_target_version
 
@@ -265,6 +266,47 @@ def list(
         typer.echo(
             f"  - [{item['version']}] ({item['docs_type']}) {Path(item['file']).name}"
         )
+
+
+@app.command("experiment")
+def experiment(
+    label: str = typer.Argument("Beacon v1.1.9 evo harness", help="Experiment label"),
+    version: Optional[str] = typer.Option("auto", "--version", "-v", help="Target docs version"),
+    project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
+    max_runtime_minutes: int = typer.Option(0, "--max-runtime-minutes", help="Budget override"),
+    max_iterations: int = typer.Option(0, "--max-iterations", help="Budget override"),
+    max_command_count: int = typer.Option(0, "--max-command-count", help="Budget override"),
+    max_evidence_budget: int = typer.Option(0, "--max-evidence-budget", help="Budget override"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON payload"),
+):
+    """Run a fixed-budget evo experiment over the current keep/discard engine."""
+    project_root = Path(project) if project else Path.cwd()
+    resolved_version = resolve_target_version(project_root, version)
+    budget_overrides = {
+        key: value
+        for key, value in {
+            "max_runtime_minutes": max_runtime_minutes,
+            "max_iterations": max_iterations,
+            "max_command_count": max_command_count,
+            "max_evidence_budget": max_evidence_budget,
+        }.items()
+        if int(value or 0) > 0
+    }
+    payload = run_evo_experiment(
+        project_root,
+        version=resolved_version,
+        experiment_label=label,
+        budget_overrides=budget_overrides,
+    )
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        return
+    typer.echo("✓ Evo experiment completed")
+    typer.echo(f"  run_id: {payload['run_id']}")
+    typer.echo(f"  verdict: {payload['verdict']}")
+    typer.echo(f"  main_kpi_score: {payload['main_kpi_score']}")
+    typer.echo(f"  false_complete_rate: {payload['metrics']['false_complete_rate']}")
+    typer.echo(f"  path: {payload['path']}")
 
 
 if __name__ == "__main__":
