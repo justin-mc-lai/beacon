@@ -56,6 +56,8 @@ user-story / prd / test-case
 → verify orchestration through project skill workflow
 → browser QA session/auth persistence
 → story-exhaustive scenario execution
+→ evidence pack + coverage_current
+→ continue_decision
 → closure outcome + calibrated confidence
 → release/gate decision
 → QA defect or abstain routed to implement
@@ -130,6 +132,24 @@ Persist:
 Do not persist:
 
 - uncontrolled raw credential dumps in release/docs artifacts
+
+### Default runner expectation
+
+For browser-driven QA, the intended default path is:
+
+```text
+compiled browser task
+→ built-in browser-use
+→ session-aware evidence pack
+→ deterministic replay requirement
+```
+
+Project-specific runners may override this path, but the override must not remove:
+
+- compiled task
+- session continuity
+- browser evidence pack
+- replay boundary
 
 ---
 
@@ -212,6 +232,10 @@ Those repeated patterns should be promoted into:
 6. if blocked or abstained, route to implement
 7. inspect technical archive and writeback artifacts
 8. update architecture feedback and next experiment set
+9. if a severe blocker stops the round, repair it first and then use
+   `beacon help --project-root <root> --version <version> --feature "<feature>"`
+   to resume the next QA round
+10. before the resumed round claims better coverage, supplement missing test cases / scenario families / replay obligations
 
 ---
 
@@ -221,6 +245,8 @@ Those repeated patterns should be promoted into:
 2. do not leak raw auth material into docs/release artifacts
 3. do not stop at QA findings without implement/archive follow-up
 4. do not evolve project workflows without keep/discard evidence
+5. do not continue a QA round after severe blockers have made downstream evidence untrustworthy
+6. do not claim better coverage if the new round did not backfill previously missing test cases
 
 ---
 

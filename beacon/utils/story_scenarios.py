@@ -149,11 +149,11 @@ def expand_story_scenarios(
     entries: list[dict[str, Any]],
     expansion_profile: str = "pua-web",
     scenario_depth: str = "standard",
-    ui_runner: str = "playwright",
+    ui_runner: str = "browser-use",
 ) -> dict[str, Any]:
     by_ac: dict[str, list[dict[str, Any]]] = {}
     normalized_ui_runner = str(ui_runner or "").strip().lower()
-    default_exploratory_runner = normalized_ui_runner if normalized_ui_runner in {"agent-browser", "browser-use"} else "agent-browser"
+    default_exploratory_runner = normalized_ui_runner if normalized_ui_runner in {"agent-browser", "browser-use"} else "browser-use"
     for entry in entries:
         if not isinstance(entry, dict):
             continue

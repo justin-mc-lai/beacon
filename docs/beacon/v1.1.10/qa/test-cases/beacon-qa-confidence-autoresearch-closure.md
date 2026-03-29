@@ -90,6 +90,14 @@
 | TC-034 | architecture-feedback | implement 完成后检查技术归档回流 | QA 缺陷可反哺 requirement rewrite input 与 architecture feedback 文档 |
 | TC-035 | project-workflow-evolution | target project workflow 进入 keep/discard | 只允许演进 profile/orchestration/evidence contract 等小策略面 |
 | TC-036 | end-to-end-closure | 从 user-story 到 project verify 到 QA 到 implement/archive | 闭环路径清晰，可持续演进到稳定交付 |
+| TC-037 | round-coverage | 读取 feature-qa-scorecard / round summary | 明确包含 `coverage_current / coverage_gap / continue_decision`，能告诉人类“此刻覆盖到哪” |
+| TC-038 | severe-blocker-stop | 鉴权失效、required replay 缺失或 project evidence gate 未满足 | 本轮 QA 必须 `stop_for_repair`，不得继续堆叠下游无效 case |
+| TC-039 | repair-handoff | round 被 `stop_for_repair` | 结果必须给出 blocker summary、repair handoff、`resume_command` |
+| TC-040 | help-resume | 修复闭环完成后调用 `beacon help --project-root <root> --version <version> --feature "<feature>"` | 能输出下一轮 QA 的 next-step command，而不是要求人类猜流程 |
+| TC-041 | round-backfill | 下一轮 QA 启动前对照上一轮 coverage gap | 若缺 scenario family / replay / test cases，则 `test_case_backfill_required=true` 并先补齐 |
+| TC-042 | browser-use-default | browser-relevant QA 未显式指定 runner | 默认走内建 `browser-use` 主路径，同时保留 project override 能力 |
+| TC-043 | session-continuity | 第二轮 story-exhaustive / delta rerun 启动 | 复用上一轮 session manifest、profile ref、cookies ref、storage-state ref，而不是重新丢失用户态 |
+| TC-044 | release-guidance-boundary | round summary 仍为 `stop_for_repair` 或 coverage gap 未收敛 | release guidance 不得 claim `release_ready` |
 
 ## 样板场景
 
@@ -148,6 +156,24 @@
 - 同类 QA 缺陷在多个 feature 重复出现
 - 预期：反馈不只停在单 feature 修补，而会进入 architecture feedback / baseline uplift
 
+### 场景 K：严重阻塞触发 QA 停止
+
+- 首个 browser happy path 已因 auth/session 失效而不可比较
+- 后续 negative / recovery / compatibility 继续执行只会放大噪音
+- 预期：系统直接 `stop_for_repair`，并指出应先修复鉴权或 evidence gate
+
+### 场景 L：修复完成后通过 help 恢复下一轮 QA
+
+- repair 已关闭上一轮 blocker
+- 人类运行 `beacon help --project-root <root> --version <version> --feature "<feature>"`
+- 预期：系统输出下一轮 QA 的 next-step command，而不是把人类扔回空白状态
+
+### 场景 M：新一轮 QA 先补用例再重跑
+
+- 上一轮 coverage 仍缺 boundary / recovery family
+- 本轮若直接重跑 happy/negative 不会提高 closure truth
+- 预期：系统先要求补齐 matrix/test cases，再进入重跑
+
 ## 测试反馈回写规则
 
 | Finding Type | Writeback Target | Expected Follow-up |
@@ -161,10 +187,15 @@
 | project-workflow gap | profile/orchestration contract / evidence gate | 补齐目标项目 skill workflow 或 required evidence |
 | implementation gap | `beacon implement` / technical archive | 修复实现并写回技术归档 |
 | architecture feedback | architecture blueprint / baseline uplift | 把重复缺陷提升为结构化架构改进 |
+| severe blocker stop | round summary / repair handoff / help next-step | 停止本轮 QA，先修复再继续 |
+| missing round coverage | feature scorecard / test-case backfill queue | 先补 scenario/test cases 再重跑 |
+| help-driven resume | `beacon help` payload / next_step command | 让人类能无歧义地恢复下一轮 QA |
 
 ## 执行语义
 
 - `Pass`: QA 同时覆盖 anchor truth、divergent scenario families、project workflow reality、boundary blocks 与 learning feedback
+- `Pass`: 每轮都能告诉人类当前覆盖率、是否继续测试、是否必须先修复阻塞
 - `Pass`: coverage 发散但不脱离 requirement/evidence/replay/audit/project-workflow anchors
 - `Fail`: 仍把 status 当 closure，把 exhaustiveness 当 confidence，把 exploratory pass 当 release truth
+- `Fail`: 遇到严重阻塞仍继续堆叠 case，导致 coverage 看似上升但证据已失真
 - `Blocked`: sampled audit strategy、truth labels、release thresholds、project workflow gate 或 architecture feedback 路径仍有关键冲突

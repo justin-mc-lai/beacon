@@ -9,6 +9,7 @@ Current repo truth:
 - materials are closed
 - runtime is not yet closed
 - the shortest path is to wire judgement, project workflow, audit parity, and doc integrity in that order
+- the mainline still needs an explicit continue / stop_for_repair / resume contract
 
 ---
 
@@ -49,6 +50,10 @@ Stop treating QA result as status-only.
   - `confidence_raw`
   - `evidence_sufficiency`
   - `root_cause_type`
+- emit round-level coverage truth:
+  - `coverage_current`
+  - `coverage_gap`
+  - `continue_decision`
 - derive AC closure report
 - surface feature QA scorecard
 
@@ -61,6 +66,7 @@ Stop treating QA result as status-only.
 ### Success metric
 - every browser scenario emits `closure_outcome`
 - `qa run <feature>` writes a first-class machine result richer than status-only
+- the same result can tell a human whether to keep testing or stop the round
 
 ---
 
@@ -103,6 +109,7 @@ Stop treating target-project verify workflow as a parallel concern.
 - consume verify-stage orchestration or its state
 - enforce required evidence gate before confidence-based release truth
 - reuse QA session/browser auth manifests where applicable
+- keep browser QA on a default built-in `browser-use` path unless the project explicitly overrides it
 
 ### Primary files
 - `beacon/commands/qa.py`
@@ -112,6 +119,34 @@ Stop treating target-project verify workflow as a parallel concern.
 
 ### Success metric
 - the shortest operator path is one mainline, not `verify run` plus a separate manual QA path
+
+---
+
+## Phase 3.5 — Stop-for-repair and help-driven resume
+
+### Goal
+Make QA rounds terminate honestly and restart cleanly.
+
+### Deliverables
+- define `continue_decision`:
+  - `continue`
+  - `stop_for_repair`
+  - `ready_for_release`
+- define severe blocker rules that halt the current round
+- emit repair handoff + blocker summary + `resume_command`
+- ensure `beacon help --project-root <root> --version <version> --feature "<feature>"` can point the human at the correct next QA action
+- require `test_case_backfill_required` when the resumed round still has missing scenario families or replay obligations
+
+### Primary files
+- `beacon/commands/qa.py`
+- `beacon/commands/help.py`
+- `beacon/utils/help_support.py`
+- `beacon/commands/test_case.py`
+
+### Success metric
+- severe blockers stop the round instead of creating fake coverage
+- humans can repair the blocker and resume the next QA round without guessing the command
+- the resumed round backfills missing test cases before claiming improved coverage
 
 ---
 
@@ -166,10 +201,13 @@ Make calibrated QA precision visible in the main operator surfaces.
   - confidence floor
   - review-required count
   - unresolved closure outcomes
+  - current round coverage and residual gap
+  - continue / stop_for_repair / ready_for_release decision
 - report/status main views show:
   - release confidence summary
   - audit drift signals
   - training readiness
+  - repair/resume hints for humans
 
 ### Success metric
 - release owner can answer:
@@ -209,6 +247,8 @@ Make documentation and machine refresh behavior part of formal closure rather th
 5. no claim of closure while project workflow remains outside the QA mainline
 6. no claim of doc closure while source-architecture is outside formal audit/gate
 7. no silent overwrite of human-authored QA requirement docs during artifact refresh
+8. no continuing a QA round once severe blockers have invalidated downstream evidence
+9. no resumed QA round claiming higher coverage without filling the previous round's missing test cases
 
 ---
 
@@ -219,6 +259,7 @@ M1 = closure outcome
 M2 = calibrated confidence
 M2.5 = project workflow mainline integration
 M3 = audit truth set
+M3.5 = stop-for-repair + help resume loop
 M4 = QA precision evo
 M5 = release governance uplift
 M5.5 = materials and doc-integrity closure

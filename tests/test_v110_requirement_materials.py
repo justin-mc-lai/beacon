@@ -139,28 +139,42 @@ def test_v110_docs_should_express_anchor_and_feedback_model():
     sync_contract = (ROOT / "docs" / "beacon" / VERSION / "source-architecture" / "sync-contract.md").read_text(encoding="utf-8")
     qa_prd = (ROOT / "docs" / "beacon" / VERSION / "prd" / f"{SLUG}.md").read_text(encoding="utf-8")
     phasing = (ROOT / "docs" / "beacon" / VERSION / "execution" / "qa-confidence-implementation-phasing.md").read_text(encoding="utf-8")
+    data_contract = (ROOT / "docs" / "beacon" / VERSION / "execution" / "qa-confidence-data-contract.md").read_text(encoding="utf-8")
+    source_loop = (ROOT / "docs" / "beacon" / VERSION / "source-architecture" / "qa-implement-release-feedback-loop.md").read_text(encoding="utf-8")
     source_qa = (ROOT / "docs" / "beacon" / VERSION / "qa" / "test-cases" / f"{ARCH_SLUG}.md").read_text(encoding="utf-8")
     route_qa = (ROOT / "docs" / "beacon" / VERSION / "qa" / "test-cases" / f"{ROUTE_SLUG}.md").read_text(encoding="utf-8")
 
     assert "Implemented / Verified" in summary
     assert "runtime-closed" in summary
+    assert "continue_decision" in summary
+    assert "stop_for_repair" in summary
     assert "Anchor-A" in qa_doc
     assert "TC-036" in qa_doc
+    assert "TC-044" in qa_doc
     assert "project-specific skill/profile/orchestration" in blueprint
     assert "browser QA session/auth persistence" in blueprint
     assert "technical implementation archive" in blueprint
+    assert "supplement missing test cases" in blueprint
+    assert "beacon help --project-root <root> --version <version> --feature" in blueprint
     assert "route closure an explicit contract" in route_blueprint
     assert "route-closure-contract.json" in route_prd
     assert "implementation-map.json" in route_prd
     assert "TC-010 | miniapp" in route_qa
     assert "FR-016 `qa run <feature>` must consume project workflow truth" in qa_prd
     assert "FR-018 Machine refresh must preserve human-authored QA requirement docs" in qa_prd
+    assert "FR-020 Severe blockers must terminate QA instead of creating fake progress" in qa_prd
+    assert "FR-023 Browser-driven QA should default to built-in `browser-use` with session continuity" in qa_prd
     assert "Phase 2.5 — Move project workflow into the QA mainline" in phasing
+    assert "Phase 3.5 — Stop-for-repair and help-driven resume" in phasing
     assert "Phase 5.5 — Materials and doc-integrity closure" in phasing
+    assert "continue_decision" in data_contract
+    assert "resume_command" in data_contract
     assert "source-architecture/" in summary
     assert "beacon-source-architecture-sync" in arch_prd
     assert "beacon-prototype-frontend-route-closure" in summary
     assert "must update source architecture docs" in sync_contract
+    assert "round coverage snapshot" in source_loop
+    assert "beacon help --project-root <root> --version <version> --feature" in source_loop
     assert "TC-016 | formal-audit" in source_qa
     assert "Implemented / Verified" in release
     assert "test-case gate" in release

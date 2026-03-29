@@ -16,6 +16,7 @@ from beacon.utils.project_skills import (
     resolve_profile_for_feature,
     run_profile_orchestration,
 )
+from beacon.utils.learning_loop import refresh_learning_loop
 from beacon.utils.qa_precision import refresh_qa_calibration_model, write_qa_audit_label
 from beacon.utils.qa_feature import (
     build_feature_qa_precision_artifacts,
@@ -334,6 +335,8 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
         str(matrix_path),
         "--qa-types",
         ",".join(plan.get("targeted_layers") or ["contract"]),
+        "--ui-runner",
+        "browser-use",
         "--require-fresh-evidence",
     ]
     command_exit = _beacon_exec_silent(auto_args, cwd=_repo_root()) if json_output else _beacon_exec(auto_args, cwd=_repo_root())
@@ -399,6 +402,8 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
         plan=plan,
         per_item_results=per_item_results,
         project_profile_gate=project_profile_gate,
+        qa_status=qa_status,
+        exhaustiveness=exhaustiveness,
     )
     qa_status["scenario_results_v2"] = scenario_results_v2
     qa_status["ac_closure_path"] = str(ac_closure_path.relative_to(project_root))
@@ -448,6 +453,15 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
         typer.echo(f"  feature: {feature}")
         typer.echo(f"  matrix: {feature_matrix_rel}")
         typer.echo(f"  evidence_done: {payload['evidence_done']}")
+        typer.echo(f"  continue_decision: {feature_scorecard.get('continue_decision', 'continue')}")
+        coverage_current = feature_scorecard.get("coverage_current") if isinstance(feature_scorecard.get("coverage_current"), dict) else {}
+        if coverage_current:
+            typer.echo(
+                f"  coverage: {coverage_current.get('executed_scenarios', 0)}/{coverage_current.get('required_scenarios', 0)} ({coverage_current.get('coverage_rate', 0)})"
+            )
+        if str(feature_scorecard.get("continue_decision") or "") == "stop_for_repair":
+            typer.echo(f"  stop_reasons: {', '.join(feature_scorecard.get('stop_reasons', [])) or '-'}")
+            typer.echo(f"  resume_command: {feature_scorecard.get('resume_command', '')}")
         if blocking_updates:
             typer.echo(f"  blocking_artifact_updates: {len(blocking_updates)}")
     return exit_code, payload
@@ -527,6 +541,17 @@ def status(
         typer.echo(
             f"Exhaustiveness: score={exhaustiveness.get('score', 0)} threshold={exhaustiveness.get('threshold', 0)} status={exhaustiveness.get('status', 'N/A')}"
         )
+    feature_scorecard = payload.get("feature_scorecard")
+    if isinstance(feature_scorecard, dict) and feature_scorecard:
+        typer.echo(f"Continue decision: {feature_scorecard.get('continue_decision', 'continue')}")
+        coverage_current = feature_scorecard.get("coverage_current")
+        if isinstance(coverage_current, dict):
+            typer.echo(
+                f"Coverage: {coverage_current.get('executed_scenarios', 0)}/{coverage_current.get('required_scenarios', 0)} ({coverage_current.get('coverage_rate', 0)})"
+            )
+        if str(feature_scorecard.get("continue_decision") or "") == "stop_for_repair":
+            typer.echo(f"Stop reasons: {', '.join(feature_scorecard.get('stop_reasons', [])) or '-'}")
+            typer.echo(f"Resume command: {feature_scorecard.get('resume_command', '')}")
 
 
 @app.command(
@@ -662,6 +687,7 @@ def audit_label(
     }
     path = write_qa_audit_label(project_root, run_id=run_id, scenario_id=scenario_id, payload=payload)
     calibration = refresh_qa_calibration_model(project_root)
+    learning = refresh_learning_loop(project_root)
     result = {
         "status": "recorded",
         "run_id": run_id,
@@ -669,6 +695,7 @@ def audit_label(
         "audit_path": str(path.relative_to(project_root)),
         "calibration_model_path": str((project_root / ".beacon" / "state" / "qa-calibration" / "latest.json").relative_to(project_root)),
         "training_sample_count": calibration.get("training_sample_count"),
+        "learning_counts": learning.get("counts", {}),
     }
     if json_output:
         typer.echo(json.dumps(result, ensure_ascii=False, indent=2))

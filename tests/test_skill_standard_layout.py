@@ -30,6 +30,9 @@ def test_standard_skill_package_should_have_frontmatter_and_metadata():
     assert "../../docs/beacon/v1.1.10/release/v1.1.10.md" in skill_text
     assert 'Lifecycle Navigation Rules' in skill_text
     assert 'beacon help --project-root . --json' in skill_text
+    assert 'QA prompt contract must follow first principles' in skill_text
+    assert 'stop_for_repair' in skill_text
+    assert 'browser-use' in skill_text
 
     metadata = json.loads((ROOT / "skills" / "beacon" / "metadata.json").read_text(encoding="utf-8"))
     assert metadata["name"] == "beacon"

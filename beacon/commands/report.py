@@ -67,6 +67,8 @@ def _human_summary(machine: dict[str, Any]) -> str:
         f"- release_confidence_avg: `{release_summary.get('release_confidence_avg')}`",
         f"- review_required_count: `{release_summary.get('review_required_count')}`",
         f"- needs_replay_count: `{release_summary.get('needs_replay_count')}`",
+        f"- continue_decision: `{release_summary.get('continue_decision')}`",
+        f"- test_case_backfill_required: `{release_summary.get('test_case_backfill_required')}`",
         f"- main_kpi: `{release_summary.get('main_kpi')}`",
         f"- main_kpi_score: `{release_summary.get('main_kpi_score')}`",
         f"- keep/review/discard: `{release_summary.get('decision_keep')}/{release_summary.get('decision_review')}/{release_summary.get('decision_discard')}`",

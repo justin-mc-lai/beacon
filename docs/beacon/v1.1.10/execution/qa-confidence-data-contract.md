@@ -185,6 +185,17 @@ At minimum it should aggregate:
   "review_required_count": 2,
   "needs_replay_count": 1,
   "false_complete_risk": 0.18,
+  "coverage_current": {
+    "required_scenarios": 34,
+    "executed_scenarios": 21,
+    "coverage_rate": 0.6176,
+    "missing_scenario_families": ["recovery", "compatibility"],
+    "missing_test_case_ids": ["TC-021", "TC-022"]
+  },
+  "continue_decision": "stop_for_repair",
+  "stop_reasons": ["auth_session_invalid", "required_replay_missing"],
+  "test_case_backfill_required": true,
+  "resume_command": "beacon help --project-root . --version v1.1.10 --feature \"My Feature\"",
   "release_ready": false
 }
 ```
@@ -205,6 +216,27 @@ It is not allowed to invent facts absent from:
 - scenario results
 - AC closure reports
 - audit labels
+
+### Additional round-level fields
+
+`feature-qa-scorecard` should also answer the human control question:
+
+> should the current round continue, stop for repair, or hand off to release review?
+
+Recommended additive fields:
+
+| Field | Meaning |
+| --- | --- |
+| `coverage_current` | current round's executed vs required coverage snapshot |
+| `continue_decision` | `continue` / `stop_for_repair` / `ready_for_release` |
+| `stop_reasons` | severe blockers that invalidate further testing in the same round |
+| `test_case_backfill_required` | whether the next round must expand matrix/test cases before rerun |
+| `resume_command` | human-facing command to resume the next QA round |
+
+#### `continue_decision`
+- `continue`
+- `stop_for_repair`
+- `ready_for_release`
 
 ---
 

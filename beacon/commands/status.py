@@ -165,6 +165,13 @@ def _status_impl(
             typer.echo(
                 f"- release.confidence: min={release_summary.get('release_confidence_min')} avg={release_summary.get('release_confidence_avg')} review={release_summary.get('review_required_count')} replay={release_summary.get('needs_replay_count')}"
             )
+        if release_summary.get("continue_decision"):
+            typer.echo(f"- release.continue_decision: {release_summary.get('continue_decision')}")
+        coverage_current = release_summary.get("coverage_current") if isinstance(release_summary.get("coverage_current"), dict) else {}
+        if coverage_current:
+            typer.echo(
+                f"- release.coverage_current: {coverage_current.get('executed_scenarios', 0)}/{coverage_current.get('required_scenarios', 0)} ({coverage_current.get('coverage_rate', 0)})"
+            )
         typer.echo(
             f"- release.learning: {release_summary.get('main_kpi')}={release_summary.get('main_kpi_score')} keep/review/discard={release_summary.get('decision_keep')}/{release_summary.get('decision_review')}/{release_summary.get('decision_discard')}"
         )

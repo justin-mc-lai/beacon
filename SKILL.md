@@ -110,6 +110,7 @@ beacon help --project-root . --version v1.1.10 --feature "My feature" --json
 ```bash
 beacon implement list-runners --json
 beacon implement run "My feature" --project . --version v1.1.10 --runner auto --json
+beacon implement run "My feature" --project . --version v1.1.10 --runner auto --auto-qa --auto-qa-follow-handoff --auto-qa-max-rounds 3 --json
 beacon qa run "My feature" --project . --version v1.1.10 --json
 beacon review quality "My feature" --project . --version v1.1.10 --json
 beacon gate check release --project-root . --version v1.1.10 --json
@@ -175,6 +176,55 @@ think
    - `release`
    - `release scorecard`
    - keep/discard + evo harness
+
+### QA 的 skill 提示词必须遵守第一性原则
+
+对 `qa` 主链来说，Beacon 不允许“为了显得更努力而继续跑测试”。
+
+正确顺序只能是：
+
+```text
+user story / AC order
+→ scenario divergence
+→ current-round execution
+→ evidence pack
+→ coverage_current / coverage_gap
+→ continue_decision
+→ severe blocker? stop_for_repair
+→ repair handoff
+→ beacon help resume
+→ next QA round with test-case backfill
+→ release guidance
+```
+
+执行规则：
+
+1. **先顺序，后发散**
+   - 必须先按 user story / AC 顺序推进
+   - 再发散到 happy / negative / boundary / recovery / compatibility
+
+2. **先证据，后结论**
+   - 没有 evidence pack、replay、coverage snapshot，不得 claim closure
+
+3. **阻塞严重就停**
+   - 遇到 auth/session 失效、required replay 缺失、project evidence gate 不满足、contract drift、environment instability
+   - 本轮 QA 应 `stop_for_repair`
+   - 不允许继续堆无效 case 制造“覆盖率上升”
+
+4. **每轮都要告诉人类下一步**
+   - QA 输出必须给 blocker summary、repair handoff、`resume_command`
+   - 修复后优先通过
+     `beacon help --project-root . --version v1.1.10 --feature "<feature>" --json`
+     获取下一轮命令
+
+5. **下一轮必须先补缺口**
+   - 若上一轮仍有 coverage gap / missing test cases / missing replay obligations
+   - 则先补 `test-case` / matrix，再继续 QA
+
+6. **浏览器 QA 默认继承用户态**
+   - 默认 browser path 以 `browser-use` 为主
+   - 必须保留 session manifest、profile ref、cookies ref、storage-state ref
+   - 让下一轮 QA 复用同一用户上下文
 
 ## 为什么这套 skill 重要
 
@@ -268,21 +318,21 @@ requirement material
 ## 文档入口与故障排查
 
 ### 文档入口
-- `docs/beacon/v1.1.9/SUMMARY.md`
-- `docs/beacon/v1.1.9/execution/index.md`
-- `docs/beacon/v1.1.9/release/v1.1.9.md`
-- `docs/beacon/v1.1.9/SUMMARY.md`（下一轮探索）
+- `docs/beacon/v1.1.10/SUMMARY.md`
+- `docs/beacon/v1.1.10/execution/index.md`
+- `docs/beacon/v1.1.10/release/v1.1.10.md`
+- `docs/beacon/v1.1.10/prd/beacon-qa-confidence-autoresearch-closure.md`
 
 ### 常见问题
 - 不确定当前阶段下一步做什么：
-  - `beacon help --project-root . --version v1.1.9 --feature "<feature>" --json`
+  - `beacon help --project-root . --version v1.1.10 --feature "<feature>" --json`
 - 觉得材料状态不一致：
   - `beacon doctor --project-root . --json`
-  - `beacon doctor verify-materials --project-root . --version v1.1.9 --json`
+  - `beacon doctor verify-materials --project-root . --version v1.1.10 --json`
 - 不确定 release/gate 是否已闭环：
-  - `beacon gate check release --project-root . --version v1.1.9 --json`
+  - `beacon gate check release --project-root . --version v1.1.10 --json`
 - 想看当前全局状态：
-  - `beacon status --board --project-root . --version v1.1.9`
+  - `beacon status --board --project-root . --version v1.1.10`
 
 ## 命令触发（CLI/Skill 单一事实源）
 
@@ -424,10 +474,10 @@ python3 scripts/sync_skill_commands.py --check
 
 ```bash
 # 推荐
-beacon workflow start "Beacon v1.1.9 release line" --project /abs/path/to/project --version v1.1.9
+beacon workflow start "Beacon v1.1.10 release line" --project /abs/path/to/project --version v1.1.10
 
 # 兼容
-python3 -m beacon.main workflow start "Beacon v1.1.9 release line" --project /abs/path/to/project --version v1.1.9
+python3 -m beacon.main workflow start "Beacon v1.1.10 release line" --project /abs/path/to/project --version v1.1.10
 ```
 
 ## Gate 检查
@@ -469,4 +519,4 @@ docs/beacon/{version}/
 
 ---
 
-**版本**: v1.1.9
+**版本**: v1.1.10

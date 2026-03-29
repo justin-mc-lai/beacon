@@ -215,6 +215,9 @@ def test_v110_qa_run_should_emit_precision_artifacts(tmp_path: Path):
     qa_status = json.loads((tmp_path / ".beacon" / "qa" / "status.json").read_text(encoding="utf-8"))
     assert qa_status["scenario_results_v2"]
     assert qa_status["feature_scorecard"]["release_ready"] is True
+    assert qa_status["feature_scorecard"]["continue_decision"] == "ready_for_release"
+    assert qa_status["feature_scorecard"]["test_case_backfill_required"] is False
+    assert qa_status["feature_scorecard"]["coverage_current"]["coverage_rate"] == 1.0
     assert (tmp_path / qa_status["ac_closure_path"]).exists()
     assert (tmp_path / qa_status["feature_scorecard_path"]).exists()
 
@@ -283,6 +286,9 @@ def test_v110_release_scorecard_should_consume_feature_scorecard_and_project_gat
     assert payload["qa"]["project_profile_gate_status"] == "pass"
     assert payload["release_ready"] is True
     assert payload["feature_qa_scorecard"]["release_confidence_min"] >= 0.6
+    summary = payload["feature_qa_scorecard"]
+    assert summary["continue_decision"] == "ready_for_release"
+    assert summary["coverage_current"]["coverage_rate"] == 1.0
 
 
 def test_v110_material_audit_should_require_source_architecture_and_project_skill_blueprint(tmp_path: Path):
@@ -364,6 +370,7 @@ def test_v110_qa_audit_label_should_refresh_calibration_and_feed_experiment(tmp_
     assert label.exit_code == 0, label.stdout
     label_payload = json.loads(label.stdout)
     assert label_payload["training_sample_count"] == 1
+    assert "learning_counts" in label_payload
 
     calibration = json.loads((tmp_path / ".beacon" / "state" / "qa-calibration" / "latest.json").read_text(encoding="utf-8"))
     assert calibration["training_sample_count"] == 1
@@ -374,3 +381,165 @@ def test_v110_qa_audit_label_should_refresh_calibration_and_feed_experiment(tmp_
     experiment_payload = json.loads(experiment.stdout)
     assert "false_block_rate" in experiment_payload["metrics"]
     assert "human_audit_agreement" in experiment_payload["metrics"]
+
+
+def test_v110_qa_blocked_round_should_emit_stop_for_repair_and_help_resume(tmp_path: Path):
+    _seed_common_docs(tmp_path)
+    freeze = _invoke(["freeze", FEATURE, "--project", str(tmp_path), "--version", VERSION, "--json"])
+    assert freeze.exit_code == 0, freeze.stdout
+    _mark_implemented(tmp_path)
+    pass_script = _write_passing_layer_script(tmp_path)
+    fail_script = tmp_path / "fail-layer.sh"
+    fail_script.write_text("#!/bin/sh\nset -eu\necho 'boom' >&2\nexit 1\n", encoding="utf-8")
+    fail_script.chmod(0o755)
+
+    result = _invoke(
+        [
+            "qa",
+            "run",
+            FEATURE,
+            "--project",
+            str(tmp_path),
+            "--version",
+            VERSION,
+            "--layer-command",
+            f"contract=sh {pass_script}",
+            "--layer-command",
+            f"integration=sh {fail_script}",
+            "--json",
+        ]
+    )
+    assert result.exit_code == 2, result.stdout
+    payload = json.loads(result.stdout)
+    scorecard = payload["feature_scorecard"]
+    assert scorecard["continue_decision"] == "stop_for_repair"
+    assert "implementation_reopened" in scorecard["stop_reasons"]
+    assert scorecard["repair_handoff"]["action"] == "implement"
+    assert "beacon help" in scorecard["resume_command"]
+
+    help_result = _invoke(
+        [
+            "help",
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            VERSION,
+            "--feature",
+            FEATURE,
+            "--json",
+        ]
+    )
+    assert help_result.exit_code == 0, help_result.stdout
+    help_payload = json.loads(help_result.stdout)
+    assert help_payload["next_step"]["action"] == "implement"
+    assert "beacon implement run" in help_payload["next_step"]["command"]
+
+
+def test_v110_implement_should_auto_trigger_next_qa_round_when_enabled(tmp_path: Path):
+    _seed_common_docs(tmp_path)
+    freeze = _invoke(["freeze", FEATURE, "--project", str(tmp_path), "--version", VERSION, "--json"])
+    assert freeze.exit_code == 0, freeze.stdout
+    script = _write_passing_layer_script(tmp_path)
+
+    result = _invoke(
+        [
+            "implement",
+            "run",
+            FEATURE,
+            "--project",
+            str(tmp_path),
+            "--version",
+            VERSION,
+            "--runner",
+            "native-single",
+            "--auto-qa",
+            "--auto-qa-arg",
+            "--layer-command",
+            "--auto-qa-arg",
+            f"contract=sh {script}",
+            "--auto-qa-arg",
+            "--layer-command",
+            "--auto-qa-arg",
+            f"integration=sh {script}",
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["auto_qa"]["enabled"] is True
+    assert payload["auto_qa"]["triggered"] is True
+    assert payload["auto_qa"]["exit_code"] == 0
+    assert payload["auto_qa"]["payload"]["feature_scorecard"]["continue_decision"] == "ready_for_release"
+    qa_status = json.loads((tmp_path / ".beacon" / "qa" / "status.json").read_text(encoding="utf-8"))
+    assert qa_status["feature"] == FEATURE
+
+
+def test_v110_implement_should_allow_auto_qa_setting_to_be_disabled(tmp_path: Path):
+    _seed_common_docs(tmp_path)
+    freeze = _invoke(["freeze", FEATURE, "--project", str(tmp_path), "--version", VERSION, "--json"])
+    assert freeze.exit_code == 0, freeze.stdout
+    (tmp_path / "beacon.config.yaml").write_text(
+        "implementation:\n  auto_qa: true\n",
+        encoding="utf-8",
+    )
+
+    result = _invoke(
+        [
+            "implement",
+            "run",
+            FEATURE,
+            "--project",
+            str(tmp_path),
+            "--version",
+            VERSION,
+            "--runner",
+            "native-single",
+            "--no-auto-qa",
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["auto_qa"]["enabled"] is False
+    assert payload["auto_qa"]["triggered"] is False
+    assert not (tmp_path / ".beacon" / "qa" / "status.json").exists()
+
+
+def test_v110_implement_auto_qa_should_propagate_blocked_repair_result(tmp_path: Path):
+    _seed_common_docs(tmp_path)
+    freeze = _invoke(["freeze", FEATURE, "--project", str(tmp_path), "--version", VERSION, "--json"])
+    assert freeze.exit_code == 0, freeze.stdout
+    pass_script = _write_passing_layer_script(tmp_path)
+    fail_script = tmp_path / "fail-auto-qa.sh"
+    fail_script.write_text("#!/bin/sh\nset -eu\necho 'fail' >&2\nexit 1\n", encoding="utf-8")
+    fail_script.chmod(0o755)
+
+    result = _invoke(
+        [
+            "implement",
+            "run",
+            FEATURE,
+            "--project",
+            str(tmp_path),
+            "--version",
+            VERSION,
+            "--runner",
+            "native-single",
+            "--auto-qa",
+            "--auto-qa-arg",
+            "--layer-command",
+            "--auto-qa-arg",
+            f"contract=sh {pass_script}",
+            "--auto-qa-arg",
+            "--layer-command",
+            "--auto-qa-arg",
+            f"integration=sh {fail_script}",
+            "--json",
+        ]
+    )
+    assert result.exit_code == 2, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["status"] == "completed"
+    assert payload["auto_qa"]["triggered"] is True
+    assert payload["auto_qa"]["exit_code"] == 2
+    assert payload["auto_qa"]["payload"]["feature_scorecard"]["continue_decision"] == "stop_for_repair"

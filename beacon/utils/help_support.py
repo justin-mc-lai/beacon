@@ -9,6 +9,7 @@ from typing import Any
 from beacon.utils.control_plane import build_resume_contract
 from beacon.utils.coverage import compute_coverage_metrics
 from beacon.utils.project_skills import evaluate_project_profile_gate, resolve_profile_for_feature
+from beacon.utils.qa_precision import load_feature_qa_scorecard
 from beacon.utils.revision_state import load_revision_state
 from beacon.utils.runtime import load_run_state
 from beacon.utils.scoring import (
@@ -47,7 +48,7 @@ def _infer_current_stage(*, revision_state: dict[str, Any], workflow_progress: d
     return delivery or str(revision_state.get("doc_status", "") or "draft")
 
 
-def _blocking_reasons(*, revision_state: dict[str, Any], workflow_progress: dict[str, Any], coverage: dict[str, Any], profile_gate: dict[str, Any] | None = None, control_plane: dict[str, Any] | None = None) -> list[str]:
+def _blocking_reasons(*, revision_state: dict[str, Any], workflow_progress: dict[str, Any], coverage: dict[str, Any], profile_gate: dict[str, Any] | None = None, control_plane: dict[str, Any] | None = None, feature_scorecard: dict[str, Any] | None = None) -> list[str]:
     reasons: list[str] = []
     delivery_status = str(revision_state.get("delivery_status", "") or "")
     if str(revision_state.get("doc_status", "") or "draft") != "frozen":
@@ -68,16 +69,67 @@ def _blocking_reasons(*, revision_state: dict[str, Any], workflow_progress: dict
         code = str(item.get("reason_code", "") or "").strip()
         if code:
             reasons.append(code)
+    feature_scorecard = feature_scorecard if isinstance(feature_scorecard, dict) else {}
+    if str(feature_scorecard.get("continue_decision") or "").strip() == "stop_for_repair":
+        reasons.append("qa_stop_for_repair")
+        reasons.extend(str(item).strip() for item in (feature_scorecard.get("stop_reasons") or []) if str(item).strip())
     if isinstance(control_plane, dict) and int(control_plane.get("failure_streak", 0) or 0) > 0:
         reasons.append("control_plane_escalation_active")
     return sorted(set(reasons))
 
 
-def _next_step(*, revision_state: dict[str, Any], workflow_progress: dict[str, Any], blocked: bool, blocking_reasons: list[str], feature: str, version: str, project_root: Path, profile_gate: dict[str, Any] | None = None, profile: dict[str, Any] | None = None, control_plane: dict[str, Any] | None = None) -> dict[str, str]:
+def _next_step(*, revision_state: dict[str, Any], workflow_progress: dict[str, Any], blocked: bool, blocking_reasons: list[str], feature: str, version: str, project_root: Path, profile_gate: dict[str, Any] | None = None, profile: dict[str, Any] | None = None, control_plane: dict[str, Any] | None = None, feature_scorecard: dict[str, Any] | None = None) -> dict[str, str]:
     quoted_feature = json.dumps(feature, ensure_ascii=False)
     base = f'--project-root {project_root} --version {version}'
     next_stage = str(workflow_progress.get("next_stage", "") or "")
     run_id = str(workflow_progress.get("run_id", "") or "")
+    feature_scorecard = feature_scorecard if isinstance(feature_scorecard, dict) else {}
+    continue_decision = str(feature_scorecard.get("continue_decision") or "").strip()
+    if continue_decision == "stop_for_repair":
+        stop_reasons = [str(item).strip() for item in (feature_scorecard.get("stop_reasons") or []) if str(item).strip()]
+        if any(reason in {"implementation_reopened", "bug_filed"} for reason in stop_reasons):
+            return {
+                "action": "implement",
+                "reason": "qa round found an implementation blocker that must be fixed before the next round",
+                "command": f"beacon implement run {quoted_feature} --project {project_root} --version {version} --runner native-single",
+            }
+        if bool(feature_scorecard.get("test_case_backfill_required")):
+            return {
+                "action": "test-case-create",
+                "reason": "qa round found missing coverage or scenario families that must be backfilled before rerun",
+                "command": f"beacon test-case create {quoted_feature} {base}",
+            }
+        if any(reason in {"project_profile_gate_blocked", "required_evidence_missing", "required_case_missing", "contract_drift"} for reason in stop_reasons):
+            profile_id = str((profile or {}).get("profile_id", "") or (profile_gate or {}).get("profile_id", "") or "")
+            profile_arg = f" --profile {profile_id}" if profile_id else ""
+            return {
+                "action": "verify-run",
+                "reason": "project workflow or evidence gate is still blocking the QA round",
+                "command": f"beacon verify run {quoted_feature} {base}{profile_arg}",
+            }
+        return {
+            "action": "qa-resume",
+            "reason": "qa stopped for repair; close the blocker and then resume through Beacon help",
+            "command": str(feature_scorecard.get("resume_command") or f"beacon help {base} --feature {quoted_feature}"),
+        }
+    if continue_decision == "continue":
+        if bool(feature_scorecard.get("test_case_backfill_required")):
+            return {
+                "action": "test-case-create",
+                "reason": "the next QA round needs additional test cases before rerun",
+                "command": f"beacon test-case create {quoted_feature} {base}",
+            }
+        return {
+            "action": "qa-run",
+            "reason": "qa coverage is incomplete but no severe blocker requires stopping the round",
+            "command": f"beacon qa run {quoted_feature} --project {project_root} --version {version} --json",
+        }
+    if continue_decision == "ready_for_release":
+        return {
+            "action": "release-check",
+            "reason": "current QA round is ready for release/governance evaluation",
+            "command": f"beacon gate check release --project-root {project_root} --version {version}",
+        }
     if blocked:
         if "control_plane_escalation_active" in blocking_reasons and isinstance(control_plane, dict):
             run_id = str(control_plane.get("run_id", "") or "")
@@ -228,6 +280,7 @@ def build_help_payload(
     story_summary = summarize_story_items(story_state)
     profile = resolve_profile_for_feature(project_root, version=resolved_version, feature=feature_name, explicit_profile=None)
     profile_gate = evaluate_project_profile_gate(project_root, version=resolved_version, feature=feature_name) if profile else {}
+    feature_scorecard = load_feature_qa_scorecard(project_root, feature=feature_name) if feature_name else {}
     control_plane = build_resume_contract(project_root, run_id=resolved_run_id or None)
     blocking = _blocking_reasons(
         revision_state=revision_state,
@@ -235,6 +288,7 @@ def build_help_payload(
         coverage=coverage,
         profile_gate=profile_gate,
         control_plane=control_plane,
+        feature_scorecard=feature_scorecard,
     )
     blocked = bool(blocking)
     current_stage = _infer_current_stage(revision_state=revision_state, workflow_progress=workflow_progress)
@@ -249,6 +303,7 @@ def build_help_payload(
         profile_gate=profile_gate,
         profile=profile,
         control_plane=control_plane,
+        feature_scorecard=feature_scorecard,
     )
     scores = {
         "test_score": compute_test_score(coverage, auto_test_status=auto_test, story_summary=story_summary),
@@ -281,4 +336,5 @@ def build_help_payload(
         "run_state": load_run_state(project_root, resolved_run_id) if resolved_run_id else None,
         "project_profile": {"profile_id": str((profile or {}).get("profile_id", "") or ""), "project": str((profile or {}).get("project", "") or "")} if profile else None,
         "project_gate": profile_gate,
+        "feature_scorecard": feature_scorecard if isinstance(feature_scorecard, dict) else {},
     }

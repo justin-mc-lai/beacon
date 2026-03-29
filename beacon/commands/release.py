@@ -342,6 +342,9 @@ def scorecard(
             f"review_required={feature_scorecard.get('review_required_count')} "
             f"needs_replay={feature_scorecard.get('needs_replay_count')}"
         )
+        typer.echo(
+            f"Continue decision: {feature_scorecard.get('continue_decision', '')} backfill_required={feature_scorecard.get('test_case_backfill_required', False)}"
+        )
     decision_summary = payload.get("learning_scorecard", {}).get("decision_summary", {}) if isinstance(payload.get("learning_scorecard"), dict) else {}
     typer.echo(
         "Learning scorecard: "

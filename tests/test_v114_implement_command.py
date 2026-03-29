@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import importlib
 import json
 from pathlib import Path
 
@@ -9,6 +10,7 @@ from beacon.main import app
 
 
 runner = CliRunner()
+implement_cmd = importlib.import_module("beacon.commands.implement")
 
 
 def _invoke(args: list[str]):
@@ -402,6 +404,98 @@ def test_implement_run_should_support_auto_review_quality_and_status_surface(tmp
     assert status_payload["review_spec_exists"] is True
     assert status_payload["review_quality_exists"] is True
     assert status_payload["implementation_marker_exists"] is True
+
+
+def test_run_auto_qa_sequence_should_follow_supported_handoff_and_rerun(monkeypatch, tmp_path: Path):
+    calls: list[tuple[str, str]] = []
+    qa_payloads = [
+        (
+            2,
+            {
+                "feature_scorecard": {
+                    "continue_decision": "continue",
+                    "repair_handoff": {
+                        "action": "test-case-create",
+                        "command": 'beacon test-case create "My Feature" --project-root /tmp/demo --version v1.1.10',
+                    },
+                }
+            },
+        ),
+        (
+            0,
+            {
+                "feature_scorecard": {
+                    "continue_decision": "ready_for_release",
+                    "repair_handoff": {
+                        "action": "release-check",
+                        "command": "beacon gate check release --project-root /tmp/demo --version v1.1.10",
+                    },
+                }
+            },
+        ),
+    ]
+
+    def _fake_run_auto_qa(project_root: Path, *, feature: str, version: str, extra_args: list[str]):
+        calls.append(("qa", feature))
+        return qa_payloads.pop(0)
+
+    def _fake_run_beacon_json_command(project_root: Path, command: str):
+        calls.append(("handoff", command))
+        return 0, {"status": "generated"}
+
+    monkeypatch.setattr(implement_cmd, "_run_auto_qa", _fake_run_auto_qa)
+    monkeypatch.setattr(implement_cmd, "_run_beacon_json_command", _fake_run_beacon_json_command)
+
+    exit_code, payload = implement_cmd._run_auto_qa_sequence(  # type: ignore[attr-defined]
+        tmp_path,
+        feature="My Feature",
+        version="v1.1.10",
+        extra_args=["--mode", "story-exhaustive"],
+        follow_handoff=True,
+        max_rounds=3,
+    )
+    assert exit_code == 0
+    assert payload["follow_handoff"] is True
+    assert payload["max_rounds"] == 3
+    assert len(payload["history"]) == 3
+    assert calls[0] == ("qa", "My Feature")
+    assert calls[1][0] == "handoff"
+    assert calls[2] == ("qa", "My Feature")
+
+
+def test_run_auto_qa_sequence_should_not_follow_handoff_when_disabled(monkeypatch, tmp_path: Path):
+    calls: list[str] = []
+
+    def _fake_run_auto_qa(project_root: Path, *, feature: str, version: str, extra_args: list[str]):
+        calls.append("qa")
+        return 2, {
+            "feature_scorecard": {
+                "continue_decision": "continue",
+                "repair_handoff": {
+                    "action": "test-case-create",
+                    "command": 'beacon test-case create "My Feature" --project-root /tmp/demo --version v1.1.10',
+                },
+            }
+        }
+
+    def _fake_run_beacon_json_command(project_root: Path, command: str):
+        calls.append("handoff")
+        return 0, {"status": "generated"}
+
+    monkeypatch.setattr(implement_cmd, "_run_auto_qa", _fake_run_auto_qa)
+    monkeypatch.setattr(implement_cmd, "_run_beacon_json_command", _fake_run_beacon_json_command)
+
+    exit_code, payload = implement_cmd._run_auto_qa_sequence(  # type: ignore[attr-defined]
+        tmp_path,
+        feature="My Feature",
+        version="v1.1.10",
+        extra_args=[],
+        follow_handoff=False,
+        max_rounds=3,
+    )
+    assert exit_code == 2
+    assert payload["follow_handoff"] is False
+    assert calls == ["qa"]
 
 
 def test_implement_run_should_fail_when_runner_times_out(tmp_path: Path):

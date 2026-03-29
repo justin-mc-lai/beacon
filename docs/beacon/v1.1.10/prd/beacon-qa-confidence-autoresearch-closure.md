@@ -42,6 +42,9 @@ At the current repository state, four blockers prevent v1.1.10 from being truly 
    - but formal audit still does not treat them as a required closure surface
 4. **machine refresh can still overwrite human-authored QA docs**
    - this weakens the requirement surface itself
+5. **QA still lacks a first-class continue/stop decision**
+   - the mainline can report evidence and confidence
+   - but it still does not formally answer whether testing should continue, stop for repair, or hand off to release
 
 These are not documentation defects only.
 
@@ -440,6 +443,87 @@ The shortest correct behavior is:
 - preserve human docs
 - only overwrite human docs on explicit opt-in
 
+### FR-019 QA must execute in story order and emit round-level coverage truth
+
+The QA mainline must proceed in first-principles order:
+
+```text
+user story / AC order
+→ scenario divergence
+→ current-round execution
+→ evidence pack
+→ coverage_current / coverage_gap
+→ continue_decision
+```
+
+This means the runtime result must tell the operator:
+
+- what part of the story is already covered
+- what part is still uncovered
+- whether the next correct step is continue, stop for repair, or release review
+
+### FR-020 Severe blockers must terminate QA instead of creating fake progress
+
+When one of the following makes downstream evidence untrustworthy:
+
+- browser auth/session failure
+- required replay missing on high-risk browser paths
+- project-specific required evidence gate missing
+- contract drift invalidating current traceability
+- environment instability that makes repeated results non-comparable
+
+Beacon must mark the round as:
+
+- `continue_decision=stop_for_repair`
+
+and stop claiming that additional QA in the same round improves closure truth.
+
+### FR-021 QA result must produce a human repair/resume handoff
+
+If a round stops for repair, the machine/human output must include:
+
+- blocker summary
+- root-cause summary
+- repair handoff target
+- `resume_command`
+
+The canonical resume path should be compatible with:
+
+```text
+beacon help --project-root <root> --version <version> --feature "<feature>"
+```
+
+so a human can repair the blocker, confirm closure, and resume the QA mainline without guessing the next command.
+
+### FR-022 Every QA round must backfill missing test cases before claiming improved coverage
+
+Re-running the same passing subset is not enough.
+
+Each new QA round must compare the previous round’s:
+
+- coverage gap
+- blocker history
+- missing scenario families
+- missing replay/evidence obligations
+
+and explicitly decide whether `test_case_backfill_required=true`.
+
+If yes, Beacon must update the test-case/matrix surface before claiming the new round improved coverage.
+
+### FR-023 Browser-driven QA should default to built-in `browser-use` with session continuity
+
+For browser-relevant scenario families, the default QA path should assume Beacon can compile and execute browser tasks through built-in `browser-use`, while still allowing project-specific overrides when needed.
+
+Regardless of the concrete runner, the workflow must preserve:
+
+- session manifest
+- profile ref
+- cookies ref
+- storage-state ref
+- scope/origin metadata
+
+so the next round inherits the same user context instead of starting from scratch.
+
 ---
 
 ## 7. Data model scope
@@ -461,6 +545,26 @@ Human-readable requirement surfaces must also exist:
 
 - `user-story/beacon-qa-confidence-autoresearch-closure.md`
 - `qa/test-cases/beacon-qa-confidence-autoresearch-closure.md`
+
+---
+
+## 7.5 First-principles operator path
+
+The product should make the shortest correct operator path obvious:
+
+```text
+run QA around the story
+→ inspect evidence and current coverage
+→ decide continue / stop_for_repair / ready_for_release
+→ if stopped, repair the blocker
+→ use beacon help to resume the next QA round
+→ backfill missing test cases
+→ only then update release guidance
+```
+
+Anything longer than that is process waste.
+
+Anything shorter than that is fake closure.
 - `execution/boundaries.md`
 - `execution/project-skill-qa-evolution-blueprint.md`
 - `release/v1.1.10.md`

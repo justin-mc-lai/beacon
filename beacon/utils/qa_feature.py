@@ -234,6 +234,7 @@ def _build_story_scenario_map(
         entries=entries,
         expansion_profile="pua-web",
         scenario_depth="standard",
+        ui_runner="browser-use",
     )
 
 
@@ -538,8 +539,10 @@ def collect_verification_writeback(
                     "scenario_family": str(item.get("scenario_family") or "").strip(),
                     "test_item_id": test_item_id,
                     "status": status,
+                    "reason_code": str(item.get("reason_code") or "").strip(),
                     "qa_type": str(item.get("qa_type") or item.get("layer") or "").strip(),
                     "browser_required": bool(item.get("browser_required")),
+                    "replay_required": bool(item.get("replay_required")),
                     "browser_evidence_pack_ref": str(item.get("browser_evidence_pack_ref") or "").strip(),
                     "replay_ref": str(item.get("replay_ref") or "").strip(),
                     "evidence_ref": item.get("evidence_ref") if isinstance(item.get("evidence_ref"), list) else [],
@@ -588,8 +591,10 @@ def collect_verification_writeback(
                 "scenario_family": str(entry.get("scenario_family") or "").strip(),
                 "test_item_id": test_item_id,
                 "status": run_status or "pending",
+                "reason_code": str(entry.get("reason_code") or "").strip(),
                 "qa_type": str(entry.get("qa_type") or "").strip(),
                 "browser_required": bool(entry.get("browser_required")),
+                "replay_required": bool(entry.get("replay_required")),
                 "browser_evidence_pack_ref": str(entry.get("browser_evidence_pack_ref") or "").strip(),
                 "replay_ref": str(entry.get("replay_ref") or "").strip(),
                 "evidence_ref": [],
@@ -646,7 +651,16 @@ def _closure_outcome(item: dict[str, Any], *, evidence_sufficiency: str) -> str:
     return "review_required"
 
 
-def _root_cause_type(*, status: str, closure_outcome: str) -> str:
+def _root_cause_type(*, status: str, closure_outcome: str, reason_code: str = "") -> str:
+    normalized_reason = str(reason_code or "").strip().lower()
+    if any(token in normalized_reason for token in ("contract_drift", "requirement", "trace_mismatch")):
+        return "spec_gap"
+    if any(token in normalized_reason for token in ("session", "auth", "environment", "origin_target_unknown")):
+        return "environment_gap"
+    if any(token in normalized_reason for token in ("flake", "rerun")):
+        return "flake"
+    if any(token in normalized_reason for token in ("runner", "browser-use", "agent-browser", "junit", "assertion_count_zero")):
+        return "runner_gap"
     if closure_outcome in {"needs_more_evidence", "needs_replay"}:
         return "evidence_gap"
     if closure_outcome == "requirement_rewrite_required":
@@ -707,6 +721,8 @@ def build_feature_qa_precision_artifacts(
     plan: dict[str, Any],
     per_item_results: list[dict[str, Any]],
     project_profile_gate: dict[str, Any] | None = None,
+    qa_status: dict[str, Any] | None = None,
+    exhaustiveness: dict[str, Any] | None = None,
 ) -> tuple[list[dict[str, Any]], dict[str, Any], dict[str, Any], Path, Path]:
     calibration_model = load_qa_calibration_model(project_root)
     risk_bands = calibration_model.get("risk_bands") if isinstance(calibration_model.get("risk_bands"), dict) else {}
@@ -743,6 +759,7 @@ def build_feature_qa_precision_artifacts(
             "needs_requirement_clarification",
         } or (review_threshold <= calibrated < auto_accept_threshold)
         status = str(item.get("status") or "pending").strip().lower()
+        reason_code = str(item.get("reason_code") or "").strip()
         scenario_results.append(
             {
                 "scenario_id": str(item.get("scenario_id") or item.get("tc_id") or "").strip(),
@@ -758,7 +775,8 @@ def build_feature_qa_precision_artifacts(
                 "confidence_band": confidence_band,
                 "requires_human_review": requires_human_review,
                 "evidence_sufficiency": evidence_sufficiency,
-                "root_cause_type": _root_cause_type(status=status, closure_outcome=closure_outcome),
+                "root_cause_type": _root_cause_type(status=status, closure_outcome=closure_outcome, reason_code=reason_code),
+                "reason_code": reason_code,
                 "browser_required": bool(item.get("browser_required")),
                 "replay_required": bool(item.get("replay_required")),
                 "replay_present": bool(str(item.get("replay_ref") or "").strip()),
@@ -872,6 +890,156 @@ def build_feature_qa_precision_artifacts(
         4,
     )
     project_gate_status = str(project_profile_gate.get("status") or "not_configured")
+    qa_status = qa_status if isinstance(qa_status, dict) else {}
+    exhaustiveness = exhaustiveness if isinstance(exhaustiveness, dict) else {}
+    quality_issues = qa_status.get("quality_issues") if isinstance(qa_status.get("quality_issues"), list) else []
+    quality_reason_codes = sorted(
+        {
+            str(item.get("reason_code") or "").strip()
+            for item in quality_issues
+            if isinstance(item, dict) and str(item.get("reason_code") or "").strip()
+        }
+    )
+    quality_stop_reasons = sorted(
+        {
+            str(reason).strip()
+            for item in quality_issues
+            if isinstance(item, dict) and isinstance(item.get("details"), dict)
+            for reason in (item.get("details", {}).get("stop_reasons") or [])
+            if str(reason).strip()
+        }
+    )
+    stop_reasons: list[str] = []
+    if project_gate_status == "blocked":
+        gate_issues = project_profile_gate.get("issues") if isinstance(project_profile_gate.get("issues"), list) else []
+        stop_reasons.extend(
+            str(item.get("reason_code") or "project_profile_gate_blocked").strip()
+            for item in gate_issues
+            if isinstance(item, dict)
+        )
+        if not stop_reasons:
+            stop_reasons.append("project_profile_gate_blocked")
+    stop_reasons.extend(
+        outcome
+        for outcome in unresolved_closure_outcomes
+        if outcome in {"implementation_reopened", "bug_filed", "needs_replay", "needs_more_evidence"}
+    )
+    stop_reasons.extend(
+        code
+        for code in quality_reason_codes
+        if any(
+            token in code
+            for token in (
+                "auth",
+                "session",
+                "environment",
+                "contract_drift",
+                "required_evidence_missing",
+                "required_case_missing",
+                "junit_missing",
+                "assertion_count_zero",
+                "compatibility_execution_missing",
+            )
+        )
+    )
+    stop_reasons.extend(
+        code
+        for code in (
+            "required_replay_missing" if list(exhaustiveness.get("missing_replay_scenarios") or []) else "",
+            "browser_evidence_incomplete" if list(exhaustiveness.get("missing_browser_evidence_scenarios") or []) else "",
+        )
+        if code
+    )
+    stop_reasons.extend(quality_stop_reasons)
+    stop_reasons = sorted({code for code in stop_reasons if str(code).strip()})
+    required_scenarios = int(exhaustiveness.get("scenario_count") or scenario_total or len(plan.get("targeted_scenario_ids") or []))
+    executed_scenarios = len(
+        [
+            item
+            for item in scenario_results
+            if bool(item.get("evidence_ref"))
+            or str(item.get("status") or "").strip().lower() in {"passed", "failed", "review_required"}
+        ]
+    )
+    required_source_tc_ids = sorted(
+        {
+            str(item)
+            for item in (plan.get("targeted_source_tc_ids") or plan.get("targeted_tc_ids") or [])
+            if str(item).strip()
+        }
+    )
+    unresolved_source_tc_ids = sorted(
+        {
+            str(item.get("source_tc_id") or item.get("tc_id") or "").strip()
+            for item in scenario_results
+            if str(item.get("closure_outcome") or "").strip() not in {"accepted"}
+            and str(item.get("source_tc_id") or item.get("tc_id") or "").strip()
+        }
+    )
+    missing_test_case_ids = sorted(
+        {
+            *[item for item in required_source_tc_ids if item not in {str(row.get("source_tc_id") or row.get("tc_id") or "").strip() for row in scenario_results}],
+            *unresolved_source_tc_ids,
+        }
+    )
+    coverage_missing_families = list(exhaustiveness.get("missing_axes") or [])
+    family_names = {str(item.get("scenario_family") or "").strip() for item in scenario_results if str(item.get("scenario_family") or "").strip()}
+    missing_scenario_families = sorted([item for item in coverage_missing_families if item in family_names or item in (plan.get("required_scenario_families") or [])])
+    coverage_current = {
+        "required_scenarios": required_scenarios,
+        "executed_scenarios": executed_scenarios,
+        "coverage_rate": round(float(executed_scenarios) / float(required_scenarios or 1), 4),
+        "required_scenario_families": sorted({str(item) for item in (plan.get("required_scenario_families") or []) if str(item).strip()}),
+        "covered_scenario_families": sorted(
+            {
+                str(item.get("scenario_family") or "").strip()
+                for item in scenario_results
+                if bool(item.get("evidence_ref")) and str(item.get("scenario_family") or "").strip()
+            }
+        ),
+        "missing_scenario_families": missing_scenario_families,
+        "missing_test_case_ids": missing_test_case_ids,
+    }
+    coverage_gap = {
+        "missing_axes": list(exhaustiveness.get("missing_axes") or []),
+        "missing_replay_scenarios": list(exhaustiveness.get("missing_replay_scenarios") or []),
+        "missing_browser_evidence_scenarios": list(exhaustiveness.get("missing_browser_evidence_scenarios") or []),
+        "missing_scenario_families": missing_scenario_families,
+        "missing_test_case_ids": missing_test_case_ids,
+        "open_closure_outcomes": unresolved_closure_outcomes,
+    }
+    test_case_backfill_required = bool(
+        missing_scenario_families
+        or missing_test_case_ids
+        or list(exhaustiveness.get("missing_replay_scenarios") or [])
+    )
+    continue_decision = "ready_for_release"
+    if stop_reasons:
+        continue_decision = "stop_for_repair"
+    elif test_case_backfill_required or unresolved_closure_outcomes or str(exhaustiveness.get("status") or "").strip().lower() != "passed":
+        continue_decision = "continue"
+    resume_command = (
+        f'beacon help --project-root {project_root} --version {str(plan.get("version") or "")} --feature "{feature}"'
+    )
+    repair_handoff = {
+        "action": "implement"
+        if any(reason in {"implementation_reopened", "bug_filed"} for reason in stop_reasons)
+        else ("verify-run" if project_gate_status == "blocked" else ("test-case-create" if test_case_backfill_required else "qa-repair")),
+        "reason": ", ".join(stop_reasons[:3]) if stop_reasons else ("coverage_gap_remaining" if test_case_backfill_required else "qa_round_incomplete"),
+        "command": (
+            f'beacon implement run "{feature}" --project {project_root} --version {str(plan.get("version") or "")} --runner native-single'
+            if any(reason in {"implementation_reopened", "bug_filed"} for reason in stop_reasons)
+            else (
+                f'beacon verify run "{feature}" --project-root {project_root} --version {str(plan.get("version") or "")}'
+                if project_gate_status == "blocked"
+                else (
+                    f'beacon test-case create "{feature}" --project {project_root} --version {str(plan.get("version") or "")}'
+                    if test_case_backfill_required
+                    else resume_command
+                )
+            )
+        ),
+    }
     feature_scorecard_payload = {
         "schema_version": "1.0",
         "feature": feature,
@@ -889,6 +1057,13 @@ def build_feature_qa_precision_artifacts(
         "unresolved_closure_outcomes": unresolved_closure_outcomes,
         "project_profile_gate_status": project_gate_status,
         "project_profile_id": str(project_profile_gate.get("profile_id") or ""),
+        "coverage_current": coverage_current,
+        "coverage_gap": coverage_gap,
+        "continue_decision": continue_decision,
+        "stop_reasons": stop_reasons,
+        "test_case_backfill_required": test_case_backfill_required,
+        "resume_command": resume_command,
+        "repair_handoff": repair_handoff,
         "release_ready": (
             bool(ac_reports)
             and all(str(item.get("closure_status") or "") == "accepted" for item in ac_reports)

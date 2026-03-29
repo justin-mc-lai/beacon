@@ -29,7 +29,26 @@ qa finding
 - story-scenario map
 - browser evidence / replay
 - session reuse
+- round coverage snapshot
+- continue / stop_for_repair decision
 - release/gate input
+
+## Round decision 层
+
+这层解决的不是“有没有跑”，而是“这轮还该不该继续跑”。
+
+关键职责：
+
+- 给人类输出当前 coverage
+- 判断 blocker 是否已经严重到必须停测
+- 产出 repair handoff
+- 产出 resume command
+
+对应的人类入口应该包括：
+
+- `beacon help --project-root <root> --version <version> --feature "<feature>"`
+
+因为真正的闭环不是“系统记得”，而是“人类也知道下一步该敲什么命令”。
 
 ## Implement 层
 
@@ -75,6 +94,7 @@ qa finding
 - keep/discard
 - requirement rewrite input
 - baseline uplift
+- next-round test-case backfill decisions
 
 ## 这条闭环为什么要写进源码架构文档
 
@@ -84,5 +104,7 @@ qa finding
 - implement 修了，但技术归档没写
 - 技术归档有了，但 requirement rewrite 不更新
 - release 只看结果，不看 evidence chain
+- round 已经该停，但系统还在继续堆无效 case
+- 修复已完成，但人类不知道怎么恢复下一轮 QA
 
 如果不把这条闭环显式画出来，后续变更很容易只修表层。

@@ -147,7 +147,7 @@ def test_v119_test_case_create_should_emit_story_scenario_map(tmp_path: Path):
     families = {item["scenario_family"] for item in scenario_map["scenarios"]}
     assert scenario_map["expansion_profile"] == "pua-web"
     assert {"happy", "negative", "boundary", "recovery", "compatibility"} <= families
-    assert all(item["exploratory_runner"] in {"agent-browser", "browser-use"} for item in scenario_map["scenarios"] if item["browser_required"])
+    assert all(item["exploratory_runner"] == "browser-use" for item in scenario_map["scenarios"] if item["browser_required"])
     assert all(item["replay_command"] for item in scenario_map["scenarios"] if item["replay_required"])
 
 
@@ -267,6 +267,56 @@ def test_v119_story_exhaustive_should_block_dependent_scenarios_when_happy_fails
     assert blocked
     assert any(item.get("scenario_family") != "happy" for item in blocked)
     assert qa_status["exhaustiveness"]["status"] == "blocked"
+
+
+def test_v119_story_exhaustive_should_hard_stop_remaining_cases_for_repair(tmp_path: Path):
+    _seed_story_docs(tmp_path)
+    _seed_feature_matrix(tmp_path)
+    matrix_path = tmp_path / "docs" / "beacon" / VERSION / ".machine" / "qa" / f"{SLUG}.ac-test-matrix.json"
+    matrix = json.loads(matrix_path.read_text(encoding="utf-8"))
+    matrix["entries"].append(
+        {
+            "ac_id": "AC-001",
+            "tc_id": "TC-002",
+            "layer": "regression",
+            "command": "",
+            "assertion": "登录失败后其余非关键轮次不应继续误跑",
+            "status": "planned",
+        }
+    )
+    matrix_path.write_text(json.dumps(matrix, ensure_ascii=False, indent=2), encoding="utf-8")
+    _mark_implemented(tmp_path)
+    fail = _write_fail_script(tmp_path)
+    regression = _write_pass_script(tmp_path, name="regression-pass.sh")
+
+    result = _invoke(
+        [
+            "qa",
+            "run",
+            FEATURE,
+            "--project",
+            str(tmp_path),
+            "--version",
+            VERSION,
+            "--mode",
+            "story-exhaustive",
+            "--layer-command",
+            f"functional=sh {fail}",
+            "--layer-command",
+            f"regression=sh {regression}",
+            "--json",
+        ]
+    )
+    assert result.exit_code == 2, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["feature_scorecard"]["continue_decision"] == "stop_for_repair"
+    assert "stop_on_fail_triggered" in payload["feature_scorecard"]["stop_reasons"]
+
+    qa_status = json.loads((tmp_path / ".beacon" / "qa" / "status.json").read_text(encoding="utf-8"))
+    regression_rows = [item for item in qa_status["qa9"]["tc_results"] if item["source_tc_id"] == "TC-002"]
+    assert regression_rows
+    assert all(item["status"] == "blocked" for item in regression_rows)
+    assert all(item["reason_code"] == "qa_round_stopped_for_repair" for item in regression_rows)
 
 
 def test_v119_story_exhaustive_should_chain_browser_session_and_runner_evidence(tmp_path: Path):

@@ -87,3 +87,28 @@ The skill package wraps these CLI commands instead of replacing them:
 - `beacon implement`
 - `beacon workflow`
 - `beacon review`
+
+## Rule 7: QA guidance in the skill must obey first-principles order
+
+When the skill routes a user into Beacon QA, it must preserve this order:
+
+```text
+user story / AC order
+→ scenario divergence
+→ current-round execution
+→ evidence pack
+→ coverage_current / coverage_gap
+→ continue_decision
+→ severe blocker? stop_for_repair
+→ repair handoff
+→ beacon help resume
+→ next QA round with test-case backfill
+→ release guidance
+```
+
+That means the skill prompt must not encourage:
+
+- skipping story/AC order
+- continuing QA after severe blockers invalidate downstream evidence
+- claiming progress without coverage/evidence truth
+- asking humans to guess the resume path instead of using `beacon help`

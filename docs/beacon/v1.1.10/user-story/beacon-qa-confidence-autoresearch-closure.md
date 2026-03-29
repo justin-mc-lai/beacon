@@ -128,6 +128,69 @@
 | AC-019 | Implement And Architecture Feedback | QA 缺陷、review-required outcome 或 release block 可路由到 `beacon implement`，并产出 `technical-implementation-*`、requirement rewrite input 与 architecture feedback |
 | AC-020 | Formal Closure And Doc Integrity | QA test feedback 必须能回写 benchmark truth、audit drift、candidate surface、project skill evolution input 与 next experiment set；同时 machine refresh 默认不得覆盖人工编写的 QA requirement docs |
 
+## First-principles workflow contract
+
+这条用户故事真正要求的 QA 主链必须按顺序回答问题，而不是“先跑一堆测试再事后解释”：
+
+```text
+user story / AC order
+→ scenario divergence
+→ current-round execution
+→ evidence + coverage_current
+→ continue_decision
+→ severe blocker? stop_for_repair
+→ repair closure
+→ beacon help next-step guidance
+→ next QA round with test-case backfill
+→ release guidance
+```
+
+对人类操作者来说，每轮 QA 必须显式产出：
+
+- `coverage_current`
+- `coverage_gap`
+- `continue_decision`
+- severe blocker summary
+- `resume_command`
+- whether `test_case_backfill_required=true`
+
+其中：
+
+1. **顺序围绕用户故事发散**
+   - 先按 user story / AC 顺序展开
+   - 再围绕每个 AC 向 happy / negative / boundary / recovery / compatibility 发散
+   - 不允许跳过未解释的 coverage gap 直接进入 release claim
+
+2. **阻塞严重时必须停**
+   - 若遇到高风险 browser replay 缺失
+   - 鉴权失效导致后续 scenario 全部失真
+   - project verify evidence gate 未满足
+   - 或 contract drift / environment instability 已使证据失真
+   - 则本轮 QA 必须 `stop_for_repair`，而不是继续堆无效 case
+
+3. **停下来后必须给人类明确下一步**
+   - QA 结果必须指出阻塞根因
+   - 必须给出 repair handoff
+   - 修复完成后，人类应能通过
+     `beacon help --project-root <root> --version <version> --feature "<feature>"`
+     获得下一轮 QA 的继续命令
+
+4. **每轮 QA 都要补齐测试用例**
+   - 新一轮 QA 不能只重跑旧 case
+   - 必须先对照上一轮的 coverage gap 与 blocker history
+   - 补齐缺失的 test cases / scenario families / replay requirements
+
+5. **浏览器 QA 默认带用户态连续性**
+   - 默认 browser runner 应以 `browser-use` 为内建主路径
+   - 同时保留上一轮的 session manifest、profile ref、cookies ref、storage-state ref
+   - 使后续 rerun / replay / delta QA 能持续复用用户态上下文
+
+6. **release 只能消费最后一轮真实 QA 结论**
+   - 只有当 `continue_decision` 不是 `stop_for_repair`
+   - 且 coverage gap 已收敛到可接受范围
+   - 且 replay / evidence / project gate 满足
+   - release guidance 才有资格说 `release_ready`
+
 ## Risks And Reminders
 
 - 若只增加 confidence 字段、不定义 closure outcome，release 仍会停留在“看起来通过”

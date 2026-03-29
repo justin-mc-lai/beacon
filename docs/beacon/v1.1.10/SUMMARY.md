@@ -187,3 +187,40 @@ The line is considered truly closed because:
 - project-specific verify workflow can be part of the QA mainline rather than a parallel path
 - source-architecture docs are protected by formal materials/gate checks
 - machine refresh commands do not overwrite human-authored QA planning docs by default
+
+---
+
+## First-principles QA workflow clarification
+
+The intended `v1.1.10` QA mainline is not:
+
+```text
+run tests
+→ collect logs
+→ keep going until somebody manually stops
+```
+
+It is:
+
+```text
+user story order
+→ scenario expansion
+→ current-round execution
+→ evidence pack + coverage snapshot
+→ continue_decision
+→ severe blocker? stop_for_repair
+→ repair/implement closure
+→ beacon help next-step guidance
+→ next QA round with test-case backfill
+→ release guidance
+```
+
+This means every QA round should answer five human questions in order:
+
+1. what story / AC / scenario was tested
+2. what evidence exists right now
+3. how much coverage is complete right now
+4. should QA continue or stop for repair
+5. what is the next command the human should run
+
+If Beacon cannot answer those five questions, it has not closed the QA loop.

@@ -72,6 +72,10 @@ def test_skill_should_prefer_beacon_subcommand_and_docs_beacon_output():
     assert 'docs/beacon/{version}/' in text
     assert 'skills/beacon/' in text
     assert 'docs/product/{version}' not in text
+    assert 'QA 的 skill 提示词必须遵守第一性原则' in text
+    assert 'stop_for_repair' in text
+    assert 'test-case backfill' in text
+    assert 'browser-use' in text
 
 
 def test_claude_should_align_to_current_runtime_version():

@@ -120,6 +120,7 @@ bash skills/beacon/scripts/run_beacon.sh help --project-root . --feature "My Fea
 ```bash
 bash skills/beacon/scripts/run_beacon.sh implement list-runners --json
 bash skills/beacon/scripts/run_beacon.sh implement run "My Feature" --project . --version v1.1.10 --runner auto --json
+bash skills/beacon/scripts/run_beacon.sh implement run "My Feature" --project . --version v1.1.10 --runner auto --auto-qa --auto-qa-follow-handoff --auto-qa-max-rounds 3 --json
 bash skills/beacon/scripts/run_beacon.sh qa run "My Feature" --project . --version v1.1.10 --json
 bash skills/beacon/scripts/run_beacon.sh review quality "My Feature" --project . --version v1.1.10 --json
 bash skills/beacon/scripts/run_beacon.sh gate check release --project-root . --version v1.1.10 --json
@@ -173,6 +174,33 @@ Current v1.1.10 release-line surfaces:
    - `release`
    - `release scorecard`
    - keep/discard + evo harness
+
+### QA prompt contract must follow first principles
+
+When this skill routes into `qa`, it must preserve the same first-principles order as the product docs:
+
+```text
+user story / AC order
+→ scenario divergence
+→ current-round execution
+→ evidence pack
+→ coverage_current / coverage_gap
+→ continue_decision
+→ severe blocker? stop_for_repair
+→ repair handoff
+→ beacon help resume
+→ next QA round with test-case backfill
+→ release guidance
+```
+
+Required behaviors:
+
+1. do not skip story/AC order and jump straight to random layers
+2. do not claim closure without evidence pack, replay truth, and current coverage snapshot
+3. do stop the round when severe blockers make downstream evidence untrustworthy
+4. do give humans a repair handoff plus a `beacon help ...` resume path
+5. do backfill missing test cases before claiming the next round improved coverage
+6. do preserve browser session continuity; default browser path should prefer `browser-use`
 
 ## Why This Skill Matters
 
@@ -245,8 +273,8 @@ If you are planning the next QA precision line, then read:
 bash skills/beacon/scripts/run_beacon.sh --version
 bash skills/beacon/scripts/run_beacon.sh workflow --help
 bash skills/beacon/scripts/run_beacon.sh help --project-root . --json
-bash skills/beacon/scripts/run_beacon.sh freeze "My Feature" --project-root . --version v1.1.9
-bash skills/beacon/scripts/run_beacon.sh reopen "My Feature" --project-root . --version v1.1.9 --reason change-request
+bash skills/beacon/scripts/run_beacon.sh freeze "My Feature" --project-root . --version v1.1.10
+bash skills/beacon/scripts/run_beacon.sh reopen "My Feature" --project-root . --version v1.1.10 --reason change-request
 ```
 
 4. For implementation adapters and lifecycle navigation:
@@ -255,7 +283,7 @@ bash skills/beacon/scripts/run_beacon.sh reopen "My Feature" --project-root . --
 bash skills/beacon/scripts/run_beacon.sh skill list
 bash skills/beacon/scripts/run_beacon.sh implement list-runners --json
 bash skills/beacon/scripts/run_beacon.sh help --project-root . --feature "My Feature" --json
-bash skills/beacon/scripts/run_beacon.sh doctor repair-package --version v1.1.9 --json
+bash skills/beacon/scripts/run_beacon.sh doctor repair-package --version v1.1.10 --json
 ```
 
 ## Command / Wrapper Surface
@@ -308,7 +336,11 @@ When the user asks "what should I do next", "why am I blocked", or wants to cont
 4. If help/doctor indicates the current revision is superseded or a change request is pending, run `beacon reopen ...`.
 5. If blocked or inconsistent, run `beacon doctor --project-root <root> --json` or `beacon doctor advise ...`.
 6. If the project has a profile / project-specific skill path, prefer `beacon verify run ... --profile <profile>` before trying to accept.
-7. Only then route into `freeze`, `implement`, `review`, `verify`, `orchestrate`, or `release` actions.
+7. For QA rounds, prefer:
+   - `beacon qa run "<feature>" --project . --version v1.1.10 --json`
+   - inspect evidence / coverage / continue decision
+   - if blocked, repair first and resume via `beacon help ...`
+8. Only then route into `freeze`, `implement`, `review`, `verify`, `orchestrate`, or `release` actions.
 
 Example: `beacon help --project-root . --json`
 
@@ -330,8 +362,9 @@ See:
 
 - [Sections index](./references/_sections.md)
 - [Usage rules](./references/usage-rules.md)
-- [Summary](../../docs/beacon/v1.1.9/SUMMARY.md)
-- [Execution index](../../docs/beacon/v1.1.9/execution/index.md)
+- [Summary](../../docs/beacon/v1.1.10/SUMMARY.md)
+- [Execution index](../../docs/beacon/v1.1.10/execution/index.md)
+- [QA PRD](../../docs/beacon/v1.1.10/prd/beacon-qa-confidence-autoresearch-closure.md)
 - [Skill development standard](../../../docs/skill-development-standards.md)
 - [Root compatibility skill](../../SKILL.md)
 
@@ -341,9 +374,9 @@ See:
   - run `bash skills/beacon/scripts/run_beacon.sh --version`
 - Materials feel inconsistent:
   - run `beacon doctor --project-root . --json`
-  - run `beacon doctor verify-materials --project-root . --version v1.1.9 --json`
+  - run `beacon doctor verify-materials --project-root . --version v1.1.10 --json`
 - Not sure what step comes next:
-  - run `beacon help --project-root . --version v1.1.9 --feature "<feature>" --json`
+  - run `beacon help --project-root . --version v1.1.10 --feature "<feature>" --json`
 - Gate / release confusion:
-  - read `../../docs/beacon/v1.1.9/release/v1.1.9.md`
-  - run `beacon gate check release --project-root . --version v1.1.9 --json`
+  - read `../../docs/beacon/v1.1.10/release/v1.1.10.md`
+  - run `beacon gate check release --project-root . --version v1.1.10 --json`

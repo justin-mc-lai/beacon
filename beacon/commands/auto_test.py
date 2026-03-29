@@ -1173,6 +1173,48 @@ def _dependency_blockers(
     return blocked
 
 
+def _derive_round_stop_reasons(
+    *,
+    item: dict[str, Any],
+    tc_payload: dict[str, Any],
+    active_browser_session: dict[str, Any],
+) -> list[str]:
+    status = str(tc_payload.get("status") or "").strip().lower()
+    if status not in {"failed", "blocked"}:
+        return []
+    reasons: list[str] = []
+    if bool(item.get("stop_on_fail")):
+        reasons.append("stop_on_fail_triggered")
+    if bool(tc_payload.get("browser_required")) and bool(tc_payload.get("replay_required")) and not str(tc_payload.get("replay_ref") or "").strip():
+        reasons.append("required_replay_missing")
+    if (
+        bool(active_browser_session)
+        and bool(tc_payload.get("browser_required"))
+        and str(item.get("scenario_family") or "").strip().lower() == "happy"
+    ):
+        reasons.append("auth_session_invalid")
+    return sorted({reason for reason in reasons if str(reason).strip()})
+
+
+def _derive_qa_round_stop_issue(tc_execution_map: dict[str, dict[str, Any]]) -> dict[str, Any] | None:
+    for payload in tc_execution_map.values():
+        if not isinstance(payload, dict):
+            continue
+        if not bool(payload.get("round_stop_trigger")):
+            continue
+        reasons = [str(item).strip() for item in (payload.get("round_stop_reasons") or []) if str(item).strip()]
+        return {
+            "reason_code": "qa_round_stopped_for_repair",
+            "message": f"qa round stopped for repair: {', '.join(reasons) or 'severe blocker'}",
+            "details": {
+                "tc_id": str(payload.get("tc_id") or ""),
+                "scenario_id": str(payload.get("scenario_id") or ""),
+                "stop_reasons": reasons,
+            },
+        }
+    return None
+
+
 def _execute_qa9_tc_entries(
     *,
     project_root: Path,
@@ -1192,6 +1234,9 @@ def _execute_qa9_tc_entries(
 
     tc_map: dict[str, dict[str, Any]] = {}
     active_browser_session = _active_browser_session(project_root)
+    round_stop_active = False
+    round_stop_reasons: list[str] = []
+    round_stop_anchor = ""
     for item in entries:
         if not isinstance(item, dict):
             continue
@@ -1203,6 +1248,29 @@ def _execute_qa9_tc_entries(
         if qa_type not in QA9_TYPES:
             continue
         automation = str(item.get("automation") or "auto").strip().lower()
+        if round_stop_active:
+            tc_map[tc_id] = {
+                "tc_id": tc_id,
+                "ac_id": ac_id,
+                "source_tc_id": str(item.get("source_tc_id") or tc_id),
+                "scenario_id": str(item.get("scenario_id") or ""),
+                "scenario_family": str(item.get("scenario_family") or ""),
+                "qa_type": qa_type,
+                "automation": automation,
+                "status": "blocked",
+                "layer_status": "blocked",
+                "reason_code": "qa_round_stopped_for_repair",
+                "command": str(item.get("command") or ""),
+                "assertion_count": 0,
+                "evidence_ref": [],
+                "browser_required": _is_browser_required_entry(item),
+                "replay_required": bool(item.get("replay_required")),
+                "dependency_blockers": [],
+                "round_stop_reasons": list(round_stop_reasons),
+                "round_stop_anchor": round_stop_anchor,
+                "stop_on_fail": bool(item.get("stop_on_fail")),
+            }
+            continue
         dependency_blockers = _dependency_blockers(
             depends_on=item.get("depends_on") if isinstance(item.get("depends_on"), list) else [],
             tc_map=tc_map,
@@ -1225,6 +1293,7 @@ def _execute_qa9_tc_entries(
                 "browser_required": _is_browser_required_entry(item),
                 "replay_required": bool(item.get("replay_required")),
                 "dependency_blockers": dependency_blockers,
+                "stop_on_fail": bool(item.get("stop_on_fail")),
             }
             continue
         command = str(
@@ -1247,6 +1316,7 @@ def _execute_qa9_tc_entries(
                 "command": command,
                 "assertion_count": 0,
                 "evidence_ref": [],
+                "stop_on_fail": bool(item.get("stop_on_fail")),
             }
             continue
 
@@ -1262,6 +1332,7 @@ def _execute_qa9_tc_entries(
                 "command": "",
                 "assertion_count": 0,
                 "evidence_ref": [],
+                "stop_on_fail": bool(item.get("stop_on_fail")),
             }
             continue
 
@@ -1437,7 +1508,19 @@ def _execute_qa9_tc_entries(
             "replay_required": bool(item.get("replay_required")),
             "replay_ref": browser_pack_refs["replay_ref"],
             "dependency_blockers": dependency_blockers,
+            "stop_on_fail": bool(item.get("stop_on_fail")),
         }
+        stop_reasons = _derive_round_stop_reasons(
+            item=item,
+            tc_payload=tc_map[tc_id],
+            active_browser_session=active_browser_session,
+        )
+        if stop_reasons:
+            tc_map[tc_id]["round_stop_trigger"] = True
+            tc_map[tc_id]["round_stop_reasons"] = stop_reasons
+            round_stop_active = True
+            round_stop_reasons = stop_reasons
+            round_stop_anchor = tc_id
     return tc_map
 
 
@@ -1544,6 +1627,7 @@ def _build_qa9_tc_backfill(
                 "automation": automation,
                 "status": tc_status,
                 "layer_status": layer_status,
+                "reason_code": str(tc_payload.get("reason_code") or ""),
                 "assertion_count": assertion_count,
                 "command": effective_command,
                 "run_id": run_id,
@@ -1558,6 +1642,10 @@ def _build_qa9_tc_backfill(
                 "browser_evidence_pack_ref": str(tc_payload.get("browser_evidence_pack_ref") or ""),
                 "replay_required": bool(tc_payload.get("replay_required") or item.get("replay_required")),
                 "replay_ref": str(tc_payload.get("replay_ref") or ""),
+                "stop_on_fail": bool(tc_payload.get("stop_on_fail") or item.get("stop_on_fail")),
+                "round_stop_trigger": bool(tc_payload.get("round_stop_trigger")),
+                "round_stop_reasons": list(tc_payload.get("round_stop_reasons") or []),
+                "round_stop_anchor": str(tc_payload.get("round_stop_anchor") or ""),
             }
         )
 
@@ -1575,6 +1663,8 @@ def _build_qa9_tc_backfill(
             "automation_rate": round(automation_rate, 4),
             "auto_cases_total": auto_total,
             "auto_cases_executed": auto_executed,
+            "round_stop_triggered": any(bool(item.get("round_stop_trigger")) for item in tc_results),
+            "round_stop_reasons": next((list(item.get("round_stop_reasons") or []) for item in tc_results if bool(item.get("round_stop_trigger"))), []),
         },
         "tc_results": tc_results,
     }
@@ -2228,6 +2318,9 @@ def create(
             encoding="utf-8",
         )
         execution_payload.setdefault("artifacts", []).append(str(qa9_tc_execution_path.relative_to(project_root)))
+        round_stop_issue = _derive_qa_round_stop_issue(qa9_tc_execution_map)
+        if round_stop_issue:
+            test_status["quality_issues"].append(round_stop_issue)
 
     required_file_issues = _collect_required_file_issues(
         project_root=project_root,

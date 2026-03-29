@@ -400,21 +400,21 @@ def _build_story_scenario_payload(
             resolved_ui_runner = str(
                 strategy.get("ui_runner")
                 or existing_qa9_payload.get("ui_runner")
-                or "playwright"
+                or "browser-use"
             ).strip().lower()
         qa9_entries = _normalize_existing_qa9_entries(
             feature=display_feature,
             feature_slug=feature_slug,
             entries=existing_entries,
             ac_items=ac_items,
-            ui_runner=resolved_ui_runner or "playwright",
+            ui_runner=resolved_ui_runner or "browser-use",
         )
     else:
         think_progress = _load_think_progress(project_root, version)
         think_strategy = think_progress.get("qa_strategy") if isinstance(think_progress, dict) else None
         strategy = think_strategy if isinstance(think_strategy, dict) else {}
         strategy_ui_runner = str(strategy.get("ui_runner") or "").strip().lower()
-        resolved_ui_runner = resolved_ui_runner or strategy_ui_runner or "playwright"
+        resolved_ui_runner = resolved_ui_runner or strategy_ui_runner or "browser-use"
         qa_types_resolved = parse_qa_types(None, profile="web-full")
         if not strategy:
             strategy = build_qa_strategy(
@@ -452,10 +452,10 @@ def _build_story_scenario_payload(
         entries=qa9_entries,
         expansion_profile=expansion_profile,
         scenario_depth=scenario_depth,
-        ui_runner=resolved_ui_runner or "playwright",
+        ui_runner=resolved_ui_runner or "browser-use",
     )
     scenario_payload["feature"] = display_feature
-    return scenario_payload, (resolved_ui_runner or "playwright")
+    return scenario_payload, (resolved_ui_runner or "browser-use")
 
 
 def _feature_slugs_for_version(project_root: Path, version: str) -> list[str]:
@@ -764,9 +764,9 @@ def create(
     think_strategy = think_progress.get("qa_strategy") if isinstance(think_progress, dict) else None
     strategy = think_strategy if isinstance(think_strategy, dict) else {}
     strategy_ui_runner = str(strategy.get("ui_runner") or "").strip()
-    resolved_ui_runner = str(ui_runner or strategy_ui_runner or "playwright").strip().lower()
+    resolved_ui_runner = str(ui_runner or strategy_ui_runner or "browser-use").strip().lower()
     if not resolved_ui_runner:
-        resolved_ui_runner = "playwright"
+        resolved_ui_runner = "browser-use"
     explicit_ui_runner = bool(str(ui_runner or "").strip())
     if not strategy:
         strategy = build_qa_strategy(

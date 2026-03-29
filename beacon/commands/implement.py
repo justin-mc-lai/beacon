@@ -95,6 +95,147 @@ def _write_text(path: Path, content: str) -> None:
     path.write_text(content, encoding="utf-8")
 
 
+def _normalize_string_list(value: Any) -> list[str]:
+    if isinstance(value, list):
+        return [str(item) for item in value if str(item).strip()]
+    if isinstance(value, str) and str(value).strip():
+        return [str(value).strip()]
+    return []
+
+
+def _run_auto_qa(project_root: Path, *, feature: str, version: str, extra_args: list[str]) -> tuple[int, dict[str, Any] | None]:
+    cmd = [
+        sys.executable,
+        "-m",
+        "beacon.main",
+        "qa",
+        "run",
+        feature,
+        "--project",
+        str(project_root),
+        "--version",
+        version,
+        "--json",
+        *extra_args,
+    ]
+    result = subprocess.run(cmd, cwd=_repo_root(), capture_output=True, text=True)
+    payload = None
+    if result.stdout.strip():
+        try:
+            payload = json.loads(result.stdout)
+        except Exception:  # noqa: BLE001
+            payload = None
+    return result.returncode, payload
+
+
+def _run_beacon_json_command(project_root: Path, command: str) -> tuple[int, dict[str, Any] | None]:
+    rendered = str(command or "").strip()
+    if not rendered:
+        return 2, None
+    if "--json" not in rendered:
+        rendered = f"{rendered} --json"
+    result = subprocess.run(rendered, cwd=_repo_root(), shell=True, capture_output=True, text=True)
+    payload = None
+    if result.stdout.strip():
+        try:
+            payload = json.loads(result.stdout)
+        except Exception:  # noqa: BLE001
+            payload = None
+    return result.returncode, payload
+
+
+def _run_auto_qa_sequence(
+    project_root: Path,
+    *,
+    feature: str,
+    version: str,
+    extra_args: list[str],
+    follow_handoff: bool,
+    max_rounds: int,
+) -> tuple[int, dict[str, Any]]:
+    history: list[dict[str, Any]] = []
+    qa_exit, qa_payload = _run_auto_qa(project_root, feature=feature, version=version, extra_args=extra_args)
+    history.append(
+        {
+            "step": "qa-run",
+            "round": 1,
+            "exit_code": qa_exit,
+            "payload": qa_payload,
+        }
+    )
+    final_exit = qa_exit
+    final_payload = qa_payload
+    previous_signature = ""
+    rounds_completed = 1
+
+    while follow_handoff and rounds_completed < max(1, int(max_rounds or 1)):
+        feature_scorecard = final_payload.get("feature_scorecard") if isinstance(final_payload, dict) else {}
+        if not isinstance(feature_scorecard, dict) or not feature_scorecard:
+            break
+        continue_decision = str(feature_scorecard.get("continue_decision") or "").strip()
+        if continue_decision == "ready_for_release":
+            break
+        repair_handoff = feature_scorecard.get("repair_handoff") if isinstance(feature_scorecard.get("repair_handoff"), dict) else {}
+        action = str(repair_handoff.get("action") or "").strip()
+        command = str(repair_handoff.get("command") or "").strip()
+        signature = json.dumps(
+            {
+                "continue_decision": continue_decision,
+                "action": action,
+                "command": command,
+                "stop_reasons": feature_scorecard.get("stop_reasons", []),
+                "missing_test_case_ids": (feature_scorecard.get("coverage_gap") or {}).get("missing_test_case_ids", []),
+            },
+            ensure_ascii=False,
+            sort_keys=True,
+        )
+        if not action or not command or signature == previous_signature:
+            break
+        previous_signature = signature
+        if action not in {"test-case-create", "verify-run", "qa-run"}:
+            break
+        handoff_exit, handoff_payload = _run_beacon_json_command(project_root, command)
+        history.append(
+            {
+                "step": action,
+                "round": rounds_completed,
+                "exit_code": handoff_exit,
+                "payload": handoff_payload,
+                "command": command,
+            }
+        )
+        if handoff_exit != 0:
+            final_exit = handoff_exit
+            break
+        if action == "qa-run":
+            final_exit = handoff_exit
+            final_payload = handoff_payload
+            break
+        rounds_completed += 1
+        qa_exit, qa_payload = _run_auto_qa(project_root, feature=feature, version=version, extra_args=extra_args)
+        history.append(
+            {
+                "step": "qa-run",
+                "round": rounds_completed,
+                "exit_code": qa_exit,
+                "payload": qa_payload,
+            }
+        )
+        final_exit = qa_exit
+        final_payload = qa_payload
+
+    return final_exit, {
+        "enabled": True,
+        "triggered": True,
+        "args": extra_args,
+        "follow_handoff": bool(follow_handoff),
+        "max_rounds": int(max_rounds or 1),
+        "exit_code": final_exit,
+        "payload": final_payload,
+        "history": history,
+    }
+
+
 def _render_summary_markdown(payload: dict[str, Any]) -> str:
     lines = [
         "# Beacon Implementation Summary",
@@ -328,12 +469,28 @@ def run_implement_stage(  # noqa: PLR0913
     timeout_sec: int | None = None,
     auto_review_spec: bool | None = None,
     auto_review_quality: bool | None = None,
+    auto_qa: bool | None = None,
+    auto_qa_args: list[str] | None = None,
+    auto_qa_follow_handoff: bool | None = None,
+    auto_qa_max_rounds: int | None = None,
 ) -> tuple[int, dict[str, Any]]:
     resolved_version = resolve_target_version(project_root, version)
     config = load_beacon_config(project_root)
     implementation_cfg = config.get("implementation") if isinstance(config.get("implementation"), dict) else {}
     auto_review_spec = bool(implementation_cfg.get("auto_review_spec", True)) if auto_review_spec is None else auto_review_spec
     auto_review_quality = bool(implementation_cfg.get("auto_review_quality", False)) if auto_review_quality is None else auto_review_quality
+    auto_qa = bool(implementation_cfg.get("auto_qa", False)) if auto_qa is None else auto_qa
+    auto_qa_follow_handoff = (
+        bool(implementation_cfg.get("auto_qa_follow_handoff", False))
+        if auto_qa_follow_handoff is None
+        else auto_qa_follow_handoff
+    )
+    auto_qa_max_rounds = int(implementation_cfg.get("auto_qa_max_rounds", 2) or 2) if auto_qa_max_rounds is None else int(auto_qa_max_rounds or 1)
+    resolved_auto_qa_args = (
+        _normalize_string_list(implementation_cfg.get("auto_qa_args"))
+        if auto_qa_args is None
+        else [str(item) for item in auto_qa_args if str(item).strip()]
+    )
 
     adapter_id, adapter = resolve_adapter(project_root, None if str(runner or "").strip().lower() == "auto" else runner)
     if not adapter_id or not adapter:
@@ -536,10 +693,28 @@ def run_implement_stage(  # noqa: PLR0913
         )
         summary_payload["artifact_writeback_open_count"] = int(obligations.get("open_count", 0) or 0)
         summary_payload["requirement_rewrite_input"] = str(learning_payload.get("path", "") or "")
+        summary_payload["auto_qa"] = {
+            "enabled": bool(auto_qa),
+            "triggered": False,
+            "args": resolved_auto_qa_args,
+            "follow_handoff": bool(auto_qa_follow_handoff),
+            "max_rounds": int(auto_qa_max_rounds or 1),
+        }
+        auto_qa_exit = 0
+        if auto_qa:
+            auto_qa_exit, auto_qa_payload = _run_auto_qa_sequence(
+                project_root,
+                feature=feature,
+                version=resolved_version,
+                extra_args=resolved_auto_qa_args,
+                follow_handoff=bool(auto_qa_follow_handoff),
+                max_rounds=int(auto_qa_max_rounds or 1),
+            )
+            summary_payload["auto_qa"] = auto_qa_payload
         write_json(summary_paths["json"], summary_payload)
         _write_text(summary_paths["md"], _render_summary_markdown(summary_payload))
         write_json(state_path, summary_payload)
-        return 0, summary_payload
+        return auto_qa_exit, summary_payload
     if adapter_type in {"handoff", "claude-skill"}:
         request_md = project_root / (request_md_path or Path(f".beacon/implement/{run_id}/request.md"))
         _write_text(request_md, task_prompt + "\n")
@@ -762,12 +937,30 @@ def run_implement_stage(  # noqa: PLR0913
     )
     summary_payload["artifact_writeback_open_count"] = int(obligations.get("open_count", 0) or 0)
     summary_payload["requirement_rewrite_input"] = str(learning_payload.get("path", "") or "")
+    summary_payload["auto_qa"] = {
+        "enabled": bool(auto_qa),
+        "triggered": False,
+        "args": resolved_auto_qa_args,
+        "follow_handoff": bool(auto_qa_follow_handoff),
+        "max_rounds": int(auto_qa_max_rounds or 1),
+    }
+    auto_qa_exit = 0
+    if auto_qa:
+        auto_qa_exit, auto_qa_payload = _run_auto_qa_sequence(
+            project_root,
+            feature=feature,
+            version=resolved_version,
+            extra_args=resolved_auto_qa_args,
+            follow_handoff=bool(auto_qa_follow_handoff),
+            max_rounds=int(auto_qa_max_rounds or 1),
+        )
+        summary_payload["auto_qa"] = auto_qa_payload
     write_json(summary_paths["json"], summary_payload)
     _write_text(summary_paths["md"], _render_summary_markdown(summary_payload))
 
     payload = {**base_state, **summary_payload}
     write_json(state_path, payload)
-    return 0, payload
+    return auto_qa_exit, payload
 
 
 @app.command("list-runners")
@@ -814,6 +1007,10 @@ def run(
     timeout_sec: int = typer.Option(0, "--timeout-sec", help="Override timeout seconds"),
     auto_review_spec: bool = typer.Option(True, "--auto-review-spec/--no-auto-review-spec", help="Auto trigger review spec"),
     auto_review_quality: bool = typer.Option(False, "--auto-review-quality/--no-auto-review-quality", help="Auto trigger review quality"),
+    auto_qa: Optional[bool] = typer.Option(None, "--auto-qa/--no-auto-qa", help="Auto trigger qa run after successful implementation"),
+    auto_qa_arg: Optional[list[str]] = typer.Option(None, "--auto-qa-arg", help="Extra argument passed to auto-triggered qa run (repeatable)"),
+    auto_qa_follow_handoff: Optional[bool] = typer.Option(None, "--auto-qa-follow-handoff/--no-auto-qa-follow-handoff", help="When auto-qa is blocked, follow supported repair handoff actions and retry QA"),
+    auto_qa_max_rounds: int = typer.Option(0, "--auto-qa-max-rounds", help="Maximum QA rounds in the auto-qa follow-handoff loop"),
     json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
 ):
     """Run implementation using the resolved skill adapter."""
@@ -829,6 +1026,10 @@ def run(
         timeout_sec=timeout_sec or None,
         auto_review_spec=auto_review_spec,
         auto_review_quality=auto_review_quality,
+        auto_qa=auto_qa,
+        auto_qa_args=list(auto_qa_arg or []),
+        auto_qa_follow_handoff=auto_qa_follow_handoff,
+        auto_qa_max_rounds=auto_qa_max_rounds or None,
     )
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
