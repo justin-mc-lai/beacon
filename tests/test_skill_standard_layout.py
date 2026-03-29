@@ -25,46 +25,46 @@ def test_standard_skill_package_should_have_frontmatter_and_metadata():
     assert skill_text.startswith("---\n")
     assert "name: beacon" in skill_text
     assert "description:" in skill_text
-    assert "../../docs/beacon/v1.1.9/SUMMARY.md" in skill_text
-    assert "../../docs/beacon/v1.1.9/execution/index.md" in skill_text
-    assert "../../docs/beacon/v1.1.9/release/v1.1.9.md" in skill_text
+    assert "../../docs/beacon/v1.1.10/SUMMARY.md" in skill_text
+    assert "../../docs/beacon/v1.1.10/execution/index.md" in skill_text
+    assert "../../docs/beacon/v1.1.10/release/v1.1.10.md" in skill_text
     assert 'Lifecycle Navigation Rules' in skill_text
     assert 'beacon help --project-root . --json' in skill_text
 
     metadata = json.loads((ROOT / "skills" / "beacon" / "metadata.json").read_text(encoding="utf-8"))
     assert metadata["name"] == "beacon"
-    assert metadata["version"] == "1.1.9"
+    assert metadata["version"] == "1.1.10"
 
 
 def test_standard_skill_wrapper_script_should_launch_beacon_version():
     script = ROOT / "skills" / "beacon" / "scripts" / "run_beacon.sh"
     result = subprocess.run(["bash", str(script), "--version"], cwd=ROOT, capture_output=True, text=True)
     assert result.returncode == 0, result.stdout + result.stderr
-    assert "Beacon CLI v1.1.9" in result.stdout
+    assert "Beacon CLI v1.1.10" in result.stdout
 
 
 def test_basic_workflow_example_should_align_with_v115_docs_and_flow():
     example = (ROOT / "skills" / "beacon" / "examples" / "basic-workflow.md").read_text(encoding="utf-8")
-    assert "../../../docs/beacon/v1.1.9/SUMMARY.md" in example
-    assert "../../../docs/beacon/v1.1.9/execution/index.md" in example
+    assert "../../../docs/beacon/v1.1.10/SUMMARY.md" in example
+    assert "../../../docs/beacon/v1.1.10/execution/index.md" in example
     assert "release-readiness.md" in example
     assert "implementation-with-omx.md" in example
-    assert "Beacon v1.1.9 release line" in example
+    assert "Beacon v1.1.10 release line" in example
     assert "workflow status" in example
 
 
 def test_release_readiness_example_should_cover_doctor_gate_and_release():
     example = (ROOT / "skills" / "beacon" / "examples" / "release-readiness.md").read_text(encoding="utf-8")
-    assert "../../../docs/beacon/v1.1.9/SUMMARY.md" in example
+    assert "../../../docs/beacon/v1.1.10/SUMMARY.md" in example
     assert "doctor verify-materials" in example
     assert "doctor repair-package" in example
     assert "gate check release" in example
-    assert "release check v1.1.9 --project ." in example
+    assert "release check v1.1.10 --project ." in example
 
 
 def test_implementation_with_omx_example_should_cover_skill_and_implement_flow():
     example = (ROOT / "skills" / "beacon" / "examples" / "implementation-with-omx.md").read_text(encoding="utf-8")
-    assert "../../../docs/beacon/v1.1.9/SUMMARY.md" in example
+    assert "../../../docs/beacon/v1.1.10/SUMMARY.md" in example
     assert "skill detect" in example
     assert "skill prefer omx" in example
     assert "implement list-runners" in example

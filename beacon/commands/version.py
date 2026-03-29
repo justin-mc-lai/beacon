@@ -270,7 +270,7 @@ def list(
 
 @app.command("experiment")
 def experiment(
-    label: str = typer.Argument("Beacon v1.1.9 evo harness", help="Experiment label"),
+    label: str = typer.Argument("Beacon v1.1.10 evo harness", help="Experiment label"),
     version: Optional[str] = typer.Option("auto", "--version", "-v", help="Target docs version"),
     project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
     max_runtime_minutes: int = typer.Option(0, "--max-runtime-minutes", help="Budget override"),

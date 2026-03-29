@@ -1,4 +1,4 @@
-"""Beacon QA command - primary surface for v1.1.9 feature-aware verification."""
+"""Beacon QA command - primary surface for v1.1.10 precision-aware verification."""
 
 from __future__ import annotations
 
@@ -11,7 +11,14 @@ from typing import Any, Optional
 import typer
 
 from beacon.utils.exhaustiveness import build_exhaustiveness_report, write_exhaustiveness_report
+from beacon.utils.project_skills import (
+    evaluate_project_profile_gate,
+    resolve_profile_for_feature,
+    run_profile_orchestration,
+)
+from beacon.utils.qa_precision import refresh_qa_calibration_model, write_qa_audit_label
 from beacon.utils.qa_feature import (
+    build_feature_qa_precision_artifacts,
     build_feature_qa_plan,
     collect_verification_writeback,
     feature_qa_matrix_path,
@@ -30,11 +37,14 @@ from beacon.utils.qa_runtime import (
     write_qa_session,
     write_qa_status,
 )
+from beacon.utils.story_state import feature_slug
 from beacon.utils.writeback import record_verification_writeback
 
-app = typer.Typer(name="qa", help="QA primary surface (v1.1.9)")
+app = typer.Typer(name="qa", help="QA primary surface (v1.1.10)")
 session_app = typer.Typer(name="session", help="QA login/session state helpers")
+audit_app = typer.Typer(name="audit", help="QA audit truth helpers")
 app.add_typer(session_app, name="session")
+app.add_typer(audit_app, name="audit")
 
 KNOWN_SCOPES = {
     "all",
@@ -244,6 +254,49 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
     mode = _extract_option(args, "--mode") or "feature-aware"
     project_root = Path(project_value).resolve() if project_value else Path.cwd()
     args = _strip_option_with_value(args, "--mode")
+    current_session = load_current_qa_session(project_root)
+
+    project_profile = resolve_profile_for_feature(project_root, version=version, feature=feature)
+    project_profile_gate = evaluate_project_profile_gate(project_root, version=version, feature=feature)
+    project_orchestration: dict[str, Any] = project_profile_gate.get("orchestration", {}) if isinstance(project_profile_gate, dict) else {}
+    if project_profile and str(project_profile_gate.get("status") or "") != "pass":
+        orchestration_params: dict[str, str] = {}
+        for key in ("origin", "profile_ref", "cookies_ref", "storage_state_ref"):
+            value = str(current_session.get(key) or "").strip()
+            if value:
+                orchestration_params[key] = value
+        orchestration_exit, project_orchestration = run_profile_orchestration(
+            project_root,
+            version=version,
+            feature=feature,
+            profile_id=str(project_profile.get("profile_id") or ""),
+            stage="verify",
+            params=orchestration_params,
+        )
+        project_profile_gate = evaluate_project_profile_gate(
+            project_root,
+            version=version,
+            feature=feature,
+            profile_id=str(project_profile.get("profile_id") or ""),
+        )
+        if orchestration_exit != 0 or str(project_profile_gate.get("status") or "") == "blocked":
+            blocked_payload = {
+                "schema_version": "1.0",
+                "feature": feature,
+                "version": version,
+                "status": "blocked",
+                "reason_codes": ["project_profile_gate_blocked"],
+                "project_profile": project_profile,
+                "project_profile_gate": project_profile_gate,
+                "project_orchestration": project_orchestration,
+                "session_id": str(current_session.get("session_id") or ""),
+            }
+            write_feature_qa_status(project_root, feature=feature, payload=blocked_payload)
+            if json_output:
+                typer.echo(json.dumps(blocked_payload, ensure_ascii=False, indent=2))
+            else:
+                typer.echo(f"Beacon QA blocked: project profile gate blocked for {feature}", err=True)
+            return 2, blocked_payload
 
     plan = build_feature_qa_plan(project_root, version=version, feature=feature, execution_mode=mode)
     if not bool(plan.get("implementation_done", False)):
@@ -318,6 +371,10 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
     qa_status["blocking_artifact_updates"] = blocking_updates
     qa_status["per_item_results"] = per_item_results
     qa_status["execution_mode"] = str(plan.get("execution_mode") or mode)
+    qa_status["project_profile"] = project_profile or {}
+    qa_status["project_profile_gate"] = project_profile_gate if isinstance(project_profile_gate, dict) else {}
+    qa_status["project_orchestration"] = project_orchestration if isinstance(project_orchestration, dict) else {}
+    qa_status["current_session_id"] = str(current_session.get("session_id") or "")
     canonical_matrix = writeback_feature_matrix_evidence(
         project_root,
         plan=plan,
@@ -335,9 +392,23 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
     )
     write_exhaustiveness_report(project_root, feature=feature, payload=exhaustiveness)
     qa_status["exhaustiveness"] = exhaustiveness
+    scenario_results_v2, ac_closure, feature_scorecard, ac_closure_path, feature_scorecard_path = build_feature_qa_precision_artifacts(
+        project_root,
+        feature=feature,
+        run_id=str(qa_status.get("run_id") or plan.get("implementation_run_id") or "feature-qa"),
+        plan=plan,
+        per_item_results=per_item_results,
+        project_profile_gate=project_profile_gate,
+    )
+    qa_status["scenario_results_v2"] = scenario_results_v2
+    qa_status["ac_closure_path"] = str(ac_closure_path.relative_to(project_root))
+    qa_status["feature_scorecard_path"] = str(feature_scorecard_path.relative_to(project_root))
+    qa_status["feature_scorecard"] = feature_scorecard
+    qa_status["release_ready"] = bool(feature_scorecard.get("release_ready", False))
     if str(exhaustiveness.get("status") or "").strip().lower() != "passed":
         qa_status["status"] = "blocked"
         qa_status["evidence_done"] = False
+        qa_status["release_ready"] = False
     write_qa_status(project_root, qa_status)
 
     payload = {
@@ -355,6 +426,14 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
         "targeted_scenario_families": list(plan.get("targeted_scenario_families") or []),
         "story_scenario_map_path": str(plan.get("story_scenario_map_path") or ""),
         "exhaustiveness": exhaustiveness,
+        "project_profile": project_profile or {},
+        "project_profile_gate": project_profile_gate if isinstance(project_profile_gate, dict) else {},
+        "current_session_id": str(current_session.get("session_id") or ""),
+        "scenario_results_v2": scenario_results_v2,
+        "ac_closure": ac_closure,
+        "feature_scorecard": feature_scorecard,
+        "ac_closure_path": str(ac_closure_path.relative_to(project_root)),
+        "feature_scorecard_path": str(feature_scorecard_path.relative_to(project_root)),
     }
     write_feature_qa_status(project_root, feature=feature, payload=payload)
 
@@ -556,3 +635,57 @@ def session_show(
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
         return
     typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+
+
+@audit_app.command("label")
+def audit_label(
+    run_id: str = typer.Argument(..., help="QA run id"),
+    scenario_id: str = typer.Argument(..., help="Scenario id"),
+    label: str = typer.Option(..., "--label", help="Audit label"),
+    feature: str = typer.Option("", "--feature", help="Feature slug/name"),
+    reason: str = typer.Option("", "--reason", help="Audit reason"),
+    auditor: str = typer.Option("human-review", "--auditor", help="Auditor id"),
+    evidence_ref: list[str] = typer.Option([], "--evidence-ref", help="Evidence ref (repeatable)"),
+    project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
+    json_output: bool = typer.Option(False, "--json", help="JSON output"),
+):
+    """Record a machine-readable QA audit label."""
+    project_root = Path(project) if project else Path.cwd()
+    payload = {
+        "schema_version": "1.0",
+        "scenario_id": scenario_id,
+        "feature_slug": feature_slug(feature) if feature else "",
+        "label": label,
+        "auditor": auditor,
+        "reason": reason,
+        "evidence_refs": [str(item) for item in evidence_ref if str(item).strip()],
+    }
+    path = write_qa_audit_label(project_root, run_id=run_id, scenario_id=scenario_id, payload=payload)
+    calibration = refresh_qa_calibration_model(project_root)
+    result = {
+        "status": "recorded",
+        "run_id": run_id,
+        "scenario_id": scenario_id,
+        "audit_path": str(path.relative_to(project_root)),
+        "calibration_model_path": str((project_root / ".beacon" / "state" / "qa-calibration" / "latest.json").relative_to(project_root)),
+        "training_sample_count": calibration.get("training_sample_count"),
+    }
+    if json_output:
+        typer.echo(json.dumps(result, ensure_ascii=False, indent=2))
+        return
+    typer.echo(f"✓ QA audit recorded: {path}")
+
+
+@audit_app.command("calibrate")
+def audit_calibrate(
+    project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
+    json_output: bool = typer.Option(False, "--json", help="JSON output"),
+):
+    """Recompute the QA calibration model from recorded audit labels."""
+    project_root = Path(project) if project else Path.cwd()
+    payload = refresh_qa_calibration_model(project_root)
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        return
+    typer.echo("✓ QA calibration model refreshed")
+    typer.echo(f"  samples: {payload.get('training_sample_count', 0)}")

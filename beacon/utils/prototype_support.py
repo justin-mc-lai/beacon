@@ -30,6 +30,8 @@ def prototype_paths(project_root: Path, version: str, feature: str) -> dict[str,
         "theme": root / "theme.json",
         "navigation_map": root / "navigation-map.json",
         "interaction_map": root / "interaction-map.json",
+        "route_closure_contract": root / "route-closure-contract.json",
+        "implementation_map": root / "implementation-map.json",
         "review_json": root / "prototype-review.json",
         "review_md": root / "prototype-review.md",
     }
@@ -122,6 +124,9 @@ _UI_REQUIRED_PATTERNS = (
     re.compile(r"ui_visualization_required\s*[:=]\s*true", re.IGNORECASE),
     re.compile(r"prototype_freeze_required\s*[:=]\s*true", re.IGNORECASE),
 )
+_ROUTE_CLOSURE_PATTERNS = (
+    re.compile(r"route_closure_required\s*[:=]\s*true", re.IGNORECASE),
+)
 
 
 def version_requires_prototype(project_root: Path, version: str) -> bool:
@@ -139,4 +144,18 @@ def version_requires_prototype(project_root: Path, version: str) -> bool:
                 continue
             if any(pattern.search(text) for pattern in _UI_REQUIRED_PATTERNS):
                 return True
+    return False
+
+
+def feature_requires_route_closure(project_root: Path, version: str, feature: str) -> bool:
+    refs = source_refs(project_root, version, feature)
+    for path in refs.values():
+        if not path.exists():
+            continue
+        try:
+            text = path.read_text(encoding="utf-8")
+        except Exception:  # noqa: BLE001
+            continue
+        if any(pattern.search(text) for pattern in _ROUTE_CLOSURE_PATTERNS):
+            return True
     return False

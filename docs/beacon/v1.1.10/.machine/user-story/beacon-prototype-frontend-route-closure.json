@@ -1,0 +1,333 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-prototype-frontend-route-closure",
+  "feature_slug": "beacon-prototype-frontend-route-closure",
+  "version": "v1.1.10",
+  "current_revision_id": "R1",
+  "lifecycle_status": "frozen",
+  "updated_at": "2026-03-28T15:38:07.811656+00:00",
+  "revisions": [
+    {
+      "revision_id": "R1",
+      "feature_slug": "beacon-prototype-frontend-route-closure",
+      "source_revision_id": null,
+      "reason": "draft",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:8371460f1680ca8c06fd04fa432360993564c0ef40155a6b9f6868fdf3608e38",
+      "superseded_by": null,
+      "created_at": "2026-03-28T15:38:07.811660+00:00",
+      "frozen_at": "2026-03-28T15:38:07.812224+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    }
+  ],
+  "stories": [
+    {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "beacon-prototype-frontend-route-closure",
+      "priority": "medium",
+      "status": "frozen",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "Route Closure Contract",
+          "text": "`prototype create` 产出 `route-closure-contract.json`",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "Implementation Map",
+          "text": "`prototype create` 产出 `implementation-map.json`",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "Route Closure Required",
+          "text": "当需求声明 `route_closure_required: true` 时，review/gate 必须检查 route closure 工件",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "Binding Completeness",
+          "text": "`prototype review` 对未绑定 case 抛出失败检查",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "Drift Markers",
+          "text": "`prototype review` / gate 可识别 `isolated / fragile / legacy-only / tab-route-drift / param-contract-mismatch / fake-jump`",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "Fake Jump Block",
+          "text": "已绑定但无真实 runtime target 或 tab state target 的 case 不能通过 review",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "Test Case Synthesis",
+          "text": "`test-case create` 会把 `prototype:route-closure-contract` 编进 AC matrix",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "Backward Compatibility",
+          "text": "未声明 `route_closure_required` 的旧版本 prototype 流程不被破坏",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "AC-009",
+          "kind": "ac",
+          "theme": "Shopxo Coverage",
+          "text": "解决方案覆盖 utility/footer/孤岛/legacy-only 页面类问题",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "AC-010",
+          "kind": "ac",
+          "theme": "Milemon Coverage",
+          "text": "解决方案覆盖 mega-menu quick links / mobile accordion / dead-link 问题",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "AC-011",
+          "kind": "ac",
+          "theme": "Miniapp Coverage",
+          "text": "解决方案覆盖 tab route、params/query、fake jump、safe fallback 问题",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — `prototype create` 产出 `route-closure-contract.json`",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-001"
+          ]
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — `prototype create` 产出 `implementation-map.json`",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-002"
+          ]
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — 当需求声明 `route_closure_required: true` 时，review/gate 必须检查 route closure 工件",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-003"
+          ]
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — `prototype review` 对未绑定 case 抛出失败检查",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-004"
+          ]
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — `prototype review` / gate 可识别 `isolated / fragile / legacy-only / tab-route-drift / param-contract-mismatch / fake-jump`",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-005"
+          ]
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — 已绑定但无真实 runtime target 或 tab state target 的 case 不能通过 review",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-006"
+          ]
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — `test-case create` 会把 `prototype:route-closure-contract` 编进 AC matrix",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-007"
+          ]
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — 未声明 `route_closure_required` 的旧版本 prototype 流程不被破坏",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-008"
+          ]
+        },
+        {
+          "id": "TEST-009",
+          "kind": "test",
+          "text": "Verify AC-009 — 解决方案覆盖 utility/footer/孤岛/legacy-only 页面类问题",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-009"
+          ]
+        },
+        {
+          "id": "TEST-010",
+          "kind": "test",
+          "text": "Verify AC-010 — 解决方案覆盖 mega-menu quick links / mobile accordion / dead-link 问题",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-010"
+          ]
+        },
+        {
+          "id": "TEST-011",
+          "kind": "test",
+          "text": "Verify AC-011 — 解决方案覆盖 tab route、params/query、fake jump、safe fallback 问题",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-011"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,567 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-qa-confidence-autoresearch-closure",
+  "feature_slug": "beacon-qa-confidence-autoresearch-closure",
+  "version": "v1.1.10",
+  "current_revision_id": "R1",
+  "lifecycle_status": "frozen",
+  "updated_at": "2026-03-28T14:32:09.769150+00:00",
+  "revisions": [
+    {
+      "revision_id": "R1",
+      "feature_slug": "beacon-qa-confidence-autoresearch-closure",
+      "source_revision_id": null,
+      "reason": "draft",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:57e0af19e202452dd4a9314334f5fe875c7904df4c8cc5b80605badd34b531ca",
+      "superseded_by": null,
+      "created_at": "2026-03-28T14:32:09.769154+00:00",
+      "frozen_at": "2026-03-28T14:32:09.769936+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    }
+  ],
+  "stories": [
+    {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "beacon-qa-confidence-autoresearch-closure",
+      "priority": "medium",
+      "status": "frozen",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "Status vs Closure",
+          "text": "scenario result 明确区分 `status` 与 `closure_outcome`，不再把 status 当成 closure truth",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "Confidence Axes",
+          "text": "scenario result 明确包含 `confidence_raw`、`confidence_calibrated`、`confidence_band` 与 review flag",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "Derived AC Closure",
+          "text": "AC closure 由 required scenario families、replay、evidence sufficiency、confidence threshold 与 unresolved outcomes 推导",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "High-risk Browser Truth",
+          "text": "高风险 browser scenario 自动放行前必须同时具备 deterministic replay、browser evidence pack 与 calibrated confidence threshold",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "Abstain Path",
+          "text": "Beacon 正式支持 `review_required`、`needs_more_evidence`、`needs_replay`、`needs_requirement_clarification`",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "Root Cause Taxonomy",
+          "text": "scenario result 正式支持 `spec_gap / implementation_gap / runner_gap / environment_gap / flake / evidence_gap`",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "AC Closure Artifact",
+          "text": "`.beacon/qa/features/<feature>/ac-closure.json` 作为正式 machine artifact 被定义",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "Feature QA Scorecard",
+          "text": "`.beacon/qa/features/<feature>/scorecard.json` 正式表达 closure、confidence、review count 与 false-complete risk",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "AC-009",
+          "kind": "ac",
+          "theme": "Release Decision Policy",
+          "text": "release scorecard 使用 calibrated confidence、review count、needs_replay、open outcomes 决定 `release_ready`",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "AC-010",
+          "kind": "ac",
+          "theme": "Human Audit Labels",
+          "text": "`.beacon/state/qa-audits/<run_id>/<scenario_id>.json` 作为 sampled audit truth artifact 被定义",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "AC-011",
+          "kind": "ac",
+          "theme": "Benchmark Corpus",
+          "text": "benchmark corpus 至少覆盖 false pass、false block、stale evidence、missing replay、wrong delta rerun、story/AC trace mismatch",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "AC-012",
+          "kind": "ac",
+          "theme": "Small Editable Surface",
+          "text": "QA precision 优化面只允许 scenario expansion、delta selection、evidence sufficiency、confidence calibration 与 release thresholds",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "AC-013",
+          "kind": "ac",
+          "theme": "Fixed-budget Governance",
+          "text": "keep/discard experiment 必须固定预算、可比较、可回滚，不能演变为整仓自治",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "AC-014",
+          "kind": "ac",
+          "theme": "Deterministic Truth Boundary",
+          "text": "v1.1.10 不替换 deterministic replay，不允许把 LLM judgement 变成唯一 truth source",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "AC-015",
+          "kind": "ac",
+          "theme": "Cross-version Compatibility",
+          "text": "v1.1.10 扩展而不破坏 v1.1.9 QA contracts、v1.1.7 project skill/profile/orchestration、v1.1.8 `technical-implementation-*` 归档面",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "AC-016",
+          "kind": "ac",
+          "theme": "Project Skill Workflow",
+          "text": "目标项目可通过 profile/skill binding、verify orchestration、required evidence gate 声明项目专属 QA workflow，并在 operator surfaces 中被解释清楚",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "AC-017",
+          "kind": "ac",
+          "theme": "Mainline Project Workflow",
+          "text": "`qa run <feature>` 主链直接消费 profile binding、verify orchestration 与 required evidence gate，而不是要求操作者手工走平行 `verify run`",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "AC-018",
+          "kind": "ac",
+          "theme": "Browser Auth Persistence",
+          "text": "browser QA session manifest 支持保存 `profile_ref / cookies_ref / storage_state_ref / scopes / expiry`，并可供后续 QA/replay/workflow 复用",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "AC-019",
+          "kind": "ac",
+          "theme": "Implement And Architecture Feedback",
+          "text": "QA 缺陷、review-required outcome 或 release block 可路由到 `beacon implement`，并产出 `technical-implementation-*`、requirement rewrite input 与 architecture feedback",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "AC-020",
+          "kind": "ac",
+          "theme": "Formal Closure And Doc Integrity",
+          "text": "QA test feedback 必须能回写 benchmark truth、audit drift、candidate surface、project skill evolution input 与 next experiment set；同时 machine refresh 默认不得覆盖人工编写的 QA requirement docs",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — scenario result 明确区分 `status` 与 `closure_outcome`，不再把 status 当成 closure truth",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-001"
+          ]
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — scenario result 明确包含 `confidence_raw`、`confidence_calibrated`、`confidence_band` 与 review flag",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-002"
+          ]
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — AC closure 由 required scenario families、replay、evidence sufficiency、confidence threshold 与 unresolved outcomes 推导",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-003"
+          ]
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — 高风险 browser scenario 自动放行前必须同时具备 deterministic replay、browser evidence pack 与 calibrated confidence threshold",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-004"
+          ]
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — Beacon 正式支持 `review_required`、`needs_more_evidence`、`needs_replay`、`needs_requirement_clarification`",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-005"
+          ]
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — scenario result 正式支持 `spec_gap / implementation_gap / runner_gap / environment_gap / flake / evidence_gap`",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-006"
+          ]
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — `.beacon/qa/features/<feature>/ac-closure.json` 作为正式 machine artifact 被定义",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-007"
+          ]
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — `.beacon/qa/features/<feature>/scorecard.json` 正式表达 closure、confidence、review count 与 false-complete risk",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-008"
+          ]
+        },
+        {
+          "id": "TEST-009",
+          "kind": "test",
+          "text": "Verify AC-009 — release scorecard 使用 calibrated confidence、review count、needs_replay、open outcomes 决定 `release_ready`",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-009"
+          ]
+        },
+        {
+          "id": "TEST-010",
+          "kind": "test",
+          "text": "Verify AC-010 — `.beacon/state/qa-audits/<run_id>/<scenario_id>.json` 作为 sampled audit truth artifact 被定义",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-010"
+          ]
+        },
+        {
+          "id": "TEST-011",
+          "kind": "test",
+          "text": "Verify AC-011 — benchmark corpus 至少覆盖 false pass、false block、stale evidence、missing replay、wrong delta rerun、story/AC trace mismatch",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-011"
+          ]
+        },
+        {
+          "id": "TEST-012",
+          "kind": "test",
+          "text": "Verify AC-012 — QA precision 优化面只允许 scenario expansion、delta selection、evidence sufficiency、confidence calibration 与 release thresholds",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-012"
+          ]
+        },
+        {
+          "id": "TEST-013",
+          "kind": "test",
+          "text": "Verify AC-013 — keep/discard experiment 必须固定预算、可比较、可回滚，不能演变为整仓自治",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-013"
+          ]
+        },
+        {
+          "id": "TEST-014",
+          "kind": "test",
+          "text": "Verify AC-014 — v1.1.10 不替换 deterministic replay，不允许把 LLM judgement 变成唯一 truth source",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-014"
+          ]
+        },
+        {
+          "id": "TEST-015",
+          "kind": "test",
+          "text": "Verify AC-015 — v1.1.10 扩展而不破坏 v1.1.9 QA contracts、v1.1.7 project skill/profile/orchestration、v1.1.8 `technical-implementation-*` 归档面",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-015"
+          ]
+        },
+        {
+          "id": "TEST-016",
+          "kind": "test",
+          "text": "Verify AC-016 — 目标项目可通过 profile/skill binding、verify orchestration、required evidence gate 声明项目专属 QA workflow，并在 operator surfaces 中被解释清楚",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-016"
+          ]
+        },
+        {
+          "id": "TEST-017",
+          "kind": "test",
+          "text": "Verify AC-017 — `qa run <feature>` 主链直接消费 profile binding、verify orchestration 与 required evidence gate，而不是要求操作者手工走平行 `verify run`",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-017"
+          ]
+        },
+        {
+          "id": "TEST-018",
+          "kind": "test",
+          "text": "Verify AC-018 — browser QA session manifest 支持保存 `profile_ref / cookies_ref / storage_state_ref / scopes / expiry`，并可供后续 QA/replay/workflow 复用",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-018"
+          ]
+        },
+        {
+          "id": "TEST-019",
+          "kind": "test",
+          "text": "Verify AC-019 — QA 缺陷、review-required outcome 或 release block 可路由到 `beacon implement`，并产出 `technical-implementation-*`、requirement rewrite input 与 architecture feedback",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-019"
+          ]
+        },
+        {
+          "id": "TEST-020",
+          "kind": "test",
+          "text": "Verify AC-020 — QA test feedback 必须能回写 benchmark truth、audit drift、candidate surface、project skill evolution input 与 next experiment set；同时 machine refresh 默认不得覆盖人工编写的 QA requirement docs",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-020"
+          ]
+        }
+      ]
+    }
+  ]
+}

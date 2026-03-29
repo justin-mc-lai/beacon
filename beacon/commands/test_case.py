@@ -135,6 +135,25 @@ def _load_prototype_contract_artifacts(project_root: Path, version: str, feature
     return navigation, interaction
 
 
+def _load_route_closure_artifacts(project_root: Path, version: str, feature_slug: str) -> tuple[dict, dict]:
+    proto_root = project_root / "docs" / "beacon" / version / "prototype" / feature_slug
+    route_payload = {}
+    impl_payload = {}
+    route_path = proto_root / "route-closure-contract.json"
+    impl_path = proto_root / "implementation-map.json"
+    if route_path.exists():
+        try:
+            route_payload = json.loads(route_path.read_text(encoding="utf-8"))
+        except Exception:  # noqa: BLE001
+            route_payload = {}
+    if impl_path.exists():
+        try:
+            impl_payload = json.loads(impl_path.read_text(encoding="utf-8"))
+        except Exception:  # noqa: BLE001
+            impl_payload = {}
+    return route_payload, impl_payload
+
+
 def _story_sequence_for_feature(project_root: Path, version: str, feature_slug: str, *, fallback_entries: list[dict]) -> list[dict]:
     machine_story = project_root / "docs" / "beacon" / version / ".machine" / "user-story" / f"{feature_slug}.json"
     if machine_story.exists():
@@ -579,6 +598,11 @@ def create(
     version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
     project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
     output: Optional[str] = typer.Option(None, "--output", "-o", help="Output file"),
+    overwrite_doc: bool = typer.Option(
+        False,
+        "--overwrite-doc",
+        help="Allow overwriting the human-readable QA markdown when it already exists.",
+    ),
     qa_profile: str = typer.Option(
         "web-full",
         "--qa-profile",
@@ -664,6 +688,9 @@ def create(
     prototype_navigation, prototype_interaction = _load_prototype_contract_artifacts(
         project_root, resolved_version, feature_slug
     )
+    route_closure_contract, implementation_map = _load_route_closure_artifacts(
+        project_root, resolved_version, feature_slug
+    )
     synthetic_idx = len(entries)
     ac_anchor = ac_items[0]["ac_id"] if ac_items else "AC-001"
     for jump in prototype_navigation.get("jump_map", []) or []:
@@ -694,6 +721,32 @@ def create(
                 "evidence_path": f".beacon/evidence/test-results/{feature_slug}/{tc_id}.json",
                 "status": "pending",
                 "source": "prototype:interaction-map",
+            }
+        )
+    closure_cases = route_closure_contract.get("closure_cases") if isinstance(route_closure_contract.get("closure_cases"), list) else []
+    bound_cases = {
+        str(item.get("case_id") or ""): item
+        for item in (implementation_map.get("closure_bindings") or [])
+        if isinstance(item, dict) and str(item.get("case_id") or "").strip()
+    }
+    for case in closure_cases:
+        if not isinstance(case, dict):
+            continue
+        synthetic_idx += 1
+        tc_id = f"TC-{synthetic_idx:03d}"
+        case_id = str(case.get("case_id") or "").strip()
+        binding = bound_cases.get(case_id, {})
+        target = str(binding.get("runtime_target") or binding.get("state_target") or case.get("target_surface_id") or "").strip()
+        entries.append(
+            {
+                "tc_id": tc_id,
+                "ac_id": ac_anchor,
+                "layer": "ui",
+                "command": "python3 -c \"print('prototype-route-closure-check')\"",
+                "assertion": f"route closure {case.get('source_label', '')} -> {target or case.get('target_surface_id', '')} remains deterministic",
+                "evidence_path": f".beacon/evidence/test-results/{feature_slug}/{tc_id}.json",
+                "status": "pending",
+                "source": "prototype:route-closure-contract",
             }
         )
 
@@ -851,7 +904,10 @@ def create(
 {result_rows}
 """
 
-    output_path.write_text(md_content, encoding="utf-8")
+    doc_written = False
+    if output or not output_path.exists() or overwrite_doc:
+        output_path.write_text(md_content, encoding="utf-8")
+        doc_written = True
     if uses_machine_surface(resolved_version):
         index_path = output_path.parent / "index.md"
         if not index_path.exists():
@@ -869,7 +925,10 @@ def create(
                 encoding="utf-8",
             )
 
-    typer.echo(f"✓ Test cases created: {output_path}")
+    if doc_written:
+        typer.echo(f"✓ Test cases created: {output_path}")
+    else:
+        typer.echo(f"✓ Test cases preserved: {output_path}")
     typer.echo(f"✓ AC matrix created: {matrix_path}")
     typer.echo(f"✓ QA9 matrix created: {qa9_matrix_path}")
     typer.echo(f"✓ Story scenario map created: {scenario_map_path}")

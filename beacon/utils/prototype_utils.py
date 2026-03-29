@@ -38,7 +38,7 @@ _REQUIRED_CONTRACT_KEYS = {
     "jump_map",
     "states",
 }
-_LIST_KEYS = {"sections", "navigation", "brand_keywords", "states"}
+_LIST_KEYS = {"sections", "navigation", "brand_keywords", "states", "drift_guardrails"}
 _COMPLEX_LIST_KEYS = {"jump_map", "modal_map", "drawer_map", "tab_map"}
 
 
@@ -64,6 +64,8 @@ def prototype_files(project_root: Path, version: str, feature: str) -> dict[str,
         "theme": root / "theme.json",
         "navigation_map": root / "navigation-map.json",
         "interaction_map": root / "interaction-map.json",
+        "route_closure_contract": root / "route-closure-contract.json",
+        "implementation_map": root / "implementation-map.json",
         "review_json": root / "prototype-review.json",
         "review_md": root / "prototype-review.md",
     }
@@ -195,6 +197,8 @@ def extract_prototype_contract_from_source(source_doc: dict[str, Any]) -> dict[s
             "tab_map",
             "states",
             "target_user",
+            "route_closure_required",
+            "drift_guardrails",
         }:
             contract[key] = _normalize_contract_value(key, value)
     if not contract.get("target_user") and source_doc.get("type") == "user-story":
@@ -232,6 +236,11 @@ def merge_prototype_contract(feature: str, version: str, source_docs: list[dict[
             "Prototype Contract missing required fields: " + ", ".join(missing)
         )
     return merged
+
+
+def _feature_requires_route_closure(contract: dict[str, Any]) -> bool:
+    value = str(contract.get("route_closure_required", "")).strip().lower()
+    return value in {"true", "1", "yes", "required"}
 
 
 def derive_theme_tokens(contract: dict[str, Any]) -> dict[str, Any]:
@@ -292,6 +301,163 @@ def derive_interaction_map(contract: dict[str, Any]) -> dict[str, Any]:
     if secondary_cta:
         interactions["ctas"].append({"label": secondary_cta, "kind": "secondary"})
     return interactions
+
+
+def _surface_id_from_target(target: str) -> str:
+    text = str(target or "").strip()
+    if text.startswith("#"):
+        text = text[1:]
+    return slugify_feature(text)
+
+
+def derive_route_closure_contract(
+    feature: str,
+    version: str,
+    contract: dict[str, Any],
+    navigation_map: dict[str, Any],
+    interaction_map: dict[str, Any],
+) -> dict[str, Any]:
+    surfaces: list[dict[str, Any]] = []
+    seen_surfaces: set[str] = set()
+    for section in navigation_map.get("sections", []):
+        if not isinstance(section, dict):
+            continue
+        surface_id = str(section.get("id") or "").strip()
+        if not surface_id or surface_id in seen_surfaces:
+            continue
+        seen_surfaces.add(surface_id)
+        surfaces.append(
+            {
+                "surface_id": surface_id,
+                "label": str(section.get("label") or surface_id),
+                "entry_kind": "page",
+                "mounted_required": True,
+            }
+        )
+
+    cases: list[dict[str, Any]] = []
+    index = 0
+    for node in navigation_map.get("navigation_nodes", []):
+        if not isinstance(node, dict):
+            continue
+        index += 1
+        cases.append(
+            {
+                "case_id": f"RC-{index:03d}",
+                "source_type": "page-jump",
+                "source_label": str(node.get("label") or ""),
+                "target_surface_id": _surface_id_from_target(str(node.get("target") or "")),
+                "target_type": "page",
+                "required_context": [],
+                "fallback_behavior": "block",
+            }
+        )
+    for jump in interaction_map.get("jump_map", []):
+        if not isinstance(jump, dict):
+            continue
+        index += 1
+        cases.append(
+            {
+                "case_id": f"RC-{index:03d}",
+                "source_type": "button-jump",
+                "source_label": str(jump.get("from") or ""),
+                "target_surface_id": _surface_id_from_target(str(jump.get("to") or "")),
+                "target_type": "page",
+                "required_context": [],
+                "fallback_behavior": "block",
+            }
+        )
+    for raw_tab in interaction_map.get("tab_map", []):
+        if isinstance(raw_tab, dict):
+            label = str(raw_tab.get("label") or raw_tab.get("target") or "").strip()
+        else:
+            label = str(raw_tab or "").strip()
+        if not label:
+            continue
+        index += 1
+        cases.append(
+            {
+                "case_id": f"RC-{index:03d}",
+                "source_type": "tab-jump",
+                "source_label": label,
+                "target_surface_id": _surface_id_from_target(label),
+                "target_type": "tab",
+                "required_context": ["tab"],
+                "fallback_behavior": "safe-fallback",
+            }
+        )
+    for cta in interaction_map.get("ctas", []):
+        if not isinstance(cta, dict):
+            continue
+        label = str(cta.get("label") or "").strip()
+        if not label:
+            continue
+        index += 1
+        cases.append(
+            {
+                "case_id": f"RC-{index:03d}",
+                "source_type": "cta",
+                "source_label": label,
+                "target_surface_id": _surface_id_from_target(str(contract.get("primary_exit") or contract.get("primary_entry") or "")),
+                "target_type": "page",
+                "required_context": [],
+                "fallback_behavior": "block",
+            }
+        )
+    return {
+        "schema_version": "1.0",
+        "feature": feature,
+        "version": version,
+        "required": _feature_requires_route_closure(contract),
+        "drift_guardrails": contract.get(
+            "drift_guardrails",
+            ["isolated-page", "fragile-route", "legacy-only-entry", "fake-jump", "tab-route-drift", "param-contract-mismatch"],
+        ),
+        "surfaces": surfaces,
+        "closure_cases": cases,
+    }
+
+
+def derive_implementation_map(feature: str, version: str, route_closure_contract: dict[str, Any]) -> dict[str, Any]:
+    surfaces = route_closure_contract.get("surfaces") if isinstance(route_closure_contract.get("surfaces"), list) else []
+    closure_cases = route_closure_contract.get("closure_cases") if isinstance(route_closure_contract.get("closure_cases"), list) else []
+    return {
+        "schema_version": "1.0",
+        "feature": feature,
+        "version": version,
+        "baseline_id": "draft",
+        "adapter": "unbound",
+        "binding_status": "draft",
+        "surfaces": [
+            {
+                "surface_id": str(item.get("surface_id") or ""),
+                "implementation_type": "unknown",
+                "runtime_entry": "",
+                "route_or_url": "",
+                "code_paths": [],
+                "selectors": [],
+                "state_hooks": [],
+                "theme_binding": "",
+                "interaction_binding": "",
+                "evidence_capture_plan": [],
+                "mounted": True,
+            }
+            for item in surfaces
+            if isinstance(item, dict)
+        ],
+        "closure_bindings": [
+            {
+                "case_id": str(item.get("case_id") or ""),
+                "binding_status": "unbound",
+                "runtime_target": "",
+                "state_target": "",
+                "context_contract": list(item.get("required_context") or []),
+                "drift_status": "unknown",
+            }
+            for item in closure_cases
+            if isinstance(item, dict)
+        ],
+    }
 
 
 def _nav_links(navigation_map: dict[str, Any]) -> str:
@@ -522,6 +688,8 @@ def write_prototype_bundle(project_root: Path, version: str, feature: str) -> di
     theme = derive_theme_tokens(contract)
     navigation_map = derive_navigation_map(contract)
     interaction_map = derive_interaction_map(contract)
+    route_closure_contract = derive_route_closure_contract(feature, version, contract, navigation_map, interaction_map)
+    implementation_map = derive_implementation_map(feature, version, route_closure_contract)
     source_payload = _source_payload(feature, version, source_docs, contract)
 
     files["root"].mkdir(parents=True, exist_ok=True)
@@ -576,6 +744,8 @@ def write_prototype_bundle(project_root: Path, version: str, feature: str) -> di
             "theme": sha256_text(json.dumps(theme, ensure_ascii=False, sort_keys=True)),
             "navigation_map": sha256_text(json.dumps(navigation_map, ensure_ascii=False, sort_keys=True)),
             "interaction_map": sha256_text(json.dumps(interaction_map, ensure_ascii=False, sort_keys=True)),
+            "route_closure_contract": sha256_text(json.dumps(route_closure_contract, ensure_ascii=False, sort_keys=True)),
+            "implementation_map": sha256_text(json.dumps(implementation_map, ensure_ascii=False, sort_keys=True)),
         },
     }
     _write_json(files["source_map"], source_payload)
@@ -583,6 +753,8 @@ def write_prototype_bundle(project_root: Path, version: str, feature: str) -> di
     _write_json(files["theme"], theme)
     _write_json(files["navigation_map"], navigation_map)
     _write_json(files["interaction_map"], interaction_map)
+    _write_json(files["route_closure_contract"], route_closure_contract)
+    _write_json(files["implementation_map"], implementation_map)
     _write_json(files["manifest"], manifest_payload)
     _write_json(files["freeze"], freeze_payload)
     return {
@@ -628,7 +800,11 @@ def review_prototype_bundle(project_root: Path, version: str, feature: str) -> d
     if not source_docs:
         raise FileNotFoundError(f"No source documents found for '{feature}'")
     contract = merge_prototype_contract(feature, version, source_docs)
-    missing_artifacts = [name for name in ("index_html", "manifest", "source_map", "prototype_brief", "theme", "navigation_map", "interaction_map") if not files[name].exists()]
+    route_closure_required = _feature_requires_route_closure(contract)
+    required_artifacts = ["index_html", "manifest", "source_map", "prototype_brief", "theme", "navigation_map", "interaction_map"]
+    if route_closure_required:
+        required_artifacts.extend(["route_closure_contract", "implementation_map"])
+    missing_artifacts = [name for name in required_artifacts if not files[name].exists()]
     checks: list[dict[str, Any]] = [
         {
             "name": "contract_resolved",
@@ -657,6 +833,74 @@ def review_prototype_bundle(project_root: Path, version: str, feature: str) -> d
             "message": "theme.json should exist.",
         },
     ]
+    if route_closure_required:
+        route_closure_payload = _read_json(files["route_closure_contract"])
+        implementation_payload = _read_json(files["implementation_map"])
+        closure_cases = route_closure_payload.get("closure_cases") if isinstance(route_closure_payload.get("closure_cases"), list) else []
+        bindings = implementation_payload.get("closure_bindings") if isinstance(implementation_payload.get("closure_bindings"), list) else []
+        binding_by_case = {
+            str(item.get("case_id") or ""): item
+            for item in bindings
+            if isinstance(item, dict) and str(item.get("case_id") or "").strip()
+        }
+        unresolved_case_ids: list[str] = []
+        drift_case_ids: list[str] = []
+        fake_jump_case_ids: list[str] = []
+        for case in closure_cases:
+            if not isinstance(case, dict):
+                continue
+            case_id = str(case.get("case_id") or "").strip()
+            binding = binding_by_case.get(case_id, {})
+            binding_status = str(binding.get("binding_status") or "").strip().lower()
+            drift_status = str(binding.get("drift_status") or "").strip().lower()
+            if binding_status not in {"bound", "internal", "external"}:
+                unresolved_case_ids.append(case_id)
+            if drift_status in {"isolated", "fragile", "legacy-only", "tab-route-drift", "param-contract-mismatch"}:
+                drift_case_ids.append(case_id)
+            runtime_target = str(binding.get("runtime_target") or "").strip()
+            if binding_status == "bound":
+                if str(case.get("target_type") or "") == "tab":
+                    if not str(binding.get("state_target") or "").strip():
+                        fake_jump_case_ids.append(case_id)
+                elif not runtime_target:
+                    fake_jump_case_ids.append(case_id)
+        checks.extend(
+            [
+                {
+                    "name": "route_closure_contract_present",
+                    "status": "pass" if files["route_closure_contract"].exists() else "fail",
+                    "message": "route-closure-contract.json should exist.",
+                },
+                {
+                    "name": "implementation_binding_manifest_present",
+                    "status": "pass" if files["implementation_map"].exists() else "fail",
+                    "message": "implementation-map.json should exist.",
+                },
+                {
+                    "name": "route_closure_cases_present",
+                    "status": "pass" if bool(closure_cases) else "fail",
+                    "message": "route closure cases should exist for route-producing controls.",
+                },
+                {
+                    "name": "route_closure_binding_complete",
+                    "status": "pass" if not unresolved_case_ids else "fail",
+                    "message": "every route closure case should bind to a runtime target or explicit internal/external path.",
+                    "details": {"unresolved_case_ids": unresolved_case_ids},
+                },
+                {
+                    "name": "route_closure_no_drift_markers",
+                    "status": "pass" if not drift_case_ids else "fail",
+                    "message": "route closure bindings should not remain isolated/fragile/legacy-only/tab drift.",
+                    "details": {"drift_case_ids": drift_case_ids},
+                },
+                {
+                    "name": "route_closure_no_fake_jump",
+                    "status": "pass" if not fake_jump_case_ids else "fail",
+                    "message": "bound route-producing controls should not degrade into fake jumps or toast-only placeholders.",
+                    "details": {"fake_jump_case_ids": fake_jump_case_ids},
+                },
+            ]
+        )
     if files["index_html"].exists():
         html_text = files["index_html"].read_text(encoding="utf-8")
         checks.extend(_check_html_contract(html_text, contract))
@@ -720,7 +964,7 @@ def freeze_prototype(project_root: Path, version: str, feature: str) -> dict[str
             "artifact_fingerprints": {
                 key: sha256_file(path)
                 for key, path in files.items()
-                if key in {"index_html", "manifest", "source_map", "prototype_brief", "theme", "navigation_map", "interaction_map", "review_json", "review_md"}
+                if key in {"index_html", "manifest", "source_map", "prototype_brief", "theme", "navigation_map", "interaction_map", "route_closure_contract", "implementation_map", "review_json", "review_md"}
             },
             "review_status": review_payload.get("overall_status", "fail"),
         }

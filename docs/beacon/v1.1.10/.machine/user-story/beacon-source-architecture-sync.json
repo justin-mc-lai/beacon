@@ -1,0 +1,437 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-source-architecture-sync",
+  "feature_slug": "beacon-source-architecture-sync",
+  "version": "v1.1.10",
+  "current_revision_id": "R1",
+  "lifecycle_status": "frozen",
+  "updated_at": "2026-03-28T14:32:09.987371+00:00",
+  "revisions": [
+    {
+      "revision_id": "R1",
+      "feature_slug": "beacon-source-architecture-sync",
+      "source_revision_id": null,
+      "reason": "draft",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:364a1ebe5321c854ff4b60a75d47763dd7154c6ad6afaf8f1f5a70c9013db90d",
+      "superseded_by": null,
+      "created_at": "2026-03-28T14:32:09.987375+00:00",
+      "frozen_at": "2026-03-28T14:32:09.988004+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    }
+  ],
+  "stories": [
+    {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "beacon-source-architecture-sync",
+      "priority": "medium",
+      "status": "frozen",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "Source Architecture Dir",
+          "text": "`docs/beacon/v1.1.10/source-architecture/` 正式存在并被纳入版本目录",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "Reading Order",
+          "text": "该目录存在 `index.md` 并提供明确阅读顺序",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "Overall Map",
+          "text": "存在整体源码架构总览，解释 `main.py / cli_factory.py / commands / utils / adapters / docs /.machine /.beacon`",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "Command Map",
+          "text": "存在子命令与模块映射文档，帮助人理解 CLI surface 与源码模块关系",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "Memory State Map",
+          "text": "存在 memory / runtime / revision / story / QA session 等状态面说明",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "Skill Prompt Map",
+          "text": "存在 skill adapters、project profile、verify orchestration、prompt/skill surfaces 的源码说明",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "Workflow Artifact Map",
+          "text": "存在 lifecycle / workflow / docs / `.machine` / `.beacon` 工件流说明",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "QA Implement Loop",
+          "text": "存在 QA / browser session / evidence / implement / technical archive / architecture feedback 回流说明",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "AC-009",
+          "kind": "ac",
+          "theme": "Human Friendly Style",
+          "text": "文档面向人类阅读，解释职责、边界、配合关系和更新点，而不是单纯文件列表",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "AC-010",
+          "kind": "ac",
+          "theme": "Sync And Gate Contract",
+          "text": "存在明确的同步契约，且 source-architecture 线进入正式 materials/gate 闭环",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "AC-011",
+          "kind": "ac",
+          "theme": "Parallel Requirement Line",
+          "text": "该 feature 具有同级别 `user-story / prd / qa/test-cases / release feedback`",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "AC-012",
+          "kind": "ac",
+          "theme": "Machine Compatibility",
+          "text": "该 feature 也生成 `.machine/user-story`、`.machine/qa/*`、`.machine/execution/*.revision.json` 等标准机器工件",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "AC-013",
+          "kind": "ac",
+          "theme": "Lifecycle Coverage",
+          "text": "文档覆盖 Beacon 生命周期与工作流，而不只覆盖 CLI 入口",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "AC-014",
+          "kind": "ac",
+          "theme": "Skill Coverage",
+          "text": "文档覆盖 memory、skill prompts、project skills、子命令、workflow、QA、implement、release 等全链路",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "AC-015",
+          "kind": "ac",
+          "theme": "Future Update Rule",
+          "text": "后续 `v1.1.10` 相关源码变更若影响结构、职责、工件流、状态流，必须同步更新源码架构文档",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — `docs/beacon/v1.1.10/source-architecture/` 正式存在并被纳入版本目录",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-001"
+          ]
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — 该目录存在 `index.md` 并提供明确阅读顺序",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-002"
+          ]
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — 存在整体源码架构总览，解释 `main.py / cli_factory.py / commands / utils / adapters / docs /.machine /.beacon`",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-003"
+          ]
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — 存在子命令与模块映射文档，帮助人理解 CLI surface 与源码模块关系",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-004"
+          ]
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — 存在 memory / runtime / revision / story / QA session 等状态面说明",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-005"
+          ]
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — 存在 skill adapters、project profile、verify orchestration、prompt/skill surfaces 的源码说明",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-006"
+          ]
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — 存在 lifecycle / workflow / docs / `.machine` / `.beacon` 工件流说明",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-007"
+          ]
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — 存在 QA / browser session / evidence / implement / technical archive / architecture feedback 回流说明",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-008"
+          ]
+        },
+        {
+          "id": "TEST-009",
+          "kind": "test",
+          "text": "Verify AC-009 — 文档面向人类阅读，解释职责、边界、配合关系和更新点，而不是单纯文件列表",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-009"
+          ]
+        },
+        {
+          "id": "TEST-010",
+          "kind": "test",
+          "text": "Verify AC-010 — 存在明确的同步契约，且 source-architecture 线进入正式 materials/gate 闭环",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-010"
+          ]
+        },
+        {
+          "id": "TEST-011",
+          "kind": "test",
+          "text": "Verify AC-011 — 该 feature 具有同级别 `user-story / prd / qa/test-cases / release feedback`",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-011"
+          ]
+        },
+        {
+          "id": "TEST-012",
+          "kind": "test",
+          "text": "Verify AC-012 — 该 feature 也生成 `.machine/user-story`、`.machine/qa/*`、`.machine/execution/*.revision.json` 等标准机器工件",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-012"
+          ]
+        },
+        {
+          "id": "TEST-013",
+          "kind": "test",
+          "text": "Verify AC-013 — 文档覆盖 Beacon 生命周期与工作流，而不只覆盖 CLI 入口",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-013"
+          ]
+        },
+        {
+          "id": "TEST-014",
+          "kind": "test",
+          "text": "Verify AC-014 — 文档覆盖 memory、skill prompts、project skills、子命令、workflow、QA、implement、release 等全链路",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-014"
+          ]
+        },
+        {
+          "id": "TEST-015",
+          "kind": "test",
+          "text": "Verify AC-015 — 后续 `v1.1.10` 相关源码变更若影响结构、职责、工件流、状态流，必须同步更新源码架构文档",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-015"
+          ]
+        }
+      ]
+    }
+  ]
+}

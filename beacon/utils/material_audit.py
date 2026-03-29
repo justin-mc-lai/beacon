@@ -52,6 +52,8 @@ def build_material_audit(project_root: Path | str, *, version: str | None = None
     tc_dir = source_root / "qa" / "test-cases"
     release_dir = source_root / "release"
     boundaries_file = source_root / "execution" / "boundaries.md"
+    project_skill_blueprint = source_root / "execution" / "project-skill-qa-evolution-blueprint.md"
+    source_arch_index = source_root / "source-architecture" / "index.md"
     summary_file = source_root / "SUMMARY.md"
 
     checks: list[dict[str, Any]] = []
@@ -140,6 +142,27 @@ def build_material_audit(project_root: Path | str, *, version: str | None = None
             },
         }
     )
+    if _parse_semver_tuple(resolved_version) >= (1, 1, 10):
+        checks.append(
+            {
+                "name": "formal_project_skill_blueprint_present",
+                "status": "pass" if project_skill_blueprint.exists() else "fail",
+                "details": {
+                    "path": str(project_skill_blueprint.relative_to(root)),
+                    "exists": project_skill_blueprint.exists(),
+                },
+            }
+        )
+        checks.append(
+            {
+                "name": "formal_source_architecture_present",
+                "status": "pass" if source_arch_index.exists() else "fail",
+                "details": {
+                    "path": str(source_arch_index.relative_to(root)),
+                    "exists": source_arch_index.exists(),
+                },
+            }
+        )
 
     release_docs = sorted(str(path.relative_to(root)) for path in release_dir.glob("*.md")) if release_dir.exists() else []
     checks.append(

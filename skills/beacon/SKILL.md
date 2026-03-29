@@ -3,7 +3,7 @@ name: beacon
 description: Use when you need Beacon's evidence-first product workflow through a standard skill package that delegates to beacon CLI commands and scripts.
 metadata:
   author: Beacon CLI
-  version: "1.1.9"
+  version: "1.1.10"
   organization: Beacon
   date: March 2026
   abstract: Standard skill package wrapper for Beacon CLI workflow, implement, review, and release operations.
@@ -70,10 +70,10 @@ If you only remember one sentence:
 
 ## Current Release Line
 
-- **Current release line**: `v1.1.9`
-- **Current package version**: `1.1.9`
-- **Latest landed implementation line**: `v1.1.9` (control / recovery / learning overlay; implemented and verified in-repo)
-- **Next planning line**: `v1.1.10` (QA confidence / closure outcome / autoresearch training loop)
+- **Current release line**: `v1.1.10`
+- **Current package version**: `1.1.10`
+- **Current landed implementation line**: `v1.1.10` (QA precision / source architecture sync / prototype route closure; implemented and verified in-repo)
+- **Previous stable line**: `v1.1.9` (control / recovery / learning overlay)
 
 ## Overview
 
@@ -101,28 +101,28 @@ It exposes Beacon through a `skills/beacon/` package layout while still delegati
 ### Start a feature lifecycle
 
 ```bash
-bash skills/beacon/scripts/run_beacon.sh workflow start "My Feature" --project . --version v1.1.9
-bash skills/beacon/scripts/run_beacon.sh think start "My Feature" --project . --version v1.1.9
-bash skills/beacon/scripts/run_beacon.sh user-story create "My Feature" --project . --version v1.1.9
-bash skills/beacon/scripts/run_beacon.sh prd create "My Feature" --project . --version v1.1.9
-bash skills/beacon/scripts/run_beacon.sh test-case create "My Feature" --project . --version v1.1.9
+bash skills/beacon/scripts/run_beacon.sh workflow start "My Feature" --project . --version v1.1.10
+bash skills/beacon/scripts/run_beacon.sh think start "My Feature" --project . --version v1.1.10
+bash skills/beacon/scripts/run_beacon.sh user-story create "My Feature" --project . --version v1.1.10
+bash skills/beacon/scripts/run_beacon.sh prd create "My Feature" --project . --version v1.1.10
+bash skills/beacon/scripts/run_beacon.sh test-case create "My Feature" --project . --version v1.1.10
 ```
 
 ### Ask Beacon what comes next
 
 ```bash
-bash skills/beacon/scripts/run_beacon.sh status --board --project-root . --version v1.1.9
-bash skills/beacon/scripts/run_beacon.sh help --project-root . --feature "My Feature" --version v1.1.9 --json
+bash skills/beacon/scripts/run_beacon.sh status --board --project-root . --version v1.1.10
+bash skills/beacon/scripts/run_beacon.sh help --project-root . --feature "My Feature" --version v1.1.10 --json
 ```
 
 ### Run implementation and closure
 
 ```bash
 bash skills/beacon/scripts/run_beacon.sh implement list-runners --json
-bash skills/beacon/scripts/run_beacon.sh implement run "My Feature" --project . --version v1.1.9 --runner auto --json
-bash skills/beacon/scripts/run_beacon.sh qa run "My Feature" --project . --version v1.1.9 --json
-bash skills/beacon/scripts/run_beacon.sh review quality "My Feature" --project . --version v1.1.9 --json
-bash skills/beacon/scripts/run_beacon.sh gate check release --project-root . --version v1.1.9 --json
+bash skills/beacon/scripts/run_beacon.sh implement run "My Feature" --project . --version v1.1.10 --runner auto --json
+bash skills/beacon/scripts/run_beacon.sh qa run "My Feature" --project . --version v1.1.10 --json
+bash skills/beacon/scripts/run_beacon.sh review quality "My Feature" --project . --version v1.1.10 --json
+bash skills/beacon/scripts/run_beacon.sh gate check release --project-root . --version v1.1.10 --json
 ```
 
 ## Workflow Model
@@ -149,7 +149,7 @@ Supporting surfaces:
 
 ## Current Product Surfaces
 
-Current v1.1.9 release-line surfaces:
+Current v1.1.10 release-line surfaces:
 
 1. requirement package generation
    - `workflow / think / user-story / prd / test-case`
@@ -209,11 +209,11 @@ Use this skill when:
 
 ## Recommended Reading Order
 
-1. [Summary](../../docs/beacon/v1.1.9/SUMMARY.md)
-2. [Execution index](../../docs/beacon/v1.1.9/execution/index.md)
-3. [Architecture blueprint](../../docs/beacon/v1.1.9/execution/architecture-blueprint.md)
-4. [Closure loop blueprint](../../docs/beacon/v1.1.9/execution/closure-loop-blueprint.md)
-5. [Release note](../../docs/beacon/v1.1.9/release/v1.1.9.md)
+1. [Summary](../../docs/beacon/v1.1.10/SUMMARY.md)
+2. [Execution index](../../docs/beacon/v1.1.10/execution/index.md)
+3. [Architecture blueprint](../../docs/beacon/v1.1.10/execution/architecture-blueprint.md)
+4. [Source architecture index](../../docs/beacon/v1.1.10/source-architecture/index.md)
+5. [Release note](../../docs/beacon/v1.1.10/release/v1.1.10.md)
 
 If you are working on the latest landed closure line, then read:
 
@@ -231,13 +231,13 @@ If you are planning the next QA precision line, then read:
 
 ## How to Use
 
-1. Read the current version package under [`../../docs/beacon/v1.1.9/`](../../docs/beacon/v1.1.9/SUMMARY.md)
+1. Read the current version package under [`../../docs/beacon/v1.1.10/`](../../docs/beacon/v1.1.10/SUMMARY.md)
 2. Use the command docs hub when you need the right level of operator guidance:
 
-- [Summary](../../docs/beacon/v1.1.9/SUMMARY.md)
-- [Execution index](../../docs/beacon/v1.1.9/execution/index.md)
-- [Release note](../../docs/beacon/v1.1.9/release/v1.1.9.md)
-- [Architecture blueprint](../../docs/beacon/v1.1.9/execution/architecture-blueprint.md)
+- [Summary](../../docs/beacon/v1.1.10/SUMMARY.md)
+- [Execution index](../../docs/beacon/v1.1.10/execution/index.md)
+- [Release note](../../docs/beacon/v1.1.10/release/v1.1.10.md)
+- [Architecture blueprint](../../docs/beacon/v1.1.10/execution/architecture-blueprint.md)
 - [Closure loop blueprint](../../docs/beacon/v1.1.9/execution/closure-loop-blueprint.md)
 3. Use the wrapper script:
 

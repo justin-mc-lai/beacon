@@ -43,7 +43,7 @@ def test_init_project_mode_takeover_should_write_onboarding_artifacts(tmp_path: 
     assert onboarding_state["docs_version"] == "v1.1.8"
     assert onboarding_state["next_recommended_stage"] == "architecture-current-state"
     assert payload["docs_version"] == "v1.1.8"
-    assert payload["runtime_version"] == "v1.1.8"
+    assert payload["runtime_version"] == "v1.1.10"
 
 
 def test_init_auto_should_use_project_docs_version_but_runtime_v118_for_context(tmp_path: Path):

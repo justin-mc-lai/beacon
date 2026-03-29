@@ -1,4 +1,4 @@
-"""Scenario/exhaustiveness scoring helpers for Beacon v1.1.9 QA."""
+"""Scenario/exhaustiveness scoring helpers for Beacon v1.1.10 QA."""
 
 from __future__ import annotations
 

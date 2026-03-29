@@ -93,7 +93,7 @@ def test_resolve_runtime_version_auto_should_follow_active_toolkit_version(tmp_p
         },
     )
 
-    assert resolve_runtime_version(tmp_path, "auto") == "v1.1.8"
+    assert resolve_runtime_version(tmp_path, "auto") == "v1.1.10"
 
 
 def test_machine_surface_should_follow_toolkit_version_not_delivery_version():

@@ -54,6 +54,28 @@ Suggested embedding:
 }
 ```
 
+### Field derivation anchors
+
+`scenario-result-v2` should be treated as an additive extension of the existing v1.1.9 execution output.
+
+Recommended source mapping:
+
+| v1.1.10 field | Primary source | Notes |
+| --- | --- | --- |
+| `status` | existing `tc_results[].status` / `per_item_results[].status` | execution fact, not release truth |
+| `scenario_id` | existing story-scenario-map / scenario execution id | keep stable across audit linkage |
+| `tc_id` / `ac_id` | existing QA matrix + story trace | requirement anchor |
+| `browser_evidence_pack_ref` | existing browser evidence pack ref | evidence anchor |
+| `replay_present` | derived from existing replay ref/presence | replay anchor |
+| `closure_outcome` | new v1.1.10 judgement output | closure anchor |
+| `confidence_raw` | new scoring output from judge signals | judgement anchor |
+| `confidence_calibrated` | new calibration layer output | must not exist without raw score provenance |
+| `requires_human_review` | derived from abstain threshold + closure state | operator anchor |
+
+Boundary rule:
+
+> v1.1.10 may add judgement semantics, but it must not erase the underlying execution/evidence facts it is judging.
+
 ### Enums
 
 #### `status`
@@ -127,6 +149,18 @@ Suggested embedding:
 - `blocked`
 - `failed`
 
+### Derivation rules
+
+`ac-closure-report` must be computed, not hand-authored.
+
+At minimum it should aggregate:
+
+- scenario family coverage
+- replay completeness
+- evidence sufficiency
+- calibrated confidence floor
+- open closure outcomes
+
 ---
 
 ## 3. `feature-qa-scorecard`
@@ -154,6 +188,23 @@ Suggested embedding:
   "release_ready": false
 }
 ```
+
+### Interpretation boundary
+
+`feature-qa-scorecard` is an operator summary artifact.
+
+It is allowed to summarize:
+
+- closure counts
+- confidence floor / average
+- review counts
+- false-complete risk
+
+It is not allowed to invent facts absent from:
+
+- scenario results
+- AC closure reports
+- audit labels
 
 ---
 
@@ -186,6 +237,12 @@ Suggested embedding:
 - `spec_gap`
 - `runner_gap`
 - `flake`
+
+### Truth rule
+
+`qa-audit-label` outranks automatic judgement for benchmark construction.
+
+If an audit label disagrees with the automatic result, the corpus should record the disagreement rather than mutating history.
 
 ---
 
@@ -239,6 +296,16 @@ Suggested embedding:
 }
 ```
 
+### Calibration boundary
+
+This model calibrates risk bands.
+
+It does not replace:
+
+- evidence sufficiency checks
+- replay requirements
+- open-outcome blocking
+
 ---
 
 ## 7. Release decision policy
@@ -285,3 +352,15 @@ v1.1.10 contracts must extend—not break—v1.1.9:
 The contract rule is:
 
 > **additive evolution first, destructive schema break never by default**.
+
+## 9. Source-of-truth hierarchy
+
+When fields conflict, prefer the following order:
+
+1. requirement trace artifact
+2. scenario execution/evidence artifact
+3. replay/evidence completeness artifact
+4. sampled audit label
+5. calibrated confidence summary
+
+Confidence should never override a stronger lower-layer fact.

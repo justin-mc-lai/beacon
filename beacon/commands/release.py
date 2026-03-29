@@ -324,12 +324,24 @@ def scorecard(
     typer.echo(
         f"QA: {payload['qa']['status']} evidence_done={payload['qa']['evidence_done']} mode={payload['qa']['execution_mode']}"
     )
+    if payload["qa"].get("project_profile_gate_status"):
+        typer.echo(
+            f"Project QA Gate: status={payload['qa'].get('project_profile_gate_status')} profile={payload['qa'].get('project_profile_id') or '-'}"
+        )
     exhaustiveness = payload.get("exhaustiveness", {})
     if isinstance(exhaustiveness, dict) and exhaustiveness:
         typer.echo(
             f"Exhaustiveness: status={exhaustiveness.get('status')} score={exhaustiveness.get('score')} threshold={exhaustiveness.get('threshold')}"
         )
         typer.echo(f"Missing axes: {', '.join(exhaustiveness.get('missing_axes', [])) or '-'}")
+    feature_scorecard = payload.get("feature_qa_scorecard", {})
+    if isinstance(feature_scorecard, dict) and feature_scorecard:
+        typer.echo(
+            "Feature QA Scorecard: "
+            f"confidence_min={feature_scorecard.get('release_confidence_min')} "
+            f"review_required={feature_scorecard.get('review_required_count')} "
+            f"needs_replay={feature_scorecard.get('needs_replay_count')}"
+        )
     decision_summary = payload.get("learning_scorecard", {}).get("decision_summary", {}) if isinstance(payload.get("learning_scorecard"), dict) else {}
     typer.echo(
         "Learning scorecard: "

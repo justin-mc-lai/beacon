@@ -58,6 +58,26 @@ def _matrix_files(project_root: Path, version: str, feature: str | None = None) 
     return sorted(unique.values(), key=lambda p: p.name)
 
 
+def _implementation_slugs(project_root: Path, version: str, feature: str | None = None) -> set[str]:
+    state_dir = project_root / ".beacon" / "state"
+    impl_markers = list(state_dir.glob("implementation-*.json")) if state_dir.exists() else []
+    marker_slugs = {p.stem.replace("implementation-", "", 1) for p in impl_markers}
+
+    # Older release lines may only materialize implementation evidence under
+    # docs/.machine execution archives rather than .beacon/state markers.
+    machine_exec_dir = project_root / "docs" / "beacon" / version / ".machine" / "execution"
+    archive_slugs = {
+        p.stem.replace("technical-implementation-", "", 1)
+        for p in machine_exec_dir.glob("technical-implementation-*.json")
+        if p.is_file()
+    } if machine_exec_dir.exists() else set()
+
+    combined = marker_slugs | archive_slugs
+    if feature:
+        combined = {slug for slug in combined if slug == feature}
+    return combined
+
+
 def compute_coverage_metrics(
     project_root: Path,
     *,
@@ -72,11 +92,7 @@ def compute_coverage_metrics(
     planned_story = len(story_files)
     story_slugs = {p.stem for p in story_files}
 
-    implementation_dir = project_root / ".beacon" / "state"
-    impl_markers = list(implementation_dir.glob("implementation-*.json")) if implementation_dir.exists() else []
-    impl_slugs = {p.stem.replace("implementation-", "", 1) for p in impl_markers}
-    if feature_filter:
-        impl_slugs = {x for x in impl_slugs if x == feature_filter}
+    impl_slugs = _implementation_slugs(project_root, ver, feature=feature_filter or None)
     implemented_story = len(story_slugs & impl_slugs) if story_slugs else 0
 
     matrix_files = _matrix_files(project_root, ver, feature=feature_filter or None)

@@ -5,7 +5,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-CURRENT_RELEASE = "v1.1.9"
+CURRENT_RELEASE = "v1.1.10"
 
 
 def _section(text: str, start_heading: str, end_heading: str | None = None) -> str:

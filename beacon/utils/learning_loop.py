@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 from typing import Any
 
+from beacon.utils.qa_precision import refresh_qa_calibration_model
 from beacon.utils.runtime import now_iso, read_json, write_json
 from beacon.utils.story_state import feature_slug
 from beacon.utils.v115_delivery import ensure_eval_lab_skeleton
@@ -279,21 +280,30 @@ def refresh_benchmark_corpus(project_root: Path) -> dict[str, Any]:
     ensure_evo_skeleton(project_root)
     rewrite_inputs = _collect_requirement_rewrite_inputs(project_root)
     debug_issues: list[dict[str, Any]] = []
+    qa_audit_inputs: list[dict[str, Any]] = []
     issues_root = project_root / ".beacon" / "debug" / "issues"
     if issues_root.exists():
         for path in sorted(issues_root.glob("*.json")):
             payload = _read_json(path)
             if payload:
                 debug_issues.append({**payload, "path": str(path.relative_to(project_root))})
+    audits_root = project_root / ".beacon" / "state" / "qa-audits"
+    if audits_root.exists():
+        for path in sorted(audits_root.glob("*/*.json")):
+            payload = _read_json(path)
+            if payload:
+                qa_audit_inputs.append({**payload, "path": str(path.relative_to(project_root)), "run_id": path.parent.name})
 
     corpus = {
         "schema_version": "1.0",
         "generated_at": now_iso(),
         "technical_archive_inputs": rewrite_inputs,
         "debug_issue_inputs": debug_issues,
+        "qa_audit_inputs": qa_audit_inputs,
         "counts": {
             "technical_archive_inputs": len(rewrite_inputs),
             "debug_issue_inputs": len(debug_issues),
+            "qa_audit_inputs": len(qa_audit_inputs),
         },
     }
     write_json(_benchmark_corpus_path(project_root), corpus)
@@ -394,6 +404,41 @@ def _build_learning_candidates(project_root: Path) -> list[dict[str, Any]]:
             )
             bucket["benchmark_refs"].append(str(path.relative_to(project_root)))
             bucket["recurrence_count"] += int(payload.get("count", 1) or 1)
+
+    audits_root = project_root / ".beacon" / "state" / "qa-audits"
+    if audits_root.exists():
+        for path in sorted(audits_root.glob("*/*.json")):
+            payload = _read_json(path)
+            if not payload:
+                continue
+            label = str(payload.get("label") or "").strip()
+            feature = str(payload.get("feature_slug") or "").strip()
+            benchmark_ref = str(path.relative_to(project_root))
+            if label == "false_pass":
+                candidate = "Tighten QA confidence/replay/evidence policy for false-pass samples."
+                bucket = _bucket("qa_confidence_policy", candidate)
+            elif label == "false_block":
+                candidate = "Reduce false-block rate by improving review thresholds and evidence sufficiency policy."
+                bucket = _bucket("qa_evidence_sufficiency_policy", candidate)
+            elif label in {"runner_gap", "flake"}:
+                candidate = "Adjust QA evidence and flake-handling policy for unstable runner samples."
+                bucket = _bucket("qa_evidence_sufficiency_policy", candidate)
+            else:
+                candidate = f"Review QA audit label handling for `{label}` samples."
+                bucket = _bucket("qa_confidence_policy", candidate)
+            bucket["sources"].append(
+                {
+                    "source_type": "qa_audit",
+                    "label": label,
+                    "feature": feature,
+                    "path": benchmark_ref,
+                }
+            )
+            bucket["benchmark_refs"].append(benchmark_ref)
+            if feature:
+                bucket["features"].add(feature)
+            bucket["recurrence_count"] += 1
+            bucket["verification_support"] += 1
 
     rows: list[dict[str, Any]] = []
     for bucket in buckets.values():
@@ -589,7 +634,13 @@ def _high_risk_candidate(candidate: dict[str, Any]) -> bool:
 
 def _candidate_priority(candidate: dict[str, Any]) -> tuple[int, int, int, str]:
     category = str(candidate.get("category") or "")
-    category_rank = {"debug_recovery_policy": 0, "requirement_rewrite": 1, "execution_baseline": 2}.get(category, 9)
+    category_rank = {
+        "qa_confidence_policy": 0,
+        "qa_evidence_sufficiency_policy": 1,
+        "debug_recovery_policy": 2,
+        "requirement_rewrite": 3,
+        "execution_baseline": 4,
+    }.get(category, 9)
     risk_rank = 0 if _high_risk_candidate(candidate) else 1
     score = int(candidate.get("scorecard", {}).get("total_score", 0) or 0)
     return (risk_rank, category_rank, -score, str(candidate.get("candidate_id") or ""))
@@ -599,6 +650,9 @@ def _supporting_metrics(*, selected: list[dict[str, Any]], budget: dict[str, int
     if not selected:
         return {
             "false_complete_rate": 1.0,
+            "false_block_rate": 1.0,
+            "human_audit_agreement": 0.0,
+            "confidence_calibration_error": 1.0,
             "evidence_coverage": 0.0,
             "recovery_success_rate": 0.0,
             "operator_load": 0.0,
@@ -624,8 +678,14 @@ def _supporting_metrics(*, selected: list[dict[str, Any]], budget: dict[str, int
         }
     )
     command_count = min(int(budget.get("max_command_count", 0) or 0), max(1, len(selected) + 2))
+    qa_audit_refs = [ref for ref in evidence_refs if "/qa-audits/" in ref]
+    false_block_samples = len([item for item in selected if str(item.get("category") or "") == "qa_evidence_sufficiency_policy"])
+    calibration_candidates = len([item for item in selected if str(item.get("category") or "") == "qa_confidence_policy"])
     return {
         "false_complete_rate": round(len(unresolved) / float(len(risky) or 1), 4),
+        "false_block_rate": round(false_block_samples / float(len(selected) or 1), 4),
+        "human_audit_agreement": round(len(qa_audit_refs) / float(len(selected) or 1), 4),
+        "confidence_calibration_error": round(1.0 / float(max(1, calibration_candidates + len(qa_audit_refs))), 4),
         "evidence_coverage": round(len(evidence_refs) / float(max(1, int(budget.get("max_evidence_budget", len(evidence_refs)) or 1))), 4),
         "recovery_success_rate": round(len(debug_good) / float(len(debug_cases) or 1), 4),
         "operator_load": round(len(selected) / float(max(1, int(budget.get("max_iterations", len(selected)) or 1))), 4),
@@ -723,7 +783,7 @@ def run_evo_experiment(
     previous_overall = float(previous.get("overall_score")) if previous and previous.get("overall_score") is not None else None
     verdict = _experiment_verdict(current_score=main_score, previous_score=previous_main, metrics=metrics)
     run_id = f"evo-{now_iso().replace(':', '').replace('-', '').replace('+00:00', 'Z')}"
-    label = str(experiment_label or "Beacon v1.1.9 evo harness").strip()
+    label = str(experiment_label or "Beacon v1.1.10 evo harness").strip()
     payload = {
         "schema_version": "1.0",
         "run_id": run_id,
@@ -932,6 +992,7 @@ def write_evo_contract_docs(project_root: Path, *, version: str) -> dict[str, st
 
 def refresh_learning_loop(project_root: Path) -> dict[str, Any]:
     corpus = refresh_benchmark_corpus(project_root)
+    calibration = refresh_qa_calibration_model(project_root)
     decision_engine = refresh_keep_discard_engine(project_root)
     baseline = refresh_execution_baseline(project_root)
     docs = {}
@@ -952,9 +1013,11 @@ def refresh_learning_loop(project_root: Path) -> dict[str, Any]:
         "counts": {
             "technical_archive_inputs": corpus.get("counts", {}).get("technical_archive_inputs", 0),
             "debug_issue_inputs": corpus.get("counts", {}).get("debug_issue_inputs", 0),
+            "qa_audit_inputs": corpus.get("counts", {}).get("qa_audit_inputs", 0),
             "baseline_recommendations": len(baseline.get("recommendations", [])),
             "keep_decisions": decision_engine.get("counts", {}).get("keep", 0),
             "review_decisions": decision_engine.get("counts", {}).get("review", 0),
             "discard_decisions": decision_engine.get("counts", {}).get("discard", 0),
         },
+        "qa_calibration_model": calibration,
     }

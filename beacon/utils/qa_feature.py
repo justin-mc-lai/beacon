@@ -1,4 +1,4 @@
-"""Feature-aware QA planning and writeback helpers for Beacon v1.1.9."""
+"""Feature-aware QA planning and writeback helpers for Beacon v1.1.10."""
 
 from __future__ import annotations
 
@@ -10,6 +10,13 @@ from beacon.commands.auto_test import LAYER_NAMES
 from beacon.utils.artifact_paths import qa_matrix_candidates
 from beacon.utils.artifact_update_obligations import blocking_obligations, load_artifact_update_obligations
 from beacon.utils.qa9 import QA9_TYPES, normalize_qa_type
+from beacon.utils.qa_precision import (
+    DEFAULT_AUTO_ACCEPT_THRESHOLD,
+    DEFAULT_REVIEW_THRESHOLD,
+    load_qa_calibration_model,
+    write_feature_qa_ac_closure,
+    write_feature_qa_scorecard,
+)
 from beacon.utils.revision_state import load_revision_state
 from beacon.utils.runtime import now_iso, read_json, write_json
 from beacon.utils.story_scenarios import expand_story_scenarios, scenario_map_path as docs_story_scenario_map_path
@@ -589,6 +596,310 @@ def collect_verification_writeback(
             }
         )
     return sorted(verified), sorted(failed), per_item
+
+
+def _clamp_confidence(value: float) -> float:
+    return round(max(0.0, min(1.0, float(value))), 4)
+
+
+def _confidence_band(calibrated: float, *, auto_accept_threshold: float, review_threshold: float) -> str:
+    if calibrated >= auto_accept_threshold:
+        return "high"
+    if calibrated >= review_threshold:
+        return "medium"
+    return "low"
+
+
+def _evidence_sufficiency(item: dict[str, Any]) -> str:
+    browser_required = bool(item.get("browser_required"))
+    replay_required = bool(item.get("replay_required"))
+    has_browser_pack = bool(str(item.get("browser_evidence_pack_ref") or "").strip())
+    has_replay = bool(str(item.get("replay_ref") or "").strip())
+    has_refs = bool(item.get("evidence_ref")) or has_browser_pack or has_replay
+    if browser_required:
+        if has_browser_pack and (not replay_required or has_replay):
+            return "strong"
+        if has_browser_pack or has_replay:
+            return "partial"
+        return "missing"
+    return "strong" if has_refs else "weak"
+
+
+def _closure_outcome(item: dict[str, Any], *, evidence_sufficiency: str) -> str:
+    status = str(item.get("status") or "pending").strip().lower()
+    browser_required = bool(item.get("browser_required"))
+    replay_required = bool(item.get("replay_required"))
+    has_replay = bool(str(item.get("replay_ref") or "").strip())
+    has_browser_pack = bool(str(item.get("browser_evidence_pack_ref") or "").strip())
+    if browser_required and replay_required and not has_replay:
+        return "needs_replay"
+    if browser_required and not has_browser_pack:
+        return "needs_more_evidence"
+    if status == "passed":
+        return "accepted"
+    if status == "failed":
+        return "implementation_reopened"
+    if status == "blocked":
+        return "review_required" if evidence_sufficiency in {"strong", "partial"} else "needs_more_evidence"
+    if status == "review_required":
+        return "review_required"
+    return "review_required"
+
+
+def _root_cause_type(*, status: str, closure_outcome: str) -> str:
+    if closure_outcome in {"needs_more_evidence", "needs_replay"}:
+        return "evidence_gap"
+    if closure_outcome == "requirement_rewrite_required":
+        return "spec_gap"
+    if closure_outcome in {"runner_issue", "flake_quarantined"}:
+        return "runner_gap" if closure_outcome == "runner_issue" else "flake"
+    if status == "failed" or closure_outcome in {"implementation_reopened", "bug_filed"}:
+        return "implementation_gap"
+    return "none"
+
+
+def _judge_signals(item: dict[str, Any], *, evidence_sufficiency: str) -> dict[str, float]:
+    status = str(item.get("status") or "pending").strip().lower()
+    status_score = {
+        "passed": 1.0,
+        "failed": 0.15,
+        "blocked": 0.35,
+        "review_required": 0.45,
+        "pending": 0.25,
+    }.get(status, 0.25)
+    evidence_score = {
+        "strong": 1.0,
+        "partial": 0.7,
+        "weak": 0.45,
+        "missing": 0.1,
+    }.get(evidence_sufficiency, 0.25)
+    replay_required = bool(item.get("replay_required"))
+    replay_present = bool(str(item.get("replay_ref") or "").strip())
+    replay_score = 1.0 if (not replay_required or replay_present) else 0.0
+    trace_score = 1.0 if str(item.get("ac_id") or "").strip() and str(item.get("tc_id") or "").strip() else 0.5
+    flake_penalty = 0.0
+    return {
+        "status_score": round(status_score, 4),
+        "evidence_score": round(evidence_score, 4),
+        "replay_score": round(replay_score, 4),
+        "trace_score": round(trace_score, 4),
+        "flake_penalty": round(flake_penalty, 4),
+    }
+
+
+def _calibrated_confidence(raw: float, calibration_model: dict[str, Any]) -> float:
+    bins = calibration_model.get("bins") if isinstance(calibration_model.get("bins"), list) else []
+    for item in bins:
+        if not isinstance(item, dict):
+            continue
+        lower = float(item.get("lower") or 0.0)
+        upper = float(item.get("upper") or 1.0)
+        if lower <= raw <= upper:
+            return _clamp_confidence(float(item.get("empirical_accuracy") or raw))
+    return _clamp_confidence(raw)
+
+
+def build_feature_qa_precision_artifacts(
+    project_root: Path,
+    *,
+    feature: str,
+    run_id: str,
+    plan: dict[str, Any],
+    per_item_results: list[dict[str, Any]],
+    project_profile_gate: dict[str, Any] | None = None,
+) -> tuple[list[dict[str, Any]], dict[str, Any], dict[str, Any], Path, Path]:
+    calibration_model = load_qa_calibration_model(project_root)
+    risk_bands = calibration_model.get("risk_bands") if isinstance(calibration_model.get("risk_bands"), dict) else {}
+    auto_accept_threshold = float(risk_bands.get("auto_accept") or DEFAULT_AUTO_ACCEPT_THRESHOLD)
+    review_threshold = float(risk_bands.get("review_required") or DEFAULT_REVIEW_THRESHOLD)
+
+    scenario_results: list[dict[str, Any]] = []
+    for item in per_item_results:
+        if not isinstance(item, dict):
+            continue
+        evidence_sufficiency = _evidence_sufficiency(item)
+        closure_outcome = _closure_outcome(item, evidence_sufficiency=evidence_sufficiency)
+        judge_signals = _judge_signals(item, evidence_sufficiency=evidence_sufficiency)
+        raw = _clamp_confidence(
+            (
+                float(judge_signals["status_score"])
+                + float(judge_signals["evidence_score"])
+                + float(judge_signals["replay_score"])
+                + float(judge_signals["trace_score"])
+            )
+            / 4.0
+            - float(judge_signals["flake_penalty"])
+        )
+        calibrated = _calibrated_confidence(raw, calibration_model)
+        confidence_band = _confidence_band(
+            calibrated,
+            auto_accept_threshold=auto_accept_threshold,
+            review_threshold=review_threshold,
+        )
+        requires_human_review = closure_outcome in {
+            "review_required",
+            "needs_more_evidence",
+            "needs_replay",
+            "needs_requirement_clarification",
+        } or (review_threshold <= calibrated < auto_accept_threshold)
+        status = str(item.get("status") or "pending").strip().lower()
+        scenario_results.append(
+            {
+                "scenario_id": str(item.get("scenario_id") or item.get("tc_id") or "").strip(),
+                "tc_id": str(item.get("tc_id") or "").strip(),
+                "source_tc_id": str(item.get("source_tc_id") or item.get("tc_id") or "").strip(),
+                "ac_id": str(item.get("ac_id") or "").strip(),
+                "feature_slug": feature_slug(feature),
+                "scenario_family": str(item.get("scenario_family") or "").strip(),
+                "status": "review_required" if requires_human_review and status == "blocked" else status,
+                "closure_outcome": closure_outcome,
+                "confidence_raw": raw,
+                "confidence_calibrated": calibrated,
+                "confidence_band": confidence_band,
+                "requires_human_review": requires_human_review,
+                "evidence_sufficiency": evidence_sufficiency,
+                "root_cause_type": _root_cause_type(status=status, closure_outcome=closure_outcome),
+                "browser_required": bool(item.get("browser_required")),
+                "replay_required": bool(item.get("replay_required")),
+                "replay_present": bool(str(item.get("replay_ref") or "").strip()),
+                "browser_evidence_pack_ref": str(item.get("browser_evidence_pack_ref") or "").strip(),
+                "judge_signals": judge_signals,
+                "evidence_ref": item.get("evidence_ref") if isinstance(item.get("evidence_ref"), list) else [],
+            }
+        )
+
+    required_by_ac: dict[str, list[str]] = {}
+    story_rows = plan.get("story_scenarios", {}).get("stories") if isinstance(plan.get("story_scenarios"), dict) else []
+    for row in story_rows if isinstance(story_rows, list) else []:
+        if not isinstance(row, dict):
+            continue
+        ac_id = str(row.get("ac_id") or "").strip()
+        if ac_id:
+            required_by_ac[ac_id] = [str(item) for item in (row.get("required_families") or []) if str(item).strip()]
+
+    ac_reports: list[dict[str, Any]] = []
+    ac_ids = sorted({str(item.get("ac_id") or "").strip() for item in scenario_results if str(item.get("ac_id") or "").strip()})
+    for ac_id in ac_ids:
+        ac_results = [item for item in scenario_results if str(item.get("ac_id") or "").strip() == ac_id]
+        required_families = required_by_ac.get(ac_id, [])
+        passed_families = sorted(
+            {
+                str(item.get("scenario_family") or "").strip()
+                for item in ac_results
+                if bool(item.get("browser_required")) and str(item.get("closure_outcome") or "") == "accepted"
+            }
+        )
+        missing_replay = [
+            str(item.get("scenario_id") or "")
+            for item in ac_results
+            if bool(item.get("replay_required")) and not bool(item.get("replay_present"))
+        ]
+        open_outcomes = sorted(
+            {
+                str(item.get("closure_outcome") or "").strip()
+                for item in ac_results
+                if str(item.get("closure_outcome") or "").strip() not in {"accepted"}
+            }
+        )
+        missing_required_families = [family for family in required_families if family not in passed_families]
+        confidences = [float(item.get("confidence_calibrated") or 0.0) for item in ac_results]
+        closure_status = "accepted"
+        blocking_reasons: list[str] = []
+        if any(str(item.get("closure_outcome") or "") in {"implementation_reopened", "bug_filed"} for item in ac_results):
+            closure_status = "failed"
+            blocking_reasons.append("implementation_reopened")
+        elif missing_replay or any(outcome in {"needs_more_evidence", "needs_replay"} for outcome in open_outcomes):
+            closure_status = "blocked"
+            if missing_replay:
+                blocking_reasons.append("missing_replay")
+        elif missing_required_families:
+            closure_status = "blocked"
+            blocking_reasons.append("required_scenario_family_missing")
+        elif any(bool(item.get("requires_human_review")) for item in ac_results):
+            closure_status = "review_required"
+            blocking_reasons.append("human_review_required")
+        ac_reports.append(
+            {
+                "ac_id": ac_id,
+                "feature_slug": feature_slug(feature),
+                "required_scenario_families": required_families,
+                "passed_scenario_families": passed_families,
+                "required_replay_scenarios": [
+                    str(item.get("scenario_id") or "")
+                    for item in ac_results
+                    if bool(item.get("replay_required"))
+                ],
+                "missing_replay_scenarios": missing_replay,
+                "scenario_ids": [str(item.get("scenario_id") or "") for item in ac_results],
+                "closure_status": closure_status,
+                "confidence_min": round(min(confidences), 4) if confidences else 0.0,
+                "confidence_avg": round(sum(confidences) / float(len(confidences) or 1), 4),
+                "open_outcomes": open_outcomes,
+                "blocking_reasons": blocking_reasons + missing_required_families,
+            }
+        )
+
+    ac_closure_payload = {
+        "schema_version": "1.0",
+        "feature": feature,
+        "feature_slug": feature_slug(feature),
+        "run_id": run_id,
+        "generated_at": now_iso(),
+        "reports": ac_reports,
+    }
+    ac_closure_path = write_feature_qa_ac_closure(project_root, feature=feature, payload=ac_closure_payload)
+
+    project_profile_gate = project_profile_gate if isinstance(project_profile_gate, dict) else {}
+    review_required_count = len([item for item in scenario_results if bool(item.get("requires_human_review"))])
+    needs_replay_count = len([item for item in scenario_results if str(item.get("closure_outcome") or "") == "needs_replay"])
+    unresolved_closure_outcomes = sorted(
+        {
+            str(item.get("closure_outcome") or "").strip()
+            for item in scenario_results
+            if str(item.get("closure_outcome") or "").strip() not in {"accepted"}
+        }
+    )
+    calibrated_confidences = [float(item.get("confidence_calibrated") or 0.0) for item in scenario_results]
+    release_confidence_min = round(min(calibrated_confidences), 4) if calibrated_confidences else 0.0
+    release_confidence_avg = round(sum(calibrated_confidences) / float(len(calibrated_confidences) or 1), 4)
+    scenario_total = len(scenario_results)
+    scenario_passed = len([item for item in scenario_results if str(item.get("closure_outcome") or "") == "accepted"])
+    false_complete_risk = round(
+        max(
+            1.0 - release_confidence_avg,
+            float(len(unresolved_closure_outcomes)) / float(scenario_total or 1),
+        ),
+        4,
+    )
+    project_gate_status = str(project_profile_gate.get("status") or "not_configured")
+    feature_scorecard_payload = {
+        "schema_version": "1.0",
+        "feature": feature,
+        "feature_slug": feature_slug(feature),
+        "run_id": run_id,
+        "ac_total": len(ac_reports),
+        "ac_accepted": len([item for item in ac_reports if str(item.get("closure_status") or "") == "accepted"]),
+        "scenario_total": scenario_total,
+        "scenario_passed": scenario_passed,
+        "release_confidence_min": release_confidence_min,
+        "release_confidence_avg": release_confidence_avg,
+        "review_required_count": review_required_count,
+        "needs_replay_count": needs_replay_count,
+        "false_complete_risk": false_complete_risk,
+        "unresolved_closure_outcomes": unresolved_closure_outcomes,
+        "project_profile_gate_status": project_gate_status,
+        "project_profile_id": str(project_profile_gate.get("profile_id") or ""),
+        "release_ready": (
+            bool(ac_reports)
+            and all(str(item.get("closure_status") or "") == "accepted" for item in ac_reports)
+            and review_required_count == 0
+            and needs_replay_count == 0
+            and release_confidence_min >= auto_accept_threshold
+            and project_gate_status in {"pass", "not_configured"}
+        ),
+    }
+    feature_scorecard_path = write_feature_qa_scorecard(project_root, feature=feature, payload=feature_scorecard_payload)
+    return scenario_results, ac_closure_payload, feature_scorecard_payload, ac_closure_path, feature_scorecard_path
 
 
 def writeback_feature_matrix_evidence(

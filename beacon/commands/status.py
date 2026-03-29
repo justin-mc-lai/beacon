@@ -153,9 +153,17 @@ def _status_impl(
         typer.echo(
             f"- release.qa: {release_summary.get('qa_status')} ({release_summary.get('qa_execution_mode')}, evidence_done={release_summary.get('qa_evidence_done')})"
         )
+        if release_summary.get("qa_project_profile_gate_status") and release_summary.get("qa_project_profile_gate_status") != "not_configured":
+            typer.echo(
+                f"- release.project_gate: {release_summary.get('qa_project_profile_gate_status')} ({release_summary.get('qa_project_profile_id') or '-'})"
+            )
         if release_summary.get("exhaustiveness_status"):
             typer.echo(
                 f"- release.exhaustiveness: {release_summary.get('exhaustiveness_status')} ({release_summary.get('exhaustiveness_score')})"
+            )
+        if release_summary.get("release_confidence_min") is not None:
+            typer.echo(
+                f"- release.confidence: min={release_summary.get('release_confidence_min')} avg={release_summary.get('release_confidence_avg')} review={release_summary.get('review_required_count')} replay={release_summary.get('needs_replay_count')}"
             )
         typer.echo(
             f"- release.learning: {release_summary.get('main_kpi')}={release_summary.get('main_kpi_score')} keep/review/discard={release_summary.get('decision_keep')}/{release_summary.get('decision_review')}/{release_summary.get('decision_discard')}"
