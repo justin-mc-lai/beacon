@@ -19,7 +19,8 @@
 15. `./architecture-blueprint.md`
 16. `../source-architecture/index.md`
 17. `./qa-confidence-implementation-phasing.md`
-18. `../release/v1.1.10.md`
+18. `./runtime-evidence-tracking-policy.md`
+19. `../release/v1.1.10.md`
 
 ## What this line focuses on
 
@@ -47,5 +48,6 @@ This planning line is complete only when it has:
 - machine execution governance artifacts
 - explicit boundaries
 - human-readable source architecture docs
+- runtime evidence tracking policy
 - phased implementation plan
 - release/test feedback note
