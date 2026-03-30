@@ -19,6 +19,7 @@ from beacon.utils.implement_adapters import (
 from beacon.utils.project_skills import bind_feature_profile, list_skill_registry
 from beacon.utils.runtime import now_iso
 from beacon.utils.skill_config import load_yaml_like, write_yaml_like
+from beacon.utils.skill_drift import build_skill_drift_report
 
 app = typer.Typer(name="skill", help="Manage Beacon implementation skill adapters")
 registry_app = typer.Typer(name="registry", help="Inspect Beacon multi-skill registry")
@@ -333,6 +334,34 @@ def doctor(
     for item in checks:
         typer.echo(f"- {item['status'].upper()}: {item['adapter_id']} :: {', '.join(item['issues']) or 'ok'}")
     if status == "fail":
+        raise typer.Exit(2)
+
+
+@app.command("sync-check")
+def sync_check(
+    project_root: str = typer.Option("", "--project-root", "--project", "-p", help="Project root path"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
+):
+    """Check Beacon skill drift across repo, local Claude, and local Codex skill installs."""
+    root = Path(project_root) if project_root else Path.cwd()
+    payload = build_skill_drift_report(root)
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo("Beacon Skill Sync Check")
+        typer.echo("=" * 24)
+        typer.echo(f"status: {payload['status']}")
+        typer.echo(f"drift_count: {payload['drift_count']}")
+        typer.echo(f"missing_count: {payload['missing_count']}")
+        for item in payload.get("checks", []):
+            if not isinstance(item, dict):
+                continue
+            typer.echo(f"- {item.get('name')}: {item.get('status')}")
+            if item.get("kind") == "directory" and str(item.get("status")) == "drift":
+                typer.echo(
+                    f"  missing={len(item.get('missing_files', []))} unexpected={len(item.get('unexpected_files', []))} drift={len(item.get('drift_files', []))}"
+                )
+    if str(payload.get("status")) != "pass":
         raise typer.Exit(2)
 
 

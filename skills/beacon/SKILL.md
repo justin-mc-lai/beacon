@@ -296,6 +296,7 @@ Compatible delegated surfaces:
 
 - `python3 -m beacon.main <subcommand>`
 - `bash skills/beacon/scripts/run_beacon.sh <subcommand> ...`
+- `python3 scripts/check_skill_drift.py --project-root . --json`
 
 ## Common Usage Modes
 
@@ -325,6 +326,7 @@ Compatible delegated surfaces:
 - `debug`
 - `remember`
 - `recall`
+- `skill sync-check`
 
 ## Lifecycle Navigation Rules
 
@@ -380,3 +382,6 @@ See:
 - Gate / release confusion:
   - read `../../docs/beacon/v1.1.10/release/v1.1.10.md`
   - run `beacon gate check release --project-root . --version v1.1.10 --json`
+- Not sure whether local Claude/Codex skill copies drifted:
+  - run `python3 scripts/check_skill_drift.py --project-root . --json`
+  - run `beacon skill sync-check --project-root . --json`

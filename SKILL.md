@@ -302,6 +302,7 @@ requirement material
 
 - `python3 -m beacon.main <subcommand>`
 - `bash skills/beacon/scripts/run_beacon.sh <subcommand> ...`
+- `python3 scripts/check_skill_drift.py --project-root . --json`
 
 ## 阶段导航规则
 
@@ -516,6 +517,15 @@ docs/beacon/{version}/
 - `skills/beacon/SKILL.md`
 - `references/acceptance-criteria.md`
 - `references/user-story-mapping.md`
+
+### Skill 同步校验
+
+一键检查 repo / Claude / Codex 三处 skill 是否漂移：
+
+```bash
+python3 scripts/check_skill_drift.py --project-root . --json
+beacon skill sync-check --project-root . --json
+```
 
 ---
 
