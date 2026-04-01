@@ -139,6 +139,24 @@ def _init_impl(
     )
     architecture_status = _write_if_apply(architecture_path, architecture_content, apply, force=False)
     actions.append({"scope": "docs", "action": architecture_status, "path": str(architecture_path.relative_to(root))})
+    if project_mode == "takeover":
+        service_map_path = root / "docs" / "beacon" / docs_version / "execution" / "current-state-service-map.md"
+        service_map_content = (
+            "# Current-State Service Map\n\n"
+            "- status: draft\n"
+            "- capture existing service ownership, contracts, and dependencies before delivery changes.\n"
+        )
+        service_map_status = _write_if_apply(service_map_path, service_map_content, apply, force=False)
+        actions.append({"scope": "docs", "action": service_map_status, "path": str(service_map_path.relative_to(root))})
+
+        refactor_boundaries_path = root / "docs" / "beacon" / docs_version / "execution" / "refactor-boundaries.md"
+        refactor_boundaries_content = (
+            "# Refactor Boundaries\n\n"
+            "- status: draft\n"
+            "- record protected boundaries, risky modules, and allowed change slices for takeover work.\n"
+        )
+        refactor_boundaries_status = _write_if_apply(refactor_boundaries_path, refactor_boundaries_content, apply, force=False)
+        actions.append({"scope": "docs", "action": refactor_boundaries_status, "path": str(refactor_boundaries_path.relative_to(root))})
 
     version_blueprint_path = root / "docs" / "beacon" / docs_version / "execution" / "version-evolution-blueprint.md"
     version_blueprint_content = (
@@ -207,6 +225,8 @@ def _init_impl(
         "implementation_archive_enabled": False,
         "qa_managed": False,
         "gate_managed": False,
+        "takeover_baseline_status": "draft" if project_mode == "takeover" else "not_applicable",
+        "takeover_baseline_frozen_at": "",
         "next_recommended_stage": "think" if project_mode == "greenfield" else "architecture-current-state",
         "updated_at": now_iso(),
     }

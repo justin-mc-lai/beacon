@@ -9,13 +9,14 @@
 
 ## 1. 当前版本是什么
 
-Beacon 当前单一发布口径是 **v1.1.10**。
+Beacon 当前运行时发布口径是 **v1.1.11**。
 
-> 当前发布线：`v1.1.10`
+> 当前发布线：`v1.1.11`
 
 - **CLI 入口**：`beacon <subcommand>`
 - **标准 skill 包**：`skills/beacon/`
-- **当前包版本**：`1.1.10`
+- **当前包版本**：`1.1.11`
+- **最新已接受文档线**：`v1.1.12`
 - **文档主源**：`docs/beacon/<version>/`
 - **状态目录**：`.beacon/`
 
@@ -27,7 +28,13 @@ Beacon 当前单一发布口径是 **v1.1.10**。
 
 如果你只记一条：
 
-> **Beacon 现在是 v1.1.10，写文档看 `docs/beacon`，执行命令用 `beacon <subcommand>`。**
+> **Beacon 现在是 v1.1.11，写文档看 `docs/beacon`，执行命令用 `beacon <subcommand>`。**
+
+补充说明：
+
+- `v1.1.11` 仍是当前 CLI/runtime release line
+- `v1.1.12` 已在仓内完成 version truth / profile-aware routing / typed learning plane / takeover baseline gate / project-skill boundary 的 runtime supplement 实现
+- 在正式切换 package/runtime 版本前，`v1.1.12` 仍按“已实现 supplement、未切换 current runtime line”处理
 
 ---
 
@@ -54,7 +61,7 @@ Beacon 默认**不负责**：
 - issue tracker 轮询、workspace 调度、agent scheduler
 - 在 core 内维护完整 PM 模板大全
 
-### 当前发布线摘要（v1.1.10）
+### 当前发布线摘要（v1.1.11）
 
 - **QA precision closure 已落地**：`qa run <feature>` 会输出 `closure_outcome`、`confidence_calibrated` 与 feature scorecard
 - **project-aware QA mainline**：project profile / verify workflow 可正式并入 QA 主线，而不是旁路验收脚本
@@ -62,6 +69,14 @@ Beacon 默认**不负责**：
 - **prototype route closure**：prototype 到 frontend route / tab / jump / state 的闭环被提升为显式合同
 - **release/gate precision aware**：release/report/status 可消费 confidence、review-required、needs-replay 等语义
 - **human QA docs preservation**：machine refresh 默认不覆盖人工编写的 QA requirement 文档
+
+### v1.1.12 runtime supplement（已实现，未切换 current runtime line）
+
+- **single-source version truth**：runtime/package/docs default line/planning line/partial supplement 统一走 machine-readable source
+- **profile-aware navigator first**：`help` / `status` 先解 version truth、project mode、profile binding、execution surface，再决定 native fallback
+- **project skill boundary**：orchestration 在执行前校验 stage / capability / evidence contract，且执行改成显式 argv 而不是 `shell=True`
+- **typed learning plane**：learning surface 拆成 `qa_policy` / `design_policy` / `contract_policy` / `rewrite_policy` / `debug_policy` / `benchmark_policy`
+- **takeover baseline gate**：takeover 项目缺 current-state baseline 或未冻结时会阻断 `implement`
 
 ### 上一发布线摘要（v1.1.7）
 
@@ -78,9 +93,9 @@ Beacon 默认**不负责**：
 - **单一事实源**：`docs/beacon/<version>/` 优先于 `.beacon/`
 - **版本包最小闭环**：`SUMMARY / execution / prd / user-story / qa/test-cases / release`
 
-### v1.1.10 为什么重要
+### v1.1.11 为什么重要
 
-v1.1.10 相比 v1.1.9 的核心新增，不是继续堆更多 workflow 节点，而是把“测试跑过了”升级成“Beacon 能解释为什么可以放行，为什么必须 abstain，为什么需要更多证据”：
+v1.1.11 相比 v1.1.9 的核心新增，不是继续堆更多 workflow 节点，而是把“测试跑过了”升级成“Beacon 能解释为什么可以放行，为什么必须 abstain，为什么需要更多证据”：
 
 - `closure_outcome`
 - `confidence_calibrated`
@@ -89,12 +104,12 @@ v1.1.10 相比 v1.1.9 的核心新增，不是继续堆更多 workflow 节点，
 - prototype frontend route closure
 - QA audit truth → keep/discard → precision uplift
 
-你现在可以从这些入口阅读 v1.1.10：
+你现在可以从这些入口阅读当前 release line：
 
-- `docs/beacon/v1.1.10/SUMMARY.md`
-- `docs/beacon/v1.1.10/execution/index.md`
-- `docs/beacon/v1.1.10/execution/architecture-blueprint.md`
-- `docs/beacon/v1.1.10/release/v1.1.10.md`
+- `docs/beacon/v1.1.11/SUMMARY.md`
+- `docs/beacon/v1.1.11/execution/index.md`
+- `docs/beacon/v1.1.11/execution/architecture-blueprint.md`
+- `docs/beacon/v1.1.11/release/v1.1.11.md`
 
 ### v1.1.7 为什么重要（历史）
 
@@ -147,79 +162,79 @@ beacon <subcommand> ...
 
 ### Quick Start / 30-second path
 
-如果你只想用最短路径快速跑通 Beacon v1.1.10，先执行：
+如果你只想用最短路径快速跑通 Beacon v1.1.11，先执行：
 
 ```bash
-beacon ask "Create a release-ready requirement package" --project-root . --version v1.1.10 --plan-only --json
-beacon workflow start "Beacon v1.1.10 precision closure baseline" --project . --version v1.1.10
-beacon doctor verify-materials --project-root . --version v1.1.10 --json
-beacon gate check release --project-root . --version v1.1.10 --json
+beacon ask "Create a release-ready requirement package" --project-root . --version v1.1.11 --plan-only --json
+beacon workflow start "Beacon v1.1.11 precision closure baseline" --project . --version v1.1.11
+beacon doctor verify-materials --project-root . --version v1.1.11 --json
+beacon gate check release --project-root . --version v1.1.11 --json
 ```
 
 如果你想继续读完整命令文档，请看下面的 Command Docs 入口。
 
 ### Command Docs / 命令文档入口
 
-如果你想按当前发布线阅读 v1.1.10 文档，建议从这里进入：
+如果你想按当前发布线阅读 v1.1.11 文档，建议从这里进入：
 
-- `docs/beacon/v1.1.10/SUMMARY.md`：当前版本总览
-- `docs/beacon/v1.1.10/execution/index.md`：执行面索引与推荐阅读顺序
-- `docs/beacon/v1.1.10/execution/architecture-blueprint.md`：架构蓝图主文档
-- `docs/beacon/v1.1.10/execution/boundaries.md`：边界与放行约束
-- `docs/beacon/v1.1.10/execution/qa-confidence-data-contract.md`：QA 精度数据合同
-- `docs/beacon/v1.1.10/source-architecture/index.md`：源码架构同步入口
-- `docs/beacon/v1.1.10/release/v1.1.10.md`：当前发布说明
+- `docs/beacon/v1.1.11/SUMMARY.md`：当前版本总览
+- `docs/beacon/v1.1.11/execution/index.md`：执行面索引与推荐阅读顺序
+- `docs/beacon/v1.1.11/execution/architecture-blueprint.md`：架构蓝图主文档
+- `docs/beacon/v1.1.11/execution/boundaries.md`：边界与放行约束
+- `docs/beacon/v1.1.11/execution/prototype-reference-pack-v2-blueprint.md`：reference pack v2 蓝图
+- `docs/beacon/v1.1.11/source-architecture/index.md`：源码架构同步入口
+- `docs/beacon/v1.1.11/release/v1.1.11.md`：当前发布说明
 
-如果你关注 v1.1.10 当前闭环增强线，请优先读：
+如果你关注 v1.1.11 当前闭环增强线，请优先读：
 
-- `docs/beacon/v1.1.10/prd/beacon-qa-confidence-autoresearch-closure.md`
-- `docs/beacon/v1.1.10/prd/beacon-source-architecture-sync.md`
-- `docs/beacon/v1.1.10/prd/beacon-prototype-frontend-route-closure.md`
-- `docs/beacon/v1.1.10/execution/project-skill-qa-evolution-blueprint.md`
-- `docs/beacon/v1.1.10/execution/prototype-frontend-route-closure-blueprint.md`
+- `docs/beacon/v1.1.11/user-story/beacon-prototype-reference-pack-v2.md`
+- `docs/beacon/v1.1.11/prd/beacon-prototype-reference-pack-v2.md`
+- `docs/beacon/v1.1.11/execution/project-skill-qa-evolution-blueprint.md`
+- `docs/beacon/v1.1.11/execution/prototype-reference-pack-v2-blueprint.md`
+- `docs/beacon/v1.1.11/execution/prototype-reference-pack-v2-implementation-phasing.md`
 
 ### 最小工作流
 
 ```bash
 # 1) 启动需求主链
-beacon workflow start "Beacon v1.1.10 precision closure baseline" --project . --version v1.1.10
+beacon workflow start "Beacon v1.1.11 precision closure baseline" --project . --version v1.1.11
 
 # 2) 生成主链文档
-beacon think start "Beacon v1.1.10 precision closure baseline" --project . --version v1.1.10
-beacon user-story create "Beacon v1.1.10 precision closure baseline" --project . --version v1.1.10
-beacon prd create "Beacon v1.1.10 precision closure baseline" --project . --version v1.1.10
-beacon test-case create "Beacon v1.1.10 precision closure baseline" --project . --version v1.1.10
+beacon think start "Beacon v1.1.11 precision closure baseline" --project . --version v1.1.11
+beacon user-story create "Beacon v1.1.11 precision closure baseline" --project . --version v1.1.11
+beacon prd create "Beacon v1.1.11 precision closure baseline" --project . --version v1.1.11
+beacon test-case create "Beacon v1.1.11 precision closure baseline" --project . --version v1.1.11
 
 # 2.5) 配置并执行实现适配
 beacon skill list
 beacon skill registry list --json
 beacon profile create demo demo --json
-beacon skill bind "Beacon v1.1.10 precision closure baseline" --profile demo --version v1.1.10
+beacon skill bind "Beacon v1.1.11 precision closure baseline" --profile demo --version v1.1.11
 beacon implement list-runners --json
-beacon doctor repair-package --project-root . --version v1.1.10 --json
-beacon implement run "Beacon v1.1.10 precision closure baseline" --runner omx --json
-beacon qa run "Beacon v1.1.10 precision closure baseline" --profile demo --json
-beacon verify run "Beacon v1.1.10 precision closure baseline" --profile demo --json
-beacon orchestrate run "Beacon v1.1.10 precision closure baseline" --profile demo --dry-run --json
+beacon doctor repair-package --project-root . --version v1.1.11 --json
+beacon implement run "Beacon v1.1.11 precision closure baseline" --runner omx --json
+beacon qa run "Beacon v1.1.11 precision closure baseline" --profile demo --json
+beacon verify run "Beacon v1.1.11 precision closure baseline" --profile demo --json
+beacon orchestrate run "Beacon v1.1.11 precision closure baseline" --profile demo --dry-run --json
 
 # 2.6) 标准 skill + script 触发
 bash skills/beacon/scripts/run_beacon.sh --version
 bash skills/beacon/scripts/run_beacon.sh skill list
 
 # 3) 状态 / 验收
-beacon status --board --project-root . --version v1.1.10
+beacon status --board --project-root . --version v1.1.11
 beacon qa status --project .
-beacon gate check release --project-root . --version v1.1.10
+beacon gate check release --project-root . --version v1.1.11
 ```
 
-### v1.1.10 project-aware 示例（以 Rolo 思路为例）
+### v1.1.11 project-aware 示例（以 Rolo 思路为例）
 
 ```bash
 beacon profile create rolo rolo-uat --example rolo-uat --json
-beacon skill bind "KZFJ-1110 启动页营销内容配置" --profile rolo-uat --version v1.1.10
+beacon skill bind "KZFJ-1110 启动页营销内容配置" --profile rolo-uat --version v1.1.11
 beacon verify run "KZFJ-1110 启动页营销内容配置" \
   --project . \
-  --version v1.1.10 \
+  --version v1.1.11 \
   --profile rolo-uat \
   --json
 ```
@@ -234,7 +249,7 @@ beacon verify run "KZFJ-1110 启动页营销内容配置" \
 
 ```bash
 # 默认只生成计划，不执行
-beacon ask "请帮我梳理 Beacon v1.1.10 的 QA 精度与交付闭环" --plan-only --json
+beacon ask "请帮我梳理 Beacon v1.1.11 的 QA 精度与交付闭环" --plan-only --json
 
 # 显式执行（带边界/置信度闸门）
 beacon ask "请生成用户故事并给出验收标准" --execute --json
@@ -244,9 +259,9 @@ beacon ask "请生成用户故事并给出验收标准" --execute --json
 
 ```bash
 beacon doctor --project-root . --json
-beacon doctor verify-materials --project-root . --version v1.1.10 --json
-beacon doctor verify-delivery --project-root . --version v1.1.10 --json
-beacon report --machine latest --project-root . --version v1.1.10
+beacon doctor verify-materials --project-root . --version v1.1.11 --json
+beacon doctor verify-delivery --project-root . --version v1.1.11 --json
+beacon report --machine latest --project-root . --version v1.1.11
 ```
 
 ---
@@ -296,24 +311,27 @@ docs/beacon/<version>/.machine/execution/
 └── runs/
 ```
 
-### 当前验收工件（v1.1.10）
+### 当前验收工件（v1.1.11）
 
-- `docs/beacon/v1.1.10/SUMMARY.md`
-- `docs/beacon/v1.1.10/execution/index.md`
-- `docs/beacon/v1.1.10/execution/architecture-blueprint.md`
-- `docs/beacon/v1.1.10/execution/boundaries.md`
-- `docs/beacon/v1.1.10/execution/qa-confidence-data-contract.md`
-- `docs/beacon/v1.1.10/execution/project-skill-qa-evolution-blueprint.md`
-- `docs/beacon/v1.1.10/execution/prototype-frontend-route-closure-blueprint.md`
-- `docs/beacon/v1.1.10/execution/qa-confidence-implementation-phasing.md`
-- `docs/beacon/v1.1.10/source-architecture/index.md`
-- `docs/beacon/v1.1.10/release/v1.1.10.md`
-- `docs/beacon/v1.1.10/.machine/execution/beacon-qa-confidence-autoresearch-closure.revision.json`
-- `docs/beacon/v1.1.10/.machine/execution/beacon-source-architecture-sync.revision.json`
-- `docs/beacon/v1.1.10/.machine/execution/beacon-prototype-frontend-route-closure.revision.json`
-- `docs/beacon/v1.1.10/.machine/user-story/beacon-qa-confidence-autoresearch-closure.json`
-- `docs/beacon/v1.1.10/.machine/qa/beacon-qa-confidence-autoresearch-closure.ac-test-matrix.json`
-- `docs/beacon/v1.1.10/.machine/qa/beacon-qa-confidence-autoresearch-closure.story-scenario-map.json`
+- `docs/beacon/v1.1.11/SUMMARY.md`
+- `docs/beacon/v1.1.11/execution/index.md`
+- `docs/beacon/v1.1.11/execution/architecture-blueprint.md`
+- `docs/beacon/v1.1.11/execution/boundaries.md`
+- `docs/beacon/v1.1.11/execution/prototype-reference-pack-v2-blueprint.md`
+- `docs/beacon/v1.1.11/execution/project-skill-qa-evolution-blueprint.md`
+- `docs/beacon/v1.1.11/execution/prototype-reference-pack-v2-implementation-phasing.md`
+- `docs/beacon/v1.1.11/source-architecture/index.md`
+- `docs/beacon/v1.1.11/release/v1.1.11.md`
+
+如果你要看这次补齐的 governance / boundary / learning-plane 收口，请读：
+
+- `docs/beacon/v1.1.12/SUMMARY.md`
+- `docs/beacon/v1.1.12/execution/index.md`
+- `docs/beacon/v1.1.12/release/v1.1.12.md`
+- `docs/beacon/v1.1.11/.machine/execution/beacon-prototype-reference-pack-v2.revision.json`
+- `docs/beacon/v1.1.11/.machine/user-story/beacon-prototype-reference-pack-v2.json`
+- `docs/beacon/v1.1.11/.machine/qa/beacon-prototype-reference-pack-v2.ac-test-matrix.json`
+- `docs/beacon/v1.1.11/.machine/qa/beacon-prototype-reference-pack-v2.story-scenario-map.json`
 
 ---
 
@@ -323,24 +341,24 @@ docs/beacon/<version>/.machine/execution/
 
 ```bash
 python3 -m pytest -q
-beacon doctor verify-materials --project-root . --version v1.1.10 --json
-beacon doctor verify-delivery --project-root . --version v1.1.10 --json
-beacon gate check release --project-root . --version v1.1.10 --json
-beacon release check v1.1.10 --project .
+beacon doctor verify-materials --project-root . --version v1.1.11 --json
+beacon doctor verify-delivery --project-root . --version v1.1.11 --json
+beacon gate check release --project-root . --version v1.1.11 --json
+beacon release check v1.1.11 --project .
 ```
 
 ### 自动生成验收审计
 
 ```bash
-beacon release scorecard v1.1.10 --project . --json
-beacon report --human latest --project-root . --version v1.1.10
+beacon release scorecard v1.1.11 --project . --json
+beacon report --human latest --project-root . --version v1.1.11
 ```
 
 ---
 
 ## 6. 后续迭代版本文档编写约定
 
-后续版本（如 `v1.1.10`、`v1.2.0`）继续沿用下面这套方案。
+后续版本（如 `v1.1.11`、`v1.2.0`）继续沿用下面这套方案。
 
 ### README 编写原则
 
@@ -385,14 +403,14 @@ docs/beacon/<version>/
 
 ### 当前发布线参考文档
 
-- [v1.1.10 Summary](./docs/beacon/v1.1.10/SUMMARY.md)
-- [v1.1.10 Execution Index](./docs/beacon/v1.1.10/execution/index.md)
-- [v1.1.10 Architecture Blueprint](./docs/beacon/v1.1.10/execution/architecture-blueprint.md)
-- [v1.1.10 Boundaries](./docs/beacon/v1.1.10/execution/boundaries.md)
-- [v1.1.10 QA Confidence Contract](./docs/beacon/v1.1.10/execution/qa-confidence-data-contract.md)
-- [v1.1.10 Source Architecture Index](./docs/beacon/v1.1.10/source-architecture/index.md)
-- [v1.1.10 Release Notes](./docs/beacon/v1.1.10/release/v1.1.10.md)
+- [v1.1.11 Summary](./docs/beacon/v1.1.11/SUMMARY.md)
+- [v1.1.11 Execution Index](./docs/beacon/v1.1.11/execution/index.md)
+- [v1.1.11 Architecture Blueprint](./docs/beacon/v1.1.11/execution/architecture-blueprint.md)
+- [v1.1.11 Boundaries](./docs/beacon/v1.1.11/execution/boundaries.md)
+- [v1.1.11 QA Confidence Contract](./docs/beacon/v1.1.11/execution/qa-confidence-data-contract.md)
+- [v1.1.11 Source Architecture Index](./docs/beacon/v1.1.11/source-architecture/index.md)
+- [v1.1.11 Release Notes](./docs/beacon/v1.1.11/release/v1.1.11.md)
 
 ---
 
-**版本**: v1.1.10
+**版本**: v1.1.11

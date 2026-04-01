@@ -1,0 +1,193 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-prototype-reference-pack-v2",
+  "version": "v1.1.11",
+  "overall_status": "pass",
+  "contract_summary": {
+    "prototype_archetype": "admin-workbench",
+    "target_user": null,
+    "primary_cta": "Generate Reference Pack",
+    "states": [
+      "draft",
+      "review-ready",
+      "frozen"
+    ],
+    "prototype_mode": "reference-pack-v2"
+  },
+  "checks": [
+    {
+      "name": "contract_resolved",
+      "status": "pass",
+      "message": "Prototype Contract resolved from PRD + User Story."
+    },
+    {
+      "name": "required_artifacts_present",
+      "status": "pass",
+      "message": "All contract artifacts should exist.",
+      "details": {
+        "missing": []
+      }
+    },
+    {
+      "name": "navigation_contract_present",
+      "status": "pass",
+      "message": "navigation-map.json should exist."
+    },
+    {
+      "name": "interaction_contract_present",
+      "status": "pass",
+      "message": "interaction-map.json should exist."
+    },
+    {
+      "name": "theme_contract_present",
+      "status": "pass",
+      "message": "theme.json should exist."
+    },
+    {
+      "name": "prototype_plan_present",
+      "status": "pass",
+      "message": "prototype-plan.json should exist."
+    },
+    {
+      "name": "tokens_css_present",
+      "status": "pass",
+      "message": "tokens.css should exist."
+    },
+    {
+      "name": "coverage_report_present",
+      "status": "pass",
+      "message": "coverage-report.json should exist."
+    },
+    {
+      "name": "route_closure_contract_present",
+      "status": "pass",
+      "message": "route-closure-contract.json should exist."
+    },
+    {
+      "name": "implementation_binding_manifest_present",
+      "status": "pass",
+      "message": "implementation-map.json should exist."
+    },
+    {
+      "name": "route_closure_cases_present",
+      "status": "pass",
+      "message": "route closure cases should exist for route-producing controls."
+    },
+    {
+      "name": "route_closure_binding_complete",
+      "status": "pass",
+      "message": "every route closure case should bind to a runtime target or explicit internal/external path.",
+      "details": {
+        "unresolved_case_ids": []
+      }
+    },
+    {
+      "name": "route_closure_no_drift_markers",
+      "status": "pass",
+      "message": "route closure bindings should not remain isolated/fragile/legacy-only/tab drift.",
+      "details": {
+        "drift_case_ids": []
+      }
+    },
+    {
+      "name": "route_closure_no_fake_jump",
+      "status": "pass",
+      "message": "bound route-producing controls should not degrade into fake jumps or toast-only placeholders.",
+      "details": {
+        "fake_jump_case_ids": []
+      }
+    },
+    {
+      "name": "prototype_page_inventory_missing",
+      "status": "pass",
+      "message": "reference-pack-v2 requires required page inventory.",
+      "details": {
+        "required_pages": [
+          "overview",
+          "page-inventory",
+          "route-closure",
+          "delivery-readiness",
+          "baseline-protection",
+          "prototype-plan",
+          "page-specs",
+          "prototype-review",
+          "prototype-freeze"
+        ]
+      }
+    },
+    {
+      "name": "prototype_required_page_missing",
+      "status": "pass",
+      "message": "all required pages must be generated.",
+      "details": {
+        "missing_pages": []
+      }
+    },
+    {
+      "name": "prototype_required_state_missing",
+      "status": "pass",
+      "message": "all required state variants must be generated.",
+      "details": {
+        "missing_states": []
+      }
+    },
+    {
+      "name": "prototype_compact_mode_detected",
+      "status": "pass",
+      "message": "full-hi-fi reference pack must not degrade into compact coverage."
+    },
+    {
+      "name": "prototype_baseline_regression",
+      "status": "pass",
+      "message": "baseline-protected pages must not regress.",
+      "details": {
+        "baseline_regression_pages": []
+      }
+    },
+    {
+      "name": "prototype_artifact_inconsistent",
+      "status": "pass",
+      "message": "manifest/freeze/review artifacts should remain self-consistent.",
+      "details": {
+        "inconsistencies": []
+      }
+    },
+    {
+      "name": "prototype_cjk_parse_failed",
+      "status": "pass",
+      "message": "CJK punctuation parsing should not lose contract fields."
+    },
+    {
+      "name": "prototype_stale",
+      "status": "pass",
+      "message": "prototype should not be stale relative to source docs."
+    },
+    {
+      "name": "primary_cta_rendered",
+      "status": "pass",
+      "message": "Primary CTA should be rendered in HTML."
+    },
+    {
+      "name": "jump_targets_rendered",
+      "status": "pass",
+      "message": "Jump targets should appear in generated HTML."
+    },
+    {
+      "name": "accessibility_basics",
+      "status": "pass",
+      "message": "Generated HTML should include core accessibility markers.",
+      "details": {
+        "required_tokens": [
+          "aria-label",
+          "prefers-reduced-motion",
+          ":focus-visible"
+        ]
+      }
+    },
+    {
+      "name": "generic_shell_avoided",
+      "status": "pass",
+      "message": "Generated HTML should avoid the previous generic shell placeholders."
+    }
+  ]
+}

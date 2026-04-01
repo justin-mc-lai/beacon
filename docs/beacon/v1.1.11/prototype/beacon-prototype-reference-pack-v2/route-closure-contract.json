@@ -1,0 +1,120 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-prototype-reference-pack-v2",
+  "version": "v1.1.11",
+  "required": true,
+  "drift_guardrails": [
+    "isolated-page",
+    "fragile-route",
+    "legacy-only-entry",
+    "fake-jump",
+    "tab-route-drift",
+    "param-contract-mismatch"
+  ],
+  "surfaces": [
+    {
+      "surface_id": "overview",
+      "label": "Overview",
+      "entry_kind": "page",
+      "mounted_required": true
+    },
+    {
+      "surface_id": "page-inventory",
+      "label": "Page Inventory",
+      "entry_kind": "page",
+      "mounted_required": true
+    },
+    {
+      "surface_id": "route-closure",
+      "label": "Route Closure",
+      "entry_kind": "page",
+      "mounted_required": true
+    },
+    {
+      "surface_id": "baseline-protection",
+      "label": "Baseline Protection",
+      "entry_kind": "page",
+      "mounted_required": true
+    },
+    {
+      "surface_id": "delivery-readiness",
+      "label": "Delivery Readiness",
+      "entry_kind": "page",
+      "mounted_required": true
+    }
+  ],
+  "closure_cases": [
+    {
+      "case_id": "RC-001",
+      "source_type": "page-jump",
+      "source_label": "Overview",
+      "target_surface_id": "overview",
+      "target_type": "page",
+      "required_context": [],
+      "fallback_behavior": "block"
+    },
+    {
+      "case_id": "RC-002",
+      "source_type": "page-jump",
+      "source_label": "Page Inventory",
+      "target_surface_id": "page-inventory",
+      "target_type": "page",
+      "required_context": [],
+      "fallback_behavior": "block"
+    },
+    {
+      "case_id": "RC-003",
+      "source_type": "page-jump",
+      "source_label": "Route Closure",
+      "target_surface_id": "route-closure",
+      "target_type": "page",
+      "required_context": [],
+      "fallback_behavior": "block"
+    },
+    {
+      "case_id": "RC-004",
+      "source_type": "page-jump",
+      "source_label": "Delivery Readiness",
+      "target_surface_id": "delivery-readiness",
+      "target_type": "page",
+      "required_context": [],
+      "fallback_behavior": "block"
+    },
+    {
+      "case_id": "RC-005",
+      "source_type": "button-jump",
+      "source_label": "prototype-plan",
+      "target_surface_id": "page-specs",
+      "target_type": "page",
+      "required_context": [],
+      "fallback_behavior": "block"
+    },
+    {
+      "case_id": "RC-006",
+      "source_type": "button-jump",
+      "source_label": "page-specs",
+      "target_surface_id": "route-closure",
+      "target_type": "page",
+      "required_context": [],
+      "fallback_behavior": "block"
+    },
+    {
+      "case_id": "RC-007",
+      "source_type": "button-jump",
+      "source_label": "route-closure",
+      "target_surface_id": "prototype-review",
+      "target_type": "page",
+      "required_context": [],
+      "fallback_behavior": "block"
+    },
+    {
+      "case_id": "RC-008",
+      "source_type": "cta",
+      "source_label": "Generate Reference Pack",
+      "target_surface_id": "prototype-freeze",
+      "target_type": "page",
+      "required_context": [],
+      "fallback_behavior": "block"
+    }
+  ]
+}

@@ -115,8 +115,13 @@ def _status_impl(
             "delivery_status": help_payload.get("delivery_status", ""),
             "blocked": help_payload.get("blocked", False),
             "blocking_reasons": help_payload.get("blocking_reasons", []),
+            "blocked_reason": help_payload.get("blocked_reason", ""),
         },
         "next_step": help_payload.get("next_step", {}),
+        "project_mode": help_payload.get("project_mode", "greenfield"),
+        "execution_surface": help_payload.get("execution_surface", {}),
+        "learning_surface": help_payload.get("learning_surface", {}),
+        "decision_trace": help_payload.get("decision_trace", []),
         "control_plane": resume_contract,
         "qa_status": {
             "feature": qa_status.get("feature"),

@@ -1,0 +1,61 @@
+{
+  "primary_entry": "prototype-plan",
+  "primary_exit": "prototype-freeze",
+  "sections": [
+    {
+      "id": "overview",
+      "label": "Overview"
+    },
+    {
+      "id": "page-inventory",
+      "label": "Page Inventory"
+    },
+    {
+      "id": "route-closure",
+      "label": "Route Closure"
+    },
+    {
+      "id": "baseline-protection",
+      "label": "Baseline Protection"
+    },
+    {
+      "id": "delivery-readiness",
+      "label": "Delivery Readiness"
+    }
+  ],
+  "navigation_nodes": [
+    {
+      "label": "Overview",
+      "target": "#overview"
+    },
+    {
+      "label": "Page Inventory",
+      "target": "#page-inventory"
+    },
+    {
+      "label": "Route Closure",
+      "target": "#route-closure"
+    },
+    {
+      "label": "Delivery Readiness",
+      "target": "#delivery-readiness"
+    }
+  ],
+  "jump_map": [
+    {
+      "from": "prototype-plan",
+      "to": "page-specs",
+      "why": "compile required pages and states"
+    },
+    {
+      "from": "page-specs",
+      "to": "route-closure",
+      "why": "attach runtime closure contract"
+    },
+    {
+      "from": "route-closure",
+      "to": "prototype-review",
+      "why": "validate coverage and consistency"
+    }
+  ]
+}

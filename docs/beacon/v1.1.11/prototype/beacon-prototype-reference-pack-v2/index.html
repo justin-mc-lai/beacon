@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>beacon-prototype-reference-pack-v2 · Beacon Prototype</title>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+    <style>
+      :root {
+        --beacon-primary: #2563eb;
+        --beacon-secondary: #0f172a;
+        --beacon-bg: linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%);
+        --beacon-radius: 20px;
+      }
+      body { background: var(--beacon-bg); color: #0f172a; }
+      .prototype-nav { backdrop-filter: blur(16px); background: rgba(255,255,255,0.82); border-bottom: 1px solid rgba(148,163,184,0.18); }
+      .prototype-hero { background: linear-gradient(135deg, var(--beacon-secondary), #1e293b); color: white; border-radius: 28px; box-shadow: 0 28px 80px rgba(15,23,42,0.22); }
+      .prototype-card { border: 1px solid rgba(148,163,184,0.24); border-radius: var(--beacon-radius); background: rgba(255,255,255,0.88); box-shadow: 0 18px 50px rgba(15,23,42,0.08); }
+      .prototype-token { display: inline-flex; align-items: center; gap: .4rem; padding: .45rem .75rem; border-radius: 999px; background: rgba(59,130,246,0.12); color: var(--beacon-primary); font-size: .85rem; font-weight: 600; }
+      .btn-primary { background: var(--beacon-primary); border-color: var(--beacon-primary); box-shadow: 0 14px 30px color-mix(in srgb, var(--beacon-primary) 30%, transparent); }
+      .prototype-sidebar { position: sticky; top: 5rem; }
+      :focus-visible { outline: 3px solid color-mix(in srgb, var(--beacon-primary) 45%, transparent); outline-offset: 2px; }
+      @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation: none !important; transition: none !important; } }
+    </style>
+  </head>
+  <body>
+    <div x-data="{ tab: 'overview' }">
+      <nav class="navbar navbar-expand-lg prototype-nav sticky-top">
+        <div class="container py-2">
+          <a class="navbar-brand fw-semibold" href="#top">Beacon Prototype</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#prototypeDrawer" aria-controls="prototypeDrawer" aria-label="Open navigation"><span class="navbar-toggler-icon"></span></button>
+          <div class="collapse navbar-collapse"><div class="navbar-nav ms-auto"><a class="nav-link text-body-secondary" href="#overview">Overview</a><a class="nav-link text-body-secondary" href="#page-inventory">Page Inventory</a><a class="nav-link text-body-secondary" href="#route-closure">Route Closure</a><a class="nav-link text-body-secondary" href="#delivery-readiness">Delivery Readiness</a></div></div>
+        </div>
+      </nav>
+      <div class="offcanvas offcanvas-end" tabindex="-1" id="prototypeDrawer" aria-labelledby="prototypeDrawerLabel">
+        <div class="offcanvas-header"><h2 class="offcanvas-title h5 mb-0" id="prototypeDrawerLabel">Navigate</h2><button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close navigation"></button></div>
+        <div class="offcanvas-body d-flex flex-column gap-2"><a class="btn btn-outline-primary text-start" href="#overview">Overview</a><a class="btn btn-outline-primary text-start" href="#page-inventory">Page Inventory</a><a class="btn btn-outline-primary text-start" href="#route-closure">Route Closure</a><a class="btn btn-outline-primary text-start" href="#delivery-readiness">Delivery Readiness</a></div>
+      </div>
+      <main class="container py-4 py-lg-5" id="top">
+        <section class="prototype-hero p-4 p-lg-5 mb-4 mb-lg-5">
+          <div class="row g-4 align-items-center">
+            <div class="col-lg-8">
+              <div class="d-flex flex-wrap gap-2 mb-3">
+                <span class="prototype-token"><i class="bi bi-bootstrap-fill"></i> Bootstrap 5.3.3</span>
+                <span class="prototype-token"><i class="bi bi-stars"></i> disciplined</span>
+                <span class="prototype-token"><i class="bi bi-kanban"></i> admin-workbench</span>
+              </div>
+              <h1 class="display-6 fw-bold mb-3">beacon-prototype-reference-pack-v2</h1>
+              <p class="lead text-white-50 mb-4">Professional reference prototype aligned to requirement contracts, navigation intent, and state coverage.</p>
+              <div class="d-flex flex-wrap gap-3"><button class="btn btn-primary btn-lg">Generate Reference Pack</button><button class="btn btn-outline-light btn-lg">Learn More</button></div>
+            </div>
+            <div class="col-lg-4">
+              <div class="prototype-card p-4 text-dark">
+                <div class="d-flex justify-content-between align-items-center mb-3"><strong>Prototype Brief</strong><span class="badge text-bg-warning">Draft</span></div>
+                <ul class="list-unstyled small text-body-secondary mb-0">
+                  <li>Target user: <strong class="text-dark">Product team</strong></li>
+                  <li>Primary entry: <strong class="text-dark">prototype-plan</strong></li>
+                  <li>Primary exit: <strong class="text-dark">prototype-freeze</strong></li>
+                  <li>Source materials:</li>
+                  <ul><li><code>docs/beacon/v1.1.11/user-story/beacon-prototype-reference-pack-v2.md</code></li><li><code>docs/beacon/v1.1.11/prd/beacon-prototype-reference-pack-v2.md</code></li></ul>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+        <div class="row g-4">
+          <aside class="col-lg-3"><div class="prototype-card prototype-sidebar p-3"><div class="nav nav-pills flex-column gap-2"><button class="btn btn-outline-primary text-start" @click="tab='overview'">Overview</button><button class="btn btn-outline-primary text-start" @click="tab='jumps'">Jump Map</button><button class="btn btn-outline-primary text-start" @click="tab='states'">States</button><button class="btn btn-outline-primary text-start" data-bs-toggle="toast" data-bs-target="#prototypeToast" aria-label="Show toast sample">Toast Sample</button></div></div></aside>
+          <div class="col-lg-9">
+            <section class="prototype-card p-4 p-lg-5">
+              <div x-show="tab==='overview'">
+        <div class="row g-4">
+          <div class="col-lg-3"><div class="list-group"><a class="list-group-item list-group-item-action">Overview</a><a class="list-group-item list-group-item-action">Page Inventory</a><a class="list-group-item list-group-item-action">Route Closure</a><a class="list-group-item list-group-item-action">Baseline Protection</a><a class="list-group-item list-group-item-action">Delivery Readiness</a></div></div>
+          <div class="col-lg-9"><div class="card border-0 shadow-sm"><div class="card-body"><div class="d-flex justify-content-between align-items-center mb-3"><h3 class="h5 mb-0">Workbench Panel</h3><button class="btn btn-primary">Generate Reference Pack</button></div><div class="alert alert-primary">Administrative actions, filters, and review context live here.</div><div class="row g-3"><span class="badge text-bg-light border border-secondary-subtle me-2 mb-2">draft</span><span class="badge text-bg-light border border-secondary-subtle me-2 mb-2">review-ready</span><span class="badge text-bg-light border border-secondary-subtle me-2 mb-2">frozen</span></div></div></div></div>
+        </div>
+        </div>
+              <div x-show="tab==='jumps'" class="row g-3">
+            <div class="col-md-6 col-xl-4">
+              <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                  <div class="text-uppercase small text-body-secondary mb-2">Jump</div>
+                  <h3 class="h6 mb-2">prototype-plan → page-specs</h3>
+                  <p class="text-body-secondary small mb-0">compile required pages and states</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6 col-xl-4">
+              <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                  <div class="text-uppercase small text-body-secondary mb-2">Jump</div>
+                  <h3 class="h6 mb-2">page-specs → route-closure</h3>
+                  <p class="text-body-secondary small mb-0">attach runtime closure contract</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6 col-xl-4">
+              <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                  <div class="text-uppercase small text-body-secondary mb-2">Jump</div>
+                  <h3 class="h6 mb-2">route-closure → prototype-review</h3>
+                  <p class="text-body-secondary small mb-0">validate coverage and consistency</p>
+                </div>
+              </div>
+            </div>
+            </div>
+              <div x-show="tab==='states'" class="pt-2"><span class="badge text-bg-light border border-secondary-subtle me-2 mb-2">draft</span><span class="badge text-bg-light border border-secondary-subtle me-2 mb-2">review-ready</span><span class="badge text-bg-light border border-secondary-subtle me-2 mb-2">frozen</span></div>
+            </section>
+          </div>
+        </div>
+      </main>
+      <div class="toast-container position-fixed bottom-0 end-0 p-3"><div id="prototypeToast" class="toast" role="status" aria-live="polite" aria-atomic="true"><div class="toast-header"><strong class="me-auto">Beacon Prototype</strong><button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close toast"></button></div><div class="toast-body">Review and freeze this prototype before delivery gate checks.</div></div></div>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    </div>
+  </body>
+</html>

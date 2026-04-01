@@ -1,0 +1,35 @@
+{
+  "feature": "beacon-prototype-reference-pack-v2",
+  "version": "v1.1.11",
+  "prototype_archetype": "admin-workbench",
+  "target_user": "",
+  "primary_flow": {
+    "entry": "prototype-plan",
+    "exit": "prototype-freeze",
+    "jumps": [
+      {
+        "from": "prototype-plan",
+        "to": "page-specs",
+        "why": "compile required pages and states"
+      },
+      {
+        "from": "page-specs",
+        "to": "route-closure",
+        "why": "attach runtime closure contract"
+      },
+      {
+        "from": "route-closure",
+        "to": "prototype-review",
+        "why": "validate coverage and consistency"
+      }
+    ]
+  },
+  "primary_cta": "Generate Reference Pack",
+  "design_intent": {
+    "theme_mood": "disciplined",
+    "brand_keywords": [],
+    "surface_style": null
+  },
+  "prototype_mode": "reference-pack-v2",
+  "coverage_mode": "all-existing-routes"
+}

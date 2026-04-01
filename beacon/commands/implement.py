@@ -13,6 +13,11 @@ import typer
 
 from beacon.utils.artifact_paths import qa_matrix_candidates
 from beacon.utils.artifact_update_obligations import write_artifact_update_obligations
+from beacon.utils.git_alignment import (
+    build_implement_branch_guard_payload,
+    switch_to_expected_branch,
+)
+from beacon.utils.governance import evaluate_takeover_baseline_gate
 from beacon.utils.implement_native import run_native_implementation
 from beacon.utils.implement_adapters import (
     build_default_task_prompt,
@@ -74,6 +79,10 @@ def _technical_archive_paths(project_root: Path, version: str, feature: str) -> 
         "md": execution_dir / f"technical-implementation-{slug}.md",
         "json": machine_execution_dir / f"technical-implementation-{slug}.json",
     }
+
+
+def _branch_preflight_path(run_id: str) -> Path:
+    return Path(f".beacon/implement/{run_id}/branch-preflight.json")
 
 
 def _git_commit(project_root: Path) -> str:
@@ -456,6 +465,61 @@ def _run_review_command(project_root: Path, version: str, feature: str, mode: st
     return result.returncode, payload
 
 
+def _run_branch_preflight(
+    *,
+    project_root: Path,
+    version: str,
+    run_id: str,
+    feature: str,
+    auto_switch_branch: bool,
+    require_clean_worktree_for_switch: bool,
+) -> dict[str, Any]:
+    feature_slug = _slug(feature)
+    branch_preflight = build_implement_branch_guard_payload(
+        project_root,
+        version,
+        require_clean_worktree_for_switch=require_clean_worktree_for_switch,
+    )
+    branch_preflight.update(
+        {
+            "run_id": run_id,
+            "feature": feature,
+            "feature_slug": feature_slug,
+            "generated_at": now_iso(),
+        }
+    )
+    if branch_preflight.get("blocked") and auto_switch_branch:
+        dirty_worktree = bool(branch_preflight.get("dirty_worktree"))
+        if not (dirty_worktree and require_clean_worktree_for_switch):
+            switch_payload = switch_to_expected_branch(
+                project_root,
+                str(branch_preflight.get("expected_branch", "") or ""),
+                create_if_missing=True,
+            )
+            branch_preflight["switch_attempt"] = switch_payload
+            refreshed = build_implement_branch_guard_payload(
+                project_root,
+                version,
+                require_clean_worktree_for_switch=require_clean_worktree_for_switch,
+            )
+            refreshed.update(
+                {
+                    "run_id": run_id,
+                    "feature": feature,
+                    "feature_slug": feature_slug,
+                    "generated_at": now_iso(),
+                    "switch_attempt": switch_payload,
+                    "auto_switch_branch": True,
+                }
+            )
+            if switch_payload.get("status") == "failed" and refreshed.get("blocked"):
+                refreshed["reason_codes"] = list(
+                    dict.fromkeys([*list(refreshed.get("reason_codes", [])), "implement_branch_switch_failed"])
+                )
+            branch_preflight = refreshed
+    return branch_preflight
+
+
 def run_implement_stage(  # noqa: PLR0913
     *,
     feature: str,
@@ -473,10 +537,12 @@ def run_implement_stage(  # noqa: PLR0913
     auto_qa_args: list[str] | None = None,
     auto_qa_follow_handoff: bool | None = None,
     auto_qa_max_rounds: int | None = None,
+    auto_switch_branch: bool | None = None,
 ) -> tuple[int, dict[str, Any]]:
     resolved_version = resolve_target_version(project_root, version)
     config = load_beacon_config(project_root)
     implementation_cfg = config.get("implementation") if isinstance(config.get("implementation"), dict) else {}
+    branch_guard_cfg = implementation_cfg.get("branch_guard") if isinstance(implementation_cfg.get("branch_guard"), dict) else {}
     auto_review_spec = bool(implementation_cfg.get("auto_review_spec", True)) if auto_review_spec is None else auto_review_spec
     auto_review_quality = bool(implementation_cfg.get("auto_review_quality", False)) if auto_review_quality is None else auto_review_quality
     auto_qa = bool(implementation_cfg.get("auto_qa", False)) if auto_qa is None else auto_qa
@@ -491,6 +557,61 @@ def run_implement_stage(  # noqa: PLR0913
         if auto_qa_args is None
         else [str(item) for item in auto_qa_args if str(item).strip()]
     )
+    auto_switch_branch = (
+        bool(branch_guard_cfg.get("auto_switch", False))
+        if auto_switch_branch is None
+        else auto_switch_branch
+    )
+    require_clean_worktree_for_switch = bool(branch_guard_cfg.get("require_clean_worktree_for_switch", True))
+
+    run_id = str(run_id_override or "").strip() or generate_run_id(project_root)
+    feature_slug = _slug(feature)
+    impl_dir = _impl_root(project_root, run_id)
+    impl_dir.mkdir(parents=True, exist_ok=True)
+    state_path = impl_dir / "state.json"
+    takeover_gate = evaluate_takeover_baseline_gate(project_root, version=resolved_version)
+    if str(takeover_gate.get("status", "") or "") == "blocked":
+        payload = {
+            "schema_version": "1.0",
+            "run_id": run_id,
+            "feature": feature,
+            "feature_slug": feature_slug,
+            "version": resolved_version,
+            "status": "blocked",
+            "reason_code": "takeover_baseline_required",
+            "takeover_gate": takeover_gate,
+            "generated_at": now_iso(),
+        }
+        write_json(state_path, payload)
+        return 2, payload
+    branch_preflight_path = _branch_preflight_path(run_id)
+    branch_preflight = _run_branch_preflight(
+        project_root=project_root,
+        version=resolved_version,
+        run_id=run_id,
+        feature=feature,
+        auto_switch_branch=bool(auto_switch_branch),
+        require_clean_worktree_for_switch=require_clean_worktree_for_switch,
+    )
+    write_json(project_root / branch_preflight_path, branch_preflight)
+    if branch_preflight.get("blocked"):
+        payload = {
+            "schema_version": "1.0",
+            "run_id": run_id,
+            "feature": feature,
+            "feature_slug": feature_slug,
+            "version": resolved_version,
+            "status": "blocked",
+            "reason_code": "implement_branch_guard_blocked",
+            "branch_preflight_path": str(branch_preflight_path),
+            "branch_preflight": branch_preflight,
+            "expected_branch": branch_preflight.get("expected_branch", ""),
+            "current_branch": branch_preflight.get("current_branch", ""),
+            "recommended_command": branch_preflight.get("recommended_command", ""),
+            "generated_at": now_iso(),
+        }
+        write_json(state_path, payload)
+        return 2, payload
 
     adapter_id, adapter = resolve_adapter(project_root, None if str(runner or "").strip().lower() == "auto" else runner)
     if not adapter_id or not adapter:
@@ -500,13 +621,14 @@ def run_implement_stage(  # noqa: PLR0913
             "reason_code": "runner_not_configured",
             "feature": feature,
             "version": resolved_version,
+            "run_id": run_id,
+            "feature_slug": feature_slug,
+            "branch_preflight_path": str(branch_preflight_path),
+            "branch_preflight": branch_preflight,
         }
+        write_json(state_path, payload)
         return 2, payload
 
-    run_id = str(run_id_override or "").strip() or generate_run_id(project_root)
-    feature_slug = _slug(feature)
-    impl_dir = _impl_root(project_root, run_id)
-    impl_dir.mkdir(parents=True, exist_ok=True)
     artifacts = _artifacts(project_root, resolved_version, feature)
     request_path = Path(f".beacon/implement/{run_id}/request.json")
     request_md_path = Path(
@@ -570,6 +692,8 @@ def run_implement_stage(  # noqa: PLR0913
             "runtime_family": str(adapter.get("runtime_family", "")),
             "skill": rendered_skill,
         },
+        "branch_preflight_path": str(branch_preflight_path),
+        "branch_preflight": branch_preflight,
         "task_prompt": task_prompt,
         "result_file": str(result_path),
         "generated_at": now_iso(),
@@ -587,6 +711,7 @@ def run_implement_stage(  # noqa: PLR0913
         "adapter_type": str(adapter.get("adapter_type", "")),
         "request_path": str(request_path),
         "result_path": str(result_path),
+        "branch_preflight_path": str(branch_preflight_path),
         "generated_at": now_iso(),
         "status": "planned",
     }
@@ -639,6 +764,7 @@ def run_implement_stage(  # noqa: PLR0913
             "changed_files": result_payload.get("changed_files", []),
             "verification": result_payload.get("verification", []),
             "artifact_updates": result_payload.get("artifact_updates", {}),
+            "branch_preflight": branch_preflight,
             "implementation_marker": str(marker.relative_to(project_root)),
             "technical_archive": {
                 "json": str(archive_paths["json"].relative_to(project_root)),
@@ -886,6 +1012,8 @@ def run_implement_stage(  # noqa: PLR0913
         "result_path": str(result_path),
         "stdout_path": str(stdout_path),
         "stderr_path": str(stderr_path),
+        "branch_preflight_path": str(branch_preflight_path),
+        "branch_preflight": branch_preflight,
         "implementation_marker": str(marker.relative_to(project_root)),
         "technical_archive": {
             "json": str(archive_paths["json"].relative_to(project_root)),
@@ -1011,6 +1139,7 @@ def run(
     auto_qa_arg: Optional[list[str]] = typer.Option(None, "--auto-qa-arg", help="Extra argument passed to auto-triggered qa run (repeatable)"),
     auto_qa_follow_handoff: Optional[bool] = typer.Option(None, "--auto-qa-follow-handoff/--no-auto-qa-follow-handoff", help="When auto-qa is blocked, follow supported repair handoff actions and retry QA"),
     auto_qa_max_rounds: int = typer.Option(0, "--auto-qa-max-rounds", help="Maximum QA rounds in the auto-qa follow-handoff loop"),
+    auto_switch_branch: bool = typer.Option(False, "--auto-switch-branch", help="Explicitly switch/create the expected Beacon version branch before implementation"),
     json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
 ):
     """Run implementation using the resolved skill adapter."""
@@ -1030,6 +1159,7 @@ def run(
         auto_qa_args=list(auto_qa_arg or []),
         auto_qa_follow_handoff=auto_qa_follow_handoff,
         auto_qa_max_rounds=auto_qa_max_rounds or None,
+        auto_switch_branch=auto_switch_branch,
     )
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
@@ -1039,6 +1169,39 @@ def run(
         if payload.get("reason_code"):
             typer.echo(f"reason_code: {payload.get('reason_code')}")
     raise typer.Exit(code=code)
+
+
+@app.command("check-branch")
+def check_branch(
+    project: Optional[str] = typer.Option(None, "--project", "--project-root", "-p", help="Project root"),
+    version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
+    feature: str = typer.Option("implement-branch-preflight", "--feature", help="Feature label for traceability"),
+    auto_switch_branch: bool = typer.Option(False, "--auto-switch-branch", help="Explicitly switch/create the expected Beacon version branch"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
+):
+    """Check or repair the required Beacon implementation branch before coding."""
+    project_root = Path(project) if project else Path.cwd()
+    resolved_version = resolve_target_version(project_root, version)
+    run_id = generate_run_id(project_root)
+    payload = _run_branch_preflight(
+        project_root=project_root,
+        version=resolved_version,
+        run_id=run_id,
+        feature=feature,
+        auto_switch_branch=auto_switch_branch,
+        require_clean_worktree_for_switch=True,
+    )
+    payload["branch_preflight_path"] = str(_branch_preflight_path(run_id))
+    write_json(project_root / _branch_preflight_path(run_id), payload)
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo(f"Beacon implement branch check: {payload.get('status')}")
+        typer.echo(f"expected_branch: {payload.get('expected_branch', '')}")
+        typer.echo(f"current_branch: {payload.get('current_branch', '')}")
+        if payload.get("recommended_command"):
+            typer.echo(f"recommended_command: {payload.get('recommended_command')}")
+    raise typer.Exit(code=2 if payload.get("blocked") else 0)
 
 
 @app.command("status")

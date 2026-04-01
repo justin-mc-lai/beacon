@@ -4,13 +4,14 @@ import json
 import subprocess
 from pathlib import Path
 
+from beacon import __toolkit_version__
 from typer.testing import CliRunner
 
 from beacon.main import app
 
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "v1.1.10"
+VERSION = __toolkit_version__
 FEATURE = "Beacon Iteration Governance"
 SCRIPT = ROOT / "skills" / "beacon-iteration-governance" / "scripts" / "run_iteration_governance.sh"
 runner = CliRunner()

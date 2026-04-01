@@ -1,4 +1,4 @@
-"""Stage-aware help/navigator support helpers for Beacon v1.1.7."""
+"""Stage-aware help/navigator support helpers for Beacon."""
 
 from __future__ import annotations
 
@@ -8,7 +8,14 @@ from typing import Any
 
 from beacon.utils.control_plane import build_resume_contract
 from beacon.utils.coverage import compute_coverage_metrics
-from beacon.utils.project_skills import evaluate_project_profile_gate, resolve_profile_for_feature
+from beacon.utils.governance import evaluate_takeover_baseline_gate, load_project_mode
+from beacon.utils.learning_loop import load_learning_plane_contract
+from beacon.utils.project_skills import (
+    default_project_profile,
+    evaluate_project_profile_gate,
+    load_feature_profile_binding,
+    resolve_profile_for_feature,
+)
 from beacon.utils.qa_precision import load_feature_qa_scorecard
 from beacon.utils.revision_state import load_revision_state
 from beacon.utils.runtime import load_run_state
@@ -18,7 +25,7 @@ from beacon.utils.scoring import (
     compute_readiness_score,
     compute_test_score,
 )
-from beacon.utils.story_state import load_story_state, summarize_story_items, feature_slug
+from beacon.utils.story_state import feature_slug, load_story_state, summarize_story_items
 from beacon.utils.versioning import describe_project_version_context, resolve_docs_version
 from beacon.utils.workflow_memory import compute_workflow_progress, resolve_workflow_run_id
 
@@ -48,8 +55,77 @@ def _infer_current_stage(*, revision_state: dict[str, Any], workflow_progress: d
     return delivery or str(revision_state.get("doc_status", "") or "draft")
 
 
-def _blocking_reasons(*, revision_state: dict[str, Any], workflow_progress: dict[str, Any], coverage: dict[str, Any], profile_gate: dict[str, Any] | None = None, control_plane: dict[str, Any] | None = None, feature_scorecard: dict[str, Any] | None = None) -> list[str]:
+def _unique_reasons_in_order(values: list[str]) -> list[str]:
+    seen: set[str] = set()
+    ordered: list[str] = []
+    for value in values:
+        text = str(value or "").strip()
+        if not text or text in seen:
+            continue
+        seen.add(text)
+        ordered.append(text)
+    return ordered
+
+
+def _profile_binding_source(project_root: Path, *, version: str, feature: str) -> str:
+    binding = load_feature_profile_binding(project_root, version=version, feature=feature)
+    if binding:
+        return "feature_binding"
+    if default_project_profile(project_root):
+        return "default_profile"
+    return "none"
+
+
+def _stage_local_execution_binding(
+    *,
+    profile: dict[str, Any] | None,
+    revision_state: dict[str, Any],
+    workflow_progress: dict[str, Any],
+) -> dict[str, str]:
+    if not profile:
+        return {"stage": "", "skill_id": "", "status": "not_configured"}
+    skills = profile.get("skills") if isinstance(profile.get("skills"), dict) else {}
+    delivery_status = str(revision_state.get("delivery_status", "") or "")
+    doc_status = str(revision_state.get("doc_status", "") or "")
+    next_stage = str(workflow_progress.get("next_stage", "") or "")
+    stage_candidates: list[str] = []
+    if delivery_status in {"implemented", "verifying", "verified"} or next_stage == "verify":
+        stage_candidates.append("verify")
+    if delivery_status in {"accepted"}:
+        stage_candidates.append("review")
+    if doc_status == "frozen" and delivery_status in {"", "idle", "draft"}:
+        stage_candidates.append("implementation")
+    if next_stage:
+        stage_candidates.append(next_stage)
+    for stage in stage_candidates:
+        skill_id = str(skills.get(stage, "") or "").strip()
+        if skill_id:
+            return {"stage": stage, "skill_id": skill_id, "status": "bound"}
+    return {
+        "stage": stage_candidates[0] if stage_candidates else "",
+        "skill_id": "",
+        "status": "not_bound",
+    }
+
+
+def _blocking_reasons(
+    *,
+    revision_state: dict[str, Any],
+    workflow_progress: dict[str, Any],
+    coverage: dict[str, Any],
+    profile_gate: dict[str, Any] | None = None,
+    control_plane: dict[str, Any] | None = None,
+    feature_scorecard: dict[str, Any] | None = None,
+    takeover_gate: dict[str, Any] | None = None,
+) -> list[str]:
     reasons: list[str] = []
+    if isinstance(takeover_gate, dict) and str(takeover_gate.get("status", "") or "") == "blocked":
+        reasons.append("takeover_baseline_required")
+        reasons.extend(
+            str(item.get("reason_code", "") or "").strip()
+            for item in (takeover_gate.get("issues") or [])
+            if isinstance(item, dict)
+        )
     delivery_status = str(revision_state.get("delivery_status", "") or "")
     if str(revision_state.get("doc_status", "") or "draft") != "frozen":
         reasons.append("revision_not_frozen")
@@ -72,18 +148,56 @@ def _blocking_reasons(*, revision_state: dict[str, Any], workflow_progress: dict
     feature_scorecard = feature_scorecard if isinstance(feature_scorecard, dict) else {}
     if str(feature_scorecard.get("continue_decision") or "").strip() == "stop_for_repair":
         reasons.append("qa_stop_for_repair")
-        reasons.extend(str(item).strip() for item in (feature_scorecard.get("stop_reasons") or []) if str(item).strip())
+        reasons.extend(
+            str(item).strip()
+            for item in (feature_scorecard.get("stop_reasons") or [])
+            if str(item).strip()
+        )
     if isinstance(control_plane, dict) and int(control_plane.get("failure_streak", 0) or 0) > 0:
         reasons.append("control_plane_escalation_active")
-    return sorted(set(reasons))
+    return _unique_reasons_in_order(reasons)
 
 
-def _next_step(*, revision_state: dict[str, Any], workflow_progress: dict[str, Any], blocked: bool, blocking_reasons: list[str], feature: str, version: str, project_root: Path, profile_gate: dict[str, Any] | None = None, profile: dict[str, Any] | None = None, control_plane: dict[str, Any] | None = None, feature_scorecard: dict[str, Any] | None = None) -> dict[str, str]:
+def _next_step(
+    *,
+    revision_state: dict[str, Any],
+    workflow_progress: dict[str, Any],
+    blocked: bool,
+    blocking_reasons: list[str],
+    feature: str,
+    version: str,
+    project_root: Path,
+    profile_gate: dict[str, Any] | None = None,
+    profile: dict[str, Any] | None = None,
+    control_plane: dict[str, Any] | None = None,
+    feature_scorecard: dict[str, Any] | None = None,
+    project_mode: str = "greenfield",
+    stage_binding: dict[str, str] | None = None,
+) -> dict[str, str]:
     quoted_feature = json.dumps(feature, ensure_ascii=False)
     base = f'--project-root {project_root} --version {version}'
     next_stage = str(workflow_progress.get("next_stage", "") or "")
     run_id = str(workflow_progress.get("run_id", "") or "")
     feature_scorecard = feature_scorecard if isinstance(feature_scorecard, dict) else {}
+    stage_binding = stage_binding if isinstance(stage_binding, dict) else {}
+    delivery_status = str(revision_state.get("delivery_status", "") or "")
+
+    if project_mode == "takeover" and "takeover_baseline_required" in blocking_reasons:
+        return {
+            "action": "takeover-baseline",
+            "reason": "takeover projects must freeze current-state architecture, service-map, and boundaries before implementation",
+            "command": f"beacon doctor advise --project-root {project_root} --version {version} --feature {quoted_feature}",
+        }
+
+    if delivery_status in {"accepted", "released"} and (
+        bool(feature_scorecard.get("release_ready", False)) or bool(workflow_progress.get("gate_pass", False))
+    ):
+        return {
+            "action": "release-check",
+            "reason": "accepted revision is already release-ready under current workflow evidence",
+            "command": f"beacon gate check release --project-root {project_root} --version {version}",
+        }
+
     continue_decision = str(feature_scorecard.get("continue_decision") or "").strip()
     if continue_decision == "stop_for_repair":
         stop_reasons = [str(item).strip() for item in (feature_scorecard.get("stop_reasons") or []) if str(item).strip()]
@@ -99,7 +213,15 @@ def _next_step(*, revision_state: dict[str, Any], workflow_progress: dict[str, A
                 "reason": "qa round found missing coverage or scenario families that must be backfilled before rerun",
                 "command": f"beacon test-case create {quoted_feature} {base}",
             }
-        if any(reason in {"project_profile_gate_blocked", "required_evidence_missing", "required_case_missing", "contract_drift"} for reason in stop_reasons):
+        if any(
+            reason in {
+                "project_profile_gate_blocked",
+                "required_evidence_missing",
+                "required_case_missing",
+                "contract_drift",
+            }
+            for reason in stop_reasons
+        ):
             profile_id = str((profile or {}).get("profile_id", "") or (profile_gate or {}).get("profile_id", "") or "")
             profile_arg = f" --profile {profile_id}" if profile_id else ""
             return {
@@ -130,6 +252,7 @@ def _next_step(*, revision_state: dict[str, Any], workflow_progress: dict[str, A
             "reason": "current QA round is ready for release/governance evaluation",
             "command": f"beacon gate check release --project-root {project_root} --version {version}",
         }
+
     if blocked:
         if "control_plane_escalation_active" in blocking_reasons and isinstance(control_plane, dict):
             run_id = str(control_plane.get("run_id", "") or "")
@@ -185,28 +308,32 @@ def _next_step(*, revision_state: dict[str, Any], workflow_progress: dict[str, A
             "command": f"beacon freeze {quoted_feature} {base}",
         }
 
-    delivery_status = str(revision_state.get("delivery_status", "") or "")
-    if doc_status == "frozen" and delivery_status in {"", "idle", "draft"}:
-        return {
-            "action": "implement",
-            "reason": "revision is frozen and ready for native implementation",
-            "command": f"beacon implement run {quoted_feature} {base} --runner native-single",
-        }
-
     if profile:
         profile_id = str((profile or {}).get("profile_id", "") or "")
         gate_status = str((profile_gate or {}).get("status", "") or "")
         if delivery_status in {"implemented", "verifying", "verified"}:
-            if gate_status == "blocked":
+            if gate_status == "blocked" and str(stage_binding.get("skill_id", "") or "").strip():
                 return {
                     "action": "verify-run",
                     "reason": "project profile still has missing evidence or required cases",
                     "command": f"beacon verify run {quoted_feature} {base} --profile {profile_id}",
                 }
+            if gate_status == "blocked":
+                return {
+                    "action": "doctor-advise",
+                    "reason": "project profile is configured but the verify-stage binding is unresolved or still blocked",
+                    "command": f"beacon doctor advise --project-root {project_root} --version {version} --feature {quoted_feature}",
+                }
             return {
                 "action": "review-quality",
                 "reason": "project profile verification evidence is satisfied; move into formal quality review",
                 "command": f"beacon review quality {quoted_feature} {base}",
+            }
+        if doc_status == "frozen" and delivery_status in {"", "idle", "draft"} and str(stage_binding.get("skill_id", "") or "").strip():
+            return {
+                "action": "orchestrate-run",
+                "reason": "project profile defines a stage-local implementation surface for this feature",
+                "command": f"beacon orchestrate run {quoted_feature} {base} --profile {profile_id} --stage {stage_binding.get('stage') or 'implementation'}",
             }
         if delivery_status in {"accepted"}:
             return {
@@ -214,6 +341,13 @@ def _next_step(*, revision_state: dict[str, Any], workflow_progress: dict[str, A
                 "reason": "accepted revision can move to release readiness evaluation",
                 "command": f"beacon gate check release --project-root {project_root} --version {version}",
             }
+
+    if doc_status == "frozen" and delivery_status in {"", "idle", "draft"}:
+        return {
+            "action": "implement",
+            "reason": "revision is frozen and ready for native implementation",
+            "command": f"beacon implement run {quoted_feature} {base} --runner native-single",
+        }
 
     if not run_id:
         return {
@@ -236,12 +370,6 @@ def _next_step(*, revision_state: dict[str, Any], workflow_progress: dict[str, A
             "command": f"beacon workflow continue --project-root {project_root} --version {version} --run-id {run_id}",
         }
 
-    if delivery_status in {"implemented", "verifying", "verified"} or next_stage == "verify":
-        return {
-            "action": "review-quality",
-            "reason": "implementation exists; next step is verification/review closure",
-            "command": f"beacon review quality {quoted_feature} {base}",
-        }
     if delivery_status in {"accepted"}:
         return {
             "action": "release-check",
@@ -265,7 +393,12 @@ def build_help_payload(
     version_context = describe_project_version_context(project_root, docs_version=version or None)
     resolved_version = str(version_context.get("docs_version", "") or resolve_docs_version(project_root, version))
     feature_name = feature or ""
-    revision_state = load_revision_state(project_root, version=resolved_version, feature=feature_name, create_if_missing=False)
+    revision_state = load_revision_state(
+        project_root,
+        version=resolved_version,
+        feature=feature_name,
+        create_if_missing=False,
+    )
     story_state = load_story_state(
         project_root,
         version=resolved_version,
@@ -273,15 +406,38 @@ def build_help_payload(
         create_if_missing=False,
         revision_id=str(revision_state.get("revision_id", "R1") or "R1"),
     )
-    resolved_run_id = resolve_workflow_run_id(project_root, run_id=run_id, version=resolved_version, feature=feature_name) or ""
-    workflow_progress = compute_workflow_progress(project_root, run_id=resolved_run_id or None, version=resolved_version, feature=feature_name)
+    resolved_run_id = (
+        resolve_workflow_run_id(project_root, run_id=run_id, version=resolved_version, feature=feature_name) or ""
+    )
+    workflow_progress = compute_workflow_progress(
+        project_root,
+        run_id=resolved_run_id or None,
+        version=resolved_version,
+        feature=feature_name,
+    )
     coverage = compute_coverage_metrics(project_root, version=resolved_version, feature=feature_name or None)
     auto_test = _auto_test_status(project_root)
     story_summary = summarize_story_items(story_state)
-    profile = resolve_profile_for_feature(project_root, version=resolved_version, feature=feature_name, explicit_profile=None)
-    profile_gate = evaluate_project_profile_gate(project_root, version=resolved_version, feature=feature_name) if profile else {}
+    project_mode = load_project_mode(project_root)
+    takeover_gate = evaluate_takeover_baseline_gate(project_root, version=resolved_version)
+    profile = resolve_profile_for_feature(
+        project_root,
+        version=resolved_version,
+        feature=feature_name,
+        explicit_profile=None,
+    )
+    profile_gate = (
+        evaluate_project_profile_gate(project_root, version=resolved_version, feature=feature_name)
+        if profile
+        else {}
+    )
     feature_scorecard = load_feature_qa_scorecard(project_root, feature=feature_name) if feature_name else {}
     control_plane = build_resume_contract(project_root, run_id=resolved_run_id or None)
+    stage_binding = _stage_local_execution_binding(
+        profile=profile,
+        revision_state=revision_state,
+        workflow_progress=workflow_progress,
+    )
     blocking = _blocking_reasons(
         revision_state=revision_state,
         workflow_progress=workflow_progress,
@@ -289,9 +445,31 @@ def build_help_payload(
         profile_gate=profile_gate,
         control_plane=control_plane,
         feature_scorecard=feature_scorecard,
+        takeover_gate=takeover_gate,
     )
     blocked = bool(blocking)
     current_stage = _infer_current_stage(revision_state=revision_state, workflow_progress=workflow_progress)
+    profile_binding_source = (
+        _profile_binding_source(project_root, version=resolved_version, feature=feature_name)
+        if feature_name
+        else "none"
+    )
+    learning_surface = load_learning_plane_contract(project_root)
+    execution_surface = {
+        "project_mode": project_mode,
+        "profile_binding_source": profile_binding_source,
+        "profile_id": str((profile or {}).get("profile_id", "") or ""),
+        "stage_binding": stage_binding,
+        "selected_surface": (
+            "takeover-baseline-gate"
+            if str(takeover_gate.get("status", "") or "") == "blocked"
+            else f"project-profile:{stage_binding.get('stage') or current_stage}"
+            if profile and str(stage_binding.get("skill_id", "") or "").strip()
+            else "native-default"
+        ),
+        "native_fallback_allowed": not bool(profile and str(stage_binding.get("skill_id", "") or "").strip()),
+        "takeover_gate": takeover_gate,
+    }
     next_step = _next_step(
         revision_state=revision_state,
         workflow_progress=workflow_progress,
@@ -304,12 +482,62 @@ def build_help_payload(
         profile=profile,
         control_plane=control_plane,
         feature_scorecard=feature_scorecard,
+        project_mode=project_mode,
+        stage_binding=stage_binding,
     )
+    decision_trace = [
+        {
+            "step": "version_truth",
+            "status": "resolved",
+            "docs_version": resolved_version,
+            "runtime_version": str(version_context.get("runtime_version", "") or ""),
+            "current_runtime_release_line": str(version_context.get("current_runtime_release_line", "") or ""),
+            "release_truth_status": str(version_context.get("release_truth_status", "") or ""),
+            "version_truth_source": str(version_context.get("version_truth_source", "") or ""),
+        },
+        {
+            "step": "project_mode",
+            "status": project_mode,
+            "takeover_gate_status": str(takeover_gate.get("status", "") or ""),
+        },
+        {
+            "step": "feature_profile_binding",
+            "status": "resolved" if profile else "not_configured",
+            "profile_id": str((profile or {}).get("profile_id", "") or ""),
+            "binding_source": profile_binding_source,
+        },
+        {
+            "step": "stage_local_execution_binding",
+            "status": str(stage_binding.get("status", "") or "not_configured"),
+            "stage": str(stage_binding.get("stage", "") or ""),
+            "skill_id": str(stage_binding.get("skill_id", "") or ""),
+        },
+        {
+            "step": "learning_surface",
+            "status": "resolved",
+            "subject_surface": learning_surface.get("subject_surface", []),
+        },
+    ]
     scores = {
         "test_score": compute_test_score(coverage, auto_test_status=auto_test, story_summary=story_summary),
-        "closure_score": compute_closure_score(revision_state=revision_state, story_state=story_state, workflow_progress=workflow_progress),
-        "readiness_score": compute_readiness_score(target_stage=str(next_step.get("action", "status")), revision_state=revision_state, coverage_metrics=coverage, workflow_progress=workflow_progress, blocked=blocked),
-        "quality_score": compute_quality_score(project_root, version=resolved_version, feature_slug=feature_slug(feature_name), workflow_progress=workflow_progress),
+        "closure_score": compute_closure_score(
+            revision_state=revision_state,
+            story_state=story_state,
+            workflow_progress=workflow_progress,
+        ),
+        "readiness_score": compute_readiness_score(
+            target_stage=str(next_step.get("action", "status")),
+            revision_state=revision_state,
+            coverage_metrics=coverage,
+            workflow_progress=workflow_progress,
+            blocked=blocked,
+        ),
+        "quality_score": compute_quality_score(
+            project_root,
+            version=resolved_version,
+            feature_slug=feature_slug(feature_name),
+            workflow_progress=workflow_progress,
+        ),
     }
     return {
         "schema_version": "1.0",
@@ -320,12 +548,14 @@ def build_help_payload(
         "feature_slug": feature_slug(feature_name),
         "version": resolved_version,
         "run_id": resolved_run_id,
+        "project_mode": project_mode,
         "revision_id": str(revision_state.get("revision_id", "") or ""),
         "current_stage": current_stage,
         "doc_status": str(revision_state.get("doc_status", "") or "draft"),
         "delivery_status": str(revision_state.get("delivery_status", "") or "idle"),
         "blocked": blocked,
         "blocking_reasons": blocking,
+        "blocked_reason": blocking[0] if blocking else "",
         "next_step": next_step,
         "scores": {k: v.get("score") if isinstance(v, dict) else v for k, v in scores.items()},
         "score_details": scores,
@@ -334,7 +564,16 @@ def build_help_payload(
         "story_summary": story_summary,
         "workflow_progress": workflow_progress,
         "run_state": load_run_state(project_root, resolved_run_id) if resolved_run_id else None,
-        "project_profile": {"profile_id": str((profile or {}).get("profile_id", "") or ""), "project": str((profile or {}).get("project", "") or "")} if profile else None,
+        "project_profile": {
+            "profile_id": str((profile or {}).get("profile_id", "") or ""),
+            "project": str((profile or {}).get("project", "") or ""),
+        }
+        if profile
+        else None,
         "project_gate": profile_gate,
+        "execution_surface": execution_surface,
+        "learning_surface": learning_surface,
+        "decision_trace": decision_trace,
+        "takeover_gate": takeover_gate,
         "feature_scorecard": feature_scorecard if isinstance(feature_scorecard, dict) else {},
     }

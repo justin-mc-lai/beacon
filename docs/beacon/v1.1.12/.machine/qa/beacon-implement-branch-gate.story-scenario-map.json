@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-implement-branch-gate",
+  "feature_slug": "beacon-implement-branch-gate",
+  "version": "v1.1.12",
+  "generated_at": "2026-03-31T00:00:00+00:00",
+  "expansion_profile": "standard",
+  "scenario_depth": "standard",
+  "families_required": [
+    "happy",
+    "negative",
+    "boundary",
+    "recovery",
+    "compatibility"
+  ],
+  "stories": [
+    {
+      "story_id": "US-001",
+      "title": "implement branch preflight",
+      "scenarios": [
+        {
+          "scenario_id": "BG-TC-001",
+          "family": "happy",
+          "summary": "implement passes on exact Beacon version branch"
+        },
+        {
+          "scenario_id": "BG-TC-002",
+          "family": "negative",
+          "summary": "implement blocks on non-version branch"
+        },
+        {
+          "scenario_id": "BG-TC-103",
+          "family": "boundary",
+          "summary": "auto-switch blocks on dirty worktree"
+        }
+      ]
+    }
+  ]
+}

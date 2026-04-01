@@ -12,6 +12,62 @@ from beacon.utils.runtime import now_iso, read_json, write_json
 from beacon.utils.story_state import feature_slug
 from beacon.utils.v115_delivery import ensure_eval_lab_skeleton
 
+DEFAULT_SUBJECT_SURFACE = [
+    "qa_policy",
+    "design_policy",
+    "contract_policy",
+    "rewrite_policy",
+    "debug_policy",
+    "benchmark_policy",
+]
+DEFAULT_PROGRAM_SURFACE = [
+    "benchmark_corpus",
+    "decision_scorecard",
+    "keep_discard_ledger",
+]
+FORBIDDEN_SUBJECT_SURFACE = [
+    "project_skill_command_template",
+    "project_ops_command",
+    "repository_code_mutation",
+    "release_verdict_override",
+    "secret_state",
+    "takeover_architecture_truth",
+]
+POLICY_FAMILY_TOPICS = {
+    "qa_policy": [
+        "scenario_expansion",
+        "evidence_sufficiency",
+        "false_complete_reduction",
+        "continue_decision_calibration",
+    ],
+    "design_policy": [
+        "design_brief_extraction",
+        "design_system_normalization",
+        "guideline_severity_mapping",
+        "review_thresholds",
+    ],
+    "contract_policy": [
+        "readonly_contract_inputs",
+        "service_slice_alignment",
+        "evidence_contract_match",
+    ],
+    "rewrite_policy": [
+        "requirement_rewrite_inputs",
+        "artifact_update_obligations",
+        "version_research_writeback",
+    ],
+    "debug_policy": [
+        "failure_streak_recovery",
+        "structured_debug_repair",
+        "recovery_handoff",
+    ],
+    "benchmark_policy": [
+        "benchmark_corpus_curation",
+        "keep_discard_scoring",
+        "false_complete_rate",
+    ],
+}
+
 
 def _learning_root(project_root: Path) -> Path:
     return project_root / ".beacon" / "state" / "learning"
@@ -134,18 +190,79 @@ def ensure_evo_skeleton(project_root: Path) -> None:
                     "max_command_count": 12,
                     "max_evidence_budget": 20,
                 },
-                "subject_surface": [
-                    "execution_baseline",
-                    "requirement_rewrite",
-                    "debug_recovery_policy",
-                ],
-                "program_surface": [
-                    "benchmark_corpus",
-                    "decision_scorecard",
-                    "keep_discard_ledger",
-                ],
+                "subject_surface": DEFAULT_SUBJECT_SURFACE,
+                "program_surface": DEFAULT_PROGRAM_SURFACE,
+                "forbidden_subject_surface": FORBIDDEN_SUBJECT_SURFACE,
+                "policy_topics": POLICY_FAMILY_TOPICS,
             },
         )
+
+
+def load_learning_plane_contract(project_root: Path) -> dict[str, Any]:
+    payload = _read_json(_evo_decision_engine_path(project_root))
+    if not payload:
+        payload = {
+            "schema_version": "1.0",
+            "main_kpi": "false_complete_rate",
+            "supporting_metrics": [
+                "evidence_coverage",
+                "recovery_success_rate",
+                "operator_load",
+                "cost_per_trial",
+            ],
+            "budget_contract": {
+                "max_runtime_minutes": 30,
+                "max_iterations": 3,
+                "max_command_count": 12,
+                "max_evidence_budget": 20,
+            },
+        }
+    return {
+        **payload,
+        "subject_surface": _normalize_text_list(payload.get("subject_surface")) or list(DEFAULT_SUBJECT_SURFACE),
+        "program_surface": _normalize_text_list(payload.get("program_surface")) or list(DEFAULT_PROGRAM_SURFACE),
+        "forbidden_subject_surface": _normalize_text_list(payload.get("forbidden_subject_surface"))
+        or list(FORBIDDEN_SUBJECT_SURFACE),
+        "policy_topics": payload.get("policy_topics")
+        if isinstance(payload.get("policy_topics"), dict)
+        else dict(POLICY_FAMILY_TOPICS),
+    }
+
+
+def validate_learning_surface_mutation(
+    project_root: Path,
+    *,
+    subject_surface: list[str] | None = None,
+) -> dict[str, Any]:
+    contract = load_learning_plane_contract(project_root)
+    requested = _normalize_text_list(subject_surface)
+    allowed = set(_normalize_text_list(contract.get("subject_surface")))
+    forbidden = set(_normalize_text_list(contract.get("forbidden_subject_surface")))
+    issues: list[dict[str, Any]] = []
+    for item in requested:
+        if item in forbidden:
+            issues.append(
+                {
+                    "reason_code": "learning_surface_forbidden",
+                    "surface": item,
+                    "message": f"learning surface is forbidden: {item}",
+                }
+            )
+        elif item not in allowed:
+            issues.append(
+                {
+                    "reason_code": "learning_surface_unknown",
+                    "surface": item,
+                    "message": f"learning surface is outside the typed contract: {item}",
+                }
+            )
+    return {
+        "status": "blocked" if issues else "pass",
+        "requested_subject_surface": requested,
+        "allowed_subject_surface": sorted(allowed),
+        "forbidden_subject_surface": sorted(forbidden),
+        "issues": issues,
+    }
 
 
 def _technical_learning_payload(*, version: str, feature: str, archive_payload: dict[str, Any], archive_path: str) -> dict[str, Any]:
@@ -237,6 +354,84 @@ def write_requirement_rewrite_input(
         recommendation="keep-review",
         rationale="technical archive extracted structured requirement rewrite inputs",
         refs=[archive_path, str(out.relative_to(project_root))],
+    )
+    refresh_learning_loop(project_root)
+    return {**payload, "path": str(out.relative_to(project_root))}
+
+
+def write_prototype_design_rewrite_input(
+    project_root: Path,
+    *,
+    version: str,
+    feature: str,
+    review_payload: dict[str, Any],
+    guideline_payload: dict[str, Any],
+    benchmark_refs: list[str] | None = None,
+) -> dict[str, Any]:
+    ensure_eval_lab_skeleton(project_root, apply=True)
+    feature_id = feature_slug(feature)
+    out = requirement_rewrite_input_path(project_root, version=version, feature=feature)
+    existing = _read_json(out)
+    rewrite_targets = existing.get("rewrite_targets") if isinstance(existing.get("rewrite_targets"), dict) else {}
+    baseline_candidates = _normalize_text_list(existing.get("baseline_uplift_candidates"))
+    artifact_obligations = _normalize_text_list(existing.get("artifact_update_obligations"))
+    verification_commands = _normalize_text_list(existing.get("verification_commands"))
+    benchmark_rows = _normalize_text_list(existing.get("benchmark_refs"))
+
+    rewrite_targets.setdefault("design_brief", [])
+    rewrite_targets.setdefault("prototype_plan", [])
+    rewrite_targets.setdefault("guideline_fix", [])
+
+    findings = guideline_payload.get("findings") if isinstance(guideline_payload.get("findings"), list) else []
+    for finding in findings:
+        if not isinstance(finding, dict):
+            continue
+        rule = str(finding.get("rule") or "").strip()
+        message = str(finding.get("message") or "").strip()
+        if not rule:
+            continue
+        if rule == "url-reflects-state":
+            rewrite_targets["prototype_plan"].append("Reflect tab/filter state in URL for design-governed prototype flows.")
+        elif rule in {"generic-font-stack", "generic-font-contract"}:
+            rewrite_targets["design_brief"].append("Strengthen typography direction and anti-generic font rules in the design brief.")
+        else:
+            rewrite_targets["guideline_fix"].append(f"Fix guideline rule `{rule}`: {message}")
+        baseline_candidates.append(f"Design governance candidate: {rule} -> {message}")
+
+    if not findings:
+        baseline_candidates.append("Keep design-governed prototype review in the learning loop as a baseline policy.")
+
+    artifact_obligations.extend(["design_brief", "design_system_contract", "web_guideline_review"])
+    verification_commands.append(f"beacon prototype review \"{feature}\" --version {version}")
+    benchmark_rows.extend(_normalize_text_list(benchmark_refs))
+
+    payload = {
+        **existing,
+        "schema_version": "1.0",
+        "feature": feature,
+        "feature_slug": feature_id,
+        "version": version,
+        "generated_at": now_iso(),
+        "source_type": "prototype_design_review",
+        "design_review_outcome": str(review_payload.get("design_review_outcome") or guideline_payload.get("design_review_outcome") or "pass"),
+        "artifact_update_obligations": sorted(set(_normalize_text_list(artifact_obligations))),
+        "verification_commands": sorted(set(_normalize_text_list(verification_commands))),
+        "rewrite_targets": {
+            key: sorted(set(_normalize_text_list(value)))
+            for key, value in rewrite_targets.items()
+        },
+        "baseline_uplift_candidates": sorted(set(_normalize_text_list(baseline_candidates))),
+        "benchmark_refs": sorted(set(_normalize_text_list(benchmark_rows))),
+        "path": str(out.relative_to(project_root)),
+    }
+    write_json(out, payload)
+    append_keep_discard_entry(
+        project_root,
+        source="prototype-design-review",
+        entry_id=f"{feature_id}:{payload.get('design_review_outcome') or 'pass'}",
+        recommendation="review" if findings else "keep",
+        rationale="prototype design review generated structured next-iteration inputs",
+        refs=[str(out.relative_to(project_root)), *payload.get("benchmark_refs", [])],
     )
     refresh_learning_loop(project_root)
     return {**payload, "path": str(out.relative_to(project_root))}
@@ -345,7 +540,8 @@ def _build_learning_candidates(project_root: Path) -> list[dict[str, Any]]:
         obligations = _normalize_text_list(item.get("artifact_update_obligations"))
         verification_commands = _normalize_text_list(item.get("verification_commands"))
         for candidate in _normalize_text_list(item.get("baseline_uplift_candidates")):
-            bucket = _bucket("execution_baseline", candidate)
+            category = "design_policy" if str(item.get("source_type") or "") == "prototype_design_review" else "benchmark_policy"
+            bucket = _bucket(category, candidate)
             bucket["sources"].append(
                 {
                     "source_type": "technical_archive",
@@ -367,7 +563,8 @@ def _build_learning_candidates(project_root: Path) -> list[dict[str, Any]]:
             if not isinstance(rows, list):
                 continue
             for candidate in _normalize_text_list(rows):
-                bucket = _bucket("requirement_rewrite", f"[{section}] {candidate}")
+                category = "design_policy" if section in {"design_brief", "prototype_plan", "guideline_fix"} else "rewrite_policy"
+                bucket = _bucket(category, f"[{section}] {candidate}")
                 bucket["sources"].append(
                     {
                         "source_type": "technical_archive",
@@ -394,7 +591,7 @@ def _build_learning_candidates(project_root: Path) -> list[dict[str, Any]]:
             if not reason_code:
                 continue
             candidate = f"Investigate recurring debug reason_code `{reason_code}` before next release."
-            bucket = _bucket("debug_recovery_policy", candidate)
+            bucket = _bucket("debug_policy", candidate)
             bucket["sources"].append(
                 {
                     "source_type": "debug_issue",
@@ -416,16 +613,16 @@ def _build_learning_candidates(project_root: Path) -> list[dict[str, Any]]:
             benchmark_ref = str(path.relative_to(project_root))
             if label == "false_pass":
                 candidate = "Tighten QA confidence/replay/evidence policy for false-pass samples."
-                bucket = _bucket("qa_confidence_policy", candidate)
+                bucket = _bucket("qa_policy", candidate)
             elif label == "false_block":
                 candidate = "Reduce false-block rate by improving review thresholds and evidence sufficiency policy."
-                bucket = _bucket("qa_evidence_sufficiency_policy", candidate)
+                bucket = _bucket("qa_policy", candidate)
             elif label in {"runner_gap", "flake"}:
                 candidate = "Adjust QA evidence and flake-handling policy for unstable runner samples."
-                bucket = _bucket("qa_evidence_sufficiency_policy", candidate)
+                bucket = _bucket("qa_policy", candidate)
             else:
                 candidate = f"Review QA audit label handling for `{label}` samples."
-                bucket = _bucket("qa_confidence_policy", candidate)
+                bucket = _bucket("qa_policy", candidate)
             bucket["sources"].append(
                 {
                     "source_type": "qa_audit",
@@ -616,7 +813,7 @@ def refresh_keep_discard_engine(project_root: Path) -> dict[str, Any]:
 def _high_risk_candidate(candidate: dict[str, Any]) -> bool:
     category = str(candidate.get("category") or "").strip()
     text = str(candidate.get("text") or "").strip().lower()
-    if category == "debug_recovery_policy":
+    if category == "debug_policy":
         return True
     return any(
         token in text
@@ -635,11 +832,12 @@ def _high_risk_candidate(candidate: dict[str, Any]) -> bool:
 def _candidate_priority(candidate: dict[str, Any]) -> tuple[int, int, int, str]:
     category = str(candidate.get("category") or "")
     category_rank = {
-        "qa_confidence_policy": 0,
-        "qa_evidence_sufficiency_policy": 1,
-        "debug_recovery_policy": 2,
-        "requirement_rewrite": 3,
-        "execution_baseline": 4,
+        "qa_policy": 0,
+        "design_policy": 1,
+        "contract_policy": 2,
+        "debug_policy": 3,
+        "rewrite_policy": 4,
+        "benchmark_policy": 5,
     }.get(category, 9)
     risk_rank = 0 if _high_risk_candidate(candidate) else 1
     score = int(candidate.get("scorecard", {}).get("total_score", 0) or 0)
@@ -664,7 +862,7 @@ def _supporting_metrics(*, selected: list[dict[str, Any]], budget: dict[str, int
         for item in risky
         if str(item.get("decision") or "").strip() == "discard"
     ]
-    debug_cases = [item for item in selected if str(item.get("category") or "") == "debug_recovery_policy"]
+    debug_cases = [item for item in selected if str(item.get("category") or "") == "debug_policy"]
     debug_good = [
         item
         for item in debug_cases
@@ -679,8 +877,8 @@ def _supporting_metrics(*, selected: list[dict[str, Any]], budget: dict[str, int
     )
     command_count = min(int(budget.get("max_command_count", 0) or 0), max(1, len(selected) + 2))
     qa_audit_refs = [ref for ref in evidence_refs if "/qa-audits/" in ref]
-    false_block_samples = len([item for item in selected if str(item.get("category") or "") == "qa_evidence_sufficiency_policy"])
-    calibration_candidates = len([item for item in selected if str(item.get("category") or "") == "qa_confidence_policy"])
+    false_block_samples = len([item for item in selected if str(item.get("category") or "") == "qa_policy"])
+    calibration_candidates = len([item for item in selected if str(item.get("category") or "") == "qa_policy"])
     return {
         "false_complete_rate": round(len(unresolved) / float(len(risky) or 1), 4),
         "false_block_rate": round(false_block_samples / float(len(selected) or 1), 4),

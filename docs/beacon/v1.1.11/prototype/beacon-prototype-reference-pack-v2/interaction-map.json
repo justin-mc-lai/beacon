@@ -1,0 +1,39 @@
+{
+  "ctas": [
+    {
+      "label": "Generate Reference Pack",
+      "kind": "primary"
+    }
+  ],
+  "states": [
+    "draft",
+    "review-ready",
+    "frozen"
+  ],
+  "jump_map": [
+    {
+      "from": "prototype-plan",
+      "to": "page-specs",
+      "why": "compile required pages and states"
+    },
+    {
+      "from": "page-specs",
+      "to": "route-closure",
+      "why": "attach runtime closure contract"
+    },
+    {
+      "from": "route-closure",
+      "to": "prototype-review",
+      "why": "validate coverage and consistency"
+    }
+  ],
+  "modal_map": [],
+  "drawer_map": [],
+  "tab_map": [],
+  "form_actions": [
+    {
+      "label": "Generate Reference Pack",
+      "action": "prototype-freeze"
+    }
+  ]
+}

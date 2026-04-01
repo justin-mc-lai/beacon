@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import shlex
 import subprocess
 from pathlib import Path
 from typing import Any
@@ -359,6 +360,95 @@ def _profile_context(
     }
 
 
+def _stage_capabilities(stage: str) -> list[str]:
+    normalized = str(stage or "").strip().lower()
+    mapping = {
+        "implementation": ["implementation"],
+        "verify": ["verify", "qa"],
+        "review": ["review", "gate"],
+        "delivery": ["delivery"],
+        "debug": ["debug"],
+        "pipeline": ["pipeline"],
+        "qa": ["qa", "verify"],
+    }
+    return mapping.get(normalized, [normalized] if normalized else [])
+
+
+def _first_reason_code(issues: list[dict[str, Any]]) -> str:
+    for item in issues:
+        if not isinstance(item, dict):
+            continue
+        code = str(item.get("reason_code", "") or "").strip()
+        if code:
+            return code
+    return ""
+
+
+def _validate_orchestration_node(
+    *,
+    skill_payload: dict[str, Any],
+    node: dict[str, Any],
+) -> list[dict[str, Any]]:
+    issues: list[dict[str, Any]] = []
+    node_stage = str(node.get("stage", "") or "").strip()
+    supported_stages = {str(item).strip() for item in skill_payload.get("supported_stages", []) if str(item).strip()}
+    capabilities = {str(item).strip() for item in skill_payload.get("capabilities", []) if str(item).strip()}
+    evidence_contract = {str(item).strip() for item in skill_payload.get("evidence_contract", []) if str(item).strip()}
+    entry = str(skill_payload.get("entry", "") or "").strip()
+
+    if not node_stage or (supported_stages and node_stage not in supported_stages):
+        issues.append(
+            {
+                "reason_code": "project_skill_stage_unsupported",
+                "message": f"skill does not support stage `{node_stage or '-'}'",
+                "stage": node_stage,
+                "supported_stages": sorted(supported_stages),
+            }
+        )
+    required_capabilities = _stage_capabilities(node_stage)
+    if required_capabilities and capabilities and not any(item in capabilities for item in required_capabilities):
+        issues.append(
+            {
+                "reason_code": "project_skill_capability_missing",
+                "message": f"skill capabilities {sorted(capabilities)} do not satisfy stage `{node_stage}`",
+                "required_capabilities": required_capabilities,
+            }
+        )
+    if not entry:
+        issues.append(
+            {
+                "reason_code": "project_skill_entry_missing",
+                "message": "skill entry is missing",
+            }
+        )
+
+    missing_evidence = [
+        key
+        for key in node.get("produces_evidence", [])
+        if str(key).strip() and str(key).strip() not in evidence_contract
+    ]
+    if missing_evidence:
+        issues.append(
+            {
+                "reason_code": "project_skill_evidence_contract_mismatch",
+                "message": f"node evidence is outside skill evidence contract: {missing_evidence}",
+                "missing_evidence": missing_evidence,
+                "evidence_contract": sorted(evidence_contract),
+            }
+        )
+
+    produces_cases = [str(item).strip() for item in node.get("produces_cases", []) if str(item).strip()]
+    if produces_cases and capabilities and not any(item in capabilities for item in {"verify", "qa"}):
+        issues.append(
+            {
+                "reason_code": "project_skill_case_surface_unsupported",
+                "message": f"skill capabilities {sorted(capabilities)} cannot produce verification cases",
+                "produces_cases": produces_cases,
+            }
+        )
+    return issues
+
+
 def run_profile_orchestration(
     project_root: Path,
     *,
@@ -422,7 +512,24 @@ def run_profile_orchestration(
             "evidence_path": str(_node_evidence_path(project_root, feature, run_id, node_id).relative_to(project_root)),
             "produces_evidence": list(node.get("produces_evidence", [])),
             "produces_cases": list(node.get("produces_cases", [])),
+            "execution_boundary": {
+                "mode": "validated_shell_template" if command_template else "missing_command_template",
+                "skill_entry": skill_entry,
+                "supported_stages": list(skill_payload.get("supported_stages", [])),
+                "capabilities": list(skill_payload.get("capabilities", [])),
+                "evidence_contract": list(skill_payload.get("evidence_contract", [])),
+            },
         }
+
+        node_issues = _validate_orchestration_node(skill_payload=skill_payload, node=node)
+        if node_issues:
+            result_payload["status"] = "blocked"
+            result_payload["issues"] = node_issues
+            result_payload["reason_code"] = _first_reason_code(node_issues) or "project_skill_boundary_blocked"
+            status = "blocked"
+            write_json(_node_evidence_path(project_root, feature, run_id, node_id), result_payload)
+            node_results.append(result_payload)
+            break
 
         if dry_run:
             node_results.append(result_payload)
@@ -435,10 +542,28 @@ def run_profile_orchestration(
             node_results.append(result_payload)
             break
 
+        try:
+            command_argv = shlex.split(command)
+        except ValueError as exc:
+            result_payload["status"] = "blocked"
+            result_payload["reason_code"] = "project_skill_command_parse_failed"
+            result_payload["stderr"] = str(exc)
+            status = "blocked"
+            write_json(_node_evidence_path(project_root, feature, run_id, node_id), result_payload)
+            node_results.append(result_payload)
+            break
+        if not command_argv:
+            result_payload["status"] = "blocked"
+            result_payload["reason_code"] = "project_skill_command_parse_failed"
+            result_payload["stderr"] = "empty argv after parsing"
+            status = "blocked"
+            write_json(_node_evidence_path(project_root, feature, run_id, node_id), result_payload)
+            node_results.append(result_payload)
+            break
+
         completed = subprocess.run(
-            command,
+            command_argv,
             cwd=project_root,
-            shell=True,
             capture_output=True,
             text=True,
             check=False,
@@ -482,6 +607,10 @@ def run_profile_orchestration(
         "required_evidence": list(profile.get("required_evidence", [])),
         "required_cases": list(profile.get("required_cases", [])),
     }
+    if status == "blocked":
+        summary["reason_code"] = _first_reason_code(
+            [item for node in node_results for item in (node.get("issues") or []) if isinstance(item, dict)]
+        ) or "project_skill_boundary_blocked"
     write_json(orchestration_state_path(project_root, resolved_version, feature), summary)
     return (0 if summary["status"] in {"completed", "dry_run"} else 2), summary
 
@@ -553,6 +682,13 @@ def evaluate_project_profile_gate(
     required_evidence = [str(item) for item in profile.get("required_evidence", []) if str(item).strip()]
     required_cases = [str(item) for item in profile.get("required_cases", []) if str(item).strip()]
     issues: list[dict[str, Any]] = []
+    orchestration_nodes = orchestration.get("nodes") if isinstance(orchestration.get("nodes"), list) else []
+    for node in orchestration_nodes:
+        if not isinstance(node, dict):
+            continue
+        for item in node.get("issues", []):
+            if isinstance(item, dict):
+                issues.append(item)
 
     for key in required_evidence:
         status = evidence_status.get(key, "")

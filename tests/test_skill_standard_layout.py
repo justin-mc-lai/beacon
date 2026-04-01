@@ -4,8 +4,11 @@ import json
 import subprocess
 from pathlib import Path
 
+from beacon import __toolkit_version__, __version__
 
 ROOT = Path(__file__).resolve().parents[1]
+CURRENT_RELEASE = __toolkit_version__
+CURRENT_PACKAGE_VERSION = __version__
 
 
 def test_standard_skill_package_should_exist():
@@ -25,9 +28,9 @@ def test_standard_skill_package_should_have_frontmatter_and_metadata():
     assert skill_text.startswith("---\n")
     assert "name: beacon" in skill_text
     assert "description:" in skill_text
-    assert "../../docs/beacon/v1.1.10/SUMMARY.md" in skill_text
-    assert "../../docs/beacon/v1.1.10/execution/index.md" in skill_text
-    assert "../../docs/beacon/v1.1.10/release/v1.1.10.md" in skill_text
+    assert f"../../docs/beacon/{CURRENT_RELEASE}/SUMMARY.md" in skill_text
+    assert f"../../docs/beacon/{CURRENT_RELEASE}/execution/index.md" in skill_text
+    assert f"../../docs/beacon/{CURRENT_RELEASE}/release/{CURRENT_RELEASE}.md" in skill_text
     assert 'Lifecycle Navigation Rules' in skill_text
     assert 'beacon help --project-root . --json' in skill_text
     assert 'QA prompt contract must follow first principles' in skill_text
@@ -36,38 +39,38 @@ def test_standard_skill_package_should_have_frontmatter_and_metadata():
 
     metadata = json.loads((ROOT / "skills" / "beacon" / "metadata.json").read_text(encoding="utf-8"))
     assert metadata["name"] == "beacon"
-    assert metadata["version"] == "1.1.10"
+    assert metadata["version"] == CURRENT_PACKAGE_VERSION
 
 
 def test_standard_skill_wrapper_script_should_launch_beacon_version():
     script = ROOT / "skills" / "beacon" / "scripts" / "run_beacon.sh"
     result = subprocess.run(["bash", str(script), "--version"], cwd=ROOT, capture_output=True, text=True)
     assert result.returncode == 0, result.stdout + result.stderr
-    assert "Beacon CLI v1.1.10" in result.stdout
+    assert f"Beacon CLI {CURRENT_RELEASE}" in result.stdout
 
 
 def test_basic_workflow_example_should_align_with_v115_docs_and_flow():
     example = (ROOT / "skills" / "beacon" / "examples" / "basic-workflow.md").read_text(encoding="utf-8")
-    assert "../../../docs/beacon/v1.1.10/SUMMARY.md" in example
-    assert "../../../docs/beacon/v1.1.10/execution/index.md" in example
+    assert f"../../../docs/beacon/{CURRENT_RELEASE}/SUMMARY.md" in example
+    assert f"../../../docs/beacon/{CURRENT_RELEASE}/execution/index.md" in example
     assert "release-readiness.md" in example
     assert "implementation-with-omx.md" in example
-    assert "Beacon v1.1.10 release line" in example
+    assert f"Beacon {CURRENT_RELEASE} release line" in example
     assert "workflow status" in example
 
 
 def test_release_readiness_example_should_cover_doctor_gate_and_release():
     example = (ROOT / "skills" / "beacon" / "examples" / "release-readiness.md").read_text(encoding="utf-8")
-    assert "../../../docs/beacon/v1.1.10/SUMMARY.md" in example
+    assert f"../../../docs/beacon/{CURRENT_RELEASE}/SUMMARY.md" in example
     assert "doctor verify-materials" in example
     assert "doctor repair-package" in example
     assert "gate check release" in example
-    assert "release check v1.1.10 --project ." in example
+    assert f"release check {CURRENT_RELEASE} --project ." in example
 
 
 def test_implementation_with_omx_example_should_cover_skill_and_implement_flow():
     example = (ROOT / "skills" / "beacon" / "examples" / "implementation-with-omx.md").read_text(encoding="utf-8")
-    assert "../../../docs/beacon/v1.1.10/SUMMARY.md" in example
+    assert f"../../../docs/beacon/{CURRENT_RELEASE}/SUMMARY.md" in example
     assert "skill detect" in example
     assert "skill prefer omx" in example
     assert "implement list-runners" in example

@@ -1,6 +1,6 @@
 # Beacon Skill Example
 
-This example focuses on the **basic workflow path** in v1.1.10:
+This example focuses on the **basic workflow path** in v1.1.11:
 
 1. start from the command docs hub
 2. use the wrapper script
@@ -10,8 +10,8 @@ This example focuses on the **basic workflow path** in v1.1.10:
 
 Read first:
 
-- [`../../../docs/beacon/v1.1.10/SUMMARY.md`](../../../docs/beacon/v1.1.10/SUMMARY.md)
-- [`../../../docs/beacon/v1.1.10/execution/index.md`](../../../docs/beacon/v1.1.10/execution/index.md)
+- [`../../../docs/beacon/v1.1.11/SUMMARY.md`](../../../docs/beacon/v1.1.11/SUMMARY.md)
+- [`../../../docs/beacon/v1.1.11/execution/index.md`](../../../docs/beacon/v1.1.11/execution/index.md)
 
 Related focused examples:
 
@@ -24,36 +24,36 @@ bash skills/beacon/scripts/run_beacon.sh --version
 
 # 1) Natural-language planning
 bash skills/beacon/scripts/run_beacon.sh ask \
-  "Create a release-ready requirement package for Beacon v1.1.10 release line" \
+  "Create a release-ready requirement package for Beacon v1.1.11 release line" \
   --project-root . \
-  --version v1.1.10 \
+  --version v1.1.11 \
   --plan-only --json
 
 # 2) Start the workflow
 bash skills/beacon/scripts/run_beacon.sh workflow start \
-  "Beacon v1.1.10 release line" \
+  "Beacon v1.1.11 release line" \
   --project . \
-  --version v1.1.10
+  --version v1.1.11
 
 # 3) Generate the main-chain artifacts
 bash skills/beacon/scripts/run_beacon.sh think start \
-  "Beacon v1.1.10 release line" \
+  "Beacon v1.1.11 release line" \
   --project . \
-  --version v1.1.10
+  --version v1.1.11
 bash skills/beacon/scripts/run_beacon.sh user-story create \
-  "Beacon v1.1.10 release line" \
+  "Beacon v1.1.11 release line" \
   --project . \
-  --version v1.1.10
+  --version v1.1.11
 bash skills/beacon/scripts/run_beacon.sh prd create \
-  "Beacon v1.1.10 release line" \
+  "Beacon v1.1.11 release line" \
   --project . \
-  --version v1.1.10
+  --version v1.1.11
 bash skills/beacon/scripts/run_beacon.sh test-case create \
-  "Beacon v1.1.10 release line" \
+  "Beacon v1.1.11 release line" \
   --project . \
-  --version v1.1.10
+  --version v1.1.11
 
 # 4) Inspect status / next stage
-bash skills/beacon/scripts/run_beacon.sh status --board --project-root . --version v1.1.10
-bash skills/beacon/scripts/run_beacon.sh workflow status --project . --version v1.1.10
+bash skills/beacon/scripts/run_beacon.sh status --board --project-root . --version v1.1.11
+bash skills/beacon/scripts/run_beacon.sh workflow status --project . --version v1.1.11
 ```

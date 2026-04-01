@@ -1,0 +1,408 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-prototype-reference-pack-v2",
+  "feature_slug": "beacon-prototype-reference-pack-v2",
+  "version": "v1.1.11",
+  "current_revision_id": "R1",
+  "lifecycle_status": "frozen",
+  "updated_at": "2026-03-31T10:59:38.765571+00:00",
+  "revisions": [
+    {
+      "revision_id": "R1",
+      "feature_slug": "beacon-prototype-reference-pack-v2",
+      "source_revision_id": null,
+      "reason": "draft",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:38ac5abb69dc65d60d0687a8c1065ff9492042b47ba0d97dd81634943c087a47",
+      "superseded_by": null,
+      "created_at": "2026-03-31T02:37:33.694461+00:00",
+      "frozen_at": "2026-03-31T02:52:04.413373+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    }
+  ],
+  "stories": [
+    {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "Beacon Prototype v2 升级为 Story-driven 高保真实现参考包",
+      "priority": "high",
+      "status": "accepted",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "Contract Compiler Input",
+          "text": "`prototype plan/create` 必须消费结构化 story/prd blocks，并支持 route source、code source、baseline source，而不是仅依赖前几行扁平 preview",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260331T040127Z-edc8",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-31T10:59:38.765415+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "CJK-safe Parsing",
+          "text": "contract parser 必须正确处理中文分号、中文冒号、换行列表、多段 block，不允许因为 `；` 等标点导致 jump/state/section 丢失",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260331T040127Z-edc8",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-31T10:59:38.765415+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "Page Inventory",
+          "text": "必须显式解析 `coverage_mode` 与 `page_inventory`；当 feature 声明 `all-existing-routes` 时，Beacon 需解析 required pages，而不是只渲染 archetype sections",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260331T040127Z-edc8",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-31T10:59:38.765415+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "Page Spec",
+          "text": "每个 required page 都必须生成 page-spec，至少包含 `page_id`、`intent`、`sections`、`primary_cta`、`states`、`route_targets`、`truth_notes`",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260331T040127Z-edc8",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-31T10:59:38.765415+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "Hi-fi Output",
+          "text": "每个 required page 都必须生成独立高保真页面/画布；当 contract 声明 `full-hi-fi` 时，不允许退回 `compact coverage`、结构化小画布或摘要式表格替代",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260331T040127Z-edc8",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-31T10:59:38.765415+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "Baseline Protection",
+          "text": "contract 可声明 `baseline_protection`；被保护页面不得退化为 generic shell，不得丢失既有有效交互与信息层级",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260331T040127Z-edc8",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-31T10:59:38.765415+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "Route Closure",
+          "text": "CTA/tab/page jumps 必须携带 target、context/params、fallback，并进入 `route-closure-contract.json` 与 `implementation-map.json`",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260331T040127Z-edc8",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-31T10:59:38.765415+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "Shared Visual System",
+          "text": "产物必须输出单一 `theme.json + tokens.css`，并显式声明页面只能消费共享 token，不允许 per-page 失控硬编码",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260331T040127Z-edc8",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-31T10:59:38.765415+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-009",
+          "kind": "ac",
+          "theme": "Review Strictness",
+          "text": "`prototype review` 必须检查 page coverage、state coverage、compact-mode drift、baseline regression、route closure、artifact consistency、stale source",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260331T040127Z-edc8",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-31T10:59:38.765415+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-010",
+          "kind": "ac",
+          "theme": "Freeze Integrity",
+          "text": "`prototype freeze` 仅在 `review=pass`、`stale=false`、manifest/freeze/review 自洽、artifact fingerprints 完整时允许通过",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260331T040127Z-edc8",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-31T10:59:38.765415+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-011",
+          "kind": "ac",
+          "theme": "Machine Consumers",
+          "text": "`test-case/review/gate/implementation` 必须可消费 `prototype-plan.json`、`page-specs/`、coverage report、route closure 工件",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260331T040127Z-edc8",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-31T10:59:38.765415+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-012",
+          "kind": "ac",
+          "theme": "Real Fixture Coverage",
+          "text": "`slow_uni_bmtop` 这类要求“38 页全高保真 + baseline protection + route closure”的 fixture 必须可被 truthful 表达",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260331T040127Z-edc8",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-31T10:59:38.765415+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-013",
+          "kind": "ac",
+          "theme": "Backward Compatibility",
+          "text": "旧的 prototype 流程可继续使用 minimal mode，但 minimal mode 必须显式标记为不具备 `reference-pack-v2` 的强保证",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260331T040127Z-edc8",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-31T10:59:38.765415+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260331T040127Z-edc8",
+          "verified_by_run_id": null,
+          "accepted_at": "2026-03-31T04:02:02.928774+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — compiler consumes structured story/prd contract plus route/code/baseline sources",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-31T10:59:38.765415+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-001"
+          ]
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — parser is safe for Chinese punctuation and multi-line contract blocks",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-31T10:59:38.765415+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-002"
+          ]
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — required pages resolve from explicit page inventory or route sources",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-31T10:59:38.765415+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-003"
+          ]
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — each required page receives a page-spec artifact",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-31T10:59:38.765415+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-004"
+          ]
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — full-hi-fi features emit independent page artifacts rather than compact coverage",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-31T10:59:38.765415+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-005"
+          ]
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — baseline-protected pages cannot regress to generic shells",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-31T10:59:38.765415+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-006"
+          ]
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — CTA/tab/page jumps carry target, context, and fallback into route closure artifacts",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-31T10:59:38.765415+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-007"
+          ]
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — theme.json and tokens.css remain the single visual source",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-31T10:59:38.765415+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-008"
+          ]
+        },
+        {
+          "id": "TEST-009",
+          "kind": "test",
+          "text": "Verify AC-009 — review fails on page/state coverage drift, compact mode, baseline regression, stale source, or artifact inconsistency",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-31T10:59:38.765415+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-009"
+          ]
+        },
+        {
+          "id": "TEST-010",
+          "kind": "test",
+          "text": "Verify AC-010 — freeze only passes on strict review and consistent artifacts",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-31T10:59:38.765415+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-010"
+          ]
+        },
+        {
+          "id": "TEST-011",
+          "kind": "test",
+          "text": "Verify AC-011 — test-case, review, gate, and implementation consumers can read the new prototype artifacts",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-31T10:59:38.765415+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-011"
+          ]
+        },
+        {
+          "id": "TEST-012",
+          "kind": "test",
+          "text": "Verify AC-012 — real complex fixtures such as slow_uni_bmtop can be truthfully represented",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-31T10:59:38.765415+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-012"
+          ]
+        },
+        {
+          "id": "TEST-013",
+          "kind": "test",
+          "text": "Verify AC-013 — minimal mode remains backward compatible while explicitly downgraded",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-03-31T10:59:38.765415+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-013"
+          ]
+        }
+      ],
+      "feature": "beacon-prototype-reference-pack-v2",
+      "feature_slug": "beacon-prototype-reference-pack-v2",
+      "version": "v1.1.11",
+      "verification_evidence": [
+        ".beacon/auto-test-status.json"
+      ],
+      "last_changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/memory/decisions.json",
+        ".beacon/memory/feedback.json",
+        ".beacon/memory/memory-v1.json",
+        ".beacon/memory/project-insights.json",
+        ".beacon/memory/vocabulary.json",
+        ".beacon/memory/workflow-lifecycle.index.json",
+        ".beacon/memory/workflow-lifecycle.json",
+        ".beacon/qa/status.json",
+        ".beacon/raw-command-log.jsonl"
+      ],
+      "accepted_at": "2026-03-31T10:59:38.765415+00:00",
+      "accepted_by": "qa"
+    }
+  ]
+}

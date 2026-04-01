@@ -1,10 +1,4 @@
-"""Version resolution helpers.
-
-Beacon project docs version and Beacon runtime/toolkit version are distinct:
-
-- docs version controls which `docs/beacon/<version>/` line is treated as source of truth
-- runtime version controls managed context markers and runtime compatibility checks
-"""
+"""Version resolution helpers with v1.1.12 release-truth support."""
 
 from __future__ import annotations
 
@@ -18,7 +12,10 @@ from beacon import __toolkit_version__
 _SEMVER = re.compile(r"^v?(\d+)\.(\d+)\.(\d+)$")
 _RELEASE_LINE = re.compile(r"^v?(\d+)\.(\d+)\.(\d+)(?:[.-].+)?$")
 _TOOLKIT_VERSION = re.compile(r'__toolkit_version__\s*=\s*"(?P<version>v\d+\.\d+\.\d+)"')
+_PACKAGE_VERSION = re.compile(r'__version__\s*=\s*"(?P<version>\d+\.\d+\.\d+)"')
 _CONTEXT_MARKER = re.compile(r"<!--\s*BEACON:VERSION:([^>\s]+)\s*-->")
+_VERSION_TRUTH_STATE = Path(".beacon/state/version-truth/current.json")
+_VERSION_TRUTH_CANONICAL = Path("beacon/version-truth.json")
 
 
 def normalize_version(value: str | None) -> str | None:
@@ -53,6 +50,37 @@ def _iter_version_names(root: Path) -> Iterable[str]:
     return names
 
 
+def _version_key(value: str) -> tuple[int, int, int]:
+    match = _SEMVER.match(value)
+    if not match:
+        return (0, 0, 0)
+    major, minor, patch = match.groups()
+    return (int(major), int(minor), int(patch))
+
+
+def _read_json_file(path: Path) -> dict[str, Any]:
+    if not path.exists():
+        return {}
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:  # noqa: BLE001
+        return {}
+    return payload if isinstance(payload, dict) else {}
+
+
+def _normalize_version_list(values: Any) -> list[str]:
+    if isinstance(values, str):
+        values = [values]
+    if not isinstance(values, list):
+        return []
+    out: list[str] = []
+    for value in values:
+        normalized = normalize_version(str(value or "").strip())
+        if normalized and normalized not in out:
+            out.append(normalized)
+    return out
+
+
 def discover_versions(project_root: Path) -> list[str]:
     candidates: set[str] = set()
     for base in (project_root / "docs" / "beacon",):
@@ -60,15 +88,7 @@ def discover_versions(project_root: Path) -> list[str]:
             normalized = normalize_version(name)
             if normalized:
                 candidates.add(normalized)
-
-    def _key(ver: str) -> tuple[int, int, int]:
-        match = _SEMVER.match(ver)
-        if not match:
-            return (0, 0, 0)
-        a, b, c = match.groups()
-        return (int(a), int(b), int(c))
-
-    return sorted(candidates, key=_key)
+    return sorted(candidates, key=_version_key)
 
 
 def largest_version(project_root: Path, *, fallback: str = "v1.0.0") -> str:
@@ -125,22 +145,175 @@ def context_managed_version(project_root: Path) -> str | None:
     return next(iter(versions))
 
 
-def current_runtime_release_version(project_root: Path) -> str | None:
+def _truth_source_candidates(project_root: Path) -> list[tuple[str, Path]]:
+    return [
+        ("runtime_state", project_root / _VERSION_TRUTH_STATE),
+        ("canonical_file", project_root / _VERSION_TRUTH_CANONICAL),
+    ]
+
+
+def version_truth_source_path(project_root: Path) -> Path | None:
+    for _, candidate in _truth_source_candidates(project_root):
+        if candidate.exists():
+            return candidate
+    return None
+
+
+def _read_init_versions(project_root: Path) -> tuple[str | None, str | None]:
     init_file = project_root / "beacon" / "__init__.py"
     if not init_file.exists():
-        return None
+        return (None, None)
     try:
         text = init_file.read_text(encoding="utf-8")
     except Exception:  # noqa: BLE001
-        return None
-    match = _TOOLKIT_VERSION.search(text)
-    if not match:
-        return None
-    version = normalize_version(match.group("version"))
+        return (None, None)
+    package_match = _PACKAGE_VERSION.search(text)
+    toolkit_match = _TOOLKIT_VERSION.search(text)
+    package_version = str(package_match.group("version")) if package_match else None
+    toolkit_version = normalize_version(toolkit_match.group("version")) if toolkit_match else None
+    return (package_version, toolkit_version)
+
+
+def _infer_version_truth(project_root: Path) -> dict[str, Any]:
+    package_version, runtime_version = _read_init_versions(project_root)
+    docs_versions = discover_versions(project_root)
+    current_release = runtime_version or (docs_versions[-1] if docs_versions else None) or "v1.0.0"
+    planning_lines = [item for item in docs_versions if _version_key(item) > _version_key(current_release)]
+    lines: dict[str, dict[str, str]] = {}
+    for version in docs_versions:
+        status = "historical_release"
+        if version == current_release:
+            status = "current_runtime_release"
+        elif version in planning_lines:
+            status = "planning_only"
+        lines[version] = {"status": status}
+    if current_release not in lines:
+        lines[current_release] = {"status": "current_runtime_release"}
+    return {
+        "schema_version": "1.0",
+        "package_version": package_version or "",
+        "runtime_version": current_release,
+        "docs_default_line": current_release,
+        "current_runtime_release_line": current_release,
+        "planning_lines": planning_lines,
+        "partial_runtime_supplement_lines": [],
+        "lines": lines,
+    }
+
+
+def _normalize_version_truth(
+    project_root: Path,
+    payload: dict[str, Any],
+    *,
+    source_kind: str,
+    source_path: Path | None,
+) -> dict[str, Any]:
+    inferred = _infer_version_truth(project_root)
+    package_version = str(payload.get("package_version", "") or inferred.get("package_version", "")).strip()
+    runtime_version = normalize_version(
+        str(payload.get("runtime_version", "") or inferred.get("runtime_version", ""))
+    )
+    current_release = normalize_version(
+        str(
+            payload.get("current_runtime_release_line", "")
+            or inferred.get("current_runtime_release_line", "")
+            or runtime_version
+            or ""
+        )
+    ) or inferred["current_runtime_release_line"]
+    docs_default_line = normalize_version(
+        str(payload.get("docs_default_line", "") or inferred.get("docs_default_line", "") or current_release)
+    ) or current_release
+    planning_lines = _normalize_version_list(payload.get("planning_lines"))
+    if not planning_lines:
+        planning_lines = _normalize_version_list(inferred.get("planning_lines"))
+    partial_lines = _normalize_version_list(payload.get("partial_runtime_supplement_lines"))
+    lines_payload = payload.get("lines") if isinstance(payload.get("lines"), dict) else {}
+    lines: dict[str, dict[str, Any]] = {}
+    for version, item in inferred.get("lines", {}).items():
+        if isinstance(item, dict):
+            lines[str(version)] = dict(item)
+    for version, item in lines_payload.items():
+        normalized = normalize_version(str(version or "").strip())
+        if not normalized:
+            continue
+        row = dict(item) if isinstance(item, dict) else {}
+        lines[normalized] = {
+            "status": str(row.get("status", "") or lines.get(normalized, {}).get("status", "")).strip(),
+        }
+    all_versions = set(discover_versions(project_root))
+    all_versions.update(lines.keys())
+    all_versions.update(planning_lines)
+    all_versions.update(partial_lines)
+    all_versions.add(current_release)
+    for version in sorted(all_versions, key=_version_key):
+        status = str(lines.get(version, {}).get("status", "") or "").strip()
+        if not status:
+            if version == current_release:
+                status = "current_runtime_release"
+            elif version in partial_lines:
+                status = "planning_with_partial_runtime_supplement"
+            elif version in planning_lines:
+                status = "planning_only"
+            else:
+                status = "historical_release"
+        elif version in partial_lines and status == "planning_only":
+            status = "planning_with_partial_runtime_supplement"
+        lines[version] = {"status": status}
+    return {
+        "schema_version": str(payload.get("schema_version", "") or inferred.get("schema_version", "1.0")),
+        "package_version": package_version,
+        "runtime_version": runtime_version or current_release,
+        "docs_default_line": docs_default_line,
+        "current_runtime_release_line": current_release,
+        "planning_lines": [item for item in planning_lines if item != current_release],
+        "partial_runtime_supplement_lines": [item for item in partial_lines if item != current_release],
+        "lines": lines,
+        "source_kind": source_kind,
+        "source_path": str(source_path.relative_to(project_root)) if source_path and source_path.exists() else "",
+    }
+
+
+def load_version_truth(project_root: Path) -> dict[str, Any]:
+    for source_kind, candidate in _truth_source_candidates(project_root):
+        payload = _read_json_file(candidate)
+        if payload:
+            return _normalize_version_truth(project_root, payload, source_kind=source_kind, source_path=candidate)
+    return _normalize_version_truth(
+        project_root,
+        _infer_version_truth(project_root),
+        source_kind="inferred",
+        source_path=None,
+    )
+
+
+def release_truth_status(version_truth: dict[str, Any], version: str | None) -> str:
+    normalized = normalize_version(version)
+    if not normalized:
+        return "unknown"
+    lines = version_truth.get("lines") if isinstance(version_truth.get("lines"), dict) else {}
+    row = lines.get(normalized) if isinstance(lines, dict) else None
+    if isinstance(row, dict):
+        status = str(row.get("status", "") or "").strip()
+        if status:
+            return status
+    if normalized == str(version_truth.get("current_runtime_release_line", "") or ""):
+        return "current_runtime_release"
+    if normalized in _normalize_version_list(version_truth.get("partial_runtime_supplement_lines")):
+        return "planning_with_partial_runtime_supplement"
+    if normalized in _normalize_version_list(version_truth.get("planning_lines")):
+        return "planning_only"
+    return "historical_release"
+
+
+def current_runtime_release_version(project_root: Path) -> str | None:
+    version = normalize_version(
+        str(load_version_truth(project_root).get("current_runtime_release_line", "") or "")
+    )
     if not version:
         return None
     versions = set(discover_versions(project_root))
-    return version if version in versions else None
+    return version if not versions or version in versions else None
 
 
 def resolve_docs_version(
@@ -161,10 +334,17 @@ def resolve_docs_version(
             resolved = onboarding
             source = "onboarding_state"
         else:
-            runtime_release = current_runtime_release_version(project_root)
-            if runtime_release:
-                resolved = runtime_release
-                source = "runtime_release"
+            version_truth = load_version_truth(project_root)
+            docs_default = normalize_version(
+                str(
+                    version_truth.get("docs_default_line", "")
+                    or version_truth.get("current_runtime_release_line", "")
+                    or ""
+                )
+            )
+            if docs_default:
+                resolved = docs_default
+                source = "version_truth"
             else:
                 resolved = largest_version(project_root, fallback=fallback)
                 source = "docs_scan"
@@ -202,18 +382,24 @@ def resolve_runtime_version(
             resolved = toolkit
             source = "toolkit_version"
         else:
-            onboarding = onboarding_runtime_version(project_root)
-            if onboarding:
-                resolved = onboarding
-                source = "onboarding_state"
+            version_truth = load_version_truth(project_root)
+            truth_runtime = normalize_version(str(version_truth.get("runtime_version", "") or ""))
+            if truth_runtime:
+                resolved = truth_runtime
+                source = "version_truth"
             else:
-                context_version = context_managed_version(project_root)
-                if context_version:
-                    resolved = context_version
-                    source = "context_marker"
+                onboarding = onboarding_runtime_version(project_root)
+                if onboarding:
+                    resolved = onboarding
+                    source = "onboarding_state"
                 else:
-                    resolved = normalize_version(fallback) or "v1.0.0"
-                    source = "fallback"
+                    context_version = context_managed_version(project_root)
+                    if context_version:
+                        resolved = context_version
+                        source = "context_marker"
+                    else:
+                        resolved = normalize_version(fallback) or "v1.0.0"
+                        source = "fallback"
     return (resolved, source) if return_source else resolved
 
 
@@ -227,6 +413,7 @@ def describe_project_version_context(
     resolved_runtime, runtime_source = resolve_runtime_version(project_root, runtime_version, return_source=True)
     context_versions = context_managed_versions(project_root)
     unique_context = sorted({value for value in context_versions.values() if value})
+    version_truth = load_version_truth(project_root)
     return {
         "docs_version": resolved_docs,
         "docs_version_source": docs_source,
@@ -239,6 +426,17 @@ def describe_project_version_context(
         "context_version_consistent": len(unique_context) <= 1,
         "available_docs_versions": discover_versions(project_root),
         "latest_scanned_docs_version": largest_version(project_root, fallback=resolved_docs),
+        "package_version": str(version_truth.get("package_version", "") or ""),
+        "docs_default_line": str(version_truth.get("docs_default_line", "") or ""),
+        "current_runtime_release_line": str(version_truth.get("current_runtime_release_line", "") or ""),
+        "planning_lines": _normalize_version_list(version_truth.get("planning_lines")),
+        "partial_runtime_supplement_lines": _normalize_version_list(
+            version_truth.get("partial_runtime_supplement_lines")
+        ),
+        "release_truth_status": release_truth_status(version_truth, resolved_docs),
+        "version_truth_source": str(version_truth.get("source_path", "") or ""),
+        "version_truth_source_kind": str(version_truth.get("source_kind", "") or ""),
+        "version_truth": version_truth,
     }
 
 
