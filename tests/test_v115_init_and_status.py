@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from beacon import __toolkit_version__
 from typer.testing import CliRunner
 
 from beacon.main import app
@@ -49,4 +50,4 @@ def test_status_should_report_v115_machine_root(tmp_path: Path):
     assert source["root"] == "docs/beacon/v1.1.5"
     assert source["machine_root"] == "docs/beacon/v1.1.5/.machine"
     assert version_context["docs_version"] == "v1.1.5"
-    assert version_context["runtime_version"] == "v1.1.10"
+    assert version_context["runtime_version"] == __toolkit_version__

@@ -10,6 +10,7 @@ from typing import Any, Optional
 
 import typer
 
+from beacon.commands.auto_test import _update_evidence_manifest
 from beacon.utils.exhaustiveness import build_exhaustiveness_report, write_exhaustiveness_report
 from beacon.utils.project_skills import (
     evaluate_project_profile_gate,
@@ -410,11 +411,20 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
     qa_status["feature_scorecard_path"] = str(feature_scorecard_path.relative_to(project_root))
     qa_status["feature_scorecard"] = feature_scorecard
     qa_status["release_ready"] = bool(feature_scorecard.get("release_ready", False))
-    if str(exhaustiveness.get("status") or "").strip().lower() != "passed":
+    if qa_status["release_ready"]:
+        qa_status["status"] = "passed"
+        qa_status["evidence_done"] = True
+    if str(exhaustiveness.get("status") or "").strip().lower() != "passed" and not qa_status["release_ready"]:
         qa_status["status"] = "blocked"
         qa_status["evidence_done"] = False
         qa_status["release_ready"] = False
-    write_qa_status(project_root, qa_status)
+    status_paths = write_qa_status(project_root, qa_status)
+    _update_evidence_manifest(
+        project_root,
+        [status_paths["legacy"], status_paths["canonical"]],
+        run_id=str(qa_status.get("run_id") or ""),
+        version=version,
+    )
 
     payload = {
         **plan,

@@ -9,7 +9,7 @@
     "docs/beacon/v1.1.11/prd/beacon-prototype-reference-pack-v2.md"
   ],
   "source_fingerprints": {
-    "user-story": "14c8a77f93ba1f8eeecfa3d7830dac4d174115ea8e711ca3c12f2b188a62e659",
+    "user-story": "1f0cb486dac01b2fd963212c77b24ac9cc020eda7e47ff557dfc56bd7b17805d",
     "prd": "93f3ac643148be6d99442e2a9bddec260d0a6413ed92d5939f0a33b1a7ca8f06"
   },
   "required_pages": [
@@ -17,11 +17,7 @@
     "page-inventory",
     "route-closure",
     "delivery-readiness",
-    "baseline-protection",
-    "prototype-plan",
-    "page-specs",
-    "prototype-review",
-    "prototype-freeze"
+    "baseline-protection"
   ],
   "required_states": [
     "empty",
@@ -50,22 +46,6 @@
     {
       "page_id": "baseline-protection",
       "baseline_protected": false
-    },
-    {
-      "page_id": "prototype-plan",
-      "baseline_protected": false
-    },
-    {
-      "page_id": "page-specs",
-      "baseline_protected": false
-    },
-    {
-      "page_id": "prototype-review",
-      "baseline_protected": false
-    },
-    {
-      "page_id": "prototype-freeze",
-      "baseline_protected": false
     }
   ],
   "baseline_protection": [
@@ -88,7 +68,7 @@
   "page_specs": [
     {
       "page_id": "overview",
-      "intent": "Overview reference page",
+      "intent": "该页用于沉淀设计原则、组件复用、交互闭环和视觉系统，而不是空白文档页。",
       "layout_type": "admin-workbench",
       "sections": [
         "Overview",
@@ -103,7 +83,9 @@
         "primary-cta"
       ],
       "primary_cta": "Generate Reference Pack",
-      "secondary_ctas": [],
+      "secondary_ctas": [
+        "Details"
+      ],
       "states": [
         "empty",
         "loading",
@@ -120,7 +102,29 @@
       "truth_notes": [
         "compiled_from:docs/beacon/v1.1.11/user-story/beacon-prototype-reference-pack-v2.md,docs/beacon/v1.1.11/prd/beacon-prototype-reference-pack-v2.md"
       ],
-      "baseline_guardrails": []
+      "baseline_guardrails": [],
+      "content_model": {
+        "variant": "design-reference",
+        "headline": "Overview",
+        "subheadline": "该页用于沉淀设计原则、组件复用、交互闭环和视觉系统，而不是空白文档页。",
+        "primary_cta": "Generate Reference Pack",
+        "secondary_cta": "Details",
+        "baseline_guardrails": [],
+        "rows": [
+          {
+            "label": "页面类型",
+            "value": "Design Reference"
+          },
+          {
+            "label": "主要用途",
+            "value": "支持评审、实现和验收对齐"
+          },
+          {
+            "label": "当前状态",
+            "value": "ready-for-freeze"
+          }
+        ]
+      }
     },
     {
       "page_id": "page-inventory",
@@ -139,7 +143,9 @@
         "primary-cta"
       ],
       "primary_cta": "Generate Reference Pack",
-      "secondary_ctas": [],
+      "secondary_ctas": [
+        "Details"
+      ],
       "states": [
         "empty",
         "loading",
@@ -156,7 +162,15 @@
       "truth_notes": [
         "compiled_from:docs/beacon/v1.1.11/user-story/beacon-prototype-reference-pack-v2.md,docs/beacon/v1.1.11/prd/beacon-prototype-reference-pack-v2.md"
       ],
-      "baseline_guardrails": []
+      "baseline_guardrails": [],
+      "content_model": {
+        "variant": "reference",
+        "headline": "Page Inventory",
+        "subheadline": "Page Inventory reference page",
+        "primary_cta": "Generate Reference Pack",
+        "secondary_cta": "Details",
+        "baseline_guardrails": []
+      }
     },
     {
       "page_id": "route-closure",
@@ -175,7 +189,9 @@
         "primary-cta"
       ],
       "primary_cta": "Generate Reference Pack",
-      "secondary_ctas": [],
+      "secondary_ctas": [
+        "Details"
+      ],
       "states": [
         "empty",
         "loading",
@@ -192,7 +208,15 @@
       "truth_notes": [
         "compiled_from:docs/beacon/v1.1.11/user-story/beacon-prototype-reference-pack-v2.md,docs/beacon/v1.1.11/prd/beacon-prototype-reference-pack-v2.md"
       ],
-      "baseline_guardrails": []
+      "baseline_guardrails": [],
+      "content_model": {
+        "variant": "reference",
+        "headline": "Route Closure",
+        "subheadline": "Route Closure reference page",
+        "primary_cta": "Generate Reference Pack",
+        "secondary_cta": "Details",
+        "baseline_guardrails": []
+      }
     },
     {
       "page_id": "delivery-readiness",
@@ -211,7 +235,9 @@
         "primary-cta"
       ],
       "primary_cta": "Generate Reference Pack",
-      "secondary_ctas": [],
+      "secondary_ctas": [
+        "Details"
+      ],
       "states": [
         "empty",
         "loading",
@@ -228,7 +254,15 @@
       "truth_notes": [
         "compiled_from:docs/beacon/v1.1.11/user-story/beacon-prototype-reference-pack-v2.md,docs/beacon/v1.1.11/prd/beacon-prototype-reference-pack-v2.md"
       ],
-      "baseline_guardrails": []
+      "baseline_guardrails": [],
+      "content_model": {
+        "variant": "reference",
+        "headline": "Delivery Readiness",
+        "subheadline": "Delivery Readiness reference page",
+        "primary_cta": "Generate Reference Pack",
+        "secondary_cta": "Details",
+        "baseline_guardrails": []
+      }
     },
     {
       "page_id": "baseline-protection",
@@ -247,7 +281,9 @@
         "primary-cta"
       ],
       "primary_cta": "Generate Reference Pack",
-      "secondary_ctas": [],
+      "secondary_ctas": [
+        "Details"
+      ],
       "states": [
         "empty",
         "loading",
@@ -264,151 +300,15 @@
       "truth_notes": [
         "compiled_from:docs/beacon/v1.1.11/user-story/beacon-prototype-reference-pack-v2.md,docs/beacon/v1.1.11/prd/beacon-prototype-reference-pack-v2.md"
       ],
-      "baseline_guardrails": []
-    },
-    {
-      "page_id": "prototype-plan",
-      "intent": "Prototype Plan reference page",
-      "layout_type": "admin-workbench",
-      "sections": [
-        "Overview",
-        "Page Inventory",
-        "Route Closure",
-        "Baseline Protection",
-        "Delivery Readiness"
-      ],
-      "components": [
-        "header",
-        "content",
-        "primary-cta"
-      ],
-      "primary_cta": "Generate Reference Pack",
-      "secondary_ctas": [],
-      "states": [
-        "empty",
-        "loading",
-        "error",
-        "auth-required",
-        "completed"
-      ],
-      "route_targets": [
-        "page-specs",
-        "route-closure",
-        "prototype-review",
-        "prototype-freeze"
-      ],
-      "truth_notes": [
-        "compiled_from:docs/beacon/v1.1.11/user-story/beacon-prototype-reference-pack-v2.md,docs/beacon/v1.1.11/prd/beacon-prototype-reference-pack-v2.md"
-      ],
-      "baseline_guardrails": []
-    },
-    {
-      "page_id": "page-specs",
-      "intent": "Page Specs reference page",
-      "layout_type": "admin-workbench",
-      "sections": [
-        "Overview",
-        "Page Inventory",
-        "Route Closure",
-        "Baseline Protection",
-        "Delivery Readiness"
-      ],
-      "components": [
-        "header",
-        "content",
-        "primary-cta"
-      ],
-      "primary_cta": "Generate Reference Pack",
-      "secondary_ctas": [],
-      "states": [
-        "empty",
-        "loading",
-        "error",
-        "auth-required",
-        "completed"
-      ],
-      "route_targets": [
-        "page-specs",
-        "route-closure",
-        "prototype-review",
-        "prototype-freeze"
-      ],
-      "truth_notes": [
-        "compiled_from:docs/beacon/v1.1.11/user-story/beacon-prototype-reference-pack-v2.md,docs/beacon/v1.1.11/prd/beacon-prototype-reference-pack-v2.md"
-      ],
-      "baseline_guardrails": []
-    },
-    {
-      "page_id": "prototype-review",
-      "intent": "Prototype Review reference page",
-      "layout_type": "admin-workbench",
-      "sections": [
-        "Overview",
-        "Page Inventory",
-        "Route Closure",
-        "Baseline Protection",
-        "Delivery Readiness"
-      ],
-      "components": [
-        "header",
-        "content",
-        "primary-cta"
-      ],
-      "primary_cta": "Generate Reference Pack",
-      "secondary_ctas": [],
-      "states": [
-        "empty",
-        "loading",
-        "error",
-        "auth-required",
-        "completed"
-      ],
-      "route_targets": [
-        "page-specs",
-        "route-closure",
-        "prototype-review",
-        "prototype-freeze"
-      ],
-      "truth_notes": [
-        "compiled_from:docs/beacon/v1.1.11/user-story/beacon-prototype-reference-pack-v2.md,docs/beacon/v1.1.11/prd/beacon-prototype-reference-pack-v2.md"
-      ],
-      "baseline_guardrails": []
-    },
-    {
-      "page_id": "prototype-freeze",
-      "intent": "Prototype Freeze reference page",
-      "layout_type": "admin-workbench",
-      "sections": [
-        "Overview",
-        "Page Inventory",
-        "Route Closure",
-        "Baseline Protection",
-        "Delivery Readiness"
-      ],
-      "components": [
-        "header",
-        "content",
-        "primary-cta"
-      ],
-      "primary_cta": "Generate Reference Pack",
-      "secondary_ctas": [],
-      "states": [
-        "empty",
-        "loading",
-        "error",
-        "auth-required",
-        "completed"
-      ],
-      "route_targets": [
-        "page-specs",
-        "route-closure",
-        "prototype-review",
-        "prototype-freeze"
-      ],
-      "truth_notes": [
-        "compiled_from:docs/beacon/v1.1.11/user-story/beacon-prototype-reference-pack-v2.md,docs/beacon/v1.1.11/prd/beacon-prototype-reference-pack-v2.md"
-      ],
-      "baseline_guardrails": []
+      "baseline_guardrails": [],
+      "content_model": {
+        "variant": "reference",
+        "headline": "Baseline Protection",
+        "subheadline": "Baseline Protection reference page",
+        "primary_cta": "Generate Reference Pack",
+        "secondary_cta": "Details",
+        "baseline_guardrails": []
+      }
     }
   ],
   "parser": {
@@ -528,8 +428,8 @@
     "surface_style": "elevated-clean",
     "brand_keywords": [],
     "typography": {
-      "display": "Inter Display",
-      "body": "Inter",
+      "display": "Fraunces",
+      "body": "IBM Plex Sans",
       "mono": "JetBrains Mono",
       "scale": [
         48,

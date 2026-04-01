@@ -22,7 +22,11 @@ from beacon.utils.prototype_utils import evaluate_prototype_status
 from beacon.utils.qa_runtime import load_qa_status
 from beacon.utils.runtime import now_iso
 from beacon.utils.story_state import load_story_state
-from beacon.utils.writeback import record_acceptance_writeback, record_verification_writeback
+from beacon.utils.writeback import (
+    record_acceptance_writeback,
+    record_verification_writeback,
+    sync_acceptance_workflow_closure,
+)
 from beacon.utils.versioning import resolve_target_version
 
 app = typer.Typer(name="review", help="Formal implementation-stage review actions")
@@ -438,6 +442,11 @@ def review_accept(
                 typer.echo("✗ Review accept blocked: project profile evidence gate failed")
             raise typer.Exit(2)
         result = record_acceptance_writeback(project_root, version=resolved_version, feature=feature, accepted_by=reviewer)
+        lifecycle_sync = sync_acceptance_workflow_closure(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+        )
         payload = {
             "schema_version": "1.0",
             "feature": feature,
@@ -446,6 +455,11 @@ def review_accept(
             "reviewer": reviewer,
             "story_status": result.get("story", {}).get("status", ""),
             "revision_status": result.get("revision", {}).get("delivery_status", ""),
+            "workflow_run_id": lifecycle_sync.get("run_id", ""),
+            "workflow_closure_complete": lifecycle_sync.get("closure_complete", False),
+            "workflow_gate_pass": lifecycle_sync.get("gate_pass", False),
+            "workflow_missing_stages": lifecycle_sync.get("missing_closure_stages", []),
+            "workflow_synced_stages": lifecycle_sync.get("synced_stages", []),
         }
         update_artifact_update_obligation(
             project_root,

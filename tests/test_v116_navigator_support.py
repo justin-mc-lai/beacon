@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from beacon import __toolkit_version__
 from beacon.utils.help_support import build_help_payload
 from beacon.utils.revision_state import freeze_revision_state, load_revision_state, reopen_revision_state
 from beacon.utils.runtime import write_json
@@ -91,9 +92,9 @@ def test_help_payload_should_recommend_freeze_then_implement_then_quality(tmp_pa
     # Draft state -> freeze
     payload = build_help_payload(tmp_path, version=VERSION, feature=FEATURE)
     assert payload["docs_version"] == VERSION
-    assert payload["runtime_version"] == "v1.1.10"
+    assert payload["runtime_version"] == __toolkit_version__
     assert payload["version_context"]["docs_version"] == VERSION
-    assert payload["version_context"]["runtime_version"] == "v1.1.10"
+    assert payload["version_context"]["runtime_version"] == __toolkit_version__
     assert payload["next_step"]["action"] == "freeze"
     assert payload["blocked"] is True
     assert "revision_not_frozen" in payload["blocking_reasons"]

@@ -31,6 +31,7 @@ from beacon.utils.debug_feedback import (
     is_debug_mode_enabled,
     load_debug_mode_state,
 )
+from beacon.utils.git_alignment import collect_git_alignment
 from beacon.utils.llm_loop import build_next_stage_trace, merge_token_usage
 from beacon.utils.memory import append_memory_entry
 from beacon.utils.implement_adapters import load_beacon_config_file, project_config_path
@@ -446,58 +447,8 @@ def _execution_roots(project_root: Path, version: str) -> list[Path]:
     return [project_root / "docs" / "beacon" / version / "execution"]
 
 
-def _git_command(project_root: Path, *args: str) -> str:
-    try:
-        result = subprocess.run(
-            ["git", *args],
-            cwd=project_root,
-            capture_output=True,
-            text=True,
-            timeout=5,
-        )
-    except Exception:  # noqa: BLE001
-        return ""
-    if result.returncode != 0:
-        return ""
-    return str(result.stdout or "").strip()
-
-
 def _git_metadata(project_root: Path, version: str) -> dict[str, Any]:
-    current_branch = _git_command(project_root, "rev-parse", "--abbrev-ref", "HEAD")
-    current_commit = _git_command(project_root, "rev-parse", "HEAD")
-    repo_url = _git_command(project_root, "remote", "get-url", "origin")
-    current_tag = _git_command(project_root, "describe", "--tags", "--exact-match")
-    target_branch = f"beacon/{version}"
-    branch_prefix = "beacon/"
-    branch_matches_target = bool(current_branch and current_branch == target_branch)
-    branch_has_required_prefix = bool(current_branch and current_branch.startswith(branch_prefix))
-    tag_matches_version = bool(current_tag and current_tag == version)
-    version_ref_satisfied = branch_matches_target or tag_matches_version
-    reason_codes: list[str] = []
-    if not branch_matches_target:
-        reason_codes.append("git_branch_target_mismatch")
-    if not branch_has_required_prefix:
-        reason_codes.append("git_branch_prefix_mismatch")
-    if not version_ref_satisfied:
-        reason_codes.append("git_version_ref_not_satisfied")
-    return {
-        "repo_url": repo_url,
-        "base_branch": "main",
-        "target_branch": target_branch,
-        "current_branch": current_branch,
-        "current_commit": current_commit,
-        "current_tag": current_tag,
-        "worktree_path": str(project_root),
-        "version_ref": version,
-        "allowed_refs": ["tag", "branch"],
-        "enforce_branch_prefix": branch_prefix,
-        "branch_matches_target": branch_matches_target,
-        "branch_has_required_prefix": branch_has_required_prefix,
-        "tag_matches_version": tag_matches_version,
-        "version_ref_satisfied": version_ref_satisfied,
-        "reason_codes": reason_codes,
-        "blocked": not version_ref_satisfied,
-    }
+    return collect_git_alignment(project_root, version, allow_tag=True, require_exact_branch=False)
 
 
 def _existing_research_docs(project_root: Path, version: str) -> list[str]:

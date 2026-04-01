@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import importlib
 import json
+import subprocess
 from pathlib import Path
 
 from typer.testing import CliRunner
@@ -17,8 +18,20 @@ def _invoke(args: list[str]):
     return runner.invoke(app, args)
 
 
+def _init_git_repo(root: Path, *, version: str) -> None:
+    subprocess.run(["git", "init"], cwd=root, check=True, capture_output=True, text=True)
+    subprocess.run(["git", "config", "user.name", "Beacon Tests"], cwd=root, check=True, capture_output=True, text=True)
+    subprocess.run(["git", "config", "user.email", "beacon-tests@example.com"], cwd=root, check=True, capture_output=True, text=True)
+    (root / ".gitkeep").write_text("test\n", encoding="utf-8")
+    subprocess.run(["git", "add", ".gitkeep"], cwd=root, check=True, capture_output=True, text=True)
+    subprocess.run(["git", "commit", "-m", "init"], cwd=root, check=True, capture_output=True, text=True)
+    subprocess.run(["git", "switch", "-c", f"beacon/{version}"], cwd=root, check=True, capture_output=True, text=True)
+
+
 def _seed_feature_docs(root: Path, *, version: str = "v1.1.4", feature: str = "my feature") -> str:
     slug = feature.lower().replace(" ", "-")
+    if not (root / ".git").exists():
+        _init_git_repo(root, version=version)
     base = root / "docs" / "beacon" / version
     (base / "user-story").mkdir(parents=True, exist_ok=True)
     (base / "prd").mkdir(parents=True, exist_ok=True)
@@ -342,6 +355,75 @@ def test_implement_run_should_fail_when_result_is_invalid_json(tmp_path: Path):
     payload = json.loads(result.stdout)
     assert payload["reason_code"] == "runner_result_invalid"
     assert "result json parse failed" in payload["problems"][0]
+
+
+def test_implement_check_branch_should_block_when_current_branch_is_not_version_branch(tmp_path: Path):
+    _init_git_repo(tmp_path, version="v1.1.4")
+    subprocess.run(["git", "switch", "main"], cwd=tmp_path, check=True, capture_output=True, text=True)
+    result = _invoke(
+        [
+            "implement",
+            "check-branch",
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            "v1.1.4",
+            "--json",
+        ]
+    )
+    assert result.exit_code == 2, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["status"] == "blocked"
+    assert payload["expected_branch"] == "beacon/v1.1.4"
+    assert payload["current_branch"] == "main"
+
+
+def test_implement_run_should_block_before_runner_when_branch_mismatched(tmp_path: Path):
+    _init_git_repo(tmp_path, version="v1.1.4")
+    subprocess.run(["git", "switch", "main"], cwd=tmp_path, check=True, capture_output=True, text=True)
+    _seed_feature_docs(tmp_path, feature="My Feature")
+    subprocess.run(["git", "switch", "main"], cwd=tmp_path, check=True, capture_output=True, text=True)
+    result = _invoke(
+        [
+            "implement",
+            "run",
+            "My Feature",
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            "v1.1.4",
+            "--runner",
+            "omx",
+            "--json",
+        ]
+    )
+    assert result.exit_code == 2, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["reason_code"] == "implement_branch_guard_blocked"
+    assert payload["expected_branch"] == "beacon/v1.1.4"
+    assert payload["current_branch"] == "main"
+
+
+def test_implement_check_branch_should_auto_switch_when_explicitly_requested(tmp_path: Path):
+    _init_git_repo(tmp_path, version="v1.1.4")
+    subprocess.run(["git", "switch", "main"], cwd=tmp_path, check=True, capture_output=True, text=True)
+    result = _invoke(
+        [
+            "implement",
+            "check-branch",
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            "v1.1.4",
+            "--auto-switch-branch",
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["status"] == "pass"
+    assert payload["current_branch"] == "beacon/v1.1.4"
+    assert payload["switch_attempt"]["status"] == "switched"
 
 
 def test_implement_run_should_support_auto_review_quality_and_status_surface(tmp_path: Path):

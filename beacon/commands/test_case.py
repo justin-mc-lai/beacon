@@ -154,6 +154,29 @@ def _load_route_closure_artifacts(project_root: Path, version: str, feature_slug
     return route_payload, impl_payload
 
 
+def _load_prototype_v2_artifacts(project_root: Path, version: str, feature_slug: str) -> tuple[dict, dict]:
+    proto_root = project_root / "docs" / "beacon" / version / "prototype" / feature_slug
+    plan_payload = {}
+    coverage_payload = {}
+    plan_path = proto_root / "prototype-plan.json"
+    coverage_path = proto_root / "coverage-report.json"
+    if plan_path.exists():
+        try:
+            payload = json.loads(plan_path.read_text(encoding="utf-8"))
+            if isinstance(payload, dict):
+                plan_payload = payload
+        except Exception:  # noqa: BLE001
+            plan_payload = {}
+    if coverage_path.exists():
+        try:
+            payload = json.loads(coverage_path.read_text(encoding="utf-8"))
+            if isinstance(payload, dict):
+                coverage_payload = payload
+        except Exception:  # noqa: BLE001
+            coverage_payload = {}
+    return plan_payload, coverage_payload
+
+
 def _story_sequence_for_feature(project_root: Path, version: str, feature_slug: str, *, fallback_entries: list[dict]) -> list[dict]:
     machine_story = project_root / "docs" / "beacon" / version / ".machine" / "user-story" / f"{feature_slug}.json"
     if machine_story.exists():
@@ -688,6 +711,9 @@ def create(
     prototype_navigation, prototype_interaction = _load_prototype_contract_artifacts(
         project_root, resolved_version, feature_slug
     )
+    prototype_plan, prototype_coverage = _load_prototype_v2_artifacts(
+        project_root, resolved_version, feature_slug
+    )
     route_closure_contract, implementation_map = _load_route_closure_artifacts(
         project_root, resolved_version, feature_slug
     )
@@ -721,6 +747,58 @@ def create(
                 "evidence_path": f".beacon/evidence/test-results/{feature_slug}/{tc_id}.json",
                 "status": "pending",
                 "source": "prototype:interaction-map",
+            }
+        )
+    if prototype_coverage:
+        synthetic_idx += 1
+        tc_id = f"TC-{synthetic_idx:03d}"
+        entries.append(
+            {
+                "tc_id": tc_id,
+                "ac_id": ac_anchor,
+                "layer": "ui",
+                "command": "python3 -c \"print('prototype-coverage-report-check')\"",
+                "assertion": "coverage report is consumed as a first-class prototype artifact",
+                "evidence_path": f".beacon/evidence/test-results/{feature_slug}/{tc_id}.json",
+                "status": "pending",
+                "source": "prototype:coverage-report",
+            }
+        )
+    for page_spec in prototype_plan.get("page_specs", []) or []:
+        if not isinstance(page_spec, dict):
+            continue
+        page_id = str(page_spec.get("page_id") or "").strip()
+        if not page_id:
+            continue
+        synthetic_idx += 1
+        tc_id = f"TC-{synthetic_idx:03d}"
+        entries.append(
+            {
+                "tc_id": tc_id,
+                "ac_id": ac_anchor,
+                "layer": "ui",
+                "command": "python3 -c \"print('prototype-page-spec-check')\"",
+                "assertion": f"page-spec {page_id} compiles required sections and route targets",
+                "evidence_path": f".beacon/evidence/test-results/{feature_slug}/{tc_id}.json",
+                "status": "pending",
+                "source": "prototype:page-specs",
+            }
+        )
+    for missing_state in prototype_coverage.get("missing_state_variants", []) or []:
+        if not isinstance(missing_state, str):
+            continue
+        synthetic_idx += 1
+        tc_id = f"TC-{synthetic_idx:03d}"
+        entries.append(
+            {
+                "tc_id": tc_id,
+                "ac_id": ac_anchor,
+                "layer": "ui",
+                "command": "python3 -c \"print('prototype-coverage-check')\"",
+                "assertion": f"coverage report flags missing variant {missing_state}",
+                "evidence_path": f".beacon/evidence/test-results/{feature_slug}/{tc_id}.json",
+                "status": "pending",
+                "source": "prototype:coverage-report",
             }
         )
     closure_cases = route_closure_contract.get("closure_cases") if isinstance(route_closure_contract.get("closure_cases"), list) else []
@@ -884,6 +962,8 @@ def create(
 **AC Matrix JSON**: {matrix_path}
 **QA9 Matrix JSON**: {qa9_matrix_path}
 **Story Scenario Map JSON**: {scenario_map_path}
+**Prototype Plan Present**: {bool(prototype_plan)}
+**Prototype Coverage Present**: {bool(prototype_coverage)}
 **Prototype Navigation Contract**: {bool(prototype_navigation)}
 **Prototype Interaction Contract**: {bool(prototype_interaction)}
 

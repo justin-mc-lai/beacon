@@ -9,15 +9,47 @@ import json
 import typer
 
 from beacon.utils.prototype_utils import (
+    bind_prototype_bundle,
+    compile_prototype_plan,
     evaluate_prototype_status,
     freeze_prototype,
     prototype_dir,
     review_prototype_bundle,
+    write_prototype_plan,
     write_prototype_bundle,
 )
 from beacon.utils.versioning import resolve_target_version
 
 app = typer.Typer(name="prototype", help="Generate and manage static UI prototypes")
+
+
+@app.command()
+def plan(
+    feature: str = typer.Argument(..., help="Feature name"),
+    project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
+    version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON payload"),
+):
+    """Compile structured prototype plan from requirement contracts."""
+    project_root = Path(project) if project else Path.cwd()
+    resolved_version = resolve_target_version(project_root, version)
+    try:
+        result = write_prototype_plan(project_root, resolved_version, feature)
+    except (FileNotFoundError, ValueError) as exc:
+        typer.echo(str(exc), err=True)
+        raise typer.Exit(2)
+    payload = {
+        "feature": feature,
+        "version": resolved_version,
+        "prototype_mode": result["plan"].get("prototype_mode"),
+        "required_pages": result["plan"].get("required_pages", []),
+        "required_states": result["plan"].get("required_states", []),
+        "path": str(result["path"].relative_to(project_root)),
+    }
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        return
+    typer.echo(f"✓ Prototype plan compiled: {result['path']}")
 
 
 @app.command()
@@ -46,6 +78,8 @@ def create(
         for name, path in result["files"].items():
             if name == "root":
                 continue
+            if path.is_dir():
+                continue
             target = out_root / path.name
             target.write_bytes(path.read_bytes())
 
@@ -54,6 +88,7 @@ def create(
         "version": resolved_version,
         "ui_kit": "bootstrap-5.3.x",
         "prototype_type": result["contract"]["prototype_archetype"],
+        "prototype_mode": result.get("prototype_mode", "minimal"),
         "paths": {k: str(v.relative_to(project_root)) for k, v in result["files"].items() if k != "root"},
     }
     if json_output:
@@ -107,6 +142,34 @@ def review(
         return
     typer.echo(f"✓ Prototype review complete: {payload.get('overall_status')}")
     typer.echo(f"✓ Review report: {prototype_dir(project_root, resolved_version, feature) / 'prototype-review.md'}")
+
+
+@app.command()
+def bind(
+    feature: str = typer.Argument(..., help="Feature name"),
+    project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
+    version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON payload"),
+):
+    """Bind prototype route-closure cases to implementation-map runtime targets."""
+    project_root = Path(project) if project else Path.cwd()
+    resolved_version = resolve_target_version(project_root, version)
+    try:
+        payload = bind_prototype_bundle(project_root, resolved_version, feature)
+    except (FileNotFoundError, ValueError) as exc:
+        typer.echo(str(exc), err=True)
+        raise typer.Exit(2)
+    if json_output:
+        serializable = {
+            "feature": feature,
+            "version": resolved_version,
+            "bound_cases": payload.get("bound_cases", 0),
+            "path": str(Path(payload.get("path", "")).relative_to(project_root)),
+        }
+        typer.echo(json.dumps(serializable, ensure_ascii=False, indent=2))
+        return
+    typer.echo(f"✓ Prototype bound: {payload.get('bound_cases', 0)} cases")
+    typer.echo(f"✓ Implementation map: {payload.get('path')}")
 
 
 @app.command()

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import subprocess
 from pathlib import Path
 
 from typer.testing import CliRunner
@@ -15,8 +16,20 @@ def _invoke(args: list[str]):
     return runner.invoke(app, args)
 
 
+def _init_git_repo(root: Path, *, version: str) -> None:
+    subprocess.run(["git", "init"], cwd=root, check=True, capture_output=True, text=True)
+    subprocess.run(["git", "config", "user.name", "Beacon Tests"], cwd=root, check=True, capture_output=True, text=True)
+    subprocess.run(["git", "config", "user.email", "beacon-tests@example.com"], cwd=root, check=True, capture_output=True, text=True)
+    (root / ".gitkeep").write_text("test\n", encoding="utf-8")
+    subprocess.run(["git", "add", ".gitkeep"], cwd=root, check=True, capture_output=True, text=True)
+    subprocess.run(["git", "commit", "-m", "init"], cwd=root, check=True, capture_output=True, text=True)
+    subprocess.run(["git", "switch", "-c", f"beacon/{version}"], cwd=root, check=True, capture_output=True, text=True)
+
+
 def _seed_feature_docs(root: Path, *, version: str = "v1.1.4", feature: str = "Workflow Feature") -> str:
     slug = feature.lower().replace(" ", "-")
+    if not (root / ".git").exists():
+        _init_git_repo(root, version=version)
     base = root / "docs" / "beacon" / version
     (base / "user-story").mkdir(parents=True, exist_ok=True)
     (base / "prd").mkdir(parents=True, exist_ok=True)

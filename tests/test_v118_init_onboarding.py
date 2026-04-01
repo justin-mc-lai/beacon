@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from beacon import __toolkit_version__
 from typer.testing import CliRunner
 
 from beacon.main import app
@@ -43,7 +44,7 @@ def test_init_project_mode_takeover_should_write_onboarding_artifacts(tmp_path: 
     assert onboarding_state["docs_version"] == "v1.1.8"
     assert onboarding_state["next_recommended_stage"] == "architecture-current-state"
     assert payload["docs_version"] == "v1.1.8"
-    assert payload["runtime_version"] == "v1.1.10"
+    assert payload["runtime_version"] == __toolkit_version__
 
 
 def test_init_auto_should_use_project_docs_version_but_runtime_v118_for_context(tmp_path: Path):

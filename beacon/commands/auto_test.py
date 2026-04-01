@@ -1759,12 +1759,13 @@ def _collect_required_file_issues(
     require_assertion_count: bool,
 ) -> list[dict[str, Any]]:
     issues: list[dict[str, Any]] = []
+    junit_layers = {"unit", "integration", "contract"}
     for layer in layer_results:
         status = str(layer.get("status", "")).lower()
         if status != "passed":
             continue
-        name = str(layer.get("layer", ""))
-        if require_assertion_count and int(layer.get("assertion_count", 0) or 0) <= 0:
+        name = normalize_qa_type(str(layer.get("layer", "")))
+        if require_assertion_count and name in junit_layers and int(layer.get("assertion_count", 0) or 0) <= 0:
             issues.append(
                 {
                     "layer": name,
@@ -1772,7 +1773,7 @@ def _collect_required_file_issues(
                     "message": f"layer {name} passed but assertion_count=0",
                 }
             )
-        if require_junit:
+        if require_junit and name in junit_layers:
             junit_path = str(layer.get("junit_path") or "").strip()
             if not junit_path:
                 issues.append(

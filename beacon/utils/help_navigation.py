@@ -20,7 +20,7 @@ def build_help_payload(project_root: Path, *, version: str | None = None, featur
 
 def build_doctor_advise_payload(project_root: Path, *, version: str | None = None, feature: str | None = None, run_id: str | None = None, strict: bool = False) -> dict[str, Any]:
     help_payload = build_help_payload(project_root, version=version, feature=feature, run_id=run_id)
-    doctor_payload = build_doctor_payload(project_root, strict=strict)
+    doctor_payload = build_doctor_payload(project_root, strict=strict, version=version or "auto")
     incompatibilities = doctor_payload.get("incompatibilities", []) if isinstance(doctor_payload.get("incompatibilities"), list) else []
     repair_plan = doctor_payload.get("repair_plan", []) if isinstance(doctor_payload.get("repair_plan"), list) else []
     diagnosis = []

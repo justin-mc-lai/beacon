@@ -148,8 +148,22 @@ REASON_CODES = [
     "prototype_theme_contract_missing",
     "prototype_navigation_contract_missing",
     "prototype_interaction_contract_missing",
+    "prototype_design_brief_missing",
+    "prototype_design_system_contract_missing",
+    "prototype_design_prompt_missing",
+    "prototype_web_guideline_review_missing",
+    "prototype_plan_missing",
+    "prototype_coverage_missing",
+    "prototype_page_inventory_missing",
+    "prototype_required_page_missing",
+    "prototype_required_state_missing",
+    "prototype_compact_mode_detected",
+    "prototype_baseline_regression",
+    "prototype_artifact_inconsistent",
+    "prototype_cjk_parse_failed",
     "prototype_review_missing",
     "prototype_review_failed",
+    "prototype_design_review_failed",
     "formal_package_closure_missing",
 ]
 
@@ -1077,6 +1091,34 @@ def check_prototype_contract(
 
     for feature_dir in sorted(feature_dirs):
         payload = prototype_status(project_root, resolved_version, feature_dir.name)
+        files = payload.get("files", {})
+        plan_path = Path(files.get("prototype_plan")) if isinstance(files, dict) and files.get("prototype_plan") else None
+        coverage_path = Path(files.get("coverage_report")) if isinstance(files, dict) and files.get("coverage_report") else None
+        manifest_path = Path(files.get("manifest")) if isinstance(files, dict) and files.get("manifest") else None
+        plan_payload = {}
+        coverage_payload = {}
+        manifest_payload = {}
+        if plan_path and plan_path.exists():
+            try:
+                plan_payload = json.loads(plan_path.read_text(encoding="utf-8"))
+            except Exception:  # noqa: BLE001
+                plan_payload = {}
+        if coverage_path and coverage_path.exists():
+            try:
+                coverage_payload = json.loads(coverage_path.read_text(encoding="utf-8"))
+            except Exception:  # noqa: BLE001
+                coverage_payload = {}
+        if manifest_path and manifest_path.exists():
+            try:
+                manifest_payload = json.loads(manifest_path.read_text(encoding="utf-8"))
+            except Exception:  # noqa: BLE001
+                manifest_payload = {}
+        prototype_mode = str((plan_payload or {}).get("prototype_mode") or manifest_payload.get("prototype_mode") or "").strip().lower()
+        reference_pack_v2 = prototype_mode == "reference-pack-v2"
+        design_governance_required = bool(
+            (isinstance(plan_payload, dict) and plan_payload.get("contract", {}).get("design_governance_required"))
+            or manifest_payload.get("design_governance_required")
+        )
         if payload.get("status") == "missing":
             issues.append({
                 "reason_code": "prototype_missing",
@@ -1102,6 +1144,58 @@ def check_prototype_contract(
                 "blocked": True,
                 "message": f"prototype stale for feature {feature_dir.name}",
             })
+        if payload.get("status") == "inconsistent":
+            issues.append({
+                "reason_code": "prototype_artifact_inconsistent",
+                "blocked": True,
+                "message": f"prototype artifacts inconsistent for feature {feature_dir.name}",
+                "details": {"reasons": payload.get("inconsistent_reasons", [])},
+            })
+        if reference_pack_v2:
+            if not plan_path or not plan_path.exists():
+                issues.append({
+                    "reason_code": "prototype_plan_missing",
+                    "blocked": True,
+                    "message": f"prototype-plan.json missing for feature {feature_dir.name}",
+                })
+            if not coverage_path or not coverage_path.exists():
+                issues.append({
+                    "reason_code": "prototype_coverage_missing",
+                    "blocked": True,
+                    "message": f"coverage-report.json missing for feature {feature_dir.name}",
+                })
+            required_pages = [str(item).strip() for item in (plan_payload.get("required_pages") or []) if str(item).strip()] if isinstance(plan_payload, dict) else []
+            required_states = [str(item).strip() for item in (plan_payload.get("required_states") or []) if str(item).strip()] if isinstance(plan_payload, dict) else []
+            if not required_pages:
+                issues.append({
+                    "reason_code": "prototype_page_inventory_missing",
+                    "blocked": True,
+                    "message": f"required page inventory missing for feature {feature_dir.name}",
+                })
+            pages_dir = Path(files.get("pages_dir")) if isinstance(files, dict) and files.get("pages_dir") else None
+            states_dir = Path(files.get("states_dir")) if isinstance(files, dict) and files.get("states_dir") else None
+            missing_pages = [page for page in required_pages if not pages_dir or not (pages_dir / f"{page}.html").exists()]
+            missing_states = [f"{page}--{state}" for page in required_pages for state in required_states if not states_dir or not (states_dir / f"{page}--{state}.html").exists()]
+            if missing_pages:
+                issues.append({
+                    "reason_code": "prototype_required_page_missing",
+                    "blocked": True,
+                    "message": f"required pages missing for feature {feature_dir.name}",
+                    "details": {"missing_pages": missing_pages[:50]},
+                })
+            if missing_states:
+                issues.append({
+                    "reason_code": "prototype_required_state_missing",
+                    "blocked": True,
+                    "message": f"required state variants missing for feature {feature_dir.name}",
+                    "details": {"missing_states": missing_states[:50]},
+                })
+            if bool((coverage_payload or {}).get("compact_mode_detected")):
+                issues.append({
+                    "reason_code": "prototype_compact_mode_detected",
+                    "blocked": True,
+                    "message": f"compact coverage detected for feature {feature_dir.name}",
+                })
         files = payload.get("files", {})
         required_contracts = {
             "theme": "prototype_theme_contract_missing",
@@ -1110,6 +1204,13 @@ def check_prototype_contract(
             "review_json": "prototype_review_missing",
             "review_md": "prototype_review_missing",
         }
+        if design_governance_required:
+            required_contracts["design_brief"] = "prototype_design_brief_missing"
+            required_contracts["design_system_contract"] = "prototype_design_system_contract_missing"
+            required_contracts["design_prompt_json"] = "prototype_design_prompt_missing"
+            required_contracts["design_prompt_md"] = "prototype_design_prompt_missing"
+            required_contracts["web_guideline_review_json"] = "prototype_web_guideline_review_missing"
+            required_contracts["web_guideline_review_md"] = "prototype_web_guideline_review_missing"
         if feature_requires_route_closure(project_root, resolved_version, feature_dir.name):
             required_contracts["route_closure_contract"] = "prototype_route_closure_contract_missing"
             required_contracts["implementation_map"] = "prototype_implementation_map_missing"
@@ -1156,6 +1257,36 @@ def check_prototype_contract(
                         "blocked": True,
                         "message": f"fake jump or toast-only navigation remains for feature {feature_dir.name}",
                     })
+                if "prototype_baseline_regression" in failed_checks:
+                    issues.append({
+                        "reason_code": "prototype_baseline_regression",
+                        "blocked": True,
+                        "message": f"baseline protected pages regressed for feature {feature_dir.name}",
+                    })
+                if "prototype_artifact_inconsistent" in failed_checks:
+                    issues.append({
+                        "reason_code": "prototype_artifact_inconsistent",
+                        "blocked": True,
+                        "message": f"artifact consistency failed for feature {feature_dir.name}",
+                    })
+                if "prototype_cjk_parse_failed" in failed_checks:
+                    issues.append({
+                        "reason_code": "prototype_cjk_parse_failed",
+                        "blocked": True,
+                        "message": f"CJK parse failure detected for feature {feature_dir.name}",
+                    })
+                if "web_guideline_critical_findings_clear" in failed_checks:
+                    issues.append({
+                        "reason_code": "prototype_design_review_failed",
+                        "blocked": True,
+                        "message": f"design guideline review failed for feature {feature_dir.name}",
+                    })
+        if design_governance_required and str(payload.get("design_review_outcome") or "pass") == "blocked":
+            issues.append({
+                "reason_code": "prototype_design_review_failed",
+                "blocked": True,
+                "message": f"design review outcome blocked for feature {feature_dir.name}",
+            })
     return issues
 
 

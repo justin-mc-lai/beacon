@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-prototype-reference-pack-v2",
+  "version": "v1.1.11",
+  "design_generation_mode": "spec-driven",
+  "interactive_prototype_required": false,
+  "guidance_anchors": [],
+  "design_mode_references": [],
+  "prompt_sections": {
+    "context": {
+      "audience": "product team",
+      "tone": "disciplined",
+      "visual_direction": "disciplined / admin-workbench",
+      "differentiator": "delivery-grade reference UI"
+    },
+    "constraints": [
+      "shared token system",
+      "accessible interactive states",
+      "non-generic aesthetic direction"
+    ],
+    "visual_system": {
+      "typography": {
+        "display": "Fraunces",
+        "body": "IBM Plex Sans",
+        "mono": "JetBrains Mono",
+        "scale": [
+          48,
+          32,
+          24,
+          18,
+          16,
+          14,
+          12
+        ]
+      },
+      "palette": {
+        "primary": "#2563eb",
+        "secondary": "#0f172a",
+        "accent": "#2563eb"
+      },
+      "motion": "minimal-functional",
+      "anti_generic_rules": [
+        "avoid Inter/Roboto/Arial/system-only default stacks",
+        "avoid purple-on-white generic gradients",
+        "avoid template-like undifferentiated layouts"
+      ]
+    },
+    "prototype_scope": {
+      "archetype": "admin-workbench",
+      "required_pages": [
+        "overview",
+        "page-inventory",
+        "route-closure",
+        "delivery-readiness",
+        "baseline-protection"
+      ],
+      "required_states": [
+        "empty",
+        "loading",
+        "error",
+        "auth-required",
+        "completed"
+      ],
+      "route_closure_required": true
+    }
+  },
+  "llm_design_prompt": "Design a high-fidelity interactive prototype for `beacon-prototype-reference-pack-v2`.\nMode: spec-driven.\nAudience: product team.\nTone: disciplined.\nVisual direction: disciplined / admin-workbench.\nPrototype archetype: admin-workbench.\nRequired pages: overview, page-inventory, route-closure, delivery-readiness, baseline-protection.\nRequired states: empty, loading, error, auth-required, completed.\nUse the shared design system contract and avoid generic AI aesthetics.\nPreserve accessibility, visible focus, reduced motion, semantic navigation, and URL-reflected state where applicable."
+}

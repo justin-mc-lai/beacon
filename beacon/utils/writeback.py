@@ -6,9 +6,17 @@ from pathlib import Path
 from typing import Any, Iterable
 
 from beacon.utils.revision_state import load_revision_state, save_revision_state
-from beacon.utils.runtime import now_iso
-from beacon.utils.story_state import load_story_state, save_story_state
+from beacon.utils.runtime import load_run_state, now_iso, save_run_state
+from beacon.utils.story_state import feature_slug, load_story_state, save_story_state
 from beacon.utils.versioning import resolve_target_version
+from beacon.utils.workflow_memory import (
+    append_lifecycle_event,
+    compute_workflow_progress,
+    record_stage_writeback,
+    resolve_workflow_run_id,
+    workflow_stages_for_run,
+    write_stage_context,
+)
 
 
 def _normalize_ids(values: Iterable[str] | None) -> set[str]:
@@ -18,6 +26,98 @@ def _normalize_ids(values: Iterable[str] | None) -> set[str]:
         if text:
             out.add(text)
     return out
+
+
+def _existing_relative_paths(project_root: Path, candidates: Iterable[Path]) -> list[str]:
+    refs: list[str] = []
+    for candidate in candidates:
+        path = Path(candidate)
+        if not path.exists():
+            continue
+        refs.append(str(path.relative_to(project_root)))
+    return refs
+
+
+def _workflow_stage_evidence(project_root: Path, *, version: str, feature: str) -> dict[str, list[str]]:
+    slug = feature_slug(feature)
+    docs_root = project_root / "docs" / "beacon" / version
+    execution_root = docs_root / "execution"
+    machine_root = docs_root / ".machine"
+    prototype_root = docs_root / "prototype" / slug
+    state_root = project_root / ".beacon" / "state"
+    qa_root = project_root / ".beacon" / "qa" / "features" / slug
+
+    return {
+        "think": _existing_relative_paths(
+            project_root,
+            [
+                docs_root / "SUMMARY.md",
+                execution_root / "index.md",
+                execution_root / "architecture-blueprint.md",
+            ],
+        ),
+        "user-story": _existing_relative_paths(
+            project_root,
+            [
+                docs_root / "user-story" / f"{slug}.md",
+                machine_root / "user-story" / f"{slug}.json",
+            ],
+        ),
+        "prd": _existing_relative_paths(
+            project_root,
+            [
+                docs_root / "prd" / f"{slug}.md",
+                machine_root / "execution" / f"{slug}.revision.json",
+            ],
+        ),
+        "prototype": _existing_relative_paths(
+            project_root,
+            [
+                prototype_root / "prototype-plan.json",
+                prototype_root / "manifest.json",
+                prototype_root / "prototype-review.json",
+                prototype_root / "freeze.json",
+            ],
+        ),
+        "test-case": _existing_relative_paths(
+            project_root,
+            [
+                docs_root / "qa" / "test-cases" / f"{slug}.md",
+                machine_root / "qa" / f"{slug}.ac-test-matrix.json",
+                machine_root / "qa" / f"{slug}.qa9-matrix.json",
+                machine_root / "qa" / f"{slug}.story-scenario-map.json",
+            ],
+        ),
+        "implementation": _existing_relative_paths(
+            project_root,
+            [
+                execution_root / f"technical-implementation-{slug}.md",
+                execution_root / f"technical-implementation-{slug}.json",
+                execution_root / f"implementation-summary-{slug}.md",
+                execution_root / f"implementation-summary-{slug}.json",
+                state_root / f"implementation-{slug}.json",
+            ],
+        ),
+        "verify": _existing_relative_paths(
+            project_root,
+            [
+                project_root / ".beacon" / "auto-test-status.json",
+                execution_root / f"review-quality-{slug}.md",
+                execution_root / f"review-quality-{slug}.json",
+                execution_root / f"review-spec-{slug}.md",
+                execution_root / f"review-spec-{slug}.json",
+                qa_root / "scorecard.json",
+            ],
+        ),
+        "gate": _existing_relative_paths(
+            project_root,
+            [
+                project_root / ".beacon" / "gate-report.json",
+                project_root / ".beacon" / "evidence-manifest.json",
+                execution_root / "terminal.json",
+            ],
+        ),
+    }
 
 
 def _update_items(
@@ -157,3 +257,124 @@ def record_acceptance_writeback(
     save_revision_state(project_root, version=resolved_version, feature=feature, state=revision)
     return {"story": story, "revision": revision}
 
+
+def sync_acceptance_workflow_closure(
+    project_root: Path,
+    *,
+    version: str = "auto",
+    feature: str,
+    run_id: str | None = None,
+    source: str = "review.accept.sync",
+) -> dict[str, Any]:
+    resolved_version = resolve_target_version(project_root, version)
+    resolved_run_id = resolve_workflow_run_id(
+        project_root,
+        run_id=run_id,
+        version=resolved_version,
+        feature=feature,
+    )
+    if not resolved_run_id:
+        return {
+            "run_id": "",
+            "version": resolved_version,
+            "feature": feature,
+            "synced_stages": [],
+            "closure_complete": False,
+            "gate_pass": False,
+            "reason": "run_not_found",
+        }
+
+    run_state = load_run_state(project_root, resolved_run_id) or {}
+    stage_order = workflow_stages_for_run(project_root, run_id=resolved_run_id, run_state=run_state)
+    stage_evidence = _workflow_stage_evidence(project_root, version=resolved_version, feature=feature)
+    progress = compute_workflow_progress(
+        project_root,
+        run_id=resolved_run_id,
+        version=resolved_version,
+        feature=feature,
+    )
+    synced_stages: list[str] = []
+
+    for stage in stage_order:
+        refs = stage_evidence.get(stage, [])
+        if not refs:
+            continue
+        stage_state = progress.get("stages", {}).get(stage, {}) if isinstance(progress.get("stages"), dict) else {}
+        changed = False
+        if not bool(stage_state.get("has_started")):
+            append_lifecycle_event(
+                project_root,
+                run_id=resolved_run_id,
+                stage=stage,
+                event="stage_started",
+                source=source,
+                evidence_ref=refs,
+                details={"backfilled": True, "feature": feature, "version": resolved_version},
+            )
+            changed = True
+        if not bool(stage_state.get("has_context")):
+            write_stage_context(
+                project_root,
+                run_id=resolved_run_id,
+                stage=stage,
+                feature=feature,
+            )
+            changed = True
+        if not bool(stage_state.get("has_finished")):
+            append_lifecycle_event(
+                project_root,
+                run_id=resolved_run_id,
+                stage=stage,
+                event="stage_finished",
+                source=source,
+                evidence_ref=refs,
+                details={"backfilled": True, "feature": feature, "version": resolved_version},
+            )
+            changed = True
+        if not bool(stage_state.get("has_writeback")):
+            record_stage_writeback(
+                project_root,
+                run_id=resolved_run_id,
+                stage=stage,
+                feature=feature,
+                evidence_ref=refs,
+                status="completed",
+            )
+            changed = True
+        if changed:
+            synced_stages.append(stage)
+            progress = compute_workflow_progress(
+                project_root,
+                run_id=resolved_run_id,
+                version=resolved_version,
+                feature=feature,
+            )
+
+    final_progress = compute_workflow_progress(
+        project_root,
+        run_id=resolved_run_id,
+        version=resolved_version,
+        feature=feature,
+    )
+    if bool(final_progress.get("closure_complete")) and bool(final_progress.get("gate_pass")):
+        updated_state = dict(run_state)
+        updated_state["status"] = "completed"
+        updated_state["reason"] = "synced_from_acceptance"
+        updated_state["ended_at"] = now_iso()
+        events = updated_state.get("events")
+        if not isinstance(events, list):
+            events = []
+        if not any(isinstance(item, dict) and str(item.get("event", "")) == "workflow_completed" for item in events):
+            events.append({"event": "workflow_completed", "ts": now_iso()})
+        updated_state["events"] = events
+        save_run_state(project_root, resolved_run_id, updated_state)
+
+    return {
+        "run_id": resolved_run_id,
+        "version": resolved_version,
+        "feature": feature,
+        "synced_stages": synced_stages,
+        "closure_complete": bool(final_progress.get("closure_complete")),
+        "gate_pass": bool(final_progress.get("gate_pass")),
+        "missing_closure_stages": final_progress.get("missing_closure_stages", []),
+    }

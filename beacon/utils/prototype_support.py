@@ -24,14 +24,26 @@ def prototype_paths(project_root: Path, version: str, feature: str) -> dict[str,
     return {
         "root": root,
         "index": root / "index.html",
+        "prototype_plan": root / "prototype-plan.json",
+        "design_brief": root / "design-brief.json",
+        "design_system_contract": root / "design-system-contract.json",
+        "design_prompt_json": root / "design-prompt.json",
+        "design_prompt_md": root / "design-prompt.md",
         "manifest": root / "manifest.json",
         "source_map": root / "source-map.json",
         "freeze": root / "freeze.json",
         "theme": root / "theme.json",
+        "tokens_css": root / "tokens.css",
         "navigation_map": root / "navigation-map.json",
         "interaction_map": root / "interaction-map.json",
+        "coverage_report": root / "coverage-report.json",
+        "pages_dir": root / "pages",
+        "states_dir": root / "states",
+        "page_specs_dir": root / "page-specs",
         "route_closure_contract": root / "route-closure-contract.json",
         "implementation_map": root / "implementation-map.json",
+        "web_guideline_review_json": root / "web-guideline-review.json",
+        "web_guideline_review_md": root / "web-guideline-review.md",
         "review_json": root / "prototype-review.json",
         "review_md": root / "prototype-review.md",
     }
@@ -82,6 +94,8 @@ def prototype_status(project_root: Path, version: str, feature: str) -> dict[str
     exists = all(paths[key].exists() for key in ("index", "manifest", "source_map", "freeze"))
     frozen = str(freeze.get("status", "")).strip().lower() == "frozen"
     stale = False
+    inconsistent = False
+    inconsistent_reasons: list[str] = []
     recorded_source = freeze.get("source_fingerprints")
     if isinstance(recorded_source, dict):
         normalized_source = dict(recorded_source)
@@ -101,17 +115,35 @@ def prototype_status(project_root: Path, version: str, feature: str) -> dict[str
     else:
         status = "missing"
 
+    artifacts = manifest.get("artifacts") if isinstance(manifest.get("artifacts"), dict) else {}
+    for name, rel in artifacts.items():
+        full = project_root / str(rel)
+        if name in {"pages_dir", "states_dir", "page_specs_dir"}:
+            if not full.exists() or not full.is_dir():
+                inconsistent_reasons.append(f"missing_dir:{name}")
+            continue
+        if not full.exists():
+            inconsistent_reasons.append(f"missing_artifact:{name}")
+    if inconsistent_reasons:
+        inconsistent = True
+        if status != "stale":
+            status = "inconsistent"
+
     return {
         "status": status,
         "exists": exists,
         "frozen": frozen,
         "stale": stale,
+        "inconsistent": inconsistent,
+        "inconsistent_reasons": inconsistent_reasons,
         "ui_kit": str((manifest or freeze).get("ui_kit", "") or PROTOTYPE_UI_KIT),
         "review_status": str((manifest or freeze).get("review_status", "") or _read_json(paths["review_json"]).get("overall_status", "missing")),
+        "design_review_outcome": str((manifest or freeze).get("design_review_outcome", "") or "pass"),
         "gate_ready": bool(
             exists
             and str((manifest or freeze).get("review_status", "") or _read_json(paths["review_json"]).get("overall_status", "missing")) == "pass"
             and status == "frozen"
+            and not inconsistent
         ),
         "files": {key: path for key, path in paths.items()},
         "paths": {key: str(path) for key, path in paths.items()},

@@ -903,7 +903,12 @@ def _derive_repair_plan(incompatibilities: list[dict[str, Any]]) -> list[dict[st
     return plan
 
 
-def build_doctor_payload(project_root: Path, *, strict: bool = False) -> dict[str, Any]:
+def build_doctor_payload(
+    project_root: Path,
+    *,
+    strict: bool = False,
+    version: str = "auto",
+) -> dict[str, Any]:
     runtime = collect_runtime_info()
     normalized_root = Path(project_root)
     if not normalized_root.exists():
@@ -970,7 +975,7 @@ def build_doctor_payload(project_root: Path, *, strict: bool = False) -> dict[st
         }
 
     project_versions = detect_iteration_versions(normalized_root)
-    version_context = describe_project_version_context(normalized_root, docs_version="auto")
+    version_context = describe_project_version_context(normalized_root, docs_version=version or None)
     latest_version = str(version_context.get("docs_version", "") or project_versions.get("latest_iteration_version", "")).strip() or "v1.0.0"
     artifact_view = compute_artifact_stage_view(normalized_root, latest_version)
     workflow_progress = compute_workflow_progress(normalized_root, version=latest_version)
@@ -1035,9 +1040,9 @@ def build_doctor_payload(project_root: Path, *, strict: bool = False) -> dict[st
     }
 
 
-def build_doctor_diagnostics(project_root: Path, *, strict: bool = False) -> dict[str, Any]:
+def build_doctor_diagnostics(project_root: Path, *, strict: bool = False, version: str = "auto") -> dict[str, Any]:
     """Compatibility alias for doctor v2 payload builder."""
-    return build_doctor_payload(project_root, strict=strict)
+    return build_doctor_payload(project_root, strict=strict, version=version)
 
 
 
@@ -1051,7 +1056,7 @@ def build_doctor_advice_payload(
 ) -> dict[str, Any]:
     """Combine diagnostics with stage-aware navigation advice."""
     from beacon.utils.help_support import build_help_payload
-    diagnostics = build_doctor_payload(project_root, strict=strict)
+    diagnostics = build_doctor_payload(project_root, strict=strict, version=version)
     navigator = build_help_payload(project_root, version=version, feature=feature, run_id=run_id)
     incompatibilities = diagnostics.get("incompatibilities", []) if isinstance(diagnostics.get("incompatibilities"), list) else []
     blocked_reasons = list(navigator.get("blocking_reasons", []))

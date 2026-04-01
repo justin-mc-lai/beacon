@@ -8,4 +8,6 @@
 - none
 
 ## Recommendations
-- none
+- Update `review_quality` after implementation: run quality review after native implementation
+- Update `acceptance` after implementation: acceptance remains a formal post-verify action
+- [version_research] Open artifact writeback obligations: ['review_quality', 'acceptance']

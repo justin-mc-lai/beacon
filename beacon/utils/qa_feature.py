@@ -787,6 +787,7 @@ def build_feature_qa_precision_artifacts(
         )
 
     required_by_ac: dict[str, list[str]] = {}
+    families_by_ac_and_source_tc: dict[tuple[str, str], set[str]] = {}
     story_rows = plan.get("story_scenarios", {}).get("stories") if isinstance(plan.get("story_scenarios"), dict) else []
     for row in story_rows if isinstance(story_rows, list) else []:
         if not isinstance(row, dict):
@@ -794,19 +795,39 @@ def build_feature_qa_precision_artifacts(
         ac_id = str(row.get("ac_id") or "").strip()
         if ac_id:
             required_by_ac[ac_id] = [str(item) for item in (row.get("required_families") or []) if str(item).strip()]
+        scenarios = row.get("scenarios") if isinstance(row.get("scenarios"), list) else []
+        for scenario in scenarios:
+            if not isinstance(scenario, dict):
+                continue
+            source_tc_id = str(scenario.get("source_tc_id") or "").strip()
+            scenario_family = str(scenario.get("scenario_family") or "").strip()
+            if ac_id and source_tc_id and scenario_family:
+                families_by_ac_and_source_tc.setdefault((ac_id, source_tc_id), set()).add(scenario_family)
+    accepted_source_tc_ids = {
+        str(item.get("source_tc_id") or item.get("tc_id") or "").strip()
+        for item in scenario_results
+        if str(item.get("closure_outcome") or "").strip() == "accepted"
+        and str(item.get("source_tc_id") or item.get("tc_id") or "").strip()
+    }
 
     ac_reports: list[dict[str, Any]] = []
     ac_ids = sorted({str(item.get("ac_id") or "").strip() for item in scenario_results if str(item.get("ac_id") or "").strip()})
     for ac_id in ac_ids:
         ac_results = [item for item in scenario_results if str(item.get("ac_id") or "").strip() == ac_id]
         required_families = required_by_ac.get(ac_id, [])
-        passed_families = sorted(
-            {
-                str(item.get("scenario_family") or "").strip()
-                for item in ac_results
-                if bool(item.get("browser_required")) and str(item.get("closure_outcome") or "") == "accepted"
-            }
-        )
+        passed_family_set: set[str] = set()
+        for item in ac_results:
+            if str(item.get("closure_outcome") or "").strip() != "accepted":
+                continue
+            scenario_family = str(item.get("scenario_family") or "").strip()
+            if scenario_family:
+                passed_family_set.add(scenario_family)
+                continue
+            source_tc_id = str(item.get("source_tc_id") or item.get("tc_id") or "").strip()
+            passed_family_set.update(families_by_ac_and_source_tc.get((ac_id, source_tc_id), set()))
+        for source_tc_id in accepted_source_tc_ids:
+            passed_family_set.update(families_by_ac_and_source_tc.get((ac_id, source_tc_id), set()))
+        passed_families = sorted(passed_family_set)
         missing_replay = [
             str(item.get("scenario_id") or "")
             for item in ac_results
@@ -924,10 +945,13 @@ def build_feature_qa_precision_artifacts(
         for outcome in unresolved_closure_outcomes
         if outcome in {"implementation_reopened", "bug_filed", "needs_replay", "needs_more_evidence"}
     )
-    stop_reasons.extend(
-        code
-        for code in quality_reason_codes
-        if any(
+    for item in quality_issues:
+        if not isinstance(item, dict):
+            continue
+        code = str(item.get("reason_code") or "").strip()
+        if not code:
+            continue
+        if not any(
             token in code
             for token in (
                 "auth",
@@ -940,8 +964,13 @@ def build_feature_qa_precision_artifacts(
                 "assertion_count_zero",
                 "compatibility_execution_missing",
             )
-        )
-    )
+        ):
+            continue
+        if code in {"junit_missing_or_invalid", "assertion_count_zero_pass"}:
+            layer = normalize_qa_type(str(item.get("layer") or "").strip())
+            if layer not in {"unit", "integration", "contract"}:
+                continue
+        stop_reasons.append(code)
     stop_reasons.extend(
         code
         for code in (
@@ -985,18 +1014,24 @@ def build_feature_qa_precision_artifacts(
     coverage_missing_families = list(exhaustiveness.get("missing_axes") or [])
     family_names = {str(item.get("scenario_family") or "").strip() for item in scenario_results if str(item.get("scenario_family") or "").strip()}
     missing_scenario_families = sorted([item for item in coverage_missing_families if item in family_names or item in (plan.get("required_scenario_families") or [])])
+    covered_scenario_families: set[str] = set()
+    for item in scenario_results:
+        if not bool(item.get("evidence_ref")):
+            continue
+        scenario_family = str(item.get("scenario_family") or "").strip()
+        if scenario_family:
+            covered_scenario_families.add(scenario_family)
+            continue
+        ac_id = str(item.get("ac_id") or "").strip()
+        source_tc_id = str(item.get("source_tc_id") or item.get("tc_id") or "").strip()
+        covered_scenario_families.update(families_by_ac_and_source_tc.get((ac_id, source_tc_id), set()))
+
     coverage_current = {
         "required_scenarios": required_scenarios,
         "executed_scenarios": executed_scenarios,
         "coverage_rate": round(float(executed_scenarios) / float(required_scenarios or 1), 4),
         "required_scenario_families": sorted({str(item) for item in (plan.get("required_scenario_families") or []) if str(item).strip()}),
-        "covered_scenario_families": sorted(
-            {
-                str(item.get("scenario_family") or "").strip()
-                for item in scenario_results
-                if bool(item.get("evidence_ref")) and str(item.get("scenario_family") or "").strip()
-            }
-        ),
+        "covered_scenario_families": sorted(covered_scenario_families),
         "missing_scenario_families": missing_scenario_families,
         "missing_test_case_ids": missing_test_case_ids,
     }
@@ -1013,9 +1048,19 @@ def build_feature_qa_precision_artifacts(
         or missing_test_case_ids
         or list(exhaustiveness.get("missing_replay_scenarios") or [])
     )
+    release_ready = (
+        bool(ac_reports)
+        and all(str(item.get("closure_status") or "") == "accepted" for item in ac_reports)
+        and review_required_count == 0
+        and needs_replay_count == 0
+        and release_confidence_min >= auto_accept_threshold
+        and project_gate_status in {"pass", "not_configured"}
+    )
     continue_decision = "ready_for_release"
     if stop_reasons:
         continue_decision = "stop_for_repair"
+    elif release_ready:
+        continue_decision = "ready_for_release"
     elif test_case_backfill_required or unresolved_closure_outcomes or str(exhaustiveness.get("status") or "").strip().lower() != "passed":
         continue_decision = "continue"
     resume_command = (
@@ -1064,14 +1109,7 @@ def build_feature_qa_precision_artifacts(
         "test_case_backfill_required": test_case_backfill_required,
         "resume_command": resume_command,
         "repair_handoff": repair_handoff,
-        "release_ready": (
-            bool(ac_reports)
-            and all(str(item.get("closure_status") or "") == "accepted" for item in ac_reports)
-            and review_required_count == 0
-            and needs_replay_count == 0
-            and release_confidence_min >= auto_accept_threshold
-            and project_gate_status in {"pass", "not_configured"}
-        ),
+        "release_ready": release_ready,
     }
     feature_scorecard_path = write_feature_qa_scorecard(project_root, feature=feature, payload=feature_scorecard_payload)
     return scenario_results, ac_closure_payload, feature_scorecard_payload, ac_closure_path, feature_scorecard_path

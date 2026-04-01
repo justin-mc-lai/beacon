@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from beacon import __toolkit_version__
 from typer.testing import CliRunner
 
 from beacon.main import app
@@ -93,7 +94,7 @@ def test_resolve_runtime_version_auto_should_follow_active_toolkit_version(tmp_p
         },
     )
 
-    assert resolve_runtime_version(tmp_path, "auto") == "v1.1.10"
+    assert resolve_runtime_version(tmp_path, "auto") == __toolkit_version__
 
 
 def test_machine_surface_should_follow_toolkit_version_not_delivery_version():

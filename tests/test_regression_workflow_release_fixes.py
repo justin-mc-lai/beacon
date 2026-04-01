@@ -8,7 +8,9 @@ from pathlib import Path
 from typer.testing import CliRunner
 
 from beacon.main import app
-from beacon.utils.runtime import save_run_state
+from beacon.utils.revision_state import freeze_revision_state
+from beacon.utils.runtime import load_run_state, save_run_state
+from beacon.utils.writeback import record_implementation_writeback, record_verification_writeback
 from beacon.utils.workflow_memory import append_lifecycle_event, compute_workflow_progress
 
 
@@ -57,6 +59,92 @@ def _seed_release_artifacts(project_root: Path, *, version: str, run_id: str) ->
         ),
         encoding="utf-8",
     )
+
+
+def _seed_review_acceptance_feature(project_root: Path, *, version: str, feature: str) -> str:
+    slug = feature.lower().replace(" ", "-")
+    docs_root = project_root / "docs" / "beacon" / version
+    (docs_root / "user-story").mkdir(parents=True, exist_ok=True)
+    (docs_root / "prd").mkdir(parents=True, exist_ok=True)
+    (docs_root / "qa" / "test-cases").mkdir(parents=True, exist_ok=True)
+    (docs_root / "execution").mkdir(parents=True, exist_ok=True)
+    prototype_root = docs_root / "prototype" / slug
+    prototype_root.mkdir(parents=True, exist_ok=True)
+
+    summary = docs_root / "SUMMARY.md"
+    summary.write_text("# Summary\n", encoding="utf-8")
+    (docs_root / "execution" / "index.md").write_text("# Execution Index\n", encoding="utf-8")
+    (docs_root / "execution" / "architecture-blueprint.md").write_text("# Blueprint\n", encoding="utf-8")
+    (docs_root / "user-story" / f"{slug}.md").write_text(
+        "\n".join(
+            [
+                f"# User Story: {feature}",
+                "",
+                "| ID | Theme | Acceptance Criteria |",
+                "| --- | --- | --- |",
+                "| AC-001 | prototype | Reference pack is generated |",
+            ]
+        ),
+        encoding="utf-8",
+    )
+    (docs_root / "prd" / f"{slug}.md").write_text(f"# PRD: {feature}\n", encoding="utf-8")
+    (docs_root / "qa" / "test-cases" / f"{slug}.md").write_text(f"# Test Cases: {feature}\n", encoding="utf-8")
+
+    machine_user_story = docs_root / ".machine" / "user-story"
+    machine_qa = docs_root / ".machine" / "qa"
+    machine_exec = docs_root / ".machine" / "execution"
+    machine_user_story.mkdir(parents=True, exist_ok=True)
+    machine_qa.mkdir(parents=True, exist_ok=True)
+    machine_exec.mkdir(parents=True, exist_ok=True)
+    for suffix in ("ac-test-matrix", "qa9-matrix", "story-scenario-map"):
+        (machine_qa / f"{slug}.{suffix}.json").write_text(json.dumps({"feature": feature}, ensure_ascii=False), encoding="utf-8")
+    (machine_exec / f"{slug}.revision.json").write_text(
+        json.dumps({"feature": feature, "version": version, "revision_id": "R1"}, ensure_ascii=False),
+        encoding="utf-8",
+    )
+
+    for rel in (
+        "prototype-plan.json",
+        "manifest.json",
+        "prototype-review.json",
+        "freeze.json",
+    ):
+        (prototype_root / rel).write_text(json.dumps({"feature": feature}, ensure_ascii=False), encoding="utf-8")
+
+    for rel in (
+        f"technical-implementation-{slug}.md",
+        f"technical-implementation-{slug}.json",
+        f"implementation-summary-{slug}.md",
+        f"implementation-summary-{slug}.json",
+        f"review-quality-{slug}.md",
+        f"review-quality-{slug}.json",
+        f"review-spec-{slug}.md",
+        f"review-spec-{slug}.json",
+    ):
+        path = docs_root / "execution" / rel
+        if path.suffix == ".json":
+            path.write_text(json.dumps({"feature": feature, "version": version}, ensure_ascii=False), encoding="utf-8")
+        else:
+            path.write_text(f"# {rel}\n", encoding="utf-8")
+    (docs_root / "execution" / "terminal.json").write_text(
+        json.dumps({"feature": feature, "version": version, "status": "Pass"}, ensure_ascii=False),
+        encoding="utf-8",
+    )
+
+    state_dir = project_root / ".beacon" / "state"
+    state_dir.mkdir(parents=True, exist_ok=True)
+    (state_dir / f"implementation-{slug}.json").write_text(
+        json.dumps({"feature": feature, "version": version}, ensure_ascii=False),
+        encoding="utf-8",
+    )
+    qa_feature_dir = project_root / ".beacon" / "qa" / "features" / slug
+    qa_feature_dir.mkdir(parents=True, exist_ok=True)
+    (qa_feature_dir / "scorecard.json").write_text(
+        json.dumps({"feature": feature, "version": version, "continue_decision": "ready_for_release"}, ensure_ascii=False),
+        encoding="utf-8",
+    )
+
+    return slug
 
 
 def test_run_workflow_strict_flag_should_enable_effective_strict_mode(tmp_path: Path):
@@ -164,3 +252,77 @@ def test_compute_workflow_progress_should_not_read_gate_pass_from_other_run(tmp_
     progress_b = compute_workflow_progress(tmp_path, run_id=run_b)
     assert progress_b.get("gate_pass") is False
     assert progress_b.get("gate_status") == "unknown"
+
+
+def test_review_accept_should_backfill_workflow_closure_from_accepted_artifacts(tmp_path: Path):
+    version = "v1.1.11"
+    feature = "Prototype Reference Pack V2"
+    slug = _seed_review_acceptance_feature(tmp_path, version=version, feature=feature)
+    run_id = "run-20260331T023659Z-291e"
+
+    save_run_state(
+        tmp_path,
+        run_id,
+        {
+            "run_id": run_id,
+            "workflow": "workflow.start",
+            "mode": "manual",
+            "feature": feature,
+            "version": version,
+            "prototype_enabled": True,
+            "status": "planned",
+            "started_at": "2026-03-31T02:36:59+00:00",
+            "events": [{"event": "workflow_started", "ts": "2026-03-31T02:36:59+00:00"}],
+        },
+    )
+    freeze_revision_state(tmp_path, version=version, feature=feature)
+    record_implementation_writeback(tmp_path, version=version, feature=feature, run_id="impl-run")
+    record_verification_writeback(
+        tmp_path,
+        version=version,
+        feature=feature,
+        run_id="verify-run",
+        verified_item_ids=["AC-001", "TASK-001", "TEST-001"],
+        failed_item_ids=[],
+        evidence_ref=[".beacon/auto-test-status.json"],
+    )
+
+    beacon_dir = tmp_path / ".beacon"
+    beacon_dir.mkdir(parents=True, exist_ok=True)
+    (beacon_dir / "auto-test-status.json").write_text(
+        json.dumps({"status": "passed", "run_id": run_id, "version": version}, ensure_ascii=False),
+        encoding="utf-8",
+    )
+    (beacon_dir / "gate-report.json").write_text(
+        json.dumps({"status": "Pass", "run_id": run_id, "version": version}, ensure_ascii=False),
+        encoding="utf-8",
+    )
+    (beacon_dir / "evidence-manifest.json").write_text(
+        json.dumps({"run_id": run_id, "version": version, "entries": [{"path": ".beacon/auto-test-status.json", "sha256": "x"}]}, ensure_ascii=False),
+        encoding="utf-8",
+    )
+
+    result = _invoke(["review", "accept", feature, "--project", str(tmp_path), "--version", version, "--json"])
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["status"] == "accepted"
+    assert payload["workflow_closure_complete"] is True
+    assert payload["workflow_gate_pass"] is True
+
+    progress = compute_workflow_progress(tmp_path, version=version, feature=feature)
+    assert progress["run_id"] == run_id
+    assert progress["closure_complete"] is True
+    assert progress["missing_closure_stages"] == []
+
+    run_state = load_run_state(tmp_path, run_id)
+    assert run_state is not None
+    assert run_state["status"] == "completed"
+    assert any(item.get("event") == "workflow_completed" for item in run_state.get("events", []))
+
+    help_result = _invoke(["help", "--project-root", str(tmp_path), "--version", version, "--feature", feature, "--json"])
+    assert help_result.exit_code == 0, help_result.stdout
+    help_payload = json.loads(help_result.stdout)
+    assert help_payload["current_stage"] == "accepted"
+    assert help_payload["next_step"]["action"] == "release-check"
+    assert "prototype" in payload["workflow_synced_stages"]
+    assert slug == "prototype-reference-pack-v2"
