@@ -42,8 +42,17 @@ These artifacts are scratch/runtime-only and should not be committed:
 - `.beacon/state/change-impact/run-20*.json`
 - `.beacon/state/baselines/*/bl-run-20*.json`
 - `.beacon/state/spec-fingerprints/*/run-20*.json`
+- `.beacon/evidence/auto-test/run-20*/`
+- `.beacon/implement/run-20*/`
+- `.beacon/state/workflow-memory/run-20*/`
+- `.beacon/flaky-history.json`
+- `.beacon/state/evo/experiments/evo-20*.json`
+- `.beacon/state/evo/ledger.jsonl`
+- `.beacon/evidence/test-results/*` unless a feature folder is explicitly promoted as canonical tracked proof
+- `.beacon/qa/features/*` unless a feature folder is explicitly promoted as the canonical tracked QA closure surface
+- `.tmp/`
 
-Those patterns are enforced in the repository `.gitignore`.
+Those patterns are enforced in the repository `.gitignore`. For `test-results/` and `qa/features/`, Beacon keeps a narrow allowlist of promoted canonical folders and treats every other folder under those roots as local runtime output.
 
 ## Naming Rule
 
@@ -59,6 +68,7 @@ Before committing:
 1. keep current release evidence
 2. drop timestamped scratch state
 3. verify `gate check release` and `release check`
+4. if already-tracked evidence files are noisy locally, quiet them with local-only git mechanisms such as `.git/info/exclude` or `git update-index --skip-worktree` instead of rewriting repository policy
 
 If a new runtime artifact must be tracked, it should first be justified as:
 
