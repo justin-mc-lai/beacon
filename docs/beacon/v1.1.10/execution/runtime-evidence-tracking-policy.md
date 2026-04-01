@@ -68,7 +68,8 @@ Before committing:
 1. keep current release evidence
 2. drop timestamped scratch state
 3. verify `gate check release` and `release check`
-4. if already-tracked evidence files are noisy locally, quiet them with local-only git mechanisms such as `.git/info/exclude` or `git update-index --skip-worktree` instead of rewriting repository policy
+4. if already-tracked evidence files are noisy locally, use `beacon doctor quiet-worktree apply --project-root .`
+5. before intentionally editing those quieted evidence files again, run `beacon doctor quiet-worktree restore --project-root .`
 
 If a new runtime artifact must be tracked, it should first be justified as:
 

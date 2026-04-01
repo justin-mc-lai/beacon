@@ -49,6 +49,8 @@ def test_runtime_evidence_tracking_policy_should_document_tracked_and_ignored_su
     assert ".beacon/implement/run-20*/" in text
     assert ".beacon/state/workflow-memory/run-20*/" in text
     assert ".beacon/evidence/test-results/*" in text
+    assert "beacon doctor quiet-worktree apply --project-root ." in text
+    assert "beacon doctor quiet-worktree restore --project-root ." in text
 
 
 def test_only_current_release_test_results_should_remain_tracked():

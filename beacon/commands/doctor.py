@@ -15,6 +15,7 @@ from beacon.utils.help_navigation import build_doctor_advise_payload
 from beacon.utils.material_audit import build_delivery_audit, build_material_audit
 from beacon.utils.v115_delivery import repair_v115_delivery_package
 from beacon.utils.versioning import describe_project_version_context, resolve_target_version
+from beacon.utils.worktree_quiet import apply_quiet_worktree, quiet_worktree_status, restore_quiet_worktree
 
 app = typer.Typer(
     name="doctor",
@@ -181,6 +182,31 @@ def _print_verification_result(title: str, result: dict[str, Any]) -> None:
         status = str(item.get("status", "warn")).upper()
         typer.echo(f"- {status}: {item.get('name')} ({json.dumps(item.get('details', {}), ensure_ascii=False)})")
     typer.echo(f"Overall: {str(result.get('status', 'warn')).upper()}")
+
+
+def _print_quiet_worktree_result(payload: dict[str, Any]) -> None:
+    typer.echo("Beacon Doctor Quiet Worktree")
+    typer.echo("=" * 28)
+    typer.echo(f"mode                : {payload.get('mode', 'status')}")
+    typer.echo(f"git_root            : {payload.get('git_root', '')}")
+    typer.echo(f"exclude_path        : {payload.get('exclude_path', '')}")
+    typer.echo(f"exclude_block       : {bool(payload.get('exclude_block_present'))}")
+    typer.echo(f"tracked_candidates  : {payload.get('tracked_candidate_count', 0)}")
+    typer.echo(f"skip_worktree_paths : {payload.get('skip_worktree_count', 0)}")
+
+    skipped = payload.get("skip_worktree_paths", [])
+    if skipped:
+        typer.echo("\nActive skip-worktree")
+        typer.echo("-" * 28)
+        for path in skipped:
+            typer.echo(f"- {path}")
+
+    patterns = payload.get("exclude_patterns", [])
+    if patterns:
+        typer.echo("\nManaged exclude patterns")
+        typer.echo("-" * 28)
+        for pattern in patterns:
+            typer.echo(f"- {pattern}")
 
 
 def _single_check_payload(
@@ -581,6 +607,57 @@ def verify_agent_md(
         strict=strict,
         json_output=json_output,
     )
+
+
+@app.command("quiet-worktree")
+def quiet_worktree(
+    mode: str = typer.Argument("status", help="One of: status, apply, restore"),
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Manage local skip-worktree/exclude quieting for Beacon runtime churn."""
+    root = Path(project_root) if project_root else Path.cwd()
+    normalized = mode.strip().lower()
+    actions = {
+        "status": quiet_worktree_status,
+        "apply": apply_quiet_worktree,
+        "restore": restore_quiet_worktree,
+    }
+    action = actions.get(normalized)
+    if action is None:
+        raise typer.BadParameter("mode must be one of: status, apply, restore")
+
+    try:
+        result = action(root)
+    except (ValueError, RuntimeError) as exc:
+        payload = {
+            "schema_version": "2.0",
+            "action": "quiet-worktree",
+            "status": "BLOCKED",
+            "mode": normalized,
+            "result": {
+                "project_root": str(root.resolve()),
+                "error": str(exc),
+            },
+        }
+        if json_output:
+            typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        else:
+            typer.echo(f"Beacon Doctor Quiet Worktree\n{'=' * 28}\nerror: {exc}")
+        raise typer.Exit(code=2)
+
+    payload = {
+        "schema_version": "2.0",
+        "action": "quiet-worktree",
+        "status": "PASS",
+        "mode": normalized,
+        "result": result,
+    }
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        _print_quiet_worktree_result(result)
+    raise typer.Exit(code=0)
 
 
 if __name__ == "__main__":
