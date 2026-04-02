@@ -1,0 +1,268 @@
+{
+  "schema_version": "1.0",
+  "plan_id": "plan-beacon-implement-branch-gate-r1",
+  "feature": "beacon-implement-branch-gate",
+  "feature_slug": "beacon-implement-branch-gate",
+  "version": "v1.1.12",
+  "revision_id": "R1",
+  "baseline_hash": "sha256:84b58c99d9fd29235559dc520ff4b962c71afd6a638ce1acb083e2f1002c52ea",
+  "plan_hash": "sha256:a1778042d1bed63d844603fad408f93009eceda39c57e791499db297fe2fc29a",
+  "status": "completed",
+  "source_refs": {
+    "user_story": "docs/beacon/v1.1.12/user-story/beacon-implement-branch-gate.md",
+    "prd": "docs/beacon/v1.1.12/prd/beacon-implement-branch-gate.md",
+    "test_case": "docs/beacon/v1.1.12/qa/test-cases/beacon-implement-branch-gate.md",
+    "ac_matrix": "docs/beacon/v1.1.12/.machine/qa/beacon-implement-branch-gate.ac-test-matrix.json",
+    "story_scenario_map": "docs/beacon/v1.1.12/.machine/qa/beacon-implement-branch-gate.story-scenario-map.json"
+  },
+  "workstreams": [
+    {
+      "workstream_id": "implementation-main",
+      "title": "Implementation Mainline",
+      "task_ids": [
+        "ITASK-001",
+        "ITASK-002",
+        "ITASK-003",
+        "ITASK-004",
+        "ITASK-005",
+        "ITASK-006",
+        "ITASK-007"
+      ]
+    }
+  ],
+  "task_mapping_source": "prd-sections",
+  "tasks": [
+    {
+      "task_id": "ITASK-001",
+      "title": "FR-001 Shared Git Alignment Helper",
+      "description": "抽出共享 helper，至少可供： - workflow execution artifact generation - implement branch preflight - future doctor/gate live checks 共同消费。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-001",
+        "AC-010"
+      ],
+      "mapped_test_ids": [
+        "TEST-001",
+        "TEST-010"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-v112-release",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.1.12/.machine/execution/technical-implementation-beacon-implement-branch-gate.json",
+        "verify:run-v112-release"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "2026-04-01T22:06:59.730157+00:00",
+      "completed_at": "2026-04-01T22:06:59.730163+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-002",
+      "title": "FR-002 Implement Branch Preflight",
+      "description": "`beacon implement run` 在 runner 解析前执行 branch preflight，输出： - `expected_branch` - `current_branch` - `current_tag` - `reason_codes` - `recommended_command` - `blocked`",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-005"
+      ],
+      "mapped_test_ids": [
+        "TEST-005"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-001"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-v112-release",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.1.12/.machine/execution/technical-implementation-beacon-implement-branch-gate.json",
+        "verify:run-v112-release"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "2026-04-01T22:06:59.730170+00:00",
+      "completed_at": "2026-04-01T22:06:59.730172+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-003",
+      "title": "FR-003 Exact Branch Requirement",
+      "description": "对 implement 阶段： - 目标分支固定为 `beacon/<version>` - 要求 `current_branch == target_branch` - `allow_tag=false` - `require_exact_branch=true`",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-002"
+      ],
+      "mapped_test_ids": [
+        "TEST-002"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-002"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-v112-release",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.1.12/.machine/execution/technical-implementation-beacon-implement-branch-gate.json",
+        "verify:run-v112-release"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "2026-04-01T22:06:59.730176+00:00",
+      "completed_at": "2026-04-01T22:06:59.730177+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-004",
+      "title": "FR-004 Explicit Repair Surface",
+      "description": "新增： ```bash beacon implement check-branch --project-root . --version v1.1.12 ``` 并支持： ```bash beacon implement check-branch --auto-switch-branch beacon implement run ... --auto-switch-branch ```",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-004",
+        "AC-006"
+      ],
+      "mapped_test_ids": [
+        "TEST-004",
+        "TEST-006"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-003"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-v112-release",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.1.12/.machine/execution/technical-implementation-beacon-implement-branch-gate.json",
+        "verify:run-v112-release"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "2026-04-01T22:06:59.730181+00:00",
+      "completed_at": "2026-04-01T22:06:59.730182+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-005",
+      "title": "FR-005 Safe Switch Policy",
+      "description": "当分支不匹配且启用 `--auto-switch-branch`： - 优先 `git switch beacon/<version>` - 本地分支不存在时允许 `git switch -c beacon/<version>` - dirty worktree 且需要切换时必须阻断",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-008"
+      ],
+      "mapped_test_ids": [
+        "TEST-008"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-004"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-v112-release",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.1.12/.machine/execution/technical-implementation-beacon-implement-branch-gate.json",
+        "verify:run-v112-release"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "2026-04-01T22:06:59.730186+00:00",
+      "completed_at": "2026-04-01T22:06:59.730187+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-006",
+      "title": "FR-006 Preflight Artifact",
+      "description": "每次 preflight 写出： ```text .beacon/implement/<run_id>/branch-preflight.json ``` blocked 结果也必须持久化。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-007"
+      ],
+      "mapped_test_ids": [
+        "TEST-007"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-005"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-v112-release",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.1.12/.machine/execution/technical-implementation-beacon-implement-branch-gate.json",
+        "verify:run-v112-release"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "2026-04-01T22:06:59.730190+00:00",
+      "completed_at": "2026-04-01T22:06:59.730192+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-007",
+      "title": "FR-007 Block Before Runner",
+      "description": "若 preflight blocked： - 不得调用 `resolve_adapter` 之后的执行路径 - 不得启动任何 runner/native implementation - 必须返回 `implement_branch_guard_blocked` ## 6. Suggested Output Contract ```json { \"schema_version\": \"1.0\", \"status\": \"blocked\", \"version\": \"v1.1.12\", \"expected_branch\": \"beacon/v1.1.12\", \"current_branch\": \"main\", \"reason_codes\": [ \"git_branch_target_mismatch\", \"git_version_ref_not_satisfied\", \"git_exact_branch_required\" ], \"recommended_command\": \"git switch beacon/v1.1.12\", \"blocked\": true } ``` ## 7. Success Standard 这条线完成时，Beacon 应能稳定做到： 1. 在 `main` 或错误分支上调用 `implement run` 会先被挡住 2. `implement` 失败信息能直接告诉使用者切到哪个分支 3. `workflow` 与 `implement` 不再出现分支规则漂移 4. blocked 和 pass 都会留下 branch preflight evidence",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-003",
+        "AC-009"
+      ],
+      "mapped_test_ids": [
+        "TC-003",
+        "TEST-009"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-006"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-v112-release",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.1.12/.machine/execution/technical-implementation-beacon-implement-branch-gate.json",
+        "verify:run-v112-release"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "2026-04-01T22:06:59.730195+00:00",
+      "completed_at": "2026-04-01T22:06:59.730197+00:00",
+      "active_run_id": ""
+    }
+  ],
+  "generated_at": "2026-04-01T21:55:35.085970+00:00",
+  "updated_at": "2026-04-01T22:06:59.734734+00:00",
+  "accepted_at": "2026-04-01T22:06:59.734725+00:00",
+  "accepted_by": "release-closure"
+}

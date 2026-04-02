@@ -10,6 +10,7 @@ import typer
 from beacon.utils.artifact_paths import machine_root, uses_machine_surface
 from beacon.utils.control_plane import build_resume_contract
 from beacon.utils.coverage import compute_coverage_metrics
+from beacon.utils.implementation_plan import load_implementation_plan_progress
 from beacon.utils.learning_loop import load_keep_discard_engine
 from beacon.utils.material_audit import build_material_audit
 from beacon.utils.qa_runtime import load_qa_status
@@ -91,6 +92,7 @@ def _status_impl(
 
     target_feature = feature_filter or str(workflow_progress.get("feature", "") or "")
     help_payload = build_help_payload(root, version=coverage_version, feature=target_feature, run_id=resolved_run_id or None) if target_feature else {}
+    implementation_plan_progress = load_implementation_plan_progress(root, version=coverage_version, feature=target_feature) if target_feature else {}
     qa_status = load_qa_status(root)
     resume_contract = build_resume_contract(root, run_id=resolved_run_id or None)
     keep_discard_engine = load_keep_discard_engine(root)
@@ -121,6 +123,13 @@ def _status_impl(
         "project_mode": help_payload.get("project_mode", "greenfield"),
         "execution_surface": help_payload.get("execution_surface", {}),
         "learning_surface": help_payload.get("learning_surface", {}),
+        "implementation_plan": {
+            "plan_id": implementation_plan_progress.get("plan_id", ""),
+            "status": implementation_plan_progress.get("status", "missing"),
+            "counts": implementation_plan_progress.get("counts", {}),
+            "next_task_id": implementation_plan_progress.get("next_task_id", ""),
+            "blocked_task_ids": implementation_plan_progress.get("blocked_task_ids", []),
+        },
         "decision_trace": help_payload.get("decision_trace", []),
         "control_plane": resume_contract,
         "qa_status": {
@@ -184,6 +193,12 @@ def _status_impl(
         typer.echo(f"- memory.writebacks: {memory_metrics.get('writebacks')}")
         typer.echo(f"- memory.recall_injections: {memory_metrics.get('recall_injections')}")
         typer.echo(f"- memory.next_stage: {workflow_progress.get('next_stage') or 'none'}")
+        if payload.get("implementation_plan", {}).get("plan_id"):
+            typer.echo(
+                f"- implementation_plan: {payload.get('implementation_plan', {}).get('status')} "
+                f"next={payload.get('implementation_plan', {}).get('next_task_id') or 'none'} "
+                f"counts={payload.get('implementation_plan', {}).get('counts', {})}"
+            )
         typer.echo(
             f"- control.failure_streak: {resume_contract.get('failure_streak')}"
         )

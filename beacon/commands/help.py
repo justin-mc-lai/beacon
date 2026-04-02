@@ -36,6 +36,7 @@ def _render_human(payload: dict[str, object]) -> str:
     scores = payload.get("scores", {}) if isinstance(payload.get("scores"), dict) else {}
     next_step = payload.get("next_step", {}) if isinstance(payload.get("next_step"), dict) else {}
     version_context = payload.get("version_context", {}) if isinstance(payload.get("version_context"), dict) else {}
+    version_guard = payload.get("context_version_guard", {}) if isinstance(payload.get("context_version_guard"), dict) else {}
     lines = [
         "Beacon Help / Next Step",
         "=" * 26,
@@ -43,6 +44,7 @@ def _render_human(payload: dict[str, object]) -> str:
         f"docs version    : {payload.get('docs_version', payload.get('version', ''))}",
         f"runtime version : {payload.get('runtime_version', '')}",
         f"context version : {version_context.get('context_managed_version', '') or 'N/A'}",
+        f"context guard   : {version_guard.get('status', '') or 'N/A'}",
         f"active revision : {payload.get('revision_id', '')}",
         f"doc status      : {payload.get('doc_status', '')}",
         f"delivery status : {payload.get('delivery_status', '')}",

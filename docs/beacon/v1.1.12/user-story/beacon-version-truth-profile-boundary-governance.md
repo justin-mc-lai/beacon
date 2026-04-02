@@ -41,6 +41,9 @@
 ### US-010: 系统必须透明解释推荐与阻断
 作为项目协作者，我希望 help / status / review / gate / QA scenario generation 都输出 decision trace，说明版本真相、执行面、学习面、评分和 blocked reason。
 
+### US-011: 显式版本输入与上下文不一致时必须阻断
+作为项目协作者，我希望当 `AGENTS/CLAUDE`、当前 branch、onboarding context 已经明确版本线时，Beacon 能在我显式输错 `--version` 的那一刻直接阻断，而不是静默把材料写偏到错误文档线。
+
 ## Acceptance Criteria
 
 | AC ID | Theme | Description |
@@ -63,6 +66,7 @@
 | AC-016 | Adjacent-semantics Drift Block | 若 requirement 仅是开屏页视频上传/展示，Beacon 不得自动把场景扩张成视频播放器语义，如 `500MB` 压测、seek、fullscreen、subtitle、buffering |
 | AC-017 | Transparent Decision Trace | help / status / review / gate / QA scenario generation 输出必须包含 `version_truth_source`、`project_mode`、`execution_surface`、`learning_surface`、`requirement_anchor_score`、`blocked_reason` |
 | AC-018 | Stable Workflow Order | Beacon 必须先解析 version truth、project mode、execution surface、learning surface、requirement anchors，再进入 help / implement / review / gate |
+| AC-019 | Context Version Guard | 当显式 `--version` 与上下文管理版本冲突时，系统必须返回 `context_version_mismatch`，并给出推荐版本 |
 
 ## First-principles Loop
 

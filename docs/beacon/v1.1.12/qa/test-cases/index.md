@@ -6,3 +6,4 @@
   - `beacon-version-truth-profile-boundary-governance`
   - `beacon-prototype-design-governance-loop`
   - `beacon-implement-branch-gate`
+  - `beacon-prd-us-to-plan-implementation-progress-closure`

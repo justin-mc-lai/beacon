@@ -1,23 +1,25 @@
 # Beacon v1.1.12 Summary
 
-**主题**: Autoresearch-driven prototype completion / design governance / execution-boundary stabilization
-**状态**: Implemented Runtime Supplement
-**基线版本**: `v1.1.11`
+**主题**: Autoresearch-driven prototype completion / design governance / execution-boundary stabilization / requirement-to-implementation closure
+**状态**: Implemented and Release-Ready
+**基线版本**: `v1.1.12`
 **日期**: 2026-04-01
 
 ---
 
 ## Current Closure Assessment
 
-As of the current repository state, `v1.1.11` already closes:
+As of the current repository state, `v1.1.12` closes:
 
 - story-driven prototype contract compilation
 - page inventory + page spec generation
 - route closure / implementation binding
 - multi-page reference-pack output
+- PRD / user-story / test-case → implementation-plan compilation
+- pre-implement plan gate + task-level progress/writeback closure
+- release-gate / doctor upgrade-package alignment for implementation-plan runtime
 
-What it did **not** yet close at the start of this line was the design-governance loop around those artifacts.
-That gap is now closed for the runtime supplement surfaces in this repository:
+This line closes the design-governance loop around those artifacts:
 
 - implement-time branch drift is blocked before runner execution
 - Beacon version truth is single-sourced
@@ -31,12 +33,12 @@ Beacon can now truthfully say:
 which pages/states/routes exist
 ```
 
-It still cannot truthfully say:
+It can now also truthfully say:
 
 ```text
 whether the generated prototype meets a stable design brief,
 whether it follows formal web interface rules,
-whether design review findings should feed the next autoresearch iteration,
+whether design review findings feed the next bounded autoresearch iteration,
 whether implement coding started on the required Beacon version branch,
 whether help/navigator routed the task onto the right project execution surface
 ```
@@ -103,16 +105,19 @@ Cross-project use in Rolo and slow_uni_bmtop exposes five additional blockers:
 3. project skill orchestration now validates stage / capability / evidence boundary before execution
 4. learning plane subject surfaces are now typed for design / qa / contract / rewrite / debug / benchmark policy optimization
 5. takeover projects are now blocked at runtime until current-state baseline is ready and frozen
+6. prototype now exposes a unified directory page plus `ui-style-analysis` for secondary build continuation
+7. software design security is now reviewed under `review design`, not copied into a new infra-first top-level command
+8. explicit `--version` drift against managed context can now be blocked before requirement materials write to the wrong docs line
 
 ---
 
-## Target result now implemented as supplement
+## Target result now implemented in the release line
 
 Beacon v1.1.12 should make the following statement true:
 
 > A high-fidelity prototype is only releasable when Beacon can explain the design brief it compiled, the visual/token system it enforced, the web-interface rules it checked, the review findings it accepted or rejected, which findings should feed the next bounded autoresearch iteration, whether implementation started on the required Beacon version branch, and whether the task was routed onto the correct project execution surface under a single version truth.
 
-In this repo, the runtime supplement for that statement is now implemented, verified, and covered by regression tests.
+In this repo, that runtime statement is implemented, verified, and covered by regression tests.
 
 ---
 
@@ -137,20 +142,31 @@ In this repo, the runtime supplement for that statement is now implemented, veri
 1. `research/beacon-practice-boundary-learning-analysis.md`
 2. `research/beacon-meta-harness-design-governance-analysis.md`
 3. `research/beacon-requirement-anchor-divergence-closure-analysis.md`
-4. `user-story/beacon-version-truth-profile-boundary-governance.md`
-5. `prd/beacon-version-truth-profile-boundary-governance.md`
-6. `qa/test-cases/beacon-version-truth-profile-boundary-governance.md`
-7. `execution/requirement-anchor-implementation-blueprint.md`
-8. `user-story/beacon-prototype-design-governance-loop.md`
-9. `prd/beacon-prototype-design-governance-loop.md`
-10. `qa/test-cases/beacon-prototype-design-governance-loop.md`
-11. `execution/boundaries.md`
-12. `execution/architecture-blueprint.md`
-13. `execution/prototype-design-governance-blueprint.md`
-14. `release/v1.1.12.md`
-15. `user-story/beacon-implement-branch-gate.md`
-16. `prd/beacon-implement-branch-gate.md`
-17. `qa/test-cases/beacon-implement-branch-gate.md`
+4. `research/beacon-design-security-review-surface-analysis.md`
+5. `user-story/beacon-version-truth-profile-boundary-governance.md`
+6. `prd/beacon-version-truth-profile-boundary-governance.md`
+7. `qa/test-cases/beacon-version-truth-profile-boundary-governance.md`
+8. `execution/requirement-anchor-implementation-blueprint.md`
+9. `user-story/beacon-prototype-design-governance-loop.md`
+10. `prd/beacon-prototype-design-governance-loop.md`
+11. `qa/test-cases/beacon-prototype-design-governance-loop.md`
+12. `execution/boundaries.md`
+13. `execution/architecture-blueprint.md`
+14. `execution/prototype-design-governance-blueprint.md`
+15. `release/v1.1.12.md`
+16. `user-story/beacon-implement-branch-gate.md`
+17. `prd/beacon-implement-branch-gate.md`
+18. `qa/test-cases/beacon-implement-branch-gate.md`
+
+## Supplemental requirement-to-implementation closure artifacts
+
+The current runtime/release line remains `v1.1.12`.
+If you are auditing or extending the shipped implementation-closure runtime inside this same line, also read:
+
+18. `user-story/beacon-prd-us-to-plan-implementation-progress-closure.md`
+19. `prd/beacon-prd-us-to-plan-implementation-progress-closure.md`
+20. `qa/test-cases/beacon-prd-us-to-plan-implementation-progress-closure.md`
+21. `execution/prd-us-to-plan-implementation-progress-blueprint.md`
 
 ---
 
@@ -159,17 +175,22 @@ In this repo, the runtime supplement for that statement is now implemented, veri
 1. `./research/beacon-practice-boundary-learning-analysis.md`
 2. `./research/beacon-meta-harness-design-governance-analysis.md`
 3. `./research/beacon-requirement-anchor-divergence-closure-analysis.md`
-4. `./user-story/beacon-version-truth-profile-boundary-governance.md`
-5. `./prd/beacon-version-truth-profile-boundary-governance.md`
-6. `./execution/requirement-anchor-implementation-blueprint.md`
-7. `./user-story/beacon-prototype-design-governance-loop.md`
-8. `./prd/beacon-prototype-design-governance-loop.md`
-9. `./execution/boundaries.md`
-10. `./execution/architecture-blueprint.md`
-11. `./execution/prototype-design-governance-blueprint.md`
-12. `./qa/test-cases/beacon-version-truth-profile-boundary-governance.md`
-13. `./qa/test-cases/beacon-prototype-design-governance-loop.md`
-14. `./release/v1.1.12.md`
-15. `./user-story/beacon-implement-branch-gate.md`
-16. `./prd/beacon-implement-branch-gate.md`
-17. `./qa/test-cases/beacon-implement-branch-gate.md`
+4. `./research/beacon-design-security-review-surface-analysis.md`
+5. `./user-story/beacon-version-truth-profile-boundary-governance.md`
+6. `./prd/beacon-version-truth-profile-boundary-governance.md`
+7. `./execution/requirement-anchor-implementation-blueprint.md`
+8. `./user-story/beacon-prototype-design-governance-loop.md`
+9. `./prd/beacon-prototype-design-governance-loop.md`
+10. `./execution/boundaries.md`
+11. `./execution/architecture-blueprint.md`
+12. `./execution/prototype-design-governance-blueprint.md`
+13. `./qa/test-cases/beacon-version-truth-profile-boundary-governance.md`
+14. `./qa/test-cases/beacon-prototype-design-governance-loop.md`
+15. `./release/v1.1.12.md`
+16. `./user-story/beacon-implement-branch-gate.md`
+17. `./prd/beacon-implement-branch-gate.md`
+18. `./qa/test-cases/beacon-implement-branch-gate.md`
+19. `./user-story/beacon-prd-us-to-plan-implementation-progress-closure.md`
+20. `./prd/beacon-prd-us-to-plan-implementation-progress-closure.md`
+21. `./qa/test-cases/beacon-prd-us-to-plan-implementation-progress-closure.md`
+22. `./execution/prd-us-to-plan-implementation-progress-blueprint.md`

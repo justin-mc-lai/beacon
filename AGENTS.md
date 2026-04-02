@@ -1,5 +1,5 @@
 <!-- BEACON:START -->
-<!-- BEACON:VERSION:v1.1.11 -->
+<!-- BEACON:VERSION:v1.1.12 -->
 # AGENTS.md
 
 This file is Beacon-managed agent operation guidance.
@@ -10,7 +10,7 @@ This file is Beacon-managed agent operation guidance.
 - Preserve user-authored sections outside Beacon managed blocks.
 
 ## Beacon requirement-material usage
-- Runtime target version: `v1.1.11`
+- Runtime target version: `v1.1.12`
 - Latest accepted docs line in this repo: `v1.1.12`
 - Keep runtime version and docs version separate:
   - runtime guidance follows the Beacon CLI/runtime line

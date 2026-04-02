@@ -3,7 +3,7 @@ name: beacon
 description: Use when you need Beacon's evidence-first product workflow through a standard skill package that delegates to beacon CLI commands and scripts.
 metadata:
   author: Beacon CLI
-  version: "1.1.11"
+  version: "1.1.12"
   organization: Beacon
   date: March 2026
   abstract: Standard skill package wrapper for Beacon CLI workflow, implement, review, and release operations.
@@ -70,17 +70,16 @@ If you only remember one sentence:
 
 ## Current Release Line
 
-- **Current release line**: `v1.1.11`
-- **Current package version**: `1.1.11`
+- **Current release line**: `v1.1.12`
+- **Current package version**: `1.1.12`
 - **Latest accepted docs line**: `v1.1.12`
-- **Current landed implementation line**: `v1.1.11` (QA precision / source architecture sync / prototype route closure; implemented and verified in-repo)
+- **Current landed implementation line**: `v1.1.12` (design governance / version truth / profile-aware routing / typed learning plane / takeover baseline gate; implemented and verified in-repo)
 - **Previous stable line**: `v1.1.10` (QA precision / source architecture sync / prototype route closure)
 
 `v1.1.12` note:
 
-- the repo now includes the implemented runtime supplement for version truth, profile-aware routing, capability-bounded project execution, typed learning surfaces, and takeover baseline gating
-- the current CLI/runtime release line still remains `v1.1.11`
-- read `../../docs/beacon/v1.1.11/` for the current runtime line and `../../docs/beacon/v1.1.12/` for the latest governance supplement
+- the repo now ships version truth, profile-aware routing, capability-bounded project execution, typed learning surfaces, and takeover baseline gating as part of the current release line
+- read `../../docs/beacon/v1.1.12/` for the current runtime line
 
 ## Overview
 
@@ -108,29 +107,30 @@ It exposes Beacon through a `skills/beacon/` package layout while still delegati
 ### Start a feature lifecycle
 
 ```bash
-bash skills/beacon/scripts/run_beacon.sh workflow start "My Feature" --project . --version v1.1.11
-bash skills/beacon/scripts/run_beacon.sh think start "My Feature" --project . --version v1.1.11
-bash skills/beacon/scripts/run_beacon.sh user-story create "My Feature" --project . --version v1.1.11
-bash skills/beacon/scripts/run_beacon.sh prd create "My Feature" --project . --version v1.1.11
-bash skills/beacon/scripts/run_beacon.sh test-case create "My Feature" --project . --version v1.1.11
+bash skills/beacon/scripts/run_beacon.sh workflow start "My Feature" --project . --version v1.1.12
+bash skills/beacon/scripts/run_beacon.sh think start "My Feature" --project . --version v1.1.12
+bash skills/beacon/scripts/run_beacon.sh user-story create "My Feature" --project . --version v1.1.12
+bash skills/beacon/scripts/run_beacon.sh prd create "My Feature" --project . --version v1.1.12
+bash skills/beacon/scripts/run_beacon.sh test-case create "My Feature" --project . --version v1.1.12
 ```
 
 ### Ask Beacon what comes next
 
 ```bash
-bash skills/beacon/scripts/run_beacon.sh status --board --project-root . --version v1.1.11
-bash skills/beacon/scripts/run_beacon.sh help --project-root . --feature "My Feature" --version v1.1.11 --json
+bash skills/beacon/scripts/run_beacon.sh status --board --project-root . --version v1.1.12
+bash skills/beacon/scripts/run_beacon.sh help --project-root . --feature "My Feature" --version v1.1.12 --json
 ```
 
 ### Run implementation and closure
 
 ```bash
 bash skills/beacon/scripts/run_beacon.sh implement list-runners --json
-bash skills/beacon/scripts/run_beacon.sh implement run "My Feature" --project . --version v1.1.11 --runner auto --json
-bash skills/beacon/scripts/run_beacon.sh implement run "My Feature" --project . --version v1.1.11 --runner auto --auto-qa --auto-qa-follow-handoff --auto-qa-max-rounds 3 --json
-bash skills/beacon/scripts/run_beacon.sh qa run "My Feature" --project . --version v1.1.11 --json
-bash skills/beacon/scripts/run_beacon.sh review quality "My Feature" --project . --version v1.1.11 --json
-bash skills/beacon/scripts/run_beacon.sh gate check release --project-root . --version v1.1.11 --json
+bash skills/beacon/scripts/run_beacon.sh implement plan "My Feature" --project . --version v1.1.12 --json
+bash skills/beacon/scripts/run_beacon.sh implement run "My Feature" --project . --version v1.1.12 --runner auto --json
+bash skills/beacon/scripts/run_beacon.sh implement run "My Feature" --project . --version v1.1.12 --runner auto --auto-qa --auto-qa-follow-handoff --auto-qa-max-rounds 3 --json
+bash skills/beacon/scripts/run_beacon.sh qa run "My Feature" --project . --version v1.1.12 --json
+bash skills/beacon/scripts/run_beacon.sh review quality "My Feature" --project . --version v1.1.12 --json
+bash skills/beacon/scripts/run_beacon.sh gate check release --project-root . --version v1.1.12 --json
 ```
 
 ## Workflow Model
@@ -157,7 +157,7 @@ Supporting surfaces:
 
 ## Current Product Surfaces
 
-Current v1.1.11 release-line surfaces:
+Current v1.1.12 release-line surfaces:
 
 1. requirement package generation
    - `workflow / think / user-story / prd / test-case`
@@ -165,6 +165,8 @@ Current v1.1.11 release-line surfaces:
    - `init`
 3. implementation archive
    - `implement`
+   - `implement plan / compile-plan`
+   - implementation-plan gate / task progress / writeback closure
    - `technical-implementation-*`
 4. feature-aware QA and story-exhaustive verification
    - `qa run <feature>`
@@ -244,11 +246,12 @@ Use this skill when:
 
 ## Recommended Reading Order
 
-1. [Summary](../../docs/beacon/v1.1.11/SUMMARY.md)
-2. [Execution index](../../docs/beacon/v1.1.11/execution/index.md)
-3. [Architecture blueprint](../../docs/beacon/v1.1.11/execution/architecture-blueprint.md)
-4. [Source architecture index](../../docs/beacon/v1.1.11/source-architecture/index.md)
-5. [Release note](../../docs/beacon/v1.1.11/release/v1.1.11.md)
+1. [Summary](../../docs/beacon/v1.1.12/SUMMARY.md)
+2. [Execution index](../../docs/beacon/v1.1.12/execution/index.md)
+3. [Architecture blueprint](../../docs/beacon/v1.1.12/execution/architecture-blueprint.md)
+4. [Implementation blueprint](../../docs/beacon/v1.1.12/execution/requirement-anchor-implementation-blueprint.md)
+5. [Release note](../../docs/beacon/v1.1.12/release/v1.1.12.md)
+6. [Plan closure blueprint](../../docs/beacon/v1.1.12/execution/prd-us-to-plan-implementation-progress-blueprint.md)
 
 If you are working on the latest landed closure line, then read:
 
@@ -259,20 +262,20 @@ If you are working on the latest landed closure line, then read:
 
 If you are planning the next QA precision line, then read:
 
-1. `../../docs/beacon/v1.1.11/SUMMARY.md`
-2. `../../docs/beacon/v1.1.11/prd/beacon-qa-confidence-autoresearch-closure.md`
-3. `../../docs/beacon/v1.1.11/execution/qa-confidence-data-contract.md`
-4. `../../docs/beacon/v1.1.11/execution/qa-confidence-implementation-phasing.md`
+1. `../../docs/beacon/v1.1.12/SUMMARY.md`
+2. `../../docs/beacon/v1.1.12/prd/beacon-version-truth-profile-boundary-governance.md`
+3. `../../docs/beacon/v1.1.12/prd/beacon-prototype-design-governance-loop.md`
+4. `../../docs/beacon/v1.1.12/execution/requirement-anchor-implementation-blueprint.md`
 
 ## How to Use
 
-1. Read the current version package under [`../../docs/beacon/v1.1.11/`](../../docs/beacon/v1.1.11/SUMMARY.md)
+1. Read the current version package under [`../../docs/beacon/v1.1.12/`](../../docs/beacon/v1.1.12/SUMMARY.md)
 2. Use the command docs hub when you need the right level of operator guidance:
 
-- [Summary](../../docs/beacon/v1.1.11/SUMMARY.md)
-- [Execution index](../../docs/beacon/v1.1.11/execution/index.md)
-- [Release note](../../docs/beacon/v1.1.11/release/v1.1.11.md)
-- [Architecture blueprint](../../docs/beacon/v1.1.11/execution/architecture-blueprint.md)
+- [Summary](../../docs/beacon/v1.1.12/SUMMARY.md)
+- [Execution index](../../docs/beacon/v1.1.12/execution/index.md)
+- [Release note](../../docs/beacon/v1.1.12/release/v1.1.12.md)
+- [Architecture blueprint](../../docs/beacon/v1.1.12/execution/architecture-blueprint.md)
 - [Closure loop blueprint](../../docs/beacon/v1.1.9/execution/closure-loop-blueprint.md)
 3. Use the wrapper script:
 
@@ -280,8 +283,8 @@ If you are planning the next QA precision line, then read:
 bash skills/beacon/scripts/run_beacon.sh --version
 bash skills/beacon/scripts/run_beacon.sh workflow --help
 bash skills/beacon/scripts/run_beacon.sh help --project-root . --json
-bash skills/beacon/scripts/run_beacon.sh freeze "My Feature" --project-root . --version v1.1.11
-bash skills/beacon/scripts/run_beacon.sh reopen "My Feature" --project-root . --version v1.1.11 --reason change-request
+bash skills/beacon/scripts/run_beacon.sh freeze "My Feature" --project-root . --version v1.1.12
+bash skills/beacon/scripts/run_beacon.sh reopen "My Feature" --project-root . --version v1.1.12 --reason change-request
 ```
 
 4. For implementation adapters and lifecycle navigation:
@@ -289,8 +292,9 @@ bash skills/beacon/scripts/run_beacon.sh reopen "My Feature" --project-root . --
 ```bash
 bash skills/beacon/scripts/run_beacon.sh skill list
 bash skills/beacon/scripts/run_beacon.sh implement list-runners --json
+bash skills/beacon/scripts/run_beacon.sh implement plan "My Feature" --project-root . --version v1.1.12 --json
 bash skills/beacon/scripts/run_beacon.sh help --project-root . --feature "My Feature" --json
-bash skills/beacon/scripts/run_beacon.sh doctor repair-package --version v1.1.11 --json
+bash skills/beacon/scripts/run_beacon.sh doctor upgrade-package --version v1.1.12 --json
 ```
 
 ## Command / Wrapper Surface
@@ -315,6 +319,7 @@ Compatible delegated surfaces:
 - `test-case`
 
 ### 2. Delivery closure mode
+- `implement plan`
 - `implement`
 - `qa`
 - `review`
@@ -342,14 +347,15 @@ When the user asks "what should I do next", "why am I blocked", or wants to cont
 1. Run `beacon status --board --project-root <root> --version <version>` when you need the raw board.
 2. Run `beacon help --project-root <root> --version <version> --feature <feature> --json` for the canonical next-step recommendation.
 3. If help indicates the revision is not frozen, run `beacon freeze ...` before implementation.
-4. If help/doctor indicates the current revision is superseded or a change request is pending, run `beacon reopen ...`.
-5. If blocked or inconsistent, run `beacon doctor --project-root <root> --json` or `beacon doctor advise ...`.
-6. If the project has a profile / project-specific skill path, prefer `beacon verify run ... --profile <profile>` before trying to accept.
-7. For QA rounds, prefer:
-   - `beacon qa run "<feature>" --project . --version v1.1.11 --json`
+4. If help indicates implementation-plan drift or absence, run `beacon implement plan ...` before implementation.
+5. If help/doctor indicates the current revision is superseded or a change request is pending, run `beacon reopen ...`.
+6. If blocked or inconsistent, run `beacon doctor --project-root <root> --json` or `beacon doctor advise ...`.
+7. If the project has a profile / project-specific skill path, prefer `beacon verify run ... --profile <profile>` before trying to accept.
+8. For QA rounds, prefer:
+   - `beacon qa run "<feature>" --project . --version v1.1.12 --json`
    - inspect evidence / coverage / continue decision
    - if blocked, repair first and resume via `beacon help ...`
-8. Only then route into `freeze`, `implement`, `review`, `verify`, `orchestrate`, or `release` actions.
+9. Only then route into `freeze`, `implement`, `review`, `verify`, `orchestrate`, or `release` actions.
 
 Example: `beacon help --project-root . --json`
 
@@ -371,9 +377,9 @@ See:
 
 - [Sections index](./references/_sections.md)
 - [Usage rules](./references/usage-rules.md)
-- [Summary](../../docs/beacon/v1.1.11/SUMMARY.md)
-- [Execution index](../../docs/beacon/v1.1.11/execution/index.md)
-- [QA PRD](../../docs/beacon/v1.1.11/prd/beacon-qa-confidence-autoresearch-closure.md)
+- [Summary](../../docs/beacon/v1.1.12/SUMMARY.md)
+- [Execution index](../../docs/beacon/v1.1.12/execution/index.md)
+- [QA PRD](../../docs/beacon/v1.1.12/prd/beacon-version-truth-profile-boundary-governance.md)
 - [Skill development standard](../../../docs/skill-development-standards.md)
 - [Root compatibility skill](../../SKILL.md)
 
@@ -383,12 +389,14 @@ See:
   - run `bash skills/beacon/scripts/run_beacon.sh --version`
 - Materials feel inconsistent:
   - run `beacon doctor --project-root . --json`
-  - run `beacon doctor verify-materials --project-root . --version v1.1.11 --json`
+  - run `beacon doctor verify-materials --project-root . --version v1.1.12 --json`
+- Old package line needs current runtime-compatible material upgrades:
+  - run `beacon doctor upgrade-package --project-root . --version <old-version> --json`
 - Not sure what step comes next:
-  - run `beacon help --project-root . --version v1.1.11 --feature "<feature>" --json`
+  - run `beacon help --project-root . --version v1.1.12 --feature "<feature>" --json`
 - Gate / release confusion:
-  - read `../../docs/beacon/v1.1.11/release/v1.1.11.md`
-  - run `beacon gate check release --project-root . --version v1.1.11 --json`
+  - read `../../docs/beacon/v1.1.12/release/v1.1.12.md`
+  - run `beacon gate check release --project-root . --version v1.1.12 --json`
 - Not sure whether local Claude/Codex skill copies drifted:
   - run `python3 scripts/check_skill_drift.py --project-root . --json`
   - run `beacon skill sync-check --project-root . --json`

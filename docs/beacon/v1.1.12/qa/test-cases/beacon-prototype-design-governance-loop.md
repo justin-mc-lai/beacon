@@ -17,8 +17,8 @@
 
 | 组别 | 目标 |
 |---|---|
-| DG-TC-001 ~ 004 | Design brief / design-system contract compilation |
-| DG-TC-101 ~ 105 | Guideline audit / design review outcome |
+| DG-TC-001 ~ 005 | Design brief / design-system contract compilation |
+| DG-TC-101 ~ 106 | Guideline audit / design review outcome |
 | DG-TC-201 ~ 204 | Iteration writeback / keep-discard governance |
 | DG-TC-301 ~ 303 | Freeze / gate / backward compatibility |
 | DG-TC-401 ~ 406 | Version truth / profile routing / learning-plane / takeover boundary |
@@ -33,6 +33,7 @@
 | DG-TC-002 | design-system contract 编译 | 启用 `frontend-design` generation contract | 生成 `design-system-contract.json` | unit |
 | DG-TC-003 | anti-generic guard | 设计 brief 明确禁止 generic aesthetic | contract 中出现可审计限制项 | unit |
 | DG-TC-004 | shared token discipline | render 多页面 reference pack | 页面消费共享 token，不靠 page-level 失控硬编码 | unit + snapshot |
+| DG-TC-005 | unified directory + style analysis | 运行 `prototype create/directory` | 存在统一目录页与 `ui-style-analysis` 工件，可供二开读取 | integration |
 
 ---
 
@@ -45,6 +46,7 @@
 | DG-TC-103 | URL state finding | tab/filter 仅本地 state 不入 URL | guideline audit 报出 state-sync finding | integration |
 | DG-TC-104 | visual generic finding | 使用通用字体/弱视觉方向 | design review 输出 revise/block finding | review |
 | DG-TC-105 | outcome synthesis | 同时存在 structure pass + design fail | `design_review_outcome` 不得误判为 pass | unit |
+| DG-TC-106 | cso-inspired design security review | 运行 `review design` 审查 upload / privileged action / secret / integration surfaces | 输出结构化 security finding，并作为 review artifact 保留 | integration |
 
 ---
 

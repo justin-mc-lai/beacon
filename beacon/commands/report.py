@@ -10,7 +10,8 @@ import typer
 
 from beacon.utils.coverage import compute_coverage_metrics
 from beacon.utils.control_plane import build_resume_contract
-from beacon.utils.runtime import load_run_state, newest_run_id, now_iso, write_json
+from beacon.utils.implementation_plan import implementation_plan_supported, load_implementation_plan_progress
+from beacon.utils.runtime import load_run_state, newest_run_id, now_iso, read_json, write_json
 from beacon.utils.acceptance_audit import (
     build_acceptance_audit_payload,
     render_acceptance_audit_markdown,
@@ -184,6 +185,19 @@ def _human_summary(machine: dict[str, Any]) -> str:
                     f"- discard: `{decision_summary.get('discard')}`",
                 ]
             )
+    implementation_plan = machine.get("implementation_plan")
+    if isinstance(implementation_plan, dict) and implementation_plan:
+        lines.extend(
+            [
+                "",
+                "## Implementation Plan",
+                f"- plan_id: `{implementation_plan.get('plan_id')}`",
+                f"- status: `{implementation_plan.get('status')}`",
+                f"- next_task_id: `{implementation_plan.get('next_task_id')}`",
+                f"- blocked_task_ids: `{implementation_plan.get('blocked_task_ids')}`",
+                f"- counts: `{implementation_plan.get('counts')}`",
+            ]
+        )
     if isinstance(release_scorecard, dict) and release_scorecard and release_summary.get("exhaustiveness_status"):
         lines.append(
             f"- exhaustiveness: `{release_summary.get('exhaustiveness_status')}` score=`{release_summary.get('exhaustiveness_score')}` threshold=`{release_summary.get('exhaustiveness_threshold')}`"
@@ -233,6 +247,22 @@ def _compute_consistency_snapshot(project_root: Path, *, version: str) -> dict[s
     }
 
 
+def _latest_implement_state(project_root: Path, *, feature: str | None = None) -> dict[str, Any]:
+    implement_root = project_root / ".beacon" / "implement"
+    if not implement_root.exists():
+        return {}
+    candidates = sorted(implement_root.glob("*/state.json"))
+    filtered_feature = str(feature or "").strip()
+    for state_path in reversed(candidates):
+        loaded = read_json(state_path, {})
+        if not isinstance(loaded, dict):
+            continue
+        if filtered_feature and str(loaded.get("feature", "") or "").strip() != filtered_feature:
+            continue
+        return loaded
+    return {}
+
+
 def _build_machine_payload(
     project_root: Path,
     run_id: str,
@@ -262,12 +292,19 @@ def _build_machine_payload(
             or resolve_target_version(project_root, None)
         )
         consistency_snapshot = _compute_consistency_snapshot(project_root, version=coverage_version)
+        implement_state = _latest_implement_state(project_root, feature=feature)
+        plan_feature = str(feature or progress.get("feature", "") or implement_state.get("feature", "") or "").strip()
+        implementation_plan = (
+            load_implementation_plan_progress(project_root, version=coverage_version, feature=plan_feature)
+            if plan_feature and implementation_plan_supported(coverage_version)
+            else {}
+        )
         return {
             "run_id": resolved,
             "workflow": "workflow",
             "mode": "normal",
-            "status": "unknown",
-            "reason": "no-run-state",
+            "status": str(implement_state.get("status", "unknown") or "unknown"),
+            "reason": str(implement_state.get("reason_code", "no-run-state") or "no-run-state"),
             "events": [],
             "llm_prompts": [],
             "token_usage": {"prompt_tokens": 0, "completion_tokens": 0},
@@ -293,6 +330,7 @@ def _build_machine_payload(
             "qa_status": load_qa_status(project_root),
             "learning_plane": load_keep_discard_engine(project_root),
             "release_scorecard": build_release_scorecard(project_root, version=coverage_version),
+            "implementation_plan": implementation_plan,
             "source_of_truth": {
                 "root": f"docs/beacon/{coverage_version}",
                 "runtime_state_root": ".beacon",
@@ -316,6 +354,12 @@ def _build_machine_payload(
         or resolve_target_version(project_root, None)
     )
     consistency_snapshot = _compute_consistency_snapshot(project_root, version=coverage_version)
+    plan_feature = str(feature or state.get("feature", "") or progress.get("feature", "") or "").strip()
+    implementation_plan = (
+        load_implementation_plan_progress(project_root, version=coverage_version, feature=plan_feature)
+        if plan_feature and implementation_plan_supported(coverage_version)
+        else {}
+    )
     return {
         "run_id": resolved,
         "workflow": state.get("workflow", "workflow"),
@@ -347,6 +391,7 @@ def _build_machine_payload(
         "qa_status": load_qa_status(project_root),
         "learning_plane": load_keep_discard_engine(project_root),
         "release_scorecard": build_release_scorecard(project_root, version=coverage_version),
+        "implementation_plan": implementation_plan,
         "source_of_truth": {
             "root": f"docs/beacon/{coverage_version}",
             "runtime_state_root": ".beacon",

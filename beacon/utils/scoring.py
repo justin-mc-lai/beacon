@@ -103,7 +103,14 @@ def compute_closure_score(*, revision_state: dict[str, Any], story_state: dict[s
 
 def compute_readiness_score(*, target_stage: str, revision_state: dict[str, Any], coverage_metrics: dict[str, Any], workflow_progress: dict[str, Any], blocked: bool) -> dict[str, Any]:
     doc_status = str(revision_state.get("doc_status", "draft"))
-    base = {"freeze": 55, "implement": 85 if doc_status == "frozen" else 25, "review-quality": 70, "release-check": 85, "status": 50}.get(target_stage, 50)
+    base = {
+        "freeze": 55,
+        "implement-plan": 75 if doc_status == "frozen" else 25,
+        "implement": 85 if doc_status == "frozen" else 25,
+        "review-quality": 70,
+        "release-check": 85,
+        "status": 50,
+    }.get(target_stage, 50)
     if blocked:
         base -= 35
     if not coverage_metrics.get("planned_story"):

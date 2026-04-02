@@ -6,7 +6,7 @@ from pathlib import Path
 from datetime import datetime
 import os
 
-from beacon.utils.versioning import resolve_target_version
+from beacon.utils.versioning import resolve_operational_docs_version, resolve_target_version
 from beacon.utils.story_state import ensure_story_state
 from beacon.utils.revision_state import load_revision_state
 
@@ -48,7 +48,15 @@ def create(
 ):
     """Create a user story"""
     project_root = Path(project) if project else Path.cwd()
-    resolved_version = resolve_target_version(project_root, version)
+    try:
+        resolved_version = resolve_operational_docs_version(
+            project_root,
+            version,
+            command_name="user-story create",
+        )
+    except ValueError as exc:
+        typer.echo(str(exc), err=True)
+        raise typer.Exit(2)
 
     story = generate_user_story(feature, project_root)
 

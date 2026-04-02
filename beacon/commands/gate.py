@@ -22,6 +22,8 @@ from beacon.utils.memory import scope_memory_paths
 from beacon.utils.qa9 import QA9_TYPES, normalize_qa_type, parse_qa_types
 from beacon.utils.qa_runtime import load_qa_status
 from beacon.utils.exhaustiveness import load_exhaustiveness_report
+from beacon.utils.implementation_plan import implementation_plan_supported, load_implementation_plan
+from beacon.utils.implementation_plan import load_implementation_plan_progress
 from beacon.utils.qa_precision import load_feature_qa_ac_closure, load_feature_qa_scorecard
 from beacon.utils.prototype_support import feature_requires_route_closure, prototype_status, version_requires_prototype
 from beacon.utils.versioning import resolve_target_version
@@ -116,6 +118,10 @@ REASON_CODES = [
     "browser_replay_missing",
     "browser_evidence_incomplete",
     "required_scenario_family_missing",
+    "implementation_plan_missing",
+    "implementation_plan_blocked",
+    "implementation_plan_incomplete",
+    "implementation_plan_matrix_alignment_missing",
     "evidence_timestamp_out_of_window",
     "assertion_count_zero_pass",
     "junit_missing_or_invalid",
@@ -1639,6 +1645,186 @@ def check_v110_precision_contract(
     return issues
 
 
+def _latest_implement_feature(project_root: Path) -> str:
+    implement_root = project_root / ".beacon" / "implement"
+    if not implement_root.exists():
+        return ""
+    for state_path in reversed(sorted(implement_root.glob("*/state.json"))):
+        try:
+            payload = json.loads(state_path.read_text(encoding="utf-8"))
+        except Exception:  # noqa: BLE001
+            continue
+        if not isinstance(payload, dict):
+            continue
+        feature = str(payload.get("feature", "") or "").strip()
+        if feature:
+            return feature
+    return ""
+
+
+def check_v112_implementation_plan_contract(
+    project_root: Path,
+    mode: GateMode,
+    stage: str,
+    version: Optional[str] = None,
+) -> List[Dict[str, Any]]:
+    issues: list[dict[str, Any]] = []
+    if stage != "release":
+        return issues
+    if mode not in {GateMode.STRICT, GateMode.DEBUG}:
+        return issues
+    resolved_version = _resolved_gate_version(project_root, version)
+    if not implementation_plan_supported(resolved_version):
+        return issues
+
+    qa_status = load_qa_status(project_root)
+    feature_name = str(qa_status.get("feature", "") or "").strip() or _latest_implement_feature(project_root)
+    if not feature_name:
+        issues.append(
+            {
+                "reason_code": "implementation_plan_missing",
+                "severity": "critical",
+                "message": "release requires implementation plan truth but no feature context could be resolved",
+                "blocked": True,
+            }
+        )
+        return issues
+
+    plan = load_implementation_plan(project_root, version=resolved_version, feature=feature_name)
+    progress = load_implementation_plan_progress(project_root, version=resolved_version, feature=feature_name)
+    if not plan:
+        issues.append(
+            {
+                "reason_code": "implementation_plan_missing",
+                "severity": "critical",
+                "message": f"implementation plan missing for feature {feature_name}",
+                "blocked": True,
+            }
+        )
+        return issues
+
+    if str(progress.get("status", "")).strip().lower() == "blocked":
+        issues.append(
+            {
+                "reason_code": "implementation_plan_blocked",
+                "severity": "critical",
+                "message": f"implementation plan has blocked tasks: {progress.get('blocked_task_ids', [])}",
+                "blocked": True,
+            }
+        )
+    counts = progress.get("counts") if isinstance(progress.get("counts"), dict) else {}
+    if int(counts.get("completed", 0) or 0) < int(counts.get("total", 0) or 0):
+        issues.append(
+            {
+                "reason_code": "implementation_plan_incomplete",
+                "severity": "critical",
+                "message": f"implementation plan incomplete: {counts}",
+                "blocked": True,
+            }
+        )
+
+    source_refs = plan.get("source_refs") if isinstance(plan.get("source_refs"), dict) else {}
+    matrix_ref = str(source_refs.get("ac_matrix", "") or "").strip()
+    if matrix_ref:
+        matrix_path = project_root / matrix_ref
+        if matrix_path.exists():
+            matrix_payload = {}
+            try:
+                matrix_payload = json.loads(matrix_path.read_text(encoding="utf-8"))
+            except Exception:  # noqa: BLE001
+                matrix_payload = {}
+            entries = matrix_payload.get("entries") if isinstance(matrix_payload, dict) and isinstance(matrix_payload.get("entries"), list) else []
+            ac_ids_with_tc = {
+                str(item.get("ac_id", "") or "").strip().upper()
+                for item in entries
+                if isinstance(item, dict) and str(item.get("ac_id", "") or "").strip() and str(item.get("tc_id", "") or "").strip()
+            }
+            missing_alignment: list[str] = []
+            for task in plan.get("tasks", []):
+                if not isinstance(task, dict):
+                    continue
+                mapped_ac_ids = [str(item).strip().upper() for item in task.get("mapped_ac_ids", []) if str(item).strip()]
+                mapped_test_ids = [str(item).strip().upper() for item in task.get("mapped_test_ids", []) if str(item).strip()]
+                if any(ac_id in ac_ids_with_tc for ac_id in mapped_ac_ids) and not mapped_test_ids:
+                    missing_alignment.append(str(task.get("task_id", "") or ""))
+            if missing_alignment:
+                issues.append(
+                    {
+                        "reason_code": "implementation_plan_matrix_alignment_missing",
+                        "severity": "critical",
+                        "message": f"implementation plan tasks missing AC/test alignment: {missing_alignment}",
+                        "blocked": True,
+                    }
+                )
+    scenario_ref = str(source_refs.get("story_scenario_map", "") or "").strip()
+    if scenario_ref:
+        scenario_path = project_root / scenario_ref
+        if scenario_path.exists():
+            scenario_payload = {}
+            try:
+                scenario_payload = json.loads(scenario_path.read_text(encoding="utf-8"))
+            except Exception:  # noqa: BLE001
+                scenario_payload = {}
+            scenarios = scenario_payload.get("scenarios") if isinstance(scenario_payload, dict) and isinstance(scenario_payload.get("scenarios"), list) else []
+            ac_or_tc_with_scenarios = {
+                str(item.get("ac_id", "") or item.get("source_tc_id", "") or item.get("tc_id", "") or "").strip().upper()
+                for item in scenarios
+                if isinstance(item, dict) and str(item.get("scenario_id", "") or "").strip()
+            }
+            missing_scenarios: list[str] = []
+            for task in plan.get("tasks", []):
+                if not isinstance(task, dict):
+                    continue
+                mapped_ac_ids = [str(item).strip().upper() for item in task.get("mapped_ac_ids", []) if str(item).strip()]
+                mapped_test_ids = [str(item).strip().upper() for item in task.get("mapped_test_ids", []) if str(item).strip()]
+                mapped_scenario_ids = [str(item).strip().upper() for item in task.get("mapped_scenario_ids", []) if str(item).strip()]
+                if (set(mapped_ac_ids) | set(mapped_test_ids)) & ac_or_tc_with_scenarios and not mapped_scenario_ids:
+                    missing_scenarios.append(str(task.get("task_id", "") or ""))
+            if missing_scenarios:
+                issues.append(
+                    {
+                        "reason_code": "implementation_plan_matrix_alignment_missing",
+                        "severity": "critical",
+                        "message": f"implementation plan tasks missing scenario alignment: {missing_scenarios}",
+                        "blocked": True,
+                    }
+                )
+    qa9_ref = str(source_refs.get("qa9_matrix", "") or "").strip()
+    if qa9_ref:
+        qa9_path = project_root / qa9_ref
+        if qa9_path.exists():
+            qa9_payload = {}
+            try:
+                qa9_payload = json.loads(qa9_path.read_text(encoding="utf-8"))
+            except Exception:  # noqa: BLE001
+                qa9_payload = {}
+            entries = qa9_payload.get("entries") if isinstance(qa9_payload, dict) and isinstance(qa9_payload.get("entries"), list) else []
+            ac_or_tc_with_qa = {
+                str(item.get("ac_id", "") or item.get("tc_id", "") or item.get("source_tc_id", "") or "").strip().upper()
+                for item in entries
+                if isinstance(item, dict) and str(item.get("id", "") or item.get("tc_id", "") or "").strip()
+            }
+            missing_qa: list[str] = []
+            for task in plan.get("tasks", []):
+                if not isinstance(task, dict):
+                    continue
+                mapped_ac_ids = [str(item).strip().upper() for item in task.get("mapped_ac_ids", []) if str(item).strip()]
+                mapped_test_ids = [str(item).strip().upper() for item in task.get("mapped_test_ids", []) if str(item).strip()]
+                mapped_qa_case_ids = [str(item).strip().upper() for item in task.get("mapped_qa_case_ids", []) if str(item).strip()]
+                if (set(mapped_ac_ids) | set(mapped_test_ids)) & ac_or_tc_with_qa and not mapped_qa_case_ids:
+                    missing_qa.append(str(task.get("task_id", "") or ""))
+            if missing_qa:
+                issues.append(
+                    {
+                        "reason_code": "implementation_plan_matrix_alignment_missing",
+                        "severity": "critical",
+                        "message": f"implementation plan tasks missing QA alignment: {missing_qa}",
+                        "blocked": True,
+                    }
+                )
+    return issues
+
+
 def check_v119_control_learning_contract(
     project_root: Path,
     mode: GateMode,
@@ -2857,6 +3043,7 @@ def run_gate_checks(
         all_issues.extend(check_delivery_execution_artifacts(project_root, mode, stage, version))
         all_issues.extend(check_formal_version_package_closure(project_root, mode, stage, version))
         all_issues.extend(check_v119_control_learning_contract(project_root, mode, stage, version))
+        all_issues.extend(check_v112_implementation_plan_contract(project_root, mode, stage, version))
         all_issues.extend(check_v110_precision_contract(project_root, mode, stage, version))
         all_issues.extend(check_prototype_contract(project_root, mode, stage, version))
 

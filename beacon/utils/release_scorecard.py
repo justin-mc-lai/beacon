@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any
 
 from beacon.utils.exhaustiveness import load_exhaustiveness_report
+from beacon.utils.implementation_plan import implementation_plan_supported, load_implementation_plan_progress
 from beacon.utils.learning_loop import load_latest_evo_experiment
 from beacon.utils.qa_precision import load_feature_qa_scorecard
 from beacon.utils.qa_runtime import load_qa_status
@@ -40,6 +41,11 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
     feature = str(qa_status.get("feature") or "").strip()
     exhaustiveness = load_exhaustiveness_report(project_root, feature=feature) if feature else {}
     feature_scorecard = load_feature_qa_scorecard(project_root, feature=feature) if feature else {}
+    implementation_plan = (
+        load_implementation_plan_progress(project_root, version=resolved_version, feature=feature)
+        if feature and implementation_plan_supported(resolved_version)
+        else {}
+    )
     scorecard_state = _load_json(project_root / ".beacon" / "state" / "evo" / "scorecards" / "latest.json")
     latest_experiment = load_latest_evo_experiment(project_root)
     blocked_count = len(
@@ -82,6 +88,7 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
         },
         "exhaustiveness": exhaustiveness if isinstance(exhaustiveness, dict) else {},
         "feature_qa_scorecard": feature_scorecard if isinstance(feature_scorecard, dict) else {},
+        "implementation_plan": implementation_plan if isinstance(implementation_plan, dict) else {},
         "learning_scorecard": {
             "main_kpi": str(scorecard_state.get("main_kpi") or "false_complete_rate"),
             "decision_summary": decision_summary,
@@ -98,6 +105,7 @@ def summarize_release_scorecard(scorecard: dict[str, Any] | None) -> dict[str, A
     exhaustiveness = payload.get("exhaustiveness") if isinstance(payload.get("exhaustiveness"), dict) else {}
     feature_scorecard = payload.get("feature_qa_scorecard") if isinstance(payload.get("feature_qa_scorecard"), dict) else {}
     learning = payload.get("learning_scorecard") if isinstance(payload.get("learning_scorecard"), dict) else {}
+    implementation_plan = payload.get("implementation_plan") if isinstance(payload.get("implementation_plan"), dict) else {}
     decisions = learning.get("decision_summary") if isinstance(learning.get("decision_summary"), dict) else {}
     latest_experiment = payload.get("latest_experiment") if isinstance(payload.get("latest_experiment"), dict) else {}
     return {
@@ -129,4 +137,7 @@ def summarize_release_scorecard(scorecard: dict[str, Any] | None) -> dict[str, A
         "decision_review": int(decisions.get("review") or 0),
         "decision_discard": int(decisions.get("discard") or 0),
         "candidate_count": int(learning.get("candidate_count") or 0),
+        "implementation_plan_status": str(implementation_plan.get("status") or ""),
+        "implementation_plan_next_task_id": str(implementation_plan.get("next_task_id") or ""),
+        "implementation_plan_blocked_task_ids": list(implementation_plan.get("blocked_task_ids") or []),
     }

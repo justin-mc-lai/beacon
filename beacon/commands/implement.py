@@ -18,6 +18,17 @@ from beacon.utils.git_alignment import (
     switch_to_expected_branch,
 )
 from beacon.utils.governance import evaluate_takeover_baseline_gate
+from beacon.utils.implementation_plan import (
+    build_implementation_plan_gate_payload,
+    compile_implementation_plan,
+    implementation_plan_json_path,
+    implementation_plan_markdown_path,
+    implementation_plan_progress_path,
+    implementation_plan_supported,
+    load_implementation_plan_progress,
+    mark_implementation_plan_failed,
+    mark_implementation_plan_started,
+)
 from beacon.utils.implement_native import run_native_implementation
 from beacon.utils.implement_adapters import (
     build_default_task_prompt,
@@ -32,6 +43,7 @@ from beacon.utils.learning_loop import write_requirement_rewrite_input
 from beacon.utils.runtime import generate_run_id, now_iso, write_json
 from beacon.utils.story_state import load_story_state
 from beacon.utils.versioning import resolve_target_version
+from beacon.utils.writeback import record_implementation_writeback
 
 app = typer.Typer(name="implement", help="Run implementation via configured skill adapters")
 
@@ -291,6 +303,21 @@ def _normalize_list(value: Any) -> list[Any]:
     return list(value) if isinstance(value, list) else []
 
 
+def _story_item_ids(story: dict[str, Any], *, kinds: set[str]) -> list[str]:
+    out: list[str] = []
+    for item in story.get("items", []):
+        if not isinstance(item, dict):
+            continue
+        if str(item.get("kind", "") or "") not in kinds:
+            continue
+        if not bool(item.get("required", True)):
+            continue
+        item_id = str(item.get("id", "") or "").strip().upper()
+        if item_id:
+            out.append(item_id)
+    return out
+
+
 def _modules_from_changed_files(changed_files: list[str]) -> list[str]:
     modules: set[str] = set()
     for item in changed_files:
@@ -438,6 +465,10 @@ def _validate_result(payload: dict[str, Any]) -> list[str]:
     updates = payload.get("artifact_updates")
     if updates is not None and not isinstance(updates, dict):
         problems.append("artifact_updates must be an object")
+    for key in ("implemented_task_ids", "verified_task_ids", "blocked_task_ids", "failed_task_ids"):
+        value = payload.get(key)
+        if value is not None and not isinstance(value, list):
+            problems.append(f"{key} must be a list")
     return problems
 
 
@@ -613,6 +644,35 @@ def run_implement_stage(  # noqa: PLR0913
         write_json(state_path, payload)
         return 2, payload
 
+    plan_preflight_path = Path(f".beacon/implement/{run_id}/plan-preflight.json")
+    implementation_plan_gate: dict[str, Any] = {}
+    if implementation_plan_supported(resolved_version):
+        implementation_plan_gate = build_implementation_plan_gate_payload(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            run_id=run_id,
+        )
+        write_json(project_root / plan_preflight_path, implementation_plan_gate)
+        if implementation_plan_gate.get("blocked"):
+            payload = {
+                "schema_version": "1.0",
+                "run_id": run_id,
+                "feature": feature,
+                "feature_slug": feature_slug,
+                "version": resolved_version,
+                "status": "blocked",
+                "reason_code": str(implementation_plan_gate.get("reason_code", "implementation_plan_missing") or "implementation_plan_missing"),
+                "plan_preflight_path": str(plan_preflight_path),
+                "plan_preflight": implementation_plan_gate,
+                "branch_preflight_path": str(branch_preflight_path),
+                "branch_preflight": branch_preflight,
+                "recommended_command": str(implementation_plan_gate.get("recommended_command", "") or ""),
+                "generated_at": now_iso(),
+            }
+            write_json(state_path, payload)
+            return 2, payload
+
     adapter_id, adapter = resolve_adapter(project_root, None if str(runner or "").strip().lower() == "auto" else runner)
     if not adapter_id or not adapter:
         payload = {
@@ -664,6 +724,11 @@ def run_implement_stage(  # noqa: PLR0913
         "result_file": str(result_path),
         "source_of_truth_root": artifacts["source_of_truth_root"],
     }
+    implementation_plan_file = (
+        str(implementation_plan_json_path(project_root, resolved_version, feature).relative_to(project_root))
+        if implementation_plan_supported(resolved_version)
+        else ""
+    )
     rendered_skill = str(skill or adapter.get("skill_prefix", "") or "").strip()
     default_prompt = build_default_task_prompt(
         feature=feature,
@@ -671,6 +736,7 @@ def run_implement_stage(  # noqa: PLR0913
         source_of_truth_root=artifacts["source_of_truth_root"],
         feature_slug=feature_slug,
         result_file=str(result_path),
+        implementation_plan_file=implementation_plan_file,
     )
     rendered_task_template = str(task_template or adapter.get("task_template") or "").strip()
     task_prompt = format_template(rendered_task_template, {**context, "task_prompt": default_prompt}) if rendered_task_template else default_prompt
@@ -696,6 +762,7 @@ def run_implement_stage(  # noqa: PLR0913
         "branch_preflight": branch_preflight,
         "task_prompt": task_prompt,
         "result_file": str(result_path),
+        "implementation_plan": implementation_plan_file,
         "generated_at": now_iso(),
     }
     write_json(project_root / request_path, request_payload)
@@ -712,12 +779,19 @@ def run_implement_stage(  # noqa: PLR0913
         "request_path": str(request_path),
         "result_path": str(result_path),
         "branch_preflight_path": str(branch_preflight_path),
+        "plan_preflight_path": str(plan_preflight_path),
         "generated_at": now_iso(),
         "status": "planned",
     }
 
     adapter_type = str(adapter.get("adapter_type", "")).strip()
     if adapter_type == "native":
+        mark_implementation_plan_started(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            run_id=run_id,
+        )
         native_mode = str(adapter.get("mode", "single") or "single")
         result_payload = run_native_implementation(
             project_root,
@@ -727,6 +801,13 @@ def run_implement_stage(  # noqa: PLR0913
             mode=native_mode,
         )
         if str(result_payload.get("status", "")).strip().lower() != "completed":
+            mark_implementation_plan_failed(
+                project_root,
+                version=resolved_version,
+                feature=feature,
+                run_id=run_id,
+                reason_code=str(result_payload.get("reason_code", "native_runner_failed") or "native_runner_failed"),
+            )
             payload = {
                 **base_state,
                 "status": "failed",
@@ -763,13 +844,21 @@ def run_implement_stage(  # noqa: PLR0913
             "summary": str(result_payload.get("summary", "")),
             "changed_files": result_payload.get("changed_files", []),
             "verification": result_payload.get("verification", []),
+            "implemented_task_ids": result_payload.get("implemented_task_ids", []),
+            "verified_task_ids": result_payload.get("verified_task_ids", []),
+            "blocked_task_ids": result_payload.get("blocked_task_ids", []),
+            "failed_task_ids": result_payload.get("failed_task_ids", []),
             "artifact_updates": result_payload.get("artifact_updates", {}),
             "branch_preflight": branch_preflight,
+            "plan_preflight_path": str(plan_preflight_path),
+            "plan_preflight": implementation_plan_gate,
             "implementation_marker": str(marker.relative_to(project_root)),
             "technical_archive": {
                 "json": str(archive_paths["json"].relative_to(project_root)),
                 "md": str(archive_paths["md"].relative_to(project_root)),
             },
+            "implementation_plan": implementation_plan_file,
+            "implementation_plan_progress": load_implementation_plan_progress(project_root, version=resolved_version, feature=feature),
             "generated_at": now_iso(),
         }
         for key, value in result_payload.items():
@@ -850,6 +939,9 @@ def run_implement_stage(  # noqa: PLR0913
             "request_path": str(request_path),
             "request_markdown": str(request_md.relative_to(project_root)),
             "recommended_flows": adapter.get("recommended_flows", []),
+            "plan_preflight_path": str(plan_preflight_path),
+            "plan_preflight": implementation_plan_gate,
+            "implementation_plan": implementation_plan_file,
         }
         write_json(state_path, payload)
         return 0, payload
@@ -865,6 +957,9 @@ def run_implement_stage(  # noqa: PLR0913
             "command": command,
             "command_path": str(command_path),
             "task_prompt": task_prompt,
+            "plan_preflight_path": str(plan_preflight_path),
+            "plan_preflight": implementation_plan_gate,
+            "implementation_plan": implementation_plan_file,
         }
         write_json(state_path, payload)
         return 0, payload
@@ -877,6 +972,12 @@ def run_implement_stage(  # noqa: PLR0913
         env.update({str(k): str(v) for k, v in adapter.get("env_overrides", {}).items()})
 
     timeout = int(timeout_sec or adapter.get("timeout_sec") or 3600)
+    mark_implementation_plan_started(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        run_id=run_id,
+    )
     try:
         result = subprocess.run(
             command,
@@ -887,6 +988,13 @@ def run_implement_stage(  # noqa: PLR0913
             env={**os.environ, **env},
         )
     except subprocess.TimeoutExpired:
+        mark_implementation_plan_failed(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            run_id=run_id,
+            reason_code="runner_execution_timeout",
+        )
         payload = {
             **base_state,
             "status": "failed",
@@ -897,6 +1005,13 @@ def run_implement_stage(  # noqa: PLR0913
         write_json(state_path, payload)
         return 2, payload
     except FileNotFoundError:
+        mark_implementation_plan_failed(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            run_id=run_id,
+            reason_code="runner_command_not_found",
+        )
         payload = {
             **base_state,
             "status": "failed",
@@ -909,6 +1024,13 @@ def run_implement_stage(  # noqa: PLR0913
     _write_text(project_root / stderr_path, result.stderr or "")
 
     if result.returncode != 0:
+        mark_implementation_plan_failed(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            run_id=run_id,
+            reason_code="runner_execution_failed",
+        )
         payload = {
             **base_state,
             "status": "failed",
@@ -923,6 +1045,13 @@ def run_implement_stage(  # noqa: PLR0913
 
     full_result_path = project_root / result_path
     if not full_result_path.exists():
+        mark_implementation_plan_failed(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            run_id=run_id,
+            reason_code="runner_result_missing",
+        )
         payload = {
             **base_state,
             "status": "failed",
@@ -937,6 +1066,13 @@ def run_implement_stage(  # noqa: PLR0913
     try:
         result_payload = json.loads(full_result_path.read_text(encoding="utf-8"))
     except Exception as exc:  # noqa: BLE001
+        mark_implementation_plan_failed(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            run_id=run_id,
+            reason_code="runner_result_invalid",
+        )
         payload = {
             **base_state,
             "status": "failed",
@@ -947,6 +1083,13 @@ def run_implement_stage(  # noqa: PLR0913
         return 2, payload
     problems = _validate_result(result_payload)
     if problems:
+        mark_implementation_plan_failed(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            run_id=run_id,
+            reason_code="runner_result_invalid",
+        )
         payload = {
             **base_state,
             "status": "failed",
@@ -957,6 +1100,13 @@ def run_implement_stage(  # noqa: PLR0913
         return 2, payload
 
     if str(result_payload.get("status", "")).strip().lower() != "completed":
+        mark_implementation_plan_failed(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            run_id=run_id,
+            reason_code="implement_execution_failed",
+        )
         payload = {
             **base_state,
             "status": "failed",
@@ -994,6 +1144,19 @@ def run_implement_stage(  # noqa: PLR0913
     summary_paths = _summary_paths(project_root, resolved_version, feature)
     archive_paths = _technical_archive_paths(project_root, resolved_version, feature)
     story_state = load_story_state(project_root, version=resolved_version, feature=feature, create_if_missing=True) or {}
+    implemented_item_ids = [str(item) for item in _normalize_string_list(result_payload.get("implemented_items"))]
+    if not implemented_item_ids:
+        implemented_item_ids = _story_item_ids(story_state, kinds={"ac", "task"})
+    implemented_task_ids = [str(item) for item in _normalize_string_list(result_payload.get("implemented_task_ids"))]
+    writeback_payload = record_implementation_writeback(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        run_id=run_id,
+        implemented_item_ids=implemented_item_ids,
+        task_ids=implemented_task_ids,
+        changed_files=result_payload.get("changed_files", []),
+    )
     summary_payload = {
         "schema_version": "1.0",
         "run_id": run_id,
@@ -1007,6 +1170,10 @@ def run_implement_stage(  # noqa: PLR0913
         "summary": str(result_payload.get("summary", "")),
         "changed_files": result_payload.get("changed_files", []),
         "verification": result_payload.get("verification", []),
+        "implemented_task_ids": implemented_task_ids,
+        "verified_task_ids": result_payload.get("verified_task_ids", []),
+        "blocked_task_ids": result_payload.get("blocked_task_ids", []),
+        "failed_task_ids": result_payload.get("failed_task_ids", []),
         "artifact_updates": result_payload.get("artifact_updates", {}),
         "request_path": str(request_path),
         "result_path": str(result_path),
@@ -1014,6 +1181,10 @@ def run_implement_stage(  # noqa: PLR0913
         "stderr_path": str(stderr_path),
         "branch_preflight_path": str(branch_preflight_path),
         "branch_preflight": branch_preflight,
+        "plan_preflight_path": str(plan_preflight_path),
+        "plan_preflight": implementation_plan_gate,
+        "implementation_plan": implementation_plan_file,
+        "implementation_plan_progress": load_implementation_plan_progress(project_root, version=resolved_version, feature=feature),
         "implementation_marker": str(marker.relative_to(project_root)),
         "technical_archive": {
             "json": str(archive_paths["json"].relative_to(project_root)),
@@ -1022,6 +1193,7 @@ def run_implement_stage(  # noqa: PLR0913
         "review_spec": review_spec_info,
         "review_quality": review_quality_info,
         "generated_at": now_iso(),
+        "writeback": writeback_payload,
     }
     technical_payload = _technical_archive_payload(
         project_root=project_root,
@@ -1204,6 +1376,44 @@ def check_branch(
     raise typer.Exit(code=2 if payload.get("blocked") else 0)
 
 
+def _plan_impl(feature: str, project: Optional[str], version: str, json_output: bool) -> int:
+    project_root = Path(project) if project else Path.cwd()
+    code, payload = compile_implementation_plan(project_root, version=version, feature=feature)
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo(f"Beacon implementation plan status: {payload.get('status')}")
+        if payload.get("plan_id"):
+            typer.echo(f"plan_id: {payload.get('plan_id')}")
+        if payload.get("plan_path"):
+            typer.echo(f"plan_path: {payload.get('plan_path')}")
+        if payload.get("reason_code"):
+            typer.echo(f"reason_code: {payload.get('reason_code')}")
+    return code
+
+
+@app.command("plan")
+def plan(
+    feature: str = typer.Argument(..., help="Feature name"),
+    project: Optional[str] = typer.Option(None, "--project", "--project-root", "-p", help="Project root"),
+    version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
+):
+    """Compile PRD/user-story/test-case into an implementation plan."""
+    raise typer.Exit(code=_plan_impl(feature, project, version, json_output))
+
+
+@app.command("compile-plan")
+def compile_plan(
+    feature: str = typer.Argument(..., help="Feature name"),
+    project: Optional[str] = typer.Option(None, "--project", "--project-root", "-p", help="Project root"),
+    version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
+):
+    """Alias of `implement plan`."""
+    raise typer.Exit(code=_plan_impl(feature, project, version, json_output))
+
+
 @app.command("status")
 def status(
     feature_or_run_id: str = typer.Argument(..., help="Feature name or run id"),
@@ -1247,6 +1457,10 @@ def status(
     output["review_spec_exists"] = review_spec.exists()
     output["review_quality_exists"] = review_quality.exists()
     output["implementation_marker_exists"] = (project_root / ".beacon" / "state" / f"implementation-{slug}.json").exists()
+    output["implementation_plan_exists"] = implementation_plan_json_path(project_root, resolved_version, slug).exists()
+    output["implementation_plan_markdown_exists"] = implementation_plan_markdown_path(project_root, resolved_version, slug).exists()
+    output["implementation_plan_progress_exists"] = implementation_plan_progress_path(project_root, resolved_version, slug).exists()
+    output["implementation_plan_progress"] = load_implementation_plan_progress(project_root, version=resolved_version, feature=slug)
     if json_output:
         typer.echo(json.dumps(output, ensure_ascii=False, indent=2))
         return

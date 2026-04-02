@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 import json
+import os
 import re
+import subprocess
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -14,8 +16,10 @@ _RELEASE_LINE = re.compile(r"^v?(\d+)\.(\d+)\.(\d+)(?:[.-].+)?$")
 _TOOLKIT_VERSION = re.compile(r'__toolkit_version__\s*=\s*"(?P<version>v\d+\.\d+\.\d+)"')
 _PACKAGE_VERSION = re.compile(r'__version__\s*=\s*"(?P<version>\d+\.\d+\.\d+)"')
 _CONTEXT_MARKER = re.compile(r"<!--\s*BEACON:VERSION:([^>\s]+)\s*-->")
+_SEMVER_SEARCH = re.compile(r"v?\d+\.\d+\.\d+")
 _VERSION_TRUTH_STATE = Path(".beacon/state/version-truth/current.json")
 _VERSION_TRUTH_CANONICAL = Path("beacon/version-truth.json")
+_ALLOW_CONTEXT_VERSION_DRIFT_ENV = "BEACON_ALLOW_CONTEXT_VERSION_DRIFT"
 
 
 def normalize_version(value: str | None) -> str | None:
@@ -143,6 +147,148 @@ def context_managed_version(project_root: Path) -> str | None:
     if len(versions) != 1:
         return None
     return next(iter(versions))
+
+
+def current_git_branch(project_root: Path) -> str:
+    try:
+        result = subprocess.run(
+            ["git", "rev-parse", "--abbrev-ref", "HEAD"],
+            cwd=project_root,
+            capture_output=True,
+            text=True,
+            timeout=5,
+            check=False,
+        )
+    except Exception:  # noqa: BLE001
+        return ""
+    if result.returncode != 0:
+        return ""
+    return str(result.stdout or "").strip()
+
+
+def branch_context_version(project_root: Path) -> str | None:
+    branch = current_git_branch(project_root)
+    if not branch:
+        return None
+    versions = {
+        normalize_version(token)
+        for token in _SEMVER_SEARCH.findall(branch)
+    }
+    normalized = sorted({item for item in versions if item}, key=_version_key)
+    if len(normalized) != 1:
+        return None
+    return normalized[0]
+
+
+def _preferred_context_version(signals: dict[str, str]) -> str:
+    non_empty = {key: value for key, value in signals.items() if value}
+    if not non_empty:
+        return ""
+    counts: dict[str, int] = {}
+    for value in non_empty.values():
+        counts[value] = counts.get(value, 0) + 1
+    ranked = sorted(
+        counts.items(),
+        key=lambda item: (-item[1], _version_key(item[0])),
+    )
+    if ranked and ranked[0][1] >= 2:
+        return ranked[0][0]
+    for key in ("context_marker", "onboarding_docs", "git_branch"):
+        value = non_empty.get(key, "")
+        if value:
+            return value
+    return ranked[0][0] if ranked else ""
+
+
+def build_context_version_guard(
+    project_root: Path,
+    requested_version: str | None,
+    *,
+    resolved_version: str | None = None,
+    docs_source: str = "",
+) -> dict[str, Any]:
+    raw_requested = str(requested_version or "").strip()
+    raw_lower = raw_requested.lower()
+    explicit_requested = bool(raw_requested and raw_lower not in {"auto", "latest", "latest-docs", "planned"})
+    requested_normalized = normalize_version(raw_requested) if explicit_requested else ""
+    resolved_normalized = normalize_version(resolved_version or requested_normalized or "")
+    context_marker_version = context_managed_version(project_root) or ""
+    if context_marker_version and not (project_root / "docs" / "beacon" / context_marker_version).exists():
+        version_truth = load_version_truth(project_root)
+        truth_versions = set()
+        lines = version_truth.get("lines") if isinstance(version_truth.get("lines"), dict) else {}
+        truth_versions.update(normalize_version(str(item)) for item in lines.keys())
+        truth_versions.update(_normalize_version_list(version_truth.get("planning_lines")))
+        truth_versions.update(_normalize_version_list(version_truth.get("partial_runtime_supplement_lines")))
+        truth_versions.add(normalize_version(str(version_truth.get("docs_default_line", "") or "")))
+        truth_versions.add(normalize_version(str(version_truth.get("current_runtime_release_line", "") or "")))
+        truth_versions = {item for item in truth_versions if item}
+        if context_marker_version not in truth_versions:
+            context_marker_version = ""
+    signals = {
+        "context_marker": context_marker_version,
+        "onboarding_docs": onboarding_docs_version(project_root) or "",
+        "git_branch": branch_context_version(project_root) or "",
+    }
+    recommended_version = _preferred_context_version(signals)
+    override_enabled = str(os.getenv(_ALLOW_CONTEXT_VERSION_DRIFT_ENV, "")).strip().lower() in {"1", "true", "yes", "on"}
+
+    status = "not_applicable"
+    reason_code = ""
+    message = ""
+    if explicit_requested:
+        status = "pass"
+        if recommended_version and requested_normalized and requested_normalized != recommended_version:
+            if override_enabled:
+                status = "warn"
+                reason_code = "context_version_override"
+                message = (
+                    f"requested version {requested_normalized} differs from context-managed version "
+                    f"{recommended_version}, but override is enabled via {_ALLOW_CONTEXT_VERSION_DRIFT_ENV}=1."
+                )
+            else:
+                status = "blocked"
+                reason_code = "context_version_mismatch"
+                message = (
+                    f"requested version {requested_normalized} conflicts with context-managed version "
+                    f"{recommended_version}. Use --version {recommended_version} or set "
+                    f"{_ALLOW_CONTEXT_VERSION_DRIFT_ENV}=1 if the drift is intentional."
+                )
+
+    return {
+        "schema_version": "1.0",
+        "requested_version": requested_normalized or raw_requested,
+        "resolved_version": resolved_normalized or "",
+        "docs_source": docs_source,
+        "status": status,
+        "reason_code": reason_code,
+        "message": message,
+        "recommended_version": recommended_version,
+        "signals": signals,
+        "git_branch": current_git_branch(project_root),
+        "override_enabled": override_enabled,
+        "override_env": _ALLOW_CONTEXT_VERSION_DRIFT_ENV,
+    }
+
+
+def resolve_operational_docs_version(
+    project_root: Path,
+    requested: str | None,
+    *,
+    fallback: str = "v1.0.0",
+    command_name: str = "",
+) -> str:
+    resolved, source = resolve_docs_version(project_root, requested, fallback=fallback, return_source=True)
+    guard = build_context_version_guard(
+        project_root,
+        requested,
+        resolved_version=resolved,
+        docs_source=source,
+    )
+    if str(guard.get("status", "") or "") == "blocked":
+        prefix = f"{command_name}: " if command_name else ""
+        raise ValueError(prefix + str(guard.get("message", "context version mismatch")))
+    return str(resolved)
 
 
 def _truth_source_candidates(project_root: Path) -> list[tuple[str, Path]]:
@@ -414,6 +560,12 @@ def describe_project_version_context(
     context_versions = context_managed_versions(project_root)
     unique_context = sorted({value for value in context_versions.values() if value})
     version_truth = load_version_truth(project_root)
+    context_version_guard = build_context_version_guard(
+        project_root,
+        docs_version,
+        resolved_version=resolved_docs,
+        docs_source=docs_source,
+    )
     return {
         "docs_version": resolved_docs,
         "docs_version_source": docs_source,
@@ -437,6 +589,7 @@ def describe_project_version_context(
         "version_truth_source": str(version_truth.get("source_path", "") or ""),
         "version_truth_source_kind": str(version_truth.get("source_kind", "") or ""),
         "version_truth": version_truth,
+        "context_version_guard": context_version_guard,
     }
 
 

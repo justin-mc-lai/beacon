@@ -1,0 +1,655 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-prototype-design-governance-loop",
+  "feature_slug": "beacon-prototype-design-governance-loop",
+  "version": "v1.1.12",
+  "current_revision_id": "R1",
+  "lifecycle_status": "frozen",
+  "updated_at": "2026-04-01T22:06:59.754430+00:00",
+  "revisions": [
+    {
+      "revision_id": "R1",
+      "feature_slug": "beacon-prototype-design-governance-loop",
+      "source_revision_id": null,
+      "reason": "draft",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:542b88506c8c59d894d4d852f092aebc10520d8b4f878d5e17fc78b8481d8f73",
+      "superseded_by": null,
+      "created_at": "2026-04-01T21:55:35.792890+00:00",
+      "frozen_at": "2026-04-01T21:55:35.793884+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    }
+  ],
+  "stories": [
+    {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "beacon-prototype-design-governance-loop",
+      "priority": "medium",
+      "status": "accepted",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "Small Editable Surface",
+          "text": "autoresearch 仅允许优化 prototype/design 的 prompt policy、rule policy、design brief extractor、guideline mapping、review thresholds",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-v112-release",
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.754200+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "Design Brief Artifact",
+          "text": "`prototype plan` 之前必须产出 `design-brief.json`，包含 audience、tone、visual direction、typography intent、color intent、motion intent、differentiator",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-v112-release",
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.754200+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-002A",
+          "kind": "ac",
+          "theme": "Description-as-Design Mode",
+          "text": "design brief 必须显式包含 `design_generation_mode=description-as-design` 或等价字段，并可声明 interactive prototype required",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-v112-release",
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.754200+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "Frontend-design Contract",
+          "text": "`frontend-design` 输出被规范化为 `design-system-contract.json` 或等价 artifact，供 prototype renderer 消费",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-v112-release",
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.754200+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "Distinct Aesthetic Guard",
+          "text": "design contract 必须能表达并约束“禁止 generic AI aesthetic”，至少覆盖字体、配色、布局/空间、动效策略",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-v112-release",
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.754200+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-004A",
+          "kind": "ac",
+          "theme": "Unified Directory Page",
+          "text": "`prototype` 必须提供统一目录页作为多页面 reference pack 的入口，能跳转页面与状态变体",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-v112-release",
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.754200+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "Shared Token Discipline",
+          "text": "high-fidelity pages 必须受共享 token 驱动，不允许 page-level 失控硬编码绕过视觉系统",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-v112-release",
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.754200+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-005A",
+          "kind": "ac",
+          "theme": "UI Style Analysis Artifact",
+          "text": "`prototype plan/create` 必须产出 `ui-style-analysis.json/.md`，显式说明视觉系统、目录页 contract 与二开 extension rules",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-v112-release",
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.754200+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "Guideline Audit Artifact",
+          "text": "`prototype review` 或 `review design` 必须产出 `web-guideline-review.json`，记录规则版本、finding、severity、file refs",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-v112-release",
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.754200+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-006A",
+          "kind": "ac",
+          "theme": "Design Security Review Surface",
+          "text": "`review design` 必须可产出 cso-inspired 的 design-security finding，至少覆盖 privileged actions、upload constraints、secret handling、integration boundary、auditability",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-v112-release",
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.754200+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "Web Guideline Gate",
+          "text": "正式 gate 必须可消费 icon button label、skip link、focus-visible、reduced-motion、form labeling、URL state、semantic heading、image dimensions 等关键规则",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-v112-release",
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.754200+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "Visual Review Outcome",
+          "text": "Beacon 必须能输出 `design_review_outcome`，至少区分 `pass / revise / blocked`",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-v112-release",
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.754200+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-009",
+          "kind": "ac",
+          "theme": "Iteration Writeback",
+          "text": "design findings 必须回写 next iteration input，至少覆盖 page additions、state additions、design-brief edits、guideline fixes",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-v112-release",
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.754200+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-010",
+          "kind": "ac",
+          "theme": "Keep / Discard Governance",
+          "text": "每轮 design/prototype policy 迭代必须写入 keep/discard ledger，不满足 benchmark 或 gate 的变更必须 discard",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-v112-release",
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.754200+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-011",
+          "kind": "ac",
+          "theme": "Consumer Compatibility",
+          "text": "implementation / qa / gate / freeze 均可消费 design brief、design-system contract、guideline audit artifacts",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-v112-release",
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.754200+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-011A",
+          "kind": "ac",
+          "theme": "Design Mode References",
+          "text": "design brief / design-system contract 必须可声明 GemDesign/Figma 风格的工作方式参考，但语义必须明确为 Beacon 内部生成模式",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-v112-release",
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.754200+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-012",
+          "kind": "ac",
+          "theme": "Backward Compatibility",
+          "text": "未启用 design governance 的旧 prototype line 不被破坏，但必须显式标记不具备 design-governed guarantee",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-v112-release",
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.754200+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-013",
+          "kind": "ac",
+          "theme": "Version Truth Source",
+          "text": "skill / runtime / release docs / current docs line 必须读取统一的 machine-readable 版本真相源，并显式区分 planning line 与 runtime line",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-v112-release",
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.754200+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-014",
+          "kind": "ac",
+          "theme": "Profile-aware Navigator",
+          "text": "help / doctor / status 在推荐 implement / verify / review 前必须先解析 project mode、feature binding、profile gate 与 stage-local execution surface",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-v112-release",
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.754200+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-015",
+          "kind": "ac",
+          "theme": "Capability-bounded Orchestration",
+          "text": "project skill orchestration 运行前必须校验 `supported_stages`、`capabilities`、`evidence_contract`，不满足则 blocked",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-v112-release",
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.754200+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-016",
+          "kind": "ac",
+          "theme": "Typed Learning Surfaces",
+          "text": "learning plane 至少拆出 `qa_policy`、`design_policy`、`contract_policy`、`debug_policy`、`rewrite_policy`、`benchmark_policy`",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-v112-release",
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.754200+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-017",
+          "kind": "ac",
+          "theme": "Takeover Baseline Gate",
+          "text": "takeover 项目在缺少 architecture/current-state/refactor-boundary/freeze baseline 时不得进入 implement",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-v112-release",
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.754200+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-018",
+          "kind": "ac",
+          "theme": "Read-only Project Contract Inputs",
+          "text": "项目 boundary / service-slice / QA evolution 文档只可作为 verify/review/gate 的只读 contract input，不可变成 Beacon core 的默认执行面",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-v112-release",
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.754200+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — autoresearch 仅允许优化 prototype/design 的 prompt policy、rule policy、design brief extractor、guideline mapping、review thresholds",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.754200+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-001"
+          ]
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — `prototype plan` 之前必须产出 `design-brief.json`，包含 audience、tone、visual direction、typography intent、color intent、motion intent、differentiator",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.754200+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-002"
+          ]
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-002A — design brief 必须显式包含 `design_generation_mode=description-as-design` 或等价字段，并可声明 interactive prototype required",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.754200+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-002A"
+          ]
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-003 — `frontend-design` 输出被规范化为 `design-system-contract.json` 或等价 artifact，供 prototype renderer 消费",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.754200+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-003"
+          ]
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-004 — design contract 必须能表达并约束“禁止 generic AI aesthetic”，至少覆盖字体、配色、布局/空间、动效策略",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.754200+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-004"
+          ]
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-004A — `prototype` 必须提供统一目录页作为多页面 reference pack 的入口，能跳转页面与状态变体",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.754200+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-004A"
+          ]
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-005 — high-fidelity pages 必须受共享 token 驱动，不允许 page-level 失控硬编码绕过视觉系统",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.754200+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-005"
+          ]
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-005A — `prototype plan/create` 必须产出 `ui-style-analysis.json/.md`，显式说明视觉系统、目录页 contract 与二开 extension rules",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.754200+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-005A"
+          ]
+        },
+        {
+          "id": "TEST-009",
+          "kind": "test",
+          "text": "Verify AC-006 — `prototype review` 或 `review design` 必须产出 `web-guideline-review.json`，记录规则版本、finding、severity、file refs",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.754200+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-006"
+          ]
+        },
+        {
+          "id": "TEST-010",
+          "kind": "test",
+          "text": "Verify AC-006A — `review design` 必须可产出 cso-inspired 的 design-security finding，至少覆盖 privileged actions、upload constraints、secret handling、integration boundary、auditability",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.754200+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-006A"
+          ]
+        },
+        {
+          "id": "TEST-011",
+          "kind": "test",
+          "text": "Verify AC-007 — 正式 gate 必须可消费 icon button label、skip link、focus-visible、reduced-motion、form labeling、URL state、semantic heading、image dimensions 等关键规则",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.754200+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-007"
+          ]
+        },
+        {
+          "id": "TEST-012",
+          "kind": "test",
+          "text": "Verify AC-008 — Beacon 必须能输出 `design_review_outcome`，至少区分 `pass / revise / blocked`",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.754200+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-008"
+          ]
+        },
+        {
+          "id": "TEST-013",
+          "kind": "test",
+          "text": "Verify AC-009 — design findings 必须回写 next iteration input，至少覆盖 page additions、state additions、design-brief edits、guideline fixes",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.754200+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-009"
+          ]
+        },
+        {
+          "id": "TEST-014",
+          "kind": "test",
+          "text": "Verify AC-010 — 每轮 design/prototype policy 迭代必须写入 keep/discard ledger，不满足 benchmark 或 gate 的变更必须 discard",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.754200+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-010"
+          ]
+        },
+        {
+          "id": "TEST-015",
+          "kind": "test",
+          "text": "Verify AC-011 — implementation / qa / gate / freeze 均可消费 design brief、design-system contract、guideline audit artifacts",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.754200+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-011"
+          ]
+        },
+        {
+          "id": "TEST-016",
+          "kind": "test",
+          "text": "Verify AC-011A — design brief / design-system contract 必须可声明 GemDesign/Figma 风格的工作方式参考，但语义必须明确为 Beacon 内部生成模式",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.754200+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-011A"
+          ]
+        },
+        {
+          "id": "TEST-017",
+          "kind": "test",
+          "text": "Verify AC-012 — 未启用 design governance 的旧 prototype line 不被破坏，但必须显式标记不具备 design-governed guarantee",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.754200+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-012"
+          ]
+        },
+        {
+          "id": "TEST-018",
+          "kind": "test",
+          "text": "Verify AC-013 — skill / runtime / release docs / current docs line 必须读取统一的 machine-readable 版本真相源，并显式区分 planning line 与 runtime line",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.754200+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-013"
+          ]
+        },
+        {
+          "id": "TEST-019",
+          "kind": "test",
+          "text": "Verify AC-014 — help / doctor / status 在推荐 implement / verify / review 前必须先解析 project mode、feature binding、profile gate 与 stage-local execution surface",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.754200+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-014"
+          ]
+        },
+        {
+          "id": "TEST-020",
+          "kind": "test",
+          "text": "Verify AC-015 — project skill orchestration 运行前必须校验 `supported_stages`、`capabilities`、`evidence_contract`，不满足则 blocked",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.754200+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-015"
+          ]
+        },
+        {
+          "id": "TEST-021",
+          "kind": "test",
+          "text": "Verify AC-016 — learning plane 至少拆出 `qa_policy`、`design_policy`、`contract_policy`、`debug_policy`、`rewrite_policy`、`benchmark_policy`",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.754200+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-016"
+          ]
+        },
+        {
+          "id": "TEST-022",
+          "kind": "test",
+          "text": "Verify AC-017 — takeover 项目在缺少 architecture/current-state/refactor-boundary/freeze baseline 时不得进入 implement",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.754200+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-017"
+          ]
+        },
+        {
+          "id": "TEST-023",
+          "kind": "test",
+          "text": "Verify AC-018 — 项目 boundary / service-slice / QA evolution 文档只可作为 verify/review/gate 的只读 contract input，不可变成 Beacon core 的默认执行面",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.754200+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-018"
+          ]
+        }
+      ],
+      "feature": "beacon-prototype-design-governance-loop",
+      "feature_slug": "beacon-prototype-design-governance-loop",
+      "version": "v1.1.12",
+      "last_changed_files": [],
+      "verification_evidence": [
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.1.12/.machine/execution/technical-implementation-beacon-prototype-design-governance-loop.json"
+      ],
+      "accepted_at": "2026-04-01T22:06:59.754200+00:00",
+      "accepted_by": "release-closure"
+    }
+  ]
+}

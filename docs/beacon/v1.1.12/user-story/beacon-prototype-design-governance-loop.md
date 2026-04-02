@@ -23,8 +23,14 @@
 ### US-003: `$frontend-design` 成为 generation-side 合同输入
 作为前端负责人，我希望 `frontend-design` 的审美方向、字体、色彩、空间、动效和 differentiator 被落成 machine-readable contract，再驱动 reference pack 生成。
 
+### US-003B: Prototype 必须产出统一目录页与 style analysis
+作为二开协作者，我希望 `prototype` 总能给出统一目录页和 `ui-style-analysis` 工件，这样我能先分析当前前端 UI 风格和共享 token，再继续扩展原型，而不是从 HTML 结果里反向猜视觉系统。
+
 ### US-004: `$web-design-guidelines` 成为 review-side 正式门禁
 作为 QA owner，我希望最新 Web Interface Guidelines 被正式拉入 review/gate，而不只是人工附加检查。
+
+### US-004A: 软件设计安全要收敛到 `review design`
+作为 release owner，我希望参考 gstack `cso` 的思路，把软件设计安全作为 `review design` 的正式子面，审查 privileged action、upload、secret、integration trust boundary 与 auditability，而不是额外开一个脱离 requirement/prototype 的顶级命令。
 
 ### US-005: Design review finding 必须回流下一轮迭代
 作为 Beacon 维护者，我希望 design guideline failures、visual regressions、generic-style findings 与 UX/a11y gaps 能写回 keep/discard 与 next iteration input。
@@ -65,8 +71,11 @@
 | AC-002A | Description-as-Design Mode | design brief 必须显式包含 `design_generation_mode=description-as-design` 或等价字段，并可声明 interactive prototype required |
 | AC-003 | Frontend-design Contract | `frontend-design` 输出被规范化为 `design-system-contract.json` 或等价 artifact，供 prototype renderer 消费 |
 | AC-004 | Distinct Aesthetic Guard | design contract 必须能表达并约束“禁止 generic AI aesthetic”，至少覆盖字体、配色、布局/空间、动效策略 |
+| AC-004A | Unified Directory Page | `prototype` 必须提供统一目录页作为多页面 reference pack 的入口，能跳转页面与状态变体 |
 | AC-005 | Shared Token Discipline | high-fidelity pages 必须受共享 token 驱动，不允许 page-level 失控硬编码绕过视觉系统 |
+| AC-005A | UI Style Analysis Artifact | `prototype plan/create` 必须产出 `ui-style-analysis.json/.md`，显式说明视觉系统、目录页 contract 与二开 extension rules |
 | AC-006 | Guideline Audit Artifact | `prototype review` 或 `review design` 必须产出 `web-guideline-review.json`，记录规则版本、finding、severity、file refs |
+| AC-006A | Design Security Review Surface | `review design` 必须可产出 cso-inspired 的 design-security finding，至少覆盖 privileged actions、upload constraints、secret handling、integration boundary、auditability |
 | AC-007 | Web Guideline Gate | 正式 gate 必须可消费 icon button label、skip link、focus-visible、reduced-motion、form labeling、URL state、semantic heading、image dimensions 等关键规则 |
 | AC-008 | Visual Review Outcome | Beacon 必须能输出 `design_review_outcome`，至少区分 `pass / revise / blocked` |
 | AC-009 | Iteration Writeback | design findings 必须回写 next iteration input，至少覆盖 page additions、state additions、design-brief edits、guideline fixes |

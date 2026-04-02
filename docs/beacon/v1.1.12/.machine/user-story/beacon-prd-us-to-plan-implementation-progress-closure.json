@@ -1,0 +1,338 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-prd-us-to-plan-implementation-progress-closure",
+  "feature_slug": "beacon-prd-us-to-plan-implementation-progress-closure",
+  "version": "v1.1.12",
+  "current_revision_id": "R1",
+  "lifecycle_status": "frozen",
+  "updated_at": "2026-04-01T22:16:19.909016+00:00",
+  "revisions": [
+    {
+      "revision_id": "R1",
+      "feature_slug": "beacon-prd-us-to-plan-implementation-progress-closure",
+      "source_revision_id": null,
+      "reason": "draft",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:50f56bd668b45da9a121db55bb1494f33f685ea1b6e88b576d93f13e97370a74",
+      "superseded_by": null,
+      "created_at": "2026-04-01T21:55:35.316389+00:00",
+      "frozen_at": "2026-04-01T21:55:35.316876+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    }
+  ],
+  "stories": [
+    {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "beacon-prd-us-to-plan-implementation-progress-closure",
+      "priority": "medium",
+      "status": "accepted",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "Plan Compiler",
+          "text": "Beacon 必须存在 `prd-us-to-plan` 语义，把 `user-story + prd + test-case` 编译成 implementation plan",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-v112-release",
+          "verified_by_run_id": "run-20260402T061014055287",
+          "accepted_at": "2026-04-01T22:16:19.908855+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "Plan Artifact",
+          "text": "implementation plan 必须有 machine-readable artifact 与 human-readable artifact，且可被 implement / status / writeback 消费",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-v112-release",
+          "verified_by_run_id": "run-20260402T061014055287",
+          "accepted_at": "2026-04-01T22:16:19.908855+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "Baseline Binding",
+          "text": "plan 必须绑定当前 version、revision_id 与 frozen baseline truth，未对齐时不得进入 implement",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-v112-release",
+          "verified_by_run_id": "run-20260402T061014055287",
+          "accepted_at": "2026-04-01T22:16:19.908855+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "Pre-implement Gate",
+          "text": "`implement run` 在 runner 启动前必须校验 plan readiness，不得跳过 plan gate 直接编码",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-v112-release",
+          "verified_by_run_id": "run-20260402T061014055287",
+          "accepted_at": "2026-04-01T22:16:19.908855+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "Task Progress Model",
+          "text": "implementation plan 必须显式表达 task 级状态，包括 `pending`、`in_progress`、`blocked`、`done`",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-v112-release",
+          "verified_by_run_id": "run-20260402T061014055287",
+          "accepted_at": "2026-04-01T22:16:19.908855+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "Traceability",
+          "text": "每个 task 必须可追踪其 source refs、mapped story ids、mapped AC ids、mapped TEST ids",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-v112-release",
+          "verified_by_run_id": "run-20260402T061014055287",
+          "accepted_at": "2026-04-01T22:16:19.908855+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "Writeback Update",
+          "text": "implement / verify / accept 的 writeback 必须同步更新 implementation plan progress",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-v112-release",
+          "verified_by_run_id": "run-20260402T061014055287",
+          "accepted_at": "2026-04-01T22:16:19.908855+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "Status Visibility",
+          "text": "`status` 必须能展示 plan-level progress，并能指出当前卡在哪个 task / 哪个 AC / 哪个 TEST",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-v112-release",
+          "verified_by_run_id": "run-20260402T061014055287",
+          "accepted_at": "2026-04-01T22:16:19.908855+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-009",
+          "kind": "ac",
+          "theme": "Progress Fidelity",
+          "text": "任务级进度不得被 run-level summary 或 stage-level progress 伪装或覆盖",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-v112-release",
+          "verified_by_run_id": "run-20260402T061014055287",
+          "accepted_at": "2026-04-01T22:16:19.908855+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-010",
+          "kind": "ac",
+          "theme": "Closed-Loop Evidence",
+          "text": "已完成任务必须留下可回溯 evidence refs，便于 review / gate / recover 使用",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-v112-release",
+          "verified_by_run_id": "run-20260402T061014055287",
+          "accepted_at": "2026-04-01T22:16:19.908855+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — Beacon 必须存在 `prd-us-to-plan` 语义，把 `user-story + prd + test-case` 编译成 implementation plan",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260402T061014055287",
+          "accepted_at": "2026-04-01T22:16:19.908855+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-001"
+          ]
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — implementation plan 必须有 machine-readable artifact 与 human-readable artifact，且可被 implement / status / writeback 消费",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260402T061014055287",
+          "accepted_at": "2026-04-01T22:16:19.908855+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-002"
+          ]
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — plan 必须绑定当前 version、revision_id 与 frozen baseline truth，未对齐时不得进入 implement",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260402T061014055287",
+          "accepted_at": "2026-04-01T22:16:19.908855+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-003"
+          ]
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — `implement run` 在 runner 启动前必须校验 plan readiness，不得跳过 plan gate 直接编码",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260402T061014055287",
+          "accepted_at": "2026-04-01T22:16:19.908855+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-004"
+          ]
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — implementation plan 必须显式表达 task 级状态，包括 `pending`、`in_progress`、`blocked`、`done`",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260402T061014055287",
+          "accepted_at": "2026-04-01T22:16:19.908855+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-005"
+          ]
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — 每个 task 必须可追踪其 source refs、mapped story ids、mapped AC ids、mapped TEST ids",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260402T061014055287",
+          "accepted_at": "2026-04-01T22:16:19.908855+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-006"
+          ]
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — implement / verify / accept 的 writeback 必须同步更新 implementation plan progress",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260402T061014055287",
+          "accepted_at": "2026-04-01T22:16:19.908855+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-007"
+          ]
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — `status` 必须能展示 plan-level progress，并能指出当前卡在哪个 task / 哪个 AC / 哪个 TEST",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260402T061014055287",
+          "accepted_at": "2026-04-01T22:16:19.908855+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-008"
+          ]
+        },
+        {
+          "id": "TEST-009",
+          "kind": "test",
+          "text": "Verify AC-009 — 任务级进度不得被 run-level summary 或 stage-level progress 伪装或覆盖",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260402T061014055287",
+          "accepted_at": "2026-04-01T22:16:19.908855+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-009"
+          ]
+        },
+        {
+          "id": "TEST-010",
+          "kind": "test",
+          "text": "Verify AC-010 — 已完成任务必须留下可回溯 evidence refs，便于 review / gate / recover 使用",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260402T061014055287",
+          "accepted_at": "2026-04-01T22:16:19.908855+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-010"
+          ]
+        }
+      ],
+      "feature": "beacon-prd-us-to-plan-implementation-progress-closure",
+      "feature_slug": "beacon-prd-us-to-plan-implementation-progress-closure",
+      "version": "v1.1.12",
+      "last_changed_files": [
+        "beacon/utils/implementation_plan.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/gate.py",
+        "beacon/commands/status.py",
+        "beacon/commands/review.py",
+        "beacon/commands/report.py",
+        "beacon/commands/doctor.py",
+        "beacon/utils/writeback.py",
+        "beacon/utils/version_package_upgrade.py"
+      ],
+      "verification_evidence": [
+        ".beacon/qa/features/beacon-prd-us-to-plan-implementation-progress-closure/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json"
+      ],
+      "accepted_at": "2026-04-01T22:16:19.908855+00:00",
+      "accepted_by": "release-closure"
+    }
+  ]
+}

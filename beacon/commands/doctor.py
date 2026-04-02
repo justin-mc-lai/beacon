@@ -13,7 +13,9 @@ from beacon.utils.doctor_diagnostics import build_doctor_payload, build_doctor_a
 from beacon.utils.doctor_setup import install_launchers, resolve_bin_dir, uninstall_launchers
 from beacon.utils.help_navigation import build_doctor_advise_payload
 from beacon.utils.material_audit import build_delivery_audit, build_material_audit
+from beacon.utils.source_architecture import current_source_architecture_status
 from beacon.utils.v115_delivery import repair_v115_delivery_package
+from beacon.utils.version_package_upgrade import upgrade_version_package
 from beacon.utils.versioning import describe_project_version_context, resolve_target_version
 from beacon.utils.worktree_quiet import apply_quiet_worktree, quiet_worktree_status, restore_quiet_worktree
 
@@ -93,7 +95,7 @@ def _doctor_impl(json_output: bool, project_root: str, fix: bool, upgrade: bool,
             with_agents=True,
         )
         target_version = resolve_target_version(root, "latest-docs")
-        repair_v115_delivery_package(root, version=target_version, apply=True)
+        upgrade_version_package(root, version=target_version, apply=True)
 
     payload = build_doctor_payload(root, strict=strict)
 
@@ -503,6 +505,42 @@ def repair_package(
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
     else:
         _print_action_result("Beacon Doctor Repair Package", {"installed": [], "removed": [], "skipped": [], "warnings": []})
+        typer.echo(json.dumps(result, ensure_ascii=False, indent=2))
+    raise typer.Exit(code=0)
+
+
+@app.command("upgrade-package")
+def upgrade_package(
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    version: str = typer.Option("latest-docs", "--version", "-v", help="Target docs version"),
+    dry_run: bool = typer.Option(False, "--dry-run", help="Preview without writing files"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Cumulatively upgrade an older Beacon version package to newer runtime-compatible material structure."""
+    root = Path(project_root) if project_root else Path.cwd()
+    result = upgrade_version_package(root, version=version, apply=not dry_run)
+    resolved_version = resolve_target_version(root, version)
+    source_arch_status = current_source_architecture_status(root, version=resolved_version)
+    payload = {
+        "schema_version": "2.0",
+        "action": "upgrade-package",
+        "status": "PASS",
+        "result": result,
+        "source_architecture_status": source_arch_status,
+    }
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        _print_action_result("Beacon Doctor Upgrade Package", {"installed": [], "removed": [], "skipped": [], "warnings": []})
+        summary = result.get("summary") if isinstance(result.get("summary"), dict) else {}
+        if summary:
+            typer.echo(
+                "summary: "
+                f"written={summary.get('written', 0)} "
+                f"planned={summary.get('planned', 0)} "
+                f"unchanged={summary.get('unchanged', 0)} "
+                f"steps={summary.get('step_count', 0)}"
+            )
         typer.echo(json.dumps(result, ensure_ascii=False, indent=2))
     raise typer.Exit(code=0)
 

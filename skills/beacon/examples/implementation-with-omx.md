@@ -4,8 +4,8 @@ This example focuses on **adapter-driven implementation** using the Beacon skill
 
 Read first:
 
-- [`../../../docs/beacon/v1.1.11/SUMMARY.md`](../../../docs/beacon/v1.1.11/SUMMARY.md)
-- [`../../../docs/beacon/v1.1.11/execution/index.md`](../../../docs/beacon/v1.1.11/execution/index.md)
+- [`../../../docs/beacon/v1.1.12/SUMMARY.md`](../../../docs/beacon/v1.1.12/SUMMARY.md)
+- [`../../../docs/beacon/v1.1.12/execution/index.md`](../../../docs/beacon/v1.1.12/execution/index.md)
 
 ```bash
 # 1) Inspect skill adapters and preferred runner
@@ -17,28 +17,36 @@ bash skills/beacon/scripts/run_beacon.sh implement list-runners --json
 bash skills/beacon/scripts/run_beacon.sh skill prefer omx --project-root . --scope project
 
 # 3) Run implementation through OMX (dry-run first)
-bash skills/beacon/scripts/run_beacon.sh implement run \
-  "Beacon v1.1.11 release line" \
+bash skills/beacon/scripts/run_beacon.sh implement plan \
+  "Beacon v1.1.12 release line" \
   --project . \
-  --version v1.1.11 \
+  --version v1.1.12 \
+  --json
+
+# 4) Run implementation through OMX (dry-run first)
+bash skills/beacon/scripts/run_beacon.sh implement run \
+  "Beacon v1.1.12 release line" \
+  --project . \
+  --version v1.1.12 \
   --runner omx \
   --dry-run \
   --json
 
-# 4) Inspect implementation status
+# 5) Inspect implementation status / plan progress
 bash skills/beacon/scripts/run_beacon.sh implement status \
+  "Beacon v1.1.12 release line" \
   --project-root . \
-  --version v1.1.11
+  --version v1.1.12
 
-# 5) After implementation, run review and release checks
+# 6) After implementation, run review and release checks
 bash skills/beacon/scripts/run_beacon.sh review spec \
-  "Beacon v1.1.11 release line" \
+  "Beacon v1.1.12 release line" \
   --project . \
-  --version v1.1.11 \
+  --version v1.1.12 \
   --json
 bash skills/beacon/scripts/run_beacon.sh review quality \
-  "Beacon v1.1.11 release line" \
+  "Beacon v1.1.12 release line" \
   --project . \
-  --version v1.1.11 \
+  --version v1.1.12 \
   --json
 ```

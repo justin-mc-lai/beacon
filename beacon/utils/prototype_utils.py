@@ -98,6 +98,8 @@ def prototype_files(project_root: Path, version: str, feature: str) -> dict[str,
         "design_system_contract": root / "design-system-contract.json",
         "design_prompt_json": root / "design-prompt.json",
         "design_prompt_md": root / "design-prompt.md",
+        "ui_style_analysis_json": root / "ui-style-analysis.json",
+        "ui_style_analysis_md": root / "ui-style-analysis.md",
         "manifest": root / "manifest.json",
         "source_map": root / "source-map.json",
         "freeze": root / "freeze.json",
@@ -693,6 +695,137 @@ def _render_design_prompt_markdown(payload: dict[str, Any]) -> str:
             "",
         ]
     ) + "\n"
+
+
+def compile_ui_style_analysis(
+    *,
+    feature: str,
+    version: str,
+    contract: dict[str, Any],
+    plan_payload: dict[str, Any],
+    design_brief: dict[str, Any],
+    design_system_contract: dict[str, Any],
+) -> dict[str, Any]:
+    page_specs = plan_payload.get("page_specs") if isinstance(plan_payload.get("page_specs"), list) else []
+    required_pages = [str(item).strip() for item in (plan_payload.get("required_pages") or []) if str(item).strip()]
+    required_states = [str(item).strip() for item in (plan_payload.get("required_states") or []) if str(item).strip()]
+    page_links: list[dict[str, Any]] = []
+    for spec in page_specs:
+        if not isinstance(spec, dict):
+            continue
+        page_id = slugify_feature(str(spec.get("page_id") or ""))
+        if not page_id:
+            continue
+        page_links.append(
+            {
+                "page_id": page_id,
+                "intent": str(spec.get("intent") or ""),
+                "path": f"pages/{page_id}.html",
+                "state_paths": [f"states/{page_id}--{slugify_feature(state)}.html" for state in required_states],
+            }
+        )
+    secondary_build_rules = [
+        "analyze existing shared tokens and interaction patterns before extending pages",
+        "preserve the unified prototype directory as the navigation source of truth",
+        "extend via design-brief and design-system contract, not ad-hoc page-local styling",
+        "route design/security findings back through review before freeze",
+    ]
+    return {
+        "schema_version": "1.0",
+        "feature": feature,
+        "version": version,
+        "analysis_mode": "design-governed-prototype",
+        "directory_contract": {
+            "directory_page": "index.html",
+            "landing_kind": "reference-pack-directory",
+            "required_pages": required_pages,
+            "required_states": required_states,
+            "page_links": page_links,
+        },
+        "visual_system": {
+            "tone": design_brief.get("tone"),
+            "visual_direction": design_brief.get("visual_direction"),
+            "differentiator": design_brief.get("differentiator"),
+            "guidance_anchors": list(design_brief.get("guidance_anchors") or []),
+            "design_mode_references": list(design_brief.get("design_mode_references") or []),
+            "typography": design_system_contract.get("typography", {}),
+            "palette": design_system_contract.get("palette", {}),
+            "motion": design_system_contract.get("motion"),
+            "anti_generic_rules": list(design_system_contract.get("anti_generic_rules") or []),
+        },
+        "component_patterns": {
+            "navigation": list(contract.get("navigation") or []),
+            "primary_cta": str(contract.get("primary_cta") or ""),
+            "secondary_cta": str(contract.get("secondary_cta") or ""),
+            "states": list(contract.get("states") or []),
+            "surface_style": str(contract.get("surface_style") or ""),
+        },
+        "secondary_build_contract": {
+            "source_refs": list(plan_payload.get("source_refs") or []),
+            "required_artifacts": [
+                "prototype-plan.json",
+                "design-brief.json",
+                "design-system-contract.json",
+                "design-prompt.json",
+                "ui-style-analysis.json",
+                "tokens.css",
+                "navigation-map.json",
+                "interaction-map.json",
+                "index.html",
+            ],
+            "extension_rules": secondary_build_rules,
+        },
+    }
+
+
+def _render_ui_style_analysis_markdown(payload: dict[str, Any]) -> str:
+    directory_contract = payload.get("directory_contract", {}) if isinstance(payload.get("directory_contract"), dict) else {}
+    visual_system = payload.get("visual_system", {}) if isinstance(payload.get("visual_system"), dict) else {}
+    secondary_build_contract = (
+        payload.get("secondary_build_contract", {})
+        if isinstance(payload.get("secondary_build_contract"), dict)
+        else {}
+    )
+    component_patterns = payload.get("component_patterns", {}) if isinstance(payload.get("component_patterns"), dict) else {}
+    lines = [
+        f"# UI Style Analysis: {payload.get('feature')}",
+        "",
+        f"- version: `{payload.get('version')}`",
+        f"- analysis_mode: `{payload.get('analysis_mode')}`",
+        "",
+        "## Unified Directory",
+        f"- directory_page: `{directory_contract.get('directory_page')}`",
+        f"- landing_kind: `{directory_contract.get('landing_kind')}`",
+        f"- required_pages: `{', '.join(directory_contract.get('required_pages', []))}`",
+        f"- required_states: `{', '.join(directory_contract.get('required_states', []))}`",
+        "",
+        "## Visual System",
+        f"- tone: `{visual_system.get('tone')}`",
+        f"- visual_direction: `{visual_system.get('visual_direction')}`",
+        f"- differentiator: `{visual_system.get('differentiator')}`",
+        f"- typography: `{json.dumps(visual_system.get('typography', {}), ensure_ascii=False)}`",
+        f"- palette: `{json.dumps(visual_system.get('palette', {}), ensure_ascii=False)}`",
+        f"- motion: `{visual_system.get('motion')}`",
+        "",
+        "## Component Patterns",
+        f"- navigation: `{', '.join(component_patterns.get('navigation', []))}`",
+        f"- primary_cta: `{component_patterns.get('primary_cta')}`",
+        f"- secondary_cta: `{component_patterns.get('secondary_cta')}`",
+        f"- states: `{', '.join(component_patterns.get('states', []))}`",
+        "",
+        "## Secondary Build Contract",
+        f"- source_refs: `{', '.join(secondary_build_contract.get('source_refs', []))}`",
+        f"- required_artifacts: `{', '.join(secondary_build_contract.get('required_artifacts', []))}`",
+        "",
+        "## Extension Rules",
+    ]
+    rules = secondary_build_contract.get("extension_rules", [])
+    if isinstance(rules, list) and rules:
+        for rule in rules:
+            lines.append(f"- {rule}")
+    else:
+        lines.append("- none")
+    return "\n".join(lines) + "\n"
 
 
 def derive_theme_tokens(contract: dict[str, Any]) -> dict[str, Any]:
@@ -2610,6 +2743,14 @@ def write_prototype_bundle(project_root: Path, version: str, feature: str) -> di
         contract=contract,
         plan_payload=plan_payload,
     )
+    ui_style_analysis = compile_ui_style_analysis(
+        feature=feature,
+        version=version,
+        contract=contract,
+        plan_payload=plan_payload,
+        design_brief=design_brief,
+        design_system_contract=design_system_contract,
+    )
     reference_pack_v2 = _is_reference_pack_v2(contract, version)
     route_closure_contract = derive_route_closure_contract(feature, version, contract, navigation_map, interaction_map)
     implementation_map = derive_implementation_map(feature, version, route_closure_contract)
@@ -2734,6 +2875,7 @@ def write_prototype_bundle(project_root: Path, version: str, feature: str) -> di
             "design_brief": sha256_text(json.dumps(design_brief, ensure_ascii=False, sort_keys=True)),
             "design_system_contract": sha256_text(json.dumps(design_system_contract, ensure_ascii=False, sort_keys=True)),
             "design_prompt_json": sha256_text(json.dumps(design_prompt_payload, ensure_ascii=False, sort_keys=True)),
+            "ui_style_analysis_json": sha256_text(json.dumps(ui_style_analysis, ensure_ascii=False, sort_keys=True)),
             "prototype_brief": sha256_text(json.dumps(brief_payload, ensure_ascii=False, sort_keys=True)),
             "theme": sha256_text(json.dumps(theme, ensure_ascii=False, sort_keys=True)),
             "tokens_css": sha256_file(files["tokens_css"]),
@@ -2749,6 +2891,8 @@ def write_prototype_bundle(project_root: Path, version: str, feature: str) -> di
     _write_json(files["design_system_contract"], design_system_contract)
     _write_json(files["design_prompt_json"], design_prompt_payload)
     files["design_prompt_md"].write_text(_render_design_prompt_markdown(design_prompt_payload), encoding="utf-8")
+    _write_json(files["ui_style_analysis_json"], ui_style_analysis)
+    files["ui_style_analysis_md"].write_text(_render_ui_style_analysis_markdown(ui_style_analysis), encoding="utf-8")
     _write_json(files["prototype_brief"], brief_payload)
     _write_json(files["theme"], theme)
     _write_json(files["navigation_map"], navigation_map)
@@ -2785,12 +2929,22 @@ def write_prototype_plan(project_root: Path, version: str, feature: str) -> dict
         contract=contract,
         plan_payload=plan_payload,
     )
+    ui_style_analysis = compile_ui_style_analysis(
+        feature=feature,
+        version=version,
+        contract=contract,
+        plan_payload=plan_payload,
+        design_brief=design_brief,
+        design_system_contract=design_system_contract,
+    )
     files["root"].mkdir(parents=True, exist_ok=True)
     _write_json(files["prototype_plan"], plan_payload)
     _write_json(files["design_brief"], design_brief)
     _write_json(files["design_system_contract"], design_system_contract)
     _write_json(files["design_prompt_json"], design_prompt_payload)
     files["design_prompt_md"].write_text(_render_design_prompt_markdown(design_prompt_payload), encoding="utf-8")
+    _write_json(files["ui_style_analysis_json"], ui_style_analysis)
+    files["ui_style_analysis_md"].write_text(_render_ui_style_analysis_markdown(ui_style_analysis), encoding="utf-8")
     return {
         "feature": feature,
         "version": version,
@@ -2967,6 +3121,11 @@ def review_prototype_bundle(project_root: Path, version: str, feature: str) -> d
                     "name": "design_prompt_present",
                     "status": "pass" if files["design_prompt_json"].exists() and files["design_prompt_md"].exists() else "fail",
                     "message": "design-prompt artifacts should exist.",
+                },
+                {
+                    "name": "ui_style_analysis_present",
+                    "status": "pass" if files["ui_style_analysis_json"].exists() and files["ui_style_analysis_md"].exists() else "fail",
+                    "message": "ui-style-analysis artifacts should exist.",
                 },
             ]
         )
@@ -3303,6 +3462,8 @@ def freeze_prototype(project_root: Path, version: str, feature: str) -> dict[str
                     "prototype_plan",
                     "design_brief",
                     "design_system_contract",
+                    "ui_style_analysis_json",
+                    "ui_style_analysis_md",
                     "manifest",
                     "source_map",
                     "prototype_brief",
