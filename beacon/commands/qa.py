@@ -24,6 +24,7 @@ from beacon.utils.qa_feature import (
     build_feature_qa_plan,
     collect_verification_writeback,
     feature_qa_matrix_path,
+    load_feature_qa_status,
     materialize_feature_qa_matrix,
     writeback_feature_matrix_evidence,
     write_feature_qa_status,
@@ -40,6 +41,7 @@ from beacon.utils.qa_runtime import (
     write_qa_status,
 )
 from beacon.utils.story_state import feature_slug
+from beacon.utils.v110_baseline import generate_spec_fingerprint
 from beacon.utils.writeback import record_verification_writeback
 
 app = typer.Typer(name="qa", help="QA primary surface (v1.1.10)")
@@ -309,12 +311,33 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
         return 2, plan
 
     if str(plan.get("status") or "") == "up_to_date":
+        existing_status = load_feature_qa_status(project_root, feature=feature)
         payload = {
+            **existing_status,
             **plan,
             "feature_matrix_path": str(feature_qa_matrix_path(project_root, feature=feature).relative_to(project_root)),
             "message": "feature QA already up to date; no rerun required",
         }
-        write_feature_qa_status(project_root, feature=feature, payload=payload)
+        feature_status_path = write_feature_qa_status(project_root, feature=feature, payload=payload)
+        manifest_refs = [str(feature_status_path.relative_to(project_root))]
+        for candidate in (
+            project_root / ".beacon" / "auto-test-status.json",
+            project_root / ".beacon" / "qa" / "status.json",
+        ):
+            if candidate.exists():
+                manifest_refs.append(str(candidate.relative_to(project_root)))
+        for key in ("canonical_matrix_path", "ac_closure_path", "feature_scorecard_path"):
+            value = str(payload.get(key) or "").strip()
+            if value:
+                manifest_refs.append(value)
+        current_status = load_qa_status(project_root)
+        current_run_id = str(current_status.get("run_id") or payload.get("run_id") or "").strip()
+        _update_evidence_manifest(
+            project_root,
+            manifest_refs,
+            run_id=current_run_id,
+            version=version,
+        )
         if json_output:
             typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
         else:
@@ -418,10 +441,46 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
         qa_status["status"] = "blocked"
         qa_status["evidence_done"] = False
         qa_status["release_ready"] = False
+    refreshed_fingerprint = generate_spec_fingerprint(
+        project_root,
+        run_id=str(qa_status.get("run_id") or plan.get("implementation_run_id") or "feature-qa"),
+        version=version,
+    )
+    refreshed_hash = str(refreshed_fingerprint.get("fingerprint_hash", "") or "").strip()
+    if refreshed_hash:
+        qa_status["current_spec_fingerprint_hash"] = refreshed_hash
+        auto_test_status_path = project_root / ".beacon" / "auto-test-status.json"
+        if auto_test_status_path.exists():
+            try:
+                auto_test_status = json.loads(auto_test_status_path.read_text(encoding="utf-8"))
+            except Exception:  # noqa: BLE001
+                auto_test_status = {}
+            if isinstance(auto_test_status, dict):
+                auto_test_status["spec_fingerprint_hash"] = refreshed_hash
+                execution_payload = auto_test_status.get("execution")
+                if isinstance(execution_payload, dict):
+                    execution_payload["spec_fingerprint"] = {
+                        "fingerprint_hash": refreshed_hash,
+                        "version": str(qa_status.get("version") or version),
+                        "generated_at": str(refreshed_fingerprint.get("generated_at", "") or ""),
+                    }
+                auto_test_status_path.write_text(
+                    json.dumps(auto_test_status, ensure_ascii=False, indent=2),
+                    encoding="utf-8",
+                )
     status_paths = write_qa_status(project_root, qa_status)
+    manifest_refs = [status_paths["legacy"], status_paths["canonical"]]
+    if canonical_matrix is not None:
+        manifest_refs.append(str(canonical_matrix.relative_to(project_root)))
+    manifest_refs.extend(
+        [
+            str(ac_closure_path.relative_to(project_root)),
+            str(feature_scorecard_path.relative_to(project_root)),
+        ]
+    )
     _update_evidence_manifest(
         project_root,
-        [status_paths["legacy"], status_paths["canonical"]],
+        manifest_refs,
         run_id=str(qa_status.get("run_id") or ""),
         version=version,
     )

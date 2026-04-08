@@ -23,7 +23,7 @@ from beacon.utils.qa9 import (
     to_legacy_layer,
 )
 from beacon.utils.story_scenarios import expand_story_scenarios, write_story_scenario_map
-from beacon.utils.versioning import discover_versions, resolve_operational_docs_version, resolve_target_version
+from beacon.utils.versioning import discover_versions, normalize_version, resolve_operational_docs_version, resolve_target_version
 
 app = typer.Typer(name="test-case", help="Generate test cases")
 
@@ -58,11 +58,12 @@ def _extract_ac_items(content: str, source: str) -> list[dict]:
             continue
         ac_id = m.group(1).upper()
         cells = [x.strip() for x in line.strip().strip("|").split("|")]
-        text = cells[1] if len(cells) > 1 else line.strip()
+        theme = cells[1] if len(cells) > 1 else ""
+        text = cells[2] if len(cells) > 2 else (cells[1] if len(cells) > 1 else line.strip())
         if ac_id in seen:
             continue
         seen.add(ac_id)
-        items.append({"ac_id": ac_id, "text": text, "source": source})
+        items.append({"ac_id": ac_id, "theme": theme, "text": text, "source": source})
 
     # Fallback bullet/text pattern: AC-001: xxx
     for m in re.finditer(r"\b(AC-\d{3,})\b[:：]?\s*([^\n]+)", content, flags=re.I):
@@ -71,18 +72,36 @@ def _extract_ac_items(content: str, source: str) -> list[dict]:
         if ac_id in seen:
             continue
         seen.add(ac_id)
-        items.append({"ac_id": ac_id, "text": text, "source": source})
+        items.append({"ac_id": ac_id, "theme": "", "text": text, "source": source})
 
     return items
 
 
 def _infer_layer_from_ac(text: str) -> str:
     t = (text or "").lower()
-    if any(x in t for x in ("登录", "注册", "浏览", "表单", "submit", "form", "ui", "页面", "点击")):
+    if "prototype" in t and any(token in t for token in ("映射", "orphan", "anchor", "ui 模块", "状态")):
+        return "unit"
+    ui_patterns = (
+        "登录",
+        "注册",
+        "浏览",
+        "表单",
+        "页面",
+        "点击",
+        r"\bsubmit\b",
+        r"\bform\b",
+        r"\bui\b",
+        r"\bpage\b",
+        r"\bclick\b",
+        r"\bbrowser\b",
+        r"\bscreen\b",
+        r"\broute\b",
+    )
+    if any(re.search(pattern, t, flags=re.I) for pattern in ui_patterns):
         return "ui"
-    if any(x in t for x in ("api", "接口", "http", "curl", "endpoint")):
+    if any(re.search(pattern, t, flags=re.I) for pattern in (r"\bapi\b", "接口", r"\bhttp\b", r"\bcurl\b", r"\bendpoint\b")):
         return "api-curl"
-    if any(x in t for x in ("单元", "unit", "函数", "边界", "error", "异常", "校验", "security")):
+    if any(re.search(pattern, t, flags=re.I) for pattern in ("单元", r"\bunit\b", "函数", "边界", r"\berror\b", "异常", "校验", r"\bsecurity\b")):
         return "unit"
     # Default to unit for deterministic commandability in minimal setups.
     return "unit"
@@ -242,6 +261,17 @@ def _build_qa_requirements(qa_types: list[str], qa_applicability: Optional[dict[
             }
         )
     return out
+
+
+def _supports_profile_required_type_narrowing(version: str) -> bool:
+    normalized = normalize_version(version) or ""
+    if not normalized.startswith("v"):
+        return False
+    try:
+        major, minor, patch = [int(part) for part in normalized[1:].split(".")]
+    except Exception:  # noqa: BLE001
+        return False
+    return (major, minor, patch) >= (1, 2, 0)
 
 
 def _build_qa9_entries(
@@ -860,6 +890,17 @@ def create(
             qa_types=qa_types_resolved,
             ui_runner=resolved_ui_runner,
         )
+    required_types = strategy.get("qa_required_types") if isinstance(strategy, dict) else []
+    if (
+        qa_types is None
+        and _supports_profile_required_type_narrowing(resolved_version)
+        and str(qa_profile or "").strip().lower() == "web-full"
+        and isinstance(required_types, list)
+        and required_types
+    ):
+        narrowed = [normalize_qa_type(item) for item in required_types if normalize_qa_type(item) in QA9_TYPES]
+        if narrowed:
+            qa_types_resolved = narrowed
     command_baseline = strategy.get("command_baseline") if isinstance(strategy, dict) else {}
     if not isinstance(command_baseline, dict):
         command_baseline = {}

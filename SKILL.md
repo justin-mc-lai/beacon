@@ -1,14 +1,14 @@
 ---
 name: beacon
-version: 1.1.12
+version: 1.2.0
 description: Evidence-first Product Workflow Kernel for product thinking, user stories, PRDs, test cases, and release workflows
 ---
 
 # Beacon - Evidence-first Product Workflow Kernel
 
-> **Skill Version**: v1.1.12
-> **CLI Version**: v1.1.12
-> **Last Updated**: 2026-03-31
+> **Skill Version**: v1.2.0
+> **CLI Version**: v1.2.0
+> **Last Updated**: 2026-04-08
 
 Beacon 是 AI 产品工作流内核，提供需求澄清、用户故事、PRD、测试用例、证据闭环与发布门禁的统一工作流。
 
@@ -52,21 +52,21 @@ Beacon 是 AI 产品工作流内核，提供需求澄清、用户故事、PRD、
 
 ## 当前版本与发布线
 
-- **当前发布线**：`v1.1.12`
-- **当前包版本**：`1.1.12`
-- **最新已接受文档线**：`v1.1.12`
-- **当前已落地实现线**：`v1.1.12`（design governance / version truth / profile-aware routing / typed learning plane / takeover baseline gate 已在仓内落地，并有实现测试覆盖）
-- **上一稳定基线**：`v1.1.10`（QA precision / source architecture sync / prototype route closure）
+- **当前发布线**：`v1.2.0`
+- **当前包版本**：`1.2.0`
+- **最新已接受文档线**：`v1.2.0`
+- **当前已落地实现线**：`v1.2.0`（mainline command simplification / project-skill discovery / shared discovery routing / prototype anchoring / QA baseline hardening 已在仓内落地，并有实现测试覆盖）
+- **上一稳定基线**：`v1.1.12`（design governance / version truth / profile-aware routing / typed learning plane / takeover baseline gate）
 
 如果你只记一条：
 
-> **正式包版本现在是 `v1.1.12`，当前实现与文档主线统一阅读 `docs/beacon/v1.1.12/`；历史闭环增强线可回看 `docs/beacon/v1.1.9/`。**
+> **正式包版本现在是 `v1.2.0`，当前实现与文档主线统一阅读 `docs/beacon/v1.2.0/`；历史闭环增强线可回看 `docs/beacon/v1.1.9/`。**
 
-`v1.1.12` 说明：
+`v1.2.0` 说明：
 
-- `v1.1.12` 已正式成为 current runtime release line
-- version truth / profile-aware routing / project-skill boundary / typed learning plane / takeover baseline gate 已进入正式发布口径
-- 当前最稳妥的阅读方式是直接以 `docs/beacon/v1.1.12/` 作为 current line
+- `v1.2.0` 已正式成为 current runtime release line
+- command-surface simplification、project-skill discovery、prototype anchoring 与 QA baseline bundle 已进入正式发布口径
+- 当前最稳妥的阅读方式是直接以 `docs/beacon/v1.2.0/` 作为 current line
 
 ## Beacon 到底是什么
 
@@ -104,31 +104,31 @@ Beacon 不是单一命令，也不是“帮你写几份 PM 文档”的模板集
 ### 最短路径
 
 ```bash
-beacon workflow start "My feature" --project . --version v1.1.12
-beacon think start "My feature" --project . --version v1.1.12
-beacon user-story create "My feature" --project . --version v1.1.12
-beacon prd create "My feature" --project . --version v1.1.12
-beacon test-case create "My feature" --project . --version v1.1.12
-beacon help --project-root . --version v1.1.12 --feature "My feature" --json
+beacon workflow start "My feature" --project . --version v1.2.0
+beacon think start "My feature" --project . --version v1.2.0
+beacon user-story create "My feature" --project . --version v1.2.0
+beacon prd create "My feature" --project . --version v1.2.0
+beacon test-case create "My feature" --project . --version v1.2.0
+beacon help --project-root . --version v1.2.0 --feature "My feature" --json
 ```
 
 ### 如果你已经有实现与验证链
 
 ```bash
 beacon implement list-runners --json
-beacon implement plan "My feature" --project . --version v1.1.12 --json
-beacon implement run "My feature" --project . --version v1.1.12 --runner auto --json
-beacon implement run "My feature" --project . --version v1.1.12 --runner auto --auto-qa --auto-qa-follow-handoff --auto-qa-max-rounds 3 --json
-beacon qa run "My feature" --project . --version v1.1.12 --json
-beacon review quality "My feature" --project . --version v1.1.12 --json
-beacon gate check release --project-root . --version v1.1.12 --json
+beacon implement plan "My feature" --project . --version v1.2.0 --json
+beacon implement run "My feature" --project . --version v1.2.0 --runner auto --json
+beacon implement run "My feature" --project . --version v1.2.0 --runner auto --auto-qa --auto-qa-follow-handoff --auto-qa-max-rounds 3 --json
+beacon qa run "My feature" --project . --version v1.2.0 --json
+beacon review quality "My feature" --project . --version v1.2.0 --json
+beacon gate check release --project-root . --version v1.2.0 --json
 ```
 
 ### 如果你只想看当前该做什么
 
 ```bash
-beacon status --board --project-root . --version v1.1.12
-beacon help --project-root . --version v1.1.12 --feature "My feature" --json
+beacon status --board --project-root . --version v1.2.0
+beacon help --project-root . --version v1.2.0 --feature "My feature" --json
 ```
 
 ## Beacon 的主工作流模型
@@ -158,7 +158,7 @@ think
 
 > **它不是只生成内容，而是要求内容、执行、证据、放行都对齐。**
 
-## 当前产品面（v1.1.12）
+## 当前产品面（v1.2.0）
 
 当前正式发布线的几个关键能力面：
 
@@ -224,7 +224,7 @@ user story / AC order
 4. **每轮都要告诉人类下一步**
    - QA 输出必须给 blocker summary、repair handoff、`resume_command`
    - 修复后优先通过
-     `beacon help --project-root . --version v1.1.12 --feature "<feature>" --json`
+     `beacon help --project-root . --version v1.2.0 --feature "<feature>" --json`
      获取下一轮命令
 
 5. **下一轮必须先补缺口**
@@ -260,12 +260,12 @@ requirement material
 
 ## 推荐阅读顺序
 
-1. `docs/beacon/v1.1.12/SUMMARY.md`
-2. `docs/beacon/v1.1.12/execution/index.md`
-3. `docs/beacon/v1.1.12/execution/architecture-blueprint.md`
-4. `docs/beacon/v1.1.12/execution/requirement-anchor-implementation-blueprint.md`
-5. `docs/beacon/v1.1.12/release/v1.1.12.md`
-6. `docs/beacon/v1.1.12/execution/prd-us-to-plan-implementation-progress-blueprint.md`
+1. `docs/beacon/v1.2.0/SUMMARY.md`
+2. `docs/beacon/v1.2.0/execution/index.md`
+3. `docs/beacon/v1.2.0/execution/architecture-blueprint.md`
+4. `docs/beacon/v1.2.0/execution/requirement-anchor-implementation-blueprint.md`
+5. `docs/beacon/v1.2.0/release/v1.2.0.md`
+6. `docs/beacon/v1.2.0/execution/prd-us-to-plan-implementation-progress-blueprint.md`
 
 如果你关注上一轮闭环增强基线，再看：
 
@@ -276,10 +276,10 @@ requirement material
 
 如果你关注下一轮 QA 精准度 / 自动训练增强，再看：
 
-1. `docs/beacon/v1.1.12/SUMMARY.md`
-2. `docs/beacon/v1.1.12/prd/beacon-version-truth-profile-boundary-governance.md`
-3. `docs/beacon/v1.1.12/prd/beacon-prototype-design-governance-loop.md`
-4. `docs/beacon/v1.1.12/execution/requirement-anchor-implementation-blueprint.md`
+1. `docs/beacon/v1.2.0/SUMMARY.md`
+2. `docs/beacon/v1.2.0/prd/beacon-version-truth-profile-boundary-governance.md`
+3. `docs/beacon/v1.2.0/prd/beacon-prototype-design-governance-loop.md`
+4. `docs/beacon/v1.2.0/execution/requirement-anchor-implementation-blueprint.md`
 
 ## 常见使用场景
 
@@ -332,23 +332,23 @@ requirement material
 ## 文档入口与故障排查
 
 ### 文档入口
-- `docs/beacon/v1.1.12/SUMMARY.md`
-- `docs/beacon/v1.1.12/execution/index.md`
-- `docs/beacon/v1.1.12/release/v1.1.12.md`
-- `docs/beacon/v1.1.12/prd/beacon-version-truth-profile-boundary-governance.md`
+- `docs/beacon/v1.2.0/SUMMARY.md`
+- `docs/beacon/v1.2.0/execution/index.md`
+- `docs/beacon/v1.2.0/release/v1.2.0.md`
+- `docs/beacon/v1.2.0/prd/beacon-version-truth-profile-boundary-governance.md`
 
 ### 常见问题
 - 不确定当前阶段下一步做什么：
-  - `beacon help --project-root . --version v1.1.12 --feature "<feature>" --json`
+  - `beacon help --project-root . --version v1.2.0 --feature "<feature>" --json`
 - 觉得材料状态不一致：
   - `beacon doctor --project-root . --json`
-  - `beacon doctor verify-materials --project-root . --version v1.1.12 --json`
+  - `beacon doctor verify-materials --project-root . --version v1.2.0 --json`
 - 不确定 release/gate 是否已闭环：
-  - `beacon gate check release --project-root . --version v1.1.12 --json`
+  - `beacon gate check release --project-root . --version v1.2.0 --json`
 - 旧版本 package 想补到当前 runtime 能力：
   - `beacon doctor upgrade-package --project-root . --version <old-version> --json`
 - 想看当前全局状态：
-  - `beacon status --board --project-root . --version v1.1.12`
+  - `beacon status --board --project-root . --version v1.2.0`
 
 ## 命令触发（CLI/Skill 单一事实源）
 
@@ -490,10 +490,10 @@ python3 scripts/sync_skill_commands.py --check
 
 ```bash
 # 推荐
-beacon workflow start "Beacon v1.1.12 release line" --project /abs/path/to/project --version v1.1.12
+beacon workflow start "Beacon v1.2.0 release line" --project /abs/path/to/project --version v1.2.0
 
 # 兼容
-python3 -m beacon.main workflow start "Beacon v1.1.12 release line" --project /abs/path/to/project --version v1.1.12
+python3 -m beacon.main workflow start "Beacon v1.2.0 release line" --project /abs/path/to/project --version v1.2.0
 ```
 
 ## Gate 检查
@@ -544,4 +544,4 @@ beacon skill sync-check --project-root . --json
 
 ---
 
-**版本**: v1.1.12
+**版本**: v1.2.0

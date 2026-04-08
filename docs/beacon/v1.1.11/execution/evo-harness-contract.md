@@ -29,7 +29,8 @@
 - ledger: `.beacon/state/evo/ledgers/latest.json`
 
 ## Latest Experiment
-- run_id: `-`
-- label: `-`
-- selected_candidates: `0`
-- verdict: `-`
+- run_id: `evo-20260331T143934.331848+0000`
+- label: `Beacon v1.1.12 design governance autoresearch`
+- selected_candidates: `2`
+- verdict: `discard`
+

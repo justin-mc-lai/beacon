@@ -1087,10 +1087,11 @@ def update_plan_progress_for_verification(
             task["evidence_refs"] = _normalize_text_list([*(task.get("evidence_refs", []) or []), *refs])
             continue
         if verified_ids and (not verified_ids.isdisjoint(mapped_test_ids) or not verified_ids.isdisjoint(mapped_ac_ids)):
-            if str(task.get("status", "")).strip().lower() in {"draft", "planned", "in_progress"}:
+            if str(task.get("status", "")).strip().lower() in {"draft", "planned", "in_progress", "blocked"}:
                 task["status"] = "completed"
                 task["completed_at"] = str(task.get("completed_at", "") or now_iso())
                 task["active_run_id"] = ""
+                task["blocked_reason"] = ""
             task["evidence_refs"] = _normalize_text_list([*(task.get("evidence_refs", []) or []), *refs])
     return _write_implementation_plan(project_root, version=version, feature=feature, payload=plan)
 

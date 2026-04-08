@@ -33,6 +33,12 @@ They describe the now-landed compiler / gate / writeback / release-governance co
 3. `../qa/test-cases/beacon-prd-us-to-plan-implementation-progress-closure.md`
 4. `./prd-us-to-plan-implementation-progress-blueprint.md`
 
+## Supplemental external reference study
+
+This additional research note compares Beacon against public external references that are relevant to Beacon's product packaging problem.
+
+1. `../research/beacon-external-reference-study-statsclaw-awesome-design-md.md`
+
 ## What this line focuses on
 
 v1.1.12 is the line that makes prototype quality a governed loop:

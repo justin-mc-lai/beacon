@@ -26,6 +26,7 @@ from beacon.utils.prototype_utils import evaluate_prototype_status, review_proto
 from beacon.utils.qa_runtime import load_qa_status
 from beacon.utils.runtime import now_iso
 from beacon.utils.story_state import load_story_state
+from beacon.utils.workflow_memory import resolve_workflow_run_id
 from beacon.utils.writeback import (
     record_acceptance_writeback,
     record_verification_writeback,
@@ -54,6 +55,22 @@ def _feature_paths(project_root: Path, version: str, feature: str) -> dict[str, 
         "implementation_marker": project_root / ".beacon" / "state" / f"implementation-{slug}.json",
         "implementation_summary": base / "execution" / f"implementation-summary-{slug}.json",
     }
+
+
+def _resolve_acceptance_workflow_run_id(project_root: Path, version: str, feature: str) -> str:
+    run_id = resolve_workflow_run_id(project_root, version=version, feature=feature)
+    if run_id:
+        return run_id
+    execution_root = project_root / "docs" / "beacon" / version / ".machine" / "execution"
+    for candidate in (
+        execution_root / "terminal.json",
+        execution_root / "delivery-manifest.json",
+    ):
+        payload = _read_json_if_exists(candidate)
+        value = str(payload.get("run_id", "") or "").strip()
+        if value.startswith("run-"):
+            return value
+    return ""
 
 
 def _write_review_artifacts(
@@ -774,11 +791,70 @@ def review_accept(
                 typer.echo("✗ Review accept blocked: project profile evidence gate failed")
             raise typer.Exit(2)
         result = record_acceptance_writeback(project_root, version=resolved_version, feature=feature, accepted_by=reviewer)
+        workflow_run_id = _resolve_acceptance_workflow_run_id(project_root, resolved_version, feature)
         lifecycle_sync = sync_acceptance_workflow_closure(
             project_root,
             version=resolved_version,
             feature=feature,
+            run_id=workflow_run_id or None,
         )
+        if workflow_run_id:
+            from beacon.commands.workflow import (
+                _sync_terminal_manifest,
+                _write_execution_governance_artifacts,
+                _write_workflow_terminal_artifacts,
+            )
+            from beacon.utils.v110_baseline import record_baseline_snapshot
+
+            _write_execution_governance_artifacts(
+                project_root=project_root,
+                version=resolved_version,
+                run_id=workflow_run_id,
+                feature=feature,
+                workflow_status="completed",
+            )
+            _write_workflow_terminal_artifacts(
+                project_root=project_root,
+                version=resolved_version,
+                run_id=workflow_run_id,
+                feature=feature,
+                workflow_status="completed",
+                reason="review_accept_completed",
+            )
+            _sync_terminal_manifest(project_root, version=resolved_version, run_id=workflow_run_id)
+            refreshed_sync = sync_acceptance_workflow_closure(
+                project_root,
+                version=resolved_version,
+                feature=feature,
+                run_id=workflow_run_id,
+                source="review.accept.sync",
+            )
+            lifecycle_sync = {
+                **lifecycle_sync,
+                **refreshed_sync,
+                "synced_stages": sorted(
+                    {
+                        *(
+                            lifecycle_sync.get("synced_stages", [])
+                            if isinstance(lifecycle_sync.get("synced_stages"), list)
+                            else []
+                        ),
+                        *(
+                            refreshed_sync.get("synced_stages", [])
+                            if isinstance(refreshed_sync.get("synced_stages"), list)
+                            else []
+                        ),
+                    }
+                ),
+            }
+            record_baseline_snapshot(
+                project_root,
+                run_id=workflow_run_id,
+                version=resolved_version,
+                feature=feature,
+                workflow_status="completed",
+            )
+            _sync_terminal_manifest(project_root, version=resolved_version, run_id=workflow_run_id)
         payload = {
             "schema_version": "1.0",
             "feature": feature,

@@ -20,8 +20,8 @@ def test_root_help_should_hide_flat_labs_and_bridge_commands():
     result = _invoke(["--help"])
     assert result.exit_code == 0
     stdout = result.stdout
-    assert "labs" in stdout
-    assert "bridge" in stdout
+    assert "labs" not in stdout
+    assert "bridge" not in stdout
     assert "analyze" not in stdout
     assert "team" not in stdout
     assert "ralph-bridge" not in stdout

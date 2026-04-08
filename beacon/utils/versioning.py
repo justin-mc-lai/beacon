@@ -1,4 +1,4 @@
-"""Version resolution helpers with v1.1.12 release-truth support."""
+"""Version resolution helpers with Beacon release-truth support."""
 
 from __future__ import annotations
 

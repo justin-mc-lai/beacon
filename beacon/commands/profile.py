@@ -9,6 +9,7 @@ from typing import Optional
 import typer
 
 from beacon.utils.project_skills import create_project_profile, load_project_profile
+from beacon.utils.skill_discovery import load_skill_discovery
 
 app = typer.Typer(name="profile", help="Manage Beacon project skill profiles")
 
@@ -55,3 +56,27 @@ def show(
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
         return
     typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+
+
+@app.command("discovery")
+def discovery(
+    project_root: Optional[str] = typer.Option(None, "--project-root", "--project", "-p", help="Project root path"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
+):
+    """Show the latest discovery result for project profile review."""
+    root = Path(project_root) if project_root else Path.cwd()
+    payload = load_skill_discovery(root)
+    if not payload:
+        typer.echo("No skill discovery result found", err=True)
+        raise typer.Exit(2)
+    output = {
+        "schema_version": "1.0",
+        "status": str(payload.get("status", "preview") or "preview"),
+        "recommended_profile_id": str(payload.get("recommended_profile_id", "") or ""),
+        "selected_template": str(payload.get("selected_template", "") or ""),
+        "payload": payload,
+    }
+    if json_output:
+        typer.echo(json.dumps(output, ensure_ascii=False, indent=2))
+        return
+    typer.echo(json.dumps(output, ensure_ascii=False, indent=2))

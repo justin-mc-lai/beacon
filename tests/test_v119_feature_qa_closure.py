@@ -83,6 +83,15 @@ def _seed_feature_docs(root: Path) -> None:
     )
 
 
+def _seed_story_scenario_map(root: Path, payload: dict) -> None:
+    docs = root / "docs" / "beacon" / VERSION / ".machine" / "qa"
+    docs.mkdir(parents=True, exist_ok=True)
+    (docs / f"{SLUG}.story-scenario-map.json").write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+
+
 def _mark_implemented(root: Path, *, run_id: str = "run-impl-001") -> None:
     marker = root / ".beacon" / "state"
     marker.mkdir(parents=True, exist_ok=True)
@@ -172,6 +181,25 @@ def test_v119_qa_run_feature_should_write_per_item_verification(tmp_path: Path):
     assert statuses["AC-002"] == "verified"
     assert statuses["TEST-001"] == "passed"
     assert statuses["TEST-002"] == "passed"
+
+
+
+def test_v119_materialized_feature_qa_matrix_should_use_run_scoped_evidence_paths(tmp_path: Path):
+    _seed_feature_docs(tmp_path)
+    _mark_implemented(tmp_path)
+
+    evolve = _invoke(["qa", "evolve", FEATURE, "--project", str(tmp_path), "--version", VERSION, "--json"])
+    assert evolve.exit_code == 0, evolve.stdout
+
+    plan = json.loads((tmp_path / ".beacon" / "qa" / "features" / SLUG / "plan.json").read_text(encoding="utf-8"))
+    matrix_path = tmp_path / ".beacon" / "qa" / "features" / SLUG / "matrix.qa9.json"
+    assert matrix_path.exists()
+    matrix = json.loads(matrix_path.read_text(encoding="utf-8"))
+    assert matrix["source_matrix_path"].endswith(f"{SLUG}.ac-test-matrix.json")
+    for entry in matrix["entries"]:
+        assert "__RUN_ID__" in entry["evidence_path"]
+        assert f".beacon/evidence/qa-feature/{SLUG}/" in entry["evidence_path"]
+    assert plan["targeted_tc_ids"] == ["TC-001", "TC-002"]
 
 
 
@@ -274,3 +302,59 @@ def test_v119_review_quality_and_accept_should_close_formal_obligations(tmp_path
     statuses = {item["artifact"]: item["status"] for item in obligations["obligations"]}
     assert statuses["review_quality"] == "completed"
     assert statuses["acceptance"] == "completed"
+
+
+def test_v119_feature_qa_should_ignore_unselected_story_scenario_families(tmp_path: Path):
+    _seed_feature_docs(tmp_path)
+    _seed_story_scenario_map(
+        tmp_path,
+        {
+            "schema_version": "1.0",
+            "feature": SLUG,
+            "feature_slug": SLUG,
+            "stories": [
+                {
+                    "ac_id": "AC-001",
+                    "required_families": ["happy", "negative"],
+                    "scenarios": [
+                        {"scenario_id": "SC-001", "source_tc_id": "TC-001", "scenario_family": "primary"},
+                        {"scenario_id": "SC-002", "source_tc_id": "TC-099", "scenario_family": "happy"},
+                        {"scenario_id": "SC-003", "source_tc_id": "TC-099", "scenario_family": "negative"},
+                    ],
+                },
+                {
+                    "ac_id": "AC-002",
+                    "required_families": [],
+                    "scenarios": [
+                        {"scenario_id": "SC-004", "source_tc_id": "TC-002", "scenario_family": "primary"},
+                    ],
+                },
+            ],
+            "scenarios": [],
+        },
+    )
+    _mark_implemented(tmp_path)
+    script = _write_passing_layer_script(tmp_path)
+
+    result = _invoke(
+        [
+            "qa",
+            "run",
+            FEATURE,
+            "--project",
+            str(tmp_path),
+            "--version",
+            VERSION,
+            "--layer-command",
+            f"contract=sh {script}",
+            "--layer-command",
+            f"integration=sh {script}",
+        ]
+    )
+    assert result.exit_code == 0, result.stdout
+
+    qa_status = json.loads((tmp_path / ".beacon" / "qa" / "status.json").read_text(encoding="utf-8"))
+    assert qa_status["release_ready"] is True
+    ac_closure = json.loads((tmp_path / ".beacon" / "qa" / "features" / SLUG / "ac-closure.json").read_text(encoding="utf-8"))
+    blocked = [item for item in ac_closure["reports"] if item["closure_status"] != "accepted"]
+    assert blocked == []

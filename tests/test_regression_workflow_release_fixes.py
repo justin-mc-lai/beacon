@@ -318,6 +318,10 @@ def test_review_accept_should_backfill_workflow_closure_from_accepted_artifacts(
     assert run_state is not None
     assert run_state["status"] == "completed"
     assert any(item.get("event") == "workflow_completed" for item in run_state.get("events", []))
+    gate_report = json.loads((beacon_dir / "gate-report.json").read_text(encoding="utf-8"))
+    evidence_manifest = json.loads((beacon_dir / "evidence-manifest.json").read_text(encoding="utf-8"))
+    assert gate_report["run_id"] == run_id
+    assert evidence_manifest["run_id"] == run_id
 
     help_result = _invoke(["help", "--project-root", str(tmp_path), "--version", version, "--feature", feature, "--json"])
     assert help_result.exit_code == 0, help_result.stdout

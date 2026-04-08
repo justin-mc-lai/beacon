@@ -25,6 +25,7 @@ from beacon.utils.project_skills import (
 from beacon.utils.qa_precision import load_feature_qa_scorecard
 from beacon.utils.revision_state import load_revision_state
 from beacon.utils.runtime import load_run_state
+from beacon.utils.skill_discovery import build_discovery_hint, load_skill_discovery
 from beacon.utils.scoring import (
     compute_closure_score,
     compute_quality_score,
@@ -32,7 +33,7 @@ from beacon.utils.scoring import (
     compute_test_score,
 )
 from beacon.utils.story_state import feature_slug, load_story_state, summarize_story_items
-from beacon.utils.versioning import describe_project_version_context, resolve_docs_version
+from beacon.utils.versioning import describe_project_version_context, normalize_version, resolve_docs_version
 from beacon.utils.workflow_memory import compute_workflow_progress, resolve_workflow_run_id
 
 
@@ -80,6 +81,17 @@ def _profile_binding_source(project_root: Path, *, version: str, feature: str) -
     if default_project_profile(project_root):
         return "default_profile"
     return "none"
+
+
+def _supports_skill_discover(version: str) -> bool:
+    normalized = normalize_version(version) or ""
+    if not normalized.startswith("v"):
+        return False
+    try:
+        major, minor, patch = [int(part) for part in normalized[1:].split(".")]
+    except Exception:  # noqa: BLE001
+        return False
+    return (major, minor, patch) >= (1, 2, 0)
 
 
 def _stage_local_execution_binding(
@@ -191,6 +203,7 @@ def _next_step(
     stage_binding: dict[str, str] | None = None,
     implementation_plan_gate: dict[str, Any] | None = None,
     version_guard: dict[str, Any] | None = None,
+    discovery_hint: dict[str, Any] | None = None,
 ) -> dict[str, str]:
     quoted_feature = json.dumps(feature, ensure_ascii=False)
     base = f'--project-root {project_root} --version {version}'
@@ -291,6 +304,12 @@ def _next_step(
             }
             for reason in blocking_reasons
         ):
+            if _supports_skill_discover(version) and not profile and bool((discovery_hint or {}).get("recommended", False)):
+                return {
+                    "action": "skill-discover",
+                    "reason": str((discovery_hint or {}).get("reason") or "project skill onboarding is not configured; discover a bounded project profile before implementation planning"),
+                    "command": str((discovery_hint or {}).get("command") or f"beacon skill discover --project-root {project_root} --json"),
+                }
             return {
                 "action": "implement-plan",
                 "reason": "implementation requires a compiled plan aligned to the active frozen revision",
@@ -350,6 +369,13 @@ def _next_step(
             "command": f"beacon freeze {quoted_feature} {base}",
         }
 
+    if _supports_skill_discover(version) and not profile and delivery_status in {"", "idle", "draft"} and bool((discovery_hint or {}).get("recommended", False)):
+        return {
+            "action": "skill-discover",
+            "reason": str((discovery_hint or {}).get("reason") or "project skill onboarding can be configured before implementation proceeds"),
+            "command": str((discovery_hint or {}).get("command") or f"beacon skill discover --project-root {project_root} --json"),
+        }
+
     if profile:
         profile_id = str((profile or {}).get("profile_id", "") or "")
         gate_status = str((profile_gate or {}).get("status", "") or "")
@@ -397,18 +423,25 @@ def _next_step(
             "command": f"beacon implement run {quoted_feature} {base} --runner native-single",
         }
 
-    if not run_id:
-        return {
-            "action": "workflow-start",
-            "reason": "no active workflow run found for the requested feature/version",
-            "command": f"beacon workflow start {quoted_feature} --project {project_root} --version {version}",
-        }
-
     if delivery_status in {"implemented", "verifying", "verified"} or next_stage == "verify":
         return {
             "action": "review-quality",
             "reason": "implementation exists; next step is verification/review closure",
             "command": f"beacon review quality {quoted_feature} {base}",
+        }
+
+    if delivery_status in {"accepted"}:
+        return {
+            "action": "release-check",
+            "reason": "accepted revision can move to release readiness evaluation",
+            "command": f"beacon gate check release --project-root {project_root} --version {version}",
+        }
+
+    if not run_id:
+        return {
+            "action": "workflow-start",
+            "reason": "no active workflow run found for the requested feature/version",
+            "command": f"beacon workflow start {quoted_feature} --project {project_root} --version {version}",
         }
 
     if next_stage in {"think", "user-story", "prd", "prototype", "test-case"}:
@@ -481,6 +514,8 @@ def build_help_payload(
         else {}
     )
     feature_scorecard = load_feature_qa_scorecard(project_root, feature=feature_name) if feature_name else {}
+    discovery_state = load_skill_discovery(project_root) if _supports_skill_discover(resolved_version) else None
+    discovery_hint = build_discovery_hint(project_root) if _supports_skill_discover(resolved_version) and feature_name else {}
     control_plane = build_resume_contract(project_root, run_id=resolved_run_id or None)
     plan_supported = bool(feature_name and implementation_plan_supported(resolved_version))
     implementation_plan_gate = (
@@ -545,6 +580,7 @@ def build_help_payload(
         stage_binding=stage_binding,
         implementation_plan_gate=implementation_plan_gate,
         version_guard=version_guard,
+        discovery_hint=discovery_hint,
     )
     decision_trace = [
         {
@@ -568,6 +604,17 @@ def build_help_payload(
             "status": "resolved" if profile else "not_configured",
             "profile_id": str((profile or {}).get("profile_id", "") or ""),
             "binding_source": profile_binding_source,
+        },
+        {
+            "step": "skill_discovery",
+            "status": "resolved" if discovery_state else "not_configured",
+            "selected_template": str((discovery_state or {}).get("selected_template", "") or ""),
+            "applied": bool((discovery_state or {}).get("applied", False)),
+        },
+        {
+            "step": "skill_discovery_hint",
+            "status": "recommended" if bool((discovery_hint or {}).get("recommended", False)) else "not_recommended",
+            "templates": list((discovery_hint or {}).get("templates", [])),
         },
         {
             "step": "stage_local_execution_binding",
@@ -641,6 +688,8 @@ def build_help_payload(
         }
         if profile
         else None,
+        "skill_discovery": discovery_state,
+        "skill_discovery_hint": discovery_hint,
         "project_gate": profile_gate,
         "execution_surface": execution_surface,
         "learning_surface": learning_surface,

@@ -22,17 +22,18 @@
 ## Current Decision Summary
 
 - keep: `0`
-- review: `1`
-- discard: `1`
+- review: `2`
+- discard: `0`
 
 ## Latest Score Delta
 
-- main_kpi_score: `-`
-- score_delta.main_kpi_score: `-`
-- score_delta.false_complete_rate: `-`
+- main_kpi_score: `0.0`
+- score_delta.main_kpi_score: `None`
+- score_delta.false_complete_rate: `None`
 
 ## Artifacts
 
 - decision_engine: `.beacon/state/evo/decision-engine.json`
 - scorecard: `.beacon/state/evo/scorecards/latest.json`
 - latest_experiment: `.beacon/state/evo/experiments/latest.json`
+

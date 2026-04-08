@@ -19,6 +19,13 @@ from beacon.utils.implement_adapters import (
 from beacon.utils.project_skills import bind_feature_profile, list_skill_registry
 from beacon.utils.runtime import now_iso
 from beacon.utils.skill_config import load_yaml_like, write_yaml_like
+from beacon.utils.skill_discovery import (
+    apply_skill_discovery,
+    build_skill_discovery_payload,
+    load_skill_discovery,
+    validate_skill_discovery_payload,
+    write_skill_discovery_state,
+)
 from beacon.utils.skill_drift import build_skill_drift_report
 
 app = typer.Typer(name="skill", help="Manage Beacon implementation skill adapters")
@@ -307,6 +314,18 @@ def doctor(
     adapters = discover_skill_adapters(root)
     preferred = resolve_default_runner(root)
     checks = [_doctor_adapter(adapter_id, payload, root) for adapter_id, payload in sorted(adapters.items())]
+    discovery_payload = load_skill_discovery(root)
+    if discovery_payload:
+        discovery_issues = validate_skill_discovery_payload(root, discovery_payload)
+        checks.append(
+            {
+                "adapter_id": "skill-discovery",
+                "detected": True,
+                "evidence": [str((root / ".beacon" / "state" / "skill-discovery").relative_to(root))],
+                "issues": discovery_issues,
+                "status": "pass" if not discovery_issues else "fail",
+            }
+        )
     status = "pass"
     if any(item["status"] == "fail" for item in checks):
         status = "fail"
@@ -335,6 +354,39 @@ def doctor(
         typer.echo(f"- {item['status'].upper()}: {item['adapter_id']} :: {', '.join(item['issues']) or 'ok'}")
     if status == "fail":
         raise typer.Exit(2)
+
+
+@app.command("discover")
+def discover(
+    project_root: str = typer.Option("", "--project-root", "--project", "-p", help="Project root path"),
+    template: str = typer.Option("", "--template", help="Template id override"),
+    profile_id: str = typer.Option("", "--profile", help="Recommended profile id override"),
+    from_memory: bool = typer.Option(False, "--from-memory", help="Use prior discovery artifacts as memory signals"),
+    apply_recommended: bool = typer.Option(False, "--apply-recommended", help="Apply the recommended profile/config"),
+    dry_run: bool = typer.Option(True, "--dry-run/--no-dry-run", help="Preview by default; disable for explicit apply"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
+):
+    """Discover bounded project skill/profile recommendations for the current project."""
+    root = (Path(project_root) if project_root else Path.cwd()).resolve()
+    payload = build_skill_discovery_payload(
+        root,
+        template_id=template or None,
+        from_memory=from_memory,
+        profile_id=profile_id or None,
+    )
+    if apply_recommended and not dry_run:
+        payload = apply_skill_discovery(root, payload)
+    state_path = write_skill_discovery_state(root, payload)
+    payload["state_path"] = str(state_path.relative_to(root))
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        return
+    typer.echo("Beacon Skill Discover")
+    typer.echo("=" * 22)
+    typer.echo(f"status: {payload.get('status')}")
+    typer.echo(f"selected_template: {payload.get('selected_template', '') or '-'}")
+    typer.echo(f"recommended_profile_id: {payload.get('recommended_profile_id', '') or '-'}")
+    typer.echo(f"state_path: {payload.get('state_path', '')}")
 
 
 @app.command("sync-check")

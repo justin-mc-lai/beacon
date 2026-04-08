@@ -61,6 +61,17 @@ def _render_human(payload: dict[str, object]) -> str:
         f"- why     : {next_step.get('reason', '')}",
         f"- command : {next_step.get('command', '')}",
     ]
+    discovery = payload.get("skill_discovery_hint", {}) if isinstance(payload.get("skill_discovery_hint"), dict) else {}
+    if not discovery:
+        discovery = payload.get("skill_discovery", {}) if isinstance(payload.get("skill_discovery"), dict) else {}
+    if bool(discovery.get("recommended")):
+        lines.extend([
+            "",
+            "skill discovery",
+            f"- reason   : {discovery.get('reason', '')}",
+            f"- command  : {discovery.get('command', '')}",
+            f"- templates: {', '.join(discovery.get('templates', [])) if isinstance(discovery.get('templates'), list) else ''}",
+        ])
     reasons = payload.get("blocking_reasons", []) if isinstance(payload.get("blocking_reasons"), list) else []
     lines.extend(["", "blocking reasons"])
     if reasons:
