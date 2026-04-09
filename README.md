@@ -181,6 +181,32 @@ beacon doctor verify-materials --project-root . --version v1.2.0 --json
 beacon gate check release --project-root . --version v1.2.0 --json
 ```
 
+### QA autoresearch 最短触发（首屏版）
+
+如果你的目标是 **PRD / Story / QA → QA 演进迭代 → keep/discard → 下一轮 QA**，只记下面这组：
+
+```bash
+# 1) 用自然语言拿路由
+beacon ask "帮我对「<feature>」做 QA 验收" --project-root . --version v1.2.0 --plan-only --json
+
+# 2) 真正跑 QA
+beacon qa run "<feature>" --project . --version v1.2.0 --mode story-exhaustive --json
+
+# 3) 生成 QA 演进计划
+beacon qa evolve "<feature>" --project . --version v1.2.0 --mode story-exhaustive --json
+
+# 4) 跑 autoresearch 风格实验
+beacon version experiment "QA autoresearch for <feature>" --version v1.2.0 --project . --json
+```
+
+注意：
+
+- `qa autoresearch` 在 Beacon 里不是单一魔法命令
+- 当前最稳定的闭环是：`qa run → qa evolve → qa audit label → version experiment`
+- 详情请读：
+  - `docs/beacon/v1.2.0/execution/qa-autoresearch-usage-guide.md`
+  - `docs/beacon/v1.2.0/execution/autoresearch-module-evolution.md`
+
 如果你想继续读完整命令文档，请看下面的 Command Docs 入口。
 
 ### Command Docs / 命令文档入口
