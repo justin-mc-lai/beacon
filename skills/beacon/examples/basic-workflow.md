@@ -12,6 +12,7 @@ Read first:
 
 - [`../../../docs/beacon/v1.2.0/SUMMARY.md`](../../../docs/beacon/v1.2.0/SUMMARY.md)
 - [`../../../docs/beacon/v1.2.0/execution/index.md`](../../../docs/beacon/v1.2.0/execution/index.md)
+- [`../../../docs/beacon/v1.2.0/execution/workflow-usage-guide.md`](../../../docs/beacon/v1.2.0/execution/workflow-usage-guide.md)
 
 Related focused examples:
 

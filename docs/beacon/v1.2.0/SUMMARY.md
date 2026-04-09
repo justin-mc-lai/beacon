@@ -63,9 +63,10 @@ This release line is considered closed only when it includes:
 8. `./qa/test-cases/beacon-v1.2.0-command-simplification-and-project-skill-workflow.md`
 9. `./execution/command-surface-simplification-blueprint.md`
 10. `./execution/architecture-blueprint.md`
-11. `./execution/project-skill-qa-evolution-blueprint.md`
-12. `./execution/target-project-kernel-blueprint.md`
-13. `./source-architecture/index.md`
-14. `./execution/boundaries.md`
-15. `./release/v1.2.0.md`
-16. `./execution/index.md`
+11. `./execution/workflow-usage-guide.md`
+12. `./execution/project-skill-qa-evolution-blueprint.md`
+13. `./execution/target-project-kernel-blueprint.md`
+14. `./source-architecture/index.md`
+15. `./execution/boundaries.md`
+16. `./release/v1.2.0.md`
+17. `./execution/index.md`

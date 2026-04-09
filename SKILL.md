@@ -263,9 +263,9 @@ requirement material
 1. `docs/beacon/v1.2.0/SUMMARY.md`
 2. `docs/beacon/v1.2.0/execution/index.md`
 3. `docs/beacon/v1.2.0/execution/architecture-blueprint.md`
-4. `docs/beacon/v1.2.0/execution/requirement-anchor-implementation-blueprint.md`
-5. `docs/beacon/v1.2.0/release/v1.2.0.md`
-6. `docs/beacon/v1.2.0/execution/prd-us-to-plan-implementation-progress-blueprint.md`
+4. `docs/beacon/v1.2.0/execution/workflow-usage-guide.md`
+5. `docs/beacon/v1.2.0/execution/requirement-anchor-implementation-blueprint.md`
+6. `docs/beacon/v1.2.0/release/v1.2.0.md`
 
 如果你关注上一轮闭环增强基线，再看：
 
@@ -334,6 +334,7 @@ requirement material
 ### 文档入口
 - `docs/beacon/v1.2.0/SUMMARY.md`
 - `docs/beacon/v1.2.0/execution/index.md`
+- `docs/beacon/v1.2.0/execution/workflow-usage-guide.md`
 - `docs/beacon/v1.2.0/release/v1.2.0.md`
 - `docs/beacon/v1.2.0/prd/beacon-version-truth-profile-boundary-governance.md`
 

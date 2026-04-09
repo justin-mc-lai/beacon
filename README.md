@@ -190,6 +190,7 @@ beacon gate check release --project-root . --version v1.2.0 --json
 - `docs/beacon/v1.2.0/SUMMARY.md`：当前版本总览
 - `docs/beacon/v1.2.0/execution/index.md`：执行面索引与推荐阅读顺序
 - `docs/beacon/v1.2.0/execution/architecture-blueprint.md`：架构蓝图主文档
+- `docs/beacon/v1.2.0/execution/workflow-usage-guide.md`：完整工作流使用指南
 - `docs/beacon/v1.2.0/execution/boundaries.md`：边界与放行约束
 - `docs/beacon/v1.2.0/execution/command-surface-simplification-blueprint.md`：command surface simplification blueprint
 - `docs/beacon/v1.2.0/execution/project-skill-qa-evolution-blueprint.md`：project skill / QA evolution blueprint

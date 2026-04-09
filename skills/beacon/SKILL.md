@@ -249,9 +249,9 @@ Use this skill when:
 1. [Summary](../../docs/beacon/v1.2.0/SUMMARY.md)
 2. [Execution index](../../docs/beacon/v1.2.0/execution/index.md)
 3. [Architecture blueprint](../../docs/beacon/v1.2.0/execution/architecture-blueprint.md)
-4. [Implementation blueprint](../../docs/beacon/v1.2.0/execution/requirement-anchor-implementation-blueprint.md)
-5. [Release note](../../docs/beacon/v1.2.0/release/v1.2.0.md)
-6. [Plan closure blueprint](../../docs/beacon/v1.2.0/execution/prd-us-to-plan-implementation-progress-blueprint.md)
+4. [Workflow usage guide](../../docs/beacon/v1.2.0/execution/workflow-usage-guide.md)
+5. [Implementation blueprint](../../docs/beacon/v1.2.0/execution/requirement-anchor-implementation-blueprint.md)
+6. [Release note](../../docs/beacon/v1.2.0/release/v1.2.0.md)
 
 If you are working on the latest landed closure line, then read:
 
@@ -274,6 +274,7 @@ If you are planning the next QA precision line, then read:
 
 - [Summary](../../docs/beacon/v1.2.0/SUMMARY.md)
 - [Execution index](../../docs/beacon/v1.2.0/execution/index.md)
+- [Workflow usage guide](../../docs/beacon/v1.2.0/execution/workflow-usage-guide.md)
 - [Release note](../../docs/beacon/v1.2.0/release/v1.2.0.md)
 - [Architecture blueprint](../../docs/beacon/v1.2.0/execution/architecture-blueprint.md)
 - [Closure loop blueprint](../../docs/beacon/v1.1.9/execution/closure-loop-blueprint.md)
