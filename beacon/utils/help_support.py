@@ -139,6 +139,11 @@ def _blocking_reasons(
     implementation_plan_gate: dict[str, Any] | None = None,
 ) -> list[str]:
     reasons: list[str] = []
+    feature_scorecard = feature_scorecard if isinstance(feature_scorecard, dict) else {}
+    delivery_status = str(revision_state.get("delivery_status", "") or "")
+    continue_decision = str(feature_scorecard.get("continue_decision") or "").strip()
+    freeze_gate_exempt = delivery_status in {"implemented", "verifying", "verified", "accepted", "released"} or continue_decision == "ready_for_release"
+
     if isinstance(version_guard, dict) and str(version_guard.get("status", "") or "") == "blocked":
         code = str(version_guard.get("reason_code", "") or "").strip()
         if code:
@@ -150,8 +155,7 @@ def _blocking_reasons(
             for item in (takeover_gate.get("issues") or [])
             if isinstance(item, dict)
         )
-    delivery_status = str(revision_state.get("delivery_status", "") or "")
-    if str(revision_state.get("doc_status", "") or "draft") != "frozen":
+    if str(revision_state.get("doc_status", "") or "draft") != "frozen" and not freeze_gate_exempt:
         reasons.append("revision_not_frozen")
     verify_status = str(workflow_progress.get("stages", {}).get("verify", {}).get("status", "") or "")
     if verify_status == "failed":
@@ -169,7 +173,6 @@ def _blocking_reasons(
         code = str(item.get("reason_code", "") or "").strip()
         if code:
             reasons.append(code)
-    feature_scorecard = feature_scorecard if isinstance(feature_scorecard, dict) else {}
     if str(feature_scorecard.get("continue_decision") or "").strip() == "stop_for_repair":
         reasons.append("qa_stop_for_repair")
         reasons.extend(

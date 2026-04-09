@@ -175,6 +175,23 @@ project_skills:
     )
 
 
+def _write_demo_profile_with_qa_layer_commands(root: Path, script: Path) -> None:
+    _write_demo_profile(root)
+    config_path = root / "beacon.config.yaml"
+    config_path.write_text(
+        config_path.read_text(encoding="utf-8")
+        .replace(
+            "      required_cases:\n        - upload_mp4_success\n      orchestration:\n",
+            "      required_cases:\n        - upload_mp4_success\n"
+            "      qa_layer_commands:\n"
+            f"        contract: sh {script}\n"
+            f"        integration: sh {script}\n"
+            "      orchestration:\n",
+        ),
+        encoding="utf-8",
+    )
+
+
 def _seed_release_state(root: Path) -> None:
     (root / ".beacon").mkdir(parents=True, exist_ok=True)
     (root / ".beacon" / "state" / "evo" / "scorecards").mkdir(parents=True, exist_ok=True)
@@ -268,6 +285,36 @@ def test_v110_qa_run_should_consume_project_profile_gate(tmp_path: Path):
     assert (tmp_path / ".beacon" / "gateway.txt").exists()
 
 
+def test_v110_qa_run_should_use_profile_qa_layer_commands_when_bound(tmp_path: Path):
+    _seed_common_docs(tmp_path)
+    _mark_implemented(tmp_path)
+    script = _write_passing_layer_script(tmp_path)
+    _write_demo_profile_with_qa_layer_commands(tmp_path, script)
+    bind = _invoke(["skill", "bind", FEATURE, "--profile", "demo", "--project-root", str(tmp_path), "--version", VERSION, "--json"])
+    assert bind.exit_code == 0, bind.stdout
+
+    result = _invoke(
+        [
+            "qa",
+            "run",
+            FEATURE,
+            "--project",
+            str(tmp_path),
+            "--version",
+            VERSION,
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["status"] == "passed"
+    assert payload["project_profile"]["profile_id"] == "demo"
+    assert payload["project_profile_gate"]["status"] == "pass"
+    assert payload["feature_scorecard"]["release_ready"] is True
+    assert (tmp_path / ".beacon" / "pipeline.txt").exists()
+    assert (tmp_path / ".beacon" / "gateway.txt").exists()
+
+
 def test_v110_release_scorecard_should_consume_feature_scorecard_and_project_gate(tmp_path: Path):
     _seed_common_docs(tmp_path)
     _mark_implemented(tmp_path)
@@ -302,6 +349,38 @@ def test_v110_release_scorecard_should_consume_feature_scorecard_and_project_gat
     summary = payload["feature_qa_scorecard"]
     assert summary["continue_decision"] == "ready_for_release"
     assert summary["coverage_current"]["coverage_rate"] == 1.0
+
+
+def test_v110_help_should_not_report_revision_not_frozen_after_release_ready_qa(tmp_path: Path):
+    _seed_common_docs(tmp_path)
+    _mark_implemented(tmp_path)
+    script = _write_passing_layer_script(tmp_path)
+
+    qa = _invoke(
+        [
+            "qa",
+            "run",
+            FEATURE,
+            "--project",
+            str(tmp_path),
+            "--version",
+            VERSION,
+            "--layer-command",
+            f"contract=sh {script}",
+            "--layer-command",
+            f"integration=sh {script}",
+        ]
+    )
+    assert qa.exit_code == 0, qa.stdout
+
+    help_result = _invoke(["help", "--project-root", str(tmp_path), "--version", VERSION, "--feature", FEATURE, "--json"])
+    assert help_result.exit_code == 0, help_result.stdout
+    payload = json.loads(help_result.stdout)
+    assert payload["feature_scorecard"]["release_ready"] is True
+    assert payload["feature_scorecard"]["continue_decision"] == "ready_for_release"
+    assert payload["blocked"] is False
+    assert "revision_not_frozen" not in payload["blocking_reasons"]
+    assert payload["next_step"]["action"] == "release-check"
 
 
 def test_v110_material_audit_should_require_source_architecture_and_project_skill_blueprint(tmp_path: Path):

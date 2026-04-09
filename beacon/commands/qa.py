@@ -11,6 +11,7 @@ from typing import Any, Optional
 import typer
 
 from beacon.commands.auto_test import _update_evidence_manifest
+from beacon.utils.implement_adapters import format_template
 from beacon.utils.exhaustiveness import build_exhaustiveness_report, write_exhaustiveness_report
 from beacon.utils.project_skills import (
     evaluate_project_profile_gate,
@@ -111,6 +112,20 @@ FLAG_NAMES = {
     "--verbose",
     "-v",
     "--json",
+}
+LAYER_SPECIFIC_OPTION_MAP: dict[str, tuple[str, ...]] = {
+    "ui": ("--ui-command",),
+    "api-curl": ("--api-curl-command",),
+    "unit": ("--unit-command",),
+    "smoke": ("--smoke-command",),
+    "visual": ("--visual-command",),
+    "functional": ("--functional-command",),
+    "interface": ("--interface-command", "--api-curl-command"),
+    "contract": ("--contract-command",),
+    "integration": ("--integration-command",),
+    "regression": ("--regression-command",),
+    "exception": ("--exception-command",),
+    "compatibility": ("--compatibility-command",),
 }
 
 
@@ -215,6 +230,87 @@ def _looks_like_feature_request(args: list[str]) -> bool:
     if not positional:
         return False
     return positional.strip().lower() not in KNOWN_SCOPES
+
+
+def _explicit_layer_overrides(args: list[str]) -> set[str]:
+    explicit: set[str] = set()
+    index = 0
+    while index < len(args):
+        item = str(args[index])
+        if item == "--layer-command" and index + 1 < len(args):
+            raw = str(args[index + 1])
+            if "=" in raw:
+                layer = raw.split("=", 1)[0].strip().lower().replace("_", "-")
+                if layer:
+                    explicit.add(layer)
+            index += 2
+            continue
+        if item.startswith("--layer-command="):
+            raw = item.split("=", 1)[1]
+            if "=" in raw:
+                layer = raw.split("=", 1)[0].strip().lower().replace("_", "-")
+                if layer:
+                    explicit.add(layer)
+            index += 1
+            continue
+        for layer, option_names in LAYER_SPECIFIC_OPTION_MAP.items():
+            matched = False
+            for option_name in option_names:
+                if item == option_name:
+                    explicit.add(layer)
+                    index += 2
+                    matched = True
+                    break
+                if item.startswith(f"{option_name}="):
+                    explicit.add(layer)
+                    index += 1
+                    matched = True
+                    break
+            if matched:
+                break
+        else:
+            index += 1
+    return explicit
+
+
+def _profile_layer_command_args(
+    *,
+    project_profile: dict[str, Any] | None,
+    project_root: Path,
+    feature: str,
+    version: str,
+    targeted_layers: list[str],
+    raw_args: list[str],
+) -> list[str]:
+    if not isinstance(project_profile, dict) or not project_profile:
+        return []
+    profile_commands = project_profile.get("qa_layer_commands")
+    if not isinstance(profile_commands, dict):
+        return []
+
+    explicit_layers = _explicit_layer_overrides(raw_args)
+    context = {
+        "project_root": str(project_root),
+        "feature": feature,
+        "feature_slug": feature_slug(feature),
+        "version": version,
+        "profile_id": str(project_profile.get("profile_id") or ""),
+    }
+    auto_args: list[str] = []
+    for raw_layer in targeted_layers:
+        layer = str(raw_layer or "").strip().lower().replace("_", "-")
+        if not layer or layer in explicit_layers:
+            continue
+        command_template = str(
+            profile_commands.get(layer)
+            or profile_commands.get(layer.replace("-", "_"))
+            or profile_commands.get("default")
+            or ""
+        ).strip()
+        if not command_template:
+            continue
+        auto_args.extend(["--layer-command", f"{layer}={format_template(command_template, context)}"])
+    return auto_args
 
 
 def _collect_evidence_refs(payload: dict[str, Any], *, project_root: Path, feature_matrix_rel: str) -> list[str]:
@@ -363,6 +459,16 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
         "browser-use",
         "--require-fresh-evidence",
     ]
+    auto_args.extend(
+        _profile_layer_command_args(
+            project_profile=project_profile,
+            project_root=project_root,
+            feature=feature,
+            version=version,
+            targeted_layers=list(plan.get("targeted_layers") or []),
+            raw_args=args,
+        )
+    )
     command_exit = _beacon_exec_silent(auto_args, cwd=_repo_root()) if json_output else _beacon_exec(auto_args, cwd=_repo_root())
     qa_status = load_qa_status(project_root)
     verified_ids, failed_ids, per_item_results = collect_verification_writeback(plan=plan, qa_status=qa_status)
