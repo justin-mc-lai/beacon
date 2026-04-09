@@ -113,6 +113,10 @@ beacon help --project-root . --version v1.2.0 --feature "<feature>" --json
 - 已生成主链 requirement artifacts
 - 已能通过 `help` 获得下一步推荐
 
+如果你想专门给最终用户一份“少记命令、多说意图”的版本，请同时阅读：
+
+- `./natural-language-trigger-handbook.md`
+
 ---
 
 ## 5. 完整工作流：推荐顺序

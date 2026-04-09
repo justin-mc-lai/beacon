@@ -250,8 +250,9 @@ Use this skill when:
 2. [Execution index](../../docs/beacon/v1.2.0/execution/index.md)
 3. [Architecture blueprint](../../docs/beacon/v1.2.0/execution/architecture-blueprint.md)
 4. [Workflow usage guide](../../docs/beacon/v1.2.0/execution/workflow-usage-guide.md)
-5. [Implementation blueprint](../../docs/beacon/v1.2.0/execution/requirement-anchor-implementation-blueprint.md)
-6. [Release note](../../docs/beacon/v1.2.0/release/v1.2.0.md)
+5. [Natural-language trigger handbook](../../docs/beacon/v1.2.0/execution/natural-language-trigger-handbook.md)
+6. [Implementation blueprint](../../docs/beacon/v1.2.0/execution/requirement-anchor-implementation-blueprint.md)
+7. [Release note](../../docs/beacon/v1.2.0/release/v1.2.0.md)
 
 If you are working on the latest landed closure line, then read:
 
@@ -275,6 +276,7 @@ If you are planning the next QA precision line, then read:
 - [Summary](../../docs/beacon/v1.2.0/SUMMARY.md)
 - [Execution index](../../docs/beacon/v1.2.0/execution/index.md)
 - [Workflow usage guide](../../docs/beacon/v1.2.0/execution/workflow-usage-guide.md)
+- [Natural-language trigger handbook](../../docs/beacon/v1.2.0/execution/natural-language-trigger-handbook.md)
 - [Release note](../../docs/beacon/v1.2.0/release/v1.2.0.md)
 - [Architecture blueprint](../../docs/beacon/v1.2.0/execution/architecture-blueprint.md)
 - [Closure loop blueprint](../../docs/beacon/v1.1.9/execution/closure-loop-blueprint.md)

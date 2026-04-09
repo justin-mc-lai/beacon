@@ -191,6 +191,7 @@ beacon gate check release --project-root . --version v1.2.0 --json
 - `docs/beacon/v1.2.0/execution/index.md`：执行面索引与推荐阅读顺序
 - `docs/beacon/v1.2.0/execution/architecture-blueprint.md`：架构蓝图主文档
 - `docs/beacon/v1.2.0/execution/workflow-usage-guide.md`：完整工作流使用指南
+- `docs/beacon/v1.2.0/execution/natural-language-trigger-handbook.md`：稳定可靠的自然语言触发手册
 - `docs/beacon/v1.2.0/execution/boundaries.md`：边界与放行约束
 - `docs/beacon/v1.2.0/execution/command-surface-simplification-blueprint.md`：command surface simplification blueprint
 - `docs/beacon/v1.2.0/execution/project-skill-qa-evolution-blueprint.md`：project skill / QA evolution blueprint
@@ -258,6 +259,18 @@ beacon verify run "KZFJ-1110 启动页营销内容配置" \
 - 需要 Beacon 在 accept 前阻断“关键 case 没跑”的场景
 
 ### 自然语言入口
+
+如果用户记不住太多命令，优先只教这 3 个：
+
+```bash
+beacon ask "<自然语言目标>" --project-root . --version v1.2.0 --plan-only --json
+beacon help --project-root . --version v1.2.0 --feature "<feature>" --json
+beacon status --board --project-root . --version v1.2.0
+```
+
+推荐配套阅读：
+
+- `docs/beacon/v1.2.0/execution/natural-language-trigger-handbook.md`
 
 ```bash
 # 默认只生成计划，不执行

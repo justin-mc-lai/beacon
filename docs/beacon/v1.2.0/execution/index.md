@@ -13,12 +13,13 @@
 9. `../qa/test-cases/beacon-v1.2.0-command-simplification-and-project-skill-workflow.md`
 10. `./architecture-blueprint.md`
 11. `./workflow-usage-guide.md`
-12. `./command-surface-simplification-blueprint.md`
-13. `./project-skill-qa-evolution-blueprint.md`
-14. `./target-project-kernel-blueprint.md`
-15. `../source-architecture/index.md`
-16. `./boundaries.md`
-17. `../release/v1.2.0.md`
+12. `./natural-language-trigger-handbook.md`
+13. `./command-surface-simplification-blueprint.md`
+14. `./project-skill-qa-evolution-blueprint.md`
+15. `./target-project-kernel-blueprint.md`
+16. `../source-architecture/index.md`
+17. `./boundaries.md`
+18. `../release/v1.2.0.md`
 
 ## Notes
 
@@ -28,5 +29,6 @@
 - `beacon skill discover` remains a subordinate project-onboarding surface, not a new product center.
 - command-surface simplification ships here as a bounded operator-contract change; any future rename/merge program remains later work.
 - `./workflow-usage-guide.md` is the recommended human operator guide for end-to-end usage.
+- `./natural-language-trigger-handbook.md` is the recommended short-prompt guide for users who cannot remember many commands.
 - `./evo-harness-contract.md`
 - `./evo-scorecard-contract.md`
