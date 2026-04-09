@@ -117,6 +117,11 @@ beacon help --project-root . --version v1.2.0 --feature "<feature>" --json
 
 - `./natural-language-trigger-handbook.md`
 
+如果你下一步要把 QA 做成 autoresearch 风格的受控演进，请继续阅读：
+
+- `./qa-autoresearch-usage-guide.md`
+- `./autoresearch-module-evolution.md`
+
 ---
 
 ## 5. 完整工作流：推荐顺序

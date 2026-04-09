@@ -192,6 +192,8 @@ beacon gate check release --project-root . --version v1.2.0 --json
 - `docs/beacon/v1.2.0/execution/architecture-blueprint.md`：架构蓝图主文档
 - `docs/beacon/v1.2.0/execution/workflow-usage-guide.md`：完整工作流使用指南
 - `docs/beacon/v1.2.0/execution/natural-language-trigger-handbook.md`：稳定可靠的自然语言触发手册
+- `docs/beacon/v1.2.0/execution/qa-autoresearch-usage-guide.md`：QA autoresearch 稳定触发与执行手册
+- `docs/beacon/v1.2.0/execution/autoresearch-module-evolution.md`：autoresearch 在 Beacon 各模块中的演进地图
 - `docs/beacon/v1.2.0/execution/boundaries.md`：边界与放行约束
 - `docs/beacon/v1.2.0/execution/command-surface-simplification-blueprint.md`：command surface simplification blueprint
 - `docs/beacon/v1.2.0/execution/project-skill-qa-evolution-blueprint.md`：project skill / QA evolution blueprint
@@ -271,6 +273,8 @@ beacon status --board --project-root . --version v1.2.0
 推荐配套阅读：
 
 - `docs/beacon/v1.2.0/execution/natural-language-trigger-handbook.md`
+- `docs/beacon/v1.2.0/execution/qa-autoresearch-usage-guide.md`
+- `docs/beacon/v1.2.0/execution/autoresearch-module-evolution.md`
 
 ```bash
 # 默认只生成计划，不执行

@@ -265,8 +265,10 @@ requirement material
 3. `docs/beacon/v1.2.0/execution/architecture-blueprint.md`
 4. `docs/beacon/v1.2.0/execution/workflow-usage-guide.md`
 5. `docs/beacon/v1.2.0/execution/natural-language-trigger-handbook.md`
-6. `docs/beacon/v1.2.0/execution/requirement-anchor-implementation-blueprint.md`
-7. `docs/beacon/v1.2.0/release/v1.2.0.md`
+6. `docs/beacon/v1.2.0/execution/qa-autoresearch-usage-guide.md`
+7. `docs/beacon/v1.2.0/execution/autoresearch-module-evolution.md`
+8. `docs/beacon/v1.2.0/execution/requirement-anchor-implementation-blueprint.md`
+9. `docs/beacon/v1.2.0/release/v1.2.0.md`
 
 如果你关注上一轮闭环增强基线，再看：
 
@@ -337,6 +339,8 @@ requirement material
 - `docs/beacon/v1.2.0/execution/index.md`
 - `docs/beacon/v1.2.0/execution/workflow-usage-guide.md`
 - `docs/beacon/v1.2.0/execution/natural-language-trigger-handbook.md`
+- `docs/beacon/v1.2.0/execution/qa-autoresearch-usage-guide.md`
+- `docs/beacon/v1.2.0/execution/autoresearch-module-evolution.md`
 - `docs/beacon/v1.2.0/release/v1.2.0.md`
 - `docs/beacon/v1.2.0/prd/beacon-version-truth-profile-boundary-governance.md`
 

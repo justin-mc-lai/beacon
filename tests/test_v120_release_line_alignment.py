@@ -27,6 +27,8 @@ def test_current_release_line_should_have_required_docs_surfaces():
         docs_root / "execution" / "architecture-blueprint.md",
         docs_root / "execution" / "workflow-usage-guide.md",
         docs_root / "execution" / "natural-language-trigger-handbook.md",
+        docs_root / "execution" / "qa-autoresearch-usage-guide.md",
+        docs_root / "execution" / "autoresearch-module-evolution.md",
         docs_root / "release" / f"{__toolkit_version__}.md",
     ]
 

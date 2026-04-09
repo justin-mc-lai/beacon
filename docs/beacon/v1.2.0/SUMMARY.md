@@ -65,9 +65,11 @@ This release line is considered closed only when it includes:
 10. `./execution/architecture-blueprint.md`
 11. `./execution/workflow-usage-guide.md`
 12. `./execution/natural-language-trigger-handbook.md`
-13. `./execution/project-skill-qa-evolution-blueprint.md`
-14. `./execution/target-project-kernel-blueprint.md`
-15. `./source-architecture/index.md`
-16. `./execution/boundaries.md`
-17. `./release/v1.2.0.md`
-18. `./execution/index.md`
+13. `./execution/qa-autoresearch-usage-guide.md`
+14. `./execution/autoresearch-module-evolution.md`
+15. `./execution/project-skill-qa-evolution-blueprint.md`
+16. `./execution/target-project-kernel-blueprint.md`
+17. `./source-architecture/index.md`
+18. `./execution/boundaries.md`
+19. `./release/v1.2.0.md`
+20. `./execution/index.md`

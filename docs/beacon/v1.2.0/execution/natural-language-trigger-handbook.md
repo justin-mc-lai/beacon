@@ -494,3 +494,7 @@ beacon ask "帮我【动作】「对象」" --project-root . --version v1.2.0 --
 ```
 
 这比“长段描述 + 多个目标 + 模糊对象”稳定得多。
+
+如果你接下来要把自然语言路由继续落到 QA autoresearch 闭环，请继续阅读：
+
+- `./qa-autoresearch-usage-guide.md`
