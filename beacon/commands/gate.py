@@ -2655,7 +2655,8 @@ def check_test_execution_integrity(project_root: Path, mode: GateMode, stage: st
     matrix_path = None
     matrix_report = execution.get("matrix_report") if isinstance(execution, dict) else None
     if isinstance(matrix_report, dict) and matrix_report.get("matrix_path"):
-        matrix_path = Path(str(matrix_report.get("matrix_path")))
+        candidate = Path(str(matrix_report.get("matrix_path")))
+        matrix_path = candidate if candidate.is_absolute() else project_root / candidate
     if matrix_path is None:
         candidates = _candidate_matrix_paths(project_root)
         matrix_path = candidates[0] if candidates else None

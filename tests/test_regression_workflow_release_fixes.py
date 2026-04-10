@@ -3,11 +3,14 @@
 from __future__ import annotations
 
 import json
+import hashlib
 from pathlib import Path
 
 from typer.testing import CliRunner
 
+from beacon.commands.gate import GateMode, check_test_execution_integrity
 from beacon.main import app
+from beacon.utils.artifact_paths import machine_execution_dir
 from beacon.utils.revision_state import freeze_revision_state
 from beacon.utils.runtime import load_run_state, save_run_state
 from beacon.utils.writeback import record_implementation_writeback, record_verification_writeback
@@ -92,7 +95,7 @@ def _seed_review_acceptance_feature(project_root: Path, *, version: str, feature
 
     machine_user_story = docs_root / ".machine" / "user-story"
     machine_qa = docs_root / ".machine" / "qa"
-    machine_exec = docs_root / ".machine" / "execution"
+    machine_exec = machine_execution_dir(project_root, version)
     machine_user_story.mkdir(parents=True, exist_ok=True)
     machine_qa.mkdir(parents=True, exist_ok=True)
     machine_exec.mkdir(parents=True, exist_ok=True)
@@ -113,23 +116,23 @@ def _seed_review_acceptance_feature(project_root: Path, *, version: str, feature
 
     for rel in (
         f"technical-implementation-{slug}.md",
-        f"technical-implementation-{slug}.json",
         f"implementation-summary-{slug}.md",
-        f"implementation-summary-{slug}.json",
         f"review-quality-{slug}.md",
-        f"review-quality-{slug}.json",
         f"review-spec-{slug}.md",
-        f"review-spec-{slug}.json",
     ):
         path = docs_root / "execution" / rel
-        if path.suffix == ".json":
-            path.write_text(json.dumps({"feature": feature, "version": version}, ensure_ascii=False), encoding="utf-8")
-        else:
-            path.write_text(f"# {rel}\n", encoding="utf-8")
-    (docs_root / "execution" / "terminal.json").write_text(
-        json.dumps({"feature": feature, "version": version, "status": "Pass"}, ensure_ascii=False),
-        encoding="utf-8",
-    )
+        path.write_text(f"# {rel}\n", encoding="utf-8")
+    for rel in (
+        f"technical-implementation-{slug}.json",
+        f"implementation-summary-{slug}.json",
+        f"review-quality-{slug}.json",
+        f"review-spec-{slug}.json",
+        "terminal.json",
+    ):
+        (machine_exec / rel).write_text(
+            json.dumps({"feature": feature, "version": version, "status": "Pass"}, ensure_ascii=False),
+            encoding="utf-8",
+        )
 
     state_dir = project_root / ".beacon" / "state"
     state_dir.mkdir(parents=True, exist_ok=True)
@@ -207,6 +210,75 @@ def test_gate_should_fallback_when_gate_config_json_is_malformed(tmp_path: Path)
     )
     assert result.exit_code == 0
     assert "Traceback" not in result.stdout
+
+
+def test_gate_should_resolve_relative_matrix_path_from_project_root(tmp_path: Path):
+    version = "v1.0.0"
+    run_id = "run-relative-matrix-001"
+    matrix_path = tmp_path / "docs" / "beacon" / version / ".machine" / "qa" / "feature.ac-test-matrix.json"
+    evidence_path = tmp_path / ".beacon" / "evidence" / "test-results" / "feature" / "TC-001.json"
+    auto_test_status = tmp_path / ".beacon" / "auto-test-status.json"
+    signature_chain = tmp_path / ".beacon" / "evidence-signature-chain.json"
+
+    matrix_path.parent.mkdir(parents=True, exist_ok=True)
+    evidence_path.parent.mkdir(parents=True, exist_ok=True)
+    auto_test_status.parent.mkdir(parents=True, exist_ok=True)
+
+    matrix_path.write_text(
+        json.dumps(
+            {
+                "entries": [
+                    {
+                        "ac_id": "AC-001",
+                        "tc_id": "TC-001",
+                        "layer": "unit",
+                        "evidence_path": str(evidence_path.relative_to(tmp_path)),
+                    }
+                ]
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    evidence_path.write_text(json.dumps({"status": "passed"}, ensure_ascii=False), encoding="utf-8")
+
+    auto_test_status.write_text(
+        json.dumps(
+            {
+                "status": "passed",
+                "run_id": run_id,
+                "execution": {
+                    "run_id": run_id,
+                    "version": version,
+                    "layers": [
+                        {"layer": "unit", "status": "passed"}
+                    ],
+                    "matrix_report": {
+                        "matrix_path": f"docs/beacon/{version}/.machine/qa/feature.ac-test-matrix.json",
+                    },
+                },
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    summary_sha = hashlib.sha256(auto_test_status.read_bytes()).hexdigest()
+    signature_chain.write_text(
+        json.dumps(
+            [
+                {
+                    "run_id": run_id,
+                    "summary_path": ".beacon/auto-test-status.json",
+                    "summary_sha256": summary_sha,
+                }
+            ],
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+
+    issues = check_test_execution_integrity(tmp_path, GateMode.STRICT, "release")
+    assert issues == []
 
 
 def test_release_create_should_use_resolved_version_in_file_content(tmp_path: Path):
