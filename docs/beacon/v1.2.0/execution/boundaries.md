@@ -69,3 +69,30 @@ The requirement package is only freeze-ready when it contains:
 
 Frozen requirement materials become implementation inputs.
 They do not bypass the mainline or release governance.
+
+## Execution surface boundary
+
+`v1.2.0` enforces a split execution surface:
+
+- human execution docs → `docs/beacon/<version>/execution/*.md`
+- machine execution docs → `docs/beacon/<version>/.machine/execution/*.json`
+
+This is a hard packaging rule, not a taste preference.
+
+### Allowed in `execution/`
+
+- indexes
+- blueprints
+- operator guides
+- review markdown
+- implementation markdown
+- summary markdown
+
+### Forbidden in `execution/`
+
+- machine summaries
+- machine review payloads
+- machine init reports
+- machine terminal/config/source/git-alignment/change-impact/delivery-manifest payloads
+
+If a command writes execution JSON into the human surface, treat it as package drift and repair it.

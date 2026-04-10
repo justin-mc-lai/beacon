@@ -23,7 +23,7 @@
 
 - keep: `0`
 - review: `2`
-- discard: `0`
+- discard: `1`
 
 ## Latest Score Delta
 

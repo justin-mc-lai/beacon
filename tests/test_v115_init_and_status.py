@@ -7,6 +7,7 @@ from beacon import __toolkit_version__
 from typer.testing import CliRunner
 
 from beacon.main import app
+from beacon.utils.artifact_paths import execution_file_output
 
 
 runner = CliRunner()
@@ -37,6 +38,8 @@ def test_init_should_create_v115_machine_dirs_indexes_and_eval_lab(tmp_path: Pat
     assert (docs_root / ".machine" / "qa").is_dir()
     assert (docs_root / "execution" / "index.md").exists()
     assert (docs_root / "qa" / "test-cases" / "index.md").exists()
+    assert execution_file_output(tmp_path, "v1.1.5", "init-report.json").exists()
+    assert (docs_root / "execution" / "init-report.md").exists()
     assert (tmp_path / ".beacon" / "state" / "eval-lab" / "keep-discard-log.jsonl").exists()
 
 

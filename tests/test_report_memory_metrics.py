@@ -8,6 +8,7 @@ from pathlib import Path
 from typer.testing import CliRunner
 
 from beacon.main import app
+from beacon.utils.artifact_paths import execution_file_output
 
 
 runner = CliRunner()
@@ -161,8 +162,8 @@ def test_report_should_write_summary_into_requested_version_execution_dir(tmp_pa
     )
     assert machine.exit_code == 0
 
-    summary_path = tmp_path / "docs" / "beacon" / "v2.3.4" / "execution" / "summary.json"
-    legacy_path = tmp_path / "docs" / "beacon" / "v1.0.0" / "execution" / "summary.json"
+    summary_path = execution_file_output(tmp_path, "v2.3.4", "summary.json")
+    legacy_path = execution_file_output(tmp_path, "v1.0.0", "summary.json")
     assert summary_path.exists()
     assert not legacy_path.exists()
 
@@ -188,5 +189,5 @@ def test_report_default_mode_should_not_write_summary_files(tmp_path: Path):
     machine = _invoke(["report", "--project-root", str(tmp_path), "--machine", "--version", "v2.5.0", "latest"])
     assert machine.exit_code == 0
 
-    summary_path = tmp_path / "docs" / "beacon" / "v2.5.0" / "execution" / "summary.json"
+    summary_path = execution_file_output(tmp_path, "v2.5.0", "summary.json")
     assert not summary_path.exists()

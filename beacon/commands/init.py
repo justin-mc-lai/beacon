@@ -8,9 +8,15 @@ from typing import Optional
 
 import typer
 
-from beacon.utils.artifact_paths import machine_execution_dir, machine_qa_dir, uses_machine_surface
+from beacon.utils.artifact_paths import (
+    execution_file_output,
+    human_execution_file,
+    machine_execution_dir,
+    machine_qa_dir,
+    uses_machine_surface,
+)
 from beacon.utils.runtime import now_iso, write_json
-from beacon.utils.v115_delivery import ensure_eval_lab_skeleton, ensure_human_primary_indexes
+from beacon.utils.v115_delivery import ensure_eval_lab_skeleton, ensure_human_primary_indexes, refresh_evidence_manifest
 from beacon.utils.versioning import resolve_docs_version, resolve_runtime_version
 
 app = typer.Typer(
@@ -252,12 +258,20 @@ def _init_impl(
         "conflicts": [],
     }
 
-    report_dir = root / "docs" / "beacon" / docs_version / "execution"
-    report_json = report_dir / "init-report.json"
-    report_md = report_dir / "init-report.md"
+    report_json = execution_file_output(root, docs_version, "init-report.json")
+    report_md = human_execution_file(root, docs_version, "init-report.md")
     if apply:
         write_json(report_json, payload)
+        report_md.parent.mkdir(parents=True, exist_ok=True)
         report_md.write_text("# Beacon Init Report\n\n- status: completed\n", encoding="utf-8")
+        refresh_evidence_manifest(
+            root,
+            refs=[
+                str(report_json.relative_to(root)),
+                str(report_md.relative_to(root)),
+            ],
+            version=docs_version,
+        )
     payload["report_files"] = {
         "json": str(report_json.relative_to(root)),
         "markdown": str(report_md.relative_to(root)),

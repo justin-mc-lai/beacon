@@ -8,6 +8,7 @@ from pathlib import Path
 from typer.testing import CliRunner
 
 from beacon.main import app
+from beacon.utils.artifact_paths import execution_file_output
 
 
 runner = CliRunner()
@@ -191,8 +192,8 @@ def test_implement_run_command_runner_should_write_marker_summary_and_review(tmp
     payload = json.loads(result.stdout)
     assert payload["status"] == "completed"
     assert (tmp_path / ".beacon" / "state" / "implementation-my-feature.json").exists()
-    assert (tmp_path / "docs" / "beacon" / "v1.1.4" / "execution" / "implementation-summary-my-feature.json").exists()
-    assert (tmp_path / "docs" / "beacon" / "v1.1.4" / "execution" / "review-spec-my-feature.json").exists()
+    assert execution_file_output(tmp_path, "v1.1.4", "implementation-summary-my-feature.json").exists()
+    assert execution_file_output(tmp_path, "v1.1.4", "review-spec-my-feature.json").exists()
 
 
 def test_implement_run_should_fail_when_result_missing(tmp_path: Path):
@@ -466,7 +467,7 @@ def test_implement_run_should_support_auto_review_quality_and_status_surface(tmp
     assert result.exit_code == 0, result.stdout
     payload = json.loads(result.stdout)
     assert payload["review_quality"]["exit_code"] == 0
-    assert (tmp_path / "docs" / "beacon" / "v1.1.4" / "execution" / "review-quality-my-feature.json").exists()
+    assert execution_file_output(tmp_path, "v1.1.4", "review-quality-my-feature.json").exists()
 
     status = _invoke(
         [

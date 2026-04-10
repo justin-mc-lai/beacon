@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import shutil
 from pathlib import Path
@@ -22,6 +23,58 @@ _EXECUTION_MACHINE_FILES = (
 )
 
 _QA_MATRIX_SUFFIXES = (".ac-test-matrix.json", ".qa9-matrix.json")
+
+
+def refresh_evidence_manifest(
+    project_root: Path,
+    *,
+    refs: list[str],
+    version: str,
+) -> None:
+    manifest_path = project_root / ".beacon" / "evidence-manifest.json"
+    payload: dict[str, Any] = {}
+    if manifest_path.exists():
+        try:
+            loaded = json.loads(manifest_path.read_text(encoding="utf-8"))
+            if isinstance(loaded, dict):
+                payload = loaded
+        except Exception:  # noqa: BLE001
+            payload = {}
+    entries = payload.get("entries")
+    if not isinstance(entries, list):
+        entries = []
+    manifest_rel = str(manifest_path.relative_to(project_root))
+    by_path: dict[str, dict[str, Any]] = {
+        ref_path: item
+        for item in entries
+        if isinstance(item, dict)
+        and (ref_path := str(item.get("path", "")).strip())
+        and ref_path != manifest_rel
+        and (project_root / ref_path).exists()
+        and (project_root / ref_path).is_file()
+    }
+    for ref in refs:
+        ref_path = str(ref or "").strip()
+        if not ref_path or ref_path == manifest_rel:
+            continue
+        full = project_root / ref_path
+        if not full.exists() or not full.is_file():
+            continue
+        by_path[ref_path] = {
+            "path": ref_path,
+            "sha256": hashlib.sha256(full.read_bytes()).hexdigest(),
+            "updated_at": now_iso(),
+        }
+    output_payload: dict[str, Any] = {
+        "schema_version": "1.0",
+        "entries": list(by_path.values()),
+        "updated_at": now_iso(),
+        "version": version,
+    }
+    run_id = str(payload.get("run_id", "") or "").strip()
+    if run_id:
+        output_payload["run_id"] = run_id
+    write_json(manifest_path, output_payload)
 
 
 def build_first_principles_contract(project_root: Path, *, version: str) -> dict[str, Any]:
@@ -266,7 +319,8 @@ def repair_v115_delivery_package(
     human_qa = qa_docs_dir(project_root, resolved_version)
 
     migrated: list[str] = []
-    for filename in _EXECUTION_MACHINE_FILES:
+    execution_json_filenames = sorted({path.name for path in human_exec.glob("*.json")} | set(_EXECUTION_MACHINE_FILES))
+    for filename in execution_json_filenames:
         src = human_exec / filename
         dst = machine_exec / filename
         if not src.exists():
@@ -305,6 +359,14 @@ def repair_v115_delivery_package(
     eval_actions = ensure_eval_lab_skeleton(project_root, apply=apply)
     actions.extend(index_actions)
     actions.extend(eval_actions)
+    if apply:
+        manifest_refs = sorted(
+            {
+                *migrated,
+                *[item["path"] for item in index_actions if isinstance(item, dict) and str(item.get("path", "")).strip()],
+            }
+        )
+        refresh_evidence_manifest(project_root, refs=manifest_refs, version=resolved_version)
 
     return {
         "schema_version": "1.0",
@@ -319,4 +381,3 @@ def repair_v115_delivery_package(
             "doctor is the authority for repairing old package layout into v1.1.5 structure",
         ],
     }
-

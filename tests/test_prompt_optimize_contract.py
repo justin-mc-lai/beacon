@@ -54,6 +54,24 @@ def test_prompt_optimize_should_route_user_story_intent(tmp_path: Path):
     assert args[:2] == ["user-story", "create"]
 
 
+def test_prompt_optimize_should_route_cross_stage_subagent_evolution_to_version(tmp_path: Path):
+    result = _invoke(
+        [
+            "prompt",
+            "optimize",
+            "继续演进下一版本，参考 https://github.com/atticus98/codex-turbo 开源项目，在 beacon 中引入简化版 codex 原生 subagent，从需求prd、用户故事story、qa test、implement run 都支持 subagent 方式。或给出调研的新方向。",
+            "--project-root",
+            str(tmp_path),
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0
+    payload = json.loads(result.stdout)
+    assert payload.get("intent") == "version"
+    args = payload.get("recommended_args", [])
+    assert args[:2] == ["version", "create"]
+
+
 def test_prompt_optimize_should_block_outside_boundary_execute(tmp_path: Path):
     result = _invoke(
         [
@@ -268,6 +286,39 @@ def test_prompt_optimize_continue_workflow_should_prioritize_resume_intent(tmp_p
     assert args
     assert args[0] in {"resume", "workflow"}
     assert "continue" in args or "resume" in args
+
+
+def test_prompt_optimize_should_route_next_version_subagent_evolution_to_version(tmp_path: Path):
+    result = _invoke(
+        [
+            "prompt",
+            "optimize",
+            "继续演进下一版本，引入简化版 codex 原生 subagent，并给出调研新方向",
+            "--project-root",
+            str(tmp_path),
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0
+    payload = json.loads(result.stdout)
+    assert payload.get("intent") == "version"
+    assert payload.get("recommended_args", [])[:2] == ["version", "create"]
+
+
+def test_ask_should_route_next_version_subagent_evolution_prompt_to_version(tmp_path: Path):
+    result = _invoke(
+        [
+            "ask",
+            "继续演进下一版本，参考 https://github.com/atticus98/codex-turbo 开源项目，在 beacon 中引入简化版 codex 原生 subagent，从需求prd、用户故事story、 qa test、implement run 都支持subagent 方式。或给出调研的新方向。",
+            "--project-root",
+            str(tmp_path),
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0
+    payload = json.loads(result.stdout)
+    assert payload.get("intent") == "version"
+    assert payload.get("recommended_args", [])[:2] == ["version", "create"]
 
 
 def test_intent_router_should_detect_english_out_of_scope_boundaries(tmp_path: Path):

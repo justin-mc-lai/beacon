@@ -27,6 +27,8 @@
 
 - Human primary execution docs live here.
 - Machine execution artifacts live under `docs/beacon/v1.2.0/.machine/execution/`.
+- `docs/beacon/<version>/execution/` should remain **Markdown-first / human-readable only**.
+- Any machine-readable execution JSON written into `docs/beacon/<version>/execution/` is considered **surface drift** and must be repaired back into `.machine/execution/`.
 - `v1.2.0` should be read as a mainline-hardening line, not as a generic capability expansion line.
 - `beacon skill discover` remains a subordinate project-onboarding surface, not a new product center.
 - command-surface simplification ships here as a bounded operator-contract change; any future rename/merge program remains later work.

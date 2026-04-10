@@ -51,6 +51,18 @@ help
 `docs/beacon/<version>/` 是 source of truth。  
 `.beacon/` 是执行时证据与状态，不替代正式文档。
 
+进一步拆分 execution surface：
+
+- `docs/beacon/<version>/execution/`：**只放人类主读 Markdown**
+- `docs/beacon/<version>/.machine/execution/`：**只放机器主读 JSON**
+
+如果你在 `execution/` 里看到 `*.json`，那通常表示：
+
+1. 历史版本包还没 repair
+2. 某个命令面绕过了 machine-surface path helper
+
+优先修命令，不要把混放当成正常现象。
+
 ### 2.3 `skill discover` 是项目绑定面，不是新产品中心
 
 `beacon skill discover` 只负责：
@@ -301,6 +313,11 @@ beacon implement run "<feature>" --project . --version v1.2.0 --runner native-si
 - technical archive
 - implementation summary
 - artifact update obligations
+
+其中：
+
+- human summary / archive markdown → `docs/beacon/<version>/execution/*.md`
+- machine summary / archive json → `docs/beacon/<version>/.machine/execution/*.json`
 
 ---
 

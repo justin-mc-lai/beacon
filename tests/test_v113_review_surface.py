@@ -5,7 +5,7 @@ from pathlib import Path
 
 from typer.testing import CliRunner
 
-from beacon.utils.artifact_paths import qa_matrix_output
+from beacon.utils.artifact_paths import execution_file_output, qa_matrix_output
 from beacon.main import app
 
 
@@ -57,5 +57,5 @@ def test_review_spec_should_write_formal_review_artifacts(tmp_path: Path):
     payload = json.loads(result.stdout)
     assert payload["review_type"] == "spec"
     assert payload["status"] == "pass"
-    assert (root / "execution" / f"review-spec-{slug}.json").exists()
+    assert execution_file_output(tmp_path, version, f"review-spec-{slug}.json").exists()
     assert (root / "execution" / f"review-spec-{slug}.md").exists()

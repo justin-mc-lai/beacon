@@ -29,6 +29,7 @@ def _seed_v115_layout(root: Path) -> None:
         "change-impact.json",
         "delivery-manifest.json",
         "terminal.json",
+        "implementation-summary-machine-feature.json",
     ):
         (base / "execution" / filename).write_text(json.dumps({"name": filename}), encoding="utf-8")
     (base / "qa" / "test-cases" / "machine-feature.md").write_text("# Test\n", encoding="utf-8")
@@ -52,7 +53,9 @@ def test_doctor_repair_package_should_move_machine_artifacts_and_create_indexes(
     machine_exec = tmp_path / "docs" / "beacon" / "v1.1.5" / ".machine" / "execution"
     assert (machine_exec / "config.json").exists()
     assert (machine_exec / "terminal.json").exists()
+    assert (machine_exec / "implementation-summary-machine-feature.json").exists()
     assert not (tmp_path / "docs" / "beacon" / "v1.1.5" / "execution" / "config.json").exists()
+    assert not (tmp_path / "docs" / "beacon" / "v1.1.5" / "execution" / "implementation-summary-machine-feature.json").exists()
     assert not (tmp_path / "docs" / "beacon" / "v1.1.5" / "qa" / "test-cases" / "machine-feature.ac-test-matrix.json").exists()
     assert (tmp_path / "docs" / "beacon" / "v1.1.5" / ".machine" / "qa" / "machine-feature.ac-test-matrix.json").exists()
     assert (tmp_path / "docs" / "beacon" / "v1.1.5" / "execution" / "index.md").exists()

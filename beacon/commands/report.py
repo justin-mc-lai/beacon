@@ -8,6 +8,7 @@ from typing import Any
 
 import typer
 
+from beacon.utils.artifact_paths import execution_file_output, human_execution_file
 from beacon.utils.coverage import compute_coverage_metrics
 from beacon.utils.control_plane import build_resume_contract
 from beacon.utils.implementation_plan import implementation_plan_supported, load_implementation_plan_progress
@@ -28,6 +29,7 @@ from beacon.utils.v110_metrics import (
     compute_baseline_drift_metrics,
     compute_memory_governance_metrics,
 )
+from beacon.utils.v115_delivery import refresh_evidence_manifest
 from beacon.utils.workflow_memory import (
     compute_memory_metrics,
     compute_workflow_progress,
@@ -426,14 +428,20 @@ def _report_impl(
         or str(payload.get("filters", {}).get("version", "")).strip()
         or resolve_target_version(root, None)
     )
-    exec_dirs = [root / "docs" / "beacon" / report_version / "execution"]
     if write_summary:
-        for exec_dir in exec_dirs:
-            exec_dir.mkdir(parents=True, exist_ok=True)
-            summary_json = exec_dir / "summary.json"
-            summary_md = exec_dir / "summary.md"
-            write_json(summary_json, payload)
-            summary_md.write_text(_human_summary(payload), encoding="utf-8")
+        summary_json = execution_file_output(root, report_version, "summary.json")
+        summary_md = human_execution_file(root, report_version, "summary.md")
+        write_json(summary_json, payload)
+        summary_md.parent.mkdir(parents=True, exist_ok=True)
+        summary_md.write_text(_human_summary(payload), encoding="utf-8")
+        refresh_evidence_manifest(
+            root,
+            refs=[
+                str(summary_json.relative_to(root)),
+                str(summary_md.relative_to(root)),
+            ],
+            version=report_version,
+        )
 
     emit_human = human or not machine
     if emit_human:
@@ -455,7 +463,7 @@ def report_callback(
     write_summary: bool = typer.Option(
         False,
         "--write-summary",
-        help="Write summary.{json,md} into docs/beacon/<version>/execution (disabled by default).",
+        help="Write summary.md into docs/beacon/<version>/execution and summary.json into docs/beacon/<version>/.machine/execution (disabled by default).",
     ),
 ):
     """Generate report directly (PTK flat syntax compatibility)."""
@@ -482,7 +490,7 @@ def generate(
     write_summary: bool = typer.Option(
         False,
         "--write-summary",
-        help="Write summary.{json,md} into docs/beacon/<version>/execution (disabled by default).",
+        help="Write summary.md into docs/beacon/<version>/execution and summary.json into docs/beacon/<version>/.machine/execution (disabled by default).",
     ),
 ):
     """Generate run report (nested compatibility)."""
@@ -506,7 +514,7 @@ def acceptance_audit(
     run_regression: bool = typer.Option(False, "--run-regression", help="Run regression command before building audit."),
     regression_command: str = typer.Option("python3 -m pytest -q", "--regression-command", help="Command used when --run-regression is enabled."),
     json_output: bool = typer.Option(False, "--json", help="Output JSON instead of markdown."),
-    write_output: bool = typer.Option(True, "--write/--no-write", help="Write acceptance audit into docs/beacon/<version>/execution."),
+    write_output: bool = typer.Option(True, "--write/--no-write", help="Write acceptance-regression-audit.md into docs/beacon/<version>/execution and acceptance-regression-audit.json into docs/beacon/<version>/.machine/execution."),
 ):
     """Generate deterministic acceptance regression audit artifacts."""
     root = Path(project_root) if project_root else Path.cwd()

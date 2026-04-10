@@ -5,6 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
+from beacon.utils.artifact_paths import execution_file_candidates
 from beacon.utils.coverage import compute_coverage_metrics
 from beacon.utils.material_audit import build_material_audit
 from beacon.utils.story_state import ensure_story_state, story_state_summary
@@ -119,20 +120,20 @@ def compute_readiness_score(*, target_stage: str, revision_state: dict[str, Any]
 
 
 def compute_quality_score(project_root: Path, *, version: str, feature_slug: str, workflow_progress: dict[str, Any]) -> dict[str, Any]:
-    execution_dir = project_root / "docs" / "beacon" / version / "execution"
     penalties = 0
     for name in (f"review-spec-{feature_slug}.json", f"review-quality-{feature_slug}.json"):
-        path = execution_dir / name
-        if path.exists():
-            try:
-                payload = __import__("json").loads(path.read_text(encoding="utf-8"))
-            except Exception:
-                payload = {}
-            status = str(payload.get("status", "")).lower()
-            if status == "fail":
-                penalties += 25
-            elif status == "warn":
-                penalties += 10
+        path = next((candidate for candidate in execution_file_candidates(project_root, version, name) if candidate.exists()), None)
+        if path is None:
+            continue
+        try:
+            payload = __import__("json").loads(path.read_text(encoding="utf-8"))
+        except Exception:
+            payload = {}
+        status = str(payload.get("status", "")).lower()
+        if status == "fail":
+            penalties += 25
+        elif status == "warn":
+            penalties += 10
     if str(workflow_progress.get("stages", {}).get("verify", {}).get("status", "")).lower() == "failed":
         penalties += 30
     return {"score": _clamp_score(100 - penalties), "penalties": penalties}

@@ -93,7 +93,7 @@ EXPLICIT_ONLY_COMMAND_HINTS: dict[str, tuple[str, ...]] = {
 }
 
 DEFAULT_INTENT_KEYWORDS: dict[str, tuple[str, ...]] = {
-    "think": ("think", "需求", "澄清", "梳理", "分析需求", "方案"),
+    "think": ("think", "需求", "澄清", "梳理", "分析需求", "方案", "下一版本", "下个版本", "演进", "调研方向", "新方向", "subagent"),
     "user-story": ("user story", "user-story", "用户故事", "验收标准", "ac"),
     "prd": ("prd", "需求文档", "产品文档", "spec", "规格说明", "prd 文档"),
     "test-case": ("test-case", "test case", "测试用例", "测试矩阵", "验收测试", "ac->tc"),
@@ -122,7 +122,18 @@ DEFAULT_INTENT_KEYWORDS: dict[str, tuple[str, ...]] = {
     "ui-spec": ("ui-spec", "ui spec", "ui 规范", "界面规范", "设计规范", "design token"),
     "prototype": ("prototype", "交互原型", "可点击原型", "ui 原型", "单页原型", "html prototype"),
     "wireframe": ("wireframe", "线框图", "低保真", "页面草图", "原型草图", "mockup"),
-    "version": ("version", "版本规划", "版本计划", "版本迭代", "semver"),
+    "version": (
+        "version",
+        "版本规划",
+        "版本计划",
+        "版本迭代",
+        "下一版本",
+        "下个版本",
+        "版本演进",
+        "演进方向",
+        "新方向",
+        "semver",
+    ),
     "test-progress": ("test-progress", "test progress", "测试进度", "测试结果汇总", "回归进度"),
     "feedback": ("feedback", "反馈同步", "反馈闭环", "测试反馈", "用户反馈"),
     "remember": ("remember", "记住", "记忆", "记下来", "写入记忆", "保存记忆"),
@@ -274,6 +285,7 @@ _ARTIFACT_SIGNAL_KEYWORDS: dict[str, tuple[str, ...]] = {
     "resume": ("resume", "继续", "恢复", "续跑"),
     "gate": ("gate", "放行", "门禁"),
     "release": ("release", "发布", "发版"),
+    "version": ("version", "版本", "版本规划", "版本迭代", "下一版本", "演进"),
 }
 
 _PROMPT_TEMPLATE_BY_INTENT: dict[str, str] = {
@@ -289,11 +301,44 @@ _PROMPT_TEMPLATE_BY_INTENT: dict[str, str] = {
     "doctor": "请用 Beacon 做环境与上下文诊断，输出 doctor 结论、风险和下一步命令，version={version}。",
     "qa": "请用 Beacon 为「{feature}」执行 QA 验收规划或回归分析，version={version}。",
     "auto-test": "请用 Beacon 为「{feature}」生成自动测试/回归执行建议，version={version}。",
+    "version": "请用 Beacon 为「{feature}」输出下一版本演进建议、范围边界、候选方向与推荐命令，version={version}。",
     "debug": "请用 Beacon debug 分析这次提示词为什么没有进入正确主链，输出意图、边界、推荐命令和规范化重写建议，version={version}。",
 }
 
 RESUME_ACTION_KEYWORDS = ("resume", "continue", "恢复", "继续", "续跑", "接着")
 RESUME_CONTEXT_KEYWORDS = ("workflow", "工作流", "上次", "上一轮", "previous", "last", "run-")
+VERSION_EVOLUTION_KEYWORDS = (
+    "下一版本",
+    "下个版本",
+    "版本演进",
+    "继续演进",
+    "演进",
+    "演进方向",
+    "新方向",
+    "路线",
+    "roadmap",
+)
+SUBAGENT_PLANNING_KEYWORDS = (
+    "subagent",
+    "sub-agent",
+    "子代理",
+    "multi-agent",
+    "multi agent",
+    "codex 原生",
+    "native-team",
+    "native-single",
+    "orchestrate",
+    "orchestration",
+)
+CROSS_STAGE_PLANNING_KEYWORDS = (
+    "需求",
+    "prd",
+    "用户故事",
+    "story",
+    "test",
+    "qa",
+    "implement",
+)
 
 
 class _SafeFormatMap(dict[str, str]):
@@ -474,6 +519,18 @@ def _rule_route(goal: str, *, intent_keywords: dict[str, tuple[str, ...]]) -> di
         resume_context_hits = _keyword_hits(text, RESUME_CONTEXT_KEYWORDS)
         if resume_action_hits and resume_context_hits:
             scores["resume"] += 2
+
+    version_evolution_hits = _keyword_hits(text, VERSION_EVOLUTION_KEYWORDS)
+    subagent_planning_hits = _keyword_hits(text, SUBAGENT_PLANNING_KEYWORDS)
+    cross_stage_planning_hits = _keyword_hits(text, CROSS_STAGE_PLANNING_KEYWORDS)
+    if "version" in scores and version_evolution_hits:
+        scores["version"] += len(version_evolution_hits)
+        if subagent_planning_hits:
+            scores["version"] += len(subagent_planning_hits)
+        if len(cross_stage_planning_hits) >= 2:
+            scores["version"] += 3
+    if "version" in scores and subagent_planning_hits and len(cross_stage_planning_hits) >= 3:
+        scores["version"] += 2
 
     ranked = sorted(
         scores.items(),

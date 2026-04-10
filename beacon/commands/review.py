@@ -13,7 +13,7 @@ from beacon.utils.artifact_update_obligations import (
     load_artifact_update_obligations,
     update_artifact_update_obligation,
 )
-from beacon.utils.artifact_paths import qa_matrix_candidates
+from beacon.utils.artifact_paths import execution_file_candidates, execution_file_output, human_execution_dir, human_execution_file, qa_matrix_candidates
 from beacon.utils.coverage import compute_coverage_metrics
 from beacon.utils.implementation_plan import (
     implementation_plan_supported,
@@ -26,6 +26,7 @@ from beacon.utils.prototype_utils import evaluate_prototype_status, review_proto
 from beacon.utils.qa_runtime import load_qa_status
 from beacon.utils.runtime import now_iso
 from beacon.utils.story_state import load_story_state
+from beacon.utils.v115_delivery import refresh_evidence_manifest
 from beacon.utils.workflow_memory import resolve_workflow_run_id
 from beacon.utils.writeback import (
     record_acceptance_writeback,
@@ -46,14 +47,14 @@ def _feature_paths(project_root: Path, version: str, feature: str) -> dict[str, 
     base = project_root / "docs" / "beacon" / version
     return {
         "base": base,
-        "execution": base / "execution",
+        "execution": human_execution_dir(project_root, version),
         "user_story": base / "user-story" / f"{slug}.md",
         "prd": base / "prd" / f"{slug}.md",
         "test_case": base / "qa" / "test-cases" / f"{slug}.md",
         "ac_matrix": qa_matrix_candidates(project_root, version, slug, "ac-test-matrix")[0],
         "prototype_dir": base / "prototype" / slug,
         "implementation_marker": project_root / ".beacon" / "state" / f"implementation-{slug}.json",
-        "implementation_summary": base / "execution" / f"implementation-summary-{slug}.json",
+        "implementation_summary": execution_file_candidates(project_root, version, f"implementation-summary-{slug}.json")[0],
     }
 
 
@@ -75,16 +76,26 @@ def _resolve_acceptance_workflow_run_id(project_root: Path, version: str, featur
 
 def _write_review_artifacts(
     *,
+    project_root: Path,
+    version: str,
     payload: dict[str, Any],
     markdown: str,
-    execution_dir: Path,
     artifact_name: str,
 ) -> dict[str, str]:
-    execution_dir.mkdir(parents=True, exist_ok=True)
-    json_path = execution_dir / f"{artifact_name}.json"
-    md_path = execution_dir / f"{artifact_name}.md"
+    json_path = execution_file_output(project_root, version, f"{artifact_name}.json")
+    md_path = human_execution_file(project_root, version, f"{artifact_name}.md")
+    json_path.parent.mkdir(parents=True, exist_ok=True)
+    md_path.parent.mkdir(parents=True, exist_ok=True)
     json_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     md_path.write_text(markdown, encoding="utf-8")
+    refresh_evidence_manifest(
+        project_root,
+        refs=[
+            str(json_path.relative_to(project_root)),
+            str(md_path.relative_to(project_root)),
+        ],
+        version=version,
+    )
     return {"json": str(json_path), "markdown": str(md_path)}
 
 
@@ -410,9 +421,10 @@ def review_spec(
     }
     artifact_name = f"review-spec-{_slug(feature)}"
     payload["artifacts"] = _write_review_artifacts(
+        project_root=project_root,
+        version=resolved_version,
         payload=payload,
         markdown=_render_markdown("Beacon Review Spec", payload),
-        execution_dir=paths["execution"],
         artifact_name=artifact_name,
     )
 
@@ -589,9 +601,10 @@ def review_quality(
     }
     artifact_name = f"review-quality-{_slug(feature)}"
     payload["artifacts"] = _write_review_artifacts(
+        project_root=project_root,
+        version=resolved_version,
         payload=payload,
         markdown=_render_markdown("Beacon Review Quality", payload),
-        execution_dir=paths["execution"],
         artifact_name=artifact_name,
     )
     if gate_ready:
@@ -711,9 +724,10 @@ def review_design(
     }
     artifact_name = f"review-design-{_slug(feature)}"
     payload["artifacts"] = _write_review_artifacts(
+        project_root=project_root,
+        version=resolved_version,
         payload=payload,
         markdown=_render_design_markdown(payload),
-        execution_dir=paths["execution"],
         artifact_name=artifact_name,
     )
     if json_output:

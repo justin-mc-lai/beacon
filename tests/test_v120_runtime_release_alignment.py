@@ -25,7 +25,7 @@ def test_v120_version_truth_should_promote_v120_to_current_runtime_release():
     assert payload["runtime_version"] == __toolkit_version__
     assert payload["docs_default_line"] == __toolkit_version__
     assert payload["current_runtime_release_line"] == __toolkit_version__
-    assert payload["planning_lines"] == []
+    assert payload["planning_lines"] == ["v1.3.0"]
     assert payload["lines"][__toolkit_version__]["status"] == "current_runtime_release"
 
 

@@ -5,6 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any, Iterable
 
+from beacon.utils.artifact_paths import machine_execution_dir
 from beacon.utils.revision_state import load_revision_state, save_revision_state
 from beacon.utils.implementation_plan import (
     mark_implementation_plan_accepted,
@@ -48,6 +49,7 @@ def _workflow_stage_evidence(project_root: Path, *, version: str, feature: str) 
     docs_root = project_root / "docs" / "beacon" / version
     execution_root = docs_root / "execution"
     machine_root = docs_root / ".machine"
+    machine_execution_root = machine_execution_dir(project_root, version)
     prototype_root = docs_root / "prototype" / slug
     state_root = project_root / ".beacon" / "state"
     qa_root = project_root / ".beacon" / "qa" / "features" / slug
@@ -97,9 +99,9 @@ def _workflow_stage_evidence(project_root: Path, *, version: str, feature: str) 
             project_root,
             [
                 execution_root / f"technical-implementation-{slug}.md",
-                execution_root / f"technical-implementation-{slug}.json",
+                machine_execution_root / f"technical-implementation-{slug}.json",
                 execution_root / f"implementation-summary-{slug}.md",
-                execution_root / f"implementation-summary-{slug}.json",
+                machine_execution_root / f"implementation-summary-{slug}.json",
                 state_root / f"implementation-{slug}.json",
             ],
         ),
@@ -108,9 +110,9 @@ def _workflow_stage_evidence(project_root: Path, *, version: str, feature: str) 
             [
                 project_root / ".beacon" / "auto-test-status.json",
                 execution_root / f"review-quality-{slug}.md",
-                execution_root / f"review-quality-{slug}.json",
+                machine_execution_root / f"review-quality-{slug}.json",
                 execution_root / f"review-spec-{slug}.md",
-                execution_root / f"review-spec-{slug}.json",
+                machine_execution_root / f"review-spec-{slug}.json",
                 qa_root / "scorecard.json",
             ],
         ),
@@ -119,7 +121,7 @@ def _workflow_stage_evidence(project_root: Path, *, version: str, feature: str) 
             [
                 project_root / ".beacon" / "gate-report.json",
                 project_root / ".beacon" / "evidence-manifest.json",
-                execution_root / "terminal.json",
+                machine_execution_root / "terminal.json",
             ],
         ),
     }

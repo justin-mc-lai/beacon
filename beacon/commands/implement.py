@@ -11,7 +11,7 @@ from typing import Any, Optional
 
 import typer
 
-from beacon.utils.artifact_paths import qa_matrix_candidates
+from beacon.utils.artifact_paths import execution_file_candidates, execution_file_output, human_execution_file, qa_matrix_candidates
 from beacon.utils.artifact_update_obligations import write_artifact_update_obligations
 from beacon.utils.git_alignment import (
     build_implement_branch_guard_payload,
@@ -42,6 +42,7 @@ from beacon.utils.implement_adapters import (
 from beacon.utils.learning_loop import write_requirement_rewrite_input
 from beacon.utils.runtime import generate_run_id, now_iso, write_json
 from beacon.utils.story_state import load_story_state
+from beacon.utils.v115_delivery import refresh_evidence_manifest
 from beacon.utils.versioning import resolve_target_version
 from beacon.utils.writeback import record_implementation_writeback
 
@@ -76,20 +77,17 @@ def _artifacts(project_root: Path, version: str, feature: str) -> dict[str, str]
 
 def _summary_paths(project_root: Path, version: str, feature: str) -> dict[str, Path]:
     slug = _slug(feature)
-    execution_dir = project_root / "docs" / "beacon" / version / "execution"
     return {
-        "json": execution_dir / f"implementation-summary-{slug}.json",
-        "md": execution_dir / f"implementation-summary-{slug}.md",
+        "json": execution_file_output(project_root, version, f"implementation-summary-{slug}.json"),
+        "md": human_execution_file(project_root, version, f"implementation-summary-{slug}.md"),
     }
 
 
 def _technical_archive_paths(project_root: Path, version: str, feature: str) -> dict[str, Path]:
     slug = _slug(feature)
-    execution_dir = project_root / "docs" / "beacon" / version / "execution"
-    machine_execution_dir = project_root / "docs" / "beacon" / version / ".machine" / "execution"
     return {
-        "md": execution_dir / f"technical-implementation-{slug}.md",
-        "json": machine_execution_dir / f"technical-implementation-{slug}.json",
+        "md": human_execution_file(project_root, version, f"technical-implementation-{slug}.md"),
+        "json": execution_file_output(project_root, version, f"technical-implementation-{slug}.json"),
     }
 
 
@@ -882,6 +880,14 @@ def run_implement_stage(  # noqa: PLR0913
         technical_payload["revision_id"] = current_revision_id
         write_json(archive_paths["json"], technical_payload)
         _write_text(archive_paths["md"], _render_technical_archive_markdown(technical_payload))
+        refresh_evidence_manifest(
+            project_root,
+            refs=[
+                str(archive_paths["json"].relative_to(project_root)),
+                str(archive_paths["md"].relative_to(project_root)),
+            ],
+            version=resolved_version,
+        )
         learning_payload = write_requirement_rewrite_input(
             project_root,
             version=resolved_version,
@@ -928,6 +934,14 @@ def run_implement_stage(  # noqa: PLR0913
             summary_payload["auto_qa"] = auto_qa_payload
         write_json(summary_paths["json"], summary_payload)
         _write_text(summary_paths["md"], _render_summary_markdown(summary_payload))
+        refresh_evidence_manifest(
+            project_root,
+            refs=[
+                str(summary_paths["json"].relative_to(project_root)),
+                str(summary_paths["md"].relative_to(project_root)),
+            ],
+            version=resolved_version,
+        )
         write_json(state_path, summary_payload)
         return auto_qa_exit, summary_payload
     if adapter_type in {"handoff", "claude-skill"}:
@@ -1211,6 +1225,14 @@ def run_implement_stage(  # noqa: PLR0913
     technical_payload["revision_id"] = str(story_state.get("current_revision_id", "") or "")
     write_json(archive_paths["json"], technical_payload)
     _write_text(archive_paths["md"], _render_technical_archive_markdown(technical_payload))
+    refresh_evidence_manifest(
+        project_root,
+        refs=[
+            str(archive_paths["json"].relative_to(project_root)),
+            str(archive_paths["md"].relative_to(project_root)),
+        ],
+        version=resolved_version,
+    )
     learning_payload = write_requirement_rewrite_input(
         project_root,
         version=resolved_version,
@@ -1257,6 +1279,14 @@ def run_implement_stage(  # noqa: PLR0913
         summary_payload["auto_qa"] = auto_qa_payload
     write_json(summary_paths["json"], summary_payload)
     _write_text(summary_paths["md"], _render_summary_markdown(summary_payload))
+    refresh_evidence_manifest(
+        project_root,
+        refs=[
+            str(summary_paths["json"].relative_to(project_root)),
+            str(summary_paths["md"].relative_to(project_root)),
+        ],
+        version=resolved_version,
+    )
 
     payload = {**base_state, **summary_payload}
     write_json(state_path, payload)
@@ -1450,12 +1480,12 @@ def status(
 
     slug = str(state_payload.get("feature_slug", feature_slug))
     summary = _summary_paths(project_root, resolved_version, slug).get("json")
-    review_spec = project_root / "docs" / "beacon" / resolved_version / "execution" / f"review-spec-{slug}.json"
-    review_quality = project_root / "docs" / "beacon" / resolved_version / "execution" / f"review-quality-{slug}.json"
+    review_spec = execution_file_candidates(project_root, resolved_version, f"review-spec-{slug}.json")
+    review_quality = execution_file_candidates(project_root, resolved_version, f"review-quality-{slug}.json")
     output = dict(state_payload)
     output["summary_exists"] = bool(summary and summary.exists())
-    output["review_spec_exists"] = review_spec.exists()
-    output["review_quality_exists"] = review_quality.exists()
+    output["review_spec_exists"] = any(path.exists() for path in review_spec)
+    output["review_quality_exists"] = any(path.exists() for path in review_quality)
     output["implementation_marker_exists"] = (project_root / ".beacon" / "state" / f"implementation-{slug}.json").exists()
     output["implementation_plan_exists"] = implementation_plan_json_path(project_root, resolved_version, slug).exists()
     output["implementation_plan_markdown_exists"] = implementation_plan_markdown_path(project_root, resolved_version, slug).exists()
