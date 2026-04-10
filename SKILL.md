@@ -6,9 +6,9 @@ description: Evidence-first Product Workflow Kernel for product thinking, user s
 
 # Beacon - Evidence-first Product Workflow Kernel
 
-> **Skill Version**: v1.2.0
-> **CLI Version**: v1.2.0
-> **Last Updated**: 2026-04-08
+> **Skill Version**: v1.2.1 supplement
+> **CLI Version**: v1.2.0 runtime line + v1.2.1 supplement
+> **Last Updated**: 2026-04-10
 
 Beacon 是 AI 产品工作流内核，提供需求澄清、用户故事、PRD、测试用例、证据闭环与发布门禁的统一工作流。
 
@@ -56,6 +56,7 @@ Beacon 是 AI 产品工作流内核，提供需求澄清、用户故事、PRD、
 - **当前包版本**：`1.2.0`
 - **最新已接受文档线**：`v1.2.0`
 - **当前已落地实现线**：`v1.2.0`（mainline command simplification / project-skill discovery / shared discovery routing / prototype anchoring / QA baseline hardening 已在仓内落地，并有实现测试覆盖）
+- **当前补充增强线**：`v1.2.1`（Codex `UserPromptSubmit` → Beacon debug prompt adaptation / guidance / debug evidence ingress 已落地）
 - **上一稳定基线**：`v1.1.12`（design governance / version truth / profile-aware routing / typed learning plane / takeover baseline gate）
 
 如果你只记一条：
@@ -67,6 +68,7 @@ Beacon 是 AI 产品工作流内核，提供需求澄清、用户故事、PRD、
 - `v1.2.0` 已正式成为 current runtime release line
 - command-surface simplification、project-skill discovery、prototype anchoring 与 QA baseline bundle 已进入正式发布口径
 - 当前最稳妥的阅读方式是直接以 `docs/beacon/v1.2.0/` 作为 current line
+- `docs/beacon/v1.2.1/` 是当前针对 Codex hook / debug prompt adaptation 的 supplement line
 
 ## Beacon 到底是什么
 
@@ -131,6 +133,13 @@ beacon status --board --project-root . --version v1.2.0
 beacon help --project-root . --version v1.2.0 --feature "My feature" --json
 ```
 
+### 如果你要把 Codex 原始用户输入接入 Beacon debug
+
+```bash
+printf '%s' '{"hook_event_name":"UserPromptSubmit","prompt":"请帮我梳理登录需求并进入 Beacon 主链"}' \
+  | beacon debug codex-user-prompt-submit --project-root . --version v1.2.1 --json
+```
+
 ## Beacon 的主工作流模型
 
 Beacon 当前的标准主链是：
@@ -180,6 +189,7 @@ think
    - `debug`
    - `resume`
    - control / exhaustion / checkpoint semantics
+   - `debug codex-user-prompt-submit`
 6. **Review / Gate / Release / Learning 治理**
    - `review`
    - `gate`
@@ -524,7 +534,8 @@ docs/beacon/{version}/
 ├── release/{version}.md
 ├── execution/index.md
 ├── execution/boundaries.md
-└── .machine/execution/terminal.json
+├── execution/*.md              # human-readable execution docs only
+└── .machine/execution/*.json   # machine-readable execution artifacts only
 ```
 
 ## 参考文档

@@ -16,6 +16,7 @@ from beacon.utils.debug_feedback import (
     is_debug_mode_enabled,
 )
 from beacon.utils.intent_router import DEFAULT_ROUTABLE_INTENTS, SUPPORTED_INTENTS, optimize_prompt_to_plan
+from beacon.utils.prompt_router_history import append_prompt_router_history
 from beacon.utils.runtime import now_iso
 from beacon.utils.v115_delivery import build_first_principles_contract
 from beacon.utils.versioning import resolve_target_version
@@ -66,13 +67,6 @@ def _resolve_boundary_state(plan: dict[str, Any]) -> str:
     if boundary.get("in_scope") is True:
         return "in_scope"
     return "out_of_scope"
-
-
-def _append_router_history(project_root: Path, event: dict[str, Any]) -> None:
-    history_path = project_root / ".beacon" / "memory" / "prompt-router-history.jsonl"
-    history_path.parent.mkdir(parents=True, exist_ok=True)
-    with history_path.open("a", encoding="utf-8") as handle:
-        handle.write(json.dumps(event, ensure_ascii=False) + "\n")
 
 
 def _build_boundary_safe_command_pack(plan: dict[str, Any], project_root: Path, goal: str) -> dict[str, Any]:
@@ -272,7 +266,7 @@ def _optimize_impl(
         if execute and not blocked_reason
         else None,
     }
-    _append_router_history(root, event)
+    append_prompt_router_history(root, event)
 
     if is_debug_mode_enabled(root):
         try:

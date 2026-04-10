@@ -260,6 +260,38 @@ INTENT_PRIORITY: dict[str, int] = {
     "think": 10,
 }
 
+_ARTIFACT_SIGNAL_KEYWORDS: dict[str, tuple[str, ...]] = {
+    "think": ("think", "需求", "澄清", "方案", "边界"),
+    "user-story": ("user-story", "用户故事", "验收标准", "ac"),
+    "prd": ("prd", "需求文档", "规格", "spec"),
+    "test-case": ("test-case", "测试用例", "测试矩阵", "ac->tc"),
+    "workflow": ("workflow", "工作流", "主链"),
+    "qa": ("qa", "验收", "回归", "测试"),
+    "auto-test": ("auto-test", "自动测试", "自动化测试"),
+    "debug": ("debug", "调试", "路由", "提示词"),
+    "doctor": ("doctor", "诊断", "健康检查"),
+    "status": ("status", "状态", "看板"),
+    "resume": ("resume", "继续", "恢复", "续跑"),
+    "gate": ("gate", "放行", "门禁"),
+    "release": ("release", "发布", "发版"),
+}
+
+_PROMPT_TEMPLATE_BY_INTENT: dict[str, str] = {
+    "think": "请用 Beacon 为「{feature}」做需求澄清，输出 think 产物、关键边界、阻塞项和下一步命令，version={version}。",
+    "user-story": "请用 Beacon 为「{feature}」生成 user-story 与验收标准，version={version}。",
+    "prd": "请用 Beacon 为「{feature}」生成 PRD，覆盖目标、范围、约束和风险，version={version}。",
+    "test-case": "请用 Beacon 为「{feature}」生成测试用例、AC→TC 映射和覆盖缺口，version={version}。",
+    "workflow": "请用 Beacon 为「{feature}」启动完整工作流，并告诉我主链下一步该执行什么，version={version}。",
+    "status": "请用 Beacon 查看当前 workflow 状态，并说明下一步推荐动作，version={version}。",
+    "resume": "请用 Beacon 继续上次 workflow，先识别 run/feature，再输出恢复建议，version={version}。",
+    "gate": "请用 Beacon 检查当前 release gate 状态，并说明阻塞项与放行建议，version={version}。",
+    "release": "请用 Beacon 检查「{feature}」的 release 准备度，输出 release 风险与缺失工件，version={version}。",
+    "doctor": "请用 Beacon 做环境与上下文诊断，输出 doctor 结论、风险和下一步命令，version={version}。",
+    "qa": "请用 Beacon 为「{feature}」执行 QA 验收规划或回归分析，version={version}。",
+    "auto-test": "请用 Beacon 为「{feature}」生成自动测试/回归执行建议，version={version}。",
+    "debug": "请用 Beacon debug 分析这次提示词为什么没有进入正确主链，输出意图、边界、推荐命令和规范化重写建议，version={version}。",
+}
+
 RESUME_ACTION_KEYWORDS = ("resume", "continue", "恢复", "继续", "续跑", "接着")
 RESUME_CONTEXT_KEYWORDS = ("workflow", "工作流", "上次", "上一轮", "previous", "last", "run-")
 
@@ -744,4 +776,75 @@ def optimize_prompt_to_plan(
             "config_loaded": bool(router_config.get("config_loaded")),
             "config_path": str(router_config.get("config_path", "")),
         },
+    }
+
+
+def build_prompt_adaptation_pack(
+    goal: str,
+    *,
+    plan: dict[str, Any],
+    project_root: Path,
+    version: str,
+) -> dict[str, Any]:
+    """Translate routing output into a user-facing prompt normalization guide."""
+    intent = str(plan.get("intent", "think") or "think")
+    confidence = round(float(plan.get("confidence", 0.0) or 0.0), 2)
+    boundary = plan.get("boundary", {}) if isinstance(plan.get("boundary"), dict) else {}
+    boundary_state = str(boundary.get("state", "in_scope") or "in_scope")
+    feature = _extract_feature(goal)
+    feature_hint = feature if feature and feature != "Untitled Feature" else "<feature>"
+    version_text = str(version or "auto").strip() or "auto"
+    normalized_prompt = (
+        _PROMPT_TEMPLATE_BY_INTENT.get(intent)
+        or "请用 Beacon 为「{feature}」输出主链建议、推荐命令与下一步动作，version={version}。"
+    ).format(feature=feature_hint, version=version_text)
+
+    goal_text = str(goal or "").strip()
+    goal_has_version = re.search(r"\bv?\d+\.\d+\.\d+\b", goal_text) is not None
+    artifact_tokens = _ARTIFACT_SIGNAL_KEYWORDS.get(intent, ())
+    goal_has_artifact_signal = any(_match_token(_normalize_text(goal_text), token) for token in artifact_tokens)
+
+    normalize_actions: list[str] = []
+    missing_fields: list[str] = []
+    if not goal_has_artifact_signal:
+        missing_fields.append("expected_artifact_or_stage")
+        normalize_actions.append("明确说明你要 Beacon 产出哪类工件或当前所处阶段。")
+    if not goal_has_version:
+        missing_fields.append("target_version")
+        normalize_actions.append("补充目标 version，例如 `v1.2.1`。")
+    if boundary_state == "mixed_need_confirm":
+        missing_fields.append("boundary_split")
+        normalize_actions.append("把 Beacon 主链诉求与写代码/部署等非 Beacon 诉求拆成两条输入。")
+    elif boundary_state == "out_of_scope":
+        missing_fields.append("beacon_scope")
+        normalize_actions.append("把需求改写成 requirement / QA / release / debug 这类 Beacon 范围内目标。")
+
+    min_confidence = float(plan.get("execution_policy", {}).get("min_confidence", DEFAULT_CONFIDENCE_THRESHOLD) or DEFAULT_CONFIDENCE_THRESHOLD)
+    needs_clarification = bool(
+        boundary_state != "in_scope"
+        or confidence < min_confidence
+        or missing_fields
+    )
+    if confidence < min_confidence:
+        normalize_actions.append("避免只说“帮我搞一下”，要明确 feature、期望工件和执行边界。")
+
+    guidance_lines = [
+        f"Beacon prompt adapter: intent={intent}, confidence={confidence}, boundary={boundary_state}.",
+        f"Recommended Beacon command: {str(plan.get('recommended_command', '')).strip() or 'beacon help --project-root . --json'}",
+        "Guide the user to include: feature context, expected Beacon artifact/stage, target version, and whether Beacon should only plan or also execute.",
+    ]
+    if normalize_actions:
+        guidance_lines.append("Normalization actions: " + " ".join(normalize_actions))
+    guidance_lines.append(f'Suggested normalized prompt: "{normalized_prompt}"')
+
+    return {
+        "intent": intent,
+        "confidence": confidence,
+        "boundary_state": boundary_state,
+        "needs_clarification": needs_clarification,
+        "missing_fields": missing_fields,
+        "normalize_actions": normalize_actions,
+        "normalized_prompt": normalized_prompt,
+        "recommended_command": str(plan.get("recommended_command", "")).strip(),
+        "assistant_context": " ".join(line.strip() for line in guidance_lines if line.strip()),
     }

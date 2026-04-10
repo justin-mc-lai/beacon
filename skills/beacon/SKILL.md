@@ -74,12 +74,14 @@ If you only remember one sentence:
 - **Current package version**: `1.2.0`
 - **Latest accepted docs line**: `v1.2.0`
 - **Current landed implementation line**: `v1.2.0` (mainline command simplification / project-skill discovery / shared discovery routing / prototype anchoring / QA baseline hardening; implemented and verified in-repo)
+- **Current supplement line**: `v1.2.1` (Codex `UserPromptSubmit` -> Beacon debug prompt adaptation / guidance / debug evidence ingress)
 - **Previous stable line**: `v1.1.12` (design governance / version truth / profile-aware routing / typed learning plane / takeover baseline gate)
 
 `v1.2.0` note:
 
 - the repo now ships mainline command simplification, project-skill discovery, shared discovery routing, prototype anchoring, and QA baseline hardening as part of the current release line
 - read `../../docs/beacon/v1.2.0/` for the current runtime line
+- read `../../docs/beacon/v1.2.1/` for the current Codex hook / debug supplement line
 
 ## Overview
 
@@ -119,6 +121,13 @@ bash skills/beacon/scripts/run_beacon.sh test-case create "My Feature" --project
 ```bash
 bash skills/beacon/scripts/run_beacon.sh status --board --project-root . --version v1.2.0
 bash skills/beacon/scripts/run_beacon.sh help --project-root . --feature "My Feature" --version v1.2.0 --json
+```
+
+### Adapt Codex `UserPromptSubmit` into Beacon guidance
+
+```bash
+printf '%s' '{"hook_event_name":"UserPromptSubmit","prompt":"请帮我梳理登录需求并进入 Beacon 主链"}' \
+  | bash skills/beacon/scripts/run_beacon.sh debug codex-user-prompt-submit --project-root . --version v1.2.1 --json
 ```
 
 ### Run implementation and closure
@@ -177,6 +186,7 @@ Current v1.2.0 release-line surfaces:
    - `debug`
    - `resume`
    - exhaustion / checkpoint semantics
+   - `debug codex-user-prompt-submit`
 6. review / gate / release / learning governance
    - `review`
    - `gate`
