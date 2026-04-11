@@ -12,11 +12,11 @@ Beacon 版本语义的统一中文说明入口。 机器侧以 `beacon/version-s
 
 | 字段 | 类型 | 中文说明 | 示例 |
 | --- | --- | --- | --- |
-| `package_version` | 包版本 | 已安装 Beacon 包版本。 | `1.2.0` |
-| `runtime_version` | 运行版本 | CLI 与受管上下文当前使用的 Beacon runtime/toolkit 版本线。 | `v1.2.0` |
-| `docs_default_line` | 文档版本 | 当命令使用 auto/latest 解析文档目标时默认命中的文档线。 | `v1.2.0` |
-| `current_runtime_release_line` | 发布真相 | 当前被视为正式 runtime 发布真相的 Beacon 版本线。 | `v1.2.0` |
-| `planning_lines` | 规划版本 | 已开启规划但尚未提升为当前 runtime release 的未来文档线。 | `["v1.3.0"]` |
+| `package_version` | 包版本 | 已安装 Beacon 包版本。 | `1.3.0` |
+| `runtime_version` | 运行版本 | CLI 与受管上下文当前使用的 Beacon runtime/toolkit 版本线。 | `v1.3.0` |
+| `docs_default_line` | 文档版本 | 当命令使用 auto/latest 解析文档目标时默认命中的文档线。 | `v1.3.0` |
+| `current_runtime_release_line` | 发布真相 | 当前被视为正式 runtime 发布真相的 Beacon 版本线。 | `v1.3.0` |
+| `planning_lines` | 规划版本 | 已开启规划但尚未提升为当前 runtime release 的未来文档线。 | `[]` |
 | `partial_runtime_supplement_lines` | 补充增强 | 已有局部 runtime 增强、但仍未替代当前 runtime release 的规划版本线。 | `["v1.2.1"]` |
 
 ## 状态值

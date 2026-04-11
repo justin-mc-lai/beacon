@@ -586,6 +586,7 @@ def run_implement_stage(  # noqa: PLR0913
     auto_qa_follow_handoff: bool | None = None,
     auto_qa_max_rounds: int | None = None,
     auto_switch_branch: bool | None = None,
+    team_runtime: str | None = None,
 ) -> tuple[int, dict[str, Any]]:
     resolved_version = resolve_target_version(project_root, version)
     config = load_beacon_config(project_root)
@@ -819,6 +820,7 @@ def run_implement_stage(  # noqa: PLR0913
             feature=feature,
             run_id=run_id,
             mode=native_mode,
+            runtime=str(team_runtime or "file"),
         )
         if str(result_payload.get("status", "")).strip().lower() != "completed":
             mark_implementation_plan_failed(
@@ -1388,6 +1390,7 @@ def run(
     auto_qa_follow_handoff: Optional[bool] = typer.Option(None, "--auto-qa-follow-handoff/--no-auto-qa-follow-handoff", help="When auto-qa is blocked, follow supported repair handoff actions and retry QA"),
     auto_qa_max_rounds: int = typer.Option(0, "--auto-qa-max-rounds", help="Maximum QA rounds in the auto-qa follow-handoff loop"),
     auto_switch_branch: bool = typer.Option(False, "--auto-switch-branch", help="Explicitly switch/create the expected Beacon version branch before implementation"),
+    runtime: str = typer.Option("file", "--runtime", help="Team runtime for native-team/codex-subagents: file/tmux/auto"),
     json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
 ):
     """Run implementation using the resolved skill adapter."""
@@ -1408,6 +1411,7 @@ def run(
         auto_qa_follow_handoff=auto_qa_follow_handoff,
         auto_qa_max_rounds=auto_qa_max_rounds or None,
         auto_switch_branch=auto_switch_branch,
+        team_runtime=runtime,
     )
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
@@ -1534,6 +1538,7 @@ def team_run(
     version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
     auto_review_spec: bool = typer.Option(True, "--auto-review-spec/--no-auto-review-spec", help="Auto trigger review spec"),
     auto_review_quality: bool = typer.Option(False, "--auto-review-quality/--no-auto-review-quality", help="Auto trigger review quality"),
+    runtime: str = typer.Option("file", "--runtime", help="Runtime mode: file/tmux/auto"),
     json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
 ):
     """Run implementation through the explicit implement-team surface."""
@@ -1545,6 +1550,7 @@ def team_run(
         runner="codex-subagents",
         auto_review_spec=auto_review_spec,
         auto_review_quality=auto_review_quality,
+        team_runtime=runtime,
     )
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))

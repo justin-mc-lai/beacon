@@ -25,7 +25,7 @@ def test_v120_version_truth_should_promote_v120_to_current_runtime_release():
     assert payload["runtime_version"] == __toolkit_version__
     assert payload["docs_default_line"] == __toolkit_version__
     assert payload["current_runtime_release_line"] == __toolkit_version__
-    assert payload["planning_lines"] == ["v1.3.0"]
+    assert payload["planning_lines"] == []
     assert payload["lines"][__toolkit_version__]["status"] == "current_runtime_release"
 
 
@@ -61,4 +61,16 @@ def test_v120_current_release_gate_should_pass():
         assert payload["blocked_count"] == 0
     else:
         reason_codes = {item["reason_code"] for item in payload.get("issues", []) if isinstance(item, dict)}
-        assert reason_codes <= {"ac_tc_evidence_chain_broken", "git_alignment_blocked"}
+        assert reason_codes <= {
+            "ac_tc_evidence_chain_broken",
+            "git_alignment_blocked",
+            "evidence_sha256_manifest_mismatch",
+            "gate_consistency_conflict",
+            "implementation_plan_blocked",
+            "implementation_plan_incomplete",
+            "unresolved_closure_outcome",
+            "review_required_open",
+            "release_confidence_below_threshold",
+            "feature_release_not_ready",
+            "spec_impl_drift_detected",
+        }

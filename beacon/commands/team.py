@@ -14,9 +14,37 @@ from beacon.utils.debug_feedback import (
     is_debug_mode_enabled,
 )
 from beacon.utils.memory import append_memory_entry
+from beacon.utils.story_state import feature_slug
 from beacon.utils.workflow_memory import append_lifecycle_event
+from beacon.utils.subagent_runtime import (
+    load_worker_spec,
+    team_hud_html_path,
+    team_hud_json_path,
+    worker_result_path,
+)
 
 app = typer.Typer(name="team", help="Team collaboration management")
+
+
+def _render_worker_markdown(payload: dict[str, Any]) -> str:
+    lines = [
+        f"# Team Worker Report: {payload.get('role', '')}",
+        "",
+        f"- role: `{payload.get('role', '')}`",
+        f"- status: `{payload.get('status', '')}`",
+    ]
+    summary = str(payload.get("summary", "")).strip()
+    if summary:
+        lines.append(f"- summary: {summary}")
+    for key in ("implemented_item_ids", "verified_item_ids", "failed_item_ids", "changed_files", "recommendations"):
+        values = payload.get(key)
+        if isinstance(values, list):
+            lines.extend(["", f"## {key}"])
+            if values:
+                lines.extend(f"- {item}" for item in values)
+            else:
+                lines.append("- none")
+    return "\n".join(lines) + "\n"
 
 # Team state machine states
 class TeamState(str, Enum):
@@ -712,6 +740,87 @@ def report(
         typer.echo(f"  Runtime: {report_data['runtime']}")
         typer.echo(f"  Terminal: {report_data['terminal_status']}")
         typer.echo(f"  Fix Loops: {report_data['fix_loops']}")
+
+
+@app.command("worker-run")
+def worker_run(
+    spec: str = typer.Option(..., "--spec", help="Worker spec json path"),
+):
+    """Execute a bounded team worker from a precomputed spec."""
+    spec_path = Path(spec).resolve()
+    payload = load_worker_spec(spec_path)
+    result = dict(payload.get("payload", {})) if isinstance(payload.get("payload"), dict) else {}
+    output_json = Path(str(payload.get("output_json", ""))).resolve()
+    output_md = Path(str(payload.get("output_md", ""))).resolve()
+    result_path = Path(str(payload.get("result_path", ""))).resolve()
+    result.setdefault("role", str(payload.get("role", "") or "worker"))
+    result.setdefault("status", "completed")
+    result.setdefault("summary", f"worker {result.get('role', '')} completed")
+    output_json.parent.mkdir(parents=True, exist_ok=True)
+    output_md.parent.mkdir(parents=True, exist_ok=True)
+    result_path.parent.mkdir(parents=True, exist_ok=True)
+    output_json.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    output_md.write_text(_render_worker_markdown(result), encoding="utf-8")
+    result_path.write_text(
+        json.dumps(
+            {
+                "role": result.get("role", ""),
+                "status": result.get("status", ""),
+                "json": str(output_json),
+                "markdown": str(output_md),
+                "completed_at": datetime.now().isoformat(),
+            },
+            ensure_ascii=False,
+            indent=2,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    typer.echo(json.dumps({"status": "completed", "role": result.get("role", ""), "result_path": str(result_path)}, ensure_ascii=False))
+
+
+@app.command("hud")
+def hud(
+    team: str = typer.Option(..., "--team", "-t", help="Team name"),
+    project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
+    json_output: bool = typer.Option(False, "--json", help="JSON output"),
+):
+    """Read a stable HUD snapshot for a team."""
+    project_root = Path(project) if project else Path.cwd()
+    path = team_hud_json_path(project_root, team_name=team)
+    if not path.exists():
+        typer.echo("No team HUD found")
+        raise typer.Exit(1)
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        return
+    typer.echo(f"Team HUD: {team}")
+    typer.echo(f"  Runtime: {payload.get('runtime', '')}")
+    typer.echo(f"  tmux: {payload.get('tmux_session', '')}")
+    for role in payload.get("roles", []):
+        if not isinstance(role, dict):
+            continue
+        typer.echo(f"  - {role.get('role', '')}: {role.get('status', '')} pane={role.get('pane_id', '')}")
+
+
+@app.command("page")
+def page(
+    team: str = typer.Option(..., "--team", "-t", help="Team name"),
+    project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
+):
+    """Show the generated HTML HUD page path for a team."""
+    project_root = Path(project) if project else Path.cwd()
+    state = load_team_state(project_root, team)
+    feature = str(state.get("feature", "") or "")
+    version = str(state.get("version", "") or "")
+    run_id = str(state.get("run_id", "") or "")
+    surface_dir = str(state.get("surface_dir", "team") or "team")
+    path = team_hud_html_path(project_root, version=version, feature=feature_slug(feature), run_id=run_id, surface_dir=surface_dir)
+    if not path.exists():
+        typer.echo("No team HUD page found")
+        raise typer.Exit(1)
+    typer.echo(str(path.relative_to(project_root)))
 
 
 @app.command("list")

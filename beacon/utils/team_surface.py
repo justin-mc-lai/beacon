@@ -10,6 +10,22 @@ from beacon.utils.runtime import now_iso, write_json
 from beacon.utils.story_state import feature_slug
 
 
+def _team_roles_root() -> Path:
+    return Path(__file__).resolve().parents[1] / "team_roles"
+
+
+def _load_team_role_config(surface: str) -> dict[str, Any]:
+    path = _team_roles_root() / f"{surface}.json"
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except Exception as exc:  # noqa: BLE001
+        raise RuntimeError(f"invalid team role config for {surface}: {path}") from exc
+    if not isinstance(payload, dict):
+        raise RuntimeError(f"team role config must be an object: {path}")
+    payload["source_path"] = str(path.relative_to(path.parents[2]))
+    return payload
+
+
 def build_context_isolation(
     *,
     role_plane: str,
@@ -29,41 +45,31 @@ def build_context_isolation(
 
 def implement_team_contract(project_root: Path, *, version: str, feature: str) -> dict[str, Any]:
     feature_text = str(feature or "").strip()
+    config = _load_team_role_config("implement-team")
+    context = config.get("context_isolation") if isinstance(config.get("context_isolation"), dict) else {}
     return {
-        "preferred_surface": "implement-team",
-        "preferred_runner": "codex-subagents",
+        "preferred_surface": str(config.get("preferred_surface", "implement-team")),
+        "preferred_runner": str(config.get("preferred_runner", "codex-subagents")),
         "plan_command": f'beacon implement team-plan "{feature_text}" --project-root {project_root} --version {version}',
         "run_command": f'beacon implement team-run "{feature_text}" --project {project_root} --version {version}',
         "qa_team_command": f'beacon qa team-run "{feature_text}" --project {project_root} --version {version}',
-        "roles": ["planner", "implementer", "reviewer", "tester"],
-        "context_isolation": {
-            **build_context_isolation(
-                role_plane="implementation",
-                isolated_from=["qa-team"],
-                shared_inputs=["docs", "implementation_plan", "evidence_refs"],
-                shared_outputs=["implementation_summary", "technical_archive", "repair_handoff"],
-                rule="qa_must_not_inherit_implement_private_context",
-            ),
-            "implement_surface": "implement-team",
-            "qa_surface": "qa-team",
-        },
+        "roles": list(config.get("roles", [])),
+        "context_isolation": dict(context),
+        "config_source": str(config.get("source_path", "")),
     }
 
 
 def qa_team_contract(project_root: Path, *, version: str, feature: str) -> dict[str, Any]:
     feature_text = str(feature or "").strip()
+    config = _load_team_role_config("qa-team")
+    context = config.get("context_isolation") if isinstance(config.get("context_isolation"), dict) else {}
     return {
-        "preferred_surface": "qa-team",
+        "preferred_surface": str(config.get("preferred_surface", "qa-team")),
         "plan_command": f'beacon qa team-plan "{feature_text}" --project {project_root} --version {version}',
         "run_command": f'beacon qa team-run "{feature_text}" --project {project_root} --version {version}',
-        "roles": ["verifier", "repair-handoff-writer"],
-        "context_isolation": build_context_isolation(
-            role_plane="qa",
-            isolated_from=["implement-team"],
-            shared_inputs=["docs/beacon/<version>/qa/test-cases", "implementation_summary", "technical_archive", "evidence_refs"],
-            shared_outputs=["feature_scorecard", "repair_handoff", "qa_status"],
-            rule="qa_must_not_inherit_implement_private_context",
-        ),
+        "roles": list(config.get("roles", [])),
+        "context_isolation": dict(context),
+        "config_source": str(config.get("source_path", "")),
     }
 
 

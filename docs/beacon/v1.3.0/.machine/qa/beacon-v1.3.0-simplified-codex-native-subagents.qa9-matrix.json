@@ -1,0 +1,81 @@
+{
+  "schema_version": "1.0.2",
+  "feature": "beacon-v1.3.0-simplified-codex-native-subagents",
+  "feature_slug": "beacon-v1.3.0-simplified-codex-native-subagents",
+  "version": "v1.3.0",
+  "qa_profile": "custom",
+  "qa_types": [
+    "implementation"
+  ],
+  "llm_plan": {
+    "mode": "rule",
+    "model": "beacon-rule-llm-v1",
+    "project_scan": {
+      "language": "python",
+      "framework": "python-app",
+      "frontend": "unknown",
+      "api_spec_refs": [],
+      "risk_points": [
+        "planning-line routing drift",
+        "implement-team evidence drift",
+        "context-isolation regression"
+      ]
+    },
+    "project_type": "ai-agent-skill",
+    "generated_at": "2026-04-11T01:55:00+00:00",
+    "prompt_ref": "beacon.qa9.llm.plan.v1.0.2",
+    "skip_reason": "",
+    "qa_types": [
+      "implementation"
+    ]
+  },
+  "qa_strategy": {
+    "schema_version": "1.0.2",
+    "generated_at": "2026-04-11T01:55:00+00:00",
+    "project_type": "ai-agent-skill",
+    "project_scan": {
+      "language": "python",
+      "framework": "python-app",
+      "frontend": "unknown",
+      "api_spec_refs": [],
+      "risk_points": [
+        "planning-line routing drift",
+        "implement-team evidence drift",
+        "context-isolation regression"
+      ]
+    },
+    "qa_applicability": {
+      "implementation": "required"
+    },
+    "qa_required_types": [
+      "implementation"
+    ],
+    "runner_policy": {
+      "implementation": {
+        "primary": "codex-subagents",
+        "fallback": [
+          "native-team",
+          "native-single"
+        ]
+      }
+    },
+    "command_baseline": {
+      "implementation": "beacon implement team-run \"beacon-v1.3.0-simplified-codex-native-subagents\" --project . --version v1.3.0 --json"
+    },
+    "ui_runner": "none"
+  },
+  "qa_requirements": [
+    {
+      "qa_type": "implementation",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    }
+  ]
+}

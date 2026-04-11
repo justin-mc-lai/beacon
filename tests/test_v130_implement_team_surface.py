@@ -66,6 +66,7 @@ def test_v130_implement_plan_should_emit_team_mode_contract(tmp_path: Path):
     assert team_mode["preferred_runner"] == "codex-subagents"
     assert "qa team-run" in team_mode["qa_team_command"]
     assert team_mode["context_isolation"]["qa_surface"] == "qa-team"
+    assert team_mode["config_source"] == "beacon/team_roles/implement-team.json"
 
 
 def test_v130_implement_run_auto_should_use_codex_subagents_team_surface(tmp_path: Path):
@@ -162,3 +163,61 @@ def test_v130_team_commands_should_be_explicit_and_stable(tmp_path: Path):
     qa_plan_payload = json.loads(qa_plan.stdout)
     assert qa_plan_payload["team_surface"] == "qa-team"
     assert "beacon qa team-run" in qa_plan_payload["team_contract"]["run_command"]
+    assert qa_plan_payload["team_contract"]["config_source"] == "beacon/team_roles/qa-team.json"
+
+
+def test_v130_team_run_should_emit_hud_paths_in_file_runtime(tmp_path: Path):
+    _seed_docs(tmp_path)
+    _invoke(["freeze", FEATURE, "--project", str(tmp_path), "--version", VERSION])
+    _invoke(["implement", "plan", FEATURE, "--project", str(tmp_path), "--version", VERSION])
+
+    result = _invoke(
+        [
+            "implement",
+            "team-run",
+            FEATURE,
+            "--project",
+            str(tmp_path),
+            "--version",
+            VERSION,
+            "--runtime",
+            "file",
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    team_execution = payload["team_execution"]
+    assert team_execution["runtime"] == "file"
+    hud = team_execution["hud"]
+    assert (tmp_path / hud["json"]).exists()
+    assert (tmp_path / hud["html"]).exists()
+
+
+def test_v130_team_run_should_materialize_tmux_session_when_requested(tmp_path: Path):
+    if subprocess.run(["/bin/sh", "-lc", "command -v tmux >/dev/null 2>&1"], capture_output=True, text=True).returncode != 0:
+        return
+    _seed_docs(tmp_path)
+    _invoke(["freeze", FEATURE, "--project", str(tmp_path), "--version", VERSION])
+    _invoke(["implement", "plan", FEATURE, "--project", str(tmp_path), "--version", VERSION])
+
+    result = _invoke(
+        [
+            "implement",
+            "team-run",
+            FEATURE,
+            "--project",
+            str(tmp_path),
+            "--version",
+            VERSION,
+            "--runtime",
+            "tmux",
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    team_execution = payload["team_execution"]
+    assert team_execution["runtime"] == "tmux"
+    assert team_execution["tmux_session"]
+    assert any(str(item.get("pane_id", "")) for item in team_execution["role_reports"].values())

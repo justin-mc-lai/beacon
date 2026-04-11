@@ -43,6 +43,14 @@ from beacon.utils.qa_runtime import (
     write_qa_status,
 )
 from beacon.utils.story_state import feature_slug
+from beacon.utils.subagent_runtime import (
+    resolve_team_runtime,
+    spawn_tmux_workers,
+    wait_for_worker_results,
+    worker_result_path,
+    write_team_hud,
+    write_worker_spec,
+)
 from beacon.utils.team_surface import (
     build_context_isolation,
     load_implement_to_qa_handoff,
@@ -185,14 +193,20 @@ def _materialize_qa_team_surface(
     feature: str,
     run_id: str,
     payload: dict[str, Any],
+    runtime: str = "file",
 ) -> dict[str, Any]:
     feature_key = feature_slug(feature)
     team_name = f"qa-team-{run_id}"
+    resolved_runtime = resolve_team_runtime(runtime)
     state = {
         "active": True,
         "team_name": team_name,
         "task": f"QA verify {feature}",
-        "runtime": "file",
+        "runtime": resolved_runtime,
+        "feature": feature,
+        "version": version,
+        "run_id": run_id,
+        "surface_dir": "qa-team",
         "state": TeamState.TERMINAL.value,
         "terminal_status": TerminalStatus.PASS.value if str(payload.get("status", "")).lower() == "passed" else TerminalStatus.BLOCKED.value,
         "started_at": str(payload.get("generated_at") or ""),
@@ -251,17 +265,68 @@ def _materialize_qa_team_surface(
             "recommendations": [str(repair_handoff.get("command") or "").strip()] if repair_handoff else ["No repair handoff required."],
         },
     }
-    for role, role_payload in role_payloads.items():
-        json_path = artifact_dir / f"{role}.json"
-        md_path = artifact_dir / f"{role}.md"
-        _write_json(json_path, role_payload)
-        md_path.parent.mkdir(parents=True, exist_ok=True)
-        md_path.write_text(_render_qa_team_role_markdown(role, role_payload), encoding="utf-8")
-        role_reports[role] = {
-            "json": str(json_path.relative_to(project_root)),
-            "markdown": str(md_path.relative_to(project_root)),
-            "status": str(role_payload.get("status", "")),
-        }
+    tmux_session = ""
+    if resolved_runtime == "tmux":
+        worker_specs = []
+        for role, role_payload in role_payloads.items():
+            json_path = artifact_dir / f"{role}.json"
+            md_path = artifact_dir / f"{role}.md"
+            spec_payload = {
+                "role": role,
+                "payload": role_payload,
+                "output_json": str(json_path),
+                "output_md": str(md_path),
+                "result_path": str(worker_result_path(project_root, team_name=team_name, role=role)),
+            }
+            spec_path = write_worker_spec(project_root, team_name=team_name, role=role, payload=spec_payload)
+            worker_specs.append({"role": role, "spec_path": spec_path})
+        spawn_payload = spawn_tmux_workers(project_root, team_name=team_name, worker_specs=worker_specs)
+        tmux_session = str(spawn_payload.get("tmux_session", "") or "")
+        results = wait_for_worker_results(project_root, team_name=team_name, roles=list(role_payloads.keys()))
+        worker_map = {item["role"]: item for item in spawn_payload.get("workers", []) if isinstance(item, dict)}
+        for role in role_payloads:
+            result = results.get(role, {})
+            role_reports[role] = {
+                "json": str(Path(str(result.get("json", ""))).relative_to(project_root)),
+                "markdown": str(Path(str(result.get("markdown", ""))).relative_to(project_root)),
+                "status": str(result.get("status", "") or role_payloads[role].get("status", "")),
+                "pane_id": str(worker_map.get(role, {}).get("pane_id", "") or ""),
+            }
+    else:
+        for role, role_payload in role_payloads.items():
+            json_path = artifact_dir / f"{role}.json"
+            md_path = artifact_dir / f"{role}.md"
+            _write_json(json_path, role_payload)
+            md_path.parent.mkdir(parents=True, exist_ok=True)
+            md_path.write_text(_render_qa_team_role_markdown(role, role_payload), encoding="utf-8")
+            role_reports[role] = {
+                "json": str(json_path.relative_to(project_root)),
+                "markdown": str(md_path.relative_to(project_root)),
+                "status": str(role_payload.get("status", "")),
+                "pane_id": "",
+            }
+
+    hud = write_team_hud(
+        project_root,
+        team_name=team_name,
+        version=version,
+        feature=feature_key,
+        run_id=run_id,
+        surface_dir="qa-team",
+        runtime=resolved_runtime,
+        tmux_session=tmux_session,
+        roles=[
+            {
+                "worker_id": f"worker-{index+1:03d}",
+                "role": role,
+                "status": str(role_reports.get(role, {}).get("status", "") or ""),
+                "pane_id": str(role_reports.get(role, {}).get("pane_id", "") or ""),
+                "json": str(role_reports.get(role, {}).get("json", "") or ""),
+                "markdown": str(role_reports.get(role, {}).get("markdown", "") or ""),
+            }
+            for index, role in enumerate(["verifier", "repair-handoff-writer"])
+        ],
+    )
 
     return {
         "team_name": team_name,
@@ -269,9 +334,12 @@ def _materialize_qa_team_surface(
         "state_path": str(get_team_state_file(project_root, team_name).relative_to(project_root)),
         "artifact_dir": str(artifact_dir.relative_to(project_root)),
         "terminal_status": state["terminal_status"],
+        "runtime": resolved_runtime,
+        "tmux_session": tmux_session,
         "roles": ["verifier", "repair-handoff-writer"],
         "role_reports": role_reports,
         "context_isolation": state["context_isolation"],
+        "hud": hud,
     }
 
 
@@ -561,6 +629,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
                 feature=feature,
                 run_id=str(payload.get("run_id") or plan.get("implementation_run_id") or "feature-qa"),
                 payload=payload,
+                runtime=str(_extract_option(args, "--runtime") or "file"),
             )
             payload["execution_surface"] = "qa-team"
             payload["context_isolation"] = payload["team_execution"].get("context_isolation", {})
@@ -775,6 +844,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
             feature=feature,
             run_id=str(qa_status.get("run_id") or plan.get("implementation_run_id") or "feature-qa"),
             payload=payload,
+            runtime=str(_extract_option(args, "--runtime") or "file"),
         )
         payload["execution_surface"] = "qa-team"
         payload["context_isolation"] = payload["team_execution"].get("context_isolation", {})
@@ -824,6 +894,7 @@ def team_run(
     project: Optional[str] = typer.Option(None, "--project", "--project-root", "-p", help="Project root"),
     version: str = typer.Option("auto", "--version", "-v", help="Version"),
     mode: str = typer.Option("feature-aware", "--mode", help="QA execution mode"),
+    runtime: str = typer.Option("file", "--runtime", help="Runtime mode: file/tmux/auto"),
     json_output: bool = typer.Option(False, "--json", help="JSON output"),
 ):
     """Run QA through the explicit qa-team surface with isolated context."""
@@ -835,6 +906,8 @@ def team_run(
         version,
         "--mode",
         mode,
+        "--runtime",
+        runtime,
         "--team-mode",
     ]
     if json_output:

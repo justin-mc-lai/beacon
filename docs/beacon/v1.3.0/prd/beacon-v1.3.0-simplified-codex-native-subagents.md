@@ -192,6 +192,43 @@ Beacon 必须为 team-mode 提供统一且稳定的显性触发契约，至少�
 
 其目标是让用户和后续源码都能明确知道何时进入 team-mode，而不是依赖隐式路由猜测。
 
+### FR-023 真实 subagent spawn/runtime
+
+`implement-team` 与 `qa-team` 不能只停留在多角色证据写回。
+
+至少在 `implement run` 上，Beacon 必须支持真实的 child-agent spawn/runtime。
+
+### FR-024 有界并行 worker 调度
+
+Beacon 必须支持 bounded parallel worker 调度，而不是只做顺序角色模拟。
+
+最低要求：
+
+- coordinator 负责 spawn / wait / collect
+- 并发度显式受控
+- `max_depth = 1`
+- 不允许 worker 再开 worker
+
+### FR-025 tmux / pane 级可视执行
+
+Beacon 必须为多角色 team-mode 提供稳定的可视执行面。
+
+最低要求：
+
+- 支持 `runtime=tmux`
+- 为每个 role 分配 tmux pane 或 window
+- 把 session / pane mapping 写入 runtime state
+- 提供稳定 HUD 或 HTML 展示页，而不是只靠终端输出
+
+### FR-026 当前 team mode 与目标 runtime 必须区分
+
+在 `v1.3.0` 文档与实现里，必须明确区分：
+
+- 当前已实现：多角色证据模型
+- 目标能力：真实 Codex 多代理并行运行时
+
+不允许把前者表述成后者。
+
 ## 4. 源码落点
 
 当前最小落地路径建议从以下文件入手：

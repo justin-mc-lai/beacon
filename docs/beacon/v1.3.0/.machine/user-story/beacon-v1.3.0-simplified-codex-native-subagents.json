@@ -5,7 +5,7 @@
   "version": "v1.3.0",
   "current_revision_id": "R1",
   "lifecycle_status": "frozen",
-  "updated_at": "2026-04-11T01:39:38.854377+00:00",
+  "updated_at": "2026-04-11T08:47:11.241058+00:00",
   "revisions": [
     {
       "revision_id": "R1",
@@ -28,7 +28,7 @@
       "revision_id": "R1",
       "title": "beacon-v1.3.0-simplified-codex-native-subagents",
       "priority": "medium",
-      "status": "frozen",
+      "status": "blocked",
       "items": [
         {
           "id": "AC-001",
@@ -36,38 +36,79 @@
           "theme": "general",
           "text": "Acceptance criteria TBD",
           "required": true,
-          "status": "draft",
-          "implemented_by_run_id": null,
-          "verified_by_run_id": null,
-          "accepted_at": null,
-          "changed_in_revision": null
+          "status": "failed",
+          "implemented_by_run_id": "run-20260411T053009Z-06d8",
+          "verified_by_run_id": "run-20260411T101256754607",
+          "accepted_at": "2026-04-11T02:05:43.347377+00:00",
+          "changed_in_revision": "R1"
         },
         {
           "id": "TASK-001",
           "kind": "task",
           "text": "Implement current frozen revision",
           "required": true,
-          "status": "draft",
-          "implemented_by_run_id": null,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260411T053009Z-06d8",
           "verified_by_run_id": null,
-          "accepted_at": null,
-          "changed_in_revision": null
+          "accepted_at": "2026-04-11T02:05:43.347377+00:00",
+          "changed_in_revision": "R1"
         },
         {
           "id": "TEST-001",
           "kind": "test",
           "text": "Verify AC-001 — Acceptance criteria TBD",
           "required": true,
-          "status": "draft",
+          "status": "failed",
           "implemented_by_run_id": null,
-          "verified_by_run_id": null,
-          "accepted_at": null,
-          "changed_in_revision": null,
+          "verified_by_run_id": "run-20260411T101256754607",
+          "accepted_at": "2026-04-11T02:05:43.347377+00:00",
+          "changed_in_revision": "R1",
           "covers": [
             "AC-001"
           ]
         }
-      ]
+      ],
+      "feature": "beacon-v1.3.0-simplified-codex-native-subagents",
+      "feature_slug": "beacon-v1.3.0-simplified-codex-native-subagents",
+      "version": "v1.3.0",
+      "last_changed_files": [
+        "AGENTS.md",
+        "CLAUDE.md",
+        "beacon/commands/implement.py",
+        "beacon/commands/qa.py",
+        "beacon/commands/team.py",
+        "beacon/utils/implement_native.py",
+        "beacon/utils/team_surface.py",
+        "docs/beacon/v1.1.11/execution/evo-scorecard-contract.md",
+        "docs/beacon/v1.2.0/execution/evo-scorecard-contract.md",
+        "docs/beacon/v1.3.0/.machine/execution/beacon-v1.3.0-simplified-codex-native-subagents.revision.json",
+        "docs/beacon/v1.3.0/.machine/execution/implementation-plan-beacon-v1.3.0-simplified-codex-native-subagents.json",
+        "docs/beacon/v1.3.0/.machine/execution/implementation-plan-beacon-v1.3.0-simplified-codex-native-subagents.progress.json",
+        "docs/beacon/v1.3.0/.machine/user-story/beacon-v1.3.0-simplified-codex-native-subagents.json",
+        "docs/beacon/v1.3.0/execution/codex-native-subagent-implementation-blueprint.md",
+        "docs/beacon/v1.3.0/execution/implementation-plan-beacon-v1.3.0-simplified-codex-native-subagents.md",
+        "docs/beacon/v1.3.0/execution/index.md",
+        "docs/beacon/v1.3.0/prd/beacon-v1.3.0-simplified-codex-native-subagents.md",
+        "pyproject.toml",
+        "tests/test_v130_implement_team_surface.py"
+      ],
+      "verification_evidence": [
+        ".beacon/qa/features/beacon-v1.3.0-simplified-codex-native-subagents/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260411T101256754607/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260411T101256754607/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260411T101256754607/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260411T101256754607/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260411T101256754607/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260411T101256754607/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260411T101256754607/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "['.beacon/evidence/auto-test/run-20260411T101256754607/qa9-tc/TEST-001/command.txt', '.beacon/evidence/auto-test/run-20260411T101256754607/qa9-tc/TEST-001/stdout.log', '.beacon/evidence/auto-test/run-20260411T101256754607/qa9-tc/TEST-001/stderr.log', '.beacon/evidence/auto-test/run-20260411T101256754607/qa9-tc/TEST-001/result.json']"
+      ],
+      "accepted_at": "2026-04-11T02:05:43.347377+00:00",
+      "accepted_by": "qa"
     }
   ]
 }

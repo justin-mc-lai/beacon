@@ -41,6 +41,35 @@ Beacon 应该吸收“契约”，而不是吸收“环境”。
 
 Beacon 应做的是：围绕正式工件与 release truth，编译出阶段级 worker plan。
 
+## 当前现实状态
+
+当前仓内已经落地的是：
+
+- `implement-team`
+- `qa-team`
+- 多角色 role reports
+- team manifest
+- implement / qa 上下文隔离
+
+但这仍然只是：
+
+```text
+多角色证据模型
+```
+
+而不是：
+
+```text
+真实 Codex 多代理并行 runtime
+```
+
+当前实现还没有：
+
+- child-agent spawn/runtime
+- tmux pane 级执行
+- live worker 调度展示
+- 并行 worker orchestration
+
 ## 分阶段计划
 
 ### Phase 0：规划入口
@@ -126,6 +155,7 @@ Beacon 应做的是：围绕正式工件与 release truth，编译出阶段级 w
 - 为 `implement plan` 与 `implement run` 提供显性稳定的 team-mode 触发契约
 - 证明 leader -> child-agent -> evidence -> canonical writeback 闭环
 - 保持 `native-single` / `native-team` 可用
+- 明确区分“证据 team-mode”与“真实 subagent runtime”
 
 为什么从这里开始：
 
@@ -179,6 +209,29 @@ Beacon 应做的是：围绕正式工件与 release truth，编译出阶段级 w
 - QA 只消费正式 requirement artifacts、implementation evidence、handoff 摘要
 - 不把实现期对话当作 QA 真相源
 
+### Phase 3.8：tmux / HUD 可视执行
+
+触点：
+
+- `beacon/commands/team.py`
+- `beacon/utils/subagent_runtime.py`
+- `beacon/utils/subagent_tmux.py`
+- `beacon/utils/team_hud.py`
+
+目标：
+
+- `implement team-run --runtime tmux`
+- `qa team-run --runtime tmux`
+- 为每个 role 创建 pane / window
+- 持久化 session / pane mapping
+- 输出稳定 HUD / HTML 页面
+
+要求：
+
+- 展示层读取 runtime state，而不是直接解析终端文本
+- tmux 是执行载体，不是 release truth
+- worker 实时状态必须可观测
+
 ### Phase 4：release-truth 硬化
 
 触点：
@@ -212,3 +265,5 @@ Beacon 应做的是：围绕正式工件与 release truth，编译出阶段级 w
 5. 人类主读中文与机器主读英文的双轨 contract 已被测试锁死
 6. `implement plan` / `implement run` / `qa` 都具备显性稳定的 team-mode 触发方式
 7. QA 与 implement 只通过正式工件和 evidence handoff 协作
+8. `implement-team` 不再只是顺序角色模拟，而是支持真实 bounded subagent runtime
+9. tmux / pane 级可视执行可稳定展示 worker 生命周期

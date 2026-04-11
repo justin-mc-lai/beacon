@@ -1,0 +1,29 @@
+{
+  "preferred_surface": "implement-team",
+  "preferred_runner": "codex-subagents",
+  "roles": [
+    "planner",
+    "implementer",
+    "reviewer",
+    "tester"
+  ],
+  "context_isolation": {
+    "role_plane": "implementation",
+    "isolated_from": [
+      "qa-team"
+    ],
+    "shared_inputs": [
+      "docs",
+      "implementation_plan",
+      "evidence_refs"
+    ],
+    "shared_outputs": [
+      "implementation_summary",
+      "technical_archive",
+      "repair_handoff"
+    ],
+    "rule": "qa_must_not_inherit_implement_private_context",
+    "implement_surface": "implement-team",
+    "qa_surface": "qa-team"
+  }
+}

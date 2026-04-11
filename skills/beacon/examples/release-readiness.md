@@ -1,54 +1,54 @@
 # Beacon Skill Example: Release Readiness
 
-This example focuses on **verification and release evidence** for Beacon v1.2.0.
+This example focuses on **verification and release evidence** for Beacon v1.3.0.
 
 Read first:
 
-- [`../../../docs/beacon/v1.2.0/SUMMARY.md`](../../../docs/beacon/v1.2.0/SUMMARY.md)
-- [`../../../docs/beacon/v1.2.0/execution/index.md`](../../../docs/beacon/v1.2.0/execution/index.md)
+- [`../../../docs/beacon/v1.3.0/SUMMARY.md`](../../../docs/beacon/v1.3.0/SUMMARY.md)
+- [`../../../docs/beacon/v1.3.0/execution/index.md`](../../../docs/beacon/v1.3.0/execution/index.md)
 
 ```bash
 # 1) Inspect current package state
-bash skills/beacon/scripts/run_beacon.sh status --board --project-root . --version v1.2.0
+bash skills/beacon/scripts/run_beacon.sh status --board --project-root . --version v1.3.0
 
 # 2) Verify materials and delivery
 bash skills/beacon/scripts/run_beacon.sh doctor verify-materials \
   --project-root . \
-  --version v1.2.0 \
+  --version v1.3.0 \
   --json
 bash skills/beacon/scripts/run_beacon.sh doctor verify-delivery \
   --project-root . \
-  --version v1.2.0 \
+  --version v1.3.0 \
   --json
 
 # 3) Repair old package layout if needed
 bash skills/beacon/scripts/run_beacon.sh doctor repair-package \
   --project-root . \
-  --version v1.2.0 \
+  --version v1.3.0 \
   --json
 bash skills/beacon/scripts/run_beacon.sh doctor upgrade-package \
   --project-root . \
-  --version v1.2.0 \
+  --version v1.3.0 \
   --json
 
 # 4) Ensure current feature has an implementation plan before release gate
 bash skills/beacon/scripts/run_beacon.sh implement plan \
-  "Beacon v1.2.0 release line" \
+  "Beacon v1.3.0 release line" \
   --project . \
-  --version v1.2.0 \
+  --version v1.3.0 \
   --json
 
 # 5) Run release gate and release readiness checks
 bash skills/beacon/scripts/run_beacon.sh gate check release \
   --project-root . \
-  --version v1.2.0 \
+  --version v1.3.0 \
   --json
-bash skills/beacon/scripts/run_beacon.sh release check v1.2.0 --project .
+bash skills/beacon/scripts/run_beacon.sh release check v1.3.0 --project .
 
 # 6) Optional: generate acceptance audit artifacts
 bash skills/beacon/scripts/run_beacon.sh report latest acceptance-audit \
   --project-root . \
-  --version v1.2.0 \
+  --version v1.3.0 \
   --feature beacon-prd-us-to-plan-implementation-progress-closure \
   --write
 ```
