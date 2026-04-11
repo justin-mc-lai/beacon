@@ -147,6 +147,7 @@ def _status_impl(
             "docs_version": coverage_version,
             "runtime_version": str(version_context.get("runtime_version", "") or help_payload.get("runtime_version", "")),
         },
+        "version_semantics": help_payload.get("version_semantics", {}) or version_context.get("version_semantics", {}),
         "source_of_truth": source_of_truth,
         "workflow_progress": workflow_progress,
         "filters": {

@@ -61,6 +61,14 @@ def builtin_skill_registry() -> dict[str, dict[str, Any]]:
             "supported_stages": ["implementation"],
             "evidence_contract": ["implementation_summary", "team_execution", "story_writeback"],
         },
+        "codex-subagents": {
+            "id": "codex-subagents",
+            "kind": "builtin",
+            "entry": "beacon implement run --runner codex-subagents",
+            "capabilities": ["implementation", "coordination", "codex-native-team"],
+            "supported_stages": ["implementation"],
+            "evidence_contract": ["implementation_summary", "team_execution", "story_writeback", "context_isolation"],
+        },
         "qa9-default": {
             "id": "qa9-default",
             "kind": "builtin",

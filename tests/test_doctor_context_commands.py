@@ -27,6 +27,7 @@ def test_setup_context_creates_context_files_with_beacon_markers(tmp_path: Path)
     assert payload.get("status") == "PASS"
     assert payload.get("docs_version") == "v1.0.0"
     assert payload.get("runtime_version") == __toolkit_version__
+    assert payload.get("version_semantics", {}).get("resolver_contract", {}).get("version_context") == "describe_project_version_context()"
     result_payload = payload.get("result", {})
 
     claude = (tmp_path / "CLAUDE.md").read_text(encoding="utf-8")
@@ -58,6 +59,7 @@ def test_verify_context_reports_pass_after_setup_context(tmp_path: Path):
     assert payload.get("status") == "PASS"
     assert payload.get("docs_version") == "v1.0.0"
     assert payload.get("runtime_version") == __toolkit_version__
+    assert payload.get("version_context", {}).get("version_semantics", {}).get("fields", {}).get("runtime_version", {}).get("kind") == "runtime"
     checks = payload.get("result", {}).get("checks", [])
     assert all(item.get("status") == "pass" for item in checks)
 

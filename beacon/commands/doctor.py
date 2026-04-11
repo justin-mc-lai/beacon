@@ -221,10 +221,13 @@ def _single_check_payload(
 ) -> dict[str, Any]:
     status = str(check.get("status", "warn")).lower()
     blocked = status == "fail" or (strict and status == "warn")
+    version_context = describe_project_version_context(project_root, docs_version=version or None)
     return {
         "schema_version": "2.0",
         "action": action,
         "status": "BLOCKED" if blocked else status.upper(),
+        "version_context": version_context,
+        "version_semantics": version_context.get("version_semantics", {}),
         "result": {
             "schema_version": "1.0",
             "action": action,
@@ -373,6 +376,7 @@ def setup_context(
         "docs_version": version_context.get("docs_version", ""),
         "runtime_version": runtime_version,
         "version_context": version_context,
+        "version_semantics": version_context.get("version_semantics", {}),
         "result": result,
     }
     if json_output:
@@ -413,6 +417,7 @@ def verify_context(
         "docs_version": version_context.get("docs_version", ""),
         "runtime_version": runtime_version,
         "version_context": version_context,
+        "version_semantics": version_context.get("version_semantics", {}),
         "result": result,
     }
     if strict and payload["status"] == "WARN":

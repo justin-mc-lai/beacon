@@ -13,15 +13,16 @@
 9. `../qa/test-cases/beacon-v1.2.0-command-simplification-and-project-skill-workflow.md`
 10. `./architecture-blueprint.md`
 11. `./workflow-usage-guide.md`
-12. `./natural-language-trigger-handbook.md`
-13. `./qa-autoresearch-usage-guide.md`
-14. `./autoresearch-module-evolution.md`
-15. `./command-surface-simplification-blueprint.md`
-16. `./project-skill-qa-evolution-blueprint.md`
-17. `./target-project-kernel-blueprint.md`
-18. `../source-architecture/index.md`
-19. `./boundaries.md`
-20. `../release/v1.2.0.md`
+12. `./complete-usage-guide.md`
+13. `./natural-language-trigger-handbook.md`
+14. `./qa-autoresearch-usage-guide.md`
+15. `./autoresearch-module-evolution.md`
+16. `./command-surface-simplification-blueprint.md`
+17. `./project-skill-qa-evolution-blueprint.md`
+18. `./target-project-kernel-blueprint.md`
+19. `../source-architecture/index.md`
+20. `./boundaries.md`
+21. `../release/v1.2.0.md`
 
 ## Notes
 
@@ -33,6 +34,7 @@
 - `beacon skill discover` remains a subordinate project-onboarding surface, not a new product center.
 - command-surface simplification ships here as a bounded operator-contract change; any future rename/merge program remains later work.
 - `./workflow-usage-guide.md` is the recommended human operator guide for end-to-end usage.
+- `./complete-usage-guide.md` is the one-doc consolidated operator summary for v1.2.0.
 - `./natural-language-trigger-handbook.md` is the recommended short-prompt guide for users who cannot remember many commands.
 - `./qa-autoresearch-usage-guide.md` is the recommended operator guide for stable QA evolve / audit / experiment loops.
 - `./autoresearch-module-evolution.md` explains how autoresearch surfaces are distributed across Beacon versions and modules.

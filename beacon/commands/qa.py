@@ -11,6 +11,7 @@ from typing import Any, Optional
 import typer
 
 from beacon.commands.auto_test import _update_evidence_manifest
+from beacon.commands.team import TeamState, TerminalStatus, get_team_state_file, save_team_state
 from beacon.utils.implement_adapters import format_template
 from beacon.utils.exhaustiveness import build_exhaustiveness_report, write_exhaustiveness_report
 from beacon.utils.project_skills import (
@@ -42,6 +43,11 @@ from beacon.utils.qa_runtime import (
     write_qa_status,
 )
 from beacon.utils.story_state import feature_slug
+from beacon.utils.team_surface import (
+    build_context_isolation,
+    load_implement_to_qa_handoff,
+    qa_team_contract,
+)
 from beacon.utils.v110_baseline import generate_spec_fingerprint
 from beacon.utils.writeback import record_verification_writeback
 
@@ -143,6 +149,130 @@ def _beacon_exec_silent(args: list[str], *, cwd: Path | None = None) -> int:
     cmd = [sys.executable, "-m", "beacon.main", *args]
     result = subprocess.run(cmd, cwd=cwd or _repo_root(), capture_output=True, text=True)
     return int(result.returncode)
+
+
+def _write_json(path: Path, payload: dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
+def _render_qa_team_role_markdown(role: str, payload: dict[str, Any]) -> str:
+    lines = [
+        f"# QA Team Role Report: {role}",
+        "",
+        f"- role: `{role}`",
+        f"- status: `{payload.get('status', '')}`",
+        f"- feature: `{payload.get('feature', '')}`",
+    ]
+    summary = str(payload.get("summary", "")).strip()
+    if summary:
+        lines.append(f"- summary: {summary}")
+    for key in ("targeted_scenario_ids", "stop_reasons", "evidence_refs", "recommendations"):
+        values = payload.get(key)
+        if isinstance(values, list):
+            lines.extend(["", f"## {key}"])
+            if values:
+                lines.extend(f"- {item}" for item in values)
+            else:
+                lines.append("- none")
+    return "\n".join(lines) + "\n"
+
+
+def _materialize_qa_team_surface(
+    project_root: Path,
+    *,
+    version: str,
+    feature: str,
+    run_id: str,
+    payload: dict[str, Any],
+) -> dict[str, Any]:
+    feature_key = feature_slug(feature)
+    team_name = f"qa-team-{run_id}"
+    state = {
+        "active": True,
+        "team_name": team_name,
+        "task": f"QA verify {feature}",
+        "runtime": "file",
+        "state": TeamState.TERMINAL.value,
+        "terminal_status": TerminalStatus.PASS.value if str(payload.get("status", "")).lower() == "passed" else TerminalStatus.BLOCKED.value,
+        "started_at": str(payload.get("generated_at") or ""),
+        "ended_at": str(payload.get("generated_at") or ""),
+        "workers": [
+            {"id": "worker-001", "role": "verifier", "status": "completed"},
+            {"id": "worker-002", "role": "repair-handoff-writer", "status": "completed"},
+        ],
+        "tasks": [
+            {"id": 1, "description": "Verify QA evidence and blockers", "status": "completed", "worker": "worker-001"},
+            {"id": 2, "description": "Write repair handoff when blocked", "status": "completed", "worker": "worker-002"},
+        ],
+        "review_gates": {
+            "spec": {"status": "pass", "reviewer": "verifier"},
+            "quality": {"status": "pass" if str(payload.get("status", "")).lower() == "passed" else "blocked", "reviewer": "repair-handoff-writer"},
+        },
+        "fix_loops": 0,
+        "context_isolation": build_context_isolation(
+            role_plane="qa",
+            isolated_from=["implement-team"],
+            shared_inputs=["docs/beacon/<version>/qa/test-cases", "implementation_summary", "technical_archive", "evidence_refs"],
+            shared_outputs=["feature_scorecard", "repair_handoff", "qa_status"],
+            rule="qa_must_not_inherit_implement_private_context",
+        ),
+    }
+    save_team_state(project_root, team_name, state)
+
+    artifact_dir = project_root / "docs" / "beacon" / version / "execution" / "qa-team" / feature_key / run_id
+    role_reports: dict[str, dict[str, str]] = {}
+    feature_scorecard = payload.get("feature_scorecard") if isinstance(payload.get("feature_scorecard"), dict) else {}
+    stop_reasons = [str(item) for item in feature_scorecard.get("stop_reasons", []) if str(item).strip()]
+    repair_handoff = feature_scorecard.get("repair_handoff") if isinstance(feature_scorecard.get("repair_handoff"), dict) else {}
+    evidence_refs = [
+        str(payload.get("feature_matrix_path") or ""),
+        str(payload.get("ac_closure_path") or ""),
+        str(payload.get("feature_scorecard_path") or ""),
+    ]
+    targeted_scenarios = [str(item) for item in payload.get("targeted_scenario_ids", []) if str(item).strip()]
+    role_payloads = {
+        "verifier": {
+            "feature": feature,
+            "status": payload.get("status", "unknown"),
+            "summary": "qa-team verifier summarized coverage, blockers, and release readiness",
+            "targeted_scenario_ids": targeted_scenarios,
+            "stop_reasons": stop_reasons,
+            "evidence_refs": [item for item in evidence_refs if item],
+            "recommendations": ["Proceed to release review."] if str(payload.get("status", "")).lower() == "passed" else ["Use repair handoff and rerun QA after implementation fix."],
+        },
+        "repair-handoff-writer": {
+            "feature": feature,
+            "status": "completed",
+            "summary": "qa-team repair handoff writer materialized blocker handoff from canonical feature scorecard",
+            "targeted_scenario_ids": targeted_scenarios,
+            "stop_reasons": stop_reasons,
+            "evidence_refs": [str(repair_handoff.get("command") or "")] if repair_handoff else [],
+            "recommendations": [str(repair_handoff.get("command") or "").strip()] if repair_handoff else ["No repair handoff required."],
+        },
+    }
+    for role, role_payload in role_payloads.items():
+        json_path = artifact_dir / f"{role}.json"
+        md_path = artifact_dir / f"{role}.md"
+        _write_json(json_path, role_payload)
+        md_path.parent.mkdir(parents=True, exist_ok=True)
+        md_path.write_text(_render_qa_team_role_markdown(role, role_payload), encoding="utf-8")
+        role_reports[role] = {
+            "json": str(json_path.relative_to(project_root)),
+            "markdown": str(md_path.relative_to(project_root)),
+            "status": str(role_payload.get("status", "")),
+        }
+
+    return {
+        "team_name": team_name,
+        "team_surface": "qa-team",
+        "state_path": str(get_team_state_file(project_root, team_name).relative_to(project_root)),
+        "artifact_dir": str(artifact_dir.relative_to(project_root)),
+        "terminal_status": state["terminal_status"],
+        "roles": ["verifier", "repair-handoff-writer"],
+        "role_reports": role_reports,
+        "context_isolation": state["context_isolation"],
+    }
 
 
 def _extract_option(args: list[str], *names: str) -> str:
@@ -348,6 +478,7 @@ def _collect_evidence_refs(payload: dict[str, Any], *, project_root: Path, featu
 
 def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
     args, json_output = _strip_flag(raw_args, "--json")
+    args, team_mode = _strip_flag(args, "--team-mode")
     feature = _first_positional(args)
     project_value = _extract_option(args, "--project", "--project-root", "-p")
     version = _extract_option(args, "--version", "-v") or "auto"
@@ -399,6 +530,12 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
             return 2, blocked_payload
 
     plan = build_feature_qa_plan(project_root, version=version, feature=feature, execution_mode=mode)
+    team_contract = qa_team_contract(project_root, version=version, feature=feature)
+    handoff = load_implement_to_qa_handoff(
+        project_root,
+        feature=feature,
+        run_id=str(plan.get("implementation_run_id") or ""),
+    ) if str(plan.get("implementation_run_id") or "").strip() else {}
     if not bool(plan.get("implementation_done", False)):
         if json_output:
             typer.echo(json.dumps(plan, ensure_ascii=False, indent=2))
@@ -413,7 +550,20 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
             **plan,
             "feature_matrix_path": str(feature_qa_matrix_path(project_root, feature=feature).relative_to(project_root)),
             "message": "feature QA already up to date; no rerun required",
+            "team_mode": bool(team_mode),
+            "team_contract": team_contract,
+            "implement_to_qa_handoff": handoff,
         }
+        if team_mode:
+            payload["team_execution"] = _materialize_qa_team_surface(
+                project_root,
+                version=version,
+                feature=feature,
+                run_id=str(payload.get("run_id") or plan.get("implementation_run_id") or "feature-qa"),
+                payload=payload,
+            )
+            payload["execution_surface"] = "qa-team"
+            payload["context_isolation"] = payload["team_execution"].get("context_isolation", {})
         feature_status_path = write_feature_qa_status(project_root, feature=feature, payload=payload)
         manifest_refs = [str(feature_status_path.relative_to(project_root))]
         for candidate in (
@@ -614,7 +764,20 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
         "feature_scorecard": feature_scorecard,
         "ac_closure_path": str(ac_closure_path.relative_to(project_root)),
         "feature_scorecard_path": str(feature_scorecard_path.relative_to(project_root)),
+        "team_mode": bool(team_mode),
+        "team_contract": team_contract,
+        "implement_to_qa_handoff": handoff,
     }
+    if team_mode:
+        payload["team_execution"] = _materialize_qa_team_surface(
+            project_root,
+            version=version,
+            feature=feature,
+            run_id=str(qa_status.get("run_id") or plan.get("implementation_run_id") or "feature-qa"),
+            payload=payload,
+        )
+        payload["execution_surface"] = "qa-team"
+        payload["context_isolation"] = payload["team_execution"].get("context_isolation", {})
     write_feature_qa_status(project_root, feature=feature, payload=payload)
 
     exit_code = command_exit
@@ -655,6 +818,37 @@ def run(ctx: typer.Context):
     raise typer.Exit(code=code)
 
 
+@app.command("team-run")
+def team_run(
+    feature: str = typer.Argument(..., help="Feature name"),
+    project: Optional[str] = typer.Option(None, "--project", "--project-root", "-p", help="Project root"),
+    version: str = typer.Option("auto", "--version", "-v", help="Version"),
+    mode: str = typer.Option("feature-aware", "--mode", help="QA execution mode"),
+    json_output: bool = typer.Option(False, "--json", help="JSON output"),
+):
+    """Run QA through the explicit qa-team surface with isolated context."""
+    raw_args = [
+        feature,
+        "--project",
+        str(Path(project).resolve() if project else Path.cwd()),
+        "--version",
+        version,
+        "--mode",
+        mode,
+        "--team-mode",
+    ]
+    if json_output:
+        raw_args.append("--json")
+    code, payload = _run_feature_aware_qa(raw_args)
+    if not json_output:
+        typer.echo(f"Beacon QA team-run status: {payload.get('status')}")
+        typer.echo(f"  feature: {feature}")
+        if payload.get("team_execution"):
+            typer.echo(f"  team_surface: {payload.get('team_execution', {}).get('team_surface', '')}")
+            typer.echo(f"  state_path: {payload.get('team_execution', {}).get('state_path', '')}")
+    raise typer.Exit(code=code)
+
+
 @app.command("evolve")
 def evolve(
     feature: str = typer.Argument(..., help="Feature name"),
@@ -681,6 +875,28 @@ def evolve(
     typer.echo(f"- targeted_tc_ids: {', '.join(plan.get('targeted_tc_ids', [])) or '-'}")
     typer.echo(f"- targeted_scenario_ids: {', '.join(plan.get('targeted_scenario_ids', [])) or '-'}")
     typer.echo(f"- reason_codes: {', '.join(plan.get('reason_codes', [])) or '-'}")
+
+
+@app.command("team-plan")
+def team_plan(
+    feature: str = typer.Argument(..., help="Feature name"),
+    project: Optional[str] = typer.Option(None, "--project", "--project-root", "-p", help="Project root"),
+    version: str = typer.Option("auto", "--version", "-v", help="Version"),
+    mode: str = typer.Option("feature-aware", "--mode", help="QA execution mode"),
+    json_output: bool = typer.Option(False, "--json", help="JSON output"),
+):
+    """Build a QA plan with explicit qa-team execution guidance."""
+    project_root = Path(project).resolve() if project else Path.cwd()
+    plan = build_feature_qa_plan(project_root, version=version, feature=feature, execution_mode=mode)
+    plan["team_surface"] = "qa-team"
+    plan["team_mode"] = True
+    plan["team_contract"] = qa_team_contract(project_root, version=version, feature=feature)
+    if json_output:
+        typer.echo(json.dumps(plan, ensure_ascii=False, indent=2))
+        return
+    typer.echo(f"Beacon QA team-plan: {feature}")
+    typer.echo(f"- team_surface: qa-team")
+    typer.echo(f"- run_command: {plan['team_contract'].get('run_command', '')}")
 
 
 @app.command("status")

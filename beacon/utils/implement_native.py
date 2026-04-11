@@ -19,6 +19,7 @@ from beacon.commands.team import (
 )
 from beacon.utils.revision_state import load_revision_state
 from beacon.utils.story_state import feature_slug, load_story_state
+from beacon.utils.team_surface import build_context_isolation
 from beacon.utils.writeback import (
     record_implementation_writeback,
     record_verification_writeback,
@@ -85,8 +86,15 @@ def _read_auto_test_status(project_root: Path) -> dict[str, Any]:
     return payload if isinstance(payload, dict) else {}
 
 
-def _role_artifact_dir(project_root: Path, version: str, feature: str, run_id: str) -> Path:
-    return project_root / "docs" / "beacon" / version / "execution" / "native-team" / feature_slug(feature) / run_id
+def _role_artifact_dir(
+    project_root: Path,
+    version: str,
+    feature: str,
+    run_id: str,
+    *,
+    surface_dir: str = "native-team",
+) -> Path:
+    return project_root / "docs" / "beacon" / version / "execution" / surface_dir / feature_slug(feature) / run_id
 
 
 def _render_role_markdown(role: str, payload: dict[str, Any]) -> str:
@@ -133,8 +141,9 @@ def _write_role_report(
     run_id: str,
     role: str,
     payload: dict[str, Any],
+    surface_dir: str = "native-team",
 ) -> dict[str, Any]:
-    artifact_dir = _role_artifact_dir(project_root, version, feature, run_id)
+    artifact_dir = _role_artifact_dir(project_root, version, feature, run_id, surface_dir=surface_dir)
     json_path = artifact_dir / f"{role}.json"
     md_path = artifact_dir / f"{role}.md"
     _write_json(json_path, payload)
@@ -179,8 +188,11 @@ def _run_native_team_flow(  # noqa: PLR0915
     revision_id: str,
     story: dict[str, Any],
     changed_files: list[str],
+    surface_dir: str = "native-team",
+    team_surface: str = "native-team",
+    context_isolation: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    team_name = f"native-team-{run_id}"
+    team_name = f"{team_surface}-{run_id}"
     implement_item_ids = _story_item_ids(story, kinds={"ac", "task"})
     verify_item_ids = _story_item_ids(story, kinds={"ac", "test"})
     state = {
@@ -241,6 +253,7 @@ def _run_native_team_flow(  # noqa: PLR0915
         run_id=run_id,
         role="planner",
         payload=planner_payload,
+        surface_dir=surface_dir,
     )
     _set_worker_status(state, "worker-001", status="completed", completed_at=_now_iso(), artifact=role_reports["planner"]["json"])
     _set_task_status(state, 1, status="completed")
@@ -275,6 +288,7 @@ def _run_native_team_flow(  # noqa: PLR0915
         run_id=run_id,
         role="implementer",
         payload=implementer_payload,
+        surface_dir=surface_dir,
     )
     _set_worker_status(state, "worker-002", status="completed", completed_at=_now_iso(), artifact=role_reports["implementer"]["json"])
     _set_task_status(state, 2, status="completed")
@@ -307,6 +321,7 @@ def _run_native_team_flow(  # noqa: PLR0915
         run_id=run_id,
         role="reviewer",
         payload=reviewer_payload,
+        surface_dir=surface_dir,
     )
     state["review_gates"]["spec"] = {"status": reviewer_status, "reviewer": "reviewer"}
     _set_worker_status(state, "worker-003", status="completed", completed_at=_now_iso(), artifact=role_reports["reviewer"]["json"])
@@ -393,6 +408,7 @@ def _run_native_team_flow(  # noqa: PLR0915
         run_id=run_id,
         role="tester",
         payload=tester_payload,
+        surface_dir=surface_dir,
     )
     state["review_gates"]["quality"] = {"status": quality_status, "reviewer": "tester"}
     _set_worker_status(state, "worker-004", status="completed", completed_at=_now_iso(), artifact=role_reports["tester"]["json"])
@@ -403,8 +419,9 @@ def _run_native_team_flow(  # noqa: PLR0915
 
     return {
         "team_name": team_name,
+        "team_surface": team_surface,
         "state_path": str(get_team_state_file(project_root, team_name).relative_to(project_root)),
-        "artifact_dir": str(_role_artifact_dir(project_root, version, feature, run_id).relative_to(project_root)),
+        "artifact_dir": str(_role_artifact_dir(project_root, version, feature, run_id, surface_dir=surface_dir).relative_to(project_root)),
         "final_state": state.get("state"),
         "terminal_status": state.get("terminal_status"),
         "roles": [worker.get("role") for worker in state.get("workers", []) if isinstance(worker, dict)],
@@ -414,6 +431,7 @@ def _run_native_team_flow(  # noqa: PLR0915
         "verified_items": verified_item_ids,
         "blocked_items": blocked_item_ids,
         "verification_entries": verification_entries,
+        "context_isolation": context_isolation or {},
     }
 
 
@@ -451,7 +469,11 @@ def run_native_implementation(
     blocked_item_ids: list[str] = []
     verification = [
         {
-            "command": f"beacon implement run --runner native-{mode}",
+            "command": (
+                "beacon implement run --runner codex-subagents"
+                if mode == "codex-subagents"
+                else f"beacon implement run --runner native-{mode}"
+            ),
             "status": "passed",
         }
     ]
@@ -474,7 +496,9 @@ def run_native_implementation(
         "revision_id": str(revision.get("revision_id", "")),
     }
 
-    if mode == "team":
+    if mode in {"team", "codex-subagents"}:
+        team_surface = "implement-team" if mode == "codex-subagents" else "native-team"
+        surface_dir = "codex-subagents" if mode == "codex-subagents" else "native-team"
         team_execution = _run_native_team_flow(
             project_root,
             version=version,
@@ -483,9 +507,24 @@ def run_native_implementation(
             revision_id=str(revision.get("revision_id", "")),
             story=story,
             changed_files=changed_files,
+            surface_dir=surface_dir,
+            team_surface=team_surface,
+            context_isolation=build_context_isolation(
+                role_plane="implementation",
+                isolated_from=["qa-team"],
+                shared_inputs=["docs/beacon/<version>/user-story", "docs/beacon/<version>/prd", "implementation-plan"],
+                shared_outputs=["implementation_summary", "technical_archive", "story_writeback", "evidence_refs"],
+                rule="qa_must_not_inherit_implement_private_context",
+            ),
         )
         payload["team_execution"] = team_execution
-        payload["summary"] = "native-team implementation completed via planner/implementer/reviewer/tester flow"
+        payload["team_surface"] = team_surface
+        payload["context_isolation"] = team_execution.get("context_isolation", {})
+        payload["summary"] = (
+            "codex-subagents implementation completed via implement-team flow"
+            if mode == "codex-subagents"
+            else "native-team implementation completed via planner/implementer/reviewer/tester flow"
+        )
         payload["implemented_items"] = team_execution.get("implemented_items", implemented_item_ids)
         payload["verified_items"] = team_execution.get("verified_items", [])
         payload["blocked_items"] = team_execution.get("blocked_items", [])

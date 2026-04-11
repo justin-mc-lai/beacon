@@ -1,47 +1,47 @@
-# Think: Beacon v1.3.0 Simplified Codex Native Subagents
+# Think：Beacon v1.3.0 简化版 Codex 原生子代理
 
-**Feature**: Beacon v1.3.0 - Simplified Codex Native Subagents  
-**Version**: v1.3.0  
-**Date**: 2026-04-10  
-**Status**: planning line
+**Feature**: `beacon-v1.3.0-simplified-codex-native-subagents`  
+**Version**: `v1.3.0`  
+**Date**: `2026-04-10`  
+**Status**: `planning line`
 
-## Problem framing
+## 问题框定
 
-Beacon has two useful but separate capabilities today:
+Beacon 现在已经具备两类有价值能力：
 
-1. strong stage artifacts
-2. bounded implementation-time coordination via `native-team`
+1. 强阶段工件能力
+2. `native-team` 这类有边界的实现期协同能力
 
-What is missing is a stage-wide delegation model that can help with requirement authoring, critique, scenario expansion, and verification without breaking Beacon's evidence-first contract.
+但缺失的是一套“跨阶段可复用的子代理模型”，使需求编写、批判、场景扩展、验证等工作可以在不破坏 evidence-first contract 的前提下被拆分。
 
-## Desired outcome
+## 想要的结果
 
-When a user asks for a complex next-step artifact, Beacon can choose:
+当用户请求复杂阶段产物时，Beacon 能够在两条路径之间显式选择：
 
-- single-surface generation
-- or a bounded subagent lane
+- 单阶段单面生成
+- 受约束的子代理 lane
 
-while still returning one canonical Beacon artifact.
+但最终仍然只返回一份 canonical Beacon artifact。
 
-## Constraints
+## 约束
 
-1. Must remain mainline-first.
-2. Must not become a generic super-agent shell.
-3. Must preserve version/package truth.
-4. Must keep all delegation visible in artifacts and run state.
+1. 必须保持 mainline-first
+2. 不得演进成通用 super-agent shell
+3. 必须保住 version/package truth
+4. 所有委托都必须在 artifacts 与 run state 中可见
 
-## Proposed thesis
+## 核心判断
 
-Beacon should add a simplified stage subagent model, not a full orchestration platform.
+Beacon 应该增加的是“简化版阶段子代理模型”，不是“完整 orchestration 平台”。
 
-That means:
+这意味着：
 
-- opt-in delegation
-- fixed role catalog
-- stage-specific worker templates
-- explicit evidence writeback
+- 委托默认关闭
+- 角色固定
+- worker template 按阶段声明
+- evidence writeback 显式化
 
-## Stage candidates
+## 候选阶段
 
 1. `think`
    - `researcher`
@@ -63,8 +63,12 @@ That means:
    - `reviewer`
    - `tester`
 
-## Decision
+## 结论
 
-`v1.3.0` should be a planning and architecture line first.
+`v1.3.0` 首先应是一条“规划 + 架构 + 约束冻结”线。
 
-Only the smallest enabling runtime changes should ship before the full stage rollout is proven.
+只有最小可验证的运行时变更应该先落地，尤其是：
+
+1. version prompt routing
+2. version semantics freeze
+3. `implement run` 的第一条 Codex-native 多代理闭环

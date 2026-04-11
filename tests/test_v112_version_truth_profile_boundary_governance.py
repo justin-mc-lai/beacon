@@ -54,6 +54,26 @@ def _seed_version_truth(root: Path) -> None:
         + "\n",
         encoding="utf-8",
     )
+    (root / "beacon" / "version-semantics.json").write_text(
+        json.dumps(
+            {
+                "schema_version": "1.0",
+                "artifact": "beacon-version-semantics",
+                "fields": {
+                    "runtime_version": {"kind": "runtime", "meaning": "runtime line"},
+                    "docs_default_line": {"kind": "docs", "meaning": "default docs line"},
+                    "current_runtime_release_line": {"kind": "release_truth", "meaning": "release line"},
+                },
+                "resolver_contract": {
+                    "version_context": "describe_project_version_context()",
+                },
+            },
+            ensure_ascii=False,
+            indent=2,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
 
 
 def _seed_feature_docs(root: Path, *, version: str = VERSION, feature: str = FEATURE) -> None:
@@ -118,6 +138,9 @@ def test_v112_version_truth_should_promote_v112_to_current_runtime_release(tmp_p
     assert payload["planning_lines"] == []
     assert payload["partial_runtime_supplement_lines"] == []
     assert payload["version_truth_source"] == "beacon/version-truth.json"
+    assert payload["version_semantics_source"] == "beacon/version-semantics.json"
+    assert payload["version_semantics"]["fields"]["runtime_version"]["meaning"]
+    assert payload["version_semantics"]["resolver_contract"]["version_context"] == "describe_project_version_context()"
 
 
 def test_v112_help_and_status_should_expose_execution_learning_surfaces_and_decision_trace(tmp_path: Path):
@@ -126,6 +149,7 @@ def test_v112_help_and_status_should_expose_execution_learning_surfaces_and_deci
     assert result.exit_code == 0, result.stdout
     payload = json.loads(result.stdout)
     assert payload["blocked_reason"] == "revision_not_frozen"
+    assert payload["version_semantics"]["fields"]["docs_default_line"]["kind"] == "docs"
     assert payload["execution_surface"]["selected_surface"] == "native-default"
     assert "qa_policy" in payload["learning_surface"]["subject_surface"]
     assert payload["decision_trace"][0]["step"] == "version_truth"
@@ -135,6 +159,7 @@ def test_v112_help_and_status_should_expose_execution_learning_surfaces_and_deci
     status_payload = json.loads(status.stdout)
     assert status_payload["project_mode"] == "greenfield"
     assert status_payload["revision"]["blocked_reason"] == "revision_not_frozen"
+    assert status_payload["version_semantics"]["fields"]["current_runtime_release_line"]["kind"] == "release_truth"
     assert status_payload["execution_surface"]["selected_surface"] == "native-default"
     assert "design_policy" in status_payload["learning_surface"]["subject_surface"]
 

@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.0",
+  "artifact": "beacon-artifact-language-policy",
+  "description": "Canonical language policy for Beacon artifacts. Human-facing materials default to Chinese; machine-facing artifacts default to English or machine-stable keys.",
+  "default_policy": {
+    "human_primary_language": "zh-CN",
+    "machine_primary_language": "en",
+    "rule": "Do not rename machine-stable keys for presentation-only localization."
+  },
+  "artifact_classes": {
+    "human_requirement_docs": {
+      "scope": [
+        "summary",
+        "prd",
+        "user-story",
+        "qa/test-cases",
+        "execution/index",
+        "execution/contracts"
+      ],
+      "audience": "human",
+      "language": "zh-CN",
+      "notes": "Default Chinese for human-readable planning, requirement, and navigation materials."
+    },
+    "machine_contracts": {
+      "scope": [
+        ".machine",
+        "runtime_state",
+        "json_contracts",
+        "evidence_payloads"
+      ],
+      "audience": "machine",
+      "language": "en",
+      "notes": "Prefer stable English keys and machine-friendly structures."
+    },
+    "human_mirrors_of_machine_contracts": {
+      "scope": [
+        "execution/*-contract.md"
+      ],
+      "audience": "human",
+      "language": "zh-CN",
+      "notes": "Chinese mirrors of machine-readable contracts; machine artifacts remain source of truth."
+    }
+  },
+  "sync_contract": {
+    "source_of_truth": "machine-readable artifact",
+    "mirror": "human-readable Chinese markdown",
+    "enforcement": [
+      "source JSON artifact",
+      "Chinese mirror markdown",
+      "shared renderer or deterministic transform",
+      "render function in source code",
+      "tests must fail on drift"
+    ]
+  },
+  "rules": [
+    "Human-facing planning and requirement materials should default to Chinese.",
+    "Machine-facing contracts and runtime artifacts should default to English or machine-stable keys.",
+    "Localization must not change machine field names.",
+    "Any new mirrored artifact type must define source JSON, Chinese mirror markdown, render function, and drift test."
+  ]
+}

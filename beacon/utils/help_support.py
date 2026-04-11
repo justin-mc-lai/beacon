@@ -37,6 +37,33 @@ from beacon.utils.versioning import describe_project_version_context, normalize_
 from beacon.utils.workflow_memory import compute_workflow_progress, resolve_workflow_run_id
 
 
+def _semver_tuple(version: str | None) -> tuple[int, int, int]:
+    text = str(normalize_version(version) or version or "").strip().lstrip("v")
+    try:
+        major, minor, patch = text.split(".")
+        return (int(major), int(minor), int(patch))
+    except Exception:  # noqa: BLE001
+        return (0, 0, 0)
+
+
+def _preferred_implement_runner(version: str) -> str:
+    return "codex-subagents" if _semver_tuple(version) >= (1, 3, 0) else "native-single"
+
+
+def _preferred_implement_command(*, feature: str, project_root: Path, version: str, base: str) -> str:
+    quoted_feature = json.dumps(feature, ensure_ascii=False)
+    if _semver_tuple(version) >= (1, 3, 0):
+        return f"beacon implement team-run {quoted_feature} --project {project_root} --version {version}"
+    return f"beacon implement run {quoted_feature} {base} --runner {_preferred_implement_runner(version)}"
+
+
+def _preferred_qa_command(*, feature: str, project_root: Path, version: str, base: str) -> str:
+    quoted_feature = json.dumps(feature, ensure_ascii=False)
+    if _semver_tuple(version) >= (1, 3, 0):
+        return f"beacon qa team-run {quoted_feature} --project {project_root} --version {version}"
+    return f"beacon qa run {quoted_feature} --project {project_root} --version {version} --json"
+
+
 def _read_json(path: Path) -> dict[str, Any]:
     try:
         payload = json.loads(path.read_text(encoding="utf-8"))
@@ -239,7 +266,7 @@ def _next_step(
             return {
                 "action": "implement",
                 "reason": "qa round found an implementation blocker that must be fixed before the next round",
-                "command": f"beacon implement run {quoted_feature} --project {project_root} --version {version} --runner native-single",
+                "command": _preferred_implement_command(feature=feature, project_root=project_root, version=version, base=base),
             }
         if bool(feature_scorecard.get("test_case_backfill_required")):
             return {
@@ -278,7 +305,7 @@ def _next_step(
         return {
             "action": "qa-run",
             "reason": "qa coverage is incomplete but no severe blocker requires stopping the round",
-            "command": f"beacon qa run {quoted_feature} --project {project_root} --version {version} --json",
+            "command": _preferred_qa_command(feature=feature, project_root=project_root, version=version, base=base),
         }
     if continue_decision == "ready_for_release":
         return {
@@ -423,7 +450,7 @@ def _next_step(
         return {
             "action": "implement",
             "reason": "revision is frozen and ready for native implementation",
-            "command": f"beacon implement run {quoted_feature} {base} --runner native-single",
+            "command": _preferred_implement_command(feature=feature, project_root=project_root, version=version, base=base),
         }
 
     if delivery_status in {"implemented", "verifying", "verified"} or next_stage == "verify":
@@ -664,6 +691,7 @@ def build_help_payload(
         "docs_version": resolved_version,
         "runtime_version": str(version_context.get("runtime_version", "") or ""),
         "version_context": version_context,
+        "version_semantics": version_context.get("version_semantics", {}),
         "context_version_guard": version_guard,
         "feature": feature_name,
         "feature_slug": feature_slug(feature_name),

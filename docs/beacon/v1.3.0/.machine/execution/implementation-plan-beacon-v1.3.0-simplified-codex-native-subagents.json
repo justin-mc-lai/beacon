@@ -1,0 +1,569 @@
+{
+  "schema_version": "1.0",
+  "plan_id": "plan-beacon-v1.3.0-simplified-codex-native-subagents-r1",
+  "feature": "beacon-v1.3.0-simplified-codex-native-subagents",
+  "feature_slug": "beacon-v1.3.0-simplified-codex-native-subagents",
+  "version": "v1.3.0",
+  "revision_id": "R1",
+  "baseline_hash": "sha256:f3e563bd54e5af6530a5f790683bc0b635bee6642af80ef0158489e9731c0720",
+  "plan_hash": "sha256:9e414b6d89476b0a239f42ac0eb079463c4dcaf3bd02f8fb47f13835dbf4064e",
+  "status": "planned",
+  "source_refs": {
+    "user_story": "docs/beacon/v1.3.0/user-story/beacon-v1.3.0-simplified-codex-native-subagents.md",
+    "prd": "docs/beacon/v1.3.0/prd/beacon-v1.3.0-simplified-codex-native-subagents.md",
+    "test_case": "docs/beacon/v1.3.0/qa/test-cases/beacon-v1.3.0-simplified-codex-native-subagents.md"
+  },
+  "workstreams": [
+    {
+      "workstream_id": "implementation-main",
+      "title": "Implementation Mainline",
+      "task_ids": [
+        "ITASK-001",
+        "ITASK-002",
+        "ITASK-003",
+        "ITASK-004",
+        "ITASK-005",
+        "ITASK-006",
+        "ITASK-007",
+        "ITASK-008",
+        "ITASK-009",
+        "ITASK-010",
+        "ITASK-011",
+        "ITASK-012",
+        "ITASK-013",
+        "ITASK-014",
+        "ITASK-015",
+        "ITASK-016",
+        "ITASK-017",
+        "ITASK-018",
+        "ITASK-019",
+        "ITASK-020",
+        "ITASK-021",
+        "ITASK-022"
+      ]
+    }
+  ],
+  "task_mapping_source": "prd-sections",
+  "tasks": [
+    {
+      "task_id": "ITASK-001",
+      "title": "FR-001 阶段级 `subagent_mode`",
+      "description": "`think`、`user-story`、`prd`、`test-case`、`qa`、`implement run` 必须支持受约束的阶段级 `subagent_mode`。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-001"
+      ],
+      "mapped_test_ids": [
+        "TEST-001"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [],
+      "target_modules": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-002",
+      "title": "FR-002 角色注册表",
+      "description": "Beacon 必须内置一个小型角色注册表，按阶段声明允许角色，而不是允许任意 agent 自由进入正式流程。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-001"
+      ],
+      "target_modules": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-003",
+      "title": "FR-003 委托计划工件",
+      "description": "在进入子代理执行前，Beacon 必须先写出子代理计划工件，至少包含： stage role feature / version / run_id allowed_scope expected_output_schema",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-002"
+      ],
+      "target_modules": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-004",
+      "title": "FR-004 子代理证据工件",
+      "description": "子代理完成后，Beacon 必须先把 worker evidence 写入运行时目录，再决定是否进入正式 writeback。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-003"
+      ],
+      "target_modules": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-005",
+      "title": "FR-005 正式回写所有权",
+      "description": "`think`、`user-story`、`prd`、`test-case`、`qa`、`implement run` 仍然必须对最终 Beacon 工件负责，不能把正式 writeback 让给 worker。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-004"
+      ],
+      "target_modules": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-006",
+      "title": "FR-006 适配器边界",
+      "description": "`implement run` 对接 Codex 原生子代理时，必须把它视为 adapter，而不是新的 Beacon runtime core。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-005"
+      ],
+      "target_modules": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-007",
+      "title": "FR-007 规划类 prompt 路由",
+      "description": "`beacon ask` 必须把“下一版本 / 子代理演进 / 调研新方向”这类输入路由到 `version` 规划面，而不是 QA 执行面。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-006"
+      ],
+      "target_modules": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-008",
+      "title": "FR-008 并发边界契约",
+      "description": "子代理运行时必须保持浅层、可审计、可解释： 显式阶段角色注册 有界并发 fan-out 不允许递归 worker 再开 worker 每个 worker 必须带 allowed_scope 元数据",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-007"
+      ],
+      "target_modules": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-009",
+      "title": "FR-009 implement-first 落地顺序",
+      "description": "`implement run` 必须是第一条真正落地 Codex 原生多代理集成的执行面。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-008"
+      ],
+      "target_modules": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-010",
+      "title": "FR-010 阶段扩面前置条件",
+      "description": "`think`、`user-story`、`prd`、`test-case`、`qa` 只有在 `implement run` 已证明 plan/evidence/writeback 闭环稳定之后，才允许复用共享运行时。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-009"
+      ],
+      "target_modules": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-011",
+      "title": "FR-011 版本语义规范注册表",
+      "description": "Beacon 必须把现有版本字段的语义冻结并集中管理，以下字段必须保持 canonical 且互不重叠： `package_version` `runtime_version` `docs_default_line` `current_runtime_release_line` `planning_lines` `partial_runtime_supplement_lines`",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-010"
+      ],
+      "target_modules": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-012",
+      "title": "FR-012 字段逐项语义定义",
+      "description": "Beacon 必须对现有字段逐项给出唯一语义： `package_version`：已安装 Beacon 包版本 `runtime_version`：CLI 与受管上下文当前使用的 Beacon runtime/toolkit 版本线 `docs_default_line`：docs-oriented 命令在 `auto/latest` 时默认命中的文档线 `current_runtime_release_line`：当前被视为正式 runtime release truth 的版本线 `planning_lines`：已开启规划、但尚未提升为 current runtime release 的未来文档线 `partial_runtime_supplement_lines`：已有局部 runtime 增强、但仍未替代 current runtime release 的规划版本线",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-011"
+      ],
+      "target_modules": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-013",
+      "title": "FR-013 统一解析归口",
+      "description": "后续所有版本解析都必须经过统一 versioning 层，而不是命令内部再写一套版本判断。 至少适用于： `ask` / `prompt` `help` `status` `doctor` `init` `version` `gate` / `release`",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-012"
+      ],
+      "target_modules": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-014",
+      "title": "FR-014 防漂移约束",
+      "description": "后续源码演进不得： 为现有版本语义引入重叠别名 静默把 docs-target resolution 与 runtime-target resolution 混用 在命令内部私自重解释 version truth 字段 新增版本状态字段却不更新 canonical contract 与对应消费者",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-013"
+      ],
+      "target_modules": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-015",
+      "title": "FR-015 planning line 解析规则",
+      "description": "当用户输入明确表达“下一版本规划”时，Beacon 必须按 canonical planning-line 语义解析目标，而不是默认回退到 current runtime release line。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-014"
+      ],
+      "target_modules": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-016",
+      "title": "FR-016 人类默认中文、机器默认英文",
+      "description": "`v1.3.0` 之后，Beacon 在版本规划材料中必须显式区分： 人类可读主输出：默认中文 机器可读 artifact：默认英文或机器友好键名",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-015"
+      ],
+      "target_modules": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-017",
+      "title": "FR-017 双面镜像同步",
+      "description": "对于同时存在机器面与人类面的 contract： 机器面是 source of truth 人类面是中文镜像 两侧必须通过统一渲染/测试机制保持同步 版本语义 contract 至少必须满足这一规则。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-016"
+      ],
+      "target_modules": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-018",
+      "title": "FR-018 新 contract artifact 四件套",
+      "description": "未来若新增任意 contract 类 artifact，必须同时具备： source JSON artifact 中文镜像 Markdown 统一 render 函数 drift test 不允许只补其中一部分。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-017"
+      ],
+      "target_modules": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-019",
+      "title": "FR-019 implement plan 与 implement run 的 team-mode 优先策略",
+      "description": "`v1.3.0` 必须把 `implement plan` 与 `implement run` 明确收敛到 team-mode 优先策略： `implement plan` 默认应输出面向 team-mode 的拆解 `implement run` 应优先使用 `codex-subagents` 路径 必须存在显性、稳定、可重复的 team-mode 触发方式，而不是只靠模糊启发式",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-018"
+      ],
+      "target_modules": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-020",
+      "title": "FR-020 QA 的 team-mode 要求",
+      "description": "`qa` 在 `v1.3.0` 也必须优先提供显性 team-mode 执行路径，用于： verifier repair-handoff-writer coverage / blocker 汇总",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-019"
+      ],
+      "target_modules": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-021",
+      "title": "FR-021 implement 与 QA 的上下文隔离",
+      "description": "实现与 QA 必须视为两条相互隔离的角色执行面： QA 不应继承实现阶段的私有上下文 两者只允许通过正式工件、evidence refs、handoff 摘要进行协作 不允许把“实现对话上下文”直接当作 QA 真相源",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-020"
+      ],
+      "target_modules": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-022",
+      "title": "FR-022 显性稳定的 team-mode 触发契约",
+      "description": "Beacon 必须为 team-mode 提供统一且稳定的显性触发契约，至少覆盖： `implement plan` `implement run` `qa` 其目标是让用户和后续源码都能明确知道何时进入 team-mode，而不是依赖隐式路由猜测。 ## 4. 源码落点 当前最小落地路径建议从以下文件入手： `beacon/utils/intent_router.py` `beacon/commands/ask.py` `beacon/commands/think.py` `beacon/commands/user_story.py` `beacon/commands/prd.py` `beacon/commands/test_case.py` `beacon/commands/qa.py` `beacon/commands/implement.py` `beacon/utils/implement_native.py` `beacon/utils/project_skills.py` `beacon/commands/team.py` `beacon/utils/versioning.py` `beacon/version-semantics.json` `beacon/artifact-language-policy.json` ## 5. 非目标 通用任意 shell DAG 编排器 替换现有 project-skill orchestration 强制所有项目开启 native subagents 在 Beacon 正式工件之外再造第二套 release truth 让机器 artifact 也强制转成中文 ## 6. 推进顺序 1. 规划线与工件 contract 收口 2. 版本语义冻结与统一解析归口 3. 共享 subagent plan/evidence 运行时 4. `implement plan` / `implement run` 的 team-mode 与 Codex-native adapter 5. `qa` 的 team-mode 与 implement/qa 上下文隔离 6. `think / user-story / prd / test-case / qa` 的只读/批判类扩面 7. gate / release 硬化 8. 中文人类面与英文机器面双轨同步治理",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-021"
+      ],
+      "target_modules": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    }
+  ],
+  "team_mode": {
+    "preferred_surface": "implement-team",
+    "preferred_runner": "codex-subagents",
+    "plan_command": "beacon implement team-plan \"beacon-v1.3.0-simplified-codex-native-subagents\" --project-root . --version v1.3.0",
+    "run_command": "beacon implement team-run \"beacon-v1.3.0-simplified-codex-native-subagents\" --project . --version v1.3.0",
+    "qa_team_command": "beacon qa team-run \"beacon-v1.3.0-simplified-codex-native-subagents\" --project . --version v1.3.0",
+    "roles": [
+      "planner",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "context_isolation": {
+      "role_plane": "implementation",
+      "isolated_from": [
+        "qa-team"
+      ],
+      "shared_inputs": [
+        "docs",
+        "implementation_plan",
+        "evidence_refs"
+      ],
+      "shared_outputs": [
+        "implementation_summary",
+        "technical_archive",
+        "repair_handoff"
+      ],
+      "rule": "qa_must_not_inherit_implement_private_context",
+      "implement_surface": "implement-team",
+      "qa_surface": "qa-team"
+    }
+  },
+  "generated_at": "2026-04-11T01:39:49.006291+00:00",
+  "updated_at": "2026-04-11T01:39:49.006305+00:00"
+}

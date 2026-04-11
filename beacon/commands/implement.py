@@ -42,8 +42,9 @@ from beacon.utils.implement_adapters import (
 from beacon.utils.learning_loop import write_requirement_rewrite_input
 from beacon.utils.runtime import generate_run_id, now_iso, write_json
 from beacon.utils.story_state import load_story_state
+from beacon.utils.team_surface import write_implement_to_qa_handoff
 from beacon.utils.v115_delivery import refresh_evidence_manifest
-from beacon.utils.versioning import resolve_target_version
+from beacon.utils.versioning import normalize_version, resolve_target_version
 from beacon.utils.writeback import record_implementation_writeback
 
 app = typer.Typer(name="implement", help="Run implementation via configured skill adapters")
@@ -112,6 +113,24 @@ def _git_commit(project_root: Path) -> str:
 def _write_text(path: Path, content: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(content, encoding="utf-8")
+
+
+def _semver_tuple(version: str | None) -> tuple[int, int, int]:
+    text = str(normalize_version(version) or version or "").strip().lstrip("v")
+    try:
+        major, minor, patch = text.split(".")
+        return (int(major), int(minor), int(patch))
+    except Exception:  # noqa: BLE001
+        return (0, 0, 0)
+
+
+def _default_runner_for_version(project_root: Path, version: str) -> str:
+    if _semver_tuple(version) >= (1, 3, 0):
+        return "codex-subagents"
+    configured = resolve_default_runner(project_root)
+    if configured:
+        return configured
+    return "native-single"
 
 
 def _normalize_string_list(value: Any) -> list[str]:
@@ -671,7 +690,10 @@ def run_implement_stage(  # noqa: PLR0913
             write_json(state_path, payload)
             return 2, payload
 
-    adapter_id, adapter = resolve_adapter(project_root, None if str(runner or "").strip().lower() == "auto" else runner)
+    requested_runner = None if str(runner or "").strip().lower() == "auto" else runner
+    if requested_runner is None:
+        requested_runner = _default_runner_for_version(project_root, resolved_version)
+    adapter_id, adapter = resolve_adapter(project_root, requested_runner)
     if not adapter_id or not adapter:
         payload = {
             "schema_version": "1.0",
@@ -914,6 +936,18 @@ def run_implement_stage(  # noqa: PLR0913
         )
         summary_payload["artifact_writeback_open_count"] = int(obligations.get("open_count", 0) or 0)
         summary_payload["requirement_rewrite_input"] = str(learning_payload.get("path", "") or "")
+        handoff_path = write_implement_to_qa_handoff(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            run_id=run_id,
+            summary_ref=str(summary_paths["json"].relative_to(project_root)),
+            technical_archive_ref=str(archive_paths["json"].relative_to(project_root)),
+            evidence_refs=[str(summary_paths["json"].relative_to(project_root)), str(archive_paths["json"].relative_to(project_root))],
+            changed_files=result_payload.get("changed_files", []),
+            implementation_plan_ref=implementation_plan_file,
+        )
+        summary_payload["implement_to_qa_handoff"] = str(handoff_path.relative_to(project_root))
         summary_payload["auto_qa"] = {
             "enabled": bool(auto_qa),
             "triggered": False,
@@ -1259,6 +1293,18 @@ def run_implement_stage(  # noqa: PLR0913
     )
     summary_payload["artifact_writeback_open_count"] = int(obligations.get("open_count", 0) or 0)
     summary_payload["requirement_rewrite_input"] = str(learning_payload.get("path", "") or "")
+    handoff_path = write_implement_to_qa_handoff(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        run_id=run_id,
+        summary_ref=str(summary_paths["json"].relative_to(project_root)),
+        technical_archive_ref=str(archive_paths["json"].relative_to(project_root)),
+        evidence_refs=[str(summary_paths["json"].relative_to(project_root)), str(archive_paths["json"].relative_to(project_root))],
+        changed_files=result_payload.get("changed_files", []),
+        implementation_plan_ref=implementation_plan_file,
+    )
+    summary_payload["implement_to_qa_handoff"] = str(handoff_path.relative_to(project_root))
     summary_payload["auto_qa"] = {
         "enabled": bool(auto_qa),
         "triggered": False,
@@ -1301,7 +1347,7 @@ def list_runners(
     """List implementation runners available to Beacon."""
     root = Path(project_root) if project_root else Path.cwd()
     adapters = discover_skill_adapters(root)
-    preferred = resolve_default_runner(root)
+    preferred = resolve_default_runner(root) or _default_runner_for_version(root, "v1.3.0")
     rows = []
     for adapter_id, adapter in sorted(adapters.items()):
         detected, evidence = detect_adapter(adapter_id, root)
@@ -1422,6 +1468,32 @@ def _plan_impl(feature: str, project: Optional[str], version: str, json_output: 
     return code
 
 
+def _team_plan_impl(feature: str, project: Optional[str], version: str, json_output: bool) -> int:
+    project_root = Path(project) if project else Path.cwd()
+    code, payload = compile_implementation_plan(project_root, version=version, feature=feature)
+    resolved_version = resolve_target_version(project_root, version)
+    team_mode = {
+        "preferred_surface": "implement-team",
+        "preferred_runner": "codex-subagents" if _semver_tuple(resolved_version) >= (1, 3, 0) else "native-team",
+        "plan_command": f'beacon implement team-plan "{feature}" --project-root {project_root} --version {resolved_version}',
+        "run_command": f'beacon implement team-run "{feature}" --project {project_root} --version {resolved_version}',
+    }
+    payload = {
+        **payload,
+        "team_surface": "implement-team",
+        "team_mode": payload.get("team_mode", {}) or team_mode,
+        "recommended_command": str((payload.get("team_mode", {}) or team_mode).get("run_command") or ""),
+    }
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo(f"Beacon implement team-plan status: {payload.get('status')}")
+        typer.echo(f"team_surface: implement-team")
+        if payload.get("recommended_command"):
+            typer.echo(f"recommended_command: {payload.get('recommended_command')}")
+    return code
+
+
 @app.command("plan")
 def plan(
     feature: str = typer.Argument(..., help="Feature name"),
@@ -1433,6 +1505,17 @@ def plan(
     raise typer.Exit(code=_plan_impl(feature, project, version, json_output))
 
 
+@app.command("team-plan")
+def team_plan(
+    feature: str = typer.Argument(..., help="Feature name"),
+    project: Optional[str] = typer.Option(None, "--project", "--project-root", "-p", help="Project root"),
+    version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
+):
+    """Compile an implementation plan with explicit implement-team guidance."""
+    raise typer.Exit(code=_team_plan_impl(feature, project, version, json_output))
+
+
 @app.command("compile-plan")
 def compile_plan(
     feature: str = typer.Argument(..., help="Feature name"),
@@ -1442,6 +1525,34 @@ def compile_plan(
 ):
     """Alias of `implement plan`."""
     raise typer.Exit(code=_plan_impl(feature, project, version, json_output))
+
+
+@app.command("team-run")
+def team_run(
+    feature: str = typer.Argument(..., help="Feature name"),
+    project: Optional[str] = typer.Option(None, "--project", "--project-root", "-p", help="Project root"),
+    version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
+    auto_review_spec: bool = typer.Option(True, "--auto-review-spec/--no-auto-review-spec", help="Auto trigger review spec"),
+    auto_review_quality: bool = typer.Option(False, "--auto-review-quality/--no-auto-review-quality", help="Auto trigger review quality"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
+):
+    """Run implementation through the explicit implement-team surface."""
+    project_root = Path(project) if project else Path.cwd()
+    code, payload = run_implement_stage(
+        feature=feature,
+        project_root=project_root,
+        version=version,
+        runner="codex-subagents",
+        auto_review_spec=auto_review_spec,
+        auto_review_quality=auto_review_quality,
+    )
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo(f"Beacon implement team-run status: {payload.get('status')}")
+        typer.echo(f"team_surface: {payload.get('team_surface', '')}")
+        typer.echo(f"run_id: {payload.get('run_id', '')}")
+    raise typer.Exit(code=code)
 
 
 @app.command("status")

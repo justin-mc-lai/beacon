@@ -6,8 +6,8 @@ description: Evidence-first Product Workflow Kernel for product thinking, user s
 
 # Beacon - Evidence-first Product Workflow Kernel
 
-> **Skill Version**: v1.2.1 supplement
-> **CLI Version**: v1.2.0 runtime line + v1.2.1 supplement
+> **Skill Version**: v1.2.0
+> **CLI Version**: v1.2.0
 > **Last Updated**: 2026-04-10
 
 Beacon 是 AI 产品工作流内核，提供需求澄清、用户故事、PRD、测试用例、证据闭环与发布门禁的统一工作流。

@@ -18,6 +18,11 @@ def _invoke(args: list[str]):
     return runner.invoke(app, args)
 
 
+def _seed_planning_versions(project_root: Path) -> None:
+    for version in ("v1.2.0", "v1.3.0"):
+        (project_root / "docs" / "beacon" / version).mkdir(parents=True, exist_ok=True)
+
+
 def test_prompt_optimize_should_route_requirement_text_to_in_scope_command(tmp_path: Path):
     result = _invoke(
         [
@@ -33,6 +38,7 @@ def test_prompt_optimize_should_route_requirement_text_to_in_scope_command(tmp_p
     payload = json.loads(result.stdout)
     assert payload.get("intent") in {"think", "prd", "test-case"}
     assert payload.get("boundary", {}).get("in_scope") is True
+    assert payload.get("version_semantics", {}).get("fields", {}).get("runtime_version", {}).get("kind") == "runtime"
     assert str(payload.get("recommended_command", "")).startswith("beacon ")
 
 
@@ -55,6 +61,7 @@ def test_prompt_optimize_should_route_user_story_intent(tmp_path: Path):
 
 
 def test_prompt_optimize_should_route_cross_stage_subagent_evolution_to_version(tmp_path: Path):
+    _seed_planning_versions(tmp_path)
     result = _invoke(
         [
             "prompt",
@@ -70,6 +77,7 @@ def test_prompt_optimize_should_route_cross_stage_subagent_evolution_to_version(
     assert payload.get("intent") == "version"
     args = payload.get("recommended_args", [])
     assert args[:2] == ["version", "create"]
+    assert args[-1] == "v1.3.0"
 
 
 def test_prompt_optimize_should_block_outside_boundary_execute(tmp_path: Path):
@@ -289,6 +297,7 @@ def test_prompt_optimize_continue_workflow_should_prioritize_resume_intent(tmp_p
 
 
 def test_prompt_optimize_should_route_next_version_subagent_evolution_to_version(tmp_path: Path):
+    _seed_planning_versions(tmp_path)
     result = _invoke(
         [
             "prompt",
@@ -303,9 +312,11 @@ def test_prompt_optimize_should_route_next_version_subagent_evolution_to_version
     payload = json.loads(result.stdout)
     assert payload.get("intent") == "version"
     assert payload.get("recommended_args", [])[:2] == ["version", "create"]
+    assert payload.get("recommended_args", [])[-1] == "v1.3.0"
 
 
 def test_ask_should_route_next_version_subagent_evolution_prompt_to_version(tmp_path: Path):
+    _seed_planning_versions(tmp_path)
     result = _invoke(
         [
             "ask",
@@ -318,6 +329,8 @@ def test_ask_should_route_next_version_subagent_evolution_prompt_to_version(tmp_
     assert result.exit_code == 0
     payload = json.loads(result.stdout)
     assert payload.get("intent") == "version"
+    assert payload.get("version_semantics", {}).get("fields", {}).get("planning_lines", {}).get("kind") == "planning"
+    assert payload.get("recommended_args", [])[-1] == "v1.3.0"
     assert payload.get("recommended_args", [])[:2] == ["version", "create"]
 
 

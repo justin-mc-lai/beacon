@@ -216,6 +216,7 @@ beacon version experiment "QA autoresearch for <feature>" --version v1.2.0 --pro
 - `docs/beacon/v1.2.0/SUMMARY.md`：当前版本总览
 - `docs/beacon/v1.2.0/execution/index.md`：执行面索引与推荐阅读顺序
 - `docs/beacon/v1.2.0/execution/architecture-blueprint.md`：架构蓝图主文档
+- `docs/beacon/v1.2.0/execution/complete-usage-guide.md`：完整使用文档（汇总版）
 - `docs/beacon/v1.2.0/execution/workflow-usage-guide.md`：完整工作流使用指南
 - `docs/beacon/v1.2.0/execution/natural-language-trigger-handbook.md`：稳定可靠的自然语言触发手册
 - `docs/beacon/v1.2.0/execution/qa-autoresearch-usage-guide.md`：QA autoresearch 稳定触发与执行手册

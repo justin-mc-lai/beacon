@@ -57,6 +57,15 @@ def test_codex_user_prompt_submit_should_capture_history_feedback_and_snapshot(t
     assert history_payload["source"] == "codex.user-prompt-submit"
     assert history_payload["normalized_prompt"] == output["prompt_adaptation"]["normalized_prompt"]
 
+    input_audit_path = tmp_path / output["input_audit_path"]
+    assert input_audit_path.exists()
+    input_audit_lines = [line for line in input_audit_path.read_text(encoding="utf-8").splitlines() if line.strip()]
+    input_audit_payload = json.loads(input_audit_lines[-1])
+    assert input_audit_payload["source"] == "codex.user-prompt-submit"
+    assert input_audit_payload["hook_event_name"] == "UserPromptSubmit"
+    assert input_audit_payload["session_id"] == payload["session_id"]
+    assert input_audit_payload["normalized_prompt"] == output["prompt_adaptation"]["normalized_prompt"]
+
     feedback_path = tmp_path / output["debug_feedback"]["path"]
     assert feedback_path.exists()
     feedback_lines = [line for line in feedback_path.read_text(encoding="utf-8").splitlines() if line.strip()]

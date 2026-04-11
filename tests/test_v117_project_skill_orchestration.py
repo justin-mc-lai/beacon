@@ -158,7 +158,7 @@ def test_skill_registry_list_should_include_builtin_and_external_skills(tmp_path
     assert result.exit_code == 0, result.stdout
     payload = json.loads(result.stdout)
     ids = {item["id"] for item in payload["skills"]}
-    assert {"native-single", "native-team", "qa9-default", "rolo-dev"} <= ids
+    assert {"native-single", "native-team", "codex-subagents", "qa9-default", "rolo-dev"} <= ids
 
 
 def test_verify_run_should_execute_profile_orchestration_and_satisfy_gate(tmp_path: Path):

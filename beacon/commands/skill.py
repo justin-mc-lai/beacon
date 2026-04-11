@@ -36,6 +36,17 @@ def _resolve_scope_path(project_root: Path, scope: str) -> Path:
     return global_config_path() if scope == "global" else project_config_path(project_root)
 
 
+def _adapter_defined_in_project_config(project_root: Path, adapter_id: str) -> bool:
+    path = project_config_path(project_root)
+    config = load_yaml_like(path) if path.exists() else {}
+    skill_section = config.get("skill") if isinstance(config.get("skill"), dict) else {}
+    adapters = skill_section.get("adapters") if isinstance(skill_section.get("adapters"), dict) else {}
+    implementation_section = config.get("implementation") if isinstance(config.get("implementation"), dict) else {}
+    runners = implementation_section.get("runners") if isinstance(implementation_section.get("runners"), dict) else {}
+    preferred = str(skill_section.get("preferred", "")).strip()
+    return adapter_id in adapters or adapter_id in runners or preferred == adapter_id
+
+
 def _upsert_adapter(
     *,
     config_path: Path,
@@ -314,6 +325,13 @@ def doctor(
     adapters = discover_skill_adapters(root)
     preferred = resolve_default_runner(root)
     checks = [_doctor_adapter(adapter_id, payload, root) for adapter_id, payload in sorted(adapters.items())]
+    for item in checks:
+        adapter_id = str(item.get("adapter_id", "") or "")
+        if str(item.get("status", "") or "") != "fail":
+            continue
+        if _adapter_defined_in_project_config(root, adapter_id):
+            continue
+        item["status"] = "warn"
     discovery_payload = load_skill_discovery(root)
     if discovery_payload:
         discovery_issues = validate_skill_discovery_payload(root, discovery_payload)
@@ -332,16 +350,23 @@ def doctor(
     elif any(item["status"] == "warn" for item in checks):
         status = "warn"
     if preferred and preferred not in adapters:
-        status = "fail"
+        preferred_status = "fail" if _adapter_defined_in_project_config(root, preferred) else "warn"
         checks.append(
             {
                 "adapter_id": preferred,
                 "detected": False,
                 "evidence": [],
                 "issues": ["preferred adapter not found"],
-                "status": "fail",
+                "status": preferred_status,
             }
         )
+        if preferred_status == "fail":
+            status = "fail"
+    status = "pass"
+    if any(item["status"] == "fail" for item in checks):
+        status = "fail"
+    elif any(item["status"] == "warn" for item in checks):
+        status = "warn"
     payload = {"schema_version": "1.0", "status": status, "preferred": preferred or "", "checks": checks}
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))

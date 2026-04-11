@@ -12,6 +12,7 @@ from beacon.utils.artifact_paths import human_execution_file, machine_execution_
 from beacon.utils.revision_state import load_revision_state
 from beacon.utils.runtime import now_iso, read_json, write_json
 from beacon.utils.story_state import feature_slug, load_story_state
+from beacon.utils.team_surface import implement_team_contract
 from beacon.utils.versioning import normalize_version, resolve_target_version
 
 
@@ -51,6 +52,19 @@ def implementation_plan_supported(version: str | None) -> bool:
         return (int(major), int(minor), int(patch)) >= (1, 1, 12)
     except Exception:  # noqa: BLE001
         return False
+
+
+def _semver_tuple(version: str | None) -> tuple[int, int, int]:
+    normalized = normalize_version(version) or "v0.0.0"
+    try:
+        major, minor, patch = normalized.lstrip("v").split(".")
+        return (int(major), int(minor), int(patch))
+    except Exception:  # noqa: BLE001
+        return (0, 0, 0)
+
+
+def _team_mode_contract(project_root: Path, *, version: str, feature: str) -> dict[str, Any]:
+    return implement_team_contract(project_root, version=version, feature=feature)
 
 
 def implementation_plan_json_path(project_root: Path, version: str, feature: str) -> Path:
@@ -618,6 +632,20 @@ def _render_plan_markdown(payload: dict[str, Any]) -> str:
             lines.append(f"- {key}: `{value}`")
     else:
         lines.append("- none")
+    team_mode = payload.get("team_mode") if isinstance(payload.get("team_mode"), dict) else {}
+    if team_mode:
+        lines.extend(
+            [
+                "",
+                "## Team Mode",
+                f"- preferred_surface: `{team_mode.get('preferred_surface', '')}`",
+                f"- preferred_runner: `{team_mode.get('preferred_runner', '')}`",
+                f"- plan_command: `{team_mode.get('plan_command', '')}`",
+                f"- run_command: `{team_mode.get('run_command', '')}`",
+                f"- qa_team_command: `{team_mode.get('qa_team_command', '')}`",
+                f"- roles: {', '.join(team_mode.get('roles', [])) or '-'}",
+            ]
+        )
     lines.extend(["", "## Tasks"])
     tasks = [task for task in payload.get("tasks", []) if isinstance(task, dict)]
     if not tasks:
@@ -890,6 +918,7 @@ def compile_implementation_plan(project_root: Path, *, version: str = "auto", fe
         ],
         "task_mapping_source": "prd-sections" if prd_candidates else "acceptance-criteria",
         "tasks": tasks,
+        "team_mode": _team_mode_contract(project_root, version=resolved_version, feature=feature),
         "generated_at": now_iso(),
     }
     written = _write_implementation_plan(project_root, version=resolved_version, feature=feature, payload=payload)
@@ -907,6 +936,7 @@ def compile_implementation_plan(project_root: Path, *, version: str = "auto", fe
         "plan_markdown_path": str(implementation_plan_markdown_path(project_root, resolved_version, feature).relative_to(project_root)),
         "progress_path": str(implementation_plan_progress_path(project_root, resolved_version, feature).relative_to(project_root)),
         "counts": _task_counts(tasks),
+        "team_mode": payload.get("team_mode", {}),
     }
 
 

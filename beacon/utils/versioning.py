@@ -19,6 +19,7 @@ _CONTEXT_MARKER = re.compile(r"<!--\s*BEACON:VERSION:([^>\s]+)\s*-->")
 _SEMVER_SEARCH = re.compile(r"v?\d+\.\d+\.\d+")
 _VERSION_TRUTH_STATE = Path(".beacon/state/version-truth/current.json")
 _VERSION_TRUTH_CANONICAL = Path("beacon/version-truth.json")
+_VERSION_SEMANTICS_CANONICAL = Path("beacon/version-semantics.json")
 _ALLOW_CONTEXT_VERSION_DRIFT_ENV = "BEACON_ALLOW_CONTEXT_VERSION_DRIFT"
 
 
@@ -70,6 +71,250 @@ def _read_json_file(path: Path) -> dict[str, Any]:
     except Exception:  # noqa: BLE001
         return {}
     return payload if isinstance(payload, dict) else {}
+
+
+def _default_version_semantics() -> dict[str, Any]:
+    return {
+        "schema_version": "1.0",
+        "artifact": "beacon-version-semantics",
+        "description": (
+            "Canonical version semantics contract for Beacon. Consumers must resolve version meaning "
+            "through beacon.utils.versioning rather than command-local interpretation."
+        ),
+        "fields": {
+            "package_version": {
+                "kind": "package",
+                "meaning": "Installed Beacon package version.",
+                "example": "1.2.0",
+            },
+            "runtime_version": {
+                "kind": "runtime",
+                "meaning": "Active Beacon runtime/toolkit line used by the CLI and managed context.",
+                "example": "v1.2.0",
+            },
+            "docs_default_line": {
+                "kind": "docs",
+                "meaning": "Default docs line for docs-oriented commands when the caller uses auto/latest.",
+                "example": "v1.2.0",
+            },
+            "current_runtime_release_line": {
+                "kind": "release_truth",
+                "meaning": "Beacon runtime line currently considered the formal runtime release truth.",
+                "example": "v1.2.0",
+            },
+            "planning_lines": {
+                "kind": "planning",
+                "meaning": "Future docs lines opened for planning and not yet promoted to the current runtime release.",
+                "example": ["v1.3.0"],
+            },
+            "partial_runtime_supplement_lines": {
+                "kind": "supplement",
+                "meaning": (
+                    "Planning lines with bounded runtime supplements that still do not replace the current runtime release."
+                ),
+                "example": ["v1.2.1"],
+            },
+        },
+        "status_values": {
+            "historical_release": "A historical released line that is not the current runtime release.",
+            "planning_only": "A planning line with docs/package planning but no accepted runtime promotion.",
+            "planning_with_partial_runtime_supplement": (
+                "A planning line with bounded runtime supplements that still does not replace the current runtime release."
+            ),
+            "current_runtime_release": "The current Beacon runtime release line.",
+        },
+        "resolver_contract": {
+            "docs_target": "resolve_docs_version()",
+            "runtime_target": "resolve_runtime_version()",
+            "version_context": "describe_project_version_context()",
+            "release_truth_status": "release_truth_status()",
+        },
+        "consumer_surfaces": ["ask", "help", "status", "doctor", "init", "version"],
+        "rules": [
+            "Do not conflate docs-target resolution with runtime-target resolution.",
+            "Do not add overlapping aliases for existing version fields without updating this contract.",
+            "Commands should expose version_context and version_semantics rather than reinterpreting raw fields.",
+        ],
+    }
+
+
+def load_version_semantics(project_root: Path) -> dict[str, Any]:
+    payload = _read_json_file(project_root / _VERSION_SEMANTICS_CANONICAL)
+    merged = _default_version_semantics()
+
+    for key in ("schema_version", "artifact", "description"):
+        value = str(payload.get(key, "")).strip() if payload else ""
+        if value:
+            merged[key] = value
+
+    for key in ("fields", "status_values", "resolver_contract"):
+        if isinstance(payload.get(key), dict):
+            base = merged.get(key, {})
+            if isinstance(base, dict):
+                merged[key] = {**base, **payload[key]}
+            else:
+                merged[key] = dict(payload[key])
+
+    for key in ("consumer_surfaces", "rules"):
+        values = payload.get(key)
+        if isinstance(values, list) and values:
+            merged[key] = [str(item) for item in values if str(item).strip()]
+
+    artifact_path = project_root / _VERSION_SEMANTICS_CANONICAL
+    merged["source_path"] = str(_VERSION_SEMANTICS_CANONICAL) if artifact_path.exists() else ""
+    merged["source_kind"] = "canonical_file" if artifact_path.exists() else "default"
+    return merged
+
+
+def _render_semantics_example(value: Any) -> str:
+    if isinstance(value, (list, dict)):
+        return json.dumps(value, ensure_ascii=False)
+    return str(value)
+
+
+_FIELD_KIND_LABELS = {
+    "package": "包版本",
+    "runtime": "运行版本",
+    "docs": "文档版本",
+    "release_truth": "发布真相",
+    "planning": "规划版本",
+    "supplement": "补充增强",
+}
+
+_FIELD_MEANING_ZH = {
+    "package_version": "已安装 Beacon 包版本。",
+    "runtime_version": "CLI 与受管上下文当前使用的 Beacon runtime/toolkit 版本线。",
+    "docs_default_line": "当命令使用 auto/latest 解析文档目标时默认命中的文档线。",
+    "current_runtime_release_line": "当前被视为正式 runtime 发布真相的 Beacon 版本线。",
+    "planning_lines": "已开启规划但尚未提升为当前 runtime release 的未来文档线。",
+    "partial_runtime_supplement_lines": "已有局部 runtime 增强、但仍未替代当前 runtime release 的规划版本线。",
+}
+
+_STATUS_VALUE_ZH = {
+    "historical_release": "历史正式版本线，已不是当前 runtime release。",
+    "planning_only": "仅规划中的版本线，已有 docs/package 规划但尚未成为 runtime release。",
+    "planning_with_partial_runtime_supplement": "带局部 runtime 增强的规划版本线，但仍不是当前 runtime release。",
+    "current_runtime_release": "当前 Beacon runtime 正式发布线。",
+}
+
+_RESOLVER_LABEL_ZH = {
+    "docs_target": "文档目标解析",
+    "runtime_target": "运行目标解析",
+    "version_context": "统一版本上下文",
+    "release_truth_status": "发布真相状态判断",
+}
+
+_CONSUMER_SURFACE_ZH = {
+    "ask": "自然语言入口",
+    "help": "阶段导航",
+    "status": "状态面板",
+    "doctor": "诊断与修复建议",
+    "init": "项目初始化",
+    "version": "版本规划",
+}
+
+_RULE_ZH = {
+    "Do not conflate docs-target resolution with runtime-target resolution.": "不得把文档目标解析与运行目标解析混为一谈。",
+    "Do not add overlapping aliases for existing version fields without updating this contract.": "未经更新本 contract，不得为现有版本字段新增语义重叠的别名。",
+    "Commands should expose version_context and version_semantics rather than reinterpreting raw fields.": "命令应暴露统一的 version_context 与 version_semantics，而不是各自重解释原始字段。",
+}
+
+
+def render_version_semantics_markdown(semantics: dict[str, Any], *, version: str) -> str:
+    version_text = normalize_version(version) or str(version or "").strip() or "<version>"
+    lines = [
+        "# Beacon 版本语义契约",
+        "",
+        f"- 文档线: `{version_text}`",
+        "- 镜像源: `beacon/version-semantics.json`",
+        "- 镜像规则: 本文档是机器可读版本语义 artifact 的人类可读中文镜像；两侧必须同步更新。",
+        "",
+        "## 目的",
+        "",
+        "Beacon 版本语义的统一中文说明入口。"
+        " 机器侧以 `beacon/version-semantics.json` 为准，"
+        "人类侧通过本镜像理解字段语义、状态含义、解析入口与使用规则。",
+        "",
+        "## 规范字段",
+        "",
+        "| 字段 | 类型 | 中文说明 | 示例 |",
+        "| --- | --- | --- | --- |",
+    ]
+    fields = semantics.get("fields", {}) if isinstance(semantics.get("fields"), dict) else {}
+    for field_name, payload in fields.items():
+        if not isinstance(payload, dict):
+            continue
+        kind = str(payload.get("kind", "")).strip()
+        lines.append(
+            "| "
+            + " | ".join(
+                [
+                    f"`{field_name}`",
+                    _FIELD_KIND_LABELS.get(kind, kind),
+                    _FIELD_MEANING_ZH.get(field_name, str(payload.get("meaning", "")).strip()),
+                    f"`{_render_semantics_example(payload.get('example', ''))}`",
+                ]
+            )
+            + " |"
+        )
+
+    lines.extend(
+        [
+            "",
+            "## 状态值",
+            "",
+            "| 状态值 | 中文说明 |",
+            "| --- | --- |",
+        ]
+    )
+    status_values = semantics.get("status_values", {}) if isinstance(semantics.get("status_values"), dict) else {}
+    for status_name, meaning in status_values.items():
+        lines.append(f"| `{status_name}` | {_STATUS_VALUE_ZH.get(status_name, str(meaning).strip())} |")
+
+    lines.extend(
+        [
+            "",
+            "## 解析入口契约",
+            "",
+            "| 语义面 | 统一入口 |",
+            "| --- | --- |",
+        ]
+    )
+    resolver_contract = semantics.get("resolver_contract", {}) if isinstance(semantics.get("resolver_contract"), dict) else {}
+    for key, value in resolver_contract.items():
+        lines.append(f"| {_RESOLVER_LABEL_ZH.get(key, key)} | `{str(value).strip()}` |")
+
+    lines.extend(["", "## 消费面", ""])
+    consumer_surfaces = semantics.get("consumer_surfaces", []) if isinstance(semantics.get("consumer_surfaces"), list) else []
+    if consumer_surfaces:
+        lines.extend(
+            f"- `{str(item).strip()}`：{_CONSUMER_SURFACE_ZH.get(str(item).strip(), str(item).strip())}"
+            for item in consumer_surfaces
+            if str(item).strip()
+        )
+    else:
+        lines.append("- 无")
+
+    lines.extend(["", "## 规则", ""])
+    rules = semantics.get("rules", []) if isinstance(semantics.get("rules"), list) else []
+    if rules:
+        lines.extend(f"- {_RULE_ZH.get(str(item).strip(), str(item).strip())}" for item in rules if str(item).strip())
+    else:
+        lines.append("- 无")
+
+    lines.extend(
+        [
+            "",
+            "## 镜像同步契约",
+            "",
+            "1. `beacon/version-semantics.json` 是机器可读单一事实源。",
+            "2. `docs/beacon/<version>/execution/version-semantics-contract.md` 是人类可读中文镜像。",
+            "3. 后续变更必须同时更新两侧。",
+            "4. 若 Markdown 镜像与 JSON artifact 漂移，测试必须失败。",
+            "",
+        ]
+    )
+    return "\n".join(lines)
 
 
 def _normalize_version_list(values: Any) -> list[str]:
@@ -560,6 +805,7 @@ def describe_project_version_context(
     context_versions = context_managed_versions(project_root)
     unique_context = sorted({value for value in context_versions.values() if value})
     version_truth = load_version_truth(project_root)
+    version_semantics = load_version_semantics(project_root)
     context_version_guard = build_context_version_guard(
         project_root,
         docs_version,
@@ -589,6 +835,9 @@ def describe_project_version_context(
         "version_truth_source": str(version_truth.get("source_path", "") or ""),
         "version_truth_source_kind": str(version_truth.get("source_kind", "") or ""),
         "version_truth": version_truth,
+        "version_semantics_source": str(version_semantics.get("source_path", "") or ""),
+        "version_semantics_source_kind": str(version_semantics.get("source_kind", "") or ""),
+        "version_semantics": version_semantics,
         "context_version_guard": context_version_guard,
     }
 

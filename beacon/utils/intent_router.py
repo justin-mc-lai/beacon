@@ -11,6 +11,7 @@ from typing import Any
 from urllib import request
 
 from beacon.utils.runtime import now_iso
+from beacon.utils.versioning import load_version_truth, resolve_docs_version
 
 SUPPORTED_INTENTS = (
     "think",
@@ -708,12 +709,23 @@ def _build_command_plan(
     goal: str,
     project_root: Path,
     version: str,
+    requested_version: str | None,
     stage_hint: str,
     command_templates: dict[str, Any],
 ) -> tuple[list[str], str]:
     feature = _extract_feature(goal)
     root_text = str(project_root)
     version_text = str(version or "auto").strip() or "auto"
+    requested_version_text = _normalize_text(requested_version or "")
+    if (
+        intent == "version"
+        and requested_version_text in {"", "auto", "latest"}
+        and _keyword_hits(_normalize_text(goal), VERSION_EVOLUTION_KEYWORDS)
+    ):
+        version_truth = load_version_truth(project_root)
+        planning_lines = version_truth.get("planning_lines")
+        if isinstance(planning_lines, list) and planning_lines:
+            version_text = str(resolve_docs_version(project_root, "planned"))
     stage = stage_hint if stage_hint in STAGE_HINTS else _extract_stage_hint(goal)
     context = {
         "intent": intent,
@@ -742,6 +754,7 @@ def optimize_prompt_to_plan(
     *,
     project_root: Path,
     version: str = "auto",
+    requested_version: str | None = None,
     router_mode: str = "auto",
 ) -> dict[str, Any]:
     """Route natural language prompt to a normalized beacon command plan."""
@@ -773,6 +786,7 @@ def optimize_prompt_to_plan(
         goal=goal,
         project_root=root,
         version=version,
+        requested_version=requested_version,
         stage_hint=stage_hint,
         command_templates=router_config["intent_command_templates"],
     )

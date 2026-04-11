@@ -1016,6 +1016,8 @@ def build_doctor_payload(
         "overall": overall,
         "checks": checks,
         "runtime": runtime,
+        "version_context": version_context,
+        "version_semantics": version_context.get("version_semantics", {}),
         "project": {
             "project_root": str(normalized_root),
             "available_versions": project_versions.get("available_versions", []),

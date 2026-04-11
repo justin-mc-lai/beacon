@@ -46,8 +46,38 @@ def test_debug_enable_should_capture_ask_prompt_into_debug_feedback_and_memory(t
     assert event.get("goal") == "做一次环境诊断并输出结果"
     assert event.get("intent") == "doctor"
 
+    input_audit = payload.get("input_audit", {})
+    audit_path = tmp_path / input_audit.get("path", "")
+    assert audit_path.exists()
+    audit_lines = [line for line in audit_path.read_text(encoding="utf-8").splitlines() if line.strip()]
+    audit_payload = json.loads(audit_lines[-1])
+    assert audit_payload.get("source") == "ask"
+    assert audit_payload.get("input_goal") == "做一次环境诊断并输出结果"
+    assert audit_payload.get("intent") == "doctor"
+
     entries = load_memory_entries(tmp_path)
     assert any(str(item.get("source", "")) == "debug.prompt.optimize" for item in entries)
+
+
+def test_debug_input_audit_should_read_recent_user_input_events(tmp_path: Path):
+    ask_result = _invoke(["ask", "做一次环境诊断并输出结果", "--project-root", str(tmp_path), "--json"])
+    assert ask_result.exit_code == 0, ask_result.stdout
+
+    result = _invoke(
+        [
+            "debug",
+            "input-audit",
+            "--project-root",
+            str(tmp_path),
+            "--limit",
+            "5",
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload.get("count") == 1
+    assert payload.get("events", [{}])[-1].get("source") == "ask"
 
 
 def test_debug_sync_prompts_should_import_router_history_into_memory(tmp_path: Path):

@@ -100,7 +100,7 @@ def test_implement_list_runners_should_show_preferred(tmp_path: Path):
     payload = json.loads(result.stdout)
     assert payload["preferred"] == "omx"
     ids = {item["id"] for item in payload["runners"]}
-    assert {"omx", "omc", "gstack"} <= ids
+    assert {"omx", "omc", "gstack", "codex-subagents"} <= ids
 
 
 def test_implement_run_dry_run_should_write_request_and_state(tmp_path: Path):

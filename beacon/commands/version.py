@@ -13,7 +13,12 @@ import typer
 
 from beacon.utils.learning_loop import run_evo_experiment
 from beacon.utils.runtime import now_iso, write_json
-from beacon.utils.versioning import discover_versions, normalize_version, resolve_target_version
+from beacon.utils.versioning import (
+    describe_project_version_context,
+    discover_versions,
+    normalize_version,
+    resolve_target_version,
+)
 
 app = typer.Typer(name="version", help="Version planning and evolution traceability")
 
@@ -202,6 +207,10 @@ def create(
         "artifacts": created_files,
         "created_at": now_iso(),
     }
+    version_context = describe_project_version_context(
+        project_root,
+        docs_version=selection.target_version,
+    )
     metadata_path = (
         project_root
         / ".beacon"
@@ -214,7 +223,18 @@ def create(
     created_files.append(str(metadata_path))
 
     if json_output:
-        typer.echo(json.dumps({"status": "ok", "version_plan": metadata}, ensure_ascii=False, indent=2))
+        typer.echo(
+            json.dumps(
+                {
+                    "status": "ok",
+                    "version_plan": metadata,
+                    "version_context": version_context,
+                    "version_semantics": version_context.get("version_semantics", {}),
+                },
+                ensure_ascii=False,
+                indent=2,
+            )
+        )
         return
 
     typer.echo("✓ Version plan created")
@@ -253,8 +273,23 @@ def list(
                     }
                 )
 
+    version_context = describe_project_version_context(
+        project_root,
+        docs_version=versions[0] if versions else None,
+    )
     if json_output:
-        typer.echo(json.dumps({"count": len(records), "items": records}, ensure_ascii=False, indent=2))
+        typer.echo(
+            json.dumps(
+                {
+                    "count": len(records),
+                    "items": records,
+                    "version_context": version_context,
+                    "version_semantics": version_context.get("version_semantics", {}),
+                },
+                ensure_ascii=False,
+                indent=2,
+            )
+        )
         return
 
     if not records:
@@ -298,6 +333,9 @@ def experiment(
         experiment_label=label,
         budget_overrides=budget_overrides,
     )
+    version_context = describe_project_version_context(project_root, docs_version=resolved_version)
+    payload["version_context"] = version_context
+    payload["version_semantics"] = version_context.get("version_semantics", {})
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
         return

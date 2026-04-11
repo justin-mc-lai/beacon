@@ -17,7 +17,7 @@ from beacon.utils.artifact_paths import (
 )
 from beacon.utils.runtime import now_iso, write_json
 from beacon.utils.v115_delivery import ensure_eval_lab_skeleton, ensure_human_primary_indexes, refresh_evidence_manifest
-from beacon.utils.versioning import resolve_docs_version, resolve_runtime_version
+from beacon.utils.versioning import describe_project_version_context, resolve_docs_version, resolve_runtime_version
 
 app = typer.Typer(
     name="init",
@@ -240,12 +240,20 @@ def _init_impl(
         write_json(onboarding_state_path, onboarding_state)
     actions.append({"scope": "state", "action": "created" if apply else "planned", "path": str(onboarding_state_path.relative_to(root))})
 
+    version_context = describe_project_version_context(
+        root,
+        docs_version=docs_version,
+        runtime_version=effective_runtime_version,
+    )
+
     payload = {
         "schema_version": "1.0",
         "command": "beacon init",
         "docs_version": docs_version,
         "version": docs_version,
         "runtime_version": effective_runtime_version,
+        "version_context": version_context,
+        "version_semantics": version_context.get("version_semantics", {}),
         "project_mode": project_mode,
         "project_root": str(root),
         "dry_run": dry_run,

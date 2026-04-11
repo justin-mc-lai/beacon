@@ -35,6 +35,7 @@ from beacon.utils.intent_router import (
     build_prompt_adaptation_pack,
     optimize_prompt_to_plan,
 )
+from beacon.utils.input_audit import append_user_input_audit, load_user_input_audit, user_input_audit_path
 from beacon.utils.learning_loop import refresh_learning_loop
 from beacon.utils.prompt_router_history import (
     append_prompt_router_history,
@@ -365,6 +366,34 @@ def sync_prompts(
     typer.echo(f"- path: {payload['path']}")
 
 
+@app.command("input-audit")
+def input_audit(
+    project_root: str = typer.Option("", "--project-root", help="Project root path"),
+    limit: int = typer.Option(20, "--limit", min=0, help="Read latest N audit events (0 = all)."),
+    source: str = typer.Option("", "--source", help="Filter by source, e.g. ask/prompt.optimize/codex.user-prompt-submit"),
+    hook_event_name: str = typer.Option("", "--hook-event-name", help="Filter by hook event name"),
+    json_output: bool = typer.Option(False, "--json", help="JSON output"),
+):
+    """Inspect structured user-input audit events."""
+    root = Path(project_root) if project_root else Path.cwd()
+    rows = load_user_input_audit(root, limit=limit, source=source, hook_event_name=hook_event_name)
+    payload = {
+        "path": str(user_input_audit_path(root).relative_to(root)),
+        "count": len(rows),
+        "events": rows,
+    }
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        return
+    typer.echo("Beacon Input Audit")
+    typer.echo(f"- path: {payload['path']}")
+    typer.echo(f"- count: {payload['count']}")
+    for row in rows[-min(len(rows), 10):]:
+        typer.echo(
+            f"- {row.get('ts', '')} source={row.get('source', '')} intent={row.get('intent', '')} prompt={row.get('input_goal', '')}"
+        )
+
+
 @app.command("codex-user-prompt-submit")
 def codex_user_prompt_submit(
     project_root: str = typer.Option("", "--project-root", help="Project root path"),
@@ -400,6 +429,7 @@ def codex_user_prompt_submit(
         prompt,
         project_root=root,
         version=resolved_version,
+        requested_version=version,
         router_mode=router_mode,
     )
     adaptation = build_prompt_adaptation_pack(
@@ -431,6 +461,32 @@ def codex_user_prompt_submit(
         "needs_clarification": bool(adaptation.get("needs_clarification", False)),
     }
     history_path = append_prompt_router_history(root, history_event)
+    input_audit_path = append_user_input_audit(
+        root,
+        {
+            "ts": history_event["ts"],
+            "source": "codex.user-prompt-submit",
+            "channel": "hook",
+            "hook_event_name": hook_event_name,
+            "input_goal": prompt,
+            "raw_prompt": prompt,
+            "normalized_prompt": str(adaptation.get("normalized_prompt", "") or ""),
+            "intent": plan.get("intent", ""),
+            "confidence": plan.get("confidence", 0.0),
+            "boundary_state": str(plan.get("boundary", {}).get("state", "in_scope") or "in_scope"),
+            "recommended_command": plan.get("recommended_command", ""),
+            "recommended_args": list(plan.get("recommended_args", [])),
+            "router_mode": plan.get("router_mode", "rule"),
+            "execute_requested": False,
+            "execute_blocked": False,
+            "block_reason": _prompt_block_reason(plan),
+            "execute_exit_code": None,
+            "session_id": str(payload.get("session_id", payload.get("sessionId", "")) or ""),
+            "thread_id": str(payload.get("thread_id", payload.get("threadId", "")) or ""),
+            "turn_id": str(payload.get("turn_id", payload.get("turnId", "")) or ""),
+            "transcript_path": str(payload.get("transcript_path", payload.get("transcriptPath", "")) or ""),
+        },
+    )
 
     target_run_id, feedback_path, debug_event = append_debug_feedback_event(
         root,
@@ -484,6 +540,7 @@ def codex_user_prompt_submit(
             "path": str(feedback_path.relative_to(root)),
         },
         "history_path": str(history_path.relative_to(root)),
+        "input_audit_path": str(input_audit_path.relative_to(root)),
         "snapshot_path": str(snapshot_path.relative_to(root)),
         "hookSpecificOutput": {
             "hookEventName": "UserPromptSubmit",
