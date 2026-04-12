@@ -123,6 +123,14 @@ bash skills/beacon/scripts/run_beacon.sh status --board --project-root . --versi
 bash skills/beacon/scripts/run_beacon.sh help --project-root . --feature "My Feature" --version v1.3.0 --json
 ```
 
+### Refresh a real project after runtime upgrades
+
+```bash
+bash skills/beacon/scripts/run_beacon.sh doctor setup-context --project-root . --sync-materials --version v1.3.0 --json
+bash skills/beacon/scripts/run_beacon.sh doctor verify-context --project-root . --strict --json
+bash skills/beacon/scripts/run_beacon.sh doctor sync-materials --project-root . --version <docs-version> --all-features --json
+```
+
 ### Adapt Codex `UserPromptSubmit` into Beacon guidance
 
 ```bash
@@ -312,6 +320,7 @@ bash skills/beacon/scripts/run_beacon.sh implement list-runners --json
 bash skills/beacon/scripts/run_beacon.sh implement plan "My Feature" --project-root . --version v1.3.0 --json
 bash skills/beacon/scripts/run_beacon.sh help --project-root . --feature "My Feature" --json
 bash skills/beacon/scripts/run_beacon.sh doctor upgrade-package --version v1.3.0 --json
+bash skills/beacon/scripts/run_beacon.sh doctor sync-materials --project-root . --version <docs-version> --all-features --json
 ```
 
 ## Command / Wrapper Surface
@@ -409,6 +418,8 @@ See:
   - run `beacon doctor verify-materials --project-root . --version v1.3.0 --json`
 - Old package line needs current runtime-compatible material upgrades:
   - run `beacon doctor upgrade-package --project-root . --version <old-version> --json`
+- Real project upgraded runtime but QA is still reading stale machine materials:
+  - run `beacon doctor sync-materials --project-root . --version <docs-version> --all-features --json`
 - Not sure what step comes next:
   - run `beacon help --project-root . --version v1.3.0 --feature "<feature>" --json`
 - Gate / release confusion:

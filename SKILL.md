@@ -133,6 +133,16 @@ beacon status --board --project-root . --version v1.3.0
 beacon help --project-root . --version v1.3.0 --feature "My feature" --json
 ```
 
+### 如果你在真实项目里升级 Beacon runtime
+
+先刷新 managed context，再同步 machine requirement materials：
+
+```bash
+beacon doctor setup-context --project-root . --sync-materials --version v1.3.0
+beacon doctor verify-context --project-root . --strict
+beacon doctor sync-materials --project-root . --version <docs-version> --all-features
+```
+
 ### 如果你要把 Codex 原始用户输入接入 Beacon debug
 
 ```bash
@@ -364,6 +374,8 @@ requirement material
   - `beacon gate check release --project-root . --version v1.3.0 --json`
 - 旧版本 package 想补到当前 runtime 能力：
   - `beacon doctor upgrade-package --project-root . --version <old-version> --json`
+- 实际项目在 runtime 升级后，怀疑 `.machine/user-story` / `.machine/qa` 还没跟上当前文档：
+  - `beacon doctor sync-materials --project-root . --version <docs-version> --all-features`
 - 想看当前全局状态：
   - `beacon status --board --project-root . --version v1.3.0`
 

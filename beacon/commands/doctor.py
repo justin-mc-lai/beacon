@@ -12,6 +12,7 @@ from beacon.utils.context_files import setup_context_files, verify_context_files
 from beacon.utils.doctor_diagnostics import build_doctor_payload, build_doctor_advice_payload, collect_runtime_info
 from beacon.utils.doctor_setup import install_launchers, resolve_bin_dir, uninstall_launchers
 from beacon.utils.help_navigation import build_doctor_advise_payload
+from beacon.utils.material_sync import sync_project_requirement_materials
 from beacon.utils.material_audit import build_delivery_audit, build_material_audit
 from beacon.utils.source_architecture import current_source_architecture_status
 from beacon.utils.v115_delivery import repair_v115_delivery_package
@@ -352,6 +353,10 @@ def setup_context(
     project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
     dry_run: bool = typer.Option(False, "--dry-run", help="Preview without writing files"),
     force: bool = typer.Option(False, "--force", help="Append managed blocks when markers are missing"),
+    sync_materials: bool = typer.Option(False, "--sync-materials/--no-sync-materials", help="Sync machine requirement materials after context refresh."),
+    feature: str = typer.Option("", "--feature", help="Sync only one feature when --sync-materials is enabled."),
+    all_features: bool = typer.Option(True, "--all-features/--single-feature", help="When syncing materials, operate on all features in the target version."),
+    overwrite_test_doc: bool = typer.Option(False, "--overwrite-test-doc", help="Allow sync to overwrite human QA markdown."),
     json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
     with_claude: bool = typer.Option(True, "--with-claude/--without-claude", help="Manage CLAUDE.md"),
     with_agents: bool = typer.Option(True, "--with-agents/--without-agents", help="Manage AGENTS.md"),
@@ -369,6 +374,18 @@ def setup_context(
         with_claude=with_claude,
         with_agents=with_agents,
     )
+    material_sync = None
+    if sync_materials:
+        docs_version = str(version_context.get("docs_version") or "")
+        if docs_version:
+            material_sync = sync_project_requirement_materials(
+                root,
+                version=docs_version,
+                feature=feature,
+                all_features=all_features if not feature else False,
+                dry_run=dry_run,
+                overwrite_test_doc=overwrite_test_doc,
+            )
     payload = {
         "schema_version": "2.0",
         "action": "setup-context",
@@ -378,6 +395,7 @@ def setup_context(
         "version_context": version_context,
         "version_semantics": version_context.get("version_semantics", {}),
         "result": result,
+        "material_sync": material_sync,
     }
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
@@ -388,8 +406,48 @@ def setup_context(
         typer.echo(f"runtime_version: {payload.get('runtime_version')}")
         for item in result.get("actions", []):
             typer.echo(f"- {item.get('file')}: {item.get('action')} ({item.get('merge_mode')})")
+        if isinstance(material_sync, dict):
+            typer.echo(f"- material_sync.features: {material_sync.get('feature_count', 0)}")
         typer.echo(f"Overall: {payload.get('status')}")
 
+    raise typer.Exit(code=0)
+
+
+@app.command("sync-materials")
+def sync_materials(
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    version: str = typer.Option("latest-docs", "--version", "-v", help="Target docs version"),
+    feature: str = typer.Option("", "--feature", help="Sync only one feature"),
+    all_features: bool = typer.Option(True, "--all-features/--single-feature", help="Sync all features under the target version"),
+    dry_run: bool = typer.Option(False, "--dry-run", help="Preview without writing files"),
+    overwrite_test_doc: bool = typer.Option(False, "--overwrite-test-doc", help="Allow overwriting human QA markdown"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Sync machine user-story and QA artifacts from current human requirement docs."""
+    root = Path(project_root) if project_root else Path.cwd()
+    result = sync_project_requirement_materials(
+        root,
+        version=version,
+        feature=feature,
+        all_features=all_features if not feature else False,
+        dry_run=dry_run,
+        overwrite_test_doc=overwrite_test_doc,
+    )
+    payload = {
+        "schema_version": "2.0",
+        "action": "sync-materials",
+        "status": "PASS",
+        "result": result,
+    }
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo("Beacon Doctor Material Sync")
+        typer.echo("=" * 27)
+        typer.echo(f"version: {result.get('version')}")
+        typer.echo(f"features: {result.get('feature_count')}")
+        for item in result.get("results", []):
+            typer.echo(f"- {item.get('feature')}: {item.get('status')}")
     raise typer.Exit(code=0)
 
 
