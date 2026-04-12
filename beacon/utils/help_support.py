@@ -33,12 +33,12 @@ from beacon.utils.scoring import (
     compute_test_score,
 )
 from beacon.utils.story_state import feature_slug, load_story_state, summarize_story_items
-from beacon.utils.versioning import describe_project_version_context, normalize_version, resolve_docs_version
+from beacon.utils.versioning import describe_project_version_context, normalize_version, release_line_key, resolve_docs_version
 from beacon.utils.workflow_memory import compute_workflow_progress, resolve_workflow_run_id
 
 
 def _semver_tuple(version: str | None) -> tuple[int, int, int]:
-    text = str(normalize_version(version) or version or "").strip().lstrip("v")
+    text = str(release_line_key(version) or normalize_version(version) or version or "").strip().lstrip("v")
     try:
         major, minor, patch = text.split(".")
         return (int(major), int(minor), int(patch))
@@ -53,8 +53,15 @@ def _preferred_implement_runner(version: str) -> str:
 def _preferred_implement_command(*, feature: str, project_root: Path, version: str, base: str) -> str:
     quoted_feature = json.dumps(feature, ensure_ascii=False)
     if _semver_tuple(version) >= (1, 3, 0):
-        return f"beacon implement team-run {quoted_feature} --project {project_root} --version {version}"
+        return f"beacon implement dev-run {quoted_feature} --project {project_root} --version {version}"
     return f"beacon implement run {quoted_feature} {base} --runner {_preferred_implement_runner(version)}"
+
+
+def _preferred_plan_or_dev_command(*, feature: str, project_root: Path, version: str) -> str:
+    quoted_feature = json.dumps(feature, ensure_ascii=False)
+    if _semver_tuple(version) >= (1, 3, 0):
+        return f"beacon implement dev-run {quoted_feature} --project {project_root} --version {version}"
+    return f"beacon implement plan {quoted_feature} --project-root {project_root} --version {version}"
 
 
 def _preferred_qa_command(*, feature: str, project_root: Path, version: str, base: str) -> str:
@@ -111,7 +118,7 @@ def _profile_binding_source(project_root: Path, *, version: str, feature: str) -
 
 
 def _supports_skill_discover(version: str) -> bool:
-    normalized = normalize_version(version) or ""
+    normalized = release_line_key(version) or normalize_version(version) or ""
     if not normalized.startswith("v"):
         return False
     try:
@@ -325,6 +332,8 @@ def _next_step(
             }
         if any(
             reason in {
+                "technical_review_contract_missing",
+                "technical_review_contract_invalid",
                 "implementation_plan_missing",
                 "implementation_plan_invalid",
                 "implementation_plan_feature_version_mismatch",
@@ -334,6 +343,16 @@ def _next_step(
             }
             for reason in blocking_reasons
         ):
+            if any(reason in {"technical_review_contract_missing", "technical_review_contract_invalid"} for reason in blocking_reasons):
+                contract_path = ""
+                if isinstance(implementation_plan_gate, dict):
+                    tech_gate = implementation_plan_gate.get("technical_review_gate") if isinstance(implementation_plan_gate.get("technical_review_gate"), dict) else {}
+                    contract_path = str(tech_gate.get("contract_json_path", "") or "")
+                return {
+                    "action": "technical-review-contract",
+                    "reason": "implementation requires a deterministic technical review contract before planning or coding can proceed",
+                    "command": contract_path or f"docs/beacon/{version}/.machine/execution/deterministic-implementation-contract-<feature>.json",
+                }
             if _supports_skill_discover(version) and not profile and bool((discovery_hint or {}).get("recommended", False)):
                 return {
                     "action": "skill-discover",
@@ -342,8 +361,8 @@ def _next_step(
                 }
             return {
                 "action": "implement-plan",
-                "reason": "implementation requires a compiled plan aligned to the active frozen revision",
-                "command": str((implementation_plan_gate or {}).get("recommended_command") or f'beacon implement plan {quoted_feature} --project-root {project_root} --version {version}'),
+                "reason": "implementation requires execution-ready planning aligned to the active frozen revision",
+                "command": _preferred_plan_or_dev_command(feature=feature, project_root=project_root, version=version),
             }
         if "control_plane_escalation_active" in blocking_reasons and isinstance(control_plane, dict):
             run_id = str(control_plane.get("run_id", "") or "")
@@ -444,8 +463,8 @@ def _next_step(
         if isinstance(implementation_plan_gate, dict) and bool(implementation_plan_gate.get("blocked")):
             return {
                 "action": "implement-plan",
-                "reason": "implementation requires a compiled plan aligned to the frozen revision baseline",
-                "command": str(implementation_plan_gate.get("recommended_command") or f'beacon implement plan {quoted_feature} --project-root {project_root} --version {version}'),
+                "reason": "implementation requires execution-ready planning aligned to the frozen revision baseline",
+                "command": _preferred_plan_or_dev_command(feature=feature, project_root=project_root, version=version),
             }
         return {
             "action": "implement",

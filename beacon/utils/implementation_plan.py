@@ -9,11 +9,13 @@ from pathlib import Path
 from typing import Any, Iterable
 
 from beacon.utils.artifact_paths import human_execution_file, machine_execution_file, qa_matrix_candidates
+from beacon.utils.implement_adapters import load_beacon_config
 from beacon.utils.revision_state import load_revision_state
 from beacon.utils.runtime import now_iso, read_json, write_json
 from beacon.utils.story_state import feature_slug, load_story_state
 from beacon.utils.team_surface import implement_team_contract
-from beacon.utils.versioning import normalize_version, resolve_target_version
+from beacon.utils.technical_review_contract import build_technical_review_gate_payload
+from beacon.utils.versioning import normalize_version, release_line_key, resolve_target_version
 
 
 TASK_STATUSES = ("draft", "planned", "in_progress", "blocked", "completed")
@@ -46,7 +48,7 @@ _FUNCTIONAL_REQUIREMENT_END_TITLES = (
 
 
 def implementation_plan_supported(version: str | None) -> bool:
-    normalized = normalize_version(version) or "v0.0.0"
+    normalized = release_line_key(version) or normalize_version(version) or "v0.0.0"
     try:
         major, minor, patch = normalized.lstrip("v").split(".")
         return (int(major), int(minor), int(patch)) >= (1, 1, 12)
@@ -55,7 +57,7 @@ def implementation_plan_supported(version: str | None) -> bool:
 
 
 def _semver_tuple(version: str | None) -> tuple[int, int, int]:
-    normalized = normalize_version(version) or "v0.0.0"
+    normalized = release_line_key(version) or normalize_version(version) or "v0.0.0"
     try:
         major, minor, patch = normalized.lstrip("v").split(".")
         return (int(major), int(minor), int(patch))
@@ -65,6 +67,165 @@ def _semver_tuple(version: str | None) -> tuple[int, int, int]:
 
 def _team_mode_contract(project_root: Path, *, version: str, feature: str) -> dict[str, Any]:
     return implement_team_contract(project_root, version=version, feature=feature)
+
+
+def implementation_git_workflow_json_path(project_root: Path, version: str, feature: str) -> Path:
+    resolved_version = resolve_target_version(project_root, version)
+    return machine_execution_file(project_root, resolved_version, f"git-workflow-{feature_slug(feature)}.json")
+
+
+def implementation_git_workflow_markdown_path(project_root: Path, version: str, feature: str) -> Path:
+    resolved_version = resolve_target_version(project_root, version)
+    return human_execution_file(project_root, resolved_version, f"git-workflow-{feature_slug(feature)}.md")
+
+
+def list_implementation_git_workflow_contracts(project_root: Path, *, version: str = "auto") -> list[dict[str, Any]]:
+    resolved_version = resolve_target_version(project_root, version)
+    machine_dir = machine_execution_file(project_root, resolved_version, "placeholder.json").parent
+    out: list[dict[str, Any]] = []
+    if not machine_dir.exists():
+        return out
+    for path in sorted(machine_dir.glob("git-workflow-*.json")):
+        payload = read_json(path, {})
+        if not isinstance(payload, dict) or not payload:
+            continue
+        out.append(
+            {
+                "path": str(path.relative_to(project_root)),
+                "feature": str(payload.get("feature", "") or ""),
+                "feature_slug": str(payload.get("feature_slug", "") or ""),
+                "mode": str(payload.get("mode", "") or ""),
+                "expected_branch": str(payload.get("expected_branch", "") or ""),
+                "service_directories": list(payload.get("service_directories", [])) if isinstance(payload.get("service_directories"), list) else [],
+                "use_git_worktree": bool(payload.get("use_git_worktree", False)),
+                "payload": payload,
+            }
+        )
+    return out
+
+
+def _default_git_workflow_contract(project_root: Path, *, version: str, feature: str) -> dict[str, Any]:
+    config = load_beacon_config(project_root)
+    implementation_cfg = config.get("implementation") if isinstance(config.get("implementation"), dict) else {}
+    branch_guard_cfg = implementation_cfg.get("branch_guard") if isinstance(implementation_cfg.get("branch_guard"), dict) else {}
+    expected_branch = str(branch_guard_cfg.get("expected_branch", "") or "").strip() or f"beacon/{version}"
+    branch_prefix = str(branch_guard_cfg.get("branch_prefix", "") or "").strip()
+    if not branch_prefix:
+        branch_prefix = expected_branch.split("/", 1)[0] + "/" if "/" in expected_branch else "beacon/"
+    service_directories = [
+        str(item).strip()
+        for item in branch_guard_cfg.get("git_roots", [])
+        if str(item).strip()
+    ] if isinstance(branch_guard_cfg.get("git_roots"), list) else []
+    mode = "workspace" if service_directories else "single-repo"
+    return {
+        "schema_version": "1.0",
+        "feature": feature,
+        "feature_slug": feature_slug(feature),
+        "version": version,
+        "mode": mode,
+        "expected_branch": expected_branch,
+        "branch_prefix": branch_prefix,
+        "base_branch": str(branch_guard_cfg.get("base_branch", "") or "main").strip() or "main",
+        "use_git_worktree": bool(branch_guard_cfg.get("use_git_worktree", False)),
+        "require_clean_worktree_for_switch": bool(branch_guard_cfg.get("require_clean_worktree_for_switch", True)),
+        "service_directories": service_directories,
+        "git_roots": service_directories,
+        "worktree_root": str(project_root),
+        "source": "project_config_seed" if branch_guard_cfg else "version_default",
+        "generated_at": now_iso(),
+    }
+
+
+def _render_git_workflow_markdown(payload: dict[str, Any]) -> str:
+    services = payload.get("service_directories") if isinstance(payload.get("service_directories"), list) else []
+    lines = [
+        "# Beacon Git Workflow Contract",
+        "",
+        f"- feature: `{payload.get('feature', '')}`",
+        f"- version: `{payload.get('version', '')}`",
+        f"- mode: `{payload.get('mode', '')}`",
+        f"- expected_branch: `{payload.get('expected_branch', '')}`",
+        f"- branch_prefix: `{payload.get('branch_prefix', '')}`",
+        f"- base_branch: `{payload.get('base_branch', '')}`",
+        f"- use_git_worktree: `{bool(payload.get('use_git_worktree', False))}`",
+        f"- require_clean_worktree_for_switch: `{bool(payload.get('require_clean_worktree_for_switch', True))}`",
+        f"- worktree_root: `{payload.get('worktree_root', '')}`",
+        f"- source: `{payload.get('source', '')}`",
+        "",
+        "## Service Directories",
+    ]
+    if services:
+        lines.extend(f"- `{item}`" for item in services)
+    else:
+        lines.append("- repo root only")
+    return "\n".join(lines) + "\n"
+
+
+def materialize_implementation_git_workflow_contract(project_root: Path, *, version: str, feature: str) -> dict[str, Any]:
+    resolved_version = resolve_target_version(project_root, version)
+    json_path = implementation_git_workflow_json_path(project_root, resolved_version, feature)
+    existing = read_json(json_path, {})
+    if (
+        isinstance(existing, dict)
+        and str(existing.get("feature", "") or "") == feature
+        and str(existing.get("version", "") or "") == resolved_version
+    ):
+        return existing
+    payload = _default_git_workflow_contract(project_root, version=resolved_version, feature=feature)
+    write_json(json_path, payload)
+    markdown_path = implementation_git_workflow_markdown_path(project_root, resolved_version, feature)
+    markdown_path.parent.mkdir(parents=True, exist_ok=True)
+    markdown_path.write_text(_render_git_workflow_markdown(payload), encoding="utf-8")
+    return payload
+
+
+def has_implementation_git_workflow_contract(project_root: Path, *, version: str, feature: str) -> bool:
+    resolved_version = resolve_target_version(project_root, version)
+    return implementation_git_workflow_json_path(project_root, resolved_version, feature).exists()
+
+
+def load_or_seed_implementation_git_workflow_contract(project_root: Path, *, version: str, feature: str) -> dict[str, Any]:
+    resolved_version = resolve_target_version(project_root, version)
+    if has_implementation_git_workflow_contract(project_root, version=resolved_version, feature=feature):
+        return load_implementation_git_workflow_contract(project_root, version=resolved_version, feature=feature)
+    return _default_git_workflow_contract(project_root, version=resolved_version, feature=feature)
+
+
+def ensure_implementation_git_workflow_contract(
+    project_root: Path,
+    *,
+    version: str,
+    feature: str,
+    force_refresh_from_seed: bool = False,
+) -> dict[str, Any]:
+    resolved_version = resolve_target_version(project_root, version)
+    if force_refresh_from_seed:
+        return materialize_implementation_git_workflow_contract(project_root, version=resolved_version, feature=feature)
+    existing = load_implementation_git_workflow_contract(project_root, version=resolved_version, feature=feature)
+    if existing and str(existing.get("feature", "") or "") == feature and str(existing.get("version", "") or "") == resolved_version:
+        json_path = implementation_git_workflow_json_path(project_root, resolved_version, feature)
+        markdown_path = implementation_git_workflow_markdown_path(project_root, resolved_version, feature)
+        if json_path.exists() and markdown_path.exists():
+            return existing
+    return materialize_implementation_git_workflow_contract(project_root, version=resolved_version, feature=feature)
+
+
+def load_implementation_git_workflow_contract(project_root: Path, *, version: str, feature: str) -> dict[str, Any]:
+    resolved_version = resolve_target_version(project_root, version)
+    json_path = implementation_git_workflow_json_path(project_root, resolved_version, feature)
+    payload = read_json(json_path, {})
+    if (
+        isinstance(payload, dict)
+        and str(payload.get("feature", "") or "") == feature
+        and str(payload.get("version", "") or "") == resolved_version
+    ):
+        return payload
+    plan = load_implementation_plan(project_root, version=resolved_version, feature=feature)
+    plan_contract = plan.get("git_workflow") if isinstance(plan.get("git_workflow"), dict) else {}
+    if isinstance(plan_contract, dict) and str(plan_contract.get("version", "") or "") == resolved_version:
+        return plan_contract
+    return _default_git_workflow_contract(project_root, version=resolved_version, feature=feature)
 
 
 def implementation_plan_json_path(project_root: Path, version: str, feature: str) -> Path:
@@ -642,8 +803,28 @@ def _render_plan_markdown(payload: dict[str, Any]) -> str:
                 f"- preferred_runner: `{team_mode.get('preferred_runner', '')}`",
                 f"- plan_command: `{team_mode.get('plan_command', '')}`",
                 f"- run_command: `{team_mode.get('run_command', '')}`",
+                f"- dev_run_command: `{team_mode.get('dev_run_command', '')}`",
                 f"- qa_team_command: `{team_mode.get('qa_team_command', '')}`",
                 f"- roles: {', '.join(team_mode.get('roles', [])) or '-'}",
+            ]
+        )
+        execution_order = team_mode.get("execution_order") if isinstance(team_mode.get("execution_order"), list) else []
+        if execution_order:
+            lines.append(f"- execution_order: {', '.join(execution_order)}")
+    git_workflow = payload.get("git_workflow") if isinstance(payload.get("git_workflow"), dict) else {}
+    if git_workflow:
+        lines.extend(
+            [
+                "",
+                "## Git Workflow",
+                f"- mode: `{git_workflow.get('mode', '')}`",
+                f"- expected_branch: `{git_workflow.get('expected_branch', '')}`",
+                f"- branch_prefix: `{git_workflow.get('branch_prefix', '')}`",
+                f"- base_branch: `{git_workflow.get('base_branch', '')}`",
+                f"- use_git_worktree: `{bool(git_workflow.get('use_git_worktree', False))}`",
+                f"- require_clean_worktree_for_switch: `{bool(git_workflow.get('require_clean_worktree_for_switch', True))}`",
+                f"- service_directories: {', '.join(git_workflow.get('service_directories', [])) or '-'}",
+                f"- git_workflow_ref: `{payload.get('git_workflow_ref', '')}`",
             ]
         )
     lines.extend(["", "## Tasks"])
@@ -767,6 +948,25 @@ def compile_implementation_plan(project_root: Path, *, version: str = "auto", fe
             "feature_slug": feature_slug(feature),
             "version": resolved_version,
             "recommended_command": f'beacon freeze "{feature}" --project-root {project_root} --version {resolved_version}',
+        }
+        return 2, payload
+    technical_review_gate = build_technical_review_gate_payload(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        revision_id=str(revision.get("revision_id", "") or ""),
+    )
+    if bool(technical_review_gate.get("blocked")):
+        payload = {
+            "schema_version": "1.0",
+            "status": "blocked",
+            "blocked": True,
+            "reason_code": str(technical_review_gate.get("reason_code") or "technical_review_contract_missing"),
+            "feature": feature,
+            "feature_slug": feature_slug(feature),
+            "version": resolved_version,
+            "technical_review_gate": technical_review_gate,
+            "recommended_command": str(technical_review_gate.get("contract_json_path") or ""),
         }
         return 2, payload
 
@@ -898,6 +1098,7 @@ def compile_implementation_plan(project_root: Path, *, version: str = "auto", fe
             }
         )
 
+    git_workflow = materialize_implementation_git_workflow_contract(project_root, version=resolved_version, feature=feature)
     payload = {
         "schema_version": "1.0",
         "plan_id": f"plan-{feature_slug(feature)}-{str(revision.get('revision_id', 'R1') or 'R1').lower()}",
@@ -919,6 +1120,9 @@ def compile_implementation_plan(project_root: Path, *, version: str = "auto", fe
         "task_mapping_source": "prd-sections" if prd_candidates else "acceptance-criteria",
         "tasks": tasks,
         "team_mode": _team_mode_contract(project_root, version=resolved_version, feature=feature),
+        "git_workflow": git_workflow,
+        "git_workflow_ref": str(implementation_git_workflow_json_path(project_root, resolved_version, feature).relative_to(project_root)),
+        "git_workflow_markdown_ref": str(implementation_git_workflow_markdown_path(project_root, resolved_version, feature).relative_to(project_root)),
         "generated_at": now_iso(),
     }
     written = _write_implementation_plan(project_root, version=resolved_version, feature=feature, payload=payload)
@@ -935,8 +1139,11 @@ def compile_implementation_plan(project_root: Path, *, version: str = "auto", fe
         "plan_path": str(implementation_plan_json_path(project_root, resolved_version, feature).relative_to(project_root)),
         "plan_markdown_path": str(implementation_plan_markdown_path(project_root, resolved_version, feature).relative_to(project_root)),
         "progress_path": str(implementation_plan_progress_path(project_root, resolved_version, feature).relative_to(project_root)),
+        "git_workflow_ref": str(implementation_git_workflow_json_path(project_root, resolved_version, feature).relative_to(project_root)),
+        "git_workflow_markdown_ref": str(implementation_git_workflow_markdown_path(project_root, resolved_version, feature).relative_to(project_root)),
         "counts": _task_counts(tasks),
         "team_mode": payload.get("team_mode", {}),
+        "git_workflow": payload.get("git_workflow", {}),
     }
 
 
@@ -958,6 +1165,23 @@ def build_implementation_plan_gate_payload(project_root: Path, *, version: str =
     }
     if str(revision.get("doc_status", "draft") or "draft") != "frozen":
         payload.update({"status": "blocked", "blocked": True, "reason_code": "revision_not_frozen"})
+        return payload
+    technical_review_gate = build_technical_review_gate_payload(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        revision_id=str(revision.get("revision_id", "") or ""),
+    )
+    if bool(technical_review_gate.get("blocked")):
+        payload.update(
+            {
+                "status": "blocked",
+                "blocked": True,
+                "reason_code": str(technical_review_gate.get("reason_code") or "technical_review_contract_missing"),
+                "technical_review_gate": technical_review_gate,
+                "recommended_command": str(technical_review_gate.get("contract_json_path") or ""),
+            }
+        )
         return payload
     if not plan_path.exists():
         payload.update({"status": "blocked", "blocked": True, "reason_code": "implementation_plan_missing"})

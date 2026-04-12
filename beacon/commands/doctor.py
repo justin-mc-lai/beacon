@@ -15,6 +15,7 @@ from beacon.utils.help_navigation import build_doctor_advise_payload
 from beacon.utils.material_sync import sync_project_requirement_materials
 from beacon.utils.material_audit import build_delivery_audit, build_material_audit
 from beacon.utils.source_architecture import current_source_architecture_status
+from beacon.utils.technical_review_contract import materialize_technical_review_contract, technical_review_contract_json_path, technical_review_contract_markdown_path
 from beacon.utils.v115_delivery import repair_v115_delivery_package
 from beacon.utils.version_package_upgrade import upgrade_version_package
 from beacon.utils.versioning import describe_project_version_context, resolve_target_version
@@ -451,6 +452,52 @@ def sync_materials(
     raise typer.Exit(code=0)
 
 
+@app.command("sync-technical-review-contract")
+def sync_technical_review_contract(
+    feature: str = typer.Argument(..., help="Feature name"),
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    version: str = typer.Option("latest-docs", "--version", "-v", help="Target docs version"),
+    revision_id: str = typer.Option("", "--revision-id", help="Revision id to stamp into the draft contract"),
+    force_refresh: bool = typer.Option(False, "--force-refresh", help="Regenerate the draft contract from current seed/config"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Materialize a draft deterministic implementation contract for human technical review."""
+    root = Path(project_root) if project_root else Path.cwd()
+    payload = materialize_technical_review_contract(
+        root,
+        version=version,
+        feature=feature,
+        revision_id=revision_id,
+        force_refresh=force_refresh,
+    )
+    result = {
+        "schema_version": "1.0",
+        "feature": feature,
+        "version": str(payload.get("version", "") or version),
+        "review_status": str(payload.get("review_status", "") or ""),
+        "contract_json_path": str(technical_review_contract_json_path(root, str(payload.get("version", "") or version), feature).relative_to(root)),
+        "contract_markdown_path": str(technical_review_contract_markdown_path(root, str(payload.get("version", "") or version), feature).relative_to(root)),
+        "payload": payload,
+    }
+    output = {
+        "schema_version": "2.0",
+        "action": "sync-technical-review-contract",
+        "status": "PASS",
+        "result": result,
+    }
+    if json_output:
+        typer.echo(json.dumps(output, ensure_ascii=False, indent=2))
+    else:
+        typer.echo("Beacon Doctor Technical Review Contract")
+        typer.echo("=" * 39)
+        typer.echo(f"feature: {feature}")
+        typer.echo(f"version: {result['version']}")
+        typer.echo(f"review_status: {result['review_status']}")
+        typer.echo(f"json: {result['contract_json_path']}")
+        typer.echo(f"markdown: {result['contract_markdown_path']}")
+    raise typer.Exit(code=0)
+
+
 @app.command("verify-context")
 def verify_context(
     project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
@@ -660,10 +707,35 @@ def verify_git_alignment(
     """Verify execution git-alignment artifact for a version."""
     root = Path(project_root) if project_root else Path.cwd()
     audit = build_delivery_audit(root, version=version or None, strict=strict)
-    check = next(
+    git_check = next(
         (item for item in audit.get("checks", []) if str(item.get("name")) == "execution_git_alignment_schema"),
         {"name": "execution_git_alignment_schema", "status": "fail", "details": {"missing": True}},
     )
+    workflow_check = next(
+        (item for item in audit.get("checks", []) if str(item.get("name")) == "execution_git_workflow_contract"),
+        {"name": "execution_git_workflow_contract", "status": "pass", "details": {"required": False}},
+    )
+    alignment_check = next(
+        (item for item in audit.get("checks", []) if str(item.get("name")) == "delivery_manifest_git_workflow_alignment"),
+        {"name": "delivery_manifest_git_workflow_alignment", "status": "pass", "details": {"branch_mismatches": []}},
+    )
+    statuses = [str(git_check.get("status", "fail")).lower()]
+    for item in (workflow_check, alignment_check):
+        statuses.append(str(item.get("status", "pass")).lower())
+    merged_status = "pass"
+    if any(status == "fail" for status in statuses):
+        merged_status = "fail"
+    elif any(status == "warn" for status in statuses):
+        merged_status = "warn"
+    check = {
+        "name": "execution_git_alignment_schema",
+        "status": merged_status,
+        "details": {
+            "git_alignment": git_check.get("details", {}),
+            "git_workflow_contract": workflow_check.get("details", {}),
+            "manifest_alignment": alignment_check.get("details", {}),
+        },
+    }
     payload = _single_check_payload(
         action="verify-git-alignment",
         project_root=root,

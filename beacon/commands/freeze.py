@@ -8,6 +8,7 @@ from typing import Optional
 
 import typer
 
+from beacon.utils.requirement_clarity import build_requirement_clarity_gate_payload, write_requirement_clarity_report
 from beacon.utils.revision_state import freeze_revision_state
 from beacon.utils.story_state import freeze_story_state, feature_slug
 from beacon.utils.versioning import resolve_target_version
@@ -18,6 +19,28 @@ app = typer.Typer(name="freeze", help="Freeze current feature revision as implem
 def _freeze_impl(feature: str, project: Optional[str], version: str, json_output: bool) -> int:
     project_root = Path(project) if project else Path.cwd()
     resolved_version = resolve_target_version(project_root, version)
+    clarity_gate = build_requirement_clarity_gate_payload(project_root, version=resolved_version, feature=feature)
+    clarity_report = write_requirement_clarity_report(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        payload=clarity_gate,
+    )
+    if bool(clarity_gate.get("blocked")):
+        payload = {
+            "schema_version": "1.0",
+            "feature": feature,
+            "version": resolved_version,
+            "status": "blocked",
+            "reason_code": str(clarity_gate.get("reason_code") or "requirement_clarity_open"),
+            "requirement_clarity_gate": clarity_gate,
+            "requirement_clarity_report": clarity_report,
+        }
+        if json_output:
+            typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        else:
+            typer.echo("Beacon freeze blocked: requirement clarity issues remain")
+        return 2
     revision = freeze_revision_state(project_root, version=resolved_version, feature=feature)
     freeze_story_state(project_root, version=resolved_version, feature=feature)
     payload = {
@@ -28,6 +51,8 @@ def _freeze_impl(feature: str, project: Optional[str], version: str, json_output
         "status": "frozen",
         "baseline_hash": revision.get("baseline_hash", ""),
         "story_path": str((project_root / "docs" / "beacon" / resolved_version / ".machine" / "user-story" / f"{feature_slug(feature)}.json").relative_to(project_root)),
+        "requirement_clarity_gate": clarity_gate,
+        "requirement_clarity_report": clarity_report,
     }
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
