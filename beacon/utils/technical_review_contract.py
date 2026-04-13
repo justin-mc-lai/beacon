@@ -11,6 +11,7 @@ from beacon.utils.runtime import now_iso, write_json
 from beacon.utils.runtime import read_json
 from beacon.utils.story_state import feature_slug
 from beacon.utils.versioning import normalize_version, release_line_key, resolve_target_version
+from beacon.utils.workflow_memory import append_lifecycle_event, record_stage_writeback, resolve_workflow_run_id
 
 
 _REQUIRED_STRING_FIELDS = (
@@ -62,6 +63,15 @@ def load_technical_review_contract(project_root: Path, *, version: str = "auto",
     resolved_version = resolve_target_version(project_root, version)
     path = technical_review_contract_json_path(project_root, resolved_version, feature)
     payload = read_json(path, {})
+    return payload if isinstance(payload, dict) else {}
+
+
+def technical_review_state_path(project_root: Path, feature: str) -> Path:
+    return project_root / ".beacon" / "state" / f"technical-review-contract-{feature_slug(feature)}.json"
+
+
+def load_technical_review_state(project_root: Path, *, feature: str) -> dict[str, Any]:
+    payload = read_json(technical_review_state_path(project_root, feature), {})
     return payload if isinstance(payload, dict) else {}
 
 
@@ -196,6 +206,67 @@ def _render_technical_review_contract_markdown(payload: dict[str, Any]) -> str:
     return "\n".join(lines).rstrip() + "\n"
 
 
+def write_technical_review_contract_writeback(
+    project_root: Path,
+    *,
+    version: str,
+    feature: str,
+    contract: dict[str, Any],
+    source: str = "doctor.sync-technical-review-contract",
+    run_id: str = "",
+) -> dict[str, Any]:
+    resolved_version = resolve_target_version(project_root, version)
+    json_path = technical_review_contract_json_path(project_root, resolved_version, feature)
+    markdown_path = technical_review_contract_markdown_path(project_root, resolved_version, feature)
+    state_path = technical_review_state_path(project_root, feature)
+    resolved_run_id = run_id or resolve_workflow_run_id(project_root, version=resolved_version, feature=feature) or ""
+    payload = {
+        "schema_version": "1.0",
+        "feature": feature,
+        "feature_slug": feature_slug(feature),
+        "version": resolved_version,
+        "revision_id": str(contract.get("revision_id", "") or ""),
+        "review_status": str(contract.get("review_status", "") or ""),
+        "approved_by": str(contract.get("approved_by", "") or ""),
+        "reviewed_at": str(contract.get("reviewed_at", "") or ""),
+        "contract_json_path": str(json_path.relative_to(project_root)),
+        "contract_markdown_path": str(markdown_path.relative_to(project_root)),
+        "run_id": resolved_run_id,
+        "source": source,
+        "written_at": now_iso(),
+    }
+    write_json(state_path, payload)
+
+    if resolved_run_id:
+        evidence_ref = [
+            str(json_path.relative_to(project_root)),
+            str(markdown_path.relative_to(project_root)),
+            str(state_path.relative_to(project_root)),
+        ]
+        append_lifecycle_event(
+            project_root,
+            run_id=resolved_run_id,
+            stage="technical-review",
+            event="contract_synced",
+            source=source,
+            evidence_ref=evidence_ref,
+            details={"review_status": payload["review_status"]},
+        )
+        if payload["review_status"] in {"approved", "accepted"}:
+            record_stage_writeback(
+                project_root,
+                run_id=resolved_run_id,
+                stage="technical-review",
+                feature=feature,
+                evidence_ref=evidence_ref,
+                status=payload["review_status"],
+            )
+    return {
+        **payload,
+        "state_path": str(state_path.relative_to(project_root)),
+    }
+
+
 def materialize_technical_review_contract(
     project_root: Path,
     *,
@@ -203,22 +274,45 @@ def materialize_technical_review_contract(
     feature: str,
     revision_id: str = "",
     force_refresh: bool = False,
+    contract_overrides: dict[str, Any] | None = None,
+    source: str = "doctor.sync-technical-review-contract",
+    run_id: str = "",
 ) -> dict[str, Any]:
     resolved_version = resolve_target_version(project_root, version)
     existing = load_technical_review_contract(project_root, version=resolved_version, feature=feature)
     if existing and not force_refresh:
-        return existing
-    payload = _default_technical_review_contract(
-        project_root,
-        version=resolved_version,
-        feature=feature,
-        revision_id=revision_id,
-    )
+        payload = dict(existing)
+    else:
+        payload = _default_technical_review_contract(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            revision_id=revision_id,
+        )
+    if contract_overrides:
+        for key, value in contract_overrides.items():
+            if value is None:
+                continue
+            payload[key] = value
+    if revision_id:
+        payload["revision_id"] = revision_id
+    payload["feature"] = feature
+    payload["feature_slug"] = feature_slug(feature)
+    payload["version"] = resolved_version
     json_path = technical_review_contract_json_path(project_root, resolved_version, feature)
     markdown_path = technical_review_contract_markdown_path(project_root, resolved_version, feature)
     write_json(json_path, payload)
     markdown_path.parent.mkdir(parents=True, exist_ok=True)
     markdown_path.write_text(_render_technical_review_contract_markdown(payload), encoding="utf-8")
+    writeback = write_technical_review_contract_writeback(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        contract=payload,
+        source=source,
+        run_id=run_id,
+    )
+    payload["writeback"] = writeback
     return payload
 
 

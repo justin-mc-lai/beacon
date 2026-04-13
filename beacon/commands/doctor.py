@@ -458,6 +458,9 @@ def sync_technical_review_contract(
     project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
     version: str = typer.Option("latest-docs", "--version", "-v", help="Target docs version"),
     revision_id: str = typer.Option("", "--revision-id", help="Revision id to stamp into the draft contract"),
+    review_status: str = typer.Option("draft", "--review-status", help="Contract status: draft/approved/accepted"),
+    approved_by: str = typer.Option("", "--approved-by", help="Reviewer/approver id or name"),
+    reviewed_at: str = typer.Option("", "--reviewed-at", help="Reviewed timestamp"),
     force_refresh: bool = typer.Option(False, "--force-refresh", help="Regenerate the draft contract from current seed/config"),
     json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
 ):
@@ -469,6 +472,12 @@ def sync_technical_review_contract(
         feature=feature,
         revision_id=revision_id,
         force_refresh=force_refresh,
+        contract_overrides={
+            "review_status": review_status,
+            "approved_by": approved_by,
+            "reviewed_at": reviewed_at,
+        },
+        source="doctor.sync-technical-review-contract",
     )
     result = {
         "schema_version": "1.0",
@@ -477,6 +486,7 @@ def sync_technical_review_contract(
         "review_status": str(payload.get("review_status", "") or ""),
         "contract_json_path": str(technical_review_contract_json_path(root, str(payload.get("version", "") or version), feature).relative_to(root)),
         "contract_markdown_path": str(technical_review_contract_markdown_path(root, str(payload.get("version", "") or version), feature).relative_to(root)),
+        "state_path": str((payload.get("writeback", {}) or {}).get("state_path", "") or ""),
         "payload": payload,
     }
     output = {
@@ -495,6 +505,7 @@ def sync_technical_review_contract(
         typer.echo(f"review_status: {result['review_status']}")
         typer.echo(f"json: {result['contract_json_path']}")
         typer.echo(f"markdown: {result['contract_markdown_path']}")
+        typer.echo(f"state: {result['state_path']}")
     raise typer.Exit(code=0)
 
 

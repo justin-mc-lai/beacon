@@ -153,6 +153,7 @@ def test_v131_doctor_should_materialize_draft_technical_review_contract(tmp_path
     assert payload["result"]["review_status"] == "draft"
     assert (tmp_path / payload["result"]["contract_json_path"]).exists()
     assert (tmp_path / payload["result"]["contract_markdown_path"]).exists()
+    assert (tmp_path / payload["result"]["state_path"]).exists()
 
 
 def test_v131_implement_plan_should_block_with_unapproved_technical_review_contract(tmp_path: Path):
@@ -165,6 +166,63 @@ def test_v131_implement_plan_should_block_with_unapproved_technical_review_contr
     assert payload["reason_code"] == "technical_review_contract_invalid"
     validation = payload["technical_review_gate"]["validation"]
     assert "review_status" in validation["invalid_fields"] or "approved_by" in validation["missing_fields"]
+
+
+def test_v131_doctor_approved_contract_should_unlock_implement_plan(tmp_path: Path):
+    _seed_docs(tmp_path, unresolved=False)
+    assert _invoke(["freeze", FEATURE, "--project", str(tmp_path), "--version", VERSION]).exit_code == 0
+    result = _invoke(
+        [
+            "doctor",
+            "sync-technical-review-contract",
+            FEATURE,
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            VERSION,
+            "--revision-id",
+            "R1",
+            "--review-status",
+            "approved",
+            "--approved-by",
+            "tech-lead",
+            "--reviewed-at",
+            "2026-04-13T09:00:00+08:00",
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0, result.stdout
+    approved = json.loads(result.stdout)
+    assert approved["result"]["review_status"] == "approved"
+    plan = _invoke(["implement", "plan", FEATURE, "--project", str(tmp_path), "--version", VERSION, "--json"])
+    assert plan.exit_code == 0, plan.stdout
+
+
+def test_v131_status_should_surface_technical_review_state(tmp_path: Path):
+    _seed_docs(tmp_path, unresolved=False)
+    assert _invoke(["freeze", FEATURE, "--project", str(tmp_path), "--version", VERSION]).exit_code == 0
+    _invoke(
+        [
+            "doctor",
+            "sync-technical-review-contract",
+            FEATURE,
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            VERSION,
+            "--revision-id",
+            "R1",
+            "--review-status",
+            "approved",
+            "--approved-by",
+            "tech-lead",
+            "--reviewed-at",
+            "2026-04-13T09:00:00+08:00",
+        ]
+    )
+    result = _invoke(["status", "--board", "--project-root", str(tmp_path), "--version", VERSION, "--feature", FEATURE])
+    assert result.exit_code == 0, result.stdout
+    assert "technical_review: pass review_status=approved" in result.stdout
 
 
 def test_v131_implement_plan_should_pass_with_technical_review_contract(tmp_path: Path):
