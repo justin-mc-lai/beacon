@@ -75,6 +75,56 @@ def load_technical_review_state(project_root: Path, *, feature: str) -> dict[str
     return payload if isinstance(payload, dict) else {}
 
 
+def approved_technical_review_contract(project_root: Path, *, version: str = "auto", feature: str) -> dict[str, Any]:
+    resolved_version = resolve_target_version(project_root, version)
+    contract = load_technical_review_contract(project_root, version=resolved_version, feature=feature)
+    if not isinstance(contract, dict) or not contract:
+        return {}
+    if str(contract.get("review_status") or "").strip().lower() not in {"approved", "accepted"}:
+        return {}
+    validation = validate_technical_review_contract(
+        contract,
+        version=resolved_version,
+        feature=feature,
+        revision_id=str(contract.get("revision_id", "") or ""),
+    )
+    return contract if validation.get("valid") else {}
+
+
+def technical_review_git_workflow_seed(contract: dict[str, Any]) -> dict[str, Any]:
+    if not isinstance(contract, dict):
+        return {}
+    service_directories = [
+        str(item).strip()
+        for item in (
+            contract.get("writable_services")
+            if isinstance(contract.get("writable_services"), list) and contract.get("writable_services")
+            else contract.get("service_directories")
+            if isinstance(contract.get("service_directories"), list)
+            else []
+        )
+        if str(item).strip()
+    ]
+    mode = "workspace" if service_directories and service_directories != ["."] else "single-repo"
+    return {
+        "schema_version": "1.0",
+        "feature": str(contract.get("feature", "") or ""),
+        "feature_slug": str(contract.get("feature_slug", "") or ""),
+        "version": str(contract.get("version", "") or ""),
+        "mode": mode,
+        "expected_branch": str(contract.get("target_branch", "") or ""),
+        "branch_prefix": str(contract.get("branch_prefix", "") or ""),
+        "base_branch": str(contract.get("base_branch", "") or ""),
+        "use_git_worktree": bool(contract.get("use_git_worktree", False)),
+        "require_clean_worktree_for_switch": bool(contract.get("require_clean_worktree_for_switch", True)),
+        "service_directories": service_directories,
+        "git_roots": service_directories,
+        "worktree_root": str(contract.get("worktree_root", "") or ""),
+        "source": "technical_review_contract",
+        "generated_at": now_iso(),
+    }
+
+
 def validate_technical_review_contract(payload: dict[str, Any], *, version: str, feature: str, revision_id: str = "") -> dict[str, Any]:
     missing_fields: list[str] = []
     invalid_fields: list[str] = []

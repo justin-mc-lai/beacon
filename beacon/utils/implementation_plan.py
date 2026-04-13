@@ -14,7 +14,11 @@ from beacon.utils.revision_state import load_revision_state
 from beacon.utils.runtime import now_iso, read_json, write_json
 from beacon.utils.story_state import feature_slug, load_story_state
 from beacon.utils.team_surface import implement_team_contract
-from beacon.utils.technical_review_contract import build_technical_review_gate_payload
+from beacon.utils.technical_review_contract import (
+    approved_technical_review_contract,
+    build_technical_review_gate_payload,
+    technical_review_git_workflow_seed,
+)
 from beacon.utils.versioning import normalize_version, release_line_key, resolve_target_version
 
 
@@ -105,6 +109,11 @@ def list_implementation_git_workflow_contracts(project_root: Path, *, version: s
 
 
 def _default_git_workflow_contract(project_root: Path, *, version: str, feature: str) -> dict[str, Any]:
+    approved_contract = approved_technical_review_contract(project_root, version=version, feature=feature)
+    if approved_contract:
+        payload = technical_review_git_workflow_seed(approved_contract)
+        if payload:
+            return payload
     config = load_beacon_config(project_root)
     implementation_cfg = config.get("implementation") if isinstance(config.get("implementation"), dict) else {}
     branch_guard_cfg = implementation_cfg.get("branch_guard") if isinstance(implementation_cfg.get("branch_guard"), dict) else {}
@@ -165,14 +174,15 @@ def _render_git_workflow_markdown(payload: dict[str, Any]) -> str:
 def materialize_implementation_git_workflow_contract(project_root: Path, *, version: str, feature: str) -> dict[str, Any]:
     resolved_version = resolve_target_version(project_root, version)
     json_path = implementation_git_workflow_json_path(project_root, resolved_version, feature)
+    payload = _default_git_workflow_contract(project_root, version=resolved_version, feature=feature)
     existing = read_json(json_path, {})
     if (
         isinstance(existing, dict)
         and str(existing.get("feature", "") or "") == feature
         and str(existing.get("version", "") or "") == resolved_version
+        and existing == payload
     ):
         return existing
-    payload = _default_git_workflow_contract(project_root, version=resolved_version, feature=feature)
     write_json(json_path, payload)
     markdown_path = implementation_git_workflow_markdown_path(project_root, resolved_version, feature)
     markdown_path.parent.mkdir(parents=True, exist_ok=True)
@@ -187,6 +197,11 @@ def has_implementation_git_workflow_contract(project_root: Path, *, version: str
 
 def load_or_seed_implementation_git_workflow_contract(project_root: Path, *, version: str, feature: str) -> dict[str, Any]:
     resolved_version = resolve_target_version(project_root, version)
+    approved_contract = approved_technical_review_contract(project_root, version=resolved_version, feature=feature)
+    if approved_contract:
+        payload = technical_review_git_workflow_seed(approved_contract)
+        if payload:
+            return payload
     if has_implementation_git_workflow_contract(project_root, version=resolved_version, feature=feature):
         return load_implementation_git_workflow_contract(project_root, version=resolved_version, feature=feature)
     return _default_git_workflow_contract(project_root, version=resolved_version, feature=feature)
@@ -200,6 +215,9 @@ def ensure_implementation_git_workflow_contract(
     force_refresh_from_seed: bool = False,
 ) -> dict[str, Any]:
     resolved_version = resolve_target_version(project_root, version)
+    approved_contract = approved_technical_review_contract(project_root, version=resolved_version, feature=feature)
+    if approved_contract and not force_refresh_from_seed:
+        return materialize_implementation_git_workflow_contract(project_root, version=resolved_version, feature=feature)
     if force_refresh_from_seed:
         return materialize_implementation_git_workflow_contract(project_root, version=resolved_version, feature=feature)
     existing = load_implementation_git_workflow_contract(project_root, version=resolved_version, feature=feature)

@@ -81,9 +81,28 @@ def _seed_docs(root: Path, *, unresolved: bool = False) -> None:
     (base / "qa" / "test-cases" / f"{SLUG}.ac-test-matrix.json").write_text('{"entries":[]}\n', encoding="utf-8")
 
 
-def _write_contract(root: Path, *, review_status: str = "approved", approved_by: str = "tech-lead", reviewed_at: str = "2026-04-13T09:00:00+08:00") -> None:
+def _write_contract(
+    root: Path,
+    *,
+    review_status: str = "approved",
+    approved_by: str = "tech-lead",
+    reviewed_at: str = "2026-04-13T09:00:00+08:00",
+    base_branch: str = "main",
+    target_branch: str | None = None,
+    branch_prefix: str = "beacon/",
+    use_git_worktree: bool = False,
+    worktree_root: str | None = None,
+    service_directories: list[str] | None = None,
+    writable_services: list[str] | None = None,
+    reference_only_services: list[str] | None = None,
+) -> None:
     path = technical_review_contract_json_path(root, VERSION, FEATURE)
     path.parent.mkdir(parents=True, exist_ok=True)
+    target_branch = target_branch or f"beacon/{VERSION}"
+    worktree_root = worktree_root or str(root)
+    service_directories = service_directories or ["."]
+    writable_services = writable_services or list(service_directories)
+    reference_only_services = reference_only_services or ["docs"]
     path.write_text(
         json.dumps(
             {
@@ -92,16 +111,16 @@ def _write_contract(root: Path, *, review_status: str = "approved", approved_by:
                 "feature_slug": SLUG,
                 "version": VERSION,
                 "revision_id": "R1",
-                "base_branch": "main",
-                "target_branch": f"beacon/{VERSION}",
-                "branch_prefix": "beacon/",
-                "use_git_worktree": False,
-                "worktree_root": str(root),
+                "base_branch": base_branch,
+                "target_branch": target_branch,
+                "branch_prefix": branch_prefix,
+                "use_git_worktree": use_git_worktree,
+                "worktree_root": worktree_root,
                 "environment_mode": "local-dev",
                 "isolation_strategy": "repo-local isolation",
-                "service_directories": ["."],
-                "writable_services": ["."],
-                "reference_only_services": ["docs"],
+                "service_directories": service_directories,
+                "writable_services": writable_services,
+                "reference_only_services": reference_only_services,
                 "review_status": review_status,
                 "approved_by": approved_by,
                 "reviewed_at": reviewed_at,
@@ -256,6 +275,151 @@ def test_v131_status_should_surface_technical_review_state(tmp_path: Path):
     assert result.exit_code == 0, result.stdout
     assert "requirement_clarity: pass findings=0" in result.stdout
     assert "technical_review: pass review_status=approved" in result.stdout
+
+
+def test_v131_sync_git_workflow_should_prefer_approved_technical_review_contract_over_config_seed(tmp_path: Path):
+    workspace = tmp_path / "workspace"
+    workspace.mkdir()
+    _init_git_repo(workspace)
+    base = workspace / "docs" / "beacon" / VERSION
+    (base / "user-story").mkdir(parents=True, exist_ok=True)
+    (base / "prd").mkdir(parents=True, exist_ok=True)
+    (base / "qa" / "test-cases").mkdir(parents=True, exist_ok=True)
+    (base / "execution").mkdir(parents=True, exist_ok=True)
+    (base / "release").mkdir(parents=True, exist_ok=True)
+    (base / "SUMMARY.md").write_text("# Summary\n", encoding="utf-8")
+    (base / "execution" / "index.md").write_text("# Execution\n", encoding="utf-8")
+    (base / "execution" / "architecture-blueprint.md").write_text("# Architecture\n", encoding="utf-8")
+    (base / "release" / f"{VERSION}.md").write_text("# Release\n", encoding="utf-8")
+    (base / "user-story" / f"{SLUG}.md").write_text("# User Story\n\n## US-001：A\n\n### 验收标准\n\n- [ ] A\n", encoding="utf-8")
+    (base / "prd" / f"{SLUG}.md").write_text("# PRD\n\n## 功能需求\n\n### FR-001 A\n- A\n", encoding="utf-8")
+    (base / "qa" / "test-cases" / f"{SLUG}.md").write_text("# Test Cases\n", encoding="utf-8")
+    (base / "qa" / "test-cases" / f"{SLUG}.ac-test-matrix.json").write_text('{"entries":[]}\n', encoding="utf-8")
+    (workspace / "beacon.config.yaml").write_text(
+        (
+            "implementation:\n"
+            "  branch_guard:\n"
+            "    expected_branch: beacon/from-config\n"
+            "    branch_prefix: beacon/\n"
+            "    base_branch: main\n"
+            "    git_roots:\n"
+            "      - config-service\n"
+        ),
+        encoding="utf-8",
+    )
+    assert _invoke(["freeze", FEATURE, "--project", str(workspace), "--version", VERSION]).exit_code == 0
+    contract_path = technical_review_contract_json_path(workspace, VERSION, FEATURE)
+    contract_path.parent.mkdir(parents=True, exist_ok=True)
+    contract_path.write_text(
+        json.dumps(
+            {
+                "schema_version": "1.0",
+                "feature": FEATURE,
+                "feature_slug": SLUG,
+                "version": VERSION,
+                "revision_id": "R1",
+                "base_branch": "master",
+                "target_branch": "feature/v1.3.1-human-loop",
+                "branch_prefix": "feature/",
+                "use_git_worktree": True,
+                "worktree_root": str(workspace / ".worktrees" / "human-loop"),
+                "environment_mode": "isolated-local",
+                "isolation_strategy": "per-service worktrees",
+                "service_directories": ["svc-api", "svc-web"],
+                "writable_services": ["svc-api", "svc-web"],
+                "reference_only_services": ["docs"],
+                "review_status": "approved",
+                "approved_by": "tech-lead",
+                "reviewed_at": "2026-04-13T09:00:00+08:00",
+            },
+            ensure_ascii=False,
+            indent=2,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    result = _invoke(
+        [
+            "implement",
+            "sync-git-workflow",
+            FEATURE,
+            "--project",
+            str(workspace),
+            "--version",
+            VERSION,
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["git_workflow"]["expected_branch"] == "feature/v1.3.1-human-loop"
+    assert payload["git_workflow"]["branch_prefix"] == "feature/"
+    assert payload["git_workflow"]["service_directories"] == ["svc-api", "svc-web"]
+    assert payload["git_workflow"]["source"] == "technical_review_contract"
+
+
+def test_v131_check_branch_should_use_materialized_git_workflow_from_approved_contract(tmp_path: Path):
+    workspace = tmp_path / "workspace"
+    workspace.mkdir()
+    for name in ("svc-api", "svc-web"):
+        service_root = workspace / name
+        service_root.mkdir()
+        _init_git_repo(service_root)
+        subprocess.run(
+            ["git", "switch", "-c", "feature/v1.3.1-human-loop"],
+            cwd=service_root,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+    base = workspace / "docs" / "beacon" / VERSION
+    (base / "user-story").mkdir(parents=True, exist_ok=True)
+    (base / "prd").mkdir(parents=True, exist_ok=True)
+    (base / "qa" / "test-cases").mkdir(parents=True, exist_ok=True)
+    (base / "execution").mkdir(parents=True, exist_ok=True)
+    (base / "release").mkdir(parents=True, exist_ok=True)
+    (base / "SUMMARY.md").write_text("# Summary\n", encoding="utf-8")
+    (base / "execution" / "index.md").write_text("# Execution\n", encoding="utf-8")
+    (base / "execution" / "architecture-blueprint.md").write_text("# Architecture\n", encoding="utf-8")
+    (base / "release" / f"{VERSION}.md").write_text("# Release\n", encoding="utf-8")
+    (base / "user-story" / f"{SLUG}.md").write_text("# User Story\n\n## US-001：A\n\n### 验收标准\n\n- [ ] A\n", encoding="utf-8")
+    (base / "prd" / f"{SLUG}.md").write_text("# PRD\n\n## 功能需求\n\n### FR-001 A\n- A\n", encoding="utf-8")
+    (base / "qa" / "test-cases" / f"{SLUG}.md").write_text("# Test Cases\n", encoding="utf-8")
+    (base / "qa" / "test-cases" / f"{SLUG}.ac-test-matrix.json").write_text('{"entries":[]}\n', encoding="utf-8")
+    assert _invoke(["freeze", FEATURE, "--project", str(workspace), "--version", VERSION]).exit_code == 0
+    _write_contract(
+        workspace,
+        review_status="approved",
+        approved_by="tech-lead",
+        reviewed_at="2026-04-13T09:00:00+08:00",
+        base_branch="main",
+        target_branch="feature/v1.3.1-human-loop",
+        branch_prefix="feature/",
+        use_git_worktree=True,
+        worktree_root=str(workspace / ".worktrees" / "human-loop"),
+        service_directories=["svc-api", "svc-web"],
+        writable_services=["svc-api", "svc-web"],
+        reference_only_services=["docs"],
+    )
+    _invoke(["implement", "sync-git-workflow", FEATURE, "--project", str(workspace), "--version", VERSION])
+    result = _invoke(
+        [
+            "implement",
+            "check-branch",
+            "--project-root",
+            str(workspace),
+            "--version",
+            VERSION,
+            "--feature",
+            FEATURE,
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["expected_branch"] == "feature/v1.3.1-human-loop"
+    assert payload["git_workflow"]["service_directories"] == ["svc-api", "svc-web"]
+    assert payload["git_workflow"]["source"] == "technical_review_contract"
 
 
 def test_v131_implement_plan_should_pass_with_technical_review_contract(tmp_path: Path):
