@@ -5,11 +5,12 @@ from pathlib import Path
 from typing import Any
 
 from beacon.utils.artifact_paths import execution_file_candidates, qa_matrix_candidates
-from beacon.utils.versioning import normalize_version, resolve_target_version
+from beacon.utils.implementation_plan import list_implementation_git_workflow_contracts
+from beacon.utils.versioning import normalize_version, release_line_key, resolve_target_version
 
 
 def _parse_semver_tuple(value: str | None) -> tuple[int, int, int]:
-    normalized = normalize_version(value) or "v0.0.0"
+    normalized = release_line_key(value) or normalize_version(value) or "v0.0.0"
     try:
         major, minor, patch = normalized.lstrip("v").split(".")
         return (int(major), int(minor), int(patch))
@@ -308,6 +309,88 @@ def build_delivery_audit(project_root: Path | str, *, version: str | None = None
             "name": "delivery_manifest_schema",
             "status": "pass" if not manifest_missing else "fail",
             "details": {"issues": manifest_missing},
+        }
+    )
+
+    workflow_contracts = list_implementation_git_workflow_contracts(root, version=resolved_version)
+    workflow_required = _parse_semver_tuple(resolved_version) >= (1, 3, 0)
+    workflow_missing: list[str] = []
+    workflow_invalid: list[dict[str, Any]] = []
+    workflow_markdown_missing: list[str] = []
+    expected_branches: list[str] = []
+    required_workflow_fields = {
+        "feature",
+        "feature_slug",
+        "version",
+        "mode",
+        "expected_branch",
+        "branch_prefix",
+        "base_branch",
+        "use_git_worktree",
+        "require_clean_worktree_for_switch",
+        "service_directories",
+    }
+    machine_exec_dir = root / "docs" / "beacon" / resolved_version / ".machine" / "execution"
+    for plan_path in sorted(machine_exec_dir.glob("implementation-plan-*.json")):
+        if str(plan_path.name).endswith(".progress.json"):
+            continue
+        expected_name = plan_path.name.replace("implementation-plan-", "git-workflow-")
+        workflow_path = machine_exec_dir / expected_name
+        if not workflow_path.exists():
+            workflow_missing.append(str(workflow_path.relative_to(root)))
+    for item in workflow_contracts:
+        payload = item.get("payload") if isinstance(item.get("payload"), dict) else {}
+        path = str(item.get("path", "") or "")
+        missing = sorted(field for field in required_workflow_fields if field not in payload)
+        if missing:
+            workflow_invalid.append({"path": path, "missing": missing})
+        expected_branches.append(str(payload.get("expected_branch", "") or ""))
+        markdown_path = root / path.replace("/.machine/execution/", "/execution/").replace(".json", ".md")
+        if not markdown_path.exists():
+            workflow_markdown_missing.append(str(markdown_path.relative_to(root)))
+    workflow_status = "pass"
+    if workflow_required and (workflow_missing or workflow_invalid or workflow_markdown_missing):
+        workflow_status = "fail" if strict else "warn"
+    checks.append(
+        {
+            "name": "execution_git_workflow_contract",
+            "status": workflow_status,
+            "details": {
+                "required": workflow_required,
+                "count": len(workflow_contracts),
+                "paths": [str(item.get("path", "") or "") for item in workflow_contracts],
+                "missing_contracts": workflow_missing,
+                "invalid_contracts": workflow_invalid,
+                "missing_markdown": workflow_markdown_missing,
+            },
+        }
+    )
+    if manifest_missing:
+        manifest_branch_status = "pass"
+        branch_mismatch_details: list[dict[str, Any]] = []
+    else:
+        normalized_expected_branches = sorted({item for item in expected_branches if item})
+        branch_mismatch_details = []
+        if normalized_expected_branches and isinstance(manifest_payload, dict):
+            affected_projects = manifest_payload.get("affected_projects") if isinstance(manifest_payload.get("affected_projects"), list) else []
+            for idx, item in enumerate(affected_projects):
+                if not isinstance(item, dict):
+                    continue
+                target_branch = str(item.get("target_branch", "") or "")
+                if target_branch and target_branch not in normalized_expected_branches:
+                    branch_mismatch_details.append(
+                        {
+                            "index": idx,
+                            "target_branch": target_branch,
+                            "expected_branches": normalized_expected_branches,
+                        }
+                    )
+        manifest_branch_status = "pass" if not branch_mismatch_details else ("fail" if strict else "warn")
+    checks.append(
+        {
+            "name": "delivery_manifest_git_workflow_alignment",
+            "status": manifest_branch_status,
+            "details": {"branch_mismatches": branch_mismatch_details},
         }
     )
 

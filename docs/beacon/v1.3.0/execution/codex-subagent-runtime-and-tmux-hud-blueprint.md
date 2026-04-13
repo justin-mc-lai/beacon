@@ -18,18 +18,18 @@
 - 固定角色集合
 - 角色报告落盘
 - implement / qa 上下文隔离
+- `tmux` session / pane 创建与等待
+- HUD JSON / HTML 输出
 
 但它们**还没有**做到：
 
 - 真实 child-agent spawn
-- 多 worker 并行执行
-- tmux pane / live terminal 可视化
-- coordinator 对子代理的实时调度与等待
+- 每个 worker 都是独立 Codex 推理会话
 
 也就是说，当前实现更接近：
 
 ```text
-多角色证据编排
+Beacon bounded team runtime
 ```
 
 而不是：
@@ -37,6 +37,12 @@
 ```text
 Codex-native 多代理并行执行 runtime
 ```
+
+为了避免误解，当前准确口径是：
+
+- `implement-team` / `qa-team` 已经支持有界并行 worker 调度
+- `tmux` 已经是可用执行后端，而不是纯蓝图
+- 但 worker 仍主要负责 materialize Beacon coordinator 预编译的 role payload
 
 ---
 
@@ -61,6 +67,16 @@ Beacon stage owner
 - 人类能实时观察执行状态
 - 最终正式工件仍由 Beacon 主命令负责
 
+当前实现对应关系应明确写成：
+
+```text
+当前实现
+→ Beacon coordinator 先编译 role payload
+→ worker-run materialize role artifacts
+→ tmux/HUD 提供并行执行与可视化
+→ canonical writeback 仍回到 Beacon stage owner
+```
+
 ---
 
 ## 3. 最小运行时架构
@@ -81,6 +97,20 @@ Beacon stage owner
 - package truth
 - writeback ownership
 - gate/release ownership
+
+并且在 `v1.3.0` 当前 release line 下，只有两个 stage owner 真正需要多代理运行：
+
+- `implement run`
+- `qa run`
+
+其他阶段：
+
+- `think`
+- `user-story`
+- `prd`
+- `test-case`
+
+当前都应保持单 owner surface，不需要进入并行 team runtime。
 
 #### Layer B：Coordinator runtime
 
@@ -124,11 +154,19 @@ Beacon stage owner
 第一批 implement-team 角色继续用：
 
 - `planner`
+- `implementation-architect`
 - `implementer`
 - `reviewer`
 - `tester`
 
 但角色不再只是静态 report 名字，而应对应真实 worker lane。
+
+当前实现里的精确语义是：
+
+- `planner` 先由 coordinator 串行完成
+- `implementation-architect` 在 implementer 之前产出 execution-scoped 架构边界说明
+- `implementer / reviewer / tester` 在 `tmux` 模式下进入并行 pane
+- 这是一条有界并行线，而不是自由 fan-out
 
 ### 4.2 运行时 contract
 
@@ -150,10 +188,18 @@ Beacon stage owner
 ### 4.3 并行规则
 
 - `planner` 先行
+- `implementation-architect` 在 implementer 之前完成，且不得改写 frozen docs
 - `implementer` 启动后，`reviewer` 与 `tester` 可在 bounded policy 下并行或半并行
 - 默认 `max_depth = 1`
 - 不允许 worker 再 spawn worker
 - 默认 `max_threads` 明确写入 runtime config
+
+当前稳定运行策略还应补充为：
+
+- 只有 `implement` / `qa` 允许进入这条并行线
+- `runtime=file` 提供无 tmux 的稳定落盘与 HUD
+- `runtime=auto` 当前保守等价于 `file`
+- 不通过用户全局 runner 偏好覆盖这条 release-line 默认行为
 
 ---
 
@@ -201,6 +247,8 @@ tmux 只应该是执行载体，不应该是唯一可视面。
 ### 实现阶段
 
 ```bash
+beacon implement sync-git-workflow "<feature>" --project . --version v1.3.0 --json
+beacon implement dev-run "<feature>" --project . --version v1.3.0 --runtime tmux --json
 beacon implement team-plan "<feature>" --project . --version v1.3.0
 beacon implement team-run "<feature>" --project . --version v1.3.0 --runtime tmux --json
 beacon team hud --team "<team-name>" --project . --json
@@ -283,3 +331,6 @@ beacon team page --team <team-name> --project .
 4. HUD/HTML 页面能实时显示 worker 状态
 5. 最终仍由 Beacon 正式 writeback，而不是 worker 直接改 formal truth
 6. gate/release 继续只读取 Beacon formal artifacts
+7. `qa team-run --runtime tmux` 会真实 spawn verifier / repair-handoff-writer
+8. `implement` 与 `qa` 是仅有的稳定多代理运行面
+9. `think / user-story / prd / test-case` 仍保持单 owner 正式材料面

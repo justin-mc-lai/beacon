@@ -8,6 +8,34 @@ Beacon 不应该成为通用多代理运行时。
 
 Beacon 应该成为一个更清晰的阶段 orchestrator：可以在特定阶段引入受约束 worker lane，同时保持正式工件、release truth 与 gate 模型不变。
 
+## 当前准确口径
+
+`v1.3.0` 当前稳定落地的多代理执行面只包括：
+
+- `implement`
+- `qa`
+
+这两个阶段需要多代理，是因为：
+
+1. `implement` 需要 planner / implementer / reviewer / tester 的写能力分工与并行
+2. `qa` 需要 verifier / repair-handoff-writer 的验证与 repair handoff 分工
+3. 两者都已经具备较成熟的 evidence/writeback/gate 交界面
+
+在补强 `implement-team` 时，需要再明确：
+
+4. `implementation-architect` 属于**实现期架构角色**，不是 requirement / architecture truth owner
+5. 它只能读取 frozen requirement materials，并写 execution-scoped implementation architecture note
+6. 它不得直接改写 `user-story / prd / test-case / architecture-blueprint`
+
+而以下阶段当前仍应保持单 owner 正式材料面：
+
+- `think`
+- `user-story`
+- `prd`
+- `test-case`
+
+原因不是“这些阶段永远不能扩面”，而是它们当前主要承担 canonical requirement artifact 的正式回写；在这条 release line 中，它们更适合保留单 owner 生成与只读/批判型扩面蓝图，而不是进入多代理并行写回。
+
 ## 现有插入点
 
 ### 规划入口
@@ -60,6 +88,12 @@ Beacon 应该成为一个更清晰的阶段 orchestrator：可以在特定阶段
 
 Beacon 应吸收这些契约，而不是吸收其环境配置方式。
 
+还应吸收来自 `awesome-codex-subagents` 的一个关键判断：
+
+1. `meta-orchestration` 应与普通执行角色分离治理
+2. QA / review / research 不应混成一个泛化 worker
+3. 角色目录要按用途分层，而不是把所有 worker 平铺暴露
+
 ## 最小新增构件
 
 1. `beacon/utils/subagent_runtime.py`
@@ -79,6 +113,40 @@ Beacon 应吸收这些契约，而不是吸收其环境配置方式。
    - `qa`
    - 必须统一说明如何进入 team-mode，而不是依赖隐式猜测
 
+## 当前运行时如何保持稳定
+
+`v1.3.0` 当前的稳定性不是来自“任意子代理都能自由运行”，而是来自 Beacon 自己掌控的 bounded team runtime：
+
+1. 只有显式 surface 会进入 team-mode
+2. 角色集合固定且外置配置
+3. worker 输出先落到 run-scoped artifacts
+4. 正式 writeback 仍由 Beacon stage owner 执行
+5. `tmux` 只负责执行与观察，不负责 truth
+6. frozen requirement truth 与 execution-scoped architecture note 必须分层治理
+
+当前具体语义是：
+
+- `runtime=file`：稳定生成多角色工件，但不启动真实并行 pane
+- `runtime=tmux`：由 Beacon coordinator 创建 tmux session / panes 并等待 worker 完成
+- `runtime=auto`：当前保守回退到 `file`
+
+因此，`v1.3.0` 当前应被理解为：
+
+```text
+当前已落地 = Beacon bounded team runtime
+不是 = 通用 Codex agent platform
+```
+
+## 全局配置约束
+
+为保证 `v1.3.0` 的默认行为稳定，Beacon 不应依赖用户全局配置把 `skill.preferred` 或 `implementation.default_runner` 强行钉到外部 runner。
+
+建议规则：
+
+1. 全局配置可以保留 runner 定义
+2. 但不应把 `omx` 之类的外部 runner 设成全局默认
+3. `implement team-run` / `qa team-run` 的默认多代理路径应由 Beacon 当前 release line 自己决定
+
 ## 推进顺序
 
 1. 规划入口与 version routing
@@ -97,6 +165,44 @@ Beacon 应吸收这些契约，而不是吸收其环境配置方式。
 5. 不允许递归 worker 再开 worker
 6. 新增版本字段或 resolver 分支前，必须先更新 canonical version-semantics contract
 7. `implement` 与 `qa` 的角色执行面必须上下文隔离，只允许通过正式工件与 evidence handoff 交汇
+
+## 设计规范补充
+
+`v1.3.0` 的设计规范需要再明确三点：
+
+1. 只有 `implement` 与 `qa` 需要多代理稳定运行
+2. `think / user-story / prd / test-case` 当前保持单 owner 正式材料面
+3. 当前稳定性来自 Beacon bounded coordinator runtime，而不是把正式 writeback 下放给自由 worker
+4. `implement-team` 可以增加 `implementation-architect`，但它只属于执行层，不属于需求/设计真相层
+
+## Git workflow contract 也必须进入 versioned materials
+
+`v1.3.0` 的实现阶段不能继续只依赖全局 `beacon.config` 指定：
+
+- 目标分支
+- 是否使用 git worktree
+- 多服务 workspace 的 service roots
+
+这些信息必须进入当前版本线的 execution materials，至少以 machine-readable contract + human-readable mirror 存在。
+
+推荐理解为：
+
+```text
+frozen requirement materials
+→ implementation plan
+→ git workflow contract
+→ branch/worktree preflight
+→ implement-team runtime
+```
+
+这样才能兼容 rolo 这种多仓 workspace：
+
+- 根目录不是单 git repo
+- 真正执行面在多个 service repo
+- 当前版本开发线可能是 `feature/<version>-<topic>`
+- 是否使用 worktree 必须是 feature/version contract 的一部分
+
+而不是隐藏在全局配置里。
 
 ## 版本语义治理
 

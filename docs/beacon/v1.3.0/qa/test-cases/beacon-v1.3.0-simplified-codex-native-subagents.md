@@ -118,3 +118,39 @@
 - Given：同一 feature 先执行 implement，再执行 qa
 - When：QA 开始运行
 - Then：QA 只能消费正式工件、evidence refs、handoff 摘要，不得直接继承 implement 私有上下文
+
+## TC-020：implement-team 必须包含实现期架构角色
+
+- Given：`implement-team` 的 team contract 与运行结果
+- When：查看 roles / role reports
+- Then：必须存在 `implementation-architect`
+
+## TC-021：实现期架构角色不得改写冻结材料
+
+- Given：`implementation-architect` 读取 frozen PRD/story/test-case
+- When：执行 implement-team
+- Then：该角色只能写 execution-scoped artifacts，不得直接改写 frozen docs
+
+## TC-022：implement dev-run 必须在 frozen 前提下自动补 implementation plan
+
+- Given：feature 已 frozen，但 implementation plan 不存在
+- When：执行 `beacon implement dev-run`
+- Then：Beacon 必须先自动生成 implementation plan，再进入实现
+
+## TC-023：implement dev-run 不得自动跨过 requirement truth gate
+
+- Given：feature 未 frozen 或 takeover baseline 缺失
+- When：执行 `beacon implement dev-run`
+- Then：必须阻塞，并明确返回对应 reason code
+
+## TC-024：git workflow contract 必须进入 versioned execution materials
+
+- Given：执行 `implement plan` 或 `implement dev-run`
+- When：implementation plan 产出
+- Then：必须同时生成 git workflow contract 的 machine-readable JSON 与 human-readable Markdown
+
+## TC-025：branch guard 必须优先读取 versioned git workflow contract
+
+- Given：implementation plan 已经产出 git workflow contract，随后删除全局 `beacon.config`
+- When：执行 `implement check-branch`
+- Then：仍应能按当前版本物料中的 git workflow contract 做出正确判断

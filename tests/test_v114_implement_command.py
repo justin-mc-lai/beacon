@@ -427,6 +427,53 @@ def test_implement_check_branch_should_auto_switch_when_explicitly_requested(tmp
     assert payload["switch_attempt"]["status"] == "switched"
 
 
+def test_implement_check_branch_should_support_workspace_root_with_child_git_repos(tmp_path: Path):
+    workspace = tmp_path / "workspace"
+    workspace.mkdir()
+    for name in ("marketing_sys", "health-svr-dotnet"):
+        service_root = workspace / name
+        service_root.mkdir()
+        _init_git_repo(service_root, version="v1.3.1-dev")
+        subprocess.run(
+            ["git", "switch", "-c", "feature/v1.3.1-dev-account-cleanup-upstream"],
+            cwd=service_root,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+    (workspace / "beacon.config.yaml").write_text(
+        (
+            "implementation:\n"
+            "  branch_guard:\n"
+            "    expected_branch: feature/v1.3.1-dev-account-cleanup-upstream\n"
+            "    branch_prefix: feature/\n"
+            "    base_branch: master\n"
+            "    git_roots:\n"
+            "      - marketing_sys\n"
+            "      - health-svr-dotnet\n"
+        ),
+        encoding="utf-8",
+    )
+    result = _invoke(
+        [
+            "implement",
+            "check-branch",
+            "--project-root",
+            str(workspace),
+            "--version",
+            "v1.3.1-dev",
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["status"] == "pass"
+    assert payload["expected_branch"] == "feature/v1.3.1-dev-account-cleanup-upstream"
+    workspace_repos = payload["git_alignment"]["workspace_repos"]
+    assert len(workspace_repos) == 2
+    assert all(item["branch_matches_target"] for item in workspace_repos)
+
+
 def test_implement_run_should_support_auto_review_quality_and_status_surface(tmp_path: Path):
     _seed_feature_docs(tmp_path, feature="My Feature")
     script = tmp_path / "runner.py"

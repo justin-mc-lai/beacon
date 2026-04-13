@@ -3,10 +3,73 @@
   "preferred_runner": "codex-subagents",
   "roles": [
     "planner",
+    "implementation-architect",
     "implementer",
     "reviewer",
     "tester"
   ],
+  "execution_order": [
+    "planner",
+    "implementation-architect",
+    "implementer",
+    "reviewer",
+    "tester"
+  ],
+  "formal_writeback_roles": [
+    "implementer",
+    "reviewer",
+    "tester"
+  ],
+  "role_contracts": {
+    "planner": {
+      "purpose": "Compile execution-ready task scope from the frozen revision baseline.",
+      "writes_to_formal_truth": false,
+      "outputs": [
+        "execution_plan_note"
+      ]
+    },
+    "implementation-architect": {
+      "purpose": "Translate frozen requirement truth into implementation-safe module boundaries and service ownership guidance.",
+      "writes_to_formal_truth": false,
+      "reads": [
+        "docs/beacon/<version>/user-story",
+        "docs/beacon/<version>/prd",
+        "docs/beacon/<version>/qa/test-cases",
+        "docs/beacon/<version>/execution/architecture-blueprint.md",
+        "implementation_plan",
+        "git_workflow_contract"
+      ],
+      "outputs": [
+        "implementation_architecture_note"
+      ],
+      "restrictions": [
+        "must_not_modify_frozen_requirement_materials",
+        "must_not_overwrite_architecture_blueprint"
+      ]
+    },
+    "implementer": {
+      "purpose": "Write code inside the frozen scope and the implementation architecture note.",
+      "writes_to_formal_truth": true,
+      "outputs": [
+        "story_writeback",
+        "implementation_summary"
+      ]
+    },
+    "reviewer": {
+      "purpose": "Review implementation/spec drift and architecture-boundary drift.",
+      "writes_to_formal_truth": true,
+      "outputs": [
+        "review_gate_spec"
+      ]
+    },
+    "tester": {
+      "purpose": "Check implementation evidence and verification readiness before acceptance.",
+      "writes_to_formal_truth": true,
+      "outputs": [
+        "review_gate_quality"
+      ]
+    }
+  },
   "context_isolation": {
     "role_plane": "implementation",
     "isolated_from": [

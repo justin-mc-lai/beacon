@@ -76,6 +76,30 @@ beacon implement team-run "<feature>" --project . --version v1.3.0 --runtime tmu
 
 ## 3. implement-team 使用方式
 
+如果前置 gate 已全部准备好，可直接使用：
+
+```bash
+beacon implement team-run "<feature>" --project . --version v1.3.0 --runtime tmux --json
+```
+
+如果 feature 已 frozen，但希望 Beacon 自动补 implementation plan / git workflow contract / branch preflight，再进入开发，推荐使用：
+
+```bash
+beacon implement dev-run "<feature>" --project . --version v1.3.0 --runtime tmux --json
+```
+
+如果你只想先把当前 feature/version 的 branch/worktree/service-directory 约束固化进版本物料，可先执行：
+
+```bash
+beacon implement sync-git-workflow "<feature>" --project . --version v1.3.0 --json
+```
+
+这条命令的语义是：
+
+- 读取当前可用 seed（通常来自 `beacon.config`）
+- materialize 为 versioned git workflow contract
+- 后续 `check-branch` / `gate` / `doctor` 都优先读取该 contract
+
 ### 3.1 先生成计划
 
 ```bash
@@ -186,6 +210,7 @@ docs/beacon/v1.3.0/execution/qa-team/<feature-slug>/<run-id>/index.html
 
 - implement-team:
   - `planner`
+  - `implementation-architect`
   - `implementer`
   - `reviewer`
   - `tester`
@@ -204,6 +229,17 @@ docs/beacon/v1.3.0/execution/qa-team/<feature-slug>/<run-id>/index.html
 - gate / release 仍读取 formal artifacts
 - 不允许递归 worker 再开 worker
 - implement / qa 仍必须上下文隔离
+- `implementation-architect` 只允许写 execution-scoped architecture note，不允许直接改 frozen PRD/story/test-case/architecture-blueprint
+- git branch / worktree / service-directory 应优先来自当前版本线的 execution materials，不应只藏在全局 `beacon.config`
+
+## 8.1 Config 与 versioned contract 的主从关系
+
+当前推荐原则：
+
+1. `beacon.config` 中的 `implementation.branch_guard` 只作为 seed / fallback
+2. `implement plan` / `implement sync-git-workflow` / `implement dev-run` 会生成 versioned git workflow contract
+3. 一旦 contract 已存在，后续 branch/worktree gate 应优先读取 versioned contract
+4. 只有 contract 缺失时，才允许退回 config seed
 
 ---
 

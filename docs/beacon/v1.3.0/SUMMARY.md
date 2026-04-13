@@ -45,6 +45,9 @@
    - Markdown 中文镜像
 7. 把 `artifact-language-policy` 做成统一“中人 / 英机”规范。
 8. 把 `team` 正式提升为稳定 surface，而不是只停留在隐式 team-mode 提法。
+9. 为 `implement` 补一条面向 frozen baseline 的 `dev-run` 开发入口，允许只在安全前置 gate 范围内自动准备执行面。
+10. 把实现期 git workflow 从全局配置偏好，收敛成 versioned execution material 中的显式 contract（分支 / worktree / 服务目录）。
+11. 提供 `implement sync-git-workflow`，把 config seed 显式固化到当前版本物料。
 
 ## 范围
 
@@ -52,9 +55,11 @@
 
 - `ask` / `prompt` 对下一版本子代理演进的规划路由
 - `implement run` 的 Codex-native 多代理集成
+- `implement dev-run` 的安全自动前置 gate 处理
 - `think / user-story / prd / test-case / qa` 的后续扩面蓝图
 - 版本语义 contract
 - 中文人类面与英文机器面的双轨治理
+- versioned git workflow contract（branch / worktree / service directories）
 
 ### Out of scope
 

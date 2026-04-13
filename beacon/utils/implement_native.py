@@ -266,8 +266,45 @@ def _run_native_team_flow(  # noqa: PLR0915
     runtime: str = "file",
 ) -> dict[str, Any]:
     team_name = f"{team_surface}-{run_id}"
+    include_architect = team_surface == "implement-team"
     implement_item_ids = _story_item_ids(story, kinds={"ac", "task"})
     verify_item_ids = _story_item_ids(story, kinds={"ac", "test"})
+    workers = [
+        {"id": "worker-001", "role": "planner", "status": "idle", "started_at": None, "completed_at": None},
+    ]
+    tasks = [
+        {"id": 1, "description": "Plan frozen revision execution scope", "status": "pending", "worker": "worker-001"},
+    ]
+    if include_architect:
+        workers.append({"id": "worker-002", "role": "implementation-architect", "status": "idle", "started_at": None, "completed_at": None})
+        tasks.append({"id": 2, "description": "Translate frozen materials into implementation architecture boundaries", "status": "pending", "worker": "worker-002"})
+        implementer_worker_id = "worker-003"
+        reviewer_worker_id = "worker-004"
+        tester_worker_id = "worker-005"
+        implement_task_id = 3
+        review_task_id = 4
+        test_task_id = 5
+    else:
+        implementer_worker_id = "worker-002"
+        reviewer_worker_id = "worker-003"
+        tester_worker_id = "worker-004"
+        implement_task_id = 2
+        review_task_id = 3
+        test_task_id = 4
+    workers.extend(
+        [
+            {"id": implementer_worker_id, "role": "implementer", "status": "idle", "started_at": None, "completed_at": None},
+            {"id": reviewer_worker_id, "role": "reviewer", "status": "idle", "started_at": None, "completed_at": None},
+            {"id": tester_worker_id, "role": "tester", "status": "idle", "started_at": None, "completed_at": None},
+        ]
+    )
+    tasks.extend(
+        [
+            {"id": implement_task_id, "description": "Implement planned story items", "status": "pending", "worker": implementer_worker_id},
+            {"id": review_task_id, "description": "Review scope/spec drift after implementation", "status": "pending", "worker": reviewer_worker_id},
+            {"id": test_task_id, "description": "Verify implementation evidence and testing status", "status": "pending", "worker": tester_worker_id},
+        ]
+    )
     state = {
         "active": True,
         "team_name": team_name,
@@ -280,18 +317,8 @@ def _run_native_team_flow(  # noqa: PLR0915
         "state": TeamState.TEAM_PLAN.value,
         "terminal_status": None,
         "started_at": _now_iso(),
-        "workers": [
-            {"id": "worker-001", "role": "planner", "status": "idle", "started_at": None, "completed_at": None},
-            {"id": "worker-002", "role": "implementer", "status": "idle", "started_at": None, "completed_at": None},
-            {"id": "worker-003", "role": "reviewer", "status": "idle", "started_at": None, "completed_at": None},
-            {"id": "worker-004", "role": "tester", "status": "idle", "started_at": None, "completed_at": None},
-        ],
-        "tasks": [
-            {"id": 1, "description": "Plan frozen revision execution scope", "status": "pending", "worker": "worker-001"},
-            {"id": 2, "description": "Implement planned story items", "status": "pending", "worker": "worker-002"},
-            {"id": 3, "description": "Review scope/spec drift after implementation", "status": "pending", "worker": "worker-003"},
-            {"id": 4, "description": "Verify implementation evidence and testing status", "status": "pending", "worker": "worker-004"},
-        ],
+        "workers": workers,
+        "tasks": tasks,
         "review_gates": {
             "spec": {"status": None, "reviewer": "reviewer"},
             "quality": {"status": None, "reviewer": "tester"},
@@ -338,9 +365,46 @@ def _run_native_team_flow(  # noqa: PLR0915
     _set_task_status(state, 1, status="completed")
     state = _quiet_advance_state(project_root, team_name, state, TeamState.TEAM_PRD.value)
 
+    if include_architect:
+        _set_worker_status(state, "worker-002", status="in_progress", started_at=_now_iso())
+        _set_task_status(state, 2, status="in_progress")
+        save_team_state(project_root, team_name, state)
+        architect_payload = {
+            "schema_version": "1.0",
+            "role": "implementation-architect",
+            "status": "completed",
+            "revision_id": revision_id,
+            "summary": "implementation-architect captured execution-only service/module boundaries without mutating frozen docs",
+            "target_item_ids": implement_item_ids,
+            "changed_files_hint": changed_files,
+            "constraints": [
+                "must_not_modify_frozen_requirement_materials",
+                "must_not_overwrite_architecture_blueprint",
+                "must_only_write_execution_scoped_notes",
+            ],
+            "recommendations": [
+                "Keep service ownership aligned to the frozen implementation plan.",
+                "Record module/service boundary choices in execution-scoped artifacts only.",
+                "Implementer should follow this note without editing frozen PRD/story/test-case materials.",
+            ],
+        }
+        architect_reports, tmux_session = _execute_role_payloads(
+            project_root,
+            version=version,
+            feature=feature,
+            run_id=run_id,
+            team_name=team_name,
+            surface_dir=surface_dir,
+            runtime="file",
+            role_payloads={"implementation-architect": architect_payload},
+        )
+        role_reports["implementation-architect"] = architect_reports["implementation-architect"]
+        _set_worker_status(state, "worker-002", status="completed", completed_at=_now_iso(), artifact=role_reports["implementation-architect"]["json"])
+        _set_task_status(state, 2, status="completed")
+
     # Implementer
-    _set_worker_status(state, "worker-002", status="in_progress", started_at=_now_iso())
-    _set_task_status(state, 2, status="in_progress")
+    _set_worker_status(state, implementer_worker_id, status="in_progress", started_at=_now_iso())
+    _set_task_status(state, implement_task_id, status="in_progress")
     save_team_state(project_root, team_name, state)
     record_implementation_writeback(
         project_root,
@@ -358,7 +422,10 @@ def _run_native_team_flow(  # noqa: PLR0915
         "summary": "implementation writeback recorded for planned items",
         "implemented_item_ids": implement_item_ids,
         "changed_files": changed_files,
-        "recommendations": ["Run reviewer gate to confirm no scope/spec drift."],
+        "recommendations": [
+            "Follow the implementation-architect execution note when present.",
+            "Run reviewer gate to confirm no scope/spec drift.",
+        ],
     }
     # Reviewer
     missing_items = [item_id for item_id in implement_item_ids if item_id not in set(implement_item_ids)]
@@ -447,12 +514,12 @@ def _run_native_team_flow(  # noqa: PLR0915
             else ["Resolve failing verification evidence before acceptance."]
         ),
     }
-    _set_worker_status(state, "worker-002", status="in_progress", started_at=_now_iso())
-    _set_worker_status(state, "worker-003", status="in_progress", started_at=_now_iso())
-    _set_worker_status(state, "worker-004", status="in_progress", started_at=_now_iso())
-    _set_task_status(state, 2, status="in_progress")
-    _set_task_status(state, 3, status="in_progress")
-    _set_task_status(state, 4, status="in_progress")
+    _set_worker_status(state, implementer_worker_id, status="in_progress", started_at=_now_iso())
+    _set_worker_status(state, reviewer_worker_id, status="in_progress", started_at=_now_iso())
+    _set_worker_status(state, tester_worker_id, status="in_progress", started_at=_now_iso())
+    _set_task_status(state, implement_task_id, status="in_progress")
+    _set_task_status(state, review_task_id, status="in_progress")
+    _set_task_status(state, test_task_id, status="in_progress")
     save_team_state(project_root, team_name, state)
     state = _quiet_advance_state(project_root, team_name, state, TeamState.TEAM_EXEC.value)
     parallel_reports, tmux_parallel_session = _execute_role_payloads(
@@ -473,12 +540,12 @@ def _run_native_team_flow(  # noqa: PLR0915
     role_reports["implementer"] = parallel_reports["implementer"]
     role_reports["reviewer"] = parallel_reports["reviewer"]
     role_reports["tester"] = parallel_reports["tester"]
-    _set_worker_status(state, "worker-002", status="completed", completed_at=_now_iso(), artifact=role_reports["implementer"]["json"])
-    _set_worker_status(state, "worker-003", status="completed", completed_at=_now_iso(), artifact=role_reports["reviewer"]["json"])
-    _set_worker_status(state, "worker-004", status="completed", completed_at=_now_iso(), artifact=role_reports["tester"]["json"])
-    _set_task_status(state, 2, status="completed")
-    _set_task_status(state, 3, status="completed")
-    _set_task_status(state, 4, status="completed")
+    _set_worker_status(state, implementer_worker_id, status="completed", completed_at=_now_iso(), artifact=role_reports["implementer"]["json"])
+    _set_worker_status(state, reviewer_worker_id, status="completed", completed_at=_now_iso(), artifact=role_reports["reviewer"]["json"])
+    _set_worker_status(state, tester_worker_id, status="completed", completed_at=_now_iso(), artifact=role_reports["tester"]["json"])
+    _set_task_status(state, implement_task_id, status="completed")
+    _set_task_status(state, review_task_id, status="completed")
+    _set_task_status(state, test_task_id, status="completed")
     state["review_gates"]["spec"] = {"status": reviewer_status, "reviewer": "reviewer"}
     state["review_gates"]["quality"] = {"status": quality_status, "reviewer": "tester"}
     state = _quiet_advance_state(project_root, team_name, state, TeamState.TEAM_VERIFY.value)

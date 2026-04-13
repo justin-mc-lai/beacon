@@ -119,3 +119,36 @@
 - `qa` 必须存在显性 team-mode 触发方式
 - implement 与 qa 只能通过正式工件与 evidence refs 交互
 - QA 不得直接继承 implement 的私有上下文
+
+## US-015：作为实现负责人，我希望 implement-team 增加实现期架构角色，但不入侵已冻结需求真相
+
+**验收标准**：
+
+- `implement-team` 至少支持 `implementation-architect`
+- 该角色只能读取 frozen requirement materials 与 implementation plan
+- 该角色只允许写 execution-scoped artifacts，不得直接改写 `user-story / prd / test-case / architecture-blueprint`
+
+## US-016：作为 takeover / workspace 项目操作者，我希望 frozen 后可以一条命令进入开发，而不是先手动补齐所有执行面工件
+
+**验收标准**：
+
+- Beacon 必须提供新的 implement 开发入口（如 `implement dev-run`）
+- 在 frozen baseline 前提下，该入口应允许自动处理安全前置 gate
+- 自动处理仅限 implementation plan / git workflow contract / branch preflight 等执行面准备
+- 若 requirement truth 缺失（如 not frozen / takeover baseline 缺失），仍必须阻塞
+
+## US-017：作为多仓 workspace 项目操作者，我希望 git workflow 约束来自当前版本物料，而不是只来自全局配置
+
+**验收标准**：
+
+- 当前版本线必须能记录目标分支、branch prefix、base branch、service directories、是否使用 git worktree
+- implement branch guard 必须优先读取 versioned execution materials 中的 git workflow contract
+- `beacon.config` 只允许作为缺省 seed / 兼容 fallback，不再是唯一真相源
+
+## US-018：作为 rolo 项目操作者，我希望根目录不是单 git repo 时，Beacon 仍能在多个服务目录上严格执行 branch/worktree gate
+
+**验收标准**：
+
+- workspace root 可通过 service directories 对多个子仓执行统一 branch preflight
+- 目标分支允许是 `feature/<version>-<topic>` 这类 workspace feature branch
+- gate 通过后才能进入实现；gate 阻塞时必须返回结构化原因，而不是静默跳过

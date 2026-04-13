@@ -47,23 +47,31 @@ def implement_team_contract(project_root: Path, *, version: str, feature: str) -
     feature_text = str(feature or "").strip()
     config = _load_team_role_config("implement-team")
     context = config.get("context_isolation") if isinstance(config.get("context_isolation"), dict) else {}
-    return {
+    contract = {
         "preferred_surface": str(config.get("preferred_surface", "implement-team")),
         "preferred_runner": str(config.get("preferred_runner", "codex-subagents")),
         "plan_command": f'beacon implement team-plan "{feature_text}" --project-root {project_root} --version {version}',
         "run_command": f'beacon implement team-run "{feature_text}" --project {project_root} --version {version}',
+        "dev_run_command": f'beacon implement dev-run "{feature_text}" --project {project_root} --version {version}',
         "qa_team_command": f'beacon qa team-run "{feature_text}" --project {project_root} --version {version}',
         "roles": list(config.get("roles", [])),
         "context_isolation": dict(context),
         "config_source": str(config.get("source_path", "")),
     }
+    if isinstance(config.get("execution_order"), list):
+        contract["execution_order"] = list(config.get("execution_order", []))
+    if isinstance(config.get("formal_writeback_roles"), list):
+        contract["formal_writeback_roles"] = list(config.get("formal_writeback_roles", []))
+    if isinstance(config.get("role_contracts"), dict):
+        contract["role_contracts"] = dict(config.get("role_contracts", {}))
+    return contract
 
 
 def qa_team_contract(project_root: Path, *, version: str, feature: str) -> dict[str, Any]:
     feature_text = str(feature or "").strip()
     config = _load_team_role_config("qa-team")
     context = config.get("context_isolation") if isinstance(config.get("context_isolation"), dict) else {}
-    return {
+    contract = {
         "preferred_surface": str(config.get("preferred_surface", "qa-team")),
         "plan_command": f'beacon qa team-plan "{feature_text}" --project {project_root} --version {version}',
         "run_command": f'beacon qa team-run "{feature_text}" --project {project_root} --version {version}',
@@ -71,6 +79,9 @@ def qa_team_contract(project_root: Path, *, version: str, feature: str) -> dict[
         "context_isolation": dict(context),
         "config_source": str(config.get("source_path", "")),
     }
+    if isinstance(config.get("role_contracts"), dict):
+        contract["role_contracts"] = dict(config.get("role_contracts", {}))
+    return contract
 
 
 def implement_to_qa_handoff_path(project_root: Path, *, feature: str, run_id: str) -> Path:

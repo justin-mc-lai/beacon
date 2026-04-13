@@ -21,6 +21,10 @@ from beacon.utils.governance import evaluate_takeover_baseline_gate
 from beacon.utils.implementation_plan import (
     build_implementation_plan_gate_payload,
     compile_implementation_plan,
+    ensure_implementation_git_workflow_contract,
+    load_or_seed_implementation_git_workflow_contract,
+    implementation_git_workflow_json_path,
+    implementation_git_workflow_markdown_path,
     implementation_plan_json_path,
     implementation_plan_markdown_path,
     implementation_plan_progress_path,
@@ -44,7 +48,7 @@ from beacon.utils.runtime import generate_run_id, now_iso, write_json
 from beacon.utils.story_state import load_story_state
 from beacon.utils.team_surface import write_implement_to_qa_handoff
 from beacon.utils.v115_delivery import refresh_evidence_manifest
-from beacon.utils.versioning import normalize_version, resolve_target_version
+from beacon.utils.versioning import normalize_version, release_line_key, resolve_target_version
 from beacon.utils.writeback import record_implementation_writeback
 
 app = typer.Typer(name="implement", help="Run implementation via configured skill adapters")
@@ -116,7 +120,7 @@ def _write_text(path: Path, content: str) -> None:
 
 
 def _semver_tuple(version: str | None) -> tuple[int, int, int]:
-    text = str(normalize_version(version) or version or "").strip().lstrip("v")
+    text = str(release_line_key(version) or normalize_version(version) or version or "").strip().lstrip("v")
     try:
         major, minor, patch = text.split(".")
         return (int(major), int(minor), int(patch))
@@ -521,12 +525,20 @@ def _run_branch_preflight(
     feature: str,
     auto_switch_branch: bool,
     require_clean_worktree_for_switch: bool,
+    expected_branch: str = "",
+    branch_prefix: str = "beacon/",
+    base_branch: str = "main",
+    git_roots: list[str] | None = None,
 ) -> dict[str, Any]:
     feature_slug = _slug(feature)
     branch_preflight = build_implement_branch_guard_payload(
         project_root,
         version,
         require_clean_worktree_for_switch=require_clean_worktree_for_switch,
+        expected_branch=expected_branch,
+        branch_prefix=branch_prefix,
+        base_branch=base_branch,
+        git_roots=git_roots,
     )
     branch_preflight.update(
         {
@@ -543,12 +555,17 @@ def _run_branch_preflight(
                 project_root,
                 str(branch_preflight.get("expected_branch", "") or ""),
                 create_if_missing=True,
+                git_roots=git_roots,
             )
             branch_preflight["switch_attempt"] = switch_payload
             refreshed = build_implement_branch_guard_payload(
                 project_root,
                 version,
                 require_clean_worktree_for_switch=require_clean_worktree_for_switch,
+                expected_branch=expected_branch,
+                branch_prefix=branch_prefix,
+                base_branch=base_branch,
+                git_roots=git_roots,
             )
             refreshed.update(
                 {
@@ -566,6 +583,28 @@ def _run_branch_preflight(
                 )
             branch_preflight = refreshed
     return branch_preflight
+
+
+def _branch_guard_inputs(project_root: Path, *, version: str, feature: str) -> dict[str, Any]:
+    config = load_beacon_config(project_root)
+    implementation_cfg = config.get("implementation") if isinstance(config.get("implementation"), dict) else {}
+    branch_guard_cfg = implementation_cfg.get("branch_guard") if isinstance(implementation_cfg.get("branch_guard"), dict) else {}
+    contract = load_or_seed_implementation_git_workflow_contract(project_root, version=version, feature=feature)
+    service_directories = _normalize_string_list(contract.get("service_directories") or contract.get("git_roots"))
+    expected_branch = str(contract.get("expected_branch", "") or str(branch_guard_cfg.get("expected_branch", "") or "")).strip()
+    branch_prefix = str(contract.get("branch_prefix", "") or str(branch_guard_cfg.get("branch_prefix", "beacon/") or "beacon/")).strip() or "beacon/"
+    base_branch = str(contract.get("base_branch", "") or str(branch_guard_cfg.get("base_branch", "main") or "main")).strip() or "main"
+    require_clean = bool(
+        contract.get("require_clean_worktree_for_switch", branch_guard_cfg.get("require_clean_worktree_for_switch", True))
+    )
+    return {
+        "git_workflow": contract,
+        "expected_branch": expected_branch,
+        "branch_prefix": branch_prefix,
+        "base_branch": base_branch,
+        "git_roots": service_directories,
+        "require_clean_worktree_for_switch": require_clean,
+    }
 
 
 def run_implement_stage(  # noqa: PLR0913
@@ -611,7 +650,13 @@ def run_implement_stage(  # noqa: PLR0913
         if auto_switch_branch is None
         else auto_switch_branch
     )
-    require_clean_worktree_for_switch = bool(branch_guard_cfg.get("require_clean_worktree_for_switch", True))
+    branch_guard_inputs = _branch_guard_inputs(project_root, version=resolved_version, feature=feature)
+    require_clean_worktree_for_switch = bool(branch_guard_inputs.get("require_clean_worktree_for_switch", True))
+    expected_branch_override = str(branch_guard_inputs.get("expected_branch", "") or "").strip()
+    branch_prefix_override = str(branch_guard_inputs.get("branch_prefix", "beacon/") or "beacon/").strip() or "beacon/"
+    base_branch_override = str(branch_guard_inputs.get("base_branch", "main") or "main").strip() or "main"
+    workspace_git_roots = [str(item) for item in _normalize_string_list(branch_guard_inputs.get("git_roots"))]
+    git_workflow_contract = branch_guard_inputs.get("git_workflow", {}) if isinstance(branch_guard_inputs.get("git_workflow"), dict) else {}
 
     run_id = str(run_id_override or "").strip() or generate_run_id(project_root)
     feature_slug = _slug(feature)
@@ -629,6 +674,7 @@ def run_implement_stage(  # noqa: PLR0913
             "status": "blocked",
             "reason_code": "takeover_baseline_required",
             "takeover_gate": takeover_gate,
+            "git_workflow": git_workflow_contract,
             "generated_at": now_iso(),
         }
         write_json(state_path, payload)
@@ -641,6 +687,10 @@ def run_implement_stage(  # noqa: PLR0913
         feature=feature,
         auto_switch_branch=bool(auto_switch_branch),
         require_clean_worktree_for_switch=require_clean_worktree_for_switch,
+        expected_branch=expected_branch_override,
+        branch_prefix=branch_prefix_override,
+        base_branch=base_branch_override,
+        git_roots=workspace_git_roots,
     )
     write_json(project_root / branch_preflight_path, branch_preflight)
     if branch_preflight.get("blocked"):
@@ -657,6 +707,7 @@ def run_implement_stage(  # noqa: PLR0913
             "expected_branch": branch_preflight.get("expected_branch", ""),
             "current_branch": branch_preflight.get("current_branch", ""),
             "recommended_command": branch_preflight.get("recommended_command", ""),
+            "git_workflow": git_workflow_contract,
             "generated_at": now_iso(),
         }
         write_json(state_path, payload)
@@ -686,6 +737,7 @@ def run_implement_stage(  # noqa: PLR0913
                 "branch_preflight_path": str(branch_preflight_path),
                 "branch_preflight": branch_preflight,
                 "recommended_command": str(implementation_plan_gate.get("recommended_command", "") or ""),
+                "git_workflow": git_workflow_contract,
                 "generated_at": now_iso(),
             }
             write_json(state_path, payload)
@@ -784,6 +836,7 @@ def run_implement_stage(  # noqa: PLR0913
         "task_prompt": task_prompt,
         "result_file": str(result_path),
         "implementation_plan": implementation_plan_file,
+        "git_workflow": git_workflow_contract,
         "generated_at": now_iso(),
     }
     write_json(project_root / request_path, request_payload)
@@ -801,6 +854,7 @@ def run_implement_stage(  # noqa: PLR0913
         "result_path": str(result_path),
         "branch_preflight_path": str(branch_preflight_path),
         "plan_preflight_path": str(plan_preflight_path),
+        "git_workflow": git_workflow_contract,
         "generated_at": now_iso(),
         "status": "planned",
     }
@@ -1434,6 +1488,11 @@ def check_branch(
     """Check or repair the required Beacon implementation branch before coding."""
     project_root = Path(project) if project else Path.cwd()
     resolved_version = resolve_target_version(project_root, version)
+    branch_guard_inputs = _branch_guard_inputs(project_root, version=resolved_version, feature=feature)
+    expected_branch_override = str(branch_guard_inputs.get("expected_branch", "") or "").strip()
+    branch_prefix_override = str(branch_guard_inputs.get("branch_prefix", "beacon/") or "beacon/").strip() or "beacon/"
+    base_branch_override = str(branch_guard_inputs.get("base_branch", "main") or "main").strip() or "main"
+    workspace_git_roots = [str(item) for item in _normalize_string_list(branch_guard_inputs.get("git_roots"))]
     run_id = generate_run_id(project_root)
     payload = _run_branch_preflight(
         project_root=project_root,
@@ -1442,7 +1501,12 @@ def check_branch(
         feature=feature,
         auto_switch_branch=auto_switch_branch,
         require_clean_worktree_for_switch=True,
+        expected_branch=expected_branch_override,
+        branch_prefix=branch_prefix_override,
+        base_branch=base_branch_override,
+        git_roots=workspace_git_roots,
     )
+    payload["git_workflow"] = branch_guard_inputs.get("git_workflow", {})
     payload["branch_preflight_path"] = str(_branch_preflight_path(run_id))
     write_json(project_root / _branch_preflight_path(run_id), payload)
     if json_output:
@@ -1454,6 +1518,194 @@ def check_branch(
         if payload.get("recommended_command"):
             typer.echo(f"recommended_command: {payload.get('recommended_command')}")
     raise typer.Exit(code=2 if payload.get("blocked") else 0)
+
+
+@app.command("dev-run")
+def dev_run(
+    feature: str = typer.Argument(..., help="Feature name"),
+    project: Optional[str] = typer.Option(None, "--project", "--project-root", "-p", help="Project root"),
+    version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
+    runner: str = typer.Option("auto", "--runner", help="Runner id or auto"),
+    runtime: str = typer.Option("file", "--runtime", help="Team runtime for native-team/codex-subagents: file/tmux/auto"),
+    auto_switch_branch: bool = typer.Option(True, "--auto-switch-branch/--no-auto-switch-branch", help="Auto repair branch/workspace alignment before entering implementation"),
+    auto_review_spec: bool = typer.Option(True, "--auto-review-spec/--no-auto-review-spec", help="Auto trigger review spec"),
+    auto_review_quality: bool = typer.Option(False, "--auto-review-quality/--no-auto-review-quality", help="Auto trigger review quality"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
+):
+    """Compile safe pre-implement artifacts/gates, then enter implementation."""
+    project_root = Path(project) if project else Path.cwd()
+    resolved_version = resolve_target_version(project_root, version)
+    preflight_resolution: dict[str, Any] = {
+        "schema_version": "1.0",
+        "feature": feature,
+        "feature_slug": _slug(feature),
+        "version": resolved_version,
+        "steps": [],
+    }
+
+    takeover_gate = evaluate_takeover_baseline_gate(project_root, version=resolved_version)
+    if str(takeover_gate.get("status", "") or "") == "blocked":
+        payload = {
+            "schema_version": "1.0",
+            "status": "blocked",
+            "reason_code": "takeover_baseline_required",
+            "feature": feature,
+            "feature_slug": _slug(feature),
+            "version": resolved_version,
+            "takeover_gate": takeover_gate,
+            "preflight_resolution": {
+                **preflight_resolution,
+                "status": "blocked",
+                "steps": [
+                    {
+                        "gate": "takeover_baseline",
+                        "status": "blocked",
+                        "reason_code": "takeover_baseline_required",
+                    }
+                ],
+            },
+        }
+        if json_output:
+            typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        else:
+            typer.echo("Beacon implement dev-run blocked: takeover baseline required")
+        raise typer.Exit(code=2)
+
+    branch_guard_inputs = _branch_guard_inputs(project_root, version=resolved_version, feature=feature)
+    preflight_run_id = generate_run_id(project_root)
+    branch_preflight = _run_branch_preflight(
+        project_root=project_root,
+        version=resolved_version,
+        run_id=preflight_run_id,
+        feature=feature,
+        auto_switch_branch=auto_switch_branch,
+        require_clean_worktree_for_switch=bool(branch_guard_inputs.get("require_clean_worktree_for_switch", True)),
+        expected_branch=str(branch_guard_inputs.get("expected_branch", "") or "").strip(),
+        branch_prefix=str(branch_guard_inputs.get("branch_prefix", "beacon/") or "beacon/").strip() or "beacon/",
+        base_branch=str(branch_guard_inputs.get("base_branch", "main") or "main").strip() or "main",
+        git_roots=[str(item) for item in _normalize_string_list(branch_guard_inputs.get("git_roots"))],
+    )
+    preflight_resolution["steps"].append(
+        {
+            "gate": "branch_preflight",
+            "status": "pass" if not branch_preflight.get("blocked") else "blocked",
+            "reason_codes": list(branch_preflight.get("reason_codes", [])),
+            "expected_branch": str(branch_preflight.get("expected_branch", "") or ""),
+        }
+    )
+    if branch_preflight.get("blocked"):
+        payload = {
+            "schema_version": "1.0",
+            "status": "blocked",
+            "reason_code": "implement_branch_guard_blocked",
+            "feature": feature,
+            "feature_slug": _slug(feature),
+            "version": resolved_version,
+            "branch_preflight": branch_preflight,
+            "preflight_resolution": {
+                **preflight_resolution,
+                "status": "blocked",
+            },
+        }
+        if json_output:
+            typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        else:
+            typer.echo("Beacon implement dev-run blocked: branch preflight blocked")
+        raise typer.Exit(code=2)
+
+    git_workflow_contract = ensure_implementation_git_workflow_contract(project_root, version=resolved_version, feature=feature)
+    preflight_resolution["steps"].append(
+        {
+            "gate": "git_workflow_contract",
+            "status": "materialized",
+            "path": str(implementation_git_workflow_json_path(project_root, resolved_version, feature).relative_to(project_root)),
+            "expected_branch": str(git_workflow_contract.get("expected_branch", "") or ""),
+        }
+    )
+
+    plan_code, plan_payload = compile_implementation_plan(project_root, version=resolved_version, feature=feature)
+    preflight_resolution["steps"].append(
+        {
+            "gate": "implementation_plan",
+            "status": "planned" if plan_code == 0 else "blocked",
+            "reason_code": str(plan_payload.get("reason_code", "") or ""),
+            "plan_path": str(plan_payload.get("plan_path", "") or ""),
+            "git_workflow_ref": str(plan_payload.get("git_workflow_ref", "") or ""),
+        }
+    )
+    if plan_code != 0:
+        payload = {
+            **plan_payload,
+            "preflight_resolution": {
+                **preflight_resolution,
+                "status": "blocked",
+            },
+        }
+        if json_output:
+            typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        else:
+            typer.echo(f"Beacon implement dev-run blocked: {payload.get('reason_code')}")
+        raise typer.Exit(code=plan_code)
+
+    code, payload = run_implement_stage(
+        feature=feature,
+        project_root=project_root,
+        version=resolved_version,
+        runner=runner,
+        auto_switch_branch=False,
+        auto_review_spec=auto_review_spec,
+        auto_review_quality=auto_review_quality,
+        team_runtime=runtime,
+    )
+    payload["preflight_resolution"] = {
+        **preflight_resolution,
+        "status": "completed" if code == 0 else "blocked",
+    }
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo(f"Beacon implement dev-run status: {payload.get('status')}")
+        typer.echo(f"run_id: {payload.get('run_id', '')}")
+        if payload.get("reason_code"):
+            typer.echo(f"reason_code: {payload.get('reason_code')}")
+    raise typer.Exit(code=code)
+
+
+@app.command("sync-git-workflow")
+def sync_git_workflow(
+    feature: str = typer.Argument(..., help="Feature name"),
+    project: Optional[str] = typer.Option(None, "--project", "--project-root", "-p", help="Project root"),
+    version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
+    force_from_seed: bool = typer.Option(False, "--force-from-seed", help="Refresh the versioned contract from config/default seed even if one already exists"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
+):
+    """Materialize or refresh the versioned git workflow contract for a feature."""
+    project_root = Path(project) if project else Path.cwd()
+    resolved_version = resolve_target_version(project_root, version)
+    payload = ensure_implementation_git_workflow_contract(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        force_refresh_from_seed=force_from_seed,
+    )
+    output = {
+        "schema_version": "1.0",
+        "status": "materialized",
+        "feature": feature,
+        "feature_slug": _slug(feature),
+        "version": resolved_version,
+        "git_workflow_ref": str(implementation_git_workflow_json_path(project_root, resolved_version, feature).relative_to(project_root)),
+        "git_workflow_markdown_ref": str(implementation_git_workflow_markdown_path(project_root, resolved_version, feature).relative_to(project_root)),
+        "git_workflow": payload,
+        "source_mode": "seed_refresh" if force_from_seed else str(payload.get("source", "") or "version_material"),
+    }
+    if json_output:
+        typer.echo(json.dumps(output, ensure_ascii=False, indent=2))
+    else:
+        typer.echo(f"Beacon implement git workflow sync: {feature}")
+        typer.echo(f"git_workflow_ref: {output['git_workflow_ref']}")
+        typer.echo(f"expected_branch: {payload.get('expected_branch', '')}")
+    raise typer.Exit(code=0)
 
 
 def _plan_impl(feature: str, project: Optional[str], version: str, json_output: bool) -> int:
@@ -1481,6 +1733,7 @@ def _team_plan_impl(feature: str, project: Optional[str], version: str, json_out
         "preferred_runner": "codex-subagents" if _semver_tuple(resolved_version) >= (1, 3, 0) else "native-team",
         "plan_command": f'beacon implement team-plan "{feature}" --project-root {project_root} --version {resolved_version}',
         "run_command": f'beacon implement team-run "{feature}" --project {project_root} --version {resolved_version}',
+        "dev_run_command": f'beacon implement dev-run "{feature}" --project {project_root} --version {resolved_version}',
     }
     payload = {
         **payload,

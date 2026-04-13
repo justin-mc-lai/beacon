@@ -7,6 +7,13 @@ from pathlib import Path
 from typing import Any
 
 
+def _branch_prefix_from_expected_branch(expected_branch: str, fallback: str) -> str:
+    text = str(expected_branch or "").strip()
+    if "/" in text:
+        return text.split("/", 1)[0] + "/"
+    return fallback
+
+
 def git_output(project_root: Path, *args: str, timeout: float = 5) -> str:
     try:
         result = subprocess.run(
@@ -68,12 +75,13 @@ def collect_git_alignment(
     require_exact_branch: bool = False,
     branch_prefix: str = "beacon/",
     base_branch: str = "main",
+    expected_branch: str = "",
 ) -> dict[str, Any]:
     current_branch = git_output(project_root, "rev-parse", "--abbrev-ref", "HEAD")
     current_commit = git_output(project_root, "rev-parse", "HEAD")
     repo_url = git_output(project_root, "remote", "get-url", "origin")
     current_tag = git_output(project_root, "describe", "--tags", "--exact-match")
-    target_branch = f"{branch_prefix}{version}"
+    target_branch = str(expected_branch or f"{branch_prefix}{version}")
     branch_matches_target = bool(current_branch and current_branch == target_branch)
     branch_has_required_prefix = bool(current_branch and current_branch.startswith(branch_prefix))
     tag_matches_version = bool(current_tag and current_tag == version)
@@ -129,12 +137,90 @@ def build_implement_branch_guard_payload(
     version: str,
     *,
     require_clean_worktree_for_switch: bool = True,
+    expected_branch: str = "",
+    branch_prefix: str = "beacon/",
+    base_branch: str = "main",
+    git_roots: list[str] | None = None,
 ) -> dict[str, Any]:
+    roots = [str(item).strip() for item in (git_roots or []) if str(item).strip()]
+    if roots:
+        alignments = []
+        any_repo_detected = False
+        blocked = False
+        dirty_worktree = False
+        for item in roots:
+            repo_root = (project_root / item).resolve()
+            resolved_prefix = _branch_prefix_from_expected_branch(expected_branch, branch_prefix)
+            alignment = collect_git_alignment(
+                repo_root,
+                version,
+                allow_tag=False,
+                require_exact_branch=True,
+                branch_prefix=resolved_prefix,
+                base_branch=base_branch,
+                expected_branch=expected_branch,
+            )
+            any_repo_detected = any_repo_detected or bool(alignment.get("repo_detected"))
+            blocked = blocked or bool(alignment.get("blocked"))
+            repo_dirty = git_has_dirty_worktree(repo_root) if alignment.get("repo_detected") else False
+            dirty_worktree = dirty_worktree or repo_dirty
+            alignments.append(
+                {
+                    "repo_root": str(repo_root),
+                    "relative_root": item,
+                    "dirty_worktree": repo_dirty,
+                    **alignment,
+                }
+            )
+        target_branch = str(expected_branch or (alignments[0].get("target_branch", "") if alignments else ""))
+        current_branch = ",".join(sorted({str(item.get("current_branch", "") or "") for item in alignments if str(item.get("current_branch", "") or "")}))
+        current_tag = ",".join(sorted({str(item.get("current_tag", "") or "") for item in alignments if str(item.get("current_tag", "") or "")}))
+        branch_exists = all(git_branch_exists(Path(item["repo_root"]), target_branch) for item in alignments) if target_branch else False
+        reason_codes: list[str] = []
+        for item in alignments:
+            reason_codes.extend(list(item.get("reason_codes", [])))
+        summary = (
+            f"implement branch preflight passed on workspace branch {target_branch}"
+            if not blocked
+            else f"implement branch preflight blocked: expected {target_branch}, workspace repos not aligned"
+        )
+        recommended_command = ""
+        if blocked and target_branch:
+            recommended_command = f"git -C <service-root> switch {target_branch}"
+        return {
+            "schema_version": "1.0",
+            "status": "blocked" if blocked else "pass",
+            "summary": summary,
+            "blocked": blocked,
+            "version": version,
+            "expected_branch": target_branch,
+            "current_branch": current_branch,
+            "current_tag": current_tag,
+            "branch_exists": branch_exists,
+            "dirty_worktree": dirty_worktree,
+            "require_clean_worktree_for_switch": require_clean_worktree_for_switch,
+            "recommended_command": recommended_command,
+            "reason_codes": list(dict.fromkeys(reason_codes)),
+            "git_alignment": {
+                "mode": "workspace",
+                "repo_detected": any_repo_detected,
+                "target_branch": target_branch,
+                "worktree_path": str(project_root),
+                "workspace_repos": alignments,
+                "blocked": blocked,
+                "reason_codes": list(dict.fromkeys(reason_codes)),
+            },
+        }
+
+    resolved_prefix = _branch_prefix_from_expected_branch(expected_branch, branch_prefix)
     alignment = collect_git_alignment(
         project_root,
         version,
         allow_tag=False,
         require_exact_branch=True,
+        branch_prefix=resolved_prefix,
+        base_branch=base_branch,
+        expected_branch=expected_branch,
     )
     expected_branch = str(alignment.get("target_branch", "") or "")
     current_branch = str(alignment.get("current_branch", "") or "")
@@ -184,7 +270,23 @@ def switch_to_expected_branch(
     expected_branch: str,
     *,
     create_if_missing: bool = True,
+    git_roots: list[str] | None = None,
 ) -> dict[str, Any]:
+    roots = [str(item).strip() for item in (git_roots or []) if str(item).strip()]
+    if roots:
+        attempts = []
+        statuses = []
+        for item in roots:
+            repo_root = (project_root / item).resolve()
+            result = switch_to_expected_branch(repo_root, expected_branch, create_if_missing=create_if_missing)
+            attempts.append({"repo_root": str(repo_root), **result})
+            statuses.append(str(result.get("status", "")))
+        overall = "switched" if all(status == "switched" for status in statuses) else "failed"
+        return {
+            "status": overall,
+            "expected_branch": expected_branch,
+            "attempts": attempts,
+        }
     commands: list[list[str]] = [["git", "switch", expected_branch]]
     if create_if_missing:
         commands.append(["git", "switch", "-c", expected_branch])
