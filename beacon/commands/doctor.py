@@ -15,11 +15,17 @@ from beacon.utils.help_navigation import build_doctor_advise_payload
 from beacon.utils.material_sync import sync_project_requirement_materials
 from beacon.utils.material_audit import build_delivery_audit, build_material_audit
 from beacon.utils.requirement_clarity import materialize_requirement_clarity
+from beacon.utils.runtime import now_iso, write_json
 from beacon.utils.source_architecture import current_source_architecture_status
 from beacon.utils.technical_review_contract import materialize_technical_review_contract, technical_review_contract_json_path, technical_review_contract_markdown_path
 from beacon.utils.v115_delivery import repair_v115_delivery_package
 from beacon.utils.version_package_upgrade import upgrade_version_package
-from beacon.utils.versioning import describe_project_version_context, resolve_target_version
+from beacon.utils.versioning import (
+    describe_project_version_context,
+    load_project_onboarding_state,
+    resolve_target_version,
+    runtime_capability_lines,
+)
 from beacon.utils.worktree_quiet import apply_quiet_worktree, quiet_worktree_status, restore_quiet_worktree
 
 app = typer.Typer(
@@ -376,6 +382,28 @@ def setup_context(
         with_claude=with_claude,
         with_agents=with_agents,
     )
+    onboarding_state_path = root / ".beacon" / "state" / "project-onboarding.json"
+    onboarding_state = load_project_onboarding_state(root)
+    onboarding_exists = onboarding_state_path.exists()
+    refreshed_onboarding = {
+        **onboarding_state,
+        "schema_version": str(onboarding_state.get("schema_version", "") or "1.0"),
+        "docs_version": str(onboarding_state.get("docs_version", "") or version_context.get("docs_version", "") or ""),
+        "runtime_version": runtime_version,
+        "runtime_capability_lines": runtime_capability_lines(),
+        "updated_at": now_iso(),
+    }
+    if not dry_run:
+        write_json(onboarding_state_path, refreshed_onboarding)
+    result_actions = result.get("actions") if isinstance(result.get("actions"), list) else []
+    result_actions.append(
+        {
+            "file": str(onboarding_state_path.relative_to(root)),
+            "action": "planned" if dry_run else "updated" if onboarding_exists else "created",
+            "merge_mode": "state-refresh",
+        }
+    )
+    result["actions"] = result_actions
     material_sync = None
     if sync_materials:
         docs_version = str(version_context.get("docs_version") or "")

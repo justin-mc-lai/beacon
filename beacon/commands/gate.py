@@ -33,15 +33,13 @@ from beacon.utils.prototype_support import feature_requires_route_closure, proto
 from beacon.utils.requirement_clarity import (
     build_requirement_clarity_gate_payload,
     load_requirement_clarity_state,
-    requirement_clarity_gate_supported,
 )
 from beacon.utils.revision_state import load_revision_state
 from beacon.utils.technical_review_contract import (
     build_technical_review_gate_payload,
     load_technical_review_state,
-    technical_review_contract_supported,
 )
-from beacon.utils.versioning import resolve_target_version
+from beacon.utils.versioning import project_runtime_feature_enabled, resolve_runtime_version, resolve_target_version
 from beacon.utils.v110_baseline import (
     load_latest_baseline_snapshot,
     load_latest_spec_fingerprint,
@@ -1935,7 +1933,13 @@ def check_v131_human_loop_contract(
     if mode not in {GateMode.STRICT, GateMode.DEBUG}:
         return issues
     resolved_version = _resolved_gate_version(project_root, version)
-    if not (requirement_clarity_gate_supported(resolved_version) or technical_review_contract_supported(resolved_version)):
+    resolved_runtime = resolve_runtime_version(project_root, "auto")
+    if not project_runtime_feature_enabled(
+        project_root,
+        "v1.3.1",
+        docs_version=resolved_version,
+        runtime_version=resolved_runtime,
+    ):
         return issues
 
     feature_name = str(load_qa_status(project_root).get("feature") or "").strip() or _latest_implement_feature(project_root)

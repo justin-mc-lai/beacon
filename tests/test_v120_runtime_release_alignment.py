@@ -64,6 +64,7 @@ def test_v120_current_release_gate_should_pass():
         assert reason_codes <= {
             "ac_tc_evidence_chain_broken",
             "git_alignment_blocked",
+            "git_workflow_contract_missing",
             "evidence_sha256_manifest_mismatch",
             "gate_consistency_conflict",
             "implementation_plan_blocked",

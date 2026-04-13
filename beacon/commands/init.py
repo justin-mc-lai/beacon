@@ -17,7 +17,7 @@ from beacon.utils.artifact_paths import (
 )
 from beacon.utils.runtime import now_iso, write_json
 from beacon.utils.v115_delivery import ensure_eval_lab_skeleton, ensure_human_primary_indexes, refresh_evidence_manifest
-from beacon.utils.versioning import describe_project_version_context, resolve_docs_version, resolve_runtime_version
+from beacon.utils.versioning import describe_project_version_context, resolve_docs_version, resolve_runtime_version, runtime_capability_lines
 
 app = typer.Typer(
     name="init",
@@ -226,6 +226,7 @@ def _init_impl(
         "lifecycle_adoption_level": 2,
         "docs_version": docs_version,
         "runtime_version": effective_runtime_version,
+        "runtime_capability_lines": runtime_capability_lines(),
         "architecture_blueprint_ready": apply or architecture_path.exists(),
         "version_blueprint_ready": apply or version_blueprint_path.exists(),
         "implementation_archive_enabled": False,

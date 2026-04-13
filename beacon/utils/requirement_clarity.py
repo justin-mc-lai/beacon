@@ -9,7 +9,13 @@ from typing import Any
 from beacon.utils.artifact_paths import human_execution_file, machine_execution_file
 from beacon.utils.runtime import now_iso, read_json, write_json
 from beacon.utils.story_state import feature_slug
-from beacon.utils.versioning import normalize_version, release_line_key, resolve_target_version
+from beacon.utils.versioning import (
+    normalize_version,
+    project_runtime_feature_enabled,
+    release_line_key,
+    resolve_runtime_version,
+    resolve_target_version,
+)
 from beacon.utils.workflow_memory import append_lifecycle_event, record_stage_writeback, resolve_workflow_run_id
 
 _SECTION_HEADING_RE = re.compile(r"^(#{2,6})\s+(.+?)\s*$")
@@ -124,12 +130,20 @@ def _scan_file(path: Path) -> list[dict[str, Any]]:
 
 def build_requirement_clarity_gate_payload(project_root: Path, *, version: str = "auto", feature: str) -> dict[str, Any]:
     resolved_version = resolve_target_version(project_root, version)
+    resolved_runtime = resolve_runtime_version(project_root, "auto")
     payload: dict[str, Any] = {
         "schema_version": "1.0",
         "feature": feature,
         "feature_slug": feature_slug(feature),
         "version": resolved_version,
-        "required": requirement_clarity_gate_supported(resolved_version),
+        "runtime_version": resolved_runtime,
+        "runtime_capability_line": "v1.3.1",
+        "required": project_runtime_feature_enabled(
+            project_root,
+            "v1.3.1",
+            docs_version=resolved_version,
+            runtime_version=resolved_runtime,
+        ),
         "reason_code": "",
         "blocked": False,
         "status": "pass",

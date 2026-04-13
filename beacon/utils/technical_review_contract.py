@@ -10,7 +10,13 @@ from beacon.utils.implement_adapters import load_beacon_config
 from beacon.utils.runtime import now_iso, write_json
 from beacon.utils.runtime import read_json
 from beacon.utils.story_state import feature_slug
-from beacon.utils.versioning import normalize_version, release_line_key, resolve_target_version
+from beacon.utils.versioning import (
+    normalize_version,
+    project_runtime_feature_enabled,
+    release_line_key,
+    resolve_runtime_version,
+    resolve_target_version,
+)
 from beacon.utils.workflow_memory import append_lifecycle_event, record_stage_writeback, resolve_workflow_run_id
 
 
@@ -374,6 +380,7 @@ def build_technical_review_gate_payload(
     revision_id: str = "",
 ) -> dict[str, Any]:
     resolved_version = resolve_target_version(project_root, version)
+    resolved_runtime = resolve_runtime_version(project_root, "auto")
     json_path = technical_review_contract_json_path(project_root, resolved_version, feature)
     markdown_path = technical_review_contract_markdown_path(project_root, resolved_version, feature)
     payload: dict[str, Any] = {
@@ -381,7 +388,14 @@ def build_technical_review_gate_payload(
         "feature": feature,
         "feature_slug": feature_slug(feature),
         "version": resolved_version,
-        "required": technical_review_contract_supported(resolved_version),
+        "runtime_version": resolved_runtime,
+        "runtime_capability_line": "v1.3.1",
+        "required": project_runtime_feature_enabled(
+            project_root,
+            "v1.3.1",
+            docs_version=resolved_version,
+            runtime_version=resolved_runtime,
+        ),
         "contract_json_path": str(json_path.relative_to(project_root)),
         "contract_markdown_path": str(markdown_path.relative_to(project_root)),
         "state_path": str(technical_review_state_path(project_root, feature).relative_to(project_root)),

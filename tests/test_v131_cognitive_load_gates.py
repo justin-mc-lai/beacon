@@ -22,6 +22,7 @@ from beacon.utils.technical_review_contract import technical_review_contract_jso
 
 runner = CliRunner()
 VERSION = "v1.3.1"
+LEGACY_DOCS_VERSION = "v1.0.0"
 FEATURE = "Human Loop Feature"
 SLUG = "human-loop-feature"
 
@@ -40,9 +41,9 @@ def _init_git_repo(root: Path) -> None:
     subprocess.run(["git", "switch", "-c", f"beacon/{VERSION}"], cwd=root, check=True, capture_output=True, text=True)
 
 
-def _seed_docs(root: Path, *, unresolved: bool = False) -> None:
+def _seed_docs(root: Path, *, version: str = VERSION, unresolved: bool = False) -> None:
     _init_git_repo(root)
-    base = root / "docs" / "beacon" / VERSION
+    base = root / "docs" / "beacon" / version
     (base / "user-story").mkdir(parents=True, exist_ok=True)
     (base / "prd").mkdir(parents=True, exist_ok=True)
     (base / "qa" / "test-cases").mkdir(parents=True, exist_ok=True)
@@ -51,7 +52,7 @@ def _seed_docs(root: Path, *, unresolved: bool = False) -> None:
     (base / "SUMMARY.md").write_text("# Summary\n", encoding="utf-8")
     (base / "execution" / "index.md").write_text("# Execution\n", encoding="utf-8")
     (base / "execution" / "architecture-blueprint.md").write_text("# Architecture\n", encoding="utf-8")
-    (base / "release" / f"{VERSION}.md").write_text("# Release\n", encoding="utf-8")
+    (base / "release" / f"{version}.md").write_text("# Release\n", encoding="utf-8")
     user_story_lines = [
         "# User Story",
         "",
@@ -548,6 +549,40 @@ def test_v131_implement_plan_should_pass_with_technical_review_contract(tmp_path
     payload = json.loads(result.stdout)
     assert payload["status"] == "planned"
     assert payload["revision_id"] == "R1"
+
+
+def test_v131_runtime_capability_should_block_freeze_on_legacy_docs_line(tmp_path: Path):
+    _seed_docs(tmp_path, version=LEGACY_DOCS_VERSION, unresolved=True)
+    assert _invoke(["doctor", "setup-context", "--project-root", str(tmp_path)]).exit_code == 0
+    result = _invoke(["freeze", FEATURE, "--project", str(tmp_path), "--version", LEGACY_DOCS_VERSION, "--json"])
+    assert result.exit_code == 2, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["version"] == LEGACY_DOCS_VERSION
+    assert payload["requirement_clarity_gate"]["required"] is True
+    assert payload["requirement_clarity_gate"]["runtime_capability_line"] == VERSION
+    assert payload["requirement_clarity_gate"]["blocked"] is True
+    assert (tmp_path / "docs" / "beacon" / VERSION).exists() is False
+
+
+def test_v131_runtime_capability_should_require_technical_review_on_legacy_docs_line(tmp_path: Path):
+    _seed_docs(tmp_path, version=LEGACY_DOCS_VERSION, unresolved=False)
+    assert _invoke(["doctor", "setup-context", "--project-root", str(tmp_path)]).exit_code == 0
+    assert _invoke(["freeze", FEATURE, "--project", str(tmp_path), "--version", LEGACY_DOCS_VERSION]).exit_code == 0
+    result = _invoke(["implement", "plan", FEATURE, "--project", str(tmp_path), "--version", LEGACY_DOCS_VERSION, "--json"])
+    assert result.exit_code == 2, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["version"] == LEGACY_DOCS_VERSION
+    assert payload["reason_code"] == "technical_review_contract_missing"
+    assert payload["technical_review_gate"]["required"] is True
+    assert payload["technical_review_gate"]["runtime_capability_line"] == VERSION
+
+
+def test_v131_help_should_show_runtime_capability_lines_for_legacy_docs_line(tmp_path: Path):
+    _seed_docs(tmp_path, version=LEGACY_DOCS_VERSION, unresolved=False)
+    assert _invoke(["doctor", "setup-context", "--project-root", str(tmp_path)]).exit_code == 0
+    payload = build_help_payload(tmp_path, version=LEGACY_DOCS_VERSION, feature=FEATURE)
+    assert payload["docs_version"] == LEGACY_DOCS_VERSION
+    assert VERSION in payload["version_context"]["runtime_capability_lines"]
 
 
 def test_v131_help_should_point_to_technical_review_contract_before_implement(tmp_path: Path):

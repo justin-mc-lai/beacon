@@ -21,6 +21,7 @@ _VERSION_TRUTH_STATE = Path(".beacon/state/version-truth/current.json")
 _VERSION_TRUTH_CANONICAL = Path("beacon/version-truth.json")
 _VERSION_SEMANTICS_CANONICAL = Path("beacon/version-semantics.json")
 _ALLOW_CONTEXT_VERSION_DRIFT_ENV = "BEACON_ALLOW_CONTEXT_VERSION_DRIFT"
+_RUNTIME_PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 
 def normalize_version(value: str | None) -> str | None:
@@ -61,6 +62,29 @@ def _version_key(value: str) -> tuple[int, int, int]:
         return (0, 0, 0)
     major, minor, patch = match.groups()
     return (int(major), int(minor), int(patch))
+
+
+def runtime_feature_supported(version: str | None, *, runtime_version: str | None = None) -> bool:
+    normalized = release_line_key(version) or normalize_version(version)
+    if not normalized:
+        return False
+    resolved_runtime = normalize_version(runtime_version or __toolkit_version__) or "v0.0.0"
+    if _version_key(resolved_runtime) >= _version_key(normalized):
+        return True
+    runtime_truth = load_version_truth(_RUNTIME_PROJECT_ROOT)
+    status = release_truth_status(runtime_truth, normalized)
+    return status in {"current_runtime_release", "planning_with_partial_runtime_supplement"}
+
+
+def runtime_capability_lines() -> list[str]:
+    runtime_truth = load_version_truth(_RUNTIME_PROJECT_ROOT)
+    lines = {
+        normalize_version(__toolkit_version__),
+        normalize_version(str(runtime_truth.get("runtime_version", "") or "")),
+        normalize_version(str(runtime_truth.get("current_runtime_release_line", "") or "")),
+        *(_normalize_version_list(runtime_truth.get("partial_runtime_supplement_lines"))),
+    }
+    return [item for item in sorted({line for line in lines if line}, key=_version_key) if item]
 
 
 def _read_json_file(path: Path) -> dict[str, Any]:
@@ -366,6 +390,40 @@ def onboarding_docs_version(project_root: Path) -> str | None:
 def onboarding_runtime_version(project_root: Path) -> str | None:
     payload = load_project_onboarding_state(project_root)
     return normalize_version(str(payload.get("runtime_version", "") or "").strip())
+
+
+def onboarding_runtime_capability_lines(project_root: Path) -> list[str]:
+    payload = load_project_onboarding_state(project_root)
+    return _normalize_version_list(payload.get("runtime_capability_lines"))
+
+
+def project_runtime_feature_enabled(
+    project_root: Path,
+    capability_version: str | None,
+    *,
+    docs_version: str | None = None,
+    runtime_version: str | None = None,
+) -> bool:
+    normalized_capability = release_line_key(capability_version) or normalize_version(capability_version)
+    if not normalized_capability:
+        return False
+    normalized_docs_full = normalize_version(docs_version)
+    normalized_docs = release_line_key(docs_version) or normalized_docs_full
+    if (
+        normalized_docs
+        and normalized_docs_full == normalized_docs
+        and _version_key(normalized_docs) >= _version_key(normalized_capability)
+    ):
+        return True
+    if not runtime_feature_supported(normalized_capability, runtime_version=runtime_version):
+        return False
+    capability_lines = onboarding_runtime_capability_lines(project_root)
+    if normalized_capability in capability_lines:
+        return True
+    onboarding_runtime = onboarding_runtime_version(project_root)
+    if onboarding_runtime and _version_key(onboarding_runtime) >= _version_key(normalized_capability):
+        return True
+    return False
 
 
 def context_managed_versions(project_root: Path) -> dict[str, str]:
@@ -805,6 +863,7 @@ def describe_project_version_context(
     context_versions = context_managed_versions(project_root)
     unique_context = sorted({value for value in context_versions.values() if value})
     version_truth = load_version_truth(project_root)
+    runtime_truth = load_version_truth(_RUNTIME_PROJECT_ROOT)
     version_semantics = load_version_semantics(project_root)
     context_version_guard = build_context_version_guard(
         project_root,
@@ -817,6 +876,9 @@ def describe_project_version_context(
         "docs_version_source": docs_source,
         "runtime_version": resolved_runtime,
         "runtime_version_source": runtime_source,
+        "runtime_capability_lines": runtime_capability_lines(),
+        "runtime_truth_runtime_version": str(runtime_truth.get("runtime_version", "") or ""),
+        "runtime_truth_current_release_line": str(runtime_truth.get("current_runtime_release_line", "") or ""),
         "onboarding_docs_version": onboarding_docs_version(project_root) or "",
         "onboarding_runtime_version": onboarding_runtime_version(project_root) or "",
         "context_versions": context_versions,

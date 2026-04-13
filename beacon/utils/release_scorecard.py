@@ -18,8 +18,12 @@ from beacon.utils.qa_runtime import load_qa_status
 from beacon.utils.requirement_clarity import build_requirement_clarity_gate_payload, load_requirement_clarity_state
 from beacon.utils.revision_state import load_revision_state
 from beacon.utils.technical_review_contract import build_technical_review_gate_payload, load_technical_review_state
-from beacon.utils.versioning import normalize_version
-from beacon.utils.versioning import release_line_key, resolve_target_version
+from beacon.utils.versioning import (
+    project_runtime_feature_enabled,
+    resolve_runtime_version,
+    resolve_target_version,
+    runtime_feature_supported,
+)
 
 
 def _load_json(path: Path) -> dict[str, Any]:
@@ -30,15 +34,6 @@ def _load_json(path: Path) -> dict[str, Any]:
     except Exception:  # noqa: BLE001
         return {}
     return payload if isinstance(payload, dict) else {}
-
-
-def _parse_semver_tuple(value: str | None) -> tuple[int, int, int]:
-    normalized = release_line_key(value) or normalize_version(value) or "v0.0.0"
-    try:
-        major, minor, patch = normalized.lstrip("v").split(".")
-        return (int(major), int(minor), int(patch))
-    except Exception:  # noqa: BLE001
-        return (0, 0, 0)
 
 
 def _latest_implement_feature(project_root: Path) -> str:
@@ -55,6 +50,7 @@ def _latest_implement_feature(project_root: Path) -> str:
 
 def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, Any]:
     resolved_version = resolve_target_version(project_root, version)
+    resolved_runtime = resolve_runtime_version(project_root, "auto")
     gate_report = _load_json(project_root / ".beacon" / "gate-report.json")
     qa_status = load_qa_status(project_root)
     feature = str(qa_status.get("feature") or "").strip() or _latest_implement_feature(project_root)
@@ -95,7 +91,7 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
         and (not exhaustiveness or str(exhaustiveness.get("status") or "").strip().lower() == "passed")
     )
     release_ready = legacy_release_ready
-    if _parse_semver_tuple(resolved_version) >= (1, 1, 10):
+    if runtime_feature_supported("v1.1.10", runtime_version=resolved_runtime):
         release_ready = (
             legacy_release_ready
             and bool(feature_scorecard)
@@ -103,7 +99,12 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
             and project_gate_status in {"pass", "not_configured"}
             and not list(feature_scorecard.get("unresolved_closure_outcomes") or [])
         )
-    if _parse_semver_tuple(resolved_version) >= (1, 3, 1):
+    if project_runtime_feature_enabled(
+        project_root,
+        "v1.3.1",
+        docs_version=resolved_version,
+        runtime_version=resolved_runtime,
+    ):
         release_ready = (
             release_ready
             and bool(feature)
@@ -116,6 +117,7 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
     return {
         "schema_version": "1.0",
         "version": resolved_version,
+        "runtime_version": resolved_runtime,
         "release_ready": release_ready,
         "gate": {
             "status": str(gate_report.get("status") or "unknown"),
