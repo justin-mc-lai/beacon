@@ -83,6 +83,12 @@ If you only remember one sentence:
 - read `../../docs/beacon/v1.3.0/` for the current runtime line
 - read `../../docs/beacon/v1.2.1/` for the current Codex hook / debug supplement line
 
+Human-operator note:
+
+- runtime release line remains `v1.3.0`
+- but the recommended human-facing operating model now follows `../../docs/beacon/v1.3.1/execution/human-minimal-usage-guide.md`
+- for humans, the stable loop is now the `v1.3.1` 6-command model plus 3 support commands
+
 ## Overview
 
 It exposes Beacon through a `skills/beacon/` package layout while still delegating real work to:
@@ -122,6 +128,25 @@ bash skills/beacon/scripts/run_beacon.sh test-case create "My Feature" --project
 bash skills/beacon/scripts/run_beacon.sh status --board --project-root . --version v1.3.0
 bash skills/beacon/scripts/run_beacon.sh help --project-root . --feature "My Feature" --version v1.3.0 --json
 ```
+
+### Human minimal operating model
+
+Humans should primarily remember only:
+
+```text
+prd
+→ user-story
+→ test-case
+→ implement
+→ qa
+→ release
+```
+
+Use only these support commands when blocked:
+
+- `help`
+- `status`
+- `doctor`
 
 ### Refresh a real project after runtime upgrades
 
@@ -202,6 +227,27 @@ Current v1.3.0 release-line surfaces:
    - `release scorecard`
    - keep/discard + evo harness
 
+### Human-facing simplification now follows v1.3.1
+
+Even though the full product surface remains broad, the human-facing recommendation is now:
+
+- primary commands:
+  - `prd`
+  - `user-story`
+  - `test-case`
+  - `implement`
+  - `qa`
+  - `release`
+- support commands:
+  - `help`
+  - `status`
+  - `doctor`
+- machine/internal lanes:
+  - `brainstorm`
+  - `implement-team`
+  - `qa-team`
+  - learning / auto research
+
 ### QA prompt contract must follow first principles
 
 When this skill routes into `qa`, it must preserve the same first-principles order as the product docs:
@@ -264,15 +310,14 @@ Use this skill when:
 
 ## Recommended Reading Order
 
-1. [Summary](../../docs/beacon/v1.3.0/SUMMARY.md)
-2. [Execution index](../../docs/beacon/v1.3.0/execution/index.md)
-3. [Architecture blueprint](../../docs/beacon/v1.3.0/execution/architecture-blueprint.md)
-4. [Workflow usage guide](../../docs/beacon/v1.3.0/execution/workflow-usage-guide.md)
-5. [Natural-language trigger handbook](../../docs/beacon/v1.3.0/execution/natural-language-trigger-handbook.md)
-6. [QA autoresearch usage guide](../../docs/beacon/v1.3.0/execution/qa-autoresearch-usage-guide.md)
-7. [Autoresearch module evolution](../../docs/beacon/v1.3.0/execution/autoresearch-module-evolution.md)
-8. [Implementation blueprint](../../docs/beacon/v1.3.0/execution/requirement-anchor-implementation-blueprint.md)
-9. [Release note](../../docs/beacon/v1.3.0/release/v1.3.0.md)
+1. [Human minimal usage guide](../../docs/beacon/v1.3.1/execution/human-minimal-usage-guide.md)
+2. [Workflow boundaries](../../docs/beacon/v1.3.1/execution/boundaries.md)
+3. [Deterministic implementation contract](../../docs/beacon/v1.3.1/execution/deterministic-implementation-contract-blueprint.md)
+4. [Summary](../../docs/beacon/v1.3.0/SUMMARY.md)
+5. [Execution index](../../docs/beacon/v1.3.0/execution/index.md)
+6. [Architecture blueprint](../../docs/beacon/v1.3.0/execution/architecture-blueprint.md)
+7. [Workflow usage guide](../../docs/beacon/v1.3.0/execution/workflow-usage-guide.md)
+8. [Release note](../../docs/beacon/v1.3.0/release/v1.3.0.md)
 
 If you are working on the latest landed closure line, then read:
 
@@ -338,19 +383,18 @@ Compatible delegated surfaces:
 ## Common Usage Modes
 
 ### 1. Requirement package mode
-- `workflow`
-- `think`
-- `user-story`
-- `prd`
-- `test-case`
+- for humans, prefer:
+  - `prd`
+  - `user-story`
+  - `test-case`
+- internal Beacon lanes may still call `workflow` / `think` / `brainstorm`
 
 ### 2. Delivery closure mode
-- `implement plan`
-- `implement`
-- `qa`
-- `review`
-- `gate`
-- `release`
+- for humans, prefer:
+  - `implement`
+  - `qa`
+  - `release`
+- internal Beacon lanes may still invoke `implement-team`, `qa-team`, `review`, `gate`
 
 ### 3. Project takeover mode
 - `init`
@@ -372,16 +416,18 @@ When the user asks "what should I do next", "why am I blocked", or wants to cont
 
 1. Run `beacon status --board --project-root <root> --version <version>` when you need the raw board.
 2. Run `beacon help --project-root <root> --version <version> --feature <feature> --json` for the canonical next-step recommendation.
-3. If help indicates the revision is not frozen, run `beacon freeze ...` before implementation.
-4. If help indicates implementation-plan drift or absence, run `beacon implement plan ...` before implementation.
-5. If help/doctor indicates the current revision is superseded or a change request is pending, run `beacon reopen ...`.
-6. If blocked or inconsistent, run `beacon doctor --project-root <root> --json` or `beacon doctor advise ...`.
-7. If the project has a profile / project-specific skill path, prefer `beacon verify run ... --profile <profile>` before trying to accept.
-8. For QA rounds, prefer:
+3. If requirements still contain ambiguity, run `beacon doctor sync-requirement-clarity ...` before freeze.
+4. If help indicates the revision is not frozen, run `beacon freeze ...`.
+5. If implementation needs deterministic branch/worktree/service scope, run `beacon doctor sync-technical-review-contract ...`.
+6. If help indicates implementation-plan drift or absence, run `beacon implement plan ...` or `beacon implement dev-run ...`.
+7. If help/doctor indicates the current revision is superseded or a change request is pending, run `beacon reopen ...`.
+8. If blocked or inconsistent, run `beacon doctor --project-root <root> --json` or `beacon doctor advise ...`.
+9. If the project has a profile / project-specific skill path, prefer `beacon verify run ... --profile <profile>` before trying to accept.
+10. For QA rounds, prefer:
    - `beacon qa run "<feature>" --project . --version v1.3.0 --json`
    - inspect evidence / coverage / continue decision
    - if blocked, repair first and resume via `beacon help ...`
-9. Only then route into `freeze`, `implement`, `review`, `verify`, `orchestrate`, or `release` actions.
+11. Only then route into `freeze`, `implement`, `review`, `verify`, `orchestrate`, or `release` actions.
 
 Example: `beacon help --project-root . --json`
 
@@ -420,6 +466,10 @@ See:
   - run `beacon doctor upgrade-package --project-root . --version <old-version> --json`
 - Real project upgraded runtime but QA is still reading stale machine materials:
   - run `beacon doctor sync-materials --project-root . --version <docs-version> --all-features --json`
+- Requirements still feel unclear before freeze:
+  - run `beacon doctor sync-requirement-clarity "<feature>" --project-root . --version <version> --json`
+- Implementation scope is still not deterministic:
+  - run `beacon doctor sync-technical-review-contract "<feature>" --project-root . --version <version> --revision-id <revision> --json`
 - Not sure what step comes next:
   - run `beacon help --project-root . --version v1.3.0 --feature "<feature>" --json`
 - Gate / release confusion:

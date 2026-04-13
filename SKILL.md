@@ -70,6 +70,12 @@ Beacon 是 AI 产品工作流内核，提供需求澄清、用户故事、PRD、
 - 当前最稳妥的阅读方式是直接以 `docs/beacon/v1.3.0/` 作为 current line
 - `docs/beacon/v1.2.1/` 是当前针对 Codex hook / debug prompt adaptation 的 supplement line
 
+当前还需要加一条操作口径：
+
+- **当前人类推荐操作面** 已按 `docs/beacon/v1.3.1/execution/human-minimal-usage-guide.md` 收口
+- 也就是说，runtime/release line 仍是 `v1.3.0`
+- 但人类使用心智已经切到 `v1.3.1` 的 6 个主命令 + 3 个辅助命令模型
+
 ## Beacon 到底是什么
 
 Beacon 不是单一命令，也不是“帮你写几份 PM 文档”的模板集合。
@@ -132,6 +138,29 @@ beacon gate check release --project-root . --version v1.3.0 --json
 beacon status --board --project-root . --version v1.3.0
 beacon help --project-root . --version v1.3.0 --feature "My feature" --json
 ```
+
+### 如果你是人类操作者，优先按 `v1.3.1` 的极简人类面工作
+
+长期只记 6 个主命令：
+
+```text
+prd
+→ user-story
+→ test-case
+→ implement
+→ qa
+→ release
+```
+
+只在卡住时用 3 个辅助命令：
+
+- `help`
+- `status`
+- `doctor`
+
+参考：
+
+- `docs/beacon/v1.3.1/execution/human-minimal-usage-guide.md`
 
 ### 如果你在真实项目里升级 Beacon runtime
 
@@ -207,6 +236,25 @@ think
    - `release scorecard`
    - keep/discard + evo harness
 
+### 人类面已经按 `v1.3.1` 收口
+
+虽然完整产品面仍然很丰富，但对人类操作者推荐的长期心智面已经收敛为：
+
+- `prd`
+- `user-story`
+- `test-case`
+- `implement`
+- `qa`
+- `release`
+
+而以下能力应视为内部执行面或高级面：
+
+- `brainstorm` 作为独立长期入口
+- `implement-team`
+- `qa-team`
+- learning / auto research
+- 低层 runtime / repair lanes
+
 ### QA 的 skill 提示词必须遵守第一性原则
 
 对 `qa` 主链来说，Beacon 不允许“为了显得更努力而继续跑测试”。
@@ -280,15 +328,14 @@ requirement material
 
 ## 推荐阅读顺序
 
-1. `docs/beacon/v1.3.0/SUMMARY.md`
-2. `docs/beacon/v1.3.0/execution/index.md`
-3. `docs/beacon/v1.3.0/execution/architecture-blueprint.md`
-4. `docs/beacon/v1.3.0/execution/workflow-usage-guide.md`
-5. `docs/beacon/v1.3.0/execution/natural-language-trigger-handbook.md`
-6. `docs/beacon/v1.3.0/execution/qa-autoresearch-usage-guide.md`
-7. `docs/beacon/v1.3.0/execution/autoresearch-module-evolution.md`
-8. `docs/beacon/v1.3.0/execution/requirement-anchor-implementation-blueprint.md`
-9. `docs/beacon/v1.3.0/release/v1.3.0.md`
+1. `docs/beacon/v1.3.1/execution/human-minimal-usage-guide.md`
+2. `docs/beacon/v1.3.1/execution/boundaries.md`
+3. `docs/beacon/v1.3.1/execution/deterministic-implementation-contract-blueprint.md`
+4. `docs/beacon/v1.3.0/SUMMARY.md`
+5. `docs/beacon/v1.3.0/execution/index.md`
+6. `docs/beacon/v1.3.0/execution/architecture-blueprint.md`
+7. `docs/beacon/v1.3.0/execution/workflow-usage-guide.md`
+8. `docs/beacon/v1.3.0/release/v1.3.0.md`
 
 如果你关注上一轮闭环增强基线，再看：
 
@@ -307,21 +354,26 @@ requirement material
 ## 常见使用场景
 
 ### 场景 A：从 0 到 1 建需求包
-- 用 `workflow` 启主链
-- 生成 think / user-story / prd / test-case
-- 用 `help` 看下一步
+- 对人类而言，优先沿 6 个主命令推进：
+  - `prd`
+  - `user-story`
+  - `test-case`
+  - `implement`
+  - `qa`
+  - `release`
+- 需要时再用 `help` 看下一步
 
 ### 场景 B：已经有 feature，想进入实现与验收
-- 用 `implement plan`
-- 用 `implement`
-- 用 `qa`
-- 用 `review quality`
-- 用 `gate`
+- 对人类而言：
+  - 用 `implement`
+  - 用 `qa`
+  - 用 `release`
+- Beacon 内部可以继续调用 team / learning / auto research，不要求人类长期记忆这些入口
 
 ### 场景 C：项目接管 / 多人协作
 - 用 `init`
-- 用 `project lifecycle onboarding`
-- 用 `status / report / resume`
+- 卡住时用 `status / help / doctor`
+- 不要求人类先理解内部 team runtime 细节
 
 ### 场景 D：版本迭代与闭环复盘
 - 用 `report / release / evolution-summary / version`
@@ -345,16 +397,21 @@ requirement material
 
 1. `beacon status --board --project-root . --version <version>`
 2. `beacon help --project-root . --version <version> --feature "<feature>" --json`
-3. 如果 revision 未冻结，先 `beacon freeze ...`
-4. 如果已冻结但 implementation plan 缺失或漂移，先 `beacon implement plan ...`
-5. 如果 revision 已 superseded 或 change request 未处理，先 `beacon reopen ...`
-6. 如果状态不一致或卡住，运行 `beacon doctor --project-root . --json`
+3. 如果需求仍有遗漏点 / 问号点 / 未澄清点，先 `beacon doctor sync-requirement-clarity ...`
+4. 如果需求已清晰，再 `beacon freeze ...`
+5. 如果进入实现前还没有 deterministic implementation contract，先 `beacon doctor sync-technical-review-contract ...`
+6. 如果已冻结且技术评审已明确，再进入 `beacon implement ...`
+7. 如果 revision 已 superseded 或 change request 未处理，先 `beacon reopen ...`
+8. 如果状态不一致或卡住，运行 `beacon doctor --project-root . --json`
 
 不要在 Beacon 已经能计算下一步时靠猜。
 
 ## 文档入口与故障排查
 
 ### 文档入口
+- `docs/beacon/v1.3.1/execution/human-minimal-usage-guide.md`
+- `docs/beacon/v1.3.1/execution/boundaries.md`
+- `docs/beacon/v1.3.1/execution/deterministic-implementation-contract-blueprint.md`
 - `docs/beacon/v1.3.0/SUMMARY.md`
 - `docs/beacon/v1.3.0/execution/index.md`
 - `docs/beacon/v1.3.0/execution/workflow-usage-guide.md`
@@ -376,6 +433,10 @@ requirement material
   - `beacon doctor upgrade-package --project-root . --version <old-version> --json`
 - 实际项目在 runtime 升级后，怀疑 `.machine/user-story` / `.machine/qa` 还没跟上当前文档：
   - `beacon doctor sync-materials --project-root . --version <docs-version> --all-features`
+- 需求还没清晰，不知道能不能 freeze：
+  - `beacon doctor sync-requirement-clarity "<feature>" --project-root . --version <version> --json`
+- 已冻结但实现前还没确定 branch/worktree/service scope：
+  - `beacon doctor sync-technical-review-contract "<feature>" --project-root . --version <version> --revision-id <revision> --json`
 - 想看当前全局状态：
   - `beacon status --board --project-root . --version v1.3.0`
 
