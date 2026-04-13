@@ -66,6 +66,10 @@ def _human_summary(machine: dict[str, Any]) -> str:
         f"- qa_execution_mode: `{release_summary.get('qa_execution_mode')}`",
         f"- qa_evidence_done: `{release_summary.get('qa_evidence_done')}`",
         f"- qa_project_profile_gate: `{release_summary.get('qa_project_profile_gate_status')}`",
+        f"- requirement_clarity_status: `{release_summary.get('requirement_clarity_status')}`",
+        f"- requirement_clarity_blocked: `{release_summary.get('requirement_clarity_blocked')}`",
+        f"- technical_review_status: `{release_summary.get('technical_review_status')}`",
+        f"- technical_review_review_status: `{release_summary.get('technical_review_review_status')}`",
         f"- release_confidence_min: `{release_summary.get('release_confidence_min')}`",
         f"- release_confidence_avg: `{release_summary.get('release_confidence_avg')}`",
         f"- review_required_count: `{release_summary.get('review_required_count')}`",
@@ -198,6 +202,19 @@ def _human_summary(machine: dict[str, Any]) -> str:
                 f"- next_task_id: `{implementation_plan.get('next_task_id')}`",
                 f"- blocked_task_ids: `{implementation_plan.get('blocked_task_ids')}`",
                 f"- counts: `{implementation_plan.get('counts')}`",
+            ]
+        )
+    if release_summary.get("requirement_clarity_status") or release_summary.get("technical_review_status"):
+        lines.extend(
+            [
+                "",
+                "## Human-Loop Gates",
+                f"- requirement_clarity_status: `{release_summary.get('requirement_clarity_status')}`",
+                f"- requirement_clarity_blocked: `{release_summary.get('requirement_clarity_blocked')}`",
+                f"- requirement_clarity_finding_count: `{release_summary.get('requirement_clarity_finding_count')}`",
+                f"- technical_review_status: `{release_summary.get('technical_review_status')}`",
+                f"- technical_review_blocked: `{release_summary.get('technical_review_blocked')}`",
+                f"- technical_review_review_status: `{release_summary.get('technical_review_review_status')}`",
             ]
         )
     if isinstance(release_scorecard, dict) and release_scorecard and release_summary.get("exhaustiveness_status"):

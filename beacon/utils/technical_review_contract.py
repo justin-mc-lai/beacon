@@ -384,6 +384,7 @@ def build_technical_review_gate_payload(
         "required": technical_review_contract_supported(resolved_version),
         "contract_json_path": str(json_path.relative_to(project_root)),
         "contract_markdown_path": str(markdown_path.relative_to(project_root)),
+        "state_path": str(technical_review_state_path(project_root, feature).relative_to(project_root)),
         "blocked": False,
         "status": "pass",
         "reason_code": "",

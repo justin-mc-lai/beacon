@@ -22,10 +22,25 @@ from beacon.utils.memory import scope_memory_paths
 from beacon.utils.qa9 import QA9_TYPES, normalize_qa_type, parse_qa_types
 from beacon.utils.qa_runtime import load_qa_status
 from beacon.utils.exhaustiveness import load_exhaustiveness_report
-from beacon.utils.implementation_plan import implementation_plan_supported, load_implementation_plan
-from beacon.utils.implementation_plan import load_implementation_plan_progress
+from beacon.utils.implementation_plan import (
+    implementation_plan_supported,
+    list_implementation_git_workflow_contracts,
+    load_implementation_plan,
+    load_implementation_plan_progress,
+)
 from beacon.utils.qa_precision import load_feature_qa_ac_closure, load_feature_qa_scorecard
 from beacon.utils.prototype_support import feature_requires_route_closure, prototype_status, version_requires_prototype
+from beacon.utils.requirement_clarity import (
+    build_requirement_clarity_gate_payload,
+    load_requirement_clarity_state,
+    requirement_clarity_gate_supported,
+)
+from beacon.utils.revision_state import load_revision_state
+from beacon.utils.technical_review_contract import (
+    build_technical_review_gate_payload,
+    load_technical_review_state,
+    technical_review_contract_supported,
+)
 from beacon.utils.versioning import resolve_target_version
 from beacon.utils.v110_baseline import (
     load_latest_baseline_snapshot,
@@ -1435,6 +1450,89 @@ def check_delivery_execution_artifacts(project_root: Path, mode: GateMode, stage
                     }
                 )
 
+    if _parse_semver_tuple(resolved_version) >= (1, 3, 0):
+        machine_exec_dir = project_root / "docs" / "beacon" / resolved_version / ".machine" / "execution"
+        workflow_contracts = list_implementation_git_workflow_contracts(project_root, version=resolved_version)
+        required_workflow_fields = {
+            "feature",
+            "feature_slug",
+            "version",
+            "mode",
+            "expected_branch",
+            "branch_prefix",
+            "base_branch",
+            "use_git_worktree",
+            "require_clean_worktree_for_switch",
+            "service_directories",
+        }
+        missing_contracts: list[str] = []
+        invalid_contracts: list[dict[str, Any]] = []
+        missing_markdown: list[str] = []
+        expected_branches: set[str] = set()
+        for plan_path in sorted(machine_exec_dir.glob("implementation-plan-*.json")):
+            if str(plan_path.name).endswith(".progress.json"):
+                continue
+            workflow_path = machine_exec_dir / plan_path.name.replace("implementation-plan-", "git-workflow-")
+            if not workflow_path.exists():
+                missing_contracts.append(str(workflow_path.relative_to(project_root)))
+        for item in workflow_contracts:
+            payload = item.get("payload") if isinstance(item.get("payload"), dict) else {}
+            path = str(item.get("path", "") or "")
+            missing = sorted(field for field in required_workflow_fields if field not in payload)
+            if missing:
+                invalid_contracts.append({"path": path, "missing": missing})
+            branch = str(payload.get("expected_branch", "") or "").strip()
+            if branch:
+                expected_branches.add(branch)
+            markdown_path = project_root / path.replace("/.machine/execution/", "/execution/").replace(".json", ".md")
+            if not markdown_path.exists():
+                missing_markdown.append(str(markdown_path.relative_to(project_root)))
+        if missing_contracts:
+            issues.append(
+                {
+                    "reason_code": "git_workflow_contract_missing",
+                    "severity": "critical",
+                    "message": f"git workflow contracts missing for implementation plans: {missing_contracts[:5]}",
+                    "blocked": True,
+                }
+            )
+        if invalid_contracts:
+            issues.append(
+                {
+                    "reason_code": "git_workflow_contract_invalid",
+                    "severity": "critical",
+                    "message": f"git workflow contracts invalid: {invalid_contracts[:5]}",
+                    "blocked": True,
+                }
+            )
+        if missing_markdown:
+            issues.append(
+                {
+                    "reason_code": "git_workflow_markdown_missing",
+                    "severity": "critical",
+                    "message": f"git workflow markdown mirrors missing: {missing_markdown[:5]}",
+                    "blocked": True,
+                }
+            )
+        if expected_branches and isinstance(manifest_payload, dict):
+            affected_projects = manifest_payload.get("affected_projects") if isinstance(manifest_payload.get("affected_projects"), list) else []
+            mismatches: list[dict[str, Any]] = []
+            for idx, item in enumerate(affected_projects):
+                if not isinstance(item, dict):
+                    continue
+                target_branch = str(item.get("target_branch", "") or "")
+                if target_branch and target_branch not in expected_branches:
+                    mismatches.append({"index": idx, "target_branch": target_branch, "expected_branches": sorted(expected_branches)})
+            if mismatches:
+                issues.append(
+                    {
+                        "reason_code": "git_workflow_delivery_manifest_mismatch",
+                        "severity": "critical",
+                        "message": f"delivery-manifest target branches drift from git workflow contract: {mismatches[:5]}",
+                        "blocked": True,
+                    }
+                )
+
     change_payload = _required_json("change-impact.json", "change_impact_missing", "change_impact_schema_invalid")
     if isinstance(change_payload, dict):
         missing = [
@@ -1822,6 +1920,113 @@ def check_v112_implementation_plan_contract(
                         "blocked": True,
                     }
                 )
+    return issues
+
+
+def check_v131_human_loop_contract(
+    project_root: Path,
+    mode: GateMode,
+    stage: str,
+    version: Optional[str] = None,
+) -> List[Dict[str, Any]]:
+    issues: list[dict[str, Any]] = []
+    if stage != "release":
+        return issues
+    if mode not in {GateMode.STRICT, GateMode.DEBUG}:
+        return issues
+    resolved_version = _resolved_gate_version(project_root, version)
+    if not (requirement_clarity_gate_supported(resolved_version) or technical_review_contract_supported(resolved_version)):
+        return issues
+
+    feature_name = str(load_qa_status(project_root).get("feature") or "").strip() or _latest_implement_feature(project_root)
+    if not feature_name:
+        issues.append(
+            {
+                "reason_code": "feature_name_missing",
+                "severity": "critical",
+                "message": "v1.3.1 release requires feature context to evaluate human-loop contracts",
+                "blocked": True,
+            }
+        )
+        return issues
+
+    revision = load_revision_state(project_root, version=resolved_version, feature=feature_name, create_if_missing=False)
+    requirement_gate = build_requirement_clarity_gate_payload(project_root, version=resolved_version, feature=feature_name)
+    requirement_state = load_requirement_clarity_state(project_root, feature=feature_name)
+    technical_gate = build_technical_review_gate_payload(
+        project_root,
+        version=resolved_version,
+        feature=feature_name,
+        revision_id=str(revision.get("revision_id", "") or ""),
+    )
+    technical_state = load_technical_review_state(project_root, feature=feature_name)
+
+    if bool(requirement_gate.get("required")):
+        if not requirement_state:
+            issues.append(
+                {
+                    "reason_code": "requirement_clarity_state_missing",
+                    "severity": "critical",
+                    "message": f"requirement clarity state missing for feature {feature_name}",
+                    "blocked": True,
+                }
+            )
+        if bool(requirement_gate.get("blocked")):
+            issues.append(
+                {
+                    "reason_code": "requirement_clarity_open",
+                    "severity": "critical",
+                    "message": f"requirement clarity still blocked for feature {feature_name}",
+                    "blocked": True,
+                    "details": {"findings": requirement_gate.get("findings", [])[:10]},
+                }
+            )
+        for key, reason_code in {
+            "report_json_path": "requirement_clarity_report_missing",
+            "report_markdown_path": "requirement_clarity_markdown_missing",
+        }.items():
+            rel = str(requirement_gate.get(key, "") or "")
+            if rel and not (project_root / rel).exists():
+                issues.append(
+                    {
+                        "reason_code": reason_code,
+                        "severity": "critical",
+                        "message": f"requirement clarity artifact missing: {rel}",
+                        "blocked": True,
+                    }
+                )
+
+    if bool(technical_gate.get("required")):
+        if not technical_state:
+            issues.append(
+                {
+                    "reason_code": "technical_review_state_missing",
+                    "severity": "critical",
+                    "message": f"technical review state missing for feature {feature_name}",
+                    "blocked": True,
+                }
+            )
+        if bool(technical_gate.get("blocked")):
+            issues.append(
+                {
+                    "reason_code": str(technical_gate.get("reason_code") or "technical_review_contract_invalid"),
+                    "severity": "critical",
+                    "message": f"technical review gate blocked for feature {feature_name}",
+                    "blocked": True,
+                    "details": {
+                        "validation": technical_gate.get("validation", {}),
+                    },
+                }
+            )
+        if str(technical_state.get("review_status") or "").strip().lower() not in {"approved", "accepted"}:
+            issues.append(
+                {
+                    "reason_code": "technical_review_not_approved",
+                    "severity": "critical",
+                    "message": f"technical review contract not approved for feature {feature_name}",
+                    "blocked": True,
+                }
+            )
     return issues
 
 
@@ -3045,6 +3250,7 @@ def run_gate_checks(
         all_issues.extend(check_formal_version_package_closure(project_root, mode, stage, version))
         all_issues.extend(check_v119_control_learning_contract(project_root, mode, stage, version))
         all_issues.extend(check_v112_implementation_plan_contract(project_root, mode, stage, version))
+        all_issues.extend(check_v131_human_loop_contract(project_root, mode, stage, version))
         all_issues.extend(check_v110_precision_contract(project_root, mode, stage, version))
         all_issues.extend(check_prototype_contract(project_root, mode, stage, version))
 

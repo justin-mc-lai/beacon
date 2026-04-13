@@ -134,6 +134,9 @@ def build_requirement_clarity_gate_payload(project_root: Path, *, version: str =
         "blocked": False,
         "status": "pass",
         "findings": [],
+        "report_json_path": str(requirement_clarity_json_path(project_root, resolved_version, feature).relative_to(project_root)),
+        "report_markdown_path": str(requirement_clarity_markdown_path(project_root, resolved_version, feature).relative_to(project_root)),
+        "state_path": str(requirement_clarity_state_path(project_root, feature).relative_to(project_root)),
     }
     if not payload["required"]:
         return payload

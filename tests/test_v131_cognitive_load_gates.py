@@ -6,6 +6,8 @@ from pathlib import Path
 
 from typer.testing import CliRunner
 
+from beacon.commands.gate import GateMode, check_v131_human_loop_contract
+from beacon.commands.report import _human_summary
 from beacon.main import app
 from beacon.utils.help_support import build_help_payload
 from beacon.utils.requirement_clarity import (
@@ -14,6 +16,7 @@ from beacon.utils.requirement_clarity import (
     requirement_clarity_markdown_path,
     requirement_clarity_state_path,
 )
+from beacon.utils.release_scorecard import build_release_scorecard, summarize_release_scorecard
 from beacon.utils.technical_review_contract import technical_review_contract_json_path, technical_review_contract_markdown_path
 
 
@@ -420,6 +423,79 @@ def test_v131_check_branch_should_use_materialized_git_workflow_from_approved_co
     assert payload["expected_branch"] == "feature/v1.3.1-human-loop"
     assert payload["git_workflow"]["service_directories"] == ["svc-api", "svc-web"]
     assert payload["git_workflow"]["source"] == "technical_review_contract"
+
+
+def test_v131_release_scorecard_should_include_human_loop_surfaces(tmp_path: Path):
+    _seed_docs(tmp_path, unresolved=False)
+    assert _invoke(["freeze", FEATURE, "--project", str(tmp_path), "--version", VERSION]).exit_code == 0
+    _invoke(
+        [
+            "doctor",
+            "sync-technical-review-contract",
+            FEATURE,
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            VERSION,
+            "--revision-id",
+            "R1",
+            "--review-status",
+            "approved",
+            "--approved-by",
+            "tech-lead",
+            "--reviewed-at",
+            "2026-04-13T09:00:00+08:00",
+        ]
+    )
+    qa_root = tmp_path / ".beacon" / "qa"
+    (qa_root / "features" / SLUG).mkdir(parents=True, exist_ok=True)
+    (qa_root / "status.json").write_text(
+        json.dumps({"feature": FEATURE, "status": "passed", "evidence_done": True}, ensure_ascii=False),
+        encoding="utf-8",
+    )
+    (qa_root / "features" / SLUG / "scorecard.json").write_text(
+        json.dumps({"release_ready": True, "continue_decision": "ready_for_release", "unresolved_closure_outcomes": []}, ensure_ascii=False),
+        encoding="utf-8",
+    )
+    (tmp_path / ".beacon" / "gate-report.json").write_text(json.dumps({"status": "pass", "issues": []}, ensure_ascii=False), encoding="utf-8")
+
+    scorecard = build_release_scorecard(tmp_path, version=VERSION)
+    summary = summarize_release_scorecard(scorecard)
+    assert scorecard["requirement_clarity"]["blocked"] is False
+    assert scorecard["technical_review"]["review_status"] == "approved"
+    assert summary["requirement_clarity_status"] == "pass"
+    assert summary["technical_review_review_status"] == "approved"
+
+
+def test_v131_report_human_summary_should_show_human_loop_gates(tmp_path: Path):
+    machine = {
+        "run_id": "latest",
+        "workflow": "workflow",
+        "mode": "normal",
+        "status": "completed",
+        "release_scorecard": {
+            "release_ready": False,
+            "gate": {"status": "blocked", "blocked_count": 1},
+            "qa": {"status": "passed", "execution_mode": "feature-aware", "evidence_done": True, "project_profile_gate_status": "pass"},
+            "feature_qa_scorecard": {"release_confidence_min": 0.9, "release_confidence_avg": 0.95, "review_required_count": 0, "needs_replay_count": 0, "continue_decision": "continue", "test_case_backfill_required": False},
+            "learning_scorecard": {"main_kpi": "false_complete_rate", "decision_summary": {"keep": 1, "review": 0, "discard": 0}},
+            "latest_experiment": {"main_kpi_score": 0.1},
+            "requirement_clarity": {"status": "blocked", "blocked": True, "finding_count": 2},
+            "technical_review": {"status": "pass", "blocked": False, "review_status": "approved"},
+        },
+        "artifacts": {},
+    }
+    summary = _human_summary(machine)
+    assert "requirement_clarity_status" in summary
+    assert "technical_review_review_status" in summary
+    assert "## Human-Loop Gates" in summary
+
+
+def test_v131_gate_release_should_block_when_human_loop_contracts_are_unresolved(tmp_path: Path):
+    _seed_docs(tmp_path, unresolved=True)
+    issues = check_v131_human_loop_contract(tmp_path, GateMode.STRICT, "release", VERSION)
+    reason_codes = {item["reason_code"] for item in issues}
+    assert "feature_name_missing" in reason_codes or "requirement_clarity_state_missing" in reason_codes
 
 
 def test_v131_implement_plan_should_pass_with_technical_review_contract(tmp_path: Path):
