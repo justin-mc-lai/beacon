@@ -7,9 +7,10 @@ from pathlib import Path
 from typing import Any
 
 from beacon.utils.artifact_paths import human_execution_file, machine_execution_file
-from beacon.utils.runtime import write_json
+from beacon.utils.runtime import now_iso, read_json, write_json
 from beacon.utils.story_state import feature_slug
 from beacon.utils.versioning import normalize_version, release_line_key, resolve_target_version
+from beacon.utils.workflow_memory import append_lifecycle_event, record_stage_writeback, resolve_workflow_run_id
 
 _SECTION_HEADING_RE = re.compile(r"^(#{2,6})\s+(.+?)\s*$")
 _UNRESOLVED_SECTION_TITLES = {
@@ -163,6 +164,15 @@ def requirement_clarity_markdown_path(project_root: Path, version: str, feature:
     return human_execution_file(project_root, resolved_version, f"requirement-clarity-{feature_slug(feature)}.md")
 
 
+def requirement_clarity_state_path(project_root: Path, feature: str) -> Path:
+    return project_root / ".beacon" / "state" / f"requirement-clarity-{feature_slug(feature)}.json"
+
+
+def load_requirement_clarity_state(project_root: Path, *, feature: str) -> dict[str, Any]:
+    payload = read_json(requirement_clarity_state_path(project_root, feature), {})
+    return payload if isinstance(payload, dict) else {}
+
+
 def _render_requirement_clarity_markdown(payload: dict[str, Any]) -> str:
     findings = payload.get("findings") if isinstance(payload.get("findings"), list) else []
     lines = [
@@ -208,4 +218,96 @@ def write_requirement_clarity_report(
     return {
         "json": str(json_path.relative_to(project_root)),
         "markdown": str(markdown_path.relative_to(project_root)),
+    }
+
+
+def write_requirement_clarity_writeback(
+    project_root: Path,
+    *,
+    version: str,
+    feature: str,
+    gate_payload: dict[str, Any],
+    report: dict[str, str],
+    source: str = "freeze",
+    run_id: str = "",
+) -> dict[str, Any]:
+    resolved_version = resolve_target_version(project_root, version)
+    state_path = requirement_clarity_state_path(project_root, feature)
+    resolved_run_id = run_id or resolve_workflow_run_id(project_root, version=resolved_version, feature=feature) or ""
+    payload = {
+        "schema_version": "1.0",
+        "feature": feature,
+        "feature_slug": feature_slug(feature),
+        "version": resolved_version,
+        "status": str(gate_payload.get("status", "") or ""),
+        "blocked": bool(gate_payload.get("blocked", False)),
+        "reason_code": str(gate_payload.get("reason_code", "") or ""),
+        "report_json_path": str(report.get("json", "") or ""),
+        "report_markdown_path": str(report.get("markdown", "") or ""),
+        "finding_count": len(gate_payload.get("findings", []) if isinstance(gate_payload.get("findings"), list) else []),
+        "run_id": resolved_run_id,
+        "source": source,
+        "written_at": now_iso(),
+    }
+    write_json(state_path, payload)
+
+    if resolved_run_id:
+        evidence_ref = [
+            str(report.get("json", "") or ""),
+            str(report.get("markdown", "") or ""),
+            str(state_path.relative_to(project_root)),
+        ]
+        append_lifecycle_event(
+            project_root,
+            run_id=resolved_run_id,
+            stage="requirement-review",
+            event="clarity_synced",
+            source=source,
+            evidence_ref=evidence_ref,
+            details={"status": payload["status"], "finding_count": payload["finding_count"]},
+        )
+        if not payload["blocked"]:
+            record_stage_writeback(
+                project_root,
+                run_id=resolved_run_id,
+                stage="requirement-review",
+                feature=feature,
+                evidence_ref=evidence_ref,
+                status="cleared",
+            )
+    return {
+        **payload,
+        "state_path": str(state_path.relative_to(project_root)),
+    }
+
+
+def materialize_requirement_clarity(
+    project_root: Path,
+    *,
+    version: str = "auto",
+    feature: str,
+    source: str = "doctor.sync-requirement-clarity",
+    run_id: str = "",
+) -> dict[str, Any]:
+    resolved_version = resolve_target_version(project_root, version)
+    gate_payload = build_requirement_clarity_gate_payload(project_root, version=resolved_version, feature=feature)
+    report = write_requirement_clarity_report(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        payload=gate_payload,
+    )
+    writeback = write_requirement_clarity_writeback(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        gate_payload=gate_payload,
+        report=report,
+        source=source,
+        run_id=run_id,
+    )
+    return {
+        "gate": gate_payload,
+        "report": report,
+        "writeback": writeback,
     }

@@ -14,6 +14,7 @@ from beacon.utils.implementation_plan import load_implementation_plan_progress
 from beacon.utils.learning_loop import load_keep_discard_engine
 from beacon.utils.material_audit import build_material_audit
 from beacon.utils.qa_runtime import load_qa_status
+from beacon.utils.requirement_clarity import build_requirement_clarity_gate_payload, load_requirement_clarity_state
 from beacon.utils.release_scorecard import build_release_scorecard, summarize_release_scorecard
 from beacon.utils.runtime import newest_run_id, read_json
 from beacon.utils.technical_review_contract import build_technical_review_gate_payload, load_technical_review_state
@@ -94,6 +95,8 @@ def _status_impl(
     target_feature = feature_filter or str(workflow_progress.get("feature", "") or "")
     help_payload = build_help_payload(root, version=coverage_version, feature=target_feature, run_id=resolved_run_id or None) if target_feature else {}
     implementation_plan_progress = load_implementation_plan_progress(root, version=coverage_version, feature=target_feature) if target_feature else {}
+    requirement_clarity_gate = build_requirement_clarity_gate_payload(root, version=coverage_version, feature=target_feature) if target_feature else {}
+    requirement_clarity_state = load_requirement_clarity_state(root, feature=target_feature) if target_feature else {}
     technical_review_gate = build_technical_review_gate_payload(root, version=coverage_version, feature=target_feature, revision_id=str(help_payload.get("revision_id", "") or "")) if target_feature else {}
     technical_review_state = load_technical_review_state(root, feature=target_feature) if target_feature else {}
     qa_status = load_qa_status(root)
@@ -132,6 +135,13 @@ def _status_impl(
             "counts": implementation_plan_progress.get("counts", {}),
             "next_task_id": implementation_plan_progress.get("next_task_id", ""),
             "blocked_task_ids": implementation_plan_progress.get("blocked_task_ids", []),
+        },
+        "requirement_clarity": {
+            "status": requirement_clarity_gate.get("status", "not_required"),
+            "blocked": requirement_clarity_gate.get("blocked", False),
+            "reason_code": requirement_clarity_gate.get("reason_code", ""),
+            "finding_count": requirement_clarity_state.get("finding_count", 0),
+            "state_path": requirement_clarity_state.get("state_path", ""),
         },
         "technical_review": {
             "status": technical_review_gate.get("status", "not_required"),
@@ -210,6 +220,11 @@ def _status_impl(
                 f"- implementation_plan: {payload.get('implementation_plan', {}).get('status')} "
                 f"next={payload.get('implementation_plan', {}).get('next_task_id') or 'none'} "
                 f"counts={payload.get('implementation_plan', {}).get('counts', {})}"
+            )
+        if target_feature:
+            typer.echo(
+                f"- requirement_clarity: {payload.get('requirement_clarity', {}).get('status')} "
+                f"findings={payload.get('requirement_clarity', {}).get('finding_count')}"
             )
         if target_feature:
             typer.echo(

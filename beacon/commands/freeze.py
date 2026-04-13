@@ -8,7 +8,11 @@ from typing import Optional
 
 import typer
 
-from beacon.utils.requirement_clarity import build_requirement_clarity_gate_payload, write_requirement_clarity_report
+from beacon.utils.requirement_clarity import (
+    build_requirement_clarity_gate_payload,
+    write_requirement_clarity_report,
+    write_requirement_clarity_writeback,
+)
 from beacon.utils.revision_state import freeze_revision_state
 from beacon.utils.story_state import freeze_story_state, feature_slug
 from beacon.utils.versioning import resolve_target_version
@@ -26,6 +30,14 @@ def _freeze_impl(feature: str, project: Optional[str], version: str, json_output
         feature=feature,
         payload=clarity_gate,
     )
+    clarity_writeback = write_requirement_clarity_writeback(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        gate_payload=clarity_gate,
+        report=clarity_report,
+        source="freeze",
+    )
     if bool(clarity_gate.get("blocked")):
         payload = {
             "schema_version": "1.0",
@@ -35,6 +47,7 @@ def _freeze_impl(feature: str, project: Optional[str], version: str, json_output
             "reason_code": str(clarity_gate.get("reason_code") or "requirement_clarity_open"),
             "requirement_clarity_gate": clarity_gate,
             "requirement_clarity_report": clarity_report,
+            "requirement_clarity_writeback": clarity_writeback,
         }
         if json_output:
             typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
@@ -53,6 +66,7 @@ def _freeze_impl(feature: str, project: Optional[str], version: str, json_output
         "story_path": str((project_root / "docs" / "beacon" / resolved_version / ".machine" / "user-story" / f"{feature_slug(feature)}.json").relative_to(project_root)),
         "requirement_clarity_gate": clarity_gate,
         "requirement_clarity_report": clarity_report,
+        "requirement_clarity_writeback": clarity_writeback,
     }
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))

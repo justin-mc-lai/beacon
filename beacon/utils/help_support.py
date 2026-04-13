@@ -23,6 +23,7 @@ from beacon.utils.project_skills import (
     resolve_profile_for_feature,
 )
 from beacon.utils.qa_precision import load_feature_qa_scorecard
+from beacon.utils.requirement_clarity import build_requirement_clarity_gate_payload
 from beacon.utils.revision_state import load_revision_state
 from beacon.utils.runtime import load_run_state
 from beacon.utils.skill_discovery import build_discovery_hint, load_skill_discovery
@@ -171,6 +172,7 @@ def _blocking_reasons(
     feature_scorecard: dict[str, Any] | None = None,
     takeover_gate: dict[str, Any] | None = None,
     implementation_plan_gate: dict[str, Any] | None = None,
+    requirement_clarity_gate: dict[str, Any] | None = None,
 ) -> list[str]:
     reasons: list[str] = []
     feature_scorecard = feature_scorecard if isinstance(feature_scorecard, dict) else {}
@@ -216,6 +218,10 @@ def _blocking_reasons(
         )
     if isinstance(control_plane, dict) and int(control_plane.get("failure_streak", 0) or 0) > 0:
         reasons.append("control_plane_escalation_active")
+    if isinstance(requirement_clarity_gate, dict) and bool(requirement_clarity_gate.get("blocked")):
+        code = str(requirement_clarity_gate.get("reason_code", "") or "").strip()
+        if code:
+            reasons.append(code)
     if isinstance(implementation_plan_gate, dict) and bool(implementation_plan_gate.get("blocked")):
         code = str(implementation_plan_gate.get("reason_code", "") or "").strip()
         if code:
@@ -239,6 +245,7 @@ def _next_step(
     project_mode: str = "greenfield",
     stage_binding: dict[str, str] | None = None,
     implementation_plan_gate: dict[str, Any] | None = None,
+    requirement_clarity_gate: dict[str, Any] | None = None,
     version_guard: dict[str, Any] | None = None,
     discovery_hint: dict[str, Any] | None = None,
 ) -> dict[str, str]:
@@ -329,6 +336,15 @@ def _next_step(
                 "action": "use-context-version",
                 "reason": "the requested version conflicts with the current managed context and would write to the wrong docs line",
                 "command": f"beacon help --project-root {project_root} --version {command_version} --feature {quoted_feature}",
+            }
+        if "requirement_clarity_open" in blocking_reasons:
+            report_path = ""
+            if isinstance(requirement_clarity_gate, dict):
+                report_path = str(requirement_clarity_gate.get("report_json_path", "") or "")
+            return {
+                "action": "requirement-clarity",
+                "reason": "requirements still contain unresolved or ambiguous items and must be clarified before freeze",
+                "command": report_path or f"beacon doctor sync-requirement-clarity {quoted_feature} --project-root {project_root} --version {version} --json",
             }
         if any(
             reason in {
@@ -574,6 +590,13 @@ def build_help_payload(
     )
     implementation_plan = load_implementation_plan(project_root, version=resolved_version, feature=feature_name) if plan_supported else {}
     implementation_plan_progress = load_implementation_plan_progress(project_root, version=resolved_version, feature=feature_name) if plan_supported else {}
+    requirement_clarity_gate = (
+        build_requirement_clarity_gate_payload(project_root, version=resolved_version, feature=feature_name)
+        if feature_name
+        else {}
+    )
+    if isinstance(requirement_clarity_gate, dict) and feature_name:
+        requirement_clarity_gate["report_json_path"] = f"docs/beacon/{resolved_version}/.machine/execution/requirement-clarity-{feature_slug(feature_name)}.json"
     stage_binding = _stage_local_execution_binding(
         profile=profile,
         revision_state=revision_state,
@@ -589,6 +612,7 @@ def build_help_payload(
         feature_scorecard=feature_scorecard,
         takeover_gate=takeover_gate,
         implementation_plan_gate=implementation_plan_gate,
+        requirement_clarity_gate=requirement_clarity_gate,
     )
     blocked = bool(blocking)
     current_stage = _infer_current_stage(revision_state=revision_state, workflow_progress=workflow_progress)
@@ -628,6 +652,7 @@ def build_help_payload(
         project_mode=project_mode,
         stage_binding=stage_binding,
         implementation_plan_gate=implementation_plan_gate,
+        requirement_clarity_gate=requirement_clarity_gate,
         version_guard=version_guard,
         discovery_hint=discovery_hint,
     )
@@ -746,6 +771,7 @@ def build_help_payload(
         "implementation_plan": implementation_plan,
         "implementation_plan_gate": implementation_plan_gate,
         "implementation_plan_progress": implementation_plan_progress,
+        "requirement_clarity_gate": requirement_clarity_gate,
         "decision_trace": decision_trace,
         "takeover_gate": takeover_gate,
         "feature_scorecard": feature_scorecard if isinstance(feature_scorecard, dict) else {},

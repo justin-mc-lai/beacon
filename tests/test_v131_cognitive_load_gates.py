@@ -8,7 +8,12 @@ from typer.testing import CliRunner
 
 from beacon.main import app
 from beacon.utils.help_support import build_help_payload
-from beacon.utils.requirement_clarity import requirement_clarity_json_path, requirement_clarity_markdown_path
+from beacon.utils.requirement_clarity import (
+    load_requirement_clarity_state,
+    requirement_clarity_json_path,
+    requirement_clarity_markdown_path,
+    requirement_clarity_state_path,
+)
 from beacon.utils.technical_review_contract import technical_review_contract_json_path, technical_review_contract_markdown_path
 
 
@@ -119,6 +124,33 @@ def test_v131_freeze_should_block_when_requirement_clarity_has_open_items(tmp_pa
     assert payload["requirement_clarity_gate"]["findings"]
     assert (tmp_path / payload["requirement_clarity_report"]["json"]).exists()
     assert (tmp_path / payload["requirement_clarity_report"]["markdown"]).exists()
+    assert (tmp_path / payload["requirement_clarity_writeback"]["state_path"]).exists()
+
+
+def test_v131_doctor_should_materialize_requirement_clarity_state(tmp_path: Path):
+    _seed_docs(tmp_path, unresolved=True)
+    result = _invoke(
+        [
+            "doctor",
+            "sync-requirement-clarity",
+            FEATURE,
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            VERSION,
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["status"] == "PASS"
+    report = payload["result"]["report"]
+    writeback = payload["result"]["writeback"]
+    assert (tmp_path / report["json"]).exists()
+    assert (tmp_path / report["markdown"]).exists()
+    assert (tmp_path / writeback["state_path"]).exists()
+    state = load_requirement_clarity_state(tmp_path, feature=FEATURE)
+    assert state["blocked"] is True
 
 
 def test_v131_implement_plan_should_block_without_technical_review_contract(tmp_path: Path):
@@ -222,6 +254,7 @@ def test_v131_status_should_surface_technical_review_state(tmp_path: Path):
     )
     result = _invoke(["status", "--board", "--project-root", str(tmp_path), "--version", VERSION, "--feature", FEATURE])
     assert result.exit_code == 0, result.stdout
+    assert "requirement_clarity: pass findings=0" in result.stdout
     assert "technical_review: pass review_status=approved" in result.stdout
 
 
@@ -244,6 +277,13 @@ def test_v131_help_should_point_to_technical_review_contract_before_implement(tm
     assert "deterministic-implementation-contract" in payload["next_step"]["command"]
 
 
+def test_v131_help_should_point_to_requirement_clarity_before_freeze(tmp_path: Path):
+    _seed_docs(tmp_path, unresolved=True)
+    payload = build_help_payload(tmp_path, version=VERSION, feature=FEATURE)
+    assert payload["next_step"]["action"] == "requirement-clarity"
+    assert "requirement-clarity" in payload["next_step"]["command"]
+
+
 def test_v131_freeze_should_write_requirement_clarity_report_when_clean(tmp_path: Path):
     _seed_docs(tmp_path, unresolved=False)
     result = _invoke(["freeze", FEATURE, "--project", str(tmp_path), "--version", VERSION, "--json"])
@@ -254,4 +294,5 @@ def test_v131_freeze_should_write_requirement_clarity_report_when_clean(tmp_path
     assert (tmp_path / report["markdown"]).exists()
     assert requirement_clarity_json_path(tmp_path, VERSION, FEATURE).exists()
     assert requirement_clarity_markdown_path(tmp_path, VERSION, FEATURE).exists()
+    assert requirement_clarity_state_path(tmp_path, FEATURE).exists()
     assert not payload["requirement_clarity_gate"]["blocked"]

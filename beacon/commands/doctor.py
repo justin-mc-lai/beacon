@@ -14,6 +14,7 @@ from beacon.utils.doctor_setup import install_launchers, resolve_bin_dir, uninst
 from beacon.utils.help_navigation import build_doctor_advise_payload
 from beacon.utils.material_sync import sync_project_requirement_materials
 from beacon.utils.material_audit import build_delivery_audit, build_material_audit
+from beacon.utils.requirement_clarity import materialize_requirement_clarity
 from beacon.utils.source_architecture import current_source_architecture_status
 from beacon.utils.technical_review_contract import materialize_technical_review_contract, technical_review_contract_json_path, technical_review_contract_markdown_path
 from beacon.utils.v115_delivery import repair_v115_delivery_package
@@ -449,6 +450,44 @@ def sync_materials(
         typer.echo(f"features: {result.get('feature_count')}")
         for item in result.get("results", []):
             typer.echo(f"- {item.get('feature')}: {item.get('status')}")
+    raise typer.Exit(code=0)
+
+
+@app.command("sync-requirement-clarity")
+def sync_requirement_clarity(
+    feature: str = typer.Argument(..., help="Feature name"),
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    version: str = typer.Option("latest-docs", "--version", "-v", help="Target docs version"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Materialize requirement clarity report and state before freeze."""
+    root = Path(project_root) if project_root else Path.cwd()
+    result = materialize_requirement_clarity(
+        root,
+        version=version,
+        feature=feature,
+        source="doctor.sync-requirement-clarity",
+    )
+    output = {
+        "schema_version": "2.0",
+        "action": "sync-requirement-clarity",
+        "status": "PASS",
+        "result": result,
+    }
+    if json_output:
+        typer.echo(json.dumps(output, ensure_ascii=False, indent=2))
+    else:
+        gate = result.get("gate", {}) if isinstance(result.get("gate"), dict) else {}
+        report = result.get("report", {}) if isinstance(result.get("report"), dict) else {}
+        writeback = result.get("writeback", {}) if isinstance(result.get("writeback"), dict) else {}
+        typer.echo("Beacon Doctor Requirement Clarity")
+        typer.echo("=" * 33)
+        typer.echo(f"feature: {feature}")
+        typer.echo(f"status: {gate.get('status', '')}")
+        typer.echo(f"blocked: {gate.get('blocked', False)}")
+        typer.echo(f"json: {report.get('json', '')}")
+        typer.echo(f"markdown: {report.get('markdown', '')}")
+        typer.echo(f"state: {writeback.get('state_path', '')}")
     raise typer.Exit(code=0)
 
 
