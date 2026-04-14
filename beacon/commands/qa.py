@@ -14,6 +14,7 @@ from beacon.commands.auto_test import _update_evidence_manifest
 from beacon.commands.team import TeamState, TerminalStatus, get_team_state_file, save_team_state
 from beacon.utils.implement_adapters import format_template
 from beacon.utils.exhaustiveness import build_exhaustiveness_report, write_exhaustiveness_report
+from beacon.utils.exhaustiveness import feature_exhaustiveness_report_path
 from beacon.utils.project_skills import (
     evaluate_project_profile_gate,
     resolve_profile_for_feature,
@@ -25,7 +26,9 @@ from beacon.utils.qa_feature import (
     build_feature_qa_precision_artifacts,
     build_feature_qa_plan,
     collect_verification_writeback,
+    feature_qa_plan_path,
     feature_qa_matrix_path,
+    feature_qa_status_path,
     load_feature_qa_status,
     materialize_feature_qa_matrix,
     writeback_feature_matrix_evidence,
@@ -57,6 +60,7 @@ from beacon.utils.team_surface import (
     qa_team_contract,
 )
 from beacon.utils.v110_baseline import generate_spec_fingerprint
+from beacon.utils.v115_delivery import refresh_evidence_manifest
 from beacon.utils.writeback import record_verification_writeback
 
 app = typer.Typer(name="qa", help="QA primary surface (v1.1.10)")
@@ -551,8 +555,10 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
     project_value = _extract_option(args, "--project", "--project-root", "-p")
     version = _extract_option(args, "--version", "-v") or "auto"
     mode = _extract_option(args, "--mode") or "feature-aware"
+    runtime = _extract_option(args, "--runtime") or "file"
     project_root = Path(project_value).resolve() if project_value else Path.cwd()
     args = _strip_option_with_value(args, "--mode")
+    args = _strip_option_with_value(args, "--runtime")
     current_session = load_current_qa_session(project_root)
 
     project_profile = resolve_profile_for_feature(project_root, version=version, feature=feature)
@@ -629,7 +635,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
                 feature=feature,
                 run_id=str(payload.get("run_id") or plan.get("implementation_run_id") or "feature-qa"),
                 payload=payload,
-                runtime=str(_extract_option(args, "--runtime") or "file"),
+                runtime=runtime,
             )
             payload["execution_surface"] = "qa-team"
             payload["context_isolation"] = payload["team_execution"].get("context_isolation", {})
@@ -774,6 +780,14 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
     refreshed_hash = str(refreshed_fingerprint.get("fingerprint_hash", "") or "").strip()
     if refreshed_hash:
         qa_status["current_spec_fingerprint_hash"] = refreshed_hash
+        qa_status["spec_fingerprint_hash"] = refreshed_hash
+        execution_payload = qa_status.get("execution")
+        if isinstance(execution_payload, dict):
+            execution_payload["spec_fingerprint"] = {
+                "fingerprint_hash": refreshed_hash,
+                "version": str(qa_status.get("version") or version),
+                "generated_at": str(refreshed_fingerprint.get("generated_at", "") or ""),
+            }
         auto_test_status_path = project_root / ".beacon" / "auto-test-status.json"
         if auto_test_status_path.exists():
             try:
@@ -803,13 +817,6 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
             str(feature_scorecard_path.relative_to(project_root)),
         ]
     )
-    _update_evidence_manifest(
-        project_root,
-        manifest_refs,
-        run_id=str(qa_status.get("run_id") or ""),
-        version=version,
-    )
-
     payload = {
         **plan,
         "run_id": str(qa_status.get("run_id") or ""),
@@ -844,11 +851,31 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
             feature=feature,
             run_id=str(qa_status.get("run_id") or plan.get("implementation_run_id") or "feature-qa"),
             payload=payload,
-            runtime=str(_extract_option(args, "--runtime") or "file"),
+            runtime=runtime,
         )
         payload["execution_surface"] = "qa-team"
         payload["context_isolation"] = payload["team_execution"].get("context_isolation", {})
-    write_feature_qa_status(project_root, feature=feature, payload=payload)
+    feature_status_file = write_feature_qa_status(project_root, feature=feature, payload=payload)
+    manifest_refs.extend(
+        [
+            str(feature_status_file.relative_to(project_root)),
+            str(feature_qa_plan_path(project_root, feature=feature).relative_to(project_root)),
+            str(feature_qa_matrix_path(project_root, feature=feature).relative_to(project_root)),
+            str(feature_exhaustiveness_report_path(project_root, feature=feature).relative_to(project_root)),
+            str(feature_qa_status_path(project_root, feature=feature).relative_to(project_root)),
+        ]
+    )
+    _update_evidence_manifest(
+        project_root,
+        manifest_refs,
+        run_id=str(qa_status.get("run_id") or ""),
+        version=version,
+    )
+    refresh_evidence_manifest(
+        project_root,
+        refs=list(dict.fromkeys(manifest_refs)),
+        version=str(qa_status.get("version") or version),
+    )
 
     exit_code = command_exit
     if exit_code == 0 and str(qa_status.get("status") or "").strip().lower() != "passed":
@@ -933,11 +960,18 @@ def evolve(
 ):
     """Compute the delta-aware rerun plan for a feature without executing QA."""
     project_root = Path(project).resolve() if project else Path.cwd()
-    plan = build_feature_qa_plan(project_root, version=version, feature=feature, execution_mode=mode)
+    plan = build_feature_qa_plan(
+        project_root,
+        version=version,
+        feature=feature,
+        execution_mode=mode,
+        persist=write_matrix,
+    )
     if write_matrix and plan.get("targeted_entries"):
         matrix_path = materialize_feature_qa_matrix(project_root, plan=plan)
         plan["feature_matrix_path"] = str(matrix_path.relative_to(project_root))
-    write_feature_qa_status(project_root, feature=feature, payload=plan)
+    if write_matrix:
+        write_feature_qa_status(project_root, feature=feature, payload=plan)
     if json_output:
         typer.echo(json.dumps(plan, ensure_ascii=False, indent=2))
         return

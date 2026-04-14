@@ -34,6 +34,14 @@ def _normalize_ids(values: Iterable[str] | None) -> set[str]:
     return out
 
 
+def _is_story_verification_complete(items: list[dict[str, Any]]) -> bool:
+    required_acs = [item for item in items if isinstance(item, dict) and item.get("kind") == "ac" and bool(item.get("required", True))]
+    required_tests = [item for item in items if isinstance(item, dict) and item.get("kind") == "test" and bool(item.get("required", True))]
+    ac_complete = all(str(item.get("status", "")).lower() in {"verified", "accepted"} for item in required_acs)
+    test_complete = all(str(item.get("status", "")).lower() in {"passed", "verified", "accepted"} for item in required_tests)
+    return bool(required_acs or required_tests) and ac_complete and test_complete
+
+
 def _existing_relative_paths(project_root: Path, candidates: Iterable[Path]) -> list[str]:
     refs: list[str] = []
     for candidate in candidates:
@@ -227,10 +235,27 @@ def record_verification_writeback(
             item["changed_in_revision"] = str(revision.get("revision_id", "R1"))
             verified += 1
     story["verification_evidence"] = [str(x) for x in (evidence_ref or []) if str(x).strip()]
-    story["status"] = "verified" if failed == 0 and verified > 0 else ("blocked" if failed > 0 else story.get("status", "draft"))
+    verification_complete = _is_story_verification_complete([item for item in story.get("items", []) if isinstance(item, dict)])
+    current_story_status = str(story.get("status", "draft") or "draft")
+    if failed > 0:
+        story["status"] = "blocked"
+    elif verification_complete:
+        story["status"] = "verified"
+    elif current_story_status in {"implemented", "verified", "accepted", "released"}:
+        story["status"] = current_story_status if current_story_status != "verified" else "implemented"
+    else:
+        story["status"] = "implemented" if verified > 0 else current_story_status
     save_story_state(project_root, version=resolved_version, feature=feature, state=story)
 
-    revision["delivery_status"] = "verified" if failed == 0 else "blocked"
+    current_delivery_status = str(revision.get("delivery_status", "") or "")
+    if failed > 0:
+        revision["delivery_status"] = "blocked"
+    elif verification_complete:
+        revision["delivery_status"] = "verified"
+    elif current_delivery_status in {"implemented", "verified", "accepted", "released"}:
+        revision["delivery_status"] = current_delivery_status if current_delivery_status != "verified" else "implemented"
+    elif verified > 0:
+        revision["delivery_status"] = "implemented"
     revision["last_verification_run_id"] = run_id
     revision["verification_evidence"] = [str(x) for x in (evidence_ref or []) if str(x).strip()]
     save_revision_state(project_root, version=resolved_version, feature=feature, state=revision)

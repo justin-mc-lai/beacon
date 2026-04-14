@@ -75,24 +75,38 @@ def _dir_check(name: str, expected: Path, actual: Path) -> dict[str, Any]:
     return payload
 
 
+def _duplicate_install_check(name: str, duplicate_root: Path) -> dict[str, Any]:
+    payload: dict[str, Any] = {
+        "name": name,
+        "kind": "duplicate_install",
+        "duplicate_path": str(duplicate_root),
+    }
+    payload["status"] = "drift" if duplicate_root.exists() else "match"
+    return payload
+
+
 def build_skill_drift_report(project_root: Path, *, home: Path | None = None) -> dict[str, Any]:
     root = project_root.resolve()
     user_home = (home or Path.home()).resolve()
     checks = [
-        _file_check(
-            "repo_root_vs_claude_root",
-            root / "SKILL.md",
-            user_home / ".claude" / "skills" / "beacon" / "SKILL.md",
+        _dir_check(
+            "repo_packaged_vs_agents_packaged",
+            root / "skills" / "beacon",
+            user_home / ".agents" / "skills" / "beacon",
+        ),
+        _duplicate_install_check(
+            "legacy_codex_duplicate_install",
+            user_home / ".codex" / "skills" / "beacon",
         ),
         _dir_check(
             "repo_packaged_vs_claude_packaged",
             root / "skills" / "beacon",
             user_home / ".claude" / "skills" / "beacon" / "skills" / "beacon",
         ),
-        _dir_check(
-            "repo_packaged_vs_codex_packaged",
-            root / "skills" / "beacon",
-            user_home / ".codex" / "skills" / "beacon",
+        _file_check(
+            "repo_root_vs_claude_root",
+            root / "SKILL.md",
+            user_home / ".claude" / "skills" / "beacon" / "SKILL.md",
         ),
     ]
     drift_count = len([item for item in checks if str(item.get("status")) == "drift"])

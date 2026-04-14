@@ -1305,7 +1305,9 @@ def _execute_qa9_tc_entries(
         tc_dir = evidence_root / "qa9-tc" / tc_id
         tc_dir.mkdir(parents=True, exist_ok=True)
 
-        if automation not in {"auto", "hybrid"}:
+        explicit_layer_command = bool(explicit_layer_overrides.get(qa_type))
+        executable_automation = automation in {"auto", "hybrid", "mixed"} or (automation == "manual" and explicit_layer_command)
+        if not executable_automation:
             tc_map[tc_id] = {
                 "tc_id": tc_id,
                 "ac_id": ac_id,

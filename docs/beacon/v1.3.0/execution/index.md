@@ -9,7 +9,7 @@
 5. `./codex-native-subagent-implementation-blueprint.md`
 6. `./codex-subagent-runtime-and-tmux-hud-blueprint.md`
 7. `./team-runtime-usage-guide.md`
-8. `../research/beacon-v1.3.0-codex-native-subagent-direction.md`
+8. `../../research/beacon-codex-native-subagent-direction-gstack-superpowers.md`
 9. `../think/beacon-v1.3.0-simplified-codex-native-subagents.md`
 10. `../user-story/beacon-v1.3.0-simplified-codex-native-subagents.md`
 11. `../prd/beacon-v1.3.0-simplified-codex-native-subagents.md`
@@ -30,6 +30,7 @@
 - `implement-team` 已完成 tmux runtime + HUD 实机落地；`qa-team` 已接入同一 runtime/HUD contract。
 - `implement-team` 的执行角色应补入实现期架构角色（`implementation-architect`），但该角色只允许写 execution-scoped artifacts。
 - `implement` 的 git branch / worktree / service-directory 约束应优先来自 versioned execution materials，而不是只写在全局 `beacon.config`。
+- Codex-native 子代理方向研究已提升到 `docs/beacon/research/` 全局目录；`v1.3.0` 只消费其结论，不再把该研究本体视为版本私有物料。
 - `./codex-subagent-runtime-and-tmux-hud-blueprint.md` 说明下一步如何把 team mode 推进到真实 tmux / pane 级多角色执行。
 - `./team-runtime-usage-guide.md` 是当前最适合操作者直接使用的 team runtime 手册。
 - 对实际项目执行 Beacon runtime 升级后，应先同步 machine requirement materials，再进入 `qa team-plan` / `qa team-run`：

@@ -414,10 +414,11 @@ def build_feature_qa_plan(
     version: str = "auto",
     feature: str,
     execution_mode: str = "feature-aware",
+    persist: bool = True,
 ) -> dict[str, Any]:
     resolved_version = resolve_target_version(project_root, version)
-    story = load_story_state(project_root, version=resolved_version, feature=feature, create_if_missing=True) or {}
-    revision = load_revision_state(project_root, version=resolved_version, feature=feature, create_if_missing=True)
+    story = load_story_state(project_root, version=resolved_version, feature=feature, create_if_missing=persist) or {}
+    revision = load_revision_state(project_root, version=resolved_version, feature=feature, create_if_missing=persist)
     source_matrix_path, source_matrix = _load_source_matrix(project_root, version=resolved_version, feature=feature, story=story)
     source_entries = source_matrix.get("entries") if isinstance(source_matrix.get("entries"), list) else []
     derived_entries = _derive_entries(feature, [item for item in source_entries if isinstance(item, dict)])
@@ -496,9 +497,10 @@ def build_feature_qa_plan(
         "targeted_scenario_families": targeted_scenario_families,
         "previous_run_id": str(previous_status.get("run_id") or "").strip() if isinstance(previous_status, dict) else "",
     }
-    write_json(feature_qa_plan_path(project_root, feature=feature), payload)
-    write_json(feature_qa_scenario_map_path(project_root, feature=feature), scenario_map)
-    write_json(docs_story_scenario_map_path(project_root, version=resolved_version, feature=feature), scenario_map)
+    if persist:
+        write_json(feature_qa_plan_path(project_root, feature=feature), payload)
+        write_json(feature_qa_scenario_map_path(project_root, feature=feature), scenario_map)
+        write_json(docs_story_scenario_map_path(project_root, version=resolved_version, feature=feature), scenario_map)
     return payload
 
 
@@ -1067,6 +1069,12 @@ def build_feature_qa_precision_artifacts(
             if str(item).strip()
         }
     )
+    executed_source_tc_ids = {
+        str(row.get("source_tc_id") or row.get("tc_id") or "").strip()
+        for row in scenario_results
+        if str(row.get("source_tc_id") or row.get("tc_id") or "").strip()
+    }
+    unexecuted_source_tc_ids = sorted(item for item in required_source_tc_ids if item not in executed_source_tc_ids)
     unresolved_source_tc_ids = sorted(
         {
             str(item.get("source_tc_id") or item.get("tc_id") or "").strip()
@@ -1077,7 +1085,7 @@ def build_feature_qa_precision_artifacts(
     )
     missing_test_case_ids = sorted(
         {
-            *[item for item in required_source_tc_ids if item not in {str(row.get("source_tc_id") or row.get("tc_id") or "").strip() for row in scenario_results}],
+            *unexecuted_source_tc_ids,
             *unresolved_source_tc_ids,
         }
     )
@@ -1113,10 +1121,13 @@ def build_feature_qa_precision_artifacts(
         "missing_test_case_ids": missing_test_case_ids,
         "open_closure_outcomes": unresolved_closure_outcomes,
     }
-    test_case_backfill_required = bool(
+    coverage_gap_remaining = bool(
         missing_scenario_families
         or missing_test_case_ids
         or list(exhaustiveness.get("missing_replay_scenarios") or [])
+    )
+    test_case_backfill_required = bool(
+        missing_scenario_families
     )
     release_ready = (
         bool(ac_reports)
@@ -1131,7 +1142,7 @@ def build_feature_qa_precision_artifacts(
         continue_decision = "stop_for_repair"
     elif release_ready:
         continue_decision = "ready_for_release"
-    elif test_case_backfill_required or unresolved_closure_outcomes or str(exhaustiveness.get("status") or "").strip().lower() != "passed":
+    elif coverage_gap_remaining or unresolved_closure_outcomes or str(exhaustiveness.get("status") or "").strip().lower() != "passed":
         continue_decision = "continue"
     resume_command = (
         f'beacon help --project-root {project_root} --version {str(plan.get("version") or "")} --feature "{feature}"'
@@ -1140,7 +1151,7 @@ def build_feature_qa_precision_artifacts(
         "action": "implement"
         if any(reason in {"implementation_reopened", "bug_filed"} for reason in stop_reasons)
         else ("verify-run" if project_gate_status == "blocked" else ("test-case-create" if test_case_backfill_required else "qa-repair")),
-        "reason": ", ".join(stop_reasons[:3]) if stop_reasons else ("coverage_gap_remaining" if test_case_backfill_required else "qa_round_incomplete"),
+        "reason": ", ".join(stop_reasons[:3]) if stop_reasons else ("coverage_gap_remaining" if coverage_gap_remaining else "qa_round_incomplete"),
         "command": (
             f'beacon implement run "{feature}" --project {project_root} --version {str(plan.get("version") or "")} --runner native-single'
             if any(reason in {"implementation_reopened", "bug_filed"} for reason in stop_reasons)
@@ -1150,7 +1161,7 @@ def build_feature_qa_precision_artifacts(
                 else (
                     f'beacon test-case create "{feature}" --project {project_root} --version {str(plan.get("version") or "")}'
                     if test_case_backfill_required
-                    else resume_command
+                    else (resume_command if coverage_gap_remaining else resume_command)
                 )
             )
         ),

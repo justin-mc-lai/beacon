@@ -7,6 +7,7 @@ from pathlib import Path
 from typer.testing import CliRunner
 
 from beacon.main import app
+from beacon.utils.v110_baseline import load_latest_spec_fingerprint
 
 
 runner = CliRunner()
@@ -141,6 +142,33 @@ def test_v119_qa_evolve_should_compute_feature_delta_plan(tmp_path: Path):
     assert "no_prior_feature_qa" in payload["reason_codes"]
 
 
+def test_v119_qa_evolve_no_write_matrix_should_not_materialize_state_files(tmp_path: Path):
+    _seed_feature_docs(tmp_path)
+    _mark_implemented(tmp_path)
+
+    result = _invoke(
+        [
+            "qa",
+            "evolve",
+            FEATURE,
+            "--project",
+            str(tmp_path),
+            "--version",
+            VERSION,
+            "--no-write-matrix",
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["status"] == "rerun_required"
+
+    feature_root = tmp_path / ".beacon" / "qa" / "features" / SLUG
+    assert not feature_root.exists()
+    docs_story_map = tmp_path / "docs" / "beacon" / VERSION / ".machine" / "qa" / f"{SLUG}.story-scenario-map.json"
+    assert not docs_story_map.exists()
+
+
 
 def test_v119_qa_run_feature_should_write_per_item_verification(tmp_path: Path):
     _seed_feature_docs(tmp_path)
@@ -181,6 +209,102 @@ def test_v119_qa_run_feature_should_write_per_item_verification(tmp_path: Path):
     assert statuses["AC-002"] == "verified"
     assert statuses["TEST-001"] == "passed"
     assert statuses["TEST-002"] == "passed"
+
+
+def test_v119_qa_run_team_mode_should_not_forward_runtime_to_auto_test(tmp_path: Path):
+    _seed_feature_docs(tmp_path)
+    _mark_implemented(tmp_path)
+    script = _write_passing_layer_script(tmp_path)
+
+    result = _invoke(
+        [
+            "qa",
+            "run",
+            FEATURE,
+            "--project",
+            str(tmp_path),
+            "--version",
+            VERSION,
+            "--team-mode",
+            "--runtime",
+            "file",
+            "--layer-command",
+            f"contract=sh {script}",
+            "--layer-command",
+            f"integration=sh {script}",
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["status"] == "passed"
+    assert payload["execution_surface"] == "qa-team"
+    assert payload["team_execution"]["runtime"] == "file"
+
+
+def test_v119_qa_run_should_execute_manual_and_mixed_cases_when_layer_command_is_explicit(tmp_path: Path):
+    _seed_feature_docs(tmp_path)
+    _mark_implemented(tmp_path)
+    script = _write_passing_layer_script(tmp_path)
+
+    matrix_path = tmp_path / "docs" / "beacon" / VERSION / ".machine" / "qa" / f"{SLUG}.ac-test-matrix.json"
+    matrix = json.loads(matrix_path.read_text(encoding="utf-8"))
+    entries = matrix.get("entries", [])
+    entries[0]["layer"] = "contract"
+    entries[0]["qa_type"] = "contract"
+    entries[0]["automation"] = "manual"
+    entries[1]["layer"] = "integration"
+    entries[1]["qa_type"] = "integration"
+    entries[1]["automation"] = "mixed"
+    matrix_path.write_text(json.dumps(matrix, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    result = _invoke(
+        [
+            "qa",
+            "run",
+            FEATURE,
+            "--project",
+            str(tmp_path),
+            "--version",
+            VERSION,
+            "--layer-command",
+            f"contract=sh {script}",
+            "--layer-command",
+            f"integration=sh {script}",
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    statuses = {item["tc_id"]: item["status"] for item in payload["per_item_results"]}
+    assert statuses == {"TC-001": "passed", "TC-002": "passed"}
+
+
+def test_v119_qa_run_should_sync_latest_spec_fingerprint_into_auto_test_status(tmp_path: Path):
+    _seed_feature_docs(tmp_path)
+    _mark_implemented(tmp_path)
+    script = _write_passing_layer_script(tmp_path)
+
+    result = _invoke(
+        [
+            "qa",
+            "run",
+            FEATURE,
+            "--project",
+            str(tmp_path),
+            "--version",
+            VERSION,
+            "--layer-command",
+            f"contract=sh {script}",
+            "--layer-command",
+            f"integration=sh {script}",
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0, result.stdout
+    latest_fingerprint = load_latest_spec_fingerprint(tmp_path, version=VERSION)
+    auto_status = json.loads((tmp_path / ".beacon" / "auto-test-status.json").read_text(encoding="utf-8"))
+    assert auto_status["spec_fingerprint_hash"] == latest_fingerprint["fingerprint_hash"]
 
 
 

@@ -419,7 +419,7 @@ def sync_check(
     project_root: str = typer.Option("", "--project-root", "--project", "-p", help="Project root path"),
     json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
 ):
-    """Check Beacon skill drift across repo, local Claude, and local Codex skill installs."""
+    """Check Beacon skill drift across repo, local Claude installs, and legacy Codex duplicates."""
     root = Path(project_root) if project_root else Path.cwd()
     payload = build_skill_drift_report(root)
     if json_output:

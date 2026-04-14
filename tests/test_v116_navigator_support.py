@@ -86,6 +86,31 @@ def test_story_and_revision_state_should_support_freeze_reopen_and_writeback(tmp
         record_acceptance_writeback(tmp_path, version=VERSION, feature=FEATURE, accepted_by="qa")
 
 
+def test_partial_verification_writeback_should_not_promote_story_or_revision_to_verified(tmp_path: Path):
+    _seed_user_story(tmp_path)
+    freeze_revision_state(tmp_path, version=VERSION, feature=FEATURE)
+    record_implementation_writeback(
+        tmp_path,
+        version=VERSION,
+        feature=FEATURE,
+        run_id="run-impl",
+        implemented_item_ids=["AC-001", "AC-002"],
+        changed_files=["beacon/utils/writeback.py"],
+    )
+
+    verify = record_verification_writeback(
+        tmp_path,
+        version=VERSION,
+        feature=FEATURE,
+        run_id="run-verify",
+        verified_item_ids=["AC-001"],
+        failed_item_ids=[],
+        evidence_ref=[".beacon/auto-test-status.json"],
+    )
+    assert verify["story"]["status"] == "implemented"
+    assert verify["revision"]["delivery_status"] == "implemented"
+
+
 def test_help_payload_should_recommend_freeze_then_implement_then_quality(tmp_path: Path):
     _seed_user_story(tmp_path)
 

@@ -31,6 +31,7 @@ _INIT_TOOLKIT_VERSION_RE = re.compile(r'^__toolkit_version__\s*=\s*"([^"]+)"\s*$
 _LEGACY_TRIGGER_RE = re.compile(r"/beacon:[a-z0-9-]+", re.IGNORECASE)
 _SEMVER_RE = re.compile(r"^v?(\d+)\.(\d+)\.(\d+)$")
 _SEMVER_SEARCH_RE = re.compile(r"v?\d+\.\d+\.\d+")
+_SHARED_DOCS_ROOT_NAMES = {"research"}
 
 _CONTEXT_FILES = ("AGENTS.md", "CLAUDE.md")
 
@@ -286,6 +287,8 @@ def _version_root_semantics_drift(project_root: Path) -> list[str]:
     for child in docs_root.iterdir():
         if not child.is_dir():
             continue
+        if child.name in _SHARED_DOCS_ROOT_NAMES:
+            continue
         key = release_line_key(child.name)
         if not key:
             invalid.append(f"{child}: invalid formal version root")
@@ -322,16 +325,13 @@ def _load_delivery_package_provenance(project_root: Path, version: str) -> dict[
             evidence.append(f"{filename}={candidate.relative_to(project_root)}")
             break
 
-    run_ids = sorted(
-        {
-            _normalize(str(item.get("payload", {}).get("run_id", "")).strip()) or str(item.get("payload", {}).get("run_id", "")).strip()
-            for item in payloads.values()
-            if str(item.get("payload", {}).get("run_id", "")).strip()
-        }
-    )
     source_payload = payloads.get("source.json", {}).get("payload", {}) if payloads.get("source.json") else {}
     manifest_payload = payloads.get("delivery-manifest.json", {}).get("payload", {}) if payloads.get("delivery-manifest.json") else {}
     terminal_payload = payloads.get("terminal.json", {}).get("payload", {}) if payloads.get("terminal.json") else {}
+    source_run_id = _normalize(str(source_payload.get("run_id", "")).strip()) or str(source_payload.get("run_id", "")).strip()
+    manifest_run_id = _normalize(str(manifest_payload.get("run_id", "")).strip()) or str(manifest_payload.get("run_id", "")).strip()
+    terminal_run_id = _normalize(str(terminal_payload.get("run_id", "")).strip()) or str(terminal_payload.get("run_id", "")).strip()
+    run_ids = sorted({run_id for run_id in (source_run_id, manifest_run_id, terminal_run_id) if run_id})
 
     has_formal_package = bool(
         payloads.get("source.json") and (payloads.get("delivery-manifest.json") or payloads.get("terminal.json"))
@@ -342,15 +342,33 @@ def _load_delivery_package_provenance(project_root: Path, version: str) -> dict[
         or source_payload.get("status")
         or ""
     ).strip()
+    terminal_status = str(terminal_payload.get("status") or "").strip()
+    preferred_run_id = ""
+    preferred_run_id_source = ""
+    if terminal_run_id:
+        preferred_run_id = terminal_run_id
+        preferred_run_id_source = "terminal.json"
+    elif manifest_run_id:
+        preferred_run_id = manifest_run_id
+        preferred_run_id_source = "delivery-manifest.json"
+    elif source_run_id:
+        preferred_run_id = source_run_id
+        preferred_run_id_source = "source.json"
     if run_ids:
         evidence.append(f"package_run_ids={run_ids}")
     if delivery_status:
         evidence.append(f"package_status={delivery_status}")
+    if terminal_status:
+        evidence.append(f"terminal_status={terminal_status}")
+    if preferred_run_id:
+        evidence.append(f"preferred_run_id={preferred_run_id} ({preferred_run_id_source})")
 
     return {
         "has_formal_package": has_formal_package,
         "run_ids": run_ids,
         "delivery_status": delivery_status,
+        "preferred_run_id": preferred_run_id,
+        "preferred_run_id_source": preferred_run_id_source,
         "evidence": evidence,
     }
 
@@ -390,9 +408,9 @@ def _stale_ptk_references(project_root: Path) -> list[str]:
 def _collect_install_copy_versions(runtime_skill_version: str) -> dict[str, Any]:
     install_paths = {
         "agents": Path.home() / ".agents" / "skills" / "beacon" / "SKILL.md",
-        "codex": Path.home() / ".codex" / "skills" / "beacon" / "SKILL.md",
         "claude": Path.home() / ".claude" / "skills" / "beacon" / "SKILL.md",
     }
+    legacy_codex_root = Path.home() / ".codex" / "skills" / "beacon"
     versions: dict[str, str] = {}
     evidence: list[str] = []
     for channel, path in install_paths.items():
@@ -403,15 +421,19 @@ def _collect_install_copy_versions(runtime_skill_version: str) -> dict[str, Any]
             versions[channel] = ""
             evidence.append(f"{channel}:missing ({path})")
 
+    legacy_codex_present = legacy_codex_root.exists()
+    evidence.append(f"codex_legacy_duplicate:{'present' if legacy_codex_present else 'absent'} ({legacy_codex_root})")
+
     resolved_runtime = _normalize(runtime_skill_version)
     existing_versions = {v for v in versions.values() if v}
     mismatched_with_runtime = any(v != resolved_runtime for v in existing_versions) if resolved_runtime else False
-    drift_detected = len(existing_versions) > 1 or mismatched_with_runtime
+    drift_detected = len(existing_versions) > 1 or mismatched_with_runtime or legacy_codex_present
 
     return {
         "versions": versions,
         "evidence": evidence,
         "drift_detected": drift_detected,
+        "legacy_codex_present": legacy_codex_present,
     }
 
 
@@ -789,11 +811,13 @@ def collect_compatibility_checks(
         "installed_skill_copy_drift": {
             "status": "WARN" if install_copy_versions.get("drift_detected") else "PASS",
             "severity": "medium",
-            "summary": "Installed beacon skill copies (agents/codex/claude) should stay on one runtime version.",
+            "summary": "Installed Beacon skill copies should use one canonical Codex root plus one Claude root.",
             "evidence": install_copy_versions.get("evidence", []),
-            "impact": "Version drift across local skill copies can cause trigger mismatch and inconsistent behavior.",
+            "impact": "Duplicate Codex roots or version drift across local skill copies can cause repeated public skills and inconsistent trigger behavior.",
             "repair": [
-                "Sync ~/.agents/skills/beacon, ~/.codex/skills/beacon, ~/.claude/skills/beacon to the same version.",
+                "For Codex, keep only ~/.agents/skills/beacon as the canonical Beacon skill root.",
+                "Remove ~/.codex/skills/beacon if it exists, then restart Codex.",
+                "Sync ~/.agents/skills/beacon and ~/.claude/skills/beacon to the same version.",
                 "Reinstall/update launchers with `beacon doctor setup` if CLI entry mismatch persists.",
             ],
         },
@@ -978,7 +1002,13 @@ def build_doctor_payload(
     version_context = describe_project_version_context(normalized_root, docs_version=version or None)
     latest_version = str(version_context.get("docs_version", "") or project_versions.get("latest_iteration_version", "")).strip() or "v1.0.0"
     artifact_view = compute_artifact_stage_view(normalized_root, latest_version)
-    workflow_progress = compute_workflow_progress(normalized_root, version=latest_version)
+    delivery_provenance = _load_delivery_package_provenance(normalized_root, latest_version)
+    preferred_run_id = str(delivery_provenance.get("preferred_run_id", "") or "").strip() or None
+    workflow_progress = compute_workflow_progress(
+        normalized_root,
+        run_id=preferred_run_id,
+        version=latest_version,
+    )
     memory_view = {
         "run_id": workflow_progress.get("run_id") or "",
         "next_stage": workflow_progress.get("next_stage"),

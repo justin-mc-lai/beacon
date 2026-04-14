@@ -42,12 +42,21 @@ def _seed_codex_skill(home: Path, repo_root: Path) -> None:
         target.write_text(source.read_text(encoding="utf-8"), encoding="utf-8")
 
 
+def _seed_agents_skill(home: Path, repo_root: Path) -> None:
+    agents_root = home / ".agents" / "skills" / "beacon"
+    agents_root.mkdir(parents=True, exist_ok=True)
+    for rel in ("SKILL.md", "metadata.json"):
+        target = agents_root / rel
+        source = repo_root / "skills" / "beacon" / rel
+        target.write_text(source.read_text(encoding="utf-8"), encoding="utf-8")
+
+
 def test_build_skill_drift_report_should_pass_when_all_targets_match(tmp_path: Path, monkeypatch):
     repo_root = tmp_path / "repo"
     home = tmp_path / "home"
     _seed_repo_skill(repo_root)
     _seed_claude_skill(home, repo_root)
-    _seed_codex_skill(home, repo_root)
+    _seed_agents_skill(home, repo_root)
     monkeypatch.setenv("HOME", str(home))
 
     payload = build_skill_drift_report(repo_root)
@@ -56,20 +65,20 @@ def test_build_skill_drift_report_should_pass_when_all_targets_match(tmp_path: P
     assert payload["missing_count"] == 0
 
 
-def test_skill_sync_check_should_fail_when_codex_skill_drifts(tmp_path: Path, monkeypatch):
+def test_skill_sync_check_should_fail_when_legacy_codex_duplicate_exists(tmp_path: Path, monkeypatch):
     repo_root = tmp_path / "repo"
     home = tmp_path / "home"
     _seed_repo_skill(repo_root)
     _seed_claude_skill(home, repo_root)
+    _seed_agents_skill(home, repo_root)
     _seed_codex_skill(home, repo_root)
-    (home / ".codex" / "skills" / "beacon" / "SKILL.md").write_text("# drifted codex skill\n", encoding="utf-8")
     monkeypatch.setenv("HOME", str(home))
 
     result = runner.invoke(app, ["skill", "sync-check", "--project-root", str(repo_root), "--json"])
     assert result.exit_code == 2, result.stdout
     payload = json.loads(result.stdout)
     assert payload["status"] == "fail"
-    assert any(item["name"] == "repo_packaged_vs_codex_packaged" and item["status"] == "drift" for item in payload["checks"])
+    assert any(item["name"] == "legacy_codex_duplicate_install" and item["status"] == "drift" for item in payload["checks"])
 
 
 def test_check_skill_drift_script_should_emit_json(tmp_path: Path, monkeypatch):
@@ -77,7 +86,7 @@ def test_check_skill_drift_script_should_emit_json(tmp_path: Path, monkeypatch):
     home = tmp_path / "home"
     _seed_repo_skill(repo_root)
     _seed_claude_skill(home, repo_root)
-    _seed_codex_skill(home, repo_root)
+    _seed_agents_skill(home, repo_root)
     monkeypatch.setenv("HOME", str(home))
 
     result = subprocess.run(

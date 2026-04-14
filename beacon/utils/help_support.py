@@ -200,6 +200,8 @@ def _blocking_reasons(
         reasons.append("revision_superseded")
     if (coverage.get("planned_story", 0) or 0) <= 0:
         reasons.append("missing_user_story")
+    if delivery_status in {"implemented", "verifying", "verified", "accepted", "released"} and not bool(coverage.get("full_coverage", False)):
+        reasons.append("coverage_incomplete")
     if delivery_status == "blocked":
         reasons.append("workflow_blocked")
     gate_issues = profile_gate.get("issues", []) if isinstance(profile_gate, dict) and isinstance(profile_gate.get("issues"), list) else []
@@ -321,7 +323,7 @@ def _next_step(
             "reason": "qa coverage is incomplete but no severe blocker requires stopping the round",
             "command": _preferred_qa_command(feature=feature, project_root=project_root, version=version, base=base),
         }
-    if continue_decision == "ready_for_release":
+    if continue_decision == "ready_for_release" and not blocked:
         return {
             "action": "release-check",
             "reason": "current QA round is ready for release/governance evaluation",
@@ -419,6 +421,12 @@ def _next_step(
                 "action": "review-quality",
                 "reason": "verification is failing and quality review / fixes are required",
                 "command": f"beacon review quality {quoted_feature} {base}",
+            }
+        if "coverage_incomplete" in blocking_reasons:
+            return {
+                "action": "qa-run",
+                "reason": "coverage is still incomplete; do not advance to release-check until remaining AC/test evidence is closed",
+                "command": _preferred_qa_command(feature=feature, project_root=project_root, version=version, base=base),
             }
         return {
             "action": "doctor-advise",
