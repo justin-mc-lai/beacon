@@ -9,6 +9,12 @@ from typing import Any
 from beacon.utils.control_plane import build_resume_contract
 from beacon.utils.coverage import compute_coverage_metrics
 from beacon.utils.governance import evaluate_takeover_baseline_gate, load_project_mode
+from beacon.utils.implementation_plan import (
+    build_implementation_plan_gate_payload,
+    implementation_plan_supported,
+    load_implementation_plan,
+    load_implementation_plan_progress,
+)
 from beacon.utils.learning_loop import load_learning_plane_contract
 from beacon.utils.project_skills import (
     default_project_profile,
@@ -17,8 +23,10 @@ from beacon.utils.project_skills import (
     resolve_profile_for_feature,
 )
 from beacon.utils.qa_precision import load_feature_qa_scorecard
+from beacon.utils.requirement_clarity import build_requirement_clarity_gate_payload
 from beacon.utils.revision_state import load_revision_state
 from beacon.utils.runtime import load_run_state
+from beacon.utils.skill_discovery import build_discovery_hint, load_skill_discovery
 from beacon.utils.scoring import (
     compute_closure_score,
     compute_quality_score,
@@ -26,8 +34,42 @@ from beacon.utils.scoring import (
     compute_test_score,
 )
 from beacon.utils.story_state import feature_slug, load_story_state, summarize_story_items
-from beacon.utils.versioning import describe_project_version_context, resolve_docs_version
+from beacon.utils.versioning import describe_project_version_context, normalize_version, release_line_key, resolve_docs_version
 from beacon.utils.workflow_memory import compute_workflow_progress, resolve_workflow_run_id
+
+
+def _semver_tuple(version: str | None) -> tuple[int, int, int]:
+    text = str(release_line_key(version) or normalize_version(version) or version or "").strip().lstrip("v")
+    try:
+        major, minor, patch = text.split(".")
+        return (int(major), int(minor), int(patch))
+    except Exception:  # noqa: BLE001
+        return (0, 0, 0)
+
+
+def _preferred_implement_runner(version: str) -> str:
+    return "codex-subagents" if _semver_tuple(version) >= (1, 3, 0) else "native-single"
+
+
+def _preferred_implement_command(*, feature: str, project_root: Path, version: str, base: str) -> str:
+    quoted_feature = json.dumps(feature, ensure_ascii=False)
+    if _semver_tuple(version) >= (1, 3, 0):
+        return f"beacon implement dev-run {quoted_feature} --project {project_root} --version {version}"
+    return f"beacon implement run {quoted_feature} {base} --runner {_preferred_implement_runner(version)}"
+
+
+def _preferred_plan_or_dev_command(*, feature: str, project_root: Path, version: str) -> str:
+    quoted_feature = json.dumps(feature, ensure_ascii=False)
+    if _semver_tuple(version) >= (1, 3, 0):
+        return f"beacon implement dev-run {quoted_feature} --project {project_root} --version {version}"
+    return f"beacon implement plan {quoted_feature} --project-root {project_root} --version {version}"
+
+
+def _preferred_qa_command(*, feature: str, project_root: Path, version: str, base: str) -> str:
+    quoted_feature = json.dumps(feature, ensure_ascii=False)
+    if _semver_tuple(version) >= (1, 3, 0):
+        return f"beacon qa team-run {quoted_feature} --project {project_root} --version {version}"
+    return f"beacon qa run {quoted_feature} --project {project_root} --version {version} --json"
 
 
 def _read_json(path: Path) -> dict[str, Any]:
@@ -76,6 +118,17 @@ def _profile_binding_source(project_root: Path, *, version: str, feature: str) -
     return "none"
 
 
+def _supports_skill_discover(version: str) -> bool:
+    normalized = release_line_key(version) or normalize_version(version) or ""
+    if not normalized.startswith("v"):
+        return False
+    try:
+        major, minor, patch = [int(part) for part in normalized[1:].split(".")]
+    except Exception:  # noqa: BLE001
+        return False
+    return (major, minor, patch) >= (1, 2, 0)
+
+
 def _stage_local_execution_binding(
     *,
     profile: dict[str, Any] | None,
@@ -113,12 +166,24 @@ def _blocking_reasons(
     revision_state: dict[str, Any],
     workflow_progress: dict[str, Any],
     coverage: dict[str, Any],
+    version_guard: dict[str, Any] | None = None,
     profile_gate: dict[str, Any] | None = None,
     control_plane: dict[str, Any] | None = None,
     feature_scorecard: dict[str, Any] | None = None,
     takeover_gate: dict[str, Any] | None = None,
+    implementation_plan_gate: dict[str, Any] | None = None,
+    requirement_clarity_gate: dict[str, Any] | None = None,
 ) -> list[str]:
     reasons: list[str] = []
+    feature_scorecard = feature_scorecard if isinstance(feature_scorecard, dict) else {}
+    delivery_status = str(revision_state.get("delivery_status", "") or "")
+    continue_decision = str(feature_scorecard.get("continue_decision") or "").strip()
+    freeze_gate_exempt = delivery_status in {"implemented", "verifying", "verified", "accepted", "released"} or continue_decision == "ready_for_release"
+
+    if isinstance(version_guard, dict) and str(version_guard.get("status", "") or "") == "blocked":
+        code = str(version_guard.get("reason_code", "") or "").strip()
+        if code:
+            reasons.append(code)
     if isinstance(takeover_gate, dict) and str(takeover_gate.get("status", "") or "") == "blocked":
         reasons.append("takeover_baseline_required")
         reasons.extend(
@@ -126,8 +191,7 @@ def _blocking_reasons(
             for item in (takeover_gate.get("issues") or [])
             if isinstance(item, dict)
         )
-    delivery_status = str(revision_state.get("delivery_status", "") or "")
-    if str(revision_state.get("doc_status", "") or "draft") != "frozen":
+    if str(revision_state.get("doc_status", "") or "draft") != "frozen" and not freeze_gate_exempt:
         reasons.append("revision_not_frozen")
     verify_status = str(workflow_progress.get("stages", {}).get("verify", {}).get("status", "") or "")
     if verify_status == "failed":
@@ -145,7 +209,6 @@ def _blocking_reasons(
         code = str(item.get("reason_code", "") or "").strip()
         if code:
             reasons.append(code)
-    feature_scorecard = feature_scorecard if isinstance(feature_scorecard, dict) else {}
     if str(feature_scorecard.get("continue_decision") or "").strip() == "stop_for_repair":
         reasons.append("qa_stop_for_repair")
         reasons.extend(
@@ -155,6 +218,14 @@ def _blocking_reasons(
         )
     if isinstance(control_plane, dict) and int(control_plane.get("failure_streak", 0) or 0) > 0:
         reasons.append("control_plane_escalation_active")
+    if isinstance(requirement_clarity_gate, dict) and bool(requirement_clarity_gate.get("blocked")):
+        code = str(requirement_clarity_gate.get("reason_code", "") or "").strip()
+        if code:
+            reasons.append(code)
+    if isinstance(implementation_plan_gate, dict) and bool(implementation_plan_gate.get("blocked")):
+        code = str(implementation_plan_gate.get("reason_code", "") or "").strip()
+        if code:
+            reasons.append(code)
     return _unique_reasons_in_order(reasons)
 
 
@@ -173,6 +244,10 @@ def _next_step(
     feature_scorecard: dict[str, Any] | None = None,
     project_mode: str = "greenfield",
     stage_binding: dict[str, str] | None = None,
+    implementation_plan_gate: dict[str, Any] | None = None,
+    requirement_clarity_gate: dict[str, Any] | None = None,
+    version_guard: dict[str, Any] | None = None,
+    discovery_hint: dict[str, Any] | None = None,
 ) -> dict[str, str]:
     quoted_feature = json.dumps(feature, ensure_ascii=False)
     base = f'--project-root {project_root} --version {version}'
@@ -205,7 +280,7 @@ def _next_step(
             return {
                 "action": "implement",
                 "reason": "qa round found an implementation blocker that must be fixed before the next round",
-                "command": f"beacon implement run {quoted_feature} --project {project_root} --version {version} --runner native-single",
+                "command": _preferred_implement_command(feature=feature, project_root=project_root, version=version, base=base),
             }
         if bool(feature_scorecard.get("test_case_backfill_required")):
             return {
@@ -244,7 +319,7 @@ def _next_step(
         return {
             "action": "qa-run",
             "reason": "qa coverage is incomplete but no severe blocker requires stopping the round",
-            "command": f"beacon qa run {quoted_feature} --project {project_root} --version {version} --json",
+            "command": _preferred_qa_command(feature=feature, project_root=project_root, version=version, base=base),
         }
     if continue_decision == "ready_for_release":
         return {
@@ -254,6 +329,57 @@ def _next_step(
         }
 
     if blocked:
+        if "context_version_mismatch" in blocking_reasons:
+            recommended_version = str((version_guard or {}).get("recommended_version", "") or "")
+            command_version = recommended_version or version
+            return {
+                "action": "use-context-version",
+                "reason": "the requested version conflicts with the current managed context and would write to the wrong docs line",
+                "command": f"beacon help --project-root {project_root} --version {command_version} --feature {quoted_feature}",
+            }
+        if "requirement_clarity_open" in blocking_reasons:
+            report_path = ""
+            if isinstance(requirement_clarity_gate, dict):
+                report_path = str(requirement_clarity_gate.get("report_json_path", "") or "")
+            return {
+                "action": "requirement-clarity",
+                "reason": "requirements still contain unresolved or ambiguous items and must be clarified before freeze",
+                "command": report_path or f"beacon doctor sync-requirement-clarity {quoted_feature} --project-root {project_root} --version {version} --json",
+            }
+        if any(
+            reason in {
+                "technical_review_contract_missing",
+                "technical_review_contract_invalid",
+                "implementation_plan_missing",
+                "implementation_plan_invalid",
+                "implementation_plan_feature_version_mismatch",
+                "implementation_plan_revision_mismatch",
+                "implementation_plan_baseline_mismatch",
+                "implementation_plan_source_refs_incomplete",
+            }
+            for reason in blocking_reasons
+        ):
+            if any(reason in {"technical_review_contract_missing", "technical_review_contract_invalid"} for reason in blocking_reasons):
+                contract_path = ""
+                if isinstance(implementation_plan_gate, dict):
+                    tech_gate = implementation_plan_gate.get("technical_review_gate") if isinstance(implementation_plan_gate.get("technical_review_gate"), dict) else {}
+                    contract_path = str(tech_gate.get("contract_json_path", "") or "")
+                return {
+                    "action": "technical-review-contract",
+                    "reason": "implementation requires a deterministic technical review contract before planning or coding can proceed",
+                    "command": contract_path or f"docs/beacon/{version}/.machine/execution/deterministic-implementation-contract-<feature>.json",
+                }
+            if _supports_skill_discover(version) and not profile and bool((discovery_hint or {}).get("recommended", False)):
+                return {
+                    "action": "skill-discover",
+                    "reason": str((discovery_hint or {}).get("reason") or "project skill onboarding is not configured; discover a bounded project profile before implementation planning"),
+                    "command": str((discovery_hint or {}).get("command") or f"beacon skill discover --project-root {project_root} --json"),
+                }
+            return {
+                "action": "implement-plan",
+                "reason": "implementation requires execution-ready planning aligned to the active frozen revision",
+                "command": _preferred_plan_or_dev_command(feature=feature, project_root=project_root, version=version),
+            }
         if "control_plane_escalation_active" in blocking_reasons and isinstance(control_plane, dict):
             run_id = str(control_plane.get("run_id", "") or "")
             run_arg = f" {run_id}" if run_id else ""
@@ -308,6 +434,13 @@ def _next_step(
             "command": f"beacon freeze {quoted_feature} {base}",
         }
 
+    if _supports_skill_discover(version) and not profile and delivery_status in {"", "idle", "draft"} and bool((discovery_hint or {}).get("recommended", False)):
+        return {
+            "action": "skill-discover",
+            "reason": str((discovery_hint or {}).get("reason") or "project skill onboarding can be configured before implementation proceeds"),
+            "command": str((discovery_hint or {}).get("command") or f"beacon skill discover --project-root {project_root} --json"),
+        }
+
     if profile:
         profile_id = str((profile or {}).get("profile_id", "") or "")
         gate_status = str((profile_gate or {}).get("status", "") or "")
@@ -343,17 +476,16 @@ def _next_step(
             }
 
     if doc_status == "frozen" and delivery_status in {"", "idle", "draft"}:
+        if isinstance(implementation_plan_gate, dict) and bool(implementation_plan_gate.get("blocked")):
+            return {
+                "action": "implement-plan",
+                "reason": "implementation requires execution-ready planning aligned to the frozen revision baseline",
+                "command": _preferred_plan_or_dev_command(feature=feature, project_root=project_root, version=version),
+            }
         return {
             "action": "implement",
             "reason": "revision is frozen and ready for native implementation",
-            "command": f"beacon implement run {quoted_feature} {base} --runner native-single",
-        }
-
-    if not run_id:
-        return {
-            "action": "workflow-start",
-            "reason": "no active workflow run found for the requested feature/version",
-            "command": f"beacon workflow start {quoted_feature} --project {project_root} --version {version}",
+            "command": _preferred_implement_command(feature=feature, project_root=project_root, version=version, base=base),
         }
 
     if delivery_status in {"implemented", "verifying", "verified"} or next_stage == "verify":
@@ -361,6 +493,20 @@ def _next_step(
             "action": "review-quality",
             "reason": "implementation exists; next step is verification/review closure",
             "command": f"beacon review quality {quoted_feature} {base}",
+        }
+
+    if delivery_status in {"accepted"}:
+        return {
+            "action": "release-check",
+            "reason": "accepted revision can move to release readiness evaluation",
+            "command": f"beacon gate check release --project-root {project_root} --version {version}",
+        }
+
+    if not run_id:
+        return {
+            "action": "workflow-start",
+            "reason": "no active workflow run found for the requested feature/version",
+            "command": f"beacon workflow start {quoted_feature} --project {project_root} --version {version}",
         }
 
     if next_stage in {"think", "user-story", "prd", "prototype", "test-case"}:
@@ -392,6 +538,7 @@ def build_help_payload(
 ) -> dict[str, Any]:
     version_context = describe_project_version_context(project_root, docs_version=version or None)
     resolved_version = str(version_context.get("docs_version", "") or resolve_docs_version(project_root, version))
+    version_guard = version_context.get("context_version_guard") if isinstance(version_context.get("context_version_guard"), dict) else {}
     feature_name = feature or ""
     revision_state = load_revision_state(
         project_root,
@@ -432,7 +579,24 @@ def build_help_payload(
         else {}
     )
     feature_scorecard = load_feature_qa_scorecard(project_root, feature=feature_name) if feature_name else {}
+    discovery_state = load_skill_discovery(project_root) if _supports_skill_discover(resolved_version) else None
+    discovery_hint = build_discovery_hint(project_root) if _supports_skill_discover(resolved_version) and feature_name else {}
     control_plane = build_resume_contract(project_root, run_id=resolved_run_id or None)
+    plan_supported = bool(feature_name and implementation_plan_supported(resolved_version))
+    implementation_plan_gate = (
+        build_implementation_plan_gate_payload(project_root, version=resolved_version, feature=feature_name, run_id=resolved_run_id)
+        if plan_supported
+        else {}
+    )
+    implementation_plan = load_implementation_plan(project_root, version=resolved_version, feature=feature_name) if plan_supported else {}
+    implementation_plan_progress = load_implementation_plan_progress(project_root, version=resolved_version, feature=feature_name) if plan_supported else {}
+    requirement_clarity_gate = (
+        build_requirement_clarity_gate_payload(project_root, version=resolved_version, feature=feature_name)
+        if feature_name
+        else {}
+    )
+    if isinstance(requirement_clarity_gate, dict) and feature_name:
+        requirement_clarity_gate["report_json_path"] = f"docs/beacon/{resolved_version}/.machine/execution/requirement-clarity-{feature_slug(feature_name)}.json"
     stage_binding = _stage_local_execution_binding(
         profile=profile,
         revision_state=revision_state,
@@ -442,10 +606,13 @@ def build_help_payload(
         revision_state=revision_state,
         workflow_progress=workflow_progress,
         coverage=coverage,
+        version_guard=version_guard,
         profile_gate=profile_gate,
         control_plane=control_plane,
         feature_scorecard=feature_scorecard,
         takeover_gate=takeover_gate,
+        implementation_plan_gate=implementation_plan_gate,
+        requirement_clarity_gate=requirement_clarity_gate,
     )
     blocked = bool(blocking)
     current_stage = _infer_current_stage(revision_state=revision_state, workflow_progress=workflow_progress)
@@ -484,6 +651,10 @@ def build_help_payload(
         feature_scorecard=feature_scorecard,
         project_mode=project_mode,
         stage_binding=stage_binding,
+        implementation_plan_gate=implementation_plan_gate,
+        requirement_clarity_gate=requirement_clarity_gate,
+        version_guard=version_guard,
+        discovery_hint=discovery_hint,
     )
     decision_trace = [
         {
@@ -494,6 +665,8 @@ def build_help_payload(
             "current_runtime_release_line": str(version_context.get("current_runtime_release_line", "") or ""),
             "release_truth_status": str(version_context.get("release_truth_status", "") or ""),
             "version_truth_source": str(version_context.get("version_truth_source", "") or ""),
+            "context_guard_status": str(version_guard.get("status", "") or ""),
+            "context_guard_recommended_version": str(version_guard.get("recommended_version", "") or ""),
         },
         {
             "step": "project_mode",
@@ -507,6 +680,17 @@ def build_help_payload(
             "binding_source": profile_binding_source,
         },
         {
+            "step": "skill_discovery",
+            "status": "resolved" if discovery_state else "not_configured",
+            "selected_template": str((discovery_state or {}).get("selected_template", "") or ""),
+            "applied": bool((discovery_state or {}).get("applied", False)),
+        },
+        {
+            "step": "skill_discovery_hint",
+            "status": "recommended" if bool((discovery_hint or {}).get("recommended", False)) else "not_recommended",
+            "templates": list((discovery_hint or {}).get("templates", [])),
+        },
+        {
             "step": "stage_local_execution_binding",
             "status": str(stage_binding.get("status", "") or "not_configured"),
             "stage": str(stage_binding.get("stage", "") or ""),
@@ -516,6 +700,13 @@ def build_help_payload(
             "step": "learning_surface",
             "status": "resolved",
             "subject_surface": learning_surface.get("subject_surface", []),
+        },
+        {
+            "step": "implementation_plan",
+            "status": str(implementation_plan_gate.get("status", "not_configured") or "not_configured"),
+            "plan_id": str(implementation_plan.get("plan_id", "") or ""),
+            "next_task_id": str(implementation_plan_progress.get("next_task_id", "") or ""),
+            "reason_code": str(implementation_plan_gate.get("reason_code", "") or ""),
         },
     ]
     scores = {
@@ -544,6 +735,8 @@ def build_help_payload(
         "docs_version": resolved_version,
         "runtime_version": str(version_context.get("runtime_version", "") or ""),
         "version_context": version_context,
+        "version_semantics": version_context.get("version_semantics", {}),
+        "context_version_guard": version_guard,
         "feature": feature_name,
         "feature_slug": feature_slug(feature_name),
         "version": resolved_version,
@@ -570,9 +763,15 @@ def build_help_payload(
         }
         if profile
         else None,
+        "skill_discovery": discovery_state,
+        "skill_discovery_hint": discovery_hint,
         "project_gate": profile_gate,
         "execution_surface": execution_surface,
         "learning_surface": learning_surface,
+        "implementation_plan": implementation_plan,
+        "implementation_plan_gate": implementation_plan_gate,
+        "implementation_plan_progress": implementation_plan_progress,
+        "requirement_clarity_gate": requirement_clarity_gate,
         "decision_trace": decision_trace,
         "takeover_gate": takeover_gate,
         "feature_scorecard": feature_scorecard if isinstance(feature_scorecard, dict) else {},

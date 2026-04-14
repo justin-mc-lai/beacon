@@ -140,9 +140,6 @@ def _resolve_launcher_sources(launcher_source: str | Path) -> tuple[dict[str, Pa
 
         if "beacon" not in resolved and "beacon-cli" in resolved:
             resolved["beacon"] = resolved["beacon-cli"]
-            warnings.append(
-                f"launcher source missing beacon, fallback to beacon-cli: {resolved['beacon-cli']}"
-            )
 
         if "beacon-cli" not in resolved and "beacon" in resolved:
             resolved["beacon-cli"] = resolved["beacon"]
@@ -159,8 +156,27 @@ def _resolve_launcher_sources(launcher_source: str | Path) -> tuple[dict[str, Pa
     return {}, warnings
 
 
-def _build_launcher_script(launcher_name: str, source_path: Path) -> str:
+def _build_launcher_script(
+    launcher_name: str,
+    source_path: Path,
+    *,
+    beacon_cli_source: Path | None = None,
+) -> str:
     source_exec = shlex.quote(str(source_path))
+    if launcher_name == "beacon" and beacon_cli_source is not None:
+        beacon_cli_exec = shlex.quote(str(beacon_cli_source))
+        source_exec = (
+            f"python3 -m beacon.main \"$@\"\n"
+            f"# fallback-cli: {beacon_cli_exec}"
+        )
+        return (
+            "#!/usr/bin/env bash\n"
+            f"{DOCTOR_MANAGED_MARKER}\n"
+            f"{DOCTOR_NAME_MARKER}{launcher_name}\n"
+            f"{DOCTOR_SOURCE_MARKER}{source_path}\n"
+            "set -euo pipefail\n"
+            f"exec {source_exec}\n"
+        )
     return (
         "#!/usr/bin/env bash\n"
         f"{DOCTOR_MANAGED_MARKER}\n"
@@ -198,6 +214,7 @@ def install_launchers(
     for target in launcher_targets(target_dir):
         launcher_name = target.name
         source_path = sources.get(launcher_name)
+        beacon_cli_source = sources.get("beacon-cli")
         target_str = str(target)
 
         if source_path is None:
@@ -208,12 +225,22 @@ def install_launchers(
         if not os.access(source_path, os.X_OK):
             result["warnings"].append(f"launcher source is not executable: {source_path}")
 
-        expected_content = _build_launcher_script(launcher_name, source_path)
+        expected_content = _build_launcher_script(
+            launcher_name,
+            source_path,
+            beacon_cli_source=beacon_cli_source,
+        )
 
         if target.exists() and target.is_dir():
             result["skipped"].append(target_str)
             result["warnings"].append(f"target path is a directory, skip: {target}")
             continue
+
+        if target.is_symlink():
+            if dry_run:
+                result["warnings"].append(f"dry-run: would replace symlink launcher with regular file: {target}")
+            else:
+                target.unlink(missing_ok=True)
 
         managed = is_doctor_managed_launcher(target)
         if target.exists() and not managed and not force:

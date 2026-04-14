@@ -1,0 +1,69 @@
+{
+  "active": true,
+  "team_name": "qa-team-run-20260411T103751883212",
+  "task": "QA verify beacon-v1.3.0-simplified-codex-native-subagents",
+  "runtime": "file",
+  "feature": "beacon-v1.3.0-simplified-codex-native-subagents",
+  "version": "v1.3.0",
+  "run_id": "run-20260411T103751883212",
+  "surface_dir": "qa-team",
+  "state": "terminal",
+  "terminal_status": "Blocked",
+  "started_at": "2026-04-11T03:43:13.117161+00:00",
+  "ended_at": "2026-04-11T03:43:13.117161+00:00",
+  "workers": [
+    {
+      "id": "worker-001",
+      "role": "verifier",
+      "status": "completed"
+    },
+    {
+      "id": "worker-002",
+      "role": "repair-handoff-writer",
+      "status": "completed"
+    }
+  ],
+  "tasks": [
+    {
+      "id": 1,
+      "description": "Verify QA evidence and blockers",
+      "status": "completed",
+      "worker": "worker-001"
+    },
+    {
+      "id": 2,
+      "description": "Write repair handoff when blocked",
+      "status": "completed",
+      "worker": "worker-002"
+    }
+  ],
+  "review_gates": {
+    "spec": {
+      "status": "pass",
+      "reviewer": "verifier"
+    },
+    "quality": {
+      "status": "blocked",
+      "reviewer": "repair-handoff-writer"
+    }
+  },
+  "fix_loops": 0,
+  "context_isolation": {
+    "role_plane": "qa",
+    "isolated_from": [
+      "implement-team"
+    ],
+    "shared_inputs": [
+      "docs/beacon/<version>/qa/test-cases",
+      "implementation_summary",
+      "technical_archive",
+      "evidence_refs"
+    ],
+    "shared_outputs": [
+      "feature_scorecard",
+      "repair_handoff",
+      "qa_status"
+    ],
+    "rule": "qa_must_not_inherit_implement_private_context"
+  }
+}

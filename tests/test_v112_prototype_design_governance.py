@@ -15,7 +15,12 @@ def _invoke(args: list[str]):
     return runner.invoke(app, args)
 
 
-def _prepare_design_governed_sources(tmp_path: Path, feature: str, version: str = "v1.1.12") -> None:
+def _prepare_design_governed_sources(
+    tmp_path: Path,
+    feature: str,
+    version: str = "v1.1.12",
+    extra_lines: list[str] | None = None,
+) -> None:
     slug = feature.lower().replace(" ", "-")
     us_dir = tmp_path / "docs" / "beacon" / version / "user-story"
     prd_dir = tmp_path / "docs" / "beacon" / version / "prd"
@@ -56,6 +61,7 @@ def _prepare_design_governed_sources(tmp_path: Path, feature: str, version: str 
             "  - loading",
             "  - error",
             "  - completed",
+            *(extra_lines or []),
         ]
     )
     (us_dir / f"{slug}.md").write_text(body, encoding="utf-8")
@@ -118,6 +124,56 @@ def test_design_governance_plan_and_review_emit_artifacts(tmp_path: Path):
     assert "design_system_contract_present" in check_names
     assert "design_prompt_present" in check_names
     assert "web_guideline_review_generated" in check_names
+
+
+def test_design_governance_directory_command_and_style_analysis_artifacts(tmp_path: Path):
+    feature = "Design Governed Prototype"
+    version = "v1.1.12"
+    _prepare_design_governed_sources(tmp_path, feature, version)
+
+    create = _invoke(["prototype", "create", feature, "--project", str(tmp_path), "--version", version, "--json"])
+    assert create.exit_code == 0, create.stdout
+
+    root = tmp_path / "docs" / "beacon" / version / "prototype" / "design-governed-prototype"
+    style_analysis = json.loads((root / "ui-style-analysis.json").read_text(encoding="utf-8"))
+    assert style_analysis["directory_contract"]["directory_page"] == "index.html"
+    assert "ui-style-analysis.json" in style_analysis["secondary_build_contract"]["required_artifacts"]
+    assert (root / "ui-style-analysis.md").exists()
+
+    directory = _invoke(["prototype", "directory", feature, "--project", str(tmp_path), "--version", version, "--json"])
+    assert directory.exit_code == 0, directory.stdout
+    payload = json.loads(directory.stdout)
+    assert payload["directory_page"].endswith("docs/beacon/v1.1.12/prototype/design-governed-prototype/index.html")
+    assert payload["style_analysis_path"].endswith("ui-style-analysis.json")
+    assert "overview" in payload["generated_pages"]
+
+
+def test_review_design_should_emit_cso_inspired_security_findings(tmp_path: Path):
+    feature = "Secure Upload Prototype"
+    version = "v1.1.12"
+    _prepare_design_governed_sources(
+        tmp_path,
+        feature,
+        version,
+        extra_lines=[
+            "primary_cta: Upload asset",
+            "secondary_cta: Review upload",
+            "sections: Upload Queue；Delivery Readiness",
+        ],
+    )
+
+    create = _invoke(["prototype", "create", feature, "--project", str(tmp_path), "--version", version])
+    assert create.exit_code == 0, create.stdout
+
+    review = _invoke(["review", "design", feature, "--project", str(tmp_path), "--version", version, "--json"])
+    assert review.exit_code == 0, review.stdout
+    payload = json.loads(review.stdout)
+    assert payload["review_type"] == "design"
+    assert payload["security_design_review"]["mode"] == "cso-inspired-design-review"
+    reason_codes = {item["reason_code"] for item in payload["security_design_review"]["findings"]}
+    assert "upload_constraints_missing" in reason_codes
+    assert payload["artifacts"]["json"].endswith("review-design-secure-upload-prototype.json")
+    assert payload["status"] == "fail"
 
 
 def test_design_governance_review_should_fail_on_critical_guideline_gap(tmp_path: Path):

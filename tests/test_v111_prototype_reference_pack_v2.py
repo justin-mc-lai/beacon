@@ -6,7 +6,7 @@ from pathlib import Path
 from typer.testing import CliRunner
 
 from beacon.commands.gate import GateMode, check_prototype_contract
-from beacon.utils.artifact_paths import qa_matrix_output
+from beacon.utils.artifact_paths import machine_execution_dir, qa_matrix_output
 from beacon.utils.doctor_diagnostics import build_doctor_payload
 from beacon.utils.revision_state import freeze_revision_state
 from beacon.utils.runtime import save_run_state
@@ -245,14 +245,16 @@ def test_v11111_review_accept_should_close_workflow_lifecycle_from_delivery_arti
     )
 
     execution = tmp_path / "docs" / "beacon" / version / "execution"
+    machine_execution = machine_execution_dir(tmp_path, version)
     execution.mkdir(parents=True, exist_ok=True)
+    machine_execution.mkdir(parents=True, exist_ok=True)
     (tmp_path / "docs" / "beacon" / version / "SUMMARY.md").write_text("# Summary\n", encoding="utf-8")
     (execution / "index.md").write_text("# Execution Index\n", encoding="utf-8")
     (execution / "architecture-blueprint.md").write_text("# Architecture Blueprint\n", encoding="utf-8")
     (execution / f"technical-implementation-{slug}.md").write_text("# Technical Implementation\n", encoding="utf-8")
-    (execution / f"technical-implementation-{slug}.json").write_text("{}", encoding="utf-8")
+    (machine_execution / f"technical-implementation-{slug}.json").write_text("{}", encoding="utf-8")
     (execution / f"implementation-summary-{slug}.md").write_text("# Implementation Summary\n", encoding="utf-8")
-    (execution / f"implementation-summary-{slug}.json").write_text("{}", encoding="utf-8")
+    (machine_execution / f"implementation-summary-{slug}.json").write_text("{}", encoding="utf-8")
 
     beacon_root = tmp_path / ".beacon"
     (beacon_root / "state").mkdir(parents=True, exist_ok=True)
@@ -271,8 +273,6 @@ def test_v11111_review_accept_should_close_workflow_lifecycle_from_delivery_arti
         json.dumps({"version": version, "run_id": run_id, "entries": [{"path": ".beacon/auto-test-status.json", "sha256": "x"}]}),
         encoding="utf-8",
     )
-    machine_execution = tmp_path / "docs" / "beacon" / version / ".machine" / "execution"
-    machine_execution.mkdir(parents=True, exist_ok=True)
     (machine_execution / "terminal.json").write_text(
         json.dumps({"status": "Pass", "version": version, "run_id": run_id, "traceability": {}}),
         encoding="utf-8",

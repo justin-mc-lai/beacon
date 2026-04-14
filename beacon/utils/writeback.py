@@ -5,7 +5,13 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any, Iterable
 
+from beacon.utils.artifact_paths import machine_execution_dir
 from beacon.utils.revision_state import load_revision_state, save_revision_state
+from beacon.utils.implementation_plan import (
+    mark_implementation_plan_accepted,
+    update_plan_progress_for_implementation,
+    update_plan_progress_for_verification,
+)
 from beacon.utils.runtime import load_run_state, now_iso, save_run_state
 from beacon.utils.story_state import feature_slug, load_story_state, save_story_state
 from beacon.utils.versioning import resolve_target_version
@@ -43,6 +49,7 @@ def _workflow_stage_evidence(project_root: Path, *, version: str, feature: str) 
     docs_root = project_root / "docs" / "beacon" / version
     execution_root = docs_root / "execution"
     machine_root = docs_root / ".machine"
+    machine_execution_root = machine_execution_dir(project_root, version)
     prototype_root = docs_root / "prototype" / slug
     state_root = project_root / ".beacon" / "state"
     qa_root = project_root / ".beacon" / "qa" / "features" / slug
@@ -92,9 +99,9 @@ def _workflow_stage_evidence(project_root: Path, *, version: str, feature: str) 
             project_root,
             [
                 execution_root / f"technical-implementation-{slug}.md",
-                execution_root / f"technical-implementation-{slug}.json",
+                machine_execution_root / f"technical-implementation-{slug}.json",
                 execution_root / f"implementation-summary-{slug}.md",
-                execution_root / f"implementation-summary-{slug}.json",
+                machine_execution_root / f"implementation-summary-{slug}.json",
                 state_root / f"implementation-{slug}.json",
             ],
         ),
@@ -103,9 +110,9 @@ def _workflow_stage_evidence(project_root: Path, *, version: str, feature: str) 
             [
                 project_root / ".beacon" / "auto-test-status.json",
                 execution_root / f"review-quality-{slug}.md",
-                execution_root / f"review-quality-{slug}.json",
+                machine_execution_root / f"review-quality-{slug}.json",
                 execution_root / f"review-spec-{slug}.md",
-                execution_root / f"review-spec-{slug}.json",
+                machine_execution_root / f"review-spec-{slug}.json",
                 qa_root / "scorecard.json",
             ],
         ),
@@ -114,7 +121,7 @@ def _workflow_stage_evidence(project_root: Path, *, version: str, feature: str) 
             [
                 project_root / ".beacon" / "gate-report.json",
                 project_root / ".beacon" / "evidence-manifest.json",
-                execution_root / "terminal.json",
+                machine_execution_root / "terminal.json",
             ],
         ),
     }
@@ -150,6 +157,7 @@ def record_implementation_writeback(
     feature: str,
     run_id: str,
     implemented_item_ids: Iterable[str] | None = None,
+    task_ids: Iterable[str] | None = None,
     changed_files: Iterable[str] | None = None,
 ) -> dict[str, Any]:
     resolved_version = resolve_target_version(project_root, version)
@@ -173,7 +181,16 @@ def record_implementation_writeback(
     if changed_files is not None:
         revision["changed_files"] = [str(x) for x in changed_files if str(x).strip()]
     save_revision_state(project_root, version=resolved_version, feature=feature, state=revision)
-    return {"updated_items": updated, "story": story, "revision": revision}
+    plan = update_plan_progress_for_implementation(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        run_id=run_id,
+        implemented_item_ids=target_ids,
+        task_ids=task_ids,
+        changed_files=changed_files,
+    )
+    return {"updated_items": updated, "story": story, "revision": revision, "implementation_plan": plan}
 
 
 def record_verification_writeback(
@@ -217,7 +234,16 @@ def record_verification_writeback(
     revision["last_verification_run_id"] = run_id
     revision["verification_evidence"] = [str(x) for x in (evidence_ref or []) if str(x).strip()]
     save_revision_state(project_root, version=resolved_version, feature=feature, state=revision)
-    return {"verified_items": verified, "failed_items": failed, "story": story, "revision": revision}
+    plan = update_plan_progress_for_verification(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        run_id=run_id,
+        verified_item_ids=verified_ids,
+        failed_item_ids=failed_ids,
+        evidence_refs=evidence_ref,
+    )
+    return {"verified_items": verified, "failed_items": failed, "story": story, "revision": revision, "implementation_plan": plan}
 
 
 def record_acceptance_writeback(
@@ -255,7 +281,13 @@ def record_acceptance_writeback(
     revision["accepted_at"] = accepted_at
     revision["accepted_by"] = accepted_by
     save_revision_state(project_root, version=resolved_version, feature=feature, state=revision)
-    return {"story": story, "revision": revision}
+    plan = mark_implementation_plan_accepted(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        accepted_by=accepted_by,
+    )
+    return {"story": story, "revision": revision, "implementation_plan": plan}
 
 
 def sync_acceptance_workflow_closure(

@@ -102,6 +102,23 @@
 - component material rules
 - anti-generic restrictions
 
+### FR-002A 新增 Unified Directory + UI Style Analysis
+
+`prototype` 必须把 `index.html` 提升为正式的统一目录页 contract，而不只是生成副产物。
+
+同时新增：
+
+- `ui-style-analysis.json`
+- `ui-style-analysis.md`
+
+至少表达：
+
+- unified directory page
+- required page/state links
+- current visual system summary
+- secondary build required artifacts
+- extension rules for 二开 / agent continuation
+
 ### FR-003 `frontend-design` 进入 generation 面
 
 `prototype plan/create` 应可消费：
@@ -152,6 +169,20 @@ Beacon 必须在 review 阶段拉取最新 guideline rules，并生成：
 - URL-reflected state
 - icon decoration semantics
 - image dimensions / loading strategy
+
+### FR-004A Design security 进入 `review design`
+
+Beacon 参考 gstack `cso` 的思路，但不复制它的 infra-first 形态。
+
+在 Beacon 里，软件设计安全应收敛为 `review design` 的正式子面。
+
+至少检查：
+
+- privileged action / role boundary
+- upload/file constraints
+- secret-handling surfaces
+- external integration trust boundary
+- auditability / evidence trace
 
 ### FR-005 Review 输出继续决策
 

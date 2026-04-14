@@ -1,0 +1,325 @@
+{
+  "schema_version": "1.0",
+  "review_type": "quality",
+  "feature": "beacon-v1.3.0-simplified-codex-native-subagents",
+  "feature_slug": "beacon-v1.3.0-simplified-codex-native-subagents",
+  "version": "v1.3.0",
+  "generated_at": "2026-04-11T08:47:10.904605+00:00",
+  "status": "fail",
+  "gate_ready": false,
+  "verify_status": "failed",
+  "prototype_gate_ready": null,
+  "project_profile_gate": {
+    "status": "not_configured",
+    "profile_id": "",
+    "issues": [],
+    "required_evidence": [],
+    "required_cases": [],
+    "contract_drifts": []
+  },
+  "issues": [
+    {
+      "reason_code": "verify_not_passed",
+      "severity": "critical",
+      "message": "verify evidence status is failed"
+    },
+    {
+      "reason_code": "evidence_not_closed",
+      "severity": "critical",
+      "message": "implementation_done may be true but evidence_done is still false"
+    },
+    {
+      "reason_code": "coverage_incomplete",
+      "severity": "warn",
+      "message": "coverage incomplete: story=1/1, ac=0/1, tc=0/1"
+    },
+    {
+      "reason_code": "implementation_plan_blocked",
+      "severity": "critical",
+      "message": "implementation plan has blocked tasks: ['ITASK-001']",
+      "blocked": true
+    }
+  ],
+  "recommendations": [
+    "Run or refresh verify/auto-test evidence before quality review.",
+    "Close feature QA evidence and writeback obligations before quality review passes.",
+    "Clear blocked implementation plan tasks before quality review can pass."
+  ],
+  "evidence_done": false,
+  "artifact_update_obligations": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1.3.0-simplified-codex-native-subagents",
+    "feature_slug": "beacon-v1.3.0-simplified-codex-native-subagents",
+    "version": "v1.3.0",
+    "run_id": "run-20260411T053009Z-06d8",
+    "generated_at": "2026-04-11T05:30:11.596152+00:00",
+    "technical_archive_path": "docs/beacon/v1.3.0/.machine/execution/technical-implementation-beacon-v1.3.0-simplified-codex-native-subagents.json",
+    "obligations": [
+      {
+        "artifact": "review_quality",
+        "required": true,
+        "reason": "run quality review after native implementation",
+        "status": "open",
+        "notes": ""
+      },
+      {
+        "artifact": "acceptance",
+        "required": true,
+        "reason": "acceptance remains a formal post-verify action",
+        "status": "open",
+        "notes": ""
+      }
+    ],
+    "open_count": 2
+  },
+  "implementation_plan_progress": {
+    "schema_version": "1.0",
+    "plan_id": "plan-beacon-v1.3.0-simplified-codex-native-subagents-r1",
+    "feature": "beacon-v1.3.0-simplified-codex-native-subagents",
+    "version": "v1.3.0",
+    "revision_id": "R1",
+    "status": "blocked",
+    "counts": {
+      "total": 22,
+      "draft": 0,
+      "planned": 0,
+      "in_progress": 0,
+      "blocked": 1,
+      "completed": 21
+    },
+    "blocked_task_ids": [
+      "ITASK-001"
+    ],
+    "completed_task_ids": [
+      "ITASK-002",
+      "ITASK-003",
+      "ITASK-004",
+      "ITASK-005",
+      "ITASK-006",
+      "ITASK-007",
+      "ITASK-008",
+      "ITASK-009",
+      "ITASK-010",
+      "ITASK-011",
+      "ITASK-012",
+      "ITASK-013",
+      "ITASK-014",
+      "ITASK-015",
+      "ITASK-016",
+      "ITASK-017",
+      "ITASK-018",
+      "ITASK-019",
+      "ITASK-020",
+      "ITASK-021",
+      "ITASK-022"
+    ],
+    "next_task_id": "ITASK-001",
+    "task_states": [
+      {
+        "task_id": "ITASK-001",
+        "status": "blocked",
+        "blocked_reason": "verification_failed",
+        "mapped_ac_ids": [
+          "AC-001"
+        ],
+        "mapped_test_ids": [
+          "TEST-001"
+        ],
+        "mapped_scenario_ids": [
+          "SC-001"
+        ],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-002",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-003",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-004",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-005",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-006",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-007",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-008",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-009",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-010",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-011",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-012",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-013",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-014",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-015",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-016",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-017",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-018",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-019",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-020",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-021",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-022",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      }
+    ],
+    "updated_at": "2026-04-11T05:30:10.228096+00:00"
+  }
+}

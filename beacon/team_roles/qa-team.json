@@ -1,0 +1,25 @@
+{
+  "preferred_surface": "qa-team",
+  "roles": [
+    "verifier",
+    "repair-handoff-writer"
+  ],
+  "context_isolation": {
+    "role_plane": "qa",
+    "isolated_from": [
+      "implement-team"
+    ],
+    "shared_inputs": [
+      "docs/beacon/<version>/qa/test-cases",
+      "implementation_summary",
+      "technical_archive",
+      "evidence_refs"
+    ],
+    "shared_outputs": [
+      "feature_scorecard",
+      "repair_handoff",
+      "qa_status"
+    ],
+    "rule": "qa_must_not_inherit_implement_private_context"
+  }
+}

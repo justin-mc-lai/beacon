@@ -22,7 +22,7 @@ from beacon.utils.runtime import now_iso, read_json, write_json
 from beacon.utils.story_scenarios import expand_story_scenarios, scenario_map_path as docs_story_scenario_map_path
 from beacon.utils.story_state import feature_slug, load_story_state
 from beacon.utils.v110_baseline import load_latest_spec_fingerprint
-from beacon.utils.versioning import resolve_target_version
+from beacon.utils.versioning import normalize_version, resolve_target_version
 
 FEATURE_QA_SCHEMA = "1.0"
 QA_LAYER_SET = set(LAYER_NAMES) | set(QA9_TYPES)
@@ -103,6 +103,18 @@ def _load_json(path: Path) -> dict[str, Any]:
 
 def _load_source_matrix(project_root: Path, *, version: str, feature: str, story: dict[str, Any]) -> tuple[Path, dict[str, Any]]:
     slug = feature_slug(feature)
+    normalized_version = normalize_version(version) or ""
+    if normalized_version.startswith("v"):
+        try:
+            major, minor, patch = [int(part) for part in normalized_version[1:].split(".")]
+        except Exception:  # noqa: BLE001
+            major, minor, patch = (0, 0, 0)
+        if (major, minor, patch) >= (1, 2, 0):
+            for candidate in qa_matrix_candidates(project_root, version, slug, "qa9-matrix"):
+                if candidate.exists():
+                    payload = _load_json(candidate)
+                    if isinstance(payload.get("entries"), list):
+                        return candidate, payload
     for candidate in qa_matrix_candidates(project_root, version, slug, "ac-test-matrix"):
         if candidate.exists():
             payload = _load_json(candidate)
@@ -332,7 +344,13 @@ def _impacted_layers(derived_entries: list[dict[str, Any]], technical_archive: d
     return resolved or all_layers
 
 
-def _previous_evidence_done(previous: dict[str, Any], *, spec_hash: str, implementation_run_id: str) -> bool:
+def _previous_evidence_done(
+    previous: dict[str, Any],
+    *,
+    spec_hash: str,
+    implementation_run_id: str,
+    source_matrix_path: str,
+) -> bool:
     if not isinstance(previous, dict) or not previous:
         return False
     if not bool(previous.get("evidence_done", False)):
@@ -340,6 +358,11 @@ def _previous_evidence_done(previous: dict[str, Any], *, spec_hash: str, impleme
     if str(previous.get("current_spec_fingerprint_hash") or "") != spec_hash:
         return False
     if str(previous.get("implementation_run_id") or "") != implementation_run_id:
+        return False
+    if str(previous.get("source_matrix_path") or "") != source_matrix_path:
+        return False
+    feature_scorecard = previous.get("feature_scorecard")
+    if not isinstance(feature_scorecard, dict) or not feature_scorecard:
         return False
     return True
 
@@ -350,6 +373,7 @@ def _targeted_entries(
     previous_status: dict[str, Any],
     spec_hash: str,
     implementation_run_id: str,
+    source_matrix_path: str,
     technical_archive: dict[str, Any],
     blocking_updates: list[dict[str, Any]],
 ) -> tuple[str, list[str], list[dict[str, Any]]]:
@@ -365,11 +389,18 @@ def _targeted_entries(
         reason_codes.append("spec_fingerprint_changed")
     if previous_status and str(previous_status.get("implementation_run_id") or "") != implementation_run_id:
         reason_codes.append("implementation_run_changed")
+    if previous_status and str(previous_status.get("source_matrix_path") or "") != source_matrix_path:
+        reason_codes.append("source_matrix_changed")
     if not previous_status:
         impacted = list(derived_entries)
         return "rerun_required", reason_codes or ["no_prior_feature_qa"], impacted
 
-    if not reason_codes and _previous_evidence_done(previous_status, spec_hash=spec_hash, implementation_run_id=implementation_run_id):
+    if not reason_codes and _previous_evidence_done(
+        previous_status,
+        spec_hash=spec_hash,
+        implementation_run_id=implementation_run_id,
+        source_matrix_path=source_matrix_path,
+    ):
         return "up_to_date", [], []
 
     impacted_layers = _impacted_layers(derived_entries, technical_archive)
@@ -398,11 +429,13 @@ def build_feature_qa_plan(
     implementation_done = bool(implementation_run_id) or str(revision.get("delivery_status") or "").strip().lower() in {"implemented", "verified", "accepted", "released"}
     spec_hash = _spec_hash(project_root, version=resolved_version, revision=revision)
     previous_status = load_feature_qa_status(project_root, feature=feature)
+    source_matrix_rel = str(source_matrix_path.relative_to(project_root))
     status, reason_codes, targeted_source_entries = _targeted_entries(
         derived_entries=derived_entries,
         previous_status=previous_status,
         spec_hash=spec_hash,
         implementation_run_id=implementation_run_id,
+        source_matrix_path=source_matrix_rel,
         technical_archive=archive_payload,
         blocking_updates=blocking_updates,
     )
@@ -438,7 +471,7 @@ def build_feature_qa_plan(
         "current_spec_fingerprint_hash": spec_hash,
         "current_baseline_hash": str(revision.get("baseline_hash") or "").strip(),
         "implementation_run_id": implementation_run_id,
-        "source_matrix_path": str(source_matrix_path.relative_to(project_root)),
+        "source_matrix_path": source_matrix_rel,
         "derived_matrix_path": str(feature_qa_matrix_path(project_root, feature=feature).relative_to(project_root)),
         "story_scenario_map_path": str(feature_qa_scenario_map_path(project_root, feature=feature).relative_to(project_root)),
         "docs_story_scenario_map_path": str(docs_story_scenario_map_path(project_root, version=resolved_version, feature=feature).relative_to(project_root)),
@@ -475,6 +508,15 @@ def materialize_feature_qa_matrix(project_root: Path, *, plan: dict[str, Any]) -
         raise ValueError("feature_missing")
     path = feature_qa_matrix_path(project_root, feature=feature)
     targeted_entries = plan.get("targeted_entries") if isinstance(plan.get("targeted_entries"), list) else []
+    materialized_entries: list[dict[str, Any]] = []
+    for entry in targeted_entries:
+        if not isinstance(entry, dict):
+            continue
+        item = dict(entry)
+        tc_id = str(item.get("tc_id") or "").strip()
+        if tc_id:
+            item["evidence_path"] = _derived_evidence_path(feature=feature, tc_id=tc_id)
+        materialized_entries.append(item)
     payload = {
         "schema_version": FEATURE_QA_SCHEMA,
         "feature": str(plan.get("feature_slug") or feature_slug(feature)),
@@ -486,7 +528,7 @@ def materialize_feature_qa_matrix(project_root: Path, *, plan: dict[str, Any]) -
         "story_scenario_map_path": str(plan.get("story_scenario_map_path") or ""),
         "reason_codes": list(plan.get("reason_codes") or []),
         "qa_types": list(plan.get("targeted_layers") or []),
-        "entries": targeted_entries,
+        "entries": materialized_entries,
     }
     write_json(path, payload)
     return path
@@ -786,6 +828,21 @@ def build_feature_qa_precision_artifacts(
             }
         )
 
+    selected_source_tc_ids = {
+        str(item).strip()
+        for item in (
+            plan.get("targeted_source_tc_ids")
+            or plan.get("targeted_tc_ids")
+            or [
+                tc_id
+                for row in (plan.get("story_sequence") or [])
+                if isinstance(row, dict)
+                for tc_id in (row.get("tc_ids") or [])
+            ]
+        )
+        if str(item).strip()
+    }
+
     required_by_ac: dict[str, list[str]] = {}
     families_by_ac_and_source_tc: dict[tuple[str, str], set[str]] = {}
     story_rows = plan.get("story_scenarios", {}).get("stories") if isinstance(plan.get("story_scenarios"), dict) else []
@@ -793,9 +850,22 @@ def build_feature_qa_precision_artifacts(
         if not isinstance(row, dict):
             continue
         ac_id = str(row.get("ac_id") or "").strip()
-        if ac_id:
-            required_by_ac[ac_id] = [str(item) for item in (row.get("required_families") or []) if str(item).strip()]
         scenarios = row.get("scenarios") if isinstance(row.get("scenarios"), list) else []
+        filtered_required_families: list[str] = []
+        if selected_source_tc_ids and scenarios:
+            filtered_required_families = [
+                str(scenario.get("scenario_family") or "").strip()
+                for scenario in scenarios
+                if isinstance(scenario, dict)
+                and str(scenario.get("source_tc_id") or "").strip() in selected_source_tc_ids
+                and str(scenario.get("scenario_family") or "").strip() not in {"", "primary"}
+            ]
+        if ac_id:
+            required_by_ac[ac_id] = (
+                filtered_required_families
+                if filtered_required_families or selected_source_tc_ids
+                else [str(item) for item in (row.get("required_families") or []) if str(item).strip()]
+            )
         for scenario in scenarios:
             if not isinstance(scenario, dict):
                 continue

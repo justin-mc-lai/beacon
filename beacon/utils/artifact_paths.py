@@ -43,8 +43,24 @@ def human_execution_file(project_root: Path, version: str, filename: str) -> Pat
     return human_execution_dir(project_root, version) / filename
 
 
+def change_docs_dir(project_root: Path, version: str) -> Path:
+    return version_root(project_root, version) / "change"
+
+
+def change_docs_file(project_root: Path, version: str, filename: str) -> Path:
+    return change_docs_dir(project_root, version) / filename
+
+
 def machine_root(project_root: Path, version: str) -> Path:
     return version_root(project_root, version) / ".machine"
+
+
+def machine_change_dir(project_root: Path, version: str) -> Path:
+    return machine_root(project_root, version) / "change"
+
+
+def machine_change_file(project_root: Path, version: str, filename: str) -> Path:
+    return machine_change_dir(project_root, version) / filename
 
 
 def machine_execution_dir(project_root: Path, version: str) -> Path:
@@ -86,6 +102,12 @@ def execution_file_output(project_root: Path, version: str, filename: str) -> Pa
     if uses_machine_surface(version) and filename.endswith(".json"):
         return machine_execution_file(project_root, version, filename)
     return human_execution_file(project_root, version, filename)
+
+
+def change_file_output(project_root: Path, version: str, filename: str) -> Path:
+    if uses_machine_surface(version) and filename.endswith(".json"):
+        return machine_change_file(project_root, version, filename)
+    return change_docs_file(project_root, version, filename)
 
 
 def qa_matrix_candidates(project_root: Path, version: str, feature_slug: str, kind: str) -> list[Path]:

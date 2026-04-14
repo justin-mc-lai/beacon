@@ -7,6 +7,7 @@ think -> user-story -> prd -> [prototype] -> test-case -> implementation -> veri
 from __future__ import annotations
 
 import json
+import re
 import uuid
 from pathlib import Path
 from typing import Any
@@ -405,6 +406,13 @@ def _slug(text: str) -> str:
     return (text or "").strip().lower().replace(" ", "-")
 
 
+def _match_slug(text: str) -> str:
+    raw = str(text or "").strip().lower()
+    if not raw:
+        return ""
+    return "-".join(token for token in re.findall(r"[a-z0-9]+", raw) if token)
+
+
 def resolve_workflow_run_id(
     project_root: Path,
     *,
@@ -427,7 +435,10 @@ def resolve_workflow_run_id(
 
     versions_filter = (version or "").strip()
     feature_filter = _slug(feature or "")
+    loose_feature_filter = _match_slug(feature or "")
     candidates: list[tuple[str, str]] = []
+    exact_feature_candidates: list[tuple[str, str]] = []
+    loose_feature_candidates: list[tuple[str, str]] = []
 
     for run_dir in runs_dir(project_root).iterdir():
         if not run_dir.is_dir():
@@ -443,16 +454,37 @@ def resolve_workflow_run_id(
             continue
         if versions_filter and str(state.get("version", "")) != versions_filter:
             continue
-        if feature_filter and _slug(str(state.get("feature", ""))) != feature_filter:
-            continue
+        state_feature = str(state.get("feature", ""))
+        candidate_slug = _slug(state_feature)
+        candidate_match_slug = _match_slug(state_feature)
         ts = str(state.get("ended_at") or state.get("started_at") or rid)
         candidates.append((rid, ts))
+        if feature_filter and candidate_slug == feature_filter:
+            exact_feature_candidates.append((rid, ts))
+        if feature_filter and loose_feature_filter and candidate_match_slug:
+            if (
+                candidate_match_slug == loose_feature_filter
+                or loose_feature_filter in candidate_match_slug
+                or candidate_match_slug in loose_feature_filter
+            ):
+                loose_feature_candidates.append((rid, ts))
 
-    if not candidates:
+    filtered = candidates
+    if feature_filter:
+        if exact_feature_candidates:
+            filtered = exact_feature_candidates
+        elif loose_feature_candidates:
+            filtered = loose_feature_candidates
+        elif versions_filter and len(candidates) == 1:
+            filtered = candidates
+        else:
+            filtered = []
+
+    if not filtered:
         return None
     # ISO timestamps and run-id lexical order are both monotonic enough for our scope.
-    candidates.sort(key=lambda x: x[1])
-    return candidates[-1][0]
+    filtered.sort(key=lambda x: x[1])
+    return filtered[-1][0]
 
 
 def _select_default_run_id(events: list[dict[str, Any]]) -> str | None:

@@ -345,6 +345,20 @@ help / status / review / gate / QA scenario generation 结果必须输出结构�
 
 这样系统才能解释“为什么推荐这个执行面”、“为什么允许/阻断这次发散”。
 
+### FR-014 Context-managed Requirement Version Guard
+
+当用户显式输入 `--version vX.Y.Z` 时，Beacon 必须把它与以下上下文版本信号比对：
+
+- `AGENTS.md` / `CLAUDE.md` managed marker
+- onboarding docs version
+- current git branch embedded semver
+
+如果显式版本与上下文推荐版本冲突，则：
+
+- 返回 `context_version_mismatch`
+- 阻断 requirement-material 写入类命令
+- 在 help/status 中给出推荐版本与恢复命令
+
 ## 7. Requirement-anchor Governance Model
 
 Beacon 的稳定性不只取决于 typed learning surface，还取决于“发散是否始终锚在需求里”。

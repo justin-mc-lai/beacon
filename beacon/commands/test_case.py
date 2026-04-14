@@ -22,8 +22,9 @@ from beacon.utils.qa9 import (
     parse_qa_types,
     to_legacy_layer,
 )
+from beacon.utils.requirement_parsing import build_feature_ac_items, extract_qa_case_rows
 from beacon.utils.story_scenarios import expand_story_scenarios, write_story_scenario_map
-from beacon.utils.versioning import discover_versions, resolve_target_version
+from beacon.utils.versioning import discover_versions, normalize_version, resolve_operational_docs_version, resolve_target_version
 
 app = typer.Typer(name="test-case", help="Generate test cases")
 
@@ -58,11 +59,12 @@ def _extract_ac_items(content: str, source: str) -> list[dict]:
             continue
         ac_id = m.group(1).upper()
         cells = [x.strip() for x in line.strip().strip("|").split("|")]
-        text = cells[1] if len(cells) > 1 else line.strip()
+        theme = cells[1] if len(cells) > 1 else ""
+        text = cells[2] if len(cells) > 2 else (cells[1] if len(cells) > 1 else line.strip())
         if ac_id in seen:
             continue
         seen.add(ac_id)
-        items.append({"ac_id": ac_id, "text": text, "source": source})
+        items.append({"ac_id": ac_id, "theme": theme, "text": text, "source": source})
 
     # Fallback bullet/text pattern: AC-001: xxx
     for m in re.finditer(r"\b(AC-\d{3,})\b[:：]?\s*([^\n]+)", content, flags=re.I):
@@ -71,18 +73,36 @@ def _extract_ac_items(content: str, source: str) -> list[dict]:
         if ac_id in seen:
             continue
         seen.add(ac_id)
-        items.append({"ac_id": ac_id, "text": text, "source": source})
+        items.append({"ac_id": ac_id, "theme": "", "text": text, "source": source})
 
     return items
 
 
 def _infer_layer_from_ac(text: str) -> str:
     t = (text or "").lower()
-    if any(x in t for x in ("登录", "注册", "浏览", "表单", "submit", "form", "ui", "页面", "点击")):
+    if "prototype" in t and any(token in t for token in ("映射", "orphan", "anchor", "ui 模块", "状态")):
+        return "unit"
+    ui_patterns = (
+        "登录",
+        "注册",
+        "浏览",
+        "表单",
+        "页面",
+        "点击",
+        r"\bsubmit\b",
+        r"\bform\b",
+        r"\bui\b",
+        r"\bpage\b",
+        r"\bclick\b",
+        r"\bbrowser\b",
+        r"\bscreen\b",
+        r"\broute\b",
+    )
+    if any(re.search(pattern, t, flags=re.I) for pattern in ui_patterns):
         return "ui"
-    if any(x in t for x in ("api", "接口", "http", "curl", "endpoint")):
+    if any(re.search(pattern, t, flags=re.I) for pattern in (r"\bapi\b", "接口", r"\bhttp\b", r"\bcurl\b", r"\bendpoint\b")):
         return "api-curl"
-    if any(x in t for x in ("单元", "unit", "函数", "边界", "error", "异常", "校验", "security")):
+    if any(re.search(pattern, t, flags=re.I) for pattern in ("单元", r"\bunit\b", "函数", "边界", r"\berror\b", "异常", "校验", r"\bsecurity\b")):
         return "unit"
     # Default to unit for deterministic commandability in minimal setups.
     return "unit"
@@ -242,6 +262,95 @@ def _build_qa_requirements(qa_types: list[str], qa_applicability: Optional[dict[
             }
         )
     return out
+
+
+def _supports_profile_required_type_narrowing(version: str) -> bool:
+    normalized = normalize_version(version) or ""
+    if not normalized.startswith("v"):
+        return False
+    try:
+        major, minor, patch = [int(part) for part in normalized[1:].split(".")]
+    except Exception:  # noqa: BLE001
+        return False
+    return (major, minor, patch) >= (1, 2, 0)
+
+
+def _qa_case_type_to_qa_type(case_type: str, execution: str) -> str:
+    kind = str(case_type or "").strip().lower()
+    mode = str(execution or "").strip().lower()
+
+    if "doc review" in mode:
+        return "contract"
+    if "db" in mode:
+        return "integration"
+    if "api" in mode:
+        return "interface"
+    if "agent-browser" in mode or "browser" in mode:
+        if "回归" in kind:
+            return "regression"
+        return "functional"
+    if "契约" in kind:
+        return "contract"
+    if "回归" in kind:
+        return "regression"
+    if "边界" in kind or "异常" in kind:
+        return "exception"
+    return "functional"
+
+
+def _qa_case_automation(execution: str) -> str:
+    mode = str(execution or "").strip().lower()
+    markers = [token for token in ("agent-browser", "api", "db", "manual", "doc review") if token in mode]
+    if len(markers) > 1 or "+" in mode:
+        return "mixed"
+    if "manual" in mode or "doc review" in mode:
+        return "manual"
+    return "auto"
+
+
+def _build_entries_from_qa_case_rows(
+    *,
+    feature: str,
+    feature_slug: str,
+    qa_rows: list[dict[str, Any]],
+    ac_items: list[dict[str, Any]],
+    ui_runner: str,
+) -> list[dict[str, Any]]:
+    story_to_ac = {
+        str(item.get("story_id") or "").strip().upper(): str(item.get("ac_id") or "").strip()
+        for item in ac_items
+        if str(item.get("story_id") or "").strip() and str(item.get("ac_id") or "").strip()
+    }
+    fallback_ac_id = str(ac_items[0].get("ac_id") or "AC-001") if ac_items else "AC-001"
+    entries: list[dict[str, Any]] = []
+    for index, row in enumerate(qa_rows, start=1):
+        qa_type = _qa_case_type_to_qa_type(str(row.get("case_type") or ""), str(row.get("execution") or ""))
+        tc_id = str(row.get("tc_id") or f"TC-{index:03d}").strip() or f"TC-{index:03d}"
+        story_id = str(row.get("story_id") or "").strip().upper()
+        ac_id = story_to_ac.get(story_id, fallback_ac_id)
+        assertion = str(row.get("expected_result") or row.get("scenario") or default_assertion_for_qa_type(qa_type)).strip()
+        entries.append(
+            {
+                "tc_id": tc_id,
+                "ac_id": ac_id,
+                "story_id": story_id,
+                "layer": to_legacy_layer(qa_type),
+                "qa_type": qa_type,
+                "title": f"{feature} {story_id or ac_id} :: {str(row.get('scenario') or assertion).strip()[:80]}",
+                "priority": _default_priority_for_qa_type(qa_type),
+                "automation": _qa_case_automation(str(row.get("execution") or "")),
+                "command": default_command_for_qa_type(qa_type, ui_runner=ui_runner),
+                "assertion": assertion,
+                "evidence_path": f".beacon/evidence/test-results/{feature_slug}/{{run_id}}/{tc_id}.json",
+                "required_files": ["command.txt", "stdout.log", "stderr.log", "result.json", "junit.xml"],
+                "status": "pending",
+                "source": str(row.get("source") or "qa:test-cases"),
+                "execution_method": str(row.get("execution") or ""),
+                "scenario": str(row.get("scenario") or ""),
+                "steps": str(row.get("steps") or ""),
+            }
+        )
+    return entries
 
 
 def _build_qa9_entries(
@@ -404,10 +513,20 @@ def _build_story_scenario_payload(
     prd_path, prd_content = _read_first_existing(
         _candidate_doc_paths(project_root, version, "prd", feature_slug)
     )
-    ac_items = _extract_ac_items(us_content, f"user-story:{us_path}" if us_path else "user-story:missing")
-    ac_items.extend(_extract_ac_items(prd_content, f"prd:{prd_path}" if prd_path else "prd:missing"))
+    qa_path, qa_content = _read_first_existing(
+        _candidate_doc_paths(project_root, version, "qa/test-cases", feature_slug)
+    )
+    ac_items = build_feature_ac_items(
+        user_story_content=us_content,
+        prd_content=prd_content,
+        qa_content=qa_content,
+        user_story_source=f"user-story:{us_path}" if us_path else "user-story:missing",
+        prd_source=f"prd:{prd_path}" if prd_path else "prd:missing",
+        qa_source=f"qa:test-cases:{qa_path}" if qa_path else "qa:test-cases:missing",
+    )
     if not ac_items:
         ac_items = [{"ac_id": "AC-001", "text": f"{feature} core flow works", "source": "fallback"}]
+    qa_rows = extract_qa_case_rows(qa_content, f"qa:test-cases:{qa_path}" if qa_path else "qa:test-cases:missing")
     existing_qa9_payload = _load_existing_qa9_payload(project_root, version, feature_slug)
     existing_entries = (
         [item for item in existing_qa9_payload.get("entries", []) if isinstance(item, dict)]
@@ -417,7 +536,17 @@ def _build_story_scenario_payload(
     display_feature = str(existing_qa9_payload.get("feature") or feature).strip() or feature
     resolved_ui_runner = str(ui_runner or "").strip().lower()
 
-    if existing_entries:
+    if qa_rows:
+        if not resolved_ui_runner:
+            resolved_ui_runner = "browser-use"
+        qa9_entries = _build_entries_from_qa_case_rows(
+            feature=display_feature,
+            feature_slug=feature_slug,
+            qa_rows=qa_rows,
+            ac_items=ac_items,
+            ui_runner=resolved_ui_runner or "browser-use",
+        )
+    elif existing_entries:
         if not resolved_ui_runner:
             strategy = existing_qa9_payload.get("qa_strategy") if isinstance(existing_qa9_payload.get("qa_strategy"), dict) else {}
             resolved_ui_runner = str(
@@ -674,7 +803,15 @@ def create(
 ):
     """Create test cases and executable AC matrix."""
     project_root = Path(project) if project else Path.cwd()
-    resolved_version = resolve_target_version(project_root, version)
+    try:
+        resolved_version = resolve_operational_docs_version(
+            project_root,
+            version,
+            command_name="test-case create",
+        )
+    except ValueError as exc:
+        typer.echo(str(exc), err=True)
+        raise typer.Exit(2)
     feature_slug = _slug(feature)
     memory_context_path = os.environ.get("BEACON_STAGE_CONTEXT_PATH", "").strip()
 
@@ -685,28 +822,20 @@ def create(
     prd_path, prd_content = _read_first_existing(
         _candidate_doc_paths(project_root, resolved_version, "prd", feature_slug)
     )
-    ac_items = _extract_ac_items(us_content, f"user-story:{us_path}" if us_path else "user-story:missing")
-    ac_items.extend(_extract_ac_items(prd_content, f"prd:{prd_path}" if prd_path else "prd:missing"))
+    qa_path, qa_content = _read_first_existing(
+        _candidate_doc_paths(project_root, resolved_version, "qa/test-cases", feature_slug)
+    )
+    ac_items = build_feature_ac_items(
+        user_story_content=us_content,
+        prd_content=prd_content,
+        qa_content=qa_content,
+        user_story_source=f"user-story:{us_path}" if us_path else "user-story:missing",
+        prd_source=f"prd:{prd_path}" if prd_path else "prd:missing",
+        qa_source=f"qa:test-cases:{qa_path}" if qa_path else "qa:test-cases:missing",
+    )
     if not ac_items:
         ac_items = [{"ac_id": "AC-001", "text": f"{feature} core flow works", "source": "fallback"}]
-
-    entries = []
-    for idx, ac in enumerate(ac_items, start=1):
-        layer = _infer_layer_from_ac(ac.get("text", ""))
-        tc_id = f"TC-{idx:03d}"
-        evidence_path = f".beacon/evidence/test-results/{feature_slug}/{tc_id}.json"
-        entries.append(
-            {
-                "tc_id": tc_id,
-                "ac_id": ac["ac_id"],
-                "layer": layer,
-                "command": _default_command_for_layer(layer),
-                "assertion": _default_assertion_for_layer(layer),
-                "evidence_path": evidence_path,
-                "status": "pending",
-                "source": ac.get("source", ""),
-            }
-        )
+    qa_case_rows = extract_qa_case_rows(qa_content, f"qa:test-cases:{qa_path}" if qa_path else "qa:test-cases:missing")
 
     prototype_navigation, prototype_interaction = _load_prototype_contract_artifacts(
         project_root, resolved_version, feature_slug
@@ -717,116 +846,143 @@ def create(
     route_closure_contract, implementation_map = _load_route_closure_artifacts(
         project_root, resolved_version, feature_slug
     )
-    synthetic_idx = len(entries)
-    ac_anchor = ac_items[0]["ac_id"] if ac_items else "AC-001"
-    for jump in prototype_navigation.get("jump_map", []) or []:
-        synthetic_idx += 1
-        tc_id = f"TC-{synthetic_idx:03d}"
-        entries.append(
-            {
-                "tc_id": tc_id,
-                "ac_id": ac_anchor,
-                "layer": "ui",
-                "command": "python3 -c \"print('prototype-jump-check')\"",
-                "assertion": f"jump {jump.get('from', '')} -> {jump.get('to', '')} is represented",
-                "evidence_path": f".beacon/evidence/test-results/{feature_slug}/{tc_id}.json",
-                "status": "pending",
-                "source": "prototype:navigation-map",
-            }
+    if qa_case_rows:
+        entries = _build_entries_from_qa_case_rows(
+            feature=feature,
+            feature_slug=feature_slug,
+            qa_rows=qa_case_rows,
+            ac_items=ac_items,
+            ui_runner="browser-use",
         )
-    for state_name in prototype_interaction.get("states", []) or []:
-        synthetic_idx += 1
-        tc_id = f"TC-{synthetic_idx:03d}"
-        entries.append(
-            {
-                "tc_id": tc_id,
-                "ac_id": ac_anchor,
-                "layer": "ui",
-                "command": "python3 -c \"print('prototype-state-check')\"",
-                "assertion": f"state {state_name} is represented in prototype",
-                "evidence_path": f".beacon/evidence/test-results/{feature_slug}/{tc_id}.json",
-                "status": "pending",
-                "source": "prototype:interaction-map",
-            }
-        )
-    if prototype_coverage:
-        synthetic_idx += 1
-        tc_id = f"TC-{synthetic_idx:03d}"
-        entries.append(
-            {
-                "tc_id": tc_id,
-                "ac_id": ac_anchor,
-                "layer": "ui",
-                "command": "python3 -c \"print('prototype-coverage-report-check')\"",
-                "assertion": "coverage report is consumed as a first-class prototype artifact",
-                "evidence_path": f".beacon/evidence/test-results/{feature_slug}/{tc_id}.json",
-                "status": "pending",
-                "source": "prototype:coverage-report",
-            }
-        )
-    for page_spec in prototype_plan.get("page_specs", []) or []:
-        if not isinstance(page_spec, dict):
-            continue
-        page_id = str(page_spec.get("page_id") or "").strip()
-        if not page_id:
-            continue
-        synthetic_idx += 1
-        tc_id = f"TC-{synthetic_idx:03d}"
-        entries.append(
-            {
-                "tc_id": tc_id,
-                "ac_id": ac_anchor,
-                "layer": "ui",
-                "command": "python3 -c \"print('prototype-page-spec-check')\"",
-                "assertion": f"page-spec {page_id} compiles required sections and route targets",
-                "evidence_path": f".beacon/evidence/test-results/{feature_slug}/{tc_id}.json",
-                "status": "pending",
-                "source": "prototype:page-specs",
-            }
-        )
-    for missing_state in prototype_coverage.get("missing_state_variants", []) or []:
-        if not isinstance(missing_state, str):
-            continue
-        synthetic_idx += 1
-        tc_id = f"TC-{synthetic_idx:03d}"
-        entries.append(
-            {
-                "tc_id": tc_id,
-                "ac_id": ac_anchor,
-                "layer": "ui",
-                "command": "python3 -c \"print('prototype-coverage-check')\"",
-                "assertion": f"coverage report flags missing variant {missing_state}",
-                "evidence_path": f".beacon/evidence/test-results/{feature_slug}/{tc_id}.json",
-                "status": "pending",
-                "source": "prototype:coverage-report",
-            }
-        )
-    closure_cases = route_closure_contract.get("closure_cases") if isinstance(route_closure_contract.get("closure_cases"), list) else []
-    bound_cases = {
-        str(item.get("case_id") or ""): item
-        for item in (implementation_map.get("closure_bindings") or [])
-        if isinstance(item, dict) and str(item.get("case_id") or "").strip()
-    }
-    for case in closure_cases:
-        if not isinstance(case, dict):
-            continue
-        synthetic_idx += 1
-        tc_id = f"TC-{synthetic_idx:03d}"
-        case_id = str(case.get("case_id") or "").strip()
-        binding = bound_cases.get(case_id, {})
-        target = str(binding.get("runtime_target") or binding.get("state_target") or case.get("target_surface_id") or "").strip()
-        entries.append(
-            {
-                "tc_id": tc_id,
-                "ac_id": ac_anchor,
-                "layer": "ui",
-                "command": "python3 -c \"print('prototype-route-closure-check')\"",
-                "assertion": f"route closure {case.get('source_label', '')} -> {target or case.get('target_surface_id', '')} remains deterministic",
-                "evidence_path": f".beacon/evidence/test-results/{feature_slug}/{tc_id}.json",
-                "status": "pending",
-                "source": "prototype:route-closure-contract",
-            }
-        )
+    else:
+        entries = []
+        for idx, ac in enumerate(ac_items, start=1):
+            layer = _infer_layer_from_ac(ac.get("text", ""))
+            tc_id = f"TC-{idx:03d}"
+            evidence_path = f".beacon/evidence/test-results/{feature_slug}/{tc_id}.json"
+            entries.append(
+                {
+                    "tc_id": tc_id,
+                    "ac_id": ac["ac_id"],
+                    "layer": layer,
+                    "command": _default_command_for_layer(layer),
+                    "assertion": _default_assertion_for_layer(layer),
+                    "evidence_path": evidence_path,
+                    "status": "pending",
+                    "source": ac.get("source", ""),
+                }
+            )
+
+        synthetic_idx = len(entries)
+        ac_anchor = ac_items[0]["ac_id"] if ac_items else "AC-001"
+        for jump in prototype_navigation.get("jump_map", []) or []:
+            synthetic_idx += 1
+            tc_id = f"TC-{synthetic_idx:03d}"
+            entries.append(
+                {
+                    "tc_id": tc_id,
+                    "ac_id": ac_anchor,
+                    "layer": "ui",
+                    "command": "python3 -c \"print('prototype-jump-check')\"",
+                    "assertion": f"jump {jump.get('from', '')} -> {jump.get('to', '')} is represented",
+                    "evidence_path": f".beacon/evidence/test-results/{feature_slug}/{tc_id}.json",
+                    "status": "pending",
+                    "source": "prototype:navigation-map",
+                }
+            )
+        for state_name in prototype_interaction.get("states", []) or []:
+            synthetic_idx += 1
+            tc_id = f"TC-{synthetic_idx:03d}"
+            entries.append(
+                {
+                    "tc_id": tc_id,
+                    "ac_id": ac_anchor,
+                    "layer": "ui",
+                    "command": "python3 -c \"print('prototype-state-check')\"",
+                    "assertion": f"state {state_name} is represented in prototype",
+                    "evidence_path": f".beacon/evidence/test-results/{feature_slug}/{tc_id}.json",
+                    "status": "pending",
+                    "source": "prototype:interaction-map",
+                }
+            )
+        if prototype_coverage:
+            synthetic_idx += 1
+            tc_id = f"TC-{synthetic_idx:03d}"
+            entries.append(
+                {
+                    "tc_id": tc_id,
+                    "ac_id": ac_anchor,
+                    "layer": "ui",
+                    "command": "python3 -c \"print('prototype-coverage-report-check')\"",
+                    "assertion": "coverage report is consumed as a first-class prototype artifact",
+                    "evidence_path": f".beacon/evidence/test-results/{feature_slug}/{tc_id}.json",
+                    "status": "pending",
+                    "source": "prototype:coverage-report",
+                }
+            )
+        for page_spec in prototype_plan.get("page_specs", []) or []:
+            if not isinstance(page_spec, dict):
+                continue
+            page_id = str(page_spec.get("page_id") or "").strip()
+            if not page_id:
+                continue
+            synthetic_idx += 1
+            tc_id = f"TC-{synthetic_idx:03d}"
+            entries.append(
+                {
+                    "tc_id": tc_id,
+                    "ac_id": ac_anchor,
+                    "layer": "ui",
+                    "command": "python3 -c \"print('prototype-page-spec-check')\"",
+                    "assertion": f"page-spec {page_id} compiles required sections and route targets",
+                    "evidence_path": f".beacon/evidence/test-results/{feature_slug}/{tc_id}.json",
+                    "status": "pending",
+                    "source": "prototype:page-specs",
+                }
+            )
+        for missing_state in prototype_coverage.get("missing_state_variants", []) or []:
+            if not isinstance(missing_state, str):
+                continue
+            synthetic_idx += 1
+            tc_id = f"TC-{synthetic_idx:03d}"
+            entries.append(
+                {
+                    "tc_id": tc_id,
+                    "ac_id": ac_anchor,
+                    "layer": "ui",
+                    "command": "python3 -c \"print('prototype-coverage-check')\"",
+                    "assertion": f"coverage report flags missing variant {missing_state}",
+                    "evidence_path": f".beacon/evidence/test-results/{feature_slug}/{tc_id}.json",
+                    "status": "pending",
+                    "source": "prototype:coverage-report",
+                }
+            )
+        closure_cases = route_closure_contract.get("closure_cases") if isinstance(route_closure_contract.get("closure_cases"), list) else []
+        bound_cases = {
+            str(item.get("case_id") or ""): item
+            for item in (implementation_map.get("closure_bindings") or [])
+            if isinstance(item, dict) and str(item.get("case_id") or "").strip()
+        }
+        for case in closure_cases:
+            if not isinstance(case, dict):
+                continue
+            synthetic_idx += 1
+            tc_id = f"TC-{synthetic_idx:03d}"
+            case_id = str(case.get("case_id") or "").strip()
+            binding = bound_cases.get(case_id, {})
+            target = str(binding.get("runtime_target") or binding.get("state_target") or case.get("target_surface_id") or "").strip()
+            entries.append(
+                {
+                    "tc_id": tc_id,
+                    "ac_id": ac_anchor,
+                    "layer": "ui",
+                    "command": "python3 -c \"print('prototype-route-closure-check')\"",
+                    "assertion": f"route closure {case.get('source_label', '')} -> {target or case.get('target_surface_id', '')} remains deterministic",
+                    "evidence_path": f".beacon/evidence/test-results/{feature_slug}/{tc_id}.json",
+                    "status": "pending",
+                    "source": "prototype:route-closure-contract",
+                }
+            )
 
     matrix_payload = {
         "schema_version": "1.0",
@@ -852,6 +1008,17 @@ def create(
             qa_types=qa_types_resolved,
             ui_runner=resolved_ui_runner,
         )
+    required_types = strategy.get("qa_required_types") if isinstance(strategy, dict) else []
+    if (
+        qa_types is None
+        and _supports_profile_required_type_narrowing(resolved_version)
+        and str(qa_profile or "").strip().lower() == "web-full"
+        and isinstance(required_types, list)
+        and required_types
+    ):
+        narrowed = [normalize_qa_type(item) for item in required_types if normalize_qa_type(item) in QA9_TYPES]
+        if narrowed:
+            qa_types_resolved = narrowed
     command_baseline = strategy.get("command_baseline") if isinstance(strategy, dict) else {}
     if not isinstance(command_baseline, dict):
         command_baseline = {}
@@ -866,14 +1033,23 @@ def create(
                 command_baseline[qa_type] = default_command_for_qa_type(qa_type, ui_runner=resolved_ui_runner)
     if automation_target_rate < 0 or automation_target_rate > 1:
         raise typer.BadParameter("--automation-target-rate must be between 0 and 1")
-    qa9_entries = _build_qa9_entries(
-        feature=feature,
-        feature_slug=feature_slug,
-        ac_items=ac_items,
-        qa_types=qa_types_resolved,
-        ui_runner=resolved_ui_runner,
-        command_baseline=command_baseline,
-    )
+    if qa_case_rows:
+        qa9_entries = _build_entries_from_qa_case_rows(
+            feature=feature,
+            feature_slug=feature_slug,
+            qa_rows=qa_case_rows,
+            ac_items=ac_items,
+            ui_runner=resolved_ui_runner,
+        )
+    else:
+        qa9_entries = _build_qa9_entries(
+            feature=feature,
+            feature_slug=feature_slug,
+            ac_items=ac_items,
+            qa_types=qa_types_resolved,
+            ui_runner=resolved_ui_runner,
+            command_baseline=command_baseline,
+        )
     qa9_payload = {
         "schema_version": "1.0.2",
         "feature": feature,

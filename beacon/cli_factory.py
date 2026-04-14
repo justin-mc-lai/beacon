@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 from typing import Optional
 
 import typer
@@ -10,9 +11,14 @@ from .command_catalog import ADVANCED_SURFACE, BRIDGE_COMMANDS, CORE_COMMANDS, D
 
 
 def build_app(*, package_version: str) -> typer.Typer:
+    show_labs = str(os.environ.get("BEACON_LABS", "")).strip().lower() in {"1", "true", "yes", "on"}
+    show_bridge = str(os.environ.get("BEACON_ADVANCED", "")).strip().lower() in {"1", "true", "yes", "on"}
     app = typer.Typer(
         name="beacon",
-        help="Beacon - Evidence-first Product Workflow Kernel",
+        help=(
+            "Beacon - Evidence-first Product Workflow Kernel\n\n"
+            "Mainline: think -> user-story -> prd -> test-case -> implement -> qa -> gate -> release"
+        ),
         add_completion=False,
         no_args_is_help=True,
     )
@@ -110,29 +116,32 @@ def build_app(*, package_version: str) -> typer.Typer:
     from .commands.team import app as team_app
     from .commands.ralph_bridge import app as ralph_bridge_app
 
-    app.add_typer(run_app, name="run", hidden=True)
-    app.add_typer(doctor_app, name="doctor")
-    app.command("freeze")(freeze_entry)
-    app.command("reopen")(reopen_entry)
-    app.add_typer(gate_app, name="gate")
-    app.add_typer(init_app, name="init")
-    app.add_typer(status_app, name="status")
-    app.add_typer(report_app, name="report")
-    app.add_typer(review_app, name="review")
-    app.add_typer(skill_app, name="skill")
-    app.add_typer(profile_app, name="profile")
-    app.add_typer(implement_app, name="implement")
-    app.add_typer(verify_app, name="verify")
-    app.add_typer(orchestrate_app, name="orchestrate")
-    app.add_typer(debug_app, name="debug")
-    app.add_typer(feedback_app, name="feedback")
-    app.command("help")(help_entry)
-    app.add_typer(prompt_app, name="prompt", hidden=True)
     app.add_typer(think_app, name="think")
     app.add_typer(user_story_app, name="user-story")
     app.add_typer(prd_app, name="prd")
     app.add_typer(test_case_app, name="test-case")
+    app.add_typer(implement_app, name="implement")
+    app.add_typer(qa_app, name="qa")
+    app.add_typer(gate_app, name="gate")
+    app.add_typer(release_app, name="release")
+    app.command("ask")(ask_entry)
+    app.command("help")(help_entry)
+    app.add_typer(status_app, name="status")
+    app.add_typer(doctor_app, name="doctor")
     app.add_typer(workflow_app, name="workflow")
+    app.add_typer(init_app, name="init")
+    app.add_typer(profile_app, name="profile")
+    app.add_typer(skill_app, name="skill")
+    app.add_typer(run_app, name="run", hidden=True)
+    app.command("freeze")(freeze_entry)
+    app.command("reopen")(reopen_entry)
+    app.add_typer(report_app, name="report")
+    app.add_typer(review_app, name="review")
+    app.add_typer(verify_app, name="verify")
+    app.add_typer(orchestrate_app, name="orchestrate")
+    app.add_typer(debug_app, name="debug")
+    app.add_typer(feedback_app, name="feedback", hidden=True)
+    app.add_typer(prompt_app, name="prompt", hidden=True)
 
     # Planning & Analysis commands
     app.add_typer(analyze_app, name="analyze", hidden=True)
@@ -144,13 +153,11 @@ def build_app(*, package_version: str) -> typer.Typer:
     app.add_typer(persona_app, name="persona", hidden=True)
     app.add_typer(kano_app, name="kano", hidden=True)
     app.add_typer(moscow_app, name="moscow", hidden=True)
-    app.add_typer(evolution_summary_app, name="evolution-summary")
+    app.add_typer(evolution_summary_app, name="evolution-summary", hidden=True)
 
     # Testing & Release commands
-    app.add_typer(auto_test_app, name="auto-test")
-    app.add_typer(qa_app, name="qa")
-    app.add_typer(test_progress_app, name="test-progress")
-    app.add_typer(release_app, name="release")
+    app.add_typer(auto_test_app, name="auto-test", hidden=True)
+    app.add_typer(test_progress_app, name="test-progress", hidden=True)
     app.add_typer(api_design_app, name="api-design", hidden=True)
     app.add_typer(data_dictionary_app, name="data-dictionary", hidden=True)
 
@@ -159,11 +166,10 @@ def build_app(*, package_version: str) -> typer.Typer:
     app.add_typer(wireframe_app, name="wireframe", hidden=True)
     app.add_typer(prototype_app, name="prototype")
     app.add_typer(save_app, name="save", hidden=True)
-    app.add_typer(recall_app, name="recall")
-    app.add_typer(remember_app, name="remember")
+    app.add_typer(recall_app, name="recall", hidden=True)
+    app.add_typer(remember_app, name="remember", hidden=True)
     app.add_typer(team_app, name="team", hidden=True)
     app.add_typer(ralph_bridge_app, name="ralph-bridge", hidden=True)
-    app.command("ask")(ask_entry)
     app.command("resume")(resume_entry)
 
     labs_app.add_typer(analyze_app, name="analyze")
@@ -183,8 +189,8 @@ def build_app(*, package_version: str) -> typer.Typer:
     bridge_app.add_typer(team_app, name="team")
     bridge_app.add_typer(ralph_bridge_app, name="ralph")
 
-    app.add_typer(labs_app, name="labs")
-    app.add_typer(bridge_app, name="bridge")
+    app.add_typer(labs_app, name="labs", hidden=not show_labs)
+    app.add_typer(bridge_app, name="bridge", hidden=not show_bridge)
 
     @app.command("work", hidden=True)
     def work_alias(

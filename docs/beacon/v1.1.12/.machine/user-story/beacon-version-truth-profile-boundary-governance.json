@@ -1,0 +1,551 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-version-truth-profile-boundary-governance",
+  "feature_slug": "beacon-version-truth-profile-boundary-governance",
+  "version": "v1.1.12",
+  "current_revision_id": "R1",
+  "lifecycle_status": "frozen",
+  "updated_at": "2026-04-01T22:06:59.766285+00:00",
+  "revisions": [
+    {
+      "revision_id": "R1",
+      "feature_slug": "beacon-version-truth-profile-boundary-governance",
+      "source_revision_id": null,
+      "reason": "draft",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:d7018f53aa80dd8360c5921a5473e36bae406362d592f2c3e3efbc80b4db3110",
+      "superseded_by": null,
+      "created_at": "2026-04-01T21:55:36.260869+00:00",
+      "frozen_at": "2026-04-01T21:55:36.261913+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    }
+  ],
+  "stories": [
+    {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "beacon-version-truth-profile-boundary-governance",
+      "priority": "medium",
+      "status": "accepted",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "Single Version Truth",
+          "text": "Beacon 必须存在单一 machine-readable version truth source，至少表达 runtime/package/docs default line/planning line/partial runtime supplement",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-v112-release",
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.766081+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "Responsibility Layering",
+          "text": "Beacon 必须把 Requirement kernel、Delivery evidence kernel、Project execution adapters、Learning plane 的职责和禁区固定为四层模型",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-v112-release",
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.766081+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "Separate Status Semantics",
+          "text": "`planning line`、`partial runtime supplement`、`current runtime line` 必须可同时表达，避免 release truth 自相矛盾",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-v112-release",
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.766081+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "Profile-aware First",
+          "text": "help / doctor advise / status 的下一步推荐必须先看 project mode、feature/profile binding、stage-local binding，再决定是否 native fallback",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-v112-release",
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.766081+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "No Premature Native Default",
+          "text": "存在 profile binding 时，Beacon 不得默认先推荐 `native-single` 或 generic review path",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-v112-release",
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.766081+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "Stage Validation",
+          "text": "project skill orchestration 运行前必须校验 `skill.supported_stages` 覆盖当前 node stage",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-v112-release",
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.766081+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "Capability Validation",
+          "text": "orchestration 运行前必须校验 `skill.capabilities` 与请求动作一致，不一致则 blocked",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-v112-release",
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.766081+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "Evidence Contract Validation",
+          "text": "node 声明的 `produces_evidence` / `produces_cases` 必须与 skill/profile contract 一致，不一致则 blocked",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-v112-release",
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.766081+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-009",
+          "kind": "ac",
+          "theme": "Adapter Boundary",
+          "text": "project skill execution 不得退化成无边界任意 shell 编排；若保留 command template，必须经过 adapter-boundary 校验",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-v112-release",
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.766081+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-010",
+          "kind": "ac",
+          "theme": "Typed Learning Plane",
+          "text": "learning plane 必须显式区分 `qa_policy`、`design_policy`、`contract_policy`、`rewrite_policy`、`debug_policy`、`benchmark_policy`",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-v112-release",
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.766081+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-011",
+          "kind": "ac",
+          "theme": "Design Surface Alignment",
+          "text": "`v1.1.12` 文档里声明的 design brief extraction / guideline mapping / review thresholds 等 surfaces 必须在 learning plane contract 中可见",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-v112-release",
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.766081+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-012",
+          "kind": "ac",
+          "theme": "Takeover Baseline Gate",
+          "text": "project mode=`takeover` 时，缺少 architecture blueprint / current-state service map / refactor boundaries / frozen baseline 任一项都不得进入 implement",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-v112-release",
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.766081+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-013",
+          "kind": "ac",
+          "theme": "Readonly Project Inputs",
+          "text": "`rolo` 这类项目的 service-slice map / boundary docs / required evidence contracts 必须作为只读 contract inputs，而不是 Beacon core 的通用实现动作",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-v112-release",
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.766081+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-014",
+          "kind": "ac",
+          "theme": "Requirement-anchored Expansion",
+          "text": "QA/autoresearch 发散场景必须携带 `anchor_ids`、`anchor_kinds`、`semantic_scope`、`divergence_budget`、`adjacent_capability_flags` 等锚定信息",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-v112-release",
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.766081+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-015",
+          "kind": "ac",
+          "theme": "Requirement Anchor Score",
+          "text": "每个发散场景必须计算 `RAS`，并按 auto / review / manual / blocked 四个分段治理",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-v112-release",
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.766081+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-016",
+          "kind": "ac",
+          "theme": "Adjacent-semantics Drift Block",
+          "text": "若 requirement 仅是开屏页视频上传/展示，Beacon 不得自动把场景扩张成视频播放器语义，如 `500MB` 压测、seek、fullscreen、subtitle、buffering",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-v112-release",
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.766081+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-017",
+          "kind": "ac",
+          "theme": "Transparent Decision Trace",
+          "text": "help / status / review / gate / QA scenario generation 输出必须包含 `version_truth_source`、`project_mode`、`execution_surface`、`learning_surface`、`requirement_anchor_score`、`blocked_reason`",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-v112-release",
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.766081+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-018",
+          "kind": "ac",
+          "theme": "Stable Workflow Order",
+          "text": "Beacon 必须先解析 version truth、project mode、execution surface、learning surface、requirement anchors，再进入 help / implement / review / gate",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-v112-release",
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.766081+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "AC-019",
+          "kind": "ac",
+          "theme": "Context Version Guard",
+          "text": "当显式 `--version` 与上下文管理版本冲突时，系统必须返回 `context_version_mismatch`，并给出推荐版本",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-v112-release",
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.766081+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — Beacon 必须存在单一 machine-readable version truth source，至少表达 runtime/package/docs default line/planning line/partial runtime supplement",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.766081+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-001"
+          ]
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — Beacon 必须把 Requirement kernel、Delivery evidence kernel、Project execution adapters、Learning plane 的职责和禁区固定为四层模型",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.766081+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-002"
+          ]
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — `planning line`、`partial runtime supplement`、`current runtime line` 必须可同时表达，避免 release truth 自相矛盾",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.766081+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-003"
+          ]
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — help / doctor advise / status 的下一步推荐必须先看 project mode、feature/profile binding、stage-local binding，再决定是否 native fallback",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.766081+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-004"
+          ]
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — 存在 profile binding 时，Beacon 不得默认先推荐 `native-single` 或 generic review path",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.766081+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-005"
+          ]
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — project skill orchestration 运行前必须校验 `skill.supported_stages` 覆盖当前 node stage",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.766081+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-006"
+          ]
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — orchestration 运行前必须校验 `skill.capabilities` 与请求动作一致，不一致则 blocked",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.766081+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-007"
+          ]
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — node 声明的 `produces_evidence` / `produces_cases` 必须与 skill/profile contract 一致，不一致则 blocked",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.766081+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-008"
+          ]
+        },
+        {
+          "id": "TEST-009",
+          "kind": "test",
+          "text": "Verify AC-009 — project skill execution 不得退化成无边界任意 shell 编排；若保留 command template，必须经过 adapter-boundary 校验",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.766081+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-009"
+          ]
+        },
+        {
+          "id": "TEST-010",
+          "kind": "test",
+          "text": "Verify AC-010 — learning plane 必须显式区分 `qa_policy`、`design_policy`、`contract_policy`、`rewrite_policy`、`debug_policy`、`benchmark_policy`",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.766081+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-010"
+          ]
+        },
+        {
+          "id": "TEST-011",
+          "kind": "test",
+          "text": "Verify AC-011 — `v1.1.12` 文档里声明的 design brief extraction / guideline mapping / review thresholds 等 surfaces 必须在 learning plane contract 中可见",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.766081+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-011"
+          ]
+        },
+        {
+          "id": "TEST-012",
+          "kind": "test",
+          "text": "Verify AC-012 — project mode=`takeover` 时，缺少 architecture blueprint / current-state service map / refactor boundaries / frozen baseline 任一项都不得进入 implement",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.766081+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-012"
+          ]
+        },
+        {
+          "id": "TEST-013",
+          "kind": "test",
+          "text": "Verify AC-013 — `rolo` 这类项目的 service-slice map / boundary docs / required evidence contracts 必须作为只读 contract inputs，而不是 Beacon core 的通用实现动作",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.766081+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-013"
+          ]
+        },
+        {
+          "id": "TEST-014",
+          "kind": "test",
+          "text": "Verify AC-014 — QA/autoresearch 发散场景必须携带 `anchor_ids`、`anchor_kinds`、`semantic_scope`、`divergence_budget`、`adjacent_capability_flags` 等锚定信息",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.766081+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-014"
+          ]
+        },
+        {
+          "id": "TEST-015",
+          "kind": "test",
+          "text": "Verify AC-015 — 每个发散场景必须计算 `RAS`，并按 auto / review / manual / blocked 四个分段治理",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.766081+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-015"
+          ]
+        },
+        {
+          "id": "TEST-016",
+          "kind": "test",
+          "text": "Verify AC-016 — 若 requirement 仅是开屏页视频上传/展示，Beacon 不得自动把场景扩张成视频播放器语义，如 `500MB` 压测、seek、fullscreen、subtitle、buffering",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.766081+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-016"
+          ]
+        },
+        {
+          "id": "TEST-017",
+          "kind": "test",
+          "text": "Verify AC-017 — help / status / review / gate / QA scenario generation 输出必须包含 `version_truth_source`、`project_mode`、`execution_surface`、`learning_surface`、`requirement_anchor_score`、`blocked_reason`",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.766081+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-017"
+          ]
+        },
+        {
+          "id": "TEST-018",
+          "kind": "test",
+          "text": "Verify AC-018 — Beacon 必须先解析 version truth、project mode、execution surface、learning surface、requirement anchors，再进入 help / implement / review / gate",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.766081+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-018"
+          ]
+        },
+        {
+          "id": "TEST-019",
+          "kind": "test",
+          "text": "Verify AC-019 — 当显式 `--version` 与上下文管理版本冲突时，系统必须返回 `context_version_mismatch`，并给出推荐版本",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-v112-release",
+          "accepted_at": "2026-04-01T22:06:59.766081+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-019"
+          ]
+        }
+      ],
+      "feature": "beacon-version-truth-profile-boundary-governance",
+      "feature_slug": "beacon-version-truth-profile-boundary-governance",
+      "version": "v1.1.12",
+      "last_changed_files": [],
+      "verification_evidence": [
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.1.12/.machine/execution/technical-implementation-beacon-version-truth-profile-boundary-governance.json"
+      ],
+      "accepted_at": "2026-04-01T22:06:59.766081+00:00",
+      "accepted_by": "release-closure"
+    }
+  ]
+}

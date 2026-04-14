@@ -116,3 +116,70 @@ def test_gate_release_should_skip_delivery_execution_contract_before_v111(tmp_pa
     _seed_release_execution(tmp_path, version="v1.0.0", pending_task=True)
     issues = check_delivery_execution_artifacts(tmp_path, GateMode.STRICT, "release", "v1.0.0")
     assert issues == []
+
+
+def test_gate_release_should_require_git_workflow_contract_for_v130_plans(tmp_path: Path):
+    version = "v1.3.0"
+    _seed_release_execution(tmp_path, version=version, pending_task=False)
+    machine_dir = tmp_path / "docs" / "beacon" / version / ".machine" / "execution"
+    machine_dir.mkdir(parents=True, exist_ok=True)
+    (machine_dir / "implementation-plan-demo.json").write_text(
+        json.dumps(
+            {
+                "feature": "Demo",
+                "feature_slug": "demo",
+                "version": version,
+                "tasks": [{"task_id": "ITASK-001"}],
+                "source_refs": {"prd": "docs/beacon/v1.3.0/prd/demo.md"},
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    issues = check_delivery_execution_artifacts(tmp_path, GateMode.STRICT, "release", version)
+    reason_codes = {item["reason_code"] for item in issues}
+    assert "git_workflow_contract_missing" in reason_codes
+
+
+def test_gate_release_should_detect_delivery_manifest_git_workflow_mismatch(tmp_path: Path):
+    version = "v1.3.0"
+    _seed_release_execution(tmp_path, version=version, pending_task=False)
+    machine_dir = tmp_path / "docs" / "beacon" / version / ".machine" / "execution"
+    exec_dir = tmp_path / "docs" / "beacon" / version / "execution"
+    machine_dir.mkdir(parents=True, exist_ok=True)
+    (machine_dir / "implementation-plan-demo.json").write_text(
+        json.dumps(
+            {
+                "feature": "Demo",
+                "feature_slug": "demo",
+                "version": version,
+                "tasks": [{"task_id": "ITASK-001"}],
+                "source_refs": {"prd": "docs/beacon/v1.3.0/prd/demo.md"},
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    (machine_dir / "git-workflow-demo.json").write_text(
+        json.dumps(
+            {
+                "schema_version": "1.0",
+                "feature": "Demo",
+                "feature_slug": "demo",
+                "version": version,
+                "mode": "single-repo",
+                "expected_branch": "feature/v1.3.0-demo",
+                "branch_prefix": "feature/",
+                "base_branch": "main",
+                "use_git_worktree": False,
+                "require_clean_worktree_for_switch": True,
+                "service_directories": [],
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    (exec_dir / "git-workflow-demo.md").write_text("# Contract\n", encoding="utf-8")
+    issues = check_delivery_execution_artifacts(tmp_path, GateMode.STRICT, "release", version)
+    reason_codes = {item["reason_code"] for item in issues}
+    assert "git_workflow_delivery_manifest_mismatch" in reason_codes

@@ -335,8 +335,10 @@ class TestBeaconVersion:
 
     def test_version_create(self, tmp_path):
         """Test version create"""
-        result = runner.invoke(app, ["version", "create", "电商收藏", "--project", str(tmp_path)])
+        result = runner.invoke(app, ["version", "create", "电商收藏", "--project", str(tmp_path), "--json"])
         assert result.exit_code == 0
+        payload = json.loads(result.stdout)
+        assert payload["version_semantics"]["fields"]["package_version"]["kind"] == "package"
 
 
 class TestBeaconRoadmap:

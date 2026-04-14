@@ -1,0 +1,2842 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.2.0-command-simplification-and-project-skill-workflow",
+  "feature_slug": "beacon-v1.2.0-command-simplification-and-project-skill-workflow",
+  "version": "v1.2.0",
+  "generated_at": "2026-04-08T13:21:06.683911+00:00",
+  "expansion_profile": "pua-web",
+  "scenario_depth": "standard",
+  "families_required": [
+    "happy",
+    "negative",
+    "boundary",
+    "recovery",
+    "compatibility"
+  ],
+  "stories": [
+    {
+      "ac_id": "AC-001",
+      "theme": "Mainline Command Surface",
+      "text": "默认命令面必须优先暴露 `PRD → story → QA` 主链入口，且不破坏主链向后兼容性",
+      "scenario_ids": [
+        "SC-001",
+        "SC-002"
+      ],
+      "scenario_families": [
+        "primary",
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-001",
+          "source_tc_id": "TC-001",
+          "tc_id": "TC-001-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "unit",
+          "browser_required": false,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-002",
+          "source_tc_id": "TC-021",
+          "tc_id": "TC-021-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "interface",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "Help Routing",
+      "text": "`help / status` 必须成为主链阶段路由中心，而不是只展示命令清单",
+      "scenario_ids": [
+        "SC-003",
+        "SC-004"
+      ],
+      "scenario_families": [
+        "primary",
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-003",
+          "source_tc_id": "TC-002",
+          "tc_id": "TC-002-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "unit",
+          "browser_required": false,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-004",
+          "source_tc_id": "TC-022",
+          "tc_id": "TC-022-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "Advanced Surface Disclosure",
+      "text": "低频或高级能力默认降噪，但仍保留显式入口，不得删除专家路径",
+      "scenario_ids": [
+        "SC-005",
+        "SC-006"
+      ],
+      "scenario_families": [
+        "primary",
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-005",
+          "source_tc_id": "TC-003",
+          "tc_id": "TC-003-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "unit",
+          "browser_required": false,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-006",
+          "source_tc_id": "TC-023",
+          "tc_id": "TC-023-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "integration",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "Project Skill Recommendation",
+      "text": "系统必须根据项目特征推荐服务于 verify / delivery / debug / pipeline 的 skill/profile",
+      "scenario_ids": [
+        "SC-007",
+        "SC-008",
+        "SC-009",
+        "SC-010",
+        "SC-011",
+        "SC-012"
+      ],
+      "scenario_families": [
+        "primary",
+        "happy",
+        "negative",
+        "boundary",
+        "recovery",
+        "compatibility"
+      ],
+      "required_families": [
+        "happy",
+        "negative",
+        "boundary",
+        "recovery",
+        "compatibility"
+      ],
+      "scenarios": [
+        {
+          "scenario_id": "SC-007",
+          "source_tc_id": "TC-004",
+          "tc_id": "TC-004-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "unit",
+          "browser_required": false,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-008",
+          "source_tc_id": "TC-024",
+          "tc_id": "TC-024-HAPPY",
+          "scenario_family": "happy",
+          "qa_type": "functional",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-009",
+          "source_tc_id": "TC-024",
+          "tc_id": "TC-024-NEGATIVE",
+          "scenario_family": "negative",
+          "qa_type": "functional",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-010",
+          "source_tc_id": "TC-024",
+          "tc_id": "TC-024-BOUNDARY",
+          "scenario_family": "boundary",
+          "qa_type": "functional",
+          "browser_required": true,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-011",
+          "source_tc_id": "TC-024",
+          "tc_id": "TC-024-RECOVERY",
+          "scenario_family": "recovery",
+          "qa_type": "functional",
+          "browser_required": true,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-012",
+          "source_tc_id": "TC-024",
+          "tc_id": "TC-024-COMPATIBILITY",
+          "scenario_family": "compatibility",
+          "qa_type": "compatibility",
+          "browser_required": true,
+          "replay_required": true
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "Starter Pack Boundary",
+      "text": "starter packs 必须声明适用技术栈、边界，并保持 capability / evidence / required-cases 合同",
+      "scenario_ids": [
+        "SC-013",
+        "SC-014",
+        "SC-015",
+        "SC-016",
+        "SC-017",
+        "SC-018"
+      ],
+      "scenario_families": [
+        "happy",
+        "negative",
+        "boundary",
+        "recovery",
+        "compatibility",
+        "primary"
+      ],
+      "required_families": [
+        "happy",
+        "negative",
+        "boundary",
+        "recovery",
+        "compatibility"
+      ],
+      "scenarios": [
+        {
+          "scenario_id": "SC-013",
+          "source_tc_id": "TC-005",
+          "tc_id": "TC-005-HAPPY",
+          "scenario_family": "happy",
+          "qa_type": "unit",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-014",
+          "source_tc_id": "TC-005",
+          "tc_id": "TC-005-NEGATIVE",
+          "scenario_family": "negative",
+          "qa_type": "unit",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-015",
+          "source_tc_id": "TC-005",
+          "tc_id": "TC-005-BOUNDARY",
+          "scenario_family": "boundary",
+          "qa_type": "unit",
+          "browser_required": true,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-016",
+          "source_tc_id": "TC-005",
+          "tc_id": "TC-005-RECOVERY",
+          "scenario_family": "recovery",
+          "qa_type": "unit",
+          "browser_required": true,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-017",
+          "source_tc_id": "TC-005",
+          "tc_id": "TC-005-COMPATIBILITY",
+          "scenario_family": "compatibility",
+          "qa_type": "compatibility",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-018",
+          "source_tc_id": "TC-025",
+          "tc_id": "TC-025-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "regression",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-006",
+      "theme": "Discover Preview Flow",
+      "text": "`beacon skill discover` 必须遵循 `detect → recommend → preview → apply`，且默认停在 preview/dry-run",
+      "scenario_ids": [
+        "SC-019",
+        "SC-020"
+      ],
+      "scenario_families": [
+        "primary",
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-019",
+          "source_tc_id": "TC-006",
+          "tc_id": "TC-006-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "unit",
+          "browser_required": false,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-020",
+          "source_tc_id": "TC-026",
+          "tc_id": "TC-026-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "exception",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-007",
+      "theme": "Discover Explainability",
+      "text": "discovery 结果必须包含项目特征、推荐模板/skills、评分、理由与证据",
+      "scenario_ids": [
+        "SC-021"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-021",
+          "source_tc_id": "TC-007",
+          "tc_id": "TC-007-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "unit",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-008",
+      "theme": "Discover Shared State",
+      "text": "discovery 必须写出有界状态 artifact，并被 `help / profile / skill doctor` 共用",
+      "scenario_ids": [
+        "SC-022"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-022",
+          "source_tc_id": "TC-008",
+          "tc_id": "TC-008-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "unit",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-009",
+      "theme": "Prototype Forward Anchor",
+      "text": "PRD/story 的关键需求点必须能映射到 prototype 页面或状态",
+      "scenario_ids": [
+        "SC-023",
+        "SC-024",
+        "SC-025",
+        "SC-026",
+        "SC-027"
+      ],
+      "scenario_families": [
+        "happy",
+        "negative",
+        "boundary",
+        "recovery",
+        "compatibility"
+      ],
+      "required_families": [
+        "happy",
+        "negative",
+        "boundary",
+        "recovery",
+        "compatibility"
+      ],
+      "scenarios": [
+        {
+          "scenario_id": "SC-023",
+          "source_tc_id": "TC-009",
+          "tc_id": "TC-009-HAPPY",
+          "scenario_family": "happy",
+          "qa_type": "unit",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-024",
+          "source_tc_id": "TC-009",
+          "tc_id": "TC-009-NEGATIVE",
+          "scenario_family": "negative",
+          "qa_type": "unit",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-025",
+          "source_tc_id": "TC-009",
+          "tc_id": "TC-009-BOUNDARY",
+          "scenario_family": "boundary",
+          "qa_type": "unit",
+          "browser_required": true,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-026",
+          "source_tc_id": "TC-009",
+          "tc_id": "TC-009-RECOVERY",
+          "scenario_family": "recovery",
+          "qa_type": "unit",
+          "browser_required": true,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-027",
+          "source_tc_id": "TC-009",
+          "tc_id": "TC-009-COMPATIBILITY",
+          "scenario_family": "compatibility",
+          "qa_type": "compatibility",
+          "browser_required": true,
+          "replay_required": true
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-010",
+      "theme": "Prototype Reverse Anchor",
+      "text": "orphan prototype / orphan requirement / UI 模块缺失必须被显式检测并给出修复方向",
+      "scenario_ids": [
+        "SC-028",
+        "SC-029",
+        "SC-030",
+        "SC-031",
+        "SC-032"
+      ],
+      "scenario_families": [
+        "happy",
+        "negative",
+        "boundary",
+        "recovery",
+        "compatibility"
+      ],
+      "required_families": [
+        "happy",
+        "negative",
+        "boundary",
+        "recovery",
+        "compatibility"
+      ],
+      "scenarios": [
+        {
+          "scenario_id": "SC-028",
+          "source_tc_id": "TC-010",
+          "tc_id": "TC-010-HAPPY",
+          "scenario_family": "happy",
+          "qa_type": "unit",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-029",
+          "source_tc_id": "TC-010",
+          "tc_id": "TC-010-NEGATIVE",
+          "scenario_family": "negative",
+          "qa_type": "unit",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-030",
+          "source_tc_id": "TC-010",
+          "tc_id": "TC-010-BOUNDARY",
+          "scenario_family": "boundary",
+          "qa_type": "unit",
+          "browser_required": true,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-031",
+          "source_tc_id": "TC-010",
+          "tc_id": "TC-010-RECOVERY",
+          "scenario_family": "recovery",
+          "qa_type": "unit",
+          "browser_required": true,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-032",
+          "source_tc_id": "TC-010",
+          "tc_id": "TC-010-COMPATIBILITY",
+          "scenario_family": "compatibility",
+          "qa_type": "compatibility",
+          "browser_required": true,
+          "replay_required": true
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-011",
+      "theme": "Mainline Anchor Contract",
+      "text": "`v1.2.0` 文档必须明确 `PRD → story → QA` 是唯一主链锚点，其他工作流均为 subordinate workstreams",
+      "scenario_ids": [
+        "SC-033"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-033",
+          "source_tc_id": "TC-011",
+          "tc_id": "TC-011-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "unit",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-012",
+      "theme": "Story-QA Baseline Bundle",
+      "text": "`PRD + story + .machine/user-story + QA markdown + AC matrix + scenario map + QA9 matrix + coverage/evidence scorecard` 必须被定义为固定 bundle",
+      "scenario_ids": [
+        "SC-034"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-034",
+          "source_tc_id": "TC-012",
+          "tc_id": "TC-012-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "unit",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-013",
+      "theme": "QA Auto Harness Inputs",
+      "text": "`qa auto harness` 只能消费 baseline bundle，不得自建 benchmark target",
+      "scenario_ids": [
+        "SC-035"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-035",
+          "source_tc_id": "TC-013",
+          "tc_id": "TC-013-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "unit",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-014",
+      "theme": "QA Auto Harness Boundaries",
+      "text": "harness 只能迭代 bounded QA policy surfaces，并输出 coverage/evidence/false-complete delta 与 keep/discard verdict",
+      "scenario_ids": [
+        "SC-036"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-036",
+          "source_tc_id": "TC-014",
+          "tc_id": "TC-014-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "unit",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-015",
+      "theme": "Requirement Freeze Closure",
+      "text": "当前 requirement package 必须可生成 machine baseline bundle、完成 freeze，并清晰说明“冻结的是需求包，不是已实现代码”",
+      "scenario_ids": [
+        "SC-037",
+        "SC-038",
+        "SC-039",
+        "SC-040",
+        "SC-041"
+      ],
+      "scenario_families": [
+        "happy",
+        "negative",
+        "boundary",
+        "recovery",
+        "compatibility"
+      ],
+      "required_families": [
+        "happy",
+        "negative",
+        "boundary",
+        "recovery",
+        "compatibility"
+      ],
+      "scenarios": [
+        {
+          "scenario_id": "SC-037",
+          "source_tc_id": "TC-015",
+          "tc_id": "TC-015-HAPPY",
+          "scenario_family": "happy",
+          "qa_type": "unit",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-038",
+          "source_tc_id": "TC-015",
+          "tc_id": "TC-015-NEGATIVE",
+          "scenario_family": "negative",
+          "qa_type": "unit",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-039",
+          "source_tc_id": "TC-015",
+          "tc_id": "TC-015-BOUNDARY",
+          "scenario_family": "boundary",
+          "qa_type": "unit",
+          "browser_required": true,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-040",
+          "source_tc_id": "TC-015",
+          "tc_id": "TC-015-RECOVERY",
+          "scenario_family": "recovery",
+          "qa_type": "unit",
+          "browser_required": true,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-041",
+          "source_tc_id": "TC-015",
+          "tc_id": "TC-015-COMPATIBILITY",
+          "scenario_family": "compatibility",
+          "qa_type": "compatibility",
+          "browser_required": true,
+          "replay_required": true
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-016",
+      "theme": "Smart Entry Routing",
+      "text": "`ask / help` 必须承担更强的主链命令推荐职责，而不是只做静态说明",
+      "scenario_ids": [
+        "SC-042"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-042",
+          "source_tc_id": "TC-016",
+          "tc_id": "TC-016-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "unit",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-017",
+      "theme": "Progressive Disclosure",
+      "text": "default visible command surface 必须优先主链，advanced / labs surfaces 通过显式 disclosure 暴露",
+      "scenario_ids": [
+        "SC-043"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-043",
+          "source_tc_id": "TC-017",
+          "tc_id": "TC-017-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "unit",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-018",
+      "theme": "Architecture Guardrails",
+      "text": "`v1.2.0` 必须显式保持四层架构边界，并避免把 agent-platform rewrite 变成当前中心",
+      "scenario_ids": [
+        "SC-044",
+        "SC-045",
+        "SC-046",
+        "SC-047",
+        "SC-048"
+      ],
+      "scenario_families": [
+        "happy",
+        "negative",
+        "boundary",
+        "recovery",
+        "compatibility"
+      ],
+      "required_families": [
+        "happy",
+        "negative",
+        "boundary",
+        "recovery",
+        "compatibility"
+      ],
+      "scenarios": [
+        {
+          "scenario_id": "SC-044",
+          "source_tc_id": "TC-018",
+          "tc_id": "TC-018-HAPPY",
+          "scenario_family": "happy",
+          "qa_type": "unit",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-045",
+          "source_tc_id": "TC-018",
+          "tc_id": "TC-018-NEGATIVE",
+          "scenario_family": "negative",
+          "qa_type": "unit",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-046",
+          "source_tc_id": "TC-018",
+          "tc_id": "TC-018-BOUNDARY",
+          "scenario_family": "boundary",
+          "qa_type": "unit",
+          "browser_required": true,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-047",
+          "source_tc_id": "TC-018",
+          "tc_id": "TC-018-RECOVERY",
+          "scenario_family": "recovery",
+          "qa_type": "unit",
+          "browser_required": true,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-048",
+          "source_tc_id": "TC-018",
+          "tc_id": "TC-018-COMPATIBILITY",
+          "scenario_family": "compatibility",
+          "qa_type": "compatibility",
+          "browser_required": true,
+          "replay_required": true
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-019",
+      "theme": "Deferred Generic Discover",
+      "text": "泛化 `beacon discover` 代码分析能力必须被标记为未来 advanced/labs 方向，而不是当前主链冻结交付",
+      "scenario_ids": [
+        "SC-049"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-049",
+          "source_tc_id": "TC-019",
+          "tc_id": "TC-019-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "unit",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-020",
+      "theme": "Research Convergence",
+      "text": "三份 April 8 深度调研的结论必须被吸收到 versioned requirement package，并映射到 execution / source-architecture / QA contracts",
+      "scenario_ids": [
+        "SC-050",
+        "SC-051",
+        "SC-052",
+        "SC-053",
+        "SC-054"
+      ],
+      "scenario_families": [
+        "happy",
+        "negative",
+        "boundary",
+        "recovery",
+        "compatibility"
+      ],
+      "required_families": [
+        "happy",
+        "negative",
+        "boundary",
+        "recovery",
+        "compatibility"
+      ],
+      "scenarios": [
+        {
+          "scenario_id": "SC-050",
+          "source_tc_id": "TC-020",
+          "tc_id": "TC-020-HAPPY",
+          "scenario_family": "happy",
+          "qa_type": "unit",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-051",
+          "source_tc_id": "TC-020",
+          "tc_id": "TC-020-NEGATIVE",
+          "scenario_family": "negative",
+          "qa_type": "unit",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-052",
+          "source_tc_id": "TC-020",
+          "tc_id": "TC-020-BOUNDARY",
+          "scenario_family": "boundary",
+          "qa_type": "unit",
+          "browser_required": true,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-053",
+          "source_tc_id": "TC-020",
+          "tc_id": "TC-020-RECOVERY",
+          "scenario_family": "recovery",
+          "qa_type": "unit",
+          "browser_required": true,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-054",
+          "source_tc_id": "TC-020",
+          "tc_id": "TC-020-COMPATIBILITY",
+          "scenario_family": "compatibility",
+          "qa_type": "compatibility",
+          "browser_required": true,
+          "replay_required": true
+        }
+      ]
+    }
+  ],
+  "scenarios": [
+    {
+      "scenario_id": "SC-001",
+      "source_tc_id": "TC-001",
+      "tc_id": "TC-001-PRIMARY",
+      "ac_id": "AC-001",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "primary",
+      "title": "AC-001 primary path :: All unit assertions pass",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.2.0-command-simplification-and-project-skill-workflow/{run_id}/TC-001-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-002",
+      "source_tc_id": "TC-021",
+      "tc_id": "TC-021-PRIMARY",
+      "ac_id": "AC-001",
+      "qa_type": "interface",
+      "layer": "api-curl",
+      "scenario_family": "primary",
+      "title": "AC-001 primary path :: HTTP status and schema assertions pass",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "interface",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k interface --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "HTTP status and schema assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.2.0-command-simplification-and-project-skill-workflow/{run_id}/TC-021-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-003",
+      "source_tc_id": "TC-002",
+      "tc_id": "TC-002-PRIMARY",
+      "ac_id": "AC-002",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "primary",
+      "title": "AC-002 primary path :: All unit assertions pass",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.2.0-command-simplification-and-project-skill-workflow/{run_id}/TC-002-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-004",
+      "source_tc_id": "TC-022",
+      "tc_id": "TC-022-PRIMARY",
+      "ac_id": "AC-002",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-002 primary path :: Provider/consumer contract assertions pass",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.2.0-command-simplification-and-project-skill-workflow/{run_id}/TC-022-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-005",
+      "source_tc_id": "TC-003",
+      "tc_id": "TC-003-PRIMARY",
+      "ac_id": "AC-003",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "primary",
+      "title": "AC-003 primary path :: All unit assertions pass",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.2.0-command-simplification-and-project-skill-workflow/{run_id}/TC-003-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-006",
+      "source_tc_id": "TC-023",
+      "tc_id": "TC-023-PRIMARY",
+      "ac_id": "AC-003",
+      "qa_type": "integration",
+      "layer": "integration",
+      "scenario_family": "primary",
+      "title": "AC-003 primary path :: Integration flow assertions pass",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "integration",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k integration --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Integration flow assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.2.0-command-simplification-and-project-skill-workflow/{run_id}/TC-023-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-007",
+      "source_tc_id": "TC-004",
+      "tc_id": "TC-004-PRIMARY",
+      "ac_id": "AC-004",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "primary",
+      "title": "AC-004 primary path :: All unit assertions pass",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.2.0-command-simplification-and-project-skill-workflow/{run_id}/TC-004-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-008",
+      "source_tc_id": "TC-024",
+      "tc_id": "TC-024-HAPPY",
+      "ac_id": "AC-004",
+      "qa_type": "functional",
+      "layer": "ui",
+      "scenario_family": "happy",
+      "title": "AC-004 happy path :: Critical path assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "npx playwright test",
+      "coverage_axes": [
+        "happy",
+        "functional",
+        "browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": true,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -m smoke --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Critical path assertions pass (happy path completes with expected evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.2.0-command-simplification-and-project-skill-workflow/{run_id}/TC-024-HAPPY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-009",
+      "source_tc_id": "TC-024",
+      "tc_id": "TC-024-NEGATIVE",
+      "ac_id": "AC-004",
+      "qa_type": "functional",
+      "layer": "ui",
+      "scenario_family": "negative",
+      "title": "AC-004 negative path :: Critical path assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "npx playwright test",
+      "coverage_axes": [
+        "negative",
+        "functional",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-008"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -m smoke --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Critical path assertions pass (negative path is rejected or handled with explicit evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.2.0-command-simplification-and-project-skill-workflow/{run_id}/TC-024-NEGATIVE.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-010",
+      "source_tc_id": "TC-024",
+      "tc_id": "TC-024-BOUNDARY",
+      "ac_id": "AC-004",
+      "qa_type": "functional",
+      "layer": "ui",
+      "scenario_family": "boundary",
+      "title": "AC-004 boundary path :: Critical path assertions pass",
+      "browser_required": true,
+      "replay_required": false,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "npx playwright test",
+      "coverage_axes": [
+        "boundary",
+        "functional",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-008"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -m smoke --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Critical path assertions pass (boundary path is validated with explicit evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.2.0-command-simplification-and-project-skill-workflow/{run_id}/TC-024-BOUNDARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-011",
+      "source_tc_id": "TC-024",
+      "tc_id": "TC-024-RECOVERY",
+      "ac_id": "AC-004",
+      "qa_type": "functional",
+      "layer": "ui",
+      "scenario_family": "recovery",
+      "title": "AC-004 recovery path :: Critical path assertions pass",
+      "browser_required": true,
+      "replay_required": false,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "npx playwright test",
+      "coverage_axes": [
+        "recovery",
+        "functional",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-008"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -m smoke --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Critical path assertions pass (recovery path survives refresh/back/retry with evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.2.0-command-simplification-and-project-skill-workflow/{run_id}/TC-024-RECOVERY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-012",
+      "source_tc_id": "TC-024",
+      "tc_id": "TC-024-COMPATIBILITY",
+      "ac_id": "AC-004",
+      "qa_type": "compatibility",
+      "layer": "compatibility",
+      "scenario_family": "compatibility",
+      "title": "AC-004 compatibility path :: Critical path assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "npx playwright test --project=chromium --project=firefox --project=webkit",
+      "coverage_axes": [
+        "compatibility",
+        "compatibility",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-008"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -m smoke --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Critical path assertions pass (compatibility path preserves behavior across browser/device pairs)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.2.0-command-simplification-and-project-skill-workflow/{run_id}/TC-024-COMPATIBILITY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-013",
+      "source_tc_id": "TC-005",
+      "tc_id": "TC-005-HAPPY",
+      "ac_id": "AC-005",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "happy",
+      "title": "AC-005 happy path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "happy",
+        "unit",
+        "browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": true,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (happy path completes with expected evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.2.0-command-simplification-and-project-skill-workflow/{run_id}/TC-005-HAPPY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-014",
+      "source_tc_id": "TC-005",
+      "tc_id": "TC-005-NEGATIVE",
+      "ac_id": "AC-005",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "negative",
+      "title": "AC-005 negative path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "negative",
+        "unit",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-013"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (negative path is rejected or handled with explicit evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.2.0-command-simplification-and-project-skill-workflow/{run_id}/TC-005-NEGATIVE.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-015",
+      "source_tc_id": "TC-005",
+      "tc_id": "TC-005-BOUNDARY",
+      "ac_id": "AC-005",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "boundary",
+      "title": "AC-005 boundary path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": false,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "boundary",
+        "unit",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-013"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (boundary path is validated with explicit evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.2.0-command-simplification-and-project-skill-workflow/{run_id}/TC-005-BOUNDARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-016",
+      "source_tc_id": "TC-005",
+      "tc_id": "TC-005-RECOVERY",
+      "ac_id": "AC-005",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "recovery",
+      "title": "AC-005 recovery path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": false,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "recovery",
+        "unit",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-013"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (recovery path survives refresh/back/retry with evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.2.0-command-simplification-and-project-skill-workflow/{run_id}/TC-005-RECOVERY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-017",
+      "source_tc_id": "TC-005",
+      "tc_id": "TC-005-COMPATIBILITY",
+      "ac_id": "AC-005",
+      "qa_type": "compatibility",
+      "layer": "compatibility",
+      "scenario_family": "compatibility",
+      "title": "AC-005 compatibility path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "npx playwright test --project=chromium --project=firefox --project=webkit",
+      "coverage_axes": [
+        "compatibility",
+        "compatibility",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-013"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (compatibility path preserves behavior across browser/device pairs)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.2.0-command-simplification-and-project-skill-workflow/{run_id}/TC-005-COMPATIBILITY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-018",
+      "source_tc_id": "TC-025",
+      "tc_id": "TC-025-PRIMARY",
+      "ac_id": "AC-005",
+      "qa_type": "regression",
+      "layer": "regression",
+      "scenario_family": "primary",
+      "title": "AC-005 primary path :: No known behavior regression found",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "regression",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k regression --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "No known behavior regression found",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.2.0-command-simplification-and-project-skill-workflow/{run_id}/TC-025-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-019",
+      "source_tc_id": "TC-006",
+      "tc_id": "TC-006-PRIMARY",
+      "ac_id": "AC-006",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "primary",
+      "title": "AC-006 primary path :: All unit assertions pass",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.2.0-command-simplification-and-project-skill-workflow/{run_id}/TC-006-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-020",
+      "source_tc_id": "TC-026",
+      "tc_id": "TC-026-PRIMARY",
+      "ac_id": "AC-006",
+      "qa_type": "exception",
+      "layer": "exception",
+      "scenario_family": "primary",
+      "title": "AC-006 primary path :: Negative-path assertions pass",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "exception",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k exception --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Negative-path assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.2.0-command-simplification-and-project-skill-workflow/{run_id}/TC-026-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-021",
+      "source_tc_id": "TC-007",
+      "tc_id": "TC-007-PRIMARY",
+      "ac_id": "AC-007",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "primary",
+      "title": "AC-007 primary path :: All unit assertions pass",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.2.0-command-simplification-and-project-skill-workflow/{run_id}/TC-007-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-022",
+      "source_tc_id": "TC-008",
+      "tc_id": "TC-008-PRIMARY",
+      "ac_id": "AC-008",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "primary",
+      "title": "AC-008 primary path :: All unit assertions pass",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.2.0-command-simplification-and-project-skill-workflow/{run_id}/TC-008-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-023",
+      "source_tc_id": "TC-009",
+      "tc_id": "TC-009-HAPPY",
+      "ac_id": "AC-009",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "happy",
+      "title": "AC-009 happy path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "happy",
+        "unit",
+        "browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": true,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (happy path completes with expected evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.2.0-command-simplification-and-project-skill-workflow/{run_id}/TC-009-HAPPY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-024",
+      "source_tc_id": "TC-009",
+      "tc_id": "TC-009-NEGATIVE",
+      "ac_id": "AC-009",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "negative",
+      "title": "AC-009 negative path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "negative",
+        "unit",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-023"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (negative path is rejected or handled with explicit evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.2.0-command-simplification-and-project-skill-workflow/{run_id}/TC-009-NEGATIVE.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-025",
+      "source_tc_id": "TC-009",
+      "tc_id": "TC-009-BOUNDARY",
+      "ac_id": "AC-009",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "boundary",
+      "title": "AC-009 boundary path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": false,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "boundary",
+        "unit",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-023"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (boundary path is validated with explicit evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.2.0-command-simplification-and-project-skill-workflow/{run_id}/TC-009-BOUNDARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-026",
+      "source_tc_id": "TC-009",
+      "tc_id": "TC-009-RECOVERY",
+      "ac_id": "AC-009",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "recovery",
+      "title": "AC-009 recovery path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": false,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "recovery",
+        "unit",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-023"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (recovery path survives refresh/back/retry with evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.2.0-command-simplification-and-project-skill-workflow/{run_id}/TC-009-RECOVERY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-027",
+      "source_tc_id": "TC-009",
+      "tc_id": "TC-009-COMPATIBILITY",
+      "ac_id": "AC-009",
+      "qa_type": "compatibility",
+      "layer": "compatibility",
+      "scenario_family": "compatibility",
+      "title": "AC-009 compatibility path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "npx playwright test --project=chromium --project=firefox --project=webkit",
+      "coverage_axes": [
+        "compatibility",
+        "compatibility",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-023"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (compatibility path preserves behavior across browser/device pairs)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.2.0-command-simplification-and-project-skill-workflow/{run_id}/TC-009-COMPATIBILITY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-028",
+      "source_tc_id": "TC-010",
+      "tc_id": "TC-010-HAPPY",
+      "ac_id": "AC-010",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "happy",
+      "title": "AC-010 happy path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "happy",
+        "unit",
+        "browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": true,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (happy path completes with expected evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.2.0-command-simplification-and-project-skill-workflow/{run_id}/TC-010-HAPPY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-029",
+      "source_tc_id": "TC-010",
+      "tc_id": "TC-010-NEGATIVE",
+      "ac_id": "AC-010",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "negative",
+      "title": "AC-010 negative path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "negative",
+        "unit",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-028"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (negative path is rejected or handled with explicit evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.2.0-command-simplification-and-project-skill-workflow/{run_id}/TC-010-NEGATIVE.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-030",
+      "source_tc_id": "TC-010",
+      "tc_id": "TC-010-BOUNDARY",
+      "ac_id": "AC-010",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "boundary",
+      "title": "AC-010 boundary path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": false,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "boundary",
+        "unit",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-028"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (boundary path is validated with explicit evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.2.0-command-simplification-and-project-skill-workflow/{run_id}/TC-010-BOUNDARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-031",
+      "source_tc_id": "TC-010",
+      "tc_id": "TC-010-RECOVERY",
+      "ac_id": "AC-010",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "recovery",
+      "title": "AC-010 recovery path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": false,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "recovery",
+        "unit",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-028"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (recovery path survives refresh/back/retry with evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.2.0-command-simplification-and-project-skill-workflow/{run_id}/TC-010-RECOVERY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-032",
+      "source_tc_id": "TC-010",
+      "tc_id": "TC-010-COMPATIBILITY",
+      "ac_id": "AC-010",
+      "qa_type": "compatibility",
+      "layer": "compatibility",
+      "scenario_family": "compatibility",
+      "title": "AC-010 compatibility path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "npx playwright test --project=chromium --project=firefox --project=webkit",
+      "coverage_axes": [
+        "compatibility",
+        "compatibility",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-028"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (compatibility path preserves behavior across browser/device pairs)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.2.0-command-simplification-and-project-skill-workflow/{run_id}/TC-010-COMPATIBILITY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-033",
+      "source_tc_id": "TC-011",
+      "tc_id": "TC-011-PRIMARY",
+      "ac_id": "AC-011",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "primary",
+      "title": "AC-011 primary path :: All unit assertions pass",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.2.0-command-simplification-and-project-skill-workflow/{run_id}/TC-011-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-034",
+      "source_tc_id": "TC-012",
+      "tc_id": "TC-012-PRIMARY",
+      "ac_id": "AC-012",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "primary",
+      "title": "AC-012 primary path :: All unit assertions pass",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.2.0-command-simplification-and-project-skill-workflow/{run_id}/TC-012-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-035",
+      "source_tc_id": "TC-013",
+      "tc_id": "TC-013-PRIMARY",
+      "ac_id": "AC-013",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "primary",
+      "title": "AC-013 primary path :: All unit assertions pass",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.2.0-command-simplification-and-project-skill-workflow/{run_id}/TC-013-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-036",
+      "source_tc_id": "TC-014",
+      "tc_id": "TC-014-PRIMARY",
+      "ac_id": "AC-014",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "primary",
+      "title": "AC-014 primary path :: All unit assertions pass",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.2.0-command-simplification-and-project-skill-workflow/{run_id}/TC-014-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-037",
+      "source_tc_id": "TC-015",
+      "tc_id": "TC-015-HAPPY",
+      "ac_id": "AC-015",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "happy",
+      "title": "AC-015 happy path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "happy",
+        "unit",
+        "browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": true,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (happy path completes with expected evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.2.0-command-simplification-and-project-skill-workflow/{run_id}/TC-015-HAPPY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-038",
+      "source_tc_id": "TC-015",
+      "tc_id": "TC-015-NEGATIVE",
+      "ac_id": "AC-015",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "negative",
+      "title": "AC-015 negative path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "negative",
+        "unit",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-037"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (negative path is rejected or handled with explicit evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.2.0-command-simplification-and-project-skill-workflow/{run_id}/TC-015-NEGATIVE.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-039",
+      "source_tc_id": "TC-015",
+      "tc_id": "TC-015-BOUNDARY",
+      "ac_id": "AC-015",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "boundary",
+      "title": "AC-015 boundary path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": false,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "boundary",
+        "unit",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-037"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (boundary path is validated with explicit evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.2.0-command-simplification-and-project-skill-workflow/{run_id}/TC-015-BOUNDARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-040",
+      "source_tc_id": "TC-015",
+      "tc_id": "TC-015-RECOVERY",
+      "ac_id": "AC-015",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "recovery",
+      "title": "AC-015 recovery path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": false,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "recovery",
+        "unit",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-037"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (recovery path survives refresh/back/retry with evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.2.0-command-simplification-and-project-skill-workflow/{run_id}/TC-015-RECOVERY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-041",
+      "source_tc_id": "TC-015",
+      "tc_id": "TC-015-COMPATIBILITY",
+      "ac_id": "AC-015",
+      "qa_type": "compatibility",
+      "layer": "compatibility",
+      "scenario_family": "compatibility",
+      "title": "AC-015 compatibility path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "npx playwright test --project=chromium --project=firefox --project=webkit",
+      "coverage_axes": [
+        "compatibility",
+        "compatibility",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-037"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (compatibility path preserves behavior across browser/device pairs)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.2.0-command-simplification-and-project-skill-workflow/{run_id}/TC-015-COMPATIBILITY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-042",
+      "source_tc_id": "TC-016",
+      "tc_id": "TC-016-PRIMARY",
+      "ac_id": "AC-016",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "primary",
+      "title": "AC-016 primary path :: All unit assertions pass",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.2.0-command-simplification-and-project-skill-workflow/{run_id}/TC-016-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-043",
+      "source_tc_id": "TC-017",
+      "tc_id": "TC-017-PRIMARY",
+      "ac_id": "AC-017",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "primary",
+      "title": "AC-017 primary path :: All unit assertions pass",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.2.0-command-simplification-and-project-skill-workflow/{run_id}/TC-017-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-044",
+      "source_tc_id": "TC-018",
+      "tc_id": "TC-018-HAPPY",
+      "ac_id": "AC-018",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "happy",
+      "title": "AC-018 happy path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "happy",
+        "unit",
+        "browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": true,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (happy path completes with expected evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.2.0-command-simplification-and-project-skill-workflow/{run_id}/TC-018-HAPPY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-045",
+      "source_tc_id": "TC-018",
+      "tc_id": "TC-018-NEGATIVE",
+      "ac_id": "AC-018",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "negative",
+      "title": "AC-018 negative path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "negative",
+        "unit",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-044"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (negative path is rejected or handled with explicit evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.2.0-command-simplification-and-project-skill-workflow/{run_id}/TC-018-NEGATIVE.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-046",
+      "source_tc_id": "TC-018",
+      "tc_id": "TC-018-BOUNDARY",
+      "ac_id": "AC-018",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "boundary",
+      "title": "AC-018 boundary path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": false,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "boundary",
+        "unit",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-044"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (boundary path is validated with explicit evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.2.0-command-simplification-and-project-skill-workflow/{run_id}/TC-018-BOUNDARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-047",
+      "source_tc_id": "TC-018",
+      "tc_id": "TC-018-RECOVERY",
+      "ac_id": "AC-018",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "recovery",
+      "title": "AC-018 recovery path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": false,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "recovery",
+        "unit",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-044"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (recovery path survives refresh/back/retry with evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.2.0-command-simplification-and-project-skill-workflow/{run_id}/TC-018-RECOVERY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-048",
+      "source_tc_id": "TC-018",
+      "tc_id": "TC-018-COMPATIBILITY",
+      "ac_id": "AC-018",
+      "qa_type": "compatibility",
+      "layer": "compatibility",
+      "scenario_family": "compatibility",
+      "title": "AC-018 compatibility path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "npx playwright test --project=chromium --project=firefox --project=webkit",
+      "coverage_axes": [
+        "compatibility",
+        "compatibility",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-044"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (compatibility path preserves behavior across browser/device pairs)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.2.0-command-simplification-and-project-skill-workflow/{run_id}/TC-018-COMPATIBILITY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-049",
+      "source_tc_id": "TC-019",
+      "tc_id": "TC-019-PRIMARY",
+      "ac_id": "AC-019",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "primary",
+      "title": "AC-019 primary path :: All unit assertions pass",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.2.0-command-simplification-and-project-skill-workflow/{run_id}/TC-019-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-050",
+      "source_tc_id": "TC-020",
+      "tc_id": "TC-020-HAPPY",
+      "ac_id": "AC-020",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "happy",
+      "title": "AC-020 happy path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "happy",
+        "unit",
+        "browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": true,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (happy path completes with expected evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.2.0-command-simplification-and-project-skill-workflow/{run_id}/TC-020-HAPPY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-051",
+      "source_tc_id": "TC-020",
+      "tc_id": "TC-020-NEGATIVE",
+      "ac_id": "AC-020",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "negative",
+      "title": "AC-020 negative path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "negative",
+        "unit",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-050"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (negative path is rejected or handled with explicit evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.2.0-command-simplification-and-project-skill-workflow/{run_id}/TC-020-NEGATIVE.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-052",
+      "source_tc_id": "TC-020",
+      "tc_id": "TC-020-BOUNDARY",
+      "ac_id": "AC-020",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "boundary",
+      "title": "AC-020 boundary path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": false,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "boundary",
+        "unit",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-050"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (boundary path is validated with explicit evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.2.0-command-simplification-and-project-skill-workflow/{run_id}/TC-020-BOUNDARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-053",
+      "source_tc_id": "TC-020",
+      "tc_id": "TC-020-RECOVERY",
+      "ac_id": "AC-020",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "recovery",
+      "title": "AC-020 recovery path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": false,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "recovery",
+        "unit",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-050"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (recovery path survives refresh/back/retry with evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.2.0-command-simplification-and-project-skill-workflow/{run_id}/TC-020-RECOVERY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-054",
+      "source_tc_id": "TC-020",
+      "tc_id": "TC-020-COMPATIBILITY",
+      "ac_id": "AC-020",
+      "qa_type": "compatibility",
+      "layer": "compatibility",
+      "scenario_family": "compatibility",
+      "title": "AC-020 compatibility path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "npx playwright test --project=chromium --project=firefox --project=webkit",
+      "coverage_axes": [
+        "compatibility",
+        "compatibility",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-050"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (compatibility path preserves behavior across browser/device pairs)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.2.0-command-simplification-and-project-skill-workflow/{run_id}/TC-020-COMPATIBILITY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    }
+  ]
+}

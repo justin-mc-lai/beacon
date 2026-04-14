@@ -5,7 +5,7 @@ from pathlib import Path
 from datetime import datetime
 import os
 
-from beacon.utils.versioning import resolve_target_version
+from beacon.utils.versioning import resolve_operational_docs_version, resolve_target_version
 
 app = typer.Typer(name="prd", help="Generate Product Requirements Document")
 
@@ -19,7 +19,15 @@ def create(
 ):
     """Create a PRD"""
     project_root = Path(project) if project else Path.cwd()
-    resolved_version = resolve_target_version(project_root, version)
+    try:
+        resolved_version = resolve_operational_docs_version(
+            project_root,
+            version,
+            command_name="prd create",
+        )
+    except ValueError as exc:
+        typer.echo(str(exc), err=True)
+        raise typer.Exit(2)
 
     memory_context_path = os.environ.get("BEACON_STAGE_CONTEXT_PATH", "").strip()
 

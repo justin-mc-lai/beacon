@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.0",
+  "artifact": "beacon-version-semantics",
+  "description": "Canonical version semantics contract for Beacon. Consumers must resolve version meaning through beacon.utils.versioning rather than command-local interpretation.",
+  "fields": {
+    "package_version": {
+      "kind": "package",
+      "meaning": "Installed Beacon package version.",
+      "example": "1.3.0"
+    },
+    "runtime_version": {
+      "kind": "runtime",
+      "meaning": "Active Beacon runtime/toolkit line used by the CLI and managed context.",
+      "example": "v1.3.0"
+    },
+    "docs_default_line": {
+      "kind": "docs",
+      "meaning": "Default docs line for docs-oriented commands when the caller uses auto/latest.",
+      "example": "v1.3.0"
+    },
+    "current_runtime_release_line": {
+      "kind": "release_truth",
+      "meaning": "Beacon runtime line currently considered the formal runtime release truth.",
+      "example": "v1.3.0"
+    },
+    "planning_lines": {
+      "kind": "planning",
+      "meaning": "Future docs lines opened for planning and not yet promoted to the current runtime release.",
+      "example": []
+    },
+    "partial_runtime_supplement_lines": {
+      "kind": "supplement",
+      "meaning": "Planning lines with bounded runtime supplements that still do not replace the current runtime release.",
+      "example": [
+        "v1.2.1"
+      ]
+    }
+  },
+  "status_values": {
+    "historical_release": "A historical released line that is not the current runtime release.",
+    "planning_only": "A planning line with docs/package planning but no accepted runtime promotion.",
+    "planning_with_partial_runtime_supplement": "A planning line with bounded runtime supplements that still does not replace the current runtime release.",
+    "current_runtime_release": "The current Beacon runtime release line."
+  },
+  "resolver_contract": {
+    "docs_target": "resolve_docs_version()",
+    "runtime_target": "resolve_runtime_version()",
+    "version_context": "describe_project_version_context()",
+    "release_truth_status": "release_truth_status()"
+  },
+  "consumer_surfaces": [
+    "ask",
+    "help",
+    "status",
+    "doctor",
+    "init",
+    "version"
+  ],
+  "rules": [
+    "Do not conflate docs-target resolution with runtime-target resolution.",
+    "Do not add overlapping aliases for existing version fields without updating this contract.",
+    "Commands should expose version_context and version_semantics rather than reinterpreting raw fields."
+  ]
+}

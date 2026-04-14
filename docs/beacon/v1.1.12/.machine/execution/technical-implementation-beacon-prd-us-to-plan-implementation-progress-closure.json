@@ -1,0 +1,49 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-prd-us-to-plan-implementation-progress-closure",
+  "feature_slug": "beacon-prd-us-to-plan-implementation-progress-closure",
+  "version": "v1.1.12",
+  "run_id": "run-v112-release",
+  "implemented_at": "2026-04-01T10:45:00+00:00",
+  "runner": "native-single",
+  "verification": [
+    {
+      "command": "python3 -m pytest -q tests/test_v112_implementation_plan_runtime.py tests/test_v112_doctor_upgrade_package.py",
+      "status": "passed"
+    }
+  ],
+  "artifact_updates": {
+    "review_quality": {
+      "required": false,
+      "reason": "release-line closure captured in runtime tests"
+    },
+    "acceptance": {
+      "required": false,
+      "reason": "v1.1.12 runtime/gate/doctor chain closed"
+    }
+  },
+  "implemented_items": [
+    "AC-001",
+    "AC-002",
+    "AC-003",
+    "AC-004",
+    "AC-005",
+    "AC-006",
+    "AC-007",
+    "AC-008",
+    "AC-009",
+    "AC-010"
+  ],
+  "changed_files": [
+    "beacon/utils/implementation_plan.py",
+    "beacon/commands/implement.py",
+    "beacon/commands/gate.py",
+    "beacon/commands/status.py",
+    "beacon/commands/review.py",
+    "beacon/commands/report.py",
+    "beacon/commands/doctor.py",
+    "beacon/utils/writeback.py",
+    "beacon/utils/version_package_upgrade.py"
+  ],
+  "summary": "Closed PRD/US-to-plan compile, plan gate, progress writeback, release-gate validation, and doctor upgrade path for v1.1.12."
+}

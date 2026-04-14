@@ -1,0 +1,24 @@
+template_id: ml-model
+description: ML model starter pack
+project_types:
+  - ml-model
+recommended_profile_id: ml-model-default
+recommended_skills:
+  implementation: native-single
+  verify: qa9-default
+  review: review-quality
+project_skills:
+  profiles:
+    ml-model-default:
+      project: "{project_name}"
+      profile_id: ml-model-default
+      description: ML model starter profile
+      skills:
+        verify: qa9-default
+        review: review-quality
+      required_evidence:
+        - qa_matrix_evidence
+      required_cases:
+        - model_smoke
+      orchestration:
+        nodes: []

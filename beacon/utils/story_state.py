@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 from typing import Any
 
+from beacon.utils.requirement_parsing import build_feature_ac_items
 from beacon.utils.versioning import resolve_target_version
 
 
@@ -61,18 +62,21 @@ def _write_json(path: Path, payload: dict[str, Any]) -> None:
 
 
 def _extract_acceptance_criteria(markdown: str) -> list[dict[str, Any]]:
-    items: list[dict[str, Any]] = []
-    for line in str(markdown or "").splitlines():
-        stripped = line.strip()
-        if stripped.startswith("| AC-"):
-            parts = [p.strip() for p in stripped.strip("|").split("|")]
-            if len(parts) >= 3:
-                items.append({"id": parts[0], "theme": parts[1], "text": parts[2]})
-        elif stripped.startswith("- [ ] AC-"):
-            rest = stripped[len("- [ ] ") :]
-            ac_id, _, desc = rest.partition(" ")
-            items.append({"id": ac_id.strip(), "theme": "general", "text": desc.strip() or "TBD"})
-    return items
+    return [
+        {
+            "id": str(item.get("ac_id") or ""),
+            "theme": str(item.get("theme") or "general"),
+            "text": str(item.get("text") or "TBD"),
+            "story_id": str(item.get("story_id") or ""),
+            "details": list(item.get("details") or []),
+            "source": str(item.get("source") or ""),
+        }
+        for item in build_feature_ac_items(
+            user_story_content=markdown,
+            user_story_source="user-story:markdown",
+        )
+        if str(item.get("ac_id") or "").strip()
+    ]
 
 
 def _default_items(markdown: str) -> list[dict[str, Any]]:
@@ -93,6 +97,9 @@ def _default_items(markdown: str) -> list[dict[str, Any]]:
                 "verified_by_run_id": None,
                 "accepted_at": None,
                 "changed_in_revision": None,
+                "story_id": ac.get("story_id", ""),
+                "details": list(ac.get("details") or []),
+                "source": ac.get("source", ""),
             }
         )
     items.append(
@@ -121,6 +128,8 @@ def _default_items(markdown: str) -> list[dict[str, Any]]:
                 "accepted_at": None,
                 "changed_in_revision": None,
                 "covers": [ac["id"]],
+                "story_id": ac.get("story_id", ""),
+                "source": ac.get("source", ""),
             }
         )
     return items
@@ -294,6 +303,146 @@ def freeze_story_state(project_root: Path, version: str, feature: str) -> dict[s
         story["status"] = "frozen"
     _write_json(machine_story_path(project_root, resolve_target_version(project_root, version), feature), root_state)
     return root_state
+
+
+def sync_story_state_from_docs(project_root: Path, version: str, feature: str) -> dict[str, Any]:
+    from beacon.utils.revision_state import load_revision_state, save_revision_state
+
+    resolved_version = resolve_target_version(project_root, version)
+    path = machine_story_path(project_root, resolved_version, feature)
+    root_state = _read_json(path, {}) or ensure_story_state(project_root, resolved_version, feature)
+    current_revision_id = str(root_state.get("current_revision_id", "R1") or "R1")
+    active_story = _active_story(root_state) or {
+        "story_id": "US-001",
+        "revision_id": current_revision_id,
+        "title": feature,
+        "priority": "medium",
+        "status": "draft",
+        "items": [],
+    }
+    existing_items = {
+        str(item.get("id") or "").upper(): item
+        for item in (active_story.get("items") if isinstance(active_story.get("items"), list) else [])
+        if isinstance(item, dict) and str(item.get("id") or "").strip()
+    }
+
+    user_story_content = user_story_markdown_path(project_root, resolved_version, feature).read_text(encoding="utf-8") if user_story_markdown_path(project_root, resolved_version, feature).exists() else ""
+    prd_path = _prd_markdown_path(project_root, resolved_version, feature)
+    prd_content = prd_path.read_text(encoding="utf-8") if prd_path.exists() else ""
+    qa_path = _test_case_markdown_path(project_root, resolved_version, feature)
+    qa_content = qa_path.read_text(encoding="utf-8") if qa_path.exists() else ""
+    ac_seed = build_feature_ac_items(
+        user_story_content=user_story_content,
+        prd_content=prd_content,
+        qa_content=qa_content,
+        user_story_source=f"user-story:{user_story_markdown_path(project_root, resolved_version, feature)}",
+        prd_source=f"prd:{prd_path}",
+        qa_source=f"qa:test-cases:{qa_path}",
+    )
+    if not ac_seed:
+        ac_seed = [{"ac_id": "AC-001", "theme": "general", "text": "Acceptance criteria TBD", "details": [], "source": "fallback"}]
+
+    new_items: list[dict[str, Any]] = []
+    for index, ac in enumerate(ac_seed, start=1):
+        ac_id = f"AC-{index:03d}"
+        existing = existing_items.get(ac_id, {})
+        new_items.append(
+            {
+                "id": ac_id,
+                "kind": "ac",
+                "theme": str(ac.get("theme") or "general"),
+                "text": str(ac.get("text") or "TBD"),
+                "required": bool(existing.get("required", True)),
+                "status": str(existing.get("status") or "draft"),
+                "implemented_by_run_id": existing.get("implemented_by_run_id"),
+                "verified_by_run_id": existing.get("verified_by_run_id"),
+                "accepted_at": existing.get("accepted_at"),
+                "changed_in_revision": existing.get("changed_in_revision"),
+                "story_id": str(ac.get("story_id") or ""),
+                "details": list(ac.get("details") or []),
+                "source": str(ac.get("source") or ""),
+            }
+        )
+
+    task_existing = existing_items.get("TASK-001", {})
+    new_items.append(
+        {
+            "id": "TASK-001",
+            "kind": "task",
+            "text": "Implement current frozen revision",
+            "required": bool(task_existing.get("required", True)),
+            "status": str(task_existing.get("status") or "draft"),
+            "implemented_by_run_id": task_existing.get("implemented_by_run_id"),
+            "verified_by_run_id": task_existing.get("verified_by_run_id"),
+            "accepted_at": task_existing.get("accepted_at"),
+            "changed_in_revision": task_existing.get("changed_in_revision"),
+        }
+    )
+
+    for index, ac in enumerate(ac_seed, start=1):
+        test_id = f"TEST-{index:03d}"
+        ac_id = f"AC-{index:03d}"
+        existing = existing_items.get(test_id, {})
+        new_items.append(
+            {
+                "id": test_id,
+                "kind": "test",
+                "text": f"Verify {str(ac.get('story_id') or ac_id)} — {str(ac.get('text') or 'Acceptance criteria TBD')}",
+                "required": bool(existing.get("required", True)),
+                "status": str(existing.get("status") or "draft"),
+                "implemented_by_run_id": existing.get("implemented_by_run_id"),
+                "verified_by_run_id": existing.get("verified_by_run_id"),
+                "accepted_at": existing.get("accepted_at"),
+                "changed_in_revision": existing.get("changed_in_revision"),
+                "covers": [ac_id],
+                "story_id": str(ac.get("story_id") or ""),
+                "source": str(ac.get("source") or ""),
+            }
+        )
+
+    active_story["title"] = active_story.get("title") or feature
+    active_story["revision_id"] = current_revision_id
+    active_story["priority"] = active_story.get("priority") or "medium"
+    active_story["items"] = new_items
+    active_story["status"] = "frozen" if str(get_active_revision(root_state).get("doc_status", "draft") if get_active_revision(root_state) else "draft") == "frozen" else str(active_story.get("status") or "draft")
+
+    stories = root_state.get("stories") if isinstance(root_state.get("stories"), list) else []
+    replaced = False
+    for idx, story in enumerate(stories):
+        if isinstance(story, dict) and str(story.get("revision_id") or "") == current_revision_id:
+            merged = dict(story)
+            merged.update(active_story)
+            stories[idx] = merged
+            replaced = True
+            break
+    if not replaced:
+        stories.append(active_story)
+    root_state["stories"] = stories
+    root_state["version"] = resolved_version
+    root_state["feature"] = feature
+    root_state["feature_slug"] = feature_slug(feature)
+    root_state["updated_at"] = _now_iso()
+
+    active_revision = get_active_revision(root_state)
+    if active_revision is not None and str(active_revision.get("doc_status") or "draft") == "frozen":
+        baseline_hash = _baseline_hash(project_root, resolved_version, feature)
+        active_revision["baseline_hash"] = baseline_hash
+        active_revision.setdefault("frozen_at", _now_iso())
+        revision = load_revision_state(project_root, version=resolved_version, feature=feature, create_if_missing=True)
+        revision["baseline_hash"] = baseline_hash
+        revision["doc_status"] = str(revision.get("doc_status") or "frozen")
+        save_revision_state(project_root, version=resolved_version, feature=feature, state=revision)
+
+    _write_json(path, root_state)
+    return {
+        "path": str(path.relative_to(project_root)),
+        "feature": feature,
+        "version": resolved_version,
+        "revision_id": current_revision_id,
+        "ac_count": len([item for item in new_items if str(item.get("kind") or "") == "ac"]),
+        "test_count": len([item for item in new_items if str(item.get("kind") or "") == "test"]),
+        "story_ids": [str(item.get("story_id") or "") for item in new_items if str(item.get("kind") or "") == "ac"],
+    }
 
 
 def reopen_story_state(project_root: Path, version: str, feature: str, *, reason: str = "reopen") -> dict[str, Any]:

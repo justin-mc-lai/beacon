@@ -44,7 +44,7 @@ from beacon.utils.runtime import (
     save_run_state,
     write_json,
 )
-from beacon.utils.versioning import resolve_target_version
+from beacon.utils.versioning import resolve_operational_docs_version, resolve_target_version
 from beacon.utils.v110_baseline import record_baseline_snapshot
 from beacon.utils.workflow_memory import (
     append_lifecycle_event,
@@ -957,6 +957,16 @@ def _write_workflow_terminal_artifacts(
             ]
         )
 
+    auto_test_run_id = ""
+    auto_test_status = project_root / ".beacon" / "auto-test-status.json"
+    if auto_test_status.exists():
+        try:
+            auto_payload = json.loads(auto_test_status.read_text(encoding="utf-8"))
+        except Exception:  # noqa: BLE001
+            auto_payload = {}
+        if isinstance(auto_payload, dict):
+            auto_test_run_id = str(auto_payload.get("run_id", "") or "").strip()
+
     gate_status = "Pass" if status_value == "Pass" else "Blocked"
     gate_issues: list[dict[str, Any]] = []
     if gate_status == "Blocked":
@@ -975,7 +985,7 @@ def _write_workflow_terminal_artifacts(
             "mode": "strict",
             "status": gate_status,
             "issues": gate_issues,
-            "run_id": run_id,
+            "run_id": auto_test_run_id or run_id,
             "version": version,
             "coverage": {
                 "full_coverage": bool(coverage.get("full_coverage")),
@@ -989,7 +999,7 @@ def _write_workflow_terminal_artifacts(
     _update_evidence_manifest(
         project_root,
         written_refs + [".beacon/gate-report.json"],
-        run_id=run_id,
+        run_id=auto_test_run_id or run_id,
         version=version,
     )
 
@@ -1032,6 +1042,16 @@ def _write_workflow_terminal_artifacts(
 
 
 def _sync_terminal_manifest(project_root: Path, *, version: str, run_id: str) -> None:
+    auto_test_run_id = ""
+    auto_test_status = project_root / ".beacon" / "auto-test-status.json"
+    if auto_test_status.exists():
+        try:
+            auto_payload = json.loads(auto_test_status.read_text(encoding="utf-8"))
+        except Exception:  # noqa: BLE001
+            auto_payload = {}
+        if isinstance(auto_payload, dict):
+            auto_test_run_id = str(auto_payload.get("run_id", "") or "").strip()
+
     refs = [
         f".beacon/runs/{run_id}/state.json",
         ".beacon/raw-command-log.jsonl",
@@ -1055,7 +1075,12 @@ def _sync_terminal_manifest(project_root: Path, *, version: str, run_id: str) ->
             path = root / name
             if path.exists():
                 refs.append(str(path.relative_to(project_root)))
-    _update_evidence_manifest(project_root, refs, run_id=run_id, version=version)
+    _update_evidence_manifest(
+        project_root,
+        refs,
+        run_id=auto_test_run_id or run_id,
+        version=version,
+    )
 
 
 def run_beacon_command(
@@ -2170,7 +2195,15 @@ def start(
 ):
     """Start full product workflow"""
     project_root = Path(project) if project else Path.cwd()
-    resolved_version = resolve_target_version(project_root, version)
+    try:
+        resolved_version = resolve_operational_docs_version(
+            project_root,
+            version,
+            command_name="workflow start",
+        )
+    except ValueError as exc:
+        typer.echo(str(exc), err=True)
+        raise typer.Exit(2)
     effective_hud = _resolve_hud_enforcement(
         version=resolved_version,
         hud_requested=bool(hud),

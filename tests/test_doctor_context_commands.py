@@ -27,6 +27,7 @@ def test_setup_context_creates_context_files_with_beacon_markers(tmp_path: Path)
     assert payload.get("status") == "PASS"
     assert payload.get("docs_version") == "v1.0.0"
     assert payload.get("runtime_version") == __toolkit_version__
+    assert payload.get("version_semantics", {}).get("resolver_contract", {}).get("version_context") == "describe_project_version_context()"
     result_payload = payload.get("result", {})
 
     claude = (tmp_path / "CLAUDE.md").read_text(encoding="utf-8")
@@ -34,7 +35,9 @@ def test_setup_context_creates_context_files_with_beacon_markers(tmp_path: Path)
     for content in (claude, agents):
         assert "<!-- BEACON:START -->" in content
         assert "<!-- BEACON:END -->" in content
-    assert len(result_payload.get("actions", [])) == 2
+    onboarding = json.loads((tmp_path / ".beacon" / "state" / "project-onboarding.json").read_text(encoding="utf-8"))
+    assert "v1.3.1" in onboarding.get("runtime_capability_lines", [])
+    assert len(result_payload.get("actions", [])) == 3
 
 
 def test_setup_context_dry_run_reports_planned_and_keeps_filesystem_unchanged(tmp_path: Path):
@@ -58,6 +61,7 @@ def test_verify_context_reports_pass_after_setup_context(tmp_path: Path):
     assert payload.get("status") == "PASS"
     assert payload.get("docs_version") == "v1.0.0"
     assert payload.get("runtime_version") == __toolkit_version__
+    assert payload.get("version_context", {}).get("version_semantics", {}).get("fields", {}).get("runtime_version", {}).get("kind") == "runtime"
     checks = payload.get("result", {}).get("checks", [])
     assert all(item.get("status") == "pass" for item in checks)
 

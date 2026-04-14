@@ -1,0 +1,29 @@
+template_id: python-cli
+description: Python CLI / agent workflow starter pack
+project_types:
+  - python-cli
+  - agent-workflow
+languages:
+  - python
+frameworks:
+  - python-cli
+recommended_profile_id: python-cli-default
+recommended_skills:
+  implementation: native-single
+  verify: qa9-default
+  review: review-quality
+project_skills:
+  profiles:
+    python-cli-default:
+      project: "{project_name}"
+      profile_id: python-cli-default
+      description: Python CLI starter profile
+      skills:
+        verify: qa9-default
+        review: review-quality
+      required_evidence:
+        - qa_matrix_evidence
+      required_cases:
+        - cli_help_smoke
+      orchestration:
+        nodes: []

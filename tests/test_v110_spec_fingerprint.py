@@ -100,3 +100,22 @@ def test_baseline_snapshot_should_include_required_fields_and_revision(tmp_path:
     assert change_impact.get("doc_chain_update_required") is True
     task_names = [str(item.get("task", "")) for item in change_impact.get("tasks", []) if isinstance(item, dict)]
     assert any(task == "regenerate-prd" for task in task_names)
+
+
+def test_fingerprint_should_be_stable_for_relative_and_resolved_project_roots(tmp_path: Path, monkeypatch):
+    _seed_v110_docs(tmp_path)
+
+    absolute = generate_spec_fingerprint(
+        tmp_path.resolve(),
+        run_id="run-v110-fp-abs",
+        version="v1.1.0",
+    )
+
+    monkeypatch.chdir(tmp_path)
+    relative = generate_spec_fingerprint(
+        Path("."),
+        run_id="run-v110-fp-rel",
+        version="v1.1.0",
+    )
+
+    assert absolute["fingerprint_hash"] == relative["fingerprint_hash"]

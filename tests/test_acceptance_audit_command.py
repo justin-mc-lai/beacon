@@ -8,6 +8,7 @@ from typer.testing import CliRunner
 
 from beacon.main import app
 from beacon.utils.acceptance_audit import parse_pytest_summary
+from beacon.utils.artifact_paths import execution_file_output
 
 
 runner = CliRunner()
@@ -118,11 +119,12 @@ def test_report_acceptance_audit_should_write_generated_artifacts(tmp_path: Path
     assert payload["legacy_manual_specs"] == ["docs/beacon/v1.0.0/qa/test-cases/beacon-core.md"]
 
     beacon_md = tmp_path / "docs" / "beacon" / "v1.1.1" / "execution" / "acceptance-regression-audit.md"
-    beacon_json = tmp_path / "docs" / "beacon" / "v1.1.1" / "execution" / "acceptance-regression-audit.json"
+    beacon_json = execution_file_output(tmp_path, "v1.1.1", "acceptance-regression-audit.json")
     manifest = json.loads((tmp_path / ".beacon" / "evidence-manifest.json").read_text(encoding="utf-8"))
     assert beacon_md.exists()
     assert beacon_json.exists()
     assert "5 passed in 0.12s" in beacon_md.read_text(encoding="utf-8")
     manifest_paths = {str(item.get("path")) for item in manifest.get("entries", []) if isinstance(item, dict)}
     assert "docs/beacon/v1.1.1/execution/acceptance-regression-audit.md" in manifest_paths
+    assert "docs/beacon/v1.1.1/.machine/execution/acceptance-regression-audit.json" in manifest_paths
     assert "docs/product/v1.1.1/execution/acceptance-regression-audit.md" not in manifest_paths

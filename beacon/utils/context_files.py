@@ -62,6 +62,7 @@ def build_claude_guidance_body(runtime_version: str) -> str:
         "- `beacon init --apply`\n"
         "- `beacon doctor setup-context --project-root .`\n"
         "- `beacon doctor verify-context --project-root . --strict`\n"
+        "- `beacon doctor sync-materials --project-root . --version <version> --all-features`\n"
         "- `beacon workflow start \"<feature>\" --version <version> --project-root .`\n"
         "- `beacon skill list`\n"
         "- `beacon implement list-runners --json`\n"
@@ -102,6 +103,8 @@ def build_agents_guidance_body(runtime_version: str) -> str:
         "- If context blocks are missing/corrupted, run:\n"
         "  - `beacon doctor setup-context --project-root .`\n"
         "  - `beacon doctor verify-context --project-root . --strict`\n"
+        "- After runtime/version upgrades on a real project, sync machine requirement materials before QA:\n"
+        "  - `beacon doctor sync-materials --project-root . --version <version> --all-features`\n"
     )
 
 

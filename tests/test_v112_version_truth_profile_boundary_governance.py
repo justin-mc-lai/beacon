@@ -30,22 +30,42 @@ def _invoke(args: list[str]):
 def _seed_version_truth(root: Path) -> None:
     (root / "beacon").mkdir(parents=True, exist_ok=True)
     (root / "beacon" / "__init__.py").write_text(
-        '__version__ = "1.1.11"\n__toolkit_version__ = "v1.1.11"\n',
+        '__version__ = "1.1.12"\n__toolkit_version__ = "v1.1.12"\n',
         encoding="utf-8",
     )
     (root / "beacon" / "version-truth.json").write_text(
         json.dumps(
             {
                 "schema_version": "1.0",
-                "package_version": "1.1.11",
-                "runtime_version": "v1.1.11",
-                "docs_default_line": "v1.1.11",
-                "current_runtime_release_line": "v1.1.11",
-                "planning_lines": ["v1.1.12"],
-                "partial_runtime_supplement_lines": ["v1.1.12"],
+                "package_version": "1.1.12",
+                "runtime_version": "v1.1.12",
+                "docs_default_line": "v1.1.12",
+                "current_runtime_release_line": "v1.1.12",
+                "planning_lines": [],
+                "partial_runtime_supplement_lines": [],
                 "lines": {
-                    "v1.1.11": {"status": "current_runtime_release"},
-                    "v1.1.12": {"status": "planning_with_partial_runtime_supplement"},
+                    "v1.1.11": {"status": "historical_release"},
+                    "v1.1.12": {"status": "current_runtime_release"},
+                },
+            },
+            ensure_ascii=False,
+            indent=2,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    (root / "beacon" / "version-semantics.json").write_text(
+        json.dumps(
+            {
+                "schema_version": "1.0",
+                "artifact": "beacon-version-semantics",
+                "fields": {
+                    "runtime_version": {"kind": "runtime", "meaning": "runtime line"},
+                    "docs_default_line": {"kind": "docs", "meaning": "default docs line"},
+                    "current_runtime_release_line": {"kind": "release_truth", "meaning": "release line"},
+                },
+                "resolver_contract": {
+                    "version_context": "describe_project_version_context()",
                 },
             },
             ensure_ascii=False,
@@ -83,6 +103,12 @@ def _seed_feature_docs(root: Path, *, version: str = VERSION, feature: str = FEA
     (base / "execution" / "boundaries.md").write_text("# Boundaries\n", encoding="utf-8")
 
 
+def _seed_context_markers(root: Path, version: str = VERSION) -> None:
+    marker = f"<!-- BEACON:VERSION:{version} -->\n"
+    (root / "AGENTS.md").write_text(marker, encoding="utf-8")
+    (root / "CLAUDE.md").write_text(marker, encoding="utf-8")
+
+
 def _write_takeover_state(root: Path, *, frozen_at: str = "") -> None:
     (root / ".beacon" / "state").mkdir(parents=True, exist_ok=True)
     write_json(
@@ -98,7 +124,7 @@ def _write_takeover_state(root: Path, *, frozen_at: str = "") -> None:
     )
 
 
-def test_v112_version_truth_should_distinguish_runtime_release_and_planning_supplement(tmp_path: Path):
+def test_v112_version_truth_should_promote_v112_to_current_runtime_release(tmp_path: Path):
     _seed_version_truth(tmp_path)
     for version in ("v1.1.11", "v1.1.12"):
         base = tmp_path / "docs" / "beacon" / version
@@ -106,12 +132,15 @@ def test_v112_version_truth_should_distinguish_runtime_release_and_planning_supp
         (base / "release" / f"{version}.md").write_text(f"# Release {version}\n", encoding="utf-8")
 
     payload = describe_project_version_context(tmp_path, docs_version="v1.1.12")
-    assert payload["docs_default_line"] == "v1.1.11"
-    assert payload["current_runtime_release_line"] == "v1.1.11"
-    assert payload["release_truth_status"] == "planning_with_partial_runtime_supplement"
-    assert payload["planning_lines"] == ["v1.1.12"]
-    assert payload["partial_runtime_supplement_lines"] == ["v1.1.12"]
+    assert payload["docs_default_line"] == "v1.1.12"
+    assert payload["current_runtime_release_line"] == "v1.1.12"
+    assert payload["release_truth_status"] == "current_runtime_release"
+    assert payload["planning_lines"] == []
+    assert payload["partial_runtime_supplement_lines"] == []
     assert payload["version_truth_source"] == "beacon/version-truth.json"
+    assert payload["version_semantics_source"] == "beacon/version-semantics.json"
+    assert payload["version_semantics"]["fields"]["runtime_version"]["meaning"]
+    assert payload["version_semantics"]["resolver_contract"]["version_context"] == "describe_project_version_context()"
 
 
 def test_v112_help_and_status_should_expose_execution_learning_surfaces_and_decision_trace(tmp_path: Path):
@@ -120,6 +149,7 @@ def test_v112_help_and_status_should_expose_execution_learning_surfaces_and_deci
     assert result.exit_code == 0, result.stdout
     payload = json.loads(result.stdout)
     assert payload["blocked_reason"] == "revision_not_frozen"
+    assert payload["version_semantics"]["fields"]["docs_default_line"]["kind"] == "docs"
     assert payload["execution_surface"]["selected_surface"] == "native-default"
     assert "qa_policy" in payload["learning_surface"]["subject_surface"]
     assert payload["decision_trace"][0]["step"] == "version_truth"
@@ -129,8 +159,31 @@ def test_v112_help_and_status_should_expose_execution_learning_surfaces_and_deci
     status_payload = json.loads(status.stdout)
     assert status_payload["project_mode"] == "greenfield"
     assert status_payload["revision"]["blocked_reason"] == "revision_not_frozen"
+    assert status_payload["version_semantics"]["fields"]["current_runtime_release_line"]["kind"] == "release_truth"
     assert status_payload["execution_surface"]["selected_surface"] == "native-default"
     assert "design_policy" in status_payload["learning_surface"]["subject_surface"]
+
+
+def test_v112_help_should_block_when_requested_version_conflicts_with_context_markers(tmp_path: Path):
+    _seed_feature_docs(tmp_path)
+    _seed_context_markers(tmp_path, VERSION)
+
+    result = _invoke(["help", "--project-root", str(tmp_path), "--version", "v1.1.11", "--feature", FEATURE, "--json"])
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["blocked_reason"] == "context_version_mismatch"
+    assert payload["context_version_guard"]["recommended_version"] == VERSION
+    assert payload["next_step"]["action"] == "use-context-version"
+
+
+def test_v112_user_story_create_should_block_on_context_version_mismatch(tmp_path: Path):
+    _seed_version_truth(tmp_path)
+    _seed_context_markers(tmp_path, VERSION)
+
+    result = _invoke(["user-story", "create", "Guarded Story", "--project", str(tmp_path), "--version", "v1.1.11"])
+    assert result.exit_code == 2, result.stdout
+    assert "context-managed version" in result.stdout
+    assert VERSION in result.stdout
 
 
 def test_v112_project_skill_boundary_should_block_stage_capability_and_evidence_mismatch(tmp_path: Path):

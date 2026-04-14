@@ -9,6 +9,7 @@ import subprocess
 from pathlib import Path
 from typing import Any
 
+from beacon.utils.artifact_paths import execution_file_output, human_execution_file
 from beacon.utils.coverage import compute_coverage_metrics
 from beacon.utils.runtime import now_iso, write_json
 from beacon.utils.versioning import resolve_target_version
@@ -238,17 +239,15 @@ def render_acceptance_audit_markdown(payload: dict[str, Any]) -> str:
 
 def write_acceptance_audit(project_root: Path, payload: dict[str, Any]) -> dict[str, str]:
     version = str(payload.get("version", "") or "")
-    execution_roots = [project_root / "docs" / "beacon" / version / "execution"]
     written: dict[str, str] = {}
     markdown = render_acceptance_audit_markdown(payload)
-    for root in execution_roots:
-        root.mkdir(parents=True, exist_ok=True)
-        md_path = root / "acceptance-regression-audit.md"
-        json_path = root / "acceptance-regression-audit.json"
-        md_path.write_text(markdown, encoding="utf-8")
-        write_json(json_path, payload)
-        written[str(md_path.relative_to(project_root))] = str(md_path)
-        written[str(json_path.relative_to(project_root))] = str(json_path)
+    md_path = human_execution_file(project_root, version, "acceptance-regression-audit.md")
+    json_path = execution_file_output(project_root, version, "acceptance-regression-audit.json")
+    md_path.parent.mkdir(parents=True, exist_ok=True)
+    md_path.write_text(markdown, encoding="utf-8")
+    write_json(json_path, payload)
+    written[str(md_path.relative_to(project_root))] = str(md_path)
+    written[str(json_path.relative_to(project_root))] = str(json_path)
     _update_evidence_manifest(
         project_root,
         sorted(written.keys()),

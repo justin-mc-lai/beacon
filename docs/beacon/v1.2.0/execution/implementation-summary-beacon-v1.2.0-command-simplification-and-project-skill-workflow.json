@@ -1,0 +1,609 @@
+{
+  "schema_version": "1.0",
+  "run_id": "run-20260408T145614Z-03c8",
+  "feature": "beacon-v1.2.0-command-simplification-and-project-skill-workflow",
+  "feature_slug": "beacon-v1.2.0-command-simplification-and-project-skill-workflow",
+  "version": "v1.2.0",
+  "runner": "native-single",
+  "adapter_type": "native",
+  "request_path": ".beacon/implement/run-20260408T145614Z-03c8/request.json",
+  "result_path": ".beacon/implement/run-20260408T145614Z-03c8/result.json",
+  "branch_preflight_path": ".beacon/implement/run-20260408T145614Z-03c8/branch-preflight.json",
+  "plan_preflight_path": ".beacon/implement/run-20260408T145614Z-03c8/plan-preflight.json",
+  "generated_at": "2026-04-08T14:56:15.071080+00:00",
+  "status": "completed",
+  "skill": "",
+  "summary": "native-single implementation completed",
+  "changed_files": [
+    ".omc/state/last-tool-error.json",
+    ".omc/state/subagent-tracking.json",
+    "AGENTS.md",
+    "CLAUDE.md",
+    "README.md",
+    "SKILL.md",
+    "beacon/__init__.py",
+    "beacon/cli_factory.py",
+    "beacon/commands/help.py",
+    "beacon/commands/profile.py",
+    "beacon/commands/qa.py",
+    "beacon/commands/review.py",
+    "beacon/commands/skill.py",
+    "beacon/commands/test_case.py",
+    "beacon/commands/workflow.py",
+    "beacon/utils/help_support.py",
+    "beacon/utils/implementation_plan.py",
+    "beacon/utils/qa_feature.py",
+    "beacon/utils/v110_baseline.py",
+    "beacon/utils/versioning.py",
+    "beacon/utils/workflow_memory.py",
+    "beacon/version-truth.json",
+    "docs/beacon/v1.1.11/execution/evo-harness-contract.md",
+    "docs/beacon/v1.1.11/execution/evo-scorecard-contract.md",
+    "docs/beacon/v1.1.12/execution/index.md",
+    "docs/beacon/v1.1.7/prd/beacon-project-skill-orchestration.md",
+    "pyproject.toml",
+    "skills/beacon/SKILL.md",
+    "skills/beacon/examples/basic-workflow.md",
+    "skills/beacon/examples/implementation-with-omx.md",
+    "skills/beacon/examples/release-readiness.md",
+    "skills/beacon/metadata.json",
+    "tests/test_regression_workflow_release_fixes.py",
+    "tests/test_v110_spec_fingerprint.py",
+    "tests/test_v114_skill_command.py",
+    "tests/test_v119_feature_qa_closure.py"
+  ],
+  "verification": [
+    {
+      "command": "beacon implement run --runner native-single",
+      "status": "passed"
+    }
+  ],
+  "implemented_task_ids": [],
+  "verified_task_ids": [],
+  "blocked_task_ids": [],
+  "failed_task_ids": [],
+  "artifact_updates": {
+    "user_story": {
+      "required": false,
+      "reason": "story machine state writeback recorded"
+    },
+    "review_quality": {
+      "required": true,
+      "reason": "run quality review after native implementation"
+    },
+    "acceptance": {
+      "required": true,
+      "reason": "acceptance remains a formal post-verify action"
+    }
+  },
+  "branch_preflight": {
+    "schema_version": "1.0",
+    "status": "pass",
+    "summary": "implement branch preflight passed on beacon/v1.2.0",
+    "blocked": false,
+    "version": "v1.2.0",
+    "expected_branch": "beacon/v1.2.0",
+    "current_branch": "beacon/v1.2.0",
+    "current_tag": "",
+    "branch_exists": true,
+    "dirty_worktree": true,
+    "require_clean_worktree_for_switch": true,
+    "recommended_command": "",
+    "reason_codes": [],
+    "git_alignment": {
+      "repo_url": "https://github.com/justin-mc-lai/beacon.git",
+      "base_branch": "main",
+      "target_branch": "beacon/v1.2.0",
+      "current_branch": "beacon/v1.2.0",
+      "current_commit": "0e30d4d11e4c5045e5a4893dbb2064a5da1e52a9",
+      "current_tag": "",
+      "worktree_path": ".",
+      "version_ref": "v1.2.0",
+      "allowed_refs": [
+        "branch"
+      ],
+      "enforce_branch_prefix": "beacon/",
+      "branch_matches_target": true,
+      "branch_has_required_prefix": true,
+      "tag_matches_version": false,
+      "version_ref_satisfied": true,
+      "reason_codes": [],
+      "blocked": false,
+      "detached_head": false,
+      "repo_detected": true
+    },
+    "run_id": "run-20260408T145614Z-03c8",
+    "feature": "beacon-v1.2.0-command-simplification-and-project-skill-workflow",
+    "feature_slug": "beacon-v1.2.0-command-simplification-and-project-skill-workflow",
+    "generated_at": "2026-04-08T14:56:14.941496+00:00"
+  },
+  "plan_preflight": {
+    "schema_version": "1.0",
+    "run_id": "run-20260408T145614Z-03c8",
+    "feature": "beacon-v1.2.0-command-simplification-and-project-skill-workflow",
+    "feature_slug": "beacon-v1.2.0-command-simplification-and-project-skill-workflow",
+    "version": "v1.2.0",
+    "expected_plan": "docs/beacon/v1.2.0/.machine/execution/implementation-plan-beacon-v1.2.0-command-simplification-and-project-skill-workflow.json",
+    "expected_revision_id": "R1",
+    "baseline_hash": "sha256:70058afa4c8e6513c53dbfe2fd31363e64138a61fcc91f64466d1e0e4ec29b95",
+    "recommended_command": "beacon implement plan \"beacon-v1.2.0-command-simplification-and-project-skill-workflow\" --project-root . --version v1.2.0",
+    "generated_at": "2026-04-08T14:56:14.942842+00:00",
+    "status": "pass",
+    "blocked": false,
+    "plan_id": "plan-beacon-v1.2.0-command-simplification-and-project-skill-workflow-r1",
+    "plan_path": "docs/beacon/v1.2.0/.machine/execution/implementation-plan-beacon-v1.2.0-command-simplification-and-project-skill-workflow.json",
+    "progress_path": "docs/beacon/v1.2.0/.machine/execution/implementation-plan-beacon-v1.2.0-command-simplification-and-project-skill-workflow.progress.json"
+  },
+  "implementation_marker": ".beacon/state/implementation-beacon-v1.2.0-command-simplification-and-project-skill-workflow.json",
+  "technical_archive": {
+    "json": "docs/beacon/v1.2.0/.machine/execution/technical-implementation-beacon-v1.2.0-command-simplification-and-project-skill-workflow.json",
+    "md": "docs/beacon/v1.2.0/execution/technical-implementation-beacon-v1.2.0-command-simplification-and-project-skill-workflow.md"
+  },
+  "implementation_plan": "docs/beacon/v1.2.0/.machine/execution/implementation-plan-beacon-v1.2.0-command-simplification-and-project-skill-workflow.json",
+  "implementation_plan_progress": {
+    "schema_version": "1.0",
+    "plan_id": "plan-beacon-v1.2.0-command-simplification-and-project-skill-workflow-r1",
+    "feature": "beacon-v1.2.0-command-simplification-and-project-skill-workflow",
+    "version": "v1.2.0",
+    "revision_id": "R1",
+    "status": "completed",
+    "counts": {
+      "total": 20,
+      "draft": 0,
+      "planned": 0,
+      "in_progress": 0,
+      "blocked": 0,
+      "completed": 20
+    },
+    "blocked_task_ids": [],
+    "completed_task_ids": [
+      "ITASK-001",
+      "ITASK-002",
+      "ITASK-003",
+      "ITASK-004",
+      "ITASK-005",
+      "ITASK-006",
+      "ITASK-007",
+      "ITASK-008",
+      "ITASK-009",
+      "ITASK-010",
+      "ITASK-011",
+      "ITASK-012",
+      "ITASK-013",
+      "ITASK-014",
+      "ITASK-015",
+      "ITASK-016",
+      "ITASK-017",
+      "ITASK-018",
+      "ITASK-019",
+      "ITASK-020"
+    ],
+    "next_task_id": "",
+    "task_states": [
+      {
+        "task_id": "ITASK-001",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-001"
+        ],
+        "mapped_test_ids": [
+          "TC-001",
+          "TC-021"
+        ],
+        "mapped_scenario_ids": [
+          "SC-001",
+          "SC-002"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-001",
+          "TC-021"
+        ]
+      },
+      {
+        "task_id": "ITASK-002",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-002"
+        ],
+        "mapped_test_ids": [
+          "TC-002",
+          "TC-022"
+        ],
+        "mapped_scenario_ids": [
+          "SC-003",
+          "SC-004"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-002",
+          "TC-022"
+        ]
+      },
+      {
+        "task_id": "ITASK-003",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-003"
+        ],
+        "mapped_test_ids": [
+          "TC-003",
+          "TC-023"
+        ],
+        "mapped_scenario_ids": [
+          "SC-005",
+          "SC-006"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-003",
+          "TC-023"
+        ]
+      },
+      {
+        "task_id": "ITASK-004",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-004"
+        ],
+        "mapped_test_ids": [
+          "TC-004",
+          "TC-024"
+        ],
+        "mapped_scenario_ids": [
+          "SC-007",
+          "SC-008",
+          "SC-009",
+          "SC-010",
+          "SC-011",
+          "SC-012"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-004",
+          "TC-024"
+        ]
+      },
+      {
+        "task_id": "ITASK-005",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-005"
+        ],
+        "mapped_test_ids": [
+          "TC-005",
+          "TC-025"
+        ],
+        "mapped_scenario_ids": [
+          "SC-013",
+          "SC-014",
+          "SC-015",
+          "SC-016",
+          "SC-017",
+          "SC-018"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-005",
+          "TC-025"
+        ]
+      },
+      {
+        "task_id": "ITASK-006",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-006"
+        ],
+        "mapped_test_ids": [
+          "TC-006",
+          "TC-026"
+        ],
+        "mapped_scenario_ids": [
+          "SC-019",
+          "SC-020"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-006",
+          "TC-026"
+        ]
+      },
+      {
+        "task_id": "ITASK-007",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-007"
+        ],
+        "mapped_test_ids": [
+          "TC-007"
+        ],
+        "mapped_scenario_ids": [
+          "SC-021"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-007"
+        ]
+      },
+      {
+        "task_id": "ITASK-008",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-008"
+        ],
+        "mapped_test_ids": [
+          "TC-008"
+        ],
+        "mapped_scenario_ids": [
+          "SC-022"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-008"
+        ]
+      },
+      {
+        "task_id": "ITASK-009",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-009"
+        ],
+        "mapped_test_ids": [
+          "TC-009"
+        ],
+        "mapped_scenario_ids": [
+          "SC-023",
+          "SC-024",
+          "SC-025",
+          "SC-026",
+          "SC-027"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-009"
+        ]
+      },
+      {
+        "task_id": "ITASK-010",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-010"
+        ],
+        "mapped_test_ids": [
+          "TC-010"
+        ],
+        "mapped_scenario_ids": [
+          "SC-028",
+          "SC-029",
+          "SC-030",
+          "SC-031",
+          "SC-032"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-010"
+        ]
+      },
+      {
+        "task_id": "ITASK-011",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-011"
+        ],
+        "mapped_test_ids": [
+          "TC-011"
+        ],
+        "mapped_scenario_ids": [
+          "SC-033"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-011"
+        ]
+      },
+      {
+        "task_id": "ITASK-012",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-012"
+        ],
+        "mapped_test_ids": [
+          "TC-012"
+        ],
+        "mapped_scenario_ids": [
+          "SC-034"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-012"
+        ]
+      },
+      {
+        "task_id": "ITASK-013",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-013"
+        ],
+        "mapped_test_ids": [
+          "TC-013"
+        ],
+        "mapped_scenario_ids": [
+          "SC-035"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-013"
+        ]
+      },
+      {
+        "task_id": "ITASK-014",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-014"
+        ],
+        "mapped_test_ids": [
+          "TC-014"
+        ],
+        "mapped_scenario_ids": [
+          "SC-036"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-014"
+        ]
+      },
+      {
+        "task_id": "ITASK-015",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-015"
+        ],
+        "mapped_test_ids": [
+          "TC-015"
+        ],
+        "mapped_scenario_ids": [
+          "SC-037",
+          "SC-038",
+          "SC-039",
+          "SC-040",
+          "SC-041"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-015"
+        ]
+      },
+      {
+        "task_id": "ITASK-016",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-016"
+        ],
+        "mapped_test_ids": [
+          "TC-016"
+        ],
+        "mapped_scenario_ids": [
+          "SC-042"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-016"
+        ]
+      },
+      {
+        "task_id": "ITASK-017",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-017"
+        ],
+        "mapped_test_ids": [
+          "TC-017"
+        ],
+        "mapped_scenario_ids": [
+          "SC-043"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-017"
+        ]
+      },
+      {
+        "task_id": "ITASK-018",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-018"
+        ],
+        "mapped_test_ids": [
+          "TC-018"
+        ],
+        "mapped_scenario_ids": [
+          "SC-044",
+          "SC-045",
+          "SC-046",
+          "SC-047",
+          "SC-048"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-018"
+        ]
+      },
+      {
+        "task_id": "ITASK-019",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-019"
+        ],
+        "mapped_test_ids": [
+          "TC-019"
+        ],
+        "mapped_scenario_ids": [
+          "SC-049"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-019"
+        ]
+      },
+      {
+        "task_id": "ITASK-020",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-020"
+        ],
+        "mapped_test_ids": [
+          "TC-020"
+        ],
+        "mapped_scenario_ids": [
+          "SC-050",
+          "SC-051",
+          "SC-052",
+          "SC-053",
+          "SC-054"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-020"
+        ]
+      }
+    ],
+    "updated_at": "2026-04-08T14:56:15.067048+00:00"
+  },
+  "implemented_items": [
+    "AC-001",
+    "AC-002",
+    "AC-003",
+    "AC-004",
+    "AC-005",
+    "AC-006",
+    "AC-007",
+    "AC-008",
+    "AC-009",
+    "AC-010",
+    "AC-011",
+    "AC-012",
+    "AC-013",
+    "AC-014",
+    "AC-015",
+    "AC-016",
+    "AC-017",
+    "AC-018",
+    "AC-019",
+    "AC-020",
+    "TASK-001"
+  ],
+  "verified_items": [],
+  "blocked_items": [],
+  "runner_mode": "single",
+  "revision_id": "R1",
+  "artifact_writeback_obligations": ".beacon/state/artifact-update-obligations/beacon-v1.2.0-command-simplification-and-project-skill-workflow.json",
+  "artifact_writeback_open_count": 2,
+  "requirement_rewrite_input": "docs/beacon/v1.2.0/.machine/execution/requirement-rewrite-input-beacon-v1.2.0-command-simplification-and-project-skill-workflow.json",
+  "auto_qa": {
+    "enabled": false,
+    "triggered": false,
+    "args": [],
+    "follow_handoff": false,
+    "max_rounds": 2
+  }
+}

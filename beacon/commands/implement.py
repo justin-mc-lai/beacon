@@ -11,13 +11,35 @@ from typing import Any, Optional
 
 import typer
 
-from beacon.utils.artifact_paths import qa_matrix_candidates
+from beacon.utils.artifact_paths import (
+    change_docs_file,
+    change_file_output,
+    execution_file_candidates,
+    execution_file_output,
+    human_execution_file,
+    qa_matrix_candidates,
+)
 from beacon.utils.artifact_update_obligations import write_artifact_update_obligations
 from beacon.utils.git_alignment import (
     build_implement_branch_guard_payload,
     switch_to_expected_branch,
 )
 from beacon.utils.governance import evaluate_takeover_baseline_gate
+from beacon.utils.implementation_plan import (
+    build_implementation_plan_gate_payload,
+    compile_implementation_plan,
+    ensure_implementation_git_workflow_contract,
+    load_or_seed_implementation_git_workflow_contract,
+    implementation_git_workflow_json_path,
+    implementation_git_workflow_markdown_path,
+    implementation_plan_json_path,
+    implementation_plan_markdown_path,
+    implementation_plan_progress_path,
+    implementation_plan_supported,
+    load_implementation_plan_progress,
+    mark_implementation_plan_failed,
+    mark_implementation_plan_started,
+)
 from beacon.utils.implement_native import run_native_implementation
 from beacon.utils.implement_adapters import (
     build_default_task_prompt,
@@ -31,7 +53,10 @@ from beacon.utils.implement_adapters import (
 from beacon.utils.learning_loop import write_requirement_rewrite_input
 from beacon.utils.runtime import generate_run_id, now_iso, write_json
 from beacon.utils.story_state import load_story_state
-from beacon.utils.versioning import resolve_target_version
+from beacon.utils.team_surface import write_implement_to_qa_handoff
+from beacon.utils.v115_delivery import refresh_evidence_manifest
+from beacon.utils.versioning import normalize_version, release_line_key, resolve_target_version
+from beacon.utils.writeback import record_implementation_writeback
 
 app = typer.Typer(name="implement", help="Run implementation via configured skill adapters")
 
@@ -64,20 +89,25 @@ def _artifacts(project_root: Path, version: str, feature: str) -> dict[str, str]
 
 def _summary_paths(project_root: Path, version: str, feature: str) -> dict[str, Path]:
     slug = _slug(feature)
-    execution_dir = project_root / "docs" / "beacon" / version / "execution"
     return {
-        "json": execution_dir / f"implementation-summary-{slug}.json",
-        "md": execution_dir / f"implementation-summary-{slug}.md",
+        "json": execution_file_output(project_root, version, f"implementation-summary-{slug}.json"),
+        "md": human_execution_file(project_root, version, f"implementation-summary-{slug}.md"),
     }
 
 
 def _technical_archive_paths(project_root: Path, version: str, feature: str) -> dict[str, Path]:
     slug = _slug(feature)
-    execution_dir = project_root / "docs" / "beacon" / version / "execution"
-    machine_execution_dir = project_root / "docs" / "beacon" / version / ".machine" / "execution"
     return {
-        "md": execution_dir / f"technical-implementation-{slug}.md",
-        "json": machine_execution_dir / f"technical-implementation-{slug}.json",
+        "md": human_execution_file(project_root, version, f"technical-implementation-{slug}.md"),
+        "json": execution_file_output(project_root, version, f"technical-implementation-{slug}.json"),
+    }
+
+
+def _change_document_paths(project_root: Path, version: str, feature: str) -> dict[str, Path]:
+    slug = _slug(feature)
+    return {
+        "md": change_docs_file(project_root, version, f"{slug}.md"),
+        "json": change_file_output(project_root, version, f"{slug}.json"),
     }
 
 
@@ -102,6 +132,24 @@ def _git_commit(project_root: Path) -> str:
 def _write_text(path: Path, content: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(content, encoding="utf-8")
+
+
+def _semver_tuple(version: str | None) -> tuple[int, int, int]:
+    text = str(release_line_key(version) or normalize_version(version) or version or "").strip().lstrip("v")
+    try:
+        major, minor, patch = text.split(".")
+        return (int(major), int(minor), int(patch))
+    except Exception:  # noqa: BLE001
+        return (0, 0, 0)
+
+
+def _default_runner_for_version(project_root: Path, version: str) -> str:
+    if _semver_tuple(version) >= (1, 3, 0):
+        return "codex-subagents"
+    configured = resolve_default_runner(project_root)
+    if configured:
+        return configured
+    return "native-single"
 
 
 def _normalize_string_list(value: Any) -> list[str]:
@@ -259,6 +307,10 @@ def _render_summary_markdown(payload: dict[str, Any]) -> str:
     skill = str(payload.get("skill", "") or "").strip()
     if skill:
         lines.append(f"- skill: `{skill}`")
+    change_document = payload.get("change_document") if isinstance(payload.get("change_document"), dict) else {}
+    if change_document:
+        lines.append(f"- change_document_md: `{change_document.get('md', '')}`")
+        lines.append(f"- change_document_json: `{change_document.get('json', '')}`")
     lines.extend(["", "## Changed Files"])
     changed = payload.get("changed_files") if isinstance(payload.get("changed_files"), list) else []
     if changed:
@@ -291,6 +343,21 @@ def _normalize_list(value: Any) -> list[Any]:
     return list(value) if isinstance(value, list) else []
 
 
+def _story_item_ids(story: dict[str, Any], *, kinds: set[str]) -> list[str]:
+    out: list[str] = []
+    for item in story.get("items", []):
+        if not isinstance(item, dict):
+            continue
+        if str(item.get("kind", "") or "") not in kinds:
+            continue
+        if not bool(item.get("required", True)):
+            continue
+        item_id = str(item.get("id", "") or "").strip().upper()
+        if item_id:
+            out.append(item_id)
+    return out
+
+
 def _modules_from_changed_files(changed_files: list[str]) -> list[str]:
     modules: set[str] = set()
     for item in changed_files:
@@ -303,6 +370,124 @@ def _modules_from_changed_files(changed_files: list[str]) -> list[str]:
         elif parts:
             modules.add(parts[0])
     return sorted(modules)
+
+
+def _dedupe_strings(values: list[Any]) -> list[str]:
+    out: list[str] = []
+    seen: set[str] = set()
+    for value in values:
+        text = str(value or "").strip()
+        if not text or text in seen:
+            continue
+        seen.add(text)
+        out.append(text)
+    return out
+
+
+def _feature_change_payload(
+    *,
+    feature: str,
+    version: str,
+    run_id: str,
+    summary_ref: str,
+    technical_ref: str,
+    technical_payload: dict[str, Any],
+) -> dict[str, Any]:
+    added = _dedupe_strings(_normalize_list(technical_payload.get("additions")))
+    removed = _dedupe_strings(_normalize_list(technical_payload.get("deletions")))
+    fixed = _dedupe_strings(
+        _normalize_list(technical_payload.get("modifications"))
+        + _normalize_list(technical_payload.get("refactors"))
+    )
+    changed_files = _dedupe_strings(_normalize_list(technical_payload.get("changed_files")))
+    if not added and not removed and not fixed and changed_files:
+        fixed = [f"Updated `{path}`" for path in changed_files]
+
+    implementation_impact = _dedupe_strings(
+        [f"Changed file: `{path}`" for path in changed_files]
+        + [f"Module touched: `{path}`" for path in _normalize_list(technical_payload.get("modules_touched"))]
+        + [f"Service touched: `{path}`" for path in _normalize_list(technical_payload.get("services"))]
+        + (
+            ["Database-related changes present"]
+            if isinstance(technical_payload.get("db_changes"), dict) and not bool(technical_payload.get("db_changes", {}).get("none", True))
+            else []
+        )
+        + (
+            ["API-related changes present"]
+            if isinstance(technical_payload.get("api_changes"), dict) and not bool(technical_payload.get("api_changes", {}).get("none", True))
+            else []
+        )
+    )
+
+    verification = []
+    for item in _normalize_list(technical_payload.get("verification")):
+        if isinstance(item, dict):
+            status = str(item.get("status", "unknown") or "unknown").strip()
+            command = str(item.get("command", "") or "").strip()
+            verification.append(f"{status}: {command}".strip(": "))
+        else:
+            text = str(item or "").strip()
+            if text:
+                verification.append(text)
+
+    traceability_refs = _dedupe_strings(
+        [
+            summary_ref,
+            technical_ref,
+            str((technical_payload.get("traceability") or {}).get("request_path", "") or ""),
+            str((technical_payload.get("traceability") or {}).get("result_path", "") or ""),
+            str((technical_payload.get("traceability") or {}).get("stdout_path", "") or ""),
+            str((technical_payload.get("traceability") or {}).get("stderr_path", "") or ""),
+        ]
+    )
+
+    return {
+        "schema_version": "1.0",
+        "feature": feature,
+        "feature_slug": str(technical_payload.get("feature_slug", "") or _slug(feature)),
+        "version": version,
+        "run_id": run_id,
+        "status": "completed",
+        "summary": str(technical_payload.get("implementation_scope_summary", "") or ""),
+        "added": added,
+        "removed": removed,
+        "fixed": fixed,
+        "implementation_impact": implementation_impact,
+        "verification_status": verification,
+        "traceability_refs": traceability_refs,
+        "generated_at": now_iso(),
+    }
+
+
+def _render_feature_change_markdown(payload: dict[str, Any]) -> str:
+    def _section(title: str, items: list[str]) -> list[str]:
+        lines = ["", f"## {title}"]
+        if not items:
+            lines.append("- none")
+            return lines
+        for item in items:
+            lines.append(f"- {item}")
+        return lines
+
+    lines = [
+        "# Beacon Feature Change Document",
+        "",
+        f"- feature: `{payload.get('feature')}`",
+        f"- feature_slug: `{payload.get('feature_slug')}`",
+        f"- version: `{payload.get('version')}`",
+        f"- run_id: `{payload.get('run_id')}`",
+        f"- status: `{payload.get('status')}`",
+        "",
+        "## Scope",
+        f"- {payload.get('summary') or 'No summary provided'}",
+    ]
+    lines.extend(_section("Added", [str(x) for x in _normalize_list(payload.get("added"))]))
+    lines.extend(_section("Removed / Reduced", [str(x) for x in _normalize_list(payload.get("removed"))]))
+    lines.extend(_section("Fixed", [str(x) for x in _normalize_list(payload.get("fixed"))]))
+    lines.extend(_section("Implementation Impact", [str(x) for x in _normalize_list(payload.get("implementation_impact"))]))
+    lines.extend(_section("Verification Status", [str(x) for x in _normalize_list(payload.get("verification_status"))]))
+    lines.extend(_section("Traceability Refs", [f"`{x}`" for x in _normalize_list(payload.get("traceability_refs"))]))
+    return "\n".join(lines) + "\n"
 
 
 def _technical_archive_payload(
@@ -438,6 +623,10 @@ def _validate_result(payload: dict[str, Any]) -> list[str]:
     updates = payload.get("artifact_updates")
     if updates is not None and not isinstance(updates, dict):
         problems.append("artifact_updates must be an object")
+    for key in ("implemented_task_ids", "verified_task_ids", "blocked_task_ids", "failed_task_ids"):
+        value = payload.get(key)
+        if value is not None and not isinstance(value, list):
+            problems.append(f"{key} must be a list")
     return problems
 
 
@@ -473,12 +662,20 @@ def _run_branch_preflight(
     feature: str,
     auto_switch_branch: bool,
     require_clean_worktree_for_switch: bool,
+    expected_branch: str = "",
+    branch_prefix: str = "beacon/",
+    base_branch: str = "main",
+    git_roots: list[str] | None = None,
 ) -> dict[str, Any]:
     feature_slug = _slug(feature)
     branch_preflight = build_implement_branch_guard_payload(
         project_root,
         version,
         require_clean_worktree_for_switch=require_clean_worktree_for_switch,
+        expected_branch=expected_branch,
+        branch_prefix=branch_prefix,
+        base_branch=base_branch,
+        git_roots=git_roots,
     )
     branch_preflight.update(
         {
@@ -495,12 +692,17 @@ def _run_branch_preflight(
                 project_root,
                 str(branch_preflight.get("expected_branch", "") or ""),
                 create_if_missing=True,
+                git_roots=git_roots,
             )
             branch_preflight["switch_attempt"] = switch_payload
             refreshed = build_implement_branch_guard_payload(
                 project_root,
                 version,
                 require_clean_worktree_for_switch=require_clean_worktree_for_switch,
+                expected_branch=expected_branch,
+                branch_prefix=branch_prefix,
+                base_branch=base_branch,
+                git_roots=git_roots,
             )
             refreshed.update(
                 {
@@ -518,6 +720,28 @@ def _run_branch_preflight(
                 )
             branch_preflight = refreshed
     return branch_preflight
+
+
+def _branch_guard_inputs(project_root: Path, *, version: str, feature: str) -> dict[str, Any]:
+    config = load_beacon_config(project_root)
+    implementation_cfg = config.get("implementation") if isinstance(config.get("implementation"), dict) else {}
+    branch_guard_cfg = implementation_cfg.get("branch_guard") if isinstance(implementation_cfg.get("branch_guard"), dict) else {}
+    contract = load_or_seed_implementation_git_workflow_contract(project_root, version=version, feature=feature)
+    service_directories = _normalize_string_list(contract.get("service_directories") or contract.get("git_roots"))
+    expected_branch = str(contract.get("expected_branch", "") or str(branch_guard_cfg.get("expected_branch", "") or "")).strip()
+    branch_prefix = str(contract.get("branch_prefix", "") or str(branch_guard_cfg.get("branch_prefix", "beacon/") or "beacon/")).strip() or "beacon/"
+    base_branch = str(contract.get("base_branch", "") or str(branch_guard_cfg.get("base_branch", "main") or "main")).strip() or "main"
+    require_clean = bool(
+        contract.get("require_clean_worktree_for_switch", branch_guard_cfg.get("require_clean_worktree_for_switch", True))
+    )
+    return {
+        "git_workflow": contract,
+        "expected_branch": expected_branch,
+        "branch_prefix": branch_prefix,
+        "base_branch": base_branch,
+        "git_roots": service_directories,
+        "require_clean_worktree_for_switch": require_clean,
+    }
 
 
 def run_implement_stage(  # noqa: PLR0913
@@ -538,6 +762,7 @@ def run_implement_stage(  # noqa: PLR0913
     auto_qa_follow_handoff: bool | None = None,
     auto_qa_max_rounds: int | None = None,
     auto_switch_branch: bool | None = None,
+    team_runtime: str | None = None,
 ) -> tuple[int, dict[str, Any]]:
     resolved_version = resolve_target_version(project_root, version)
     config = load_beacon_config(project_root)
@@ -562,7 +787,13 @@ def run_implement_stage(  # noqa: PLR0913
         if auto_switch_branch is None
         else auto_switch_branch
     )
-    require_clean_worktree_for_switch = bool(branch_guard_cfg.get("require_clean_worktree_for_switch", True))
+    branch_guard_inputs = _branch_guard_inputs(project_root, version=resolved_version, feature=feature)
+    require_clean_worktree_for_switch = bool(branch_guard_inputs.get("require_clean_worktree_for_switch", True))
+    expected_branch_override = str(branch_guard_inputs.get("expected_branch", "") or "").strip()
+    branch_prefix_override = str(branch_guard_inputs.get("branch_prefix", "beacon/") or "beacon/").strip() or "beacon/"
+    base_branch_override = str(branch_guard_inputs.get("base_branch", "main") or "main").strip() or "main"
+    workspace_git_roots = [str(item) for item in _normalize_string_list(branch_guard_inputs.get("git_roots"))]
+    git_workflow_contract = branch_guard_inputs.get("git_workflow", {}) if isinstance(branch_guard_inputs.get("git_workflow"), dict) else {}
 
     run_id = str(run_id_override or "").strip() or generate_run_id(project_root)
     feature_slug = _slug(feature)
@@ -580,6 +811,7 @@ def run_implement_stage(  # noqa: PLR0913
             "status": "blocked",
             "reason_code": "takeover_baseline_required",
             "takeover_gate": takeover_gate,
+            "git_workflow": git_workflow_contract,
             "generated_at": now_iso(),
         }
         write_json(state_path, payload)
@@ -592,6 +824,10 @@ def run_implement_stage(  # noqa: PLR0913
         feature=feature,
         auto_switch_branch=bool(auto_switch_branch),
         require_clean_worktree_for_switch=require_clean_worktree_for_switch,
+        expected_branch=expected_branch_override,
+        branch_prefix=branch_prefix_override,
+        base_branch=base_branch_override,
+        git_roots=workspace_git_roots,
     )
     write_json(project_root / branch_preflight_path, branch_preflight)
     if branch_preflight.get("blocked"):
@@ -608,12 +844,46 @@ def run_implement_stage(  # noqa: PLR0913
             "expected_branch": branch_preflight.get("expected_branch", ""),
             "current_branch": branch_preflight.get("current_branch", ""),
             "recommended_command": branch_preflight.get("recommended_command", ""),
+            "git_workflow": git_workflow_contract,
             "generated_at": now_iso(),
         }
         write_json(state_path, payload)
         return 2, payload
 
-    adapter_id, adapter = resolve_adapter(project_root, None if str(runner or "").strip().lower() == "auto" else runner)
+    plan_preflight_path = Path(f".beacon/implement/{run_id}/plan-preflight.json")
+    implementation_plan_gate: dict[str, Any] = {}
+    if implementation_plan_supported(resolved_version):
+        implementation_plan_gate = build_implementation_plan_gate_payload(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            run_id=run_id,
+        )
+        write_json(project_root / plan_preflight_path, implementation_plan_gate)
+        if implementation_plan_gate.get("blocked"):
+            payload = {
+                "schema_version": "1.0",
+                "run_id": run_id,
+                "feature": feature,
+                "feature_slug": feature_slug,
+                "version": resolved_version,
+                "status": "blocked",
+                "reason_code": str(implementation_plan_gate.get("reason_code", "implementation_plan_missing") or "implementation_plan_missing"),
+                "plan_preflight_path": str(plan_preflight_path),
+                "plan_preflight": implementation_plan_gate,
+                "branch_preflight_path": str(branch_preflight_path),
+                "branch_preflight": branch_preflight,
+                "recommended_command": str(implementation_plan_gate.get("recommended_command", "") or ""),
+                "git_workflow": git_workflow_contract,
+                "generated_at": now_iso(),
+            }
+            write_json(state_path, payload)
+            return 2, payload
+
+    requested_runner = None if str(runner or "").strip().lower() == "auto" else runner
+    if requested_runner is None:
+        requested_runner = _default_runner_for_version(project_root, resolved_version)
+    adapter_id, adapter = resolve_adapter(project_root, requested_runner)
     if not adapter_id or not adapter:
         payload = {
             "schema_version": "1.0",
@@ -664,6 +934,11 @@ def run_implement_stage(  # noqa: PLR0913
         "result_file": str(result_path),
         "source_of_truth_root": artifacts["source_of_truth_root"],
     }
+    implementation_plan_file = (
+        str(implementation_plan_json_path(project_root, resolved_version, feature).relative_to(project_root))
+        if implementation_plan_supported(resolved_version)
+        else ""
+    )
     rendered_skill = str(skill or adapter.get("skill_prefix", "") or "").strip()
     default_prompt = build_default_task_prompt(
         feature=feature,
@@ -671,6 +946,7 @@ def run_implement_stage(  # noqa: PLR0913
         source_of_truth_root=artifacts["source_of_truth_root"],
         feature_slug=feature_slug,
         result_file=str(result_path),
+        implementation_plan_file=implementation_plan_file,
     )
     rendered_task_template = str(task_template or adapter.get("task_template") or "").strip()
     task_prompt = format_template(rendered_task_template, {**context, "task_prompt": default_prompt}) if rendered_task_template else default_prompt
@@ -696,6 +972,8 @@ def run_implement_stage(  # noqa: PLR0913
         "branch_preflight": branch_preflight,
         "task_prompt": task_prompt,
         "result_file": str(result_path),
+        "implementation_plan": implementation_plan_file,
+        "git_workflow": git_workflow_contract,
         "generated_at": now_iso(),
     }
     write_json(project_root / request_path, request_payload)
@@ -712,12 +990,20 @@ def run_implement_stage(  # noqa: PLR0913
         "request_path": str(request_path),
         "result_path": str(result_path),
         "branch_preflight_path": str(branch_preflight_path),
+        "plan_preflight_path": str(plan_preflight_path),
+        "git_workflow": git_workflow_contract,
         "generated_at": now_iso(),
         "status": "planned",
     }
 
     adapter_type = str(adapter.get("adapter_type", "")).strip()
     if adapter_type == "native":
+        mark_implementation_plan_started(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            run_id=run_id,
+        )
         native_mode = str(adapter.get("mode", "single") or "single")
         result_payload = run_native_implementation(
             project_root,
@@ -725,8 +1011,16 @@ def run_implement_stage(  # noqa: PLR0913
             feature=feature,
             run_id=run_id,
             mode=native_mode,
+            runtime=str(team_runtime or "file"),
         )
         if str(result_payload.get("status", "")).strip().lower() != "completed":
+            mark_implementation_plan_failed(
+                project_root,
+                version=resolved_version,
+                feature=feature,
+                run_id=run_id,
+                reason_code=str(result_payload.get("reason_code", "native_runner_failed") or "native_runner_failed"),
+            )
             payload = {
                 **base_state,
                 "status": "failed",
@@ -763,13 +1057,21 @@ def run_implement_stage(  # noqa: PLR0913
             "summary": str(result_payload.get("summary", "")),
             "changed_files": result_payload.get("changed_files", []),
             "verification": result_payload.get("verification", []),
+            "implemented_task_ids": result_payload.get("implemented_task_ids", []),
+            "verified_task_ids": result_payload.get("verified_task_ids", []),
+            "blocked_task_ids": result_payload.get("blocked_task_ids", []),
+            "failed_task_ids": result_payload.get("failed_task_ids", []),
             "artifact_updates": result_payload.get("artifact_updates", {}),
             "branch_preflight": branch_preflight,
+            "plan_preflight_path": str(plan_preflight_path),
+            "plan_preflight": implementation_plan_gate,
             "implementation_marker": str(marker.relative_to(project_root)),
             "technical_archive": {
                 "json": str(archive_paths["json"].relative_to(project_root)),
                 "md": str(archive_paths["md"].relative_to(project_root)),
             },
+            "implementation_plan": implementation_plan_file,
+            "implementation_plan_progress": load_implementation_plan_progress(project_root, version=resolved_version, feature=feature),
             "generated_at": now_iso(),
         }
         for key, value in result_payload.items():
@@ -793,6 +1095,14 @@ def run_implement_stage(  # noqa: PLR0913
         technical_payload["revision_id"] = current_revision_id
         write_json(archive_paths["json"], technical_payload)
         _write_text(archive_paths["md"], _render_technical_archive_markdown(technical_payload))
+        refresh_evidence_manifest(
+            project_root,
+            refs=[
+                str(archive_paths["json"].relative_to(project_root)),
+                str(archive_paths["md"].relative_to(project_root)),
+            ],
+            version=resolved_version,
+        )
         learning_payload = write_requirement_rewrite_input(
             project_root,
             version=resolved_version,
@@ -819,6 +1129,18 @@ def run_implement_stage(  # noqa: PLR0913
         )
         summary_payload["artifact_writeback_open_count"] = int(obligations.get("open_count", 0) or 0)
         summary_payload["requirement_rewrite_input"] = str(learning_payload.get("path", "") or "")
+        handoff_path = write_implement_to_qa_handoff(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            run_id=run_id,
+            summary_ref=str(summary_paths["json"].relative_to(project_root)),
+            technical_archive_ref=str(archive_paths["json"].relative_to(project_root)),
+            evidence_refs=[str(summary_paths["json"].relative_to(project_root)), str(archive_paths["json"].relative_to(project_root))],
+            changed_files=result_payload.get("changed_files", []),
+            implementation_plan_ref=implementation_plan_file,
+        )
+        summary_payload["implement_to_qa_handoff"] = str(handoff_path.relative_to(project_root))
         summary_payload["auto_qa"] = {
             "enabled": bool(auto_qa),
             "triggered": False,
@@ -839,6 +1161,14 @@ def run_implement_stage(  # noqa: PLR0913
             summary_payload["auto_qa"] = auto_qa_payload
         write_json(summary_paths["json"], summary_payload)
         _write_text(summary_paths["md"], _render_summary_markdown(summary_payload))
+        refresh_evidence_manifest(
+            project_root,
+            refs=[
+                str(summary_paths["json"].relative_to(project_root)),
+                str(summary_paths["md"].relative_to(project_root)),
+            ],
+            version=resolved_version,
+        )
         write_json(state_path, summary_payload)
         return auto_qa_exit, summary_payload
     if adapter_type in {"handoff", "claude-skill"}:
@@ -850,6 +1180,9 @@ def run_implement_stage(  # noqa: PLR0913
             "request_path": str(request_path),
             "request_markdown": str(request_md.relative_to(project_root)),
             "recommended_flows": adapter.get("recommended_flows", []),
+            "plan_preflight_path": str(plan_preflight_path),
+            "plan_preflight": implementation_plan_gate,
+            "implementation_plan": implementation_plan_file,
         }
         write_json(state_path, payload)
         return 0, payload
@@ -865,6 +1198,9 @@ def run_implement_stage(  # noqa: PLR0913
             "command": command,
             "command_path": str(command_path),
             "task_prompt": task_prompt,
+            "plan_preflight_path": str(plan_preflight_path),
+            "plan_preflight": implementation_plan_gate,
+            "implementation_plan": implementation_plan_file,
         }
         write_json(state_path, payload)
         return 0, payload
@@ -877,6 +1213,12 @@ def run_implement_stage(  # noqa: PLR0913
         env.update({str(k): str(v) for k, v in adapter.get("env_overrides", {}).items()})
 
     timeout = int(timeout_sec or adapter.get("timeout_sec") or 3600)
+    mark_implementation_plan_started(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        run_id=run_id,
+    )
     try:
         result = subprocess.run(
             command,
@@ -887,6 +1229,13 @@ def run_implement_stage(  # noqa: PLR0913
             env={**os.environ, **env},
         )
     except subprocess.TimeoutExpired:
+        mark_implementation_plan_failed(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            run_id=run_id,
+            reason_code="runner_execution_timeout",
+        )
         payload = {
             **base_state,
             "status": "failed",
@@ -897,6 +1246,13 @@ def run_implement_stage(  # noqa: PLR0913
         write_json(state_path, payload)
         return 2, payload
     except FileNotFoundError:
+        mark_implementation_plan_failed(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            run_id=run_id,
+            reason_code="runner_command_not_found",
+        )
         payload = {
             **base_state,
             "status": "failed",
@@ -909,6 +1265,13 @@ def run_implement_stage(  # noqa: PLR0913
     _write_text(project_root / stderr_path, result.stderr or "")
 
     if result.returncode != 0:
+        mark_implementation_plan_failed(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            run_id=run_id,
+            reason_code="runner_execution_failed",
+        )
         payload = {
             **base_state,
             "status": "failed",
@@ -923,6 +1286,13 @@ def run_implement_stage(  # noqa: PLR0913
 
     full_result_path = project_root / result_path
     if not full_result_path.exists():
+        mark_implementation_plan_failed(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            run_id=run_id,
+            reason_code="runner_result_missing",
+        )
         payload = {
             **base_state,
             "status": "failed",
@@ -937,6 +1307,13 @@ def run_implement_stage(  # noqa: PLR0913
     try:
         result_payload = json.loads(full_result_path.read_text(encoding="utf-8"))
     except Exception as exc:  # noqa: BLE001
+        mark_implementation_plan_failed(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            run_id=run_id,
+            reason_code="runner_result_invalid",
+        )
         payload = {
             **base_state,
             "status": "failed",
@@ -947,6 +1324,13 @@ def run_implement_stage(  # noqa: PLR0913
         return 2, payload
     problems = _validate_result(result_payload)
     if problems:
+        mark_implementation_plan_failed(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            run_id=run_id,
+            reason_code="runner_result_invalid",
+        )
         payload = {
             **base_state,
             "status": "failed",
@@ -957,6 +1341,13 @@ def run_implement_stage(  # noqa: PLR0913
         return 2, payload
 
     if str(result_payload.get("status", "")).strip().lower() != "completed":
+        mark_implementation_plan_failed(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            run_id=run_id,
+            reason_code="implement_execution_failed",
+        )
         payload = {
             **base_state,
             "status": "failed",
@@ -993,7 +1384,21 @@ def run_implement_stage(  # noqa: PLR0913
 
     summary_paths = _summary_paths(project_root, resolved_version, feature)
     archive_paths = _technical_archive_paths(project_root, resolved_version, feature)
+    change_paths = _change_document_paths(project_root, resolved_version, feature)
     story_state = load_story_state(project_root, version=resolved_version, feature=feature, create_if_missing=True) or {}
+    implemented_item_ids = [str(item) for item in _normalize_string_list(result_payload.get("implemented_items"))]
+    if not implemented_item_ids:
+        implemented_item_ids = _story_item_ids(story_state, kinds={"ac", "task"})
+    implemented_task_ids = [str(item) for item in _normalize_string_list(result_payload.get("implemented_task_ids"))]
+    writeback_payload = record_implementation_writeback(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        run_id=run_id,
+        implemented_item_ids=implemented_item_ids,
+        task_ids=implemented_task_ids,
+        changed_files=result_payload.get("changed_files", []),
+    )
     summary_payload = {
         "schema_version": "1.0",
         "run_id": run_id,
@@ -1007,6 +1412,10 @@ def run_implement_stage(  # noqa: PLR0913
         "summary": str(result_payload.get("summary", "")),
         "changed_files": result_payload.get("changed_files", []),
         "verification": result_payload.get("verification", []),
+        "implemented_task_ids": implemented_task_ids,
+        "verified_task_ids": result_payload.get("verified_task_ids", []),
+        "blocked_task_ids": result_payload.get("blocked_task_ids", []),
+        "failed_task_ids": result_payload.get("failed_task_ids", []),
         "artifact_updates": result_payload.get("artifact_updates", {}),
         "request_path": str(request_path),
         "result_path": str(result_path),
@@ -1014,14 +1423,23 @@ def run_implement_stage(  # noqa: PLR0913
         "stderr_path": str(stderr_path),
         "branch_preflight_path": str(branch_preflight_path),
         "branch_preflight": branch_preflight,
+        "plan_preflight_path": str(plan_preflight_path),
+        "plan_preflight": implementation_plan_gate,
+        "implementation_plan": implementation_plan_file,
+        "implementation_plan_progress": load_implementation_plan_progress(project_root, version=resolved_version, feature=feature),
         "implementation_marker": str(marker.relative_to(project_root)),
         "technical_archive": {
             "json": str(archive_paths["json"].relative_to(project_root)),
             "md": str(archive_paths["md"].relative_to(project_root)),
         },
+        "change_document": {
+            "json": str(change_paths["json"].relative_to(project_root)),
+            "md": str(change_paths["md"].relative_to(project_root)),
+        },
         "review_spec": review_spec_info,
         "review_quality": review_quality_info,
         "generated_at": now_iso(),
+        "writeback": writeback_payload,
     }
     technical_payload = _technical_archive_payload(
         project_root=project_root,
@@ -1039,6 +1457,22 @@ def run_implement_stage(  # noqa: PLR0913
     technical_payload["revision_id"] = str(story_state.get("current_revision_id", "") or "")
     write_json(archive_paths["json"], technical_payload)
     _write_text(archive_paths["md"], _render_technical_archive_markdown(technical_payload))
+    refresh_evidence_manifest(
+        project_root,
+        refs=[
+            str(archive_paths["json"].relative_to(project_root)),
+            str(archive_paths["md"].relative_to(project_root)),
+        ],
+        version=resolved_version,
+    )
+    change_payload = _feature_change_payload(
+        feature=feature,
+        version=resolved_version,
+        run_id=run_id,
+        summary_ref=str(summary_paths["json"].relative_to(project_root)),
+        technical_ref=str(archive_paths["json"].relative_to(project_root)),
+        technical_payload=technical_payload,
+    )
     learning_payload = write_requirement_rewrite_input(
         project_root,
         version=resolved_version,
@@ -1065,6 +1499,18 @@ def run_implement_stage(  # noqa: PLR0913
     )
     summary_payload["artifact_writeback_open_count"] = int(obligations.get("open_count", 0) or 0)
     summary_payload["requirement_rewrite_input"] = str(learning_payload.get("path", "") or "")
+    handoff_path = write_implement_to_qa_handoff(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        run_id=run_id,
+        summary_ref=str(summary_paths["json"].relative_to(project_root)),
+        technical_archive_ref=str(archive_paths["json"].relative_to(project_root)),
+        evidence_refs=[str(summary_paths["json"].relative_to(project_root)), str(archive_paths["json"].relative_to(project_root))],
+        changed_files=result_payload.get("changed_files", []),
+        implementation_plan_ref=implementation_plan_file,
+    )
+    summary_payload["implement_to_qa_handoff"] = str(handoff_path.relative_to(project_root))
     summary_payload["auto_qa"] = {
         "enabled": bool(auto_qa),
         "triggered": False,
@@ -1085,6 +1531,24 @@ def run_implement_stage(  # noqa: PLR0913
         summary_payload["auto_qa"] = auto_qa_payload
     write_json(summary_paths["json"], summary_payload)
     _write_text(summary_paths["md"], _render_summary_markdown(summary_payload))
+    refresh_evidence_manifest(
+        project_root,
+        refs=[
+            str(summary_paths["json"].relative_to(project_root)),
+            str(summary_paths["md"].relative_to(project_root)),
+        ],
+        version=resolved_version,
+    )
+    write_json(change_paths["json"], change_payload)
+    _write_text(change_paths["md"], _render_feature_change_markdown(change_payload))
+    refresh_evidence_manifest(
+        project_root,
+        refs=[
+            str(change_paths["json"].relative_to(project_root)),
+            str(change_paths["md"].relative_to(project_root)),
+        ],
+        version=resolved_version,
+    )
 
     payload = {**base_state, **summary_payload}
     write_json(state_path, payload)
@@ -1099,7 +1563,7 @@ def list_runners(
     """List implementation runners available to Beacon."""
     root = Path(project_root) if project_root else Path.cwd()
     adapters = discover_skill_adapters(root)
-    preferred = resolve_default_runner(root)
+    preferred = resolve_default_runner(root) or _default_runner_for_version(root, "v1.3.0")
     rows = []
     for adapter_id, adapter in sorted(adapters.items()):
         detected, evidence = detect_adapter(adapter_id, root)
@@ -1140,6 +1604,7 @@ def run(
     auto_qa_follow_handoff: Optional[bool] = typer.Option(None, "--auto-qa-follow-handoff/--no-auto-qa-follow-handoff", help="When auto-qa is blocked, follow supported repair handoff actions and retry QA"),
     auto_qa_max_rounds: int = typer.Option(0, "--auto-qa-max-rounds", help="Maximum QA rounds in the auto-qa follow-handoff loop"),
     auto_switch_branch: bool = typer.Option(False, "--auto-switch-branch", help="Explicitly switch/create the expected Beacon version branch before implementation"),
+    runtime: str = typer.Option("file", "--runtime", help="Team runtime for native-team/codex-subagents: file/tmux/auto"),
     json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
 ):
     """Run implementation using the resolved skill adapter."""
@@ -1160,6 +1625,7 @@ def run(
         auto_qa_follow_handoff=auto_qa_follow_handoff,
         auto_qa_max_rounds=auto_qa_max_rounds or None,
         auto_switch_branch=auto_switch_branch,
+        team_runtime=runtime,
     )
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
@@ -1182,6 +1648,11 @@ def check_branch(
     """Check or repair the required Beacon implementation branch before coding."""
     project_root = Path(project) if project else Path.cwd()
     resolved_version = resolve_target_version(project_root, version)
+    branch_guard_inputs = _branch_guard_inputs(project_root, version=resolved_version, feature=feature)
+    expected_branch_override = str(branch_guard_inputs.get("expected_branch", "") or "").strip()
+    branch_prefix_override = str(branch_guard_inputs.get("branch_prefix", "beacon/") or "beacon/").strip() or "beacon/"
+    base_branch_override = str(branch_guard_inputs.get("base_branch", "main") or "main").strip() or "main"
+    workspace_git_roots = [str(item) for item in _normalize_string_list(branch_guard_inputs.get("git_roots"))]
     run_id = generate_run_id(project_root)
     payload = _run_branch_preflight(
         project_root=project_root,
@@ -1190,7 +1661,12 @@ def check_branch(
         feature=feature,
         auto_switch_branch=auto_switch_branch,
         require_clean_worktree_for_switch=True,
+        expected_branch=expected_branch_override,
+        branch_prefix=branch_prefix_override,
+        base_branch=base_branch_override,
+        git_roots=workspace_git_roots,
     )
+    payload["git_workflow"] = branch_guard_inputs.get("git_workflow", {})
     payload["branch_preflight_path"] = str(_branch_preflight_path(run_id))
     write_json(project_root / _branch_preflight_path(run_id), payload)
     if json_output:
@@ -1202,6 +1678,300 @@ def check_branch(
         if payload.get("recommended_command"):
             typer.echo(f"recommended_command: {payload.get('recommended_command')}")
     raise typer.Exit(code=2 if payload.get("blocked") else 0)
+
+
+@app.command("dev-run")
+def dev_run(
+    feature: str = typer.Argument(..., help="Feature name"),
+    project: Optional[str] = typer.Option(None, "--project", "--project-root", "-p", help="Project root"),
+    version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
+    runner: str = typer.Option("auto", "--runner", help="Runner id or auto"),
+    runtime: str = typer.Option("file", "--runtime", help="Team runtime for native-team/codex-subagents: file/tmux/auto"),
+    auto_switch_branch: bool = typer.Option(True, "--auto-switch-branch/--no-auto-switch-branch", help="Auto repair branch/workspace alignment before entering implementation"),
+    auto_review_spec: bool = typer.Option(True, "--auto-review-spec/--no-auto-review-spec", help="Auto trigger review spec"),
+    auto_review_quality: bool = typer.Option(False, "--auto-review-quality/--no-auto-review-quality", help="Auto trigger review quality"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
+):
+    """Compile safe pre-implement artifacts/gates, then enter implementation."""
+    project_root = Path(project) if project else Path.cwd()
+    resolved_version = resolve_target_version(project_root, version)
+    preflight_resolution: dict[str, Any] = {
+        "schema_version": "1.0",
+        "feature": feature,
+        "feature_slug": _slug(feature),
+        "version": resolved_version,
+        "steps": [],
+    }
+
+    takeover_gate = evaluate_takeover_baseline_gate(project_root, version=resolved_version)
+    if str(takeover_gate.get("status", "") or "") == "blocked":
+        payload = {
+            "schema_version": "1.0",
+            "status": "blocked",
+            "reason_code": "takeover_baseline_required",
+            "feature": feature,
+            "feature_slug": _slug(feature),
+            "version": resolved_version,
+            "takeover_gate": takeover_gate,
+            "preflight_resolution": {
+                **preflight_resolution,
+                "status": "blocked",
+                "steps": [
+                    {
+                        "gate": "takeover_baseline",
+                        "status": "blocked",
+                        "reason_code": "takeover_baseline_required",
+                    }
+                ],
+            },
+        }
+        if json_output:
+            typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        else:
+            typer.echo("Beacon implement dev-run blocked: takeover baseline required")
+        raise typer.Exit(code=2)
+
+    branch_guard_inputs = _branch_guard_inputs(project_root, version=resolved_version, feature=feature)
+    preflight_run_id = generate_run_id(project_root)
+    branch_preflight = _run_branch_preflight(
+        project_root=project_root,
+        version=resolved_version,
+        run_id=preflight_run_id,
+        feature=feature,
+        auto_switch_branch=auto_switch_branch,
+        require_clean_worktree_for_switch=bool(branch_guard_inputs.get("require_clean_worktree_for_switch", True)),
+        expected_branch=str(branch_guard_inputs.get("expected_branch", "") or "").strip(),
+        branch_prefix=str(branch_guard_inputs.get("branch_prefix", "beacon/") or "beacon/").strip() or "beacon/",
+        base_branch=str(branch_guard_inputs.get("base_branch", "main") or "main").strip() or "main",
+        git_roots=[str(item) for item in _normalize_string_list(branch_guard_inputs.get("git_roots"))],
+    )
+    preflight_resolution["steps"].append(
+        {
+            "gate": "branch_preflight",
+            "status": "pass" if not branch_preflight.get("blocked") else "blocked",
+            "reason_codes": list(branch_preflight.get("reason_codes", [])),
+            "expected_branch": str(branch_preflight.get("expected_branch", "") or ""),
+        }
+    )
+    if branch_preflight.get("blocked"):
+        payload = {
+            "schema_version": "1.0",
+            "status": "blocked",
+            "reason_code": "implement_branch_guard_blocked",
+            "feature": feature,
+            "feature_slug": _slug(feature),
+            "version": resolved_version,
+            "branch_preflight": branch_preflight,
+            "preflight_resolution": {
+                **preflight_resolution,
+                "status": "blocked",
+            },
+        }
+        if json_output:
+            typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        else:
+            typer.echo("Beacon implement dev-run blocked: branch preflight blocked")
+        raise typer.Exit(code=2)
+
+    git_workflow_contract = ensure_implementation_git_workflow_contract(project_root, version=resolved_version, feature=feature)
+    preflight_resolution["steps"].append(
+        {
+            "gate": "git_workflow_contract",
+            "status": "materialized",
+            "path": str(implementation_git_workflow_json_path(project_root, resolved_version, feature).relative_to(project_root)),
+            "expected_branch": str(git_workflow_contract.get("expected_branch", "") or ""),
+        }
+    )
+
+    plan_code, plan_payload = compile_implementation_plan(project_root, version=resolved_version, feature=feature)
+    preflight_resolution["steps"].append(
+        {
+            "gate": "implementation_plan",
+            "status": "planned" if plan_code == 0 else "blocked",
+            "reason_code": str(plan_payload.get("reason_code", "") or ""),
+            "plan_path": str(plan_payload.get("plan_path", "") or ""),
+            "git_workflow_ref": str(plan_payload.get("git_workflow_ref", "") or ""),
+        }
+    )
+    if plan_code != 0:
+        payload = {
+            **plan_payload,
+            "preflight_resolution": {
+                **preflight_resolution,
+                "status": "blocked",
+            },
+        }
+        if json_output:
+            typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        else:
+            typer.echo(f"Beacon implement dev-run blocked: {payload.get('reason_code')}")
+        raise typer.Exit(code=plan_code)
+
+    code, payload = run_implement_stage(
+        feature=feature,
+        project_root=project_root,
+        version=resolved_version,
+        runner=runner,
+        auto_switch_branch=False,
+        auto_review_spec=auto_review_spec,
+        auto_review_quality=auto_review_quality,
+        team_runtime=runtime,
+    )
+    payload["preflight_resolution"] = {
+        **preflight_resolution,
+        "status": "completed" if code == 0 else "blocked",
+    }
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo(f"Beacon implement dev-run status: {payload.get('status')}")
+        typer.echo(f"run_id: {payload.get('run_id', '')}")
+        if payload.get("reason_code"):
+            typer.echo(f"reason_code: {payload.get('reason_code')}")
+    raise typer.Exit(code=code)
+
+
+@app.command("sync-git-workflow")
+def sync_git_workflow(
+    feature: str = typer.Argument(..., help="Feature name"),
+    project: Optional[str] = typer.Option(None, "--project", "--project-root", "-p", help="Project root"),
+    version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
+    force_from_seed: bool = typer.Option(False, "--force-from-seed", help="Refresh the versioned contract from config/default seed even if one already exists"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
+):
+    """Materialize or refresh the versioned git workflow contract for a feature."""
+    project_root = Path(project) if project else Path.cwd()
+    resolved_version = resolve_target_version(project_root, version)
+    payload = ensure_implementation_git_workflow_contract(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        force_refresh_from_seed=force_from_seed,
+    )
+    output = {
+        "schema_version": "1.0",
+        "status": "materialized",
+        "feature": feature,
+        "feature_slug": _slug(feature),
+        "version": resolved_version,
+        "git_workflow_ref": str(implementation_git_workflow_json_path(project_root, resolved_version, feature).relative_to(project_root)),
+        "git_workflow_markdown_ref": str(implementation_git_workflow_markdown_path(project_root, resolved_version, feature).relative_to(project_root)),
+        "git_workflow": payload,
+        "source_mode": "seed_refresh" if force_from_seed else str(payload.get("source", "") or "version_material"),
+    }
+    if json_output:
+        typer.echo(json.dumps(output, ensure_ascii=False, indent=2))
+    else:
+        typer.echo(f"Beacon implement git workflow sync: {feature}")
+        typer.echo(f"git_workflow_ref: {output['git_workflow_ref']}")
+        typer.echo(f"expected_branch: {payload.get('expected_branch', '')}")
+    raise typer.Exit(code=0)
+
+
+def _plan_impl(feature: str, project: Optional[str], version: str, json_output: bool) -> int:
+    project_root = Path(project) if project else Path.cwd()
+    code, payload = compile_implementation_plan(project_root, version=version, feature=feature)
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo(f"Beacon implementation plan status: {payload.get('status')}")
+        if payload.get("plan_id"):
+            typer.echo(f"plan_id: {payload.get('plan_id')}")
+        if payload.get("plan_path"):
+            typer.echo(f"plan_path: {payload.get('plan_path')}")
+        if payload.get("reason_code"):
+            typer.echo(f"reason_code: {payload.get('reason_code')}")
+    return code
+
+
+def _team_plan_impl(feature: str, project: Optional[str], version: str, json_output: bool) -> int:
+    project_root = Path(project) if project else Path.cwd()
+    code, payload = compile_implementation_plan(project_root, version=version, feature=feature)
+    resolved_version = resolve_target_version(project_root, version)
+    team_mode = {
+        "preferred_surface": "implement-team",
+        "preferred_runner": "codex-subagents" if _semver_tuple(resolved_version) >= (1, 3, 0) else "native-team",
+        "plan_command": f'beacon implement team-plan "{feature}" --project-root {project_root} --version {resolved_version}',
+        "run_command": f'beacon implement team-run "{feature}" --project {project_root} --version {resolved_version}',
+        "dev_run_command": f'beacon implement dev-run "{feature}" --project {project_root} --version {resolved_version}',
+    }
+    payload = {
+        **payload,
+        "team_surface": "implement-team",
+        "team_mode": payload.get("team_mode", {}) or team_mode,
+        "recommended_command": str((payload.get("team_mode", {}) or team_mode).get("run_command") or ""),
+    }
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo(f"Beacon implement team-plan status: {payload.get('status')}")
+        typer.echo(f"team_surface: implement-team")
+        if payload.get("recommended_command"):
+            typer.echo(f"recommended_command: {payload.get('recommended_command')}")
+    return code
+
+
+@app.command("plan")
+def plan(
+    feature: str = typer.Argument(..., help="Feature name"),
+    project: Optional[str] = typer.Option(None, "--project", "--project-root", "-p", help="Project root"),
+    version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
+):
+    """Compile PRD/user-story/test-case into an implementation plan."""
+    raise typer.Exit(code=_plan_impl(feature, project, version, json_output))
+
+
+@app.command("team-plan")
+def team_plan(
+    feature: str = typer.Argument(..., help="Feature name"),
+    project: Optional[str] = typer.Option(None, "--project", "--project-root", "-p", help="Project root"),
+    version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
+):
+    """Compile an implementation plan with explicit implement-team guidance."""
+    raise typer.Exit(code=_team_plan_impl(feature, project, version, json_output))
+
+
+@app.command("compile-plan")
+def compile_plan(
+    feature: str = typer.Argument(..., help="Feature name"),
+    project: Optional[str] = typer.Option(None, "--project", "--project-root", "-p", help="Project root"),
+    version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
+):
+    """Alias of `implement plan`."""
+    raise typer.Exit(code=_plan_impl(feature, project, version, json_output))
+
+
+@app.command("team-run")
+def team_run(
+    feature: str = typer.Argument(..., help="Feature name"),
+    project: Optional[str] = typer.Option(None, "--project", "--project-root", "-p", help="Project root"),
+    version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
+    auto_review_spec: bool = typer.Option(True, "--auto-review-spec/--no-auto-review-spec", help="Auto trigger review spec"),
+    auto_review_quality: bool = typer.Option(False, "--auto-review-quality/--no-auto-review-quality", help="Auto trigger review quality"),
+    runtime: str = typer.Option("file", "--runtime", help="Runtime mode: file/tmux/auto"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
+):
+    """Run implementation through the explicit implement-team surface."""
+    project_root = Path(project) if project else Path.cwd()
+    code, payload = run_implement_stage(
+        feature=feature,
+        project_root=project_root,
+        version=version,
+        runner="codex-subagents",
+        auto_review_spec=auto_review_spec,
+        auto_review_quality=auto_review_quality,
+        team_runtime=runtime,
+    )
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo(f"Beacon implement team-run status: {payload.get('status')}")
+        typer.echo(f"team_surface: {payload.get('team_surface', '')}")
+        typer.echo(f"run_id: {payload.get('run_id', '')}")
+    raise typer.Exit(code=code)
 
 
 @app.command("status")
@@ -1225,11 +1995,23 @@ def status(
             state_payload = json.loads(state_path.read_text(encoding="utf-8"))
     else:
         candidate_states = sorted(implement_root.glob("*/state.json")) if implement_root.exists() else []
+        fallback_state: dict[str, Any] | None = None
         for state_path in reversed(candidate_states):
             payload = json.loads(state_path.read_text(encoding="utf-8"))
-            if str(payload.get("feature_slug", "")) == feature_slug or str(payload.get("feature", "")) == feature_or_run_id:
+            payload_feature_matches = (
+                str(payload.get("feature_slug", "")) == feature_slug
+                or str(payload.get("feature", "")) == feature_or_run_id
+            )
+            if not payload_feature_matches:
+                continue
+            payload_version = normalize_version(str(payload.get("version", "")).strip())
+            if payload_version and payload_version == resolved_version:
                 state_payload = payload
                 break
+            if fallback_state is None:
+                fallback_state = payload
+        if state_payload is None:
+            state_payload = fallback_state
         if state_payload is None and feature_or_run_id.startswith("run-"):
             state_path = implement_root / feature_or_run_id / "state.json"
             if state_path.exists():
@@ -1240,13 +2022,17 @@ def status(
 
     slug = str(state_payload.get("feature_slug", feature_slug))
     summary = _summary_paths(project_root, resolved_version, slug).get("json")
-    review_spec = project_root / "docs" / "beacon" / resolved_version / "execution" / f"review-spec-{slug}.json"
-    review_quality = project_root / "docs" / "beacon" / resolved_version / "execution" / f"review-quality-{slug}.json"
+    review_spec = execution_file_candidates(project_root, resolved_version, f"review-spec-{slug}.json")
+    review_quality = execution_file_candidates(project_root, resolved_version, f"review-quality-{slug}.json")
     output = dict(state_payload)
     output["summary_exists"] = bool(summary and summary.exists())
-    output["review_spec_exists"] = review_spec.exists()
-    output["review_quality_exists"] = review_quality.exists()
+    output["review_spec_exists"] = any(path.exists() for path in review_spec)
+    output["review_quality_exists"] = any(path.exists() for path in review_quality)
     output["implementation_marker_exists"] = (project_root / ".beacon" / "state" / f"implementation-{slug}.json").exists()
+    output["implementation_plan_exists"] = implementation_plan_json_path(project_root, resolved_version, slug).exists()
+    output["implementation_plan_markdown_exists"] = implementation_plan_markdown_path(project_root, resolved_version, slug).exists()
+    output["implementation_plan_progress_exists"] = implementation_plan_progress_path(project_root, resolved_version, slug).exists()
+    output["implementation_plan_progress"] = load_implementation_plan_progress(project_root, version=resolved_version, feature=slug)
     if json_output:
         typer.echo(json.dumps(output, ensure_ascii=False, indent=2))
         return

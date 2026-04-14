@@ -48,13 +48,23 @@ def _find_layer_files(project_root: Path, *, version: str, layer: str) -> list[P
     return list(dedup.values())
 
 
-def _layer_signature(paths: list[Path]) -> tuple[str, list[dict[str, str]]]:
+def _normalized_path(project_root: Path, path: Path) -> str:
+    root = project_root.resolve()
+    resolved = path.resolve()
+    try:
+        return resolved.relative_to(root).as_posix()
+    except ValueError:
+        return str(resolved)
+
+
+def _layer_signature(project_root: Path, paths: list[Path]) -> tuple[str, list[dict[str, str]]]:
     parts: list[str] = []
     files: list[dict[str, str]] = []
     for path in sorted(paths):
         digest = _sha256(path)
-        files.append({"path": str(path), "sha256": digest})
-        parts.append(f"{path}:{digest}")
+        normalized_path = _normalized_path(project_root, path)
+        files.append({"path": normalized_path, "sha256": digest})
+        parts.append(f"{normalized_path}:{digest}")
     merged = hashlib.sha256("\n".join(parts).encode("utf-8")).hexdigest() if parts else ""
     return merged, files
 
@@ -129,7 +139,7 @@ def generate_spec_fingerprint(
     merged_parts: list[str] = []
     for layer_key in ("user_story", "prd", "test_case"):
         files = _find_layer_files(project_root, version=resolved_version, layer=layer_key)
-        layer_hash, refs = _layer_signature(files)
+        layer_hash, refs = _layer_signature(project_root, files)
         layers[layer_key] = {
             "hash": layer_hash,
             "count": len(refs),

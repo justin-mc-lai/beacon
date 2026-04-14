@@ -17,7 +17,7 @@
 
 | 组别 | 目标 |
 |---|---|
-| VT-TC-001 ~ 003 | version truth 单源 |
+| VT-TC-001 ~ 004 | version truth 单源 |
 | VT-TC-101 ~ 104 | profile-aware navigator |
 | VT-TC-201 ~ 204 | project skill capability boundary |
 | VT-TC-301 ~ 303 | typed learning plane |
@@ -34,6 +34,7 @@
 | VT-TC-001 | 当前版本单源一致 | 读取 runtime/package/skill/docs 当前版本 | 返回同一 machine-readable source 的派生值 | unit |
 | VT-TC-002 | planning line with partial runtime supplement | 查询 `v1.1.12` release truth | 能同时表达 planning line 与 partial runtime supplement，不混淆 current runtime line | unit |
 | VT-TC-003 | help/status 版本解析一致 | 分别执行 help/status/version context | docs/runtime/current release line 一致且来源可解释 | regression |
+| VT-TC-004 | explicit version mismatch guard | 上下文已锚定 `vX.Y.Z`，显式输入 `--version vA.B.C` | 返回 `context_version_mismatch`，并给出推荐版本 | integration |
 
 ---
 

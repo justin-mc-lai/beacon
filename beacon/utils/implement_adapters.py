@@ -259,6 +259,13 @@ def _builtin_adapters() -> dict[str, dict[str, Any]]:
             "supports_dry_run": True,
             "result_file": ".beacon/implement/{run_id}/result.json",
         },
+        "codex-subagents": {
+            "adapter_type": "native",
+            "runtime_family": "codex-native",
+            "mode": "codex-subagents",
+            "supports_dry_run": True,
+            "result_file": ".beacon/implement/{run_id}/result.json",
+        },
     }
 
 
@@ -303,7 +310,7 @@ def detect_adapter(adapter_id: str, project_root: Path) -> tuple[bool, list[str]
     adapter = discover_skill_adapters(project_root).get(adapter_id, {})
     evidence: list[str] = []
     runtime_family = str(adapter.get("runtime_family", adapter_id)).strip()
-    if adapter_id in {"native-single", "native-team"}:
+    if adapter_id in {"native-single", "native-team", "codex-subagents"}:
         return (True, ["builtin-native"])
     if adapter_id == "gstack":
         candidate_paths = [
@@ -342,18 +349,33 @@ def format_template(value: str, context: dict[str, Any]) -> str:
     return rendered
 
 
-def build_default_task_prompt(*, feature: str, version: str, source_of_truth_root: str, feature_slug: str, result_file: str) -> str:
-    return (
-        "Implement the scoped Beacon feature.\n"
-        f"Feature: {feature}\n"
-        f"Version: {version}\n"
-        "Read Beacon source of truth:\n"
-        f"- {source_of_truth_root}/user-story/{feature_slug}.md\n"
-        f"- {source_of_truth_root}/prd/{feature_slug}.md\n"
-        f"- {source_of_truth_root}/qa/test-cases/{feature_slug}.md\n"
-        "Run relevant verification.\n"
-        f"Write structured result to {result_file}\n"
+def build_default_task_prompt(
+    *,
+    feature: str,
+    version: str,
+    source_of_truth_root: str,
+    feature_slug: str,
+    result_file: str,
+    implementation_plan_file: str = "",
+) -> str:
+    lines = [
+        "Implement the scoped Beacon feature.",
+        f"Feature: {feature}",
+        f"Version: {version}",
+        "Read Beacon source of truth:",
+        f"- {source_of_truth_root}/user-story/{feature_slug}.md",
+        f"- {source_of_truth_root}/prd/{feature_slug}.md",
+        f"- {source_of_truth_root}/qa/test-cases/{feature_slug}.md",
+    ]
+    if str(implementation_plan_file or "").strip():
+        lines.append(f"- {implementation_plan_file}")
+    lines.extend(
+        [
+            "Run relevant verification.",
+            f"Write structured result to {result_file}",
+        ]
     )
+    return "\n".join(lines) + "\n"
 
 
 def resolve_adapter(project_root: Path, adapter_id: str | None) -> tuple[str | None, dict[str, Any]]:

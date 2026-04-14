@@ -12,9 +12,20 @@ from beacon.utils.context_files import setup_context_files, verify_context_files
 from beacon.utils.doctor_diagnostics import build_doctor_payload, build_doctor_advice_payload, collect_runtime_info
 from beacon.utils.doctor_setup import install_launchers, resolve_bin_dir, uninstall_launchers
 from beacon.utils.help_navigation import build_doctor_advise_payload
+from beacon.utils.material_sync import sync_project_requirement_materials
 from beacon.utils.material_audit import build_delivery_audit, build_material_audit
+from beacon.utils.requirement_clarity import materialize_requirement_clarity
+from beacon.utils.runtime import now_iso, write_json
+from beacon.utils.source_architecture import current_source_architecture_status
+from beacon.utils.technical_review_contract import materialize_technical_review_contract, technical_review_contract_json_path, technical_review_contract_markdown_path
 from beacon.utils.v115_delivery import repair_v115_delivery_package
-from beacon.utils.versioning import describe_project_version_context, resolve_target_version
+from beacon.utils.version_package_upgrade import upgrade_version_package
+from beacon.utils.versioning import (
+    describe_project_version_context,
+    load_project_onboarding_state,
+    resolve_target_version,
+    runtime_capability_lines,
+)
 from beacon.utils.worktree_quiet import apply_quiet_worktree, quiet_worktree_status, restore_quiet_worktree
 
 app = typer.Typer(
@@ -93,7 +104,7 @@ def _doctor_impl(json_output: bool, project_root: str, fix: bool, upgrade: bool,
             with_agents=True,
         )
         target_version = resolve_target_version(root, "latest-docs")
-        repair_v115_delivery_package(root, version=target_version, apply=True)
+        upgrade_version_package(root, version=target_version, apply=True)
 
     payload = build_doctor_payload(root, strict=strict)
 
@@ -219,10 +230,13 @@ def _single_check_payload(
 ) -> dict[str, Any]:
     status = str(check.get("status", "warn")).lower()
     blocked = status == "fail" or (strict and status == "warn")
+    version_context = describe_project_version_context(project_root, docs_version=version or None)
     return {
         "schema_version": "2.0",
         "action": action,
         "status": "BLOCKED" if blocked else status.upper(),
+        "version_context": version_context,
+        "version_semantics": version_context.get("version_semantics", {}),
         "result": {
             "schema_version": "1.0",
             "action": action,
@@ -347,6 +361,10 @@ def setup_context(
     project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
     dry_run: bool = typer.Option(False, "--dry-run", help="Preview without writing files"),
     force: bool = typer.Option(False, "--force", help="Append managed blocks when markers are missing"),
+    sync_materials: bool = typer.Option(False, "--sync-materials/--no-sync-materials", help="Sync machine requirement materials after context refresh."),
+    feature: str = typer.Option("", "--feature", help="Sync only one feature when --sync-materials is enabled."),
+    all_features: bool = typer.Option(True, "--all-features/--single-feature", help="When syncing materials, operate on all features in the target version."),
+    overwrite_test_doc: bool = typer.Option(False, "--overwrite-test-doc", help="Allow sync to overwrite human QA markdown."),
     json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
     with_claude: bool = typer.Option(True, "--with-claude/--without-claude", help="Manage CLAUDE.md"),
     with_agents: bool = typer.Option(True, "--with-agents/--without-agents", help="Manage AGENTS.md"),
@@ -364,6 +382,40 @@ def setup_context(
         with_claude=with_claude,
         with_agents=with_agents,
     )
+    onboarding_state_path = root / ".beacon" / "state" / "project-onboarding.json"
+    onboarding_state = load_project_onboarding_state(root)
+    onboarding_exists = onboarding_state_path.exists()
+    refreshed_onboarding = {
+        **onboarding_state,
+        "schema_version": str(onboarding_state.get("schema_version", "") or "1.0"),
+        "docs_version": str(onboarding_state.get("docs_version", "") or version_context.get("docs_version", "") or ""),
+        "runtime_version": runtime_version,
+        "runtime_capability_lines": runtime_capability_lines(),
+        "updated_at": now_iso(),
+    }
+    if not dry_run:
+        write_json(onboarding_state_path, refreshed_onboarding)
+    result_actions = result.get("actions") if isinstance(result.get("actions"), list) else []
+    result_actions.append(
+        {
+            "file": str(onboarding_state_path.relative_to(root)),
+            "action": "planned" if dry_run else "updated" if onboarding_exists else "created",
+            "merge_mode": "state-refresh",
+        }
+    )
+    result["actions"] = result_actions
+    material_sync = None
+    if sync_materials:
+        docs_version = str(version_context.get("docs_version") or "")
+        if docs_version:
+            material_sync = sync_project_requirement_materials(
+                root,
+                version=docs_version,
+                feature=feature,
+                all_features=all_features if not feature else False,
+                dry_run=dry_run,
+                overwrite_test_doc=overwrite_test_doc,
+            )
     payload = {
         "schema_version": "2.0",
         "action": "setup-context",
@@ -371,7 +423,9 @@ def setup_context(
         "docs_version": version_context.get("docs_version", ""),
         "runtime_version": runtime_version,
         "version_context": version_context,
+        "version_semantics": version_context.get("version_semantics", {}),
         "result": result,
+        "material_sync": material_sync,
     }
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
@@ -382,8 +436,143 @@ def setup_context(
         typer.echo(f"runtime_version: {payload.get('runtime_version')}")
         for item in result.get("actions", []):
             typer.echo(f"- {item.get('file')}: {item.get('action')} ({item.get('merge_mode')})")
+        if isinstance(material_sync, dict):
+            typer.echo(f"- material_sync.features: {material_sync.get('feature_count', 0)}")
         typer.echo(f"Overall: {payload.get('status')}")
 
+    raise typer.Exit(code=0)
+
+
+@app.command("sync-materials")
+def sync_materials(
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    version: str = typer.Option("latest-docs", "--version", "-v", help="Target docs version"),
+    feature: str = typer.Option("", "--feature", help="Sync only one feature"),
+    all_features: bool = typer.Option(True, "--all-features/--single-feature", help="Sync all features under the target version"),
+    dry_run: bool = typer.Option(False, "--dry-run", help="Preview without writing files"),
+    overwrite_test_doc: bool = typer.Option(False, "--overwrite-test-doc", help="Allow overwriting human QA markdown"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Sync machine user-story and QA artifacts from current human requirement docs."""
+    root = Path(project_root) if project_root else Path.cwd()
+    result = sync_project_requirement_materials(
+        root,
+        version=version,
+        feature=feature,
+        all_features=all_features if not feature else False,
+        dry_run=dry_run,
+        overwrite_test_doc=overwrite_test_doc,
+    )
+    payload = {
+        "schema_version": "2.0",
+        "action": "sync-materials",
+        "status": "PASS",
+        "result": result,
+    }
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo("Beacon Doctor Material Sync")
+        typer.echo("=" * 27)
+        typer.echo(f"version: {result.get('version')}")
+        typer.echo(f"features: {result.get('feature_count')}")
+        for item in result.get("results", []):
+            typer.echo(f"- {item.get('feature')}: {item.get('status')}")
+    raise typer.Exit(code=0)
+
+
+@app.command("sync-requirement-clarity")
+def sync_requirement_clarity(
+    feature: str = typer.Argument(..., help="Feature name"),
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    version: str = typer.Option("latest-docs", "--version", "-v", help="Target docs version"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Materialize requirement clarity report and state before freeze."""
+    root = Path(project_root) if project_root else Path.cwd()
+    result = materialize_requirement_clarity(
+        root,
+        version=version,
+        feature=feature,
+        source="doctor.sync-requirement-clarity",
+    )
+    output = {
+        "schema_version": "2.0",
+        "action": "sync-requirement-clarity",
+        "status": "PASS",
+        "result": result,
+    }
+    if json_output:
+        typer.echo(json.dumps(output, ensure_ascii=False, indent=2))
+    else:
+        gate = result.get("gate", {}) if isinstance(result.get("gate"), dict) else {}
+        report = result.get("report", {}) if isinstance(result.get("report"), dict) else {}
+        writeback = result.get("writeback", {}) if isinstance(result.get("writeback"), dict) else {}
+        typer.echo("Beacon Doctor Requirement Clarity")
+        typer.echo("=" * 33)
+        typer.echo(f"feature: {feature}")
+        typer.echo(f"status: {gate.get('status', '')}")
+        typer.echo(f"blocked: {gate.get('blocked', False)}")
+        typer.echo(f"json: {report.get('json', '')}")
+        typer.echo(f"markdown: {report.get('markdown', '')}")
+        typer.echo(f"state: {writeback.get('state_path', '')}")
+    raise typer.Exit(code=0)
+
+
+@app.command("sync-technical-review-contract")
+def sync_technical_review_contract(
+    feature: str = typer.Argument(..., help="Feature name"),
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    version: str = typer.Option("latest-docs", "--version", "-v", help="Target docs version"),
+    revision_id: str = typer.Option("", "--revision-id", help="Revision id to stamp into the draft contract"),
+    review_status: str = typer.Option("draft", "--review-status", help="Contract status: draft/approved/accepted"),
+    approved_by: str = typer.Option("", "--approved-by", help="Reviewer/approver id or name"),
+    reviewed_at: str = typer.Option("", "--reviewed-at", help="Reviewed timestamp"),
+    force_refresh: bool = typer.Option(False, "--force-refresh", help="Regenerate the draft contract from current seed/config"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Materialize a draft deterministic implementation contract for human technical review."""
+    root = Path(project_root) if project_root else Path.cwd()
+    payload = materialize_technical_review_contract(
+        root,
+        version=version,
+        feature=feature,
+        revision_id=revision_id,
+        force_refresh=force_refresh,
+        contract_overrides={
+            "review_status": review_status,
+            "approved_by": approved_by,
+            "reviewed_at": reviewed_at,
+        },
+        source="doctor.sync-technical-review-contract",
+    )
+    result = {
+        "schema_version": "1.0",
+        "feature": feature,
+        "version": str(payload.get("version", "") or version),
+        "review_status": str(payload.get("review_status", "") or ""),
+        "contract_json_path": str(technical_review_contract_json_path(root, str(payload.get("version", "") or version), feature).relative_to(root)),
+        "contract_markdown_path": str(technical_review_contract_markdown_path(root, str(payload.get("version", "") or version), feature).relative_to(root)),
+        "state_path": str((payload.get("writeback", {}) or {}).get("state_path", "") or ""),
+        "payload": payload,
+    }
+    output = {
+        "schema_version": "2.0",
+        "action": "sync-technical-review-contract",
+        "status": "PASS",
+        "result": result,
+    }
+    if json_output:
+        typer.echo(json.dumps(output, ensure_ascii=False, indent=2))
+    else:
+        typer.echo("Beacon Doctor Technical Review Contract")
+        typer.echo("=" * 39)
+        typer.echo(f"feature: {feature}")
+        typer.echo(f"version: {result['version']}")
+        typer.echo(f"review_status: {result['review_status']}")
+        typer.echo(f"json: {result['contract_json_path']}")
+        typer.echo(f"markdown: {result['contract_markdown_path']}")
+        typer.echo(f"state: {result['state_path']}")
     raise typer.Exit(code=0)
 
 
@@ -411,6 +600,7 @@ def verify_context(
         "docs_version": version_context.get("docs_version", ""),
         "runtime_version": runtime_version,
         "version_context": version_context,
+        "version_semantics": version_context.get("version_semantics", {}),
         "result": result,
     }
     if strict and payload["status"] == "WARN":
@@ -507,6 +697,42 @@ def repair_package(
     raise typer.Exit(code=0)
 
 
+@app.command("upgrade-package")
+def upgrade_package(
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    version: str = typer.Option("latest-docs", "--version", "-v", help="Target docs version"),
+    dry_run: bool = typer.Option(False, "--dry-run", help="Preview without writing files"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Cumulatively upgrade an older Beacon version package to newer runtime-compatible material structure."""
+    root = Path(project_root) if project_root else Path.cwd()
+    result = upgrade_version_package(root, version=version, apply=not dry_run)
+    resolved_version = resolve_target_version(root, version)
+    source_arch_status = current_source_architecture_status(root, version=resolved_version)
+    payload = {
+        "schema_version": "2.0",
+        "action": "upgrade-package",
+        "status": "PASS",
+        "result": result,
+        "source_architecture_status": source_arch_status,
+    }
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        _print_action_result("Beacon Doctor Upgrade Package", {"installed": [], "removed": [], "skipped": [], "warnings": []})
+        summary = result.get("summary") if isinstance(result.get("summary"), dict) else {}
+        if summary:
+            typer.echo(
+                "summary: "
+                f"written={summary.get('written', 0)} "
+                f"planned={summary.get('planned', 0)} "
+                f"unchanged={summary.get('unchanged', 0)} "
+                f"steps={summary.get('step_count', 0)}"
+            )
+        typer.echo(json.dumps(result, ensure_ascii=False, indent=2))
+    raise typer.Exit(code=0)
+
+
 @app.command("verify-config")
 def verify_config(
     project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
@@ -559,10 +785,35 @@ def verify_git_alignment(
     """Verify execution git-alignment artifact for a version."""
     root = Path(project_root) if project_root else Path.cwd()
     audit = build_delivery_audit(root, version=version or None, strict=strict)
-    check = next(
+    git_check = next(
         (item for item in audit.get("checks", []) if str(item.get("name")) == "execution_git_alignment_schema"),
         {"name": "execution_git_alignment_schema", "status": "fail", "details": {"missing": True}},
     )
+    workflow_check = next(
+        (item for item in audit.get("checks", []) if str(item.get("name")) == "execution_git_workflow_contract"),
+        {"name": "execution_git_workflow_contract", "status": "pass", "details": {"required": False}},
+    )
+    alignment_check = next(
+        (item for item in audit.get("checks", []) if str(item.get("name")) == "delivery_manifest_git_workflow_alignment"),
+        {"name": "delivery_manifest_git_workflow_alignment", "status": "pass", "details": {"branch_mismatches": []}},
+    )
+    statuses = [str(git_check.get("status", "fail")).lower()]
+    for item in (workflow_check, alignment_check):
+        statuses.append(str(item.get("status", "pass")).lower())
+    merged_status = "pass"
+    if any(status == "fail" for status in statuses):
+        merged_status = "fail"
+    elif any(status == "warn" for status in statuses):
+        merged_status = "warn"
+    check = {
+        "name": "execution_git_alignment_schema",
+        "status": merged_status,
+        "details": {
+            "git_alignment": git_check.get("details", {}),
+            "git_workflow_contract": workflow_check.get("details", {}),
+            "manifest_alignment": alignment_check.get("details", {}),
+        },
+    }
     payload = _single_check_payload(
         action="verify-git-alignment",
         project_root=root,

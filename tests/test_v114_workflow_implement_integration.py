@@ -7,6 +7,7 @@ from pathlib import Path
 from typer.testing import CliRunner
 
 from beacon.main import app
+from beacon.utils.artifact_paths import execution_file_output
 
 
 runner = CliRunner()
@@ -104,7 +105,7 @@ def test_workflow_auto_should_delegate_implementation_to_runner(tmp_path: Path):
     )
     assert result.exit_code == 0, result.stdout
     assert (tmp_path / ".beacon" / "state" / f"implementation-{slug}.json").exists()
-    assert (tmp_path / "docs" / "beacon" / "v1.1.4" / "execution" / f"implementation-summary-{slug}.json").exists()
+    assert execution_file_output(tmp_path, "v1.1.4", f"implementation-summary-{slug}.json").exists()
 
 
 def test_workflow_should_still_block_without_command_or_runner(tmp_path: Path):

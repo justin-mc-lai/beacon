@@ -79,9 +79,21 @@ help/navigator 先默认 native implementation
 
 将 design-system contract 与 prototype plan 一起交给 reference-pack renderer。
 
+同时要求 renderer 负责：
+
+- 统一目录页
+- `ui-style-analysis` 工件
+- page/state 跳转闭环
+
 ### Stage E: Guideline auditor
 
 拉取最新 web guideline 规则并输出 findings artifact。
+
+### Stage E1: Design security review
+
+`review design` 在 Beacon 中承担 cso-inspired 的软件设计安全审查。
+
+它不是新的顶级安全平台，而是 review 阶段的附加判断面。
 
 ### Stage F: Iteration governor
 

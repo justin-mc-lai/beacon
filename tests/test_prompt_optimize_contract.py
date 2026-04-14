@@ -18,6 +18,11 @@ def _invoke(args: list[str]):
     return runner.invoke(app, args)
 
 
+def _seed_planning_versions(project_root: Path) -> None:
+    for version in ("v1.2.0", "v1.3.0"):
+        (project_root / "docs" / "beacon" / version).mkdir(parents=True, exist_ok=True)
+
+
 def test_prompt_optimize_should_route_requirement_text_to_in_scope_command(tmp_path: Path):
     result = _invoke(
         [
@@ -33,6 +38,7 @@ def test_prompt_optimize_should_route_requirement_text_to_in_scope_command(tmp_p
     payload = json.loads(result.stdout)
     assert payload.get("intent") in {"think", "prd", "test-case"}
     assert payload.get("boundary", {}).get("in_scope") is True
+    assert payload.get("version_semantics", {}).get("fields", {}).get("runtime_version", {}).get("kind") == "runtime"
     assert str(payload.get("recommended_command", "")).startswith("beacon ")
 
 
@@ -52,6 +58,26 @@ def test_prompt_optimize_should_route_user_story_intent(tmp_path: Path):
     assert payload.get("intent") == "user-story"
     args = payload.get("recommended_args", [])
     assert args[:2] == ["user-story", "create"]
+
+
+def test_prompt_optimize_should_route_cross_stage_subagent_evolution_to_version(tmp_path: Path):
+    _seed_planning_versions(tmp_path)
+    result = _invoke(
+        [
+            "prompt",
+            "optimize",
+            "继续演进下一版本，参考 https://github.com/atticus98/codex-turbo 开源项目，在 beacon 中引入简化版 codex 原生 subagent，从需求prd、用户故事story、qa test、implement run 都支持 subagent 方式。或给出调研的新方向。",
+            "--project-root",
+            str(tmp_path),
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0
+    payload = json.loads(result.stdout)
+    assert payload.get("intent") == "version"
+    args = payload.get("recommended_args", [])
+    assert args[:2] == ["version", "create"]
+    assert args[-1] == "v1.3.0"
 
 
 def test_prompt_optimize_should_block_outside_boundary_execute(tmp_path: Path):
@@ -268,6 +294,44 @@ def test_prompt_optimize_continue_workflow_should_prioritize_resume_intent(tmp_p
     assert args
     assert args[0] in {"resume", "workflow"}
     assert "continue" in args or "resume" in args
+
+
+def test_prompt_optimize_should_route_next_version_subagent_evolution_to_version(tmp_path: Path):
+    _seed_planning_versions(tmp_path)
+    result = _invoke(
+        [
+            "prompt",
+            "optimize",
+            "继续演进下一版本，引入简化版 codex 原生 subagent，并给出调研新方向",
+            "--project-root",
+            str(tmp_path),
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0
+    payload = json.loads(result.stdout)
+    assert payload.get("intent") == "version"
+    assert payload.get("recommended_args", [])[:2] == ["version", "create"]
+    assert payload.get("recommended_args", [])[-1] == "v1.3.0"
+
+
+def test_ask_should_route_next_version_subagent_evolution_prompt_to_version(tmp_path: Path):
+    _seed_planning_versions(tmp_path)
+    result = _invoke(
+        [
+            "ask",
+            "继续演进下一版本，参考 https://github.com/atticus98/codex-turbo 开源项目，在 beacon 中引入简化版 codex 原生 subagent，从需求prd、用户故事story、 qa test、implement run 都支持subagent 方式。或给出调研的新方向。",
+            "--project-root",
+            str(tmp_path),
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0
+    payload = json.loads(result.stdout)
+    assert payload.get("intent") == "version"
+    assert payload.get("version_semantics", {}).get("fields", {}).get("planning_lines", {}).get("kind") == "planning"
+    assert payload.get("recommended_args", [])[-1] == "v1.3.0"
+    assert payload.get("recommended_args", [])[:2] == ["version", "create"]
 
 
 def test_intent_router_should_detect_english_out_of_scope_boundaries(tmp_path: Path):

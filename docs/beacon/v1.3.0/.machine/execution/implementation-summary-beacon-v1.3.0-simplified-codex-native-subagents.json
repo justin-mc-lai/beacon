@@ -1,0 +1,515 @@
+{
+  "schema_version": "1.0",
+  "run_id": "run-20260411T053009Z-06d8",
+  "feature": "beacon-v1.3.0-simplified-codex-native-subagents",
+  "feature_slug": "beacon-v1.3.0-simplified-codex-native-subagents",
+  "version": "v1.3.0",
+  "runner": "codex-subagents",
+  "adapter_type": "native",
+  "request_path": ".beacon/implement/run-20260411T053009Z-06d8/request.json",
+  "result_path": ".beacon/implement/run-20260411T053009Z-06d8/result.json",
+  "branch_preflight_path": ".beacon/implement/run-20260411T053009Z-06d8/branch-preflight.json",
+  "plan_preflight_path": ".beacon/implement/run-20260411T053009Z-06d8/plan-preflight.json",
+  "generated_at": "2026-04-11T05:30:11.256898+00:00",
+  "status": "completed",
+  "skill": "",
+  "summary": "codex-subagents implementation completed via implement-team flow",
+  "changed_files": [
+    "AGENTS.md",
+    "CLAUDE.md",
+    "beacon/commands/implement.py",
+    "beacon/commands/qa.py",
+    "beacon/commands/team.py",
+    "beacon/utils/implement_native.py",
+    "beacon/utils/team_surface.py",
+    "docs/beacon/v1.1.11/execution/evo-scorecard-contract.md",
+    "docs/beacon/v1.2.0/execution/evo-scorecard-contract.md",
+    "docs/beacon/v1.3.0/.machine/execution/beacon-v1.3.0-simplified-codex-native-subagents.revision.json",
+    "docs/beacon/v1.3.0/.machine/execution/implementation-plan-beacon-v1.3.0-simplified-codex-native-subagents.json",
+    "docs/beacon/v1.3.0/.machine/execution/implementation-plan-beacon-v1.3.0-simplified-codex-native-subagents.progress.json",
+    "docs/beacon/v1.3.0/.machine/user-story/beacon-v1.3.0-simplified-codex-native-subagents.json",
+    "docs/beacon/v1.3.0/execution/codex-native-subagent-implementation-blueprint.md",
+    "docs/beacon/v1.3.0/execution/implementation-plan-beacon-v1.3.0-simplified-codex-native-subagents.md",
+    "docs/beacon/v1.3.0/execution/index.md",
+    "docs/beacon/v1.3.0/prd/beacon-v1.3.0-simplified-codex-native-subagents.md",
+    "pyproject.toml",
+    "tests/test_v130_implement_team_surface.py"
+  ],
+  "verification": [
+    {
+      "command": "beacon implement run --runner codex-subagents",
+      "status": "passed"
+    },
+    {
+      "command": "auto-test-status",
+      "status": "failed",
+      "evidence": ".beacon/auto-test-status.json"
+    }
+  ],
+  "implemented_task_ids": [],
+  "verified_task_ids": [],
+  "blocked_task_ids": [],
+  "failed_task_ids": [],
+  "artifact_updates": {
+    "user_story": {
+      "required": false,
+      "reason": "story machine state writeback recorded"
+    },
+    "review_quality": {
+      "required": true,
+      "reason": "run quality review after native implementation"
+    },
+    "acceptance": {
+      "required": true,
+      "reason": "acceptance remains a formal post-verify action"
+    }
+  },
+  "branch_preflight": {
+    "schema_version": "1.0",
+    "status": "pass",
+    "summary": "implement branch preflight passed on beacon/v1.3.0",
+    "blocked": false,
+    "version": "v1.3.0",
+    "expected_branch": "beacon/v1.3.0",
+    "current_branch": "beacon/v1.3.0",
+    "current_tag": "",
+    "branch_exists": true,
+    "dirty_worktree": true,
+    "require_clean_worktree_for_switch": true,
+    "recommended_command": "",
+    "reason_codes": [],
+    "git_alignment": {
+      "repo_url": "https://github.com/justin-mc-lai/beacon.git",
+      "base_branch": "main",
+      "target_branch": "beacon/v1.3.0",
+      "current_branch": "beacon/v1.3.0",
+      "current_commit": "3ab01aacb23c82c7b30eb4799974322accbd4727",
+      "current_tag": "",
+      "worktree_path": ".",
+      "version_ref": "v1.3.0",
+      "allowed_refs": [
+        "branch"
+      ],
+      "enforce_branch_prefix": "beacon/",
+      "branch_matches_target": true,
+      "branch_has_required_prefix": true,
+      "tag_matches_version": false,
+      "version_ref_satisfied": true,
+      "reason_codes": [],
+      "blocked": false,
+      "detached_head": false,
+      "repo_detected": true
+    },
+    "run_id": "run-20260411T053009Z-06d8",
+    "feature": "beacon-v1.3.0-simplified-codex-native-subagents",
+    "feature_slug": "beacon-v1.3.0-simplified-codex-native-subagents",
+    "generated_at": "2026-04-11T05:30:10.082127+00:00"
+  },
+  "plan_preflight": {
+    "schema_version": "1.0",
+    "run_id": "run-20260411T053009Z-06d8",
+    "feature": "beacon-v1.3.0-simplified-codex-native-subagents",
+    "feature_slug": "beacon-v1.3.0-simplified-codex-native-subagents",
+    "version": "v1.3.0",
+    "expected_plan": "docs/beacon/v1.3.0/.machine/execution/implementation-plan-beacon-v1.3.0-simplified-codex-native-subagents.json",
+    "expected_revision_id": "R1",
+    "baseline_hash": "sha256:f3e563bd54e5af6530a5f790683bc0b635bee6642af80ef0158489e9731c0720",
+    "recommended_command": "beacon implement plan \"beacon-v1.3.0-simplified-codex-native-subagents\" --project-root . --version v1.3.0",
+    "generated_at": "2026-04-11T05:30:10.083275+00:00",
+    "status": "pass",
+    "blocked": false,
+    "plan_id": "plan-beacon-v1.3.0-simplified-codex-native-subagents-r1",
+    "plan_path": "docs/beacon/v1.3.0/.machine/execution/implementation-plan-beacon-v1.3.0-simplified-codex-native-subagents.json",
+    "progress_path": "docs/beacon/v1.3.0/.machine/execution/implementation-plan-beacon-v1.3.0-simplified-codex-native-subagents.progress.json"
+  },
+  "implementation_marker": ".beacon/state/implementation-beacon-v1.3.0-simplified-codex-native-subagents.json",
+  "technical_archive": {
+    "json": "docs/beacon/v1.3.0/.machine/execution/technical-implementation-beacon-v1.3.0-simplified-codex-native-subagents.json",
+    "md": "docs/beacon/v1.3.0/execution/technical-implementation-beacon-v1.3.0-simplified-codex-native-subagents.md"
+  },
+  "implementation_plan": "docs/beacon/v1.3.0/.machine/execution/implementation-plan-beacon-v1.3.0-simplified-codex-native-subagents.json",
+  "implementation_plan_progress": {
+    "schema_version": "1.0",
+    "plan_id": "plan-beacon-v1.3.0-simplified-codex-native-subagents-r1",
+    "feature": "beacon-v1.3.0-simplified-codex-native-subagents",
+    "version": "v1.3.0",
+    "revision_id": "R1",
+    "status": "blocked",
+    "counts": {
+      "total": 22,
+      "draft": 0,
+      "planned": 0,
+      "in_progress": 0,
+      "blocked": 1,
+      "completed": 21
+    },
+    "blocked_task_ids": [
+      "ITASK-001"
+    ],
+    "completed_task_ids": [
+      "ITASK-002",
+      "ITASK-003",
+      "ITASK-004",
+      "ITASK-005",
+      "ITASK-006",
+      "ITASK-007",
+      "ITASK-008",
+      "ITASK-009",
+      "ITASK-010",
+      "ITASK-011",
+      "ITASK-012",
+      "ITASK-013",
+      "ITASK-014",
+      "ITASK-015",
+      "ITASK-016",
+      "ITASK-017",
+      "ITASK-018",
+      "ITASK-019",
+      "ITASK-020",
+      "ITASK-021",
+      "ITASK-022"
+    ],
+    "next_task_id": "ITASK-001",
+    "task_states": [
+      {
+        "task_id": "ITASK-001",
+        "status": "blocked",
+        "blocked_reason": "verification_failed",
+        "mapped_ac_ids": [
+          "AC-001"
+        ],
+        "mapped_test_ids": [
+          "TEST-001"
+        ],
+        "mapped_scenario_ids": [
+          "SC-001"
+        ],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-002",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-003",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-004",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-005",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-006",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-007",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-008",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-009",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-010",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-011",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-012",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-013",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-014",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-015",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-016",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-017",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-018",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-019",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-020",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-021",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-022",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      }
+    ],
+    "updated_at": "2026-04-11T05:30:10.228096+00:00"
+  },
+  "implemented_items": [
+    "AC-001",
+    "TASK-001"
+  ],
+  "verified_items": [],
+  "blocked_items": [
+    "AC-001",
+    "TEST-001"
+  ],
+  "runner_mode": "codex-subagents",
+  "revision_id": "R1",
+  "team_execution": {
+    "team_name": "implement-team-run-20260411T053009Z-06d8",
+    "team_surface": "implement-team",
+    "state_path": ".beacon/team/implement-team-run-20260411T053009Z-06d8/manifest.json",
+    "artifact_dir": "docs/beacon/v1.3.0/execution/codex-subagents/beacon-v1.3.0-simplified-codex-native-subagents/run-20260411T053009Z-06d8",
+    "final_state": "terminal",
+    "terminal_status": "Blocked",
+    "runtime": "tmux",
+    "tmux_session": "implement-team-run-20260411T053009Z-06d8",
+    "roles": [
+      "planner",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "role_reports": {
+      "planner": {
+        "role": "planner",
+        "status": "completed",
+        "json": "docs/beacon/v1.3.0/execution/codex-subagents/beacon-v1.3.0-simplified-codex-native-subagents/run-20260411T053009Z-06d8/planner.json",
+        "markdown": "docs/beacon/v1.3.0/execution/codex-subagents/beacon-v1.3.0-simplified-codex-native-subagents/run-20260411T053009Z-06d8/planner.md"
+      },
+      "implementer": {
+        "role": "implementer",
+        "status": "completed",
+        "json": "docs/beacon/v1.3.0/execution/codex-subagents/beacon-v1.3.0-simplified-codex-native-subagents/run-20260411T053009Z-06d8/implementer.json",
+        "markdown": "docs/beacon/v1.3.0/execution/codex-subagents/beacon-v1.3.0-simplified-codex-native-subagents/run-20260411T053009Z-06d8/implementer.md",
+        "pane_id": "%85"
+      },
+      "reviewer": {
+        "role": "reviewer",
+        "status": "pass",
+        "json": "docs/beacon/v1.3.0/execution/codex-subagents/beacon-v1.3.0-simplified-codex-native-subagents/run-20260411T053009Z-06d8/reviewer.json",
+        "markdown": "docs/beacon/v1.3.0/execution/codex-subagents/beacon-v1.3.0-simplified-codex-native-subagents/run-20260411T053009Z-06d8/reviewer.md",
+        "pane_id": "%87"
+      },
+      "tester": {
+        "role": "tester",
+        "status": "blocked",
+        "json": "docs/beacon/v1.3.0/execution/codex-subagents/beacon-v1.3.0-simplified-codex-native-subagents/run-20260411T053009Z-06d8/tester.json",
+        "markdown": "docs/beacon/v1.3.0/execution/codex-subagents/beacon-v1.3.0-simplified-codex-native-subagents/run-20260411T053009Z-06d8/tester.md",
+        "pane_id": "%86"
+      }
+    },
+    "review_gates": {
+      "spec": {
+        "status": "pass",
+        "reviewer": "reviewer"
+      },
+      "quality": {
+        "status": "fail",
+        "reviewer": "tester"
+      }
+    },
+    "implemented_items": [
+      "AC-001",
+      "TASK-001"
+    ],
+    "verified_items": [],
+    "blocked_items": [
+      "AC-001",
+      "TEST-001"
+    ],
+    "verification_entries": [
+      {
+        "command": "auto-test-status",
+        "status": "failed",
+        "evidence": ".beacon/auto-test-status.json"
+      }
+    ],
+    "context_isolation": {
+      "role_plane": "implementation",
+      "isolated_from": [
+        "qa-team"
+      ],
+      "shared_inputs": [
+        "docs/beacon/<version>/user-story",
+        "docs/beacon/<version>/prd",
+        "implementation-plan"
+      ],
+      "shared_outputs": [
+        "implementation_summary",
+        "technical_archive",
+        "story_writeback",
+        "evidence_refs"
+      ],
+      "rule": "qa_must_not_inherit_implement_private_context"
+    },
+    "hud": {
+      "json": ".beacon/state/team-hud/implement-team-run-20260411T053009Z-06d8.json",
+      "html": "docs/beacon/v1.3.0/execution/codex-subagents/beacon-v1.3.0-simplified-codex-native-subagents/run-20260411T053009Z-06d8/index.html"
+    }
+  },
+  "team_surface": "implement-team",
+  "context_isolation": {
+    "role_plane": "implementation",
+    "isolated_from": [
+      "qa-team"
+    ],
+    "shared_inputs": [
+      "docs/beacon/<version>/user-story",
+      "docs/beacon/<version>/prd",
+      "implementation-plan"
+    ],
+    "shared_outputs": [
+      "implementation_summary",
+      "technical_archive",
+      "story_writeback",
+      "evidence_refs"
+    ],
+    "rule": "qa_must_not_inherit_implement_private_context"
+  },
+  "artifact_writeback_obligations": ".beacon/state/artifact-update-obligations/beacon-v1.3.0-simplified-codex-native-subagents.json",
+  "artifact_writeback_open_count": 2,
+  "requirement_rewrite_input": "docs/beacon/v1.3.0/.machine/execution/requirement-rewrite-input-beacon-v1.3.0-simplified-codex-native-subagents.json",
+  "implement_to_qa_handoff": ".beacon/handoffs/implement-to-qa/beacon-v1.3.0-simplified-codex-native-subagents/run-20260411T053009Z-06d8.json",
+  "auto_qa": {
+    "enabled": false,
+    "triggered": false,
+    "args": [],
+    "follow_handoff": false,
+    "max_rounds": 2
+  }
+}

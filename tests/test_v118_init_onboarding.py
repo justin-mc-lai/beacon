@@ -45,6 +45,7 @@ def test_init_project_mode_takeover_should_write_onboarding_artifacts(tmp_path: 
     assert onboarding_state["next_recommended_stage"] == "architecture-current-state"
     assert payload["docs_version"] == "v1.1.8"
     assert payload["runtime_version"] == __toolkit_version__
+    assert payload["version_context"]["version_semantics"]["fields"]["docs_default_line"]["kind"] == "docs"
 
 
 def test_init_auto_should_use_project_docs_version_but_runtime_v118_for_context(tmp_path: Path):
@@ -73,6 +74,7 @@ def test_init_auto_should_use_project_docs_version_but_runtime_v118_for_context(
     assert payload["docs_version"] == "v0.1.0"
     assert payload["version"] == "v0.1.0"
     assert payload["runtime_version"] == "v1.1.8"
+    assert payload["version_semantics"]["fields"]["runtime_version"]["kind"] == "runtime"
 
     assert (tmp_path / "docs" / "beacon" / "v0.1.0" / "execution" / "project-lifecycle-onboarding.md").exists()
     assert not (tmp_path / "docs" / "beacon" / "v1.1.8" / "SUMMARY.md").exists()

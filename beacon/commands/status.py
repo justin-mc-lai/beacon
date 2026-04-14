@@ -10,11 +10,14 @@ import typer
 from beacon.utils.artifact_paths import machine_root, uses_machine_surface
 from beacon.utils.control_plane import build_resume_contract
 from beacon.utils.coverage import compute_coverage_metrics
+from beacon.utils.implementation_plan import load_implementation_plan_progress
 from beacon.utils.learning_loop import load_keep_discard_engine
 from beacon.utils.material_audit import build_material_audit
 from beacon.utils.qa_runtime import load_qa_status
+from beacon.utils.requirement_clarity import build_requirement_clarity_gate_payload, load_requirement_clarity_state
 from beacon.utils.release_scorecard import build_release_scorecard, summarize_release_scorecard
 from beacon.utils.runtime import newest_run_id, read_json
+from beacon.utils.technical_review_contract import build_technical_review_gate_payload, load_technical_review_state
 from beacon.utils.versioning import describe_project_version_context, resolve_target_version
 from beacon.utils.workflow_memory import compute_memory_metrics, compute_workflow_progress
 from beacon.utils.help_support import build_help_payload
@@ -91,6 +94,11 @@ def _status_impl(
 
     target_feature = feature_filter or str(workflow_progress.get("feature", "") or "")
     help_payload = build_help_payload(root, version=coverage_version, feature=target_feature, run_id=resolved_run_id or None) if target_feature else {}
+    implementation_plan_progress = load_implementation_plan_progress(root, version=coverage_version, feature=target_feature) if target_feature else {}
+    requirement_clarity_gate = build_requirement_clarity_gate_payload(root, version=coverage_version, feature=target_feature) if target_feature else {}
+    requirement_clarity_state = load_requirement_clarity_state(root, feature=target_feature) if target_feature else {}
+    technical_review_gate = build_technical_review_gate_payload(root, version=coverage_version, feature=target_feature, revision_id=str(help_payload.get("revision_id", "") or "")) if target_feature else {}
+    technical_review_state = load_technical_review_state(root, feature=target_feature) if target_feature else {}
     qa_status = load_qa_status(root)
     resume_contract = build_resume_contract(root, run_id=resolved_run_id or None)
     keep_discard_engine = load_keep_discard_engine(root)
@@ -121,6 +129,28 @@ def _status_impl(
         "project_mode": help_payload.get("project_mode", "greenfield"),
         "execution_surface": help_payload.get("execution_surface", {}),
         "learning_surface": help_payload.get("learning_surface", {}),
+        "implementation_plan": {
+            "plan_id": implementation_plan_progress.get("plan_id", ""),
+            "status": implementation_plan_progress.get("status", "missing"),
+            "counts": implementation_plan_progress.get("counts", {}),
+            "next_task_id": implementation_plan_progress.get("next_task_id", ""),
+            "blocked_task_ids": implementation_plan_progress.get("blocked_task_ids", []),
+        },
+        "requirement_clarity": {
+            "status": requirement_clarity_gate.get("status", "not_required"),
+            "blocked": requirement_clarity_gate.get("blocked", False),
+            "reason_code": requirement_clarity_gate.get("reason_code", ""),
+            "finding_count": requirement_clarity_state.get("finding_count", 0),
+            "state_path": requirement_clarity_state.get("state_path", ""),
+        },
+        "technical_review": {
+            "status": technical_review_gate.get("status", "not_required"),
+            "blocked": technical_review_gate.get("blocked", False),
+            "reason_code": technical_review_gate.get("reason_code", ""),
+            "review_status": technical_review_state.get("review_status", ""),
+            "approved_by": technical_review_state.get("approved_by", ""),
+            "state_path": technical_review_state.get("state_path", ""),
+        },
         "decision_trace": help_payload.get("decision_trace", []),
         "control_plane": resume_contract,
         "qa_status": {
@@ -138,6 +168,7 @@ def _status_impl(
             "docs_version": coverage_version,
             "runtime_version": str(version_context.get("runtime_version", "") or help_payload.get("runtime_version", "")),
         },
+        "version_semantics": help_payload.get("version_semantics", {}) or version_context.get("version_semantics", {}),
         "source_of_truth": source_of_truth,
         "workflow_progress": workflow_progress,
         "filters": {
@@ -172,6 +203,12 @@ def _status_impl(
             )
         if release_summary.get("continue_decision"):
             typer.echo(f"- release.continue_decision: {release_summary.get('continue_decision')}")
+        if release_summary.get("change_documents_status"):
+            typer.echo(
+                f"- release.change_documents: {release_summary.get('change_documents_status')} "
+                f"feature_count={release_summary.get('change_documents_feature_count')} "
+                f"includes_current={release_summary.get('change_documents_includes_current_feature')}"
+            )
         coverage_current = release_summary.get("coverage_current") if isinstance(release_summary.get("coverage_current"), dict) else {}
         if coverage_current:
             typer.echo(
@@ -184,6 +221,22 @@ def _status_impl(
         typer.echo(f"- memory.writebacks: {memory_metrics.get('writebacks')}")
         typer.echo(f"- memory.recall_injections: {memory_metrics.get('recall_injections')}")
         typer.echo(f"- memory.next_stage: {workflow_progress.get('next_stage') or 'none'}")
+        if payload.get("implementation_plan", {}).get("plan_id"):
+            typer.echo(
+                f"- implementation_plan: {payload.get('implementation_plan', {}).get('status')} "
+                f"next={payload.get('implementation_plan', {}).get('next_task_id') or 'none'} "
+                f"counts={payload.get('implementation_plan', {}).get('counts', {})}"
+            )
+        if target_feature:
+            typer.echo(
+                f"- requirement_clarity: {payload.get('requirement_clarity', {}).get('status')} "
+                f"findings={payload.get('requirement_clarity', {}).get('finding_count')}"
+            )
+        if target_feature:
+            typer.echo(
+                f"- technical_review: {payload.get('technical_review', {}).get('status')} "
+                f"review_status={payload.get('technical_review', {}).get('review_status') or 'none'}"
+            )
         typer.echo(
             f"- control.failure_streak: {resume_contract.get('failure_streak')}"
         )

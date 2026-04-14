@@ -7,6 +7,49 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-04-09
+
+### Added
+
+- Added the v1.2.0 runtime release package under `docs/beacon/v1.2.0/`, including machine execution/QA artifacts, architecture blueprints, release notes, and source-architecture mapping.
+- Added bounded project-skill discovery primitives:
+  - `beacon skill discover`
+  - `beacon profile discovery`
+  - template-backed starter packs under `beacon/templates/skill_profiles/`
+  - static project analysis and explainable preview/apply workflow helpers
+- Added release-line regression coverage for:
+  - v1.2.0 interface/help surface
+  - skill discovery
+  - runtime release alignment
+  - spec-fingerprint path stability
+  - workflow acceptance / release consistency fixes
+
+### Changed
+
+- Promoted Beacon runtime/package/docs default line to `v1.2.0`.
+- Updated managed guidance, root/package skill docs, metadata, and examples to treat `v1.2.0` as the current runtime release line.
+- Hardened the default CLI surface so the visible mainline prioritizes:
+  - `think`
+  - `user-story`
+  - `prd`
+  - `test-case`
+  - `implement`
+  - `qa`
+  - `gate`
+  - `release`
+- Improved help/profile/skill-doctor linkage so missing project binding can route through discovery instead of static guidance.
+- Repaired review/gate/release consistency so accepted workflow closure refreshes terminal/gate/evidence/spec-fingerprint truth and keeps release checks aligned with the latest QA execution.
+- Normalized spec-fingerprint path hashing to project-relative paths for stable release-gate comparisons across different path resolutions.
+
+### Verified
+
+- Full regression: `python3 -m pytest -q` → `607 passed`
+- Bytecode sanity: `python3 -m compileall beacon tests`
+- Package build: `python3 -m build --sdist --wheel`
+- Materials audit: `python3 -m beacon.main doctor verify-materials --project-root . --version v1.2.0 --strict --json`
+- Release gate: `python3 -m beacon.main gate check release --project-root . --version v1.2.0 --json`
+- Release readiness: `python3 -m beacon.main release check v1.2.0 --project .`
+
 ## [1.1.9] - 2026-03-28
 
 ### Added

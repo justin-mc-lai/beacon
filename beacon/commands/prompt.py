@@ -15,10 +15,12 @@ from beacon.utils.debug_feedback import (
     append_debug_feedback_event,
     is_debug_mode_enabled,
 )
+from beacon.utils.input_audit import append_user_input_audit
 from beacon.utils.intent_router import DEFAULT_ROUTABLE_INTENTS, SUPPORTED_INTENTS, optimize_prompt_to_plan
+from beacon.utils.prompt_router_history import append_prompt_router_history
 from beacon.utils.runtime import now_iso
 from beacon.utils.v115_delivery import build_first_principles_contract
-from beacon.utils.versioning import resolve_target_version
+from beacon.utils.versioning import describe_project_version_context, resolve_target_version
 
 app = typer.Typer(
     name="prompt",
@@ -66,13 +68,6 @@ def _resolve_boundary_state(plan: dict[str, Any]) -> str:
     if boundary.get("in_scope") is True:
         return "in_scope"
     return "out_of_scope"
-
-
-def _append_router_history(project_root: Path, event: dict[str, Any]) -> None:
-    history_path = project_root / ".beacon" / "memory" / "prompt-router-history.jsonl"
-    history_path.parent.mkdir(parents=True, exist_ok=True)
-    with history_path.open("a", encoding="utf-8") as handle:
-        handle.write(json.dumps(event, ensure_ascii=False) + "\n")
 
 
 def _build_boundary_safe_command_pack(plan: dict[str, Any], project_root: Path, goal: str) -> dict[str, Any]:
@@ -200,6 +195,7 @@ def _optimize_impl(
         goal,
         project_root=root,
         version=resolved_version,
+        requested_version=version,
         router_mode=router_mode,
     )
 
@@ -222,6 +218,9 @@ def _optimize_impl(
     plan["execution_request"] = execution_request
     plan["boundary_safe_command_pack"] = _build_boundary_safe_command_pack(plan, root, goal)
     plan["first_principles_contract"] = build_first_principles_contract(root, version=resolved_version)
+    version_context = describe_project_version_context(root, docs_version=resolved_version)
+    plan["version_context"] = version_context
+    plan["version_semantics"] = version_context.get("version_semantics", {})
     confidence = float(plan.get("confidence", 0.0) or 0.0)
     plan["clarification_gate"] = {
         "required": bool(
@@ -272,7 +271,39 @@ def _optimize_impl(
         if execute and not blocked_reason
         else None,
     }
-    _append_router_history(root, event)
+    append_prompt_router_history(root, event)
+    audit_path = append_user_input_audit(
+        root,
+        {
+            "ts": event["ts"],
+            "source": str(execution_request.get("entrypoint", "prompt.optimize") or "prompt.optimize"),
+            "channel": "cli",
+            "hook_event_name": "",
+            "input_goal": goal,
+            "raw_prompt": goal,
+            "intent": plan.get("intent", ""),
+            "confidence": plan.get("confidence", 0.0),
+            "boundary_state": _resolve_boundary_state(plan),
+            "recommended_command": plan.get("recommended_command", ""),
+            "recommended_args": list(plan.get("recommended_args", [])),
+            "router_mode": plan.get("router_mode", "rule"),
+            "execute_requested": bool(execute),
+            "execute_blocked": bool(blocked_reason),
+            "block_reason": blocked_reason,
+            "execute_exit_code": int(plan.get("executed", {}).get("exit_code", 0) or 0)
+            if execute and not blocked_reason
+            else None,
+            "version_context": {
+                "docs_version": str(version_context.get("docs_version", "") or ""),
+                "runtime_version": str(version_context.get("runtime_version", "") or ""),
+                "current_runtime_release_line": str(version_context.get("current_runtime_release_line", "") or ""),
+                "planning_lines": list(version_context.get("planning_lines", []) or []),
+            },
+        },
+    )
+    plan["input_audit"] = {
+        "path": str(audit_path.relative_to(root)),
+    }
 
     if is_debug_mode_enabled(root):
         try:

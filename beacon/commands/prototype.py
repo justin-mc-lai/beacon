@@ -18,9 +18,17 @@ from beacon.utils.prototype_utils import (
     write_prototype_plan,
     write_prototype_bundle,
 )
-from beacon.utils.versioning import resolve_target_version
+from beacon.utils.versioning import resolve_operational_docs_version, resolve_target_version
 
 app = typer.Typer(name="prototype", help="Generate and manage static UI prototypes")
+
+
+def _resolved_operational_version(project_root: Path, version: str, command_name: str) -> str:
+    try:
+        return resolve_operational_docs_version(project_root, version, command_name=command_name)
+    except ValueError as exc:
+        typer.echo(str(exc), err=True)
+        raise typer.Exit(2) from exc
 
 
 @app.command()
@@ -32,7 +40,7 @@ def plan(
 ):
     """Compile structured prototype plan from requirement contracts."""
     project_root = Path(project) if project else Path.cwd()
-    resolved_version = resolve_target_version(project_root, version)
+    resolved_version = _resolved_operational_version(project_root, version, "prototype plan")
     try:
         result = write_prototype_plan(project_root, resolved_version, feature)
     except (FileNotFoundError, ValueError) as exc:
@@ -62,7 +70,7 @@ def create(
 ):
     """Create a Bootstrap-based professional single-page prototype from requirement contracts."""
     project_root = Path(project) if project else Path.cwd()
-    resolved_version = resolve_target_version(project_root, version)
+    resolved_version = _resolved_operational_version(project_root, version, "prototype create")
     try:
         result = write_prototype_bundle(project_root, resolved_version, feature)
     except FileNotFoundError as exc:
@@ -109,7 +117,7 @@ def preview(
 ):
     """Print local preview entry points for a generated prototype."""
     project_root = Path(project) if project else Path.cwd()
-    resolved_version = resolve_target_version(project_root, version)
+    resolved_version = _resolved_operational_version(project_root, version, "prototype preview")
     status = evaluate_prototype_status(project_root, resolved_version, feature)
     html_path = status["files"]["index_html"]
     if not html_path.exists():
@@ -122,6 +130,66 @@ def preview(
     typer.echo(f'Quick serve: python3 -m http.server 4173 --directory "{root}"')
 
 
+@app.command("directory")
+def directory(
+    feature: str = typer.Argument(..., help="Feature name"),
+    project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
+    version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON payload"),
+):
+    """Show the unified prototype directory page and its style-analysis contract."""
+    project_root = Path(project) if project else Path.cwd()
+    resolved_version = _resolved_operational_version(project_root, version, "prototype directory")
+    status = evaluate_prototype_status(project_root, resolved_version, feature)
+    html_path = status["files"]["index_html"]
+    if not html_path.exists():
+        typer.echo(f"Prototype directory not found: {html_path}", err=True)
+        raise typer.Exit(1)
+
+    coverage_path = status["files"]["coverage_report"]
+    coverage = {}
+    if coverage_path.exists():
+        try:
+            loaded = json.loads(coverage_path.read_text(encoding="utf-8"))
+            if isinstance(loaded, dict):
+                coverage = loaded
+        except Exception:  # noqa: BLE001
+            coverage = {}
+
+    style_analysis_path = status["files"]["ui_style_analysis_json"]
+    payload = {
+        "feature": feature,
+        "version": resolved_version,
+        "directory_page": str(html_path.relative_to(project_root)),
+        "style_analysis_path": (
+            str(style_analysis_path.relative_to(project_root))
+            if style_analysis_path.exists()
+            else ""
+        ),
+        "required_pages": coverage.get("required_pages", []),
+        "required_states": coverage.get("required_states", []),
+        "generated_pages": coverage.get("generated_pages", []),
+        "generated_state_variants": coverage.get("generated_state_variants", []),
+        "review_status": status.get("review_status"),
+        "design_review_outcome": status.get("design_review_outcome"),
+        "gate_ready": bool(status.get("gate_ready")),
+    }
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        return
+
+    typer.echo("Beacon Prototype Directory")
+    typer.echo("=" * 28)
+    typer.echo(f"feature       : {feature}")
+    typer.echo(f"version       : {resolved_version}")
+    typer.echo(f"directory     : {html_path}")
+    typer.echo(f"style_analysis: {style_analysis_path if style_analysis_path.exists() else 'missing'}")
+    typer.echo(f"pages         : {len(payload.get('generated_pages', []))}")
+    typer.echo(f"state_variants: {len(payload.get('generated_state_variants', []))}")
+    typer.echo(f"review        : {payload.get('review_status')}")
+    typer.echo(f"gate_ready    : {payload.get('gate_ready')}")
+
+
 @app.command()
 def review(
     feature: str = typer.Argument(..., help="Feature name"),
@@ -131,7 +199,7 @@ def review(
 ):
     """Review a generated prototype against requirement and delivery contracts."""
     project_root = Path(project) if project else Path.cwd()
-    resolved_version = resolve_target_version(project_root, version)
+    resolved_version = _resolved_operational_version(project_root, version, "prototype review")
     try:
         payload = review_prototype_bundle(project_root, resolved_version, feature)
     except (FileNotFoundError, ValueError) as exc:
@@ -153,7 +221,7 @@ def bind(
 ):
     """Bind prototype route-closure cases to implementation-map runtime targets."""
     project_root = Path(project) if project else Path.cwd()
-    resolved_version = resolve_target_version(project_root, version)
+    resolved_version = _resolved_operational_version(project_root, version, "prototype bind")
     try:
         payload = bind_prototype_bundle(project_root, resolved_version, feature)
     except (FileNotFoundError, ValueError) as exc:
@@ -181,7 +249,7 @@ def freeze(
 ):
     """Freeze a prototype by persisting source and artifact fingerprints."""
     project_root = Path(project) if project else Path.cwd()
-    resolved_version = resolve_target_version(project_root, version)
+    resolved_version = _resolved_operational_version(project_root, version, "prototype freeze")
     try:
         payload = freeze_prototype(project_root, resolved_version, feature)
     except (FileNotFoundError, ValueError) as exc:
@@ -205,7 +273,7 @@ def status(
 ):
     """Show prototype status including stale detection and review readiness."""
     project_root = Path(project) if project else Path.cwd()
-    resolved_version = resolve_target_version(project_root, version)
+    resolved_version = _resolved_operational_version(project_root, version, "prototype status")
     payload = evaluate_prototype_status(project_root, resolved_version, feature)
     if json_output:
         serializable = dict(payload)

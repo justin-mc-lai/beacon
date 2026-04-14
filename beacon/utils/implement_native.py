@@ -19,6 +19,15 @@ from beacon.commands.team import (
 )
 from beacon.utils.revision_state import load_revision_state
 from beacon.utils.story_state import feature_slug, load_story_state
+from beacon.utils.subagent_runtime import (
+    resolve_team_runtime,
+    spawn_tmux_workers,
+    wait_for_worker_results,
+    write_team_hud,
+    write_worker_spec,
+    worker_result_path,
+)
+from beacon.utils.team_surface import build_context_isolation
 from beacon.utils.writeback import (
     record_implementation_writeback,
     record_verification_writeback,
@@ -85,8 +94,15 @@ def _read_auto_test_status(project_root: Path) -> dict[str, Any]:
     return payload if isinstance(payload, dict) else {}
 
 
-def _role_artifact_dir(project_root: Path, version: str, feature: str, run_id: str) -> Path:
-    return project_root / "docs" / "beacon" / version / "execution" / "native-team" / feature_slug(feature) / run_id
+def _role_artifact_dir(
+    project_root: Path,
+    version: str,
+    feature: str,
+    run_id: str,
+    *,
+    surface_dir: str = "native-team",
+) -> Path:
+    return project_root / "docs" / "beacon" / version / "execution" / surface_dir / feature_slug(feature) / run_id
 
 
 def _render_role_markdown(role: str, payload: dict[str, Any]) -> str:
@@ -133,8 +149,9 @@ def _write_role_report(
     run_id: str,
     role: str,
     payload: dict[str, Any],
+    surface_dir: str = "native-team",
 ) -> dict[str, Any]:
-    artifact_dir = _role_artifact_dir(project_root, version, feature, run_id)
+    artifact_dir = _role_artifact_dir(project_root, version, feature, run_id, surface_dir=surface_dir)
     json_path = artifact_dir / f"{role}.json"
     md_path = artifact_dir / f"{role}.md"
     _write_json(json_path, payload)
@@ -145,6 +162,70 @@ def _write_role_report(
         "json": str(json_path.relative_to(project_root)),
         "markdown": str(md_path.relative_to(project_root)),
     }
+
+
+def _execute_role_payloads(
+    project_root: Path,
+    *,
+    version: str,
+    feature: str,
+    run_id: str,
+    team_name: str,
+    surface_dir: str,
+    runtime: str,
+    role_payloads: dict[str, dict[str, Any]],
+) -> tuple[dict[str, Any], str]:
+    resolved_root = project_root.resolve()
+
+    def _rel(path_text: str) -> str:
+        path = Path(str(path_text)).resolve()
+        return str(path.relative_to(resolved_root))
+
+    resolved_runtime = resolve_team_runtime(runtime)
+    if resolved_runtime != "tmux":
+        reports = {
+            role: _write_role_report(
+                project_root,
+                version=version,
+                feature=feature,
+                run_id=run_id,
+                role=role,
+                payload=payload,
+                surface_dir=surface_dir,
+            )
+            for role, payload in role_payloads.items()
+        }
+        return reports, ""
+
+    worker_specs: list[dict[str, Any]] = []
+    artifact_dir = _role_artifact_dir(project_root, version, feature, run_id, surface_dir=surface_dir)
+    for role, payload in role_payloads.items():
+        json_path = artifact_dir / f"{role}.json"
+        md_path = artifact_dir / f"{role}.md"
+        spec_payload = {
+            "role": role,
+            "payload": payload,
+            "output_json": str(json_path),
+            "output_md": str(md_path),
+            "result_path": str(worker_result_path(project_root, team_name=team_name, role=role)),
+        }
+        spec_path = write_worker_spec(project_root, team_name=team_name, role=role, payload=spec_payload)
+        worker_specs.append({"role": role, "spec_path": spec_path})
+    spawn_payload = spawn_tmux_workers(project_root, team_name=team_name, worker_specs=worker_specs)
+    results = wait_for_worker_results(project_root, team_name=team_name, roles=list(role_payloads.keys()))
+    reports: dict[str, Any] = {}
+    worker_map = {item["role"]: item for item in spawn_payload.get("workers", []) if isinstance(item, dict)}
+    for role in role_payloads:
+        result = results.get(role, {})
+        pane_id = str(worker_map.get(role, {}).get("pane_id", "") or "")
+        reports[role] = {
+            "role": role,
+            "status": str(result.get("status", "") or role_payloads[role].get("status", "")),
+            "json": _rel(str(result.get("json", ""))),
+            "markdown": _rel(str(result.get("markdown", ""))),
+            "pane_id": pane_id,
+        }
+    return reports, str(spawn_payload.get("tmux_session", "") or "")
 
 
 def _set_worker_status(state: dict[str, Any], worker_id: str, **updates: Any) -> None:
@@ -179,30 +260,65 @@ def _run_native_team_flow(  # noqa: PLR0915
     revision_id: str,
     story: dict[str, Any],
     changed_files: list[str],
+    surface_dir: str = "native-team",
+    team_surface: str = "native-team",
+    context_isolation: dict[str, Any] | None = None,
+    runtime: str = "file",
 ) -> dict[str, Any]:
-    team_name = f"native-team-{run_id}"
+    team_name = f"{team_surface}-{run_id}"
+    include_architect = team_surface == "implement-team"
     implement_item_ids = _story_item_ids(story, kinds={"ac", "task"})
     verify_item_ids = _story_item_ids(story, kinds={"ac", "test"})
+    workers = [
+        {"id": "worker-001", "role": "planner", "status": "idle", "started_at": None, "completed_at": None},
+    ]
+    tasks = [
+        {"id": 1, "description": "Plan frozen revision execution scope", "status": "pending", "worker": "worker-001"},
+    ]
+    if include_architect:
+        workers.append({"id": "worker-002", "role": "implementation-architect", "status": "idle", "started_at": None, "completed_at": None})
+        tasks.append({"id": 2, "description": "Translate frozen materials into implementation architecture boundaries", "status": "pending", "worker": "worker-002"})
+        implementer_worker_id = "worker-003"
+        reviewer_worker_id = "worker-004"
+        tester_worker_id = "worker-005"
+        implement_task_id = 3
+        review_task_id = 4
+        test_task_id = 5
+    else:
+        implementer_worker_id = "worker-002"
+        reviewer_worker_id = "worker-003"
+        tester_worker_id = "worker-004"
+        implement_task_id = 2
+        review_task_id = 3
+        test_task_id = 4
+    workers.extend(
+        [
+            {"id": implementer_worker_id, "role": "implementer", "status": "idle", "started_at": None, "completed_at": None},
+            {"id": reviewer_worker_id, "role": "reviewer", "status": "idle", "started_at": None, "completed_at": None},
+            {"id": tester_worker_id, "role": "tester", "status": "idle", "started_at": None, "completed_at": None},
+        ]
+    )
+    tasks.extend(
+        [
+            {"id": implement_task_id, "description": "Implement planned story items", "status": "pending", "worker": implementer_worker_id},
+            {"id": review_task_id, "description": "Review scope/spec drift after implementation", "status": "pending", "worker": reviewer_worker_id},
+            {"id": test_task_id, "description": "Verify implementation evidence and testing status", "status": "pending", "worker": tester_worker_id},
+        ]
+    )
     state = {
         "active": True,
         "team_name": team_name,
         "task": f"Implement {feature} for revision {revision_id}",
-        "runtime": "file",
+        "runtime": resolve_team_runtime(runtime),
+        "feature": feature,
+        "version": version,
+        "run_id": run_id,
+        "surface_dir": surface_dir,
         "state": TeamState.TEAM_PLAN.value,
         "terminal_status": None,
         "started_at": _now_iso(),
-        "workers": [
-            {"id": "worker-001", "role": "planner", "status": "idle", "started_at": None, "completed_at": None},
-            {"id": "worker-002", "role": "implementer", "status": "idle", "started_at": None, "completed_at": None},
-            {"id": "worker-003", "role": "reviewer", "status": "idle", "started_at": None, "completed_at": None},
-            {"id": "worker-004", "role": "tester", "status": "idle", "started_at": None, "completed_at": None},
-        ],
-        "tasks": [
-            {"id": 1, "description": "Plan frozen revision execution scope", "status": "pending", "worker": "worker-001"},
-            {"id": 2, "description": "Implement planned story items", "status": "pending", "worker": "worker-002"},
-            {"id": 3, "description": "Review scope/spec drift after implementation", "status": "pending", "worker": "worker-003"},
-            {"id": 4, "description": "Verify implementation evidence and testing status", "status": "pending", "worker": "worker-004"},
-        ],
+        "workers": workers,
+        "tasks": tasks,
         "review_gates": {
             "spec": {"status": None, "reviewer": "reviewer"},
             "quality": {"status": None, "reviewer": "tester"},
@@ -234,21 +350,61 @@ def _run_native_team_flow(  # noqa: PLR0915
             "Run reviewer and tester gates before acceptance.",
         ],
     }
-    role_reports["planner"] = _write_role_report(
+    planner_reports, tmux_session = _execute_role_payloads(
         project_root,
         version=version,
         feature=feature,
         run_id=run_id,
-        role="planner",
-        payload=planner_payload,
+        team_name=team_name,
+        surface_dir=surface_dir,
+        runtime="file",
+        role_payloads={"planner": planner_payload},
     )
+    role_reports["planner"] = planner_reports["planner"]
     _set_worker_status(state, "worker-001", status="completed", completed_at=_now_iso(), artifact=role_reports["planner"]["json"])
     _set_task_status(state, 1, status="completed")
     state = _quiet_advance_state(project_root, team_name, state, TeamState.TEAM_PRD.value)
 
+    if include_architect:
+        _set_worker_status(state, "worker-002", status="in_progress", started_at=_now_iso())
+        _set_task_status(state, 2, status="in_progress")
+        save_team_state(project_root, team_name, state)
+        architect_payload = {
+            "schema_version": "1.0",
+            "role": "implementation-architect",
+            "status": "completed",
+            "revision_id": revision_id,
+            "summary": "implementation-architect captured execution-only service/module boundaries without mutating frozen docs",
+            "target_item_ids": implement_item_ids,
+            "changed_files_hint": changed_files,
+            "constraints": [
+                "must_not_modify_frozen_requirement_materials",
+                "must_not_overwrite_architecture_blueprint",
+                "must_only_write_execution_scoped_notes",
+            ],
+            "recommendations": [
+                "Keep service ownership aligned to the frozen implementation plan.",
+                "Record module/service boundary choices in execution-scoped artifacts only.",
+                "Implementer should follow this note without editing frozen PRD/story/test-case materials.",
+            ],
+        }
+        architect_reports, tmux_session = _execute_role_payloads(
+            project_root,
+            version=version,
+            feature=feature,
+            run_id=run_id,
+            team_name=team_name,
+            surface_dir=surface_dir,
+            runtime="file",
+            role_payloads={"implementation-architect": architect_payload},
+        )
+        role_reports["implementation-architect"] = architect_reports["implementation-architect"]
+        _set_worker_status(state, "worker-002", status="completed", completed_at=_now_iso(), artifact=role_reports["implementation-architect"]["json"])
+        _set_task_status(state, 2, status="completed")
+
     # Implementer
-    _set_worker_status(state, "worker-002", status="in_progress", started_at=_now_iso())
-    _set_task_status(state, 2, status="in_progress")
+    _set_worker_status(state, implementer_worker_id, status="in_progress", started_at=_now_iso())
+    _set_task_status(state, implement_task_id, status="in_progress")
     save_team_state(project_root, team_name, state)
     record_implementation_writeback(
         project_root,
@@ -266,24 +422,12 @@ def _run_native_team_flow(  # noqa: PLR0915
         "summary": "implementation writeback recorded for planned items",
         "implemented_item_ids": implement_item_ids,
         "changed_files": changed_files,
-        "recommendations": ["Run reviewer gate to confirm no scope/spec drift."],
+        "recommendations": [
+            "Follow the implementation-architect execution note when present.",
+            "Run reviewer gate to confirm no scope/spec drift.",
+        ],
     }
-    role_reports["implementer"] = _write_role_report(
-        project_root,
-        version=version,
-        feature=feature,
-        run_id=run_id,
-        role="implementer",
-        payload=implementer_payload,
-    )
-    _set_worker_status(state, "worker-002", status="completed", completed_at=_now_iso(), artifact=role_reports["implementer"]["json"])
-    _set_task_status(state, 2, status="completed")
-    state = _quiet_advance_state(project_root, team_name, state, TeamState.TEAM_EXEC.value)
-
     # Reviewer
-    _set_worker_status(state, "worker-003", status="in_progress", started_at=_now_iso())
-    _set_task_status(state, 3, status="in_progress")
-    save_team_state(project_root, team_name, state)
     missing_items = [item_id for item_id in implement_item_ids if item_id not in set(implement_item_ids)]
     reviewer_status = "pass" if not missing_items else "fail"
     reviewer_issues = [f"missing implementation writeback for {item_id}" for item_id in missing_items]
@@ -300,23 +444,7 @@ def _run_native_team_flow(  # noqa: PLR0915
             ["Proceed to tester verification."] if reviewer_status == "pass" else ["Fix missing item writeback before verify."]
         ),
     }
-    role_reports["reviewer"] = _write_role_report(
-        project_root,
-        version=version,
-        feature=feature,
-        run_id=run_id,
-        role="reviewer",
-        payload=reviewer_payload,
-    )
-    state["review_gates"]["spec"] = {"status": reviewer_status, "reviewer": "reviewer"}
-    _set_worker_status(state, "worker-003", status="completed", completed_at=_now_iso(), artifact=role_reports["reviewer"]["json"])
-    _set_task_status(state, 3, status="completed")
-    state = _quiet_advance_state(project_root, team_name, state, TeamState.TEAM_VERIFY.value)
-
     # Tester
-    _set_worker_status(state, "worker-004", status="in_progress", started_at=_now_iso())
-    _set_task_status(state, 4, status="in_progress")
-    save_team_state(project_root, team_name, state)
     auto_test_status = _read_auto_test_status(project_root)
     auto_test_value = str(auto_test_status.get("status", "") or "").lower()
     tester_status = "completed"
@@ -386,27 +514,81 @@ def _run_native_team_flow(  # noqa: PLR0915
             else ["Resolve failing verification evidence before acceptance."]
         ),
     }
-    role_reports["tester"] = _write_role_report(
+    _set_worker_status(state, implementer_worker_id, status="in_progress", started_at=_now_iso())
+    _set_worker_status(state, reviewer_worker_id, status="in_progress", started_at=_now_iso())
+    _set_worker_status(state, tester_worker_id, status="in_progress", started_at=_now_iso())
+    _set_task_status(state, implement_task_id, status="in_progress")
+    _set_task_status(state, review_task_id, status="in_progress")
+    _set_task_status(state, test_task_id, status="in_progress")
+    save_team_state(project_root, team_name, state)
+    state = _quiet_advance_state(project_root, team_name, state, TeamState.TEAM_EXEC.value)
+    parallel_reports, tmux_parallel_session = _execute_role_payloads(
         project_root,
         version=version,
         feature=feature,
         run_id=run_id,
-        role="tester",
-        payload=tester_payload,
+        team_name=team_name,
+        surface_dir=surface_dir,
+        runtime=runtime,
+        role_payloads={
+            "implementer": implementer_payload,
+            "reviewer": reviewer_payload,
+            "tester": tester_payload,
+        },
     )
+    tmux_session = tmux_parallel_session or tmux_session
+    role_reports["implementer"] = parallel_reports["implementer"]
+    role_reports["reviewer"] = parallel_reports["reviewer"]
+    role_reports["tester"] = parallel_reports["tester"]
+    _set_worker_status(state, implementer_worker_id, status="completed", completed_at=_now_iso(), artifact=role_reports["implementer"]["json"])
+    _set_worker_status(state, reviewer_worker_id, status="completed", completed_at=_now_iso(), artifact=role_reports["reviewer"]["json"])
+    _set_worker_status(state, tester_worker_id, status="completed", completed_at=_now_iso(), artifact=role_reports["tester"]["json"])
+    _set_task_status(state, implement_task_id, status="completed")
+    _set_task_status(state, review_task_id, status="completed")
+    _set_task_status(state, test_task_id, status="completed")
+    state["review_gates"]["spec"] = {"status": reviewer_status, "reviewer": "reviewer"}
     state["review_gates"]["quality"] = {"status": quality_status, "reviewer": "tester"}
-    _set_worker_status(state, "worker-004", status="completed", completed_at=_now_iso(), artifact=role_reports["tester"]["json"])
-    _set_task_status(state, 4, status="completed")
-
+    state = _quiet_advance_state(project_root, team_name, state, TeamState.TEAM_VERIFY.value)
     state["terminal_status"] = TerminalStatus.BLOCKED.value if quality_status == "fail" else TerminalStatus.PASS.value
     state = _quiet_advance_state(project_root, team_name, state, TeamState.TERMINAL.value)
+    save_team_state(project_root, team_name, state)
+    hud_roles = []
+    for worker in state.get("workers", []):
+        if not isinstance(worker, dict):
+            continue
+        role = str(worker.get("role", "") or "")
+        report = role_reports.get(role, {})
+        hud_roles.append(
+            {
+                "worker_id": str(worker.get("id", "") or ""),
+                "role": role,
+                "status": str(worker.get("status", "") or ""),
+                "pane_id": str(report.get("pane_id", "") or ""),
+                "json": str(report.get("json", "") or ""),
+                "markdown": str(report.get("markdown", "") or ""),
+            }
+        )
+    hud_paths = write_team_hud(
+        project_root,
+        team_name=team_name,
+        version=version,
+        feature=feature_slug(feature),
+        run_id=run_id,
+        surface_dir=surface_dir,
+        runtime=resolve_team_runtime(runtime),
+        tmux_session=tmux_session,
+        roles=hud_roles,
+    )
 
     return {
         "team_name": team_name,
+        "team_surface": team_surface,
         "state_path": str(get_team_state_file(project_root, team_name).relative_to(project_root)),
-        "artifact_dir": str(_role_artifact_dir(project_root, version, feature, run_id).relative_to(project_root)),
+        "artifact_dir": str(_role_artifact_dir(project_root, version, feature, run_id, surface_dir=surface_dir).relative_to(project_root)),
         "final_state": state.get("state"),
         "terminal_status": state.get("terminal_status"),
+        "runtime": resolve_team_runtime(runtime),
+        "tmux_session": tmux_session,
         "roles": [worker.get("role") for worker in state.get("workers", []) if isinstance(worker, dict)],
         "role_reports": role_reports,
         "review_gates": state.get("review_gates", {}),
@@ -414,6 +596,8 @@ def _run_native_team_flow(  # noqa: PLR0915
         "verified_items": verified_item_ids,
         "blocked_items": blocked_item_ids,
         "verification_entries": verification_entries,
+        "context_isolation": context_isolation or {},
+        "hud": hud_paths,
     }
 
 
@@ -424,6 +608,7 @@ def run_native_implementation(
     feature: str,
     run_id: str,
     mode: str = "single",
+    runtime: str = "file",
 ) -> dict[str, Any]:
     revision = load_revision_state(project_root, version=version, feature=feature, create_if_missing=True)
     if str(revision.get("doc_status", "draft")) != "frozen":
@@ -451,7 +636,11 @@ def run_native_implementation(
     blocked_item_ids: list[str] = []
     verification = [
         {
-            "command": f"beacon implement run --runner native-{mode}",
+            "command": (
+                "beacon implement run --runner codex-subagents"
+                if mode == "codex-subagents"
+                else f"beacon implement run --runner native-{mode}"
+            ),
             "status": "passed",
         }
     ]
@@ -474,7 +663,9 @@ def run_native_implementation(
         "revision_id": str(revision.get("revision_id", "")),
     }
 
-    if mode == "team":
+    if mode in {"team", "codex-subagents"}:
+        team_surface = "implement-team" if mode == "codex-subagents" else "native-team"
+        surface_dir = "codex-subagents" if mode == "codex-subagents" else "native-team"
         team_execution = _run_native_team_flow(
             project_root,
             version=version,
@@ -483,9 +674,25 @@ def run_native_implementation(
             revision_id=str(revision.get("revision_id", "")),
             story=story,
             changed_files=changed_files,
+            surface_dir=surface_dir,
+            team_surface=team_surface,
+            context_isolation=build_context_isolation(
+                role_plane="implementation",
+                isolated_from=["qa-team"],
+                shared_inputs=["docs/beacon/<version>/user-story", "docs/beacon/<version>/prd", "implementation-plan"],
+                shared_outputs=["implementation_summary", "technical_archive", "story_writeback", "evidence_refs"],
+                rule="qa_must_not_inherit_implement_private_context",
+            ),
+            runtime=runtime,
         )
         payload["team_execution"] = team_execution
-        payload["summary"] = "native-team implementation completed via planner/implementer/reviewer/tester flow"
+        payload["team_surface"] = team_surface
+        payload["context_isolation"] = team_execution.get("context_isolation", {})
+        payload["summary"] = (
+            "codex-subagents implementation completed via implement-team flow"
+            if mode == "codex-subagents"
+            else "native-team implementation completed via planner/implementer/reviewer/tester flow"
+        )
         payload["implemented_items"] = team_execution.get("implemented_items", implemented_item_ids)
         payload["verified_items"] = team_execution.get("verified_items", [])
         payload["blocked_items"] = team_execution.get("blocked_items", [])

@@ -8,6 +8,7 @@ from pathlib import Path
 from typer.testing import CliRunner
 
 from beacon.main import app
+from beacon.utils.artifact_paths import change_docs_file, change_file_output, execution_file_output
 
 
 runner = CliRunner()
@@ -99,7 +100,7 @@ def test_implement_list_runners_should_show_preferred(tmp_path: Path):
     payload = json.loads(result.stdout)
     assert payload["preferred"] == "omx"
     ids = {item["id"] for item in payload["runners"]}
-    assert {"omx", "omc", "gstack"} <= ids
+    assert {"omx", "omc", "gstack", "codex-subagents"} <= ids
 
 
 def test_implement_run_dry_run_should_write_request_and_state(tmp_path: Path):
@@ -191,8 +192,14 @@ def test_implement_run_command_runner_should_write_marker_summary_and_review(tmp
     payload = json.loads(result.stdout)
     assert payload["status"] == "completed"
     assert (tmp_path / ".beacon" / "state" / "implementation-my-feature.json").exists()
-    assert (tmp_path / "docs" / "beacon" / "v1.1.4" / "execution" / "implementation-summary-my-feature.json").exists()
-    assert (tmp_path / "docs" / "beacon" / "v1.1.4" / "execution" / "review-spec-my-feature.json").exists()
+    assert execution_file_output(tmp_path, "v1.1.4", "implementation-summary-my-feature.json").exists()
+    assert execution_file_output(tmp_path, "v1.1.4", "review-spec-my-feature.json").exists()
+    assert payload["change_document"]["md"] == "docs/beacon/v1.1.4/change/my-feature.md"
+    assert change_docs_file(tmp_path, "v1.1.4", "my-feature.md").exists()
+    assert change_file_output(tmp_path, "v1.1.4", "my-feature.json").exists()
+    change_text = change_docs_file(tmp_path, "v1.1.4", "my-feature.md").read_text(encoding="utf-8")
+    assert "## Fixed" in change_text
+    assert "Updated `beacon/commands/implement.py`" in change_text
 
 
 def test_implement_run_should_fail_when_result_missing(tmp_path: Path):
@@ -277,6 +284,61 @@ def test_implement_run_should_fail_when_result_json_is_unparseable(tmp_path: Pat
     assert result.exit_code == 2
     payload = json.loads(result.stdout)
     assert payload["reason_code"] == "runner_result_invalid"
+
+
+def test_implement_status_should_prefer_run_matching_requested_version(tmp_path: Path):
+    feature = "Friend Match"
+    slug = _seed_feature_docs(tmp_path, version="v1.0.0", feature=feature)
+    _seed_feature_docs(tmp_path, version="v1.3.1", feature=feature)
+
+    legacy_run = tmp_path / ".beacon" / "implement" / "run-v100" / "state.json"
+    legacy_run.parent.mkdir(parents=True, exist_ok=True)
+    legacy_run.write_text(
+        json.dumps(
+            {
+                "run_id": "run-v100",
+                "feature": feature,
+                "feature_slug": slug,
+                "version": "v1.0.0",
+                "status": "completed",
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+
+    newer_run = tmp_path / ".beacon" / "implement" / "run-v131" / "state.json"
+    newer_run.parent.mkdir(parents=True, exist_ok=True)
+    newer_run.write_text(
+        json.dumps(
+            {
+                "run_id": "run-v131",
+                "feature": feature,
+                "feature_slug": slug,
+                "version": "v1.3.1",
+                "status": "completed",
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+
+    result = _invoke(
+        [
+            "implement",
+            "status",
+            feature,
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            "v1.0.0",
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["run_id"] == "run-v100"
+    assert payload["version"] == "v1.0.0"
 
 
 def test_implement_run_should_fail_when_runner_times_out(tmp_path: Path):
@@ -426,6 +488,53 @@ def test_implement_check_branch_should_auto_switch_when_explicitly_requested(tmp
     assert payload["switch_attempt"]["status"] == "switched"
 
 
+def test_implement_check_branch_should_support_workspace_root_with_child_git_repos(tmp_path: Path):
+    workspace = tmp_path / "workspace"
+    workspace.mkdir()
+    for name in ("marketing_sys", "health-svr-dotnet"):
+        service_root = workspace / name
+        service_root.mkdir()
+        _init_git_repo(service_root, version="v1.3.1-dev")
+        subprocess.run(
+            ["git", "switch", "-c", "feature/v1.3.1-dev-account-cleanup-upstream"],
+            cwd=service_root,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+    (workspace / "beacon.config.yaml").write_text(
+        (
+            "implementation:\n"
+            "  branch_guard:\n"
+            "    expected_branch: feature/v1.3.1-dev-account-cleanup-upstream\n"
+            "    branch_prefix: feature/\n"
+            "    base_branch: master\n"
+            "    git_roots:\n"
+            "      - marketing_sys\n"
+            "      - health-svr-dotnet\n"
+        ),
+        encoding="utf-8",
+    )
+    result = _invoke(
+        [
+            "implement",
+            "check-branch",
+            "--project-root",
+            str(workspace),
+            "--version",
+            "v1.3.1-dev",
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["status"] == "pass"
+    assert payload["expected_branch"] == "feature/v1.3.1-dev-account-cleanup-upstream"
+    workspace_repos = payload["git_alignment"]["workspace_repos"]
+    assert len(workspace_repos) == 2
+    assert all(item["branch_matches_target"] for item in workspace_repos)
+
+
 def test_implement_run_should_support_auto_review_quality_and_status_surface(tmp_path: Path):
     _seed_feature_docs(tmp_path, feature="My Feature")
     script = tmp_path / "runner.py"
@@ -466,7 +575,7 @@ def test_implement_run_should_support_auto_review_quality_and_status_surface(tmp
     assert result.exit_code == 0, result.stdout
     payload = json.loads(result.stdout)
     assert payload["review_quality"]["exit_code"] == 0
-    assert (tmp_path / "docs" / "beacon" / "v1.1.4" / "execution" / "review-quality-my-feature.json").exists()
+    assert execution_file_output(tmp_path, "v1.1.4", "review-quality-my-feature.json").exists()
 
     status = _invoke(
         [

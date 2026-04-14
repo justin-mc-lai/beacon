@@ -6,7 +6,7 @@ from pathlib import Path
 import os
 
 from beacon.utils.qa9 import build_qa_strategy, parse_qa_types
-from beacon.utils.versioning import resolve_target_version
+from beacon.utils.versioning import resolve_operational_docs_version
 
 app = typer.Typer(name="think", help="Product thinking vNext")
 
@@ -59,6 +59,14 @@ class ThinkSession:
         return self.load_progress()
 
 
+def _resolved_operational_version(project_root: Path, version: str, command_name: str) -> str:
+    try:
+        return resolve_operational_docs_version(project_root, version, command_name=command_name)
+    except ValueError as exc:
+        typer.echo(str(exc), err=True)
+        raise typer.Exit(2) from exc
+
+
 @app.command()
 def start(
     topic: str = typer.Argument(..., help="Product topic to analyze"),
@@ -82,7 +90,7 @@ def start(
 ):
     """Start a new think session"""
     project_root = Path(project) if project else Path.cwd()
-    session = ThinkSession(project_root, version=resolve_target_version(project_root, version))
+    session = ThinkSession(project_root, version=_resolved_operational_version(project_root, version, "think start"))
 
     typer.echo(f"Starting think session for: {topic}")
     typer.echo(f"Project root: {project_root}")
@@ -127,7 +135,7 @@ def status(
 ):
     """Show current think session status"""
     project_root = Path(project) if project else Path.cwd()
-    session = ThinkSession(project_root, version=resolve_target_version(project_root, version))
+    session = ThinkSession(project_root, version=_resolved_operational_version(project_root, version, "think status"))
     data = session.get_status()
 
     typer.echo(f"Think Session Status")
@@ -152,7 +160,7 @@ def confirm(
 ):
     """Confirm a fact"""
     project_root = Path(project) if project else Path.cwd()
-    session = ThinkSession(project_root, version=resolve_target_version(project_root, version))
+    session = ThinkSession(project_root, version=_resolved_operational_version(project_root, version, "think confirm"))
     session.add_fact(fact)
     typer.echo(f"Confirmed: {fact}")
 
@@ -167,7 +175,7 @@ def question(
 ):
     """Add an open question"""
     project_root = Path(project) if project else Path.cwd()
-    session = ThinkSession(project_root, version=resolve_target_version(project_root, version))
+    session = ThinkSession(project_root, version=_resolved_operational_version(project_root, version, "think question"))
 
     q_data = {
         "id": len(session.get_status().get("open_questions", [])) + 1,
@@ -190,7 +198,7 @@ def conflict(
 ):
     """Record a conflict"""
     project_root = Path(project) if project else Path.cwd()
-    session = ThinkSession(project_root, version=resolve_target_version(project_root, version))
+    session = ThinkSession(project_root, version=_resolved_operational_version(project_root, version, "think conflict"))
 
     data = session.load_progress()
     data["conflicts"].append({
@@ -210,7 +218,7 @@ def summarize(
 ):
     """Generate round summary"""
     project_root = Path(project) if project else Path.cwd()
-    session = ThinkSession(project_root, version=resolve_target_version(project_root, version))
+    session = ThinkSession(project_root, version=_resolved_operational_version(project_root, version, "think summarize"))
     data = session.get_status()
 
     typer.echo("\n" + "=" * 50)

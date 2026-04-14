@@ -14,7 +14,7 @@ Beacon v1.1.7 已经完成：
 
 - 多服务部署
 - UAT gateway 存在统一入口规范
-- 发布要走 Yunxiao pipeline
+- 发布要走项目既有 CI/CD pipeline
 - 验收需要查接口 / 页面 / 日志 / SQL / Redis / 工单证据
 
 仅靠通用 QA 模板还不够。

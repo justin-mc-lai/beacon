@@ -1,0 +1,80 @@
+{
+  "active": true,
+  "team_name": "implement-team-run-20260411T052628Z-a5d6",
+  "task": "Implement beacon-v1.3.0-simplified-codex-native-subagents for revision R1",
+  "runtime": "tmux",
+  "feature": "beacon-v1.3.0-simplified-codex-native-subagents",
+  "version": "v1.3.0",
+  "run_id": "run-20260411T052628Z-a5d6",
+  "surface_dir": "codex-subagents",
+  "state": "team-plan",
+  "terminal_status": null,
+  "started_at": "2026-04-11T05:26:28.757587+00:00",
+  "workers": [
+    {
+      "id": "worker-001",
+      "role": "planner",
+      "status": "in_progress",
+      "started_at": "2026-04-11T05:26:28.758782+00:00",
+      "completed_at": null
+    },
+    {
+      "id": "worker-002",
+      "role": "implementer",
+      "status": "idle",
+      "started_at": null,
+      "completed_at": null
+    },
+    {
+      "id": "worker-003",
+      "role": "reviewer",
+      "status": "idle",
+      "started_at": null,
+      "completed_at": null
+    },
+    {
+      "id": "worker-004",
+      "role": "tester",
+      "status": "idle",
+      "started_at": null,
+      "completed_at": null
+    }
+  ],
+  "tasks": [
+    {
+      "id": 1,
+      "description": "Plan frozen revision execution scope",
+      "status": "in_progress",
+      "worker": "worker-001"
+    },
+    {
+      "id": 2,
+      "description": "Implement planned story items",
+      "status": "pending",
+      "worker": "worker-002"
+    },
+    {
+      "id": 3,
+      "description": "Review scope/spec drift after implementation",
+      "status": "pending",
+      "worker": "worker-003"
+    },
+    {
+      "id": 4,
+      "description": "Verify implementation evidence and testing status",
+      "status": "pending",
+      "worker": "worker-004"
+    }
+  ],
+  "review_gates": {
+    "spec": {
+      "status": null,
+      "reviewer": "reviewer"
+    },
+    "quality": {
+      "status": null,
+      "reviewer": "tester"
+    }
+  },
+  "fix_loops": 0
+}

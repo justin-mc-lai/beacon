@@ -30,6 +30,13 @@ def test_root_help_should_include_skill_and_implement():
     assert "implement" in result.stdout
 
 
+def test_root_help_should_hide_labs_and_bridge_by_default():
+    result = _invoke(["--help"])
+    assert result.exit_code == 0
+    assert "labs" not in result.stdout
+    assert "bridge" not in result.stdout
+
+
 def test_skill_detect_should_find_omx_omc_and_gstack(monkeypatch, tmp_path: Path):
     bin_dir = tmp_path / "bin"
     _write_exec(bin_dir / "omx")

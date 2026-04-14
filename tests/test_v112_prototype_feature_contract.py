@@ -48,8 +48,12 @@ def test_v112_summary_and_boundaries_should_close_the_requirement_loop():
     assert "可冻结" in decision and "可治理" in decision
 
 
-def test_v121_requirement_materials_should_have_been_removed():
-    assert not (ROOT / "docs" / "beacon" / "v1.2.1").exists()
+def test_v121_requirement_materials_should_exist_as_partial_runtime_supplement_line():
+    root = ROOT / "docs" / "beacon" / "v1.2.1"
+    assert root.exists()
+    assert (root / "SUMMARY.md").exists()
+    summary = (root / "SUMMARY.md").read_text(encoding="utf-8")
+    assert "v1.2.1" in summary
 
 
 @pytest.mark.skipif(not PROTOTYPE_ENABLED, reason="prototype command not yet registered")

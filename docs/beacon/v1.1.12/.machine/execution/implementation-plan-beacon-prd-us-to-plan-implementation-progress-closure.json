@@ -1,0 +1,556 @@
+{
+  "schema_version": "1.0",
+  "plan_id": "plan-beacon-prd-us-to-plan-implementation-progress-closure-r1",
+  "feature": "beacon-prd-us-to-plan-implementation-progress-closure",
+  "feature_slug": "beacon-prd-us-to-plan-implementation-progress-closure",
+  "version": "v1.1.12",
+  "revision_id": "R1",
+  "baseline_hash": "sha256:d5f1c2a973377548f34c8e110dd79d1527fe35d5bcd6234c54a03270c560fea6",
+  "plan_hash": "sha256:5e14975cf6d2970f9357f9492dedd9b49b08b7d3bdbc734046df21fd7a7b9cd0",
+  "status": "completed",
+  "source_refs": {
+    "user_story": "docs/beacon/v1.1.12/user-story/beacon-prd-us-to-plan-implementation-progress-closure.md",
+    "prd": "docs/beacon/v1.1.12/prd/beacon-prd-us-to-plan-implementation-progress-closure.md",
+    "test_case": "docs/beacon/v1.1.12/qa/test-cases/beacon-prd-us-to-plan-implementation-progress-closure.md",
+    "ac_matrix": "docs/beacon/v1.1.12/.machine/qa/beacon-prd-us-to-plan-implementation-progress-closure.ac-test-matrix.json",
+    "story_scenario_map": "docs/beacon/v1.1.12/.machine/qa/beacon-prd-us-to-plan-implementation-progress-closure.story-scenario-map.json",
+    "qa9_matrix": "docs/beacon/v1.1.12/.machine/qa/beacon-prd-us-to-plan-implementation-progress-closure.qa9-matrix.json"
+  },
+  "workstreams": [
+    {
+      "workstream_id": "implementation-main",
+      "title": "Implementation Mainline",
+      "task_ids": [
+        "ITASK-001",
+        "ITASK-002",
+        "ITASK-003",
+        "ITASK-004",
+        "ITASK-005",
+        "ITASK-006",
+        "ITASK-007",
+        "ITASK-008"
+      ]
+    }
+  ],
+  "task_mapping_source": "prd-sections",
+  "tasks": [
+    {
+      "task_id": "ITASK-001",
+      "title": "FR-001 PRD/US-to-Plan Compiler",
+      "description": "新增一个编译层，输入至少包括： - user-story - prd - qa/test-cases - frozen revision state - baseline hash / version truth 输出一个 implementation plan。 编译结果必须显式表达： - source refs - scope boundary - workstreams - tasks - task dependencies - task to AC mapping - task to TEST mapping - expected evidence refs - status model",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-001"
+      ],
+      "mapped_test_ids": [
+        "TC-001"
+      ],
+      "mapped_scenario_ids": [
+        "SC-001",
+        "SC-002"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-001",
+        "TC-011"
+      ],
+      "depends_on": [],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-v112-release",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.1.12/.machine/execution/technical-implementation-beacon-prd-us-to-plan-implementation-progress-closure.json",
+        "verify:run-v112-release",
+        ".beacon/qa/features/beacon-prd-us-to-plan-implementation-progress-closure/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260402T061014055287"
+      ],
+      "changed_files": [
+        "beacon/utils/implementation_plan.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/gate.py",
+        "beacon/commands/status.py",
+        "beacon/commands/review.py",
+        "beacon/commands/report.py",
+        "beacon/commands/doctor.py",
+        "beacon/utils/writeback.py",
+        "beacon/utils/version_package_upgrade.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-01T22:06:59.738338+00:00",
+      "completed_at": "2026-04-01T22:06:59.738342+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-002",
+      "title": "FR-002 Implementation Plan Artifact",
+      "description": "新增 machine-readable 与 human-readable 产物： - `docs/beacon/<version>/execution/implementation-plan-<feature>.md` - `docs/beacon/<version>/.machine/execution/implementation-plan-<feature>.json` plan 至少应包含： - `plan_id` - `feature` - `version` - `revision_id` - `source_refs` - `baseline_hash` - `plan_hash` - `workstreams[]` - `tasks[]`",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-002"
+      ],
+      "mapped_test_ids": [
+        "TC-002"
+      ],
+      "mapped_scenario_ids": [
+        "SC-003",
+        "SC-004"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-002",
+        "TC-012"
+      ],
+      "depends_on": [
+        "ITASK-001"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-v112-release",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.1.12/.machine/execution/technical-implementation-beacon-prd-us-to-plan-implementation-progress-closure.json",
+        "verify:run-v112-release",
+        ".beacon/qa/features/beacon-prd-us-to-plan-implementation-progress-closure/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260402T061014055287"
+      ],
+      "changed_files": [
+        "beacon/utils/implementation_plan.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/gate.py",
+        "beacon/commands/status.py",
+        "beacon/commands/review.py",
+        "beacon/commands/report.py",
+        "beacon/commands/doctor.py",
+        "beacon/utils/writeback.py",
+        "beacon/utils/version_package_upgrade.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-01T22:06:59.738349+00:00",
+      "completed_at": "2026-04-01T22:06:59.738351+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-003",
+      "title": "FR-003 Task Model",
+      "description": "每个 task 至少应包含： - `task_id` - `title` - `description` - `mapped_story_ids` - `mapped_ac_ids` - `mapped_test_ids` - `depends_on` - `target_modules` - `status` - `evidence_refs` - `changed_files` - `blocked_reason` - `started_at` - `completed_at` task status 必须至少支持： - `draft` - `planned` - `in_progress` - `blocked` - `completed`",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-006"
+      ],
+      "mapped_test_ids": [
+        "TC-006"
+      ],
+      "mapped_scenario_ids": [
+        "SC-019",
+        "SC-020"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-006",
+        "TC-016"
+      ],
+      "depends_on": [
+        "ITASK-002"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-v112-release",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.1.12/.machine/execution/technical-implementation-beacon-prd-us-to-plan-implementation-progress-closure.json",
+        "verify:run-v112-release",
+        ".beacon/qa/features/beacon-prd-us-to-plan-implementation-progress-closure/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260402T061014055287"
+      ],
+      "changed_files": [
+        "beacon/utils/implementation_plan.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/gate.py",
+        "beacon/commands/status.py",
+        "beacon/commands/review.py",
+        "beacon/commands/report.py",
+        "beacon/commands/doctor.py",
+        "beacon/utils/writeback.py",
+        "beacon/utils/version_package_upgrade.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-01T22:06:59.738357+00:00",
+      "completed_at": "2026-04-01T22:06:59.738358+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-004",
+      "title": "FR-004 Pre-implement Plan Gate",
+      "description": "`beacon implement run` 在 runner 解析前必须先校验： - plan 是否存在 - plan 是否匹配当前 feature / version / revision - plan baseline hash 是否与 frozen revision 一致 - plan 中的 source refs 是否完整 - task model 是否可解析 若不满足，必须返回结构化 blocked 结果，且不得进入真正的 runner 执行面。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-003"
+      ],
+      "mapped_test_ids": [
+        "TC-003"
+      ],
+      "mapped_scenario_ids": [
+        "SC-005",
+        "SC-006"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-003",
+        "TC-013"
+      ],
+      "depends_on": [
+        "ITASK-003"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-v112-release",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.1.12/.machine/execution/technical-implementation-beacon-prd-us-to-plan-implementation-progress-closure.json",
+        "verify:run-v112-release",
+        ".beacon/qa/features/beacon-prd-us-to-plan-implementation-progress-closure/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260402T061014055287"
+      ],
+      "changed_files": [
+        "beacon/utils/implementation_plan.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/gate.py",
+        "beacon/commands/status.py",
+        "beacon/commands/review.py",
+        "beacon/commands/report.py",
+        "beacon/commands/doctor.py",
+        "beacon/utils/writeback.py",
+        "beacon/utils/version_package_upgrade.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-01T22:06:59.738364+00:00",
+      "completed_at": "2026-04-01T22:06:59.738365+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-005",
+      "title": "FR-005 Plan Progress Writeback",
+      "description": "implement 执行过程中必须可以回写： - task started - task blocked - task completed - evidence refs - changed files - implementation notes writeback 不能只停留在 run summary，还必须更新 plan 的 task 状态。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-005",
+        "AC-007"
+      ],
+      "mapped_test_ids": [
+        "TC-005",
+        "TC-007"
+      ],
+      "mapped_scenario_ids": [
+        "SC-013",
+        "SC-014",
+        "SC-015",
+        "SC-016",
+        "SC-017",
+        "SC-018",
+        "SC-021",
+        "SC-022"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-005",
+        "TC-007",
+        "TC-015",
+        "TC-017"
+      ],
+      "depends_on": [
+        "ITASK-004"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-v112-release",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.1.12/.machine/execution/technical-implementation-beacon-prd-us-to-plan-implementation-progress-closure.json",
+        "verify:run-v112-release",
+        ".beacon/qa/features/beacon-prd-us-to-plan-implementation-progress-closure/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260402T061014055287"
+      ],
+      "changed_files": [
+        "beacon/utils/implementation_plan.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/gate.py",
+        "beacon/commands/status.py",
+        "beacon/commands/review.py",
+        "beacon/commands/report.py",
+        "beacon/commands/doctor.py",
+        "beacon/utils/writeback.py",
+        "beacon/utils/version_package_upgrade.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-01T22:06:59.738371+00:00",
+      "completed_at": "2026-04-01T22:06:59.738372+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-006",
+      "title": "FR-006 AC/TEST Traceability",
+      "description": "plan 必须保留从需求到执行的 traceability： - PRD section / user-story slice / AC - TEST case / verify evidence - implementation task 至少要做到： - 一个 AC 可以映射到一个或多个 task - 一个 task 可以覆盖一个或多个 TEST case - status / writeback 可以反查到具体 task",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-008"
+      ],
+      "mapped_test_ids": [
+        "TC-008"
+      ],
+      "mapped_scenario_ids": [
+        "SC-023",
+        "SC-024",
+        "SC-025",
+        "SC-026",
+        "SC-027",
+        "SC-028"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-008",
+        "TC-018"
+      ],
+      "depends_on": [
+        "ITASK-005"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-v112-release",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.1.12/.machine/execution/technical-implementation-beacon-prd-us-to-plan-implementation-progress-closure.json",
+        "verify:run-v112-release",
+        ".beacon/qa/features/beacon-prd-us-to-plan-implementation-progress-closure/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260402T061014055287"
+      ],
+      "changed_files": [
+        "beacon/utils/implementation_plan.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/gate.py",
+        "beacon/commands/status.py",
+        "beacon/commands/review.py",
+        "beacon/commands/report.py",
+        "beacon/commands/doctor.py",
+        "beacon/utils/writeback.py",
+        "beacon/utils/version_package_upgrade.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-01T22:06:59.738378+00:00",
+      "completed_at": "2026-04-01T22:06:59.738380+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-007",
+      "title": "FR-007 Status Integration",
+      "description": "`beacon status`、`implement status`、`help` 至少应展示： - current plan id - plan status - next task - blocked task - completed task count - total task count - task-level progress summary 阶段级 workflow 进度保留，但不能取代 task-level 进度。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-009"
+      ],
+      "mapped_test_ids": [
+        "TC-009"
+      ],
+      "mapped_scenario_ids": [
+        "SC-029"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-009"
+      ],
+      "depends_on": [
+        "ITASK-006"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-v112-release",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.1.12/.machine/execution/technical-implementation-beacon-prd-us-to-plan-implementation-progress-closure.json",
+        "verify:run-v112-release",
+        ".beacon/qa/features/beacon-prd-us-to-plan-implementation-progress-closure/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260402T061014055287"
+      ],
+      "changed_files": [
+        "beacon/utils/implementation_plan.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/gate.py",
+        "beacon/commands/status.py",
+        "beacon/commands/review.py",
+        "beacon/commands/report.py",
+        "beacon/commands/doctor.py",
+        "beacon/utils/writeback.py",
+        "beacon/utils/version_package_upgrade.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-01T22:06:59.738385+00:00",
+      "completed_at": "2026-04-01T22:06:59.738386+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-008",
+      "title": "FR-008 Compatibility With Existing Implement Surface",
+      "description": "现有 `implement` runner、branch preflight、takeover gate、frozen revision gate 必须继续保留。 新增 plan gate 之后： - 不得破坏 native-single / native-team / adapter runners - 不得破坏现有 implement summary / technical archive - 不得破坏现有 story / revision writeback ## 6. Suggested Output Contract ### 6.1 Implementation plan JSON ```json { \"schema_version\": \"1.0\", \"plan_id\": \"plan-001\", \"feature\": \"beacon-prd-us-to-plan-implementation-progress-closure\", \"version\": \"v1.1.12\", \"revision_id\": \"R1\", \"baseline_hash\": \"sha256:...\", \"plan_hash\": \"sha256:...\", \"status\": \"planned\", \"source_refs\": { \"user_story\": \"docs/beacon/v1.1.12/user-story/....md\", \"prd\": \"docs/beacon/v1.1.12/prd/....md\", \"test_case\": \"docs/beacon/v1.1.12/qa/test-cases/....md\" }, \"tasks\": [ { \"task_id\": \"TASK-001\", \"title\": \"...\" } ] } ``` ### 6.2 Plan preflight blocked output ```json { \"schema_version\": \"1.0\", \"status\": \"blocked\", \"blocked\": true, \"reason_code\": \"implementation_plan_missing\", \"expected_plan\": \"docs/beacon/v1.1.12/.machine/execution/implementation-plan-....json\", \"recommended_command\": \"beacon implement plan ...\" } ``` ## 7. Success Standard 这条线完成时，Beacon 应能稳定做到： 1. 从 PRD / user-story / test-case 编译出 implementation plan 2. 在 implement 开始前阻断 plan 缺失或 baseline 不一致的情况 3. 让实现过程拥有 task-level 进度，而不仅是 run-level 结果 4. 让 writeback 可反查到 AC / TEST / task 的对应关系 5. 让 status / help 能清楚说明当前实现进度与下一步任务 6. 不破坏现有 implement / workflow / gate 的主链语义 ## 8. First-principles Loop 正确链路应是： ```text user-story + prd + test-case → prd-us-to-plan compile → implementation plan → plan gate → implement execution → task progress writeback → status / review / verify ``` 不是： ```text user-story + prd → runner prompt → implementation summary only → task status unknown ```",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-004",
+        "AC-010"
+      ],
+      "mapped_test_ids": [
+        "TC-004",
+        "TC-010"
+      ],
+      "mapped_scenario_ids": [
+        "SC-007",
+        "SC-008",
+        "SC-009",
+        "SC-010",
+        "SC-011",
+        "SC-012",
+        "SC-030"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-004",
+        "TC-010",
+        "TC-014"
+      ],
+      "depends_on": [
+        "ITASK-007"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-v112-release",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.1.12/.machine/execution/technical-implementation-beacon-prd-us-to-plan-implementation-progress-closure.json",
+        "verify:run-v112-release",
+        ".beacon/qa/features/beacon-prd-us-to-plan-implementation-progress-closure/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260402T061014055287/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260402T061014055287"
+      ],
+      "changed_files": [
+        "beacon/utils/implementation_plan.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/gate.py",
+        "beacon/commands/status.py",
+        "beacon/commands/review.py",
+        "beacon/commands/report.py",
+        "beacon/commands/doctor.py",
+        "beacon/utils/writeback.py",
+        "beacon/utils/version_package_upgrade.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-01T22:06:59.738392+00:00",
+      "completed_at": "2026-04-01T22:06:59.738393+00:00",
+      "active_run_id": ""
+    }
+  ],
+  "generated_at": "2026-04-01T21:55:35.559960+00:00",
+  "updated_at": "2026-04-01T22:16:19.910643+00:00",
+  "accepted_at": "2026-04-01T22:16:19.910629+00:00",
+  "accepted_by": "release-closure"
+}
