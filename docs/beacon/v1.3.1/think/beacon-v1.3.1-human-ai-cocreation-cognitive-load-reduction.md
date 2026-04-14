@@ -3,7 +3,7 @@
 **Feature**: `beacon-v1.3.1-human-ai-cocreation-cognitive-load-reduction`  
 **Version**: `v1.3.1`  
 **Date**: `2026-04-12`  
-**Status**: `planning line`
+**Status**: `accepted supplement line`
 
 ## 问题框定
 
@@ -63,5 +63,4 @@ Beacon 下一条线应优先优化：
 
 ## 结论
 
-`v1.3.1` 应是一条“交互收口 + 执行隐藏 + 同步增强”的规划线。
-
+`v1.3.1` 已验证为一条“交互收口 + 执行隐藏 + 同步增强”的 accepted supplement line。

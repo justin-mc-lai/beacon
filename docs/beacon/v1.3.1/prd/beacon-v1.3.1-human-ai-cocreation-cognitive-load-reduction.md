@@ -3,7 +3,7 @@
 **Feature**: `beacon-v1.3.1-human-ai-cocreation-cognitive-load-reduction`  
 **Version**: `v1.3.1`  
 **Date**: `2026-04-12`  
-**Status**: `planning line`
+**Status**: `accepted supplement line`
 
 ## 1. 问题
 
@@ -14,7 +14,7 @@ Beacon 已经具备较强的阶段治理与 machine lane 能力，但人类操�
 3. `implement` 与 `qa` 虽然能力变强，但人类仍可能被迫理解内部多角色拆分
 4. 源码升级后，旧项目的 machine 物料容易滞后
 5. CLI 在人类视角下仍不够极简
-6. 需求文档里经常残留遗漏点、不清晰点、问号点与未澄清点，但当前没有被提升为正式冻结阻塞项
+6. 需求文档里经常残留未闭合的需求歧义与澄清债务，但当前没有被提升为正式冻结阻塞项
 7. 每个版本进入实现前，git 分支、worktree、隔离环境、服务目录边界等实现面约束常常不够确定
 
 ## 2. 目标
@@ -144,11 +144,11 @@ Beacon 源码更新后，旧项目必须支持按指定文档版本执行物料�
 
 Beacon 必须把以下内容视为冻结前阻塞项：
 
-- 遗漏点
-- 不清晰点
-- 问号点
-- 未澄清点
-- 需求不明点
+- 未闭合的需求歧义
+- 表述含混的验收边界
+- 尚未落定的业务决策
+- 未完成收口的澄清债务
+- scope 解释仍可双向扩张的条目
 
 只要这些问题仍存在：
 
@@ -160,10 +160,10 @@ Beacon 必须把以下内容视为冻结前阻塞项：
 
 在 `brainstorm -> prd -> user-story` 过程中，Beacon 必须支持显式记录并收口：
 
-- open questions
-- missing decisions
-- ambiguous requirements
-- scope gaps
+- decisions_to_close
+- unresolved_business_choices
+- ambiguous_scope_edges
+- acceptance_boundary_gaps
 
 只有这些清单被清空或降级为非阻塞项，需求包才允许冻结。
 
@@ -208,6 +208,38 @@ Beacon 必须把技术评审提升为每个版本进入实现前的正式前置�
 
 也就是说，极简 CLI 不是去掉这些动作，而是把它们内嵌进主闭环而不是额外扩展命令负担。
 
+### FR-016 同一版本必须支持多个并行 feature package
+
+`v1.3.1` 必须正式承认：
+
+- 同一个 `docs version` 下可以存在多份 `prd`
+- 每份 `prd` 对应自己的 `user-story`
+- 每份 `user-story` 对应自己的 `test-case`
+
+要求：
+
+- 通过共享 `feature slug` 维持一对一链路
+- 不要求引入新的嵌套目录结构
+- 不要求人类学习新的并行命令
+
+### FR-017 交付必须产出独立 change 文档与版本演进图
+
+Beacon 不能只留下 technical archive。
+
+还必须有面向交付与 release 的独立 change 面，至少包含：
+
+- 新增
+- 删除 / 收敛
+- 修复
+- 追溯到哪些 feature package
+
+同时必须存在版本演进图，说明：
+
+- 相对上一版本新增了什么
+- 删除 / 收敛了什么
+- 修复 / 校正了什么
+- 哪些能力被保留
+
 ## 4. 非功能约束
 
 1. 不得削弱 `v1.3.0` 已落地的 team runtime。
@@ -226,3 +258,5 @@ Beacon 必须把技术评审提升为每个版本进入实现前的正式前置�
 5. `prd/user-story` 的冻结前审核阻塞规则被正式定义。
 6. 每个版本进入实现前的技术评审与 deterministic implementation contract 被正式定义。
 7. 极简 CLI 路线在文档层被清晰定义并可进一步实现。
+8. 同一版本下多个 feature package 的并行一对一文档链被正式定义。
+9. 版本级 `change` 文档与版本演进图成为正式交付面。

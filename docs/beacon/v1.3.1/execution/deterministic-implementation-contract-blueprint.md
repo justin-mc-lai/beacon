@@ -2,7 +2,7 @@
 
 ## Purpose
 
-`v1.3.1` requires each version line to complete a technical review before implementation.
+`v1.3.1` requires each feature package inside a version line to complete a technical review before implementation.
 
 That review must not stop at architecture commentary.
 
@@ -22,14 +22,19 @@ Common failure mode:
 
 The implementation plane must be explicit before coding starts.
 
+Version is the container.
+
+Feature package is the execution unit.
+
 ## Required fields
 
-At minimum, each version-level technical review should resolve:
+At minimum, each feature-package technical review should resolve:
 
 ### 1. Version and feature identity
 
 - `version`
 - `feature`
+- `feature_slug`
 - `docs_version`
 - `revision_id`
 
@@ -127,6 +132,7 @@ For a `rolo`-style workspace, the contract should resolve something like:
 ```text
 version: vX.Y.Z
 feature: callback-rewrite-auth-closure
+feature_slug: callback-rewrite-auth-closure
 
 workspace_root: /path/to/rolo
 base_branch: main
@@ -209,3 +215,10 @@ Human-visible surface may stay simple:
 
 But Beacon internally should treat this contract as a prerequisite to `implement`.
 
+## Relationship to parallel feature packages
+
+If `v1.3.1` contains multiple feature packages, then:
+
+- each package needs its own deterministic implementation contract
+- version-level release may aggregate multiple package contracts
+- no single package may borrow another package's writable scope or service boundary decision

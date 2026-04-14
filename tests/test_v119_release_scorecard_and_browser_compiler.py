@@ -21,6 +21,7 @@ def _invoke(args: list[str]):
 
 def _seed_release_state(root: Path) -> None:
     (root / ".beacon").mkdir(parents=True, exist_ok=True)
+    (root / "docs" / "beacon" / VERSION).mkdir(parents=True, exist_ok=True)
     (root / ".beacon" / "state" / "evo" / "scorecards").mkdir(parents=True, exist_ok=True)
     (root / ".beacon" / "state" / "evo" / "experiments").mkdir(parents=True, exist_ok=True)
     (root / ".beacon" / "qa" / "features" / "browser-story-feature").mkdir(parents=True, exist_ok=True)
@@ -57,6 +58,28 @@ def _seed_release_state(root: Path) -> None:
                 "threshold": 0.8,
                 "missing_axes": [],
                 "missing_replay_scenarios": [],
+            },
+            ensure_ascii=False,
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+    (root / ".beacon" / "qa" / "features" / "browser-story-feature" / "scorecard.json").write_text(
+        json.dumps(
+            {
+                "schema_version": "1.0",
+                "feature": "Browser Story Feature",
+                "feature_slug": "browser-story-feature",
+                "run_id": "run-release-001",
+                "release_confidence_min": 0.95,
+                "release_confidence_avg": 0.97,
+                "review_required_count": 0,
+                "needs_replay_count": 0,
+                "continue_decision": "ready_for_release",
+                "test_case_backfill_required": False,
+                "unresolved_closure_outcomes": [],
+                "release_ready": True,
+                "coverage_current": {"required_scenarios": 7, "executed_scenarios": 7, "coverage_rate": 1.0},
             },
             ensure_ascii=False,
             indent=2,
@@ -110,6 +133,19 @@ def test_v119_release_scorecard_should_render_json_payload(tmp_path: Path):
     assert payload["exhaustiveness"]["score"] == 0.95
     assert payload["learning_scorecard"]["decision_summary"]["keep"] == 2
     assert payload["latest_experiment"]["main_kpi_score"] == 88
+
+
+def test_v119_release_scorecard_should_not_reuse_cross_version_qa_status(tmp_path: Path):
+    _seed_release_state(tmp_path)
+
+    result = _invoke(["release", "scorecard", "v9.9.9", "--project", str(tmp_path), "--json"])
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["version"] == "v9.9.9"
+    assert payload["release_ready"] is False
+    assert payload["qa"]["feature"] == ""
+    assert payload["qa"]["status"] == "unknown"
+    assert payload["qa"]["version_match"] is False
 
 
 def test_v119_browser_task_compiler_and_runners_should_accept_compiled_task(tmp_path: Path):

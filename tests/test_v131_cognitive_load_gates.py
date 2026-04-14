@@ -9,6 +9,7 @@ from typer.testing import CliRunner
 from beacon.commands.gate import GateMode, check_v131_human_loop_contract
 from beacon.commands.report import _human_summary
 from beacon.main import app
+from beacon.utils.artifact_paths import change_docs_file, change_file_output
 from beacon.utils.help_support import build_help_payload
 from beacon.utils.requirement_clarity import (
     load_requirement_clarity_state,
@@ -135,6 +136,53 @@ def _write_contract(
         + "\n",
         encoding="utf-8",
     )
+
+
+def _write_version_change_docs(root: Path, *, version: str = VERSION, feature: str = FEATURE, slug: str = SLUG) -> None:
+    feature_json = change_file_output(root, version, f"{slug}.json")
+    feature_md = change_docs_file(root, version, f"{slug}.md")
+    version_json = change_file_output(root, version, f"{version}.json")
+    version_md = change_docs_file(root, version, f"{version}.md")
+    for path in (feature_json, feature_md, version_json, version_md):
+        path.parent.mkdir(parents=True, exist_ok=True)
+
+    feature_payload = {
+        "schema_version": "1.0",
+        "version": version,
+        "feature": feature,
+        "feature_slug": slug,
+        "status": "completed",
+        "summary": "Human loop feature landed",
+        "added": ["Added human-loop release contract"],
+        "removed": [],
+        "fixed": [],
+        "traceability_refs": [f"docs/beacon/{version}/execution/implementation-summary-{slug}.json"],
+    }
+    version_payload = {
+        "schema_version": "1.0",
+        "version": version,
+        "status": "generated",
+        "feature_count": 1,
+        "features": [
+            {
+                "feature": feature,
+                "feature_slug": slug,
+                "summary": "Human loop feature landed",
+                "status": "completed",
+            }
+        ],
+        "added": [f"[{slug}] Added human-loop release contract"],
+        "removed": [],
+        "fixed": [],
+        "traceability_refs": [
+            f"docs/beacon/{version}/.machine/change/{slug}.json",
+            f"docs/beacon/{version}/change/{slug}.md",
+        ],
+    }
+    feature_json.write_text(json.dumps(feature_payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    feature_md.write_text(f"# {slug}\n", encoding="utf-8")
+    version_json.write_text(json.dumps(version_payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    version_md.write_text(f"# {version} change\n", encoding="utf-8")
 
 
 def test_v131_freeze_should_block_when_requirement_clarity_has_open_items(tmp_path: Path):
@@ -429,6 +477,7 @@ def test_v131_check_branch_should_use_materialized_git_workflow_from_approved_co
 def test_v131_release_scorecard_should_include_human_loop_surfaces(tmp_path: Path):
     _seed_docs(tmp_path, unresolved=False)
     assert _invoke(["freeze", FEATURE, "--project", str(tmp_path), "--version", VERSION]).exit_code == 0
+    _write_version_change_docs(tmp_path)
     _invoke(
         [
             "doctor",
@@ -475,9 +524,12 @@ def test_v131_release_scorecard_should_include_human_loop_surfaces(tmp_path: Pat
     summary = summarize_release_scorecard(scorecard)
     assert scorecard["requirement_clarity"]["blocked"] is False
     assert scorecard["technical_review"]["review_status"] == "approved"
+    assert scorecard["change_documents"]["status"] == "pass"
+    assert scorecard["change_documents"]["includes_current_feature"] is True
     assert scorecard["release_ready"] is True
     assert summary["requirement_clarity_status"] == "pass"
     assert summary["technical_review_review_status"] == "approved"
+    assert summary["change_documents_status"] == "pass"
 
 
 def test_v131_report_human_summary_should_show_human_loop_gates(tmp_path: Path):
@@ -495,12 +547,14 @@ def test_v131_report_human_summary_should_show_human_loop_gates(tmp_path: Path):
             "latest_experiment": {"main_kpi_score": 0.1},
             "requirement_clarity": {"status": "blocked", "blocked": True, "finding_count": 2},
             "technical_review": {"status": "pass", "blocked": False, "review_status": "approved"},
+            "change_documents": {"status": "blocked", "markdown_exists": False, "json_exists": False, "feature_count": 0, "includes_current_feature": False},
         },
         "artifacts": {},
     }
     summary = _human_summary(machine)
     assert "requirement_clarity_status" in summary
     assert "technical_review_review_status" in summary
+    assert "change_documents_status" in summary
     assert "## Human-Loop Gates" in summary
 
 

@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 from typing import Any
 
+from beacon.utils.artifact_paths import change_docs_file, change_file_output
 from beacon.utils.exhaustiveness import load_exhaustiveness_report
 from beacon.utils.implementation_plan import (
     implementation_plan_supported,
@@ -17,6 +18,7 @@ from beacon.utils.qa_precision import load_feature_qa_scorecard
 from beacon.utils.qa_runtime import load_qa_status
 from beacon.utils.requirement_clarity import build_requirement_clarity_gate_payload, load_requirement_clarity_state
 from beacon.utils.revision_state import load_revision_state
+from beacon.utils.story_state import feature_slug
 from beacon.utils.technical_review_contract import build_technical_review_gate_payload, load_technical_review_state
 from beacon.utils.versioning import (
     project_runtime_feature_enabled,
@@ -48,12 +50,55 @@ def _latest_implement_feature(project_root: Path) -> str:
     return ""
 
 
+def _version_change_status(project_root: Path, *, version: str, current_feature: str) -> dict[str, Any]:
+    markdown_path = change_docs_file(project_root, version, f"{version}.md")
+    json_path = change_file_output(project_root, version, f"{version}.json")
+    payload = _load_json(json_path)
+    payload_version = str(payload.get("version") or "").strip()
+    features = payload.get("features") if isinstance(payload.get("features"), list) else []
+    feature_slugs = sorted(
+        {
+            str(item.get("feature_slug") or "").strip()
+            for item in features
+            if isinstance(item, dict) and str(item.get("feature_slug") or "").strip()
+        }
+    )
+    current_feature_slug = feature_slug(current_feature) if str(current_feature or "").strip() else ""
+    includes_current_feature = (not current_feature_slug) or current_feature_slug in feature_slugs
+    markdown_exists = markdown_path.exists()
+    json_exists = json_path.exists()
+    version_match = bool(payload) and payload_version == version
+    status = "pass" if markdown_exists and json_exists and version_match and includes_current_feature else "blocked"
+    if not markdown_exists and not json_exists and not payload:
+        status = "missing"
+    return {
+        "status": status,
+        "markdown_path": str(markdown_path.relative_to(project_root)),
+        "json_path": str(json_path.relative_to(project_root)),
+        "markdown_exists": markdown_exists,
+        "json_exists": json_exists,
+        "version_match": version_match,
+        "feature_count": int(payload.get("feature_count") or len(feature_slugs) or 0),
+        "feature_slugs": feature_slugs,
+        "current_feature_slug": current_feature_slug,
+        "includes_current_feature": includes_current_feature,
+    }
+
+
 def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, Any]:
     resolved_version = resolve_target_version(project_root, version)
     resolved_runtime = resolve_runtime_version(project_root, "auto")
     gate_report = _load_json(project_root / ".beacon" / "gate-report.json")
     qa_status = load_qa_status(project_root)
+    gate_version = str(gate_report.get("version") or "").strip()
+    gate_version_match = not gate_version or gate_version == resolved_version
+    qa_version = str(qa_status.get("version") or "").strip()
+    qa_version_match = not qa_version or qa_version == resolved_version
+    if not qa_version_match:
+        qa_status = {}
     feature = str(qa_status.get("feature") or "").strip() or _latest_implement_feature(project_root)
+    if qa_status == {}:
+        feature = ""
     exhaustiveness = load_exhaustiveness_report(project_root, feature=feature) if feature else {}
     feature_scorecard = load_feature_qa_scorecard(project_root, feature=feature) if feature else {}
     implementation_plan = (
@@ -63,6 +108,10 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
     )
     scorecard_state = _load_json(project_root / ".beacon" / "state" / "evo" / "scorecards" / "latest.json")
     latest_experiment = load_latest_evo_experiment(project_root)
+    if isinstance(latest_experiment, dict):
+        experiment_version = str(latest_experiment.get("version") or "").strip()
+        if experiment_version and experiment_version != resolved_version:
+            latest_experiment = {}
     git_workflow_contracts = list_implementation_git_workflow_contracts(project_root, version=resolved_version)
     revision_state = load_revision_state(project_root, version=resolved_version, feature=feature, create_if_missing=False) if feature else {}
     requirement_clarity_gate = build_requirement_clarity_gate_payload(project_root, version=resolved_version, feature=feature) if feature else {}
@@ -78,6 +127,7 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
         else {}
     )
     technical_review_state = load_technical_review_state(project_root, feature=feature) if feature else {}
+    change_documents = _version_change_status(project_root, version=resolved_version, current_feature=feature)
     blocked_count = len(
         [item for item in gate_report.get("issues", []) if isinstance(item, dict) and bool(item.get("blocked"))]
     ) if isinstance(gate_report.get("issues"), list) else 0
@@ -89,6 +139,8 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
         and str(qa_status.get("status") or "").strip().lower() == "passed"
         and bool(qa_status.get("evidence_done", False))
         and (not exhaustiveness or str(exhaustiveness.get("status") or "").strip().lower() == "passed")
+        and gate_version_match
+        and qa_version_match
     )
     release_ready = legacy_release_ready
     if runtime_feature_supported("v1.1.10", runtime_version=resolved_runtime):
@@ -113,6 +165,10 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
             and not bool(technical_review_gate.get("blocked", False))
             and str(technical_review_state.get("review_status") or "").strip().lower() in {"approved", "accepted"}
             and bool(technical_review_state)
+            and bool(change_documents.get("markdown_exists", False))
+            and bool(change_documents.get("json_exists", False))
+            and bool(change_documents.get("version_match", False))
+            and bool(change_documents.get("includes_current_feature", False))
         )
     return {
         "schema_version": "1.0",
@@ -123,6 +179,8 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
             "status": str(gate_report.get("status") or "unknown"),
             "blocked_count": blocked_count,
             "run_id": str(gate_report.get("run_id") or ""),
+            "artifact_version": gate_version,
+            "version_match": gate_version_match,
         },
         "qa": {
             "feature": feature,
@@ -131,6 +189,8 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
             "execution_mode": str(qa_status.get("execution_mode") or "feature-aware"),
             "project_profile_id": str(project_profile_gate.get("profile_id") or ""),
             "project_profile_gate_status": project_gate_status,
+            "artifact_version": qa_version,
+            "version_match": qa_version_match,
         },
         "exhaustiveness": exhaustiveness if isinstance(exhaustiveness, dict) else {},
         "feature_qa_scorecard": feature_scorecard if isinstance(feature_scorecard, dict) else {},
@@ -160,6 +220,7 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
             "contract_json_path": str(technical_review_gate.get("contract_json_path") or ""),
             "contract_markdown_path": str(technical_review_gate.get("contract_markdown_path") or ""),
         },
+        "change_documents": change_documents,
         "learning_scorecard": {
             "main_kpi": str(scorecard_state.get("main_kpi") or "false_complete_rate"),
             "decision_summary": decision_summary,
@@ -180,6 +241,7 @@ def summarize_release_scorecard(scorecard: dict[str, Any] | None) -> dict[str, A
     git_workflow = payload.get("git_workflow") if isinstance(payload.get("git_workflow"), dict) else {}
     requirement_clarity = payload.get("requirement_clarity") if isinstance(payload.get("requirement_clarity"), dict) else {}
     technical_review = payload.get("technical_review") if isinstance(payload.get("technical_review"), dict) else {}
+    change_documents = payload.get("change_documents") if isinstance(payload.get("change_documents"), dict) else {}
     decisions = learning.get("decision_summary") if isinstance(learning.get("decision_summary"), dict) else {}
     latest_experiment = payload.get("latest_experiment") if isinstance(payload.get("latest_experiment"), dict) else {}
     return {
@@ -223,4 +285,10 @@ def summarize_release_scorecard(scorecard: dict[str, Any] | None) -> dict[str, A
         "technical_review_status": str(technical_review.get("status") or ""),
         "technical_review_blocked": bool(technical_review.get("blocked", False)),
         "technical_review_review_status": str(technical_review.get("review_status") or ""),
+        "change_documents_status": str(change_documents.get("status") or ""),
+        "change_documents_markdown_exists": bool(change_documents.get("markdown_exists", False)),
+        "change_documents_json_exists": bool(change_documents.get("json_exists", False)),
+        "change_documents_version_match": bool(change_documents.get("version_match", False)),
+        "change_documents_feature_count": int(change_documents.get("feature_count") or 0),
+        "change_documents_includes_current_feature": bool(change_documents.get("includes_current_feature", False)),
     }

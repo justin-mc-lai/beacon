@@ -10,7 +10,7 @@ from typer.testing import CliRunner
 
 from beacon.commands.gate import GateMode, check_test_execution_integrity
 from beacon.main import app
-from beacon.utils.artifact_paths import machine_execution_dir
+from beacon.utils.artifact_paths import change_docs_file, change_file_output, machine_execution_dir
 from beacon.utils.revision_state import freeze_revision_state
 from beacon.utils.runtime import load_run_state, save_run_state
 from beacon.utils.writeback import record_implementation_writeback, record_verification_writeback
@@ -296,6 +296,94 @@ def test_release_create_should_use_resolved_version_in_file_content(tmp_path: Pa
     assert "latest" not in text
 
 
+def test_release_create_should_aggregate_version_change_document(tmp_path: Path):
+    version = "v2.1.0"
+    for slug, summary, field, item in (
+        ("feature-a", "First feature landed", "added", "Added contract A"),
+        ("feature-b", "Second feature landed", "fixed", "Fixed edge case B"),
+    ):
+        change_json = change_file_output(tmp_path, version, f"{slug}.json")
+        change_md = change_docs_file(tmp_path, version, f"{slug}.md")
+        change_json.parent.mkdir(parents=True, exist_ok=True)
+        change_md.parent.mkdir(parents=True, exist_ok=True)
+        payload = {
+            "schema_version": "1.0",
+            "version": version,
+            "feature": slug.replace("-", " ").title(),
+            "feature_slug": slug,
+            "status": "completed",
+            "summary": summary,
+            "added": [item] if field == "added" else [],
+            "removed": [],
+            "fixed": [item] if field == "fixed" else [],
+            "traceability_refs": [f"docs/beacon/{version}/execution/implementation-summary-{slug}.json"],
+        }
+        change_json.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+        change_md.write_text(f"# {slug}\n", encoding="utf-8")
+
+    result = _invoke(["release", "create", version, "--project", str(tmp_path)])
+    assert result.exit_code == 0
+
+    version_change_md = change_docs_file(tmp_path, version, f"{version}.md")
+    version_change_json = change_file_output(tmp_path, version, f"{version}.json")
+    assert version_change_md.exists()
+    assert version_change_json.exists()
+
+    change_text = version_change_md.read_text(encoding="utf-8")
+    assert "feature packages included: 2" in change_text
+    assert "`feature-a`" in change_text
+    assert "`feature-b`" in change_text
+    assert "[feature-a] Added contract A" in change_text
+    assert "[feature-b] Fixed edge case B" in change_text
+
+    release_text = (tmp_path / "docs" / "beacon" / version / "release" / f"{version}.md").read_text(encoding="utf-8")
+    assert f"docs/beacon/{version}/change/{version}.md" in release_text
+    assert f"docs/beacon/{version}/.machine/change/{version}.json" in release_text
+
+
+def test_release_create_should_synthesize_feature_changes_from_technical_archive_when_missing(tmp_path: Path):
+    version = "v1.3.1"
+    slug = "feature-from-archive"
+    machine_exec = tmp_path / "docs" / "beacon" / version / ".machine" / "execution"
+    exec_dir = tmp_path / "docs" / "beacon" / version / "execution"
+    machine_exec.mkdir(parents=True, exist_ok=True)
+    exec_dir.mkdir(parents=True, exist_ok=True)
+
+    (machine_exec / f"technical-implementation-{slug}.json").write_text(
+        json.dumps(
+            {
+                "schema_version": "1.0",
+                "version": version,
+                "feature": "Feature From Archive",
+                "feature_slug": slug,
+                "implementation_scope_summary": "Archive-backed feature landed",
+                "changed_files": ["beacon/commands/release.py"],
+                "additions": [],
+                "deletions": [],
+                "modifications": [],
+                "refactors": [],
+            },
+            ensure_ascii=False,
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+    (exec_dir / f"technical-implementation-{slug}.md").write_text("# tech\n", encoding="utf-8")
+    (machine_exec / f"implementation-summary-{slug}.json").write_text("{}", encoding="utf-8")
+    (exec_dir / f"implementation-summary-{slug}.md").write_text("# summary\n", encoding="utf-8")
+
+    result = _invoke(["release", "create", version, "--project", str(tmp_path)])
+    assert result.exit_code == 0
+
+    version_change_json = change_file_output(tmp_path, version, f"{version}.json")
+    payload = json.loads(version_change_json.read_text(encoding="utf-8"))
+    assert payload["feature_count"] == 1
+    assert payload["features"][0]["feature_slug"] == slug
+    assert any("[feature-from-archive] Updated `beacon/commands/release.py`" == item for item in payload["fixed"])
+    assert change_file_output(tmp_path, version, f"{slug}.json").exists()
+    assert change_docs_file(tmp_path, version, f"{slug}.md").exists()
+
+
 def test_release_check_should_fail_when_artifacts_version_mismatch(tmp_path: Path):
     _seed_release_artifacts(tmp_path, version="v1.2.3", run_id="run-20260306T000000000000")
 
@@ -305,6 +393,20 @@ def test_release_check_should_fail_when_artifacts_version_mismatch(tmp_path: Pat
 
     matched = _invoke(["release", "check", "v1.2.3", "--project", str(tmp_path)])
     assert matched.exit_code == 0
+
+
+def test_v131_release_check_should_require_version_change_documents(tmp_path: Path):
+    version = "v1.3.1"
+    (tmp_path / "docs" / "beacon" / version).mkdir(parents=True, exist_ok=True)
+    _seed_release_artifacts(tmp_path, version=version, run_id="run-20260306T000000000001")
+
+    blocked = _invoke(["release", "check", version, "--project", str(tmp_path)])
+    assert blocked.exit_code == 1
+    assert "version change markdown exists" in blocked.stdout
+
+    _invoke(["release", "create", version, "--project", str(tmp_path)])
+    passed = _invoke(["release", "check", version, "--project", str(tmp_path)])
+    assert passed.exit_code == 0
 
 
 def test_compute_workflow_progress_should_not_read_gate_pass_from_other_run(tmp_path: Path):

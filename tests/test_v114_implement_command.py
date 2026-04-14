@@ -8,7 +8,7 @@ from pathlib import Path
 from typer.testing import CliRunner
 
 from beacon.main import app
-from beacon.utils.artifact_paths import execution_file_output
+from beacon.utils.artifact_paths import change_docs_file, change_file_output, execution_file_output
 
 
 runner = CliRunner()
@@ -194,6 +194,12 @@ def test_implement_run_command_runner_should_write_marker_summary_and_review(tmp
     assert (tmp_path / ".beacon" / "state" / "implementation-my-feature.json").exists()
     assert execution_file_output(tmp_path, "v1.1.4", "implementation-summary-my-feature.json").exists()
     assert execution_file_output(tmp_path, "v1.1.4", "review-spec-my-feature.json").exists()
+    assert payload["change_document"]["md"] == "docs/beacon/v1.1.4/change/my-feature.md"
+    assert change_docs_file(tmp_path, "v1.1.4", "my-feature.md").exists()
+    assert change_file_output(tmp_path, "v1.1.4", "my-feature.json").exists()
+    change_text = change_docs_file(tmp_path, "v1.1.4", "my-feature.md").read_text(encoding="utf-8")
+    assert "## Fixed" in change_text
+    assert "Updated `beacon/commands/implement.py`" in change_text
 
 
 def test_implement_run_should_fail_when_result_missing(tmp_path: Path):
@@ -278,6 +284,61 @@ def test_implement_run_should_fail_when_result_json_is_unparseable(tmp_path: Pat
     assert result.exit_code == 2
     payload = json.loads(result.stdout)
     assert payload["reason_code"] == "runner_result_invalid"
+
+
+def test_implement_status_should_prefer_run_matching_requested_version(tmp_path: Path):
+    feature = "Friend Match"
+    slug = _seed_feature_docs(tmp_path, version="v1.0.0", feature=feature)
+    _seed_feature_docs(tmp_path, version="v1.3.1", feature=feature)
+
+    legacy_run = tmp_path / ".beacon" / "implement" / "run-v100" / "state.json"
+    legacy_run.parent.mkdir(parents=True, exist_ok=True)
+    legacy_run.write_text(
+        json.dumps(
+            {
+                "run_id": "run-v100",
+                "feature": feature,
+                "feature_slug": slug,
+                "version": "v1.0.0",
+                "status": "completed",
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+
+    newer_run = tmp_path / ".beacon" / "implement" / "run-v131" / "state.json"
+    newer_run.parent.mkdir(parents=True, exist_ok=True)
+    newer_run.write_text(
+        json.dumps(
+            {
+                "run_id": "run-v131",
+                "feature": feature,
+                "feature_slug": slug,
+                "version": "v1.3.1",
+                "status": "completed",
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+
+    result = _invoke(
+        [
+            "implement",
+            "status",
+            feature,
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            "v1.0.0",
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["run_id"] == "run-v100"
+    assert payload["version"] == "v1.0.0"
 
 
 def test_implement_run_should_fail_when_runner_times_out(tmp_path: Path):

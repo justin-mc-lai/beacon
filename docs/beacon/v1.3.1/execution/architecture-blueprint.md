@@ -150,6 +150,73 @@ brainstorm / review 收口问题
 - 机器 lane 隐藏化
 - help/status/doctor 负责在需要时显式揭示复杂度
 
+### F. 极简主面必须对应 host-visible skills
+
+如果 `v1.3.1` 只在文档里说“人类只记 6+3”，但在 Codex / Claude 中仍然只有一个宽泛 `beacon` 入口，这条线就没有真正落地。
+
+因此还需要：
+
+1. 一个 umbrella skill：
+   - `using-beacon`
+2. 九个 public host-visible skills：
+   - `beacon-prd`
+   - `beacon-user-story`
+   - `beacon-test-case`
+   - `beacon-implement`
+   - `beacon-qa`
+   - `beacon-release`
+   - `beacon-help`
+   - `beacon-status`
+   - `beacon-doctor`
+3. `brainstorm`、`implement-team`、`qa-team` 继续保留在隐藏 machine lanes
+
+### G. 同一版本必须支持多个并行 feature package
+
+`v1.3.1` 不应继续隐含“一个版本只对应一份 PRD”的单体假设。
+
+更小、更稳的模型是：
+
+- `version` 是交付容器
+- `feature package` 是并行工作单元
+- 每个 `feature package` 通过同一个 `feature slug` 串起：
+  - `prd/<slug>.md`
+  - `user-story/<slug>.md`
+  - `qa/test-cases/<slug>.md`
+  - `execution/technical-implementation-<slug>.md`
+
+也就是说：
+
+```text
+同一 docs/beacon/v1.3.1/
+  可以同时存在 feature-a / feature-b / feature-c
+  但每个 feature 仍保持自己的一对一文档链
+```
+
+这样做的好处是：
+
+- 不增加新的公开命令
+- 不引入新的目录心智
+- 直接复用 Beacon 当前按 `feature slug` 写文件的实现
+- 让并行需求包变成正式 contract，而不是隐式碰运气
+
+### H. `change` 文档必须成为独立交付面
+
+`implementation-summary` 与 `technical-implementation` 已经能记录实现细节，
+但它们更偏执行摘要和技术归档，不是人类交付视角下的“本次版本改了什么”。
+
+因此 `v1.3.1` 需要补一层更轻的独立 change 面：
+
+- feature 级 `change/<feature-slug>.md`
+- version 级 `change/<version>.md`
+
+它们的目标不是替代技术归档，而是回答：
+
+- 新增了什么
+- 删除 / 收敛了什么
+- 修复 / 校正了什么
+- 这些变化由哪些 feature package 贡献
+- release 当前到底在放行什么
+
 ## 设计规范
 
 1. 不增加人类必须记忆的主命令数量。
@@ -159,3 +226,6 @@ brainstorm / review 收口问题
 5. QA 每轮必须体现“比上一轮更清晰”的业务边界。
 6. learning / auto research 只能围绕冻结用户故事扩展覆盖，不得偏离主需求包。
 7. 机器协作可以自由制定，但不得脱离人类主文档交付面。
+8. 同一个版本必须允许多个并行 feature package 共存。
+9. 每个 feature package 必须通过相同 `feature slug` 串起自己的 `prd / user-story / test-case`。
+10. 交付完成后必须有独立 `change` 文档，不要求人类自己去拼装 technical archive。

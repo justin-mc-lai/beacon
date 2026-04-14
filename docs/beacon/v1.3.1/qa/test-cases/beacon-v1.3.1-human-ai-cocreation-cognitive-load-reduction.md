@@ -3,7 +3,7 @@
 **Feature**: `beacon-v1.3.1-human-ai-cocreation-cognitive-load-reduction`  
 **Version**: `v1.3.1`  
 **Date**: `2026-04-12`  
-**Status**: `planning line`
+**Status**: `accepted supplement line`
 
 ## TC-001：人类主闭环必须收敛为六段
 
@@ -88,3 +88,21 @@
 - Given：版本级技术评审尚未明确 deterministic implementation contract
 - When：进入 `implement`
 - Then：Beacon 必须阻塞或明确返回“技术评审未完成”
+
+## TC-015：同一版本必须允许多个并行 feature package
+
+- Given：同一个版本下创建多个 feature 的 `prd / user-story / test-case`
+- When：检查对应文档根
+- Then：这些 feature package 必须共存，且不应互相覆盖
+
+## TC-016：每个并行 feature package 必须保持自己的一对一文档链
+
+- Given：同一个版本下存在多个 feature package
+- When：检查某个 feature 的 `prd / user-story / test-case`
+- Then：它们必须通过相同 `feature slug` 串起，不得跨 feature 混链
+
+## TC-017：release 前必须存在独立 change 文档和版本演进图
+
+- Given：某个版本准备进入 release
+- When：检查版本交付物
+- Then：必须存在独立 `change` 文档，并且能看到新增 / 删除 / 修复和版本路线演进图

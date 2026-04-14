@@ -11,7 +11,14 @@ from typing import Any, Optional
 
 import typer
 
-from beacon.utils.artifact_paths import execution_file_candidates, execution_file_output, human_execution_file, qa_matrix_candidates
+from beacon.utils.artifact_paths import (
+    change_docs_file,
+    change_file_output,
+    execution_file_candidates,
+    execution_file_output,
+    human_execution_file,
+    qa_matrix_candidates,
+)
 from beacon.utils.artifact_update_obligations import write_artifact_update_obligations
 from beacon.utils.git_alignment import (
     build_implement_branch_guard_payload,
@@ -93,6 +100,14 @@ def _technical_archive_paths(project_root: Path, version: str, feature: str) -> 
     return {
         "md": human_execution_file(project_root, version, f"technical-implementation-{slug}.md"),
         "json": execution_file_output(project_root, version, f"technical-implementation-{slug}.json"),
+    }
+
+
+def _change_document_paths(project_root: Path, version: str, feature: str) -> dict[str, Path]:
+    slug = _slug(feature)
+    return {
+        "md": change_docs_file(project_root, version, f"{slug}.md"),
+        "json": change_file_output(project_root, version, f"{slug}.json"),
     }
 
 
@@ -292,6 +307,10 @@ def _render_summary_markdown(payload: dict[str, Any]) -> str:
     skill = str(payload.get("skill", "") or "").strip()
     if skill:
         lines.append(f"- skill: `{skill}`")
+    change_document = payload.get("change_document") if isinstance(payload.get("change_document"), dict) else {}
+    if change_document:
+        lines.append(f"- change_document_md: `{change_document.get('md', '')}`")
+        lines.append(f"- change_document_json: `{change_document.get('json', '')}`")
     lines.extend(["", "## Changed Files"])
     changed = payload.get("changed_files") if isinstance(payload.get("changed_files"), list) else []
     if changed:
@@ -351,6 +370,124 @@ def _modules_from_changed_files(changed_files: list[str]) -> list[str]:
         elif parts:
             modules.add(parts[0])
     return sorted(modules)
+
+
+def _dedupe_strings(values: list[Any]) -> list[str]:
+    out: list[str] = []
+    seen: set[str] = set()
+    for value in values:
+        text = str(value or "").strip()
+        if not text or text in seen:
+            continue
+        seen.add(text)
+        out.append(text)
+    return out
+
+
+def _feature_change_payload(
+    *,
+    feature: str,
+    version: str,
+    run_id: str,
+    summary_ref: str,
+    technical_ref: str,
+    technical_payload: dict[str, Any],
+) -> dict[str, Any]:
+    added = _dedupe_strings(_normalize_list(technical_payload.get("additions")))
+    removed = _dedupe_strings(_normalize_list(technical_payload.get("deletions")))
+    fixed = _dedupe_strings(
+        _normalize_list(technical_payload.get("modifications"))
+        + _normalize_list(technical_payload.get("refactors"))
+    )
+    changed_files = _dedupe_strings(_normalize_list(technical_payload.get("changed_files")))
+    if not added and not removed and not fixed and changed_files:
+        fixed = [f"Updated `{path}`" for path in changed_files]
+
+    implementation_impact = _dedupe_strings(
+        [f"Changed file: `{path}`" for path in changed_files]
+        + [f"Module touched: `{path}`" for path in _normalize_list(technical_payload.get("modules_touched"))]
+        + [f"Service touched: `{path}`" for path in _normalize_list(technical_payload.get("services"))]
+        + (
+            ["Database-related changes present"]
+            if isinstance(technical_payload.get("db_changes"), dict) and not bool(technical_payload.get("db_changes", {}).get("none", True))
+            else []
+        )
+        + (
+            ["API-related changes present"]
+            if isinstance(technical_payload.get("api_changes"), dict) and not bool(technical_payload.get("api_changes", {}).get("none", True))
+            else []
+        )
+    )
+
+    verification = []
+    for item in _normalize_list(technical_payload.get("verification")):
+        if isinstance(item, dict):
+            status = str(item.get("status", "unknown") or "unknown").strip()
+            command = str(item.get("command", "") or "").strip()
+            verification.append(f"{status}: {command}".strip(": "))
+        else:
+            text = str(item or "").strip()
+            if text:
+                verification.append(text)
+
+    traceability_refs = _dedupe_strings(
+        [
+            summary_ref,
+            technical_ref,
+            str((technical_payload.get("traceability") or {}).get("request_path", "") or ""),
+            str((technical_payload.get("traceability") or {}).get("result_path", "") or ""),
+            str((technical_payload.get("traceability") or {}).get("stdout_path", "") or ""),
+            str((technical_payload.get("traceability") or {}).get("stderr_path", "") or ""),
+        ]
+    )
+
+    return {
+        "schema_version": "1.0",
+        "feature": feature,
+        "feature_slug": str(technical_payload.get("feature_slug", "") or _slug(feature)),
+        "version": version,
+        "run_id": run_id,
+        "status": "completed",
+        "summary": str(technical_payload.get("implementation_scope_summary", "") or ""),
+        "added": added,
+        "removed": removed,
+        "fixed": fixed,
+        "implementation_impact": implementation_impact,
+        "verification_status": verification,
+        "traceability_refs": traceability_refs,
+        "generated_at": now_iso(),
+    }
+
+
+def _render_feature_change_markdown(payload: dict[str, Any]) -> str:
+    def _section(title: str, items: list[str]) -> list[str]:
+        lines = ["", f"## {title}"]
+        if not items:
+            lines.append("- none")
+            return lines
+        for item in items:
+            lines.append(f"- {item}")
+        return lines
+
+    lines = [
+        "# Beacon Feature Change Document",
+        "",
+        f"- feature: `{payload.get('feature')}`",
+        f"- feature_slug: `{payload.get('feature_slug')}`",
+        f"- version: `{payload.get('version')}`",
+        f"- run_id: `{payload.get('run_id')}`",
+        f"- status: `{payload.get('status')}`",
+        "",
+        "## Scope",
+        f"- {payload.get('summary') or 'No summary provided'}",
+    ]
+    lines.extend(_section("Added", [str(x) for x in _normalize_list(payload.get("added"))]))
+    lines.extend(_section("Removed / Reduced", [str(x) for x in _normalize_list(payload.get("removed"))]))
+    lines.extend(_section("Fixed", [str(x) for x in _normalize_list(payload.get("fixed"))]))
+    lines.extend(_section("Implementation Impact", [str(x) for x in _normalize_list(payload.get("implementation_impact"))]))
+    lines.extend(_section("Verification Status", [str(x) for x in _normalize_list(payload.get("verification_status"))]))
+    lines.extend(_section("Traceability Refs", [f"`{x}`" for x in _normalize_list(payload.get("traceability_refs"))]))
+    return "\n".join(lines) + "\n"
 
 
 def _technical_archive_payload(
@@ -1247,6 +1384,7 @@ def run_implement_stage(  # noqa: PLR0913
 
     summary_paths = _summary_paths(project_root, resolved_version, feature)
     archive_paths = _technical_archive_paths(project_root, resolved_version, feature)
+    change_paths = _change_document_paths(project_root, resolved_version, feature)
     story_state = load_story_state(project_root, version=resolved_version, feature=feature, create_if_missing=True) or {}
     implemented_item_ids = [str(item) for item in _normalize_string_list(result_payload.get("implemented_items"))]
     if not implemented_item_ids:
@@ -1294,6 +1432,10 @@ def run_implement_stage(  # noqa: PLR0913
             "json": str(archive_paths["json"].relative_to(project_root)),
             "md": str(archive_paths["md"].relative_to(project_root)),
         },
+        "change_document": {
+            "json": str(change_paths["json"].relative_to(project_root)),
+            "md": str(change_paths["md"].relative_to(project_root)),
+        },
         "review_spec": review_spec_info,
         "review_quality": review_quality_info,
         "generated_at": now_iso(),
@@ -1322,6 +1464,14 @@ def run_implement_stage(  # noqa: PLR0913
             str(archive_paths["md"].relative_to(project_root)),
         ],
         version=resolved_version,
+    )
+    change_payload = _feature_change_payload(
+        feature=feature,
+        version=resolved_version,
+        run_id=run_id,
+        summary_ref=str(summary_paths["json"].relative_to(project_root)),
+        technical_ref=str(archive_paths["json"].relative_to(project_root)),
+        technical_payload=technical_payload,
     )
     learning_payload = write_requirement_rewrite_input(
         project_root,
@@ -1386,6 +1536,16 @@ def run_implement_stage(  # noqa: PLR0913
         refs=[
             str(summary_paths["json"].relative_to(project_root)),
             str(summary_paths["md"].relative_to(project_root)),
+        ],
+        version=resolved_version,
+    )
+    write_json(change_paths["json"], change_payload)
+    _write_text(change_paths["md"], _render_feature_change_markdown(change_payload))
+    refresh_evidence_manifest(
+        project_root,
+        refs=[
+            str(change_paths["json"].relative_to(project_root)),
+            str(change_paths["md"].relative_to(project_root)),
         ],
         version=resolved_version,
     )
@@ -1835,11 +1995,23 @@ def status(
             state_payload = json.loads(state_path.read_text(encoding="utf-8"))
     else:
         candidate_states = sorted(implement_root.glob("*/state.json")) if implement_root.exists() else []
+        fallback_state: dict[str, Any] | None = None
         for state_path in reversed(candidate_states):
             payload = json.loads(state_path.read_text(encoding="utf-8"))
-            if str(payload.get("feature_slug", "")) == feature_slug or str(payload.get("feature", "")) == feature_or_run_id:
+            payload_feature_matches = (
+                str(payload.get("feature_slug", "")) == feature_slug
+                or str(payload.get("feature", "")) == feature_or_run_id
+            )
+            if not payload_feature_matches:
+                continue
+            payload_version = normalize_version(str(payload.get("version", "")).strip())
+            if payload_version and payload_version == resolved_version:
                 state_payload = payload
                 break
+            if fallback_state is None:
+                fallback_state = payload
+        if state_payload is None:
+            state_payload = fallback_state
         if state_payload is None and feature_or_run_id.startswith("run-"):
             state_path = implement_root / feature_or_run_id / "state.json"
             if state_path.exists():

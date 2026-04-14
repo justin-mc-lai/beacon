@@ -203,6 +203,12 @@ def _status_impl(
             )
         if release_summary.get("continue_decision"):
             typer.echo(f"- release.continue_decision: {release_summary.get('continue_decision')}")
+        if release_summary.get("change_documents_status"):
+            typer.echo(
+                f"- release.change_documents: {release_summary.get('change_documents_status')} "
+                f"feature_count={release_summary.get('change_documents_feature_count')} "
+                f"includes_current={release_summary.get('change_documents_includes_current_feature')}"
+            )
         coverage_current = release_summary.get("coverage_current") if isinstance(release_summary.get("coverage_current"), dict) else {}
         if coverage_current:
             typer.echo(

@@ -1,7 +1,7 @@
 # Workflow Boundaries (v1.3.1)
 
 - feature: Beacon v1.3.1 human-AI cocreation cognitive load reduction
-- workflow_status: planning line / human surface simplification
+- workflow_status: accepted supplement line / human surface simplification
 - guardrail: reduce human-visible command burden without weakening formal delivery, freeze, QA, or release truth
 
 ---
@@ -22,6 +22,10 @@ PRD
 This is the **human primary chain**.
 
 Everything else is subordinate.
+
+Additional rule:
+
+> the chain runs per feature package, even when multiple feature packages coexist inside the same version line.
 
 ## Human vs machine boundary
 
@@ -48,6 +52,28 @@ These commands remain allowed, but should only surface when the user is blocked,
 
 They are **support surfaces**, not the primary loop.
 
+### Host-visible public skills
+
+The host-visible skill layer must mirror the same human boundary:
+
+- umbrella:
+  - `using-beacon`
+- primary:
+  - `beacon-prd`
+  - `beacon-user-story`
+  - `beacon-test-case`
+  - `beacon-implement`
+  - `beacon-qa`
+  - `beacon-release`
+- support:
+  - `beacon-help`
+  - `beacon-status`
+  - `beacon-doctor`
+
+Rule:
+
+> if a host-visible skill does not fit this 6+3 human boundary, it should not be public.
+
 ### Hidden / machine-first commands
 
 These commands or lanes may continue to exist, but should not become the normal human operating burden:
@@ -62,6 +88,30 @@ These commands or lanes may continue to exist, but should not become the normal 
 Rule:
 
 > machine collaboration may stay rich, but human cognition must stay narrow.
+
+## Feature-package boundary
+
+`v1.3.1` makes the following boundary explicit:
+
+- one version line may contain multiple feature packages
+- one feature package owns exactly one primary `prd`
+- that `prd` maps to its own `user-story`
+- that `user-story` maps to its own `test-case`
+
+The binding key is the shared `feature slug`.
+
+Allowed:
+
+- multiple `prd/*.md` files under the same version
+- multiple `user-story/*.md` files under the same version
+- multiple `qa/test-cases/*.md` files under the same version
+- parallel implementation/QA per feature package
+
+Forbidden:
+
+- assuming one version must collapse into one PRD
+- mixing one feature's PRD with another feature's story/test package
+- releasing a version without knowing which feature packages actually landed
 
 ## Brainstorm boundary
 
@@ -182,6 +232,28 @@ Required operator surface:
 beacon doctor sync-materials --project-root <root> --version <docs-version> --all-features
 ```
 
+## Change-document boundary
+
+`implementation-summary` and `technical-implementation` are not enough on their own.
+
+`v1.3.1` requires an independent change surface so the delivery truth is readable without diff archaeology.
+
+Required outputs:
+
+- feature-level `change/<feature-slug>.md`
+- version-level `change/<version>.md`
+
+Required classification:
+
+- added
+- removed
+- fixed
+- retained / unchanged where necessary for context
+
+Rule:
+
+> release truth should reference explicit change documents, not implicit memory of implementation archives.
+
 ## CLI simplification boundary
 
 Extreme simplification does not mean deleting necessary control surfaces.
@@ -198,4 +270,3 @@ Forbidden:
 - removing technical review obligations
 - making recovery impossible
 - claiming "simple" while silently dropping formal delivery rigor
-
