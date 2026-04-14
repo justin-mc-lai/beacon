@@ -1,23 +1,1523 @@
 {
-  "schema_version": "1.0",
-  "feature": "Beacon QA Confidence Autoresearch Closure",
-  "feature_slug": "beacon-qa-confidence-autoresearch-closure",
-  "version": "v1.1.10",
-  "run_id": "run-v110-release",
+  "scope": "qa9",
+  "timestamp": "2026-04-14T09:55:47.089433",
+  "project": "/Users/apple/Developer/Personal/products/beacon",
+  "version": "v1.3.1",
+  "run_id": "run-20260414T095547083057",
+  "spec_fingerprint_hash": "b0afe958c7c1eab0513dda790e34bff5199eb9d170224051b43a564f8d941c6d",
   "status": "passed",
+  "selected_layers": [
+    "contract"
+  ],
+  "execution": {
+    "run_id": "run-20260414T095547083057",
+    "version": "v1.3.1",
+    "evidence_dir": ".beacon/evidence/auto-test/run-20260414T095547083057",
+    "spec_fingerprint": {
+      "fingerprint_hash": "b0afe958c7c1eab0513dda790e34bff5199eb9d170224051b43a564f8d941c6d",
+      "version": "v1.3.1",
+      "generated_at": "2026-04-14T02:02:02.869721+00:00"
+    },
+    "layers": [
+      {
+        "layer": "contract",
+        "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "exit_code": 0,
+        "status": "passed",
+        "assertion_count": 166,
+        "was_flaky": false,
+        "attempt_count": 1,
+        "attempts": [
+          {
+            "attempt": 1,
+            "exit_code": 0
+          }
+        ],
+        "execution_fingerprint": "7a7b4f3183034373c0f1362447c6dc64ba07d088b028b7bcd398e83e7da1a903",
+        "started_at": "2026-04-14T09:55:47.089729",
+        "ended_at": "2026-04-14T09:56:18.812186",
+        "junit_path": ".beacon/evidence/auto-test/run-20260414T095547083057/contract/junit.xml",
+        "junit_valid": true,
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260414T095547083057/contract/command.txt",
+          ".beacon/evidence/auto-test/run-20260414T095547083057/contract/stdout.log",
+          ".beacon/evidence/auto-test/run-20260414T095547083057/contract/stderr.log",
+          ".beacon/evidence/auto-test/run-20260414T095547083057/contract/junit.xml",
+          ".beacon/evidence/auto-test/run-20260414T095547083057/contract/result.json"
+        ]
+      }
+    ],
+    "ui_action_evidence": {},
+    "matrix_report": {
+      "status": "ok",
+      "matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/beacon-v1.3.1-human-ai-cocreation-cognitive-load-reduction/matrix.qa9.json",
+      "evidence_generated": 12,
+      "entry_count": 12,
+      "freshness_violations": []
+    },
+    "artifacts": [
+      ".beacon/evidence/auto-test/run-20260414T095547083057/qa9/tc-execution-map.json",
+      ".beacon/evidence/auto-test/run-20260414T095547083057/qa9/tc-results.json",
+      ".beacon/evidence/auto-test/run-20260414T095547083057/summary.json",
+      ".beacon/flaky-history.json",
+      ".beacon/evidence-signature-chain.json"
+    ],
+    "qa9_matrix_schema_version": "1.0",
+    "flaky": {
+      "pass_count": 1,
+      "flaky_pass_count": 0,
+      "flaky_rate": 0.0,
+      "max_flaky_rate": 0.02
+    }
+  },
+  "qa9": {
+    "qa_profile": "web-full",
+    "qa_types": [
+      "contract"
+    ],
+    "qa_matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/beacon-v1.3.1-human-ai-cocreation-cognitive-load-reduction/matrix.qa9.json",
+    "ui_runner": "browser-use",
+    "quality_requirements": {
+      "require_junit": true,
+      "require_assertion_count": true
+    },
+    "compatibility": {
+      "browsers": [],
+      "devices": [],
+      "required_pairs": [],
+      "executed_pairs": []
+    },
+    "summary": {
+      "cases_total": 12,
+      "passed": 12,
+      "failed": 0,
+      "blocked": 0,
+      "pending": 0,
+      "pass_rate": 1.0,
+      "automation_rate": 1.0,
+      "auto_cases_total": 12,
+      "auto_cases_executed": 12,
+      "round_stop_triggered": false,
+      "round_stop_reasons": []
+    },
+    "tc_results": [
+      {
+        "tc_id": "TC-001",
+        "ac_id": "AC-001",
+        "source_tc_id": "TC-001",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 166,
+        "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260414T095547083057",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.1-human-ai-cocreation-cognitive-load-reduction/tc-001/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-001/command.txt",
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-001/stdout.log",
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-001/stderr.log",
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-001/junit.xml",
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-001/result.json"
+        ],
+        "execution_fingerprint": "8dfcc4df0d1afe2de3b2b39a546c15fc19052c2f7429dfd3371d924aaa93214a",
+        "started_at": "2026-04-14T09:56:18.817344",
+        "ended_at": "2026-04-14T09:56:43.276429",
+        "junit_path": ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-001/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-002",
+        "ac_id": "AC-002",
+        "source_tc_id": "TC-002",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 166,
+        "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260414T095547083057",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.1-human-ai-cocreation-cognitive-load-reduction/tc-002/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-002/command.txt",
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-002/stdout.log",
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-002/stderr.log",
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-002/junit.xml",
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-002/result.json"
+        ],
+        "execution_fingerprint": "ce98d5da9bbb80895213885b65327abe2538b8fcab41a52d43c4a76a6bcecd6c",
+        "started_at": "2026-04-14T09:56:43.277340",
+        "ended_at": "2026-04-14T09:57:07.160855",
+        "junit_path": ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-002/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-003",
+        "ac_id": "AC-003",
+        "source_tc_id": "TC-003",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 166,
+        "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260414T095547083057",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.1-human-ai-cocreation-cognitive-load-reduction/tc-003/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-003/command.txt",
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-003/stdout.log",
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-003/stderr.log",
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-003/junit.xml",
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-003/result.json"
+        ],
+        "execution_fingerprint": "0c5eb7e1b7cb8d0f095b263f80e63c4b76e00329c916527a9f9ea84e094d5ec4",
+        "started_at": "2026-04-14T09:57:07.161897",
+        "ended_at": "2026-04-14T09:57:32.451046",
+        "junit_path": ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-003/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-004",
+        "ac_id": "AC-004",
+        "source_tc_id": "TC-004",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 166,
+        "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260414T095547083057",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.1-human-ai-cocreation-cognitive-load-reduction/tc-004/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-004/command.txt",
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-004/stdout.log",
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-004/stderr.log",
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-004/junit.xml",
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-004/result.json"
+        ],
+        "execution_fingerprint": "bcaa392e42ceee28663dcfd7ad77b32cad5cee3de937d6a06bc5bbf656f7df00",
+        "started_at": "2026-04-14T09:57:32.452362",
+        "ended_at": "2026-04-14T09:58:08.639762",
+        "junit_path": ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-004/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-005",
+        "ac_id": "AC-005",
+        "source_tc_id": "TC-005",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 166,
+        "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260414T095547083057",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.1-human-ai-cocreation-cognitive-load-reduction/tc-005/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-005/command.txt",
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-005/stdout.log",
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-005/stderr.log",
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-005/junit.xml",
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-005/result.json"
+        ],
+        "execution_fingerprint": "f2dd47df9fc704578279125d7df891ebaafeaecdcfaed807035d515bb971a12e",
+        "started_at": "2026-04-14T09:58:08.640763",
+        "ended_at": "2026-04-14T09:58:36.364309",
+        "junit_path": ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-005/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-006",
+        "ac_id": "AC-006",
+        "source_tc_id": "TC-006",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 166,
+        "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260414T095547083057",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.1-human-ai-cocreation-cognitive-load-reduction/tc-006/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-006/command.txt",
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-006/stdout.log",
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-006/stderr.log",
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-006/junit.xml",
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-006/result.json"
+        ],
+        "execution_fingerprint": "a1b144665676b7bf0271e7efdc60a5ffe1a82fe3a04e53f1dc751a8f03a7dac0",
+        "started_at": "2026-04-14T09:58:36.365229",
+        "ended_at": "2026-04-14T09:59:04.559023",
+        "junit_path": ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-006/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-007",
+        "ac_id": "AC-007",
+        "source_tc_id": "TC-007",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 166,
+        "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260414T095547083057",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.1-human-ai-cocreation-cognitive-load-reduction/tc-007/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-007/command.txt",
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-007/stdout.log",
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-007/stderr.log",
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-007/junit.xml",
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-007/result.json"
+        ],
+        "execution_fingerprint": "5fcf0a6118e8318dd48dab8710c9f4d641f3ec6f5175f1e9a47b36698f79f0cb",
+        "started_at": "2026-04-14T09:59:04.560532",
+        "ended_at": "2026-04-14T09:59:40.330049",
+        "junit_path": ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-007/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-008",
+        "ac_id": "AC-008",
+        "source_tc_id": "TC-008",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 166,
+        "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260414T095547083057",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.1-human-ai-cocreation-cognitive-load-reduction/tc-008/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-008/command.txt",
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-008/stdout.log",
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-008/stderr.log",
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-008/junit.xml",
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-008/result.json"
+        ],
+        "execution_fingerprint": "9876a28f9cc286e671560e44060b98925983b38ef1d4c9394e95a7929726e836",
+        "started_at": "2026-04-14T09:59:40.331031",
+        "ended_at": "2026-04-14T10:00:10.071393",
+        "junit_path": ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-008/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-009",
+        "ac_id": "AC-009",
+        "source_tc_id": "TC-009",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 166,
+        "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260414T095547083057",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.1-human-ai-cocreation-cognitive-load-reduction/tc-009/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-009/command.txt",
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-009/stdout.log",
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-009/stderr.log",
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-009/junit.xml",
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-009/result.json"
+        ],
+        "execution_fingerprint": "1d4b4977ed3ba353f56a4f88610fb19aa18cbf5684285f10d8362806b441bf6f",
+        "started_at": "2026-04-14T10:00:10.072525",
+        "ended_at": "2026-04-14T10:00:36.778261",
+        "junit_path": ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-009/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-010",
+        "ac_id": "AC-010",
+        "source_tc_id": "TC-010",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 166,
+        "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260414T095547083057",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.1-human-ai-cocreation-cognitive-load-reduction/tc-010/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-010/command.txt",
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-010/stdout.log",
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-010/stderr.log",
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-010/junit.xml",
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-010/result.json"
+        ],
+        "execution_fingerprint": "2c4ccb5b3c2fd55a07d23599ea50a4dfbc84b801fbbd9727e8373fc50e97133f",
+        "started_at": "2026-04-14T10:00:36.779458",
+        "ended_at": "2026-04-14T10:01:04.902262",
+        "junit_path": ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-010/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-011",
+        "ac_id": "AC-011",
+        "source_tc_id": "TC-011",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 166,
+        "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260414T095547083057",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.1-human-ai-cocreation-cognitive-load-reduction/tc-011/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-011/command.txt",
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-011/stdout.log",
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-011/stderr.log",
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-011/junit.xml",
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-011/result.json"
+        ],
+        "execution_fingerprint": "6c4658028a8d1efb8953b79e413aa951e16579f433aeed98a61dc47dd793e57e",
+        "started_at": "2026-04-14T10:01:04.903554",
+        "ended_at": "2026-04-14T10:01:34.652141",
+        "junit_path": ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-011/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-012",
+        "ac_id": "AC-012",
+        "source_tc_id": "TC-012",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 166,
+        "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260414T095547083057",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.1-human-ai-cocreation-cognitive-load-reduction/tc-012/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-012/command.txt",
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-012/stdout.log",
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-012/stderr.log",
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-012/junit.xml",
+          ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-012/result.json"
+        ],
+        "execution_fingerprint": "5fdf376d63d6b7902130dea6d0e7efbebebae7367628e01cd26356261487cef0",
+        "started_at": "2026-04-14T10:01:34.653315",
+        "ended_at": "2026-04-14T10:02:02.021023",
+        "junit_path": ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-012/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      }
+    ]
+  },
+  "quality_issues": [],
+  "schema_version": "1.0",
+  "updated_at": "2026-04-14T02:02:02.444063+00:00",
+  "feature": "beacon-v1.3.1-human-ai-cocreation-cognitive-load-reduction",
+  "feature_slug": "beacon-v1.3.1-human-ai-cocreation-cognitive-load-reduction",
+  "implementation_done": true,
   "evidence_done": true,
-  "execution_mode": "precision-release",
+  "story_sequence": [
+    {
+      "ac_id": "AC-001",
+      "theme": "US-001",
+      "text": "作为 Beacon 人类使用者，我希望只面对有限主闭环，而不是越来越多的命令面",
+      "tc_ids": [
+        "TC-001"
+      ],
+      "qa_types": [
+        "contract"
+      ]
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "US-002",
+      "text": "作为需求作者，我希望 `brainstorm` 在 `prd -> user-story` 探索中持续存在，但不增加额外操作负担",
+      "tc_ids": [
+        "TC-002"
+      ],
+      "qa_types": [
+        "contract"
+      ]
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "US-003",
+      "text": "作为实现负责人，我希望 `implement` 对人类保持单入口，但内部可由 Beacon 自由使用 team 协作闭环交付",
+      "tc_ids": [
+        "TC-003"
+      ],
+      "qa_types": [
+        "contract"
+      ]
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "US-004",
+      "text": "作为 QA 负责人，我希望 `qa` 对人类保持单入口，但内部能使用 team、learning、auto research 提升覆盖与边界清晰度",
+      "tc_ids": [
+        "TC-004"
+      ],
+      "qa_types": [
+        "contract"
+      ]
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "US-005",
+      "text": "作为旧项目操作者，我希望 Beacon 源码升级后，可以按文档版本一键同步旧物料",
+      "tc_ids": [
+        "TC-005"
+      ],
+      "qa_types": [
+        "contract"
+      ]
+    },
+    {
+      "ac_id": "AC-006",
+      "theme": "US-006",
+      "text": "作为 Beacon 人类使用者，我希望探索极简 CLI，而不是记忆一大串细分命令",
+      "tc_ids": [
+        "TC-006"
+      ],
+      "qa_types": [
+        "contract"
+      ]
+    },
+    {
+      "ac_id": "AC-007",
+      "theme": "US-007",
+      "text": "作为产品负责人，我希望人类交付与机器协作分层明确",
+      "tc_ids": [
+        "TC-007"
+      ],
+      "qa_types": [
+        "contract"
+      ]
+    },
+    {
+      "ac_id": "AC-008",
+      "theme": "US-008",
+      "text": "作为需求负责人，我希望需求文档里的遗漏点、不清晰点、问号点、未澄清点都被显式审核，否则不能冻结",
+      "tc_ids": [
+        "TC-008"
+      ],
+      "qa_types": [
+        "contract"
+      ]
+    },
+    {
+      "ac_id": "AC-009",
+      "theme": "US-009",
+      "text": "作为技术负责人，我希望每个版本在实现前都先完成技术评审，给出确定性实现面",
+      "tc_ids": [
+        "TC-009"
+      ],
+      "qa_types": [
+        "contract"
+      ]
+    },
+    {
+      "ac_id": "AC-010",
+      "theme": "US-010",
+      "text": "作为多服务项目操作者，我希望类似 rolo 这类项目能在版本评审阶段就明确具体改哪些服务",
+      "tc_ids": [
+        "TC-010"
+      ],
+      "qa_types": [
+        "contract"
+      ]
+    },
+    {
+      "ac_id": "AC-011",
+      "theme": "US-011",
+      "text": "作为版本负责人，我希望同一个版本下可以并行维护多个 feature package，但每个包都保持自己的 PRD / user-story / test-case",
+      "tc_ids": [
+        "TC-011"
+      ],
+      "qa_types": [
+        "contract"
+      ]
+    },
+    {
+      "ac_id": "AC-012",
+      "theme": "US-012",
+      "text": "作为交付负责人，我希望 release 前有独立 change 文档和版本演进图，而不是自己去拼技术归档",
+      "tc_ids": [
+        "TC-012"
+      ],
+      "qa_types": [
+        "contract"
+      ]
+    }
+  ],
+  "targeted_rerun": {
+    "required": true,
+    "reason_codes": [
+      "no_prior_feature_qa",
+      "artifact_updates_pending"
+    ],
+    "targeted_layers": [
+      "contract"
+    ],
+    "targeted_ac_ids": [
+      "AC-001",
+      "AC-002",
+      "AC-003",
+      "AC-004",
+      "AC-005",
+      "AC-006",
+      "AC-007",
+      "AC-008",
+      "AC-009",
+      "AC-010",
+      "AC-011",
+      "AC-012"
+    ],
+    "targeted_tc_ids": [
+      "TC-001",
+      "TC-002",
+      "TC-003",
+      "TC-004",
+      "TC-005",
+      "TC-006",
+      "TC-007",
+      "TC-008",
+      "TC-009",
+      "TC-010",
+      "TC-011",
+      "TC-012"
+    ],
+    "targeted_scenario_ids": [],
+    "targeted_scenario_families": []
+  },
+  "feature_matrix_path": ".beacon/qa/features/beacon-v1.3.1-human-ai-cocreation-cognitive-load-reduction/matrix.qa9.json",
+  "blocking_artifact_updates": [
+    {
+      "artifact": "review_quality",
+      "required": true,
+      "reason": "run quality review after native implementation",
+      "status": "open",
+      "notes": ""
+    }
+  ],
+  "per_item_results": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-001",
+      "source_tc_id": "TC-001",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-001",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-001/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-002",
+      "source_tc_id": "TC-002",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-002",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-002/command.txt",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-002/stdout.log",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-002/stderr.log",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-002/junit.xml",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-002/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-003",
+      "source_tc_id": "TC-003",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-003",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-003/command.txt",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-003/stdout.log",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-003/stderr.log",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-003/junit.xml",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-003/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-004",
+      "source_tc_id": "TC-004",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-004",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-004/command.txt",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-004/stdout.log",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-004/stderr.log",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-004/junit.xml",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-004/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-005",
+      "tc_id": "TC-005",
+      "source_tc_id": "TC-005",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-005",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-005/command.txt",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-005/stdout.log",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-005/stderr.log",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-005/junit.xml",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-005/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-006",
+      "tc_id": "TC-006",
+      "source_tc_id": "TC-006",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-006",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-006/command.txt",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-006/stdout.log",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-006/stderr.log",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-006/junit.xml",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-006/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-007",
+      "tc_id": "TC-007",
+      "source_tc_id": "TC-007",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-007",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-007/command.txt",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-007/stdout.log",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-007/stderr.log",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-007/junit.xml",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-007/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-008",
+      "tc_id": "TC-008",
+      "source_tc_id": "TC-008",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-008",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-008/command.txt",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-008/stdout.log",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-008/stderr.log",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-008/junit.xml",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-008/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-009",
+      "tc_id": "TC-009",
+      "source_tc_id": "TC-009",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-009",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-009/command.txt",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-009/stdout.log",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-009/stderr.log",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-009/junit.xml",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-009/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-010",
+      "tc_id": "TC-010",
+      "source_tc_id": "TC-010",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-010",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-010/command.txt",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-010/stdout.log",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-010/stderr.log",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-010/junit.xml",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-010/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-011",
+      "tc_id": "TC-011",
+      "source_tc_id": "TC-011",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-011",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-011/command.txt",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-011/stdout.log",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-011/stderr.log",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-011/junit.xml",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-011/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-012",
+      "tc_id": "TC-012",
+      "source_tc_id": "TC-012",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-012",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-012/command.txt",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-012/stdout.log",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-012/stderr.log",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-012/junit.xml",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-012/result.json"
+      ]
+    }
+  ],
+  "execution_mode": "feature-aware",
+  "project_profile": {},
   "project_profile_gate": {
-    "status": "pass",
-    "profile_id": "release-global"
+    "status": "not_configured",
+    "profile_id": "",
+    "issues": [],
+    "required_evidence": [],
+    "required_cases": [],
+    "contract_drifts": []
   },
+  "project_orchestration": {},
+  "current_session_id": "",
+  "exhaustiveness": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1.3.1-human-ai-cocreation-cognitive-load-reduction",
+    "feature_slug": "beacon-v1.3.1-human-ai-cocreation-cognitive-load-reduction",
+    "run_id": "run-20260414T095547083057",
+    "generated_at": "2026-04-14T02:02:02.865855+00:00",
+    "execution_mode": "feature-aware",
+    "scenario_count": 12,
+    "browser_scenario_count": 0,
+    "required_families": [],
+    "passed_families": [],
+    "missing_axes": [],
+    "missing_replay_scenarios": [],
+    "missing_browser_evidence_scenarios": [],
+    "scenario_pass_rate": 1.0,
+    "family_coverage_rate": 1.0,
+    "replay_coverage_rate": 1.0,
+    "browser_evidence_rate": 1.0,
+    "score": 1.0,
+    "threshold": 0.6,
+    "status": "passed",
+    "required_next_action": "continue_current_plan",
+    "failure_streak": 0,
+    "escalation_level": "E0"
+  },
+  "scenario_results_v2": [
+    {
+      "scenario_id": "TC-001",
+      "tc_id": "TC-001",
+      "source_tc_id": "TC-001",
+      "ac_id": "AC-001",
+      "feature_slug": "beacon-v1.3.1-human-ai-cocreation-cognitive-load-reduction",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-001/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-002",
+      "tc_id": "TC-002",
+      "source_tc_id": "TC-002",
+      "ac_id": "AC-002",
+      "feature_slug": "beacon-v1.3.1-human-ai-cocreation-cognitive-load-reduction",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-002/command.txt",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-002/stdout.log",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-002/stderr.log",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-002/junit.xml",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-002/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-003",
+      "tc_id": "TC-003",
+      "source_tc_id": "TC-003",
+      "ac_id": "AC-003",
+      "feature_slug": "beacon-v1.3.1-human-ai-cocreation-cognitive-load-reduction",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-003/command.txt",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-003/stdout.log",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-003/stderr.log",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-003/junit.xml",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-003/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-004",
+      "tc_id": "TC-004",
+      "source_tc_id": "TC-004",
+      "ac_id": "AC-004",
+      "feature_slug": "beacon-v1.3.1-human-ai-cocreation-cognitive-load-reduction",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-004/command.txt",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-004/stdout.log",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-004/stderr.log",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-004/junit.xml",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-004/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-005",
+      "tc_id": "TC-005",
+      "source_tc_id": "TC-005",
+      "ac_id": "AC-005",
+      "feature_slug": "beacon-v1.3.1-human-ai-cocreation-cognitive-load-reduction",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-005/command.txt",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-005/stdout.log",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-005/stderr.log",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-005/junit.xml",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-005/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-006",
+      "tc_id": "TC-006",
+      "source_tc_id": "TC-006",
+      "ac_id": "AC-006",
+      "feature_slug": "beacon-v1.3.1-human-ai-cocreation-cognitive-load-reduction",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-006/command.txt",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-006/stdout.log",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-006/stderr.log",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-006/junit.xml",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-006/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-007",
+      "tc_id": "TC-007",
+      "source_tc_id": "TC-007",
+      "ac_id": "AC-007",
+      "feature_slug": "beacon-v1.3.1-human-ai-cocreation-cognitive-load-reduction",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-007/command.txt",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-007/stdout.log",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-007/stderr.log",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-007/junit.xml",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-007/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-008",
+      "tc_id": "TC-008",
+      "source_tc_id": "TC-008",
+      "ac_id": "AC-008",
+      "feature_slug": "beacon-v1.3.1-human-ai-cocreation-cognitive-load-reduction",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-008/command.txt",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-008/stdout.log",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-008/stderr.log",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-008/junit.xml",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-008/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-009",
+      "tc_id": "TC-009",
+      "source_tc_id": "TC-009",
+      "ac_id": "AC-009",
+      "feature_slug": "beacon-v1.3.1-human-ai-cocreation-cognitive-load-reduction",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-009/command.txt",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-009/stdout.log",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-009/stderr.log",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-009/junit.xml",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-009/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-010",
+      "tc_id": "TC-010",
+      "source_tc_id": "TC-010",
+      "ac_id": "AC-010",
+      "feature_slug": "beacon-v1.3.1-human-ai-cocreation-cognitive-load-reduction",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-010/command.txt",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-010/stdout.log",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-010/stderr.log",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-010/junit.xml",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-010/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-011",
+      "tc_id": "TC-011",
+      "source_tc_id": "TC-011",
+      "ac_id": "AC-011",
+      "feature_slug": "beacon-v1.3.1-human-ai-cocreation-cognitive-load-reduction",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-011/command.txt",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-011/stdout.log",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-011/stderr.log",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-011/junit.xml",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-011/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-012",
+      "tc_id": "TC-012",
+      "source_tc_id": "TC-012",
+      "ac_id": "AC-012",
+      "feature_slug": "beacon-v1.3.1-human-ai-cocreation-cognitive-load-reduction",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-012/command.txt",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-012/stdout.log",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-012/stderr.log",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-012/junit.xml",
+        ".beacon/evidence/auto-test/run-20260414T095547083057/qa9-tc/TC-012/result.json"
+      ]
+    }
+  ],
+  "ac_closure_path": ".beacon/qa/features/beacon-v1.3.1-human-ai-cocreation-cognitive-load-reduction/ac-closure.json",
+  "feature_scorecard_path": ".beacon/qa/features/beacon-v1.3.1-human-ai-cocreation-cognitive-load-reduction/scorecard.json",
   "feature_scorecard": {
-    "release_ready": true,
-    "release_confidence_min": 0.92,
+    "schema_version": "1.0",
+    "feature": "beacon-v1.3.1-human-ai-cocreation-cognitive-load-reduction",
+    "feature_slug": "beacon-v1.3.1-human-ai-cocreation-cognitive-load-reduction",
+    "run_id": "run-20260414T095547083057",
+    "ac_total": 12,
+    "ac_accepted": 12,
+    "scenario_total": 12,
+    "scenario_passed": 12,
+    "release_confidence_min": 1.0,
+    "release_confidence_avg": 1.0,
     "review_required_count": 0,
-    "needs_replay_count": 0
+    "needs_replay_count": 0,
+    "false_complete_risk": 0.0,
+    "unresolved_closure_outcomes": [],
+    "project_profile_gate_status": "not_configured",
+    "project_profile_id": "",
+    "coverage_current": {
+      "required_scenarios": 12,
+      "executed_scenarios": 12,
+      "coverage_rate": 1.0,
+      "required_scenario_families": [
+        "boundary",
+        "compatibility",
+        "happy",
+        "negative",
+        "recovery"
+      ],
+      "covered_scenario_families": [
+        "primary"
+      ],
+      "missing_scenario_families": [],
+      "missing_test_case_ids": []
+    },
+    "coverage_gap": {
+      "missing_axes": [],
+      "missing_replay_scenarios": [],
+      "missing_browser_evidence_scenarios": [],
+      "missing_scenario_families": [],
+      "missing_test_case_ids": [],
+      "open_closure_outcomes": []
+    },
+    "continue_decision": "ready_for_release",
+    "stop_reasons": [],
+    "test_case_backfill_required": false,
+    "resume_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.3.1 --feature \"beacon-v1.3.1-human-ai-cocreation-cognitive-load-reduction\"",
+    "repair_handoff": {
+      "action": "qa-repair",
+      "reason": "qa_round_incomplete",
+      "command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.3.1 --feature \"beacon-v1.3.1-human-ai-cocreation-cognitive-load-reduction\""
+    },
+    "release_ready": true
   },
-  "feature_scorecard_path": ".beacon/qa/features/beacon-qa-confidence-autoresearch-closure/scorecard.json",
-  "ac_closure_path": ".beacon/qa/features/beacon-qa-confidence-autoresearch-closure/ac-closure.json",
-  "updated_at": "2026-03-29T00:00:00+00:00"
+  "release_ready": true,
+  "current_spec_fingerprint_hash": "b0afe958c7c1eab0513dda790e34bff5199eb9d170224051b43a564f8d941c6d"
 }
