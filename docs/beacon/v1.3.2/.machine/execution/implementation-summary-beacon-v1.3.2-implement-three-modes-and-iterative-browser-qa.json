@@ -1,0 +1,956 @@
+{
+  "schema_version": "1.0",
+  "run_id": "run-20260414T085139Z-8e0c",
+  "feature": "beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa",
+  "feature_slug": "beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa",
+  "version": "v1.3.2",
+  "mode": "",
+  "host_runtime": "codex",
+  "runner": "native-single",
+  "adapter_type": "native",
+  "request_path": ".beacon/implement/run-20260414T085139Z-8e0c/request.json",
+  "result_path": ".beacon/implement/run-20260414T085139Z-8e0c/result.json",
+  "branch_preflight_path": ".beacon/implement/run-20260414T085139Z-8e0c/branch-preflight.json",
+  "plan_preflight_path": ".beacon/implement/run-20260414T085139Z-8e0c/plan-preflight.json",
+  "git_workflow": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa",
+    "feature_slug": "beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa",
+    "version": "v1.3.2",
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.3.2",
+    "branch_prefix": "beacon/",
+    "base_branch": "main",
+    "use_git_worktree": false,
+    "require_clean_worktree_for_switch": true,
+    "service_directories": [
+      "."
+    ],
+    "git_roots": [
+      "."
+    ],
+    "worktree_root": ".",
+    "source": "technical_review_contract",
+    "generated_at": "2026-04-14T08:51:39.750677+00:00"
+  },
+  "generated_at": "2026-04-14T08:51:40.671442+00:00",
+  "status": "completed",
+  "subagent_prechecks": {
+    "required": false,
+    "host_runtime": "codex",
+    "runtime_readiness": {},
+    "delegation_readiness": {}
+  },
+  "skill": "",
+  "summary": "native-single implementation completed",
+  "changed_files": [
+    "AGENTS.md",
+    "CLAUDE.md",
+    "beacon/commands/doctor.py",
+    "beacon/commands/help.py",
+    "beacon/commands/implement.py",
+    "beacon/commands/init.py",
+    "beacon/commands/qa.py",
+    "beacon/commands/status.py",
+    "beacon/utils/context_files.py",
+    "beacon/utils/doctor_diagnostics.py",
+    "beacon/utils/help_support.py",
+    "docs/beacon/research/index.md",
+    "docs/beacon/v1.3.2/.machine/execution/beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa.revision.json",
+    "docs/beacon/v1.3.2/.machine/qa/beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa.ac-test-matrix.json",
+    "docs/beacon/v1.3.2/.machine/qa/beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa.qa9-matrix.json",
+    "docs/beacon/v1.3.2/.machine/qa/beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa.story-scenario-map.json",
+    "docs/beacon/v1.3.2/.machine/user-story/beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa.json",
+    "docs/beacon/v1.3.2/SUMMARY.md",
+    "docs/beacon/v1.3.2/execution/index.md",
+    "docs/beacon/v1.3.2/prd/beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa.md",
+    "docs/beacon/v1.3.2/qa/test-cases/beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa.md",
+    "docs/beacon/v1.3.2/user-story/beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa.md",
+    "skills/beacon/using-beacon/SKILL.md"
+  ],
+  "verification": [
+    {
+      "command": "beacon implement run --runner native-single",
+      "status": "passed"
+    }
+  ],
+  "implemented_task_ids": [],
+  "verified_task_ids": [],
+  "blocked_task_ids": [],
+  "failed_task_ids": [],
+  "artifact_updates": {
+    "user_story": {
+      "required": false,
+      "reason": "story machine state writeback recorded"
+    },
+    "review_quality": {
+      "required": true,
+      "reason": "run quality review after native implementation"
+    },
+    "acceptance": {
+      "required": true,
+      "reason": "acceptance remains a formal post-verify action"
+    }
+  },
+  "branch_preflight": {
+    "schema_version": "1.0",
+    "status": "pass",
+    "summary": "implement branch preflight passed on workspace branch beacon/v1.3.2",
+    "blocked": false,
+    "version": "v1.3.2",
+    "expected_branch": "beacon/v1.3.2",
+    "current_branch": "beacon/v1.3.2",
+    "current_tag": "",
+    "branch_exists": true,
+    "dirty_worktree": true,
+    "require_clean_worktree_for_switch": true,
+    "recommended_command": "",
+    "reason_codes": [],
+    "git_alignment": {
+      "mode": "workspace",
+      "repo_detected": true,
+      "target_branch": "beacon/v1.3.2",
+      "worktree_path": "/Users/apple/Developer/Personal/products/beacon",
+      "workspace_repos": [
+        {
+          "repo_root": "/Users/apple/Developer/Personal/products/beacon",
+          "relative_root": ".",
+          "dirty_worktree": true,
+          "repo_url": "https://github.com/justin-mc-lai/beacon.git",
+          "base_branch": "main",
+          "target_branch": "beacon/v1.3.2",
+          "current_branch": "beacon/v1.3.2",
+          "current_commit": "c4575ab3a41abec387b33ad9811989307094d4d5",
+          "current_tag": "",
+          "worktree_path": "/Users/apple/Developer/Personal/products/beacon",
+          "version_ref": "v1.3.2",
+          "allowed_refs": [
+            "branch"
+          ],
+          "enforce_branch_prefix": "beacon/",
+          "branch_matches_target": true,
+          "branch_has_required_prefix": true,
+          "tag_matches_version": false,
+          "version_ref_satisfied": true,
+          "reason_codes": [],
+          "blocked": false,
+          "detached_head": false,
+          "repo_detected": true
+        }
+      ],
+      "blocked": false,
+      "reason_codes": []
+    },
+    "run_id": "run-20260414T085139Z-8e0c",
+    "feature": "beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa",
+    "feature_slug": "beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa",
+    "generated_at": "2026-04-14T08:51:40.449986+00:00"
+  },
+  "plan_preflight": {
+    "schema_version": "1.0",
+    "run_id": "run-20260414T085139Z-8e0c",
+    "feature": "beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa",
+    "feature_slug": "beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa",
+    "version": "v1.3.2",
+    "expected_plan": "docs/beacon/v1.3.2/.machine/execution/implementation-plan-beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa.json",
+    "expected_revision_id": "R1",
+    "baseline_hash": "sha256:034eac663dcd457d18ce1b585027ae355ba919fdf202a46f1dda037bf4586a43",
+    "recommended_command": "beacon implement plan \"beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa\" --project-root /Users/apple/Developer/Personal/products/beacon --version v1.3.2",
+    "generated_at": "2026-04-14T08:51:40.451352+00:00",
+    "status": "pass",
+    "blocked": false,
+    "plan_id": "plan-beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa-r1",
+    "plan_path": "docs/beacon/v1.3.2/.machine/execution/implementation-plan-beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa.json",
+    "progress_path": "docs/beacon/v1.3.2/.machine/execution/implementation-plan-beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa.progress.json"
+  },
+  "implementation_marker": ".beacon/state/implementation-beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa.json",
+  "technical_archive": {
+    "json": "docs/beacon/v1.3.2/.machine/execution/technical-implementation-beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa.json",
+    "md": "docs/beacon/v1.3.2/execution/technical-implementation-beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa.md"
+  },
+  "implementation_plan": "docs/beacon/v1.3.2/.machine/execution/implementation-plan-beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa.json",
+  "implementation_plan_progress": {
+    "schema_version": "1.0",
+    "plan_id": "plan-beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa-r1",
+    "feature": "beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa",
+    "version": "v1.3.2",
+    "revision_id": "R1",
+    "status": "completed",
+    "counts": {
+      "total": 42,
+      "draft": 0,
+      "planned": 0,
+      "in_progress": 0,
+      "blocked": 0,
+      "completed": 42
+    },
+    "blocked_task_ids": [],
+    "completed_task_ids": [
+      "ITASK-001",
+      "ITASK-002",
+      "ITASK-003",
+      "ITASK-004",
+      "ITASK-005",
+      "ITASK-006",
+      "ITASK-007",
+      "ITASK-008",
+      "ITASK-009",
+      "ITASK-010",
+      "ITASK-011",
+      "ITASK-012",
+      "ITASK-013",
+      "ITASK-014",
+      "ITASK-015",
+      "ITASK-016",
+      "ITASK-017",
+      "ITASK-018",
+      "ITASK-019",
+      "ITASK-020",
+      "ITASK-021",
+      "ITASK-022",
+      "ITASK-023",
+      "ITASK-024",
+      "ITASK-025",
+      "ITASK-026",
+      "ITASK-027",
+      "ITASK-028",
+      "ITASK-029",
+      "ITASK-030",
+      "ITASK-031",
+      "ITASK-032",
+      "ITASK-033",
+      "ITASK-034",
+      "ITASK-035",
+      "ITASK-036",
+      "ITASK-037",
+      "ITASK-038",
+      "ITASK-039",
+      "ITASK-040",
+      "ITASK-041",
+      "ITASK-042"
+    ],
+    "next_task_id": "",
+    "task_states": [
+      {
+        "task_id": "ITASK-001",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-001",
+          "AC-013",
+          "AC-003",
+          "AC-024"
+        ],
+        "mapped_test_ids": [
+          "TC-001",
+          "TC-013",
+          "TC-003",
+          "TC-024",
+          "TC-027",
+          "TC-029"
+        ],
+        "mapped_scenario_ids": [
+          "SC-001",
+          "SC-002",
+          "SC-003",
+          "SC-004",
+          "SC-005",
+          "SC-006",
+          "SC-007",
+          "SC-008",
+          "SC-009",
+          "SC-010",
+          "SC-021",
+          "SC-022",
+          "SC-023",
+          "SC-024",
+          "SC-025",
+          "SC-026",
+          "SC-027",
+          "SC-028",
+          "SC-029",
+          "SC-030",
+          "SC-096",
+          "SC-097",
+          "SC-098",
+          "SC-099",
+          "SC-100",
+          "SC-151",
+          "SC-152",
+          "SC-153",
+          "SC-154",
+          "SC-155"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-001",
+          "TC-003",
+          "TC-013",
+          "TC-024",
+          "TC-027",
+          "TC-029"
+        ]
+      },
+      {
+        "task_id": "ITASK-002",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-002"
+        ],
+        "mapped_test_ids": [
+          "TC-002",
+          "TC-028"
+        ],
+        "mapped_scenario_ids": [
+          "SC-011",
+          "SC-012",
+          "SC-013",
+          "SC-014",
+          "SC-015",
+          "SC-016",
+          "SC-017",
+          "SC-018",
+          "SC-019",
+          "SC-020"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-002",
+          "TC-028"
+        ]
+      },
+      {
+        "task_id": "ITASK-003",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-014"
+        ],
+        "mapped_test_ids": [
+          "TC-014"
+        ],
+        "mapped_scenario_ids": [
+          "SC-101",
+          "SC-102",
+          "SC-103",
+          "SC-104",
+          "SC-105"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-014"
+        ]
+      },
+      {
+        "task_id": "ITASK-004",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-004",
+          "AC-011"
+        ],
+        "mapped_test_ids": [
+          "TC-004",
+          "TC-011",
+          "TC-030"
+        ],
+        "mapped_scenario_ids": [
+          "SC-031",
+          "SC-032",
+          "SC-033",
+          "SC-034",
+          "SC-035",
+          "SC-036",
+          "SC-037",
+          "SC-038",
+          "SC-039",
+          "SC-040",
+          "SC-086",
+          "SC-087",
+          "SC-088",
+          "SC-089",
+          "SC-090"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-004",
+          "TC-011",
+          "TC-030"
+        ]
+      },
+      {
+        "task_id": "ITASK-005",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-007",
+          "AC-005"
+        ],
+        "mapped_test_ids": [
+          "TC-007",
+          "TC-005",
+          "TC-031",
+          "TC-033"
+        ],
+        "mapped_scenario_ids": [
+          "SC-041",
+          "SC-042",
+          "SC-043",
+          "SC-044",
+          "SC-045",
+          "SC-046",
+          "SC-047",
+          "SC-048",
+          "SC-049",
+          "SC-050",
+          "SC-061",
+          "SC-062",
+          "SC-063",
+          "SC-064",
+          "SC-065",
+          "SC-066",
+          "SC-067",
+          "SC-068",
+          "SC-069",
+          "SC-070"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-005",
+          "TC-007",
+          "TC-031",
+          "TC-033"
+        ]
+      },
+      {
+        "task_id": "ITASK-006",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-006",
+          "AC-009"
+        ],
+        "mapped_test_ids": [
+          "TC-006",
+          "TC-009",
+          "TC-032"
+        ],
+        "mapped_scenario_ids": [
+          "SC-051",
+          "SC-052",
+          "SC-053",
+          "SC-054",
+          "SC-055",
+          "SC-056",
+          "SC-057",
+          "SC-058",
+          "SC-059",
+          "SC-060",
+          "SC-076",
+          "SC-077",
+          "SC-078",
+          "SC-079",
+          "SC-080"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-006",
+          "TC-009",
+          "TC-032"
+        ]
+      },
+      {
+        "task_id": "ITASK-007",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-012",
+          "AC-008",
+          "AC-010",
+          "AC-015"
+        ],
+        "mapped_test_ids": [
+          "TC-012",
+          "TC-008",
+          "TC-010",
+          "TC-015"
+        ],
+        "mapped_scenario_ids": [
+          "SC-071",
+          "SC-072",
+          "SC-073",
+          "SC-074",
+          "SC-075",
+          "SC-081",
+          "SC-082",
+          "SC-083",
+          "SC-084",
+          "SC-085",
+          "SC-091",
+          "SC-092",
+          "SC-093",
+          "SC-094",
+          "SC-095",
+          "SC-106",
+          "SC-107",
+          "SC-108",
+          "SC-109",
+          "SC-110"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-008",
+          "TC-010",
+          "TC-012",
+          "TC-015"
+        ]
+      },
+      {
+        "task_id": "ITASK-008",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-019",
+          "AC-020",
+          "AC-021",
+          "AC-023",
+          "AC-025",
+          "AC-026",
+          "AC-022",
+          "AC-016"
+        ],
+        "mapped_test_ids": [
+          "TC-019",
+          "TC-020",
+          "TC-021",
+          "TC-023",
+          "TC-025",
+          "TC-026",
+          "TC-022",
+          "TC-016"
+        ],
+        "mapped_scenario_ids": [
+          "SC-111",
+          "SC-112",
+          "SC-113",
+          "SC-114",
+          "SC-115",
+          "SC-126",
+          "SC-127",
+          "SC-128",
+          "SC-129",
+          "SC-130",
+          "SC-131",
+          "SC-132",
+          "SC-133",
+          "SC-134",
+          "SC-135",
+          "SC-136",
+          "SC-137",
+          "SC-138",
+          "SC-139",
+          "SC-140",
+          "SC-141",
+          "SC-142",
+          "SC-143",
+          "SC-144",
+          "SC-145",
+          "SC-146",
+          "SC-147",
+          "SC-148",
+          "SC-149",
+          "SC-150",
+          "SC-156",
+          "SC-157",
+          "SC-158",
+          "SC-159",
+          "SC-160",
+          "SC-161",
+          "SC-162",
+          "SC-163",
+          "SC-164",
+          "SC-165"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-016",
+          "TC-019",
+          "TC-020",
+          "TC-021",
+          "TC-022",
+          "TC-023",
+          "TC-025",
+          "TC-026"
+        ]
+      },
+      {
+        "task_id": "ITASK-009",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-017"
+        ],
+        "mapped_test_ids": [
+          "TC-017"
+        ],
+        "mapped_scenario_ids": [
+          "SC-116",
+          "SC-117",
+          "SC-118",
+          "SC-119",
+          "SC-120"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-017"
+        ]
+      },
+      {
+        "task_id": "ITASK-010",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-018"
+        ],
+        "mapped_test_ids": [
+          "TC-018"
+        ],
+        "mapped_scenario_ids": [
+          "SC-121",
+          "SC-122",
+          "SC-123",
+          "SC-124",
+          "SC-125"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-018"
+        ]
+      },
+      {
+        "task_id": "ITASK-011",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-012",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-013",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-014",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-015",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-016",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-017",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-018",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-019",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-020",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-021",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-022",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-023",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-024",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-025",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-026",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-027",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-028",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-029",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-030",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-031",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-032",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-033",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-034",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-035",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-036",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-037",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-038",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-039",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-040",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-041",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-042",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      }
+    ],
+    "updated_at": "2026-04-14T08:51:40.663142+00:00"
+  },
+  "implemented_items": [
+    "AC-001",
+    "AC-002",
+    "AC-003",
+    "AC-004",
+    "AC-005",
+    "AC-006",
+    "AC-007",
+    "AC-008",
+    "AC-009",
+    "AC-010",
+    "AC-011",
+    "AC-012",
+    "AC-013",
+    "AC-014",
+    "AC-015",
+    "AC-016",
+    "AC-017",
+    "AC-018",
+    "AC-019",
+    "AC-020",
+    "AC-021",
+    "AC-022",
+    "AC-023",
+    "AC-024",
+    "AC-025",
+    "AC-026",
+    "TASK-001"
+  ],
+  "verified_items": [],
+  "blocked_items": [],
+  "runner_mode": "single",
+  "revision_id": "R1",
+  "artifact_writeback_obligations": ".beacon/state/artifact-update-obligations/beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa.json",
+  "artifact_writeback_open_count": 2,
+  "requirement_rewrite_input": "docs/beacon/v1.3.2/.machine/execution/requirement-rewrite-input-beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa.json",
+  "implement_to_qa_handoff": ".beacon/handoffs/implement-to-qa/beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa/run-20260414T085139Z-8e0c.json",
+  "auto_qa": {
+    "enabled": false,
+    "triggered": false,
+    "args": [],
+    "follow_handoff": false,
+    "max_rounds": 2
+  }
+}

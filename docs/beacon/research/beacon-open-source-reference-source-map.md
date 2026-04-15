@@ -1,6 +1,6 @@
 # Beacon Open-Source Reference Source Map
 
-**Date**: 2026-04-13  
+**Date**: 2026-04-15  
 **Purpose**: 为 Beacon 研究与版本演进冻结一份“外部开源参考项目 -> `oss-sync` 本地源码目录”的 source map，避免后续只看到 GitHub 链接，却不知道本机应从哪个目录开始读源码。  
 **Canonical mirror root**: `/Users/apple/Developer/Personal/oss-sync`  
 **Canonical mirror indexes**:
@@ -8,7 +8,7 @@
 - `/Users/apple/Developer/Personal/oss-sync/index/repos.json`
 - `/Users/apple/Developer/Personal/oss-sync/index/repos.md`
 
-**Verification note**: 本文内容基于 2026-04-13 重新生成的 `oss-sync` index，当前 `repo_count = 68`。
+**Verification note**: 本文内容基于 2026-04-15 重新生成的 `oss-sync` index，当前 `repo_count = 75`。
 
 ---
 
@@ -33,6 +33,13 @@
 | `superpowers` | `canonical` | `agents/agent-skills/superpowers` | `git@github.com:obra/superpowers.git` | `docs/beacon/research/beacon-codex-native-subagent-direction-gstack-superpowers.md` |
 | `codex-turbo` | `canonical` | `agents/agent-skills/codex-turbo` | `https://github.com/atticus98/codex-turbo.git` | `docs/beacon/research/beacon-codex-native-subagent-direction-gstack-superpowers.md` |
 | `awesome-codex-subagents` | `canonical` | `agents/agent-skills/awesome-codex-subagents` | `https://github.com/VoltAgent/awesome-codex-subagents.git` | `docs/beacon/research/beacon-codex-native-subagent-direction-gstack-superpowers.md` |
+| `ralph` | `canonical` | `ralph/agent-skills/ralph` | `https://github.com/snarktank/ralph` | `docs/beacon/research/beacon-ralph-subagent-long-task-delivery-brainstorm.md` |
+| `ralph-orchestrator` | `canonical` | `ralph/agent-skills/ralph-orchestrator` | `https://github.com/mikeyobrien/ralph-orchestrator` | `docs/beacon/research/beacon-ralph-subagent-long-task-delivery-brainstorm.md` |
+| `ralphex` | `canonical` | `ralph/agent-skills/ralphex` | `https://github.com/umputun/ralphex` | `docs/beacon/research/beacon-ralph-subagent-long-task-delivery-brainstorm.md` |
+| `ralph-loop-agent` | `canonical` | `ralph/agent-skills/ralph-loop-agent` | `https://github.com/vercel-labs/ralph-loop-agent` | `docs/beacon/research/beacon-ralph-subagent-long-task-delivery-brainstorm.md` |
+| `ralph-claude-code` | `canonical` | `ralph/agent-skills/ralph-claude-code` | `https://github.com/frankbria/ralph-claude-code` | `docs/beacon/research/beacon-ralph-subagent-long-task-delivery-brainstorm.md` |
+| `ralphy` | `canonical` | `ralph/agent-skills/ralphy` | `https://github.com/michaelshimeles/ralphy` | `docs/beacon/research/beacon-ralph-subagent-long-task-delivery-brainstorm.md` |
+| `ralph-tui` | `canonical` | `ralph/agent-skills/ralph-tui` | `https://github.com/subsy/ralph-tui` | `docs/beacon/research/beacon-ralph-subagent-long-task-delivery-brainstorm.md` |
 | `deer-flow` | `canonical` | `agents/agent-skills/deer-flow` | `git@github.com:bytedance/deer-flow.git` | `docs/beacon/v1.1.6/research/deer-flow/README.md`, `docs/beacon/v1.1.6/research/README.md` |
 | `openspec` | `canonical` | `automation/autoresearch/openspec` | `https://github.com/Fission-AI/OpenSpec.git` | `docs/beacon/v1.1.6/research/openspec/README.md`, `docs/beacon/v1.1.6/research/README.md` |
 | `gsd-2` | `canonical` | `automation/autoresearch/gsd-2` | `https://github.com/gsd-build/gsd-2.git` | `docs/beacon/v1.1.6/research/gsd-2/README.md`, `docs/beacon/v1.1.6/research/README.md` |
@@ -56,6 +63,8 @@ Absolute path rule:
   `/Users/apple/Developer/Personal/oss-sync/agents/agent-skills/gstack`
 - `superpowers` absolute path:
   `/Users/apple/Developer/Personal/oss-sync/agents/agent-skills/superpowers`
+- `ralph` absolute path:
+  `/Users/apple/Developer/Personal/oss-sync/ralph/agent-skills/ralph`
 
 ---
 
@@ -105,6 +114,88 @@ Absolute path rule:
   - `categories/04-quality-security/`
   - `categories/09-meta-orchestration/`
   - `categories/10-research-analysis/`
+
+### `ralph`
+
+- Root:
+  `/Users/apple/Developer/Personal/oss-sync/ralph/agent-skills/ralph`
+- Start here:
+  - `README.md`
+  - `ralph.sh`
+  - `prompt.md`
+  - `CLAUDE.md`
+  - `skills/prd/`
+  - `skills/ralph/`
+
+### `ralph-orchestrator`
+
+- Root:
+  `/Users/apple/Developer/Personal/oss-sync/ralph/agent-skills/ralph-orchestrator`
+- Start here:
+  - `README.md`
+  - `docs/getting-started/`
+  - `docs/concepts/`
+  - `crates/ralph-cli/`
+  - `crates/ralph-core/`
+  - `.ralph/`
+
+### `ralphex`
+
+- Root:
+  `/Users/apple/Developer/Personal/oss-sync/ralph/agent-skills/ralphex`
+- Start here:
+  - `README.md`
+  - `cmd/ralphex/`
+  - `pkg/plan/`
+  - `pkg/processor/`
+  - `pkg/executor/`
+  - `pkg/config/`
+
+### `ralph-loop-agent`
+
+- Root:
+  `/Users/apple/Developer/Personal/oss-sync/ralph/agent-skills/ralph-loop-agent`
+- Start here:
+  - `README.md`
+  - `packages/ralph-loop-agent/`
+  - `examples/cli/`
+
+### `ralph-claude-code`
+
+- Root:
+  `/Users/apple/Developer/Personal/oss-sync/ralph/agent-skills/ralph-claude-code`
+- Start here:
+  - `README.md`
+  - `install.sh`
+  - `lib/response_analyzer.sh`
+  - `lib/circuit_breaker.sh`
+  - `lib/enable_core.sh`
+  - `docs/user-guide/`
+
+### `ralphy`
+
+- Root:
+  `/Users/apple/Developer/Personal/oss-sync/ralph/agent-skills/ralphy`
+- Start here:
+  - `README.md`
+  - `ralphy.sh`
+  - `cli/README.md`
+  - `cli/src/`
+  - `example-prd.md`
+  - `example-prd.yaml`
+
+### `ralph-tui`
+
+- Root:
+  `/Users/apple/Developer/Personal/oss-sync/ralph/agent-skills/ralph-tui`
+- Start here:
+  - `README.md`
+  - `src/cli.tsx`
+  - `src/engine/`
+  - `src/tui/`
+  - `src/plugins/`
+  - `skills/ralph-tui-prd/`
+  - `docs/plans/`
 
 ### `deer-flow`
 
@@ -220,6 +311,11 @@ Absolute path rule:
 ## 4. Current gap status
 
 当前 Beacon 高优先级研究里显式点名的开源参考项目，已经全部有 `oss-sync` canonical mirrors。
+
+补充说明：
+
+1. Ralph 相关参考项目现在统一归到 `oss-sync/ralph/agent-skills/`
+2. 若后续版本线继续细化 Ralph / loop / closure controller 研究，优先从这组 canonical mirrors 开始，而不是重新搜索零散学习副本
 
 后续规则保持不变：
 

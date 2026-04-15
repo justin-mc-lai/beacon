@@ -17,6 +17,7 @@ from beacon.utils.material_audit import build_delivery_audit, build_material_aud
 from beacon.utils.requirement_clarity import materialize_requirement_clarity
 from beacon.utils.runtime import now_iso, write_json
 from beacon.utils.source_architecture import current_source_architecture_status
+from beacon.utils.subagent_readiness import delegation_readiness_precheck, runtime_readiness_precheck
 from beacon.utils.technical_review_contract import materialize_technical_review_contract, technical_review_contract_json_path, technical_review_contract_markdown_path
 from beacon.utils.v115_delivery import repair_v115_delivery_package
 from beacon.utils.version_package_upgrade import upgrade_version_package
@@ -574,6 +575,66 @@ def sync_technical_review_contract(
         typer.echo(f"markdown: {result['contract_markdown_path']}")
         typer.echo(f"state: {result['state_path']}")
     raise typer.Exit(code=0)
+
+
+@app.command("verify-subagent-runtime")
+def verify_subagent_runtime(
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    host_runtime: str = typer.Option("unknown", "--host-runtime", help="Host runtime: codex|claude"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Verify host-native subagent runtime readiness for Codex/Claude skill execution."""
+    root = Path(project_root) if project_root else Path.cwd()
+    result = runtime_readiness_precheck(root, host_runtime=host_runtime)
+    payload = {
+        "schema_version": "2.0",
+        "action": "verify-subagent-runtime",
+        "status": "PASS" if str(result.get("status")) == "pass" else "BLOCKED",
+        "result": result,
+    }
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo("Beacon Doctor Subagent Runtime")
+        typer.echo("=" * 31)
+        typer.echo(f"host_runtime: {result.get('host_runtime', '')}")
+        typer.echo(f"status: {result.get('status', '')}")
+        for item in result.get("checks", []):
+            typer.echo(f"- {item.get('name')}: {item.get('ok')} ({item.get('detail')})")
+        if result.get("recommended_command"):
+            typer.echo(f"recommended_command: {result.get('recommended_command')}")
+    raise typer.Exit(code=0 if payload["status"] == "PASS" else 2)
+
+
+@app.command("verify-subagent-delegation")
+def verify_subagent_delegation(
+    feature: str = typer.Argument(..., help="Feature name"),
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    version: str = typer.Option("latest-docs", "--version", "-v", help="Target docs version"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Verify feature-level delegation readiness before host-native team subagent use."""
+    root = Path(project_root) if project_root else Path.cwd()
+    result = delegation_readiness_precheck(root, feature=feature, version=version)
+    payload = {
+        "schema_version": "2.0",
+        "action": "verify-subagent-delegation",
+        "status": "PASS" if str(result.get("status")) == "pass" else "BLOCKED",
+        "result": result,
+    }
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo("Beacon Doctor Subagent Delegation")
+        typer.echo("=" * 34)
+        typer.echo(f"feature: {feature}")
+        typer.echo(f"version: {result.get('version', '')}")
+        typer.echo(f"status: {result.get('status', '')}")
+        for item in result.get("checks", []):
+            typer.echo(f"- {item.get('name')}: {item.get('ok')} ({item.get('detail')})")
+        if result.get("recommended_command"):
+            typer.echo(f"recommended_command: {result.get('recommended_command')}")
+    raise typer.Exit(code=0 if payload["status"] == "PASS" else 2)
 
 
 @app.command("verify-context")

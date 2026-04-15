@@ -73,6 +73,7 @@ def _human_summary(machine: dict[str, Any]) -> str:
         f"- change_documents_status: `{release_summary.get('change_documents_status')}`",
         f"- change_documents_feature_count: `{release_summary.get('change_documents_feature_count')}`",
         f"- change_documents_includes_current_feature: `{release_summary.get('change_documents_includes_current_feature')}`",
+        "- note: `release_ready` reflects current-feature closure readiness; change documents and package closure remain version-line governance surfaces.",
         f"- release_confidence_min: `{release_summary.get('release_confidence_min')}`",
         f"- release_confidence_avg: `{release_summary.get('release_confidence_avg')}`",
         f"- review_required_count: `{release_summary.get('review_required_count')}`",

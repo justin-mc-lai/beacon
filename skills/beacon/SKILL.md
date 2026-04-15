@@ -165,6 +165,13 @@ When Beacon is installed into Codex / Claude skill roots, the public host-visibl
 - `beacon-doctor`
 - `beacon-real-project-validation`
 
+Optional supplemental toolkit skill:
+
+- `beacon-toolkit-lighthouse`
+  - analysis-only surface
+  - not part of the 6+3 main workflow
+  - used for fast single-file repo/package/infra/feature understanding
+
 This root `beacon` skill remains the compatibility umbrella and install root.
 
 ### Refresh a real project after runtime upgrades
@@ -245,6 +252,9 @@ Current v1.3.1 release-line surfaces:
    - `release`
    - `release scorecard`
    - keep/discard + evo harness
+7. optional analysis toolkit
+   - `beacon-toolkit-lighthouse`
+   - single-file Mermaid + text analysis for arbitrary projects, packages, infra chains, and feature slices
 
 ### Human-facing simplification now follows v1.3.1
 
@@ -430,6 +440,10 @@ Compatible delegated surfaces:
 - `recall`
 - `skill sync-check`
 
+### 5. Optional analysis toolkit mode
+- `beacon-toolkit-lighthouse`
+- use when the user needs fast understanding of a target repo/package/infra chain without entering the main workflow
+
 ## Lifecycle Navigation Rules
 
 When the user asks "what should I do next", "why am I blocked", or wants to continue a feature without knowing the correct stage:
@@ -464,6 +478,7 @@ See:
 - [Basic workflow example](./examples/basic-workflow.md)
 - [Release readiness example](./examples/release-readiness.md)
 - [Implementation with OMX example](./examples/implementation-with-omx.md)
+- [Toolkit Lighthouse analysis example](./examples/beacon-toolkit-lighthouse-analysis.md)
 
 ## References
 

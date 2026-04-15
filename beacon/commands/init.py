@@ -18,6 +18,7 @@ from beacon.utils.artifact_paths import (
 from beacon.utils.runtime import now_iso, write_json
 from beacon.utils.v115_delivery import ensure_eval_lab_skeleton, ensure_human_primary_indexes, refresh_evidence_manifest
 from beacon.utils.versioning import describe_project_version_context, resolve_docs_version, resolve_runtime_version, runtime_capability_lines
+from beacon.utils.global_boundaries import sync_project_global_boundaries
 
 app = typer.Typer(
     name="init",
@@ -77,6 +78,15 @@ def _init_impl(
         if apply:
             p.mkdir(parents=True, exist_ok=True)
         actions.append({"scope": "docs", "action": "created" if apply else "planned", "path": str(p.relative_to(root))})
+
+    global_boundaries_result = sync_project_global_boundaries(root, dry_run=dry_run)
+    actions.append(
+        {
+            "scope": "docs",
+            "action": str(global_boundaries_result.get("action", "updated")),
+            "path": str(Path(str(global_boundaries_result.get("path", ""))).relative_to(root)) if str(global_boundaries_result.get("path", "")).startswith(str(root)) else str(global_boundaries_result.get("path", "")),
+        }
+    )
 
     if with_context_guidance and (with_claude or with_agents):
         from beacon.utils.context_files import setup_context_files

@@ -46,6 +46,7 @@ from beacon.utils.qa_runtime import (
     write_qa_status,
 )
 from beacon.utils.story_state import feature_slug
+from beacon.utils.subagent_readiness import delegation_readiness_precheck, detect_host_runtime, runtime_readiness_precheck
 from beacon.utils.subagent_runtime import (
     resolve_team_runtime,
     spawn_tmux_workers,
@@ -120,6 +121,7 @@ OPTION_NAMES_WITH_VALUE = {
     "--rerun-flaky",
     "--max-flaky-rate",
     "--mode",
+    "--host-runtime",
 }
 FLAG_NAMES = {
     "--strict-ui-assertion",
@@ -556,6 +558,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
     version = _extract_option(args, "--version", "-v") or "auto"
     mode = _extract_option(args, "--mode") or "feature-aware"
     runtime = _extract_option(args, "--runtime") or "file"
+    host_runtime = _extract_option(args, "--host-runtime")
     project_root = Path(project_value).resolve() if project_value else Path.cwd()
     args = _strip_option_with_value(args, "--mode")
     args = _strip_option_with_value(args, "--runtime")
@@ -603,6 +606,57 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
                 typer.echo(f"Beacon QA blocked: project profile gate blocked for {feature}", err=True)
             return 2, blocked_payload
 
+    resolved_host_runtime = detect_host_runtime(host_runtime or None)
+    subagent_prechecks: dict[str, Any] = {
+        "required": False,
+        "host_runtime": resolved_host_runtime,
+        "runtime_readiness": {},
+        "delegation_readiness": {},
+    }
+    if team_mode:
+        runtime_precheck = runtime_readiness_precheck(project_root, host_runtime=resolved_host_runtime)
+        delegation_precheck = delegation_readiness_precheck(project_root, feature=feature, version=version)
+        subagent_prechecks = {
+            "required": True,
+            "host_runtime": resolved_host_runtime,
+            "runtime_readiness": runtime_precheck,
+            "delegation_readiness": delegation_precheck,
+        }
+        if str(runtime_precheck.get("status", "")).strip().lower() != "pass":
+            blocked_payload = {
+                "schema_version": "1.0",
+                "feature": feature,
+                "version": version,
+                "status": "blocked",
+                "reason_codes": [str(runtime_precheck.get("reason_code", "runtime_not_ready") or "runtime_not_ready")],
+                "host_runtime": resolved_host_runtime,
+                "subagent_prechecks": subagent_prechecks,
+                "recommended_command": str(runtime_precheck.get("recommended_command", "") or ""),
+            }
+            write_feature_qa_status(project_root, feature=feature, payload=blocked_payload)
+            if json_output:
+                typer.echo(json.dumps(blocked_payload, ensure_ascii=False, indent=2))
+            else:
+                typer.echo(f"Beacon QA blocked: {blocked_payload['reason_codes'][0]}", err=True)
+            return 2, blocked_payload
+        if str(delegation_precheck.get("status", "")).strip().lower() != "pass":
+            blocked_payload = {
+                "schema_version": "1.0",
+                "feature": feature,
+                "version": version,
+                "status": "blocked",
+                "reason_codes": [str(delegation_precheck.get("reason_code", "delegation_not_ready") or "delegation_not_ready")],
+                "host_runtime": resolved_host_runtime,
+                "subagent_prechecks": subagent_prechecks,
+                "recommended_command": str(delegation_precheck.get("recommended_command", "") or ""),
+            }
+            write_feature_qa_status(project_root, feature=feature, payload=blocked_payload)
+            if json_output:
+                typer.echo(json.dumps(blocked_payload, ensure_ascii=False, indent=2))
+            else:
+                typer.echo(f"Beacon QA blocked: {blocked_payload['reason_codes'][0]}", err=True)
+            return 2, blocked_payload
+
     plan = build_feature_qa_plan(project_root, version=version, feature=feature, execution_mode=mode)
     team_contract = qa_team_contract(project_root, version=version, feature=feature)
     handoff = load_implement_to_qa_handoff(
@@ -625,6 +679,8 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
             "feature_matrix_path": str(feature_qa_matrix_path(project_root, feature=feature).relative_to(project_root)),
             "message": "feature QA already up to date; no rerun required",
             "team_mode": bool(team_mode),
+            "host_runtime": resolved_host_runtime,
+            "subagent_prechecks": subagent_prechecks,
             "team_contract": team_contract,
             "implement_to_qa_handoff": handoff,
         }
@@ -841,6 +897,8 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
         "ac_closure_path": str(ac_closure_path.relative_to(project_root)),
         "feature_scorecard_path": str(feature_scorecard_path.relative_to(project_root)),
         "team_mode": bool(team_mode),
+        "host_runtime": resolved_host_runtime,
+        "subagent_prechecks": subagent_prechecks,
         "team_contract": team_contract,
         "implement_to_qa_handoff": handoff,
     }
@@ -877,8 +935,9 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
         version=str(qa_status.get("version") or version),
     )
 
-    exit_code = command_exit
-    if exit_code == 0 and str(qa_status.get("status") or "").strip().lower() != "passed":
+    final_status = str(qa_status.get("status") or "").strip().lower()
+    exit_code = 0 if final_status == "passed" else command_exit
+    if exit_code == 0 and final_status != "passed":
         exit_code = 2
 
     if json_output:
@@ -906,12 +965,44 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
     "run",
     context_settings={"allow_extra_args": True, "ignore_unknown_options": True},
 )
-def run(ctx: typer.Context):
+def run(
+    ctx: typer.Context,
+    feature: Optional[str] = typer.Argument(None, help="Feature name or legacy QA scope"),
+    project: Optional[str] = typer.Option(None, "--project", "--project-root", "-p", help="Project root"),
+    version: str = typer.Option("auto", "--version", "-v", help="Version"),
+    mode: str = typer.Option("feature-aware", "--mode", help="QA execution mode"),
+    runtime: str = typer.Option("file", "--runtime", help="Runtime mode: file/tmux/auto"),
+    host_runtime: str = typer.Option("", "--host-runtime", help="Host runtime for native subagent checks: codex|claude"),
+    layer_command: Optional[list[str]] = typer.Option(None, "--layer-command", help="Override a QA layer command using layer=command (repeatable)"),
+    team_mode: bool = typer.Option(False, "--team-mode", help="Run through the explicit qa-team surface"),
+    json_output: bool = typer.Option(False, "--json", help="JSON output"),
+):
     """Run QA in scope mode or feature-aware mode (`beacon qa run <feature>`)."""
-    if _looks_like_feature_request(list(ctx.args)):
-        code, _ = _run_feature_aware_qa(list(ctx.args))
+    raw_args: list[str] = []
+    if feature:
+        raw_args.append(feature)
+    if project:
+        raw_args.extend(["--project", project])
+    if version:
+        raw_args.extend(["--version", version])
+    if mode:
+        raw_args.extend(["--mode", mode])
+    if runtime:
+        raw_args.extend(["--runtime", runtime])
+    if host_runtime:
+        raw_args.extend(["--host-runtime", host_runtime])
+    for item in layer_command or []:
+        raw_args.extend(["--layer-command", item])
+    if team_mode:
+        raw_args.append("--team-mode")
+    if json_output:
+        raw_args.append("--json")
+    raw_args.extend(str(item) for item in ctx.args)
+
+    if _looks_like_feature_request(raw_args):
+        code, _ = _run_feature_aware_qa(raw_args)
         raise typer.Exit(code=code)
-    code = _beacon_exec(["auto-test", "create", *ctx.args], cwd=_repo_root())
+    code = _beacon_exec(["auto-test", "create", *raw_args], cwd=_repo_root())
     raise typer.Exit(code=code)
 
 
@@ -922,6 +1013,7 @@ def team_run(
     version: str = typer.Option("auto", "--version", "-v", help="Version"),
     mode: str = typer.Option("feature-aware", "--mode", help="QA execution mode"),
     runtime: str = typer.Option("file", "--runtime", help="Runtime mode: file/tmux/auto"),
+    host_runtime: str = typer.Option("", "--host-runtime", help="Host runtime for native subagent checks: codex|claude"),
     json_output: bool = typer.Option(False, "--json", help="JSON output"),
 ):
     """Run QA through the explicit qa-team surface with isolated context."""
@@ -935,6 +1027,8 @@ def team_run(
         mode,
         "--runtime",
         runtime,
+        "--host-runtime",
+        host_runtime,
         "--team-mode",
     ]
     if json_output:
@@ -1031,6 +1125,13 @@ def status(
         typer.echo(f"Feature: {feature}")
         typer.echo(f"Evidence done: {payload.get('evidence_done')}")
         typer.echo(f"Execution mode: {payload.get('execution_mode', 'feature-aware')}")
+        typer.echo(f"Host runtime: {payload.get('host_runtime', 'N/A') or 'N/A'}")
+        prechecks = payload.get("subagent_prechecks") if isinstance(payload.get("subagent_prechecks"), dict) else {}
+        if prechecks:
+            runtime_precheck = prechecks.get("runtime_readiness") if isinstance(prechecks.get("runtime_readiness"), dict) else {}
+            delegation_precheck = prechecks.get("delegation_readiness") if isinstance(prechecks.get("delegation_readiness"), dict) else {}
+            typer.echo(f"Subagent runtime: {runtime_precheck.get('status', 'N/A') or 'N/A'}")
+            typer.echo(f"Subagent delegation: {delegation_precheck.get('status', 'N/A') or 'N/A'}")
     layers = payload.get("selected_layers")
     if isinstance(layers, list):
         typer.echo(f"Layers: {', '.join(str(x) for x in layers)}")

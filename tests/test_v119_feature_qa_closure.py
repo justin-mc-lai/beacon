@@ -93,6 +93,23 @@ def _seed_story_scenario_map(root: Path, payload: dict) -> None:
     )
 
 
+def _seed_team_mode_prechecks(root: Path) -> None:
+    docs = root / "docs" / "beacon" / VERSION
+    (root / "AGENTS.md").write_text("Use docs/beacon/global-boundaries.md\n", encoding="utf-8")
+    (root / "CLAUDE.md").write_text("Use docs/beacon/global-boundaries.md\n", encoding="utf-8")
+    (root / "docs" / "beacon" / "global-boundaries.md").write_text("# Global Boundaries\n", encoding="utf-8")
+    machine_execution = docs / ".machine" / "execution"
+    machine_execution.mkdir(parents=True, exist_ok=True)
+    (machine_execution / f"implementation-plan-{SLUG}.json").write_text(json.dumps({"plan_id": "plan-001"}), encoding="utf-8")
+    (machine_execution / f"git-workflow-{SLUG}.json").write_text(json.dumps({"expected_branch": f"beacon/{VERSION}"}), encoding="utf-8")
+    machine_qa = docs / ".machine" / "qa"
+    machine_qa.mkdir(parents=True, exist_ok=True)
+    ac_matrix_path = machine_qa / f"{SLUG}.ac-test-matrix.json"
+    ac_matrix = json.loads(ac_matrix_path.read_text(encoding="utf-8"))
+    (machine_qa / f"{SLUG}.qa9-matrix.json").write_text(json.dumps(ac_matrix, ensure_ascii=False, indent=2), encoding="utf-8")
+    (machine_qa / f"{SLUG}.story-scenario-map.json").write_text(json.dumps({"feature": SLUG, "scenarios": []}, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
 def _mark_implemented(root: Path, *, run_id: str = "run-impl-001") -> None:
     marker = root / ".beacon" / "state"
     marker.mkdir(parents=True, exist_ok=True)
@@ -140,6 +157,15 @@ def test_v119_qa_evolve_should_compute_feature_delta_plan(tmp_path: Path):
     assert payload["implementation_done"] is True
     assert payload["targeted_tc_ids"] == ["TC-001", "TC-002"]
     assert "no_prior_feature_qa" in payload["reason_codes"]
+
+
+def test_v119_qa_run_help_should_expose_feature_aware_options():
+    result = _invoke(["qa", "run", "--help"])
+    assert result.exit_code == 0, result.stdout
+    assert "FEATURE" in result.stdout
+    assert "--project" in result.stdout
+    assert "--version" in result.stdout
+    assert "--json" in result.stdout
 
 
 def test_v119_qa_evolve_no_write_matrix_should_not_materialize_state_files(tmp_path: Path):
@@ -213,6 +239,7 @@ def test_v119_qa_run_feature_should_write_per_item_verification(tmp_path: Path):
 
 def test_v119_qa_run_team_mode_should_not_forward_runtime_to_auto_test(tmp_path: Path):
     _seed_feature_docs(tmp_path)
+    _seed_team_mode_prechecks(tmp_path)
     _mark_implemented(tmp_path)
     script = _write_passing_layer_script(tmp_path)
 
@@ -240,6 +267,46 @@ def test_v119_qa_run_team_mode_should_not_forward_runtime_to_auto_test(tmp_path:
     assert payload["status"] == "passed"
     assert payload["execution_surface"] == "qa-team"
     assert payload["team_execution"]["runtime"] == "file"
+
+
+def test_v119_qa_run_should_return_zero_when_final_feature_status_is_passed(tmp_path: Path, monkeypatch):
+    _seed_feature_docs(tmp_path)
+    _seed_team_mode_prechecks(tmp_path)
+    _mark_implemented(tmp_path)
+
+    def fake_exec(_args, *, cwd=None):
+        return 2
+
+    def fake_load_status(_project_root):
+        return {
+            "run_id": "run-pass-001",
+            "status": "passed",
+            "evidence_done": True,
+            "execution": {"layers": []},
+            "qa9": {"summary": {}, "tc_results": []},
+        }
+
+    monkeypatch.setattr("beacon.commands.qa._beacon_exec_silent", fake_exec)
+    monkeypatch.setattr("beacon.commands.qa.load_qa_status", fake_load_status)
+
+    result = _invoke(
+        [
+            "qa",
+            "run",
+            FEATURE,
+            "--project",
+            str(tmp_path),
+            "--version",
+            VERSION,
+            "--team-mode",
+            "--runtime",
+            "file",
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["status"] == "passed"
 
 
 def test_v119_qa_run_should_execute_manual_and_mixed_cases_when_layer_command_is_explicit(tmp_path: Path):

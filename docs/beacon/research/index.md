@@ -73,6 +73,10 @@ Rule of thumb:
    - Why it matters:
      promotes subagent governance out of a single release line and freezes the cross-version position that Beacon should use bounded subagents only on selected surfaces, with stage-owner truth, fresh context packaging, and explicit review ladders.
 
+10. [Beacon Ralph / Subagent norms and long-task delivery brainstorm](./beacon-ralph-subagent-long-task-delivery-brainstorm.md)
+   - Why it matters:
+     freezes a cross-version judgment that Ralph should be the closure controller, subagents should remain bounded execution units, and long tasks should be modeled as a requirement-to-release loop rather than open-ended agent expansion.
+
 ---
 
 ## 3. Version-bound research entrypoints
@@ -151,8 +155,9 @@ If you are trying to understand Beacon's long-horizon research direction:
 7. Then read [Beacon completeness and maturity matrix](./beacon-completeness-maturity-matrix.md)
 8. Then read [Beacon maturity remediation roadmap](./beacon-maturity-remediation-roadmap.md)
 9. Then read [Beacon codex-native subagent direction from `gstack`, `superpowers`, and the v1.3.0 seed note](./beacon-codex-native-subagent-direction-gstack-superpowers.md)
-10. Then read [`docs/beacon/v1.1.12/research/`](../v1.1.12/research/) for the most recent governance-heavy release-line studies
-11. Then read [`docs/beacon/v1.2.0/research/`](../v1.2.0/research/) for newer product-surface expansion work
+10. Then read [Beacon Ralph / Subagent norms and long-task delivery brainstorm](./beacon-ralph-subagent-long-task-delivery-brainstorm.md)
+11. Then read [`docs/beacon/v1.1.12/research/`](../v1.1.12/research/) for the most recent governance-heavy release-line studies
+12. Then read [`docs/beacon/v1.2.0/research/`](../v1.2.0/research/) for newer product-surface expansion work
 
 If you are trying to solve a concrete versioned task:
 

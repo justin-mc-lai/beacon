@@ -486,6 +486,7 @@ python3 scripts/sync_skill_commands.py --check
 | `beacon init` | `init` |
 | `beacon jtbd` | `jtbd` |
 | `beacon kano` | `kano` |
+| `beacon lighthouse` | `lighthouse` |
 | `beacon moscow` | `moscow` |
 | `beacon persona` | `persona` |
 | `beacon prototype` | `prototype` |
@@ -542,6 +543,7 @@ python3 scripts/sync_skill_commands.py --check
 | `init` | `beacon init` |
 | `jtbd` | `beacon jtbd` |
 | `kano` | `beacon kano` |
+| `lighthouse` | `beacon lighthouse` |
 | `moscow` | `beacon moscow` |
 | `persona` | `beacon persona` |
 | `prototype` | `beacon prototype` |

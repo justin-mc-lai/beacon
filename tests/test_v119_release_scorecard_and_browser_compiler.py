@@ -214,6 +214,54 @@ def test_v119_browser_task_compiler_and_runners_should_accept_compiled_task(tmp_
     assert (layer_dir / "action-transcript.json").exists()
 
 
+def test_v119_browser_runners_should_tolerate_project_root_realpath_alias(tmp_path: Path):
+    tc_dir = tmp_path / "evidence" / "tc"
+    fallback = _write_pass_script(tmp_path, "fallback-alias.sh")
+    layer_dir = tc_dir / "explore"
+    layer_dir.mkdir(parents=True, exist_ok=True)
+    task = build_browser_task(
+        item={
+            "feature": "Browser Story Feature",
+            "ac_id": "AC-001",
+            "tc_id": "TC-001-HAPPY",
+            "source_tc_id": "TC-001",
+            "scenario_id": "SC-001",
+            "scenario_family": "happy",
+            "assertion": "用户登录成功并进入 dashboard",
+            "exploratory_runner": "agent-browser",
+            "deterministic_runner": "playwright",
+            "replay_required": False,
+        },
+        qa_type="functional",
+        mode="functional",
+        project_root=tmp_path.resolve(),
+    )
+    task_path = write_browser_task(tc_dir=tc_dir, payload=task)
+    original_layer_dir = os.environ.get("BEACON_LAYER_DIR")
+    os.environ["BEACON_LAYER_DIR"] = str(layer_dir)
+    try:
+        code = agent_browser_runner.main(
+            [
+                "--mode",
+                "functional",
+                "--task-file",
+                str(task_path),
+                "--fallback-cmd",
+                f"sh {fallback}",
+                "--project-root",
+                str(tmp_path.resolve()),
+            ]
+        )
+    finally:
+        if original_layer_dir is None:
+            os.environ.pop("BEACON_LAYER_DIR", None)
+        else:
+            os.environ["BEACON_LAYER_DIR"] = original_layer_dir
+    assert code == 0
+    report = json.loads((layer_dir / "browser-runner-report.json").read_text(encoding="utf-8"))
+    assert report["artifact_refs"]["task_ref"].endswith("browser-runner-task.json")
+
+
 def test_v119_release_scorecard_should_surface_in_report_and_status_main_views(tmp_path: Path):
     _seed_release_state(tmp_path)
 

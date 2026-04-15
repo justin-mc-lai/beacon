@@ -194,6 +194,67 @@
 - And：不得扩展成 Codex/Claude/OMX 多运行时选择或桥接叙事
 - Covers：`AC-018`
 
+## TC-019：必须存在唯一 canonical `global-boundaries` source
+
+- Given：Beacon 存在多个版本包
+- When：检查 `global-boundaries` 的来源
+- Then：必须存在唯一 canonical source
+- And：各版本线只能继承、引用、落实该 source
+- Covers：`AC-019`
+
+## TC-020：Beacon 源码开发自身必须支持 `global-boundaries`
+
+- Given：Beacon 仓库发生源码迭代
+- When：检查 docs 组织、host-visible skills 与主命令面
+- Then：这些面都必须继续符合 `global-boundaries`
+- And：违反时应可被识别为 package drift 或 boundary drift
+- Covers：`AC-020`
+
+## TC-021：目标项目必须支持 `global-boundaries`
+
+- Given：Beacon 已安装并接入真实目标项目
+- When：检查项目侧上下文和 managed files
+- Then：目标项目必须能感知、继承并验证 `global-boundaries`
+- And：项目侧语义不得与 `global-boundaries` 冲突
+- Covers：`AC-021`
+
+## TC-022：`init/setup-context/verify-context/sync-materials` 必须支持 `global-boundaries`
+
+- Given：新项目初始化、旧项目升级或上下文修复
+- When：执行 `init`、`doctor setup-context`、`doctor verify-context`、`doctor sync-materials`
+- Then：必须能建立、校验或同步 `global-boundaries` 的继承关系
+- Covers：`AC-022`
+
+## TC-023：版本包必须显式声明如何继承 `global-boundaries`
+
+- Given：任意 `docs/beacon/vX.Y.Z/` 版本包
+- When：检查该版本包的 `SUMMARY / execution/index / execution/boundaries`
+- Then：必须能看出它如何引用并落实 `global-boundaries`
+- And：不得把版本级文档冒充成新的全局真相
+- Covers：`AC-023`
+
+## TC-024：目标项目交付闭环必须可验证地遵守 `global-boundaries`
+
+- Given：Beacon 已驱动目标项目进入 `prd -> user-story -> test-case -> implement -> qa -> release`
+- When：检查目标项目交付闭环
+- Then：该闭环必须可验证地遵守 `global-boundaries`
+- And：目标项目不应暴露额外主命令负担
+- Covers：`AC-024`
+
+## TC-025：`doctor` 必须能识别 `global-boundaries` drift
+
+- Given：Beacon 源码侧与目标项目侧存在约束不一致
+- When：执行 `doctor`
+- Then：必须能指出源码侧与项目侧之间的 `global-boundaries` drift
+- Covers：`AC-025`
+
+## TC-026：`v1.3.2` 成功判定必须包含 `global-boundaries`
+
+- Given：评估 `v1.3.2` 是否可以视为完成
+- When：检查成功判定
+- Then：必须同时包含 Beacon 源码侧与目标项目侧对 `global-boundaries` 的可验证支持
+- Covers：`AC-026`
+
 ## 建议执行节奏
 
 ### Round 1
@@ -218,3 +279,8 @@
 
 - 验证极简人类主流程是否保持稳定
 - 验证宿主原生 subagent/team 调起与两段预检查是否被内嵌且对人类输出保持克制
+
+### Round 6
+
+- 验证 `global-boundaries` 是否已成为可验证的全局特性
+- 验证 Beacon 源码侧与目标项目侧是否都能继承、同步并检查该约束

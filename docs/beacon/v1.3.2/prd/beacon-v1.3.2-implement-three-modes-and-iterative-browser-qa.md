@@ -115,7 +115,7 @@ QA 必须围绕冻结的：
      - shell 调用必须 sandbox
      - 必须有 allow/deny lists
      - 必须记录工具活动并支持审计
-     - 参考：<https://platform.openai.com/docs/guides/tools-shell?api-mode=responses>
+     - 参考：<https://platform.openai.com/docs/guides/tools-shell>
 3. Claude 官方侧：
    - Claude Code 官方 subagents 文档明确区分：
      - subagents：单 session 内的独立上下文 worker
@@ -162,6 +162,25 @@ QA 必须围绕冻结的：
 - 宿主差异化配置细节
 
 这些都应该默认由 Beacon 机器内部处理；只有在阻断时，才通过极简诊断面暴露给人类。
+
+### 3.6 `global-boundaries` 必须成为正式功能特性
+
+`global-boundaries` 在 `v1.3.2` 中不能只被视为一份顶层文档。
+
+它必须被定义为 Beacon 的正式功能特性，至少覆盖两层：
+
+1. **Beacon 源码开发自身**
+   - Beacon 的后续源码迭代、命令设计、skill 暴露、文档结构，必须持续遵守并消费 `global-boundaries`
+2. **Beacon 的目标项目**
+   - 当 Beacon 被安装、接入、同步到真实项目后，目标项目也必须能读取、继承并验证 `global-boundaries`
+
+也就是说，`global-boundaries` 的正确定位不是：
+
+- “仓库里有一份全局文档，供人类参考”
+
+而是：
+
+- “Beacon 源码与 Beacon 目标项目都可被验证地支持这份全局约束”
 
 ## 4. 功能需求
 
@@ -630,6 +649,110 @@ Beacon 必须为 team subagent 稳定调用提供统一的 doctor / preflight su
 
 > 复杂细节必须保留给机器与审计面，而不是默认倾倒给人类。
 
+### FR-035 `global-boundaries` 必须成为 Beacon 的正式全局特性
+
+`v1.3.2` 必须把 `global-boundaries` 定义为 Beacon 的正式全局特性，而不是仅作为顶层文档存在。
+
+至少必须满足：
+
+- 存在唯一 canonical global boundaries source
+- 各版本线只能继承、引用、落实它，不得各自发明新的“全局真相”
+- 后续 Beacon 功能迭代必须把 `global-boundaries` 作为正式输入，而不是只当注释性材料
+
+### FR-036 Beacon 源码开发自身必须支持 `global-boundaries`
+
+Beacon 源码开发自身必须能够被 `global-boundaries` 约束和验证。
+
+至少必须覆盖：
+
+- 顶层 docs 组织
+- host-visible skill 暴露
+- `help / status / doctor / implement / qa` 的对外命令面
+- team/subagent/precheck 的机器内化策略
+- 版本包对全局约束的引用方式
+
+规则：
+
+- Beacon 后续源码迭代若违反 `global-boundaries`，应可被识别为 package drift 或 boundary drift
+
+### FR-037 Beacon 目标项目必须支持 `global-boundaries`
+
+当 Beacon 被安装到真实目标项目后，目标项目也必须支持 `global-boundaries` 特性。
+
+这里的“支持”至少包括：
+
+- 目标项目上下文能感知 Beacon 全局约束
+- 目标项目中生成的 `AGENTS.md` / `CLAUDE.md` / managed context 能引用或继承该约束
+- 目标项目的 `implement / qa / doctor / status / help` 语义不应与 `global-boundaries` 冲突
+
+### FR-038 `init/setup-context/sync-materials/verify-context` 必须支持 `global-boundaries`
+
+Beacon 的以下能力必须显式支持 `global-boundaries`：
+
+- `init`
+- `doctor setup-context`
+- `doctor verify-context`
+- `doctor sync-materials`
+
+至少要求：
+
+- 新项目初始化时能建立 `global-boundaries` 的可见继承关系
+- 已接入项目能验证自己是否仍符合 `global-boundaries`
+- 旧项目升级后能把 `global-boundaries` 正确同步进目标上下文，而不是靠人工补文档
+
+### FR-039 版本包必须显式声明如何继承 `global-boundaries`
+
+每个版本包都不得重新定义 Beacon 全局约束本体。
+
+每个版本包必须显式回答：
+
+- 当前版本如何引用 `global-boundaries`
+- 当前版本在什么地方落实该约束
+- 当前版本是否新增任何对全局约束的补充说明
+
+但不得把版本级约束文档冒充成新的全局真相。
+
+### FR-040 目标项目的交付闭环必须可验证地遵守 `global-boundaries`
+
+Beacon 目标项目中的以下闭环必须可验证地遵守 `global-boundaries`：
+
+- `prd`
+- `user-story`
+- `test-case`
+- `implement`
+- `qa`
+- `release`
+
+至少要求：
+
+- 人类主流程仍保持极简
+- team/subagent/precheck 默认留在机器内部
+- 目标项目不因 Beacon 接入而暴露额外主命令负担
+
+### FR-041 `doctor` 必须能检查 `global-boundaries` 的源码侧与项目侧一致性
+
+`doctor` 不应只检查包版本、物料版本和上下文缺失。
+
+在 `v1.3.2` 中，`doctor` 应至少具备：
+
+- 检查 Beacon 源码包是否仍符合 `global-boundaries`
+- 检查目标项目上下文是否正确继承 `global-boundaries`
+- 指出“源码侧已升级但项目侧仍未同步”的 global-boundaries drift
+
+### FR-042 `global-boundaries` 必须进入成功判定
+
+`v1.3.2` 的成功不只在于：
+
+- 三模式清晰
+- QA 迭代闭环清晰
+- Codex / Claude 宿主原生 subagent 语义清晰
+
+还必须包括：
+
+- Beacon 源码开发自身可验证地支持 `global-boundaries`
+- Beacon 目标项目可验证地支持 `global-boundaries`
+- 两者之间不存在“顶层约束存在，但项目侧无法消费”的断层
+
 ## 5. 非功能约束
 
 1. 不得把三模式扩成 Beacon 全阶段通用 runtime。
@@ -648,6 +771,7 @@ Beacon 必须为 team subagent 稳定调用提供统一的 doctor / preflight su
 6. Beacon 能在 Codex / Claude 宿主环境下稳定判断是否可以调起原生 team subagent，而不是盲目尝试。
 7. Claude 路径下的 team subagent 调起，必须经过两段稳定预检查并可明确阻断。
 8. 人类主心智仍保持在 `prd -> user-story -> test-case -> implement -> qa -> release`，而不被 team/subagent/precheck 复杂度扩张。
+9. Beacon 源码开发自身与 Beacon 目标项目都可验证地支持 `global-boundaries` 特性。
 
 ## 7. 验收语义
 
@@ -659,6 +783,8 @@ Beacon 必须为 team subagent 稳定调用提供统一的 doctor / preflight su
 - Codex / Claude 宿主原生 team subagent 的调起前置检查被正式定义
 - Claude 多环境 subagent 的两段稳定预检查被正式定义
 - 对外公开命令面仍然极度克制，复杂度被明确要求保留在机器内部
+- `global-boundaries` 被正式定义为 Beacon 全局特性，而不是单纯文档
+- Beacon 源码侧与目标项目侧都能验证性支持 `global-boundaries`
 
 ### Fail
 
@@ -669,6 +795,7 @@ Beacon 必须为 team subagent 稳定调用提供统一的 doctor / preflight su
 - 仍然把 Beacon 的目标写成桥接 OMX/Codex/Claude 执行器，而不是作为 skill 使用 Codex/Claude 原生能力
 - Claude 路径仍然把 subagent 与 team runtime 混成一个概念
 - 新能力让人类必须理解更多内部命令、team lane 或 precheck 细节，破坏极简心智面
+- `global-boundaries` 只存在于 Beacon 仓库文档中，但 Beacon 源码与目标项目都无法验证性支持它
 
 ### Blocked
 

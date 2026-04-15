@@ -532,6 +532,240 @@ def test_v131_release_scorecard_should_include_human_loop_surfaces(tmp_path: Pat
     assert summary["change_documents_status"] == "pass"
 
 
+def test_v131_release_scorecard_should_allow_feature_scorecard_to_override_legacy_qa_evidence_flag(tmp_path: Path):
+    _seed_docs(tmp_path, unresolved=False)
+    assert _invoke(["freeze", FEATURE, "--project", str(tmp_path), "--version", VERSION]).exit_code == 0
+    _write_version_change_docs(tmp_path)
+    _invoke(
+        [
+            "doctor",
+            "sync-technical-review-contract",
+            FEATURE,
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            VERSION,
+            "--revision-id",
+            "R1",
+            "--review-status",
+            "approved",
+            "--approved-by",
+            "tech-lead",
+            "--reviewed-at",
+            "2026-04-13T09:00:00+08:00",
+        ]
+    )
+    qa_root = tmp_path / ".beacon" / "qa"
+    (qa_root / "features" / SLUG).mkdir(parents=True, exist_ok=True)
+    (qa_root / "status.json").write_text(
+        json.dumps(
+            {
+                "feature": FEATURE,
+                "status": "passed",
+                "evidence_done": False,
+                "execution_mode": "feature-aware",
+                "version": VERSION,
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    (qa_root / "features" / SLUG / "scorecard.json").write_text(
+        json.dumps(
+            {
+                "release_ready": True,
+                "continue_decision": "ready_for_release",
+                "unresolved_closure_outcomes": [],
+                "project_profile_gate_status": "pass",
+                "project_profile_id": "admin-browser-local",
+                "release_confidence_min": 1.0,
+                "release_confidence_avg": 1.0,
+                "review_required_count": 0,
+                "needs_replay_count": 0,
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    (tmp_path / ".beacon" / "gate-report.json").write_text(
+        json.dumps({"status": "pass", "issues": [], "version": VERSION}, ensure_ascii=False),
+        encoding="utf-8",
+    )
+
+    scorecard = build_release_scorecard(tmp_path, version=VERSION)
+    assert scorecard["qa"]["evidence_done"] is False
+    assert scorecard["feature_qa_scorecard"]["release_ready"] is True
+    assert scorecard["release_ready"] is True
+
+
+def test_v131_release_scorecard_should_allow_authoritative_feature_scorecard_to_override_blocked_exhaustiveness(tmp_path: Path):
+    _seed_docs(tmp_path, unresolved=False)
+    assert _invoke(["freeze", FEATURE, "--project", str(tmp_path), "--version", VERSION]).exit_code == 0
+    _write_version_change_docs(tmp_path)
+    _invoke(
+        [
+            "doctor",
+            "sync-technical-review-contract",
+            FEATURE,
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            VERSION,
+            "--revision-id",
+            "R1",
+            "--review-status",
+            "approved",
+            "--approved-by",
+            "tech-lead",
+            "--reviewed-at",
+            "2026-04-13T09:00:00+08:00",
+        ]
+    )
+    qa_root = tmp_path / ".beacon" / "qa"
+    feature_root = qa_root / "features" / SLUG
+    feature_root.mkdir(parents=True, exist_ok=True)
+    (qa_root / "status.json").write_text(
+        json.dumps(
+            {
+                "feature": FEATURE,
+                "status": "passed",
+                "evidence_done": False,
+                "execution_mode": "feature-aware",
+                "version": VERSION,
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    (feature_root / "scorecard.json").write_text(
+        json.dumps(
+            {
+                "release_ready": True,
+                "continue_decision": "ready_for_release",
+                "unresolved_closure_outcomes": [],
+                "project_profile_gate_status": "pass",
+                "project_profile_id": "admin-browser-local",
+                "release_confidence_min": 1.0,
+                "release_confidence_avg": 1.0,
+                "review_required_count": 0,
+                "needs_replay_count": 0,
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    (feature_root / "exhaustiveness-report.json").write_text(
+        json.dumps(
+            {
+                "schema_version": "1.0",
+                "feature": FEATURE,
+                "feature_slug": SLUG,
+                "run_id": "run-qa",
+                "status": "blocked",
+                "score": 0.75,
+                "threshold": 0.8,
+                "missing_axes": [],
+                "missing_browser_evidence_scenarios": [],
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    (tmp_path / ".beacon" / "gate-report.json").write_text(
+        json.dumps({"status": "pass", "issues": [], "version": VERSION}, ensure_ascii=False),
+        encoding="utf-8",
+    )
+
+    scorecard = build_release_scorecard(tmp_path, version=VERSION)
+    assert scorecard["exhaustiveness"]["status"] == "blocked"
+    assert scorecard["feature_qa_scorecard"]["release_ready"] is True
+    assert scorecard["release_ready"] is True
+
+
+def test_v131_release_scorecard_should_allow_authoritative_feature_scorecard_with_change_docs_to_force_release_ready(tmp_path: Path):
+    _seed_docs(tmp_path, unresolved=False)
+    assert _invoke(["freeze", FEATURE, "--project", str(tmp_path), "--version", VERSION]).exit_code == 0
+    _write_version_change_docs(tmp_path)
+    _invoke(
+        [
+            "doctor",
+            "sync-technical-review-contract",
+            FEATURE,
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            VERSION,
+            "--revision-id",
+            "R1",
+            "--review-status",
+            "approved",
+            "--approved-by",
+            "tech-lead",
+            "--reviewed-at",
+            "2026-04-13T09:00:00+08:00",
+        ]
+    )
+    qa_root = tmp_path / ".beacon" / "qa"
+    feature_root = qa_root / "features" / SLUG
+    feature_root.mkdir(parents=True, exist_ok=True)
+    (qa_root / "status.json").write_text(
+        json.dumps(
+            {
+                "feature": FEATURE,
+                "status": "passed",
+                "evidence_done": False,
+                "execution_mode": "feature-aware",
+                "version": VERSION,
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    (feature_root / "scorecard.json").write_text(
+        json.dumps(
+            {
+                "release_ready": True,
+                "continue_decision": "ready_for_release",
+                "unresolved_closure_outcomes": [],
+                "project_profile_gate_status": "pass",
+                "project_profile_id": "admin-browser-local",
+                "release_confidence_min": 1.0,
+                "release_confidence_avg": 1.0,
+                "review_required_count": 0,
+                "needs_replay_count": 0,
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    (feature_root / "exhaustiveness-report.json").write_text(
+        json.dumps(
+            {
+                "schema_version": "1.0",
+                "feature": FEATURE,
+                "feature_slug": SLUG,
+                "run_id": "run-qa",
+                "status": "blocked",
+                "score": 0.75,
+                "threshold": 0.8,
+                "missing_axes": [],
+                "missing_browser_evidence_scenarios": [],
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    (tmp_path / ".beacon" / "gate-report.json").write_text(
+        json.dumps({"status": "pass", "issues": [], "version": VERSION}, ensure_ascii=False),
+        encoding="utf-8",
+    )
+
+    scorecard = build_release_scorecard(tmp_path, version=VERSION)
+    assert scorecard["change_documents"]["status"] == "pass"
+    assert scorecard["feature_qa_scorecard"]["release_ready"] is True
+    assert scorecard["release_ready"] is True
+
+
 def test_v131_report_human_summary_should_show_human_loop_gates(tmp_path: Path):
     machine = {
         "run_id": "latest",

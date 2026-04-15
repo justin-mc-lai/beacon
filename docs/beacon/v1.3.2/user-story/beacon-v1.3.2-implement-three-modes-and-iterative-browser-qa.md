@@ -129,6 +129,72 @@
 - 不讨论同一轮执行中在 Codex/Claude/OMX 之间做选择
 - Beacon 不应扩展成多运行时桥接调度器
 
+## US-015：作为 Beacon 维护者，我希望 `global-boundaries` 成为正式全局特性，而不是只停留在顶层文档
+
+**验收标准**：
+
+- 必须存在唯一 canonical global boundaries source
+- 各版本线只能继承、引用、落实它
+- 各版本线不得各自发明新的“全局真相”
+
+## US-016：作为 Beacon 核心开发者，我希望 Beacon 源码开发自身可被 `global-boundaries` 约束和验证
+
+**验收标准**：
+
+- 顶层 docs 组织必须遵守 `global-boundaries`
+- host-visible skill 暴露必须遵守 `global-boundaries`
+- `help / status / doctor / implement / qa` 的对外命令面必须遵守 `global-boundaries`
+- 若源码迭代违反该约束，应可被识别为 package drift 或 boundary drift
+
+## US-017：作为目标项目操作者，我希望 Beacon 接入到目标项目后，目标项目也能继承并验证 `global-boundaries`
+
+**验收标准**：
+
+- 目标项目上下文必须能感知 Beacon 全局约束
+- 目标项目中生成的 `AGENTS.md` / `CLAUDE.md` / managed context 必须能引用或继承该约束
+- 目标项目的 `implement / qa / doctor / status / help` 语义不应与 `global-boundaries` 冲突
+
+## US-018：作为项目初始化与升级负责人，我希望 `init/setup-context/sync-materials/verify-context` 能显式支持 `global-boundaries`
+
+**验收标准**：
+
+- 新项目初始化时能建立 `global-boundaries` 的可见继承关系
+- 已接入项目能验证自己是否仍符合 `global-boundaries`
+- 旧项目升级后能把 `global-boundaries` 正确同步进目标上下文
+
+## US-019：作为版本维护者，我希望每个版本包都显式声明如何继承 `global-boundaries`
+
+**验收标准**：
+
+- 当前版本如何引用 `global-boundaries` 必须可见
+- 当前版本在什么位置落实该约束必须可见
+- 当前版本可以增加补充说明，但不得把版本级约束文档冒充成新的全局真相
+
+## US-020：作为交付负责人，我希望目标项目的交付闭环可验证地遵守 `global-boundaries`
+
+**验收标准**：
+
+- 目标项目中的 `prd / user-story / test-case / implement / qa / release` 闭环必须可验证地遵守 `global-boundaries`
+- 人类主流程仍保持极简
+- team/subagent/precheck 默认留在机器内部
+- 目标项目不因 Beacon 接入而暴露额外主命令负担
+
+## US-021：作为运维负责人，我希望 `doctor` 能检查 `global-boundaries` 的源码侧与项目侧一致性
+
+**验收标准**：
+
+- `doctor` 必须能检查 Beacon 源码包是否仍符合 `global-boundaries`
+- `doctor` 必须能检查目标项目上下文是否正确继承 `global-boundaries`
+- `doctor` 必须能指出源码侧与项目侧之间的 `global-boundaries` drift
+
+## US-022：作为版本负责人，我希望 `global-boundaries` 进入 `v1.3.2` 成功判定，而不是边缘参考项
+
+**验收标准**：
+
+- `v1.3.2` 的成功判定必须包含 Beacon 源码侧可验证地支持 `global-boundaries`
+- `v1.3.2` 的成功判定必须包含目标项目侧可验证地支持 `global-boundaries`
+- 不允许出现“顶层约束存在，但项目侧无法消费”的断层
+
 ## Acceptance Criteria Matrix
 
 | ID | Theme | Acceptance Criteria |
@@ -151,3 +217,11 @@
 | AC-016 | embedded-prechecks | `runtime-readiness` 与 `delegation-readiness` 必须默认内嵌在 `implement/qa`，而不是成为人类主流程中的额外命令负担。 |
 | AC-017 | minimal-human-output | precheck / delegation / blocker 对人类必须只输出极简原因、推荐下一步与 fallback；复杂细节应保留给机器输出。 |
 | AC-018 | unique-host-context | `v1.3.2` 只讨论当前宿主是否支持原生 subagent/team，不引入多运行时选择或桥接叙事。 |
+| AC-019 | canonical-global-boundaries | 必须存在唯一 canonical `global-boundaries` source，各版本线只能继承、引用、落实它，不得各自发明新的全局真相。 |
+| AC-020 | source-dev-support | Beacon 源码开发自身必须可被 `global-boundaries` 约束和验证，至少覆盖 docs 组织、host-visible skills 与主命令面。 |
+| AC-021 | target-project-support | Beacon 目标项目必须能感知、继承并验证 `global-boundaries`，且项目侧上下文语义不得与之冲突。 |
+| AC-022 | init-and-context-support | `init / doctor setup-context / doctor verify-context / doctor sync-materials` 必须显式支持 `global-boundaries` 的建立、校验与同步。 |
+| AC-023 | version-inheritance-declared | 每个版本包都必须显式声明如何继承 `global-boundaries`，但不得把版本级约束文档冒充成新的全局真相。 |
+| AC-024 | delivery-loop-compliance | 目标项目的 `prd / user-story / test-case / implement / qa / release` 闭环必须可验证地遵守 `global-boundaries`。 |
+| AC-025 | doctor-global-boundaries-drift | `doctor` 必须能检查并指出 Beacon 源码侧与目标项目侧之间的 `global-boundaries` drift。 |
+| AC-026 | success-includes-global-boundaries | `v1.3.2` 的成功判定必须同时包含 Beacon 源码侧与目标项目侧对 `global-boundaries` 的可验证支持。 |

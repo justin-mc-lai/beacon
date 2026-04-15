@@ -1,6 +1,6 @@
 ---
 name: beacon-prd
-description: Use when the user wants to draft, refine, clarify, or review a product requirements document through Beacon's minimal v1.3.1 human surface. Keep brainstorm embedded inside the PRD loop rather than sending the user to a standalone brainstorm stage unless explicitly requested.
+description: Use when the user wants to draft, refine, clarify, or review a product requirements document through Beacon's minimal v1.3.2 human surface. Keep brainstorm embedded inside the PRD loop rather than sending the user to a standalone brainstorm stage unless explicitly requested.
 ---
 
 # Beacon PRD

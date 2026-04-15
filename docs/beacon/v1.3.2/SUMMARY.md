@@ -78,11 +78,14 @@
 
 1. `./execution/index.md`
 2. `./execution/architecture-blueprint.md`
-3. `./research/beacon-v1.3.2-responsibility-optimization-analysis.md`
-4. `./execution/implement-execution-modes-blueprint.md`
-5. `./execution/implement-command-contract.md`
-6. `./execution/qa-iterative-browser-contract.md`
-7. `./execution/ralph-closure-state-machine.md`
-8. `./prd/beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa.md`
-9. `./user-story/beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa.md`
-10. `./qa/test-cases/beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa.md`
+3. `../global-boundaries.md`
+4. `./execution/boundaries.md`
+5. `./research/beacon-v1.3.2-responsibility-optimization-analysis.md`
+6. `./execution/implement-execution-modes-blueprint.md`
+7. `./execution/implement-command-contract.md`
+8. `./execution/qa-iterative-browser-contract.md`
+9. `./execution/ralph-closure-state-machine.md`
+10. `./prd/beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa.md`
+11. `./user-story/beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa.md`
+12. `./qa/test-cases/beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa.md`
+13. `./release/v1.3.2-real-project-validation.md`
