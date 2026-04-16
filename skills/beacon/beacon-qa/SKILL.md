@@ -1,6 +1,6 @@
 ---
 name: beacon-qa
-description: Use when the user wants to verify a Beacon feature, inspect new findings, improve coverage, or assess whether a feature is ready for release through the minimal v1.3.1 human surface.
+description: Use when the user wants to verify a Beacon feature, inspect new findings, improve coverage, or assess whether a feature is ready for release through the minimal v1.3.2 human surface.
 ---
 
 # Beacon QA

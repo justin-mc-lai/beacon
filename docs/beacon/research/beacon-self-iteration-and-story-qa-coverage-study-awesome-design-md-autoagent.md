@@ -1,7 +1,7 @@
 # Research: Beacon self-iteration and story-qa coverage study from `awesome-design-md` and `autoagent`
 
 **Date**: 2026-04-08  
-**Intent**: pull two external references into `beacon/.research`, then translate them into a concrete research/design direction for:
+**Intent**: fold two external references into Beacon's cross-version research set, then translate them into a concrete research/design direction for:
 
 - Beacon 自迭代自身
 - 基于用户故事的 QA 覆盖率基线
@@ -12,10 +12,16 @@
 > Beacon 的根本是 `PRD → user-story → QA` 这条证据链。  
 > 所有自迭代、资产化和覆盖率设计都必须围绕 `PRD/story` 锚点展开。
 
-**Local clones**:
+**Source directories**:
 
-- `.research/awesome-design-md/`
-- `.research/autoagent/`
+- canonical source map:
+  [`./beacon-open-source-reference-source-map.md`](./beacon-open-source-reference-source-map.md)
+- `awesome-design-md`:
+  `/Users/apple/Developer/Personal/oss-sync/core-skills/awesome-design-md`
+- `autoagent`:
+  `/Users/apple/Developer/Personal/oss-sync/automation/autoresearch/autoagent`
+- adjacent autoresearch lineage already mirrored locally:
+  `/Users/apple/Developer/Personal/oss-sync/automation/autoresearch/karpathy-autoresearch`
 
 ---
 

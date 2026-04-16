@@ -7,6 +7,7 @@ from pathlib import Path
 from typer.testing import CliRunner
 
 from beacon.main import app
+from beacon.utils.v110_baseline import load_latest_spec_fingerprint
 
 
 runner = CliRunner()
@@ -92,6 +93,23 @@ def _seed_story_scenario_map(root: Path, payload: dict) -> None:
     )
 
 
+def _seed_team_mode_prechecks(root: Path) -> None:
+    docs = root / "docs" / "beacon" / VERSION
+    (root / "AGENTS.md").write_text("Use docs/beacon/global-boundaries.md\n", encoding="utf-8")
+    (root / "CLAUDE.md").write_text("Use docs/beacon/global-boundaries.md\n", encoding="utf-8")
+    (root / "docs" / "beacon" / "global-boundaries.md").write_text("# Global Boundaries\n", encoding="utf-8")
+    machine_execution = docs / ".machine" / "execution"
+    machine_execution.mkdir(parents=True, exist_ok=True)
+    (machine_execution / f"implementation-plan-{SLUG}.json").write_text(json.dumps({"plan_id": "plan-001"}), encoding="utf-8")
+    (machine_execution / f"git-workflow-{SLUG}.json").write_text(json.dumps({"expected_branch": f"beacon/{VERSION}"}), encoding="utf-8")
+    machine_qa = docs / ".machine" / "qa"
+    machine_qa.mkdir(parents=True, exist_ok=True)
+    ac_matrix_path = machine_qa / f"{SLUG}.ac-test-matrix.json"
+    ac_matrix = json.loads(ac_matrix_path.read_text(encoding="utf-8"))
+    (machine_qa / f"{SLUG}.qa9-matrix.json").write_text(json.dumps(ac_matrix, ensure_ascii=False, indent=2), encoding="utf-8")
+    (machine_qa / f"{SLUG}.story-scenario-map.json").write_text(json.dumps({"feature": SLUG, "scenarios": []}, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
 def _mark_implemented(root: Path, *, run_id: str = "run-impl-001") -> None:
     marker = root / ".beacon" / "state"
     marker.mkdir(parents=True, exist_ok=True)
@@ -141,6 +159,42 @@ def test_v119_qa_evolve_should_compute_feature_delta_plan(tmp_path: Path):
     assert "no_prior_feature_qa" in payload["reason_codes"]
 
 
+def test_v119_qa_run_help_should_expose_feature_aware_options():
+    result = _invoke(["qa", "run", "--help"])
+    assert result.exit_code == 0, result.stdout
+    assert "FEATURE" in result.stdout
+    assert "--project" in result.stdout
+    assert "--version" in result.stdout
+    assert "--json" in result.stdout
+
+
+def test_v119_qa_evolve_no_write_matrix_should_not_materialize_state_files(tmp_path: Path):
+    _seed_feature_docs(tmp_path)
+    _mark_implemented(tmp_path)
+
+    result = _invoke(
+        [
+            "qa",
+            "evolve",
+            FEATURE,
+            "--project",
+            str(tmp_path),
+            "--version",
+            VERSION,
+            "--no-write-matrix",
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["status"] == "rerun_required"
+
+    feature_root = tmp_path / ".beacon" / "qa" / "features" / SLUG
+    assert not feature_root.exists()
+    docs_story_map = tmp_path / "docs" / "beacon" / VERSION / ".machine" / "qa" / f"{SLUG}.story-scenario-map.json"
+    assert not docs_story_map.exists()
+
+
 
 def test_v119_qa_run_feature_should_write_per_item_verification(tmp_path: Path):
     _seed_feature_docs(tmp_path)
@@ -169,10 +223,17 @@ def test_v119_qa_run_feature_should_write_per_item_verification(tmp_path: Path):
     assert qa_status["status"] == "passed"
     assert qa_status["evidence_done"] is True
     assert qa_status["targeted_rerun"]["targeted_tc_ids"] == ["TC-001", "TC-002"]
+    assert qa_status["boundary_evidence"]["assumption_capture_required"] is True
+    assert qa_status["boundary_evidence"]["goal_driven_verification_required"] is True
+    assert qa_status["boundary_evidence"]["verification_item_count"] >= 2
 
     feature_status = json.loads((tmp_path / ".beacon" / "qa" / "features" / SLUG / "status.json").read_text(encoding="utf-8"))
     assert feature_status["verified_item_ids"] == ["AC-001", "AC-002", "TEST-001", "TEST-002"]
     assert feature_status["failed_item_ids"] == []
+
+    feature_scorecard = json.loads((tmp_path / ".beacon" / "qa" / "features" / SLUG / "scorecard.json").read_text(encoding="utf-8"))
+    assert feature_scorecard["boundary_evidence"]["goal_driven_verification_required"] is True
+    assert feature_scorecard["boundary_evidence"]["targeted_scope_only"] is True
 
     story_state = json.loads((tmp_path / "docs" / "beacon" / VERSION / ".machine" / "user-story" / f"{SLUG}.json").read_text(encoding="utf-8"))
     active_story = next(item for item in story_state["stories"] if item["revision_id"] == story_state["current_revision_id"])
@@ -181,6 +242,143 @@ def test_v119_qa_run_feature_should_write_per_item_verification(tmp_path: Path):
     assert statuses["AC-002"] == "verified"
     assert statuses["TEST-001"] == "passed"
     assert statuses["TEST-002"] == "passed"
+
+
+def test_v119_qa_run_team_mode_should_not_forward_runtime_to_auto_test(tmp_path: Path):
+    _seed_feature_docs(tmp_path)
+    _seed_team_mode_prechecks(tmp_path)
+    _mark_implemented(tmp_path)
+    script = _write_passing_layer_script(tmp_path)
+
+    result = _invoke(
+        [
+            "qa",
+            "run",
+            FEATURE,
+            "--project",
+            str(tmp_path),
+            "--version",
+            VERSION,
+            "--team-mode",
+            "--runtime",
+            "file",
+            "--layer-command",
+            f"contract=sh {script}",
+            "--layer-command",
+            f"integration=sh {script}",
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["status"] == "passed"
+    assert payload["execution_surface"] == "qa-team"
+    assert payload["team_execution"]["runtime"] == "file"
+
+
+def test_v119_qa_run_should_return_zero_when_final_feature_status_is_passed(tmp_path: Path, monkeypatch):
+    _seed_feature_docs(tmp_path)
+    _seed_team_mode_prechecks(tmp_path)
+    _mark_implemented(tmp_path)
+
+    def fake_exec(_args, *, cwd=None):
+        return 2
+
+    def fake_load_status(_project_root):
+        return {
+            "run_id": "run-pass-001",
+            "status": "passed",
+            "evidence_done": True,
+            "execution": {"layers": []},
+            "qa9": {"summary": {}, "tc_results": []},
+        }
+
+    monkeypatch.setattr("beacon.commands.qa._beacon_exec_silent", fake_exec)
+    monkeypatch.setattr("beacon.commands.qa.load_qa_status", fake_load_status)
+
+    result = _invoke(
+        [
+            "qa",
+            "run",
+            FEATURE,
+            "--project",
+            str(tmp_path),
+            "--version",
+            VERSION,
+            "--team-mode",
+            "--runtime",
+            "file",
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["status"] == "passed"
+
+
+def test_v119_qa_run_should_execute_manual_and_mixed_cases_when_layer_command_is_explicit(tmp_path: Path):
+    _seed_feature_docs(tmp_path)
+    _mark_implemented(tmp_path)
+    script = _write_passing_layer_script(tmp_path)
+
+    matrix_path = tmp_path / "docs" / "beacon" / VERSION / ".machine" / "qa" / f"{SLUG}.ac-test-matrix.json"
+    matrix = json.loads(matrix_path.read_text(encoding="utf-8"))
+    entries = matrix.get("entries", [])
+    entries[0]["layer"] = "contract"
+    entries[0]["qa_type"] = "contract"
+    entries[0]["automation"] = "manual"
+    entries[1]["layer"] = "integration"
+    entries[1]["qa_type"] = "integration"
+    entries[1]["automation"] = "mixed"
+    matrix_path.write_text(json.dumps(matrix, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    result = _invoke(
+        [
+            "qa",
+            "run",
+            FEATURE,
+            "--project",
+            str(tmp_path),
+            "--version",
+            VERSION,
+            "--layer-command",
+            f"contract=sh {script}",
+            "--layer-command",
+            f"integration=sh {script}",
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    statuses = {item["tc_id"]: item["status"] for item in payload["per_item_results"]}
+    assert statuses == {"TC-001": "passed", "TC-002": "passed"}
+
+
+def test_v119_qa_run_should_sync_latest_spec_fingerprint_into_auto_test_status(tmp_path: Path):
+    _seed_feature_docs(tmp_path)
+    _mark_implemented(tmp_path)
+    script = _write_passing_layer_script(tmp_path)
+
+    result = _invoke(
+        [
+            "qa",
+            "run",
+            FEATURE,
+            "--project",
+            str(tmp_path),
+            "--version",
+            VERSION,
+            "--layer-command",
+            f"contract=sh {script}",
+            "--layer-command",
+            f"integration=sh {script}",
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0, result.stdout
+    latest_fingerprint = load_latest_spec_fingerprint(tmp_path, version=VERSION)
+    auto_status = json.loads((tmp_path / ".beacon" / "auto-test-status.json").read_text(encoding="utf-8"))
+    assert auto_status["spec_fingerprint_hash"] == latest_fingerprint["fingerprint_hash"]
 
 
 

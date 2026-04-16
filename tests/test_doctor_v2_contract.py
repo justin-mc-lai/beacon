@@ -11,6 +11,8 @@ from typer.testing import CliRunner
 from beacon import __toolkit_version__, __version__
 from beacon.main import app
 from beacon.utils.doctor_setup import resolve_bin_dir
+from beacon.utils.runtime import save_run_state
+from beacon.utils.workflow_memory import append_lifecycle_event
 
 
 runner = CliRunner()
@@ -185,6 +187,19 @@ def test_doctor_should_allow_multiple_suffixed_iteration_roots_without_canonical
     assert "COMP-210" not in codes
 
 
+def test_doctor_should_allow_shared_research_root_without_formal_version_collision(tmp_path: Path):
+    _prepare_basic_project(tmp_path)
+    (tmp_path / "docs" / "beacon" / "research").mkdir(parents=True, exist_ok=True)
+    (tmp_path / "docs" / "beacon" / "v1.3.0").mkdir(parents=True, exist_ok=True)
+
+    result = _invoke(["doctor", "--json", "--project-root", str(tmp_path)])
+    assert result.exit_code == 0
+    payload = json.loads(result.stdout)
+    incompatibilities = payload.get("incompatibilities", [])
+    codes = {item.get("code") for item in incompatibilities}
+    assert "COMP-210" not in codes
+
+
 def test_doctor_should_flag_version_root_semantics_drift_when_canonical_and_suffixed_roots_mix(tmp_path: Path):
     _prepare_basic_project(tmp_path)
     (tmp_path / "docs" / "beacon" / "v1.2.1").mkdir(parents=True, exist_ok=True)
@@ -196,6 +211,88 @@ def test_doctor_should_flag_version_root_semantics_drift_when_canonical_and_suff
     incompatibilities = payload.get("incompatibilities", [])
     codes = {item.get("code") for item in incompatibilities}
     assert "COMP-210" in codes
+
+
+def test_doctor_should_prefer_delivery_package_run_for_status_memory_comparison(tmp_path: Path):
+    _prepare_basic_project(tmp_path)
+    version = "v1.3.0"
+    feature = "feature-docs"
+    base = tmp_path / "docs" / "beacon" / version
+    machine_exec = base / ".machine" / "execution"
+
+    (base / "user-story").mkdir(parents=True, exist_ok=True)
+    (base / "prd").mkdir(parents=True, exist_ok=True)
+    (base / "qa" / "test-cases").mkdir(parents=True, exist_ok=True)
+    machine_exec.mkdir(parents=True, exist_ok=True)
+
+    (base / "user-story" / "feature.md").write_text("# us\n", encoding="utf-8")
+    (base / "prd" / "feature.md").write_text("# prd\n", encoding="utf-8")
+    (base / "qa" / "test-cases" / "feature.md").write_text("# tc\n", encoding="utf-8")
+
+    completed_run = "run-20260411T015913Z-d792"
+    planned_run = "run-20260411T114548Z-60ff"
+
+    save_run_state(
+        tmp_path,
+        completed_run,
+        {
+            "run_id": completed_run,
+            "workflow": "workflow.start",
+            "mode": "manual",
+            "feature": feature,
+            "version": version,
+            "prototype_enabled": False,
+            "status": "completed",
+            "started_at": "2026-04-11T01:59:13.000000+00:00",
+            "ended_at": "2026-04-11T02:05:44.000000+00:00",
+        },
+    )
+    save_run_state(
+        tmp_path,
+        planned_run,
+        {
+            "run_id": planned_run,
+            "workflow": "workflow.start",
+            "mode": "manual",
+            "feature": "other-feature",
+            "version": version,
+            "prototype_enabled": False,
+            "status": "planned",
+            "started_at": "2026-04-11T11:45:48.000000+00:00",
+        },
+    )
+
+    for stage in ("think", "user-story", "prd", "test-case"):
+        for event in ("stage_started", "stage_context_injected", "stage_finished", "memory_writeback"):
+            append_lifecycle_event(
+                tmp_path,
+                run_id=completed_run,
+                stage=stage,
+                event=event,
+                source="test.fixture",
+            )
+
+    (machine_exec / "source.json").write_text(
+        json.dumps({"run_id": planned_run, "feature": "other-feature", "status": "draft"}, ensure_ascii=False),
+        encoding="utf-8",
+    )
+    (machine_exec / "delivery-manifest.json").write_text(
+        json.dumps({"run_id": planned_run, "feature": "other-feature", "delivery_status": "draft"}, ensure_ascii=False),
+        encoding="utf-8",
+    )
+    (machine_exec / "terminal.json").write_text(
+        json.dumps({"run_id": completed_run, "feature": feature, "status": "Pass"}, ensure_ascii=False),
+        encoding="utf-8",
+    )
+
+    result = _invoke(["doctor", "--json", "--project-root", str(tmp_path)])
+    assert result.exit_code == 0
+    payload = json.loads(result.stdout)
+    incompatibilities = payload.get("incompatibilities", [])
+    codes = {item.get("code") for item in incompatibilities}
+
+    assert payload.get("materials", {}).get("workflow_memory_view", {}).get("run_id") == completed_run
+    assert "COMP-202" not in codes
 
 
 def test_doctor_setup_should_install_beacon_launchers(tmp_path: Path):

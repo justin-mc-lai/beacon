@@ -55,6 +55,9 @@ def test_implement_run_should_write_technical_archive_outputs(tmp_path: Path):
             "  'status':'completed',\n"
             "  'summary':'runner finished',\n"
             "  'changed_files':['app/services/uploader.py','app/models/material.py'],\n"
+            "  'assumptions':['bucket already provisioned'],\n"
+            "  'simplicity_notes':['reuse existing upload flow'],\n"
+            "  'scope_guard':{'in_scope': True, 'summary':'touch upload flow only', 'allowed_paths':['app/services','app/models']},\n"
             "  'verification':[{'command':'pytest -q','status':'passed'}],\n"
             "  'artifact_updates':{'prd':{'required':False}},\n"
             "  'services':[{'name':'marketing_sys','role':'backend','changed_files':['app/services/uploader.py']}],\n"
@@ -117,3 +120,13 @@ def test_implement_run_should_write_technical_archive_outputs(tmp_path: Path):
     assert archive["api_changes"]["new_endpoints"] == ["POST /api/material/upload"]
     assert archive["env_changes"] == ["MATERIAL_UPLOAD_BUCKET"]
     assert archive["services"][0]["name"] == "marketing_sys"
+    assert archive["assumptions"] == ["bucket already provisioned"]
+    assert archive["simplicity_notes"] == ["reuse existing upload flow"]
+    assert archive["scope_guard"]["in_scope"] is True
+    assert archive["verification_signals"]["has_assumptions"] is True
+    assert archive["boundary_principles"][0]["id"] == "explicit_assumptions"
+
+    markdown = human_md.read_text(encoding="utf-8")
+    assert "## Boundary Principles" in markdown
+    assert "## Assumptions" in markdown
+    assert "## Scope Guard" in markdown

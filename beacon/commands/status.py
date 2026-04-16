@@ -264,7 +264,24 @@ def _status_impl(
         typer.echo(f"- source_of_truth.root: {source_of_truth.get('root')}")
         if source_of_truth.get("machine_root"):
             typer.echo(f"- source_of_truth.machine_root: {source_of_truth.get('machine_root')}")
-        typer.echo(f"- source_of_truth.formal_package_closure: {source_of_truth.get('formal_package_closure')}")
+        typer.echo(
+            f"- source_of_truth.version_line_package_closure: {source_of_truth.get('formal_package_closure')}"
+        )
+        execution_surface = payload.get("execution_surface", {}) if isinstance(payload.get("execution_surface"), dict) else {}
+        if execution_surface:
+            typer.echo(f"- execution.host_runtime: {execution_surface.get('host_runtime') or 'N/A'}")
+            typer.echo(f"- execution.subagent_runtime: {execution_surface.get('subagent_runtime_status') or 'N/A'}")
+            typer.echo(f"- execution.subagent_delegation: {execution_surface.get('subagent_delegation_status') or 'N/A'}")
+            typer.echo(f"- execution.ralph_phase: {execution_surface.get('ralph_phase') or 'N/A'}")
+            typer.echo(f"- execution.ralph_stop_state: {execution_surface.get('ralph_stop_state') or 'N/A'}")
+            typer.echo(f"- execution.ralph_next_action: {execution_surface.get('ralph_next_action') or 'N/A'}")
+            typer.echo(f"- execution.ralph_round_count: {execution_surface.get('ralph_round_count') or 0}")
+            typer.echo(f"- execution.ralph_last_round_ref: {execution_surface.get('ralph_last_round_ref') or 'N/A'}")
+            typer.echo(f"- execution.ralph_failure_streak: {execution_surface.get('ralph_failure_streak') or 0}")
+            typer.echo(f"- execution.ralph_no_delta_streak: {execution_surface.get('ralph_no_delta_streak') or 0}")
+            typer.echo(f"- execution.qa_mode: {execution_surface.get('qa_execution_mode') or 'N/A'}")
+            typer.echo(f"- execution.qa_session: {execution_surface.get('qa_current_session_id') or 'N/A'}")
+            typer.echo(f"- execution.qa_runner: {execution_surface.get('qa_runner_type') or 'N/A'}")
         if qa_status:
             typer.echo(f"- qa.status: {qa_status.get('status')}")
             typer.echo(f"- qa.evidence_done: {qa_status.get('evidence_done')}")

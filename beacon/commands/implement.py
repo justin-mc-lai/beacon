@@ -19,6 +19,7 @@ from beacon.utils.artifact_paths import (
     human_execution_file,
     qa_matrix_candidates,
 )
+from beacon.utils.circuit_breaker import CircuitBreaker
 from beacon.utils.artifact_update_obligations import write_artifact_update_obligations
 from beacon.utils.git_alignment import (
     build_implement_branch_guard_payload,
@@ -40,6 +41,7 @@ from beacon.utils.implementation_plan import (
     mark_implementation_plan_failed,
     mark_implementation_plan_started,
 )
+from beacon.utils.global_boundaries import global_boundary_principle_summaries
 from beacon.utils.implement_native import run_native_implementation
 from beacon.utils.implement_adapters import (
     build_default_task_prompt,
@@ -51,8 +53,16 @@ from beacon.utils.implement_adapters import (
     resolve_default_runner,
 )
 from beacon.utils.learning_loop import write_requirement_rewrite_input
+from beacon.utils.ralph_runtime import (
+    append_ralph_round,
+    finalize_ralph_state,
+    initialize_ralph_state,
+    load_ralph_state,
+    mark_ralph_handoff_required,
+)
 from beacon.utils.runtime import generate_run_id, now_iso, write_json
 from beacon.utils.story_state import load_story_state
+from beacon.utils.subagent_readiness import delegation_readiness_precheck, detect_host_runtime, runtime_readiness_precheck
 from beacon.utils.team_surface import write_implement_to_qa_handoff
 from beacon.utils.v115_delivery import refresh_evidence_manifest
 from beacon.utils.versioning import normalize_version, release_line_key, resolve_target_version
@@ -111,6 +121,23 @@ def _change_document_paths(project_root: Path, version: str, feature: str) -> di
     }
 
 
+def _ralph_summary_paths(project_root: Path, version: str, feature: str) -> dict[str, Path]:
+    slug = _slug(feature)
+    return {
+        "json": execution_file_output(project_root, version, f"ralph-summary-{slug}.json"),
+        "md": human_execution_file(project_root, version, f"ralph-summary-{slug}.md"),
+    }
+
+
+def _ralph_round_paths(project_root: Path, version: str, feature: str, round_index: int) -> dict[str, Path]:
+    slug = _slug(feature)
+    round_name = f"round-{int(round_index):03d}"
+    return {
+        "json": execution_file_output(project_root, version, f"ralph-round-{slug}-{round_name}.json"),
+        "md": human_execution_file(project_root, version, f"ralph-round-{slug}-{round_name}.md"),
+    }
+
+
 def _branch_preflight_path(run_id: str) -> Path:
     return Path(f".beacon/implement/{run_id}/branch-preflight.json")
 
@@ -150,6 +177,41 @@ def _default_runner_for_version(project_root: Path, version: str) -> str:
     if configured:
         return configured
     return "native-single"
+
+
+def _normalize_mode(value: str | None) -> str:
+    text = str(value or "").strip().lower()
+    return text if text in {"single", "team", "ralph"} else ""
+
+
+def _resolve_mode_runner(*, mode: str, requested_runner: str | None, project_root: Path, version: str) -> str | None:
+    if requested_runner:
+        return requested_runner
+    if mode == "single":
+        return "native-single"
+    if mode in {"team", "ralph"}:
+        return "codex-subagents"
+    return _default_runner_for_version(project_root, version)
+
+
+def _resolve_host_runtime_for_adapter(*, adapter_id: str, adapter: dict[str, Any], explicit_host_runtime: str | None) -> str:
+    explicit = str(explicit_host_runtime or "").strip().lower()
+    if explicit in {"codex", "claude"}:
+        return explicit
+    runtime_family = str(adapter.get("runtime_family", "") or "").strip().lower()
+    if adapter_id == "codex-subagents" or runtime_family == "codex-native":
+        return "codex"
+    if runtime_family == "claude-code" or adapter_id == "gstack":
+        return "claude"
+    return detect_host_runtime(explicit_host_runtime)
+
+
+def _requires_host_native_prechecks(*, adapter_id: str, adapter: dict[str, Any], mode: str) -> bool:
+    adapter_type = str(adapter.get("adapter_type", "") or "").strip().lower()
+    runtime_family = str(adapter.get("runtime_family", "") or "").strip().lower()
+    if adapter_type == "handoff":
+        return False
+    return bool(mode in {"team", "ralph"} or adapter_id == "codex-subagents" or runtime_family == "claude-code")
 
 
 def _normalize_string_list(value: Any) -> list[str]:
@@ -293,6 +355,270 @@ def _run_auto_qa_sequence(
     }
 
 
+def _render_ralph_round_markdown(payload: dict[str, Any]) -> str:
+    lines = [
+        "# Beacon Ralph Round",
+        "",
+        f"- round: `{payload.get('round', '')}`",
+        f"- feature: `{payload.get('feature', '')}`",
+        f"- version: `{payload.get('version', '')}`",
+        f"- executor: `{payload.get('executor', '')}`",
+        f"- implement_run_id: `{payload.get('run_id', '')}`",
+        f"- continue_decision: `{payload.get('continue_decision', '')}`",
+        f"- next_action: `{payload.get('next_action', '')}`",
+        f"- stop_state: `{payload.get('stop_state', '')}`",
+        f"- current_blocker: `{payload.get('current_blocker', '')}`",
+        f"- recorded_at: `{payload.get('recorded_at', '')}`",
+        "",
+        "## Refs",
+        f"- implementation_summary: `{payload.get('implementation_summary_ref', '')}`",
+        f"- review_quality: `{payload.get('review_quality_ref', '')}`",
+        f"- qa_scorecard: `{payload.get('qa_scorecard_ref', '')}`",
+        f"- gate_release: `{payload.get('gate_release_ref', '')}`",
+        f"- repair_handoff_command: `{payload.get('repair_handoff_command', '')}`",
+    ]
+    return "\n".join(lines) + "\n"
+
+
+def _build_ralph_summary(auto_qa_payload: dict[str, Any] | None) -> dict[str, Any]:
+    payload = auto_qa_payload if isinstance(auto_qa_payload, dict) else {}
+    qa_payload = payload.get("payload") if isinstance(payload.get("payload"), dict) else {}
+    feature_scorecard = qa_payload.get("feature_scorecard") if isinstance(qa_payload.get("feature_scorecard"), dict) else {}
+    continue_decision = str(feature_scorecard.get("continue_decision", "") or "").strip()
+    stop_state = "human_blocked"
+    if continue_decision == "ready_for_release":
+        stop_state = "release_ready"
+    elif int(payload.get("max_rounds", 1) or 1) > 0 and len([item for item in payload.get("history", []) if isinstance(item, dict) and str(item.get("step", "")) == "qa-run"]) >= int(payload.get("max_rounds", 1) or 1):
+        stop_state = "budget_exhausted"
+    repair_handoff = feature_scorecard.get("repair_handoff") if isinstance(feature_scorecard.get("repair_handoff"), dict) else {}
+    return {
+        "enabled": True,
+        "round_count": len([item for item in payload.get("history", []) if isinstance(item, dict) and str(item.get("step", "")) == "qa-run"]),
+        "stop_state": stop_state,
+        "continue_decision": continue_decision or "",
+        "next_action": str((repair_handoff or {}).get("action", "") or ""),
+        "recommended_command": str((repair_handoff or {}).get("command", "") or ""),
+        "repair_handoff": repair_handoff,
+        "history": payload.get("history", []),
+    }
+
+
+def _run_ralph_controller(  # noqa: PLR0913
+    *,
+    feature: str,
+    project_root: Path,
+    version: str,
+    runner: str | None,
+    skill: str | None,
+    task_template: str | None,
+    timeout_sec: int | None,
+    auto_switch_branch: bool | None,
+    team_runtime: str | None,
+    host_runtime: str | None,
+    max_rounds: int,
+) -> tuple[int, dict[str, Any]]:
+    resolved_version = resolve_target_version(project_root, version)
+    requested_runner = None if str(runner or "").strip().lower() == "auto" else runner
+    executor_mode = "single" if str(requested_runner or "").strip() == "native-single" else "team"
+    controller_run_id = generate_run_id(project_root)
+    detected_host_runtime = detect_host_runtime(host_runtime)
+    initialize_ralph_state(
+        project_root,
+        feature=feature,
+        version=resolved_version,
+        run_id=controller_run_id,
+        host_runtime=detected_host_runtime,
+        runner=str(requested_runner or _resolve_mode_runner(mode=executor_mode, requested_runner=None, project_root=project_root, version=resolved_version) or ""),
+    )
+
+    # Ralph completion is determined only by structured review/QA/gate
+    # artifacts. The circuit breaker remains as a safety guard for stuck loops.
+    circuit_breaker = CircuitBreaker(
+        no_progress_threshold=3,
+        same_error_threshold=3,
+        output_decline_threshold=3,
+    )
+
+    last_payload: dict[str, Any] = {}
+    last_exit_code = 0
+    controller_state: dict[str, Any] = load_ralph_state(project_root, feature=feature)
+
+    for round_index in range(1, max(1, int(max_rounds or 1)) + 1):
+        child_run_id = generate_run_id(project_root)
+        child_runner = _resolve_mode_runner(
+            mode=executor_mode,
+            requested_runner=requested_runner,
+            project_root=project_root,
+            version=resolved_version,
+        )
+        exit_code, round_payload = run_implement_stage(
+            feature=feature,
+            project_root=project_root,
+            version=resolved_version,
+            mode=executor_mode,
+            host_runtime=detected_host_runtime,
+            run_id_override=child_run_id,
+            runner=child_runner,
+            skill=skill,
+            task_template=task_template,
+            dry_run=False,
+            timeout_sec=timeout_sec,
+            auto_review_spec=True,
+            auto_review_quality=True,
+            auto_qa=True,
+            auto_qa_args=[],
+            auto_qa_follow_handoff=False,
+            auto_qa_max_rounds=1,
+            auto_switch_branch=auto_switch_branch,
+            team_runtime=team_runtime,
+        )
+        last_exit_code = exit_code
+        last_payload = round_payload if isinstance(round_payload, dict) else {}
+
+        # Check circuit breaker first (safety check)
+        result_for_breaker = {
+            "output": str(last_payload.get("summary", "") or last_payload.get("status", "") or ""),
+            "error": str(last_payload.get("error", "") or ""),
+        }
+        is_stuck, stuck_reason = circuit_breaker.detect_stuck(round_index, result_for_breaker)
+        if is_stuck:
+            controller_state = mark_ralph_handoff_required(
+                project_root,
+                feature=feature,
+                run_id=str(last_payload.get("run_id", "") or child_run_id),
+                request_markdown=f"Circuit breaker triggered: {stuck_reason}\n\nPlease review the implementation and resolve the issue.",
+            )
+            append_ralph_round(
+                project_root,
+                feature=feature,
+                round_payload={
+                    "round": round_index,
+                    "run_id": str(last_payload.get("run_id", "") or child_run_id),
+                    "status": "circuit_breaker_triggered",
+                    "circuit_breaker_reason": stuck_reason,
+                    "recorded_at": now_iso(),
+                },
+            )
+            break
+
+        if str(last_payload.get("status", "") or "") == "handoff_required":
+            controller_state = mark_ralph_handoff_required(
+                project_root,
+                feature=feature,
+                run_id=str(last_payload.get("run_id", "") or child_run_id),
+                request_markdown=str(last_payload.get("request_markdown", "") or ""),
+            )
+            append_ralph_round(
+                project_root,
+                feature=feature,
+                round_payload={
+                    "round": round_index,
+                    "run_id": str(last_payload.get("run_id", "") or child_run_id),
+                    "status": "handoff_required",
+                    "recorded_at": now_iso(),
+                },
+            )
+            break
+
+        gate_release_info: dict[str, Any] | None = None
+        auto_qa_payload = last_payload.get("auto_qa") if isinstance(last_payload.get("auto_qa"), dict) else {}
+        auto_qa_feature_scorecard = (
+            (auto_qa_payload.get("payload") or {}).get("feature_scorecard", {})
+            if isinstance(auto_qa_payload.get("payload"), dict)
+            else {}
+        )
+        review_quality_info = last_payload.get("review_quality") if isinstance(last_payload.get("review_quality"), dict) else {}
+        if bool((review_quality_info.get("payload") or {}).get("gate_ready")) and str(auto_qa_feature_scorecard.get("continue_decision", "") or "") == "ready_for_release":
+            gate_rc, gate_payload = _run_gate_release_command(project_root, resolved_version)
+            gate_release_info = {"exit_code": gate_rc, "payload": gate_payload}
+
+        evaluator_auto_qa_payload = dict(auto_qa_payload)
+        # Ralph owns the outer loop budget. The QA payload is a single-round input
+        # to the closure evaluator, so its inner max_rounds must not force
+        # budget_exhausted after every QA run.
+        evaluator_auto_qa_payload["max_rounds"] = 0
+        controller_state = finalize_ralph_state(
+            project_root,
+            feature=feature,
+            run_id=str(last_payload.get("run_id", "") or child_run_id),
+            review_quality=review_quality_info,
+            auto_qa=evaluator_auto_qa_payload,
+            gate_release=gate_release_info or {},
+        )
+        auto_qa_feature_scorecard = (
+            (auto_qa_payload.get("payload") or {}).get("feature_scorecard", {})
+            if isinstance(auto_qa_payload.get("payload"), dict)
+            else {}
+        )
+        round_paths = _ralph_round_paths(project_root, resolved_version, feature, round_index)
+        round_ref_json = str(round_paths["json"].relative_to(project_root))
+        round_payload_ref = {
+            "round": round_index,
+            "feature": feature,
+            "version": resolved_version,
+            "executor": executor_mode,
+            "run_id": str(last_payload.get("run_id", "") or child_run_id),
+            "implementation_summary_ref": str(
+                ((last_payload.get("summary_paths") or {}).get("json") or "")
+            ),
+            "review_quality_ref": str(((review_quality_info.get("paths") or {}).get("json") or "")),
+            "qa_scorecard_ref": str(((auto_qa_payload.get("payload") or {}).get("feature_scorecard_path") or "")),
+            "gate_release_ref": str(((gate_release_info or {}).get("payload") or {}).get("release_scorecard_path", "")) if isinstance((gate_release_info or {}).get("payload"), dict) else "",
+            "continue_decision": str(auto_qa_feature_scorecard.get("continue_decision", "") or ""),
+            "next_action": str(controller_state.get("next_action", "") or ""),
+            "stop_state": str(controller_state.get("stop_state", "") or ""),
+            "current_blocker": str(controller_state.get("current_blocker", "") or ""),
+            "repair_handoff_command": str((auto_qa_feature_scorecard.get("repair_handoff") or {}).get("command", "")) if isinstance(auto_qa_feature_scorecard.get("repair_handoff"), dict) else "",
+            "recorded_at": now_iso(),
+            "round_ref": round_ref_json,
+            "review_quality": review_quality_info,
+            "auto_qa": auto_qa_payload,
+            "gate_release": gate_release_info or {},
+        }
+        write_json(round_paths["json"], round_payload_ref)
+        _write_text(round_paths["md"], _render_ralph_round_markdown(round_payload_ref))
+        controller_state = append_ralph_round(
+            project_root,
+            feature=feature,
+            round_payload=round_payload_ref,
+        )
+        if str(controller_state.get("stop_state", "") or "") in {"release_ready", "budget_exhausted"}:
+            break
+        if str(controller_state.get("next_action", "") or "") != "implement":
+            break
+
+    ralph_paths = _ralph_summary_paths(project_root, resolved_version, feature)
+    write_json(ralph_paths["json"], controller_state)
+    _write_text(ralph_paths["md"], _render_ralph_summary_markdown(controller_state))
+    refresh_evidence_manifest(
+        project_root,
+        refs=[
+            str(ralph_paths["json"].relative_to(project_root)),
+            str(ralph_paths["md"].relative_to(project_root)),
+        ],
+        version=resolved_version,
+    )
+
+    payload = {
+        "schema_version": "1.0",
+        "run_id": controller_run_id,
+        "feature": feature,
+        "feature_slug": _slug(feature),
+        "version": resolved_version,
+        "mode": "ralph",
+        "host_runtime": detected_host_runtime,
+        "status": str(controller_state.get("status", "") or "completed"),
+        "ralph": controller_state,
+        "ralph_artifacts": {
+            "json": str(ralph_paths["json"].relative_to(project_root)),
+            "md": str(ralph_paths["md"].relative_to(project_root)),
+        },
+        "last_round": last_payload,
+    }
+    write_json(project_root / _branch_preflight_path(controller_run_id).with_name("state.json"), payload)
+    return last_exit_code if str(controller_state.get("stop_state", "") or "") != "release_ready" else 0, payload
+
+
 def _render_summary_markdown(payload: dict[str, Any]) -> str:
     lines = [
         "# Beacon Implementation Summary",
@@ -304,9 +630,19 @@ def _render_summary_markdown(payload: dict[str, Any]) -> str:
         f"- runner: `{payload.get('runner')}`",
         f"- adapter_type: `{payload.get('adapter_type')}`",
     ]
+    mode = str(payload.get("mode", "") or "").strip()
+    if mode:
+        lines.append(f"- mode: `{mode}`")
+    host_runtime = str(payload.get("host_runtime", "") or "").strip()
+    if host_runtime:
+        lines.append(f"- host_runtime: `{host_runtime}`")
     skill = str(payload.get("skill", "") or "").strip()
     if skill:
         lines.append(f"- skill: `{skill}`")
+    ralph = payload.get("ralph") if isinstance(payload.get("ralph"), dict) else {}
+    if ralph:
+        lines.append(f"- ralph_stop_state: `{ralph.get('stop_state', '')}`")
+        lines.append(f"- ralph_round_count: `{ralph.get('round_count', 0)}`")
     change_document = payload.get("change_document") if isinstance(payload.get("change_document"), dict) else {}
     if change_document:
         lines.append(f"- change_document_md: `{change_document.get('md', '')}`")
@@ -336,6 +672,37 @@ def _render_summary_markdown(payload: dict[str, Any]) -> str:
                 lines.append(f"- `{key}`: {value}")
     else:
         lines.append("- none")
+    return "\n".join(lines) + "\n"
+
+
+def _render_ralph_summary_markdown(payload: dict[str, Any]) -> str:
+    lines = [
+        "# Beacon Ralph Summary",
+        "",
+        f"- feature: `{payload.get('feature', '')}`",
+        f"- version: `{payload.get('version', '')}`",
+        f"- run_id: `{payload.get('run_id', '')}`",
+        f"- stop_state: `{payload.get('stop_state', '')}`",
+        f"- round_count: `{payload.get('round_count', 0)}`",
+        f"- failure_streak: `{payload.get('failure_streak', 0)}`",
+        f"- no_delta_streak: `{payload.get('no_delta_streak', 0)}`",
+        f"- next_action: `{payload.get('next_action', '')}`",
+        f"- recommended_command: `{payload.get('recommended_command', '')}`",
+        "",
+        "## Rounds",
+    ]
+    rounds = payload.get("rounds") if isinstance(payload.get("rounds"), list) else []
+    if not rounds:
+        lines.append("- none")
+    else:
+        for item in rounds:
+            if not isinstance(item, dict):
+                continue
+            lines.append(
+                f"- round=`{item.get('round', '')}` run_id=`{item.get('run_id', '')}` "
+                f"continue_decision=`{item.get('continue_decision', '')}` next_action=`{item.get('next_action', '')}` "
+                f"round_ref=`{item.get('round_ref', '')}`"
+            )
     return "\n".join(lines) + "\n"
 
 
@@ -511,6 +878,10 @@ def _technical_archive_payload(
     deletions = [str(x) for x in _normalize_list(result_payload.get("deletions")) if str(x).strip()]
     refactors = [str(x) for x in _normalize_list(result_payload.get("refactors")) if str(x).strip()]
     services = _normalize_list(result_payload.get("services"))
+    assumptions = _normalize_list(result_payload.get("assumptions"))
+    simplicity_notes = _normalize_list(result_payload.get("simplicity_notes"))
+    scope_guard = result_payload.get("scope_guard") if isinstance(result_payload.get("scope_guard"), dict) else {}
+    verification = _normalize_list(result_payload.get("verification"))
     payload = {
         "schema_version": "1.0",
         "feature": feature,
@@ -524,9 +895,17 @@ def _technical_archive_payload(
         "profile_id": str(result_payload.get("profile_id", "") or ""),
         "git_commit": _git_commit(project_root),
         "services": services,
+        "boundary_principles": global_boundary_principle_summaries(),
         "implementation_scope_summary": str(result_payload.get("summary", "") or ""),
         "business_goal_summary": str(result_payload.get("business_goal_summary", "") or str(result_payload.get("summary", "") or "")),
         "acceptance_scope": _normalize_list(result_payload.get("acceptance_scope")),
+        "assumptions": assumptions,
+        "simplicity_notes": simplicity_notes,
+        "scope_guard": {
+            "in_scope": bool(scope_guard.get("in_scope", True)),
+            "summary": str(scope_guard.get("summary", "") or ""),
+            "allowed_paths": _normalize_list(scope_guard.get("allowed_paths")),
+        },
         "changed_files": changed_files,
         "modules_touched": _modules_from_changed_files(changed_files),
         "additions": additions,
@@ -545,7 +924,12 @@ def _technical_archive_payload(
         "env_changes": _normalize_list(result_payload.get("env_changes")),
         "feature_flags": _normalize_list(result_payload.get("feature_flags")),
         "deployment_notes": _normalize_list(result_payload.get("deployment_notes")),
-        "verification": _normalize_list(result_payload.get("verification")),
+        "verification": verification,
+        "verification_signals": {
+            "count": len(verification),
+            "has_acceptance_scope": bool(_normalize_list(result_payload.get("acceptance_scope"))),
+            "has_assumptions": bool(assumptions),
+        },
         "known_risks": _normalize_list(result_payload.get("known_risks")),
         "rollback_notes": _normalize_list(result_payload.get("rollback_notes")),
         "compatibility_notes": _normalize_list(result_payload.get("compatibility_notes")),
@@ -588,6 +972,9 @@ def _render_technical_archive_markdown(payload: dict[str, Any]) -> str:
         f"- stderr_path: `{payload.get('traceability', {}).get('stderr_path', '')}`",
     ]
     lines.extend(_render_section("Services", [str(x) for x in payload.get("services", [])]))
+    lines.extend(_render_section("Boundary Principles", [f"`{item.get('id', '')}`: {item.get('heading', '')}" for item in payload.get("boundary_principles", []) if isinstance(item, dict)]))
+    lines.extend(_render_section("Assumptions", payload.get("assumptions", [])))
+    lines.extend(_render_section("Simplicity Notes", payload.get("simplicity_notes", [])))
     lines.extend(_render_section("Changed Files", [f"`{x}`" for x in payload.get("changed_files", [])]))
     lines.extend(_render_section("Modules Touched", [f"`{x}`" for x in payload.get("modules_touched", [])]))
     lines.extend(_render_section("Additions", payload.get("additions", [])))
@@ -602,6 +989,18 @@ def _render_technical_archive_markdown(payload: dict[str, Any]) -> str:
     lines.extend(_render_section("Known Risks", payload.get("known_risks", [])))
     lines.extend(_render_section("Rollback Notes", payload.get("rollback_notes", [])))
     lines.extend(_render_section("Verification", [str(item) for item in payload.get("verification", [])]))
+    lines.extend(
+        [
+            "",
+            "## Scope Guard",
+            f"- in_scope: `{payload.get('scope_guard', {}).get('in_scope', True)}`",
+            f"- summary: `{payload.get('scope_guard', {}).get('summary', '')}`",
+            f"- allowed_paths: `{', '.join(payload.get('scope_guard', {}).get('allowed_paths', []))}`",
+            "",
+            "## Verification Signals",
+            json.dumps(payload.get("verification_signals", {}), ensure_ascii=False, indent=2),
+        ]
+    )
     lines.extend(["", "## DB Changes", json.dumps(payload.get("db_changes", {}), ensure_ascii=False, indent=2)])
     lines.extend(["", "## API Changes", json.dumps(payload.get("api_changes", {}), ensure_ascii=False, indent=2)])
     return "\n".join(lines) + "\n"
@@ -620,6 +1019,15 @@ def _validate_result(payload: dict[str, Any]) -> list[str]:
     verification = payload.get("verification")
     if verification is not None and not isinstance(verification, list):
         problems.append("verification must be a list")
+    assumptions = payload.get("assumptions")
+    if assumptions is not None and not isinstance(assumptions, list):
+        problems.append("assumptions must be a list")
+    simplicity_notes = payload.get("simplicity_notes")
+    if simplicity_notes is not None and not isinstance(simplicity_notes, list):
+        problems.append("simplicity_notes must be a list")
+    scope_guard = payload.get("scope_guard")
+    if scope_guard is not None and not isinstance(scope_guard, dict):
+        problems.append("scope_guard must be an object")
     updates = payload.get("artifact_updates")
     if updates is not None and not isinstance(updates, dict):
         problems.append("artifact_updates must be an object")
@@ -639,6 +1047,30 @@ def _run_review_command(project_root: Path, version: str, feature: str, mode: st
         mode,
         feature,
         "--project",
+        str(project_root),
+        "--version",
+        version,
+        "--json",
+    ]
+    result = subprocess.run(cmd, cwd=_repo_root(), capture_output=True, text=True)
+    payload = None
+    if result.stdout.strip():
+        try:
+            payload = json.loads(result.stdout)
+        except Exception:  # noqa: BLE001
+            payload = None
+    return result.returncode, payload
+
+
+def _run_gate_release_command(project_root: Path, version: str) -> tuple[int, dict[str, Any] | None]:
+    cmd = [
+        sys.executable,
+        "-m",
+        "beacon.main",
+        "gate",
+        "check",
+        "release",
+        "--project-root",
         str(project_root),
         "--version",
         version,
@@ -749,6 +1181,8 @@ def run_implement_stage(  # noqa: PLR0913
     feature: str,
     project_root: Path,
     version: str,
+    mode: str | None = None,
+    host_runtime: str | None = None,
     run_id_override: str | None = None,
     runner: str | None = None,
     skill: str | None = None,
@@ -765,6 +1199,21 @@ def run_implement_stage(  # noqa: PLR0913
     team_runtime: str | None = None,
 ) -> tuple[int, dict[str, Any]]:
     resolved_version = resolve_target_version(project_root, version)
+    resolved_mode = _normalize_mode(mode)
+    if resolved_mode == "ralph" and not str(run_id_override or "").strip():
+        return _run_ralph_controller(
+            feature=feature,
+            project_root=project_root,
+            version=resolved_version,
+            runner=runner,
+            skill=skill,
+            task_template=task_template,
+            timeout_sec=timeout_sec,
+            auto_switch_branch=auto_switch_branch,
+            team_runtime=team_runtime,
+            host_runtime=host_runtime,
+            max_rounds=max(2, int(auto_qa_max_rounds or 2)),
+        )
     config = load_beacon_config(project_root)
     implementation_cfg = config.get("implementation") if isinstance(config.get("implementation"), dict) else {}
     branch_guard_cfg = implementation_cfg.get("branch_guard") if isinstance(implementation_cfg.get("branch_guard"), dict) else {}
@@ -787,6 +1236,11 @@ def run_implement_stage(  # noqa: PLR0913
         if auto_switch_branch is None
         else auto_switch_branch
     )
+    if resolved_mode == "ralph":
+        auto_qa = True
+        auto_qa_follow_handoff = True
+        auto_qa_max_rounds = max(int(auto_qa_max_rounds or 0), 3)
+        auto_review_quality = True
     branch_guard_inputs = _branch_guard_inputs(project_root, version=resolved_version, feature=feature)
     require_clean_worktree_for_switch = bool(branch_guard_inputs.get("require_clean_worktree_for_switch", True))
     expected_branch_override = str(branch_guard_inputs.get("expected_branch", "") or "").strip()
@@ -800,6 +1254,15 @@ def run_implement_stage(  # noqa: PLR0913
     impl_dir = _impl_root(project_root, run_id)
     impl_dir.mkdir(parents=True, exist_ok=True)
     state_path = impl_dir / "state.json"
+    if resolved_mode == "ralph":
+        initialize_ralph_state(
+            project_root,
+            feature=feature,
+            version=resolved_version,
+            run_id=run_id,
+            host_runtime=str(host_runtime or ""),
+            runner=str(runner or ""),
+        )
     takeover_gate = evaluate_takeover_baseline_gate(project_root, version=resolved_version)
     if str(takeover_gate.get("status", "") or "") == "blocked":
         payload = {
@@ -881,8 +1344,12 @@ def run_implement_stage(  # noqa: PLR0913
             return 2, payload
 
     requested_runner = None if str(runner or "").strip().lower() == "auto" else runner
-    if requested_runner is None:
-        requested_runner = _default_runner_for_version(project_root, resolved_version)
+    requested_runner = _resolve_mode_runner(
+        mode=resolved_mode,
+        requested_runner=requested_runner,
+        project_root=project_root,
+        version=resolved_version,
+    )
     adapter_id, adapter = resolve_adapter(project_root, requested_runner)
     if not adapter_id or not adapter:
         payload = {
@@ -898,6 +1365,63 @@ def run_implement_stage(  # noqa: PLR0913
         }
         write_json(state_path, payload)
         return 2, payload
+
+    resolved_host_runtime = _resolve_host_runtime_for_adapter(
+        adapter_id=adapter_id,
+        adapter=adapter,
+        explicit_host_runtime=host_runtime,
+    )
+    subagent_prechecks: dict[str, Any] = {
+        "required": False,
+        "host_runtime": resolved_host_runtime,
+        "runtime_readiness": {},
+        "delegation_readiness": {},
+    }
+    if _requires_host_native_prechecks(adapter_id=adapter_id, adapter=adapter, mode=resolved_mode):
+        runtime_precheck = runtime_readiness_precheck(project_root, host_runtime=resolved_host_runtime)
+        delegation_precheck = delegation_readiness_precheck(
+            project_root,
+            feature=feature,
+            version=resolved_version,
+        )
+        subagent_prechecks = {
+            "required": True,
+            "host_runtime": resolved_host_runtime,
+            "runtime_readiness": runtime_precheck,
+            "delegation_readiness": delegation_precheck,
+        }
+        if str(runtime_precheck.get("status", "")).strip().lower() != "pass":
+            payload = {
+                "schema_version": "1.0",
+                "status": "blocked",
+                "reason_code": str(runtime_precheck.get("reason_code", "runtime_not_ready") or "runtime_not_ready"),
+                "feature": feature,
+                "version": resolved_version,
+                "run_id": run_id,
+                "feature_slug": feature_slug,
+                "host_runtime": resolved_host_runtime,
+                "mode": resolved_mode or "",
+                "subagent_prechecks": subagent_prechecks,
+                "recommended_command": str(runtime_precheck.get("recommended_command", "") or ""),
+            }
+            write_json(state_path, payload)
+            return 2, payload
+        if str(delegation_precheck.get("status", "")).strip().lower() != "pass":
+            payload = {
+                "schema_version": "1.0",
+                "status": "blocked",
+                "reason_code": str(delegation_precheck.get("reason_code", "delegation_not_ready") or "delegation_not_ready"),
+                "feature": feature,
+                "version": resolved_version,
+                "run_id": run_id,
+                "feature_slug": feature_slug,
+                "host_runtime": resolved_host_runtime,
+                "mode": resolved_mode or "",
+                "subagent_prechecks": subagent_prechecks,
+                "recommended_command": str(delegation_precheck.get("recommended_command", "") or ""),
+            }
+            write_json(state_path, payload)
+            return 2, payload
 
     artifacts = _artifacts(project_root, resolved_version, feature)
     request_path = Path(f".beacon/implement/{run_id}/request.json")
@@ -968,6 +1492,9 @@ def run_implement_stage(  # noqa: PLR0913
             "runtime_family": str(adapter.get("runtime_family", "")),
             "skill": rendered_skill,
         },
+        "mode": resolved_mode or "",
+        "host_runtime": resolved_host_runtime,
+        "subagent_prechecks": subagent_prechecks,
         "branch_preflight_path": str(branch_preflight_path),
         "branch_preflight": branch_preflight,
         "task_prompt": task_prompt,
@@ -985,6 +1512,8 @@ def run_implement_stage(  # noqa: PLR0913
         "feature": feature,
         "feature_slug": feature_slug,
         "version": resolved_version,
+        "mode": resolved_mode or "",
+        "host_runtime": resolved_host_runtime,
         "runner": adapter_id,
         "adapter_type": str(adapter.get("adapter_type", "")),
         "request_path": str(request_path),
@@ -994,6 +1523,7 @@ def run_implement_stage(  # noqa: PLR0913
         "git_workflow": git_workflow_contract,
         "generated_at": now_iso(),
         "status": "planned",
+        "subagent_prechecks": subagent_prechecks,
     }
 
     adapter_type = str(adapter.get("adapter_type", "")).strip()
@@ -1149,6 +1679,7 @@ def run_implement_stage(  # noqa: PLR0913
             "max_rounds": int(auto_qa_max_rounds or 1),
         }
         auto_qa_exit = 0
+        gate_release_info: dict[str, Any] | None = None
         if auto_qa:
             auto_qa_exit, auto_qa_payload = _run_auto_qa_sequence(
                 project_root,
@@ -1159,6 +1690,50 @@ def run_implement_stage(  # noqa: PLR0913
                 max_rounds=int(auto_qa_max_rounds or 1),
             )
             summary_payload["auto_qa"] = auto_qa_payload
+        auto_qa_feature_scorecard = (
+            ((summary_payload.get("auto_qa") or {}).get("payload") or {}).get("feature_scorecard", {})
+            if isinstance((summary_payload.get("auto_qa") or {}).get("payload"), dict)
+            else {}
+        )
+        if resolved_mode == "ralph" and bool((review_quality_info or {}).get("payload", {}).get("gate_ready")) and str(auto_qa_feature_scorecard.get("continue_decision", "") or "") == "ready_for_release":
+            gate_rc, gate_payload = _run_gate_release_command(project_root, resolved_version)
+            gate_release_info = {"exit_code": gate_rc, "payload": gate_payload}
+            summary_payload["gate_release"] = gate_release_info
+        if resolved_mode == "ralph":
+            append_ralph_round(
+                project_root,
+                feature=feature,
+                round_payload={
+                    "run_id": run_id,
+                    "review_quality": {},
+                    "auto_qa": summary_payload.get("auto_qa", {}),
+                    "gate_release": gate_release_info or {},
+                    "recorded_at": now_iso(),
+                },
+            )
+            summary_payload["ralph"] = finalize_ralph_state(
+                project_root,
+                feature=feature,
+                run_id=run_id,
+                review_quality=review_quality_info or {},
+                auto_qa=summary_payload.get("auto_qa", {}),
+                gate_release=gate_release_info or {},
+            )
+            ralph_paths = _ralph_summary_paths(project_root, resolved_version, feature)
+            write_json(ralph_paths["json"], summary_payload["ralph"])
+            _write_text(ralph_paths["md"], _render_ralph_summary_markdown(summary_payload["ralph"]))
+            summary_payload["ralph_artifacts"] = {
+                "json": str(ralph_paths["json"].relative_to(project_root)),
+                "md": str(ralph_paths["md"].relative_to(project_root)),
+            }
+            refresh_evidence_manifest(
+                project_root,
+                refs=[
+                    str(ralph_paths["json"].relative_to(project_root)),
+                    str(ralph_paths["md"].relative_to(project_root)),
+                ],
+                version=resolved_version,
+            )
         write_json(summary_paths["json"], summary_payload)
         _write_text(summary_paths["md"], _render_summary_markdown(summary_payload))
         refresh_evidence_manifest(
@@ -1184,6 +1759,28 @@ def run_implement_stage(  # noqa: PLR0913
             "plan_preflight": implementation_plan_gate,
             "implementation_plan": implementation_plan_file,
         }
+        if resolved_mode == "ralph":
+            payload["ralph"] = mark_ralph_handoff_required(
+                project_root,
+                feature=feature,
+                run_id=run_id,
+                request_markdown=str(request_md.relative_to(project_root)),
+            )
+            ralph_paths = _ralph_summary_paths(project_root, resolved_version, feature)
+            write_json(ralph_paths["json"], payload["ralph"])
+            _write_text(ralph_paths["md"], _render_ralph_summary_markdown(payload["ralph"]))
+            payload["ralph_artifacts"] = {
+                "json": str(ralph_paths["json"].relative_to(project_root)),
+                "md": str(ralph_paths["md"].relative_to(project_root)),
+            }
+            refresh_evidence_manifest(
+                project_root,
+                refs=[
+                    str(ralph_paths["json"].relative_to(project_root)),
+                    str(ralph_paths["md"].relative_to(project_root)),
+                ],
+                version=resolved_version,
+            )
         write_json(state_path, payload)
         return 0, payload
 
@@ -1519,6 +2116,7 @@ def run_implement_stage(  # noqa: PLR0913
         "max_rounds": int(auto_qa_max_rounds or 1),
     }
     auto_qa_exit = 0
+    gate_release_info: dict[str, Any] | None = None
     if auto_qa:
         auto_qa_exit, auto_qa_payload = _run_auto_qa_sequence(
             project_root,
@@ -1529,6 +2127,50 @@ def run_implement_stage(  # noqa: PLR0913
             max_rounds=int(auto_qa_max_rounds or 1),
         )
         summary_payload["auto_qa"] = auto_qa_payload
+    auto_qa_feature_scorecard = (
+        ((summary_payload.get("auto_qa") or {}).get("payload") or {}).get("feature_scorecard", {})
+        if isinstance((summary_payload.get("auto_qa") or {}).get("payload"), dict)
+        else {}
+    )
+    if resolved_mode == "ralph" and bool((review_quality_info or {}).get("payload", {}).get("gate_ready")) and str(auto_qa_feature_scorecard.get("continue_decision", "") or "") == "ready_for_release":
+        gate_rc, gate_payload = _run_gate_release_command(project_root, resolved_version)
+        gate_release_info = {"exit_code": gate_rc, "payload": gate_payload}
+        summary_payload["gate_release"] = gate_release_info
+    if resolved_mode == "ralph":
+        append_ralph_round(
+            project_root,
+            feature=feature,
+            round_payload={
+                "run_id": run_id,
+                "review_quality": review_quality_info or {},
+                "auto_qa": summary_payload.get("auto_qa", {}),
+                "gate_release": gate_release_info or {},
+                "recorded_at": now_iso(),
+            },
+        )
+        summary_payload["ralph"] = finalize_ralph_state(
+            project_root,
+            feature=feature,
+            run_id=run_id,
+            review_quality=review_quality_info or {},
+            auto_qa=summary_payload.get("auto_qa", {}),
+            gate_release=gate_release_info or {},
+        )
+        ralph_paths = _ralph_summary_paths(project_root, resolved_version, feature)
+        write_json(ralph_paths["json"], summary_payload["ralph"])
+        _write_text(ralph_paths["md"], _render_ralph_summary_markdown(summary_payload["ralph"]))
+        summary_payload["ralph_artifacts"] = {
+            "json": str(ralph_paths["json"].relative_to(project_root)),
+            "md": str(ralph_paths["md"].relative_to(project_root)),
+        }
+        refresh_evidence_manifest(
+            project_root,
+            refs=[
+                str(ralph_paths["json"].relative_to(project_root)),
+                str(ralph_paths["md"].relative_to(project_root)),
+            ],
+            version=resolved_version,
+        )
     write_json(summary_paths["json"], summary_payload)
     _write_text(summary_paths["md"], _render_summary_markdown(summary_payload))
     refresh_evidence_manifest(
@@ -1592,6 +2234,8 @@ def run(
     feature: str = typer.Argument(..., help="Feature name"),
     project: Optional[str] = typer.Option(None, "--project", "--project-root", "-p", help="Project root"),
     version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
+    mode: str = typer.Option("", "--mode", help="Implementation mode: single|team|ralph"),
+    host_runtime: str = typer.Option("", "--host-runtime", help="Host runtime for native subagent checks: codex|claude"),
     runner: str = typer.Option("auto", "--runner", help="Runner id or auto"),
     skill: str = typer.Option("", "--skill", help="Override adapter skill"),
     task_template: str = typer.Option("", "--task-template", help="Override task template"),
@@ -1613,6 +2257,8 @@ def run(
         feature=feature,
         project_root=project_root,
         version=version,
+        mode=mode or None,
+        host_runtime=host_runtime or None,
         runner=runner,
         skill=skill or None,
         task_template=task_template or None,
@@ -1632,6 +2278,10 @@ def run(
     else:
         typer.echo(f"Beacon implement status: {payload.get('status')}")
         typer.echo(f"run_id: {payload.get('run_id', '')}")
+        if payload.get("mode"):
+            typer.echo(f"mode: {payload.get('mode')}")
+        if payload.get("host_runtime"):
+            typer.echo(f"host_runtime: {payload.get('host_runtime')}")
         if payload.get("reason_code"):
             typer.echo(f"reason_code: {payload.get('reason_code')}")
     raise typer.Exit(code=code)
@@ -2037,3 +2687,76 @@ def status(
         typer.echo(json.dumps(output, ensure_ascii=False, indent=2))
         return
     typer.echo(json.dumps(output, ensure_ascii=False, indent=2))
+
+
+@app.command("ralph-status")
+def ralph_status(
+    feature: str = typer.Argument(..., help="Feature name"),
+    project: Optional[str] = typer.Option(None, "--project", "--project-root", "-p", help="Project root"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
+):
+    """Show Ralph controller state for one feature."""
+    project_root = Path(project) if project else Path.cwd()
+    payload = load_ralph_state(project_root, feature=feature)
+    if not payload:
+        typer.echo("Ralph state not found", err=True)
+        raise typer.Exit(2)
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        raise typer.Exit(0)
+    typer.echo("Beacon Ralph Status")
+    typer.echo("=" * 20)
+    typer.echo(f"feature: {payload.get('feature', '')}")
+    typer.echo(f"version: {payload.get('version', '')}")
+    typer.echo(f"phase: {payload.get('phase', '')}")
+    typer.echo(f"status: {payload.get('status', '')}")
+    typer.echo(f"stop_state: {payload.get('stop_state', '') or 'N/A'}")
+    typer.echo(f"next_action: {payload.get('next_action', '') or 'N/A'}")
+    typer.echo(f"recommended_command: {payload.get('recommended_command', '') or 'N/A'}")
+    raise typer.Exit(0)
+
+
+@app.command("ralph-resume")
+def ralph_resume(
+    feature: str = typer.Argument(..., help="Feature name"),
+    project: Optional[str] = typer.Option(None, "--project", "--project-root", "-p", help="Project root"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
+):
+    """Resume the next actionable Ralph step when it is safe to do so."""
+    project_root = Path(project) if project else Path.cwd()
+    payload = load_ralph_state(project_root, feature=feature)
+    if not payload:
+        typer.echo("Ralph state not found", err=True)
+        raise typer.Exit(2)
+    next_action = str(payload.get("next_action", "") or "").strip()
+    command = str(payload.get("recommended_command", "") or "").strip()
+    if next_action not in {"implement", "qa", "verify", "test-case", "review_quality", "release"} or not command:
+        output = {
+            "schema_version": "1.0",
+            "status": "blocked",
+            "reason_code": "ralph_resume_not_actionable",
+            "feature": feature,
+            "ralph": payload,
+        }
+        if json_output:
+            typer.echo(json.dumps(output, ensure_ascii=False, indent=2))
+        else:
+            typer.echo("Beacon Ralph resume blocked")
+            typer.echo(f"next_action: {next_action or 'N/A'}")
+            typer.echo(f"recommended_command: {command or 'N/A'}")
+        raise typer.Exit(2)
+    exit_code, result = _run_beacon_json_command(project_root, command)
+    output = {
+        "schema_version": "1.0",
+        "status": "completed" if exit_code == 0 else "failed",
+        "feature": feature,
+        "recommended_command": command,
+        "exit_code": exit_code,
+        "result": result,
+    }
+    if json_output:
+        typer.echo(json.dumps(output, ensure_ascii=False, indent=2))
+    else:
+        typer.echo(f"Beacon Ralph resume status: {output['status']}")
+        typer.echo(f"recommended_command: {command}")
+    raise typer.Exit(exit_code)

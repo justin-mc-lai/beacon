@@ -689,6 +689,156 @@ def test_run_auto_qa_sequence_should_not_follow_handoff_when_disabled(monkeypatc
     assert calls == ["qa"]
 
 
+def test_ralph_controller_should_keep_qa_single_round_and_write_round_artifact(monkeypatch, tmp_path: Path):
+    _seed_feature_docs(tmp_path, version="v1.3.2", feature="My Feature")
+    calls: list[tuple[str, str]] = []
+    call_count = {"count": 0}
+
+    def _fake_run_implement_stage(**kwargs):
+        call_count["count"] += 1
+        calls.append(("implement", kwargs["feature"]))
+        assert kwargs["mode"] == "single"
+        assert kwargs["auto_qa"] is True
+        assert kwargs["auto_qa_follow_handoff"] is False
+        assert kwargs["auto_qa_max_rounds"] == 1
+        return 0, {
+            "run_id": kwargs["run_id_override"],
+            "status": "completed",
+            "summary": "runner finished",
+            "summary_paths": {"json": "docs/beacon/v1.3.2/execution/implementation-summary-my-feature.json"},
+            "review_quality": {
+                "exit_code": 0,
+                "payload": {"gate_ready": False},
+                "paths": {"json": "docs/beacon/v1.3.2/execution/review-quality-my-feature.json"},
+            },
+            "auto_qa": {
+                "enabled": True,
+                "triggered": True,
+                "follow_handoff": False,
+                "max_rounds": 1,
+                "exit_code": 2,
+                "payload": {
+                    "feature_scorecard_path": ".beacon/qa/features/my-feature/scorecard.json",
+                    "feature_scorecard": {
+                        "continue_decision": "stop_for_repair",
+                        "repair_handoff": {
+                            "action": "implement" if call_count["count"] == 1 else "human_review",
+                            "command": (
+                                'beacon implement run "My Feature" --project /tmp/demo --version v1.3.2 --runner native-single'
+                                if call_count["count"] == 1
+                                else "manual review required"
+                            ),
+                            "reason": "fix blocker" if call_count["count"] == 1 else "needs human review",
+                        },
+                    },
+                },
+                "history": [
+                    {
+                        "step": "qa-run",
+                        "round": 1,
+                        "exit_code": 2,
+                    }
+                ],
+            },
+        }
+
+    monkeypatch.setattr(implement_cmd, "run_implement_stage", _fake_run_implement_stage)
+    monkeypatch.setattr(implement_cmd, "_run_gate_release_command", lambda *args, **kwargs: (0, {"status": "pass"}))
+    monkeypatch.setattr(implement_cmd, "refresh_evidence_manifest", lambda *args, **kwargs: None)
+
+    exit_code, payload = implement_cmd._run_ralph_controller(  # type: ignore[attr-defined]
+        feature="My Feature",
+        project_root=tmp_path,
+        version="v1.3.2",
+        runner="native-single",
+        skill=None,
+        task_template=None,
+        timeout_sec=None,
+        auto_switch_branch=None,
+        team_runtime=None,
+        host_runtime="codex",
+        max_rounds=3,
+    )
+
+    assert exit_code == 0
+    assert len(calls) == 2
+    ralph = payload["ralph"]
+    assert ralph["round_count"] == 2
+    assert ralph["next_action"] == "human_review"
+    assert ralph["current_blocker"] == "needs human review"
+    assert ralph["last_round_ref"].endswith("ralph-round-my-feature-round-002.json")
+    assert (tmp_path / ralph["last_round_ref"]).exists()
+    assert (tmp_path / "docs/beacon/v1.3.2/execution/ralph-round-my-feature-round-001.md").exists()
+    assert (tmp_path / "docs/beacon/v1.3.2/execution/ralph-round-my-feature-round-002.md").exists()
+    round_one = json.loads((tmp_path / "docs/beacon/v1.3.2/.machine/execution/ralph-round-my-feature-round-001.json").read_text())
+    round_two = json.loads((tmp_path / "docs/beacon/v1.3.2/.machine/execution/ralph-round-my-feature-round-002.json").read_text())
+    assert round_one["auto_qa"]["max_rounds"] == 1
+    assert round_two["auto_qa"]["max_rounds"] == 1
+
+
+def test_ralph_controller_should_ignore_text_completion_without_structured_qa_release(monkeypatch, tmp_path: Path):
+    _seed_feature_docs(tmp_path, version="v1.3.2", feature="My Feature")
+    calls = {"count": 0}
+
+    def _fake_run_implement_stage(**kwargs):
+        calls["count"] += 1
+        return 0, {
+            "run_id": kwargs["run_id_override"],
+            "status": "completed",
+            "completed": True,
+            "summary": "Task complete. All work is done. Ready for release.",
+            "review_quality": {
+                "exit_code": 0,
+                "payload": {"gate_ready": False},
+                "paths": {"json": "docs/beacon/v1.3.2/execution/review-quality-my-feature.json"},
+            },
+            "auto_qa": {
+                "enabled": True,
+                "triggered": True,
+                "follow_handoff": False,
+                "max_rounds": 1,
+                "exit_code": 2,
+                "payload": {
+                    "feature_scorecard_path": ".beacon/qa/features/my-feature/scorecard.json",
+                    "feature_scorecard": {
+                        "continue_decision": "stop_for_repair",
+                        "repair_handoff": {
+                            "action": "human_review",
+                            "command": "manual review required",
+                            "reason": "qa still blocked",
+                        },
+                    },
+                },
+                "history": [{"step": "qa-run", "round": 1, "exit_code": 2}],
+            },
+        }
+
+    monkeypatch.setattr(implement_cmd, "run_implement_stage", _fake_run_implement_stage)
+    monkeypatch.setattr(implement_cmd, "refresh_evidence_manifest", lambda *args, **kwargs: None)
+
+    _, payload = implement_cmd._run_ralph_controller(  # type: ignore[attr-defined]
+        feature="My Feature",
+        project_root=tmp_path,
+        version="v1.3.2",
+        runner="native-single",
+        skill=None,
+        task_template=None,
+        timeout_sec=None,
+        auto_switch_branch=None,
+        team_runtime=None,
+        host_runtime="codex",
+        max_rounds=3,
+    )
+
+    assert calls["count"] == 1
+    ralph = payload["ralph"]
+    assert ralph["stop_state"] == "human_blocked"
+    assert ralph["next_action"] == "human_review"
+    assert ralph["current_blocker"] == "qa still blocked"
+    assert ralph["rounds"][0]["continue_decision"] == "stop_for_repair"
+    assert ralph["rounds"][0].get("status") != "exit_detector_triggered"
+
+
 def test_implement_run_should_fail_when_runner_times_out(tmp_path: Path):
     _seed_feature_docs(tmp_path, feature="My Feature")
     script = tmp_path / "runner.py"

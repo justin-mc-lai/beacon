@@ -8,6 +8,7 @@ from typer.testing import CliRunner
 
 from beacon.main import app
 from beacon.utils.material_audit import build_material_audit
+from beacon.utils.writeback import record_implementation_writeback
 
 
 runner = CliRunner()
@@ -381,6 +382,61 @@ def test_v110_help_should_not_report_revision_not_frozen_after_release_ready_qa(
     assert payload["blocked"] is False
     assert "revision_not_frozen" not in payload["blocking_reasons"]
     assert payload["next_step"]["action"] == "release-check"
+
+
+def test_v110_help_should_not_suggest_release_check_when_feature_scorecard_is_ready_but_coverage_is_incomplete(tmp_path: Path):
+    _seed_common_docs(tmp_path)
+    _mark_implemented(tmp_path)
+    record_implementation_writeback(
+        tmp_path,
+        version=VERSION,
+        feature=FEATURE,
+        run_id="run-impl",
+        implemented_item_ids=["AC-001", "AC-002"],
+        changed_files=["beacon/utils/help_support.py"],
+    )
+    docs = tmp_path / "docs" / "beacon" / VERSION
+    (docs / ".machine" / "qa").mkdir(parents=True, exist_ok=True)
+    (tmp_path / ".beacon" / "qa" / "features" / SLUG).mkdir(parents=True, exist_ok=True)
+    (tmp_path / ".beacon" / "state").mkdir(parents=True, exist_ok=True)
+
+    (docs / ".machine" / "qa" / f"{SLUG}.ac-test-matrix.json").write_text(
+        json.dumps(
+            {
+                "entries": [
+                    {"ac_id": "AC-001", "tc_id": "TC-001", "evidence_path": ".beacon/evidence/TC-001.json"},
+                    {"ac_id": "AC-002", "tc_id": "TC-002", "evidence_path": ""},
+                ]
+            },
+            ensure_ascii=False,
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+    (tmp_path / ".beacon" / "evidence").mkdir(parents=True, exist_ok=True)
+    (tmp_path / ".beacon" / "evidence" / "TC-001.json").write_text("{}", encoding="utf-8")
+    (tmp_path / ".beacon" / "qa" / "features" / SLUG / "scorecard.json").write_text(
+        json.dumps(
+            {
+                "feature": FEATURE,
+                "feature_slug": SLUG,
+                "continue_decision": "ready_for_release",
+                "release_ready": True,
+                "test_case_backfill_required": False,
+                "coverage_current": {"coverage_rate": 1.0},
+            },
+            ensure_ascii=False,
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+
+    help_result = _invoke(["help", "--project-root", str(tmp_path), "--version", VERSION, "--feature", FEATURE, "--json"])
+    assert help_result.exit_code == 0, help_result.stdout
+    payload = json.loads(help_result.stdout)
+    assert payload["blocked"] is True
+    assert "coverage_incomplete" in payload["blocking_reasons"]
+    assert payload["next_step"]["action"] == "qa-run"
 
 
 def test_v110_material_audit_should_require_source_architecture_and_project_skill_blueprint(tmp_path: Path):

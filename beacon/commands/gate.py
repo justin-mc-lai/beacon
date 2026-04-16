@@ -950,6 +950,13 @@ def check_memory_closure(project_root: Path, mode: GateMode, stage: str, version
 
 
 def _resolve_release_contract_run_id(project_root: Path, version: Optional[str] = None) -> str:
+    gate_report_path = project_root / ".beacon" / "gate-report.json"
+    gate_payload, gate_status = _load_json_file(gate_report_path)
+    if gate_status == "ok" and isinstance(gate_payload, dict):
+        run_id = str(gate_payload.get("run_id", "") or "").strip()
+        if run_id.startswith("run-"):
+            return run_id
+
     resolved_version = _resolved_gate_version(project_root, version)
     terminal_path = _resolve_existing_execution_file(project_root, resolved_version, "terminal.json")
     payload, status = _load_json_file(terminal_path)

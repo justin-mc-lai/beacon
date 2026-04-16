@@ -22,7 +22,9 @@ from beacon.utils.project_skills import (
     load_feature_profile_binding,
     resolve_profile_for_feature,
 )
+from beacon.utils.qa_runtime import load_current_qa_session, load_qa_status
 from beacon.utils.qa_precision import load_feature_qa_scorecard
+from beacon.utils.ralph_runtime import load_ralph_state
 from beacon.utils.requirement_clarity import build_requirement_clarity_gate_payload
 from beacon.utils.revision_state import load_revision_state
 from beacon.utils.runtime import load_run_state
@@ -34,6 +36,7 @@ from beacon.utils.scoring import (
     compute_test_score,
 )
 from beacon.utils.story_state import feature_slug, load_story_state, summarize_story_items
+from beacon.utils.subagent_readiness import delegation_readiness_precheck, detect_host_runtime, runtime_readiness_precheck
 from beacon.utils.versioning import describe_project_version_context, normalize_version, release_line_key, resolve_docs_version
 from beacon.utils.workflow_memory import compute_workflow_progress, resolve_workflow_run_id
 
@@ -82,6 +85,69 @@ def _read_json(path: Path) -> dict[str, Any]:
 
 def _auto_test_status(project_root: Path) -> dict[str, Any]:
     return _read_json(project_root / ".beacon" / "auto-test-status.json")
+
+
+def _implement_state_recency(payload: dict[str, Any], *, fallback_key: str = "") -> str:
+    return str(
+        payload.get("generated_at", "")
+        or payload.get("updated_at", "")
+        or payload.get("implemented_at", "")
+        or payload.get("run_id", "")
+        or fallback_key
+    ).strip()
+
+
+def _latest_implement_state(project_root: Path, *, feature: str, version: str) -> dict[str, Any]:
+    impl_root = project_root / ".beacon" / "implement"
+    if not impl_root.exists():
+        return {}
+    target_slug = feature_slug(feature)
+    candidates: list[tuple[str, dict[str, Any]]] = []
+    for state_path in sorted(impl_root.glob("*/state.json"), reverse=True):
+        payload = _read_json(state_path)
+        if str(payload.get("feature_slug", "") or "") != target_slug:
+            continue
+        payload_version = str(payload.get("version", "") or "").strip()
+        if payload_version and payload_version != version:
+            continue
+        candidates.append((state_path.parent.name, payload))
+    if not candidates:
+        return {}
+    non_handoff = [
+        (key, payload)
+        for key, payload in candidates
+        if str(payload.get("status", "") or "").strip().lower() not in {"handoff_required", "waiting_for_handoff"}
+    ]
+    pool = non_handoff or candidates
+    ordered = sorted(pool, key=lambda item: _implement_state_recency(item[1], fallback_key=item[0]), reverse=True)
+    return ordered[0][1]
+
+
+def _ralph_handoff_is_stale(
+    *,
+    ralph_state: dict[str, Any] | None,
+    implement_state: dict[str, Any] | None,
+    feature_scorecard: dict[str, Any] | None,
+) -> bool:
+    if not isinstance(ralph_state, dict) or not ralph_state:
+        return False
+    blocker = str(ralph_state.get("current_blocker", "") or "").strip()
+    next_action = str(ralph_state.get("next_action", "") or "").strip()
+    recommended_command = str(ralph_state.get("recommended_command", "") or "").strip()
+    if blocker != "handoff_required" and next_action != "handoff_execute" and "request.md" not in recommended_command:
+        return False
+    if not isinstance(implement_state, dict) or not implement_state:
+        return False
+    implement_status = str(implement_state.get("status", "") or "").strip().lower()
+    implement_run_id = str(implement_state.get("run_id", "") or "").strip()
+    active_run_id = str(ralph_state.get("active_run_id", "") or "").strip()
+    continue_decision = str((feature_scorecard or {}).get("continue_decision", "") or "").strip()
+    return bool(
+        implement_status == "completed"
+        and implement_run_id
+        and implement_run_id != active_run_id
+        and continue_decision in {"continue", "stop_for_repair", "ready_for_release", ""}
+    )
 
 
 def _infer_current_stage(*, revision_state: dict[str, Any], workflow_progress: dict[str, Any]) -> str:
@@ -200,6 +266,8 @@ def _blocking_reasons(
         reasons.append("revision_superseded")
     if (coverage.get("planned_story", 0) or 0) <= 0:
         reasons.append("missing_user_story")
+    if delivery_status in {"implemented", "verifying", "verified", "accepted", "released"} and not bool(coverage.get("full_coverage", False)):
+        reasons.append("coverage_incomplete")
     if delivery_status == "blocked":
         reasons.append("workflow_blocked")
     gate_issues = profile_gate.get("issues", []) if isinstance(profile_gate, dict) and isinstance(profile_gate.get("issues"), list) else []
@@ -321,7 +389,7 @@ def _next_step(
             "reason": "qa coverage is incomplete but no severe blocker requires stopping the round",
             "command": _preferred_qa_command(feature=feature, project_root=project_root, version=version, base=base),
         }
-    if continue_decision == "ready_for_release":
+    if continue_decision == "ready_for_release" and not blocked:
         return {
             "action": "release-check",
             "reason": "current QA round is ready for release/governance evaluation",
@@ -419,6 +487,12 @@ def _next_step(
                 "action": "review-quality",
                 "reason": "verification is failing and quality review / fixes are required",
                 "command": f"beacon review quality {quoted_feature} {base}",
+            }
+        if "coverage_incomplete" in blocking_reasons:
+            return {
+                "action": "qa-run",
+                "reason": "coverage is still incomplete; do not advance to release-check until remaining AC/test evidence is closed",
+                "command": _preferred_qa_command(feature=feature, project_root=project_root, version=version, base=base),
             }
         return {
             "action": "doctor-advise",
@@ -602,6 +676,8 @@ def build_help_payload(
         revision_state=revision_state,
         workflow_progress=workflow_progress,
     )
+    ralph_state = load_ralph_state(project_root, feature=feature_name) if feature_name else {}
+    implement_state = _latest_implement_state(project_root, feature=feature_name, version=resolved_version) if feature_name else {}
     blocking = _blocking_reasons(
         revision_state=revision_state,
         workflow_progress=workflow_progress,
@@ -614,6 +690,26 @@ def build_help_payload(
         implementation_plan_gate=implementation_plan_gate,
         requirement_clarity_gate=requirement_clarity_gate,
     )
+    scorecard_release_ready = bool(feature_scorecard.get("release_ready", False))
+    scorecard_continue_decision = str(feature_scorecard.get("continue_decision", "") or "").strip()
+    qa_closure_authoritative = scorecard_release_ready or scorecard_continue_decision == "ready_for_release"
+    ralph_handoff_stale = _ralph_handoff_is_stale(
+        ralph_state=ralph_state,
+        implement_state=implement_state,
+        feature_scorecard=feature_scorecard,
+    )
+    if (
+        isinstance(ralph_state, dict)
+        and str(ralph_state.get("phase", "") or "").strip()
+        and not qa_closure_authoritative
+        and not ralph_handoff_stale
+    ):
+        current_blocker = str(ralph_state.get("current_blocker", "") or "").strip()
+        stop_state = str(ralph_state.get("stop_state", "") or "").strip()
+        if current_blocker:
+            blocking = [current_blocker]
+        elif stop_state and stop_state != "release_ready":
+            blocking = [stop_state]
     blocked = bool(blocking)
     current_stage = _infer_current_stage(revision_state=revision_state, workflow_progress=workflow_progress)
     profile_binding_source = (
@@ -622,6 +718,23 @@ def build_help_payload(
         else "none"
     )
     learning_surface = load_learning_plane_contract(project_root)
+    qa_status = load_qa_status(project_root)
+    current_qa_session = load_current_qa_session(project_root)
+    host_runtime = str(implement_state.get("host_runtime", "") or "").strip() or detect_host_runtime(None)
+    runtime_precheck = (
+        (implement_state.get("subagent_prechecks") or {}).get("runtime_readiness", {})
+        if isinstance(implement_state.get("subagent_prechecks"), dict)
+        else {}
+    )
+    if not runtime_precheck:
+        runtime_precheck = runtime_readiness_precheck(project_root, host_runtime=host_runtime)
+    delegation_precheck = (
+        (implement_state.get("subagent_prechecks") or {}).get("delegation_readiness", {})
+        if isinstance(implement_state.get("subagent_prechecks"), dict)
+        else {}
+    )
+    if not delegation_precheck and feature_name:
+        delegation_precheck = delegation_readiness_precheck(project_root, feature=feature_name, version=resolved_version)
     execution_surface = {
         "project_mode": project_mode,
         "profile_binding_source": profile_binding_source,
@@ -636,6 +749,21 @@ def build_help_payload(
         ),
         "native_fallback_allowed": not bool(profile and str(stage_binding.get("skill_id", "") or "").strip()),
         "takeover_gate": takeover_gate,
+        "host_runtime": host_runtime,
+        "implement_mode": str(implement_state.get("mode", "") or ""),
+        "implement_runner": str(implement_state.get("runner", "") or ""),
+        "subagent_runtime_status": str(runtime_precheck.get("status", "") or ""),
+        "subagent_delegation_status": str(delegation_precheck.get("status", "") or ""),
+        "ralph_phase": "" if ralph_handoff_stale else str(ralph_state.get("phase", "") or ""),
+        "ralph_stop_state": "" if ralph_handoff_stale else str(ralph_state.get("stop_state", "") or ""),
+        "ralph_next_action": "" if ralph_handoff_stale else str(ralph_state.get("next_action", "") or ""),
+        "ralph_round_count": 0 if ralph_handoff_stale else int(ralph_state.get("round_count", 0) or 0),
+        "ralph_last_round_ref": "" if ralph_handoff_stale else str(ralph_state.get("last_round_ref", "") or ""),
+        "ralph_failure_streak": 0 if ralph_handoff_stale else int(ralph_state.get("failure_streak", 0) or 0),
+        "ralph_no_delta_streak": 0 if ralph_handoff_stale else int(ralph_state.get("no_delta_streak", 0) or 0),
+        "qa_execution_mode": str(qa_status.get("execution_mode", "") or ""),
+        "qa_current_session_id": str(current_qa_session.get("session_id", "") or ""),
+        "qa_runner_type": str(current_qa_session.get("runner_type", "") or ""),
     }
     next_step = _next_step(
         revision_state=revision_state,
@@ -656,6 +784,17 @@ def build_help_payload(
         version_guard=version_guard,
         discovery_hint=discovery_hint,
     )
+    if (
+        isinstance(ralph_state, dict)
+        and str(ralph_state.get("recommended_command", "") or "").strip()
+        and not qa_closure_authoritative
+        and not ralph_handoff_stale
+    ):
+        next_step = {
+            "action": str(ralph_state.get("next_action", "") or "ralph"),
+            "reason": str(ralph_state.get("current_blocker", "") or "follow Ralph controller next step"),
+            "command": str(ralph_state.get("recommended_command", "") or ""),
+        }
     decision_trace = [
         {
             "step": "version_truth",
@@ -767,6 +906,7 @@ def build_help_payload(
         "skill_discovery_hint": discovery_hint,
         "project_gate": profile_gate,
         "execution_surface": execution_surface,
+        "ralph": ralph_state,
         "learning_surface": learning_surface,
         "implementation_plan": implementation_plan,
         "implementation_plan_gate": implementation_plan_gate,

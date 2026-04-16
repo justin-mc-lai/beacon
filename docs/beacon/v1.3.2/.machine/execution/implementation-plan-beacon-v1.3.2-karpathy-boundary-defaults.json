@@ -1,0 +1,567 @@
+{
+  "schema_version": "1.0",
+  "plan_id": "plan-beacon-v1.3.2-karpathy-boundary-defaults-r1",
+  "feature": "beacon-v1.3.2-karpathy-boundary-defaults",
+  "feature_slug": "beacon-v1.3.2-karpathy-boundary-defaults",
+  "version": "v1.3.2",
+  "revision_id": "R1",
+  "baseline_hash": "sha256:52346376b274c1813a23a00abe649f54cef68601c3e313c8b33ad1d414f3d0fc",
+  "plan_hash": "sha256:ad49f2dbe8e390e8fd73f9f585664b98d1b886f284f99c80e8bbb9267b799a6d",
+  "status": "completed",
+  "source_refs": {
+    "user_story": "docs/beacon/v1.3.2/user-story/beacon-v1.3.2-karpathy-boundary-defaults.md",
+    "prd": "docs/beacon/v1.3.2/prd/beacon-v1.3.2-karpathy-boundary-defaults.md",
+    "test_case": "docs/beacon/v1.3.2/qa/test-cases/beacon-v1.3.2-karpathy-boundary-defaults.md"
+  },
+  "boundary_principles": [
+    {
+      "id": "explicit_assumptions",
+      "heading": "显式假设与歧义管理"
+    },
+    {
+      "id": "simplicity_first",
+      "heading": "简单优先"
+    },
+    {
+      "id": "surgical_changes",
+      "heading": "外科手术式改动"
+    },
+    {
+      "id": "goal_driven_execution",
+      "heading": "目标驱动验证闭环"
+    },
+    {
+      "id": "trivial_task_exception",
+      "heading": "trivial task 可以轻量处理，但不能越界"
+    }
+  ],
+  "workstreams": [
+    {
+      "workstream_id": "implementation-main",
+      "title": "Implementation Mainline",
+      "task_ids": [
+        "ITASK-001",
+        "ITASK-002",
+        "ITASK-003",
+        "ITASK-004",
+        "ITASK-005",
+        "ITASK-006",
+        "ITASK-007",
+        "ITASK-008"
+      ]
+    }
+  ],
+  "task_mapping_source": "prd-sections",
+  "tasks": [
+    {
+      "task_id": "ITASK-001",
+      "title": "FR-001 全局规范必须要求显式假设",
+      "description": "Beacon 在进入实现、QA 或自动修复前，必须能显式记录关键假设。 要求： 不允许 silently pick one interpretation 多种解释并存时必须记录取舍 需求不清时优先阻断或回到 `prd/user-story` 简单任务可快速处理，但不得隐藏关键不确定性",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-001"
+      ],
+      "mapped_test_ids": [
+        "TEST-001"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "tests:test_v118_implement_technical_archive.py",
+        "tests:test_v119_feature_qa_closure.py",
+        "tests:test_v132_karpathy_boundary_defaults.py",
+        "tests:test_v132_karpathy_boundary_execution_materials.py",
+        "tests:test_v112_implementation_plan_runtime.py",
+        "run:run-20260416T005940Z-367d",
+        "run:beacon-v1.3.2-karpathy-boundary-defaults-impl-accepted",
+        "docs/beacon/v1.3.2/execution/deterministic-implementation-contract-beacon-v1.3.2-karpathy-boundary-defaults.md",
+        "docs/beacon/v1.3.2/prd/beacon-v1.3.2-karpathy-boundary-defaults.md",
+        "verify:beacon-v1.3.2-karpathy-boundary-defaults-verify-accepted"
+      ],
+      "changed_files": [
+        "beacon/utils/global_boundaries.py",
+        "beacon/utils/implement_adapters.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/qa.py",
+        "beacon/utils/qa_feature.py",
+        "tests/test_v118_implement_technical_archive.py",
+        "tests/test_v119_feature_qa_closure.py",
+        "tests/test_v132_karpathy_boundary_defaults.py",
+        "tests/test_v132_karpathy_boundary_execution_materials.py",
+        "beacon/utils/doctor_diagnostics.py",
+        "beacon/utils/technical_review_contract.py",
+        "beacon/utils/implementation_plan.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-16T00:59:40.847787+00:00",
+      "completed_at": "2026-04-16T07:16:22.250243+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-002",
+      "title": "FR-002 全局规范必须要求简单优先",
+      "description": "Beacon 默认实现策略必须是最小正确变化。 禁止默认行为： 为单次需求新增抽象层 为未请求的未来扩展增加配置 为不可能路径增加复杂错误处理 为了“看起来完整”扩大 scope 允许行为： 现有结构已需要抽象时复用抽象 需求明确要求扩展性时记录理由 复杂性来自业务必要性时写入 evidence",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-002"
+      ],
+      "mapped_test_ids": [
+        "TEST-002"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-001"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "tests:test_v118_implement_technical_archive.py",
+        "tests:test_v119_feature_qa_closure.py",
+        "tests:test_v132_karpathy_boundary_defaults.py",
+        "tests:test_v132_karpathy_boundary_execution_materials.py",
+        "tests:test_v112_implementation_plan_runtime.py",
+        "run:run-20260416T005940Z-367d",
+        "run:beacon-v1.3.2-karpathy-boundary-defaults-impl-accepted",
+        "docs/beacon/v1.3.2/execution/deterministic-implementation-contract-beacon-v1.3.2-karpathy-boundary-defaults.md",
+        "docs/beacon/v1.3.2/prd/beacon-v1.3.2-karpathy-boundary-defaults.md",
+        "verify:beacon-v1.3.2-karpathy-boundary-defaults-verify-accepted"
+      ],
+      "changed_files": [
+        "beacon/utils/global_boundaries.py",
+        "beacon/utils/implement_adapters.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/qa.py",
+        "beacon/utils/qa_feature.py",
+        "tests/test_v118_implement_technical_archive.py",
+        "tests/test_v119_feature_qa_closure.py",
+        "tests/test_v132_karpathy_boundary_defaults.py",
+        "tests/test_v132_karpathy_boundary_execution_materials.py",
+        "beacon/utils/doctor_diagnostics.py",
+        "beacon/utils/technical_review_contract.py",
+        "beacon/utils/implementation_plan.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-16T00:59:40.847806+00:00",
+      "completed_at": "2026-04-16T07:16:22.250259+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-003",
+      "title": "FR-003 全局规范必须要求外科手术式改动",
+      "description": "Beacon 对源码和文档的改动必须可追溯到当前请求或冻结材料。 要求： 不主动重构无关代码 不主动格式化无关文件 不删除预先存在的死代码，除非需求明确要求 自己新增后产生的 orphan imports / vars / files 必须清理 每个 changed file 应能解释为什么属于当前 scope",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-003"
+      ],
+      "mapped_test_ids": [
+        "TEST-003"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-002"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "tests:test_v118_implement_technical_archive.py",
+        "tests:test_v119_feature_qa_closure.py",
+        "tests:test_v132_karpathy_boundary_defaults.py",
+        "tests:test_v132_karpathy_boundary_execution_materials.py",
+        "tests:test_v112_implementation_plan_runtime.py",
+        "run:run-20260416T005940Z-367d",
+        "run:beacon-v1.3.2-karpathy-boundary-defaults-impl-accepted",
+        "docs/beacon/v1.3.2/execution/deterministic-implementation-contract-beacon-v1.3.2-karpathy-boundary-defaults.md",
+        "docs/beacon/v1.3.2/prd/beacon-v1.3.2-karpathy-boundary-defaults.md",
+        "verify:beacon-v1.3.2-karpathy-boundary-defaults-verify-accepted"
+      ],
+      "changed_files": [
+        "beacon/utils/global_boundaries.py",
+        "beacon/utils/implement_adapters.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/qa.py",
+        "beacon/utils/qa_feature.py",
+        "tests/test_v118_implement_technical_archive.py",
+        "tests/test_v119_feature_qa_closure.py",
+        "tests/test_v132_karpathy_boundary_defaults.py",
+        "tests/test_v132_karpathy_boundary_execution_materials.py",
+        "beacon/utils/doctor_diagnostics.py",
+        "beacon/utils/technical_review_contract.py",
+        "beacon/utils/implementation_plan.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-16T00:59:40.847815+00:00",
+      "completed_at": "2026-04-16T07:16:22.250269+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-004",
+      "title": "FR-004 全局规范必须要求目标驱动执行",
+      "description": "Beacon 不应只执行用户给出的动作，而应把非平凡任务转成可验证目标。 要求： bug fix 应有复现或验证证据 feature 应有 acceptance criteria 或 test case 映射 refactor 应说明 before/after 验证 多步骤任务应有每步 verify 信号",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-004"
+      ],
+      "mapped_test_ids": [
+        "TEST-004"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-003"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "tests:test_v118_implement_technical_archive.py",
+        "tests:test_v119_feature_qa_closure.py",
+        "tests:test_v132_karpathy_boundary_defaults.py",
+        "tests:test_v132_karpathy_boundary_execution_materials.py",
+        "tests:test_v112_implementation_plan_runtime.py",
+        "run:run-20260416T005940Z-367d",
+        "run:beacon-v1.3.2-karpathy-boundary-defaults-impl-accepted",
+        "docs/beacon/v1.3.2/execution/deterministic-implementation-contract-beacon-v1.3.2-karpathy-boundary-defaults.md",
+        "docs/beacon/v1.3.2/prd/beacon-v1.3.2-karpathy-boundary-defaults.md",
+        "verify:beacon-v1.3.2-karpathy-boundary-defaults-verify-accepted"
+      ],
+      "changed_files": [
+        "beacon/utils/global_boundaries.py",
+        "beacon/utils/implement_adapters.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/qa.py",
+        "beacon/utils/qa_feature.py",
+        "tests/test_v118_implement_technical_archive.py",
+        "tests/test_v119_feature_qa_closure.py",
+        "tests/test_v132_karpathy_boundary_defaults.py",
+        "tests/test_v132_karpathy_boundary_execution_materials.py",
+        "beacon/utils/doctor_diagnostics.py",
+        "beacon/utils/technical_review_contract.py",
+        "beacon/utils/implementation_plan.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-16T00:59:40.847824+00:00",
+      "completed_at": "2026-04-16T07:16:22.250278+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-005",
+      "title": "FR-005 规则必须进入 Beacon 自有规范，不形成外部 skill 依赖",
+      "description": "`andrej-karpathy-skills` 只能作为参考来源。 Beacon 不应要求： 安装该仓库 安装其 Claude plugin 调用其 `karpathy-guidelines` skill 把该外部 skill 加入默认 host-visible skill pack 正确做法是： 提炼原则 写入 Beacon `global-boundaries` 通过 Beacon 自有 tests / docs / doctor 验证",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-005"
+      ],
+      "mapped_test_ids": [
+        "TEST-005"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-004"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "tests:test_v132_karpathy_boundary_defaults.py",
+        "tests:test_v132_karpathy_boundary_execution_materials.py",
+        "tests:test_v112_implementation_plan_runtime.py",
+        "run:run-20260415T220055Z-2461",
+        "run:beacon-v1.3.2-karpathy-boundary-defaults-impl-accepted",
+        "docs/beacon/v1.3.2/execution/deterministic-implementation-contract-beacon-v1.3.2-karpathy-boundary-defaults.md",
+        "docs/beacon/v1.3.2/prd/beacon-v1.3.2-karpathy-boundary-defaults.md",
+        "verify:beacon-v1.3.2-karpathy-boundary-defaults-verify-accepted"
+      ],
+      "changed_files": [
+        "beacon/utils/global_boundaries.py",
+        "beacon/utils/doctor_diagnostics.py",
+        "beacon/utils/technical_review_contract.py",
+        "beacon/utils/implementation_plan.py",
+        "tests/test_v132_karpathy_boundary_defaults.py",
+        "tests/test_v132_karpathy_boundary_execution_materials.py",
+        "beacon/utils/implement_adapters.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/qa.py",
+        "beacon/utils/qa_feature.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-15T22:00:55.656774+00:00",
+      "completed_at": "2026-04-16T07:16:22.250287+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-006",
+      "title": "FR-006 默认全局规范必须同时约束 Beacon 自身与目标项目",
+      "description": "规则适用于两层： 1. Beacon 源码迭代自身 2. Beacon 接入的目标项目 目标项目同步 context 时，应能继承这些边界： AGENTS.md CLAUDE.md docs/beacon/global-boundaries.md",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-006"
+      ],
+      "mapped_test_ids": [
+        "TEST-006"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-005"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "tests:test_v132_karpathy_boundary_defaults.py",
+        "tests:test_v132_karpathy_boundary_execution_materials.py",
+        "tests:test_v112_implementation_plan_runtime.py",
+        "run:run-20260415T220055Z-2461",
+        "run:beacon-v1.3.2-karpathy-boundary-defaults-impl-accepted",
+        "docs/beacon/v1.3.2/execution/deterministic-implementation-contract-beacon-v1.3.2-karpathy-boundary-defaults.md",
+        "docs/beacon/v1.3.2/prd/beacon-v1.3.2-karpathy-boundary-defaults.md",
+        "verify:beacon-v1.3.2-karpathy-boundary-defaults-verify-accepted"
+      ],
+      "changed_files": [
+        "beacon/utils/global_boundaries.py",
+        "beacon/utils/doctor_diagnostics.py",
+        "beacon/utils/technical_review_contract.py",
+        "beacon/utils/implementation_plan.py",
+        "tests/test_v132_karpathy_boundary_defaults.py",
+        "tests/test_v132_karpathy_boundary_execution_materials.py",
+        "beacon/utils/implement_adapters.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/qa.py",
+        "beacon/utils/qa_feature.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-15T22:00:55.656921+00:00",
+      "completed_at": "2026-04-16T07:16:22.250296+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-007",
+      "title": "FR-007 规则必须与 6+3 主面兼容",
+      "description": "不得新增公开主命令。 规则应嵌入现有阶段： `prd`: 澄清假设与边界 `user-story`: 明确验收范围 `test-case`: 转成可验证目标 `implement`: 最小外科手术式改动 `qa`: 验证目标与新增发现 `release`: 检查未越界改动 `help/status/doctor`: 只在阻断或诊断时展示细节",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-007"
+      ],
+      "mapped_test_ids": [
+        "TEST-007"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-006"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "tests:test_v132_karpathy_boundary_defaults.py",
+        "tests:test_v132_karpathy_boundary_execution_materials.py",
+        "run:run-20260416T010141Z-4fc2",
+        "run:beacon-v1.3.2-karpathy-boundary-defaults-impl-accepted",
+        "docs/beacon/v1.3.2/execution/deterministic-implementation-contract-beacon-v1.3.2-karpathy-boundary-defaults.md",
+        "docs/beacon/v1.3.2/prd/beacon-v1.3.2-karpathy-boundary-defaults.md",
+        "verify:beacon-v1.3.2-karpathy-boundary-defaults-verify-accepted"
+      ],
+      "changed_files": [
+        "beacon/utils/global_boundaries.py",
+        "tests/test_v132_karpathy_boundary_defaults.py",
+        "beacon/utils/doctor_diagnostics.py",
+        "beacon/utils/technical_review_contract.py",
+        "beacon/utils/implementation_plan.py",
+        "beacon/utils/implement_adapters.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/qa.py",
+        "beacon/utils/qa_feature.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-16T01:01:41.126091+00:00",
+      "completed_at": "2026-04-16T07:16:22.250304+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-008",
+      "title": "FR-008 规则必须支持轻重任务区分",
+      "description": "Karpathy 风格规则偏谨慎。 Beacon 必须避免把所有 trivial task 都变成重流程。 要求： 简单拼写、单行文案、明显 typo 可快速处理 非平凡实现、重构、bug fix、数据变更必须启用完整边界 是否进入完整边界应可由风险、scope、文件影响面判断 ## 5. 边界清单 ### 应进入 `global-boundaries` 1. 显式假设与歧义管理。 2. 简单优先与反过度工程。 3. 外科手术式改动范围。 4. 目标驱动验证闭环。 5. trivial task 的轻量例外。 ### 不应进入 `global-boundaries` 1. 对 `andrej-karpathy-skills` 的安装步骤。 2. 对 Claude plugin 的依赖。 3. 任何新增 Beacon 公开命令。 4. 任何外部 skill 调用要求。 ## 6. 验收标准 1. 新 PRD 明确引用并转译 `andrej-karpathy-skills` 的四条原则。 2. 后续实现必须把规则写入 Beacon 默认全局规范。 3. 后续实现不得新增外部 skill 依赖。 4. 后续实现必须保持 `6+3` 人类主面。 5. 后续验证必须覆盖： 文档存在 context sync 继承 help/doctor 不默认扩张主面 implementation/qa 能记录 assumption / scope / verification evidence ## 7. 风险与缓解 | 风险 | 影响 | 缓解 | |------|------|------| | 规则过重导致小任务变慢 | 中 | 明确 trivial task 轻量例外 | | 外部仓库变成新依赖 | 高 | 只提炼原则，不安装不调用 | | 规则只写文档不被执行 | 高 | 后续补 tests / doctor / context sync 验证 | | 与现有 Beacon 全局约束重复 | 低 | 作为行为边界补充，不替代 6+3 / host-native 约束 | --- **Created**: 2026-04-15 **Version**: v1.3.2 **Status**: Draft **Reference**: `https://github.com/forrestchang/andrej-karpathy-skills`",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-008"
+      ],
+      "mapped_test_ids": [
+        "TEST-008"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-007"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "tests:test_v132_karpathy_boundary_defaults.py",
+        "tests:test_v132_karpathy_boundary_execution_materials.py",
+        "run:run-20260416T010141Z-4fc2",
+        "run:beacon-v1.3.2-karpathy-boundary-defaults-impl-accepted",
+        "docs/beacon/v1.3.2/execution/deterministic-implementation-contract-beacon-v1.3.2-karpathy-boundary-defaults.md",
+        "docs/beacon/v1.3.2/prd/beacon-v1.3.2-karpathy-boundary-defaults.md",
+        "verify:beacon-v1.3.2-karpathy-boundary-defaults-verify-accepted"
+      ],
+      "changed_files": [
+        "beacon/utils/global_boundaries.py",
+        "tests/test_v132_karpathy_boundary_defaults.py",
+        "beacon/utils/doctor_diagnostics.py",
+        "beacon/utils/technical_review_contract.py",
+        "beacon/utils/implementation_plan.py",
+        "beacon/utils/implement_adapters.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/qa.py",
+        "beacon/utils/qa_feature.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-16T01:01:41.126103+00:00",
+      "completed_at": "2026-04-16T07:16:22.250311+00:00",
+      "active_run_id": ""
+    }
+  ],
+  "team_mode": {
+    "preferred_surface": "implement-team",
+    "preferred_runner": "codex-subagents",
+    "plan_command": "beacon implement team-plan \"beacon-v1.3.2-karpathy-boundary-defaults\" --project-root . --version v1.3.2",
+    "run_command": "beacon implement team-run \"beacon-v1.3.2-karpathy-boundary-defaults\" --project . --version v1.3.2",
+    "dev_run_command": "beacon implement dev-run \"beacon-v1.3.2-karpathy-boundary-defaults\" --project . --version v1.3.2",
+    "qa_team_command": "beacon qa team-run \"beacon-v1.3.2-karpathy-boundary-defaults\" --project . --version v1.3.2",
+    "roles": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "context_isolation": {
+      "role_plane": "implementation",
+      "isolated_from": [
+        "qa-team"
+      ],
+      "shared_inputs": [
+        "docs",
+        "implementation_plan",
+        "evidence_refs"
+      ],
+      "shared_outputs": [
+        "implementation_summary",
+        "technical_archive",
+        "repair_handoff"
+      ],
+      "rule": "qa_must_not_inherit_implement_private_context",
+      "implement_surface": "implement-team",
+      "qa_surface": "qa-team"
+    },
+    "config_source": "beacon/team_roles/implement-team.json",
+    "execution_order": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "formal_writeback_roles": [
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "role_contracts": {
+      "planner": {
+        "purpose": "Compile execution-ready task scope from the frozen revision baseline.",
+        "writes_to_formal_truth": false,
+        "outputs": [
+          "execution_plan_note"
+        ]
+      },
+      "implementation-architect": {
+        "purpose": "Translate frozen requirement truth into implementation-safe module boundaries and service ownership guidance.",
+        "writes_to_formal_truth": false,
+        "reads": [
+          "docs/beacon/<version>/user-story",
+          "docs/beacon/<version>/prd",
+          "docs/beacon/<version>/qa/test-cases",
+          "docs/beacon/<version>/execution/architecture-blueprint.md",
+          "implementation_plan",
+          "git_workflow_contract"
+        ],
+        "outputs": [
+          "implementation_architecture_note"
+        ],
+        "restrictions": [
+          "must_not_modify_frozen_requirement_materials",
+          "must_not_overwrite_architecture_blueprint"
+        ]
+      },
+      "implementer": {
+        "purpose": "Write code inside the frozen scope and the implementation architecture note.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "story_writeback",
+          "implementation_summary"
+        ]
+      },
+      "reviewer": {
+        "purpose": "Review implementation/spec drift and architecture-boundary drift.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_spec"
+        ]
+      },
+      "tester": {
+        "purpose": "Check implementation evidence and verification readiness before acceptance.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_quality"
+        ]
+      }
+    }
+  },
+  "git_workflow": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1.3.2-karpathy-boundary-defaults",
+    "feature_slug": "beacon-v1.3.2-karpathy-boundary-defaults",
+    "version": "v1.3.2",
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.3.2",
+    "branch_prefix": "beacon/",
+    "base_branch": "main",
+    "use_git_worktree": false,
+    "require_clean_worktree_for_switch": true,
+    "service_directories": [
+      "."
+    ],
+    "git_roots": [
+      "."
+    ],
+    "worktree_root": ".",
+    "source": "technical_review_contract",
+    "generated_at": "2026-04-15T22:00:55.445531+00:00"
+  },
+  "git_workflow_ref": "docs/beacon/v1.3.2/.machine/execution/git-workflow-beacon-v1.3.2-karpathy-boundary-defaults.json",
+  "git_workflow_markdown_ref": "docs/beacon/v1.3.2/execution/git-workflow-beacon-v1.3.2-karpathy-boundary-defaults.md",
+  "generated_at": "2026-04-15T22:00:55.446895+00:00",
+  "updated_at": "2026-04-16T07:16:22.257892+00:00",
+  "accepted_at": "2026-04-16T07:16:22.257877+00:00",
+  "accepted_by": "qa"
+}

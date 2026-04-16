@@ -9,9 +9,14 @@
 > 主链仍然是 `PRD → user-story → QA`。  
 > memory / knowledge plane 的职责，是帮助这条链更可追溯、更不漂移，而不是取代这条链。
 
-**Local clone**:
+**Source directories**:
 
-- `.research/mempalace/`
+- canonical source map:
+  [`./beacon-open-source-reference-source-map.md`](./beacon-open-source-reference-source-map.md)
+- `mempalace`:
+  `/Users/apple/Developer/Personal/oss-sync/memory/memory-systems/mempalace`
+- adjacent local memory-system mirrors now live under:
+  `/Users/apple/Developer/Personal/oss-sync/memory/memory-systems/`
 
 ---
 

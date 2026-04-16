@@ -1,6 +1,6 @@
 ---
 name: beacon-test-case
-description: Use when the user wants to create, extend, or audit test cases and acceptance coverage for a Beacon feature through the minimal v1.3.1 human surface.
+description: Use when the user wants to create, extend, or audit test cases and acceptance coverage for a Beacon feature through the minimal v1.3.2 human surface.
 ---
 
 # Beacon Test Case

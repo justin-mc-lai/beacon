@@ -133,23 +133,44 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
     ) if isinstance(gate_report.get("issues"), list) else 0
     decision_summary = scorecard_state.get("counts") if isinstance(scorecard_state.get("counts"), dict) else {}
     project_profile_gate = qa_status.get("project_profile_gate") if isinstance(qa_status.get("project_profile_gate"), dict) else {}
+    if not project_profile_gate and isinstance(feature_scorecard, dict):
+        project_profile_gate = {
+            "status": str(feature_scorecard.get("project_profile_gate_status") or "not_configured"),
+            "profile_id": str(feature_scorecard.get("project_profile_id") or ""),
+        }
     project_gate_status = str(project_profile_gate.get("status") or "not_configured")
+    qa_passed = str(qa_status.get("status") or "").strip().lower() == "passed"
+    feature_scorecard_release_ready = bool(feature_scorecard.get("release_ready", False))
+    feature_scorecard_continue_decision = str(feature_scorecard.get("continue_decision") or "").strip()
+    qa_evidence_done = bool(qa_status.get("evidence_done", False))
+    exhaustiveness_pass = (not exhaustiveness) or str(exhaustiveness.get("status") or "").strip().lower() == "passed"
+    feature_scorecard_authoritative = (
+        bool(feature_scorecard)
+        and feature_scorecard_release_ready
+        and feature_scorecard_continue_decision == "ready_for_release"
+        and not list(feature_scorecard.get("unresolved_closure_outcomes") or [])
+    )
     legacy_release_ready = (
         str(gate_report.get("status") or "").strip().lower() == "pass"
-        and str(qa_status.get("status") or "").strip().lower() == "passed"
-        and bool(qa_status.get("evidence_done", False))
-        and (not exhaustiveness or str(exhaustiveness.get("status") or "").strip().lower() == "passed")
+        and qa_passed
+        and qa_evidence_done
+        and exhaustiveness_pass
         and gate_version_match
         and qa_version_match
     )
     release_ready = legacy_release_ready
     if runtime_feature_supported("v1.1.10", runtime_version=resolved_runtime):
         release_ready = (
-            legacy_release_ready
+            str(gate_report.get("status") or "").strip().lower() == "pass"
+            and qa_passed
+            and (qa_evidence_done or feature_scorecard_release_ready or feature_scorecard_continue_decision == "ready_for_release")
             and bool(feature_scorecard)
-            and bool(feature_scorecard.get("release_ready", False))
+            and feature_scorecard_release_ready
             and project_gate_status in {"pass", "not_configured"}
             and not list(feature_scorecard.get("unresolved_closure_outcomes") or [])
+            and (exhaustiveness_pass or feature_scorecard_authoritative)
+            and gate_version_match
+            and qa_version_match
         )
     if project_runtime_feature_enabled(
         project_root,
@@ -170,6 +191,16 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
             and bool(change_documents.get("version_match", False))
             and bool(change_documents.get("includes_current_feature", False))
         )
+    if (
+        runtime_feature_supported("v1.1.10", runtime_version=resolved_runtime)
+        and feature_scorecard_authoritative
+        and project_gate_status in {"pass", "not_configured"}
+        and bool(change_documents.get("markdown_exists", False))
+        and bool(change_documents.get("json_exists", False))
+        and bool(change_documents.get("version_match", False))
+        and bool(change_documents.get("includes_current_feature", False))
+    ):
+        release_ready = True
     return {
         "schema_version": "1.0",
         "version": resolved_version,

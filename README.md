@@ -9,14 +9,14 @@
 
 ## 1. 当前版本是什么
 
-Beacon 当前运行时发布口径是 **v1.3.0**。
+Beacon 当前运行时发布口径是 **v1.3.1**。
 
-> 当前发布线：`v1.3.0`
+> 当前发布线：`v1.3.1`
 
 - **CLI 入口**：`beacon <subcommand>`
 - **标准 skill 包**：`skills/beacon/`
-- **当前包版本**：`1.3.0`
-- **最新已接受文档线**：`v1.3.0`
+- **当前包版本**：`1.3.1`
+- **最新已接受文档线**：`v1.3.1`
 - **文档主源**：`docs/beacon/<version>/`
 - **状态目录**：`.beacon/`
 
@@ -25,17 +25,18 @@ Beacon 当前运行时发布口径是 **v1.3.0**。
 - `docs/beacon/` 是唯一维护的信息源（source of truth）
 - `.beacon/` 是运行时状态，不替代正式交付文档
 - 新生成的 AGENTS / CLAUDE managed block 也遵循以上口径
-- README 下方仍保留部分历史发布线细节作为参考；当前发布请优先以 `docs/beacon/v1.3.0/` 为准
+- README 下方仍保留部分历史发布线细节作为参考；当前发布请优先以 `docs/beacon/v1.3.1/` 为准
 
 如果你只记一条：
 
-> **Beacon 现在是 v1.3.0，写文档看 `docs/beacon/v1.3.0/`，执行命令用 `beacon <subcommand>`。**
+> **Beacon 现在是 v1.3.1，写文档看 `docs/beacon/v1.3.1/`，执行命令用 `beacon <subcommand>`。**
 
 补充说明：
 
-- `v1.3.0` 已正式成为当前 CLI/runtime release line
-- v1.3.0 在保留 Beacon 主链与 release truth 的前提下，加入了 implement-team tmux runtime / HUD、外置角色配置与 team runtime contract
-- `docs/beacon/v1.3.0/` 是当前 release 主阅读面
+- `v1.3.1` 已正式成为当前 CLI/runtime release line
+- `v1.3.1` 把人类主操作面收口到 `prd -> user-story -> test-case -> implement -> qa -> release`
+- `docs/beacon/v1.3.1/` 是当前 release 主阅读面
+- `docs/beacon/v1.3.0/` 保留为上一轮闭环增强线的历史参考
 
 ---
 
@@ -121,6 +122,23 @@ v1.3.0 相比 v1.1.11 的核心新增，不是继续堆更多 workflow 节点，
 - `docs/beacon/v1.3.0/execution/architecture-blueprint.md`
 - `docs/beacon/v1.3.0/release/v1.3.0.md`
 
+### v1.3.1 为什么重要
+
+v1.3.1 在保留 v1.3.0 release truth 的前提下，把人类实际使用面进一步压缩到更稳定的最小工作流：
+
+- `prd -> user-story -> test-case -> implement -> qa -> release`
+- `help / status / doctor` 成为唯一推荐的辅助导航面
+- `docs/beacon/v1.3.1/execution/human-minimal-usage-guide.md` 明确了人类面与机器内部面边界
+- `docs/beacon/v1.3.1/execution/deterministic-implementation-contract-blueprint.md` 明确了 implement 前的确定性技术合同
+
+你现在可以从这些入口阅读当前 release line：
+
+- `docs/beacon/v1.3.1/SUMMARY.md`
+- `docs/beacon/v1.3.1/execution/index.md`
+- `docs/beacon/v1.3.1/execution/architecture-blueprint.md`
+- `docs/beacon/v1.3.1/execution/human-minimal-usage-guide.md`
+- `docs/beacon/v1.3.1/release/v1.3.1.md`
+
 ### v1.1.7 为什么重要（历史）
 
 v1.1.7 相比 v1.1.6 的核心新增，不是单纯补命令，而是补：
@@ -172,13 +190,13 @@ beacon <subcommand> ...
 
 ### Quick Start / 30-second path
 
-如果你只想用最短路径快速跑通 Beacon v1.3.0，先执行：
+如果你只想用最短路径快速跑通 Beacon v1.3.1，先执行：
 
 ```bash
-beacon ask "Create a release-ready requirement package" --project-root . --version v1.3.0 --plan-only --json
-beacon workflow start "Beacon v1.3.0 governance closure baseline" --project . --version v1.3.0
-beacon doctor verify-materials --project-root . --version v1.3.0 --json
-beacon gate check release --project-root . --version v1.3.0 --json
+beacon help --project-root . --version v1.3.1 --feature "<feature>" --json
+beacon implement dev-run "<feature>" --project . --version v1.3.1 --json
+beacon qa team-run "<feature>" --project . --version v1.3.1 --json
+beacon gate check release --project-root . --version v1.3.1 --json
 ```
 
 ### QA autoresearch 最短触发（首屏版）
@@ -211,21 +229,15 @@ beacon version experiment "QA autoresearch for <feature>" --version v1.3.0 --pro
 
 ### Command Docs / 命令文档入口
 
-如果你想按当前发布线阅读 v1.3.0 文档，建议从这里进入：
+如果你想按当前发布线阅读 v1.3.1 文档，建议从这里进入：
 
-- `docs/beacon/v1.3.0/SUMMARY.md`：当前版本总览
-- `docs/beacon/v1.3.0/execution/index.md`：执行面索引与推荐阅读顺序
-- `docs/beacon/v1.3.0/execution/architecture-blueprint.md`：架构蓝图主文档
-- `docs/beacon/v1.3.0/execution/complete-usage-guide.md`：完整使用文档（汇总版）
-- `docs/beacon/v1.3.0/execution/workflow-usage-guide.md`：完整工作流使用指南
-- `docs/beacon/v1.3.0/execution/natural-language-trigger-handbook.md`：稳定可靠的自然语言触发手册
-- `docs/beacon/v1.3.0/execution/qa-autoresearch-usage-guide.md`：QA autoresearch 稳定触发与执行手册
-- `docs/beacon/v1.3.0/execution/autoresearch-module-evolution.md`：autoresearch 在 Beacon 各模块中的演进地图
-- `docs/beacon/v1.3.0/execution/boundaries.md`：边界与放行约束
-- `docs/beacon/v1.3.0/execution/command-surface-simplification-blueprint.md`：command surface simplification blueprint
-- `docs/beacon/v1.3.0/execution/project-skill-qa-evolution-blueprint.md`：project skill / QA evolution blueprint
-- `docs/beacon/v1.3.0/execution/target-project-kernel-blueprint.md`：target project kernel blueprint
-- `docs/beacon/v1.3.0/release/v1.3.0.md`：当前发布说明
+- `docs/beacon/v1.3.1/SUMMARY.md`：当前版本总览
+- `docs/beacon/v1.3.1/execution/index.md`：执行面索引与推荐阅读顺序
+- `docs/beacon/v1.3.1/execution/architecture-blueprint.md`：架构蓝图主文档
+- `docs/beacon/v1.3.1/execution/human-minimal-usage-guide.md`：极简人类操作面
+- `docs/beacon/v1.3.1/execution/boundaries.md`：边界与放行约束
+- `docs/beacon/v1.3.1/execution/deterministic-implementation-contract-blueprint.md`：实现前技术合同蓝图
+- `docs/beacon/v1.3.1/release/v1.3.1.md`：当前发布说明
 
 如果你关注 v1.3.0 当前闭环增强线，请优先读：
 
@@ -367,7 +379,17 @@ docs/beacon/<version>/.machine/execution/
 └── runs/
 ```
 
-### 当前验收工件（v1.3.0）
+### 当前验收工件（v1.3.1）
+
+- `docs/beacon/v1.3.1/SUMMARY.md`
+- `docs/beacon/v1.3.1/execution/index.md`
+- `docs/beacon/v1.3.1/execution/architecture-blueprint.md`
+- `docs/beacon/v1.3.1/execution/human-minimal-usage-guide.md`
+- `docs/beacon/v1.3.1/execution/boundaries.md`
+- `docs/beacon/v1.3.1/execution/deterministic-implementation-contract-blueprint.md`
+- `docs/beacon/v1.3.1/release/v1.3.1.md`
+
+### 当前验收工件（v1.3.0，历史）
 
 - `docs/beacon/v1.3.0/SUMMARY.md`
 - `docs/beacon/v1.3.0/execution/index.md`
@@ -404,11 +426,26 @@ beacon gate check release --project-root . --version v1.3.0 --json
 beacon release check v1.3.0 --project .
 ```
 
+### 当前发布线验证（v1.3.1）
+
+```bash
+python3 -m pytest -q
+beacon doctor verify-context --project-root . --strict
+beacon doctor verify-materials --project-root . --version v1.3.1 --json
+beacon gate check release --project-root . --version v1.3.1 --json
+beacon release check v1.3.1 --project .
+```
+
 ### 自动生成验收审计
 
 ```bash
 beacon release scorecard v1.3.0 --project . --json
 beacon report --human latest --project-root . --version v1.3.0
+```
+
+```bash
+beacon release scorecard v1.3.1 --project . --json
+beacon report --human latest --project-root . --version v1.3.1
 ```
 
 ---
@@ -460,15 +497,14 @@ docs/beacon/<version>/
 
 ### 当前发布线参考文档
 
-- [v1.3.0 Summary](./docs/beacon/v1.3.0/SUMMARY.md)
-- [v1.3.0 Execution Index](./docs/beacon/v1.3.0/execution/index.md)
-- [v1.3.0 Architecture Blueprint](./docs/beacon/v1.3.0/execution/architecture-blueprint.md)
-- [v1.3.0 Boundaries](./docs/beacon/v1.3.0/execution/boundaries.md)
-- [v1.3.0 Command Surface Blueprint](./docs/beacon/v1.3.0/execution/command-surface-simplification-blueprint.md)
-- [v1.3.0 Project Skill / QA Blueprint](./docs/beacon/v1.3.0/execution/project-skill-qa-evolution-blueprint.md)
-- [v1.3.0 Target Project Kernel Blueprint](./docs/beacon/v1.3.0/execution/target-project-kernel-blueprint.md)
-- [v1.3.0 Release Notes](./docs/beacon/v1.3.0/release/v1.3.0.md)
+- [v1.3.1 Summary](./docs/beacon/v1.3.1/SUMMARY.md)
+- [v1.3.1 Execution Index](./docs/beacon/v1.3.1/execution/index.md)
+- [v1.3.1 Architecture Blueprint](./docs/beacon/v1.3.1/execution/architecture-blueprint.md)
+- [v1.3.1 Human Minimal Usage Guide](./docs/beacon/v1.3.1/execution/human-minimal-usage-guide.md)
+- [v1.3.1 Boundaries](./docs/beacon/v1.3.1/execution/boundaries.md)
+- [v1.3.1 Deterministic Implementation Contract Blueprint](./docs/beacon/v1.3.1/execution/deterministic-implementation-contract-blueprint.md)
+- [v1.3.1 Release Notes](./docs/beacon/v1.3.1/release/v1.3.1.md)
 
 ---
 
-**版本**: v1.3.0
+**版本**: v1.3.1

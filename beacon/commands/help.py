@@ -37,6 +37,7 @@ def _render_human(payload: dict[str, object]) -> str:
     next_step = payload.get("next_step", {}) if isinstance(payload.get("next_step"), dict) else {}
     version_context = payload.get("version_context", {}) if isinstance(payload.get("version_context"), dict) else {}
     version_guard = payload.get("context_version_guard", {}) if isinstance(payload.get("context_version_guard"), dict) else {}
+    execution_surface = payload.get("execution_surface", {}) if isinstance(payload.get("execution_surface"), dict) else {}
     lines = [
         "Beacon Help / Next Step",
         "=" * 26,
@@ -49,6 +50,19 @@ def _render_human(payload: dict[str, object]) -> str:
         f"doc status      : {payload.get('doc_status', '')}",
         f"delivery status : {payload.get('delivery_status', '')}",
         f"current stage   : {payload.get('current_stage', '')}",
+        f"host runtime    : {execution_surface.get('host_runtime', '') or 'N/A'}",
+        f"implement mode  : {execution_surface.get('implement_mode', '') or 'N/A'}",
+        f"implement runner: {execution_surface.get('implement_runner', '') or 'N/A'}",
+        f"subagent runtime: {execution_surface.get('subagent_runtime_status', '') or 'N/A'}",
+        f"subagent deleg. : {execution_surface.get('subagent_delegation_status', '') or 'N/A'}",
+        f"ralph phase     : {execution_surface.get('ralph_phase', '') or 'N/A'}",
+        f"ralph stop      : {execution_surface.get('ralph_stop_state', '') or 'N/A'}",
+        f"ralph next      : {execution_surface.get('ralph_next_action', '') or 'N/A'}",
+        f"ralph rounds    : {execution_surface.get('ralph_round_count', 0) or 0}",
+        f"ralph round ref : {execution_surface.get('ralph_last_round_ref', '') or 'N/A'}",
+        f"qa mode         : {execution_surface.get('qa_execution_mode', '') or 'N/A'}",
+        f"qa session      : {execution_surface.get('qa_current_session_id', '') or 'N/A'}",
+        f"qa runner       : {execution_surface.get('qa_runner_type', '') or 'N/A'}",
         "",
         "scores",
         f"- test_score      : {scores.get('test_score', 0)}",

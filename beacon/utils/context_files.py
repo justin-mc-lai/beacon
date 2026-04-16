@@ -44,6 +44,8 @@ class VerificationCheck(TypedDict):
         "context_files_presence",
         "managed_block_integrity",
         "managed_block_version_drift",
+        "global_boundaries_presence",
+        "global_boundaries_inheritance",
     ]
     status: Literal["pass", "warn", "fail"]
     details: dict[str, object]
@@ -71,6 +73,7 @@ def build_claude_guidance_body(runtime_version: str) -> str:
         "- `beacon status --verbose`\n\n"
         "## Requirement materials and docs paths\n"
         f"- Runtime target version: `{runtime_version}`\n"
+        "- `docs/beacon/global-boundaries.md` is the canonical cross-version global constraint source.\n"
         "- `docs/beacon/<version>/` is the canonical source of truth.\n"
         "- `docs/beacon/<version>/SUMMARY.md`\n"
         "- `docs/beacon/<version>/prd/`\n"
@@ -91,13 +94,15 @@ def build_agents_guidance_body(runtime_version: str) -> str:
         "- Preserve user-authored sections outside Beacon managed blocks.\n\n"
         "## Beacon requirement-material usage\n"
         f"- Runtime target version: `{runtime_version}`\n"
+        "- Use `docs/beacon/global-boundaries.md` as the canonical Beacon-wide global constraint source.\n"
         "- Use `docs/beacon/<version>/` as the canonical delivery tree.\n"
         "- Read progressively in this order:\n"
-        "  1. `docs/beacon/<version>/SUMMARY.md`\n"
-        "  2. `docs/beacon/<version>/execution/index.md`\n"
-        "  3. `docs/beacon/<version>/execution/architecture-blueprint.md`\n"
-        "  4. `docs/beacon/<version>/prd/`, `user-story/`, `qa/test-cases/`\n"
-        "  5. `docs/beacon/<version>/.machine/`\n"
+        "  1. `docs/beacon/global-boundaries.md`\n"
+        "  2. `docs/beacon/<version>/SUMMARY.md`\n"
+        "  3. `docs/beacon/<version>/execution/index.md`\n"
+        "  4. `docs/beacon/<version>/execution/architecture-blueprint.md`\n"
+        "  5. `docs/beacon/<version>/prd/`, `user-story/`, `qa/test-cases/`\n"
+        "  6. `docs/beacon/<version>/.machine/`\n"
         "- For greenfield projects: start with architecture blueprint, then enter think → user-story → prd.\n"
         "- For takeover projects: document current-state architecture, service map, constraints, and version timeline before new implementation.\n"
         "- If context blocks are missing/corrupted, run:\n"
@@ -247,6 +252,7 @@ def setup_context_files(
     """Setup or update CLAUDE.md / AGENTS.md managed blocks."""
     root = Path(project_root)
     actions: list[dict[str, object]] = []
+    from beacon.utils.global_boundaries import GLOBAL_BOUNDARIES_RELATIVE_PATH, sync_project_global_boundaries
 
     targets: list[tuple[str, Path, str]] = []
     if with_claude:
@@ -268,6 +274,19 @@ def setup_context_files(
             }
         )
 
+    global_boundaries_result = sync_project_global_boundaries(root, dry_run=dry_run)
+    actions.append(
+        {
+            "file": GLOBAL_BOUNDARIES_RELATIVE_PATH.name,
+            "path": str(global_boundaries_result.get("path", "")),
+            "force": False,
+            "merge_mode": "copied",
+            "action": str(global_boundaries_result.get("action", "updated")),
+            "changed": bool(global_boundaries_result.get("changed", False)),
+            "backup_path": global_boundaries_result.get("backup_path"),
+        }
+    )
+
     return {
         "project_root": str(root),
         "runtime_version": runtime_version,
@@ -284,15 +303,20 @@ def verify_context_files(
 ) -> dict[str, object]:
     """Verify context files presence, marker integrity and version drift."""
     root = Path(project_root)
+    from beacon.utils.global_boundaries import path_mentions_global_boundaries, project_global_boundaries_path
     inspections = {
         "CLAUDE.md": inspect_context_file(root / "CLAUDE.md", runtime_version),
         "AGENTS.md": inspect_context_file(root / "AGENTS.md", runtime_version),
     }
+    global_boundaries_path = project_global_boundaries_path(root)
 
     missing_files = [name for name, info in inspections.items() if not info["exists"]]
     integrity_issues = [name for name, info in inspections.items() if info["marker_integrity"] != _MARKER_OK]
     drift_files = [name for name, info in inspections.items() if info["version_drift"] is True]
     unknown_drift = [name for name, info in inspections.items() if info["version_drift"] is None]
+    missing_global_boundaries_refs = [
+        name for name in ("CLAUDE.md", "AGENTS.md") if inspections.get(name, {}).get("exists") and not path_mentions_global_boundaries(root / name, project_root=root)
+    ]
 
     drift_status: Literal["pass", "warn", "fail"] = "pass"
     if drift_files:
@@ -318,6 +342,16 @@ def verify_context_files(
                 "drifted": drift_files,
                 "unknown": unknown_drift,
             },
+        },
+        {
+            "name": "global_boundaries_presence",
+            "status": "pass" if global_boundaries_path.exists() else "fail",
+            "details": {"path": str(global_boundaries_path), "exists": global_boundaries_path.exists()},
+        },
+        {
+            "name": "global_boundaries_inheritance",
+            "status": "pass" if not missing_global_boundaries_refs else ("fail" if strict else "warn"),
+            "details": {"missing_references": missing_global_boundaries_refs},
         },
     ]
 

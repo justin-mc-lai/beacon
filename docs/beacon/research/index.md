@@ -8,6 +8,10 @@
 
 Use `docs/beacon/research/` for research that is expected to stay useful across multiple release lines.
 
+For local source lookup of external references, start with:
+
+- [Beacon Open-Source Reference Source Map](./beacon-open-source-reference-source-map.md)
+
 Good fit:
 
 - external reference studies
@@ -33,39 +37,63 @@ Rule of thumb:
 
 ### Active long-lived notes
 
-1. [Karpathy `LLM Wiki` pattern analysis](./beacon-karpathy-llm-wiki-pattern-analysis.md)
+1. [Beacon Open-Source Reference Source Map](./beacon-open-source-reference-source-map.md)
+   - Why it matters:
+     freezes the mapping from Beacon research references to canonical `oss-sync` source directories, so future version evolution can read local source code from a known path instead of guessing old `.research/` locations.
+
+2. [Karpathy `LLM Wiki` pattern analysis](./beacon-karpathy-llm-wiki-pattern-analysis.md)
    - Why it matters:
      gives Beacon a reusable frame for compiled knowledge layers, `ingest/query/lint`, query-to-doc writeback, and schema-as-maintainer governance.
 
-2. [Beacon multi-project isolation and learning brainstorm](./beacon-multi-project-isolation-and-learning-brainstorm.md)
+3. [Beacon multi-project isolation and learning brainstorm](./beacon-multi-project-isolation-and-learning-brainstorm.md)
    - Why it matters:
      proposes a `kernel / project capsule / distill plane` model for strict project isolation, human-thinking/agent-execution split, and reusable but controlled cross-project experience distillation.
 
-3. [Beacon manager strong doc sync brainstorm](./beacon-manager-strong-doc-sync-brainstorm.md)
+4. [Beacon manager strong doc sync brainstorm](./beacon-manager-strong-doc-sync-brainstorm.md)
    - Why it matters:
      defines a separate `beacon-manager` tool/skill for binding multiple project `docs/beacon` trees into one personal GitHub knowledge repo with git-like `bind/pull/sync/status/reconcile/doctor` workflows and strong consistency rules.
 
-4. [Beacon self-iteration and story-QA coverage study from awesome-design-md and autoagent](./beacon-self-iteration-and-story-qa-coverage-study-awesome-design-md-autoagent.md)
+5. [Beacon self-iteration and story-QA coverage study from awesome-design-md and autoagent](./beacon-self-iteration-and-story-qa-coverage-study-awesome-design-md-autoagent.md)
    - Why it matters:
      proposes a dual structure for Beacon: an asset plane for reusable QA baseline bundles and a bounded eval plane for policy-level self-iteration driven by story/AC coverage and false-complete reduction.
 
-5. [Beacon memory and knowledge-plane study from mempalace](./beacon-memory-asset-eval-plane-study-mempalace.md)
+6. [Beacon memory and knowledge-plane study from mempalace](./beacon-memory-asset-eval-plane-study-mempalace.md)
    - Why it matters:
      argues for a raw-plus-structured memory model for Beacon, where important reasoning is preserved verbatim, organized into a navigable knowledge plane, and benchmarked for recall value rather than summarized away too early.
 
-6. [Beacon completeness and maturity matrix](./beacon-completeness-maturity-matrix.md)
+7. [Beacon completeness and maturity matrix](./beacon-completeness-maturity-matrix.md)
    - Why it matters:
      provides a concrete score-based assessment of Beacon's current product surfaces, skill/operator design, architecture responsibilities, and risk concentration, anchored explicitly on the `PRD → story → QA` mainline.
 
-7. [Beacon maturity remediation roadmap](./beacon-maturity-remediation-roadmap.md)
+8. [Beacon maturity remediation roadmap](./beacon-maturity-remediation-roadmap.md)
    - Why it matters:
      translates the maturity matrix into an execution order, prioritizing mainline hardening, complexity reduction, asset packaging, and only then bounded self-iteration.
+
+9. [Beacon codex-native subagent direction from `gstack`, `superpowers`, and the v1.3.0 seed note](./beacon-codex-native-subagent-direction-gstack-superpowers.md)
+   - Why it matters:
+     promotes subagent governance out of a single release line and freezes the cross-version position that Beacon should use bounded subagents only on selected surfaces, with stage-owner truth, fresh context packaging, and explicit review ladders.
+
+10. [Beacon Ralph / Subagent norms and long-task delivery brainstorm](./beacon-ralph-subagent-long-task-delivery-brainstorm.md)
+   - Why it matters:
+     freezes a cross-version judgment that Ralph should be the closure controller, subagents should remain bounded execution units, and long tasks should be modeled as a requirement-to-release loop rather than open-ended agent expansion.
 
 ---
 
 ## 3. Version-bound research entrypoints
 
 These directories contain research tied to specific release lines and should be read together with that version's `SUMMARY.md` and execution materials.
+
+### v1.3.2
+
+- [`docs/beacon/v1.3.2/research/`](../v1.3.2/research/)
+  - Current notable topic:
+    responsibility optimization for `implement / qa / ralph`, clarifying the split between truth owner, execution runtime, closure controller, and learning plane
+
+### v1.3.0
+
+- [`docs/beacon/v1.3.0/research/`](../v1.3.0/research/)
+  - Current notable topic:
+    this line no longer owns the canonical codex-native subagent direction note; it now consumes [Beacon codex-native subagent direction from `gstack`, `superpowers`, and the v1.3.0 seed note](./beacon-codex-native-subagent-direction-gstack-superpowers.md) and keeps only version-local pointers/adoption materials
 
 ### v1.2.0
 
@@ -119,14 +147,17 @@ Use these mainly for historical context, not as the first source for current pro
 If you are trying to understand Beacon's long-horizon research direction:
 
 1. Start with [Karpathy `LLM Wiki` pattern analysis](./beacon-karpathy-llm-wiki-pattern-analysis.md)
-2. Then read [Beacon multi-project isolation and learning brainstorm](./beacon-multi-project-isolation-and-learning-brainstorm.md)
-3. Then read [Beacon manager strong doc sync brainstorm](./beacon-manager-strong-doc-sync-brainstorm.md) for the independent cross-project doc-sync tool direction
-4. Then read [Beacon self-iteration and story-QA coverage study from awesome-design-md and autoagent](./beacon-self-iteration-and-story-qa-coverage-study-awesome-design-md-autoagent.md)
-5. Then read [Beacon memory and knowledge-plane study from mempalace](./beacon-memory-asset-eval-plane-study-mempalace.md)
-6. Then read [Beacon completeness and maturity matrix](./beacon-completeness-maturity-matrix.md)
-7. Then read [Beacon maturity remediation roadmap](./beacon-maturity-remediation-roadmap.md)
-8. Then read [`docs/beacon/v1.1.12/research/`](../v1.1.12/research/) for the most recent governance-heavy release-line studies
-9. Then read [`docs/beacon/v1.2.0/research/`](../v1.2.0/research/) for newer product-surface expansion work
+2. Then read [Beacon Open-Source Reference Source Map](./beacon-open-source-reference-source-map.md) if you need the local `oss-sync` source directories behind any external reference
+3. Then read [Beacon multi-project isolation and learning brainstorm](./beacon-multi-project-isolation-and-learning-brainstorm.md)
+4. Then read [Beacon manager strong doc sync brainstorm](./beacon-manager-strong-doc-sync-brainstorm.md) for the independent cross-project doc-sync tool direction
+5. Then read [Beacon self-iteration and story-QA coverage study from awesome-design-md and autoagent](./beacon-self-iteration-and-story-qa-coverage-study-awesome-design-md-autoagent.md)
+6. Then read [Beacon memory and knowledge-plane study from mempalace](./beacon-memory-asset-eval-plane-study-mempalace.md)
+7. Then read [Beacon completeness and maturity matrix](./beacon-completeness-maturity-matrix.md)
+8. Then read [Beacon maturity remediation roadmap](./beacon-maturity-remediation-roadmap.md)
+9. Then read [Beacon codex-native subagent direction from `gstack`, `superpowers`, and the v1.3.0 seed note](./beacon-codex-native-subagent-direction-gstack-superpowers.md)
+10. Then read [Beacon Ralph / Subagent norms and long-task delivery brainstorm](./beacon-ralph-subagent-long-task-delivery-brainstorm.md)
+11. Then read [`docs/beacon/v1.1.12/research/`](../v1.1.12/research/) for the most recent governance-heavy release-line studies
+12. Then read [`docs/beacon/v1.2.0/research/`](../v1.2.0/research/) for newer product-surface expansion work
 
 If you are trying to solve a concrete versioned task:
 
@@ -144,3 +175,4 @@ When adding a new research note:
 2. place it in the correct directory
 3. add a one-line entry here if it is cross-version
 4. if it materially changes a version line, also update that version's `SUMMARY.md` or execution index as needed
+5. if it cites an external open-source project, also update [Beacon Open-Source Reference Source Map](./beacon-open-source-reference-source-map.md)

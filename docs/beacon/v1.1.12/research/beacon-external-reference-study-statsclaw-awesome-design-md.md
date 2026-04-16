@@ -21,6 +21,8 @@
 - Paper shortlink: `https://bit.ly/statsclaw`
 - Paper resolved PDF: `https://yiqingxu.org/papers/2026_statsclaw/statsclaw.pdf`
 - Repo: `https://github.com/statsclaw/statsclaw`
+- Current local mirror status:
+  `/Users/apple/Developer/Personal/oss-sync/automation/autoresearch/statsclaw`
 
 Observed public repo surface on 2026-04-06:
 
@@ -36,15 +38,18 @@ Observed public repo surface on 2026-04-06:
 ### External reference B: awesome-design-md
 
 - Repo: `https://github.com/VoltAgent/awesome-design-md`
-- Local clone for this study: `.research/awesome-design-md/`
+- Current local mirror status:
+  `/Users/apple/Developer/Personal/oss-sync/core-skills/awesome-design-md`
+- Canonical source map for future import:
+  `docs/beacon/research/beacon-open-source-reference-source-map.md`
 
-Key local evidence:
+Key upstream evidence used by this study:
 
-- `.research/awesome-design-md/README.md`
-- `.research/awesome-design-md/CONTRIBUTING.md`
-- `.research/awesome-design-md/.github/ISSUE_TEMPLATE/design-md-request.yml`
-- `.research/awesome-design-md/design-md/voltagent/DESIGN.md`
-- `.research/awesome-design-md/design-md/voltagent/README.md`
+- `/Users/apple/Developer/Personal/oss-sync/core-skills/awesome-design-md/README.md`
+- `/Users/apple/Developer/Personal/oss-sync/core-skills/awesome-design-md/CONTRIBUTING.md`
+- `/Users/apple/Developer/Personal/oss-sync/core-skills/awesome-design-md/.github/ISSUE_TEMPLATE/design-md-request.yml`
+- `/Users/apple/Developer/Personal/oss-sync/core-skills/awesome-design-md/design-md/voltagent/DESIGN.md`
+- `/Users/apple/Developer/Personal/oss-sync/core-skills/awesome-design-md/design-md/voltagent/README.md`
 
 ---
 
@@ -130,7 +135,7 @@ Minimal Beacon shape:
 
 ### 3.3 awesome-design-md teaches Beacon to package design governance as portable assets
 
-From `.research/awesome-design-md/README.md`:
+From the public `awesome-design-md` repo materials used by this study:
 
 - 仓库把 DESIGN.md 定义成“plain-text design system document that AI agents read”
 - 每个站点目录都是固定三件套：

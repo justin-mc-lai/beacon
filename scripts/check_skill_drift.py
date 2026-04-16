@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Check Beacon skill drift across repo, local Claude, and local Codex installs."""
+"""Check Beacon skill drift across repo, local Claude installs, and legacy Codex duplicates."""
 
 from __future__ import annotations
 

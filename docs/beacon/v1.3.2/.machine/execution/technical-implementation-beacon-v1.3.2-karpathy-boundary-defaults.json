@@ -1,0 +1,151 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.3.2-karpathy-boundary-defaults",
+  "feature_slug": "beacon-v1.3.2-karpathy-boundary-defaults",
+  "version": "v1.3.2",
+  "revision_id": "R1",
+  "run_id": "beacon-v1.3.2-karpathy-boundary-defaults-impl-accepted",
+  "implemented_at": "2026-04-16T07:16:22.250243+00:00",
+  "runner": "native-single",
+  "skill": "",
+  "profile_id": "",
+  "git_commit": "78107c4f6304971b2fee66fea2feb2eb0e42b1b2",
+  "services": [],
+  "boundary_principles": [
+    {
+      "id": "explicit_assumptions",
+      "heading": "显式假设与歧义管理"
+    },
+    {
+      "id": "simplicity_first",
+      "heading": "简单优先"
+    },
+    {
+      "id": "surgical_changes",
+      "heading": "外科手术式改动"
+    },
+    {
+      "id": "goal_driven_execution",
+      "heading": "目标驱动验证闭环"
+    },
+    {
+      "id": "trivial_task_exception",
+      "heading": "trivial task 可以轻量处理，但不能越界"
+    }
+  ],
+  "implementation_scope_summary": "Karpathy boundary defaults were promoted from prose guidance into machine-verifiable boundary contracts across implement, qa, and doctor surfaces.",
+  "business_goal_summary": "Make Beacon's default execution behavior verifiably respect explicit assumptions, simplicity-first changes, surgical scope, and goal-driven verification.",
+  "acceptance_scope": [
+    "global boundaries contract materialization",
+    "technical review contract boundary principles",
+    "implementation plan boundary principle carry-through",
+    "qa evidence boundary summaries"
+  ],
+  "assumptions": [],
+  "simplicity_notes": [
+    "Keep the default boundary model centralized in canonical global-boundaries rather than feature-local variants."
+  ],
+  "scope_guard": {
+    "in_scope": true,
+    "summary": "Only Beacon boundary defaults and their machine-consumable surfaces were changed.",
+    "allowed_paths": [
+      "beacon/utils/global_boundaries.py",
+      "beacon/utils/doctor_diagnostics.py",
+      "beacon/utils/technical_review_contract.py",
+      "beacon/utils/implementation_plan.py",
+      "beacon/utils/implement_adapters.py",
+      "beacon/commands/implement.py",
+      "beacon/commands/qa.py",
+      "beacon/utils/qa_feature.py"
+    ]
+  },
+  "changed_files": [
+    "beacon/utils/global_boundaries.py",
+    "beacon/utils/doctor_diagnostics.py",
+    "beacon/utils/technical_review_contract.py",
+    "beacon/utils/implementation_plan.py",
+    "beacon/utils/implement_adapters.py",
+    "beacon/commands/implement.py",
+    "beacon/commands/qa.py",
+    "beacon/utils/qa_feature.py"
+  ],
+  "modules_touched": [
+    "beacon/utils",
+    "beacon/commands"
+  ],
+  "additions": [
+    "machine-readable boundary principle propagation"
+  ],
+  "modifications": [
+    "doctor boundary diagnostics",
+    "implement/qa boundary evidence",
+    "technical review contract rendering"
+  ],
+  "deletions": [],
+  "refactors": [],
+  "data_operations": [],
+  "db_changes": {
+    "none": true,
+    "new_tables": [],
+    "altered_tables": [],
+    "indexes": [],
+    "migrations": []
+  },
+  "cache_changes": [],
+  "event_contract_changes": [],
+  "api_changes": {
+    "none": true,
+    "new_endpoints": [],
+    "changed_endpoints": [],
+    "removed_endpoints": []
+  },
+  "external_integrations": [],
+  "queue_or_job_changes": [],
+  "cron_changes": [],
+  "config_changes": [],
+  "env_changes": [],
+  "feature_flags": [],
+  "deployment_notes": [],
+  "verification": [
+    {
+      "command": "python3 -m pytest -q tests/test_v132_karpathy_boundary_defaults.py",
+      "status": "passed"
+    },
+    {
+      "command": "python3 -m pytest -q tests/test_v132_karpathy_boundary_execution_materials.py",
+      "status": "passed"
+    },
+    {
+      "command": "beacon review accept \"beacon-v1.3.2-karpathy-boundary-defaults\" --project . --version v1.3.2 --json",
+      "status": "passed"
+    }
+  ],
+  "verification_signals": {
+    "count": 3,
+    "has_acceptance_scope": true,
+    "has_assumptions": false
+  },
+  "known_risks": [],
+  "rollback_notes": [],
+  "compatibility_notes": [],
+  "artifact_updates": {
+    "user_story": {
+      "required": false,
+      "reason": "story machine state writeback recorded"
+    },
+    "review_quality": {
+      "required": false,
+      "reason": "accepted feature archived into version package"
+    },
+    "acceptance": {
+      "required": false,
+      "reason": "acceptance already recorded"
+    }
+  },
+  "traceability": {
+    "request_path": "",
+    "result_path": "",
+    "stdout_path": "",
+    "stderr_path": ""
+  }
+}

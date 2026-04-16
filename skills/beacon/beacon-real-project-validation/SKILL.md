@@ -22,6 +22,13 @@ If the user only gives a versioned docs path such as `docs/beacon/v1.0.0`, infer
 - Do not run `prd create`, `user-story create`, `test-case create`, `implement plan`, or `implement run` on the live repo unless the user explicitly asks for write-path validation.
 - If write-path validation is required, use an isolated copy or worktree instead of the user's main working tree.
 - Treat `blocked`, `release_ready=false`, or failed release checks as valid command execution results until you confirm the CLI itself is wrong.
+- For latest Beacon lines with native team / Ralph / browser QA support, keep the public human surface minimal:
+  - validate through `help`, `status`, `implement`, `qa`, `release`
+  - do not treat internal `.beacon/` artifacts as the primary operator surface
+- Distinguish clearly:
+  - current-feature closure readiness
+  - version-line package closure / change-doc closure
+  These can diverge without indicating a CLI defect.
 
 ## Workflow
 
@@ -65,6 +72,22 @@ Run the public minimal commands against the real project:
 
 Prefer JSON output when the surface supports it.
 
+For Beacon versions with team / Ralph support, also validate:
+
+- `implement run FEATURE --mode team --dry-run --json`
+- `implement run FEATURE --mode ralph --dry-run --json`
+- `implement ralph-status FEATURE --json`
+- `doctor verify-subagent-runtime --host-runtime codex|claude --json`
+- `doctor verify-subagent-delegation FEATURE --version VERSION --json`
+
+For Beacon versions with browser QA/session support, also validate:
+
+- `qa session list --json`
+- `qa run FEATURE --json`
+- `qa team-run FEATURE --host-runtime codex|claude --json`
+
+If browser QA is in scope, verify whether the target feature's formal QA bundle actually declares browser-capable layers rather than assuming browser automation should run.
+
 ### 4. Classify What Failed
 
 Treat the result as a **project-state blocker**, not a Beacon defect, when:
@@ -72,6 +95,8 @@ Treat the result as a **project-state blocker**, not a Beacon defect, when:
 - the command exits cleanly
 - the payload is structured and version-aware
 - the command reports real project issues such as QA blocked, release not ready, or missing evidence
+- the feature is release-ready but the version line still lacks change docs / package closure
+- browser QA is formally configured but the project lacks local runtime, runner configuration, or session/profile prerequisites
 
 Treat the result as a **Beacon CLI defect** when:
 
@@ -80,6 +105,10 @@ Treat the result as a **Beacon CLI defect** when:
 - the command selects the wrong feature run
 - the command requires undocumented arguments to function
 - a read-only validation command unexpectedly mutates tracked docs or implementation files
+- the public human surface contradicts newer authoritative feature scorecard state, for example:
+  - `help` still points to repair after current-feature QA is release-ready
+  - `status` / `release scorecard` aggregate older fields and miss the authoritative feature scorecard outcome
+- browser QA formal layers are selected, but Beacon silently falls back to unrelated default layers instead of executing the declared browser-capable matrix
 
 ### 5. Fix Beacon If The CLI Is Wrong
 
@@ -106,6 +135,24 @@ Only if the user explicitly wants full write-path validation:
   - `beacon implement plan`
 - confirm the generated artifacts land under the intended `docs/beacon/<version>/` line
 
+For modern Beacon lines, this write-path validation may also include:
+
+- `beacon doctor setup-context --project-root <isolated-root>`
+- `beacon freeze FEATURE --project-root <isolated-root> --version VERSION`
+- `beacon doctor sync-technical-review-contract FEATURE --project-root <isolated-root> --version VERSION ...`
+- `beacon implement run FEATURE --mode team|ralph --dry-run --json`
+- `beacon qa session save/use ...`
+- `beacon qa team-run FEATURE --json`
+- `beacon release scorecard VERSION --json`
+
+When browser QA/session/profile validation is required:
+
+- prefer isolated worktree execution
+- start the target app locally in that isolated worktree
+- save a canonical QA session
+- bind a minimal project profile if needed
+- verify that browser-capable QA layers really produce browser-task / evidence-pack artifacts
+
 ### 7. Report Results
 
 Always report:
@@ -126,6 +173,8 @@ Conclude with a compact validation summary:
 - command surfaces that passed
 - command surfaces that returned meaningful blocked/not-ready states
 - command surfaces that exposed real Beacon defects
+- whether current-feature closure is ready
+- whether version-line package/change-doc closure is still open
 - follow-up recommendation:
   - `safe to use on this project`
   - `safe for read-only use only`

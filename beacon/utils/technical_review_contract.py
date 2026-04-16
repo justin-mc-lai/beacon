@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Any
 
 from beacon.utils.artifact_paths import human_execution_file, machine_execution_file
+from beacon.utils.global_boundaries import global_boundary_principle_summaries
 from beacon.utils.implement_adapters import load_beacon_config
 from beacon.utils.runtime import now_iso, write_json
 from beacon.utils.runtime import read_json
@@ -205,6 +206,7 @@ def _default_technical_review_contract(project_root: Path, *, version: str, feat
         "downstream_services": [],
         "shared_schema_or_contracts": [],
         "cross_service_change_order": [],
+        "boundary_principles": global_boundary_principle_summaries(),
         "review_status": "draft",
         "approved_by": "",
         "reviewed_at": "",
@@ -257,6 +259,16 @@ def _render_technical_review_contract_markdown(payload: dict[str, Any]) -> str:
     lines.extend(_list_block("Service Directories", payload.get("service_directories") if isinstance(payload.get("service_directories"), list) else []))
     lines.extend(_list_block("Writable Services", payload.get("writable_services") if isinstance(payload.get("writable_services"), list) else []))
     lines.extend(_list_block("Reference-only Services", payload.get("reference_only_services") if isinstance(payload.get("reference_only_services"), list) else []))
+    boundary_principles = payload.get("boundary_principles") if isinstance(payload.get("boundary_principles"), list) else []
+    lines.append("## Boundary Principles")
+    if boundary_principles:
+        for item in boundary_principles:
+            if not isinstance(item, dict):
+                continue
+            lines.append(f"- `{item.get('id', '')}`: {item.get('heading', '')}")
+    else:
+        lines.append("- none")
+    lines.append("")
     notes = payload.get("notes") if isinstance(payload.get("notes"), list) else []
     lines.extend(_list_block("Notes", notes))
     return "\n".join(lines).rstrip() + "\n"
@@ -355,6 +367,7 @@ def materialize_technical_review_contract(
     payload["feature"] = feature
     payload["feature_slug"] = feature_slug(feature)
     payload["version"] = resolved_version
+    payload["boundary_principles"] = global_boundary_principle_summaries()
     json_path = technical_review_contract_json_path(project_root, resolved_version, feature)
     markdown_path = technical_review_contract_markdown_path(project_root, resolved_version, feature)
     write_json(json_path, payload)

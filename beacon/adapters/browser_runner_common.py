@@ -102,7 +102,7 @@ def write_runner_artifacts(
         if task_src.exists():
             task_copy = layer_dir / "browser-runner-task.json"
             task_copy.write_text(task_src.read_text(encoding="utf-8"), encoding="utf-8")
-            task_ref = str(task_copy.relative_to(project_root))
+            task_ref = _relative_ref(project_root, str(task_copy))
 
     target_url = str(payload.get("target_url") or session.get("origin") or "/").strip() or "/"
     steps = payload.get("steps") if isinstance(payload.get("steps"), list) else []
@@ -186,11 +186,11 @@ def write_runner_artifacts(
 
     artifact_refs = {
         "task_ref": task_ref,
-        "url_ref": str(url_path.relative_to(project_root)),
-        "transcript_ref": str(transcript_path.relative_to(project_root)),
-        "dom_ref": str(dom_path.relative_to(project_root)),
-        "network_ref": str(network_path.relative_to(project_root)),
-        "console_ref": str(console_path.relative_to(project_root)),
+        "url_ref": _relative_ref(project_root, str(url_path)),
+        "transcript_ref": _relative_ref(project_root, str(transcript_path)),
+        "dom_ref": _relative_ref(project_root, str(dom_path)),
+        "network_ref": _relative_ref(project_root, str(network_path)),
+        "console_ref": _relative_ref(project_root, str(console_path)),
         "session_manifest_ref": str(session.get("manifest_ref") or ""),
         "profile_ref": str(session.get("profile_ref") or ""),
         "cookies_ref": str(session.get("cookies_ref") or ""),
