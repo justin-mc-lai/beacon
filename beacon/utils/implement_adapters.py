@@ -7,6 +7,8 @@ import os
 from pathlib import Path
 from typing import Any
 
+from beacon.utils.global_boundaries import global_boundary_prompt_lines
+
 try:  # pragma: no cover - optional dependency
     import yaml  # type: ignore
 except Exception:  # noqa: BLE001
@@ -371,6 +373,9 @@ def build_default_task_prompt(
         lines.append(f"- {implementation_plan_file}")
     lines.extend(
         [
+            "Follow Beacon boundary defaults:",
+            *[f"- {line}" for line in global_boundary_prompt_lines()],
+            "Structured result should include: assumptions, simplicity_notes, scope_guard, verification.",
             "Run relevant verification.",
             f"Write structured result to {result_file}",
         ]

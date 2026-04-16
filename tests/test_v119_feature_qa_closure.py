@@ -223,10 +223,17 @@ def test_v119_qa_run_feature_should_write_per_item_verification(tmp_path: Path):
     assert qa_status["status"] == "passed"
     assert qa_status["evidence_done"] is True
     assert qa_status["targeted_rerun"]["targeted_tc_ids"] == ["TC-001", "TC-002"]
+    assert qa_status["boundary_evidence"]["assumption_capture_required"] is True
+    assert qa_status["boundary_evidence"]["goal_driven_verification_required"] is True
+    assert qa_status["boundary_evidence"]["verification_item_count"] >= 2
 
     feature_status = json.loads((tmp_path / ".beacon" / "qa" / "features" / SLUG / "status.json").read_text(encoding="utf-8"))
     assert feature_status["verified_item_ids"] == ["AC-001", "AC-002", "TEST-001", "TEST-002"]
     assert feature_status["failed_item_ids"] == []
+
+    feature_scorecard = json.loads((tmp_path / ".beacon" / "qa" / "features" / SLUG / "scorecard.json").read_text(encoding="utf-8"))
+    assert feature_scorecard["boundary_evidence"]["goal_driven_verification_required"] is True
+    assert feature_scorecard["boundary_evidence"]["targeted_scope_only"] is True
 
     story_state = json.loads((tmp_path / "docs" / "beacon" / VERSION / ".machine" / "user-story" / f"{SLUG}.json").read_text(encoding="utf-8"))
     active_story = next(item for item in story_state["stories"] if item["revision_id"] == story_state["current_revision_id"])

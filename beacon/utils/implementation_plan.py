@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Any, Iterable
 
 from beacon.utils.artifact_paths import human_execution_file, machine_execution_file, qa_matrix_candidates
+from beacon.utils.global_boundaries import global_boundary_principle_summaries
 from beacon.utils.implement_adapters import load_beacon_config
 from beacon.utils.revision_state import load_revision_state
 from beacon.utils.runtime import now_iso, read_json, write_json
@@ -811,6 +812,15 @@ def _render_plan_markdown(payload: dict[str, Any]) -> str:
             lines.append(f"- {key}: `{value}`")
     else:
         lines.append("- none")
+    boundary_principles = payload.get("boundary_principles") if isinstance(payload.get("boundary_principles"), list) else []
+    lines.extend(["", "## Boundary Principles"])
+    if boundary_principles:
+        for item in boundary_principles:
+            if not isinstance(item, dict):
+                continue
+            lines.append(f"- `{item.get('id', '')}`: `{item.get('heading', '')}`")
+    else:
+        lines.append("- none")
     team_mode = payload.get("team_mode") if isinstance(payload.get("team_mode"), dict) else {}
     if team_mode:
         lines.extend(
@@ -1128,6 +1138,7 @@ def compile_implementation_plan(project_root: Path, *, version: str = "auto", fe
         "plan_hash": "",
         "status": "planned",
         "source_refs": source_refs,
+        "boundary_principles": global_boundary_principle_summaries(),
         "workstreams": [
             {
                 "workstream_id": "implementation-main",

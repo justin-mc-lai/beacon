@@ -6,13 +6,35 @@
   "version": "v1.3.2",
   "revision_id": "R1",
   "baseline_hash": "sha256:52346376b274c1813a23a00abe649f54cef68601c3e313c8b33ad1d414f3d0fc",
-  "plan_hash": "sha256:d112a7d124690150423853463fd67e2077f7c11995515834dd23ba0f75ae39a8",
-  "status": "planned",
+  "plan_hash": "sha256:14395d619b172ff328334083f7be28078ab7b5dc58b4316e873db02715d3f379",
+  "status": "completed",
   "source_refs": {
     "user_story": "docs/beacon/v1.3.2/user-story/beacon-v1.3.2-karpathy-boundary-defaults.md",
     "prd": "docs/beacon/v1.3.2/prd/beacon-v1.3.2-karpathy-boundary-defaults.md",
     "test_case": "docs/beacon/v1.3.2/qa/test-cases/beacon-v1.3.2-karpathy-boundary-defaults.md"
   },
+  "boundary_principles": [
+    {
+      "id": "explicit_assumptions",
+      "heading": "显式假设与歧义管理"
+    },
+    {
+      "id": "simplicity_first",
+      "heading": "简单优先"
+    },
+    {
+      "id": "surgical_changes",
+      "heading": "外科手术式改动"
+    },
+    {
+      "id": "goal_driven_execution",
+      "heading": "目标驱动验证闭环"
+    },
+    {
+      "id": "trivial_task_exception",
+      "heading": "trivial task 可以轻量处理，但不能越界"
+    }
+  ],
   "workstreams": [
     {
       "workstream_id": "implementation-main",
@@ -48,12 +70,30 @@
       "mapped_qa_case_ids": [],
       "depends_on": [],
       "target_modules": [],
-      "status": "planned",
-      "evidence_refs": [],
-      "changed_files": [],
+      "status": "completed",
+      "evidence_refs": [
+        "tests:test_v118_implement_technical_archive.py",
+        "tests:test_v119_feature_qa_closure.py",
+        "tests:test_v132_karpathy_boundary_defaults.py",
+        "tests:test_v132_karpathy_boundary_execution_materials.py",
+        "tests:test_v112_implementation_plan_runtime.py",
+        "run:run-20260416T005940Z-367d"
+      ],
+      "changed_files": [
+        "beacon/utils/global_boundaries.py",
+        "beacon/utils/implement_adapters.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/qa.py",
+        "beacon/utils/qa_feature.py",
+        "tests/test_v118_implement_technical_archive.py",
+        "tests/test_v119_feature_qa_closure.py",
+        "tests/test_v132_karpathy_boundary_defaults.py",
+        "tests/test_v132_karpathy_boundary_execution_materials.py"
+      ],
       "blocked_reason": "",
-      "started_at": "",
-      "completed_at": ""
+      "started_at": "2026-04-16T00:59:40.847787+00:00",
+      "completed_at": "2026-04-16T00:59:40.847797+00:00",
+      "active_run_id": ""
     },
     {
       "task_id": "ITASK-002",
@@ -74,12 +114,30 @@
         "ITASK-001"
       ],
       "target_modules": [],
-      "status": "planned",
-      "evidence_refs": [],
-      "changed_files": [],
+      "status": "completed",
+      "evidence_refs": [
+        "tests:test_v118_implement_technical_archive.py",
+        "tests:test_v119_feature_qa_closure.py",
+        "tests:test_v132_karpathy_boundary_defaults.py",
+        "tests:test_v132_karpathy_boundary_execution_materials.py",
+        "tests:test_v112_implementation_plan_runtime.py",
+        "run:run-20260416T005940Z-367d"
+      ],
+      "changed_files": [
+        "beacon/utils/global_boundaries.py",
+        "beacon/utils/implement_adapters.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/qa.py",
+        "beacon/utils/qa_feature.py",
+        "tests/test_v118_implement_technical_archive.py",
+        "tests/test_v119_feature_qa_closure.py",
+        "tests/test_v132_karpathy_boundary_defaults.py",
+        "tests/test_v132_karpathy_boundary_execution_materials.py"
+      ],
       "blocked_reason": "",
-      "started_at": "",
-      "completed_at": ""
+      "started_at": "2026-04-16T00:59:40.847806+00:00",
+      "completed_at": "2026-04-16T00:59:40.847808+00:00",
+      "active_run_id": ""
     },
     {
       "task_id": "ITASK-003",
@@ -100,12 +158,30 @@
         "ITASK-002"
       ],
       "target_modules": [],
-      "status": "planned",
-      "evidence_refs": [],
-      "changed_files": [],
+      "status": "completed",
+      "evidence_refs": [
+        "tests:test_v118_implement_technical_archive.py",
+        "tests:test_v119_feature_qa_closure.py",
+        "tests:test_v132_karpathy_boundary_defaults.py",
+        "tests:test_v132_karpathy_boundary_execution_materials.py",
+        "tests:test_v112_implementation_plan_runtime.py",
+        "run:run-20260416T005940Z-367d"
+      ],
+      "changed_files": [
+        "beacon/utils/global_boundaries.py",
+        "beacon/utils/implement_adapters.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/qa.py",
+        "beacon/utils/qa_feature.py",
+        "tests/test_v118_implement_technical_archive.py",
+        "tests/test_v119_feature_qa_closure.py",
+        "tests/test_v132_karpathy_boundary_defaults.py",
+        "tests/test_v132_karpathy_boundary_execution_materials.py"
+      ],
       "blocked_reason": "",
-      "started_at": "",
-      "completed_at": ""
+      "started_at": "2026-04-16T00:59:40.847815+00:00",
+      "completed_at": "2026-04-16T00:59:40.847817+00:00",
+      "active_run_id": ""
     },
     {
       "task_id": "ITASK-004",
@@ -126,12 +202,30 @@
         "ITASK-003"
       ],
       "target_modules": [],
-      "status": "planned",
-      "evidence_refs": [],
-      "changed_files": [],
+      "status": "completed",
+      "evidence_refs": [
+        "tests:test_v118_implement_technical_archive.py",
+        "tests:test_v119_feature_qa_closure.py",
+        "tests:test_v132_karpathy_boundary_defaults.py",
+        "tests:test_v132_karpathy_boundary_execution_materials.py",
+        "tests:test_v112_implementation_plan_runtime.py",
+        "run:run-20260416T005940Z-367d"
+      ],
+      "changed_files": [
+        "beacon/utils/global_boundaries.py",
+        "beacon/utils/implement_adapters.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/qa.py",
+        "beacon/utils/qa_feature.py",
+        "tests/test_v118_implement_technical_archive.py",
+        "tests/test_v119_feature_qa_closure.py",
+        "tests/test_v132_karpathy_boundary_defaults.py",
+        "tests/test_v132_karpathy_boundary_execution_materials.py"
+      ],
       "blocked_reason": "",
-      "started_at": "",
-      "completed_at": ""
+      "started_at": "2026-04-16T00:59:40.847824+00:00",
+      "completed_at": "2026-04-16T00:59:40.847825+00:00",
+      "active_run_id": ""
     },
     {
       "task_id": "ITASK-005",
@@ -152,12 +246,25 @@
         "ITASK-004"
       ],
       "target_modules": [],
-      "status": "planned",
-      "evidence_refs": [],
-      "changed_files": [],
+      "status": "completed",
+      "evidence_refs": [
+        "tests:test_v132_karpathy_boundary_defaults.py",
+        "tests:test_v132_karpathy_boundary_execution_materials.py",
+        "tests:test_v112_implementation_plan_runtime.py",
+        "run:run-20260415T220055Z-2461"
+      ],
+      "changed_files": [
+        "beacon/utils/global_boundaries.py",
+        "beacon/utils/doctor_diagnostics.py",
+        "beacon/utils/technical_review_contract.py",
+        "beacon/utils/implementation_plan.py",
+        "tests/test_v132_karpathy_boundary_defaults.py",
+        "tests/test_v132_karpathy_boundary_execution_materials.py"
+      ],
       "blocked_reason": "",
-      "started_at": "",
-      "completed_at": ""
+      "started_at": "2026-04-15T22:00:55.656774+00:00",
+      "completed_at": "2026-04-15T22:00:55.656881+00:00",
+      "active_run_id": ""
     },
     {
       "task_id": "ITASK-006",
@@ -178,12 +285,25 @@
         "ITASK-005"
       ],
       "target_modules": [],
-      "status": "planned",
-      "evidence_refs": [],
-      "changed_files": [],
+      "status": "completed",
+      "evidence_refs": [
+        "tests:test_v132_karpathy_boundary_defaults.py",
+        "tests:test_v132_karpathy_boundary_execution_materials.py",
+        "tests:test_v112_implementation_plan_runtime.py",
+        "run:run-20260415T220055Z-2461"
+      ],
+      "changed_files": [
+        "beacon/utils/global_boundaries.py",
+        "beacon/utils/doctor_diagnostics.py",
+        "beacon/utils/technical_review_contract.py",
+        "beacon/utils/implementation_plan.py",
+        "tests/test_v132_karpathy_boundary_defaults.py",
+        "tests/test_v132_karpathy_boundary_execution_materials.py"
+      ],
       "blocked_reason": "",
-      "started_at": "",
-      "completed_at": ""
+      "started_at": "2026-04-15T22:00:55.656921+00:00",
+      "completed_at": "2026-04-15T22:00:55.656925+00:00",
+      "active_run_id": ""
     },
     {
       "task_id": "ITASK-007",
@@ -204,12 +324,20 @@
         "ITASK-006"
       ],
       "target_modules": [],
-      "status": "planned",
-      "evidence_refs": [],
-      "changed_files": [],
+      "status": "completed",
+      "evidence_refs": [
+        "tests:test_v132_karpathy_boundary_defaults.py",
+        "tests:test_v132_karpathy_boundary_execution_materials.py",
+        "run:run-20260416T010141Z-4fc2"
+      ],
+      "changed_files": [
+        "beacon/utils/global_boundaries.py",
+        "tests/test_v132_karpathy_boundary_defaults.py"
+      ],
       "blocked_reason": "",
-      "started_at": "",
-      "completed_at": ""
+      "started_at": "2026-04-16T01:01:41.126091+00:00",
+      "completed_at": "2026-04-16T01:01:41.126097+00:00",
+      "active_run_id": ""
     },
     {
       "task_id": "ITASK-008",
@@ -230,12 +358,20 @@
         "ITASK-007"
       ],
       "target_modules": [],
-      "status": "planned",
-      "evidence_refs": [],
-      "changed_files": [],
+      "status": "completed",
+      "evidence_refs": [
+        "tests:test_v132_karpathy_boundary_defaults.py",
+        "tests:test_v132_karpathy_boundary_execution_materials.py",
+        "run:run-20260416T010141Z-4fc2"
+      ],
+      "changed_files": [
+        "beacon/utils/global_boundaries.py",
+        "tests/test_v132_karpathy_boundary_defaults.py"
+      ],
       "blocked_reason": "",
-      "started_at": "",
-      "completed_at": ""
+      "started_at": "2026-04-16T01:01:41.126103+00:00",
+      "completed_at": "2026-04-16T01:01:41.126105+00:00",
+      "active_run_id": ""
     }
   ],
   "team_mode": {
@@ -354,10 +490,10 @@
     ],
     "worktree_root": ".",
     "source": "technical_review_contract",
-    "generated_at": "2026-04-15T16:21:59.008679+00:00"
+    "generated_at": "2026-04-15T22:00:55.445531+00:00"
   },
   "git_workflow_ref": "docs/beacon/v1.3.2/.machine/execution/git-workflow-beacon-v1.3.2-karpathy-boundary-defaults.json",
   "git_workflow_markdown_ref": "docs/beacon/v1.3.2/execution/git-workflow-beacon-v1.3.2-karpathy-boundary-defaults.md",
-  "generated_at": "2026-04-15T16:21:59.010187+00:00",
-  "updated_at": "2026-04-15T16:21:59.010203+00:00"
+  "generated_at": "2026-04-15T22:00:55.446895+00:00",
+  "updated_at": "2026-04-16T01:01:41.126115+00:00"
 }

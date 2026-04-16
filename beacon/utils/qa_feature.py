@@ -1185,6 +1185,13 @@ def build_feature_qa_precision_artifacts(
         "project_profile_id": str(project_profile_gate.get("profile_id") or ""),
         "coverage_current": coverage_current,
         "coverage_gap": coverage_gap,
+        "boundary_evidence": {
+            "boundary_principles": plan.get("boundary_principles", []),
+            "assumption_capture_required": True,
+            "goal_driven_verification_required": True,
+            "verification_item_count": len(per_item_results),
+            "targeted_scope_only": bool(plan.get("targeted_tc_ids") or plan.get("targeted_ac_ids")),
+        },
         "continue_decision": continue_decision,
         "stop_reasons": stop_reasons,
         "test_case_backfill_required": test_case_backfill_required,

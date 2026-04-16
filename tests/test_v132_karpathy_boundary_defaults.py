@@ -5,9 +5,15 @@ from pathlib import Path
 
 from typer.testing import CliRunner
 
+from beacon.command_catalog import CORE_COMMANDS, SUPPORT_COMMANDS
 from beacon.main import app
 from beacon.utils.context_files import setup_context_files, verify_context_files
-from beacon.utils.global_boundaries import load_installed_global_boundaries, project_global_boundaries_path
+from beacon.utils.global_boundaries import (
+    global_boundary_prompt_lines,
+    inspect_global_boundary_principles,
+    load_installed_global_boundaries,
+    project_global_boundaries_path,
+)
 from beacon.utils.requirement_clarity import build_requirement_clarity_gate_payload
 
 
@@ -108,6 +114,40 @@ def test_context_setup_should_sync_global_boundaries_and_managed_references(tmp_
     assert checks["global_boundaries_inheritance"]["status"] == "pass"
 
 
+def test_global_boundaries_should_expose_required_karpathy_principles():
+    text = load_installed_global_boundaries()
+    inspection = inspect_global_boundary_principles(text)
+
+    assert inspection["ok"] is True
+    assert inspection["missing_ids"] == []
+    assert "要求默认安装外部 skill 仓库" in text
+    assert "要求运行时调用外部 skill 才能满足 Beacon 默认规范" in text
+
+
+def test_karpathy_defaults_should_not_expand_public_command_surface():
+    assert CORE_COMMANDS == (
+        "think",
+        "user-story",
+        "prd",
+        "prototype",
+        "test-case",
+        "workflow",
+        "qa",
+        "auto-test",
+        "gate",
+        "release",
+    )
+    assert "implement" in SUPPORT_COMMANDS
+    assert "doctor" in SUPPORT_COMMANDS
+
+
+def test_karpathy_prompt_lines_should_include_trivial_task_lightweight_rule():
+    lines = global_boundary_prompt_lines()
+
+    assert any("typo" in line.lower() for line in lines)
+    assert any("do not expand scope" in line.lower() for line in lines)
+
+
 def test_doctor_should_report_global_boundaries_checks_as_pass(tmp_path: Path):
     _seed_feature_docs(tmp_path)
     setup_context_files(
@@ -125,4 +165,5 @@ def test_doctor_should_report_global_boundaries_checks_as_pass(tmp_path: Path):
     payload = json.loads(result.stdout)
     checks = payload["compatibility_checks"]
     assert checks["global_boundaries_source"]["status"] == "PASS"
+    assert checks["global_boundaries_principles"]["status"] == "PASS"
     assert checks["global_boundaries_inheritance"]["status"] == "PASS"

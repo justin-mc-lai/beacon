@@ -781,6 +781,13 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
         "targeted_scenario_ids": plan.get("targeted_scenario_ids", []),
         "targeted_scenario_families": plan.get("targeted_scenario_families", []),
     }
+    qa_status["boundary_evidence"] = {
+        "boundary_principles": plan.get("boundary_principles", []),
+        "assumption_capture_required": True,
+        "goal_driven_verification_required": True,
+        "targeted_scope_only": bool(plan.get("targeted_tc_ids") or plan.get("targeted_ac_ids")),
+        "verification_item_count": len(per_item_results),
+    }
     qa_status["feature_matrix_path"] = feature_matrix_rel
     qa_status["blocking_artifact_updates"] = blocking_updates
     qa_status["per_item_results"] = per_item_results

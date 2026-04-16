@@ -10,7 +10,12 @@ from typing import Any
 
 from beacon.utils.artifact_paths import execution_file_candidates
 from beacon.utils.context_files import inspect_context_file
-from beacon.utils.global_boundaries import path_mentions_global_boundaries, project_global_boundaries_path
+from beacon.utils.global_boundaries import (
+    inspect_global_boundary_principles,
+    load_project_global_boundaries,
+    path_mentions_global_boundaries,
+    project_global_boundaries_path,
+)
 from beacon.utils.runtime import now_iso
 from beacon.utils.versioning import (
     describe_project_version_context,
@@ -509,6 +514,17 @@ def _collect_global_boundaries_source(project_root: Path) -> tuple[bool, list[st
     return (False, evidence)
 
 
+def _collect_global_boundaries_principles(project_root: Path) -> tuple[bool, list[str]]:
+    text = load_project_global_boundaries(project_root)
+    if not text.strip():
+        return (False, ["global_boundaries_text_missing"])
+    inspection = inspect_global_boundary_principles(text)
+    evidence = list(inspection.get("evidence", []))
+    if inspection.get("missing_ids"):
+        evidence.append(f"missing_ids={inspection.get('missing_ids', [])}")
+    return (bool(inspection.get("ok")), evidence)
+
+
 def _collect_global_boundaries_inheritance(
     *,
     project_root: Path,
@@ -694,6 +710,7 @@ def collect_compatibility_checks(
         context_inspections,
     )
     global_boundaries_source_ok, global_boundaries_source_evidence = _collect_global_boundaries_source(project_root)
+    global_boundaries_principles_ok, global_boundaries_principles_evidence = _collect_global_boundaries_principles(project_root)
     global_boundaries_inheritance_status, global_boundaries_inheritance_evidence = _collect_global_boundaries_inheritance(
         project_root=project_root,
         context_files=context_files,
@@ -761,6 +778,17 @@ def collect_compatibility_checks(
             "repair": [
                 "Create or restore `docs/beacon/global-boundaries.md` as the canonical Beacon-wide constraint source.",
                 "Keep version packages referencing this file instead of redefining global truth.",
+            ],
+        },
+        "global_boundaries_principles": {
+            "status": "PASS" if global_boundaries_principles_ok else "FAIL",
+            "severity": "high",
+            "summary": "The canonical global-boundaries file should contain the required explicit-assumptions, simplicity, surgical-change, goal-driven, and trivial-task principles.",
+            "evidence": global_boundaries_principles_evidence,
+            "impact": "If these principle groups drift out of the canonical file, Beacon loses a machine-verifiable default behavior contract for both source and target projects.",
+            "repair": [
+                "Restore the required principle headings and markers in `docs/beacon/global-boundaries.md`.",
+                "Keep the canonical file aligned with Karpathy-derived boundary defaults before syncing managed context.",
             ],
         },
         "global_boundaries_inheritance": {
@@ -916,6 +944,7 @@ def _compatibility_checks_to_incompatibilities(
         "suspicious_runtime_named_docs_root": "COMP-212",
         "global_boundaries_source": "COMP-213",
         "global_boundaries_inheritance": "COMP-214",
+        "global_boundaries_principles": "COMP-215",
     }
     items: list[dict[str, Any]] = []
     for name, check in compatibility_checks.items():
@@ -1037,6 +1066,7 @@ def build_doctor_payload(
             "installed_skill_copy_drift": {"status": "UNKNOWN", "severity": "medium", "summary": "project root unavailable"},
             "global_boundaries_source": {"status": "UNKNOWN", "severity": "high", "summary": "project root unavailable"},
             "global_boundaries_inheritance": {"status": "UNKNOWN", "severity": "high", "summary": "project root unavailable"},
+            "global_boundaries_principles": {"status": "UNKNOWN", "severity": "high", "summary": "project root unavailable"},
         }
         return {
             "schema_version": "2.0",

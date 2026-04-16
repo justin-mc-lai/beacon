@@ -41,6 +41,7 @@ from beacon.utils.implementation_plan import (
     mark_implementation_plan_failed,
     mark_implementation_plan_started,
 )
+from beacon.utils.global_boundaries import global_boundary_principle_summaries
 from beacon.utils.implement_native import run_native_implementation
 from beacon.utils.implement_adapters import (
     build_default_task_prompt,
@@ -877,6 +878,10 @@ def _technical_archive_payload(
     deletions = [str(x) for x in _normalize_list(result_payload.get("deletions")) if str(x).strip()]
     refactors = [str(x) for x in _normalize_list(result_payload.get("refactors")) if str(x).strip()]
     services = _normalize_list(result_payload.get("services"))
+    assumptions = _normalize_list(result_payload.get("assumptions"))
+    simplicity_notes = _normalize_list(result_payload.get("simplicity_notes"))
+    scope_guard = result_payload.get("scope_guard") if isinstance(result_payload.get("scope_guard"), dict) else {}
+    verification = _normalize_list(result_payload.get("verification"))
     payload = {
         "schema_version": "1.0",
         "feature": feature,
@@ -890,9 +895,17 @@ def _technical_archive_payload(
         "profile_id": str(result_payload.get("profile_id", "") or ""),
         "git_commit": _git_commit(project_root),
         "services": services,
+        "boundary_principles": global_boundary_principle_summaries(),
         "implementation_scope_summary": str(result_payload.get("summary", "") or ""),
         "business_goal_summary": str(result_payload.get("business_goal_summary", "") or str(result_payload.get("summary", "") or "")),
         "acceptance_scope": _normalize_list(result_payload.get("acceptance_scope")),
+        "assumptions": assumptions,
+        "simplicity_notes": simplicity_notes,
+        "scope_guard": {
+            "in_scope": bool(scope_guard.get("in_scope", True)),
+            "summary": str(scope_guard.get("summary", "") or ""),
+            "allowed_paths": _normalize_list(scope_guard.get("allowed_paths")),
+        },
         "changed_files": changed_files,
         "modules_touched": _modules_from_changed_files(changed_files),
         "additions": additions,
@@ -911,7 +924,12 @@ def _technical_archive_payload(
         "env_changes": _normalize_list(result_payload.get("env_changes")),
         "feature_flags": _normalize_list(result_payload.get("feature_flags")),
         "deployment_notes": _normalize_list(result_payload.get("deployment_notes")),
-        "verification": _normalize_list(result_payload.get("verification")),
+        "verification": verification,
+        "verification_signals": {
+            "count": len(verification),
+            "has_acceptance_scope": bool(_normalize_list(result_payload.get("acceptance_scope"))),
+            "has_assumptions": bool(assumptions),
+        },
         "known_risks": _normalize_list(result_payload.get("known_risks")),
         "rollback_notes": _normalize_list(result_payload.get("rollback_notes")),
         "compatibility_notes": _normalize_list(result_payload.get("compatibility_notes")),
@@ -954,6 +972,9 @@ def _render_technical_archive_markdown(payload: dict[str, Any]) -> str:
         f"- stderr_path: `{payload.get('traceability', {}).get('stderr_path', '')}`",
     ]
     lines.extend(_render_section("Services", [str(x) for x in payload.get("services", [])]))
+    lines.extend(_render_section("Boundary Principles", [f"`{item.get('id', '')}`: {item.get('heading', '')}" for item in payload.get("boundary_principles", []) if isinstance(item, dict)]))
+    lines.extend(_render_section("Assumptions", payload.get("assumptions", [])))
+    lines.extend(_render_section("Simplicity Notes", payload.get("simplicity_notes", [])))
     lines.extend(_render_section("Changed Files", [f"`{x}`" for x in payload.get("changed_files", [])]))
     lines.extend(_render_section("Modules Touched", [f"`{x}`" for x in payload.get("modules_touched", [])]))
     lines.extend(_render_section("Additions", payload.get("additions", [])))
@@ -968,6 +989,18 @@ def _render_technical_archive_markdown(payload: dict[str, Any]) -> str:
     lines.extend(_render_section("Known Risks", payload.get("known_risks", [])))
     lines.extend(_render_section("Rollback Notes", payload.get("rollback_notes", [])))
     lines.extend(_render_section("Verification", [str(item) for item in payload.get("verification", [])]))
+    lines.extend(
+        [
+            "",
+            "## Scope Guard",
+            f"- in_scope: `{payload.get('scope_guard', {}).get('in_scope', True)}`",
+            f"- summary: `{payload.get('scope_guard', {}).get('summary', '')}`",
+            f"- allowed_paths: `{', '.join(payload.get('scope_guard', {}).get('allowed_paths', []))}`",
+            "",
+            "## Verification Signals",
+            json.dumps(payload.get("verification_signals", {}), ensure_ascii=False, indent=2),
+        ]
+    )
     lines.extend(["", "## DB Changes", json.dumps(payload.get("db_changes", {}), ensure_ascii=False, indent=2)])
     lines.extend(["", "## API Changes", json.dumps(payload.get("api_changes", {}), ensure_ascii=False, indent=2)])
     return "\n".join(lines) + "\n"
@@ -986,6 +1019,15 @@ def _validate_result(payload: dict[str, Any]) -> list[str]:
     verification = payload.get("verification")
     if verification is not None and not isinstance(verification, list):
         problems.append("verification must be a list")
+    assumptions = payload.get("assumptions")
+    if assumptions is not None and not isinstance(assumptions, list):
+        problems.append("assumptions must be a list")
+    simplicity_notes = payload.get("simplicity_notes")
+    if simplicity_notes is not None and not isinstance(simplicity_notes, list):
+        problems.append("simplicity_notes must be a list")
+    scope_guard = payload.get("scope_guard")
+    if scope_guard is not None and not isinstance(scope_guard, dict):
+        problems.append("scope_guard must be an object")
     updates = payload.get("artifact_updates")
     if updates is not None and not isinstance(updates, dict):
         problems.append("artifact_updates must be an object")
