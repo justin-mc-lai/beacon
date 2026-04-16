@@ -1,7 +1,7 @@
-# 用户故事：Beacon v1.3.2 核心瘦身与外部 skill 降级
+# 用户故事：Beacon v1.3.3 核心瘦身与外部 skill 降级
 
-**Feature**: `beacon-v1.3.2-core-slimming-and-external-skill-demotion`  
-**Version**: `v1.3.2`  
+**Feature**: `beacon-v1.3.3-core-slimming-and-external-skill-demotion`  
+**Version**: `v1.3.3`  
 **Date**: `2026-04-15`  
 **Status**: `planning line`
 

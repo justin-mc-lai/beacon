@@ -316,3 +316,82 @@ def test_help_payload_should_expose_ralph_round_and_qa_observability(tmp_path: P
     assert execution["qa_execution_mode"] == "story-exhaustive"
     assert execution["qa_current_session_id"] == "session-001"
     assert execution["qa_runner_type"] == "browser-use"
+
+
+def test_help_payload_should_ignore_stale_handoff_when_completed_native_run_exists(tmp_path: Path):
+    _seed_user_story(tmp_path)
+    freeze_revision_state(tmp_path, version=VERSION, feature=FEATURE)
+    record_implementation_writeback(
+        tmp_path,
+        version=VERSION,
+        feature=FEATURE,
+        run_id="run-complete",
+        implemented_item_ids=["AC-001", "AC-002"],
+        changed_files=["beacon/utils/help_support.py"],
+    )
+    write_json(
+        tmp_path / ".beacon" / "implement" / "run-complete" / "state.json",
+        {
+            "schema_version": "1.0",
+            "run_id": "run-complete",
+            "feature": FEATURE,
+            "feature_slug": SLUG,
+            "version": VERSION,
+            "status": "completed",
+            "runner": "native-single",
+            "mode": "ralph",
+            "generated_at": "2026-04-16T00:00:00+00:00",
+        },
+    )
+    scorecard_path = tmp_path / ".beacon" / "qa" / "features" / SLUG / "scorecard.json"
+    scorecard_path.parent.mkdir(parents=True, exist_ok=True)
+    write_json(
+        scorecard_path,
+        {
+            "schema_version": "1.0",
+            "feature": FEATURE,
+            "feature_slug": SLUG,
+            "run_id": "run-qa",
+            "continue_decision": "stop_for_repair",
+            "release_ready": False,
+            "stop_reasons": ["implementation_reopened"],
+            "repair_handoff": {
+                "action": "implement",
+                "reason": "implementation_reopened",
+                "command": f'beacon implement run "{FEATURE}" --project {tmp_path} --version {VERSION} --runner native-single',
+            },
+        },
+    )
+    write_json(
+        tmp_path / ".beacon" / "qa" / "status.json",
+        {
+            "feature": FEATURE,
+            "feature_slug": SLUG,
+            "version": VERSION,
+            "status": "blocked",
+            "evidence_done": False,
+            "execution_mode": "feature-aware",
+            "run_id": "run-qa",
+        },
+    )
+    write_json(
+        tmp_path / ".beacon" / "ralph" / f"{SLUG}.json",
+        {
+            "schema_version": "1.1",
+            "feature": FEATURE,
+            "feature_slug": SLUG,
+            "version": VERSION,
+            "active_run_id": "run-handoff",
+            "phase": "waiting_for_handoff",
+            "stop_state": "human_blocked",
+            "current_blocker": "handoff_required",
+            "next_action": "handoff_execute",
+            "recommended_command": ".beacon/implement/run-handoff/request.md",
+        },
+    )
+
+    payload = build_help_payload(tmp_path, version=VERSION, feature=FEATURE)
+    assert payload["next_step"]["action"] == "implement"
+    assert "request.md" not in payload["next_step"]["command"]
+    execution = payload["execution_surface"]
+    assert execution["ralph_phase"] == ""

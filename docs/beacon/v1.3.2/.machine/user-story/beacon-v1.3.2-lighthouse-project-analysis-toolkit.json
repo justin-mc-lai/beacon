@@ -1,0 +1,264 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.3.2-lighthouse-project-analysis-toolkit",
+  "feature_slug": "beacon-v1.3.2-lighthouse-project-analysis-toolkit",
+  "version": "v1.3.2",
+  "current_revision_id": "R1",
+  "lifecycle_status": "frozen",
+  "updated_at": "2026-04-16T02:25:39.801232+00:00",
+  "revisions": [
+    {
+      "revision_id": "R1",
+      "feature_slug": "beacon-v1.3.2-lighthouse-project-analysis-toolkit",
+      "source_revision_id": null,
+      "reason": "draft",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:05604234e3aad534f3b3d8c988901759218b295a2849625839727238d765a468",
+      "superseded_by": null,
+      "created_at": "2026-04-16T02:04:43.246749+00:00",
+      "frozen_at": "2026-04-16T02:28:54.810582+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    }
+  ],
+  "stories": [
+    {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "beacon-v1.3.2-lighthouse-project-analysis-toolkit",
+      "priority": "medium",
+      "status": "frozen",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "general",
+          "text": "正向流程: 用户可以对当前项目或指定子路径运行 Lighthouse，并得到单文件 Markdown 结果。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.2/user-story/beacon-v1.3.2-lighthouse-project-analysis-toolkit.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "general",
+          "text": "数据要求: 输出必须包含关键源码路径、入口文件、依赖/链路引用，并显式区分 Confirmed Facts 与 Inferred Structure。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.2/user-story/beacon-v1.3.2-lighthouse-project-analysis-toolkit.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "general",
+          "text": "用户体验: 输出默认采用 Mermaid + 中文说明，结构稳定且类似 `system-architecture-map.md`。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.2/user-story/beacon-v1.3.2-lighthouse-project-analysis-toolkit.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "general",
+          "text": "性能要求: 默认分析必须限制为单文件结果和有限张 Mermaid 图，避免变成长报告或全仓漫游。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.2/user-story/beacon-v1.3.2-lighthouse-project-analysis-toolkit.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "general",
+          "text": "安全要求: Lighthouse 默认只读分析，不自动触发 PRD / implement / QA，也不写回正式 requirement truth。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.2/user-story/beacon-v1.3.2-lighthouse-project-analysis-toolkit.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "general",
+          "text": "兼容性: Beacon 源码分析时必须同时写 `.beacon/analysis/<slug>.md` 和 `docs/beacon/<version>/execution/beacon-toolkit-lighthouse-<slug>.md`。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.2/user-story/beacon-v1.3.2-lighthouse-project-analysis-toolkit.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "general",
+          "text": "错误处理: 当 mode 不支持、target 缺失或范围不存在时，系统必须返回清晰阻断而不是静默生成错误工件。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.2/user-story/beacon-v1.3.2-lighthouse-project-analysis-toolkit.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — 正向流程: 用户可以对当前项目或指定子路径运行 Lighthouse，并得到单文件 Markdown 结果。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.2/user-story/beacon-v1.3.2-lighthouse-project-analysis-toolkit.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — 数据要求: 输出必须包含关键源码路径、入口文件、依赖/链路引用，并显式区分 Confirmed Facts 与 Inferred Structure。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.2/user-story/beacon-v1.3.2-lighthouse-project-analysis-toolkit.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — 用户体验: 输出默认采用 Mermaid + 中文说明，结构稳定且类似 `system-architecture-map.md`。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.2/user-story/beacon-v1.3.2-lighthouse-project-analysis-toolkit.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — 性能要求: 默认分析必须限制为单文件结果和有限张 Mermaid 图，避免变成长报告或全仓漫游。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.2/user-story/beacon-v1.3.2-lighthouse-project-analysis-toolkit.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — 安全要求: Lighthouse 默认只读分析，不自动触发 PRD / implement / QA，也不写回正式 requirement truth。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.2/user-story/beacon-v1.3.2-lighthouse-project-analysis-toolkit.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — 兼容性: Beacon 源码分析时必须同时写 `.beacon/analysis/<slug>.md` 和 `docs/beacon/<version>/execution/beacon-toolkit-lighthouse-<slug>.md`。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.2/user-story/beacon-v1.3.2-lighthouse-project-analysis-toolkit.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — 错误处理: 当 mode 不支持、target 缺失或范围不存在时，系统必须返回清晰阻断而不是静默生成错误工件。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.2/user-story/beacon-v1.3.2-lighthouse-project-analysis-toolkit.md"
+        }
+      ]
+    }
+  ]
+}

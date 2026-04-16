@@ -1,7 +1,7 @@
-# Beacon v1.3.2 瘦身改造清单
+# Beacon v1.3.3 瘦身改造清单
 
-**Feature**: `beacon-v1.3.2-core-slimming-and-external-skill-demotion`  
-**Version**: `v1.3.2`  
+**Feature**: `beacon-v1.3.3-core-slimming-and-external-skill-demotion`  
+**Version**: `v1.3.3`  
 **Type**: `execution checklist`
 
 ## 目标

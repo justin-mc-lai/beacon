@@ -1,0 +1,468 @@
+{
+  "schema_version": "1.0",
+  "plan_id": "plan-beacon-v1.3.2-lighthouse-project-analysis-toolkit-r1",
+  "feature": "beacon-v1.3.2-lighthouse-project-analysis-toolkit",
+  "feature_slug": "beacon-v1.3.2-lighthouse-project-analysis-toolkit",
+  "version": "v1.3.2",
+  "revision_id": "R1",
+  "baseline_hash": "sha256:c47d27f20cb243462633407b93b3b75c316f9e17ef892721f4753fd8428ede6e",
+  "plan_hash": "sha256:8002bbf31a16768ef2b815cbd870256651e11e16a9477307cfd82d0c05af5276",
+  "status": "planned",
+  "source_refs": {
+    "user_story": "docs/beacon/v1.3.2/user-story/beacon-v1.3.2-lighthouse-project-analysis-toolkit.md",
+    "prd": "docs/beacon/v1.3.2/prd/beacon-v1.3.2-lighthouse-project-analysis-toolkit.md",
+    "test_case": "docs/beacon/v1.3.2/qa/test-cases/beacon-v1.3.2-lighthouse-project-analysis-toolkit.md",
+    "ac_matrix": "docs/beacon/v1.3.2/.machine/qa/beacon-v1.3.2-lighthouse-project-analysis-toolkit.ac-test-matrix.json",
+    "story_scenario_map": "docs/beacon/v1.3.2/.machine/qa/beacon-v1.3.2-lighthouse-project-analysis-toolkit.story-scenario-map.json",
+    "qa9_matrix": "docs/beacon/v1.3.2/.machine/qa/beacon-v1.3.2-lighthouse-project-analysis-toolkit.qa9-matrix.json"
+  },
+  "boundary_principles": [
+    {
+      "id": "explicit_assumptions",
+      "heading": "显式假设与歧义管理"
+    },
+    {
+      "id": "simplicity_first",
+      "heading": "简单优先"
+    },
+    {
+      "id": "surgical_changes",
+      "heading": "外科手术式改动"
+    },
+    {
+      "id": "goal_driven_execution",
+      "heading": "目标驱动验证闭环"
+    },
+    {
+      "id": "trivial_task_exception",
+      "heading": "trivial task 可以轻量处理，但不能越界"
+    }
+  ],
+  "workstreams": [
+    {
+      "workstream_id": "implementation-main",
+      "title": "Implementation Mainline",
+      "task_ids": [
+        "ITASK-001",
+        "ITASK-002",
+        "ITASK-003",
+        "ITASK-004",
+        "ITASK-005",
+        "ITASK-006",
+        "ITASK-007",
+        "ITASK-008",
+        "ITASK-009",
+        "ITASK-010"
+      ]
+    }
+  ],
+  "task_mapping_source": "prd-sections",
+  "tasks": [
+    {
+      "task_id": "ITASK-001",
+      "title": "FR-001 必须提供独立的 Beacon skill 入口",
+      "description": "新增一个独立 skill： `beacon-toolkit-lighthouse` 该 skill 必须被视为： optional toolkit analysis surface not a main workflow step ### FR-001A 必须采用统一 toolkit 命名 该能力必须明确进入 `Beacon toolkit` 命名体系： `beacon-toolkit-lighthouse` 后续如果 Beacon 继续扩展 workflow 外工具包能力，应统一采用： `beacon-toolkit-*` 规则： > 不再使用 `beacon-<tool>` 形式命名这类 workflow 外分析工具，避免与主工作流技能表面混淆。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-001"
+      ],
+      "mapped_test_ids": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009"
+      ],
+      "mapped_scenario_ids": [
+        "SC-001",
+        "SC-002",
+        "SC-003",
+        "SC-004",
+        "SC-005",
+        "SC-006",
+        "SC-007",
+        "SC-008",
+        "SC-009",
+        "SC-010",
+        "SC-011",
+        "SC-012",
+        "SC-013",
+        "SC-014",
+        "SC-015",
+        "SC-016",
+        "SC-017",
+        "SC-018",
+        "SC-019",
+        "SC-020",
+        "SC-021"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009"
+      ],
+      "depends_on": [],
+      "target_modules": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-002",
+      "title": "FR-002 必须支持任意目标项目分析",
+      "description": "Lighthouse 至少要支持以下分析对象： 1. 当前本地项目 2. 指定路径的子模块/子目录 3. 开源库镜像目录 4. 第三方包在目标项目中的使用切片 5. 基础设施链路或功能特性范围",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-002"
+      ],
+      "mapped_test_ids": [
+        "TEST-002"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-001"
+      ],
+      "target_modules": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-003",
+      "title": "FR-003 必须支持单文件输出",
+      "description": "默认输出必须是： 单个 Markdown 文件 建议默认输出位置： `.beacon/analysis/<slug>.md` 如果用户明确指定，也可以输出到： `docs/beacon/<version>/analysis/<slug>.md` ### FR-003A Beacon 源码迭代必须默认交付 Lighthouse 单文件 当分析对象是 **Beacon 源码自身** 时，默认交付物不能只落在 `.beacon/analysis/`。 它必须默认同时形成一份 versioned 单文件交付： `docs/beacon/<version>/execution/beacon-toolkit-lighthouse-<slug>.md` 这份交付物的职责是： 1. 成为 Beacon 源码迭代中的标准认知地图 2. 让版本包自带对当前功能/架构/链路的快速理解入口 3. 作为后续 PRD / implement / QA / release 的共享分析底图 规则： > 对任意目标项目，Lighthouse 可以默认落到 `.beacon/analysis/`； > 但对 Beacon 源码自身迭代，必须额外默认交付一份 versioned Lighthouse 单文件。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-006"
+      ],
+      "mapped_test_ids": [
+        "TEST-006"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-002"
+      ],
+      "target_modules": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-004",
+      "title": "FR-004 输出必须类似 `system-architecture-map`",
+      "description": "输出必须默认包含： 1. 一句话总结 2. 目标范围说明 3. 1~3 张 Mermaid 图 4. 关键入口与关键文件 5. 模块/子系统说明 6. 外部依赖或链路关系 7. 风险 / 开放问题 / 下一步建议",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-003",
+        "AC-004"
+      ],
+      "mapped_test_ids": [
+        "TEST-003",
+        "TEST-004"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-003"
+      ],
+      "target_modules": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-005",
+      "title": "FR-005 必须提供多种分析视角",
+      "description": "Lighthouse 至少应支持这些输出模式： 1. `repo-ramp` 用于快速理解整个项目 2. `system-architecture-map` 用于输出系统分层和模块关系图 3. `package-brief` 用于第三方包/开源库快速解构 4. `infra-chain-map` 用于基础设施链路梳理 5. `feature-slice` 用于单个功能切片解构",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-005"
+      ],
+      "mapped_test_ids": [
+        "TEST-005"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-004"
+      ],
+      "target_modules": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-006",
+      "title": "FR-006 必须显式区分事实与推断",
+      "description": "输出中必须存在这类分层： Confirmed Facts Inferred Structure Open Questions 不能把推断直接写成正式事实。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-007"
+      ],
+      "mapped_test_ids": [
+        "TEST-007"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-005"
+      ],
+      "target_modules": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-007",
+      "title": "FR-007 必须带源引用",
+      "description": "输出必须至少包含： 1. 关键源码路径 2. 关键 README/文档路径 3. 关键配置/入口文件",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-006"
+      ],
+      "target_modules": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-008",
+      "title": "FR-008 必须与主工作流解耦",
+      "description": "Lighthouse 不应默认触发： `freeze` `prd` `user-story` `test-case` `implement` `qa` 只有当用户明确要求时，才应把分析输出转成主工作流输入。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-007"
+      ],
+      "target_modules": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-009",
+      "title": "FR-009 必须支持“分析后继续”",
+      "description": "当用户明确要求时，Lighthouse 输出应可作为下游输入： 1. 喂给 `beacon-prd` 2. 喂给 `beacon-implement` 3. 喂给 `beacon-qa` 但这种转换必须是显式动作，而不是默认发生。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-008"
+      ],
+      "target_modules": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-010",
+      "title": "FR-010 必须保持 Beacon 风格",
+      "description": "Lighthouse 输出必须遵循 Beacon 风格： 1. evidence-first 2. source-ref aware 3. machine/human artifact 可落盘 4. 不扩张主面 --- ## 7. 输出合同 推荐的单文件输出结构： ```markdown # <Target> Lighthouse Map ## 1. Summary ## 2. Scope ## 3. Mermaid Maps overall map execution/data/dependency map optional module map ## 4. Key Entry Points ## 5. Key Modules / Subsystems ## 6. External Dependencies / Infra Chain ## 7. Confirmed Facts ## 8. Inferred Structure ## 9. Open Questions / Risks ## 10. Recommended Next Steps ``` --- ## 8. 成功判定 当下面条件都满足时，视为 Lighthouse 设计闭合： 1. `v1.3.2` 下存在正式 PRD 2. 存在 `beacon-toolkit-lighthouse` skill 设计 3. 明确它不属于主工作流 4. 明确它能对任意项目输出单文件图文分析 5. 明确它的输出合同、输入范围和后续接入边界 6. 明确 Beacon 源码迭代默认交付 versioned Lighthouse 单文件 --- ## 9. 推荐实现顺序 ### Phase 1 1. 新增 `beacon-toolkit-lighthouse` skill 2. 固定单文件输出模板 3. 支持本地 repo/path 分析 ### Phase 2 1. 支持 package-brief / infra-chain-map / feature-slice 2. 支持对 Lighthouse 输出继续进入 PRD/implement/qa ### Phase 3 1. 如果必要，再增加更强的自动索引/图谱能力 --- ## 10. 最终判断 Beacon 现在已经有很强的 workflow kernel， 但还缺一个“让用户快速看懂陌生系统”的工具包面。 `Beacon Toolkit Lighthouse` 正是这个补位： > 它不进入主工作流， > 但能像灯塔一样先把目标项目、开源库、第三方依赖和链路结构照亮， > 再决定是否进入 Beacon 主链。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-009"
+      ],
+      "target_modules": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    }
+  ],
+  "team_mode": {
+    "preferred_surface": "implement-team",
+    "preferred_runner": "codex-subagents",
+    "plan_command": "beacon implement team-plan \"beacon-v1.3.2-lighthouse-project-analysis-toolkit\" --project-root . --version v1.3.2",
+    "run_command": "beacon implement team-run \"beacon-v1.3.2-lighthouse-project-analysis-toolkit\" --project . --version v1.3.2",
+    "dev_run_command": "beacon implement dev-run \"beacon-v1.3.2-lighthouse-project-analysis-toolkit\" --project . --version v1.3.2",
+    "qa_team_command": "beacon qa team-run \"beacon-v1.3.2-lighthouse-project-analysis-toolkit\" --project . --version v1.3.2",
+    "roles": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "context_isolation": {
+      "role_plane": "implementation",
+      "isolated_from": [
+        "qa-team"
+      ],
+      "shared_inputs": [
+        "docs",
+        "implementation_plan",
+        "evidence_refs"
+      ],
+      "shared_outputs": [
+        "implementation_summary",
+        "technical_archive",
+        "repair_handoff"
+      ],
+      "rule": "qa_must_not_inherit_implement_private_context",
+      "implement_surface": "implement-team",
+      "qa_surface": "qa-team"
+    },
+    "config_source": "beacon/team_roles/implement-team.json",
+    "execution_order": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "formal_writeback_roles": [
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "role_contracts": {
+      "planner": {
+        "purpose": "Compile execution-ready task scope from the frozen revision baseline.",
+        "writes_to_formal_truth": false,
+        "outputs": [
+          "execution_plan_note"
+        ]
+      },
+      "implementation-architect": {
+        "purpose": "Translate frozen requirement truth into implementation-safe module boundaries and service ownership guidance.",
+        "writes_to_formal_truth": false,
+        "reads": [
+          "docs/beacon/<version>/user-story",
+          "docs/beacon/<version>/prd",
+          "docs/beacon/<version>/qa/test-cases",
+          "docs/beacon/<version>/execution/architecture-blueprint.md",
+          "implementation_plan",
+          "git_workflow_contract"
+        ],
+        "outputs": [
+          "implementation_architecture_note"
+        ],
+        "restrictions": [
+          "must_not_modify_frozen_requirement_materials",
+          "must_not_overwrite_architecture_blueprint"
+        ]
+      },
+      "implementer": {
+        "purpose": "Write code inside the frozen scope and the implementation architecture note.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "story_writeback",
+          "implementation_summary"
+        ]
+      },
+      "reviewer": {
+        "purpose": "Review implementation/spec drift and architecture-boundary drift.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_spec"
+        ]
+      },
+      "tester": {
+        "purpose": "Check implementation evidence and verification readiness before acceptance.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_quality"
+        ]
+      }
+    }
+  },
+  "git_workflow": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1.3.2-lighthouse-project-analysis-toolkit",
+    "feature_slug": "beacon-v1.3.2-lighthouse-project-analysis-toolkit",
+    "version": "v1.3.2",
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.3.2",
+    "branch_prefix": "beacon/",
+    "base_branch": "main",
+    "use_git_worktree": false,
+    "require_clean_worktree_for_switch": true,
+    "service_directories": [
+      "."
+    ],
+    "git_roots": [
+      "."
+    ],
+    "worktree_root": ".",
+    "source": "technical_review_contract",
+    "generated_at": "2026-04-16T02:32:17.402348+00:00"
+  },
+  "git_workflow_ref": "docs/beacon/v1.3.2/.machine/execution/git-workflow-beacon-v1.3.2-lighthouse-project-analysis-toolkit.json",
+  "git_workflow_markdown_ref": "docs/beacon/v1.3.2/execution/git-workflow-beacon-v1.3.2-lighthouse-project-analysis-toolkit.md",
+  "generated_at": "2026-04-16T02:32:17.404098+00:00",
+  "updated_at": "2026-04-16T02:32:17.404111+00:00"
+}

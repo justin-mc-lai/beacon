@@ -1,7 +1,7 @@
-# PRD：Beacon v1.3.2 核心瘦身与外部 skill 降级
+# PRD：Beacon v1.3.3 核心瘦身与外部 skill 降级
 
-**Feature**: `beacon-v1.3.2-core-slimming-and-external-skill-demotion`  
-**Version**: `v1.3.2`  
+**Feature**: `beacon-v1.3.3-core-slimming-and-external-skill-demotion`  
+**Version**: `v1.3.3`  
 **Date**: `2026-04-15`  
 **Status**: `planning line`
 
@@ -31,7 +31,7 @@ Beacon 当前已经不再把 `gstack` 作为默认实现 runner，但源码与�
 
 ## 2. 目标
 
-`v1.3.2` 在不破坏已有交付能力的前提下，把 Beacon 收敛成更轻的核心：
+`v1.3.3` 在不破坏已有交付能力的前提下，把 Beacon 收敛成更轻的核心：
 
 ### 2.1 核心目标
 
@@ -122,7 +122,7 @@ Beacon 当前已经不再把 `gstack` 作为默认实现 runner，但源码与�
 
 `qa` 当前在存在 project profile 且 gate 未通过时，会自动执行 project orchestration。
 
-`v1.3.2` 目标应改为：
+`v1.3.3` 目标应改为：
 
 - 默认不自动调用外部 orchestration
 - 只有在显式 profile mode 或显式开关时才允许调用
@@ -237,7 +237,7 @@ README、help、host-visible skills、usage docs 里的默认教学路径必须�
 2. 不破坏 `qa` 对冻结材料的正式验收能力。
 3. 不破坏真实项目需要的 contract drift / evidence gate。
 4. 新增收敛动作必须可审计、可测试、可回退。
-5. 不得在 `v1.3.2` 再引入新的公开 bridge/runtime 命令。
+5. 不得在 `v1.3.3` 再引入新的公开 bridge/runtime 命令。
 
 ## 7. 风险与缓解
 

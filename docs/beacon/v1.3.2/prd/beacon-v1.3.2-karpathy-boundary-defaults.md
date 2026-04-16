@@ -37,7 +37,7 @@ Beacon 已经有 `docs/beacon/global-boundaries.md`，用于约束人类主面�
 
 1. 纳入 `global-boundaries` 的原则层，而不是新增公开命令。
 2. 约束 Beacon 源码迭代、目标项目执行、host skill 行为。
-3. 与 `v1.3.2` 核心瘦身目标一致，避免外部重型 skill 依赖。
+3. 与下一迭代的核心瘦身目标一致，避免外部重型 skill 依赖。
 4. 保持规则可验证、可审计、可映射到 PRD / user-story / test-case / implement / qa。
 
 ## 3. 来源边界
