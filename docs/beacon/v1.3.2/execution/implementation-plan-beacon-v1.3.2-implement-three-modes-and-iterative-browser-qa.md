@@ -5,7 +5,7 @@
 - version: `v1.3.2`
 - revision_id: `R1`
 - baseline_hash: `sha256:034eac663dcd457d18ce1b585027ae355ba919fdf202a46f1dda037bf4586a43`
-- plan_hash: `sha256:277be300c90f61fe6c8fab747fc4e0a376bf9651c7689236d344ffebc3e42583`
+- plan_hash: `sha256:d8c24090340f07b55000aa678fe86f4ae83e91af8667b3bc877a7d8f6e40f386`
 - status: `completed`
 
 ## Source Refs
@@ -15,6 +15,13 @@
 - ac_matrix: `docs/beacon/v1.3.2/.machine/qa/beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa.ac-test-matrix.json`
 - story_scenario_map: `docs/beacon/v1.3.2/.machine/qa/beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa.story-scenario-map.json`
 - qa9_matrix: `docs/beacon/v1.3.2/.machine/qa/beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa.qa9-matrix.json`
+
+## Boundary Principles
+- `explicit_assumptions`: `显式假设与歧义管理`
+- `simplicity_first`: `简单优先`
+- `surgical_changes`: `外科手术式改动`
+- `goal_driven_execution`: `目标驱动验证闭环`
+- `trivial_task_exception`: `trivial task 可以轻量处理，但不能越界`
 
 ## Team Mode
 - preferred_surface: `implement-team`

@@ -750,6 +750,8 @@ def build_help_payload(
         "native_fallback_allowed": not bool(profile and str(stage_binding.get("skill_id", "") or "").strip()),
         "takeover_gate": takeover_gate,
         "host_runtime": host_runtime,
+        "implement_mode": str(implement_state.get("mode", "") or ""),
+        "implement_runner": str(implement_state.get("runner", "") or ""),
         "subagent_runtime_status": str(runtime_precheck.get("status", "") or ""),
         "subagent_delegation_status": str(delegation_precheck.get("status", "") or ""),
         "ralph_phase": "" if ralph_handoff_stale else str(ralph_state.get("phase", "") or ""),

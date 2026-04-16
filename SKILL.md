@@ -1,13 +1,13 @@
 ---
 name: beacon
-version: 1.3.0
+version: 1.3.1
 description: Evidence-first Product Workflow Kernel for product thinking, user stories, PRDs, test cases, and release workflows
 ---
 
 # Beacon - Evidence-first Product Workflow Kernel
 
-> **Skill Version**: v1.3.0
-> **CLI Version**: v1.3.0
+> **Skill Version**: v1.3.1
+> **CLI Version**: v1.3.1
 > **Last Updated**: 2026-04-10
 
 Beacon 是 AI 产品工作流内核，提供需求澄清、用户故事、PRD、测试用例、证据闭环与发布门禁的统一工作流。
@@ -52,29 +52,29 @@ Beacon 是 AI 产品工作流内核，提供需求澄清、用户故事、PRD、
 
 ## 当前版本与发布线
 
-- **当前发布线**：`v1.3.0`
-- **当前包版本**：`1.3.0`
-- **最新已接受文档线**：`v1.3.0`
-- **当前已落地实现线**：`v1.3.0`（bounded Codex multi-role team runtime、implement-team tmux/HUD、qa-team runtime contract、角色配置外置 已在仓内落地，并有实现测试覆盖）
+- **当前发布线**：`v1.3.1`
+- **当前包版本**：`1.3.1`
+- **最新已接受文档线**：`v1.3.1`
+- **当前已落地实现线**：`v1.3.1`（极简人类主流程、help/status/doctor 导航面、deterministic implementation contract 已在仓内落地，并有实现测试覆盖）
 - **当前补充增强线**：`v1.2.1`（Codex `UserPromptSubmit` → Beacon debug prompt adaptation / guidance / debug evidence ingress 已落地）
 - **上一稳定基线**：`v1.1.12`（design governance / version truth / profile-aware routing / typed learning plane / takeover baseline gate）
 
 如果你只记一条：
 
-> **正式包版本现在是 `v1.3.0`，当前实现与文档主线统一阅读 `docs/beacon/v1.3.0/`；历史闭环增强线可回看 `docs/beacon/v1.3.0/`。**
+> **正式包版本现在是 `v1.3.1`，当前实现与文档主线统一阅读 `docs/beacon/v1.3.1/`；历史闭环增强线可回看 `docs/beacon/v1.3.0/`。**
 
-`v1.3.0` 说明：
+`v1.3.1` 说明：
 
-- `v1.3.0` 已正式成为 current runtime release line
-- implement-team tmux runtime / HUD、team role config externalization 与 qa-team runtime contract 已进入正式发布口径
-- 当前最稳妥的阅读方式是直接以 `docs/beacon/v1.3.0/` 作为 current line
+- `v1.3.1` 已正式成为 current runtime release line
+- 当前最稳妥的阅读方式是直接以 `docs/beacon/v1.3.1/` 作为 current line
+- 人类推荐主流程已经收口为 `prd -> user-story -> test-case -> implement -> qa -> release`
 - `docs/beacon/v1.2.1/` 是当前针对 Codex hook / debug prompt adaptation 的 supplement line
 
 当前还需要加一条操作口径：
 
 - **当前人类推荐操作面** 已按 `docs/beacon/v1.3.1/execution/human-minimal-usage-guide.md` 收口
-- 也就是说，runtime/release line 仍是 `v1.3.0`
-- 但人类使用心智已经切到 `v1.3.1` 的 6 个主命令 + 3 个辅助命令模型
+- 也就是说，runtime/release line 与人类主操作面都已经统一到 `v1.3.1`
+- 人类使用心智已经切到 `v1.3.1` 的 6 个主命令 + 3 个辅助命令模型
 
 ## Beacon 到底是什么
 
@@ -206,7 +206,7 @@ think
 
 > **它不是只生成内容，而是要求内容、执行、证据、放行都对齐。**
 
-## 当前产品面（v1.3.0）
+## 当前产品面（v1.3.1）
 
 当前正式发布线的几个关键能力面：
 
@@ -423,7 +423,7 @@ requirement material
 
 ### 常见问题
 - 不确定当前阶段下一步做什么：
-  - `beacon help --project-root . --version v1.3.0 --feature "<feature>" --json`
+  - `beacon help --project-root . --version v1.3.1 --feature "<feature>" --json`
 - 觉得材料状态不一致：
   - `beacon doctor --project-root . --json`
   - `beacon doctor verify-materials --project-root . --version v1.3.0 --json`
@@ -438,7 +438,7 @@ requirement material
 - 已冻结但实现前还没确定 branch/worktree/service scope：
   - `beacon doctor sync-technical-review-contract "<feature>" --project-root . --version <version> --revision-id <revision> --json`
 - 想看当前全局状态：
-  - `beacon status --board --project-root . --version v1.3.0`
+  - `beacon status --board --project-root . --version v1.3.1`
 
 ## 命令触发（CLI/Skill 单一事实源）
 
@@ -637,4 +637,4 @@ beacon skill sync-check --project-root . --json
 
 ---
 
-**版本**: v1.3.0
+**版本**: v1.3.1

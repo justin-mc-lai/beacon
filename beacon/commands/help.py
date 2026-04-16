@@ -51,6 +51,8 @@ def _render_human(payload: dict[str, object]) -> str:
         f"delivery status : {payload.get('delivery_status', '')}",
         f"current stage   : {payload.get('current_stage', '')}",
         f"host runtime    : {execution_surface.get('host_runtime', '') or 'N/A'}",
+        f"implement mode  : {execution_surface.get('implement_mode', '') or 'N/A'}",
+        f"implement runner: {execution_surface.get('implement_runner', '') or 'N/A'}",
         f"subagent runtime: {execution_surface.get('subagent_runtime_status', '') or 'N/A'}",
         f"subagent deleg. : {execution_surface.get('subagent_delegation_status', '') or 'N/A'}",
         f"ralph phase     : {execution_surface.get('ralph_phase', '') or 'N/A'}",

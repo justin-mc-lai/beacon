@@ -5,8 +5,8 @@
 - version: `v1.3.2`
 - revision_id: `R1`
 - baseline_hash: `sha256:c47d27f20cb243462633407b93b3b75c316f9e17ef892721f4753fd8428ede6e`
-- plan_hash: `sha256:8002bbf31a16768ef2b815cbd870256651e11e16a9477307cfd82d0c05af5276`
-- status: `planned`
+- plan_hash: `sha256:aba596b09fa8a9ef5553460f67e49df011c98027beda28c38540dca3d6a43333`
+- status: `completed`
 
 ## Source Refs
 - user_story: `docs/beacon/v1.3.2/user-story/beacon-v1.3.2-lighthouse-project-analysis-toolkit.md`
@@ -46,7 +46,7 @@
 ## Tasks
 
 ### ITASK-001 — FR-001 必须提供独立的 Beacon skill 入口
-- status: `planned`
+- status: `completed`
 - mapped_ac_ids: AC-001
 - mapped_test_ids: TC-001, TC-002, TC-003, TC-004, TC-005, TC-006, TC-007, TC-008, TC-009
 - mapped_scenario_ids: SC-001, SC-002, SC-003, SC-004, SC-005, SC-006, SC-007, SC-008, SC-009, SC-010, SC-011, SC-012, SC-013, SC-014, SC-015, SC-016, SC-017, SC-018, SC-019, SC-020, SC-021
@@ -55,7 +55,7 @@
 - target_modules: -
 
 ### ITASK-002 — FR-002 必须支持任意目标项目分析
-- status: `planned`
+- status: `completed`
 - mapped_ac_ids: AC-002
 - mapped_test_ids: TEST-002
 - mapped_scenario_ids: -
@@ -64,7 +64,7 @@
 - target_modules: -
 
 ### ITASK-003 — FR-003 必须支持单文件输出
-- status: `planned`
+- status: `completed`
 - mapped_ac_ids: AC-006
 - mapped_test_ids: TEST-006
 - mapped_scenario_ids: -
@@ -73,7 +73,7 @@
 - target_modules: -
 
 ### ITASK-004 — FR-004 输出必须类似 `system-architecture-map`
-- status: `planned`
+- status: `completed`
 - mapped_ac_ids: AC-003, AC-004
 - mapped_test_ids: TEST-003, TEST-004
 - mapped_scenario_ids: -
@@ -82,7 +82,7 @@
 - target_modules: -
 
 ### ITASK-005 — FR-005 必须提供多种分析视角
-- status: `planned`
+- status: `completed`
 - mapped_ac_ids: AC-005
 - mapped_test_ids: TEST-005
 - mapped_scenario_ids: -
@@ -91,7 +91,7 @@
 - target_modules: -
 
 ### ITASK-006 — FR-006 必须显式区分事实与推断
-- status: `planned`
+- status: `completed`
 - mapped_ac_ids: AC-007
 - mapped_test_ids: TEST-007
 - mapped_scenario_ids: -
@@ -100,7 +100,7 @@
 - target_modules: -
 
 ### ITASK-007 — FR-007 必须带源引用
-- status: `planned`
+- status: `completed`
 - mapped_ac_ids: -
 - mapped_test_ids: -
 - mapped_scenario_ids: -
@@ -109,7 +109,7 @@
 - target_modules: -
 
 ### ITASK-008 — FR-008 必须与主工作流解耦
-- status: `planned`
+- status: `completed`
 - mapped_ac_ids: -
 - mapped_test_ids: -
 - mapped_scenario_ids: -
@@ -118,7 +118,7 @@
 - target_modules: -
 
 ### ITASK-009 — FR-009 必须支持“分析后继续”
-- status: `planned`
+- status: `completed`
 - mapped_ac_ids: -
 - mapped_test_ids: -
 - mapped_scenario_ids: -
@@ -127,7 +127,7 @@
 - target_modules: -
 
 ### ITASK-010 — FR-010 必须保持 Beacon 风格
-- status: `planned`
+- status: `completed`
 - mapped_ac_ids: -
 - mapped_test_ids: -
 - mapped_scenario_ids: -

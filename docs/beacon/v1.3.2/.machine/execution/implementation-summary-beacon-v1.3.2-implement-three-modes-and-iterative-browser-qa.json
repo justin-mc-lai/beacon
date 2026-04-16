@@ -1,17 +1,17 @@
 {
   "schema_version": "1.0",
-  "run_id": "run-20260414T085139Z-8e0c",
+  "run_id": "run-20260416T030652Z-900b",
   "feature": "beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa",
   "feature_slug": "beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa",
   "version": "v1.3.2",
   "mode": "",
   "host_runtime": "codex",
-  "runner": "native-single",
+  "runner": "codex-subagents",
   "adapter_type": "native",
-  "request_path": ".beacon/implement/run-20260414T085139Z-8e0c/request.json",
-  "result_path": ".beacon/implement/run-20260414T085139Z-8e0c/result.json",
-  "branch_preflight_path": ".beacon/implement/run-20260414T085139Z-8e0c/branch-preflight.json",
-  "plan_preflight_path": ".beacon/implement/run-20260414T085139Z-8e0c/plan-preflight.json",
+  "request_path": ".beacon/implement/run-20260416T030652Z-900b/request.json",
+  "result_path": ".beacon/implement/run-20260416T030652Z-900b/result.json",
+  "branch_preflight_path": ".beacon/implement/run-20260416T030652Z-900b/branch-preflight.json",
+  "plan_preflight_path": ".beacon/implement/run-20260416T030652Z-900b/plan-preflight.json",
   "git_workflow": {
     "schema_version": "1.0",
     "feature": "beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa",
@@ -31,47 +31,104 @@
     ],
     "worktree_root": ".",
     "source": "technical_review_contract",
-    "generated_at": "2026-04-14T08:51:39.750677+00:00"
+    "generated_at": "2026-04-16T03:06:52.861505+00:00"
   },
-  "generated_at": "2026-04-14T08:51:40.671442+00:00",
+  "generated_at": "2026-04-16T03:06:53.417457+00:00",
   "status": "completed",
   "subagent_prechecks": {
-    "required": false,
+    "required": true,
     "host_runtime": "codex",
-    "runtime_readiness": {},
-    "delegation_readiness": {}
+    "runtime_readiness": {
+      "schema_version": "1.0",
+      "check": "runtime-readiness",
+      "status": "pass",
+      "reason_code": "",
+      "host_runtime": "codex",
+      "checks": [
+        {
+          "name": "skill_root_present",
+          "ok": true,
+          "detail": "/Users/apple/.agents/skills/beacon"
+        },
+        {
+          "name": "context_file_present",
+          "ok": true,
+          "detail": "AGENTS.md"
+        },
+        {
+          "name": "global_boundaries_present",
+          "ok": true,
+          "detail": "docs/beacon/global-boundaries.md"
+        },
+        {
+          "name": "context_inherits_global_boundaries",
+          "ok": true,
+          "detail": "AGENTS.md"
+        }
+      ],
+      "blocked_checks": [],
+      "recommended_command": ""
+    },
+    "delegation_readiness": {
+      "schema_version": "1.0",
+      "check": "delegation-readiness",
+      "status": "pass",
+      "reason_code": "",
+      "feature": "beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa",
+      "version": "v1.3.2",
+      "checks": [
+        {
+          "name": "prd_present",
+          "ok": true,
+          "detail": "docs/beacon/v1.3.2/prd/beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa.md"
+        },
+        {
+          "name": "user_story_present",
+          "ok": true,
+          "detail": "docs/beacon/v1.3.2/user-story/beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa.md"
+        },
+        {
+          "name": "test_case_present",
+          "ok": true,
+          "detail": "docs/beacon/v1.3.2/qa/test-cases/beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa.md"
+        },
+        {
+          "name": "implementation_plan_present",
+          "ok": true,
+          "detail": "docs/beacon/v1.3.2/.machine/execution/implementation-plan-beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa.json"
+        },
+        {
+          "name": "git_workflow_present",
+          "ok": true,
+          "detail": "docs/beacon/v1.3.2/.machine/execution/git-workflow-beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa.json"
+        },
+        {
+          "name": "qa_baseline_bundle_present",
+          "ok": true,
+          "detail": "docs/beacon/v1.3.2/.machine/qa"
+        }
+      ],
+      "blocked_checks": [],
+      "recommended_command": ""
+    }
   },
   "skill": "",
-  "summary": "native-single implementation completed",
+  "summary": "codex-subagents implementation completed via implement-team flow",
   "changed_files": [
-    "AGENTS.md",
-    "CLAUDE.md",
-    "beacon/commands/doctor.py",
-    "beacon/commands/help.py",
-    "beacon/commands/implement.py",
-    "beacon/commands/init.py",
-    "beacon/commands/qa.py",
-    "beacon/commands/status.py",
-    "beacon/utils/context_files.py",
-    "beacon/utils/doctor_diagnostics.py",
-    "beacon/utils/help_support.py",
-    "docs/beacon/research/index.md",
-    "docs/beacon/v1.3.2/.machine/execution/beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa.revision.json",
-    "docs/beacon/v1.3.2/.machine/qa/beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa.ac-test-matrix.json",
-    "docs/beacon/v1.3.2/.machine/qa/beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa.qa9-matrix.json",
-    "docs/beacon/v1.3.2/.machine/qa/beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa.story-scenario-map.json",
-    "docs/beacon/v1.3.2/.machine/user-story/beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa.json",
-    "docs/beacon/v1.3.2/SUMMARY.md",
-    "docs/beacon/v1.3.2/execution/index.md",
-    "docs/beacon/v1.3.2/prd/beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa.md",
-    "docs/beacon/v1.3.2/qa/test-cases/beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa.md",
-    "docs/beacon/v1.3.2/user-story/beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa.md",
-    "skills/beacon/using-beacon/SKILL.md"
+    "docs/beacon/v1.3.2/.machine/execution/git-workflow-beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa.json",
+    "docs/beacon/v1.3.2/.machine/execution/implementation-plan-beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa.json",
+    "docs/beacon/v1.3.2/.machine/execution/implementation-plan-beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa.progress.json",
+    "docs/beacon/v1.3.2/execution/implementation-plan-beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa.md"
   ],
   "verification": [
     {
-      "command": "beacon implement run --runner native-single",
+      "command": "beacon implement run --runner codex-subagents",
       "status": "passed"
+    },
+    {
+      "command": "auto-test-status",
+      "status": "blocked",
+      "evidence": ".beacon/auto-test-status.json"
     }
   ],
   "implemented_task_ids": [],
@@ -110,7 +167,7 @@
       "mode": "workspace",
       "repo_detected": true,
       "target_branch": "beacon/v1.3.2",
-      "worktree_path": "/Users/apple/Developer/Personal/products/beacon",
+      "worktree_path": ".",
       "workspace_repos": [
         {
           "repo_root": "/Users/apple/Developer/Personal/products/beacon",
@@ -120,7 +177,7 @@
           "base_branch": "main",
           "target_branch": "beacon/v1.3.2",
           "current_branch": "beacon/v1.3.2",
-          "current_commit": "c4575ab3a41abec387b33ad9811989307094d4d5",
+          "current_commit": "78107c4f6304971b2fee66fea2feb2eb0e42b1b2",
           "current_tag": "",
           "worktree_path": "/Users/apple/Developer/Personal/products/beacon",
           "version_ref": "v1.3.2",
@@ -141,22 +198,22 @@
       "blocked": false,
       "reason_codes": []
     },
-    "run_id": "run-20260414T085139Z-8e0c",
+    "run_id": "run-20260416T030652Z-900b",
     "feature": "beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa",
     "feature_slug": "beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa",
-    "generated_at": "2026-04-14T08:51:40.449986+00:00"
+    "generated_at": "2026-04-16T03:06:53.234594+00:00"
   },
   "plan_preflight": {
     "schema_version": "1.0",
-    "run_id": "run-20260414T085139Z-8e0c",
+    "run_id": "run-20260416T030652Z-900b",
     "feature": "beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa",
     "feature_slug": "beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa",
     "version": "v1.3.2",
     "expected_plan": "docs/beacon/v1.3.2/.machine/execution/implementation-plan-beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa.json",
     "expected_revision_id": "R1",
     "baseline_hash": "sha256:034eac663dcd457d18ce1b585027ae355ba919fdf202a46f1dda037bf4586a43",
-    "recommended_command": "beacon implement plan \"beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa\" --project-root /Users/apple/Developer/Personal/products/beacon --version v1.3.2",
-    "generated_at": "2026-04-14T08:51:40.451352+00:00",
+    "recommended_command": "beacon implement plan \"beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa\" --project-root . --version v1.3.2",
+    "generated_at": "2026-04-16T03:06:53.236058+00:00",
     "status": "pass",
     "blocked": false,
     "plan_id": "plan-beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa-r1",
@@ -175,17 +232,16 @@
     "feature": "beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa",
     "version": "v1.3.2",
     "revision_id": "R1",
-    "status": "completed",
+    "status": "blocked",
     "counts": {
       "total": 42,
       "draft": 0,
       "planned": 0,
       "in_progress": 0,
-      "blocked": 0,
-      "completed": 42
+      "blocked": 10,
+      "completed": 32
     },
-    "blocked_task_ids": [],
-    "completed_task_ids": [
+    "blocked_task_ids": [
       "ITASK-001",
       "ITASK-002",
       "ITASK-003",
@@ -195,7 +251,9 @@
       "ITASK-007",
       "ITASK-008",
       "ITASK-009",
-      "ITASK-010",
+      "ITASK-010"
+    ],
+    "completed_task_ids": [
       "ITASK-011",
       "ITASK-012",
       "ITASK-013",
@@ -229,12 +287,12 @@
       "ITASK-041",
       "ITASK-042"
     ],
-    "next_task_id": "",
+    "next_task_id": "ITASK-001",
     "task_states": [
       {
         "task_id": "ITASK-001",
-        "status": "completed",
-        "blocked_reason": "",
+        "status": "blocked",
+        "blocked_reason": "verification_failed",
         "mapped_ac_ids": [
           "AC-001",
           "AC-013",
@@ -292,8 +350,8 @@
       },
       {
         "task_id": "ITASK-002",
-        "status": "completed",
-        "blocked_reason": "",
+        "status": "blocked",
+        "blocked_reason": "verification_failed",
         "mapped_ac_ids": [
           "AC-002"
         ],
@@ -320,8 +378,8 @@
       },
       {
         "task_id": "ITASK-003",
-        "status": "completed",
-        "blocked_reason": "",
+        "status": "blocked",
+        "blocked_reason": "verification_failed",
         "mapped_ac_ids": [
           "AC-014"
         ],
@@ -341,8 +399,8 @@
       },
       {
         "task_id": "ITASK-004",
-        "status": "completed",
-        "blocked_reason": "",
+        "status": "blocked",
+        "blocked_reason": "verification_failed",
         "mapped_ac_ids": [
           "AC-004",
           "AC-011"
@@ -377,8 +435,8 @@
       },
       {
         "task_id": "ITASK-005",
-        "status": "completed",
-        "blocked_reason": "",
+        "status": "blocked",
+        "blocked_reason": "verification_failed",
         "mapped_ac_ids": [
           "AC-007",
           "AC-005"
@@ -420,8 +478,8 @@
       },
       {
         "task_id": "ITASK-006",
-        "status": "completed",
-        "blocked_reason": "",
+        "status": "blocked",
+        "blocked_reason": "verification_failed",
         "mapped_ac_ids": [
           "AC-006",
           "AC-009"
@@ -456,8 +514,8 @@
       },
       {
         "task_id": "ITASK-007",
-        "status": "completed",
-        "blocked_reason": "",
+        "status": "blocked",
+        "blocked_reason": "verification_failed",
         "mapped_ac_ids": [
           "AC-012",
           "AC-008",
@@ -501,8 +559,8 @@
       },
       {
         "task_id": "ITASK-008",
-        "status": "completed",
-        "blocked_reason": "",
+        "status": "blocked",
+        "blocked_reason": "verification_failed",
         "mapped_ac_ids": [
           "AC-019",
           "AC-020",
@@ -578,8 +636,8 @@
       },
       {
         "task_id": "ITASK-009",
-        "status": "completed",
-        "blocked_reason": "",
+        "status": "blocked",
+        "blocked_reason": "verification_failed",
         "mapped_ac_ids": [
           "AC-017"
         ],
@@ -599,8 +657,8 @@
       },
       {
         "task_id": "ITASK-010",
-        "status": "completed",
-        "blocked_reason": "",
+        "status": "blocked",
+        "blocked_reason": "verification_failed",
         "mapped_ac_ids": [
           "AC-018"
         ],
@@ -907,7 +965,7 @@
         "mapped_qa_case_ids": []
       }
     ],
-    "updated_at": "2026-04-14T08:51:40.663142+00:00"
+    "updated_at": "2026-04-16T03:06:53.346729+00:00"
   },
   "implemented_items": [
     "AC-001",
@@ -939,13 +997,257 @@
     "TASK-001"
   ],
   "verified_items": [],
-  "blocked_items": [],
-  "runner_mode": "single",
+  "blocked_items": [
+    "AC-001",
+    "AC-002",
+    "AC-003",
+    "AC-004",
+    "AC-005",
+    "AC-006",
+    "AC-007",
+    "AC-008",
+    "AC-009",
+    "AC-010",
+    "AC-011",
+    "AC-012",
+    "AC-013",
+    "AC-014",
+    "AC-015",
+    "AC-016",
+    "AC-017",
+    "AC-018",
+    "AC-019",
+    "AC-020",
+    "AC-021",
+    "AC-022",
+    "AC-023",
+    "AC-024",
+    "AC-025",
+    "AC-026",
+    "TEST-001",
+    "TEST-002",
+    "TEST-003",
+    "TEST-004",
+    "TEST-005",
+    "TEST-006",
+    "TEST-007",
+    "TEST-008",
+    "TEST-009",
+    "TEST-010",
+    "TEST-011",
+    "TEST-012",
+    "TEST-013",
+    "TEST-014",
+    "TEST-015",
+    "TEST-016",
+    "TEST-017",
+    "TEST-018",
+    "TEST-019",
+    "TEST-020",
+    "TEST-021",
+    "TEST-022",
+    "TEST-023",
+    "TEST-024",
+    "TEST-025",
+    "TEST-026"
+  ],
+  "runner_mode": "codex-subagents",
   "revision_id": "R1",
+  "team_execution": {
+    "team_name": "implement-team-run-20260416T030652Z-900b",
+    "team_surface": "implement-team",
+    "state_path": ".beacon/team/implement-team-run-20260416T030652Z-900b/manifest.json",
+    "artifact_dir": "docs/beacon/v1.3.2/execution/codex-subagents/beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa/run-20260416T030652Z-900b",
+    "final_state": "terminal",
+    "terminal_status": "Blocked",
+    "runtime": "file",
+    "tmux_session": "",
+    "roles": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "role_reports": {
+      "planner": {
+        "role": "planner",
+        "status": "completed",
+        "json": "docs/beacon/v1.3.2/execution/codex-subagents/beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa/run-20260416T030652Z-900b/planner.json",
+        "markdown": "docs/beacon/v1.3.2/execution/codex-subagents/beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa/run-20260416T030652Z-900b/planner.md"
+      },
+      "implementation-architect": {
+        "role": "implementation-architect",
+        "status": "completed",
+        "json": "docs/beacon/v1.3.2/execution/codex-subagents/beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa/run-20260416T030652Z-900b/implementation-architect.json",
+        "markdown": "docs/beacon/v1.3.2/execution/codex-subagents/beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa/run-20260416T030652Z-900b/implementation-architect.md"
+      },
+      "implementer": {
+        "role": "implementer",
+        "status": "completed",
+        "json": "docs/beacon/v1.3.2/execution/codex-subagents/beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa/run-20260416T030652Z-900b/implementer.json",
+        "markdown": "docs/beacon/v1.3.2/execution/codex-subagents/beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa/run-20260416T030652Z-900b/implementer.md"
+      },
+      "reviewer": {
+        "role": "reviewer",
+        "status": "pass",
+        "json": "docs/beacon/v1.3.2/execution/codex-subagents/beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa/run-20260416T030652Z-900b/reviewer.json",
+        "markdown": "docs/beacon/v1.3.2/execution/codex-subagents/beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa/run-20260416T030652Z-900b/reviewer.md"
+      },
+      "tester": {
+        "role": "tester",
+        "status": "blocked",
+        "json": "docs/beacon/v1.3.2/execution/codex-subagents/beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa/run-20260416T030652Z-900b/tester.json",
+        "markdown": "docs/beacon/v1.3.2/execution/codex-subagents/beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa/run-20260416T030652Z-900b/tester.md"
+      }
+    },
+    "review_gates": {
+      "spec": {
+        "status": "pass",
+        "reviewer": "reviewer"
+      },
+      "quality": {
+        "status": "fail",
+        "reviewer": "tester"
+      }
+    },
+    "implemented_items": [
+      "AC-001",
+      "AC-002",
+      "AC-003",
+      "AC-004",
+      "AC-005",
+      "AC-006",
+      "AC-007",
+      "AC-008",
+      "AC-009",
+      "AC-010",
+      "AC-011",
+      "AC-012",
+      "AC-013",
+      "AC-014",
+      "AC-015",
+      "AC-016",
+      "AC-017",
+      "AC-018",
+      "AC-019",
+      "AC-020",
+      "AC-021",
+      "AC-022",
+      "AC-023",
+      "AC-024",
+      "AC-025",
+      "AC-026",
+      "TASK-001"
+    ],
+    "verified_items": [],
+    "blocked_items": [
+      "AC-001",
+      "AC-002",
+      "AC-003",
+      "AC-004",
+      "AC-005",
+      "AC-006",
+      "AC-007",
+      "AC-008",
+      "AC-009",
+      "AC-010",
+      "AC-011",
+      "AC-012",
+      "AC-013",
+      "AC-014",
+      "AC-015",
+      "AC-016",
+      "AC-017",
+      "AC-018",
+      "AC-019",
+      "AC-020",
+      "AC-021",
+      "AC-022",
+      "AC-023",
+      "AC-024",
+      "AC-025",
+      "AC-026",
+      "TEST-001",
+      "TEST-002",
+      "TEST-003",
+      "TEST-004",
+      "TEST-005",
+      "TEST-006",
+      "TEST-007",
+      "TEST-008",
+      "TEST-009",
+      "TEST-010",
+      "TEST-011",
+      "TEST-012",
+      "TEST-013",
+      "TEST-014",
+      "TEST-015",
+      "TEST-016",
+      "TEST-017",
+      "TEST-018",
+      "TEST-019",
+      "TEST-020",
+      "TEST-021",
+      "TEST-022",
+      "TEST-023",
+      "TEST-024",
+      "TEST-025",
+      "TEST-026"
+    ],
+    "verification_entries": [
+      {
+        "command": "auto-test-status",
+        "status": "blocked",
+        "evidence": ".beacon/auto-test-status.json"
+      }
+    ],
+    "context_isolation": {
+      "role_plane": "implementation",
+      "isolated_from": [
+        "qa-team"
+      ],
+      "shared_inputs": [
+        "docs/beacon/<version>/user-story",
+        "docs/beacon/<version>/prd",
+        "implementation-plan"
+      ],
+      "shared_outputs": [
+        "implementation_summary",
+        "technical_archive",
+        "story_writeback",
+        "evidence_refs"
+      ],
+      "rule": "qa_must_not_inherit_implement_private_context"
+    },
+    "hud": {
+      "json": ".beacon/state/team-hud/implement-team-run-20260416T030652Z-900b.json",
+      "html": "docs/beacon/v1.3.2/execution/codex-subagents/beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa/run-20260416T030652Z-900b/index.html"
+    }
+  },
+  "team_surface": "implement-team",
+  "context_isolation": {
+    "role_plane": "implementation",
+    "isolated_from": [
+      "qa-team"
+    ],
+    "shared_inputs": [
+      "docs/beacon/<version>/user-story",
+      "docs/beacon/<version>/prd",
+      "implementation-plan"
+    ],
+    "shared_outputs": [
+      "implementation_summary",
+      "technical_archive",
+      "story_writeback",
+      "evidence_refs"
+    ],
+    "rule": "qa_must_not_inherit_implement_private_context"
+  },
   "artifact_writeback_obligations": ".beacon/state/artifact-update-obligations/beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa.json",
   "artifact_writeback_open_count": 2,
   "requirement_rewrite_input": "docs/beacon/v1.3.2/.machine/execution/requirement-rewrite-input-beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa.json",
-  "implement_to_qa_handoff": ".beacon/handoffs/implement-to-qa/beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa/run-20260414T085139Z-8e0c.json",
+  "implement_to_qa_handoff": ".beacon/handoffs/implement-to-qa/beacon-v1.3.2-implement-three-modes-and-iterative-browser-qa/run-20260416T030652Z-900b.json",
   "auto_qa": {
     "enabled": false,
     "triggered": false,
