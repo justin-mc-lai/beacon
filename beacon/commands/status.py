@@ -128,6 +128,8 @@ def _status_impl(
         "next_step": help_payload.get("next_step", {}),
         "project_mode": help_payload.get("project_mode", "greenfield"),
         "execution_surface": help_payload.get("execution_surface", {}),
+        "hud": help_payload.get("hud", {}),
+        "minimal_hud": help_payload.get("minimal_hud", {}),
         "learning_surface": help_payload.get("learning_surface", {}),
         "implementation_plan": {
             "plan_id": implementation_plan_progress.get("plan_id", ""),
@@ -282,6 +284,12 @@ def _status_impl(
             typer.echo(f"- execution.qa_mode: {execution_surface.get('qa_execution_mode') or 'N/A'}")
             typer.echo(f"- execution.qa_session: {execution_surface.get('qa_current_session_id') or 'N/A'}")
             typer.echo(f"- execution.qa_runner: {execution_surface.get('qa_runner_type') or 'N/A'}")
+        minimal_hud = payload.get("minimal_hud", {}) if isinstance(payload.get("minimal_hud"), dict) else {}
+        hud_lines = minimal_hud.get("lines", []) if isinstance(minimal_hud.get("lines"), list) else []
+        if hud_lines:
+            typer.echo(f"- hud.scenario: {minimal_hud.get('scenario') or 'N/A'}")
+            for index, line in enumerate(hud_lines, start=1):
+                typer.echo(f"- hud.line{index}: {line}")
         if qa_status:
             typer.echo(f"- qa.status: {qa_status.get('status')}")
             typer.echo(f"- qa.evidence_done: {qa_status.get('evidence_done')}")

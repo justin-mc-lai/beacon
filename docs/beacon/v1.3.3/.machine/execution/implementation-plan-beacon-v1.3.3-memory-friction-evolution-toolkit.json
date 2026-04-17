@@ -1,0 +1,507 @@
+{
+  "schema_version": "1.0",
+  "plan_id": "plan-beacon-v1.3.3-memory-friction-evolution-toolkit-r1",
+  "feature": "beacon-v1.3.3-memory-friction-evolution-toolkit",
+  "feature_slug": "beacon-v1.3.3-memory-friction-evolution-toolkit",
+  "version": "v1.3.3",
+  "revision_id": "R1",
+  "baseline_hash": "sha256:90be1fc779c606f333eb4d83d7b1fa9ced56f01c7ba77ec734b81a506b3fed56",
+  "plan_hash": "sha256:d527755dd7ec41e75fb6b9f2d5a6a0e453e091532b0d031a0704184688381d80",
+  "status": "completed",
+  "source_refs": {
+    "user_story": "docs/beacon/v1.3.3/user-story/beacon-v1.3.3-memory-friction-evolution-toolkit.md",
+    "prd": "docs/beacon/v1.3.3/prd/beacon-v1.3.3-memory-friction-evolution-toolkit.md",
+    "test_case": "docs/beacon/v1.3.3/qa/test-cases/beacon-v1.3.3-memory-friction-evolution-toolkit.md",
+    "story_scenario_map": "docs/beacon/v1.3.3/.machine/qa/beacon-v1.3.3-memory-friction-evolution-toolkit.story-scenario-map.json"
+  },
+  "boundary_principles": [
+    {
+      "id": "explicit_assumptions",
+      "heading": "显式假设与歧义管理"
+    },
+    {
+      "id": "simplicity_first",
+      "heading": "简单优先"
+    },
+    {
+      "id": "surgical_changes",
+      "heading": "外科手术式改动"
+    },
+    {
+      "id": "goal_driven_execution",
+      "heading": "目标驱动验证闭环"
+    },
+    {
+      "id": "trivial_task_exception",
+      "heading": "trivial task 可以轻量处理，但不能越界"
+    }
+  ],
+  "workstreams": [
+    {
+      "workstream_id": "implementation-main",
+      "title": "Implementation Mainline",
+      "task_ids": [
+        "ITASK-001",
+        "ITASK-002",
+        "ITASK-003",
+        "ITASK-004",
+        "ITASK-005",
+        "ITASK-006"
+      ]
+    }
+  ],
+  "task_mapping_source": "prd-sections",
+  "tasks": [
+    {
+      "task_id": "ITASK-001",
+      "title": "FR-001 Toolkit 必须与 Lighthouse 并行",
+      "description": "Toolkit 必须支持与 `beacon-toolkit-lighthouse` 并行运行： Lighthouse 负责单文件静态结构图 Toolkit 负责动态摩擦候选 最终在统一报告层汇合",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-001"
+      ],
+      "mapped_test_ids": [
+        "TEST-001",
+        "TC-001"
+      ],
+      "mapped_scenario_ids": [
+        "SC-001"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260417T012730Z-5ef7",
+        ".beacon/qa/features/beacon-v1.3.3-memory-friction-evolution-toolkit/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260417T092826491236/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260417T092826491236/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260417T092826491236/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260417T092826491236/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260417T092826491236/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260417T092826491236/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260417T092826491236/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260417T092826491236/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260417T092826491236",
+        ".beacon/auto-test-status.json",
+        "verify:review.accept"
+      ],
+      "changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/qa/status.json",
+        ".omc/project-memory.json",
+        "beacon/cli_factory.py",
+        "beacon/command_catalog.py",
+        "beacon/commands/help.py",
+        "beacon/commands/status.py",
+        "beacon/utils/help_support.py",
+        "docs/beacon/v1.3.1/.machine/execution/change-impact.json",
+        "docs/beacon/v1.3.1/.machine/execution/config.json",
+        "docs/beacon/v1.3.1/.machine/execution/delivery-manifest.json",
+        "docs/beacon/v1.3.1/.machine/execution/git-alignment.json",
+        "docs/beacon/v1.3.1/.machine/execution/source.json",
+        "docs/beacon/v1.3.3/SUMMARY.md",
+        "docs/beacon/v1.3.3/execution/index.md",
+        "docs/beacon/v1.3.3/prd/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
+        "docs/beacon/v1.3.3/qa/test-cases/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
+        "docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
+        "docs/plans/2026-04-16-beacon-v1.3.3-minimal-hud-design.md",
+        "docs/plans/2026-04-16-beacon-v1.3.3-minimal-hud-implementation.md",
+        "skills/beacon/SKILL.md",
+        "skills/beacon/metadata.json"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-17T01:27:31.539830+00:00",
+      "completed_at": "2026-04-17T01:27:31.681180+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-002",
+      "title": "FR-002 Toolkit 必须复用现有记忆能力",
+      "description": "必须复用以下现有能力： `remember` `recall` `workflow_memory` `debug_feedback` `learning_loop` 不得新建第二套 memory plane 或平行记忆目录标准。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-001"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260417T012730Z-5ef7"
+      ],
+      "changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/qa/status.json",
+        ".omc/project-memory.json",
+        "beacon/cli_factory.py",
+        "beacon/command_catalog.py",
+        "beacon/commands/help.py",
+        "beacon/commands/status.py",
+        "beacon/utils/help_support.py",
+        "docs/beacon/v1.3.1/.machine/execution/change-impact.json",
+        "docs/beacon/v1.3.1/.machine/execution/config.json",
+        "docs/beacon/v1.3.1/.machine/execution/delivery-manifest.json",
+        "docs/beacon/v1.3.1/.machine/execution/git-alignment.json",
+        "docs/beacon/v1.3.1/.machine/execution/source.json",
+        "docs/beacon/v1.3.3/SUMMARY.md",
+        "docs/beacon/v1.3.3/execution/index.md",
+        "docs/beacon/v1.3.3/prd/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
+        "docs/beacon/v1.3.3/qa/test-cases/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
+        "docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
+        "docs/plans/2026-04-16-beacon-v1.3.3-minimal-hud-design.md",
+        "docs/plans/2026-04-16-beacon-v1.3.3-minimal-hud-implementation.md",
+        "skills/beacon/SKILL.md",
+        "skills/beacon/metadata.json"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-17T01:27:31.681193+00:00",
+      "completed_at": "2026-04-17T01:27:31.681195+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-003",
+      "title": "FR-003 输出候选必须可执行",
+      "description": "每条候选至少包含： `friction_summary` `evidence_refs` `recommendation`（keep/review/discard） `recommended_command` 禁止输出不可执行或无证据的泛化建议。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-002"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260417T012730Z-5ef7"
+      ],
+      "changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/qa/status.json",
+        ".omc/project-memory.json",
+        "beacon/cli_factory.py",
+        "beacon/command_catalog.py",
+        "beacon/commands/help.py",
+        "beacon/commands/status.py",
+        "beacon/utils/help_support.py",
+        "docs/beacon/v1.3.1/.machine/execution/change-impact.json",
+        "docs/beacon/v1.3.1/.machine/execution/config.json",
+        "docs/beacon/v1.3.1/.machine/execution/delivery-manifest.json",
+        "docs/beacon/v1.3.1/.machine/execution/git-alignment.json",
+        "docs/beacon/v1.3.1/.machine/execution/source.json",
+        "docs/beacon/v1.3.3/SUMMARY.md",
+        "docs/beacon/v1.3.3/execution/index.md",
+        "docs/beacon/v1.3.3/prd/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
+        "docs/beacon/v1.3.3/qa/test-cases/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
+        "docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
+        "docs/plans/2026-04-16-beacon-v1.3.3-minimal-hud-design.md",
+        "docs/plans/2026-04-16-beacon-v1.3.3-minimal-hud-implementation.md",
+        "skills/beacon/SKILL.md",
+        "skills/beacon/metadata.json"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-17T01:27:31.681204+00:00",
+      "completed_at": "2026-04-17T01:27:31.681205+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-004",
+      "title": "FR-004 命令面必须保持可选",
+      "description": "命令仅允许在可选 analysis 面暴露（例如 `labs/hidden`）： 不得新增公开主命令 不得改变普通用户默认主链",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-003"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260417T012730Z-5ef7"
+      ],
+      "changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/qa/status.json",
+        ".omc/project-memory.json",
+        "beacon/cli_factory.py",
+        "beacon/command_catalog.py",
+        "beacon/commands/help.py",
+        "beacon/commands/status.py",
+        "beacon/utils/help_support.py",
+        "docs/beacon/v1.3.1/.machine/execution/change-impact.json",
+        "docs/beacon/v1.3.1/.machine/execution/config.json",
+        "docs/beacon/v1.3.1/.machine/execution/delivery-manifest.json",
+        "docs/beacon/v1.3.1/.machine/execution/git-alignment.json",
+        "docs/beacon/v1.3.1/.machine/execution/source.json",
+        "docs/beacon/v1.3.3/SUMMARY.md",
+        "docs/beacon/v1.3.3/execution/index.md",
+        "docs/beacon/v1.3.3/prd/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
+        "docs/beacon/v1.3.3/qa/test-cases/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
+        "docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
+        "docs/plans/2026-04-16-beacon-v1.3.3-minimal-hud-design.md",
+        "docs/plans/2026-04-16-beacon-v1.3.3-minimal-hud-implementation.md",
+        "skills/beacon/SKILL.md",
+        "skills/beacon/metadata.json"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-17T01:27:31.681214+00:00",
+      "completed_at": "2026-04-17T01:27:31.681216+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-005",
+      "title": "FR-005 必须支持最小回写闭环",
+      "description": "当候选被选中（keep/review）时，支持： `remember add --upsert` 写回条目必须带来源与证据引用",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-004"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260417T012730Z-5ef7"
+      ],
+      "changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/qa/status.json",
+        ".omc/project-memory.json",
+        "beacon/cli_factory.py",
+        "beacon/command_catalog.py",
+        "beacon/commands/help.py",
+        "beacon/commands/status.py",
+        "beacon/utils/help_support.py",
+        "docs/beacon/v1.3.1/.machine/execution/change-impact.json",
+        "docs/beacon/v1.3.1/.machine/execution/config.json",
+        "docs/beacon/v1.3.1/.machine/execution/delivery-manifest.json",
+        "docs/beacon/v1.3.1/.machine/execution/git-alignment.json",
+        "docs/beacon/v1.3.1/.machine/execution/source.json",
+        "docs/beacon/v1.3.3/SUMMARY.md",
+        "docs/beacon/v1.3.3/execution/index.md",
+        "docs/beacon/v1.3.3/prd/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
+        "docs/beacon/v1.3.3/qa/test-cases/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
+        "docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
+        "docs/plans/2026-04-16-beacon-v1.3.3-minimal-hud-design.md",
+        "docs/plans/2026-04-16-beacon-v1.3.3-minimal-hud-implementation.md",
+        "skills/beacon/SKILL.md",
+        "skills/beacon/metadata.json"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-17T01:27:31.681224+00:00",
+      "completed_at": "2026-04-17T01:27:31.681226+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-006",
+      "title": "FR-006 必须有轮次与退出保护",
+      "description": "参考 GenericAgent loop 的轻量原则： 每轮必须输出结构化决策（继续/停止） 必须支持 `max_turns` 防无限循环 每轮输入/输出都要可回放 ## 5. 最小数据契约 ```json { \"schema_version\": \"1.0\", \"run_id\": \"mfe-20260416T000000Z\", \"docs_version\": \"v1.3.3\", \"mode\": \"memory|friction|both\", \"inputs\": { \"memory_refs\": [], \"debug_refs\": [], \"lighthouse_ref\": \"\" }, \"candidates\": [ { \"candidate_id\": \"debug_policy:xxx\", \"category\": \"debug_policy|rewrite_policy|qa_policy\", \"friction_summary\": \"\", \"evidence_refs\": [], \"score\": 0, \"recommendation\": \"keep|review|discard\", \"recommended_command\": \"\" } ], \"decision\": { \"next_prompt\": \"\", \"should_exit\": false } } ``` ## 6. 实施切片 ### Slice A：命令编排层 新增 `beacon/commands/memory_friction_evolution.py` 提供 `run/report` 两个最小入口 ### Slice B：证据聚合层 复用 `beacon.utils.memory` 复用 `beacon.utils.debug_feedback` 复用 `beacon.utils.learning_loop` ### Slice C：并行 Lighthouse 层 复用 `beacon.utils.lighthouse` 支持 `--with-lighthouse --target <path>` ### Slice D：写回层 候选选中后复用 `remember add --upsert` 统一写入证据路径与 source_session_id ## 7. 测试要求 最小新增测试： 1. memory-only 模式输出候选 2. friction-only 模式输出候选 3. both 模式合并候选且去重 4. `--with-lighthouse` 可并行产物不冲突 5. `--max-turns` 能阻止无限循环 6. writeback 仅通过 `remember` 写回，不创建新 memory 文件 ## 8. 风险与缓解 | 风险 | 影响 | 缓解 | |------|------|------| | 与 learning_loop 重复建设 | 中 | 先做薄编排层，禁止重写已有判分逻辑 | | 候选建议过泛化 | 中 | 强制 evidence_refs + recommended_command | | 工具面膨胀干扰主链 | 高 | 限制在 labs/hidden，可选启用 | | 并行运行造成输出分裂 | 中 | 统一 run_id 与合并报告路径 | ## 9. 成功标准 1. toolkit 能与 lighthouse 并行运行并稳定产物 2. 基于真实 memory/debug 数据输出 Top-N 候选 3. 候选都有证据引用与推荐命令 4. 写回闭环复用 remember/recall，不新增 memory silo 5. 主 `6+3` 默认路径无新增认知负担 --- **Created**: 2026-04-16 **Version**: v1.3.3 **Status**: Draft **Memory Context**: N/A",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-005"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260417T012730Z-5ef7"
+      ],
+      "changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/qa/status.json",
+        ".omc/project-memory.json",
+        "beacon/cli_factory.py",
+        "beacon/command_catalog.py",
+        "beacon/commands/help.py",
+        "beacon/commands/status.py",
+        "beacon/utils/help_support.py",
+        "docs/beacon/v1.3.1/.machine/execution/change-impact.json",
+        "docs/beacon/v1.3.1/.machine/execution/config.json",
+        "docs/beacon/v1.3.1/.machine/execution/delivery-manifest.json",
+        "docs/beacon/v1.3.1/.machine/execution/git-alignment.json",
+        "docs/beacon/v1.3.1/.machine/execution/source.json",
+        "docs/beacon/v1.3.3/SUMMARY.md",
+        "docs/beacon/v1.3.3/execution/index.md",
+        "docs/beacon/v1.3.3/prd/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
+        "docs/beacon/v1.3.3/qa/test-cases/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
+        "docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
+        "docs/plans/2026-04-16-beacon-v1.3.3-minimal-hud-design.md",
+        "docs/plans/2026-04-16-beacon-v1.3.3-minimal-hud-implementation.md",
+        "skills/beacon/SKILL.md",
+        "skills/beacon/metadata.json"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-17T01:27:31.681235+00:00",
+      "completed_at": "2026-04-17T01:27:31.681236+00:00",
+      "active_run_id": ""
+    }
+  ],
+  "team_mode": {
+    "preferred_surface": "implement-team",
+    "preferred_runner": "codex-subagents",
+    "plan_command": "beacon implement team-plan \"beacon-v1.3.3-memory-friction-evolution-toolkit\" --project-root . --version v1.3.3",
+    "run_command": "beacon implement team-run \"beacon-v1.3.3-memory-friction-evolution-toolkit\" --project . --version v1.3.3",
+    "dev_run_command": "beacon implement dev-run \"beacon-v1.3.3-memory-friction-evolution-toolkit\" --project . --version v1.3.3",
+    "qa_team_command": "beacon qa team-run \"beacon-v1.3.3-memory-friction-evolution-toolkit\" --project . --version v1.3.3",
+    "roles": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "context_isolation": {
+      "role_plane": "implementation",
+      "isolated_from": [
+        "qa-team"
+      ],
+      "shared_inputs": [
+        "docs",
+        "implementation_plan",
+        "evidence_refs"
+      ],
+      "shared_outputs": [
+        "implementation_summary",
+        "technical_archive",
+        "repair_handoff"
+      ],
+      "rule": "qa_must_not_inherit_implement_private_context",
+      "implement_surface": "implement-team",
+      "qa_surface": "qa-team"
+    },
+    "config_source": "beacon/team_roles/implement-team.json",
+    "execution_order": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "formal_writeback_roles": [
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "role_contracts": {
+      "planner": {
+        "purpose": "Compile execution-ready task scope from the frozen revision baseline.",
+        "writes_to_formal_truth": false,
+        "outputs": [
+          "execution_plan_note"
+        ]
+      },
+      "implementation-architect": {
+        "purpose": "Translate frozen requirement truth into implementation-safe module boundaries and service ownership guidance.",
+        "writes_to_formal_truth": false,
+        "reads": [
+          "docs/beacon/<version>/user-story",
+          "docs/beacon/<version>/prd",
+          "docs/beacon/<version>/qa/test-cases",
+          "docs/beacon/<version>/execution/architecture-blueprint.md",
+          "implementation_plan",
+          "git_workflow_contract"
+        ],
+        "outputs": [
+          "implementation_architecture_note"
+        ],
+        "restrictions": [
+          "must_not_modify_frozen_requirement_materials",
+          "must_not_overwrite_architecture_blueprint"
+        ]
+      },
+      "implementer": {
+        "purpose": "Write code inside the frozen scope and the implementation architecture note.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "story_writeback",
+          "implementation_summary"
+        ]
+      },
+      "reviewer": {
+        "purpose": "Review implementation/spec drift and architecture-boundary drift.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_spec"
+        ]
+      },
+      "tester": {
+        "purpose": "Check implementation evidence and verification readiness before acceptance.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_quality"
+        ]
+      }
+    }
+  },
+  "git_workflow": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1.3.3-memory-friction-evolution-toolkit",
+    "feature_slug": "beacon-v1.3.3-memory-friction-evolution-toolkit",
+    "version": "v1.3.3",
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.3.3",
+    "branch_prefix": "beacon/",
+    "base_branch": "main",
+    "use_git_worktree": false,
+    "require_clean_worktree_for_switch": true,
+    "service_directories": [
+      "."
+    ],
+    "git_roots": [
+      "."
+    ],
+    "worktree_root": ".",
+    "source": "technical_review_contract",
+    "generated_at": "2026-04-17T01:27:09.316832+00:00"
+  },
+  "git_workflow_ref": "docs/beacon/v1.3.3/.machine/execution/git-workflow-beacon-v1.3.3-memory-friction-evolution-toolkit.json",
+  "git_workflow_markdown_ref": "docs/beacon/v1.3.3/execution/git-workflow-beacon-v1.3.3-memory-friction-evolution-toolkit.md",
+  "generated_at": "2026-04-17T01:27:09.319371+00:00",
+  "updated_at": "2026-04-17T01:38:39.537660+00:00",
+  "accepted_at": "2026-04-17T01:38:39.537646+00:00",
+  "accepted_by": "codex"
+}

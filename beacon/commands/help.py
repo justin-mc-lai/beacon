@@ -38,6 +38,8 @@ def _render_human(payload: dict[str, object]) -> str:
     version_context = payload.get("version_context", {}) if isinstance(payload.get("version_context"), dict) else {}
     version_guard = payload.get("context_version_guard", {}) if isinstance(payload.get("context_version_guard"), dict) else {}
     execution_surface = payload.get("execution_surface", {}) if isinstance(payload.get("execution_surface"), dict) else {}
+    minimal_hud = payload.get("minimal_hud", {}) if isinstance(payload.get("minimal_hud"), dict) else {}
+    hud_lines = minimal_hud.get("lines", []) if isinstance(minimal_hud.get("lines"), list) else []
     lines = [
         "Beacon Help / Next Step",
         "=" * 26,
@@ -63,6 +65,12 @@ def _render_human(payload: dict[str, object]) -> str:
         f"qa mode         : {execution_surface.get('qa_execution_mode', '') or 'N/A'}",
         f"qa session      : {execution_surface.get('qa_current_session_id', '') or 'N/A'}",
         f"qa runner       : {execution_surface.get('qa_runner_type', '') or 'N/A'}",
+    ]
+    if hud_lines:
+        lines.extend(["", "minimal hud"])
+        for line in hud_lines:
+            lines.append(f"- {line}")
+    lines.extend([
         "",
         "scores",
         f"- test_score      : {scores.get('test_score', 0)}",
@@ -74,7 +82,7 @@ def _render_human(payload: dict[str, object]) -> str:
         f"- action  : {next_step.get('action', '')}",
         f"- why     : {next_step.get('reason', '')}",
         f"- command : {next_step.get('command', '')}",
-    ]
+    ])
     discovery = payload.get("skill_discovery_hint", {}) if isinstance(payload.get("skill_discovery_hint"), dict) else {}
     if not discovery:
         discovery = payload.get("skill_discovery", {}) if isinstance(payload.get("skill_discovery"), dict) else {}

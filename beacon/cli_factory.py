@@ -111,6 +111,8 @@ def build_app(*, package_version: str) -> typer.Typer:
     from .commands.wireframe import app as wireframe_app
     from .commands.prototype import app as prototype_app
     from .commands.lighthouse import app as lighthouse_app
+    from .commands.memory_friction_evolution import app as memory_friction_evolution_app
+    from .commands.prd_bootstrap import app as prd_bootstrap_app
     from .commands.save import app as save_app
     from .commands.recall import app as recall_app
     from .commands.remember import app as remember_app
@@ -166,6 +168,8 @@ def build_app(*, package_version: str) -> typer.Typer:
     app.add_typer(ui_spec_app, name="ui-spec", hidden=True)
     app.add_typer(wireframe_app, name="wireframe", hidden=True)
     app.add_typer(lighthouse_app, name="lighthouse", hidden=True)
+    app.add_typer(memory_friction_evolution_app, name="memory-friction-evolution", hidden=True)
+    app.add_typer(prd_bootstrap_app, name="prd-bootstrap", hidden=True)
     app.add_typer(prototype_app, name="prototype")
     app.add_typer(save_app, name="save", hidden=True)
     app.add_typer(recall_app, name="recall", hidden=True)
@@ -182,6 +186,7 @@ def build_app(*, package_version: str) -> typer.Typer:
     labs_app.add_typer(jtbd_app, name="jtbd")
     labs_app.add_typer(kano_app, name="kano")
     labs_app.add_typer(lighthouse_app, name="lighthouse")
+    labs_app.add_typer(memory_friction_evolution_app, name="memory-friction-evolution")
     labs_app.add_typer(moscow_app, name="moscow")
     labs_app.add_typer(persona_app, name="persona")
     labs_app.add_typer(roadmap_app, name="roadmap")

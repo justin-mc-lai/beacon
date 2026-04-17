@@ -1,0 +1,283 @@
+{
+  "schema_version": "1.0",
+  "run_id": "run-20260417T012730Z-5ef7",
+  "feature": "beacon-v1.3.3-memory-friction-evolution-toolkit",
+  "feature_slug": "beacon-v1.3.3-memory-friction-evolution-toolkit",
+  "version": "v1.3.3",
+  "mode": "single",
+  "host_runtime": "codex",
+  "runner": "native-single",
+  "adapter_type": "native",
+  "request_path": ".beacon/implement/run-20260417T012730Z-5ef7/request.json",
+  "result_path": ".beacon/implement/run-20260417T012730Z-5ef7/result.json",
+  "branch_preflight_path": ".beacon/implement/run-20260417T012730Z-5ef7/branch-preflight.json",
+  "plan_preflight_path": ".beacon/implement/run-20260417T012730Z-5ef7/plan-preflight.json",
+  "git_workflow": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1.3.3-memory-friction-evolution-toolkit",
+    "feature_slug": "beacon-v1.3.3-memory-friction-evolution-toolkit",
+    "version": "v1.3.3",
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.3.3",
+    "branch_prefix": "beacon/",
+    "base_branch": "main",
+    "use_git_worktree": false,
+    "require_clean_worktree_for_switch": true,
+    "service_directories": [
+      "."
+    ],
+    "git_roots": [
+      "."
+    ],
+    "worktree_root": ".",
+    "source": "technical_review_contract",
+    "generated_at": "2026-04-17T01:27:30.230370+00:00"
+  },
+  "generated_at": "2026-04-17T01:27:31.683915+00:00",
+  "status": "completed",
+  "subagent_prechecks": {
+    "required": false,
+    "host_runtime": "codex",
+    "runtime_readiness": {},
+    "delegation_readiness": {}
+  },
+  "skill": "",
+  "summary": "native-single implementation completed",
+  "changed_files": [
+    ".beacon/auto-test-status.json",
+    ".beacon/evidence-manifest.json",
+    ".beacon/evidence-signature-chain.json",
+    ".beacon/gate-report.json",
+    ".beacon/qa/status.json",
+    ".omc/project-memory.json",
+    "beacon/cli_factory.py",
+    "beacon/command_catalog.py",
+    "beacon/commands/help.py",
+    "beacon/commands/status.py",
+    "beacon/utils/help_support.py",
+    "docs/beacon/v1.3.1/.machine/execution/change-impact.json",
+    "docs/beacon/v1.3.1/.machine/execution/config.json",
+    "docs/beacon/v1.3.1/.machine/execution/delivery-manifest.json",
+    "docs/beacon/v1.3.1/.machine/execution/git-alignment.json",
+    "docs/beacon/v1.3.1/.machine/execution/source.json",
+    "docs/beacon/v1.3.3/SUMMARY.md",
+    "docs/beacon/v1.3.3/execution/index.md",
+    "docs/beacon/v1.3.3/prd/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
+    "docs/beacon/v1.3.3/qa/test-cases/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
+    "docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
+    "docs/plans/2026-04-16-beacon-v1.3.3-minimal-hud-design.md",
+    "docs/plans/2026-04-16-beacon-v1.3.3-minimal-hud-implementation.md",
+    "skills/beacon/SKILL.md",
+    "skills/beacon/metadata.json"
+  ],
+  "verification": [
+    {
+      "command": "beacon implement run --runner native-single",
+      "status": "passed"
+    }
+  ],
+  "implemented_task_ids": [],
+  "verified_task_ids": [],
+  "blocked_task_ids": [],
+  "failed_task_ids": [],
+  "artifact_updates": {
+    "user_story": {
+      "required": false,
+      "reason": "story machine state writeback recorded"
+    },
+    "review_quality": {
+      "required": true,
+      "reason": "run quality review after native implementation"
+    },
+    "acceptance": {
+      "required": true,
+      "reason": "acceptance remains a formal post-verify action"
+    }
+  },
+  "branch_preflight": {
+    "schema_version": "1.0",
+    "status": "pass",
+    "summary": "implement branch preflight passed on workspace branch beacon/v1.3.3",
+    "blocked": false,
+    "version": "v1.3.3",
+    "expected_branch": "beacon/v1.3.3",
+    "current_branch": "beacon/v1.3.3",
+    "current_tag": "",
+    "branch_exists": true,
+    "dirty_worktree": true,
+    "require_clean_worktree_for_switch": true,
+    "recommended_command": "",
+    "reason_codes": [],
+    "git_alignment": {
+      "mode": "workspace",
+      "repo_detected": true,
+      "target_branch": "beacon/v1.3.3",
+      "worktree_path": ".",
+      "workspace_repos": [
+        {
+          "repo_root": "/Users/apple/Developer/Personal/products/beacon",
+          "relative_root": ".",
+          "dirty_worktree": true,
+          "repo_url": "https://github.com/justin-mc-lai/beacon.git",
+          "base_branch": "main",
+          "target_branch": "beacon/v1.3.3",
+          "current_branch": "beacon/v1.3.3",
+          "current_commit": "e31380f5232174f4c39a3ee537e15bda6708c2ba",
+          "current_tag": "",
+          "worktree_path": "/Users/apple/Developer/Personal/products/beacon",
+          "version_ref": "v1.3.3",
+          "allowed_refs": [
+            "branch"
+          ],
+          "enforce_branch_prefix": "beacon/",
+          "branch_matches_target": true,
+          "branch_has_required_prefix": true,
+          "tag_matches_version": false,
+          "version_ref_satisfied": true,
+          "reason_codes": [],
+          "blocked": false,
+          "detached_head": false,
+          "repo_detected": true
+        }
+      ],
+      "blocked": false,
+      "reason_codes": []
+    },
+    "run_id": "run-20260417T012730Z-5ef7",
+    "feature": "beacon-v1.3.3-memory-friction-evolution-toolkit",
+    "feature_slug": "beacon-v1.3.3-memory-friction-evolution-toolkit",
+    "generated_at": "2026-04-17T01:27:31.488704+00:00"
+  },
+  "plan_preflight": {
+    "schema_version": "1.0",
+    "run_id": "run-20260417T012730Z-5ef7",
+    "feature": "beacon-v1.3.3-memory-friction-evolution-toolkit",
+    "feature_slug": "beacon-v1.3.3-memory-friction-evolution-toolkit",
+    "version": "v1.3.3",
+    "expected_plan": "docs/beacon/v1.3.3/.machine/execution/implementation-plan-beacon-v1.3.3-memory-friction-evolution-toolkit.json",
+    "expected_revision_id": "R1",
+    "baseline_hash": "sha256:90be1fc779c606f333eb4d83d7b1fa9ced56f01c7ba77ec734b81a506b3fed56",
+    "recommended_command": "beacon implement plan \"beacon-v1.3.3-memory-friction-evolution-toolkit\" --project-root . --version v1.3.3",
+    "generated_at": "2026-04-17T01:27:31.491610+00:00",
+    "status": "pass",
+    "blocked": false,
+    "plan_id": "plan-beacon-v1.3.3-memory-friction-evolution-toolkit-r1",
+    "plan_path": "docs/beacon/v1.3.3/.machine/execution/implementation-plan-beacon-v1.3.3-memory-friction-evolution-toolkit.json",
+    "progress_path": "docs/beacon/v1.3.3/.machine/execution/implementation-plan-beacon-v1.3.3-memory-friction-evolution-toolkit.progress.json"
+  },
+  "implementation_marker": ".beacon/state/implementation-beacon-v1.3.3-memory-friction-evolution-toolkit.json",
+  "technical_archive": {
+    "json": "docs/beacon/v1.3.3/.machine/execution/technical-implementation-beacon-v1.3.3-memory-friction-evolution-toolkit.json",
+    "md": "docs/beacon/v1.3.3/execution/technical-implementation-beacon-v1.3.3-memory-friction-evolution-toolkit.md"
+  },
+  "implementation_plan": "docs/beacon/v1.3.3/.machine/execution/implementation-plan-beacon-v1.3.3-memory-friction-evolution-toolkit.json",
+  "implementation_plan_progress": {
+    "schema_version": "1.0",
+    "plan_id": "plan-beacon-v1.3.3-memory-friction-evolution-toolkit-r1",
+    "feature": "beacon-v1.3.3-memory-friction-evolution-toolkit",
+    "version": "v1.3.3",
+    "revision_id": "R1",
+    "status": "completed",
+    "counts": {
+      "total": 6,
+      "draft": 0,
+      "planned": 0,
+      "in_progress": 0,
+      "blocked": 0,
+      "completed": 6
+    },
+    "blocked_task_ids": [],
+    "completed_task_ids": [
+      "ITASK-001",
+      "ITASK-002",
+      "ITASK-003",
+      "ITASK-004",
+      "ITASK-005",
+      "ITASK-006"
+    ],
+    "next_task_id": "",
+    "task_states": [
+      {
+        "task_id": "ITASK-001",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-001"
+        ],
+        "mapped_test_ids": [
+          "TEST-001",
+          "TC-001"
+        ],
+        "mapped_scenario_ids": [
+          "SC-001"
+        ],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-002",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-003",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-004",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-005",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-006",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      }
+    ],
+    "updated_at": "2026-04-17T01:27:31.681250+00:00"
+  },
+  "implemented_items": [
+    "AC-001",
+    "TASK-001"
+  ],
+  "verified_items": [],
+  "blocked_items": [],
+  "runner_mode": "single",
+  "revision_id": "R1",
+  "artifact_writeback_obligations": ".beacon/state/artifact-update-obligations/beacon-v1.3.3-memory-friction-evolution-toolkit.json",
+  "artifact_writeback_open_count": 2,
+  "requirement_rewrite_input": "docs/beacon/v1.3.3/.machine/execution/requirement-rewrite-input-beacon-v1.3.3-memory-friction-evolution-toolkit.json",
+  "implement_to_qa_handoff": ".beacon/handoffs/implement-to-qa/beacon-v1.3.3-memory-friction-evolution-toolkit/run-20260417T012730Z-5ef7.json",
+  "auto_qa": {
+    "enabled": false,
+    "triggered": false,
+    "args": [],
+    "follow_handoff": false,
+    "max_rounds": 2
+  }
+}

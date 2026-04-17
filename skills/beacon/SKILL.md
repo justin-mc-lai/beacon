@@ -171,6 +171,10 @@ Optional supplemental toolkit skill:
   - analysis-only surface
   - not part of the 6+3 main workflow
   - used for fast single-file repo/package/infra/feature understanding
+- `beacon-prd-bootstrap`
+  - requirement bootstrap-only surface
+  - default safe mode (`dry-run + strict verify + no-overwrite`)
+  - not part of the 6+3 main workflow
 
 This root `beacon` skill remains the compatibility umbrella and install root.
 
