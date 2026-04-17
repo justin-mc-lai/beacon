@@ -297,6 +297,26 @@ external compatibility 只允许进入：
 7. 可回滚可追踪：落盘 `.beacon/state/prd-bootstrap/<run-id>.json`
 8. 并发锁：执行期间持有 `.beacon/state/locks/prd-bootstrap.lock`
 
+### FR-016 Codex 输入框下固定 HUD 必须通过 hook 自动注入
+
+`v1.3.3` 对 HUD 的“极简”要求必须覆盖 Codex 宿主输入面：
+
+1. 目标体验：
+   - 在 Codex 会话中，输入框下方稳定看到 Beacon 极简 HUD（1-3 行）
+   - HUD 文本必须来自 `minimal_hud` 同一数据契约，禁止双源文案
+2. 触发事件（最小）：
+   - `UserPromptSubmit`：每次提交用户输入时刷新 HUD
+   - 会话刷新事件：至少支持 `SessionStart/SessionResume/SessionRefresh` 中的可配置集合
+3. 输出契约：
+   - hook 输出必须包含 `hookSpecificOutput.additionalContext`
+   - 内容必须是极简 HUD 行（S1-S6 契约），不得塞入大段解释文本
+4. 失败退化：
+   - hook 失败时不得阻断用户输入提交流程
+   - 降级为空 HUD + debug 事件落盘
+5. 治理边界：
+   - 不自动改写用户全局 `~/.codex` hook 配置
+   - 安装/校验流程统一走 `beacon doctor` 子命令
+
 ## 5. 瘦身改造清单
 
 ### A. 必须收敛

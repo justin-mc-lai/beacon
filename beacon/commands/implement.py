@@ -59,6 +59,7 @@ from beacon.utils.ralph_runtime import (
     initialize_ralph_state,
     load_ralph_state,
     mark_ralph_handoff_required,
+    save_ralph_state,
 )
 from beacon.utils.runtime import generate_run_id, now_iso, write_json
 from beacon.utils.story_state import load_story_state
@@ -103,6 +104,70 @@ def _summary_paths(project_root: Path, version: str, feature: str) -> dict[str, 
         "json": execution_file_output(project_root, version, f"implementation-summary-{slug}.json"),
         "md": human_execution_file(project_root, version, f"implementation-summary-{slug}.md"),
     }
+
+
+def _refresh_ralph_state_after_resume(
+    project_root: Path,
+    *,
+    feature: str,
+    resumed_action: str,
+    exit_code: int,
+    result: dict[str, Any] | None,
+) -> None:
+    state = load_ralph_state(project_root, feature=feature)
+    if not state:
+        return
+    payload = result if isinstance(result, dict) else {}
+    version = str(state.get("version", "") or "").strip()
+    updated = False
+
+    if resumed_action == "review_quality":
+        if exit_code != 0:
+            return
+        gate_ready = bool(payload.get("gate_ready", False))
+        if gate_ready:
+            release_cmd = f"beacon gate check release --project-root {project_root} --version {version}" if version else ""
+            state.update(
+                {
+                    "review_gate_ready": True,
+                    "current_blocker": "gate_release_pending",
+                    "next_action": "release",
+                    "recommended_command": release_cmd,
+                    "stop_state": "human_blocked",
+                    "updated_at": now_iso(),
+                }
+            )
+            updated = True
+    elif resumed_action == "release":
+        gate_status = str(payload.get("status", "") or "").strip().lower()
+        release_check_cmd = f"beacon gate check release --project-root {project_root} --version {version}" if version else ""
+        if gate_status == "pass":
+            state.update(
+                {
+                    "gate_release_status": "pass",
+                    "stop_state": "release_ready",
+                    "current_blocker": "",
+                    "next_action": "release",
+                    "recommended_command": f"beacon release check {version} --project {project_root}" if version else "",
+                    "updated_at": now_iso(),
+                }
+            )
+            updated = True
+        elif gate_status:
+            state.update(
+                {
+                    "gate_release_status": gate_status,
+                    "stop_state": "human_blocked",
+                    "current_blocker": "gate_release_blocked",
+                    "next_action": "release",
+                    "recommended_command": release_check_cmd,
+                    "updated_at": now_iso(),
+                }
+            )
+            updated = True
+
+    if updated:
+        save_ralph_state(project_root, feature=feature, payload=state)
 
 
 def _technical_archive_paths(project_root: Path, version: str, feature: str) -> dict[str, Path]:
@@ -2746,6 +2811,13 @@ def ralph_resume(
             typer.echo(f"recommended_command: {command or 'N/A'}")
         raise typer.Exit(2)
     exit_code, result = _run_beacon_json_command(project_root, command)
+    _refresh_ralph_state_after_resume(
+        project_root,
+        feature=feature,
+        resumed_action=next_action,
+        exit_code=exit_code,
+        result=result if isinstance(result, dict) else {},
+    )
     output = {
         "schema_version": "1.0",
         "status": "completed" if exit_code == 0 else "failed",

@@ -4,8 +4,8 @@
 - feature: `beacon-v1.3.3-minimal-hud-scenarios-and-implementation`
 - version: `v1.3.3`
 - revision_id: `R1`
-- baseline_hash: ``
-- plan_hash: `sha256:47172f9ec7b041ecf29bc587c329074b8c0c4ec7d286db83542953f0ae21b1a9`
+- baseline_hash: `sha256:bd18efe8a43c4ccaaa4bb2651dee6ff9412a77d94cc8ff9b672923d884e2ce98`
+- plan_hash: `sha256:e260f41a12d7425b6d380a41fe7a8c61d356dcfed5776eaf459ccefb398ee319`
 - status: `completed`
 
 ## Source Refs
@@ -56,54 +56,81 @@
 
 ### ITASK-002 — FR-002 HUD 默认只展示最小决策信息
 - status: `completed`
-- mapped_ac_ids: -
-- mapped_test_ids: -
-- mapped_scenario_ids: -
-- mapped_qa_case_ids: -
+- mapped_ac_ids: AC-002
+- mapped_test_ids: TC-002, TC-009
+- mapped_scenario_ids: SC-008, SC-009
+- mapped_qa_case_ids: TC-002, TC-009
 - depends_on: ITASK-001
 - target_modules: -
 
 ### ITASK-003 — FR-003 Ralph HUD 必须可观测闭环状态
 - status: `completed`
-- mapped_ac_ids: -
-- mapped_test_ids: -
-- mapped_scenario_ids: -
-- mapped_qa_case_ids: -
+- mapped_ac_ids: AC-003
+- mapped_test_ids: TC-003, TC-010
+- mapped_scenario_ids: SC-010, SC-011
+- mapped_qa_case_ids: TC-003, TC-010
 - depends_on: ITASK-002
 - target_modules: -
 
 ### ITASK-004 — FR-004 Team HUD 必须可观测执行摘要
 - status: `completed`
-- mapped_ac_ids: -
-- mapped_test_ids: -
-- mapped_scenario_ids: -
-- mapped_qa_case_ids: -
+- mapped_ac_ids: AC-004
+- mapped_test_ids: TC-004, TC-011
+- mapped_scenario_ids: SC-012, SC-013, SC-014, SC-015, SC-016, SC-017
+- mapped_qa_case_ids: TC-004, TC-011
 - depends_on: ITASK-003
 - target_modules: -
 
 ### ITASK-005 — FR-005 命令面不得扩张
 - status: `completed`
-- mapped_ac_ids: -
-- mapped_test_ids: -
-- mapped_scenario_ids: -
-- mapped_qa_case_ids: -
+- mapped_ac_ids: AC-005
+- mapped_test_ids: TC-005, TC-012
+- mapped_scenario_ids: SC-018, SC-019, SC-020, SC-021, SC-022, SC-023
+- mapped_qa_case_ids: TC-005, TC-012
 - depends_on: ITASK-004
 - target_modules: -
 
 ### ITASK-006 — FR-006 阻断推荐命令必须统一
 - status: `completed`
-- mapped_ac_ids: -
-- mapped_test_ids: -
-- mapped_scenario_ids: -
-- mapped_qa_case_ids: -
+- mapped_ac_ids: AC-006
+- mapped_test_ids: TC-006, TC-013
+- mapped_scenario_ids: SC-024, SC-025
+- mapped_qa_case_ids: TC-006, TC-013
 - depends_on: ITASK-005
 - target_modules: -
 
 ### ITASK-007 — FR-007 机器细节必须保留但不挤占人类面
 - status: `completed`
+- mapped_ac_ids: AC-007
+- mapped_test_ids: TC-007, TC-014
+- mapped_scenario_ids: SC-026, SC-027
+- mapped_qa_case_ids: TC-007, TC-014
+- depends_on: ITASK-006
+- target_modules: -
+
+### ITASK-008 — FR-008 Codex Hook 必须支持输入框下固定 HUD 注入
+- status: `completed`
 - mapped_ac_ids: -
 - mapped_test_ids: -
 - mapped_scenario_ids: -
 - mapped_qa_case_ids: -
-- depends_on: ITASK-006
+- depends_on: ITASK-007
+- target_modules: -
+
+### ITASK-009 — FR-009 自动注入事件必须覆盖 UserPromptSubmit 与会话刷新
+- status: `completed`
+- mapped_ac_ids: -
+- mapped_test_ids: -
+- mapped_scenario_ids: -
+- mapped_qa_case_ids: -
+- depends_on: ITASK-008
+- target_modules: -
+
+### ITASK-010 — FR-010 Hook 安装/校验必须走 doctor 治理面
+- status: `completed`
+- mapped_ac_ids: -
+- mapped_test_ids: -
+- mapped_scenario_ids: -
+- mapped_qa_case_ids: -
+- depends_on: ITASK-009
 - target_modules: -

@@ -2,7 +2,7 @@
 
 **Feature**: `beacon-v1.3.3-core-slimming-and-external-skill-demotion`  
 **Version**: `v1.3.3`  
-**Date**: `2026-04-15`  
+**Date**: `2026-04-17`  
 **Status**: `planning line`
 
 ## US-001：作为 Beacon 人类操作者，我希望默认只面对 `6+3` 极简主面，而不是先学习 skill/profile/orchestrate
@@ -99,6 +99,17 @@
 - 必须写出 `.beacon/state/prd-bootstrap/<run-id>.json` 与回滚清单
 - 必须持有 `.beacon/state/locks/prd-bootstrap.lock` 防并发写冲突
 
+## US-012：作为 Codex 用户，我希望输入框下方固定显示 Beacon HUD，并在提交输入和会话刷新时自动更新
+
+**验收标准**：
+
+- Codex 输入框下方可稳定显示来自 `minimal_hud` 的 1-3 行 HUD
+- `UserPromptSubmit` 事件触发后 HUD 必须立即刷新
+- 会话刷新事件（`SessionStart/SessionResume/SessionRefresh`）至少支持其一并可配置
+- hook 输出必须通过 `hookSpecificOutput.additionalContext` 返回 HUD 文本，不得返回长解释段落
+- hook 异常时不得阻断用户输入提交流程，必须降级并写 debug 证据
+- hook wiring 的安装/校验必须通过 `beacon doctor`，禁止未确认自动改写全局 `~/.codex` 配置
+
 ## Acceptance Criteria Matrix
 
 | ID | Theme | Acceptance Criteria |
@@ -114,3 +125,4 @@
 | AC-009 | contract-decoupled | project contract 能力必须与 external orchestration 解耦。 |
 | AC-010 | new-user-unblocked | 新用户在默认路径下不应先接触 compatibility plane 命令和概念。 |
 | AC-011 | prd-bootstrap-safe-by-default | `beacon-prd-bootstrap` 必须支持一键生成 `prd/user-story/test-case`，且默认 `dry-run + no-overwrite + strict context verify + atomic write + rollback/lock`。 |
+| AC-012 | codex-fixed-hud-hook | Codex 输入框下固定 HUD 必须通过 hook 自动注入，覆盖 `UserPromptSubmit` 与会话刷新，且失败可降级不阻断。 |

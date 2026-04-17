@@ -4,8 +4,8 @@
   "feature": "beacon-v1.3.3-minimal-hud-scenarios-and-implementation",
   "feature_slug": "beacon-v1.3.3-minimal-hud-scenarios-and-implementation",
   "version": "v1.3.3",
-  "generated_at": "2026-04-17T01:38:53.877128+00:00",
-  "status": "pass",
+  "generated_at": "2026-04-17T05:06:11.639889+00:00",
+  "status": "warn",
   "gate_ready": true,
   "verify_status": "passed",
   "prototype_gate_ready": null,
@@ -17,7 +17,13 @@
     "required_cases": [],
     "contract_drifts": []
   },
-  "issues": [],
+  "issues": [
+    {
+      "reason_code": "coverage_incomplete",
+      "severity": "warn",
+      "message": "coverage incomplete: story=1/1, ac=7/10, tc=7/10"
+    }
+  ],
   "recommendations": [],
   "evidence_done": true,
   "artifact_update_obligations": {
@@ -25,26 +31,29 @@
     "feature": "beacon-v1.3.3-minimal-hud-scenarios-and-implementation",
     "feature_slug": "beacon-v1.3.3-minimal-hud-scenarios-and-implementation",
     "version": "v1.3.3",
-    "run_id": "run-20260416T141049Z-84ce",
-    "generated_at": "2026-04-16T14:10:50.762746+00:00",
+    "run_id": "run-20260417T045517Z-529b",
+    "generated_at": "2026-04-17T04:55:21.190884+00:00",
     "technical_archive_path": "docs/beacon/v1.3.3/.machine/execution/technical-implementation-beacon-v1.3.3-minimal-hud-scenarios-and-implementation.json",
     "obligations": [
       {
         "artifact": "review_quality",
         "required": true,
         "reason": "run quality review after native implementation",
-        "status": "open",
-        "notes": ""
+        "status": "completed",
+        "notes": "review quality passed and gate_ready=true",
+        "updated_at": "2026-04-17T05:01:36.272184+00:00"
       },
       {
         "artifact": "acceptance",
         "required": true,
         "reason": "acceptance remains a formal post-verify action",
-        "status": "open",
-        "notes": ""
+        "status": "completed",
+        "notes": "accepted by qa",
+        "updated_at": "2026-04-17T05:01:15.131949+00:00"
       }
     ],
-    "open_count": 2
+    "open_count": 0,
+    "updated_at": "2026-04-17T05:01:36.272196+00:00"
   },
   "implementation_plan_progress": {
     "schema_version": "1.0",
@@ -54,12 +63,12 @@
     "revision_id": "R1",
     "status": "completed",
     "counts": {
-      "total": 7,
+      "total": 10,
       "draft": 0,
       "planned": 0,
       "in_progress": 0,
       "blocked": 0,
-      "completed": 7
+      "completed": 10
     },
     "blocked_task_ids": [],
     "completed_task_ids": [
@@ -69,7 +78,10 @@
       "ITASK-004",
       "ITASK-005",
       "ITASK-006",
-      "ITASK-007"
+      "ITASK-007",
+      "ITASK-008",
+      "ITASK-009",
+      "ITASK-010"
     ],
     "next_task_id": "",
     "task_states": [
@@ -104,40 +116,132 @@
         "task_id": "ITASK-002",
         "status": "completed",
         "blocked_reason": "",
-        "mapped_ac_ids": [],
-        "mapped_test_ids": [],
-        "mapped_scenario_ids": [],
-        "mapped_qa_case_ids": []
+        "mapped_ac_ids": [
+          "AC-002"
+        ],
+        "mapped_test_ids": [
+          "TC-002",
+          "TC-009"
+        ],
+        "mapped_scenario_ids": [
+          "SC-008",
+          "SC-009"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-002",
+          "TC-009"
+        ]
       },
       {
         "task_id": "ITASK-003",
         "status": "completed",
         "blocked_reason": "",
-        "mapped_ac_ids": [],
-        "mapped_test_ids": [],
-        "mapped_scenario_ids": [],
-        "mapped_qa_case_ids": []
+        "mapped_ac_ids": [
+          "AC-003"
+        ],
+        "mapped_test_ids": [
+          "TC-003",
+          "TC-010"
+        ],
+        "mapped_scenario_ids": [
+          "SC-010",
+          "SC-011"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-003",
+          "TC-010"
+        ]
       },
       {
         "task_id": "ITASK-004",
         "status": "completed",
         "blocked_reason": "",
-        "mapped_ac_ids": [],
-        "mapped_test_ids": [],
-        "mapped_scenario_ids": [],
-        "mapped_qa_case_ids": []
+        "mapped_ac_ids": [
+          "AC-004"
+        ],
+        "mapped_test_ids": [
+          "TC-004",
+          "TC-011"
+        ],
+        "mapped_scenario_ids": [
+          "SC-012",
+          "SC-013",
+          "SC-014",
+          "SC-015",
+          "SC-016",
+          "SC-017"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-004",
+          "TC-011"
+        ]
       },
       {
         "task_id": "ITASK-005",
         "status": "completed",
         "blocked_reason": "",
-        "mapped_ac_ids": [],
-        "mapped_test_ids": [],
-        "mapped_scenario_ids": [],
-        "mapped_qa_case_ids": []
+        "mapped_ac_ids": [
+          "AC-005"
+        ],
+        "mapped_test_ids": [
+          "TC-005",
+          "TC-012"
+        ],
+        "mapped_scenario_ids": [
+          "SC-018",
+          "SC-019",
+          "SC-020",
+          "SC-021",
+          "SC-022",
+          "SC-023"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-005",
+          "TC-012"
+        ]
       },
       {
         "task_id": "ITASK-006",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-006"
+        ],
+        "mapped_test_ids": [
+          "TC-006",
+          "TC-013"
+        ],
+        "mapped_scenario_ids": [
+          "SC-024",
+          "SC-025"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-006",
+          "TC-013"
+        ]
+      },
+      {
+        "task_id": "ITASK-007",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-007"
+        ],
+        "mapped_test_ids": [
+          "TC-007",
+          "TC-014"
+        ],
+        "mapped_scenario_ids": [
+          "SC-026",
+          "SC-027"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-007",
+          "TC-014"
+        ]
+      },
+      {
+        "task_id": "ITASK-008",
         "status": "completed",
         "blocked_reason": "",
         "mapped_ac_ids": [],
@@ -146,7 +250,16 @@
         "mapped_qa_case_ids": []
       },
       {
-        "task_id": "ITASK-007",
+        "task_id": "ITASK-009",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-010",
         "status": "completed",
         "blocked_reason": "",
         "mapped_ac_ids": [],
@@ -155,6 +268,6 @@
         "mapped_qa_case_ids": []
       }
     ],
-    "updated_at": "2026-04-17T01:35:43.224228+00:00"
+    "updated_at": "2026-04-17T05:01:11.566234+00:00"
   }
 }

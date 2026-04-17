@@ -12,6 +12,7 @@ Beacon 已有 `team_hud` 与 Ralph 状态基础，但当前缺少统一、极简
 1. 人类面缺少稳定的“阶段 + 阻断 + 下一步”最小可视化。
 2. HUD 信息边界不清晰，容易膨胀为运行细节堆积。
 3. `help/status` 未形成统一 HUD 渲染规则，场景一致性不足。
+4. Codex 侧缺少“输入框下固定 HUD”注入路径，导致用户感知不稳定。
 
 ## 2. 目标
 
@@ -27,6 +28,8 @@ Beacon 已有 `team_hud` 与 Ralph 状态基础，但当前缺少统一、极简
    - HUD 只服务 `6+3` 主链，不新增命令面
 4. **实现可落地**
    - 给出最小数据契约、代码切片、测试切片
+5. **宿主固定 HUD**
+   - 在 Codex 通过 hook 自动注入，覆盖 `UserPromptSubmit` 与会话刷新
 
 ## 3. 用户故事
 
@@ -102,6 +105,37 @@ compatibility 相关阻断时，推荐命令优先指向：
 - 人类 HUD 保持摘要
 - JSON/artifacts 保持全量
 
+### FR-008 Codex Hook 必须支持输入框下固定 HUD 注入
+
+Codex hook 集成必须满足：
+
+1. hook 输出契约复用 `hookSpecificOutput.additionalContext`
+2. 注入内容必须由 `minimal_hud` 渲染结果直接生成（1-3 行）
+3. 注入文本必须可 machine-parse（建议固定前缀 `[beacon-hud]`）
+4. 注入逻辑不得在 hook 内重复推导业务状态，必须调用统一 `help_support` 聚合层
+
+### FR-009 自动注入事件必须覆盖 UserPromptSubmit 与会话刷新
+
+最小事件集合：
+
+- `UserPromptSubmit`（必选）
+- `SessionStart` / `SessionResume` / `SessionRefresh`（可配置，至少支持其一）
+
+要求：
+
+1. 提交输入后必须刷新 HUD（防止滞后）
+2. 会话刷新时必须重放最近 HUD（防止“进入会话无 HUD”）
+3. 事件不支持时必须优雅降级，不阻断主会话
+
+### FR-010 Hook 安装/校验必须走 doctor 治理面
+
+为避免环境漂移和误配，hook 集成必须由 `beacon doctor` 管理：
+
+1. 提供 `doctor` 子命令用于生成/校验 Codex hook wiring（命名可调整）
+2. 默认 `dry-run` 输出建议配置，显式 `--apply` 才写入
+3. 禁止 Beacon 未经用户确认自动改写全局 hook 配置
+4. 失败时给出单一恢复命令与诊断结果落盘
+
 ## 6. 最小数据契约
 
 ```json
@@ -117,7 +151,14 @@ compatibility 相关阻断时，推荐命令优先指向：
     "circuit_status": "ok|warn|trip"
   },
   "blocker": {"level": "none|warn|blocked", "reason": "", "recommended_command": ""},
-  "next_action": ""
+  "next_action": "",
+  "hook": {
+    "enabled": true,
+    "runtime": "codex",
+    "event": "UserPromptSubmit|SessionStart|SessionResume|SessionRefresh",
+    "render_target": "input_footer",
+    "context_prefix": "[beacon-hud]"
+  }
 }
 ```
 
@@ -145,6 +186,19 @@ compatibility 相关阻断时，推荐命令优先指向：
 - 修改 `beacon/utils/subagent_runtime.py`
 - 只补齐必要字段，不改主路径
 
+### Slice E：Codex Hook 注入层
+
+- 修改 `beacon/commands/debug.py`
+- 新增/扩展 Codex hook 适配命令（可沿用或扩展 `codex-user-prompt-submit`）
+- 支持 `UserPromptSubmit + 会话刷新事件` 两类输入
+- 返回 `hookSpecificOutput.additionalContext`，承载固定 HUD 文本
+
+### Slice F：Doctor 安装与验证层
+
+- 修改 `beacon/commands/doctor.py`
+- 增加 hook wiring 的 dry-run/apply/verify 流程
+- 落盘诊断产物到 `.beacon/state/hud-hook/`
+
 ## 8. 测试要求
 
 新增：
@@ -160,6 +214,10 @@ compatibility 相关阻断时，推荐命令优先指向：
 5. S5 3 行（warn）
 6. S6 3 行（blocked/trip）
 7. 行长与字段白名单约束
+8. `UserPromptSubmit` 事件返回固定 HUD additionalContext
+9. 会话刷新事件返回固定 HUD additionalContext
+10. hook 失败时不阻断主输入流程（降级成功）
+11. doctor hook wiring dry-run/apply/verify 可复现
 
 回归：
 
@@ -173,6 +231,7 @@ compatibility 相关阻断时，推荐命令优先指向：
 | HUD 信息膨胀 | 高 | 固定场景 + 行数预算 + 字段白名单 |
 | 命令输出兼容性回归 | 中 | JSON 输出只增不删 |
 | 阻断命令不一致 | 中 | 统一在 `help_support` 生成推荐命令 |
+| hook 事件不一致导致注入失效 | 中 | 事件集合可配置 + doctor verify + 降级路径 |
 
 ## 10. 成功标准
 
@@ -181,6 +240,7 @@ compatibility 相关阻断时，推荐命令优先指向：
 3. compatibility 阻断时推荐 doctor 迁移命令
 4. 无新增公开一级命令
 5. 场景测试与回归测试通过
+6. Codex 在 `UserPromptSubmit/会话刷新` 后可稳定看到输入框下固定 HUD
 
 ---
 

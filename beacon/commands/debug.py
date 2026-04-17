@@ -29,6 +29,7 @@ from beacon.utils.debug_feedback import (
     resolve_debug_run_id,
     save_debug_mode_state,
 )
+from beacon.utils.help_support import build_help_payload
 from beacon.utils.intent_router import (
     DEFAULT_CONFIDENCE_THRESHOLD,
     ROUTER_CONFIG_FILE,
@@ -52,6 +53,10 @@ exhaustion_app = typer.Typer(name="exhaustion", help="Failure streak / escalatio
 app.add_typer(confidence_app, name="confidence")
 app.add_typer(checkpoint_app, name="checkpoint")
 app.add_typer(exhaustion_app, name="exhaustion")
+
+
+HUD_HOOK_CONTEXT_PREFIX = "[beacon-hud]"
+HUD_HOOK_SUPPORTED_EVENTS = {"UserPromptSubmit", "SessionStart", "SessionResume", "SessionRefresh"}
 
 
 def _router_config_path(project_root: Path) -> Path:
@@ -93,6 +98,14 @@ def _read_codex_hook_event_name(payload: dict[str, Any]) -> str:
 
 def _read_codex_prompt_text(payload: dict[str, Any]) -> str:
     for key in ("prompt", "input", "user_prompt", "userPrompt", "text"):
+        value = str(payload.get(key, "") or "").strip()
+        if value:
+            return value
+    return ""
+
+
+def _read_codex_feature(payload: dict[str, Any]) -> str:
+    for key in ("feature", "feature_slug", "featureSlug"):
         value = str(payload.get(key, "") or "").strip()
         if value:
             return value
@@ -151,6 +164,52 @@ def _append_codex_hook_snapshot(
         "prompt": _read_codex_prompt_text(payload),
         "plan": plan,
         "adaptation": adaptation,
+    }
+    with path.open("a", encoding="utf-8") as handle:
+        handle.write(json.dumps(record, ensure_ascii=False) + "\n")
+    return path
+
+
+def _render_fixed_hud_context(lines: list[str]) -> str:
+    cleaned = [str(item).strip() for item in lines if str(item).strip()]
+    if not cleaned:
+        return ""
+    return "\n".join([HUD_HOOK_CONTEXT_PREFIX, *cleaned])
+
+
+def _append_codex_fixed_hud_snapshot(
+    project_root: Path,
+    *,
+    run_id: str,
+    payload: dict[str, Any],
+    hook_event_name: str,
+    feature: str,
+    version: str,
+    status: str,
+    reason: str,
+    minimal_hud: dict[str, Any],
+    context_text: str,
+    parse_error: str = "",
+    render_error: str = "",
+) -> Path:
+    run_dir = debug_root(project_root) / "runs" / run_id
+    run_dir.mkdir(parents=True, exist_ok=True)
+    path = run_dir / "codex-fixed-hud.jsonl"
+    record = {
+        "ts": now_iso(),
+        "hook_event_name": hook_event_name,
+        "session_id": str(payload.get("session_id", payload.get("sessionId", "")) or ""),
+        "thread_id": str(payload.get("thread_id", payload.get("threadId", "")) or ""),
+        "turn_id": str(payload.get("turn_id", payload.get("turnId", "")) or ""),
+        "transcript_path": str(payload.get("transcript_path", payload.get("transcriptPath", "")) or ""),
+        "feature": feature,
+        "version": version,
+        "status": status,
+        "reason": reason,
+        "minimal_hud": minimal_hud,
+        "additional_context": context_text,
+        "parse_error": parse_error,
+        "render_error": render_error,
     }
     with path.open("a", encoding="utf-8") as handle:
         handle.write(json.dumps(record, ensure_ascii=False) + "\n")
@@ -555,6 +614,199 @@ def codex_user_prompt_submit(
     typer.echo(f"- boundary: {adaptation.get('boundary_state', '')}")
     typer.echo(f"- command: {plan.get('recommended_command', '')}")
     typer.echo(f'- normalized_prompt: {adaptation.get("normalized_prompt", "")}')
+
+
+@app.command("codex-fixed-hud")
+def codex_fixed_hud(
+    project_root: str = typer.Option("", "--project-root", help="Project root path"),
+    version: str = typer.Option("auto", "--version", help="Docs version used for fixed HUD rendering"),
+    feature: str = typer.Option("", "--feature", help="Feature slug override for HUD context"),
+    run_id: str = typer.Option("", "--run-id", help="Debug run id (default auto-resolve)"),
+    payload_json: str = typer.Option("", "--payload-json", help="Inline hook JSON payload"),
+    fallback_hook_event: str = typer.Option(
+        "UserPromptSubmit",
+        "--fallback-hook-event",
+        help="Fallback hook event when payload is empty/invalid",
+    ),
+    json_output: bool = typer.Option(True, "--json/--no-json", help="Emit hook JSON output"),
+):
+    """Render fixed Beacon HUD for Codex hook events without blocking user input on failures."""
+    root = Path(project_root) if project_root else Path.cwd()
+
+    payload: dict[str, Any] = {}
+    parse_error = ""
+    try:
+        payload = _load_hook_payload(payload_json)
+    except typer.BadParameter as exc:
+        parse_error = str(exc)
+
+    hook_event_name = (_read_codex_hook_event_name(payload) or str(fallback_hook_event or "").strip() or "UserPromptSubmit").strip()
+    if hook_event_name not in HUD_HOOK_SUPPORTED_EVENTS:
+        result = {
+            "status": "ignored",
+            "reason": "unsupported_hook_event",
+            "hook_event_name": hook_event_name,
+            "supported_hook_events": sorted(HUD_HOOK_SUPPORTED_EVENTS),
+            "hookSpecificOutput": {
+                "hookEventName": hook_event_name or str(fallback_hook_event or "UserPromptSubmit"),
+                "additionalContext": "",
+            },
+        }
+        if json_output:
+            typer.echo(json.dumps(result, ensure_ascii=False, indent=2))
+            return
+        typer.echo("Ignored: unsupported hook event")
+        return
+
+    resolved_feature = str(feature or _read_codex_feature(payload) or "").strip()
+    resolved_version = resolve_target_version(root, version)
+    minimal_hud: dict[str, Any] = {"schema_version": "1.0", "scenario": "", "line_budget": 0, "lines": []}
+    context_text = ""
+    status = "captured"
+    reason = ""
+    render_error = ""
+    hud_lines: list[str] = []
+
+    if parse_error:
+        status = "degraded"
+        reason = "invalid_payload_json"
+    else:
+        try:
+            help_payload = build_help_payload(
+                root,
+                version=resolved_version,
+                feature=resolved_feature or None,
+            )
+            candidate_hud = help_payload.get("minimal_hud")
+            if isinstance(candidate_hud, dict):
+                minimal_hud = candidate_hud
+            candidate_lines = minimal_hud.get("lines")
+            hud_lines = [str(item).strip() for item in candidate_lines] if isinstance(candidate_lines, list) else []
+            hud_lines = [line for line in hud_lines if line]
+            context_text = _render_fixed_hud_context(hud_lines)
+            if not context_text:
+                status = "degraded"
+                reason = "empty_hud_lines"
+        except Exception as exc:  # noqa: BLE001
+            status = "degraded"
+            reason = "hud_render_failed"
+            render_error = str(exc)
+            minimal_hud = {"schema_version": "1.0", "scenario": "", "line_budget": 0, "lines": []}
+            context_text = ""
+            hud_lines = []
+
+    confidence = 1.0 if status == "captured" else 0.0
+    input_audit_file = append_user_input_audit(
+        root,
+        {
+            "ts": now_iso(),
+            "source": "codex.fixed-hud-hook",
+            "channel": "hook",
+            "hook_event_name": hook_event_name,
+            "input_goal": f"codex fixed hud {hook_event_name}",
+            "raw_prompt": _read_codex_prompt_text(payload),
+            "normalized_prompt": "",
+            "intent": "hud",
+            "confidence": confidence,
+            "boundary_state": "in_scope",
+            "recommended_command": "",
+            "recommended_args": [],
+            "router_mode": "hud",
+            "execute_requested": False,
+            "execute_blocked": status != "captured",
+            "block_reason": reason,
+            "execute_exit_code": None,
+            "session_id": str(payload.get("session_id", payload.get("sessionId", "")) or ""),
+            "thread_id": str(payload.get("thread_id", payload.get("threadId", "")) or ""),
+            "turn_id": str(payload.get("turn_id", payload.get("turnId", "")) or ""),
+            "transcript_path": str(payload.get("transcript_path", payload.get("transcriptPath", "")) or ""),
+            "feature": resolved_feature,
+            "hud_scenario": str(minimal_hud.get("scenario", "") or ""),
+            "hud_line_budget": len(hud_lines),
+        },
+    )
+    target_run_id, feedback_path, debug_event = append_debug_feedback_event(
+        root,
+        run_id=run_id or None,
+        source="debug.codex.fixed-hud-hook",
+        goal=f"render fixed hud for {hook_event_name}",
+        intent="hud",
+        confidence=confidence,
+        boundary_state="in_scope",
+        block_reason=reason,
+        recommended_command="",
+        executed=False,
+        note="captured-from-codex-fixed-hud-hook",
+        extra={
+            "hook_event_name": hook_event_name,
+            "feature": resolved_feature,
+            "version": resolved_version,
+            "hud_scenario": str(minimal_hud.get("scenario", "") or ""),
+            "hud_line_budget": len(hud_lines),
+            "status": status,
+            "parse_error": parse_error,
+            "render_error": render_error,
+        },
+    )
+    append_debug_event_memory(
+        root,
+        run_id=target_run_id,
+        event_payload=debug_event,
+        evidence_path=feedback_path,
+        source="debug.codex.fixed-hud-hook",
+    )
+    snapshot_path = _append_codex_fixed_hud_snapshot(
+        root,
+        run_id=target_run_id,
+        payload=payload,
+        hook_event_name=hook_event_name,
+        feature=resolved_feature,
+        version=resolved_version,
+        status=status,
+        reason=reason,
+        minimal_hud=minimal_hud,
+        context_text=context_text,
+        parse_error=parse_error,
+        render_error=render_error,
+    )
+
+    result = {
+        "status": status,
+        "reason": reason,
+        "hook_event_name": hook_event_name,
+        "feature": resolved_feature,
+        "version": resolved_version,
+        "minimal_hud": minimal_hud,
+        "debug_feedback": {
+            "run_id": target_run_id,
+            "path": str(feedback_path.relative_to(root)),
+        },
+        "input_audit_path": str(input_audit_file.relative_to(root)),
+        "snapshot_path": str(snapshot_path.relative_to(root)),
+        "hookSpecificOutput": {
+            "hookEventName": hook_event_name,
+            "additionalContext": context_text,
+        },
+    }
+    if parse_error:
+        result["parse_error"] = parse_error
+    if render_error:
+        result["render_error"] = render_error
+
+    if json_output:
+        typer.echo(json.dumps(result, ensure_ascii=False, indent=2))
+        return
+    typer.echo("Beacon Codex fixed HUD hook")
+    typer.echo(f"- status: {status}")
+    if reason:
+        typer.echo(f"- reason: {reason}")
+    typer.echo(f"- hook_event_name: {hook_event_name}")
+    typer.echo(f"- feature: {resolved_feature or '<empty>'}")
+    typer.echo(f"- version: {resolved_version}")
+    if context_text:
+        typer.echo(context_text)
+    else:
+        typer.echo("(empty HUD context)")
 
 
 @app.command("project-feed")
