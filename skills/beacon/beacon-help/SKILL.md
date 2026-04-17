@@ -1,6 +1,6 @@
 ---
 name: beacon-help
-description: Use when the user asks what Beacon should do next, is blocked in the Beacon lifecycle, or needs stage-aware guidance through the minimal v1.3.2 human surface.
+description: Use when the user asks what Beacon should do next, is blocked in the Beacon lifecycle, or needs stage-aware guidance through the minimal v1.3.3 human surface.
 ---
 
 # Beacon Help

@@ -1,6 +1,6 @@
 ---
 name: using-beacon
-description: Use when Beacon should become the primary workflow router in Codex or Claude for requirements, implementation, QA, release readiness, or next-step guidance. Route the user into Beacon's minimal v1.3.2 human surface instead of exposing the full CLI catalog.
+description: Use when Beacon should become the primary workflow router in Codex or Claude for requirements, implementation, QA, release readiness, or next-step guidance. Route the user into Beacon's minimal v1.3.3 human surface instead of exposing the full CLI catalog.
 ---
 
 # Using Beacon

@@ -1,6 +1,6 @@
 ---
 name: beacon-release
-description: Use when the user wants Beacon to judge release readiness, inspect final blocking conditions, or run the last release-facing checks through the minimal v1.3.2 human surface.
+description: Use when the user wants Beacon to judge release readiness, inspect final blocking conditions, or run the last release-facing checks through the minimal v1.3.3 human surface.
 ---
 
 # Beacon Release
