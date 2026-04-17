@@ -1,0 +1,144 @@
+"""v1.3.3 Ralph resume state refresh contracts."""
+
+from __future__ import annotations
+
+import json
+import importlib
+from pathlib import Path
+
+from typer.testing import CliRunner
+
+from beacon.main import app
+
+
+runner = CliRunner()
+implement_module = importlib.import_module("beacon.commands.implement")
+
+
+def _write_ralph_state(tmp_path: Path, feature: str, payload: dict) -> Path:
+    slug = "-".join(feature.strip().lower().split())
+    path = tmp_path / ".beacon" / "ralph" / f"{slug}.json"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    return path
+
+
+def _read_json(path: Path) -> dict:
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def test_ralph_resume_should_promote_review_quality_gate_ready_to_release(monkeypatch, tmp_path: Path):
+    feature = "beacon-v1.3.3-minimal-hud-scenarios-and-implementation"
+    state_path = _write_ralph_state(
+        tmp_path,
+        feature,
+        {
+            "schema_version": "1.1",
+            "feature": feature,
+            "feature_slug": feature,
+            "version": "v1.3.3",
+            "next_action": "review_quality",
+            "recommended_command": f'beacon review quality "{feature}" --project . --version v1.3.3',
+            "stop_state": "human_blocked",
+            "current_blocker": "review_quality_blocked",
+            "review_gate_ready": False,
+        },
+    )
+
+    monkeypatch.setattr(
+        implement_module,
+        "_run_beacon_json_command",
+        lambda project_root, command: (0, {"status": "warn", "gate_ready": True}),
+    )
+
+    result = runner.invoke(
+        app,
+        ["implement", "ralph-resume", feature, "--project-root", str(tmp_path), "--json"],
+    )
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["status"] == "completed"
+
+    updated = _read_json(state_path)
+    assert updated["review_gate_ready"] is True
+    assert updated["next_action"] == "release"
+    assert updated["current_blocker"] == "gate_release_pending"
+    assert "beacon gate check release" in updated["recommended_command"]
+
+
+def test_ralph_resume_should_mark_release_ready_after_gate_pass(monkeypatch, tmp_path: Path):
+    feature = "beacon-v1.3.3-minimal-hud-scenarios-and-implementation"
+    state_path = _write_ralph_state(
+        tmp_path,
+        feature,
+        {
+            "schema_version": "1.1",
+            "feature": feature,
+            "feature_slug": feature,
+            "version": "v1.3.3",
+            "next_action": "release",
+            "recommended_command": "beacon gate check release --project-root . --version v1.3.3",
+            "stop_state": "human_blocked",
+            "current_blocker": "gate_release_pending",
+            "gate_release_status": "",
+        },
+    )
+
+    monkeypatch.setattr(
+        implement_module,
+        "_run_beacon_json_command",
+        lambda project_root, command: (0, {"status": "pass"}),
+    )
+
+    result = runner.invoke(
+        app,
+        ["implement", "ralph-resume", feature, "--project-root", str(tmp_path), "--json"],
+    )
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["status"] == "completed"
+
+    updated = _read_json(state_path)
+    assert updated["gate_release_status"] == "pass"
+    assert updated["stop_state"] == "release_ready"
+    assert updated["current_blocker"] == ""
+    assert updated["next_action"] == "release"
+
+
+def test_ralph_resume_should_mark_gate_release_blocked_when_gate_fails(monkeypatch, tmp_path: Path):
+    feature = "beacon-v1.3.3-minimal-hud-scenarios-and-implementation"
+    state_path = _write_ralph_state(
+        tmp_path,
+        feature,
+        {
+            "schema_version": "1.1",
+            "feature": feature,
+            "feature_slug": feature,
+            "version": "v1.3.3",
+            "next_action": "release",
+            "recommended_command": "beacon gate check release --project-root . --version v1.3.3",
+            "stop_state": "human_blocked",
+            "current_blocker": "gate_release_pending",
+            "gate_release_status": "",
+        },
+    )
+
+    monkeypatch.setattr(
+        implement_module,
+        "_run_beacon_json_command",
+        lambda project_root, command: (2, {"status": "Blocked"}),
+    )
+
+    result = runner.invoke(
+        app,
+        ["implement", "ralph-resume", feature, "--project-root", str(tmp_path), "--json"],
+    )
+    assert result.exit_code == 2, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["status"] == "failed"
+
+    updated = _read_json(state_path)
+    assert updated["gate_release_status"] == "blocked"
+    assert updated["stop_state"] == "human_blocked"
+    assert updated["current_blocker"] == "gate_release_blocked"
+    assert updated["next_action"] == "release"

@@ -3,9 +3,17 @@
   "feature": "beacon-v1.3.3-minimal-hud-scenarios-and-implementation",
   "feature_slug": "beacon-v1.3.3-minimal-hud-scenarios-and-implementation",
   "version": "v1.3.3",
-  "qa_profile": "custom",
+  "qa_profile": "web-full",
   "qa_types": [
-    "unit"
+    "unit",
+    "interface",
+    "contract",
+    "integration",
+    "smoke",
+    "functional",
+    "regression",
+    "exception",
+    "compatibility"
   ],
   "llm_plan": {
     "mode": "rule",
@@ -23,16 +31,24 @@
       ]
     },
     "project_type": "ai-agent-skill",
-    "generated_at": "2026-04-16T23:36:30.793780",
+    "generated_at": "2026-04-17T12:03:28.455378",
     "prompt_ref": "beacon.qa9.llm.plan.v1.0.2",
     "skip_reason": "",
     "qa_types": [
-      "unit"
+      "unit",
+      "interface",
+      "contract",
+      "integration",
+      "smoke",
+      "functional",
+      "regression",
+      "exception",
+      "compatibility"
     ]
   },
   "qa_strategy": {
     "schema_version": "1.0.2",
-    "generated_at": "2026-04-16T23:36:30.792919",
+    "generated_at": "2026-04-17T12:03:28.454362",
     "project_type": "ai-agent-skill",
     "project_scan": {
       "language": "python",
@@ -58,7 +74,15 @@
       "compatibility": "conditional"
     },
     "qa_required_types": [
-      "unit"
+      "unit",
+      "interface",
+      "contract",
+      "integration",
+      "smoke",
+      "functional",
+      "regression",
+      "exception",
+      "compatibility"
     ],
     "runner_policy": {
       "functional": {
@@ -109,9 +133,9 @@
     },
     {
       "qa_type": "interface",
-      "required": false,
-      "automation_required": false,
-      "min_cases": 0,
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
       "applicability": "required",
       "waiver": {
         "ticket": "",
@@ -121,9 +145,9 @@
     },
     {
       "qa_type": "contract",
-      "required": false,
-      "automation_required": false,
-      "min_cases": 0,
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
       "applicability": "required",
       "waiver": {
         "ticket": "",
@@ -133,9 +157,9 @@
     },
     {
       "qa_type": "integration",
-      "required": false,
-      "automation_required": false,
-      "min_cases": 0,
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
       "applicability": "required",
       "waiver": {
         "ticket": "",
@@ -145,9 +169,9 @@
     },
     {
       "qa_type": "smoke",
-      "required": false,
-      "automation_required": false,
-      "min_cases": 0,
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
       "applicability": "required",
       "waiver": {
         "ticket": "",
@@ -169,9 +193,9 @@
     },
     {
       "qa_type": "regression",
-      "required": false,
-      "automation_required": false,
-      "min_cases": 0,
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
       "applicability": "required",
       "waiver": {
         "ticket": "",
@@ -181,9 +205,9 @@
     },
     {
       "qa_type": "exception",
-      "required": false,
-      "automation_required": false,
-      "min_cases": 0,
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
       "applicability": "required",
       "waiver": {
         "ticket": "",
@@ -216,7 +240,7 @@
       "automation": "auto",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
       "assertion": "All unit assertions pass",
-      "evidence_path": ".beacon/evidence/auto-test/run-20260417T093313841050/qa9-tc/TC-001/command.txt",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-minimal-hud-scenarios-and-implementation/{run_id}/TC-001.json",
       "required_files": [
         "command.txt",
         "stdout.log",
@@ -224,9 +248,8 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "passed",
-      "source": "user-story:docs/beacon/v1.3.3/user-story/beacon-v1.3.3-minimal-hud-scenarios-and-implementation.md",
-      "last_run_id": "run-20260417T093313841050"
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.3/user-story/beacon-v1.3.3-minimal-hud-scenarios-and-implementation.md"
     },
     {
       "tc_id": "TC-002",
@@ -238,7 +261,7 @@
       "automation": "auto",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
       "assertion": "All unit assertions pass",
-      "evidence_path": ".beacon/evidence/auto-test/run-20260417T093313841050/qa9-tc/TC-002/command.txt",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-minimal-hud-scenarios-and-implementation/{run_id}/TC-002.json",
       "required_files": [
         "command.txt",
         "stdout.log",
@@ -246,9 +269,8 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "passed",
-      "source": "user-story:docs/beacon/v1.3.3/user-story/beacon-v1.3.3-minimal-hud-scenarios-and-implementation.md",
-      "last_run_id": "run-20260417T093313841050"
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.3/user-story/beacon-v1.3.3-minimal-hud-scenarios-and-implementation.md"
     },
     {
       "tc_id": "TC-003",
@@ -260,7 +282,7 @@
       "automation": "auto",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
       "assertion": "All unit assertions pass",
-      "evidence_path": ".beacon/evidence/auto-test/run-20260417T093313841050/qa9-tc/TC-003/command.txt",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-minimal-hud-scenarios-and-implementation/{run_id}/TC-003.json",
       "required_files": [
         "command.txt",
         "stdout.log",
@@ -268,9 +290,8 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "passed",
-      "source": "user-story:docs/beacon/v1.3.3/user-story/beacon-v1.3.3-minimal-hud-scenarios-and-implementation.md",
-      "last_run_id": "run-20260417T093313841050"
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.3/user-story/beacon-v1.3.3-minimal-hud-scenarios-and-implementation.md"
     },
     {
       "tc_id": "TC-004",
@@ -282,7 +303,7 @@
       "automation": "auto",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
       "assertion": "All unit assertions pass",
-      "evidence_path": ".beacon/evidence/auto-test/run-20260417T093313841050/qa9-tc/TC-004/command.txt",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-minimal-hud-scenarios-and-implementation/{run_id}/TC-004.json",
       "required_files": [
         "command.txt",
         "stdout.log",
@@ -290,9 +311,8 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "passed",
-      "source": "user-story:docs/beacon/v1.3.3/user-story/beacon-v1.3.3-minimal-hud-scenarios-and-implementation.md",
-      "last_run_id": "run-20260417T093313841050"
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.3/user-story/beacon-v1.3.3-minimal-hud-scenarios-and-implementation.md"
     },
     {
       "tc_id": "TC-005",
@@ -304,7 +324,7 @@
       "automation": "auto",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
       "assertion": "All unit assertions pass",
-      "evidence_path": ".beacon/evidence/auto-test/run-20260417T093313841050/qa9-tc/TC-005/command.txt",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-minimal-hud-scenarios-and-implementation/{run_id}/TC-005.json",
       "required_files": [
         "command.txt",
         "stdout.log",
@@ -312,9 +332,8 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "passed",
-      "source": "user-story:docs/beacon/v1.3.3/user-story/beacon-v1.3.3-minimal-hud-scenarios-and-implementation.md",
-      "last_run_id": "run-20260417T093313841050"
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.3/user-story/beacon-v1.3.3-minimal-hud-scenarios-and-implementation.md"
     },
     {
       "tc_id": "TC-006",
@@ -326,7 +345,7 @@
       "automation": "auto",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
       "assertion": "All unit assertions pass",
-      "evidence_path": ".beacon/evidence/auto-test/run-20260417T093313841050/qa9-tc/TC-006/command.txt",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-minimal-hud-scenarios-and-implementation/{run_id}/TC-006.json",
       "required_files": [
         "command.txt",
         "stdout.log",
@@ -334,9 +353,8 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "passed",
-      "source": "user-story:docs/beacon/v1.3.3/user-story/beacon-v1.3.3-minimal-hud-scenarios-and-implementation.md",
-      "last_run_id": "run-20260417T093313841050"
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.3/user-story/beacon-v1.3.3-minimal-hud-scenarios-and-implementation.md"
     },
     {
       "tc_id": "TC-007",
@@ -348,7 +366,112 @@
       "automation": "auto",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
       "assertion": "All unit assertions pass",
-      "evidence_path": ".beacon/evidence/auto-test/run-20260417T093313841050/qa9-tc/TC-007/command.txt",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-minimal-hud-scenarios-and-implementation/{run_id}/TC-007.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.3/user-story/beacon-v1.3.3-minimal-hud-scenarios-and-implementation.md"
+    },
+    {
+      "tc_id": "TC-008",
+      "ac_id": "AC-008",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.3-minimal-hud-scenarios-and-implementation unit :: Codex 固定 HUD 注入：hook 输出必须通过 `hookSpecificOutput.additionalContext` 返回 1-3 行 HUD，",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-minimal-hud-scenarios-and-implementation/{run_id}/TC-008.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.3/user-story/beacon-v1.3.3-minimal-hud-scenarios-and-implementation.md"
+    },
+    {
+      "tc_id": "TC-009",
+      "ac_id": "AC-009",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.3-minimal-hud-scenarios-and-implementation unit :: 自动注入事件覆盖：必须覆盖 `UserPromptSubmit`，并支持会话刷新事件（`SessionStart/SessionResume/SessionRe",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-minimal-hud-scenarios-and-implementation/{run_id}/TC-009.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.3/user-story/beacon-v1.3.3-minimal-hud-scenarios-and-implementation.md"
+    },
+    {
+      "tc_id": "TC-010",
+      "ac_id": "AC-010",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.3-minimal-hud-scenarios-and-implementation unit :: Hook 治理与降级：hook 安装/校验必须走 `beacon doctor`；hook 失败不得阻断主输入流程，必须降级并写 debug 证据。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-minimal-hud-scenarios-and-implementation/{run_id}/TC-010.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.3/user-story/beacon-v1.3.3-minimal-hud-scenarios-and-implementation.md"
+    },
+    {
+      "tc_id": "TC-011",
+      "ac_id": "AC-001",
+      "layer": "api-curl",
+      "qa_type": "interface",
+      "title": "beacon-v1.3.3-minimal-hud-scenarios-and-implementation interface coverage",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k interface --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "HTTP status and schema assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-minimal-hud-scenarios-and-implementation/{run_id}/TC-011.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.3/user-story/beacon-v1.3.3-minimal-hud-scenarios-and-implementation.md"
+    },
+    {
+      "tc_id": "TC-012",
+      "ac_id": "AC-002",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-v1.3.3-minimal-hud-scenarios-and-implementation contract coverage",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260417T125522574491/qa9-tc/TC-012/command.txt",
       "required_files": [
         "command.txt",
         "stdout.log",
@@ -358,7 +481,135 @@
       ],
       "status": "passed",
       "source": "user-story:docs/beacon/v1.3.3/user-story/beacon-v1.3.3-minimal-hud-scenarios-and-implementation.md",
-      "last_run_id": "run-20260417T093313841050"
+      "last_run_id": "run-20260417T125522574491"
+    },
+    {
+      "tc_id": "TC-013",
+      "ac_id": "AC-003",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-v1.3.3-minimal-hud-scenarios-and-implementation integration coverage",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k integration --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Integration flow assertions pass",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260417T125522574491/qa9-tc/TC-013/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "user-story:docs/beacon/v1.3.3/user-story/beacon-v1.3.3-minimal-hud-scenarios-and-implementation.md",
+      "last_run_id": "run-20260417T125522574491"
+    },
+    {
+      "tc_id": "TC-014",
+      "ac_id": "AC-004",
+      "layer": "smoke",
+      "qa_type": "smoke",
+      "title": "beacon-v1.3.3-minimal-hud-scenarios-and-implementation smoke coverage",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -m smoke --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Critical path assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-minimal-hud-scenarios-and-implementation/{run_id}/TC-014.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.3/user-story/beacon-v1.3.3-minimal-hud-scenarios-and-implementation.md"
+    },
+    {
+      "tc_id": "TC-015",
+      "ac_id": "AC-005",
+      "layer": "ui",
+      "qa_type": "functional",
+      "title": "beacon-v1.3.3-minimal-hud-scenarios-and-implementation functional coverage",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m beacon.adapters.browser_use_runner --mode functional --fallback-cmd \"python3 -m pytest -q -k functional --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "assertion": "Web UI assertions and key actions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-minimal-hud-scenarios-and-implementation/{run_id}/TC-015.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.3/user-story/beacon-v1.3.3-minimal-hud-scenarios-and-implementation.md"
+    },
+    {
+      "tc_id": "TC-016",
+      "ac_id": "AC-006",
+      "layer": "regression",
+      "qa_type": "regression",
+      "title": "beacon-v1.3.3-minimal-hud-scenarios-and-implementation regression coverage",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k regression --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "No known behavior regression found",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260417T125522574491/qa9-tc/TC-016/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "user-story:docs/beacon/v1.3.3/user-story/beacon-v1.3.3-minimal-hud-scenarios-and-implementation.md",
+      "last_run_id": "run-20260417T125522574491"
+    },
+    {
+      "tc_id": "TC-017",
+      "ac_id": "AC-007",
+      "layer": "exception",
+      "qa_type": "exception",
+      "title": "beacon-v1.3.3-minimal-hud-scenarios-and-implementation exception coverage",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k exception --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Negative-path assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-minimal-hud-scenarios-and-implementation/{run_id}/TC-017.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.3/user-story/beacon-v1.3.3-minimal-hud-scenarios-and-implementation.md"
+    },
+    {
+      "tc_id": "TC-018",
+      "ac_id": "AC-008",
+      "layer": "compatibility",
+      "qa_type": "compatibility",
+      "title": "beacon-v1.3.3-minimal-hud-scenarios-and-implementation compatibility coverage",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m beacon.adapters.browser_use_runner --mode compatibility --fallback-cmd \"python3 -m pytest -q -k compatibility --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "assertion": "Cross-browser/device assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-minimal-hud-scenarios-and-implementation/{run_id}/TC-018.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.3/user-story/beacon-v1.3.3-minimal-hud-scenarios-and-implementation.md"
     }
   ],
   "compatibility_matrix": {
@@ -386,5 +637,5 @@
       }
     ]
   },
-  "generated_at": "2026-04-16T23:36:30.793798"
+  "generated_at": "2026-04-17T12:03:28.455394"
 }

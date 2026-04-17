@@ -4,8 +4,8 @@
 - feature: `beacon-v1.3.3-core-slimming-and-external-skill-demotion`
 - version: `v1.3.3`
 - revision_id: `R1`
-- baseline_hash: `sha256:d683028a58cb21b6881b290a4cc7d2e3a726723c0f3c42efbf15f1c58e0c0aba`
-- plan_hash: `sha256:d5f3b8cdb6a7a2bc170bd8d4236029ece2a233fd5bb6fdfc5bc4e90e6d4c7a88`
+- baseline_hash: `sha256:b4c3c261e6e63aae01cf04a5308969d68fd635419f56aac6081b07cc31f899c6`
+- plan_hash: `sha256:00ac287984da32c61537952c752cc4092cf264ab10157438eec393fdb41a9585`
 - status: `completed`
 
 ## Source Refs
@@ -47,46 +47,46 @@
 
 ### ITASK-001 — FR-001 默认 runner 必须保持宿主原生优先
 - status: `completed`
-- mapped_ac_ids: AC-001, AC-002, AC-003
-- mapped_test_ids: TC-001, TC-002, TC-003, TC-012, TC-013, TC-014
-- mapped_scenario_ids: SC-001, SC-002, SC-003, SC-004, SC-005, SC-006
-- mapped_qa_case_ids: TC-001, TC-002, TC-003, TC-012, TC-013, TC-014
+- mapped_ac_ids: AC-002, AC-001
+- mapped_test_ids: TC-002, TC-001, TC-008, TC-015, TC-009
+- mapped_scenario_ids: SC-001, SC-002, SC-003, SC-004, SC-005, SC-006, SC-007, SC-008, SC-009
+- mapped_qa_case_ids: TC-001, TC-002, TC-008, TC-009, TC-015
 - depends_on: -
 - target_modules: -
 
 ### ITASK-002 — FR-002 external adapter 必须退出 core builtin 集合
 - status: `completed`
-- mapped_ac_ids: AC-007, AC-008
-- mapped_test_ids: TC-007, TC-008, TC-018, TC-019
-- mapped_scenario_ids: SC-021, SC-022, SC-023, SC-024, SC-025, SC-026, SC-027, SC-028, SC-029, SC-030, SC-031, SC-032
-- mapped_qa_case_ids: TC-007, TC-008, TC-018, TC-019
+- mapped_ac_ids: AC-007, AC-003
+- mapped_test_ids: TC-007, TC-003, TC-010, TC-014
+- mapped_scenario_ids: SC-010, SC-011, SC-026, SC-027
+- mapped_qa_case_ids: TC-003, TC-007, TC-010, TC-014
 - depends_on: ITASK-001
 - target_modules: -
 
 ### ITASK-003 — FR-003 兼容迁移必须由 doctor 子命令统一执行
 - status: `completed`
-- mapped_ac_ids: AC-009, AC-004, AC-011
-- mapped_test_ids: TC-009, TC-004, TC-011, TC-015
-- mapped_scenario_ids: SC-007, SC-008, SC-009, SC-010, SC-011, SC-012, SC-033, SC-035
-- mapped_qa_case_ids: TC-004, TC-009, TC-011, TC-015
+- mapped_ac_ids: AC-004, AC-009, AC-011
+- mapped_test_ids: TC-004, TEST-009, TEST-011, TC-011
+- mapped_scenario_ids: SC-012, SC-013, SC-014, SC-015, SC-016, SC-017
+- mapped_qa_case_ids: TC-004, TC-011
 - depends_on: ITASK-002
 - target_modules: -
 
 ### ITASK-004 — FR-004 `qa` 默认不得隐式自动触发 external orchestration
 - status: `completed`
-- mapped_ac_ids: AC-005, AC-010
-- mapped_test_ids: TC-005, TC-010, TC-016
-- mapped_scenario_ids: SC-013, SC-014, SC-015, SC-016, SC-017, SC-018, SC-034
-- mapped_qa_case_ids: TC-005, TC-010, TC-016
+- mapped_ac_ids: AC-005, AC-006, AC-008
+- mapped_test_ids: TC-005, TC-006, TEST-008, TC-012, TC-013
+- mapped_scenario_ids: SC-018, SC-019, SC-020, SC-021, SC-022, SC-023, SC-024, SC-025
+- mapped_qa_case_ids: TC-005, TC-006, TC-012, TC-013
 - depends_on: ITASK-003
 - target_modules: -
 
 ### ITASK-005 — FR-005 `skill/profile/orchestrate` 必须退出默认主叙事
 - status: `completed`
-- mapped_ac_ids: AC-006
-- mapped_test_ids: TC-006, TC-017
-- mapped_scenario_ids: SC-019, SC-020
-- mapped_qa_case_ids: TC-006, TC-017
+- mapped_ac_ids: AC-010
+- mapped_test_ids: TEST-010
+- mapped_scenario_ids: SC-034
+- mapped_qa_case_ids: TC-010
 - depends_on: ITASK-004
 - target_modules: -
 
@@ -178,4 +178,13 @@
 - mapped_scenario_ids: -
 - mapped_qa_case_ids: -
 - depends_on: ITASK-014
+- target_modules: -
+
+### ITASK-016 — FR-016 Codex 输入框下固定 HUD 必须通过 hook 自动注入
+- status: `completed`
+- mapped_ac_ids: -
+- mapped_test_ids: -
+- mapped_scenario_ids: -
+- mapped_qa_case_ids: -
+- depends_on: ITASK-015
 - target_modules: -

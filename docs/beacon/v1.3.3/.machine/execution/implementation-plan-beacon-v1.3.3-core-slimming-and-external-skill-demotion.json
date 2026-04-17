@@ -5,8 +5,8 @@
   "feature_slug": "beacon-v1.3.3-core-slimming-and-external-skill-demotion",
   "version": "v1.3.3",
   "revision_id": "R1",
-  "baseline_hash": "sha256:d683028a58cb21b6881b290a4cc7d2e3a726723c0f3c42efbf15f1c58e0c0aba",
-  "plan_hash": "sha256:d5f3b8cdb6a7a2bc170bd8d4236029ece2a233fd5bb6fdfc5bc4e90e6d4c7a88",
+  "baseline_hash": "sha256:b4c3c261e6e63aae01cf04a5308969d68fd635419f56aac6081b07cc31f899c6",
+  "plan_hash": "sha256:00ac287984da32c61537952c752cc4092cf264ab10157438eec393fdb41a9585",
   "status": "completed",
   "source_refs": {
     "user_story": "docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
@@ -57,7 +57,8 @@
         "ITASK-012",
         "ITASK-013",
         "ITASK-014",
-        "ITASK-015"
+        "ITASK-015",
+        "ITASK-016"
       ]
     }
   ],
@@ -71,17 +72,15 @@
         "US-001"
       ],
       "mapped_ac_ids": [
-        "AC-001",
         "AC-002",
-        "AC-003"
+        "AC-001"
       ],
       "mapped_test_ids": [
-        "TC-001",
         "TC-002",
-        "TC-003",
-        "TC-012",
-        "TC-013",
-        "TC-014"
+        "TC-001",
+        "TC-008",
+        "TC-015",
+        "TC-009"
       ],
       "mapped_scenario_ids": [
         "SC-001",
@@ -89,87 +88,53 @@
         "SC-003",
         "SC-004",
         "SC-005",
-        "SC-006"
+        "SC-006",
+        "SC-007",
+        "SC-008",
+        "SC-009"
       ],
       "mapped_qa_case_ids": [
         "TC-001",
         "TC-002",
-        "TC-003",
-        "TC-012",
-        "TC-013",
-        "TC-014"
+        "TC-008",
+        "TC-009",
+        "TC-015"
       ],
       "depends_on": [],
       "target_modules": [],
       "status": "completed",
       "evidence_refs": [
-        "run:run-20260416T151139Z-de5e",
-        ".beacon/auto-test-status.json",
-        "verify:run-20260416T151139Z-de5e-tester",
         ".beacon/qa/features/beacon-v1.3.3-core-slimming-and-external-skill-demotion/matrix.qa9.json",
         ".beacon/qa/status.json",
         ".beacon/qa/current-session.json",
-        ".beacon/evidence/auto-test/run-20260417T000533465589/contract/command.txt",
-        ".beacon/evidence/auto-test/run-20260417T000533465589/contract/stdout.log",
-        ".beacon/evidence/auto-test/run-20260417T000533465589/contract/stderr.log",
-        ".beacon/evidence/auto-test/run-20260417T000533465589/contract/junit.xml",
-        ".beacon/evidence/auto-test/run-20260417T000533465589/contract/result.json",
-        ".beacon/evidence/auto-test/run-20260417T000533465589/integration/command.txt",
-        ".beacon/evidence/auto-test/run-20260417T000533465589/integration/stdout.log",
-        ".beacon/evidence/auto-test/run-20260417T000533465589/integration/stderr.log",
-        ".beacon/evidence/auto-test/run-20260417T000533465589/integration/junit.xml",
-        ".beacon/evidence/auto-test/run-20260417T000533465589/integration/result.json",
-        ".beacon/evidence/auto-test/run-20260417T000533465589/regression/command.txt",
-        ".beacon/evidence/auto-test/run-20260417T000533465589/regression/stdout.log",
-        ".beacon/evidence/auto-test/run-20260417T000533465589/regression/stderr.log",
-        ".beacon/evidence/auto-test/run-20260417T000533465589/regression/junit.xml",
-        ".beacon/evidence/auto-test/run-20260417T000533465589/regression/result.json",
-        ".beacon/evidence/auto-test/run-20260417T000533465589/qa9/tc-execution-map.json",
-        ".beacon/evidence/auto-test/run-20260417T000533465589/qa9/tc-results.json",
-        ".beacon/evidence/auto-test/run-20260417T000533465589/summary.json",
+        ".beacon/evidence/auto-test/run-20260417T132646363596/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260417T132646363596/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260417T132646363596/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260417T132646363596/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260417T132646363596/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260417T132646363596/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260417T132646363596/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260417T132646363596/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260417T132646363596/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260417T132646363596/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260417T132646363596/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260417T132646363596/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260417T132646363596/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260417T132646363596/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260417T132646363596/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260417T132646363596/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260417T132646363596/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260417T132646363596/summary.json",
         ".beacon/flaky-history.json",
         ".beacon/evidence-signature-chain.json",
-        "verify:run-20260417T000533465589",
-        "verify:review.accept",
-        ".beacon/evidence/auto-test/run-20260417T094023475686/contract/command.txt",
-        ".beacon/evidence/auto-test/run-20260417T094023475686/contract/stdout.log",
-        ".beacon/evidence/auto-test/run-20260417T094023475686/contract/stderr.log",
-        ".beacon/evidence/auto-test/run-20260417T094023475686/contract/junit.xml",
-        ".beacon/evidence/auto-test/run-20260417T094023475686/contract/result.json",
-        ".beacon/evidence/auto-test/run-20260417T094023475686/integration/command.txt",
-        ".beacon/evidence/auto-test/run-20260417T094023475686/integration/stdout.log",
-        ".beacon/evidence/auto-test/run-20260417T094023475686/integration/stderr.log",
-        ".beacon/evidence/auto-test/run-20260417T094023475686/integration/junit.xml",
-        ".beacon/evidence/auto-test/run-20260417T094023475686/integration/result.json",
-        ".beacon/evidence/auto-test/run-20260417T094023475686/regression/command.txt",
-        ".beacon/evidence/auto-test/run-20260417T094023475686/regression/stdout.log",
-        ".beacon/evidence/auto-test/run-20260417T094023475686/regression/stderr.log",
-        ".beacon/evidence/auto-test/run-20260417T094023475686/regression/junit.xml",
-        ".beacon/evidence/auto-test/run-20260417T094023475686/regression/result.json",
-        ".beacon/evidence/auto-test/run-20260417T094023475686/qa9/tc-execution-map.json",
-        ".beacon/evidence/auto-test/run-20260417T094023475686/qa9/tc-results.json",
-        ".beacon/evidence/auto-test/run-20260417T094023475686/summary.json",
-        "verify:run-20260417T094023475686"
+        "verify:run-20260417T132646363596",
+        ".beacon/qa/features/beacon-v1.3.3-core-slimming-and-external-skill-demotion/status.json",
+        "run:run-20260416T151139Z-de5e"
       ],
-      "changed_files": [
-        ".beacon/auto-test-status.json",
-        ".beacon/evidence-manifest.json",
-        ".beacon/qa/status.json",
-        ".omc/project-memory.json",
-        "beacon/commands/help.py",
-        "beacon/commands/status.py",
-        "beacon/utils/help_support.py",
-        "docs/beacon/v1.3.3/SUMMARY.md",
-        "docs/beacon/v1.3.3/execution/index.md",
-        "docs/beacon/v1.3.3/prd/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-        "docs/beacon/v1.3.3/qa/test-cases/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-        "docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-        "docs/plans/2026-04-16-beacon-v1.3.3-minimal-hud-design.md",
-        "docs/plans/2026-04-16-beacon-v1.3.3-minimal-hud-implementation.md"
-      ],
+      "changed_files": [],
       "blocked_reason": "",
-      "started_at": "2026-04-16T15:11:39.716250+00:00",
-      "completed_at": "2026-04-16T15:11:39.816824+00:00",
+      "started_at": "2026-04-17T05:35:18.901908+00:00",
+      "completed_at": "2026-04-17T05:35:18.903285+00:00",
       "active_run_id": ""
     },
     {
@@ -181,33 +146,25 @@
       ],
       "mapped_ac_ids": [
         "AC-007",
-        "AC-008"
+        "AC-003"
       ],
       "mapped_test_ids": [
         "TC-007",
-        "TC-008",
-        "TC-018",
-        "TC-019"
+        "TC-003",
+        "TC-010",
+        "TC-014"
       ],
       "mapped_scenario_ids": [
-        "SC-021",
-        "SC-022",
-        "SC-023",
-        "SC-024",
-        "SC-025",
+        "SC-010",
+        "SC-011",
         "SC-026",
-        "SC-027",
-        "SC-028",
-        "SC-029",
-        "SC-030",
-        "SC-031",
-        "SC-032"
+        "SC-027"
       ],
       "mapped_qa_case_ids": [
+        "TC-003",
         "TC-007",
-        "TC-008",
-        "TC-018",
-        "TC-019"
+        "TC-010",
+        "TC-014"
       ],
       "depends_on": [
         "ITASK-001"
@@ -215,30 +172,37 @@
       "target_modules": [],
       "status": "completed",
       "evidence_refs": [
-        "run:run-20260416T151139Z-de5e",
-        ".beacon/auto-test-status.json",
-        "verify:run-20260416T151139Z-de5e-tester",
-        "verify:review.accept"
-      ],
-      "changed_files": [
-        ".beacon/auto-test-status.json",
-        ".beacon/evidence-manifest.json",
+        ".beacon/qa/features/beacon-v1.3.3-core-slimming-and-external-skill-demotion/matrix.qa9.json",
         ".beacon/qa/status.json",
-        ".omc/project-memory.json",
-        "beacon/commands/help.py",
-        "beacon/commands/status.py",
-        "beacon/utils/help_support.py",
-        "docs/beacon/v1.3.3/SUMMARY.md",
-        "docs/beacon/v1.3.3/execution/index.md",
-        "docs/beacon/v1.3.3/prd/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-        "docs/beacon/v1.3.3/qa/test-cases/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-        "docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-        "docs/plans/2026-04-16-beacon-v1.3.3-minimal-hud-design.md",
-        "docs/plans/2026-04-16-beacon-v1.3.3-minimal-hud-implementation.md"
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260417T132646363596/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260417T132646363596/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260417T132646363596/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260417T132646363596/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260417T132646363596/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260417T132646363596/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260417T132646363596/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260417T132646363596/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260417T132646363596/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260417T132646363596/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260417T132646363596/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260417T132646363596/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260417T132646363596/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260417T132646363596/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260417T132646363596/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260417T132646363596/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260417T132646363596/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260417T132646363596/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260417T132646363596",
+        ".beacon/qa/features/beacon-v1.3.3-core-slimming-and-external-skill-demotion/status.json",
+        "run:run-20260416T151139Z-de5e"
       ],
+      "changed_files": [],
       "blocked_reason": "",
-      "started_at": "2026-04-16T15:11:39.816836+00:00",
-      "completed_at": "2026-04-16T15:11:39.816838+00:00",
+      "started_at": "2026-04-17T05:35:18.903303+00:00",
+      "completed_at": "2026-04-17T05:35:18.903304+00:00",
       "active_run_id": ""
     },
     {
@@ -249,31 +213,27 @@
         "US-001"
       ],
       "mapped_ac_ids": [
-        "AC-009",
         "AC-004",
+        "AC-009",
         "AC-011"
       ],
       "mapped_test_ids": [
-        "TC-009",
         "TC-004",
-        "TC-011",
-        "TC-015"
+        "TEST-009",
+        "TEST-011",
+        "TC-011"
       ],
       "mapped_scenario_ids": [
-        "SC-007",
-        "SC-008",
-        "SC-009",
-        "SC-010",
-        "SC-011",
         "SC-012",
-        "SC-033",
-        "SC-035"
+        "SC-013",
+        "SC-014",
+        "SC-015",
+        "SC-016",
+        "SC-017"
       ],
       "mapped_qa_case_ids": [
         "TC-004",
-        "TC-009",
-        "TC-011",
-        "TC-015"
+        "TC-011"
       ],
       "depends_on": [
         "ITASK-002"
@@ -281,30 +241,13 @@
       "target_modules": [],
       "status": "completed",
       "evidence_refs": [
-        "run:run-20260416T151139Z-de5e",
-        ".beacon/auto-test-status.json",
-        "verify:run-20260416T151139Z-de5e-tester",
-        "verify:review.accept"
+        ".beacon/qa/features/beacon-v1.3.3-core-slimming-and-external-skill-demotion/status.json",
+        "run:run-20260416T151139Z-de5e"
       ],
-      "changed_files": [
-        ".beacon/auto-test-status.json",
-        ".beacon/evidence-manifest.json",
-        ".beacon/qa/status.json",
-        ".omc/project-memory.json",
-        "beacon/commands/help.py",
-        "beacon/commands/status.py",
-        "beacon/utils/help_support.py",
-        "docs/beacon/v1.3.3/SUMMARY.md",
-        "docs/beacon/v1.3.3/execution/index.md",
-        "docs/beacon/v1.3.3/prd/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-        "docs/beacon/v1.3.3/qa/test-cases/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-        "docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-        "docs/plans/2026-04-16-beacon-v1.3.3-minimal-hud-design.md",
-        "docs/plans/2026-04-16-beacon-v1.3.3-minimal-hud-implementation.md"
-      ],
+      "changed_files": [],
       "blocked_reason": "",
-      "started_at": "2026-04-16T15:11:39.816846+00:00",
-      "completed_at": "2026-04-16T15:11:39.816847+00:00",
+      "started_at": "2026-04-17T05:35:18.903316+00:00",
+      "completed_at": "2026-04-17T05:35:18.903318+00:00",
       "active_run_id": ""
     },
     {
@@ -316,26 +259,31 @@
       ],
       "mapped_ac_ids": [
         "AC-005",
-        "AC-010"
+        "AC-006",
+        "AC-008"
       ],
       "mapped_test_ids": [
         "TC-005",
-        "TC-010",
-        "TC-016"
+        "TC-006",
+        "TEST-008",
+        "TC-012",
+        "TC-013"
       ],
       "mapped_scenario_ids": [
-        "SC-013",
-        "SC-014",
-        "SC-015",
-        "SC-016",
-        "SC-017",
         "SC-018",
-        "SC-034"
+        "SC-019",
+        "SC-020",
+        "SC-021",
+        "SC-022",
+        "SC-023",
+        "SC-024",
+        "SC-025"
       ],
       "mapped_qa_case_ids": [
         "TC-005",
-        "TC-010",
-        "TC-016"
+        "TC-006",
+        "TC-012",
+        "TC-013"
       ],
       "depends_on": [
         "ITASK-003"
@@ -343,30 +291,37 @@
       "target_modules": [],
       "status": "completed",
       "evidence_refs": [
-        "run:run-20260416T151139Z-de5e",
-        ".beacon/auto-test-status.json",
-        "verify:run-20260416T151139Z-de5e-tester",
-        "verify:review.accept"
-      ],
-      "changed_files": [
-        ".beacon/auto-test-status.json",
-        ".beacon/evidence-manifest.json",
+        ".beacon/qa/features/beacon-v1.3.3-core-slimming-and-external-skill-demotion/matrix.qa9.json",
         ".beacon/qa/status.json",
-        ".omc/project-memory.json",
-        "beacon/commands/help.py",
-        "beacon/commands/status.py",
-        "beacon/utils/help_support.py",
-        "docs/beacon/v1.3.3/SUMMARY.md",
-        "docs/beacon/v1.3.3/execution/index.md",
-        "docs/beacon/v1.3.3/prd/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-        "docs/beacon/v1.3.3/qa/test-cases/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-        "docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-        "docs/plans/2026-04-16-beacon-v1.3.3-minimal-hud-design.md",
-        "docs/plans/2026-04-16-beacon-v1.3.3-minimal-hud-implementation.md"
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260417T132646363596/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260417T132646363596/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260417T132646363596/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260417T132646363596/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260417T132646363596/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260417T132646363596/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260417T132646363596/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260417T132646363596/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260417T132646363596/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260417T132646363596/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260417T132646363596/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260417T132646363596/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260417T132646363596/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260417T132646363596/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260417T132646363596/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260417T132646363596/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260417T132646363596/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260417T132646363596/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260417T132646363596",
+        ".beacon/qa/features/beacon-v1.3.3-core-slimming-and-external-skill-demotion/status.json",
+        "run:run-20260416T151139Z-de5e"
       ],
+      "changed_files": [],
       "blocked_reason": "",
-      "started_at": "2026-04-16T15:11:39.816854+00:00",
-      "completed_at": "2026-04-16T15:11:39.816856+00:00",
+      "started_at": "2026-04-17T05:35:18.903323+00:00",
+      "completed_at": "2026-04-17T05:35:18.903324+00:00",
       "active_run_id": ""
     },
     {
@@ -377,19 +332,16 @@
         "US-001"
       ],
       "mapped_ac_ids": [
-        "AC-006"
+        "AC-010"
       ],
       "mapped_test_ids": [
-        "TC-006",
-        "TC-017"
+        "TEST-010"
       ],
       "mapped_scenario_ids": [
-        "SC-019",
-        "SC-020"
+        "SC-034"
       ],
       "mapped_qa_case_ids": [
-        "TC-006",
-        "TC-017"
+        "TC-010"
       ],
       "depends_on": [
         "ITASK-004"
@@ -397,73 +349,13 @@
       "target_modules": [],
       "status": "completed",
       "evidence_refs": [
-        "run:run-20260416T151139Z-de5e",
-        ".beacon/auto-test-status.json",
-        "verify:run-20260416T151139Z-de5e-tester",
-        ".beacon/qa/features/beacon-v1.3.3-core-slimming-and-external-skill-demotion/matrix.qa9.json",
-        ".beacon/qa/status.json",
-        ".beacon/qa/current-session.json",
-        ".beacon/evidence/auto-test/run-20260417T000533465589/contract/command.txt",
-        ".beacon/evidence/auto-test/run-20260417T000533465589/contract/stdout.log",
-        ".beacon/evidence/auto-test/run-20260417T000533465589/contract/stderr.log",
-        ".beacon/evidence/auto-test/run-20260417T000533465589/contract/junit.xml",
-        ".beacon/evidence/auto-test/run-20260417T000533465589/contract/result.json",
-        ".beacon/evidence/auto-test/run-20260417T000533465589/integration/command.txt",
-        ".beacon/evidence/auto-test/run-20260417T000533465589/integration/stdout.log",
-        ".beacon/evidence/auto-test/run-20260417T000533465589/integration/stderr.log",
-        ".beacon/evidence/auto-test/run-20260417T000533465589/integration/junit.xml",
-        ".beacon/evidence/auto-test/run-20260417T000533465589/integration/result.json",
-        ".beacon/evidence/auto-test/run-20260417T000533465589/regression/command.txt",
-        ".beacon/evidence/auto-test/run-20260417T000533465589/regression/stdout.log",
-        ".beacon/evidence/auto-test/run-20260417T000533465589/regression/stderr.log",
-        ".beacon/evidence/auto-test/run-20260417T000533465589/regression/junit.xml",
-        ".beacon/evidence/auto-test/run-20260417T000533465589/regression/result.json",
-        ".beacon/evidence/auto-test/run-20260417T000533465589/qa9/tc-execution-map.json",
-        ".beacon/evidence/auto-test/run-20260417T000533465589/qa9/tc-results.json",
-        ".beacon/evidence/auto-test/run-20260417T000533465589/summary.json",
-        ".beacon/flaky-history.json",
-        ".beacon/evidence-signature-chain.json",
-        "verify:run-20260417T000533465589",
-        "verify:review.accept",
-        ".beacon/evidence/auto-test/run-20260417T094023475686/contract/command.txt",
-        ".beacon/evidence/auto-test/run-20260417T094023475686/contract/stdout.log",
-        ".beacon/evidence/auto-test/run-20260417T094023475686/contract/stderr.log",
-        ".beacon/evidence/auto-test/run-20260417T094023475686/contract/junit.xml",
-        ".beacon/evidence/auto-test/run-20260417T094023475686/contract/result.json",
-        ".beacon/evidence/auto-test/run-20260417T094023475686/integration/command.txt",
-        ".beacon/evidence/auto-test/run-20260417T094023475686/integration/stdout.log",
-        ".beacon/evidence/auto-test/run-20260417T094023475686/integration/stderr.log",
-        ".beacon/evidence/auto-test/run-20260417T094023475686/integration/junit.xml",
-        ".beacon/evidence/auto-test/run-20260417T094023475686/integration/result.json",
-        ".beacon/evidence/auto-test/run-20260417T094023475686/regression/command.txt",
-        ".beacon/evidence/auto-test/run-20260417T094023475686/regression/stdout.log",
-        ".beacon/evidence/auto-test/run-20260417T094023475686/regression/stderr.log",
-        ".beacon/evidence/auto-test/run-20260417T094023475686/regression/junit.xml",
-        ".beacon/evidence/auto-test/run-20260417T094023475686/regression/result.json",
-        ".beacon/evidence/auto-test/run-20260417T094023475686/qa9/tc-execution-map.json",
-        ".beacon/evidence/auto-test/run-20260417T094023475686/qa9/tc-results.json",
-        ".beacon/evidence/auto-test/run-20260417T094023475686/summary.json",
-        "verify:run-20260417T094023475686"
+        ".beacon/qa/features/beacon-v1.3.3-core-slimming-and-external-skill-demotion/status.json",
+        "run:run-20260416T151139Z-de5e"
       ],
-      "changed_files": [
-        ".beacon/auto-test-status.json",
-        ".beacon/evidence-manifest.json",
-        ".beacon/qa/status.json",
-        ".omc/project-memory.json",
-        "beacon/commands/help.py",
-        "beacon/commands/status.py",
-        "beacon/utils/help_support.py",
-        "docs/beacon/v1.3.3/SUMMARY.md",
-        "docs/beacon/v1.3.3/execution/index.md",
-        "docs/beacon/v1.3.3/prd/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-        "docs/beacon/v1.3.3/qa/test-cases/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-        "docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-        "docs/plans/2026-04-16-beacon-v1.3.3-minimal-hud-design.md",
-        "docs/plans/2026-04-16-beacon-v1.3.3-minimal-hud-implementation.md"
-      ],
+      "changed_files": [],
       "blocked_reason": "",
-      "started_at": "2026-04-16T15:11:39.816862+00:00",
-      "completed_at": "2026-04-16T15:11:39.816864+00:00",
+      "started_at": "2026-04-17T05:35:18.903335+00:00",
+      "completed_at": "2026-04-17T05:35:18.903336+00:00",
       "active_run_id": ""
     },
     {
@@ -483,27 +375,13 @@
       "target_modules": [],
       "status": "completed",
       "evidence_refs": [
+        ".beacon/qa/features/beacon-v1.3.3-core-slimming-and-external-skill-demotion/status.json",
         "run:run-20260416T151139Z-de5e"
       ],
-      "changed_files": [
-        ".beacon/auto-test-status.json",
-        ".beacon/evidence-manifest.json",
-        ".beacon/qa/status.json",
-        ".omc/project-memory.json",
-        "beacon/commands/help.py",
-        "beacon/commands/status.py",
-        "beacon/utils/help_support.py",
-        "docs/beacon/v1.3.3/SUMMARY.md",
-        "docs/beacon/v1.3.3/execution/index.md",
-        "docs/beacon/v1.3.3/prd/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-        "docs/beacon/v1.3.3/qa/test-cases/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-        "docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-        "docs/plans/2026-04-16-beacon-v1.3.3-minimal-hud-design.md",
-        "docs/plans/2026-04-16-beacon-v1.3.3-minimal-hud-implementation.md"
-      ],
+      "changed_files": [],
       "blocked_reason": "",
-      "started_at": "2026-04-16T15:11:39.816870+00:00",
-      "completed_at": "2026-04-16T15:11:39.816871+00:00",
+      "started_at": "2026-04-17T05:35:18.903340+00:00",
+      "completed_at": "2026-04-17T05:35:18.903341+00:00",
       "active_run_id": ""
     },
     {
@@ -523,27 +401,13 @@
       "target_modules": [],
       "status": "completed",
       "evidence_refs": [
+        ".beacon/qa/features/beacon-v1.3.3-core-slimming-and-external-skill-demotion/status.json",
         "run:run-20260416T151139Z-de5e"
       ],
-      "changed_files": [
-        ".beacon/auto-test-status.json",
-        ".beacon/evidence-manifest.json",
-        ".beacon/qa/status.json",
-        ".omc/project-memory.json",
-        "beacon/commands/help.py",
-        "beacon/commands/status.py",
-        "beacon/utils/help_support.py",
-        "docs/beacon/v1.3.3/SUMMARY.md",
-        "docs/beacon/v1.3.3/execution/index.md",
-        "docs/beacon/v1.3.3/prd/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-        "docs/beacon/v1.3.3/qa/test-cases/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-        "docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-        "docs/plans/2026-04-16-beacon-v1.3.3-minimal-hud-design.md",
-        "docs/plans/2026-04-16-beacon-v1.3.3-minimal-hud-implementation.md"
-      ],
+      "changed_files": [],
       "blocked_reason": "",
-      "started_at": "2026-04-16T15:11:39.816877+00:00",
-      "completed_at": "2026-04-16T15:11:39.816879+00:00",
+      "started_at": "2026-04-17T05:35:18.903345+00:00",
+      "completed_at": "2026-04-17T05:35:18.903346+00:00",
       "active_run_id": ""
     },
     {
@@ -563,27 +427,13 @@
       "target_modules": [],
       "status": "completed",
       "evidence_refs": [
+        ".beacon/qa/features/beacon-v1.3.3-core-slimming-and-external-skill-demotion/status.json",
         "run:run-20260416T151139Z-de5e"
       ],
-      "changed_files": [
-        ".beacon/auto-test-status.json",
-        ".beacon/evidence-manifest.json",
-        ".beacon/qa/status.json",
-        ".omc/project-memory.json",
-        "beacon/commands/help.py",
-        "beacon/commands/status.py",
-        "beacon/utils/help_support.py",
-        "docs/beacon/v1.3.3/SUMMARY.md",
-        "docs/beacon/v1.3.3/execution/index.md",
-        "docs/beacon/v1.3.3/prd/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-        "docs/beacon/v1.3.3/qa/test-cases/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-        "docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-        "docs/plans/2026-04-16-beacon-v1.3.3-minimal-hud-design.md",
-        "docs/plans/2026-04-16-beacon-v1.3.3-minimal-hud-implementation.md"
-      ],
+      "changed_files": [],
       "blocked_reason": "",
-      "started_at": "2026-04-16T15:11:39.816885+00:00",
-      "completed_at": "2026-04-16T15:11:39.816886+00:00",
+      "started_at": "2026-04-17T05:35:18.903349+00:00",
+      "completed_at": "2026-04-17T05:35:18.903351+00:00",
       "active_run_id": ""
     },
     {
@@ -603,27 +453,13 @@
       "target_modules": [],
       "status": "completed",
       "evidence_refs": [
+        ".beacon/qa/features/beacon-v1.3.3-core-slimming-and-external-skill-demotion/status.json",
         "run:run-20260416T151139Z-de5e"
       ],
-      "changed_files": [
-        ".beacon/auto-test-status.json",
-        ".beacon/evidence-manifest.json",
-        ".beacon/qa/status.json",
-        ".omc/project-memory.json",
-        "beacon/commands/help.py",
-        "beacon/commands/status.py",
-        "beacon/utils/help_support.py",
-        "docs/beacon/v1.3.3/SUMMARY.md",
-        "docs/beacon/v1.3.3/execution/index.md",
-        "docs/beacon/v1.3.3/prd/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-        "docs/beacon/v1.3.3/qa/test-cases/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-        "docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-        "docs/plans/2026-04-16-beacon-v1.3.3-minimal-hud-design.md",
-        "docs/plans/2026-04-16-beacon-v1.3.3-minimal-hud-implementation.md"
-      ],
+      "changed_files": [],
       "blocked_reason": "",
-      "started_at": "2026-04-16T15:11:39.816892+00:00",
-      "completed_at": "2026-04-16T15:11:39.816893+00:00",
+      "started_at": "2026-04-17T05:35:18.903354+00:00",
+      "completed_at": "2026-04-17T05:35:18.903355+00:00",
       "active_run_id": ""
     },
     {
@@ -643,27 +479,13 @@
       "target_modules": [],
       "status": "completed",
       "evidence_refs": [
+        ".beacon/qa/features/beacon-v1.3.3-core-slimming-and-external-skill-demotion/status.json",
         "run:run-20260416T151139Z-de5e"
       ],
-      "changed_files": [
-        ".beacon/auto-test-status.json",
-        ".beacon/evidence-manifest.json",
-        ".beacon/qa/status.json",
-        ".omc/project-memory.json",
-        "beacon/commands/help.py",
-        "beacon/commands/status.py",
-        "beacon/utils/help_support.py",
-        "docs/beacon/v1.3.3/SUMMARY.md",
-        "docs/beacon/v1.3.3/execution/index.md",
-        "docs/beacon/v1.3.3/prd/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-        "docs/beacon/v1.3.3/qa/test-cases/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-        "docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-        "docs/plans/2026-04-16-beacon-v1.3.3-minimal-hud-design.md",
-        "docs/plans/2026-04-16-beacon-v1.3.3-minimal-hud-implementation.md"
-      ],
+      "changed_files": [],
       "blocked_reason": "",
-      "started_at": "2026-04-16T15:11:39.816899+00:00",
-      "completed_at": "2026-04-16T15:11:39.816901+00:00",
+      "started_at": "2026-04-17T05:35:18.903359+00:00",
+      "completed_at": "2026-04-17T05:35:18.903360+00:00",
       "active_run_id": ""
     },
     {
@@ -683,27 +505,13 @@
       "target_modules": [],
       "status": "completed",
       "evidence_refs": [
+        ".beacon/qa/features/beacon-v1.3.3-core-slimming-and-external-skill-demotion/status.json",
         "run:run-20260416T151139Z-de5e"
       ],
-      "changed_files": [
-        ".beacon/auto-test-status.json",
-        ".beacon/evidence-manifest.json",
-        ".beacon/qa/status.json",
-        ".omc/project-memory.json",
-        "beacon/commands/help.py",
-        "beacon/commands/status.py",
-        "beacon/utils/help_support.py",
-        "docs/beacon/v1.3.3/SUMMARY.md",
-        "docs/beacon/v1.3.3/execution/index.md",
-        "docs/beacon/v1.3.3/prd/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-        "docs/beacon/v1.3.3/qa/test-cases/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-        "docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-        "docs/plans/2026-04-16-beacon-v1.3.3-minimal-hud-design.md",
-        "docs/plans/2026-04-16-beacon-v1.3.3-minimal-hud-implementation.md"
-      ],
+      "changed_files": [],
       "blocked_reason": "",
-      "started_at": "2026-04-16T15:11:39.816907+00:00",
-      "completed_at": "2026-04-16T15:11:39.816908+00:00",
+      "started_at": "2026-04-17T05:35:18.903363+00:00",
+      "completed_at": "2026-04-17T05:35:18.903365+00:00",
       "active_run_id": ""
     },
     {
@@ -723,27 +531,13 @@
       "target_modules": [],
       "status": "completed",
       "evidence_refs": [
+        ".beacon/qa/features/beacon-v1.3.3-core-slimming-and-external-skill-demotion/status.json",
         "run:run-20260416T151139Z-de5e"
       ],
-      "changed_files": [
-        ".beacon/auto-test-status.json",
-        ".beacon/evidence-manifest.json",
-        ".beacon/qa/status.json",
-        ".omc/project-memory.json",
-        "beacon/commands/help.py",
-        "beacon/commands/status.py",
-        "beacon/utils/help_support.py",
-        "docs/beacon/v1.3.3/SUMMARY.md",
-        "docs/beacon/v1.3.3/execution/index.md",
-        "docs/beacon/v1.3.3/prd/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-        "docs/beacon/v1.3.3/qa/test-cases/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-        "docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-        "docs/plans/2026-04-16-beacon-v1.3.3-minimal-hud-design.md",
-        "docs/plans/2026-04-16-beacon-v1.3.3-minimal-hud-implementation.md"
-      ],
+      "changed_files": [],
       "blocked_reason": "",
-      "started_at": "2026-04-16T15:11:39.816914+00:00",
-      "completed_at": "2026-04-16T15:11:39.816915+00:00",
+      "started_at": "2026-04-17T05:35:18.903368+00:00",
+      "completed_at": "2026-04-17T05:35:18.903369+00:00",
       "active_run_id": ""
     },
     {
@@ -763,27 +557,13 @@
       "target_modules": [],
       "status": "completed",
       "evidence_refs": [
+        ".beacon/qa/features/beacon-v1.3.3-core-slimming-and-external-skill-demotion/status.json",
         "run:run-20260416T151139Z-de5e"
       ],
-      "changed_files": [
-        ".beacon/auto-test-status.json",
-        ".beacon/evidence-manifest.json",
-        ".beacon/qa/status.json",
-        ".omc/project-memory.json",
-        "beacon/commands/help.py",
-        "beacon/commands/status.py",
-        "beacon/utils/help_support.py",
-        "docs/beacon/v1.3.3/SUMMARY.md",
-        "docs/beacon/v1.3.3/execution/index.md",
-        "docs/beacon/v1.3.3/prd/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-        "docs/beacon/v1.3.3/qa/test-cases/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-        "docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-        "docs/plans/2026-04-16-beacon-v1.3.3-minimal-hud-design.md",
-        "docs/plans/2026-04-16-beacon-v1.3.3-minimal-hud-implementation.md"
-      ],
+      "changed_files": [],
       "blocked_reason": "",
-      "started_at": "2026-04-16T15:11:39.816922+00:00",
-      "completed_at": "2026-04-16T15:11:39.816923+00:00",
+      "started_at": "2026-04-17T05:35:18.903373+00:00",
+      "completed_at": "2026-04-17T05:35:18.903374+00:00",
       "active_run_id": ""
     },
     {
@@ -803,33 +583,19 @@
       "target_modules": [],
       "status": "completed",
       "evidence_refs": [
+        ".beacon/qa/features/beacon-v1.3.3-core-slimming-and-external-skill-demotion/status.json",
         "run:run-20260416T151139Z-de5e"
       ],
-      "changed_files": [
-        ".beacon/auto-test-status.json",
-        ".beacon/evidence-manifest.json",
-        ".beacon/qa/status.json",
-        ".omc/project-memory.json",
-        "beacon/commands/help.py",
-        "beacon/commands/status.py",
-        "beacon/utils/help_support.py",
-        "docs/beacon/v1.3.3/SUMMARY.md",
-        "docs/beacon/v1.3.3/execution/index.md",
-        "docs/beacon/v1.3.3/prd/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-        "docs/beacon/v1.3.3/qa/test-cases/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-        "docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-        "docs/plans/2026-04-16-beacon-v1.3.3-minimal-hud-design.md",
-        "docs/plans/2026-04-16-beacon-v1.3.3-minimal-hud-implementation.md"
-      ],
+      "changed_files": [],
       "blocked_reason": "",
-      "started_at": "2026-04-16T15:11:39.816929+00:00",
-      "completed_at": "2026-04-16T15:11:39.816930+00:00",
+      "started_at": "2026-04-17T05:35:18.903378+00:00",
+      "completed_at": "2026-04-17T05:35:18.903379+00:00",
       "active_run_id": ""
     },
     {
       "task_id": "ITASK-015",
       "title": "FR-015 必须新增 `beacon-prd-bootstrap` 人类 skill（可选）",
-      "description": "`v1.3.3` 必须新增一个可选人类 skill：`beacon-prd-bootstrap`，用于一键编排 requirement 三件套： 目标：在不新增公开一级命令前提下，一键生成 `prd + user-story + test-case` 定位：optional skill，不替代主 `6+3`，仅降低 requirement 启动摩擦 命令契约（建议）： `beacon-prd-bootstrap run \"<feature>\" --desc \"<需求描述>\" --version <v> --dry-run` `beacon-prd-bootstrap run \"<feature>\" --desc \"<需求描述>\" --version <v> --apply --no-overwrite` 风险防线（默认必须生效）： 1. 前置门禁：先执行 `beacon doctor verify-context --project-root . --strict` 2. 双阶段执行：默认 `dry-run`，必须显式 `--apply` 才落盘 3. 防覆盖策略：默认 `--no-overwrite`，遇到既有文件阻断并给单一恢复命令 4. 原子写入：临时文件写入后统一替换，失败不留半成品 5. 跨文档一致性：`feature/version` 一致，`AC -> test-case` 映射完整 6. 质量阈值门控：禁止空模板/未完成占位符超阈值产物落盘 7. 可回滚可追踪：落盘 `.beacon/state/prd-bootstrap/<run-id>.json` 8. 并发锁：执行期间持有 `.beacon/state/locks/prd-bootstrap.lock` ## 5. 瘦身改造清单 ### A. 必须收敛 1. README 主路径里的 `skill/profile/orchestrate` 推荐流程 2. `qa` 主路径中的隐式 project orchestration 自动执行 3. `ralph-bridge` 作为正式能力名词的存在感 4. tests 中把 `gstack/omx/omc` 视为 core runner 的断言 5. builtin adapters 中 external runner 的默认内置地位 6. HUD 输出中超出极简场景契约的冗余展示 ### B. 应降级为 compatibility 1. `implement_adapters` 中 external builtin adapters 2. `skill registry` 中 external skill 的正式产品化叙事 3. `project_skills.run_profile_orchestration()` 的默认调用地位 4. README 中面向普通用户的 project-aware skill 文案 5. `ralph-bridge` 命令面叙事 ### C. 可保留 1. host-native readiness/delegation precheck 2. `team` / `qa-team` 作为隐藏机器面能力 3. project contract / required evidence / required cases 4. external adapter dry-run/detect 能力（仅 compatibility plane） 5. `doctor` 的 compatibility migration 能力作为唯一官方迁移入口 ### D. 新增迁移切片（doctor） 1. `doctor migrate-compat --dry-run`：扫描 + 计划，不改写 2. `doctor migrate-compat --apply`：执行迁移并产出报告 3. `doctor` 迁移后验证：校验 core/compat 边界 4. `qa` 阻断推荐命令统一回指 doctor 迁移入口 ### E. 新增 HUD 并行 PRD 切片 1. 在 `v1.3.3/prd/` 增加 HUD 并行 PRD 2. 主 PRD 与 HUD 并行 PRD 互相引用，避免单文档过载 3. HUD 场景与实现约束以并行 PRD 为准，主 PRD 保留总要求 ### F. 新增 Memory/Friction Evolution Toolkit 并行 PRD 切片 1. 在 `v1.3.3/prd/` 增加 toolkit 并行 PRD 2. 与 `beacon-toolkit-lighthouse` 并行输出 single-file artifacts 3. 候选建议必须包含 `evidence_refs + recommended_command` 4. 记忆写回必须复用 `remember add --upsert`，不得创建新 memory silo ### G. 新增 `beacon-prd-bootstrap` 切片 1. 新增可选人类 skill `beacon-prd-bootstrap` 2. 默认 `dry-run`，显式 `--apply` 才允许写入 3. 默认 `--no-overwrite`，阻断覆盖风险 4. 失败即停并输出单一恢复命令 5. 输出 state artifact 与回滚清单 ## 6. 非功能约束 1. 不破坏当前 `implement` 三模式主线 2. 不破坏 `qa` 对冻结材料的正式验收能力 3. 不破坏真实项目需要的 contract drift/evidence gate 4. 收敛动作必须可审计、可测试、可回退 5. 不得在 `v1.3.3` 再引入新的公开 bridge/runtime 命令 6. `doctor` 迁移必须支持 dry-run 与回滚清单 7. HUD 增强不得引入 TUI/dashboard 前置依赖 8. toolkit 增强不得扩张主 `6+3`，仅允许在 `labs/hidden` analysis 面暴露 9. `beacon-prd-bootstrap` 只能作为 optional skill，不得新增公开一级命令 10. `beacon-prd-bootstrap` 必须默认 `dry-run + no-overwrite + context strict verify` ## 7. 风险与缓解 | 风险 | 影响 | 缓解 | |------|------|------| | 真实项目仍依赖旧 profile/orchestration 路径 | 高 | 通过 `doctor migrate-compat` 提供扫描、迁移、验证与回滚点 | | 收敛过快导致旧测试大面积失效 | 中 | 先拆分 core/compatibility tests，再删旧断言 | | 文档与代码不同步 | 高 | README/help/tests/skill docs 同步收敛 | | project contract 和 external execution 耦合未拆干净 | 高 | 先完成 contract/execution 解耦，再默认关闭隐式 external orchestration | | HUD 字段扩张导致人类面噪音上升 | 中 | 人类面维持摘要，细节仅进 JSON/artifact | | toolkit 与现有 learning_loop 重叠导致重复建设 | 中 | 先做薄封装，复用 remember/recall/debug_feedback/learning_loop 数据面 | | `beacon-prd-bootstrap` 误写/覆盖导致 requirement 漂移 | 高 | 强制 `doctor verify-context --strict` + `dry-run/apply` + `no-overwrite` + 原子写入 + 一致性校验 + 锁 | ## 8. 成功标准 1. Beacon core 主叙事只剩 `6+3` 2. 默认 `implement/qa` 不再依赖 external skill orchestration 3. `qa` 不再隐式自动执行 external orchestration，阻断时统一推荐 doctor 迁移命令 4. external adapters 不再作为 core builtin 默认面 5. `ralph-bridge` 不再作为正式主能力出现 6. README/help 不再把 `skill/profile/orchestrate` 当普通用户主路径 7. 测试明确分成 core 与 compatibility 两层 8. `doctor` 完成兼容迁移全链路（scan/plan/apply/verify/report） 9. Ralph HUD 与 Team HUD 在保持轻量前提下提供稳定闭环观测字段 10. HUD 满足 S1-S6 场景与 1-3 行预算约束 11. 并行 HUD PRD 已纳入 `v1.3.3` 正式 requirement 包 12. 并行 toolkit PRD 已纳入 `v1.3.3` 正式 requirement 包 13. toolkit 可基于真实 memory/debug 数据输出 Top-N 摩擦演进候选 14. toolkit 与 lighthouse 可并行运行，且不影响主 `6+3` 路径 15. `beacon-prd-bootstrap` 可一键生成 `prd/user-story/test-case` 且默认不覆盖 16. `beacon-prd-bootstrap` 运行全程可追踪、可回滚、可阻断半成品 --- **Created**: 2026-04-16 **Version**: v1.3.3 **Status**: Draft **Memory Context**: N/A",
+      "description": "`v1.3.3` 必须新增一个可选人类 skill：`beacon-prd-bootstrap`，用于一键编排 requirement 三件套： 目标：在不新增公开一级命令前提下，一键生成 `prd + user-story + test-case` 定位：optional skill，不替代主 `6+3`，仅降低 requirement 启动摩擦 命令契约（建议）： `beacon-prd-bootstrap run \"<feature>\" --desc \"<需求描述>\" --version <v> --dry-run` `beacon-prd-bootstrap run \"<feature>\" --desc \"<需求描述>\" --version <v> --apply --no-overwrite` 风险防线（默认必须生效）： 1. 前置门禁：先执行 `beacon doctor verify-context --project-root . --strict` 2. 双阶段执行：默认 `dry-run`，必须显式 `--apply` 才落盘 3. 防覆盖策略：默认 `--no-overwrite`，遇到既有文件阻断并给单一恢复命令 4. 原子写入：临时文件写入后统一替换，失败不留半成品 5. 跨文档一致性：`feature/version` 一致，`AC -> test-case` 映射完整 6. 质量阈值门控：禁止空模板/未完成占位符超阈值产物落盘 7. 可回滚可追踪：落盘 `.beacon/state/prd-bootstrap/<run-id>.json` 8. 并发锁：执行期间持有 `.beacon/state/locks/prd-bootstrap.lock`",
       "mapped_story_ids": [
         "US-001"
       ],
@@ -843,27 +609,39 @@
       "target_modules": [],
       "status": "completed",
       "evidence_refs": [
+        ".beacon/qa/features/beacon-v1.3.3-core-slimming-and-external-skill-demotion/status.json",
         "run:run-20260416T151139Z-de5e"
       ],
-      "changed_files": [
-        ".beacon/auto-test-status.json",
-        ".beacon/evidence-manifest.json",
-        ".beacon/qa/status.json",
-        ".omc/project-memory.json",
-        "beacon/commands/help.py",
-        "beacon/commands/status.py",
-        "beacon/utils/help_support.py",
-        "docs/beacon/v1.3.3/SUMMARY.md",
-        "docs/beacon/v1.3.3/execution/index.md",
-        "docs/beacon/v1.3.3/prd/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-        "docs/beacon/v1.3.3/qa/test-cases/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-        "docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-        "docs/plans/2026-04-16-beacon-v1.3.3-minimal-hud-design.md",
-        "docs/plans/2026-04-16-beacon-v1.3.3-minimal-hud-implementation.md"
-      ],
+      "changed_files": [],
       "blocked_reason": "",
-      "started_at": "2026-04-16T15:11:39.816936+00:00",
-      "completed_at": "2026-04-16T15:11:39.816938+00:00",
+      "started_at": "2026-04-17T05:35:18.903382+00:00",
+      "completed_at": "2026-04-17T05:35:18.903384+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-016",
+      "title": "FR-016 Codex 输入框下固定 HUD 必须通过 hook 自动注入",
+      "description": "`v1.3.3` 对 HUD 的“极简”要求必须覆盖 Codex 宿主输入面： 1. 目标体验： 在 Codex 会话中，输入框下方稳定看到 Beacon 极简 HUD（1-3 行） HUD 文本必须来自 `minimal_hud` 同一数据契约，禁止双源文案 2. 触发事件（最小）： `UserPromptSubmit`：每次提交用户输入时刷新 HUD 会话刷新事件：至少支持 `SessionStart/SessionResume/SessionRefresh` 中的可配置集合 3. 输出契约： hook 输出必须包含 `hookSpecificOutput.additionalContext` 内容必须是极简 HUD 行（S1-S6 契约），不得塞入大段解释文本 4. 失败退化： hook 失败时不得阻断用户输入提交流程 降级为空 HUD + debug 事件落盘 5. 治理边界： 不自动改写用户全局 `~/.codex` hook 配置 安装/校验流程统一走 `beacon doctor` 子命令 ## 5. 瘦身改造清单 ### A. 必须收敛 1. README 主路径里的 `skill/profile/orchestrate` 推荐流程 2. `qa` 主路径中的隐式 project orchestration 自动执行 3. `ralph-bridge` 作为正式能力名词的存在感 4. tests 中把 `gstack/omx/omc` 视为 core runner 的断言 5. builtin adapters 中 external runner 的默认内置地位 6. HUD 输出中超出极简场景契约的冗余展示 ### B. 应降级为 compatibility 1. `implement_adapters` 中 external builtin adapters 2. `skill registry` 中 external skill 的正式产品化叙事 3. `project_skills.run_profile_orchestration()` 的默认调用地位 4. README 中面向普通用户的 project-aware skill 文案 5. `ralph-bridge` 命令面叙事 ### C. 可保留 1. host-native readiness/delegation precheck 2. `team` / `qa-team` 作为隐藏机器面能力 3. project contract / required evidence / required cases 4. external adapter dry-run/detect 能力（仅 compatibility plane） 5. `doctor` 的 compatibility migration 能力作为唯一官方迁移入口 ### D. 新增迁移切片（doctor） 1. `doctor migrate-compat --dry-run`：扫描 + 计划，不改写 2. `doctor migrate-compat --apply`：执行迁移并产出报告 3. `doctor` 迁移后验证：校验 core/compat 边界 4. `qa` 阻断推荐命令统一回指 doctor 迁移入口 ### E. 新增 HUD 并行 PRD 切片 1. 在 `v1.3.3/prd/` 增加 HUD 并行 PRD 2. 主 PRD 与 HUD 并行 PRD 互相引用，避免单文档过载 3. HUD 场景与实现约束以并行 PRD 为准，主 PRD 保留总要求 ### F. 新增 Memory/Friction Evolution Toolkit 并行 PRD 切片 1. 在 `v1.3.3/prd/` 增加 toolkit 并行 PRD 2. 与 `beacon-toolkit-lighthouse` 并行输出 single-file artifacts 3. 候选建议必须包含 `evidence_refs + recommended_command` 4. 记忆写回必须复用 `remember add --upsert`，不得创建新 memory silo ### G. 新增 `beacon-prd-bootstrap` 切片 1. 新增可选人类 skill `beacon-prd-bootstrap` 2. 默认 `dry-run`，显式 `--apply` 才允许写入 3. 默认 `--no-overwrite`，阻断覆盖风险 4. 失败即停并输出单一恢复命令 5. 输出 state artifact 与回滚清单 ## 6. 非功能约束 1. 不破坏当前 `implement` 三模式主线 2. 不破坏 `qa` 对冻结材料的正式验收能力 3. 不破坏真实项目需要的 contract drift/evidence gate 4. 收敛动作必须可审计、可测试、可回退 5. 不得在 `v1.3.3` 再引入新的公开 bridge/runtime 命令 6. `doctor` 迁移必须支持 dry-run 与回滚清单 7. HUD 增强不得引入 TUI/dashboard 前置依赖 8. toolkit 增强不得扩张主 `6+3`，仅允许在 `labs/hidden` analysis 面暴露 9. `beacon-prd-bootstrap` 只能作为 optional skill，不得新增公开一级命令 10. `beacon-prd-bootstrap` 必须默认 `dry-run + no-overwrite + context strict verify` ## 7. 风险与缓解 | 风险 | 影响 | 缓解 | |------|------|------| | 真实项目仍依赖旧 profile/orchestration 路径 | 高 | 通过 `doctor migrate-compat` 提供扫描、迁移、验证与回滚点 | | 收敛过快导致旧测试大面积失效 | 中 | 先拆分 core/compatibility tests，再删旧断言 | | 文档与代码不同步 | 高 | README/help/tests/skill docs 同步收敛 | | project contract 和 external execution 耦合未拆干净 | 高 | 先完成 contract/execution 解耦，再默认关闭隐式 external orchestration | | HUD 字段扩张导致人类面噪音上升 | 中 | 人类面维持摘要，细节仅进 JSON/artifact | | toolkit 与现有 learning_loop 重叠导致重复建设 | 中 | 先做薄封装，复用 remember/recall/debug_feedback/learning_loop 数据面 | | `beacon-prd-bootstrap` 误写/覆盖导致 requirement 漂移 | 高 | 强制 `doctor verify-context --strict` + `dry-run/apply` + `no-overwrite` + 原子写入 + 一致性校验 + 锁 | ## 8. 成功标准 1. Beacon core 主叙事只剩 `6+3` 2. 默认 `implement/qa` 不再依赖 external skill orchestration 3. `qa` 不再隐式自动执行 external orchestration，阻断时统一推荐 doctor 迁移命令 4. external adapters 不再作为 core builtin 默认面 5. `ralph-bridge` 不再作为正式主能力出现 6. README/help 不再把 `skill/profile/orchestrate` 当普通用户主路径 7. 测试明确分成 core 与 compatibility 两层 8. `doctor` 完成兼容迁移全链路（scan/plan/apply/verify/report） 9. Ralph HUD 与 Team HUD 在保持轻量前提下提供稳定闭环观测字段 10. HUD 满足 S1-S6 场景与 1-3 行预算约束 11. 并行 HUD PRD 已纳入 `v1.3.3` 正式 requirement 包 12. 并行 toolkit PRD 已纳入 `v1.3.3` 正式 requirement 包 13. toolkit 可基于真实 memory/debug 数据输出 Top-N 摩擦演进候选 14. toolkit 与 lighthouse 可并行运行，且不影响主 `6+3` 路径 15. `beacon-prd-bootstrap` 可一键生成 `prd/user-story/test-case` 且默认不覆盖 16. `beacon-prd-bootstrap` 运行全程可追踪、可回滚、可阻断半成品 --- **Created**: 2026-04-16 **Version**: v1.3.3 **Status**: Draft **Memory Context**: N/A",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-015"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/beacon-v1.3.3-core-slimming-and-external-skill-demotion/status.json",
+        "run:run-20260416T151139Z-de5e"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "2026-04-17T05:35:18.903387+00:00",
+      "completed_at": "2026-04-17T05:35:18.903388+00:00",
       "active_run_id": ""
     }
   ],
@@ -983,12 +761,10 @@
     ],
     "worktree_root": ".",
     "source": "technical_review_contract",
-    "generated_at": "2026-04-16T15:09:14.525530+00:00"
+    "generated_at": "2026-04-17T03:59:22.577315+00:00"
   },
   "git_workflow_ref": "docs/beacon/v1.3.3/.machine/execution/git-workflow-beacon-v1.3.3-core-slimming-and-external-skill-demotion.json",
   "git_workflow_markdown_ref": "docs/beacon/v1.3.3/execution/git-workflow-beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-  "generated_at": "2026-04-16T15:09:14.526569+00:00",
-  "updated_at": "2026-04-17T01:44:17.659257+00:00",
-  "accepted_at": "2026-04-17T01:37:51.350459+00:00",
-  "accepted_by": "codex"
+  "generated_at": "2026-04-17T03:59:22.578330+00:00",
+  "updated_at": "2026-04-17T05:35:18.903400+00:00"
 }

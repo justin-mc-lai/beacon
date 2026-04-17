@@ -2,7 +2,7 @@
 
 **Feature**: `beacon-v1.3.3-core-slimming-and-external-skill-demotion`  
 **Version**: `v1.3.3`  
-**Date**: `2026-04-15`  
+**Date**: `2026-04-17`  
 **Status**: `planning line`
 
 ## 测试目标
@@ -14,6 +14,7 @@
 3. `qa` 是否停止隐式自动执行 external orchestration
 4. docs / help / tests / discovery 是否一致收口
 5. `beacon-prd-bootstrap` 是否在一键闭环同时满足默认安全防线
+6. Codex 输入框下固定 HUD 是否通过 hook 自动注入并可降级
 
 ## 测试用例
 
@@ -100,6 +101,14 @@
 - And：运行期间必须持有 `.beacon/state/locks/prd-bootstrap.lock`
 - Covers：`AC-011`
 
+## TC-012：Codex 输入框下固定 HUD 必须由 hook 自动注入并可降级
+
+- Given：Codex 已按 doctor 生成/校验的 hook wiring 运行 Beacon
+- When：触发 `UserPromptSubmit` 和至少一种会话刷新事件（`SessionStart/SessionResume/SessionRefresh`）
+- Then：输入框下方应看到同源 `minimal_hud` 1-3 行内容（通过 `hookSpecificOutput.additionalContext` 注入）
+- And：hook 异常时不阻断输入提交，系统记录 debug 事件并降级为空 HUD
+- Covers：`AC-012`
+
 ## 建议执行节奏
 
 ### Round 1
@@ -121,3 +130,8 @@
 
 - 验证 `beacon-prd-bootstrap` 在默认参数下仅 dry-run
 - 验证 apply 覆盖阻断、原子写入、锁和回滚清单是否完整
+
+### Round 5
+
+- 验证 Codex hook 在 `UserPromptSubmit/会话刷新` 的固定 HUD 注入
+- 验证 hook 失败降级与 debug 证据

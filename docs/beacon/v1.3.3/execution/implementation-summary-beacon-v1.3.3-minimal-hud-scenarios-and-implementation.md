@@ -2,7 +2,7 @@
 
 - feature: `beacon-v1.3.3-minimal-hud-scenarios-and-implementation`
 - version: `v1.3.3`
-- run_id: `run-20260416T141049Z-84ce`
+- run_id: `run-20260417T045517Z-529b`
 - status: `completed`
 - runner: `codex-subagents`
 - adapter_type: `native`
@@ -10,14 +10,41 @@
 - host_runtime: `codex`
 
 ## Changed Files
-- `.omc/project-memory.json`
-- `docs/beacon/v1.3.3/SUMMARY.md`
-- `docs/beacon/v1.3.3/execution/index.md`
+- `.beacon/auto-test-status.json`
+- `.beacon/evidence-manifest.json`
+- `.beacon/evidence-signature-chain.json`
+- `.beacon/gate-report.json`
+- `.beacon/qa/status.json`
+- `beacon/commands/debug.py`
+- `docs/beacon/v1.3.3/.machine/execution/beacon-v1.3.3-core-slimming-and-external-skill-demotion.revision.json`
+- `docs/beacon/v1.3.3/.machine/execution/beacon-v1.3.3-minimal-hud-scenarios-and-implementation.revision.json`
+- `docs/beacon/v1.3.3/.machine/execution/git-workflow-beacon-v1.3.3-core-slimming-and-external-skill-demotion.json`
+- `docs/beacon/v1.3.3/.machine/execution/git-workflow-beacon-v1.3.3-minimal-hud-scenarios-and-implementation.json`
+- `docs/beacon/v1.3.3/.machine/execution/implementation-plan-beacon-v1.3.3-core-slimming-and-external-skill-demotion.json`
+- `docs/beacon/v1.3.3/.machine/execution/implementation-plan-beacon-v1.3.3-core-slimming-and-external-skill-demotion.progress.json`
+- `docs/beacon/v1.3.3/.machine/execution/implementation-plan-beacon-v1.3.3-minimal-hud-scenarios-and-implementation.json`
+- `docs/beacon/v1.3.3/.machine/execution/implementation-plan-beacon-v1.3.3-minimal-hud-scenarios-and-implementation.progress.json`
+- `docs/beacon/v1.3.3/.machine/execution/implementation-summary-beacon-v1.3.3-minimal-hud-scenarios-and-implementation.json`
+- `docs/beacon/v1.3.3/.machine/execution/requirement-rewrite-input-beacon-v1.3.3-minimal-hud-scenarios-and-implementation.json`
+- `docs/beacon/v1.3.3/.machine/execution/technical-implementation-beacon-v1.3.3-minimal-hud-scenarios-and-implementation.json`
+- `docs/beacon/v1.3.3/.machine/qa/beacon-v1.3.3-core-slimming-and-external-skill-demotion.ac-test-matrix.json`
+- `docs/beacon/v1.3.3/.machine/qa/beacon-v1.3.3-core-slimming-and-external-skill-demotion.qa9-matrix.json`
+- `docs/beacon/v1.3.3/.machine/qa/beacon-v1.3.3-core-slimming-and-external-skill-demotion.story-scenario-map.json`
+- `docs/beacon/v1.3.3/.machine/qa/beacon-v1.3.3-minimal-hud-scenarios-and-implementation.ac-test-matrix.json`
+- `docs/beacon/v1.3.3/.machine/qa/beacon-v1.3.3-minimal-hud-scenarios-and-implementation.qa9-matrix.json`
+- `docs/beacon/v1.3.3/.machine/qa/beacon-v1.3.3-minimal-hud-scenarios-and-implementation.story-scenario-map.json`
+- `docs/beacon/v1.3.3/.machine/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.json`
+- `docs/beacon/v1.3.3/.machine/user-story/beacon-v1.3.3-minimal-hud-scenarios-and-implementation.json`
+- `docs/beacon/v1.3.3/execution/implementation-plan-beacon-v1.3.3-core-slimming-and-external-skill-demotion.md`
+- `docs/beacon/v1.3.3/execution/implementation-plan-beacon-v1.3.3-minimal-hud-scenarios-and-implementation.md`
+- `docs/beacon/v1.3.3/execution/implementation-summary-beacon-v1.3.3-minimal-hud-scenarios-and-implementation.md`
+- `docs/beacon/v1.3.3/execution/technical-implementation-beacon-v1.3.3-minimal-hud-scenarios-and-implementation.md`
 - `docs/beacon/v1.3.3/prd/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md`
+- `docs/beacon/v1.3.3/prd/beacon-v1.3.3-minimal-hud-scenarios-and-implementation.md`
 - `docs/beacon/v1.3.3/qa/test-cases/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md`
+- `docs/beacon/v1.3.3/qa/test-cases/beacon-v1.3.3-minimal-hud-scenarios-and-implementation.md`
 - `docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md`
-- `docs/plans/2026-04-16-beacon-v1.3.3-minimal-hud-design.md`
-- `docs/plans/2026-04-16-beacon-v1.3.3-minimal-hud-implementation.md`
+- `docs/beacon/v1.3.3/user-story/beacon-v1.3.3-minimal-hud-scenarios-and-implementation.md`
 
 ## Verification
 - `passed`: beacon implement run --runner codex-subagents

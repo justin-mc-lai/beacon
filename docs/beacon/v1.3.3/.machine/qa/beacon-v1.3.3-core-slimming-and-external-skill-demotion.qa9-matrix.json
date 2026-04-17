@@ -31,7 +31,7 @@
       ]
     },
     "project_type": "ai-agent-skill",
-    "generated_at": "2026-04-16T23:06:44.769223",
+    "generated_at": "2026-04-17T12:03:28.457744",
     "prompt_ref": "beacon.qa9.llm.plan.v1.0.2",
     "skip_reason": "",
     "qa_types": [
@@ -48,7 +48,7 @@
   },
   "qa_strategy": {
     "schema_version": "1.0.2",
-    "generated_at": "2026-04-16T23:06:44.767768",
+    "generated_at": "2026-04-17T12:03:28.454600",
     "project_type": "ai-agent-skill",
     "project_scan": {
       "language": "python",
@@ -463,14 +463,14 @@
     },
     {
       "tc_id": "TC-012",
-      "ac_id": "AC-001",
-      "layer": "api-curl",
-      "qa_type": "interface",
-      "title": "beacon-v1.3.3-core-slimming-and-external-skill-demotion interface coverage",
+      "ac_id": "AC-012",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.3-core-slimming-and-external-skill-demotion unit :: Codex 输入框下固定 HUD 必须通过 hook 自动注入，覆盖 `UserPromptSubmit` 与会话刷新，且失败可降级不阻断。",
       "priority": "P0",
       "automation": "auto",
-      "command": "python3 -m pytest -q -k interface --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "HTTP status and schema assertions pass",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
       "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-012.json",
       "required_files": [
         "command.txt",
@@ -484,59 +484,15 @@
     },
     {
       "tc_id": "TC-013",
-      "ac_id": "AC-002",
-      "layer": "contract",
-      "qa_type": "contract",
-      "title": "beacon-v1.3.3-core-slimming-and-external-skill-demotion contract coverage",
-      "priority": "P1",
-      "automation": "auto",
-      "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "Provider/consumer contract assertions pass",
-      "evidence_path": ".beacon/evidence/auto-test/run-20260417T094023475686/qa9-tc/TC-013/command.txt",
-      "required_files": [
-        "command.txt",
-        "stdout.log",
-        "stderr.log",
-        "result.json",
-        "junit.xml"
-      ],
-      "status": "passed",
-      "source": "user-story:docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-      "last_run_id": "run-20260417T094023475686"
-    },
-    {
-      "tc_id": "TC-014",
-      "ac_id": "AC-003",
-      "layer": "integration",
-      "qa_type": "integration",
-      "title": "beacon-v1.3.3-core-slimming-and-external-skill-demotion integration coverage",
-      "priority": "P1",
-      "automation": "auto",
-      "command": "python3 -m pytest -q -k integration --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "Integration flow assertions pass",
-      "evidence_path": ".beacon/evidence/auto-test/run-20260417T094023475686/qa9-tc/TC-014/command.txt",
-      "required_files": [
-        "command.txt",
-        "stdout.log",
-        "stderr.log",
-        "result.json",
-        "junit.xml"
-      ],
-      "status": "passed",
-      "source": "user-story:docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-      "last_run_id": "run-20260417T094023475686"
-    },
-    {
-      "tc_id": "TC-015",
-      "ac_id": "AC-004",
-      "layer": "smoke",
-      "qa_type": "smoke",
-      "title": "beacon-v1.3.3-core-slimming-and-external-skill-demotion smoke coverage",
+      "ac_id": "AC-001",
+      "layer": "api-curl",
+      "qa_type": "interface",
+      "title": "beacon-v1.3.3-core-slimming-and-external-skill-demotion interface coverage",
       "priority": "P0",
       "automation": "auto",
-      "command": "python3 -m pytest -q -m smoke --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "Critical path assertions pass",
-      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-015.json",
+      "command": "python3 -m pytest -q -k interface --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "HTTP status and schema assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-013.json",
       "required_files": [
         "command.txt",
         "stdout.log",
@@ -548,15 +504,59 @@
       "source": "user-story:docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md"
     },
     {
+      "tc_id": "TC-014",
+      "ac_id": "AC-002",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-v1.3.3-core-slimming-and-external-skill-demotion contract coverage",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260417T132646363596/qa9-tc/TC-014/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "user-story:docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
+      "last_run_id": "run-20260417T132646363596"
+    },
+    {
+      "tc_id": "TC-015",
+      "ac_id": "AC-003",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-v1.3.3-core-slimming-and-external-skill-demotion integration coverage",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k integration --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Integration flow assertions pass",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260417T132646363596/qa9-tc/TC-015/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "user-story:docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
+      "last_run_id": "run-20260417T132646363596"
+    },
+    {
       "tc_id": "TC-016",
-      "ac_id": "AC-005",
-      "layer": "ui",
-      "qa_type": "functional",
-      "title": "beacon-v1.3.3-core-slimming-and-external-skill-demotion functional coverage",
+      "ac_id": "AC-004",
+      "layer": "smoke",
+      "qa_type": "smoke",
+      "title": "beacon-v1.3.3-core-slimming-and-external-skill-demotion smoke coverage",
       "priority": "P0",
       "automation": "auto",
-      "command": "python3 -m beacon.adapters.browser_use_runner --mode functional --fallback-cmd \"python3 -m pytest -q -k functional --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
-      "assertion": "Web UI assertions and key actions pass",
+      "command": "python3 -m pytest -q -m smoke --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Critical path assertions pass",
       "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-016.json",
       "required_files": [
         "command.txt",
@@ -570,37 +570,15 @@
     },
     {
       "tc_id": "TC-017",
-      "ac_id": "AC-006",
-      "layer": "regression",
-      "qa_type": "regression",
-      "title": "beacon-v1.3.3-core-slimming-and-external-skill-demotion regression coverage",
-      "priority": "P1",
+      "ac_id": "AC-005",
+      "layer": "ui",
+      "qa_type": "functional",
+      "title": "beacon-v1.3.3-core-slimming-and-external-skill-demotion functional coverage",
+      "priority": "P0",
       "automation": "auto",
-      "command": "python3 -m pytest -q -k regression --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "No known behavior regression found",
-      "evidence_path": ".beacon/evidence/auto-test/run-20260417T094023475686/qa9-tc/TC-017/command.txt",
-      "required_files": [
-        "command.txt",
-        "stdout.log",
-        "stderr.log",
-        "result.json",
-        "junit.xml"
-      ],
-      "status": "passed",
-      "source": "user-story:docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-      "last_run_id": "run-20260417T094023475686"
-    },
-    {
-      "tc_id": "TC-018",
-      "ac_id": "AC-007",
-      "layer": "exception",
-      "qa_type": "exception",
-      "title": "beacon-v1.3.3-core-slimming-and-external-skill-demotion exception coverage",
-      "priority": "P1",
-      "automation": "auto",
-      "command": "python3 -m pytest -q -k exception --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "Negative-path assertions pass",
-      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-018.json",
+      "command": "python3 -m beacon.adapters.browser_use_runner --mode functional --fallback-cmd \"python3 -m pytest -q -k functional --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "assertion": "Web UI assertions and key actions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-017.json",
       "required_files": [
         "command.txt",
         "stdout.log",
@@ -612,7 +590,50 @@
       "source": "user-story:docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md"
     },
     {
+      "tc_id": "TC-018",
+      "ac_id": "AC-006",
+      "layer": "regression",
+      "qa_type": "regression",
+      "title": "beacon-v1.3.3-core-slimming-and-external-skill-demotion regression coverage",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k regression --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "No known behavior regression found",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260417T132646363596/qa9-tc/TC-018/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "user-story:docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
+      "last_run_id": "run-20260417T132646363596"
+    },
+    {
       "tc_id": "TC-019",
+      "ac_id": "AC-007",
+      "layer": "exception",
+      "qa_type": "exception",
+      "title": "beacon-v1.3.3-core-slimming-and-external-skill-demotion exception coverage",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k exception --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Negative-path assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-019.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md"
+    },
+    {
+      "tc_id": "TC-020",
       "ac_id": "AC-008",
       "layer": "compatibility",
       "qa_type": "compatibility",
@@ -621,7 +642,7 @@
       "automation": "auto",
       "command": "python3 -m beacon.adapters.browser_use_runner --mode compatibility --fallback-cmd \"python3 -m pytest -q -k compatibility --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
       "assertion": "Cross-browser/device assertions pass",
-      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-019.json",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-020.json",
       "required_files": [
         "command.txt",
         "stdout.log",
@@ -658,5 +679,5 @@
       }
     ]
   },
-  "generated_at": "2026-04-16T23:06:44.769252"
+  "generated_at": "2026-04-17T12:03:28.457765"
 }
