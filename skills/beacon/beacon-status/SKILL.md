@@ -1,6 +1,6 @@
 ---
 name: beacon-status
-description: Use when the user wants a board, current stage snapshot, or overall lifecycle state for a Beacon feature through the minimal v1.3.2 human surface.
+description: Use when the user wants a board, current stage snapshot, or overall lifecycle state for a Beacon feature through the minimal v1.3.3 human surface.
 ---
 
 # Beacon Status

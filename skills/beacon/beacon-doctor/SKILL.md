@@ -1,6 +1,6 @@
 ---
 name: beacon-doctor
-description: Use when the user needs Beacon to repair context, sync materials, diagnose environment or package drift, or restore the workflow to a usable state through the minimal v1.3.2 human surface.
+description: Use when the user needs Beacon to repair context, sync materials, diagnose environment or package drift, or restore the workflow to a usable state through the minimal v1.3.3 human surface.
 ---
 
 # Beacon Doctor

@@ -1,6 +1,6 @@
 ---
 name: beacon-implement
-description: Use when the user wants to plan or run implementation through Beacon's minimal v1.3.2 human surface. Keep `implement` as the only public implementation entrypoint; treat team runtime and subagent lanes as internal.
+description: Use when the user wants to plan or run implementation through Beacon's minimal v1.3.3 human surface. Keep `implement` as the only public implementation entrypoint; treat team runtime and subagent lanes as internal.
 ---
 
 # Beacon Implement

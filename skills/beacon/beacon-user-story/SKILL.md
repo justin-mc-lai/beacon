@@ -1,6 +1,6 @@
 ---
 name: beacon-user-story
-description: Use when the user wants to derive, refine, review, or freeze user stories and acceptance criteria from a Beacon PRD through the minimal v1.3.2 human surface.
+description: Use when the user wants to derive, refine, review, or freeze user stories and acceptance criteria from a Beacon PRD through the minimal v1.3.3 human surface.
 ---
 
 # Beacon User Story

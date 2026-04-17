@@ -1,54 +1,43 @@
 # Beacon Skill Example: Release Readiness
 
-This example focuses on **verification and release evidence** for Beacon v1.3.1.
+This example focuses on **v1.3.3 release evidence and gate consistency**.
 
 Read first:
 
-- [`../../../docs/beacon/v1.3.1/SUMMARY.md`](../../../docs/beacon/v1.3.1/SUMMARY.md)
-- [`../../../docs/beacon/v1.3.1/execution/index.md`](../../../docs/beacon/v1.3.1/execution/index.md)
+- [`../../../docs/beacon/v1.3.3/SUMMARY.md`](../../../docs/beacon/v1.3.3/SUMMARY.md)
+- [`../../../docs/beacon/v1.3.3/execution/index.md`](../../../docs/beacon/v1.3.3/execution/index.md)
+- [`../../../docs/beacon/v1.3.3/release/v1.3.3.md`](../../../docs/beacon/v1.3.3/release/v1.3.3.md)
 
 ```bash
 # 1) Inspect current package state
-bash skills/beacon/scripts/run_beacon.sh status --board --project-root . --version v1.3.1
+bash skills/beacon/scripts/run_beacon.sh status --board --project-root . --version v1.3.3
 
-# 2) Verify materials and delivery
-bash skills/beacon/scripts/run_beacon.sh doctor verify-materials \
+# 2) Verify context and sync machine materials after runtime upgrades
+bash skills/beacon/scripts/run_beacon.sh doctor verify-context \
   --project-root . \
-  --version v1.3.1 \
+  --strict \
   --json
-bash skills/beacon/scripts/run_beacon.sh doctor verify-delivery \
+bash skills/beacon/scripts/run_beacon.sh doctor sync-materials \
   --project-root . \
-  --version v1.3.1 \
-  --json
-
-# 3) Repair old package layout if needed
-bash skills/beacon/scripts/run_beacon.sh doctor repair-package \
-  --project-root . \
-  --version v1.3.1 \
-  --json
-bash skills/beacon/scripts/run_beacon.sh doctor upgrade-package \
-  --project-root . \
-  --version v1.3.1 \
+  --version v1.3.3 \
+  --all-features \
   --json
 
-# 4) Ensure current feature has an implementation plan before release gate
+# 3) Ensure current feature has implementation-plan truth before release gate
 bash skills/beacon/scripts/run_beacon.sh implement plan \
-  "Beacon v1.3.1 release line" \
+  "Beacon v1.3.3 lightweight release line" \
   --project . \
-  --version v1.3.1 \
+  --version v1.3.3 \
   --json
 
-# 5) Run release gate and release readiness checks
+# 4) Run release gate and release readiness checks
 bash skills/beacon/scripts/run_beacon.sh gate check release \
   --project-root . \
-  --version v1.3.1 \
+  --version v1.3.3 \
   --json
-bash skills/beacon/scripts/run_beacon.sh release check v1.3.1 --project .
+bash skills/beacon/scripts/run_beacon.sh release check v1.3.3 --project .
 
-# 6) Optional: generate acceptance audit artifacts
-bash skills/beacon/scripts/run_beacon.sh report latest acceptance-audit \
-  --project-root . \
-  --version v1.3.1 \
-  --feature beacon-prd-us-to-plan-implementation-progress-closure \
-  --write
+# 5) Confirm the fixed HUD hook can inject context into Codex
+printf '%s' '{"hook_event_name":"UserPromptSubmit","prompt":"继续 Beacon v1.3.3 release"}' \
+  | bash skills/beacon/scripts/run_beacon.sh debug codex-fixed-hud --project-root . --version v1.3.3 --json
 ```
