@@ -13,6 +13,7 @@
 2. external skill / runner / orchestration 是否被降级为 compatibility
 3. `qa` 是否停止隐式自动执行 external orchestration
 4. docs / help / tests / discovery 是否一致收口
+5. `beacon-prd-bootstrap` 是否在一键闭环同时满足默认安全防线
 
 ## 测试用例
 
@@ -88,6 +89,17 @@
 - Then：不应先被引导到 `skill bind / profile create / orchestrate run`
 - Covers：`AC-010`
 
+## TC-011：`beacon-prd-bootstrap` 必须默认安全并可回滚
+
+- Given：项目中存在 `beacon-prd-bootstrap` optional skill
+- When：执行 `beacon-prd-bootstrap run "<feature>" --desc "<需求描述>" --version v1.3.3`（未显式 apply）
+- Then：系统必须执行 `doctor verify-context --strict` 并仅输出 dry-run 计划，不落盘文档
+- And：执行 `--apply` 但目标文档已存在时，默认 `--no-overwrite` 必须阻断并返回单一恢复命令
+- And：写入阶段必须使用原子写入，异常中断后不得出现半成品文档
+- And：运行后必须有 `.beacon/state/prd-bootstrap/<run-id>.json` 与回滚清单
+- And：运行期间必须持有 `.beacon/state/locks/prd-bootstrap.lock`
+- Covers：`AC-011`
+
 ## 建议执行节奏
 
 ### Round 1
@@ -104,3 +116,8 @@
 
 - 验证测试分层与 discovery/registry 分层
 - 验证 contract plane 与 external orchestration 是否完成解耦
+
+### Round 4
+
+- 验证 `beacon-prd-bootstrap` 在默认参数下仅 dry-run
+- 验证 apply 覆盖阻断、原子写入、锁和回滚清单是否完整

@@ -1,0 +1,482 @@
+{
+  "schema_version": "1.0",
+  "run_id": "run-20260416T141049Z-84ce",
+  "feature": "beacon-v1.3.3-minimal-hud-scenarios-and-implementation",
+  "feature_slug": "beacon-v1.3.3-minimal-hud-scenarios-and-implementation",
+  "version": "v1.3.3",
+  "mode": "team",
+  "host_runtime": "codex",
+  "runner": "codex-subagents",
+  "adapter_type": "native",
+  "request_path": ".beacon/implement/run-20260416T141049Z-84ce/request.json",
+  "result_path": ".beacon/implement/run-20260416T141049Z-84ce/result.json",
+  "branch_preflight_path": ".beacon/implement/run-20260416T141049Z-84ce/branch-preflight.json",
+  "plan_preflight_path": ".beacon/implement/run-20260416T141049Z-84ce/plan-preflight.json",
+  "git_workflow": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1.3.3-minimal-hud-scenarios-and-implementation",
+    "feature_slug": "beacon-v1.3.3-minimal-hud-scenarios-and-implementation",
+    "version": "v1.3.3",
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.3.3",
+    "branch_prefix": "beacon/",
+    "base_branch": "main",
+    "use_git_worktree": false,
+    "require_clean_worktree_for_switch": true,
+    "service_directories": [
+      "."
+    ],
+    "git_roots": [
+      "."
+    ],
+    "worktree_root": ".",
+    "source": "technical_review_contract",
+    "generated_at": "2026-04-16T14:10:49.014229+00:00"
+  },
+  "generated_at": "2026-04-16T14:10:50.097235+00:00",
+  "status": "completed",
+  "subagent_prechecks": {
+    "required": true,
+    "host_runtime": "codex",
+    "runtime_readiness": {
+      "schema_version": "1.0",
+      "check": "runtime-readiness",
+      "status": "pass",
+      "reason_code": "",
+      "host_runtime": "codex",
+      "checks": [
+        {
+          "name": "skill_root_present",
+          "ok": true,
+          "detail": "/Users/apple/.agents/skills/beacon"
+        },
+        {
+          "name": "context_file_present",
+          "ok": true,
+          "detail": "AGENTS.md"
+        },
+        {
+          "name": "global_boundaries_present",
+          "ok": true,
+          "detail": "docs/beacon/global-boundaries.md"
+        },
+        {
+          "name": "context_inherits_global_boundaries",
+          "ok": true,
+          "detail": "AGENTS.md"
+        }
+      ],
+      "blocked_checks": [],
+      "recommended_command": ""
+    },
+    "delegation_readiness": {
+      "schema_version": "1.0",
+      "check": "delegation-readiness",
+      "status": "pass",
+      "reason_code": "",
+      "feature": "beacon-v1.3.3-minimal-hud-scenarios-and-implementation",
+      "version": "v1.3.3",
+      "checks": [
+        {
+          "name": "prd_present",
+          "ok": true,
+          "detail": "docs/beacon/v1.3.3/prd/beacon-v1.3.3-minimal-hud-scenarios-and-implementation.md"
+        },
+        {
+          "name": "user_story_present",
+          "ok": true,
+          "detail": "docs/beacon/v1.3.3/user-story/beacon-v1.3.3-minimal-hud-scenarios-and-implementation.md"
+        },
+        {
+          "name": "test_case_present",
+          "ok": true,
+          "detail": "docs/beacon/v1.3.3/qa/test-cases/beacon-v1.3.3-minimal-hud-scenarios-and-implementation.md"
+        },
+        {
+          "name": "implementation_plan_present",
+          "ok": true,
+          "detail": "docs/beacon/v1.3.3/.machine/execution/implementation-plan-beacon-v1.3.3-minimal-hud-scenarios-and-implementation.json"
+        },
+        {
+          "name": "git_workflow_present",
+          "ok": true,
+          "detail": "docs/beacon/v1.3.3/.machine/execution/git-workflow-beacon-v1.3.3-minimal-hud-scenarios-and-implementation.json"
+        },
+        {
+          "name": "qa_baseline_bundle_present",
+          "ok": true,
+          "detail": "docs/beacon/v1.3.3/.machine/qa"
+        }
+      ],
+      "blocked_checks": [],
+      "recommended_command": ""
+    }
+  },
+  "skill": "",
+  "summary": "codex-subagents implementation completed via implement-team flow",
+  "changed_files": [
+    ".omc/project-memory.json",
+    "docs/beacon/v1.3.3/SUMMARY.md",
+    "docs/beacon/v1.3.3/execution/index.md",
+    "docs/beacon/v1.3.3/prd/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
+    "docs/beacon/v1.3.3/qa/test-cases/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
+    "docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
+    "docs/plans/2026-04-16-beacon-v1.3.3-minimal-hud-design.md",
+    "docs/plans/2026-04-16-beacon-v1.3.3-minimal-hud-implementation.md"
+  ],
+  "verification": [
+    {
+      "command": "beacon implement run --runner codex-subagents",
+      "status": "passed"
+    },
+    {
+      "command": "auto-test-status",
+      "status": "passed",
+      "evidence": ".beacon/auto-test-status.json"
+    }
+  ],
+  "implemented_task_ids": [],
+  "verified_task_ids": [],
+  "blocked_task_ids": [],
+  "failed_task_ids": [],
+  "artifact_updates": {
+    "user_story": {
+      "required": false,
+      "reason": "story machine state writeback recorded"
+    },
+    "review_quality": {
+      "required": true,
+      "reason": "run quality review after native implementation"
+    },
+    "acceptance": {
+      "required": true,
+      "reason": "acceptance remains a formal post-verify action"
+    }
+  },
+  "branch_preflight": {
+    "schema_version": "1.0",
+    "status": "pass",
+    "summary": "implement branch preflight passed on workspace branch beacon/v1.3.3",
+    "blocked": false,
+    "version": "v1.3.3",
+    "expected_branch": "beacon/v1.3.3",
+    "current_branch": "beacon/v1.3.3",
+    "current_tag": "",
+    "branch_exists": true,
+    "dirty_worktree": true,
+    "require_clean_worktree_for_switch": true,
+    "recommended_command": "",
+    "reason_codes": [],
+    "git_alignment": {
+      "mode": "workspace",
+      "repo_detected": true,
+      "target_branch": "beacon/v1.3.3",
+      "worktree_path": ".",
+      "workspace_repos": [
+        {
+          "repo_root": "/Users/apple/Developer/Personal/products/beacon",
+          "relative_root": ".",
+          "dirty_worktree": true,
+          "repo_url": "https://github.com/justin-mc-lai/beacon.git",
+          "base_branch": "main",
+          "target_branch": "beacon/v1.3.3",
+          "current_branch": "beacon/v1.3.3",
+          "current_commit": "e31380f5232174f4c39a3ee537e15bda6708c2ba",
+          "current_tag": "",
+          "worktree_path": "/Users/apple/Developer/Personal/products/beacon",
+          "version_ref": "v1.3.3",
+          "allowed_refs": [
+            "branch"
+          ],
+          "enforce_branch_prefix": "beacon/",
+          "branch_matches_target": true,
+          "branch_has_required_prefix": true,
+          "tag_matches_version": false,
+          "version_ref_satisfied": true,
+          "reason_codes": [],
+          "blocked": false,
+          "detached_head": false,
+          "repo_detected": true
+        }
+      ],
+      "blocked": false,
+      "reason_codes": []
+    },
+    "run_id": "run-20260416T141049Z-84ce",
+    "feature": "beacon-v1.3.3-minimal-hud-scenarios-and-implementation",
+    "feature_slug": "beacon-v1.3.3-minimal-hud-scenarios-and-implementation",
+    "generated_at": "2026-04-16T14:10:49.961302+00:00"
+  },
+  "plan_preflight": {
+    "schema_version": "1.0",
+    "run_id": "run-20260416T141049Z-84ce",
+    "feature": "beacon-v1.3.3-minimal-hud-scenarios-and-implementation",
+    "feature_slug": "beacon-v1.3.3-minimal-hud-scenarios-and-implementation",
+    "version": "v1.3.3",
+    "expected_plan": "docs/beacon/v1.3.3/.machine/execution/implementation-plan-beacon-v1.3.3-minimal-hud-scenarios-and-implementation.json",
+    "expected_revision_id": "R1",
+    "baseline_hash": "",
+    "recommended_command": "beacon implement plan \"beacon-v1.3.3-minimal-hud-scenarios-and-implementation\" --project-root . --version v1.3.3",
+    "generated_at": "2026-04-16T14:10:49.962606+00:00",
+    "status": "pass",
+    "blocked": false,
+    "plan_id": "plan-beacon-v1.3.3-minimal-hud-scenarios-and-implementation-r1",
+    "plan_path": "docs/beacon/v1.3.3/.machine/execution/implementation-plan-beacon-v1.3.3-minimal-hud-scenarios-and-implementation.json",
+    "progress_path": "docs/beacon/v1.3.3/.machine/execution/implementation-plan-beacon-v1.3.3-minimal-hud-scenarios-and-implementation.progress.json"
+  },
+  "implementation_marker": ".beacon/state/implementation-beacon-v1.3.3-minimal-hud-scenarios-and-implementation.json",
+  "technical_archive": {
+    "json": "docs/beacon/v1.3.3/.machine/execution/technical-implementation-beacon-v1.3.3-minimal-hud-scenarios-and-implementation.json",
+    "md": "docs/beacon/v1.3.3/execution/technical-implementation-beacon-v1.3.3-minimal-hud-scenarios-and-implementation.md"
+  },
+  "implementation_plan": "docs/beacon/v1.3.3/.machine/execution/implementation-plan-beacon-v1.3.3-minimal-hud-scenarios-and-implementation.json",
+  "implementation_plan_progress": {
+    "schema_version": "1.0",
+    "plan_id": "plan-beacon-v1.3.3-minimal-hud-scenarios-and-implementation-r1",
+    "feature": "beacon-v1.3.3-minimal-hud-scenarios-and-implementation",
+    "version": "v1.3.3",
+    "revision_id": "R1",
+    "status": "completed",
+    "counts": {
+      "total": 7,
+      "draft": 0,
+      "planned": 0,
+      "in_progress": 0,
+      "blocked": 0,
+      "completed": 7
+    },
+    "blocked_task_ids": [],
+    "completed_task_ids": [
+      "ITASK-001",
+      "ITASK-002",
+      "ITASK-003",
+      "ITASK-004",
+      "ITASK-005",
+      "ITASK-006",
+      "ITASK-007"
+    ],
+    "next_task_id": "",
+    "task_states": [
+      {
+        "task_id": "ITASK-001",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-001"
+        ],
+        "mapped_test_ids": [
+          "TC-001",
+          "TC-008",
+          "TC-015"
+        ],
+        "mapped_scenario_ids": [
+          "SC-001",
+          "SC-002",
+          "SC-003",
+          "SC-004",
+          "SC-005",
+          "SC-006",
+          "SC-007"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-001",
+          "TC-008",
+          "TC-015"
+        ]
+      },
+      {
+        "task_id": "ITASK-002",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-003",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-004",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-005",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-006",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-007",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      }
+    ],
+    "updated_at": "2026-04-16T14:10:50.060500+00:00"
+  },
+  "implemented_items": [
+    "AC-001",
+    "TASK-001"
+  ],
+  "verified_items": [
+    "AC-001",
+    "TEST-001"
+  ],
+  "blocked_items": [],
+  "runner_mode": "codex-subagents",
+  "revision_id": "R1",
+  "team_execution": {
+    "team_name": "implement-team-run-20260416T141049Z-84ce",
+    "team_surface": "implement-team",
+    "state_path": ".beacon/team/implement-team-run-20260416T141049Z-84ce/manifest.json",
+    "artifact_dir": "docs/beacon/v1.3.3/execution/codex-subagents/beacon-v1.3.3-minimal-hud-scenarios-and-implementation/run-20260416T141049Z-84ce",
+    "final_state": "terminal",
+    "terminal_status": "Pass",
+    "runtime": "file",
+    "tmux_session": "",
+    "roles": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "role_reports": {
+      "planner": {
+        "role": "planner",
+        "status": "completed",
+        "json": "docs/beacon/v1.3.3/execution/codex-subagents/beacon-v1.3.3-minimal-hud-scenarios-and-implementation/run-20260416T141049Z-84ce/planner.json",
+        "markdown": "docs/beacon/v1.3.3/execution/codex-subagents/beacon-v1.3.3-minimal-hud-scenarios-and-implementation/run-20260416T141049Z-84ce/planner.md"
+      },
+      "implementation-architect": {
+        "role": "implementation-architect",
+        "status": "completed",
+        "json": "docs/beacon/v1.3.3/execution/codex-subagents/beacon-v1.3.3-minimal-hud-scenarios-and-implementation/run-20260416T141049Z-84ce/implementation-architect.json",
+        "markdown": "docs/beacon/v1.3.3/execution/codex-subagents/beacon-v1.3.3-minimal-hud-scenarios-and-implementation/run-20260416T141049Z-84ce/implementation-architect.md"
+      },
+      "implementer": {
+        "role": "implementer",
+        "status": "completed",
+        "json": "docs/beacon/v1.3.3/execution/codex-subagents/beacon-v1.3.3-minimal-hud-scenarios-and-implementation/run-20260416T141049Z-84ce/implementer.json",
+        "markdown": "docs/beacon/v1.3.3/execution/codex-subagents/beacon-v1.3.3-minimal-hud-scenarios-and-implementation/run-20260416T141049Z-84ce/implementer.md"
+      },
+      "reviewer": {
+        "role": "reviewer",
+        "status": "pass",
+        "json": "docs/beacon/v1.3.3/execution/codex-subagents/beacon-v1.3.3-minimal-hud-scenarios-and-implementation/run-20260416T141049Z-84ce/reviewer.json",
+        "markdown": "docs/beacon/v1.3.3/execution/codex-subagents/beacon-v1.3.3-minimal-hud-scenarios-and-implementation/run-20260416T141049Z-84ce/reviewer.md"
+      },
+      "tester": {
+        "role": "tester",
+        "status": "completed",
+        "json": "docs/beacon/v1.3.3/execution/codex-subagents/beacon-v1.3.3-minimal-hud-scenarios-and-implementation/run-20260416T141049Z-84ce/tester.json",
+        "markdown": "docs/beacon/v1.3.3/execution/codex-subagents/beacon-v1.3.3-minimal-hud-scenarios-and-implementation/run-20260416T141049Z-84ce/tester.md"
+      }
+    },
+    "review_gates": {
+      "spec": {
+        "status": "pass",
+        "reviewer": "reviewer"
+      },
+      "quality": {
+        "status": "pass",
+        "reviewer": "tester"
+      }
+    },
+    "implemented_items": [
+      "AC-001",
+      "TASK-001"
+    ],
+    "verified_items": [
+      "AC-001",
+      "TEST-001"
+    ],
+    "blocked_items": [],
+    "verification_entries": [
+      {
+        "command": "auto-test-status",
+        "status": "passed",
+        "evidence": ".beacon/auto-test-status.json"
+      }
+    ],
+    "context_isolation": {
+      "role_plane": "implementation",
+      "isolated_from": [
+        "qa-team"
+      ],
+      "shared_inputs": [
+        "docs/beacon/<version>/user-story",
+        "docs/beacon/<version>/prd",
+        "implementation-plan"
+      ],
+      "shared_outputs": [
+        "implementation_summary",
+        "technical_archive",
+        "story_writeback",
+        "evidence_refs"
+      ],
+      "rule": "qa_must_not_inherit_implement_private_context"
+    },
+    "hud": {
+      "json": ".beacon/state/team-hud/implement-team-run-20260416T141049Z-84ce.json",
+      "html": "docs/beacon/v1.3.3/execution/codex-subagents/beacon-v1.3.3-minimal-hud-scenarios-and-implementation/run-20260416T141049Z-84ce/index.html"
+    }
+  },
+  "team_surface": "implement-team",
+  "context_isolation": {
+    "role_plane": "implementation",
+    "isolated_from": [
+      "qa-team"
+    ],
+    "shared_inputs": [
+      "docs/beacon/<version>/user-story",
+      "docs/beacon/<version>/prd",
+      "implementation-plan"
+    ],
+    "shared_outputs": [
+      "implementation_summary",
+      "technical_archive",
+      "story_writeback",
+      "evidence_refs"
+    ],
+    "rule": "qa_must_not_inherit_implement_private_context"
+  },
+  "artifact_writeback_obligations": ".beacon/state/artifact-update-obligations/beacon-v1.3.3-minimal-hud-scenarios-and-implementation.json",
+  "artifact_writeback_open_count": 2,
+  "requirement_rewrite_input": "docs/beacon/v1.3.3/.machine/execution/requirement-rewrite-input-beacon-v1.3.3-minimal-hud-scenarios-and-implementation.json",
+  "implement_to_qa_handoff": ".beacon/handoffs/implement-to-qa/beacon-v1.3.3-minimal-hud-scenarios-and-implementation/run-20260416T141049Z-84ce.json",
+  "auto_qa": {
+    "enabled": false,
+    "triggered": false,
+    "args": [],
+    "follow_handoff": false,
+    "max_rounds": 2
+  }
+}

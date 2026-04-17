@@ -87,6 +87,18 @@
 - 不应先看到 `orchestrate run`
 - 不应先被要求理解 external adapter registry
 
+## US-011：作为需求操作者，我希望 `beacon-prd-bootstrap` 一键生成 requirement 三件套且默认安全
+
+**验收标准**：
+
+- `beacon-prd-bootstrap` 作为 optional 人类 skill，不新增公开一级命令
+- 默认必须 `dry-run`，仅显式 `--apply` 才允许落盘
+- 默认必须 `--no-overwrite`，遇到既有文档必须阻断并给单一恢复命令
+- 执行前必须跑 `beacon doctor verify-context --project-root . --strict`
+- 写入必须原子化，失败不得留下半成品
+- 必须写出 `.beacon/state/prd-bootstrap/<run-id>.json` 与回滚清单
+- 必须持有 `.beacon/state/locks/prd-bootstrap.lock` 防并发写冲突
+
 ## Acceptance Criteria Matrix
 
 | ID | Theme | Acceptance Criteria |
@@ -101,3 +113,4 @@
 | AC-008 | layered-discovery | `skill detect / registry / discovery` 的输出必须分层展示 builtin core 与 external compatibility。 |
 | AC-009 | contract-decoupled | project contract 能力必须与 external orchestration 解耦。 |
 | AC-010 | new-user-unblocked | 新用户在默认路径下不应先接触 compatibility plane 命令和概念。 |
+| AC-011 | prd-bootstrap-safe-by-default | `beacon-prd-bootstrap` 必须支持一键生成 `prd/user-story/test-case`，且默认 `dry-run + no-overwrite + strict context verify + atomic write + rollback/lock`。 |

@@ -9,6 +9,7 @@ Beacon's install root stays:
 - `skills/beacon/`
 
 This preserves the existing root `SKILL.md` and packaged metadata while adding nested host-visible subskills underneath the same root.
+The same packaged root is also consumed by Claude host plugin loading, so Codex/Claude stay aligned on one skill source.
 
 ## Public host-visible skills
 
@@ -26,6 +27,11 @@ This preserves the existing root `SKILL.md` and packaged metadata while adding n
   - `beacon-help`
   - `beacon-status`
   - `beacon-doctor`
+
+## Optional supplemental skills (not 6+3 mainline)
+
+- `beacon-toolkit-lighthouse`
+- `beacon-prd-bootstrap`
 
 ## Installation
 

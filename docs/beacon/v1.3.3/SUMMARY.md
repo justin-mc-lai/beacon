@@ -72,15 +72,29 @@ human minimal surface
 3. `../global-boundaries.md`
 4. `./execution/boundaries.md`
 5. `./prd/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md`
-6. `./user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md`
-7. `./qa/test-cases/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md`
-8. `./execution/beacon-v1.3.3-core-slimming-and-external-skill-demotion-slimming-checklist.md`
+6. `./prd/beacon-v1.3.3-minimal-hud-scenarios-and-implementation.md`
+7. `./prd/beacon-v1.3.3-memory-friction-evolution-toolkit.md`
+8. `./user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md`
+9. `./user-story/beacon-v1.3.3-minimal-hud-scenarios-and-implementation.md`
+10. `./user-story/beacon-v1.3.3-memory-friction-evolution-toolkit.md`
+11. `./qa/test-cases/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md`
+12. `./qa/test-cases/beacon-v1.3.3-minimal-hud-scenarios-and-implementation.md`
+13. `./qa/test-cases/beacon-v1.3.3-memory-friction-evolution-toolkit.md`
+14. `./execution/beacon-v1.3.3-core-slimming-and-external-skill-demotion-slimming-checklist.md`
 
 ## 当前版本包起点
 
-当前 `v1.3.3` 先从一个单 feature 版本包起步：
+当前 `v1.3.3` 采用“主 PRD + 双并行 PRD”的轻量三文档包：
 
 - `beacon-v1.3.3-core-slimming-and-external-skill-demotion`
+- `beacon-v1.3.3-minimal-hud-scenarios-and-implementation`
+- `beacon-v1.3.3-memory-friction-evolution-toolkit`
+
+其中：
+
+- 主 PRD 负责 core/compat 收敛、迁移治理与总验收目标
+- HUD 并行 PRD 负责 S1-S6 场景契约与极简实现切片
+- toolkit 并行 PRD 负责 memory/friction 演进与 lighthouse 并行分析约束
 
 如果后续有新增版本范围，应继续保持：
 

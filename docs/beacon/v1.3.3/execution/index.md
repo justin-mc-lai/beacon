@@ -7,9 +7,15 @@
 3. `../../global-boundaries.md`
 4. `./boundaries.md`
 5. `../prd/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md`
-6. `../user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md`
-7. `../qa/test-cases/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md`
-8. `./beacon-v1.3.3-core-slimming-and-external-skill-demotion-slimming-checklist.md`
+6. `../prd/beacon-v1.3.3-minimal-hud-scenarios-and-implementation.md`
+7. `../prd/beacon-v1.3.3-memory-friction-evolution-toolkit.md`
+8. `../user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md`
+9. `../user-story/beacon-v1.3.3-minimal-hud-scenarios-and-implementation.md`
+10. `../user-story/beacon-v1.3.3-memory-friction-evolution-toolkit.md`
+11. `../qa/test-cases/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md`
+12. `../qa/test-cases/beacon-v1.3.3-minimal-hud-scenarios-and-implementation.md`
+13. `../qa/test-cases/beacon-v1.3.3-memory-friction-evolution-toolkit.md`
+14. `./beacon-v1.3.3-core-slimming-and-external-skill-demotion-slimming-checklist.md`
 
 ## 说明
 
@@ -34,4 +40,8 @@ prd
 
 1. 讲清 v1.3.3 的 core/compatibility 分层。
 2. 把瘦身目标落实到 README/help/skill/tests。
-3. 给后续实际实现提供一份不扩张心智负担的执行蓝图。
+3. 通过并行 HUD PRD 锁定 S1-S6 极简场景与 1-3 行预算。
+4. 通过并行 toolkit PRD 锁定 memory/friction 演进与 lighthouse 并行策略。
+5. 给后续实际实现提供一份不扩张心智负担的执行蓝图。
+- `./evo-harness-contract.md`
+- `./evo-scorecard-contract.md`

@@ -16,6 +16,7 @@ from beacon.utils.implementation_plan import (
     load_implementation_plan_progress,
 )
 from beacon.utils.learning_loop import load_learning_plane_contract
+from beacon.utils.minimal_hud import build_minimal_hud
 from beacon.utils.project_skills import (
     default_project_profile,
     evaluate_project_profile_gate,
@@ -182,6 +183,30 @@ def _profile_binding_source(project_root: Path, *, version: str, feature: str) -
     if default_project_profile(project_root):
         return "default_profile"
     return "none"
+
+
+def _resolve_hud_refs(
+    *,
+    project_root: Path,
+    feature: str,
+    implement_state: dict[str, Any],
+    ralph_state: dict[str, Any],
+) -> dict[str, str]:
+    refs: dict[str, str] = {"team_hud_json": "", "team_hud_html": "", "ralph_state_json": ""}
+    if feature:
+        refs["ralph_state_json"] = str((project_root / ".beacon" / "ralph" / f"{feature_slug(feature)}.json").relative_to(project_root))
+    team_execution = implement_state.get("team_execution") if isinstance(implement_state.get("team_execution"), dict) else {}
+    hud = team_execution.get("hud") if isinstance(team_execution.get("hud"), dict) else {}
+    refs["team_hud_json"] = str(hud.get("json", "") or "")
+    refs["team_hud_html"] = str(hud.get("html", "") or "")
+    if refs["team_hud_json"] or refs["team_hud_html"]:
+        return refs
+    team_mode = implement_state.get("team_mode") if isinstance(implement_state.get("team_mode"), dict) else {}
+    refs["team_hud_json"] = str(team_mode.get("hud_json", "") or "")
+    refs["team_hud_html"] = str(team_mode.get("hud_html", "") or "")
+    if not ralph_state and refs["ralph_state_json"]:
+        refs["ralph_state_json"] = ""
+    return refs
 
 
 def _supports_skill_discover(version: str) -> bool:
@@ -795,6 +820,43 @@ def build_help_payload(
             "reason": str(ralph_state.get("current_blocker", "") or "follow Ralph controller next step"),
             "command": str(ralph_state.get("recommended_command", "") or ""),
         }
+    plan_counts = implementation_plan_progress.get("counts") if isinstance(implementation_plan_progress.get("counts"), dict) else {}
+    progress_total = int(plan_counts.get("total", 0) or 0)
+    progress_done = int(plan_counts.get("completed", 0) or 0)
+    blocker_level = "blocked" if blocked else "warn" if (
+        int(execution_surface.get("ralph_failure_streak", 0) or 0) > 0
+        or int(execution_surface.get("ralph_no_delta_streak", 0) or 0) > 0
+    ) else "none"
+    hud_refs = _resolve_hud_refs(
+        project_root=project_root,
+        feature=feature_name,
+        implement_state=implement_state,
+        ralph_state=ralph_state if isinstance(ralph_state, dict) else {},
+    )
+    minimal_hud_payload = {
+        "beacon_version": str(version_context.get("runtime_version", "") or resolved_version),
+        "docs_version": resolved_version,
+        "feature": feature_name,
+        "stage": current_stage,
+        "execution": {
+            "mode": str(execution_surface.get("implement_mode", "") or ""),
+            "elapsed": str(implement_state.get("generated_at", "") or "N/A"),
+            "progress": {
+                "done": progress_done,
+                "total": progress_total,
+                "round": int(execution_surface.get("ralph_round_count", 0) or 0),
+            },
+            "circuit_status": "trip" if blocker_level == "blocked" else "warn" if blocker_level == "warn" else "ok",
+        },
+        "blocker": {
+            "level": blocker_level,
+            "reason": blocking[0] if blocking else "",
+            "recommended_command": str(next_step.get("command", "") or ""),
+        },
+        "next_action": str(next_step.get("action", "") or ""),
+        "hud_refs": hud_refs,
+    }
+    minimal_hud = build_minimal_hud(minimal_hud_payload)
     decision_trace = [
         {
             "step": "version_truth",
@@ -906,6 +968,11 @@ def build_help_payload(
         "skill_discovery_hint": discovery_hint,
         "project_gate": profile_gate,
         "execution_surface": execution_surface,
+        "hud": hud_refs,
+        "minimal_hud": {
+            **minimal_hud,
+            "payload": minimal_hud_payload,
+        },
         "ralph": ralph_state,
         "learning_surface": learning_surface,
         "implementation_plan": implementation_plan,
