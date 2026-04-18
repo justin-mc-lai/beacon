@@ -116,16 +116,20 @@ def test_setup_context_files_should_create_both_files_with_markers(tmp_path: Pat
         with_agents=True,
     )
 
-    assert len(payload["actions"]) == 2
+    assert len(payload["actions"]) == 3
+    action_files = [action["file"] for action in payload["actions"]]
+    assert action_files == ["CLAUDE.md", "AGENTS.md", "global-boundaries.md"]
 
     claude = (tmp_path / "CLAUDE.md").read_text(encoding="utf-8")
     agents = (tmp_path / "AGENTS.md").read_text(encoding="utf-8")
+    global_boundaries = (tmp_path / "docs" / "beacon" / "global-boundaries.md").read_text(encoding="utf-8")
     for content in (claude, agents):
         assert MANAGED_BLOCK_START in content
         assert MANAGED_BLOCK_END in content
         assert "BEACON:VERSION:v1.2.3" in content
     assert "docs/beacon/<version>/` is the canonical source of truth" in claude
     assert "Use `docs/beacon/<version>/` as the canonical delivery tree." in agents
+    assert "跨版本全局约束" in global_boundaries
     assert "docs/product/<version>" not in claude
     assert "docs/product/<version>" not in agents
 
@@ -148,11 +152,15 @@ def test_verify_context_files_should_return_expected_checks_and_statuses(tmp_pat
         "context_files_presence",
         "managed_block_integrity",
         "managed_block_version_drift",
+        "global_boundaries_presence",
+        "global_boundaries_inheritance",
     ]
     assert check_statuses == {
         "context_files_presence": "pass",
         "managed_block_integrity": "pass",
         "managed_block_version_drift": "pass",
+        "global_boundaries_presence": "pass",
+        "global_boundaries_inheritance": "pass",
     }
 
     drift_payload = verify_context_files(tmp_path, runtime_version="v9.9.9", strict=False)

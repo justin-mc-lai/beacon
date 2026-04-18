@@ -841,6 +841,7 @@ def build_help_payload(
         "execution": {
             "mode": str(execution_surface.get("implement_mode", "") or ""),
             "elapsed": str(implement_state.get("generated_at", "") or "N/A"),
+            "updated_at": str(implement_state.get("generated_at", "") or ""),
             "progress": {
                 "done": progress_done,
                 "total": progress_total,

@@ -1,4 +1,4 @@
-"""Requirement clarity gates for v1.3.1+ freeze flows."""
+"""Requirement clarity gates for v1.3.3+ freeze flows."""
 
 from __future__ import annotations
 
@@ -135,10 +135,10 @@ def build_requirement_clarity_gate_payload(project_root: Path, *, version: str =
         "feature_slug": feature_slug(feature),
         "version": resolved_version,
         "runtime_version": resolved_runtime,
-        "runtime_capability_line": "v1.3.1",
+        "runtime_capability_line": "v1.3.3",
         "required": project_runtime_feature_enabled(
             project_root,
-            "v1.3.1",
+            "v1.3.3",
             docs_version=resolved_version,
             runtime_version=resolved_runtime,
         ),

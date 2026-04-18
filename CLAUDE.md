@@ -1,5 +1,5 @@
 <!-- BEACON:START -->
-<!-- BEACON:VERSION:v1.3.1 -->
+<!-- BEACON:VERSION:v1.3.3 -->
 # CLAUDE.md
 
 This file is Beacon-managed runtime guidance.
@@ -10,19 +10,18 @@ This file is Beacon-managed runtime guidance.
 - Prefer `beacon <subcommand>` form for cross-environment stability.
 
 ## Key commands
-- `beacon init --apply`
 - `beacon doctor setup-context --project-root .`
 - `beacon doctor verify-context --project-root . --strict`
 - `beacon doctor sync-materials --project-root . --version <version> --all-features`
-- `beacon workflow start "<feature>" --version <version> --project-root .`
+- `beacon doctor setup-codex-hud-hook --project-root . --version <version> --apply --json`
+- `beacon doctor verify-codex-hud-hook --project-root . --version <version> --json`
 - `beacon skill list`
 - `beacon implement list-runners --json`
 - `beacon implement run "<feature>" --version <version> --runner <runner>`
-- `beacon workflow --help`
-- `beacon status --verbose`
+- `beacon status --board --project-root . --version <version>`
 
 ## Requirement materials and docs paths
-- Runtime target version: `v1.3.1`
+- Runtime target version: `v1.3.3`
 - `docs/beacon/global-boundaries.md` is the canonical cross-version global constraint source.
 - `docs/beacon/<version>/` is the canonical source of truth.
 - `docs/beacon/<version>/SUMMARY.md`
@@ -31,4 +30,3 @@ This file is Beacon-managed runtime guidance.
 - `docs/beacon/<version>/qa/test-cases/`
 - `docs/beacon/<version>/execution/`
 <!-- BEACON:END -->
-

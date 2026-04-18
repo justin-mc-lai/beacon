@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 import sys
 import time
 from pathlib import Path
@@ -17,6 +18,7 @@ from beacon.utils.control_plane import (
     load_recovery_checkpoint,
     record_stage_failure,
 )
+from beacon.utils.codex_hud_hook import HUD_HOOK_ACTIVATION_SOURCE_ENV, record_codex_hud_hook_activation
 from beacon.utils.debug_feedback import (
     append_debug_event_memory,
     append_debug_feedback_event,
@@ -769,6 +771,19 @@ def codex_fixed_hud(
         parse_error=parse_error,
         render_error=render_error,
     )
+    activation_source = str(os.environ.get(HUD_HOOK_ACTIVATION_SOURCE_ENV, "") or "").strip()
+    activation_record = record_codex_hud_hook_activation(
+        root,
+        hook_event_name=hook_event_name,
+        payload=payload,
+        feature=resolved_feature,
+        version=resolved_version,
+        status=status,
+        reason=reason,
+        activation_source=activation_source,
+        additional_context=context_text,
+        minimal_hud=minimal_hud,
+    )
 
     result = {
         "status": status,
@@ -783,6 +798,8 @@ def codex_fixed_hud(
         },
         "input_audit_path": str(input_audit_file.relative_to(root)),
         "snapshot_path": str(snapshot_path.relative_to(root)),
+        "runtime_activation_path": activation_record["state_path"],
+        "runtime_activation_log_path": activation_record["log_path"],
         "hookSpecificOutput": {
             "hookEventName": hook_event_name,
             "additionalContext": context_text,

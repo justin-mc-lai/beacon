@@ -32,10 +32,17 @@ def _init_git_repo(root: Path) -> None:
 def _seed_docs(root: Path) -> None:
     if not (root / ".git").exists():
         _init_git_repo(root)
+    (root / "AGENTS.md").write_text(
+        "# AGENTS.md\n\n- Use docs/beacon/global-boundaries.md as the canonical Beacon-wide global constraint source.\n",
+        encoding="utf-8",
+    )
+    (root / "docs" / "beacon").mkdir(parents=True, exist_ok=True)
+    (root / "docs" / "beacon" / "global-boundaries.md").write_text("# Global Boundaries\n", encoding="utf-8")
     base = root / "docs" / "beacon" / VERSION
     (base / "user-story").mkdir(parents=True, exist_ok=True)
     (base / "prd").mkdir(parents=True, exist_ok=True)
     (base / "qa" / "test-cases").mkdir(parents=True, exist_ok=True)
+    (base / ".machine" / "qa").mkdir(parents=True, exist_ok=True)
     (base / "execution").mkdir(parents=True, exist_ok=True)
     (base / "release").mkdir(parents=True, exist_ok=True)
     (base / "SUMMARY.md").write_text("# Summary\n", encoding="utf-8")
@@ -52,6 +59,9 @@ def _seed_docs(root: Path) -> None:
     )
     (base / "qa" / "test-cases" / f"{SLUG}.md").write_text("# Test Cases\n", encoding="utf-8")
     (base / "qa" / "test-cases" / f"{SLUG}.ac-test-matrix.json").write_text('{"entries":[]}\n', encoding="utf-8")
+    (base / ".machine" / "qa" / f"{SLUG}.ac-test-matrix.json").write_text('{"entries":[]}\n', encoding="utf-8")
+    (base / ".machine" / "qa" / f"{SLUG}.qa9-matrix.json").write_text('{"entries":[]}\n', encoding="utf-8")
+    (base / ".machine" / "qa" / f"{SLUG}.story-scenario-map.json").write_text('{"entries":[]}\n', encoding="utf-8")
 
 
 def test_v130_implement_plan_should_emit_team_mode_contract(tmp_path: Path):
@@ -139,7 +149,7 @@ def test_v130_qa_team_run_should_materialize_isolated_team_surface(tmp_path: Pat
     )
 
     result = _invoke(["qa", "team-run", FEATURE, "--project", str(tmp_path), "--version", VERSION, "--json"])
-    assert result.exit_code == 2, result.stdout
+    assert result.exit_code == 0, result.stdout
     payload = json.loads(result.stdout)
     assert payload["team_mode"] is True
     assert payload["execution_surface"] == "qa-team"
@@ -327,6 +337,12 @@ def test_v130_sync_git_workflow_should_materialize_contract_from_seed(tmp_path: 
 def test_prerelease_dev_run_should_still_default_to_codex_subagents(tmp_path: Path):
     workspace = tmp_path / "workspace"
     workspace.mkdir()
+    (workspace / "AGENTS.md").write_text(
+        "# AGENTS.md\n\n- Use docs/beacon/global-boundaries.md as the canonical Beacon-wide global constraint source.\n",
+        encoding="utf-8",
+    )
+    (workspace / "docs" / "beacon").mkdir(parents=True, exist_ok=True)
+    (workspace / "docs" / "beacon" / "global-boundaries.md").write_text("# Global Boundaries\n", encoding="utf-8")
     for name in ("marketing_sys", "health-svr-dotnet"):
         service_root = workspace / name
         service_root.mkdir()
@@ -345,6 +361,7 @@ def test_prerelease_dev_run_should_still_default_to_codex_subagents(tmp_path: Pa
     (base / "user-story").mkdir(parents=True, exist_ok=True)
     (base / "prd").mkdir(parents=True, exist_ok=True)
     (base / "qa" / "test-cases").mkdir(parents=True, exist_ok=True)
+    (base / ".machine" / "qa").mkdir(parents=True, exist_ok=True)
     (base / "execution").mkdir(parents=True, exist_ok=True)
     (base / "release").mkdir(parents=True, exist_ok=True)
     (base / "SUMMARY.md").write_text("# Summary\n", encoding="utf-8")
@@ -355,6 +372,9 @@ def test_prerelease_dev_run_should_still_default_to_codex_subagents(tmp_path: Pa
     (base / "prd" / f"{slug}.md").write_text("# PRD\n\n- FR-001 Workspace branch contract\n", encoding="utf-8")
     (base / "qa" / "test-cases" / f"{slug}.md").write_text("# Test Cases\n", encoding="utf-8")
     (base / "qa" / "test-cases" / f"{slug}.ac-test-matrix.json").write_text('{"entries":[]}\n', encoding="utf-8")
+    (base / ".machine" / "qa" / f"{slug}.ac-test-matrix.json").write_text('{"entries":[]}\n', encoding="utf-8")
+    (base / ".machine" / "qa" / f"{slug}.qa9-matrix.json").write_text('{"entries":[]}\n', encoding="utf-8")
+    (base / ".machine" / "qa" / f"{slug}.story-scenario-map.json").write_text('{"entries":[]}\n', encoding="utf-8")
     (workspace / "beacon.config.yaml").write_text(
         (
             "implementation:\n"

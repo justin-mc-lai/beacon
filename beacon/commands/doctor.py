@@ -9,6 +9,7 @@ from typing import Any
 import typer
 
 from beacon.utils.context_files import setup_context_files, verify_context_files
+from beacon.utils.codex_hud_hook import setup_codex_hud_hook, verify_codex_hud_hook
 from beacon.utils.doctor_diagnostics import build_doctor_payload, build_doctor_advice_payload, collect_runtime_info
 from beacon.utils.doctor_setup import install_launchers, resolve_bin_dir, uninstall_launchers
 from beacon.utils.help_navigation import build_doctor_advise_payload
@@ -219,6 +220,39 @@ def _print_quiet_worktree_result(payload: dict[str, Any]) -> None:
         typer.echo("-" * 28)
         for pattern in patterns:
             typer.echo(f"- {pattern}")
+
+
+def _print_codex_hud_hook_setup_result(payload: dict[str, Any]) -> None:
+    typer.echo("Beacon Doctor Codex HUD Hook Setup")
+    typer.echo("=" * 34)
+    typer.echo(f"mode            : {payload.get('mode', 'dry-run')}")
+    typer.echo(f"plugin_root     : {payload.get('plugin_root', '')}")
+    typer.echo(f"events          : {', '.join(payload.get('events', []))}")
+    typer.echo(f"restart_required: {bool(payload.get('restart_required', False))}")
+    typer.echo(f"diagnostics     : {payload.get('diagnostics_path', '')}")
+    for item in payload.get("actions", []):
+        typer.echo(f"- {item.get('action')}: {item.get('path')}")
+
+
+def _print_codex_hud_hook_verify_result(payload: dict[str, Any]) -> None:
+    typer.echo("Beacon Doctor Codex HUD Hook Verify")
+    typer.echo("=" * 35)
+    typer.echo(f"status       : {payload.get('status', 'blocked')}")
+    typer.echo(f"plugin_root  : {payload.get('plugin_root', '')}")
+    typer.echo(f"events       : {', '.join(payload.get('events', []))}")
+    runtime = payload.get("runtime") if isinstance(payload.get("runtime"), dict) else {}
+    if runtime:
+        typer.echo(f"runtime      : {runtime.get('state', 'unknown')}")
+        typer.echo(f"last_seen    : {runtime.get('last_activation', {}).get('generated_at', '') or 'N/A'}")
+    typer.echo(f"diagnostics  : {payload.get('diagnostics_path', '')}")
+    for item in payload.get("checks", []):
+        if item.get("ok"):
+            state = "PASS"
+        elif item.get("required", True):
+            state = "BLOCKED"
+        else:
+            state = "WARN"
+        typer.echo(f"- {state}: {item.get('name')} ({item.get('detail')})")
 
 
 def _single_check_payload(
@@ -999,3 +1033,66 @@ def advise(
     else:
         _print_advise_result(payload)
     raise typer.Exit(code=2 if payload.get("status") == "BLOCKED" else 0)
+
+
+@app.command("setup-codex-hud-hook")
+def setup_codex_hud_hook_command(
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    version: str = typer.Option("auto", "--version", "-v", help="Target docs version"),
+    events: str = typer.Option(
+        ",".join(("UserPromptSubmit", "SessionStart", "SessionResume", "SessionRefresh")),
+        "--events",
+        help="Comma-separated hook event names",
+    ),
+    apply: bool = typer.Option(False, "--apply", help="Write hook wiring into ~/.codex"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Generate or apply Codex fixed HUD hook wiring."""
+    root = Path(project_root) if project_root else Path.cwd()
+    resolved_version = resolve_target_version(root, version)
+    result = setup_codex_hud_hook(root, version=resolved_version, apply=apply, events=events)
+    payload = {
+        "schema_version": "2.0",
+        "action": "setup-codex-hud-hook",
+        "status": "PASS",
+        "result": result,
+    }
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        _print_codex_hud_hook_setup_result(result)
+    raise typer.Exit(code=0)
+
+
+@app.command("verify-codex-hud-hook")
+def verify_codex_hud_hook_command(
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    version: str = typer.Option("auto", "--version", "-v", help="Target docs version"),
+    events: str = typer.Option(
+        ",".join(("UserPromptSubmit", "SessionStart", "SessionResume", "SessionRefresh")),
+        "--events",
+        help="Comma-separated hook event names expected in wiring",
+    ),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Verify Codex fixed HUD hook wiring managed by doctor."""
+    root = Path(project_root) if project_root else Path.cwd()
+    resolved_version = resolve_target_version(root, version)
+    result = verify_codex_hud_hook(root, version=resolved_version, events=events)
+    payload = {
+        "schema_version": "2.0",
+        "action": "verify-codex-hud-hook",
+        "status": (
+            "PASS"
+            if result.get("status") == "pass"
+            else "WARN"
+            if result.get("status") == "warn"
+            else "BLOCKED"
+        ),
+        "result": result,
+    }
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        _print_codex_hud_hook_verify_result(result)
+    raise typer.Exit(code=0 if payload["status"] in {"PASS", "WARN"} else 2)

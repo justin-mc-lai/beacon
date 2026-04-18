@@ -78,11 +78,30 @@ def runtime_feature_supported(version: str | None, *, runtime_version: str | Non
 
 def runtime_capability_lines() -> list[str]:
     runtime_truth = load_version_truth(_RUNTIME_PROJECT_ROOT)
+    current_release = normalize_version(str(runtime_truth.get("current_runtime_release_line", "") or ""))
+    current_match = _SEMVER.match(current_release or "")
+    compatible_historical_lines: set[str] = set()
+    if current_match:
+        current_major, current_minor, _ = current_match.groups()
+        lines_payload = runtime_truth.get("lines") if isinstance(runtime_truth.get("lines"), dict) else {}
+        for version, row in lines_payload.items():
+            normalized = normalize_version(str(version or "").strip())
+            if not normalized or normalized == current_release:
+                continue
+            match = _SEMVER.match(normalized)
+            if not match:
+                continue
+            major, minor, _patch = match.groups()
+            status = str(row.get("status", "") or "").strip() if isinstance(row, dict) else ""
+            # Keep same-minor historical release lines visible as runtime-compatible docs lanes.
+            if status == "historical_release" and major == current_major and minor == current_minor:
+                compatible_historical_lines.add(normalized)
     lines = {
         normalize_version(__toolkit_version__),
         normalize_version(str(runtime_truth.get("runtime_version", "") or "")),
-        normalize_version(str(runtime_truth.get("current_runtime_release_line", "") or "")),
+        current_release,
         *(_normalize_version_list(runtime_truth.get("partial_runtime_supplement_lines"))),
+        *compatible_historical_lines,
     }
     return [item for item in sorted({line for line in lines if line}, key=_version_key) if item]
 

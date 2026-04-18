@@ -1,12 +1,12 @@
 # Beacon Skill Example
 
-This example focuses on the **v1.3.3 lightweight main workflow**:
+This example focuses on the **Beacon v1.3.3 release line** and its lightweight main workflow:
 
 1. read the current version package
 2. use the wrapper script
 3. generate PRD, user story, and test case materials
 4. run implementation planning
-5. inspect status / next stage
+5. inspect workflow status / next stage
 
 Read first:
 

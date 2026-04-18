@@ -174,7 +174,7 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
         )
     if project_runtime_feature_enabled(
         project_root,
-        "v1.3.1",
+        "v1.3.3",
         docs_version=resolved_version,
         runtime_version=resolved_runtime,
     ):

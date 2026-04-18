@@ -1,4 +1,4 @@
-"""Deterministic technical review contract gates for v1.3.1+ implementation flows."""
+"""Deterministic technical review contract gates for v1.3.3+ implementation flows."""
 
 from __future__ import annotations
 
@@ -402,10 +402,10 @@ def build_technical_review_gate_payload(
         "feature_slug": feature_slug(feature),
         "version": resolved_version,
         "runtime_version": resolved_runtime,
-        "runtime_capability_line": "v1.3.1",
+        "runtime_capability_line": "v1.3.3",
         "required": project_runtime_feature_enabled(
             project_root,
-            "v1.3.1",
+            "v1.3.3",
             docs_version=resolved_version,
             runtime_version=resolved_runtime,
         ),
