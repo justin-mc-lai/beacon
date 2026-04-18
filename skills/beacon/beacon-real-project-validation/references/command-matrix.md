@@ -94,3 +94,59 @@ beacon qa session save qa-local -p ROOT --origin http://127.0.0.1:3000 --runner-
 beacon qa session use qa-local -p ROOT --json
 beacon qa team-run FEATURE -p ROOT -v VERSION --host-runtime codex --json
 ```
+
+## Multi-Project Board Acceptance Pack
+
+Use this path when validating a lifecycle-first board / projection feature across multiple real projects.
+
+### Capture Script
+
+```bash
+bash skills/beacon/beacon-real-project-validation/scripts/run_real_project_board_validation.sh \
+  --version v1.3.4 \
+  --output-dir .beacon/validation/real-project-board/v1.3.4-sample
+```
+
+The capture pack now writes an isolated ledger under the output directory and emits a canonical multi-project homepage artifact:
+
+- `portfolio-board.txt`
+- `portfolio-board.json`
+- `acceptance-record.md`
+
+Default targets:
+
+- `/Users/apple/Developer/Company/rolo`
+- `/Users/apple/Developer/Personal/products/slow_uni_bmtop`
+- `/Users/apple/Developer/Personal/products/shopxo_canada`
+- `/Users/apple/Developer/Personal/products/beacon`
+
+### Optional Explicit Targets
+
+```bash
+bash skills/beacon/beacon-real-project-validation/scripts/run_real_project_board_validation.sh \
+  --target "rolo|/Users/apple/Developer/Company/rolo||auto" \
+  --target "slow_uni_bmtop|/Users/apple/Developer/Personal/products/slow_uni_bmtop||auto" \
+  --target "shopxo_canada|/Users/apple/Developer/Personal/products/shopxo_canada||auto" \
+  --target "beacon|/Users/apple/Developer/Personal/products/beacon|beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane|v1.3.4"
+```
+
+Target format:
+
+- `label|project_root|feature|version`
+- `feature` can be empty when the validation step is project-level only
+- `version` can be `auto`; when omitted or missing, the script resolves an effective docs line from `AGENTS.md` or the latest local docs line
+
+### Record Template
+
+After capture, review and complete:
+
+- `skills/beacon/beacon-real-project-validation/references/board-acceptance-record-template.md`
+- generated `acceptance-record.md`
+
+using:
+
+- generated output directory
+- per-project `doctor` / `help` / `status` / `release` outputs
+- per-project `projection-determinism.json`
+- top-level `portfolio-board.txt`
+- homepage / detail / deterministic projection / debug tri-state judgments

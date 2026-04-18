@@ -79,7 +79,9 @@ visual plane
 7. `./prd/beacon-v1.3.4-runtime-evidence-layering-and-noise-governance.md`
 8. `./research/beacon-v1.3.4-management-board-lifecycle-brainstorm.md`
 9. `./research/beacon-v1.3.4-one-person-company-ops-board-model.md`
-10. `./prototype/beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane/index.html`
+10. `./research/beacon-v1.3.4-real-project-board-acceptance-brainstorm.md`
+11. `./execution/real-project-validation-checklist-beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md`
+12. `./prototype/beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane/index.html`
 
 ## 当前版本包起点
 
@@ -118,13 +120,19 @@ visual plane
   - 细化首页、项目详情、运行态中心三层页面
   - 约束 host session、git/worktree、runtime 细节的展示边界
   - 明确 `omc` / `omx` 不属于 Beacon 管理看板范围
+- `research/beacon-v1.3.4-real-project-board-acceptance-brainstorm.md`
+  - 收口四个真实项目并板验收
+  - 冻结首页降噪、详情解释性、debug 三态、Beacon 自并板和断库重建场景
 
 当前已补充正式需求闭环材料：
 
 - `user-story/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md`
   - 将 CEO 汇总、项目负责人详情、runtime 下钻、恢复降级、边界治理拆成正式用户故事与 AC
 - `qa/test-cases/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md`
-  - 将 lifecycle-first board、team/ralph 下钻、git/worktree、session 边界、degraded/rebuild、prototype 一致性拆成可执行场景
+  - 将 lifecycle-first board、team/ralph 下钻、git/worktree、session 边界、四项目真实并板、deterministic projection、degraded/rebuild、prototype 一致性拆成可执行场景
+- `execution/real-project-validation-checklist-beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md`
+  - 将 `rolo / slow_uni_bmtop / shopxo_canada / beacon` 四项目并板验收冻结成执行清单
+  - 约束首页总览、详情解释性、debug 三态、deterministic projection 与断库重建
 
 当前已补充一套冻结 prototype 参考包：
 

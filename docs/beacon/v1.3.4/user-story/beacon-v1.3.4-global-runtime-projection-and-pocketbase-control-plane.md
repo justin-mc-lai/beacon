@@ -48,6 +48,26 @@
 
 作为操作者，我希望看板给出“当前建议下一步”和“当前建议 skill”，例如需求阶段推荐 `beacon-prd / beacon-user-story / beacon-test-case`，实现阶段推荐 `beacon-implement / beacon-qa / beacon-release`，阻断时推荐 `beacon-doctor`。
 
+### US-011: 四个真实项目必须以正确语义并板
+
+作为 Beacon 管理者，我希望 `rolo / slow_uni_bmtop / shopxo_canada / beacon` 都能进入同一个看板，并保持各自正确的 project_kind、生命周期、debug 状态与下一步。
+
+### US-012: Projection 多写必须确定性且可追溯
+
+作为运行态治理者，我希望同一份 `docs/beacon + .beacon + git/worktree` truth snapshot 总是先归一化成同一份 projection envelope，再写入 SQLite 与 PocketBase，避免人机状态漂移。
+
+### US-013: Branch / Worktree 冲突必须先预校验再落盘
+
+作为项目负责人，我希望在用户显式分支、git worktree 实证和 heuristic 推断冲突时，系统先标记 `partial / conflicted` 并给出 doctor 提示，而不是静默写错。
+
+### US-014: Debug 三态必须成为正式管理信息
+
+作为 Beacon 使用者，我希望系统能区分 `materialized_issue / runtime_feed_only / no_debug_feed`，尤其不能把“没有 debug feed”误判成“没有项目状态”。
+
+### US-015: Beacon 源码项目必须按同一规则自并板
+
+作为 Beacon 自身迭代者，我希望 `beacon` 源码项目也走同一套 truth -> projection -> board 路径，被看板展示为 `v1.3.4` 自演进项目，而不是特殊硬编码对象。
+
 ## Acceptance Criteria
 
 - AC-001 首页生命周期优先：总览层默认只展示项目、版本、feature、生命周期阶段、总进度、交付状态、blocker、下一步；runtime 仅可压缩显示为 badge。
@@ -64,6 +84,16 @@
 - AC-012 Beacon 外运行时排除：`omc / omx` 与其他 Beacon 外兼容运行时不进入正式投影和默认看板展示。
 - AC-013 生命周期推荐 skill：看板必须基于当前阶段给出推荐 skill，而不是暴露一组无上下文的平铺 skill 列表。
 - AC-014 Prototype 参考包一致：原型参考包中的 `portfolio-overview / project-detail / runtime-center / recovery-diagnostics` 四页和关键状态必须与上述 AC 对齐，不得漂移。
+- AC-015 四项目真实并板：`rolo / slow_uni_bmtop / shopxo_canada / beacon` 必须都能进入 `Beacon 管理看板`。
+- AC-016 四项目显示正确：`rolo=multi_repo_workspace`、`slow_uni_bmtop=single_repo + materialized_issue`、`shopxo_canada=no_debug_feed 但仍有项目态`、`beacon=v1.3.4 自演进项目`。
+- AC-017 首页差异清晰：首页必须让 CEO 一眼分辨四个项目的阶段、进度、blocker 与项目形态差异，而不是四张同质卡片。
+- AC-018 详情页可解释：进入任一项目详情页后，必须能解释该项目为何显示成当前 `project_kind / lifecycle / debug state / recommended next step`。
+- AC-019 多写确定性：同一 truth snapshot 重复投影时，必须产出同一 `projection envelope`，并让 SQLite / PocketBase 共享一致的 `source_hash / projection_seq`。
+- AC-020 Preflight 优先于写入：branch / worktree / project_kind / lifecycle / session 绑定存在冲突时，只允许 `reject / partial / conflicted`，不允许静默猜测覆盖。
+- AC-021 Debug 三态正式建模：系统必须把 `materialized_issue / runtime_feed_only / no_debug_feed` 作为正式展示与治理状态。
+- AC-022 Beacon 自并板不走特判：`beacon` 源码项目不得依赖特殊 project key、隐藏字段或写死版本名旁路。
+- AC-023 断库重建后四项目仍可恢复：SQLite / PocketBase 缺失后，必须能从本地 truth 重新恢复四项目最小并板能力。
+- AC-024 真实项目验收留痕：并板验收必须保留机器可读或文档化记录，不能只口头确认。
 
 ## Metadata
 
@@ -76,4 +106,3 @@
 | Feature Slug | beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane |
 | Runtime Truth | docs/beacon + .beacon |
 | Projection Layer | Beacon Runtime Ledger + Beacon 管理看板 |
-

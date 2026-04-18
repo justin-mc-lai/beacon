@@ -12,8 +12,11 @@
 8. `../prd/beacon-v1.3.4-runtime-evidence-layering-and-noise-governance.md`
 9. `../research/beacon-v1.3.4-management-board-lifecycle-brainstorm.md`
 10. `../research/beacon-v1.3.4-one-person-company-ops-board-model.md`
-11. `./doctor-orchestration-blueprint.md`
-12. `../prototype/beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane/index.html`
+11. `../research/beacon-v1.3.4-real-project-board-acceptance-brainstorm.md`
+12. `./beacon-toolkit-lighthouse-real-env-debug-friction-and-deterministic-projection.md`
+13. `./real-project-validation-checklist-beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md`
+14. `./doctor-orchestration-blueprint.md`
+15. `../prototype/beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane/index.html`
 
 ## 说明
 
@@ -51,3 +54,8 @@ prd
 9. 将主 feature 补成正式 `user-story + test-case`，避免只停留在 PRD 与 prototype。
 10. 冻结 Beacon 自身的 machine evidence / runtime cache 分层，并为 `status / qa / release` 定义正式噪音治理规则。
 11. 冻结 `beacon doctor` 的职责分层与编排蓝图，避免后续新增职责继续平铺进 `doctor.py`。
+12. 把真实环境 debug friction 与 projection 写链风险前置进主 PRD，而不是等实现时再被动修补。
+13. 把四个真实项目并板与 Beacon 自并板写成正式验收场景，避免验收只靠 synthetic fixture。
+14. 把真实项目并板验收冻结成可执行 checklist，避免后续只验证字段存在、不验证看板语义。
+- `./evo-harness-contract.md`
+- `./evo-scorecard-contract.md`

@@ -2732,8 +2732,29 @@ def status(
             if state_path.exists():
                 state_payload = json.loads(state_path.read_text(encoding="utf-8"))
     if state_payload is None:
-        typer.echo("Implementation run not found", err=True)
-        raise typer.Exit(2)
+        missing_payload = {
+            "status": "missing",
+            "reason_code": "implementation_run_not_found",
+            "message": "Implementation run not found",
+            "feature": feature_or_run_id if not feature_or_run_id.startswith("run-") else "",
+            "feature_slug": feature_slug if not feature_or_run_id.startswith("run-") else "",
+            "run_id": target_run or (feature_or_run_id if feature_or_run_id.startswith("run-") else ""),
+            "version": resolved_version,
+            "project_root": str(project_root),
+            "summary_exists": False,
+            "review_spec_exists": False,
+            "review_quality_exists": False,
+            "implementation_marker_exists": False,
+            "implementation_plan_exists": False,
+            "implementation_plan_markdown_exists": False,
+            "implementation_plan_progress_exists": False,
+            "implementation_plan_progress": {},
+        }
+        if json_output:
+            typer.echo(json.dumps(missing_payload, ensure_ascii=False, indent=2))
+            return
+        typer.echo(json.dumps(missing_payload, ensure_ascii=False, indent=2))
+        return
 
     slug = str(state_payload.get("feature_slug", feature_slug))
     summary = _summary_paths(project_root, resolved_version, slug).get("json")
