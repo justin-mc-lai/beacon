@@ -8,27 +8,31 @@ from typing import Any
 
 import typer
 
-from beacon.utils.context_files import setup_context_files, verify_context_files
-from beacon.utils.codex_hud_hook import setup_codex_hud_hook, verify_codex_hud_hook
-from beacon.utils.doctor_diagnostics import build_doctor_payload, build_doctor_advice_payload, collect_runtime_info
-from beacon.utils.doctor_setup import install_launchers, resolve_bin_dir, uninstall_launchers
-from beacon.utils.help_navigation import build_doctor_advise_payload
-from beacon.utils.material_sync import sync_project_requirement_materials
-from beacon.utils.material_audit import build_delivery_audit, build_material_audit
-from beacon.utils.requirement_clarity import materialize_requirement_clarity
-from beacon.utils.runtime import now_iso, write_json
-from beacon.utils.source_architecture import current_source_architecture_status
-from beacon.utils.subagent_readiness import delegation_readiness_precheck, runtime_readiness_precheck
-from beacon.utils.technical_review_contract import materialize_technical_review_contract, technical_review_contract_json_path, technical_review_contract_markdown_path
-from beacon.utils.v115_delivery import repair_v115_delivery_package
-from beacon.utils.version_package_upgrade import upgrade_version_package
-from beacon.utils.versioning import (
-    describe_project_version_context,
-    load_project_onboarding_state,
-    resolve_target_version,
-    runtime_capability_lines,
+from beacon.utils.doctor_orchestrator import (
+    run_codex_hud_hook_setup,
+    run_codex_hud_hook_verify,
+    run_config_verify,
+    run_context_setup,
+    run_context_verify,
+    run_delivery_verify,
+    run_doctor_advise,
+    run_doctor_diagnose,
+    run_doctor_fix_flow,
+    run_git_alignment_verify,
+    run_gitignore_setup,
+    run_gitignore_verify,
+    run_launcher_setup,
+    run_launcher_uninstall,
+    run_materials_sync,
+    run_materials_verify,
+    run_package_repair,
+    run_package_upgrade,
+    run_quiet_worktree,
+    run_requirement_clarity_sync,
+    run_subagent_delegation_verify,
+    run_subagent_runtime_verify,
+    run_technical_review_contract_sync,
 )
-from beacon.utils.worktree_quiet import apply_quiet_worktree, quiet_worktree_status, restore_quiet_worktree
 
 app = typer.Typer(
     name="doctor",
@@ -92,40 +96,20 @@ def _doctor_impl(json_output: bool, project_root: str, fix: bool, upgrade: bool,
         return 0
 
     if fix and root.exists():
-        (root / ".beacon").mkdir(parents=True, exist_ok=True)
-        (root / "docs").mkdir(parents=True, exist_ok=True)
-        (root / "skills").mkdir(parents=True, exist_ok=True)
-        runtime = collect_runtime_info()
-        runtime_version = str(runtime.get("toolkit_version") or runtime.get("package_version") or "v1.0.0")
-        setup_context_files(
-            project_root=root,
-            runtime_version=runtime_version,
-            dry_run=False,
-            force=False,
-            with_claude=True,
-            with_agents=True,
-        )
-        target_version = resolve_target_version(root, "latest-docs")
-        upgrade_version_package(root, version=target_version, apply=True)
+        run_doctor_fix_flow(str(root))
 
-    payload = build_doctor_payload(root, strict=strict)
+    execution = run_doctor_diagnose(
+        project_root=str(root),
+        strict=strict,
+    )
+    payload = execution.payload
 
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
     else:
         _print_doctor_report(payload)
 
-    return 2 if payload.get("overall") == "BLOCKED" else 0
-
-
-def _resolve_launcher_source(launcher_source: str) -> Path:
-    if launcher_source:
-        return Path(launcher_source).expanduser().resolve()
-    runtime = collect_runtime_info()
-    candidate = Path(str(runtime.get("launcher_path", "")).strip())
-    if candidate.exists():
-        return candidate
-    return (Path(__file__).resolve().parents[2] / "beacon-cli").resolve()
+    return execution.exit_code
 
 
 def _print_action_result(title: str, result: dict[str, Any]) -> None:
@@ -255,36 +239,6 @@ def _print_codex_hud_hook_verify_result(payload: dict[str, Any]) -> None:
         typer.echo(f"- {state}: {item.get('name')} ({item.get('detail')})")
 
 
-def _single_check_payload(
-    *,
-    action: str,
-    project_root: Path,
-    version: str | None,
-    strict: bool,
-    check: dict[str, Any],
-) -> dict[str, Any]:
-    status = str(check.get("status", "warn")).lower()
-    blocked = status == "fail" or (strict and status == "warn")
-    version_context = describe_project_version_context(project_root, docs_version=version or None)
-    return {
-        "schema_version": "2.0",
-        "action": action,
-        "status": "BLOCKED" if blocked else status.upper(),
-        "version_context": version_context,
-        "version_semantics": version_context.get("version_semantics", {}),
-        "result": {
-            "schema_version": "1.0",
-            "action": action,
-            "project_root": str(project_root),
-            "version": version or "",
-            "strict": strict,
-            "status": "fail" if blocked else status,
-            "ok": not blocked,
-            "checks": [check],
-        },
-    }
-
-
 @app.callback(invoke_without_command=True)
 def doctor_callback(
     ctx: typer.Context,
@@ -336,29 +290,21 @@ def setup(
     json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
 ):
     """Install `beacon` and `beacon-cli` launchers to system PATH directory."""
-    resolved_bin_dir = resolve_bin_dir(bin_dir).resolve()
-    source = _resolve_launcher_source(launcher_source)
-
-    result = install_launchers(
-        bin_dir=resolved_bin_dir,
-        launcher_source=source,
+    execution = run_launcher_setup(
+        bin_dir=bin_dir,
+        launcher_source=launcher_source,
         force=force,
         dry_run=dry_run,
     )
-    status = "BLOCKED" if result.get("error") else "PASS"
-    payload = {
-        "schema_version": "2.0",
-        "action": "setup",
-        "status": status,
-        "result": result,
-    }
+    payload = execution.payload
+    result = payload.get("result", {}) if isinstance(payload.get("result"), dict) else {}
 
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
     else:
         _print_action_result("Beacon Doctor Setup", result)
 
-    raise typer.Exit(2 if status == "BLOCKED" else 0)
+    raise typer.Exit(execution.exit_code)
 
 
 @app.command("uninstall")
@@ -369,26 +315,20 @@ def uninstall(
     json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
 ):
     """Uninstall launchers created by `beacon doctor setup`."""
-    resolved_bin_dir = resolve_bin_dir(bin_dir).resolve()
-
-    result = uninstall_launchers(
-        bin_dir=resolved_bin_dir,
+    execution = run_launcher_uninstall(
+        bin_dir=bin_dir,
         force=force,
         dry_run=dry_run,
     )
-    payload = {
-        "schema_version": "2.0",
-        "action": "uninstall",
-        "status": "PASS",
-        "result": result,
-    }
+    payload = execution.payload
+    result = payload.get("result", {}) if isinstance(payload.get("result"), dict) else {}
 
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
     else:
         _print_action_result("Beacon Doctor Uninstall", result)
 
-    raise typer.Exit(0)
+    raise typer.Exit(execution.exit_code)
 
 
 @app.command("setup-context")
@@ -403,65 +343,24 @@ def setup_context(
     json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
     with_claude: bool = typer.Option(True, "--with-claude/--without-claude", help="Manage CLAUDE.md"),
     with_agents: bool = typer.Option(True, "--with-agents/--without-agents", help="Manage AGENTS.md"),
+    with_gitignore: bool = typer.Option(True, "--with-gitignore/--without-gitignore", help="Manage Beacon standard .gitignore block"),
 ):
     """Create or refresh managed Beacon context blocks in CLAUDE.md/AGENTS.md."""
-    root = Path(project_root) if project_root else Path.cwd()
-    runtime = collect_runtime_info()
-    runtime_version = str(runtime.get("toolkit_version") or runtime.get("package_version") or "v1.0.0")
-    version_context = describe_project_version_context(root, runtime_version=runtime_version)
-    result = setup_context_files(
-        project_root=root,
-        runtime_version=runtime_version,
+    execution = run_context_setup(
+        project_root=project_root,
         dry_run=dry_run,
         force=force,
+        sync_materials=sync_materials,
+        feature=feature,
+        all_features=all_features,
+        overwrite_test_doc=overwrite_test_doc,
         with_claude=with_claude,
         with_agents=with_agents,
+        with_gitignore=with_gitignore,
     )
-    onboarding_state_path = root / ".beacon" / "state" / "project-onboarding.json"
-    onboarding_state = load_project_onboarding_state(root)
-    onboarding_exists = onboarding_state_path.exists()
-    refreshed_onboarding = {
-        **onboarding_state,
-        "schema_version": str(onboarding_state.get("schema_version", "") or "1.0"),
-        "docs_version": str(onboarding_state.get("docs_version", "") or version_context.get("docs_version", "") or ""),
-        "runtime_version": runtime_version,
-        "runtime_capability_lines": runtime_capability_lines(),
-        "updated_at": now_iso(),
-    }
-    if not dry_run:
-        write_json(onboarding_state_path, refreshed_onboarding)
-    result_actions = result.get("actions") if isinstance(result.get("actions"), list) else []
-    result_actions.append(
-        {
-            "file": str(onboarding_state_path.relative_to(root)),
-            "action": "planned" if dry_run else "updated" if onboarding_exists else "created",
-            "merge_mode": "state-refresh",
-        }
-    )
-    result["actions"] = result_actions
-    material_sync = None
-    if sync_materials:
-        docs_version = str(version_context.get("docs_version") or "")
-        if docs_version:
-            material_sync = sync_project_requirement_materials(
-                root,
-                version=docs_version,
-                feature=feature,
-                all_features=all_features if not feature else False,
-                dry_run=dry_run,
-                overwrite_test_doc=overwrite_test_doc,
-            )
-    payload = {
-        "schema_version": "2.0",
-        "action": "setup-context",
-        "status": "PASS",
-        "docs_version": version_context.get("docs_version", ""),
-        "runtime_version": runtime_version,
-        "version_context": version_context,
-        "version_semantics": version_context.get("version_semantics", {}),
-        "result": result,
-        "material_sync": material_sync,
-    }
+    payload = execution.payload
+    result = payload.get("result", {}) if isinstance(payload.get("result"), dict) else {}
+    material_sync = payload.get("material_sync") if isinstance(payload.get("material_sync"), dict) else None
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
     else:
@@ -475,7 +374,7 @@ def setup_context(
             typer.echo(f"- material_sync.features: {material_sync.get('feature_count', 0)}")
         typer.echo(f"Overall: {payload.get('status')}")
 
-    raise typer.Exit(code=0)
+    raise typer.Exit(code=execution.exit_code)
 
 
 @app.command("sync-materials")
@@ -489,21 +388,16 @@ def sync_materials(
     json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
 ):
     """Sync machine user-story and QA artifacts from current human requirement docs."""
-    root = Path(project_root) if project_root else Path.cwd()
-    result = sync_project_requirement_materials(
-        root,
+    execution = run_materials_sync(
+        project_root=project_root,
         version=version,
         feature=feature,
-        all_features=all_features if not feature else False,
+        all_features=all_features,
         dry_run=dry_run,
         overwrite_test_doc=overwrite_test_doc,
     )
-    payload = {
-        "schema_version": "2.0",
-        "action": "sync-materials",
-        "status": "PASS",
-        "result": result,
-    }
+    payload = execution.payload
+    result = payload.get("result", {}) if isinstance(payload.get("result"), dict) else {}
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
     else:
@@ -513,7 +407,7 @@ def sync_materials(
         typer.echo(f"features: {result.get('feature_count')}")
         for item in result.get("results", []):
             typer.echo(f"- {item.get('feature')}: {item.get('status')}")
-    raise typer.Exit(code=0)
+    raise typer.Exit(code=execution.exit_code)
 
 
 @app.command("sync-requirement-clarity")
@@ -524,19 +418,13 @@ def sync_requirement_clarity(
     json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
 ):
     """Materialize requirement clarity report and state before freeze."""
-    root = Path(project_root) if project_root else Path.cwd()
-    result = materialize_requirement_clarity(
-        root,
+    execution = run_requirement_clarity_sync(
+        project_root=project_root,
         version=version,
         feature=feature,
-        source="doctor.sync-requirement-clarity",
     )
-    output = {
-        "schema_version": "2.0",
-        "action": "sync-requirement-clarity",
-        "status": "PASS",
-        "result": result,
-    }
+    output = execution.payload
+    result = output.get("result", {}) if isinstance(output.get("result"), dict) else {}
     if json_output:
         typer.echo(json.dumps(output, ensure_ascii=False, indent=2))
     else:
@@ -551,7 +439,7 @@ def sync_requirement_clarity(
         typer.echo(f"json: {report.get('json', '')}")
         typer.echo(f"markdown: {report.get('markdown', '')}")
         typer.echo(f"state: {writeback.get('state_path', '')}")
-    raise typer.Exit(code=0)
+    raise typer.Exit(code=execution.exit_code)
 
 
 @app.command("sync-technical-review-contract")
@@ -567,36 +455,18 @@ def sync_technical_review_contract(
     json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
 ):
     """Materialize a draft deterministic implementation contract for human technical review."""
-    root = Path(project_root) if project_root else Path.cwd()
-    payload = materialize_technical_review_contract(
-        root,
+    execution = run_technical_review_contract_sync(
+        project_root=project_root,
         version=version,
         feature=feature,
         revision_id=revision_id,
+        review_status=review_status,
+        approved_by=approved_by,
+        reviewed_at=reviewed_at,
         force_refresh=force_refresh,
-        contract_overrides={
-            "review_status": review_status,
-            "approved_by": approved_by,
-            "reviewed_at": reviewed_at,
-        },
-        source="doctor.sync-technical-review-contract",
     )
-    result = {
-        "schema_version": "1.0",
-        "feature": feature,
-        "version": str(payload.get("version", "") or version),
-        "review_status": str(payload.get("review_status", "") or ""),
-        "contract_json_path": str(technical_review_contract_json_path(root, str(payload.get("version", "") or version), feature).relative_to(root)),
-        "contract_markdown_path": str(technical_review_contract_markdown_path(root, str(payload.get("version", "") or version), feature).relative_to(root)),
-        "state_path": str((payload.get("writeback", {}) or {}).get("state_path", "") or ""),
-        "payload": payload,
-    }
-    output = {
-        "schema_version": "2.0",
-        "action": "sync-technical-review-contract",
-        "status": "PASS",
-        "result": result,
-    }
+    output = execution.payload
+    result = output.get("result", {}) if isinstance(output.get("result"), dict) else {}
     if json_output:
         typer.echo(json.dumps(output, ensure_ascii=False, indent=2))
     else:
@@ -608,7 +478,7 @@ def sync_technical_review_contract(
         typer.echo(f"json: {result['contract_json_path']}")
         typer.echo(f"markdown: {result['contract_markdown_path']}")
         typer.echo(f"state: {result['state_path']}")
-    raise typer.Exit(code=0)
+    raise typer.Exit(code=execution.exit_code)
 
 
 @app.command("verify-subagent-runtime")
@@ -618,14 +488,12 @@ def verify_subagent_runtime(
     json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
 ):
     """Verify host-native subagent runtime readiness for Codex/Claude skill execution."""
-    root = Path(project_root) if project_root else Path.cwd()
-    result = runtime_readiness_precheck(root, host_runtime=host_runtime)
-    payload = {
-        "schema_version": "2.0",
-        "action": "verify-subagent-runtime",
-        "status": "PASS" if str(result.get("status")) == "pass" else "BLOCKED",
-        "result": result,
-    }
+    execution = run_subagent_runtime_verify(
+        project_root=project_root,
+        host_runtime=host_runtime,
+    )
+    payload = execution.payload
+    result = payload.get("result", {}) if isinstance(payload.get("result"), dict) else {}
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
     else:
@@ -637,7 +505,7 @@ def verify_subagent_runtime(
             typer.echo(f"- {item.get('name')}: {item.get('ok')} ({item.get('detail')})")
         if result.get("recommended_command"):
             typer.echo(f"recommended_command: {result.get('recommended_command')}")
-    raise typer.Exit(code=0 if payload["status"] == "PASS" else 2)
+    raise typer.Exit(code=execution.exit_code)
 
 
 @app.command("verify-subagent-delegation")
@@ -648,14 +516,13 @@ def verify_subagent_delegation(
     json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
 ):
     """Verify feature-level delegation readiness before host-native team subagent use."""
-    root = Path(project_root) if project_root else Path.cwd()
-    result = delegation_readiness_precheck(root, feature=feature, version=version)
-    payload = {
-        "schema_version": "2.0",
-        "action": "verify-subagent-delegation",
-        "status": "PASS" if str(result.get("status")) == "pass" else "BLOCKED",
-        "result": result,
-    }
+    execution = run_subagent_delegation_verify(
+        project_root=project_root,
+        version=version,
+        feature=feature,
+    )
+    payload = execution.payload
+    result = payload.get("result", {}) if isinstance(payload.get("result"), dict) else {}
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
     else:
@@ -668,7 +535,7 @@ def verify_subagent_delegation(
             typer.echo(f"- {item.get('name')}: {item.get('ok')} ({item.get('detail')})")
         if result.get("recommended_command"):
             typer.echo(f"recommended_command: {result.get('recommended_command')}")
-    raise typer.Exit(code=0 if payload["status"] == "PASS" else 2)
+    raise typer.Exit(code=execution.exit_code)
 
 
 @app.command("verify-context")
@@ -676,30 +543,17 @@ def verify_context(
     project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
     strict: bool = typer.Option(False, "--strict", help="Treat warnings as blocked"),
     json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+    with_gitignore: bool = typer.Option(True, "--with-gitignore/--without-gitignore", help="Verify Beacon standard .gitignore block"),
 ):
     """Verify managed Beacon context blocks in CLAUDE.md/AGENTS.md."""
-    root = Path(project_root) if project_root else Path.cwd()
-    runtime = collect_runtime_info()
-    runtime_version = str(runtime.get("toolkit_version") or runtime.get("package_version") or "v1.0.0")
-    version_context = describe_project_version_context(root, runtime_version=runtime_version)
-    result = verify_context_files(
-        project_root=root,
-        runtime_version=runtime_version,
+    execution = run_context_verify(
+        project_root=project_root,
         strict=strict,
+        with_gitignore=with_gitignore,
     )
+    payload = execution.payload
+    result = payload.get("result", {}) if isinstance(payload.get("result"), dict) else {}
     status_map = {"pass": "PASS", "warn": "WARN", "fail": "BLOCKED"}
-    payload = {
-        "schema_version": "2.0",
-        "action": "verify-context",
-        "status": status_map.get(str(result.get("status", "warn")).lower(), "WARN"),
-        "docs_version": version_context.get("docs_version", ""),
-        "runtime_version": runtime_version,
-        "version_context": version_context,
-        "version_semantics": version_context.get("version_semantics", {}),
-        "result": result,
-    }
-    if strict and payload["status"] == "WARN":
-        payload["status"] = "BLOCKED"
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
     else:
@@ -715,7 +569,7 @@ def verify_context(
             )
         typer.echo(f"Overall: {payload.get('status')}")
 
-    raise typer.Exit(code=2 if payload.get("status") == "BLOCKED" else 0)
+    raise typer.Exit(code=execution.exit_code)
 
 
 @app.command("verify-materials")
@@ -726,21 +580,62 @@ def verify_materials(
     json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
 ):
     """Verify version material completeness for research/main-chain artifacts."""
-    root = Path(project_root) if project_root else Path.cwd()
-    result = build_material_audit(root, version=version or None, strict=strict)
-    payload = {
-        "schema_version": "2.0",
-        "action": "verify-materials",
-        "status": str(result.get("status", "warn")).upper(),
-        "result": result,
-    }
-    if strict and payload["status"] == "WARN":
-        payload["status"] = "BLOCKED"
+    execution = run_materials_verify(
+        project_root=project_root,
+        version=version,
+        strict=strict,
+    )
+    payload = execution.payload
+    result = payload.get("result", {}) if isinstance(payload.get("result"), dict) else {}
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
     else:
         _print_verification_result("Beacon Doctor Materials Verify", result)
-    raise typer.Exit(code=2 if payload.get("status") in {"FAIL", "BLOCKED"} else 0)
+    raise typer.Exit(code=execution.exit_code)
+
+
+@app.command("sync-gitignore")
+def sync_gitignore(
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    dry_run: bool = typer.Option(False, "--dry-run", help="Preview without writing files"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Create or refresh the Beacon-managed .gitignore block."""
+    execution = run_gitignore_setup(
+        project_root=project_root,
+        dry_run=dry_run,
+    )
+    payload = execution.payload
+    result = payload.get("result", {}) if isinstance(payload.get("result"), dict) else {}
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo("Beacon Doctor Gitignore Sync")
+        typer.echo("=" * 28)
+        typer.echo(f"runtime_version: {payload.get('runtime_version')}")
+        typer.echo(f"path: {result.get('path', '')}")
+        typer.echo(f"action: {result.get('action', '')}")
+        typer.echo(f"merge_mode: {result.get('merge_mode', '')}")
+    raise typer.Exit(code=execution.exit_code)
+
+
+@app.command("verify-gitignore")
+def verify_gitignore(
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    strict: bool = typer.Option(False, "--strict", help="Treat warnings as blocked"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Verify the Beacon-managed .gitignore block."""
+    execution = run_gitignore_verify(
+        project_root=project_root,
+        strict=strict,
+    )
+    payload = execution.payload
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        _print_verification_result("Beacon Doctor Gitignore Verify", payload["result"])
+    raise typer.Exit(code=execution.exit_code)
 
 
 @app.command("verify-delivery")
@@ -751,21 +646,18 @@ def verify_delivery(
     json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
 ):
     """Verify execution-layer delivery artifacts for a version."""
-    root = Path(project_root) if project_root else Path.cwd()
-    result = build_delivery_audit(root, version=version or None, strict=strict)
-    payload = {
-        "schema_version": "2.0",
-        "action": "verify-delivery",
-        "status": str(result.get("status", "warn")).upper(),
-        "result": result,
-    }
-    if strict and payload["status"] == "WARN":
-        payload["status"] = "BLOCKED"
+    execution = run_delivery_verify(
+        project_root=project_root,
+        version=version,
+        strict=strict,
+    )
+    payload = execution.payload
+    result = payload.get("result", {}) if isinstance(payload.get("result"), dict) else {}
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
     else:
         _print_verification_result("Beacon Doctor Delivery Verify", result)
-    raise typer.Exit(code=2 if payload.get("status") in {"FAIL", "BLOCKED"} else 0)
+    raise typer.Exit(code=execution.exit_code)
 
 
 @app.command("repair-package")
@@ -776,20 +668,19 @@ def repair_package(
     json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
 ):
     """Repair a delivery package into the v1.1.5 human/machine layered layout."""
-    root = Path(project_root) if project_root else Path.cwd()
-    result = repair_v115_delivery_package(root, version=version, apply=not dry_run)
-    payload = {
-        "schema_version": "2.0",
-        "action": "repair-package",
-        "status": "PASS",
-        "result": result,
-    }
+    execution = run_package_repair(
+        project_root=project_root,
+        version=version,
+        dry_run=dry_run,
+    )
+    payload = execution.payload
+    result = payload.get("result", {}) if isinstance(payload.get("result"), dict) else {}
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
     else:
         _print_action_result("Beacon Doctor Repair Package", {"installed": [], "removed": [], "skipped": [], "warnings": []})
         typer.echo(json.dumps(result, ensure_ascii=False, indent=2))
-    raise typer.Exit(code=0)
+    raise typer.Exit(code=execution.exit_code)
 
 
 @app.command("upgrade-package")
@@ -800,17 +691,13 @@ def upgrade_package(
     json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
 ):
     """Cumulatively upgrade an older Beacon version package to newer runtime-compatible material structure."""
-    root = Path(project_root) if project_root else Path.cwd()
-    result = upgrade_version_package(root, version=version, apply=not dry_run)
-    resolved_version = resolve_target_version(root, version)
-    source_arch_status = current_source_architecture_status(root, version=resolved_version)
-    payload = {
-        "schema_version": "2.0",
-        "action": "upgrade-package",
-        "status": "PASS",
-        "result": result,
-        "source_architecture_status": source_arch_status,
-    }
+    execution = run_package_upgrade(
+        project_root=project_root,
+        version=version,
+        dry_run=dry_run,
+    )
+    payload = execution.payload
+    result = payload.get("result", {}) if isinstance(payload.get("result"), dict) else {}
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
     else:
@@ -825,7 +712,7 @@ def upgrade_package(
                 f"steps={summary.get('step_count', 0)}"
             )
         typer.echo(json.dumps(result, ensure_ascii=False, indent=2))
-    raise typer.Exit(code=0)
+    raise typer.Exit(code=execution.exit_code)
 
 
 @app.command("verify-config")
@@ -836,38 +723,17 @@ def verify_config(
     json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
 ):
     """Verify execution config/source metadata artifacts for a version."""
-    root = Path(project_root) if project_root else Path.cwd()
-    audit = build_delivery_audit(root, version=version or None, strict=strict)
-    target_checks = [
-        item
-        for item in audit.get("checks", [])
-        if str(item.get("name")) in {"execution_required_files_present", "execution_config_schema", "execution_source_schema"}
-    ]
-    worst = "pass"
-    for item in target_checks:
-        status = str(item.get("status", "pass")).lower()
-        if status == "fail":
-            worst = "fail"
-            break
-        if status == "warn":
-            worst = "warn"
-    merged_check = {
-        "name": "verify_config",
-        "status": worst,
-        "details": {"checks": target_checks},
-    }
-    payload = _single_check_payload(
-        action="verify-config",
-        project_root=root,
-        version=version or None,
+    execution = run_config_verify(
+        project_root=project_root,
+        version=version,
         strict=strict,
-        check=merged_check,
     )
+    payload = execution.payload
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
     else:
         _print_verification_result("Beacon Doctor Config Verify", payload["result"])
-    raise typer.Exit(code=2 if payload.get("status") == "BLOCKED" else 0)
+    raise typer.Exit(code=execution.exit_code)
 
 
 @app.command("verify-git-alignment")
@@ -878,49 +744,17 @@ def verify_git_alignment(
     json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
 ):
     """Verify execution git-alignment artifact for a version."""
-    root = Path(project_root) if project_root else Path.cwd()
-    audit = build_delivery_audit(root, version=version or None, strict=strict)
-    git_check = next(
-        (item for item in audit.get("checks", []) if str(item.get("name")) == "execution_git_alignment_schema"),
-        {"name": "execution_git_alignment_schema", "status": "fail", "details": {"missing": True}},
-    )
-    workflow_check = next(
-        (item for item in audit.get("checks", []) if str(item.get("name")) == "execution_git_workflow_contract"),
-        {"name": "execution_git_workflow_contract", "status": "pass", "details": {"required": False}},
-    )
-    alignment_check = next(
-        (item for item in audit.get("checks", []) if str(item.get("name")) == "delivery_manifest_git_workflow_alignment"),
-        {"name": "delivery_manifest_git_workflow_alignment", "status": "pass", "details": {"branch_mismatches": []}},
-    )
-    statuses = [str(git_check.get("status", "fail")).lower()]
-    for item in (workflow_check, alignment_check):
-        statuses.append(str(item.get("status", "pass")).lower())
-    merged_status = "pass"
-    if any(status == "fail" for status in statuses):
-        merged_status = "fail"
-    elif any(status == "warn" for status in statuses):
-        merged_status = "warn"
-    check = {
-        "name": "execution_git_alignment_schema",
-        "status": merged_status,
-        "details": {
-            "git_alignment": git_check.get("details", {}),
-            "git_workflow_contract": workflow_check.get("details", {}),
-            "manifest_alignment": alignment_check.get("details", {}),
-        },
-    }
-    payload = _single_check_payload(
-        action="verify-git-alignment",
-        project_root=root,
-        version=version or None,
+    execution = run_git_alignment_verify(
+        project_root=project_root,
+        version=version,
         strict=strict,
-        check=check,
     )
+    payload = execution.payload
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
     else:
         _print_verification_result("Beacon Doctor Git Alignment Verify", payload["result"])
-    raise typer.Exit(code=2 if payload.get("status") == "BLOCKED" else 0)
+    raise typer.Exit(code=execution.exit_code)
 
 
 @app.command("setup-agent-md")
@@ -935,9 +769,14 @@ def setup_agent_md(
         project_root=project_root,
         dry_run=dry_run,
         force=force,
+        sync_materials=False,
+        feature="",
+        all_features=True,
+        overwrite_test_doc=False,
         json_output=json_output,
         with_claude=True,
         with_agents=True,
+        with_gitignore=True,
     )
 
 
@@ -952,6 +791,7 @@ def verify_agent_md(
         project_root=project_root,
         strict=strict,
         json_output=json_output,
+        with_gitignore=True,
     )
 
 
@@ -962,48 +802,19 @@ def quiet_worktree(
     json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
 ):
     """Manage local skip-worktree/exclude quieting for Beacon runtime churn."""
-    root = Path(project_root) if project_root else Path.cwd()
-    normalized = mode.strip().lower()
-    actions = {
-        "status": quiet_worktree_status,
-        "apply": apply_quiet_worktree,
-        "restore": restore_quiet_worktree,
-    }
-    action = actions.get(normalized)
-    if action is None:
-        raise typer.BadParameter("mode must be one of: status, apply, restore")
-
-    try:
-        result = action(root)
-    except (ValueError, RuntimeError) as exc:
-        payload = {
-            "schema_version": "2.0",
-            "action": "quiet-worktree",
-            "status": "BLOCKED",
-            "mode": normalized,
-            "result": {
-                "project_root": str(root.resolve()),
-                "error": str(exc),
-            },
-        }
-        if json_output:
-            typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
-        else:
-            typer.echo(f"Beacon Doctor Quiet Worktree\n{'=' * 28}\nerror: {exc}")
-        raise typer.Exit(code=2)
-
-    payload = {
-        "schema_version": "2.0",
-        "action": "quiet-worktree",
-        "status": "PASS",
-        "mode": normalized,
-        "result": result,
-    }
+    execution = run_quiet_worktree(
+        project_root=project_root,
+        mode=mode,
+    )
+    payload = execution.payload
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
     else:
-        _print_quiet_worktree_result(result)
-    raise typer.Exit(code=0)
+        if payload.get("status") == "BLOCKED":
+            typer.echo(f"Beacon Doctor Quiet Worktree\n{'=' * 28}\nerror: {payload.get('result', {}).get('error', '')}")
+        else:
+            _print_quiet_worktree_result(payload.get("result", {}))
+    raise typer.Exit(code=execution.exit_code)
 
 
 if __name__ == "__main__":
@@ -1020,19 +831,19 @@ def advise(
     json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
 ):
     """Diagnose blockers and suggest the safest next action."""
-    root = Path(project_root) if project_root else Path.cwd()
-    payload = build_doctor_advise_payload(
-        root,
-        version=version or None,
-        feature=feature or None,
-        run_id=run_id or None,
+    execution = run_doctor_advise(
+        project_root=project_root,
+        version=version,
+        feature=feature,
+        run_id=run_id,
         strict=strict,
     )
+    payload = execution.payload
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
     else:
         _print_advise_result(payload)
-    raise typer.Exit(code=2 if payload.get("status") == "BLOCKED" else 0)
+    raise typer.Exit(code=execution.exit_code)
 
 
 @app.command("setup-codex-hud-hook")
@@ -1048,20 +859,18 @@ def setup_codex_hud_hook_command(
     json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
 ):
     """Generate or apply Codex fixed HUD hook wiring."""
-    root = Path(project_root) if project_root else Path.cwd()
-    resolved_version = resolve_target_version(root, version)
-    result = setup_codex_hud_hook(root, version=resolved_version, apply=apply, events=events)
-    payload = {
-        "schema_version": "2.0",
-        "action": "setup-codex-hud-hook",
-        "status": "PASS",
-        "result": result,
-    }
+    execution = run_codex_hud_hook_setup(
+        project_root=project_root,
+        version=version,
+        events=events,
+        apply=apply,
+    )
+    payload = execution.payload
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
     else:
-        _print_codex_hud_hook_setup_result(result)
-    raise typer.Exit(code=0)
+        _print_codex_hud_hook_setup_result(payload.get("result", {}))
+    raise typer.Exit(code=execution.exit_code)
 
 
 @app.command("verify-codex-hud-hook")
@@ -1076,23 +885,14 @@ def verify_codex_hud_hook_command(
     json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
 ):
     """Verify Codex fixed HUD hook wiring managed by doctor."""
-    root = Path(project_root) if project_root else Path.cwd()
-    resolved_version = resolve_target_version(root, version)
-    result = verify_codex_hud_hook(root, version=resolved_version, events=events)
-    payload = {
-        "schema_version": "2.0",
-        "action": "verify-codex-hud-hook",
-        "status": (
-            "PASS"
-            if result.get("status") == "pass"
-            else "WARN"
-            if result.get("status") == "warn"
-            else "BLOCKED"
-        ),
-        "result": result,
-    }
+    execution = run_codex_hud_hook_verify(
+        project_root=project_root,
+        version=version,
+        events=events,
+    )
+    payload = execution.payload
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
     else:
-        _print_codex_hud_hook_verify_result(result)
-    raise typer.Exit(code=0 if payload["status"] in {"PASS", "WARN"} else 2)
+        _print_codex_hud_hook_verify_result(payload.get("result", {}))
+    raise typer.Exit(code=execution.exit_code)

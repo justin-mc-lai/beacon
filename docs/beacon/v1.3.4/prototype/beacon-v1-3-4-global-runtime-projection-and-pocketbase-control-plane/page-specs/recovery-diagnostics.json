@@ -1,0 +1,60 @@
+{
+  "page_id": "recovery-diagnostics",
+  "intent": "Recovery Diagnostics reference page",
+  "layout_type": "admin-workbench",
+  "sections": [
+    "portfolio-overview",
+    "project-detail",
+    "runtime-center",
+    "recovery-diagnostics"
+  ],
+  "components": [
+    "header",
+    "content",
+    "primary-cta"
+  ],
+  "primary_cta": "查看项目详情",
+  "secondary_ctas": [
+    "打开运行态"
+  ],
+  "states": [
+    "healthy-summary",
+    "requirement-incomplete",
+    "implement-running",
+    "qa-running",
+    "release-ready",
+    "team-active",
+    "ralph-active",
+    "blocked",
+    "db-offline",
+    "partial-rebuild"
+  ],
+  "route_targets": [
+    "project-detail",
+    "runtime-center",
+    "recovery-diagnostics",
+    "portfolio-overview"
+  ],
+  "truth_notes": [
+    "compiled_from:docs/beacon/v1.3.4/user-story/beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane.md"
+  ],
+  "baseline_guardrails": [
+    "omc omx explicitly excluded from managed runtime scope",
+    "projection not truth wording",
+    "rebuild from docs/beacon and .beacon path",
+    "sqlite and pocketbase degraded mode explanation"
+  ],
+  "content_model": {
+    "variant": "reference",
+    "headline": "Recovery Diagnostics",
+    "subheadline": "Recovery Diagnostics reference page",
+    "primary_cta": "查看项目详情",
+    "secondary_cta": "打开运行态",
+    "baseline_guardrails": [
+      "omc omx explicitly excluded from managed runtime scope",
+      "projection not truth wording",
+      "rebuild from docs/beacon and .beacon path",
+      "sqlite and pocketbase degraded mode explanation"
+    ]
+  }
+}

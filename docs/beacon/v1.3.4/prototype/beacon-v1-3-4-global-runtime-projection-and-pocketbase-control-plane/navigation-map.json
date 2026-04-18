@@ -1,0 +1,62 @@
+{
+  "primary_entry": "portfolio-overview",
+  "primary_exit": "project-detail",
+  "sections": [
+    {
+      "id": "portfolio-overview",
+      "label": "portfolio-overview"
+    },
+    {
+      "id": "project-detail",
+      "label": "project-detail"
+    },
+    {
+      "id": "runtime-center",
+      "label": "runtime-center"
+    },
+    {
+      "id": "recovery-diagnostics",
+      "label": "recovery-diagnostics"
+    }
+  ],
+  "navigation_nodes": [
+    {
+      "label": "overview",
+      "target": "#overview"
+    },
+    {
+      "label": "projects",
+      "target": "#projects"
+    },
+    {
+      "label": "runtime",
+      "target": "#runtime"
+    },
+    {
+      "label": "diagnostics",
+      "target": "#diagnostics"
+    }
+  ],
+  "jump_map": [
+    {
+      "from": "portfolio-overview",
+      "to": "project-detail",
+      "why": "drill into selected project version, parallel PRDs, and lifecycle progress"
+    },
+    {
+      "from": "project-detail",
+      "to": "runtime-center",
+      "why": "inspect single/team/ralph active runs and agent/session refs"
+    },
+    {
+      "from": "runtime-center",
+      "to": "recovery-diagnostics",
+      "why": "inspect stale runs, sqlite unavailable state, and rebuild readiness"
+    },
+    {
+      "from": "recovery-diagnostics",
+      "to": "portfolio-overview",
+      "why": "return to cross-project summary after diagnosis"
+    }
+  ]
+}
