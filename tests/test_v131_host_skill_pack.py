@@ -36,7 +36,7 @@ def test_codex_install_doc_should_target_packaged_beacon_skill_root():
     install_doc = ROOT / ".codex" / "INSTALL.md"
     assert install_doc.exists()
     text = install_doc.read_text(encoding="utf-8")
-    assert "skills/beacon/" in text
+    assert "/absolute/path/to/beacon/skills/beacon" in text
     assert "~/.agents/skills/beacon" in text
     assert 'ln -s /absolute/path/to/beacon/skills/beacon ~/.codex/skills/beacon' not in text
     assert "using-beacon" in text
@@ -83,7 +83,8 @@ def test_v131_docs_should_reference_host_skill_pack_and_public_skill_names():
 
 def test_packaged_beacon_skill_should_describe_v131_host_visible_subskills():
     text = (ROOT / "skills" / "beacon" / "SKILL.md").read_text(encoding="utf-8")
-    assert "host-visible skill pack now follows" in text
-    assert "Host-visible v1.3.1 subskills" in text
+    assert "This package is the canonical `skills/beacon/` wrapper for Codex and Claude." in text
+    assert "The public Codex / Claude surfaces are:" in text
+    assert "## Current v1.3.3 Additions" in text
     for name in PUBLIC_HOST_SKILLS:
         assert f"`{name}`" in text

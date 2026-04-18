@@ -17,6 +17,15 @@ bash skills/beacon/scripts/run_beacon.sh doctor verify-context \
   --project-root . \
   --strict \
   --json
+bash skills/beacon/scripts/run_beacon.sh doctor verify-materials \
+  --project-root . \
+  --version v1.3.3 \
+  --json
+bash skills/beacon/scripts/run_beacon.sh doctor repair-package \
+  --project-root . \
+  --version v1.3.3 \
+  --dry-run \
+  --json
 bash skills/beacon/scripts/run_beacon.sh doctor sync-materials \
   --project-root . \
   --version v1.3.3 \

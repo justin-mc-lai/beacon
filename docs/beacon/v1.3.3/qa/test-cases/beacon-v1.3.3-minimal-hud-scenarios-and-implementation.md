@@ -73,7 +73,7 @@
 
 - Given：hook 输入异常或状态读取失败
 - When：执行 hook
-- Then：输入提交流程不被阻断；降级为空 HUD；写入 debug 证据事件
+- Then：输入提交流程不被阻断；降级为空 HUD；写入 debug 证据事件；`doctor verify-codex-hud-hook` 在未捕获运行态激活证据前返回 warning，捕获 doctor-managed dispatch 证据后返回 pass
 
 ---
 

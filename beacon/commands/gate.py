@@ -1943,7 +1943,7 @@ def check_v131_human_loop_contract(
     resolved_runtime = resolve_runtime_version(project_root, "auto")
     if not project_runtime_feature_enabled(
         project_root,
-        "v1.3.1",
+        "v1.3.3",
         docs_version=resolved_version,
         runtime_version=resolved_runtime,
     ):
@@ -1955,7 +1955,7 @@ def check_v131_human_loop_contract(
             {
                 "reason_code": "feature_name_missing",
                 "severity": "critical",
-                "message": "v1.3.1 release requires feature context to evaluate human-loop contracts",
+                "message": "v1.3.3 release requires feature context to evaluate human-loop contracts",
                 "blocked": True,
             }
         )

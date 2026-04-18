@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from datetime import datetime
 from typing import Any
 
 
@@ -35,6 +36,27 @@ def _scenario(stage: str, mode: str, blocker_level: str, circuit_status: str) ->
     return "S1"
 
 
+def _looks_like_timestamp(value: str) -> bool:
+    text = str(value or "").strip()
+    if not text:
+        return False
+    normalized = text[:-1] + "+00:00" if text.endswith("Z") else text
+    try:
+        datetime.fromisoformat(normalized)
+    except ValueError:
+        return False
+    return True
+
+
+def _execution_time_fragment(execution: dict[str, Any]) -> str:
+    updated_at = _text(execution.get("updated_at"), "")
+    if updated_at:
+        return f"updated:{updated_at}"
+    elapsed = _text(execution.get("elapsed"), "N/A")
+    label = "updated" if _looks_like_timestamp(elapsed) else "elapsed"
+    return f"{label}:{elapsed}"
+
+
 def build_minimal_hud(payload: dict[str, Any]) -> dict[str, Any]:
     """Build 1-3 line minimal HUD from normalized payload."""
     beacon_version = _text(payload.get("beacon_version"), "N/A")
@@ -46,12 +68,12 @@ def build_minimal_hud(payload: dict[str, Any]) -> dict[str, Any]:
     next_action = _text(payload.get("next_action"), "none")
 
     mode = _text(execution.get("mode"), "")
-    elapsed = _text(execution.get("elapsed"), "N/A")
     progress = execution.get("progress") if isinstance(execution.get("progress"), dict) else {}
     done = int(progress.get("done", 0) or 0)
     total = int(progress.get("total", 0) or 0)
     round_count = int(progress.get("round", 0) or 0)
     circuit_status = _text(execution.get("circuit_status"), "ok").lower()
+    time_fragment = _execution_time_fragment(execution)
 
     blocker_level = _text(blocker.get("level"), "none").lower()
     blocker_reason = _text(blocker.get("reason"), "")
@@ -70,11 +92,11 @@ def build_minimal_hud(payload: dict[str, Any]) -> dict[str, Any]:
 
     if scenario in {"S2", "S3", "S4", "S5", "S6"}:
         if mode == "ralph":
-            line2 = f"▸ round:{round_count} circuit:{circuit_status} elapsed:{elapsed}"
+            line2 = f"▸ round:{round_count} circuit:{circuit_status} {time_fragment}"
         elif mode in {"single", "team"}:
-            line2 = f"▸ progress:{done}/{total} elapsed:{elapsed}"
+            line2 = f"▸ progress:{done}/{total} {time_fragment}"
         else:
-            line2 = f"▸ state:{circuit_status} elapsed:{elapsed}"
+            line2 = f"▸ state:{circuit_status} {time_fragment}"
         lines.append(_clip(line2))
 
     if scenario in {"S5", "S6"}:
@@ -95,4 +117,3 @@ def build_minimal_hud_lines(payload: dict[str, Any]) -> list[str]:
     result = build_minimal_hud(payload)
     lines = result.get("lines")
     return list(lines) if isinstance(lines, list) else []
-

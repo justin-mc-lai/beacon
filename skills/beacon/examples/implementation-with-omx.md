@@ -12,6 +12,7 @@ Read first:
 # 1) Inspect optional adapters and preferred runner
 bash skills/beacon/scripts/run_beacon.sh skill list
 bash skills/beacon/scripts/run_beacon.sh skill detect --project-root . --json
+# skill prefer omx only when compatibility is explicit
 bash skills/beacon/scripts/run_beacon.sh implement list-runners --json
 
 # 2) Keep default implementation host-native unless compatibility is explicit
@@ -31,6 +32,7 @@ bash skills/beacon/scripts/run_beacon.sh implement run \
   --json
 
 # 4) Inspect implementation status / plan progress
+# review spec before escalating to compatibility-plane execution
 bash skills/beacon/scripts/run_beacon.sh implement status \
   "Beacon v1.3.3 lightweight release line" \
   --project-root . \

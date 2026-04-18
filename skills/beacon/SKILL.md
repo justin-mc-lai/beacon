@@ -138,6 +138,14 @@ think
 
 For human routing, prefer the minimal 6+3 surface. Do not expose team/subagent/Ralph internals unless the user explicitly asks for them or a Beacon command recommends them.
 
+## Lifecycle Navigation Rules
+
+- Use `beacon help --project-root . --json` when the next step is unclear.
+- Run `status` before guessing the current stage.
+- QA prompt contract must follow first principles.
+- If requirement evidence is incomplete or drifted, return `stop_for_repair`.
+- `browser-use` is optional evidence tooling, not the default workflow surface.
+
 ## Reading Order
 
 Read current v1.3.3 materials in this order:
@@ -175,6 +183,7 @@ Feature package roots:
 - Need current next step: `beacon help --project-root . --version v1.3.3 --feature "<feature>" --json`
 - Release confusion: `beacon gate check release --project-root . --version v1.3.3 --json`
 - Skill drift: `python3 scripts/check_skill_drift.py --project-root . --json`
+- QA prompt contract must follow first principles before doing browser-use or test-case backfill.
 
 ## Examples
 

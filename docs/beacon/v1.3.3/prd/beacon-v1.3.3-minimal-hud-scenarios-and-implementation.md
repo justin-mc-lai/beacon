@@ -135,6 +135,7 @@ Codex hook 集成必须满足：
 2. 默认 `dry-run` 输出建议配置，显式 `--apply` 才写入
 3. 禁止 Beacon 未经用户确认自动改写全局 hook 配置
 4. 失败时给出单一恢复命令与诊断结果落盘
+5. `verify-codex-hud-hook` 必须区分“静态 wiring 正确”和“运行中会话已实际触发 hook”；缺少运行态证据时只能返回 warning，不能误报 pass
 
 ## 6. 最小数据契约
 
@@ -147,6 +148,7 @@ Codex hook 集成必须满足：
   "execution": {
     "mode": "single|team|ralph",
     "elapsed": "1m30s",
+    "updated_at": "2026-04-17T12:00:00Z",
     "progress": {"done": 0, "total": 0, "round": 0},
     "circuit_status": "ok|warn|trip"
   },

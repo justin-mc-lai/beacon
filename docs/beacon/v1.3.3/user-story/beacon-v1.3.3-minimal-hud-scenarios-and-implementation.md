@@ -17,7 +17,7 @@
 - AC-007 阻断恢复一致性：compatibility 阻断统一推荐 `beacon doctor migrate-compat ...`；机器侧仍保留完整 JSON/artifacts。
 - AC-008 Codex 固定 HUD 注入：hook 输出必须通过 `hookSpecificOutput.additionalContext` 返回 1-3 行 HUD，且文本来自 `minimal_hud` 同一渲染契约。
 - AC-009 自动注入事件覆盖：必须覆盖 `UserPromptSubmit`，并支持会话刷新事件（`SessionStart/SessionResume/SessionRefresh` 至少其一可配置）。
-- AC-010 Hook 治理与降级：hook 安装/校验必须走 `beacon doctor`；hook 失败不得阻断主输入流程，必须降级并写 debug 证据。
+- AC-010 Hook 治理与降级：hook 安装/校验必须走 `beacon doctor`；hook 失败不得阻断主输入流程，必须降级并写 debug 证据；`verify-codex-hud-hook` 在缺少运行态激活证据时只能返回 warning。
 
 ## Metadata
 

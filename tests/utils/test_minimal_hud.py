@@ -69,3 +69,9 @@ def test_lines_should_not_exceed_120_chars() -> None:
     assert hud["lines"]
     assert all(len(line) <= 120 for line in hud["lines"])
 
+
+def test_timestamp_execution_value_should_render_as_updated_not_elapsed() -> None:
+    payload = _payload(stage="implement", mode="single")
+    payload["execution"]["elapsed"] = "2026-04-17T12:00:00+00:00"
+    hud = build_minimal_hud(payload)
+    assert any("updated:2026-04-17T12:00:00+00:00" in line for line in hud["lines"])

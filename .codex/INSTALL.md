@@ -1,15 +1,14 @@
 # Installing Beacon Host Skills for Codex
 
-Enable Beacon's `v1.3.1` minimal human surface in Codex through native skill discovery.
+Enable Beacon's `v1.3.3` minimal human surface in Codex through native skill discovery.
 
 ## Installed skill root
 
-Beacon's install root stays:
+Beacon's canonical install root is:
 
-- `skills/beacon/`
+- `~/.agents/skills/beacon` -> `/absolute/path/to/beacon/skills/beacon`
 
-This preserves the existing root `SKILL.md` and packaged metadata while adding nested host-visible subskills underneath the same root.
-The same packaged root is also consumed by Claude host plugin loading, so Codex/Claude stay aligned on one skill source.
+Do not also install Beacon under `~/.codex/skills/beacon`. That creates duplicate discovery and can make Codex restart back onto a stale Beacon root.
 
 ## Public host-visible skills
 
@@ -28,10 +27,11 @@ The same packaged root is also consumed by Claude host plugin loading, so Codex/
   - `beacon-status`
   - `beacon-doctor`
 
-## Optional supplemental skills (not 6+3 mainline)
+## Optional supplemental skills
 
 - `beacon-toolkit-lighthouse`
 - `beacon-prd-bootstrap`
+- `beacon-real-project-validation`
 
 ## Installation
 
@@ -56,11 +56,21 @@ cmd /c mklink /J "$env:USERPROFILE\.agents\skills\beacon" "C:\absolute\path\to\b
 
 ```bash
 find ~/.agents/skills/beacon -maxdepth 2 -name SKILL.md | sort
+python3 scripts/check_skill_drift.py --project-root . --json
+beacon doctor verify-codex-hud-hook --project-root . --version v1.3.3 --json
+```
+
+## HUD hook recovery
+
+Use the doctor-managed hook instead of ad hoc config edits:
+
+```bash
+beacon doctor setup-codex-hud-hook --project-root . --version v1.3.3 --apply --json
+beacon doctor verify-codex-hud-hook --project-root . --version v1.3.3 --json
 ```
 
 ## Notes
 
-- For Codex, `~/.agents/skills/beacon` is the canonical install root.
-- Do not also install the same Beacon pack under `~/.codex/skills/beacon`; that creates duplicate skill discovery and repeated public skill entries like `beacon-doctor`.
-- `brainstorm`, `team`, `implement-team`, and `qa-team` should remain hidden machine lanes, not public host-visible skills.
-- The nested public skills exist to make the `v1.3.1` 6+3 human surface prompt-triggerable, not to mirror Beacon's full CLI catalog.
+- `~/.agents/skills/beacon` is the canonical install root.
+- `brainstorm`, `team`, `implement-team`, and `qa-team` remain hidden machine lanes, not public skills.
+- The nested public skills exist to make the `v1.3.3` 6+3 human surface prompt-triggerable.
