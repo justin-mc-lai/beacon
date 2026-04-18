@@ -1,0 +1,649 @@
+{
+  "schema_version": "2.0",
+  "feature": "beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane",
+  "version": "v1.3.4",
+  "prototype_mode": "reference-pack-v2",
+  "coverage_mode": "all-existing-routes",
+  "source_refs": [
+    "docs/beacon/v1.3.4/user-story/beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane.md"
+  ],
+  "source_fingerprints": {
+    "user-story": "a72cccc697069c2951074be81da70c8e9bb4f9f9308ec1593318149d4cb0bdc3"
+  },
+  "required_pages": [
+    "portfolio-overview",
+    "project-detail",
+    "runtime-center",
+    "recovery-diagnostics"
+  ],
+  "required_states": [
+    "healthy-summary",
+    "requirement-incomplete",
+    "implement-running",
+    "qa-running",
+    "release-ready",
+    "team-active",
+    "ralph-active",
+    "blocked",
+    "db-offline",
+    "partial-rebuild"
+  ],
+  "page_inventory": [
+    {
+      "page_id": "portfolio-overview",
+      "baseline_protected": true
+    },
+    {
+      "page_id": "project-detail",
+      "baseline_protected": true
+    },
+    {
+      "page_id": "runtime-center",
+      "baseline_protected": true
+    },
+    {
+      "page_id": "recovery-diagnostics",
+      "baseline_protected": true
+    }
+  ],
+  "baseline_protection": [
+    {
+      "page": "portfolio-overview",
+      "preserve": [
+        "current version, progress, blocker in one scan line",
+        "lifecycle-first summary cards",
+        "no raw worker transcript exposure",
+        "runtime only as compressed badge"
+      ]
+    },
+    {
+      "page": "project-detail",
+      "preserve": [
+        "git and worktree governance card",
+        "main PRD and parallel PRD distinction",
+        "recommended next skill and next action",
+        "requirement materials completeness panel"
+      ]
+    },
+    {
+      "page": "runtime-center",
+      "preserve": [
+        "active agent count and role status for team",
+        "host session refs without full transcript disclosure",
+        "round count and next action for ralph",
+        "single team ralph mode separation"
+      ]
+    },
+    {
+      "page": "recovery-diagnostics",
+      "preserve": [
+        "omc omx explicitly excluded from managed runtime scope",
+        "projection not truth wording",
+        "rebuild from docs/beacon and .beacon path",
+        "sqlite and pocketbase degraded mode explanation"
+      ]
+    }
+  ],
+  "page_specs": [
+    {
+      "page_id": "portfolio-overview",
+      "intent": "Portfolio Overview reference page",
+      "layout_type": "admin-workbench",
+      "sections": [
+        "portfolio-overview",
+        "project-detail",
+        "runtime-center",
+        "recovery-diagnostics"
+      ],
+      "components": [
+        "header",
+        "content",
+        "primary-cta"
+      ],
+      "primary_cta": "查看项目详情",
+      "secondary_ctas": [
+        "打开运行态"
+      ],
+      "states": [
+        "healthy-summary",
+        "requirement-incomplete",
+        "implement-running",
+        "qa-running",
+        "release-ready",
+        "team-active",
+        "ralph-active",
+        "blocked",
+        "db-offline",
+        "partial-rebuild"
+      ],
+      "route_targets": [
+        "project-detail",
+        "runtime-center",
+        "recovery-diagnostics",
+        "portfolio-overview"
+      ],
+      "truth_notes": [
+        "compiled_from:docs/beacon/v1.3.4/user-story/beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane.md"
+      ],
+      "baseline_guardrails": [
+        "current version, progress, blocker in one scan line",
+        "lifecycle-first summary cards",
+        "no raw worker transcript exposure",
+        "runtime only as compressed badge"
+      ],
+      "content_model": {
+        "variant": "reference",
+        "headline": "Portfolio Overview",
+        "subheadline": "Portfolio Overview reference page",
+        "primary_cta": "查看项目详情",
+        "secondary_cta": "打开运行态",
+        "baseline_guardrails": [
+          "current version, progress, blocker in one scan line",
+          "lifecycle-first summary cards",
+          "no raw worker transcript exposure",
+          "runtime only as compressed badge"
+        ]
+      }
+    },
+    {
+      "page_id": "project-detail",
+      "intent": "Project Detail reference page",
+      "layout_type": "admin-workbench",
+      "sections": [
+        "portfolio-overview",
+        "project-detail",
+        "runtime-center",
+        "recovery-diagnostics"
+      ],
+      "components": [
+        "header",
+        "content",
+        "primary-cta"
+      ],
+      "primary_cta": "查看项目详情",
+      "secondary_ctas": [
+        "打开运行态"
+      ],
+      "states": [
+        "healthy-summary",
+        "requirement-incomplete",
+        "implement-running",
+        "qa-running",
+        "release-ready",
+        "team-active",
+        "ralph-active",
+        "blocked",
+        "db-offline",
+        "partial-rebuild"
+      ],
+      "route_targets": [
+        "project-detail",
+        "runtime-center",
+        "recovery-diagnostics",
+        "portfolio-overview"
+      ],
+      "truth_notes": [
+        "compiled_from:docs/beacon/v1.3.4/user-story/beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane.md"
+      ],
+      "baseline_guardrails": [
+        "git and worktree governance card",
+        "main PRD and parallel PRD distinction",
+        "recommended next skill and next action",
+        "requirement materials completeness panel"
+      ],
+      "content_model": {
+        "variant": "reference",
+        "headline": "Project Detail",
+        "subheadline": "Project Detail reference page",
+        "primary_cta": "查看项目详情",
+        "secondary_cta": "打开运行态",
+        "baseline_guardrails": [
+          "git and worktree governance card",
+          "main PRD and parallel PRD distinction",
+          "recommended next skill and next action",
+          "requirement materials completeness panel"
+        ]
+      }
+    },
+    {
+      "page_id": "runtime-center",
+      "intent": "Runtime Center reference page",
+      "layout_type": "admin-workbench",
+      "sections": [
+        "portfolio-overview",
+        "project-detail",
+        "runtime-center",
+        "recovery-diagnostics"
+      ],
+      "components": [
+        "header",
+        "content",
+        "primary-cta"
+      ],
+      "primary_cta": "查看项目详情",
+      "secondary_ctas": [
+        "打开运行态"
+      ],
+      "states": [
+        "healthy-summary",
+        "requirement-incomplete",
+        "implement-running",
+        "qa-running",
+        "release-ready",
+        "team-active",
+        "ralph-active",
+        "blocked",
+        "db-offline",
+        "partial-rebuild"
+      ],
+      "route_targets": [
+        "project-detail",
+        "runtime-center",
+        "recovery-diagnostics",
+        "portfolio-overview"
+      ],
+      "truth_notes": [
+        "compiled_from:docs/beacon/v1.3.4/user-story/beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane.md"
+      ],
+      "baseline_guardrails": [
+        "active agent count and role status for team",
+        "host session refs without full transcript disclosure",
+        "round count and next action for ralph",
+        "single team ralph mode separation"
+      ],
+      "content_model": {
+        "variant": "reference",
+        "headline": "Runtime Center",
+        "subheadline": "Runtime Center reference page",
+        "primary_cta": "查看项目详情",
+        "secondary_cta": "打开运行态",
+        "baseline_guardrails": [
+          "active agent count and role status for team",
+          "host session refs without full transcript disclosure",
+          "round count and next action for ralph",
+          "single team ralph mode separation"
+        ]
+      }
+    },
+    {
+      "page_id": "recovery-diagnostics",
+      "intent": "Recovery Diagnostics reference page",
+      "layout_type": "admin-workbench",
+      "sections": [
+        "portfolio-overview",
+        "project-detail",
+        "runtime-center",
+        "recovery-diagnostics"
+      ],
+      "components": [
+        "header",
+        "content",
+        "primary-cta"
+      ],
+      "primary_cta": "查看项目详情",
+      "secondary_ctas": [
+        "打开运行态"
+      ],
+      "states": [
+        "healthy-summary",
+        "requirement-incomplete",
+        "implement-running",
+        "qa-running",
+        "release-ready",
+        "team-active",
+        "ralph-active",
+        "blocked",
+        "db-offline",
+        "partial-rebuild"
+      ],
+      "route_targets": [
+        "project-detail",
+        "runtime-center",
+        "recovery-diagnostics",
+        "portfolio-overview"
+      ],
+      "truth_notes": [
+        "compiled_from:docs/beacon/v1.3.4/user-story/beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane.md"
+      ],
+      "baseline_guardrails": [
+        "omc omx explicitly excluded from managed runtime scope",
+        "projection not truth wording",
+        "rebuild from docs/beacon and .beacon path",
+        "sqlite and pocketbase degraded mode explanation"
+      ],
+      "content_model": {
+        "variant": "reference",
+        "headline": "Recovery Diagnostics",
+        "subheadline": "Recovery Diagnostics reference page",
+        "primary_cta": "查看项目详情",
+        "secondary_cta": "打开运行态",
+        "baseline_guardrails": [
+          "omc omx explicitly excluded from managed runtime scope",
+          "projection not truth wording",
+          "rebuild from docs/beacon and .beacon path",
+          "sqlite and pocketbase degraded mode explanation"
+        ]
+      }
+    }
+  ],
+  "parser": {
+    "cjk_detected": true,
+    "cjk_parse_failed": false,
+    "warnings": []
+  },
+  "contract": {
+    "feature": "beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane",
+    "version": "v1.3.4",
+    "design_sources": [
+      "docs/beacon/v1.3.4/user-story/beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane.md"
+    ],
+    "ui_visualization_required": true,
+    "design_governance_required": true,
+    "interactive_prototype_required": "true",
+    "design_generation_mode": "description-as-design",
+    "prototype_mode": "reference-pack-v2",
+    "coverage_mode": "all-existing-routes",
+    "prototype_archetype": "admin-workbench",
+    "theme_mood": "disciplined",
+    "theme_primary": "#1F6FEB",
+    "theme_secondary": "#0F172A",
+    "surface_style": "calm-ops board with lifecycle-first information hierarchy",
+    "target_user": "one-person-company CEO and project owner",
+    "brand_keywords": [
+      "lifecycle-first",
+      "delivery-truth",
+      "calm-ops",
+      "sober-control"
+    ],
+    "sections": [
+      "portfolio-overview",
+      "project-detail",
+      "runtime-center",
+      "recovery-diagnostics"
+    ],
+    "navigation": [
+      "overview",
+      "projects",
+      "runtime",
+      "diagnostics"
+    ],
+    "primary_entry": "portfolio-overview",
+    "primary_exit": "project-detail",
+    "primary_cta": "查看项目详情",
+    "secondary_cta": "打开运行态",
+    "jump_map": [
+      {
+        "from": "portfolio-overview",
+        "to": "project-detail",
+        "why": "drill into selected project version, parallel PRDs, and lifecycle progress"
+      },
+      {
+        "from": "project-detail",
+        "to": "runtime-center",
+        "why": "inspect single/team/ralph active runs and agent/session refs"
+      },
+      {
+        "from": "runtime-center",
+        "to": "recovery-diagnostics",
+        "why": "inspect stale runs, sqlite unavailable state, and rebuild readiness"
+      },
+      {
+        "from": "recovery-diagnostics",
+        "to": "portfolio-overview",
+        "why": "return to cross-project summary after diagnosis"
+      }
+    ],
+    "states": [
+      "healthy-summary",
+      "requirement-incomplete",
+      "implement-running",
+      "qa-running",
+      "release-ready",
+      "team-active",
+      "ralph-active",
+      "blocked",
+      "db-offline",
+      "partial-rebuild"
+    ],
+    "route_closure_required": true,
+    "drift_guardrails": [
+      "runtime-noise-exposed-on-home",
+      "agent-count-misused-as-progress",
+      "projection-layer-presented-as-truth",
+      "omc-omx-leak-into-board",
+      "git-worktree-governance-hidden"
+    ],
+    "design_reference_sources": [
+      "Beacon v1.3.4 main PRD lifecycle-first board model",
+      "Beacon v1.3.4 one-person-company ops board model",
+      "PocketBase as control plane",
+      "not formal delivery truth",
+      "Beacon admin-workbench prototype discipline",
+      "human minimal surface with runtime drilldown only"
+    ],
+    "required_pages": [
+      "portfolio-overview",
+      "project-detail",
+      "runtime-center",
+      "recovery-diagnostics"
+    ],
+    "required_states": [
+      "healthy-summary",
+      "requirement-incomplete",
+      "implement-running",
+      "qa-running",
+      "release-ready",
+      "team-active",
+      "ralph-active",
+      "blocked",
+      "db-offline",
+      "partial-rebuild"
+    ],
+    "page_inventory": [
+      "portfolio-overview",
+      "project-detail",
+      "runtime-center",
+      "recovery-diagnostics"
+    ],
+    "page_inventory_source": [
+      "CEO overview requires project/version/stage/progress/blocker summary.",
+      "Project owner detail requires version line",
+      "main/parallel PRDs",
+      "material completeness",
+      "git/worktree governance",
+      "session refs.",
+      "Runtime center requires single/team/ralph focused drilldown.",
+      "Recovery diagnostics requires degraded mode",
+      "rebuild contract",
+      "and sync-health explanation."
+    ],
+    "baseline_protection": [
+      {
+        "page": "portfolio-overview",
+        "preserve": [
+          "current version, progress, blocker in one scan line",
+          "lifecycle-first summary cards",
+          "no raw worker transcript exposure",
+          "runtime only as compressed badge"
+        ]
+      },
+      {
+        "page": "project-detail",
+        "preserve": [
+          "git and worktree governance card",
+          "main PRD and parallel PRD distinction",
+          "recommended next skill and next action",
+          "requirement materials completeness panel"
+        ]
+      },
+      {
+        "page": "runtime-center",
+        "preserve": [
+          "active agent count and role status for team",
+          "host session refs without full transcript disclosure",
+          "round count and next action for ralph",
+          "single team ralph mode separation"
+        ]
+      },
+      {
+        "page": "recovery-diagnostics",
+        "preserve": [
+          "omc omx explicitly excluded from managed runtime scope",
+          "projection not truth wording",
+          "rebuild from docs/beacon and .beacon path",
+          "sqlite and pocketbase degraded mode explanation"
+        ]
+      }
+    ],
+    "source_has_cjk_punctuation": true
+  },
+  "theme": {
+    "primary": "#1F6FEB",
+    "secondary": "#0F172A",
+    "accent": "#1F6FEB",
+    "mood": "disciplined",
+    "surface_style": "calm-ops board with lifecycle-first information hierarchy",
+    "brand_keywords": [
+      "lifecycle-first",
+      "delivery-truth",
+      "calm-ops",
+      "sober-control"
+    ],
+    "typography": {
+      "display": "Fraunces",
+      "body": "IBM Plex Sans",
+      "mono": "JetBrains Mono",
+      "scale": [
+        48,
+        32,
+        24,
+        18,
+        16,
+        14,
+        12
+      ]
+    },
+    "spacing_scale": "4-8-12-16-24-32",
+    "radius_scale": "10/14/18",
+    "shadow_style": "disciplined-elevation",
+    "motion": "minimal-functional",
+    "light_dark_strategy": "light-first with dark-compatible tokens"
+  },
+  "navigation_map": {
+    "primary_entry": "portfolio-overview",
+    "primary_exit": "project-detail",
+    "sections": [
+      {
+        "id": "portfolio-overview",
+        "label": "portfolio-overview"
+      },
+      {
+        "id": "project-detail",
+        "label": "project-detail"
+      },
+      {
+        "id": "runtime-center",
+        "label": "runtime-center"
+      },
+      {
+        "id": "recovery-diagnostics",
+        "label": "recovery-diagnostics"
+      }
+    ],
+    "navigation_nodes": [
+      {
+        "label": "overview",
+        "target": "#overview"
+      },
+      {
+        "label": "projects",
+        "target": "#projects"
+      },
+      {
+        "label": "runtime",
+        "target": "#runtime"
+      },
+      {
+        "label": "diagnostics",
+        "target": "#diagnostics"
+      }
+    ],
+    "jump_map": [
+      {
+        "from": "portfolio-overview",
+        "to": "project-detail",
+        "why": "drill into selected project version, parallel PRDs, and lifecycle progress"
+      },
+      {
+        "from": "project-detail",
+        "to": "runtime-center",
+        "why": "inspect single/team/ralph active runs and agent/session refs"
+      },
+      {
+        "from": "runtime-center",
+        "to": "recovery-diagnostics",
+        "why": "inspect stale runs, sqlite unavailable state, and rebuild readiness"
+      },
+      {
+        "from": "recovery-diagnostics",
+        "to": "portfolio-overview",
+        "why": "return to cross-project summary after diagnosis"
+      }
+    ]
+  },
+  "interaction_map": {
+    "ctas": [
+      {
+        "label": "查看项目详情",
+        "kind": "primary"
+      },
+      {
+        "label": "打开运行态",
+        "kind": "secondary"
+      }
+    ],
+    "states": [
+      "healthy-summary",
+      "requirement-incomplete",
+      "implement-running",
+      "qa-running",
+      "release-ready",
+      "team-active",
+      "ralph-active",
+      "blocked",
+      "db-offline",
+      "partial-rebuild"
+    ],
+    "jump_map": [
+      {
+        "from": "portfolio-overview",
+        "to": "project-detail",
+        "why": "drill into selected project version, parallel PRDs, and lifecycle progress"
+      },
+      {
+        "from": "project-detail",
+        "to": "runtime-center",
+        "why": "inspect single/team/ralph active runs and agent/session refs"
+      },
+      {
+        "from": "runtime-center",
+        "to": "recovery-diagnostics",
+        "why": "inspect stale runs, sqlite unavailable state, and rebuild readiness"
+      },
+      {
+        "from": "recovery-diagnostics",
+        "to": "portfolio-overview",
+        "why": "return to cross-project summary after diagnosis"
+      }
+    ],
+    "modal_map": [],
+    "drawer_map": [],
+    "tab_map": [],
+    "form_actions": [
+      {
+        "label": "查看项目详情",
+        "action": "project-detail"
+      }
+    ]
+  }
+}

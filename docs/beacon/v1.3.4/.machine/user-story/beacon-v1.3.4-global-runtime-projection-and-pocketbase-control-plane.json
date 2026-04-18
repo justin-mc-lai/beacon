@@ -1,0 +1,481 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane",
+  "feature_slug": "beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane",
+  "version": "v1.3.4",
+  "current_revision_id": "R1",
+  "lifecycle_status": "frozen",
+  "updated_at": "2026-04-18T07:46:17.043400+00:00",
+  "revisions": [
+    {
+      "revision_id": "R1",
+      "feature_slug": "beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane",
+      "source_revision_id": null,
+      "reason": "draft",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:4bb6773bb5cc0384c697b3c2e050633914689342bad164b6f058cf615b0a2884",
+      "superseded_by": null,
+      "created_at": "2026-04-18T07:46:17.043404+00:00",
+      "frozen_at": "2026-04-18T07:46:17.044254+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    }
+  ],
+  "stories": [
+    {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane",
+      "priority": "medium",
+      "status": "frozen",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "general",
+          "text": "首页生命周期优先：总览层默认只展示项目、版本、feature、生命周期阶段、总进度、交付状态、blocker、下一步；runtime 仅可压缩显示为 badge。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "general",
+          "text": "CEO 视图极简：首页不得默认暴露 tmux pane、worker transcript、raw debug event、宿主交互洪流。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "general",
+          "text": "项目详情可接力：详情页必须展示版本线、主 PRD / 并行 PRD、需求物料补齐情况、implement / qa / release 状态、推荐 skill / 下一步。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "general",
+          "text": "需求物料显式状态：系统必须对 `prd / user-story / test-case` 至少表达 `missing / draft / ready / frozen`。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "general",
+          "text": "Runtime 下钻分层：`single / team / ralph` 只在运行态详情层展开，且不作为生命周期主导航。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "general",
+          "text": "Team 运行态透明：当 runtime 为 `team` 时，必须可见 agent 数、role、status、role artifact 引用与 session 引用。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "general",
+          "text": "Ralph 闭环可观测：当 runtime 为 `ralph` 时，必须可见 `round_count / failure_streak / next_action / current_blocker`。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "general",
+          "text": "Git / worktree 治理可见：每个版本迭代 / feature 必须可见 repo root、branch、commit、dirty、worktree path、expected branch rule、spec status。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "AC-009",
+          "kind": "ac",
+          "theme": "general",
+          "text": "Session 边界受控：看板可以展示 `Codex / Claude` session metadata 与 transcript ref，但不得把宿主完整 session 系统并入 Beacon 真相层。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "AC-010",
+          "kind": "ac",
+          "theme": "general",
+          "text": "Projection / truth 边界明确：页面与文案必须明确 `docs/beacon + .beacon` 是 truth，`Beacon Runtime Ledger + PocketBase` 是 projection / control plane。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "AC-011",
+          "kind": "ac",
+          "theme": "general",
+          "text": "降级与重建成立：当 SQLite / PocketBase 缺失时，看板必须显示 degraded / rebuild 信息，并允许从本地 truth 重建最小可用状态。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "AC-012",
+          "kind": "ac",
+          "theme": "general",
+          "text": "Beacon 外运行时排除：`omc / omx` 与其他 Beacon 外兼容运行时不进入正式投影和默认看板展示。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "AC-013",
+          "kind": "ac",
+          "theme": "general",
+          "text": "生命周期推荐 skill：看板必须基于当前阶段给出推荐 skill，而不是暴露一组无上下文的平铺 skill 列表。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "AC-014",
+          "kind": "ac",
+          "theme": "general",
+          "text": "Prototype 参考包一致：原型参考包中的 `portfolio-overview / project-detail / runtime-center / recovery-diagnostics` 四页和关键状态必须与上述 AC 对齐，不得漂移。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — 首页生命周期优先：总览层默认只展示项目、版本、feature、生命周期阶段、总进度、交付状态、blocker、下一步；runtime 仅可压缩显示为 badge。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — CEO 视图极简：首页不得默认暴露 tmux pane、worker transcript、raw debug event、宿主交互洪流。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — 项目详情可接力：详情页必须展示版本线、主 PRD / 并行 PRD、需求物料补齐情况、implement / qa / release 状态、推荐 skill / 下一步。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — 需求物料显式状态：系统必须对 `prd / user-story / test-case` 至少表达 `missing / draft / ready / frozen`。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — Runtime 下钻分层：`single / team / ralph` 只在运行态详情层展开，且不作为生命周期主导航。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — Team 运行态透明：当 runtime 为 `team` 时，必须可见 agent 数、role、status、role artifact 引用与 session 引用。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — Ralph 闭环可观测：当 runtime 为 `ralph` 时，必须可见 `round_count / failure_streak / next_action / current_blocker`。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — Git / worktree 治理可见：每个版本迭代 / feature 必须可见 repo root、branch、commit、dirty、worktree path、expected branch rule、spec status。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TEST-009",
+          "kind": "test",
+          "text": "Verify AC-009 — Session 边界受控：看板可以展示 `Codex / Claude` session metadata 与 transcript ref，但不得把宿主完整 session 系统并入 Beacon 真相层。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-009"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TEST-010",
+          "kind": "test",
+          "text": "Verify AC-010 — Projection / truth 边界明确：页面与文案必须明确 `docs/beacon + .beacon` 是 truth，`Beacon Runtime Ledger + PocketBase` 是 projection / control plane。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-010"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TEST-011",
+          "kind": "test",
+          "text": "Verify AC-011 — 降级与重建成立：当 SQLite / PocketBase 缺失时，看板必须显示 degraded / rebuild 信息，并允许从本地 truth 重建最小可用状态。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-011"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TEST-012",
+          "kind": "test",
+          "text": "Verify AC-012 — Beacon 外运行时排除：`omc / omx` 与其他 Beacon 外兼容运行时不进入正式投影和默认看板展示。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-012"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TEST-013",
+          "kind": "test",
+          "text": "Verify AC-013 — 生命周期推荐 skill：看板必须基于当前阶段给出推荐 skill，而不是暴露一组无上下文的平铺 skill 列表。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-013"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TEST-014",
+          "kind": "test",
+          "text": "Verify AC-014 — Prototype 参考包一致：原型参考包中的 `portfolio-overview / project-detail / runtime-center / recovery-diagnostics` 四页和关键状态必须与上述 AC 对齐，不得漂移。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-014"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        }
+      ]
+    }
+  ]
+}

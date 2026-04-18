@@ -1,8 +1,23 @@
+# BEACON:GITIGNORE:START
+# BEACON:GITIGNORE:VERSION:v1.3.3
 # Local orchestration scratch state
 .omx/
+.omc/
 
 # Beacon runtime scratch state that should not be committed by default
+.beacon/analysis/
+.beacon/debug/ideas/
+.beacon/debug/issues/
+.beacon/debug/runs/
 .beacon/iteration-governance/
+.beacon/ralph/
+.beacon/team/
+.beacon/handoffs/
+.beacon/state/checkpoints/
+.beacon/state/debug-feedback/
+.beacon/state/hud-hook/
+.beacon/state/input-audit/
+.beacon/state/skill-discovery/
 .beacon/state/team-hud/
 .beacon/state/workflow-hud/
 
@@ -29,6 +44,7 @@
 .beacon/state/evo/ledger.jsonl
 .beacon/state/requirement-clarity-*.json
 .beacon/state/technical-review-contract-*.json
+.beacon/state/exhaustion.json
 
 # Only explicitly promoted canonical QA and test-result surfaces stay tracked
 .beacon/evidence/test-results/*
@@ -48,3 +64,4 @@
 # Python cache noise
 __pycache__/
 *.py[cod]
+# BEACON:GITIGNORE:END

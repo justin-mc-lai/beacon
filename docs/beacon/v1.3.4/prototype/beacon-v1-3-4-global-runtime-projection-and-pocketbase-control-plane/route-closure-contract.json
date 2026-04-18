@@ -1,0 +1,131 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane",
+  "version": "v1.3.4",
+  "required": true,
+  "drift_guardrails": [
+    "runtime-noise-exposed-on-home",
+    "agent-count-misused-as-progress",
+    "projection-layer-presented-as-truth",
+    "omc-omx-leak-into-board",
+    "git-worktree-governance-hidden"
+  ],
+  "surfaces": [
+    {
+      "surface_id": "portfolio-overview",
+      "label": "portfolio-overview",
+      "entry_kind": "page",
+      "mounted_required": true
+    },
+    {
+      "surface_id": "project-detail",
+      "label": "project-detail",
+      "entry_kind": "page",
+      "mounted_required": true
+    },
+    {
+      "surface_id": "runtime-center",
+      "label": "runtime-center",
+      "entry_kind": "page",
+      "mounted_required": true
+    },
+    {
+      "surface_id": "recovery-diagnostics",
+      "label": "recovery-diagnostics",
+      "entry_kind": "page",
+      "mounted_required": true
+    }
+  ],
+  "closure_cases": [
+    {
+      "case_id": "RC-001",
+      "source_type": "page-jump",
+      "source_label": "overview",
+      "target_surface_id": "overview",
+      "target_type": "page",
+      "required_context": [],
+      "fallback_behavior": "block"
+    },
+    {
+      "case_id": "RC-002",
+      "source_type": "page-jump",
+      "source_label": "projects",
+      "target_surface_id": "projects",
+      "target_type": "page",
+      "required_context": [],
+      "fallback_behavior": "block"
+    },
+    {
+      "case_id": "RC-003",
+      "source_type": "page-jump",
+      "source_label": "runtime",
+      "target_surface_id": "runtime",
+      "target_type": "page",
+      "required_context": [],
+      "fallback_behavior": "block"
+    },
+    {
+      "case_id": "RC-004",
+      "source_type": "page-jump",
+      "source_label": "diagnostics",
+      "target_surface_id": "diagnostics",
+      "target_type": "page",
+      "required_context": [],
+      "fallback_behavior": "block"
+    },
+    {
+      "case_id": "RC-005",
+      "source_type": "button-jump",
+      "source_label": "portfolio-overview",
+      "target_surface_id": "project-detail",
+      "target_type": "page",
+      "required_context": [],
+      "fallback_behavior": "block"
+    },
+    {
+      "case_id": "RC-006",
+      "source_type": "button-jump",
+      "source_label": "project-detail",
+      "target_surface_id": "runtime-center",
+      "target_type": "page",
+      "required_context": [],
+      "fallback_behavior": "block"
+    },
+    {
+      "case_id": "RC-007",
+      "source_type": "button-jump",
+      "source_label": "runtime-center",
+      "target_surface_id": "recovery-diagnostics",
+      "target_type": "page",
+      "required_context": [],
+      "fallback_behavior": "block"
+    },
+    {
+      "case_id": "RC-008",
+      "source_type": "button-jump",
+      "source_label": "recovery-diagnostics",
+      "target_surface_id": "portfolio-overview",
+      "target_type": "page",
+      "required_context": [],
+      "fallback_behavior": "block"
+    },
+    {
+      "case_id": "RC-009",
+      "source_type": "cta",
+      "source_label": "查看项目详情",
+      "target_surface_id": "project-detail",
+      "target_type": "page",
+      "required_context": [],
+      "fallback_behavior": "block"
+    },
+    {
+      "case_id": "RC-010",
+      "source_type": "cta",
+      "source_label": "打开运行态",
+      "target_surface_id": "project-detail",
+      "target_type": "page",
+      "required_context": [],
+      "fallback_behavior": "block"
+    }
+  ]
+}

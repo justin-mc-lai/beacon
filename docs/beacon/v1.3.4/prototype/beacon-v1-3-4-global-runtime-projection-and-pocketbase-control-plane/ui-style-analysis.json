@@ -1,0 +1,185 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane",
+  "version": "v1.3.4",
+  "analysis_mode": "design-governed-prototype",
+  "directory_contract": {
+    "directory_page": "index.html",
+    "landing_kind": "reference-pack-directory",
+    "required_pages": [
+      "portfolio-overview",
+      "project-detail",
+      "runtime-center",
+      "recovery-diagnostics"
+    ],
+    "required_states": [
+      "healthy-summary",
+      "requirement-incomplete",
+      "implement-running",
+      "qa-running",
+      "release-ready",
+      "team-active",
+      "ralph-active",
+      "blocked",
+      "db-offline",
+      "partial-rebuild"
+    ],
+    "page_links": [
+      {
+        "page_id": "portfolio-overview",
+        "intent": "Portfolio Overview reference page",
+        "path": "pages/portfolio-overview.html",
+        "state_paths": [
+          "states/portfolio-overview--healthy-summary.html",
+          "states/portfolio-overview--requirement-incomplete.html",
+          "states/portfolio-overview--implement-running.html",
+          "states/portfolio-overview--qa-running.html",
+          "states/portfolio-overview--release-ready.html",
+          "states/portfolio-overview--team-active.html",
+          "states/portfolio-overview--ralph-active.html",
+          "states/portfolio-overview--blocked.html",
+          "states/portfolio-overview--db-offline.html",
+          "states/portfolio-overview--partial-rebuild.html"
+        ]
+      },
+      {
+        "page_id": "project-detail",
+        "intent": "Project Detail reference page",
+        "path": "pages/project-detail.html",
+        "state_paths": [
+          "states/project-detail--healthy-summary.html",
+          "states/project-detail--requirement-incomplete.html",
+          "states/project-detail--implement-running.html",
+          "states/project-detail--qa-running.html",
+          "states/project-detail--release-ready.html",
+          "states/project-detail--team-active.html",
+          "states/project-detail--ralph-active.html",
+          "states/project-detail--blocked.html",
+          "states/project-detail--db-offline.html",
+          "states/project-detail--partial-rebuild.html"
+        ]
+      },
+      {
+        "page_id": "runtime-center",
+        "intent": "Runtime Center reference page",
+        "path": "pages/runtime-center.html",
+        "state_paths": [
+          "states/runtime-center--healthy-summary.html",
+          "states/runtime-center--requirement-incomplete.html",
+          "states/runtime-center--implement-running.html",
+          "states/runtime-center--qa-running.html",
+          "states/runtime-center--release-ready.html",
+          "states/runtime-center--team-active.html",
+          "states/runtime-center--ralph-active.html",
+          "states/runtime-center--blocked.html",
+          "states/runtime-center--db-offline.html",
+          "states/runtime-center--partial-rebuild.html"
+        ]
+      },
+      {
+        "page_id": "recovery-diagnostics",
+        "intent": "Recovery Diagnostics reference page",
+        "path": "pages/recovery-diagnostics.html",
+        "state_paths": [
+          "states/recovery-diagnostics--healthy-summary.html",
+          "states/recovery-diagnostics--requirement-incomplete.html",
+          "states/recovery-diagnostics--implement-running.html",
+          "states/recovery-diagnostics--qa-running.html",
+          "states/recovery-diagnostics--release-ready.html",
+          "states/recovery-diagnostics--team-active.html",
+          "states/recovery-diagnostics--ralph-active.html",
+          "states/recovery-diagnostics--blocked.html",
+          "states/recovery-diagnostics--db-offline.html",
+          "states/recovery-diagnostics--partial-rebuild.html"
+        ]
+      }
+    ]
+  },
+  "visual_system": {
+    "tone": "disciplined",
+    "visual_direction": "disciplined / admin-workbench",
+    "differentiator": "lifecycle-first",
+    "guidance_anchors": [
+      "frontend-design",
+      "web-design-guidelines"
+    ],
+    "design_mode_references": [
+      "Beacon v1.3.4 main PRD lifecycle-first board model",
+      "Beacon v1.3.4 one-person-company ops board model",
+      "PocketBase as control plane",
+      "not formal delivery truth",
+      "Beacon admin-workbench prototype discipline",
+      "human minimal surface with runtime drilldown only"
+    ],
+    "typography": {
+      "display": "Fraunces",
+      "body": "IBM Plex Sans",
+      "mono": "JetBrains Mono",
+      "scale": [
+        48,
+        32,
+        24,
+        18,
+        16,
+        14,
+        12
+      ]
+    },
+    "palette": {
+      "primary": "#1F6FEB",
+      "secondary": "#0F172A",
+      "accent": "#1F6FEB"
+    },
+    "motion": "minimal-functional",
+    "anti_generic_rules": [
+      "avoid Inter/Roboto/Arial/system-only default stacks",
+      "avoid purple-on-white generic gradients",
+      "avoid template-like undifferentiated layouts"
+    ]
+  },
+  "component_patterns": {
+    "navigation": [
+      "overview",
+      "projects",
+      "runtime",
+      "diagnostics"
+    ],
+    "primary_cta": "查看项目详情",
+    "secondary_cta": "打开运行态",
+    "states": [
+      "healthy-summary",
+      "requirement-incomplete",
+      "implement-running",
+      "qa-running",
+      "release-ready",
+      "team-active",
+      "ralph-active",
+      "blocked",
+      "db-offline",
+      "partial-rebuild"
+    ],
+    "surface_style": "calm-ops board with lifecycle-first information hierarchy"
+  },
+  "secondary_build_contract": {
+    "source_refs": [
+      "docs/beacon/v1.3.4/user-story/beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane.md"
+    ],
+    "required_artifacts": [
+      "prototype-plan.json",
+      "design-brief.json",
+      "design-system-contract.json",
+      "design-prompt.json",
+      "ui-style-analysis.json",
+      "tokens.css",
+      "navigation-map.json",
+      "interaction-map.json",
+      "index.html"
+    ],
+    "extension_rules": [
+      "analyze existing shared tokens and interaction patterns before extending pages",
+      "preserve the unified prototype directory as the navigation source of truth",
+      "extend via design-brief and design-system contract, not ad-hoc page-local styling",
+      "route design/security findings back through review before freeze"
+    ]
+  }
+}

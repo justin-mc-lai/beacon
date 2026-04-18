@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane · Recovery Diagnostics</title>
+    <link rel="stylesheet" href="../tokens.css">
+    <style>
+      body { font-family: var(--beacon-font-body, sans-serif); background: linear-gradient(180deg, #eef2ff 0%, #f8fafc 100%); color: #0f172a; margin: 0; }
+      h1, h2, h3, h4, h5, h6 { font-family: var(--beacon-font-display, serif); scroll-margin-top: 6rem; }
+      .frame { max-width: 1180px; margin: 0 auto; padding: 32px; }
+      .skip-link { position: absolute; left: 1rem; top: -3rem; background: #0f172a; color: white; padding: .7rem 1rem; border-radius: 999px; z-index: 100; text-decoration: none; }
+      .skip-link:focus-visible { top: 1rem; }
+      .phone-shell { max-width: 430px; margin: 0 auto; background: #12182d; border-radius: 36px; padding: 14px; box-shadow: 0 30px 80px rgba(15,23,42,.25); }
+      .screen { background: #f8fafc; min-height: 820px; border-radius: 28px; overflow: hidden; padding: 18px; }
+      .hero-panel { background: linear-gradient(135deg, var(--beacon-color-secondary) 0%, var(--beacon-color-primary) 100%); color: white; border-radius: 24px; padding: 18px; box-shadow: 0 20px 44px rgba(59,130,246,.25); }
+      .hero-panel.compact { padding: 16px; }
+      .hero-panel.live { background: linear-gradient(135deg, #0f766e 0%, var(--beacon-color-primary) 100%); }
+      .hero-panel h2 { margin: 6px 0 8px; font-size: 1.35rem; }
+      .hero-panel p { margin: 0; color: rgba(255,255,255,.82); font-size: .95rem; line-height: 1.45; }
+      .eyebrow { font-size: .72rem; text-transform: uppercase; letter-spacing: .12em; opacity: .78; font-weight: 700; }
+      .page-meta-badge, .live-chip { display: inline-flex; margin-top: 12px; padding: 6px 10px; border-radius: 999px; background: rgba(255,255,255,.16); font-size: .74rem; font-weight: 700; }
+      .surface-card { background: rgba(255,255,255,.96); border-radius: 20px; padding: 16px; box-shadow: 0 16px 36px rgba(15,23,42,.08); border: 1px solid rgba(148,163,184,.16); }
+      .surface-card.emphasis { background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(239,246,255,.98)); }
+      .card-stack { display: flex; flex-direction: column; gap: 14px; margin-top: 14px; }
+      .stat-grid, .podium-grid, .step-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 14px; }
+      .podium-grid { grid-template-columns: repeat(3, 1fr); }
+      .step-grid { grid-template-columns: repeat(3, 1fr); }
+      .stat-card, .podium-card, .step-card { background: rgba(255,255,255,.96); border-radius: 18px; padding: 14px; box-shadow: 0 14px 30px rgba(15,23,42,.06); }
+      .stat-card span, .podium-card span { display: block; font-size: .72rem; color: #64748b; }
+      .stat-card strong { display: block; font-size: 1.25rem; margin-top: 6px; }
+      .podium-card strong { display: block; margin-top: 8px; font-size: 1rem; }
+      .podium-card small { color: #64748b; }
+      .podium-card.gold { background: linear-gradient(180deg, #fff7d6, #ffffff); }
+      .podium-card.silver { background: linear-gradient(180deg, #eef2f7, #ffffff); }
+      .podium-card.bronze { background: linear-gradient(180deg, #f8e7d8, #ffffff); }
+      .profile-card { display: flex; align-items: center; gap: 12px; }
+      .avatar-circle { width: 52px; height: 52px; border-radius: 999px; background: linear-gradient(135deg, var(--beacon-color-primary), var(--beacon-color-secondary)); color: white; display: flex; align-items: center; justify-content: center; font-weight: 800; }
+      .cta-row { display: flex; gap: 12px; margin-top: 14px; }
+      .btn-primary-solid, .btn-secondary-ghost { border: 0; border-radius: 16px; padding: 12px 14px; font-weight: 700; }
+      .btn-primary-solid { background: var(--beacon-color-primary); color: white; flex: 1; }
+      .btn-secondary-ghost { background: #eef2ff; color: var(--beacon-color-secondary); flex: 1; }
+      .data-row, .match-row { display: flex; justify-content: space-between; gap: 12px; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(226,232,240,.8); }
+      .data-row:last-child, .match-row:last-child { border-bottom: 0; }
+      .data-row span, .match-row span { color: #64748b; font-size: .88rem; display: block; }
+      .data-row strong, .match-row strong, .match-row b { color: #0f172a; font-size: .95rem; }
+      .tab-strip { display: flex; gap: 8px; overflow: auto; margin-top: 14px; }
+      .tab { padding: 8px 12px; border-radius: 999px; background: #e2e8f0; color: #334155; font-size: .8rem; font-weight: 700; white-space: nowrap; }
+      .tab.active { background: var(--beacon-color-primary); color: white; }
+      @media (max-width: 640px) { .stat-grid, .podium-grid, .step-grid { grid-template-columns: 1fr 1fr; } .cta-row { flex-direction: column; } }
+    </style>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <main class="frame" id="main-content">
+      <div class="phone-shell">
+        <section class="screen">
+          
+    <section class="hero-panel compact">
+      <div class="eyebrow">Reference Page</div>
+      <h2>Recovery Diagnostics</h2>
+      <p>Recovery Diagnostics reference page</p>
+      <div class='page-meta-badge'>qa-running</div>
+    </section>
+    <section class="surface-card"><div class='data-row'><span>Sections</span><strong>4</strong></div><div class='data-row'><span>States</span><strong>10</strong></div><div class='data-row'><span>Route Targets</span><strong>4</strong></div></section>
+    
+        </section>
+      </div>
+    </main>
+  </body>
+</html>

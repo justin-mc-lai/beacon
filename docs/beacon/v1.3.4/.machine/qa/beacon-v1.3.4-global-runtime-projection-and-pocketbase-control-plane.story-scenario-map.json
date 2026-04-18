@@ -1,0 +1,1228 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane",
+  "feature_slug": "beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane",
+  "version": "v1.3.4",
+  "generated_at": "2026-04-18T09:15:38.600106+00:00",
+  "expansion_profile": "pua-web",
+  "scenario_depth": "standard",
+  "families_required": [
+    "happy",
+    "negative",
+    "boundary",
+    "recovery",
+    "compatibility"
+  ],
+  "stories": [
+    {
+      "ac_id": "AC-001",
+      "theme": "general",
+      "text": "首页生命周期优先：总览层默认只展示项目、版本、feature、生命周期阶段、总进度、交付状态、blocker、下一步；runtime 仅可压缩显示为 badge。",
+      "scenario_ids": [
+        "SC-001"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-001",
+          "source_tc_id": "TC-001",
+          "tc_id": "TC-001-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "general",
+      "text": "CEO 视图极简：首页不得默认暴露 tmux pane、worker transcript、raw debug event、宿主交互洪流。",
+      "scenario_ids": [
+        "SC-002"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-002",
+          "source_tc_id": "TC-002",
+          "tc_id": "TC-002-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "general",
+      "text": "项目详情可接力：详情页必须展示版本线、主 PRD / 并行 PRD、需求物料补齐情况、implement / qa / release 状态、推荐 skill / 下一步。",
+      "scenario_ids": [
+        "SC-003"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-003",
+          "source_tc_id": "TC-003",
+          "tc_id": "TC-003-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "general",
+      "text": "需求物料显式状态：系统必须对 `prd / user-story / test-case` 至少表达 `missing / draft / ready / frozen`。",
+      "scenario_ids": [
+        "SC-004"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-004",
+          "source_tc_id": "TC-004",
+          "tc_id": "TC-004-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "general",
+      "text": "Runtime 下钻分层：`single / team / ralph` 只在运行态详情层展开，且不作为生命周期主导航。",
+      "scenario_ids": [
+        "SC-005"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-005",
+          "source_tc_id": "TC-005",
+          "tc_id": "TC-005-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-006",
+      "theme": "general",
+      "text": "Team 运行态透明：当 runtime 为 `team` 时，必须可见 agent 数、role、status、role artifact 引用与 session 引用。",
+      "scenario_ids": [
+        "SC-006"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-006",
+          "source_tc_id": "TC-006",
+          "tc_id": "TC-006-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-007",
+      "theme": "general",
+      "text": "Ralph 闭环可观测：当 runtime 为 `ralph` 时，必须可见 `round_count / failure_streak / next_action / current_blocker`。",
+      "scenario_ids": [
+        "SC-007"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-007",
+          "source_tc_id": "TC-007",
+          "tc_id": "TC-007-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-008",
+      "theme": "general",
+      "text": "Git / worktree 治理可见：每个版本迭代 / feature 必须可见 repo root、branch、commit、dirty、worktree path、expected branch rule、spec status。",
+      "scenario_ids": [
+        "SC-008"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-008",
+          "source_tc_id": "TC-008",
+          "tc_id": "TC-008-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-009",
+      "theme": "general",
+      "text": "Session 边界受控：看板可以展示 `Codex / Claude` session metadata 与 transcript ref，但不得把宿主完整 session 系统并入 Beacon 真相层。",
+      "scenario_ids": [
+        "SC-009"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-009",
+          "source_tc_id": "TC-009",
+          "tc_id": "TC-009-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-010",
+      "theme": "general",
+      "text": "Projection / truth 边界明确：页面与文案必须明确 `docs/beacon + .beacon` 是 truth，`Beacon Runtime Ledger + PocketBase` 是 projection / control plane。",
+      "scenario_ids": [
+        "SC-010",
+        "SC-011",
+        "SC-012",
+        "SC-013",
+        "SC-014"
+      ],
+      "scenario_families": [
+        "happy",
+        "negative",
+        "boundary",
+        "recovery",
+        "compatibility"
+      ],
+      "required_families": [
+        "happy",
+        "negative",
+        "boundary",
+        "recovery",
+        "compatibility"
+      ],
+      "scenarios": [
+        {
+          "scenario_id": "SC-010",
+          "source_tc_id": "TC-010",
+          "tc_id": "TC-010-HAPPY",
+          "scenario_family": "happy",
+          "qa_type": "contract",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-011",
+          "source_tc_id": "TC-010",
+          "tc_id": "TC-010-NEGATIVE",
+          "scenario_family": "negative",
+          "qa_type": "contract",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-012",
+          "source_tc_id": "TC-010",
+          "tc_id": "TC-010-BOUNDARY",
+          "scenario_family": "boundary",
+          "qa_type": "contract",
+          "browser_required": true,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-013",
+          "source_tc_id": "TC-010",
+          "tc_id": "TC-010-RECOVERY",
+          "scenario_family": "recovery",
+          "qa_type": "contract",
+          "browser_required": true,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-014",
+          "source_tc_id": "TC-010",
+          "tc_id": "TC-010-COMPATIBILITY",
+          "scenario_family": "compatibility",
+          "qa_type": "compatibility",
+          "browser_required": true,
+          "replay_required": true
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-011",
+      "theme": "general",
+      "text": "降级与重建成立：当 SQLite / PocketBase 缺失时，看板必须显示 degraded / rebuild 信息，并允许从本地 truth 重建最小可用状态。",
+      "scenario_ids": [
+        "SC-015",
+        "SC-016",
+        "SC-017",
+        "SC-018",
+        "SC-019"
+      ],
+      "scenario_families": [
+        "happy",
+        "negative",
+        "boundary",
+        "recovery",
+        "compatibility"
+      ],
+      "required_families": [
+        "happy",
+        "negative",
+        "boundary",
+        "recovery",
+        "compatibility"
+      ],
+      "scenarios": [
+        {
+          "scenario_id": "SC-015",
+          "source_tc_id": "TC-011",
+          "tc_id": "TC-011-HAPPY",
+          "scenario_family": "happy",
+          "qa_type": "contract",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-016",
+          "source_tc_id": "TC-011",
+          "tc_id": "TC-011-NEGATIVE",
+          "scenario_family": "negative",
+          "qa_type": "contract",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-017",
+          "source_tc_id": "TC-011",
+          "tc_id": "TC-011-BOUNDARY",
+          "scenario_family": "boundary",
+          "qa_type": "contract",
+          "browser_required": true,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-018",
+          "source_tc_id": "TC-011",
+          "tc_id": "TC-011-RECOVERY",
+          "scenario_family": "recovery",
+          "qa_type": "contract",
+          "browser_required": true,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-019",
+          "source_tc_id": "TC-011",
+          "tc_id": "TC-011-COMPATIBILITY",
+          "scenario_family": "compatibility",
+          "qa_type": "compatibility",
+          "browser_required": true,
+          "replay_required": true
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-012",
+      "theme": "general",
+      "text": "Beacon 外运行时排除：`omc / omx` 与其他 Beacon 外兼容运行时不进入正式投影和默认看板展示。",
+      "scenario_ids": [
+        "SC-020"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-020",
+          "source_tc_id": "TC-012",
+          "tc_id": "TC-012-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-013",
+      "theme": "general",
+      "text": "生命周期推荐 skill：看板必须基于当前阶段给出推荐 skill，而不是暴露一组无上下文的平铺 skill 列表。",
+      "scenario_ids": [
+        "SC-021"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-021",
+          "source_tc_id": "TC-013",
+          "tc_id": "TC-013-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-014",
+      "theme": "general",
+      "text": "Prototype 参考包一致：原型参考包中的 `portfolio-overview / project-detail / runtime-center / recovery-diagnostics` 四页和关键状态必须与上述 AC 对齐，不得漂移。",
+      "scenario_ids": [
+        "SC-022"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-022",
+          "source_tc_id": "TC-014",
+          "tc_id": "TC-014-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    }
+  ],
+  "scenarios": [
+    {
+      "scenario_id": "SC-001",
+      "source_tc_id": "TC-001",
+      "tc_id": "TC-001-PRIMARY",
+      "ac_id": "AC-001",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-001 primary path :: 首页生命周期优先：总览层默认只展示项目、版本、feature、生命周期阶段、总进度、交付状态、blocker、下一步；runtime 仅可压缩显示为 badge。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane/tc-001/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-002",
+      "source_tc_id": "TC-002",
+      "tc_id": "TC-002-PRIMARY",
+      "ac_id": "AC-002",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-002 primary path :: CEO 视图极简：首页不得默认暴露 tmux pane、worker transcript、raw debug event、宿主交互洪流。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane/tc-002/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-003",
+      "source_tc_id": "TC-003",
+      "tc_id": "TC-003-PRIMARY",
+      "ac_id": "AC-003",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-003 primary path :: 项目详情可接力：详情页必须展示版本线、主 PRD / 并行 PRD、需求物料补齐情况、implement / qa / release 状态、推荐 skill / 下一步。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane/tc-003/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-004",
+      "source_tc_id": "TC-004",
+      "tc_id": "TC-004-PRIMARY",
+      "ac_id": "AC-004",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-004 primary path :: 需求物料显式状态：系统必须对 `prd / user-story / test-case` 至少表达 `missing / draft / ready / frozen`。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane/tc-004/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-005",
+      "source_tc_id": "TC-005",
+      "tc_id": "TC-005-PRIMARY",
+      "ac_id": "AC-005",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-005 primary path :: Runtime 下钻分层：`single / team / ralph` 只在运行态详情层展开，且不作为生命周期主导航。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane/tc-005/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-006",
+      "source_tc_id": "TC-006",
+      "tc_id": "TC-006-PRIMARY",
+      "ac_id": "AC-006",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-006 primary path :: Team 运行态透明：当 runtime 为 `team` 时，必须可见 agent 数、role、status、role artifact 引用与 session 引用。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane/tc-006/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-007",
+      "source_tc_id": "TC-007",
+      "tc_id": "TC-007-PRIMARY",
+      "ac_id": "AC-007",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-007 primary path :: Ralph 闭环可观测：当 runtime 为 `ralph` 时，必须可见 `round_count / failure_streak / next_action / current_blo",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane/tc-007/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-008",
+      "source_tc_id": "TC-008",
+      "tc_id": "TC-008-PRIMARY",
+      "ac_id": "AC-008",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-008 primary path :: Git / worktree 治理可见：每个版本迭代 / feature 必须可见 repo root、branch、commit、dirty、worktree path、expected b",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane/tc-008/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-009",
+      "source_tc_id": "TC-009",
+      "tc_id": "TC-009-PRIMARY",
+      "ac_id": "AC-009",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-009 primary path :: Session 边界受控：看板可以展示 `Codex / Claude` session metadata 与 transcript ref，但不得把宿主完整 session 系统并入 Bea",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane/tc-009/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-010",
+      "source_tc_id": "TC-010",
+      "tc_id": "TC-010-HAPPY",
+      "ac_id": "AC-010",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "happy",
+      "title": "AC-010 happy path :: Projection / truth 边界明确：页面与文案必须明确 `docs/beacon + .beacon` 是 truth，`Beacon Runtime Ledger + Pocke",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "happy",
+        "contract",
+        "browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": true,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Projection / truth 边界明确：页面与文案必须明确 `docs/beacon + .beacon` 是 truth，`Beacon Runtime Ledger + PocketBase` 是 projection / control plane。 (happy path completes with expected evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane/tc-010/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-011",
+      "source_tc_id": "TC-010",
+      "tc_id": "TC-010-NEGATIVE",
+      "ac_id": "AC-010",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "negative",
+      "title": "AC-010 negative path :: Projection / truth 边界明确：页面与文案必须明确 `docs/beacon + .beacon` 是 truth，`Beacon Runtime Ledger + Pocke",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "negative",
+        "contract",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-010"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Projection / truth 边界明确：页面与文案必须明确 `docs/beacon + .beacon` 是 truth，`Beacon Runtime Ledger + PocketBase` 是 projection / control plane。 (negative path is rejected or handled with explicit evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane/tc-010/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-012",
+      "source_tc_id": "TC-010",
+      "tc_id": "TC-010-BOUNDARY",
+      "ac_id": "AC-010",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "boundary",
+      "title": "AC-010 boundary path :: Projection / truth 边界明确：页面与文案必须明确 `docs/beacon + .beacon` 是 truth，`Beacon Runtime Ledger + Pocke",
+      "browser_required": true,
+      "replay_required": false,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "boundary",
+        "contract",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-010"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Projection / truth 边界明确：页面与文案必须明确 `docs/beacon + .beacon` 是 truth，`Beacon Runtime Ledger + PocketBase` 是 projection / control plane。 (boundary path is validated with explicit evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane/tc-010/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-013",
+      "source_tc_id": "TC-010",
+      "tc_id": "TC-010-RECOVERY",
+      "ac_id": "AC-010",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "recovery",
+      "title": "AC-010 recovery path :: Projection / truth 边界明确：页面与文案必须明确 `docs/beacon + .beacon` 是 truth，`Beacon Runtime Ledger + Pocke",
+      "browser_required": true,
+      "replay_required": false,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "recovery",
+        "contract",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-010"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Projection / truth 边界明确：页面与文案必须明确 `docs/beacon + .beacon` 是 truth，`Beacon Runtime Ledger + PocketBase` 是 projection / control plane。 (recovery path survives refresh/back/retry with evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane/tc-010/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-014",
+      "source_tc_id": "TC-010",
+      "tc_id": "TC-010-COMPATIBILITY",
+      "ac_id": "AC-010",
+      "qa_type": "compatibility",
+      "layer": "compatibility",
+      "scenario_family": "compatibility",
+      "title": "AC-010 compatibility path :: Projection / truth 边界明确：页面与文案必须明确 `docs/beacon + .beacon` 是 truth，`Beacon Runtime Ledger + Pocke",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "npx playwright test --project=chromium --project=firefox --project=webkit",
+      "coverage_axes": [
+        "compatibility",
+        "compatibility",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-010"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m beacon.adapters.browser_use_runner --mode compatibility --fallback-cmd \"python3 -m pytest -q -k compatibility --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "assertion": "Projection / truth 边界明确：页面与文案必须明确 `docs/beacon + .beacon` 是 truth，`Beacon Runtime Ledger + PocketBase` 是 projection / control plane。 (compatibility path preserves behavior across browser/device pairs)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane/tc-010/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-015",
+      "source_tc_id": "TC-011",
+      "tc_id": "TC-011-HAPPY",
+      "ac_id": "AC-011",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "happy",
+      "title": "AC-011 happy path :: 降级与重建成立：当 SQLite / PocketBase 缺失时，看板必须显示 degraded / rebuild 信息，并允许从本地 truth 重建最小可用状态。",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "happy",
+        "contract",
+        "browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": true,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "降级与重建成立：当 SQLite / PocketBase 缺失时，看板必须显示 degraded / rebuild 信息，并允许从本地 truth 重建最小可用状态。 (happy path completes with expected evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane/tc-011/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-016",
+      "source_tc_id": "TC-011",
+      "tc_id": "TC-011-NEGATIVE",
+      "ac_id": "AC-011",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "negative",
+      "title": "AC-011 negative path :: 降级与重建成立：当 SQLite / PocketBase 缺失时，看板必须显示 degraded / rebuild 信息，并允许从本地 truth 重建最小可用状态。",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "negative",
+        "contract",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-015"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "降级与重建成立：当 SQLite / PocketBase 缺失时，看板必须显示 degraded / rebuild 信息，并允许从本地 truth 重建最小可用状态。 (negative path is rejected or handled with explicit evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane/tc-011/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-017",
+      "source_tc_id": "TC-011",
+      "tc_id": "TC-011-BOUNDARY",
+      "ac_id": "AC-011",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "boundary",
+      "title": "AC-011 boundary path :: 降级与重建成立：当 SQLite / PocketBase 缺失时，看板必须显示 degraded / rebuild 信息，并允许从本地 truth 重建最小可用状态。",
+      "browser_required": true,
+      "replay_required": false,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "boundary",
+        "contract",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-015"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "降级与重建成立：当 SQLite / PocketBase 缺失时，看板必须显示 degraded / rebuild 信息，并允许从本地 truth 重建最小可用状态。 (boundary path is validated with explicit evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane/tc-011/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-018",
+      "source_tc_id": "TC-011",
+      "tc_id": "TC-011-RECOVERY",
+      "ac_id": "AC-011",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "recovery",
+      "title": "AC-011 recovery path :: 降级与重建成立：当 SQLite / PocketBase 缺失时，看板必须显示 degraded / rebuild 信息，并允许从本地 truth 重建最小可用状态。",
+      "browser_required": true,
+      "replay_required": false,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "recovery",
+        "contract",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-015"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "降级与重建成立：当 SQLite / PocketBase 缺失时，看板必须显示 degraded / rebuild 信息，并允许从本地 truth 重建最小可用状态。 (recovery path survives refresh/back/retry with evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane/tc-011/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-019",
+      "source_tc_id": "TC-011",
+      "tc_id": "TC-011-COMPATIBILITY",
+      "ac_id": "AC-011",
+      "qa_type": "compatibility",
+      "layer": "compatibility",
+      "scenario_family": "compatibility",
+      "title": "AC-011 compatibility path :: 降级与重建成立：当 SQLite / PocketBase 缺失时，看板必须显示 degraded / rebuild 信息，并允许从本地 truth 重建最小可用状态。",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "npx playwright test --project=chromium --project=firefox --project=webkit",
+      "coverage_axes": [
+        "compatibility",
+        "compatibility",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-015"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m beacon.adapters.browser_use_runner --mode compatibility --fallback-cmd \"python3 -m pytest -q -k compatibility --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "assertion": "降级与重建成立：当 SQLite / PocketBase 缺失时，看板必须显示 degraded / rebuild 信息，并允许从本地 truth 重建最小可用状态。 (compatibility path preserves behavior across browser/device pairs)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane/tc-011/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-020",
+      "source_tc_id": "TC-012",
+      "tc_id": "TC-012-PRIMARY",
+      "ac_id": "AC-012",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-012 primary path :: Beacon 外运行时排除：`omc / omx` 与其他 Beacon 外兼容运行时不进入正式投影和默认看板展示。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane/tc-012/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-021",
+      "source_tc_id": "TC-013",
+      "tc_id": "TC-013-PRIMARY",
+      "ac_id": "AC-013",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-013 primary path :: 生命周期推荐 skill：看板必须基于当前阶段给出推荐 skill，而不是暴露一组无上下文的平铺 skill 列表。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane/tc-013/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-022",
+      "source_tc_id": "TC-014",
+      "tc_id": "TC-014-PRIMARY",
+      "ac_id": "AC-014",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-014 primary path :: Prototype 参考包一致：原型参考包中的 `portfolio-overview / project-detail / runtime-center / recovery-diagnos",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane/tc-014/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    }
+  ]
+}

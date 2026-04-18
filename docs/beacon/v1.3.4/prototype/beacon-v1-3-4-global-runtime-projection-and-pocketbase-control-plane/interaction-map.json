@@ -1,0 +1,55 @@
+{
+  "ctas": [
+    {
+      "label": "查看项目详情",
+      "kind": "primary"
+    },
+    {
+      "label": "打开运行态",
+      "kind": "secondary"
+    }
+  ],
+  "states": [
+    "healthy-summary",
+    "requirement-incomplete",
+    "implement-running",
+    "qa-running",
+    "release-ready",
+    "team-active",
+    "ralph-active",
+    "blocked",
+    "db-offline",
+    "partial-rebuild"
+  ],
+  "jump_map": [
+    {
+      "from": "portfolio-overview",
+      "to": "project-detail",
+      "why": "drill into selected project version, parallel PRDs, and lifecycle progress"
+    },
+    {
+      "from": "project-detail",
+      "to": "runtime-center",
+      "why": "inspect single/team/ralph active runs and agent/session refs"
+    },
+    {
+      "from": "runtime-center",
+      "to": "recovery-diagnostics",
+      "why": "inspect stale runs, sqlite unavailable state, and rebuild readiness"
+    },
+    {
+      "from": "recovery-diagnostics",
+      "to": "portfolio-overview",
+      "why": "return to cross-project summary after diagnosis"
+    }
+  ],
+  "modal_map": [],
+  "drawer_map": [],
+  "tab_map": [],
+  "form_actions": [
+    {
+      "label": "查看项目详情",
+      "action": "project-detail"
+    }
+  ]
+}
