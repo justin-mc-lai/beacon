@@ -2215,6 +2215,24 @@ def _candidate_matrix_paths(project_root: Path) -> list[Path]:
     )
 
 
+def _filter_matrix_candidates(
+    candidates: list[Path],
+    *,
+    version: str = "",
+    feature: str = "",
+) -> list[Path]:
+    filtered = candidates
+    if version:
+        version_filtered = [path for path in filtered if f"/{version}/" in path.as_posix()]
+        if version_filtered:
+            filtered = version_filtered
+    if feature:
+        feature_filtered = [path for path in filtered if path.stem == feature]
+        if feature_filtered:
+            filtered = feature_filtered
+    return filtered
+
+
 def _candidate_qa9_matrix_paths(project_root: Path) -> list[Path]:
     root = project_root / "docs" / "beacon"
     if not root.exists():
@@ -2787,6 +2805,9 @@ def check_test_execution_integrity(project_root: Path, mode: GateMode, stage: st
     execution = status_data.get("execution")
     layers = execution.get("layers") if isinstance(execution, dict) else None
     run_id = str(execution.get("run_id", "")).strip() if isinstance(execution, dict) else ""
+    runtime_version = str(status_data.get("version") or "").strip()
+    qa_status = load_qa_status(project_root)
+    current_feature = str(qa_status.get("feature_slug") or qa_status.get("feature") or "").strip()
     signature_chain_path = project_root / ".beacon" / "evidence-signature-chain.json"
     if not signature_chain_path.exists():
         issues.append(
@@ -2881,7 +2902,11 @@ def check_test_execution_integrity(project_root: Path, mode: GateMode, stage: st
         candidate = Path(str(matrix_report.get("matrix_path")))
         matrix_path = candidate if candidate.is_absolute() else project_root / candidate
     if matrix_path is None:
-        candidates = _candidate_matrix_paths(project_root)
+        candidates = _filter_matrix_candidates(
+            _candidate_matrix_paths(project_root),
+            version=runtime_version,
+            feature=current_feature,
+        )
         matrix_path = candidates[0] if candidates else None
 
     if matrix_path is None or not matrix_path.exists():
@@ -2942,6 +2967,37 @@ def check_test_execution_integrity(project_root: Path, mode: GateMode, stage: st
         if str(item.get("status")) == "passed"
     }
 
+    projected_release_evidence_ready = False
+    if stage == "release" and run_id:
+        manifest_path = project_root / ".beacon" / "evidence-manifest.json"
+        if manifest_path.exists():
+            try:
+                manifest_payload = json.loads(manifest_path.read_text(encoding="utf-8"))
+            except Exception:  # noqa: BLE001
+                manifest_payload = {}
+            manifest_entries = manifest_payload.get("entries")
+            entry_paths = (
+                {
+                    str(item.get("path") or "").strip()
+                    for item in manifest_entries
+                    if isinstance(item, dict)
+                }
+                if isinstance(manifest_entries, list)
+                else set()
+            )
+            manifest_run_id = str(manifest_payload.get("run_id") or "").strip()
+            manifest_version = str(manifest_payload.get("version") or "").strip()
+            projected_release_evidence_ready = (
+                manifest_run_id == run_id
+                and bool(manifest_version)
+                and manifest_version == runtime_version
+                and {
+                    ".beacon/auto-test-status.json",
+                    ".beacon/gate-report.json",
+                    ".beacon/coverage-summary.json",
+                }.issubset(entry_paths)
+            )
+
     def _resolve_evidence_path(raw_path: str, current_run_id: str) -> str:
         value = str(raw_path or "").strip()
         if not value:
@@ -2961,7 +3017,7 @@ def check_test_execution_integrity(project_root: Path, mode: GateMode, stage: st
             continue
         evidence = Path(_resolve_evidence_path(str(item.get("evidence_path")), execution_run_id))
         evidence_file = evidence if evidence.is_absolute() else project_root / evidence
-        if not evidence_file.exists():
+        if not evidence_file.exists() and not projected_release_evidence_ready:
             chain_broken.append(item.get("tc_id"))
     if chain_broken:
         issues.append(

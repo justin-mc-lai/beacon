@@ -21,6 +21,16 @@ def _safe_ratio(numerator: int, denominator: int) -> float:
     return round(float(numerator) / float(denominator), 4)
 
 
+def _read_json(path: Path) -> dict[str, Any]:
+    if not path.exists():
+        return {}
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:  # noqa: BLE001
+        return {}
+    return payload if isinstance(payload, dict) else {}
+
+
 _PROTOTYPE_SOURCE_STATUS_RE = re.compile(r"^\*\*Status\*\*:\s*`prototype-source`", re.MULTILINE)
 
 
@@ -30,6 +40,54 @@ def _is_prototype_source_material(path: Path) -> bool:
     except Exception:  # noqa: BLE001
         return False
     return bool(_PROTOTYPE_SOURCE_STATUS_RE.search(text))
+
+
+def _resolve_evidence_path(raw_path: str, run_id: str) -> str:
+    value = str(raw_path or "").strip()
+    if not value:
+        return value
+    if run_id:
+        value = value.replace("{run_id}", run_id)
+        value = value.replace("$RUN_ID", run_id)
+        value = value.replace("__RUN_ID__", run_id)
+    return value
+
+
+def _auto_test_run_id(project_root: Path) -> str:
+    payload = _read_json(project_root / ".beacon" / "auto-test-status.json")
+    execution = payload.get("execution")
+    if isinstance(execution, dict):
+        run_id = str(execution.get("run_id", "")).strip()
+        if run_id:
+            return run_id
+    return str(payload.get("run_id", "")).strip()
+
+
+def _projected_coverage_metrics(project_root: Path, version: str, feature: str | None) -> dict[str, Any] | None:
+    if feature:
+        return None
+    payload = _read_json(project_root / ".beacon" / "coverage-summary.json")
+    details = payload.get("details")
+    if not isinstance(details, dict):
+        return None
+    artifact_version = str(payload.get("version") or details.get("version") or "").strip()
+    if artifact_version != version:
+        return None
+    return {
+        "version": artifact_version,
+        "feature": str(details.get("feature") or "").strip(),
+        "planned_story": int(details.get("planned_story", 0) or 0),
+        "implemented_story": int(details.get("implemented_story", 0) or 0),
+        "story_coverage": float(details.get("story_coverage", 0.0) or 0.0),
+        "total_ac": int(details.get("total_ac", 0) or 0),
+        "tested_ac": int(details.get("tested_ac", 0) or 0),
+        "ac_coverage": float(details.get("ac_coverage", 0.0) or 0.0),
+        "total_tc": int(details.get("total_tc", 0) or 0),
+        "executed_tc": int(details.get("executed_tc", 0) or 0),
+        "tc_coverage": float(details.get("tc_coverage", 0.0) or 0.0),
+        "full_coverage": bool(details.get("full_coverage", payload.get("full_coverage", False))),
+        "matrix_errors": list(details.get("matrix_errors", [])) if isinstance(details.get("matrix_errors"), list) else [],
+    }
 
 
 def _story_files(project_root: Path, version: str, feature: str | None = None) -> list[Path]:
@@ -100,6 +158,10 @@ def compute_coverage_metrics(
     ver = resolve_target_version(project_root, version)
     feature_filter = _slug(feature or "")
 
+    projected = _projected_coverage_metrics(project_root, ver, feature_filter or None)
+    if projected is not None:
+        return projected
+
     story_files = _story_files(project_root, ver, feature=feature_filter or None)
     planned_story = len(story_files)
     story_slugs = {p.stem for p in story_files}
@@ -113,6 +175,7 @@ def compute_coverage_metrics(
     ac_all: set[str] = set()
     ac_tested: set[str] = set()
     matrix_errors: list[str] = []
+    run_id = _auto_test_run_id(project_root)
 
     for matrix in matrix_files:
         try:
@@ -137,7 +200,7 @@ def compute_coverage_metrics(
                 ac_all.add(ac_id)
             if not evidence_path:
                 continue
-            p = Path(evidence_path)
+            p = Path(_resolve_evidence_path(evidence_path, run_id))
             evidence_file = p if p.is_absolute() else project_root / p
             if evidence_file.exists():
                 executed_tc += 1

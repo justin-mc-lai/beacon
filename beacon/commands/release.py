@@ -34,6 +34,11 @@ def _extract_version(payload: dict) -> str:
     direct = str(payload.get("version", "")).strip()
     if direct:
         return direct
+    details = payload.get("details")
+    if isinstance(details, dict):
+        detail_version = str(details.get("version", "")).strip()
+        if detail_version:
+            return detail_version
     execution = payload.get("execution")
     if isinstance(execution, dict):
         return str(execution.get("version", "")).strip()
@@ -486,11 +491,15 @@ def check(
 
     coverage_ok = False
     coverage_detail = "missing"
+    coverage_version = ""
+    coverage_run_id = ""
     if coverage_summary_path.exists():
         try:
             coverage_payload = json.loads(coverage_summary_path.read_text(encoding="utf-8"))
         except Exception:  # noqa: BLE001
             coverage_payload = {}
+        coverage_version = _extract_version(coverage_payload)
+        coverage_run_id = _extract_run_id(coverage_payload)
         rate = coverage_payload.get("coverage_rate")
         if isinstance(rate, (int, float)):
             coverage_ok = float(rate) >= 0.8
@@ -503,6 +512,21 @@ def check(
         coverage_ok = bool(gate_coverage_full)
         coverage_detail = f"gate_report.coverage.full_coverage={coverage_ok}"
     checks.append(("coverage artifact ready", coverage_ok, coverage_detail))
+    if coverage_summary_path.exists():
+        checks.append(
+            (
+                "coverage summary version matches release version",
+                bool(coverage_version) and coverage_version == resolved_version,
+                f"artifact_version={coverage_version or 'missing'}, expected={resolved_version}",
+            )
+        )
+        checks.append(
+            (
+                "coverage summary run_id matches test artifacts",
+                bool(coverage_run_id) and bool(expected_run_id) and coverage_run_id == expected_run_id,
+                f"coverage_run_id={coverage_run_id or 'missing'}, expected={expected_run_id or 'missing'}",
+            )
+        )
 
     if enforce_change_documents:
         change_md_ref = str(change_documents.get("markdown_path") or "")
