@@ -56,6 +56,29 @@ def extract_explicit_ac_items(content: str, source: str) -> list[dict[str, Any]]
     return items
 
 
+def _dedupe_explicit_ac_items(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    deduped: list[dict[str, Any]] = []
+    seen: dict[str, dict[str, Any]] = {}
+    for item in items:
+        if not isinstance(item, dict):
+            continue
+        ac_id = str(item.get("ac_id") or "").strip().upper()
+        if not ac_id:
+            continue
+        current = seen.get(ac_id)
+        if current is None:
+            clone = dict(item)
+            clone["ac_id"] = ac_id
+            seen[ac_id] = clone
+            deduped.append(clone)
+            continue
+        if not str(current.get("theme") or "").strip() and str(item.get("theme") or "").strip():
+            current["theme"] = item.get("theme")
+        if not str(current.get("text") or "").strip() and str(item.get("text") or "").strip():
+            current["text"] = item.get("text")
+    return deduped
+
+
 def extract_story_sections(content: str, source: str) -> list[dict[str, Any]]:
     sections: list[dict[str, Any]] = []
     if not str(content or "").strip():
@@ -163,7 +186,7 @@ def build_feature_ac_items(
     explicit = extract_explicit_ac_items(user_story_content, user_story_source)
     explicit.extend(extract_explicit_ac_items(prd_content, prd_source))
     if explicit:
-        return explicit
+        return _dedupe_explicit_ac_items(explicit)
 
     sections = extract_story_sections(user_story_content, user_story_source)
     if not sections:

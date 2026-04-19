@@ -35,6 +35,8 @@ def test_setup_context_creates_context_files_with_beacon_markers(tmp_path: Path)
     for content in (claude, agents):
         assert "<!-- BEACON:START -->" in content
         assert "<!-- BEACON:END -->" in content
+        assert f"<!-- BEACON:VERSION:{__toolkit_version__} -->" in content
+        assert f"<!-- BEACON:DOCS_VERSION:{payload.get('docs_version')} -->" in content
         assert "docs/beacon/global-boundaries.md" in content
     assert (tmp_path / "docs" / "beacon" / "global-boundaries.md").exists()
     assert (tmp_path / ".gitignore").exists()
@@ -100,3 +102,62 @@ def test_verify_context_json_includes_required_check_names(tmp_path: Path):
         "managed_block_integrity",
         "managed_block_version_drift",
     }.issubset(names)
+
+
+def test_setup_context_with_explicit_docs_version_should_anchor_planning_line_without_runtime_drift(tmp_path: Path):
+    (tmp_path / "docs" / "beacon" / "v1.3.4" / "execution").mkdir(parents=True, exist_ok=True)
+    (tmp_path / "docs" / "beacon" / "v1.3.4" / "SUMMARY.md").write_text("# v1.3.4\n", encoding="utf-8")
+    (tmp_path / "docs" / "beacon" / "v1.3.4" / "execution" / "index.md").write_text("# index\n", encoding="utf-8")
+    (tmp_path / "docs" / "beacon" / "v1.3.4" / "execution" / "architecture-blueprint.md").write_text("# arch\n", encoding="utf-8")
+
+    result = _invoke(
+        ["doctor", "setup-context", "--project-root", str(tmp_path), "--version", "v1.3.4", "--json"]
+    )
+    assert result.exit_code == 0, result.stdout
+
+    payload = json.loads(result.stdout)
+    assert payload.get("docs_version") == "v1.3.4"
+    assert payload.get("runtime_version") == __toolkit_version__
+
+    claude = (tmp_path / "CLAUDE.md").read_text(encoding="utf-8")
+    agents = (tmp_path / "AGENTS.md").read_text(encoding="utf-8")
+    for content in (claude, agents):
+        assert f"<!-- BEACON:VERSION:{__toolkit_version__} -->" in content
+        assert "<!-- BEACON:DOCS_VERSION:v1.3.4 -->" in content
+        assert f"Runtime target version: `{__toolkit_version__}`" in content
+        assert "Docs target version: `v1.3.4`" in content
+
+    onboarding = json.loads((tmp_path / ".beacon" / "state" / "project-onboarding.json").read_text(encoding="utf-8"))
+    assert onboarding["docs_version"] == "v1.3.4"
+    assert onboarding["runtime_version"] == __toolkit_version__
+
+
+def test_setup_context_should_overwrite_stale_onboarding_docs_version_when_explicit_version_is_provided(tmp_path: Path):
+    state_dir = tmp_path / ".beacon" / "state"
+    state_dir.mkdir(parents=True, exist_ok=True)
+    (state_dir / "project-onboarding.json").write_text(
+        json.dumps(
+            {
+                "schema_version": "1.0",
+                "docs_version": "v1.3.1-功能开发",
+                "runtime_version": "v1.1.12",
+            },
+            ensure_ascii=False,
+            indent=2,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    (tmp_path / "docs" / "beacon" / "v1.3.3" / "execution").mkdir(parents=True, exist_ok=True)
+    (tmp_path / "docs" / "beacon" / "v1.3.3" / "SUMMARY.md").write_text("# v1.3.3\n", encoding="utf-8")
+    (tmp_path / "docs" / "beacon" / "v1.3.3" / "execution" / "index.md").write_text("# index\n", encoding="utf-8")
+    (tmp_path / "docs" / "beacon" / "v1.3.3" / "execution" / "architecture-blueprint.md").write_text("# arch\n", encoding="utf-8")
+
+    result = _invoke(
+        ["doctor", "setup-context", "--project-root", str(tmp_path), "--version", "v1.3.3", "--json"]
+    )
+    assert result.exit_code == 0, result.stdout
+
+    onboarding = json.loads((state_dir / "project-onboarding.json").read_text(encoding="utf-8"))
+    assert onboarding["docs_version"] == "v1.3.3"
+    assert onboarding["runtime_version"] == __toolkit_version__

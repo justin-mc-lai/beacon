@@ -16,6 +16,7 @@ _RELEASE_LINE = re.compile(r"^v?(\d+)\.(\d+)\.(\d+)(?:[.-].+)?$")
 _TOOLKIT_VERSION = re.compile(r'__toolkit_version__\s*=\s*"(?P<version>v\d+\.\d+\.\d+)"')
 _PACKAGE_VERSION = re.compile(r'__version__\s*=\s*"(?P<version>\d+\.\d+\.\d+)"')
 _CONTEXT_MARKER = re.compile(r"<!--\s*BEACON:VERSION:([^>\s]+)\s*-->")
+_CONTEXT_DOCS_MARKER = re.compile(r"<!--\s*BEACON:DOCS_VERSION:([^>\s]+)\s*-->")
 _SEMVER_SEARCH = re.compile(r"v?\d+\.\d+\.\d+")
 _VERSION_TRUTH_STATE = Path(".beacon/state/version-truth/current.json")
 _VERSION_TRUTH_CANONICAL = Path("beacon/version-truth.json")
@@ -471,6 +472,29 @@ def context_managed_version(project_root: Path) -> str | None:
     return next(iter(versions))
 
 
+def context_managed_docs_versions(project_root: Path) -> dict[str, str]:
+    versions: dict[str, str] = {}
+    for name in ("AGENTS.md", "CLAUDE.md"):
+        path = project_root / name
+        if not path.exists():
+            continue
+        content = path.read_text(encoding="utf-8")
+        match = _CONTEXT_DOCS_MARKER.search(content)
+        if not match:
+            continue
+        normalized = normalize_version(match.group(1))
+        if normalized:
+            versions[name] = normalized
+    return versions
+
+
+def context_managed_docs_version(project_root: Path) -> str | None:
+    versions = {value for value in context_managed_docs_versions(project_root).values() if value}
+    if len(versions) != 1:
+        return None
+    return next(iter(versions))
+
+
 def current_git_branch(project_root: Path) -> str:
     try:
         result = subprocess.run(
@@ -547,12 +571,21 @@ def build_context_version_guard(
         truth_versions = {item for item in truth_versions if item}
         if context_marker_version not in truth_versions:
             context_marker_version = ""
+    docs_marker_version = context_managed_docs_version(project_root) or context_marker_version
     signals = {
         "context_marker": context_marker_version,
+        "context_docs_marker": docs_marker_version,
         "onboarding_docs": onboarding_docs_version(project_root) or "",
         "git_branch": branch_context_version(project_root) or "",
     }
-    recommended_version = _preferred_context_version(signals)
+    docs_recommended_version = _preferred_context_version(
+        {
+            "context_docs_marker": docs_marker_version,
+            "onboarding_docs": onboarding_docs_version(project_root) or "",
+            "git_branch": branch_context_version(project_root) or "",
+        }
+    )
+    recommended_version = docs_recommended_version or _preferred_context_version(signals)
     override_enabled = str(os.getenv(_ALLOW_CONTEXT_VERSION_DRIFT_ENV, "")).strip().lower() in {"1", "true", "yes", "on"}
 
     status = "not_applicable"
@@ -880,7 +913,9 @@ def describe_project_version_context(
     resolved_docs, docs_source = resolve_docs_version(project_root, docs_version, return_source=True)
     resolved_runtime, runtime_source = resolve_runtime_version(project_root, runtime_version, return_source=True)
     context_versions = context_managed_versions(project_root)
+    context_docs_versions = context_managed_docs_versions(project_root)
     unique_context = sorted({value for value in context_versions.values() if value})
+    unique_context_docs = sorted({value for value in context_docs_versions.values() if value})
     version_truth = load_version_truth(project_root)
     runtime_truth = load_version_truth(_RUNTIME_PROJECT_ROOT)
     version_semantics = load_version_semantics(project_root)
@@ -901,8 +936,11 @@ def describe_project_version_context(
         "onboarding_docs_version": onboarding_docs_version(project_root) or "",
         "onboarding_runtime_version": onboarding_runtime_version(project_root) or "",
         "context_versions": context_versions,
+        "context_docs_versions": context_docs_versions,
         "context_managed_version": unique_context[0] if len(unique_context) == 1 else "",
+        "context_docs_version": unique_context_docs[0] if len(unique_context_docs) == 1 else "",
         "context_version_consistent": len(unique_context) <= 1,
+        "context_docs_version_consistent": len(unique_context_docs) <= 1,
         "available_docs_versions": discover_versions(project_root),
         "latest_scanned_docs_version": largest_version(project_root, fallback=resolved_docs),
         "package_version": str(version_truth.get("package_version", "") or ""),

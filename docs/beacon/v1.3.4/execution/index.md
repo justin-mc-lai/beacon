@@ -14,9 +14,10 @@
 10. `../research/beacon-v1.3.4-one-person-company-ops-board-model.md`
 11. `../research/beacon-v1.3.4-real-project-board-acceptance-brainstorm.md`
 12. `./beacon-toolkit-lighthouse-real-env-debug-friction-and-deterministic-projection.md`
-13. `./real-project-validation-checklist-beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md`
-14. `./doctor-orchestration-blueprint.md`
-15. `../prototype/beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane/index.html`
+13. `./beacon-toolkit-lighthouse-prd-implement-drift-closure.md`
+14. `./real-project-validation-checklist-beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md`
+15. `./doctor-orchestration-blueprint.md`
+16. `../prototype/beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane/index.html`
 
 ## 说明
 

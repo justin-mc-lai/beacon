@@ -170,6 +170,22 @@ PocketBase 必须承担以下职责：
   - `qa`
   - `release`
 
+并且必须承认 Beacon 的立项根本不是“有这几个命令”，而是：
+
+```text
+prd
+→ user-story
+→ test-case
+→ acceptance
+```
+
+也就是说：
+
+- `prd` 定义承诺面
+- `user-story` 定义 acceptance criteria
+- `test-case` 定义验收场景
+- `implement / qa / release` 只能沿这条链闭环，不得反向改写 requirement truth
+
 `single / team / ralph` 只能作为实现阶段的 runtime 下钻信息，而不是生命周期主轴。
 
 ### 2.7 支持双层视图
@@ -575,6 +591,17 @@ CEO 视图必须能够按多项目汇总展示：
 - `ready`
 - `frozen`
 
+### FR-016A 生命周期主轴必须绑定 requirement traceability
+
+系统不得只把 `prd / user-story / test-case` 当作“是否存在”的材料目录。
+
+它还必须能够正式表达：
+
+- 当前 PRD 是否已冻结承诺面
+- 当前 User Story 是否已冻结 acceptance criteria
+- 当前 Test Case 是否已建立验收场景
+- 后续 implement / qa / release 是否仍然绑定这同一份 requirement truth
+
 ### FR-017 必须显式建模实现阶段 runtime 模式
 
 系统必须把以下 runtime 模式作为正式投影对象：
@@ -599,6 +626,17 @@ CEO 视图必须能够按多项目汇总展示：
 - status
 - pane / tmux session 引用
 - role artifact 引用
+
+### FR-018A `implement single / team / ralph` 必须遵循同一套 PRD 对齐闭环
+
+`single / team / ralph` 在本版本中虽然属于实现阶段 runtime 模式，但不得演化成三套不同的 requirement closure 语义。
+
+系统必须保证三种 implement lane 都满足：
+
+- 共享同一份当前 PRD / user-story / test-case truth
+- 共享同一套 `delivery surface manifest`
+- 共享同一套 `implementation-summary` / `review-spec` / `gate` 对齐规则
+- 不允许因为 runtime mode 不同而绕过 promised-vs-shipped 比对
 
 ### FR-019 必须记录 git 分支与 worktree 绑定
 
@@ -1215,6 +1253,16 @@ PocketBase 中不得成为 requirement、acceptance、release decision 的唯一
 
 而不是默认展开 runtime 内部细节。
 
+### AC-008A 生命周期主轴不只是导航，还是 requirement truth 主轴
+
+对于任一 feature，看板和投影层都必须能解释：
+
+- 当前 requirement truth 来自哪份 PRD
+- 当前 acceptance criteria 来自哪份 User Story
+- 当前验收场景来自哪份 Test Case
+
+不得把生命周期展示退化成“只有阶段 badge，没有 requirement traceability”。
+
 ### AC-009 支持 CEO 总览视图
 
 CEO 视图必须能对多项目展示：
@@ -1251,6 +1299,10 @@ CEO 视图必须能对多项目展示：
 - `failure_streak`
 - `next_action`
 - `current_blocker`
+
+### AC-012A `single / team / ralph` 不得绕过同一套 requirement closure
+
+当同一 feature 分别通过 `single / team / ralph` 三种 implement lane 推进时，三者都必须仍然绑定同一份 PRD / user-story / test-case，并接受同一套 delivery summary、review-spec 与 gate 判断。
 
 ### AC-013 子 skill 必须通过生命周期推荐
 

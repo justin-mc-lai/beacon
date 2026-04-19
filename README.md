@@ -99,6 +99,15 @@ beacon gate check release --project-root . --version v1.3.3 --json
 beacon release check v1.3.3 --project .
 ```
 
+### Compatibility Entry Points
+
+以下入口仍保留给兼容性与文档示例使用：
+
+```bash
+beacon workflow start "<feature>" --version v1.3.3 --project-root .
+beacon ask "请生成用户故事并给出验收标准" --project-root . --json
+```
+
 ### Codex HUD Hook
 
 用 doctor 托管 Codex HUD，而不是手工改散落配置：

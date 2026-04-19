@@ -54,6 +54,12 @@
 - When：查看运行态中心
 - Then：可见 `round_count / failure_streak / next_action / current_blocker`
 
+### TC-007A (AC-007A): 不同 implement lane 仍绑定同一份 requirement closure
+
+- Given：同一 feature 分别通过 `single / team / ralph` 三种 implement lane 推进
+- When：检查其 delivery summary、review-spec 与 gate 输入
+- Then：三者都绑定同一份 PRD / user-story / test-case，且都使用同一套 promised-vs-shipped compare 与 downgrade rule
+
 ### TC-008 (AC-008): Git / Worktree 治理信息完整
 
 - Given：某个项目包含单仓或多仓 workspace 绑定

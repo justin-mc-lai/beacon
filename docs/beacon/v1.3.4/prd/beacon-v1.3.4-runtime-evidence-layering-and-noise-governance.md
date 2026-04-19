@@ -67,6 +67,46 @@
 - 错误 A：什么都不提交，导致 gate 缺少可复现机器证据
 - 错误 B：把完整 runtime / debug / session 洪流都提交到 git，造成长期噪音与边界破坏
 
+### 1.4 PocketBase control plane 承诺面与交付面已经出现偏差
+
+`v1.3.4` 主 PRD 已把 PocketBase control plane 写成正式交付，但当前实现仍主要停留在：
+
+- SQLite ledger
+- PocketBase-ready mirror pack
+
+而未形成：
+
+- 可启动 PocketBase 服务
+- collections schema init
+- admin surface
+- backup/export 操作面
+
+这条偏差已进入 Beacon debug issue：
+
+- `beacon-core--pocketbase-control-plane-admin-surface-missing`
+
+这说明 runtime / projection 线不仅需要噪音治理，还需要正式的“承诺面 vs 交付面”防漂移合同。
+
+### 1.5 Beacon 现有 gate 仍缺少 delivery-surface drift 阻断
+
+Beacon 现在已有：
+
+- `implementation-summary`
+- `review-spec`
+- `review-quality`
+- spec fingerprint drift check
+
+但仍缺少一层正式比较：
+
+- `PRD promised surfaces`
+- `implement shipped surfaces`
+
+这条问题已进入 Beacon debug issue：
+
+- `beacon-core--prd-implement-delivery-drift-gate-missing`
+
+所以本并行 PRD 不只管“runtime 噪音”，也必须冻结“delivery drift”规则，否则主 PRD 承诺仍可能超过真实交付。
+
 ## 2. 目标
 
 `v1.3.4` 需要正式冻结 Beacon 机器面的提交边界与噪音治理规则。
@@ -294,6 +334,89 @@ Beacon 必须让 `.gitignore`、artifact language policy 与版本文档一致�
 - 什么不进 git
 - 什么只能按 summary evidence 升格后再进 git
 
+### FR-009 必须定义 `delivery surface manifest`
+
+对于主 PRD 已明确承诺的交付面，系统必须允许冻结一份结构化 `delivery surface manifest`，至少包含：
+
+- `surface_id`
+- `required_for_acceptance`
+- `delivery_stage`
+- `acceptance_refs`
+- `allowed_degrade_mode`
+
+### FR-010 `implementation-summary` 必须支持 shipped surfaces 回写
+
+实现总结后续不能只写 done work summary，还必须支持：
+
+- `shipped_surfaces`
+- `partial_surfaces`
+- `deferred_surfaces`
+- `downgrade_rationale`
+
+以便后续 `review-spec` 和 `gate` 能做正式比对。
+
+### FR-011 `review-spec / gate / release` 必须拦截 delivery drift
+
+如果主 PRD 承诺的 required surfaces 未被 shipped，且不存在正式 downgrade 批准，则必须阻断。
+
+至少应支持以下结果：
+
+- `blocked`
+- `accepted_downgrade`
+
+而不允许静默滑过。
+
+### FR-012 debug issue 必须能映射到 evidence / delivery drift 修复线
+
+当 Beacon 自身 debug issue 命中 runtime evidence、projection、delivery drift 类问题时，系统必须支持把 issue 正式映射到本并行 PRD，而不是只停留在 `.beacon/debug/` 本地记录。
+
+### FR-013 `implement single / team / ralph` 必须写回同构的 delivery summary
+
+后续不论 implement 通过 `single`、`team` 还是 `ralph` 推进，都必须写回同构的交付摘要，而不是按 runtime mode 各自生成不可比对的完成信号。
+
+至少必须统一回写：
+
+- `feature`
+- `version`
+- `revision_id`
+- `runtime_mode`
+- `shipped_surfaces`
+- `partial_surfaces`
+- `deferred_surfaces`
+- `downgrade_rationale`
+
+### FR-014 `implement single / team / ralph` 必须共享同一套 review-spec / gate
+
+三种 implement lane 都必须接受同一套：
+
+- promised-vs-shipped delivery surface compare
+- downgrade approval rule
+- review-spec blocking rule
+- gate / release blocking rule
+
+不允许出现：
+
+- `single` 走正式 gate
+- `team` 只看 runtime 完成
+- `ralph` 只看 round 结束
+
+### FR-015 `review-spec / gate` 必须检查 `prd → user-story → test-case → acceptance` 链路
+
+Beacon 的 requirement closure 不得只停留在“PRD promised vs implementation shipped”。
+
+还必须至少检查：
+
+- PRD promised surfaces 是否存在对应 User Story acceptance criteria
+- User Story acceptance criteria 是否存在对应 Test Case coverage
+- 实现与 QA 结论是否仍绑定同一份 PRD / User Story / Test Case truth
+
+如果这条链断裂，则必须：
+
+- `blocked`
+- 或 `accepted_downgrade`
+
+而不允许只凭 runtime 或局部实现总结放行。
+
 ## 6. 候选实现方向
 
 ### Slice A：Machine Evidence Policy
@@ -328,6 +451,7 @@ Beacon 必须让 `.gitignore`、artifact language policy 与版本文档一致�
 | stale runtime 误导 QA / release | 高 | 增加 revision/freshness/source 绑定，stale 只能 advisory |
 | `status` 默认继续向人类输出机器洪流 | 中 | 默认人类模式只保留 6 个关键字段 |
 | 宿主 session / debug 产物误入正式版本包 | 高 | 明确只允许 summary refs，禁止 raw host interaction 进入 truth/gate |
+| PRD 承诺面超过真实交付面，但 gate 未阻断 | 高 | 新增 delivery surface manifest 与 promised-vs-shipped gate |
 
 ## 8. 验收标准
 
@@ -362,6 +486,31 @@ runtime 缺失时，`qa` 必须允许回退到正式材料与重验路径，不�
 
 如果 runtime 信息需要进入版本判断，必须先转成带 revision/freshness/source 的 summary evidence，而不是直接把 raw `.beacon` 状态纳入 git。
 
+### AC-007 delivery drift 有正式阻断规则
+
+`beacon-core--pocketbase-control-plane-admin-surface-missing` 与 `beacon-core--prd-implement-delivery-drift-gate-missing` 必须在本并行 PRD 中有明确承接，并冻结成 promised-vs-shipped 的阻断规则。
+
+### AC-008 未批准 downgrade 不得放行
+
+当主 PRD 的 required delivery surfaces 未被 shipped 时，如果没有正式 downgrade 批准，`review-spec / gate / release` 不得把该 feature 判成完成。
+
+### AC-009 `single / team / ralph` 三种 implement lane 结果可比对
+
+对于同一份 PRD，如果分别通过 `single / team / ralph` 推进，最终都必须产出结构同构的 delivery summary，并能被 `review-spec / gate / release` 使用同一套规则比较。
+
+### AC-010 runtime mode 不得成为绕过 PRD 对齐的理由
+
+系统不得因为某个 feature 处于 `team` 或 `ralph` 模式，就仅以 agent 活跃、round 完成、runtime 存活等信号替代 promised-vs-shipped requirement closure。
+
+### AC-011 `prd / user-story / test-case` 三层都进入正式对齐检查
+
+后续 `review-spec / gate / release` 必须不仅检查 PRD promised surfaces，也要检查：
+
+- User Story acceptance criteria 是否对齐
+- Test Case coverage 是否可用于正式验收
+
+否则不得把该 feature 判成 requirement closure complete。
+
 ## 9. 成功指标
 
 - Beacon 工作区不再因为高频 runtime 缓存而长期脏掉
@@ -369,6 +518,9 @@ runtime 缺失时，`qa` 必须允许回退到正式材料与重验路径，不�
 - QA 与 release 在无 runtime 时仍可继续推进
 - runtime 有值时能提供辅助判断，但不会反向绑架 truth/gate
 - 团队能明确知道“哪类机器面该提交，哪类不该提交”
+- PRD 承诺面与 implement 交付面之间的偏差能在 gate 前被正式识别
+- `single / team / ralph` 三种 implement lane 都不会各自漂成不同的 requirement closure 语义
+- `prd / user-story / test-case` 三层对齐会成为 gate 前置检查，而不是仅靠口头要求
 
 ## 10. 与主 PRD 的关系
 
@@ -385,6 +537,13 @@ runtime 缺失时，`qa` 必须允许回退到正式材料与重验路径，不�
 并行 PRD
   = 管 Beacon 自己怎样不被 runtime 噪音拖垮
 ```
+
+## 11. 关联 Debug Issues
+
+| issue_id | reason_code | requirement mapping |
+|------|------|------|
+| `beacon-core--pocketbase-control-plane-admin-surface-missing` | `pocketbase-control-plane-admin-surface-missing` | 主 PRD 交付面与实际 runtime/control-plane 交付对齐 |
+| `beacon-core--prd-implement-delivery-drift-gate-missing` | `prd-implement-delivery-drift-gate-missing` | promised vs shipped delivery surface gate |
 
 ---
 

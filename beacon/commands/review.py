@@ -24,6 +24,7 @@ from beacon.utils.material_audit import build_material_audit
 from beacon.utils.project_skills import evaluate_project_profile_gate
 from beacon.utils.prototype_utils import evaluate_prototype_status, review_prototype_bundle
 from beacon.utils.qa_runtime import load_qa_status
+from beacon.utils.requirement_closure import build_requirement_closure
 from beacon.utils.runtime import now_iso
 from beacon.utils.story_state import load_story_state
 from beacon.utils.v115_delivery import refresh_evidence_manifest
@@ -131,6 +132,16 @@ def _render_markdown(title: str, payload: dict[str, Any]) -> str:
             lines.append(f"- {item}")
     else:
         lines.append("- none")
+    requirement_closure = payload.get("requirement_closure", {}) if isinstance(payload.get("requirement_closure"), dict) else {}
+    if requirement_closure.get("enabled"):
+        lines.extend(
+            [
+                "",
+                "## Requirement Closure",
+                f"- status: `{requirement_closure.get('status', 'unknown')}`",
+                f"- covered_ac_ids: `{', '.join(requirement_closure.get('coverage', {}).get('covered_ac_ids', []))}`",
+            ]
+        )
     return "\n".join(lines) + "\n"
 
 
@@ -400,6 +411,27 @@ def review_spec(
         )
         recommendations.append("Resolve blocked implementation plan tasks before final release gate.")
 
+    requirement_closure = build_requirement_closure(
+        project_root,
+        resolved_version,
+        feature,
+        implementation_summary=implementation_summary,
+    )
+    if requirement_closure.get("enabled"):
+        issues.extend(requirement_closure.get("issues", []))
+        for item in requirement_closure.get("issues", []):
+            if not isinstance(item, dict):
+                continue
+            reason_code = str(item.get("reason_code", "") or "").strip()
+            if reason_code == "user_story_acceptance_missing":
+                recommendations.append("补齐 User Story / PRD 中可解析的 AC，确保 review-spec 可以抽取 acceptance 条目。")
+            elif reason_code in {"test_case_traceability_missing", "prd_user_story_test_case_traceability_broken"}:
+                recommendations.append("补齐 Test Case 或 AC-Test Matrix，让每个 AC 都有可追踪测试覆盖。")
+            elif reason_code == "implementation_requirement_traceability_missing":
+                recommendations.append("通过 implement 生成带 requirement_traceability 的标准 implementation summary。")
+            elif reason_code == "implementation_delivery_summary_missing":
+                recommendations.append("补齐 delivery_surfaces 固定结构，确保 single/team/ralph 输出同形摘要。")
+
     status = "pass"
     if any(item.get("severity") == "critical" for item in issues):
         status = "fail"
@@ -418,6 +450,7 @@ def review_spec(
         "recommendations": recommendations,
         "artifact_updates": artifact_updates if isinstance(artifact_updates, dict) else {},
         "implementation_plan_progress": plan_progress,
+        "requirement_closure": requirement_closure,
     }
     artifact_name = f"review-spec-{_slug(feature)}"
     payload["artifacts"] = _write_review_artifacts(

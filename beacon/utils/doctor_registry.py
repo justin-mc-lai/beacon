@@ -17,6 +17,7 @@ from beacon.utils.help_navigation import build_doctor_advise_payload
 from beacon.utils.material_audit import build_delivery_audit, build_material_audit
 from beacon.utils.material_sync import sync_project_requirement_materials
 from beacon.utils.requirement_clarity import materialize_requirement_clarity
+from beacon.utils.runtime_projection_store import export_runtime_ledger, rebuild_runtime_ledger, verify_runtime_ledger
 from beacon.utils.runtime import now_iso, write_json
 from beacon.utils.source_architecture import current_source_architecture_status
 from beacon.utils.subagent_readiness import delegation_readiness_precheck, runtime_readiness_precheck
@@ -51,6 +52,7 @@ def _context_setup_managed_files(
     *,
     project_root: Path,
     runtime_version: str,
+    docs_version: str,
     dry_run: bool,
     force: bool,
     with_claude: bool,
@@ -59,6 +61,7 @@ def _context_setup_managed_files(
     return setup_context_files(
         project_root=project_root,
         runtime_version=runtime_version,
+        docs_version=docs_version,
         dry_run=dry_run,
         force=force,
         with_claude=with_claude,
@@ -79,7 +82,7 @@ def _context_refresh_onboarding_state(
     refreshed = {
         **onboarding_state,
         "schema_version": str(onboarding_state.get("schema_version", "") or "1.0"),
-        "docs_version": str(onboarding_state.get("docs_version", "") or docs_version or ""),
+        "docs_version": str(docs_version or onboarding_state.get("docs_version", "") or ""),
         "runtime_version": runtime_version,
         "runtime_capability_lines": runtime_capability_lines(),
         "updated_at": now_iso(),
@@ -274,6 +277,39 @@ def _runtime_verify_subagent_delegation(
     return delegation_readiness_precheck(project_root, feature=feature, version=version)
 
 
+def _projection_verify_runtime_ledger(
+    *,
+    project_root: Path,
+    version: str | None,
+    feature: str | None,
+) -> dict[str, Any]:
+    return verify_runtime_ledger(
+        project_root=project_root,
+        docs_version=version or None,
+        feature=feature or None,
+    )
+
+
+def _projection_export_runtime_ledger(
+    *,
+    label: str | None,
+) -> dict[str, Any]:
+    return export_runtime_ledger(label=label or None)
+
+
+def _projection_rebuild_runtime_ledger(
+    *,
+    project_root: Path,
+    version: str | None,
+    feature: str | None,
+) -> dict[str, Any]:
+    return rebuild_runtime_ledger(
+        project_root=project_root,
+        docs_version=version or None,
+        feature=feature or None,
+    )
+
+
 def _delivery_verify_audit(
     *,
     project_root: Path,
@@ -407,7 +443,7 @@ def get_doctor_registry() -> dict[str, DoctorHandlerSpec]:
             action="setup",
             handler_id="managed-files",
             description="Create or refresh managed CLAUDE.md/AGENTS.md/global boundaries blocks.",
-            reads=("project_root", "runtime_version"),
+            reads=("project_root", "runtime_version", "docs_version"),
             writes=("CLAUDE.md", "AGENTS.md", "docs/beacon/global-boundaries.md"),
             safe_by_default=True,
             supports_dry_run=True,
@@ -543,6 +579,45 @@ def get_doctor_registry() -> dict[str, DoctorHandlerSpec]:
             supports_dry_run=False,
             participates_in_parent_flows=("verify-subagent-delegation",),
             handler=_runtime_verify_subagent_delegation,
+        ),
+        DoctorHandlerSpec(
+            key="projection.verify.runtime-ledger",
+            domain="projection",
+            action="verify",
+            handler_id="runtime-ledger",
+            description="Verify deterministic runtime-ledger projection and PocketBase control-plane health.",
+            reads=("project_root", "version", "feature"),
+            writes=(),
+            safe_by_default=True,
+            supports_dry_run=False,
+            participates_in_parent_flows=("verify-runtime-ledger",),
+            handler=_projection_verify_runtime_ledger,
+        ),
+        DoctorHandlerSpec(
+            key="projection.export.runtime-ledger",
+            domain="projection",
+            action="export",
+            handler_id="runtime-ledger",
+            description="Export runtime-ledger SQLite/projection/PocketBase artifacts for backup.",
+            reads=("runtime_ledger_root",),
+            writes=("runtime-ledger-export",),
+            safe_by_default=True,
+            supports_dry_run=False,
+            participates_in_parent_flows=("export-runtime-ledger",),
+            handler=_projection_export_runtime_ledger,
+        ),
+        DoctorHandlerSpec(
+            key="projection.rebuild.runtime-ledger",
+            domain="projection",
+            action="repair",
+            handler_id="runtime-ledger",
+            description="Rebuild runtime-ledger projection from local Beacon truth.",
+            reads=("project_root", "version", "feature"),
+            writes=("runtime-ledger.sqlite3", "pocketbase/collections", "runtime-ledger/projections"),
+            safe_by_default=True,
+            supports_dry_run=False,
+            participates_in_parent_flows=("rebuild-runtime-ledger",),
+            handler=_projection_rebuild_runtime_ledger,
         ),
         DoctorHandlerSpec(
             key="delivery.verify.audit",

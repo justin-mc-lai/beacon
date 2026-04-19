@@ -213,7 +213,17 @@ def _status_impl(
         typer.echo(f"- board.next_action: {board_summary.get('next_action') or 'none'}")
         typer.echo(f"- board.debug_state: {board_summary.get('debug_state') or 'no_debug_feed'}")
         typer.echo(f"- board.runtime_corroboration: {board_summary.get('runtime_corroboration') or 'missing'}")
+        typer.echo(f"- board.health: {board_summary.get('health_status') or 'unknown'}")
+        typer.echo(f"- board.active_runs: {board_summary.get('active_runs') or 0}")
+        typer.echo(f"- board.active_agents: {board_summary.get('active_agents') or 0}")
         typer.echo(f"- board.ledger_sync: {runtime_ledger.get('status') or 'unknown'}")
+        typer.echo(f"- board.sqlite: {runtime_ledger.get('sqlite_status') or 'unknown'}")
+        typer.echo(f"- board.pocketbase: {runtime_ledger.get('pocketbase_status') or 'unknown'}")
+        control_plane = runtime_ledger.get("control_plane", {}) if isinstance(runtime_ledger.get("control_plane"), dict) else {}
+        if control_plane:
+            typer.echo(f"- board.pocketbase_binary: {control_plane.get('binary_status') or 'unknown'}")
+            if control_plane.get("admin_ui"):
+                typer.echo(f"- board.pocketbase_admin_ui: {control_plane.get('admin_ui')}")
         typer.echo(f"- board.portfolio_projects: {len(portfolio_projects)}")
         for index, project in enumerate(portfolio_projects[:6], start=1):
             typer.echo(
@@ -296,8 +306,10 @@ def _status_impl(
         typer.echo(f"- coverage.full: {coverage_metrics.get('full_coverage')}")
         typer.echo(f"- version.docs: {payload.get('version_context', {}).get('docs_version')}")
         typer.echo(f"- version.runtime: {payload.get('version_context', {}).get('runtime_version')}")
+        if payload.get("version_context", {}).get("context_docs_version"):
+            typer.echo(f"- version.context_docs: {payload.get('version_context', {}).get('context_docs_version')}")
         if payload.get("version_context", {}).get("context_managed_version"):
-            typer.echo(f"- version.context: {payload.get('version_context', {}).get('context_managed_version')}")
+            typer.echo(f"- version.context_runtime: {payload.get('version_context', {}).get('context_managed_version')}")
         if payload.get("scores"):
             typer.echo(f"- score.test: {payload.get('scores', {}).get('test_score')}")
             typer.echo(f"- score.closure: {payload.get('scores', {}).get('closure_score')}")

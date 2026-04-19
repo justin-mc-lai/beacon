@@ -28,7 +28,7 @@ def _seed_docs(root: Path) -> None:
 def _seed_context(root: Path) -> None:
     setup_context_files(
         project_root=root,
-        runtime_version="v1.3.1",
+        runtime_version="v1.3.3",
         dry_run=False,
         force=False,
         with_claude=True,
@@ -106,6 +106,72 @@ def test_v133_prd_bootstrap_apply_should_write_three_docs_and_state(tmp_path: Pa
     ac_test = _extract_ac_ids(tc_path.read_text(encoding="utf-8"))
     assert ac_story
     assert ac_story == ac_test
+
+
+def test_v133_prd_bootstrap_payment_flow_should_keep_ac_count_stable_through_sync_and_qa(tmp_path: Path) -> None:
+    _seed_docs(tmp_path)
+    _seed_context(tmp_path)
+
+    bootstrap = _invoke(
+        [
+            "prd-bootstrap",
+            "run",
+            "Checkout Reliability",
+            "--desc",
+            "提升支付确认链路可靠性",
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            "v1.3.3",
+            "--apply",
+            "--json",
+        ]
+    )
+    assert bootstrap.exit_code == 0, bootstrap.stdout
+
+    sync = _invoke(
+        [
+            "doctor",
+            "sync-materials",
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            "v1.3.3",
+            "--feature",
+            "checkout-reliability",
+            "--json",
+        ]
+    )
+    assert sync.exit_code == 0, sync.stdout
+    sync_payload = json.loads(sync.stdout)
+    result = sync_payload["result"]["results"][0]
+    assert result["story_sync"]["ac_count"] == 5
+    assert result["story_sync"]["test_count"] == 5
+
+    story = json.loads((tmp_path / "docs" / "beacon" / "v1.3.3" / ".machine" / "user-story" / "checkout-reliability.json").read_text(encoding="utf-8"))
+    active_story = next(item for item in story["stories"] if item["revision_id"] == story["current_revision_id"])
+    ac_items = [item for item in active_story["items"] if item["kind"] == "ac"]
+    test_items = [item for item in active_story["items"] if item["kind"] == "test"]
+    assert [item["id"] for item in ac_items] == ["AC-001", "AC-002", "AC-003", "AC-004", "AC-005"]
+    assert [item["id"] for item in test_items] == ["TEST-001", "TEST-002", "TEST-003", "TEST-004", "TEST-005"]
+
+    qa = _invoke(
+        [
+            "qa",
+            "run",
+            "Checkout Reliability",
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            "v1.3.3",
+            "--json",
+        ]
+    )
+    assert qa.exit_code == 2, qa.stdout
+    qa_payload = json.loads(qa.stdout)
+    assert qa_payload["status"] == "blocked"
+    assert qa_payload["reason_codes"] == ["implementation_not_recorded", "no_prior_feature_qa"]
+    assert [item["ac_id"] for item in qa_payload["story_sequence"]] == ["AC-001", "AC-002", "AC-003", "AC-004", "AC-005"]
 
 
 def test_v133_prd_bootstrap_apply_should_block_when_target_exists_under_default_no_overwrite(tmp_path: Path) -> None:

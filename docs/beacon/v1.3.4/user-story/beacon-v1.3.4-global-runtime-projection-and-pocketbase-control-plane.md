@@ -28,6 +28,10 @@
 
 作为项目负责人，我希望当某个项目进入 `ralph` 模式时，能看到 `round_count`、`failure_streak`、`next_action`、`blocker`，以便判断是否仍在有效推进。
 
+### US-005A: 三种 implement lane 必须仍然对齐同一份 PRD
+
+作为需求负责人，我希望 `implement single / team / ralph` 虽然 runtime 形态不同，但都仍然绑定同一份 PRD / user-story / test-case，并接受同一套交付闭环判断，避免不同 runtime lane 漂成不同 requirement 语义。
+
 ### US-006: Git / Worktree 必须成为正式治理对象
 
 作为项目负责人，我希望看板明确表达当前 repo root、branch、dirty、worktree path、预期分支规则和规范状态，而不是只把这些信息埋在本地状态文件里。
@@ -77,6 +81,7 @@
 - AC-005 Runtime 下钻分层：`single / team / ralph` 只在运行态详情层展开，且不作为生命周期主导航。
 - AC-006 Team 运行态透明：当 runtime 为 `team` 时，必须可见 agent 数、role、status、role artifact 引用与 session 引用。
 - AC-007 Ralph 闭环可观测：当 runtime 为 `ralph` 时，必须可见 `round_count / failure_streak / next_action / current_blocker`。
+- AC-007A Implement lane 一致闭环：`single / team / ralph` 三种 implement lane 都必须绑定同一份 PRD / user-story / test-case，并接受同一套 delivery summary、review-spec 与 gate 判断。
 - AC-008 Git / worktree 治理可见：每个版本迭代 / feature 必须可见 repo root、branch、commit、dirty、worktree path、expected branch rule、spec status。
 - AC-009 Session 边界受控：看板可以展示 `Codex / Claude` session metadata 与 transcript ref，但不得把宿主完整 session 系统并入 Beacon 真相层。
 - AC-010 Projection / truth 边界明确：页面与文案必须明确 `docs/beacon + .beacon` 是 truth，`Beacon Runtime Ledger + PocketBase` 是 projection / control plane。

@@ -9,7 +9,7 @@ import hashlib
 import os
 
 from beacon.utils.artifact_update_obligations import load_artifact_update_obligations
-from beacon.utils.artifact_paths import execution_file_candidates
+from beacon.utils.artifact_paths import execution_file_candidates, human_execution_dir, machine_execution_dir
 from beacon.utils.control_plane import build_resume_contract
 from beacon.utils.coverage import compute_coverage_metrics
 from beacon.utils.debug_feedback import (
@@ -34,6 +34,7 @@ from beacon.utils.requirement_clarity import (
     build_requirement_clarity_gate_payload,
     load_requirement_clarity_state,
 )
+from beacon.utils.requirement_closure import requirement_closure_supported
 from beacon.utils.revision_state import load_revision_state
 from beacon.utils.technical_review_contract import (
     build_technical_review_gate_payload,
@@ -184,6 +185,12 @@ REASON_CODES = [
     "prototype_review_failed",
     "prototype_design_review_failed",
     "formal_package_closure_missing",
+    "user_story_acceptance_missing",
+    "test_case_traceability_missing",
+    "prd_user_story_test_case_traceability_broken",
+    "implementation_requirement_traceability_missing",
+    "implementation_delivery_summary_missing",
+    "delivery_surface_downgrade_unapproved",
 ]
 
 # Default gate evaluation stages
@@ -3048,6 +3055,33 @@ def _is_v110_consistency_enabled(project_root: Path, *, version: Optional[str]) 
     return baseline_latest.exists() or fingerprint_latest.exists() or has_status_fingerprint, resolved_version
 
 
+def _load_json_object(path: Path) -> dict[str, Any]:
+    if not path.exists():
+        return {}
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:  # noqa: BLE001
+        return {}
+    return payload if isinstance(payload, dict) else {}
+
+
+def _iter_review_spec_payloads(project_root: Path, version: str) -> list[tuple[Path, dict[str, Any]]]:
+    seen: set[str] = set()
+    payloads: list[tuple[Path, dict[str, Any]]] = []
+    for root in (machine_execution_dir(project_root, version), human_execution_dir(project_root, version)):
+        if not root.exists():
+            continue
+        for path in sorted(root.glob("review-spec-*.json")):
+            key = str(path.resolve())
+            if key in seen:
+                continue
+            seen.add(key)
+            payload = _load_json_object(path)
+            if payload:
+                payloads.append((path, payload))
+    return payloads
+
+
 def check_spec_consistency(
     project_root: Path,
     mode: GateMode,
@@ -3167,6 +3201,41 @@ def check_spec_consistency(
                 "blocked": True,
             }
         )
+
+    if requirement_closure_supported(resolved_version):
+        closure_reviews: list[dict[str, Any]] = []
+        for path, payload in _iter_review_spec_payloads(project_root, resolved_version):
+            requirement_closure = payload.get("requirement_closure")
+            if not isinstance(requirement_closure, dict) or not bool(requirement_closure.get("enabled")):
+                continue
+            closure_reviews.append(
+                {
+                    "path": str(path.relative_to(project_root)),
+                    "feature": str(payload.get("feature", "") or ""),
+                    "status": str(requirement_closure.get("status", "") or "unknown"),
+                }
+            )
+            for item in requirement_closure.get("issues", []) if isinstance(requirement_closure.get("issues"), list) else []:
+                if not isinstance(item, dict):
+                    continue
+                reason_code = str(item.get("reason_code", "") or "").strip()
+                if not reason_code:
+                    continue
+                severity = str(item.get("severity", "critical") or "critical").strip().lower()
+                issues.append(
+                    {
+                        "reason_code": reason_code,
+                        "severity": "critical" if severity == "critical" else "warning",
+                        "message": f"{payload.get('feature', path.stem)}: {item.get('message', reason_code)}",
+                        "blocked": severity == "critical",
+                        "details": {
+                            "review_spec_path": str(path.relative_to(project_root)),
+                            "requirement_closure_status": str(requirement_closure.get("status", "") or "unknown"),
+                        },
+                    }
+                )
+        if closure_reviews:
+            verdict["requirement_closure_reviews"] = closure_reviews
 
     reason_codes = [str(item.get("reason_code", "")).strip() for item in issues if isinstance(item, dict)]
     reason_codes = [code for code in reason_codes if code]
