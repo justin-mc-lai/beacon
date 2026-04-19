@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 from typing import Any
 
@@ -20,6 +21,17 @@ def _safe_ratio(numerator: int, denominator: int) -> float:
     return round(float(numerator) / float(denominator), 4)
 
 
+_PROTOTYPE_SOURCE_STATUS_RE = re.compile(r"^\*\*Status\*\*:\s*`prototype-source`", re.MULTILINE)
+
+
+def _is_prototype_source_material(path: Path) -> bool:
+    try:
+        text = path.read_text(encoding="utf-8")
+    except Exception:  # noqa: BLE001
+        return False
+    return bool(_PROTOTYPE_SOURCE_STATUS_RE.search(text))
+
+
 def _story_files(project_root: Path, version: str, feature: str | None = None) -> list[Path]:
     roots = [
         project_root / "docs" / "beacon" / version / "user-story",
@@ -28,7 +40,7 @@ def _story_files(project_root: Path, version: str, feature: str | None = None) -
     for root in roots:
         if not root.exists():
             continue
-        out.extend(root.glob("*.md"))
+        out.extend(path for path in root.glob("*.md") if not _is_prototype_source_material(path))
     if feature:
         target = _slug(feature)
         out = [p for p in out if p.stem == target]

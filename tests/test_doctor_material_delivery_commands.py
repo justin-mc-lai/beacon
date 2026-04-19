@@ -6,6 +6,7 @@ from pathlib import Path
 from typer.testing import CliRunner
 
 from beacon.main import app
+from beacon.utils.coverage import compute_coverage_metrics
 
 
 runner = CliRunner()
@@ -258,3 +259,43 @@ def test_doctor_verify_materials_should_ignore_prototype_source_user_story_alias
     feature_check = {item["name"]: item for item in payload["result"]["checks"]}["main_chain_feature_completeness"]
     assert feature_check["status"] == "pass"
     assert feature_check["details"]["features"] == [canonical]
+
+
+def test_coverage_metrics_should_ignore_prototype_source_user_story_alias(tmp_path: Path):
+    version = "v1.3.4"
+    root = tmp_path / "docs" / "beacon" / version
+    (root / "user-story").mkdir(parents=True, exist_ok=True)
+    (root / ".machine" / "qa").mkdir(parents=True, exist_ok=True)
+    canonical = "beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane"
+    alias = "beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane"
+
+    (root / "user-story" / f"{canonical}.md").write_text("# canonical\n", encoding="utf-8")
+    (root / "user-story" / f"{alias}.md").write_text(
+        "# Prototype Alias\n\n**Status**: `prototype-source`\n",
+        encoding="utf-8",
+    )
+    (tmp_path / ".beacon" / "state").mkdir(parents=True, exist_ok=True)
+    (tmp_path / ".beacon" / "state" / f"implementation-{canonical}.json").write_text(
+        json.dumps({"feature": canonical, "version": version, "status": "completed"}),
+        encoding="utf-8",
+    )
+    (root / ".machine" / "qa" / f"{canonical}.ac-test-matrix.json").write_text(
+        json.dumps(
+            {
+                "entries": [
+                    {
+                        "ac_id": "AC-001",
+                        "tc_id": "TC-001",
+                        "evidence_path": "evidence.json",
+                    }
+                ]
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    (tmp_path / "evidence.json").write_text("{}", encoding="utf-8")
+
+    metrics = compute_coverage_metrics(tmp_path, version=version)
+    assert metrics["planned_story"] == 1
+    assert metrics["implemented_story"] == 1
