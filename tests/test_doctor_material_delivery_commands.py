@@ -222,3 +222,39 @@ def test_doctor_verify_materials_should_use_v113_minimum_closure_without_researc
     assert checks["research_directory_present"]["status"] == "pass"
     assert checks["research_documents_present"]["status"] == "pass"
     assert checks["formal_boundaries_present"]["status"] == "pass"
+
+
+def test_doctor_verify_materials_should_ignore_prototype_source_user_story_alias(tmp_path: Path):
+    version = "v1.3.4"
+    root = tmp_path / "docs" / "beacon" / version
+    (root / "user-story").mkdir(parents=True, exist_ok=True)
+    (root / "prd").mkdir(parents=True, exist_ok=True)
+    (root / "qa" / "test-cases").mkdir(parents=True, exist_ok=True)
+    (root / ".machine" / "qa").mkdir(parents=True, exist_ok=True)
+    (root / "execution").mkdir(parents=True, exist_ok=True)
+    (root / "release").mkdir(parents=True, exist_ok=True)
+    (root / "source-architecture").mkdir(parents=True, exist_ok=True)
+    (root / "SUMMARY.md").write_text("# summary\n", encoding="utf-8")
+    (root / "execution" / "boundaries.md").write_text("# boundaries\n", encoding="utf-8")
+    (root / "execution" / "project-skill-qa-evolution-blueprint.md").write_text("# blueprint\n", encoding="utf-8")
+    (root / "source-architecture" / "index.md").write_text("# source arch\n", encoding="utf-8")
+    (root / "release" / f"{version}.md").write_text("# release\n", encoding="utf-8")
+
+    canonical = "beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane"
+    alias = "beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane"
+    (root / "user-story" / f"{canonical}.md").write_text("# canonical user story\n", encoding="utf-8")
+    (root / "prd" / f"{canonical}.md").write_text("# canonical prd\n", encoding="utf-8")
+    (root / "qa" / "test-cases" / f"{canonical}.md").write_text("# canonical test cases\n", encoding="utf-8")
+    (root / ".machine" / "qa" / f"{canonical}.ac-test-matrix.json").write_text(json.dumps({"entries": [{}]}), encoding="utf-8")
+
+    (root / "user-story" / f"{alias}.md").write_text(
+        "# Prototype Alias\n\n**Status**: `prototype-source`\n",
+        encoding="utf-8",
+    )
+
+    result = _invoke(["doctor", "verify-materials", "--project-root", str(tmp_path), "--version", version, "--json"])
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    feature_check = {item["name"]: item for item in payload["result"]["checks"]}["main_chain_feature_completeness"]
+    assert feature_check["status"] == "pass"
+    assert feature_check["details"]["features"] == [canonical]

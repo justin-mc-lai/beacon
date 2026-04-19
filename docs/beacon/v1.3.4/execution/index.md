@@ -4,20 +4,27 @@
 
 1. `../SUMMARY.md`
 2. `./architecture-blueprint.md`
-3. `../../global-boundaries.md`
-4. `../prd/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md`
-5. `../user-story/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md`
-6. `../qa/test-cases/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md`
-7. `../prd/beacon-v1.3.4-structured-prd-generation-and-toolkit-skill-surfacing.md`
-8. `../prd/beacon-v1.3.4-runtime-evidence-layering-and-noise-governance.md`
-9. `../research/beacon-v1.3.4-management-board-lifecycle-brainstorm.md`
-10. `../research/beacon-v1.3.4-one-person-company-ops-board-model.md`
-11. `../research/beacon-v1.3.4-real-project-board-acceptance-brainstorm.md`
-12. `./beacon-toolkit-lighthouse-real-env-debug-friction-and-deterministic-projection.md`
-13. `./beacon-toolkit-lighthouse-prd-implement-drift-closure.md`
-14. `./real-project-validation-checklist-beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md`
-15. `./doctor-orchestration-blueprint.md`
-16. `../prototype/beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane/index.html`
+3. `./boundaries.md`
+4. `./project-skill-qa-evolution-blueprint.md`
+5. `../source-architecture/index.md`
+6. `../../global-boundaries.md`
+7. `../prd/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md`
+8. `../user-story/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md`
+9. `../qa/test-cases/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md`
+10. `../prd/beacon-v1.3.4-structured-prd-generation-and-toolkit-skill-surfacing.md`
+11. `../user-story/beacon-v1.3.4-structured-prd-generation-and-toolkit-skill-surfacing.md`
+12. `../qa/test-cases/beacon-v1.3.4-structured-prd-generation-and-toolkit-skill-surfacing.md`
+13. `../prd/beacon-v1.3.4-runtime-evidence-layering-and-noise-governance.md`
+14. `../user-story/beacon-v1.3.4-runtime-evidence-layering-and-noise-governance.md`
+15. `../qa/test-cases/beacon-v1.3.4-runtime-evidence-layering-and-noise-governance.md`
+16. `../research/beacon-v1.3.4-management-board-lifecycle-brainstorm.md`
+17. `../research/beacon-v1.3.4-one-person-company-ops-board-model.md`
+18. `../research/beacon-v1.3.4-real-project-board-acceptance-brainstorm.md`
+19. `./beacon-toolkit-lighthouse-real-env-debug-friction-and-deterministic-projection.md`
+20. `./beacon-toolkit-lighthouse-prd-implement-drift-closure.md`
+21. `./real-project-validation-checklist-beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md`
+22. `./doctor-orchestration-blueprint.md`
+23. `../prototype/beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane/index.html`
 
 ## 说明
 

@@ -72,16 +72,24 @@ visual plane
 
 1. `./execution/index.md`
 2. `./execution/architecture-blueprint.md`
-3. `../global-boundaries.md`
-4. `./prd/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md`
-5. `./user-story/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md`
-6. `./qa/test-cases/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md`
-7. `./prd/beacon-v1.3.4-runtime-evidence-layering-and-noise-governance.md`
-8. `./research/beacon-v1.3.4-management-board-lifecycle-brainstorm.md`
-9. `./research/beacon-v1.3.4-one-person-company-ops-board-model.md`
-10. `./research/beacon-v1.3.4-real-project-board-acceptance-brainstorm.md`
-11. `./execution/real-project-validation-checklist-beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md`
-12. `./prototype/beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane/index.html`
+3. `./execution/boundaries.md`
+4. `./execution/project-skill-qa-evolution-blueprint.md`
+5. `./source-architecture/index.md`
+6. `../global-boundaries.md`
+7. `./prd/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md`
+8. `./user-story/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md`
+9. `./qa/test-cases/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md`
+10. `./prd/beacon-v1.3.4-runtime-evidence-layering-and-noise-governance.md`
+11. `./user-story/beacon-v1.3.4-runtime-evidence-layering-and-noise-governance.md`
+12. `./qa/test-cases/beacon-v1.3.4-runtime-evidence-layering-and-noise-governance.md`
+13. `./prd/beacon-v1.3.4-structured-prd-generation-and-toolkit-skill-surfacing.md`
+14. `./user-story/beacon-v1.3.4-structured-prd-generation-and-toolkit-skill-surfacing.md`
+15. `./qa/test-cases/beacon-v1.3.4-structured-prd-generation-and-toolkit-skill-surfacing.md`
+16. `./research/beacon-v1.3.4-management-board-lifecycle-brainstorm.md`
+17. `./research/beacon-v1.3.4-one-person-company-ops-board-model.md`
+18. `./research/beacon-v1.3.4-real-project-board-acceptance-brainstorm.md`
+19. `./execution/real-project-validation-checklist-beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md`
+20. `./prototype/beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane/index.html`
 
 ## 当前版本包起点
 
