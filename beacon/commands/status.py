@@ -16,6 +16,8 @@ from beacon.utils.material_audit import build_material_audit
 from beacon.utils.qa_runtime import load_qa_status
 from beacon.utils.requirement_clarity import build_requirement_clarity_gate_payload, load_requirement_clarity_state
 from beacon.utils.release_scorecard import build_release_scorecard, summarize_release_scorecard
+from beacon.utils.runtime_projection import build_runtime_projection
+from beacon.utils.runtime_projection_store import list_projects, load_project_detail, sync_projection
 from beacon.utils.runtime import newest_run_id, read_json
 from beacon.utils.technical_review_contract import build_technical_review_gate_payload, load_technical_review_state
 from beacon.utils.versioning import describe_project_version_context, resolve_target_version
@@ -104,6 +106,19 @@ def _status_impl(
     keep_discard_engine = load_keep_discard_engine(root)
     release_scorecard = build_release_scorecard(root, version=coverage_version)
     release_summary = summarize_release_scorecard(release_scorecard)
+    runtime_projection = build_runtime_projection(
+        root,
+        docs_version=coverage_version or None,
+        feature=target_feature or None,
+    )
+    runtime_ledger = sync_projection(runtime_projection) if board else {
+        "status": "not_synced",
+        "preflight": runtime_projection.get("projection", {}).get("preflight", {}),
+        "db_path": "",
+        "pocketbase_root": "",
+    }
+    portfolio_projects = list_projects(limit=12) if board else []
+    portfolio_detail = load_project_detail(str(runtime_projection.get("project_key") or "")) if board else {}
 
     payload = {
         "team": {"known_teams": team_count},
@@ -178,10 +193,45 @@ def _status_impl(
             "feature": feature_filter or "",
             "run_id": explicit_run_filter or "",
         },
+        "runtime_projection": runtime_projection,
+        "runtime_ledger": {
+            **runtime_ledger,
+            "portfolio_projects": portfolio_projects,
+            "current_project_detail": portfolio_detail,
+        },
     }
 
     if board:
         typer.echo("Beacon Status Board")
+        board_summary = runtime_projection.get("board", {}) if isinstance(runtime_projection.get("board"), dict) else {}
+        typer.echo(f"- truth.line: {runtime_projection.get('docs_version') or coverage_version or 'unknown'}")
+        typer.echo(f"- board.project: {runtime_projection.get('display_name') or root.name}")
+        typer.echo(f"- board.project_kind: {board_summary.get('project_kind') or runtime_projection.get('project_kind') or 'unknown'}")
+        typer.echo(f"- board.current_stage: {board_summary.get('current_stage') or 'unknown'}")
+        typer.echo(f"- board.progress: {board_summary.get('progress_label') or 'unknown'}")
+        typer.echo(f"- board.blocker: {board_summary.get('blocker') or 'none'}")
+        typer.echo(f"- board.next_action: {board_summary.get('next_action') or 'none'}")
+        typer.echo(f"- board.debug_state: {board_summary.get('debug_state') or 'no_debug_feed'}")
+        typer.echo(f"- board.runtime_corroboration: {board_summary.get('runtime_corroboration') or 'missing'}")
+        typer.echo(f"- board.health: {board_summary.get('health_status') or 'unknown'}")
+        typer.echo(f"- board.active_runs: {board_summary.get('active_runs') or 0}")
+        typer.echo(f"- board.active_agents: {board_summary.get('active_agents') or 0}")
+        typer.echo(f"- board.ledger_sync: {runtime_ledger.get('status') or 'unknown'}")
+        typer.echo(f"- board.sqlite: {runtime_ledger.get('sqlite_status') or 'unknown'}")
+        typer.echo(f"- board.pocketbase: {runtime_ledger.get('pocketbase_status') or 'unknown'}")
+        control_plane = runtime_ledger.get("control_plane", {}) if isinstance(runtime_ledger.get("control_plane"), dict) else {}
+        if control_plane:
+            typer.echo(f"- board.pocketbase_binary: {control_plane.get('binary_status') or 'unknown'}")
+            if control_plane.get("admin_ui"):
+                typer.echo(f"- board.pocketbase_admin_ui: {control_plane.get('admin_ui')}")
+        typer.echo(f"- board.portfolio_projects: {len(portfolio_projects)}")
+        for index, project in enumerate(portfolio_projects[:6], start=1):
+            typer.echo(
+                f"- portfolio.{index}: "
+                f"{project.get('display_name') or project.get('project_key')} | kind={project.get('project_kind')} | "
+                f"stage={project.get('current_stage')} | debug={project.get('debug_state')} | "
+                f"next={project.get('next_action')}"
+            )
         typer.echo(f"- team.known_teams: {team_count}")
         typer.echo(f"- gate.terminal_status: {terminal_status}")
         typer.echo(f"- bridge.known_bridges: {bridge_count}")
@@ -256,8 +306,10 @@ def _status_impl(
         typer.echo(f"- coverage.full: {coverage_metrics.get('full_coverage')}")
         typer.echo(f"- version.docs: {payload.get('version_context', {}).get('docs_version')}")
         typer.echo(f"- version.runtime: {payload.get('version_context', {}).get('runtime_version')}")
+        if payload.get("version_context", {}).get("context_docs_version"):
+            typer.echo(f"- version.context_docs: {payload.get('version_context', {}).get('context_docs_version')}")
         if payload.get("version_context", {}).get("context_managed_version"):
-            typer.echo(f"- version.context: {payload.get('version_context', {}).get('context_managed_version')}")
+            typer.echo(f"- version.context_runtime: {payload.get('version_context', {}).get('context_managed_version')}")
         if payload.get("scores"):
             typer.echo(f"- score.test: {payload.get('scores', {}).get('test_score')}")
             typer.echo(f"- score.closure: {payload.get('scores', {}).get('closure_score')}")

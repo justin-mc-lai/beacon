@@ -164,6 +164,47 @@ Always report:
 - what Beacon source changes and regression tests were added, if any
 - whether the validation touched the real project worktree or only read from it
 
+## Multi-Project Board Acceptance
+
+When the target feature is a cross-project board / projection capability, extend the validation path from “single real repo command proof” to “multi-project board acceptance”.
+
+Use the assets under this skill directory:
+
+- `references/command-matrix.md`
+  - base command matrix for preflight and read-only CLI validation
+- `references/board-acceptance-record-template.md`
+  - markdown record template for multi-project board acceptance
+- `scripts/run_real_project_board_validation.sh`
+  - read-only capture script for multi-project board validation packs
+
+For Beacon `v1.3.4` board acceptance, prefer this sequence:
+
+1. Freeze the acceptance checklist in version docs.
+2. Run the multi-project validation capture script against the intended project set.
+3. Use the generated `portfolio-board.txt` / `portfolio-board.json` as the canonical homepage evidence.
+4. Use the generated `acceptance-record.md` as the prefilled review record, then complete the remaining verdict sections.
+5. For deterministic projection checks, review each target folder `projection-determinism.json`.
+6. For degradation / rebuild checks, compare per-project `status.json` truth snapshots against the isolated ledger outputs under the capture pack.
+7. Fill the record template with:
+   - homepage summary result
+   - project detail result
+   - deterministic projection result
+   - debug tri-state result
+   - degradation / rebuild result
+8. Classify outcomes into:
+   - Beacon defect
+   - project-state blocker
+   - not-yet-implemented acceptance gap
+
+The default `v1.3.4` target set should include:
+
+- `/Users/apple/Developer/Company/rolo`
+- `/Users/apple/Developer/Personal/products/slow_uni_bmtop`
+- `/Users/apple/Developer/Personal/products/shopxo_canada`
+- `/Users/apple/Developer/Personal/products/beacon`
+
+This board-acceptance path is still read-only unless the user explicitly asks for write-path validation in an isolated worktree.
+
 ## Output Standard
 
 Conclude with a compact validation summary:

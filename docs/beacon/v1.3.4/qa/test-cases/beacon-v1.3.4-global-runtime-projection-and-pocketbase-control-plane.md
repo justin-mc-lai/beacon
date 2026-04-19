@@ -6,7 +6,7 @@
 **Test Type**: ALL  
 **Version**: v1.3.4  
 **Status**: Draft  
-**Focus**: lifecycle-first board, multi-project runtime projection, PocketBase control plane, runtime drilldown, degradation and rebuild
+**Focus**: lifecycle-first board, multi-project runtime projection, real-project board acceptance, deterministic multi-write, debug tri-state, degradation and rebuild
 
 ---
 
@@ -53,6 +53,12 @@
 - Given：某个 feature 处于 `ralph` 模式
 - When：查看运行态中心
 - Then：可见 `round_count / failure_streak / next_action / current_blocker`
+
+### TC-007A (AC-007A): 不同 implement lane 仍绑定同一份 requirement closure
+
+- Given：同一 feature 分别通过 `single / team / ralph` 三种 implement lane 推进
+- When：检查其 delivery summary、review-spec 与 gate 输入
+- Then：三者都绑定同一份 PRD / user-story / test-case，且都使用同一套 promised-vs-shipped compare 与 downgrade rule
 
 ### TC-008 (AC-008): Git / Worktree 治理信息完整
 
@@ -102,6 +108,78 @@
 - When：检查 `portfolio-overview / project-detail / runtime-center / recovery-diagnostics` 页面与关键状态
 - Then：页面结构、状态命名、边界约束与主 AC 一致，不得出现首页暴露 runtime 洪流、遗漏项目详情面板或把 `omc / omx` 带入默认导航
 
+### TC-016 (AC-015): 四个真实项目都能成功并板
+
+- Given：机器上存在 `rolo / slow_uni_bmtop / shopxo_canada / beacon` 四个真实项目
+- When：执行项目发现、投影和看板刷新
+- Then：四个项目都必须被注册并显示在 `Beacon 管理看板`
+
+### TC-017 (AC-016): `rolo` 以 workspace 语义显示正确
+
+- Given：`/Users/apple/Developer/Company/rolo` 含 root `.beacon`、多 child repo 与最新 debug runtime friction
+- When：查看首页卡片与详情页
+- Then：必须展示为 `multi_repo_workspace`，debug 状态为 `runtime_feed_only`，且不能退化为单服务单仓判定
+
+### TC-018 (AC-016): `slow_uni_bmtop` 以单仓 + materialized_issue 显示正确
+
+- Given：`/Users/apple/Developer/Personal/products/slow_uni_bmtop` 存在 `debug/index.json` 与 `debug/issues/beacon-core--runtime_feedback.json`
+- When：查看首页卡片与详情页
+- Then：必须展示为 `single_repo`，debug 状态为 `materialized_issue`
+
+### TC-019 (AC-016): `shopxo_canada` 无 debug feed 但仍保留项目态
+
+- Given：`/Users/apple/Developer/Personal/products/shopxo_canada` 存在 `.beacon` 运行态与 team/handoff 证据，但无 `debug/index.json`
+- When：查看首页卡片与详情页
+- Then：必须展示 `no_debug_feed`，但仍显示项目推进、runtime 摘要与下一步
+
+### TC-020 (AC-016, AC-022): `beacon` 源码项目自并板正确
+
+- Given：`/Users/apple/Developer/Personal/products/beacon` 本身处于 `v1.3.4` 主线
+- When：查看首页卡片与详情页
+- Then：必须按普通受管项目显示 `v1.3.4` 自迭代状态，不依赖特殊硬编码旁路
+
+### TC-021 (AC-017): CEO 首页一眼分辨四项目差异
+
+- Given：四项目同时出现在首页
+- When：从 CEO 视图进行巡检
+- Then：必须一眼分辨 workspace 项目、单仓项目、无 debug feed 项目和 Beacon 自演进项目，不得出现四张同质卡片
+
+### TC-022 (AC-018): 详情页解释性成立
+
+- Given：进入四个真实项目中的任一详情页
+- When：查看 project_kind、lifecycle、debug state、recommended next step 说明
+- Then：页面必须能解释这些字段为何成立，以及主要来源来自哪类 truth
+
+### TC-023 (AC-019): Deterministic projection envelope 重复执行一致
+
+- Given：固定同一份 `docs/beacon + .beacon + git/worktree` snapshot
+- When：重复执行 projection 两次以上
+- Then：生成的 `projection envelope`、`source_hash`、`projection_seq` 一致，SQLite / PocketBase 看到的输入版本一致
+
+### TC-024 (AC-020): Branch / Worktree 冲突只能进入 partial / conflicted
+
+- Given：用户显式 branch、git worktree 实证与 heuristic 推断存在冲突
+- When：执行 preflight 与投影写入
+- Then：系统必须 `reject / partial / conflicted`，并提供 doctor 提示，不得静默覆盖
+
+### TC-025 (AC-021): Debug 三态被正式建模
+
+- Given：真实项目分别对应 `materialized_issue / runtime_feed_only / no_debug_feed`
+- When：查看看板、详情页与诊断页
+- Then：三态必须有稳定命名、展示与治理语义，不得混淆成“有 issue / 无 issue”二元状态
+
+### TC-026 (AC-023): 断库后可重建四项目最小并板状态
+
+- Given：SQLite / PocketBase 缺失，但四项目的 `docs/beacon`、`.beacon` 与 git/worktree 仍存在
+- When：执行重建
+- Then：至少恢复 project registry、project_kind、lifecycle 摘要、debug 三态、推荐下一步
+
+### TC-027 (AC-024): 真实项目验收留痕
+
+- Given：完成一次四项目并板验收
+- When：检查验证输出
+- Then：必须存在机器可读或文档化验收记录，可回溯项目路径、时间、结果与阻塞项
+
 ---
 
 ## Suggested Commands
@@ -109,6 +187,10 @@
 - `BEACON_ALLOW_CONTEXT_VERSION_DRIFT=1 python3 -m beacon.main prototype status beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane --project /Users/apple/Developer/Personal/products/beacon --version v1.3.4 --json`
 - `BEACON_ALLOW_CONTEXT_VERSION_DRIFT=1 python3 -m beacon.main prototype review beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane --project /Users/apple/Developer/Personal/products/beacon --version v1.3.4 --json`
 - `BEACON_ALLOW_CONTEXT_VERSION_DRIFT=1 python3 -m beacon.main prototype directory beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane --project /Users/apple/Developer/Personal/products/beacon --version v1.3.4 --json`
+- `python3 -m beacon.main status --project /Users/apple/Developer/Company/rolo --json`
+- `python3 -m beacon.main status --project /Users/apple/Developer/Personal/products/slow_uni_bmtop --json`
+- `python3 -m beacon.main status --project /Users/apple/Developer/Personal/products/shopxo_canada --json`
+- `python3 -m beacon.main status --project /Users/apple/Developer/Personal/products/beacon --json`
 
 ---
 
@@ -131,4 +213,15 @@
 | TC-013 | Pending | from AC-012 |
 | TC-014 | Pending | from AC-013 |
 | TC-015 | Pending | from AC-014 |
-
+| TC-016 | Pending | from AC-015 |
+| TC-017 | Pending | from AC-016 |
+| TC-018 | Pending | from AC-016 |
+| TC-019 | Pending | from AC-016 |
+| TC-020 | Pending | from AC-016, AC-022 |
+| TC-021 | Pending | from AC-017 |
+| TC-022 | Pending | from AC-018 |
+| TC-023 | Pending | from AC-019 |
+| TC-024 | Pending | from AC-020 |
+| TC-025 | Pending | from AC-021 |
+| TC-026 | Pending | from AC-023 |
+| TC-027 | Pending | from AC-024 |

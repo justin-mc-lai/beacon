@@ -103,6 +103,7 @@ def test_inspect_context_file_should_detect_corruption_and_version_drift(tmp_pat
     assert corrupted_info["marker_integrity"] == "corrupted"
     assert drifted_info["marker_integrity"] == "ok"
     assert drifted_info["managed_version"] == "v1.0.0"
+    assert drifted_info["managed_docs_version"] == "v1.0.0"
     assert drifted_info["version_drift"] is True
 
 
@@ -127,11 +128,33 @@ def test_setup_context_files_should_create_both_files_with_markers(tmp_path: Pat
         assert MANAGED_BLOCK_START in content
         assert MANAGED_BLOCK_END in content
         assert "BEACON:VERSION:v1.2.3" in content
+        assert "BEACON:DOCS_VERSION:v1.2.3" in content
     assert "docs/beacon/<version>/` is the canonical source of truth" in claude
     assert "Use `docs/beacon/<version>/` as the canonical delivery tree." in agents
     assert "跨版本全局约束" in global_boundaries
     assert "docs/product/<version>" not in claude
     assert "docs/product/<version>" not in agents
+
+
+def test_setup_context_files_should_allow_docs_target_to_differ_from_runtime(tmp_path: Path):
+    payload = setup_context_files(
+        tmp_path,
+        runtime_version="v1.3.3",
+        dry_run=False,
+        force=False,
+        with_claude=True,
+        with_agents=True,
+        docs_version="v1.3.4",
+    )
+
+    assert payload["docs_version"] == "v1.3.4"
+    claude = (tmp_path / "CLAUDE.md").read_text(encoding="utf-8")
+    agents = (tmp_path / "AGENTS.md").read_text(encoding="utf-8")
+    for content in (claude, agents):
+        assert "BEACON:VERSION:v1.3.3" in content
+        assert "BEACON:DOCS_VERSION:v1.3.4" in content
+        assert "Runtime target version: `v1.3.3`" in content
+        assert "Docs target version: `v1.3.4`" in content
 
 
 def test_verify_context_files_should_return_expected_checks_and_statuses(tmp_path: Path):

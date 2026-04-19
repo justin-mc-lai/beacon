@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 from typing import Any
 
@@ -36,10 +37,28 @@ def _status_from_checks(checks: list[dict[str, Any]]) -> str:
     return "pass"
 
 
+_PROTOTYPE_SOURCE_STATUS_RE = re.compile(r"^\*\*Status\*\*:\s*`prototype-source`", re.MULTILINE)
+
+
+def _is_prototype_source_material(path: Path) -> bool:
+    try:
+        text = path.read_text(encoding="utf-8")
+    except Exception:  # noqa: BLE001
+        return False
+    return bool(_PROTOTYPE_SOURCE_STATUS_RE.search(text))
+
+
 def _feature_names(directory: Path) -> set[str]:
     if not directory.exists():
         return set()
-    return {path.stem for path in directory.glob("*.md") if path.is_file() and path.stem != "index"}
+    names: set[str] = set()
+    for path in directory.glob("*.md"):
+        if not path.is_file() or path.stem == "index":
+            continue
+        if _is_prototype_source_material(path):
+            continue
+        names.add(path.stem)
+    return names
 
 
 def build_material_audit(project_root: Path | str, *, version: str | None = None, strict: bool = False) -> dict[str, Any]:

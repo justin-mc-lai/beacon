@@ -88,9 +88,75 @@ team/subagent 只能作为内部执行面存在，不应取代这两个主入口
 
 而不是人类主流程的新增常驻步骤。
 
+## Requirement Closure 全局约束
+
+### 7. `prd → user-story → test-case → acceptance` 是 Beacon 立项根本
+
+Beacon 的立项根本，不只是存在一条 6 段主流程，而是要求前 3 段形成正式 requirement truth，并支撑后续 acceptance：
+
+```text
+prd
+→ user-story
+→ test-case
+→ acceptance
+```
+
+全局规则：
+
+- `prd` 定义问题、目标、边界与承诺面
+- `user-story` 把 `prd` 编译成可执行的角色目标与 acceptance criteria
+- `test-case` 把 `user-story` 编译成可验收场景
+- `implement / qa / release` 只能沿这条链闭环，不得反向改写 requirement truth
+
+规则：
+
+> Beacon 的实现、验收、发布，必须回到 `prd / user-story / test-case` 的统一 truth，而不是由 runtime 状态、代理模式或局部完成信号单独定义“算不算完成”。
+
+### 8. 所有 implement lane 都必须绑定同一份 requirement truth
+
+无论后续实现通过：
+
+- `implement single`
+- `implement team`
+- `implement ralph`
+
+哪一条 lane 推进，它们都必须：
+
+- 绑定同一份 `prd`
+- 绑定同一份 `user-story`
+- 绑定同一份 `test-case`
+- 接受同一套 acceptance / gate 判断
+
+禁止出现：
+
+- `single` 按 PRD 验收
+- `team` 按 agent 完成度验收
+- `ralph` 按 round 结束验收
+
+规则：
+
+> runtime mode 只能改变执行形态，不能改变 requirement truth。
+
+### 9. requirement traceability 必须能被 review-spec / gate 检查
+
+Beacon 默认必须支持把下列对齐关系做成正式检查对象：
+
+- `PRD promised surfaces`
+- `User Story acceptance criteria`
+- `Test Case acceptance coverage`
+- `Implementation shipped surfaces`
+- `QA / release gate verdict`
+
+如果这条链断裂，则必须：
+
+- 阻断
+- 或明确 downgrade 并留下批准记录
+
+而不能静默滑过。
+
 ## 宿主约束
 
-### 7. 宿主上下文必须唯一
+### 10. 宿主上下文必须唯一
 
 Beacon 只讨论：
 
@@ -106,7 +172,7 @@ Beacon 只讨论：
 
 > 当前宿主是谁，就只判断当前宿主是否支持原生 subagent/team 能力。
 
-### 8. 外部运行时只可作为调研借鉴，不能默认进入主叙事
+### 11. 外部运行时只可作为调研借鉴，不能默认进入主叙事
 
 像 `omx` 这样的外部运行时，可以作为研究样本，用于借鉴：
 
@@ -118,7 +184,7 @@ Beacon 只讨论：
 
 ## 默认行为边界约束
 
-### 9. 外部规范仓库只可借鉴吸收，不形成默认依赖
+### 12. 外部规范仓库只可借鉴吸收，不形成默认依赖
 
 像 `forrestchang/andrej-karpathy-skills` 这类开源行为规范仓库，只能作为 Beacon 的研究与提炼来源。
 
@@ -135,7 +201,7 @@ Beacon 只讨论：
 - 要求运行时调用外部 skill 才能满足 Beacon 默认规范
 - 把外部规范仓库升级为 Beacon 的正式主依赖
 
-### 10. 默认行为边界必须同时约束 Beacon 自身与目标项目
+### 13. 默认行为边界必须同时约束 Beacon 自身与目标项目
 
 这份 `global-boundaries` 不只约束 Beacon 源码仓自身，也约束接入 Beacon 的目标项目。
 
@@ -149,7 +215,7 @@ Beacon 只讨论：
 
 > Beacon 的极简心智面与默认行为边界，既是 Beacon 自己的开发规范，也是目标项目的默认继承规范。
 
-### 11. 默认行为边界必须包含四类轻量原则
+### 14. 默认行为边界必须包含四类轻量原则
 
 在不扩张人类主流程的前提下，Beacon 默认应吸收以下四类行为边界：
 
@@ -171,7 +237,7 @@ Beacon 只讨论：
    - feature 要有 acceptance/test 映射
    - refactor 要有 before/after 验证
 
-### 12. trivial task 可以轻量处理，但不能越界
+### 15. trivial task 可以轻量处理，但不能越界
 
 Beacon 默认规范允许对低风险 trivial task 做轻量处理，例如：
 
@@ -191,7 +257,7 @@ Beacon 默认规范允许对低风险 trivial task 做轻量处理，例如：
 
 ## 输出约束
 
-### 13. 人类输出必须极简
+### 16. 人类输出必须极简
 
 对人类的默认输出必须控制为：
 
@@ -200,7 +266,7 @@ Beacon 默认规范允许对低风险 trivial task 做轻量处理，例如：
 - 一个推荐下一步
 - 一个 fallback 或修复命令
 
-### 14. 机器输出必须完整
+### 17. 机器输出必须完整
 
 对机器和审计面必须保留完整输出：
 

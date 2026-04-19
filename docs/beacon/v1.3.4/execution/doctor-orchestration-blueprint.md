@@ -39,7 +39,10 @@
 19. `advise`
 20. `setup-codex-hud-hook`
 21. `verify-codex-hud-hook`
-22. `doctor --fix`
+22. `verify-runtime-ledger`
+23. `export-runtime-ledger`
+24. `rebuild-runtime-ledger`
+25. `doctor --fix`
 
 其中复合编排最明确的仍是：
 
@@ -125,6 +128,9 @@
 16. `host.quiet-worktree.manage`
 17. `host.setup.codex-hud-hook`
 18. `host.verify.codex-hud-hook`
+19. `projection.verify.runtime-ledger`
+20. `projection.export.runtime-ledger`
+21. `projection.rebuild.runtime-ledger`
 
 ### 3.3 Orchestrator
 
@@ -218,6 +224,34 @@
 ### 4.6 `runtime` / `package` / `host`
 
 这三组也已进入统一执行面：
+
+1. `runtime.verify.subagent-runtime`
+2. `runtime.verify.subagent-delegation`
+3. `package.repair.v115-delivery`
+4. `package.upgrade.version-package`
+5. `package.verify.source-architecture-status`
+6. `host.quiet-worktree.manage`
+7. `host.setup.codex-hud-hook`
+8. `host.verify.codex-hud-hook`
+
+### 4.7 `projection`
+
+`v1.3.4` 新增的运行态账本治理，也收敛到同一套 registry + orchestrator 模式：
+
+1. `projection.verify.runtime-ledger`
+   - 负责验证 deterministic projection、preflight、SQLite 可用性、PocketBase control-plane scaffold
+2. `projection.export.runtime-ledger`
+   - 负责导出 SQLite / projection envelope / PocketBase scaffold 作为备份包
+3. `projection.rebuild.runtime-ledger`
+   - 负责从 `docs/beacon + .beacon` 重新投影并恢复最小可用 ledger 状态
+
+对外 CLI surface 仍收敛在：
+
+1. `beacon doctor verify-runtime-ledger`
+2. `beacon doctor export-runtime-ledger`
+3. `beacon doctor rebuild-runtime-ledger`
+
+这样保持了 `status / doctor` 承担观测与修复入口的产品边界，不新增新的一级主命令。
 
 1. `runtime`
    - `verify-subagent-runtime`

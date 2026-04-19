@@ -29,6 +29,9 @@ from beacon.utils.doctor_orchestrator import (
     run_package_upgrade,
     run_quiet_worktree,
     run_requirement_clarity_sync,
+    run_runtime_ledger_export,
+    run_runtime_ledger_rebuild,
+    run_runtime_ledger_verify,
     run_subagent_delegation_verify,
     run_subagent_runtime_verify,
     run_technical_review_contract_sync,
@@ -206,6 +209,25 @@ def _print_quiet_worktree_result(payload: dict[str, Any]) -> None:
             typer.echo(f"- {pattern}")
 
 
+def _print_runtime_ledger_result(title: str, payload: dict[str, Any]) -> None:
+    typer.echo(title)
+    typer.echo("=" * len(title))
+    typer.echo(f"status: {payload.get('status', '')}")
+    if payload.get("project_root"):
+        typer.echo(f"project_root: {payload.get('project_root')}")
+    if payload.get("db_path"):
+        typer.echo(f"db_path: {payload.get('db_path')}")
+    if payload.get("envelope_path"):
+        typer.echo(f"envelope_path: {payload.get('envelope_path')}")
+    control_plane = payload.get("control_plane") if isinstance(payload.get("control_plane"), dict) else {}
+    if control_plane:
+        typer.echo(f"pocketbase_status: {control_plane.get('status', '')}")
+        typer.echo(f"pocketbase_binary: {control_plane.get('binary_status', '')}")
+        typer.echo(f"pocketbase_admin_ui: {control_plane.get('admin_ui', '')}")
+    for item in payload.get("checks", []):
+        typer.echo(f"- {str(item.get('status', 'warn')).upper()}: {item.get('name')} ({json.dumps(item.get('details', {}), ensure_ascii=False)})")
+
+
 def _print_codex_hud_hook_setup_result(payload: dict[str, Any]) -> None:
     typer.echo("Beacon Doctor Codex HUD Hook Setup")
     typer.echo("=" * 34)
@@ -334,6 +356,7 @@ def uninstall(
 @app.command("setup-context")
 def setup_context(
     project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    version: str = typer.Option("", "--version", "-v", help="Target docs version to anchor into managed context"),
     dry_run: bool = typer.Option(False, "--dry-run", help="Preview without writing files"),
     force: bool = typer.Option(False, "--force", help="Append managed blocks when markers are missing"),
     sync_materials: bool = typer.Option(False, "--sync-materials/--no-sync-materials", help="Sync machine requirement materials after context refresh."),
@@ -348,6 +371,7 @@ def setup_context(
     """Create or refresh managed Beacon context blocks in CLAUDE.md/AGENTS.md."""
     execution = run_context_setup(
         project_root=project_root,
+        version=version,
         dry_run=dry_run,
         force=force,
         sync_materials=sync_materials,
@@ -535,6 +559,87 @@ def verify_subagent_delegation(
             typer.echo(f"- {item.get('name')}: {item.get('ok')} ({item.get('detail')})")
         if result.get("recommended_command"):
             typer.echo(f"recommended_command: {result.get('recommended_command')}")
+    raise typer.Exit(code=execution.exit_code)
+
+
+@app.command("verify-runtime-ledger")
+def verify_runtime_ledger(
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    version: str = typer.Option("", "--version", "-v", help="Target docs version"),
+    feature: str = typer.Option("", "--feature", help="Feature name"),
+    strict: bool = typer.Option(False, "--strict", help="Treat warnings as blocked"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Verify runtime-ledger determinism and PocketBase control-plane readiness."""
+    execution = run_runtime_ledger_verify(
+        project_root=project_root,
+        version=version,
+        feature=feature,
+        strict=strict,
+    )
+    payload = execution.payload
+    result = payload.get("result", {}) if isinstance(payload.get("result"), dict) else {}
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        _print_runtime_ledger_result("Beacon Doctor Runtime Ledger Verify", result)
+        typer.echo(f"Overall: {payload.get('status')}")
+    raise typer.Exit(code=execution.exit_code)
+
+
+@app.command("export-runtime-ledger")
+def export_runtime_ledger(
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    label: str = typer.Option("", "--label", help="Optional export label"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Export runtime-ledger SQLite, projection envelopes, and PocketBase scaffold."""
+    execution = run_runtime_ledger_export(
+        project_root=project_root,
+        label=label,
+    )
+    payload = execution.payload
+    result = payload.get("result", {}) if isinstance(payload.get("result"), dict) else {}
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo("Beacon Doctor Runtime Ledger Export")
+        typer.echo("=" * 35)
+        typer.echo(f"export_root: {result.get('export_root', '')}")
+        copied = result.get("copied", {}) if isinstance(result.get("copied"), dict) else {}
+        for key, value in copied.items():
+            typer.echo(f"- {key}: {value}")
+    raise typer.Exit(code=execution.exit_code)
+
+
+@app.command("rebuild-runtime-ledger")
+def rebuild_runtime_ledger(
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    version: str = typer.Option("", "--version", "-v", help="Target docs version"),
+    feature: str = typer.Option("", "--feature", help="Feature name"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Rebuild runtime-ledger projection from local Beacon truth."""
+    execution = run_runtime_ledger_rebuild(
+        project_root=project_root,
+        version=version,
+        feature=feature,
+    )
+    payload = execution.payload
+    result = payload.get("result", {}) if isinstance(payload.get("result"), dict) else {}
+    sync_payload = result.get("sync", {}) if isinstance(result.get("sync"), dict) else {}
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo("Beacon Doctor Runtime Ledger Rebuild")
+        typer.echo("=" * 36)
+        typer.echo(f"project_root: {result.get('project_root', '')}")
+        typer.echo(f"status: {result.get('status', '')}")
+        typer.echo(f"docs_version: {result.get('docs_version', '')}")
+        typer.echo(f"project_key: {result.get('project_key', '')}")
+        typer.echo(f"envelope_path: {result.get('envelope_path', '')}")
+        typer.echo(f"sqlite_status: {sync_payload.get('sqlite_status', '')}")
+        typer.echo(f"pocketbase_status: {sync_payload.get('pocketbase_status', '')}")
     raise typer.Exit(code=execution.exit_code)
 
 

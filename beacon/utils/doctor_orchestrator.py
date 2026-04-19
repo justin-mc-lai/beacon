@@ -188,6 +188,7 @@ def run_doctor_advise(
 def run_context_setup(
     *,
     project_root: str,
+    version: str | None = None,
     dry_run: bool,
     force: bool,
     sync_materials: bool,
@@ -199,12 +200,13 @@ def run_context_setup(
     with_gitignore: bool,
 ) -> DoctorExecutionResult:
     """Run the context setup orchestration."""
-    ctx = build_doctor_execution_context(project_root, dry_run=dry_run)
+    ctx = build_doctor_execution_context(project_root, version=version or None, dry_run=dry_run)
     version_context = ctx.version_context or {}
     result = run_doctor_handler(
         "context.setup.managed-files",
         project_root=ctx.project_root,
         runtime_version=ctx.runtime_version,
+        docs_version=str(version_context.get("docs_version", "") or ctx.runtime_version),
         dry_run=dry_run,
         force=force,
         with_claude=with_claude,
@@ -528,6 +530,79 @@ def run_subagent_delegation_verify(
         "result": result,
     }
     return DoctorExecutionResult(payload=payload, exit_code=0 if payload["status"] == "PASS" else 2)
+
+
+def run_runtime_ledger_verify(
+    *,
+    project_root: str,
+    version: str,
+    feature: str,
+    strict: bool,
+) -> DoctorExecutionResult:
+    """Verify runtime-ledger determinism and control-plane readiness."""
+    ctx = build_doctor_execution_context(project_root, version=version or None, strict=strict)
+    result = run_doctor_handler(
+        "projection.verify.runtime-ledger",
+        project_root=ctx.project_root,
+        version=version or None,
+        feature=feature or None,
+    )
+    status = str(result.get("status", "warn")).lower()
+    payload = {
+        "schema_version": "2.0",
+        "action": "verify-runtime-ledger",
+        "status": _map_verify_status("fail" if strict and status == "warn" else status),
+        "version_context": ctx.version_context or {},
+        "version_semantics": (ctx.version_context or {}).get("version_semantics", {}),
+        "result": result,
+    }
+    return DoctorExecutionResult(payload=payload, exit_code=0 if payload["status"] != "BLOCKED" else 2)
+
+
+def run_runtime_ledger_export(
+    *,
+    project_root: str,
+    label: str,
+) -> DoctorExecutionResult:
+    """Export runtime-ledger artifacts for backup."""
+    ctx = build_doctor_execution_context(project_root, include_version_context=False)
+    result = run_doctor_handler(
+        "projection.export.runtime-ledger",
+        label=label or None,
+    )
+    payload = {
+        "schema_version": "2.0",
+        "action": "export-runtime-ledger",
+        "status": "PASS",
+        "project_root": str(ctx.project_root),
+        "result": result,
+    }
+    return DoctorExecutionResult(payload=payload, exit_code=0)
+
+
+def run_runtime_ledger_rebuild(
+    *,
+    project_root: str,
+    version: str,
+    feature: str,
+) -> DoctorExecutionResult:
+    """Rebuild runtime-ledger projection from local truth."""
+    ctx = build_doctor_execution_context(project_root, version=version or None)
+    result = run_doctor_handler(
+        "projection.rebuild.runtime-ledger",
+        project_root=ctx.project_root,
+        version=version or None,
+        feature=feature or None,
+    )
+    payload = {
+        "schema_version": "2.0",
+        "action": "rebuild-runtime-ledger",
+        "status": _map_verify_status(str(result.get("status", "warn")).lower()),
+        "version_context": ctx.version_context or {},
+        "version_semantics": (ctx.version_context or {}).get("version_semantics", {}),
+        "result": result,
+    }
+    return DoctorExecutionResult(payload=payload, exit_code=0 if payload["status"] != "BLOCKED" else 2)
 
 
 def run_delivery_verify(

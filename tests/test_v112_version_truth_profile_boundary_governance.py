@@ -109,6 +109,18 @@ def _seed_context_markers(root: Path, version: str = VERSION) -> None:
     (root / "CLAUDE.md").write_text(marker, encoding="utf-8")
 
 
+def _seed_split_context_markers(root: Path, *, runtime_version: str, docs_version: str) -> None:
+    content = (
+        "<!-- BEACON:START -->\n"
+        f"<!-- BEACON:VERSION:{runtime_version} -->\n"
+        f"<!-- BEACON:DOCS_VERSION:{docs_version} -->\n"
+        "# Context\n"
+        "<!-- BEACON:END -->\n"
+    )
+    (root / "AGENTS.md").write_text(content, encoding="utf-8")
+    (root / "CLAUDE.md").write_text(content, encoding="utf-8")
+
+
 def _write_takeover_state(root: Path, *, frozen_at: str = "") -> None:
     (root / ".beacon" / "state").mkdir(parents=True, exist_ok=True)
     write_json(
@@ -184,6 +196,22 @@ def test_v112_user_story_create_should_block_on_context_version_mismatch(tmp_pat
     assert result.exit_code == 2, result.stdout
     assert "context-managed version" in result.stdout
     assert VERSION in result.stdout
+
+
+def test_v112_help_should_prefer_context_docs_target_over_runtime_marker_for_planning_line(tmp_path: Path):
+    _seed_feature_docs(tmp_path, version="v1.1.12")
+    _seed_split_context_markers(tmp_path, runtime_version="v1.1.12", docs_version="v1.1.13")
+    extra = tmp_path / "docs" / "beacon" / "v1.1.13"
+    (extra / "execution").mkdir(parents=True, exist_ok=True)
+    (extra / "SUMMARY.md").write_text("# Summary v1.1.13\n", encoding="utf-8")
+    (extra / "execution" / "boundaries.md").write_text("# Boundaries\n", encoding="utf-8")
+
+    result = _invoke(["help", "--project-root", str(tmp_path), "--version", "v1.1.13", "--feature", FEATURE, "--json"])
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["blocked_reason"] != "context_version_mismatch"
+    assert payload["version_context"]["context_managed_version"] == "v1.1.12"
+    assert payload["version_context"]["context_docs_version"] == "v1.1.13"
 
 
 def test_v112_project_skill_boundary_should_block_stage_capability_and_evidence_mismatch(tmp_path: Path):

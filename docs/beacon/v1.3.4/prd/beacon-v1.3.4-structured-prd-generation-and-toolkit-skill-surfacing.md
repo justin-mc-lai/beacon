@@ -52,6 +52,18 @@
 
 > 文档承诺与宿主可见 skill surface 脱节，用户在 Codex/Claude 中无法通过一致的 Beacon skill 路由使用该 toolkit。
 
+### 1.3 以上摩擦已经进入 Beacon debug issue
+
+本并行 PRD 不是抽象猜测，而是直接承接 Beacon 自身已记录的 debug issue：
+
+- `beacon-core--prd-create-generic-template-only`
+- `beacon-core--missing-memory-friction-subskill`
+
+这意味着 `v1.3.4` 必须把下面两件事从“已知摩擦”升级为“正式交付”：
+
+1. `prd create` 不再只是通用模板生成器。
+2. 已进入版本叙事的 optional toolkit 必须拥有真实可达的宿主 skill surface。
+
 ## 2. 目标
 
 ### 2.1 让 `prd create` 成为正式 requirement bootstrap 入口
@@ -185,6 +197,30 @@ memory/friction toolkit 即使补足子 skill，也仍应保持：
 - analysis plane
 - 不替代 `prd/user-story/test-case/implement/qa/release`
 
+### FR-008 debug issue 必须能落到并行 PRD 修复线
+
+当 Beacon 自身 debug issue 命中 requirement/tooling/surface 类摩擦时，系统必须支持把它们明确映射到并行 PRD，而不是只停留在 `.beacon/debug/`。
+
+至少要支持：
+
+- issue id
+- reason code
+- sample friction
+- suggested capability
+- 映射到哪条并行 PRD
+
+### FR-009 PRD 生成器必须能写出 debug-driven repair skeleton
+
+对于这类由 Beacon 自身 debug issue 驱动的修复线，`prd create` 或等价 requirement 入口至少要支持生成：
+
+- 问题来源
+- issue mapping
+- 修复目标
+- feature slices
+- 验收标准
+
+而不是继续要求人工先删空模板再手写。
+
 ## 6. 候选实现方向
 
 ### Slice A：结构化 PRD 生成器
@@ -212,6 +248,7 @@ memory/friction toolkit 即使补足子 skill，也仍应保持：
 | `prd create` 继续泛化，用户仍要大幅重写 | 高 | 建立最小模板注册机制，先覆盖真实高频场景 |
 | toolkit 子 skill 补齐后侵入主面 | 中 | 保持 optional supplemental 定位，不放入主 `6+3` |
 | 文档与入口再次漂移 | 高 | 把 skill drift 检查扩到 optional toolkit 子 skill 暴露 |
+| debug issue 仍只停留在本地记录，不进入 requirement 修复线 | 高 | 明确 requirement/tooling 类 issue 必须映射到并行 PRD |
 
 ## 8. 验收标准
 
@@ -231,11 +268,20 @@ memory/friction toolkit 即使补足子 skill，也仍应保持：
 
 补齐子 skill 后，默认主面仍只围绕 `6+3`，optional toolkit 只作为补充面存在。
 
+### AC-005 debug issue 与并行 PRD 有明确映射
+
+`beacon-core--prd-create-generic-template-only` 与 `beacon-core--missing-memory-friction-subskill` 必须在本并行 PRD 中有明确对应，不允许 debug 记录和版本内修复线脱节。
+
+### AC-006 生成器支持 debug-driven requirement skeleton
+
+当后续再出现 requirement/tooling 类 Beacon debug issue 时，PRD 入口至少要能生成适用于并行 PRD 的结构化 repair skeleton，而不是继续回退到 generic template。
+
 ## 9. 成功指标
 
 - 新建 `v1.3.x` PRD 时，不再需要先删掉 80% 占位模板再重写
 - 版本包文档里承诺的 optional toolkit 能通过宿主 skill 真实抵达
 - Beacon skill 文案、examples、实际入口三者一致
+- requirement/tooling 类 debug issue 能被稳定吸收到版本内并行 PRD
 
 ## 10. 与主 PRD 的关系
 
@@ -244,6 +290,13 @@ memory/friction toolkit 即使补足子 skill，也仍应保持：
 - `beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane`
 
 它解决的是“如何更正确地建立和暴露 v1.3.4 requirement/toolkit surface”，而不是 PocketBase 多项目运行态本身。
+
+## 11. 关联 Debug Issues
+
+| issue_id | reason_code | requirement mapping |
+|------|------|------|
+| `beacon-core--prd-create-generic-template-only` | `prd-create-generic-template-only` | `prd create` 结构化、版本感知、repair-skeleton 化 |
+| `beacon-core--missing-memory-friction-subskill` | `missing-memory-friction-subskill` | memory/friction toolkit host-visible skill 补齐 |
 
 ---
 

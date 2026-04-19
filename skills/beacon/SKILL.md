@@ -71,6 +71,7 @@ Optional supplemental skills:
 
 - `beacon-prd-bootstrap`: one-click PRD + user-story + test-case bootstrap with safe defaults
 - `beacon-toolkit-lighthouse`: fast single-file analysis without entering the main workflow
+- `beacon-memory-friction-evolution`: host-visible memory / friction evolution toolkit for optional analysis and writeback planning
 - `beacon-real-project-validation`: prove Beacon works against a real target project
 
 ## Current v1.3.3 Additions
@@ -78,7 +79,7 @@ Optional supplemental skills:
 - **Minimal HUD**: a 1-3 line HUD contract for `help/status`, Ralph, team execution, and Codex fixed HUD injection.
 - **Codex fixed HUD hook**: `debug codex-fixed-hud` supports `UserPromptSubmit`, `SessionStart`, `SessionResume`, and `SessionRefresh`, returning HUD text through `hookSpecificOutput.additionalContext`.
 - **PRD bootstrap skill**: `beacon-prd-bootstrap` is a human skill, not a new public core command. It defaults to dry-run, strict context verification, no-overwrite, atomic writes, rollback/lock governance.
-- **Memory friction toolkit**: memory evolution and target-project friction learning run beside `beacon-toolkit-lighthouse`; they do not expand the main human surface.
+- **Memory friction toolkit**: memory evolution and target-project friction learning run beside `beacon-toolkit-lighthouse`; use the optional `beacon-memory-friction-evolution` host skill when this analysis plane needs to be explicitly routed.
 - **Release gate consistency**: coverage, evidence manifest hashes, implementation-plan progress, and QA matrices are release-gate checked for v1.3.3.
 
 ## Quick Start
@@ -119,6 +120,16 @@ Run final release checks:
 ```bash
 bash skills/beacon/scripts/run_beacon.sh gate check release --project-root . --version v1.3.3 --json
 bash skills/beacon/scripts/run_beacon.sh release check v1.3.3 --project .
+```
+
+Optional analysis surface:
+
+```bash
+bash skills/beacon/scripts/run_beacon.sh memory-friction-evolution run \
+  --project-root . \
+  --version v1.3.3 \
+  --mode both \
+  --json
 ```
 
 ## Workflow Model

@@ -10,8 +10,10 @@ from typing import Literal, TypedDict
 MANAGED_BLOCK_START = "<!-- BEACON:START -->"
 MANAGED_BLOCK_END = "<!-- BEACON:END -->"
 MANAGED_VERSION_MARKER_FORMAT = "<!-- BEACON:VERSION:{version} -->"
+MANAGED_DOCS_VERSION_MARKER_FORMAT = "<!-- BEACON:DOCS_VERSION:{version} -->"
 
 _MARKER_VERSION_PATTERN = re.compile(r"<!--\s*BEACON:VERSION:([^>\s]+)\s*-->")
+_MARKER_DOCS_VERSION_PATTERN = re.compile(r"<!--\s*BEACON:DOCS_VERSION:([^>\s]+)\s*-->")
 
 _MARKER_OK = "ok"
 _MARKER_MISSING = "missing"
@@ -36,6 +38,7 @@ class ContextFileInspection(TypedDict):
     exists: bool
     marker_integrity: Literal["ok", "missing", "corrupted"]
     managed_version: str | None
+    managed_docs_version: str | None
     version_drift: bool | None
 
 
@@ -51,7 +54,7 @@ class VerificationCheck(TypedDict):
     details: dict[str, object]
 
 
-def build_claude_guidance_body(runtime_version: str) -> str:
+def build_claude_guidance_body(runtime_version: str, docs_version: str) -> str:
     """Build managed CLAUDE.md guidance body."""
     return (
         "# CLAUDE.md\n\n"
@@ -73,6 +76,7 @@ def build_claude_guidance_body(runtime_version: str) -> str:
         "- `beacon status --verbose`\n\n"
         "## Requirement materials and docs paths\n"
         f"- Runtime target version: `{runtime_version}`\n"
+        f"- Docs target version: `{docs_version}`\n"
         "- `docs/beacon/global-boundaries.md` is the canonical cross-version global constraint source.\n"
         "- `docs/beacon/<version>/` is the canonical source of truth.\n"
         "- `docs/beacon/<version>/SUMMARY.md`\n"
@@ -83,7 +87,7 @@ def build_claude_guidance_body(runtime_version: str) -> str:
     )
 
 
-def build_agents_guidance_body(runtime_version: str) -> str:
+def build_agents_guidance_body(runtime_version: str, docs_version: str) -> str:
     """Build managed AGENTS.md guidance body."""
     return (
         "# AGENTS.md\n\n"
@@ -94,6 +98,7 @@ def build_agents_guidance_body(runtime_version: str) -> str:
         "- Preserve user-authored sections outside Beacon managed blocks.\n\n"
         "## Beacon requirement-material usage\n"
         f"- Runtime target version: `{runtime_version}`\n"
+        f"- Docs target version: `{docs_version}`\n"
         "- Use `docs/beacon/global-boundaries.md` as the canonical Beacon-wide global constraint source.\n"
         "- Use `docs/beacon/<version>/` as the canonical delivery tree.\n"
         "- Read progressively in this order:\n"
@@ -113,23 +118,26 @@ def build_agents_guidance_body(runtime_version: str) -> str:
     )
 
 
-def build_managed_block(body: str, runtime_version: str) -> str:
+def build_managed_block(body: str, runtime_version: str, docs_version: str) -> str:
     """Build a full managed block for insertion/merge."""
     body_text = body.rstrip("\n")
     return (
         f"{MANAGED_BLOCK_START}\n"
         f"{MANAGED_VERSION_MARKER_FORMAT.format(version=runtime_version)}\n"
+        f"{MANAGED_DOCS_VERSION_MARKER_FORMAT.format(version=docs_version)}\n"
         f"{body_text}\n"
         f"{MANAGED_BLOCK_END}\n"
     )
 
 
-def build_default_claude_managed_block(runtime_version: str) -> str:
-    return build_managed_block(build_claude_guidance_body(runtime_version), runtime_version)
+def build_default_claude_managed_block(runtime_version: str, docs_version: str | None = None) -> str:
+    docs_target = docs_version or runtime_version
+    return build_managed_block(build_claude_guidance_body(runtime_version, docs_target), runtime_version, docs_target)
 
 
-def build_default_agents_managed_block(runtime_version: str) -> str:
-    return build_managed_block(build_agents_guidance_body(runtime_version), runtime_version)
+def build_default_agents_managed_block(runtime_version: str, docs_version: str | None = None) -> str:
+    docs_target = docs_version or runtime_version
+    return build_managed_block(build_agents_guidance_body(runtime_version, docs_target), runtime_version, docs_target)
 
 
 def _marker_integrity(content: str) -> Literal["ok", "missing", "corrupted"]:
@@ -150,6 +158,13 @@ def _marker_integrity(content: str) -> Literal["ok", "missing", "corrupted"]:
 
 def _extract_version_marker(content: str) -> str | None:
     match = _MARKER_VERSION_PATTERN.search(content)
+    if not match:
+        return None
+    return match.group(1).strip() or None
+
+
+def _extract_docs_version_marker(content: str) -> str | None:
+    match = _MARKER_DOCS_VERSION_PATTERN.search(content)
     if not match:
         return None
     return match.group(1).strip() or None
@@ -224,12 +239,14 @@ def inspect_context_file(path: Path, runtime_version: str) -> ContextFileInspect
             "exists": False,
             "marker_integrity": _MARKER_MISSING,
             "managed_version": None,
+            "managed_docs_version": None,
             "version_drift": None,
         }
 
     content = path.read_text(encoding="utf-8")
     integrity = _marker_integrity(content)
     managed_version = _extract_version_marker(content)
+    managed_docs_version = _extract_docs_version_marker(content)
     version_drift = None if managed_version is None else (managed_version != runtime_version)
 
     return {
@@ -237,6 +254,7 @@ def inspect_context_file(path: Path, runtime_version: str) -> ContextFileInspect
         "exists": True,
         "marker_integrity": integrity,
         "managed_version": managed_version,
+        "managed_docs_version": managed_docs_version,
         "version_drift": version_drift,
     }
 
@@ -248,17 +266,19 @@ def setup_context_files(
     force: bool,
     with_claude: bool,
     with_agents: bool,
+    docs_version: str | None = None,
 ) -> dict[str, object]:
     """Setup or update CLAUDE.md / AGENTS.md managed blocks."""
     root = Path(project_root)
     actions: list[dict[str, object]] = []
     from beacon.utils.global_boundaries import GLOBAL_BOUNDARIES_RELATIVE_PATH, sync_project_global_boundaries
 
+    docs_target = docs_version or runtime_version
     targets: list[tuple[str, Path, str]] = []
     if with_claude:
-        targets.append(("CLAUDE.md", root / "CLAUDE.md", build_default_claude_managed_block(runtime_version)))
+        targets.append(("CLAUDE.md", root / "CLAUDE.md", build_default_claude_managed_block(runtime_version, docs_target)))
     if with_agents:
-        targets.append(("AGENTS.md", root / "AGENTS.md", build_default_agents_managed_block(runtime_version)))
+        targets.append(("AGENTS.md", root / "AGENTS.md", build_default_agents_managed_block(runtime_version, docs_target)))
 
     for file_name, file_path, managed_block in targets:
         current = file_path.read_text(encoding="utf-8") if file_path.exists() else ""
@@ -290,6 +310,7 @@ def setup_context_files(
     return {
         "project_root": str(root),
         "runtime_version": runtime_version,
+        "docs_version": docs_target,
         "dry_run": dry_run,
         "force": force,
         "actions": actions,

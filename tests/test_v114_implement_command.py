@@ -194,6 +194,16 @@ def test_implement_run_command_runner_should_write_marker_summary_and_review(tmp
     assert (tmp_path / ".beacon" / "state" / "implementation-my-feature.json").exists()
     assert execution_file_output(tmp_path, "v1.1.4", "implementation-summary-my-feature.json").exists()
     assert execution_file_output(tmp_path, "v1.1.4", "review-spec-my-feature.json").exists()
+    summary_payload = json.loads(
+        execution_file_output(tmp_path, "v1.1.4", "implementation-summary-my-feature.json").read_text(encoding="utf-8")
+    )
+    assert summary_payload["requirement_traceability"]["prd"] == "docs/beacon/v1.1.4/prd/my-feature.md"
+    assert summary_payload["requirement_traceability"]["user_story"] == "docs/beacon/v1.1.4/user-story/my-feature.md"
+    assert summary_payload["requirement_traceability"]["test_case"] == "docs/beacon/v1.1.4/qa/test-cases/my-feature.md"
+    assert summary_payload["delivery_surfaces"]["runtime_mode"] == "single"
+    assert summary_payload["delivery_surfaces"]["shipped_surfaces"] == []
+    assert summary_payload["delivery_surfaces"]["partial_surfaces"] == []
+    assert summary_payload["delivery_surfaces"]["deferred_surfaces"] == []
     assert payload["change_document"]["md"] == "docs/beacon/v1.1.4/change/my-feature.md"
     assert change_docs_file(tmp_path, "v1.1.4", "my-feature.md").exists()
     assert change_file_output(tmp_path, "v1.1.4", "my-feature.json").exists()

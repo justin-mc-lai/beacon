@@ -737,6 +737,26 @@ def _render_summary_markdown(payload: dict[str, Any]) -> str:
                 lines.append(f"- `{key}`: {value}")
     else:
         lines.append("- none")
+    requirement_traceability = payload.get("requirement_traceability") if isinstance(payload.get("requirement_traceability"), dict) else {}
+    lines.extend(["", "## Requirement Traceability"])
+    if requirement_traceability:
+        for key in ("source_of_truth_root", "prd", "user_story", "test_case", "ac_matrix", "revision_id"):
+            lines.append(f"- {key}: `{requirement_traceability.get(key, '')}`")
+        lines.append(f"- implemented_item_ids: `{', '.join(_normalize_list(requirement_traceability.get('implemented_item_ids')))}`")
+        lines.append(f"- implemented_task_ids: `{', '.join(_normalize_list(requirement_traceability.get('implemented_task_ids')))}`")
+        lines.append(f"- verified_task_ids: `{', '.join(_normalize_list(requirement_traceability.get('verified_task_ids')))}`")
+    else:
+        lines.append("- none")
+    delivery_surfaces = payload.get("delivery_surfaces") if isinstance(payload.get("delivery_surfaces"), dict) else {}
+    lines.extend(["", "## Delivery Surfaces"])
+    if delivery_surfaces:
+        lines.append(f"- runtime_mode: `{delivery_surfaces.get('runtime_mode', '')}`")
+        lines.append(f"- shipped_surfaces: `{', '.join(_normalize_list(delivery_surfaces.get('shipped_surfaces')))}`")
+        lines.append(f"- partial_surfaces: `{', '.join(_normalize_list(delivery_surfaces.get('partial_surfaces')))}`")
+        lines.append(f"- deferred_surfaces: `{', '.join(_normalize_list(delivery_surfaces.get('deferred_surfaces')))}`")
+        lines.append(f"- downgrade_rationale: `{delivery_surfaces.get('downgrade_rationale', '')}`")
+    else:
+        lines.append("- none")
     return "\n".join(lines) + "\n"
 
 
@@ -2037,12 +2057,6 @@ def run_implement_stage(  # noqa: PLR0913
 
     review_spec_info: dict[str, Any] | None = None
     review_quality_info: dict[str, Any] | None = None
-    if auto_review_spec:
-        rc, payload = _run_review_command(project_root, resolved_version, feature, "spec")
-        review_spec_info = {"exit_code": rc, "payload": payload}
-    if auto_review_quality:
-        rc, payload = _run_review_command(project_root, resolved_version, feature, "quality")
-        review_quality_info = {"exit_code": rc, "payload": payload}
 
     summary_paths = _summary_paths(project_root, resolved_version, feature)
     archive_paths = _technical_archive_paths(project_root, resolved_version, feature)
@@ -2060,6 +2074,36 @@ def run_implement_stage(  # noqa: PLR0913
         implemented_item_ids=implemented_item_ids,
         task_ids=implemented_task_ids,
         changed_files=result_payload.get("changed_files", []),
+    )
+    requirement_traceability = {
+        "source_of_truth_root": artifacts["source_of_truth_root"],
+        "prd": artifacts["prd"],
+        "user_story": artifacts["user_story"],
+        "test_case": artifacts["test_case"],
+        "ac_matrix": artifacts["ac_matrix"],
+        "revision_id": str(story_state.get("revision_id", "") or story_state.get("current_revision_id", "") or ""),
+        "implemented_item_ids": implemented_item_ids,
+        "implemented_task_ids": implemented_task_ids,
+        "verified_task_ids": result_payload.get("verified_task_ids", []),
+    }
+    delivery_surfaces = {
+        "runtime_mode": resolved_mode or "single",
+        "shipped_surfaces": _normalize_string_list(result_payload.get("shipped_surfaces")),
+        "partial_surfaces": _normalize_string_list(result_payload.get("partial_surfaces")),
+        "deferred_surfaces": _normalize_string_list(result_payload.get("deferred_surfaces")),
+        "downgrade_rationale": str(result_payload.get("downgrade_rationale", "") or ""),
+    }
+    summary_traceability_refs = _dedupe_strings(
+        [
+            artifacts["prd"],
+            artifacts["user_story"],
+            artifacts["test_case"],
+            artifacts["ac_matrix"],
+            str(request_path),
+            str(result_path),
+            str(stdout_path),
+            str(stderr_path),
+        ]
     )
     summary_payload = {
         "schema_version": "1.0",
@@ -2089,6 +2133,9 @@ def run_implement_stage(  # noqa: PLR0913
         "plan_preflight": implementation_plan_gate,
         "implementation_plan": implementation_plan_file,
         "implementation_plan_progress": load_implementation_plan_progress(project_root, version=resolved_version, feature=feature),
+        "requirement_traceability": requirement_traceability,
+        "delivery_surfaces": delivery_surfaces,
+        "traceability_refs": summary_traceability_refs,
         "implementation_marker": str(marker.relative_to(project_root)),
         "technical_archive": {
             "json": str(archive_paths["json"].relative_to(project_root)),
@@ -2173,6 +2220,36 @@ def run_implement_stage(  # noqa: PLR0913
         implementation_plan_ref=implementation_plan_file,
     )
     summary_payload["implement_to_qa_handoff"] = str(handoff_path.relative_to(project_root))
+    write_json(change_paths["json"], change_payload)
+    _write_text(change_paths["md"], _render_feature_change_markdown(change_payload))
+    refresh_evidence_manifest(
+        project_root,
+        refs=[
+            str(change_paths["json"].relative_to(project_root)),
+            str(change_paths["md"].relative_to(project_root)),
+        ],
+        version=resolved_version,
+    )
+    write_json(summary_paths["json"], summary_payload)
+    _write_text(summary_paths["md"], _render_summary_markdown(summary_payload))
+    refresh_evidence_manifest(
+        project_root,
+        refs=[
+            str(summary_paths["json"].relative_to(project_root)),
+            str(summary_paths["md"].relative_to(project_root)),
+        ],
+        version=resolved_version,
+    )
+
+    if auto_review_spec:
+        rc, payload = _run_review_command(project_root, resolved_version, feature, "spec")
+        review_spec_info = {"exit_code": rc, "payload": payload}
+        summary_payload["review_spec"] = review_spec_info
+    if auto_review_quality:
+        rc, payload = _run_review_command(project_root, resolved_version, feature, "quality")
+        review_quality_info = {"exit_code": rc, "payload": payload}
+        summary_payload["review_quality"] = review_quality_info
+
     summary_payload["auto_qa"] = {
         "enabled": bool(auto_qa),
         "triggered": False,
@@ -2243,16 +2320,6 @@ def run_implement_stage(  # noqa: PLR0913
         refs=[
             str(summary_paths["json"].relative_to(project_root)),
             str(summary_paths["md"].relative_to(project_root)),
-        ],
-        version=resolved_version,
-    )
-    write_json(change_paths["json"], change_payload)
-    _write_text(change_paths["md"], _render_feature_change_markdown(change_payload))
-    refresh_evidence_manifest(
-        project_root,
-        refs=[
-            str(change_paths["json"].relative_to(project_root)),
-            str(change_paths["md"].relative_to(project_root)),
         ],
         version=resolved_version,
     )
@@ -2732,8 +2799,29 @@ def status(
             if state_path.exists():
                 state_payload = json.loads(state_path.read_text(encoding="utf-8"))
     if state_payload is None:
-        typer.echo("Implementation run not found", err=True)
-        raise typer.Exit(2)
+        missing_payload = {
+            "status": "missing",
+            "reason_code": "implementation_run_not_found",
+            "message": "Implementation run not found",
+            "feature": feature_or_run_id if not feature_or_run_id.startswith("run-") else "",
+            "feature_slug": feature_slug if not feature_or_run_id.startswith("run-") else "",
+            "run_id": target_run or (feature_or_run_id if feature_or_run_id.startswith("run-") else ""),
+            "version": resolved_version,
+            "project_root": str(project_root),
+            "summary_exists": False,
+            "review_spec_exists": False,
+            "review_quality_exists": False,
+            "implementation_marker_exists": False,
+            "implementation_plan_exists": False,
+            "implementation_plan_markdown_exists": False,
+            "implementation_plan_progress_exists": False,
+            "implementation_plan_progress": {},
+        }
+        if json_output:
+            typer.echo(json.dumps(missing_payload, ensure_ascii=False, indent=2))
+            return
+        typer.echo(json.dumps(missing_payload, ensure_ascii=False, indent=2))
+        return
 
     slug = str(state_payload.get("feature_slug", feature_slug))
     summary = _summary_paths(project_root, resolved_version, slug).get("json")
