@@ -102,3 +102,71 @@ def test_gate_reports_new_reason_when_test_execution_missing(tmp_path: Path):
     issues = check_test_execution_integrity(tmp_path, GateMode.STRICT, "test-case")
     codes = [x.get("reason_code") for x in issues]
     assert "test_execution_missing" in codes
+
+
+def test_gate_release_should_accept_projected_evidence_without_raw_runtime_files(tmp_path: Path):
+    version = "v1.3.4"
+    run_id = "run-123"
+    matrix_dir = tmp_path / "docs" / "beacon" / version / ".machine" / "qa"
+    matrix_dir.mkdir(parents=True, exist_ok=True)
+    (matrix_dir / "feature-a.ac-test-matrix.json").write_text(
+        json.dumps(
+            {
+                "entries": [
+                    {
+                        "ac_id": "AC-001",
+                        "tc_id": "TC-001",
+                        "layer": "contract",
+                        "evidence_path": f".beacon/evidence/auto-test/{run_id}/contract/result.json",
+                    }
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    beacon_dir = tmp_path / ".beacon"
+    beacon_dir.mkdir(parents=True, exist_ok=True)
+    (beacon_dir / "auto-test-status.json").write_text(
+        json.dumps(
+            {
+                "status": "passed",
+                "version": version,
+                "run_id": run_id,
+                "execution": {
+                    "run_id": run_id,
+                    "layers": [{"layer": "contract", "status": "passed"}],
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    (beacon_dir / "evidence-signature-chain.json").write_text(
+        json.dumps(
+            [
+                {
+                    "run_id": run_id,
+                    "summary_path": ".beacon/auto-test-status.json",
+                    "summary_sha256": "",
+                }
+            ]
+        ),
+        encoding="utf-8",
+    )
+    (beacon_dir / "evidence-manifest.json").write_text(
+        json.dumps(
+            {
+                "version": version,
+                "run_id": run_id,
+                "entries": [
+                    {"path": ".beacon/auto-test-status.json"},
+                    {"path": ".beacon/gate-report.json"},
+                    {"path": ".beacon/coverage-summary.json"},
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    issues = check_test_execution_integrity(tmp_path, GateMode.STRICT, "release")
+    assert issues == []
