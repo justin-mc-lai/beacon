@@ -3,7 +3,7 @@
 **Feature**: `beacon-v1-3-6-visual-management-console-and-material-viewer`
 **Version**: `v1.3.6`
 **Mode**: `wireframe`
-**Generated At**: `2026-04-20T07:34:20Z`
+**Generated At**: `2026-04-20T13:06:01Z`
 
 ## 页面清单
 

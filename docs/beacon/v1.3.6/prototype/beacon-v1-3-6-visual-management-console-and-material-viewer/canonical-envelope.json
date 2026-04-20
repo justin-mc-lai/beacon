@@ -1,0 +1,4383 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.3.6-visual-management-console-and-material-viewer",
+  "feature_slug": "beacon-v1-3-6-visual-management-console-and-material-viewer",
+  "version": "v1.3.6",
+  "prototype_mode": "wireframe",
+  "source_hash": "8d1f69add158cd39ebb6368448d902f901d561a37babc2a4046099805822a943",
+  "projection_seq": "pp-8d1f69add158cd39",
+  "transaction_id": "tx-beacon-v1-3-6-visual-management-console-and-material-viewer-pp-8d1f69add158cd39",
+  "committed_at": "2026-04-20T13:06:01Z",
+  "plan": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1.3.6-visual-management-console-and-material-viewer",
+    "feature_slug": "beacon-v1-3-6-visual-management-console-and-material-viewer",
+    "version": "v1.3.6",
+    "generated_at": "2026-04-20T13:06:01Z",
+    "prototype_mode": "wireframe",
+    "ui_kit": "wireframe-markdown-v1",
+    "source_documents": [
+      {
+        "type": "user-story",
+        "path": "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md",
+        "fingerprint": "4b3ec8b7c8e354bcf54f7c0cc891d46caf51d9e5cba8afb0cf85eb50c1e425a4"
+      },
+      {
+        "type": "prd",
+        "path": "docs/beacon/v1.3.6/prd/beacon-v1-3-6-visual-management-console-and-material-viewer.md",
+        "fingerprint": "4b6e8036dac3c6f36d64142615a2ff2236449820a17e5f017ce1712a7fd8056f"
+      },
+      {
+        "type": "test-case",
+        "path": "docs/beacon/v1.3.6/qa/test-cases/beacon-v1.3.6-visual-management-console-and-material-viewer.md",
+        "fingerprint": "d57ffffc63181df5d59bc97058659c524e4800d96bd34f9bd7a126d8ff7afe5d"
+      }
+    ],
+    "required_pages": [
+      "home",
+      "management-overview",
+      "project-detail",
+      "runtime-center",
+      "recovery-diagnostics",
+      "material-viewer",
+      "material-document-detail"
+    ],
+    "required_states": [
+      "blocked",
+      "degraded",
+      "doctor-suggested",
+      "document-open",
+      "draft",
+      "empty",
+      "error",
+      "filtered",
+      "frozen",
+      "healthy-warning",
+      "idle",
+      "intervention-needed",
+      "loading",
+      "ralph-active",
+      "ready",
+      "rebuild-suggested",
+      "requirement-missing",
+      "runtime-active",
+      "sibling-switch",
+      "single-active",
+      "source-missing",
+      "team-active",
+      "version-switch"
+    ],
+    "requirement_ids": {
+      "ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013",
+        "AC-014",
+        "AC-015",
+        "AC-016"
+      ],
+      "tc_ids": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012"
+      ]
+    },
+    "page_specs": [
+      {
+        "page_id": "home",
+        "name": "首页",
+        "priority": "P0",
+        "platforms": [
+          "Web",
+          "PC"
+        ],
+        "responsibility": "先回答经营判断，展示项目数、阻塞数、当前交付和介入点。",
+        "sections": [
+          "经营总览条",
+          "重点介入区",
+          "项目推进摘要",
+          "当前交付卡片",
+          "下一步建议"
+        ],
+        "actions": [
+          {
+            "label": "查看管理总览",
+            "target": "management-overview",
+            "trigger": "点击项目组合入口"
+          },
+          {
+            "label": "进入重点项目",
+            "target": "project-detail",
+            "trigger": "点击重点项目卡片"
+          }
+        ],
+        "states": [
+          {
+            "id": "ready",
+            "label": "正常总览",
+            "description": "展示项目数、阻塞数、当前交付和下一步。"
+          },
+          {
+            "id": "blocked",
+            "label": "阻塞高亮",
+            "description": "把阻塞项目和介入点提升到首屏。"
+          },
+          {
+            "id": "intervention-needed",
+            "label": "需介入",
+            "description": "强调需要 CEO / 负责人介入的项目。"
+          },
+          {
+            "id": "loading",
+            "label": "加载中",
+            "description": "首页摘要数据仍在汇总。"
+          },
+          {
+            "id": "empty",
+            "label": "空状态",
+            "description": "当前没有受管项目。"
+          },
+          {
+            "id": "error",
+            "label": "错误",
+            "description": "摘要聚合失败，但提示可以进入详情或 doctor。"
+          }
+        ],
+        "requirement_refs": {
+          "user-story": [
+            "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+          ],
+          "prd": [
+            "docs/beacon/v1.3.6/prd/beacon-v1-3-6-visual-management-console-and-material-viewer.md"
+          ],
+          "test-case": [
+            "docs/beacon/v1.3.6/qa/test-cases/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+          ]
+        },
+        "outbound_transitions": [
+          {
+            "from": "home",
+            "to": "management-overview",
+            "trigger": "点击项目组合入口",
+            "type": "primary"
+          },
+          {
+            "from": "home",
+            "to": "project-detail",
+            "trigger": "点击重点项目卡片",
+            "type": "primary"
+          }
+        ]
+      },
+      {
+        "page_id": "management-overview",
+        "name": "管理总览",
+        "priority": "P0",
+        "platforms": [
+          "Web",
+          "PC"
+        ],
+        "responsibility": "提供多项目密集管理视图，稳定扫描版本、阶段、进度、健康态和下一步。",
+        "sections": [
+          "筛选与排序条",
+          "项目注册表",
+          "阶段分布摘要",
+          "风险与调试摘要",
+          "推荐 skill 区"
+        ],
+        "actions": [
+          {
+            "label": "进入项目详情",
+            "target": "project-detail",
+            "trigger": "点击项目行或卡片"
+          },
+          {
+            "label": "返回首页",
+            "target": "home",
+            "trigger": "点击首页导航"
+          }
+        ],
+        "states": [
+          {
+            "id": "ready",
+            "label": "多项目已加载",
+            "description": "密集展示多项目当前状态。"
+          },
+          {
+            "id": "filtered",
+            "label": "已筛选",
+            "description": "按阶段、版本、健康态筛选项目。"
+          },
+          {
+            "id": "empty",
+            "label": "无项目",
+            "description": "没有任何受管项目进入注册表。"
+          },
+          {
+            "id": "loading",
+            "label": "加载中",
+            "description": "项目注册表正在聚合。"
+          },
+          {
+            "id": "error",
+            "label": "错误",
+            "description": "总览聚合失败但保留恢复提示。"
+          }
+        ],
+        "requirement_refs": {
+          "user-story": [
+            "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+          ],
+          "prd": [
+            "docs/beacon/v1.3.6/prd/beacon-v1-3-6-visual-management-console-and-material-viewer.md"
+          ],
+          "test-case": [
+            "docs/beacon/v1.3.6/qa/test-cases/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+          ]
+        },
+        "outbound_transitions": [
+          {
+            "from": "management-overview",
+            "to": "project-detail",
+            "trigger": "点击项目行/卡片",
+            "type": "primary"
+          },
+          {
+            "from": "management-overview",
+            "to": "home",
+            "trigger": "点击首页导航",
+            "type": "return"
+          }
+        ]
+      },
+      {
+        "page_id": "project-detail",
+        "name": "项目详情",
+        "priority": "P0",
+        "platforms": [
+          "Web",
+          "PC",
+          "App"
+        ],
+        "responsibility": "成为接力页，展示版本线、主 PRD、并行 PRD、需求闭环和推荐动作。",
+        "sections": [
+          "项目头部摘要",
+          "版本与分支信息",
+          "主 PRD 与并行 PRD",
+          "需求物料闭环状态",
+          "最近交付与下一步",
+          "运行态摘要卡"
+        ],
+        "actions": [
+          {
+            "label": "查看运行中心",
+            "target": "runtime-center",
+            "trigger": "点击运行态摘要"
+          },
+          {
+            "label": "查看恢复诊断",
+            "target": "recovery-diagnostics",
+            "trigger": "点击恢复诊断入口"
+          },
+          {
+            "label": "查看项目物料",
+            "target": "material-viewer",
+            "trigger": "点击文档查看入口"
+          },
+          {
+            "label": "返回管理总览",
+            "target": "management-overview",
+            "trigger": "点击返回"
+          }
+        ],
+        "states": [
+          {
+            "id": "ready",
+            "label": "可接力",
+            "description": "版本、PRD、需求闭环和下一步信息完整。"
+          },
+          {
+            "id": "requirement-missing",
+            "label": "需求缺口",
+            "description": "PRD / user-story / test-case 存在缺口。"
+          },
+          {
+            "id": "draft",
+            "label": "需求草稿",
+            "description": "需求已建立但未冻结。"
+          },
+          {
+            "id": "frozen",
+            "label": "需求冻结",
+            "description": "需求链与 prototype 都已冻结。"
+          },
+          {
+            "id": "runtime-active",
+            "label": "运行中",
+            "description": "存在 single / team / ralph 运行摘要。"
+          },
+          {
+            "id": "loading",
+            "label": "加载中",
+            "description": "项目详情正在聚合。"
+          },
+          {
+            "id": "error",
+            "label": "错误",
+            "description": "详情聚合失败但给出恢复链路。"
+          }
+        ],
+        "requirement_refs": {
+          "user-story": [
+            "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+          ],
+          "prd": [
+            "docs/beacon/v1.3.6/prd/beacon-v1-3-6-visual-management-console-and-material-viewer.md"
+          ],
+          "test-case": [
+            "docs/beacon/v1.3.6/qa/test-cases/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+          ]
+        },
+        "outbound_transitions": [
+          {
+            "from": "project-detail",
+            "to": "runtime-center",
+            "trigger": "点击运行态摘要",
+            "type": "drill-down"
+          },
+          {
+            "from": "project-detail",
+            "to": "recovery-diagnostics",
+            "trigger": "点击恢复诊断入口",
+            "type": "drill-down"
+          },
+          {
+            "from": "project-detail",
+            "to": "material-viewer",
+            "trigger": "点击文档查看入口",
+            "type": "drill-down"
+          },
+          {
+            "from": "project-detail",
+            "to": "management-overview",
+            "trigger": "点击返回",
+            "type": "return"
+          }
+        ]
+      },
+      {
+        "page_id": "runtime-center",
+        "name": "运行中心",
+        "priority": "P1",
+        "platforms": [
+          "Web",
+          "PC"
+        ],
+        "responsibility": "只在这里下钻 single / team / ralph 的 runtime 细节和有限 session metadata。",
+        "sections": [
+          "运行态摘要头部",
+          "single / team / ralph 模式切换",
+          "agent/session 引用",
+          "artifact 与 linked run",
+          "最近结果与 blocker"
+        ],
+        "actions": [
+          {
+            "label": "返回项目详情",
+            "target": "project-detail",
+            "trigger": "点击返回"
+          },
+          {
+            "label": "返回管理总览",
+            "target": "management-overview",
+            "trigger": "点击面包屑"
+          }
+        ],
+        "states": [
+          {
+            "id": "single-active",
+            "label": "Single 运行",
+            "description": "展示单进程执行摘要和 linked run。"
+          },
+          {
+            "id": "team-active",
+            "label": "Team 运行",
+            "description": "展示 agent 数、角色、状态和 host session metadata。"
+          },
+          {
+            "id": "ralph-active",
+            "label": "Ralph 闭环",
+            "description": "展示 round_count、failure_streak、next_action、blocker。"
+          },
+          {
+            "id": "idle",
+            "label": "无活跃运行",
+            "description": "当前没有任何 active runtime。"
+          },
+          {
+            "id": "loading",
+            "label": "加载中",
+            "description": "运行态数据仍在读取。"
+          },
+          {
+            "id": "error",
+            "label": "错误",
+            "description": "运行态投影异常，需要回到诊断页。"
+          }
+        ],
+        "requirement_refs": {
+          "user-story": [
+            "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+          ],
+          "prd": [
+            "docs/beacon/v1.3.6/prd/beacon-v1-3-6-visual-management-console-and-material-viewer.md"
+          ],
+          "test-case": [
+            "docs/beacon/v1.3.6/qa/test-cases/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+          ]
+        },
+        "outbound_transitions": [
+          {
+            "from": "runtime-center",
+            "to": "project-detail",
+            "trigger": "点击返回",
+            "type": "return"
+          }
+        ]
+      },
+      {
+        "page_id": "recovery-diagnostics",
+        "name": "恢复诊断",
+        "priority": "P2",
+        "platforms": [
+          "Web",
+          "PC"
+        ],
+        "responsibility": "解释 degraded / rebuild / doctor，明确 truth 仍来自 docs/beacon 与 .beacon。",
+        "sections": [
+          "truth 来源说明",
+          "degraded / rebuild / doctor 诊断卡",
+          "恢复步骤",
+          "风险提示"
+        ],
+        "actions": [
+          {
+            "label": "返回项目详情",
+            "target": "project-detail",
+            "trigger": "点击返回"
+          },
+          {
+            "label": "前往运行中心",
+            "target": "runtime-center",
+            "trigger": "点击运行态关联"
+          }
+        ],
+        "states": [
+          {
+            "id": "healthy-warning",
+            "label": "健康但预警",
+            "description": "当前系统可用但存在恢复风险提示。"
+          },
+          {
+            "id": "degraded",
+            "label": "降级",
+            "description": "SQLite 或 PocketBase 缺失，但 truth 仍可从文档恢复。"
+          },
+          {
+            "id": "rebuild-suggested",
+            "label": "建议重建",
+            "description": "投影层需要重建。"
+          },
+          {
+            "id": "doctor-suggested",
+            "label": "建议 doctor",
+            "description": "推荐执行 doctor 修复上下文。"
+          },
+          {
+            "id": "loading",
+            "label": "加载中",
+            "description": "诊断结果仍在采集。"
+          },
+          {
+            "id": "error",
+            "label": "错误",
+            "description": "诊断页本身无法完成聚合。"
+          }
+        ],
+        "requirement_refs": {
+          "user-story": [
+            "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+          ],
+          "prd": [
+            "docs/beacon/v1.3.6/prd/beacon-v1-3-6-visual-management-console-and-material-viewer.md"
+          ],
+          "test-case": [
+            "docs/beacon/v1.3.6/qa/test-cases/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+          ]
+        },
+        "outbound_transitions": [
+          {
+            "from": "recovery-diagnostics",
+            "to": "project-detail",
+            "trigger": "点击返回",
+            "type": "return"
+          }
+        ]
+      },
+      {
+        "page_id": "material-viewer",
+        "name": "项目物料查看器",
+        "priority": "P1",
+        "platforms": [
+          "Web",
+          "PC"
+        ],
+        "responsibility": "按 version -> document type -> feature 提供只读 Markdown 浏览。",
+        "sections": [
+          "版本树",
+          "文档类型列表",
+          "feature 目录",
+          "文档阅读面板",
+          "来源路径信息"
+        ],
+        "actions": [
+          {
+            "label": "打开文档",
+            "target": "material-document-detail",
+            "trigger": "点击文档列表项"
+          },
+          {
+            "label": "返回项目详情",
+            "target": "project-detail",
+            "trigger": "点击返回"
+          }
+        ],
+        "states": [
+          {
+            "id": "ready",
+            "label": "可浏览",
+            "description": "版本树和文档列表已加载。"
+          },
+          {
+            "id": "document-open",
+            "label": "文档已打开",
+            "description": "右侧阅读区显示当前文档正文。"
+          },
+          {
+            "id": "source-missing",
+            "label": "来源缺失",
+            "description": "目标文档不存在或暂不可读。"
+          },
+          {
+            "id": "loading",
+            "label": "加载中",
+            "description": "文档列表或内容仍在加载。"
+          },
+          {
+            "id": "empty",
+            "label": "空状态",
+            "description": "该版本或类型下没有可读文档。"
+          },
+          {
+            "id": "error",
+            "label": "错误",
+            "description": "文档读取失败。"
+          }
+        ],
+        "requirement_refs": {
+          "user-story": [
+            "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+          ],
+          "prd": [
+            "docs/beacon/v1.3.6/prd/beacon-v1-3-6-visual-management-console-and-material-viewer.md"
+          ],
+          "test-case": [
+            "docs/beacon/v1.3.6/qa/test-cases/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+          ]
+        },
+        "outbound_transitions": [
+          {
+            "from": "material-viewer",
+            "to": "material-document-detail",
+            "trigger": "点击文档列表项",
+            "type": "drill-down"
+          }
+        ]
+      },
+      {
+        "page_id": "material-document-detail",
+        "name": "物料文档详情",
+        "priority": "P2",
+        "platforms": [
+          "Web",
+          "PC"
+        ],
+        "responsibility": "冻结文档阅读状态，包括来源路径、版本切换和同类文档切换。",
+        "sections": [
+          "文档头部信息",
+          "版本 / 类型 / feature 面包屑",
+          "Markdown 正文区",
+          "同类文档切换",
+          "来源路径与只读说明"
+        ],
+        "actions": [
+          {
+            "label": "返回物料查看器",
+            "target": "material-viewer",
+            "trigger": "点击返回"
+          },
+          {
+            "label": "切换同版本文档",
+            "target": "material-document-detail",
+            "trigger": "点击侧栏文档"
+          }
+        ],
+        "states": [
+          {
+            "id": "ready",
+            "label": "文档已打开",
+            "description": "显示文档正文与来源路径。"
+          },
+          {
+            "id": "sibling-switch",
+            "label": "切换同类文档",
+            "description": "在阅读区切换相邻文档。"
+          },
+          {
+            "id": "version-switch",
+            "label": "切换版本",
+            "description": "切换到同类型的其他版本文档。"
+          },
+          {
+            "id": "source-missing",
+            "label": "来源缺失",
+            "description": "文档不存在或来源路径不可达。"
+          }
+        ],
+        "requirement_refs": {
+          "user-story": [
+            "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+          ],
+          "prd": [
+            "docs/beacon/v1.3.6/prd/beacon-v1-3-6-visual-management-console-and-material-viewer.md"
+          ],
+          "test-case": [
+            "docs/beacon/v1.3.6/qa/test-cases/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+          ]
+        },
+        "outbound_transitions": [
+          {
+            "from": "material-document-detail",
+            "to": "material-viewer",
+            "trigger": "点击返回",
+            "type": "return"
+          }
+        ]
+      }
+    ],
+    "page_inventory": [
+      {
+        "page_id": "home",
+        "name": "首页",
+        "priority": "P0",
+        "platforms": [
+          "Web",
+          "PC"
+        ],
+        "responsibility": "先回答经营判断，展示项目数、阻塞数、当前交付和介入点。",
+        "sections": [
+          "经营总览条",
+          "重点介入区",
+          "项目推进摘要",
+          "当前交付卡片",
+          "下一步建议"
+        ],
+        "actions": [
+          {
+            "label": "查看管理总览",
+            "target": "management-overview",
+            "trigger": "点击项目组合入口"
+          },
+          {
+            "label": "进入重点项目",
+            "target": "project-detail",
+            "trigger": "点击重点项目卡片"
+          }
+        ],
+        "states": [
+          {
+            "id": "ready",
+            "label": "正常总览",
+            "description": "展示项目数、阻塞数、当前交付和下一步。"
+          },
+          {
+            "id": "blocked",
+            "label": "阻塞高亮",
+            "description": "把阻塞项目和介入点提升到首屏。"
+          },
+          {
+            "id": "intervention-needed",
+            "label": "需介入",
+            "description": "强调需要 CEO / 负责人介入的项目。"
+          },
+          {
+            "id": "loading",
+            "label": "加载中",
+            "description": "首页摘要数据仍在汇总。"
+          },
+          {
+            "id": "empty",
+            "label": "空状态",
+            "description": "当前没有受管项目。"
+          },
+          {
+            "id": "error",
+            "label": "错误",
+            "description": "摘要聚合失败，但提示可以进入详情或 doctor。"
+          }
+        ],
+        "requirement_refs": {
+          "user-story": [
+            "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+          ],
+          "prd": [
+            "docs/beacon/v1.3.6/prd/beacon-v1-3-6-visual-management-console-and-material-viewer.md"
+          ],
+          "test-case": [
+            "docs/beacon/v1.3.6/qa/test-cases/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+          ]
+        },
+        "outbound_transitions": [
+          {
+            "from": "home",
+            "to": "management-overview",
+            "trigger": "点击项目组合入口",
+            "type": "primary"
+          },
+          {
+            "from": "home",
+            "to": "project-detail",
+            "trigger": "点击重点项目卡片",
+            "type": "primary"
+          }
+        ]
+      },
+      {
+        "page_id": "management-overview",
+        "name": "管理总览",
+        "priority": "P0",
+        "platforms": [
+          "Web",
+          "PC"
+        ],
+        "responsibility": "提供多项目密集管理视图，稳定扫描版本、阶段、进度、健康态和下一步。",
+        "sections": [
+          "筛选与排序条",
+          "项目注册表",
+          "阶段分布摘要",
+          "风险与调试摘要",
+          "推荐 skill 区"
+        ],
+        "actions": [
+          {
+            "label": "进入项目详情",
+            "target": "project-detail",
+            "trigger": "点击项目行或卡片"
+          },
+          {
+            "label": "返回首页",
+            "target": "home",
+            "trigger": "点击首页导航"
+          }
+        ],
+        "states": [
+          {
+            "id": "ready",
+            "label": "多项目已加载",
+            "description": "密集展示多项目当前状态。"
+          },
+          {
+            "id": "filtered",
+            "label": "已筛选",
+            "description": "按阶段、版本、健康态筛选项目。"
+          },
+          {
+            "id": "empty",
+            "label": "无项目",
+            "description": "没有任何受管项目进入注册表。"
+          },
+          {
+            "id": "loading",
+            "label": "加载中",
+            "description": "项目注册表正在聚合。"
+          },
+          {
+            "id": "error",
+            "label": "错误",
+            "description": "总览聚合失败但保留恢复提示。"
+          }
+        ],
+        "requirement_refs": {
+          "user-story": [
+            "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+          ],
+          "prd": [
+            "docs/beacon/v1.3.6/prd/beacon-v1-3-6-visual-management-console-and-material-viewer.md"
+          ],
+          "test-case": [
+            "docs/beacon/v1.3.6/qa/test-cases/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+          ]
+        },
+        "outbound_transitions": [
+          {
+            "from": "management-overview",
+            "to": "project-detail",
+            "trigger": "点击项目行/卡片",
+            "type": "primary"
+          },
+          {
+            "from": "management-overview",
+            "to": "home",
+            "trigger": "点击首页导航",
+            "type": "return"
+          }
+        ]
+      },
+      {
+        "page_id": "project-detail",
+        "name": "项目详情",
+        "priority": "P0",
+        "platforms": [
+          "Web",
+          "PC",
+          "App"
+        ],
+        "responsibility": "成为接力页，展示版本线、主 PRD、并行 PRD、需求闭环和推荐动作。",
+        "sections": [
+          "项目头部摘要",
+          "版本与分支信息",
+          "主 PRD 与并行 PRD",
+          "需求物料闭环状态",
+          "最近交付与下一步",
+          "运行态摘要卡"
+        ],
+        "actions": [
+          {
+            "label": "查看运行中心",
+            "target": "runtime-center",
+            "trigger": "点击运行态摘要"
+          },
+          {
+            "label": "查看恢复诊断",
+            "target": "recovery-diagnostics",
+            "trigger": "点击恢复诊断入口"
+          },
+          {
+            "label": "查看项目物料",
+            "target": "material-viewer",
+            "trigger": "点击文档查看入口"
+          },
+          {
+            "label": "返回管理总览",
+            "target": "management-overview",
+            "trigger": "点击返回"
+          }
+        ],
+        "states": [
+          {
+            "id": "ready",
+            "label": "可接力",
+            "description": "版本、PRD、需求闭环和下一步信息完整。"
+          },
+          {
+            "id": "requirement-missing",
+            "label": "需求缺口",
+            "description": "PRD / user-story / test-case 存在缺口。"
+          },
+          {
+            "id": "draft",
+            "label": "需求草稿",
+            "description": "需求已建立但未冻结。"
+          },
+          {
+            "id": "frozen",
+            "label": "需求冻结",
+            "description": "需求链与 prototype 都已冻结。"
+          },
+          {
+            "id": "runtime-active",
+            "label": "运行中",
+            "description": "存在 single / team / ralph 运行摘要。"
+          },
+          {
+            "id": "loading",
+            "label": "加载中",
+            "description": "项目详情正在聚合。"
+          },
+          {
+            "id": "error",
+            "label": "错误",
+            "description": "详情聚合失败但给出恢复链路。"
+          }
+        ],
+        "requirement_refs": {
+          "user-story": [
+            "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+          ],
+          "prd": [
+            "docs/beacon/v1.3.6/prd/beacon-v1-3-6-visual-management-console-and-material-viewer.md"
+          ],
+          "test-case": [
+            "docs/beacon/v1.3.6/qa/test-cases/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+          ]
+        },
+        "outbound_transitions": [
+          {
+            "from": "project-detail",
+            "to": "runtime-center",
+            "trigger": "点击运行态摘要",
+            "type": "drill-down"
+          },
+          {
+            "from": "project-detail",
+            "to": "recovery-diagnostics",
+            "trigger": "点击恢复诊断入口",
+            "type": "drill-down"
+          },
+          {
+            "from": "project-detail",
+            "to": "material-viewer",
+            "trigger": "点击文档查看入口",
+            "type": "drill-down"
+          },
+          {
+            "from": "project-detail",
+            "to": "management-overview",
+            "trigger": "点击返回",
+            "type": "return"
+          }
+        ]
+      },
+      {
+        "page_id": "runtime-center",
+        "name": "运行中心",
+        "priority": "P1",
+        "platforms": [
+          "Web",
+          "PC"
+        ],
+        "responsibility": "只在这里下钻 single / team / ralph 的 runtime 细节和有限 session metadata。",
+        "sections": [
+          "运行态摘要头部",
+          "single / team / ralph 模式切换",
+          "agent/session 引用",
+          "artifact 与 linked run",
+          "最近结果与 blocker"
+        ],
+        "actions": [
+          {
+            "label": "返回项目详情",
+            "target": "project-detail",
+            "trigger": "点击返回"
+          },
+          {
+            "label": "返回管理总览",
+            "target": "management-overview",
+            "trigger": "点击面包屑"
+          }
+        ],
+        "states": [
+          {
+            "id": "single-active",
+            "label": "Single 运行",
+            "description": "展示单进程执行摘要和 linked run。"
+          },
+          {
+            "id": "team-active",
+            "label": "Team 运行",
+            "description": "展示 agent 数、角色、状态和 host session metadata。"
+          },
+          {
+            "id": "ralph-active",
+            "label": "Ralph 闭环",
+            "description": "展示 round_count、failure_streak、next_action、blocker。"
+          },
+          {
+            "id": "idle",
+            "label": "无活跃运行",
+            "description": "当前没有任何 active runtime。"
+          },
+          {
+            "id": "loading",
+            "label": "加载中",
+            "description": "运行态数据仍在读取。"
+          },
+          {
+            "id": "error",
+            "label": "错误",
+            "description": "运行态投影异常，需要回到诊断页。"
+          }
+        ],
+        "requirement_refs": {
+          "user-story": [
+            "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+          ],
+          "prd": [
+            "docs/beacon/v1.3.6/prd/beacon-v1-3-6-visual-management-console-and-material-viewer.md"
+          ],
+          "test-case": [
+            "docs/beacon/v1.3.6/qa/test-cases/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+          ]
+        },
+        "outbound_transitions": [
+          {
+            "from": "runtime-center",
+            "to": "project-detail",
+            "trigger": "点击返回",
+            "type": "return"
+          }
+        ]
+      },
+      {
+        "page_id": "recovery-diagnostics",
+        "name": "恢复诊断",
+        "priority": "P2",
+        "platforms": [
+          "Web",
+          "PC"
+        ],
+        "responsibility": "解释 degraded / rebuild / doctor，明确 truth 仍来自 docs/beacon 与 .beacon。",
+        "sections": [
+          "truth 来源说明",
+          "degraded / rebuild / doctor 诊断卡",
+          "恢复步骤",
+          "风险提示"
+        ],
+        "actions": [
+          {
+            "label": "返回项目详情",
+            "target": "project-detail",
+            "trigger": "点击返回"
+          },
+          {
+            "label": "前往运行中心",
+            "target": "runtime-center",
+            "trigger": "点击运行态关联"
+          }
+        ],
+        "states": [
+          {
+            "id": "healthy-warning",
+            "label": "健康但预警",
+            "description": "当前系统可用但存在恢复风险提示。"
+          },
+          {
+            "id": "degraded",
+            "label": "降级",
+            "description": "SQLite 或 PocketBase 缺失，但 truth 仍可从文档恢复。"
+          },
+          {
+            "id": "rebuild-suggested",
+            "label": "建议重建",
+            "description": "投影层需要重建。"
+          },
+          {
+            "id": "doctor-suggested",
+            "label": "建议 doctor",
+            "description": "推荐执行 doctor 修复上下文。"
+          },
+          {
+            "id": "loading",
+            "label": "加载中",
+            "description": "诊断结果仍在采集。"
+          },
+          {
+            "id": "error",
+            "label": "错误",
+            "description": "诊断页本身无法完成聚合。"
+          }
+        ],
+        "requirement_refs": {
+          "user-story": [
+            "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+          ],
+          "prd": [
+            "docs/beacon/v1.3.6/prd/beacon-v1-3-6-visual-management-console-and-material-viewer.md"
+          ],
+          "test-case": [
+            "docs/beacon/v1.3.6/qa/test-cases/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+          ]
+        },
+        "outbound_transitions": [
+          {
+            "from": "recovery-diagnostics",
+            "to": "project-detail",
+            "trigger": "点击返回",
+            "type": "return"
+          }
+        ]
+      },
+      {
+        "page_id": "material-viewer",
+        "name": "项目物料查看器",
+        "priority": "P1",
+        "platforms": [
+          "Web",
+          "PC"
+        ],
+        "responsibility": "按 version -> document type -> feature 提供只读 Markdown 浏览。",
+        "sections": [
+          "版本树",
+          "文档类型列表",
+          "feature 目录",
+          "文档阅读面板",
+          "来源路径信息"
+        ],
+        "actions": [
+          {
+            "label": "打开文档",
+            "target": "material-document-detail",
+            "trigger": "点击文档列表项"
+          },
+          {
+            "label": "返回项目详情",
+            "target": "project-detail",
+            "trigger": "点击返回"
+          }
+        ],
+        "states": [
+          {
+            "id": "ready",
+            "label": "可浏览",
+            "description": "版本树和文档列表已加载。"
+          },
+          {
+            "id": "document-open",
+            "label": "文档已打开",
+            "description": "右侧阅读区显示当前文档正文。"
+          },
+          {
+            "id": "source-missing",
+            "label": "来源缺失",
+            "description": "目标文档不存在或暂不可读。"
+          },
+          {
+            "id": "loading",
+            "label": "加载中",
+            "description": "文档列表或内容仍在加载。"
+          },
+          {
+            "id": "empty",
+            "label": "空状态",
+            "description": "该版本或类型下没有可读文档。"
+          },
+          {
+            "id": "error",
+            "label": "错误",
+            "description": "文档读取失败。"
+          }
+        ],
+        "requirement_refs": {
+          "user-story": [
+            "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+          ],
+          "prd": [
+            "docs/beacon/v1.3.6/prd/beacon-v1-3-6-visual-management-console-and-material-viewer.md"
+          ],
+          "test-case": [
+            "docs/beacon/v1.3.6/qa/test-cases/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+          ]
+        },
+        "outbound_transitions": [
+          {
+            "from": "material-viewer",
+            "to": "material-document-detail",
+            "trigger": "点击文档列表项",
+            "type": "drill-down"
+          }
+        ]
+      },
+      {
+        "page_id": "material-document-detail",
+        "name": "物料文档详情",
+        "priority": "P2",
+        "platforms": [
+          "Web",
+          "PC"
+        ],
+        "responsibility": "冻结文档阅读状态，包括来源路径、版本切换和同类文档切换。",
+        "sections": [
+          "文档头部信息",
+          "版本 / 类型 / feature 面包屑",
+          "Markdown 正文区",
+          "同类文档切换",
+          "来源路径与只读说明"
+        ],
+        "actions": [
+          {
+            "label": "返回物料查看器",
+            "target": "material-viewer",
+            "trigger": "点击返回"
+          },
+          {
+            "label": "切换同版本文档",
+            "target": "material-document-detail",
+            "trigger": "点击侧栏文档"
+          }
+        ],
+        "states": [
+          {
+            "id": "ready",
+            "label": "文档已打开",
+            "description": "显示文档正文与来源路径。"
+          },
+          {
+            "id": "sibling-switch",
+            "label": "切换同类文档",
+            "description": "在阅读区切换相邻文档。"
+          },
+          {
+            "id": "version-switch",
+            "label": "切换版本",
+            "description": "切换到同类型的其他版本文档。"
+          },
+          {
+            "id": "source-missing",
+            "label": "来源缺失",
+            "description": "文档不存在或来源路径不可达。"
+          }
+        ],
+        "requirement_refs": {
+          "user-story": [
+            "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+          ],
+          "prd": [
+            "docs/beacon/v1.3.6/prd/beacon-v1-3-6-visual-management-console-and-material-viewer.md"
+          ],
+          "test-case": [
+            "docs/beacon/v1.3.6/qa/test-cases/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+          ]
+        },
+        "outbound_transitions": [
+          {
+            "from": "material-document-detail",
+            "to": "material-viewer",
+            "trigger": "点击返回",
+            "type": "return"
+          }
+        ]
+      }
+    ],
+    "navigation": {
+      "primary_entry": "home",
+      "primary_exit": "material-viewer",
+      "transitions": [
+        {
+          "from": "home",
+          "to": "management-overview",
+          "trigger": "点击项目组合入口",
+          "type": "primary"
+        },
+        {
+          "from": "home",
+          "to": "project-detail",
+          "trigger": "点击重点项目卡片",
+          "type": "primary"
+        },
+        {
+          "from": "management-overview",
+          "to": "project-detail",
+          "trigger": "点击项目行/卡片",
+          "type": "primary"
+        },
+        {
+          "from": "management-overview",
+          "to": "home",
+          "trigger": "点击首页导航",
+          "type": "return"
+        },
+        {
+          "from": "project-detail",
+          "to": "runtime-center",
+          "trigger": "点击运行态摘要",
+          "type": "drill-down"
+        },
+        {
+          "from": "project-detail",
+          "to": "recovery-diagnostics",
+          "trigger": "点击恢复诊断入口",
+          "type": "drill-down"
+        },
+        {
+          "from": "project-detail",
+          "to": "material-viewer",
+          "trigger": "点击文档查看入口",
+          "type": "drill-down"
+        },
+        {
+          "from": "project-detail",
+          "to": "management-overview",
+          "trigger": "点击返回",
+          "type": "return"
+        },
+        {
+          "from": "runtime-center",
+          "to": "project-detail",
+          "trigger": "点击返回",
+          "type": "return"
+        },
+        {
+          "from": "recovery-diagnostics",
+          "to": "project-detail",
+          "trigger": "点击返回",
+          "type": "return"
+        },
+        {
+          "from": "material-viewer",
+          "to": "material-document-detail",
+          "trigger": "点击文档列表项",
+          "type": "drill-down"
+        },
+        {
+          "from": "material-document-detail",
+          "to": "material-viewer",
+          "trigger": "点击返回",
+          "type": "return"
+        }
+      ]
+    },
+    "platform_variants": {
+      "global_platforms": [
+        "Web",
+        "PC"
+      ],
+      "pages": {
+        "home": {
+          "platforms": [
+            "Web",
+            "PC"
+          ],
+          "notes": []
+        },
+        "management-overview": {
+          "platforms": [
+            "Web",
+            "PC"
+          ],
+          "notes": []
+        },
+        "project-detail": {
+          "platforms": [
+            "Web",
+            "PC",
+            "App"
+          ],
+          "notes": [
+            "仅项目详情页支持 App"
+          ]
+        },
+        "runtime-center": {
+          "platforms": [
+            "Web",
+            "PC"
+          ],
+          "notes": []
+        },
+        "recovery-diagnostics": {
+          "platforms": [
+            "Web",
+            "PC"
+          ],
+          "notes": []
+        },
+        "material-viewer": {
+          "platforms": [
+            "Web",
+            "PC"
+          ],
+          "notes": []
+        },
+        "material-document-detail": {
+          "platforms": [
+            "Web",
+            "PC"
+          ],
+          "notes": []
+        }
+      },
+      "notes": [
+        "默认展示 Web / PC 线框视图。",
+        "App 只在真实需求明确要求时保留；当前仅 project-detail 做移动差异提示。"
+      ]
+    },
+    "contract": {
+      "prototype_archetype": "admin-workbench",
+      "wireframe_only": true,
+      "design_governance_required": false,
+      "route_closure_required": false,
+      "required_files": [
+        "wireframe-summary.md",
+        "wireframe-manifest.json",
+        "navigation-map.md",
+        "navigation-map.json",
+        "state-flow-map.md",
+        "state-flow-map.json",
+        "component-catalog.md",
+        "component-catalog.json",
+        "canonical-envelope.json",
+        "pages/*.md",
+        "freeze.json",
+        "prototype-review.json"
+      ]
+    },
+    "parser": {
+      "page_detection": "keyword-catalog",
+      "fallback_used": false,
+      "cjk_detected": true,
+      "cjk_parse_failed": false
+    },
+    "theme": {
+      "ui_kit": "wireframe-markdown-v1",
+      "prototype_archetype": "admin-workbench",
+      "primary": "#2563EB",
+      "secondary": "#0F172A",
+      "surface_note": "Wireframe freeze uses markdown and metadata only, not high-fidelity HTML surfaces."
+    }
+  },
+  "navigation_map": {
+    "primary_entry": "home",
+    "primary_exit": "material-viewer",
+    "transitions": [
+      {
+        "from": "home",
+        "to": "management-overview",
+        "trigger": "点击项目组合入口",
+        "type": "primary"
+      },
+      {
+        "from": "home",
+        "to": "project-detail",
+        "trigger": "点击重点项目卡片",
+        "type": "primary"
+      },
+      {
+        "from": "management-overview",
+        "to": "project-detail",
+        "trigger": "点击项目行/卡片",
+        "type": "primary"
+      },
+      {
+        "from": "management-overview",
+        "to": "home",
+        "trigger": "点击首页导航",
+        "type": "return"
+      },
+      {
+        "from": "project-detail",
+        "to": "runtime-center",
+        "trigger": "点击运行态摘要",
+        "type": "drill-down"
+      },
+      {
+        "from": "project-detail",
+        "to": "recovery-diagnostics",
+        "trigger": "点击恢复诊断入口",
+        "type": "drill-down"
+      },
+      {
+        "from": "project-detail",
+        "to": "material-viewer",
+        "trigger": "点击文档查看入口",
+        "type": "drill-down"
+      },
+      {
+        "from": "project-detail",
+        "to": "management-overview",
+        "trigger": "点击返回",
+        "type": "return"
+      },
+      {
+        "from": "runtime-center",
+        "to": "project-detail",
+        "trigger": "点击返回",
+        "type": "return"
+      },
+      {
+        "from": "recovery-diagnostics",
+        "to": "project-detail",
+        "trigger": "点击返回",
+        "type": "return"
+      },
+      {
+        "from": "material-viewer",
+        "to": "material-document-detail",
+        "trigger": "点击文档列表项",
+        "type": "drill-down"
+      },
+      {
+        "from": "material-document-detail",
+        "to": "material-viewer",
+        "trigger": "点击返回",
+        "type": "return"
+      }
+    ]
+  },
+  "state_flow_map": {
+    "schema_version": "1.0",
+    "node_count": 40,
+    "edge_count": 20,
+    "nodes": [
+      {
+        "state_key": "home:ready",
+        "page_id": "home",
+        "state_id": "ready",
+        "label": "正常总览",
+        "description": "展示项目数、阻塞数、当前交付和下一步。"
+      },
+      {
+        "state_key": "home:blocked",
+        "page_id": "home",
+        "state_id": "blocked",
+        "label": "阻塞高亮",
+        "description": "把阻塞项目和介入点提升到首屏。"
+      },
+      {
+        "state_key": "home:intervention-needed",
+        "page_id": "home",
+        "state_id": "intervention-needed",
+        "label": "需介入",
+        "description": "强调需要 CEO / 负责人介入的项目。"
+      },
+      {
+        "state_key": "home:loading",
+        "page_id": "home",
+        "state_id": "loading",
+        "label": "加载中",
+        "description": "首页摘要数据仍在汇总。"
+      },
+      {
+        "state_key": "home:empty",
+        "page_id": "home",
+        "state_id": "empty",
+        "label": "空状态",
+        "description": "当前没有受管项目。"
+      },
+      {
+        "state_key": "home:error",
+        "page_id": "home",
+        "state_id": "error",
+        "label": "错误",
+        "description": "摘要聚合失败，但提示可以进入详情或 doctor。"
+      },
+      {
+        "state_key": "management-overview:ready",
+        "page_id": "management-overview",
+        "state_id": "ready",
+        "label": "多项目已加载",
+        "description": "密集展示多项目当前状态。"
+      },
+      {
+        "state_key": "management-overview:filtered",
+        "page_id": "management-overview",
+        "state_id": "filtered",
+        "label": "已筛选",
+        "description": "按阶段、版本、健康态筛选项目。"
+      },
+      {
+        "state_key": "management-overview:empty",
+        "page_id": "management-overview",
+        "state_id": "empty",
+        "label": "无项目",
+        "description": "没有任何受管项目进入注册表。"
+      },
+      {
+        "state_key": "management-overview:loading",
+        "page_id": "management-overview",
+        "state_id": "loading",
+        "label": "加载中",
+        "description": "项目注册表正在聚合。"
+      },
+      {
+        "state_key": "management-overview:error",
+        "page_id": "management-overview",
+        "state_id": "error",
+        "label": "错误",
+        "description": "总览聚合失败但保留恢复提示。"
+      },
+      {
+        "state_key": "project-detail:ready",
+        "page_id": "project-detail",
+        "state_id": "ready",
+        "label": "可接力",
+        "description": "版本、PRD、需求闭环和下一步信息完整。"
+      },
+      {
+        "state_key": "project-detail:requirement-missing",
+        "page_id": "project-detail",
+        "state_id": "requirement-missing",
+        "label": "需求缺口",
+        "description": "PRD / user-story / test-case 存在缺口。"
+      },
+      {
+        "state_key": "project-detail:draft",
+        "page_id": "project-detail",
+        "state_id": "draft",
+        "label": "需求草稿",
+        "description": "需求已建立但未冻结。"
+      },
+      {
+        "state_key": "project-detail:frozen",
+        "page_id": "project-detail",
+        "state_id": "frozen",
+        "label": "需求冻结",
+        "description": "需求链与 prototype 都已冻结。"
+      },
+      {
+        "state_key": "project-detail:runtime-active",
+        "page_id": "project-detail",
+        "state_id": "runtime-active",
+        "label": "运行中",
+        "description": "存在 single / team / ralph 运行摘要。"
+      },
+      {
+        "state_key": "project-detail:loading",
+        "page_id": "project-detail",
+        "state_id": "loading",
+        "label": "加载中",
+        "description": "项目详情正在聚合。"
+      },
+      {
+        "state_key": "project-detail:error",
+        "page_id": "project-detail",
+        "state_id": "error",
+        "label": "错误",
+        "description": "详情聚合失败但给出恢复链路。"
+      },
+      {
+        "state_key": "runtime-center:single-active",
+        "page_id": "runtime-center",
+        "state_id": "single-active",
+        "label": "Single 运行",
+        "description": "展示单进程执行摘要和 linked run。"
+      },
+      {
+        "state_key": "runtime-center:team-active",
+        "page_id": "runtime-center",
+        "state_id": "team-active",
+        "label": "Team 运行",
+        "description": "展示 agent 数、角色、状态和 host session metadata。"
+      },
+      {
+        "state_key": "runtime-center:ralph-active",
+        "page_id": "runtime-center",
+        "state_id": "ralph-active",
+        "label": "Ralph 闭环",
+        "description": "展示 round_count、failure_streak、next_action、blocker。"
+      },
+      {
+        "state_key": "runtime-center:idle",
+        "page_id": "runtime-center",
+        "state_id": "idle",
+        "label": "无活跃运行",
+        "description": "当前没有任何 active runtime。"
+      },
+      {
+        "state_key": "runtime-center:loading",
+        "page_id": "runtime-center",
+        "state_id": "loading",
+        "label": "加载中",
+        "description": "运行态数据仍在读取。"
+      },
+      {
+        "state_key": "runtime-center:error",
+        "page_id": "runtime-center",
+        "state_id": "error",
+        "label": "错误",
+        "description": "运行态投影异常，需要回到诊断页。"
+      },
+      {
+        "state_key": "recovery-diagnostics:healthy-warning",
+        "page_id": "recovery-diagnostics",
+        "state_id": "healthy-warning",
+        "label": "健康但预警",
+        "description": "当前系统可用但存在恢复风险提示。"
+      },
+      {
+        "state_key": "recovery-diagnostics:degraded",
+        "page_id": "recovery-diagnostics",
+        "state_id": "degraded",
+        "label": "降级",
+        "description": "SQLite 或 PocketBase 缺失，但 truth 仍可从文档恢复。"
+      },
+      {
+        "state_key": "recovery-diagnostics:rebuild-suggested",
+        "page_id": "recovery-diagnostics",
+        "state_id": "rebuild-suggested",
+        "label": "建议重建",
+        "description": "投影层需要重建。"
+      },
+      {
+        "state_key": "recovery-diagnostics:doctor-suggested",
+        "page_id": "recovery-diagnostics",
+        "state_id": "doctor-suggested",
+        "label": "建议 doctor",
+        "description": "推荐执行 doctor 修复上下文。"
+      },
+      {
+        "state_key": "recovery-diagnostics:loading",
+        "page_id": "recovery-diagnostics",
+        "state_id": "loading",
+        "label": "加载中",
+        "description": "诊断结果仍在采集。"
+      },
+      {
+        "state_key": "recovery-diagnostics:error",
+        "page_id": "recovery-diagnostics",
+        "state_id": "error",
+        "label": "错误",
+        "description": "诊断页本身无法完成聚合。"
+      },
+      {
+        "state_key": "material-viewer:ready",
+        "page_id": "material-viewer",
+        "state_id": "ready",
+        "label": "可浏览",
+        "description": "版本树和文档列表已加载。"
+      },
+      {
+        "state_key": "material-viewer:document-open",
+        "page_id": "material-viewer",
+        "state_id": "document-open",
+        "label": "文档已打开",
+        "description": "右侧阅读区显示当前文档正文。"
+      },
+      {
+        "state_key": "material-viewer:source-missing",
+        "page_id": "material-viewer",
+        "state_id": "source-missing",
+        "label": "来源缺失",
+        "description": "目标文档不存在或暂不可读。"
+      },
+      {
+        "state_key": "material-viewer:loading",
+        "page_id": "material-viewer",
+        "state_id": "loading",
+        "label": "加载中",
+        "description": "文档列表或内容仍在加载。"
+      },
+      {
+        "state_key": "material-viewer:empty",
+        "page_id": "material-viewer",
+        "state_id": "empty",
+        "label": "空状态",
+        "description": "该版本或类型下没有可读文档。"
+      },
+      {
+        "state_key": "material-viewer:error",
+        "page_id": "material-viewer",
+        "state_id": "error",
+        "label": "错误",
+        "description": "文档读取失败。"
+      },
+      {
+        "state_key": "material-document-detail:ready",
+        "page_id": "material-document-detail",
+        "state_id": "ready",
+        "label": "文档已打开",
+        "description": "显示文档正文与来源路径。"
+      },
+      {
+        "state_key": "material-document-detail:sibling-switch",
+        "page_id": "material-document-detail",
+        "state_id": "sibling-switch",
+        "label": "切换同类文档",
+        "description": "在阅读区切换相邻文档。"
+      },
+      {
+        "state_key": "material-document-detail:version-switch",
+        "page_id": "material-document-detail",
+        "state_id": "version-switch",
+        "label": "切换版本",
+        "description": "切换到同类型的其他版本文档。"
+      },
+      {
+        "state_key": "material-document-detail:source-missing",
+        "page_id": "material-document-detail",
+        "state_id": "source-missing",
+        "label": "来源缺失",
+        "description": "文档不存在或来源路径不可达。"
+      }
+    ],
+    "edges": [
+      {
+        "from": "home:loading",
+        "to": "home:ready",
+        "event": "data_loaded",
+        "guard": "data_fetch_success",
+        "kind": "intra-page",
+        "fallback": null,
+        "test_refs": [
+          "TC-001",
+          "TC-002"
+        ]
+      },
+      {
+        "from": "home:ready",
+        "to": "home:error",
+        "event": "data_failure",
+        "guard": "runtime_or_projection_error",
+        "kind": "intra-page",
+        "fallback": "recovery-diagnostics:ready",
+        "test_refs": [
+          "TC-001",
+          "TC-002"
+        ]
+      },
+      {
+        "from": "management-overview:loading",
+        "to": "management-overview:ready",
+        "event": "data_loaded",
+        "guard": "data_fetch_success",
+        "kind": "intra-page",
+        "fallback": null,
+        "test_refs": [
+          "TC-001",
+          "TC-002"
+        ]
+      },
+      {
+        "from": "management-overview:ready",
+        "to": "management-overview:error",
+        "event": "data_failure",
+        "guard": "runtime_or_projection_error",
+        "kind": "intra-page",
+        "fallback": "recovery-diagnostics:ready",
+        "test_refs": [
+          "TC-001",
+          "TC-002"
+        ]
+      },
+      {
+        "from": "project-detail:loading",
+        "to": "project-detail:ready",
+        "event": "data_loaded",
+        "guard": "data_fetch_success",
+        "kind": "intra-page",
+        "fallback": null,
+        "test_refs": [
+          "TC-001",
+          "TC-002"
+        ]
+      },
+      {
+        "from": "project-detail:ready",
+        "to": "project-detail:error",
+        "event": "data_failure",
+        "guard": "runtime_or_projection_error",
+        "kind": "intra-page",
+        "fallback": "recovery-diagnostics:ready",
+        "test_refs": [
+          "TC-001",
+          "TC-002"
+        ]
+      },
+      {
+        "from": "material-viewer:loading",
+        "to": "material-viewer:ready",
+        "event": "data_loaded",
+        "guard": "data_fetch_success",
+        "kind": "intra-page",
+        "fallback": null,
+        "test_refs": [
+          "TC-001",
+          "TC-002"
+        ]
+      },
+      {
+        "from": "material-viewer:ready",
+        "to": "material-viewer:error",
+        "event": "data_failure",
+        "guard": "runtime_or_projection_error",
+        "kind": "intra-page",
+        "fallback": "recovery-diagnostics:ready",
+        "test_refs": [
+          "TC-001",
+          "TC-002"
+        ]
+      },
+      {
+        "from": "home:ready",
+        "to": "management-overview:ready",
+        "event": "点击项目组合入口",
+        "guard": "route_allowed",
+        "kind": "inter-page",
+        "fallback": "home:ready",
+        "test_refs": [
+          "TC-001"
+        ]
+      },
+      {
+        "from": "home:ready",
+        "to": "project-detail:ready",
+        "event": "点击重点项目卡片",
+        "guard": "route_allowed",
+        "kind": "inter-page",
+        "fallback": "home:ready",
+        "test_refs": [
+          "TC-001"
+        ]
+      },
+      {
+        "from": "management-overview:ready",
+        "to": "project-detail:ready",
+        "event": "点击项目行/卡片",
+        "guard": "route_allowed",
+        "kind": "inter-page",
+        "fallback": "management-overview:ready",
+        "test_refs": [
+          "TC-001"
+        ]
+      },
+      {
+        "from": "management-overview:ready",
+        "to": "home:ready",
+        "event": "点击首页导航",
+        "guard": "route_allowed",
+        "kind": "inter-page",
+        "fallback": "management-overview:ready",
+        "test_refs": [
+          "TC-001"
+        ]
+      },
+      {
+        "from": "project-detail:ready",
+        "to": "runtime-center:ready",
+        "event": "点击运行态摘要",
+        "guard": "route_allowed",
+        "kind": "inter-page",
+        "fallback": "project-detail:ready",
+        "test_refs": [
+          "TC-001"
+        ]
+      },
+      {
+        "from": "project-detail:ready",
+        "to": "recovery-diagnostics:ready",
+        "event": "点击恢复诊断入口",
+        "guard": "route_allowed",
+        "kind": "inter-page",
+        "fallback": "project-detail:ready",
+        "test_refs": [
+          "TC-001"
+        ]
+      },
+      {
+        "from": "project-detail:ready",
+        "to": "material-viewer:ready",
+        "event": "点击文档查看入口",
+        "guard": "route_allowed",
+        "kind": "inter-page",
+        "fallback": "project-detail:ready",
+        "test_refs": [
+          "TC-001"
+        ]
+      },
+      {
+        "from": "project-detail:ready",
+        "to": "management-overview:ready",
+        "event": "点击返回",
+        "guard": "route_allowed",
+        "kind": "inter-page",
+        "fallback": "project-detail:ready",
+        "test_refs": [
+          "TC-001"
+        ]
+      },
+      {
+        "from": "runtime-center:ready",
+        "to": "project-detail:ready",
+        "event": "点击返回",
+        "guard": "route_allowed",
+        "kind": "inter-page",
+        "fallback": "runtime-center:ready",
+        "test_refs": [
+          "TC-001"
+        ]
+      },
+      {
+        "from": "recovery-diagnostics:ready",
+        "to": "project-detail:ready",
+        "event": "点击返回",
+        "guard": "route_allowed",
+        "kind": "inter-page",
+        "fallback": "recovery-diagnostics:ready",
+        "test_refs": [
+          "TC-001"
+        ]
+      },
+      {
+        "from": "material-viewer:ready",
+        "to": "material-document-detail:ready",
+        "event": "点击文档列表项",
+        "guard": "route_allowed",
+        "kind": "inter-page",
+        "fallback": "material-viewer:ready",
+        "test_refs": [
+          "TC-001"
+        ]
+      },
+      {
+        "from": "material-document-detail:ready",
+        "to": "material-viewer:ready",
+        "event": "点击返回",
+        "guard": "route_allowed",
+        "kind": "inter-page",
+        "fallback": "material-document-detail:ready",
+        "test_refs": [
+          "TC-001"
+        ]
+      }
+    ]
+  },
+  "component_catalog": {
+    "schema_version": "1.0",
+    "component_count": 35,
+    "components": [
+      {
+        "component_id": "home-component-01",
+        "page_id": "home",
+        "name": "经营总览条",
+        "responsibility": "经营总览条 模块负责承载 `首页` 的关键信息与操作。",
+        "data_source": [
+          "prototype-plan.page_specs",
+          "source-map.requirement_refs"
+        ],
+        "interaction": {
+          "label": "查看管理总览",
+          "trigger": "点击项目组合入口",
+          "target": "management-overview"
+        },
+        "state_refs": [
+          "ready",
+          "blocked",
+          "intervention-needed",
+          "loading",
+          "empty",
+          "error"
+        ],
+        "ac_refs": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004",
+          "AC-005",
+          "AC-006",
+          "AC-007",
+          "AC-008",
+          "AC-009",
+          "AC-010",
+          "AC-011",
+          "AC-012",
+          "AC-013",
+          "AC-014",
+          "AC-015",
+          "AC-016"
+        ],
+        "tc_refs": [
+          "TC-001",
+          "TC-002",
+          "TC-003",
+          "TC-004",
+          "TC-005",
+          "TC-006",
+          "TC-007",
+          "TC-008",
+          "TC-009",
+          "TC-010",
+          "TC-011",
+          "TC-012"
+        ],
+        "story_refs": [
+          "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+        ]
+      },
+      {
+        "component_id": "home-component-02",
+        "page_id": "home",
+        "name": "重点介入区",
+        "responsibility": "重点介入区 模块负责承载 `首页` 的关键信息与操作。",
+        "data_source": [
+          "prototype-plan.page_specs",
+          "source-map.requirement_refs"
+        ],
+        "interaction": {
+          "label": "进入重点项目",
+          "trigger": "点击重点项目卡片",
+          "target": "project-detail"
+        },
+        "state_refs": [
+          "ready",
+          "blocked",
+          "intervention-needed",
+          "loading",
+          "empty",
+          "error"
+        ],
+        "ac_refs": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004",
+          "AC-005",
+          "AC-006",
+          "AC-007",
+          "AC-008",
+          "AC-009",
+          "AC-010",
+          "AC-011",
+          "AC-012",
+          "AC-013",
+          "AC-014",
+          "AC-015",
+          "AC-016"
+        ],
+        "tc_refs": [
+          "TC-001",
+          "TC-002",
+          "TC-003",
+          "TC-004",
+          "TC-005",
+          "TC-006",
+          "TC-007",
+          "TC-008",
+          "TC-009",
+          "TC-010",
+          "TC-011",
+          "TC-012"
+        ],
+        "story_refs": [
+          "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+        ]
+      },
+      {
+        "component_id": "home-component-03",
+        "page_id": "home",
+        "name": "项目推进摘要",
+        "responsibility": "项目推进摘要 模块负责承载 `首页` 的关键信息与操作。",
+        "data_source": [
+          "prototype-plan.page_specs",
+          "source-map.requirement_refs"
+        ],
+        "interaction": {
+          "label": "无直接动作",
+          "trigger": "被动展示",
+          "target": "home"
+        },
+        "state_refs": [
+          "ready",
+          "blocked",
+          "intervention-needed",
+          "loading",
+          "empty",
+          "error"
+        ],
+        "ac_refs": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004",
+          "AC-005",
+          "AC-006",
+          "AC-007",
+          "AC-008",
+          "AC-009",
+          "AC-010",
+          "AC-011",
+          "AC-012",
+          "AC-013",
+          "AC-014",
+          "AC-015",
+          "AC-016"
+        ],
+        "tc_refs": [
+          "TC-001",
+          "TC-002",
+          "TC-003",
+          "TC-004",
+          "TC-005",
+          "TC-006",
+          "TC-007",
+          "TC-008",
+          "TC-009",
+          "TC-010",
+          "TC-011",
+          "TC-012"
+        ],
+        "story_refs": [
+          "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+        ]
+      },
+      {
+        "component_id": "home-component-04",
+        "page_id": "home",
+        "name": "当前交付卡片",
+        "responsibility": "当前交付卡片 模块负责承载 `首页` 的关键信息与操作。",
+        "data_source": [
+          "prototype-plan.page_specs",
+          "source-map.requirement_refs"
+        ],
+        "interaction": {
+          "label": "无直接动作",
+          "trigger": "被动展示",
+          "target": "home"
+        },
+        "state_refs": [
+          "ready",
+          "blocked",
+          "intervention-needed",
+          "loading",
+          "empty",
+          "error"
+        ],
+        "ac_refs": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004",
+          "AC-005",
+          "AC-006",
+          "AC-007",
+          "AC-008",
+          "AC-009",
+          "AC-010",
+          "AC-011",
+          "AC-012",
+          "AC-013",
+          "AC-014",
+          "AC-015",
+          "AC-016"
+        ],
+        "tc_refs": [
+          "TC-001",
+          "TC-002",
+          "TC-003",
+          "TC-004",
+          "TC-005",
+          "TC-006",
+          "TC-007",
+          "TC-008",
+          "TC-009",
+          "TC-010",
+          "TC-011",
+          "TC-012"
+        ],
+        "story_refs": [
+          "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+        ]
+      },
+      {
+        "component_id": "home-component-05",
+        "page_id": "home",
+        "name": "下一步建议",
+        "responsibility": "下一步建议 模块负责承载 `首页` 的关键信息与操作。",
+        "data_source": [
+          "prototype-plan.page_specs",
+          "source-map.requirement_refs"
+        ],
+        "interaction": {
+          "label": "无直接动作",
+          "trigger": "被动展示",
+          "target": "home"
+        },
+        "state_refs": [
+          "ready",
+          "blocked",
+          "intervention-needed",
+          "loading",
+          "empty",
+          "error"
+        ],
+        "ac_refs": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004",
+          "AC-005",
+          "AC-006",
+          "AC-007",
+          "AC-008",
+          "AC-009",
+          "AC-010",
+          "AC-011",
+          "AC-012",
+          "AC-013",
+          "AC-014",
+          "AC-015",
+          "AC-016"
+        ],
+        "tc_refs": [
+          "TC-001",
+          "TC-002",
+          "TC-003",
+          "TC-004",
+          "TC-005",
+          "TC-006",
+          "TC-007",
+          "TC-008",
+          "TC-009",
+          "TC-010",
+          "TC-011",
+          "TC-012"
+        ],
+        "story_refs": [
+          "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+        ]
+      },
+      {
+        "component_id": "management-overview-component-01",
+        "page_id": "management-overview",
+        "name": "筛选与排序条",
+        "responsibility": "筛选与排序条 模块负责承载 `管理总览` 的关键信息与操作。",
+        "data_source": [
+          "prototype-plan.page_specs",
+          "source-map.requirement_refs"
+        ],
+        "interaction": {
+          "label": "进入项目详情",
+          "trigger": "点击项目行或卡片",
+          "target": "project-detail"
+        },
+        "state_refs": [
+          "ready",
+          "filtered",
+          "empty",
+          "loading",
+          "error"
+        ],
+        "ac_refs": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004",
+          "AC-005",
+          "AC-006",
+          "AC-007",
+          "AC-008",
+          "AC-009",
+          "AC-010",
+          "AC-011",
+          "AC-012",
+          "AC-013",
+          "AC-014",
+          "AC-015",
+          "AC-016"
+        ],
+        "tc_refs": [
+          "TC-001",
+          "TC-002",
+          "TC-003",
+          "TC-004",
+          "TC-005",
+          "TC-006",
+          "TC-007",
+          "TC-008",
+          "TC-009",
+          "TC-010",
+          "TC-011",
+          "TC-012"
+        ],
+        "story_refs": [
+          "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+        ]
+      },
+      {
+        "component_id": "management-overview-component-02",
+        "page_id": "management-overview",
+        "name": "项目注册表",
+        "responsibility": "项目注册表 模块负责承载 `管理总览` 的关键信息与操作。",
+        "data_source": [
+          "prototype-plan.page_specs",
+          "source-map.requirement_refs"
+        ],
+        "interaction": {
+          "label": "返回首页",
+          "trigger": "点击首页导航",
+          "target": "home"
+        },
+        "state_refs": [
+          "ready",
+          "filtered",
+          "empty",
+          "loading",
+          "error"
+        ],
+        "ac_refs": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004",
+          "AC-005",
+          "AC-006",
+          "AC-007",
+          "AC-008",
+          "AC-009",
+          "AC-010",
+          "AC-011",
+          "AC-012",
+          "AC-013",
+          "AC-014",
+          "AC-015",
+          "AC-016"
+        ],
+        "tc_refs": [
+          "TC-001",
+          "TC-002",
+          "TC-003",
+          "TC-004",
+          "TC-005",
+          "TC-006",
+          "TC-007",
+          "TC-008",
+          "TC-009",
+          "TC-010",
+          "TC-011",
+          "TC-012"
+        ],
+        "story_refs": [
+          "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+        ]
+      },
+      {
+        "component_id": "management-overview-component-03",
+        "page_id": "management-overview",
+        "name": "阶段分布摘要",
+        "responsibility": "阶段分布摘要 模块负责承载 `管理总览` 的关键信息与操作。",
+        "data_source": [
+          "prototype-plan.page_specs",
+          "source-map.requirement_refs"
+        ],
+        "interaction": {
+          "label": "无直接动作",
+          "trigger": "被动展示",
+          "target": "management-overview"
+        },
+        "state_refs": [
+          "ready",
+          "filtered",
+          "empty",
+          "loading",
+          "error"
+        ],
+        "ac_refs": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004",
+          "AC-005",
+          "AC-006",
+          "AC-007",
+          "AC-008",
+          "AC-009",
+          "AC-010",
+          "AC-011",
+          "AC-012",
+          "AC-013",
+          "AC-014",
+          "AC-015",
+          "AC-016"
+        ],
+        "tc_refs": [
+          "TC-001",
+          "TC-002",
+          "TC-003",
+          "TC-004",
+          "TC-005",
+          "TC-006",
+          "TC-007",
+          "TC-008",
+          "TC-009",
+          "TC-010",
+          "TC-011",
+          "TC-012"
+        ],
+        "story_refs": [
+          "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+        ]
+      },
+      {
+        "component_id": "management-overview-component-04",
+        "page_id": "management-overview",
+        "name": "风险与调试摘要",
+        "responsibility": "风险与调试摘要 模块负责承载 `管理总览` 的关键信息与操作。",
+        "data_source": [
+          "prototype-plan.page_specs",
+          "source-map.requirement_refs"
+        ],
+        "interaction": {
+          "label": "无直接动作",
+          "trigger": "被动展示",
+          "target": "management-overview"
+        },
+        "state_refs": [
+          "ready",
+          "filtered",
+          "empty",
+          "loading",
+          "error"
+        ],
+        "ac_refs": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004",
+          "AC-005",
+          "AC-006",
+          "AC-007",
+          "AC-008",
+          "AC-009",
+          "AC-010",
+          "AC-011",
+          "AC-012",
+          "AC-013",
+          "AC-014",
+          "AC-015",
+          "AC-016"
+        ],
+        "tc_refs": [
+          "TC-001",
+          "TC-002",
+          "TC-003",
+          "TC-004",
+          "TC-005",
+          "TC-006",
+          "TC-007",
+          "TC-008",
+          "TC-009",
+          "TC-010",
+          "TC-011",
+          "TC-012"
+        ],
+        "story_refs": [
+          "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+        ]
+      },
+      {
+        "component_id": "management-overview-component-05",
+        "page_id": "management-overview",
+        "name": "推荐 skill 区",
+        "responsibility": "推荐 skill 区 模块负责承载 `管理总览` 的关键信息与操作。",
+        "data_source": [
+          "prototype-plan.page_specs",
+          "source-map.requirement_refs"
+        ],
+        "interaction": {
+          "label": "无直接动作",
+          "trigger": "被动展示",
+          "target": "management-overview"
+        },
+        "state_refs": [
+          "ready",
+          "filtered",
+          "empty",
+          "loading",
+          "error"
+        ],
+        "ac_refs": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004",
+          "AC-005",
+          "AC-006",
+          "AC-007",
+          "AC-008",
+          "AC-009",
+          "AC-010",
+          "AC-011",
+          "AC-012",
+          "AC-013",
+          "AC-014",
+          "AC-015",
+          "AC-016"
+        ],
+        "tc_refs": [
+          "TC-001",
+          "TC-002",
+          "TC-003",
+          "TC-004",
+          "TC-005",
+          "TC-006",
+          "TC-007",
+          "TC-008",
+          "TC-009",
+          "TC-010",
+          "TC-011",
+          "TC-012"
+        ],
+        "story_refs": [
+          "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+        ]
+      },
+      {
+        "component_id": "project-detail-component-01",
+        "page_id": "project-detail",
+        "name": "项目头部摘要",
+        "responsibility": "项目头部摘要 模块负责承载 `项目详情` 的关键信息与操作。",
+        "data_source": [
+          "prototype-plan.page_specs",
+          "source-map.requirement_refs"
+        ],
+        "interaction": {
+          "label": "查看运行中心",
+          "trigger": "点击运行态摘要",
+          "target": "runtime-center"
+        },
+        "state_refs": [
+          "ready",
+          "requirement-missing",
+          "draft",
+          "frozen",
+          "runtime-active",
+          "loading",
+          "error"
+        ],
+        "ac_refs": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004",
+          "AC-005",
+          "AC-006",
+          "AC-007",
+          "AC-008",
+          "AC-009",
+          "AC-010",
+          "AC-011",
+          "AC-012",
+          "AC-013",
+          "AC-014",
+          "AC-015",
+          "AC-016"
+        ],
+        "tc_refs": [
+          "TC-001",
+          "TC-002",
+          "TC-003",
+          "TC-004",
+          "TC-005",
+          "TC-006",
+          "TC-007",
+          "TC-008",
+          "TC-009",
+          "TC-010",
+          "TC-011",
+          "TC-012"
+        ],
+        "story_refs": [
+          "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+        ]
+      },
+      {
+        "component_id": "project-detail-component-02",
+        "page_id": "project-detail",
+        "name": "版本与分支信息",
+        "responsibility": "版本与分支信息 模块负责承载 `项目详情` 的关键信息与操作。",
+        "data_source": [
+          "prototype-plan.page_specs",
+          "source-map.requirement_refs"
+        ],
+        "interaction": {
+          "label": "查看恢复诊断",
+          "trigger": "点击恢复诊断入口",
+          "target": "recovery-diagnostics"
+        },
+        "state_refs": [
+          "ready",
+          "requirement-missing",
+          "draft",
+          "frozen",
+          "runtime-active",
+          "loading",
+          "error"
+        ],
+        "ac_refs": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004",
+          "AC-005",
+          "AC-006",
+          "AC-007",
+          "AC-008",
+          "AC-009",
+          "AC-010",
+          "AC-011",
+          "AC-012",
+          "AC-013",
+          "AC-014",
+          "AC-015",
+          "AC-016"
+        ],
+        "tc_refs": [
+          "TC-001",
+          "TC-002",
+          "TC-003",
+          "TC-004",
+          "TC-005",
+          "TC-006",
+          "TC-007",
+          "TC-008",
+          "TC-009",
+          "TC-010",
+          "TC-011",
+          "TC-012"
+        ],
+        "story_refs": [
+          "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+        ]
+      },
+      {
+        "component_id": "project-detail-component-03",
+        "page_id": "project-detail",
+        "name": "主 PRD 与并行 PRD",
+        "responsibility": "主 PRD 与并行 PRD 模块负责承载 `项目详情` 的关键信息与操作。",
+        "data_source": [
+          "prototype-plan.page_specs",
+          "source-map.requirement_refs"
+        ],
+        "interaction": {
+          "label": "查看项目物料",
+          "trigger": "点击文档查看入口",
+          "target": "material-viewer"
+        },
+        "state_refs": [
+          "ready",
+          "requirement-missing",
+          "draft",
+          "frozen",
+          "runtime-active",
+          "loading",
+          "error"
+        ],
+        "ac_refs": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004",
+          "AC-005",
+          "AC-006",
+          "AC-007",
+          "AC-008",
+          "AC-009",
+          "AC-010",
+          "AC-011",
+          "AC-012",
+          "AC-013",
+          "AC-014",
+          "AC-015",
+          "AC-016"
+        ],
+        "tc_refs": [
+          "TC-001",
+          "TC-002",
+          "TC-003",
+          "TC-004",
+          "TC-005",
+          "TC-006",
+          "TC-007",
+          "TC-008",
+          "TC-009",
+          "TC-010",
+          "TC-011",
+          "TC-012"
+        ],
+        "story_refs": [
+          "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+        ]
+      },
+      {
+        "component_id": "project-detail-component-04",
+        "page_id": "project-detail",
+        "name": "需求物料闭环状态",
+        "responsibility": "需求物料闭环状态 模块负责承载 `项目详情` 的关键信息与操作。",
+        "data_source": [
+          "prototype-plan.page_specs",
+          "source-map.requirement_refs"
+        ],
+        "interaction": {
+          "label": "返回管理总览",
+          "trigger": "点击返回",
+          "target": "management-overview"
+        },
+        "state_refs": [
+          "ready",
+          "requirement-missing",
+          "draft",
+          "frozen",
+          "runtime-active",
+          "loading",
+          "error"
+        ],
+        "ac_refs": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004",
+          "AC-005",
+          "AC-006",
+          "AC-007",
+          "AC-008",
+          "AC-009",
+          "AC-010",
+          "AC-011",
+          "AC-012",
+          "AC-013",
+          "AC-014",
+          "AC-015",
+          "AC-016"
+        ],
+        "tc_refs": [
+          "TC-001",
+          "TC-002",
+          "TC-003",
+          "TC-004",
+          "TC-005",
+          "TC-006",
+          "TC-007",
+          "TC-008",
+          "TC-009",
+          "TC-010",
+          "TC-011",
+          "TC-012"
+        ],
+        "story_refs": [
+          "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+        ]
+      },
+      {
+        "component_id": "project-detail-component-05",
+        "page_id": "project-detail",
+        "name": "最近交付与下一步",
+        "responsibility": "最近交付与下一步 模块负责承载 `项目详情` 的关键信息与操作。",
+        "data_source": [
+          "prototype-plan.page_specs",
+          "source-map.requirement_refs"
+        ],
+        "interaction": {
+          "label": "无直接动作",
+          "trigger": "被动展示",
+          "target": "project-detail"
+        },
+        "state_refs": [
+          "ready",
+          "requirement-missing",
+          "draft",
+          "frozen",
+          "runtime-active",
+          "loading",
+          "error"
+        ],
+        "ac_refs": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004",
+          "AC-005",
+          "AC-006",
+          "AC-007",
+          "AC-008",
+          "AC-009",
+          "AC-010",
+          "AC-011",
+          "AC-012",
+          "AC-013",
+          "AC-014",
+          "AC-015",
+          "AC-016"
+        ],
+        "tc_refs": [
+          "TC-001",
+          "TC-002",
+          "TC-003",
+          "TC-004",
+          "TC-005",
+          "TC-006",
+          "TC-007",
+          "TC-008",
+          "TC-009",
+          "TC-010",
+          "TC-011",
+          "TC-012"
+        ],
+        "story_refs": [
+          "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+        ]
+      },
+      {
+        "component_id": "project-detail-component-06",
+        "page_id": "project-detail",
+        "name": "运行态摘要卡",
+        "responsibility": "运行态摘要卡 模块负责承载 `项目详情` 的关键信息与操作。",
+        "data_source": [
+          "prototype-plan.page_specs",
+          "source-map.requirement_refs"
+        ],
+        "interaction": {
+          "label": "无直接动作",
+          "trigger": "被动展示",
+          "target": "project-detail"
+        },
+        "state_refs": [
+          "ready",
+          "requirement-missing",
+          "draft",
+          "frozen",
+          "runtime-active",
+          "loading",
+          "error"
+        ],
+        "ac_refs": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004",
+          "AC-005",
+          "AC-006",
+          "AC-007",
+          "AC-008",
+          "AC-009",
+          "AC-010",
+          "AC-011",
+          "AC-012",
+          "AC-013",
+          "AC-014",
+          "AC-015",
+          "AC-016"
+        ],
+        "tc_refs": [
+          "TC-001",
+          "TC-002",
+          "TC-003",
+          "TC-004",
+          "TC-005",
+          "TC-006",
+          "TC-007",
+          "TC-008",
+          "TC-009",
+          "TC-010",
+          "TC-011",
+          "TC-012"
+        ],
+        "story_refs": [
+          "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+        ]
+      },
+      {
+        "component_id": "runtime-center-component-01",
+        "page_id": "runtime-center",
+        "name": "运行态摘要头部",
+        "responsibility": "运行态摘要头部 模块负责承载 `运行中心` 的关键信息与操作。",
+        "data_source": [
+          "prototype-plan.page_specs",
+          "source-map.requirement_refs"
+        ],
+        "interaction": {
+          "label": "返回项目详情",
+          "trigger": "点击返回",
+          "target": "project-detail"
+        },
+        "state_refs": [
+          "single-active",
+          "team-active",
+          "ralph-active",
+          "idle",
+          "loading",
+          "error"
+        ],
+        "ac_refs": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004",
+          "AC-005",
+          "AC-006",
+          "AC-007",
+          "AC-008",
+          "AC-009",
+          "AC-010",
+          "AC-011",
+          "AC-012",
+          "AC-013",
+          "AC-014",
+          "AC-015",
+          "AC-016"
+        ],
+        "tc_refs": [
+          "TC-001",
+          "TC-002",
+          "TC-003",
+          "TC-004",
+          "TC-005",
+          "TC-006",
+          "TC-007",
+          "TC-008",
+          "TC-009",
+          "TC-010",
+          "TC-011",
+          "TC-012"
+        ],
+        "story_refs": [
+          "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+        ]
+      },
+      {
+        "component_id": "runtime-center-component-02",
+        "page_id": "runtime-center",
+        "name": "single / team / ralph 模式切换",
+        "responsibility": "single / team / ralph 模式切换 模块负责承载 `运行中心` 的关键信息与操作。",
+        "data_source": [
+          "prototype-plan.page_specs",
+          "source-map.requirement_refs"
+        ],
+        "interaction": {
+          "label": "返回管理总览",
+          "trigger": "点击面包屑",
+          "target": "management-overview"
+        },
+        "state_refs": [
+          "single-active",
+          "team-active",
+          "ralph-active",
+          "idle",
+          "loading",
+          "error"
+        ],
+        "ac_refs": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004",
+          "AC-005",
+          "AC-006",
+          "AC-007",
+          "AC-008",
+          "AC-009",
+          "AC-010",
+          "AC-011",
+          "AC-012",
+          "AC-013",
+          "AC-014",
+          "AC-015",
+          "AC-016"
+        ],
+        "tc_refs": [
+          "TC-001",
+          "TC-002",
+          "TC-003",
+          "TC-004",
+          "TC-005",
+          "TC-006",
+          "TC-007",
+          "TC-008",
+          "TC-009",
+          "TC-010",
+          "TC-011",
+          "TC-012"
+        ],
+        "story_refs": [
+          "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+        ]
+      },
+      {
+        "component_id": "runtime-center-component-03",
+        "page_id": "runtime-center",
+        "name": "agent/session 引用",
+        "responsibility": "agent/session 引用 模块负责承载 `运行中心` 的关键信息与操作。",
+        "data_source": [
+          "prototype-plan.page_specs",
+          "source-map.requirement_refs"
+        ],
+        "interaction": {
+          "label": "无直接动作",
+          "trigger": "被动展示",
+          "target": "runtime-center"
+        },
+        "state_refs": [
+          "single-active",
+          "team-active",
+          "ralph-active",
+          "idle",
+          "loading",
+          "error"
+        ],
+        "ac_refs": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004",
+          "AC-005",
+          "AC-006",
+          "AC-007",
+          "AC-008",
+          "AC-009",
+          "AC-010",
+          "AC-011",
+          "AC-012",
+          "AC-013",
+          "AC-014",
+          "AC-015",
+          "AC-016"
+        ],
+        "tc_refs": [
+          "TC-001",
+          "TC-002",
+          "TC-003",
+          "TC-004",
+          "TC-005",
+          "TC-006",
+          "TC-007",
+          "TC-008",
+          "TC-009",
+          "TC-010",
+          "TC-011",
+          "TC-012"
+        ],
+        "story_refs": [
+          "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+        ]
+      },
+      {
+        "component_id": "runtime-center-component-04",
+        "page_id": "runtime-center",
+        "name": "artifact 与 linked run",
+        "responsibility": "artifact 与 linked run 模块负责承载 `运行中心` 的关键信息与操作。",
+        "data_source": [
+          "prototype-plan.page_specs",
+          "source-map.requirement_refs"
+        ],
+        "interaction": {
+          "label": "无直接动作",
+          "trigger": "被动展示",
+          "target": "runtime-center"
+        },
+        "state_refs": [
+          "single-active",
+          "team-active",
+          "ralph-active",
+          "idle",
+          "loading",
+          "error"
+        ],
+        "ac_refs": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004",
+          "AC-005",
+          "AC-006",
+          "AC-007",
+          "AC-008",
+          "AC-009",
+          "AC-010",
+          "AC-011",
+          "AC-012",
+          "AC-013",
+          "AC-014",
+          "AC-015",
+          "AC-016"
+        ],
+        "tc_refs": [
+          "TC-001",
+          "TC-002",
+          "TC-003",
+          "TC-004",
+          "TC-005",
+          "TC-006",
+          "TC-007",
+          "TC-008",
+          "TC-009",
+          "TC-010",
+          "TC-011",
+          "TC-012"
+        ],
+        "story_refs": [
+          "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+        ]
+      },
+      {
+        "component_id": "runtime-center-component-05",
+        "page_id": "runtime-center",
+        "name": "最近结果与 blocker",
+        "responsibility": "最近结果与 blocker 模块负责承载 `运行中心` 的关键信息与操作。",
+        "data_source": [
+          "prototype-plan.page_specs",
+          "source-map.requirement_refs"
+        ],
+        "interaction": {
+          "label": "无直接动作",
+          "trigger": "被动展示",
+          "target": "runtime-center"
+        },
+        "state_refs": [
+          "single-active",
+          "team-active",
+          "ralph-active",
+          "idle",
+          "loading",
+          "error"
+        ],
+        "ac_refs": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004",
+          "AC-005",
+          "AC-006",
+          "AC-007",
+          "AC-008",
+          "AC-009",
+          "AC-010",
+          "AC-011",
+          "AC-012",
+          "AC-013",
+          "AC-014",
+          "AC-015",
+          "AC-016"
+        ],
+        "tc_refs": [
+          "TC-001",
+          "TC-002",
+          "TC-003",
+          "TC-004",
+          "TC-005",
+          "TC-006",
+          "TC-007",
+          "TC-008",
+          "TC-009",
+          "TC-010",
+          "TC-011",
+          "TC-012"
+        ],
+        "story_refs": [
+          "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+        ]
+      },
+      {
+        "component_id": "recovery-diagnostics-component-01",
+        "page_id": "recovery-diagnostics",
+        "name": "truth 来源说明",
+        "responsibility": "truth 来源说明 模块负责承载 `恢复诊断` 的关键信息与操作。",
+        "data_source": [
+          "prototype-plan.page_specs",
+          "source-map.requirement_refs"
+        ],
+        "interaction": {
+          "label": "返回项目详情",
+          "trigger": "点击返回",
+          "target": "project-detail"
+        },
+        "state_refs": [
+          "healthy-warning",
+          "degraded",
+          "rebuild-suggested",
+          "doctor-suggested",
+          "loading",
+          "error"
+        ],
+        "ac_refs": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004",
+          "AC-005",
+          "AC-006",
+          "AC-007",
+          "AC-008",
+          "AC-009",
+          "AC-010",
+          "AC-011",
+          "AC-012",
+          "AC-013",
+          "AC-014",
+          "AC-015",
+          "AC-016"
+        ],
+        "tc_refs": [
+          "TC-001",
+          "TC-002",
+          "TC-003",
+          "TC-004",
+          "TC-005",
+          "TC-006",
+          "TC-007",
+          "TC-008",
+          "TC-009",
+          "TC-010",
+          "TC-011",
+          "TC-012"
+        ],
+        "story_refs": [
+          "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+        ]
+      },
+      {
+        "component_id": "recovery-diagnostics-component-02",
+        "page_id": "recovery-diagnostics",
+        "name": "degraded / rebuild / doctor 诊断卡",
+        "responsibility": "degraded / rebuild / doctor 诊断卡 模块负责承载 `恢复诊断` 的关键信息与操作。",
+        "data_source": [
+          "prototype-plan.page_specs",
+          "source-map.requirement_refs"
+        ],
+        "interaction": {
+          "label": "前往运行中心",
+          "trigger": "点击运行态关联",
+          "target": "runtime-center"
+        },
+        "state_refs": [
+          "healthy-warning",
+          "degraded",
+          "rebuild-suggested",
+          "doctor-suggested",
+          "loading",
+          "error"
+        ],
+        "ac_refs": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004",
+          "AC-005",
+          "AC-006",
+          "AC-007",
+          "AC-008",
+          "AC-009",
+          "AC-010",
+          "AC-011",
+          "AC-012",
+          "AC-013",
+          "AC-014",
+          "AC-015",
+          "AC-016"
+        ],
+        "tc_refs": [
+          "TC-001",
+          "TC-002",
+          "TC-003",
+          "TC-004",
+          "TC-005",
+          "TC-006",
+          "TC-007",
+          "TC-008",
+          "TC-009",
+          "TC-010",
+          "TC-011",
+          "TC-012"
+        ],
+        "story_refs": [
+          "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+        ]
+      },
+      {
+        "component_id": "recovery-diagnostics-component-03",
+        "page_id": "recovery-diagnostics",
+        "name": "恢复步骤",
+        "responsibility": "恢复步骤 模块负责承载 `恢复诊断` 的关键信息与操作。",
+        "data_source": [
+          "prototype-plan.page_specs",
+          "source-map.requirement_refs"
+        ],
+        "interaction": {
+          "label": "无直接动作",
+          "trigger": "被动展示",
+          "target": "recovery-diagnostics"
+        },
+        "state_refs": [
+          "healthy-warning",
+          "degraded",
+          "rebuild-suggested",
+          "doctor-suggested",
+          "loading",
+          "error"
+        ],
+        "ac_refs": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004",
+          "AC-005",
+          "AC-006",
+          "AC-007",
+          "AC-008",
+          "AC-009",
+          "AC-010",
+          "AC-011",
+          "AC-012",
+          "AC-013",
+          "AC-014",
+          "AC-015",
+          "AC-016"
+        ],
+        "tc_refs": [
+          "TC-001",
+          "TC-002",
+          "TC-003",
+          "TC-004",
+          "TC-005",
+          "TC-006",
+          "TC-007",
+          "TC-008",
+          "TC-009",
+          "TC-010",
+          "TC-011",
+          "TC-012"
+        ],
+        "story_refs": [
+          "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+        ]
+      },
+      {
+        "component_id": "recovery-diagnostics-component-04",
+        "page_id": "recovery-diagnostics",
+        "name": "风险提示",
+        "responsibility": "风险提示 模块负责承载 `恢复诊断` 的关键信息与操作。",
+        "data_source": [
+          "prototype-plan.page_specs",
+          "source-map.requirement_refs"
+        ],
+        "interaction": {
+          "label": "无直接动作",
+          "trigger": "被动展示",
+          "target": "recovery-diagnostics"
+        },
+        "state_refs": [
+          "healthy-warning",
+          "degraded",
+          "rebuild-suggested",
+          "doctor-suggested",
+          "loading",
+          "error"
+        ],
+        "ac_refs": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004",
+          "AC-005",
+          "AC-006",
+          "AC-007",
+          "AC-008",
+          "AC-009",
+          "AC-010",
+          "AC-011",
+          "AC-012",
+          "AC-013",
+          "AC-014",
+          "AC-015",
+          "AC-016"
+        ],
+        "tc_refs": [
+          "TC-001",
+          "TC-002",
+          "TC-003",
+          "TC-004",
+          "TC-005",
+          "TC-006",
+          "TC-007",
+          "TC-008",
+          "TC-009",
+          "TC-010",
+          "TC-011",
+          "TC-012"
+        ],
+        "story_refs": [
+          "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+        ]
+      },
+      {
+        "component_id": "material-viewer-component-01",
+        "page_id": "material-viewer",
+        "name": "版本树",
+        "responsibility": "版本树 模块负责承载 `项目物料查看器` 的关键信息与操作。",
+        "data_source": [
+          "prototype-plan.page_specs",
+          "source-map.requirement_refs"
+        ],
+        "interaction": {
+          "label": "打开文档",
+          "trigger": "点击文档列表项",
+          "target": "material-document-detail"
+        },
+        "state_refs": [
+          "ready",
+          "document-open",
+          "source-missing",
+          "loading",
+          "empty",
+          "error"
+        ],
+        "ac_refs": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004",
+          "AC-005",
+          "AC-006",
+          "AC-007",
+          "AC-008",
+          "AC-009",
+          "AC-010",
+          "AC-011",
+          "AC-012",
+          "AC-013",
+          "AC-014",
+          "AC-015",
+          "AC-016"
+        ],
+        "tc_refs": [
+          "TC-001",
+          "TC-002",
+          "TC-003",
+          "TC-004",
+          "TC-005",
+          "TC-006",
+          "TC-007",
+          "TC-008",
+          "TC-009",
+          "TC-010",
+          "TC-011",
+          "TC-012"
+        ],
+        "story_refs": [
+          "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+        ]
+      },
+      {
+        "component_id": "material-viewer-component-02",
+        "page_id": "material-viewer",
+        "name": "文档类型列表",
+        "responsibility": "文档类型列表 模块负责承载 `项目物料查看器` 的关键信息与操作。",
+        "data_source": [
+          "prototype-plan.page_specs",
+          "source-map.requirement_refs"
+        ],
+        "interaction": {
+          "label": "返回项目详情",
+          "trigger": "点击返回",
+          "target": "project-detail"
+        },
+        "state_refs": [
+          "ready",
+          "document-open",
+          "source-missing",
+          "loading",
+          "empty",
+          "error"
+        ],
+        "ac_refs": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004",
+          "AC-005",
+          "AC-006",
+          "AC-007",
+          "AC-008",
+          "AC-009",
+          "AC-010",
+          "AC-011",
+          "AC-012",
+          "AC-013",
+          "AC-014",
+          "AC-015",
+          "AC-016"
+        ],
+        "tc_refs": [
+          "TC-001",
+          "TC-002",
+          "TC-003",
+          "TC-004",
+          "TC-005",
+          "TC-006",
+          "TC-007",
+          "TC-008",
+          "TC-009",
+          "TC-010",
+          "TC-011",
+          "TC-012"
+        ],
+        "story_refs": [
+          "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+        ]
+      },
+      {
+        "component_id": "material-viewer-component-03",
+        "page_id": "material-viewer",
+        "name": "feature 目录",
+        "responsibility": "feature 目录 模块负责承载 `项目物料查看器` 的关键信息与操作。",
+        "data_source": [
+          "prototype-plan.page_specs",
+          "source-map.requirement_refs"
+        ],
+        "interaction": {
+          "label": "无直接动作",
+          "trigger": "被动展示",
+          "target": "material-viewer"
+        },
+        "state_refs": [
+          "ready",
+          "document-open",
+          "source-missing",
+          "loading",
+          "empty",
+          "error"
+        ],
+        "ac_refs": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004",
+          "AC-005",
+          "AC-006",
+          "AC-007",
+          "AC-008",
+          "AC-009",
+          "AC-010",
+          "AC-011",
+          "AC-012",
+          "AC-013",
+          "AC-014",
+          "AC-015",
+          "AC-016"
+        ],
+        "tc_refs": [
+          "TC-001",
+          "TC-002",
+          "TC-003",
+          "TC-004",
+          "TC-005",
+          "TC-006",
+          "TC-007",
+          "TC-008",
+          "TC-009",
+          "TC-010",
+          "TC-011",
+          "TC-012"
+        ],
+        "story_refs": [
+          "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+        ]
+      },
+      {
+        "component_id": "material-viewer-component-04",
+        "page_id": "material-viewer",
+        "name": "文档阅读面板",
+        "responsibility": "文档阅读面板 模块负责承载 `项目物料查看器` 的关键信息与操作。",
+        "data_source": [
+          "prototype-plan.page_specs",
+          "source-map.requirement_refs"
+        ],
+        "interaction": {
+          "label": "无直接动作",
+          "trigger": "被动展示",
+          "target": "material-viewer"
+        },
+        "state_refs": [
+          "ready",
+          "document-open",
+          "source-missing",
+          "loading",
+          "empty",
+          "error"
+        ],
+        "ac_refs": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004",
+          "AC-005",
+          "AC-006",
+          "AC-007",
+          "AC-008",
+          "AC-009",
+          "AC-010",
+          "AC-011",
+          "AC-012",
+          "AC-013",
+          "AC-014",
+          "AC-015",
+          "AC-016"
+        ],
+        "tc_refs": [
+          "TC-001",
+          "TC-002",
+          "TC-003",
+          "TC-004",
+          "TC-005",
+          "TC-006",
+          "TC-007",
+          "TC-008",
+          "TC-009",
+          "TC-010",
+          "TC-011",
+          "TC-012"
+        ],
+        "story_refs": [
+          "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+        ]
+      },
+      {
+        "component_id": "material-viewer-component-05",
+        "page_id": "material-viewer",
+        "name": "来源路径信息",
+        "responsibility": "来源路径信息 模块负责承载 `项目物料查看器` 的关键信息与操作。",
+        "data_source": [
+          "prototype-plan.page_specs",
+          "source-map.requirement_refs"
+        ],
+        "interaction": {
+          "label": "无直接动作",
+          "trigger": "被动展示",
+          "target": "material-viewer"
+        },
+        "state_refs": [
+          "ready",
+          "document-open",
+          "source-missing",
+          "loading",
+          "empty",
+          "error"
+        ],
+        "ac_refs": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004",
+          "AC-005",
+          "AC-006",
+          "AC-007",
+          "AC-008",
+          "AC-009",
+          "AC-010",
+          "AC-011",
+          "AC-012",
+          "AC-013",
+          "AC-014",
+          "AC-015",
+          "AC-016"
+        ],
+        "tc_refs": [
+          "TC-001",
+          "TC-002",
+          "TC-003",
+          "TC-004",
+          "TC-005",
+          "TC-006",
+          "TC-007",
+          "TC-008",
+          "TC-009",
+          "TC-010",
+          "TC-011",
+          "TC-012"
+        ],
+        "story_refs": [
+          "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+        ]
+      },
+      {
+        "component_id": "material-document-detail-component-01",
+        "page_id": "material-document-detail",
+        "name": "文档头部信息",
+        "responsibility": "文档头部信息 模块负责承载 `物料文档详情` 的关键信息与操作。",
+        "data_source": [
+          "prototype-plan.page_specs",
+          "source-map.requirement_refs"
+        ],
+        "interaction": {
+          "label": "返回物料查看器",
+          "trigger": "点击返回",
+          "target": "material-viewer"
+        },
+        "state_refs": [
+          "ready",
+          "sibling-switch",
+          "version-switch",
+          "source-missing"
+        ],
+        "ac_refs": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004",
+          "AC-005",
+          "AC-006",
+          "AC-007",
+          "AC-008",
+          "AC-009",
+          "AC-010",
+          "AC-011",
+          "AC-012",
+          "AC-013",
+          "AC-014",
+          "AC-015",
+          "AC-016"
+        ],
+        "tc_refs": [
+          "TC-001",
+          "TC-002",
+          "TC-003",
+          "TC-004",
+          "TC-005",
+          "TC-006",
+          "TC-007",
+          "TC-008",
+          "TC-009",
+          "TC-010",
+          "TC-011",
+          "TC-012"
+        ],
+        "story_refs": [
+          "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+        ]
+      },
+      {
+        "component_id": "material-document-detail-component-02",
+        "page_id": "material-document-detail",
+        "name": "版本 / 类型 / feature 面包屑",
+        "responsibility": "版本 / 类型 / feature 面包屑 模块负责承载 `物料文档详情` 的关键信息与操作。",
+        "data_source": [
+          "prototype-plan.page_specs",
+          "source-map.requirement_refs"
+        ],
+        "interaction": {
+          "label": "切换同版本文档",
+          "trigger": "点击侧栏文档",
+          "target": "material-document-detail"
+        },
+        "state_refs": [
+          "ready",
+          "sibling-switch",
+          "version-switch",
+          "source-missing"
+        ],
+        "ac_refs": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004",
+          "AC-005",
+          "AC-006",
+          "AC-007",
+          "AC-008",
+          "AC-009",
+          "AC-010",
+          "AC-011",
+          "AC-012",
+          "AC-013",
+          "AC-014",
+          "AC-015",
+          "AC-016"
+        ],
+        "tc_refs": [
+          "TC-001",
+          "TC-002",
+          "TC-003",
+          "TC-004",
+          "TC-005",
+          "TC-006",
+          "TC-007",
+          "TC-008",
+          "TC-009",
+          "TC-010",
+          "TC-011",
+          "TC-012"
+        ],
+        "story_refs": [
+          "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+        ]
+      },
+      {
+        "component_id": "material-document-detail-component-03",
+        "page_id": "material-document-detail",
+        "name": "Markdown 正文区",
+        "responsibility": "Markdown 正文区 模块负责承载 `物料文档详情` 的关键信息与操作。",
+        "data_source": [
+          "prototype-plan.page_specs",
+          "source-map.requirement_refs"
+        ],
+        "interaction": {
+          "label": "无直接动作",
+          "trigger": "被动展示",
+          "target": "material-document-detail"
+        },
+        "state_refs": [
+          "ready",
+          "sibling-switch",
+          "version-switch",
+          "source-missing"
+        ],
+        "ac_refs": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004",
+          "AC-005",
+          "AC-006",
+          "AC-007",
+          "AC-008",
+          "AC-009",
+          "AC-010",
+          "AC-011",
+          "AC-012",
+          "AC-013",
+          "AC-014",
+          "AC-015",
+          "AC-016"
+        ],
+        "tc_refs": [
+          "TC-001",
+          "TC-002",
+          "TC-003",
+          "TC-004",
+          "TC-005",
+          "TC-006",
+          "TC-007",
+          "TC-008",
+          "TC-009",
+          "TC-010",
+          "TC-011",
+          "TC-012"
+        ],
+        "story_refs": [
+          "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+        ]
+      },
+      {
+        "component_id": "material-document-detail-component-04",
+        "page_id": "material-document-detail",
+        "name": "同类文档切换",
+        "responsibility": "同类文档切换 模块负责承载 `物料文档详情` 的关键信息与操作。",
+        "data_source": [
+          "prototype-plan.page_specs",
+          "source-map.requirement_refs"
+        ],
+        "interaction": {
+          "label": "无直接动作",
+          "trigger": "被动展示",
+          "target": "material-document-detail"
+        },
+        "state_refs": [
+          "ready",
+          "sibling-switch",
+          "version-switch",
+          "source-missing"
+        ],
+        "ac_refs": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004",
+          "AC-005",
+          "AC-006",
+          "AC-007",
+          "AC-008",
+          "AC-009",
+          "AC-010",
+          "AC-011",
+          "AC-012",
+          "AC-013",
+          "AC-014",
+          "AC-015",
+          "AC-016"
+        ],
+        "tc_refs": [
+          "TC-001",
+          "TC-002",
+          "TC-003",
+          "TC-004",
+          "TC-005",
+          "TC-006",
+          "TC-007",
+          "TC-008",
+          "TC-009",
+          "TC-010",
+          "TC-011",
+          "TC-012"
+        ],
+        "story_refs": [
+          "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+        ]
+      },
+      {
+        "component_id": "material-document-detail-component-05",
+        "page_id": "material-document-detail",
+        "name": "来源路径与只读说明",
+        "responsibility": "来源路径与只读说明 模块负责承载 `物料文档详情` 的关键信息与操作。",
+        "data_source": [
+          "prototype-plan.page_specs",
+          "source-map.requirement_refs"
+        ],
+        "interaction": {
+          "label": "无直接动作",
+          "trigger": "被动展示",
+          "target": "material-document-detail"
+        },
+        "state_refs": [
+          "ready",
+          "sibling-switch",
+          "version-switch",
+          "source-missing"
+        ],
+        "ac_refs": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004",
+          "AC-005",
+          "AC-006",
+          "AC-007",
+          "AC-008",
+          "AC-009",
+          "AC-010",
+          "AC-011",
+          "AC-012",
+          "AC-013",
+          "AC-014",
+          "AC-015",
+          "AC-016"
+        ],
+        "tc_refs": [
+          "TC-001",
+          "TC-002",
+          "TC-003",
+          "TC-004",
+          "TC-005",
+          "TC-006",
+          "TC-007",
+          "TC-008",
+          "TC-009",
+          "TC-010",
+          "TC-011",
+          "TC-012"
+        ],
+        "story_refs": [
+          "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+        ]
+      }
+    ]
+  },
+  "route_closure_contract": {
+    "required": false,
+    "closure_cases": [
+      {
+        "case_id": "RC-001",
+        "source_page_id": "home",
+        "source_label": "首页",
+        "target_surface_id": "management-overview",
+        "target_label": "管理总览",
+        "trigger": "点击项目组合入口",
+        "type": "primary"
+      },
+      {
+        "case_id": "RC-002",
+        "source_page_id": "home",
+        "source_label": "首页",
+        "target_surface_id": "project-detail",
+        "target_label": "项目详情",
+        "trigger": "点击重点项目卡片",
+        "type": "primary"
+      },
+      {
+        "case_id": "RC-003",
+        "source_page_id": "management-overview",
+        "source_label": "管理总览",
+        "target_surface_id": "project-detail",
+        "target_label": "项目详情",
+        "trigger": "点击项目行/卡片",
+        "type": "primary"
+      },
+      {
+        "case_id": "RC-004",
+        "source_page_id": "management-overview",
+        "source_label": "管理总览",
+        "target_surface_id": "home",
+        "target_label": "首页",
+        "trigger": "点击首页导航",
+        "type": "return"
+      },
+      {
+        "case_id": "RC-005",
+        "source_page_id": "project-detail",
+        "source_label": "项目详情",
+        "target_surface_id": "runtime-center",
+        "target_label": "运行中心",
+        "trigger": "点击运行态摘要",
+        "type": "drill-down"
+      },
+      {
+        "case_id": "RC-006",
+        "source_page_id": "project-detail",
+        "source_label": "项目详情",
+        "target_surface_id": "recovery-diagnostics",
+        "target_label": "恢复诊断",
+        "trigger": "点击恢复诊断入口",
+        "type": "drill-down"
+      },
+      {
+        "case_id": "RC-007",
+        "source_page_id": "project-detail",
+        "source_label": "项目详情",
+        "target_surface_id": "material-viewer",
+        "target_label": "项目物料查看器",
+        "trigger": "点击文档查看入口",
+        "type": "drill-down"
+      },
+      {
+        "case_id": "RC-008",
+        "source_page_id": "project-detail",
+        "source_label": "项目详情",
+        "target_surface_id": "management-overview",
+        "target_label": "管理总览",
+        "trigger": "点击返回",
+        "type": "return"
+      },
+      {
+        "case_id": "RC-009",
+        "source_page_id": "runtime-center",
+        "source_label": "运行中心",
+        "target_surface_id": "project-detail",
+        "target_label": "项目详情",
+        "trigger": "点击返回",
+        "type": "return"
+      },
+      {
+        "case_id": "RC-010",
+        "source_page_id": "recovery-diagnostics",
+        "source_label": "恢复诊断",
+        "target_surface_id": "project-detail",
+        "target_label": "项目详情",
+        "trigger": "点击返回",
+        "type": "return"
+      },
+      {
+        "case_id": "RC-011",
+        "source_page_id": "material-viewer",
+        "source_label": "项目物料查看器",
+        "target_surface_id": "material-document-detail",
+        "target_label": "物料文档详情",
+        "trigger": "点击文档列表项",
+        "type": "drill-down"
+      },
+      {
+        "case_id": "RC-012",
+        "source_page_id": "material-document-detail",
+        "source_label": "物料文档详情",
+        "target_surface_id": "material-viewer",
+        "target_label": "项目物料查看器",
+        "trigger": "点击返回",
+        "type": "return"
+      }
+    ],
+    "notes": "Wireframe freeze 只冻结跳转关系，不冻结最终实现路由。"
+  },
+  "coverage_report": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1.3.6-visual-management-console-and-material-viewer",
+    "feature_slug": "beacon-v1-3-6-visual-management-console-and-material-viewer",
+    "prototype_mode": "wireframe",
+    "required_pages": [
+      "home",
+      "management-overview",
+      "project-detail",
+      "runtime-center",
+      "recovery-diagnostics",
+      "material-viewer",
+      "material-document-detail"
+    ],
+    "generated_pages": [
+      "home",
+      "management-overview",
+      "project-detail",
+      "runtime-center",
+      "recovery-diagnostics",
+      "material-viewer",
+      "material-document-detail"
+    ],
+    "required_states": [
+      "blocked",
+      "degraded",
+      "doctor-suggested",
+      "document-open",
+      "draft",
+      "empty",
+      "error",
+      "filtered",
+      "frozen",
+      "healthy-warning",
+      "idle",
+      "intervention-needed",
+      "loading",
+      "ralph-active",
+      "ready",
+      "rebuild-suggested",
+      "requirement-missing",
+      "runtime-active",
+      "sibling-switch",
+      "single-active",
+      "source-missing",
+      "team-active",
+      "version-switch"
+    ],
+    "missing_state_variants": [],
+    "compact_mode_detected": false,
+    "page_count": 7,
+    "transition_count": 12
+  },
+  "source_map": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1.3.6-visual-management-console-and-material-viewer",
+    "feature_slug": "beacon-v1-3-6-visual-management-console-and-material-viewer",
+    "derived_from": [
+      "user-story",
+      "prd",
+      "test-case"
+    ],
+    "sources": [
+      {
+        "type": "user-story",
+        "path": "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md",
+        "fingerprint": "4b3ec8b7c8e354bcf54f7c0cc891d46caf51d9e5cba8afb0cf85eb50c1e425a4"
+      },
+      {
+        "type": "prd",
+        "path": "docs/beacon/v1.3.6/prd/beacon-v1-3-6-visual-management-console-and-material-viewer.md",
+        "fingerprint": "4b6e8036dac3c6f36d64142615a2ff2236449820a17e5f017ce1712a7fd8056f"
+      },
+      {
+        "type": "test-case",
+        "path": "docs/beacon/v1.3.6/qa/test-cases/beacon-v1.3.6-visual-management-console-and-material-viewer.md",
+        "fingerprint": "d57ffffc63181df5d59bc97058659c524e4800d96bd34f9bd7a126d8ff7afe5d"
+      }
+    ],
+    "page_requirements": [
+      {
+        "page_id": "home",
+        "refs": {
+          "user-story": [
+            "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+          ],
+          "prd": [
+            "docs/beacon/v1.3.6/prd/beacon-v1-3-6-visual-management-console-and-material-viewer.md"
+          ],
+          "test-case": [
+            "docs/beacon/v1.3.6/qa/test-cases/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+          ]
+        }
+      },
+      {
+        "page_id": "management-overview",
+        "refs": {
+          "user-story": [
+            "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+          ],
+          "prd": [
+            "docs/beacon/v1.3.6/prd/beacon-v1-3-6-visual-management-console-and-material-viewer.md"
+          ],
+          "test-case": [
+            "docs/beacon/v1.3.6/qa/test-cases/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+          ]
+        }
+      },
+      {
+        "page_id": "project-detail",
+        "refs": {
+          "user-story": [
+            "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+          ],
+          "prd": [
+            "docs/beacon/v1.3.6/prd/beacon-v1-3-6-visual-management-console-and-material-viewer.md"
+          ],
+          "test-case": [
+            "docs/beacon/v1.3.6/qa/test-cases/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+          ]
+        }
+      },
+      {
+        "page_id": "runtime-center",
+        "refs": {
+          "user-story": [
+            "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+          ],
+          "prd": [
+            "docs/beacon/v1.3.6/prd/beacon-v1-3-6-visual-management-console-and-material-viewer.md"
+          ],
+          "test-case": [
+            "docs/beacon/v1.3.6/qa/test-cases/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+          ]
+        }
+      },
+      {
+        "page_id": "recovery-diagnostics",
+        "refs": {
+          "user-story": [
+            "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+          ],
+          "prd": [
+            "docs/beacon/v1.3.6/prd/beacon-v1-3-6-visual-management-console-and-material-viewer.md"
+          ],
+          "test-case": [
+            "docs/beacon/v1.3.6/qa/test-cases/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+          ]
+        }
+      },
+      {
+        "page_id": "material-viewer",
+        "refs": {
+          "user-story": [
+            "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+          ],
+          "prd": [
+            "docs/beacon/v1.3.6/prd/beacon-v1-3-6-visual-management-console-and-material-viewer.md"
+          ],
+          "test-case": [
+            "docs/beacon/v1.3.6/qa/test-cases/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+          ]
+        }
+      },
+      {
+        "page_id": "material-document-detail",
+        "refs": {
+          "user-story": [
+            "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+          ],
+          "prd": [
+            "docs/beacon/v1.3.6/prd/beacon-v1-3-6-visual-management-console-and-material-viewer.md"
+          ],
+          "test-case": [
+            "docs/beacon/v1.3.6/qa/test-cases/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+          ]
+        }
+      }
+    ],
+    "generated_at": "2026-04-20T13:06:01Z"
+  }
+}
