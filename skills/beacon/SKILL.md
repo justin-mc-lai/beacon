@@ -22,6 +22,7 @@ This package is the canonical `skills/beacon/` wrapper for Codex and Claude. It 
 - **Latest accepted docs line**: `docs/beacon/v1.3.3/`
 - **Release status**: `release check v1.3.3` passed in-repo
 - **Core theme**: core slimming, external skill demotion, and minimal HUD
+- **Next frozen requirement line**: `v1.3.5` adds `prototype` as the formal wireframe-freeze stage pending implementation
 
 `v1.3.3` keeps Beacon lightweight:
 
@@ -33,13 +34,14 @@ human minimal surface
 
 ## Human Surface
 
-Humans should primarily remember only the 6+3 surface.
+Humans should primarily remember the 7+3 surface.
 
 Primary commands:
 
 - `prd`
 - `user-story`
 - `test-case`
+- `prototype`
 - `implement`
 - `qa`
 - `release`
@@ -63,6 +65,7 @@ The public Codex / Claude surfaces are:
 - `beacon-implement`
 - `beacon-qa`
 - `beacon-release`
+- `beacon-prototype`
 - `beacon-help`
 - `beacon-status`
 - `beacon-doctor`
@@ -134,20 +137,21 @@ bash skills/beacon/scripts/run_beacon.sh memory-friction-evolution run \
 
 ## Workflow Model
 
-Beacon's full internal lifecycle remains:
+Beacon's current human-facing lifecycle target is:
 
 ```text
-think
+prd
 -> user-story
--> prd
 -> test-case
+-> prototype
 -> implement
 -> qa
--> gate
 -> release
 ```
 
-For human routing, prefer the minimal 6+3 surface. Do not expose team/subagent/Ralph internals unless the user explicitly asks for them or a Beacon command recommends them.
+`prototype` is defined as `requirement-driven wireframe freeze orchestrator`, not HTML high-fidelity output.
+
+For human routing, prefer the minimal 7+3 surface. Do not expose team/subagent/Ralph internals unless the user explicitly asks for them or a Beacon command recommends them.
 
 ## Lifecycle Navigation Rules
 

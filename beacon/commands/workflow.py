@@ -1165,13 +1165,15 @@ def _stage_output_candidates(project_root: Path, stage: str, feature: str, versi
         ] + common
     if stage == "prototype":
         return [
-            project_root / "docs" / "beacon" / version / "prototype" / slug / "index.html",
+            project_root / "docs" / "beacon" / version / "prototype" / slug / "wireframe-summary.md",
             project_root / "docs" / "beacon" / version / "prototype" / slug / "manifest.json",
             project_root / "docs" / "beacon" / version / "prototype" / slug / "source-map.json",
             project_root / "docs" / "beacon" / version / "prototype" / slug / "prototype-brief.json",
             project_root / "docs" / "beacon" / version / "prototype" / slug / "theme.json",
             project_root / "docs" / "beacon" / version / "prototype" / slug / "navigation-map.json",
             project_root / "docs" / "beacon" / version / "prototype" / slug / "interaction-map.json",
+            project_root / "docs" / "beacon" / version / "prototype" / slug / "coverage-report.json",
+            project_root / "docs" / "beacon" / version / "prototype" / slug / "wireframe-manifest.json",
             project_root / "docs" / "beacon" / version / "prototype" / slug / "prototype-review.json",
             project_root / "docs" / "beacon" / version / "prototype" / slug / "prototype-review.md",
             project_root / "docs" / "beacon" / version / "prototype" / slug / "freeze.json",
@@ -3512,7 +3514,6 @@ def run(
         "ui-spec": "ui-spec",
         "prototype": "prototype",
         "ui_spec": "ui-spec",
-        "wireframe": "wireframe",
         "save": "save",
         "recall": "recall",
         "remember": "remember",

@@ -21,8 +21,10 @@ def _prepare_contract_sources(tmp_path: Path, feature: str, version: str = "v1.1
     slug = feature.lower().replace(" ", "-")
     us_dir = tmp_path / "docs" / "beacon" / version / "user-story"
     prd_dir = tmp_path / "docs" / "beacon" / version / "prd"
+    tc_dir = tmp_path / "docs" / "beacon" / version / "qa" / "test-cases"
     us_dir.mkdir(parents=True, exist_ok=True)
     prd_dir.mkdir(parents=True, exist_ok=True)
+    tc_dir.mkdir(parents=True, exist_ok=True)
     body = """ui_visualization_required: true
 prototype_archetype: admin-workbench
 target_user: ops lead
@@ -45,6 +47,7 @@ states: empty, loading, error, success, blocked
 """
     (us_dir / f"{slug}.md").write_text("# User Story\n" + body, encoding="utf-8")
     (prd_dir / f"{slug}.md").write_text("# PRD\n" + body, encoding="utf-8")
+    (tc_dir / f"{slug}.md").write_text("# Test Case\n" + body, encoding="utf-8")
 
 
 def test_gate_should_require_review_and_contract_artifacts(tmp_path: Path):
@@ -68,5 +71,5 @@ def test_test_case_should_consume_prototype_contract_maps(tmp_path: Path):
     matrix_path = qa_matrix_output(tmp_path, version, "ops-console", "ac-test-matrix")
     matrix = json.loads(matrix_path.read_text(encoding="utf-8"))
     sources = {item.get("source") for item in matrix.get("entries", [])}
-    assert "prototype:navigation-map" in sources
     assert "prototype:interaction-map" in sources
+    assert "prototype:page-specs" in sources

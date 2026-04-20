@@ -1,0 +1,617 @@
+{
+  "schema_version": "1.0.2",
+  "feature": "Beacon v1.3.5 Prototype Wireframe Mode and Prototype Surface Refactor",
+  "feature_slug": "beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor",
+  "version": "v1.3.5",
+  "qa_profile": "web-full",
+  "qa_types": [
+    "unit",
+    "interface",
+    "contract",
+    "integration",
+    "smoke",
+    "functional",
+    "regression",
+    "exception",
+    "compatibility"
+  ],
+  "llm_plan": {
+    "mode": "rule",
+    "model": "beacon-rule-llm-v1",
+    "project_scan": {
+      "language": "python",
+      "framework": "python-app",
+      "frontend": "unknown",
+      "api_spec_refs": [],
+      "risk_points": [
+        "authz/authn boundary",
+        "cross-browser ui behavior",
+        "api contract drift",
+        "exception handling and replay safety"
+      ]
+    },
+    "project_type": "ai-agent-skill",
+    "generated_at": "2026-04-20T11:46:09.167877",
+    "prompt_ref": "beacon.qa9.llm.plan.v1.0.2",
+    "skip_reason": "",
+    "qa_types": [
+      "unit",
+      "interface",
+      "contract",
+      "integration",
+      "smoke",
+      "functional",
+      "regression",
+      "exception",
+      "compatibility"
+    ]
+  },
+  "qa_strategy": {
+    "schema_version": "1.0.2",
+    "generated_at": "2026-04-20T11:46:09.167022",
+    "project_type": "ai-agent-skill",
+    "project_scan": {
+      "language": "python",
+      "framework": "python-app",
+      "frontend": "unknown",
+      "api_spec_refs": [],
+      "risk_points": [
+        "authz/authn boundary",
+        "cross-browser ui behavior",
+        "api contract drift",
+        "exception handling and replay safety"
+      ]
+    },
+    "qa_applicability": {
+      "unit": "required",
+      "interface": "required",
+      "contract": "required",
+      "integration": "required",
+      "smoke": "required",
+      "functional": "conditional",
+      "regression": "required",
+      "exception": "required",
+      "compatibility": "conditional"
+    },
+    "qa_required_types": [
+      "unit",
+      "interface",
+      "contract",
+      "integration",
+      "smoke",
+      "functional",
+      "regression",
+      "exception",
+      "compatibility"
+    ],
+    "runner_policy": {
+      "functional": {
+        "primary": "browser-use",
+        "fallback": [
+          "playwright",
+          "cypress",
+          "agent-browser"
+        ]
+      },
+      "compatibility": {
+        "primary": "playwright",
+        "fallback": [
+          "cypress"
+        ]
+      },
+      "api_layers": {
+        "interface": "schemathesis/newman/pytest",
+        "contract": "schemathesis/pact",
+        "integration": "pytest+testcontainers"
+      }
+    },
+    "command_baseline": {
+      "unit": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "interface": "python3 -m pytest -q -k interface --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "contract": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "integration": "python3 -m pytest -q -k integration --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "smoke": "python3 -m pytest -q -m smoke --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "functional": "python3 -m beacon.adapters.browser_use_runner --mode functional --fallback-cmd \"python3 -m pytest -q -k functional --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "regression": "python3 -m pytest -q -k regression --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "exception": "python3 -m pytest -q -k exception --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "compatibility": "python3 -m beacon.adapters.browser_use_runner --mode compatibility --fallback-cmd \"python3 -m pytest -q -k compatibility --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\""
+    },
+    "ui_runner": "browser-use"
+  },
+  "qa_requirements": [
+    {
+      "qa_type": "unit",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "interface",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "contract",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "integration",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "smoke",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "functional",
+      "required": false,
+      "automation_required": false,
+      "min_cases": 0,
+      "applicability": "conditional",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "regression",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "exception",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "compatibility",
+      "required": false,
+      "automation_required": false,
+      "min_cases": 0,
+      "applicability": "conditional",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    }
+  ],
+  "automation_target_rate": 0.85,
+  "entries": [
+    {
+      "tc_id": "TC-001",
+      "ac_id": "AC-001",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "Beacon v1.3.5 Prototype Wireframe Mode and Prototype Surface Refactor unit :: Prototype 唯一正式模式：`prototype plan/create/status/review/freeze` 都必须以 `wireframe` 作",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor/{run_id}/TC-001.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+    },
+    {
+      "tc_id": "TC-002",
+      "ac_id": "AC-002",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "Beacon v1.3.5 Prototype Wireframe Mode and Prototype Surface Refactor unit :: HTML 高保真原型移除：Beacon 文档、命令叙事、产物要求中都不再保留 HTML 高保真原型，也不保留兼容模式。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor/{run_id}/TC-002.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+    },
+    {
+      "tc_id": "TC-003",
+      "ac_id": "AC-003",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "Beacon v1.3.5 Prototype Wireframe Mode and Prototype Surface Refactor unit :: Wireframe 标准包成立：`prototype create` 生成的标准包至少包含 `wireframe-summary.md`、`wireframe-",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor/{run_id}/TC-003.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+    },
+    {
+      "tc_id": "TC-004",
+      "ac_id": "AC-004",
+      "layer": "ui",
+      "qa_type": "functional",
+      "title": "Beacon v1.3.5 Prototype Wireframe Mode and Prototype Surface Refactor functional :: 页面汇总可冻结：`wireframe-summary.md` 必须冻结页面 ID、页面名称、平台、优先级、页面职责、关联 PRD / user-story。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m beacon.adapters.browser_use_runner --mode functional --fallback-cmd \"python3 -m pytest -q -k functional --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "assertion": "Web UI assertions and key actions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor/{run_id}/TC-004.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+    },
+    {
+      "tc_id": "TC-005",
+      "ac_id": "AC-005",
+      "layer": "ui",
+      "qa_type": "functional",
+      "title": "Beacon v1.3.5 Prototype Wireframe Mode and Prototype Surface Refactor functional :: 路由说明可冻结：`navigation-map.md/json` 必须能表达页面间跳转、入口、返回路径、关键状态切换和禁止跳转。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m beacon.adapters.browser_use_runner --mode functional --fallback-cmd \"python3 -m pytest -q -k functional --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "assertion": "Web UI assertions and key actions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor/{run_id}/TC-005.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+    },
+    {
+      "tc_id": "TC-006",
+      "ac_id": "AC-006",
+      "layer": "ui",
+      "qa_type": "functional",
+      "title": "Beacon v1.3.5 Prototype Wireframe Mode and Prototype Surface Refactor functional :: 单页草图可接力：每个 `pages/*.md` 必须包含页面职责、布局块、关键模块、用户动作、状态说明、相关物料链接。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m beacon.adapters.browser_use_runner --mode functional --fallback-cmd \"python3 -m pytest -q -k functional --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "assertion": "Web UI assertions and key actions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor/{run_id}/TC-006.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+    },
+    {
+      "tc_id": "TC-007",
+      "ac_id": "AC-007",
+      "layer": "ui",
+      "qa_type": "functional",
+      "title": "Beacon v1.3.5 Prototype Wireframe Mode and Prototype Surface Refactor functional :: Requirement 对齐成立：wireframe 包必须能映射到 `prd / user-story / test-case`，并作为页面冻结的正式 req",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m beacon.adapters.browser_use_runner --mode functional --fallback-cmd \"python3 -m pytest -q -k functional --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "assertion": "Web UI assertions and key actions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor/{run_id}/TC-007.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+    },
+    {
+      "tc_id": "TC-008",
+      "ac_id": "AC-008",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "Beacon v1.3.5 Prototype Wireframe Mode and Prototype Surface Refactor unit :: Freeze / review / status 可验证：当标准包缺失关键文件或映射关系不完整时，`prototype review` 与 `prototype",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor/{run_id}/TC-008.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+    },
+    {
+      "tc_id": "TC-009",
+      "ac_id": "AC-009",
+      "layer": "ui",
+      "qa_type": "functional",
+      "title": "Beacon v1.3.5 Prototype Wireframe Mode and Prototype Surface Refactor functional :: Prototype 不承担视觉终稿：Beacon `prototype` 只负责 wireframe 冻结，不承担高保真设计稿、最终前端页面或视觉系统定义。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m beacon.adapters.browser_use_runner --mode functional --fallback-cmd \"python3 -m pytest -q -k functional --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "assertion": "Web UI assertions and key actions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor/{run_id}/TC-009.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+    },
+    {
+      "tc_id": "TC-010",
+      "ac_id": "AC-010",
+      "layer": "ui",
+      "qa_type": "functional",
+      "title": "Beacon v1.3.5 Prototype Wireframe Mode and Prototype Surface Refactor functional :: 中文可读与实现友好：wireframe 输出必须优先服务中文需求沟通和实现接力，避免只有机器可读结构、缺乏人类可直接审核的页面说明。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m beacon.adapters.browser_use_runner --mode functional --fallback-cmd \"python3 -m pytest -q -k functional --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "assertion": "Web UI assertions and key actions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor/{run_id}/TC-010.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+    },
+    {
+      "tc_id": "TC-011",
+      "ac_id": "AC-001",
+      "layer": "api-curl",
+      "qa_type": "interface",
+      "title": "Beacon v1.3.5 Prototype Wireframe Mode and Prototype Surface Refactor interface coverage",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k interface --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "HTTP status and schema assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor/{run_id}/TC-011.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+    },
+    {
+      "tc_id": "TC-012",
+      "ac_id": "AC-002",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "Beacon v1.3.5 Prototype Wireframe Mode and Prototype Surface Refactor contract coverage",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor/{run_id}/TC-012.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+    },
+    {
+      "tc_id": "TC-013",
+      "ac_id": "AC-003",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "Beacon v1.3.5 Prototype Wireframe Mode and Prototype Surface Refactor integration coverage",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k integration --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Integration flow assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor/{run_id}/TC-013.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+    },
+    {
+      "tc_id": "TC-014",
+      "ac_id": "AC-004",
+      "layer": "smoke",
+      "qa_type": "smoke",
+      "title": "Beacon v1.3.5 Prototype Wireframe Mode and Prototype Surface Refactor smoke coverage",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -m smoke --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Critical path assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor/{run_id}/TC-014.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+    },
+    {
+      "tc_id": "TC-015",
+      "ac_id": "AC-005",
+      "layer": "regression",
+      "qa_type": "regression",
+      "title": "Beacon v1.3.5 Prototype Wireframe Mode and Prototype Surface Refactor regression coverage",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k regression --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "No known behavior regression found",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor/{run_id}/TC-015.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+    },
+    {
+      "tc_id": "TC-016",
+      "ac_id": "AC-006",
+      "layer": "exception",
+      "qa_type": "exception",
+      "title": "Beacon v1.3.5 Prototype Wireframe Mode and Prototype Surface Refactor exception coverage",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k exception --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Negative-path assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor/{run_id}/TC-016.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+    },
+    {
+      "tc_id": "TC-017",
+      "ac_id": "AC-007",
+      "layer": "compatibility",
+      "qa_type": "compatibility",
+      "title": "Beacon v1.3.5 Prototype Wireframe Mode and Prototype Surface Refactor compatibility coverage",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m beacon.adapters.browser_use_runner --mode compatibility --fallback-cmd \"python3 -m pytest -q -k compatibility --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "assertion": "Cross-browser/device assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor/{run_id}/TC-017.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+    }
+  ],
+  "compatibility_matrix": {
+    "browsers": [
+      "chromium",
+      "firefox",
+      "webkit"
+    ],
+    "devices": [
+      "desktop",
+      "iphone14"
+    ],
+    "required_pairs": [
+      {
+        "browser": "chromium",
+        "device": "desktop"
+      },
+      {
+        "browser": "firefox",
+        "device": "desktop"
+      },
+      {
+        "browser": "webkit",
+        "device": "desktop"
+      }
+    ]
+  },
+  "generated_at": "2026-04-20T11:46:09.167902"
+}

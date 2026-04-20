@@ -10,20 +10,27 @@
 
 ## 人类主面约束
 
-### 1. 人类主流程继续保持 6 段
+### 1. 人类主流程升级为 7 段
 
-无论 `team`、`subagent`、`ralph` 或宿主原生能力如何增强，人类主流程都必须继续保持：
+无论 `team`、`subagent`、`ralph` 或宿主原生能力如何增强，人类主流程都必须保持为：
 
 ```text
 prd
 → user-story
 → test-case
+→ prototype
 → implement
 → qa
 → release
 ```
 
-这是 Beacon 的人类主心智面，不得因内部能力增强而扩张。
+其中：
+
+- `prototype` 只表示 `requirement-driven wireframe freeze`
+- 它位于 `test-case` 与 `implement` 之间
+- 它不承担高保真视觉稿、最终前端页面或设计系统定稿职责
+
+这是 Beacon 的人类主心智面，不得因内部能力增强而继续扩张。
 
 ### 2. 人类辅助面继续保持极简
 
