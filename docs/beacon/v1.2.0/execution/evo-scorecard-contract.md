@@ -22,8 +22,8 @@
 ## Current Decision Summary
 
 - keep: `2`
-- review: `3`
-- discard: `2`
+- review: `4`
+- discard: `5`
 
 ## Latest Score Delta
 
