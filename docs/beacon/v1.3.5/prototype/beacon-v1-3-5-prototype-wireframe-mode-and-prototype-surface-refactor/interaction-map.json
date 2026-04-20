@@ -1,0 +1,81 @@
+{
+  "states": [
+    "document-open",
+    "empty",
+    "error",
+    "filtered",
+    "idle",
+    "loading",
+    "ralph-active",
+    "ready",
+    "sibling-switch",
+    "single-active",
+    "source-missing",
+    "team-active",
+    "version-switch"
+  ],
+  "ctas": [
+    {
+      "page_id": "management-overview",
+      "label": "进入项目详情",
+      "target": "project-detail",
+      "trigger": "点击项目行或卡片"
+    },
+    {
+      "page_id": "management-overview",
+      "label": "返回首页",
+      "target": "home",
+      "trigger": "点击首页导航"
+    },
+    {
+      "page_id": "runtime-center",
+      "label": "返回项目详情",
+      "target": "project-detail",
+      "trigger": "点击返回"
+    },
+    {
+      "page_id": "runtime-center",
+      "label": "返回管理总览",
+      "target": "management-overview",
+      "trigger": "点击面包屑"
+    },
+    {
+      "page_id": "material-viewer",
+      "label": "打开文档",
+      "target": "material-document-detail",
+      "trigger": "点击文档列表项"
+    },
+    {
+      "page_id": "material-viewer",
+      "label": "返回项目详情",
+      "target": "project-detail",
+      "trigger": "点击返回"
+    },
+    {
+      "page_id": "material-document-detail",
+      "label": "返回物料查看器",
+      "target": "material-viewer",
+      "trigger": "点击返回"
+    },
+    {
+      "page_id": "material-document-detail",
+      "label": "切换同版本文档",
+      "target": "material-document-detail",
+      "trigger": "点击侧栏文档"
+    }
+  ],
+  "jump_map": [
+    {
+      "from": "material-viewer",
+      "to": "material-document-detail",
+      "trigger": "点击文档列表项",
+      "type": "drill-down"
+    },
+    {
+      "from": "material-document-detail",
+      "to": "material-viewer",
+      "trigger": "点击返回",
+      "type": "return"
+    }
+  ]
+}

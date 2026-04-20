@@ -1,0 +1,1135 @@
+{
+  "schema_version": "1.0",
+  "plan_id": "plan-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor-r1",
+  "feature": "beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor",
+  "feature_slug": "beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor",
+  "version": "v1.3.5",
+  "revision_id": "R1",
+  "baseline_hash": "sha256:e7281feaeab9b8e3ba5cc5ae0efda7d6168e42473b21ef3f0ad2c0b6271742c3",
+  "plan_hash": "sha256:81ad07e94159d229837108be92ac39e4b2938db2905a203fd8422f28a6efd545",
+  "status": "completed",
+  "source_refs": {
+    "user_story": "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+    "prd": "docs/beacon/v1.3.5/prd/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+    "test_case": "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+    "ac_matrix": "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.ac-test-matrix.json",
+    "story_scenario_map": "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.story-scenario-map.json",
+    "qa9_matrix": "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.qa9-matrix.json"
+  },
+  "boundary_principles": [
+    {
+      "id": "explicit_assumptions",
+      "heading": "显式假设与歧义管理"
+    },
+    {
+      "id": "simplicity_first",
+      "heading": "简单优先"
+    },
+    {
+      "id": "surgical_changes",
+      "heading": "外科手术式改动"
+    },
+    {
+      "id": "goal_driven_execution",
+      "heading": "目标驱动验证闭环"
+    },
+    {
+      "id": "trivial_task_exception",
+      "heading": "trivial task 可以轻量处理，但不能越界"
+    }
+  ],
+  "workstreams": [
+    {
+      "workstream_id": "implementation-main",
+      "title": "Implementation Mainline",
+      "task_ids": [
+        "ITASK-001",
+        "ITASK-002",
+        "ITASK-003",
+        "ITASK-004",
+        "ITASK-005",
+        "ITASK-006",
+        "ITASK-007",
+        "ITASK-008",
+        "ITASK-009",
+        "ITASK-010",
+        "ITASK-011",
+        "ITASK-012",
+        "ITASK-013",
+        "ITASK-014",
+        "ITASK-015"
+      ]
+    }
+  ],
+  "task_mapping_source": "prd-sections",
+  "tasks": [
+    {
+      "task_id": "ITASK-001",
+      "title": "FR-001 `prototype` 只保留 `wireframe` 草图模式",
+      "description": "当用户执行： `beacon prototype plan` `beacon prototype create` `beacon prototype review` `beacon prototype freeze` `beacon prototype status` 系统都必须以 `wireframe` 作为唯一正式语义。 要求： manifest 中必须显式记录 `prototype_mode: \"wireframe\"` status/review/freeze 必须可识别该模式 ### FR-001A 人类主链新增 `prototype` 阶段 Beacon 的人类主链应明确升级为： ```text prd → user-story → test-case → prototype → implement → qa → release ``` 要求： `prototype` 的语义明确等于 `wireframe freeze` 它位于 `test-case` 与 `implement` 之间 `implement / qa` 不得绕开 `prototype` 直接把页面结构冻结责任吞掉 ### FR-001B 必须新增 `beacon-prototype` host-visible 子 skill Beacon 对外 skill 面必须新增： `beacon-prototype` 要求： 它是 Beacon 原型阶段的唯一 host-visible 路由 它默认解释 `prototype = requirement-driven wireframe freeze` 它不得继续沿用 HTML 高保真原型叙事 ### FR-001C `wireframe.py` 必须退出正式实现面 现有独立 `wireframe.py` 必须退役。 要求： 不再作为正式主流程命令保留 不再继续向 `docs/product/...` 输出通用模板 `wireframe.py` 直接删除，不保留兼容迁移壳层",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-003",
+        "AC-005",
+        "AC-006",
+        "AC-001",
+        "AC-002"
+      ],
+      "mapped_test_ids": [
+        "TC-006",
+        "TC-002",
+        "TC-003",
+        "TC-001",
+        "TC-005",
+        "TC-011",
+        "TC-015",
+        "TC-016",
+        "TC-012",
+        "TC-013"
+      ],
+      "mapped_scenario_ids": [
+        "SC-001",
+        "SC-002",
+        "SC-003",
+        "SC-004",
+        "SC-005",
+        "SC-006",
+        "SC-007",
+        "SC-008",
+        "SC-009",
+        "SC-010",
+        "SC-011",
+        "SC-012",
+        "SC-013",
+        "SC-014",
+        "SC-021",
+        "SC-022",
+        "SC-023",
+        "SC-024",
+        "SC-025",
+        "SC-026",
+        "SC-027",
+        "SC-028"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-005",
+        "TC-006",
+        "TC-011",
+        "TC-012",
+        "TC-013",
+        "TC-015",
+        "TC-016"
+      ],
+      "depends_on": [],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260420T095555Z-3e08",
+        ".beacon/auto-test-status.json",
+        "verify:run-20260420T095555Z-3e08-tester",
+        ".beacon/qa/features/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/compatibility/command.txt",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/compatibility/stdout.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/compatibility/stderr.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/compatibility/junit.xml",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/compatibility/result.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/compatibility/action-transcript.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/compatibility/browser-runner-console.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/compatibility/browser-runner-meta.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/compatibility/browser-runner-report.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/compatibility/browser-runner-result.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/compatibility/current-url.txt",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/compatibility/dom-snapshot.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/compatibility/network-summary.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/compatibility/pair-evidence.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/functional/command.txt",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/functional/stdout.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/functional/stderr.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/functional/junit.xml",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/functional/result.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/functional/action-transcript.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/functional/browser-runner-console.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/functional/browser-runner-meta.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/functional/browser-runner-report.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/functional/browser-runner-result.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/functional/current-url.txt",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/functional/dom-snapshot.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/functional/network-summary.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/interface/command.txt",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/interface/stdout.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/interface/stderr.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/interface/junit.xml",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/interface/result.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/smoke/command.txt",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/smoke/stdout.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/smoke/stderr.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/smoke/junit.xml",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/smoke/result.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260420T181126207502",
+        ".beacon/evidence/auto-test/run-20260420T181742208068/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260420T181742208068/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260420T181742208068/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260420T181742208068/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260420T181742208068/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260420T181742208068/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260420T181742208068/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260420T181742208068/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260420T181742208068/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260420T181742208068/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260420T181742208068/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260420T181742208068/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260420T181742208068/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260420T181742208068/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260420T181742208068/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260420T181742208068/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260420T181742208068/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260420T181742208068/summary.json",
+        "verify:run-20260420T181742208068",
+        ".beacon/evidence/auto-test/run-20260420T182331187681/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260420T182331187681/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260420T182331187681/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260420T182331187681/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260420T182331187681/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260420T182331187681/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260420T182331187681/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260420T182331187681/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260420T182331187681/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260420T182331187681/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260420T182331187681/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260420T182331187681/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260420T182331187681/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260420T182331187681/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260420T182331187681/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260420T182331187681/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260420T182331187681/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260420T182331187681/summary.json",
+        "verify:run-20260420T182331187681"
+      ],
+      "changed_files": [
+        ".beacon/evidence-manifest.json",
+        "beacon/commands/gate.py",
+        "beacon/commands/prototype.py",
+        "beacon/utils/prototype_utils.py",
+        "docs/beacon/global-boundaries.md",
+        "docs/beacon/v1.3.5/.machine/execution/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.revision.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.ac-test-matrix.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.qa9-matrix.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.story-scenario-map.json",
+        "docs/beacon/v1.3.5/.machine/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json",
+        "docs/beacon/v1.3.5/SUMMARY.md",
+        "docs/beacon/v1.3.5/prd/beacon-v1-3-5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+        "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-20T09:55:55.539143+00:00",
+      "completed_at": "2026-04-20T09:55:55.584408+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-002",
+      "title": "FR-002 必须移除 HTML 高保真原型能力与要求",
+      "description": "版本文档、命令叙事、子 skill 语义都必须同步调整： 不再要求 prototype 产出 HTML 页面 不再保留 HTML 作为兼容模式 不再把视觉完成度作为 prototype 阶段目标 不再把 Beacon 作为高保真原型生成器 说明： > Beacon 中直接删除 HTML 高保真原型方向，而不是只降级其地位。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-004"
+      ],
+      "mapped_test_ids": [
+        "TC-004",
+        "TC-008",
+        "TC-009",
+        "TC-007",
+        "TC-017",
+        "TC-014"
+      ],
+      "mapped_scenario_ids": [
+        "SC-015",
+        "SC-016",
+        "SC-017",
+        "SC-018",
+        "SC-019",
+        "SC-020",
+        "SC-029",
+        "SC-030",
+        "SC-031",
+        "SC-032",
+        "SC-033",
+        "SC-034"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-004",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-014",
+        "TC-017"
+      ],
+      "depends_on": [
+        "ITASK-001"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260420T095555Z-3e08",
+        ".beacon/auto-test-status.json",
+        "verify:run-20260420T095555Z-3e08-tester",
+        ".beacon/qa/features/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/compatibility/command.txt",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/compatibility/stdout.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/compatibility/stderr.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/compatibility/junit.xml",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/compatibility/result.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/compatibility/action-transcript.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/compatibility/browser-runner-console.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/compatibility/browser-runner-meta.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/compatibility/browser-runner-report.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/compatibility/browser-runner-result.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/compatibility/current-url.txt",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/compatibility/dom-snapshot.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/compatibility/network-summary.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/compatibility/pair-evidence.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/functional/command.txt",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/functional/stdout.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/functional/stderr.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/functional/junit.xml",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/functional/result.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/functional/action-transcript.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/functional/browser-runner-console.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/functional/browser-runner-meta.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/functional/browser-runner-report.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/functional/browser-runner-result.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/functional/current-url.txt",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/functional/dom-snapshot.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/functional/network-summary.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/interface/command.txt",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/interface/stdout.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/interface/stderr.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/interface/junit.xml",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/interface/result.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/smoke/command.txt",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/smoke/stdout.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/smoke/stderr.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/smoke/junit.xml",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/smoke/result.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260420T181126207502"
+      ],
+      "changed_files": [
+        ".beacon/evidence-manifest.json",
+        "beacon/commands/gate.py",
+        "beacon/commands/prototype.py",
+        "beacon/utils/prototype_utils.py",
+        "docs/beacon/global-boundaries.md",
+        "docs/beacon/v1.3.5/.machine/execution/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.revision.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.ac-test-matrix.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.qa9-matrix.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.story-scenario-map.json",
+        "docs/beacon/v1.3.5/.machine/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json",
+        "docs/beacon/v1.3.5/SUMMARY.md",
+        "docs/beacon/v1.3.5/prd/beacon-v1-3-5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+        "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-20T09:55:55.584420+00:00",
+      "completed_at": "2026-04-20T09:55:55.584422+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-003",
+      "title": "FR-003 Wireframe 输出必须形成冻结包",
+      "description": "`wireframe` 模式下的标准输出至少包含： `wireframe-summary.md` `wireframe-manifest.json` `navigation-map.md` `navigation-map.json` `pages/*.md` `freeze.json` `prototype-review.json` 要求： 所有文件均可版本化 所有文件均适合 review 所有文件均适合 freeze 不依赖 `index.html` 才能成立",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-010"
+      ],
+      "mapped_test_ids": [
+        "TC-010"
+      ],
+      "mapped_scenario_ids": [
+        "SC-037"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-010"
+      ],
+      "depends_on": [
+        "ITASK-002"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260420T095555Z-3e08",
+        ".beacon/auto-test-status.json",
+        "verify:run-20260420T095555Z-3e08-tester",
+        ".beacon/qa/features/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/compatibility/command.txt",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/compatibility/stdout.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/compatibility/stderr.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/compatibility/junit.xml",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/compatibility/result.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/compatibility/action-transcript.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/compatibility/browser-runner-console.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/compatibility/browser-runner-meta.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/compatibility/browser-runner-report.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/compatibility/browser-runner-result.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/compatibility/current-url.txt",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/compatibility/dom-snapshot.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/compatibility/network-summary.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/compatibility/pair-evidence.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/functional/command.txt",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/functional/stdout.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/functional/stderr.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/functional/junit.xml",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/functional/result.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/functional/action-transcript.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/functional/browser-runner-console.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/functional/browser-runner-meta.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/functional/browser-runner-report.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/functional/browser-runner-result.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/functional/current-url.txt",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/functional/dom-snapshot.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/functional/network-summary.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/interface/command.txt",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/interface/stdout.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/interface/stderr.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/interface/junit.xml",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/interface/result.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/smoke/command.txt",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/smoke/stdout.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/smoke/stderr.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/smoke/junit.xml",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/smoke/result.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260420T181126207502/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260420T181126207502"
+      ],
+      "changed_files": [
+        ".beacon/evidence-manifest.json",
+        "beacon/commands/gate.py",
+        "beacon/commands/prototype.py",
+        "beacon/utils/prototype_utils.py",
+        "docs/beacon/global-boundaries.md",
+        "docs/beacon/v1.3.5/.machine/execution/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.revision.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.ac-test-matrix.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.qa9-matrix.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.story-scenario-map.json",
+        "docs/beacon/v1.3.5/.machine/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json",
+        "docs/beacon/v1.3.5/SUMMARY.md",
+        "docs/beacon/v1.3.5/prd/beacon-v1-3-5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+        "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-20T09:55:55.584429+00:00",
+      "completed_at": "2026-04-20T09:55:55.584430+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-004",
+      "title": "FR-004 `wireframe-summary.md` 必须承担页面汇总职责",
+      "description": "汇总文档至少要冻结： 页面清单 页面名称 页面 ID 支持平台 优先级 页面状态 页面职责摘要 与 PRD / user-story 的关联",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-003"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260420T095555Z-3e08"
+      ],
+      "changed_files": [
+        ".beacon/evidence-manifest.json",
+        "beacon/commands/gate.py",
+        "beacon/commands/prototype.py",
+        "beacon/utils/prototype_utils.py",
+        "docs/beacon/global-boundaries.md",
+        "docs/beacon/v1.3.5/.machine/execution/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.revision.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.ac-test-matrix.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.qa9-matrix.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.story-scenario-map.json",
+        "docs/beacon/v1.3.5/.machine/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json",
+        "docs/beacon/v1.3.5/SUMMARY.md",
+        "docs/beacon/v1.3.5/prd/beacon-v1-3-5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+        "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-20T09:55:55.584437+00:00",
+      "completed_at": "2026-04-20T09:55:55.584438+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-005",
+      "title": "FR-005 `navigation-map` 必须冻结路由与跳转逻辑",
+      "description": "必须同时提供： 人类可读的跳转图 结构化的跳转清单 至少要表达： 页面入口 页面出口 主路径跳转 次路径跳转 返回路径 死路和终点页",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-004"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260420T095555Z-3e08"
+      ],
+      "changed_files": [
+        ".beacon/evidence-manifest.json",
+        "beacon/commands/gate.py",
+        "beacon/commands/prototype.py",
+        "beacon/utils/prototype_utils.py",
+        "docs/beacon/global-boundaries.md",
+        "docs/beacon/v1.3.5/.machine/execution/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.revision.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.ac-test-matrix.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.qa9-matrix.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.story-scenario-map.json",
+        "docs/beacon/v1.3.5/.machine/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json",
+        "docs/beacon/v1.3.5/SUMMARY.md",
+        "docs/beacon/v1.3.5/prd/beacon-v1-3-5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+        "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-20T09:55:55.584445+00:00",
+      "completed_at": "2026-04-20T09:55:55.584446+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-006",
+      "title": "FR-006 单页草图必须使用 Markdown + ASCII 结构",
+      "description": "每个页面草图至少包含： 1. 页面定位 2. 页面目标用户 3. 页面回答的问题 4. ASCII 布局草图 5. 元素清单 6. 跳转入口与出口 7. 状态变化 这份单页草图必须优先服务“结构冻结”，而不是“视觉展示”。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-005"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260420T095555Z-3e08"
+      ],
+      "changed_files": [
+        ".beacon/evidence-manifest.json",
+        "beacon/commands/gate.py",
+        "beacon/commands/prototype.py",
+        "beacon/utils/prototype_utils.py",
+        "docs/beacon/global-boundaries.md",
+        "docs/beacon/v1.3.5/.machine/execution/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.revision.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.ac-test-matrix.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.qa9-matrix.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.story-scenario-map.json",
+        "docs/beacon/v1.3.5/.machine/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json",
+        "docs/beacon/v1.3.5/SUMMARY.md",
+        "docs/beacon/v1.3.5/prd/beacon-v1-3-5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+        "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-20T09:55:55.584452+00:00",
+      "completed_at": "2026-04-20T09:55:55.584454+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-007",
+      "title": "FR-007 必须支持平台差异说明",
+      "description": "Wireframe 包必须能标注不同平台变体，例如： Web PC App 小程序 即使当前只支持 Web，也必须保留平台差异标注机制，避免未来再次回到 HTML 单平台假设。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-006"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260420T095555Z-3e08"
+      ],
+      "changed_files": [
+        ".beacon/evidence-manifest.json",
+        "beacon/commands/gate.py",
+        "beacon/commands/prototype.py",
+        "beacon/utils/prototype_utils.py",
+        "docs/beacon/global-boundaries.md",
+        "docs/beacon/v1.3.5/.machine/execution/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.revision.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.ac-test-matrix.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.qa9-matrix.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.story-scenario-map.json",
+        "docs/beacon/v1.3.5/.machine/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json",
+        "docs/beacon/v1.3.5/SUMMARY.md",
+        "docs/beacon/v1.3.5/prd/beacon-v1-3-5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+        "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-20T09:55:55.584460+00:00",
+      "completed_at": "2026-04-20T09:55:55.584461+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-008",
+      "title": "FR-008 必须与 `prd / user-story / test-case` 形成对齐面",
+      "description": "Wireframe 包必须显式支持以下映射： 该页面来自哪条 PRD 承诺 该页面承载哪些 user story 该页面对应哪些 test case 场景 要求： 不是自由发挥式草图 而是 requirement-driven wireframe",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-007"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260420T095555Z-3e08"
+      ],
+      "changed_files": [
+        ".beacon/evidence-manifest.json",
+        "beacon/commands/gate.py",
+        "beacon/commands/prototype.py",
+        "beacon/utils/prototype_utils.py",
+        "docs/beacon/global-boundaries.md",
+        "docs/beacon/v1.3.5/.machine/execution/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.revision.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.ac-test-matrix.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.qa9-matrix.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.story-scenario-map.json",
+        "docs/beacon/v1.3.5/.machine/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json",
+        "docs/beacon/v1.3.5/SUMMARY.md",
+        "docs/beacon/v1.3.5/prd/beacon-v1-3-5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+        "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-20T09:55:55.584467+00:00",
+      "completed_at": "2026-04-20T09:55:55.584469+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-009",
+      "title": "FR-009 `freeze/review/status` 必须围绕 wireframe 语义工作",
+      "description": "`prototype freeze` 不应再默认冻结 HTML 页面，而应默认冻结： 页面结构 页面职责 路由逻辑 状态说明 平台差异 `prototype review` 和 `prototype status` 也必须围绕这些结构性产物工作。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-008"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260420T095555Z-3e08"
+      ],
+      "changed_files": [
+        ".beacon/evidence-manifest.json",
+        "beacon/commands/gate.py",
+        "beacon/commands/prototype.py",
+        "beacon/utils/prototype_utils.py",
+        "docs/beacon/global-boundaries.md",
+        "docs/beacon/v1.3.5/.machine/execution/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.revision.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.ac-test-matrix.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.qa9-matrix.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.story-scenario-map.json",
+        "docs/beacon/v1.3.5/.machine/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json",
+        "docs/beacon/v1.3.5/SUMMARY.md",
+        "docs/beacon/v1.3.5/prd/beacon-v1-3-5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+        "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-20T09:55:55.584475+00:00",
+      "completed_at": "2026-04-20T09:55:55.584476+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-010",
+      "title": "FR-010 版本文档与 skill 文档必须同步更新",
+      "description": "本线落地时，以下文档叙事必须一致： `docs/beacon/v1.3.5/*` `skills/beacon/SKILL.md` 新增 `skills/beacon/beacon-prototype/SKILL.md` 要求： 都明确 `prototype` 是主链 requirement freeze 阶段 都明确默认 mode 为 `wireframe` 都明确 `wireframe.py` 已退役",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-009"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260420T095555Z-3e08"
+      ],
+      "changed_files": [
+        ".beacon/evidence-manifest.json",
+        "beacon/commands/gate.py",
+        "beacon/commands/prototype.py",
+        "beacon/utils/prototype_utils.py",
+        "docs/beacon/global-boundaries.md",
+        "docs/beacon/v1.3.5/.machine/execution/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.revision.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.ac-test-matrix.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.qa9-matrix.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.story-scenario-map.json",
+        "docs/beacon/v1.3.5/.machine/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json",
+        "docs/beacon/v1.3.5/SUMMARY.md",
+        "docs/beacon/v1.3.5/prd/beacon-v1-3-5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+        "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-20T09:55:55.584482+00:00",
+      "completed_at": "2026-04-20T09:55:55.584484+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-011",
+      "title": "FR-011 必须从真实 requirement 生成“闭环型”线框内容",
+      "description": "`prototype` 不能只输出固定模板描述，必须用 LLM 对真实 `prd / user-story / test-case` 做闭环推理。 每个页面必须可回答： 该页承接哪条业务目标 核心状态如何流转（含异常分支） 该页包含哪些组件与数据槽位 该页动作如何映射到测试场景 要求： 模板骨架固定，内容语义动态推理。 推理结果必须通过规则校验后才可冻结。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-010"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260420T095555Z-3e08"
+      ],
+      "changed_files": [
+        ".beacon/evidence-manifest.json",
+        "beacon/commands/gate.py",
+        "beacon/commands/prototype.py",
+        "beacon/utils/prototype_utils.py",
+        "docs/beacon/global-boundaries.md",
+        "docs/beacon/v1.3.5/.machine/execution/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.revision.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.ac-test-matrix.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.qa9-matrix.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.story-scenario-map.json",
+        "docs/beacon/v1.3.5/.machine/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json",
+        "docs/beacon/v1.3.5/SUMMARY.md",
+        "docs/beacon/v1.3.5/prd/beacon-v1-3-5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+        "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-20T09:55:55.584490+00:00",
+      "completed_at": "2026-04-20T09:55:55.584491+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-012",
+      "title": "FR-012 必须冻结页面状态流转（State Flow），而不只是页面跳转",
+      "description": "除 `navigation-map` 外，必须新增并冻结： `state-flow-map.json` `state-flow-map.md` 至少包含： 状态节点（state id / label） 触发条件（event / guard） 迁移边（from -> to） 异常回退路径（fallback / recover） 与 test-case 场景映射（test refs）",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-011"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260420T095555Z-3e08"
+      ],
+      "changed_files": [
+        ".beacon/evidence-manifest.json",
+        "beacon/commands/gate.py",
+        "beacon/commands/prototype.py",
+        "beacon/utils/prototype_utils.py",
+        "docs/beacon/global-boundaries.md",
+        "docs/beacon/v1.3.5/.machine/execution/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.revision.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.ac-test-matrix.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.qa9-matrix.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.story-scenario-map.json",
+        "docs/beacon/v1.3.5/.machine/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json",
+        "docs/beacon/v1.3.5/SUMMARY.md",
+        "docs/beacon/v1.3.5/prd/beacon-v1-3-5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+        "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-20T09:55:55.584497+00:00",
+      "completed_at": "2026-04-20T09:55:55.584498+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-013",
+      "title": "FR-013 必须冻结页面组件契约（Component Contract）",
+      "description": "每个页面必须产出组件说明，至少包含： component_id 组件职责 数据来源（字段或查询） 用户动作（interaction） 关联状态（state refs） 关联 AC / TC / user-story refs 建议输出： `component-catalog.json` `component-catalog.md`",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-012"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260420T095555Z-3e08"
+      ],
+      "changed_files": [
+        ".beacon/evidence-manifest.json",
+        "beacon/commands/gate.py",
+        "beacon/commands/prototype.py",
+        "beacon/utils/prototype_utils.py",
+        "docs/beacon/global-boundaries.md",
+        "docs/beacon/v1.3.5/.machine/execution/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.revision.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.ac-test-matrix.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.qa9-matrix.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.story-scenario-map.json",
+        "docs/beacon/v1.3.5/.machine/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json",
+        "docs/beacon/v1.3.5/SUMMARY.md",
+        "docs/beacon/v1.3.5/prd/beacon-v1-3-5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+        "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-20T09:55:55.584505+00:00",
+      "completed_at": "2026-04-20T09:55:55.584506+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-014",
+      "title": "FR-014 多写入点必须支持事务型一致提交",
+      "description": "`prototype` 写入至少涉及三类目标： 1. 人类面（`wireframe-summary.md`, `pages/*.md` 等） 2. 机器面（`*.json` canonical / map / manifest） 3. Runtime 索引面（SQLite / projection） 要求： 以 canonical envelope 作为唯一提交源。 采用 `prepare -> validate -> commit -> publish` 提交流程。 任一 sink 失败则回滚，或标记事务失败并阻止 freeze。 每次提交写入统一事务元数据： `projection_seq` `source_hash` `transaction_id` `committed_at` `sink_checksums`",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-013"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260420T095555Z-3e08"
+      ],
+      "changed_files": [
+        ".beacon/evidence-manifest.json",
+        "beacon/commands/gate.py",
+        "beacon/commands/prototype.py",
+        "beacon/utils/prototype_utils.py",
+        "docs/beacon/global-boundaries.md",
+        "docs/beacon/v1.3.5/.machine/execution/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.revision.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.ac-test-matrix.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.qa9-matrix.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.story-scenario-map.json",
+        "docs/beacon/v1.3.5/.machine/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json",
+        "docs/beacon/v1.3.5/SUMMARY.md",
+        "docs/beacon/v1.3.5/prd/beacon-v1-3-5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+        "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-20T09:55:55.584512+00:00",
+      "completed_at": "2026-04-20T09:55:55.584513+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-015",
+      "title": "FR-015 人机隔离必须在目录与语义层同时成立",
+      "description": "要求： 人类可读层与机器可读层目录分离，不混排。 人类文档禁止承载机器专用字段噪音。 机器文档禁止依赖人类描述进行反向解析。 `status/review` 必须同时报告： human_view_status machine_contract_status sqlite_projection_status drift_status ## 6. 数据 / 状态 / 集成 ### 6.1 输入源与 canonical 语义层 wireframe 生成输入应包括： feature 名称 docs version 对应 PRD 内容 对应 user-story 内容 对应 test-case 内容 页面/路由补充说明 当前 prototype manifest canonical 输出（机器唯一真相）应包含： `prototype-plan.json` `page-specs/*.json` `navigation-map.json` `state-flow-map.json` `component-catalog.json` `route-closure-contract.json` `source-map.json` `manifest.json` ### 6.2 三写入点与事务提交 三写入点定义： 1. Human readable sink： `wireframe-summary.md` `navigation-map.md` `state-flow-map.md` `component-catalog.md` `pages/*.md` 2. Machine readable sink： canonical json artifacts 3. Runtime projection sink： SQLite 索引与 projection 镜像 事务流程： 1. `prepare` 读取 requirement 输入并生成 canonical candidate 2. `validate` 校验路由闭环、状态闭环、组件映射完整度 3. `commit` 原子写入 machine sink，并记录事务元数据 4. `publish` 从 canonical 渲染 human sink，并同步 sqlite sink 5. `verify` 校验三面 `source_hash / projection_seq` 一致 ### 6.3 输出物 wireframe summary navigation map state flow map component catalog single-page wireframes freeze artifacts prototype review result manifest with mode metadata ### 6.4 演进接口 后续可以继续扩展： 对外导出给设计工具的中间格式 更适合实现侧消费的页面草图 contract 结构化 page spec 但不得重新引入 HTML 高保真原型作为 Beacon 内部标准输出。 ## 7. 风险与缓解 | 风险 | 影响 | 缓解 | |------|------|------| | HTML 模式遗留叙事继续污染默认认知 | 高 | 文档、命令示例、manifest 与实现统一改为 wireframe only | | 新增 `prototype` 与全局 6 段主流程边界冲突 | 高 | 在 `v1.3.5` 中把它升级为正式 boundary delta，并同步更新 Beacon 全局边界 | | `prototype` 与 `wireframe.py` 双入口并存 | 高 | 移除 `wireframe.py`，统一 `beacon-prototype` 子 skill 与 `prototype` 命令 | | wireframe 过于抽象，无法落到实现 | 中 | 强制输出页面清单、跳转、元素、状态、PRD/story/case 映射 | | 团队继续把视觉细节拉进 prototype 阶段 | 高 | 明确 wireframe 只冻结结构和交互，不冻结视觉 | | review/freeze 仍以旧 HTML 资产为中心 | 中 | 删除旧 HTML 原型路径，`status/review/freeze` 统一围绕 wireframe artifact 工作 | | 人类面与机器面混写导致审阅困难 | 高 | 人机目录与字段严格分层，禁止双向污染 | | 多写入点提交成功率不一致导致漂移 | 高 | 引入事务型多 sink 提交与统一指纹校验 | | LLM 推理内容与 test-case 不一致 | 高 | 强制 AC/TC 覆盖映射校验，未通过即阻断 freeze | ## 8. 验收标准 ### AC-001 `prototype` 不再产出 HTML 高保真原型 用户执行 prototype 相关命令时，得到的必须是 wireframe 语义，而不是 HTML 原型语义。 ### AC-005 `prototype` 成为正式人类阶段 人类工作流能够明确表达： ```text prd -> user-story -> test-case -> prototype -> implement -> qa -> release ``` 且 `prototype` 被正式理解为 wireframe freeze，而不是可有可无的设计附件。 ### AC-006 `beacon-prototype` 成为唯一 host-visible 原型 skill Beacon 的对外 skill 面中存在 `beacon-prototype`，并以它承担原型阶段的统一路由。 ### AC-007 `wireframe.py` 退出正式流程 仓库内不再存在一个与 `prototype` 平行竞争的人类公开 wireframe 入口；`wireframe.py` 必须被直接删除，不保留兼容迁移壳层。 ### AC-002 Wireframe 包可独立完成页面冻结 至少基于一条真实 PRD，能够冻结： 页面清单 页面职责 页面路由 页面草图 页面状态 不依赖 HTML 页面也能完成需求冻结。 ### AC-003 Wireframe 包可接到 user-story / test-case 任一页面都能回答： 来自哪条 PRD 承诺 对应哪条 user story 需要覆盖哪些 test case ### AC-004 与下游产品线不漂移 对于 `v1.3.6` 的 Beacon 管理端主 PRD： wireframe 包可以清晰表达其页面结构 不会反向篡改主 PRD 的产品定义 只承担结构冻结职责 ### AC-008 页面状态流必须可验证 `state-flow-map` 必须可回答： 每个关键状态如何进入与退出 异常时如何回退 每条迁移对应哪些 test-case 且 `prototype review` 对状态流缺失必须阻断。 ### AC-009 页面组件说明必须可实现接力 每页必须存在组件契约并可映射： 组件 -> 状态 组件 -> 用户动作 组件 -> AC / TC 缺失映射时，`freeze` 不得通过。 ### AC-010 三写入点一致性必须可审计 同一轮生成后，human / machine / sqlite 三面必须具备相同： `source_hash` `projection_seq` `transaction_id` 任一面不一致，`status` 必须显示 `drift`，`release` 不得判定通过。 ## 9. 成功指标 主指标： Beacon `prototype` 被团队统一理解为 requirement wireframe，而不是高保真原型生成器。 辅指标： 页面冻结讨论显著减少对颜色、样式、组件细节的无效争论，更多回到页面职责、路由、状态和 requirement 映射。 从 `prd -> user-story -> test-case -> wireframe` 的映射缺口率持续下降。 三写入点一致性检查通过率稳定在 100%（以事务批次计）。 ## 10. 与下游产品线的关系 下游主线锚点：`beacon-v1-3-6-visual-management-console-and-material-viewer` 本 PRD补强的能力： 让下游主 PRD中的页面定义能通过 wireframe 包被稳定冻结和 review 回写下游主 PRD的内容： `v1.3.6` 主 PRD应补充“页面实现回链 `v1.3.5` wireframe artifact”这一要求 回写 Beacon 全局边界的内容： Beacon 人类主链应升级为包含 `prototype` 的正式 requirement freeze 闭环 保持独立冻结的内容： `prototype` wireframe only 规范 wireframe 包结构 PRD / user-story / test-case 对齐 contract --- **Created**: 2026-04-20 **Version**: `v1.3.5` **Status**: `frozen-pending-implementation` **Memory Context**: N/A",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-014"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260420T095555Z-3e08"
+      ],
+      "changed_files": [
+        ".beacon/evidence-manifest.json",
+        "beacon/commands/gate.py",
+        "beacon/commands/prototype.py",
+        "beacon/utils/prototype_utils.py",
+        "docs/beacon/global-boundaries.md",
+        "docs/beacon/v1.3.5/.machine/execution/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.revision.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.ac-test-matrix.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.qa9-matrix.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.story-scenario-map.json",
+        "docs/beacon/v1.3.5/.machine/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json",
+        "docs/beacon/v1.3.5/SUMMARY.md",
+        "docs/beacon/v1.3.5/prd/beacon-v1-3-5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+        "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-20T09:55:55.584519+00:00",
+      "completed_at": "2026-04-20T09:55:55.584521+00:00",
+      "active_run_id": ""
+    }
+  ],
+  "team_mode": {
+    "preferred_surface": "implement-team",
+    "preferred_runner": "codex-subagents",
+    "plan_command": "beacon implement team-plan \"beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor\" --project-root . --version v1.3.5",
+    "run_command": "beacon implement team-run \"beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor\" --project . --version v1.3.5",
+    "dev_run_command": "beacon implement dev-run \"beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor\" --project . --version v1.3.5",
+    "qa_team_command": "beacon qa team-run \"beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor\" --project . --version v1.3.5",
+    "roles": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "context_isolation": {
+      "role_plane": "implementation",
+      "isolated_from": [
+        "qa-team"
+      ],
+      "shared_inputs": [
+        "docs",
+        "implementation_plan",
+        "evidence_refs"
+      ],
+      "shared_outputs": [
+        "implementation_summary",
+        "technical_archive",
+        "repair_handoff"
+      ],
+      "rule": "qa_must_not_inherit_implement_private_context",
+      "implement_surface": "implement-team",
+      "qa_surface": "qa-team"
+    },
+    "config_source": "beacon/team_roles/implement-team.json",
+    "execution_order": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "formal_writeback_roles": [
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "role_contracts": {
+      "planner": {
+        "purpose": "Compile execution-ready task scope from the frozen revision baseline.",
+        "writes_to_formal_truth": false,
+        "outputs": [
+          "execution_plan_note"
+        ]
+      },
+      "implementation-architect": {
+        "purpose": "Translate frozen requirement truth into implementation-safe module boundaries and service ownership guidance.",
+        "writes_to_formal_truth": false,
+        "reads": [
+          "docs/beacon/<version>/user-story",
+          "docs/beacon/<version>/prd",
+          "docs/beacon/<version>/qa/test-cases",
+          "docs/beacon/<version>/execution/architecture-blueprint.md",
+          "implementation_plan",
+          "git_workflow_contract"
+        ],
+        "outputs": [
+          "implementation_architecture_note"
+        ],
+        "restrictions": [
+          "must_not_modify_frozen_requirement_materials",
+          "must_not_overwrite_architecture_blueprint"
+        ]
+      },
+      "implementer": {
+        "purpose": "Write code inside the frozen scope and the implementation architecture note.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "story_writeback",
+          "implementation_summary"
+        ]
+      },
+      "reviewer": {
+        "purpose": "Review implementation/spec drift and architecture-boundary drift.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_spec"
+        ]
+      },
+      "tester": {
+        "purpose": "Check implementation evidence and verification readiness before acceptance.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_quality"
+        ]
+      }
+    }
+  },
+  "git_workflow": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor",
+    "feature_slug": "beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor",
+    "version": "v1.3.5",
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.3.5",
+    "branch_prefix": "beacon/",
+    "base_branch": "main",
+    "use_git_worktree": false,
+    "require_clean_worktree_for_switch": true,
+    "service_directories": [
+      "."
+    ],
+    "git_roots": [
+      "."
+    ],
+    "worktree_root": ".",
+    "source": "technical_review_contract",
+    "generated_at": "2026-04-20T09:55:42.014840+00:00"
+  },
+  "git_workflow_ref": "docs/beacon/v1.3.5/.machine/execution/git-workflow-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json",
+  "git_workflow_markdown_ref": "docs/beacon/v1.3.5/execution/git-workflow-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+  "generated_at": "2026-04-20T09:55:42.015560+00:00",
+  "updated_at": "2026-04-20T10:23:43.962458+00:00"
+}

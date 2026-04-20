@@ -5,15 +5,22 @@ from __future__ import annotations
 import hashlib
 import json
 import re
+import shutil
+import sqlite3
+import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+
+from beacon.utils.runtime_projection_store import runtime_ledger_root
 
 
 PROTOTYPE_MODE = "wireframe"
 PROTOTYPE_UI_KIT = "wireframe-markdown-v1"
 SCHEMA_VERSION = "1.0"
 REQUIRED_SOURCE_TYPES = ("user-story", "prd", "test-case")
+AC_PATTERN = re.compile(r"\bAC-\d{3}[A-Z]?\b", re.IGNORECASE)
+TC_PATTERN = re.compile(r"\bTC-\d{3}(?:-[A-Z]+)?\b", re.IGNORECASE)
 PAGE_ORDER_DEFAULT = (
     "home",
     "management-overview",
@@ -231,6 +238,10 @@ FIELD_PATTERNS = {
 }
 
 
+def _stable_hash(payload: Any) -> str:
+    return sha256_text(json.dumps(payload, ensure_ascii=False, sort_keys=True))
+
+
 def now_iso() -> str:
     return datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
@@ -279,9 +290,12 @@ def prototype_files(project_root: Path, version: str, feature: str) -> dict[str,
     root = prototype_dir(project_root, version, feature)
     return {
         "root": root,
+        "human_view_dir": root / "human-view",
+        "machine_view_dir": root / "machine-view",
         "manifest": root / "manifest.json",
         "prototype_plan": root / "prototype-plan.json",
         "prototype_brief": root / "prototype-brief.json",
+        "canonical_envelope": root / "canonical-envelope.json",
         "source_map": root / "source-map.json",
         "freeze": root / "freeze.json",
         "review_json": root / "prototype-review.json",
@@ -290,6 +304,10 @@ def prototype_files(project_root: Path, version: str, feature: str) -> dict[str,
         "wireframe_manifest": root / "wireframe-manifest.json",
         "navigation_map": root / "navigation-map.json",
         "navigation_map_md": root / "navigation-map.md",
+        "state_flow_map": root / "state-flow-map.json",
+        "state_flow_map_md": root / "state-flow-map.md",
+        "component_catalog": root / "component-catalog.json",
+        "component_catalog_md": root / "component-catalog.md",
         "interaction_map": root / "interaction-map.json",
         "coverage_report": root / "coverage-report.json",
         "theme": root / "theme.json",
@@ -416,6 +434,19 @@ def _build_requirement_refs(docs: list[dict[str, Any]]) -> dict[str, list[str]]:
     return refs
 
 
+def _extract_requirement_ids(docs: list[dict[str, Any]]) -> dict[str, list[str]]:
+    ac_ids: set[str] = set()
+    tc_ids: set[str] = set()
+    for doc in docs:
+        text = str(doc.get("text") or "")
+        ac_ids.update(match.upper() for match in AC_PATTERN.findall(text))
+        tc_ids.update(match.upper() for match in TC_PATTERN.findall(text))
+    return {
+        "ac_ids": sorted(ac_ids),
+        "tc_ids": sorted(tc_ids),
+    }
+
+
 def _build_page_specs(page_ids: list[str], docs: list[dict[str, Any]]) -> list[dict[str, Any]]:
     refs = _build_requirement_refs(docs)
     transitions = _build_transition_inventory(page_ids)
@@ -484,6 +515,189 @@ def _build_interaction_map(page_specs: list[dict[str, Any]], transitions: list[d
             for item in transitions
         ],
     }
+
+
+def _build_component_catalog(
+    page_specs: list[dict[str, Any]],
+    requirement_ids: dict[str, list[str]],
+) -> dict[str, Any]:
+    ac_ids = list(requirement_ids.get("ac_ids") or [])
+    tc_ids = list(requirement_ids.get("tc_ids") or [])
+    components: list[dict[str, Any]] = []
+    for page in page_specs:
+        page_id = str(page.get("page_id") or "").strip()
+        state_refs = [str(item.get("id") or "").strip() for item in page.get("states", []) if str(item.get("id") or "").strip()]
+        actions = list(page.get("actions") or [])
+        for index, section in enumerate(page.get("sections", []), start=1):
+            component_id = f"{page_id}-component-{index:02d}"
+            action = actions[index - 1] if index - 1 < len(actions) else None
+            components.append(
+                {
+                    "component_id": component_id,
+                    "page_id": page_id,
+                    "name": str(section),
+                    "responsibility": f"{section} 模块负责承载 `{page.get('name')}` 的关键信息与操作。",
+                    "data_source": [
+                        "prototype-plan.page_specs",
+                        "source-map.requirement_refs",
+                    ],
+                    "interaction": (
+                        {
+                            "label": str(action.get("label") or ""),
+                            "trigger": str(action.get("trigger") or ""),
+                            "target": str(action.get("target") or ""),
+                        }
+                        if isinstance(action, dict)
+                        else {
+                            "label": "无直接动作",
+                            "trigger": "被动展示",
+                            "target": page_id,
+                        }
+                    ),
+                    "state_refs": state_refs,
+                    "ac_refs": ac_ids,
+                    "tc_refs": tc_ids,
+                    "story_refs": list((page.get("requirement_refs") or {}).get("user-story") or []),
+                }
+            )
+    return {
+        "schema_version": SCHEMA_VERSION,
+        "component_count": len(components),
+        "components": components,
+    }
+
+
+def _render_component_catalog_md(feature: str, payload: dict[str, Any]) -> str:
+    lines = [
+        f"# 组件契约清单：{feature}",
+        "",
+        "| Component ID | Page | Name | State Refs | AC Refs | TC Refs |",
+        "|---|---|---|---|---|---|",
+    ]
+    for component in payload.get("components", []):
+        lines.append(
+            "| `{}` | `{}` | {} | {} | {} | {} |".format(
+                component.get("component_id", ""),
+                component.get("page_id", ""),
+                component.get("name", ""),
+                ", ".join(component.get("state_refs", [])[:6]) or "-",
+                ", ".join(component.get("ac_refs", [])[:4]) or "-",
+                ", ".join(component.get("tc_refs", [])[:4]) or "-",
+            )
+        )
+    lines.extend(
+        [
+            "",
+            "## 说明",
+            "- 组件契约用于 requirement freeze，不是最终前端组件实现规范。",
+            "- 实现阶段需要保持 component -> state -> AC/TC 的可追踪关系。",
+        ]
+    )
+    return "\n".join(lines)
+
+
+def _build_state_flow_map(
+    page_specs: list[dict[str, Any]],
+    transitions: list[dict[str, Any]],
+    requirement_ids: dict[str, list[str]],
+) -> dict[str, Any]:
+    nodes: list[dict[str, Any]] = []
+    edges: list[dict[str, Any]] = []
+    tc_ids = list(requirement_ids.get("tc_ids") or [])
+    for page in page_specs:
+        page_id = str(page.get("page_id") or "")
+        states = [state for state in page.get("states", []) if isinstance(state, dict)]
+        state_ids = [str(state.get("id") or "").strip() for state in states if str(state.get("id") or "").strip()]
+        for state in states:
+            state_id = str(state.get("id") or "").strip()
+            if not state_id:
+                continue
+            node_key = f"{page_id}:{state_id}"
+            nodes.append(
+                {
+                    "state_key": node_key,
+                    "page_id": page_id,
+                    "state_id": state_id,
+                    "label": str(state.get("label") or state_id),
+                    "description": str(state.get("description") or ""),
+                }
+            )
+        if "loading" in state_ids and "ready" in state_ids:
+            edges.append(
+                {
+                    "from": f"{page_id}:loading",
+                    "to": f"{page_id}:ready",
+                    "event": "data_loaded",
+                    "guard": "data_fetch_success",
+                    "kind": "intra-page",
+                    "fallback": None,
+                    "test_refs": tc_ids[:2],
+                }
+            )
+        if "ready" in state_ids and "error" in state_ids:
+            fallback_page = "recovery-diagnostics" if page_id != "recovery-diagnostics" else page_id
+            edges.append(
+                {
+                    "from": f"{page_id}:ready",
+                    "to": f"{page_id}:error",
+                    "event": "data_failure",
+                    "guard": "runtime_or_projection_error",
+                    "kind": "intra-page",
+                    "fallback": f"{fallback_page}:ready",
+                    "test_refs": tc_ids[:2],
+                }
+            )
+    for transition in transitions:
+        source_page = str(transition.get("from") or "")
+        target_page = str(transition.get("to") or "")
+        if not source_page or not target_page:
+            continue
+        edges.append(
+            {
+                "from": f"{source_page}:ready",
+                "to": f"{target_page}:ready",
+                "event": str(transition.get("trigger") or "navigate"),
+                "guard": "route_allowed",
+                "kind": "inter-page",
+                "fallback": f"{source_page}:ready",
+                "test_refs": tc_ids[:1],
+            }
+        )
+    return {
+        "schema_version": SCHEMA_VERSION,
+        "node_count": len(nodes),
+        "edge_count": len(edges),
+        "nodes": nodes,
+        "edges": edges,
+    }
+
+
+def _render_state_flow_map_md(feature: str, payload: dict[str, Any]) -> str:
+    lines = [
+        f"# 状态流冻结图：{feature}",
+        "",
+        "| From | To | Event | Guard | Fallback |",
+        "|---|---|---|---|---|",
+    ]
+    for edge in payload.get("edges", []):
+        lines.append(
+            "| `{}` | `{}` | {} | {} | {} |".format(
+                edge.get("from", ""),
+                edge.get("to", ""),
+                edge.get("event", ""),
+                edge.get("guard", ""),
+                edge.get("fallback", "-") or "-",
+            )
+        )
+    lines.extend(
+        [
+            "",
+            "## 说明",
+            "- 状态流与导航图共同定义 prototype 冻结语义。",
+            "- 每条边都应可追溯到 test-case 场景。",
+        ]
+    )
+    return "\n".join(lines)
 
 
 def _build_route_closure_contract(page_specs: list[dict[str, Any]], transitions: list[dict[str, Any]], route_closure_required: bool) -> dict[str, Any]:
@@ -734,6 +948,10 @@ def _render_review_markdown(payload: dict[str, Any]) -> str:
         "",
         f"**Overall Status**: `{payload['overall_status']}`",
         f"**Prototype Mode**: `{payload['prototype_mode']}`",
+        f"**Human View Status**: `{payload.get('human_view_status', 'unknown')}`",
+        f"**Machine Contract Status**: `{payload.get('machine_contract_status', 'unknown')}`",
+        f"**SQLite Projection Status**: `{payload.get('sqlite_projection_status', 'unknown')}`",
+        f"**Drift Status**: `{payload.get('drift_status', 'unknown')}`",
         f"**Generated At**: `{payload['generated_at']}`",
         "",
         "| Check | Status | Message |",
@@ -769,6 +987,129 @@ def _artifact_fingerprints(files: dict[str, Path], *, include_optional: bool = T
                 if child.is_file():
                     fingerprints[str(child.relative_to(files["root"]))] = sha256_file(child)
     return fingerprints
+
+
+def _prototype_ledger_db_path() -> Path:
+    return runtime_ledger_root() / "prototype-ledger.sqlite3"
+
+
+def _ensure_prototype_projection_schema(conn: sqlite3.Connection) -> None:
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS prototype_projection_transactions (
+            transaction_id TEXT PRIMARY KEY,
+            feature_slug TEXT NOT NULL,
+            version TEXT NOT NULL,
+            projection_seq TEXT NOT NULL,
+            source_hash TEXT NOT NULL,
+            committed_at TEXT NOT NULL,
+            status TEXT NOT NULL,
+            root_path TEXT NOT NULL,
+            sink_checksums_json TEXT NOT NULL,
+            payload_json TEXT NOT NULL
+        )
+        """
+    )
+    conn.execute(
+        """
+        CREATE INDEX IF NOT EXISTS idx_prototype_projection_feature
+        ON prototype_projection_transactions(feature_slug, version, committed_at)
+        """
+    )
+
+
+def _write_prototype_projection_sqlite(payload: dict[str, Any]) -> dict[str, Any]:
+    db_path = _prototype_ledger_db_path()
+    db_path.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        conn = sqlite3.connect(str(db_path))
+        conn.row_factory = sqlite3.Row
+        _ensure_prototype_projection_schema(conn)
+        conn.execute(
+            """
+            INSERT INTO prototype_projection_transactions (
+                transaction_id, feature_slug, version, projection_seq, source_hash,
+                committed_at, status, root_path, sink_checksums_json, payload_json
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ON CONFLICT(transaction_id) DO UPDATE SET
+                feature_slug=excluded.feature_slug,
+                version=excluded.version,
+                projection_seq=excluded.projection_seq,
+                source_hash=excluded.source_hash,
+                committed_at=excluded.committed_at,
+                status=excluded.status,
+                root_path=excluded.root_path,
+                sink_checksums_json=excluded.sink_checksums_json,
+                payload_json=excluded.payload_json
+            """,
+            (
+                str(payload.get("transaction_id") or ""),
+                str(payload.get("feature_slug") or ""),
+                str(payload.get("version") or ""),
+                str(payload.get("projection_seq") or ""),
+                str(payload.get("source_hash") or ""),
+                str(payload.get("committed_at") or ""),
+                str(payload.get("status") or "committed"),
+                str(payload.get("root_path") or ""),
+                json.dumps(payload.get("sink_checksums") or {}, ensure_ascii=False, sort_keys=True),
+                json.dumps(payload, ensure_ascii=False, sort_keys=True),
+            ),
+        )
+        conn.commit()
+    finally:
+        try:
+            conn.close()  # type: ignore[name-defined]
+        except Exception:  # noqa: BLE001
+            pass
+    return {
+        "status": "committed",
+        "db_path": str(db_path),
+    }
+
+
+def _read_prototype_projection_sqlite(transaction_id: str) -> dict[str, Any]:
+    if not transaction_id:
+        return {"status": "missing"}
+    db_path = _prototype_ledger_db_path()
+    if not db_path.exists():
+        return {"status": "missing", "db_path": str(db_path)}
+    try:
+        conn = sqlite3.connect(str(db_path))
+        conn.row_factory = sqlite3.Row
+        _ensure_prototype_projection_schema(conn)
+        row = conn.execute(
+            """
+            SELECT transaction_id, feature_slug, version, projection_seq, source_hash,
+                   committed_at, status, root_path, sink_checksums_json
+            FROM prototype_projection_transactions
+            WHERE transaction_id = ?
+            """,
+            (transaction_id,),
+        ).fetchone()
+    finally:
+        try:
+            conn.close()  # type: ignore[name-defined]
+        except Exception:  # noqa: BLE001
+            pass
+    if row is None:
+        return {"status": "missing", "db_path": str(db_path)}
+    sink_checksums: dict[str, Any] = {}
+    try:
+        sink_checksums = json.loads(str(row["sink_checksums_json"] or "{}"))
+    except Exception:  # noqa: BLE001
+        sink_checksums = {}
+    return {
+        "status": "committed",
+        "db_path": str(db_path),
+        "transaction_id": str(row["transaction_id"]),
+        "feature_slug": str(row["feature_slug"]),
+        "version": str(row["version"]),
+        "projection_seq": str(row["projection_seq"]),
+        "source_hash": str(row["source_hash"]),
+        "committed_at": str(row["committed_at"]),
+        "root_path": str(row["root_path"]),
+        "sink_checksums": sink_checksums if isinstance(sink_checksums, dict) else {},
+    }
 
 
 def _build_source_map(project_root: Path, docs: list[dict[str, Any]], plan: dict[str, Any]) -> dict[str, Any]:
@@ -852,6 +1193,7 @@ def compile_prototype_plan(project_root: Path, version: str, feature: str) -> di
     required_states = sorted({state["id"] for page in page_specs for state in page["states"]})
     route_closure_required = _extract_field(docs, "route_closure_required", "false").lower() == "true"
     theme = _build_theme_payload(docs)
+    requirement_ids = _extract_requirement_ids(docs)
     plan = {
         "schema_version": SCHEMA_VERSION,
         "feature": feature,
@@ -870,6 +1212,7 @@ def compile_prototype_plan(project_root: Path, version: str, feature: str) -> di
         ],
         "required_pages": list(page_ids),
         "required_states": required_states,
+        "requirement_ids": requirement_ids,
         "page_specs": page_specs,
         "page_inventory": page_specs,
         "navigation": {
@@ -888,6 +1231,11 @@ def compile_prototype_plan(project_root: Path, version: str, feature: str) -> di
                 "wireframe-manifest.json",
                 "navigation-map.md",
                 "navigation-map.json",
+                "state-flow-map.md",
+                "state-flow-map.json",
+                "component-catalog.md",
+                "component-catalog.json",
+                "canonical-envelope.json",
                 "pages/*.md",
                 "freeze.json",
                 "prototype-review.json",
@@ -912,145 +1260,288 @@ def write_prototype_plan(project_root: Path, version: str, feature: str) -> dict
 
 
 def write_prototype_bundle(project_root: Path, version: str, feature: str) -> dict[str, Any]:
+    source_docs = load_source_documents(project_root, version, feature)
     plan = compile_prototype_plan(project_root, version, feature)
     files = prototype_files(project_root, version, feature)
-    root = files["root"]
-    root.mkdir(parents=True, exist_ok=True)
-    files["pages_dir"].mkdir(parents=True, exist_ok=True)
-    files["page_specs_dir"].mkdir(parents=True, exist_ok=True)
+    feature_slug = str(plan["feature_slug"])
+    source_hash = _stable_hash([{"type": doc["type"], "fingerprint": doc["fingerprint"]} for doc in source_docs])
+    projection_seq = f"pp-{source_hash[:16]}"
+    committed_at = now_iso()
+    transaction_id = f"tx-{feature_slug}-{projection_seq}"
 
     theme_payload = plan["theme"]
     transitions = plan["navigation"]["transitions"]
+    requirement_ids = plan.get("requirement_ids") if isinstance(plan.get("requirement_ids"), dict) else {}
     interaction_map = _build_interaction_map(plan["page_specs"], transitions)
+    state_flow_map = _build_state_flow_map(plan["page_specs"], transitions, requirement_ids)
+    component_catalog = _build_component_catalog(plan["page_specs"], requirement_ids)
     route_closure = _build_route_closure_contract(
         plan["page_specs"],
         transitions,
         bool(plan["contract"]["route_closure_required"]),
     )
     coverage = _build_coverage_report(plan)
-    source_map = _build_source_map(project_root, load_source_documents(project_root, version, feature), plan)
+    source_map = _build_source_map(project_root, source_docs, plan)
     wireframe_manifest = _build_wireframe_manifest(plan)
-
-    _write_json(files["prototype_plan"], plan)
-    _write_text(files["wireframe_summary"], _render_wireframe_summary(plan))
-    _write_json(files["wireframe_manifest"], wireframe_manifest)
-    _write_text(files["navigation_map_md"], _render_navigation_map_md(plan))
-    _write_json(
-        files["navigation_map"],
-        {
-            "schema_version": SCHEMA_VERSION,
-            "feature": feature,
-            "feature_slug": plan["feature_slug"],
+    canonical_envelope = {
+        "schema_version": SCHEMA_VERSION,
+        "feature": feature,
+        "feature_slug": feature_slug,
+        "version": version,
+        "prototype_mode": PROTOTYPE_MODE,
+        "source_hash": source_hash,
+        "projection_seq": projection_seq,
+        "transaction_id": transaction_id,
+        "committed_at": committed_at,
+        "plan": plan,
+        "navigation_map": {
             "primary_entry": plan["navigation"]["primary_entry"],
             "primary_exit": plan["navigation"]["primary_exit"],
-            "jump_map": [
-                {"from": item["from"], "to": item["to"], "trigger": item["trigger"], "type": item["type"]}
-                for item in transitions
-            ],
             "transitions": transitions,
         },
-    )
-    _write_json(files["interaction_map"], interaction_map)
-    _write_json(files["coverage_report"], coverage)
-    _write_json(files["route_closure_contract"], route_closure)
-    _write_json(
-        files["implementation_map"],
-        {
+        "state_flow_map": state_flow_map,
+        "component_catalog": component_catalog,
+        "route_closure_contract": route_closure,
+        "coverage_report": coverage,
+        "source_map": source_map,
+    }
+
+    with tempfile.TemporaryDirectory(prefix=f"prototype-{feature_slug}-") as tmpdir:
+        stage_root = Path(tmpdir) / "bundle"
+        template_files = prototype_files(stage_root.parent, version, feature)
+        template_root = template_files["root"]
+        stage_files: dict[str, Path] = {"root": stage_root}
+        for key, path in template_files.items():
+            if key == "root":
+                continue
+            stage_files[key] = stage_root / path.relative_to(template_root)
+        stage_files["root"].mkdir(parents=True, exist_ok=True)
+        stage_files["pages_dir"].mkdir(parents=True, exist_ok=True)
+        stage_files["page_specs_dir"].mkdir(parents=True, exist_ok=True)
+        stage_files["human_view_dir"].mkdir(parents=True, exist_ok=True)
+        stage_files["machine_view_dir"].mkdir(parents=True, exist_ok=True)
+
+        _write_json(stage_files["prototype_plan"], plan)
+        _write_json(stage_files["canonical_envelope"], canonical_envelope)
+        _write_text(stage_files["wireframe_summary"], _render_wireframe_summary(plan))
+        _write_json(stage_files["wireframe_manifest"], wireframe_manifest)
+        _write_text(stage_files["navigation_map_md"], _render_navigation_map_md(plan))
+        _write_json(
+            stage_files["navigation_map"],
+            {
+                "schema_version": SCHEMA_VERSION,
+                "feature": feature,
+                "feature_slug": feature_slug,
+                "primary_entry": plan["navigation"]["primary_entry"],
+                "primary_exit": plan["navigation"]["primary_exit"],
+                "jump_map": [
+                    {"from": item["from"], "to": item["to"], "trigger": item["trigger"], "type": item["type"]}
+                    for item in transitions
+                ],
+                "transitions": transitions,
+            },
+        )
+        _write_json(stage_files["state_flow_map"], state_flow_map)
+        _write_text(stage_files["state_flow_map_md"], _render_state_flow_map_md(feature, state_flow_map))
+        _write_json(stage_files["component_catalog"], component_catalog)
+        _write_text(stage_files["component_catalog_md"], _render_component_catalog_md(feature, component_catalog))
+        _write_json(stage_files["interaction_map"], interaction_map)
+        _write_json(stage_files["coverage_report"], coverage)
+        _write_json(stage_files["route_closure_contract"], route_closure)
+        _write_json(
+            stage_files["implementation_map"],
+            {
+                "schema_version": SCHEMA_VERSION,
+                "feature": feature,
+                "feature_slug": feature_slug,
+                "version": version,
+                "prototype_mode": PROTOTYPE_MODE,
+                "closure_bindings": [],
+                "bound_cases": 0,
+                "generated_at": now_iso(),
+                "path": str(files["implementation_map"]),
+            },
+        )
+        _write_json(
+            stage_files["prototype_brief"],
+            {"prototype_mode": PROTOTYPE_MODE, "theme": theme_payload, "page_count": len(plan["page_specs"])},
+        )
+        _write_json(stage_files["theme"], theme_payload)
+        _write_json(stage_files["platform_variants"], plan["platform_variants"])
+        _write_text(
+            stage_files["tokens_css"],
+            "\n".join(
+                [
+                    ":root {",
+                    f"  --wireframe-primary: {theme_payload['primary']};",
+                    f"  --wireframe-secondary: {theme_payload['secondary']};",
+                    "  --wireframe-note: 'Requirement-driven wireframe freeze';",
+                    "}",
+                ]
+            ),
+        )
+
+        for page in plan["page_specs"]:
+            _write_text(stage_files["pages_dir"] / f"{page['page_id']}.md", _render_page_markdown(page))
+            _write_json(stage_files["page_specs_dir"] / f"{page['page_id']}.json", page)
+        _write_json(stage_files["source_map"], source_map)
+
+        _write_json(
+            stage_files["human_view_dir"] / "index.json",
+            {
+                "schema_version": SCHEMA_VERSION,
+                "files": [
+                    "wireframe-summary.md",
+                    "navigation-map.md",
+                    "state-flow-map.md",
+                    "component-catalog.md",
+                    "pages/*.md",
+                ],
+            },
+        )
+        _write_json(
+            stage_files["machine_view_dir"] / "index.json",
+            {
+                "schema_version": SCHEMA_VERSION,
+                "files": [
+                    "canonical-envelope.json",
+                    "prototype-plan.json",
+                    "wireframe-manifest.json",
+                    "navigation-map.json",
+                    "state-flow-map.json",
+                    "component-catalog.json",
+                    "interaction-map.json",
+                    "coverage-report.json",
+                    "source-map.json",
+                    "route-closure-contract.json",
+                ],
+            },
+        )
+
+        machine_fingerprints = {}
+        human_fingerprints = {}
+        for path in sorted(stage_files["root"].rglob("*")):
+            if not path.is_file():
+                continue
+            rel = str(path.relative_to(stage_files["root"]))
+            fingerprint = sha256_file(path)
+            if rel.endswith(".md") or rel.endswith(".css"):
+                human_fingerprints[rel] = fingerprint
+            if rel.endswith(".json"):
+                machine_fingerprints[rel] = fingerprint
+
+        sink_checksums = {
+            "human": _stable_hash(human_fingerprints),
+            "machine": _stable_hash(machine_fingerprints),
+        }
+        sqlite_write = {"status": "failed", "error": "not_written"}
+        sqlite_payload = {
+            "schema_version": SCHEMA_VERSION,
+            "transaction_id": transaction_id,
+            "feature_slug": feature_slug,
+            "version": version,
+            "projection_seq": projection_seq,
+            "source_hash": source_hash,
+            "committed_at": committed_at,
+            "status": "committed",
+            "root_path": str(files["root"]),
+            "sink_checksums": sink_checksums,
+        }
+        try:
+            sqlite_write = _write_prototype_projection_sqlite(sqlite_payload)
+            sink_checksums["sqlite"] = _stable_hash(sqlite_payload)
+        except Exception as exc:  # noqa: BLE001
+            sink_checksums["sqlite"] = "missing"
+            sqlite_write = {"status": "failed", "error": str(exc), "db_path": str(_prototype_ledger_db_path())}
+
+        manifest = {
             "schema_version": SCHEMA_VERSION,
             "feature": feature,
-            "feature_slug": plan["feature_slug"],
+            "feature_slug": feature_slug,
             "version": version,
             "prototype_mode": PROTOTYPE_MODE,
-            "closure_bindings": [],
-            "bound_cases": 0,
+            "ui_kit": PROTOTYPE_UI_KIT,
+            "status": "draft",
+            "review_status": "missing",
+            "design_review_outcome": "pass",
+            "prototype_type": plan["contract"]["prototype_archetype"],
+            "source_fingerprints": {doc["type"]: doc["fingerprint"] for doc in source_docs},
+            "transaction": {
+                "source_hash": source_hash,
+                "projection_seq": projection_seq,
+                "transaction_id": transaction_id,
+                "committed_at": committed_at,
+                "sink_checksums": sink_checksums,
+                "sqlite_write": sqlite_write,
+            },
+            "artifacts": {
+                "prototype_plan": str(files["prototype_plan"].relative_to(project_root)),
+                "wireframe_summary": str(files["wireframe_summary"].relative_to(project_root)),
+                "wireframe_manifest": str(files["wireframe_manifest"].relative_to(project_root)),
+                "navigation_map": str(files["navigation_map"].relative_to(project_root)),
+                "navigation_map_md": str(files["navigation_map_md"].relative_to(project_root)),
+                "state_flow_map": str(files["state_flow_map"].relative_to(project_root)),
+                "state_flow_map_md": str(files["state_flow_map_md"].relative_to(project_root)),
+                "component_catalog": str(files["component_catalog"].relative_to(project_root)),
+                "component_catalog_md": str(files["component_catalog_md"].relative_to(project_root)),
+                "interaction_map": str(files["interaction_map"].relative_to(project_root)),
+                "coverage_report": str(files["coverage_report"].relative_to(project_root)),
+                "route_closure_contract": str(files["route_closure_contract"].relative_to(project_root)),
+                "implementation_map": str(files["implementation_map"].relative_to(project_root)),
+                "canonical_envelope": str(files["canonical_envelope"].relative_to(project_root)),
+                "source_map": str(files["source_map"].relative_to(project_root)),
+                "pages_dir": str(files["pages_dir"].relative_to(project_root)),
+                "page_specs_dir": str(files["page_specs_dir"].relative_to(project_root)),
+                "human_view_dir": str(files["human_view_dir"].relative_to(project_root)),
+                "machine_view_dir": str(files["machine_view_dir"].relative_to(project_root)),
+                "theme": str(files["theme"].relative_to(project_root)),
+                "tokens_css": str(files["tokens_css"].relative_to(project_root)),
+                "platform_variants": str(files["platform_variants"].relative_to(project_root)),
+                "freeze": str(files["freeze"].relative_to(project_root)),
+            },
+        }
+        _write_json(stage_files["manifest"], manifest)
+
+        freeze_payload = {
+            "schema_version": SCHEMA_VERSION,
+            "feature": feature,
+            "feature_slug": feature_slug,
+            "version": version,
+            "prototype_mode": PROTOTYPE_MODE,
+            "status": "draft",
+            "review_status": "missing",
+            "source_fingerprints": manifest["source_fingerprints"],
+            "artifact_fingerprints": _artifact_fingerprints(stage_files, include_optional=False),
+            "generated_at": plan["generated_at"],
+            "transaction": manifest["transaction"],
+        }
+        _write_json(stage_files["freeze"], freeze_payload)
+
+        review_payload = {
+            "schema_version": SCHEMA_VERSION,
+            "feature": feature,
+            "feature_slug": feature_slug,
+            "version": version,
+            "prototype_mode": PROTOTYPE_MODE,
             "generated_at": now_iso(),
-            "path": str(files["implementation_map"]),
-        },
-    )
-    _write_json(files["prototype_brief"], {"prototype_mode": PROTOTYPE_MODE, "theme": theme_payload, "page_count": len(plan["page_specs"])})
-    _write_json(files["theme"], theme_payload)
-    _write_json(files["platform_variants"], plan["platform_variants"])
-    _write_text(
-        files["tokens_css"],
-        "\n".join(
-            [
-                ":root {",
-                f"  --wireframe-primary: {theme_payload['primary']};",
-                f"  --wireframe-secondary: {theme_payload['secondary']};",
-                "  --wireframe-note: 'Requirement-driven wireframe freeze';",
-                "}",
-            ]
-        ),
-    )
+            "overall_status": "missing",
+            "design_review_outcome": "pass",
+            "checks": [],
+            "blocking_failures": [],
+            "artifacts": {},
+            "human_view_status": "unknown",
+            "machine_contract_status": "unknown",
+            "sqlite_projection_status": "unknown",
+            "drift_status": "unknown",
+        }
+        _write_json(stage_files["review_json"], review_payload)
+        _write_text(stage_files["review_md"], "# Prototype Review\n\nReview not yet run.")
 
-    for page in plan["page_specs"]:
-        _write_text(files["pages_dir"] / f"{page['page_id']}.md", _render_page_markdown(page))
-        _write_json(files["page_specs_dir"] / f"{page['page_id']}.json", page)
-
-    _write_json(files["source_map"], source_map)
-
-    manifest = {
-        "schema_version": SCHEMA_VERSION,
-        "feature": feature,
-        "feature_slug": plan["feature_slug"],
-        "version": version,
-        "prototype_mode": PROTOTYPE_MODE,
-        "ui_kit": PROTOTYPE_UI_KIT,
-        "status": "draft",
-        "review_status": "missing",
-        "design_review_outcome": "pass",
-        "prototype_type": plan["contract"]["prototype_archetype"],
-        "source_fingerprints": {doc["type"]: doc["fingerprint"] for doc in load_source_documents(project_root, version, feature)},
-        "artifacts": {
-            "prototype_plan": str(files["prototype_plan"].relative_to(project_root)),
-            "wireframe_summary": str(files["wireframe_summary"].relative_to(project_root)),
-            "wireframe_manifest": str(files["wireframe_manifest"].relative_to(project_root)),
-            "navigation_map": str(files["navigation_map"].relative_to(project_root)),
-            "navigation_map_md": str(files["navigation_map_md"].relative_to(project_root)),
-            "interaction_map": str(files["interaction_map"].relative_to(project_root)),
-            "coverage_report": str(files["coverage_report"].relative_to(project_root)),
-            "route_closure_contract": str(files["route_closure_contract"].relative_to(project_root)),
-            "implementation_map": str(files["implementation_map"].relative_to(project_root)),
-            "source_map": str(files["source_map"].relative_to(project_root)),
-            "pages_dir": str(files["pages_dir"].relative_to(project_root)),
-            "page_specs_dir": str(files["page_specs_dir"].relative_to(project_root)),
-            "theme": str(files["theme"].relative_to(project_root)),
-            "tokens_css": str(files["tokens_css"].relative_to(project_root)),
-            "platform_variants": str(files["platform_variants"].relative_to(project_root)),
-            "freeze": str(files["freeze"].relative_to(project_root)),
-        },
-    }
-    _write_json(files["manifest"], manifest)
-
-    freeze_payload = {
-        "schema_version": SCHEMA_VERSION,
-        "feature": feature,
-        "feature_slug": plan["feature_slug"],
-        "version": version,
-        "prototype_mode": PROTOTYPE_MODE,
-        "status": "draft",
-        "review_status": "missing",
-        "source_fingerprints": manifest["source_fingerprints"],
-        "artifact_fingerprints": _artifact_fingerprints(files, include_optional=False),
-        "generated_at": plan["generated_at"],
-    }
-    _write_json(files["freeze"], freeze_payload)
-
-    review_payload = {
-        "schema_version": SCHEMA_VERSION,
-        "feature": feature,
-        "feature_slug": plan["feature_slug"],
-        "version": version,
-        "prototype_mode": PROTOTYPE_MODE,
-        "generated_at": now_iso(),
-        "overall_status": "missing",
-        "design_review_outcome": "pass",
-        "checks": [],
-        "blocking_failures": [],
-        "artifacts": {},
-    }
-    _write_json(files["review_json"], review_payload)
-    _write_text(files["review_md"], "# Prototype Review\n\nReview not yet run.")
+        final_root = files["root"]
+        final_root.parent.mkdir(parents=True, exist_ok=True)
+        if final_root.exists():
+            shutil.rmtree(final_root)
+        shutil.move(str(stage_files["root"]), str(final_root))
 
     return {
         "prototype_mode": PROTOTYPE_MODE,
@@ -1112,11 +1603,17 @@ def review_prototype_bundle(project_root: Path, version: str, feature: str) -> d
 
     manifest = _read_json(files["manifest"])
     source_map = _read_json(files["source_map"])
+    canonical_envelope = _read_json(files["canonical_envelope"])
+    state_flow_map = _read_json(files["state_flow_map"])
+    component_catalog = _read_json(files["component_catalog"])
     route_closure = _read_json(files["route_closure_contract"])
     implementation_map = _read_json(files["implementation_map"])
     page_specs = plan.get("page_specs") if isinstance(plan.get("page_specs"), list) else []
     required_pages = [str(item).strip() for item in (plan.get("required_pages") or []) if str(item).strip()]
     required_states = [str(item).strip() for item in (plan.get("required_states") or []) if str(item).strip()]
+    transaction = manifest.get("transaction") if isinstance(manifest.get("transaction"), dict) else {}
+    transaction_id = str(transaction.get("transaction_id") or "")
+    sqlite_projection = _read_prototype_projection_sqlite(transaction_id)
 
     checks = [
         _review_check(
@@ -1140,6 +1637,16 @@ def review_prototype_bundle(project_root: Path, version: str, feature: str) -> d
             "navigation-map.md/json should exist",
         ),
         _review_check(
+            "state_flow_map_present",
+            "pass" if files["state_flow_map"].exists() and files["state_flow_map_md"].exists() else "fail",
+            "state-flow-map.md/json should exist",
+        ),
+        _review_check(
+            "component_catalog_present",
+            "pass" if files["component_catalog"].exists() and files["component_catalog_md"].exists() else "fail",
+            "component-catalog.md/json should exist",
+        ),
+        _review_check(
             "pages_directory_present",
             "pass" if files["pages_dir"].exists() else "fail",
             "pages directory should exist",
@@ -1153,6 +1660,11 @@ def review_prototype_bundle(project_root: Path, version: str, feature: str) -> d
             "coverage_report_present",
             "pass" if files["coverage_report"].exists() else "fail",
             "coverage-report.json should exist",
+        ),
+        _review_check(
+            "canonical_envelope_present",
+            "pass" if files["canonical_envelope"].exists() else "fail",
+            "canonical-envelope.json should exist",
         ),
         _review_check(
             "page_specs_present",
@@ -1238,6 +1750,74 @@ def review_prototype_bundle(project_root: Path, version: str, feature: str) -> d
             "source-map.json should record requirement sources",
         )
     )
+    state_nodes = state_flow_map.get("nodes") if isinstance(state_flow_map.get("nodes"), list) else []
+    state_edges = state_flow_map.get("edges") if isinstance(state_flow_map.get("edges"), list) else []
+    checks.append(
+        _review_check(
+            "state_flow_usable",
+            "pass" if state_nodes and state_edges else "fail",
+            "state-flow map should contain nodes and edges",
+        )
+    )
+    component_items = component_catalog.get("components") if isinstance(component_catalog.get("components"), list) else []
+    requirement_ids = plan.get("requirement_ids") if isinstance(plan.get("requirement_ids"), dict) else {}
+    require_ac_refs = bool(requirement_ids.get("ac_ids"))
+    require_tc_refs = bool(requirement_ids.get("tc_ids"))
+    missing_component_refs = []
+    for component in component_items:
+        if not isinstance(component, dict):
+            continue
+        if not component.get("state_refs"):
+            missing_component_refs.append(str(component.get("component_id") or "unknown"))
+            continue
+        if require_ac_refs and not component.get("ac_refs"):
+            missing_component_refs.append(str(component.get("component_id") or "unknown"))
+            continue
+        if require_tc_refs and not component.get("tc_refs"):
+            missing_component_refs.append(str(component.get("component_id") or "unknown"))
+    checks.append(
+        _review_check(
+            "component_contract_traceability",
+            "pass" if component_items and not missing_component_refs else "fail",
+            "component catalog should map state + AC + TC"
+            if component_items and not missing_component_refs
+            else f"missing component trace refs: {missing_component_refs[:10]}",
+        )
+    )
+    checks.append(
+        _review_check(
+            "transaction_metadata_present",
+            "pass"
+            if transaction.get("source_hash")
+            and transaction.get("projection_seq")
+            and transaction.get("transaction_id")
+            and transaction.get("committed_at")
+            and isinstance(transaction.get("sink_checksums"), dict)
+            else "fail",
+            "manifest transaction metadata should include source_hash/projection_seq/transaction_id/committed_at/sink_checksums",
+        )
+    )
+    checks.append(
+        _review_check(
+            "sqlite_projection_written",
+            "pass" if sqlite_projection.get("status") == "committed" else "fail",
+            "sqlite projection should record the same transaction",
+        )
+    )
+    sink_checksums = transaction.get("sink_checksums") if isinstance(transaction.get("sink_checksums"), dict) else {}
+    checks.append(
+        _review_check(
+            "transaction_sink_checksum_consistent",
+            "pass"
+            if isinstance(sink_checksums, dict)
+            and sink_checksums.get("sqlite")
+            and sink_checksums.get("sqlite") != "missing"
+            and sink_checksums.get("machine")
+            and sink_checksums.get("human")
+            else "fail",
+            "sink checksums should include human/machine/sqlite",
+        )
+    )
     checks.append(
         _review_check(
             "manifest_consistency",
@@ -1245,9 +1825,29 @@ def review_prototype_bundle(project_root: Path, version: str, feature: str) -> d
             "manifest should stay aligned with wireframe mode",
         )
     )
+    checks.append(
+        _review_check(
+            "canonical_manifest_consistency",
+            "pass"
+            if str(canonical_envelope.get("prototype_mode") or "") == PROTOTYPE_MODE
+            and str(canonical_envelope.get("source_hash") or "") == str(transaction.get("source_hash") or "")
+            and str(canonical_envelope.get("projection_seq") or "") == str(transaction.get("projection_seq") or "")
+            and str(canonical_envelope.get("transaction_id") or "") == str(transaction.get("transaction_id") or "")
+            else "fail",
+            "canonical envelope and manifest transaction metadata should stay consistent",
+        )
+    )
 
     blocking_failures = [item for item in checks if item["blocking"] and item["status"] == "fail"]
     overall_status = "pass" if not blocking_failures else "fail"
+    human_view_status = "pass" if files["wireframe_summary"].exists() and files["navigation_map_md"].exists() and files["state_flow_map_md"].exists() and files["component_catalog_md"].exists() else "fail"
+    machine_contract_status = "pass" if files["canonical_envelope"].exists() and files["wireframe_manifest"].exists() and files["navigation_map"].exists() and files["state_flow_map"].exists() and files["component_catalog"].exists() and files["coverage_report"].exists() else "fail"
+    sqlite_projection_status = "pass" if sqlite_projection.get("status") == "committed" else "fail"
+    drift_status = (
+        "consistent"
+        if human_view_status == "pass" and machine_contract_status == "pass" and sqlite_projection_status == "pass"
+        else "drift"
+    )
     payload = {
         "schema_version": SCHEMA_VERSION,
         "feature": feature,
@@ -1259,6 +1859,10 @@ def review_prototype_bundle(project_root: Path, version: str, feature: str) -> d
         "design_review_outcome": "pass" if overall_status == "pass" else "revise",
         "checks": checks,
         "blocking_failures": blocking_failures,
+        "human_view_status": human_view_status,
+        "machine_contract_status": machine_contract_status,
+        "sqlite_projection_status": sqlite_projection_status,
+        "drift_status": drift_status,
         "artifacts": {
             "json": str(files["review_json"].relative_to(project_root)),
             "md": str(files["review_md"].relative_to(project_root)),
@@ -1270,6 +1874,10 @@ def review_prototype_bundle(project_root: Path, version: str, feature: str) -> d
     manifest["review_status"] = overall_status
     manifest["design_review_outcome"] = payload["design_review_outcome"]
     manifest["status"] = "reviewed" if overall_status == "pass" else manifest.get("status", "draft")
+    manifest["human_view_status"] = human_view_status
+    manifest["machine_contract_status"] = machine_contract_status
+    manifest["sqlite_projection_status"] = sqlite_projection_status
+    manifest["drift_status"] = drift_status
     _write_json(files["manifest"], manifest)
     return payload
 
@@ -1281,7 +1889,22 @@ def freeze_prototype(project_root: Path, version: str, feature: str) -> dict[str
         raise ValueError("Prototype review missing or failing; run `prototype review` until pass before freeze")
 
     manifest = _read_json(files["manifest"])
+    transaction = manifest.get("transaction") if isinstance(manifest.get("transaction"), dict) else {}
+    transaction_id = str(transaction.get("transaction_id") or "")
+    sqlite_projection = _read_prototype_projection_sqlite(transaction_id)
+    if sqlite_projection.get("status") != "committed":
+        raise ValueError("Prototype sqlite projection missing; review cannot be frozen with cross-sink drift")
+
     source_docs = load_source_documents(project_root, version, feature)
+    current_source_hash = _stable_hash([{"type": doc["type"], "fingerprint": doc["fingerprint"]} for doc in source_docs])
+    if str(transaction.get("source_hash") or "") != current_source_hash:
+        raise ValueError("Prototype source hash drift detected after create; regenerate and review before freeze")
+
+    sink_checksums = transaction.get("sink_checksums") if isinstance(transaction.get("sink_checksums"), dict) else {}
+    if not sink_checksums or sink_checksums.get("sqlite") in {None, "", "missing"}:
+        raise ValueError("Prototype sink checksums incomplete; regenerate bundle before freeze")
+
+    status_snapshot = evaluate_prototype_status(project_root, version, feature)
     freeze_payload = {
         "schema_version": SCHEMA_VERSION,
         "feature": feature,
@@ -1293,6 +1916,11 @@ def freeze_prototype(project_root: Path, version: str, feature: str) -> dict[str
         "frozen_at": now_iso(),
         "source_fingerprints": {doc["type"]: doc["fingerprint"] for doc in source_docs},
         "artifact_fingerprints": _artifact_fingerprints(files),
+        "transaction": transaction,
+        "human_view_status": status_snapshot.get("human_view_status"),
+        "machine_contract_status": status_snapshot.get("machine_contract_status"),
+        "sqlite_projection_status": status_snapshot.get("sqlite_projection_status"),
+        "drift_status": status_snapshot.get("drift_status"),
     }
     _write_json(files["freeze"], freeze_payload)
 
@@ -1301,6 +1929,10 @@ def freeze_prototype(project_root: Path, version: str, feature: str) -> dict[str
     manifest["design_review_outcome"] = "pass"
     manifest["frozen_at"] = freeze_payload["frozen_at"]
     manifest["source_fingerprints"] = freeze_payload["source_fingerprints"]
+    manifest["human_view_status"] = freeze_payload["human_view_status"]
+    manifest["machine_contract_status"] = freeze_payload["machine_contract_status"]
+    manifest["sqlite_projection_status"] = freeze_payload["sqlite_projection_status"]
+    manifest["drift_status"] = freeze_payload["drift_status"]
     _write_json(files["manifest"], manifest)
     return freeze_payload
 
@@ -1326,12 +1958,19 @@ def evaluate_prototype_status(project_root: Path, version: str, feature: str) ->
             "paths": {key: str(path) for key, path in files.items()},
             "source_fingerprints": {},
             "recorded_source_fingerprints": {},
+            "human_view_status": "missing",
+            "machine_contract_status": "missing",
+            "sqlite_projection_status": "missing",
+            "drift_status": "missing",
+            "transaction": {},
         }
 
     manifest = _read_json(files["manifest"])
     freeze_payload = _read_json(files["freeze"])
     review_payload = _read_json(files["review_json"])
     plan = _read_json(files["prototype_plan"])
+    transaction = manifest.get("transaction") if isinstance(manifest.get("transaction"), dict) else {}
+    sqlite_projection = _read_prototype_projection_sqlite(str(transaction.get("transaction_id") or ""))
     current_source = {doc["type"]: doc["fingerprint"] for doc in load_source_documents(project_root, version, feature)}
     recorded_source = freeze_payload.get("source_fingerprints") if isinstance(freeze_payload.get("source_fingerprints"), dict) else {}
     if not recorded_source:
@@ -1342,17 +1981,24 @@ def evaluate_prototype_status(project_root: Path, version: str, feature: str) ->
     required_paths = {
         "manifest": files["manifest"],
         "prototype_plan": files["prototype_plan"],
+        "canonical_envelope": files["canonical_envelope"],
         "source_map": files["source_map"],
         "freeze": files["freeze"],
         "wireframe_summary": files["wireframe_summary"],
         "wireframe_manifest": files["wireframe_manifest"],
         "navigation_map": files["navigation_map"],
         "navigation_map_md": files["navigation_map_md"],
+        "state_flow_map": files["state_flow_map"],
+        "state_flow_map_md": files["state_flow_map_md"],
+        "component_catalog": files["component_catalog"],
+        "component_catalog_md": files["component_catalog_md"],
         "interaction_map": files["interaction_map"],
         "coverage_report": files["coverage_report"],
         "review_json": files["review_json"],
         "review_md": files["review_md"],
         "pages_dir": files["pages_dir"],
+        "human_view_dir": files["human_view_dir"],
+        "machine_view_dir": files["machine_view_dir"],
     }
     for key, path in required_paths.items():
         if key.endswith("_dir"):
@@ -1371,6 +2017,56 @@ def evaluate_prototype_status(project_root: Path, version: str, feature: str) ->
     review_status = str(review_payload.get("overall_status") or manifest.get("review_status") or "missing")
     design_review_outcome = str(review_payload.get("design_review_outcome") or manifest.get("design_review_outcome") or "missing")
     frozen = str(freeze_payload.get("status") or manifest.get("status") or "").lower() == "frozen"
+
+    human_view_status = (
+        "pass"
+        if all(
+            path.exists()
+            for path in (
+                files["wireframe_summary"],
+                files["navigation_map_md"],
+                files["state_flow_map_md"],
+                files["component_catalog_md"],
+            )
+        )
+        else "fail"
+    )
+    machine_contract_status = (
+        "pass"
+        if all(
+            path.exists()
+            for path in (
+                files["canonical_envelope"],
+                files["wireframe_manifest"],
+                files["navigation_map"],
+                files["state_flow_map"],
+                files["component_catalog"],
+                files["interaction_map"],
+                files["coverage_report"],
+                files["source_map"],
+            )
+        )
+        else "fail"
+    )
+    sqlite_projection_status = "pass" if sqlite_projection.get("status") == "committed" else "fail"
+    sink_checksums = transaction.get("sink_checksums") if isinstance(transaction.get("sink_checksums"), dict) else {}
+    metadata_ok = (
+        bool(transaction.get("source_hash"))
+        and bool(transaction.get("projection_seq"))
+        and bool(transaction.get("transaction_id"))
+        and bool(transaction.get("committed_at"))
+        and bool(sink_checksums.get("human"))
+        and bool(sink_checksums.get("machine"))
+        and bool(sink_checksums.get("sqlite"))
+        and sink_checksums.get("sqlite") != "missing"
+    )
+    drift_status = (
+        "consistent"
+        if metadata_ok and human_view_status == "pass" and machine_contract_status == "pass" and sqlite_projection_status == "pass"
+        else "drift"
+    )
+    if drift_status != "consistent":
+        inconsistent_reasons.append("cross_sink_drift_detected")
 
     if inconsistent_reasons:
         status = "inconsistent"
@@ -1399,4 +2095,9 @@ def evaluate_prototype_status(project_root: Path, version: str, feature: str) ->
         "paths": {key: str(path) for key, path in files.items()},
         "source_fingerprints": current_source,
         "recorded_source_fingerprints": recorded_source if isinstance(recorded_source, dict) else {},
+        "human_view_status": human_view_status,
+        "machine_contract_status": machine_contract_status,
+        "sqlite_projection_status": sqlite_projection_status,
+        "drift_status": drift_status,
+        "transaction": transaction if isinstance(transaction, dict) else {},
     }

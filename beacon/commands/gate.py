@@ -1196,6 +1196,18 @@ def check_prototype_contract(
                 "message": f"prototype artifacts inconsistent for feature {feature_dir.name}",
                 "details": {"reasons": payload.get("inconsistent_reasons", [])},
             })
+        if str(payload.get("drift_status") or "") == "drift":
+            issues.append({
+                "reason_code": "prototype_artifact_inconsistent",
+                "blocked": True,
+                "message": f"prototype cross-sink drift detected for feature {feature_dir.name}",
+            })
+        if str(payload.get("sqlite_projection_status") or "") == "fail":
+            issues.append({
+                "reason_code": "prototype_artifact_inconsistent",
+                "blocked": True,
+                "message": f"prototype sqlite projection missing for feature {feature_dir.name}",
+            })
         if prototype_mode and prototype_mode != "wireframe":
             issues.append({
                 "reason_code": "prototype_artifact_inconsistent",
@@ -1292,6 +1304,11 @@ def check_prototype_contract(
             "theme": "prototype_theme_contract_missing",
             "navigation_map": "prototype_navigation_contract_missing",
             "navigation_map_md": "prototype_navigation_contract_missing",
+            "state_flow_map": "prototype_navigation_contract_missing",
+            "state_flow_map_md": "prototype_navigation_contract_missing",
+            "component_catalog": "prototype_interaction_contract_missing",
+            "component_catalog_md": "prototype_interaction_contract_missing",
+            "canonical_envelope": "prototype_artifact_inconsistent",
             "interaction_map": "prototype_interaction_contract_missing",
             "review_json": "prototype_review_missing",
             "review_md": "prototype_review_missing",

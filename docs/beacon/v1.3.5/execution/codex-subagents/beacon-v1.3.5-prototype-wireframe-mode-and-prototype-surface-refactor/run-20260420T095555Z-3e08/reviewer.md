@@ -1,0 +1,41 @@
+# Native Team Role Report: reviewer
+
+- role: `reviewer`
+- status: `pass`
+- revision_id: `R1`
+- summary: reviewed native-team implementation against frozen revision scope
+
+## implemented_item_ids
+- `AC-001`
+- `AC-005`
+- `AC-006`
+- `AC-007`
+- `AC-002`
+- `AC-003`
+- `AC-004`
+- `AC-008`
+- `AC-009`
+- `AC-010`
+- `TASK-001`
+
+## changed_files
+- `.beacon/evidence-manifest.json`
+- `beacon/commands/gate.py`
+- `beacon/commands/prototype.py`
+- `beacon/utils/prototype_utils.py`
+- `docs/beacon/global-boundaries.md`
+- `docs/beacon/v1.3.5/.machine/execution/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.revision.json`
+- `docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.ac-test-matrix.json`
+- `docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.qa9-matrix.json`
+- `docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.story-scenario-map.json`
+- `docs/beacon/v1.3.5/.machine/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json`
+- `docs/beacon/v1.3.5/SUMMARY.md`
+- `docs/beacon/v1.3.5/prd/beacon-v1-3-5-prototype-wireframe-mode-and-prototype-surface-refactor.md`
+- `docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md`
+- `docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md`
+
+## issues
+- none
+
+## recommendations
+- Proceed to tester verification.

@@ -1,0 +1,34 @@
+# Native Team Role Report: tester
+
+- role: `tester`
+- status: `completed`
+- revision_id: `R1`
+- summary: tester consumed passed auto-test evidence and wrote verification results
+
+## verified_item_ids
+- `AC-001`
+- `AC-005`
+- `AC-006`
+- `AC-007`
+- `AC-002`
+- `AC-003`
+- `AC-004`
+- `AC-008`
+- `AC-009`
+- `AC-010`
+- `TEST-001`
+- `TEST-002`
+- `TEST-003`
+- `TEST-004`
+- `TEST-005`
+- `TEST-006`
+- `TEST-007`
+- `TEST-008`
+- `TEST-009`
+- `TEST-010`
+
+## failed_item_ids
+- none
+
+## recommendations
+- Proceed to acceptance when formal verify evidence is sufficient.

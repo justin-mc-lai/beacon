@@ -1,6 +1,6 @@
 # PRD：Beacon v1.3.5 Prototype Wireframe Mode 与 Prototype Surface 重构
 
-**Feature**: `beacon-v1-3-5-prototype-wireframe-mode-and-prototype-surface-refactor`  
+**Feature**: `beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor`  
 **Version**: `v1.3.5`  
 **Date**: `2026-04-20`  
 **Status**: `frozen-pending-implementation`  
@@ -33,6 +33,9 @@ Beacon 现有 `prototype` 输出仍然残留“HTML 高保真原型”叙事，�
 4. 草图产物与 `prd / user-story / test-case` 之间缺少正式映射。
 5. 当前 prototype 结果不好看时，团队会把问题误判为“设计不行”，而不是“阶段产物不对”。
 6. 现有独立 `wireframe.py` 命令与 `prototype` 并存，导致同一个阶段出现两套入口、两套目录、两套认知。
+7. 当前 wireframe 内容仍偏“结构化模板说明器”，没有稳定完成基于 `prd / user-story / test-case` 的业务闭环推理。
+8. 人类面与机器面信息揉杂，缺少明确的分层写入边界，导致阅读与机器消费互相污染。
+9. Beacon 已存在多写入点（人类可读文档、机器可读产物、SQLite 运行态），但缺少事务化一致机制，存在跨面漂移风险。
 
 ### 1.2 为什么不能继续人工兜底
 
@@ -193,6 +196,25 @@ prd
 
 > 要么没有公开原型阶段；要加，就只能加一个统一入口。
 
+### 3.8 人机隔离与多写入点一致性必须是默认能力
+
+`prototype` 既要可读，也要可算，但不能混写。
+
+必须采用三层语义模型：
+
+1. Canonical 语义层（机器唯一真相）：
+   - 结构化 canonical envelope（页面、状态流、组件、映射关系）。
+2. Human 视图层（人类可读投影）：
+   - 由 canonical 渲染出的 Markdown/摘要，禁止手工反写 canonical。
+3. Runtime 索引层（SQLite / 投影加速）：
+   - 只做查询聚合，不改写 requirement 正式真相。
+
+规则：
+
+- 同一语义先写 canonical，再原子投影到多写入点。
+- 任一写入失败，必须整体回滚或标记为未提交。
+- 所有写入面都带同一 `projection_seq / source_hash`，防止漂移。
+
 ## 4. 范围
 
 ### In scope
@@ -209,6 +231,9 @@ prd
 - 平台差异说明规范
 - `freeze/review/status` 对 wireframe 的识别
 - 与 PRD / user-story / test-case 的映射说明
+- 人机分层写入规范（human / machine / sqlite）
+- multi-sink 事务型提交与一致性校验
+- 跨写入面的 anti-drift 指纹比对
 
 ### Out of scope
 
@@ -404,11 +429,91 @@ Wireframe 包必须显式支持以下映射：
 - 都明确默认 mode 为 `wireframe`
 - 都明确 `wireframe.py` 已退役
 
+### FR-011 必须从真实 requirement 生成“闭环型”线框内容
+
+`prototype` 不能只输出固定模板描述，必须用 LLM 对真实 `prd / user-story / test-case` 做闭环推理。
+
+每个页面必须可回答：
+
+- 该页承接哪条业务目标
+- 核心状态如何流转（含异常分支）
+- 该页包含哪些组件与数据槽位
+- 该页动作如何映射到测试场景
+
+要求：
+
+- 模板骨架固定，内容语义动态推理。
+- 推理结果必须通过规则校验后才可冻结。
+
+### FR-012 必须冻结页面状态流转（State Flow），而不只是页面跳转
+
+除 `navigation-map` 外，必须新增并冻结：
+
+- `state-flow-map.json`
+- `state-flow-map.md`
+
+至少包含：
+
+- 状态节点（state id / label）
+- 触发条件（event / guard）
+- 迁移边（from -> to）
+- 异常回退路径（fallback / recover）
+- 与 test-case 场景映射（test refs）
+
+### FR-013 必须冻结页面组件契约（Component Contract）
+
+每个页面必须产出组件说明，至少包含：
+
+- component_id
+- 组件职责
+- 数据来源（字段或查询）
+- 用户动作（interaction）
+- 关联状态（state refs）
+- 关联 AC / TC / user-story refs
+
+建议输出：
+
+- `component-catalog.json`
+- `component-catalog.md`
+
+### FR-014 多写入点必须支持事务型一致提交
+
+`prototype` 写入至少涉及三类目标：
+
+1. 人类面（`wireframe-summary.md`, `pages/*.md` 等）
+2. 机器面（`*.json` canonical / map / manifest）
+3. Runtime 索引面（SQLite / projection）
+
+要求：
+
+- 以 canonical envelope 作为唯一提交源。
+- 采用 `prepare -> validate -> commit -> publish` 提交流程。
+- 任一 sink 失败则回滚，或标记事务失败并阻止 freeze。
+- 每次提交写入统一事务元数据：
+  - `projection_seq`
+  - `source_hash`
+  - `transaction_id`
+  - `committed_at`
+  - `sink_checksums`
+
+### FR-015 人机隔离必须在目录与语义层同时成立
+
+要求：
+
+- 人类可读层与机器可读层目录分离，不混排。
+- 人类文档禁止承载机器专用字段噪音。
+- 机器文档禁止依赖人类描述进行反向解析。
+- `status/review` 必须同时报告：
+  - human_view_status
+  - machine_contract_status
+  - sqlite_projection_status
+  - drift_status
+
 ## 6. 数据 / 状态 / 集成
 
-### 6.1 模板输入
+### 6.1 输入源与 canonical 语义层
 
-wireframe 生成的主要输入应包括：
+wireframe 生成输入应包括：
 
 - feature 名称
 - docs version
@@ -418,18 +523,57 @@ wireframe 生成的主要输入应包括：
 - 页面/路由补充说明
 - 当前 prototype manifest
 
-### 6.2 输出物
+canonical 输出（机器唯一真相）应包含：
 
-本线要求的正式输出物包括：
+- `prototype-plan.json`
+- `page-specs/*.json`
+- `navigation-map.json`
+- `state-flow-map.json`
+- `component-catalog.json`
+- `route-closure-contract.json`
+- `source-map.json`
+- `manifest.json`
+
+### 6.2 三写入点与事务提交
+
+三写入点定义：
+
+1. Human readable sink：
+   - `wireframe-summary.md`
+   - `navigation-map.md`
+   - `state-flow-map.md`
+   - `component-catalog.md`
+   - `pages/*.md`
+2. Machine readable sink：
+   - canonical json artifacts
+3. Runtime projection sink：
+   - SQLite 索引与 projection 镜像
+
+事务流程：
+
+1. `prepare`
+   - 读取 requirement 输入并生成 canonical candidate
+2. `validate`
+   - 校验路由闭环、状态闭环、组件映射完整度
+3. `commit`
+   - 原子写入 machine sink，并记录事务元数据
+4. `publish`
+   - 从 canonical 渲染 human sink，并同步 sqlite sink
+5. `verify`
+   - 校验三面 `source_hash / projection_seq` 一致
+
+### 6.3 输出物
 
 - wireframe summary
 - navigation map
+- state flow map
+- component catalog
 - single-page wireframes
 - freeze artifacts
 - prototype review result
 - manifest with mode metadata
 
-### 6.3 演进接口
+### 6.4 演进接口
 
 后续可以继续扩展：
 
@@ -449,6 +593,9 @@ wireframe 生成的主要输入应包括：
 | wireframe 过于抽象，无法落到实现 | 中 | 强制输出页面清单、跳转、元素、状态、PRD/story/case 映射 |
 | 团队继续把视觉细节拉进 prototype 阶段 | 高 | 明确 wireframe 只冻结结构和交互，不冻结视觉 |
 | review/freeze 仍以旧 HTML 资产为中心 | 中 | 删除旧 HTML 原型路径，`status/review/freeze` 统一围绕 wireframe artifact 工作 |
+| 人类面与机器面混写导致审阅困难 | 高 | 人机目录与字段严格分层，禁止双向污染 |
+| 多写入点提交成功率不一致导致漂移 | 高 | 引入事务型多 sink 提交与统一指纹校验 |
+| LLM 推理内容与 test-case 不一致 | 高 | 强制 AC/TC 覆盖映射校验，未通过即阻断 freeze |
 
 ## 8. 验收标准
 
@@ -456,7 +603,7 @@ wireframe 生成的主要输入应包括：
 
 用户执行 prototype 相关命令时，得到的必须是 wireframe 语义，而不是 HTML 原型语义。
 
-### AC-001A `prototype` 成为正式人类阶段
+### AC-005 `prototype` 成为正式人类阶段
 
 人类工作流能够明确表达：
 
@@ -466,11 +613,11 @@ prd -> user-story -> test-case -> prototype -> implement -> qa -> release
 
 且 `prototype` 被正式理解为 wireframe freeze，而不是可有可无的设计附件。
 
-### AC-001B `beacon-prototype` 成为唯一 host-visible 原型 skill
+### AC-006 `beacon-prototype` 成为唯一 host-visible 原型 skill
 
 Beacon 的对外 skill 面中存在 `beacon-prototype`，并以它承担原型阶段的统一路由。
 
-### AC-001C `wireframe.py` 退出正式流程
+### AC-007 `wireframe.py` 退出正式流程
 
 仓库内不再存在一个与 `prototype` 平行竞争的人类公开 wireframe 入口；`wireframe.py` 必须被直接删除，不保留兼容迁移壳层。
 
@@ -502,12 +649,44 @@ Beacon 的对外 skill 面中存在 `beacon-prototype`，并以它承担原型�
 - 不会反向篡改主 PRD 的产品定义
 - 只承担结构冻结职责
 
+### AC-008 页面状态流必须可验证
+
+`state-flow-map` 必须可回答：
+
+- 每个关键状态如何进入与退出
+- 异常时如何回退
+- 每条迁移对应哪些 test-case
+
+且 `prototype review` 对状态流缺失必须阻断。
+
+### AC-009 页面组件说明必须可实现接力
+
+每页必须存在组件契约并可映射：
+
+- 组件 -> 状态
+- 组件 -> 用户动作
+- 组件 -> AC / TC
+
+缺失映射时，`freeze` 不得通过。
+
+### AC-010 三写入点一致性必须可审计
+
+同一轮生成后，human / machine / sqlite 三面必须具备相同：
+
+- `source_hash`
+- `projection_seq`
+- `transaction_id`
+
+任一面不一致，`status` 必须显示 `drift`，`release` 不得判定通过。
+
 ## 9. 成功指标
 
 - 主指标：
   - Beacon `prototype` 被团队统一理解为 requirement wireframe，而不是高保真原型生成器。
 - 辅指标：
   - 页面冻结讨论显著减少对颜色、样式、组件细节的无效争论，更多回到页面职责、路由、状态和 requirement 映射。
+  - 从 `prd -> user-story -> test-case -> wireframe` 的映射缺口率持续下降。
+  - 三写入点一致性检查通过率稳定在 100%（以事务批次计）。
 
 ## 10. 与下游产品线的关系
 
@@ -527,5 +706,5 @@ Beacon 的对外 skill 面中存在 `beacon-prototype`，并以它承担原型�
 
 **Created**: 2026-04-20  
 **Version**: `v1.3.5`  
-**Status**: `draft`  
+**Status**: `frozen-pending-implementation`  
 **Memory Context**: N/A

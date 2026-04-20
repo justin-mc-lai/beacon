@@ -9,7 +9,7 @@
 ## Current Package
 
 - 主 PRD：
-  - `docs/beacon/v1.3.5/prd/beacon-v1-3-5-prototype-wireframe-mode-and-prototype-surface-refactor.md`
+  - `docs/beacon/v1.3.5/prd/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md`
 
 ## Downstream Handoff
 
