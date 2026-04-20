@@ -1,229 +1,113 @@
 {
   "schema_version": "1.0",
   "feature": "beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane",
+  "feature_slug": "beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane",
   "version": "v1.3.4",
+  "prototype_mode": "wireframe",
+  "generated_at": "2026-04-20T07:49:04Z",
   "overall_status": "pass",
-  "design_review_outcome": "revise",
-  "contract_summary": {
-    "prototype_archetype": "admin-workbench",
-    "target_user": "one-person-company CEO and project owner",
-    "primary_cta": "查看项目详情",
-    "states": [
-      "healthy-summary",
-      "requirement-incomplete",
-      "implement-running",
-      "qa-running",
-      "release-ready",
-      "team-active",
-      "ralph-active",
-      "blocked",
-      "db-offline",
-      "partial-rebuild"
-    ],
-    "prototype_mode": "reference-pack-v2"
-  },
+  "design_review_outcome": "pass",
   "checks": [
     {
-      "name": "contract_resolved",
+      "name": "prototype_mode_wireframe",
       "status": "pass",
-      "message": "Prototype Contract resolved from PRD + User Story."
+      "message": "prototype mode must be wireframe only",
+      "blocking": true
     },
     {
-      "name": "required_artifacts_present",
+      "name": "wireframe_summary_present",
       "status": "pass",
-      "message": "All contract artifacts should exist.",
-      "details": {
-        "missing": []
-      }
+      "message": "wireframe-summary.md should exist",
+      "blocking": true
     },
     {
-      "name": "navigation_contract_present",
+      "name": "wireframe_manifest_present",
       "status": "pass",
-      "message": "navigation-map.json should exist."
+      "message": "wireframe-manifest.json should exist",
+      "blocking": true
     },
     {
-      "name": "interaction_contract_present",
+      "name": "navigation_map_present",
       "status": "pass",
-      "message": "interaction-map.json should exist."
+      "message": "navigation-map.md/json should exist",
+      "blocking": true
     },
     {
-      "name": "theme_contract_present",
+      "name": "pages_directory_present",
       "status": "pass",
-      "message": "theme.json should exist."
+      "message": "pages directory should exist",
+      "blocking": true
     },
     {
-      "name": "prototype_plan_present",
+      "name": "interaction_map_present",
       "status": "pass",
-      "message": "prototype-plan.json should exist."
-    },
-    {
-      "name": "tokens_css_present",
-      "status": "pass",
-      "message": "tokens.css should exist."
+      "message": "interaction-map.json should exist",
+      "blocking": true
     },
     {
       "name": "coverage_report_present",
       "status": "pass",
-      "message": "coverage-report.json should exist."
+      "message": "coverage-report.json should exist",
+      "blocking": true
     },
     {
-      "name": "design_brief_present",
+      "name": "page_specs_present",
       "status": "pass",
-      "message": "design-brief.json should exist."
+      "message": "page-specs directory should exist",
+      "blocking": true
     },
     {
-      "name": "design_system_contract_present",
+      "name": "html_high_fidelity_removed",
       "status": "pass",
-      "message": "design-system-contract.json should exist."
+      "message": "high-fidelity HTML prototype output must be removed",
+      "blocking": true
     },
     {
-      "name": "design_prompt_present",
+      "name": "required_pages_materialized",
       "status": "pass",
-      "message": "design-prompt artifacts should exist."
+      "message": "all required page markdown files should exist",
+      "blocking": true
     },
     {
-      "name": "ui_style_analysis_present",
+      "name": "required_states_defined",
       "status": "pass",
-      "message": "ui-style-analysis artifacts should exist."
+      "message": "page states should be frozen for each page",
+      "blocking": true
     },
     {
-      "name": "route_closure_contract_present",
+      "name": "requirement_traceability_complete",
       "status": "pass",
-      "message": "route-closure-contract.json should exist."
+      "message": "all pages trace back to prd / user-story / test-case",
+      "blocking": true
     },
     {
-      "name": "implementation_binding_manifest_present",
+      "name": "navigation_transitions_present",
       "status": "pass",
-      "message": "implementation-map.json should exist."
-    },
-    {
-      "name": "route_closure_cases_present",
-      "status": "pass",
-      "message": "route closure cases should exist for route-producing controls."
+      "message": "route closure / navigation transitions should be frozen",
+      "blocking": true
     },
     {
       "name": "route_closure_binding_complete",
       "status": "pass",
-      "message": "every route closure case should bind to a runtime target or explicit internal/external path.",
-      "details": {
-        "unresolved_case_ids": []
-      }
+      "message": "route closure bindings are complete",
+      "blocking": true
     },
     {
-      "name": "route_closure_no_drift_markers",
+      "name": "source_map_present",
       "status": "pass",
-      "message": "route closure bindings should not remain isolated/fragile/legacy-only/tab drift.",
-      "details": {
-        "drift_case_ids": []
-      }
+      "message": "source-map.json should record requirement sources",
+      "blocking": true
     },
     {
-      "name": "route_closure_no_fake_jump",
+      "name": "manifest_consistency",
       "status": "pass",
-      "message": "bound route-producing controls should not degrade into fake jumps or toast-only placeholders.",
-      "details": {
-        "fake_jump_case_ids": []
-      }
-    },
-    {
-      "name": "prototype_page_inventory_missing",
-      "status": "pass",
-      "message": "reference-pack-v2 requires required page inventory.",
-      "details": {
-        "required_pages": [
-          "portfolio-overview",
-          "project-detail",
-          "runtime-center",
-          "recovery-diagnostics"
-        ]
-      }
-    },
-    {
-      "name": "prototype_required_page_missing",
-      "status": "pass",
-      "message": "all required pages must be generated.",
-      "details": {
-        "missing_pages": []
-      }
-    },
-    {
-      "name": "prototype_required_state_missing",
-      "status": "pass",
-      "message": "all required state variants must be generated.",
-      "details": {
-        "missing_states": []
-      }
-    },
-    {
-      "name": "prototype_compact_mode_detected",
-      "status": "pass",
-      "message": "full-hi-fi reference pack must not degrade into compact coverage."
-    },
-    {
-      "name": "prototype_baseline_regression",
-      "status": "pass",
-      "message": "baseline-protected pages must not regress.",
-      "details": {
-        "baseline_regression_pages": []
-      }
-    },
-    {
-      "name": "prototype_artifact_inconsistent",
-      "status": "pass",
-      "message": "manifest/freeze/review artifacts should remain self-consistent.",
-      "details": {
-        "inconsistencies": []
-      }
-    },
-    {
-      "name": "prototype_cjk_parse_failed",
-      "status": "pass",
-      "message": "CJK punctuation parsing should not lose contract fields."
-    },
-    {
-      "name": "prototype_stale",
-      "status": "pass",
-      "message": "prototype should not be stale relative to source docs."
-    },
-    {
-      "name": "primary_cta_rendered",
-      "status": "pass",
-      "message": "Primary CTA should be rendered in HTML."
-    },
-    {
-      "name": "jump_targets_rendered",
-      "status": "pass",
-      "message": "Jump targets should appear in generated HTML."
-    },
-    {
-      "name": "accessibility_basics",
-      "status": "pass",
-      "message": "Generated HTML should include core accessibility markers.",
-      "details": {
-        "required_tokens": [
-          "aria-label",
-          "prefers-reduced-motion",
-          ":focus-visible"
-        ]
-      }
-    },
-    {
-      "name": "generic_shell_avoided",
-      "status": "pass",
-      "message": "Generated HTML should avoid the previous generic shell placeholders."
-    },
-    {
-      "name": "web_guideline_review_generated",
-      "status": "pass",
-      "message": "web-guideline-review artifacts should be generated."
-    },
-    {
-      "name": "web_guideline_critical_findings_clear",
-      "status": "pass",
-      "message": "critical web guideline findings must be cleared before design-governed freeze/gate.",
-      "details": {
-        "critical_findings": 0
-      }
+      "message": "manifest should stay aligned with wireframe mode",
+      "blocking": true
     }
-  ]
+  ],
+  "blocking_failures": [],
+  "artifacts": {
+    "json": "docs/beacon/v1.3.4/prototype/beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane/prototype-review.json",
+    "md": "docs/beacon/v1.3.4/prototype/beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane/prototype-review.md"
+  }
 }

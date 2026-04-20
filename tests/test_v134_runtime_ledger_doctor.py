@@ -19,9 +19,15 @@ def _invoke(args: list[str]):
 def _seed_docs(root: Path, version: str = "v1.3.4") -> None:
     base = root / "docs" / "beacon" / version
     (base / "execution").mkdir(parents=True, exist_ok=True)
+    (base / "prd").mkdir(parents=True, exist_ok=True)
+    (base / "user-story").mkdir(parents=True, exist_ok=True)
+    (base / "qa" / "test-cases").mkdir(parents=True, exist_ok=True)
     (base / "SUMMARY.md").write_text(f"# {version}\n", encoding="utf-8")
-    (base / "execution" / "index.md").write_text("# Execution Index\n", encoding="utf-8")
-    (base / "execution" / "architecture-blueprint.md").write_text("# Architecture\n", encoding="utf-8")
+    (base / "execution" / "index.md").write_text("# Execution Index\n\n- A\n", encoding="utf-8")
+    (base / "execution" / "architecture-blueprint.md").write_text("# Architecture\n\nBeacon runtime.\n", encoding="utf-8")
+    (base / "prd" / "demo-feature.md").write_text("# Demo PRD\n\n- scope\n- flow\n", encoding="utf-8")
+    (base / "user-story" / "demo-feature.md").write_text("# Demo User Story\n\n1. actor\n2. action\n", encoding="utf-8")
+    (base / "qa" / "test-cases" / "demo-feature.md").write_text("# Demo Test Case\n\n> verify\n", encoding="utf-8")
 
 
 def _make_projection_envelope(root: Path, *, project_key: str, display_name: str) -> dict[str, object]:
@@ -49,7 +55,10 @@ def _make_projection_envelope(root: Path, *, project_key: str, display_name: str
             "progress_label": "materials:1/3",
             "blocked": False,
             "blocked_reason": "",
-            "next_step": {"action": "user-story"},
+            "next_step": {
+                "action": "user-story",
+                "command": f"beacon user-story --project-root {root} --version v1.3.4",
+            },
         },
         "materials": {"prd": "ready", "user_story": "missing", "test_case": "missing"},
         "runtime": {
@@ -64,7 +73,7 @@ def _make_projection_envelope(root: Path, *, project_key: str, display_name: str
             "hud": {},
             "run_count": 0,
             "worker_count": 0,
-            "host_session_count": 0,
+            "host_session_count": 1,
         },
         "debug": {
             "state": "no_debug_feed",
@@ -120,7 +129,21 @@ def _make_projection_envelope(root: Path, *, project_key: str, display_name: str
         "run_events": [],
         "artifact_refs": [],
         "git_workspace_bindings": [],
-        "host_sessions": [],
+        "host_sessions": [
+            {
+                "project_key": project_key,
+                "feature": "demo-feature",
+                "run_id": f"run-{project_key}",
+                "host_runtime": "codex",
+                "session_id": f"host:{project_key}",
+                "thread_id": "thread-1",
+                "turn_id": "turn-2",
+                "transcript_path": ".beacon/transcripts/demo-session.md",
+                "status": "observed",
+                "started_at": "2026-04-19T00:00:00+00:00",
+                "ended_at": "",
+            }
+        ],
         "health_snapshots": [
             {
                 "project_key": project_key,
@@ -190,6 +213,10 @@ def test_v134_runtime_ledger_should_write_anchor_control_plane_and_fallback_to_m
     assert Path(result["control_plane"]["schema_path"]).exists()
     assert Path(result["control_plane"]["serve_script"]).exists()
     assert Path(result["mirror_paths"]["project"]).exists()
+    assert Path(result["mirror_paths"]["board_index"]).exists()
+    assert Path(result["mirror_paths"]["board_portfolio_page"]).exists()
+    assert Path(result["mirror_paths"]["board_portfolio"]).exists()
+    assert "--publicDir \"$ROOT/pb_public\"" in Path(result["control_plane"]["serve_script"]).read_text(encoding="utf-8")
 
     monkeypatch.setenv("BEACON_RUNTIME_LEDGER_DISABLE_SQLITE", "1")
     portfolio = store_module.list_projects(limit=5)
@@ -239,6 +266,7 @@ def test_v134_doctor_runtime_ledger_commands_should_rebuild_verify_and_export(mo
     checks = verify_payload["result"]["checks"]
     assert any(item["name"] == "projection_determinism" for item in checks)
     assert any(item["name"] == "pocketbase_control_plane" for item in checks)
+    assert any(item["name"] == "pocketbase_board_surface" for item in checks)
 
     export = _invoke(
         [
@@ -257,3 +285,58 @@ def test_v134_doctor_runtime_ledger_commands_should_rebuild_verify_and_export(mo
     assert Path(export_payload["result"]["export_root"]).exists()
     assert "projections" in copied
     assert "pocketbase" in copied
+
+
+def test_v134_runtime_ledger_should_publish_public_board_data_for_multiple_projects(monkeypatch, tmp_path: Path) -> None:
+    ledger_root = tmp_path / "ledger"
+    monkeypatch.setenv("BEACON_RUNTIME_LEDGER_ROOT", str(ledger_root))
+
+    alpha_root = tmp_path / "alpha"
+    beta_root = tmp_path / "beta"
+    _seed_docs(alpha_root)
+    _seed_docs(beta_root)
+
+    store_module.sync_projection(_make_projection_envelope(alpha_root, project_key="alpha", display_name="Alpha"))
+    store_module.sync_projection(_make_projection_envelope(beta_root, project_key="beta", display_name="Beta"))
+
+    portfolio_path = ledger_root / "pocketbase" / "pb_public" / "data" / "portfolio-summary.json"
+    alpha_detail_path = ledger_root / "pocketbase" / "pb_public" / "data" / "projects" / "alpha.json"
+    manifest_path = ledger_root / "pocketbase" / "pb_public" / "board-manifest.json"
+    root_index_path = ledger_root / "pocketbase" / "pb_public" / "index.html"
+    board_js_path = ledger_root / "pocketbase" / "pb_public" / "assets" / "board.js"
+
+    portfolio = json.loads(portfolio_path.read_text(encoding="utf-8"))
+    assert portfolio["summary"]["project_count"] == 2
+    assert {item["display_name"] for item in portfolio["projects"]} == {"Alpha", "Beta"}
+    assert {item["recommended_skill"] for item in portfolio["projects"]} == {"beacon-user-story"}
+    assert {item["current_stage"] for item in portfolio["projects"]} == {"requirements"}
+
+    alpha_detail = json.loads(alpha_detail_path.read_text(encoding="utf-8"))
+    assert alpha_detail["project"]["display_name"] == "Alpha"
+    assert alpha_detail["truth"]["source_of_truth"] == "docs/beacon + .beacon"
+    assert alpha_detail["project"]["recommended_skill"] == "beacon-user-story"
+    assert alpha_detail["host_sessions"][0]["run_id"] == "run-alpha"
+    assert alpha_detail["host_sessions"][0]["transcript_ref"] == ".beacon/transcripts/demo-session.md"
+    assert any(item["relative_path"] == "SUMMARY.md" for item in alpha_detail["documents"])
+    summary_doc_key = next(item["doc_key"] for item in alpha_detail["documents"] if item["relative_path"] == "SUMMARY.md")
+    summary_doc_path = ledger_root / "pocketbase" / "pb_public" / "data" / "documents" / "alpha" / f"{summary_doc_key}.json"
+    assert summary_doc_path.exists()
+    summary_doc = json.loads(summary_doc_path.read_text(encoding="utf-8"))
+    assert summary_doc["title"] == "v1.3.4"
+    assert "# v1.3.4" in summary_doc["content"]
+
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    assert "portfolio-overview" in manifest["pages"]
+    assert manifest["project_count"] == 2
+
+    root_index = root_index_path.read_text(encoding="utf-8")
+    assert 'data-page="board-home"' in root_index
+    assert "Beacon 管理看板" in root_index
+    assert "四页职责" not in root_index  # root shell stays thin; content comes from board.js
+    assert "http-equiv=\"refresh\"" not in root_index
+
+    board_js = board_js_path.read_text(encoding="utf-8")
+    assert '"board-home": { nav: "首页" }' in board_js
+    assert "async function renderBoardHome()" in board_js
+    assert "按角色看" in board_js
+    assert "版本文档列表与网页查看" in board_js

@@ -1,0 +1,122 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane",
+  "feature_slug": "beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane",
+  "version": "v1.3.4",
+  "prototype_mode": "wireframe",
+  "prototype_type": "admin-workbench",
+  "pages": [
+    {
+      "page_id": "home",
+      "name": "首页",
+      "priority": "P0",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "先回答经营判断，展示项目数、阻塞数、当前交付和介入点。",
+      "file": "pages/home.md"
+    },
+    {
+      "page_id": "management-overview",
+      "name": "管理总览",
+      "priority": "P0",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "提供多项目密集管理视图，稳定扫描版本、阶段、进度、健康态和下一步。",
+      "file": "pages/management-overview.md"
+    },
+    {
+      "page_id": "project-detail",
+      "name": "项目详情",
+      "priority": "P0",
+      "platforms": [
+        "Web",
+        "PC",
+        "App"
+      ],
+      "responsibility": "成为接力页，展示版本线、主 PRD、并行 PRD、需求闭环和推荐动作。",
+      "file": "pages/project-detail.md"
+    },
+    {
+      "page_id": "runtime-center",
+      "name": "运行中心",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "只在这里下钻 single / team / ralph 的 runtime 细节和有限 session metadata。",
+      "file": "pages/runtime-center.md"
+    },
+    {
+      "page_id": "recovery-diagnostics",
+      "name": "恢复诊断",
+      "priority": "P2",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "解释 degraded / rebuild / doctor，明确 truth 仍来自 docs/beacon 与 .beacon。",
+      "file": "pages/recovery-diagnostics.md"
+    }
+  ],
+  "transitions": [
+    {
+      "from": "home",
+      "to": "management-overview",
+      "trigger": "点击项目组合入口",
+      "type": "primary"
+    },
+    {
+      "from": "home",
+      "to": "project-detail",
+      "trigger": "点击重点项目卡片",
+      "type": "primary"
+    },
+    {
+      "from": "management-overview",
+      "to": "project-detail",
+      "trigger": "点击项目行/卡片",
+      "type": "primary"
+    },
+    {
+      "from": "management-overview",
+      "to": "home",
+      "trigger": "点击首页导航",
+      "type": "return"
+    },
+    {
+      "from": "project-detail",
+      "to": "runtime-center",
+      "trigger": "点击运行态摘要",
+      "type": "drill-down"
+    },
+    {
+      "from": "project-detail",
+      "to": "recovery-diagnostics",
+      "trigger": "点击恢复诊断入口",
+      "type": "drill-down"
+    },
+    {
+      "from": "project-detail",
+      "to": "management-overview",
+      "trigger": "点击返回",
+      "type": "return"
+    },
+    {
+      "from": "runtime-center",
+      "to": "project-detail",
+      "trigger": "点击返回",
+      "type": "return"
+    },
+    {
+      "from": "recovery-diagnostics",
+      "to": "project-detail",
+      "trigger": "点击返回",
+      "type": "return"
+    }
+  ]
+}

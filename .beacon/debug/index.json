@@ -171,6 +171,19 @@
         "beacon-core": 1
       },
       "latest_event_at": "2026-04-18T14:05:00Z"
+    },
+    {
+      "schema_version": "1.0",
+      "run_id": "debug-20260419T113000Z-prototype-visual-gap",
+      "generated_at": "2026-04-19T11:30:00Z",
+      "event_count": 1,
+      "reason_counts": {
+        "prototype-reference-pack-visual-quality-drift": 1
+      },
+      "feedback_target_counts": {
+        "beacon-core": 1
+      },
+      "latest_event_at": "2026-04-19T11:30:00Z"
     }
   ],
   "issues": [
@@ -247,7 +260,20 @@
       "run_ids": [
         "debug-20260418T140500Z-prd-implement-drift"
       ]
+    },
+    {
+      "schema_version": "1.0",
+      "issue_id": "beacon-core--prototype-reference-pack-visual-quality-drift",
+      "feedback_target": "beacon-core",
+      "reason_code": "prototype-reference-pack-visual-quality-drift",
+      "count": 1,
+      "latest_event_at": "2026-04-19T11:30:00Z",
+      "sample": "beacon prototype currently generates a reference pack that is visually generic, still contains English placeholder pages, and does not reliably compile v1.3.4's Chinese, lifecycle-first management-board intent into a clear Vercel/getdesign-grade admin workbench that human users can understand at a glance.",
+      "suggested_capability": "prototype-design-governance-freeze-gate",
+      "run_ids": [
+        "debug-20260419T113000Z-prototype-visual-gap"
+      ]
     }
   ],
-  "issue_count": 5
+  "issue_count": 6
 }

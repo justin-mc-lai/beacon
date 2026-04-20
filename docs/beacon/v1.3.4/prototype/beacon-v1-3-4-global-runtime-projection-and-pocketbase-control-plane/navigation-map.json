@@ -1,62 +1,119 @@
 {
-  "primary_entry": "portfolio-overview",
+  "schema_version": "1.0",
+  "feature": "beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane",
+  "feature_slug": "beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane",
+  "primary_entry": "home",
   "primary_exit": "project-detail",
-  "sections": [
-    {
-      "id": "portfolio-overview",
-      "label": "portfolio-overview"
-    },
-    {
-      "id": "project-detail",
-      "label": "project-detail"
-    },
-    {
-      "id": "runtime-center",
-      "label": "runtime-center"
-    },
-    {
-      "id": "recovery-diagnostics",
-      "label": "recovery-diagnostics"
-    }
-  ],
-  "navigation_nodes": [
-    {
-      "label": "overview",
-      "target": "#overview"
-    },
-    {
-      "label": "projects",
-      "target": "#projects"
-    },
-    {
-      "label": "runtime",
-      "target": "#runtime"
-    },
-    {
-      "label": "diagnostics",
-      "target": "#diagnostics"
-    }
-  ],
   "jump_map": [
     {
-      "from": "portfolio-overview",
+      "from": "home",
+      "to": "management-overview",
+      "trigger": "点击项目组合入口",
+      "type": "primary"
+    },
+    {
+      "from": "home",
       "to": "project-detail",
-      "why": "drill into selected project version, parallel PRDs, and lifecycle progress"
+      "trigger": "点击重点项目卡片",
+      "type": "primary"
+    },
+    {
+      "from": "management-overview",
+      "to": "project-detail",
+      "trigger": "点击项目行/卡片",
+      "type": "primary"
+    },
+    {
+      "from": "management-overview",
+      "to": "home",
+      "trigger": "点击首页导航",
+      "type": "return"
     },
     {
       "from": "project-detail",
       "to": "runtime-center",
-      "why": "inspect single/team/ralph active runs and agent/session refs"
+      "trigger": "点击运行态摘要",
+      "type": "drill-down"
+    },
+    {
+      "from": "project-detail",
+      "to": "recovery-diagnostics",
+      "trigger": "点击恢复诊断入口",
+      "type": "drill-down"
+    },
+    {
+      "from": "project-detail",
+      "to": "management-overview",
+      "trigger": "点击返回",
+      "type": "return"
     },
     {
       "from": "runtime-center",
-      "to": "recovery-diagnostics",
-      "why": "inspect stale runs, sqlite unavailable state, and rebuild readiness"
+      "to": "project-detail",
+      "trigger": "点击返回",
+      "type": "return"
     },
     {
       "from": "recovery-diagnostics",
-      "to": "portfolio-overview",
-      "why": "return to cross-project summary after diagnosis"
+      "to": "project-detail",
+      "trigger": "点击返回",
+      "type": "return"
+    }
+  ],
+  "transitions": [
+    {
+      "from": "home",
+      "to": "management-overview",
+      "trigger": "点击项目组合入口",
+      "type": "primary"
+    },
+    {
+      "from": "home",
+      "to": "project-detail",
+      "trigger": "点击重点项目卡片",
+      "type": "primary"
+    },
+    {
+      "from": "management-overview",
+      "to": "project-detail",
+      "trigger": "点击项目行/卡片",
+      "type": "primary"
+    },
+    {
+      "from": "management-overview",
+      "to": "home",
+      "trigger": "点击首页导航",
+      "type": "return"
+    },
+    {
+      "from": "project-detail",
+      "to": "runtime-center",
+      "trigger": "点击运行态摘要",
+      "type": "drill-down"
+    },
+    {
+      "from": "project-detail",
+      "to": "recovery-diagnostics",
+      "trigger": "点击恢复诊断入口",
+      "type": "drill-down"
+    },
+    {
+      "from": "project-detail",
+      "to": "management-overview",
+      "trigger": "点击返回",
+      "type": "return"
+    },
+    {
+      "from": "runtime-center",
+      "to": "project-detail",
+      "trigger": "点击返回",
+      "type": "return"
+    },
+    {
+      "from": "recovery-diagnostics",
+      "to": "project-detail",
+      "trigger": "点击返回",
+      "type": "return"
     }
   ]
 }

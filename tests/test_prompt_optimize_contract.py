@@ -352,7 +352,6 @@ def test_prompt_optimize_should_default_non_core_labs_prompts_back_to_think(tmp_
         "请做竞品分析",
         "请给我一份 api design 草案",
         "输出一个 ui spec 文档",
-        "画一个移动端 wireframe",
         "创建用户 persona",
     ]
 
@@ -369,8 +368,8 @@ def test_prompt_optimize_should_default_non_core_labs_prompts_back_to_think(tmp_
         )
         assert result.exit_code == 0
         payload = json.loads(result.stdout)
-        assert payload.get("intent") not in {"analyze", "api-design", "ui-spec", "wireframe", "persona"}
-        assert payload.get("recommended_args", [None])[0] not in {"analyze", "api-design", "ui-spec", "wireframe", "persona"}
+        assert payload.get("intent") not in {"analyze", "api-design", "ui-spec", "persona"}
+        assert payload.get("recommended_args", [None])[0] not in {"analyze", "api-design", "ui-spec", "persona"}
 
 
 def test_prompt_optimize_should_route_explicit_lab_command_hints(tmp_path: Path):
@@ -378,7 +377,6 @@ def test_prompt_optimize_should_route_explicit_lab_command_hints(tmp_path: Path)
         "beacon analyze 抖音": "analyze",
         "beacon api-design 订单接口": "api-design",
         "beacon ui-spec 会员中心": "ui-spec",
-        "beacon wireframe 登录页": "wireframe",
         "beacon persona 核心用户": "persona",
     }
 
@@ -397,3 +395,20 @@ def test_prompt_optimize_should_route_explicit_lab_command_hints(tmp_path: Path)
         payload = json.loads(result.stdout)
         assert payload.get("intent") == expected_intent
         assert payload.get("recommended_args", [None])[0] == expected_intent
+
+
+def test_prompt_optimize_should_route_wireframe_language_to_prototype(tmp_path: Path):
+    result = _invoke(
+        [
+            "prompt",
+            "optimize",
+            "画一个移动端 wireframe",
+            "--project-root",
+            str(tmp_path),
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0
+    payload = json.loads(result.stdout)
+    assert payload.get("intent") == "prototype"
+    assert payload.get("recommended_args", [])[:2] == ["prototype", "create"]

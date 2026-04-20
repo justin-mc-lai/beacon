@@ -1,649 +1,1066 @@
 {
-  "schema_version": "2.0",
+  "schema_version": "1.0",
   "feature": "beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane",
+  "feature_slug": "beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane",
   "version": "v1.3.4",
-  "prototype_mode": "reference-pack-v2",
-  "coverage_mode": "all-existing-routes",
-  "source_refs": [
-    "docs/beacon/v1.3.4/user-story/beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane.md"
+  "generated_at": "2026-04-20T07:49:04Z",
+  "prototype_mode": "wireframe",
+  "ui_kit": "wireframe-markdown-v1",
+  "source_documents": [
+    {
+      "type": "user-story",
+      "path": "docs/beacon/v1.3.4/user-story/beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane.md",
+      "fingerprint": "90267971cf00d31a926bfe383f880c8711dbd5434fef7a10e5c118da01738617"
+    },
+    {
+      "type": "prd",
+      "path": "docs/beacon/v1.3.4/prd/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md",
+      "fingerprint": "2dceae0b06340732a07cda815590442083fc51cd5f7b16c6eafc9b019da87031"
+    },
+    {
+      "type": "test-case",
+      "path": "docs/beacon/v1.3.4/qa/test-cases/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md",
+      "fingerprint": "6f90f046942a2266f34857bea31b85dba7b2255397b2e7bb2584731ee116363c"
+    }
   ],
-  "source_fingerprints": {
-    "user-story": "a72cccc697069c2951074be81da70c8e9bb4f9f9308ec1593318149d4cb0bdc3"
-  },
   "required_pages": [
-    "portfolio-overview",
+    "home",
+    "management-overview",
     "project-detail",
     "runtime-center",
     "recovery-diagnostics"
   ],
   "required_states": [
-    "healthy-summary",
-    "requirement-incomplete",
-    "implement-running",
-    "qa-running",
-    "release-ready",
-    "team-active",
-    "ralph-active",
     "blocked",
-    "db-offline",
-    "partial-rebuild"
-  ],
-  "page_inventory": [
-    {
-      "page_id": "portfolio-overview",
-      "baseline_protected": true
-    },
-    {
-      "page_id": "project-detail",
-      "baseline_protected": true
-    },
-    {
-      "page_id": "runtime-center",
-      "baseline_protected": true
-    },
-    {
-      "page_id": "recovery-diagnostics",
-      "baseline_protected": true
-    }
-  ],
-  "baseline_protection": [
-    {
-      "page": "portfolio-overview",
-      "preserve": [
-        "current version, progress, blocker in one scan line",
-        "lifecycle-first summary cards",
-        "no raw worker transcript exposure",
-        "runtime only as compressed badge"
-      ]
-    },
-    {
-      "page": "project-detail",
-      "preserve": [
-        "git and worktree governance card",
-        "main PRD and parallel PRD distinction",
-        "recommended next skill and next action",
-        "requirement materials completeness panel"
-      ]
-    },
-    {
-      "page": "runtime-center",
-      "preserve": [
-        "active agent count and role status for team",
-        "host session refs without full transcript disclosure",
-        "round count and next action for ralph",
-        "single team ralph mode separation"
-      ]
-    },
-    {
-      "page": "recovery-diagnostics",
-      "preserve": [
-        "omc omx explicitly excluded from managed runtime scope",
-        "projection not truth wording",
-        "rebuild from docs/beacon and .beacon path",
-        "sqlite and pocketbase degraded mode explanation"
-      ]
-    }
+    "degraded",
+    "doctor-suggested",
+    "draft",
+    "empty",
+    "error",
+    "filtered",
+    "frozen",
+    "healthy-warning",
+    "idle",
+    "intervention-needed",
+    "loading",
+    "ralph-active",
+    "ready",
+    "rebuild-suggested",
+    "requirement-missing",
+    "runtime-active",
+    "single-active",
+    "team-active"
   ],
   "page_specs": [
     {
-      "page_id": "portfolio-overview",
-      "intent": "Portfolio Overview reference page",
-      "layout_type": "admin-workbench",
+      "page_id": "home",
+      "name": "首页",
+      "priority": "P0",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "先回答经营判断，展示项目数、阻塞数、当前交付和介入点。",
       "sections": [
-        "portfolio-overview",
-        "project-detail",
-        "runtime-center",
-        "recovery-diagnostics"
+        "经营总览条",
+        "重点介入区",
+        "项目推进摘要",
+        "当前交付卡片",
+        "下一步建议"
       ],
-      "components": [
-        "header",
-        "content",
-        "primary-cta"
-      ],
-      "primary_cta": "查看项目详情",
-      "secondary_ctas": [
-        "打开运行态"
+      "actions": [
+        {
+          "label": "查看管理总览",
+          "target": "management-overview",
+          "trigger": "点击项目组合入口"
+        },
+        {
+          "label": "进入重点项目",
+          "target": "project-detail",
+          "trigger": "点击重点项目卡片"
+        }
       ],
       "states": [
-        "healthy-summary",
-        "requirement-incomplete",
-        "implement-running",
-        "qa-running",
-        "release-ready",
-        "team-active",
-        "ralph-active",
-        "blocked",
-        "db-offline",
-        "partial-rebuild"
+        {
+          "id": "ready",
+          "label": "正常总览",
+          "description": "展示项目数、阻塞数、当前交付和下一步。"
+        },
+        {
+          "id": "blocked",
+          "label": "阻塞高亮",
+          "description": "把阻塞项目和介入点提升到首屏。"
+        },
+        {
+          "id": "intervention-needed",
+          "label": "需介入",
+          "description": "强调需要 CEO / 负责人介入的项目。"
+        },
+        {
+          "id": "loading",
+          "label": "加载中",
+          "description": "首页摘要数据仍在汇总。"
+        },
+        {
+          "id": "empty",
+          "label": "空状态",
+          "description": "当前没有受管项目。"
+        },
+        {
+          "id": "error",
+          "label": "错误",
+          "description": "摘要聚合失败，但提示可以进入详情或 doctor。"
+        }
       ],
-      "route_targets": [
-        "project-detail",
-        "runtime-center",
-        "recovery-diagnostics",
-        "portfolio-overview"
-      ],
-      "truth_notes": [
-        "compiled_from:docs/beacon/v1.3.4/user-story/beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane.md"
-      ],
-      "baseline_guardrails": [
-        "current version, progress, blocker in one scan line",
-        "lifecycle-first summary cards",
-        "no raw worker transcript exposure",
-        "runtime only as compressed badge"
-      ],
-      "content_model": {
-        "variant": "reference",
-        "headline": "Portfolio Overview",
-        "subheadline": "Portfolio Overview reference page",
-        "primary_cta": "查看项目详情",
-        "secondary_cta": "打开运行态",
-        "baseline_guardrails": [
-          "current version, progress, blocker in one scan line",
-          "lifecycle-first summary cards",
-          "no raw worker transcript exposure",
-          "runtime only as compressed badge"
+      "requirement_refs": {
+        "user-story": [
+          "docs/beacon/v1.3.4/user-story/beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane.md"
+        ],
+        "prd": [
+          "docs/beacon/v1.3.4/prd/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md"
+        ],
+        "test-case": [
+          "docs/beacon/v1.3.4/qa/test-cases/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md"
         ]
-      }
+      },
+      "outbound_transitions": [
+        {
+          "from": "home",
+          "to": "management-overview",
+          "trigger": "点击项目组合入口",
+          "type": "primary"
+        },
+        {
+          "from": "home",
+          "to": "project-detail",
+          "trigger": "点击重点项目卡片",
+          "type": "primary"
+        }
+      ]
+    },
+    {
+      "page_id": "management-overview",
+      "name": "管理总览",
+      "priority": "P0",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "提供多项目密集管理视图，稳定扫描版本、阶段、进度、健康态和下一步。",
+      "sections": [
+        "筛选与排序条",
+        "项目注册表",
+        "阶段分布摘要",
+        "风险与调试摘要",
+        "推荐 skill 区"
+      ],
+      "actions": [
+        {
+          "label": "进入项目详情",
+          "target": "project-detail",
+          "trigger": "点击项目行或卡片"
+        },
+        {
+          "label": "返回首页",
+          "target": "home",
+          "trigger": "点击首页导航"
+        }
+      ],
+      "states": [
+        {
+          "id": "ready",
+          "label": "多项目已加载",
+          "description": "密集展示多项目当前状态。"
+        },
+        {
+          "id": "filtered",
+          "label": "已筛选",
+          "description": "按阶段、版本、健康态筛选项目。"
+        },
+        {
+          "id": "empty",
+          "label": "无项目",
+          "description": "没有任何受管项目进入注册表。"
+        },
+        {
+          "id": "loading",
+          "label": "加载中",
+          "description": "项目注册表正在聚合。"
+        },
+        {
+          "id": "error",
+          "label": "错误",
+          "description": "总览聚合失败但保留恢复提示。"
+        }
+      ],
+      "requirement_refs": {
+        "user-story": [
+          "docs/beacon/v1.3.4/user-story/beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane.md"
+        ],
+        "prd": [
+          "docs/beacon/v1.3.4/prd/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md"
+        ],
+        "test-case": [
+          "docs/beacon/v1.3.4/qa/test-cases/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md"
+        ]
+      },
+      "outbound_transitions": [
+        {
+          "from": "management-overview",
+          "to": "project-detail",
+          "trigger": "点击项目行/卡片",
+          "type": "primary"
+        },
+        {
+          "from": "management-overview",
+          "to": "home",
+          "trigger": "点击首页导航",
+          "type": "return"
+        }
+      ]
     },
     {
       "page_id": "project-detail",
-      "intent": "Project Detail reference page",
-      "layout_type": "admin-workbench",
+      "name": "项目详情",
+      "priority": "P0",
+      "platforms": [
+        "Web",
+        "PC",
+        "App"
+      ],
+      "responsibility": "成为接力页，展示版本线、主 PRD、并行 PRD、需求闭环和推荐动作。",
       "sections": [
-        "portfolio-overview",
-        "project-detail",
-        "runtime-center",
-        "recovery-diagnostics"
+        "项目头部摘要",
+        "版本与分支信息",
+        "主 PRD 与并行 PRD",
+        "需求物料闭环状态",
+        "最近交付与下一步",
+        "运行态摘要卡"
       ],
-      "components": [
-        "header",
-        "content",
-        "primary-cta"
-      ],
-      "primary_cta": "查看项目详情",
-      "secondary_ctas": [
-        "打开运行态"
+      "actions": [
+        {
+          "label": "查看运行中心",
+          "target": "runtime-center",
+          "trigger": "点击运行态摘要"
+        },
+        {
+          "label": "查看恢复诊断",
+          "target": "recovery-diagnostics",
+          "trigger": "点击恢复诊断入口"
+        },
+        {
+          "label": "查看项目物料",
+          "target": "material-viewer",
+          "trigger": "点击文档查看入口"
+        },
+        {
+          "label": "返回管理总览",
+          "target": "management-overview",
+          "trigger": "点击返回"
+        }
       ],
       "states": [
-        "healthy-summary",
-        "requirement-incomplete",
-        "implement-running",
-        "qa-running",
-        "release-ready",
-        "team-active",
-        "ralph-active",
-        "blocked",
-        "db-offline",
-        "partial-rebuild"
+        {
+          "id": "ready",
+          "label": "可接力",
+          "description": "版本、PRD、需求闭环和下一步信息完整。"
+        },
+        {
+          "id": "requirement-missing",
+          "label": "需求缺口",
+          "description": "PRD / user-story / test-case 存在缺口。"
+        },
+        {
+          "id": "draft",
+          "label": "需求草稿",
+          "description": "需求已建立但未冻结。"
+        },
+        {
+          "id": "frozen",
+          "label": "需求冻结",
+          "description": "需求链与 prototype 都已冻结。"
+        },
+        {
+          "id": "runtime-active",
+          "label": "运行中",
+          "description": "存在 single / team / ralph 运行摘要。"
+        },
+        {
+          "id": "loading",
+          "label": "加载中",
+          "description": "项目详情正在聚合。"
+        },
+        {
+          "id": "error",
+          "label": "错误",
+          "description": "详情聚合失败但给出恢复链路。"
+        }
       ],
-      "route_targets": [
-        "project-detail",
-        "runtime-center",
-        "recovery-diagnostics",
-        "portfolio-overview"
-      ],
-      "truth_notes": [
-        "compiled_from:docs/beacon/v1.3.4/user-story/beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane.md"
-      ],
-      "baseline_guardrails": [
-        "git and worktree governance card",
-        "main PRD and parallel PRD distinction",
-        "recommended next skill and next action",
-        "requirement materials completeness panel"
-      ],
-      "content_model": {
-        "variant": "reference",
-        "headline": "Project Detail",
-        "subheadline": "Project Detail reference page",
-        "primary_cta": "查看项目详情",
-        "secondary_cta": "打开运行态",
-        "baseline_guardrails": [
-          "git and worktree governance card",
-          "main PRD and parallel PRD distinction",
-          "recommended next skill and next action",
-          "requirement materials completeness panel"
+      "requirement_refs": {
+        "user-story": [
+          "docs/beacon/v1.3.4/user-story/beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane.md"
+        ],
+        "prd": [
+          "docs/beacon/v1.3.4/prd/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md"
+        ],
+        "test-case": [
+          "docs/beacon/v1.3.4/qa/test-cases/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md"
         ]
-      }
+      },
+      "outbound_transitions": [
+        {
+          "from": "project-detail",
+          "to": "runtime-center",
+          "trigger": "点击运行态摘要",
+          "type": "drill-down"
+        },
+        {
+          "from": "project-detail",
+          "to": "recovery-diagnostics",
+          "trigger": "点击恢复诊断入口",
+          "type": "drill-down"
+        },
+        {
+          "from": "project-detail",
+          "to": "management-overview",
+          "trigger": "点击返回",
+          "type": "return"
+        }
+      ]
     },
     {
       "page_id": "runtime-center",
-      "intent": "Runtime Center reference page",
-      "layout_type": "admin-workbench",
+      "name": "运行中心",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "只在这里下钻 single / team / ralph 的 runtime 细节和有限 session metadata。",
       "sections": [
-        "portfolio-overview",
-        "project-detail",
-        "runtime-center",
-        "recovery-diagnostics"
+        "运行态摘要头部",
+        "single / team / ralph 模式切换",
+        "agent/session 引用",
+        "artifact 与 linked run",
+        "最近结果与 blocker"
       ],
-      "components": [
-        "header",
-        "content",
-        "primary-cta"
-      ],
-      "primary_cta": "查看项目详情",
-      "secondary_ctas": [
-        "打开运行态"
+      "actions": [
+        {
+          "label": "返回项目详情",
+          "target": "project-detail",
+          "trigger": "点击返回"
+        },
+        {
+          "label": "返回管理总览",
+          "target": "management-overview",
+          "trigger": "点击面包屑"
+        }
       ],
       "states": [
-        "healthy-summary",
-        "requirement-incomplete",
-        "implement-running",
-        "qa-running",
-        "release-ready",
-        "team-active",
-        "ralph-active",
-        "blocked",
-        "db-offline",
-        "partial-rebuild"
+        {
+          "id": "single-active",
+          "label": "Single 运行",
+          "description": "展示单进程执行摘要和 linked run。"
+        },
+        {
+          "id": "team-active",
+          "label": "Team 运行",
+          "description": "展示 agent 数、角色、状态和 host session metadata。"
+        },
+        {
+          "id": "ralph-active",
+          "label": "Ralph 闭环",
+          "description": "展示 round_count、failure_streak、next_action、blocker。"
+        },
+        {
+          "id": "idle",
+          "label": "无活跃运行",
+          "description": "当前没有任何 active runtime。"
+        },
+        {
+          "id": "loading",
+          "label": "加载中",
+          "description": "运行态数据仍在读取。"
+        },
+        {
+          "id": "error",
+          "label": "错误",
+          "description": "运行态投影异常，需要回到诊断页。"
+        }
       ],
-      "route_targets": [
-        "project-detail",
-        "runtime-center",
-        "recovery-diagnostics",
-        "portfolio-overview"
-      ],
-      "truth_notes": [
-        "compiled_from:docs/beacon/v1.3.4/user-story/beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane.md"
-      ],
-      "baseline_guardrails": [
-        "active agent count and role status for team",
-        "host session refs without full transcript disclosure",
-        "round count and next action for ralph",
-        "single team ralph mode separation"
-      ],
-      "content_model": {
-        "variant": "reference",
-        "headline": "Runtime Center",
-        "subheadline": "Runtime Center reference page",
-        "primary_cta": "查看项目详情",
-        "secondary_cta": "打开运行态",
-        "baseline_guardrails": [
-          "active agent count and role status for team",
-          "host session refs without full transcript disclosure",
-          "round count and next action for ralph",
-          "single team ralph mode separation"
+      "requirement_refs": {
+        "user-story": [
+          "docs/beacon/v1.3.4/user-story/beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane.md"
+        ],
+        "prd": [
+          "docs/beacon/v1.3.4/prd/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md"
+        ],
+        "test-case": [
+          "docs/beacon/v1.3.4/qa/test-cases/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md"
         ]
-      }
+      },
+      "outbound_transitions": [
+        {
+          "from": "runtime-center",
+          "to": "project-detail",
+          "trigger": "点击返回",
+          "type": "return"
+        }
+      ]
     },
     {
       "page_id": "recovery-diagnostics",
-      "intent": "Recovery Diagnostics reference page",
-      "layout_type": "admin-workbench",
+      "name": "恢复诊断",
+      "priority": "P2",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "解释 degraded / rebuild / doctor，明确 truth 仍来自 docs/beacon 与 .beacon。",
       "sections": [
-        "portfolio-overview",
-        "project-detail",
-        "runtime-center",
-        "recovery-diagnostics"
+        "truth 来源说明",
+        "degraded / rebuild / doctor 诊断卡",
+        "恢复步骤",
+        "风险提示"
       ],
-      "components": [
-        "header",
-        "content",
-        "primary-cta"
-      ],
-      "primary_cta": "查看项目详情",
-      "secondary_ctas": [
-        "打开运行态"
+      "actions": [
+        {
+          "label": "返回项目详情",
+          "target": "project-detail",
+          "trigger": "点击返回"
+        },
+        {
+          "label": "前往运行中心",
+          "target": "runtime-center",
+          "trigger": "点击运行态关联"
+        }
       ],
       "states": [
-        "healthy-summary",
-        "requirement-incomplete",
-        "implement-running",
-        "qa-running",
-        "release-ready",
-        "team-active",
-        "ralph-active",
-        "blocked",
-        "db-offline",
-        "partial-rebuild"
+        {
+          "id": "healthy-warning",
+          "label": "健康但预警",
+          "description": "当前系统可用但存在恢复风险提示。"
+        },
+        {
+          "id": "degraded",
+          "label": "降级",
+          "description": "SQLite 或 PocketBase 缺失，但 truth 仍可从文档恢复。"
+        },
+        {
+          "id": "rebuild-suggested",
+          "label": "建议重建",
+          "description": "投影层需要重建。"
+        },
+        {
+          "id": "doctor-suggested",
+          "label": "建议 doctor",
+          "description": "推荐执行 doctor 修复上下文。"
+        },
+        {
+          "id": "loading",
+          "label": "加载中",
+          "description": "诊断结果仍在采集。"
+        },
+        {
+          "id": "error",
+          "label": "错误",
+          "description": "诊断页本身无法完成聚合。"
+        }
       ],
-      "route_targets": [
-        "project-detail",
-        "runtime-center",
-        "recovery-diagnostics",
-        "portfolio-overview"
-      ],
-      "truth_notes": [
-        "compiled_from:docs/beacon/v1.3.4/user-story/beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane.md"
-      ],
-      "baseline_guardrails": [
-        "omc omx explicitly excluded from managed runtime scope",
-        "projection not truth wording",
-        "rebuild from docs/beacon and .beacon path",
-        "sqlite and pocketbase degraded mode explanation"
-      ],
-      "content_model": {
-        "variant": "reference",
-        "headline": "Recovery Diagnostics",
-        "subheadline": "Recovery Diagnostics reference page",
-        "primary_cta": "查看项目详情",
-        "secondary_cta": "打开运行态",
-        "baseline_guardrails": [
-          "omc omx explicitly excluded from managed runtime scope",
-          "projection not truth wording",
-          "rebuild from docs/beacon and .beacon path",
-          "sqlite and pocketbase degraded mode explanation"
+      "requirement_refs": {
+        "user-story": [
+          "docs/beacon/v1.3.4/user-story/beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane.md"
+        ],
+        "prd": [
+          "docs/beacon/v1.3.4/prd/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md"
+        ],
+        "test-case": [
+          "docs/beacon/v1.3.4/qa/test-cases/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md"
         ]
-      }
+      },
+      "outbound_transitions": [
+        {
+          "from": "recovery-diagnostics",
+          "to": "project-detail",
+          "trigger": "点击返回",
+          "type": "return"
+        }
+      ]
     }
   ],
-  "parser": {
-    "cjk_detected": true,
-    "cjk_parse_failed": false,
-    "warnings": []
-  },
-  "contract": {
-    "feature": "beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane",
-    "version": "v1.3.4",
-    "design_sources": [
-      "docs/beacon/v1.3.4/user-story/beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane.md"
-    ],
-    "ui_visualization_required": true,
-    "design_governance_required": true,
-    "interactive_prototype_required": "true",
-    "design_generation_mode": "description-as-design",
-    "prototype_mode": "reference-pack-v2",
-    "coverage_mode": "all-existing-routes",
-    "prototype_archetype": "admin-workbench",
-    "theme_mood": "disciplined",
-    "theme_primary": "#1F6FEB",
-    "theme_secondary": "#0F172A",
-    "surface_style": "calm-ops board with lifecycle-first information hierarchy",
-    "target_user": "one-person-company CEO and project owner",
-    "brand_keywords": [
-      "lifecycle-first",
-      "delivery-truth",
-      "calm-ops",
-      "sober-control"
-    ],
-    "sections": [
-      "portfolio-overview",
-      "project-detail",
-      "runtime-center",
-      "recovery-diagnostics"
-    ],
-    "navigation": [
-      "overview",
-      "projects",
-      "runtime",
-      "diagnostics"
-    ],
-    "primary_entry": "portfolio-overview",
-    "primary_exit": "project-detail",
-    "primary_cta": "查看项目详情",
-    "secondary_cta": "打开运行态",
-    "jump_map": [
-      {
-        "from": "portfolio-overview",
-        "to": "project-detail",
-        "why": "drill into selected project version, parallel PRDs, and lifecycle progress"
-      },
-      {
-        "from": "project-detail",
-        "to": "runtime-center",
-        "why": "inspect single/team/ralph active runs and agent/session refs"
-      },
-      {
-        "from": "runtime-center",
-        "to": "recovery-diagnostics",
-        "why": "inspect stale runs, sqlite unavailable state, and rebuild readiness"
-      },
-      {
-        "from": "recovery-diagnostics",
-        "to": "portfolio-overview",
-        "why": "return to cross-project summary after diagnosis"
-      }
-    ],
-    "states": [
-      "healthy-summary",
-      "requirement-incomplete",
-      "implement-running",
-      "qa-running",
-      "release-ready",
-      "team-active",
-      "ralph-active",
-      "blocked",
-      "db-offline",
-      "partial-rebuild"
-    ],
-    "route_closure_required": true,
-    "drift_guardrails": [
-      "runtime-noise-exposed-on-home",
-      "agent-count-misused-as-progress",
-      "projection-layer-presented-as-truth",
-      "omc-omx-leak-into-board",
-      "git-worktree-governance-hidden"
-    ],
-    "design_reference_sources": [
-      "Beacon v1.3.4 main PRD lifecycle-first board model",
-      "Beacon v1.3.4 one-person-company ops board model",
-      "PocketBase as control plane",
-      "not formal delivery truth",
-      "Beacon admin-workbench prototype discipline",
-      "human minimal surface with runtime drilldown only"
-    ],
-    "required_pages": [
-      "portfolio-overview",
-      "project-detail",
-      "runtime-center",
-      "recovery-diagnostics"
-    ],
-    "required_states": [
-      "healthy-summary",
-      "requirement-incomplete",
-      "implement-running",
-      "qa-running",
-      "release-ready",
-      "team-active",
-      "ralph-active",
-      "blocked",
-      "db-offline",
-      "partial-rebuild"
-    ],
-    "page_inventory": [
-      "portfolio-overview",
-      "project-detail",
-      "runtime-center",
-      "recovery-diagnostics"
-    ],
-    "page_inventory_source": [
-      "CEO overview requires project/version/stage/progress/blocker summary.",
-      "Project owner detail requires version line",
-      "main/parallel PRDs",
-      "material completeness",
-      "git/worktree governance",
-      "session refs.",
-      "Runtime center requires single/team/ralph focused drilldown.",
-      "Recovery diagnostics requires degraded mode",
-      "rebuild contract",
-      "and sync-health explanation."
-    ],
-    "baseline_protection": [
-      {
-        "page": "portfolio-overview",
-        "preserve": [
-          "current version, progress, blocker in one scan line",
-          "lifecycle-first summary cards",
-          "no raw worker transcript exposure",
-          "runtime only as compressed badge"
+  "page_inventory": [
+    {
+      "page_id": "home",
+      "name": "首页",
+      "priority": "P0",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "先回答经营判断，展示项目数、阻塞数、当前交付和介入点。",
+      "sections": [
+        "经营总览条",
+        "重点介入区",
+        "项目推进摘要",
+        "当前交付卡片",
+        "下一步建议"
+      ],
+      "actions": [
+        {
+          "label": "查看管理总览",
+          "target": "management-overview",
+          "trigger": "点击项目组合入口"
+        },
+        {
+          "label": "进入重点项目",
+          "target": "project-detail",
+          "trigger": "点击重点项目卡片"
+        }
+      ],
+      "states": [
+        {
+          "id": "ready",
+          "label": "正常总览",
+          "description": "展示项目数、阻塞数、当前交付和下一步。"
+        },
+        {
+          "id": "blocked",
+          "label": "阻塞高亮",
+          "description": "把阻塞项目和介入点提升到首屏。"
+        },
+        {
+          "id": "intervention-needed",
+          "label": "需介入",
+          "description": "强调需要 CEO / 负责人介入的项目。"
+        },
+        {
+          "id": "loading",
+          "label": "加载中",
+          "description": "首页摘要数据仍在汇总。"
+        },
+        {
+          "id": "empty",
+          "label": "空状态",
+          "description": "当前没有受管项目。"
+        },
+        {
+          "id": "error",
+          "label": "错误",
+          "description": "摘要聚合失败，但提示可以进入详情或 doctor。"
+        }
+      ],
+      "requirement_refs": {
+        "user-story": [
+          "docs/beacon/v1.3.4/user-story/beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane.md"
+        ],
+        "prd": [
+          "docs/beacon/v1.3.4/prd/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md"
+        ],
+        "test-case": [
+          "docs/beacon/v1.3.4/qa/test-cases/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md"
         ]
       },
-      {
-        "page": "project-detail",
-        "preserve": [
-          "git and worktree governance card",
-          "main PRD and parallel PRD distinction",
-          "recommended next skill and next action",
-          "requirement materials completeness panel"
-        ]
-      },
-      {
-        "page": "runtime-center",
-        "preserve": [
-          "active agent count and role status for team",
-          "host session refs without full transcript disclosure",
-          "round count and next action for ralph",
-          "single team ralph mode separation"
-        ]
-      },
-      {
-        "page": "recovery-diagnostics",
-        "preserve": [
-          "omc omx explicitly excluded from managed runtime scope",
-          "projection not truth wording",
-          "rebuild from docs/beacon and .beacon path",
-          "sqlite and pocketbase degraded mode explanation"
-        ]
-      }
-    ],
-    "source_has_cjk_punctuation": true
-  },
-  "theme": {
-    "primary": "#1F6FEB",
-    "secondary": "#0F172A",
-    "accent": "#1F6FEB",
-    "mood": "disciplined",
-    "surface_style": "calm-ops board with lifecycle-first information hierarchy",
-    "brand_keywords": [
-      "lifecycle-first",
-      "delivery-truth",
-      "calm-ops",
-      "sober-control"
-    ],
-    "typography": {
-      "display": "Fraunces",
-      "body": "IBM Plex Sans",
-      "mono": "JetBrains Mono",
-      "scale": [
-        48,
-        32,
-        24,
-        18,
-        16,
-        14,
-        12
+      "outbound_transitions": [
+        {
+          "from": "home",
+          "to": "management-overview",
+          "trigger": "点击项目组合入口",
+          "type": "primary"
+        },
+        {
+          "from": "home",
+          "to": "project-detail",
+          "trigger": "点击重点项目卡片",
+          "type": "primary"
+        }
       ]
     },
-    "spacing_scale": "4-8-12-16-24-32",
-    "radius_scale": "10/14/18",
-    "shadow_style": "disciplined-elevation",
-    "motion": "minimal-functional",
-    "light_dark_strategy": "light-first with dark-compatible tokens"
-  },
-  "navigation_map": {
-    "primary_entry": "portfolio-overview",
+    {
+      "page_id": "management-overview",
+      "name": "管理总览",
+      "priority": "P0",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "提供多项目密集管理视图，稳定扫描版本、阶段、进度、健康态和下一步。",
+      "sections": [
+        "筛选与排序条",
+        "项目注册表",
+        "阶段分布摘要",
+        "风险与调试摘要",
+        "推荐 skill 区"
+      ],
+      "actions": [
+        {
+          "label": "进入项目详情",
+          "target": "project-detail",
+          "trigger": "点击项目行或卡片"
+        },
+        {
+          "label": "返回首页",
+          "target": "home",
+          "trigger": "点击首页导航"
+        }
+      ],
+      "states": [
+        {
+          "id": "ready",
+          "label": "多项目已加载",
+          "description": "密集展示多项目当前状态。"
+        },
+        {
+          "id": "filtered",
+          "label": "已筛选",
+          "description": "按阶段、版本、健康态筛选项目。"
+        },
+        {
+          "id": "empty",
+          "label": "无项目",
+          "description": "没有任何受管项目进入注册表。"
+        },
+        {
+          "id": "loading",
+          "label": "加载中",
+          "description": "项目注册表正在聚合。"
+        },
+        {
+          "id": "error",
+          "label": "错误",
+          "description": "总览聚合失败但保留恢复提示。"
+        }
+      ],
+      "requirement_refs": {
+        "user-story": [
+          "docs/beacon/v1.3.4/user-story/beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane.md"
+        ],
+        "prd": [
+          "docs/beacon/v1.3.4/prd/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md"
+        ],
+        "test-case": [
+          "docs/beacon/v1.3.4/qa/test-cases/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md"
+        ]
+      },
+      "outbound_transitions": [
+        {
+          "from": "management-overview",
+          "to": "project-detail",
+          "trigger": "点击项目行/卡片",
+          "type": "primary"
+        },
+        {
+          "from": "management-overview",
+          "to": "home",
+          "trigger": "点击首页导航",
+          "type": "return"
+        }
+      ]
+    },
+    {
+      "page_id": "project-detail",
+      "name": "项目详情",
+      "priority": "P0",
+      "platforms": [
+        "Web",
+        "PC",
+        "App"
+      ],
+      "responsibility": "成为接力页，展示版本线、主 PRD、并行 PRD、需求闭环和推荐动作。",
+      "sections": [
+        "项目头部摘要",
+        "版本与分支信息",
+        "主 PRD 与并行 PRD",
+        "需求物料闭环状态",
+        "最近交付与下一步",
+        "运行态摘要卡"
+      ],
+      "actions": [
+        {
+          "label": "查看运行中心",
+          "target": "runtime-center",
+          "trigger": "点击运行态摘要"
+        },
+        {
+          "label": "查看恢复诊断",
+          "target": "recovery-diagnostics",
+          "trigger": "点击恢复诊断入口"
+        },
+        {
+          "label": "查看项目物料",
+          "target": "material-viewer",
+          "trigger": "点击文档查看入口"
+        },
+        {
+          "label": "返回管理总览",
+          "target": "management-overview",
+          "trigger": "点击返回"
+        }
+      ],
+      "states": [
+        {
+          "id": "ready",
+          "label": "可接力",
+          "description": "版本、PRD、需求闭环和下一步信息完整。"
+        },
+        {
+          "id": "requirement-missing",
+          "label": "需求缺口",
+          "description": "PRD / user-story / test-case 存在缺口。"
+        },
+        {
+          "id": "draft",
+          "label": "需求草稿",
+          "description": "需求已建立但未冻结。"
+        },
+        {
+          "id": "frozen",
+          "label": "需求冻结",
+          "description": "需求链与 prototype 都已冻结。"
+        },
+        {
+          "id": "runtime-active",
+          "label": "运行中",
+          "description": "存在 single / team / ralph 运行摘要。"
+        },
+        {
+          "id": "loading",
+          "label": "加载中",
+          "description": "项目详情正在聚合。"
+        },
+        {
+          "id": "error",
+          "label": "错误",
+          "description": "详情聚合失败但给出恢复链路。"
+        }
+      ],
+      "requirement_refs": {
+        "user-story": [
+          "docs/beacon/v1.3.4/user-story/beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane.md"
+        ],
+        "prd": [
+          "docs/beacon/v1.3.4/prd/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md"
+        ],
+        "test-case": [
+          "docs/beacon/v1.3.4/qa/test-cases/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md"
+        ]
+      },
+      "outbound_transitions": [
+        {
+          "from": "project-detail",
+          "to": "runtime-center",
+          "trigger": "点击运行态摘要",
+          "type": "drill-down"
+        },
+        {
+          "from": "project-detail",
+          "to": "recovery-diagnostics",
+          "trigger": "点击恢复诊断入口",
+          "type": "drill-down"
+        },
+        {
+          "from": "project-detail",
+          "to": "management-overview",
+          "trigger": "点击返回",
+          "type": "return"
+        }
+      ]
+    },
+    {
+      "page_id": "runtime-center",
+      "name": "运行中心",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "只在这里下钻 single / team / ralph 的 runtime 细节和有限 session metadata。",
+      "sections": [
+        "运行态摘要头部",
+        "single / team / ralph 模式切换",
+        "agent/session 引用",
+        "artifact 与 linked run",
+        "最近结果与 blocker"
+      ],
+      "actions": [
+        {
+          "label": "返回项目详情",
+          "target": "project-detail",
+          "trigger": "点击返回"
+        },
+        {
+          "label": "返回管理总览",
+          "target": "management-overview",
+          "trigger": "点击面包屑"
+        }
+      ],
+      "states": [
+        {
+          "id": "single-active",
+          "label": "Single 运行",
+          "description": "展示单进程执行摘要和 linked run。"
+        },
+        {
+          "id": "team-active",
+          "label": "Team 运行",
+          "description": "展示 agent 数、角色、状态和 host session metadata。"
+        },
+        {
+          "id": "ralph-active",
+          "label": "Ralph 闭环",
+          "description": "展示 round_count、failure_streak、next_action、blocker。"
+        },
+        {
+          "id": "idle",
+          "label": "无活跃运行",
+          "description": "当前没有任何 active runtime。"
+        },
+        {
+          "id": "loading",
+          "label": "加载中",
+          "description": "运行态数据仍在读取。"
+        },
+        {
+          "id": "error",
+          "label": "错误",
+          "description": "运行态投影异常，需要回到诊断页。"
+        }
+      ],
+      "requirement_refs": {
+        "user-story": [
+          "docs/beacon/v1.3.4/user-story/beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane.md"
+        ],
+        "prd": [
+          "docs/beacon/v1.3.4/prd/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md"
+        ],
+        "test-case": [
+          "docs/beacon/v1.3.4/qa/test-cases/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md"
+        ]
+      },
+      "outbound_transitions": [
+        {
+          "from": "runtime-center",
+          "to": "project-detail",
+          "trigger": "点击返回",
+          "type": "return"
+        }
+      ]
+    },
+    {
+      "page_id": "recovery-diagnostics",
+      "name": "恢复诊断",
+      "priority": "P2",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "解释 degraded / rebuild / doctor，明确 truth 仍来自 docs/beacon 与 .beacon。",
+      "sections": [
+        "truth 来源说明",
+        "degraded / rebuild / doctor 诊断卡",
+        "恢复步骤",
+        "风险提示"
+      ],
+      "actions": [
+        {
+          "label": "返回项目详情",
+          "target": "project-detail",
+          "trigger": "点击返回"
+        },
+        {
+          "label": "前往运行中心",
+          "target": "runtime-center",
+          "trigger": "点击运行态关联"
+        }
+      ],
+      "states": [
+        {
+          "id": "healthy-warning",
+          "label": "健康但预警",
+          "description": "当前系统可用但存在恢复风险提示。"
+        },
+        {
+          "id": "degraded",
+          "label": "降级",
+          "description": "SQLite 或 PocketBase 缺失，但 truth 仍可从文档恢复。"
+        },
+        {
+          "id": "rebuild-suggested",
+          "label": "建议重建",
+          "description": "投影层需要重建。"
+        },
+        {
+          "id": "doctor-suggested",
+          "label": "建议 doctor",
+          "description": "推荐执行 doctor 修复上下文。"
+        },
+        {
+          "id": "loading",
+          "label": "加载中",
+          "description": "诊断结果仍在采集。"
+        },
+        {
+          "id": "error",
+          "label": "错误",
+          "description": "诊断页本身无法完成聚合。"
+        }
+      ],
+      "requirement_refs": {
+        "user-story": [
+          "docs/beacon/v1.3.4/user-story/beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane.md"
+        ],
+        "prd": [
+          "docs/beacon/v1.3.4/prd/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md"
+        ],
+        "test-case": [
+          "docs/beacon/v1.3.4/qa/test-cases/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md"
+        ]
+      },
+      "outbound_transitions": [
+        {
+          "from": "recovery-diagnostics",
+          "to": "project-detail",
+          "trigger": "点击返回",
+          "type": "return"
+        }
+      ]
+    }
+  ],
+  "navigation": {
+    "primary_entry": "home",
     "primary_exit": "project-detail",
-    "sections": [
+    "transitions": [
       {
-        "id": "portfolio-overview",
-        "label": "portfolio-overview"
+        "from": "home",
+        "to": "management-overview",
+        "trigger": "点击项目组合入口",
+        "type": "primary"
       },
       {
-        "id": "project-detail",
-        "label": "project-detail"
-      },
-      {
-        "id": "runtime-center",
-        "label": "runtime-center"
-      },
-      {
-        "id": "recovery-diagnostics",
-        "label": "recovery-diagnostics"
-      }
-    ],
-    "navigation_nodes": [
-      {
-        "label": "overview",
-        "target": "#overview"
-      },
-      {
-        "label": "projects",
-        "target": "#projects"
-      },
-      {
-        "label": "runtime",
-        "target": "#runtime"
-      },
-      {
-        "label": "diagnostics",
-        "target": "#diagnostics"
-      }
-    ],
-    "jump_map": [
-      {
-        "from": "portfolio-overview",
+        "from": "home",
         "to": "project-detail",
-        "why": "drill into selected project version, parallel PRDs, and lifecycle progress"
+        "trigger": "点击重点项目卡片",
+        "type": "primary"
+      },
+      {
+        "from": "management-overview",
+        "to": "project-detail",
+        "trigger": "点击项目行/卡片",
+        "type": "primary"
+      },
+      {
+        "from": "management-overview",
+        "to": "home",
+        "trigger": "点击首页导航",
+        "type": "return"
       },
       {
         "from": "project-detail",
         "to": "runtime-center",
-        "why": "inspect single/team/ralph active runs and agent/session refs"
+        "trigger": "点击运行态摘要",
+        "type": "drill-down"
+      },
+      {
+        "from": "project-detail",
+        "to": "recovery-diagnostics",
+        "trigger": "点击恢复诊断入口",
+        "type": "drill-down"
+      },
+      {
+        "from": "project-detail",
+        "to": "management-overview",
+        "trigger": "点击返回",
+        "type": "return"
       },
       {
         "from": "runtime-center",
-        "to": "recovery-diagnostics",
-        "why": "inspect stale runs, sqlite unavailable state, and rebuild readiness"
+        "to": "project-detail",
+        "trigger": "点击返回",
+        "type": "return"
       },
       {
         "from": "recovery-diagnostics",
-        "to": "portfolio-overview",
-        "why": "return to cross-project summary after diagnosis"
+        "to": "project-detail",
+        "trigger": "点击返回",
+        "type": "return"
       }
     ]
   },
-  "interaction_map": {
-    "ctas": [
-      {
-        "label": "查看项目详情",
-        "kind": "primary"
-      },
-      {
-        "label": "打开运行态",
-        "kind": "secondary"
-      }
+  "platform_variants": {
+    "global_platforms": [
+      "Web",
+      "PC"
     ],
-    "states": [
-      "healthy-summary",
-      "requirement-incomplete",
-      "implement-running",
-      "qa-running",
-      "release-ready",
-      "team-active",
-      "ralph-active",
-      "blocked",
-      "db-offline",
-      "partial-rebuild"
-    ],
-    "jump_map": [
-      {
-        "from": "portfolio-overview",
-        "to": "project-detail",
-        "why": "drill into selected project version, parallel PRDs, and lifecycle progress"
+    "pages": {
+      "home": {
+        "platforms": [
+          "Web",
+          "PC"
+        ],
+        "notes": []
       },
-      {
-        "from": "project-detail",
-        "to": "runtime-center",
-        "why": "inspect single/team/ralph active runs and agent/session refs"
+      "management-overview": {
+        "platforms": [
+          "Web",
+          "PC"
+        ],
+        "notes": []
       },
-      {
-        "from": "runtime-center",
-        "to": "recovery-diagnostics",
-        "why": "inspect stale runs, sqlite unavailable state, and rebuild readiness"
+      "project-detail": {
+        "platforms": [
+          "Web",
+          "PC",
+          "App"
+        ],
+        "notes": [
+          "仅项目详情页支持 App"
+        ]
       },
-      {
-        "from": "recovery-diagnostics",
-        "to": "portfolio-overview",
-        "why": "return to cross-project summary after diagnosis"
+      "runtime-center": {
+        "platforms": [
+          "Web",
+          "PC"
+        ],
+        "notes": []
+      },
+      "recovery-diagnostics": {
+        "platforms": [
+          "Web",
+          "PC"
+        ],
+        "notes": []
       }
-    ],
-    "modal_map": [],
-    "drawer_map": [],
-    "tab_map": [],
-    "form_actions": [
-      {
-        "label": "查看项目详情",
-        "action": "project-detail"
-      }
+    },
+    "notes": [
+      "默认展示 Web / PC 线框视图。",
+      "App 只在真实需求明确要求时保留；当前仅 project-detail 做移动差异提示。"
     ]
+  },
+  "contract": {
+    "prototype_archetype": "admin-workbench",
+    "wireframe_only": true,
+    "design_governance_required": false,
+    "route_closure_required": true,
+    "required_files": [
+      "wireframe-summary.md",
+      "wireframe-manifest.json",
+      "navigation-map.md",
+      "navigation-map.json",
+      "pages/*.md",
+      "freeze.json",
+      "prototype-review.json"
+    ]
+  },
+  "parser": {
+    "page_detection": "keyword-catalog",
+    "fallback_used": false,
+    "cjk_detected": true,
+    "cjk_parse_failed": false
+  },
+  "theme": {
+    "ui_kit": "wireframe-markdown-v1",
+    "prototype_archetype": "admin-workbench",
+    "primary": "#1F6FEB",
+    "secondary": "#0F172A",
+    "surface_note": "Wireframe freeze uses markdown and metadata only, not high-fidelity HTML surfaces."
   }
 }

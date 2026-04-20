@@ -1,60 +1,109 @@
 {
   "page_id": "project-detail",
-  "intent": "Project Detail reference page",
-  "layout_type": "admin-workbench",
+  "name": "项目详情",
+  "priority": "P0",
+  "platforms": [
+    "Web",
+    "PC",
+    "App"
+  ],
+  "responsibility": "成为接力页，展示版本线、主 PRD、并行 PRD、需求闭环和推荐动作。",
   "sections": [
-    "portfolio-overview",
-    "project-detail",
-    "runtime-center",
-    "recovery-diagnostics"
+    "项目头部摘要",
+    "版本与分支信息",
+    "主 PRD 与并行 PRD",
+    "需求物料闭环状态",
+    "最近交付与下一步",
+    "运行态摘要卡"
   ],
-  "components": [
-    "header",
-    "content",
-    "primary-cta"
-  ],
-  "primary_cta": "查看项目详情",
-  "secondary_ctas": [
-    "打开运行态"
+  "actions": [
+    {
+      "label": "查看运行中心",
+      "target": "runtime-center",
+      "trigger": "点击运行态摘要"
+    },
+    {
+      "label": "查看恢复诊断",
+      "target": "recovery-diagnostics",
+      "trigger": "点击恢复诊断入口"
+    },
+    {
+      "label": "查看项目物料",
+      "target": "material-viewer",
+      "trigger": "点击文档查看入口"
+    },
+    {
+      "label": "返回管理总览",
+      "target": "management-overview",
+      "trigger": "点击返回"
+    }
   ],
   "states": [
-    "healthy-summary",
-    "requirement-incomplete",
-    "implement-running",
-    "qa-running",
-    "release-ready",
-    "team-active",
-    "ralph-active",
-    "blocked",
-    "db-offline",
-    "partial-rebuild"
+    {
+      "id": "ready",
+      "label": "可接力",
+      "description": "版本、PRD、需求闭环和下一步信息完整。"
+    },
+    {
+      "id": "requirement-missing",
+      "label": "需求缺口",
+      "description": "PRD / user-story / test-case 存在缺口。"
+    },
+    {
+      "id": "draft",
+      "label": "需求草稿",
+      "description": "需求已建立但未冻结。"
+    },
+    {
+      "id": "frozen",
+      "label": "需求冻结",
+      "description": "需求链与 prototype 都已冻结。"
+    },
+    {
+      "id": "runtime-active",
+      "label": "运行中",
+      "description": "存在 single / team / ralph 运行摘要。"
+    },
+    {
+      "id": "loading",
+      "label": "加载中",
+      "description": "项目详情正在聚合。"
+    },
+    {
+      "id": "error",
+      "label": "错误",
+      "description": "详情聚合失败但给出恢复链路。"
+    }
   ],
-  "route_targets": [
-    "project-detail",
-    "runtime-center",
-    "recovery-diagnostics",
-    "portfolio-overview"
-  ],
-  "truth_notes": [
-    "compiled_from:docs/beacon/v1.3.4/user-story/beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane.md"
-  ],
-  "baseline_guardrails": [
-    "git and worktree governance card",
-    "main PRD and parallel PRD distinction",
-    "recommended next skill and next action",
-    "requirement materials completeness panel"
-  ],
-  "content_model": {
-    "variant": "reference",
-    "headline": "Project Detail",
-    "subheadline": "Project Detail reference page",
-    "primary_cta": "查看项目详情",
-    "secondary_cta": "打开运行态",
-    "baseline_guardrails": [
-      "git and worktree governance card",
-      "main PRD and parallel PRD distinction",
-      "recommended next skill and next action",
-      "requirement materials completeness panel"
+  "requirement_refs": {
+    "user-story": [
+      "docs/beacon/v1.3.4/user-story/beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane.md"
+    ],
+    "prd": [
+      "docs/beacon/v1.3.4/prd/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md"
+    ],
+    "test-case": [
+      "docs/beacon/v1.3.4/qa/test-cases/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md"
     ]
-  }
+  },
+  "outbound_transitions": [
+    {
+      "from": "project-detail",
+      "to": "runtime-center",
+      "trigger": "点击运行态摘要",
+      "type": "drill-down"
+    },
+    {
+      "from": "project-detail",
+      "to": "recovery-diagnostics",
+      "trigger": "点击恢复诊断入口",
+      "type": "drill-down"
+    },
+    {
+      "from": "project-detail",
+      "to": "management-overview",
+      "trigger": "点击返回",
+      "type": "return"
+    }
+  ]
 }

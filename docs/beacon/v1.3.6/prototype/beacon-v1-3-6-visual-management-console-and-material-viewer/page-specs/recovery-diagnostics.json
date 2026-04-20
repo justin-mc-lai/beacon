@@ -1,0 +1,79 @@
+{
+  "page_id": "recovery-diagnostics",
+  "name": "恢复诊断",
+  "priority": "P2",
+  "platforms": [
+    "Web",
+    "PC"
+  ],
+  "responsibility": "解释 degraded / rebuild / doctor，明确 truth 仍来自 docs/beacon 与 .beacon。",
+  "sections": [
+    "truth 来源说明",
+    "degraded / rebuild / doctor 诊断卡",
+    "恢复步骤",
+    "风险提示"
+  ],
+  "actions": [
+    {
+      "label": "返回项目详情",
+      "target": "project-detail",
+      "trigger": "点击返回"
+    },
+    {
+      "label": "前往运行中心",
+      "target": "runtime-center",
+      "trigger": "点击运行态关联"
+    }
+  ],
+  "states": [
+    {
+      "id": "healthy-warning",
+      "label": "健康但预警",
+      "description": "当前系统可用但存在恢复风险提示。"
+    },
+    {
+      "id": "degraded",
+      "label": "降级",
+      "description": "SQLite 或 PocketBase 缺失，但 truth 仍可从文档恢复。"
+    },
+    {
+      "id": "rebuild-suggested",
+      "label": "建议重建",
+      "description": "投影层需要重建。"
+    },
+    {
+      "id": "doctor-suggested",
+      "label": "建议 doctor",
+      "description": "推荐执行 doctor 修复上下文。"
+    },
+    {
+      "id": "loading",
+      "label": "加载中",
+      "description": "诊断结果仍在采集。"
+    },
+    {
+      "id": "error",
+      "label": "错误",
+      "description": "诊断页本身无法完成聚合。"
+    }
+  ],
+  "requirement_refs": {
+    "user-story": [
+      "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+    ],
+    "prd": [
+      "docs/beacon/v1.3.6/prd/beacon-v1-3-6-visual-management-console-and-material-viewer.md"
+    ],
+    "test-case": [
+      "docs/beacon/v1.3.6/qa/test-cases/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+    ]
+  },
+  "outbound_transitions": [
+    {
+      "from": "recovery-diagnostics",
+      "to": "project-detail",
+      "trigger": "点击返回",
+      "type": "return"
+    }
+  ]
+}

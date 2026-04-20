@@ -89,7 +89,7 @@ visual plane
 17. `./research/beacon-v1.3.4-one-person-company-ops-board-model.md`
 18. `./research/beacon-v1.3.4-real-project-board-acceptance-brainstorm.md`
 19. `./execution/real-project-validation-checklist-beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md`
-20. `./prototype/beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane/index.html`
+20. `./prototype/beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane/wireframe-summary.md`
 
 ## 当前版本包起点
 
@@ -142,17 +142,17 @@ visual plane
   - 将 `rolo / slow_uni_bmtop / shopxo_canada / beacon` 四项目并板验收冻结成执行清单
   - 约束首页总览、详情解释性、debug 三态、deterministic projection 与断库重建
 
-当前已补充一套冻结 prototype 参考包：
+当前已补充一套冻结 prototype wireframe 包：
 
 - `prototype/beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane/`
-  - `index.html`
-  - `design-prompt.md`
-  - `ui-style-analysis.md`
+  - `wireframe-summary.md`
+  - `wireframe-manifest.json`
+  - `navigation-map.md`
   - `prototype-review.md`
   - `freeze.json`
   - `page-specs/`
   - `pages/`
-  - `states/`
+  - `coverage-report.json`
 
 其原型 source envelope 位于：
 

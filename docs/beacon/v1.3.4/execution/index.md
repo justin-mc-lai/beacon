@@ -24,7 +24,8 @@
 20. `./beacon-toolkit-lighthouse-prd-implement-drift-closure.md`
 21. `./real-project-validation-checklist-beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md`
 22. `./doctor-orchestration-blueprint.md`
-23. `../prototype/beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane/index.html`
+23. `../prototype/beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane/wireframe-summary.md`
+24. `./public-board-ingress-runbook.md`
 
 ## 说明
 

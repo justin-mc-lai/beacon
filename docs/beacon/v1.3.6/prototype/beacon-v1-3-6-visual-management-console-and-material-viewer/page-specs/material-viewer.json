@@ -1,0 +1,80 @@
+{
+  "page_id": "material-viewer",
+  "name": "项目物料查看器",
+  "priority": "P1",
+  "platforms": [
+    "Web",
+    "PC"
+  ],
+  "responsibility": "按 version -> document type -> feature 提供只读 Markdown 浏览。",
+  "sections": [
+    "版本树",
+    "文档类型列表",
+    "feature 目录",
+    "文档阅读面板",
+    "来源路径信息"
+  ],
+  "actions": [
+    {
+      "label": "打开文档",
+      "target": "material-document-detail",
+      "trigger": "点击文档列表项"
+    },
+    {
+      "label": "返回项目详情",
+      "target": "project-detail",
+      "trigger": "点击返回"
+    }
+  ],
+  "states": [
+    {
+      "id": "ready",
+      "label": "可浏览",
+      "description": "版本树和文档列表已加载。"
+    },
+    {
+      "id": "document-open",
+      "label": "文档已打开",
+      "description": "右侧阅读区显示当前文档正文。"
+    },
+    {
+      "id": "source-missing",
+      "label": "来源缺失",
+      "description": "目标文档不存在或暂不可读。"
+    },
+    {
+      "id": "loading",
+      "label": "加载中",
+      "description": "文档列表或内容仍在加载。"
+    },
+    {
+      "id": "empty",
+      "label": "空状态",
+      "description": "该版本或类型下没有可读文档。"
+    },
+    {
+      "id": "error",
+      "label": "错误",
+      "description": "文档读取失败。"
+    }
+  ],
+  "requirement_refs": {
+    "user-story": [
+      "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+    ],
+    "prd": [
+      "docs/beacon/v1.3.6/prd/beacon-v1-3-6-visual-management-console-and-material-viewer.md"
+    ],
+    "test-case": [
+      "docs/beacon/v1.3.6/qa/test-cases/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+    ]
+  },
+  "outbound_transitions": [
+    {
+      "from": "material-viewer",
+      "to": "material-document-detail",
+      "trigger": "点击文档列表项",
+      "type": "drill-down"
+    }
+  ]
+}

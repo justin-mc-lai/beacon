@@ -500,18 +500,14 @@ class TestBeaconUISpec:
         assert result.exit_code == 0
 
 
-class TestBeaconWireframe:
-    """Test wireframe command"""
+class TestBeaconWireframeRetired:
+    """Test wireframe retirement"""
 
-    def test_wireframe_help(self):
-        """Test wireframe help"""
+    def test_wireframe_command_not_registered(self):
+        """Test wireframe command is no longer exposed"""
         result = runner.invoke(app, ["wireframe", "--help"])
-        assert result.exit_code == 0
-
-    def test_wireframe_create(self, tmp_path):
-        """Test wireframe create"""
-        result = runner.invoke(app, ["wireframe", "create", "登录页面", "--project", str(tmp_path)])
-        assert result.exit_code == 0
+        assert result.exit_code != 0
+        assert "No such command" in result.output
 
 
 class TestBeaconPrototype:

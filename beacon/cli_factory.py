@@ -17,7 +17,7 @@ def build_app(*, package_version: str) -> typer.Typer:
         name="beacon",
         help=(
             "Beacon - Evidence-first Product Workflow Kernel\n\n"
-            "Mainline: think -> user-story -> prd -> test-case -> implement -> qa -> gate -> release"
+            "Mainline: think -> user-story -> prd -> test-case -> prototype -> implement -> qa -> gate -> release"
         ),
         add_completion=False,
         no_args_is_help=True,
@@ -108,7 +108,6 @@ def build_app(*, package_version: str) -> typer.Typer:
 
     # Design & Collaboration commands
     from .commands.ui_spec import app as ui_spec_app
-    from .commands.wireframe import app as wireframe_app
     from .commands.prototype import app as prototype_app
     from .commands.lighthouse import app as lighthouse_app
     from .commands.memory_friction_evolution import app as memory_friction_evolution_app
@@ -166,7 +165,6 @@ def build_app(*, package_version: str) -> typer.Typer:
 
     # Design & Collaboration commands
     app.add_typer(ui_spec_app, name="ui-spec", hidden=True)
-    app.add_typer(wireframe_app, name="wireframe", hidden=True)
     app.add_typer(lighthouse_app, name="lighthouse", hidden=True)
     app.add_typer(memory_friction_evolution_app, name="memory-friction-evolution", hidden=True)
     app.add_typer(prd_bootstrap_app, name="prd-bootstrap", hidden=True)
@@ -191,8 +189,6 @@ def build_app(*, package_version: str) -> typer.Typer:
     labs_app.add_typer(persona_app, name="persona")
     labs_app.add_typer(roadmap_app, name="roadmap")
     labs_app.add_typer(ui_spec_app, name="ui-spec")
-    labs_app.add_typer(wireframe_app, name="wireframe")
-
     bridge_app.add_typer(run_app, name="run")
     bridge_app.add_typer(team_app, name="team")
     bridge_app.add_typer(ralph_bridge_app, name="ralph")

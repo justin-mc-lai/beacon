@@ -21,33 +21,23 @@ def _prepare_contract_sources(tmp_path: Path, feature: str, version: str = "v1.1
     slug = feature.lower().replace(" ", "-")
     us_dir = tmp_path / "docs" / "beacon" / version / "user-story"
     prd_dir = tmp_path / "docs" / "beacon" / version / "prd"
+    tc_dir = tmp_path / "docs" / "beacon" / version / "qa" / "test-cases"
     us_dir.mkdir(parents=True, exist_ok=True)
     prd_dir.mkdir(parents=True, exist_ok=True)
+    tc_dir.mkdir(parents=True, exist_ok=True)
     body = """ui_visualization_required: true
 prototype_archetype: admin-workbench
-target_user: ops lead
-theme_mood: trusted
-theme_primary: #2563eb
-theme_secondary: #111827
-brand_keywords: trust, delivery, visibility
-surface_style: elevated-clean
-sections: Overview, Queue, Escalations
-navigation: Overview, Queue, Escalations
-primary_entry: Overview
-primary_exit: Escalations
-primary_cta: Review blockers
-secondary_cta: Export report
-jump_map: Overview->Queue: Review pending blockers; Queue->Escalations: Escalate failures
-tab_map: Overview, Queue, States
-states: empty, loading, error, success, blocked
 route_closure_required: true
-drift_guardrails: isolated-page, fragile-route, legacy-only-entry, fake-jump, tab-route-drift
+首页
+管理总览
+项目详情
+运行中心
 """
-    (us_dir / f"{slug}.md").write_text("# User Story\n" + body, encoding="utf-8")
-    (prd_dir / f"{slug}.md").write_text("# PRD\n" + body, encoding="utf-8")
+    for directory in (us_dir, prd_dir, tc_dir):
+        (directory / f"{slug}.md").write_text("# Requirement\n" + body, encoding="utf-8")
 
 
-def test_v110_prototype_create_should_emit_route_closure_contract_and_impl_map(tmp_path: Path):
+def test_v110_prototype_create_should_emit_route_closure_contract_and_stub_impl_map(tmp_path: Path):
     feature = "Frontend Route Closure"
     version = "v1.1.10"
     _prepare_contract_sources(tmp_path, feature, version)
@@ -61,7 +51,7 @@ def test_v110_prototype_create_should_emit_route_closure_contract_and_impl_map(t
     implementation_map = json.loads((root / "implementation-map.json").read_text(encoding="utf-8"))
     assert route_contract["required"] is True
     assert route_contract["closure_cases"]
-    assert implementation_map["closure_bindings"]
+    assert implementation_map["closure_bindings"] == []
 
 
 def test_v110_prototype_review_should_fail_until_route_closure_is_bound(tmp_path: Path):
@@ -77,15 +67,9 @@ def test_v110_prototype_review_should_fail_until_route_closure_is_bound(tmp_path
     failed = {item["name"] for item in payload["checks"] if item["status"] == "fail"}
     assert "route_closure_binding_complete" in failed
 
-    root = tmp_path / "docs" / "beacon" / version / "prototype" / "frontend-route-closure"
-    impl = json.loads((root / "implementation-map.json").read_text(encoding="utf-8"))
-    for binding in impl["closure_bindings"]:
-        binding["binding_status"] = "bound"
-        binding["runtime_target"] = f"/{binding['case_id'].lower()}"
-        if binding.get("context_contract"):
-            binding["state_target"] = "queue"
-        binding["drift_status"] = "closed"
-    (root / "implementation-map.json").write_text(json.dumps(impl, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    bind = _invoke(["prototype", "bind", feature, "--project", str(tmp_path), "--version", version, "--json"])
+    assert bind.exit_code == 0, bind.stdout
+    assert json.loads(bind.stdout)["bound_cases"] > 0
 
     review_after = _invoke(["prototype", "review", feature, "--project", str(tmp_path), "--version", version, "--json"])
     assert review_after.exit_code == 0, review_after.stdout

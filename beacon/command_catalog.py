@@ -54,7 +54,6 @@ LABS_COMMANDS = (
     "persona",
     "roadmap",
     "ui-spec",
-    "wireframe",
 )
 
 BRIDGE_COMMANDS = (
@@ -124,7 +123,6 @@ SUPPORTED_SUBCOMMANDS = (
     "user-story",
     "verify",
     "version",
-    "wireframe",
     "work",
     "workflow",
 )

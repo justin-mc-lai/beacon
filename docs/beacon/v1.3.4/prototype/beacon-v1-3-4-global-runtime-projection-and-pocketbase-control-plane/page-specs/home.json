@@ -1,0 +1,86 @@
+{
+  "page_id": "home",
+  "name": "首页",
+  "priority": "P0",
+  "platforms": [
+    "Web",
+    "PC"
+  ],
+  "responsibility": "先回答经营判断，展示项目数、阻塞数、当前交付和介入点。",
+  "sections": [
+    "经营总览条",
+    "重点介入区",
+    "项目推进摘要",
+    "当前交付卡片",
+    "下一步建议"
+  ],
+  "actions": [
+    {
+      "label": "查看管理总览",
+      "target": "management-overview",
+      "trigger": "点击项目组合入口"
+    },
+    {
+      "label": "进入重点项目",
+      "target": "project-detail",
+      "trigger": "点击重点项目卡片"
+    }
+  ],
+  "states": [
+    {
+      "id": "ready",
+      "label": "正常总览",
+      "description": "展示项目数、阻塞数、当前交付和下一步。"
+    },
+    {
+      "id": "blocked",
+      "label": "阻塞高亮",
+      "description": "把阻塞项目和介入点提升到首屏。"
+    },
+    {
+      "id": "intervention-needed",
+      "label": "需介入",
+      "description": "强调需要 CEO / 负责人介入的项目。"
+    },
+    {
+      "id": "loading",
+      "label": "加载中",
+      "description": "首页摘要数据仍在汇总。"
+    },
+    {
+      "id": "empty",
+      "label": "空状态",
+      "description": "当前没有受管项目。"
+    },
+    {
+      "id": "error",
+      "label": "错误",
+      "description": "摘要聚合失败，但提示可以进入详情或 doctor。"
+    }
+  ],
+  "requirement_refs": {
+    "user-story": [
+      "docs/beacon/v1.3.4/user-story/beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane.md"
+    ],
+    "prd": [
+      "docs/beacon/v1.3.4/prd/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md"
+    ],
+    "test-case": [
+      "docs/beacon/v1.3.4/qa/test-cases/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md"
+    ]
+  },
+  "outbound_transitions": [
+    {
+      "from": "home",
+      "to": "management-overview",
+      "trigger": "点击项目组合入口",
+      "type": "primary"
+    },
+    {
+      "from": "home",
+      "to": "project-detail",
+      "trigger": "点击重点项目卡片",
+      "type": "primary"
+    }
+  ]
+}

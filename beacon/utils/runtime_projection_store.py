@@ -9,6 +9,7 @@ import sqlite3
 from pathlib import Path
 from typing import Any
 
+from beacon.utils.runtime_projection_board import write_public_board_pack
 from beacon.utils.runtime import now_iso, read_json, write_json
 
 
@@ -37,6 +38,10 @@ def runtime_ledger_exports_root() -> Path:
 
 def pocketbase_projection_root() -> Path:
     return runtime_ledger_root() / "pocketbase"
+
+
+def pocketbase_public_root() -> Path:
+    return pocketbase_projection_root() / "pb_public"
 
 
 def pocketbase_managed_bin_path() -> Path:
@@ -128,6 +133,7 @@ def _control_plane_schema() -> dict[str, Any]:
 def ensure_pocketbase_control_plane() -> dict[str, Any]:
     root = pocketbase_projection_root()
     collections_root = _ensure_dir(root / "collections")
+    public_root = _ensure_dir(root / "pb_public")
     _ensure_dir(root / "bin")
     _ensure_dir(root / "pb_data")
     backups_root = _ensure_dir(root / "backups")
@@ -152,7 +158,7 @@ def ensure_pocketbase_control_plane() -> dict[str, Any]:
                 'BIN="${BEACON_POCKETBASE_BIN:-$ROOT/bin/pocketbase}"',
                 '[ -x "$BIN" ] || BIN="pocketbase"',
                 f'LISTEN="${{BEACON_POCKETBASE_HOST:-{urls["listen"]}}}"',
-                'exec "$BIN" serve --dir "$ROOT/pb_data" --http "$LISTEN"',
+                'exec "$BIN" serve --dir "$ROOT/pb_data" --publicDir "$ROOT/pb_public" --http "$LISTEN"',
                 "",
             ]
         ),
@@ -187,6 +193,7 @@ def ensure_pocketbase_control_plane() -> dict[str, Any]:
         "admin_ui": urls["admin_ui"],
         "api": urls["api"],
         "collections_root": str(collections_root),
+        "public_root": str(public_root),
         "schema_path": str(schema_path),
         "backups_root": str(backups_root),
         "exports_root": str(exports_root),
@@ -206,6 +213,9 @@ def inspect_pocketbase_control_plane() -> dict[str, Any]:
     missing: list[str] = []
     if not collections_root.exists():
         missing.append("collections_root")
+    public_root = pocketbase_public_root()
+    if not public_root.exists():
+        missing.append("public_root")
     if not (root / "collection-schema.json").exists():
         missing.append("collection_schema")
     if not (root / "scripts" / "serve-pocketbase.sh").exists():
@@ -217,6 +227,7 @@ def inspect_pocketbase_control_plane() -> dict[str, Any]:
     return {
         **manifest,
         "root": str(root),
+        "public_root": str(public_root),
         "exists": root.exists(),
         "status": "ready" if root.exists() and not missing else "degraded" if root.exists() else "missing",
         "missing": missing,
@@ -932,6 +943,13 @@ def write_pocketbase_projection_pack(envelope: dict[str, Any]) -> dict[str, str]
             "control_plane": control_plane,
         },
     )
+    board_paths = write_public_board_pack(
+        pocketbase_root=root,
+        control_plane=control_plane,
+        generated_at=now_iso(),
+    )
+    for key, value in board_paths.items():
+        written[f"board_{key}"] = value
     return written
 
 
@@ -1224,6 +1242,20 @@ def verify_runtime_ledger(
                 "binary_available": bool(control_plane.get("binary_available")),
                 "binary_path": str(control_plane.get("binary_path") or ""),
                 "admin_ui": str(control_plane.get("admin_ui") or ""),
+            },
+        },
+        {
+            "name": "pocketbase_board_surface",
+            "status": "pass"
+            if (pocketbase_public_root() / "index.html").exists()
+            and (pocketbase_public_root() / "portfolio-overview" / "index.html").exists()
+            and (pocketbase_public_root() / "data" / "portfolio-summary.json").exists()
+            else "warn",
+            "details": {
+                "public_root": str(pocketbase_public_root()),
+                "index": str((pocketbase_public_root() / "index.html")),
+                "portfolio_page": str((pocketbase_public_root() / "portfolio-overview" / "index.html")),
+                "portfolio_data": str((pocketbase_public_root() / "data" / "portfolio-summary.json")),
             },
         },
     ]

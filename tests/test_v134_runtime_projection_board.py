@@ -21,9 +21,15 @@ def _invoke(args: list[str]):
 def _seed_docs(root: Path, version: str = "v1.3.4") -> None:
     base = root / "docs" / "beacon" / version
     (base / "execution").mkdir(parents=True, exist_ok=True)
+    (base / "prd").mkdir(parents=True, exist_ok=True)
+    (base / "user-story").mkdir(parents=True, exist_ok=True)
+    (base / "qa" / "test-cases").mkdir(parents=True, exist_ok=True)
     (base / "SUMMARY.md").write_text(f"# {version}\n", encoding="utf-8")
-    (base / "execution" / "index.md").write_text("# Execution Index\n", encoding="utf-8")
-    (base / "execution" / "architecture-blueprint.md").write_text("# Architecture\n", encoding="utf-8")
+    (base / "execution" / "index.md").write_text("# Execution Index\n\n- A\n", encoding="utf-8")
+    (base / "execution" / "architecture-blueprint.md").write_text("# Architecture\n\nBeacon runtime.\n", encoding="utf-8")
+    (base / "prd" / "beacon-runtime-ledger.md").write_text("# Runtime Ledger PRD\n\n- scope\n", encoding="utf-8")
+    (base / "user-story" / "beacon-runtime-ledger.md").write_text("# Runtime Ledger User Story\n\n1. actor\n", encoding="utf-8")
+    (base / "qa" / "test-cases" / "beacon-runtime-ledger.md").write_text("# Runtime Ledger Test Case\n\n> verify\n", encoding="utf-8")
 
 
 def _make_projection_envelope(root: Path, *, project_key: str, display_name: str) -> dict[str, object]:
@@ -240,6 +246,27 @@ def test_v134_runtime_projection_store_should_sync_and_list_portfolio(monkeypatc
     detail = store_module.load_project_detail("alpha")
     assert detail["display_name"] == "Alpha"
     assert detail["projection"]["projection_seq"] == "ps-alpha"
+
+
+def test_v134_public_board_should_include_document_projection(monkeypatch, tmp_path: Path) -> None:
+    ledger_root = tmp_path / "ledger"
+    monkeypatch.setenv("BEACON_RUNTIME_LEDGER_ROOT", str(ledger_root))
+
+    project_root = tmp_path / "alpha"
+    _seed_docs(project_root)
+    envelope = _make_projection_envelope(project_root, project_key="alpha", display_name="Alpha")
+    store_module.sync_projection(envelope)
+
+    detail_path = ledger_root / "pocketbase" / "pb_public" / "data" / "projects" / "alpha.json"
+    detail = json.loads(detail_path.read_text(encoding="utf-8"))
+    assert any(item["section"] == "版本摘要" for item in detail["documents"])
+    assert any(item["section"] == "执行蓝图" for item in detail["documents"])
+
+    summary_doc_key = next(item["doc_key"] for item in detail["documents"] if item["relative_path"] == "SUMMARY.md")
+    summary_doc_path = ledger_root / "pocketbase" / "pb_public" / "data" / "documents" / "alpha" / f"{summary_doc_key}.json"
+    summary_doc = json.loads(summary_doc_path.read_text(encoding="utf-8"))
+    assert summary_doc["title"] == "v1.3.4"
+    assert "# v1.3.4" in summary_doc["content"]
 
 
 def test_v134_status_board_should_sync_projection_and_render_portfolio(monkeypatch, tmp_path: Path) -> None:
