@@ -1,0 +1,3500 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface",
+  "feature_slug": "beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface",
+  "version": "v1.3.5",
+  "generated_at": "2026-04-20T15:24:43.762453+00:00",
+  "expansion_profile": "pua-web",
+  "scenario_depth": "standard",
+  "families_required": [
+    "happy",
+    "negative",
+    "boundary",
+    "recovery",
+    "compatibility"
+  ],
+  "stories": [
+    {
+      "ac_id": "AC-001",
+      "theme": "general",
+      "text": "Beacon 不新增新的一级主命令，但新增一个宿主可见 `beacon-change` 子 skill 草案，并明确其不是新主阶段。",
+      "scenario_ids": [
+        "SC-001",
+        "SC-002",
+        "SC-003",
+        "SC-004",
+        "SC-005",
+        "SC-006",
+        "SC-007",
+        "SC-008",
+        "SC-009",
+        "SC-010",
+        "SC-011",
+        "SC-012",
+        "SC-013",
+        "SC-014",
+        "SC-015"
+      ],
+      "scenario_families": [
+        "happy",
+        "negative",
+        "boundary",
+        "recovery",
+        "compatibility",
+        "happy",
+        "negative",
+        "boundary",
+        "recovery",
+        "compatibility",
+        "happy",
+        "negative",
+        "boundary",
+        "recovery",
+        "compatibility"
+      ],
+      "required_families": [
+        "happy",
+        "negative",
+        "boundary",
+        "recovery",
+        "compatibility",
+        "happy",
+        "negative",
+        "boundary",
+        "recovery",
+        "compatibility",
+        "happy",
+        "negative",
+        "boundary",
+        "recovery",
+        "compatibility"
+      ],
+      "scenarios": [
+        {
+          "scenario_id": "SC-001",
+          "source_tc_id": "TC-001",
+          "tc_id": "TC-001-HAPPY",
+          "scenario_family": "happy",
+          "qa_type": "unit",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-002",
+          "source_tc_id": "TC-001",
+          "tc_id": "TC-001-NEGATIVE",
+          "scenario_family": "negative",
+          "qa_type": "unit",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-003",
+          "source_tc_id": "TC-001",
+          "tc_id": "TC-001-BOUNDARY",
+          "scenario_family": "boundary",
+          "qa_type": "unit",
+          "browser_required": true,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-004",
+          "source_tc_id": "TC-001",
+          "tc_id": "TC-001-RECOVERY",
+          "scenario_family": "recovery",
+          "qa_type": "unit",
+          "browser_required": true,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-005",
+          "source_tc_id": "TC-001",
+          "tc_id": "TC-001-COMPATIBILITY",
+          "scenario_family": "compatibility",
+          "qa_type": "compatibility",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-006",
+          "source_tc_id": "TC-007",
+          "tc_id": "TC-007-HAPPY",
+          "scenario_family": "happy",
+          "qa_type": "interface",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-007",
+          "source_tc_id": "TC-007",
+          "tc_id": "TC-007-NEGATIVE",
+          "scenario_family": "negative",
+          "qa_type": "interface",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-008",
+          "source_tc_id": "TC-007",
+          "tc_id": "TC-007-BOUNDARY",
+          "scenario_family": "boundary",
+          "qa_type": "interface",
+          "browser_required": true,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-009",
+          "source_tc_id": "TC-007",
+          "tc_id": "TC-007-RECOVERY",
+          "scenario_family": "recovery",
+          "qa_type": "interface",
+          "browser_required": true,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-010",
+          "source_tc_id": "TC-007",
+          "tc_id": "TC-007-COMPATIBILITY",
+          "scenario_family": "compatibility",
+          "qa_type": "compatibility",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-011",
+          "source_tc_id": "TC-013",
+          "tc_id": "TC-013-HAPPY",
+          "scenario_family": "happy",
+          "qa_type": "exception",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-012",
+          "source_tc_id": "TC-013",
+          "tc_id": "TC-013-NEGATIVE",
+          "scenario_family": "negative",
+          "qa_type": "exception",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-013",
+          "source_tc_id": "TC-013",
+          "tc_id": "TC-013-BOUNDARY",
+          "scenario_family": "boundary",
+          "qa_type": "exception",
+          "browser_required": true,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-014",
+          "source_tc_id": "TC-013",
+          "tc_id": "TC-013-RECOVERY",
+          "scenario_family": "recovery",
+          "qa_type": "exception",
+          "browser_required": true,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-015",
+          "source_tc_id": "TC-013",
+          "tc_id": "TC-013-COMPATIBILITY",
+          "scenario_family": "compatibility",
+          "qa_type": "compatibility",
+          "browser_required": true,
+          "replay_required": true
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "general",
+      "text": "冻结后的 feature 能走通 `change intake -> reopen -> prd revise -> user-story refresh -> test-case refresh -> prototype refresh -> re-freeze -> implement fix -> qa delta-run -> release recheck`。",
+      "scenario_ids": [
+        "SC-016",
+        "SC-017",
+        "SC-018",
+        "SC-019",
+        "SC-020",
+        "SC-021",
+        "SC-022",
+        "SC-023",
+        "SC-024",
+        "SC-025",
+        "SC-026",
+        "SC-027",
+        "SC-028",
+        "SC-029",
+        "SC-030"
+      ],
+      "scenario_families": [
+        "happy",
+        "negative",
+        "boundary",
+        "recovery",
+        "compatibility",
+        "happy",
+        "negative",
+        "boundary",
+        "recovery",
+        "compatibility",
+        "happy",
+        "negative",
+        "boundary",
+        "recovery",
+        "compatibility"
+      ],
+      "required_families": [
+        "happy",
+        "negative",
+        "boundary",
+        "recovery",
+        "compatibility",
+        "happy",
+        "negative",
+        "boundary",
+        "recovery",
+        "compatibility",
+        "happy",
+        "negative",
+        "boundary",
+        "recovery",
+        "compatibility"
+      ],
+      "scenarios": [
+        {
+          "scenario_id": "SC-016",
+          "source_tc_id": "TC-002",
+          "tc_id": "TC-002-HAPPY",
+          "scenario_family": "happy",
+          "qa_type": "unit",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-017",
+          "source_tc_id": "TC-002",
+          "tc_id": "TC-002-NEGATIVE",
+          "scenario_family": "negative",
+          "qa_type": "unit",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-018",
+          "source_tc_id": "TC-002",
+          "tc_id": "TC-002-BOUNDARY",
+          "scenario_family": "boundary",
+          "qa_type": "unit",
+          "browser_required": true,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-019",
+          "source_tc_id": "TC-002",
+          "tc_id": "TC-002-RECOVERY",
+          "scenario_family": "recovery",
+          "qa_type": "unit",
+          "browser_required": true,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-020",
+          "source_tc_id": "TC-002",
+          "tc_id": "TC-002-COMPATIBILITY",
+          "scenario_family": "compatibility",
+          "qa_type": "compatibility",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-021",
+          "source_tc_id": "TC-008",
+          "tc_id": "TC-008-HAPPY",
+          "scenario_family": "happy",
+          "qa_type": "contract",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-022",
+          "source_tc_id": "TC-008",
+          "tc_id": "TC-008-NEGATIVE",
+          "scenario_family": "negative",
+          "qa_type": "contract",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-023",
+          "source_tc_id": "TC-008",
+          "tc_id": "TC-008-BOUNDARY",
+          "scenario_family": "boundary",
+          "qa_type": "contract",
+          "browser_required": true,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-024",
+          "source_tc_id": "TC-008",
+          "tc_id": "TC-008-RECOVERY",
+          "scenario_family": "recovery",
+          "qa_type": "contract",
+          "browser_required": true,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-025",
+          "source_tc_id": "TC-008",
+          "tc_id": "TC-008-COMPATIBILITY",
+          "scenario_family": "compatibility",
+          "qa_type": "compatibility",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-026",
+          "source_tc_id": "TC-014",
+          "tc_id": "TC-014-HAPPY",
+          "scenario_family": "happy",
+          "qa_type": "functional",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-027",
+          "source_tc_id": "TC-014",
+          "tc_id": "TC-014-NEGATIVE",
+          "scenario_family": "negative",
+          "qa_type": "functional",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-028",
+          "source_tc_id": "TC-014",
+          "tc_id": "TC-014-BOUNDARY",
+          "scenario_family": "boundary",
+          "qa_type": "functional",
+          "browser_required": true,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-029",
+          "source_tc_id": "TC-014",
+          "tc_id": "TC-014-RECOVERY",
+          "scenario_family": "recovery",
+          "qa_type": "functional",
+          "browser_required": true,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-030",
+          "source_tc_id": "TC-014",
+          "tc_id": "TC-014-COMPATIBILITY",
+          "scenario_family": "compatibility",
+          "qa_type": "compatibility",
+          "browser_required": true,
+          "replay_required": true
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "general",
+      "text": "系统能提供一份文档化生命周期状态机，明确状态、迁移条件、阻断条件与产物边界。",
+      "scenario_ids": [
+        "SC-031",
+        "SC-032",
+        "SC-033",
+        "SC-034",
+        "SC-035",
+        "SC-036",
+        "SC-037",
+        "SC-038",
+        "SC-039",
+        "SC-040"
+      ],
+      "scenario_families": [
+        "happy",
+        "negative",
+        "boundary",
+        "recovery",
+        "compatibility",
+        "happy",
+        "negative",
+        "boundary",
+        "recovery",
+        "compatibility"
+      ],
+      "required_families": [
+        "happy",
+        "negative",
+        "boundary",
+        "recovery",
+        "compatibility",
+        "happy",
+        "negative",
+        "boundary",
+        "recovery",
+        "compatibility"
+      ],
+      "scenarios": [
+        {
+          "scenario_id": "SC-031",
+          "source_tc_id": "TC-003",
+          "tc_id": "TC-003-HAPPY",
+          "scenario_family": "happy",
+          "qa_type": "unit",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-032",
+          "source_tc_id": "TC-003",
+          "tc_id": "TC-003-NEGATIVE",
+          "scenario_family": "negative",
+          "qa_type": "unit",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-033",
+          "source_tc_id": "TC-003",
+          "tc_id": "TC-003-BOUNDARY",
+          "scenario_family": "boundary",
+          "qa_type": "unit",
+          "browser_required": true,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-034",
+          "source_tc_id": "TC-003",
+          "tc_id": "TC-003-RECOVERY",
+          "scenario_family": "recovery",
+          "qa_type": "unit",
+          "browser_required": true,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-035",
+          "source_tc_id": "TC-003",
+          "tc_id": "TC-003-COMPATIBILITY",
+          "scenario_family": "compatibility",
+          "qa_type": "compatibility",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-036",
+          "source_tc_id": "TC-009",
+          "tc_id": "TC-009-HAPPY",
+          "scenario_family": "happy",
+          "qa_type": "integration",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-037",
+          "source_tc_id": "TC-009",
+          "tc_id": "TC-009-NEGATIVE",
+          "scenario_family": "negative",
+          "qa_type": "integration",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-038",
+          "source_tc_id": "TC-009",
+          "tc_id": "TC-009-BOUNDARY",
+          "scenario_family": "boundary",
+          "qa_type": "integration",
+          "browser_required": true,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-039",
+          "source_tc_id": "TC-009",
+          "tc_id": "TC-009-RECOVERY",
+          "scenario_family": "recovery",
+          "qa_type": "integration",
+          "browser_required": true,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-040",
+          "source_tc_id": "TC-009",
+          "tc_id": "TC-009-COMPATIBILITY",
+          "scenario_family": "compatibility",
+          "qa_type": "compatibility",
+          "browser_required": true,
+          "replay_required": true
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "general",
+      "text": "变更后的 implement / qa / release 都绑定最新 frozen revision，不允许继续沿用旧 baseline。",
+      "scenario_ids": [
+        "SC-041",
+        "SC-042",
+        "SC-043",
+        "SC-044",
+        "SC-045",
+        "SC-046",
+        "SC-047",
+        "SC-048",
+        "SC-049",
+        "SC-050"
+      ],
+      "scenario_families": [
+        "happy",
+        "negative",
+        "boundary",
+        "recovery",
+        "compatibility",
+        "happy",
+        "negative",
+        "boundary",
+        "recovery",
+        "compatibility"
+      ],
+      "required_families": [
+        "happy",
+        "negative",
+        "boundary",
+        "recovery",
+        "compatibility",
+        "happy",
+        "negative",
+        "boundary",
+        "recovery",
+        "compatibility"
+      ],
+      "scenarios": [
+        {
+          "scenario_id": "SC-041",
+          "source_tc_id": "TC-004",
+          "tc_id": "TC-004-HAPPY",
+          "scenario_family": "happy",
+          "qa_type": "unit",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-042",
+          "source_tc_id": "TC-004",
+          "tc_id": "TC-004-NEGATIVE",
+          "scenario_family": "negative",
+          "qa_type": "unit",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-043",
+          "source_tc_id": "TC-004",
+          "tc_id": "TC-004-BOUNDARY",
+          "scenario_family": "boundary",
+          "qa_type": "unit",
+          "browser_required": true,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-044",
+          "source_tc_id": "TC-004",
+          "tc_id": "TC-004-RECOVERY",
+          "scenario_family": "recovery",
+          "qa_type": "unit",
+          "browser_required": true,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-045",
+          "source_tc_id": "TC-004",
+          "tc_id": "TC-004-COMPATIBILITY",
+          "scenario_family": "compatibility",
+          "qa_type": "compatibility",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-046",
+          "source_tc_id": "TC-010",
+          "tc_id": "TC-010-HAPPY",
+          "scenario_family": "happy",
+          "qa_type": "functional",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-047",
+          "source_tc_id": "TC-010",
+          "tc_id": "TC-010-NEGATIVE",
+          "scenario_family": "negative",
+          "qa_type": "functional",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-048",
+          "source_tc_id": "TC-010",
+          "tc_id": "TC-010-BOUNDARY",
+          "scenario_family": "boundary",
+          "qa_type": "functional",
+          "browser_required": true,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-049",
+          "source_tc_id": "TC-010",
+          "tc_id": "TC-010-RECOVERY",
+          "scenario_family": "recovery",
+          "qa_type": "functional",
+          "browser_required": true,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-050",
+          "source_tc_id": "TC-010",
+          "tc_id": "TC-010-COMPATIBILITY",
+          "scenario_family": "compatibility",
+          "qa_type": "compatibility",
+          "browser_required": true,
+          "replay_required": true
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "general",
+      "text": "`help/status` 在识别到冻结后需求调整时，稳定推荐 `beacon-change` 或等价 change loop。",
+      "scenario_ids": [
+        "SC-051",
+        "SC-052",
+        "SC-053",
+        "SC-054",
+        "SC-055",
+        "SC-056",
+        "SC-057",
+        "SC-058",
+        "SC-059",
+        "SC-060"
+      ],
+      "scenario_families": [
+        "happy",
+        "negative",
+        "boundary",
+        "recovery",
+        "compatibility",
+        "happy",
+        "negative",
+        "boundary",
+        "recovery",
+        "compatibility"
+      ],
+      "required_families": [
+        "happy",
+        "negative",
+        "boundary",
+        "recovery",
+        "compatibility",
+        "happy",
+        "negative",
+        "boundary",
+        "recovery",
+        "compatibility"
+      ],
+      "scenarios": [
+        {
+          "scenario_id": "SC-051",
+          "source_tc_id": "TC-005",
+          "tc_id": "TC-005-HAPPY",
+          "scenario_family": "happy",
+          "qa_type": "unit",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-052",
+          "source_tc_id": "TC-005",
+          "tc_id": "TC-005-NEGATIVE",
+          "scenario_family": "negative",
+          "qa_type": "unit",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-053",
+          "source_tc_id": "TC-005",
+          "tc_id": "TC-005-BOUNDARY",
+          "scenario_family": "boundary",
+          "qa_type": "unit",
+          "browser_required": true,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-054",
+          "source_tc_id": "TC-005",
+          "tc_id": "TC-005-RECOVERY",
+          "scenario_family": "recovery",
+          "qa_type": "unit",
+          "browser_required": true,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-055",
+          "source_tc_id": "TC-005",
+          "tc_id": "TC-005-COMPATIBILITY",
+          "scenario_family": "compatibility",
+          "qa_type": "compatibility",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-056",
+          "source_tc_id": "TC-011",
+          "tc_id": "TC-011-HAPPY",
+          "scenario_family": "happy",
+          "qa_type": "functional",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-057",
+          "source_tc_id": "TC-011",
+          "tc_id": "TC-011-NEGATIVE",
+          "scenario_family": "negative",
+          "qa_type": "functional",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-058",
+          "source_tc_id": "TC-011",
+          "tc_id": "TC-011-BOUNDARY",
+          "scenario_family": "boundary",
+          "qa_type": "functional",
+          "browser_required": true,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-059",
+          "source_tc_id": "TC-011",
+          "tc_id": "TC-011-RECOVERY",
+          "scenario_family": "recovery",
+          "qa_type": "functional",
+          "browser_required": true,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-060",
+          "source_tc_id": "TC-011",
+          "tc_id": "TC-011-COMPATIBILITY",
+          "scenario_family": "compatibility",
+          "qa_type": "compatibility",
+          "browser_required": true,
+          "replay_required": true
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-006",
+      "theme": "general",
+      "text": "`release` 能区分 initial delivery、revised delivery、hotfix delivery 的语义与 gate 对象。",
+      "scenario_ids": [
+        "SC-061",
+        "SC-062",
+        "SC-063",
+        "SC-064",
+        "SC-065",
+        "SC-066",
+        "SC-067",
+        "SC-068",
+        "SC-069",
+        "SC-070"
+      ],
+      "scenario_families": [
+        "happy",
+        "negative",
+        "boundary",
+        "recovery",
+        "compatibility",
+        "happy",
+        "negative",
+        "boundary",
+        "recovery",
+        "compatibility"
+      ],
+      "required_families": [
+        "happy",
+        "negative",
+        "boundary",
+        "recovery",
+        "compatibility",
+        "happy",
+        "negative",
+        "boundary",
+        "recovery",
+        "compatibility"
+      ],
+      "scenarios": [
+        {
+          "scenario_id": "SC-061",
+          "source_tc_id": "TC-006",
+          "tc_id": "TC-006-HAPPY",
+          "scenario_family": "happy",
+          "qa_type": "unit",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-062",
+          "source_tc_id": "TC-006",
+          "tc_id": "TC-006-NEGATIVE",
+          "scenario_family": "negative",
+          "qa_type": "unit",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-063",
+          "source_tc_id": "TC-006",
+          "tc_id": "TC-006-BOUNDARY",
+          "scenario_family": "boundary",
+          "qa_type": "unit",
+          "browser_required": true,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-064",
+          "source_tc_id": "TC-006",
+          "tc_id": "TC-006-RECOVERY",
+          "scenario_family": "recovery",
+          "qa_type": "unit",
+          "browser_required": true,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-065",
+          "source_tc_id": "TC-006",
+          "tc_id": "TC-006-COMPATIBILITY",
+          "scenario_family": "compatibility",
+          "qa_type": "compatibility",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-066",
+          "source_tc_id": "TC-012",
+          "tc_id": "TC-012-HAPPY",
+          "scenario_family": "happy",
+          "qa_type": "regression",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-067",
+          "source_tc_id": "TC-012",
+          "tc_id": "TC-012-NEGATIVE",
+          "scenario_family": "negative",
+          "qa_type": "regression",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-068",
+          "source_tc_id": "TC-012",
+          "tc_id": "TC-012-BOUNDARY",
+          "scenario_family": "boundary",
+          "qa_type": "regression",
+          "browser_required": true,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-069",
+          "source_tc_id": "TC-012",
+          "tc_id": "TC-012-RECOVERY",
+          "scenario_family": "recovery",
+          "qa_type": "regression",
+          "browser_required": true,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-070",
+          "source_tc_id": "TC-012",
+          "tc_id": "TC-012-COMPATIBILITY",
+          "scenario_family": "compatibility",
+          "qa_type": "compatibility",
+          "browser_required": true,
+          "replay_required": true
+        }
+      ]
+    }
+  ],
+  "scenarios": [
+    {
+      "scenario_id": "SC-001",
+      "source_tc_id": "TC-001",
+      "tc_id": "TC-001-HAPPY",
+      "ac_id": "AC-001",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "happy",
+      "title": "AC-001 happy path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "happy",
+        "unit",
+        "browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": true,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (happy path completes with expected evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-001-HAPPY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-002",
+      "source_tc_id": "TC-001",
+      "tc_id": "TC-001-NEGATIVE",
+      "ac_id": "AC-001",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "negative",
+      "title": "AC-001 negative path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "negative",
+        "unit",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-001"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (negative path is rejected or handled with explicit evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-001-NEGATIVE.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-003",
+      "source_tc_id": "TC-001",
+      "tc_id": "TC-001-BOUNDARY",
+      "ac_id": "AC-001",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "boundary",
+      "title": "AC-001 boundary path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": false,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "boundary",
+        "unit",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-001"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (boundary path is validated with explicit evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-001-BOUNDARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-004",
+      "source_tc_id": "TC-001",
+      "tc_id": "TC-001-RECOVERY",
+      "ac_id": "AC-001",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "recovery",
+      "title": "AC-001 recovery path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": false,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "recovery",
+        "unit",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-001"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (recovery path survives refresh/back/retry with evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-001-RECOVERY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-005",
+      "source_tc_id": "TC-001",
+      "tc_id": "TC-001-COMPATIBILITY",
+      "ac_id": "AC-001",
+      "qa_type": "compatibility",
+      "layer": "compatibility",
+      "scenario_family": "compatibility",
+      "title": "AC-001 compatibility path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "npx playwright test --project=chromium --project=firefox --project=webkit",
+      "coverage_axes": [
+        "compatibility",
+        "compatibility",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-001"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (compatibility path preserves behavior across browser/device pairs)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-001-COMPATIBILITY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-006",
+      "source_tc_id": "TC-007",
+      "tc_id": "TC-007-HAPPY",
+      "ac_id": "AC-001",
+      "qa_type": "interface",
+      "layer": "api-curl",
+      "scenario_family": "happy",
+      "title": "AC-001 happy path :: HTTP status and schema assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k interface --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "happy",
+        "interface",
+        "browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": true,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k interface --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "HTTP status and schema assertions pass (happy path completes with expected evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-007-HAPPY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-007",
+      "source_tc_id": "TC-007",
+      "tc_id": "TC-007-NEGATIVE",
+      "ac_id": "AC-001",
+      "qa_type": "interface",
+      "layer": "api-curl",
+      "scenario_family": "negative",
+      "title": "AC-001 negative path :: HTTP status and schema assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k interface --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "negative",
+        "interface",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-006"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k interface --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "HTTP status and schema assertions pass (negative path is rejected or handled with explicit evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-007-NEGATIVE.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-008",
+      "source_tc_id": "TC-007",
+      "tc_id": "TC-007-BOUNDARY",
+      "ac_id": "AC-001",
+      "qa_type": "interface",
+      "layer": "api-curl",
+      "scenario_family": "boundary",
+      "title": "AC-001 boundary path :: HTTP status and schema assertions pass",
+      "browser_required": true,
+      "replay_required": false,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k interface --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "boundary",
+        "interface",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-006"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k interface --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "HTTP status and schema assertions pass (boundary path is validated with explicit evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-007-BOUNDARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-009",
+      "source_tc_id": "TC-007",
+      "tc_id": "TC-007-RECOVERY",
+      "ac_id": "AC-001",
+      "qa_type": "interface",
+      "layer": "api-curl",
+      "scenario_family": "recovery",
+      "title": "AC-001 recovery path :: HTTP status and schema assertions pass",
+      "browser_required": true,
+      "replay_required": false,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k interface --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "recovery",
+        "interface",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-006"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k interface --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "HTTP status and schema assertions pass (recovery path survives refresh/back/retry with evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-007-RECOVERY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-010",
+      "source_tc_id": "TC-007",
+      "tc_id": "TC-007-COMPATIBILITY",
+      "ac_id": "AC-001",
+      "qa_type": "compatibility",
+      "layer": "compatibility",
+      "scenario_family": "compatibility",
+      "title": "AC-001 compatibility path :: HTTP status and schema assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "npx playwright test --project=chromium --project=firefox --project=webkit",
+      "coverage_axes": [
+        "compatibility",
+        "compatibility",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-006"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k interface --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "HTTP status and schema assertions pass (compatibility path preserves behavior across browser/device pairs)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-007-COMPATIBILITY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-011",
+      "source_tc_id": "TC-013",
+      "tc_id": "TC-013-HAPPY",
+      "ac_id": "AC-001",
+      "qa_type": "exception",
+      "layer": "exception",
+      "scenario_family": "happy",
+      "title": "AC-001 happy path :: Negative-path assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k exception --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "happy",
+        "exception",
+        "browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": true,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k exception --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Negative-path assertions pass (happy path completes with expected evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-013-HAPPY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-012",
+      "source_tc_id": "TC-013",
+      "tc_id": "TC-013-NEGATIVE",
+      "ac_id": "AC-001",
+      "qa_type": "exception",
+      "layer": "exception",
+      "scenario_family": "negative",
+      "title": "AC-001 negative path :: Negative-path assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k exception --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "negative",
+        "exception",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-011"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k exception --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Negative-path assertions pass (negative path is rejected or handled with explicit evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-013-NEGATIVE.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-013",
+      "source_tc_id": "TC-013",
+      "tc_id": "TC-013-BOUNDARY",
+      "ac_id": "AC-001",
+      "qa_type": "exception",
+      "layer": "exception",
+      "scenario_family": "boundary",
+      "title": "AC-001 boundary path :: Negative-path assertions pass",
+      "browser_required": true,
+      "replay_required": false,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k exception --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "boundary",
+        "exception",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-011"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k exception --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Negative-path assertions pass (boundary path is validated with explicit evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-013-BOUNDARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-014",
+      "source_tc_id": "TC-013",
+      "tc_id": "TC-013-RECOVERY",
+      "ac_id": "AC-001",
+      "qa_type": "exception",
+      "layer": "exception",
+      "scenario_family": "recovery",
+      "title": "AC-001 recovery path :: Negative-path assertions pass",
+      "browser_required": true,
+      "replay_required": false,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k exception --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "recovery",
+        "exception",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-011"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k exception --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Negative-path assertions pass (recovery path survives refresh/back/retry with evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-013-RECOVERY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-015",
+      "source_tc_id": "TC-013",
+      "tc_id": "TC-013-COMPATIBILITY",
+      "ac_id": "AC-001",
+      "qa_type": "compatibility",
+      "layer": "compatibility",
+      "scenario_family": "compatibility",
+      "title": "AC-001 compatibility path :: Negative-path assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "npx playwright test --project=chromium --project=firefox --project=webkit",
+      "coverage_axes": [
+        "compatibility",
+        "compatibility",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-011"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k exception --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Negative-path assertions pass (compatibility path preserves behavior across browser/device pairs)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-013-COMPATIBILITY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-016",
+      "source_tc_id": "TC-002",
+      "tc_id": "TC-002-HAPPY",
+      "ac_id": "AC-002",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "happy",
+      "title": "AC-002 happy path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "happy",
+        "unit",
+        "browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": true,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (happy path completes with expected evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-002-HAPPY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-017",
+      "source_tc_id": "TC-002",
+      "tc_id": "TC-002-NEGATIVE",
+      "ac_id": "AC-002",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "negative",
+      "title": "AC-002 negative path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "negative",
+        "unit",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-016"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (negative path is rejected or handled with explicit evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-002-NEGATIVE.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-018",
+      "source_tc_id": "TC-002",
+      "tc_id": "TC-002-BOUNDARY",
+      "ac_id": "AC-002",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "boundary",
+      "title": "AC-002 boundary path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": false,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "boundary",
+        "unit",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-016"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (boundary path is validated with explicit evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-002-BOUNDARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-019",
+      "source_tc_id": "TC-002",
+      "tc_id": "TC-002-RECOVERY",
+      "ac_id": "AC-002",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "recovery",
+      "title": "AC-002 recovery path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": false,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "recovery",
+        "unit",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-016"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (recovery path survives refresh/back/retry with evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-002-RECOVERY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-020",
+      "source_tc_id": "TC-002",
+      "tc_id": "TC-002-COMPATIBILITY",
+      "ac_id": "AC-002",
+      "qa_type": "compatibility",
+      "layer": "compatibility",
+      "scenario_family": "compatibility",
+      "title": "AC-002 compatibility path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "npx playwright test --project=chromium --project=firefox --project=webkit",
+      "coverage_axes": [
+        "compatibility",
+        "compatibility",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-016"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (compatibility path preserves behavior across browser/device pairs)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-002-COMPATIBILITY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-021",
+      "source_tc_id": "TC-008",
+      "tc_id": "TC-008-HAPPY",
+      "ac_id": "AC-002",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "happy",
+      "title": "AC-002 happy path :: Provider/consumer contract assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "happy",
+        "contract",
+        "browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": true,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass (happy path completes with expected evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-008-HAPPY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-022",
+      "source_tc_id": "TC-008",
+      "tc_id": "TC-008-NEGATIVE",
+      "ac_id": "AC-002",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "negative",
+      "title": "AC-002 negative path :: Provider/consumer contract assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "negative",
+        "contract",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-021"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass (negative path is rejected or handled with explicit evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-008-NEGATIVE.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-023",
+      "source_tc_id": "TC-008",
+      "tc_id": "TC-008-BOUNDARY",
+      "ac_id": "AC-002",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "boundary",
+      "title": "AC-002 boundary path :: Provider/consumer contract assertions pass",
+      "browser_required": true,
+      "replay_required": false,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "boundary",
+        "contract",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-021"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass (boundary path is validated with explicit evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-008-BOUNDARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-024",
+      "source_tc_id": "TC-008",
+      "tc_id": "TC-008-RECOVERY",
+      "ac_id": "AC-002",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "recovery",
+      "title": "AC-002 recovery path :: Provider/consumer contract assertions pass",
+      "browser_required": true,
+      "replay_required": false,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "recovery",
+        "contract",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-021"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass (recovery path survives refresh/back/retry with evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-008-RECOVERY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-025",
+      "source_tc_id": "TC-008",
+      "tc_id": "TC-008-COMPATIBILITY",
+      "ac_id": "AC-002",
+      "qa_type": "compatibility",
+      "layer": "compatibility",
+      "scenario_family": "compatibility",
+      "title": "AC-002 compatibility path :: Provider/consumer contract assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "npx playwright test --project=chromium --project=firefox --project=webkit",
+      "coverage_axes": [
+        "compatibility",
+        "compatibility",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-021"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass (compatibility path preserves behavior across browser/device pairs)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-008-COMPATIBILITY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-026",
+      "source_tc_id": "TC-014",
+      "tc_id": "TC-014-HAPPY",
+      "ac_id": "AC-002",
+      "qa_type": "functional",
+      "layer": "ui",
+      "scenario_family": "happy",
+      "title": "AC-002 happy path :: Cross-browser/device assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "npx playwright test",
+      "coverage_axes": [
+        "happy",
+        "functional",
+        "browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": true,
+      "automation": "auto",
+      "command": "python3 -m beacon.adapters.browser_use_runner --mode compatibility --fallback-cmd \"python3 -m pytest -q -k compatibility --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "assertion": "Cross-browser/device assertions pass (happy path completes with expected evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-014-HAPPY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-027",
+      "source_tc_id": "TC-014",
+      "tc_id": "TC-014-NEGATIVE",
+      "ac_id": "AC-002",
+      "qa_type": "functional",
+      "layer": "ui",
+      "scenario_family": "negative",
+      "title": "AC-002 negative path :: Cross-browser/device assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "npx playwright test",
+      "coverage_axes": [
+        "negative",
+        "functional",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-026"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m beacon.adapters.browser_use_runner --mode compatibility --fallback-cmd \"python3 -m pytest -q -k compatibility --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "assertion": "Cross-browser/device assertions pass (negative path is rejected or handled with explicit evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-014-NEGATIVE.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-028",
+      "source_tc_id": "TC-014",
+      "tc_id": "TC-014-BOUNDARY",
+      "ac_id": "AC-002",
+      "qa_type": "functional",
+      "layer": "ui",
+      "scenario_family": "boundary",
+      "title": "AC-002 boundary path :: Cross-browser/device assertions pass",
+      "browser_required": true,
+      "replay_required": false,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "npx playwright test",
+      "coverage_axes": [
+        "boundary",
+        "functional",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-026"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m beacon.adapters.browser_use_runner --mode compatibility --fallback-cmd \"python3 -m pytest -q -k compatibility --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "assertion": "Cross-browser/device assertions pass (boundary path is validated with explicit evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-014-BOUNDARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-029",
+      "source_tc_id": "TC-014",
+      "tc_id": "TC-014-RECOVERY",
+      "ac_id": "AC-002",
+      "qa_type": "functional",
+      "layer": "ui",
+      "scenario_family": "recovery",
+      "title": "AC-002 recovery path :: Cross-browser/device assertions pass",
+      "browser_required": true,
+      "replay_required": false,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "npx playwright test",
+      "coverage_axes": [
+        "recovery",
+        "functional",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-026"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m beacon.adapters.browser_use_runner --mode compatibility --fallback-cmd \"python3 -m pytest -q -k compatibility --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "assertion": "Cross-browser/device assertions pass (recovery path survives refresh/back/retry with evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-014-RECOVERY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-030",
+      "source_tc_id": "TC-014",
+      "tc_id": "TC-014-COMPATIBILITY",
+      "ac_id": "AC-002",
+      "qa_type": "compatibility",
+      "layer": "compatibility",
+      "scenario_family": "compatibility",
+      "title": "AC-002 compatibility path :: Cross-browser/device assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "npx playwright test --project=chromium --project=firefox --project=webkit",
+      "coverage_axes": [
+        "compatibility",
+        "compatibility",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-026"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m beacon.adapters.browser_use_runner --mode compatibility --fallback-cmd \"python3 -m pytest -q -k compatibility --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "assertion": "Cross-browser/device assertions pass (compatibility path preserves behavior across browser/device pairs)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-014-COMPATIBILITY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-031",
+      "source_tc_id": "TC-003",
+      "tc_id": "TC-003-HAPPY",
+      "ac_id": "AC-003",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "happy",
+      "title": "AC-003 happy path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "happy",
+        "unit",
+        "browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": true,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (happy path completes with expected evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-003-HAPPY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-032",
+      "source_tc_id": "TC-003",
+      "tc_id": "TC-003-NEGATIVE",
+      "ac_id": "AC-003",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "negative",
+      "title": "AC-003 negative path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "negative",
+        "unit",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-031"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (negative path is rejected or handled with explicit evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-003-NEGATIVE.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-033",
+      "source_tc_id": "TC-003",
+      "tc_id": "TC-003-BOUNDARY",
+      "ac_id": "AC-003",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "boundary",
+      "title": "AC-003 boundary path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": false,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "boundary",
+        "unit",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-031"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (boundary path is validated with explicit evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-003-BOUNDARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-034",
+      "source_tc_id": "TC-003",
+      "tc_id": "TC-003-RECOVERY",
+      "ac_id": "AC-003",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "recovery",
+      "title": "AC-003 recovery path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": false,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "recovery",
+        "unit",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-031"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (recovery path survives refresh/back/retry with evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-003-RECOVERY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-035",
+      "source_tc_id": "TC-003",
+      "tc_id": "TC-003-COMPATIBILITY",
+      "ac_id": "AC-003",
+      "qa_type": "compatibility",
+      "layer": "compatibility",
+      "scenario_family": "compatibility",
+      "title": "AC-003 compatibility path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "npx playwright test --project=chromium --project=firefox --project=webkit",
+      "coverage_axes": [
+        "compatibility",
+        "compatibility",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-031"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (compatibility path preserves behavior across browser/device pairs)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-003-COMPATIBILITY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-036",
+      "source_tc_id": "TC-009",
+      "tc_id": "TC-009-HAPPY",
+      "ac_id": "AC-003",
+      "qa_type": "integration",
+      "layer": "integration",
+      "scenario_family": "happy",
+      "title": "AC-003 happy path :: Integration flow assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k integration --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "happy",
+        "integration",
+        "browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": true,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k integration --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Integration flow assertions pass (happy path completes with expected evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-009-HAPPY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-037",
+      "source_tc_id": "TC-009",
+      "tc_id": "TC-009-NEGATIVE",
+      "ac_id": "AC-003",
+      "qa_type": "integration",
+      "layer": "integration",
+      "scenario_family": "negative",
+      "title": "AC-003 negative path :: Integration flow assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k integration --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "negative",
+        "integration",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-036"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k integration --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Integration flow assertions pass (negative path is rejected or handled with explicit evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-009-NEGATIVE.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-038",
+      "source_tc_id": "TC-009",
+      "tc_id": "TC-009-BOUNDARY",
+      "ac_id": "AC-003",
+      "qa_type": "integration",
+      "layer": "integration",
+      "scenario_family": "boundary",
+      "title": "AC-003 boundary path :: Integration flow assertions pass",
+      "browser_required": true,
+      "replay_required": false,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k integration --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "boundary",
+        "integration",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-036"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k integration --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Integration flow assertions pass (boundary path is validated with explicit evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-009-BOUNDARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-039",
+      "source_tc_id": "TC-009",
+      "tc_id": "TC-009-RECOVERY",
+      "ac_id": "AC-003",
+      "qa_type": "integration",
+      "layer": "integration",
+      "scenario_family": "recovery",
+      "title": "AC-003 recovery path :: Integration flow assertions pass",
+      "browser_required": true,
+      "replay_required": false,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k integration --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "recovery",
+        "integration",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-036"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k integration --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Integration flow assertions pass (recovery path survives refresh/back/retry with evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-009-RECOVERY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-040",
+      "source_tc_id": "TC-009",
+      "tc_id": "TC-009-COMPATIBILITY",
+      "ac_id": "AC-003",
+      "qa_type": "compatibility",
+      "layer": "compatibility",
+      "scenario_family": "compatibility",
+      "title": "AC-003 compatibility path :: Integration flow assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "npx playwright test --project=chromium --project=firefox --project=webkit",
+      "coverage_axes": [
+        "compatibility",
+        "compatibility",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-036"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k integration --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Integration flow assertions pass (compatibility path preserves behavior across browser/device pairs)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-009-COMPATIBILITY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-041",
+      "source_tc_id": "TC-004",
+      "tc_id": "TC-004-HAPPY",
+      "ac_id": "AC-004",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "happy",
+      "title": "AC-004 happy path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "happy",
+        "unit",
+        "browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": true,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (happy path completes with expected evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-004-HAPPY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-042",
+      "source_tc_id": "TC-004",
+      "tc_id": "TC-004-NEGATIVE",
+      "ac_id": "AC-004",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "negative",
+      "title": "AC-004 negative path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "negative",
+        "unit",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-041"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (negative path is rejected or handled with explicit evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-004-NEGATIVE.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-043",
+      "source_tc_id": "TC-004",
+      "tc_id": "TC-004-BOUNDARY",
+      "ac_id": "AC-004",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "boundary",
+      "title": "AC-004 boundary path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": false,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "boundary",
+        "unit",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-041"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (boundary path is validated with explicit evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-004-BOUNDARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-044",
+      "source_tc_id": "TC-004",
+      "tc_id": "TC-004-RECOVERY",
+      "ac_id": "AC-004",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "recovery",
+      "title": "AC-004 recovery path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": false,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "recovery",
+        "unit",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-041"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (recovery path survives refresh/back/retry with evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-004-RECOVERY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-045",
+      "source_tc_id": "TC-004",
+      "tc_id": "TC-004-COMPATIBILITY",
+      "ac_id": "AC-004",
+      "qa_type": "compatibility",
+      "layer": "compatibility",
+      "scenario_family": "compatibility",
+      "title": "AC-004 compatibility path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "npx playwright test --project=chromium --project=firefox --project=webkit",
+      "coverage_axes": [
+        "compatibility",
+        "compatibility",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-041"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (compatibility path preserves behavior across browser/device pairs)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-004-COMPATIBILITY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-046",
+      "source_tc_id": "TC-010",
+      "tc_id": "TC-010-HAPPY",
+      "ac_id": "AC-004",
+      "qa_type": "functional",
+      "layer": "ui",
+      "scenario_family": "happy",
+      "title": "AC-004 happy path :: Critical path assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "npx playwright test",
+      "coverage_axes": [
+        "happy",
+        "functional",
+        "browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": true,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -m smoke --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Critical path assertions pass (happy path completes with expected evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-010-HAPPY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-047",
+      "source_tc_id": "TC-010",
+      "tc_id": "TC-010-NEGATIVE",
+      "ac_id": "AC-004",
+      "qa_type": "functional",
+      "layer": "ui",
+      "scenario_family": "negative",
+      "title": "AC-004 negative path :: Critical path assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "npx playwright test",
+      "coverage_axes": [
+        "negative",
+        "functional",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-046"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -m smoke --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Critical path assertions pass (negative path is rejected or handled with explicit evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-010-NEGATIVE.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-048",
+      "source_tc_id": "TC-010",
+      "tc_id": "TC-010-BOUNDARY",
+      "ac_id": "AC-004",
+      "qa_type": "functional",
+      "layer": "ui",
+      "scenario_family": "boundary",
+      "title": "AC-004 boundary path :: Critical path assertions pass",
+      "browser_required": true,
+      "replay_required": false,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "npx playwright test",
+      "coverage_axes": [
+        "boundary",
+        "functional",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-046"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -m smoke --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Critical path assertions pass (boundary path is validated with explicit evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-010-BOUNDARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-049",
+      "source_tc_id": "TC-010",
+      "tc_id": "TC-010-RECOVERY",
+      "ac_id": "AC-004",
+      "qa_type": "functional",
+      "layer": "ui",
+      "scenario_family": "recovery",
+      "title": "AC-004 recovery path :: Critical path assertions pass",
+      "browser_required": true,
+      "replay_required": false,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "npx playwright test",
+      "coverage_axes": [
+        "recovery",
+        "functional",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-046"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -m smoke --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Critical path assertions pass (recovery path survives refresh/back/retry with evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-010-RECOVERY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-050",
+      "source_tc_id": "TC-010",
+      "tc_id": "TC-010-COMPATIBILITY",
+      "ac_id": "AC-004",
+      "qa_type": "compatibility",
+      "layer": "compatibility",
+      "scenario_family": "compatibility",
+      "title": "AC-004 compatibility path :: Critical path assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "npx playwright test --project=chromium --project=firefox --project=webkit",
+      "coverage_axes": [
+        "compatibility",
+        "compatibility",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-046"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -m smoke --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Critical path assertions pass (compatibility path preserves behavior across browser/device pairs)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-010-COMPATIBILITY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-051",
+      "source_tc_id": "TC-005",
+      "tc_id": "TC-005-HAPPY",
+      "ac_id": "AC-005",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "happy",
+      "title": "AC-005 happy path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "happy",
+        "unit",
+        "browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": true,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (happy path completes with expected evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-005-HAPPY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-052",
+      "source_tc_id": "TC-005",
+      "tc_id": "TC-005-NEGATIVE",
+      "ac_id": "AC-005",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "negative",
+      "title": "AC-005 negative path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "negative",
+        "unit",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-051"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (negative path is rejected or handled with explicit evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-005-NEGATIVE.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-053",
+      "source_tc_id": "TC-005",
+      "tc_id": "TC-005-BOUNDARY",
+      "ac_id": "AC-005",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "boundary",
+      "title": "AC-005 boundary path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": false,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "boundary",
+        "unit",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-051"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (boundary path is validated with explicit evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-005-BOUNDARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-054",
+      "source_tc_id": "TC-005",
+      "tc_id": "TC-005-RECOVERY",
+      "ac_id": "AC-005",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "recovery",
+      "title": "AC-005 recovery path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": false,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "recovery",
+        "unit",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-051"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (recovery path survives refresh/back/retry with evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-005-RECOVERY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-055",
+      "source_tc_id": "TC-005",
+      "tc_id": "TC-005-COMPATIBILITY",
+      "ac_id": "AC-005",
+      "qa_type": "compatibility",
+      "layer": "compatibility",
+      "scenario_family": "compatibility",
+      "title": "AC-005 compatibility path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "npx playwright test --project=chromium --project=firefox --project=webkit",
+      "coverage_axes": [
+        "compatibility",
+        "compatibility",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-051"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (compatibility path preserves behavior across browser/device pairs)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-005-COMPATIBILITY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-056",
+      "source_tc_id": "TC-011",
+      "tc_id": "TC-011-HAPPY",
+      "ac_id": "AC-005",
+      "qa_type": "functional",
+      "layer": "ui",
+      "scenario_family": "happy",
+      "title": "AC-005 happy path :: Web UI assertions and key actions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "npx playwright test",
+      "coverage_axes": [
+        "happy",
+        "functional",
+        "browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": true,
+      "automation": "auto",
+      "command": "python3 -m beacon.adapters.browser_use_runner --mode functional --fallback-cmd \"python3 -m pytest -q -k functional --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "assertion": "Web UI assertions and key actions pass (happy path completes with expected evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-011-HAPPY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-057",
+      "source_tc_id": "TC-011",
+      "tc_id": "TC-011-NEGATIVE",
+      "ac_id": "AC-005",
+      "qa_type": "functional",
+      "layer": "ui",
+      "scenario_family": "negative",
+      "title": "AC-005 negative path :: Web UI assertions and key actions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "npx playwright test",
+      "coverage_axes": [
+        "negative",
+        "functional",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-056"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m beacon.adapters.browser_use_runner --mode functional --fallback-cmd \"python3 -m pytest -q -k functional --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "assertion": "Web UI assertions and key actions pass (negative path is rejected or handled with explicit evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-011-NEGATIVE.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-058",
+      "source_tc_id": "TC-011",
+      "tc_id": "TC-011-BOUNDARY",
+      "ac_id": "AC-005",
+      "qa_type": "functional",
+      "layer": "ui",
+      "scenario_family": "boundary",
+      "title": "AC-005 boundary path :: Web UI assertions and key actions pass",
+      "browser_required": true,
+      "replay_required": false,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "npx playwright test",
+      "coverage_axes": [
+        "boundary",
+        "functional",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-056"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m beacon.adapters.browser_use_runner --mode functional --fallback-cmd \"python3 -m pytest -q -k functional --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "assertion": "Web UI assertions and key actions pass (boundary path is validated with explicit evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-011-BOUNDARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-059",
+      "source_tc_id": "TC-011",
+      "tc_id": "TC-011-RECOVERY",
+      "ac_id": "AC-005",
+      "qa_type": "functional",
+      "layer": "ui",
+      "scenario_family": "recovery",
+      "title": "AC-005 recovery path :: Web UI assertions and key actions pass",
+      "browser_required": true,
+      "replay_required": false,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "npx playwright test",
+      "coverage_axes": [
+        "recovery",
+        "functional",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-056"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m beacon.adapters.browser_use_runner --mode functional --fallback-cmd \"python3 -m pytest -q -k functional --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "assertion": "Web UI assertions and key actions pass (recovery path survives refresh/back/retry with evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-011-RECOVERY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-060",
+      "source_tc_id": "TC-011",
+      "tc_id": "TC-011-COMPATIBILITY",
+      "ac_id": "AC-005",
+      "qa_type": "compatibility",
+      "layer": "compatibility",
+      "scenario_family": "compatibility",
+      "title": "AC-005 compatibility path :: Web UI assertions and key actions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "npx playwright test --project=chromium --project=firefox --project=webkit",
+      "coverage_axes": [
+        "compatibility",
+        "compatibility",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-056"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m beacon.adapters.browser_use_runner --mode functional --fallback-cmd \"python3 -m pytest -q -k functional --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "assertion": "Web UI assertions and key actions pass (compatibility path preserves behavior across browser/device pairs)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-011-COMPATIBILITY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-061",
+      "source_tc_id": "TC-006",
+      "tc_id": "TC-006-HAPPY",
+      "ac_id": "AC-006",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "happy",
+      "title": "AC-006 happy path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "happy",
+        "unit",
+        "browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": true,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (happy path completes with expected evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-006-HAPPY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-062",
+      "source_tc_id": "TC-006",
+      "tc_id": "TC-006-NEGATIVE",
+      "ac_id": "AC-006",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "negative",
+      "title": "AC-006 negative path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "negative",
+        "unit",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-061"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (negative path is rejected or handled with explicit evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-006-NEGATIVE.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-063",
+      "source_tc_id": "TC-006",
+      "tc_id": "TC-006-BOUNDARY",
+      "ac_id": "AC-006",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "boundary",
+      "title": "AC-006 boundary path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": false,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "boundary",
+        "unit",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-061"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (boundary path is validated with explicit evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-006-BOUNDARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-064",
+      "source_tc_id": "TC-006",
+      "tc_id": "TC-006-RECOVERY",
+      "ac_id": "AC-006",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "recovery",
+      "title": "AC-006 recovery path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": false,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "recovery",
+        "unit",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-061"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (recovery path survives refresh/back/retry with evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-006-RECOVERY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-065",
+      "source_tc_id": "TC-006",
+      "tc_id": "TC-006-COMPATIBILITY",
+      "ac_id": "AC-006",
+      "qa_type": "compatibility",
+      "layer": "compatibility",
+      "scenario_family": "compatibility",
+      "title": "AC-006 compatibility path :: All unit assertions pass",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "npx playwright test --project=chromium --project=firefox --project=webkit",
+      "coverage_axes": [
+        "compatibility",
+        "compatibility",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-061"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass (compatibility path preserves behavior across browser/device pairs)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-006-COMPATIBILITY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-066",
+      "source_tc_id": "TC-012",
+      "tc_id": "TC-012-HAPPY",
+      "ac_id": "AC-006",
+      "qa_type": "regression",
+      "layer": "regression",
+      "scenario_family": "happy",
+      "title": "AC-006 happy path :: No known behavior regression found",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k regression --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "happy",
+        "regression",
+        "browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": true,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k regression --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "No known behavior regression found (happy path completes with expected evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-012-HAPPY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-067",
+      "source_tc_id": "TC-012",
+      "tc_id": "TC-012-NEGATIVE",
+      "ac_id": "AC-006",
+      "qa_type": "regression",
+      "layer": "regression",
+      "scenario_family": "negative",
+      "title": "AC-006 negative path :: No known behavior regression found",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k regression --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "negative",
+        "regression",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-066"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k regression --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "No known behavior regression found (negative path is rejected or handled with explicit evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-012-NEGATIVE.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-068",
+      "source_tc_id": "TC-012",
+      "tc_id": "TC-012-BOUNDARY",
+      "ac_id": "AC-006",
+      "qa_type": "regression",
+      "layer": "regression",
+      "scenario_family": "boundary",
+      "title": "AC-006 boundary path :: No known behavior regression found",
+      "browser_required": true,
+      "replay_required": false,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k regression --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "boundary",
+        "regression",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-066"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k regression --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "No known behavior regression found (boundary path is validated with explicit evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-012-BOUNDARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-069",
+      "source_tc_id": "TC-012",
+      "tc_id": "TC-012-RECOVERY",
+      "ac_id": "AC-006",
+      "qa_type": "regression",
+      "layer": "regression",
+      "scenario_family": "recovery",
+      "title": "AC-006 recovery path :: No known behavior regression found",
+      "browser_required": true,
+      "replay_required": false,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k regression --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "recovery",
+        "regression",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-066"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k regression --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "No known behavior regression found (recovery path survives refresh/back/retry with evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-012-RECOVERY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-070",
+      "source_tc_id": "TC-012",
+      "tc_id": "TC-012-COMPATIBILITY",
+      "ac_id": "AC-006",
+      "qa_type": "compatibility",
+      "layer": "compatibility",
+      "scenario_family": "compatibility",
+      "title": "AC-006 compatibility path :: No known behavior regression found",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "npx playwright test --project=chromium --project=firefox --project=webkit",
+      "coverage_axes": [
+        "compatibility",
+        "compatibility",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-066"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k regression --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "No known behavior regression found (compatibility path preserves behavior across browser/device pairs)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-012-COMPATIBILITY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    }
+  ]
+}

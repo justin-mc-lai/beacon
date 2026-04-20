@@ -215,6 +215,36 @@ prd
 - 任一写入失败，必须整体回滚或标记为未提交。
 - 所有写入面都带同一 `projection_seq / source_hash`，防止漂移。
 
+### 3.9 业务语义优先，技术标识不得泄漏到人类面
+
+`prototype` 的人类可读产物必须以业务场景为中心，避免把技术实现细节暴露为需求语言。
+
+规则：
+
+- 人类文档使用业务命名（角色、目标、关键问题、决策支持）。
+- 技术 ID（如 page_id、internal route key、component class）只可出现在 machine 层。
+- human 层可引用“业务页面名 -> 技术映射摘要”，但不得直接把技术标识当页面语义。
+
+### 3.10 `prototype` 是 requirement compiler，不是模板填空器
+
+`prototype` 必须把 `prd / user-story / test-case` 编译为可冻结 wireframe contract，而不是输出固定模板后人工补写。
+
+规则：
+
+- 模板只固定结构，不固定语义内容。
+- 语义内容由 LLM + 规则引擎联合生成并校验。
+- 未完成闭环校验（路由/状态/组件/AC-TC 映射）不得进入 freeze。
+
+### 3.11 默认确定性优先，失败时可回退且可审计
+
+`prototype` 编译链路必须可复现、可追踪、可降级。
+
+规则：
+
+- 相同 requirement 输入在同版本下应得到稳定 canonical 指纹。
+- LLM 失败时启用 deterministic fallback（结构保真、语义降级标记），且阻断 freeze。
+- 所有回退与重试必须记录在事务与审计日志中，不允许静默降级。
+
 ## 4. 范围
 
 ### In scope
@@ -509,6 +539,70 @@ Wireframe 包必须显式支持以下映射：
   - sqlite_projection_status
   - drift_status
 
+### FR-016 必须引入 requirement-driven compiler pipeline
+
+`prototype` 生成必须走固定编译流水线：
+
+1. `ingest`：
+   - 读取 PRD / user-story / test-case canonical 输入；
+2. `semantic-extract`：
+   - 提取角色、目标、关键问题、约束、AC/TC 事实；
+3. `scenario-compile`：
+   - 生成业务场景、页面职责、状态流、组件契约候选；
+4. `closure-validate`：
+   - 校验路由闭环、状态闭环、组件-行为闭环、AC/TC 覆盖；
+5. `projection-publish`：
+   - 事务写入 human/machine/sqlite 三 sink；
+6. `audit-stamp`：
+   - 记录 source_hash / projection_seq / compiler_version / fallback_reason。
+
+要求：
+
+- 每一步都有结构化产物，不可跳步直出 Markdown。
+- `status/review` 可展示每一步 pass/fail 与阻断原因。
+
+### FR-017 人类可读 wireframe 必须以业务场景字段输出
+
+每个页面的人类文档至少包含：
+
+- 用户角色（who）
+- 使用时机（when）
+- 核心目标（why）
+- 关键问题（what decision）
+- 信息结构与动作（how）
+- 异常与回退策略（risk/recover）
+
+要求：
+
+- 页面/模块说明优先表达业务价值与决策支持。
+- 技术映射信息仅保留到 machine contract，不作为 human 主描述。
+
+### FR-018 必须新增技术术语泄漏检测（semantic leak lint）
+
+`prototype review` 必须执行 semantic leak lint，检测 human 层是否出现技术泄漏：
+
+- 技术 page_id / route_id 直接暴露；
+- 组件实现类名直接暴露；
+- 仅技术字段无业务解释。
+
+要求：
+
+- 发现泄漏则 review 失败并给出修复建议；
+- leak 结果写入 `prototype-review.json` 并参与 freeze gate。
+
+### FR-019 必须提供确定性回退策略与冻结阻断策略
+
+当 LLM 编译阶段异常或置信度不足时，系统必须：
+
+- 生成 `degraded` 标记的 canonical 产物；
+- 保留最小可审阅结构（页面、路由、状态、组件骨架）；
+- 写入 `fallback-report.json`（失败阶段、原因、影响范围、修复建议）；
+- 自动阻断 `prototype freeze`，直到重新编译通过。
+
+禁止：
+
+- 直接产出看似正常但语义缺失的“空模板成功态”。
+
 ## 6. 数据 / 状态 / 集成
 
 ### 6.1 输入源与 canonical 语义层
@@ -582,6 +676,22 @@ canonical 输出（机器唯一真相）应包含：
 - 结构化 page spec
 
 但不得重新引入 HTML 高保真原型作为 Beacon 内部标准输出。
+
+### 6.5 编译结果的确定性与可复算约束
+
+为减少多写入点漂移，编译过程必须支持可复算验证：
+
+- 输入固定：requirement source map + compiler version + mode
+- 输出固定：canonical hash + projection sequence
+- 校验固定：closure score + leak score + drift score
+
+建议保留：
+
+- `compiler-input-lock.json`
+- `compiler-run-report.json`
+- `fallback-report.json`（仅异常时）
+
+并要求 `doctor` 能检查“同输入多次编译 hash 是否异常偏移”。
 
 ## 7. 风险与缓解
 
@@ -678,6 +788,31 @@ Beacon 的对外 skill 面中存在 `beacon-prototype`，并以它承担原型�
 - `transaction_id`
 
 任一面不一致，`status` 必须显示 `drift`，`release` 不得判定通过。
+
+### AC-011 人类产物零技术泄漏（可配置白名单）
+
+对 `wireframe-summary.md`、`pages/*.md`、`navigation-map.md` 执行 semantic leak lint：
+
+- 默认要求无技术标识泄漏；
+- 若存在白名单词条，必须有业务解释注释；
+- lint 不通过时，`prototype review` 与 `prototype freeze` 必须失败。
+
+### AC-012 编译流水线可观测且可阻断
+
+`prototype status/review` 能显示：
+
+- ingest / semantic-extract / scenario-compile / closure-validate / projection-publish / audit-stamp 的状态；
+- 任一步失败时的错误码与修复建议；
+- 当前是否处于 `degraded` 模式。
+
+### AC-013 回退机制可验收
+
+模拟 LLM 异常时，系统必须：
+
+- 生成 `fallback-report.json`；
+- 产出 `degraded` 标记；
+- 阻断 freeze；
+- 修复后重新编译可清除 degraded 状态并恢复正常 freeze。
 
 ## 9. 成功指标
 

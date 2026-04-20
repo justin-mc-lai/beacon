@@ -1,0 +1,555 @@
+{
+  "schema_version": "1.0.2",
+  "feature": "beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface",
+  "feature_slug": "beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface",
+  "version": "v1.3.5",
+  "qa_profile": "web-full",
+  "qa_types": [
+    "unit",
+    "interface",
+    "contract",
+    "integration",
+    "smoke",
+    "functional",
+    "regression",
+    "exception",
+    "compatibility"
+  ],
+  "llm_plan": {
+    "mode": "rule",
+    "model": "beacon-rule-llm-v1",
+    "project_scan": {
+      "language": "python",
+      "framework": "python-app",
+      "frontend": "unknown",
+      "api_spec_refs": [],
+      "risk_points": [
+        "authz/authn boundary",
+        "cross-browser ui behavior",
+        "api contract drift",
+        "exception handling and replay safety"
+      ]
+    },
+    "project_type": "ai-agent-skill",
+    "generated_at": "2026-04-20T23:24:43.761604",
+    "prompt_ref": "beacon.qa9.llm.plan.v1.0.2",
+    "skip_reason": "",
+    "qa_types": [
+      "unit",
+      "interface",
+      "contract",
+      "integration",
+      "smoke",
+      "functional",
+      "regression",
+      "exception",
+      "compatibility"
+    ]
+  },
+  "qa_strategy": {
+    "schema_version": "1.0.2",
+    "generated_at": "2026-04-20T23:24:43.760686",
+    "project_type": "ai-agent-skill",
+    "project_scan": {
+      "language": "python",
+      "framework": "python-app",
+      "frontend": "unknown",
+      "api_spec_refs": [],
+      "risk_points": [
+        "authz/authn boundary",
+        "cross-browser ui behavior",
+        "api contract drift",
+        "exception handling and replay safety"
+      ]
+    },
+    "qa_applicability": {
+      "unit": "required",
+      "interface": "required",
+      "contract": "required",
+      "integration": "required",
+      "smoke": "required",
+      "functional": "conditional",
+      "regression": "required",
+      "exception": "required",
+      "compatibility": "conditional"
+    },
+    "qa_required_types": [
+      "unit",
+      "interface",
+      "contract",
+      "integration",
+      "smoke",
+      "functional",
+      "regression",
+      "exception",
+      "compatibility"
+    ],
+    "runner_policy": {
+      "functional": {
+        "primary": "browser-use",
+        "fallback": [
+          "playwright",
+          "cypress",
+          "agent-browser"
+        ]
+      },
+      "compatibility": {
+        "primary": "playwright",
+        "fallback": [
+          "cypress"
+        ]
+      },
+      "api_layers": {
+        "interface": "schemathesis/newman/pytest",
+        "contract": "schemathesis/pact",
+        "integration": "pytest+testcontainers"
+      }
+    },
+    "command_baseline": {
+      "unit": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "interface": "python3 -m pytest -q -k interface --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "contract": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "integration": "python3 -m pytest -q -k integration --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "smoke": "python3 -m pytest -q -m smoke --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "functional": "python3 -m beacon.adapters.browser_use_runner --mode functional --fallback-cmd \"python3 -m pytest -q -k functional --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "regression": "python3 -m pytest -q -k regression --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "exception": "python3 -m pytest -q -k exception --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "compatibility": "python3 -m beacon.adapters.browser_use_runner --mode compatibility --fallback-cmd \"python3 -m pytest -q -k compatibility --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\""
+    },
+    "ui_runner": "browser-use"
+  },
+  "qa_requirements": [
+    {
+      "qa_type": "unit",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "interface",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "contract",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "integration",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "smoke",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "functional",
+      "required": false,
+      "automation_required": false,
+      "min_cases": 0,
+      "applicability": "conditional",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "regression",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "exception",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "compatibility",
+      "required": false,
+      "automation_required": false,
+      "min_cases": 0,
+      "applicability": "conditional",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    }
+  ],
+  "automation_target_rate": 0.85,
+  "entries": [
+    {
+      "tc_id": "TC-001",
+      "ac_id": "AC-001",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface unit :: Beacon 不新增新的一级主命令，但新增一个宿主可见 `beacon-change` 子 skill 草案，并明确其不是新主阶段。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-001.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.5/user-story/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.md"
+    },
+    {
+      "tc_id": "TC-002",
+      "ac_id": "AC-002",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface unit :: 冻结后的 feature 能走通 `change intake -> reopen -> prd revise -> user-story refresh ->",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-002.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.5/user-story/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.md"
+    },
+    {
+      "tc_id": "TC-003",
+      "ac_id": "AC-003",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface unit :: 系统能提供一份文档化生命周期状态机，明确状态、迁移条件、阻断条件与产物边界。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-003.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.5/user-story/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.md"
+    },
+    {
+      "tc_id": "TC-004",
+      "ac_id": "AC-004",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface unit :: 变更后的 implement / qa / release 都绑定最新 frozen revision，不允许继续沿用旧 baseline。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-004.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.5/user-story/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.md"
+    },
+    {
+      "tc_id": "TC-005",
+      "ac_id": "AC-005",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface unit :: `help/status` 在识别到冻结后需求调整时，稳定推荐 `beacon-change` 或等价 change loop。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-005.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.5/user-story/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.md"
+    },
+    {
+      "tc_id": "TC-006",
+      "ac_id": "AC-006",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface unit :: `release` 能区分 initial delivery、revised delivery、hotfix delivery 的语义与 gate 对象。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-006.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.5/user-story/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.md"
+    },
+    {
+      "tc_id": "TC-007",
+      "ac_id": "AC-001",
+      "layer": "api-curl",
+      "qa_type": "interface",
+      "title": "beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface interface coverage",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k interface --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "HTTP status and schema assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-007.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.5/user-story/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.md"
+    },
+    {
+      "tc_id": "TC-008",
+      "ac_id": "AC-002",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface contract coverage",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260420T234031256470/qa9-tc/TC-008/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "failed",
+      "source": "user-story:docs/beacon/v1.3.5/user-story/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.md",
+      "last_run_id": "run-20260420T234031256470"
+    },
+    {
+      "tc_id": "TC-009",
+      "ac_id": "AC-003",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface integration coverage",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k integration --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Integration flow assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-009.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.5/user-story/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.md"
+    },
+    {
+      "tc_id": "TC-010",
+      "ac_id": "AC-004",
+      "layer": "smoke",
+      "qa_type": "smoke",
+      "title": "beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface smoke coverage",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -m smoke --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Critical path assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-010.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.5/user-story/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.md"
+    },
+    {
+      "tc_id": "TC-011",
+      "ac_id": "AC-005",
+      "layer": "ui",
+      "qa_type": "functional",
+      "title": "beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface functional coverage",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m beacon.adapters.browser_use_runner --mode functional --fallback-cmd \"python3 -m pytest -q -k functional --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "assertion": "Web UI assertions and key actions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-011.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.5/user-story/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.md"
+    },
+    {
+      "tc_id": "TC-012",
+      "ac_id": "AC-006",
+      "layer": "regression",
+      "qa_type": "regression",
+      "title": "beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface regression coverage",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k regression --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "No known behavior regression found",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-012.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.5/user-story/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.md"
+    },
+    {
+      "tc_id": "TC-013",
+      "ac_id": "AC-001",
+      "layer": "exception",
+      "qa_type": "exception",
+      "title": "beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface exception coverage",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k exception --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Negative-path assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-013.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.5/user-story/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.md"
+    },
+    {
+      "tc_id": "TC-014",
+      "ac_id": "AC-002",
+      "layer": "compatibility",
+      "qa_type": "compatibility",
+      "title": "beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface compatibility coverage",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m beacon.adapters.browser_use_runner --mode compatibility --fallback-cmd \"python3 -m pytest -q -k compatibility --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "assertion": "Cross-browser/device assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/{run_id}/TC-014.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.5/user-story/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.md"
+    }
+  ],
+  "compatibility_matrix": {
+    "browsers": [
+      "chromium",
+      "firefox",
+      "webkit"
+    ],
+    "devices": [
+      "desktop",
+      "iphone14"
+    ],
+    "required_pairs": [
+      {
+        "browser": "chromium",
+        "device": "desktop"
+      },
+      {
+        "browser": "firefox",
+        "device": "desktop"
+      },
+      {
+        "browser": "webkit",
+        "device": "desktop"
+      }
+    ]
+  },
+  "generated_at": "2026-04-20T23:24:43.761623"
+}

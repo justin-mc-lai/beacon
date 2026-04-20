@@ -429,6 +429,47 @@ def _remove_first_positional(args: list[str]) -> list[str]:
     return out
 
 
+def _sanitize_auto_test_passthrough_args(args: list[str]) -> list[str]:
+    out = _remove_first_positional(args)
+    for option in (
+        "--project",
+        "--project-root",
+        "-p",
+        "--version",
+        "-v",
+        "--mode",
+        "--runtime",
+        "--host-runtime",
+        "--qa-matrix-path",
+        "--matrix-path",
+    ):
+        out = _strip_option_with_value(out, option)
+    for flag in ("--team-mode",):
+        out, _ = _strip_flag(out, flag)
+    return out
+
+
+def _qa_matrix_matches_expected(qa_status: dict[str, Any], expected_matrix_path: Path) -> bool:
+    qa9 = qa_status.get("qa9") if isinstance(qa_status.get("qa9"), dict) else {}
+    candidates = [
+        str(qa9.get("qa_matrix_path") or "").strip(),
+    ]
+    execution = qa_status.get("execution") if isinstance(qa_status.get("execution"), dict) else {}
+    matrix_report = execution.get("matrix_report") if isinstance(execution.get("matrix_report"), dict) else {}
+    candidates.append(str(matrix_report.get("matrix_path") or "").strip())
+    expected = str(expected_matrix_path.resolve())
+    for candidate in candidates:
+        if not candidate:
+            continue
+        try:
+            resolved = str(Path(candidate).resolve())
+        except Exception:  # noqa: BLE001
+            resolved = candidate
+        if resolved == expected:
+            return True
+    return False
+
+
 def _looks_like_feature_request(args: list[str]) -> bool:
     positional = _first_positional(args)
     if not positional:
@@ -723,11 +764,12 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
         return 0, payload
 
     matrix_path = materialize_feature_qa_matrix(project_root, plan=plan)
+    passthrough_args = _sanitize_auto_test_passthrough_args(args)
     auto_args = [
         "auto-test",
         "create",
         "qa9",
-        *_remove_first_positional(args),
+        *passthrough_args,
         "--project",
         str(project_root),
         "--version",
@@ -751,7 +793,82 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
         )
     )
     command_exit = _beacon_exec_silent(auto_args, cwd=_repo_root()) if json_output else _beacon_exec(auto_args, cwd=_repo_root())
+    if command_exit != 0:
+        blocked_payload = {
+            **plan,
+            "status": "blocked",
+            "reason_codes": sorted({*list(plan.get("reason_codes") or []), "auto_test_invocation_failed"}),
+            "message": "auto-test qa9 invocation failed; stale QA status was not accepted",
+            "command_exit": int(command_exit),
+            "auto_test_args": auto_args,
+            "team_mode": bool(team_mode),
+            "host_runtime": resolved_host_runtime,
+            "subagent_prechecks": subagent_prechecks,
+            "team_contract": team_contract,
+            "implement_to_qa_handoff": handoff,
+        }
+        if team_mode:
+            blocked_payload["team_execution"] = _materialize_qa_team_surface(
+                project_root,
+                version=version,
+                feature=feature,
+                run_id=str(plan.get("implementation_run_id") or "feature-qa"),
+                payload=blocked_payload,
+                runtime=runtime,
+            )
+            blocked_payload["execution_surface"] = "qa-team"
+            blocked_payload["context_isolation"] = blocked_payload["team_execution"].get("context_isolation", {})
+        feature_status_file = write_feature_qa_status(project_root, feature=feature, payload=blocked_payload)
+        _update_evidence_manifest(
+            project_root,
+            [str(feature_status_file.relative_to(project_root))],
+            run_id=str(plan.get("implementation_run_id") or ""),
+            version=version,
+        )
+        if json_output:
+            typer.echo(json.dumps(blocked_payload, ensure_ascii=False, indent=2))
+        else:
+            typer.echo("Beacon QA blocked: auto-test qa9 invocation failed", err=True)
+        return 2, blocked_payload
     qa_status = load_qa_status(project_root)
+    if not _qa_matrix_matches_expected(qa_status, matrix_path):
+        blocked_payload = {
+            **plan,
+            "status": "blocked",
+            "reason_codes": sorted({*list(plan.get("reason_codes") or []), "qa_matrix_mismatch"}),
+            "message": "auto-test returned QA status for a different matrix; current feature evidence was rejected",
+            "command_exit": int(command_exit),
+            "expected_qa_matrix_path": str(matrix_path),
+            "observed_qa_matrix_path": str(((qa_status.get("qa9") or {}).get("qa_matrix_path")) or ""),
+            "team_mode": bool(team_mode),
+            "host_runtime": resolved_host_runtime,
+            "subagent_prechecks": subagent_prechecks,
+            "team_contract": team_contract,
+            "implement_to_qa_handoff": handoff,
+        }
+        if team_mode:
+            blocked_payload["team_execution"] = _materialize_qa_team_surface(
+                project_root,
+                version=version,
+                feature=feature,
+                run_id=str(qa_status.get("run_id") or plan.get("implementation_run_id") or "feature-qa"),
+                payload=blocked_payload,
+                runtime=runtime,
+            )
+            blocked_payload["execution_surface"] = "qa-team"
+            blocked_payload["context_isolation"] = blocked_payload["team_execution"].get("context_isolation", {})
+        feature_status_file = write_feature_qa_status(project_root, feature=feature, payload=blocked_payload)
+        _update_evidence_manifest(
+            project_root,
+            [str(feature_status_file.relative_to(project_root))],
+            run_id=str(qa_status.get("run_id") or plan.get("implementation_run_id") or ""),
+            version=version,
+        )
+        if json_output:
+            typer.echo(json.dumps(blocked_payload, ensure_ascii=False, indent=2))
+        else:
+            typer.echo("Beacon QA blocked: QA matrix mismatch", err=True)
+        return 2, blocked_payload
     verified_ids, failed_ids, per_item_results = collect_verification_writeback(plan=plan, qa_status=qa_status)
     feature_matrix_rel = str(matrix_path.relative_to(project_root))
 

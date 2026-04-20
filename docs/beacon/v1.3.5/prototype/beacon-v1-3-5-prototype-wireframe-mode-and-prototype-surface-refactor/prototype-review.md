@@ -1,4 +1,4 @@
-# Prototype Review: beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor
+# Prototype Review: beacon-v1-3-5-prototype-wireframe-mode-and-prototype-surface-refactor
 
 **Overall Status**: `pass`
 **Prototype Mode**: `wireframe`
@@ -6,7 +6,7 @@
 **Machine Contract Status**: `pass`
 **SQLite Projection Status**: `pass`
 **Drift Status**: `consistent`
-**Generated At**: `2026-04-20T09:56:39Z`
+**Generated At**: `2026-04-20T19:15:41Z`
 
 | Check | Status | Message |
 |-------|--------|---------|

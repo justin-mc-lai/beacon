@@ -13,3 +13,11 @@
 
 ## Service Directories
 - `.`
+
+## Direct Delivery Services
+- `.`
+
+## Implementation Preflight
+- Before implementation, verify the target service belongs to: .
+- Before implementation, verify the current branch is beacon/v1.3.5.
+- If a branch switch is needed and the worktree is dirty, stop and clean or stash first.

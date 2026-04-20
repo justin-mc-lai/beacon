@@ -2041,7 +2041,7 @@ def check_v131_human_loop_contract(
     resolved_runtime = resolve_runtime_version(project_root, "auto")
     if not project_runtime_feature_enabled(
         project_root,
-        "v1.3.3",
+        "v1.3.1",
         docs_version=resolved_version,
         runtime_version=resolved_runtime,
     ):

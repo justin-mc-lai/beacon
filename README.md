@@ -105,6 +105,7 @@ beacon release check v1.3.3 --project .
 
 ```bash
 beacon workflow start "<feature>" --version v1.3.3 --project-root .
+beacon think start "<feature>" --project-root . --version v1.3.3
 beacon ask "请生成用户故事并给出验收标准" --project-root . --json
 ```
 

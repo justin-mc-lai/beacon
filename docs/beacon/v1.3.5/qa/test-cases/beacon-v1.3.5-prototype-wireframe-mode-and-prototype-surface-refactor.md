@@ -5,7 +5,7 @@
 **Feature**: beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor
 **Test Type**: ALL
 **Version**: v1.3.5
-**Generated**: 2026-04-20 17:31
+**Generated**: 2026-04-20 23:35
 **Memory Context**: N/A
 **AC Matrix JSON**: docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.ac-test-matrix.json
 **QA9 Matrix JSON**: docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.qa9-matrix.json
@@ -31,6 +31,9 @@
 | AC-008 | TC-008 | unit | `python3 -m pytest -q -k unit --junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"` | All unit assertions pass | `.beacon/evidence/test-results/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor/TC-008.json` |
 | AC-009 | TC-009 | unit | `python3 -m pytest -q -k unit --junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"` | All unit assertions pass | `.beacon/evidence/test-results/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor/TC-009.json` |
 | AC-010 | TC-010 | unit | `python3 -m pytest -q -k unit --junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"` | All unit assertions pass | `.beacon/evidence/test-results/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor/TC-010.json` |
+| AC-011 | TC-011 | unit | `python3 -m pytest -q -k unit --junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"` | All unit assertions pass | `.beacon/evidence/test-results/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor/TC-011.json` |
+| AC-012 | TC-012 | unit | `python3 -m pytest -q -k unit --junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"` | All unit assertions pass | `.beacon/evidence/test-results/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor/TC-012.json` |
+| AC-013 | TC-013 | unit | `python3 -m pytest -q -k unit --junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"` | All unit assertions pass | `.beacon/evidence/test-results/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor/TC-013.json` |
 
 ---
 
@@ -48,3 +51,6 @@
 | TC-008 | Pending | from AC-008 |
 | TC-009 | Pending | from AC-009 |
 | TC-010 | Pending | from AC-010 |
+| TC-011 | Pending | from AC-011 |
+| TC-012 | Pending | from AC-012 |
+| TC-013 | Pending | from AC-013 |

@@ -4,8 +4,8 @@
 - feature: `beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor`
 - version: `v1.3.5`
 - revision_id: `R1`
-- baseline_hash: `sha256:e7281feaeab9b8e3ba5cc5ae0efda7d6168e42473b21ef3f0ad2c0b6271742c3`
-- plan_hash: `sha256:81ad07e94159d229837108be92ac39e4b2938db2905a203fd8422f28a6efd545`
+- baseline_hash: `sha256:7967fe047d1b1b7b47a95a907a8ea34e026a51e3bfda38e4a9bc740344c736a6`
+- plan_hash: `sha256:e5cbed59e991bd335e2f0e40a2f5547415f19eb32c0716a1d123f7c88167712e`
 - status: `completed`
 
 ## Source Refs
@@ -47,46 +47,46 @@
 
 ### ITASK-001 — FR-001 `prototype` 只保留 `wireframe` 草图模式
 - status: `completed`
-- mapped_ac_ids: AC-003, AC-005, AC-006, AC-001, AC-002
-- mapped_test_ids: TC-006, TC-002, TC-003, TC-001, TC-005, TC-011, TC-015, TC-016, TC-012, TC-013
-- mapped_scenario_ids: SC-001, SC-002, SC-003, SC-004, SC-005, SC-006, SC-007, SC-008, SC-009, SC-010, SC-011, SC-012, SC-013, SC-014, SC-021, SC-022, SC-023, SC-024, SC-025, SC-026, SC-027, SC-028
-- mapped_qa_case_ids: TC-001, TC-002, TC-003, TC-005, TC-006, TC-011, TC-012, TC-013, TC-015, TC-016
+- mapped_ac_ids: AC-003, AC-002, AC-001
+- mapped_test_ids: TC-006, TC-005, TC-001, TC-014, TC-018, TC-019
+- mapped_scenario_ids: SC-001, SC-002, SC-003, SC-004, SC-005, SC-006, SC-007, SC-008, SC-009, SC-010, SC-011, SC-012, SC-013, SC-014
+- mapped_qa_case_ids: TC-001, TC-005, TC-006, TC-014, TC-018, TC-019
 - depends_on: -
 - target_modules: -
 
 ### ITASK-002 — FR-002 必须移除 HTML 高保真原型能力与要求
 - status: `completed`
-- mapped_ac_ids: AC-007, AC-008, AC-009, AC-004
-- mapped_test_ids: TC-004, TC-008, TC-009, TC-007, TC-017, TC-014
-- mapped_scenario_ids: SC-015, SC-016, SC-017, SC-018, SC-019, SC-020, SC-029, SC-030, SC-031, SC-032, SC-033, SC-034
-- mapped_qa_case_ids: TC-004, TC-007, TC-008, TC-009, TC-014, TC-017
+- mapped_ac_ids: AC-005, AC-004, AC-006, AC-008, AC-009, AC-012
+- mapped_test_ids: TC-002, TC-007, TC-003, TC-008, TC-009, TC-012, TC-020, TC-015, TC-016
+- mapped_scenario_ids: SC-015, SC-016, SC-017, SC-018, SC-019, SC-020, SC-021, SC-022, SC-023, SC-024, SC-025, SC-026, SC-027, SC-028, SC-035, SC-036, SC-039
+- mapped_qa_case_ids: TC-002, TC-003, TC-007, TC-008, TC-009, TC-012, TC-015, TC-016, TC-020
 - depends_on: ITASK-001
 - target_modules: -
 
 ### ITASK-003 — FR-003 Wireframe 输出必须形成冻结包
 - status: `completed`
-- mapped_ac_ids: AC-010
-- mapped_test_ids: TC-010
-- mapped_scenario_ids: -
-- mapped_qa_case_ids: TC-010
+- mapped_ac_ids: AC-011, AC-013
+- mapped_test_ids: TC-011, TC-013
+- mapped_scenario_ids: SC-038, SC-040
+- mapped_qa_case_ids: TC-011, TC-013
 - depends_on: ITASK-002
 - target_modules: -
 
 ### ITASK-004 — FR-004 `wireframe-summary.md` 必须承担页面汇总职责
 - status: `completed`
-- mapped_ac_ids: -
-- mapped_test_ids: -
-- mapped_scenario_ids: -
-- mapped_qa_case_ids: -
+- mapped_ac_ids: AC-010
+- mapped_test_ids: TC-010
+- mapped_scenario_ids: SC-037
+- mapped_qa_case_ids: TC-010
 - depends_on: ITASK-003
 - target_modules: -
 
 ### ITASK-005 — FR-005 `navigation-map` 必须冻结路由与跳转逻辑
 - status: `completed`
-- mapped_ac_ids: -
-- mapped_test_ids: -
-- mapped_scenario_ids: -
-- mapped_qa_case_ids: -
+- mapped_ac_ids: AC-007
+- mapped_test_ids: TC-004, TC-017
+- mapped_scenario_ids: SC-029, SC-030, SC-031, SC-032, SC-033, SC-034
+- mapped_qa_case_ids: TC-004, TC-017
 - depends_on: ITASK-004
 - target_modules: -
 
@@ -178,4 +178,40 @@
 - mapped_scenario_ids: -
 - mapped_qa_case_ids: -
 - depends_on: ITASK-014
+- target_modules: -
+
+### ITASK-016 — FR-016 必须引入 requirement-driven compiler pipeline
+- status: `completed`
+- mapped_ac_ids: -
+- mapped_test_ids: -
+- mapped_scenario_ids: -
+- mapped_qa_case_ids: -
+- depends_on: ITASK-015
+- target_modules: -
+
+### ITASK-017 — FR-017 人类可读 wireframe 必须以业务场景字段输出
+- status: `completed`
+- mapped_ac_ids: -
+- mapped_test_ids: -
+- mapped_scenario_ids: -
+- mapped_qa_case_ids: -
+- depends_on: ITASK-016
+- target_modules: -
+
+### ITASK-018 — FR-018 必须新增技术术语泄漏检测（semantic leak lint）
+- status: `completed`
+- mapped_ac_ids: -
+- mapped_test_ids: -
+- mapped_scenario_ids: -
+- mapped_qa_case_ids: -
+- depends_on: ITASK-017
+- target_modules: -
+
+### ITASK-019 — FR-019 必须提供确定性回退策略与冻结阻断策略
+- status: `completed`
+- mapped_ac_ids: -
+- mapped_test_ids: -
+- mapped_scenario_ids: -
+- mapped_qa_case_ids: -
+- depends_on: ITASK-018
 - target_modules: -

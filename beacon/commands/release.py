@@ -386,7 +386,7 @@ def check(
     change_documents = release_scorecard.get("change_documents") if isinstance(release_scorecard.get("change_documents"), dict) else {}
     enforce_change_documents = project_runtime_feature_enabled(
         project_root,
-        "v1.3.3",
+        "v1.3.1",
         docs_version=resolved_version,
         runtime_version=resolved_runtime,
     )

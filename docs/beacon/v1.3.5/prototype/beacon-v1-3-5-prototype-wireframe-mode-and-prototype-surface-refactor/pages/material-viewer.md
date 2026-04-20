@@ -30,7 +30,6 @@
 
 ## 用户动作
 - `打开文档`: 点击文档列表项 -> `material-document-detail`
-- `返回项目详情`: 点击返回 -> `project-detail`
 
 ## 状态说明
 - `ready` / 可浏览: 版本树和文档列表已加载。

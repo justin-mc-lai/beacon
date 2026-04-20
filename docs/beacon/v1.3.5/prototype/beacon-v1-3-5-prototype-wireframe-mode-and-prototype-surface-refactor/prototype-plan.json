@@ -1,32 +1,49 @@
 {
   "schema_version": "1.0",
-  "feature": "beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor",
+  "feature": "beacon-v1-3-5-prototype-wireframe-mode-and-prototype-surface-refactor",
   "feature_slug": "beacon-v1-3-5-prototype-wireframe-mode-and-prototype-surface-refactor",
   "version": "v1.3.5",
-  "generated_at": "2026-04-20T09:56:31Z",
+  "generated_at": "2026-04-20T19:15:34Z",
   "prototype_mode": "wireframe",
   "ui_kit": "wireframe-markdown-v1",
   "source_documents": [
     {
       "type": "user-story",
       "path": "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
-      "fingerprint": "e7281feaeab9b8e3ba5cc5ae0efda7d6168e42473b21ef3f0ad2c0b6271742c3"
+      "fingerprint": "c7b72ca82698445cf48170bd2f8164fb6dd4186412244ec9a0bb8df63fffea39"
     },
     {
       "type": "prd",
       "path": "docs/beacon/v1.3.5/prd/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
-      "fingerprint": "a988b38acab8648b0ec3b3657f80b703080afcfb23ade5f6bb40cb696e436d55"
+      "fingerprint": "f798a01747d617a45277ba482625f1970a05e1d2b71808e18f3449974d646488"
     },
     {
       "type": "test-case",
       "path": "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
-      "fingerprint": "3a2a6f89c56f1298a96bb0e1fff46c3e3a55ce34097d786a512d50f3df17899a"
+      "fingerprint": "3e976934ee1fa48093eb32e3930e1210620f576c08bd6ab4b5ec65c58eef35c7"
     }
   ],
   "required_pages": [
     "management-overview",
     "runtime-center",
     "material-viewer",
+    "page-01-d1bbcc5c",
+    "beacon-ui",
+    "page-03-93da1608",
+    "page-04-56a5749b",
+    "demo",
+    "human",
+    "page-07-d4c36c95",
+    "page-08-4a2d79ff",
+    "page-09-ece61c61",
+    "page-10-107f06b4",
+    "prd",
+    "user-story",
+    "page-13-1c4ec680",
+    "page-specs-json",
+    "contract",
+    "page-spec",
+    "page-17-860d61fc",
     "material-document-detail"
   ],
   "required_states": [
@@ -55,7 +72,10 @@
       "AC-007",
       "AC-008",
       "AC-009",
-      "AC-010"
+      "AC-010",
+      "AC-011",
+      "AC-012",
+      "AC-013"
     ],
     "tc_ids": [
       "TC-001",
@@ -67,7 +87,10 @@
       "TC-007",
       "TC-008",
       "TC-009",
-      "TC-010"
+      "TC-010",
+      "TC-011",
+      "TC-012",
+      "TC-013"
     ]
   },
   "page_specs": [
@@ -87,18 +110,7 @@
         "风险与调试摘要",
         "推荐 skill 区"
       ],
-      "actions": [
-        {
-          "label": "进入项目详情",
-          "target": "project-detail",
-          "trigger": "点击项目行或卡片"
-        },
-        {
-          "label": "返回首页",
-          "target": "home",
-          "trigger": "点击首页导航"
-        }
-      ],
+      "actions": [],
       "states": [
         {
           "id": "ready",
@@ -156,11 +168,6 @@
         "最近结果与 blocker"
       ],
       "actions": [
-        {
-          "label": "返回项目详情",
-          "target": "project-detail",
-          "trigger": "点击返回"
-        },
         {
           "label": "返回管理总览",
           "target": "management-overview",
@@ -233,11 +240,6 @@
           "label": "打开文档",
           "target": "material-document-detail",
           "trigger": "点击文档列表项"
-        },
-        {
-          "label": "返回项目详情",
-          "target": "project-detail",
-          "trigger": "点击返回"
         }
       ],
       "states": [
@@ -291,6 +293,814 @@
           "type": "drill-down"
         }
       ]
+    },
+    {
+      "page_id": "page-01-d1bbcc5c",
+      "name": "不要求当前阶段生成好看的高保真页面",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "冻结 `不要求当前阶段生成好看的高保真页面` 的页面结构、关键动作和状态说明，确保与 requirement 材料一致。",
+      "sections": [
+        "页面头部",
+        "关键内容区",
+        "主要操作区",
+        "状态与反馈区"
+      ],
+      "actions": [],
+      "states": [
+        {
+          "id": "ready",
+          "label": "可用",
+          "description": "页面数据齐备，用户可完成核心操作。"
+        },
+        {
+          "id": "loading",
+          "label": "加载中",
+          "description": "页面数据正在加载。"
+        },
+        {
+          "id": "error",
+          "label": "错误",
+          "description": "页面加载或提交失败，需提示恢复动作。"
+        }
+      ],
+      "requirement_refs": {
+        "user-story": [
+          "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "prd": [
+          "docs/beacon/v1.3.5/prd/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "test-case": [
+          "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ]
+      },
+      "outbound_transitions": []
+    },
+    {
+      "page_id": "beacon-ui",
+      "name": "不直接重构 Beacon UI 产品本身的页面字段",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "冻结 `不直接重构 Beacon UI 产品本身的页面字段` 的页面结构、关键动作和状态说明，确保与 requirement 材料一致。",
+      "sections": [
+        "页面头部",
+        "关键内容区",
+        "主要操作区",
+        "状态与反馈区"
+      ],
+      "actions": [],
+      "states": [
+        {
+          "id": "ready",
+          "label": "可用",
+          "description": "页面数据齐备，用户可完成核心操作。"
+        },
+        {
+          "id": "loading",
+          "label": "加载中",
+          "description": "页面数据正在加载。"
+        },
+        {
+          "id": "error",
+          "label": "错误",
+          "description": "页面加载或提交失败，需提示恢复动作。"
+        }
+      ],
+      "requirement_refs": {
+        "user-story": [
+          "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "prd": [
+          "docs/beacon/v1.3.5/prd/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "test-case": [
+          "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ]
+      },
+      "outbound_transitions": []
+    },
+    {
+      "page_id": "page-03-93da1608",
+      "name": "页面清单",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "冻结 `页面清单` 的页面结构、关键动作和状态说明，确保与 requirement 材料一致。",
+      "sections": [
+        "页面头部",
+        "关键内容区",
+        "主要操作区",
+        "状态与反馈区"
+      ],
+      "actions": [
+        {
+          "label": "进入该页面来自哪条 PRD 承诺",
+          "target": "prd",
+          "trigger": "点击跳转"
+        }
+      ],
+      "states": [
+        {
+          "id": "ready",
+          "label": "可用",
+          "description": "页面数据齐备，用户可完成核心操作。"
+        },
+        {
+          "id": "loading",
+          "label": "加载中",
+          "description": "页面数据正在加载。"
+        },
+        {
+          "id": "error",
+          "label": "错误",
+          "description": "页面加载或提交失败，需提示恢复动作。"
+        }
+      ],
+      "requirement_refs": {
+        "user-story": [
+          "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "prd": [
+          "docs/beacon/v1.3.5/prd/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "test-case": [
+          "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ]
+      },
+      "outbound_transitions": [
+        {
+          "from": "page-03-93da1608",
+          "to": "prd",
+          "trigger": "点击跳转",
+          "type": "primary"
+        }
+      ]
+    },
+    {
+      "page_id": "page-04-56a5749b",
+      "name": "页面布局块",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "冻结 `页面布局块` 的页面结构、关键动作和状态说明，确保与 requirement 材料一致。",
+      "sections": [
+        "页面头部",
+        "关键内容区",
+        "主要操作区",
+        "状态与反馈区"
+      ],
+      "actions": [],
+      "states": [
+        {
+          "id": "ready",
+          "label": "可用",
+          "description": "页面数据齐备，用户可完成核心操作。"
+        },
+        {
+          "id": "loading",
+          "label": "加载中",
+          "description": "页面数据正在加载。"
+        },
+        {
+          "id": "error",
+          "label": "错误",
+          "description": "页面加载或提交失败，需提示恢复动作。"
+        }
+      ],
+      "requirement_refs": {
+        "user-story": [
+          "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "prd": [
+          "docs/beacon/v1.3.5/prd/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "test-case": [
+          "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ]
+      },
+      "outbound_transitions": []
+    },
+    {
+      "page_id": "demo",
+      "name": "展示型 demo 页面",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "冻结 `展示型 demo 页面` 的页面结构、关键动作和状态说明，确保与 requirement 材料一致。",
+      "sections": [
+        "页面头部",
+        "关键内容区",
+        "主要操作区",
+        "状态与反馈区"
+      ],
+      "actions": [],
+      "states": [
+        {
+          "id": "ready",
+          "label": "可用",
+          "description": "页面数据齐备，用户可完成核心操作。"
+        },
+        {
+          "id": "loading",
+          "label": "加载中",
+          "description": "页面数据正在加载。"
+        },
+        {
+          "id": "error",
+          "label": "错误",
+          "description": "页面加载或提交失败，需提示恢复动作。"
+        }
+      ],
+      "requirement_refs": {
+        "user-story": [
+          "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "prd": [
+          "docs/beacon/v1.3.5/prd/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "test-case": [
+          "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ]
+      },
+      "outbound_transitions": []
+    },
+    {
+      "page_id": "human",
+      "name": "human 层可引用“业务页面名",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "冻结 `human 层可引用“业务页面名` 的页面结构、关键动作和状态说明，确保与 requirement 材料一致。",
+      "sections": [
+        "页面头部",
+        "关键内容区",
+        "主要操作区",
+        "状态与反馈区"
+      ],
+      "actions": [],
+      "states": [
+        {
+          "id": "ready",
+          "label": "可用",
+          "description": "页面数据齐备，用户可完成核心操作。"
+        },
+        {
+          "id": "loading",
+          "label": "加载中",
+          "description": "页面数据正在加载。"
+        },
+        {
+          "id": "error",
+          "label": "错误",
+          "description": "页面加载或提交失败，需提示恢复动作。"
+        }
+      ],
+      "requirement_refs": {
+        "user-story": [
+          "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "prd": [
+          "docs/beacon/v1.3.5/prd/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "test-case": [
+          "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ]
+      },
+      "outbound_transitions": []
+    },
+    {
+      "page_id": "page-07-d4c36c95",
+      "name": "页面汇总文档规范",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "冻结 `页面汇总文档规范` 的页面结构、关键动作和状态说明，确保与 requirement 材料一致。",
+      "sections": [
+        "页面头部",
+        "关键内容区",
+        "主要操作区",
+        "状态与反馈区"
+      ],
+      "actions": [],
+      "states": [
+        {
+          "id": "ready",
+          "label": "可用",
+          "description": "页面数据齐备，用户可完成核心操作。"
+        },
+        {
+          "id": "loading",
+          "label": "加载中",
+          "description": "页面数据正在加载。"
+        },
+        {
+          "id": "error",
+          "label": "错误",
+          "description": "页面加载或提交失败，需提示恢复动作。"
+        }
+      ],
+      "requirement_refs": {
+        "user-story": [
+          "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "prd": [
+          "docs/beacon/v1.3.5/prd/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "test-case": [
+          "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ]
+      },
+      "outbound_transitions": []
+    },
+    {
+      "page_id": "page-08-4a2d79ff",
+      "name": "页面名称",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "冻结 `页面名称` 的页面结构、关键动作和状态说明，确保与 requirement 材料一致。",
+      "sections": [
+        "页面头部",
+        "关键内容区",
+        "主要操作区",
+        "状态与反馈区"
+      ],
+      "actions": [],
+      "states": [
+        {
+          "id": "ready",
+          "label": "可用",
+          "description": "页面数据齐备，用户可完成核心操作。"
+        },
+        {
+          "id": "loading",
+          "label": "加载中",
+          "description": "页面数据正在加载。"
+        },
+        {
+          "id": "error",
+          "label": "错误",
+          "description": "页面加载或提交失败，需提示恢复动作。"
+        }
+      ],
+      "requirement_refs": {
+        "user-story": [
+          "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "prd": [
+          "docs/beacon/v1.3.5/prd/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "test-case": [
+          "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ]
+      },
+      "outbound_transitions": []
+    },
+    {
+      "page_id": "page-09-ece61c61",
+      "name": "页面入口",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "冻结 `页面入口` 的页面结构、关键动作和状态说明，确保与 requirement 材料一致。",
+      "sections": [
+        "页面头部",
+        "关键内容区",
+        "主要操作区",
+        "状态与反馈区"
+      ],
+      "actions": [],
+      "states": [
+        {
+          "id": "ready",
+          "label": "可用",
+          "description": "页面数据齐备，用户可完成核心操作。"
+        },
+        {
+          "id": "loading",
+          "label": "加载中",
+          "description": "页面数据正在加载。"
+        },
+        {
+          "id": "error",
+          "label": "错误",
+          "description": "页面加载或提交失败，需提示恢复动作。"
+        }
+      ],
+      "requirement_refs": {
+        "user-story": [
+          "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "prd": [
+          "docs/beacon/v1.3.5/prd/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "test-case": [
+          "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ]
+      },
+      "outbound_transitions": []
+    },
+    {
+      "page_id": "page-10-107f06b4",
+      "name": "页面出口",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "冻结 `页面出口` 的页面结构、关键动作和状态说明，确保与 requirement 材料一致。",
+      "sections": [
+        "页面头部",
+        "关键内容区",
+        "主要操作区",
+        "状态与反馈区"
+      ],
+      "actions": [],
+      "states": [
+        {
+          "id": "ready",
+          "label": "可用",
+          "description": "页面数据齐备，用户可完成核心操作。"
+        },
+        {
+          "id": "loading",
+          "label": "加载中",
+          "description": "页面数据正在加载。"
+        },
+        {
+          "id": "error",
+          "label": "错误",
+          "description": "页面加载或提交失败，需提示恢复动作。"
+        }
+      ],
+      "requirement_refs": {
+        "user-story": [
+          "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "prd": [
+          "docs/beacon/v1.3.5/prd/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "test-case": [
+          "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ]
+      },
+      "outbound_transitions": []
+    },
+    {
+      "page_id": "prd",
+      "name": "该页面来自哪条 PRD 承诺",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "冻结 `该页面来自哪条 PRD 承诺` 的页面结构、关键动作和状态说明，确保与 requirement 材料一致。",
+      "sections": [
+        "页面头部",
+        "关键内容区",
+        "主要操作区",
+        "状态与反馈区"
+      ],
+      "actions": [
+        {
+          "label": "进入该页面承载哪些 user story",
+          "target": "user-story",
+          "trigger": "点击跳转"
+        }
+      ],
+      "states": [
+        {
+          "id": "ready",
+          "label": "可用",
+          "description": "页面数据齐备，用户可完成核心操作。"
+        },
+        {
+          "id": "loading",
+          "label": "加载中",
+          "description": "页面数据正在加载。"
+        },
+        {
+          "id": "error",
+          "label": "错误",
+          "description": "页面加载或提交失败，需提示恢复动作。"
+        }
+      ],
+      "requirement_refs": {
+        "user-story": [
+          "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "prd": [
+          "docs/beacon/v1.3.5/prd/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "test-case": [
+          "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ]
+      },
+      "outbound_transitions": [
+        {
+          "from": "prd",
+          "to": "user-story",
+          "trigger": "点击跳转",
+          "type": "primary"
+        }
+      ]
+    },
+    {
+      "page_id": "user-story",
+      "name": "该页面承载哪些 user story",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "冻结 `该页面承载哪些 user story` 的页面结构、关键动作和状态说明，确保与 requirement 材料一致。",
+      "sections": [
+        "页面头部",
+        "关键内容区",
+        "主要操作区",
+        "状态与反馈区"
+      ],
+      "actions": [],
+      "states": [
+        {
+          "id": "ready",
+          "label": "可用",
+          "description": "页面数据齐备，用户可完成核心操作。"
+        },
+        {
+          "id": "loading",
+          "label": "加载中",
+          "description": "页面数据正在加载。"
+        },
+        {
+          "id": "error",
+          "label": "错误",
+          "description": "页面加载或提交失败，需提示恢复动作。"
+        }
+      ],
+      "requirement_refs": {
+        "user-story": [
+          "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "prd": [
+          "docs/beacon/v1.3.5/prd/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "test-case": [
+          "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ]
+      },
+      "outbound_transitions": []
+    },
+    {
+      "page_id": "page-13-1c4ec680",
+      "name": "页面结构",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "冻结 `页面结构` 的页面结构、关键动作和状态说明，确保与 requirement 材料一致。",
+      "sections": [
+        "页面头部",
+        "关键内容区",
+        "主要操作区",
+        "状态与反馈区"
+      ],
+      "actions": [],
+      "states": [
+        {
+          "id": "ready",
+          "label": "可用",
+          "description": "页面数据齐备，用户可完成核心操作。"
+        },
+        {
+          "id": "loading",
+          "label": "加载中",
+          "description": "页面数据正在加载。"
+        },
+        {
+          "id": "error",
+          "label": "错误",
+          "description": "页面加载或提交失败，需提示恢复动作。"
+        }
+      ],
+      "requirement_refs": {
+        "user-story": [
+          "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "prd": [
+          "docs/beacon/v1.3.5/prd/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "test-case": [
+          "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ]
+      },
+      "outbound_transitions": []
+    },
+    {
+      "page_id": "page-specs-json",
+      "name": "page-specs/*.json",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "冻结 `page-specs/*.json` 的页面结构、关键动作和状态说明，确保与 requirement 材料一致。",
+      "sections": [
+        "页面头部",
+        "关键内容区",
+        "主要操作区",
+        "状态与反馈区"
+      ],
+      "actions": [],
+      "states": [
+        {
+          "id": "ready",
+          "label": "可用",
+          "description": "页面数据齐备，用户可完成核心操作。"
+        },
+        {
+          "id": "loading",
+          "label": "加载中",
+          "description": "页面数据正在加载。"
+        },
+        {
+          "id": "error",
+          "label": "错误",
+          "description": "页面加载或提交失败，需提示恢复动作。"
+        }
+      ],
+      "requirement_refs": {
+        "user-story": [
+          "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "prd": [
+          "docs/beacon/v1.3.5/prd/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "test-case": [
+          "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ]
+      },
+      "outbound_transitions": []
+    },
+    {
+      "page_id": "contract",
+      "name": "更适合实现侧消费的页面草图 contract",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "冻结 `更适合实现侧消费的页面草图 contract` 的页面结构、关键动作和状态说明，确保与 requirement 材料一致。",
+      "sections": [
+        "页面头部",
+        "关键内容区",
+        "主要操作区",
+        "状态与反馈区"
+      ],
+      "actions": [],
+      "states": [
+        {
+          "id": "ready",
+          "label": "可用",
+          "description": "页面数据齐备，用户可完成核心操作。"
+        },
+        {
+          "id": "loading",
+          "label": "加载中",
+          "description": "页面数据正在加载。"
+        },
+        {
+          "id": "error",
+          "label": "错误",
+          "description": "页面加载或提交失败，需提示恢复动作。"
+        }
+      ],
+      "requirement_refs": {
+        "user-story": [
+          "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "prd": [
+          "docs/beacon/v1.3.5/prd/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "test-case": [
+          "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ]
+      },
+      "outbound_transitions": []
+    },
+    {
+      "page_id": "page-spec",
+      "name": "结构化 page spec",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "冻结 `结构化 page spec` 的页面结构、关键动作和状态说明，确保与 requirement 材料一致。",
+      "sections": [
+        "页面头部",
+        "关键内容区",
+        "主要操作区",
+        "状态与反馈区"
+      ],
+      "actions": [],
+      "states": [
+        {
+          "id": "ready",
+          "label": "可用",
+          "description": "页面数据齐备，用户可完成核心操作。"
+        },
+        {
+          "id": "loading",
+          "label": "加载中",
+          "description": "页面数据正在加载。"
+        },
+        {
+          "id": "error",
+          "label": "错误",
+          "description": "页面加载或提交失败，需提示恢复动作。"
+        }
+      ],
+      "requirement_refs": {
+        "user-story": [
+          "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "prd": [
+          "docs/beacon/v1.3.5/prd/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "test-case": [
+          "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ]
+      },
+      "outbound_transitions": []
+    },
+    {
+      "page_id": "page-17-860d61fc",
+      "name": "页面草图",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "冻结 `页面草图` 的页面结构、关键动作和状态说明，确保与 requirement 材料一致。",
+      "sections": [
+        "页面头部",
+        "关键内容区",
+        "主要操作区",
+        "状态与反馈区"
+      ],
+      "actions": [],
+      "states": [
+        {
+          "id": "ready",
+          "label": "可用",
+          "description": "页面数据齐备，用户可完成核心操作。"
+        },
+        {
+          "id": "loading",
+          "label": "加载中",
+          "description": "页面数据正在加载。"
+        },
+        {
+          "id": "error",
+          "label": "错误",
+          "description": "页面加载或提交失败，需提示恢复动作。"
+        }
+      ],
+      "requirement_refs": {
+        "user-story": [
+          "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "prd": [
+          "docs/beacon/v1.3.5/prd/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "test-case": [
+          "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ]
+      },
+      "outbound_transitions": []
     },
     {
       "page_id": "material-document-detail",
@@ -380,18 +1190,7 @@
         "风险与调试摘要",
         "推荐 skill 区"
       ],
-      "actions": [
-        {
-          "label": "进入项目详情",
-          "target": "project-detail",
-          "trigger": "点击项目行或卡片"
-        },
-        {
-          "label": "返回首页",
-          "target": "home",
-          "trigger": "点击首页导航"
-        }
-      ],
+      "actions": [],
       "states": [
         {
           "id": "ready",
@@ -449,11 +1248,6 @@
         "最近结果与 blocker"
       ],
       "actions": [
-        {
-          "label": "返回项目详情",
-          "target": "project-detail",
-          "trigger": "点击返回"
-        },
         {
           "label": "返回管理总览",
           "target": "management-overview",
@@ -526,11 +1320,6 @@
           "label": "打开文档",
           "target": "material-document-detail",
           "trigger": "点击文档列表项"
-        },
-        {
-          "label": "返回项目详情",
-          "target": "project-detail",
-          "trigger": "点击返回"
         }
       ],
       "states": [
@@ -584,6 +1373,814 @@
           "type": "drill-down"
         }
       ]
+    },
+    {
+      "page_id": "page-01-d1bbcc5c",
+      "name": "不要求当前阶段生成好看的高保真页面",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "冻结 `不要求当前阶段生成好看的高保真页面` 的页面结构、关键动作和状态说明，确保与 requirement 材料一致。",
+      "sections": [
+        "页面头部",
+        "关键内容区",
+        "主要操作区",
+        "状态与反馈区"
+      ],
+      "actions": [],
+      "states": [
+        {
+          "id": "ready",
+          "label": "可用",
+          "description": "页面数据齐备，用户可完成核心操作。"
+        },
+        {
+          "id": "loading",
+          "label": "加载中",
+          "description": "页面数据正在加载。"
+        },
+        {
+          "id": "error",
+          "label": "错误",
+          "description": "页面加载或提交失败，需提示恢复动作。"
+        }
+      ],
+      "requirement_refs": {
+        "user-story": [
+          "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "prd": [
+          "docs/beacon/v1.3.5/prd/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "test-case": [
+          "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ]
+      },
+      "outbound_transitions": []
+    },
+    {
+      "page_id": "beacon-ui",
+      "name": "不直接重构 Beacon UI 产品本身的页面字段",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "冻结 `不直接重构 Beacon UI 产品本身的页面字段` 的页面结构、关键动作和状态说明，确保与 requirement 材料一致。",
+      "sections": [
+        "页面头部",
+        "关键内容区",
+        "主要操作区",
+        "状态与反馈区"
+      ],
+      "actions": [],
+      "states": [
+        {
+          "id": "ready",
+          "label": "可用",
+          "description": "页面数据齐备，用户可完成核心操作。"
+        },
+        {
+          "id": "loading",
+          "label": "加载中",
+          "description": "页面数据正在加载。"
+        },
+        {
+          "id": "error",
+          "label": "错误",
+          "description": "页面加载或提交失败，需提示恢复动作。"
+        }
+      ],
+      "requirement_refs": {
+        "user-story": [
+          "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "prd": [
+          "docs/beacon/v1.3.5/prd/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "test-case": [
+          "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ]
+      },
+      "outbound_transitions": []
+    },
+    {
+      "page_id": "page-03-93da1608",
+      "name": "页面清单",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "冻结 `页面清单` 的页面结构、关键动作和状态说明，确保与 requirement 材料一致。",
+      "sections": [
+        "页面头部",
+        "关键内容区",
+        "主要操作区",
+        "状态与反馈区"
+      ],
+      "actions": [
+        {
+          "label": "进入该页面来自哪条 PRD 承诺",
+          "target": "prd",
+          "trigger": "点击跳转"
+        }
+      ],
+      "states": [
+        {
+          "id": "ready",
+          "label": "可用",
+          "description": "页面数据齐备，用户可完成核心操作。"
+        },
+        {
+          "id": "loading",
+          "label": "加载中",
+          "description": "页面数据正在加载。"
+        },
+        {
+          "id": "error",
+          "label": "错误",
+          "description": "页面加载或提交失败，需提示恢复动作。"
+        }
+      ],
+      "requirement_refs": {
+        "user-story": [
+          "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "prd": [
+          "docs/beacon/v1.3.5/prd/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "test-case": [
+          "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ]
+      },
+      "outbound_transitions": [
+        {
+          "from": "page-03-93da1608",
+          "to": "prd",
+          "trigger": "点击跳转",
+          "type": "primary"
+        }
+      ]
+    },
+    {
+      "page_id": "page-04-56a5749b",
+      "name": "页面布局块",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "冻结 `页面布局块` 的页面结构、关键动作和状态说明，确保与 requirement 材料一致。",
+      "sections": [
+        "页面头部",
+        "关键内容区",
+        "主要操作区",
+        "状态与反馈区"
+      ],
+      "actions": [],
+      "states": [
+        {
+          "id": "ready",
+          "label": "可用",
+          "description": "页面数据齐备，用户可完成核心操作。"
+        },
+        {
+          "id": "loading",
+          "label": "加载中",
+          "description": "页面数据正在加载。"
+        },
+        {
+          "id": "error",
+          "label": "错误",
+          "description": "页面加载或提交失败，需提示恢复动作。"
+        }
+      ],
+      "requirement_refs": {
+        "user-story": [
+          "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "prd": [
+          "docs/beacon/v1.3.5/prd/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "test-case": [
+          "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ]
+      },
+      "outbound_transitions": []
+    },
+    {
+      "page_id": "demo",
+      "name": "展示型 demo 页面",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "冻结 `展示型 demo 页面` 的页面结构、关键动作和状态说明，确保与 requirement 材料一致。",
+      "sections": [
+        "页面头部",
+        "关键内容区",
+        "主要操作区",
+        "状态与反馈区"
+      ],
+      "actions": [],
+      "states": [
+        {
+          "id": "ready",
+          "label": "可用",
+          "description": "页面数据齐备，用户可完成核心操作。"
+        },
+        {
+          "id": "loading",
+          "label": "加载中",
+          "description": "页面数据正在加载。"
+        },
+        {
+          "id": "error",
+          "label": "错误",
+          "description": "页面加载或提交失败，需提示恢复动作。"
+        }
+      ],
+      "requirement_refs": {
+        "user-story": [
+          "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "prd": [
+          "docs/beacon/v1.3.5/prd/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "test-case": [
+          "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ]
+      },
+      "outbound_transitions": []
+    },
+    {
+      "page_id": "human",
+      "name": "human 层可引用“业务页面名",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "冻结 `human 层可引用“业务页面名` 的页面结构、关键动作和状态说明，确保与 requirement 材料一致。",
+      "sections": [
+        "页面头部",
+        "关键内容区",
+        "主要操作区",
+        "状态与反馈区"
+      ],
+      "actions": [],
+      "states": [
+        {
+          "id": "ready",
+          "label": "可用",
+          "description": "页面数据齐备，用户可完成核心操作。"
+        },
+        {
+          "id": "loading",
+          "label": "加载中",
+          "description": "页面数据正在加载。"
+        },
+        {
+          "id": "error",
+          "label": "错误",
+          "description": "页面加载或提交失败，需提示恢复动作。"
+        }
+      ],
+      "requirement_refs": {
+        "user-story": [
+          "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "prd": [
+          "docs/beacon/v1.3.5/prd/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "test-case": [
+          "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ]
+      },
+      "outbound_transitions": []
+    },
+    {
+      "page_id": "page-07-d4c36c95",
+      "name": "页面汇总文档规范",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "冻结 `页面汇总文档规范` 的页面结构、关键动作和状态说明，确保与 requirement 材料一致。",
+      "sections": [
+        "页面头部",
+        "关键内容区",
+        "主要操作区",
+        "状态与反馈区"
+      ],
+      "actions": [],
+      "states": [
+        {
+          "id": "ready",
+          "label": "可用",
+          "description": "页面数据齐备，用户可完成核心操作。"
+        },
+        {
+          "id": "loading",
+          "label": "加载中",
+          "description": "页面数据正在加载。"
+        },
+        {
+          "id": "error",
+          "label": "错误",
+          "description": "页面加载或提交失败，需提示恢复动作。"
+        }
+      ],
+      "requirement_refs": {
+        "user-story": [
+          "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "prd": [
+          "docs/beacon/v1.3.5/prd/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "test-case": [
+          "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ]
+      },
+      "outbound_transitions": []
+    },
+    {
+      "page_id": "page-08-4a2d79ff",
+      "name": "页面名称",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "冻结 `页面名称` 的页面结构、关键动作和状态说明，确保与 requirement 材料一致。",
+      "sections": [
+        "页面头部",
+        "关键内容区",
+        "主要操作区",
+        "状态与反馈区"
+      ],
+      "actions": [],
+      "states": [
+        {
+          "id": "ready",
+          "label": "可用",
+          "description": "页面数据齐备，用户可完成核心操作。"
+        },
+        {
+          "id": "loading",
+          "label": "加载中",
+          "description": "页面数据正在加载。"
+        },
+        {
+          "id": "error",
+          "label": "错误",
+          "description": "页面加载或提交失败，需提示恢复动作。"
+        }
+      ],
+      "requirement_refs": {
+        "user-story": [
+          "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "prd": [
+          "docs/beacon/v1.3.5/prd/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "test-case": [
+          "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ]
+      },
+      "outbound_transitions": []
+    },
+    {
+      "page_id": "page-09-ece61c61",
+      "name": "页面入口",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "冻结 `页面入口` 的页面结构、关键动作和状态说明，确保与 requirement 材料一致。",
+      "sections": [
+        "页面头部",
+        "关键内容区",
+        "主要操作区",
+        "状态与反馈区"
+      ],
+      "actions": [],
+      "states": [
+        {
+          "id": "ready",
+          "label": "可用",
+          "description": "页面数据齐备，用户可完成核心操作。"
+        },
+        {
+          "id": "loading",
+          "label": "加载中",
+          "description": "页面数据正在加载。"
+        },
+        {
+          "id": "error",
+          "label": "错误",
+          "description": "页面加载或提交失败，需提示恢复动作。"
+        }
+      ],
+      "requirement_refs": {
+        "user-story": [
+          "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "prd": [
+          "docs/beacon/v1.3.5/prd/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "test-case": [
+          "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ]
+      },
+      "outbound_transitions": []
+    },
+    {
+      "page_id": "page-10-107f06b4",
+      "name": "页面出口",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "冻结 `页面出口` 的页面结构、关键动作和状态说明，确保与 requirement 材料一致。",
+      "sections": [
+        "页面头部",
+        "关键内容区",
+        "主要操作区",
+        "状态与反馈区"
+      ],
+      "actions": [],
+      "states": [
+        {
+          "id": "ready",
+          "label": "可用",
+          "description": "页面数据齐备，用户可完成核心操作。"
+        },
+        {
+          "id": "loading",
+          "label": "加载中",
+          "description": "页面数据正在加载。"
+        },
+        {
+          "id": "error",
+          "label": "错误",
+          "description": "页面加载或提交失败，需提示恢复动作。"
+        }
+      ],
+      "requirement_refs": {
+        "user-story": [
+          "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "prd": [
+          "docs/beacon/v1.3.5/prd/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "test-case": [
+          "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ]
+      },
+      "outbound_transitions": []
+    },
+    {
+      "page_id": "prd",
+      "name": "该页面来自哪条 PRD 承诺",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "冻结 `该页面来自哪条 PRD 承诺` 的页面结构、关键动作和状态说明，确保与 requirement 材料一致。",
+      "sections": [
+        "页面头部",
+        "关键内容区",
+        "主要操作区",
+        "状态与反馈区"
+      ],
+      "actions": [
+        {
+          "label": "进入该页面承载哪些 user story",
+          "target": "user-story",
+          "trigger": "点击跳转"
+        }
+      ],
+      "states": [
+        {
+          "id": "ready",
+          "label": "可用",
+          "description": "页面数据齐备，用户可完成核心操作。"
+        },
+        {
+          "id": "loading",
+          "label": "加载中",
+          "description": "页面数据正在加载。"
+        },
+        {
+          "id": "error",
+          "label": "错误",
+          "description": "页面加载或提交失败，需提示恢复动作。"
+        }
+      ],
+      "requirement_refs": {
+        "user-story": [
+          "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "prd": [
+          "docs/beacon/v1.3.5/prd/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "test-case": [
+          "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ]
+      },
+      "outbound_transitions": [
+        {
+          "from": "prd",
+          "to": "user-story",
+          "trigger": "点击跳转",
+          "type": "primary"
+        }
+      ]
+    },
+    {
+      "page_id": "user-story",
+      "name": "该页面承载哪些 user story",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "冻结 `该页面承载哪些 user story` 的页面结构、关键动作和状态说明，确保与 requirement 材料一致。",
+      "sections": [
+        "页面头部",
+        "关键内容区",
+        "主要操作区",
+        "状态与反馈区"
+      ],
+      "actions": [],
+      "states": [
+        {
+          "id": "ready",
+          "label": "可用",
+          "description": "页面数据齐备，用户可完成核心操作。"
+        },
+        {
+          "id": "loading",
+          "label": "加载中",
+          "description": "页面数据正在加载。"
+        },
+        {
+          "id": "error",
+          "label": "错误",
+          "description": "页面加载或提交失败，需提示恢复动作。"
+        }
+      ],
+      "requirement_refs": {
+        "user-story": [
+          "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "prd": [
+          "docs/beacon/v1.3.5/prd/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "test-case": [
+          "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ]
+      },
+      "outbound_transitions": []
+    },
+    {
+      "page_id": "page-13-1c4ec680",
+      "name": "页面结构",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "冻结 `页面结构` 的页面结构、关键动作和状态说明，确保与 requirement 材料一致。",
+      "sections": [
+        "页面头部",
+        "关键内容区",
+        "主要操作区",
+        "状态与反馈区"
+      ],
+      "actions": [],
+      "states": [
+        {
+          "id": "ready",
+          "label": "可用",
+          "description": "页面数据齐备，用户可完成核心操作。"
+        },
+        {
+          "id": "loading",
+          "label": "加载中",
+          "description": "页面数据正在加载。"
+        },
+        {
+          "id": "error",
+          "label": "错误",
+          "description": "页面加载或提交失败，需提示恢复动作。"
+        }
+      ],
+      "requirement_refs": {
+        "user-story": [
+          "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "prd": [
+          "docs/beacon/v1.3.5/prd/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "test-case": [
+          "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ]
+      },
+      "outbound_transitions": []
+    },
+    {
+      "page_id": "page-specs-json",
+      "name": "page-specs/*.json",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "冻结 `page-specs/*.json` 的页面结构、关键动作和状态说明，确保与 requirement 材料一致。",
+      "sections": [
+        "页面头部",
+        "关键内容区",
+        "主要操作区",
+        "状态与反馈区"
+      ],
+      "actions": [],
+      "states": [
+        {
+          "id": "ready",
+          "label": "可用",
+          "description": "页面数据齐备，用户可完成核心操作。"
+        },
+        {
+          "id": "loading",
+          "label": "加载中",
+          "description": "页面数据正在加载。"
+        },
+        {
+          "id": "error",
+          "label": "错误",
+          "description": "页面加载或提交失败，需提示恢复动作。"
+        }
+      ],
+      "requirement_refs": {
+        "user-story": [
+          "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "prd": [
+          "docs/beacon/v1.3.5/prd/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "test-case": [
+          "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ]
+      },
+      "outbound_transitions": []
+    },
+    {
+      "page_id": "contract",
+      "name": "更适合实现侧消费的页面草图 contract",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "冻结 `更适合实现侧消费的页面草图 contract` 的页面结构、关键动作和状态说明，确保与 requirement 材料一致。",
+      "sections": [
+        "页面头部",
+        "关键内容区",
+        "主要操作区",
+        "状态与反馈区"
+      ],
+      "actions": [],
+      "states": [
+        {
+          "id": "ready",
+          "label": "可用",
+          "description": "页面数据齐备，用户可完成核心操作。"
+        },
+        {
+          "id": "loading",
+          "label": "加载中",
+          "description": "页面数据正在加载。"
+        },
+        {
+          "id": "error",
+          "label": "错误",
+          "description": "页面加载或提交失败，需提示恢复动作。"
+        }
+      ],
+      "requirement_refs": {
+        "user-story": [
+          "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "prd": [
+          "docs/beacon/v1.3.5/prd/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "test-case": [
+          "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ]
+      },
+      "outbound_transitions": []
+    },
+    {
+      "page_id": "page-spec",
+      "name": "结构化 page spec",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "冻结 `结构化 page spec` 的页面结构、关键动作和状态说明，确保与 requirement 材料一致。",
+      "sections": [
+        "页面头部",
+        "关键内容区",
+        "主要操作区",
+        "状态与反馈区"
+      ],
+      "actions": [],
+      "states": [
+        {
+          "id": "ready",
+          "label": "可用",
+          "description": "页面数据齐备，用户可完成核心操作。"
+        },
+        {
+          "id": "loading",
+          "label": "加载中",
+          "description": "页面数据正在加载。"
+        },
+        {
+          "id": "error",
+          "label": "错误",
+          "description": "页面加载或提交失败，需提示恢复动作。"
+        }
+      ],
+      "requirement_refs": {
+        "user-story": [
+          "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "prd": [
+          "docs/beacon/v1.3.5/prd/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "test-case": [
+          "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ]
+      },
+      "outbound_transitions": []
+    },
+    {
+      "page_id": "page-17-860d61fc",
+      "name": "页面草图",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "冻结 `页面草图` 的页面结构、关键动作和状态说明，确保与 requirement 材料一致。",
+      "sections": [
+        "页面头部",
+        "关键内容区",
+        "主要操作区",
+        "状态与反馈区"
+      ],
+      "actions": [],
+      "states": [
+        {
+          "id": "ready",
+          "label": "可用",
+          "description": "页面数据齐备，用户可完成核心操作。"
+        },
+        {
+          "id": "loading",
+          "label": "加载中",
+          "description": "页面数据正在加载。"
+        },
+        {
+          "id": "error",
+          "label": "错误",
+          "description": "页面加载或提交失败，需提示恢复动作。"
+        }
+      ],
+      "requirement_refs": {
+        "user-story": [
+          "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "prd": [
+          "docs/beacon/v1.3.5/prd/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ],
+        "test-case": [
+          "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        ]
+      },
+      "outbound_transitions": []
     },
     {
       "page_id": "material-document-detail",
@@ -661,6 +2258,18 @@
     "primary_exit": "material-viewer",
     "transitions": [
       {
+        "from": "prd",
+        "to": "user-story",
+        "trigger": "点击跳转",
+        "type": "primary"
+      },
+      {
+        "from": "page-03-93da1608",
+        "to": "prd",
+        "trigger": "点击跳转",
+        "type": "primary"
+      },
+      {
         "from": "material-viewer",
         "to": "material-document-detail",
         "trigger": "点击文档列表项",
@@ -701,6 +2310,125 @@
         ],
         "notes": []
       },
+      "page-01-d1bbcc5c": {
+        "platforms": [
+          "Web",
+          "PC"
+        ],
+        "notes": []
+      },
+      "beacon-ui": {
+        "platforms": [
+          "Web",
+          "PC"
+        ],
+        "notes": []
+      },
+      "page-03-93da1608": {
+        "platforms": [
+          "Web",
+          "PC"
+        ],
+        "notes": []
+      },
+      "page-04-56a5749b": {
+        "platforms": [
+          "Web",
+          "PC"
+        ],
+        "notes": []
+      },
+      "demo": {
+        "platforms": [
+          "Web",
+          "PC"
+        ],
+        "notes": []
+      },
+      "human": {
+        "platforms": [
+          "Web",
+          "PC"
+        ],
+        "notes": []
+      },
+      "page-07-d4c36c95": {
+        "platforms": [
+          "Web",
+          "PC"
+        ],
+        "notes": []
+      },
+      "page-08-4a2d79ff": {
+        "platforms": [
+          "Web",
+          "PC"
+        ],
+        "notes": []
+      },
+      "page-09-ece61c61": {
+        "platforms": [
+          "Web",
+          "PC"
+        ],
+        "notes": []
+      },
+      "page-10-107f06b4": {
+        "platforms": [
+          "Web",
+          "PC"
+        ],
+        "notes": []
+      },
+      "prd": {
+        "platforms": [
+          "Web",
+          "PC"
+        ],
+        "notes": []
+      },
+      "user-story": {
+        "platforms": [
+          "Web",
+          "PC"
+        ],
+        "notes": []
+      },
+      "page-13-1c4ec680": {
+        "platforms": [
+          "Web",
+          "PC"
+        ],
+        "notes": []
+      },
+      "page-specs-json": {
+        "platforms": [
+          "Web",
+          "PC"
+        ],
+        "notes": []
+      },
+      "contract": {
+        "platforms": [
+          "Web",
+          "PC"
+        ],
+        "notes": []
+      },
+      "page-spec": {
+        "platforms": [
+          "Web",
+          "PC"
+        ],
+        "notes": []
+      },
+      "page-17-860d61fc": {
+        "platforms": [
+          "Web",
+          "PC"
+        ],
+        "notes": []
+      },
       "material-document-detail": {
         "platforms": [
           "Web",
@@ -735,8 +2463,10 @@
     ]
   },
   "parser": {
-    "page_detection": "keyword-catalog",
+    "page_detection": "requirement-driven-parser",
     "fallback_used": false,
+    "discovered_page_count": 21,
+    "custom_page_count": 17,
     "cjk_detected": true,
     "cjk_parse_failed": false
   },

@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "component_count": 20,
+  "component_count": 88,
   "components": [
     {
       "component_id": "management-overview-component-01",
@@ -12,9 +12,9 @@
         "source-map.requirement_refs"
       ],
       "interaction": {
-        "label": "进入项目详情",
-        "trigger": "点击项目行或卡片",
-        "target": "project-detail"
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "management-overview"
       },
       "state_refs": [
         "ready",
@@ -33,7 +33,10 @@
         "AC-007",
         "AC-008",
         "AC-009",
-        "AC-010"
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
       ],
       "tc_refs": [
         "TC-001",
@@ -45,7 +48,10 @@
         "TC-007",
         "TC-008",
         "TC-009",
-        "TC-010"
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
       ],
       "story_refs": [
         "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
@@ -61,9 +67,9 @@
         "source-map.requirement_refs"
       ],
       "interaction": {
-        "label": "返回首页",
-        "trigger": "点击首页导航",
-        "target": "home"
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "management-overview"
       },
       "state_refs": [
         "ready",
@@ -82,7 +88,10 @@
         "AC-007",
         "AC-008",
         "AC-009",
-        "AC-010"
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
       ],
       "tc_refs": [
         "TC-001",
@@ -94,7 +103,10 @@
         "TC-007",
         "TC-008",
         "TC-009",
-        "TC-010"
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
       ],
       "story_refs": [
         "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
@@ -131,7 +143,10 @@
         "AC-007",
         "AC-008",
         "AC-009",
-        "AC-010"
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
       ],
       "tc_refs": [
         "TC-001",
@@ -143,7 +158,10 @@
         "TC-007",
         "TC-008",
         "TC-009",
-        "TC-010"
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
       ],
       "story_refs": [
         "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
@@ -180,7 +198,10 @@
         "AC-007",
         "AC-008",
         "AC-009",
-        "AC-010"
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
       ],
       "tc_refs": [
         "TC-001",
@@ -192,7 +213,10 @@
         "TC-007",
         "TC-008",
         "TC-009",
-        "TC-010"
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
       ],
       "story_refs": [
         "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
@@ -229,7 +253,10 @@
         "AC-007",
         "AC-008",
         "AC-009",
-        "AC-010"
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
       ],
       "tc_refs": [
         "TC-001",
@@ -241,7 +268,10 @@
         "TC-007",
         "TC-008",
         "TC-009",
-        "TC-010"
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
       ],
       "story_refs": [
         "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
@@ -252,56 +282,6 @@
       "page_id": "runtime-center",
       "name": "运行态摘要头部",
       "responsibility": "运行态摘要头部 模块负责承载 `运行中心` 的关键信息与操作。",
-      "data_source": [
-        "prototype-plan.page_specs",
-        "source-map.requirement_refs"
-      ],
-      "interaction": {
-        "label": "返回项目详情",
-        "trigger": "点击返回",
-        "target": "project-detail"
-      },
-      "state_refs": [
-        "single-active",
-        "team-active",
-        "ralph-active",
-        "idle",
-        "loading",
-        "error"
-      ],
-      "ac_refs": [
-        "AC-001",
-        "AC-002",
-        "AC-003",
-        "AC-004",
-        "AC-005",
-        "AC-006",
-        "AC-007",
-        "AC-008",
-        "AC-009",
-        "AC-010"
-      ],
-      "tc_refs": [
-        "TC-001",
-        "TC-002",
-        "TC-003",
-        "TC-004",
-        "TC-005",
-        "TC-006",
-        "TC-007",
-        "TC-008",
-        "TC-009",
-        "TC-010"
-      ],
-      "story_refs": [
-        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
-      ]
-    },
-    {
-      "component_id": "runtime-center-component-02",
-      "page_id": "runtime-center",
-      "name": "single / team / ralph 模式切换",
-      "responsibility": "single / team / ralph 模式切换 模块负责承载 `运行中心` 的关键信息与操作。",
       "data_source": [
         "prototype-plan.page_specs",
         "source-map.requirement_refs"
@@ -329,7 +309,10 @@
         "AC-007",
         "AC-008",
         "AC-009",
-        "AC-010"
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
       ],
       "tc_refs": [
         "TC-001",
@@ -341,7 +324,66 @@
         "TC-007",
         "TC-008",
         "TC-009",
-        "TC-010"
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "runtime-center-component-02",
+      "page_id": "runtime-center",
+      "name": "single / team / ralph 模式切换",
+      "responsibility": "single / team / ralph 模式切换 模块负责承载 `运行中心` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "runtime-center"
+      },
+      "state_refs": [
+        "single-active",
+        "team-active",
+        "ralph-active",
+        "idle",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
       ],
       "story_refs": [
         "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
@@ -379,7 +421,10 @@
         "AC-007",
         "AC-008",
         "AC-009",
-        "AC-010"
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
       ],
       "tc_refs": [
         "TC-001",
@@ -391,7 +436,10 @@
         "TC-007",
         "TC-008",
         "TC-009",
-        "TC-010"
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
       ],
       "story_refs": [
         "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
@@ -429,7 +477,10 @@
         "AC-007",
         "AC-008",
         "AC-009",
-        "AC-010"
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
       ],
       "tc_refs": [
         "TC-001",
@@ -441,7 +492,10 @@
         "TC-007",
         "TC-008",
         "TC-009",
-        "TC-010"
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
       ],
       "story_refs": [
         "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
@@ -479,7 +533,10 @@
         "AC-007",
         "AC-008",
         "AC-009",
-        "AC-010"
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
       ],
       "tc_refs": [
         "TC-001",
@@ -491,7 +548,10 @@
         "TC-007",
         "TC-008",
         "TC-009",
-        "TC-010"
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
       ],
       "story_refs": [
         "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
@@ -529,7 +589,10 @@
         "AC-007",
         "AC-008",
         "AC-009",
-        "AC-010"
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
       ],
       "tc_refs": [
         "TC-001",
@@ -541,7 +604,10 @@
         "TC-007",
         "TC-008",
         "TC-009",
-        "TC-010"
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
       ],
       "story_refs": [
         "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
@@ -557,9 +623,9 @@
         "source-map.requirement_refs"
       ],
       "interaction": {
-        "label": "返回项目详情",
-        "trigger": "点击返回",
-        "target": "project-detail"
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "material-viewer"
       },
       "state_refs": [
         "ready",
@@ -579,7 +645,10 @@
         "AC-007",
         "AC-008",
         "AC-009",
-        "AC-010"
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
       ],
       "tc_refs": [
         "TC-001",
@@ -591,7 +660,10 @@
         "TC-007",
         "TC-008",
         "TC-009",
-        "TC-010"
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
       ],
       "story_refs": [
         "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
@@ -629,7 +701,10 @@
         "AC-007",
         "AC-008",
         "AC-009",
-        "AC-010"
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
       ],
       "tc_refs": [
         "TC-001",
@@ -641,7 +716,10 @@
         "TC-007",
         "TC-008",
         "TC-009",
-        "TC-010"
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
       ],
       "story_refs": [
         "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
@@ -679,7 +757,10 @@
         "AC-007",
         "AC-008",
         "AC-009",
-        "AC-010"
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
       ],
       "tc_refs": [
         "TC-001",
@@ -691,7 +772,10 @@
         "TC-007",
         "TC-008",
         "TC-009",
-        "TC-010"
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
       ],
       "story_refs": [
         "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
@@ -729,7 +813,10 @@
         "AC-007",
         "AC-008",
         "AC-009",
-        "AC-010"
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
       ],
       "tc_refs": [
         "TC-001",
@@ -741,7 +828,3614 @@
         "TC-007",
         "TC-008",
         "TC-009",
-        "TC-010"
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "page-01-d1bbcc5c-component-01",
+      "page_id": "page-01-d1bbcc5c",
+      "name": "页面头部",
+      "responsibility": "页面头部 模块负责承载 `不要求当前阶段生成好看的高保真页面` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "page-01-d1bbcc5c"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "page-01-d1bbcc5c-component-02",
+      "page_id": "page-01-d1bbcc5c",
+      "name": "关键内容区",
+      "responsibility": "关键内容区 模块负责承载 `不要求当前阶段生成好看的高保真页面` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "page-01-d1bbcc5c"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "page-01-d1bbcc5c-component-03",
+      "page_id": "page-01-d1bbcc5c",
+      "name": "主要操作区",
+      "responsibility": "主要操作区 模块负责承载 `不要求当前阶段生成好看的高保真页面` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "page-01-d1bbcc5c"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "page-01-d1bbcc5c-component-04",
+      "page_id": "page-01-d1bbcc5c",
+      "name": "状态与反馈区",
+      "responsibility": "状态与反馈区 模块负责承载 `不要求当前阶段生成好看的高保真页面` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "page-01-d1bbcc5c"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "beacon-ui-component-01",
+      "page_id": "beacon-ui",
+      "name": "页面头部",
+      "responsibility": "页面头部 模块负责承载 `不直接重构 Beacon UI 产品本身的页面字段` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "beacon-ui"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "beacon-ui-component-02",
+      "page_id": "beacon-ui",
+      "name": "关键内容区",
+      "responsibility": "关键内容区 模块负责承载 `不直接重构 Beacon UI 产品本身的页面字段` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "beacon-ui"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "beacon-ui-component-03",
+      "page_id": "beacon-ui",
+      "name": "主要操作区",
+      "responsibility": "主要操作区 模块负责承载 `不直接重构 Beacon UI 产品本身的页面字段` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "beacon-ui"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "beacon-ui-component-04",
+      "page_id": "beacon-ui",
+      "name": "状态与反馈区",
+      "responsibility": "状态与反馈区 模块负责承载 `不直接重构 Beacon UI 产品本身的页面字段` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "beacon-ui"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "page-03-93da1608-component-01",
+      "page_id": "page-03-93da1608",
+      "name": "页面头部",
+      "responsibility": "页面头部 模块负责承载 `页面清单` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "进入该页面来自哪条 PRD 承诺",
+        "trigger": "点击跳转",
+        "target": "prd"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "page-03-93da1608-component-02",
+      "page_id": "page-03-93da1608",
+      "name": "关键内容区",
+      "responsibility": "关键内容区 模块负责承载 `页面清单` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "page-03-93da1608"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "page-03-93da1608-component-03",
+      "page_id": "page-03-93da1608",
+      "name": "主要操作区",
+      "responsibility": "主要操作区 模块负责承载 `页面清单` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "page-03-93da1608"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "page-03-93da1608-component-04",
+      "page_id": "page-03-93da1608",
+      "name": "状态与反馈区",
+      "responsibility": "状态与反馈区 模块负责承载 `页面清单` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "page-03-93da1608"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "page-04-56a5749b-component-01",
+      "page_id": "page-04-56a5749b",
+      "name": "页面头部",
+      "responsibility": "页面头部 模块负责承载 `页面布局块` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "page-04-56a5749b"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "page-04-56a5749b-component-02",
+      "page_id": "page-04-56a5749b",
+      "name": "关键内容区",
+      "responsibility": "关键内容区 模块负责承载 `页面布局块` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "page-04-56a5749b"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "page-04-56a5749b-component-03",
+      "page_id": "page-04-56a5749b",
+      "name": "主要操作区",
+      "responsibility": "主要操作区 模块负责承载 `页面布局块` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "page-04-56a5749b"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "page-04-56a5749b-component-04",
+      "page_id": "page-04-56a5749b",
+      "name": "状态与反馈区",
+      "responsibility": "状态与反馈区 模块负责承载 `页面布局块` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "page-04-56a5749b"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "demo-component-01",
+      "page_id": "demo",
+      "name": "页面头部",
+      "responsibility": "页面头部 模块负责承载 `展示型 demo 页面` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "demo"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "demo-component-02",
+      "page_id": "demo",
+      "name": "关键内容区",
+      "responsibility": "关键内容区 模块负责承载 `展示型 demo 页面` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "demo"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "demo-component-03",
+      "page_id": "demo",
+      "name": "主要操作区",
+      "responsibility": "主要操作区 模块负责承载 `展示型 demo 页面` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "demo"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "demo-component-04",
+      "page_id": "demo",
+      "name": "状态与反馈区",
+      "responsibility": "状态与反馈区 模块负责承载 `展示型 demo 页面` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "demo"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "human-component-01",
+      "page_id": "human",
+      "name": "页面头部",
+      "responsibility": "页面头部 模块负责承载 `human 层可引用“业务页面名` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "human"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "human-component-02",
+      "page_id": "human",
+      "name": "关键内容区",
+      "responsibility": "关键内容区 模块负责承载 `human 层可引用“业务页面名` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "human"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "human-component-03",
+      "page_id": "human",
+      "name": "主要操作区",
+      "responsibility": "主要操作区 模块负责承载 `human 层可引用“业务页面名` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "human"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "human-component-04",
+      "page_id": "human",
+      "name": "状态与反馈区",
+      "responsibility": "状态与反馈区 模块负责承载 `human 层可引用“业务页面名` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "human"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "page-07-d4c36c95-component-01",
+      "page_id": "page-07-d4c36c95",
+      "name": "页面头部",
+      "responsibility": "页面头部 模块负责承载 `页面汇总文档规范` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "page-07-d4c36c95"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "page-07-d4c36c95-component-02",
+      "page_id": "page-07-d4c36c95",
+      "name": "关键内容区",
+      "responsibility": "关键内容区 模块负责承载 `页面汇总文档规范` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "page-07-d4c36c95"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "page-07-d4c36c95-component-03",
+      "page_id": "page-07-d4c36c95",
+      "name": "主要操作区",
+      "responsibility": "主要操作区 模块负责承载 `页面汇总文档规范` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "page-07-d4c36c95"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "page-07-d4c36c95-component-04",
+      "page_id": "page-07-d4c36c95",
+      "name": "状态与反馈区",
+      "responsibility": "状态与反馈区 模块负责承载 `页面汇总文档规范` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "page-07-d4c36c95"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "page-08-4a2d79ff-component-01",
+      "page_id": "page-08-4a2d79ff",
+      "name": "页面头部",
+      "responsibility": "页面头部 模块负责承载 `页面名称` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "page-08-4a2d79ff"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "page-08-4a2d79ff-component-02",
+      "page_id": "page-08-4a2d79ff",
+      "name": "关键内容区",
+      "responsibility": "关键内容区 模块负责承载 `页面名称` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "page-08-4a2d79ff"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "page-08-4a2d79ff-component-03",
+      "page_id": "page-08-4a2d79ff",
+      "name": "主要操作区",
+      "responsibility": "主要操作区 模块负责承载 `页面名称` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "page-08-4a2d79ff"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "page-08-4a2d79ff-component-04",
+      "page_id": "page-08-4a2d79ff",
+      "name": "状态与反馈区",
+      "responsibility": "状态与反馈区 模块负责承载 `页面名称` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "page-08-4a2d79ff"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "page-09-ece61c61-component-01",
+      "page_id": "page-09-ece61c61",
+      "name": "页面头部",
+      "responsibility": "页面头部 模块负责承载 `页面入口` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "page-09-ece61c61"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "page-09-ece61c61-component-02",
+      "page_id": "page-09-ece61c61",
+      "name": "关键内容区",
+      "responsibility": "关键内容区 模块负责承载 `页面入口` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "page-09-ece61c61"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "page-09-ece61c61-component-03",
+      "page_id": "page-09-ece61c61",
+      "name": "主要操作区",
+      "responsibility": "主要操作区 模块负责承载 `页面入口` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "page-09-ece61c61"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "page-09-ece61c61-component-04",
+      "page_id": "page-09-ece61c61",
+      "name": "状态与反馈区",
+      "responsibility": "状态与反馈区 模块负责承载 `页面入口` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "page-09-ece61c61"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "page-10-107f06b4-component-01",
+      "page_id": "page-10-107f06b4",
+      "name": "页面头部",
+      "responsibility": "页面头部 模块负责承载 `页面出口` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "page-10-107f06b4"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "page-10-107f06b4-component-02",
+      "page_id": "page-10-107f06b4",
+      "name": "关键内容区",
+      "responsibility": "关键内容区 模块负责承载 `页面出口` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "page-10-107f06b4"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "page-10-107f06b4-component-03",
+      "page_id": "page-10-107f06b4",
+      "name": "主要操作区",
+      "responsibility": "主要操作区 模块负责承载 `页面出口` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "page-10-107f06b4"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "page-10-107f06b4-component-04",
+      "page_id": "page-10-107f06b4",
+      "name": "状态与反馈区",
+      "responsibility": "状态与反馈区 模块负责承载 `页面出口` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "page-10-107f06b4"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "prd-component-01",
+      "page_id": "prd",
+      "name": "页面头部",
+      "responsibility": "页面头部 模块负责承载 `该页面来自哪条 PRD 承诺` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "进入该页面承载哪些 user story",
+        "trigger": "点击跳转",
+        "target": "user-story"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "prd-component-02",
+      "page_id": "prd",
+      "name": "关键内容区",
+      "responsibility": "关键内容区 模块负责承载 `该页面来自哪条 PRD 承诺` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "prd"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "prd-component-03",
+      "page_id": "prd",
+      "name": "主要操作区",
+      "responsibility": "主要操作区 模块负责承载 `该页面来自哪条 PRD 承诺` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "prd"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "prd-component-04",
+      "page_id": "prd",
+      "name": "状态与反馈区",
+      "responsibility": "状态与反馈区 模块负责承载 `该页面来自哪条 PRD 承诺` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "prd"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "user-story-component-01",
+      "page_id": "user-story",
+      "name": "页面头部",
+      "responsibility": "页面头部 模块负责承载 `该页面承载哪些 user story` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "user-story"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "user-story-component-02",
+      "page_id": "user-story",
+      "name": "关键内容区",
+      "responsibility": "关键内容区 模块负责承载 `该页面承载哪些 user story` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "user-story"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "user-story-component-03",
+      "page_id": "user-story",
+      "name": "主要操作区",
+      "responsibility": "主要操作区 模块负责承载 `该页面承载哪些 user story` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "user-story"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "user-story-component-04",
+      "page_id": "user-story",
+      "name": "状态与反馈区",
+      "responsibility": "状态与反馈区 模块负责承载 `该页面承载哪些 user story` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "user-story"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "page-13-1c4ec680-component-01",
+      "page_id": "page-13-1c4ec680",
+      "name": "页面头部",
+      "responsibility": "页面头部 模块负责承载 `页面结构` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "page-13-1c4ec680"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "page-13-1c4ec680-component-02",
+      "page_id": "page-13-1c4ec680",
+      "name": "关键内容区",
+      "responsibility": "关键内容区 模块负责承载 `页面结构` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "page-13-1c4ec680"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "page-13-1c4ec680-component-03",
+      "page_id": "page-13-1c4ec680",
+      "name": "主要操作区",
+      "responsibility": "主要操作区 模块负责承载 `页面结构` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "page-13-1c4ec680"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "page-13-1c4ec680-component-04",
+      "page_id": "page-13-1c4ec680",
+      "name": "状态与反馈区",
+      "responsibility": "状态与反馈区 模块负责承载 `页面结构` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "page-13-1c4ec680"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "page-specs-json-component-01",
+      "page_id": "page-specs-json",
+      "name": "页面头部",
+      "responsibility": "页面头部 模块负责承载 `page-specs/*.json` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "page-specs-json"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "page-specs-json-component-02",
+      "page_id": "page-specs-json",
+      "name": "关键内容区",
+      "responsibility": "关键内容区 模块负责承载 `page-specs/*.json` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "page-specs-json"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "page-specs-json-component-03",
+      "page_id": "page-specs-json",
+      "name": "主要操作区",
+      "responsibility": "主要操作区 模块负责承载 `page-specs/*.json` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "page-specs-json"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "page-specs-json-component-04",
+      "page_id": "page-specs-json",
+      "name": "状态与反馈区",
+      "responsibility": "状态与反馈区 模块负责承载 `page-specs/*.json` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "page-specs-json"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "contract-component-01",
+      "page_id": "contract",
+      "name": "页面头部",
+      "responsibility": "页面头部 模块负责承载 `更适合实现侧消费的页面草图 contract` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "contract"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "contract-component-02",
+      "page_id": "contract",
+      "name": "关键内容区",
+      "responsibility": "关键内容区 模块负责承载 `更适合实现侧消费的页面草图 contract` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "contract"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "contract-component-03",
+      "page_id": "contract",
+      "name": "主要操作区",
+      "responsibility": "主要操作区 模块负责承载 `更适合实现侧消费的页面草图 contract` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "contract"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "contract-component-04",
+      "page_id": "contract",
+      "name": "状态与反馈区",
+      "responsibility": "状态与反馈区 模块负责承载 `更适合实现侧消费的页面草图 contract` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "contract"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "page-spec-component-01",
+      "page_id": "page-spec",
+      "name": "页面头部",
+      "responsibility": "页面头部 模块负责承载 `结构化 page spec` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "page-spec"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "page-spec-component-02",
+      "page_id": "page-spec",
+      "name": "关键内容区",
+      "responsibility": "关键内容区 模块负责承载 `结构化 page spec` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "page-spec"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "page-spec-component-03",
+      "page_id": "page-spec",
+      "name": "主要操作区",
+      "responsibility": "主要操作区 模块负责承载 `结构化 page spec` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "page-spec"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "page-spec-component-04",
+      "page_id": "page-spec",
+      "name": "状态与反馈区",
+      "responsibility": "状态与反馈区 模块负责承载 `结构化 page spec` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "page-spec"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "page-17-860d61fc-component-01",
+      "page_id": "page-17-860d61fc",
+      "name": "页面头部",
+      "responsibility": "页面头部 模块负责承载 `页面草图` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "page-17-860d61fc"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "page-17-860d61fc-component-02",
+      "page_id": "page-17-860d61fc",
+      "name": "关键内容区",
+      "responsibility": "关键内容区 模块负责承载 `页面草图` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "page-17-860d61fc"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "page-17-860d61fc-component-03",
+      "page_id": "page-17-860d61fc",
+      "name": "主要操作区",
+      "responsibility": "主要操作区 模块负责承载 `页面草图` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "page-17-860d61fc"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+      ]
+    },
+    {
+      "component_id": "page-17-860d61fc-component-04",
+      "page_id": "page-17-860d61fc",
+      "name": "状态与反馈区",
+      "responsibility": "状态与反馈区 模块负责承载 `页面草图` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "page-17-860d61fc"
+      },
+      "state_refs": [
+        "ready",
+        "loading",
+        "error"
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
       ],
       "story_refs": [
         "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
@@ -777,7 +4471,10 @@
         "AC-007",
         "AC-008",
         "AC-009",
-        "AC-010"
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
       ],
       "tc_refs": [
         "TC-001",
@@ -789,7 +4486,10 @@
         "TC-007",
         "TC-008",
         "TC-009",
-        "TC-010"
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
       ],
       "story_refs": [
         "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
@@ -825,7 +4525,10 @@
         "AC-007",
         "AC-008",
         "AC-009",
-        "AC-010"
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
       ],
       "tc_refs": [
         "TC-001",
@@ -837,7 +4540,10 @@
         "TC-007",
         "TC-008",
         "TC-009",
-        "TC-010"
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
       ],
       "story_refs": [
         "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
@@ -873,7 +4579,10 @@
         "AC-007",
         "AC-008",
         "AC-009",
-        "AC-010"
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
       ],
       "tc_refs": [
         "TC-001",
@@ -885,7 +4594,10 @@
         "TC-007",
         "TC-008",
         "TC-009",
-        "TC-010"
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
       ],
       "story_refs": [
         "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
@@ -921,7 +4633,10 @@
         "AC-007",
         "AC-008",
         "AC-009",
-        "AC-010"
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
       ],
       "tc_refs": [
         "TC-001",
@@ -933,7 +4648,10 @@
         "TC-007",
         "TC-008",
         "TC-009",
-        "TC-010"
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
       ],
       "story_refs": [
         "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
@@ -969,7 +4687,10 @@
         "AC-007",
         "AC-008",
         "AC-009",
-        "AC-010"
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013"
       ],
       "tc_refs": [
         "TC-001",
@@ -981,7 +4702,10 @@
         "TC-007",
         "TC-008",
         "TC-009",
-        "TC-010"
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013"
       ],
       "story_refs": [
         "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"

@@ -31,7 +31,6 @@
 - 最近结果与 blocker
 
 ## 用户动作
-- `返回项目详情`: 点击返回 -> `project-detail`
 - `返回管理总览`: 点击面包屑 -> `management-overview`
 
 ## 状态说明

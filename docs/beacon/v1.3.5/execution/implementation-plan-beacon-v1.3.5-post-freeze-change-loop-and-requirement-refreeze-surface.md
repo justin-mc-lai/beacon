@@ -5,8 +5,8 @@
 - version: `v1.3.5`
 - revision_id: `R1`
 - baseline_hash: `sha256:df90682762ab8f17bcb4e8fdc27db88a999714a1f66b3304ae7c8b22288a366e`
-- plan_hash: `sha256:3799b29b7c1a5398fac453afb469cc7a64d7f2d486811deda1ace66e54b9fb13`
-- status: `planned`
+- plan_hash: `sha256:fad74d391576c1d0f2b804e49c49ce9e556c879c361f7bd0f70b44d9586f473e`
+- status: `blocked`
 
 ## Source Refs
 - user_story: `docs/beacon/v1.3.5/user-story/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.md`
@@ -43,7 +43,7 @@
 ## Tasks
 
 ### ITASK-001 — FR-001 增加一个宿主可见子 skill `beacon-change`
-- status: `planned`
+- status: `completed`
 - mapped_ac_ids: AC-001
 - mapped_test_ids: TEST-001
 - mapped_scenario_ids: -
@@ -52,7 +52,7 @@
 - target_modules: -
 
 ### ITASK-002 — FR-002 `beacon-change` 必须稳定接收冻结后调整意图
-- status: `planned`
+- status: `blocked`
 - mapped_ac_ids: AC-002
 - mapped_test_ids: TEST-002
 - mapped_scenario_ids: -
@@ -61,7 +61,7 @@
 - target_modules: -
 
 ### ITASK-003 — FR-003 `beacon-change` 必须把变更请求编译为 change brief
-- status: `planned`
+- status: `completed`
 - mapped_ac_ids: AC-003, AC-005
 - mapped_test_ids: TEST-003, TEST-005
 - mapped_scenario_ids: -
@@ -70,7 +70,7 @@
 - target_modules: -
 
 ### ITASK-004 — FR-004 冻结后调整必须触发 revision reopen
-- status: `planned`
+- status: `completed`
 - mapped_ac_ids: AC-004
 - mapped_test_ids: TEST-004
 - mapped_scenario_ids: -
@@ -79,7 +79,7 @@
 - target_modules: -
 
 ### ITASK-005 — FR-005 变更后必须重编译 requirement truth
-- status: `planned`
+- status: `completed`
 - mapped_ac_ids: AC-006
 - mapped_test_ids: TEST-006
 - mapped_scenario_ids: -
@@ -88,7 +88,7 @@
 - target_modules: -
 
 ### ITASK-006 — FR-006 系统必须支持 requirement re-freeze
-- status: `planned`
+- status: `completed`
 - mapped_ac_ids: -
 - mapped_test_ids: -
 - mapped_scenario_ids: -
@@ -97,7 +97,7 @@
 - target_modules: -
 
 ### ITASK-007 — FR-007 生命周期状态机必须成为正式文档资产
-- status: `planned`
+- status: `completed`
 - mapped_ac_ids: -
 - mapped_test_ids: -
 - mapped_scenario_ids: -
@@ -106,7 +106,7 @@
 - target_modules: -
 
 ### ITASK-008 — FR-008 `implement` 必须识别 revised baseline
-- status: `planned`
+- status: `completed`
 - mapped_ac_ids: -
 - mapped_test_ids: -
 - mapped_scenario_ids: -
@@ -115,7 +115,7 @@
 - target_modules: -
 
 ### ITASK-009 — FR-009 `qa` 必须识别 delta verification
-- status: `planned`
+- status: `completed`
 - mapped_ac_ids: -
 - mapped_test_ids: -
 - mapped_scenario_ids: -
@@ -124,7 +124,7 @@
 - target_modules: -
 
 ### ITASK-010 — FR-010 `release` 必须识别 recheck 场景
-- status: `planned`
+- status: `completed`
 - mapped_ac_ids: -
 - mapped_test_ids: -
 - mapped_scenario_ids: -
@@ -133,7 +133,7 @@
 - target_modules: -
 
 ### ITASK-011 — FR-011 `help/status` 必须能路由冻结后调整闭环
-- status: `planned`
+- status: `completed`
 - mapped_ac_ids: -
 - mapped_test_ids: -
 - mapped_scenario_ids: -

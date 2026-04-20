@@ -2,9 +2,9 @@
 
 ## Story
 
-**As a** Beacon 产品负责人与实现负责人,  
-**I want** `prototype` 阶段只输出 requirement-driven wireframe 冻结包，并且跨 human/machine/sqlite 多写入点保持一致,  
-**So that** 我可以在 `prd -> user-story -> test-case -> prototype -> implement -> qa -> release` 主链中稳定冻结需求、避免信息漂移、并将结果可靠交接到 `v1.3.6` 实现线。
+**As a** Beacon 产品负责人与实现负责人,
+**I want** `prototype` 阶段只输出 requirement-driven wireframe 冻结包，并且跨 human/machine/sqlite 多写入点保持一致，
+**So that** 我可以在 `prd -> user-story -> test-case -> prototype -> implement -> qa -> release` 主链中稳定冻结需求、避免信息漂移，并将结果可靠交接到 `v1.3.6` 实现线。
 
 ## Acceptance Criteria
 
@@ -18,6 +18,9 @@
 - [ ] AC-008 `state-flow-map` 可验证关键状态迁移、异常回退与 test-case 映射；缺失时 `prototype review` 必须阻断。
 - [ ] AC-009 `component-catalog` 能建立组件职责/动作/状态与 AC/TC 映射；缺失时 `prototype freeze` 必须失败。
 - [ ] AC-010 human/machine/sqlite 三写入点共享 `source_hash`、`projection_seq`、`transaction_id`；任一不一致必须标记 `drift` 并阻断 release pass。
+- [ ] AC-011 人类文档通过 semantic leak lint：无技术标识泄漏，白名单词条必须附业务解释；不通过则 review/freeze 失败。
+- [ ] AC-012 `prototype status/review` 可观测编译流水线各阶段（ingest/extract/compile/validate/publish/audit），任一步失败可阻断并给修复建议。
+- [ ] AC-013 LLM 异常触发 `degraded + fallback-report.json + freeze 阻断`，修复后重编译可恢复正常冻结状态。
 
 ## Metadata
 
@@ -27,5 +30,5 @@
 | Story Points | 8 |
 | Status | frozen-pending-implementation |
 | Created | 2026-04-20T17:28:21.671716 |
-| Updated | 2026-04-20T17:33:00+08:00 |
+| Updated | 2026-04-20T23:38:00+08:00 |
 | Memory Context | N/A |

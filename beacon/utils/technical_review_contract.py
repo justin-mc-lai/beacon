@@ -436,10 +436,10 @@ def build_technical_review_gate_payload(
         "feature_slug": feature_slug(feature),
         "version": resolved_version,
         "runtime_version": resolved_runtime,
-        "runtime_capability_line": "v1.3.3",
+        "runtime_capability_line": "v1.3.1",
         "required": project_runtime_feature_enabled(
             project_root,
-            "v1.3.3",
+            "v1.3.1",
             docs_version=resolved_version,
             runtime_version=resolved_runtime,
         ),
