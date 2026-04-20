@@ -185,6 +185,83 @@ def _profile_binding_source(project_root: Path, *, version: str, feature: str) -
     return "none"
 
 
+def _normalize_intent_text(value: str | None) -> str:
+    return " ".join(str(value or "").strip().lower().split())
+
+
+def _detect_post_freeze_change_intent(intent_text: str | None) -> bool:
+    normalized = _normalize_intent_text(intent_text)
+    if not normalized:
+        return False
+    keywords = (
+        "change",
+        "scope change",
+        "change request",
+        "reopen",
+        "re-freeze",
+        "refreeze",
+        "revise",
+        "hotfix",
+        "adjust",
+        "modify",
+        "需求调整",
+        "改需求",
+        "变更",
+        "范围调整",
+        "补边界",
+        "重新冻结",
+        "需求补充",
+        "recheck",
+    )
+    return any(keyword in normalized for keyword in keywords)
+
+
+def _build_change_loop_payload(
+    *,
+    feature: str,
+    version: str,
+    project_root: Path,
+    revision_state: dict[str, Any],
+    change_intent: str | None,
+) -> dict[str, Any]:
+    intent_text = str(change_intent or "").strip()
+    doc_status = str(revision_state.get("doc_status", "") or "")
+    source_revision_id = str(revision_state.get("source_revision_id", "") or "")
+    superseded_by = str(revision_state.get("superseded_by", "") or "")
+    has_post_freeze_context = bool(doc_status == "frozen" or source_revision_id or superseded_by)
+    intent_detected = _detect_post_freeze_change_intent(intent_text)
+    ladder = [
+        "beacon-change",
+        "reopen",
+        "prd revise",
+        "user-story refresh",
+        "test-case refresh",
+        "prototype refresh",
+        "freeze",
+        "implement fix",
+        "qa delta-run",
+        "release recheck",
+    ]
+    return {
+        "intent": intent_text,
+        "intent_detected": intent_detected,
+        "has_post_freeze_context": has_post_freeze_context,
+        "recommended": bool(feature and intent_detected and has_post_freeze_context),
+        "route": "beacon-change",
+        "reason": (
+            "feature is already in a frozen/revisioned state and the request looks like a post-freeze requirement change"
+            if feature and intent_detected and has_post_freeze_context
+            else ""
+        ),
+        "ladder": ladder,
+        "reopen_command": (
+            f"beacon reopen {json.dumps(feature, ensure_ascii=False)} --project-root {project_root} --version {version} --reason change-request"
+            if feature
+            else ""
+        ),
+    }
+
+
 def _resolve_hud_refs(
     *,
     project_root: Path,
@@ -341,6 +418,7 @@ def _next_step(
     requirement_clarity_gate: dict[str, Any] | None = None,
     version_guard: dict[str, Any] | None = None,
     discovery_hint: dict[str, Any] | None = None,
+    change_loop: dict[str, Any] | None = None,
 ) -> dict[str, str]:
     quoted_feature = json.dumps(feature, ensure_ascii=False)
     base = f'--project-root {project_root} --version {version}'
@@ -349,6 +427,14 @@ def _next_step(
     feature_scorecard = feature_scorecard if isinstance(feature_scorecard, dict) else {}
     stage_binding = stage_binding if isinstance(stage_binding, dict) else {}
     delivery_status = str(revision_state.get("delivery_status", "") or "")
+    change_loop = change_loop if isinstance(change_loop, dict) else {}
+
+    if bool(change_loop.get("recommended", False)):
+        return {
+            "action": "beacon-change",
+            "reason": str(change_loop.get("reason") or "post-freeze requirement change should route through the change loop"),
+            "command": str(change_loop.get("route") or "beacon-change"),
+        }
 
     if project_mode == "takeover" and "takeover_baseline_required" in blocking_reasons:
         return {
@@ -634,6 +720,7 @@ def build_help_payload(
     version: str = "auto",
     feature: str | None = None,
     run_id: str | None = None,
+    change_intent: str | None = None,
 ) -> dict[str, Any]:
     version_context = describe_project_version_context(project_root, docs_version=version or None)
     resolved_version = str(version_context.get("docs_version", "") or resolve_docs_version(project_root, version))
@@ -700,6 +787,13 @@ def build_help_payload(
         profile=profile,
         revision_state=revision_state,
         workflow_progress=workflow_progress,
+    )
+    change_loop = _build_change_loop_payload(
+        feature=feature_name,
+        version=resolved_version,
+        project_root=project_root,
+        revision_state=revision_state,
+        change_intent=change_intent,
     )
     ralph_state = load_ralph_state(project_root, feature=feature_name) if feature_name else {}
     implement_state = _latest_implement_state(project_root, feature=feature_name, version=resolved_version) if feature_name else {}
@@ -808,6 +902,7 @@ def build_help_payload(
         requirement_clarity_gate=requirement_clarity_gate,
         version_guard=version_guard,
         discovery_hint=discovery_hint,
+        change_loop=change_loop,
     )
     if (
         isinstance(ralph_state, dict)
@@ -945,6 +1040,8 @@ def build_help_payload(
         "run_id": resolved_run_id,
         "project_mode": project_mode,
         "revision_id": str(revision_state.get("revision_id", "") or ""),
+        "source_revision_id": str(revision_state.get("source_revision_id", "") or ""),
+        "superseded_by": str(revision_state.get("superseded_by", "") or ""),
         "current_stage": current_stage,
         "doc_status": str(revision_state.get("doc_status", "") or "draft"),
         "delivery_status": str(revision_state.get("delivery_status", "") or "idle"),
@@ -952,6 +1049,14 @@ def build_help_payload(
         "blocking_reasons": blocking,
         "blocked_reason": blocking[0] if blocking else "",
         "next_step": next_step,
+        "change_loop": change_loop,
+        "revision_lineage": {
+            "revision_id": str(revision_state.get("revision_id", "") or ""),
+            "source_revision_id": str(revision_state.get("source_revision_id", "") or ""),
+            "superseded_by": str(revision_state.get("superseded_by", "") or ""),
+            "is_latest_revision": not bool(revision_state.get("superseded_by")),
+            "is_frozen_baseline": str(revision_state.get("doc_status", "") or "") == "frozen",
+        },
         "scores": {k: v.get("score") if isinstance(v, dict) else v for k, v in scores.items()},
         "score_details": scores,
         "control_plane": control_plane,

@@ -74,6 +74,31 @@ def _team_mode_contract(project_root: Path, *, version: str, feature: str) -> di
     return implement_team_contract(project_root, version=version, feature=feature)
 
 
+def _normalize_string_list(values: Any) -> list[str]:
+    if not isinstance(values, list):
+        return []
+    out: list[str] = []
+    for value in values:
+        text = str(value or "").strip()
+        if text and text not in out:
+            out.append(text)
+    return out
+
+
+def _default_implementation_preflight_rules(
+    *,
+    direct_delivery_services: list[str],
+    expected_branch: str,
+) -> list[str]:
+    target_services = ", ".join(direct_delivery_services or ["repo root only"])
+    branch_label = expected_branch or "<expected-branch>"
+    return [
+        f"Before implementation, verify the target service belongs to: {target_services}.",
+        f"Before implementation, verify every direct delivery service is on {branch_label}.",
+        "If a branch switch is needed and the worktree is dirty, stop and clean or stash first.",
+    ]
+
+
 def implementation_git_workflow_json_path(project_root: Path, version: str, feature: str) -> Path:
     resolved_version = resolve_target_version(project_root, version)
     return machine_execution_file(project_root, resolved_version, f"git-workflow-{feature_slug(feature)}.json")
@@ -102,6 +127,7 @@ def list_implementation_git_workflow_contracts(project_root: Path, *, version: s
                 "mode": str(payload.get("mode", "") or ""),
                 "expected_branch": str(payload.get("expected_branch", "") or ""),
                 "service_directories": list(payload.get("service_directories", [])) if isinstance(payload.get("service_directories"), list) else [],
+                "direct_delivery_services": list(payload.get("direct_delivery_services", [])) if isinstance(payload.get("direct_delivery_services"), list) else [],
                 "use_git_worktree": bool(payload.get("use_git_worktree", False)),
                 "payload": payload,
             }
@@ -122,11 +148,8 @@ def _default_git_workflow_contract(project_root: Path, *, version: str, feature:
     branch_prefix = str(branch_guard_cfg.get("branch_prefix", "") or "").strip()
     if not branch_prefix:
         branch_prefix = expected_branch.split("/", 1)[0] + "/" if "/" in expected_branch else "beacon/"
-    service_directories = [
-        str(item).strip()
-        for item in branch_guard_cfg.get("git_roots", [])
-        if str(item).strip()
-    ] if isinstance(branch_guard_cfg.get("git_roots"), list) else []
+    service_directories = _normalize_string_list(branch_guard_cfg.get("git_roots"))
+    direct_delivery_services = list(service_directories)
     mode = "workspace" if service_directories else "single-repo"
     return {
         "schema_version": "1.0",
@@ -140,8 +163,13 @@ def _default_git_workflow_contract(project_root: Path, *, version: str, feature:
         "use_git_worktree": bool(branch_guard_cfg.get("use_git_worktree", False)),
         "require_clean_worktree_for_switch": bool(branch_guard_cfg.get("require_clean_worktree_for_switch", True)),
         "service_directories": service_directories,
+        "direct_delivery_services": direct_delivery_services,
         "git_roots": service_directories,
         "worktree_root": str(project_root),
+        "implementation_preflight": _default_implementation_preflight_rules(
+            direct_delivery_services=direct_delivery_services,
+            expected_branch=expected_branch,
+        ),
         "source": "project_config_seed" if branch_guard_cfg else "version_default",
         "generated_at": now_iso(),
     }
@@ -149,6 +177,8 @@ def _default_git_workflow_contract(project_root: Path, *, version: str, feature:
 
 def _render_git_workflow_markdown(payload: dict[str, Any]) -> str:
     services = payload.get("service_directories") if isinstance(payload.get("service_directories"), list) else []
+    direct_delivery_services = payload.get("direct_delivery_services") if isinstance(payload.get("direct_delivery_services"), list) else []
+    implementation_preflight = payload.get("implementation_preflight") if isinstance(payload.get("implementation_preflight"), list) else []
     lines = [
         "# Beacon Git Workflow Contract",
         "",
@@ -169,6 +199,24 @@ def _render_git_workflow_markdown(payload: dict[str, Any]) -> str:
         lines.extend(f"- `{item}`" for item in services)
     else:
         lines.append("- repo root only")
+    lines.extend(["", "## Direct Delivery Services"])
+    if direct_delivery_services:
+        lines.extend(f"- `{item}`" for item in direct_delivery_services)
+    elif services:
+        lines.extend(f"- `{item}`" for item in services)
+    else:
+        lines.append("- repo root only")
+    lines.extend(["", "## Implementation Preflight"])
+    if implementation_preflight:
+        lines.extend(f"- {item}" for item in implementation_preflight if str(item).strip())
+    else:
+        lines.extend(
+            f"- {item}"
+            for item in _default_implementation_preflight_rules(
+                direct_delivery_services=direct_delivery_services or services,
+                expected_branch=str(payload.get("expected_branch", "") or ""),
+            )
+        )
     return "\n".join(lines) + "\n"
 
 

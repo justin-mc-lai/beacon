@@ -543,6 +543,71 @@ def test_implement_check_branch_should_support_workspace_root_with_child_git_rep
     workspace_repos = payload["git_alignment"]["workspace_repos"]
     assert len(workspace_repos) == 2
     assert all(item["branch_matches_target"] for item in workspace_repos)
+    assert payload["service_scope"]["direct_delivery_services"] == ["marketing_sys", "health-svr-dotnet"]
+
+
+def test_implement_check_branch_should_block_workspace_dirty_repo_before_auto_switch(tmp_path: Path):
+    workspace = tmp_path / "workspace"
+    workspace.mkdir()
+    push_root = workspace / "push-svr"
+    push_root.mkdir()
+    _init_git_repo(push_root, version="v1.3.2.1")
+    subprocess.run(
+        ["git", "switch", "-c", "feature/v1.3.2.1"],
+        cwd=push_root,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+
+    account_root = workspace / "wechat-account-svr"
+    account_root.mkdir()
+    _init_git_repo(account_root, version="v1.3.2.1")
+    subprocess.run(
+        ["git", "switch", "-c", "feature/v1.3.1-functional-dev"],
+        cwd=account_root,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    (account_root / "dirty.txt").write_text("dirty\n", encoding="utf-8")
+
+    (workspace / "beacon.config.yaml").write_text(
+        (
+            "implementation:\n"
+            "  branch_guard:\n"
+            "    expected_branch: feature/v1.3.2.1\n"
+            "    branch_prefix: feature/\n"
+            "    base_branch: master\n"
+            "    git_roots:\n"
+            "      - push-svr\n"
+            "      - wechat-account-svr\n"
+        ),
+        encoding="utf-8",
+    )
+    result = _invoke(
+        [
+            "implement",
+            "check-branch",
+            "--project-root",
+            str(workspace),
+            "--version",
+            "v1.3.2.1",
+            "--auto-switch-branch",
+            "--json",
+        ]
+    )
+    assert result.exit_code == 2, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["status"] == "blocked"
+    assert "implement_branch_switch_dirty_worktree" in payload["reason_codes"]
+    assert "dirty worktree blocks switch" in payload["summary"]
+    assert "stash push -u" in payload["recommended_command"]
+    assert "switch_attempt" not in payload
+    dirty_repo = next(item for item in payload["git_alignment"]["workspace_repos"] if item["relative_root"] == "wechat-account-svr")
+    assert dirty_repo["dirty_worktree"] is True
+    assert "implement_branch_switch_dirty_worktree" in dirty_repo["reason_codes"]
+    assert payload["service_scope"]["direct_delivery_services"] == ["push-svr", "wechat-account-svr"]
 
 
 def test_implement_run_should_support_auto_review_quality_and_status_surface(tmp_path: Path):

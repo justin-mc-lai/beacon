@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "node_count": 40,
-  "edge_count": 20,
+  "edge_count": 11,
   "nodes": [
     {
       "state_key": "home:ready",
@@ -382,111 +382,12 @@
       ]
     },
     {
-      "from": "home:ready",
-      "to": "management-overview:ready",
-      "event": "点击项目组合入口",
-      "guard": "route_allowed",
-      "kind": "inter-page",
-      "fallback": "home:ready",
-      "test_refs": [
-        "TC-001"
-      ]
-    },
-    {
-      "from": "home:ready",
-      "to": "project-detail:ready",
-      "event": "点击重点项目卡片",
-      "guard": "route_allowed",
-      "kind": "inter-page",
-      "fallback": "home:ready",
-      "test_refs": [
-        "TC-001"
-      ]
-    },
-    {
       "from": "management-overview:ready",
       "to": "project-detail:ready",
-      "event": "点击项目行/卡片",
+      "event": "点击跳转",
       "guard": "route_allowed",
       "kind": "inter-page",
       "fallback": "management-overview:ready",
-      "test_refs": [
-        "TC-001"
-      ]
-    },
-    {
-      "from": "management-overview:ready",
-      "to": "home:ready",
-      "event": "点击首页导航",
-      "guard": "route_allowed",
-      "kind": "inter-page",
-      "fallback": "management-overview:ready",
-      "test_refs": [
-        "TC-001"
-      ]
-    },
-    {
-      "from": "project-detail:ready",
-      "to": "runtime-center:ready",
-      "event": "点击运行态摘要",
-      "guard": "route_allowed",
-      "kind": "inter-page",
-      "fallback": "project-detail:ready",
-      "test_refs": [
-        "TC-001"
-      ]
-    },
-    {
-      "from": "project-detail:ready",
-      "to": "recovery-diagnostics:ready",
-      "event": "点击恢复诊断入口",
-      "guard": "route_allowed",
-      "kind": "inter-page",
-      "fallback": "project-detail:ready",
-      "test_refs": [
-        "TC-001"
-      ]
-    },
-    {
-      "from": "project-detail:ready",
-      "to": "material-viewer:ready",
-      "event": "点击文档查看入口",
-      "guard": "route_allowed",
-      "kind": "inter-page",
-      "fallback": "project-detail:ready",
-      "test_refs": [
-        "TC-001"
-      ]
-    },
-    {
-      "from": "project-detail:ready",
-      "to": "management-overview:ready",
-      "event": "点击返回",
-      "guard": "route_allowed",
-      "kind": "inter-page",
-      "fallback": "project-detail:ready",
-      "test_refs": [
-        "TC-001"
-      ]
-    },
-    {
-      "from": "runtime-center:ready",
-      "to": "project-detail:ready",
-      "event": "点击返回",
-      "guard": "route_allowed",
-      "kind": "inter-page",
-      "fallback": "runtime-center:ready",
-      "test_refs": [
-        "TC-001"
-      ]
-    },
-    {
-      "from": "recovery-diagnostics:ready",
-      "to": "project-detail:ready",
-      "event": "点击返回",
-      "guard": "route_allowed",
-      "kind": "inter-page",
-      "fallback": "recovery-diagnostics:ready",
       "test_refs": [
         "TC-001"
       ]

@@ -1,0 +1,233 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface",
+  "feature_slug": "beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface",
+  "version": "v1.3.5",
+  "current_revision_id": "R1",
+  "lifecycle_status": "frozen",
+  "updated_at": "2026-04-20T14:42:13.237213+00:00",
+  "revisions": [
+    {
+      "revision_id": "R1",
+      "feature_slug": "beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface",
+      "source_revision_id": null,
+      "reason": "draft",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:feb84a71ae3814380172a3f862b57b04db6d38aafcb078d657716917fc29fec1",
+      "superseded_by": null,
+      "created_at": "2026-04-20T14:42:13.237217+00:00",
+      "frozen_at": "2026-04-20T15:03:20.211853+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    }
+  ],
+  "stories": [
+    {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface",
+      "priority": "medium",
+      "status": "frozen",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "general",
+          "text": "Beacon 不新增新的一级主命令，但新增一个宿主可见 `beacon-change` 子 skill 草案，并明确其不是新主阶段。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "general",
+          "text": "冻结后的 feature 能走通 `change intake -> reopen -> prd revise -> user-story refresh -> test-case refresh -> prototype refresh -> re-freeze -> implement fix -> qa delta-run -> release recheck`。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "general",
+          "text": "系统能提供一份文档化生命周期状态机，明确状态、迁移条件、阻断条件与产物边界。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "general",
+          "text": "变更后的 implement / qa / release 都绑定最新 frozen revision，不允许继续沿用旧 baseline。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "general",
+          "text": "`help/status` 在识别到冻结后需求调整时，稳定推荐 `beacon-change` 或等价 change loop。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "general",
+          "text": "`release` 能区分 initial delivery、revised delivery、hotfix delivery 的语义与 gate 对象。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — Beacon 不新增新的一级主命令，但新增一个宿主可见 `beacon-change` 子 skill 草案，并明确其不是新主阶段。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — 冻结后的 feature 能走通 `change intake -> reopen -> prd revise -> user-story refresh -> test-case refresh -> prototype refresh -> re-freeze -> implement fix -> qa delta-run -> release recheck`。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — 系统能提供一份文档化生命周期状态机，明确状态、迁移条件、阻断条件与产物边界。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — 变更后的 implement / qa / release 都绑定最新 frozen revision，不允许继续沿用旧 baseline。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — `help/status` 在识别到冻结后需求调整时，稳定推荐 `beacon-change` 或等价 change loop。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — `release` 能区分 initial delivery、revised delivery、hotfix delivery 的语义与 gate 对象。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        }
+      ]
+    }
+  ]
+}

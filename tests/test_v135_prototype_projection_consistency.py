@@ -74,3 +74,43 @@ def test_v135_create_review_freeze_should_emit_projection_consistency_payload(tm
     assert status_payload["gate_ready"] is True
     assert status_payload["drift_status"] == "consistent"
 
+
+def test_v135_prototype_should_derive_custom_pages_instead_of_fixed_management_template(tmp_path: Path):
+    version = "v1.3.5"
+    feature_slug = "checkout-surface-demo"
+    feature = "Checkout Surface Demo"
+    content = """# PRD
+
+AC-001 checkout flow pages are frozen
+AC-002 navigation is deterministic
+TC-001 verify page freeze
+TC-002 verify navigation closure
+
+## Pages
+- Login Page
+- Cart Page
+- Checkout Page
+
+## Route Map
+- Login Page -> Cart Page
+- Cart Page -> Checkout Page
+- Checkout Page -> Cart Page
+"""
+    for sub in ("user-story", "prd", "qa/test-cases"):
+        target = tmp_path / "docs" / "beacon" / version / sub / f"{feature_slug}.md"
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text(content, encoding="utf-8")
+
+    create = _invoke(["prototype", "create", feature, "--project", str(tmp_path), "--version", version, "--json"])
+    assert create.exit_code == 0, create.stdout
+
+    root = tmp_path / "docs" / "beacon" / version / "prototype" / feature_slug
+    plan = json.loads((root / "prototype-plan.json").read_text(encoding="utf-8"))
+    required_pages = set(plan.get("required_pages") or [])
+    assert required_pages == {"login-page", "cart-page", "checkout-page"}
+    assert bool((plan.get("parser") or {}).get("fallback_used")) is False
+
+    transitions = (plan.get("navigation") or {}).get("transitions") or []
+    transition_pairs = {(item.get("from"), item.get("to")) for item in transitions if isinstance(item, dict)}
+    assert ("login-page", "cart-page") in transition_pairs
+    assert ("cart-page", "checkout-page") in transition_pairs

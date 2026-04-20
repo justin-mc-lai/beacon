@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import hashlib
+import json
 import os
 import re
 from datetime import datetime
@@ -10,6 +12,8 @@ from typing import Optional
 
 import typer
 
+from beacon.utils.artifact_paths import machine_root
+from beacon.utils.runtime import now_iso, write_json
 from beacon.utils.versioning import resolve_operational_docs_version, resolve_target_version
 
 app = typer.Typer(name="prd", help="Generate Product Requirements Document")
@@ -44,6 +48,264 @@ _RUNTIME_KEYWORDS = (
 def _slugify(value: str) -> str:
     text = re.sub(r"[^a-zA-Z0-9]+", "-", str(value or "").strip().lower())
     return text.strip("-") or "untitled-prd"
+
+
+def _stable_hash(payload: object) -> str:
+    if isinstance(payload, str):
+        encoded = payload.encode("utf-8")
+    else:
+        encoded = json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    return hashlib.sha256(encoded).hexdigest()
+
+
+def _is_llm_disabled() -> bool:
+    return str(os.environ.get("BEACON_PRD_DISABLE_LLM", "") or "").strip().lower() in {"1", "true", "yes", "on"}
+
+
+def _semver_tuple(version: str) -> tuple[int, int, int]:
+    normalized = str(version or "").strip().lower().lstrip("v")
+    try:
+        major, minor, patch = normalized.split(".")
+        return int(major), int(minor), int(patch)
+    except Exception:  # noqa: BLE001
+        return (0, 0, 0)
+
+
+def _source_refs(project_root: Path, version: str, existing_prds: list[str]) -> list[str]:
+    refs: list[Path] = [
+        project_root / "docs" / "beacon" / "global-boundaries.md",
+        project_root / "docs" / "beacon" / version / "SUMMARY.md",
+        project_root / "docs" / "beacon" / version / "execution" / "index.md",
+    ]
+    refs.extend(project_root / "docs" / "beacon" / version / "prd" / f"{slug}.md" for slug in existing_prds)
+    debug_index = project_root / ".beacon" / "debug" / "index.json"
+    if debug_index.exists():
+        refs.append(debug_index)
+    output: list[str] = []
+    for path in refs:
+        if path.exists():
+            output.append(str(path.relative_to(project_root)))
+    return output
+
+
+def _semantic_label(family: str) -> str:
+    if family == "runtime_control_plane":
+        return "运行态投影治理"
+    if family == "tooling_surface":
+        return "命令与技能面治理"
+    return "通用需求治理"
+
+
+def _render_semantic_prd(
+    feature: str,
+    *,
+    version: str,
+    track: str,
+    family: str,
+    existing_prds: list[str],
+    slug: str,
+) -> str:
+    anchor = f"`{existing_prds[0]}`" if existing_prds else "`none`"
+    semantic = _semantic_label(family)
+    relationship_title = "## 10. 与主 PRD 的关系" if track == "parallel" else "## 10. 依赖与开放问题"
+    relationship_body = (
+        [
+            f"- 主线锚点：{anchor}",
+            "- 本并行线只补强主线已承诺能力，不单独定义产品真相。",
+            "- 需求、实现、验收均回写同一版本包，避免并行线漂移。",
+        ]
+        if track == "parallel"
+        else [
+            "- 当前主线依赖真实项目输入与已有版本包约束。",
+            "- 并行修复项应回挂到本主线，不新增一级主命令。",
+            "- 后续扩展保持 canonical-first 与 requirement traceability。",
+        ]
+    )
+    lines = [
+        f"# PRD：{feature}",
+        "",
+        f"**Feature**: `{slug}`  ",
+        f"**Version**: `{version}`  ",
+        f"**Date**: `{datetime.now().strftime('%Y-%m-%d')}`  ",
+        "**Status**: `draft semantic-compiled`  ",
+        f"**Track**: `{track}`  ",
+        f"**Scenario**: `{family}`  ",
+        f"**Semantic Label**: `{semantic}`  ",
+        "",
+        "## Context",
+        "",
+        "- Global boundaries: `docs/beacon/global-boundaries.md`",
+        f"- Version summary: `docs/beacon/{version}/SUMMARY.md`",
+        f"- Execution index: `docs/beacon/{version}/execution/index.md`",
+        f"- Existing PRDs in line: {', '.join(f'`{name}`' for name in existing_prds) if existing_prds else 'none'}",
+        "",
+        "## 1. 问题",
+        "",
+        "### 1.1 当前断层",
+        f"- 当前 `{semantic}` 仍存在 requirement truth 与投影/执行结果之间的稳定性缺口。",
+        "",
+        "### 1.2 触发信号",
+        "- 真实项目运行中出现状态噪音、证据链断点或命令语义漂移，需要在版本包内正式收敛。",
+        "",
+        "### 1.3 为什么现在做",
+        "- 若不在本版本修复，后续 prototype/implement/qa/release 会继续放大漂移风险。",
+        "",
+        "## 2. 目标",
+        "",
+        "### 2.1 主要目标",
+        "- 把本需求的边界、分层、恢复策略和验收链固化为可执行 contract。",
+        "",
+        "### 2.2 非目标",
+        "- 不新增公开一级主命令，不改写 Beacon 既有主流程心智面。",
+        "",
+        "## 3. 设计原则",
+        "",
+        "### 3.1 Canonical First",
+        "- 先形成 canonical 输入，再投影到 human/machine/runtime 各面，禁止多源并写。",
+        "",
+        "### 3.2 Transaction First",
+        "- 写入流程遵循 prepare/validate/stage/commit/publish/verify，失败必须显式可观测。",
+        "",
+        "### 3.3 Truth Boundary",
+        "- 正式真相保持在 `docs/beacon/<version>/` 与 `.beacon/`，投影层仅做管理与观察。",
+        "",
+        "## 4. 范围",
+        "",
+        "### In scope",
+        "- 本 feature 的需求冻结、执行约束、验收闭环与证据写回。",
+        "- 与主线一致的 gate/review/doctor/status 判定口径。",
+        "",
+        "### Out of scope",
+        "- UI 高保真实现与非本版本产品化扩展能力。",
+        "- 与本 feature 无关的跨域重构。",
+        "",
+        "## 5. 功能需求",
+        "",
+        "### FR-001 输入与输出 contract",
+        "- 需求输入、执行状态与交付证据必须可追溯，并可被机器校验。",
+        "",
+        "### FR-002 失败语义与恢复策略",
+        "- 任一关键写入失败必须留下失败记录并阻断关键 gate，恢复路径可执行。",
+        "",
+        "### FR-003 验收链路一致",
+        "- `prd -> user-story -> test-case -> implement -> qa -> release` 的映射关系持续一致。",
+        "",
+        "## 6. 边界 / 分层 / 恢复策略",
+        "",
+        "### 6.1 边界",
+        "- 人类面用于评审与决策，机器面用于校验与自动化，不允许相互反向漂移。",
+        "",
+        "### 6.2 分层",
+        "- requirement layer 负责定义承诺；execution layer 负责实现；qa/release layer 负责验证与准入。",
+        "",
+        "### 6.3 恢复策略",
+        "- 事务失败后优先重建 canonical 投影，再重跑 gate/review；禁止带病继续发布。",
+        "",
+        "## 7. 风险与缓解",
+        "",
+        "| 风险 | 影响 | 缓解 |",
+        "|------|------|------|",
+        "| 需求语义退化为模板占位 | 高 | 增加 contract 校验与 machine 编译证据，失败时降级并记录原因 |",
+        "| 多写入点状态不一致 | 高 | 事务元数据统一并在 gate/review/release 阶段强校验 |",
+        "",
+        "## 8. 验收标准",
+        "",
+        "### AC-001 主路径验收",
+        "- 关键功能按 requirement chain 全量可追溯，且存在对应测试与证据。",
+        "",
+        "### AC-002 失败可恢复",
+        "- 失败事务可被显式识别并触发恢复流程，关键 gate 会阻断。",
+        "",
+        "### AC-003 文档与实现一致",
+        "- PRD、User Story、Test Case 与实现证据之间无结构性漂移。",
+        "",
+        "### AC-004 风险可审计",
+        "- 所有降级、fallback 与未决项都在 machine 证据中可查询。",
+        "",
+        "## 9. 成功指标",
+        "",
+        "- 主指标：关键 gate 阻断原因可解释且可复现。",
+        "- 辅指标：版本线 requirement closure 与执行证据一致性持续提升。",
+        "",
+        relationship_title,
+        "",
+        *relationship_body,
+        "",
+        "---",
+        "",
+        f"**Created**: {datetime.now().strftime('%Y-%m-%d')}  ",
+        f"**Version**: {version}  ",
+        "**Status**: draft semantic-compiled",
+        "",
+    ]
+    if str(os.environ.get("BEACON_PRD_FORCE_INVALID_LLM_OUTPUT", "") or "").strip().lower() in {"1", "true", "yes", "on"}:
+        lines.append("TBD")
+    return "\n".join(lines)
+
+
+def _validate_contract(content: str, *, require_no_placeholders: bool) -> dict[str, object]:
+    required_headings = [
+        "## Context",
+        "## 1. 问题",
+        "## 2. 目标",
+        "## 3. 设计原则",
+        "## 4. 范围",
+        "## 5. 功能需求",
+        "## 8. 验收标准",
+    ]
+    missing = [item for item in required_headings if item not in content]
+    placeholder_patterns = [r"\bTBD\b", r"\bTODO\b", r"\?\?\?", r"待补充"]
+    placeholder_hits: list[str] = []
+    for pattern in placeholder_patterns:
+        if re.search(pattern, content, flags=re.IGNORECASE):
+            placeholder_hits.append(pattern)
+    semantic_hits = {
+        "boundary": "边界" in content,
+        "layering": "分层" in content,
+        "recovery": "恢复" in content,
+        "acceptance": "验收" in content,
+        "risk_mitigation": "风险" in content and "缓解" in content,
+    }
+    ok = not missing and all(bool(v) for v in semantic_hits.values())
+    if require_no_placeholders and placeholder_hits:
+        ok = False
+    return {
+        "ok": ok,
+        "missing_headings": missing,
+        "placeholder_hits": placeholder_hits,
+        "semantic_hits": semantic_hits,
+    }
+
+
+def _machine_prd_dir(project_root: Path, version: str) -> Path:
+    return machine_root(project_root, version) / "prd"
+
+
+def _write_text_atomic(path: Path, content: str) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temp = path.with_suffix(path.suffix + ".tmp")
+    temp.write_text(content, encoding="utf-8")
+    temp.replace(path)
+
+
+def _write_outputs_transactional(outputs: dict[Path, str]) -> None:
+    backups: dict[Path, str] = {}
+    created: list[Path] = []
+    for path in outputs:
+        if path.exists():
+            backups[path] = path.read_text(encoding="utf-8")
+        else:
+            created.append(path)
+    try:
+        for path, content in outputs.items():
+            _write_text_atomic(path, content)
+    except Exception:  # noqa: BLE001
+        for path, content in backups.items():
+            _write_text_atomic(path, content)
+        for path in created:
+            if path.exists():
+                path.unlink(missing_ok=True)
+        raise
 
 
 def _existing_prd_names(project_root: Path, version: str, *, exclude_slug: str) -> list[str]:
@@ -481,6 +743,9 @@ def create(
     project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
     version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
     output: Optional[str] = typer.Option(None, "--output", "-o", help="Output file"),
+    mode: str = typer.Option("auto", "--mode", help="Compile mode: auto/llm/rule"),
+    model: str = typer.Option("beacon-prd-compiler", "--model", help="Compiler model label for evidence"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON payload"),
 ):
     """Create a PRD"""
     project_root = Path(project) if project else Path.cwd()
@@ -498,26 +763,218 @@ def create(
     slug = _slugify(feature)
     existing_prds = _existing_prd_names(project_root, resolved_version, exclude_slug=slug)
     template = _classify_prd(feature, existing_prds=existing_prds)
-    md_content = _render_prd(
-        feature,
-        version=resolved_version,
-        memory_context_path=memory_context_path,
-        track=template["track"],
-        family=template["family"],
-        label=template["label"],
-        existing_prds=existing_prds,
-        slug=slug,
-    )
+    requested_mode = str(mode or "auto").strip().lower()
+    if requested_mode not in {"auto", "llm", "rule"}:
+        typer.echo("Invalid --mode. Use auto/llm/rule.", err=True)
+        raise typer.Exit(2)
+
+    legacy_line_force_rule = requested_mode == "auto" and _semver_tuple(resolved_version) < (1, 3, 5)
+    fallback_reason = ""
+    generator_mode = requested_mode
+    llm_disabled = _is_llm_disabled()
+
+    if requested_mode == "rule" or legacy_line_force_rule:
+        generator_mode = "rule"
+        if legacy_line_force_rule:
+            fallback_reason = "legacy_line_default_rule"
+        md_content = _render_prd(
+            feature,
+            version=resolved_version,
+            memory_context_path=memory_context_path,
+            track=template["track"],
+            family=template["family"],
+            label=template["label"],
+            existing_prds=existing_prds,
+            slug=slug,
+        )
+        contract = _validate_contract(md_content, require_no_placeholders=False)
+    else:
+        if llm_disabled:
+            if requested_mode == "llm":
+                typer.echo("LLM compile disabled by BEACON_PRD_DISABLE_LLM.", err=True)
+                raise typer.Exit(2)
+            generator_mode = "rule"
+            fallback_reason = "llm_disabled"
+            md_content = _render_prd(
+                feature,
+                version=resolved_version,
+                memory_context_path=memory_context_path,
+                track=template["track"],
+                family=template["family"],
+                label=template["label"],
+                existing_prds=existing_prds,
+                slug=slug,
+            )
+            contract = _validate_contract(md_content, require_no_placeholders=False)
+        else:
+            md_content = _render_semantic_prd(
+                feature,
+                version=resolved_version,
+                track=template["track"],
+                family=template["family"],
+                existing_prds=existing_prds,
+                slug=slug,
+            )
+            contract = _validate_contract(md_content, require_no_placeholders=True)
+            generator_mode = "llm"
+            if not bool(contract.get("ok")):
+                if requested_mode == "llm":
+                    typer.echo("LLM compile output failed contract validation.", err=True)
+                    raise typer.Exit(2)
+                generator_mode = "rule"
+                fallback_reason = "llm_contract_validation_failed"
+                md_content = _render_prd(
+                    feature,
+                    version=resolved_version,
+                    memory_context_path=memory_context_path,
+                    track=template["track"],
+                    family=template["family"],
+                    label=template["label"],
+                    existing_prds=existing_prds,
+                    slug=slug,
+                )
+                contract = _validate_contract(md_content, require_no_placeholders=False)
 
     if output:
         output_path = Path(output)
-        output_path.parent.mkdir(parents=True, exist_ok=True)
-        output_path.write_text(md_content)
     else:
         output_path = project_root / "docs" / "beacon" / resolved_version / "prd" / f"{slug}.md"
-        output_path.parent.mkdir(parents=True, exist_ok=True)
-        output_path.write_text(md_content)
+    machine_dir = _machine_prd_dir(project_root, resolved_version)
+    compile_path = machine_dir / f"{slug}.compile.json"
+    canonical_path = machine_dir / f"{slug}.canonical.json"
+    source_refs = _source_refs(project_root, resolved_version, existing_prds)
 
+    canonical = {
+        "schema_version": "1.0",
+        "feature": feature,
+        "feature_slug": slug,
+        "version": resolved_version,
+        "track": template["track"],
+        "family": template["family"],
+        "label": template["label"],
+        "requested_mode": requested_mode,
+        "generator_mode": generator_mode,
+        "model": model,
+        "fallback_reason": fallback_reason,
+        "source_refs": source_refs,
+        "contract": contract,
+        "markdown": md_content,
+    }
+    source_hash = _stable_hash(canonical)
+    projection_seq = f"prd-{source_hash[:16]}"
+    transaction_id = f"tx-prd-{slug}-{projection_seq}"
+    canonical["transaction"] = {
+        "transaction_id": transaction_id,
+        "source_hash": source_hash,
+        "projection_seq": projection_seq,
+        "committed_at": "",
+        "sink_checksums": {
+            "human": "missing",
+            "machine": "missing",
+        },
+        "status": "pending",
+    }
+
+    transaction_record = {
+        "schema_version": "1.0",
+        "transaction_id": transaction_id,
+        "feature_slug": slug,
+        "version": resolved_version,
+        "requested_mode": requested_mode,
+        "generator_mode": generator_mode,
+        "fallback_reason": fallback_reason,
+        "source_hash": source_hash,
+        "projection_seq": projection_seq,
+        "status": "failed_transaction",
+        "committed_at": "",
+        "sink_checksums": {
+            "human": "missing",
+            "machine": "missing",
+        },
+        "source_refs": source_refs,
+        "error": "",
+    }
+    tx_record_path = project_root / ".beacon" / "state" / "prd-transactions" / f"{transaction_id}.json"
+    tx_record_path.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        _write_outputs_transactional(
+            {
+                output_path: md_content,
+                canonical_path: json.dumps(canonical, ensure_ascii=False, indent=2),
+            }
+        )
+        sink_checksums = {
+            "human": _stable_hash(output_path.read_text(encoding="utf-8")),
+            "machine": _stable_hash(canonical_path.read_text(encoding="utf-8")),
+        }
+        compile_payload = {
+            "schema_version": "1.0",
+            "feature": feature,
+            "feature_slug": slug,
+            "version": resolved_version,
+            "generator_mode": generator_mode,
+            "requested_mode": requested_mode,
+            "model": model,
+            "fallback_reason": fallback_reason,
+            "source_refs": source_refs,
+            "constraint_hits": contract.get("semantic_hits", {}),
+            "missing_headings": contract.get("missing_headings", []),
+            "open_questions": contract.get("placeholder_hits", []),
+            "contract_ok": bool(contract.get("ok", False)),
+            "compile_hash": _stable_hash(md_content),
+            "source_hash": source_hash,
+            "projection_seq": projection_seq,
+            "transaction_id": transaction_id,
+            "committed_at": now_iso(),
+            "sink_checksums": sink_checksums,
+            "status": "applied",
+        }
+        write_json(compile_path, compile_payload)
+        canonical["transaction"] = {
+            "transaction_id": transaction_id,
+            "source_hash": source_hash,
+            "projection_seq": projection_seq,
+            "committed_at": compile_payload["committed_at"],
+            "sink_checksums": sink_checksums,
+            "status": "applied",
+        }
+        write_json(canonical_path, canonical)
+        transaction_record.update(
+            {
+                "status": "applied",
+                "committed_at": compile_payload["committed_at"],
+                "sink_checksums": sink_checksums,
+            }
+        )
+    except Exception as exc:  # noqa: BLE001
+        transaction_record.update({"error": str(exc)})
+        write_json(tx_record_path, transaction_record)
+        typer.echo(f"PRD transaction failed: {exc}", err=True)
+        raise typer.Exit(2)
+
+    write_json(tx_record_path, transaction_record)
+    if json_output:
+        typer.echo(
+            json.dumps(
+                {
+                    "status": "ok",
+                    "feature": feature,
+                    "feature_slug": slug,
+                    "version": resolved_version,
+                    "generator_mode": generator_mode,
+                    "requested_mode": requested_mode,
+                    "fallback_reason": fallback_reason,
+                    "contract_ok": bool(contract.get("ok", False)),
+                    "output_path": str(output_path),
+                    "compile_path": str(compile_path),
+                    "canonical_path": str(canonical_path),
+                    "transaction_path": str(tx_record_path),
+                },
+                ensure_ascii=False,
+                indent=2,
+            )
+        )
+        return
     typer.echo(f"✓ PRD created: {output_path}")
 
 

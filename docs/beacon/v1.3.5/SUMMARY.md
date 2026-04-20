@@ -10,6 +10,30 @@
 
 - 主 PRD：
   - `docs/beacon/v1.3.5/prd/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md`
+- 并行修复 PRD：
+  - `docs/beacon/v1.3.5/prd/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.md`
+  - 目标：把“事务一致多写 + LLM 语义编译”从部分满足提升到满足
+- 并行变更闭环 PRD：
+  - `docs/beacon/v1.3.5/prd/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.md`
+  - 目标：补齐 freeze 后变更请求、revision reopen、requirement re-freeze、delta QA 与 re-release 的正式闭环
+
+## New Draft Deliverables
+
+- 生命周期状态机草案：
+  - `docs/beacon/v1.3.5/execution/lifecycle-state-machine.md`
+- 冻结后 change-loop 执行蓝图：
+  - `docs/beacon/v1.3.5/execution/beacon-change-execution-blueprint.md`
+- 宿主变更路由 skill 草案：
+  - `skills/beacon/beacon-change/SKILL.md`
+
+## Requirement Closure Snapshot
+
+- `beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor`
+  - `prd/user-story/test-case` 已齐套，状态：`frozen-pending-implementation`
+- `beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler`
+  - `prd/user-story/test-case` 已齐套，状态：`frozen-pending-implementation`
+- `beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface`
+  - `prd/user-story/test-case` 已齐套，状态：`frozen-pending-implementation`
 
 ## Downstream Handoff
 
@@ -23,6 +47,8 @@
   - 单页草图 Markdown 规范
   - freeze / review / status 对 wireframe 的识别
   - Beacon 管理端看板的结构草图
+  - 冻结后需求调整再闭环的 requirement surface
+  - revision reopen / re-freeze / delta verification 的状态机定义
 - Out of scope：
   - Beacon 管理端成品 UI
   - Markdown 只读查看器成品交互

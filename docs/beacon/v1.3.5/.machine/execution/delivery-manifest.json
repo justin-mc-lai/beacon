@@ -1,37 +1,61 @@
 {
   "schema_version": "1.0",
   "version": "v1.3.5",
-  "feature": "beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor",
+  "feature": "beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler",
   "run_id": "run-20260420T182331187681",
-  "generated_at": "2026-04-20T19:35:00+08:00",
+  "generated_at": "2026-04-20T15:16:09.580617+00:00",
   "source_of_truth_root": "docs/beacon/v1.3.5",
-  "delivery_status": "ready",
+  "delivery_status": "completed",
   "strict_delivery_ready": true,
   "reason_codes": [],
   "affected_projects": [
     {
-      "name": "beacon",
-      "project_root": "/Users/apple/Developer/Personal/products/beacon",
+      "name": "",
+      "project_root": ".",
       "repo_url": "https://github.com/justin-mc-lai/beacon.git",
-      "change_scope": "feature_delivery",
+      "change_scope": "workflow_delivery",
       "changed_layers": [
-        "prd",
+        "research",
         "user-story",
+        "prd",
         "test-case",
-        "prototype",
-        "execution",
-        "release"
+        "execution"
       ],
       "base_branch": "main",
       "target_branch": "beacon/v1.3.5",
       "current_branch": "beacon/v1.3.5",
-      "commit": "ea95c8a69c5119878b68521b264db69bde1852c4",
+      "commit": "4161b9d46b24b89d87d331b911771ff037ac72be",
       "tag": "",
-      "worktree_path": "/Users/apple/Developer/Personal/products/beacon",
+      "worktree_path": ".",
       "alignment_status": "aligned"
     }
   ],
   "deliverables": [
+    {
+      "type": "user-story",
+      "path": "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.md",
+      "status": "completed"
+    },
+    {
+      "type": "prd",
+      "path": "docs/beacon/v1.3.5/prd/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.md",
+      "status": "completed"
+    },
+    {
+      "type": "test-case",
+      "path": "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.md",
+      "status": "completed"
+    },
+    {
+      "type": "ac-matrix",
+      "path": "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.ac-test-matrix.json",
+      "status": "completed"
+    },
+    {
+      "type": "qa9-matrix",
+      "path": "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.qa9-matrix.json",
+      "status": "completed"
+    },
     {
       "type": "boundaries",
       "path": "docs/beacon/v1.3.5/execution/boundaries.md",
@@ -61,11 +85,11 @@
       "type": "git-alignment",
       "path": "docs/beacon/v1.3.5/.machine/execution/git-alignment.json",
       "status": "completed"
-    },
-    {
-      "type": "terminal",
-      "path": "docs/beacon/v1.3.5/.machine/execution/terminal.json",
-      "status": "completed"
     }
+  ],
+  "notes": [
+    "多项目/多仓库交付范围必须通过 affected_projects 显式声明。",
+    "Current workflow status snapshot: completed.",
+    "execution artifacts are emitted only under docs/beacon."
   ]
 }

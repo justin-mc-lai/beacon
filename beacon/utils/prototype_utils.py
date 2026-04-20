@@ -237,6 +237,28 @@ FIELD_PATTERNS = {
     "route_closure_required": re.compile(r"route_closure_required\s*[:=]\s*(true|false)", re.IGNORECASE),
 }
 
+PAGE_HINT_PATTERN = re.compile(
+    r"(?:\bpage\b|\bscreen\b|页面|视图|看板|中心|详情|列表|viewer|dashboard|console|panel)",
+    re.IGNORECASE,
+)
+STOP_PAGE_TOKENS = (
+    "需求",
+    "测试",
+    "验收",
+    "状态",
+    "路由",
+    "组件",
+    "流程",
+    "说明",
+    "冻结",
+    "prototype",
+    "wireframe",
+    "只读查看",
+    "映射",
+    "网页内",
+)
+TRANSITION_HINT_PATTERN = re.compile(r"(->|→|=>|跳转|进入|返回|to\b)", re.IGNORECASE)
+
 
 def _stable_hash(payload: Any) -> str:
     return sha256_text(json.dumps(payload, ensure_ascii=False, sort_keys=True))
@@ -393,38 +415,290 @@ def _doc_contains(doc: dict[str, Any], keyword: str) -> int:
     return idx
 
 
-def _detect_page_ids(docs: list[dict[str, Any]]) -> tuple[list[str], bool]:
-    discovered: list[tuple[int, str]] = []
+def _iter_doc_lines(docs: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    for doc in docs:
+        text = str(doc.get("text") or "")
+        doc_type = str(doc.get("type") or "")
+        offset = 0
+        for line in text.splitlines():
+            rows.append({"doc_type": doc_type, "line": line.rstrip(), "offset": offset})
+            offset += len(line) + 1
+    return rows
+
+
+def _clean_page_label(raw: str) -> str:
+    label = str(raw or "").strip().strip("`'\"")
+    label = re.sub(r"^[\-*•>\d\.\)\s]+", "", label)
+    label = re.sub(r"\s+", " ", label).strip()
+    return label
+
+
+def _looks_like_page_label(label: str) -> bool:
+    cleaned = _clean_page_label(label)
+    if len(cleaned) < 2:
+        return False
+    if len(cleaned) > 48:
+        return False
+    if re.search(r"[，。！？；;]", cleaned):
+        return False
+    lowered = cleaned.lower()
+    if lowered in {"page", "pages", "screen", "screens", "route", "routes", "route map", "navigation", "navigation map"}:
+        return False
+    if re.match(r"^(?:us|fr|ac|tc)-\d+", lowered):
+        return False
+    if re.search(r"\b(?:ac|tc)-\d+\b", lowered):
+        return False
+    if re.search(r"\b(?:verify|assert|test)\b", lowered):
+        return False
+    if TRANSITION_HINT_PATTERN.search(cleaned):
+        return False
+    if re.match(r"^(?:as a|given|when|then|作为|当|如果|打开|查看|点击|页面必须|首页必须)\b", lowered):
+        return False
+    if len(cleaned.split()) > 8:
+        return False
+    if re.search(r"页面\s*(?:id|职责|交互|映射|信息|优先级|展示|收口|只读)", cleaned, flags=re.IGNORECASE):
+        return False
+    if any(token in cleaned for token in STOP_PAGE_TOKENS) or any(token in lowered for token in STOP_PAGE_TOKENS):
+        return False
+    return bool(PAGE_HINT_PATTERN.search(cleaned))
+
+
+def _known_page_id_for_text(text: str) -> str:
+    lowered = str(text or "").lower()
     for page_id, meta in PAGE_CATALOG.items():
         if page_id == "material-document-detail":
             continue
-        positions: list[int] = []
         for keyword in meta["keywords"]:
-            for doc in docs:
-                idx = _doc_contains(doc, keyword)
-                if idx >= 0:
-                    positions.append(idx)
-        if positions:
-            discovered.append((min(positions), page_id))
+            keyword_str = str(keyword).strip().lower()
+            if keyword_str and keyword_str in lowered:
+                return page_id
+    return ""
 
-    fallback_used = False
+
+def _slugify_page_id(label: str, *, ordinal: int) -> str:
+    base = re.sub(r"[^a-z0-9]+", "-", str(label or "").strip().lower()).strip("-")
+    if base:
+        return base
+    digest = hashlib.sha1(str(label or "").encode("utf-8")).hexdigest()[:8]
+    return f"page-{ordinal:02d}-{digest}"
+
+
+def _extract_declared_page_labels(line: str) -> list[str]:
+    stripped = str(line or "").strip()
+    if not stripped:
+        return []
+    if re.search(r"\b(?:AC|TC)-\d+\b", stripped, flags=re.IGNORECASE):
+        return []
+    candidates: list[str] = []
+    bullet = re.match(r"^\s*[-*]\s+(.+)$", stripped)
+    if bullet:
+        bullet_text = bullet.group(1).strip()
+        if re.search(r"(->|→|=>)", bullet_text):
+            candidates.extend(part.strip() for part in re.split(r"(?:->|→|=>)", bullet_text) if part.strip())
+        elif re.search(r"\bto\b", bullet_text, flags=re.IGNORECASE):
+            candidates.extend(part.strip() for part in re.split(r"\bto\b", bullet_text, flags=re.IGNORECASE) if part.strip())
+        else:
+            candidates.append(bullet_text)
+    else:
+        explicit = re.search(
+            r"(?:页面|page|screen|view|route)\s*[:：\-]\s*([^\|\n]{2,80})",
+            stripped,
+            flags=re.IGNORECASE,
+        )
+        if explicit:
+            candidates.append(explicit.group(1))
+    heading = re.match(r"^#{1,6}\s+(.+)$", stripped)
+    if heading:
+        candidates.append(heading.group(1))
+    cleaned: list[str] = []
+    for item in candidates:
+        normalized = _clean_page_label(item)
+        if _looks_like_page_label(normalized):
+            cleaned.append(normalized)
+    return cleaned
+
+
+def _default_custom_page_meta(page_id: str, label: str) -> dict[str, Any]:
+    name = _clean_page_label(label) or page_id.replace("-", " ").title()
+    return {
+        "name": name,
+        "keywords": (name, page_id),
+        "priority": "P1",
+        "platforms": ["Web", "PC"],
+        "responsibility": f"冻结 `{name}` 的页面结构、关键动作和状态说明，确保与 requirement 材料一致。",
+        "sections": [
+            "页面头部",
+            "关键内容区",
+            "主要操作区",
+            "状态与反馈区",
+        ],
+        "actions": [],
+        "states": [
+            {"id": "ready", "label": "可用", "description": "页面数据齐备，用户可完成核心操作。"},
+            {"id": "loading", "label": "加载中", "description": "页面数据正在加载。"},
+            {"id": "error", "label": "错误", "description": "页面加载或提交失败，需提示恢复动作。"},
+        ],
+    }
+
+
+def _detect_pages_with_meta(docs: list[dict[str, Any]]) -> tuple[list[str], bool, dict[str, dict[str, Any]]]:
+    rows = _iter_doc_lines(docs)
+    discovered: list[tuple[int, str, str, bool]] = []
+    page_meta: dict[str, dict[str, Any]] = {}
+    seen: set[str] = set()
+    label_to_page: dict[str, str] = {}
+    custom_index = 1
+
+    for row in rows:
+        line = str(row.get("line") or "")
+        if not line.strip():
+            continue
+        offset = int(row.get("offset") or 0)
+
+        known_id = _known_page_id_for_text(line)
+        if known_id and known_id not in seen:
+            discovered.append((offset, known_id, PAGE_CATALOG[known_id]["name"], False))
+            page_meta[known_id] = dict(PAGE_CATALOG[known_id])
+            seen.add(known_id)
+
+        for label in _extract_declared_page_labels(line):
+            mapped_known_id = _known_page_id_for_text(label)
+            if mapped_known_id:
+                if mapped_known_id not in seen:
+                    discovered.append((offset, mapped_known_id, PAGE_CATALOG[mapped_known_id]["name"], False))
+                    page_meta[mapped_known_id] = dict(PAGE_CATALOG[mapped_known_id])
+                    seen.add(mapped_known_id)
+                label_to_page[_clean_page_label(label).lower()] = mapped_known_id
+                continue
+
+            label_key = _clean_page_label(label).lower()
+            existing_page_id = label_to_page.get(label_key)
+            if existing_page_id:
+                continue
+
+            base_page_id = _slugify_page_id(label, ordinal=custom_index)
+            page_id = base_page_id
+            duplicate_index = 2
+            while page_id in seen:
+                page_id = f"{base_page_id}-{duplicate_index:02d}"
+                duplicate_index += 1
+            custom_index += 1
+            if page_id not in seen:
+                discovered.append((offset, page_id, label, True))
+                page_meta[page_id] = _default_custom_page_meta(page_id, label)
+                seen.add(page_id)
+                label_to_page[label_key] = page_id
+
     if not discovered:
         fallback_used = True
-        return list(PAGE_ORDER_DEFAULT), fallback_used
+        ordered = list(PAGE_ORDER_DEFAULT)
+        for page_id in ordered:
+            page_meta[page_id] = dict(PAGE_CATALOG[page_id])
+        return ordered, fallback_used, page_meta
 
-    page_ids = [page_id for _, page_id in sorted(discovered, key=lambda item: item[0])]
-    ordered = [page_id for page_id in PAGE_ORDER_DEFAULT if page_id in page_ids]
+    fallback_used = False
+    ordered_discovered = sorted(discovered, key=lambda item: item[0])
+    page_ids = [page_id for _, page_id, _, _ in ordered_discovered]
+    ordered_known = [page_id for page_id in PAGE_ORDER_DEFAULT if page_id in page_ids]
+    ordered_custom = [page_id for page_id in page_ids if page_id not in ordered_known]
+    ordered = ordered_known + ordered_custom
     if "material-viewer" in ordered and "material-document-detail" not in ordered:
         ordered.append("material-document-detail")
-    return ordered, fallback_used
+        page_meta["material-document-detail"] = dict(PAGE_CATALOG["material-document-detail"])
+    return ordered, fallback_used, page_meta
 
 
-def _build_transition_inventory(page_ids: list[str]) -> list[dict[str, Any]]:
+def _detect_page_ids(docs: list[dict[str, Any]]) -> tuple[list[str], bool]:
+    page_ids, fallback_used, _ = _detect_pages_with_meta(docs)
+    return page_ids, fallback_used
+
+
+def _resolve_page_name(page_id: str, page_meta: dict[str, dict[str, Any]]) -> str:
+    meta = page_meta.get(page_id) or PAGE_CATALOG.get(page_id) or {}
+    name = str(meta.get("name") or "").strip()
+    return name or page_id
+
+
+def _line_page_mentions(line: str, page_ids: list[str], page_meta: dict[str, dict[str, Any]]) -> list[str]:
+    lowered = str(line or "").lower()
+    matched: list[str] = []
+    for page_id in page_ids:
+        meta = page_meta.get(page_id) or PAGE_CATALOG.get(page_id) or {}
+        tokens = [page_id, str(meta.get("name") or "")]
+        tokens.extend(str(keyword) for keyword in (meta.get("keywords") or []) if str(keyword).strip())
+        for token in tokens:
+            tk = str(token).strip().lower()
+            if tk and tk in lowered:
+                matched.append(page_id)
+                break
+    return matched
+
+
+def _build_transition_inventory(page_ids: list[str], docs: list[dict[str, Any]], page_meta: dict[str, dict[str, Any]]) -> list[dict[str, Any]]:
     allowed = set(page_ids)
-    transitions = [item for item in TRANSITION_LIBRARY if item["from"] in allowed and item["to"] in allowed]
-    if "material-viewer" in allowed and "material-document-detail" not in allowed:
-        transitions = [item for item in transitions if item["to"] != "material-document-detail"]
-    return transitions
+    static_candidates = [item for item in TRANSITION_LIBRARY if item["from"] in allowed and item["to"] in allowed]
+    dynamic_candidates: list[dict[str, Any]] = []
+
+    for row in _iter_doc_lines(docs):
+        line = str(row.get("line") or "")
+        if not TRANSITION_HINT_PATTERN.search(line):
+            continue
+        mentions = _line_page_mentions(line, page_ids, page_meta)
+        if len(mentions) < 2:
+            continue
+        source = mentions[0]
+        target = mentions[1]
+        transition_type = "return" if "返回" in line else "primary"
+        trigger = "点击返回" if transition_type == "return" else "点击跳转"
+        dynamic_candidates.append(
+            {
+                "from": source,
+                "to": target,
+                "trigger": trigger,
+                "type": transition_type,
+            }
+        )
+
+    transitions = dynamic_candidates or static_candidates
+    if not transitions and len(page_ids) > 1:
+        for idx in range(len(page_ids) - 1):
+            source = page_ids[idx]
+            target = page_ids[idx + 1]
+            transitions.append(
+                {
+                    "from": source,
+                    "to": target,
+                    "trigger": f"进入{_resolve_page_name(target, page_meta)}",
+                    "type": "primary",
+                }
+            )
+
+    if "material-viewer" in allowed and "material-document-detail" in allowed:
+        required_pairs = {
+            ("material-viewer", "material-document-detail", "drill-down", "点击文档列表项"),
+            ("material-document-detail", "material-viewer", "return", "点击返回"),
+        }
+        existing_pairs = {(item["from"], item["to"]) for item in transitions}
+        for source, target, tp, trigger in required_pairs:
+            if (source, target) not in existing_pairs:
+                transitions.append({"from": source, "to": target, "type": tp, "trigger": trigger})
+
+    deduped: list[dict[str, Any]] = []
+    seen_keys: set[tuple[str, str, str]] = set()
+    for item in transitions:
+        source = str(item.get("from") or "").strip()
+        target = str(item.get("to") or "").strip()
+        trigger = str(item.get("trigger") or "").strip() or "点击跳转"
+        tp = str(item.get("type") or "").strip() or "primary"
+        if not source or not target or source not in allowed or target not in allowed:
+            continue
+        key = (source, target, tp)
+        if key in seen_keys:
+            continue
+        seen_keys.add(key)
+        deduped.append({"from": source, "to": target, "trigger": trigger, "type": tp})
+    return deduped
 
 
 def _build_requirement_refs(docs: list[dict[str, Any]]) -> dict[str, list[str]]:
@@ -447,26 +721,50 @@ def _extract_requirement_ids(docs: list[dict[str, Any]]) -> dict[str, list[str]]
     }
 
 
-def _build_page_specs(page_ids: list[str], docs: list[dict[str, Any]]) -> list[dict[str, Any]]:
+def _build_page_specs(
+    page_ids: list[str],
+    docs: list[dict[str, Any]],
+    transitions: list[dict[str, Any]],
+    page_meta: dict[str, dict[str, Any]],
+) -> list[dict[str, Any]]:
     refs = _build_requirement_refs(docs)
-    transitions = _build_transition_inventory(page_ids)
     outbound: dict[str, list[dict[str, Any]]] = {}
     for transition in transitions:
         outbound.setdefault(transition["from"], []).append(transition)
 
     page_specs: list[dict[str, Any]] = []
     for page_id in page_ids:
-        meta = PAGE_CATALOG[page_id]
+        meta = page_meta.get(page_id) or PAGE_CATALOG.get(page_id) or _default_custom_page_meta(page_id, page_id)
+        actions = list(meta.get("actions") or [])
+        filtered_actions = [action for action in actions if str(action.get("target") or "") in set(page_ids)]
+        if not filtered_actions:
+            filtered_actions = [
+                {
+                    "label": f"进入{_resolve_page_name(transition['to'], page_meta)}",
+                    "target": transition["to"],
+                    "trigger": transition["trigger"],
+                }
+                for transition in outbound.get(page_id, [])
+            ]
         page_specs.append(
             {
                 "page_id": page_id,
                 "name": meta["name"],
-                "priority": meta["priority"],
-                "platforms": list(meta["platforms"]),
-                "responsibility": meta["responsibility"],
-                "sections": list(meta["sections"]),
-                "actions": list(meta["actions"]),
-                "states": list(meta["states"]),
+                "priority": meta.get("priority", "P1"),
+                "platforms": list(meta.get("platforms") or ["Web", "PC"]),
+                "responsibility": meta.get(
+                    "responsibility", f"冻结 `{meta.get('name', page_id)}` 的页面结构、动作和状态说明。"
+                ),
+                "sections": list(meta.get("sections") or ["页面头部", "关键内容区", "主要操作区", "状态与反馈区"]),
+                "actions": filtered_actions,
+                "states": list(
+                    meta.get("states")
+                    or [
+                        {"id": "ready", "label": "可用", "description": "页面数据齐备，用户可完成核心操作。"},
+                        {"id": "loading", "label": "加载中", "description": "页面数据正在加载。"},
+                        {"id": "error", "label": "错误", "description": "页面加载或提交失败，需提示恢复动作。"},
+                    ]
+                ),
                 "requirement_refs": refs,
                 "outbound_transitions": outbound.get(page_id, []),
             }
@@ -701,15 +999,18 @@ def _render_state_flow_map_md(feature: str, payload: dict[str, Any]) -> str:
 
 
 def _build_route_closure_contract(page_specs: list[dict[str, Any]], transitions: list[dict[str, Any]], route_closure_required: bool) -> dict[str, Any]:
+    name_by_page = {str(page.get("page_id") or ""): str(page.get("name") or page.get("page_id") or "") for page in page_specs}
     closure_cases = []
     for index, transition in enumerate(transitions, start=1):
+        source = str(transition.get("from") or "")
+        target = str(transition.get("to") or "")
         closure_cases.append(
             {
                 "case_id": f"RC-{index:03d}",
-                "source_page_id": transition["from"],
-                "source_label": PAGE_CATALOG[transition["from"]]["name"],
-                "target_surface_id": transition["to"],
-                "target_label": PAGE_CATALOG[transition["to"]]["name"],
+                "source_page_id": source,
+                "source_label": name_by_page.get(source, source),
+                "target_surface_id": target,
+                "target_label": name_by_page.get(target, target),
                 "trigger": transition["trigger"],
                 "type": transition["type"],
             }
@@ -734,7 +1035,7 @@ def _build_theme_payload(docs: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
-def _build_page_layout(page_id: str) -> list[str]:
+def _build_page_layout(page_id: str, sections: list[str] | None = None) -> list[str]:
     layouts = {
         "home": [
             "+------------------------------------------------------+",
@@ -800,16 +1101,14 @@ def _build_page_layout(page_id: str) -> list[str]:
             "+---------------------------------------------------------------+",
         ],
     }
-    return layouts.get(
-        page_id,
-        [
-            "+-----------------------------+",
-            "| 页面头部                    |",
-            "+-----------------------------+",
-            "| 主体内容                    |",
-            "+-----------------------------+",
-        ],
-    )
+    if page_id in layouts:
+        return layouts[page_id]
+    dynamic_sections = [str(item).strip() for item in (sections or []) if str(item).strip()] or ["页面头部", "主体内容", "关键操作区"]
+    rendered = ["+-----------------------------+"]
+    for section in dynamic_sections[:6]:
+        rendered.append(f"| {section[:24]:<24} |")
+        rendered.append("+-----------------------------+")
+    return rendered
 
 
 def _render_page_markdown(page: dict[str, Any]) -> str:
@@ -832,7 +1131,7 @@ def _render_page_markdown(page: dict[str, Any]) -> str:
             "",
             "## 布局草图",
             "```text",
-            *_build_page_layout(page["page_id"]),
+            *_build_page_layout(page["page_id"], page.get("sections")),
             "```",
             "",
             "## 关键模块",
@@ -1185,11 +1484,12 @@ def compile_prototype_plan(project_root: Path, version: str, feature: str) -> di
             f"prototype requires requirement truth before wireframe freeze, missing: {', '.join(missing)}"
         )
 
-    page_ids, fallback_used = _detect_page_ids(docs)
+    page_ids, fallback_used, page_meta = _detect_pages_with_meta(docs)
     if "material-viewer" in page_ids and "material-document-detail" not in page_ids:
         page_ids.append("material-document-detail")
-    transitions = _build_transition_inventory(page_ids)
-    page_specs = _build_page_specs(page_ids, docs)
+        page_meta["material-document-detail"] = dict(PAGE_CATALOG["material-document-detail"])
+    transitions = _build_transition_inventory(page_ids, docs, page_meta)
+    page_specs = _build_page_specs(page_ids, docs, transitions, page_meta)
     required_states = sorted({state["id"] for page in page_specs for state in page["states"]})
     route_closure_required = _extract_field(docs, "route_closure_required", "false").lower() == "true"
     theme = _build_theme_payload(docs)
@@ -1242,8 +1542,10 @@ def compile_prototype_plan(project_root: Path, version: str, feature: str) -> di
             ],
         },
         "parser": {
-            "page_detection": "keyword-catalog",
+            "page_detection": "requirement-driven-parser",
             "fallback_used": fallback_used,
+            "discovered_page_count": len(page_ids),
+            "custom_page_count": len([page_id for page_id in page_ids if page_id not in PAGE_CATALOG]),
             "cjk_detected": any(any(ord(ch) > 127 for ch in doc["text"]) for doc in docs),
             "cjk_parse_failed": False,
         },

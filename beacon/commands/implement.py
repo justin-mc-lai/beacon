@@ -1183,6 +1183,7 @@ def _run_branch_preflight(
     branch_prefix: str = "beacon/",
     base_branch: str = "main",
     git_roots: list[str] | None = None,
+    direct_delivery_services: list[str] | None = None,
 ) -> dict[str, Any]:
     feature_slug = _slug(feature)
     branch_preflight = build_implement_branch_guard_payload(
@@ -1193,6 +1194,7 @@ def _run_branch_preflight(
         branch_prefix=branch_prefix,
         base_branch=base_branch,
         git_roots=git_roots,
+        direct_delivery_services=direct_delivery_services,
     )
     branch_preflight.update(
         {
@@ -1220,6 +1222,7 @@ def _run_branch_preflight(
                 branch_prefix=branch_prefix,
                 base_branch=base_branch,
                 git_roots=git_roots,
+                direct_delivery_services=direct_delivery_services,
             )
             refreshed.update(
                 {
@@ -1245,6 +1248,7 @@ def _branch_guard_inputs(project_root: Path, *, version: str, feature: str) -> d
     branch_guard_cfg = implementation_cfg.get("branch_guard") if isinstance(implementation_cfg.get("branch_guard"), dict) else {}
     contract = load_or_seed_implementation_git_workflow_contract(project_root, version=version, feature=feature)
     service_directories = _normalize_string_list(contract.get("service_directories") or contract.get("git_roots"))
+    direct_delivery_services = _normalize_string_list(contract.get("direct_delivery_services") or service_directories)
     expected_branch = str(contract.get("expected_branch", "") or str(branch_guard_cfg.get("expected_branch", "") or "")).strip()
     branch_prefix = str(contract.get("branch_prefix", "") or str(branch_guard_cfg.get("branch_prefix", "beacon/") or "beacon/")).strip() or "beacon/"
     base_branch = str(contract.get("base_branch", "") or str(branch_guard_cfg.get("base_branch", "main") or "main")).strip() or "main"
@@ -1257,6 +1261,7 @@ def _branch_guard_inputs(project_root: Path, *, version: str, feature: str) -> d
         "branch_prefix": branch_prefix,
         "base_branch": base_branch,
         "git_roots": service_directories,
+        "direct_delivery_services": direct_delivery_services,
         "require_clean_worktree_for_switch": require_clean,
     }
 
@@ -1332,6 +1337,7 @@ def run_implement_stage(  # noqa: PLR0913
     branch_prefix_override = str(branch_guard_inputs.get("branch_prefix", "beacon/") or "beacon/").strip() or "beacon/"
     base_branch_override = str(branch_guard_inputs.get("base_branch", "main") or "main").strip() or "main"
     workspace_git_roots = [str(item) for item in _normalize_string_list(branch_guard_inputs.get("git_roots"))]
+    direct_delivery_services = [str(item) for item in _normalize_string_list(branch_guard_inputs.get("direct_delivery_services"))]
     git_workflow_contract = branch_guard_inputs.get("git_workflow", {}) if isinstance(branch_guard_inputs.get("git_workflow"), dict) else {}
 
     run_id = str(run_id_override or "").strip() or generate_run_id(project_root)
@@ -1376,7 +1382,10 @@ def run_implement_stage(  # noqa: PLR0913
         branch_prefix=branch_prefix_override,
         base_branch=base_branch_override,
         git_roots=workspace_git_roots,
+        direct_delivery_services=direct_delivery_services,
     )
+    branch_preflight["git_workflow"] = git_workflow_contract
+    branch_preflight["branch_preflight_path"] = str(branch_preflight_path)
     write_json(project_root / branch_preflight_path, branch_preflight)
     if branch_preflight.get("blocked"):
         payload = {
@@ -1659,6 +1668,38 @@ def run_implement_stage(  # noqa: PLR0913
             "status": "completed",
             "generated_at": now_iso(),
         })
+        implemented_item_ids = [str(item) for item in _normalize_string_list(result_payload.get("implemented_items"))]
+        if not implemented_item_ids:
+            implemented_item_ids = _story_item_ids(story_state, kinds={"ac", "task"})
+        implemented_task_ids = [str(item) for item in _normalize_string_list(result_payload.get("implemented_task_ids"))]
+        requirement_traceability = {
+            "source_of_truth_root": artifacts["source_of_truth_root"],
+            "prd": artifacts["prd"],
+            "user_story": artifacts["user_story"],
+            "test_case": artifacts["test_case"],
+            "ac_matrix": artifacts["ac_matrix"],
+            "revision_id": str(story_state.get("revision_id", "") or story_state.get("current_revision_id", "") or ""),
+            "implemented_item_ids": implemented_item_ids,
+            "implemented_task_ids": implemented_task_ids,
+            "verified_task_ids": result_payload.get("verified_task_ids", []),
+        }
+        delivery_surfaces = {
+            "runtime_mode": resolved_mode or native_mode or "single",
+            "shipped_surfaces": _normalize_string_list(result_payload.get("shipped_surfaces")),
+            "partial_surfaces": _normalize_string_list(result_payload.get("partial_surfaces")),
+            "deferred_surfaces": _normalize_string_list(result_payload.get("deferred_surfaces")),
+            "downgrade_rationale": str(result_payload.get("downgrade_rationale", "") or ""),
+        }
+        summary_traceability_refs = _dedupe_strings(
+            [
+                artifacts["prd"],
+                artifacts["user_story"],
+                artifacts["test_case"],
+                artifacts["ac_matrix"],
+                str(request_path),
+                str(result_path),
+            ]
+        )
         summary_payload = {
             **base_state,
             "run_id": run_id,
@@ -1672,7 +1713,7 @@ def run_implement_stage(  # noqa: PLR0913
             "summary": str(result_payload.get("summary", "")),
             "changed_files": result_payload.get("changed_files", []),
             "verification": result_payload.get("verification", []),
-            "implemented_task_ids": result_payload.get("implemented_task_ids", []),
+            "implemented_task_ids": implemented_task_ids,
             "verified_task_ids": result_payload.get("verified_task_ids", []),
             "blocked_task_ids": result_payload.get("blocked_task_ids", []),
             "failed_task_ids": result_payload.get("failed_task_ids", []),
@@ -1687,6 +1728,9 @@ def run_implement_stage(  # noqa: PLR0913
             },
             "implementation_plan": implementation_plan_file,
             "implementation_plan_progress": load_implementation_plan_progress(project_root, version=resolved_version, feature=feature),
+            "requirement_traceability": requirement_traceability,
+            "delivery_surfaces": delivery_surfaces,
+            "traceability_refs": summary_traceability_refs,
             "generated_at": now_iso(),
         }
         for key, value in result_payload.items():
@@ -2435,6 +2479,7 @@ def check_branch(
     branch_prefix_override = str(branch_guard_inputs.get("branch_prefix", "beacon/") or "beacon/").strip() or "beacon/"
     base_branch_override = str(branch_guard_inputs.get("base_branch", "main") or "main").strip() or "main"
     workspace_git_roots = [str(item) for item in _normalize_string_list(branch_guard_inputs.get("git_roots"))]
+    direct_delivery_services = [str(item) for item in _normalize_string_list(branch_guard_inputs.get("direct_delivery_services"))]
     run_id = generate_run_id(project_root)
     payload = _run_branch_preflight(
         project_root=project_root,
@@ -2447,6 +2492,7 @@ def check_branch(
         branch_prefix=branch_prefix_override,
         base_branch=base_branch_override,
         git_roots=workspace_git_roots,
+        direct_delivery_services=direct_delivery_services,
     )
     payload["git_workflow"] = branch_guard_inputs.get("git_workflow", {})
     payload["branch_preflight_path"] = str(_branch_preflight_path(run_id))
@@ -2526,6 +2572,7 @@ def dev_run(
         branch_prefix=str(branch_guard_inputs.get("branch_prefix", "beacon/") or "beacon/").strip() or "beacon/",
         base_branch=str(branch_guard_inputs.get("base_branch", "main") or "main").strip() or "main",
         git_roots=[str(item) for item in _normalize_string_list(branch_guard_inputs.get("git_roots"))],
+        direct_delivery_services=[str(item) for item in _normalize_string_list(branch_guard_inputs.get("direct_delivery_services"))],
     )
     preflight_resolution["steps"].append(
         {

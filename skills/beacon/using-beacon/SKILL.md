@@ -12,6 +12,7 @@ Use Beacon as a minimal human-facing workflow pack.
 - `beacon-prd`
 - `beacon-user-story`
 - `beacon-test-case`
+- `beacon-change`
 - `beacon-implement`
 - `beacon-qa`
 - `beacon-release`
@@ -27,11 +28,13 @@ Use Beacon as a minimal human-facing workflow pack.
    use `beacon-user-story`
 3. Test and acceptance coverage design:
    use `beacon-test-case`
-4. Implementation handoff or execution:
+4. Frozen feature scope change, requirement supplement after freeze, or re-freeze loops:
+   use `beacon-change`
+5. Implementation handoff or execution:
    use `beacon-implement`
-5. Verification, acceptance, new findings, or release confidence:
+6. Verification, acceptance, new findings, or release confidence:
    use `beacon-qa` or `beacon-release`
-6. Blocked / lost / next-step questions:
+7. Blocked / lost / next-step questions:
    use `beacon-help`, `beacon-status`, or `beacon-doctor`
 
 ## Development pairing

@@ -9,11 +9,21 @@ import re
 from beacon.utils.artifact_paths import change_docs_file, change_file_output, machine_change_dir
 from beacon.utils.memory import append_memory_entry
 from beacon.utils.release_scorecard import build_release_scorecard
+from beacon.utils.runtime_projection_store import runtime_projection_transaction_contract
 from beacon.utils.versioning import project_runtime_feature_enabled, resolve_runtime_version, resolve_target_version
 from beacon.utils.workflow_memory import append_lifecycle_event
 
 app = typer.Typer(name="release", help="Release checklist")
 _TECHNICAL_ARCHIVE_RE = re.compile(r"^technical-implementation-(?P<slug>.+)\.json$")
+
+
+def _parse_semver_tuple(value: str) -> tuple[int, int, int]:
+    text = str(value or "").strip().lower().lstrip("v")
+    try:
+        major, minor, patch = text.split(".")
+        return int(major), int(minor), int(patch)
+    except Exception:  # noqa: BLE001
+        return (0, 0, 0)
 
 
 def _extract_run_id(payload: dict) -> str:
@@ -525,6 +535,28 @@ def check(
                 "coverage summary run_id matches test artifacts",
                 bool(coverage_run_id) and bool(expected_run_id) and coverage_run_id == expected_run_id,
                 f"coverage_run_id={coverage_run_id or 'missing'}, expected={expected_run_id or 'missing'}",
+            )
+        )
+
+    if _parse_semver_tuple(resolved_version) >= (1, 3, 5):
+        try:
+            runtime_tx_contract = runtime_projection_transaction_contract(
+                project_root=project_root,
+                docs_version=resolved_version,
+                feature=None,
+            )
+        except Exception:  # noqa: BLE001
+            runtime_tx_contract = {
+                "status": "warn",
+                "reason_code": "runtime_projection_drift",
+            }
+        runtime_tx_status = str(runtime_tx_contract.get("status") or "").lower()
+        runtime_tx_ok = runtime_tx_status != "fail"
+        checks.append(
+            (
+                "runtime projection transaction contract",
+                runtime_tx_ok,
+                f"status={runtime_tx_contract.get('status') or 'unknown'}, reason={runtime_tx_contract.get('reason_code') or '-'}",
             )
         )
 

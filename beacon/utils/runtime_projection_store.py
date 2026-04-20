@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import shutil
@@ -70,6 +71,32 @@ def _write_executable(path: Path, content: str) -> None:
 def _sqlite_disabled() -> bool:
     value = str(os.environ.get("BEACON_RUNTIME_LEDGER_DISABLE_SQLITE", "") or "").strip().lower()
     return value in {"1", "true", "yes", "on"}
+
+
+def _stable_hash_payload(payload: Any) -> str:
+    encoded = json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    return hashlib.sha256(encoded).hexdigest()
+
+
+def _stable_hash_file(path: Path) -> str:
+    if not path.exists() or not path.is_file():
+        return ""
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(65536), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def _transaction_events_root() -> Path:
+    return runtime_ledger_root() / "transactions"
+
+
+def _record_transaction_event(payload: dict[str, Any]) -> str:
+    transaction_id = str(payload.get("transaction_id") or "").strip() or "unknown-transaction"
+    target = _transaction_events_root() / f"{transaction_id}.json"
+    write_json(target, payload)
+    return str(target)
 
 
 def pocketbase_binary_path() -> str:
@@ -467,6 +494,7 @@ def ensure_runtime_projection_schema(conn: sqlite3.Connection) -> None:
 
         CREATE TABLE IF NOT EXISTS projection_writes (
             projection_seq TEXT PRIMARY KEY,
+            transaction_id TEXT NOT NULL DEFAULT '',
             project_key TEXT NOT NULL,
             source_hash TEXT NOT NULL,
             write_status TEXT NOT NULL,
@@ -475,6 +503,7 @@ def ensure_runtime_projection_schema(conn: sqlite3.Connection) -> None:
             uncertainty_reason TEXT NOT NULL DEFAULT '',
             sqlite_status TEXT NOT NULL DEFAULT '',
             pocketbase_status TEXT NOT NULL DEFAULT '',
+            sink_checksums_json TEXT NOT NULL DEFAULT '{}',
             occurred_at TEXT NOT NULL DEFAULT '',
             wrote_at TEXT NOT NULL,
             payload_json TEXT NOT NULL
@@ -486,10 +515,12 @@ def ensure_runtime_projection_schema(conn: sqlite3.Connection) -> None:
         conn,
         "projection_writes",
         {
+            "transaction_id": "TEXT NOT NULL DEFAULT ''",
             "confidence": "REAL NOT NULL DEFAULT 0",
             "uncertainty_reason": "TEXT NOT NULL DEFAULT ''",
             "sqlite_status": "TEXT NOT NULL DEFAULT ''",
             "pocketbase_status": "TEXT NOT NULL DEFAULT ''",
+            "sink_checksums_json": "TEXT NOT NULL DEFAULT '{}'",
             "occurred_at": "TEXT NOT NULL DEFAULT ''",
         },
     )
@@ -861,15 +892,18 @@ def _write_projection_history(
     write_status: str,
     sqlite_status: str,
     pocketbase_status: str,
+    transaction_id: str,
+    sink_checksums: dict[str, Any],
 ) -> None:
     projection = envelope.get("projection") if isinstance(envelope.get("projection"), dict) else {}
     conn.execute(
         """
         INSERT INTO projection_writes (
-            projection_seq, project_key, source_hash, write_status, preflight_status,
-            confidence, uncertainty_reason, sqlite_status, pocketbase_status, occurred_at, wrote_at, payload_json
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            projection_seq, transaction_id, project_key, source_hash, write_status, preflight_status,
+            confidence, uncertainty_reason, sqlite_status, pocketbase_status, sink_checksums_json, occurred_at, wrote_at, payload_json
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ON CONFLICT(projection_seq) DO UPDATE SET
+            transaction_id=excluded.transaction_id,
             project_key=excluded.project_key,
             source_hash=excluded.source_hash,
             write_status=excluded.write_status,
@@ -878,12 +912,14 @@ def _write_projection_history(
             uncertainty_reason=excluded.uncertainty_reason,
             sqlite_status=excluded.sqlite_status,
             pocketbase_status=excluded.pocketbase_status,
+            sink_checksums_json=excluded.sink_checksums_json,
             occurred_at=excluded.occurred_at,
             wrote_at=excluded.wrote_at,
             payload_json=excluded.payload_json
         """,
         (
             str(projection.get("projection_seq") or ""),
+            str(transaction_id or ""),
             str(envelope.get("project_key") or ""),
             str(projection.get("source_hash") or ""),
             write_status,
@@ -892,6 +928,7 @@ def _write_projection_history(
             str(projection.get("uncertainty_reason") or ""),
             sqlite_status,
             pocketbase_status,
+            json.dumps(sink_checksums if isinstance(sink_checksums, dict) else {}, ensure_ascii=False, sort_keys=True),
             now_iso(),
             now_iso(),
             json.dumps(envelope, ensure_ascii=False, sort_keys=True),
@@ -955,13 +992,41 @@ def write_pocketbase_projection_pack(envelope: dict[str, Any]) -> dict[str, str]
 
 def sync_projection(envelope: dict[str, Any]) -> dict[str, Any]:
     preflight = preflight_projection_write(envelope)
-    envelope_path = write_projection_envelope(envelope)
-    control_plane = ensure_pocketbase_control_plane()
     projection = envelope.get("projection") if isinstance(envelope.get("projection"), dict) else {}
+    project_key = str(envelope.get("project_key") or "")
+    source_hash = str(projection.get("source_hash") or "")
+    projection_seq = str(projection.get("projection_seq") or "")
+    transaction_id = str(projection.get("transaction_id") or "").strip() or f"tx-{project_key}-{projection_seq or 'projection'}"
+    sink_checksums: dict[str, Any] = {
+        "machine": "missing",
+        "human": "missing",
+        "sqlite": "missing",
+        "pocketbase": "missing",
+    }
+    failed_sinks: list[str] = []
+    envelope_path = write_projection_envelope(envelope)
+    sink_checksums["machine"] = _stable_hash_file(Path(envelope_path)) or "missing"
+    control_plane = ensure_pocketbase_control_plane()
+    occurred_at = now_iso()
 
     if preflight["status"] in {"conflicted", "blocked"}:
+        transaction_payload = {
+            "schema_version": "1.0",
+            "transaction_id": transaction_id,
+            "project_key": project_key,
+            "source_hash": source_hash,
+            "projection_seq": projection_seq,
+            "status": "blocked_transaction",
+            "preflight_status": str(preflight.get("status") or ""),
+            "failed_sinks": ["preflight"],
+            "sink_checksums": sink_checksums,
+            "occurred_at": occurred_at,
+            "committed_at": "",
+            "error": "preflight blocked projection commit",
+        }
+        transaction_path = _record_transaction_event(transaction_payload)
         return {
-            "status": preflight["status"],
+            "status": "blocked_transaction",
             "sqlite_status": "skipped",
             "pocketbase_status": "skipped",
             "preflight": preflight,
@@ -969,12 +1034,43 @@ def sync_projection(envelope: dict[str, Any]) -> dict[str, Any]:
             "pocketbase_root": str(pocketbase_projection_root()),
             "envelope_path": envelope_path,
             "control_plane": control_plane,
+            "transaction_id": transaction_id,
+            "projection_seq": projection_seq,
+            "source_hash": source_hash,
+            "sink_checksums": sink_checksums,
+            "failed_sinks": ["preflight"],
+            "transaction_path": transaction_path,
         }
 
-    mirror_paths = write_pocketbase_projection_pack(envelope)
-    pocketbase_status = "ready" if bool(control_plane.get("binary_available")) else "projection_only"
+    mirror_paths: dict[str, str] = {}
+    pocketbase_status = "skipped"
+    pocketbase_error = ""
+    try:
+        mirror_paths = write_pocketbase_projection_pack(envelope)
+        pocketbase_status = "ready" if bool(control_plane.get("binary_available")) else "projection_only"
+        sink_checksums["pocketbase"] = _stable_hash_payload(mirror_paths)
+        human_ref = (
+            mirror_paths.get("board_portfolio")
+            or mirror_paths.get("board_index")
+            or mirror_paths.get("project")
+            or ""
+        )
+        sink_checksums["human"] = _stable_hash_file(Path(str(human_ref))) if human_ref else "missing"
+        if not sink_checksums["human"]:
+            sink_checksums["human"] = "missing"
+    except Exception as exc:  # noqa: BLE001
+        pocketbase_status = "failed"
+        pocketbase_error = str(exc)
+        failed_sinks.append("pocketbase")
+
+    sqlite_status = "skipped"
+    sqlite_error = ""
+    committed_at = ""
+    history_written = False
+    write_status = "failed_transaction" if failed_sinks else "applied"
     try:
         with _connect() as conn:
+            sqlite_status = "applied"
             conn.execute(
                 """
                 INSERT INTO projects (
@@ -1082,32 +1178,99 @@ def sync_projection(envelope: dict[str, Any]) -> dict[str, Any]:
                 ["project_key", "issue_id", "reason_code", "issue_status", "materialization_state", "latest_event_at", "sample", "suggested_capability", "source_run_id", "truth_refs_json"],
                 _debug_issue_rows(project_key, envelope),
             )
+            sink_checksums["sqlite"] = _stable_hash_payload(
+                {
+                    "project_key": project_key,
+                    "projection_seq": projection_seq,
+                    "source_hash": source_hash,
+                    "write_status": write_status,
+                    "sqlite_status": sqlite_status,
+                    "pocketbase_status": pocketbase_status,
+                }
+            )
             _write_projection_history(
                 conn,
                 envelope=envelope,
                 preflight=preflight,
-                write_status="applied",
-                sqlite_status="applied",
+                write_status=write_status,
+                sqlite_status=sqlite_status,
                 pocketbase_status=pocketbase_status,
+                transaction_id=transaction_id,
+                sink_checksums=sink_checksums,
             )
             conn.commit()
+            history_written = True
+            committed_at = now_iso()
     except Exception as exc:  # noqa: BLE001
-        return {
-            "status": "degraded",
-            "sqlite_status": "unavailable",
-            "pocketbase_status": pocketbase_status,
-            "preflight": preflight,
-            "db_path": str(runtime_ledger_db_path()),
-            "pocketbase_root": str(pocketbase_projection_root()),
-            "mirror_paths": mirror_paths,
-            "envelope_path": envelope_path,
-            "control_plane": control_plane,
-            "error": str(exc),
-        }
+        sqlite_error = str(exc)
+        sqlite_status = "unavailable" if _sqlite_disabled() or sqlite_error == "sqlite_disabled" else "failed"
+        failed_sinks.append("sqlite")
+        write_status = "failed_transaction"
+
+    if not history_written and sqlite_status == "applied":
+        sqlite_status = "failed"
+        failed_sinks.append("sqlite")
+        write_status = "failed_transaction"
+
+    sink_checksums["sqlite"] = sink_checksums.get("sqlite") or "missing"
+    if sink_checksums["sqlite"] == "":
+        sink_checksums["sqlite"] = "missing"
+    if sink_checksums["pocketbase"] == "":
+        sink_checksums["pocketbase"] = "missing"
+
+    projection["transaction_id"] = transaction_id
+    projection["committed_at"] = committed_at
+    projection["write_status"] = write_status
+    projection["failed_sinks"] = sorted({str(item) for item in failed_sinks if str(item).strip()})
+    projection["sink_checksums"] = sink_checksums
+    envelope["projection"] = projection
+    write_json(Path(envelope_path), envelope)
+    sink_checksums["machine"] = _stable_hash_file(Path(envelope_path)) or sink_checksums.get("machine") or "missing"
+
+    transaction_payload = {
+        "schema_version": "1.0",
+        "transaction_id": transaction_id,
+        "project_key": project_key,
+        "source_hash": source_hash,
+        "projection_seq": projection_seq,
+        "status": write_status,
+        "preflight_status": str(preflight.get("status") or ""),
+        "failed_sinks": projection.get("failed_sinks") or [],
+        "sink_checksums": sink_checksums,
+        "occurred_at": occurred_at,
+        "committed_at": committed_at,
+        "sqlite_status": sqlite_status,
+        "pocketbase_status": pocketbase_status,
+        "errors": {
+            "sqlite": sqlite_error,
+            "pocketbase": pocketbase_error,
+        },
+        "envelope_path": envelope_path,
+    }
+    transaction_path = _record_transaction_event(transaction_payload)
+
+    if history_written and write_status == "failed_transaction":
+        try:
+            with _connect() as conn:
+                _write_projection_history(
+                    conn,
+                    envelope=envelope,
+                    preflight=preflight,
+                    write_status=write_status,
+                    sqlite_status=sqlite_status,
+                    pocketbase_status=pocketbase_status,
+                    transaction_id=transaction_id,
+                    sink_checksums=sink_checksums,
+                )
+                conn.commit()
+        except Exception:  # noqa: BLE001
+            pass
+
+    status = "applied" if write_status == "applied" else "failed_transaction"
 
     return {
-        "status": "applied",
-        "sqlite_status": "applied",
+        "status": status,
+        "sqlite_status": sqlite_status,
         "pocketbase_status": pocketbase_status,
         "preflight": preflight,
         "db_path": str(runtime_ledger_db_path()),
@@ -1115,7 +1278,13 @@ def sync_projection(envelope: dict[str, Any]) -> dict[str, Any]:
         "mirror_paths": mirror_paths,
         "envelope_path": envelope_path,
         "control_plane": control_plane,
-        "projection_seq": str(projection.get("projection_seq") or ""),
+        "projection_seq": projection_seq,
+        "transaction_id": transaction_id,
+        "source_hash": source_hash,
+        "sink_checksums": sink_checksums,
+        "failed_sinks": projection.get("failed_sinks") or [],
+        "transaction_path": transaction_path,
+        "error": sqlite_error or pocketbase_error,
     }
 
 
@@ -1186,6 +1355,197 @@ def load_project_detail(project_key: str) -> dict[str, Any]:
     return payload if isinstance(payload, dict) else {}
 
 
+def _latest_projection_write_from_sqlite(
+    project_key: str,
+    *,
+    source_hash: str = "",
+    projection_seq: str = "",
+) -> dict[str, Any]:
+    if not project_key:
+        return {}
+    try:
+        where_clauses = ["project_key = ?"]
+        params: list[Any] = [project_key]
+        if source_hash:
+            where_clauses.append("source_hash = ?")
+            params.append(source_hash)
+        if projection_seq:
+            where_clauses.append("projection_seq = ?")
+            params.append(projection_seq)
+        with _connect() as conn:
+            row = conn.execute(
+                f"""
+                SELECT projection_seq, transaction_id, project_key, source_hash, write_status,
+                       preflight_status, confidence, uncertainty_reason, sqlite_status, pocketbase_status,
+                       sink_checksums_json, occurred_at, wrote_at, payload_json
+                FROM projection_writes
+                WHERE {" AND ".join(where_clauses)}
+                ORDER BY wrote_at DESC
+                LIMIT 1
+                """,
+                tuple(params),
+            ).fetchone()
+        if row is None:
+            return {}
+        payload = dict(row)
+        try:
+            payload["sink_checksums"] = json.loads(str(payload.get("sink_checksums_json") or "{}"))
+        except Exception:  # noqa: BLE001
+            payload["sink_checksums"] = {}
+        payload_raw = str(payload.get("payload_json") or "")
+        try:
+            payload["envelope"] = json.loads(payload_raw) if payload_raw else {}
+        except Exception:  # noqa: BLE001
+            payload["envelope"] = {}
+        return payload
+    except Exception:  # noqa: BLE001
+        return {}
+
+
+def _latest_projection_write_from_event_log(
+    project_key: str,
+    *,
+    source_hash: str = "",
+    projection_seq: str = "",
+) -> dict[str, Any]:
+    root = _transaction_events_root()
+    if not root.exists():
+        return {}
+    candidates = sorted(root.glob("*.json"), key=lambda path: path.stat().st_mtime_ns, reverse=True)
+    for path in candidates:
+        payload = read_json(path, {})
+        if not isinstance(payload, dict):
+            continue
+        if project_key and str(payload.get("project_key") or "") != project_key:
+            continue
+        payload_source_hash = str(payload.get("source_hash") or "")
+        payload_projection_seq = str(payload.get("projection_seq") or "")
+        if source_hash and payload_source_hash != source_hash:
+            continue
+        if projection_seq and payload_projection_seq != projection_seq:
+            continue
+        sink_checksums = payload.get("sink_checksums") if isinstance(payload.get("sink_checksums"), dict) else {}
+        return {
+            "projection_seq": payload_projection_seq,
+            "transaction_id": str(payload.get("transaction_id") or ""),
+            "project_key": str(payload.get("project_key") or ""),
+            "source_hash": payload_source_hash,
+            "write_status": str(payload.get("status") or ""),
+            "preflight_status": str(payload.get("preflight_status") or ""),
+            "sqlite_status": str(payload.get("sqlite_status") or ""),
+            "pocketbase_status": str(payload.get("pocketbase_status") or ""),
+            "occurred_at": str(payload.get("occurred_at") or ""),
+            "wrote_at": str(payload.get("committed_at") or payload.get("occurred_at") or ""),
+            "sink_checksums": sink_checksums,
+            "envelope": {},
+            "event_path": str(path),
+        }
+    return {}
+
+
+def runtime_projection_transaction_contract(
+    *,
+    project_root: Path,
+    docs_version: str | None = None,
+    feature: str | None = None,
+) -> dict[str, Any]:
+    from beacon.utils.runtime_projection import build_runtime_projection
+
+    envelope = build_runtime_projection(project_root, docs_version=docs_version, feature=feature)
+    project_key = str(envelope.get("project_key") or "")
+    projection = envelope.get("projection") if isinstance(envelope.get("projection"), dict) else {}
+    expected_source_hash = str(projection.get("source_hash") or "")
+    expected_projection_seq = str(projection.get("projection_seq") or "")
+
+    latest = _latest_projection_write_from_sqlite(
+        project_key,
+        source_hash=expected_source_hash,
+        projection_seq=expected_projection_seq,
+    ) or _latest_projection_write_from_event_log(
+        project_key,
+        source_hash=expected_source_hash,
+        projection_seq=expected_projection_seq,
+    )
+    matched_projection_context = bool(latest)
+    if not latest:
+        latest = _latest_projection_write_from_sqlite(project_key) or _latest_projection_write_from_event_log(project_key)
+    if not latest:
+        return {
+            "status": "warn",
+            "blocked": False,
+            "reason_code": "runtime_projection_transaction_missing",
+            "message": "runtime projection transaction record missing",
+            "project_key": project_key,
+            "expected_source_hash": expected_source_hash,
+            "expected_projection_seq": expected_projection_seq,
+            "details": {},
+        }
+    if not matched_projection_context:
+        return {
+            "status": "warn",
+            "blocked": False,
+            "reason_code": "runtime_projection_transaction_context_missing",
+            "message": "runtime projection transaction for current context is missing; rebuild runtime ledger for this docs/feature context",
+            "project_key": project_key,
+            "expected_source_hash": expected_source_hash,
+            "expected_projection_seq": expected_projection_seq,
+            "details": latest,
+        }
+
+    sink_checksums = latest.get("sink_checksums") if isinstance(latest.get("sink_checksums"), dict) else {}
+    write_status = str(latest.get("write_status") or "").strip().lower()
+    sqlite_status = str(latest.get("sqlite_status") or "").strip().lower()
+    pocketbase_status = str(latest.get("pocketbase_status") or "").strip().lower()
+    metadata_ok = bool(latest.get("transaction_id")) and bool(latest.get("source_hash")) and bool(latest.get("projection_seq"))
+    checksum_ok = (
+        bool(sink_checksums.get("machine"))
+        and bool(sink_checksums.get("human"))
+        and bool(sink_checksums.get("sqlite"))
+        and str(sink_checksums.get("machine")) not in {"missing", "failed"}
+        and str(sink_checksums.get("human")) not in {"missing", "failed"}
+        and str(sink_checksums.get("sqlite")) not in {"missing", "failed"}
+    )
+    alignment_ok = (
+        str(latest.get("source_hash") or "") == expected_source_hash
+        and str(latest.get("projection_seq") or "") == expected_projection_seq
+    )
+
+    if write_status == "failed_transaction" or sqlite_status in {"failed", "unavailable"} or pocketbase_status == "failed":
+        return {
+            "status": "fail",
+            "blocked": True,
+            "reason_code": "runtime_projection_failed_transaction",
+            "message": "runtime projection transaction failed; release/freeze must be blocked until rebuild",
+            "project_key": project_key,
+            "expected_source_hash": expected_source_hash,
+            "expected_projection_seq": expected_projection_seq,
+            "details": latest,
+        }
+
+    if not metadata_ok or not checksum_ok or not alignment_ok:
+        return {
+            "status": "fail",
+            "blocked": True,
+            "reason_code": "runtime_projection_drift",
+            "message": "runtime projection metadata/checksum drift detected across sinks",
+            "project_key": project_key,
+            "expected_source_hash": expected_source_hash,
+            "expected_projection_seq": expected_projection_seq,
+            "details": latest,
+        }
+
+    return {
+        "status": "pass",
+        "blocked": False,
+        "reason_code": "runtime_projection_transaction_ok",
+        "message": "runtime projection transaction metadata is consistent",
+        "project_key": project_key,
+        "expected_source_hash": expected_source_hash,
+        "expected_projection_seq": expected_projection_seq,
+        "details": latest,
+    }
+
+
 def verify_runtime_ledger(
     *,
     project_root: Path,
@@ -1206,6 +1566,11 @@ def verify_runtime_ledger(
     envelope_path = projection_envelope_path(envelope1)
     control_plane = inspect_pocketbase_control_plane()
     db_path = runtime_ledger_db_path()
+    transaction_contract = runtime_projection_transaction_contract(
+        project_root=project_root,
+        docs_version=docs_version,
+        feature=feature,
+    )
     checks = [
         {
             "name": "projection_determinism",
@@ -1257,6 +1622,11 @@ def verify_runtime_ledger(
                 "portfolio_page": str((pocketbase_public_root() / "portfolio-overview" / "index.html")),
                 "portfolio_data": str((pocketbase_public_root() / "data" / "portfolio-summary.json")),
             },
+        },
+        {
+            "name": "runtime_projection_transaction_contract",
+            "status": str(transaction_contract.get("status") or "warn"),
+            "details": transaction_contract,
         },
     ]
     status = "pass"

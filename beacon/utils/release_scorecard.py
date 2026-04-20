@@ -85,6 +85,67 @@ def _version_change_status(project_root: Path, *, version: str, current_feature:
     }
 
 
+def _feature_change_payload(project_root: Path, *, version: str, feature: str) -> dict[str, Any]:
+    if not feature:
+        return {}
+    path = change_file_output(project_root, version, f"{feature_slug(feature)}.json")
+    payload = _load_json(path)
+    if not payload:
+        return {}
+    payload_version = str(payload.get("version") or "").strip()
+    if payload_version and payload_version != version:
+        return {}
+    return payload
+
+
+def _revision_binding(revision_state: dict[str, Any]) -> dict[str, Any]:
+    if not isinstance(revision_state, dict) or not revision_state:
+        return {
+            "status": "missing",
+            "reason_code": "revision_missing",
+            "revision_id": "",
+            "source_revision_id": "",
+            "superseded_by": "",
+            "doc_status": "",
+            "delivery_status": "",
+            "gate_bound_to_latest_revision": False,
+        }
+    doc_status = str(revision_state.get("doc_status") or "")
+    superseded_by = str(revision_state.get("superseded_by") or "")
+    if superseded_by:
+        status = "superseded"
+        reason_code = "revision_superseded"
+    elif doc_status != "frozen":
+        status = "reopened"
+        reason_code = "revision_not_frozen"
+    else:
+        status = "bound"
+        reason_code = ""
+    return {
+        "status": status,
+        "reason_code": reason_code,
+        "revision_id": str(revision_state.get("revision_id") or ""),
+        "source_revision_id": str(revision_state.get("source_revision_id") or ""),
+        "superseded_by": superseded_by,
+        "doc_status": doc_status,
+        "delivery_status": str(revision_state.get("delivery_status") or ""),
+        "gate_bound_to_latest_revision": status == "bound",
+    }
+
+
+def _delivery_type(revision_state: dict[str, Any], feature_change: dict[str, Any]) -> str:
+    revision_id = str(revision_state.get("revision_id") or "")
+    source_revision_id = str(revision_state.get("source_revision_id") or "")
+    if not source_revision_id and revision_id in {"", "R1"}:
+        return "initial"
+    added = [str(item).strip() for item in (feature_change.get("added") or []) if str(item).strip()]
+    removed = [str(item).strip() for item in (feature_change.get("removed") or []) if str(item).strip()]
+    fixed = [str(item).strip() for item in (feature_change.get("fixed") or []) if str(item).strip()]
+    if fixed and not added and not removed:
+        return "hotfix"
+    return "revised"
+
+
 def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, Any]:
     resolved_version = resolve_target_version(project_root, version)
     resolved_runtime = resolve_runtime_version(project_root, "auto")
@@ -114,6 +175,9 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
             latest_experiment = {}
     git_workflow_contracts = list_implementation_git_workflow_contracts(project_root, version=resolved_version)
     revision_state = load_revision_state(project_root, version=resolved_version, feature=feature, create_if_missing=False) if feature else {}
+    revision_binding = _revision_binding(revision_state)
+    feature_change = _feature_change_payload(project_root, version=resolved_version, feature=feature) if feature else {}
+    delivery_type = _delivery_type(revision_state, feature_change) if feature else ""
     requirement_clarity_gate = build_requirement_clarity_gate_payload(project_root, version=resolved_version, feature=feature) if feature else {}
     requirement_clarity_state = load_requirement_clarity_state(project_root, feature=feature) if feature else {}
     technical_review_gate = (
@@ -181,6 +245,7 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
         release_ready = (
             release_ready
             and bool(feature)
+            and bool(revision_binding.get("gate_bound_to_latest_revision", False))
             and not bool(requirement_clarity_gate.get("blocked", False))
             and bool(requirement_clarity_state)
             and not bool(technical_review_gate.get("blocked", False))
@@ -194,6 +259,7 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
     if (
         runtime_feature_supported("v1.1.10", runtime_version=resolved_runtime)
         and feature_scorecard_authoritative
+        and bool(revision_binding.get("gate_bound_to_latest_revision", False))
         and project_gate_status in {"pass", "not_configured"}
         and bool(change_documents.get("markdown_exists", False))
         and bool(change_documents.get("json_exists", False))
@@ -223,6 +289,12 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
             "artifact_version": qa_version,
             "version_match": qa_version_match,
         },
+        "delivery": {
+            "type": delivery_type,
+            "revision_id": str(revision_state.get("revision_id") or ""),
+            "source_revision_id": str(revision_state.get("source_revision_id") or ""),
+        },
+        "revision_binding": revision_binding,
         "exhaustiveness": exhaustiveness if isinstance(exhaustiveness, dict) else {},
         "feature_qa_scorecard": feature_scorecard if isinstance(feature_scorecard, dict) else {},
         "implementation_plan": implementation_plan if isinstance(implementation_plan, dict) else {},
@@ -273,6 +345,8 @@ def summarize_release_scorecard(scorecard: dict[str, Any] | None) -> dict[str, A
     requirement_clarity = payload.get("requirement_clarity") if isinstance(payload.get("requirement_clarity"), dict) else {}
     technical_review = payload.get("technical_review") if isinstance(payload.get("technical_review"), dict) else {}
     change_documents = payload.get("change_documents") if isinstance(payload.get("change_documents"), dict) else {}
+    delivery = payload.get("delivery") if isinstance(payload.get("delivery"), dict) else {}
+    revision_binding = payload.get("revision_binding") if isinstance(payload.get("revision_binding"), dict) else {}
     decisions = learning.get("decision_summary") if isinstance(learning.get("decision_summary"), dict) else {}
     latest_experiment = payload.get("latest_experiment") if isinstance(payload.get("latest_experiment"), dict) else {}
     return {
@@ -316,6 +390,12 @@ def summarize_release_scorecard(scorecard: dict[str, Any] | None) -> dict[str, A
         "technical_review_status": str(technical_review.get("status") or ""),
         "technical_review_blocked": bool(technical_review.get("blocked", False)),
         "technical_review_review_status": str(technical_review.get("review_status") or ""),
+        "delivery_type": str(delivery.get("type") or ""),
+        "delivery_revision_id": str(delivery.get("revision_id") or ""),
+        "delivery_source_revision_id": str(delivery.get("source_revision_id") or ""),
+        "release_revision_binding_status": str(revision_binding.get("status") or ""),
+        "release_revision_binding_reason": str(revision_binding.get("reason_code") or ""),
+        "release_revision_current": bool(revision_binding.get("gate_bound_to_latest_revision", False)),
         "change_documents_status": str(change_documents.get("status") or ""),
         "change_documents_markdown_exists": bool(change_documents.get("markdown_exists", False)),
         "change_documents_json_exists": bool(change_documents.get("json_exists", False)),

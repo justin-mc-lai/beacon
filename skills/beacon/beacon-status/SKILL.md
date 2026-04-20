@@ -13,6 +13,7 @@ This skill routes status inspection through Beacon's `status` surface.
 - current stage snapshot
 - lifecycle progress overview
 - quick state checks without changing delivery truth
+- revision-aware frozen/reopened/re-frozen inspection
 
 ## Operator rule
 
@@ -22,3 +23,4 @@ Prefer:
 - or `bash skills/beacon/scripts/run_beacon.sh status ...`
 
 Use status for visibility, not as a substitute for PRD, story, QA, or release decisions.
+When status shows a frozen feature that now needs scope adjustment, pair it with `beacon-change`.

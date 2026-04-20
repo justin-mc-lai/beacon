@@ -1,0 +1,1020 @@
+{
+  "schema_version": "1.0",
+  "plan_id": "plan-beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler-r1",
+  "feature": "beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler",
+  "feature_slug": "beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler",
+  "version": "v1.3.5",
+  "revision_id": "R1",
+  "baseline_hash": "sha256:36b9999f34f43cf79fb93af986ee998ef0f6ae5140c08459725a8a0e21871aa6",
+  "plan_hash": "sha256:d79c9e0523b82f4cad6668e9fc0ec8805918da2afa00cc7e18f32fc2a0511295",
+  "status": "completed",
+  "source_refs": {
+    "user_story": "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.md",
+    "prd": "docs/beacon/v1.3.5/prd/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.md",
+    "test_case": "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.md",
+    "ac_matrix": "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.ac-test-matrix.json",
+    "story_scenario_map": "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.story-scenario-map.json",
+    "qa9_matrix": "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.qa9-matrix.json"
+  },
+  "boundary_principles": [
+    {
+      "id": "explicit_assumptions",
+      "heading": "显式假设与歧义管理"
+    },
+    {
+      "id": "simplicity_first",
+      "heading": "简单优先"
+    },
+    {
+      "id": "surgical_changes",
+      "heading": "外科手术式改动"
+    },
+    {
+      "id": "goal_driven_execution",
+      "heading": "目标驱动验证闭环"
+    },
+    {
+      "id": "trivial_task_exception",
+      "heading": "trivial task 可以轻量处理，但不能越界"
+    }
+  ],
+  "workstreams": [
+    {
+      "workstream_id": "implementation-main",
+      "title": "Implementation Mainline",
+      "task_ids": [
+        "ITASK-001",
+        "ITASK-002",
+        "ITASK-003",
+        "ITASK-004",
+        "ITASK-005",
+        "ITASK-006",
+        "ITASK-007",
+        "ITASK-008",
+        "ITASK-009"
+      ]
+    }
+  ],
+  "task_mapping_source": "prd-sections",
+  "tasks": [
+    {
+      "task_id": "ITASK-001",
+      "title": "FR-001 多写入统一事务协调器",
+      "description": "为 `canonical -> human -> machine -> sqlite` 提供统一事务协调器： 固定阶段：prepare/validate/stage/commit/publish/verify。 输出统一 `transaction_result`。 每次提交都必须带事务元数据。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-002"
+      ],
+      "mapped_test_ids": [
+        "TC-002",
+        "TC-007",
+        "TC-012"
+      ],
+      "mapped_scenario_ids": [
+        "SC-016",
+        "SC-017",
+        "SC-018",
+        "SC-019",
+        "SC-020",
+        "SC-021",
+        "SC-022",
+        "SC-023",
+        "SC-024",
+        "SC-025",
+        "SC-026",
+        "SC-027",
+        "SC-028",
+        "SC-029",
+        "SC-030"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-002",
+        "TC-007",
+        "TC-012"
+      ],
+      "depends_on": [],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260420T150524Z-4d94",
+        ".beacon/auto-test-status.json",
+        "verify:run-20260420T150524Z-4d94-tester",
+        "run:run-20260420T150929Z-e370",
+        "verify:run-20260420T150929Z-e370-tester",
+        "verify:review.accept"
+      ],
+      "changed_files": [
+        ".omc/project-memory.json",
+        "beacon/commands/gate.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/prd.py",
+        "beacon/commands/release.py",
+        "beacon/commands/review.py",
+        "beacon/commands/status.py",
+        "beacon/utils/git_alignment.py",
+        "beacon/utils/implementation_plan.py",
+        "beacon/utils/prototype_utils.py",
+        "beacon/utils/requirement_clarity.py",
+        "beacon/utils/runtime_projection_store.py",
+        "beacon/utils/technical_review_contract.py",
+        "docs/beacon/v1.3.3/.machine/execution/change-impact.json",
+        "docs/beacon/v1.3.3/.machine/execution/config.json",
+        "docs/beacon/v1.3.3/.machine/execution/delivery-manifest.json",
+        "docs/beacon/v1.3.3/.machine/execution/git-alignment.json",
+        "docs/beacon/v1.3.3/.machine/execution/source.json",
+        "docs/beacon/v1.3.5/SUMMARY.md",
+        "docs/beacon/v1.3.5/execution/index.md",
+        "docs/beacon/v1.3.5/qa/test-cases/index.md",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/canonical-envelope.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/coverage-report.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/freeze.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/implementation-map.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/interaction-map.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/manifest.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/navigation-map.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/navigation-map.md",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/home.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/management-overview.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/project-detail.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/recovery-diagnostics.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/runtime-center.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/prototype-plan.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/prototype-review.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/prototype-review.md",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/route-closure-contract.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/source-map.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/state-flow-map.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/state-flow-map.md",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/wireframe-manifest.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/wireframe-summary.md",
+        "skills/beacon/beacon-help/SKILL.md",
+        "skills/beacon/beacon-status/SKILL.md",
+        "skills/beacon/using-beacon/SKILL.md",
+        "tests/test_v114_implement_command.py",
+        "tests/test_v131_cognitive_load_gates.py",
+        "tests/test_v135_prototype_projection_consistency.py",
+        ".beacon/evidence-manifest.json"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-20T15:05:24.607970+00:00",
+      "completed_at": "2026-04-20T15:09:30.215343+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-002",
+      "title": "FR-002 禁止静默部分提交",
+      "description": "当发生 sink 写入失败时，必须满足其一： 1. 全量回滚到提交前状态；或 2. 标记为失败事务并显式阻断 freeze/release。 不允许“部分成功但默认为可用”。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-001"
+      ],
+      "mapped_test_ids": [
+        "TC-001",
+        "TC-006",
+        "TC-011"
+      ],
+      "mapped_scenario_ids": [
+        "SC-001",
+        "SC-002",
+        "SC-003",
+        "SC-004",
+        "SC-005",
+        "SC-006",
+        "SC-007",
+        "SC-008",
+        "SC-009",
+        "SC-010",
+        "SC-011",
+        "SC-012",
+        "SC-013",
+        "SC-014",
+        "SC-015"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-001",
+        "TC-006",
+        "TC-011"
+      ],
+      "depends_on": [
+        "ITASK-001"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260420T150524Z-4d94",
+        ".beacon/auto-test-status.json",
+        "verify:run-20260420T150524Z-4d94-tester",
+        "run:run-20260420T150929Z-e370",
+        "verify:run-20260420T150929Z-e370-tester",
+        "verify:review.accept"
+      ],
+      "changed_files": [
+        ".omc/project-memory.json",
+        "beacon/commands/gate.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/prd.py",
+        "beacon/commands/release.py",
+        "beacon/commands/review.py",
+        "beacon/commands/status.py",
+        "beacon/utils/git_alignment.py",
+        "beacon/utils/implementation_plan.py",
+        "beacon/utils/prototype_utils.py",
+        "beacon/utils/requirement_clarity.py",
+        "beacon/utils/runtime_projection_store.py",
+        "beacon/utils/technical_review_contract.py",
+        "docs/beacon/v1.3.3/.machine/execution/change-impact.json",
+        "docs/beacon/v1.3.3/.machine/execution/config.json",
+        "docs/beacon/v1.3.3/.machine/execution/delivery-manifest.json",
+        "docs/beacon/v1.3.3/.machine/execution/git-alignment.json",
+        "docs/beacon/v1.3.3/.machine/execution/source.json",
+        "docs/beacon/v1.3.5/SUMMARY.md",
+        "docs/beacon/v1.3.5/execution/index.md",
+        "docs/beacon/v1.3.5/qa/test-cases/index.md",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/canonical-envelope.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/coverage-report.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/freeze.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/implementation-map.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/interaction-map.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/manifest.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/navigation-map.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/navigation-map.md",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/home.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/management-overview.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/project-detail.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/recovery-diagnostics.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/runtime-center.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/prototype-plan.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/prototype-review.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/prototype-review.md",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/route-closure-contract.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/source-map.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/state-flow-map.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/state-flow-map.md",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/wireframe-manifest.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/wireframe-summary.md",
+        "skills/beacon/beacon-help/SKILL.md",
+        "skills/beacon/beacon-status/SKILL.md",
+        "skills/beacon/using-beacon/SKILL.md",
+        "tests/test_v114_implement_command.py",
+        "tests/test_v131_cognitive_load_gates.py",
+        "tests/test_v135_prototype_projection_consistency.py",
+        ".beacon/evidence-manifest.json"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-20T15:05:24.662969+00:00",
+      "completed_at": "2026-04-20T15:09:30.215372+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-003",
+      "title": "FR-003 Runtime Projection 失败语义收敛",
+      "description": "runtime ledger 写入失败时必须： 标记 `status=failed_transaction`（或等价明确失败状态）； 记录失败原因与失败 sink； 不得伪装成“已一致”。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-003"
+      ],
+      "mapped_test_ids": [
+        "TC-003",
+        "TC-008",
+        "TC-013"
+      ],
+      "mapped_scenario_ids": [
+        "SC-031",
+        "SC-032",
+        "SC-033",
+        "SC-034",
+        "SC-035",
+        "SC-036",
+        "SC-037",
+        "SC-038",
+        "SC-039",
+        "SC-040",
+        "SC-041",
+        "SC-042",
+        "SC-043",
+        "SC-044",
+        "SC-045"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-003",
+        "TC-008",
+        "TC-013"
+      ],
+      "depends_on": [
+        "ITASK-002"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260420T150524Z-4d94",
+        ".beacon/auto-test-status.json",
+        "verify:run-20260420T150524Z-4d94-tester",
+        "run:run-20260420T150929Z-e370",
+        "verify:run-20260420T150929Z-e370-tester",
+        "verify:review.accept"
+      ],
+      "changed_files": [
+        ".omc/project-memory.json",
+        "beacon/commands/gate.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/prd.py",
+        "beacon/commands/release.py",
+        "beacon/commands/review.py",
+        "beacon/commands/status.py",
+        "beacon/utils/git_alignment.py",
+        "beacon/utils/implementation_plan.py",
+        "beacon/utils/prototype_utils.py",
+        "beacon/utils/requirement_clarity.py",
+        "beacon/utils/runtime_projection_store.py",
+        "beacon/utils/technical_review_contract.py",
+        "docs/beacon/v1.3.3/.machine/execution/change-impact.json",
+        "docs/beacon/v1.3.3/.machine/execution/config.json",
+        "docs/beacon/v1.3.3/.machine/execution/delivery-manifest.json",
+        "docs/beacon/v1.3.3/.machine/execution/git-alignment.json",
+        "docs/beacon/v1.3.3/.machine/execution/source.json",
+        "docs/beacon/v1.3.5/SUMMARY.md",
+        "docs/beacon/v1.3.5/execution/index.md",
+        "docs/beacon/v1.3.5/qa/test-cases/index.md",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/canonical-envelope.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/coverage-report.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/freeze.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/implementation-map.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/interaction-map.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/manifest.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/navigation-map.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/navigation-map.md",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/home.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/management-overview.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/project-detail.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/recovery-diagnostics.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/runtime-center.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/prototype-plan.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/prototype-review.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/prototype-review.md",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/route-closure-contract.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/source-map.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/state-flow-map.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/state-flow-map.md",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/wireframe-manifest.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/wireframe-summary.md",
+        "skills/beacon/beacon-help/SKILL.md",
+        "skills/beacon/beacon-status/SKILL.md",
+        "skills/beacon/using-beacon/SKILL.md",
+        "tests/test_v114_implement_command.py",
+        "tests/test_v131_cognitive_load_gates.py",
+        "tests/test_v135_prototype_projection_consistency.py",
+        ".beacon/evidence-manifest.json"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-20T15:05:24.662985+00:00",
+      "completed_at": "2026-04-20T15:09:30.215399+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-004",
+      "title": "FR-004 跨面一致性校验收敛到 gate/review/doctor",
+      "description": "`status/review/doctor/gate/release` 必须可读取统一事务状态，并判断： human/machine/sqlite 是否一致； 是否存在未闭合失败事务； 是否允许继续 freeze/release。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-004"
+      ],
+      "mapped_test_ids": [
+        "TC-004",
+        "TC-009"
+      ],
+      "mapped_scenario_ids": [
+        "SC-046",
+        "SC-047",
+        "SC-048",
+        "SC-049",
+        "SC-050",
+        "SC-051",
+        "SC-052",
+        "SC-053",
+        "SC-054",
+        "SC-055"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-004",
+        "TC-009"
+      ],
+      "depends_on": [
+        "ITASK-003"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260420T150524Z-4d94",
+        ".beacon/auto-test-status.json",
+        "verify:run-20260420T150524Z-4d94-tester",
+        "run:run-20260420T150929Z-e370",
+        "verify:run-20260420T150929Z-e370-tester",
+        "verify:review.accept"
+      ],
+      "changed_files": [
+        ".omc/project-memory.json",
+        "beacon/commands/gate.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/prd.py",
+        "beacon/commands/release.py",
+        "beacon/commands/review.py",
+        "beacon/commands/status.py",
+        "beacon/utils/git_alignment.py",
+        "beacon/utils/implementation_plan.py",
+        "beacon/utils/prototype_utils.py",
+        "beacon/utils/requirement_clarity.py",
+        "beacon/utils/runtime_projection_store.py",
+        "beacon/utils/technical_review_contract.py",
+        "docs/beacon/v1.3.3/.machine/execution/change-impact.json",
+        "docs/beacon/v1.3.3/.machine/execution/config.json",
+        "docs/beacon/v1.3.3/.machine/execution/delivery-manifest.json",
+        "docs/beacon/v1.3.3/.machine/execution/git-alignment.json",
+        "docs/beacon/v1.3.3/.machine/execution/source.json",
+        "docs/beacon/v1.3.5/SUMMARY.md",
+        "docs/beacon/v1.3.5/execution/index.md",
+        "docs/beacon/v1.3.5/qa/test-cases/index.md",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/canonical-envelope.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/coverage-report.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/freeze.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/implementation-map.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/interaction-map.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/manifest.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/navigation-map.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/navigation-map.md",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/home.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/management-overview.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/project-detail.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/recovery-diagnostics.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/runtime-center.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/prototype-plan.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/prototype-review.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/prototype-review.md",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/route-closure-contract.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/source-map.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/state-flow-map.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/state-flow-map.md",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/wireframe-manifest.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/wireframe-summary.md",
+        "skills/beacon/beacon-help/SKILL.md",
+        "skills/beacon/beacon-status/SKILL.md",
+        "skills/beacon/using-beacon/SKILL.md",
+        "tests/test_v114_implement_command.py",
+        "tests/test_v131_cognitive_load_gates.py",
+        "tests/test_v135_prototype_projection_consistency.py",
+        ".beacon/evidence-manifest.json"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-20T15:05:24.663001+00:00",
+      "completed_at": "2026-04-20T15:09:30.215425+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-005",
+      "title": "FR-005 `prd create` 增加 LLM 编译模式",
+      "description": "`prd create` 应支持： `mode=llm`（优先语义编译）； `mode=rule`（规则降级）； `mode=auto`（默认，按可用性决策）。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-005"
+      ],
+      "mapped_test_ids": [
+        "TC-005",
+        "TC-010"
+      ],
+      "mapped_scenario_ids": [
+        "SC-056",
+        "SC-057",
+        "SC-058",
+        "SC-059",
+        "SC-060",
+        "SC-061",
+        "SC-062",
+        "SC-063",
+        "SC-064",
+        "SC-065"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-005",
+        "TC-010"
+      ],
+      "depends_on": [
+        "ITASK-004"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260420T150524Z-4d94",
+        ".beacon/auto-test-status.json",
+        "verify:run-20260420T150524Z-4d94-tester",
+        "run:run-20260420T150929Z-e370",
+        "verify:run-20260420T150929Z-e370-tester",
+        "verify:review.accept"
+      ],
+      "changed_files": [
+        ".omc/project-memory.json",
+        "beacon/commands/gate.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/prd.py",
+        "beacon/commands/release.py",
+        "beacon/commands/review.py",
+        "beacon/commands/status.py",
+        "beacon/utils/git_alignment.py",
+        "beacon/utils/implementation_plan.py",
+        "beacon/utils/prototype_utils.py",
+        "beacon/utils/requirement_clarity.py",
+        "beacon/utils/runtime_projection_store.py",
+        "beacon/utils/technical_review_contract.py",
+        "docs/beacon/v1.3.3/.machine/execution/change-impact.json",
+        "docs/beacon/v1.3.3/.machine/execution/config.json",
+        "docs/beacon/v1.3.3/.machine/execution/delivery-manifest.json",
+        "docs/beacon/v1.3.3/.machine/execution/git-alignment.json",
+        "docs/beacon/v1.3.3/.machine/execution/source.json",
+        "docs/beacon/v1.3.5/SUMMARY.md",
+        "docs/beacon/v1.3.5/execution/index.md",
+        "docs/beacon/v1.3.5/qa/test-cases/index.md",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/canonical-envelope.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/coverage-report.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/freeze.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/implementation-map.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/interaction-map.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/manifest.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/navigation-map.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/navigation-map.md",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/home.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/management-overview.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/project-detail.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/recovery-diagnostics.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/runtime-center.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/prototype-plan.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/prototype-review.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/prototype-review.md",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/route-closure-contract.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/source-map.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/state-flow-map.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/state-flow-map.md",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/wireframe-manifest.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/wireframe-summary.md",
+        "skills/beacon/beacon-help/SKILL.md",
+        "skills/beacon/beacon-status/SKILL.md",
+        "skills/beacon/using-beacon/SKILL.md",
+        "tests/test_v114_implement_command.py",
+        "tests/test_v131_cognitive_load_gates.py",
+        "tests/test_v135_prototype_projection_consistency.py",
+        ".beacon/evidence-manifest.json"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-20T15:05:24.663017+00:00",
+      "completed_at": "2026-04-20T15:09:30.215450+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-006",
+      "title": "FR-006 模板约束与语义编译解耦",
+      "description": "PRD 生成流程必须拆为： 1. Schema/template contract（章节、字段、约束）； 2. LLM semantic compile（内容推理）； 3. Contract validation（硬校验）； 4. Projection（human + machine 落盘）。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-005"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260420T150524Z-4d94",
+        "run:run-20260420T150929Z-e370"
+      ],
+      "changed_files": [
+        ".omc/project-memory.json",
+        "beacon/commands/gate.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/prd.py",
+        "beacon/commands/release.py",
+        "beacon/commands/review.py",
+        "beacon/commands/status.py",
+        "beacon/utils/git_alignment.py",
+        "beacon/utils/implementation_plan.py",
+        "beacon/utils/prototype_utils.py",
+        "beacon/utils/requirement_clarity.py",
+        "beacon/utils/runtime_projection_store.py",
+        "beacon/utils/technical_review_contract.py",
+        "docs/beacon/v1.3.3/.machine/execution/change-impact.json",
+        "docs/beacon/v1.3.3/.machine/execution/config.json",
+        "docs/beacon/v1.3.3/.machine/execution/delivery-manifest.json",
+        "docs/beacon/v1.3.3/.machine/execution/git-alignment.json",
+        "docs/beacon/v1.3.3/.machine/execution/source.json",
+        "docs/beacon/v1.3.5/SUMMARY.md",
+        "docs/beacon/v1.3.5/execution/index.md",
+        "docs/beacon/v1.3.5/qa/test-cases/index.md",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/canonical-envelope.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/coverage-report.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/freeze.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/implementation-map.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/interaction-map.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/manifest.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/navigation-map.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/navigation-map.md",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/home.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/management-overview.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/project-detail.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/recovery-diagnostics.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/runtime-center.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/prototype-plan.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/prototype-review.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/prototype-review.md",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/route-closure-contract.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/source-map.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/state-flow-map.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/state-flow-map.md",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/wireframe-manifest.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/wireframe-summary.md",
+        "skills/beacon/beacon-help/SKILL.md",
+        "skills/beacon/beacon-status/SKILL.md",
+        "skills/beacon/using-beacon/SKILL.md",
+        "tests/test_v114_implement_command.py",
+        "tests/test_v131_cognitive_load_gates.py",
+        "tests/test_v135_prototype_projection_consistency.py",
+        ".beacon/evidence-manifest.json"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-20T15:05:24.663032+00:00",
+      "completed_at": "2026-04-20T15:09:30.215476+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-007",
+      "title": "FR-007 PRD 编译证据必须落 machine 面",
+      "description": "每次 PRD 生成都应写入 machine 证据，至少包含： generator_mode（llm/rule/auto）； model 或 fallback 标识； source_refs（global boundaries / version summary / existing PRDs / debug issues）； constraint_hits； open_questions； compile_hash。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-006"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260420T150524Z-4d94",
+        "run:run-20260420T150929Z-e370"
+      ],
+      "changed_files": [
+        ".omc/project-memory.json",
+        "beacon/commands/gate.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/prd.py",
+        "beacon/commands/release.py",
+        "beacon/commands/review.py",
+        "beacon/commands/status.py",
+        "beacon/utils/git_alignment.py",
+        "beacon/utils/implementation_plan.py",
+        "beacon/utils/prototype_utils.py",
+        "beacon/utils/requirement_clarity.py",
+        "beacon/utils/runtime_projection_store.py",
+        "beacon/utils/technical_review_contract.py",
+        "docs/beacon/v1.3.3/.machine/execution/change-impact.json",
+        "docs/beacon/v1.3.3/.machine/execution/config.json",
+        "docs/beacon/v1.3.3/.machine/execution/delivery-manifest.json",
+        "docs/beacon/v1.3.3/.machine/execution/git-alignment.json",
+        "docs/beacon/v1.3.3/.machine/execution/source.json",
+        "docs/beacon/v1.3.5/SUMMARY.md",
+        "docs/beacon/v1.3.5/execution/index.md",
+        "docs/beacon/v1.3.5/qa/test-cases/index.md",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/canonical-envelope.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/coverage-report.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/freeze.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/implementation-map.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/interaction-map.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/manifest.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/navigation-map.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/navigation-map.md",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/home.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/management-overview.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/project-detail.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/recovery-diagnostics.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/runtime-center.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/prototype-plan.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/prototype-review.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/prototype-review.md",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/route-closure-contract.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/source-map.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/state-flow-map.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/state-flow-map.md",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/wireframe-manifest.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/wireframe-summary.md",
+        "skills/beacon/beacon-help/SKILL.md",
+        "skills/beacon/beacon-status/SKILL.md",
+        "skills/beacon/using-beacon/SKILL.md",
+        "tests/test_v114_implement_command.py",
+        "tests/test_v131_cognitive_load_gates.py",
+        "tests/test_v135_prototype_projection_consistency.py",
+        ".beacon/evidence-manifest.json"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-20T15:05:24.663048+00:00",
+      "completed_at": "2026-04-20T15:09:30.215500+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-008",
+      "title": "FR-008 LLM 输出不达标必须阻断或降级可见",
+      "description": "当 LLM 输出未满足 contract： 必须自动重试或降级； 降级必须带显式 `fallback_reason`； freeze-ready 判定必须可识别该降级状态。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-007"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260420T150524Z-4d94",
+        "run:run-20260420T150929Z-e370"
+      ],
+      "changed_files": [
+        ".omc/project-memory.json",
+        "beacon/commands/gate.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/prd.py",
+        "beacon/commands/release.py",
+        "beacon/commands/review.py",
+        "beacon/commands/status.py",
+        "beacon/utils/git_alignment.py",
+        "beacon/utils/implementation_plan.py",
+        "beacon/utils/prototype_utils.py",
+        "beacon/utils/requirement_clarity.py",
+        "beacon/utils/runtime_projection_store.py",
+        "beacon/utils/technical_review_contract.py",
+        "docs/beacon/v1.3.3/.machine/execution/change-impact.json",
+        "docs/beacon/v1.3.3/.machine/execution/config.json",
+        "docs/beacon/v1.3.3/.machine/execution/delivery-manifest.json",
+        "docs/beacon/v1.3.3/.machine/execution/git-alignment.json",
+        "docs/beacon/v1.3.3/.machine/execution/source.json",
+        "docs/beacon/v1.3.5/SUMMARY.md",
+        "docs/beacon/v1.3.5/execution/index.md",
+        "docs/beacon/v1.3.5/qa/test-cases/index.md",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/canonical-envelope.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/coverage-report.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/freeze.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/implementation-map.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/interaction-map.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/manifest.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/navigation-map.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/navigation-map.md",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/home.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/management-overview.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/project-detail.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/recovery-diagnostics.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/runtime-center.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/prototype-plan.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/prototype-review.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/prototype-review.md",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/route-closure-contract.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/source-map.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/state-flow-map.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/state-flow-map.md",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/wireframe-manifest.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/wireframe-summary.md",
+        "skills/beacon/beacon-help/SKILL.md",
+        "skills/beacon/beacon-status/SKILL.md",
+        "skills/beacon/using-beacon/SKILL.md",
+        "tests/test_v114_implement_command.py",
+        "tests/test_v131_cognitive_load_gates.py",
+        "tests/test_v135_prototype_projection_consistency.py",
+        ".beacon/evidence-manifest.json"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-20T15:05:24.663063+00:00",
+      "completed_at": "2026-04-20T15:09:30.215525+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-009",
+      "title": "FR-009 并行 lane 输出格式统一",
+      "description": "`implement single/team/ralph` 的 requirement traceability 与 delivery summary 必须继续保持同形 contract，避免 lane 间语义漂移。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-008"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260420T150524Z-4d94",
+        "run:run-20260420T150929Z-e370"
+      ],
+      "changed_files": [
+        ".omc/project-memory.json",
+        "beacon/commands/gate.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/prd.py",
+        "beacon/commands/release.py",
+        "beacon/commands/review.py",
+        "beacon/commands/status.py",
+        "beacon/utils/git_alignment.py",
+        "beacon/utils/implementation_plan.py",
+        "beacon/utils/prototype_utils.py",
+        "beacon/utils/requirement_clarity.py",
+        "beacon/utils/runtime_projection_store.py",
+        "beacon/utils/technical_review_contract.py",
+        "docs/beacon/v1.3.3/.machine/execution/change-impact.json",
+        "docs/beacon/v1.3.3/.machine/execution/config.json",
+        "docs/beacon/v1.3.3/.machine/execution/delivery-manifest.json",
+        "docs/beacon/v1.3.3/.machine/execution/git-alignment.json",
+        "docs/beacon/v1.3.3/.machine/execution/source.json",
+        "docs/beacon/v1.3.5/SUMMARY.md",
+        "docs/beacon/v1.3.5/execution/index.md",
+        "docs/beacon/v1.3.5/qa/test-cases/index.md",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/canonical-envelope.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/coverage-report.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/freeze.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/implementation-map.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/interaction-map.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/manifest.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/navigation-map.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/navigation-map.md",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/home.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/management-overview.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/project-detail.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/recovery-diagnostics.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/runtime-center.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/prototype-plan.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/prototype-review.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/prototype-review.md",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/route-closure-contract.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/source-map.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/state-flow-map.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/state-flow-map.md",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/wireframe-manifest.json",
+        "docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/wireframe-summary.md",
+        "skills/beacon/beacon-help/SKILL.md",
+        "skills/beacon/beacon-status/SKILL.md",
+        "skills/beacon/using-beacon/SKILL.md",
+        "tests/test_v114_implement_command.py",
+        "tests/test_v131_cognitive_load_gates.py",
+        "tests/test_v135_prototype_projection_consistency.py",
+        ".beacon/evidence-manifest.json"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-20T15:05:24.663078+00:00",
+      "completed_at": "2026-04-20T15:09:30.215549+00:00",
+      "active_run_id": ""
+    }
+  ],
+  "team_mode": {
+    "preferred_surface": "implement-team",
+    "preferred_runner": "codex-subagents",
+    "plan_command": "beacon implement team-plan \"beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler\" --project-root . --version v1.3.5",
+    "run_command": "beacon implement team-run \"beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler\" --project . --version v1.3.5",
+    "dev_run_command": "beacon implement dev-run \"beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler\" --project . --version v1.3.5",
+    "qa_team_command": "beacon qa team-run \"beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler\" --project . --version v1.3.5",
+    "roles": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "context_isolation": {
+      "role_plane": "implementation",
+      "isolated_from": [
+        "qa-team"
+      ],
+      "shared_inputs": [
+        "docs",
+        "implementation_plan",
+        "evidence_refs"
+      ],
+      "shared_outputs": [
+        "implementation_summary",
+        "technical_archive",
+        "repair_handoff"
+      ],
+      "rule": "qa_must_not_inherit_implement_private_context",
+      "implement_surface": "implement-team",
+      "qa_surface": "qa-team"
+    },
+    "config_source": "beacon/team_roles/implement-team.json",
+    "execution_order": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "formal_writeback_roles": [
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "role_contracts": {
+      "planner": {
+        "purpose": "Compile execution-ready task scope from the frozen revision baseline.",
+        "writes_to_formal_truth": false,
+        "outputs": [
+          "execution_plan_note"
+        ]
+      },
+      "implementation-architect": {
+        "purpose": "Translate frozen requirement truth into implementation-safe module boundaries and service ownership guidance.",
+        "writes_to_formal_truth": false,
+        "reads": [
+          "docs/beacon/<version>/user-story",
+          "docs/beacon/<version>/prd",
+          "docs/beacon/<version>/qa/test-cases",
+          "docs/beacon/<version>/execution/architecture-blueprint.md",
+          "implementation_plan",
+          "git_workflow_contract"
+        ],
+        "outputs": [
+          "implementation_architecture_note"
+        ],
+        "restrictions": [
+          "must_not_modify_frozen_requirement_materials",
+          "must_not_overwrite_architecture_blueprint"
+        ]
+      },
+      "implementer": {
+        "purpose": "Write code inside the frozen scope and the implementation architecture note.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "story_writeback",
+          "implementation_summary"
+        ]
+      },
+      "reviewer": {
+        "purpose": "Review implementation/spec drift and architecture-boundary drift.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_spec"
+        ]
+      },
+      "tester": {
+        "purpose": "Check implementation evidence and verification readiness before acceptance.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_quality"
+        ]
+      }
+    }
+  },
+  "git_workflow": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler",
+    "feature_slug": "beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler",
+    "version": "v1.3.5",
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.3.5",
+    "branch_prefix": "beacon/",
+    "base_branch": "main",
+    "use_git_worktree": false,
+    "require_clean_worktree_for_switch": true,
+    "service_directories": [
+      "."
+    ],
+    "direct_delivery_services": [
+      "."
+    ],
+    "git_roots": [
+      "."
+    ],
+    "worktree_root": ".",
+    "implementation_preflight": [
+      "Before implementation, verify the target service belongs to: .",
+      "Before implementation, verify the current branch is beacon/v1.3.5.",
+      "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+    ],
+    "source": "technical_review_contract",
+    "generated_at": "2026-04-20T15:05:16.344790+00:00"
+  },
+  "git_workflow_ref": "docs/beacon/v1.3.5/.machine/execution/git-workflow-beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.json",
+  "git_workflow_markdown_ref": "docs/beacon/v1.3.5/execution/git-workflow-beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.md",
+  "generated_at": "2026-04-20T15:05:16.345484+00:00",
+  "updated_at": "2026-04-20T15:16:09.284867+00:00",
+  "accepted_at": "2026-04-20T15:16:09.284851+00:00",
+  "accepted_by": "codex"
+}

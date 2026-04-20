@@ -83,6 +83,20 @@ def _render_human(payload: dict[str, object]) -> str:
         f"- why     : {next_step.get('reason', '')}",
         f"- command : {next_step.get('command', '')}",
     ])
+    change_loop = payload.get("change_loop", {}) if isinstance(payload.get("change_loop"), dict) else {}
+    if change_loop.get("intent") or bool(change_loop.get("recommended")):
+        lines.extend(
+            [
+                "",
+                "change loop",
+                f"- intent      : {change_loop.get('intent', '')}",
+                f"- recommended : {change_loop.get('recommended', False)}",
+                f"- route       : {change_loop.get('route', '')}",
+            ]
+        )
+        ladder = change_loop.get("ladder", []) if isinstance(change_loop.get("ladder"), list) else []
+        if ladder:
+            lines.append(f"- ladder      : {' -> '.join(str(item) for item in ladder)}")
     discovery = payload.get("skill_discovery_hint", {}) if isinstance(payload.get("skill_discovery_hint"), dict) else {}
     if not discovery:
         discovery = payload.get("skill_discovery", {}) if isinstance(payload.get("skill_discovery"), dict) else {}
@@ -105,7 +119,7 @@ def _render_human(payload: dict[str, object]) -> str:
 
 
 
-def _help_impl(project_root: str, version: str, feature: str, run_id: str, json_output: bool) -> int:
+def _help_impl(project_root: str, version: str, feature: str, run_id: str, change_intent: str, json_output: bool) -> int:
     root = Path(project_root) if project_root else Path.cwd()
     target_feature = feature.strip()
     if not target_feature:
@@ -118,7 +132,13 @@ def _help_impl(project_root: str, version: str, feature: str, run_id: str, json_
             else:
                 typer.echo(f"Beacon help blocked: {exc}", err=True)
             return 2
-    payload = build_help_payload(root, version=version, feature=target_feature, run_id=run_id or None)
+    payload = build_help_payload(
+        root,
+        version=version,
+        feature=target_feature,
+        run_id=run_id or None,
+        change_intent=change_intent or None,
+    )
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
     else:
@@ -133,11 +153,12 @@ def help_entry(
     version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
     feature: str = typer.Option("", "--feature", "-f", help="Feature name"),
     run_id: str = typer.Option("", "--run-id", help="Run id filter"),
+    change_intent: str = typer.Option("", "--change-intent", help="Optional user change-intent text for post-freeze routing"),
     json_output: bool = typer.Option(False, "--json", help="Emit JSON payload"),
 ):
     """Show stage-aware next-step guidance."""
     if ctx.invoked_subcommand is None:
-        raise typer.Exit(code=_help_impl(project_root, version, feature, run_id, json_output))
+        raise typer.Exit(code=_help_impl(project_root, version, feature, run_id, change_intent, json_output))
 
 
 @app.command("show")
@@ -146,7 +167,8 @@ def show(
     version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
     feature: str = typer.Option("", "--feature", "-f", help="Feature name"),
     run_id: str = typer.Option("", "--run-id", help="Run id filter"),
+    change_intent: str = typer.Option("", "--change-intent", help="Optional user change-intent text for post-freeze routing"),
     json_output: bool = typer.Option(False, "--json", help="Emit JSON payload"),
 ):
     """Alias of main help output."""
-    raise typer.Exit(code=_help_impl(project_root, version, feature, run_id, json_output))
+    raise typer.Exit(code=_help_impl(project_root, version, feature, run_id, change_intent, json_output))

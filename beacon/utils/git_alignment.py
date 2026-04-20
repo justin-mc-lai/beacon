@@ -141,8 +141,10 @@ def build_implement_branch_guard_payload(
     branch_prefix: str = "beacon/",
     base_branch: str = "main",
     git_roots: list[str] | None = None,
+    direct_delivery_services: list[str] | None = None,
 ) -> dict[str, Any]:
     roots = [str(item).strip() for item in (git_roots or []) if str(item).strip()]
+    delivery_services = [str(item).strip() for item in (direct_delivery_services or []) if str(item).strip()]
     if roots:
         alignments = []
         any_repo_detected = False
@@ -164,6 +166,10 @@ def build_implement_branch_guard_payload(
             blocked = blocked or bool(alignment.get("blocked"))
             repo_dirty = git_has_dirty_worktree(repo_root) if alignment.get("repo_detected") else False
             dirty_worktree = dirty_worktree or repo_dirty
+            if repo_dirty and require_clean_worktree_for_switch and not alignment.get("branch_matches_target"):
+                alignment["reason_codes"] = list(
+                    dict.fromkeys([*alignment.get("reason_codes", []), "implement_branch_switch_dirty_worktree"])
+                )
             alignments.append(
                 {
                     "repo_root": str(repo_root),
@@ -179,14 +185,54 @@ def build_implement_branch_guard_payload(
         reason_codes: list[str] = []
         for item in alignments:
             reason_codes.extend(list(item.get("reason_codes", [])))
-        summary = (
-            f"implement branch preflight passed on workspace branch {target_branch}"
-            if not blocked
-            else f"implement branch preflight blocked: expected {target_branch}, workspace repos not aligned"
-        )
-        recommended_command = ""
+        unresolved_services = [item for item in delivery_services if item not in roots]
+        if unresolved_services:
+            blocked = True
+            reason_codes.append("implement_direct_delivery_service_scope_unresolved")
+        blocking_repos = [
+            item
+            for item in alignments
+            if item.get("blocked") or (item.get("dirty_worktree") and not item.get("branch_matches_target"))
+        ]
+        recommended_commands: list[str] = []
         if blocked and target_branch:
-            recommended_command = f"git -C <service-root> switch {target_branch}"
+            for item in blocking_repos:
+                repo_label = str(item.get("relative_root", "") or "")
+                if item.get("dirty_worktree") and require_clean_worktree_for_switch and not item.get("branch_matches_target"):
+                    recommended_commands.append(
+                        f"git -C {repo_label} stash push -u && git -C {repo_label} switch {target_branch}"
+                    )
+                elif repo_label:
+                    recommended_commands.append(f"git -C {repo_label} switch {target_branch}")
+            for item in unresolved_services:
+                recommended_commands.append(
+                    f"update git_workflow.service_directories to include {item} before implementation"
+                )
+        summary = f"implement branch preflight passed on workspace branch {target_branch}"
+        if blocked:
+            dirty_repos = [
+                str(item.get("relative_root", "") or "")
+                for item in blocking_repos
+                if item.get("dirty_worktree") and not item.get("branch_matches_target")
+            ]
+            if unresolved_services:
+                summary = (
+                    "implement branch preflight blocked: direct delivery service scope unresolved for "
+                    + ", ".join(unresolved_services)
+                )
+            elif dirty_repos:
+                summary = (
+                    f"implement branch preflight blocked: expected {target_branch}, dirty worktree blocks switch in "
+                    + ", ".join(dirty_repos)
+                )
+            else:
+                summary = f"implement branch preflight blocked: expected {target_branch}, workspace repos not aligned"
+        service_scope = {
+            "status": "blocked" if unresolved_services else "pass",
+            "direct_delivery_services": delivery_services or list(roots),
+            "verified_roots": list(roots),
+            "unresolved_services": unresolved_services,
+        }
         return {
             "schema_version": "1.0",
             "status": "blocked" if blocked else "pass",
@@ -199,7 +245,10 @@ def build_implement_branch_guard_payload(
             "branch_exists": branch_exists,
             "dirty_worktree": dirty_worktree,
             "require_clean_worktree_for_switch": require_clean_worktree_for_switch,
-            "recommended_command": recommended_command,
+            "recommended_command": recommended_commands[0] if recommended_commands else "",
+            "recommended_commands": recommended_commands,
+            "direct_delivery_services": service_scope["direct_delivery_services"],
+            "service_scope": service_scope,
             "reason_codes": list(dict.fromkeys(reason_codes)),
             "git_alignment": {
                 "mode": "workspace",
@@ -226,32 +275,49 @@ def build_implement_branch_guard_payload(
     current_branch = str(alignment.get("current_branch", "") or "")
     branch_exists = git_branch_exists(project_root, expected_branch) if expected_branch else False
     dirty_worktree = git_has_dirty_worktree(project_root) if alignment.get("repo_detected") else False
+    if dirty_worktree and require_clean_worktree_for_switch and current_branch != expected_branch:
+        alignment["reason_codes"] = list(dict.fromkeys([*alignment.get("reason_codes", []), "implement_branch_switch_dirty_worktree"]))
+    unresolved_services = [item for item in delivery_services if item not in {"."}]
+    if unresolved_services:
+        alignment["reason_codes"] = list(
+            dict.fromkeys([*alignment.get("reason_codes", []), "implement_direct_delivery_service_scope_unresolved"])
+        )
+    blocked = bool(alignment.get("blocked")) or bool(unresolved_services)
 
     if not alignment.get("repo_detected"):
         summary = "implement branch preflight blocked: git repository not detected"
-        recommended_command = ""
+        recommended_commands: list[str] = []
     elif alignment.get("detached_head"):
         summary = "implement branch preflight blocked: detached HEAD is not allowed for implement"
-        recommended_command = f"git switch {expected_branch}" if expected_branch else ""
+        recommended_commands = [f"git switch {expected_branch}"] if expected_branch else []
     elif current_branch != expected_branch:
-        summary = f"implement branch preflight blocked: expected {expected_branch}, current {current_branch or 'unknown'}"
-        recommended_command = (
-            f"git switch {expected_branch}"
-            if branch_exists
-            else f"git switch -c {expected_branch}"
-        )
+        if dirty_worktree and require_clean_worktree_for_switch:
+            summary = (
+                f"implement branch preflight blocked: expected {expected_branch}, dirty worktree blocks switch from "
+                f"{current_branch or 'unknown'}"
+            )
+            switch_command = (
+                f"git switch {expected_branch}"
+                if branch_exists
+                else f"git switch -c {expected_branch}"
+            )
+            recommended_commands = [f"git stash push -u && {switch_command}"]
+        else:
+            summary = f"implement branch preflight blocked: expected {expected_branch}, current {current_branch or 'unknown'}"
+            recommended_commands = [
+                f"git switch {expected_branch}"
+                if branch_exists
+                else f"git switch -c {expected_branch}"
+            ]
     else:
         summary = f"implement branch preflight passed on {expected_branch}"
-        recommended_command = ""
-
-    if dirty_worktree and require_clean_worktree_for_switch and current_branch != expected_branch:
-        alignment["reason_codes"] = list(dict.fromkeys([*alignment.get("reason_codes", []), "implement_branch_switch_dirty_worktree"]))
+        recommended_commands = []
 
     return {
         "schema_version": "1.0",
-        "status": "blocked" if alignment.get("blocked") else "pass",
+        "status": "blocked" if blocked else "pass",
         "summary": summary,
-        "blocked": bool(alignment.get("blocked")),
+        "blocked": blocked,
         "version": version,
         "expected_branch": expected_branch,
         "current_branch": current_branch,
@@ -259,7 +325,15 @@ def build_implement_branch_guard_payload(
         "branch_exists": branch_exists,
         "dirty_worktree": dirty_worktree,
         "require_clean_worktree_for_switch": require_clean_worktree_for_switch,
-        "recommended_command": recommended_command,
+        "recommended_command": recommended_commands[0] if recommended_commands else "",
+        "recommended_commands": recommended_commands,
+        "direct_delivery_services": delivery_services or ["."],
+        "service_scope": {
+            "status": "blocked" if unresolved_services else "pass",
+            "direct_delivery_services": delivery_services or ["."],
+            "verified_roots": ["."],
+            "unresolved_services": unresolved_services,
+        },
         "reason_codes": alignment.get("reason_codes", []),
         "git_alignment": alignment,
     }
