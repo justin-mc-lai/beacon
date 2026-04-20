@@ -1,60 +1,79 @@
 {
   "page_id": "recovery-diagnostics",
-  "intent": "Recovery Diagnostics reference page",
-  "layout_type": "admin-workbench",
+  "name": "恢复诊断",
+  "priority": "P2",
+  "platforms": [
+    "Web",
+    "PC"
+  ],
+  "responsibility": "解释 degraded / rebuild / doctor，明确 truth 仍来自 docs/beacon 与 .beacon。",
   "sections": [
-    "portfolio-overview",
-    "project-detail",
-    "runtime-center",
-    "recovery-diagnostics"
+    "truth 来源说明",
+    "degraded / rebuild / doctor 诊断卡",
+    "恢复步骤",
+    "风险提示"
   ],
-  "components": [
-    "header",
-    "content",
-    "primary-cta"
-  ],
-  "primary_cta": "查看项目详情",
-  "secondary_ctas": [
-    "打开运行态"
+  "actions": [
+    {
+      "label": "返回项目详情",
+      "target": "project-detail",
+      "trigger": "点击返回"
+    },
+    {
+      "label": "前往运行中心",
+      "target": "runtime-center",
+      "trigger": "点击运行态关联"
+    }
   ],
   "states": [
-    "healthy-summary",
-    "requirement-incomplete",
-    "implement-running",
-    "qa-running",
-    "release-ready",
-    "team-active",
-    "ralph-active",
-    "blocked",
-    "db-offline",
-    "partial-rebuild"
+    {
+      "id": "healthy-warning",
+      "label": "健康但预警",
+      "description": "当前系统可用但存在恢复风险提示。"
+    },
+    {
+      "id": "degraded",
+      "label": "降级",
+      "description": "SQLite 或 PocketBase 缺失，但 truth 仍可从文档恢复。"
+    },
+    {
+      "id": "rebuild-suggested",
+      "label": "建议重建",
+      "description": "投影层需要重建。"
+    },
+    {
+      "id": "doctor-suggested",
+      "label": "建议 doctor",
+      "description": "推荐执行 doctor 修复上下文。"
+    },
+    {
+      "id": "loading",
+      "label": "加载中",
+      "description": "诊断结果仍在采集。"
+    },
+    {
+      "id": "error",
+      "label": "错误",
+      "description": "诊断页本身无法完成聚合。"
+    }
   ],
-  "route_targets": [
-    "project-detail",
-    "runtime-center",
-    "recovery-diagnostics",
-    "portfolio-overview"
-  ],
-  "truth_notes": [
-    "compiled_from:docs/beacon/v1.3.4/user-story/beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane.md"
-  ],
-  "baseline_guardrails": [
-    "omc omx explicitly excluded from managed runtime scope",
-    "projection not truth wording",
-    "rebuild from docs/beacon and .beacon path",
-    "sqlite and pocketbase degraded mode explanation"
-  ],
-  "content_model": {
-    "variant": "reference",
-    "headline": "Recovery Diagnostics",
-    "subheadline": "Recovery Diagnostics reference page",
-    "primary_cta": "查看项目详情",
-    "secondary_cta": "打开运行态",
-    "baseline_guardrails": [
-      "omc omx explicitly excluded from managed runtime scope",
-      "projection not truth wording",
-      "rebuild from docs/beacon and .beacon path",
-      "sqlite and pocketbase degraded mode explanation"
+  "requirement_refs": {
+    "user-story": [
+      "docs/beacon/v1.3.4/user-story/beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane.md"
+    ],
+    "prd": [
+      "docs/beacon/v1.3.4/prd/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md"
+    ],
+    "test-case": [
+      "docs/beacon/v1.3.4/qa/test-cases/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md"
     ]
-  }
+  },
+  "outbound_transitions": [
+    {
+      "from": "recovery-diagnostics",
+      "to": "project-detail",
+      "trigger": "点击返回",
+      "type": "return"
+    }
+  ]
 }

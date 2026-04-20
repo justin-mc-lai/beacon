@@ -1,60 +1,80 @@
 {
   "page_id": "runtime-center",
-  "intent": "Runtime Center reference page",
-  "layout_type": "admin-workbench",
+  "name": "运行中心",
+  "priority": "P1",
+  "platforms": [
+    "Web",
+    "PC"
+  ],
+  "responsibility": "只在这里下钻 single / team / ralph 的 runtime 细节和有限 session metadata。",
   "sections": [
-    "portfolio-overview",
-    "project-detail",
-    "runtime-center",
-    "recovery-diagnostics"
+    "运行态摘要头部",
+    "single / team / ralph 模式切换",
+    "agent/session 引用",
+    "artifact 与 linked run",
+    "最近结果与 blocker"
   ],
-  "components": [
-    "header",
-    "content",
-    "primary-cta"
-  ],
-  "primary_cta": "查看项目详情",
-  "secondary_ctas": [
-    "打开运行态"
+  "actions": [
+    {
+      "label": "返回项目详情",
+      "target": "project-detail",
+      "trigger": "点击返回"
+    },
+    {
+      "label": "返回管理总览",
+      "target": "management-overview",
+      "trigger": "点击面包屑"
+    }
   ],
   "states": [
-    "healthy-summary",
-    "requirement-incomplete",
-    "implement-running",
-    "qa-running",
-    "release-ready",
-    "team-active",
-    "ralph-active",
-    "blocked",
-    "db-offline",
-    "partial-rebuild"
+    {
+      "id": "single-active",
+      "label": "Single 运行",
+      "description": "展示单进程执行摘要和 linked run。"
+    },
+    {
+      "id": "team-active",
+      "label": "Team 运行",
+      "description": "展示 agent 数、角色、状态和 host session metadata。"
+    },
+    {
+      "id": "ralph-active",
+      "label": "Ralph 闭环",
+      "description": "展示 round_count、failure_streak、next_action、blocker。"
+    },
+    {
+      "id": "idle",
+      "label": "无活跃运行",
+      "description": "当前没有任何 active runtime。"
+    },
+    {
+      "id": "loading",
+      "label": "加载中",
+      "description": "运行态数据仍在读取。"
+    },
+    {
+      "id": "error",
+      "label": "错误",
+      "description": "运行态投影异常，需要回到诊断页。"
+    }
   ],
-  "route_targets": [
-    "project-detail",
-    "runtime-center",
-    "recovery-diagnostics",
-    "portfolio-overview"
-  ],
-  "truth_notes": [
-    "compiled_from:docs/beacon/v1.3.4/user-story/beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane.md"
-  ],
-  "baseline_guardrails": [
-    "active agent count and role status for team",
-    "host session refs without full transcript disclosure",
-    "round count and next action for ralph",
-    "single team ralph mode separation"
-  ],
-  "content_model": {
-    "variant": "reference",
-    "headline": "Runtime Center",
-    "subheadline": "Runtime Center reference page",
-    "primary_cta": "查看项目详情",
-    "secondary_cta": "打开运行态",
-    "baseline_guardrails": [
-      "active agent count and role status for team",
-      "host session refs without full transcript disclosure",
-      "round count and next action for ralph",
-      "single team ralph mode separation"
+  "requirement_refs": {
+    "user-story": [
+      "docs/beacon/v1.3.4/user-story/beacon-v1-3-4-global-runtime-projection-and-pocketbase-control-plane.md"
+    ],
+    "prd": [
+      "docs/beacon/v1.3.4/prd/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md"
+    ],
+    "test-case": [
+      "docs/beacon/v1.3.4/qa/test-cases/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.md"
     ]
-  }
+  },
+  "outbound_transitions": [
+    {
+      "from": "runtime-center",
+      "to": "project-detail",
+      "trigger": "点击返回",
+      "type": "return"
+    }
+  ]
 }

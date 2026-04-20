@@ -1,0 +1,81 @@
+{
+  "page_id": "management-overview",
+  "name": "管理总览",
+  "priority": "P0",
+  "platforms": [
+    "Web",
+    "PC"
+  ],
+  "responsibility": "提供多项目密集管理视图，稳定扫描版本、阶段、进度、健康态和下一步。",
+  "sections": [
+    "筛选与排序条",
+    "项目注册表",
+    "阶段分布摘要",
+    "风险与调试摘要",
+    "推荐 skill 区"
+  ],
+  "actions": [
+    {
+      "label": "进入项目详情",
+      "target": "project-detail",
+      "trigger": "点击项目行或卡片"
+    },
+    {
+      "label": "返回首页",
+      "target": "home",
+      "trigger": "点击首页导航"
+    }
+  ],
+  "states": [
+    {
+      "id": "ready",
+      "label": "多项目已加载",
+      "description": "密集展示多项目当前状态。"
+    },
+    {
+      "id": "filtered",
+      "label": "已筛选",
+      "description": "按阶段、版本、健康态筛选项目。"
+    },
+    {
+      "id": "empty",
+      "label": "无项目",
+      "description": "没有任何受管项目进入注册表。"
+    },
+    {
+      "id": "loading",
+      "label": "加载中",
+      "description": "项目注册表正在聚合。"
+    },
+    {
+      "id": "error",
+      "label": "错误",
+      "description": "总览聚合失败但保留恢复提示。"
+    }
+  ],
+  "requirement_refs": {
+    "user-story": [
+      "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+    ],
+    "prd": [
+      "docs/beacon/v1.3.6/prd/beacon-v1-3-6-visual-management-console-and-material-viewer.md"
+    ],
+    "test-case": [
+      "docs/beacon/v1.3.6/qa/test-cases/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+    ]
+  },
+  "outbound_transitions": [
+    {
+      "from": "management-overview",
+      "to": "project-detail",
+      "trigger": "点击项目行/卡片",
+      "type": "primary"
+    },
+    {
+      "from": "management-overview",
+      "to": "home",
+      "trigger": "点击首页导航",
+      "type": "return"
+    }
+  ]
+}

@@ -1,55 +1,153 @@
 {
+  "states": [
+    "blocked",
+    "degraded",
+    "doctor-suggested",
+    "draft",
+    "empty",
+    "error",
+    "filtered",
+    "frozen",
+    "healthy-warning",
+    "idle",
+    "intervention-needed",
+    "loading",
+    "ralph-active",
+    "ready",
+    "rebuild-suggested",
+    "requirement-missing",
+    "runtime-active",
+    "single-active",
+    "team-active"
+  ],
   "ctas": [
     {
-      "label": "查看项目详情",
-      "kind": "primary"
+      "page_id": "home",
+      "label": "查看管理总览",
+      "target": "management-overview",
+      "trigger": "点击项目组合入口"
     },
     {
-      "label": "打开运行态",
-      "kind": "secondary"
+      "page_id": "home",
+      "label": "进入重点项目",
+      "target": "project-detail",
+      "trigger": "点击重点项目卡片"
+    },
+    {
+      "page_id": "management-overview",
+      "label": "进入项目详情",
+      "target": "project-detail",
+      "trigger": "点击项目行或卡片"
+    },
+    {
+      "page_id": "management-overview",
+      "label": "返回首页",
+      "target": "home",
+      "trigger": "点击首页导航"
+    },
+    {
+      "page_id": "project-detail",
+      "label": "查看运行中心",
+      "target": "runtime-center",
+      "trigger": "点击运行态摘要"
+    },
+    {
+      "page_id": "project-detail",
+      "label": "查看恢复诊断",
+      "target": "recovery-diagnostics",
+      "trigger": "点击恢复诊断入口"
+    },
+    {
+      "page_id": "project-detail",
+      "label": "查看项目物料",
+      "target": "material-viewer",
+      "trigger": "点击文档查看入口"
+    },
+    {
+      "page_id": "project-detail",
+      "label": "返回管理总览",
+      "target": "management-overview",
+      "trigger": "点击返回"
+    },
+    {
+      "page_id": "runtime-center",
+      "label": "返回项目详情",
+      "target": "project-detail",
+      "trigger": "点击返回"
+    },
+    {
+      "page_id": "runtime-center",
+      "label": "返回管理总览",
+      "target": "management-overview",
+      "trigger": "点击面包屑"
+    },
+    {
+      "page_id": "recovery-diagnostics",
+      "label": "返回项目详情",
+      "target": "project-detail",
+      "trigger": "点击返回"
+    },
+    {
+      "page_id": "recovery-diagnostics",
+      "label": "前往运行中心",
+      "target": "runtime-center",
+      "trigger": "点击运行态关联"
     }
-  ],
-  "states": [
-    "healthy-summary",
-    "requirement-incomplete",
-    "implement-running",
-    "qa-running",
-    "release-ready",
-    "team-active",
-    "ralph-active",
-    "blocked",
-    "db-offline",
-    "partial-rebuild"
   ],
   "jump_map": [
     {
-      "from": "portfolio-overview",
+      "from": "home",
+      "to": "management-overview",
+      "trigger": "点击项目组合入口",
+      "type": "primary"
+    },
+    {
+      "from": "home",
       "to": "project-detail",
-      "why": "drill into selected project version, parallel PRDs, and lifecycle progress"
+      "trigger": "点击重点项目卡片",
+      "type": "primary"
+    },
+    {
+      "from": "management-overview",
+      "to": "project-detail",
+      "trigger": "点击项目行/卡片",
+      "type": "primary"
+    },
+    {
+      "from": "management-overview",
+      "to": "home",
+      "trigger": "点击首页导航",
+      "type": "return"
     },
     {
       "from": "project-detail",
       "to": "runtime-center",
-      "why": "inspect single/team/ralph active runs and agent/session refs"
+      "trigger": "点击运行态摘要",
+      "type": "drill-down"
+    },
+    {
+      "from": "project-detail",
+      "to": "recovery-diagnostics",
+      "trigger": "点击恢复诊断入口",
+      "type": "drill-down"
+    },
+    {
+      "from": "project-detail",
+      "to": "management-overview",
+      "trigger": "点击返回",
+      "type": "return"
     },
     {
       "from": "runtime-center",
-      "to": "recovery-diagnostics",
-      "why": "inspect stale runs, sqlite unavailable state, and rebuild readiness"
+      "to": "project-detail",
+      "trigger": "点击返回",
+      "type": "return"
     },
     {
       "from": "recovery-diagnostics",
-      "to": "portfolio-overview",
-      "why": "return to cross-project summary after diagnosis"
-    }
-  ],
-  "modal_map": [],
-  "drawer_map": [],
-  "tab_map": [],
-  "form_actions": [
-    {
-      "label": "查看项目详情",
-      "action": "project-detail"
+      "to": "project-detail",
+      "trigger": "点击返回",
+      "type": "return"
     }
   ]
 }

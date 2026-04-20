@@ -1,46 +1,11 @@
 {
-  "feature": "beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane",
-  "version": "v1.3.4",
-  "prototype_archetype": "admin-workbench",
-  "target_user": "one-person-company CEO and project owner",
-  "primary_flow": {
-    "entry": "portfolio-overview",
-    "exit": "project-detail",
-    "jumps": [
-      {
-        "from": "portfolio-overview",
-        "to": "project-detail",
-        "why": "drill into selected project version, parallel PRDs, and lifecycle progress"
-      },
-      {
-        "from": "project-detail",
-        "to": "runtime-center",
-        "why": "inspect single/team/ralph active runs and agent/session refs"
-      },
-      {
-        "from": "runtime-center",
-        "to": "recovery-diagnostics",
-        "why": "inspect stale runs, sqlite unavailable state, and rebuild readiness"
-      },
-      {
-        "from": "recovery-diagnostics",
-        "to": "portfolio-overview",
-        "why": "return to cross-project summary after diagnosis"
-      }
-    ]
+  "prototype_mode": "wireframe",
+  "theme": {
+    "ui_kit": "wireframe-markdown-v1",
+    "prototype_archetype": "admin-workbench",
+    "primary": "#1F6FEB",
+    "secondary": "#0F172A",
+    "surface_note": "Wireframe freeze uses markdown and metadata only, not high-fidelity HTML surfaces."
   },
-  "primary_cta": "查看项目详情",
-  "design_intent": {
-    "theme_mood": "disciplined",
-    "brand_keywords": [
-      "lifecycle-first",
-      "delivery-truth",
-      "calm-ops",
-      "sober-control"
-    ],
-    "surface_style": "calm-ops board with lifecycle-first information hierarchy"
-  },
-  "design_governance_required": true,
-  "prototype_mode": "reference-pack-v2",
-  "coverage_mode": "all-existing-routes"
+  "page_count": 5
 }

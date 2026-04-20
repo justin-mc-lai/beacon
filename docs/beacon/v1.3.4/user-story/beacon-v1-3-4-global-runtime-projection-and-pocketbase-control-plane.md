@@ -19,11 +19,9 @@
 ## Prototype Contract
 
 ui_visualization_required: true
-design_governance_required: true
-interactive_prototype_required: true
-design_generation_mode: description-as-design
-prototype_mode: reference-pack-v2
-coverage_mode: all-existing-routes
+prototype_mode: wireframe
+prototype_freeze_required: true
+coverage_mode: requirement-page-freeze
 prototype_archetype: admin-workbench
 theme_mood: disciplined
 theme_primary: #1F6FEB
@@ -31,47 +29,65 @@ theme_secondary: #0F172A
 surface_style: calm-ops board with lifecycle-first information hierarchy
 target_user: one-person-company CEO and project owner
 brand_keywords: lifecycle-first, delivery-truth, calm-ops, sober-control
-sections: portfolio-overview, project-detail, runtime-center, recovery-diagnostics
-navigation: overview, projects, runtime, diagnostics
-primary_entry: portfolio-overview
+sections: home, management-overview, project-detail, runtime-center, recovery-diagnostics, material-viewer
+navigation: home, management-overview, project-detail, runtime-center, material-viewer
+primary_entry: home
 primary_exit: project-detail
 primary_cta: 查看项目详情
 secondary_cta: 打开运行态
-jump_map: portfolio-overview->project-detail: drill into selected project version, parallel PRDs, and lifecycle progress; project-detail->runtime-center: inspect single/team/ralph active runs and agent/session refs; runtime-center->recovery-diagnostics: inspect stale runs, sqlite unavailable state, and rebuild readiness; recovery-diagnostics->portfolio-overview: return to cross-project summary after diagnosis
-states: healthy-summary, requirement-incomplete, implement-running, qa-running, release-ready, team-active, ralph-active, blocked, db-offline, partial-rebuild
+jump_map: home->management-overview: drill into project portfolio summary; management-overview->project-detail: inspect selected project version, parallel PRDs, and lifecycle progress; project-detail->runtime-center: inspect single/team/ralph active runs and agent/session refs; project-detail->material-viewer: open requirement materials by version and type; runtime-center->recovery-diagnostics: inspect stale runs, sqlite unavailable state, and rebuild readiness; recovery-diagnostics->management-overview: return to cross-project summary after diagnosis
+states: ready, blocked, intervention-needed, requirement-missing, draft, frozen, runtime-active, single-active, team-active, ralph-active, degraded, rebuild-suggested, doctor-suggested, document-open, source-missing, loading, empty, error
 required_pages:
-  - portfolio-overview
+  - home
+  - management-overview
   - project-detail
   - runtime-center
   - recovery-diagnostics
+  - material-viewer
+  - material-document-detail
 required_states:
-  - healthy-summary
-  - requirement-incomplete
-  - implement-running
-  - qa-running
-  - release-ready
+  - ready
+  - requirement-missing
+  - draft
+  - frozen
+  - runtime-active
+  - single-active
   - team-active
   - ralph-active
   - blocked
-  - db-offline
-  - partial-rebuild
+  - degraded
+  - rebuild-suggested
+  - doctor-suggested
+  - document-open
+  - source-missing
+  - loading
+  - empty
+  - error
 page_inventory:
-  - portfolio-overview
+  - home
+  - management-overview
   - project-detail
   - runtime-center
   - recovery-diagnostics
+  - material-viewer
+  - material-document-detail
 page_inventory_source:
   CEO overview requires project/version/stage/progress/blocker summary.
   Project owner detail requires version line, main/parallel PRDs, material completeness, git/worktree governance, session refs.
   Runtime center requires single/team/ralph focused drilldown.
   Recovery diagnostics requires degraded mode, rebuild contract, and sync-health explanation.
 baseline_protection:
-  - page: portfolio-overview
+  - page: home
     preserve:
       - lifecycle-first summary cards
       - current version, progress, blocker in one scan line
       - runtime only as compressed badge
       - no raw worker transcript exposure
+  - page: management-overview
+    preserve:
+      - cross-project dense scan view
+      - project/version/stage/progress/next-step in one management table
+      - runtime only as compressed status, not primary content
   - page: project-detail
     preserve:
       - main PRD and parallel PRD distinction

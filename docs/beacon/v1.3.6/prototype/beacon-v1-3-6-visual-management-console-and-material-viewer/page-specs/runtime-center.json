@@ -1,0 +1,80 @@
+{
+  "page_id": "runtime-center",
+  "name": "运行中心",
+  "priority": "P1",
+  "platforms": [
+    "Web",
+    "PC"
+  ],
+  "responsibility": "只在这里下钻 single / team / ralph 的 runtime 细节和有限 session metadata。",
+  "sections": [
+    "运行态摘要头部",
+    "single / team / ralph 模式切换",
+    "agent/session 引用",
+    "artifact 与 linked run",
+    "最近结果与 blocker"
+  ],
+  "actions": [
+    {
+      "label": "返回项目详情",
+      "target": "project-detail",
+      "trigger": "点击返回"
+    },
+    {
+      "label": "返回管理总览",
+      "target": "management-overview",
+      "trigger": "点击面包屑"
+    }
+  ],
+  "states": [
+    {
+      "id": "single-active",
+      "label": "Single 运行",
+      "description": "展示单进程执行摘要和 linked run。"
+    },
+    {
+      "id": "team-active",
+      "label": "Team 运行",
+      "description": "展示 agent 数、角色、状态和 host session metadata。"
+    },
+    {
+      "id": "ralph-active",
+      "label": "Ralph 闭环",
+      "description": "展示 round_count、failure_streak、next_action、blocker。"
+    },
+    {
+      "id": "idle",
+      "label": "无活跃运行",
+      "description": "当前没有任何 active runtime。"
+    },
+    {
+      "id": "loading",
+      "label": "加载中",
+      "description": "运行态数据仍在读取。"
+    },
+    {
+      "id": "error",
+      "label": "错误",
+      "description": "运行态投影异常，需要回到诊断页。"
+    }
+  ],
+  "requirement_refs": {
+    "user-story": [
+      "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+    ],
+    "prd": [
+      "docs/beacon/v1.3.6/prd/beacon-v1-3-6-visual-management-console-and-material-viewer.md"
+    ],
+    "test-case": [
+      "docs/beacon/v1.3.6/qa/test-cases/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+    ]
+  },
+  "outbound_transitions": [
+    {
+      "from": "runtime-center",
+      "to": "project-detail",
+      "trigger": "点击返回",
+      "type": "return"
+    }
+  ]
+}
