@@ -161,6 +161,59 @@ Beacon 默认必须支持把下列对齐关系做成正式检查对象：
 
 而不能静默滑过。
 
+### 9A. `prototype` 必须是闭环推理产物，不得退化为静态模板说明
+
+`prototype` 可以保留结构化模板骨架，但页面内容必须基于真实：
+
+- `prd`
+- `user-story`
+- `test-case`
+
+做闭环推理后生成，至少覆盖：
+
+- 页面状态流转（含异常回退）
+- 页面跳转关系
+- 页面组件契约（职责/数据来源/交互）
+- 与 AC/TC 的映射关系
+
+规则：
+
+> 模板只负责固定结构，语义内容必须由 requirement truth 推导并通过校验，不能只做静态说明填空。
+
+### 9B. Beacon 多写入点必须采用 canonical 驱动与事务一致提交
+
+Beacon 在原型与运行态相关能力中，默认存在多写入点：
+
+1. human-readable sink（面向人类审核）
+2. machine-readable sink（面向机器消费）
+3. runtime projection sink（SQLite/投影索引）
+
+全局约束：
+
+- canonical envelope 是唯一提交源，不允许多源并写。
+- 所有 sink 必须由 canonical 单向投影生成，不允许 human 文档反向驱动 machine 真相。
+- 提交流程必须遵循：
+  - `prepare -> validate -> commit -> publish -> verify`
+- 任一 sink 写入失败：
+  - 必须整体回滚
+  - 或标记事务失败并阻断 freeze/release
+
+### 9C. 跨面 anti-drift 一致性必须可审计
+
+同一批次跨写入点必须共享一致事务元数据，至少包含：
+
+- `source_hash`
+- `projection_seq`
+- `transaction_id`
+- `committed_at`
+- `sink_checksums`
+
+规则：
+
+- `status/review/doctor/gate/release` 必须可检查并报告跨面一致性状态。
+- 发现 human/machine/sqlite 任一面不一致时，不得判定 `freeze pass` 或 `release pass`。
+- 任何“只在单面修补、未重建全体投影”的行为都视为潜在漂移。
+
 ## 宿主约束
 
 ### 10. 宿主上下文必须唯一
@@ -298,3 +351,6 @@ Beacon 默认规范允许对低风险 trivial task 做轻量处理，例如：
 5. 把 Beacon 演进成多运行时桥接调度器
 6. 把外部行为规范仓库或 plugin 变成 Beacon 默认安装前提
 7. 让目标项目在接入 Beacon 后默认绕过这份全局边界
+8. 在没有 canonical 事务提交的情况下直接多点写入 human/machine/sqlite
+9. 允许 human 文档与 machine/runtime 索引出现同批次语义不一致却继续 freeze/release
+10. 把 `prototype` 输出退化为只含静态模板说明且缺失状态流/组件契约/AC-TC 映射

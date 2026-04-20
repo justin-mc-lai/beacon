@@ -23,6 +23,7 @@ from beacon.utils.technical_review_contract import technical_review_contract_jso
 
 runner = CliRunner()
 VERSION = "v1.3.1"
+CLARITY_VERSION = "v1.3.3"
 LEGACY_DOCS_VERSION = "v1.0.0"
 FEATURE = "Human Loop Feature"
 SLUG = "human-loop-feature"
@@ -42,7 +43,13 @@ def _init_git_repo(root: Path) -> None:
     subprocess.run(["git", "switch", "-c", f"beacon/{VERSION}"], cwd=root, check=True, capture_output=True, text=True)
 
 
-def _seed_docs(root: Path, *, version: str = VERSION, unresolved: bool = False) -> None:
+def _seed_docs(
+    root: Path,
+    *,
+    version: str = VERSION,
+    unresolved: bool = False,
+    freeze_deliverables: list[str] | None = None,
+) -> None:
     _init_git_repo(root)
     base = root / "docs" / "beacon" / version
     (base / "user-story").mkdir(parents=True, exist_ok=True)
@@ -71,6 +78,15 @@ def _seed_docs(root: Path, *, version: str = VERSION, unresolved: bool = False) 
         "### FR-001 Human primary loop",
         "- keep the primary loop narrow and stable",
     ]
+    if freeze_deliverables:
+        prd_lines.extend(
+            [
+                "",
+                "## 冻结交付物",
+                "",
+                *[f"- `{item}`" for item in freeze_deliverables],
+            ]
+        )
     if unresolved:
         user_story_lines.extend(
             [
@@ -186,8 +202,8 @@ def _write_version_change_docs(root: Path, *, version: str = VERSION, feature: s
 
 
 def test_v131_freeze_should_block_when_requirement_clarity_has_open_items(tmp_path: Path):
-    _seed_docs(tmp_path, unresolved=True)
-    result = _invoke(["freeze", FEATURE, "--project", str(tmp_path), "--version", VERSION, "--json"])
+    _seed_docs(tmp_path, version=CLARITY_VERSION, unresolved=True)
+    result = _invoke(["freeze", FEATURE, "--project", str(tmp_path), "--version", CLARITY_VERSION, "--json"])
     assert result.exit_code == 2, result.stdout
     payload = json.loads(result.stdout)
     assert payload["reason_code"] == "requirement_clarity_open"
@@ -199,7 +215,7 @@ def test_v131_freeze_should_block_when_requirement_clarity_has_open_items(tmp_pa
 
 
 def test_v131_doctor_should_materialize_requirement_clarity_state(tmp_path: Path):
-    _seed_docs(tmp_path, unresolved=True)
+    _seed_docs(tmp_path, version=CLARITY_VERSION, unresolved=True)
     result = _invoke(
         [
             "doctor",
@@ -208,7 +224,7 @@ def test_v131_doctor_should_materialize_requirement_clarity_state(tmp_path: Path
             "--project-root",
             str(tmp_path),
             "--version",
-            VERSION,
+            CLARITY_VERSION,
             "--json",
         ]
     )
@@ -222,6 +238,53 @@ def test_v131_doctor_should_materialize_requirement_clarity_state(tmp_path: Path
     assert (tmp_path / writeback["state_path"]).exists()
     state = load_requirement_clarity_state(tmp_path, feature=FEATURE)
     assert state["blocked"] is True
+
+
+def test_v131_freeze_should_block_when_required_freeze_artifacts_are_missing(tmp_path: Path):
+    _seed_docs(
+        tmp_path,
+        version=CLARITY_VERSION,
+        unresolved=False,
+        freeze_deliverables=[
+            f"docs/beacon/{CLARITY_VERSION}/execution/lifecycle-state-machine.md",
+            "skills/beacon/beacon-change/SKILL.md",
+        ],
+    )
+    result = _invoke(["freeze", FEATURE, "--project", str(tmp_path), "--version", CLARITY_VERSION, "--json"])
+    assert result.exit_code == 2, result.stdout
+    payload = json.loads(result.stdout)
+    findings = payload["requirement_clarity_gate"]["findings"]
+    assert any(item["kind"] == "missing_required_artifact" for item in findings)
+    assert any("lifecycle-state-machine.md" in item.get("text", "") for item in findings)
+    assert any("skills/beacon/beacon-change/SKILL.md" in item.get("text", "") for item in findings)
+
+
+def test_v131_freeze_should_pass_when_required_freeze_artifacts_exist(tmp_path: Path):
+    _seed_docs(
+        tmp_path,
+        version=CLARITY_VERSION,
+        unresolved=False,
+        freeze_deliverables=[
+            f"docs/beacon/{CLARITY_VERSION}/execution/lifecycle-state-machine.md",
+            "skills/beacon/beacon-change/SKILL.md",
+        ],
+    )
+    (tmp_path / "docs" / "beacon" / CLARITY_VERSION / "execution" / "lifecycle-state-machine.md").write_text(
+        "# Lifecycle State Machine\n",
+        encoding="utf-8",
+    )
+    skill_path = tmp_path / "skills" / "beacon" / "beacon-change"
+    skill_path.mkdir(parents=True, exist_ok=True)
+    (skill_path / "SKILL.md").write_text(
+        "---\nname: beacon-change\n---\n",
+        encoding="utf-8",
+    )
+
+    result = _invoke(["freeze", FEATURE, "--project", str(tmp_path), "--version", CLARITY_VERSION, "--json"])
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["status"] == "frozen"
+    assert not payload["requirement_clarity_gate"]["blocked"]
 
 
 def test_v131_implement_plan_should_block_without_technical_review_contract(tmp_path: Path):
@@ -407,6 +470,7 @@ def test_v131_sync_git_workflow_should_prefer_approved_technical_review_contract
     assert payload["git_workflow"]["expected_branch"] == "feature/v1.3.1-human-loop"
     assert payload["git_workflow"]["branch_prefix"] == "feature/"
     assert payload["git_workflow"]["service_directories"] == ["svc-api", "svc-web"]
+    assert payload["git_workflow"]["direct_delivery_services"] == ["svc-api", "svc-web"]
     assert payload["git_workflow"]["source"] == "technical_review_contract"
 
 
@@ -471,7 +535,59 @@ def test_v131_check_branch_should_use_materialized_git_workflow_from_approved_co
     payload = json.loads(result.stdout)
     assert payload["expected_branch"] == "feature/v1.3.1-human-loop"
     assert payload["git_workflow"]["service_directories"] == ["svc-api", "svc-web"]
+    assert payload["git_workflow"]["direct_delivery_services"] == ["svc-api", "svc-web"]
     assert payload["git_workflow"]["source"] == "technical_review_contract"
+
+
+def test_v131_sync_git_workflow_should_not_shrink_to_writable_services_subset(tmp_path: Path):
+    workspace = tmp_path / "workspace"
+    workspace.mkdir()
+    _init_git_repo(workspace)
+    base = workspace / "docs" / "beacon" / VERSION
+    (base / "user-story").mkdir(parents=True, exist_ok=True)
+    (base / "prd").mkdir(parents=True, exist_ok=True)
+    (base / "qa" / "test-cases").mkdir(parents=True, exist_ok=True)
+    (base / "execution").mkdir(parents=True, exist_ok=True)
+    (base / "release").mkdir(parents=True, exist_ok=True)
+    (base / "SUMMARY.md").write_text("# Summary\n", encoding="utf-8")
+    (base / "execution" / "index.md").write_text("# Execution\n", encoding="utf-8")
+    (base / "execution" / "architecture-blueprint.md").write_text("# Architecture\n", encoding="utf-8")
+    (base / "release" / f"{VERSION}.md").write_text("# Release\n", encoding="utf-8")
+    (base / "user-story" / f"{SLUG}.md").write_text("# User Story\n\n## US-001：A\n\n### 验收标准\n\n- [ ] A\n", encoding="utf-8")
+    (base / "prd" / f"{SLUG}.md").write_text("# PRD\n\n## 功能需求\n\n### FR-001 A\n- A\n", encoding="utf-8")
+    (base / "qa" / "test-cases" / f"{SLUG}.md").write_text("# Test Cases\n", encoding="utf-8")
+    (base / "qa" / "test-cases" / f"{SLUG}.ac-test-matrix.json").write_text('{"entries":[]}\n', encoding="utf-8")
+    assert _invoke(["freeze", FEATURE, "--project", str(workspace), "--version", VERSION]).exit_code == 0
+    _write_contract(
+        workspace,
+        review_status="approved",
+        approved_by="tech-lead",
+        reviewed_at="2026-04-13T09:00:00+08:00",
+        base_branch="master",
+        target_branch="feature/v1.3.1-human-loop",
+        branch_prefix="feature/",
+        use_git_worktree=True,
+        worktree_root=str(workspace / ".worktrees" / "human-loop"),
+        service_directories=["svc-api", "svc-web"],
+        writable_services=["svc-api"],
+        reference_only_services=["docs", "svc-web"],
+    )
+    result = _invoke(
+        [
+            "implement",
+            "sync-git-workflow",
+            FEATURE,
+            "--project",
+            str(workspace),
+            "--version",
+            VERSION,
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["git_workflow"]["service_directories"] == ["svc-api", "svc-web"]
+    assert payload["git_workflow"]["direct_delivery_services"] == ["svc-api", "svc-web"]
 
 
 def test_v131_release_scorecard_should_include_human_loop_surfaces(tmp_path: Path):
@@ -882,21 +998,28 @@ def test_v131_help_should_point_to_technical_review_contract_before_implement(tm
 
 
 def test_v131_help_should_point_to_requirement_clarity_before_freeze(tmp_path: Path):
-    _seed_docs(tmp_path, unresolved=True)
-    payload = build_help_payload(tmp_path, version=VERSION, feature=FEATURE)
+    _seed_docs(tmp_path, version=CLARITY_VERSION, unresolved=True)
+    subprocess.run(
+        ["git", "switch", "-C", f"beacon/{CLARITY_VERSION}"],
+        cwd=tmp_path,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    payload = build_help_payload(tmp_path, version=CLARITY_VERSION, feature=FEATURE)
     assert payload["next_step"]["action"] == "requirement-clarity"
     assert "requirement-clarity" in payload["next_step"]["command"]
 
 
 def test_v131_freeze_should_write_requirement_clarity_report_when_clean(tmp_path: Path):
-    _seed_docs(tmp_path, unresolved=False)
-    result = _invoke(["freeze", FEATURE, "--project", str(tmp_path), "--version", VERSION, "--json"])
+    _seed_docs(tmp_path, version=CLARITY_VERSION, unresolved=False)
+    result = _invoke(["freeze", FEATURE, "--project", str(tmp_path), "--version", CLARITY_VERSION, "--json"])
     assert result.exit_code == 0, result.stdout
     payload = json.loads(result.stdout)
     report = payload["requirement_clarity_report"]
     assert (tmp_path / report["json"]).exists()
     assert (tmp_path / report["markdown"]).exists()
-    assert requirement_clarity_json_path(tmp_path, VERSION, FEATURE).exists()
-    assert requirement_clarity_markdown_path(tmp_path, VERSION, FEATURE).exists()
+    assert requirement_clarity_json_path(tmp_path, CLARITY_VERSION, FEATURE).exists()
+    assert requirement_clarity_markdown_path(tmp_path, CLARITY_VERSION, FEATURE).exists()
     assert requirement_clarity_state_path(tmp_path, FEATURE).exists()
     assert not payload["requirement_clarity_gate"]["blocked"]

@@ -1,0 +1,81 @@
+{
+  "states": [
+    "document-open",
+    "empty",
+    "error",
+    "filtered",
+    "idle",
+    "loading",
+    "ralph-active",
+    "ready",
+    "sibling-switch",
+    "single-active",
+    "source-missing",
+    "team-active",
+    "version-switch"
+  ],
+  "ctas": [
+    {
+      "page_id": "runtime-center",
+      "label": "返回管理总览",
+      "target": "management-overview",
+      "trigger": "点击面包屑"
+    },
+    {
+      "page_id": "material-viewer",
+      "label": "打开文档",
+      "target": "material-document-detail",
+      "trigger": "点击文档列表项"
+    },
+    {
+      "page_id": "page-03-93da1608",
+      "label": "进入该页面来自哪条 PRD 承诺",
+      "target": "prd",
+      "trigger": "点击跳转"
+    },
+    {
+      "page_id": "prd",
+      "label": "进入该页面承载哪些 user story",
+      "target": "user-story",
+      "trigger": "点击跳转"
+    },
+    {
+      "page_id": "material-document-detail",
+      "label": "返回物料查看器",
+      "target": "material-viewer",
+      "trigger": "点击返回"
+    },
+    {
+      "page_id": "material-document-detail",
+      "label": "切换同版本文档",
+      "target": "material-document-detail",
+      "trigger": "点击侧栏文档"
+    }
+  ],
+  "jump_map": [
+    {
+      "from": "prd",
+      "to": "user-story",
+      "trigger": "点击跳转",
+      "type": "primary"
+    },
+    {
+      "from": "page-03-93da1608",
+      "to": "prd",
+      "trigger": "点击跳转",
+      "type": "primary"
+    },
+    {
+      "from": "material-viewer",
+      "to": "material-document-detail",
+      "trigger": "点击文档列表项",
+      "type": "drill-down"
+    },
+    {
+      "from": "material-document-detail",
+      "to": "material-viewer",
+      "trigger": "点击返回",
+      "type": "return"
+    }
+  ]
+}

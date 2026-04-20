@@ -3,7 +3,7 @@
   "feature": "beacon-v1.3.6-visual-management-console-and-material-viewer",
   "feature_slug": "beacon-v1-3-6-visual-management-console-and-material-viewer",
   "version": "v1.3.6",
-  "generated_at": "2026-04-20T07:34:20Z",
+  "generated_at": "2026-04-20T13:27:17Z",
   "prototype_mode": "wireframe",
   "ui_kit": "wireframe-markdown-v1",
   "source_documents": [
@@ -57,6 +57,40 @@
     "team-active",
     "version-switch"
   ],
+  "requirement_ids": {
+    "ac_ids": [
+      "AC-001",
+      "AC-002",
+      "AC-003",
+      "AC-004",
+      "AC-005",
+      "AC-006",
+      "AC-007",
+      "AC-008",
+      "AC-009",
+      "AC-010",
+      "AC-011",
+      "AC-012",
+      "AC-013",
+      "AC-014",
+      "AC-015",
+      "AC-016"
+    ],
+    "tc_ids": [
+      "TC-001",
+      "TC-002",
+      "TC-003",
+      "TC-004",
+      "TC-005",
+      "TC-006",
+      "TC-007",
+      "TC-008",
+      "TC-009",
+      "TC-010",
+      "TC-011",
+      "TC-012"
+    ]
+  },
   "page_specs": [
     {
       "page_id": "home",
@@ -129,20 +163,7 @@
           "docs/beacon/v1.3.6/qa/test-cases/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
         ]
       },
-      "outbound_transitions": [
-        {
-          "from": "home",
-          "to": "management-overview",
-          "trigger": "点击项目组合入口",
-          "type": "primary"
-        },
-        {
-          "from": "home",
-          "to": "project-detail",
-          "trigger": "点击重点项目卡片",
-          "type": "primary"
-        }
-      ]
+      "outbound_transitions": []
     },
     {
       "page_id": "management-overview",
@@ -214,14 +235,8 @@
         {
           "from": "management-overview",
           "to": "project-detail",
-          "trigger": "点击项目行/卡片",
+          "trigger": "点击跳转",
           "type": "primary"
-        },
-        {
-          "from": "management-overview",
-          "to": "home",
-          "trigger": "点击首页导航",
-          "type": "return"
         }
       ]
     },
@@ -313,32 +328,7 @@
           "docs/beacon/v1.3.6/qa/test-cases/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
         ]
       },
-      "outbound_transitions": [
-        {
-          "from": "project-detail",
-          "to": "runtime-center",
-          "trigger": "点击运行态摘要",
-          "type": "drill-down"
-        },
-        {
-          "from": "project-detail",
-          "to": "recovery-diagnostics",
-          "trigger": "点击恢复诊断入口",
-          "type": "drill-down"
-        },
-        {
-          "from": "project-detail",
-          "to": "material-viewer",
-          "trigger": "点击文档查看入口",
-          "type": "drill-down"
-        },
-        {
-          "from": "project-detail",
-          "to": "management-overview",
-          "trigger": "点击返回",
-          "type": "return"
-        }
-      ]
+      "outbound_transitions": []
     },
     {
       "page_id": "runtime-center",
@@ -411,14 +401,7 @@
           "docs/beacon/v1.3.6/qa/test-cases/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
         ]
       },
-      "outbound_transitions": [
-        {
-          "from": "runtime-center",
-          "to": "project-detail",
-          "trigger": "点击返回",
-          "type": "return"
-        }
-      ]
+      "outbound_transitions": []
     },
     {
       "page_id": "recovery-diagnostics",
@@ -490,14 +473,7 @@
           "docs/beacon/v1.3.6/qa/test-cases/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
         ]
       },
-      "outbound_transitions": [
-        {
-          "from": "recovery-diagnostics",
-          "to": "project-detail",
-          "trigger": "点击返回",
-          "type": "return"
-        }
-      ]
+      "outbound_transitions": []
     },
     {
       "page_id": "material-viewer",
@@ -722,20 +698,7 @@
           "docs/beacon/v1.3.6/qa/test-cases/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
         ]
       },
-      "outbound_transitions": [
-        {
-          "from": "home",
-          "to": "management-overview",
-          "trigger": "点击项目组合入口",
-          "type": "primary"
-        },
-        {
-          "from": "home",
-          "to": "project-detail",
-          "trigger": "点击重点项目卡片",
-          "type": "primary"
-        }
-      ]
+      "outbound_transitions": []
     },
     {
       "page_id": "management-overview",
@@ -807,14 +770,8 @@
         {
           "from": "management-overview",
           "to": "project-detail",
-          "trigger": "点击项目行/卡片",
+          "trigger": "点击跳转",
           "type": "primary"
-        },
-        {
-          "from": "management-overview",
-          "to": "home",
-          "trigger": "点击首页导航",
-          "type": "return"
         }
       ]
     },
@@ -906,32 +863,7 @@
           "docs/beacon/v1.3.6/qa/test-cases/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
         ]
       },
-      "outbound_transitions": [
-        {
-          "from": "project-detail",
-          "to": "runtime-center",
-          "trigger": "点击运行态摘要",
-          "type": "drill-down"
-        },
-        {
-          "from": "project-detail",
-          "to": "recovery-diagnostics",
-          "trigger": "点击恢复诊断入口",
-          "type": "drill-down"
-        },
-        {
-          "from": "project-detail",
-          "to": "material-viewer",
-          "trigger": "点击文档查看入口",
-          "type": "drill-down"
-        },
-        {
-          "from": "project-detail",
-          "to": "management-overview",
-          "trigger": "点击返回",
-          "type": "return"
-        }
-      ]
+      "outbound_transitions": []
     },
     {
       "page_id": "runtime-center",
@@ -1004,14 +936,7 @@
           "docs/beacon/v1.3.6/qa/test-cases/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
         ]
       },
-      "outbound_transitions": [
-        {
-          "from": "runtime-center",
-          "to": "project-detail",
-          "trigger": "点击返回",
-          "type": "return"
-        }
-      ]
+      "outbound_transitions": []
     },
     {
       "page_id": "recovery-diagnostics",
@@ -1083,14 +1008,7 @@
           "docs/beacon/v1.3.6/qa/test-cases/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
         ]
       },
-      "outbound_transitions": [
-        {
-          "from": "recovery-diagnostics",
-          "to": "project-detail",
-          "trigger": "点击返回",
-          "type": "return"
-        }
-      ]
+      "outbound_transitions": []
     },
     {
       "page_id": "material-viewer",
@@ -1248,64 +1166,10 @@
     "primary_exit": "material-viewer",
     "transitions": [
       {
-        "from": "home",
-        "to": "management-overview",
-        "trigger": "点击项目组合入口",
-        "type": "primary"
-      },
-      {
-        "from": "home",
-        "to": "project-detail",
-        "trigger": "点击重点项目卡片",
-        "type": "primary"
-      },
-      {
         "from": "management-overview",
         "to": "project-detail",
-        "trigger": "点击项目行/卡片",
+        "trigger": "点击跳转",
         "type": "primary"
-      },
-      {
-        "from": "management-overview",
-        "to": "home",
-        "trigger": "点击首页导航",
-        "type": "return"
-      },
-      {
-        "from": "project-detail",
-        "to": "runtime-center",
-        "trigger": "点击运行态摘要",
-        "type": "drill-down"
-      },
-      {
-        "from": "project-detail",
-        "to": "recovery-diagnostics",
-        "trigger": "点击恢复诊断入口",
-        "type": "drill-down"
-      },
-      {
-        "from": "project-detail",
-        "to": "material-viewer",
-        "trigger": "点击文档查看入口",
-        "type": "drill-down"
-      },
-      {
-        "from": "project-detail",
-        "to": "management-overview",
-        "trigger": "点击返回",
-        "type": "return"
-      },
-      {
-        "from": "runtime-center",
-        "to": "project-detail",
-        "trigger": "点击返回",
-        "type": "return"
-      },
-      {
-        "from": "recovery-diagnostics",
-        "to": "project-detail",
-        "trigger": "点击返回",
-        "type": "return"
       },
       {
         "from": "material-viewer",
@@ -1395,14 +1259,21 @@
       "wireframe-manifest.json",
       "navigation-map.md",
       "navigation-map.json",
+      "state-flow-map.md",
+      "state-flow-map.json",
+      "component-catalog.md",
+      "component-catalog.json",
+      "canonical-envelope.json",
       "pages/*.md",
       "freeze.json",
       "prototype-review.json"
     ]
   },
   "parser": {
-    "page_detection": "keyword-catalog",
+    "page_detection": "requirement-driven-parser",
     "fallback_used": false,
+    "discovered_page_count": 7,
+    "custom_page_count": 0,
     "cjk_detected": true,
     "cjk_parse_failed": false
   },

@@ -1,0 +1,745 @@
+{
+  "schema_version": "1.0",
+  "plan_id": "plan-beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface-r1",
+  "feature": "beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface",
+  "feature_slug": "beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface",
+  "version": "v1.3.5",
+  "revision_id": "R1",
+  "baseline_hash": "sha256:df90682762ab8f17bcb4e8fdc27db88a999714a1f66b3304ae7c8b22288a366e",
+  "plan_hash": "sha256:fad74d391576c1d0f2b804e49c49ce9e556c879c361f7bd0f70b44d9586f473e",
+  "status": "blocked",
+  "source_refs": {
+    "user_story": "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.md",
+    "prd": "docs/beacon/v1.3.5/prd/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.md",
+    "test_case": "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.md"
+  },
+  "boundary_principles": [
+    {
+      "id": "explicit_assumptions",
+      "heading": "显式假设与歧义管理"
+    },
+    {
+      "id": "simplicity_first",
+      "heading": "简单优先"
+    },
+    {
+      "id": "surgical_changes",
+      "heading": "外科手术式改动"
+    },
+    {
+      "id": "goal_driven_execution",
+      "heading": "目标驱动验证闭环"
+    },
+    {
+      "id": "trivial_task_exception",
+      "heading": "trivial task 可以轻量处理，但不能越界"
+    }
+  ],
+  "workstreams": [
+    {
+      "workstream_id": "implementation-main",
+      "title": "Implementation Mainline",
+      "task_ids": [
+        "ITASK-001",
+        "ITASK-002",
+        "ITASK-003",
+        "ITASK-004",
+        "ITASK-005",
+        "ITASK-006",
+        "ITASK-007",
+        "ITASK-008",
+        "ITASK-009",
+        "ITASK-010",
+        "ITASK-011"
+      ]
+    }
+  ],
+  "task_mapping_source": "prd-sections",
+  "tasks": [
+    {
+      "task_id": "ITASK-001",
+      "title": "FR-001 增加一个宿主可见子 skill `beacon-change`",
+      "description": "系统必须提供一个新的宿主可见 skill： 名称：`beacon-change` 角色：冻结后需求调整闭环路由器 边界：不是新的一级主命令，不替代主链阶段",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-001"
+      ],
+      "mapped_test_ids": [
+        "TEST-001"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260420T152516Z-b4b1",
+        ".beacon/auto-test-status.json",
+        "verify:run-20260420T152516Z-b4b1-tester",
+        "run:run-20260420T152537Z-fd1e",
+        "verify:run-20260420T152537Z-fd1e-tester"
+      ],
+      "changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/qa/status.json",
+        "docs/beacon/v1.3.5/.machine/execution/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.revision.json",
+        "docs/beacon/v1.3.5/.machine/execution/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.revision.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.progress.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.progress.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.progress.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.qa9-matrix.json",
+        "docs/beacon/v1.3.5/.machine/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json",
+        "docs/beacon/v1.3.5/.machine/user-story/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.json",
+        "docs/beacon/v1.3.5/execution/implementation-plan-beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.md",
+        "docs/beacon/v1.3.5/execution/implementation-plan-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+        "docs/beacon/v1.3.5/execution/implementation-plan-beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.md",
+        "docs/beacon/v1.3.5/.machine/execution/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.revision.json",
+        "docs/beacon/v1.3.5/.machine/user-story/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.json"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-20T15:25:16.827581+00:00",
+      "completed_at": "2026-04-20T15:25:37.440660+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-002",
+      "title": "FR-002 `beacon-change` 必须稳定接收冻结后调整意图",
+      "description": "当用户表达以下意图时，系统应稳定路由到 `beacon-change`： 改需求 补边界 重新冻结 reopen 后再改 hotfix 但先补需求 版本要调整范围",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-002"
+      ],
+      "mapped_test_ids": [
+        "TEST-002"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-001"
+      ],
+      "target_modules": [],
+      "status": "blocked",
+      "evidence_refs": [
+        "run:run-20260420T152516Z-b4b1",
+        ".beacon/auto-test-status.json",
+        "verify:run-20260420T152516Z-b4b1-tester",
+        "run:run-20260420T152537Z-fd1e",
+        "verify:run-20260420T152537Z-fd1e-tester",
+        ".beacon/qa/features/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260420T234031256470/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260420T234031256470/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260420T234031256470/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260420T234031256470/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260420T234031256470/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260420T234031256470/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260420T234031256470/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260420T234031256470/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260420T234031256470"
+      ],
+      "changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/qa/status.json",
+        "docs/beacon/v1.3.5/.machine/execution/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.revision.json",
+        "docs/beacon/v1.3.5/.machine/execution/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.revision.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.progress.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.progress.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.progress.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.qa9-matrix.json",
+        "docs/beacon/v1.3.5/.machine/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json",
+        "docs/beacon/v1.3.5/.machine/user-story/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.json",
+        "docs/beacon/v1.3.5/execution/implementation-plan-beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.md",
+        "docs/beacon/v1.3.5/execution/implementation-plan-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+        "docs/beacon/v1.3.5/execution/implementation-plan-beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.md",
+        "docs/beacon/v1.3.5/.machine/execution/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.revision.json",
+        "docs/beacon/v1.3.5/.machine/user-story/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.json"
+      ],
+      "blocked_reason": "verification_failed",
+      "started_at": "2026-04-20T15:25:16.875952+00:00",
+      "completed_at": "2026-04-20T15:25:37.440678+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-003",
+      "title": "FR-003 `beacon-change` 必须把变更请求编译为 change brief",
+      "description": "每次变更至少输出： why changed added removed/reduced fixed impacted requirement surfaces recommended next steps",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-003",
+        "AC-005"
+      ],
+      "mapped_test_ids": [
+        "TEST-003",
+        "TEST-005"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-002"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260420T152516Z-b4b1",
+        ".beacon/auto-test-status.json",
+        "verify:run-20260420T152516Z-b4b1-tester",
+        "run:run-20260420T152537Z-fd1e",
+        "verify:run-20260420T152537Z-fd1e-tester"
+      ],
+      "changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/qa/status.json",
+        "docs/beacon/v1.3.5/.machine/execution/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.revision.json",
+        "docs/beacon/v1.3.5/.machine/execution/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.revision.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.progress.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.progress.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.progress.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.qa9-matrix.json",
+        "docs/beacon/v1.3.5/.machine/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json",
+        "docs/beacon/v1.3.5/.machine/user-story/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.json",
+        "docs/beacon/v1.3.5/execution/implementation-plan-beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.md",
+        "docs/beacon/v1.3.5/execution/implementation-plan-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+        "docs/beacon/v1.3.5/execution/implementation-plan-beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.md",
+        "docs/beacon/v1.3.5/.machine/execution/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.revision.json",
+        "docs/beacon/v1.3.5/.machine/user-story/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.json"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-20T15:25:16.875962+00:00",
+      "completed_at": "2026-04-20T15:25:37.440692+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-004",
+      "title": "FR-004 冻结后调整必须触发 revision reopen",
+      "description": "当目标 feature 已冻结时，change loop 必须： 1. 检测当前 revision 状态 2. 调用 `reopen` 3. 生成新 revision 4. 保留旧 revision 作为历史冻结基线",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-004"
+      ],
+      "mapped_test_ids": [
+        "TEST-004"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-003"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260420T152516Z-b4b1",
+        ".beacon/auto-test-status.json",
+        "verify:run-20260420T152516Z-b4b1-tester",
+        "run:run-20260420T152537Z-fd1e",
+        "verify:run-20260420T152537Z-fd1e-tester"
+      ],
+      "changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/qa/status.json",
+        "docs/beacon/v1.3.5/.machine/execution/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.revision.json",
+        "docs/beacon/v1.3.5/.machine/execution/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.revision.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.progress.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.progress.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.progress.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.qa9-matrix.json",
+        "docs/beacon/v1.3.5/.machine/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json",
+        "docs/beacon/v1.3.5/.machine/user-story/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.json",
+        "docs/beacon/v1.3.5/execution/implementation-plan-beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.md",
+        "docs/beacon/v1.3.5/execution/implementation-plan-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+        "docs/beacon/v1.3.5/execution/implementation-plan-beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.md",
+        "docs/beacon/v1.3.5/.machine/execution/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.revision.json",
+        "docs/beacon/v1.3.5/.machine/user-story/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.json"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-20T15:25:16.875971+00:00",
+      "completed_at": "2026-04-20T15:25:37.440705+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-005",
+      "title": "FR-005 变更后必须重编译 requirement truth",
+      "description": "系统必须支持把变更请求增量编译回： `prd revise` `user-story refresh` `test-case refresh` `prototype refresh`",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-006"
+      ],
+      "mapped_test_ids": [
+        "TEST-006"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-004"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260420T152516Z-b4b1",
+        ".beacon/auto-test-status.json",
+        "verify:run-20260420T152516Z-b4b1-tester",
+        "run:run-20260420T152537Z-fd1e",
+        "verify:run-20260420T152537Z-fd1e-tester"
+      ],
+      "changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/qa/status.json",
+        "docs/beacon/v1.3.5/.machine/execution/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.revision.json",
+        "docs/beacon/v1.3.5/.machine/execution/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.revision.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.progress.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.progress.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.progress.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.qa9-matrix.json",
+        "docs/beacon/v1.3.5/.machine/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json",
+        "docs/beacon/v1.3.5/.machine/user-story/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.json",
+        "docs/beacon/v1.3.5/execution/implementation-plan-beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.md",
+        "docs/beacon/v1.3.5/execution/implementation-plan-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+        "docs/beacon/v1.3.5/execution/implementation-plan-beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.md",
+        "docs/beacon/v1.3.5/.machine/execution/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.revision.json",
+        "docs/beacon/v1.3.5/.machine/user-story/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.json"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-20T15:25:16.875979+00:00",
+      "completed_at": "2026-04-20T15:25:37.440718+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-006",
+      "title": "FR-006 系统必须支持 requirement re-freeze",
+      "description": "完成 delta compile 后，系统必须能够： 运行 clarity gate 产出新的 frozen baseline 为后续 `implement` / `qa` / `release` 提供 revision-aware truth",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-005"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260420T152516Z-b4b1",
+        "run:run-20260420T152537Z-fd1e"
+      ],
+      "changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/qa/status.json",
+        "docs/beacon/v1.3.5/.machine/execution/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.revision.json",
+        "docs/beacon/v1.3.5/.machine/execution/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.revision.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.progress.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.progress.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.progress.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.qa9-matrix.json",
+        "docs/beacon/v1.3.5/.machine/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json",
+        "docs/beacon/v1.3.5/.machine/user-story/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.json",
+        "docs/beacon/v1.3.5/execution/implementation-plan-beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.md",
+        "docs/beacon/v1.3.5/execution/implementation-plan-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+        "docs/beacon/v1.3.5/execution/implementation-plan-beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.md",
+        "docs/beacon/v1.3.5/.machine/execution/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.revision.json",
+        "docs/beacon/v1.3.5/.machine/user-story/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.json"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-20T15:25:16.875988+00:00",
+      "completed_at": "2026-04-20T15:25:37.440730+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-007",
+      "title": "FR-007 生命周期状态机必须成为正式文档资产",
+      "description": "Beacon 必须新增一份状态机文档，至少覆盖： init / context_bootstrap requirement drafting freeze_ready prototype_freeze implementation_ready qa_ready release_ready change_requested revision_reopened delta_recompiled re_freeze_ready fix_in_progress re_release_ready",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-006"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260420T152516Z-b4b1",
+        "run:run-20260420T152537Z-fd1e"
+      ],
+      "changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/qa/status.json",
+        "docs/beacon/v1.3.5/.machine/execution/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.revision.json",
+        "docs/beacon/v1.3.5/.machine/execution/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.revision.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.progress.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.progress.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.progress.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.qa9-matrix.json",
+        "docs/beacon/v1.3.5/.machine/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json",
+        "docs/beacon/v1.3.5/.machine/user-story/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.json",
+        "docs/beacon/v1.3.5/execution/implementation-plan-beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.md",
+        "docs/beacon/v1.3.5/execution/implementation-plan-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+        "docs/beacon/v1.3.5/execution/implementation-plan-beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.md",
+        "docs/beacon/v1.3.5/.machine/execution/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.revision.json",
+        "docs/beacon/v1.3.5/.machine/user-story/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.json"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-20T15:25:16.875996+00:00",
+      "completed_at": "2026-04-20T15:25:37.440743+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-008",
+      "title": "FR-008 `implement` 必须识别 revised baseline",
+      "description": "`implement` 在 fix/hotfix 模式下必须能够识别： 当前 revision 是否已 re-freeze 是否基于最新 requirement truth",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-007"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260420T152516Z-b4b1",
+        "run:run-20260420T152537Z-fd1e"
+      ],
+      "changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/qa/status.json",
+        "docs/beacon/v1.3.5/.machine/execution/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.revision.json",
+        "docs/beacon/v1.3.5/.machine/execution/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.revision.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.progress.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.progress.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.progress.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.qa9-matrix.json",
+        "docs/beacon/v1.3.5/.machine/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json",
+        "docs/beacon/v1.3.5/.machine/user-story/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.json",
+        "docs/beacon/v1.3.5/execution/implementation-plan-beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.md",
+        "docs/beacon/v1.3.5/execution/implementation-plan-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+        "docs/beacon/v1.3.5/execution/implementation-plan-beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.md",
+        "docs/beacon/v1.3.5/.machine/execution/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.revision.json",
+        "docs/beacon/v1.3.5/.machine/user-story/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.json"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-20T15:25:16.876004+00:00",
+      "completed_at": "2026-04-20T15:25:37.440755+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-009",
+      "title": "FR-009 `qa` 必须识别 delta verification",
+      "description": "`qa` 必须支持 revised baseline 的正式语义，至少区分： `delta-run` `regression-run`",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-008"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260420T152516Z-b4b1",
+        "run:run-20260420T152537Z-fd1e"
+      ],
+      "changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/qa/status.json",
+        "docs/beacon/v1.3.5/.machine/execution/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.revision.json",
+        "docs/beacon/v1.3.5/.machine/execution/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.revision.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.progress.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.progress.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.progress.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.qa9-matrix.json",
+        "docs/beacon/v1.3.5/.machine/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json",
+        "docs/beacon/v1.3.5/.machine/user-story/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.json",
+        "docs/beacon/v1.3.5/execution/implementation-plan-beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.md",
+        "docs/beacon/v1.3.5/execution/implementation-plan-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+        "docs/beacon/v1.3.5/execution/implementation-plan-beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.md",
+        "docs/beacon/v1.3.5/.machine/execution/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.revision.json",
+        "docs/beacon/v1.3.5/.machine/user-story/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.json"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-20T15:25:16.876012+00:00",
+      "completed_at": "2026-04-20T15:25:37.440767+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-010",
+      "title": "FR-010 `release` 必须识别 recheck 场景",
+      "description": "`release` 必须能把 revised baseline 作为正式 gate 对象，不得把旧 baseline 的通过结果沿用到新变更。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-009"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260420T152516Z-b4b1",
+        "run:run-20260420T152537Z-fd1e"
+      ],
+      "changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/qa/status.json",
+        "docs/beacon/v1.3.5/.machine/execution/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.revision.json",
+        "docs/beacon/v1.3.5/.machine/execution/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.revision.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.progress.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.progress.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.progress.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.qa9-matrix.json",
+        "docs/beacon/v1.3.5/.machine/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json",
+        "docs/beacon/v1.3.5/.machine/user-story/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.json",
+        "docs/beacon/v1.3.5/execution/implementation-plan-beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.md",
+        "docs/beacon/v1.3.5/execution/implementation-plan-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+        "docs/beacon/v1.3.5/execution/implementation-plan-beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.md",
+        "docs/beacon/v1.3.5/.machine/execution/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.revision.json",
+        "docs/beacon/v1.3.5/.machine/user-story/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.json"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-20T15:25:16.876020+00:00",
+      "completed_at": "2026-04-20T15:25:37.440778+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-011",
+      "title": "FR-011 `help/status` 必须能路由冻结后调整闭环",
+      "description": "当系统检测到： feature 已冻结 用户表达 change intent `help/status` 必须推荐： ```text beacon-change → reopen → prd revise → user-story refresh → test-case refresh → prototype refresh → freeze → implement fix → qa delta-run → release recheck ```",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-010"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260420T152516Z-b4b1",
+        "run:run-20260420T152537Z-fd1e"
+      ],
+      "changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/qa/status.json",
+        "docs/beacon/v1.3.5/.machine/execution/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.revision.json",
+        "docs/beacon/v1.3.5/.machine/execution/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.revision.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.progress.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.progress.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.json",
+        "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.progress.json",
+        "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.qa9-matrix.json",
+        "docs/beacon/v1.3.5/.machine/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json",
+        "docs/beacon/v1.3.5/.machine/user-story/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.json",
+        "docs/beacon/v1.3.5/execution/implementation-plan-beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.md",
+        "docs/beacon/v1.3.5/execution/implementation-plan-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+        "docs/beacon/v1.3.5/execution/implementation-plan-beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.md",
+        "docs/beacon/v1.3.5/.machine/execution/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.revision.json",
+        "docs/beacon/v1.3.5/.machine/user-story/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.json"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-20T15:25:16.876028+00:00",
+      "completed_at": "2026-04-20T15:25:37.440790+00:00",
+      "active_run_id": ""
+    }
+  ],
+  "team_mode": {
+    "preferred_surface": "implement-team",
+    "preferred_runner": "codex-subagents",
+    "plan_command": "beacon implement team-plan \"beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface\" --project-root . --version v1.3.5",
+    "run_command": "beacon implement team-run \"beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface\" --project . --version v1.3.5",
+    "dev_run_command": "beacon implement dev-run \"beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface\" --project . --version v1.3.5",
+    "qa_team_command": "beacon qa team-run \"beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface\" --project . --version v1.3.5",
+    "roles": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "context_isolation": {
+      "role_plane": "implementation",
+      "isolated_from": [
+        "qa-team"
+      ],
+      "shared_inputs": [
+        "docs",
+        "implementation_plan",
+        "evidence_refs"
+      ],
+      "shared_outputs": [
+        "implementation_summary",
+        "technical_archive",
+        "repair_handoff"
+      ],
+      "rule": "qa_must_not_inherit_implement_private_context",
+      "implement_surface": "implement-team",
+      "qa_surface": "qa-team"
+    },
+    "config_source": "beacon/team_roles/implement-team.json",
+    "execution_order": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "formal_writeback_roles": [
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "role_contracts": {
+      "planner": {
+        "purpose": "Compile execution-ready task scope from the frozen revision baseline.",
+        "writes_to_formal_truth": false,
+        "outputs": [
+          "execution_plan_note"
+        ]
+      },
+      "implementation-architect": {
+        "purpose": "Translate frozen requirement truth into implementation-safe module boundaries and service ownership guidance.",
+        "writes_to_formal_truth": false,
+        "reads": [
+          "docs/beacon/<version>/user-story",
+          "docs/beacon/<version>/prd",
+          "docs/beacon/<version>/qa/test-cases",
+          "docs/beacon/<version>/execution/architecture-blueprint.md",
+          "implementation_plan",
+          "git_workflow_contract"
+        ],
+        "outputs": [
+          "implementation_architecture_note"
+        ],
+        "restrictions": [
+          "must_not_modify_frozen_requirement_materials",
+          "must_not_overwrite_architecture_blueprint"
+        ]
+      },
+      "implementer": {
+        "purpose": "Write code inside the frozen scope and the implementation architecture note.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "story_writeback",
+          "implementation_summary"
+        ]
+      },
+      "reviewer": {
+        "purpose": "Review implementation/spec drift and architecture-boundary drift.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_spec"
+        ]
+      },
+      "tester": {
+        "purpose": "Check implementation evidence and verification readiness before acceptance.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_quality"
+        ]
+      }
+    }
+  },
+  "git_workflow": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface",
+    "feature_slug": "beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface",
+    "version": "v1.3.5",
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.3.5",
+    "branch_prefix": "beacon/",
+    "base_branch": "main",
+    "use_git_worktree": false,
+    "require_clean_worktree_for_switch": true,
+    "service_directories": [
+      "."
+    ],
+    "direct_delivery_services": [
+      "."
+    ],
+    "git_roots": [
+      "."
+    ],
+    "worktree_root": ".",
+    "implementation_preflight": [
+      "Before implementation, verify the target service belongs to: .",
+      "Before implementation, verify the current branch is beacon/v1.3.5.",
+      "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+    ],
+    "source": "technical_review_contract",
+    "generated_at": "2026-04-20T15:19:09.034639+00:00"
+  },
+  "git_workflow_ref": "docs/beacon/v1.3.5/.machine/execution/git-workflow-beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.json",
+  "git_workflow_markdown_ref": "docs/beacon/v1.3.5/execution/git-workflow-beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.md",
+  "generated_at": "2026-04-20T15:19:09.035701+00:00",
+  "updated_at": "2026-04-20T15:41:20.916129+00:00"
+}

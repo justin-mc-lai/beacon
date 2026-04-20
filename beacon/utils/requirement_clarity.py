@@ -19,6 +19,8 @@ from beacon.utils.versioning import (
 from beacon.utils.workflow_memory import append_lifecycle_event, record_stage_writeback, resolve_workflow_run_id
 
 _SECTION_HEADING_RE = re.compile(r"^(#{2,6})\s+(.+?)\s*$")
+_BACKTICK_PATH_RE = re.compile(r"`([^`\n]+)`")
+_HEADING_PREFIX_RE = re.compile(r"^\d+(?:\.\d+)*[.)]?\s*")
 _UNRESOLVED_SECTION_TITLES = {
     "open questions",
     "unresolved",
@@ -31,6 +33,11 @@ _UNRESOLVED_SECTION_TITLES = {
     "疑问",
     "未澄清",
     "需求疑问",
+}
+_FREEZE_DELIVERABLE_SECTION_TITLES = {
+    "冻结交付物",
+    "freeze deliverables",
+    "frozen deliverables",
 }
 _INLINE_MARKERS = (
     "TBD",
@@ -85,7 +92,7 @@ def _scan_file(path: Path) -> list[dict[str, Any]]:
 
         heading = _SECTION_HEADING_RE.match(stripped)
         if heading:
-            title = str(heading.group(2) or "").strip().lower()
+            title = _normalize_heading_title(str(heading.group(2) or ""))
             current_unresolved_section = title if title in _UNRESOLVED_SECTION_TITLES else ""
             continue
 
@@ -126,8 +133,70 @@ def _scan_file(path: Path) -> list[dict[str, Any]]:
     return findings
 
 
+def _normalize_heading_title(title: str) -> str:
+    text = str(title or "").strip().lower()
+    return _HEADING_PREFIX_RE.sub("", text).strip()
+
+
+def _extract_required_artifacts(path: Path) -> list[dict[str, Any]]:
+    artifacts: list[dict[str, Any]] = []
+    if not path.exists():
+        return artifacts
+
+    lines = path.read_text(encoding="utf-8").splitlines()
+    current_section = ""
+    in_code_fence = False
+
+    for line_no, raw in enumerate(lines, start=1):
+        stripped = raw.strip()
+        if stripped.startswith("```"):
+            in_code_fence = not in_code_fence
+            continue
+        if in_code_fence:
+            continue
+
+        heading = _SECTION_HEADING_RE.match(stripped)
+        if heading:
+            current_section = _normalize_heading_title(str(heading.group(2) or ""))
+            continue
+
+        if current_section not in _FREEZE_DELIVERABLE_SECTION_TITLES:
+            continue
+        if not stripped:
+            continue
+        if not (
+            stripped.startswith(("-", "*", "+"))
+            or stripped[0].isdigit()
+            or "`" in stripped
+        ):
+            continue
+
+        for match in _BACKTICK_PATH_RE.findall(stripped):
+            relative = str(match or "").strip()
+            if not relative or "/" not in relative:
+                continue
+            if not (
+                relative.startswith("docs/")
+                or relative.startswith("skills/")
+                or relative.startswith(".beacon/")
+            ):
+                continue
+            artifacts.append({"path": relative, "line": line_no})
+
+    deduped: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    for item in artifacts:
+        rel = str(item.get("path") or "").strip()
+        if not rel or rel in seen:
+            continue
+        seen.add(rel)
+        deduped.append(item)
+    return deduped
+
+
 def build_requirement_clarity_gate_payload(project_root: Path, *, version: str = "auto", feature: str) -> dict[str, Any]:
     resolved_version = resolve_target_version(project_root, version)
+    prd_path = project_root / "docs" / "beacon" / resolved_version / "prd" / f"{feature_slug(feature)}.md"
     resolved_runtime = resolve_runtime_version(project_root, "auto")
     payload: dict[str, Any] = {
         "schema_version": "1.0",
@@ -158,6 +227,23 @@ def build_requirement_clarity_gate_payload(project_root: Path, *, version: str =
     for path in _version_root(project_root, resolved_version, feature):
         scanned_files.append(str(path.relative_to(project_root)))
         findings.extend(_scan_file(path))
+
+    required_artifacts = _extract_required_artifacts(prd_path)
+    payload["required_artifacts"] = [str(item.get("path") or "") for item in required_artifacts]
+    for artifact in required_artifacts:
+        relative = str(artifact.get("path") or "").strip()
+        if not relative:
+            continue
+        if not (project_root / relative).exists():
+            findings.append(
+                {
+                    "file": str(prd_path),
+                    "line": int(artifact.get("line") or 0),
+                    "kind": "missing_required_artifact",
+                    "text": f"missing required artifact: {relative}",
+                    "path": relative,
+                }
+            )
 
     payload["scanned_files"] = scanned_files
     payload["findings"] = findings

@@ -13,6 +13,7 @@ This skill routes next-step guidance through Beacon's `help` surface.
 - "where am I in Beacon?"
 - blocked workflow progression
 - stage-aware resume guidance
+- frozen feature change-loop guidance
 
 ## Operator rule
 
@@ -22,3 +23,4 @@ Prefer:
 - or `bash skills/beacon/scripts/run_beacon.sh help ...`
 
 Use `beacon-help` before exposing low-level machine lanes or asking the user to reason about Beacon internals.
+When the user is changing a frozen feature, prefer routing to `beacon-change` rather than explaining hidden `reopen/freeze` mechanics directly.

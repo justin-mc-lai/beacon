@@ -3,7 +3,7 @@
 **Feature**: `beacon-v1-3-6-visual-management-console-and-material-viewer`
 **Version**: `v1.3.6`
 **Mode**: `wireframe`
-**Generated At**: `2026-04-20T07:34:20Z`
+**Generated At**: `2026-04-20T13:26:39Z`
 
 ## 页面清单
 
@@ -20,16 +20,7 @@
 ## 跳转关系图
 
 ```text
-[home] -- 点击项目组合入口 --> [management-overview]
-[home] -- 点击重点项目卡片 --> [project-detail]
-[management-overview] -- 点击项目行/卡片 --> [project-detail]
-[management-overview] -- 点击首页导航 --> [home]
-[project-detail] -- 点击运行态摘要 --> [runtime-center]
-[project-detail] -- 点击恢复诊断入口 --> [recovery-diagnostics]
-[project-detail] -- 点击文档查看入口 --> [material-viewer]
-[project-detail] -- 点击返回 --> [management-overview]
-[runtime-center] -- 点击返回 --> [project-detail]
-[recovery-diagnostics] -- 点击返回 --> [project-detail]
+[management-overview] -- 点击跳转 --> [project-detail]
 [material-viewer] -- 点击文档列表项 --> [material-document-detail]
 [material-document-detail] -- 点击返回 --> [material-viewer]
 ```

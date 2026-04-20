@@ -1,0 +1,147 @@
+{
+  "schema_version": "1.0",
+  "run_id": "prd-bootstrap-20260420T143454Z",
+  "feature": "beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface",
+  "feature_slug": "beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface",
+  "description": "为 Beacon v1.3.5 增加冻结后需求调整再闭环能力，要求在不新增 Beacon 一级主命令的前提下，引入一个宿主可见子 skill beacon-change，稳定承接需求变更、reopen、增量补文档、重新冻结、增量实现、增量 QA 与 release recheck；同时补齐 Beacon 生命周期状态机文档草案，明确 init、freeze、change-request、revision-reopen、delta-refresh、re-freeze、fix、re-qa、re-release 的状态迁移、证据边界与主链映射。",
+  "version": "v1.3.5",
+  "generated_at": "2026-04-20T14:34:54.722495+00:00",
+  "mode": "apply",
+  "dry_run": false,
+  "no_overwrite": true,
+  "strict_context_verify": true,
+  "targets": {
+    "prd": "docs/beacon/v1.3.5/prd/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.md",
+    "user_story": "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.md",
+    "test_case": "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.md"
+  },
+  "quality": {
+    "max_placeholders": 0,
+    "total_placeholders": 0,
+    "per_doc": {
+      "prd": 0,
+      "user_story": 0,
+      "test_case": 0
+    },
+    "ok": true
+  },
+  "consistency": {
+    "story_ac_ids": [
+      "AC-001",
+      "AC-002",
+      "AC-003",
+      "AC-004",
+      "AC-005"
+    ],
+    "test_case_ac_ids": [
+      "AC-001",
+      "AC-002",
+      "AC-003",
+      "AC-004",
+      "AC-005"
+    ],
+    "missing_in_test_case": [],
+    "ok": true
+  },
+  "context_verify": {
+    "project_root": "/Users/apple/Developer/Personal/products/beacon",
+    "runtime_version": "v1.3.3",
+    "strict": true,
+    "status": "pass",
+    "ok": true,
+    "checks": [
+      {
+        "name": "context_files_presence",
+        "status": "pass",
+        "details": {
+          "missing": []
+        }
+      },
+      {
+        "name": "managed_block_integrity",
+        "status": "pass",
+        "details": {
+          "issues": []
+        }
+      },
+      {
+        "name": "managed_block_version_drift",
+        "status": "pass",
+        "details": {
+          "drifted": [],
+          "unknown": []
+        }
+      },
+      {
+        "name": "global_boundaries_presence",
+        "status": "pass",
+        "details": {
+          "path": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/global-boundaries.md",
+          "exists": true
+        }
+      },
+      {
+        "name": "global_boundaries_inheritance",
+        "status": "pass",
+        "details": {
+          "missing_references": []
+        }
+      }
+    ],
+    "files": {
+      "CLAUDE.md": {
+        "path": "/Users/apple/Developer/Personal/products/beacon/CLAUDE.md",
+        "exists": true,
+        "marker_integrity": "ok",
+        "managed_version": "v1.3.3",
+        "managed_docs_version": "v1.3.4",
+        "version_drift": false
+      },
+      "AGENTS.md": {
+        "path": "/Users/apple/Developer/Personal/products/beacon/AGENTS.md",
+        "exists": true,
+        "marker_integrity": "ok",
+        "managed_version": "v1.3.3",
+        "managed_docs_version": "v1.3.4",
+        "version_drift": false
+      }
+    }
+  },
+  "status": "applied",
+  "reason_code": "",
+  "recommended_command": "",
+  "write_actions": [
+    {
+      "target": "prd",
+      "path": "docs/beacon/v1.3.5/prd/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.md",
+      "action": "created",
+      "backup_path": ""
+    },
+    {
+      "target": "user_story",
+      "path": "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.md",
+      "action": "created",
+      "backup_path": ""
+    },
+    {
+      "target": "test_case",
+      "path": "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.md",
+      "action": "created",
+      "backup_path": ""
+    }
+  ],
+  "rollback_plan": [
+    {
+      "action": "delete",
+      "path": "docs/beacon/v1.3.5/prd/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.md"
+    },
+    {
+      "action": "delete",
+      "path": "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.md"
+    },
+    {
+      "action": "delete",
+      "path": "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.md"
+    }
+  ]
+}

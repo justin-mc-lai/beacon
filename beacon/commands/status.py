@@ -39,6 +39,7 @@ def _status_impl(
     version: str,
     feature: str,
     run_id: str,
+    change_intent: str,
 ) -> int:
     root = Path(project_root) if project_root else Path.cwd()
     team_root = root / ".beacon" / "team"
@@ -95,7 +96,17 @@ def _status_impl(
     }
 
     target_feature = feature_filter or str(workflow_progress.get("feature", "") or "")
-    help_payload = build_help_payload(root, version=coverage_version, feature=target_feature, run_id=resolved_run_id or None) if target_feature else {}
+    help_payload = (
+        build_help_payload(
+            root,
+            version=coverage_version,
+            feature=target_feature,
+            run_id=resolved_run_id or None,
+            change_intent=change_intent or None,
+        )
+        if target_feature
+        else {}
+    )
     implementation_plan_progress = load_implementation_plan_progress(root, version=coverage_version, feature=target_feature) if target_feature else {}
     requirement_clarity_gate = build_requirement_clarity_gate_payload(root, version=coverage_version, feature=target_feature) if target_feature else {}
     requirement_clarity_state = load_requirement_clarity_state(root, feature=target_feature) if target_feature else {}
@@ -134,13 +145,19 @@ def _status_impl(
         "scores": help_payload.get("scores", {}),
         "revision": {
             "revision_id": help_payload.get("revision_id", ""),
+            "source_revision_id": help_payload.get("source_revision_id", ""),
+            "superseded_by": help_payload.get("superseded_by", ""),
             "doc_status": help_payload.get("doc_status", ""),
             "delivery_status": help_payload.get("delivery_status", ""),
+            "is_latest_revision": (help_payload.get("revision_lineage", {}) if isinstance(help_payload.get("revision_lineage"), dict) else {}).get("is_latest_revision", False),
+            "is_frozen_baseline": (help_payload.get("revision_lineage", {}) if isinstance(help_payload.get("revision_lineage"), dict) else {}).get("is_frozen_baseline", False),
+            "release_delivery_type": (release_scorecard.get("delivery", {}) if isinstance(release_scorecard.get("delivery"), dict) else {}).get("type", ""),
             "blocked": help_payload.get("blocked", False),
             "blocking_reasons": help_payload.get("blocking_reasons", []),
             "blocked_reason": help_payload.get("blocked_reason", ""),
         },
         "next_step": help_payload.get("next_step", {}),
+        "change_loop": help_payload.get("change_loop", {}),
         "project_mode": help_payload.get("project_mode", "greenfield"),
         "execution_surface": help_payload.get("execution_surface", {}),
         "hud": help_payload.get("hud", {}),
@@ -180,6 +197,7 @@ def _status_impl(
             "decision_engine_path": ".beacon/state/evo/decision-engine.json",
         },
         "release_scorecard": release_scorecard,
+        "release_binding": release_scorecard.get("revision_binding", {}) if isinstance(release_scorecard, dict) else {},
         "version_context": {
             **version_context,
             "docs_version": coverage_version,
@@ -219,6 +237,11 @@ def _status_impl(
         typer.echo(f"- board.ledger_sync: {runtime_ledger.get('status') or 'unknown'}")
         typer.echo(f"- board.sqlite: {runtime_ledger.get('sqlite_status') or 'unknown'}")
         typer.echo(f"- board.pocketbase: {runtime_ledger.get('pocketbase_status') or 'unknown'}")
+        if runtime_ledger.get("transaction_id"):
+            typer.echo(f"- board.transaction_id: {runtime_ledger.get('transaction_id')}")
+        failed_sinks = runtime_ledger.get("failed_sinks") if isinstance(runtime_ledger.get("failed_sinks"), list) else []
+        if failed_sinks:
+            typer.echo(f"- board.failed_sinks: {', '.join(str(item) for item in failed_sinks)}")
         control_plane = runtime_ledger.get("control_plane", {}) if isinstance(runtime_ledger.get("control_plane"), dict) else {}
         if control_plane:
             typer.echo(f"- board.pocketbase_binary: {control_plane.get('binary_status') or 'unknown'}")
@@ -289,6 +312,18 @@ def _status_impl(
                 f"- technical_review: {payload.get('technical_review', {}).get('status')} "
                 f"review_status={payload.get('technical_review', {}).get('review_status') or 'none'}"
             )
+        if target_feature and bool(payload.get("change_loop", {}).get("recommended")):
+            typer.echo(
+                f"- change_loop: route={payload.get('change_loop', {}).get('route') or 'beacon-change'} "
+                f"intent={payload.get('change_loop', {}).get('intent') or '-'}"
+            )
+        if payload.get("release_binding"):
+            typer.echo(
+                f"- release.binding: {payload.get('release_binding', {}).get('status') or 'unknown'} "
+                f"current={payload.get('release_binding', {}).get('gate_bound_to_latest_revision')}"
+            )
+        if payload.get("revision", {}).get("release_delivery_type"):
+            typer.echo(f"- revision.delivery_type: {payload.get('revision', {}).get('release_delivery_type')}")
         typer.echo(
             f"- control.failure_streak: {resume_contract.get('failure_streak')}"
         )
@@ -374,6 +409,7 @@ def status_callback(
     version: str = typer.Option("", "--version", "-v", help="Version filter"),
     feature: str = typer.Option("", "--feature", "-f", help="Feature filter"),
     run_id: str = typer.Option("", "--run-id", help="Run id filter"),
+    change_intent: str = typer.Option("", "--change-intent", help="Optional user change-intent text for post-freeze routing"),
 ):
     """Show current status (PTK flat syntax compatibility)."""
     if ctx.invoked_subcommand is None:
@@ -385,6 +421,7 @@ def status_callback(
                 version=version,
                 feature=feature,
                 run_id=run_id,
+                change_intent=change_intent,
             )
         )
 
@@ -397,6 +434,7 @@ def show_status(
     version: str = typer.Option("", "--version", "-v", help="Version filter"),
     feature: str = typer.Option("", "--feature", "-f", help="Feature filter"),
     run_id: str = typer.Option("", "--run-id", help="Run id filter"),
+    change_intent: str = typer.Option("", "--change-intent", help="Optional user change-intent text for post-freeze routing"),
 ):
     """Show current workflow status."""
     raise typer.Exit(
@@ -407,6 +445,7 @@ def show_status(
             version=version,
             feature=feature,
             run_id=run_id,
+            change_intent=change_intent,
         )
     )
 

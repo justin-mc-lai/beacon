@@ -1,0 +1,905 @@
+{
+  "schema_version": "1.0",
+  "run_id": "run-20260420T161102Z-f6d1",
+  "feature": "beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor",
+  "feature_slug": "beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor",
+  "version": "v1.3.5",
+  "mode": "",
+  "host_runtime": "codex",
+  "runner": "codex-subagents",
+  "adapter_type": "native",
+  "request_path": ".beacon/implement/run-20260420T161102Z-f6d1/request.json",
+  "result_path": ".beacon/implement/run-20260420T161102Z-f6d1/result.json",
+  "branch_preflight_path": ".beacon/implement/run-20260420T161102Z-f6d1/branch-preflight.json",
+  "plan_preflight_path": ".beacon/implement/run-20260420T161102Z-f6d1/plan-preflight.json",
+  "git_workflow": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor",
+    "feature_slug": "beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor",
+    "version": "v1.3.5",
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.3.5",
+    "branch_prefix": "beacon/",
+    "base_branch": "main",
+    "use_git_worktree": false,
+    "require_clean_worktree_for_switch": true,
+    "service_directories": [
+      "."
+    ],
+    "direct_delivery_services": [
+      "."
+    ],
+    "git_roots": [
+      "."
+    ],
+    "worktree_root": ".",
+    "implementation_preflight": [
+      "Before implementation, verify the target service belongs to: .",
+      "Before implementation, verify the current branch is beacon/v1.3.5.",
+      "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+    ],
+    "source": "technical_review_contract",
+    "generated_at": "2026-04-20T16:11:02.555065+00:00"
+  },
+  "generated_at": "2026-04-20T16:11:03.242760+00:00",
+  "status": "completed",
+  "subagent_prechecks": {
+    "required": true,
+    "host_runtime": "codex",
+    "runtime_readiness": {
+      "schema_version": "1.0",
+      "check": "runtime-readiness",
+      "status": "pass",
+      "reason_code": "",
+      "host_runtime": "codex",
+      "checks": [
+        {
+          "name": "skill_root_present",
+          "ok": true,
+          "detail": "/Users/apple/.agents/skills/beacon"
+        },
+        {
+          "name": "context_file_present",
+          "ok": true,
+          "detail": "AGENTS.md"
+        },
+        {
+          "name": "global_boundaries_present",
+          "ok": true,
+          "detail": "docs/beacon/global-boundaries.md"
+        },
+        {
+          "name": "context_inherits_global_boundaries",
+          "ok": true,
+          "detail": "AGENTS.md"
+        }
+      ],
+      "blocked_checks": [],
+      "recommended_command": ""
+    },
+    "delegation_readiness": {
+      "schema_version": "1.0",
+      "check": "delegation-readiness",
+      "status": "pass",
+      "reason_code": "",
+      "feature": "beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor",
+      "version": "v1.3.5",
+      "checks": [
+        {
+          "name": "prd_present",
+          "ok": true,
+          "detail": "docs/beacon/v1.3.5/prd/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        },
+        {
+          "name": "user_story_present",
+          "ok": true,
+          "detail": "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        },
+        {
+          "name": "test_case_present",
+          "ok": true,
+          "detail": "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+        },
+        {
+          "name": "implementation_plan_present",
+          "ok": true,
+          "detail": "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json"
+        },
+        {
+          "name": "git_workflow_present",
+          "ok": true,
+          "detail": "docs/beacon/v1.3.5/.machine/execution/git-workflow-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json"
+        },
+        {
+          "name": "qa_baseline_bundle_present",
+          "ok": true,
+          "detail": "docs/beacon/v1.3.5/.machine/qa"
+        }
+      ],
+      "blocked_checks": [],
+      "recommended_command": ""
+    }
+  },
+  "skill": "",
+  "summary": "codex-subagents implementation completed via implement-team flow",
+  "changed_files": [
+    ".beacon/auto-test-status.json",
+    ".beacon/evidence-manifest.json",
+    ".beacon/evidence-signature-chain.json",
+    ".beacon/gate-report.json",
+    ".beacon/qa/status.json",
+    "README.md",
+    "beacon/commands/gate.py",
+    "beacon/commands/qa.py",
+    "beacon/commands/release.py",
+    "beacon/utils/qa_feature.py",
+    "beacon/utils/technical_review_contract.py",
+    "docs/beacon/v1.3.3/.machine/execution/change-impact.json",
+    "docs/beacon/v1.3.3/.machine/execution/config.json",
+    "docs/beacon/v1.3.3/.machine/execution/delivery-manifest.json",
+    "docs/beacon/v1.3.3/.machine/execution/git-alignment.json",
+    "docs/beacon/v1.3.3/.machine/execution/source.json",
+    "docs/beacon/v1.3.5/.machine/change/v1.3.5.json",
+    "docs/beacon/v1.3.5/.machine/execution/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.revision.json",
+    "docs/beacon/v1.3.5/.machine/execution/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.revision.json",
+    "docs/beacon/v1.3.5/.machine/execution/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.revision.json",
+    "docs/beacon/v1.3.5/.machine/execution/git-workflow-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json",
+    "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.json",
+    "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.progress.json",
+    "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json",
+    "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.progress.json",
+    "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.json",
+    "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.progress.json",
+    "docs/beacon/v1.3.5/.machine/execution/implementation-summary-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json",
+    "docs/beacon/v1.3.5/.machine/execution/requirement-rewrite-input-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json",
+    "docs/beacon/v1.3.5/.machine/execution/review-quality-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json",
+    "docs/beacon/v1.3.5/.machine/execution/technical-implementation-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json",
+    "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.ac-test-matrix.json",
+    "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.qa9-matrix.json",
+    "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.story-scenario-map.json",
+    "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.qa9-matrix.json",
+    "docs/beacon/v1.3.5/.machine/user-story/beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.json",
+    "docs/beacon/v1.3.5/.machine/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json",
+    "docs/beacon/v1.3.5/.machine/user-story/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.json",
+    "docs/beacon/v1.3.5/change/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+    "docs/beacon/v1.3.5/change/v1.3.5.md",
+    "docs/beacon/v1.3.5/execution/git-workflow-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+    "docs/beacon/v1.3.5/execution/implementation-plan-beacon-v1.3.5-post-freeze-change-loop-and-requirement-refreeze-surface.md",
+    "docs/beacon/v1.3.5/execution/implementation-plan-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+    "docs/beacon/v1.3.5/execution/implementation-plan-beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.md",
+    "docs/beacon/v1.3.5/execution/implementation-summary-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+    "docs/beacon/v1.3.5/execution/review-quality-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+    "docs/beacon/v1.3.5/execution/technical-implementation-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+    "docs/beacon/v1.3.5/prd/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+    "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+    "docs/beacon/v1.3.5/release/v1.3.5.md",
+    "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+  ],
+  "verification": [
+    {
+      "command": "beacon implement run --runner codex-subagents",
+      "status": "passed"
+    },
+    {
+      "command": "auto-test-status",
+      "status": "passed",
+      "evidence": ".beacon/auto-test-status.json"
+    }
+  ],
+  "implemented_task_ids": [],
+  "verified_task_ids": [],
+  "blocked_task_ids": [],
+  "failed_task_ids": [],
+  "artifact_updates": {
+    "user_story": {
+      "required": false,
+      "reason": "story machine state writeback recorded"
+    },
+    "review_quality": {
+      "required": true,
+      "reason": "run quality review after native implementation"
+    },
+    "acceptance": {
+      "required": true,
+      "reason": "acceptance remains a formal post-verify action"
+    }
+  },
+  "branch_preflight": {
+    "schema_version": "1.0",
+    "status": "pass",
+    "summary": "implement branch preflight passed on workspace branch beacon/v1.3.5",
+    "blocked": false,
+    "version": "v1.3.5",
+    "expected_branch": "beacon/v1.3.5",
+    "current_branch": "beacon/v1.3.5",
+    "current_tag": "",
+    "branch_exists": true,
+    "dirty_worktree": true,
+    "require_clean_worktree_for_switch": true,
+    "recommended_command": "",
+    "recommended_commands": [],
+    "direct_delivery_services": [
+      "."
+    ],
+    "service_scope": {
+      "status": "pass",
+      "direct_delivery_services": [
+        "."
+      ],
+      "verified_roots": [
+        "."
+      ],
+      "unresolved_services": []
+    },
+    "reason_codes": [],
+    "git_alignment": {
+      "mode": "workspace",
+      "repo_detected": true,
+      "target_branch": "beacon/v1.3.5",
+      "worktree_path": ".",
+      "workspace_repos": [
+        {
+          "repo_root": "/Users/apple/Developer/Personal/products/beacon",
+          "relative_root": ".",
+          "dirty_worktree": true,
+          "repo_url": "https://github.com/justin-mc-lai/beacon.git",
+          "base_branch": "main",
+          "target_branch": "beacon/v1.3.5",
+          "current_branch": "beacon/v1.3.5",
+          "current_commit": "a08d4bdb6ed4e30f01d77371367bdc067ff2d7f6",
+          "current_tag": "",
+          "worktree_path": "/Users/apple/Developer/Personal/products/beacon",
+          "version_ref": "v1.3.5",
+          "allowed_refs": [
+            "branch"
+          ],
+          "enforce_branch_prefix": "beacon/",
+          "branch_matches_target": true,
+          "branch_has_required_prefix": true,
+          "tag_matches_version": false,
+          "version_ref_satisfied": true,
+          "reason_codes": [],
+          "blocked": false,
+          "detached_head": false,
+          "repo_detected": true
+        }
+      ],
+      "blocked": false,
+      "reason_codes": []
+    },
+    "run_id": "run-20260420T161102Z-f6d1",
+    "feature": "beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor",
+    "feature_slug": "beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor",
+    "generated_at": "2026-04-20T16:11:03.121488+00:00",
+    "git_workflow": {
+      "schema_version": "1.0",
+      "feature": "beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor",
+      "feature_slug": "beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor",
+      "version": "v1.3.5",
+      "mode": "single-repo",
+      "expected_branch": "beacon/v1.3.5",
+      "branch_prefix": "beacon/",
+      "base_branch": "main",
+      "use_git_worktree": false,
+      "require_clean_worktree_for_switch": true,
+      "service_directories": [
+        "."
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "git_roots": [
+        "."
+      ],
+      "worktree_root": ".",
+      "implementation_preflight": [
+        "Before implementation, verify the target service belongs to: .",
+        "Before implementation, verify the current branch is beacon/v1.3.5.",
+        "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+      ],
+      "source": "technical_review_contract",
+      "generated_at": "2026-04-20T16:11:02.555065+00:00"
+    },
+    "branch_preflight_path": ".beacon/implement/run-20260420T161102Z-f6d1/branch-preflight.json"
+  },
+  "plan_preflight": {
+    "schema_version": "1.0",
+    "run_id": "run-20260420T161102Z-f6d1",
+    "feature": "beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor",
+    "feature_slug": "beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor",
+    "version": "v1.3.5",
+    "expected_plan": "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json",
+    "expected_revision_id": "R1",
+    "baseline_hash": "sha256:7967fe047d1b1b7b47a95a907a8ea34e026a51e3bfda38e4a9bc740344c736a6",
+    "recommended_command": "beacon implement plan \"beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor\" --project-root . --version v1.3.5",
+    "generated_at": "2026-04-20T16:11:03.122396+00:00",
+    "status": "pass",
+    "blocked": false,
+    "plan_id": "plan-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor-r1",
+    "plan_path": "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json",
+    "progress_path": "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.progress.json"
+  },
+  "implementation_marker": ".beacon/state/implementation-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json",
+  "technical_archive": {
+    "json": "docs/beacon/v1.3.5/.machine/execution/technical-implementation-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json",
+    "md": "docs/beacon/v1.3.5/execution/technical-implementation-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md"
+  },
+  "implementation_plan": "docs/beacon/v1.3.5/.machine/execution/implementation-plan-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json",
+  "implementation_plan_progress": {
+    "schema_version": "1.0",
+    "plan_id": "plan-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor-r1",
+    "feature": "beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor",
+    "version": "v1.3.5",
+    "revision_id": "R1",
+    "status": "completed",
+    "counts": {
+      "total": 19,
+      "draft": 0,
+      "planned": 0,
+      "in_progress": 0,
+      "blocked": 0,
+      "completed": 19
+    },
+    "blocked_task_ids": [],
+    "completed_task_ids": [
+      "ITASK-001",
+      "ITASK-002",
+      "ITASK-003",
+      "ITASK-004",
+      "ITASK-005",
+      "ITASK-006",
+      "ITASK-007",
+      "ITASK-008",
+      "ITASK-009",
+      "ITASK-010",
+      "ITASK-011",
+      "ITASK-012",
+      "ITASK-013",
+      "ITASK-014",
+      "ITASK-015",
+      "ITASK-016",
+      "ITASK-017",
+      "ITASK-018",
+      "ITASK-019"
+    ],
+    "next_task_id": "",
+    "task_states": [
+      {
+        "task_id": "ITASK-001",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-003",
+          "AC-002",
+          "AC-001"
+        ],
+        "mapped_test_ids": [
+          "TC-006",
+          "TC-005",
+          "TC-001",
+          "TC-014",
+          "TC-018",
+          "TC-019"
+        ],
+        "mapped_scenario_ids": [
+          "SC-001",
+          "SC-002",
+          "SC-003",
+          "SC-004",
+          "SC-005",
+          "SC-006",
+          "SC-007",
+          "SC-008",
+          "SC-009",
+          "SC-010",
+          "SC-011",
+          "SC-012",
+          "SC-013",
+          "SC-014"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-001",
+          "TC-005",
+          "TC-006",
+          "TC-014",
+          "TC-018",
+          "TC-019"
+        ]
+      },
+      {
+        "task_id": "ITASK-002",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-005",
+          "AC-004",
+          "AC-006",
+          "AC-008",
+          "AC-009",
+          "AC-012"
+        ],
+        "mapped_test_ids": [
+          "TC-002",
+          "TC-007",
+          "TC-003",
+          "TC-008",
+          "TC-009",
+          "TC-012",
+          "TC-020",
+          "TC-015",
+          "TC-016"
+        ],
+        "mapped_scenario_ids": [
+          "SC-015",
+          "SC-016",
+          "SC-017",
+          "SC-018",
+          "SC-019",
+          "SC-020",
+          "SC-021",
+          "SC-022",
+          "SC-023",
+          "SC-024",
+          "SC-025",
+          "SC-026",
+          "SC-027",
+          "SC-028",
+          "SC-035",
+          "SC-036",
+          "SC-039"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-002",
+          "TC-003",
+          "TC-007",
+          "TC-008",
+          "TC-009",
+          "TC-012",
+          "TC-015",
+          "TC-016",
+          "TC-020"
+        ]
+      },
+      {
+        "task_id": "ITASK-003",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-011",
+          "AC-013"
+        ],
+        "mapped_test_ids": [
+          "TC-011",
+          "TC-013"
+        ],
+        "mapped_scenario_ids": [
+          "SC-038",
+          "SC-040"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-011",
+          "TC-013"
+        ]
+      },
+      {
+        "task_id": "ITASK-004",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-010"
+        ],
+        "mapped_test_ids": [
+          "TC-010"
+        ],
+        "mapped_scenario_ids": [
+          "SC-037"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-010"
+        ]
+      },
+      {
+        "task_id": "ITASK-005",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-007"
+        ],
+        "mapped_test_ids": [
+          "TC-004",
+          "TC-017"
+        ],
+        "mapped_scenario_ids": [
+          "SC-029",
+          "SC-030",
+          "SC-031",
+          "SC-032",
+          "SC-033",
+          "SC-034"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-004",
+          "TC-017"
+        ]
+      },
+      {
+        "task_id": "ITASK-006",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-007",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-008",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-009",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-010",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-011",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-012",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-013",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-014",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-015",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-016",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-017",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-018",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-019",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      }
+    ],
+    "updated_at": "2026-04-20T16:11:03.205778+00:00"
+  },
+  "requirement_traceability": {
+    "source_of_truth_root": "docs/beacon/v1.3.5",
+    "prd": "docs/beacon/v1.3.5/prd/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+    "user_story": "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+    "test_case": "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+    "ac_matrix": "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.ac-test-matrix.json",
+    "revision_id": "R1",
+    "implemented_item_ids": [
+      "AC-001",
+      "AC-002",
+      "AC-003",
+      "AC-004",
+      "AC-005",
+      "AC-006",
+      "AC-007",
+      "AC-008",
+      "AC-009",
+      "AC-010",
+      "AC-011",
+      "AC-012",
+      "AC-013",
+      "TASK-001"
+    ],
+    "implemented_task_ids": [],
+    "verified_task_ids": []
+  },
+  "delivery_surfaces": {
+    "runtime_mode": "codex-subagents",
+    "shipped_surfaces": [],
+    "partial_surfaces": [],
+    "deferred_surfaces": [],
+    "downgrade_rationale": ""
+  },
+  "traceability_refs": [
+    "docs/beacon/v1.3.5/prd/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+    "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+    "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md",
+    "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.ac-test-matrix.json",
+    ".beacon/implement/run-20260420T161102Z-f6d1/request.json",
+    ".beacon/implement/run-20260420T161102Z-f6d1/result.json"
+  ],
+  "implemented_items": [
+    "AC-001",
+    "AC-002",
+    "AC-003",
+    "AC-004",
+    "AC-005",
+    "AC-006",
+    "AC-007",
+    "AC-008",
+    "AC-009",
+    "AC-010",
+    "AC-011",
+    "AC-012",
+    "AC-013",
+    "TASK-001"
+  ],
+  "verified_items": [
+    "AC-001",
+    "AC-002",
+    "AC-003",
+    "AC-004",
+    "AC-005",
+    "AC-006",
+    "AC-007",
+    "AC-008",
+    "AC-009",
+    "AC-010",
+    "AC-011",
+    "AC-012",
+    "AC-013",
+    "TEST-001",
+    "TEST-002",
+    "TEST-003",
+    "TEST-004",
+    "TEST-005",
+    "TEST-006",
+    "TEST-007",
+    "TEST-008",
+    "TEST-009",
+    "TEST-010",
+    "TEST-011",
+    "TEST-012",
+    "TEST-013"
+  ],
+  "blocked_items": [],
+  "runner_mode": "codex-subagents",
+  "revision_id": "R1",
+  "team_execution": {
+    "team_name": "implement-team-run-20260420T161102Z-f6d1",
+    "team_surface": "implement-team",
+    "state_path": ".beacon/team/implement-team-run-20260420T161102Z-f6d1/manifest.json",
+    "artifact_dir": "docs/beacon/v1.3.5/execution/codex-subagents/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor/run-20260420T161102Z-f6d1",
+    "final_state": "terminal",
+    "terminal_status": "Pass",
+    "runtime": "file",
+    "tmux_session": "",
+    "roles": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "role_reports": {
+      "planner": {
+        "role": "planner",
+        "status": "completed",
+        "json": "docs/beacon/v1.3.5/execution/codex-subagents/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor/run-20260420T161102Z-f6d1/planner.json",
+        "markdown": "docs/beacon/v1.3.5/execution/codex-subagents/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor/run-20260420T161102Z-f6d1/planner.md"
+      },
+      "implementation-architect": {
+        "role": "implementation-architect",
+        "status": "completed",
+        "json": "docs/beacon/v1.3.5/execution/codex-subagents/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor/run-20260420T161102Z-f6d1/implementation-architect.json",
+        "markdown": "docs/beacon/v1.3.5/execution/codex-subagents/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor/run-20260420T161102Z-f6d1/implementation-architect.md"
+      },
+      "implementer": {
+        "role": "implementer",
+        "status": "completed",
+        "json": "docs/beacon/v1.3.5/execution/codex-subagents/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor/run-20260420T161102Z-f6d1/implementer.json",
+        "markdown": "docs/beacon/v1.3.5/execution/codex-subagents/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor/run-20260420T161102Z-f6d1/implementer.md"
+      },
+      "reviewer": {
+        "role": "reviewer",
+        "status": "pass",
+        "json": "docs/beacon/v1.3.5/execution/codex-subagents/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor/run-20260420T161102Z-f6d1/reviewer.json",
+        "markdown": "docs/beacon/v1.3.5/execution/codex-subagents/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor/run-20260420T161102Z-f6d1/reviewer.md"
+      },
+      "tester": {
+        "role": "tester",
+        "status": "completed",
+        "json": "docs/beacon/v1.3.5/execution/codex-subagents/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor/run-20260420T161102Z-f6d1/tester.json",
+        "markdown": "docs/beacon/v1.3.5/execution/codex-subagents/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor/run-20260420T161102Z-f6d1/tester.md"
+      }
+    },
+    "review_gates": {
+      "spec": {
+        "status": "pass",
+        "reviewer": "reviewer"
+      },
+      "quality": {
+        "status": "pass",
+        "reviewer": "tester"
+      }
+    },
+    "implemented_items": [
+      "AC-001",
+      "AC-002",
+      "AC-003",
+      "AC-004",
+      "AC-005",
+      "AC-006",
+      "AC-007",
+      "AC-008",
+      "AC-009",
+      "AC-010",
+      "AC-011",
+      "AC-012",
+      "AC-013",
+      "TASK-001"
+    ],
+    "verified_items": [
+      "AC-001",
+      "AC-002",
+      "AC-003",
+      "AC-004",
+      "AC-005",
+      "AC-006",
+      "AC-007",
+      "AC-008",
+      "AC-009",
+      "AC-010",
+      "AC-011",
+      "AC-012",
+      "AC-013",
+      "TEST-001",
+      "TEST-002",
+      "TEST-003",
+      "TEST-004",
+      "TEST-005",
+      "TEST-006",
+      "TEST-007",
+      "TEST-008",
+      "TEST-009",
+      "TEST-010",
+      "TEST-011",
+      "TEST-012",
+      "TEST-013"
+    ],
+    "blocked_items": [],
+    "verification_entries": [
+      {
+        "command": "auto-test-status",
+        "status": "passed",
+        "evidence": ".beacon/auto-test-status.json"
+      }
+    ],
+    "context_isolation": {
+      "role_plane": "implementation",
+      "isolated_from": [
+        "qa-team"
+      ],
+      "shared_inputs": [
+        "docs/beacon/<version>/user-story",
+        "docs/beacon/<version>/prd",
+        "implementation-plan"
+      ],
+      "shared_outputs": [
+        "implementation_summary",
+        "technical_archive",
+        "story_writeback",
+        "evidence_refs"
+      ],
+      "rule": "qa_must_not_inherit_implement_private_context"
+    },
+    "hud": {
+      "json": ".beacon/state/team-hud/implement-team-run-20260420T161102Z-f6d1.json",
+      "html": "docs/beacon/v1.3.5/execution/codex-subagents/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor/run-20260420T161102Z-f6d1/index.html"
+    }
+  },
+  "team_surface": "implement-team",
+  "context_isolation": {
+    "role_plane": "implementation",
+    "isolated_from": [
+      "qa-team"
+    ],
+    "shared_inputs": [
+      "docs/beacon/<version>/user-story",
+      "docs/beacon/<version>/prd",
+      "implementation-plan"
+    ],
+    "shared_outputs": [
+      "implementation_summary",
+      "technical_archive",
+      "story_writeback",
+      "evidence_refs"
+    ],
+    "rule": "qa_must_not_inherit_implement_private_context"
+  },
+  "artifact_writeback_obligations": ".beacon/state/artifact-update-obligations/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json",
+  "artifact_writeback_open_count": 2,
+  "requirement_rewrite_input": "docs/beacon/v1.3.5/.machine/execution/requirement-rewrite-input-beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.json",
+  "implement_to_qa_handoff": ".beacon/handoffs/implement-to-qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor/run-20260420T161102Z-f6d1.json",
+  "auto_qa": {
+    "enabled": false,
+    "triggered": false,
+    "args": [],
+    "follow_handoff": false,
+    "max_rounds": 2
+  }
+}

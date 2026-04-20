@@ -1,0 +1,115 @@
+{
+  "schema_version": "1.0",
+  "run_id": "prd-bootstrap-20260420T143057Z",
+  "feature": "beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler",
+  "feature_slug": "beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler",
+  "description": "修复Beacon事务一致多写与LLM需求编译不足，补齐user-story/test-case并确保待实现闭环",
+  "version": "v1.3.5",
+  "generated_at": "2026-04-20T14:30:57.283330+00:00",
+  "mode": "dry-run",
+  "dry_run": true,
+  "no_overwrite": true,
+  "strict_context_verify": true,
+  "targets": {
+    "prd": "docs/beacon/v1.3.5/prd/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.md",
+    "user_story": "docs/beacon/v1.3.5/user-story/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.md",
+    "test_case": "docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.md"
+  },
+  "quality": {
+    "max_placeholders": 0,
+    "total_placeholders": 0,
+    "per_doc": {
+      "prd": 0,
+      "user_story": 0,
+      "test_case": 0
+    },
+    "ok": true
+  },
+  "consistency": {
+    "story_ac_ids": [
+      "AC-001",
+      "AC-002",
+      "AC-003",
+      "AC-004",
+      "AC-005"
+    ],
+    "test_case_ac_ids": [
+      "AC-001",
+      "AC-002",
+      "AC-003",
+      "AC-004",
+      "AC-005"
+    ],
+    "missing_in_test_case": [],
+    "ok": true
+  },
+  "context_verify": {
+    "project_root": "/Users/apple/Developer/Personal/products/beacon",
+    "runtime_version": "v1.3.3",
+    "strict": true,
+    "status": "pass",
+    "ok": true,
+    "checks": [
+      {
+        "name": "context_files_presence",
+        "status": "pass",
+        "details": {
+          "missing": []
+        }
+      },
+      {
+        "name": "managed_block_integrity",
+        "status": "pass",
+        "details": {
+          "issues": []
+        }
+      },
+      {
+        "name": "managed_block_version_drift",
+        "status": "pass",
+        "details": {
+          "drifted": [],
+          "unknown": []
+        }
+      },
+      {
+        "name": "global_boundaries_presence",
+        "status": "pass",
+        "details": {
+          "path": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/global-boundaries.md",
+          "exists": true
+        }
+      },
+      {
+        "name": "global_boundaries_inheritance",
+        "status": "pass",
+        "details": {
+          "missing_references": []
+        }
+      }
+    ],
+    "files": {
+      "CLAUDE.md": {
+        "path": "/Users/apple/Developer/Personal/products/beacon/CLAUDE.md",
+        "exists": true,
+        "marker_integrity": "ok",
+        "managed_version": "v1.3.3",
+        "managed_docs_version": "v1.3.4",
+        "version_drift": false
+      },
+      "AGENTS.md": {
+        "path": "/Users/apple/Developer/Personal/products/beacon/AGENTS.md",
+        "exists": true,
+        "marker_integrity": "ok",
+        "managed_version": "v1.3.3",
+        "managed_docs_version": "v1.3.4",
+        "version_drift": false
+      }
+    }
+  },
+  "status": "planned",
+  "reason_code": "",
+  "recommended_command": "",
+  "write_actions": [],
+  "rollback_plan": []
+}

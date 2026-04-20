@@ -1,10 +1,10 @@
 {
   "schema_version": "1.0",
   "version": "v1.3.3",
-  "feature": "beacon-v1.3.3-minimal-hud-scenarios-and-implementation",
-  "run_id": "run-20260416T141049Z-84ce",
-  "generated_at": "2026-04-17T05:01:12.516003+00:00",
-  "status": "pass",
+  "feature": "登录功能",
+  "run_id": "run-20260420T160405Z-1613",
+  "generated_at": "2026-04-20T16:04:06.341720+00:00",
+  "status": "warn",
   "strict_required": true,
   "repo_url": "https://github.com/justin-mc-lai/beacon.git",
   "version_ref": "v1.3.3",
@@ -16,19 +16,22 @@
   "git_refs": {
     "base_branch": "main",
     "target_branch": "beacon/v1.3.3",
-    "current_branch": "beacon/v1.3.3",
-    "commit": "6f322e09ff1736be1d5c16b03a64de5b9ba2a64b",
+    "current_branch": "beacon/v1.3.5",
+    "commit": "a08d4bdb6ed4e30f01d77371367bdc067ff2d7f6",
     "tag": "",
-    "worktree_path": "."
+    "worktree_path": "/Users/apple/Developer/Personal/products/beacon"
   },
   "alignment": {
-    "branch_matches_target": true,
+    "branch_matches_target": false,
     "branch_has_required_prefix": true,
     "tag_matches_version": false,
-    "version_ref_satisfied": true
+    "version_ref_satisfied": false
   },
-  "reason_codes": [],
-  "blocked": false,
+  "reason_codes": [
+    "git_branch_target_mismatch",
+    "git_version_ref_not_satisfied"
+  ],
+  "blocked": true,
   "notes": [
     "Git alignment is validated against target branch or exact version tag.",
     "This artifact is intended for doctor verify-git-alignment and delivery gate checks."

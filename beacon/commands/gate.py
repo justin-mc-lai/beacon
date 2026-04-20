@@ -30,6 +30,7 @@ from beacon.utils.implementation_plan import (
 )
 from beacon.utils.qa_precision import load_feature_qa_ac_closure, load_feature_qa_scorecard
 from beacon.utils.prototype_support import feature_requires_route_closure, prototype_status, version_requires_prototype
+from beacon.utils.runtime_projection_store import runtime_projection_transaction_contract
 from beacon.utils.requirement_clarity import (
     build_requirement_clarity_gate_payload,
     load_requirement_clarity_state,
@@ -189,6 +190,8 @@ REASON_CODES = [
     "prototype_surface_unbound",
     "prototype_route_closure_drift",
     "prototype_fake_jump",
+    "runtime_projection_failed_transaction",
+    "runtime_projection_drift",
     "formal_package_closure_missing",
     "user_story_acceptance_missing",
     "test_case_traceability_missing",
@@ -1196,6 +1199,18 @@ def check_prototype_contract(
                 "message": f"prototype artifacts inconsistent for feature {feature_dir.name}",
                 "details": {"reasons": payload.get("inconsistent_reasons", [])},
             })
+        if str(payload.get("drift_status") or "") == "drift":
+            issues.append({
+                "reason_code": "prototype_artifact_inconsistent",
+                "blocked": True,
+                "message": f"prototype cross-sink drift detected for feature {feature_dir.name}",
+            })
+        if str(payload.get("sqlite_projection_status") or "") == "fail":
+            issues.append({
+                "reason_code": "prototype_artifact_inconsistent",
+                "blocked": True,
+                "message": f"prototype sqlite projection missing for feature {feature_dir.name}",
+            })
         if prototype_mode and prototype_mode != "wireframe":
             issues.append({
                 "reason_code": "prototype_artifact_inconsistent",
@@ -1292,6 +1307,11 @@ def check_prototype_contract(
             "theme": "prototype_theme_contract_missing",
             "navigation_map": "prototype_navigation_contract_missing",
             "navigation_map_md": "prototype_navigation_contract_missing",
+            "state_flow_map": "prototype_navigation_contract_missing",
+            "state_flow_map_md": "prototype_navigation_contract_missing",
+            "component_catalog": "prototype_interaction_contract_missing",
+            "component_catalog_md": "prototype_interaction_contract_missing",
+            "canonical_envelope": "prototype_artifact_inconsistent",
             "interaction_map": "prototype_interaction_contract_missing",
             "review_json": "prototype_review_missing",
             "review_md": "prototype_review_missing",
@@ -1349,6 +1369,49 @@ def check_prototype_contract(
                 "message": f"design review outcome blocked for feature {feature_dir.name}",
             })
     return issues
+
+
+def check_runtime_projection_transaction_contract(
+    project_root: Path,
+    mode: GateMode,
+    stage: str,
+    version: Optional[str] = None,
+) -> List[Dict[str, Any]]:
+    if stage not in {"prototype", "test-case", "release"}:
+        return []
+    if mode not in {GateMode.STRICT, GateMode.DEBUG}:
+        return []
+    resolved_version = resolve_target_version(project_root, version)
+    if _parse_semver_tuple(resolved_version) < (1, 3, 5):
+        return []
+    try:
+        contract = runtime_projection_transaction_contract(
+            project_root=project_root,
+            docs_version=resolved_version,
+            feature=None,
+        )
+    except Exception:  # noqa: BLE001
+        return []
+    status = str(contract.get("status") or "warn").lower()
+    if status == "pass":
+        return []
+    if status == "fail":
+        return [
+            {
+                "reason_code": str(contract.get("reason_code") or "runtime_projection_failed_transaction"),
+                "blocked": True,
+                "message": str(contract.get("message") or "runtime projection transaction contract failed"),
+                "details": contract.get("details", {}),
+            }
+        ]
+    return [
+        {
+            "reason_code": "runtime_projection_drift",
+            "blocked": False,
+            "message": str(contract.get("message") or "runtime projection transaction contract not fully available"),
+            "details": contract.get("details", {}),
+        }
+    ]
 
 
 def _load_json_file(path: Path) -> tuple[Optional[Dict[str, Any]], str]:
@@ -1978,7 +2041,7 @@ def check_v131_human_loop_contract(
     resolved_runtime = resolve_runtime_version(project_root, "auto")
     if not project_runtime_feature_enabled(
         project_root,
-        "v1.3.3",
+        "v1.3.1",
         docs_version=resolved_version,
         runtime_version=resolved_runtime,
     ):
@@ -3376,6 +3439,7 @@ def run_gate_checks(
                 typer.echo("[DEBUG] [stage-local] Checking test execution integrity...")
             all_issues.extend(check_test_execution_integrity(project_root, mode, stage))
             all_issues.extend(check_prototype_contract(project_root, mode, stage, version))
+            all_issues.extend(check_runtime_projection_transaction_contract(project_root, mode, stage, version))
             if mode == GateMode.DEBUG:
                 typer.echo("[DEBUG] [stage-local] Checking coverage metrics...")
             all_issues.extend(check_coverage_metrics(project_root, mode, stage, version=version))
@@ -3417,6 +3481,7 @@ def run_gate_checks(
         all_issues.extend(check_v131_human_loop_contract(project_root, mode, stage, version))
         all_issues.extend(check_v110_precision_contract(project_root, mode, stage, version))
         all_issues.extend(check_prototype_contract(project_root, mode, stage, version))
+        all_issues.extend(check_runtime_projection_transaction_contract(project_root, mode, stage, version))
 
         if mode == GateMode.STRICT or mode == GateMode.DEBUG:
             if mode == GateMode.DEBUG:

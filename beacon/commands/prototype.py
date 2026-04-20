@@ -173,6 +173,10 @@ def directory(
         "generated_state_variants": coverage.get("required_states", []),
         "review_status": status.get("review_status"),
         "design_review_outcome": status.get("design_review_outcome"),
+        "human_view_status": status.get("human_view_status"),
+        "machine_contract_status": status.get("machine_contract_status"),
+        "sqlite_projection_status": status.get("sqlite_projection_status"),
+        "drift_status": status.get("drift_status"),
         "gate_ready": bool(status.get("gate_ready")),
     }
     if json_output:
@@ -189,6 +193,10 @@ def directory(
     typer.echo(f"pages         : {len(payload.get('generated_pages', []))}")
     typer.echo(f"state_variants: {len(payload.get('generated_state_variants', []))}")
     typer.echo(f"review        : {payload.get('review_status')}")
+    typer.echo(f"human_view    : {payload.get('human_view_status')}")
+    typer.echo(f"machine_view  : {payload.get('machine_contract_status')}")
+    typer.echo(f"sqlite_view   : {payload.get('sqlite_projection_status')}")
+    typer.echo(f"drift         : {payload.get('drift_status')}")
     typer.echo(f"gate_ready    : {payload.get('gate_ready')}")
 
 
@@ -292,6 +300,10 @@ def status(
     typer.echo(f"mode         : {payload.get('prototype_mode', 'wireframe')}")
     typer.echo(f"ui_kit       : {payload.get('ui_kit')}")
     typer.echo(f"review       : {payload.get('review_status')}")
+    typer.echo(f"human_view   : {payload.get('human_view_status')}")
+    typer.echo(f"machine_view : {payload.get('machine_contract_status')}")
+    typer.echo(f"sqlite_view  : {payload.get('sqlite_projection_status')}")
+    typer.echo(f"drift        : {payload.get('drift_status')}")
     typer.echo(f"gate_ready   : {bool(payload.get('gate_ready'))}")
     typer.echo(f"path         : {payload['files']['wireframe_summary']}")
     typer.echo(f"stale        : {bool(payload.get('stale'))}")

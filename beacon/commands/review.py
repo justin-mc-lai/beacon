@@ -25,6 +25,7 @@ from beacon.utils.project_skills import evaluate_project_profile_gate
 from beacon.utils.prototype_utils import evaluate_prototype_status, review_prototype_bundle
 from beacon.utils.qa_runtime import load_qa_status
 from beacon.utils.requirement_closure import build_requirement_closure
+from beacon.utils.runtime_projection_store import runtime_projection_transaction_contract
 from beacon.utils.runtime import now_iso
 from beacon.utils.story_state import load_story_state
 from beacon.utils.v115_delivery import refresh_evidence_manifest
@@ -369,6 +370,25 @@ def review_spec(
                 }
             )
 
+    try:
+        runtime_tx_contract = runtime_projection_transaction_contract(
+            project_root=project_root,
+            docs_version=resolved_version,
+            feature=feature,
+        )
+    except Exception:  # noqa: BLE001
+        runtime_tx_contract = {"status": "warn"}
+    if str(runtime_tx_contract.get("status") or "").lower() == "fail":
+        issues.append(
+            {
+                "reason_code": str(runtime_tx_contract.get("reason_code") or "runtime_projection_failed_transaction"),
+                "severity": "critical",
+                "message": str(runtime_tx_contract.get("message") or "runtime projection transaction contract failed"),
+                "details": runtime_tx_contract.get("details", {}),
+            }
+        )
+        recommendations.append("Run `beacon doctor rebuild-runtime-ledger --project-root . --version <version>` and clear failed runtime transaction before spec/release.")
+
     implementation_summary = {}
     if paths["implementation_summary"].exists():
         try:
@@ -553,6 +573,25 @@ def review_quality(
                 }
             )
             recommendations.append("Review/freeze the prototype bundle before final gate.")
+
+    try:
+        runtime_tx_contract = runtime_projection_transaction_contract(
+            project_root=project_root,
+            docs_version=resolved_version,
+            feature=feature,
+        )
+    except Exception:  # noqa: BLE001
+        runtime_tx_contract = {"status": "warn"}
+    if str(runtime_tx_contract.get("status") or "").lower() == "fail":
+        issues.append(
+            {
+                "reason_code": str(runtime_tx_contract.get("reason_code") or "runtime_projection_failed_transaction"),
+                "severity": "critical",
+                "message": str(runtime_tx_contract.get("message") or "runtime projection transaction contract failed"),
+                "details": runtime_tx_contract.get("details", {}),
+            }
+        )
+        recommendations.append("Rebuild runtime ledger and ensure transaction metadata consistency before quality gate.")
 
     coverage = compute_coverage_metrics(project_root, version=resolved_version, feature=feature)
     if not bool(coverage.get("full_coverage")):

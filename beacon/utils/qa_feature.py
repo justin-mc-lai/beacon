@@ -364,6 +364,11 @@ def _previous_evidence_done(
     feature_scorecard = previous.get("feature_scorecard")
     if not isinstance(feature_scorecard, dict) or not feature_scorecard:
         return False
+    scenario_results = previous.get("scenario_results_v2") if isinstance(previous.get("scenario_results_v2"), list) else []
+    coverage_current = feature_scorecard.get("coverage_current") if isinstance(feature_scorecard.get("coverage_current"), dict) else {}
+    executed_scenarios = int(coverage_current.get("executed_scenarios") or 0)
+    if executed_scenarios <= 0 and not scenario_results:
+        return False
     return True
 
 

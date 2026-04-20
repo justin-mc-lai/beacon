@@ -44,6 +44,27 @@ _REQUIRED_LIST_FIELDS = (
 )
 
 
+def _normalize_string_list(values: Any) -> list[str]:
+    if not isinstance(values, list):
+        return []
+    out: list[str] = []
+    for value in values:
+        text = str(value or "").strip()
+        if text and text not in out:
+            out.append(text)
+    return out
+
+
+def _derive_direct_delivery_services(payload: dict[str, Any]) -> list[str]:
+    direct = _normalize_string_list(payload.get("direct_delivery_services"))
+    if direct:
+        return direct
+    service_directories = _normalize_string_list(payload.get("service_directories"))
+    if service_directories:
+        return service_directories
+    return _normalize_string_list(payload.get("writable_services"))
+
+
 def technical_review_contract_supported(version: str | None) -> bool:
     normalized_full = normalize_version(version) or "v0.0.0"
     normalized = release_line_key(version) or normalized_full
@@ -101,32 +122,38 @@ def approved_technical_review_contract(project_root: Path, *, version: str = "au
 def technical_review_git_workflow_seed(contract: dict[str, Any]) -> dict[str, Any]:
     if not isinstance(contract, dict):
         return {}
-    service_directories = [
-        str(item).strip()
-        for item in (
-            contract.get("writable_services")
-            if isinstance(contract.get("writable_services"), list) and contract.get("writable_services")
-            else contract.get("service_directories")
-            if isinstance(contract.get("service_directories"), list)
-            else []
-        )
-        if str(item).strip()
-    ]
+    service_directories = _normalize_string_list(
+        contract.get("service_directories")
+        if isinstance(contract.get("service_directories"), list) and contract.get("service_directories")
+        else contract.get("writable_services")
+    )
+    direct_delivery_services = _derive_direct_delivery_services(contract)
+    target_branch = str(contract.get("target_branch", "") or "")
     mode = "workspace" if service_directories and service_directories != ["."] else "single-repo"
+    implementation_preflight = [
+        (
+            "Before implementation, verify the target service belongs to: "
+            + ", ".join(direct_delivery_services or service_directories or ["."])
+        ),
+        f"Before implementation, verify the current branch is {target_branch}.",
+        "If a branch switch is needed and the worktree is dirty, stop and clean or stash first.",
+    ]
     return {
         "schema_version": "1.0",
         "feature": str(contract.get("feature", "") or ""),
         "feature_slug": str(contract.get("feature_slug", "") or ""),
         "version": str(contract.get("version", "") or ""),
         "mode": mode,
-        "expected_branch": str(contract.get("target_branch", "") or ""),
+        "expected_branch": target_branch,
         "branch_prefix": str(contract.get("branch_prefix", "") or ""),
         "base_branch": str(contract.get("base_branch", "") or ""),
         "use_git_worktree": bool(contract.get("use_git_worktree", False)),
         "require_clean_worktree_for_switch": bool(contract.get("require_clean_worktree_for_switch", True)),
         "service_directories": service_directories,
+        "direct_delivery_services": direct_delivery_services,
         "git_roots": service_directories,
         "worktree_root": str(contract.get("worktree_root", "") or ""),
+        "implementation_preflight": implementation_preflight,
         "source": "technical_review_contract",
         "generated_at": now_iso(),
     }
@@ -179,6 +206,7 @@ def _default_technical_review_contract(project_root: Path, *, version: str, feat
     if not branch_prefix:
         branch_prefix = target_branch.split("/", 1)[0] + "/" if "/" in target_branch else "beacon/"
     service_directories = git_roots or ["."]
+    direct_delivery_services = list(service_directories)
     return {
         "schema_version": "1.0",
         "feature": feature,
@@ -199,6 +227,7 @@ def _default_technical_review_contract(project_root: Path, *, version: str, feat
         "protected_resources": [],
         "service_directories": service_directories,
         "writable_services": service_directories,
+        "direct_delivery_services": direct_delivery_services,
         "reference_only_services": ["docs"],
         "excluded_services": [],
         "gateway_services": [],
@@ -258,6 +287,7 @@ def _render_technical_review_contract_markdown(payload: dict[str, Any]) -> str:
     ]
     lines.extend(_list_block("Service Directories", payload.get("service_directories") if isinstance(payload.get("service_directories"), list) else []))
     lines.extend(_list_block("Writable Services", payload.get("writable_services") if isinstance(payload.get("writable_services"), list) else []))
+    lines.extend(_list_block("Direct Delivery Services", _derive_direct_delivery_services(payload)))
     lines.extend(_list_block("Reference-only Services", payload.get("reference_only_services") if isinstance(payload.get("reference_only_services"), list) else []))
     boundary_principles = payload.get("boundary_principles") if isinstance(payload.get("boundary_principles"), list) else []
     lines.append("## Boundary Principles")
@@ -364,6 +394,10 @@ def materialize_technical_review_contract(
             payload[key] = value
     if revision_id:
         payload["revision_id"] = revision_id
+    payload["service_directories"] = _normalize_string_list(payload.get("service_directories")) or ["."]
+    payload["writable_services"] = _normalize_string_list(payload.get("writable_services")) or list(payload["service_directories"])
+    payload["reference_only_services"] = _normalize_string_list(payload.get("reference_only_services")) or ["docs"]
+    payload["direct_delivery_services"] = _derive_direct_delivery_services(payload)
     payload["feature"] = feature
     payload["feature_slug"] = feature_slug(feature)
     payload["version"] = resolved_version
@@ -402,10 +436,10 @@ def build_technical_review_gate_payload(
         "feature_slug": feature_slug(feature),
         "version": resolved_version,
         "runtime_version": resolved_runtime,
-        "runtime_capability_line": "v1.3.3",
+        "runtime_capability_line": "v1.3.1",
         "required": project_runtime_feature_enabled(
             project_root,
-            "v1.3.3",
+            "v1.3.1",
             docs_version=resolved_version,
             runtime_version=resolved_runtime,
         ),

@@ -1,0 +1,43 @@
+# 页面线框：展示型 demo 页面
+
+**页面 ID**: `demo`
+**平台**: `Web, PC`
+**优先级**: `P1`
+
+## 页面职责
+- 冻结 `展示型 demo 页面` 的页面结构、关键动作和状态说明，确保与 requirement 材料一致。
+
+## 关联 Requirement
+- `user-story`: docs/beacon/v1.3.5/user-story/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md
+- `prd`: docs/beacon/v1.3.5/prd/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md
+- `test-case`: docs/beacon/v1.3.5/qa/test-cases/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.md
+
+## 布局草图
+```text
++-----------------------------+
+| 页面头部                     |
++-----------------------------+
+| 关键内容区                    |
++-----------------------------+
+| 主要操作区                    |
++-----------------------------+
+| 状态与反馈区                   |
++-----------------------------+
+```
+
+## 关键模块
+- 页面头部
+- 关键内容区
+- 主要操作区
+- 状态与反馈区
+
+## 用户动作
+
+## 状态说明
+- `ready` / 可用: 页面数据齐备，用户可完成核心操作。
+- `loading` / 加载中: 页面数据正在加载。
+- `error` / 错误: 页面加载或提交失败，需提示恢复动作。
+
+## 实现接力备注
+- 当前页面是 requirement freeze wireframe，不是高保真视觉稿。
+- 实现阶段必须回链本页与 navigation-map / wireframe-summary。
