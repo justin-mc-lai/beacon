@@ -1,30 +1,292 @@
 {
-  "schema_version": "1.0",
-  "feature": "beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane",
-  "feature_slug": "beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane",
-  "version": "v1.3.4",
-  "generated_at": "2026-04-17T05:46:31.114720+00:00",
-  "execution_mode": "feature-aware",
+  "scope": "qa9",
+  "timestamp": "2026-04-20T18:23:31.188191",
+  "project": "/Users/apple/Developer/Personal/products/beacon",
+  "version": "v1.3.5",
+  "run_id": "run-20260420T182331187681",
+  "spec_fingerprint_hash": "511701dcd9c32297028da318542fd07e65abdf079cc687ce270d85cef945cef0",
   "status": "passed",
+  "selected_layers": [
+    "contract",
+    "integration",
+    "regression"
+  ],
+  "execution": {
+    "run_id": "run-20260420T182331187681",
+    "version": "v1.3.5",
+    "evidence_dir": ".beacon/evidence/auto-test/run-20260420T182331187681",
+    "spec_fingerprint": {
+      "fingerprint_hash": "511701dcd9c32297028da318542fd07e65abdf079cc687ce270d85cef945cef0",
+      "version": "v1.3.5",
+      "generated_at": "2026-04-20T10:23:43.968802+00:00"
+    },
+    "layers": [
+      {
+        "layer": "contract",
+        "command": "python3 -m pytest -q tests/test_v135_prototype_projection_consistency.py --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "exit_code": 0,
+        "status": "passed",
+        "assertion_count": 1,
+        "was_flaky": false,
+        "attempt_count": 1,
+        "attempts": [
+          {
+            "attempt": 1,
+            "exit_code": 0
+          }
+        ],
+        "execution_fingerprint": "39bde85a9e22e29156911b3a59621e8e8713cad78b4d3f2b9fb87dccfec4040b",
+        "started_at": "2026-04-20T18:23:31.188485",
+        "ended_at": "2026-04-20T18:23:32.013260",
+        "junit_path": ".beacon/evidence/auto-test/run-20260420T182331187681/contract/junit.xml",
+        "junit_valid": true,
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260420T182331187681/contract/command.txt",
+          ".beacon/evidence/auto-test/run-20260420T182331187681/contract/stdout.log",
+          ".beacon/evidence/auto-test/run-20260420T182331187681/contract/stderr.log",
+          ".beacon/evidence/auto-test/run-20260420T182331187681/contract/junit.xml",
+          ".beacon/evidence/auto-test/run-20260420T182331187681/contract/result.json"
+        ]
+      },
+      {
+        "layer": "integration",
+        "command": "python3 -m pytest -q -k integration --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "exit_code": 0,
+        "status": "passed",
+        "assertion_count": 13,
+        "was_flaky": false,
+        "attempt_count": 1,
+        "attempts": [
+          {
+            "attempt": 1,
+            "exit_code": 0
+          }
+        ],
+        "execution_fingerprint": "908886543e22e726780a3550a99d09a6b04ab42de5fc86b2fc888d121e3a854b",
+        "started_at": "2026-04-20T18:23:32.014204",
+        "ended_at": "2026-04-20T18:23:36.778753",
+        "junit_path": ".beacon/evidence/auto-test/run-20260420T182331187681/integration/junit.xml",
+        "junit_valid": true,
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260420T182331187681/integration/command.txt",
+          ".beacon/evidence/auto-test/run-20260420T182331187681/integration/stdout.log",
+          ".beacon/evidence/auto-test/run-20260420T182331187681/integration/stderr.log",
+          ".beacon/evidence/auto-test/run-20260420T182331187681/integration/junit.xml",
+          ".beacon/evidence/auto-test/run-20260420T182331187681/integration/result.json"
+        ]
+      },
+      {
+        "layer": "regression",
+        "command": "python3 -m pytest -q tests/test_v135_prototype_projection_consistency.py --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "exit_code": 0,
+        "status": "passed",
+        "assertion_count": 1,
+        "was_flaky": false,
+        "attempt_count": 1,
+        "attempts": [
+          {
+            "attempt": 1,
+            "exit_code": 0
+          }
+        ],
+        "execution_fingerprint": "c008536282ff33e2fc065f2a5330c8ab40a61b8326a1c3adc763f7a325975504",
+        "started_at": "2026-04-20T18:23:36.779495",
+        "ended_at": "2026-04-20T18:23:37.558264",
+        "junit_path": ".beacon/evidence/auto-test/run-20260420T182331187681/regression/junit.xml",
+        "junit_valid": true,
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260420T182331187681/regression/command.txt",
+          ".beacon/evidence/auto-test/run-20260420T182331187681/regression/stdout.log",
+          ".beacon/evidence/auto-test/run-20260420T182331187681/regression/stderr.log",
+          ".beacon/evidence/auto-test/run-20260420T182331187681/regression/junit.xml",
+          ".beacon/evidence/auto-test/run-20260420T182331187681/regression/result.json"
+        ]
+      }
+    ],
+    "ui_action_evidence": {},
+    "matrix_report": {
+      "status": "ok",
+      "matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor/matrix.qa9.json",
+      "evidence_generated": 3,
+      "entry_count": 3,
+      "freshness_violations": []
+    },
+    "artifacts": [
+      ".beacon/evidence/auto-test/run-20260420T182331187681/qa9/tc-execution-map.json",
+      ".beacon/evidence/auto-test/run-20260420T182331187681/qa9/tc-results.json",
+      ".beacon/evidence/auto-test/run-20260420T182331187681/summary.json",
+      ".beacon/flaky-history.json",
+      ".beacon/evidence-signature-chain.json"
+    ],
+    "qa9_matrix_schema_version": "1.0",
+    "flaky": {
+      "pass_count": 3,
+      "flaky_pass_count": 0,
+      "flaky_rate": 0.0,
+      "max_flaky_rate": 0.02
+    }
+  },
+  "qa9": {
+    "qa_profile": "web-full",
+    "qa_types": [
+      "contract",
+      "integration",
+      "regression"
+    ],
+    "qa_matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor/matrix.qa9.json",
+    "ui_runner": "browser-use",
+    "quality_requirements": {
+      "require_junit": true,
+      "require_assertion_count": true
+    },
+    "compatibility": {
+      "browsers": [],
+      "devices": [],
+      "required_pairs": [],
+      "executed_pairs": []
+    },
+    "summary": {
+      "cases_total": 3,
+      "passed": 3,
+      "failed": 0,
+      "blocked": 0,
+      "pending": 0,
+      "pass_rate": 1.0,
+      "automation_rate": 1.0,
+      "auto_cases_total": 3,
+      "auto_cases_executed": 3,
+      "round_stop_triggered": false,
+      "round_stop_reasons": []
+    },
+    "tc_results": [
+      {
+        "tc_id": "TC-012",
+        "ac_id": "AC-005",
+        "source_tc_id": "TC-012",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_v135_prototype_projection_consistency.py --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260420T182331187681",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor/tc-012/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260420T182331187681/qa9-tc/TC-012/command.txt",
+          ".beacon/evidence/auto-test/run-20260420T182331187681/qa9-tc/TC-012/stdout.log",
+          ".beacon/evidence/auto-test/run-20260420T182331187681/qa9-tc/TC-012/stderr.log",
+          ".beacon/evidence/auto-test/run-20260420T182331187681/qa9-tc/TC-012/junit.xml",
+          ".beacon/evidence/auto-test/run-20260420T182331187681/qa9-tc/TC-012/result.json"
+        ],
+        "execution_fingerprint": "9d2f0e83428fa1e49f888d7d82f75854bd9225549104dce55cab1264a2ba94f1",
+        "started_at": "2026-04-20T18:23:37.559934",
+        "ended_at": "2026-04-20T18:23:38.347384",
+        "junit_path": ".beacon/evidence/auto-test/run-20260420T182331187681/qa9-tc/TC-012/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-013",
+        "ac_id": "AC-006",
+        "source_tc_id": "TC-013",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "integration",
+        "layer": "integration",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 13,
+        "command": "python3 -m pytest -q -k integration --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260420T182331187681",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor/tc-013/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260420T182331187681/qa9-tc/TC-013/command.txt",
+          ".beacon/evidence/auto-test/run-20260420T182331187681/qa9-tc/TC-013/stdout.log",
+          ".beacon/evidence/auto-test/run-20260420T182331187681/qa9-tc/TC-013/stderr.log",
+          ".beacon/evidence/auto-test/run-20260420T182331187681/qa9-tc/TC-013/junit.xml",
+          ".beacon/evidence/auto-test/run-20260420T182331187681/qa9-tc/TC-013/result.json"
+        ],
+        "execution_fingerprint": "e2d1d65b31dfed00cc6c54329a74bddd229462efaa5187a887c265a17daca56d",
+        "started_at": "2026-04-20T18:23:38.348139",
+        "ended_at": "2026-04-20T18:23:43.116617",
+        "junit_path": ".beacon/evidence/auto-test/run-20260420T182331187681/qa9-tc/TC-013/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-015",
+        "ac_id": "AC-002",
+        "source_tc_id": "TC-015",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "regression",
+        "layer": "regression",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_v135_prototype_projection_consistency.py --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260420T182331187681",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor/tc-015/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260420T182331187681/qa9-tc/TC-015/command.txt",
+          ".beacon/evidence/auto-test/run-20260420T182331187681/qa9-tc/TC-015/stdout.log",
+          ".beacon/evidence/auto-test/run-20260420T182331187681/qa9-tc/TC-015/stderr.log",
+          ".beacon/evidence/auto-test/run-20260420T182331187681/qa9-tc/TC-015/junit.xml",
+          ".beacon/evidence/auto-test/run-20260420T182331187681/qa9-tc/TC-015/result.json"
+        ],
+        "execution_fingerprint": "e22f34cff27679ac8b2ee3ce0e51786e6d1877c7437e34153d97dc141428827a",
+        "started_at": "2026-04-20T18:23:43.117384",
+        "ended_at": "2026-04-20T18:23:43.908337",
+        "junit_path": ".beacon/evidence/auto-test/run-20260420T182331187681/qa9-tc/TC-015/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      }
+    ]
+  },
+  "quality_issues": [],
+  "schema_version": "1.0",
+  "updated_at": "2026-04-20T10:23:43.936542+00:00",
+  "feature": "beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor",
+  "feature_slug": "beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor",
   "implementation_done": true,
   "evidence_done": true,
-  "current_spec_fingerprint_hash": "7a51c77bfbf77c22e0427ea116d4aeb777127c8454ffac6bc9016434abd6e948",
-  "current_baseline_hash": "sha256:b4c3c261e6e63aae01cf04a5308969d68fd635419f56aac6081b07cc31f899c6",
-  "implementation_run_id": "run-20260416T151139Z-de5e",
-  "source_matrix_path": "docs/beacon/v1.3.3/.machine/qa/beacon-v1.3.3-core-slimming-and-external-skill-demotion.qa9-matrix.json",
-  "derived_matrix_path": ".beacon/qa/features/beacon-v1.3.3-core-slimming-and-external-skill-demotion/matrix.qa9.json",
-  "story_scenario_map_path": ".beacon/qa/features/beacon-v1.3.3-core-slimming-and-external-skill-demotion/story-scenario-map.json",
-  "docs_story_scenario_map_path": "docs/beacon/v1.3.3/.machine/qa/beacon-v1.3.3-core-slimming-and-external-skill-demotion.story-scenario-map.json",
-  "technical_archive_path": "docs/beacon/v1.3.3/.machine/execution/technical-implementation-beacon-v1.3.3-core-slimming-and-external-skill-demotion.json",
-  "feature_status_path": ".beacon/qa/features/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane/status.json",
   "story_sequence": [
     {
       "ac_id": "AC-001",
-      "theme": "minimal-mainline",
-      "text": "Beacon 默认主叙事必须继续保持 `6+3`，不得把 `skill / profile / orchestrate` 作为普通用户主教学路径。",
+      "theme": "general",
+      "text": "`prototype` 默认与唯一正式模式是 `wireframe`，不再以 HTML 高保真原型作为交付语义。",
       "tc_ids": [
         "TC-001",
-        "TC-013"
+        "TC-011"
       ],
       "qa_types": [
         "interface",
@@ -32,12 +294,12 @@
       ]
     },
     {
-      "ac_id": "AC-002",
-      "theme": "external-runner-demotion",
-      "text": "`omx / omc / gstack` 必须被定义为 compatibility plane，而不是 Beacon core 默认能力。",
+      "ac_id": "AC-005",
+      "theme": "general",
+      "text": "Beacon 人类主链明确包含 `prototype` 阶段，且其职责固定为 wireframe freeze（位于 test-case 与 implement 之间）。",
       "tc_ids": [
         "TC-002",
-        "TC-014"
+        "TC-012"
       ],
       "qa_types": [
         "contract",
@@ -45,12 +307,12 @@
       ]
     },
     {
-      "ac_id": "AC-003",
-      "theme": "host-native-default",
-      "text": "`implement` 默认执行面必须继续保持宿主原生优先，不得回退成外部 runner 优先。",
+      "ac_id": "AC-006",
+      "theme": "general",
+      "text": "`beacon-prototype` 成为唯一 host-visible 原型子 skill，默认解释为 requirement-driven wireframe freeze。",
       "tc_ids": [
         "TC-003",
-        "TC-015"
+        "TC-013"
       ],
       "qa_types": [
         "integration",
@@ -58,12 +320,12 @@
       ]
     },
     {
-      "ac_id": "AC-004",
-      "theme": "qa-no-implicit-orchestration",
-      "text": "`qa` 默认不得隐式自动执行 project orchestration；只有显式 mode 或开关下才允许。",
+      "ac_id": "AC-007",
+      "theme": "general",
+      "text": "`wireframe.py` 退出正式流程，不再作为平行入口与 `prototype` 竞争语义。",
       "tc_ids": [
         "TC-004",
-        "TC-016"
+        "TC-014"
       ],
       "qa_types": [
         "smoke",
@@ -71,51 +333,38 @@
       ]
     },
     {
-      "ac_id": "AC-005",
-      "theme": "ralph-bridge-demotion",
-      "text": "`ralph-bridge` 必须退出正式主叙事，只能作为 deprecated compatibility 或被内化替代。",
+      "ac_id": "AC-002",
+      "theme": "general",
+      "text": "wireframe 包可独立冻结页面清单、页面职责、路由关系、状态说明，不依赖 HTML 页面。",
       "tc_ids": [
         "TC-005",
-        "TC-017"
+        "TC-015"
       ],
       "qa_types": [
         "functional",
-        "unit"
+        "regression"
       ]
     },
     {
-      "ac_id": "AC-006",
-      "theme": "docs-teach-6-plus-3",
-      "text": "README / help / host skill 文案必须只教学 `6+3` 默认主面。",
+      "ac_id": "AC-003",
+      "theme": "general",
+      "text": "每个页面都可追溯到 PRD 承诺、user story 与 test-case 场景，满足 requirement-driven 闭环。",
       "tc_ids": [
         "TC-006",
-        "TC-018"
-      ],
-      "qa_types": [
-        "regression",
-        "unit"
-      ]
-    },
-    {
-      "ac_id": "AC-007",
-      "theme": "core-vs-compat-tests",
-      "text": "测试必须拆分为 core 与 compatibility，两者责任边界明确。",
-      "tc_ids": [
-        "TC-007",
-        "TC-019"
+        "TC-016"
       ],
       "qa_types": [
         "exception",
-        "unit"
+        "functional"
       ]
     },
     {
-      "ac_id": "AC-008",
-      "theme": "layered-discovery",
-      "text": "`skill detect / registry / discovery` 的输出必须分层展示 builtin core 与 external compatibility。",
+      "ac_id": "AC-004",
+      "theme": "general",
+      "text": "`v1.3.5` 输出只负责结构冻结，不反向篡改 `v1.3.6` 产品定义，且可被下游直接消费。",
       "tc_ids": [
-        "TC-008",
-        "TC-020"
+        "TC-007",
+        "TC-017"
       ],
       "qa_types": [
         "compatibility",
@@ -123,9 +372,20 @@
       ]
     },
     {
+      "ac_id": "AC-008",
+      "theme": "general",
+      "text": "`state-flow-map` 可验证关键状态迁移、异常回退与 test-case 映射；缺失时 `prototype review` 必须阻断。",
+      "tc_ids": [
+        "TC-008"
+      ],
+      "qa_types": [
+        "unit"
+      ]
+    },
+    {
       "ac_id": "AC-009",
-      "theme": "contract-decoupled",
-      "text": "project contract 能力必须与 external orchestration 解耦。",
+      "theme": "general",
+      "text": "`component-catalog` 能建立组件职责/动作/状态与 AC/TC 映射；缺失时 `prototype freeze` 必须失败。",
       "tc_ids": [
         "TC-009"
       ],
@@ -135,2365 +395,65 @@
     },
     {
       "ac_id": "AC-010",
-      "theme": "new-user-unblocked",
-      "text": "新用户在默认路径下不应先接触 compatibility plane 命令和概念。",
+      "theme": "general",
+      "text": "human/machine/sqlite 三写入点共享 `source_hash`、`projection_seq`、`transaction_id`；任一不一致必须标记 `drift` 并阻断 release pass。",
       "tc_ids": [
         "TC-010"
       ],
       "qa_types": [
         "unit"
       ]
-    },
-    {
-      "ac_id": "AC-011",
-      "theme": "prd-bootstrap-safe-by-default",
-      "text": "`beacon-prd-bootstrap` 必须支持一键生成 `prd/user-story/test-case`，且默认 `dry-run + no-overwrite + strict context verify + atomic write + rollback/lock`。",
-      "tc_ids": [
-        "TC-011"
-      ],
-      "qa_types": [
-        "unit"
-      ]
-    },
-    {
-      "ac_id": "AC-012",
-      "theme": "codex-fixed-hud-hook",
-      "text": "Codex 输入框下固定 HUD 必须通过 hook 自动注入，覆盖 `UserPromptSubmit` 与会话刷新，且失败可降级不阻断。",
-      "tc_ids": [
-        "TC-012"
-      ],
-      "qa_types": [
-        "unit"
-      ]
     }
   ],
-  "story_scenarios": {
-    "schema_version": "1.0",
-    "feature": "beacon-v1.3.3-core-slimming-and-external-skill-demotion",
-    "feature_slug": "beacon-v1.3.3-core-slimming-and-external-skill-demotion",
-    "version": "v1.3.3",
-    "generated_at": "2026-04-17T04:03:28.459889+00:00",
-    "expansion_profile": "pua-web",
-    "scenario_depth": "standard",
-    "families_required": [
-      "happy",
-      "negative",
-      "boundary",
-      "recovery",
-      "compatibility"
+  "targeted_rerun": {
+    "required": true,
+    "reason_codes": [
+      "previous_feature_qa_not_passed",
+      "artifact_updates_pending"
     ],
-    "stories": [
-      {
-        "ac_id": "AC-001",
-        "theme": "minimal-mainline",
-        "text": "Beacon 默认主叙事必须继续保持 `6+3`，不得把 `skill / profile / orchestrate` 作为普通用户主教学路径。",
-        "scenario_ids": [
-          "SC-001",
-          "SC-002"
-        ],
-        "scenario_families": [
-          "primary",
-          "primary"
-        ],
-        "required_families": [],
-        "scenarios": [
-          {
-            "scenario_id": "SC-001",
-            "source_tc_id": "TC-001",
-            "tc_id": "TC-001-PRIMARY",
-            "scenario_family": "primary",
-            "qa_type": "unit",
-            "browser_required": false,
-            "replay_required": false
-          },
-          {
-            "scenario_id": "SC-002",
-            "source_tc_id": "TC-013",
-            "tc_id": "TC-013-PRIMARY",
-            "scenario_family": "primary",
-            "qa_type": "interface",
-            "browser_required": false,
-            "replay_required": false
-          }
-        ]
-      },
-      {
-        "ac_id": "AC-002",
-        "theme": "external-runner-demotion",
-        "text": "`omx / omc / gstack` 必须被定义为 compatibility plane，而不是 Beacon core 默认能力。",
-        "scenario_ids": [
-          "SC-003",
-          "SC-004"
-        ],
-        "scenario_families": [
-          "primary",
-          "primary"
-        ],
-        "required_families": [],
-        "scenarios": [
-          {
-            "scenario_id": "SC-003",
-            "source_tc_id": "TC-002",
-            "tc_id": "TC-002-PRIMARY",
-            "scenario_family": "primary",
-            "qa_type": "unit",
-            "browser_required": false,
-            "replay_required": false
-          },
-          {
-            "scenario_id": "SC-004",
-            "source_tc_id": "TC-014",
-            "tc_id": "TC-014-PRIMARY",
-            "scenario_family": "primary",
-            "qa_type": "contract",
-            "browser_required": false,
-            "replay_required": false
-          }
-        ]
-      },
-      {
-        "ac_id": "AC-003",
-        "theme": "host-native-default",
-        "text": "`implement` 默认执行面必须继续保持宿主原生优先，不得回退成外部 runner 优先。",
-        "scenario_ids": [
-          "SC-005",
-          "SC-006"
-        ],
-        "scenario_families": [
-          "primary",
-          "primary"
-        ],
-        "required_families": [],
-        "scenarios": [
-          {
-            "scenario_id": "SC-005",
-            "source_tc_id": "TC-003",
-            "tc_id": "TC-003-PRIMARY",
-            "scenario_family": "primary",
-            "qa_type": "unit",
-            "browser_required": false,
-            "replay_required": false
-          },
-          {
-            "scenario_id": "SC-006",
-            "source_tc_id": "TC-015",
-            "tc_id": "TC-015-PRIMARY",
-            "scenario_family": "primary",
-            "qa_type": "integration",
-            "browser_required": false,
-            "replay_required": false
-          }
-        ]
-      },
-      {
-        "ac_id": "AC-004",
-        "theme": "qa-no-implicit-orchestration",
-        "text": "`qa` 默认不得隐式自动执行 project orchestration；只有显式 mode 或开关下才允许。",
-        "scenario_ids": [
-          "SC-007",
-          "SC-008",
-          "SC-009",
-          "SC-010",
-          "SC-011",
-          "SC-012"
-        ],
-        "scenario_families": [
-          "primary",
-          "happy",
-          "negative",
-          "boundary",
-          "recovery",
-          "compatibility"
-        ],
-        "required_families": [
-          "happy",
-          "negative",
-          "boundary",
-          "recovery",
-          "compatibility"
-        ],
-        "scenarios": [
-          {
-            "scenario_id": "SC-007",
-            "source_tc_id": "TC-004",
-            "tc_id": "TC-004-PRIMARY",
-            "scenario_family": "primary",
-            "qa_type": "unit",
-            "browser_required": false,
-            "replay_required": false
-          },
-          {
-            "scenario_id": "SC-008",
-            "source_tc_id": "TC-016",
-            "tc_id": "TC-016-HAPPY",
-            "scenario_family": "happy",
-            "qa_type": "functional",
-            "browser_required": true,
-            "replay_required": true
-          },
-          {
-            "scenario_id": "SC-009",
-            "source_tc_id": "TC-016",
-            "tc_id": "TC-016-NEGATIVE",
-            "scenario_family": "negative",
-            "qa_type": "functional",
-            "browser_required": true,
-            "replay_required": true
-          },
-          {
-            "scenario_id": "SC-010",
-            "source_tc_id": "TC-016",
-            "tc_id": "TC-016-BOUNDARY",
-            "scenario_family": "boundary",
-            "qa_type": "functional",
-            "browser_required": true,
-            "replay_required": false
-          },
-          {
-            "scenario_id": "SC-011",
-            "source_tc_id": "TC-016",
-            "tc_id": "TC-016-RECOVERY",
-            "scenario_family": "recovery",
-            "qa_type": "functional",
-            "browser_required": true,
-            "replay_required": false
-          },
-          {
-            "scenario_id": "SC-012",
-            "source_tc_id": "TC-016",
-            "tc_id": "TC-016-COMPATIBILITY",
-            "scenario_family": "compatibility",
-            "qa_type": "compatibility",
-            "browser_required": true,
-            "replay_required": true
-          }
-        ]
-      },
-      {
-        "ac_id": "AC-005",
-        "theme": "ralph-bridge-demotion",
-        "text": "`ralph-bridge` 必须退出正式主叙事，只能作为 deprecated compatibility 或被内化替代。",
-        "scenario_ids": [
-          "SC-013",
-          "SC-014",
-          "SC-015",
-          "SC-016",
-          "SC-017",
-          "SC-018"
-        ],
-        "scenario_families": [
-          "primary",
-          "happy",
-          "negative",
-          "boundary",
-          "recovery",
-          "compatibility"
-        ],
-        "required_families": [
-          "happy",
-          "negative",
-          "boundary",
-          "recovery",
-          "compatibility"
-        ],
-        "scenarios": [
-          {
-            "scenario_id": "SC-013",
-            "source_tc_id": "TC-005",
-            "tc_id": "TC-005-PRIMARY",
-            "scenario_family": "primary",
-            "qa_type": "unit",
-            "browser_required": false,
-            "replay_required": false
-          },
-          {
-            "scenario_id": "SC-014",
-            "source_tc_id": "TC-017",
-            "tc_id": "TC-017-HAPPY",
-            "scenario_family": "happy",
-            "qa_type": "functional",
-            "browser_required": true,
-            "replay_required": true
-          },
-          {
-            "scenario_id": "SC-015",
-            "source_tc_id": "TC-017",
-            "tc_id": "TC-017-NEGATIVE",
-            "scenario_family": "negative",
-            "qa_type": "functional",
-            "browser_required": true,
-            "replay_required": true
-          },
-          {
-            "scenario_id": "SC-016",
-            "source_tc_id": "TC-017",
-            "tc_id": "TC-017-BOUNDARY",
-            "scenario_family": "boundary",
-            "qa_type": "functional",
-            "browser_required": true,
-            "replay_required": false
-          },
-          {
-            "scenario_id": "SC-017",
-            "source_tc_id": "TC-017",
-            "tc_id": "TC-017-RECOVERY",
-            "scenario_family": "recovery",
-            "qa_type": "functional",
-            "browser_required": true,
-            "replay_required": false
-          },
-          {
-            "scenario_id": "SC-018",
-            "source_tc_id": "TC-017",
-            "tc_id": "TC-017-COMPATIBILITY",
-            "scenario_family": "compatibility",
-            "qa_type": "compatibility",
-            "browser_required": true,
-            "replay_required": true
-          }
-        ]
-      },
-      {
-        "ac_id": "AC-006",
-        "theme": "docs-teach-6-plus-3",
-        "text": "README / help / host skill 文案必须只教学 `6+3` 默认主面。",
-        "scenario_ids": [
-          "SC-019",
-          "SC-020"
-        ],
-        "scenario_families": [
-          "primary",
-          "primary"
-        ],
-        "required_families": [],
-        "scenarios": [
-          {
-            "scenario_id": "SC-019",
-            "source_tc_id": "TC-006",
-            "tc_id": "TC-006-PRIMARY",
-            "scenario_family": "primary",
-            "qa_type": "unit",
-            "browser_required": false,
-            "replay_required": false
-          },
-          {
-            "scenario_id": "SC-020",
-            "source_tc_id": "TC-018",
-            "tc_id": "TC-018-PRIMARY",
-            "scenario_family": "primary",
-            "qa_type": "regression",
-            "browser_required": false,
-            "replay_required": false
-          }
-        ]
-      },
-      {
-        "ac_id": "AC-007",
-        "theme": "core-vs-compat-tests",
-        "text": "测试必须拆分为 core 与 compatibility，两者责任边界明确。",
-        "scenario_ids": [
-          "SC-021",
-          "SC-022"
-        ],
-        "scenario_families": [
-          "primary",
-          "primary"
-        ],
-        "required_families": [],
-        "scenarios": [
-          {
-            "scenario_id": "SC-021",
-            "source_tc_id": "TC-007",
-            "tc_id": "TC-007-PRIMARY",
-            "scenario_family": "primary",
-            "qa_type": "unit",
-            "browser_required": false,
-            "replay_required": false
-          },
-          {
-            "scenario_id": "SC-022",
-            "source_tc_id": "TC-019",
-            "tc_id": "TC-019-PRIMARY",
-            "scenario_family": "primary",
-            "qa_type": "exception",
-            "browser_required": false,
-            "replay_required": false
-          }
-        ]
-      },
-      {
-        "ac_id": "AC-008",
-        "theme": "layered-discovery",
-        "text": "`skill detect / registry / discovery` 的输出必须分层展示 builtin core 与 external compatibility。",
-        "scenario_ids": [
-          "SC-023",
-          "SC-024",
-          "SC-025",
-          "SC-026",
-          "SC-027",
-          "SC-028",
-          "SC-029",
-          "SC-030",
-          "SC-031",
-          "SC-032"
-        ],
-        "scenario_families": [
-          "happy",
-          "negative",
-          "boundary",
-          "recovery",
-          "compatibility",
-          "happy",
-          "negative",
-          "boundary",
-          "recovery",
-          "compatibility"
-        ],
-        "required_families": [
-          "happy",
-          "negative",
-          "boundary",
-          "recovery",
-          "compatibility",
-          "happy",
-          "negative",
-          "boundary",
-          "recovery",
-          "compatibility"
-        ],
-        "scenarios": [
-          {
-            "scenario_id": "SC-023",
-            "source_tc_id": "TC-008",
-            "tc_id": "TC-008-HAPPY",
-            "scenario_family": "happy",
-            "qa_type": "unit",
-            "browser_required": true,
-            "replay_required": true
-          },
-          {
-            "scenario_id": "SC-024",
-            "source_tc_id": "TC-008",
-            "tc_id": "TC-008-NEGATIVE",
-            "scenario_family": "negative",
-            "qa_type": "unit",
-            "browser_required": true,
-            "replay_required": true
-          },
-          {
-            "scenario_id": "SC-025",
-            "source_tc_id": "TC-008",
-            "tc_id": "TC-008-BOUNDARY",
-            "scenario_family": "boundary",
-            "qa_type": "unit",
-            "browser_required": true,
-            "replay_required": false
-          },
-          {
-            "scenario_id": "SC-026",
-            "source_tc_id": "TC-008",
-            "tc_id": "TC-008-RECOVERY",
-            "scenario_family": "recovery",
-            "qa_type": "unit",
-            "browser_required": true,
-            "replay_required": false
-          },
-          {
-            "scenario_id": "SC-027",
-            "source_tc_id": "TC-008",
-            "tc_id": "TC-008-COMPATIBILITY",
-            "scenario_family": "compatibility",
-            "qa_type": "compatibility",
-            "browser_required": true,
-            "replay_required": true
-          },
-          {
-            "scenario_id": "SC-028",
-            "source_tc_id": "TC-020",
-            "tc_id": "TC-020-HAPPY",
-            "scenario_family": "happy",
-            "qa_type": "functional",
-            "browser_required": true,
-            "replay_required": true
-          },
-          {
-            "scenario_id": "SC-029",
-            "source_tc_id": "TC-020",
-            "tc_id": "TC-020-NEGATIVE",
-            "scenario_family": "negative",
-            "qa_type": "functional",
-            "browser_required": true,
-            "replay_required": true
-          },
-          {
-            "scenario_id": "SC-030",
-            "source_tc_id": "TC-020",
-            "tc_id": "TC-020-BOUNDARY",
-            "scenario_family": "boundary",
-            "qa_type": "functional",
-            "browser_required": true,
-            "replay_required": false
-          },
-          {
-            "scenario_id": "SC-031",
-            "source_tc_id": "TC-020",
-            "tc_id": "TC-020-RECOVERY",
-            "scenario_family": "recovery",
-            "qa_type": "functional",
-            "browser_required": true,
-            "replay_required": false
-          },
-          {
-            "scenario_id": "SC-032",
-            "source_tc_id": "TC-020",
-            "tc_id": "TC-020-COMPATIBILITY",
-            "scenario_family": "compatibility",
-            "qa_type": "compatibility",
-            "browser_required": true,
-            "replay_required": true
-          }
-        ]
-      },
-      {
-        "ac_id": "AC-009",
-        "theme": "contract-decoupled",
-        "text": "project contract 能力必须与 external orchestration 解耦。",
-        "scenario_ids": [
-          "SC-033"
-        ],
-        "scenario_families": [
-          "primary"
-        ],
-        "required_families": [],
-        "scenarios": [
-          {
-            "scenario_id": "SC-033",
-            "source_tc_id": "TC-009",
-            "tc_id": "TC-009-PRIMARY",
-            "scenario_family": "primary",
-            "qa_type": "unit",
-            "browser_required": false,
-            "replay_required": false
-          }
-        ]
-      },
-      {
-        "ac_id": "AC-010",
-        "theme": "new-user-unblocked",
-        "text": "新用户在默认路径下不应先接触 compatibility plane 命令和概念。",
-        "scenario_ids": [
-          "SC-034"
-        ],
-        "scenario_families": [
-          "primary"
-        ],
-        "required_families": [],
-        "scenarios": [
-          {
-            "scenario_id": "SC-034",
-            "source_tc_id": "TC-010",
-            "tc_id": "TC-010-PRIMARY",
-            "scenario_family": "primary",
-            "qa_type": "unit",
-            "browser_required": false,
-            "replay_required": false
-          }
-        ]
-      },
-      {
-        "ac_id": "AC-011",
-        "theme": "prd-bootstrap-safe-by-default",
-        "text": "`beacon-prd-bootstrap` 必须支持一键生成 `prd/user-story/test-case`，且默认 `dry-run + no-overwrite + strict context verify + atomic write + rollback/lock`。",
-        "scenario_ids": [
-          "SC-035"
-        ],
-        "scenario_families": [
-          "primary"
-        ],
-        "required_families": [],
-        "scenarios": [
-          {
-            "scenario_id": "SC-035",
-            "source_tc_id": "TC-011",
-            "tc_id": "TC-011-PRIMARY",
-            "scenario_family": "primary",
-            "qa_type": "unit",
-            "browser_required": false,
-            "replay_required": false
-          }
-        ]
-      },
-      {
-        "ac_id": "AC-012",
-        "theme": "codex-fixed-hud-hook",
-        "text": "Codex 输入框下固定 HUD 必须通过 hook 自动注入，覆盖 `UserPromptSubmit` 与会话刷新，且失败可降级不阻断。",
-        "scenario_ids": [
-          "SC-036"
-        ],
-        "scenario_families": [
-          "primary"
-        ],
-        "required_families": [],
-        "scenarios": [
-          {
-            "scenario_id": "SC-036",
-            "source_tc_id": "TC-012",
-            "tc_id": "TC-012-PRIMARY",
-            "scenario_family": "primary",
-            "qa_type": "unit",
-            "browser_required": false,
-            "replay_required": false
-          }
-        ]
-      }
+    "targeted_layers": [
+      "contract",
+      "integration",
+      "regression"
     ],
-    "scenarios": [
-      {
-        "scenario_id": "SC-001",
-        "source_tc_id": "TC-001",
-        "tc_id": "TC-001-PRIMARY",
-        "ac_id": "AC-001",
-        "qa_type": "unit",
-        "layer": "unit",
-        "scenario_family": "primary",
-        "title": "AC-001 primary path :: All unit assertions pass",
-        "browser_required": false,
-        "replay_required": false,
-        "exploratory_runner": "native",
-        "deterministic_runner": "native",
-        "explore_command": "",
-        "replay_command": "",
-        "coverage_axes": [
-          "primary",
-          "unit",
-          "non-browser"
-        ],
-        "depends_on": [],
-        "stop_on_fail": false,
-        "automation": "auto",
-        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "All unit assertions pass",
-        "priority": "P1",
-        "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-001-PRIMARY.json",
-        "required_files": [
-          "command.txt",
-          "stdout.log",
-          "stderr.log",
-          "result.json",
-          "junit.xml"
-        ]
-      },
-      {
-        "scenario_id": "SC-002",
-        "source_tc_id": "TC-013",
-        "tc_id": "TC-013-PRIMARY",
-        "ac_id": "AC-001",
-        "qa_type": "interface",
-        "layer": "api-curl",
-        "scenario_family": "primary",
-        "title": "AC-001 primary path :: HTTP status and schema assertions pass",
-        "browser_required": false,
-        "replay_required": false,
-        "exploratory_runner": "native",
-        "deterministic_runner": "native",
-        "explore_command": "",
-        "replay_command": "",
-        "coverage_axes": [
-          "primary",
-          "interface",
-          "non-browser"
-        ],
-        "depends_on": [],
-        "stop_on_fail": false,
-        "automation": "auto",
-        "command": "python3 -m pytest -q -k interface --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "HTTP status and schema assertions pass",
-        "priority": "P1",
-        "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-013-PRIMARY.json",
-        "required_files": [
-          "command.txt",
-          "stdout.log",
-          "stderr.log",
-          "result.json",
-          "junit.xml"
-        ]
-      },
-      {
-        "scenario_id": "SC-003",
-        "source_tc_id": "TC-002",
-        "tc_id": "TC-002-PRIMARY",
-        "ac_id": "AC-002",
-        "qa_type": "unit",
-        "layer": "unit",
-        "scenario_family": "primary",
-        "title": "AC-002 primary path :: All unit assertions pass",
-        "browser_required": false,
-        "replay_required": false,
-        "exploratory_runner": "native",
-        "deterministic_runner": "native",
-        "explore_command": "",
-        "replay_command": "",
-        "coverage_axes": [
-          "primary",
-          "unit",
-          "non-browser"
-        ],
-        "depends_on": [],
-        "stop_on_fail": false,
-        "automation": "auto",
-        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "All unit assertions pass",
-        "priority": "P1",
-        "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-002-PRIMARY.json",
-        "required_files": [
-          "command.txt",
-          "stdout.log",
-          "stderr.log",
-          "result.json",
-          "junit.xml"
-        ]
-      },
-      {
-        "scenario_id": "SC-004",
-        "source_tc_id": "TC-014",
-        "tc_id": "TC-014-PRIMARY",
-        "ac_id": "AC-002",
-        "qa_type": "contract",
-        "layer": "contract",
-        "scenario_family": "primary",
-        "title": "AC-002 primary path :: Provider/consumer contract assertions pass",
-        "browser_required": false,
-        "replay_required": false,
-        "exploratory_runner": "native",
-        "deterministic_runner": "native",
-        "explore_command": "",
-        "replay_command": "",
-        "coverage_axes": [
-          "primary",
-          "contract",
-          "non-browser"
-        ],
-        "depends_on": [],
-        "stop_on_fail": false,
-        "automation": "auto",
-        "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "Provider/consumer contract assertions pass",
-        "priority": "P1",
-        "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-014-PRIMARY.json",
-        "required_files": [
-          "command.txt",
-          "stdout.log",
-          "stderr.log",
-          "result.json",
-          "junit.xml"
-        ]
-      },
-      {
-        "scenario_id": "SC-005",
-        "source_tc_id": "TC-003",
-        "tc_id": "TC-003-PRIMARY",
-        "ac_id": "AC-003",
-        "qa_type": "unit",
-        "layer": "unit",
-        "scenario_family": "primary",
-        "title": "AC-003 primary path :: All unit assertions pass",
-        "browser_required": false,
-        "replay_required": false,
-        "exploratory_runner": "native",
-        "deterministic_runner": "native",
-        "explore_command": "",
-        "replay_command": "",
-        "coverage_axes": [
-          "primary",
-          "unit",
-          "non-browser"
-        ],
-        "depends_on": [],
-        "stop_on_fail": false,
-        "automation": "auto",
-        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "All unit assertions pass",
-        "priority": "P1",
-        "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-003-PRIMARY.json",
-        "required_files": [
-          "command.txt",
-          "stdout.log",
-          "stderr.log",
-          "result.json",
-          "junit.xml"
-        ]
-      },
-      {
-        "scenario_id": "SC-006",
-        "source_tc_id": "TC-015",
-        "tc_id": "TC-015-PRIMARY",
-        "ac_id": "AC-003",
-        "qa_type": "integration",
-        "layer": "integration",
-        "scenario_family": "primary",
-        "title": "AC-003 primary path :: Integration flow assertions pass",
-        "browser_required": false,
-        "replay_required": false,
-        "exploratory_runner": "native",
-        "deterministic_runner": "native",
-        "explore_command": "",
-        "replay_command": "",
-        "coverage_axes": [
-          "primary",
-          "integration",
-          "non-browser"
-        ],
-        "depends_on": [],
-        "stop_on_fail": false,
-        "automation": "auto",
-        "command": "python3 -m pytest -q -k integration --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "Integration flow assertions pass",
-        "priority": "P1",
-        "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-015-PRIMARY.json",
-        "required_files": [
-          "command.txt",
-          "stdout.log",
-          "stderr.log",
-          "result.json",
-          "junit.xml"
-        ]
-      },
-      {
-        "scenario_id": "SC-007",
-        "source_tc_id": "TC-004",
-        "tc_id": "TC-004-PRIMARY",
-        "ac_id": "AC-004",
-        "qa_type": "unit",
-        "layer": "unit",
-        "scenario_family": "primary",
-        "title": "AC-004 primary path :: All unit assertions pass",
-        "browser_required": false,
-        "replay_required": false,
-        "exploratory_runner": "native",
-        "deterministic_runner": "native",
-        "explore_command": "",
-        "replay_command": "",
-        "coverage_axes": [
-          "primary",
-          "unit",
-          "non-browser"
-        ],
-        "depends_on": [],
-        "stop_on_fail": false,
-        "automation": "auto",
-        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "All unit assertions pass",
-        "priority": "P1",
-        "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-004-PRIMARY.json",
-        "required_files": [
-          "command.txt",
-          "stdout.log",
-          "stderr.log",
-          "result.json",
-          "junit.xml"
-        ]
-      },
-      {
-        "scenario_id": "SC-008",
-        "source_tc_id": "TC-016",
-        "tc_id": "TC-016-HAPPY",
-        "ac_id": "AC-004",
-        "qa_type": "functional",
-        "layer": "ui",
-        "scenario_family": "happy",
-        "title": "AC-004 happy path :: Critical path assertions pass",
-        "browser_required": true,
-        "replay_required": true,
-        "exploratory_runner": "browser-use",
-        "deterministic_runner": "playwright",
-        "explore_command": "",
-        "replay_command": "npx playwright test",
-        "coverage_axes": [
-          "happy",
-          "functional",
-          "browser"
-        ],
-        "depends_on": [],
-        "stop_on_fail": true,
-        "automation": "auto",
-        "command": "python3 -m pytest -q -m smoke --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "Critical path assertions pass (happy path completes with expected evidence)",
-        "priority": "P0",
-        "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-016-HAPPY.json",
-        "required_files": [
-          "command.txt",
-          "stdout.log",
-          "stderr.log",
-          "result.json",
-          "junit.xml"
-        ]
-      },
-      {
-        "scenario_id": "SC-009",
-        "source_tc_id": "TC-016",
-        "tc_id": "TC-016-NEGATIVE",
-        "ac_id": "AC-004",
-        "qa_type": "functional",
-        "layer": "ui",
-        "scenario_family": "negative",
-        "title": "AC-004 negative path :: Critical path assertions pass",
-        "browser_required": true,
-        "replay_required": true,
-        "exploratory_runner": "browser-use",
-        "deterministic_runner": "playwright",
-        "explore_command": "",
-        "replay_command": "npx playwright test",
-        "coverage_axes": [
-          "negative",
-          "functional",
-          "browser"
-        ],
-        "depends_on": [
-          "SC-008"
-        ],
-        "stop_on_fail": false,
-        "automation": "auto",
-        "command": "python3 -m pytest -q -m smoke --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "Critical path assertions pass (negative path is rejected or handled with explicit evidence)",
-        "priority": "P0",
-        "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-016-NEGATIVE.json",
-        "required_files": [
-          "command.txt",
-          "stdout.log",
-          "stderr.log",
-          "result.json",
-          "junit.xml"
-        ]
-      },
-      {
-        "scenario_id": "SC-010",
-        "source_tc_id": "TC-016",
-        "tc_id": "TC-016-BOUNDARY",
-        "ac_id": "AC-004",
-        "qa_type": "functional",
-        "layer": "ui",
-        "scenario_family": "boundary",
-        "title": "AC-004 boundary path :: Critical path assertions pass",
-        "browser_required": true,
-        "replay_required": false,
-        "exploratory_runner": "browser-use",
-        "deterministic_runner": "playwright",
-        "explore_command": "",
-        "replay_command": "npx playwright test",
-        "coverage_axes": [
-          "boundary",
-          "functional",
-          "browser"
-        ],
-        "depends_on": [
-          "SC-008"
-        ],
-        "stop_on_fail": false,
-        "automation": "auto",
-        "command": "python3 -m pytest -q -m smoke --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "Critical path assertions pass (boundary path is validated with explicit evidence)",
-        "priority": "P1",
-        "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-016-BOUNDARY.json",
-        "required_files": [
-          "command.txt",
-          "stdout.log",
-          "stderr.log",
-          "result.json",
-          "junit.xml"
-        ]
-      },
-      {
-        "scenario_id": "SC-011",
-        "source_tc_id": "TC-016",
-        "tc_id": "TC-016-RECOVERY",
-        "ac_id": "AC-004",
-        "qa_type": "functional",
-        "layer": "ui",
-        "scenario_family": "recovery",
-        "title": "AC-004 recovery path :: Critical path assertions pass",
-        "browser_required": true,
-        "replay_required": false,
-        "exploratory_runner": "browser-use",
-        "deterministic_runner": "playwright",
-        "explore_command": "",
-        "replay_command": "npx playwright test",
-        "coverage_axes": [
-          "recovery",
-          "functional",
-          "browser"
-        ],
-        "depends_on": [
-          "SC-008"
-        ],
-        "stop_on_fail": false,
-        "automation": "auto",
-        "command": "python3 -m pytest -q -m smoke --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "Critical path assertions pass (recovery path survives refresh/back/retry with evidence)",
-        "priority": "P1",
-        "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-016-RECOVERY.json",
-        "required_files": [
-          "command.txt",
-          "stdout.log",
-          "stderr.log",
-          "result.json",
-          "junit.xml"
-        ]
-      },
-      {
-        "scenario_id": "SC-012",
-        "source_tc_id": "TC-016",
-        "tc_id": "TC-016-COMPATIBILITY",
-        "ac_id": "AC-004",
-        "qa_type": "compatibility",
-        "layer": "compatibility",
-        "scenario_family": "compatibility",
-        "title": "AC-004 compatibility path :: Critical path assertions pass",
-        "browser_required": true,
-        "replay_required": true,
-        "exploratory_runner": "browser-use",
-        "deterministic_runner": "playwright",
-        "explore_command": "",
-        "replay_command": "npx playwright test --project=chromium --project=firefox --project=webkit",
-        "coverage_axes": [
-          "compatibility",
-          "compatibility",
-          "browser"
-        ],
-        "depends_on": [
-          "SC-008"
-        ],
-        "stop_on_fail": false,
-        "automation": "auto",
-        "command": "python3 -m pytest -q -m smoke --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "Critical path assertions pass (compatibility path preserves behavior across browser/device pairs)",
-        "priority": "P1",
-        "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-016-COMPATIBILITY.json",
-        "required_files": [
-          "command.txt",
-          "stdout.log",
-          "stderr.log",
-          "result.json",
-          "junit.xml"
-        ]
-      },
-      {
-        "scenario_id": "SC-013",
-        "source_tc_id": "TC-005",
-        "tc_id": "TC-005-PRIMARY",
-        "ac_id": "AC-005",
-        "qa_type": "unit",
-        "layer": "unit",
-        "scenario_family": "primary",
-        "title": "AC-005 primary path :: All unit assertions pass",
-        "browser_required": false,
-        "replay_required": false,
-        "exploratory_runner": "native",
-        "deterministic_runner": "native",
-        "explore_command": "",
-        "replay_command": "",
-        "coverage_axes": [
-          "primary",
-          "unit",
-          "non-browser"
-        ],
-        "depends_on": [],
-        "stop_on_fail": false,
-        "automation": "auto",
-        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "All unit assertions pass",
-        "priority": "P1",
-        "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-005-PRIMARY.json",
-        "required_files": [
-          "command.txt",
-          "stdout.log",
-          "stderr.log",
-          "result.json",
-          "junit.xml"
-        ]
-      },
-      {
-        "scenario_id": "SC-014",
-        "source_tc_id": "TC-017",
-        "tc_id": "TC-017-HAPPY",
-        "ac_id": "AC-005",
-        "qa_type": "functional",
-        "layer": "ui",
-        "scenario_family": "happy",
-        "title": "AC-005 happy path :: Web UI assertions and key actions pass",
-        "browser_required": true,
-        "replay_required": true,
-        "exploratory_runner": "browser-use",
-        "deterministic_runner": "playwright",
-        "explore_command": "",
-        "replay_command": "npx playwright test",
-        "coverage_axes": [
-          "happy",
-          "functional",
-          "browser"
-        ],
-        "depends_on": [],
-        "stop_on_fail": true,
-        "automation": "auto",
-        "command": "python3 -m beacon.adapters.browser_use_runner --mode functional --fallback-cmd \"python3 -m pytest -q -k functional --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
-        "assertion": "Web UI assertions and key actions pass (happy path completes with expected evidence)",
-        "priority": "P0",
-        "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-017-HAPPY.json",
-        "required_files": [
-          "command.txt",
-          "stdout.log",
-          "stderr.log",
-          "result.json",
-          "junit.xml"
-        ]
-      },
-      {
-        "scenario_id": "SC-015",
-        "source_tc_id": "TC-017",
-        "tc_id": "TC-017-NEGATIVE",
-        "ac_id": "AC-005",
-        "qa_type": "functional",
-        "layer": "ui",
-        "scenario_family": "negative",
-        "title": "AC-005 negative path :: Web UI assertions and key actions pass",
-        "browser_required": true,
-        "replay_required": true,
-        "exploratory_runner": "browser-use",
-        "deterministic_runner": "playwright",
-        "explore_command": "",
-        "replay_command": "npx playwright test",
-        "coverage_axes": [
-          "negative",
-          "functional",
-          "browser"
-        ],
-        "depends_on": [
-          "SC-014"
-        ],
-        "stop_on_fail": false,
-        "automation": "auto",
-        "command": "python3 -m beacon.adapters.browser_use_runner --mode functional --fallback-cmd \"python3 -m pytest -q -k functional --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
-        "assertion": "Web UI assertions and key actions pass (negative path is rejected or handled with explicit evidence)",
-        "priority": "P0",
-        "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-017-NEGATIVE.json",
-        "required_files": [
-          "command.txt",
-          "stdout.log",
-          "stderr.log",
-          "result.json",
-          "junit.xml"
-        ]
-      },
-      {
-        "scenario_id": "SC-016",
-        "source_tc_id": "TC-017",
-        "tc_id": "TC-017-BOUNDARY",
-        "ac_id": "AC-005",
-        "qa_type": "functional",
-        "layer": "ui",
-        "scenario_family": "boundary",
-        "title": "AC-005 boundary path :: Web UI assertions and key actions pass",
-        "browser_required": true,
-        "replay_required": false,
-        "exploratory_runner": "browser-use",
-        "deterministic_runner": "playwright",
-        "explore_command": "",
-        "replay_command": "npx playwright test",
-        "coverage_axes": [
-          "boundary",
-          "functional",
-          "browser"
-        ],
-        "depends_on": [
-          "SC-014"
-        ],
-        "stop_on_fail": false,
-        "automation": "auto",
-        "command": "python3 -m beacon.adapters.browser_use_runner --mode functional --fallback-cmd \"python3 -m pytest -q -k functional --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
-        "assertion": "Web UI assertions and key actions pass (boundary path is validated with explicit evidence)",
-        "priority": "P1",
-        "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-017-BOUNDARY.json",
-        "required_files": [
-          "command.txt",
-          "stdout.log",
-          "stderr.log",
-          "result.json",
-          "junit.xml"
-        ]
-      },
-      {
-        "scenario_id": "SC-017",
-        "source_tc_id": "TC-017",
-        "tc_id": "TC-017-RECOVERY",
-        "ac_id": "AC-005",
-        "qa_type": "functional",
-        "layer": "ui",
-        "scenario_family": "recovery",
-        "title": "AC-005 recovery path :: Web UI assertions and key actions pass",
-        "browser_required": true,
-        "replay_required": false,
-        "exploratory_runner": "browser-use",
-        "deterministic_runner": "playwright",
-        "explore_command": "",
-        "replay_command": "npx playwright test",
-        "coverage_axes": [
-          "recovery",
-          "functional",
-          "browser"
-        ],
-        "depends_on": [
-          "SC-014"
-        ],
-        "stop_on_fail": false,
-        "automation": "auto",
-        "command": "python3 -m beacon.adapters.browser_use_runner --mode functional --fallback-cmd \"python3 -m pytest -q -k functional --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
-        "assertion": "Web UI assertions and key actions pass (recovery path survives refresh/back/retry with evidence)",
-        "priority": "P1",
-        "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-017-RECOVERY.json",
-        "required_files": [
-          "command.txt",
-          "stdout.log",
-          "stderr.log",
-          "result.json",
-          "junit.xml"
-        ]
-      },
-      {
-        "scenario_id": "SC-018",
-        "source_tc_id": "TC-017",
-        "tc_id": "TC-017-COMPATIBILITY",
-        "ac_id": "AC-005",
-        "qa_type": "compatibility",
-        "layer": "compatibility",
-        "scenario_family": "compatibility",
-        "title": "AC-005 compatibility path :: Web UI assertions and key actions pass",
-        "browser_required": true,
-        "replay_required": true,
-        "exploratory_runner": "browser-use",
-        "deterministic_runner": "playwright",
-        "explore_command": "",
-        "replay_command": "npx playwright test --project=chromium --project=firefox --project=webkit",
-        "coverage_axes": [
-          "compatibility",
-          "compatibility",
-          "browser"
-        ],
-        "depends_on": [
-          "SC-014"
-        ],
-        "stop_on_fail": false,
-        "automation": "auto",
-        "command": "python3 -m beacon.adapters.browser_use_runner --mode functional --fallback-cmd \"python3 -m pytest -q -k functional --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
-        "assertion": "Web UI assertions and key actions pass (compatibility path preserves behavior across browser/device pairs)",
-        "priority": "P1",
-        "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-017-COMPATIBILITY.json",
-        "required_files": [
-          "command.txt",
-          "stdout.log",
-          "stderr.log",
-          "result.json",
-          "junit.xml"
-        ]
-      },
-      {
-        "scenario_id": "SC-019",
-        "source_tc_id": "TC-006",
-        "tc_id": "TC-006-PRIMARY",
-        "ac_id": "AC-006",
-        "qa_type": "unit",
-        "layer": "unit",
-        "scenario_family": "primary",
-        "title": "AC-006 primary path :: All unit assertions pass",
-        "browser_required": false,
-        "replay_required": false,
-        "exploratory_runner": "native",
-        "deterministic_runner": "native",
-        "explore_command": "",
-        "replay_command": "",
-        "coverage_axes": [
-          "primary",
-          "unit",
-          "non-browser"
-        ],
-        "depends_on": [],
-        "stop_on_fail": false,
-        "automation": "auto",
-        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "All unit assertions pass",
-        "priority": "P1",
-        "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-006-PRIMARY.json",
-        "required_files": [
-          "command.txt",
-          "stdout.log",
-          "stderr.log",
-          "result.json",
-          "junit.xml"
-        ]
-      },
-      {
-        "scenario_id": "SC-020",
-        "source_tc_id": "TC-018",
-        "tc_id": "TC-018-PRIMARY",
-        "ac_id": "AC-006",
-        "qa_type": "regression",
-        "layer": "regression",
-        "scenario_family": "primary",
-        "title": "AC-006 primary path :: No known behavior regression found",
-        "browser_required": false,
-        "replay_required": false,
-        "exploratory_runner": "native",
-        "deterministic_runner": "native",
-        "explore_command": "",
-        "replay_command": "",
-        "coverage_axes": [
-          "primary",
-          "regression",
-          "non-browser"
-        ],
-        "depends_on": [],
-        "stop_on_fail": false,
-        "automation": "auto",
-        "command": "python3 -m pytest -q -k regression --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "No known behavior regression found",
-        "priority": "P1",
-        "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-018-PRIMARY.json",
-        "required_files": [
-          "command.txt",
-          "stdout.log",
-          "stderr.log",
-          "result.json",
-          "junit.xml"
-        ]
-      },
-      {
-        "scenario_id": "SC-021",
-        "source_tc_id": "TC-007",
-        "tc_id": "TC-007-PRIMARY",
-        "ac_id": "AC-007",
-        "qa_type": "unit",
-        "layer": "unit",
-        "scenario_family": "primary",
-        "title": "AC-007 primary path :: All unit assertions pass",
-        "browser_required": false,
-        "replay_required": false,
-        "exploratory_runner": "native",
-        "deterministic_runner": "native",
-        "explore_command": "",
-        "replay_command": "",
-        "coverage_axes": [
-          "primary",
-          "unit",
-          "non-browser"
-        ],
-        "depends_on": [],
-        "stop_on_fail": false,
-        "automation": "auto",
-        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "All unit assertions pass",
-        "priority": "P1",
-        "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-007-PRIMARY.json",
-        "required_files": [
-          "command.txt",
-          "stdout.log",
-          "stderr.log",
-          "result.json",
-          "junit.xml"
-        ]
-      },
-      {
-        "scenario_id": "SC-022",
-        "source_tc_id": "TC-019",
-        "tc_id": "TC-019-PRIMARY",
-        "ac_id": "AC-007",
-        "qa_type": "exception",
-        "layer": "exception",
-        "scenario_family": "primary",
-        "title": "AC-007 primary path :: Negative-path assertions pass",
-        "browser_required": false,
-        "replay_required": false,
-        "exploratory_runner": "native",
-        "deterministic_runner": "native",
-        "explore_command": "",
-        "replay_command": "",
-        "coverage_axes": [
-          "primary",
-          "exception",
-          "non-browser"
-        ],
-        "depends_on": [],
-        "stop_on_fail": false,
-        "automation": "auto",
-        "command": "python3 -m pytest -q -k exception --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "Negative-path assertions pass",
-        "priority": "P1",
-        "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-019-PRIMARY.json",
-        "required_files": [
-          "command.txt",
-          "stdout.log",
-          "stderr.log",
-          "result.json",
-          "junit.xml"
-        ]
-      },
-      {
-        "scenario_id": "SC-023",
-        "source_tc_id": "TC-008",
-        "tc_id": "TC-008-HAPPY",
-        "ac_id": "AC-008",
-        "qa_type": "unit",
-        "layer": "unit",
-        "scenario_family": "happy",
-        "title": "AC-008 happy path :: All unit assertions pass",
-        "browser_required": true,
-        "replay_required": true,
-        "exploratory_runner": "browser-use",
-        "deterministic_runner": "playwright",
-        "explore_command": "",
-        "replay_command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "coverage_axes": [
-          "happy",
-          "unit",
-          "browser"
-        ],
-        "depends_on": [],
-        "stop_on_fail": true,
-        "automation": "auto",
-        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "All unit assertions pass (happy path completes with expected evidence)",
-        "priority": "P0",
-        "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-008-HAPPY.json",
-        "required_files": [
-          "command.txt",
-          "stdout.log",
-          "stderr.log",
-          "result.json",
-          "junit.xml"
-        ]
-      },
-      {
-        "scenario_id": "SC-024",
-        "source_tc_id": "TC-008",
-        "tc_id": "TC-008-NEGATIVE",
-        "ac_id": "AC-008",
-        "qa_type": "unit",
-        "layer": "unit",
-        "scenario_family": "negative",
-        "title": "AC-008 negative path :: All unit assertions pass",
-        "browser_required": true,
-        "replay_required": true,
-        "exploratory_runner": "browser-use",
-        "deterministic_runner": "playwright",
-        "explore_command": "",
-        "replay_command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "coverage_axes": [
-          "negative",
-          "unit",
-          "browser"
-        ],
-        "depends_on": [
-          "SC-023"
-        ],
-        "stop_on_fail": false,
-        "automation": "auto",
-        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "All unit assertions pass (negative path is rejected or handled with explicit evidence)",
-        "priority": "P0",
-        "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-008-NEGATIVE.json",
-        "required_files": [
-          "command.txt",
-          "stdout.log",
-          "stderr.log",
-          "result.json",
-          "junit.xml"
-        ]
-      },
-      {
-        "scenario_id": "SC-025",
-        "source_tc_id": "TC-008",
-        "tc_id": "TC-008-BOUNDARY",
-        "ac_id": "AC-008",
-        "qa_type": "unit",
-        "layer": "unit",
-        "scenario_family": "boundary",
-        "title": "AC-008 boundary path :: All unit assertions pass",
-        "browser_required": true,
-        "replay_required": false,
-        "exploratory_runner": "browser-use",
-        "deterministic_runner": "playwright",
-        "explore_command": "",
-        "replay_command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "coverage_axes": [
-          "boundary",
-          "unit",
-          "browser"
-        ],
-        "depends_on": [
-          "SC-023"
-        ],
-        "stop_on_fail": false,
-        "automation": "auto",
-        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "All unit assertions pass (boundary path is validated with explicit evidence)",
-        "priority": "P1",
-        "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-008-BOUNDARY.json",
-        "required_files": [
-          "command.txt",
-          "stdout.log",
-          "stderr.log",
-          "result.json",
-          "junit.xml"
-        ]
-      },
-      {
-        "scenario_id": "SC-026",
-        "source_tc_id": "TC-008",
-        "tc_id": "TC-008-RECOVERY",
-        "ac_id": "AC-008",
-        "qa_type": "unit",
-        "layer": "unit",
-        "scenario_family": "recovery",
-        "title": "AC-008 recovery path :: All unit assertions pass",
-        "browser_required": true,
-        "replay_required": false,
-        "exploratory_runner": "browser-use",
-        "deterministic_runner": "playwright",
-        "explore_command": "",
-        "replay_command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "coverage_axes": [
-          "recovery",
-          "unit",
-          "browser"
-        ],
-        "depends_on": [
-          "SC-023"
-        ],
-        "stop_on_fail": false,
-        "automation": "auto",
-        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "All unit assertions pass (recovery path survives refresh/back/retry with evidence)",
-        "priority": "P1",
-        "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-008-RECOVERY.json",
-        "required_files": [
-          "command.txt",
-          "stdout.log",
-          "stderr.log",
-          "result.json",
-          "junit.xml"
-        ]
-      },
-      {
-        "scenario_id": "SC-027",
-        "source_tc_id": "TC-008",
-        "tc_id": "TC-008-COMPATIBILITY",
-        "ac_id": "AC-008",
-        "qa_type": "compatibility",
-        "layer": "compatibility",
-        "scenario_family": "compatibility",
-        "title": "AC-008 compatibility path :: All unit assertions pass",
-        "browser_required": true,
-        "replay_required": true,
-        "exploratory_runner": "browser-use",
-        "deterministic_runner": "playwright",
-        "explore_command": "",
-        "replay_command": "npx playwright test --project=chromium --project=firefox --project=webkit",
-        "coverage_axes": [
-          "compatibility",
-          "compatibility",
-          "browser"
-        ],
-        "depends_on": [
-          "SC-023"
-        ],
-        "stop_on_fail": false,
-        "automation": "auto",
-        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "All unit assertions pass (compatibility path preserves behavior across browser/device pairs)",
-        "priority": "P1",
-        "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-008-COMPATIBILITY.json",
-        "required_files": [
-          "command.txt",
-          "stdout.log",
-          "stderr.log",
-          "result.json",
-          "junit.xml"
-        ]
-      },
-      {
-        "scenario_id": "SC-028",
-        "source_tc_id": "TC-020",
-        "tc_id": "TC-020-HAPPY",
-        "ac_id": "AC-008",
-        "qa_type": "functional",
-        "layer": "ui",
-        "scenario_family": "happy",
-        "title": "AC-008 happy path :: Cross-browser/device assertions pass",
-        "browser_required": true,
-        "replay_required": true,
-        "exploratory_runner": "browser-use",
-        "deterministic_runner": "playwright",
-        "explore_command": "",
-        "replay_command": "npx playwright test",
-        "coverage_axes": [
-          "happy",
-          "functional",
-          "browser"
-        ],
-        "depends_on": [],
-        "stop_on_fail": true,
-        "automation": "auto",
-        "command": "python3 -m beacon.adapters.browser_use_runner --mode compatibility --fallback-cmd \"python3 -m pytest -q -k compatibility --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
-        "assertion": "Cross-browser/device assertions pass (happy path completes with expected evidence)",
-        "priority": "P0",
-        "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-020-HAPPY.json",
-        "required_files": [
-          "command.txt",
-          "stdout.log",
-          "stderr.log",
-          "result.json",
-          "junit.xml"
-        ]
-      },
-      {
-        "scenario_id": "SC-029",
-        "source_tc_id": "TC-020",
-        "tc_id": "TC-020-NEGATIVE",
-        "ac_id": "AC-008",
-        "qa_type": "functional",
-        "layer": "ui",
-        "scenario_family": "negative",
-        "title": "AC-008 negative path :: Cross-browser/device assertions pass",
-        "browser_required": true,
-        "replay_required": true,
-        "exploratory_runner": "browser-use",
-        "deterministic_runner": "playwright",
-        "explore_command": "",
-        "replay_command": "npx playwright test",
-        "coverage_axes": [
-          "negative",
-          "functional",
-          "browser"
-        ],
-        "depends_on": [
-          "SC-028"
-        ],
-        "stop_on_fail": false,
-        "automation": "auto",
-        "command": "python3 -m beacon.adapters.browser_use_runner --mode compatibility --fallback-cmd \"python3 -m pytest -q -k compatibility --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
-        "assertion": "Cross-browser/device assertions pass (negative path is rejected or handled with explicit evidence)",
-        "priority": "P0",
-        "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-020-NEGATIVE.json",
-        "required_files": [
-          "command.txt",
-          "stdout.log",
-          "stderr.log",
-          "result.json",
-          "junit.xml"
-        ]
-      },
-      {
-        "scenario_id": "SC-030",
-        "source_tc_id": "TC-020",
-        "tc_id": "TC-020-BOUNDARY",
-        "ac_id": "AC-008",
-        "qa_type": "functional",
-        "layer": "ui",
-        "scenario_family": "boundary",
-        "title": "AC-008 boundary path :: Cross-browser/device assertions pass",
-        "browser_required": true,
-        "replay_required": false,
-        "exploratory_runner": "browser-use",
-        "deterministic_runner": "playwright",
-        "explore_command": "",
-        "replay_command": "npx playwright test",
-        "coverage_axes": [
-          "boundary",
-          "functional",
-          "browser"
-        ],
-        "depends_on": [
-          "SC-028"
-        ],
-        "stop_on_fail": false,
-        "automation": "auto",
-        "command": "python3 -m beacon.adapters.browser_use_runner --mode compatibility --fallback-cmd \"python3 -m pytest -q -k compatibility --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
-        "assertion": "Cross-browser/device assertions pass (boundary path is validated with explicit evidence)",
-        "priority": "P1",
-        "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-020-BOUNDARY.json",
-        "required_files": [
-          "command.txt",
-          "stdout.log",
-          "stderr.log",
-          "result.json",
-          "junit.xml"
-        ]
-      },
-      {
-        "scenario_id": "SC-031",
-        "source_tc_id": "TC-020",
-        "tc_id": "TC-020-RECOVERY",
-        "ac_id": "AC-008",
-        "qa_type": "functional",
-        "layer": "ui",
-        "scenario_family": "recovery",
-        "title": "AC-008 recovery path :: Cross-browser/device assertions pass",
-        "browser_required": true,
-        "replay_required": false,
-        "exploratory_runner": "browser-use",
-        "deterministic_runner": "playwright",
-        "explore_command": "",
-        "replay_command": "npx playwright test",
-        "coverage_axes": [
-          "recovery",
-          "functional",
-          "browser"
-        ],
-        "depends_on": [
-          "SC-028"
-        ],
-        "stop_on_fail": false,
-        "automation": "auto",
-        "command": "python3 -m beacon.adapters.browser_use_runner --mode compatibility --fallback-cmd \"python3 -m pytest -q -k compatibility --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
-        "assertion": "Cross-browser/device assertions pass (recovery path survives refresh/back/retry with evidence)",
-        "priority": "P1",
-        "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-020-RECOVERY.json",
-        "required_files": [
-          "command.txt",
-          "stdout.log",
-          "stderr.log",
-          "result.json",
-          "junit.xml"
-        ]
-      },
-      {
-        "scenario_id": "SC-032",
-        "source_tc_id": "TC-020",
-        "tc_id": "TC-020-COMPATIBILITY",
-        "ac_id": "AC-008",
-        "qa_type": "compatibility",
-        "layer": "compatibility",
-        "scenario_family": "compatibility",
-        "title": "AC-008 compatibility path :: Cross-browser/device assertions pass",
-        "browser_required": true,
-        "replay_required": true,
-        "exploratory_runner": "browser-use",
-        "deterministic_runner": "playwright",
-        "explore_command": "",
-        "replay_command": "npx playwright test --project=chromium --project=firefox --project=webkit",
-        "coverage_axes": [
-          "compatibility",
-          "compatibility",
-          "browser"
-        ],
-        "depends_on": [
-          "SC-028"
-        ],
-        "stop_on_fail": false,
-        "automation": "auto",
-        "command": "python3 -m beacon.adapters.browser_use_runner --mode compatibility --fallback-cmd \"python3 -m pytest -q -k compatibility --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
-        "assertion": "Cross-browser/device assertions pass (compatibility path preserves behavior across browser/device pairs)",
-        "priority": "P1",
-        "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-020-COMPATIBILITY.json",
-        "required_files": [
-          "command.txt",
-          "stdout.log",
-          "stderr.log",
-          "result.json",
-          "junit.xml"
-        ]
-      },
-      {
-        "scenario_id": "SC-033",
-        "source_tc_id": "TC-009",
-        "tc_id": "TC-009-PRIMARY",
-        "ac_id": "AC-009",
-        "qa_type": "unit",
-        "layer": "unit",
-        "scenario_family": "primary",
-        "title": "AC-009 primary path :: All unit assertions pass",
-        "browser_required": false,
-        "replay_required": false,
-        "exploratory_runner": "native",
-        "deterministic_runner": "native",
-        "explore_command": "",
-        "replay_command": "",
-        "coverage_axes": [
-          "primary",
-          "unit",
-          "non-browser"
-        ],
-        "depends_on": [],
-        "stop_on_fail": false,
-        "automation": "auto",
-        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "All unit assertions pass",
-        "priority": "P1",
-        "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-009-PRIMARY.json",
-        "required_files": [
-          "command.txt",
-          "stdout.log",
-          "stderr.log",
-          "result.json",
-          "junit.xml"
-        ]
-      },
-      {
-        "scenario_id": "SC-034",
-        "source_tc_id": "TC-010",
-        "tc_id": "TC-010-PRIMARY",
-        "ac_id": "AC-010",
-        "qa_type": "unit",
-        "layer": "unit",
-        "scenario_family": "primary",
-        "title": "AC-010 primary path :: All unit assertions pass",
-        "browser_required": false,
-        "replay_required": false,
-        "exploratory_runner": "native",
-        "deterministic_runner": "native",
-        "explore_command": "",
-        "replay_command": "",
-        "coverage_axes": [
-          "primary",
-          "unit",
-          "non-browser"
-        ],
-        "depends_on": [],
-        "stop_on_fail": false,
-        "automation": "auto",
-        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "All unit assertions pass",
-        "priority": "P1",
-        "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-010-PRIMARY.json",
-        "required_files": [
-          "command.txt",
-          "stdout.log",
-          "stderr.log",
-          "result.json",
-          "junit.xml"
-        ]
-      },
-      {
-        "scenario_id": "SC-035",
-        "source_tc_id": "TC-011",
-        "tc_id": "TC-011-PRIMARY",
-        "ac_id": "AC-011",
-        "qa_type": "unit",
-        "layer": "unit",
-        "scenario_family": "primary",
-        "title": "AC-011 primary path :: All unit assertions pass",
-        "browser_required": false,
-        "replay_required": false,
-        "exploratory_runner": "native",
-        "deterministic_runner": "native",
-        "explore_command": "",
-        "replay_command": "",
-        "coverage_axes": [
-          "primary",
-          "unit",
-          "non-browser"
-        ],
-        "depends_on": [],
-        "stop_on_fail": false,
-        "automation": "auto",
-        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "All unit assertions pass",
-        "priority": "P1",
-        "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-011-PRIMARY.json",
-        "required_files": [
-          "command.txt",
-          "stdout.log",
-          "stderr.log",
-          "result.json",
-          "junit.xml"
-        ]
-      },
-      {
-        "scenario_id": "SC-036",
-        "source_tc_id": "TC-012",
-        "tc_id": "TC-012-PRIMARY",
-        "ac_id": "AC-012",
-        "qa_type": "unit",
-        "layer": "unit",
-        "scenario_family": "primary",
-        "title": "AC-012 primary path :: All unit assertions pass",
-        "browser_required": false,
-        "replay_required": false,
-        "exploratory_runner": "native",
-        "deterministic_runner": "native",
-        "explore_command": "",
-        "replay_command": "",
-        "coverage_axes": [
-          "primary",
-          "unit",
-          "non-browser"
-        ],
-        "depends_on": [],
-        "stop_on_fail": false,
-        "automation": "auto",
-        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "All unit assertions pass",
-        "priority": "P1",
-        "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-012-PRIMARY.json",
-        "required_files": [
-          "command.txt",
-          "stdout.log",
-          "stderr.log",
-          "result.json",
-          "junit.xml"
-        ]
-      }
-    ]
+    "targeted_ac_ids": [
+      "AC-002",
+      "AC-005",
+      "AC-006"
+    ],
+    "targeted_tc_ids": [
+      "TC-012",
+      "TC-013",
+      "TC-015"
+    ],
+    "targeted_scenario_ids": [],
+    "targeted_scenario_families": []
   },
-  "required_scenario_families": [
-    "happy",
-    "negative",
-    "boundary",
-    "recovery",
-    "compatibility"
-  ],
-  "reason_codes": [],
-  "blocking_artifact_updates": [],
-  "all_entries": [
+  "boundary_evidence": {
+    "boundary_principles": [],
+    "assumption_capture_required": true,
+    "goal_driven_verification_required": true,
+    "targeted_scope_only": true,
+    "verification_item_count": 3
+  },
+  "feature_matrix_path": ".beacon/qa/features/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor/matrix.qa9.json",
+  "blocking_artifact_updates": [
     {
-      "tc_id": "TC-001",
-      "ac_id": "AC-001",
-      "layer": "unit",
-      "qa_type": "unit",
-      "title": "beacon-v1.3.3-core-slimming-and-external-skill-demotion unit :: Beacon 默认主叙事必须继续保持 `6+3`，不得把 `skill / profile / orchestrate` 作为普通用户主教学路径。",
-      "priority": "P0",
-      "automation": "auto",
-      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
-      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-001.json",
-      "required_files": [
-        "command.txt",
-        "stdout.log",
-        "stderr.log",
-        "result.json",
-        "junit.xml"
-      ],
-      "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md"
-    },
-    {
-      "tc_id": "TC-002",
-      "ac_id": "AC-002",
-      "layer": "unit",
-      "qa_type": "unit",
-      "title": "beacon-v1.3.3-core-slimming-and-external-skill-demotion unit :: `omx / omc / gstack` 必须被定义为 compatibility plane，而不是 Beacon core 默认能力。",
-      "priority": "P0",
-      "automation": "auto",
-      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
-      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-002.json",
-      "required_files": [
-        "command.txt",
-        "stdout.log",
-        "stderr.log",
-        "result.json",
-        "junit.xml"
-      ],
-      "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md"
-    },
-    {
-      "tc_id": "TC-003",
-      "ac_id": "AC-003",
-      "layer": "unit",
-      "qa_type": "unit",
-      "title": "beacon-v1.3.3-core-slimming-and-external-skill-demotion unit :: `implement` 默认执行面必须继续保持宿主原生优先，不得回退成外部 runner 优先。",
-      "priority": "P0",
-      "automation": "auto",
-      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
-      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-003.json",
-      "required_files": [
-        "command.txt",
-        "stdout.log",
-        "stderr.log",
-        "result.json",
-        "junit.xml"
-      ],
-      "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md"
-    },
-    {
-      "tc_id": "TC-004",
-      "ac_id": "AC-004",
-      "layer": "unit",
-      "qa_type": "unit",
-      "title": "beacon-v1.3.3-core-slimming-and-external-skill-demotion unit :: `qa` 默认不得隐式自动执行 project orchestration；只有显式 mode 或开关下才允许。",
-      "priority": "P0",
-      "automation": "auto",
-      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
-      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-004.json",
-      "required_files": [
-        "command.txt",
-        "stdout.log",
-        "stderr.log",
-        "result.json",
-        "junit.xml"
-      ],
-      "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md"
-    },
-    {
-      "tc_id": "TC-005",
-      "ac_id": "AC-005",
-      "layer": "unit",
-      "qa_type": "unit",
-      "title": "beacon-v1.3.3-core-slimming-and-external-skill-demotion unit :: `ralph-bridge` 必须退出正式主叙事，只能作为 deprecated compatibility 或被内化替代。",
-      "priority": "P0",
-      "automation": "auto",
-      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
-      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-005.json",
-      "required_files": [
-        "command.txt",
-        "stdout.log",
-        "stderr.log",
-        "result.json",
-        "junit.xml"
-      ],
-      "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md"
-    },
-    {
-      "tc_id": "TC-006",
-      "ac_id": "AC-006",
-      "layer": "unit",
-      "qa_type": "unit",
-      "title": "beacon-v1.3.3-core-slimming-and-external-skill-demotion unit :: README / help / host skill 文案必须只教学 `6+3` 默认主面。",
-      "priority": "P0",
-      "automation": "auto",
-      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
-      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-006.json",
-      "required_files": [
-        "command.txt",
-        "stdout.log",
-        "stderr.log",
-        "result.json",
-        "junit.xml"
-      ],
-      "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md"
-    },
-    {
-      "tc_id": "TC-007",
-      "ac_id": "AC-007",
-      "layer": "unit",
-      "qa_type": "unit",
-      "title": "beacon-v1.3.3-core-slimming-and-external-skill-demotion unit :: 测试必须拆分为 core 与 compatibility，两者责任边界明确。",
-      "priority": "P0",
-      "automation": "auto",
-      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
-      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-007.json",
-      "required_files": [
-        "command.txt",
-        "stdout.log",
-        "stderr.log",
-        "result.json",
-        "junit.xml"
-      ],
-      "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md"
-    },
-    {
-      "tc_id": "TC-008",
-      "ac_id": "AC-008",
-      "layer": "unit",
-      "qa_type": "unit",
-      "title": "beacon-v1.3.3-core-slimming-and-external-skill-demotion unit :: `skill detect / registry / discovery` 的输出必须分层展示 builtin core 与 external compatib",
-      "priority": "P0",
-      "automation": "auto",
-      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
-      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-008.json",
-      "required_files": [
-        "command.txt",
-        "stdout.log",
-        "stderr.log",
-        "result.json",
-        "junit.xml"
-      ],
-      "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md"
-    },
-    {
-      "tc_id": "TC-009",
-      "ac_id": "AC-009",
-      "layer": "unit",
-      "qa_type": "unit",
-      "title": "beacon-v1.3.3-core-slimming-and-external-skill-demotion unit :: project contract 能力必须与 external orchestration 解耦。",
-      "priority": "P0",
-      "automation": "auto",
-      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
-      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-009.json",
-      "required_files": [
-        "command.txt",
-        "stdout.log",
-        "stderr.log",
-        "result.json",
-        "junit.xml"
-      ],
-      "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md"
-    },
-    {
-      "tc_id": "TC-010",
-      "ac_id": "AC-010",
-      "layer": "unit",
-      "qa_type": "unit",
-      "title": "beacon-v1.3.3-core-slimming-and-external-skill-demotion unit :: 新用户在默认路径下不应先接触 compatibility plane 命令和概念。",
-      "priority": "P0",
-      "automation": "auto",
-      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
-      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-010.json",
-      "required_files": [
-        "command.txt",
-        "stdout.log",
-        "stderr.log",
-        "result.json",
-        "junit.xml"
-      ],
-      "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md"
-    },
-    {
-      "tc_id": "TC-011",
-      "ac_id": "AC-011",
-      "layer": "unit",
-      "qa_type": "unit",
-      "title": "beacon-v1.3.3-core-slimming-and-external-skill-demotion unit :: `beacon-prd-bootstrap` 必须支持一键生成 `prd/user-story/test-case`，且默认 `dry-run + no-ove",
-      "priority": "P0",
-      "automation": "auto",
-      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
-      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-011.json",
-      "required_files": [
-        "command.txt",
-        "stdout.log",
-        "stderr.log",
-        "result.json",
-        "junit.xml"
-      ],
-      "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md"
-    },
-    {
-      "tc_id": "TC-012",
-      "ac_id": "AC-012",
-      "layer": "unit",
-      "qa_type": "unit",
-      "title": "beacon-v1.3.3-core-slimming-and-external-skill-demotion unit :: Codex 输入框下固定 HUD 必须通过 hook 自动注入，覆盖 `UserPromptSubmit` 与会话刷新，且失败可降级不阻断。",
-      "priority": "P0",
-      "automation": "auto",
-      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
-      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-012.json",
-      "required_files": [
-        "command.txt",
-        "stdout.log",
-        "stderr.log",
-        "result.json",
-        "junit.xml"
-      ],
-      "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md"
-    },
-    {
-      "tc_id": "TC-013",
-      "ac_id": "AC-001",
-      "layer": "api-curl",
-      "qa_type": "interface",
-      "title": "beacon-v1.3.3-core-slimming-and-external-skill-demotion interface coverage",
-      "priority": "P0",
-      "automation": "auto",
-      "command": "python3 -m pytest -q -k interface --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "HTTP status and schema assertions pass",
-      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-013.json",
-      "required_files": [
-        "command.txt",
-        "stdout.log",
-        "stderr.log",
-        "result.json",
-        "junit.xml"
-      ],
-      "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md"
-    },
-    {
-      "tc_id": "TC-014",
-      "ac_id": "AC-002",
-      "layer": "contract",
-      "qa_type": "contract",
-      "title": "beacon-v1.3.3-core-slimming-and-external-skill-demotion contract coverage",
-      "priority": "P1",
-      "automation": "auto",
-      "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "Provider/consumer contract assertions pass",
-      "evidence_path": ".beacon/evidence/auto-test/run-20260417T132646363596/qa9-tc/TC-014/command.txt",
-      "required_files": [
-        "command.txt",
-        "stdout.log",
-        "stderr.log",
-        "result.json",
-        "junit.xml"
-      ],
-      "status": "passed",
-      "source": "user-story:docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-      "last_run_id": "run-20260417T132646363596"
-    },
-    {
-      "tc_id": "TC-015",
-      "ac_id": "AC-003",
-      "layer": "integration",
-      "qa_type": "integration",
-      "title": "beacon-v1.3.3-core-slimming-and-external-skill-demotion integration coverage",
-      "priority": "P1",
-      "automation": "auto",
-      "command": "python3 -m pytest -q -k integration --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "Integration flow assertions pass",
-      "evidence_path": ".beacon/evidence/auto-test/run-20260417T132646363596/qa9-tc/TC-015/command.txt",
-      "required_files": [
-        "command.txt",
-        "stdout.log",
-        "stderr.log",
-        "result.json",
-        "junit.xml"
-      ],
-      "status": "passed",
-      "source": "user-story:docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-      "last_run_id": "run-20260417T132646363596"
-    },
-    {
-      "tc_id": "TC-016",
-      "ac_id": "AC-004",
-      "layer": "smoke",
-      "qa_type": "smoke",
-      "title": "beacon-v1.3.3-core-slimming-and-external-skill-demotion smoke coverage",
-      "priority": "P0",
-      "automation": "auto",
-      "command": "python3 -m pytest -q -m smoke --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "Critical path assertions pass",
-      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-016.json",
-      "required_files": [
-        "command.txt",
-        "stdout.log",
-        "stderr.log",
-        "result.json",
-        "junit.xml"
-      ],
-      "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md"
-    },
-    {
-      "tc_id": "TC-017",
-      "ac_id": "AC-005",
-      "layer": "ui",
-      "qa_type": "functional",
-      "title": "beacon-v1.3.3-core-slimming-and-external-skill-demotion functional coverage",
-      "priority": "P0",
-      "automation": "auto",
-      "command": "python3 -m beacon.adapters.browser_use_runner --mode functional --fallback-cmd \"python3 -m pytest -q -k functional --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
-      "assertion": "Web UI assertions and key actions pass",
-      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-017.json",
-      "required_files": [
-        "command.txt",
-        "stdout.log",
-        "stderr.log",
-        "result.json",
-        "junit.xml"
-      ],
-      "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md"
-    },
-    {
-      "tc_id": "TC-018",
-      "ac_id": "AC-006",
-      "layer": "regression",
-      "qa_type": "regression",
-      "title": "beacon-v1.3.3-core-slimming-and-external-skill-demotion regression coverage",
-      "priority": "P1",
-      "automation": "auto",
-      "command": "python3 -m pytest -q -k regression --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "No known behavior regression found",
-      "evidence_path": ".beacon/evidence/auto-test/run-20260417T132646363596/qa9-tc/TC-018/command.txt",
-      "required_files": [
-        "command.txt",
-        "stdout.log",
-        "stderr.log",
-        "result.json",
-        "junit.xml"
-      ],
-      "status": "passed",
-      "source": "user-story:docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-      "last_run_id": "run-20260417T132646363596"
-    },
-    {
-      "tc_id": "TC-019",
-      "ac_id": "AC-007",
-      "layer": "exception",
-      "qa_type": "exception",
-      "title": "beacon-v1.3.3-core-slimming-and-external-skill-demotion exception coverage",
-      "priority": "P1",
-      "automation": "auto",
-      "command": "python3 -m pytest -q -k exception --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "Negative-path assertions pass",
-      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-019.json",
-      "required_files": [
-        "command.txt",
-        "stdout.log",
-        "stderr.log",
-        "result.json",
-        "junit.xml"
-      ],
-      "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md"
-    },
-    {
-      "tc_id": "TC-020",
-      "ac_id": "AC-008",
-      "layer": "compatibility",
-      "qa_type": "compatibility",
-      "title": "beacon-v1.3.3-core-slimming-and-external-skill-demotion compatibility coverage",
-      "priority": "P1",
-      "automation": "auto",
-      "command": "python3 -m beacon.adapters.browser_use_runner --mode compatibility --fallback-cmd \"python3 -m pytest -q -k compatibility --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
-      "assertion": "Cross-browser/device assertions pass",
-      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.3-core-slimming-and-external-skill-demotion/{run_id}/TC-020.json",
-      "required_files": [
-        "command.txt",
-        "stdout.log",
-        "stderr.log",
-        "result.json",
-        "junit.xml"
-      ],
-      "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md"
+      "artifact": "review_quality",
+      "required": true,
+      "reason": "run quality review after native implementation",
+      "status": "open",
+      "notes": ""
     }
   ],
-  "targeted_entries": [],
-  "targeted_layers": [],
-  "targeted_ac_ids": [],
-  "targeted_tc_ids": [],
-  "targeted_source_tc_ids": [],
-  "targeted_scenario_ids": [],
-  "targeted_scenario_families": [],
-  "previous_run_id": "run-20260417T132646363596",
-  "run_id": "run-20260417T134157631060",
-  "feature_matrix_path": "docs/beacon/v1.3.4/.machine/qa/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane.qa9-matrix.json",
   "per_item_results": [
     {
-      "ac_id": "AC-002",
-      "tc_id": "TC-014",
-      "source_tc_id": "TC-014",
+      "ac_id": "AC-005",
+      "tc_id": "TC-012",
+      "source_tc_id": "TC-012",
       "scenario_id": "",
       "scenario_family": "",
-      "test_item_id": "TEST-014",
+      "test_item_id": "TEST-012",
       "status": "passed",
       "reason_code": "",
       "qa_type": "contract",
@@ -2502,15 +462,37 @@
       "browser_evidence_pack_ref": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260417T132646363596/qa9-tc/TC-014/command.txt",
-        ".beacon/evidence/auto-test/run-20260417T132646363596/qa9-tc/TC-014/stdout.log",
-        ".beacon/evidence/auto-test/run-20260417T132646363596/qa9-tc/TC-014/stderr.log",
-        ".beacon/evidence/auto-test/run-20260417T132646363596/qa9-tc/TC-014/junit.xml",
-        ".beacon/evidence/auto-test/run-20260417T132646363596/qa9-tc/TC-014/result.json"
+        ".beacon/evidence/auto-test/run-20260420T182331187681/qa9-tc/TC-012/command.txt",
+        ".beacon/evidence/auto-test/run-20260420T182331187681/qa9-tc/TC-012/stdout.log",
+        ".beacon/evidence/auto-test/run-20260420T182331187681/qa9-tc/TC-012/stderr.log",
+        ".beacon/evidence/auto-test/run-20260420T182331187681/qa9-tc/TC-012/junit.xml",
+        ".beacon/evidence/auto-test/run-20260420T182331187681/qa9-tc/TC-012/result.json"
       ]
     },
     {
-      "ac_id": "AC-003",
+      "ac_id": "AC-006",
+      "tc_id": "TC-013",
+      "source_tc_id": "TC-013",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-013",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "integration",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260420T182331187681/qa9-tc/TC-013/command.txt",
+        ".beacon/evidence/auto-test/run-20260420T182331187681/qa9-tc/TC-013/stdout.log",
+        ".beacon/evidence/auto-test/run-20260420T182331187681/qa9-tc/TC-013/stderr.log",
+        ".beacon/evidence/auto-test/run-20260420T182331187681/qa9-tc/TC-013/junit.xml",
+        ".beacon/evidence/auto-test/run-20260420T182331187681/qa9-tc/TC-013/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-002",
       "tc_id": "TC-015",
       "source_tc_id": "TC-015",
       "scenario_id": "",
@@ -2518,58 +500,40 @@
       "test_item_id": "TEST-015",
       "status": "passed",
       "reason_code": "",
-      "qa_type": "integration",
-      "browser_required": false,
-      "replay_required": false,
-      "browser_evidence_pack_ref": "",
-      "replay_ref": "",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260417T132646363596/qa9-tc/TC-015/command.txt",
-        ".beacon/evidence/auto-test/run-20260417T132646363596/qa9-tc/TC-015/stdout.log",
-        ".beacon/evidence/auto-test/run-20260417T132646363596/qa9-tc/TC-015/stderr.log",
-        ".beacon/evidence/auto-test/run-20260417T132646363596/qa9-tc/TC-015/junit.xml",
-        ".beacon/evidence/auto-test/run-20260417T132646363596/qa9-tc/TC-015/result.json"
-      ]
-    },
-    {
-      "ac_id": "AC-006",
-      "tc_id": "TC-018",
-      "source_tc_id": "TC-018",
-      "scenario_id": "",
-      "scenario_family": "",
-      "test_item_id": "TEST-018",
-      "status": "passed",
-      "reason_code": "",
       "qa_type": "regression",
       "browser_required": false,
       "replay_required": false,
       "browser_evidence_pack_ref": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260417T132646363596/qa9-tc/TC-018/command.txt",
-        ".beacon/evidence/auto-test/run-20260417T132646363596/qa9-tc/TC-018/stdout.log",
-        ".beacon/evidence/auto-test/run-20260417T132646363596/qa9-tc/TC-018/stderr.log",
-        ".beacon/evidence/auto-test/run-20260417T132646363596/qa9-tc/TC-018/junit.xml",
-        ".beacon/evidence/auto-test/run-20260417T132646363596/qa9-tc/TC-018/result.json"
+        ".beacon/evidence/auto-test/run-20260420T182331187681/qa9-tc/TC-015/command.txt",
+        ".beacon/evidence/auto-test/run-20260420T182331187681/qa9-tc/TC-015/stdout.log",
+        ".beacon/evidence/auto-test/run-20260420T182331187681/qa9-tc/TC-015/stderr.log",
+        ".beacon/evidence/auto-test/run-20260420T182331187681/qa9-tc/TC-015/junit.xml",
+        ".beacon/evidence/auto-test/run-20260420T182331187681/qa9-tc/TC-015/result.json"
       ]
     }
   ],
-  "verified_item_ids": [
-    "AC-002",
-    "AC-003",
-    "AC-006",
-    "TEST-014",
-    "TEST-015",
-    "TEST-018"
-  ],
-  "failed_item_ids": [],
+  "execution_mode": "scope",
+  "project_profile": {},
+  "project_profile_gate": {
+    "status": "not_configured",
+    "profile_id": "",
+    "issues": [],
+    "required_evidence": [],
+    "required_cases": [],
+    "contract_drifts": []
+  },
+  "project_orchestration": {},
+  "current_session_id": "",
+  "canonical_matrix_path": "docs/beacon/v1.3.5/.machine/qa/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor.qa9-matrix.json",
   "exhaustiveness": {
     "schema_version": "1.0",
-    "feature": "beacon-v1.3.3-core-slimming-and-external-skill-demotion",
-    "feature_slug": "beacon-v1.3.3-core-slimming-and-external-skill-demotion",
-    "run_id": "run-20260417T132646363596",
-    "generated_at": "2026-04-17T05:29:01.009195+00:00",
-    "execution_mode": "feature-aware",
+    "feature": "beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor",
+    "feature_slug": "beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor",
+    "run_id": "run-20260420T182331187681",
+    "generated_at": "2026-04-20T10:23:43.966329+00:00",
+    "execution_mode": "scope",
     "scenario_count": 3,
     "browser_scenario_count": 0,
     "required_families": [],
@@ -2588,23 +552,13 @@
     "failure_streak": 0,
     "escalation_level": "E0"
   },
-  "project_profile": {},
-  "project_profile_gate": {
-    "status": "not_configured",
-    "profile_id": "",
-    "issues": [],
-    "required_evidence": [],
-    "required_cases": [],
-    "contract_drifts": []
-  },
-  "current_session_id": "",
   "scenario_results_v2": [
     {
-      "scenario_id": "TC-014",
-      "tc_id": "TC-014",
-      "source_tc_id": "TC-014",
-      "ac_id": "AC-002",
-      "feature_slug": "beacon-v1.3.3-core-slimming-and-external-skill-demotion",
+      "scenario_id": "TC-012",
+      "tc_id": "TC-012",
+      "source_tc_id": "TC-012",
+      "ac_id": "AC-005",
+      "feature_slug": "beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -2627,19 +581,54 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260417T132646363596/qa9-tc/TC-014/command.txt",
-        ".beacon/evidence/auto-test/run-20260417T132646363596/qa9-tc/TC-014/stdout.log",
-        ".beacon/evidence/auto-test/run-20260417T132646363596/qa9-tc/TC-014/stderr.log",
-        ".beacon/evidence/auto-test/run-20260417T132646363596/qa9-tc/TC-014/junit.xml",
-        ".beacon/evidence/auto-test/run-20260417T132646363596/qa9-tc/TC-014/result.json"
+        ".beacon/evidence/auto-test/run-20260420T182331187681/qa9-tc/TC-012/command.txt",
+        ".beacon/evidence/auto-test/run-20260420T182331187681/qa9-tc/TC-012/stdout.log",
+        ".beacon/evidence/auto-test/run-20260420T182331187681/qa9-tc/TC-012/stderr.log",
+        ".beacon/evidence/auto-test/run-20260420T182331187681/qa9-tc/TC-012/junit.xml",
+        ".beacon/evidence/auto-test/run-20260420T182331187681/qa9-tc/TC-012/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-013",
+      "tc_id": "TC-013",
+      "source_tc_id": "TC-013",
+      "ac_id": "AC-006",
+      "feature_slug": "beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260420T182331187681/qa9-tc/TC-013/command.txt",
+        ".beacon/evidence/auto-test/run-20260420T182331187681/qa9-tc/TC-013/stdout.log",
+        ".beacon/evidence/auto-test/run-20260420T182331187681/qa9-tc/TC-013/stderr.log",
+        ".beacon/evidence/auto-test/run-20260420T182331187681/qa9-tc/TC-013/junit.xml",
+        ".beacon/evidence/auto-test/run-20260420T182331187681/qa9-tc/TC-013/result.json"
       ]
     },
     {
       "scenario_id": "TC-015",
       "tc_id": "TC-015",
       "source_tc_id": "TC-015",
-      "ac_id": "AC-003",
-      "feature_slug": "beacon-v1.3.3-core-slimming-and-external-skill-demotion",
+      "ac_id": "AC-002",
+      "feature_slug": "beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -2662,117 +651,21 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260417T132646363596/qa9-tc/TC-015/command.txt",
-        ".beacon/evidence/auto-test/run-20260417T132646363596/qa9-tc/TC-015/stdout.log",
-        ".beacon/evidence/auto-test/run-20260417T132646363596/qa9-tc/TC-015/stderr.log",
-        ".beacon/evidence/auto-test/run-20260417T132646363596/qa9-tc/TC-015/junit.xml",
-        ".beacon/evidence/auto-test/run-20260417T132646363596/qa9-tc/TC-015/result.json"
-      ]
-    },
-    {
-      "scenario_id": "TC-018",
-      "tc_id": "TC-018",
-      "source_tc_id": "TC-018",
-      "ac_id": "AC-006",
-      "feature_slug": "beacon-v1.3.3-core-slimming-and-external-skill-demotion",
-      "scenario_family": "",
-      "status": "passed",
-      "closure_outcome": "accepted",
-      "confidence_raw": 1.0,
-      "confidence_calibrated": 1.0,
-      "confidence_band": "high",
-      "requires_human_review": false,
-      "evidence_sufficiency": "strong",
-      "root_cause_type": "none",
-      "reason_code": "",
-      "browser_required": false,
-      "replay_required": false,
-      "replay_present": false,
-      "browser_evidence_pack_ref": "",
-      "judge_signals": {
-        "status_score": 1.0,
-        "evidence_score": 1.0,
-        "replay_score": 1.0,
-        "trace_score": 1.0,
-        "flake_penalty": 0.0
-      },
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260417T132646363596/qa9-tc/TC-018/command.txt",
-        ".beacon/evidence/auto-test/run-20260417T132646363596/qa9-tc/TC-018/stdout.log",
-        ".beacon/evidence/auto-test/run-20260417T132646363596/qa9-tc/TC-018/stderr.log",
-        ".beacon/evidence/auto-test/run-20260417T132646363596/qa9-tc/TC-018/junit.xml",
-        ".beacon/evidence/auto-test/run-20260417T132646363596/qa9-tc/TC-018/result.json"
+        ".beacon/evidence/auto-test/run-20260420T182331187681/qa9-tc/TC-015/command.txt",
+        ".beacon/evidence/auto-test/run-20260420T182331187681/qa9-tc/TC-015/stdout.log",
+        ".beacon/evidence/auto-test/run-20260420T182331187681/qa9-tc/TC-015/stderr.log",
+        ".beacon/evidence/auto-test/run-20260420T182331187681/qa9-tc/TC-015/junit.xml",
+        ".beacon/evidence/auto-test/run-20260420T182331187681/qa9-tc/TC-015/result.json"
       ]
     }
   ],
-  "ac_closure": {
-    "schema_version": "1.0",
-    "feature": "beacon-v1.3.3-core-slimming-and-external-skill-demotion",
-    "feature_slug": "beacon-v1.3.3-core-slimming-and-external-skill-demotion",
-    "run_id": "run-20260417T132646363596",
-    "generated_at": "2026-04-17T05:29:01.010194+00:00",
-    "reports": [
-      {
-        "ac_id": "AC-002",
-        "feature_slug": "beacon-v1.3.3-core-slimming-and-external-skill-demotion",
-        "required_scenario_families": [],
-        "passed_scenario_families": [
-          "primary"
-        ],
-        "required_replay_scenarios": [],
-        "missing_replay_scenarios": [],
-        "scenario_ids": [
-          "TC-014"
-        ],
-        "closure_status": "accepted",
-        "confidence_min": 1.0,
-        "confidence_avg": 1.0,
-        "open_outcomes": [],
-        "blocking_reasons": []
-      },
-      {
-        "ac_id": "AC-003",
-        "feature_slug": "beacon-v1.3.3-core-slimming-and-external-skill-demotion",
-        "required_scenario_families": [],
-        "passed_scenario_families": [
-          "primary"
-        ],
-        "required_replay_scenarios": [],
-        "missing_replay_scenarios": [],
-        "scenario_ids": [
-          "TC-015"
-        ],
-        "closure_status": "accepted",
-        "confidence_min": 1.0,
-        "confidence_avg": 1.0,
-        "open_outcomes": [],
-        "blocking_reasons": []
-      },
-      {
-        "ac_id": "AC-006",
-        "feature_slug": "beacon-v1.3.3-core-slimming-and-external-skill-demotion",
-        "required_scenario_families": [],
-        "passed_scenario_families": [
-          "primary"
-        ],
-        "required_replay_scenarios": [],
-        "missing_replay_scenarios": [],
-        "scenario_ids": [
-          "TC-018"
-        ],
-        "closure_status": "accepted",
-        "confidence_min": 1.0,
-        "confidence_avg": 1.0,
-        "open_outcomes": [],
-        "blocking_reasons": []
-      }
-    ]
-  },
+  "ac_closure_path": ".beacon/qa/features/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor/ac-closure.json",
+  "feature_scorecard_path": ".beacon/qa/features/beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor/scorecard.json",
   "feature_scorecard": {
     "schema_version": "1.0",
-    "feature": "beacon-v1.3.3-core-slimming-and-external-skill-demotion",
-    "feature_slug": "beacon-v1.3.3-core-slimming-and-external-skill-demotion",
-    "run_id": "run-20260417T132646363596",
+    "feature": "beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor",
+    "feature_slug": "beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor",
+    "run_id": "run-20260420T182331187681",
     "ac_total": 3,
     "ac_accepted": 3,
     "scenario_total": 3,
@@ -2820,86 +713,14 @@
     "continue_decision": "ready_for_release",
     "stop_reasons": [],
     "test_case_backfill_required": false,
-    "resume_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.3.3 --feature \"beacon-v1.3.3-core-slimming-and-external-skill-demotion\"",
+    "resume_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.3.5 --feature \"beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor\"",
     "repair_handoff": {
       "action": "qa-repair",
       "reason": "qa_round_incomplete",
-      "command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.3.3 --feature \"beacon-v1.3.3-core-slimming-and-external-skill-demotion\""
+      "command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.3.5 --feature \"beacon-v1.3.5-prototype-wireframe-mode-and-prototype-surface-refactor\""
     },
     "release_ready": true
   },
-  "ac_closure_path": ".beacon/qa/features/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane/ac-closure.json",
-  "feature_scorecard_path": ".beacon/qa/features/beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane/scorecard.json",
-  "team_mode": false,
-  "host_runtime": "codex",
-  "subagent_prechecks": {
-    "required": false,
-    "host_runtime": "codex",
-    "runtime_readiness": {},
-    "delegation_readiness": {}
-  },
-  "team_contract": {
-    "preferred_surface": "qa-team",
-    "plan_command": "beacon qa team-plan \"beacon-v1.3.3-core-slimming-and-external-skill-demotion\" --project /Users/apple/Developer/Personal/products/beacon --version v1.3.3",
-    "run_command": "beacon qa team-run \"beacon-v1.3.3-core-slimming-and-external-skill-demotion\" --project /Users/apple/Developer/Personal/products/beacon --version v1.3.3",
-    "roles": [
-      "verifier",
-      "repair-handoff-writer"
-    ],
-    "context_isolation": {
-      "role_plane": "qa",
-      "isolated_from": [
-        "implement-team"
-      ],
-      "shared_inputs": [
-        "docs/beacon/<version>/qa/test-cases",
-        "implementation_summary",
-        "technical_archive",
-        "evidence_refs"
-      ],
-      "shared_outputs": [
-        "feature_scorecard",
-        "repair_handoff",
-        "qa_status"
-      ],
-      "rule": "qa_must_not_inherit_implement_private_context"
-    },
-    "config_source": "beacon/team_roles/qa-team.json"
-  },
-  "implement_to_qa_handoff": {
-    "schema_version": "1.0",
-    "handoff_type": "implement-to-qa",
-    "generated_at": "2026-04-16T15:11:40.497768+00:00",
-    "feature": "beacon-v1.3.3-core-slimming-and-external-skill-demotion",
-    "feature_slug": "beacon-v1.3.3-core-slimming-and-external-skill-demotion",
-    "version": "v1.3.3",
-    "run_id": "run-20260416T151139Z-de5e",
-    "source_surface": "implement-team",
-    "target_surface": "qa-team",
-    "summary_ref": "docs/beacon/v1.3.3/.machine/execution/implementation-summary-beacon-v1.3.3-core-slimming-and-external-skill-demotion.json",
-    "technical_archive_ref": "docs/beacon/v1.3.3/.machine/execution/technical-implementation-beacon-v1.3.3-core-slimming-and-external-skill-demotion.json",
-    "implementation_plan_ref": "docs/beacon/v1.3.3/.machine/execution/implementation-plan-beacon-v1.3.3-core-slimming-and-external-skill-demotion.json",
-    "changed_files": [
-      ".beacon/auto-test-status.json",
-      ".beacon/evidence-manifest.json",
-      ".beacon/qa/status.json",
-      ".omc/project-memory.json",
-      "beacon/commands/help.py",
-      "beacon/commands/status.py",
-      "beacon/utils/help_support.py",
-      "docs/beacon/v1.3.3/SUMMARY.md",
-      "docs/beacon/v1.3.3/execution/index.md",
-      "docs/beacon/v1.3.3/prd/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-      "docs/beacon/v1.3.3/qa/test-cases/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-      "docs/beacon/v1.3.3/user-story/beacon-v1.3.3-core-slimming-and-external-skill-demotion.md",
-      "docs/plans/2026-04-16-beacon-v1.3.3-minimal-hud-design.md",
-      "docs/plans/2026-04-16-beacon-v1.3.3-minimal-hud-implementation.md"
-    ],
-    "evidence_refs": [
-      "docs/beacon/v1.3.3/.machine/execution/implementation-summary-beacon-v1.3.3-core-slimming-and-external-skill-demotion.json",
-      "docs/beacon/v1.3.3/.machine/execution/technical-implementation-beacon-v1.3.3-core-slimming-and-external-skill-demotion.json"
-    ],
-    "context_rule": "qa_must_not_inherit_implement_private_context"
-  },
-  "message": "feature QA already up to date; no rerun required"
+  "release_ready": true,
+  "current_spec_fingerprint_hash": "511701dcd9c32297028da318542fd07e65abdf079cc687ce270d85cef945cef0"
 }
