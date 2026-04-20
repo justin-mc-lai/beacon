@@ -38,6 +38,7 @@ STANDARD_BEACON_GITIGNORE_LINES = (
     ".beacon/state/skill-discovery/",
     ".beacon/state/team-hud/",
     ".beacon/state/workflow-hud/",
+    ".beacon/validation/",
     "",
     "# Timestamped transient workflow runs",
     ".beacon/runs/run-20*/",

@@ -34,6 +34,7 @@ def test_doctor_sync_gitignore_should_write_managed_block(tmp_path: Path):
     gitignore = (tmp_path / ".gitignore").read_text(encoding="utf-8")
     assert "# BEACON:GITIGNORE:START" in gitignore
     assert "# BEACON:GITIGNORE:END" in gitignore
+    assert ".beacon/validation/" in gitignore
 
 
 def test_doctor_verify_gitignore_should_pass_after_sync(tmp_path: Path):
