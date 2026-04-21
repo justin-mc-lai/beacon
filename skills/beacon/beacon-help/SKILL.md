@@ -1,11 +1,13 @@
 ---
 name: beacon-help
-description: Use when the user asks what Beacon should do next, is blocked in the Beacon lifecycle, or needs stage-aware guidance through the minimal v1.3.3 human surface.
+description: Use when the user asks what Beacon should do next, is blocked in the Beacon lifecycle, or needs stage-aware guidance through Beacon's current v1.3.6 runtime surface.
 ---
 
 # Beacon Help
 
 This skill routes next-step guidance through Beacon's `help` surface.
+
+The public command stays on the current `v1.3.6` runtime line and uses the shared read model and guidance behavior defined by the `v1.3.6` docs.
 
 ## Use for
 

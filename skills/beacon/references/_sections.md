@@ -2,10 +2,11 @@
 
 - `usage-rules.md` — trigger rules, wrapper behavior, main/supplementary sync rules, and anti-drift structure contract
 - `../examples/basic-workflow.md` — example invocations
-- `../../../docs/beacon/v1.1.4/execution/latest-feature-usage-guide.md` — latest feature usage guide
-- `../../../docs/beacon/v1.1.4/execution/real-project-recipes.md` — real-project cookbook
-- `../../../docs/beacon/v1.1.4/execution/faq-and-troubleshooting.md` — FAQ / troubleshooting
-- `../../../docs/beacon/v1.1.4/execution/beacon-vs-openspec-gsd-comparison.md` — product comparison and feature solidification
+- `../../../docs/beacon/v1.3.6/SUMMARY.md` — current runtime release summary
+- `../../../docs/beacon/v1.3.6/execution/index.md` — current runtime execution index
+- `../../../docs/beacon/v1.3.6/release/v1.3.6.md` — current runtime release notes
+- `../../../docs/beacon/v1.3.6/execution/host-native-llm-and-skill-runtime-blueprint.md` — host-native runtime architecture blueprint
+- `../../../docs/beacon/v1.3.6/release/runtime-promotion-checklist.md` — runtime promotion completion record
 - `../../../docs/skill-development-standards.md` — standard skill layout baseline
 
 ## Fixed section contract

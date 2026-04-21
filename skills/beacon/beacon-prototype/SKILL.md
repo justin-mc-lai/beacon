@@ -7,6 +7,8 @@ description: Use when the user wants to generate, review, freeze, or inspect Bea
 
 This skill routes prototype work through Beacon's `prototype` surface.
 
+The public command stays on the `v1.3.6` runtime line while `v1.3.6` keeps prototype output aligned with the host-native requirement material stack instead of reverting to hard-coded template HTML flows.
+
 ## Use for
 
 - wireframe freeze package generation

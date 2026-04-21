@@ -1,6 +1,6 @@
 # Beacon Skill Example
 
-This example focuses on the **Beacon v1.3.3 release line** and its lightweight main workflow:
+This example focuses on the **Beacon v1.3.6 release line** and its lightweight main workflow:
 
 1. read the current version package
 2. use the wrapper script
@@ -10,9 +10,9 @@ This example focuses on the **Beacon v1.3.3 release line** and its lightweight m
 
 Read first:
 
-- [`../../../docs/beacon/v1.3.3/SUMMARY.md`](../../../docs/beacon/v1.3.3/SUMMARY.md)
-- [`../../../docs/beacon/v1.3.3/execution/index.md`](../../../docs/beacon/v1.3.3/execution/index.md)
-- [`../../../docs/beacon/v1.3.3/execution/project-skill-qa-evolution-blueprint.md`](../../../docs/beacon/v1.3.3/execution/project-skill-qa-evolution-blueprint.md)
+- [`../../../docs/beacon/v1.3.6/SUMMARY.md`](../../../docs/beacon/v1.3.6/SUMMARY.md)
+- [`../../../docs/beacon/v1.3.6/execution/index.md`](../../../docs/beacon/v1.3.6/execution/index.md)
+- [`../../../docs/beacon/v1.3.6/execution/project-skill-qa-evolution-blueprint.md`](../../../docs/beacon/v1.3.6/execution/project-skill-qa-evolution-blueprint.md)
 
 Related focused examples:
 
@@ -25,34 +25,34 @@ bash skills/beacon/scripts/run_beacon.sh --version
 
 # 1) Generate the main-chain artifacts
 bash skills/beacon/scripts/run_beacon.sh prd create \
-  "Beacon v1.3.3 lightweight release line" \
+  "Beacon v1.3.6 runtime release line" \
   --project . \
-  --version v1.3.3
+  --version v1.3.6
 bash skills/beacon/scripts/run_beacon.sh user-story create \
-  "Beacon v1.3.3 lightweight release line" \
+  "Beacon v1.3.6 runtime release line" \
   --project . \
-  --version v1.3.3
+  --version v1.3.6
 bash skills/beacon/scripts/run_beacon.sh test-case create \
-  "Beacon v1.3.3 lightweight release line" \
+  "Beacon v1.3.6 runtime release line" \
   --project . \
-  --version v1.3.3
+  --version v1.3.6
 
 # 2) Optional safe bootstrap for the same closed-loop materials
 bash skills/beacon/scripts/run_beacon.sh prd bootstrap \
-  "Beacon v1.3.3 lightweight release line" \
+  "Beacon v1.3.6 runtime release line" \
   --project-root . \
-  --version v1.3.3 \
+  --version v1.3.6 \
   --dry-run \
   --json
 
 # 3) Compile implementation plan before coding
 bash skills/beacon/scripts/run_beacon.sh implement plan \
-  "Beacon v1.3.3 lightweight release line" \
+  "Beacon v1.3.6 runtime release line" \
   --project . \
-  --version v1.3.3 \
+  --version v1.3.6 \
   --json
 
 # 4) Inspect status / next stage
-bash skills/beacon/scripts/run_beacon.sh status --board --project-root . --version v1.3.3
-bash skills/beacon/scripts/run_beacon.sh help --project-root . --version v1.3.3 --feature "Beacon v1.3.3 lightweight release line" --json
+bash skills/beacon/scripts/run_beacon.sh status --board --project-root . --version v1.3.6
+bash skills/beacon/scripts/run_beacon.sh help --project-root . --version v1.3.6 --feature "Beacon v1.3.6 runtime release line" --json
 ```

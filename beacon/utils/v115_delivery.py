@@ -8,7 +8,14 @@ import shutil
 from pathlib import Path
 from typing import Any
 
-from beacon.utils.artifact_paths import machine_execution_dir, machine_qa_dir, qa_docs_dir, uses_machine_surface
+from beacon.utils.artifact_paths import (
+    execution_file_candidates,
+    human_execution_dir,
+    machine_execution_dir,
+    machine_qa_dir,
+    qa_docs_dir,
+    uses_machine_surface,
+)
 from beacon.utils.runtime import now_iso, write_json
 from beacon.utils.versioning import resolve_target_version
 
@@ -23,6 +30,161 @@ _EXECUTION_MACHINE_FILES = (
 )
 
 _QA_MATRIX_SUFFIXES = (".ac-test-matrix.json", ".qa9-matrix.json")
+
+
+def _read_json(path: Path) -> dict[str, Any]:
+    if not path.exists():
+        return {}
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:  # noqa: BLE001
+        return {}
+    return payload if isinstance(payload, dict) else {}
+
+
+def _state_sort_key(path: Path, payload: dict[str, Any]) -> tuple[str, str, str, str, str, str, int, str]:
+    return (
+        str(payload.get("frozen_at") or ""),
+        str(payload.get("accepted_at") or ""),
+        str(payload.get("completed_at") or ""),
+        str(payload.get("updated_at") or ""),
+        str(payload.get("created_at") or ""),
+        str(payload.get("written_at") or ""),
+        path.stat().st_mtime_ns if path.exists() else 0,
+        path.name,
+    )
+
+
+def _latest_version_feature(project_root: Path, *, version: str) -> str:
+    machine_exec = machine_execution_dir(project_root, version)
+    if machine_exec.exists():
+        candidates: list[tuple[Path, dict[str, Any]]] = []
+        for path in machine_exec.glob("*.revision.json"):
+            payload = _read_json(path)
+            if str(payload.get("feature") or "").strip():
+                candidates.append((path, payload))
+        for path, payload in sorted(candidates, key=lambda item: _state_sort_key(item[0], item[1]), reverse=True):
+            feature = str(payload.get("feature") or "").strip()
+            if feature:
+                return feature
+
+    user_story_dir = project_root / "docs" / "beacon" / version / "user-story"
+    if user_story_dir.exists():
+        for path in sorted(user_story_dir.glob("*.md"), key=lambda item: (item.stat().st_mtime_ns, item.name), reverse=True):
+            if path.name == "index.md":
+                continue
+            feature = path.stem.strip()
+            if feature:
+                return feature
+    return ""
+
+
+def _synthetic_run_id(*, version: str) -> str:
+    stamp = (
+        now_iso()
+        .replace("-", "")
+        .replace(":", "")
+        .replace(".", "")
+        .replace("+", "Z")
+    )
+    return f"repair-{version}-{stamp}"
+
+
+def _synthesize_execution_governance(
+    project_root: Path,
+    *,
+    version: str,
+    apply: bool,
+) -> list[dict[str, str]]:
+    feature = _latest_version_feature(project_root, version=version)
+    if not feature:
+        return [
+            {
+                "path": f"docs/beacon/{version}/execution",
+                "action": "skipped",
+                "reason": "feature_missing_for_governance_synthesis",
+            }
+        ]
+
+    required_files = (
+        "boundaries.md",
+        "config.json",
+        "source.json",
+        "git-alignment.json",
+        "change-impact.json",
+        "delivery-manifest.json",
+        "terminal.json",
+    )
+    missing = [
+        filename
+        for filename in required_files
+        if not any(path.exists() for path in execution_file_candidates(project_root, version, filename))
+    ]
+    source_payload = next(
+        (_read_json(path) for path in execution_file_candidates(project_root, version, "source.json") if path.exists()),
+        {},
+    )
+    source_feature = str(source_payload.get("feature") or "").strip()
+    stale_feature = bool(source_feature and source_feature != feature)
+    if not missing and not stale_feature:
+        return []
+
+    run_id = (
+        str(source_payload.get("run_id") or "").strip()
+        if source_feature == feature
+        else ""
+    ) or _synthetic_run_id(version=version)
+    planned_paths = [
+        str((human_execution_dir(project_root, version) / "boundaries.md").relative_to(project_root)),
+        str((machine_execution_dir(project_root, version) / "config.json").relative_to(project_root)),
+        str((machine_execution_dir(project_root, version) / "source.json").relative_to(project_root)),
+        str((machine_execution_dir(project_root, version) / "git-alignment.json").relative_to(project_root)),
+        str((machine_execution_dir(project_root, version) / "change-impact.json").relative_to(project_root)),
+        str((machine_execution_dir(project_root, version) / "delivery-manifest.json").relative_to(project_root)),
+        str((machine_execution_dir(project_root, version) / "terminal.json").relative_to(project_root)),
+    ]
+
+    if apply:
+        from beacon.commands.workflow import (
+            _sync_terminal_manifest,
+            _write_execution_governance_artifacts,
+            _write_workflow_terminal_artifacts,
+        )
+
+        _write_execution_governance_artifacts(
+            project_root=project_root,
+            version=version,
+            run_id=run_id,
+            feature=feature,
+            workflow_status="completed",
+        )
+        _write_workflow_terminal_artifacts(
+            project_root=project_root,
+            version=version,
+            run_id=run_id,
+            feature=feature,
+            workflow_status="completed",
+            reason="doctor_repair_package",
+        )
+        _sync_terminal_manifest(project_root, version=version, run_id=run_id)
+
+    action = (
+        "rewritten"
+        if apply and stale_feature
+        else "planned_rewrite"
+        if stale_feature
+        else "synthesized"
+        if apply
+        else "planned"
+    )
+    return [
+        {
+            "path": path,
+            "action": action,
+            "source": f"workflow_governance:{feature}",
+        }
+        for path in planned_paths
+    ]
 
 
 def refresh_evidence_manifest(
@@ -357,13 +519,16 @@ def repair_v115_delivery_package(
 
     index_actions = ensure_human_primary_indexes(project_root, version=resolved_version, apply=apply)
     eval_actions = ensure_eval_lab_skeleton(project_root, apply=apply)
+    governance_actions = _synthesize_execution_governance(project_root, version=resolved_version, apply=apply)
     actions.extend(index_actions)
     actions.extend(eval_actions)
+    actions.extend(governance_actions)
     if apply:
         manifest_refs = sorted(
             {
                 *migrated,
                 *[item["path"] for item in index_actions if isinstance(item, dict) and str(item.get("path", "")).strip()],
+                *[item["path"] for item in governance_actions if isinstance(item, dict) and str(item.get("path", "")).strip()],
             }
         )
         refresh_evidence_manifest(project_root, refs=manifest_refs, version=resolved_version)
@@ -375,6 +540,7 @@ def repair_v115_delivery_package(
         "migrated": migrated,
         "indexes": index_actions,
         "eval_lab": eval_actions,
+        "governance": governance_actions,
         "actions": actions,
         "notes": [
             "v1.1.5 treats .machine as machine secondary surface",

@@ -25,7 +25,10 @@ def test_v120_version_truth_should_promote_v120_to_current_runtime_release():
     assert payload["runtime_version"] == __toolkit_version__
     assert payload["docs_default_line"] == __toolkit_version__
     assert payload["current_runtime_release_line"] == __toolkit_version__
-    assert payload["planning_lines"] == []
+    assert __toolkit_version__ not in payload["planning_lines"]
+    assert payload["planning_lines"] == ["v1.3.5"]
+    for line in payload["planning_lines"]:
+        assert payload["lines"][line]["status"] == "planning_only"
     assert "v1.3.4" in payload["partial_runtime_supplement_lines"]
     assert payload["lines"]["v1.3.4"]["status"] == "planning_with_partial_runtime_supplement"
     assert payload["lines"][__toolkit_version__]["status"] == "current_runtime_release"
@@ -76,9 +79,13 @@ def test_v120_current_release_gate_should_pass():
             "git_workflow_contract_missing",
             "evidence_sha256_manifest_mismatch",
             "gate_consistency_conflict",
+            "implementation_plan_missing",
             "implementation_plan_blocked",
             "implementation_plan_incomplete",
+            "requirement_clarity_markdown_missing",
+            "requirement_clarity_report_missing",
             "source_info_missing",
+            "technical_review_contract_missing",
             "terminal_artifact_missing",
             "unresolved_closure_outcome",
             "review_required_open",
@@ -86,4 +93,5 @@ def test_v120_current_release_gate_should_pass():
             "release_memory_profile_invalid",
             "feature_release_not_ready",
             "spec_impl_drift_detected",
+            "runtime_projection_drift",
         }

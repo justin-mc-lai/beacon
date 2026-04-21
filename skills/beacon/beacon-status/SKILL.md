@@ -1,11 +1,13 @@
 ---
 name: beacon-status
-description: Use when the user wants a board, current stage snapshot, or overall lifecycle state for a Beacon feature through the minimal v1.3.3 human surface.
+description: Use when the user wants a board, current stage snapshot, or overall lifecycle state for a Beacon feature through Beacon's current v1.3.6 runtime surface.
 ---
 
 # Beacon Status
 
 This skill routes status inspection through Beacon's `status` surface.
+
+The public command stays on the `v1.3.6` runtime line while `v1.3.6` defines the shared read model for lifecycle visibility and delivery state.
 
 ## Use for
 

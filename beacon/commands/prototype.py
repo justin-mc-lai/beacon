@@ -37,13 +37,15 @@ def plan(
     feature: str = typer.Argument(..., help="Feature name"),
     project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
     version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
+    mode: str = typer.Option("auto", "--mode", help="Compile mode: auto/llm/rule"),
+    model: str = typer.Option("beacon-prototype-compiler", "--model", help="Compiler model label for evidence"),
     json_output: bool = typer.Option(False, "--json", help="Emit JSON payload"),
 ):
     """Compile structured wireframe freeze plan from requirement contracts."""
     project_root = Path(project) if project else Path.cwd()
     resolved_version = _resolved_operational_version(project_root, version, "prototype plan")
     try:
-        result = write_prototype_plan(project_root, resolved_version, feature)
+        result = write_prototype_plan(project_root, resolved_version, feature, mode=mode, model=model)
     except (FileNotFoundError, ValueError) as exc:
         typer.echo(str(exc), err=True)
         raise typer.Exit(2)
@@ -51,6 +53,11 @@ def plan(
         "feature": feature,
         "version": resolved_version,
         "prototype_mode": result["plan"].get("prototype_mode"),
+        "requested_mode": (result["plan"].get("compiler") or {}).get("requested_mode"),
+        "effective_mode": (result["plan"].get("compiler") or {}).get("effective_mode"),
+        "generator_mode": (result["plan"].get("compiler") or {}).get("generator_mode"),
+        "fallback_reason": (result["plan"].get("compiler") or {}).get("fallback_reason"),
+        "capability_snapshot": (result["plan"].get("compiler") or {}).get("capability_snapshot", {}),
         "required_pages": result["plan"].get("required_pages", []),
         "required_states": result["plan"].get("required_states", []),
         "path": str(result["path"].relative_to(project_root)),
@@ -67,13 +74,15 @@ def create(
     project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
     version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
     output: Optional[str] = typer.Option(None, "--output", "-o", help="Optional output directory override"),
+    mode: str = typer.Option("auto", "--mode", help="Compile mode: auto/llm/rule"),
+    model: str = typer.Option("beacon-prototype-compiler", "--model", help="Compiler model label for evidence"),
     json_output: bool = typer.Option(False, "--json", help="Emit JSON payload"),
 ):
     """Create a requirement-driven wireframe freeze bundle from requirement contracts."""
     project_root = Path(project) if project else Path.cwd()
     resolved_version = _resolved_operational_version(project_root, version, "prototype create")
     try:
-        result = write_prototype_bundle(project_root, resolved_version, feature)
+        result = write_prototype_bundle(project_root, resolved_version, feature, mode=mode, model=model)
     except FileNotFoundError as exc:
         typer.echo(f"Missing source docs: {exc}")
         raise typer.Exit(2)
@@ -101,6 +110,11 @@ def create(
         "ui_kit": result["plan"].get("ui_kit"),
         "prototype_type": result["contract"]["prototype_archetype"],
         "prototype_mode": result.get("prototype_mode", "wireframe"),
+        "requested_mode": (result["plan"].get("compiler") or {}).get("requested_mode"),
+        "effective_mode": (result["plan"].get("compiler") or {}).get("effective_mode"),
+        "generator_mode": (result["plan"].get("compiler") or {}).get("generator_mode"),
+        "fallback_reason": (result["plan"].get("compiler") or {}).get("fallback_reason"),
+        "capability_snapshot": (result["plan"].get("compiler") or {}).get("capability_snapshot", {}),
         "paths": {k: str(v.relative_to(project_root)) for k, v in result["files"].items() if k != "root"},
     }
     if json_output:
@@ -109,6 +123,7 @@ def create(
 
     typer.echo(f"✓ Wireframe bundle created: {result['files']['wireframe_summary']}")
     typer.echo(f"✓ Archetype: {result['contract']['prototype_archetype']}")
+    typer.echo(f"✓ Generator mode: {(result['plan'].get('compiler') or {}).get('generator_mode', 'unknown')}")
     if output:
         typer.echo(f"✓ Copied artifacts to: {Path(output)}")
 
@@ -167,6 +182,11 @@ def directory(
         "directory_path": str(status["root"].relative_to(project_root)),
         "wireframe_summary_path": str(summary_path.relative_to(project_root)),
         "navigation_map_path": str(status["files"]["navigation_map_md"].relative_to(project_root)),
+        "requested_mode": (status.get("compiler") or {}).get("requested_mode"),
+        "effective_mode": (status.get("compiler") or {}).get("effective_mode"),
+        "generator_mode": (status.get("compiler") or {}).get("generator_mode"),
+        "fallback_reason": (status.get("compiler") or {}).get("fallback_reason"),
+        "capability_snapshot": (status.get("compiler") or {}).get("capability_snapshot", {}),
         "required_pages": coverage.get("required_pages", []),
         "required_states": coverage.get("required_states", []),
         "generated_pages": coverage.get("generated_pages", []),
@@ -299,6 +319,7 @@ def status(
     typer.echo(f"status       : {payload.get('status')}")
     typer.echo(f"mode         : {payload.get('prototype_mode', 'wireframe')}")
     typer.echo(f"ui_kit       : {payload.get('ui_kit')}")
+    typer.echo(f"generator    : {(payload.get('compiler') or {}).get('generator_mode', 'unknown')}")
     typer.echo(f"review       : {payload.get('review_status')}")
     typer.echo(f"human_view   : {payload.get('human_view_status')}")
     typer.echo(f"machine_view : {payload.get('machine_contract_status')}")

@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any
 
 from beacon.utils.artifact_paths import change_docs_file, change_file_output
+from beacon.utils.delivery_kernel import load_delivery_read_model
 from beacon.utils.exhaustiveness import load_exhaustiveness_report
 from beacon.utils.implementation_plan import (
     implementation_plan_supported,
@@ -38,16 +39,62 @@ def _load_json(path: Path) -> dict[str, Any]:
     return payload if isinstance(payload, dict) else {}
 
 
-def _latest_implement_feature(project_root: Path) -> str:
+def _state_sort_key(path: Path, payload: dict[str, Any]) -> tuple[str, str, str, str, str, str, int, str]:
+    return (
+        str(payload.get("frozen_at") or ""),
+        str(payload.get("accepted_at") or ""),
+        str(payload.get("completed_at") or ""),
+        str(payload.get("updated_at") or ""),
+        str(payload.get("created_at") or ""),
+        str(payload.get("written_at") or ""),
+        path.stat().st_mtime_ns if path.exists() else 0,
+        path.name,
+    )
+
+
+def _latest_implement_feature(project_root: Path, *, version: str | None = None) -> str:
     implement_root = project_root / ".beacon" / "implement"
     if not implement_root.exists():
         return ""
-    for state_path in reversed(sorted(implement_root.glob("*/state.json"))):
+    candidates: list[tuple[Path, dict[str, Any]]] = []
+    for state_path in implement_root.glob("*/state.json"):
         payload = _load_json(state_path)
+        payload_version = str(payload.get("version") or "").strip()
+        if version and payload_version and payload_version != version:
+            continue
+        if str(payload.get("feature") or "").strip():
+            candidates.append((state_path, payload))
+    for state_path, payload in sorted(candidates, key=lambda item: _state_sort_key(item[0], item[1]), reverse=True):
         feature = str(payload.get("feature") or "").strip()
         if feature:
             return feature
     return ""
+
+
+def _latest_revision_feature(project_root: Path, *, version: str) -> str:
+    revision_root = project_root / "docs" / "beacon" / version / ".machine" / "execution"
+    if not revision_root.exists():
+        return ""
+    candidates: list[tuple[Path, dict[str, Any]]] = []
+    for state_path in revision_root.glob("*.revision.json"):
+        payload = _load_json(state_path)
+        if str(payload.get("feature") or "").strip():
+            candidates.append((state_path, payload))
+    for state_path, payload in sorted(candidates, key=lambda item: _state_sort_key(item[0], item[1]), reverse=True):
+        feature = str(payload.get("feature") or "").strip()
+        if feature:
+            return feature
+    return ""
+
+
+def _resolve_scorecard_feature(project_root: Path, *, version: str, qa_status: dict[str, Any]) -> str:
+    feature = str(qa_status.get("feature") or "").strip()
+    if feature:
+        return feature
+    return _latest_revision_feature(project_root, version=version) or _latest_implement_feature(
+        project_root,
+        version=version,
+    )
 
 
 def _version_change_status(project_root: Path, *, version: str, current_feature: str) -> dict[str, Any]:
@@ -157,9 +204,7 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
     qa_version_match = not qa_version or qa_version == resolved_version
     if not qa_version_match:
         qa_status = {}
-    feature = str(qa_status.get("feature") or "").strip() or _latest_implement_feature(project_root)
-    if qa_status == {}:
-        feature = ""
+    feature = _resolve_scorecard_feature(project_root, version=resolved_version, qa_status=qa_status)
     exhaustiveness = load_exhaustiveness_report(project_root, feature=feature) if feature else {}
     feature_scorecard = load_feature_qa_scorecard(project_root, feature=feature) if feature else {}
     implementation_plan = (
@@ -267,6 +312,45 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
         and bool(change_documents.get("includes_current_feature", False))
     ):
         release_ready = True
+    release_delivery_read_model = load_delivery_read_model(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        release_payload={
+            "release_ready": release_ready,
+            "gate": {
+                "status": str(gate_report.get("status") or "unknown"),
+            },
+            "qa": {
+                "status": str(qa_status.get("status") or "unknown"),
+            },
+            "revision_binding": revision_binding,
+        },
+    ) if feature else {
+        "schema_version": "1.0",
+        "feature": "",
+        "version": resolved_version,
+        "contract": {},
+        "implement": {"delivery_contract": {}},
+        "qa": {"delivery_contract": {}},
+        "release": {"gate_status": str(gate_report.get("status") or "unknown"), "release_ready": release_ready, "revision_binding": revision_binding},
+        "traceability": {"requirement_binding": {}, "requirement_refs": [], "runtime_refs": []},
+        "risk_flags": [],
+    }
+    host_native_delivery = {
+        "schema_version": "1.0",
+        "implement": (release_delivery_read_model.get("implement") or {}).get("delivery_contract", {}),
+        "qa": (release_delivery_read_model.get("qa") or {}).get("delivery_contract", {}),
+        "status": (
+            "pass"
+            if release_ready
+            else "blocked"
+            if list(release_delivery_read_model.get("risk_flags") or [])
+            else "warn"
+        ),
+        "reason_codes": list(release_delivery_read_model.get("risk_flags") or []),
+        "traceability": dict(release_delivery_read_model.get("traceability") or {}),
+    }
     return {
         "schema_version": "1.0",
         "version": resolved_version,
@@ -330,6 +414,8 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
             "candidate_count": len(scorecard_state.get("candidates", [])) if isinstance(scorecard_state.get("candidates"), list) else 0,
         },
         "latest_experiment": latest_experiment if isinstance(latest_experiment, dict) else {},
+        "delivery_read_model": release_delivery_read_model,
+        "host_native_delivery": host_native_delivery,
     }
 
 
@@ -349,6 +435,7 @@ def summarize_release_scorecard(scorecard: dict[str, Any] | None) -> dict[str, A
     revision_binding = payload.get("revision_binding") if isinstance(payload.get("revision_binding"), dict) else {}
     decisions = learning.get("decision_summary") if isinstance(learning.get("decision_summary"), dict) else {}
     latest_experiment = payload.get("latest_experiment") if isinstance(payload.get("latest_experiment"), dict) else {}
+    host_native_delivery = payload.get("host_native_delivery") if isinstance(payload.get("host_native_delivery"), dict) else {}
     return {
         "release_ready": bool(payload.get("release_ready", False)),
         "gate_status": str(gate.get("status") or "unknown"),
@@ -402,4 +489,6 @@ def summarize_release_scorecard(scorecard: dict[str, Any] | None) -> dict[str, A
         "change_documents_version_match": bool(change_documents.get("version_match", False)),
         "change_documents_feature_count": int(change_documents.get("feature_count") or 0),
         "change_documents_includes_current_feature": bool(change_documents.get("includes_current_feature", False)),
+        "host_native_delivery_status": str(host_native_delivery.get("status") or ""),
+        "host_native_delivery_reason_codes": list(host_native_delivery.get("reason_codes") or []),
     }

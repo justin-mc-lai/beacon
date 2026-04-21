@@ -1193,30 +1193,13 @@ def build_doctor_advice_payload(
     run_id: str | None = None,
     strict: bool = False,
 ) -> dict[str, Any]:
-    """Combine diagnostics with stage-aware navigation advice."""
-    from beacon.utils.help_support import build_help_payload
-    diagnostics = build_doctor_payload(project_root, strict=strict, version=version)
-    navigator = build_help_payload(project_root, version=version, feature=feature, run_id=run_id)
-    incompatibilities = diagnostics.get("incompatibilities", []) if isinstance(diagnostics.get("incompatibilities"), list) else []
-    blocked_reasons = list(navigator.get("blocking_reasons", []))
-    if incompatibilities:
-        blocked_reasons.extend(str(item.get("code", "")) for item in incompatibilities if isinstance(item, dict) and str(item.get("status", "")).upper() in {"FAIL", "BLOCKED", "WARN"})
-    blocked_reasons = sorted({reason for reason in blocked_reasons if str(reason).strip()})
-    return {
-        "schema_version": "1.0",
-        "feature": navigator.get("feature", ""),
-        "docs_version": navigator.get("docs_version", navigator.get("version", version)),
-        "runtime_version": navigator.get("runtime_version", ""),
-        "context_managed_version": (
-            navigator.get("version_context", {}).get("context_managed_version", "")
-            if isinstance(navigator.get("version_context"), dict)
-            else ""
-        ),
-        "version": navigator.get("version", version),
-        "current_stage": navigator.get("current_stage", ""),
-        "blocked": bool(blocked_reasons) or diagnostics.get("overall") == "BLOCKED",
-        "blocking_reasons": blocked_reasons,
-        "next_step": navigator.get("next_step", {}),
-        "scores": navigator.get("scores", {}),
-        "diagnostics": diagnostics,
-    }
+    """Compatibility alias for the live doctor-advise builder."""
+    from beacon.utils.help_navigation import build_doctor_advise_payload as _build_doctor_advise_payload
+
+    return _build_doctor_advise_payload(
+        project_root,
+        version=version,
+        feature=feature,
+        run_id=run_id,
+        strict=strict,
+    )

@@ -130,6 +130,35 @@ def test_implement_run_dry_run_should_write_request_and_state(tmp_path: Path):
     assert (tmp_path / ".beacon" / "implement" / run_id / "request.json").exists()
 
 
+def test_implement_run_native_dry_run_should_not_materialize_tracked_delivery_artifacts(tmp_path: Path):
+    _seed_feature_docs(tmp_path, feature="My Feature")
+    result = _invoke(
+        [
+            "implement",
+            "run",
+            "My Feature",
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            "v1.1.4",
+            "--runner",
+            "native-single",
+            "--dry-run",
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    run_id = payload["run_id"]
+    assert payload["status"] == "dry_run"
+    assert payload["command"] == []
+    assert (tmp_path / ".beacon" / "implement" / run_id / "state.json").exists()
+    assert (tmp_path / ".beacon" / "implement" / run_id / "request.json").exists()
+    assert not (tmp_path / ".beacon" / "state" / "implementation-my-feature.json").exists()
+    assert not execution_file_output(tmp_path, "v1.1.4", "implementation-summary-my-feature.json").exists()
+    assert not execution_file_output(tmp_path, "v1.1.4", "technical-implementation-my-feature.json").exists()
+
+
 def test_implement_run_handoff_should_write_markdown_request(tmp_path: Path):
     _seed_feature_docs(tmp_path, feature="My Feature")
     (tmp_path / ".claude" / "skills" / "gstack").mkdir(parents=True, exist_ok=True)

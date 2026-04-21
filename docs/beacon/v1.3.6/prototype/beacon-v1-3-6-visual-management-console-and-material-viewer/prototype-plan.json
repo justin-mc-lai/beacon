@@ -3,14 +3,14 @@
   "feature": "beacon-v1.3.6-visual-management-console-and-material-viewer",
   "feature_slug": "beacon-v1-3-6-visual-management-console-and-material-viewer",
   "version": "v1.3.6",
-  "generated_at": "2026-04-20T13:27:17Z",
+  "generated_at": "2026-04-21T02:12:57Z",
   "prototype_mode": "wireframe",
   "ui_kit": "wireframe-markdown-v1",
   "source_documents": [
     {
       "type": "user-story",
       "path": "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md",
-      "fingerprint": "4b3ec8b7c8e354bcf54f7c0cc891d46caf51d9e5cba8afb0cf85eb50c1e425a4"
+      "fingerprint": "4ad9aed4694f78232cd838532148cff28387ce9bbf90fce5e0cda6efcabf8a78"
     },
     {
       "type": "prd",
@@ -20,7 +20,7 @@
     {
       "type": "test-case",
       "path": "docs/beacon/v1.3.6/qa/test-cases/beacon-v1.3.6-visual-management-console-and-material-viewer.md",
-      "fingerprint": "d57ffffc63181df5d59bc97058659c524e4800d96bd34f9bd7a126d8ff7afe5d"
+      "fingerprint": "7bfda1797120921e70cd1da7a63103c15a2617af5c603ec6eb8999c2593ef6f8"
     }
   ],
   "required_pages": [
@@ -74,7 +74,8 @@
       "AC-013",
       "AC-014",
       "AC-015",
-      "AC-016"
+      "AC-016",
+      "AC-017"
     ],
     "tc_ids": [
       "TC-001",
@@ -88,7 +89,8 @@
       "TC-009",
       "TC-010",
       "TC-011",
-      "TC-012"
+      "TC-012",
+      "TC-013"
     ]
   },
   "page_specs": [
@@ -163,7 +165,55 @@
           "docs/beacon/v1.3.6/qa/test-cases/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
         ]
       },
-      "outbound_transitions": []
+      "outbound_transitions": [
+        {
+          "from": "home",
+          "to": "management-overview",
+          "trigger": "点击项目组合入口",
+          "type": "primary"
+        },
+        {
+          "from": "home",
+          "to": "project-detail",
+          "trigger": "点击重点项目卡片",
+          "type": "primary"
+        }
+      ],
+      "analysis": {
+        "target_user": "Beacon 管理者 / owner / 负责人",
+        "decision_focus": [
+          "今天先盯哪些项目，而不是先看所有项目明细。",
+          "哪些阻塞已经升级成需要人工介入的经营问题。",
+          "当前交付是否继续按版本线推进，还是需要下钻到项目详情。"
+        ],
+        "layout_rules": [
+          "首屏先给经营判断，不先铺完整表格。",
+          "阻塞与介入信息必须比常规进度更靠上。",
+          "runtime 只保留摘要，不在首页展开机器内部细节。"
+        ],
+        "noise_guardrail": "首页不承载 session、agent、原始 requirement 路径等机器噪音。"
+      },
+      "layout_lines": [
+        "+----------------------------------------------------------------------------------+",
+        "| 顶栏：Beacon 管理端 | 时间范围 | 视角: CEO / Owner | 进入项目组合总览            |",
+        "+----------------------------------------------------------------------------------+",
+        "| 指标条: 活跃项目 | 阻塞项目 | 活跃 runtime | 今日交付 | 需介入项目                 |",
+        "+----------------------------------------------------------------------------------+",
+        "| 重点介入区                                                                       |",
+        "| - P0 项目A: 卡在 qa，等待 owner 决策                                              |",
+        "| - P1 项目B: docs 缺口，需补 test-case                                             |",
+        "| [进入重点项目] [查看全部介入项]                                                   |",
+        "+----------------------------------------------------------------------------------+",
+        "| 项目推进摘要列表                                                                  |",
+        "| 项目 | 当前版本 | 当前阶段 | 健康态 | 当前交付 | blocker | 下一步                 |",
+        "| A    | v1.3.6   | prototype | risk   | 首页草图  | qa 缺口 | 进详情               |",
+        "| B    | v1.2.4   | implement | good   | 文档查看器 | 无      | 继续验证            |",
+        "+----------------------------------------------------------------------------------+",
+        "| 当前交付                                      | 下一步建议                         |",
+        "| - v1.3.6 首页/总览骨架已冻结                  | - 先处理阻塞项目A                  |",
+        "| - 物料查看器只读流已接入                      | - 再进入 management overview 扫描  |",
+        "+----------------------------------------------------------------------------------+"
+      ]
     },
     {
       "page_id": "management-overview",
@@ -235,9 +285,47 @@
         {
           "from": "management-overview",
           "to": "project-detail",
-          "trigger": "点击跳转",
+          "trigger": "点击项目行/卡片",
           "type": "primary"
+        },
+        {
+          "from": "management-overview",
+          "to": "home",
+          "trigger": "点击首页导航",
+          "type": "return"
         }
+      ],
+      "analysis": {
+        "target_user": "管理端值守人 / 组合视角负责人",
+        "decision_focus": [
+          "多项目之间谁健康、谁阻塞、谁接近可发布。",
+          "是否需要通过筛选和排序快速收敛到一批项目。",
+          "什么时候应该从组合视图下钻到单项目接力页。"
+        ],
+        "layout_rules": [
+          "工具栏必须紧贴项目注册表，减少扫描跳跃。",
+          "项目注册表承担密集比较，不承担深度解释。",
+          "风险、debug、推荐 skill 放在表格侧边或下方收口，不抢主扫描节奏。"
+        ],
+        "noise_guardrail": "总览页只展示管理判断信号，不直接展开 doctor 或 runtime 原始上下文。"
+      },
+      "layout_lines": [
+        "+-----------------------------------------------------------------------------------+",
+        "| 顶栏：返回首页 | 管理总览 | 更新时间 | 批量筛选已生效数                            |",
+        "+-----------------------------------------------------------------------------------+",
+        "| 筛选与排序条: 项目类型 | 当前版本 | 阶段 | 健康态 | debug | 需求物料状态 | 排序    |",
+        "+-----------------------------------------------------------------------------------+",
+        "| 阶段分布摘要: draft 2 | prototype 3 | implement 4 | qa 1 | release 1              |",
+        "+-----------------------------------------------------------------------------------+",
+        "| 项目注册表                                                                         |",
+        "| 项目 | 类型 | 当前版本 | 主 feature | 阶段 | 进度 | 健康态 | debug | 下一步       |",
+        "| A    | 产品 | v1.3.6   | 管理看板   | prototype | 70% | risk | warn | 进详情       |",
+        "| B    | 工具 | v1.2.4   | 物料查看器 | implement | 90% | good | ok   | 做验证       |",
+        "+-----------------------------------------------------------------------------------+",
+        "| 风险与调试摘要                               | 推荐 skill 区                        |",
+        "| - 2 个项目存在 blocker                        | - prototype review                  |",
+        "| - 1 个项目 debug 态异常                       | - doctor verify-context             |",
+        "+-----------------------------------------------------------------------------------+"
       ]
     },
     {
@@ -328,7 +416,68 @@
           "docs/beacon/v1.3.6/qa/test-cases/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
         ]
       },
-      "outbound_transitions": []
+      "outbound_transitions": [
+        {
+          "from": "project-detail",
+          "to": "runtime-center",
+          "trigger": "点击运行态摘要",
+          "type": "drill-down"
+        },
+        {
+          "from": "project-detail",
+          "to": "recovery-diagnostics",
+          "trigger": "点击恢复诊断入口",
+          "type": "drill-down"
+        },
+        {
+          "from": "project-detail",
+          "to": "material-viewer",
+          "trigger": "点击文档查看入口",
+          "type": "drill-down"
+        },
+        {
+          "from": "project-detail",
+          "to": "management-overview",
+          "trigger": "点击返回",
+          "type": "return"
+        }
+      ],
+      "analysis": {
+        "target_user": "单项目 owner / 接力执行者",
+        "decision_focus": [
+          "这条版本线当前停在哪个阶段，下一步应该推进哪里。",
+          "需求闭环是否完整，是否已经具备 implement / qa 的前提。",
+          "应该去 runtime、恢复诊断，还是去看项目物料。"
+        ],
+        "layout_rules": [
+          "项目头部先建立上下文，再展开需求闭环。",
+          "主 PRD 与并行 PRD 要并排出现，避免真相散落。",
+          "最近交付、下一步、推荐动作要形成明确收口。"
+        ],
+        "noise_guardrail": "项目详情是接力页，不直接承载底层日志和实现细节。"
+      },
+      "layout_lines": [
+        "+-----------------------------------------------------------------------------------+",
+        "| 顶栏：返回总览 | 项目名 | 项目类型 | owner | 当前阶段                               |",
+        "+-----------------------------------------------------------------------------------+",
+        "| 项目头部摘要                                  | 当前版本 / git / worktree           |",
+        "| - 当前目标                                    | - version: v1.3.6                   |",
+        "| - 为什么停在这里                              | - branch/worktree 状态              |",
+        "+-----------------------------------------------------------------------------------+",
+        "| 主 PRD                              | 并行 PRD / 子线                            |",
+        "| - 主线 feature                     | - 并行 feature A                           |",
+        "| - 当前承诺面                       | - 并行 feature B                           |",
+        "+-----------------------------------------------------------------------------------+",
+        "| 需求闭环状态: prd | user-story | test-case | prototype | qa 准备度                |",
+        "+-----------------------------------------------------------------------------------+",
+        "| 最近交付                                      | 下一步 / 推荐动作                     |",
+        "| - 最新冻结产物                                | - 继续 implement / qa / review       |",
+        "| - 最近一次 review 结论                        | - 推荐 skill                          |",
+        "+-----------------------------------------------------------------------------------+",
+        "| runtime 摘要卡                                | 文档查看 / 恢复诊断入口               |",
+        "| - single/team/ralph 摘要                      | [查看项目物料] [查看恢复诊断]         |",
+        "+-----------------------------------------------------------------------------------+"
+      ]
     },
     {
       "page_id": "runtime-center",
@@ -401,7 +550,51 @@
           "docs/beacon/v1.3.6/qa/test-cases/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
         ]
       },
-      "outbound_transitions": []
+      "outbound_transitions": [
+        {
+          "from": "runtime-center",
+          "to": "project-detail",
+          "trigger": "点击返回",
+          "type": "return"
+        },
+        {
+          "from": "runtime-center",
+          "to": "management-overview",
+          "trigger": "点击面包屑",
+          "type": "return"
+        }
+      ],
+      "analysis": {
+        "target_user": "需要核对运行态的执行者 / 诊断人",
+        "decision_focus": [
+          "当前到底是 single、team 还是 ralph 在推进。",
+          "linked run、artifact、blocker 是否足以解释当前停滞点。",
+          "看完运行态后应该回到项目详情还是继续诊断。"
+        ],
+        "layout_rules": [
+          "模式切换必须固定在头部，便于横向比较三种运行形态。",
+          "session / artifact 只展示必要引用，不在此页堆底层原文。",
+          "最近结果与 blocker 必须直接可读，避免继续翻查多层结构。"
+        ],
+        "noise_guardrail": "运行中心可以下钻运行信息，但仍要压制无边界的机器内部明细。"
+      },
+      "layout_lines": [
+        "+----------------------------------------------------------------------------------+",
+        "| 顶栏：返回项目详情 | 运行中心 | 最近刷新时间 | 当前活跃模式                        |",
+        "+----------------------------------------------------------------------------------+",
+        "| 模式切换： single | team | ralph                                                |",
+        "+----------------------------------------------------------------------------------+",
+        "| 运行态摘要头部: 当前状态 | round_count | failure_streak | 当前执行目标             |",
+        "+----------------------------------------------------------------------------------+",
+        "| agent / session 引用                         | linked run / artifact refs           |",
+        "| - session id / agent 数                      | - latest run                         |",
+        "| - host / lane 摘要                           | - artifact / report                  |",
+        "+----------------------------------------------------------------------------------+",
+        "| recent_result                                | blocker / next_action                |",
+        "| - 最近结果摘要                               | - 当前 blocker                       |",
+        "| - 最近一次状态变化                           | - 下一步动作                         |",
+        "+----------------------------------------------------------------------------------+"
+      ]
     },
     {
       "page_id": "recovery-diagnostics",
@@ -473,7 +666,52 @@
           "docs/beacon/v1.3.6/qa/test-cases/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
         ]
       },
-      "outbound_transitions": []
+      "outbound_transitions": [
+        {
+          "from": "recovery-diagnostics",
+          "to": "project-detail",
+          "trigger": "点击返回",
+          "type": "return"
+        },
+        {
+          "from": "recovery-diagnostics",
+          "to": "runtime-center",
+          "trigger": "点击运行态关联",
+          "type": "drill-down"
+        }
+      ],
+      "analysis": {
+        "target_user": "负责恢复上下文的人",
+        "decision_focus": [
+          "当前是 degraded、rebuild 还是 doctor 场景。",
+          "真相是否仍然回到 docs/beacon 与 .beacon。",
+          "用户该做哪一步恢复，而不是读一堆诊断术语。"
+        ],
+        "layout_rules": [
+          "先讲 truth 来源，再给诊断卡和恢复步骤。",
+          "风险提示要比操作细节更醒目，避免误用恢复动作。",
+          "恢复动作要收口成少量步骤，不展开内部实现机制。"
+        ],
+        "noise_guardrail": "诊断页解释机器状态，但不能反客为主替代 requirement truth。"
+      },
+      "layout_lines": [
+        "+----------------------------------------------------------------------------------+",
+        "| 顶栏：返回项目详情 | 恢复诊断 | 当前环境状态                                      |",
+        "+----------------------------------------------------------------------------------+",
+        "| truth 来源说明                                                                    |",
+        "| - 正式真相来自 docs/beacon + .beacon                                              |",
+        "| - 当前页只解释恢复路径，不改写 requirement truth                                   |",
+        "+----------------------------------------------------------------------------------+",
+        "| 诊断卡： degraded | rebuild | doctor                                              |",
+        "| - 当前命中的诊断类型                                                               |",
+        "| - 推荐动作与触发条件                                                               |",
+        "+----------------------------------------------------------------------------------+",
+        "| 恢复步骤                                      | 风险提示                           |",
+        "| 1. 校验上下文                                 | - 不要把投影层当真相              |",
+        "| 2. 执行 doctor / rebuild                      | - 误修复会导致 drift              |",
+        "| 3. 回到项目页验证                             | - 先验证再 freeze                 |",
+        "+----------------------------------------------------------------------------------+"
+      ]
     },
     {
       "page_id": "material-viewer",
@@ -549,10 +787,48 @@
       "outbound_transitions": [
         {
           "from": "material-viewer",
+          "to": "project-detail",
+          "trigger": "点击返回",
+          "type": "return"
+        },
+        {
+          "from": "material-viewer",
           "to": "material-document-detail",
           "trigger": "点击文档列表项",
           "type": "drill-down"
         }
+      ],
+      "analysis": {
+        "target_user": "查看 Beacon 物料的人",
+        "decision_focus": [
+          "当前要看哪个版本、哪类文档、哪个 feature。",
+          "Markdown 物料是否存在，并能否稳定切换浏览。",
+          "这只是只读消费面，真相仍在本地 docs/beacon 与 .beacon。"
+        ],
+        "layout_rules": [
+          "左侧负责层级导航，右侧负责稳定阅读，职责不能混乱。",
+          "来源路径只做可信来源说明，不压过正文阅读体验。",
+          "版本切换要靠近树和目录，不要藏到正文底部。"
+        ],
+        "noise_guardrail": "物料页必须坚持只读查看，不暴露机器索引或编辑入口。"
+      },
+      "layout_lines": [
+        "+-----------------------------------------------------------------------------------+",
+        "| 顶栏：返回项目详情 | 项目物料查看器 | 当前项目 | 只读模式                         |",
+        "+-----------------------------------------------------------------------------------+",
+        "| 左侧导航                                                                           |",
+        "| 版本树            | 文档类型列表            | feature / 文档目录                  |",
+        "| v1.3.6            | prd                    | beacon-v1.3.6...md                   |",
+        "| v1.3.5            | user-story             | ...                                   |",
+        "| v1.3.4            | test-case              |                                       |",
+        "+-----------------------------------------------------------------------------------+",
+        "| 文档阅读面板                                                                       |",
+        "| - 文档标题 / 简介                                                                  |",
+        "| - Markdown 正文预览                                                                |",
+        "+-----------------------------------------------------------------------------------+",
+        "| 来源路径信息                                | 只读说明 / 版本切换                  |",
+        "| - docs/beacon/...                            | - 真相仍在本地文档树                 |",
+        "+-----------------------------------------------------------------------------------+"
       ]
     },
     {
@@ -623,6 +899,38 @@
           "trigger": "点击返回",
           "type": "return"
         }
+      ],
+      "analysis": {
+        "target_user": "需要持续阅读单篇物料的审阅者",
+        "decision_focus": [
+          "当前读的是哪一版、哪一类、哪个 feature 的文档。",
+          "如何在同类文档之间切换，而不丢失阅读上下文。",
+          "当来源缺失时，用户如何回退到上层查看器。"
+        ],
+        "layout_rules": [
+          "面包屑和文档头部先稳定上下文，再展开正文。",
+          "正文区必须占据视觉主体，切换控件退居辅助位置。",
+          "来源路径只作为可信性补充，不与正文争抢注意力。"
+        ],
+        "noise_guardrail": "详情阅读页不展示机器合同或 requirement 文件路径原文。"
+      },
+      "layout_lines": [
+        "+-----------------------------------------------------------------------------------+",
+        "| 顶栏：返回物料查看器 | 文档详情 | 当前版本 / 类型 / feature                        |",
+        "+-----------------------------------------------------------------------------------+",
+        "| 文档头部信息                                                                       |",
+        "| 标题 | 更新时间 | 来源版本 | 文档类型                                              |",
+        "+-----------------------------------------------------------------------------------+",
+        "| 面包屑： version / document type / feature / current document                      |",
+        "+-----------------------------------------------------------------------------------+",
+        "| Markdown 正文区                                                                    |",
+        "| # 文档标题                                                                         |",
+        "| 段落 / 列表 / 冻结说明 / requirement 内容预览                                     |",
+        "+-----------------------------------------------------------------------------------+",
+        "| 同类文档切换                               | 来源路径 / 只读说明                    |",
+        "| - 上一篇 / 下一篇                          | - docs/beacon/...                     |",
+        "| - 同版本相邻文档                           | - 不提供网页内编辑                     |",
+        "+-----------------------------------------------------------------------------------+"
       ]
     }
   ],
@@ -698,7 +1006,55 @@
           "docs/beacon/v1.3.6/qa/test-cases/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
         ]
       },
-      "outbound_transitions": []
+      "outbound_transitions": [
+        {
+          "from": "home",
+          "to": "management-overview",
+          "trigger": "点击项目组合入口",
+          "type": "primary"
+        },
+        {
+          "from": "home",
+          "to": "project-detail",
+          "trigger": "点击重点项目卡片",
+          "type": "primary"
+        }
+      ],
+      "analysis": {
+        "target_user": "Beacon 管理者 / owner / 负责人",
+        "decision_focus": [
+          "今天先盯哪些项目，而不是先看所有项目明细。",
+          "哪些阻塞已经升级成需要人工介入的经营问题。",
+          "当前交付是否继续按版本线推进，还是需要下钻到项目详情。"
+        ],
+        "layout_rules": [
+          "首屏先给经营判断，不先铺完整表格。",
+          "阻塞与介入信息必须比常规进度更靠上。",
+          "runtime 只保留摘要，不在首页展开机器内部细节。"
+        ],
+        "noise_guardrail": "首页不承载 session、agent、原始 requirement 路径等机器噪音。"
+      },
+      "layout_lines": [
+        "+----------------------------------------------------------------------------------+",
+        "| 顶栏：Beacon 管理端 | 时间范围 | 视角: CEO / Owner | 进入项目组合总览            |",
+        "+----------------------------------------------------------------------------------+",
+        "| 指标条: 活跃项目 | 阻塞项目 | 活跃 runtime | 今日交付 | 需介入项目                 |",
+        "+----------------------------------------------------------------------------------+",
+        "| 重点介入区                                                                       |",
+        "| - P0 项目A: 卡在 qa，等待 owner 决策                                              |",
+        "| - P1 项目B: docs 缺口，需补 test-case                                             |",
+        "| [进入重点项目] [查看全部介入项]                                                   |",
+        "+----------------------------------------------------------------------------------+",
+        "| 项目推进摘要列表                                                                  |",
+        "| 项目 | 当前版本 | 当前阶段 | 健康态 | 当前交付 | blocker | 下一步                 |",
+        "| A    | v1.3.6   | prototype | risk   | 首页草图  | qa 缺口 | 进详情               |",
+        "| B    | v1.2.4   | implement | good   | 文档查看器 | 无      | 继续验证            |",
+        "+----------------------------------------------------------------------------------+",
+        "| 当前交付                                      | 下一步建议                         |",
+        "| - v1.3.6 首页/总览骨架已冻结                  | - 先处理阻塞项目A                  |",
+        "| - 物料查看器只读流已接入                      | - 再进入 management overview 扫描  |",
+        "+----------------------------------------------------------------------------------+"
+      ]
     },
     {
       "page_id": "management-overview",
@@ -770,9 +1126,47 @@
         {
           "from": "management-overview",
           "to": "project-detail",
-          "trigger": "点击跳转",
+          "trigger": "点击项目行/卡片",
           "type": "primary"
+        },
+        {
+          "from": "management-overview",
+          "to": "home",
+          "trigger": "点击首页导航",
+          "type": "return"
         }
+      ],
+      "analysis": {
+        "target_user": "管理端值守人 / 组合视角负责人",
+        "decision_focus": [
+          "多项目之间谁健康、谁阻塞、谁接近可发布。",
+          "是否需要通过筛选和排序快速收敛到一批项目。",
+          "什么时候应该从组合视图下钻到单项目接力页。"
+        ],
+        "layout_rules": [
+          "工具栏必须紧贴项目注册表，减少扫描跳跃。",
+          "项目注册表承担密集比较，不承担深度解释。",
+          "风险、debug、推荐 skill 放在表格侧边或下方收口，不抢主扫描节奏。"
+        ],
+        "noise_guardrail": "总览页只展示管理判断信号，不直接展开 doctor 或 runtime 原始上下文。"
+      },
+      "layout_lines": [
+        "+-----------------------------------------------------------------------------------+",
+        "| 顶栏：返回首页 | 管理总览 | 更新时间 | 批量筛选已生效数                            |",
+        "+-----------------------------------------------------------------------------------+",
+        "| 筛选与排序条: 项目类型 | 当前版本 | 阶段 | 健康态 | debug | 需求物料状态 | 排序    |",
+        "+-----------------------------------------------------------------------------------+",
+        "| 阶段分布摘要: draft 2 | prototype 3 | implement 4 | qa 1 | release 1              |",
+        "+-----------------------------------------------------------------------------------+",
+        "| 项目注册表                                                                         |",
+        "| 项目 | 类型 | 当前版本 | 主 feature | 阶段 | 进度 | 健康态 | debug | 下一步       |",
+        "| A    | 产品 | v1.3.6   | 管理看板   | prototype | 70% | risk | warn | 进详情       |",
+        "| B    | 工具 | v1.2.4   | 物料查看器 | implement | 90% | good | ok   | 做验证       |",
+        "+-----------------------------------------------------------------------------------+",
+        "| 风险与调试摘要                               | 推荐 skill 区                        |",
+        "| - 2 个项目存在 blocker                        | - prototype review                  |",
+        "| - 1 个项目 debug 态异常                       | - doctor verify-context             |",
+        "+-----------------------------------------------------------------------------------+"
       ]
     },
     {
@@ -863,7 +1257,68 @@
           "docs/beacon/v1.3.6/qa/test-cases/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
         ]
       },
-      "outbound_transitions": []
+      "outbound_transitions": [
+        {
+          "from": "project-detail",
+          "to": "runtime-center",
+          "trigger": "点击运行态摘要",
+          "type": "drill-down"
+        },
+        {
+          "from": "project-detail",
+          "to": "recovery-diagnostics",
+          "trigger": "点击恢复诊断入口",
+          "type": "drill-down"
+        },
+        {
+          "from": "project-detail",
+          "to": "material-viewer",
+          "trigger": "点击文档查看入口",
+          "type": "drill-down"
+        },
+        {
+          "from": "project-detail",
+          "to": "management-overview",
+          "trigger": "点击返回",
+          "type": "return"
+        }
+      ],
+      "analysis": {
+        "target_user": "单项目 owner / 接力执行者",
+        "decision_focus": [
+          "这条版本线当前停在哪个阶段，下一步应该推进哪里。",
+          "需求闭环是否完整，是否已经具备 implement / qa 的前提。",
+          "应该去 runtime、恢复诊断，还是去看项目物料。"
+        ],
+        "layout_rules": [
+          "项目头部先建立上下文，再展开需求闭环。",
+          "主 PRD 与并行 PRD 要并排出现，避免真相散落。",
+          "最近交付、下一步、推荐动作要形成明确收口。"
+        ],
+        "noise_guardrail": "项目详情是接力页，不直接承载底层日志和实现细节。"
+      },
+      "layout_lines": [
+        "+-----------------------------------------------------------------------------------+",
+        "| 顶栏：返回总览 | 项目名 | 项目类型 | owner | 当前阶段                               |",
+        "+-----------------------------------------------------------------------------------+",
+        "| 项目头部摘要                                  | 当前版本 / git / worktree           |",
+        "| - 当前目标                                    | - version: v1.3.6                   |",
+        "| - 为什么停在这里                              | - branch/worktree 状态              |",
+        "+-----------------------------------------------------------------------------------+",
+        "| 主 PRD                              | 并行 PRD / 子线                            |",
+        "| - 主线 feature                     | - 并行 feature A                           |",
+        "| - 当前承诺面                       | - 并行 feature B                           |",
+        "+-----------------------------------------------------------------------------------+",
+        "| 需求闭环状态: prd | user-story | test-case | prototype | qa 准备度                |",
+        "+-----------------------------------------------------------------------------------+",
+        "| 最近交付                                      | 下一步 / 推荐动作                     |",
+        "| - 最新冻结产物                                | - 继续 implement / qa / review       |",
+        "| - 最近一次 review 结论                        | - 推荐 skill                          |",
+        "+-----------------------------------------------------------------------------------+",
+        "| runtime 摘要卡                                | 文档查看 / 恢复诊断入口               |",
+        "| - single/team/ralph 摘要                      | [查看项目物料] [查看恢复诊断]         |",
+        "+-----------------------------------------------------------------------------------+"
+      ]
     },
     {
       "page_id": "runtime-center",
@@ -936,7 +1391,51 @@
           "docs/beacon/v1.3.6/qa/test-cases/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
         ]
       },
-      "outbound_transitions": []
+      "outbound_transitions": [
+        {
+          "from": "runtime-center",
+          "to": "project-detail",
+          "trigger": "点击返回",
+          "type": "return"
+        },
+        {
+          "from": "runtime-center",
+          "to": "management-overview",
+          "trigger": "点击面包屑",
+          "type": "return"
+        }
+      ],
+      "analysis": {
+        "target_user": "需要核对运行态的执行者 / 诊断人",
+        "decision_focus": [
+          "当前到底是 single、team 还是 ralph 在推进。",
+          "linked run、artifact、blocker 是否足以解释当前停滞点。",
+          "看完运行态后应该回到项目详情还是继续诊断。"
+        ],
+        "layout_rules": [
+          "模式切换必须固定在头部，便于横向比较三种运行形态。",
+          "session / artifact 只展示必要引用，不在此页堆底层原文。",
+          "最近结果与 blocker 必须直接可读，避免继续翻查多层结构。"
+        ],
+        "noise_guardrail": "运行中心可以下钻运行信息，但仍要压制无边界的机器内部明细。"
+      },
+      "layout_lines": [
+        "+----------------------------------------------------------------------------------+",
+        "| 顶栏：返回项目详情 | 运行中心 | 最近刷新时间 | 当前活跃模式                        |",
+        "+----------------------------------------------------------------------------------+",
+        "| 模式切换： single | team | ralph                                                |",
+        "+----------------------------------------------------------------------------------+",
+        "| 运行态摘要头部: 当前状态 | round_count | failure_streak | 当前执行目标             |",
+        "+----------------------------------------------------------------------------------+",
+        "| agent / session 引用                         | linked run / artifact refs           |",
+        "| - session id / agent 数                      | - latest run                         |",
+        "| - host / lane 摘要                           | - artifact / report                  |",
+        "+----------------------------------------------------------------------------------+",
+        "| recent_result                                | blocker / next_action                |",
+        "| - 最近结果摘要                               | - 当前 blocker                       |",
+        "| - 最近一次状态变化                           | - 下一步动作                         |",
+        "+----------------------------------------------------------------------------------+"
+      ]
     },
     {
       "page_id": "recovery-diagnostics",
@@ -1008,7 +1507,52 @@
           "docs/beacon/v1.3.6/qa/test-cases/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
         ]
       },
-      "outbound_transitions": []
+      "outbound_transitions": [
+        {
+          "from": "recovery-diagnostics",
+          "to": "project-detail",
+          "trigger": "点击返回",
+          "type": "return"
+        },
+        {
+          "from": "recovery-diagnostics",
+          "to": "runtime-center",
+          "trigger": "点击运行态关联",
+          "type": "drill-down"
+        }
+      ],
+      "analysis": {
+        "target_user": "负责恢复上下文的人",
+        "decision_focus": [
+          "当前是 degraded、rebuild 还是 doctor 场景。",
+          "真相是否仍然回到 docs/beacon 与 .beacon。",
+          "用户该做哪一步恢复，而不是读一堆诊断术语。"
+        ],
+        "layout_rules": [
+          "先讲 truth 来源，再给诊断卡和恢复步骤。",
+          "风险提示要比操作细节更醒目，避免误用恢复动作。",
+          "恢复动作要收口成少量步骤，不展开内部实现机制。"
+        ],
+        "noise_guardrail": "诊断页解释机器状态，但不能反客为主替代 requirement truth。"
+      },
+      "layout_lines": [
+        "+----------------------------------------------------------------------------------+",
+        "| 顶栏：返回项目详情 | 恢复诊断 | 当前环境状态                                      |",
+        "+----------------------------------------------------------------------------------+",
+        "| truth 来源说明                                                                    |",
+        "| - 正式真相来自 docs/beacon + .beacon                                              |",
+        "| - 当前页只解释恢复路径，不改写 requirement truth                                   |",
+        "+----------------------------------------------------------------------------------+",
+        "| 诊断卡： degraded | rebuild | doctor                                              |",
+        "| - 当前命中的诊断类型                                                               |",
+        "| - 推荐动作与触发条件                                                               |",
+        "+----------------------------------------------------------------------------------+",
+        "| 恢复步骤                                      | 风险提示                           |",
+        "| 1. 校验上下文                                 | - 不要把投影层当真相              |",
+        "| 2. 执行 doctor / rebuild                      | - 误修复会导致 drift              |",
+        "| 3. 回到项目页验证                             | - 先验证再 freeze                 |",
+        "+----------------------------------------------------------------------------------+"
+      ]
     },
     {
       "page_id": "material-viewer",
@@ -1084,10 +1628,48 @@
       "outbound_transitions": [
         {
           "from": "material-viewer",
+          "to": "project-detail",
+          "trigger": "点击返回",
+          "type": "return"
+        },
+        {
+          "from": "material-viewer",
           "to": "material-document-detail",
           "trigger": "点击文档列表项",
           "type": "drill-down"
         }
+      ],
+      "analysis": {
+        "target_user": "查看 Beacon 物料的人",
+        "decision_focus": [
+          "当前要看哪个版本、哪类文档、哪个 feature。",
+          "Markdown 物料是否存在，并能否稳定切换浏览。",
+          "这只是只读消费面，真相仍在本地 docs/beacon 与 .beacon。"
+        ],
+        "layout_rules": [
+          "左侧负责层级导航，右侧负责稳定阅读，职责不能混乱。",
+          "来源路径只做可信来源说明，不压过正文阅读体验。",
+          "版本切换要靠近树和目录，不要藏到正文底部。"
+        ],
+        "noise_guardrail": "物料页必须坚持只读查看，不暴露机器索引或编辑入口。"
+      },
+      "layout_lines": [
+        "+-----------------------------------------------------------------------------------+",
+        "| 顶栏：返回项目详情 | 项目物料查看器 | 当前项目 | 只读模式                         |",
+        "+-----------------------------------------------------------------------------------+",
+        "| 左侧导航                                                                           |",
+        "| 版本树            | 文档类型列表            | feature / 文档目录                  |",
+        "| v1.3.6            | prd                    | beacon-v1.3.6...md                   |",
+        "| v1.3.5            | user-story             | ...                                   |",
+        "| v1.3.4            | test-case              |                                       |",
+        "+-----------------------------------------------------------------------------------+",
+        "| 文档阅读面板                                                                       |",
+        "| - 文档标题 / 简介                                                                  |",
+        "| - Markdown 正文预览                                                                |",
+        "+-----------------------------------------------------------------------------------+",
+        "| 来源路径信息                                | 只读说明 / 版本切换                  |",
+        "| - docs/beacon/...                            | - 真相仍在本地文档树                 |",
+        "+-----------------------------------------------------------------------------------+"
       ]
     },
     {
@@ -1158,6 +1740,38 @@
           "trigger": "点击返回",
           "type": "return"
         }
+      ],
+      "analysis": {
+        "target_user": "需要持续阅读单篇物料的审阅者",
+        "decision_focus": [
+          "当前读的是哪一版、哪一类、哪个 feature 的文档。",
+          "如何在同类文档之间切换，而不丢失阅读上下文。",
+          "当来源缺失时，用户如何回退到上层查看器。"
+        ],
+        "layout_rules": [
+          "面包屑和文档头部先稳定上下文，再展开正文。",
+          "正文区必须占据视觉主体，切换控件退居辅助位置。",
+          "来源路径只作为可信性补充，不与正文争抢注意力。"
+        ],
+        "noise_guardrail": "详情阅读页不展示机器合同或 requirement 文件路径原文。"
+      },
+      "layout_lines": [
+        "+-----------------------------------------------------------------------------------+",
+        "| 顶栏：返回物料查看器 | 文档详情 | 当前版本 / 类型 / feature                        |",
+        "+-----------------------------------------------------------------------------------+",
+        "| 文档头部信息                                                                       |",
+        "| 标题 | 更新时间 | 来源版本 | 文档类型                                              |",
+        "+-----------------------------------------------------------------------------------+",
+        "| 面包屑： version / document type / feature / current document                      |",
+        "+-----------------------------------------------------------------------------------+",
+        "| Markdown 正文区                                                                    |",
+        "| # 文档标题                                                                         |",
+        "| 段落 / 列表 / 冻结说明 / requirement 内容预览                                     |",
+        "+-----------------------------------------------------------------------------------+",
+        "| 同类文档切换                               | 来源路径 / 只读说明                    |",
+        "| - 上一篇 / 下一篇                          | - docs/beacon/...                     |",
+        "| - 同版本相邻文档                           | - 不提供网页内编辑                     |",
+        "+-----------------------------------------------------------------------------------+"
       ]
     }
   ],
@@ -1166,10 +1780,82 @@
     "primary_exit": "material-viewer",
     "transitions": [
       {
+        "from": "home",
+        "to": "management-overview",
+        "trigger": "点击项目组合入口",
+        "type": "primary"
+      },
+      {
+        "from": "home",
+        "to": "project-detail",
+        "trigger": "点击重点项目卡片",
+        "type": "primary"
+      },
+      {
         "from": "management-overview",
         "to": "project-detail",
-        "trigger": "点击跳转",
+        "trigger": "点击项目行/卡片",
         "type": "primary"
+      },
+      {
+        "from": "management-overview",
+        "to": "home",
+        "trigger": "点击首页导航",
+        "type": "return"
+      },
+      {
+        "from": "project-detail",
+        "to": "runtime-center",
+        "trigger": "点击运行态摘要",
+        "type": "drill-down"
+      },
+      {
+        "from": "project-detail",
+        "to": "recovery-diagnostics",
+        "trigger": "点击恢复诊断入口",
+        "type": "drill-down"
+      },
+      {
+        "from": "project-detail",
+        "to": "material-viewer",
+        "trigger": "点击文档查看入口",
+        "type": "drill-down"
+      },
+      {
+        "from": "project-detail",
+        "to": "management-overview",
+        "trigger": "点击返回",
+        "type": "return"
+      },
+      {
+        "from": "runtime-center",
+        "to": "project-detail",
+        "trigger": "点击返回",
+        "type": "return"
+      },
+      {
+        "from": "runtime-center",
+        "to": "management-overview",
+        "trigger": "点击面包屑",
+        "type": "return"
+      },
+      {
+        "from": "recovery-diagnostics",
+        "to": "project-detail",
+        "trigger": "点击返回",
+        "type": "return"
+      },
+      {
+        "from": "recovery-diagnostics",
+        "to": "runtime-center",
+        "trigger": "点击运行态关联",
+        "type": "drill-down"
+      },
+      {
+        "from": "material-viewer",
+        "to": "project-detail",
+        "trigger": "点击返回",
+        "type": "return"
       },
       {
         "from": "material-viewer",
@@ -1277,10 +1963,17 @@
     "cjk_detected": true,
     "cjk_parse_failed": false
   },
+  "compiler": {
+    "requested_mode": "auto",
+    "generator_mode": "rule",
+    "model": "beacon-prototype-compiler",
+    "fallback_reason": "llm_unavailable",
+    "llm_trace": {}
+  },
   "theme": {
     "ui_kit": "wireframe-markdown-v1",
     "prototype_archetype": "admin-workbench",
-    "primary": "#2563EB",
+    "primary": "#1F6FEB",
     "secondary": "#0F172A",
     "surface_note": "Wireframe freeze uses markdown and metadata only, not high-fidelity HTML surfaces."
   }

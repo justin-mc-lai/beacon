@@ -47,7 +47,7 @@ unless the user explicitly asks to carry the findings into the main Beacon lifec
 ```bash
 bash skills/beacon/scripts/run_beacon.sh memory-friction-evolution run \
   --project-root . \
-  --version v1.3.3 \
+  --version v1.3.6 \
   --mode both \
   --json
 ```
@@ -55,7 +55,7 @@ bash skills/beacon/scripts/run_beacon.sh memory-friction-evolution run \
 ```bash
 bash skills/beacon/scripts/run_beacon.sh memory-friction-evolution run \
   --project-root . \
-  --version v1.3.3 \
+  --version v1.3.6 \
   --mode friction \
   --with-lighthouse \
   --top-n 3 \

@@ -21,6 +21,7 @@ from beacon.utils.artifact_paths import (
 )
 from beacon.utils.circuit_breaker import CircuitBreaker
 from beacon.utils.artifact_update_obligations import write_artifact_update_obligations
+from beacon.utils.delivery_kernel import build_delivery_contract
 from beacon.utils.git_alignment import (
     build_implement_branch_guard_payload,
     switch_to_expected_branch,
@@ -1571,6 +1572,37 @@ def run_implement_stage(  # noqa: PLR0913
     if rendered_skill:
         task_prompt = f"{rendered_skill}\n{task_prompt}"
     context["task_prompt"] = task_prompt
+    adapter_type = str(adapter.get("adapter_type", "")).strip()
+
+    request_delivery_contract = build_delivery_contract(
+        feature=feature,
+        version=resolved_version,
+        requested_mode=resolved_mode or "",
+        effective_mode=resolved_mode or "",
+        execution_mode=resolved_mode or "",
+        runner_mode=adapter_id,
+        host_runtime=resolved_host_runtime,
+        subagent_prechecks=subagent_prechecks,
+        requirement_binding={
+            "source_of_truth_root": artifacts["source_of_truth_root"],
+            "prd": artifacts["prd"],
+            "user_story": artifacts["user_story"],
+            "test_case": artifacts["test_case"],
+            "ac_matrix": artifacts["ac_matrix"],
+        },
+        traceability_refs=[
+            artifacts["prd"],
+            artifacts["user_story"],
+            artifacts["test_case"],
+            artifacts["ac_matrix"],
+            str(request_path),
+            str(result_path),
+        ],
+        runner=adapter_id,
+        adapter_type=adapter_type,
+        execution_surface="implement-team" if resolved_mode == "team" else adapter_id,
+        team_mode=resolved_mode == "team",
+    )
 
     request_payload = {
         "schema_version": "1.0",
@@ -1596,6 +1628,8 @@ def run_implement_stage(  # noqa: PLR0913
         "implementation_plan": implementation_plan_file,
         "git_workflow": git_workflow_contract,
         "generated_at": now_iso(),
+        "delivery_contract": request_delivery_contract,
+        "host_native_delivery": request_delivery_contract,
     }
     write_json(project_root / request_path, request_payload)
 
@@ -1618,9 +1652,24 @@ def run_implement_stage(  # noqa: PLR0913
         "generated_at": now_iso(),
         "status": "planned",
         "subagent_prechecks": subagent_prechecks,
+        "delivery_contract": request_delivery_contract,
+        "host_native_delivery": request_delivery_contract,
     }
-
-    adapter_type = str(adapter.get("adapter_type", "")).strip()
+    if dry_run and adapter_type in {"native", "handoff", "claude-skill"}:
+        payload = {
+            **base_state,
+            "status": "dry_run",
+            "command": [],
+            "command_path": str(command_path),
+            "task_prompt": task_prompt,
+            "plan_preflight_path": str(plan_preflight_path),
+            "plan_preflight": implementation_plan_gate,
+            "implementation_plan": implementation_plan_file,
+        }
+        if request_md_path is not None:
+            payload["request_markdown"] = str(request_md_path.relative_to(project_root))
+        write_json(state_path, payload)
+        return 0, payload
     if adapter_type == "native":
         mark_implementation_plan_started(
             project_root,
@@ -1733,6 +1782,24 @@ def run_implement_stage(  # noqa: PLR0913
             "traceability_refs": summary_traceability_refs,
             "generated_at": now_iso(),
         }
+        summary_delivery_contract = build_delivery_contract(
+            feature=feature,
+            version=resolved_version,
+            requested_mode=resolved_mode or native_mode or "single",
+            effective_mode=resolved_mode or native_mode or "single",
+            execution_mode=resolved_mode or native_mode or "single",
+            runner_mode=adapter_id,
+            host_runtime=resolved_host_runtime,
+            subagent_prechecks=subagent_prechecks,
+            requirement_binding=requirement_traceability,
+            traceability_refs=summary_traceability_refs,
+            runner=adapter_id,
+            adapter_type=adapter_type,
+            execution_surface="implement-team" if resolved_mode == "team" else adapter_id,
+            team_mode=resolved_mode == "team",
+        )
+        summary_payload["delivery_contract"] = summary_delivery_contract
+        summary_payload["host_native_delivery"] = summary_delivery_contract
         for key, value in result_payload.items():
             if key in summary_payload:
                 continue
@@ -2194,6 +2261,24 @@ def run_implement_stage(  # noqa: PLR0913
         "generated_at": now_iso(),
         "writeback": writeback_payload,
     }
+    summary_delivery_contract = build_delivery_contract(
+        feature=feature,
+        version=resolved_version,
+        requested_mode=resolved_mode or "",
+        effective_mode=resolved_mode or "",
+        execution_mode=resolved_mode or "",
+        runner_mode=adapter_id,
+        host_runtime=resolved_host_runtime,
+        subagent_prechecks=subagent_prechecks,
+        requirement_binding=requirement_traceability,
+        traceability_refs=summary_traceability_refs,
+        runner=adapter_id,
+        adapter_type=adapter_type,
+        execution_surface="implement-team" if resolved_mode == "team" else adapter_id,
+        team_mode=resolved_mode == "team",
+    )
+    summary_payload["delivery_contract"] = summary_delivery_contract
+    summary_payload["host_native_delivery"] = summary_delivery_contract
     technical_payload = _technical_archive_payload(
         project_root=project_root,
         version=resolved_version,

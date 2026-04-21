@@ -40,13 +40,14 @@ def build_doctor_advise_payload(project_root: Path, *, version: str | None = Non
     if diagnosis:
         top = diagnosis[0]
         code = str(top.get("code", ""))
-        if code in {"COMP-207", "COMP-208", "COMP-209"}:
+        preserve_workflow_action = str(next_step.get("action", "")).strip() in {"freeze", "implement", "qa", "release"}
+        if code in {"COMP-207", "COMP-208", "COMP-209"} and not preserve_workflow_action:
             next_step = {
                 "action": "repair-context",
                 "reason": str(top.get("summary", "context files need repair")),
                 "command": f'beacon doctor setup-context --project-root "{project_root}"',
             }
-        else:
+        elif not preserve_workflow_action:
             next_step = {
                 "action": "repair-package",
                 "reason": str(top.get("summary", "delivery package needs repair")),
@@ -77,10 +78,17 @@ def build_doctor_advise_payload(project_root: Path, *, version: str | None = Non
         "delivery_status": help_payload.get("delivery_status", ""),
         "blocked": bool(help_payload.get("blocked")) or bool(diagnosis),
         "blocking_reasons": list(help_payload.get("blocking_reasons", [])),
+        "blocked_reason": help_payload.get("blocked_reason", ""),
         "scores": dict(help_payload.get("scores", {})),
         "next_step": next_step,
+        "execution_surface": dict(help_payload.get("execution_surface", {})),
+        "delivery_read_model": dict(help_payload.get("delivery_read_model", {})),
+        "surface_explanation": dict(help_payload.get("surface_explanation", {})),
+        "change_loop": dict(help_payload.get("change_loop", {})),
+        "decision_trace": list(help_payload.get("decision_trace", [])),
         "doctor_overall": doctor_payload.get("overall", "WARN"),
         "doctor_checks": doctor_payload.get("checks", []),
+        "diagnostics": doctor_payload,
         "diagnosis": diagnosis,
         "repair_plan": repair_plan,
     }

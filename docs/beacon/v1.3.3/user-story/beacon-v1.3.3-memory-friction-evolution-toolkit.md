@@ -3,7 +3,7 @@
 **Feature**: `beacon-v1.3.3-memory-friction-evolution-toolkit`  
 **Version**: `v1.3.3`  
 **Date**: `2026-04-17`  
-**Status**: `planning line`
+**Status**: `current release snapshot`
 
 ## US-001：作为维护者，我希望 toolkit 与 lighthouse 并行运行而不干扰主链
 

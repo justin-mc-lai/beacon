@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import re
 import shutil
 import sqlite3
@@ -11,8 +12,16 @@ import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+from urllib import request
 
 from beacon.utils.runtime_projection_store import runtime_ledger_root
+from beacon.utils.semantic_runtime import (
+    build_semantic_capability_snapshot,
+    build_mode_contract,
+    llm_unavailable_message,
+    load_host_response_json,
+    normalize_requested_mode,
+)
 
 
 PROTOTYPE_MODE = "wireframe"
@@ -21,6 +30,10 @@ SCHEMA_VERSION = "1.0"
 REQUIRED_SOURCE_TYPES = ("user-story", "prd", "test-case")
 AC_PATTERN = re.compile(r"\bAC-\d{3}[A-Z]?\b", re.IGNORECASE)
 TC_PATTERN = re.compile(r"\bTC-\d{3}(?:-[A-Z]+)?\b", re.IGNORECASE)
+MACHINE_NOISE_PATTERN = re.compile(
+    r"(?:sqlite|canonical-envelope|prototype-plan\.json|fingerprint|sink_checksum|transaction_id|projection|machine contract|raw runtime log|host session metadata)",
+    re.IGNORECASE,
+)
 PAGE_ORDER_DEFAULT = (
     "home",
     "management-overview",
@@ -215,6 +228,115 @@ PAGE_CATALOG: dict[str, dict[str, Any]] = {
     },
 }
 
+PAGE_ANALYSIS_CATALOG: dict[str, dict[str, Any]] = {
+    "home": {
+        "target_user": "Beacon 管理者 / owner / 负责人",
+        "decision_focus": [
+            "今天先盯哪些项目，而不是先看所有项目明细。",
+            "哪些阻塞已经升级成需要人工介入的经营问题。",
+            "当前交付是否继续按版本线推进，还是需要下钻到项目详情。",
+        ],
+        "layout_rules": [
+            "首屏先给经营判断，不先铺完整表格。",
+            "阻塞与介入信息必须比常规进度更靠上。",
+            "runtime 只保留摘要，不在首页展开机器内部细节。",
+        ],
+        "noise_guardrail": "首页不承载 session、agent、原始 requirement 路径等机器噪音。",
+    },
+    "management-overview": {
+        "target_user": "管理端值守人 / 组合视角负责人",
+        "decision_focus": [
+            "多项目之间谁健康、谁阻塞、谁接近可发布。",
+            "是否需要通过筛选和排序快速收敛到一批项目。",
+            "什么时候应该从组合视图下钻到单项目接力页。",
+        ],
+        "layout_rules": [
+            "工具栏必须紧贴项目注册表，减少扫描跳跃。",
+            "项目注册表承担密集比较，不承担深度解释。",
+            "风险、debug、推荐 skill 放在表格侧边或下方收口，不抢主扫描节奏。",
+        ],
+        "noise_guardrail": "总览页只展示管理判断信号，不直接展开 doctor 或 runtime 原始上下文。",
+    },
+    "project-detail": {
+        "target_user": "单项目 owner / 接力执行者",
+        "decision_focus": [
+            "这条版本线当前停在哪个阶段，下一步应该推进哪里。",
+            "需求闭环是否完整，是否已经具备 implement / qa 的前提。",
+            "应该去 runtime、恢复诊断，还是去看项目物料。",
+        ],
+        "layout_rules": [
+            "项目头部先建立上下文，再展开需求闭环。",
+            "主 PRD 与并行 PRD 要并排出现，避免真相散落。",
+            "最近交付、下一步、推荐动作要形成明确收口。",
+        ],
+        "noise_guardrail": "项目详情是接力页，不直接承载底层日志和实现细节。",
+    },
+    "runtime-center": {
+        "target_user": "需要核对运行态的执行者 / 诊断人",
+        "decision_focus": [
+            "当前到底是 single、team 还是 ralph 在推进。",
+            "linked run、artifact、blocker 是否足以解释当前停滞点。",
+            "看完运行态后应该回到项目详情还是继续诊断。",
+        ],
+        "layout_rules": [
+            "模式切换必须固定在头部，便于横向比较三种运行形态。",
+            "session / artifact 只展示必要引用，不在此页堆底层原文。",
+            "最近结果与 blocker 必须直接可读，避免继续翻查多层结构。",
+        ],
+        "noise_guardrail": "运行中心可以下钻运行信息，但仍要压制无边界的机器内部明细。",
+    },
+    "recovery-diagnostics": {
+        "target_user": "负责恢复上下文的人",
+        "decision_focus": [
+            "当前是 degraded、rebuild 还是 doctor 场景。",
+            "真相是否仍然回到 docs/beacon 与 .beacon。",
+            "用户该做哪一步恢复，而不是读一堆诊断术语。",
+        ],
+        "layout_rules": [
+            "先讲 truth 来源，再给诊断卡和恢复步骤。",
+            "风险提示要比操作细节更醒目，避免误用恢复动作。",
+            "恢复动作要收口成少量步骤，不展开内部实现机制。",
+        ],
+        "noise_guardrail": "诊断页解释机器状态，但不能反客为主替代 requirement truth。",
+    },
+    "material-viewer": {
+        "target_user": "查看 Beacon 物料的人",
+        "decision_focus": [
+            "当前要看哪个版本、哪类文档、哪个 feature。",
+            "Markdown 物料是否存在，并能否稳定切换浏览。",
+            "这只是只读消费面，真相仍在本地 docs/beacon 与 .beacon。",
+        ],
+        "layout_rules": [
+            "左侧负责层级导航，右侧负责稳定阅读，职责不能混乱。",
+            "来源路径只做可信来源说明，不压过正文阅读体验。",
+            "版本切换要靠近树和目录，不要藏到正文底部。",
+        ],
+        "noise_guardrail": "物料页必须坚持只读查看，不暴露机器索引或编辑入口。",
+    },
+    "material-document-detail": {
+        "target_user": "需要持续阅读单篇物料的审阅者",
+        "decision_focus": [
+            "当前读的是哪一版、哪一类、哪个 feature 的文档。",
+            "如何在同类文档之间切换，而不丢失阅读上下文。",
+            "当来源缺失时，用户如何回退到上层查看器。",
+        ],
+        "layout_rules": [
+            "面包屑和文档头部先稳定上下文，再展开正文。",
+            "正文区必须占据视觉主体，切换控件退居辅助位置。",
+            "来源路径只作为可信性补充，不与正文争抢注意力。",
+        ],
+        "noise_guardrail": "详情阅读页不展示机器合同或 requirement 文件路径原文。",
+    },
+}
+
+
+class PrototypeLLMCompileError(RuntimeError):
+    """Raised when the prototype LLM call or payload extraction fails."""
+
+
+class PrototypeLLMContractError(ValueError):
+    """Raised when the prototype LLM payload violates Beacon wireframe contracts."""
+
 TRANSITION_LIBRARY = [
     {"from": "home", "to": "management-overview", "trigger": "点击项目组合入口", "type": "primary"},
     {"from": "home", "to": "project-detail", "trigger": "点击重点项目卡片", "type": "primary"},
@@ -225,7 +347,10 @@ TRANSITION_LIBRARY = [
     {"from": "project-detail", "to": "material-viewer", "trigger": "点击文档查看入口", "type": "drill-down"},
     {"from": "project-detail", "to": "management-overview", "trigger": "点击返回", "type": "return"},
     {"from": "runtime-center", "to": "project-detail", "trigger": "点击返回", "type": "return"},
+    {"from": "runtime-center", "to": "management-overview", "trigger": "点击面包屑", "type": "return"},
     {"from": "recovery-diagnostics", "to": "project-detail", "trigger": "点击返回", "type": "return"},
+    {"from": "recovery-diagnostics", "to": "runtime-center", "trigger": "点击运行态关联", "type": "drill-down"},
+    {"from": "material-viewer", "to": "project-detail", "trigger": "点击返回", "type": "return"},
     {"from": "material-viewer", "to": "material-document-detail", "trigger": "点击文档列表项", "type": "drill-down"},
     {"from": "material-document-detail", "to": "material-viewer", "trigger": "点击返回", "type": "return"},
 ]
@@ -467,9 +592,7 @@ def _looks_like_page_label(label: str) -> bool:
 def _known_page_id_for_text(text: str) -> str:
     lowered = str(text or "").lower()
     for page_id, meta in PAGE_CATALOG.items():
-        if page_id == "material-document-detail":
-            continue
-        for keyword in meta["keywords"]:
+        for keyword in (page_id, *meta["keywords"]):
             keyword_str = str(keyword).strip().lower()
             if keyword_str and keyword_str in lowered:
                 return page_id
@@ -495,9 +618,21 @@ def _extract_declared_page_labels(line: str) -> list[str]:
     if bullet:
         bullet_text = bullet.group(1).strip()
         if re.search(r"(->|→|=>)", bullet_text):
-            candidates.extend(part.strip() for part in re.split(r"(?:->|→|=>)", bullet_text) if part.strip())
+            for part in re.split(r"(?:->|→|=>)", bullet_text):
+                token = part.strip()
+                if not token:
+                    continue
+                token = re.split(r"[:：]", token, maxsplit=1)[0].strip()
+                if token:
+                    candidates.append(token)
         elif re.search(r"\bto\b", bullet_text, flags=re.IGNORECASE):
-            candidates.extend(part.strip() for part in re.split(r"\bto\b", bullet_text, flags=re.IGNORECASE) if part.strip())
+            for part in re.split(r"\bto\b", bullet_text, flags=re.IGNORECASE):
+                token = part.strip()
+                if not token:
+                    continue
+                token = re.split(r"[:：]", token, maxsplit=1)[0].strip()
+                if token:
+                    candidates.append(token)
         else:
             candidates.append(bullet_text)
     else:
@@ -660,7 +795,13 @@ def _build_transition_inventory(page_ids: list[str], docs: list[dict[str, Any]],
             }
         )
 
-    transitions = dynamic_candidates or static_candidates
+    transitions = list(static_candidates)
+    static_pairs = {(item["from"], item["to"]) for item in static_candidates}
+    for item in dynamic_candidates:
+        pair = (str(item.get("from") or "").strip(), str(item.get("to") or "").strip())
+        if not pair[0] or not pair[1] or pair in static_pairs:
+            continue
+        transitions.append(item)
     if not transitions and len(page_ids) > 1:
         for idx in range(len(page_ids) - 1):
             source = page_ids[idx]
@@ -1038,67 +1179,136 @@ def _build_theme_payload(docs: list[dict[str, Any]]) -> dict[str, Any]:
 def _build_page_layout(page_id: str, sections: list[str] | None = None) -> list[str]:
     layouts = {
         "home": [
-            "+------------------------------------------------------+",
-            "| 经营总览条 | 活跃项目 | 阻塞项目 | 活跃 runtime |",
-            "+------------------------------------------------------+",
-            "| 重点介入区                                      |",
-            "+------------------------------------------------------+",
-            "| 项目推进摘要列表                                |",
-            "+------------------------------------------------------+",
-            "| 当前交付 / 下一步                               |",
-            "+------------------------------------------------------+",
+            "+----------------------------------------------------------------------------------+",
+            "| 顶栏：Beacon 管理端 | 时间范围 | 视角: CEO / Owner | 进入项目组合总览            |",
+            "+----------------------------------------------------------------------------------+",
+            "| 指标条: 活跃项目 | 阻塞项目 | 活跃 runtime | 今日交付 | 需介入项目                 |",
+            "+----------------------------------------------------------------------------------+",
+            "| 重点介入区                                                                       |",
+            "| - P0 项目A: 卡在 qa，等待 owner 决策                                              |",
+            "| - P1 项目B: docs 缺口，需补 test-case                                             |",
+            "| [进入重点项目] [查看全部介入项]                                                   |",
+            "+----------------------------------------------------------------------------------+",
+            "| 项目推进摘要列表                                                                  |",
+            "| 项目 | 当前版本 | 当前阶段 | 健康态 | 当前交付 | blocker | 下一步                 |",
+            "| A    | v1.3.6   | prototype | risk   | 首页草图  | qa 缺口 | 进详情               |",
+            "| B    | v1.2.4   | implement | good   | 文档查看器 | 无      | 继续验证            |",
+            "+----------------------------------------------------------------------------------+",
+            "| 当前交付                                      | 下一步建议                         |",
+            "| - v1.3.6 首页/总览骨架已冻结                  | - 先处理阻塞项目A                  |",
+            "| - 物料查看器只读流已接入                      | - 再进入 management overview 扫描  |",
+            "+----------------------------------------------------------------------------------+",
         ],
         "management-overview": [
-            "+--------------------------------------------------------------------+",
-            "| 筛选栏 | 版本 | 阶段 | 健康态 | debug | 推荐 skill                |",
-            "+--------------------------------------------------------------------+",
-            "| 项目注册表：项目名 / 类型 / 当前版本 / 主 feature / 进度 / 下一步 |",
-            "+--------------------------------------------------------------------+",
+            "+-----------------------------------------------------------------------------------+",
+            "| 顶栏：返回首页 | 管理总览 | 更新时间 | 批量筛选已生效数                            |",
+            "+-----------------------------------------------------------------------------------+",
+            "| 筛选与排序条: 项目类型 | 当前版本 | 阶段 | 健康态 | debug | 需求物料状态 | 排序    |",
+            "+-----------------------------------------------------------------------------------+",
+            "| 阶段分布摘要: draft 2 | prototype 3 | implement 4 | qa 1 | release 1              |",
+            "+-----------------------------------------------------------------------------------+",
+            "| 项目注册表                                                                         |",
+            "| 项目 | 类型 | 当前版本 | 主 feature | 阶段 | 进度 | 健康态 | debug | 下一步       |",
+            "| A    | 产品 | v1.3.6   | 管理看板   | prototype | 70% | risk | warn | 进详情       |",
+            "| B    | 工具 | v1.2.4   | 物料查看器 | implement | 90% | good | ok   | 做验证       |",
+            "+-----------------------------------------------------------------------------------+",
+            "| 风险与调试摘要                               | 推荐 skill 区                        |",
+            "| - 2 个项目存在 blocker                        | - prototype review                  |",
+            "| - 1 个项目 debug 态异常                       | - doctor verify-context             |",
+            "+-----------------------------------------------------------------------------------+",
         ],
         "project-detail": [
-            "+------------------------------------------------------------+",
-            "| 项目头部摘要 | 当前版本 | git/worktree                    |",
-            "+------------------------------------------------------------+",
-            "| 主 PRD / 并行 PRD | 生命周期 / 总进度                     |",
-            "+------------------------------------------------------------+",
-            "| prd / user-story / test-case / prototype 冻结状态         |",
-            "+------------------------------------------------------------+",
-            "| 最近交付 | 下一步 | 推荐 skill | runtime 摘要             |",
-            "+------------------------------------------------------------+",
+            "+-----------------------------------------------------------------------------------+",
+            "| 顶栏：返回总览 | 项目名 | 项目类型 | owner | 当前阶段                               |",
+            "+-----------------------------------------------------------------------------------+",
+            "| 项目头部摘要                                  | 当前版本 / git / worktree           |",
+            "| - 当前目标                                    | - version: v1.3.6                   |",
+            "| - 为什么停在这里                              | - branch/worktree 状态              |",
+            "+-----------------------------------------------------------------------------------+",
+            "| 主 PRD                              | 并行 PRD / 子线                            |",
+            "| - 主线 feature                     | - 并行 feature A                           |",
+            "| - 当前承诺面                       | - 并行 feature B                           |",
+            "+-----------------------------------------------------------------------------------+",
+            "| 需求闭环状态: prd | user-story | test-case | prototype | qa 准备度                |",
+            "+-----------------------------------------------------------------------------------+",
+            "| 最近交付                                      | 下一步 / 推荐动作                     |",
+            "| - 最新冻结产物                                | - 继续 implement / qa / review       |",
+            "| - 最近一次 review 结论                        | - 推荐 skill                          |",
+            "+-----------------------------------------------------------------------------------+",
+            "| runtime 摘要卡                                | 文档查看 / 恢复诊断入口               |",
+            "| - single/team/ralph 摘要                      | [查看项目物料] [查看恢复诊断]         |",
+            "+-----------------------------------------------------------------------------------+",
         ],
         "runtime-center": [
-            "+-------------------------------------------------------------+",
-            "| 模式切换：single | team | ralph                            |",
-            "+-------------------------------------------------------------+",
-            "| agent/session 引用 | linked run | artifact refs            |",
-            "+-------------------------------------------------------------+",
-            "| next_action | blocker | recent_result                      |",
-            "+-------------------------------------------------------------+",
+            "+----------------------------------------------------------------------------------+",
+            "| 顶栏：返回项目详情 | 运行中心 | 最近刷新时间 | 当前活跃模式                        |",
+            "+----------------------------------------------------------------------------------+",
+            "| 模式切换： single | team | ralph                                                |",
+            "+----------------------------------------------------------------------------------+",
+            "| 运行态摘要头部: 当前状态 | round_count | failure_streak | 当前执行目标             |",
+            "+----------------------------------------------------------------------------------+",
+            "| agent / session 引用                         | linked run / artifact refs           |",
+            "| - session id / agent 数                      | - latest run                         |",
+            "| - host / lane 摘要                           | - artifact / report                  |",
+            "+----------------------------------------------------------------------------------+",
+            "| recent_result                                | blocker / next_action                |",
+            "| - 最近结果摘要                               | - 当前 blocker                       |",
+            "| - 最近一次状态变化                           | - 下一步动作                         |",
+            "+----------------------------------------------------------------------------------+",
         ],
         "recovery-diagnostics": [
-            "+----------------------------------------------------+",
-            "| truth 来源说明：docs/beacon + .beacon              |",
-            "+----------------------------------------------------+",
-            "| degraded / rebuild / doctor 诊断卡                 |",
-            "+----------------------------------------------------+",
-            "| 恢复步骤 | 风险提示                                |",
-            "+----------------------------------------------------+",
+            "+----------------------------------------------------------------------------------+",
+            "| 顶栏：返回项目详情 | 恢复诊断 | 当前环境状态                                      |",
+            "+----------------------------------------------------------------------------------+",
+            "| truth 来源说明                                                                    |",
+            "| - 正式真相来自 docs/beacon + .beacon                                              |",
+            "| - 当前页只解释恢复路径，不改写 requirement truth                                   |",
+            "+----------------------------------------------------------------------------------+",
+            "| 诊断卡： degraded | rebuild | doctor                                              |",
+            "| - 当前命中的诊断类型                                                               |",
+            "| - 推荐动作与触发条件                                                               |",
+            "+----------------------------------------------------------------------------------+",
+            "| 恢复步骤                                      | 风险提示                           |",
+            "| 1. 校验上下文                                 | - 不要把投影层当真相              |",
+            "| 2. 执行 doctor / rebuild                      | - 误修复会导致 drift              |",
+            "| 3. 回到项目页验证                             | - 先验证再 freeze                 |",
+            "+----------------------------------------------------------------------------------+",
         ],
         "material-viewer": [
-            "+----------------------------------------------------------------+",
-            "| 版本树 | 文档类型 | feature 列表 | 文档阅读区                |",
-            "+----------------------------------------------------------------+",
-            "| 来源路径 | 只读说明 | 版本切换                                 |",
-            "+----------------------------------------------------------------+",
+            "+-----------------------------------------------------------------------------------+",
+            "| 顶栏：返回项目详情 | 项目物料查看器 | 当前项目 | 只读模式                         |",
+            "+-----------------------------------------------------------------------------------+",
+            "| 左侧导航                                                                           |",
+            "| 版本树            | 文档类型列表            | feature / 文档目录                  |",
+            "| v1.3.6            | prd                    | beacon-v1.3.6...md                   |",
+            "| v1.3.5            | user-story             | ...                                   |",
+            "| v1.3.4            | test-case              |                                       |",
+            "+-----------------------------------------------------------------------------------+",
+            "| 文档阅读面板                                                                       |",
+            "| - 文档标题 / 简介                                                                  |",
+            "| - Markdown 正文预览                                                                |",
+            "+-----------------------------------------------------------------------------------+",
+            "| 来源路径信息                                | 只读说明 / 版本切换                  |",
+            "| - docs/beacon/...                            | - 真相仍在本地文档树                 |",
+            "+-----------------------------------------------------------------------------------+",
         ],
         "material-document-detail": [
-            "+---------------------------------------------------------------+",
-            "| 面包屑：version / document type / feature                    |",
-            "+---------------------------------------------------------------+",
-            "| Markdown 正文区                                               |",
-            "+---------------------------------------------------------------+",
-            "| 同类文档切换 | 来源路径 | 只读说明                            |",
-            "+---------------------------------------------------------------+",
+            "+-----------------------------------------------------------------------------------+",
+            "| 顶栏：返回物料查看器 | 文档详情 | 当前版本 / 类型 / feature                        |",
+            "+-----------------------------------------------------------------------------------+",
+            "| 文档头部信息                                                                       |",
+            "| 标题 | 更新时间 | 来源版本 | 文档类型                                              |",
+            "+-----------------------------------------------------------------------------------+",
+            "| 面包屑： version / document type / feature / current document                      |",
+            "+-----------------------------------------------------------------------------------+",
+            "| Markdown 正文区                                                                    |",
+            "| # 文档标题                                                                         |",
+            "| 段落 / 列表 / 冻结说明 / requirement 内容预览                                     |",
+            "+-----------------------------------------------------------------------------------+",
+            "| 同类文档切换                               | 来源路径 / 只读说明                    |",
+            "| - 上一篇 / 下一篇                          | - docs/beacon/...                     |",
+            "| - 同版本相邻文档                           | - 不提供网页内编辑                     |",
+            "+-----------------------------------------------------------------------------------+",
         ],
     }
     if page_id in layouts:
@@ -1111,56 +1321,323 @@ def _build_page_layout(page_id: str, sections: list[str] | None = None) -> list[
     return rendered
 
 
+def _normalize_priority(value: Any) -> str:
+    priority = str(value or "").strip().upper()
+    return priority if priority in {"P0", "P1", "P2"} else "P1"
+
+
+def _normalize_platforms(value: Any, *, default: list[str] | None = None) -> list[str]:
+    allowed = {"web": "Web", "pc": "PC", "app": "App", "mobile": "App"}
+    normalized: list[str] = []
+    for item in _coerce_string_list(value, default=default or ["Web", "PC"], max_items=4):
+        resolved = allowed.get(str(item).strip().lower())
+        if resolved and resolved not in normalized:
+            normalized.append(resolved)
+    return normalized or list(default or ["Web", "PC"])
+
+
+def _contains_machine_noise(text: str) -> bool:
+    return bool(MACHINE_NOISE_PATTERN.search(str(text or "").strip()))
+
+
+def _infer_llm_sections(page_id: str, name: str) -> list[str]:
+    lowered = f"{page_id} {name}".lower()
+    if any(token in lowered for token in {"home", "首页", "dashboard", "总览"}):
+        return ["页面头部", "指标与判断", "重点事项", "下一步动作"]
+    if any(token in lowered for token in {"detail", "详情"}):
+        return ["头部摘要", "主体详情", "关键动作", "状态与反馈"]
+    if any(token in lowered for token in {"viewer", "reader", "物料", "文档"}):
+        return ["导航区", "阅读区", "上下文信息", "切换与状态"]
+    if any(token in lowered for token in {"runtime", "运行", "diagnostic", "恢复", "recovery"}):
+        return ["状态摘要", "核心面板", "异常与恢复", "返回路径"]
+    return ["页面头部", "关键内容区", "主要操作区", "状态与反馈区"]
+
+
+def _default_llm_responsibility(name: str, sections: list[str]) -> str:
+    first_section = sections[0] if sections else "当前页面的核心信息"
+    return f"先建立 `{name}` 的判断上下文，再通过 `{first_section}` 收口到下一步动作。"
+
+
+def _build_semantic_layout(
+    *,
+    page_id: str,
+    name: str,
+    sections: list[str],
+    actions: list[dict[str, str]] | None = None,
+) -> list[str]:
+    left_sections = sections[:2] or ["页面头部", "主体内容"]
+    right_sections = sections[2:4] or ["关键操作区", "状态与反馈区"]
+    action_labels = [str(item.get("label") or "").strip() for item in (actions or []) if str(item.get("label") or "").strip()]
+    action_text = " | ".join(action_labels[:3]) or "主要动作"
+    title = name or page_id.replace("-", " ").title()
+    return [
+        "+----------------------------------------------------------------------------------+",
+        f"| 页头：{title[:18]:<18} | 视角/筛选 | 关键入口 | 返回路径                          |",
+        "+----------------------------------------------------------------------------------+",
+        f"| {left_sections[0][:30]:<30} | {left_sections[1][:30]:<30} |",
+        "| - 当前判断需要先看什么                  | - 哪些信息支持继续下钻                 |",
+        "+----------------------------------------------------------------------------------+",
+        f"| {right_sections[0][:30]:<30} | {right_sections[1][:30]:<30} |",
+        "| - 这里承载主要动作与跳转                | - 这里承载 loading / empty / error     |",
+        "+----------------------------------------------------------------------------------+",
+        f"| 操作区：{action_text[:68]:<68} |",
+        "+----------------------------------------------------------------------------------+",
+    ]
+
+
+def _validate_llm_page_contract(
+    *,
+    page_specs: list[dict[str, Any]],
+    transitions: list[dict[str, Any]],
+) -> list[str]:
+    issues: list[str] = []
+    if len(page_specs) < 2:
+        issues.append("llm prototype must contain at least 2 pages")
+
+    page_ids = [str(page.get("page_id") or "").strip() for page in page_specs if str(page.get("page_id") or "").strip()]
+    known_pages = set(page_ids)
+    inbound_counts = {page_id: 0 for page_id in page_ids}
+    for transition in transitions:
+        target = str(transition.get("to") or "").strip()
+        if target in inbound_counts:
+            inbound_counts[target] += 1
+
+    for index, page in enumerate(page_specs, start=1):
+        page_id = str(page.get("page_id") or "").strip()
+        page_name = str(page.get("name") or "").strip() or page_id
+        sections = [str(item).strip() for item in page.get("sections", []) if str(item).strip()]
+        actions = [item for item in page.get("actions", []) if isinstance(item, dict)]
+        states = [item for item in page.get("states", []) if isinstance(item, dict)]
+        layout_lines = [str(item).rstrip() for item in page.get("layout_lines", []) if str(item).strip()]
+        analysis = page.get("analysis") if isinstance(page.get("analysis"), dict) else {}
+
+        if len(sections) < 2:
+            issues.append(f"{page_id}: requires at least 2 sections")
+        if len(layout_lines) < 3:
+            issues.append(f"{page_id}: layout is too small for a reviewable wireframe")
+        if not states:
+            issues.append(f"{page_id}: missing state definitions")
+        if index > 1 and inbound_counts.get(page_id, 0) == 0:
+            issues.append(f"{page_id}: has no inbound transition")
+
+        human_text_blocks = [
+            str(page.get("responsibility") or ""),
+            *sections,
+            str(analysis.get("target_user") or ""),
+            str(analysis.get("noise_guardrail") or ""),
+            *[str(item) for item in analysis.get("decision_focus", [])],
+            *[str(item) for item in analysis.get("layout_rules", [])],
+            *layout_lines,
+        ]
+        if any(_contains_machine_noise(block) for block in human_text_blocks if str(block).strip()):
+            issues.append(f"{page_id}: contains machine/projection noise in human content")
+
+        for action in actions:
+            target = str(action.get("target") or "").strip()
+            if target and target not in known_pages:
+                issues.append(f"{page_id}: action target `{target}` not found in prototype pages")
+
+        state_ids = {str(item.get("id") or "").strip() for item in states if str(item.get("id") or "").strip()}
+        if "ready" not in state_ids:
+            issues.append(f"{page_id}: missing ready state")
+        if not ({"loading", "error"} & state_ids):
+            issues.append(f"{page_id}: missing loading/error fallback state")
+
+        if not page_name:
+            issues.append(f"{page_id}: missing page name")
+
+    if not transitions:
+        issues.append("llm prototype must define at least one transition")
+    return issues
+
+
+def _human_view_files() -> list[str]:
+    return [
+        "wireframe-summary.md",
+        "navigation-map.md",
+        "pages/*.md",
+    ]
+
+
+def _default_page_analysis(page: dict[str, Any]) -> dict[str, Any]:
+    actions = [str(action.get("label") or "").strip() for action in page.get("actions", []) if isinstance(action, dict)]
+    return {
+        "target_user": "需要完成页面判断与下钻的 Beacon 使用者",
+        "decision_focus": [
+            str(page.get("responsibility") or "").strip() or "先建立页面上下文。",
+            (
+                f"确认是否执行 {actions[0]}。"
+                if actions
+                else "确认是否继续停留当前页或进入下一层。"
+            ),
+        ],
+        "layout_rules": [
+            "首屏先回答当前页最重要的问题。",
+            "主体区只保留支撑判断的结构，不展开高保真视觉。",
+        ],
+        "noise_guardrail": "页面说明只保留人类审阅需要的信息，不混入机器合同细节。",
+    }
+
+
+def _position_label(index: int, total: int) -> str:
+    if index == 0:
+        return "首屏"
+    if total <= 2:
+        return "主体"
+    if index == total - 1:
+        return "收口区"
+    return "主体区"
+
+
+def _section_purpose(section: str) -> str:
+    lowered = section.lower()
+    if "总览" in section or "摘要" in section or "头部" in section:
+        return "先建立上下文，让人快速判断当前局面。"
+    if "阻塞" in section or "风险" in section or "诊断" in section or "恢复" in section:
+        return "集中暴露异常与介入信号，避免风险被正常信息淹没。"
+    if "列表" in section or "注册表" in section or "目录" in section or "树" in section:
+        return "支持快速扫描和定位下一层下钻入口。"
+    if "正文" in section or "阅读" in section or "文档" in section:
+        return "稳定承载只读内容，避免把注意力打散到无关控件。"
+    if "来源路径" in section or "只读说明" in section:
+        return "补充可信来源与边界说明，但不应压过主体内容。"
+    if "下一步" in section or "推荐" in section:
+        return "把观察收口成明确动作，避免用户看完后不知道去哪里。"
+    if "运行" in section or "artifact" in lowered or "session" in lowered:
+        return "只展示运行态必要信息，不展开底层机器细节。"
+    if "筛选" in section or "排序" in section:
+        return "帮助用户先收窄范围，再进入对比与下钻。"
+    return "承载该页完成核心判断所需的最小信息块。"
+
+
+def _render_section_breakdown(page: dict[str, Any]) -> list[str]:
+    sections = [str(item).strip() for item in page.get("sections", []) if str(item).strip()]
+    total = len(sections)
+    lines: list[str] = []
+    for index, section in enumerate(sections):
+        lines.append(f"- `{section}`: 放在{_position_label(index, total)}，{_section_purpose(section)}")
+    return lines
+
+
+def _render_interaction_notes(page: dict[str, Any]) -> list[str]:
+    transitions = {
+        str(item.get("to") or ""): str(item.get("type") or "")
+        for item in page.get("outbound_transitions", [])
+        if isinstance(item, dict)
+    }
+    notes: list[str] = []
+    for action in page.get("actions", []):
+        if not isinstance(action, dict):
+            continue
+        label = str(action.get("label") or "").strip()
+        trigger = str(action.get("trigger") or "").strip()
+        target = str(action.get("target") or "").strip()
+        transition_type = transitions.get(target, "")
+        if transition_type == "return":
+            notes.append(f"- `{label}`: 通过 {trigger} 回到 `{target}`，用于撤销下钻并保留上层判断。")
+        elif transition_type == "drill-down":
+            notes.append(f"- `{label}`: 通过 {trigger} 下钻到 `{target}`，只在当前页信息不足时继续展开。")
+        elif target == page.get("page_id"):
+            notes.append(f"- `{label}`: 通过 {trigger} 留在本页切换阅读对象，避免跳出当前上下文。")
+        else:
+            notes.append(f"- `{label}`: 通过 {trigger} 进入 `{target}`，把当前判断转交到下一层页面完成。")
+    return notes or ["- 当前页没有定义主动跳转，重点是稳定呈现信息。"]
+
+
+def _render_state_notes(page: dict[str, Any]) -> list[str]:
+    notes: list[str] = []
+    for state in page.get("states", []):
+        if not isinstance(state, dict):
+            continue
+        state_id = str(state.get("id") or "").strip()
+        label = str(state.get("label") or state_id).strip()
+        description = str(state.get("description") or "").strip()
+        if state_id in {"error", "source-missing"}:
+            notes.append(f"- `{label}`: {description} 页面要优先给出回退或恢复入口，而不是只报错。")
+        elif state_id == "loading":
+            notes.append(f"- `{label}`: {description} 加载态只保留骨架结构，避免造成页面重新排版。")
+        elif state_id in {"empty", "idle"}:
+            notes.append(f"- `{label}`: {description} 空态要说明为什么为空，以及下一步该回哪里。")
+        else:
+            notes.append(f"- `{label}`: {description}")
+    return notes
+
+
+def _render_information_priority(page: dict[str, Any], analysis: dict[str, Any]) -> list[str]:
+    sections = [str(item).strip() for item in page.get("sections", []) if str(item).strip()]
+    priority_lines: list[str] = []
+    if sections:
+        priority_lines.append(f"- 第一优先看 `{sections[0]}`，因为页面必须先完成第一轮判断。")
+    if len(sections) >= 2:
+        priority_lines.append(f"- 第二优先看 `{sections[1]}`，用于补足判断依据并决定是否下钻。")
+    if sections:
+        priority_lines.append(f"- 最后收口到 `{sections[-1]}`，让用户在读完后知道下一步动作。")
+    for rule in analysis.get("layout_rules", [])[:2]:
+        priority_lines.append(f"- 审阅原则：{rule}")
+    return priority_lines
+
+
 def _render_page_markdown(page: dict[str, Any]) -> str:
+    analysis = (
+        page.get("analysis")
+        if isinstance(page.get("analysis"), dict)
+        else PAGE_ANALYSIS_CATALOG.get(page["page_id"], _default_page_analysis(page))
+    )
     lines = [
-        f"# 页面线框：{page['name']}",
+        f"# 低保真线框页：{page['name']}",
         "",
-        f"**页面 ID**: `{page['page_id']}`",
         f"**平台**: `{', '.join(page['platforms'])}`",
         f"**优先级**: `{page['priority']}`",
         "",
-        "## 页面职责",
-        f"- {page['responsibility']}",
-        "",
-        "## 关联 Requirement",
+        "## 页面意图",
+        f"- 目标读者：{analysis['target_user']}",
+        f"- 页面任务：{page['responsibility']}",
     ]
-    for source_type, refs in page["requirement_refs"].items():
-        lines.append(f"- `{source_type}`: {', '.join(refs)}")
+    for question in analysis.get("decision_focus", []):
+        lines.append(f"- 先回答的问题：{question}")
     lines.extend(
         [
             "",
             "## 布局草图",
             "```text",
-            *_build_page_layout(page["page_id"], page.get("sections")),
+            *(
+                page.get("layout_lines")
+                if isinstance(page.get("layout_lines"), list) and page.get("layout_lines")
+                else _build_page_layout(page["page_id"], page.get("sections"))
+            ),
             "```",
             "",
-            "## 关键模块",
+            "## 版面拆解",
         ]
     )
-    for section in page["sections"]:
-        lines.append(f"- {section}")
+    lines.extend(_render_section_breakdown(page))
     lines.extend(
         [
             "",
-            "## 用户动作",
+            "## 信息优先级",
         ]
     )
-    for action in page["actions"]:
-        lines.append(f"- `{action['label']}`: {action['trigger']} -> `{action['target']}`")
+    lines.extend(_render_information_priority(page, analysis))
     lines.extend(
         [
             "",
-            "## 状态说明",
+            "## 关键交互",
         ]
     )
-    for state in page["states"]:
-        lines.append(f"- `{state['id']}` / {state['label']}: {state['description']}")
+    lines.extend(_render_interaction_notes(page))
     lines.extend(
         [
             "",
-            "## 实现接力备注",
-            "- 当前页面是 requirement freeze wireframe，不是高保真视觉稿。",
-            "- 实现阶段必须回链本页与 navigation-map / wireframe-summary。",
+            "## 状态切换与兜底",
+        ]
+    )
+    lines.extend(_render_state_notes(page))
+    lines.extend(
+        [
+            "",
+            "## 审阅边界",
+            f"- {analysis['noise_guardrail']}",
+            "- 这页只冻结信息结构、交互收口和状态兜底，不表达高保真视觉或最终实现细节。",
         ]
     )
     return "\n".join(lines)
@@ -1475,26 +1952,279 @@ def _build_coverage_report(plan: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def compile_prototype_plan(project_root: Path, version: str, feature: str) -> dict[str, Any]:
-    docs = load_source_documents(project_root, version, feature)
-    doc_by_type = {doc["type"]: doc for doc in docs}
-    missing = [doc_type for doc_type in REQUIRED_SOURCE_TYPES if doc_type not in doc_by_type]
-    if missing:
-        raise FileNotFoundError(
-            f"prototype requires requirement truth before wireframe freeze, missing: {', '.join(missing)}"
-        )
+def _estimate_tokens(text: str) -> int:
+    return max(1, len((text or "").split()))
 
-    page_ids, fallback_used, page_meta = _detect_pages_with_meta(docs)
-    if "material-viewer" in page_ids and "material-document-detail" not in page_ids:
-        page_ids.append("material-document-detail")
-        page_meta["material-document-detail"] = dict(PAGE_CATALOG["material-document-detail"])
-    transitions = _build_transition_inventory(page_ids, docs, page_meta)
-    page_specs = _build_page_specs(page_ids, docs, transitions, page_meta)
-    required_states = sorted({state["id"] for page in page_specs for state in page["states"]})
+
+def _prototype_llm_disabled() -> bool:
+    return str(os.environ.get("BEACON_PROTOTYPE_DISABLE_LLM", "") or "").strip().lower() in {"1", "true", "yes", "on"}
+
+
+def _prototype_provider_model(model: str) -> str:
+    requested = str(model or "").strip()
+    if requested and not requested.startswith("beacon-"):
+        return requested
+    return str(os.environ.get("BEACON_LLM_MODEL", "gpt-4o-mini")).strip() or "gpt-4o-mini"
+
+
+def _extract_json_blob(text: str) -> dict[str, Any]:
+    raw = str(text or "").strip()
+    if not raw:
+        return {}
+    candidates = [raw]
+    fenced = re.findall(r"```(?:json)?\s*(\{.*?\})\s*```", raw, flags=re.DOTALL | re.IGNORECASE)
+    candidates.extend(fenced)
+    object_matches = re.findall(r"(\{.*\})", raw, flags=re.DOTALL)
+    candidates.extend(object_matches)
+    for candidate in candidates:
+        snippet = str(candidate or "").strip()
+        if not snippet:
+            continue
+        try:
+            payload = json.loads(snippet)
+        except Exception:  # noqa: BLE001
+            continue
+        if isinstance(payload, dict):
+            return payload
+    return {}
+
+
+def _prototype_source_context(docs: list[dict[str, Any]]) -> str:
+    blocks = []
+    for doc in docs:
+        blocks.append(f"[{doc['type']}]\n{str(doc.get('text') or '').strip()}")
+    return "\n\n".join(blocks)
+
+
+def _real_prototype_llm_inference(
+    *,
+    feature: str,
+    version: str,
+    docs: list[dict[str, Any]],
+    model: str,
+) -> dict[str, Any]:
+    api_key = str(os.environ.get("BEACON_LLM_API_KEY", "")).strip()
+    if not api_key:
+        raise PrototypeLLMCompileError("BEACON_LLM_API_KEY missing")
+
+    api_base = str(os.environ.get("BEACON_LLM_API_BASE", "https://api.openai.com/v1")).strip().rstrip("/")
+    provider_model = _prototype_provider_model(model)
+    timeout_s = float(str(os.environ.get("BEACON_LLM_TIMEOUT", "20")).strip() or "20")
+    temperature = float(str(os.environ.get("BEACON_LLM_TEMPERATURE", "0.2")).strip() or "0.2")
+    source_context = _prototype_source_context(docs)
+    known_page_names = ", ".join(sorted(meta["name"] for meta in PAGE_CATALOG.values()))
+    system_prompt = (
+        "You are Beacon prototype compiler. "
+        "Transform requirement truth into low-fidelity UI wireframe specs. "
+        "Return strict compact JSON only. "
+        "Do not output prose outside JSON. "
+        "Do not output high-fidelity UI. "
+        "Respect requirement traceability, keep machine noise out of human page content, "
+        "and treat the output template as a shell rather than a source of page semantics."
+    )
+    user_prompt = f"""
+feature={feature}
+version={version}
+known_page_catalog={known_page_names}
+
+Return JSON with this shape:
+{{
+  "prototype_archetype": "admin-workbench|...",
+  "theme": {{"primary":"#2563EB","secondary":"#0F172A"}},
+  "pages": [
+    {{
+      "page_id": "home",
+      "name": "首页",
+      "priority": "P0|P1|P2",
+      "platforms": ["Web","PC"],
+      "responsibility": "...",
+      "sections": ["..."],
+      "actions": [{{"label":"...","trigger":"...","target":"page-id-or-page-name"}}],
+      "states": [{{"id":"ready","label":"...","description":"..."}}],
+      "layout": ["ASCII wireframe line 1", "line 2"],
+      "analysis": {{
+        "target_user": "...",
+        "decision_focus": ["..."],
+        "layout_rules": ["..."],
+        "noise_guardrail": "..."
+      }}
+    }}
+  ],
+  "transitions": [
+    {{"from":"home","to":"project-detail","trigger":"点击重点项目卡片","type":"primary|drill-down|return"}}
+  ]
+}}
+
+Constraints:
+- Generate low-fidelity wireframe only, using ASCII layout lines.
+- Pages must be grounded in the requirement materials below.
+- Prefer stable page ids when they clearly match known Beacon pages.
+- Actions/transition targets must reference pages from the same payload.
+- Each page should include enough sections/states/actions to support review/freeze.
+- Keep runtime internals out of home and project-detail unless requirements explicitly demand drill-down.
+- Do not mention sqlite/projection/fingerprint/transaction/canonical-envelope/raw runtime log in page copy or layout.
+
+Requirement truth:
+{source_context}
+""".strip()
+
+    body = {
+        "model": provider_model,
+        "temperature": temperature,
+        "messages": [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_prompt},
+        ],
+    }
+    req = request.Request(
+        url=f"{api_base}/chat/completions",
+        method="POST",
+        data=json.dumps(body).encode("utf-8"),
+        headers={
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {api_key}",
+        },
+    )
+    try:
+        with request.urlopen(req, timeout=timeout_s) as resp:
+            payload = json.loads(resp.read().decode("utf-8"))
+    except Exception as exc:  # noqa: BLE001
+        raise PrototypeLLMCompileError(f"prototype llm request failed: {exc}") from exc
+
+    choices = payload.get("choices")
+    content = ""
+    if isinstance(choices, list) and choices:
+        first = choices[0]
+        if isinstance(first, dict):
+            message = first.get("message")
+            if isinstance(message, dict):
+                content = str(message.get("content", ""))
+    parsed = _extract_json_blob(content)
+    if not parsed:
+        raise PrototypeLLMCompileError("prototype llm response did not contain valid JSON")
+    usage = payload.get("usage") if isinstance(payload, dict) else {}
+    return {
+        "provider_model": provider_model,
+        "completion": content,
+        "payload": parsed,
+        "prompt_tokens": int((usage or {}).get("prompt_tokens", _estimate_tokens(system_prompt + user_prompt))),
+        "completion_tokens": int((usage or {}).get("completion_tokens", _estimate_tokens(content))),
+    }
+
+
+def _coerce_string_list(value: Any, *, default: list[str], max_items: int = 8) -> list[str]:
+    if isinstance(value, str):
+        items = [line.strip() for line in value.splitlines() if line.strip()]
+    elif isinstance(value, list):
+        items = [str(item).strip() for item in value if str(item).strip()]
+    else:
+        items = []
+    return items[:max_items] or list(default)
+
+
+def _coerce_layout_lines(
+    value: Any,
+    *,
+    page_id: str,
+    name: str,
+    sections: list[str],
+    actions: list[dict[str, str]] | None = None,
+) -> list[str]:
+    if isinstance(value, str):
+        lines = [line.rstrip() for line in value.splitlines() if line.strip()]
+    elif isinstance(value, list):
+        lines = [str(item).rstrip() for item in value if str(item).strip()]
+    else:
+        lines = []
+    if lines:
+        return lines[:24]
+    return _build_semantic_layout(page_id=page_id, name=name, sections=sections, actions=actions)
+
+
+def _normalize_action_list(actions: Any) -> list[dict[str, str]]:
+    normalized: list[dict[str, str]] = []
+    if not isinstance(actions, list):
+        return normalized
+    for item in actions[:8]:
+        if not isinstance(item, dict):
+            continue
+        label = str(item.get("label") or "").strip()
+        trigger = str(item.get("trigger") or "").strip() or "点击进入"
+        target = str(item.get("target") or "").strip()
+        if not label or not target:
+            continue
+        normalized.append({"label": label, "trigger": trigger, "target": target})
+    return normalized
+
+
+def _normalize_state_list(states: Any) -> list[dict[str, str]]:
+    normalized: list[dict[str, str]] = []
+    if isinstance(states, list):
+        for item in states[:8]:
+            if not isinstance(item, dict):
+                continue
+            state_id = slugify_feature(str(item.get("id") or "").strip()).replace("prototype-feature", "state")
+            label = str(item.get("label") or state_id).strip()
+            description = str(item.get("description") or "").strip() or f"{label} 状态说明待补充。"
+            if not state_id:
+                continue
+            normalized.append({"id": state_id, "label": label, "description": description})
+    defaults = [
+        {"id": "ready", "label": "可用", "description": "页面数据齐备，用户可完成核心操作。"},
+        {"id": "loading", "label": "加载中", "description": "页面数据正在加载。"},
+        {"id": "error", "label": "错误", "description": "页面加载或提交失败，需提示恢复动作。"},
+    ]
+    if not normalized:
+        return defaults
+    existing_ids = {item["id"] for item in normalized}
+    for default in defaults:
+        if default["id"] not in existing_ids:
+            normalized.append(default)
+    return normalized[:8]
+
+
+def _normalize_analysis_payload(page: dict[str, Any]) -> dict[str, Any]:
+    analysis = page.get("analysis") if isinstance(page.get("analysis"), dict) else {}
+    default_analysis = _default_page_analysis(page)
+    return {
+        "target_user": str(analysis.get("target_user") or default_analysis["target_user"]).strip(),
+        "decision_focus": _coerce_string_list(
+            analysis.get("decision_focus"),
+            default=default_analysis["decision_focus"],
+            max_items=5,
+        ),
+        "layout_rules": _coerce_string_list(
+            analysis.get("layout_rules"),
+            default=default_analysis["layout_rules"],
+            max_items=4,
+        ),
+        "noise_guardrail": str(analysis.get("noise_guardrail") or default_analysis["noise_guardrail"]).strip(),
+    }
+
+
+def _assemble_prototype_plan(
+    *,
+    docs: list[dict[str, Any]],
+    version: str,
+    feature: str,
+    page_specs: list[dict[str, Any]],
+    transitions: list[dict[str, Any]],
+    theme: dict[str, Any],
+    fallback_used: bool,
+    parser_mode: str,
+    requested_mode: str,
+    effective_mode: str,
+    generator_mode: str,
+    model: str,
+    fallback_reason: str,
+    capability_snapshot: dict[str, Any],
+    llm_trace: dict[str, Any] | None = None,
+) -> dict[str, Any]:
     route_closure_required = _extract_field(docs, "route_closure_required", "false").lower() == "true"
-    theme = _build_theme_payload(docs)
     requirement_ids = _extract_requirement_ids(docs)
-    plan = {
+    page_ids = [str(page.get("page_id") or "").strip() for page in page_specs if str(page.get("page_id") or "").strip()]
+    required_states = sorted({state["id"] for page in page_specs for state in page["states"]})
+    return {
         "schema_version": SCHEMA_VERSION,
         "feature": feature,
         "feature_slug": slugify_feature(feature),
@@ -1510,7 +2240,7 @@ def compile_prototype_plan(project_root: Path, version: str, feature: str) -> di
             }
             for doc in docs
         ],
-        "required_pages": list(page_ids),
+        "required_pages": page_ids,
         "required_states": required_states,
         "requirement_ids": requirement_ids,
         "page_specs": page_specs,
@@ -1542,28 +2272,479 @@ def compile_prototype_plan(project_root: Path, version: str, feature: str) -> di
             ],
         },
         "parser": {
-            "page_detection": "requirement-driven-parser",
+            "page_detection": parser_mode,
             "fallback_used": fallback_used,
             "discovered_page_count": len(page_ids),
             "custom_page_count": len([page_id for page_id in page_ids if page_id not in PAGE_CATALOG]),
             "cjk_detected": any(any(ord(ch) > 127 for ch in doc["text"]) for doc in docs),
             "cjk_parse_failed": False,
         },
+        "compiler": {
+            **build_mode_contract(
+                requested_mode=requested_mode,
+                effective_mode=effective_mode,
+                fallback_reason=fallback_reason,
+                capability_snapshot=capability_snapshot,
+            ),
+            "model": model,
+            "llm_trace": llm_trace or {},
+        },
         "theme": theme,
     }
-    return plan
 
 
-def write_prototype_plan(project_root: Path, version: str, feature: str) -> dict[str, Any]:
-    plan = compile_prototype_plan(project_root, version, feature)
+def _compile_prototype_plan_rule(
+    project_root: Path,
+    version: str,
+    feature: str,
+    docs: list[dict[str, Any]],
+    *,
+    requested_mode: str,
+    model: str,
+    fallback_reason: str,
+    capability_snapshot: dict[str, Any],
+) -> dict[str, Any]:
+    page_ids, fallback_used, page_meta = _detect_pages_with_meta(docs)
+    if "material-viewer" in page_ids and "material-document-detail" not in page_ids:
+        page_ids.append("material-document-detail")
+        page_meta["material-document-detail"] = dict(PAGE_CATALOG["material-document-detail"])
+    transitions = _build_transition_inventory(page_ids, docs, page_meta)
+    page_specs = _build_page_specs(page_ids, docs, transitions, page_meta)
+    theme = _build_theme_payload(docs)
+    for page in page_specs:
+        page["analysis"] = PAGE_ANALYSIS_CATALOG.get(page["page_id"], _default_page_analysis(page))
+        page["layout_lines"] = _build_page_layout(page["page_id"], page.get("sections"))
+    return _assemble_prototype_plan(
+        docs=docs,
+        version=version,
+        feature=feature,
+        page_specs=page_specs,
+        transitions=transitions,
+        theme=theme,
+        fallback_used=fallback_used,
+        parser_mode="requirement-driven-parser",
+        requested_mode=requested_mode,
+        effective_mode="rule",
+        generator_mode="rule",
+        model=model,
+        fallback_reason=fallback_reason,
+        capability_snapshot=capability_snapshot,
+    )
+
+
+def _prototype_inference_payload(inference: dict[str, Any]) -> dict[str, Any]:
+    payload = inference.get("payload")
+    if isinstance(payload, dict):
+        return payload
+    prototype_payload = inference.get("prototype")
+    if isinstance(prototype_payload, dict):
+        return prototype_payload
+    return inference if isinstance(inference, dict) else {}
+
+
+def _compile_prototype_plan_from_inference(
+    *,
+    version: str,
+    feature: str,
+    docs: list[dict[str, Any]],
+    inference: dict[str, Any],
+    requested_mode: str,
+    effective_mode: str,
+    model: str,
+    capability_snapshot: dict[str, Any],
+    inference_mode: str,
+    parser_mode: str,
+) -> dict[str, Any]:
+    payload = _prototype_inference_payload(inference)
+    raw_pages = payload.get("pages")
+    if not isinstance(raw_pages, list) or not raw_pages:
+        raise PrototypeLLMCompileError("prototype llm payload missing pages")
+
+    normalized_pages: list[dict[str, Any]] = []
+    page_aliases: dict[str, str] = {}
+    seen_page_ids: set[str] = set()
+    for index, raw_page in enumerate(raw_pages, start=1):
+        if not isinstance(raw_page, dict):
+            continue
+        raw_name = str(raw_page.get("name") or "").strip()
+        raw_page_id = str(raw_page.get("page_id") or "").strip()
+        candidate_id = raw_page_id or _known_page_id_for_text(raw_name) or _slugify_page_id(raw_name, ordinal=index)
+        page_id = candidate_id
+        suffix = 2
+        while page_id in seen_page_ids:
+            page_id = f"{candidate_id}-{suffix:02d}"
+            suffix += 1
+        seen_page_ids.add(page_id)
+        name = raw_name or PAGE_CATALOG.get(page_id, {}).get("name") or page_id.replace("-", " ").title()
+        sections = _coerce_string_list(
+            raw_page.get("sections"),
+            default=_infer_llm_sections(page_id, name),
+            max_items=8,
+        )
+        actions = _normalize_action_list(raw_page.get("actions"))
+        page = {
+            "page_id": page_id,
+            "name": name,
+            "priority": _normalize_priority(raw_page.get("priority")),
+            "platforms": _normalize_platforms(
+                raw_page.get("platforms"),
+                default=list((PAGE_CATALOG.get(page_id) or {}).get("platforms") or ["Web", "PC"]),
+            ),
+            "responsibility": str(
+                raw_page.get("responsibility")
+                or _default_llm_responsibility(name, sections)
+            ).strip(),
+            "sections": sections,
+            "actions": actions,
+            "states": _normalize_state_list(raw_page.get("states")),
+            "layout_lines": _coerce_layout_lines(
+                raw_page.get("layout"),
+                page_id=page_id,
+                name=name,
+                sections=sections,
+                actions=actions,
+            ),
+            "requirement_refs": _build_requirement_refs(docs),
+            "outbound_transitions": [],
+        }
+        page["analysis"] = _normalize_analysis_payload(
+            {
+                **page,
+                "analysis": raw_page.get("analysis"),
+            }
+        )
+        normalized_pages.append(page)
+        page_aliases[page_id.lower()] = page_id
+        page_aliases[name.lower()] = page_id
+
+    transitions: list[dict[str, Any]] = []
+    raw_transitions = payload.get("transitions") if isinstance(payload.get("transitions"), list) else []
+    for raw_transition in raw_transitions[:24]:
+        if not isinstance(raw_transition, dict):
+            continue
+        source = page_aliases.get(str(raw_transition.get("from") or "").strip().lower(), "")
+        target = page_aliases.get(str(raw_transition.get("to") or "").strip().lower(), "")
+        if not source or not target:
+            continue
+        transitions.append(
+            {
+                "from": source,
+                "to": target,
+                "trigger": str(raw_transition.get("trigger") or "点击进入").strip(),
+                "type": str(raw_transition.get("type") or "primary").strip(),
+            }
+        )
+    if not transitions:
+        for page in normalized_pages:
+            for action in page["actions"]:
+                target = page_aliases.get(str(action.get("target") or "").strip().lower(), "")
+                if not target:
+                    continue
+                transition_type = "return" if "返回" in str(action.get("label") or "") or "返回" in str(action.get("trigger") or "") else "primary"
+                if target == page["page_id"]:
+                    transition_type = "stay"
+                elif target not in {"home", "management-overview"} and transition_type != "return":
+                    transition_type = "drill-down"
+                transitions.append(
+                    {
+                        "from": page["page_id"],
+                        "to": target,
+                        "trigger": str(action.get("trigger") or "点击进入").strip(),
+                        "type": transition_type,
+                    }
+                )
+    deduped_transitions: list[dict[str, Any]] = []
+    seen_transition_keys: set[tuple[str, str, str, str]] = set()
+    for transition in transitions:
+        source = str(transition.get("from") or "").strip()
+        target = str(transition.get("to") or "").strip()
+        trigger = str(transition.get("trigger") or "").strip() or "点击进入"
+        tp = str(transition.get("type") or "").strip() or "primary"
+        if not source or not target:
+            continue
+        key = (source, target, trigger, tp)
+        if key in seen_transition_keys:
+            continue
+        seen_transition_keys.add(key)
+        deduped_transitions.append({"from": source, "to": target, "trigger": trigger, "type": tp})
+    transitions = deduped_transitions
+    outbound: dict[str, list[dict[str, Any]]] = {}
+    for transition in transitions:
+        outbound.setdefault(transition["from"], []).append(transition)
+    for page in normalized_pages:
+        resolved_actions: list[dict[str, str]] = []
+        for action in page["actions"]:
+            target = page_aliases.get(str(action.get("target") or "").strip().lower(), "")
+            if not target:
+                continue
+            resolved_actions.append(
+                {
+                    "label": str(action.get("label") or "").strip(),
+                    "trigger": str(action.get("trigger") or "点击进入").strip(),
+                    "target": target,
+                }
+            )
+        page["actions"] = resolved_actions or [
+            {
+                "label": f"进入{next((item['name'] for item in normalized_pages if item['page_id'] == transition['to']), transition['to'])}",
+                "trigger": transition["trigger"],
+                "target": transition["to"],
+            }
+            for transition in outbound.get(page["page_id"], [])
+        ]
+        page["outbound_transitions"] = outbound.get(page["page_id"], [])
+
+    if not normalized_pages:
+        raise PrototypeLLMCompileError("prototype llm payload did not yield valid pages")
+
+    contract_issues = _validate_llm_page_contract(page_specs=normalized_pages, transitions=transitions)
+    if contract_issues:
+        raise PrototypeLLMContractError("; ".join(contract_issues[:8]))
+
+    llm_theme = payload.get("theme") if isinstance(payload.get("theme"), dict) else {}
+    base_theme = _build_theme_payload(docs)
+    theme = {
+        **base_theme,
+        "prototype_archetype": str(payload.get("prototype_archetype") or llm_theme.get("prototype_archetype") or base_theme["prototype_archetype"]).strip(),
+        "primary": str(llm_theme.get("primary") or base_theme["primary"]).strip(),
+        "secondary": str(llm_theme.get("secondary") or base_theme["secondary"]).strip(),
+    }
+    llm_trace = {
+        "inference_mode": inference_mode,
+        "provider_model": str(inference.get("provider_model") or inference.get("model") or ""),
+        "prompt_tokens": int(inference.get("prompt_tokens") or 0),
+        "completion_tokens": int(inference.get("completion_tokens") or 0),
+        "validated_page_count": len(normalized_pages),
+        "validated_transition_count": len(transitions),
+    }
+    if inference_mode == "host-bridge":
+        llm_trace["host_runtime"] = str(capability_snapshot.get("host_runtime") or "")
+        llm_trace["host_response_source"] = str(capability_snapshot.get("host_response_source") or "")
+    return _assemble_prototype_plan(
+        docs=docs,
+        version=version,
+        feature=feature,
+        page_specs=normalized_pages,
+        transitions=transitions,
+        theme=theme,
+        fallback_used=False,
+        parser_mode=parser_mode,
+        requested_mode=requested_mode,
+        effective_mode=effective_mode,
+        generator_mode=effective_mode,
+        model=model,
+        fallback_reason="",
+        capability_snapshot=capability_snapshot,
+        llm_trace=llm_trace,
+    )
+
+
+def _compile_prototype_plan_llm(
+    *,
+    version: str,
+    feature: str,
+    docs: list[dict[str, Any]],
+    requested_mode: str,
+    model: str,
+    capability_snapshot: dict[str, Any],
+) -> dict[str, Any]:
+    inference = _real_prototype_llm_inference(feature=feature, version=version, docs=docs, model=model)
+    return _compile_prototype_plan_from_inference(
+        version=version,
+        feature=feature,
+        docs=docs,
+        inference=inference,
+        requested_mode=requested_mode,
+        effective_mode="llm",
+        model=model,
+        capability_snapshot=capability_snapshot,
+        inference_mode="real",
+        parser_mode="llm-wireframe-compiler",
+    )
+
+
+def _compile_prototype_plan_host(
+    *,
+    version: str,
+    feature: str,
+    docs: list[dict[str, Any]],
+    requested_mode: str,
+    model: str,
+    capability_snapshot: dict[str, Any],
+) -> dict[str, Any]:
+    inference, _ = load_host_response_json("prototype")
+    if not inference:
+        raise PrototypeLLMCompileError("prototype host response missing or invalid")
+    return _compile_prototype_plan_from_inference(
+        version=version,
+        feature=feature,
+        docs=docs,
+        inference=inference,
+        requested_mode=requested_mode,
+        effective_mode="host",
+        model=model,
+        capability_snapshot=capability_snapshot,
+        inference_mode="host-bridge",
+        parser_mode="host-wireframe-compiler",
+    )
+
+
+def compile_prototype_plan(
+    project_root: Path,
+    version: str,
+    feature: str,
+    *,
+    mode: str = "auto",
+    model: str = "beacon-prototype-compiler",
+) -> dict[str, Any]:
+    docs = load_source_documents(project_root, version, feature)
+    doc_by_type = {doc["type"]: doc for doc in docs}
+    missing = [doc_type for doc_type in REQUIRED_SOURCE_TYPES if doc_type not in doc_by_type]
+    if missing:
+        raise FileNotFoundError(
+            f"prototype requires requirement truth before wireframe freeze, missing: {', '.join(missing)}"
+        )
+    requested_mode = normalize_requested_mode(mode)
+    capability_snapshot = build_semantic_capability_snapshot(
+        "prototype",
+        disable_env="BEACON_PROTOTYPE_DISABLE_LLM",
+    )
+    if requested_mode == "rule":
+        return _compile_prototype_plan_rule(
+            project_root,
+            version,
+            feature,
+            docs,
+            requested_mode=requested_mode,
+            model=model,
+            fallback_reason="",
+            capability_snapshot=capability_snapshot,
+        )
+    if bool(capability_snapshot.get("llm_disabled")):
+        if requested_mode == "llm":
+            raise ValueError("Prototype LLM compile disabled by BEACON_PROTOTYPE_DISABLE_LLM.")
+        return _compile_prototype_plan_rule(
+            project_root,
+            version,
+            feature,
+            docs,
+            requested_mode=requested_mode,
+            model=model,
+            fallback_reason="llm_disabled",
+            capability_snapshot=capability_snapshot,
+        )
+    if bool(capability_snapshot.get("host_semantic_ready")):
+        try:
+            return _compile_prototype_plan_host(
+                version=version,
+                feature=feature,
+                docs=docs,
+                requested_mode=requested_mode,
+                model=model,
+                capability_snapshot=capability_snapshot,
+            )
+        except PrototypeLLMContractError as exc:
+            if not bool(capability_snapshot.get("provider_available")):
+                if requested_mode == "llm":
+                    raise ValueError(f"Prototype LLM compile failed: {exc}") from exc
+                return _compile_prototype_plan_rule(
+                    project_root,
+                    version,
+                    feature,
+                    docs,
+                    requested_mode=requested_mode,
+                    model=model,
+                    fallback_reason="host_contract_validation_failed",
+                    capability_snapshot=capability_snapshot,
+                )
+        except Exception as exc:  # noqa: BLE001
+            if not bool(capability_snapshot.get("provider_available")):
+                if requested_mode == "llm":
+                    raise ValueError(f"Prototype LLM compile failed: {exc}") from exc
+                return _compile_prototype_plan_rule(
+                    project_root,
+                    version,
+                    feature,
+                    docs,
+                    requested_mode=requested_mode,
+                    model=model,
+                    fallback_reason="host_compile_failed",
+                    capability_snapshot=capability_snapshot,
+                )
+    if not bool(capability_snapshot.get("provider_available")):
+        if requested_mode == "llm":
+            raise ValueError(llm_unavailable_message("Prototype LLM compile"))
+        return _compile_prototype_plan_rule(
+            project_root,
+            version,
+            feature,
+            docs,
+            requested_mode=requested_mode,
+            model=model,
+            fallback_reason="llm_unavailable",
+            capability_snapshot=capability_snapshot,
+        )
+    try:
+        return _compile_prototype_plan_llm(
+            version=version,
+            feature=feature,
+            docs=docs,
+            requested_mode=requested_mode,
+            model=model,
+            capability_snapshot=capability_snapshot,
+        )
+    except PrototypeLLMContractError as exc:
+        if requested_mode == "llm":
+            raise ValueError(f"Prototype LLM compile failed: {exc}") from exc
+        return _compile_prototype_plan_rule(
+            project_root,
+            version,
+            feature,
+            docs,
+            requested_mode=requested_mode,
+            model=model,
+            fallback_reason="llm_contract_validation_failed",
+            capability_snapshot=capability_snapshot,
+        )
+    except Exception as exc:  # noqa: BLE001
+        if requested_mode == "llm":
+            raise ValueError(f"Prototype LLM compile failed: {exc}") from exc
+        return _compile_prototype_plan_rule(
+            project_root,
+            version,
+            feature,
+            docs,
+            requested_mode=requested_mode,
+            model=model,
+            fallback_reason="llm_compile_failed",
+            capability_snapshot=capability_snapshot,
+        )
+
+
+def write_prototype_plan(
+    project_root: Path,
+    version: str,
+    feature: str,
+    *,
+    mode: str = "auto",
+    model: str = "beacon-prototype-compiler",
+) -> dict[str, Any]:
+    plan = compile_prototype_plan(project_root, version, feature, mode=mode, model=model)
     files = prototype_files(project_root, version, feature)
     _write_json(files["prototype_plan"], plan)
     return {"path": files["prototype_plan"], "plan": plan}
 
 
-def write_prototype_bundle(project_root: Path, version: str, feature: str) -> dict[str, Any]:
+def write_prototype_bundle(
+    project_root: Path,
+    version: str,
+    feature: str,
+    *,
+    mode: str = "auto",
+    model: str = "beacon-prototype-compiler",
+) -> dict[str, Any]:
     source_docs = load_source_documents(project_root, version, feature)
-    plan = compile_prototype_plan(project_root, version, feature)
+    plan = compile_prototype_plan(project_root, version, feature, mode=mode, model=model)
     files = prototype_files(project_root, version, feature)
     feature_slug = str(plan["feature_slug"])
     source_hash = _stable_hash([{"type": doc["type"], "fingerprint": doc["fingerprint"]} for doc in source_docs])
@@ -1692,13 +2873,7 @@ def write_prototype_bundle(project_root: Path, version: str, feature: str) -> di
             stage_files["human_view_dir"] / "index.json",
             {
                 "schema_version": SCHEMA_VERSION,
-                "files": [
-                    "wireframe-summary.md",
-                    "navigation-map.md",
-                    "state-flow-map.md",
-                    "component-catalog.md",
-                    "pages/*.md",
-                ],
+                "files": _human_view_files(),
             },
         )
         _write_json(
@@ -1767,6 +2942,7 @@ def write_prototype_bundle(project_root: Path, version: str, feature: str) -> di
             "review_status": "missing",
             "design_review_outcome": "pass",
             "prototype_type": plan["contract"]["prototype_archetype"],
+            "compiler": plan.get("compiler", {}),
             "source_fingerprints": {doc["type"]: doc["fingerprint"] for doc in source_docs},
             "transaction": {
                 "source_hash": source_hash,
@@ -2252,6 +3428,7 @@ def evaluate_prototype_status(project_root: Path, version: str, feature: str) ->
             "inconsistent_reasons": [],
             "prototype_mode": PROTOTYPE_MODE,
             "ui_kit": PROTOTYPE_UI_KIT,
+            "compiler": {},
             "review_status": "missing",
             "design_review_outcome": "missing",
             "gate_ready": False,
@@ -2271,6 +3448,7 @@ def evaluate_prototype_status(project_root: Path, version: str, feature: str) ->
     freeze_payload = _read_json(files["freeze"])
     review_payload = _read_json(files["review_json"])
     plan = _read_json(files["prototype_plan"])
+    compiler = plan.get("compiler") if isinstance(plan.get("compiler"), dict) else {}
     transaction = manifest.get("transaction") if isinstance(manifest.get("transaction"), dict) else {}
     sqlite_projection = _read_prototype_projection_sqlite(str(transaction.get("transaction_id") or ""))
     current_source = {doc["type"]: doc["fingerprint"] for doc in load_source_documents(project_root, version, feature)}
@@ -2389,6 +3567,7 @@ def evaluate_prototype_status(project_root: Path, version: str, feature: str) ->
         "inconsistent_reasons": inconsistent_reasons,
         "prototype_mode": str(plan.get("prototype_mode") or manifest.get("prototype_mode") or PROTOTYPE_MODE),
         "ui_kit": manifest.get("ui_kit") or PROTOTYPE_UI_KIT,
+        "compiler": compiler,
         "review_status": review_status,
         "design_review_outcome": design_review_outcome,
         "gate_ready": gate_ready,

@@ -79,6 +79,12 @@ Skill packaging does not change Beacon's delivery truth:
 - `docs/beacon/<version>/` remains source of truth
 - `.beacon/` remains runtime state only
 
+Current line:
+
+- `v1.3.6` = current runtime release line and host-native runtime docs line
+
+Package docs may still reference historical lines, but they must not describe them as current.
+
 ## Rule 6: Implement / skill remain CLI surfaces
 
 The skill package wraps these CLI commands instead of replacing them:
@@ -87,6 +93,13 @@ The skill package wraps these CLI commands instead of replacing them:
 - `beacon implement`
 - `beacon workflow`
 - `beacon review`
+
+For the `v1.3.6` runtime line, the CLI should be described as:
+
+- host-native orchestration layer first
+- structured execution kernel
+- freeze/review/status/doctor/read-model support layer
+- external provider fallback only when host-native runtime is unavailable
 
 ## Rule 7: QA guidance in the skill must obey first-principles order
 

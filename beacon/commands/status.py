@@ -160,6 +160,8 @@ def _status_impl(
         "change_loop": help_payload.get("change_loop", {}),
         "project_mode": help_payload.get("project_mode", "greenfield"),
         "execution_surface": help_payload.get("execution_surface", {}),
+        "delivery_read_model": help_payload.get("delivery_read_model", {}),
+        "surface_explanation": help_payload.get("surface_explanation", {}),
         "hud": help_payload.get("hud", {}),
         "minimal_hud": help_payload.get("minimal_hud", {}),
         "learning_surface": help_payload.get("learning_surface", {}),

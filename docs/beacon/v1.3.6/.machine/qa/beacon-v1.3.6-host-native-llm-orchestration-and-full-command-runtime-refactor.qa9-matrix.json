@@ -1,0 +1,95 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor",
+  "feature_slug": "beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor",
+  "version": "v1.3.6",
+  "generated_at": "2026-04-21T08:16:21.188059+00:00",
+  "execution_mode": "feature-aware",
+  "source_matrix_path": "docs/beacon/v1.3.6/.machine/qa/beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor.ac-test-matrix.json",
+  "story_scenario_map_path": ".beacon/qa/features/beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor/story-scenario-map.json",
+  "reason_codes": [
+    "no_prior_feature_qa"
+  ],
+  "qa_types": [
+    "contract"
+  ],
+  "entries": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-001",
+      "layer": "contract",
+      "command": "",
+      "assertion": "宿主模式默认成立：在 Claude / Codex skill 环境里执行 `beacon prd / prototype / implement / qa` 默认不要求 `BEACON_LLM_API_KEY`，并保留 host-native evidence。",
+      "status": "planned",
+      "qa_type": "contract",
+      "automation": "auto",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor/tc-001/__RUN_ID__.json"
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-002",
+      "layer": "contract",
+      "command": "",
+      "assertion": "统一 mode contract：`prd / user-story / test-case / prototype / implement / qa / release / help / status / doctor` 的 machine output 或 evidence 中都存在统一的 `requested_mode / effective_mode / fallback_reason / capability_snapshot` 字段。",
+      "status": "planned",
+      "qa_type": "contract",
+      "automation": "auto",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor/tc-002/__RUN_ID__.json"
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-003",
+      "layer": "contract",
+      "command": "",
+      "assertion": "requirement 命令同核：`prd / user-story / test-case / prototype` 不再私自直连 provider，各自通过同一 host/provider/rule arbitration 与 semantic envelope 工作。",
+      "status": "planned",
+      "qa_type": "contract",
+      "automation": "auto",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor/tc-003/__RUN_ID__.json"
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-004",
+      "layer": "contract",
+      "command": "",
+      "assertion": "`prototype` 不退化：迁移后 `prototype` 仍保留固定模板、freeze/review 与 canonical projection，但页面语义改由宿主原生 LLM 驱动。",
+      "status": "planned",
+      "qa_type": "contract",
+      "automation": "auto",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor/tc-004/__RUN_ID__.json"
+    },
+    {
+      "ac_id": "AC-005",
+      "tc_id": "TC-005",
+      "layer": "contract",
+      "command": "",
+      "assertion": "`implement / qa` 宿主原生化：`implement` 与 `qa` 仍是唯一公开执行入口，但内部可选择 host direct / subagent / team，并明确记录选择原因与 requirement 绑定。",
+      "status": "planned",
+      "qa_type": "contract",
+      "automation": "auto",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor/tc-005/__RUN_ID__.json"
+    },
+    {
+      "ac_id": "AC-006",
+      "tc_id": "TC-006",
+      "layer": "contract",
+      "command": "",
+      "assertion": "support/release 一致性：`help / status / doctor / release` 对同一 feature 的下一步、降级、gate 与风险解释必须来自统一 truth/read model，而不是各自独立猜测。",
+      "status": "planned",
+      "qa_type": "contract",
+      "automation": "auto",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor/tc-006/__RUN_ID__.json"
+    },
+    {
+      "ac_id": "AC-007",
+      "tc_id": "TC-007",
+      "layer": "contract",
+      "command": "",
+      "assertion": "人类主面不扩张：迁移完成后，对外仍只有 `prd -> user-story -> test-case -> prototype -> implement -> qa -> release + help/status/doctor`。",
+      "status": "planned",
+      "qa_type": "contract",
+      "automation": "auto",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor/tc-007/__RUN_ID__.json"
+    }
+  ]
+}

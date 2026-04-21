@@ -3,10 +3,10 @@ name: beacon-iteration-governance
 description: Use when iterating Beacon itself and you need a fixed source-iteration to docs-convergence to release-verification workflow that keeps README, current release docs, skill surfaces, and release checks aligned.
 metadata:
   author: Beacon CLI
-  version: "1.1.8"
+  version: "1.3.6"
   organization: Beacon
-  date: March 2026
-  abstract: Repository-local governance skill for Beacon feature iteration, documentation convergence, and release-readiness verification.
+  date: April 2026
+  abstract: Repository-local governance skill for Beacon runtime promotion, documentation convergence, and release-readiness verification.
 ---
 
 # Beacon Iteration Governance
@@ -49,9 +49,9 @@ Use this skill when:
 
 ```bash
 bash skills/beacon-iteration-governance/scripts/run_iteration_governance.sh --help
-bash skills/beacon-iteration-governance/scripts/run_iteration_governance.sh quick --project-root . --version v1.1.8
-bash skills/beacon-iteration-governance/scripts/run_iteration_governance.sh delivery --project-root . --version v1.1.8
-bash skills/beacon-iteration-governance/scripts/run_iteration_governance.sh full --project-root . --version v1.1.8
+bash skills/beacon-iteration-governance/scripts/run_iteration_governance.sh quick --project-root . --version v1.3.6
+bash skills/beacon-iteration-governance/scripts/run_iteration_governance.sh delivery --project-root . --version v1.3.6
+bash skills/beacon-iteration-governance/scripts/run_iteration_governance.sh full --project-root . --version v1.3.6
 ```
 
 The script writes logs and a summary under:
@@ -69,9 +69,9 @@ Use this skill through Beacon project skills when you want Beacon to own the loo
 
 ```bash
 beacon skill registry list --project-root <temp-or-project-root> --json
-beacon skill bind "Beacon Iteration Governance" --profile beacon-iter-dev --project-root <root> --version v1.1.8
-beacon verify run "Beacon Iteration Governance" --project-root <root> --version v1.1.8 --param repo_root=/abs/path/to/beacon --json
-beacon orchestrate run "Beacon Iteration Governance" --project-root <root> --version v1.1.8 --stage delivery --param repo_root=/abs/path/to/beacon --dry-run --json
+beacon skill bind "Beacon Iteration Governance" --profile beacon-iter-dev --project-root <root> --version v1.3.6
+beacon verify run "Beacon Iteration Governance" --project-root <root> --version v1.3.6 --param repo_root=/abs/path/to/beacon --json
+beacon orchestrate run "Beacon Iteration Governance" --project-root <root> --version v1.3.6 --stage delivery --param repo_root=/abs/path/to/beacon --dry-run --json
 ```
 
 See the profile example in [examples/profile-integration.md](./examples/profile-integration.md).
@@ -80,6 +80,6 @@ See the profile example in [examples/profile-integration.md](./examples/profile-
 
 - [Governance workflow](./references/workflow.md)
 - [Profile integration example](./examples/profile-integration.md)
-- [Beacon v1.1.8 Summary](../../docs/beacon/v1.1.8/SUMMARY.md)
-- [Beacon v1.1.8 Execution Index](../../docs/beacon/v1.1.8/execution/index.md)
-- [Beacon v1.1.8 Release Notes](../../docs/beacon/v1.1.8/release/v1.1.8.md)
+- [Beacon v1.3.6 Summary](../../docs/beacon/v1.3.6/SUMMARY.md)
+- [Beacon v1.3.6 Execution Index](../../docs/beacon/v1.3.6/execution/index.md)
+- [Beacon v1.3.6 Release Notes](../../docs/beacon/v1.3.6/release/v1.3.6.md)

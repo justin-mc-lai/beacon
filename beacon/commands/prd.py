@@ -14,6 +14,12 @@ import typer
 
 from beacon.utils.artifact_paths import machine_root
 from beacon.utils.runtime import now_iso, write_json
+from beacon.utils.semantic_runtime import (
+    build_mode_contract,
+    build_semantic_capability_snapshot,
+    load_host_response_json,
+    normalize_requested_mode,
+)
 from beacon.utils.versioning import resolve_operational_docs_version, resolve_target_version
 
 app = typer.Typer(name="prd", help="Generate Product Requirements Document")
@@ -275,6 +281,24 @@ def _validate_contract(content: str, *, require_no_placeholders: bool) -> dict[s
         "placeholder_hits": placeholder_hits,
         "semantic_hits": semantic_hits,
     }
+
+
+def _extract_host_prd_markdown() -> str:
+    payload, _ = load_host_response_json("prd")
+    if not payload:
+        return ""
+    candidates = [
+        payload.get("markdown"),
+        payload.get("content"),
+    ]
+    nested = payload.get("payload")
+    if isinstance(nested, dict):
+        candidates.extend([nested.get("markdown"), nested.get("content")])
+    for item in candidates:
+        text = str(item or "").strip()
+        if text:
+            return text
+    return ""
 
 
 def _machine_prd_dir(project_root: Path, version: str) -> Path:
@@ -763,17 +787,24 @@ def create(
     slug = _slugify(feature)
     existing_prds = _existing_prd_names(project_root, resolved_version, exclude_slug=slug)
     template = _classify_prd(feature, existing_prds=existing_prds)
-    requested_mode = str(mode or "auto").strip().lower()
-    if requested_mode not in {"auto", "llm", "rule"}:
+    try:
+        requested_mode = normalize_requested_mode(mode)
+    except ValueError:
         typer.echo("Invalid --mode. Use auto/llm/rule.", err=True)
         raise typer.Exit(2)
+    capability_snapshot = build_semantic_capability_snapshot(
+        "prd",
+        disable_env="BEACON_PRD_DISABLE_LLM",
+    )
 
     legacy_line_force_rule = requested_mode == "auto" and _semver_tuple(resolved_version) < (1, 3, 5)
     fallback_reason = ""
+    effective_mode = requested_mode
     generator_mode = requested_mode
-    llm_disabled = _is_llm_disabled()
+    llm_disabled = bool(capability_snapshot.get("llm_disabled"))
 
     if requested_mode == "rule" or legacy_line_force_rule:
+        effective_mode = "rule"
         generator_mode = "rule"
         if legacy_line_force_rule:
             fallback_reason = "legacy_line_default_rule"
@@ -793,6 +824,7 @@ def create(
             if requested_mode == "llm":
                 typer.echo("LLM compile disabled by BEACON_PRD_DISABLE_LLM.", err=True)
                 raise typer.Exit(2)
+            effective_mode = "rule"
             generator_mode = "rule"
             fallback_reason = "llm_disabled"
             md_content = _render_prd(
@@ -807,22 +839,39 @@ def create(
             )
             contract = _validate_contract(md_content, require_no_placeholders=False)
         else:
-            md_content = _render_semantic_prd(
-                feature,
-                version=resolved_version,
-                track=template["track"],
-                family=template["family"],
-                existing_prds=existing_prds,
-                slug=slug,
-            )
+            host_markdown = ""
+            if bool(capability_snapshot.get("host_semantic_ready")):
+                host_markdown = _extract_host_prd_markdown()
+                if host_markdown:
+                    effective_mode = "host"
+                else:
+                    fallback_reason = "host_compile_failed"
+            if host_markdown:
+                md_content = host_markdown
+            else:
+                effective_mode = "llm"
+                md_content = _render_semantic_prd(
+                    feature,
+                    version=resolved_version,
+                    track=template["track"],
+                    family=template["family"],
+                    existing_prds=existing_prds,
+                    slug=slug,
+                )
             contract = _validate_contract(md_content, require_no_placeholders=True)
-            generator_mode = "llm"
+            generator_mode = effective_mode
             if not bool(contract.get("ok")):
+                failed_mode = effective_mode
                 if requested_mode == "llm":
                     typer.echo("LLM compile output failed contract validation.", err=True)
                     raise typer.Exit(2)
+                effective_mode = "rule"
                 generator_mode = "rule"
-                fallback_reason = "llm_contract_validation_failed"
+                fallback_reason = (
+                    "host_contract_validation_failed"
+                    if failed_mode == "host"
+                    else "llm_contract_validation_failed"
+                )
                 md_content = _render_prd(
                     feature,
                     version=resolved_version,
@@ -852,10 +901,13 @@ def create(
         "track": template["track"],
         "family": template["family"],
         "label": template["label"],
-        "requested_mode": requested_mode,
-        "generator_mode": generator_mode,
+        **build_mode_contract(
+            requested_mode=requested_mode,
+            effective_mode=effective_mode,
+            fallback_reason=fallback_reason,
+            capability_snapshot=capability_snapshot,
+        ),
         "model": model,
-        "fallback_reason": fallback_reason,
         "source_refs": source_refs,
         "contract": contract,
         "markdown": md_content,
@@ -881,6 +933,7 @@ def create(
         "feature_slug": slug,
         "version": resolved_version,
         "requested_mode": requested_mode,
+        "effective_mode": effective_mode,
         "generator_mode": generator_mode,
         "fallback_reason": fallback_reason,
         "source_hash": source_hash,
@@ -912,10 +965,12 @@ def create(
             "feature": feature,
             "feature_slug": slug,
             "version": resolved_version,
+            "effective_mode": effective_mode,
             "generator_mode": generator_mode,
             "requested_mode": requested_mode,
             "model": model,
             "fallback_reason": fallback_reason,
+            "capability_snapshot": capability_snapshot,
             "source_refs": source_refs,
             "constraint_hits": contract.get("semantic_hits", {}),
             "missing_headings": contract.get("missing_headings", []),
@@ -961,9 +1016,11 @@ def create(
                     "feature": feature,
                     "feature_slug": slug,
                     "version": resolved_version,
+                    "effective_mode": effective_mode,
                     "generator_mode": generator_mode,
                     "requested_mode": requested_mode,
                     "fallback_reason": fallback_reason,
+                    "capability_snapshot": capability_snapshot,
                     "contract_ok": bool(contract.get("ok", False)),
                     "output_path": str(output_path),
                     "compile_path": str(compile_path),

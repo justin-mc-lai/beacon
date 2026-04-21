@@ -114,18 +114,27 @@ def _matrix_files(project_root: Path, version: str, feature: str | None = None) 
     if uses_machine_surface(version):
         roots.append(machine_qa_dir(project_root, version))
     roots.append(qa_docs_dir(project_root, version))
-    out: list[Path] = []
+    preferred_by_feature: dict[str, Path] = {}
+    fallback_by_feature: dict[str, Path] = {}
     for root in roots:
         if not root.exists():
             continue
-        out.extend(root.glob("*.ac-test-matrix.json"))
+        for path in root.glob("*.qa9-matrix.json"):
+            slug = path.name.removesuffix(".qa9-matrix.json")
+            preferred_by_feature.setdefault(slug, path)
+        for path in root.glob("*.ac-test-matrix.json"):
+            slug = path.name.removesuffix(".ac-test-matrix.json")
+            fallback_by_feature.setdefault(slug, path)
+    feature_slugs = sorted(set(preferred_by_feature) | set(fallback_by_feature))
     if feature:
         target = _slug(feature)
-        out = [p for p in out if p.name == f"{target}.ac-test-matrix.json"]
-    unique: dict[str, Path] = {}
-    for path in out:
-        unique.setdefault(path.name, path)
-    return sorted(unique.values(), key=lambda p: p.name)
+        feature_slugs = [slug for slug in feature_slugs if slug == target]
+    resolved: list[Path] = []
+    for slug in feature_slugs:
+        chosen = preferred_by_feature.get(slug) or fallback_by_feature.get(slug)
+        if chosen is not None:
+            resolved.append(chosen)
+    return sorted(resolved, key=lambda p: p.name)
 
 
 def _implementation_slugs(project_root: Path, version: str, feature: str | None = None) -> set[str]:
@@ -153,12 +162,13 @@ def compute_coverage_metrics(
     *,
     version: str = "auto",
     feature: str | None = None,
+    use_projected: bool = True,
 ) -> dict[str, Any]:
     """Compute story/ac/tc coverage metrics from docs + evidence artifacts."""
     ver = resolve_target_version(project_root, version)
     feature_filter = _slug(feature or "")
 
-    projected = _projected_coverage_metrics(project_root, ver, feature_filter or None)
+    projected = _projected_coverage_metrics(project_root, ver, feature_filter or None) if use_projected else None
     if projected is not None:
         return projected
 
@@ -238,3 +248,30 @@ def compute_coverage_metrics(
         "full_coverage": full_coverage,
         "matrix_errors": matrix_errors,
     }
+
+
+def write_coverage_summary(
+    project_root: Path,
+    *,
+    version: str = "auto",
+    run_id: str = "",
+) -> Path:
+    """Persist project-level coverage metrics for release/read-only consumers."""
+    metrics = compute_coverage_metrics(project_root, version=version, use_projected=False)
+    coverage_rate = min(
+        float(metrics.get("story_coverage", 0.0) or 0.0),
+        float(metrics.get("ac_coverage", 0.0) or 0.0),
+        float(metrics.get("tc_coverage", 0.0) or 0.0),
+    )
+    payload = {
+        "schema_version": "1.0",
+        "run_id": str(run_id or _auto_test_run_id(project_root)).strip(),
+        "version": str(metrics.get("version") or resolve_target_version(project_root, version)),
+        "coverage_rate": round(coverage_rate, 4),
+        "full_coverage": bool(metrics.get("full_coverage", False)),
+        "details": metrics,
+    }
+    path = project_root / ".beacon" / "coverage-summary.json"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    return path

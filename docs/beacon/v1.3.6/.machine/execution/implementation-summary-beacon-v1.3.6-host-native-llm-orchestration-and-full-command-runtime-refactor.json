@@ -1,0 +1,57 @@
+{
+  "schema_version": "1.0",
+  "run_id": "run-20260421T160700Z-v136promo",
+  "feature": "beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor",
+  "feature_slug": "beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor",
+  "version": "v1.3.6",
+  "mode": "single",
+  "host_runtime": "codex",
+  "runner": "codex",
+  "adapter_type": "native",
+  "generated_at": "2026-04-21T16:07:00+08:00",
+  "status": "completed",
+  "summary": "Beacon v1.3.6 runtime promotion aligned version truth, root docs, packaged skills, and release evidence with the host-native runtime implementation.",
+  "changed_files": [
+    "beacon/__init__.py",
+    "beacon/version-truth.json",
+    "README.md",
+    "SKILL.md",
+    "CLAUDE.md",
+    ".claude-plugin/plugin.json",
+    "skills/beacon/SKILL.md",
+    "skills/beacon/metadata.json",
+    "docs/beacon/v1.3.6/SUMMARY.md",
+    "docs/beacon/v1.3.6/release/v1.3.6.md",
+    "docs/beacon/v1.3.6/release/runtime-promotion-checklist.md",
+    "docs/beacon/v1.3.6/change/beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor.md",
+    "docs/beacon/v1.3.6/.machine/change/beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor.json"
+  ],
+  "verification": [
+    {
+      "command": "python3 -m pytest -q tests/test_v136_delivery_kernel_read_model.py tests/test_v136_host_native_requirement_contracts.py tests/test_v135_transactional_runtime_and_prd_compile.py tests/test_v135_qa_team_run_guards.py tests/test_v132_implement_three_modes_functional.py tests/test_v119_release_scorecard_and_browser_compiler.py tests/test_v133_minimal_hud_help_support.py tests/test_doctor_v2_contract.py tests/test_beacon.py tests/test_llm_loop_orchestration.py tests/test_v120_runtime_release_alignment.py tests/test_v120_release_line_alignment.py",
+      "status": "passed"
+    },
+    {
+      "command": "python3 -m beacon.main release create v1.3.6 --project . --output .beacon/release-v1.3.6-checklist.md",
+      "status": "passed"
+    }
+  ],
+  "implemented_task_ids": [
+    "promote-version-truth",
+    "align-root-docs",
+    "align-packaged-skills",
+    "generate-release-change-evidence"
+  ],
+  "verified_task_ids": [
+    "runtime-regression-suite"
+  ],
+  "blocked_task_ids": [],
+  "failed_task_ids": [],
+  "artifact_updates": {},
+  "git_workflow": {
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.3.6",
+    "base_branch": "main",
+    "current_branch": "beacon/v1.3.5"
+  }
+}

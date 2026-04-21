@@ -1,11 +1,13 @@
 ---
 name: beacon-doctor
-description: Use when the user needs Beacon to repair context, sync materials, diagnose environment or package drift, or restore the workflow to a usable state through the minimal v1.3.3 human surface.
+description: Use when the user needs Beacon to repair context, sync materials, diagnose environment or package drift, or restore the workflow to a usable state through Beacon's current v1.3.6 runtime surface.
 ---
 
 # Beacon Doctor
 
 This skill routes repair and diagnostics through Beacon's `doctor` surface.
+
+The public command stays on the current `v1.3.6` runtime line and uses the shared read model and diagnostics behavior defined by the `v1.3.6` docs.
 
 ## Use for
 

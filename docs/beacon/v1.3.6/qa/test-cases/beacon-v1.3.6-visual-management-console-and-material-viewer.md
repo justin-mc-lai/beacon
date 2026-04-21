@@ -81,6 +81,12 @@
 - When：只阅读首页与项目详情的默认层
 - Then：人类仍能判断项目当前阶段、交付内容、blocker、下一步与是否需要介入
 
+### TC-013 (AC-017): `v1.3.4` 看板主轴在 `v1.3.6` 中被保留并扩展
+
+- Given：`v1.3.6` 草图原型基于 `v1.3.4` Beacon 管理看板整理
+- When：检查首页、管理总览、项目详情、运行中心、恢复诊断、物料查看器与文档详情之间的导航关系
+- Then：必须保留 `home -> management-overview -> project-detail -> runtime-center / recovery-diagnostics` 主链路，并把 `project-detail -> material-viewer -> material-document-detail` 只读文档流正确接入
+
 ## Suggested Commands
 
 - `BEACON_ALLOW_CONTEXT_VERSION_DRIFT=1 python3 -m beacon.main user-story list --project /Users/apple/Developer/Personal/products/beacon --version v1.3.6`
@@ -102,3 +108,4 @@
 | TC-010 | Pending | from AC-014 |
 | TC-011 | Pending | from AC-015 |
 | TC-012 | Pending | from AC-016 |
+| TC-013 | Pending | from AC-017 |

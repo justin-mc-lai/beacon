@@ -68,5 +68,50 @@
       "docs/beacon/v1.3.6/qa/test-cases/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
     ]
   },
-  "outbound_transitions": []
+  "outbound_transitions": [
+    {
+      "from": "recovery-diagnostics",
+      "to": "project-detail",
+      "trigger": "点击返回",
+      "type": "return"
+    },
+    {
+      "from": "recovery-diagnostics",
+      "to": "runtime-center",
+      "trigger": "点击运行态关联",
+      "type": "drill-down"
+    }
+  ],
+  "analysis": {
+    "target_user": "负责恢复上下文的人",
+    "decision_focus": [
+      "当前是 degraded、rebuild 还是 doctor 场景。",
+      "真相是否仍然回到 docs/beacon 与 .beacon。",
+      "用户该做哪一步恢复，而不是读一堆诊断术语。"
+    ],
+    "layout_rules": [
+      "先讲 truth 来源，再给诊断卡和恢复步骤。",
+      "风险提示要比操作细节更醒目，避免误用恢复动作。",
+      "恢复动作要收口成少量步骤，不展开内部实现机制。"
+    ],
+    "noise_guardrail": "诊断页解释机器状态，但不能反客为主替代 requirement truth。"
+  },
+  "layout_lines": [
+    "+----------------------------------------------------------------------------------+",
+    "| 顶栏：返回项目详情 | 恢复诊断 | 当前环境状态                                      |",
+    "+----------------------------------------------------------------------------------+",
+    "| truth 来源说明                                                                    |",
+    "| - 正式真相来自 docs/beacon + .beacon                                              |",
+    "| - 当前页只解释恢复路径，不改写 requirement truth                                   |",
+    "+----------------------------------------------------------------------------------+",
+    "| 诊断卡： degraded | rebuild | doctor                                              |",
+    "| - 当前命中的诊断类型                                                               |",
+    "| - 推荐动作与触发条件                                                               |",
+    "+----------------------------------------------------------------------------------+",
+    "| 恢复步骤                                      | 风险提示                           |",
+    "| 1. 校验上下文                                 | - 不要把投影层当真相              |",
+    "| 2. 执行 doctor / rebuild                      | - 误修复会导致 drift              |",
+    "| 3. 回到项目页验证                             | - 先验证再 freeze                 |",
+    "+----------------------------------------------------------------------------------+"
+  ]
 }

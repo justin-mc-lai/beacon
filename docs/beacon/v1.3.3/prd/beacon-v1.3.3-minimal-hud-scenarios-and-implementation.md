@@ -3,7 +3,7 @@
 **Feature**: `beacon-v1.3.3-minimal-hud-scenarios-and-implementation`  
 **Version**: `v1.3.3`  
 **Date**: `2026-04-16`  
-**Status**: `planning line`
+**Status**: `current release snapshot`
 
 ## 1. 问题
 

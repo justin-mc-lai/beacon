@@ -12,6 +12,8 @@ import typer
 
 from beacon.commands.auto_test import _update_evidence_manifest
 from beacon.commands.team import TeamState, TerminalStatus, get_team_state_file, save_team_state
+from beacon.utils.delivery_kernel import build_delivery_contract
+from beacon.utils.coverage import write_coverage_summary
 from beacon.utils.implement_adapters import format_template
 from beacon.utils.exhaustiveness import build_exhaustiveness_report, write_exhaustiveness_report
 from beacon.utils.exhaustiveness import feature_exhaustiveness_report_path
@@ -605,6 +607,36 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
     args = _strip_option_with_value(args, "--runtime")
     current_session = load_current_qa_session(project_root)
 
+    def _with_delivery_contract(
+        payload: dict[str, Any],
+        *,
+        requirement_binding: dict[str, Any] | None = None,
+        traceability_refs: list[str] | None = None,
+        execution_surface: str | None = None,
+    ) -> dict[str, Any]:
+        contract = build_delivery_contract(
+            feature=feature,
+            version=version,
+            requested_mode=str(payload.get("execution_mode") or mode),
+            effective_mode=str(payload.get("execution_mode") or mode),
+            execution_mode=str(payload.get("execution_mode") or mode),
+            runner_mode=str(payload.get("execution_surface") or execution_surface or ("qa-team" if team_mode else "qa")),
+            host_runtime=str(payload.get("host_runtime") or detect_host_runtime(host_runtime or None)),
+            capability_snapshot=payload.get("capability_snapshot") if isinstance(payload.get("capability_snapshot"), dict) else {},
+            subagent_prechecks=payload.get("subagent_prechecks") if isinstance(payload.get("subagent_prechecks"), dict) else {},
+            requirement_binding=requirement_binding or {},
+            traceability_refs=traceability_refs or [],
+            runner=str(current_session.get("runner_type") or ""),
+            execution_surface=str(payload.get("execution_surface") or execution_surface or ("qa-team" if team_mode else "qa")),
+            team_mode=bool(payload.get("team_mode", team_mode)),
+            qa_status=str(payload.get("status") or ""),
+            release_ready=bool(payload.get("release_ready", False)),
+            risk_flags=payload.get("reason_codes") if isinstance(payload.get("reason_codes"), list) else [],
+        )
+        payload["delivery_contract"] = contract
+        payload["host_native_delivery"] = contract
+        return payload
+
     project_profile = resolve_profile_for_feature(project_root, version=version, feature=feature)
     project_profile_gate = evaluate_project_profile_gate(project_root, version=version, feature=feature)
     project_orchestration: dict[str, Any] = project_profile_gate.get("orchestration", {}) if isinstance(project_profile_gate, dict) else {}
@@ -640,6 +672,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
                 "project_orchestration": project_orchestration,
                 "session_id": str(current_session.get("session_id") or ""),
             }
+            _with_delivery_contract(blocked_payload)
             write_feature_qa_status(project_root, feature=feature, payload=blocked_payload)
             if json_output:
                 typer.echo(json.dumps(blocked_payload, ensure_ascii=False, indent=2))
@@ -674,6 +707,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
                 "subagent_prechecks": subagent_prechecks,
                 "recommended_command": str(runtime_precheck.get("recommended_command", "") or ""),
             }
+            _with_delivery_contract(blocked_payload)
             write_feature_qa_status(project_root, feature=feature, payload=blocked_payload)
             if json_output:
                 typer.echo(json.dumps(blocked_payload, ensure_ascii=False, indent=2))
@@ -691,6 +725,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
                 "subagent_prechecks": subagent_prechecks,
                 "recommended_command": str(delegation_precheck.get("recommended_command", "") or ""),
             }
+            _with_delivery_contract(blocked_payload)
             write_feature_qa_status(project_root, feature=feature, payload=blocked_payload)
             if json_output:
                 typer.echo(json.dumps(blocked_payload, ensure_ascii=False, indent=2))
@@ -714,6 +749,13 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
 
     if str(plan.get("status") or "") == "up_to_date":
         existing_status = load_feature_qa_status(project_root, feature=feature)
+        current_status = load_qa_status(project_root)
+        current_run_id = str(current_status.get("run_id") or existing_status.get("run_id") or plan.get("implementation_run_id") or "").strip()
+        coverage_summary_path = write_coverage_summary(
+            project_root,
+            version=version,
+            run_id=current_run_id,
+        )
         payload = {
             **existing_status,
             **plan,
@@ -725,6 +767,19 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
             "team_contract": team_contract,
             "implement_to_qa_handoff": handoff,
         }
+        _with_delivery_contract(
+            payload,
+            requirement_binding={
+                "source_of_truth_root": f"docs/beacon/{version}",
+                "feature_matrix_path": str(feature_qa_matrix_path(project_root, feature=feature).relative_to(project_root)),
+            },
+            traceability_refs=[
+                str(feature_qa_matrix_path(project_root, feature=feature).relative_to(project_root)),
+                str(handoff.get("summary_ref") or ""),
+                str(handoff.get("technical_archive_ref") or ""),
+            ],
+            execution_surface="qa-team" if team_mode else "qa",
+        )
         if team_mode:
             payload["team_execution"] = _materialize_qa_team_surface(
                 project_root,
@@ -740,6 +795,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
         manifest_refs = [str(feature_status_path.relative_to(project_root))]
         for candidate in (
             project_root / ".beacon" / "auto-test-status.json",
+            coverage_summary_path,
             project_root / ".beacon" / "qa" / "status.json",
         ):
             if candidate.exists():
@@ -748,8 +804,6 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
             value = str(payload.get(key) or "").strip()
             if value:
                 manifest_refs.append(value)
-        current_status = load_qa_status(project_root)
-        current_run_id = str(current_status.get("run_id") or payload.get("run_id") or "").strip()
         _update_evidence_manifest(
             project_root,
             manifest_refs,
@@ -807,6 +861,12 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
             "team_contract": team_contract,
             "implement_to_qa_handoff": handoff,
         }
+        _with_delivery_contract(
+            blocked_payload,
+            requirement_binding={"source_of_truth_root": f"docs/beacon/{version}"},
+            traceability_refs=[str(matrix_path.relative_to(project_root))],
+            execution_surface="qa-team" if team_mode else "qa",
+        )
         if team_mode:
             blocked_payload["team_execution"] = _materialize_qa_team_surface(
                 project_root,
@@ -846,6 +906,15 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
             "team_contract": team_contract,
             "implement_to_qa_handoff": handoff,
         }
+        _with_delivery_contract(
+            blocked_payload,
+            requirement_binding={"source_of_truth_root": f"docs/beacon/{version}"},
+            traceability_refs=[
+                str(matrix_path.relative_to(project_root)),
+                str(((qa_status.get("qa9") or {}).get("qa_matrix_path")) or ""),
+            ],
+            execution_surface="qa-team" if team_mode else "qa",
+        )
         if team_mode:
             blocked_payload["team_execution"] = _materialize_qa_team_surface(
                 project_root,
@@ -952,6 +1021,23 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
         qa_status["status"] = "blocked"
         qa_status["evidence_done"] = False
         qa_status["release_ready"] = False
+    _with_delivery_contract(
+        qa_status,
+        requirement_binding={
+            "source_of_truth_root": f"docs/beacon/{version}",
+            "feature_matrix_path": feature_matrix_rel,
+            "canonical_matrix_path": str(qa_status.get("canonical_matrix_path") or ""),
+        },
+        traceability_refs=[
+            feature_matrix_rel,
+            str(qa_status.get("canonical_matrix_path") or ""),
+            str(ac_closure_path.relative_to(project_root)),
+            str(feature_scorecard_path.relative_to(project_root)),
+            str(handoff.get("summary_ref") or ""),
+            str(handoff.get("technical_archive_ref") or ""),
+        ],
+        execution_surface="qa-team" if team_mode else "qa",
+    )
     refreshed_fingerprint = generate_spec_fingerprint(
         project_root,
         run_id=str(qa_status.get("run_id") or plan.get("implementation_run_id") or "feature-qa"),
@@ -988,11 +1074,17 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
                     encoding="utf-8",
                 )
     status_paths = write_qa_status(project_root, qa_status)
+    coverage_summary_path = write_coverage_summary(
+        project_root,
+        version=version,
+        run_id=str(qa_status.get("run_id") or ""),
+    )
     manifest_refs = [status_paths["legacy"], status_paths["canonical"]]
     if canonical_matrix is not None:
         manifest_refs.append(str(canonical_matrix.relative_to(project_root)))
     manifest_refs.extend(
         [
+            str(coverage_summary_path.relative_to(project_root)),
             str(ac_closure_path.relative_to(project_root)),
             str(feature_scorecard_path.relative_to(project_root)),
         ]
@@ -1026,6 +1118,23 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
         "team_contract": team_contract,
         "implement_to_qa_handoff": handoff,
     }
+    _with_delivery_contract(
+        payload,
+        requirement_binding={
+            "source_of_truth_root": f"docs/beacon/{version}",
+            "feature_matrix_path": feature_matrix_rel,
+            "canonical_matrix_path": str(qa_status.get("canonical_matrix_path") or ""),
+        },
+        traceability_refs=[
+            feature_matrix_rel,
+            str(qa_status.get("canonical_matrix_path") or ""),
+            str(ac_closure_path.relative_to(project_root)),
+            str(feature_scorecard_path.relative_to(project_root)),
+            str(handoff.get("summary_ref") or ""),
+            str(handoff.get("technical_archive_ref") or ""),
+        ],
+        execution_surface="qa-team" if team_mode else "qa",
+    )
     if team_mode:
         payload["team_execution"] = _materialize_qa_team_surface(
             project_root,

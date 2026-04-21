@@ -11,6 +11,7 @@ from typing import Any
 from urllib import request
 
 from beacon.utils.runtime import now_iso
+from beacon.utils.semantic_runtime import load_host_response_json
 from beacon.utils.versioning import load_version_truth, resolve_docs_version
 
 SUPPORTED_INTENTS = (
@@ -646,6 +647,24 @@ def _llm_route(goal: str) -> dict[str, Any]:
     }
 
 
+def _host_route(goal: str) -> dict[str, Any]:
+    payload, _source = load_host_response_json("intent-router")
+    if not payload:
+        raise RuntimeError("host semantic response missing")
+    intent = str(payload.get("intent", "")).strip().lower()
+    if intent not in SUPPORTED_INTENTS:
+        intent = "think"
+    confidence = float(payload.get("confidence", 0.8) or 0.8)
+    confidence = max(0.0, min(1.0, confidence))
+    return {
+        "intent": intent,
+        "confidence": round(confidence, 2),
+        "reason": str(payload.get("reason", "")).strip() or "host_route",
+        "stage_hint": str(payload.get("stage_hint", "")).strip().lower(),
+        "router_mode": "host",
+    }
+
+
 def _apply_boundary_guard(
     goal: str,
     route: dict[str, Any],
@@ -786,11 +805,14 @@ def optimize_prompt_to_plan(
     route = _rule_route(goal, intent_keywords=router_config["intent_keywords"])
     if _should_use_llm(router_mode):
         try:
-            route = _llm_route(goal)
-        except Exception as exc:  # noqa: BLE001
-            route = dict(route)
-            route["router_mode"] = "rule-fallback"
-            route["reason"] = f"{route.get('reason', '')};llm_error={exc}".strip(";")
+            route = _host_route(goal)
+        except Exception:
+            try:
+                route = _llm_route(goal)
+            except Exception as exc:  # noqa: BLE001
+                route = dict(route)
+                route["router_mode"] = "rule-fallback"
+                route["reason"] = f"{route.get('reason', '')};llm_error={exc}".strip(";")
 
     route = _apply_boundary_guard(
         goal,

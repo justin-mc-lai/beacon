@@ -62,6 +62,9 @@ def sync_feature_requirement_materials(
                 matrix_output=None,
                 expansion_profile="pua-web",
                 scenario_depth="standard",
+                mode="auto",
+                model="beacon-test-case-compiler",
+                json_output=False,
                 ui_runner=ui_runner,
             )
         except typer.Exit as exc:  # pragma: no cover - defensive, command exits via Typer only on parameter errors

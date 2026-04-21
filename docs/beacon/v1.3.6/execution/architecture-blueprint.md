@@ -4,6 +4,10 @@
 
 `v1.3.6` 是 Beacon 管理端看板与项目物料查看器的产品化实现线，但它必须建立在 `v1.3.5` 的 wireframe freeze artifact 之上。
 
+如需查看 Beacon skill / host runtime / CLI 结构化执行内核本身的目标演进，请继续阅读：
+
+- `./host-native-llm-and-skill-runtime-blueprint.md`
+
 ## Frozen Boundary
 
 ```text
