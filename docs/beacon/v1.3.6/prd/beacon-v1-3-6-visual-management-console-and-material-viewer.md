@@ -1,9 +1,9 @@
 # PRD：Beacon v1.3.6 可视化管理端与项目物料查看器
 
-**Feature**: `beacon-v1-3-6-visual-management-console-and-material-viewer`  
+**Feature**: `beacon-v1.3.6-visual-management-console-and-material-viewer`
 **Version**: `v1.3.6`  
 **Date**: `2026-04-20`  
-**Status**: `draft`  
+**Status**: `frozen`
 **Track**: `main`  
 **Scenario**: `visual-management-console`  
 **Template**: `主 PRD / UI-console`  

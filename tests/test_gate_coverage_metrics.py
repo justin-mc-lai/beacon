@@ -106,6 +106,86 @@ def test_gate_should_pass_coverage_check_with_projected_release_summary_in_fresh
     assert issues == []
 
 
+def test_gate_should_prefer_feature_qa_scorecard_over_stale_projected_coverage_summary(tmp_path: Path, monkeypatch):
+    version = "v1.3.6"
+    monkeypatch.setenv("BEACON_VERSION", version)
+    story_dir = tmp_path / "docs" / "beacon" / version / "user-story"
+    impl_path = tmp_path / ".beacon" / "state" / "implementation-feature-a.json"
+    qa_status_path = tmp_path / ".beacon" / "qa" / "status.json"
+    scorecard_path = tmp_path / ".beacon" / "qa" / "features" / "feature-a" / "scorecard.json"
+    coverage_path = tmp_path / ".beacon" / "coverage-summary.json"
+
+    story_dir.mkdir(parents=True, exist_ok=True)
+    impl_path.parent.mkdir(parents=True, exist_ok=True)
+    qa_status_path.parent.mkdir(parents=True, exist_ok=True)
+    scorecard_path.parent.mkdir(parents=True, exist_ok=True)
+
+    (story_dir / "feature-a.md").write_text("# story\n", encoding="utf-8")
+    impl_path.write_text(json.dumps({"status": "completed"}), encoding="utf-8")
+    qa_status_path.write_text(
+        json.dumps(
+            {
+                "version": version,
+                "feature": "feature-a",
+                "status": "passed",
+                "evidence_done": True,
+            }
+        ),
+        encoding="utf-8",
+    )
+    scorecard_path.write_text(
+        json.dumps(
+            {
+                "feature": "feature-a",
+                "feature_slug": "feature-a",
+                "release_ready": True,
+                "continue_decision": "ready_for_release",
+                "unresolved_closure_outcomes": [],
+                "ac_total": 1,
+                "ac_accepted": 1,
+                "scenario_total": 1,
+                "scenario_passed": 1,
+                "coverage_current": {
+                    "required_scenarios": 1,
+                    "executed_scenarios": 1,
+                    "coverage_rate": 1.0,
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    coverage_path.write_text(
+        json.dumps(
+            {
+                "schema_version": "1.0",
+                "run_id": "run-stale",
+                "version": version,
+                "coverage_rate": 0.0,
+                "full_coverage": False,
+                "details": {
+                    "version": version,
+                    "feature": "",
+                    "planned_story": 1,
+                    "implemented_story": 1,
+                    "story_coverage": 1.0,
+                    "total_ac": 1,
+                    "tested_ac": 0,
+                    "ac_coverage": 0.0,
+                    "total_tc": 5,
+                    "executed_tc": 0,
+                    "tc_coverage": 0.0,
+                    "full_coverage": False,
+                    "matrix_errors": [],
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    issues = check_coverage_metrics(tmp_path, GateMode.STRICT, "release")
+    assert issues == []
+
+
 def test_gate_should_expand_run_id_placeholders_when_computing_coverage(tmp_path: Path, monkeypatch):
     version = "v1.3.4"
     monkeypatch.setenv("BEACON_VERSION", version)

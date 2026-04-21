@@ -24,7 +24,7 @@
   - `docs/beacon/v1.3.6/execution/host-native-llm-and-skill-runtime-blueprint.md`
 - Release-validated feature:
   - `beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor`
-- Draft parallel exploration retained in this docs line:
+- Release-validated companion feature:
   - `beacon-v1.3.6-visual-management-console-and-material-viewer`
 
 ## Runtime Themes
@@ -44,7 +44,7 @@
   - requirement truth under `docs/beacon/v1.3.6/`
   - host-native orchestration and semantic/runtime contracts
   - release-ready packaging, HUD, diagnostics, and read-model behavior
-- Draft, non-release-blocking exploration in the same line:
+- Included companion delivery in the same line:
   - management console and material viewer product line
 - Out of scope:
   - replacing requirement truth with runtime state
@@ -69,3 +69,5 @@
   - `docs/beacon/v1.3.6/release/v1.3.6.md`
 - Promotion completion checklist:
   - `docs/beacon/v1.3.6/release/runtime-promotion-checklist.md`
+- Research directory:
+  - `docs/beacon/v1.3.6/research/`

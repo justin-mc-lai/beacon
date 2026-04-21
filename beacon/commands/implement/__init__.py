@@ -12,11 +12,15 @@ backward compatibility. Future work will migrate them to a commands.py file.
 
 from __future__ import annotations
 
+import importlib.util
+import sys
+from pathlib import Path
+
 # Import refactored modules
-from beacon.commands.implement import adapter, git, ralph, team
+from . import adapter, git, ralph, team
 
 # Re-export for backward compatibility
-from beacon.commands.implement.adapter import (
+from .adapter import (
     build_adapter_context,
     discover_adapters,
     execute_adapter,
@@ -24,35 +28,48 @@ from beacon.commands.implement.adapter import (
     resolve_adapter_for_feature,
     resolve_host_runtime_for_adapter,
 )
-from beacon.commands.implement.git import (
+from .git import (
     get_git_commit,
     run_branch_preflight,
     validate_git_workflow,
 )
-from beacon.commands.implement.ralph import (
+from .ralph import (
     build_ralph_summary,
     refresh_ralph_state_after_resume,
     render_ralph_round_markdown,
     render_ralph_summary_markdown,
 )
-from beacon.commands.implement.team import (
+from .team import (
     validate_team_mode,
     write_team_handoff,
 )
 
-# Import the Typer app from parent implement.py
-# This maintains backward compatibility with existing CLI commands
-# We need to be careful about circular imports here
+def _load_legacy_cli_module():
+    """Load the real implement CLI from the legacy sibling module.
 
-# The app is defined in the parent beacon/commands/implement.py
-# We'll import it lazily to avoid circular import issues
-import typer
+    The refactor introduced a package directory with the same import path as the
+    original `beacon.commands.implement` module. Python now resolves imports to
+    this package first, which hid the real Typer commands defined in
+    `beacon/commands/implement.py`. We load that file under an internal module
+    name and re-export its `app` so the public CLI keeps working.
+    """
 
-# Create a placeholder app that will be replaced by the real one
-app = typer.Typer(name="implement", help="Run implementation via configured skill adapters")
+    legacy_path = Path(__file__).resolve().parent.parent / "implement.py"
+    module_name = "beacon.commands._implement_legacy_cli"
+    existing = sys.modules.get(module_name)
+    if existing is not None:
+        return existing
+    spec = importlib.util.spec_from_file_location(module_name, legacy_path)
+    if spec is None or spec.loader is None:
+        raise RuntimeError(f"Unable to load legacy implement CLI from {legacy_path}")
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[module_name] = module
+    spec.loader.exec_module(module)
+    return module
 
-# Note: The actual CLI commands are registered in beacon/commands/implement.py
-# This __init__.py serves as the module interface for the refactored submodules
+
+_legacy_cli = _load_legacy_cli_module()
+app = _legacy_cli.app
 
 __all__ = [
     # Typer app

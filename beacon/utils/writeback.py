@@ -7,6 +7,7 @@ from typing import Any, Iterable
 
 from beacon.utils.artifact_paths import machine_execution_dir
 from beacon.utils.revision_state import load_revision_state, save_revision_state
+from beacon.utils.prototype_utils import prototype_files
 from beacon.utils.implementation_plan import (
     mark_implementation_plan_accepted,
     update_plan_progress_for_implementation,
@@ -58,7 +59,7 @@ def _workflow_stage_evidence(project_root: Path, *, version: str, feature: str) 
     execution_root = docs_root / "execution"
     machine_root = docs_root / ".machine"
     machine_execution_root = machine_execution_dir(project_root, version)
-    prototype_root = docs_root / "prototype" / slug
+    prototype = prototype_files(project_root, version, feature)
     state_root = project_root / ".beacon" / "state"
     qa_root = project_root / ".beacon" / "qa" / "features" / slug
 
@@ -88,10 +89,10 @@ def _workflow_stage_evidence(project_root: Path, *, version: str, feature: str) 
         "prototype": _existing_relative_paths(
             project_root,
             [
-                prototype_root / "prototype-plan.json",
-                prototype_root / "manifest.json",
-                prototype_root / "prototype-review.json",
-                prototype_root / "freeze.json",
+                prototype["prototype_plan"],
+                prototype["manifest"],
+                prototype["review_json"],
+                prototype["freeze"],
             ],
         ),
         "test-case": _existing_relative_paths(

@@ -22,6 +22,7 @@ from beacon.utils.qa9 import (
     parse_qa_types,
     to_legacy_layer,
 )
+from beacon.utils.runtime import write_json
 from beacon.utils.requirement_parsing import build_feature_ac_items, extract_qa_case_rows
 from beacon.utils.semantic_runtime import (
     build_mode_contract,
@@ -796,7 +797,7 @@ def create(
     feature: str = typer.Argument(..., help="Feature name"),
     test_type: str = typer.Option("all", "--type", "-t", help="Test type: smoke/new/regression/all"),
     version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
-    project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
+    project: Optional[str] = typer.Option(None, "--project", "-p", "--project-root", help="Project root"),
     output: Optional[str] = typer.Option(None, "--output", "-o", help="Output file"),
     overwrite_doc: bool = typer.Option(
         False,
@@ -833,6 +834,12 @@ def create(
         "--matrix-output",
         help="QA9 matrix output file path (*.qa9-matrix.json).",
     ),
+    qa9: bool = typer.Option(False, "--qa9", help="Legacy compatibility flag to emit QA9 mirror output."),
+    expand_scenarios: bool = typer.Option(
+        False,
+        "--expand-scenarios",
+        help="Legacy compatibility flag to force scenario expansion metadata in mirror outputs.",
+    ),
     expansion_profile: str = typer.Option(
         "pua-web",
         "--expansion-profile",
@@ -842,6 +849,11 @@ def create(
         "standard",
         "--scenario-depth",
         help="Scenario expansion depth: minimal/standard/deep.",
+    ),
+    prototype_contract: bool = typer.Option(
+        False,
+        "--prototype-contract",
+        help="Legacy compatibility flag for prototype contract-aware test case generation.",
     ),
     mode: str = typer.Option("auto", "--mode", help="Compile mode: auto/llm/rule"),
     model: str = typer.Option("beacon-test-case-compiler", "--model", help="Compiler model label for evidence"),
@@ -853,6 +865,7 @@ def create(
     ),
 ):
     """Create test cases and executable AC matrix."""
+    prototype_contract_requested = prototype_contract
     project_root = Path(project) if project else Path.cwd()
     try:
         resolved_version = resolve_operational_docs_version(
@@ -918,6 +931,13 @@ def create(
     qa_path, qa_content = _read_first_existing(
         _candidate_doc_paths(project_root, resolved_version, "qa/test-cases", feature_slug)
     )
+    legacy_story_path = project_root / ".beacon" / "user-story" / f"{feature_slug}.json"
+    docs_story_dir = project_root / "docs" / "beacon" / resolved_version / "user-story"
+    legacy_story_dir = project_root / ".beacon" / "user-story"
+    story_surface_exists = any(
+        directory.exists() and any(directory.iterdir())
+        for directory in (docs_story_dir, legacy_story_dir)
+    )
     ac_items = build_feature_ac_items(
         user_story_content=us_content,
         prd_content=prd_content,
@@ -927,7 +947,27 @@ def create(
         qa_source=f"qa:test-cases:{qa_path}" if qa_path else "qa:test-cases:missing",
     )
     if not ac_items:
-        ac_items = [{"ac_id": "AC-001", "text": f"{feature} core flow works", "source": "fallback"}]
+        if legacy_story_path.exists():
+            try:
+                legacy_story = json.loads(legacy_story_path.read_text(encoding="utf-8"))
+            except Exception:  # noqa: BLE001
+                legacy_story = {}
+            acceptance = legacy_story.get("acceptance_criteria") if isinstance(legacy_story, dict) else {}
+            legacy_rows: list[str] = []
+            if isinstance(acceptance, dict):
+                for values in acceptance.values():
+                    if isinstance(values, list):
+                        legacy_rows.extend(str(item).strip() for item in values if str(item).strip())
+            if legacy_rows:
+                ac_items = [
+                    {"ac_id": f"AC-{idx:03d}", "text": item, "source": f"legacy-user-story:{legacy_story_path}"}
+                    for idx, item in enumerate(legacy_rows, start=1)
+                ]
+        if not ac_items:
+            if story_surface_exists and not prd_path and not qa_path and not legacy_story_path.exists():
+                typer.echo(f"user story not found for feature: {feature_slug}", err=True)
+                raise typer.Exit(2)
+            ac_items = [{"ac_id": "AC-001", "text": f"{feature} core flow works", "source": "fallback"}]
     qa_case_rows = extract_qa_case_rows(qa_content, f"qa:test-cases:{qa_path}" if qa_path else "qa:test-cases:missing")
 
     prototype_navigation, prototype_interaction = _load_prototype_contract_artifacts(
@@ -1245,6 +1285,56 @@ def create(
         feature=feature,
         payload=scenario_payload,
     )
+    legacy_qa_path = project_root / ".beacon" / "qa" / f"{feature_slug}.json"
+    legacy_qa_path.parent.mkdir(parents=True, exist_ok=True)
+    legacy_mapping = {
+        str(item.get("ac_id") or f"AC-{idx:03d}"): [str(item.get("tc_id") or "")]
+        for idx, item in enumerate(entries, start=1)
+        if str(item.get("tc_id") or "").strip()
+    }
+    legacy_payload = {
+        "feature": feature,
+        "feature_slug": feature_slug,
+        "version": resolved_version,
+        "ac_to_tc_mapping": legacy_mapping,
+        "scenarios": list(scenario_payload.get("scenarios") or []),
+    }
+    if prototype_navigation or prototype_interaction:
+        legacy_payload["prototype_contract"] = {
+            "navigation": prototype_navigation,
+            "interaction": prototype_interaction,
+        }
+    elif prototype_contract_requested:
+        legacy_contract_path = project_root / "docs" / "beacon" / resolved_version / "prototype" / feature_slug / "contract.json"
+        if legacy_contract_path.exists():
+            try:
+                legacy_payload["prototype_contract"] = json.loads(legacy_contract_path.read_text(encoding="utf-8"))
+            except Exception:  # noqa: BLE001
+                legacy_payload["prototype_contract"] = {}
+    write_json(legacy_qa_path, legacy_payload)
+    if qa9:
+        legacy_qa9_path = project_root / ".beacon" / "qa" / f"{feature_slug}-qa9-matrix.json"
+        legacy_qa9_path.parent.mkdir(parents=True, exist_ok=True)
+        legacy_qa9_payload = {
+            "feature": feature,
+            "feature_slug": feature_slug,
+            "version": resolved_version,
+            "qa_types": [
+                "functional",
+                "smoke",
+                "unit",
+                "interface",
+                "contract",
+                "integration",
+                "regression",
+                "exception",
+                "compatibility",
+            ],
+        }
+        write_json(legacy_qa9_path, legacy_qa9_payload)
+    elif expand_scenarios:
+        legacy_payload["scenarios"] = list(scenario_payload.get("scenarios") or [])
+        write_json(legacy_qa_path, legacy_payload)
 
     md_rows = "\n".join(
         f"| {x['ac_id']} | {x['tc_id']} | {x['layer']} | `{x['command']}` | {x['assertion']} | `{x['evidence_path']}` |"

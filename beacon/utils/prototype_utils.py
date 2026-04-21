@@ -435,37 +435,64 @@ def prototype_dir(project_root: Path, version: str, feature: str) -> Path:
 
 def prototype_files(project_root: Path, version: str, feature: str) -> dict[str, Path]:
     root = prototype_dir(project_root, version, feature)
+    human_view_dir = root / "human-view"
+    machine_view_dir = root / "machine-view"
+    verification_dir = root / "verification"
+    assets_dir = root / "assets"
+    implementation_dir = root / "implementation"
+
+    def _prefer(primary: Path, *fallbacks: Path) -> Path:
+        if primary.exists():
+            return primary
+        for fallback in fallbacks:
+            if fallback.exists():
+                return fallback
+        return primary
+
     return {
         "root": root,
-        "human_view_dir": root / "human-view",
-        "machine_view_dir": root / "machine-view",
+        "human_view_dir": human_view_dir,
+        "machine_view_dir": machine_view_dir,
         "manifest": root / "manifest.json",
         "prototype_plan": root / "prototype-plan.json",
         "prototype_brief": root / "prototype-brief.json",
         "canonical_envelope": root / "canonical-envelope.json",
         "source_map": root / "source-map.json",
         "freeze": root / "freeze.json",
-        "review_json": root / "prototype-review.json",
-        "review_md": root / "prototype-review.md",
-        "wireframe_summary": root / "wireframe-summary.md",
-        "wireframe_manifest": root / "wireframe-manifest.json",
-        "navigation_map": root / "navigation-map.json",
-        "navigation_map_md": root / "navigation-map.md",
-        "state_flow_map": root / "state-flow-map.json",
-        "state_flow_map_md": root / "state-flow-map.md",
-        "component_catalog": root / "component-catalog.json",
-        "component_catalog_md": root / "component-catalog.md",
-        "interaction_map": root / "interaction-map.json",
-        "coverage_report": root / "coverage-report.json",
-        "theme": root / "theme.json",
-        "tokens_css": root / "tokens.css",
-        "platform_variants": root / "platform-variants.json",
-        "implementation_map": root / "implementation-map.json",
-        "route_closure_contract": root / "route-closure-contract.json",
-        "pages_dir": root / "pages",
-        "page_specs_dir": root / "page-specs",
+        "review_json": _prefer(root / "prototype-review.json", verification_dir / "prototype-review.json"),
+        "review_md": _prefer(root / "prototype-review.md", verification_dir / "prototype-review.md"),
+        "wireframe_summary": _prefer(root / "wireframe-summary.md", human_view_dir / "wireframe-summary.md"),
+        "wireframe_manifest": _prefer(root / "wireframe-manifest.json", machine_view_dir / "wireframe-manifest.json"),
+        "navigation_map": _prefer(root / "navigation-map.json", machine_view_dir / "navigation-map.json"),
+        "navigation_map_md": _prefer(root / "navigation-map.md", human_view_dir / "navigation-map.md"),
+        "state_flow_map": _prefer(root / "state-flow-map.json", machine_view_dir / "state-flow-map.json"),
+        "state_flow_map_md": _prefer(root / "state-flow-map.md", human_view_dir / "state-flow-map.md"),
+        "component_catalog": _prefer(root / "component-catalog.json", machine_view_dir / "component-catalog.json"),
+        "component_catalog_md": _prefer(root / "component-catalog.md", human_view_dir / "component-catalog.md"),
+        "interaction_map": _prefer(root / "interaction-map.json", machine_view_dir / "interaction-map.json"),
+        "coverage_report": _prefer(root / "coverage-report.json", machine_view_dir / "coverage-report.json"),
+        "theme": _prefer(root / "theme.json", assets_dir / "theme.json"),
+        "tokens_css": _prefer(root / "tokens.css", assets_dir / "tokens.css"),
+        "platform_variants": _prefer(root / "platform-variants.json", assets_dir / "platform-variants.json"),
+        "implementation_map": _prefer(root / "implementation-map.json", implementation_dir / "implementation-map.json"),
+        "route_closure_contract": _prefer(
+            root / "route-closure-contract.json",
+            machine_view_dir / "route-closure-contract.json",
+        ),
+        "pages_dir": _prefer(root / "pages", human_view_dir / "wireframes"),
+        "page_specs_dir": _prefer(root / "page-specs", machine_view_dir / "page-specs"),
         "index_html": root / "index.html",
     }
+
+
+def _has_named_artifact(directory: Path, name: str, suffix: str) -> bool:
+    target = directory / f"{name}{suffix}"
+    if target.exists():
+        return True
+    if not directory.exists() or not directory.is_dir():
+        return False
+    expected_suffix = f"{name}{suffix}"
+    return any(path.is_file() and path.name.endswith(expected_suffix) for path in directory.iterdir())
 
 
 def source_doc_paths(project_root: Path, version: str, feature: str) -> dict[str, Path]:
@@ -3156,7 +3183,7 @@ def review_prototype_bundle(project_root: Path, version: str, feature: str) -> d
         ),
     ]
 
-    missing_pages = [page_id for page_id in required_pages if not (files["pages_dir"] / f"{page_id}.md").exists()]
+    missing_pages = [page_id for page_id in required_pages if not _has_named_artifact(files["pages_dir"], page_id, ".md")]
     checks.append(
         _review_check(
             "required_pages_materialized",
@@ -3490,7 +3517,7 @@ def evaluate_prototype_status(project_root: Path, version: str, feature: str) ->
         inconsistent_reasons.append("legacy_html_present:index_html")
 
     required_pages = [str(item).strip() for item in (plan.get("required_pages") or []) if str(item).strip()] if isinstance(plan, dict) else []
-    missing_pages = [page_id for page_id in required_pages if not (files["pages_dir"] / f"{page_id}.md").exists()]
+    missing_pages = [page_id for page_id in required_pages if not _has_named_artifact(files["pages_dir"], page_id, ".md")]
     if missing_pages:
         inconsistent_reasons.append(f"missing_pages:{','.join(missing_pages)}")
 

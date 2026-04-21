@@ -1,0 +1,78 @@
+# Native Team Role Report: implementer
+
+- role: `implementer`
+- status: `completed`
+- revision_id: `R1`
+- summary: implementation writeback recorded for planned items
+
+## implemented_item_ids
+- `AC-001`
+- `AC-002`
+- `AC-003`
+- `AC-004`
+- `AC-005`
+- `AC-006`
+- `AC-007`
+- `AC-008`
+- `AC-009`
+- `AC-010`
+- `AC-011`
+- `AC-012`
+- `AC-013`
+- `AC-014`
+- `AC-015`
+- `AC-016`
+- `TASK-001`
+
+## changed_files
+- `.beacon/state/memory-friction-evolution/latest.json`
+- `.codex/INSTALL-MULTI-AI.md`
+- `.codex/INSTALL.md`
+- `.omc/project-memory.json`
+- `README.md`
+- `beacon/commands/implement/__init__.py`
+- `docs/beacon/v1.3.6/.machine/execution/beacon-v1.3.6-visual-management-console-and-material-viewer.revision.json`
+- `docs/beacon/v1.3.6/.machine/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.json`
+- `docs/beacon/v1.3.6/SUMMARY.md`
+- `docs/beacon/v1.3.6/prd/beacon-v1-3-6-visual-management-console-and-material-viewer.md`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/canonical-envelope.json`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/component-catalog.json`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/component-catalog.md`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/coverage-report.json`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/freeze.json`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/implementation-map.json`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/interaction-map.json`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/machine-view/index.json`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/manifest.json`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/navigation-map.json`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/navigation-map.md`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/home.json`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/management-overview.json`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/material-document-detail.json`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/material-viewer.json`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/project-detail.json`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/recovery-diagnostics.json`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/runtime-center.json`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/pages/home.md`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/pages/management-overview.md`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/pages/material-document-detail.md`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/pages/material-viewer.md`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/pages/project-detail.md`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/pages/recovery-diagnostics.md`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/pages/runtime-center.md`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/platform-variants.json`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/prototype-plan.json`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/prototype-review.json`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/prototype-review.md`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/route-closure-contract.json`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/source-map.json`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/state-flow-map.json`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/state-flow-map.md`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/theme.json`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/tokens.css`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/wireframe-manifest.json`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/wireframe-summary.md`
+
+## recommendations
+- Follow the implementation-architect execution note when present.
+- Run reviewer gate to confirm no scope/spec drift.

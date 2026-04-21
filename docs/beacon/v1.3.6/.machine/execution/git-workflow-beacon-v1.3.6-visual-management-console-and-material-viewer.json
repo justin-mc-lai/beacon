@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.3.6-visual-management-console-and-material-viewer",
+  "feature_slug": "beacon-v1.3.6-visual-management-console-and-material-viewer",
+  "version": "v1.3.6",
+  "mode": "workspace",
+  "expected_branch": "beacon/v1.3.6",
+  "branch_prefix": "beacon/",
+  "base_branch": "main",
+  "use_git_worktree": false,
+  "require_clean_worktree_for_switch": true,
+  "service_directories": [
+    ".",
+    "beacon-console-ui",
+    "beacon/commands",
+    "docs/beacon/v1.3.6",
+    ".beacon"
+  ],
+  "direct_delivery_services": [
+    "beacon-console-ui",
+    "docs/beacon/v1.3.6",
+    ".beacon"
+  ],
+  "git_roots": [
+    ".",
+    "beacon-console-ui",
+    "beacon/commands",
+    "docs/beacon/v1.3.6",
+    ".beacon"
+  ],
+  "worktree_root": ".",
+  "implementation_preflight": [
+    "Before implementation, verify the target service belongs to: beacon-console-ui, docs/beacon/v1.3.6, .beacon",
+    "Before implementation, verify the current branch is beacon/v1.3.6.",
+    "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+  ],
+  "source": "technical_review_contract",
+  "generated_at": "2026-04-21T13:51:50.912636+00:00"
+}

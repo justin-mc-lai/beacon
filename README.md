@@ -81,6 +81,55 @@ pip install beacon
 cd beacon && pip install -e ".[dev]"
 ```
 
+### 全局安装约束
+
+Beacon 的全局安装必须遵守单一技能根约束，否则会出现：
+
+- Beacon 公共 skill 重复发现
+- Codex picker 同名 skill 成对出现
+- 安装源漂移到旧副本
+- 把 `beacon-change` 误解成 `beacon change` CLI 子命令
+
+当前唯一允许的安装口径：
+
+- Beacon skill 源：
+  - `<repo>/skills/beacon/`
+- Codex / agent 发现根：
+  - `~/.agents/skills/beacon -> <repo>/skills/beacon`
+- Claude Code 主 skill：
+  - `~/.claude/skills/beacon -> <repo>`
+- Claude Code 子 skills：
+  - `~/.claude/skills/beacon-* -> <repo>/skills/beacon/<subskill>`
+
+明确禁止：
+
+- `~/.codex/skills/beacon`
+- `~/.codex/skills/beacon/skills/beacon`
+- 同时存在多个 `name: beacon` 的本地副本或历史备份链接
+
+推荐清理并重装：
+
+```bash
+rm -rf ~/.codex/skills/beacon
+rm -f ~/.agents/skills/beacon
+mkdir -p ~/.agents/skills
+ln -sf /absolute/path/to/beacon/skills/beacon ~/.agents/skills/beacon
+```
+
+安装后校验：
+
+```bash
+beacon --version
+beacon --help
+find ~/.agents/skills/beacon -maxdepth 2 -name SKILL.md | sort
+```
+
+如果你看到 `Beacon Change` 这个 host skill，请记住：
+
+- `beacon-change` 是宿主 skill 路由名
+- CLI 对应动作仍然是 `beacon reopen ...`
+- Beacon 不提供 `beacon change ...` 一级子命令
+
 ### 当前推荐命令风格
 
 ```bash
@@ -179,6 +228,7 @@ printf '%s' '{"hook_event_name":"UserPromptSubmit","prompt":"继续推进 Beacon
 - 当前 line 的 README 链接只能指向仓内真实存在的 `docs/beacon/<version>/...` 文件。
 - 历史版本说明保留在各自 `docs/beacon/<version>/release/`，不要再把旧 release 细节混入当前推荐命令段。
 - Codex/Claude 安装说明必须明确唯一技能根，并显式避免重复安装到 `~/.codex/skills/beacon`。
+- 后续新增 host-visible skill 时，必须同步写明它是 host skill 还是 CLI 子命令，避免出现 `beacon-change` / `beacon change` 这类误读。
 
 ## 7. 当前运行线：v1.3.6
 

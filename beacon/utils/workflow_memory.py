@@ -425,6 +425,7 @@ def resolve_workflow_run_id(
     Priority:
     1. explicit run_id (if exists)
     2. latest workflow.start run matching version/feature
+    3. latest lifecycle-backed workflow run matching version/feature
     """
     if run_id:
         if load_run_state(project_root, run_id):
@@ -479,6 +480,49 @@ def resolve_workflow_run_id(
             filtered = candidates
         else:
             filtered = []
+
+    if not filtered and feature_filter:
+        event_exact_candidates: dict[str, str] = {}
+        event_loose_candidates: dict[str, str] = {}
+        for item in load_lifecycle_events(project_root):
+            if not isinstance(item, dict):
+                continue
+            rid = str(item.get("run_id", "") or "")
+            if not rid.startswith("run-"):
+                continue
+            state = load_run_state(project_root, rid)
+            if not isinstance(state, dict):
+                continue
+            workflow_name = str(state.get("workflow", ""))
+            if workflow_name not in {"workflow.start", "workflow"}:
+                continue
+            details = item.get("details") if isinstance(item.get("details"), dict) else {}
+            event_version = str(details.get("version") or state.get("version", "") or "")
+            if versions_filter and event_version != versions_filter:
+                continue
+            detail_feature = str(details.get("feature") or item.get("feature", "") or "")
+            if not detail_feature.strip():
+                continue
+            candidate_slug = _slug(detail_feature)
+            candidate_match_slug = _match_slug(detail_feature)
+            ts = str(item.get("ts", "") or state.get("ended_at") or state.get("started_at") or rid)
+            if candidate_slug == feature_filter:
+                previous = event_exact_candidates.get(rid, "")
+                if ts >= previous:
+                    event_exact_candidates[rid] = ts
+            elif loose_feature_filter and candidate_match_slug and (
+                candidate_match_slug == loose_feature_filter
+                or loose_feature_filter in candidate_match_slug
+                or candidate_match_slug in loose_feature_filter
+            ):
+                previous = event_loose_candidates.get(rid, "")
+                if ts >= previous:
+                    event_loose_candidates[rid] = ts
+
+        if event_exact_candidates:
+            filtered = list(event_exact_candidates.items())
+        elif event_loose_candidates:
+            filtered = list(event_loose_candidates.items())
 
     if not filtered:
         return None

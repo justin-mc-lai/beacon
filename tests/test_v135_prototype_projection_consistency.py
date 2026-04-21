@@ -6,6 +6,11 @@ from pathlib import Path
 from typer.testing import CliRunner
 
 from beacon.main import app
+from beacon.utils.prototype_utils import (
+    _write_prototype_projection_sqlite,
+    evaluate_prototype_status,
+    prototype_files,
+)
 
 
 runner = CliRunner()
@@ -114,3 +119,104 @@ TC-002 verify navigation closure
     transition_pairs = {(item.get("from"), item.get("to")) for item in transitions if isinstance(item, dict)}
     assert ("login-page", "cart-page") in transition_pairs
     assert ("cart-page", "checkout-page") in transition_pairs
+
+
+def test_v135_prototype_status_should_accept_subdirectory_layout_bundle(tmp_path: Path):
+    version = "v1.3.6"
+    feature_slug = "subdir-layout-demo"
+    feature = "Subdir Layout Demo"
+    _prepare_sources(tmp_path, feature_slug, version)
+
+    root = tmp_path / "docs" / "beacon" / version / "prototype" / feature_slug
+    (root / "human-view" / "wireframes").mkdir(parents=True, exist_ok=True)
+    (root / "machine-view" / "page-specs").mkdir(parents=True, exist_ok=True)
+    (root / "verification").mkdir(parents=True, exist_ok=True)
+    (root / "assets").mkdir(parents=True, exist_ok=True)
+    (root / "implementation").mkdir(parents=True, exist_ok=True)
+
+    (root / "prototype-plan.json").write_text(
+        json.dumps(
+            {
+                "required_pages": ["home", "management-overview"],
+                "compiler": {},
+            },
+            ensure_ascii=False,
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+    (root / "canonical-envelope.json").write_text("{}", encoding="utf-8")
+    (root / "source-map.json").write_text("{}", encoding="utf-8")
+    (root / "freeze.json").write_text(json.dumps({"status": "frozen"}), encoding="utf-8")
+    (root / "human-view" / "wireframe-summary.md").write_text("# summary\n", encoding="utf-8")
+    (root / "human-view" / "navigation-map.md").write_text("# nav\n", encoding="utf-8")
+    (root / "human-view" / "state-flow-map.md").write_text("# state\n", encoding="utf-8")
+    (root / "human-view" / "component-catalog.md").write_text("# components\n", encoding="utf-8")
+    (root / "human-view" / "wireframes" / "home.md").write_text("# home\n", encoding="utf-8")
+    (root / "human-view" / "wireframes" / "management-overview.md").write_text("# overview\n", encoding="utf-8")
+    for name in (
+        "wireframe-manifest.json",
+        "navigation-map.json",
+        "state-flow-map.json",
+        "component-catalog.json",
+        "interaction-map.json",
+        "coverage-report.json",
+        "route-closure-contract.json",
+    ):
+        (root / "machine-view" / name).write_text("{}", encoding="utf-8")
+    (root / "machine-view" / "page-specs" / "home.json").write_text("{}", encoding="utf-8")
+    (root / "machine-view" / "page-specs" / "management-overview.json").write_text("{}", encoding="utf-8")
+    (root / "verification" / "prototype-review.json").write_text(
+        json.dumps({"overall_status": "pass", "design_review_outcome": "pass"}),
+        encoding="utf-8",
+    )
+    (root / "verification" / "prototype-review.md").write_text("# review\n", encoding="utf-8")
+    (root / "assets" / "theme.json").write_text("{}", encoding="utf-8")
+    (root / "assets" / "tokens.css").write_text(":root {}", encoding="utf-8")
+    (root / "assets" / "platform-variants.json").write_text("{}", encoding="utf-8")
+    (root / "implementation" / "implementation-map.json").write_text("{}", encoding="utf-8")
+
+    transaction = {
+        "transaction_id": "tx-subdir-layout-demo",
+        "feature_slug": feature_slug,
+        "version": version,
+        "projection_seq": "pp-subdir-layout-demo",
+        "source_hash": "source-hash",
+        "committed_at": "2026-04-21T09:13:23Z",
+        "status": "committed",
+        "root_path": str(root),
+        "sink_checksums": {
+            "human": "human-checksum",
+            "machine": "machine-checksum",
+            "sqlite": "sqlite-checksum",
+        },
+    }
+    _write_prototype_projection_sqlite(transaction)
+    (root / "manifest.json").write_text(
+        json.dumps(
+            {
+                "status": "frozen",
+                "review_status": "pass",
+                "design_review_outcome": "pass",
+                "transaction": transaction,
+            },
+            ensure_ascii=False,
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+
+    files = prototype_files(tmp_path, version, feature)
+    assert files["wireframe_summary"] == root / "human-view" / "wireframe-summary.md"
+    assert files["review_json"] == root / "verification" / "prototype-review.json"
+    assert files["pages_dir"] == root / "human-view" / "wireframes"
+    assert files["page_specs_dir"] == root / "machine-view" / "page-specs"
+
+    status = evaluate_prototype_status(tmp_path, version, feature)
+    assert status["status"] == "frozen"
+    assert status["human_view_status"] == "pass"
+    assert status["machine_contract_status"] == "pass"
+    assert status["sqlite_projection_status"] == "pass"
+    assert "missing_artifact:wireframe_summary" not in status["inconsistent_reasons"]
+    assert "missing_dir:pages_dir" not in status["inconsistent_reasons"]
+    assert "missing_pages:home,management-overview" not in status["inconsistent_reasons"]
