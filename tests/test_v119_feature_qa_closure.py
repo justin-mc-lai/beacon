@@ -231,6 +231,13 @@ def test_v119_qa_run_feature_should_write_per_item_verification(tmp_path: Path):
     assert feature_status["verified_item_ids"] == ["AC-001", "AC-002", "TEST-001", "TEST-002"]
     assert feature_status["failed_item_ids"] == []
 
+    coverage_summary = json.loads((tmp_path / ".beacon" / "coverage-summary.json").read_text(encoding="utf-8"))
+    assert coverage_summary["version"] == VERSION
+    assert coverage_summary["run_id"] == qa_status["run_id"]
+    assert coverage_summary["full_coverage"] is True
+    assert coverage_summary["details"]["total_tc"] == 2
+    assert coverage_summary["details"]["executed_tc"] == 2
+
     feature_scorecard = json.loads((tmp_path / ".beacon" / "qa" / "features" / SLUG / "scorecard.json").read_text(encoding="utf-8"))
     assert feature_scorecard["boundary_evidence"]["goal_driven_verification_required"] is True
     assert feature_scorecard["boundary_evidence"]["targeted_scope_only"] is True
@@ -242,6 +249,9 @@ def test_v119_qa_run_feature_should_write_per_item_verification(tmp_path: Path):
     assert statuses["AC-002"] == "verified"
     assert statuses["TEST-001"] == "passed"
     assert statuses["TEST-002"] == "passed"
+
+    release_check = _invoke(["release", "check", VERSION, "--project", str(tmp_path)])
+    assert release_check.exit_code == 0, release_check.stdout
 
 
 def test_v119_qa_run_team_mode_should_not_forward_runtime_to_auto_test(tmp_path: Path):
@@ -276,7 +286,10 @@ def test_v119_qa_run_team_mode_should_not_forward_runtime_to_auto_test(tmp_path:
     assert payload["team_execution"]["runtime"] == "file"
 
 
-def test_v119_qa_run_should_return_zero_when_final_feature_status_is_passed(tmp_path: Path, monkeypatch):
+def test_v119_qa_run_should_block_when_auto_test_invocation_fails_even_if_stale_status_looks_passed(
+    tmp_path: Path,
+    monkeypatch,
+):
     _seed_feature_docs(tmp_path)
     _seed_team_mode_prechecks(tmp_path)
     _mark_implemented(tmp_path)
@@ -311,9 +324,10 @@ def test_v119_qa_run_should_return_zero_when_final_feature_status_is_passed(tmp_
             "--json",
         ]
     )
-    assert result.exit_code == 0, result.stdout
+    assert result.exit_code == 2, result.stdout
     payload = json.loads(result.stdout)
-    assert payload["status"] == "passed"
+    assert payload["status"] == "blocked"
+    assert "auto_test_invocation_failed" in payload["reason_codes"]
 
 
 def test_v119_qa_run_should_execute_manual_and_mixed_cases_when_layer_command_is_explicit(tmp_path: Path):

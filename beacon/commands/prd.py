@@ -14,6 +14,12 @@ import typer
 
 from beacon.utils.artifact_paths import machine_root
 from beacon.utils.runtime import now_iso, write_json
+from beacon.utils.semantic_runtime import (
+    build_mode_contract,
+    build_semantic_capability_snapshot,
+    load_host_response_json,
+    normalize_requested_mode,
+)
 from beacon.utils.versioning import resolve_operational_docs_version, resolve_target_version
 
 app = typer.Typer(name="prd", help="Generate Product Requirements Document")
@@ -275,6 +281,24 @@ def _validate_contract(content: str, *, require_no_placeholders: bool) -> dict[s
         "placeholder_hits": placeholder_hits,
         "semantic_hits": semantic_hits,
     }
+
+
+def _extract_host_prd_markdown() -> str:
+    payload, _ = load_host_response_json("prd")
+    if not payload:
+        return ""
+    candidates = [
+        payload.get("markdown"),
+        payload.get("content"),
+    ]
+    nested = payload.get("payload")
+    if isinstance(nested, dict):
+        candidates.extend([nested.get("markdown"), nested.get("content")])
+    for item in candidates:
+        text = str(item or "").strip()
+        if text:
+            return text
+    return ""
 
 
 def _machine_prd_dir(project_root: Path, version: str) -> Path:
@@ -740,15 +764,21 @@ def _render_prd(
 @app.command()
 def create(
     feature: str = typer.Argument(..., help="Feature name"),
-    project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
+    project: Optional[str] = typer.Option(None, "--project", "-p", "--project-root", help="Project root"),
     version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
     output: Optional[str] = typer.Option(None, "--output", "-o", help="Output file"),
+    semantic: bool = typer.Option(False, "--semantic", help="Legacy compatibility flag for semantic compilation."),
+    track: Optional[str] = typer.Option(None, "--track", help="Legacy compatibility override for track."),
+    family: Optional[str] = typer.Option(None, "--family", help="Legacy compatibility override for family."),
     mode: str = typer.Option("auto", "--mode", help="Compile mode: auto/llm/rule"),
     model: str = typer.Option("beacon-prd-compiler", "--model", help="Compiler model label for evidence"),
     json_output: bool = typer.Option(False, "--json", help="Emit JSON payload"),
 ):
     """Create a PRD"""
     project_root = Path(project) if project else Path.cwd()
+    if version == "auto" and (project_root / ".beacon" / "prd").exists():
+        typer.echo("version is required for legacy PRD surface compatibility.", err=True)
+        raise typer.Exit(2)
     try:
         resolved_version = resolve_operational_docs_version(
             project_root,
@@ -763,17 +793,34 @@ def create(
     slug = _slugify(feature)
     existing_prds = _existing_prd_names(project_root, resolved_version, exclude_slug=slug)
     template = _classify_prd(feature, existing_prds=existing_prds)
-    requested_mode = str(mode or "auto").strip().lower()
-    if requested_mode not in {"auto", "llm", "rule"}:
+    if track:
+        if track not in {"main", "parallel"}:
+            typer.echo("Invalid --track. Use main/parallel.", err=True)
+            raise typer.Exit(2)
+        template["track"] = track
+    if family:
+        template["family"] = family
+        template["label"] = family
+    try:
+        requested_mode = normalize_requested_mode(mode)
+    except ValueError:
         typer.echo("Invalid --mode. Use auto/llm/rule.", err=True)
         raise typer.Exit(2)
+    if semantic and requested_mode == "auto":
+        requested_mode = "llm"
+    capability_snapshot = build_semantic_capability_snapshot(
+        "prd",
+        disable_env="BEACON_PRD_DISABLE_LLM",
+    )
 
     legacy_line_force_rule = requested_mode == "auto" and _semver_tuple(resolved_version) < (1, 3, 5)
     fallback_reason = ""
+    effective_mode = requested_mode
     generator_mode = requested_mode
-    llm_disabled = _is_llm_disabled()
+    llm_disabled = bool(capability_snapshot.get("llm_disabled"))
 
     if requested_mode == "rule" or legacy_line_force_rule:
+        effective_mode = "rule"
         generator_mode = "rule"
         if legacy_line_force_rule:
             fallback_reason = "legacy_line_default_rule"
@@ -793,6 +840,7 @@ def create(
             if requested_mode == "llm":
                 typer.echo("LLM compile disabled by BEACON_PRD_DISABLE_LLM.", err=True)
                 raise typer.Exit(2)
+            effective_mode = "rule"
             generator_mode = "rule"
             fallback_reason = "llm_disabled"
             md_content = _render_prd(
@@ -807,22 +855,39 @@ def create(
             )
             contract = _validate_contract(md_content, require_no_placeholders=False)
         else:
-            md_content = _render_semantic_prd(
-                feature,
-                version=resolved_version,
-                track=template["track"],
-                family=template["family"],
-                existing_prds=existing_prds,
-                slug=slug,
-            )
+            host_markdown = ""
+            if bool(capability_snapshot.get("host_semantic_ready")):
+                host_markdown = _extract_host_prd_markdown()
+                if host_markdown:
+                    effective_mode = "host"
+                else:
+                    fallback_reason = "host_compile_failed"
+            if host_markdown:
+                md_content = host_markdown
+            else:
+                effective_mode = "llm"
+                md_content = _render_semantic_prd(
+                    feature,
+                    version=resolved_version,
+                    track=template["track"],
+                    family=template["family"],
+                    existing_prds=existing_prds,
+                    slug=slug,
+                )
             contract = _validate_contract(md_content, require_no_placeholders=True)
-            generator_mode = "llm"
+            generator_mode = effective_mode
             if not bool(contract.get("ok")):
+                failed_mode = effective_mode
                 if requested_mode == "llm":
                     typer.echo("LLM compile output failed contract validation.", err=True)
                     raise typer.Exit(2)
+                effective_mode = "rule"
                 generator_mode = "rule"
-                fallback_reason = "llm_contract_validation_failed"
+                fallback_reason = (
+                    "host_contract_validation_failed"
+                    if failed_mode == "host"
+                    else "llm_contract_validation_failed"
+                )
                 md_content = _render_prd(
                     feature,
                     version=resolved_version,
@@ -852,10 +917,13 @@ def create(
         "track": template["track"],
         "family": template["family"],
         "label": template["label"],
-        "requested_mode": requested_mode,
-        "generator_mode": generator_mode,
+        **build_mode_contract(
+            requested_mode=requested_mode,
+            effective_mode=effective_mode,
+            fallback_reason=fallback_reason,
+            capability_snapshot=capability_snapshot,
+        ),
         "model": model,
-        "fallback_reason": fallback_reason,
         "source_refs": source_refs,
         "contract": contract,
         "markdown": md_content,
@@ -881,6 +949,7 @@ def create(
         "feature_slug": slug,
         "version": resolved_version,
         "requested_mode": requested_mode,
+        "effective_mode": effective_mode,
         "generator_mode": generator_mode,
         "fallback_reason": fallback_reason,
         "source_hash": source_hash,
@@ -912,10 +981,12 @@ def create(
             "feature": feature,
             "feature_slug": slug,
             "version": resolved_version,
+            "effective_mode": effective_mode,
             "generator_mode": generator_mode,
             "requested_mode": requested_mode,
             "model": model,
             "fallback_reason": fallback_reason,
+            "capability_snapshot": capability_snapshot,
             "source_refs": source_refs,
             "constraint_hits": contract.get("semantic_hits", {}),
             "missing_headings": contract.get("missing_headings", []),
@@ -953,6 +1024,41 @@ def create(
         raise typer.Exit(2)
 
     write_json(tx_record_path, transaction_record)
+    legacy_machine_path = project_root / ".beacon" / "prd" / f"{slug}.json"
+    legacy_machine_path.parent.mkdir(parents=True, exist_ok=True)
+    legacy_machine_payload = {
+        "metadata": {
+            "feature": feature,
+            "feature_slug": slug,
+            "version": resolved_version,
+        },
+        "content": md_content,
+        "markdown": md_content,
+        "semantic_payload": {
+            "track": template["track"],
+            "family": template["family"],
+            "label": template["label"],
+        },
+        "mode_contract": {
+            "compilation_mode": requested_mode,
+            "effective_mode": effective_mode,
+            "generator_mode": generator_mode,
+            "fallback_reason": fallback_reason,
+        },
+    }
+    write_json(legacy_machine_path, legacy_machine_payload)
+    legacy_transaction_path = project_root / ".beacon" / "transactions" / f"prd-{slug}.json"
+    legacy_transaction_path.parent.mkdir(parents=True, exist_ok=True)
+    write_json(
+        legacy_transaction_path,
+        {
+            "canonical_envelope": canonical,
+            "sinks": [
+                {"path": str(output_path.relative_to(project_root)), "kind": "human"},
+                {"path": str(legacy_machine_path.relative_to(project_root)), "kind": "machine"},
+            ],
+        },
+    )
     if json_output:
         typer.echo(
             json.dumps(
@@ -961,9 +1067,11 @@ def create(
                     "feature": feature,
                     "feature_slug": slug,
                     "version": resolved_version,
+                    "effective_mode": effective_mode,
                     "generator_mode": generator_mode,
                     "requested_mode": requested_mode,
                     "fallback_reason": fallback_reason,
+                    "capability_snapshot": capability_snapshot,
                     "contract_ok": bool(contract.get("ok", False)),
                     "output_path": str(output_path),
                     "compile_path": str(compile_path),
@@ -978,9 +1086,54 @@ def create(
     typer.echo(f"✓ PRD created: {output_path}")
 
 
+@app.command("validate")
+def validate_prd(
+    feature: str = typer.Argument(..., help="Feature name"),
+    project: Optional[str] = typer.Option(None, "--project", "-p", "--project-root", help="Project root"),
+    version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
+):
+    """Validate PRD markdown against the public PRD contract."""
+    project_root = Path(project) if project else Path.cwd()
+    resolved_version = resolve_target_version(project_root, version)
+    slug = _slugify(feature)
+    prd_path = project_root / "docs" / "beacon" / resolved_version / "prd" / f"{slug}.md"
+    if not prd_path.exists():
+        typer.echo(f"PRD not found: {prd_path}", err=True)
+        raise typer.Exit(2)
+    contract = _validate_contract(prd_path.read_text(encoding="utf-8"), require_no_placeholders=False)
+    if not bool(contract.get("ok")):
+        typer.echo(f"Contract invalid: {contract.get('issues', [])}", err=True)
+        raise typer.Exit(2)
+    typer.echo(f"Contract valid: {prd_path}")
+
+
+@app.command("audit")
+def audit_prd(
+    feature: str = typer.Argument(..., help="Feature name"),
+    project: Optional[str] = typer.Option(None, "--project", "-p", "--project-root", help="Project root"),
+    version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
+):
+    """Audit PRD markdown against the machine mirror to detect drift."""
+    project_root = Path(project) if project else Path.cwd()
+    resolved_version = resolve_target_version(project_root, version)
+    slug = _slugify(feature)
+    prd_path = project_root / "docs" / "beacon" / resolved_version / "prd" / f"{slug}.md"
+    machine_path = project_root / ".beacon" / "prd" / f"{slug}.json"
+    if not prd_path.exists() or not machine_path.exists():
+        typer.echo("PRD audit requires both markdown and machine JSON artifacts.", err=True)
+        raise typer.Exit(2)
+    markdown = prd_path.read_text(encoding="utf-8")
+    machine_payload = json.loads(machine_path.read_text(encoding="utf-8"))
+    machine_markdown = str(machine_payload.get("content") or machine_payload.get("markdown") or "").strip()
+    if markdown.strip() != machine_markdown:
+        typer.echo("Drift detected between markdown and machine PRD.", err=True)
+        raise typer.Exit(2)
+    typer.echo("No drift detected")
+
+
 @app.command("list")
 def list_prds(
-    project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
+    project: Optional[str] = typer.Option(None, "--project", "-p", "--project-root", help="Project root"),
     version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
 ):
     """List all PRDs"""

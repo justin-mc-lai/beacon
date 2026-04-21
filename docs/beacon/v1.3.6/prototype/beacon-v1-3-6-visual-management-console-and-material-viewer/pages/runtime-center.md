@@ -1,47 +1,60 @@
-# 页面线框：运行中心
+# 低保真线框页：运行中心
 
-**页面 ID**: `runtime-center`
 **平台**: `Web, PC`
 **优先级**: `P1`
 
-## 页面职责
-- 只在这里下钻 single / team / ralph 的 runtime 细节和有限 session metadata。
-
-## 关联 Requirement
-- `user-story`: docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md
-- `prd`: docs/beacon/v1.3.6/prd/beacon-v1-3-6-visual-management-console-and-material-viewer.md
-- `test-case`: docs/beacon/v1.3.6/qa/test-cases/beacon-v1.3.6-visual-management-console-and-material-viewer.md
+## 页面意图
+- 目标读者：需要核对运行态的执行者 / 诊断人
+- 页面任务：只在这里下钻 single / team / ralph 的 runtime 细节和有限 session metadata。
+- 先回答的问题：当前到底是 single、team 还是 ralph 在推进。
+- 先回答的问题：linked run、artifact、blocker 是否足以解释当前停滞点。
+- 先回答的问题：看完运行态后应该回到项目详情还是继续诊断。
 
 ## 布局草图
 ```text
-+-------------------------------------------------------------+
-| 模式切换：single | team | ralph                            |
-+-------------------------------------------------------------+
-| agent/session 引用 | linked run | artifact refs            |
-+-------------------------------------------------------------+
-| next_action | blocker | recent_result                      |
-+-------------------------------------------------------------+
++----------------------------------------------------------------------------------+
+| 顶栏：返回项目详情 | 运行中心 | 最近刷新时间 | 当前活跃模式                        |
++----------------------------------------------------------------------------------+
+| 模式切换： single | team | ralph                                                |
++----------------------------------------------------------------------------------+
+| 运行态摘要头部: 当前状态 | round_count | failure_streak | 当前执行目标             |
++----------------------------------------------------------------------------------+
+| agent / session 引用                         | linked run / artifact refs           |
+| - session id / agent 数                      | - latest run                         |
+| - host / lane 摘要                           | - artifact / report                  |
++----------------------------------------------------------------------------------+
+| recent_result                                | blocker / next_action                |
+| - 最近结果摘要                               | - 当前 blocker                       |
+| - 最近一次状态变化                           | - 下一步动作                         |
++----------------------------------------------------------------------------------+
 ```
 
-## 关键模块
-- 运行态摘要头部
-- single / team / ralph 模式切换
-- agent/session 引用
-- artifact 与 linked run
-- 最近结果与 blocker
+## 版面拆解
+- `运行态摘要头部`: 放在首屏，先建立上下文，让人快速判断当前局面。
+- `single / team / ralph 模式切换`: 放在主体区，承载该页完成核心判断所需的最小信息块。
+- `agent/session 引用`: 放在主体区，只展示运行态必要信息，不展开底层机器细节。
+- `artifact 与 linked run`: 放在主体区，只展示运行态必要信息，不展开底层机器细节。
+- `最近结果与 blocker`: 放在收口区，承载该页完成核心判断所需的最小信息块。
 
-## 用户动作
-- `返回项目详情`: 点击返回 -> `project-detail`
-- `返回管理总览`: 点击面包屑 -> `management-overview`
+## 信息优先级
+- 第一优先看 `运行态摘要头部`，因为页面必须先完成第一轮判断。
+- 第二优先看 `single / team / ralph 模式切换`，用于补足判断依据并决定是否下钻。
+- 最后收口到 `最近结果与 blocker`，让用户在读完后知道下一步动作。
+- 审阅原则：模式切换必须固定在头部，便于横向比较三种运行形态。
+- 审阅原则：session / artifact 只展示必要引用，不在此页堆底层原文。
 
-## 状态说明
-- `single-active` / Single 运行: 展示单进程执行摘要和 linked run。
-- `team-active` / Team 运行: 展示 agent 数、角色、状态和 host session metadata。
-- `ralph-active` / Ralph 闭环: 展示 round_count、failure_streak、next_action、blocker。
-- `idle` / 无活跃运行: 当前没有任何 active runtime。
-- `loading` / 加载中: 运行态数据仍在读取。
-- `error` / 错误: 运行态投影异常，需要回到诊断页。
+## 关键交互
+- `返回项目详情`: 通过 点击返回 回到 `project-detail`，用于撤销下钻并保留上层判断。
+- `返回管理总览`: 通过 点击面包屑 回到 `management-overview`，用于撤销下钻并保留上层判断。
 
-## 实现接力备注
-- 当前页面是 requirement freeze wireframe，不是高保真视觉稿。
-- 实现阶段必须回链本页与 navigation-map / wireframe-summary。
+## 状态切换与兜底
+- `Single 运行`: 展示单进程执行摘要和 linked run。
+- `Team 运行`: 展示 agent 数、角色、状态和 host session metadata。
+- `Ralph 闭环`: 展示 round_count、failure_streak、next_action、blocker。
+- `无活跃运行`: 当前没有任何 active runtime。 空态要说明为什么为空，以及下一步该回哪里。
+- `加载中`: 运行态数据仍在读取。 加载态只保留骨架结构，避免造成页面重新排版。
+- `错误`: 运行态投影异常，需要回到诊断页。 页面要优先给出回退或恢复入口，而不是只报错。
+
+## 审阅边界
+- 运行中心可以下钻运行信息，但仍要压制无边界的机器内部明细。
+- 这页只冻结信息结构、交互收口和状态兜底，不表达高保真视觉或最终实现细节。

@@ -1,0 +1,361 @@
+{
+  "schema_version": "1.0",
+  "plan_id": "plan-beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor-r1",
+  "feature": "beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor",
+  "feature_slug": "beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor",
+  "version": "v1.3.6",
+  "revision_id": "R1",
+  "baseline_hash": "sha256:5c8320b05e30a5798461b7060821b178c067fe99cf6286a8f0f581fe0c16e24d",
+  "plan_hash": "sha256:e23b89cd312c9e1855cc12a1367e6a2a2b65d9bbd73a78916bd749851886717f",
+  "status": "completed",
+  "source_refs": {
+    "user_story": "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor.md",
+    "prd": "docs/beacon/v1.3.6/prd/beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor.md",
+    "test_case": "docs/beacon/v1.3.6/qa/test-cases/beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor.md",
+    "story_scenario_map": "docs/beacon/v1.3.6/.machine/qa/beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor.story-scenario-map.json",
+    "qa9_matrix": "docs/beacon/v1.3.6/.machine/qa/beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor.qa9-matrix.json"
+  },
+  "boundary_principles": [
+    {
+      "id": "explicit_assumptions",
+      "heading": "显式假设与歧义管理"
+    },
+    {
+      "id": "simplicity_first",
+      "heading": "简单优先"
+    },
+    {
+      "id": "surgical_changes",
+      "heading": "外科手术式改动"
+    },
+    {
+      "id": "goal_driven_execution",
+      "heading": "目标驱动验证闭环"
+    },
+    {
+      "id": "trivial_task_exception",
+      "heading": "trivial task 可以轻量处理，但不能越界"
+    }
+  ],
+  "workstreams": [
+    {
+      "workstream_id": "implementation-main",
+      "title": "Implementation Mainline",
+      "task_ids": [
+        "ITASK-001",
+        "ITASK-002",
+        "ITASK-003",
+        "ITASK-004",
+        "ITASK-005"
+      ]
+    }
+  ],
+  "task_mapping_source": "prd-sections",
+  "tasks": [
+    {
+      "task_id": "ITASK-001",
+      "title": "FR-001 Unify requirement commands on one host-native semantic runtime contract.",
+      "description": "宿主模式默认成立：在 Claude / Codex skill 环境里执行 `beacon prd / prototype / implement / qa` 默认不要求 `BEACON_LLM_API_KEY`，并保留 host-native evidence。 / requirement 命令同核：`prd / user-story / test-case / prototype` 不再私自直连 provider，各自通过同一 host/provider/rule arbitration 与 semantic envelope 工作。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-001",
+        "AC-003"
+      ],
+      "mapped_test_ids": [
+        "TEST-001",
+        "TEST-003",
+        "TC-001",
+        "TC-003"
+      ],
+      "mapped_scenario_ids": [
+        "SC-001",
+        "SC-003",
+        "SC-004",
+        "SC-005",
+        "SC-006",
+        "SC-007"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-001",
+        "TC-003"
+      ],
+      "depends_on": [],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-002",
+      "title": "FR-002 Unify `implement / qa / release` on one delivery kernel and traceability plane.",
+      "description": "统一 mode contract：`prd / user-story / test-case / prototype / implement / qa / release / help / status / doctor` 的 machine output 或 evidence 中都存在统一的 `requested_mode / effective_mode / fallback_reason / capability_snapshot` 字段。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-002"
+      ],
+      "mapped_test_ids": [
+        "TEST-002",
+        "TC-002"
+      ],
+      "mapped_scenario_ids": [
+        "SC-002"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-002"
+      ],
+      "depends_on": [
+        "ITASK-001"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-003",
+      "title": "FR-003 Keep `help / status / doctor` on the same read-model truth as delivery and release.",
+      "description": "support/release 一致性：`help / status / doctor / release` 对同一 feature 的下一步、降级、gate 与风险解释必须来自统一 truth/read model，而不是各自独立猜测。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-006"
+      ],
+      "mapped_test_ids": [
+        "TEST-006",
+        "TC-006"
+      ],
+      "mapped_scenario_ids": [
+        "SC-018"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-006"
+      ],
+      "depends_on": [
+        "ITASK-002"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-004",
+      "title": "FR-004 Preserve the public `7+3` command surface while demoting provider-backed execution to fallback.",
+      "description": "`prototype` 不退化：迁移后 `prototype` 仍保留固定模板、freeze/review 与 canonical projection，但页面语义改由宿主原生 LLM 驱动。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-004"
+      ],
+      "mapped_test_ids": [
+        "TEST-004",
+        "TC-004"
+      ],
+      "mapped_scenario_ids": [
+        "SC-008",
+        "SC-009",
+        "SC-010",
+        "SC-011",
+        "SC-012"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-004"
+      ],
+      "depends_on": [
+        "ITASK-003"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-005",
+      "title": "FR-005 Promote `v1.3.6` as the current runtime/package/docs line with coherent release evidence.",
+      "description": "## Release Evidence Technical implementation: `docs/beacon/v1.3.6/execution/technical-implementation-beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor.md` Implementation summary: `docs/beacon/v1.3.6/execution/implementation-summary-beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor.md` QA scorecard: `.beacon/qa/features/beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor/scorecard.json` Release note: `docs/beacon/v1.3.6/release/v1.3.6.md`",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-005",
+        "AC-007"
+      ],
+      "mapped_test_ids": [
+        "TEST-005",
+        "TEST-007",
+        "TC-005",
+        "TC-007"
+      ],
+      "mapped_scenario_ids": [
+        "SC-013",
+        "SC-014",
+        "SC-015",
+        "SC-016",
+        "SC-017",
+        "SC-019"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-005",
+        "TC-007"
+      ],
+      "depends_on": [
+        "ITASK-004"
+      ],
+      "target_modules": [],
+      "status": "completed",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    }
+  ],
+  "team_mode": {
+    "preferred_surface": "implement-team",
+    "preferred_runner": "codex-subagents",
+    "plan_command": "beacon implement team-plan \"beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor\" --project-root . --version v1.3.6",
+    "run_command": "beacon implement team-run \"beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor\" --project . --version v1.3.6",
+    "dev_run_command": "beacon implement dev-run \"beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor\" --project . --version v1.3.6",
+    "qa_team_command": "beacon qa team-run \"beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor\" --project . --version v1.3.6",
+    "roles": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "context_isolation": {
+      "role_plane": "implementation",
+      "isolated_from": [
+        "qa-team"
+      ],
+      "shared_inputs": [
+        "docs",
+        "implementation_plan",
+        "evidence_refs"
+      ],
+      "shared_outputs": [
+        "implementation_summary",
+        "technical_archive",
+        "repair_handoff"
+      ],
+      "rule": "qa_must_not_inherit_implement_private_context",
+      "implement_surface": "implement-team",
+      "qa_surface": "qa-team"
+    },
+    "config_source": "beacon/team_roles/implement-team.json",
+    "execution_order": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "formal_writeback_roles": [
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "role_contracts": {
+      "planner": {
+        "purpose": "Compile execution-ready task scope from the frozen revision baseline.",
+        "writes_to_formal_truth": false,
+        "outputs": [
+          "execution_plan_note"
+        ]
+      },
+      "implementation-architect": {
+        "purpose": "Translate frozen requirement truth into implementation-safe module boundaries and service ownership guidance.",
+        "writes_to_formal_truth": false,
+        "reads": [
+          "docs/beacon/<version>/user-story",
+          "docs/beacon/<version>/prd",
+          "docs/beacon/<version>/qa/test-cases",
+          "docs/beacon/<version>/execution/architecture-blueprint.md",
+          "implementation_plan",
+          "git_workflow_contract"
+        ],
+        "outputs": [
+          "implementation_architecture_note"
+        ],
+        "restrictions": [
+          "must_not_modify_frozen_requirement_materials",
+          "must_not_overwrite_architecture_blueprint"
+        ]
+      },
+      "implementer": {
+        "purpose": "Write code inside the frozen scope and the implementation architecture note.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "story_writeback",
+          "implementation_summary"
+        ]
+      },
+      "reviewer": {
+        "purpose": "Review implementation/spec drift and architecture-boundary drift.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_spec"
+        ]
+      },
+      "tester": {
+        "purpose": "Check implementation evidence and verification readiness before acceptance.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_quality"
+        ]
+      }
+    }
+  },
+  "git_workflow": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor",
+    "feature_slug": "beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor",
+    "version": "v1.3.6",
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.3.6",
+    "branch_prefix": "beacon/",
+    "base_branch": "main",
+    "use_git_worktree": false,
+    "require_clean_worktree_for_switch": true,
+    "service_directories": [
+      "."
+    ],
+    "direct_delivery_services": [
+      "."
+    ],
+    "git_roots": [
+      "."
+    ],
+    "worktree_root": ".",
+    "implementation_preflight": [
+      "Before implementation, verify the target service belongs to: .",
+      "Before implementation, verify the current branch is beacon/v1.3.6.",
+      "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+    ],
+    "source": "technical_review_contract",
+    "generated_at": "2026-04-21T08:34:08.968914+00:00"
+  },
+  "git_workflow_ref": "docs/beacon/v1.3.6/.machine/execution/git-workflow-beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor.json",
+  "git_workflow_markdown_ref": "docs/beacon/v1.3.6/execution/git-workflow-beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor.md",
+  "generated_at": "2026-04-21T08:34:08.969804+00:00",
+  "updated_at": "2026-04-21T08:35:12.681401+00:00"
+}

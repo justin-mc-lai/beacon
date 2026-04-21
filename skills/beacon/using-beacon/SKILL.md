@@ -1,11 +1,14 @@
 ---
 name: using-beacon
-description: Use when Beacon should become the primary workflow router in Codex or Claude for requirements, implementation, QA, release readiness, or next-step guidance. Route the user into Beacon's minimal v1.3.3 human surface instead of exposing the full CLI catalog.
+description: Use when Beacon should become the primary workflow router in Codex or Claude for requirements, implementation, QA, release readiness, or next-step guidance. Route the user through Beacon's current v1.3.6 runtime surface instead of exposing the full CLI catalog.
 ---
 
 # Using Beacon
 
-Use Beacon as a minimal human-facing workflow pack.
+Use Beacon as a host-native human-facing workflow pack.
+
+The public surface follows the current `v1.3.6` runtime line.
+The `v1.3.6` docs define the active host-native LLM orchestration and shared delivery/read-model behavior.
 
 ## Public routing targets
 

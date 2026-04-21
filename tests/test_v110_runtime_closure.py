@@ -384,7 +384,7 @@ def test_v110_help_should_not_report_revision_not_frozen_after_release_ready_qa(
     assert payload["next_step"]["action"] == "release-check"
 
 
-def test_v110_help_should_not_suggest_release_check_when_feature_scorecard_is_ready_but_coverage_is_incomplete(tmp_path: Path):
+def test_v110_help_should_prefer_feature_scorecard_over_legacy_coverage_block_when_release_ready(tmp_path: Path):
     _seed_common_docs(tmp_path)
     _mark_implemented(tmp_path)
     record_implementation_writeback(
@@ -434,9 +434,9 @@ def test_v110_help_should_not_suggest_release_check_when_feature_scorecard_is_re
     help_result = _invoke(["help", "--project-root", str(tmp_path), "--version", VERSION, "--feature", FEATURE, "--json"])
     assert help_result.exit_code == 0, help_result.stdout
     payload = json.loads(help_result.stdout)
-    assert payload["blocked"] is True
-    assert "coverage_incomplete" in payload["blocking_reasons"]
-    assert payload["next_step"]["action"] == "qa-run"
+    assert payload["blocked"] is False
+    assert "coverage_incomplete" not in payload["blocking_reasons"]
+    assert payload["next_step"]["action"] == "release-check"
 
 
 def test_v110_material_audit_should_require_source_architecture_and_project_skill_blueprint(tmp_path: Path):

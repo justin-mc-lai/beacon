@@ -86,5 +86,66 @@
       "docs/beacon/v1.3.6/qa/test-cases/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
     ]
   },
-  "outbound_transitions": []
+  "outbound_transitions": [
+    {
+      "from": "project-detail",
+      "to": "runtime-center",
+      "trigger": "点击运行态摘要",
+      "type": "drill-down"
+    },
+    {
+      "from": "project-detail",
+      "to": "recovery-diagnostics",
+      "trigger": "点击恢复诊断入口",
+      "type": "drill-down"
+    },
+    {
+      "from": "project-detail",
+      "to": "material-viewer",
+      "trigger": "点击文档查看入口",
+      "type": "drill-down"
+    },
+    {
+      "from": "project-detail",
+      "to": "management-overview",
+      "trigger": "点击返回",
+      "type": "return"
+    }
+  ],
+  "analysis": {
+    "target_user": "单项目 owner / 接力执行者",
+    "decision_focus": [
+      "这条版本线当前停在哪个阶段，下一步应该推进哪里。",
+      "需求闭环是否完整，是否已经具备 implement / qa 的前提。",
+      "应该去 runtime、恢复诊断，还是去看项目物料。"
+    ],
+    "layout_rules": [
+      "项目头部先建立上下文，再展开需求闭环。",
+      "主 PRD 与并行 PRD 要并排出现，避免真相散落。",
+      "最近交付、下一步、推荐动作要形成明确收口。"
+    ],
+    "noise_guardrail": "项目详情是接力页，不直接承载底层日志和实现细节。"
+  },
+  "layout_lines": [
+    "+-----------------------------------------------------------------------------------+",
+    "| 顶栏：返回总览 | 项目名 | 项目类型 | owner | 当前阶段                               |",
+    "+-----------------------------------------------------------------------------------+",
+    "| 项目头部摘要                                  | 当前版本 / git / worktree           |",
+    "| - 当前目标                                    | - version: v1.3.6                   |",
+    "| - 为什么停在这里                              | - branch/worktree 状态              |",
+    "+-----------------------------------------------------------------------------------+",
+    "| 主 PRD                              | 并行 PRD / 子线                            |",
+    "| - 主线 feature                     | - 并行 feature A                           |",
+    "| - 当前承诺面                       | - 并行 feature B                           |",
+    "+-----------------------------------------------------------------------------------+",
+    "| 需求闭环状态: prd | user-story | test-case | prototype | qa 准备度                |",
+    "+-----------------------------------------------------------------------------------+",
+    "| 最近交付                                      | 下一步 / 推荐动作                     |",
+    "| - 最新冻结产物                                | - 继续 implement / qa / review       |",
+    "| - 最近一次 review 结论                        | - 推荐 skill                          |",
+    "+-----------------------------------------------------------------------------------+",
+    "| runtime 摘要卡                                | 文档查看 / 恢复诊断入口               |",
+    "| - single/team/ralph 摘要                      | [查看项目物料] [查看恢复诊断]         |",
+    "+-----------------------------------------------------------------------------------+"
+  ]
 }

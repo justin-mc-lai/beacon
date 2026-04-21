@@ -1,0 +1,94 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.3.6-visual-management-console-and-material-viewer",
+  "feature_slug": "beacon-v1.3.6-visual-management-console-and-material-viewer",
+  "version": "v1.3.6",
+  "revision_id": "R1",
+  "base_branch": "main",
+  "target_branch": "beacon/v1.3.6",
+  "branch_prefix": "beacon/",
+  "branch_strategy": "single-branch",
+  "use_git_worktree": false,
+  "worktree_root": ".",
+  "service_worktrees": [],
+  "workspace_root": ".",
+  "environment_mode": "local-dev",
+  "isolation_strategy": "repo-local implementation with fixture-backed UI read model",
+  "shared_resources_allowed": [],
+  "protected_resources": [
+    "docs/beacon/global-boundaries.md",
+    "docs/beacon/v1.3.5/prototype/beacon-v1-3-5-prototype-wireframe-mode-and-prototype-surface-refactor/"
+  ],
+  "service_directories": [
+    ".",
+    "beacon-console-ui",
+    "beacon/commands",
+    "docs/beacon/v1.3.6",
+    ".beacon"
+  ],
+  "writable_services": [
+    "beacon-console-ui",
+    "beacon/commands",
+    "docs/beacon/v1.3.6",
+    ".beacon"
+  ],
+  "direct_delivery_services": [
+    "beacon-console-ui",
+    "docs/beacon/v1.3.6",
+    ".beacon"
+  ],
+  "reference_only_services": [
+    "docs/beacon/v1.3.5",
+    "docs/beacon/global-boundaries.md"
+  ],
+  "excluded_services": [
+    "omc",
+    "omx"
+  ],
+  "gateway_services": [],
+  "bff_services": [],
+  "downstream_services": [],
+  "shared_schema_or_contracts": [
+    "docs/beacon/v1.3.6/prd/beacon-v1-3-6-visual-management-console-and-material-viewer.md",
+    "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md",
+    "docs/beacon/v1.3.6/qa/test-cases/beacon-v1.3.6-visual-management-console-and-material-viewer.md"
+  ],
+  "cross_service_change_order": [
+    "Repair implement public command routing and branch truth before evidence generation.",
+    "Bring beacon-console-ui to clean npm run build with all seven pages present.",
+    "Update versioned docs, implementation evidence, and QA inputs in docs/beacon/v1.3.6 and .beacon.",
+    "Rerun implement and QA surfaces only after revision freeze and contract materialization."
+  ],
+  "boundary_principles": [
+    {
+      "id": "explicit_assumptions",
+      "heading": "显式假设与歧义管理"
+    },
+    {
+      "id": "simplicity_first",
+      "heading": "简单优先"
+    },
+    {
+      "id": "surgical_changes",
+      "heading": "外科手术式改动"
+    },
+    {
+      "id": "goal_driven_execution",
+      "heading": "目标驱动验证闭环"
+    },
+    {
+      "id": "trivial_task_exception",
+      "heading": "trivial task 可以轻量处理，但不能越界"
+    }
+  ],
+  "review_status": "approved",
+  "approved_by": "codex",
+  "reviewed_at": "2026-04-21T14:47:22.020372+00:00",
+  "generated_at": "2026-04-21T14:47:22.019910+00:00",
+  "source": "manual-contract-after-freeze",
+  "notes": [
+    "This contract exists to unblock implement plan/status for the visual console feature.",
+    "The UI uses realistic local fixtures until PocketBase and SQLite projection are formally wired into the same truth line.",
+    "Host session visibility is limited to metadata references and linked run pointers."
+  ]
+}

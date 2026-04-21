@@ -1,8 +1,4 @@
-"""LLM loop trace helpers with optional real provider orchestration.
-
-Default remains deterministic rule mode.
-Set `BEACON_LLM_MODE=real` + `BEACON_LLM_API_KEY` to enable API inference.
-"""
+"""LLM loop trace helpers with host-first and optional provider fallback orchestration."""
 
 from __future__ import annotations
 
@@ -13,6 +9,7 @@ from typing import Any
 from urllib import request
 
 from beacon.utils.runtime import now_iso
+from beacon.utils.semantic_runtime import load_host_response_json
 
 STAGE_ORDER = ("think", "user-story", "prd", "test-case", "implementation", "verify", "none")
 
@@ -124,6 +121,27 @@ def _real_llm_inference(
     }
 
 
+def _host_llm_inference(
+    *,
+    next_stage: str,
+) -> dict[str, Any]:
+    payload, _source = load_host_response_json("next-stage")
+    if not payload:
+        raise RuntimeError("host semantic response missing")
+    completion = str(payload.get("completion") or payload.get("reason") or "").strip()
+    predicted_stage = _extract_stage_from_text(
+        str(payload.get("next_stage") or completion or next_stage),
+        next_stage,
+    )
+    return {
+        "model": str(payload.get("model") or "host-native"),
+        "completion": completion or f"next_stage={predicted_stage}",
+        "prompt_tokens": int(payload.get("prompt_tokens", 0) or 0),
+        "completion_tokens": int(payload.get("completion_tokens", 0) or 0),
+        "next_stage": predicted_stage,
+    }
+
+
 def build_next_stage_trace(
     *,
     feature: str,
@@ -137,6 +155,22 @@ def build_next_stage_trace(
         f"Project workflow inference. feature={feature}; version={version}; "
         f"run_id={run_id}; context={context}. Determine next executable stage."
     )
+
+    try:
+        host = _host_llm_inference(next_stage=fallback_stage)
+        return {
+            "ts": now_iso(),
+            "source": "workflow.next-stage-inference",
+            "inference_mode": "host",
+            "model": host["model"],
+            "prompt": prompt,
+            "completion": host["completion"],
+            "next_stage": host["next_stage"],
+            "prompt_tokens": int(host["prompt_tokens"]),
+            "completion_tokens": int(host["completion_tokens"]),
+        }
+    except Exception:  # noqa: BLE001
+        pass
 
     if _should_use_real_llm():
         try:

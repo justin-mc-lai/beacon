@@ -3,7 +3,7 @@
 **Feature**: `beacon-v1.3.3-core-slimming-and-external-skill-demotion`  
 **Version**: `v1.3.3`  
 **Date**: `2026-04-17`  
-**Status**: `planning line`
+**Status**: `current release snapshot`
 
 ## US-001：作为 Beacon 人类操作者，我希望默认只面对 `6+3` 极简主面，而不是先学习 skill/profile/orchestrate
 

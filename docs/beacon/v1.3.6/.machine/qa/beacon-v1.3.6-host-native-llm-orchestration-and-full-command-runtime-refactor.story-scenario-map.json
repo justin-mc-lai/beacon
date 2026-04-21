@@ -1,0 +1,1020 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor",
+  "feature_slug": "beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor",
+  "version": "v1.3.6",
+  "generated_at": "2026-04-21T06:06:05.132082+00:00",
+  "expansion_profile": "pua-web",
+  "scenario_depth": "standard",
+  "families_required": [
+    "happy",
+    "negative",
+    "boundary",
+    "recovery",
+    "compatibility"
+  ],
+  "stories": [
+    {
+      "ac_id": "AC-001",
+      "theme": "general",
+      "text": "宿主模式默认成立：在 Claude / Codex skill 环境里执行 `beacon prd / prototype / implement / qa` 默认不要求 `BEACON_LLM_API_KEY`，并保留 host-native evidence。",
+      "scenario_ids": [
+        "SC-001"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-001",
+          "source_tc_id": "TC-001",
+          "tc_id": "TC-001-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "general",
+      "text": "统一 mode contract：`prd / user-story / test-case / prototype / implement / qa / release / help / status / doctor` 的 machine output 或 evidence 中都存在统一的 `requested_mode / effective_mode / fallback_reason / capability_snapshot` 字段。",
+      "scenario_ids": [
+        "SC-002"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-002",
+          "source_tc_id": "TC-002",
+          "tc_id": "TC-002-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "general",
+      "text": "requirement 命令同核：`prd / user-story / test-case / prototype` 不再私自直连 provider，各自通过同一 host/provider/rule arbitration 与 semantic envelope 工作。",
+      "scenario_ids": [
+        "SC-003",
+        "SC-004",
+        "SC-005",
+        "SC-006",
+        "SC-007"
+      ],
+      "scenario_families": [
+        "happy",
+        "negative",
+        "boundary",
+        "recovery",
+        "compatibility"
+      ],
+      "required_families": [
+        "happy",
+        "negative",
+        "boundary",
+        "recovery",
+        "compatibility"
+      ],
+      "scenarios": [
+        {
+          "scenario_id": "SC-003",
+          "source_tc_id": "TC-003",
+          "tc_id": "TC-003-HAPPY",
+          "scenario_family": "happy",
+          "qa_type": "contract",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-004",
+          "source_tc_id": "TC-003",
+          "tc_id": "TC-003-NEGATIVE",
+          "scenario_family": "negative",
+          "qa_type": "contract",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-005",
+          "source_tc_id": "TC-003",
+          "tc_id": "TC-003-BOUNDARY",
+          "scenario_family": "boundary",
+          "qa_type": "contract",
+          "browser_required": true,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-006",
+          "source_tc_id": "TC-003",
+          "tc_id": "TC-003-RECOVERY",
+          "scenario_family": "recovery",
+          "qa_type": "contract",
+          "browser_required": true,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-007",
+          "source_tc_id": "TC-003",
+          "tc_id": "TC-003-COMPATIBILITY",
+          "scenario_family": "compatibility",
+          "qa_type": "compatibility",
+          "browser_required": true,
+          "replay_required": true
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "general",
+      "text": "`prototype` 不退化：迁移后 `prototype` 仍保留固定模板、freeze/review 与 canonical projection，但页面语义改由宿主原生 LLM 驱动。",
+      "scenario_ids": [
+        "SC-008",
+        "SC-009",
+        "SC-010",
+        "SC-011",
+        "SC-012"
+      ],
+      "scenario_families": [
+        "happy",
+        "negative",
+        "boundary",
+        "recovery",
+        "compatibility"
+      ],
+      "required_families": [
+        "happy",
+        "negative",
+        "boundary",
+        "recovery",
+        "compatibility"
+      ],
+      "scenarios": [
+        {
+          "scenario_id": "SC-008",
+          "source_tc_id": "TC-004",
+          "tc_id": "TC-004-HAPPY",
+          "scenario_family": "happy",
+          "qa_type": "contract",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-009",
+          "source_tc_id": "TC-004",
+          "tc_id": "TC-004-NEGATIVE",
+          "scenario_family": "negative",
+          "qa_type": "contract",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-010",
+          "source_tc_id": "TC-004",
+          "tc_id": "TC-004-BOUNDARY",
+          "scenario_family": "boundary",
+          "qa_type": "contract",
+          "browser_required": true,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-011",
+          "source_tc_id": "TC-004",
+          "tc_id": "TC-004-RECOVERY",
+          "scenario_family": "recovery",
+          "qa_type": "contract",
+          "browser_required": true,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-012",
+          "source_tc_id": "TC-004",
+          "tc_id": "TC-004-COMPATIBILITY",
+          "scenario_family": "compatibility",
+          "qa_type": "compatibility",
+          "browser_required": true,
+          "replay_required": true
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "general",
+      "text": "`implement / qa` 宿主原生化：`implement` 与 `qa` 仍是唯一公开执行入口，但内部可选择 host direct / subagent / team，并明确记录选择原因与 requirement 绑定。",
+      "scenario_ids": [
+        "SC-013",
+        "SC-014",
+        "SC-015",
+        "SC-016",
+        "SC-017"
+      ],
+      "scenario_families": [
+        "happy",
+        "negative",
+        "boundary",
+        "recovery",
+        "compatibility"
+      ],
+      "required_families": [
+        "happy",
+        "negative",
+        "boundary",
+        "recovery",
+        "compatibility"
+      ],
+      "scenarios": [
+        {
+          "scenario_id": "SC-013",
+          "source_tc_id": "TC-005",
+          "tc_id": "TC-005-HAPPY",
+          "scenario_family": "happy",
+          "qa_type": "contract",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-014",
+          "source_tc_id": "TC-005",
+          "tc_id": "TC-005-NEGATIVE",
+          "scenario_family": "negative",
+          "qa_type": "contract",
+          "browser_required": true,
+          "replay_required": true
+        },
+        {
+          "scenario_id": "SC-015",
+          "source_tc_id": "TC-005",
+          "tc_id": "TC-005-BOUNDARY",
+          "scenario_family": "boundary",
+          "qa_type": "contract",
+          "browser_required": true,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-016",
+          "source_tc_id": "TC-005",
+          "tc_id": "TC-005-RECOVERY",
+          "scenario_family": "recovery",
+          "qa_type": "contract",
+          "browser_required": true,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-017",
+          "source_tc_id": "TC-005",
+          "tc_id": "TC-005-COMPATIBILITY",
+          "scenario_family": "compatibility",
+          "qa_type": "compatibility",
+          "browser_required": true,
+          "replay_required": true
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-006",
+      "theme": "general",
+      "text": "support/release 一致性：`help / status / doctor / release` 对同一 feature 的下一步、降级、gate 与风险解释必须来自统一 truth/read model，而不是各自独立猜测。",
+      "scenario_ids": [
+        "SC-018"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-018",
+          "source_tc_id": "TC-006",
+          "tc_id": "TC-006-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-007",
+      "theme": "general",
+      "text": "人类主面不扩张：迁移完成后，对外仍只有 `prd -> user-story -> test-case -> prototype -> implement -> qa -> release + help/status/doctor`。",
+      "scenario_ids": [
+        "SC-019"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-019",
+          "source_tc_id": "TC-007",
+          "tc_id": "TC-007-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    }
+  ],
+  "scenarios": [
+    {
+      "scenario_id": "SC-001",
+      "source_tc_id": "TC-001",
+      "tc_id": "TC-001-PRIMARY",
+      "ac_id": "AC-001",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-001 primary path :: 宿主模式默认成立：在 Claude / Codex skill 环境里执行 `beacon prd / prototype / implement / qa` 默认不要求 `BEACON_LL",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor/tc-001/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-002",
+      "source_tc_id": "TC-002",
+      "tc_id": "TC-002-PRIMARY",
+      "ac_id": "AC-002",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-002 primary path :: 统一 mode contract：`prd / user-story / test-case / prototype / implement / qa / release / help / s",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor/tc-002/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-003",
+      "source_tc_id": "TC-003",
+      "tc_id": "TC-003-HAPPY",
+      "ac_id": "AC-003",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "happy",
+      "title": "AC-003 happy path :: requirement 命令同核：`prd / user-story / test-case / prototype` 不再私自直连 provider，各自通过同一 host/provider",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "happy",
+        "contract",
+        "browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": true,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "requirement 命令同核：`prd / user-story / test-case / prototype` 不再私自直连 provider，各自通过同一 host/provider/rule arbitration 与 semantic envelope 工作。 (happy path completes with expected evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor/tc-003/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-004",
+      "source_tc_id": "TC-003",
+      "tc_id": "TC-003-NEGATIVE",
+      "ac_id": "AC-003",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "negative",
+      "title": "AC-003 negative path :: requirement 命令同核：`prd / user-story / test-case / prototype` 不再私自直连 provider，各自通过同一 host/provider",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "negative",
+        "contract",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-003"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "requirement 命令同核：`prd / user-story / test-case / prototype` 不再私自直连 provider，各自通过同一 host/provider/rule arbitration 与 semantic envelope 工作。 (negative path is rejected or handled with explicit evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor/tc-003/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-005",
+      "source_tc_id": "TC-003",
+      "tc_id": "TC-003-BOUNDARY",
+      "ac_id": "AC-003",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "boundary",
+      "title": "AC-003 boundary path :: requirement 命令同核：`prd / user-story / test-case / prototype` 不再私自直连 provider，各自通过同一 host/provider",
+      "browser_required": true,
+      "replay_required": false,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "boundary",
+        "contract",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-003"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "requirement 命令同核：`prd / user-story / test-case / prototype` 不再私自直连 provider，各自通过同一 host/provider/rule arbitration 与 semantic envelope 工作。 (boundary path is validated with explicit evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor/tc-003/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-006",
+      "source_tc_id": "TC-003",
+      "tc_id": "TC-003-RECOVERY",
+      "ac_id": "AC-003",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "recovery",
+      "title": "AC-003 recovery path :: requirement 命令同核：`prd / user-story / test-case / prototype` 不再私自直连 provider，各自通过同一 host/provider",
+      "browser_required": true,
+      "replay_required": false,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "recovery",
+        "contract",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-003"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "requirement 命令同核：`prd / user-story / test-case / prototype` 不再私自直连 provider，各自通过同一 host/provider/rule arbitration 与 semantic envelope 工作。 (recovery path survives refresh/back/retry with evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor/tc-003/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-007",
+      "source_tc_id": "TC-003",
+      "tc_id": "TC-003-COMPATIBILITY",
+      "ac_id": "AC-003",
+      "qa_type": "compatibility",
+      "layer": "compatibility",
+      "scenario_family": "compatibility",
+      "title": "AC-003 compatibility path :: requirement 命令同核：`prd / user-story / test-case / prototype` 不再私自直连 provider，各自通过同一 host/provider",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "npx playwright test --project=chromium --project=firefox --project=webkit",
+      "coverage_axes": [
+        "compatibility",
+        "compatibility",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-003"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m beacon.adapters.browser_use_runner --mode compatibility --fallback-cmd \"python3 -m pytest -q -k compatibility --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "assertion": "requirement 命令同核：`prd / user-story / test-case / prototype` 不再私自直连 provider，各自通过同一 host/provider/rule arbitration 与 semantic envelope 工作。 (compatibility path preserves behavior across browser/device pairs)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor/tc-003/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-008",
+      "source_tc_id": "TC-004",
+      "tc_id": "TC-004-HAPPY",
+      "ac_id": "AC-004",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "happy",
+      "title": "AC-004 happy path :: `prototype` 不退化：迁移后 `prototype` 仍保留固定模板、freeze/review 与 canonical projection，但页面语义改由宿主原生 LLM 驱动。",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "happy",
+        "contract",
+        "browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": true,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "`prototype` 不退化：迁移后 `prototype` 仍保留固定模板、freeze/review 与 canonical projection，但页面语义改由宿主原生 LLM 驱动。 (happy path completes with expected evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor/tc-004/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-009",
+      "source_tc_id": "TC-004",
+      "tc_id": "TC-004-NEGATIVE",
+      "ac_id": "AC-004",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "negative",
+      "title": "AC-004 negative path :: `prototype` 不退化：迁移后 `prototype` 仍保留固定模板、freeze/review 与 canonical projection，但页面语义改由宿主原生 LLM 驱动。",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "negative",
+        "contract",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-008"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "`prototype` 不退化：迁移后 `prototype` 仍保留固定模板、freeze/review 与 canonical projection，但页面语义改由宿主原生 LLM 驱动。 (negative path is rejected or handled with explicit evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor/tc-004/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-010",
+      "source_tc_id": "TC-004",
+      "tc_id": "TC-004-BOUNDARY",
+      "ac_id": "AC-004",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "boundary",
+      "title": "AC-004 boundary path :: `prototype` 不退化：迁移后 `prototype` 仍保留固定模板、freeze/review 与 canonical projection，但页面语义改由宿主原生 LLM 驱动。",
+      "browser_required": true,
+      "replay_required": false,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "boundary",
+        "contract",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-008"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "`prototype` 不退化：迁移后 `prototype` 仍保留固定模板、freeze/review 与 canonical projection，但页面语义改由宿主原生 LLM 驱动。 (boundary path is validated with explicit evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor/tc-004/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-011",
+      "source_tc_id": "TC-004",
+      "tc_id": "TC-004-RECOVERY",
+      "ac_id": "AC-004",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "recovery",
+      "title": "AC-004 recovery path :: `prototype` 不退化：迁移后 `prototype` 仍保留固定模板、freeze/review 与 canonical projection，但页面语义改由宿主原生 LLM 驱动。",
+      "browser_required": true,
+      "replay_required": false,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "recovery",
+        "contract",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-008"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "`prototype` 不退化：迁移后 `prototype` 仍保留固定模板、freeze/review 与 canonical projection，但页面语义改由宿主原生 LLM 驱动。 (recovery path survives refresh/back/retry with evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor/tc-004/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-012",
+      "source_tc_id": "TC-004",
+      "tc_id": "TC-004-COMPATIBILITY",
+      "ac_id": "AC-004",
+      "qa_type": "compatibility",
+      "layer": "compatibility",
+      "scenario_family": "compatibility",
+      "title": "AC-004 compatibility path :: `prototype` 不退化：迁移后 `prototype` 仍保留固定模板、freeze/review 与 canonical projection，但页面语义改由宿主原生 LLM 驱动。",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "npx playwright test --project=chromium --project=firefox --project=webkit",
+      "coverage_axes": [
+        "compatibility",
+        "compatibility",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-008"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m beacon.adapters.browser_use_runner --mode compatibility --fallback-cmd \"python3 -m pytest -q -k compatibility --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "assertion": "`prototype` 不退化：迁移后 `prototype` 仍保留固定模板、freeze/review 与 canonical projection，但页面语义改由宿主原生 LLM 驱动。 (compatibility path preserves behavior across browser/device pairs)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor/tc-004/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-013",
+      "source_tc_id": "TC-005",
+      "tc_id": "TC-005-HAPPY",
+      "ac_id": "AC-005",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "happy",
+      "title": "AC-005 happy path :: `implement / qa` 宿主原生化：`implement` 与 `qa` 仍是唯一公开执行入口，但内部可选择 host direct / subagent / team，并明确记录选",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "happy",
+        "contract",
+        "browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": true,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "`implement / qa` 宿主原生化：`implement` 与 `qa` 仍是唯一公开执行入口，但内部可选择 host direct / subagent / team，并明确记录选择原因与 requirement 绑定。 (happy path completes with expected evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor/tc-005/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-014",
+      "source_tc_id": "TC-005",
+      "tc_id": "TC-005-NEGATIVE",
+      "ac_id": "AC-005",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "negative",
+      "title": "AC-005 negative path :: `implement / qa` 宿主原生化：`implement` 与 `qa` 仍是唯一公开执行入口，但内部可选择 host direct / subagent / team，并明确记录选",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "negative",
+        "contract",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-013"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "`implement / qa` 宿主原生化：`implement` 与 `qa` 仍是唯一公开执行入口，但内部可选择 host direct / subagent / team，并明确记录选择原因与 requirement 绑定。 (negative path is rejected or handled with explicit evidence)",
+      "priority": "P0",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor/tc-005/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-015",
+      "source_tc_id": "TC-005",
+      "tc_id": "TC-005-BOUNDARY",
+      "ac_id": "AC-005",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "boundary",
+      "title": "AC-005 boundary path :: `implement / qa` 宿主原生化：`implement` 与 `qa` 仍是唯一公开执行入口，但内部可选择 host direct / subagent / team，并明确记录选",
+      "browser_required": true,
+      "replay_required": false,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "boundary",
+        "contract",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-013"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "`implement / qa` 宿主原生化：`implement` 与 `qa` 仍是唯一公开执行入口，但内部可选择 host direct / subagent / team，并明确记录选择原因与 requirement 绑定。 (boundary path is validated with explicit evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor/tc-005/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-016",
+      "source_tc_id": "TC-005",
+      "tc_id": "TC-005-RECOVERY",
+      "ac_id": "AC-005",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "recovery",
+      "title": "AC-005 recovery path :: `implement / qa` 宿主原生化：`implement` 与 `qa` 仍是唯一公开执行入口，但内部可选择 host direct / subagent / team，并明确记录选",
+      "browser_required": true,
+      "replay_required": false,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "coverage_axes": [
+        "recovery",
+        "contract",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-013"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "`implement / qa` 宿主原生化：`implement` 与 `qa` 仍是唯一公开执行入口，但内部可选择 host direct / subagent / team，并明确记录选择原因与 requirement 绑定。 (recovery path survives refresh/back/retry with evidence)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor/tc-005/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-017",
+      "source_tc_id": "TC-005",
+      "tc_id": "TC-005-COMPATIBILITY",
+      "ac_id": "AC-005",
+      "qa_type": "compatibility",
+      "layer": "compatibility",
+      "scenario_family": "compatibility",
+      "title": "AC-005 compatibility path :: `implement / qa` 宿主原生化：`implement` 与 `qa` 仍是唯一公开执行入口，但内部可选择 host direct / subagent / team，并明确记录选",
+      "browser_required": true,
+      "replay_required": true,
+      "exploratory_runner": "browser-use",
+      "deterministic_runner": "playwright",
+      "explore_command": "",
+      "replay_command": "npx playwright test --project=chromium --project=firefox --project=webkit",
+      "coverage_axes": [
+        "compatibility",
+        "compatibility",
+        "browser"
+      ],
+      "depends_on": [
+        "SC-013"
+      ],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m beacon.adapters.browser_use_runner --mode compatibility --fallback-cmd \"python3 -m pytest -q -k compatibility --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "assertion": "`implement / qa` 宿主原生化：`implement` 与 `qa` 仍是唯一公开执行入口，但内部可选择 host direct / subagent / team，并明确记录选择原因与 requirement 绑定。 (compatibility path preserves behavior across browser/device pairs)",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor/tc-005/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-018",
+      "source_tc_id": "TC-006",
+      "tc_id": "TC-006-PRIMARY",
+      "ac_id": "AC-006",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-006 primary path :: support/release 一致性：`help / status / doctor / release` 对同一 feature 的下一步、降级、gate 与风险解释必须来自统一 trut",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor/tc-006/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-019",
+      "source_tc_id": "TC-007",
+      "tc_id": "TC-007-PRIMARY",
+      "ac_id": "AC-007",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-007 primary path :: 人类主面不扩张：迁移完成后，对外仍只有 `prd -> user-story -> test-case -> prototype -> implement -> qa -> release +",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor/tc-007/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    }
+  ]
+}

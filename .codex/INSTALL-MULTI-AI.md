@@ -12,7 +12,7 @@ Enable Beacon's evidence-first product workflow across both Codex and Claude Cod
 
 Beacon supports both Codex and Claude Code, but they have different skill discovery mechanisms:
 
-- **Codex**: Supports nested skill directories (discovers sub-skills automatically)
+- **Codex**: Uses `~/.agents/skills/` as the supported discovery root
 - **Claude Code**: Only scans first-level directories (requires flat structure)
 
 ### Quick Install (Recommended)
@@ -27,7 +27,7 @@ cd ~/Developer/Personal/products/beacon
 This script will:
 1. Install the main `beacon` skill for both Codex and Claude Code
 2. Create flat symlinks for all beacon sub-skills in `~/.claude/skills/`
-3. Preserve the nested structure for Codex in `~/.agents/skills/`
+3. Keep exactly one Codex symlink in `~/.agents/skills/`
 
 ### Manual Installation
 
@@ -39,12 +39,20 @@ git clone <beacon-repo-url> ~/Developer/Personal/products/beacon
 cd ~/Developer/Personal/products/beacon
 ```
 
-#### 2. Install for Codex (nested structure)
+#### 2. Install for Codex
 
 ```bash
 mkdir -p ~/.agents/skills
 ln -sf ~/Developer/Personal/products/beacon/skills/beacon ~/.agents/skills/beacon
 ```
+
+Do not install Beacon under `~/.codex/skills/beacon`. Codex may then discover:
+
+- `~/.agents/skills/beacon`
+- `~/.codex/skills/beacon`
+- nested duplicates under `~/.codex/skills/beacon/skills/beacon`
+
+and show duplicate Beacon skills in the picker.
 
 **Windows (PowerShell):**
 ```powershell
@@ -99,6 +107,7 @@ Check that symlinks are correctly created:
 # Verify Codex installation (nested structure)
 ls -la ~/.agents/skills/beacon
 find ~/.agents/skills/beacon -maxdepth 2 -name SKILL.md | sort
+test ! -e ~/.codex/skills/beacon && echo "ok: no ~/.codex/skills/beacon duplicate"
 
 # Verify Claude Code installation (flat structure)
 find ~/.claude/skills -maxdepth 1 -name 'beacon*' -type l
@@ -129,6 +138,17 @@ beacon --version
 beacon --help
 ```
 
+Expected:
+
+- Beacon reports `v1.3.6`
+- CLI has `reopen`
+- CLI does not have `change`
+
+That is correct because:
+
+- `beacon-change` is a host-visible skill
+- `beacon change` is not a public CLI subcommand
+
 ## Available Skills in AI Assistants
 
 After installation, you can invoke beacon skills using:
@@ -143,9 +163,9 @@ After installation, you can invoke beacon skills using:
 
 Or use the CLI directly:
 ```bash
-beacon prd create "Feature Name" --version v1.3.3
-beacon implement plan "Feature Name" --version v1.3.3
-beacon qa run "Feature Name" --version v1.3.3
+beacon prd create "Feature Name" --version v1.3.6
+beacon implement plan "Feature Name" --version v1.3.6
+beacon qa run "Feature Name" --version v1.3.6
 ```
 
 ## Updating Beacon
@@ -183,9 +203,25 @@ Skills update instantly through the symlinks - no need to restart AI assistants 
 
 ### Duplicate skills warning
 
-If you see duplicate beacon skills, ensure you only have ONE symlink per AI assistant:
-- Remove any `~/.codex/skills/beacon` (use `~/.agents/skills/beacon` instead)
-- Keep only one symlink in `~/.claude/skills/beacon`
+If you see duplicate beacon skills, enforce one root per assistant:
+
+- Codex:
+  - keep only `~/.agents/skills/beacon`
+  - remove `~/.codex/skills/beacon`
+  - remove stale links such as `~/.codex/skills/beacon.bak-*`
+- Claude Code:
+  - keep one `~/.claude/skills/beacon`
+  - keep one symlink per `beacon-*` flat sub-skill
+
+Recommended cleanup:
+
+```bash
+rm -rf ~/.codex/skills/beacon
+rm -f ~/.codex/skills/beacon.bak-*
+rm -f ~/.agents/skills/beacon
+mkdir -p ~/.agents/skills
+ln -sf ~/Developer/Personal/products/beacon/skills/beacon ~/.agents/skills/beacon
+```
 
 ### Permission issues
 
@@ -232,6 +268,6 @@ This is similar to how superpowers handles multi-AI compatibility.
 
 ## Current Release
 
-- **Version**: v1.3.3
-- **Theme**: Core slimming, external skill demotion, minimal HUD
-- **Human surface**: 6+3 commands (prd, user-story, test-case, implement, qa, release + help, status, doctor)
+- **Version**: v1.3.6
+- **Theme**: Host-native orchestration, delivery kernel convergence, minimal HUD
+- **Human surface**: host-visible workflow pack with minimal primary CLI surface

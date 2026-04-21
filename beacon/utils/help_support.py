@@ -8,6 +8,7 @@ from typing import Any
 
 from beacon.utils.control_plane import build_resume_contract
 from beacon.utils.coverage import compute_coverage_metrics
+from beacon.utils.delivery_kernel import build_surface_explanation, load_delivery_read_model
 from beacon.utils.governance import evaluate_takeover_baseline_gate, load_project_mode
 from beacon.utils.implementation_plan import (
     build_implementation_plan_gate_payload,
@@ -346,7 +347,9 @@ def _blocking_reasons(
     feature_scorecard = feature_scorecard if isinstance(feature_scorecard, dict) else {}
     delivery_status = str(revision_state.get("delivery_status", "") or "")
     continue_decision = str(feature_scorecard.get("continue_decision") or "").strip()
+    scorecard_release_ready = bool(feature_scorecard.get("release_ready", False))
     freeze_gate_exempt = delivery_status in {"implemented", "verifying", "verified", "accepted", "released"} or continue_decision == "ready_for_release"
+    qa_closure_authoritative = scorecard_release_ready or continue_decision == "ready_for_release"
 
     if isinstance(version_guard, dict) and str(version_guard.get("status", "") or "") == "blocked":
         code = str(version_guard.get("reason_code", "") or "").strip()
@@ -368,7 +371,11 @@ def _blocking_reasons(
         reasons.append("revision_superseded")
     if (coverage.get("planned_story", 0) or 0) <= 0:
         reasons.append("missing_user_story")
-    if delivery_status in {"implemented", "verifying", "verified", "accepted", "released"} and not bool(coverage.get("full_coverage", False)):
+    if (
+        delivery_status in {"implemented", "verifying", "verified", "accepted", "released"}
+        and not bool(coverage.get("full_coverage", False))
+        and not qa_closure_authoritative
+    ):
         reasons.append("coverage_incomplete")
     if delivery_status == "blocked":
         reasons.append("workflow_blocked")
@@ -884,6 +891,29 @@ def build_help_payload(
         "qa_current_session_id": str(current_qa_session.get("session_id", "") or ""),
         "qa_runner_type": str(current_qa_session.get("runner_type", "") or ""),
     }
+    delivery_read_model = (
+        load_delivery_read_model(project_root, version=resolved_version, feature=feature_name)
+        if feature_name
+        else {}
+    )
+    delivery_contract = delivery_read_model.get("contract") if isinstance(delivery_read_model.get("contract"), dict) else {}
+    if delivery_contract:
+        execution_surface["host_runtime"] = str(
+            delivery_contract.get("host_runtime") or execution_surface.get("host_runtime") or ""
+        )
+        execution_surface["implement_mode"] = str(
+            delivery_contract.get("effective_mode") or execution_surface.get("implement_mode") or ""
+        )
+        execution_surface["implement_runner"] = str(
+            delivery_contract.get("runner") or execution_surface.get("implement_runner") or ""
+        )
+        contract_snapshot = delivery_contract.get("capability_snapshot") if isinstance(delivery_contract.get("capability_snapshot"), dict) else {}
+        execution_surface["subagent_runtime_status"] = str(
+            contract_snapshot.get("subagent_runtime_status") or execution_surface.get("subagent_runtime_status") or ""
+        )
+        execution_surface["subagent_delegation_status"] = str(
+            contract_snapshot.get("subagent_delegation_status") or execution_surface.get("subagent_delegation_status") or ""
+        )
     next_step = _next_step(
         revision_state=revision_state,
         workflow_progress=workflow_progress,
@@ -953,6 +983,17 @@ def build_help_payload(
         "hud_refs": hud_refs,
     }
     minimal_hud = build_minimal_hud(minimal_hud_payload)
+    surface_explanation = build_surface_explanation(
+        delivery_contract=delivery_contract,
+        selected_surface=str(execution_surface.get("selected_surface") or ""),
+        blocked=blocked,
+        blocking_reasons=blocking,
+        diagnostics_status="",
+        next_action=str(next_step.get("action", "") or ""),
+        next_command=str(next_step.get("command", "") or ""),
+        fallback_allowed=bool(execution_surface.get("native_fallback_allowed", False)),
+        fallback_reason_code=str(delivery_contract.get("fallback_reason") or ""),
+    )
     decision_trace = [
         {
             "step": "version_truth",
@@ -1074,6 +1115,8 @@ def build_help_payload(
         "skill_discovery_hint": discovery_hint,
         "project_gate": profile_gate,
         "execution_surface": execution_surface,
+        "delivery_read_model": delivery_read_model,
+        "surface_explanation": surface_explanation,
         "hud": hud_refs,
         "minimal_hud": {
             **minimal_hud,

@@ -1,11 +1,13 @@
 ---
 name: beacon-implement
-description: Use when the user wants to plan or run implementation through Beacon's minimal v1.3.3 human surface. Keep `implement` as the only public implementation entrypoint; treat team runtime and subagent lanes as internal.
+description: Use when the user wants to plan or run implementation through Beacon's current v1.3.6 runtime surface. Keep `implement` as the only public implementation entrypoint; treat team runtime and subagent lanes as internal.
 ---
 
 # Beacon Implement
 
 This skill routes execution work through Beacon's `implement` surface.
+
+The public command stays on the `v1.3.6` runtime line while `v1.3.6` defines the shared delivery kernel and host-native execution contract.
 
 ## Use for
 

@@ -59,7 +59,7 @@ project_skills:
 
 ```bash
 beacon skill registry list --project-root <profile-root> --json
-beacon skill bind "Beacon Iteration Governance" --profile beacon-iter-dev --project-root <profile-root> --version v1.1.8
-beacon verify run "Beacon Iteration Governance" --project-root <profile-root> --version v1.1.8 --param repo_root=/abs/path/to/beacon --json
-beacon orchestrate run "Beacon Iteration Governance" --project-root <profile-root> --version v1.1.8 --stage delivery --param repo_root=/abs/path/to/beacon --dry-run --json
+beacon skill bind "Beacon Iteration Governance" --profile beacon-iter-dev --project-root <profile-root> --version v1.3.6
+beacon verify run "Beacon Iteration Governance" --project-root <profile-root> --version v1.3.6 --param repo_root=/abs/path/to/beacon --json
+beacon orchestrate run "Beacon Iteration Governance" --project-root <profile-root> --version v1.3.6 --stage delivery --param repo_root=/abs/path/to/beacon --dry-run --json
 ```

@@ -1,5 +1,11 @@
 # 执行索引（v1.3.3）
 
+## 当前线状态
+
+- `v1.3.3` 是当前正式 runtime release line。
+- 本页不是规划草稿索引，而是当前 release line 的执行资料入口。
+- 后续 planning / migration line 可以并行存在，但不得覆盖这条线的当前发布口径。
+
 ## 推荐阅读顺序
 
 1. `../SUMMARY.md`

@@ -6,6 +6,7 @@ from pathlib import Path
 from typer.testing import CliRunner
 
 from beacon.main import app
+from beacon.utils.material_sync import sync_feature_requirement_materials
 
 
 runner = CliRunner()
@@ -110,6 +111,20 @@ def test_doctor_sync_materials_should_rebuild_machine_story_and_qa_from_section_
     scenario_map = json.loads((tmp_path / "docs" / "beacon" / "v1.0.0" / ".machine" / "qa" / "friend-match.story-scenario-map.json").read_text(encoding="utf-8"))
     scenario_source_tc_ids = {item["source_tc_id"] for item in scenario_map["scenarios"]}
     assert {"TC-US001-01", "TC-US002-01", "TC-DB001-01", "TC-RG010-01"} <= scenario_source_tc_ids
+
+
+def test_sync_feature_requirement_materials_should_pass_explicit_defaults_to_test_case_create(tmp_path: Path):
+    _seed_friend_match_docs(tmp_path)
+
+    result = sync_feature_requirement_materials(
+        tmp_path,
+        version="v1.0.0",
+        feature="friend-match",
+    )
+
+    assert result["status"] == "synced"
+    assert (tmp_path / "docs" / "beacon" / "v1.0.0" / ".machine" / "qa" / "friend-match.ac-test-matrix.json").exists()
+    assert (tmp_path / "docs" / "beacon" / "v1.0.0" / ".machine" / "qa" / "friend-match.story-scenario-map.json").exists()
 
 
 def test_doctor_setup_context_with_sync_materials_should_include_sync_summary(tmp_path: Path):

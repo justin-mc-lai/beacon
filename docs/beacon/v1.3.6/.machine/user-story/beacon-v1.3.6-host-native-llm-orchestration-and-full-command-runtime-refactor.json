@@ -1,0 +1,282 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor",
+  "feature_slug": "beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor",
+  "version": "v1.3.6",
+  "current_revision_id": "R1",
+  "lifecycle_status": "frozen",
+  "updated_at": "2026-04-21T08:19:52.899266+00:00",
+  "revisions": [
+    {
+      "revision_id": "R1",
+      "feature_slug": "beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor",
+      "source_revision_id": null,
+      "reason": "draft",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:02d93f93588f88b1716b424a6b23faae255d09f928b06590decafbf8f7562380",
+      "superseded_by": null,
+      "created_at": "2026-04-21T06:06:05.130197+00:00",
+      "frozen_at": "2026-04-21T06:19:08.684402+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    }
+  ],
+  "stories": [
+    {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor",
+      "priority": "medium",
+      "status": "verified",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "general",
+          "text": "宿主模式默认成立：在 Claude / Codex skill 环境里执行 `beacon prd / prototype / implement / qa` 默认不要求 `BEACON_LLM_API_KEY`，并保留 host-native evidence。",
+          "required": true,
+          "status": "verified",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260421T161621398637",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "general",
+          "text": "统一 mode contract：`prd / user-story / test-case / prototype / implement / qa / release / help / status / doctor` 的 machine output 或 evidence 中都存在统一的 `requested_mode / effective_mode / fallback_reason / capability_snapshot` 字段。",
+          "required": true,
+          "status": "verified",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260421T161621398637",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "general",
+          "text": "requirement 命令同核：`prd / user-story / test-case / prototype` 不再私自直连 provider，各自通过同一 host/provider/rule arbitration 与 semantic envelope 工作。",
+          "required": true,
+          "status": "verified",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260421T161621398637",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "general",
+          "text": "`prototype` 不退化：迁移后 `prototype` 仍保留固定模板、freeze/review 与 canonical projection，但页面语义改由宿主原生 LLM 驱动。",
+          "required": true,
+          "status": "verified",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260421T161621398637",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "general",
+          "text": "`implement / qa` 宿主原生化：`implement` 与 `qa` 仍是唯一公开执行入口，但内部可选择 host direct / subagent / team，并明确记录选择原因与 requirement 绑定。",
+          "required": true,
+          "status": "verified",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260421T161621398637",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "general",
+          "text": "support/release 一致性：`help / status / doctor / release` 对同一 feature 的下一步、降级、gate 与风险解释必须来自统一 truth/read model，而不是各自独立猜测。",
+          "required": true,
+          "status": "verified",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260421T161621398637",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "general",
+          "text": "人类主面不扩张：迁移完成后，对外仍只有 `prd -> user-story -> test-case -> prototype -> implement -> qa -> release + help/status/doctor`。",
+          "required": true,
+          "status": "verified",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260421T161621398637",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — 宿主模式默认成立：在 Claude / Codex skill 环境里执行 `beacon prd / prototype / implement / qa` 默认不要求 `BEACON_LLM_API_KEY`，并保留 host-native evidence。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260421T161621398637",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — 统一 mode contract：`prd / user-story / test-case / prototype / implement / qa / release / help / status / doctor` 的 machine output 或 evidence 中都存在统一的 `requested_mode / effective_mode / fallback_reason / capability_snapshot` 字段。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260421T161621398637",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — requirement 命令同核：`prd / user-story / test-case / prototype` 不再私自直连 provider，各自通过同一 host/provider/rule arbitration 与 semantic envelope 工作。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260421T161621398637",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — `prototype` 不退化：迁移后 `prototype` 仍保留固定模板、freeze/review 与 canonical projection，但页面语义改由宿主原生 LLM 驱动。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260421T161621398637",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — `implement / qa` 宿主原生化：`implement` 与 `qa` 仍是唯一公开执行入口，但内部可选择 host direct / subagent / team，并明确记录选择原因与 requirement 绑定。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260421T161621398637",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — support/release 一致性：`help / status / doctor / release` 对同一 feature 的下一步、降级、gate 与风险解释必须来自统一 truth/read model，而不是各自独立猜测。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260421T161621398637",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — 人类主面不扩张：迁移完成后，对外仍只有 `prd -> user-story -> test-case -> prototype -> implement -> qa -> release + help/status/doctor`。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260421T161621398637",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        }
+      ],
+      "feature": "beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor",
+      "feature_slug": "beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor",
+      "version": "v1.3.6",
+      "verification_evidence": [
+        ".beacon/qa/features/beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260421T161621398637/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260421T161621398637/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260421T161621398637/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260421T161621398637/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260421T161621398637/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260421T161621398637/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260421T161621398637/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260421T161621398637/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json"
+      ]
+    }
+  ]
+}

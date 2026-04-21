@@ -1249,7 +1249,13 @@ def check_prototype_contract(
 
         pages_dir = Path(files.get("pages_dir")) if isinstance(files, dict) and files.get("pages_dir") else None
         page_specs_dir = Path(files.get("page_specs_dir")) if isinstance(files, dict) and files.get("page_specs_dir") else None
-        missing_pages = [page for page in required_pages if not pages_dir or not (pages_dir / f"{page}.md").exists()]
+        missing_pages = [
+            page
+            for page in required_pages
+            if not pages_dir
+            or not pages_dir.exists()
+            or not any(path.is_file() and path.name.endswith(f"{page}.md") for path in pages_dir.iterdir())
+        ]
         if missing_pages:
             issues.append({
                 "reason_code": "prototype_required_page_missing",

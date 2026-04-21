@@ -1,7 +1,7 @@
 # Beacon v1.3.3 总览
 
 **主题**：核心瘦身与外部 skill 降级  
-**状态**：规划线  
+**状态**：当前 runtime release line  
 **日期**：2026-04-16
 
 ---
@@ -21,6 +21,12 @@ human minimal surface
 - core 继续只教 `6+3`
 - 宿主原生能力继续优先
 - 外部 `skill / profile / orchestrate / bridge` 退到 compatibility plane
+
+## 当前发布口径
+
+- `v1.3.3` 是 Beacon 当前正式 runtime release line。
+- 包版本真相、README、root skill 与 `skills/beacon/` 当前都对齐到这条线。
+- 后续版本如 `v1.3.5 / v1.3.6` 可以继续存在为 planning / migration line，但不改变 `v1.3.3` 当前发布真相。
 
 ## 当前版本目标
 

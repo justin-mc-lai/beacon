@@ -1,0 +1,122 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor",
+  "feature_slug": "beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor",
+  "version": "v1.3.6",
+  "revision_id": "R1",
+  "run_id": "run-20260421T160700Z-v136promo",
+  "implemented_at": "2026-04-21T16:07:00+08:00",
+  "runner": "codex",
+  "skill": "beacon-iteration-governance",
+  "profile_id": "",
+  "git_commit": "320d114489d9a04f9976af458f51a5c5dc201cdc",
+  "services": [],
+  "implementation_scope_summary": "Promoted Beacon v1.3.6 host-native runtime truth, shared delivery kernel, release docs convergence, and packaged skill alignment.",
+  "business_goal_summary": "Make v1.3.6 the current runtime release line with aligned version truth, public docs, host skills, and release evidence.",
+  "acceptance_scope": [
+    "version truth promotion",
+    "root docs and packaged skill convergence",
+    "release evidence generation",
+    "runtime and docs regression verification"
+  ],
+  "assumptions": [
+    "v1.3.6 host-native runtime modules are the canonical implementation surface",
+    "release promotion evidence can be expressed through change docs, version truth, and regression suites"
+  ],
+  "simplicity_notes": [
+    "Promotion work keeps the public command surface unchanged",
+    "Release evidence is generated from existing Beacon release/change contracts"
+  ],
+  "scope_guard": {
+    "in_scope": true,
+    "summary": "Restricted to Beacon runtime promotion, docs convergence, packaged skill alignment, and release evidence.",
+    "allowed_paths": [
+      "beacon/",
+      "README.md",
+      "SKILL.md",
+      "CLAUDE.md",
+      ".claude-plugin/",
+      "skills/beacon/",
+      "skills/beacon-iteration-governance/",
+      "docs/beacon/v1.3.6/",
+      "tests/"
+    ]
+  },
+  "changed_files": [
+    "beacon/__init__.py",
+    "beacon/version-truth.json",
+    "beacon/utils/semantic_runtime.py",
+    "beacon/utils/delivery_kernel.py",
+    "README.md",
+    "SKILL.md",
+    "CLAUDE.md",
+    ".claude-plugin/plugin.json",
+    "skills/beacon/SKILL.md",
+    "skills/beacon/metadata.json",
+    "skills/beacon/examples/basic-workflow.md",
+    "skills/beacon/examples/release-readiness.md",
+    "skills/beacon/examples/implementation-with-omx.md",
+    "skills/beacon-iteration-governance/SKILL.md",
+    "docs/beacon/v1.3.6/SUMMARY.md",
+    "docs/beacon/v1.3.6/execution/project-skill-qa-evolution-blueprint.md",
+    "docs/beacon/v1.3.6/release/v1.3.6.md",
+    "docs/beacon/v1.3.6/release/runtime-promotion-checklist.md",
+    "docs/beacon/v1.3.6/change/beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor.md",
+    "docs/beacon/v1.3.6/.machine/change/beacon-v1.3.6-host-native-llm-orchestration-and-full-command-runtime-refactor.json",
+    "tests/test_docs_current_contract.py",
+    "tests/test_v120_runtime_release_alignment.py",
+    "tests/test_v131_host_skill_pack.py"
+  ],
+  "modules_touched": [
+    "beacon",
+    "docs/beacon/v1.3.6",
+    "skills/beacon",
+    "skills/beacon-iteration-governance",
+    "tests"
+  ],
+  "additions": [
+    "Added `docs/beacon/v1.3.6/execution/project-skill-qa-evolution-blueprint.md`.",
+    "Added v1.3.6 feature-level and version-level change evidence."
+  ],
+  "modifications": [
+    "Updated version truth, root docs, packaged skill metadata, and public skill examples for v1.3.6.",
+    "Updated host-pack and release-alignment tests to assert the promoted release truth."
+  ],
+  "deletions": [],
+  "refactors": [
+    "Reframed migration phrasing to current runtime release phrasing across public Beacon surfaces."
+  ],
+  "verification": [
+    {
+      "command": "python3 -m pytest -q tests/test_v136_delivery_kernel_read_model.py tests/test_v136_host_native_requirement_contracts.py tests/test_v135_transactional_runtime_and_prd_compile.py tests/test_v135_qa_team_run_guards.py tests/test_v132_implement_three_modes_functional.py tests/test_v119_release_scorecard_and_browser_compiler.py tests/test_v133_minimal_hud_help_support.py tests/test_doctor_v2_contract.py tests/test_beacon.py tests/test_llm_loop_orchestration.py tests/test_v120_runtime_release_alignment.py tests/test_v120_release_line_alignment.py",
+      "status": "passed"
+    },
+    {
+      "command": "python3 -m pytest -q tests/test_docs_current_contract.py tests/test_skill_standard_layout.py tests/test_v131_host_skill_pack.py tests/test_skill_command_alignment.py tests/test_v110_docs_examples_contract.py tests/test_compat_regression_docs_examples.py",
+      "status": "pending_rerun_after_promotion_fixes"
+    },
+    {
+      "command": "python3 -m beacon.main release create v1.3.6 --project . --output .beacon/release-v1.3.6-checklist.md",
+      "status": "passed",
+      "evidence": ".beacon/release-v1.3.6-checklist.md"
+    }
+  ],
+  "verification_signals": {
+    "count": 3,
+    "has_acceptance_scope": true,
+    "has_assumptions": true
+  },
+  "known_risks": [
+    "Release gate still depends on refreshed v1.3.6 QA/runtime evidence for the promoted line."
+  ],
+  "rollback_notes": [
+    "Revert version truth and current-line docs only if v1.3.6 release promotion is abandoned."
+  ],
+  "artifact_updates": {},
+  "traceability": {
+    "request_path": "",
+    "result_path": "",
+    "stdout_path": "",
+    "stderr_path": ""
+  }
+}

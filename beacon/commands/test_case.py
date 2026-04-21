@@ -7,7 +7,7 @@ import os
 import re
 from datetime import datetime
 from pathlib import Path
-from typing import Optional
+from typing import Any, Optional
 
 import typer
 
@@ -22,7 +22,14 @@ from beacon.utils.qa9 import (
     parse_qa_types,
     to_legacy_layer,
 )
+from beacon.utils.runtime import write_json
 from beacon.utils.requirement_parsing import build_feature_ac_items, extract_qa_case_rows
+from beacon.utils.semantic_runtime import (
+    build_mode_contract,
+    build_semantic_capability_snapshot,
+    load_host_response_json,
+    normalize_requested_mode,
+)
 from beacon.utils.story_scenarios import expand_story_scenarios, write_story_scenario_map
 from beacon.utils.versioning import discover_versions, normalize_version, resolve_operational_docs_version, resolve_target_version
 
@@ -497,6 +504,48 @@ def _normalize_existing_qa9_entries(
     return normalized
 
 
+def _extract_host_test_case_payload() -> dict[str, Any]:
+    payload, _ = load_host_response_json("test-case")
+    if not payload:
+        return {}
+    for candidate in (payload.get("test_case"), payload.get("payload"), payload):
+        if isinstance(candidate, dict):
+            return candidate
+    return {}
+
+
+def _normalize_host_matrix_entries(
+    *,
+    feature: str,
+    feature_slug: str,
+    entries_payload: list[dict[str, Any]],
+    ac_items: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    normalized: list[dict[str, Any]] = []
+    ac_seed = ac_items or [{"ac_id": "AC-001", "text": f"{feature} core flow works", "source": "fallback"}]
+    for index, item in enumerate(entries_payload, start=1):
+        if not isinstance(item, dict):
+            continue
+        ac = ac_seed[(index - 1) % len(ac_seed)]
+        layer = str(item.get("layer") or "").strip() or _infer_layer_from_ac(
+            str(item.get("assertion") or item.get("title") or ac.get("text") or "")
+        )
+        tc_id = str(item.get("tc_id") or item.get("id") or f"TC-{index:03d}").strip() or f"TC-{index:03d}"
+        normalized.append(
+            {
+                "tc_id": tc_id,
+                "ac_id": str(item.get("ac_id") or ac.get("ac_id") or "AC-001").strip() or "AC-001",
+                "layer": layer,
+                "command": str(item.get("command") or _default_command_for_layer(layer)).strip() or _default_command_for_layer(layer),
+                "assertion": str(item.get("assertion") or _default_assertion_for_layer(layer)).strip() or _default_assertion_for_layer(layer),
+                "evidence_path": str(item.get("evidence_path") or f".beacon/evidence/test-results/{feature_slug}/{tc_id}.json"),
+                "status": str(item.get("status") or "pending"),
+                "source": str(item.get("source") or "host:test-case"),
+            }
+        )
+    return normalized
+
+
 def _build_story_scenario_payload(
     *,
     project_root: Path,
@@ -748,7 +797,7 @@ def create(
     feature: str = typer.Argument(..., help="Feature name"),
     test_type: str = typer.Option("all", "--type", "-t", help="Test type: smoke/new/regression/all"),
     version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
-    project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
+    project: Optional[str] = typer.Option(None, "--project", "-p", "--project-root", help="Project root"),
     output: Optional[str] = typer.Option(None, "--output", "-o", help="Output file"),
     overwrite_doc: bool = typer.Option(
         False,
@@ -785,6 +834,12 @@ def create(
         "--matrix-output",
         help="QA9 matrix output file path (*.qa9-matrix.json).",
     ),
+    qa9: bool = typer.Option(False, "--qa9", help="Legacy compatibility flag to emit QA9 mirror output."),
+    expand_scenarios: bool = typer.Option(
+        False,
+        "--expand-scenarios",
+        help="Legacy compatibility flag to force scenario expansion metadata in mirror outputs.",
+    ),
     expansion_profile: str = typer.Option(
         "pua-web",
         "--expansion-profile",
@@ -795,6 +850,14 @@ def create(
         "--scenario-depth",
         help="Scenario expansion depth: minimal/standard/deep.",
     ),
+    prototype_contract: bool = typer.Option(
+        False,
+        "--prototype-contract",
+        help="Legacy compatibility flag for prototype contract-aware test case generation.",
+    ),
+    mode: str = typer.Option("auto", "--mode", help="Compile mode: auto/llm/rule"),
+    model: str = typer.Option("beacon-test-case-compiler", "--model", help="Compiler model label for evidence"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON payload"),
     ui_runner: str = typer.Option(
         "",
         "--ui-runner",
@@ -802,6 +865,7 @@ def create(
     ),
 ):
     """Create test cases and executable AC matrix."""
+    prototype_contract_requested = prototype_contract
     project_root = Path(project) if project else Path.cwd()
     try:
         resolved_version = resolve_operational_docs_version(
@@ -814,6 +878,48 @@ def create(
         raise typer.Exit(2)
     feature_slug = _slug(feature)
     memory_context_path = os.environ.get("BEACON_STAGE_CONTEXT_PATH", "").strip()
+    try:
+        requested_mode = normalize_requested_mode(mode)
+    except ValueError:
+        typer.echo("Invalid --mode. Use auto/llm/rule.", err=True)
+        raise typer.Exit(2)
+    capability_snapshot = build_semantic_capability_snapshot(
+        "test-case",
+        disable_env="BEACON_TEST_CASE_DISABLE_LLM",
+    )
+    fallback_reason = ""
+    effective_mode = requested_mode
+    host_payload: dict[str, Any] = {}
+    if requested_mode == "rule":
+        effective_mode = "rule"
+    elif bool(capability_snapshot.get("llm_disabled")):
+        if requested_mode == "llm":
+            typer.echo("LLM compile disabled by BEACON_TEST_CASE_DISABLE_LLM.", err=True)
+            raise typer.Exit(2)
+        effective_mode = "rule"
+        fallback_reason = "llm_disabled"
+    elif bool(capability_snapshot.get("host_semantic_ready")):
+        host_payload = _extract_host_test_case_payload()
+        if host_payload:
+            effective_mode = "host"
+        elif requested_mode == "llm":
+            typer.echo("Test case semantic compile requires host semantic response.", err=True)
+            raise typer.Exit(2)
+        else:
+            effective_mode = "rule"
+            fallback_reason = "host_compile_failed"
+    else:
+        if requested_mode == "llm":
+            typer.echo("Test case semantic compile requires host semantic response.", err=True)
+            raise typer.Exit(2)
+        effective_mode = "rule"
+        fallback_reason = "llm_unavailable"
+    compiler = build_mode_contract(
+        requested_mode=requested_mode,
+        effective_mode=effective_mode,
+        fallback_reason=fallback_reason,
+        capability_snapshot=capability_snapshot,
+    )
 
     # Read ACs from existing user-story/prd docs
     us_path, us_content = _read_first_existing(
@@ -825,6 +931,13 @@ def create(
     qa_path, qa_content = _read_first_existing(
         _candidate_doc_paths(project_root, resolved_version, "qa/test-cases", feature_slug)
     )
+    legacy_story_path = project_root / ".beacon" / "user-story" / f"{feature_slug}.json"
+    docs_story_dir = project_root / "docs" / "beacon" / resolved_version / "user-story"
+    legacy_story_dir = project_root / ".beacon" / "user-story"
+    story_surface_exists = any(
+        directory.exists() and any(directory.iterdir())
+        for directory in (docs_story_dir, legacy_story_dir)
+    )
     ac_items = build_feature_ac_items(
         user_story_content=us_content,
         prd_content=prd_content,
@@ -834,7 +947,27 @@ def create(
         qa_source=f"qa:test-cases:{qa_path}" if qa_path else "qa:test-cases:missing",
     )
     if not ac_items:
-        ac_items = [{"ac_id": "AC-001", "text": f"{feature} core flow works", "source": "fallback"}]
+        if legacy_story_path.exists():
+            try:
+                legacy_story = json.loads(legacy_story_path.read_text(encoding="utf-8"))
+            except Exception:  # noqa: BLE001
+                legacy_story = {}
+            acceptance = legacy_story.get("acceptance_criteria") if isinstance(legacy_story, dict) else {}
+            legacy_rows: list[str] = []
+            if isinstance(acceptance, dict):
+                for values in acceptance.values():
+                    if isinstance(values, list):
+                        legacy_rows.extend(str(item).strip() for item in values if str(item).strip())
+            if legacy_rows:
+                ac_items = [
+                    {"ac_id": f"AC-{idx:03d}", "text": item, "source": f"legacy-user-story:{legacy_story_path}"}
+                    for idx, item in enumerate(legacy_rows, start=1)
+                ]
+        if not ac_items:
+            if story_surface_exists and not prd_path and not qa_path and not legacy_story_path.exists():
+                typer.echo(f"user story not found for feature: {feature_slug}", err=True)
+                raise typer.Exit(2)
+            ac_items = [{"ac_id": "AC-001", "text": f"{feature} core flow works", "source": "fallback"}]
     qa_case_rows = extract_qa_case_rows(qa_content, f"qa:test-cases:{qa_path}" if qa_path else "qa:test-cases:missing")
 
     prototype_navigation, prototype_interaction = _load_prototype_contract_artifacts(
@@ -846,7 +979,15 @@ def create(
     route_closure_contract, implementation_map = _load_route_closure_artifacts(
         project_root, resolved_version, feature_slug
     )
-    if qa_case_rows:
+    host_matrix_entries = host_payload.get("entries") if isinstance(host_payload.get("entries"), list) else []
+    if effective_mode == "host" and host_matrix_entries:
+        entries = _normalize_host_matrix_entries(
+            feature=feature,
+            feature_slug=feature_slug,
+            entries_payload=host_matrix_entries,
+            ac_items=ac_items,
+        )
+    elif qa_case_rows:
         entries = _build_entries_from_qa_case_rows(
             feature=feature,
             feature_slug=feature_slug,
@@ -990,6 +1131,10 @@ def create(
         "feature_slug": feature_slug,
         "version": resolved_version,
         "generated_at": datetime.now().isoformat(),
+        "compiler": {
+            **compiler,
+            "model": model,
+        },
         "entries": entries,
     }
 
@@ -1033,7 +1178,24 @@ def create(
                 command_baseline[qa_type] = default_command_for_qa_type(qa_type, ui_runner=resolved_ui_runner)
     if automation_target_rate < 0 or automation_target_rate > 1:
         raise typer.BadParameter("--automation-target-rate must be between 0 and 1")
-    if qa_case_rows:
+    host_qa9_entries = host_payload.get("qa9_entries") if isinstance(host_payload.get("qa9_entries"), list) else []
+    if effective_mode == "host" and host_qa9_entries:
+        qa9_entries = _normalize_existing_qa9_entries(
+            feature=feature,
+            feature_slug=feature_slug,
+            entries=host_qa9_entries,
+            ac_items=ac_items,
+            ui_runner=resolved_ui_runner,
+        )
+    elif effective_mode == "host" and host_matrix_entries:
+        qa9_entries = _normalize_existing_qa9_entries(
+            feature=feature,
+            feature_slug=feature_slug,
+            entries=host_matrix_entries,
+            ac_items=ac_items,
+            ui_runner=resolved_ui_runner,
+        )
+    elif qa_case_rows:
         qa9_entries = _build_entries_from_qa_case_rows(
             feature=feature,
             feature_slug=feature_slug,
@@ -1055,6 +1217,10 @@ def create(
         "feature": feature,
         "feature_slug": feature_slug,
         "version": resolved_version,
+        "compiler": {
+            **compiler,
+            "model": model,
+        },
         "qa_profile": qa_profile,
         "qa_types": qa_types_resolved,
         "llm_plan": build_qa_llm_plan(
@@ -1119,14 +1285,64 @@ def create(
         feature=feature,
         payload=scenario_payload,
     )
+    legacy_qa_path = project_root / ".beacon" / "qa" / f"{feature_slug}.json"
+    legacy_qa_path.parent.mkdir(parents=True, exist_ok=True)
+    legacy_mapping = {
+        str(item.get("ac_id") or f"AC-{idx:03d}"): [str(item.get("tc_id") or "")]
+        for idx, item in enumerate(entries, start=1)
+        if str(item.get("tc_id") or "").strip()
+    }
+    legacy_payload = {
+        "feature": feature,
+        "feature_slug": feature_slug,
+        "version": resolved_version,
+        "ac_to_tc_mapping": legacy_mapping,
+        "scenarios": list(scenario_payload.get("scenarios") or []),
+    }
+    if prototype_navigation or prototype_interaction:
+        legacy_payload["prototype_contract"] = {
+            "navigation": prototype_navigation,
+            "interaction": prototype_interaction,
+        }
+    elif prototype_contract_requested:
+        legacy_contract_path = project_root / "docs" / "beacon" / resolved_version / "prototype" / feature_slug / "contract.json"
+        if legacy_contract_path.exists():
+            try:
+                legacy_payload["prototype_contract"] = json.loads(legacy_contract_path.read_text(encoding="utf-8"))
+            except Exception:  # noqa: BLE001
+                legacy_payload["prototype_contract"] = {}
+    write_json(legacy_qa_path, legacy_payload)
+    if qa9:
+        legacy_qa9_path = project_root / ".beacon" / "qa" / f"{feature_slug}-qa9-matrix.json"
+        legacy_qa9_path.parent.mkdir(parents=True, exist_ok=True)
+        legacy_qa9_payload = {
+            "feature": feature,
+            "feature_slug": feature_slug,
+            "version": resolved_version,
+            "qa_types": [
+                "functional",
+                "smoke",
+                "unit",
+                "interface",
+                "contract",
+                "integration",
+                "regression",
+                "exception",
+                "compatibility",
+            ],
+        }
+        write_json(legacy_qa9_path, legacy_qa9_payload)
+    elif expand_scenarios:
+        legacy_payload["scenarios"] = list(scenario_payload.get("scenarios") or [])
+        write_json(legacy_qa_path, legacy_payload)
 
     md_rows = "\n".join(
         f"| {x['ac_id']} | {x['tc_id']} | {x['layer']} | `{x['command']}` | {x['assertion']} | `{x['evidence_path']}` |"
         for x in entries
     )
     result_rows = "\n".join(f"| {x['tc_id']} | Pending | from {x['ac_id']} |" for x in entries)
-
-    md_content = f"""# Test Cases: {feature}
+    host_markdown = str(host_payload.get("markdown") or "").strip() if effective_mode == "host" else ""
+    md_content = host_markdown or f"""# Test Cases: {feature}
 
 ## Overview
 
@@ -1134,6 +1350,9 @@ def create(
 **Test Type**: {test_type.upper()}
 **Version**: {resolved_version}
 **Generated**: {datetime.now().strftime('%Y-%m-%d %H:%M')}
+**Requested Mode**: {compiler['requested_mode']}
+**Effective Mode**: {compiler['effective_mode']}
+**Fallback Reason**: {compiler['fallback_reason'] or 'N/A'}
 **Memory Context**: {memory_context_path or 'N/A'}
 **AC Matrix JSON**: {matrix_path}
 **QA9 Matrix JSON**: {qa9_matrix_path}
@@ -1180,6 +1399,30 @@ def create(
                 + "\n",
                 encoding="utf-8",
             )
+
+    if json_output:
+        typer.echo(
+            json.dumps(
+                {
+                    "status": "ok",
+                    "feature": feature,
+                    "feature_slug": feature_slug,
+                    "version": resolved_version,
+                    "model": model,
+                    **compiler,
+                    "output_path": str(output_path),
+                    "matrix_path": str(matrix_path),
+                    "qa9_matrix_path": str(qa9_matrix_path),
+                    "scenario_map_path": str(scenario_map_path),
+                    "entry_count": len(entries),
+                    "qa9_entry_count": len(qa9_entries),
+                    "scenario_count": len(scenario_payload.get("scenarios", [])),
+                },
+                ensure_ascii=False,
+                indent=2,
+            )
+        )
+        return
 
     if doc_written:
         typer.echo(f"✓ Test cases created: {output_path}")

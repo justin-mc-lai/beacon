@@ -11,6 +11,7 @@ from typing import Any
 from urllib import request
 
 from beacon.utils.runtime import now_iso
+from beacon.utils.semantic_runtime import load_host_response_json
 from beacon.utils.versioning import load_version_truth, resolve_docs_version
 
 SUPPORTED_INTENTS = (
@@ -646,6 +647,24 @@ def _llm_route(goal: str) -> dict[str, Any]:
     }
 
 
+def _host_route(goal: str) -> dict[str, Any]:
+    payload, _source = load_host_response_json("intent-router")
+    if not payload:
+        raise RuntimeError("host semantic response missing")
+    intent = str(payload.get("intent", "")).strip().lower()
+    if intent not in SUPPORTED_INTENTS:
+        intent = "think"
+    confidence = float(payload.get("confidence", 0.8) or 0.8)
+    confidence = max(0.0, min(1.0, confidence))
+    return {
+        "intent": intent,
+        "confidence": round(confidence, 2),
+        "reason": str(payload.get("reason", "")).strip() or "host_route",
+        "stage_hint": str(payload.get("stage_hint", "")).strip().lower(),
+        "router_mode": "host",
+    }
+
+
 def _apply_boundary_guard(
     goal: str,
     route: dict[str, Any],
@@ -786,11 +805,14 @@ def optimize_prompt_to_plan(
     route = _rule_route(goal, intent_keywords=router_config["intent_keywords"])
     if _should_use_llm(router_mode):
         try:
-            route = _llm_route(goal)
-        except Exception as exc:  # noqa: BLE001
-            route = dict(route)
-            route["router_mode"] = "rule-fallback"
-            route["reason"] = f"{route.get('reason', '')};llm_error={exc}".strip(";")
+            route = _host_route(goal)
+        except Exception:
+            try:
+                route = _llm_route(goal)
+            except Exception as exc:  # noqa: BLE001
+                route = dict(route)
+                route["router_mode"] = "rule-fallback"
+                route["reason"] = f"{route.get('reason', '')};llm_error={exc}".strip(";")
 
     route = _apply_boundary_guard(
         goal,
@@ -941,3 +963,114 @@ def build_prompt_adaptation_pack(
         "recommended_command": str(plan.get("recommended_command", "")).strip(),
         "assistant_context": " ".join(line.strip() for line in guidance_lines if line.strip()),
     }
+
+
+def _legacy_intent_name(goal: str, intent: str) -> str:
+    text = _normalize_text(goal)
+    if intent == "run" and any(token in text for token in ("implement", "implementation", "实现")):
+        return "implement"
+    if intent == "outside-boundary":
+        return "out-of-scope"
+    return intent
+
+
+def _legacy_rule_route(user_input: str) -> dict[str, Any]:
+    text = _normalize_text(user_input)
+    if not text:
+        return {"intent": "think", "confidence": 0.35, "reason": "empty_input_default_to_think"}
+
+    legacy_keywords = {key: tuple(value) for key, value in DEFAULT_INTENT_KEYWORDS.items()}
+    legacy_keywords["implement"] = ("implement", "implementation", "实现", "开发", "编码")
+    legacy_keywords["prototype"] = legacy_keywords.get("prototype", ("prototype", "wireframe", "mockup"))
+    legacy_keywords["test-case"] = tuple(legacy_keywords.get("test-case", ())) + ("test cases", "test case")
+
+    scored: list[tuple[str, list[str]]] = []
+    for intent, keywords in legacy_keywords.items():
+        hits = _keyword_hits(text, keywords)
+        if hits:
+            scored.append((intent, hits))
+
+    if not scored:
+        return {"intent": "out-of-scope", "confidence": 0.2, "reason": "no_beacon_signal"}
+
+    scored.sort(key=lambda item: (len(item[1]), INTENT_PRIORITY.get(item[0], 0)), reverse=True)
+    best_intent, best_hits = scored[0]
+    second_score = len(scored[1][1]) if len(scored) > 1 else 0
+    confidence = min(0.95, 0.74 + 0.12 * len(best_hits) - 0.04 * second_score)
+    return {
+        "intent": _legacy_intent_name(user_input, best_intent),
+        "confidence": round(confidence, 2),
+        "reason": f"legacy_keyword_rule(best={best_intent},hits={best_hits[:3]})",
+    }
+
+
+def detect_intent(user_input: str, *, project_root: str | Path | None = None, version: str = "auto") -> dict[str, Any]:
+    """Backward-compatible intent detector for older tests/importers."""
+    del project_root, version
+    result = _legacy_rule_route(user_input)
+    return {
+        "intent": str(result.get("intent") or "think"),
+        "confidence": round(float(result.get("confidence", 0.0) or 0.0), 2),
+        "reason": str(result.get("reason") or "").strip(),
+        "mode": "rule",
+    }
+
+
+def route_intent(
+    user_input: str,
+    *,
+    mode: str = "rule",
+    project_root: str | Path | None = None,
+    version: str = "auto",
+) -> dict[str, Any]:
+    """Backward-compatible routing facade preserving the legacy public API."""
+    root = Path(project_root) if project_root else Path.cwd()
+    router_config = _load_router_config(root)
+    mode_norm = _normalize_text(mode)
+
+    if mode_norm == "host":
+        try:
+            route = _host_route(user_input)
+        except Exception:
+            route = _legacy_rule_route(user_input)
+    elif mode_norm == "llm":
+        try:
+            route = _llm_route(user_input)
+        except Exception:
+            route = _legacy_rule_route(user_input)
+    else:
+        route = _legacy_rule_route(user_input)
+
+    if str(route.get("intent") or "") != "out-of-scope":
+        route = _apply_boundary_guard(
+            user_input,
+            route,
+            intent_keywords=router_config["intent_keywords"],
+            outside_boundary_keywords=router_config["outside_boundary_keywords"],
+        )
+    intent = _legacy_intent_name(user_input, str(route.get("intent") or "think"))
+    confidence = float(route.get("confidence", 0.0) or 0.0)
+    if intent == "out-of-scope":
+        confidence = min(confidence, 0.25)
+
+    return {
+        "intent": intent,
+        "confidence": round(confidence, 2),
+        "reason": str(route.get("reason") or "").strip(),
+        "mode": mode_norm or "rule",
+        "stage_hint": str(route.get("stage_hint") or "").strip(),
+        "boundary": route.get("boundary", {}),
+    }
+
+
+def render_command_template(template: str, context: dict[str, Any]) -> str:
+    """Render legacy double-brace templates and fail on missing variables."""
+    mapping = {str(key): str(value) for key, value in (context or {}).items()}
+
+    def _replace(match: re.Match[str]) -> str:
+        key = match.group(1)
+        if key not in mapping:
+            raise KeyError(key)
+        return mapping[key]
+
+    return re.sub(r"\{\{\s*([a-zA-Z0-9_-]+)\s*\}\}", _replace, str(template))

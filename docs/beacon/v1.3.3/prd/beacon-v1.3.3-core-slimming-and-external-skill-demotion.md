@@ -3,7 +3,7 @@
 **Feature**: `beacon-v1.3.3-core-slimming-and-external-skill-demotion`  
 **Version**: `v1.3.3`  
 **Date**: `2026-04-16`  
-**Status**: `planning line`
+**Status**: `current release snapshot`
 
 ## 1. 问题
 

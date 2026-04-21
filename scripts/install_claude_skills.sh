@@ -5,11 +5,13 @@
 set -e
 
 BEACON_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+REPO_ROOT_SOURCE="${BEACON_ROOT}"
 SKILLS_SOURCE="${BEACON_ROOT}/skills/beacon"
 CLAUDE_SKILLS_DIR="${HOME}/.claude/skills"
 
 echo "=== Beacon Skills Installer for Claude Code ==="
 echo "Beacon root: ${BEACON_ROOT}"
+echo "Repo root source: ${REPO_ROOT_SOURCE}"
 echo "Skills source: ${SKILLS_SOURCE}"
 echo "Claude skills dir: ${CLAUDE_SKILLS_DIR}"
 echo ""
@@ -19,12 +21,14 @@ mkdir -p "${CLAUDE_SKILLS_DIR}"
 
 # List of beacon sub-skills to install
 BEACON_SUBSKILLS=(
+    "beacon-change"
     "beacon-doctor"
     "beacon-help"
     "beacon-implement"
     "beacon-memory-friction-evolution"
     "beacon-prd"
     "beacon-prd-bootstrap"
+    "beacon-prototype"
     "beacon-qa"
     "beacon-real-project-validation"
     "beacon-release"
@@ -35,14 +39,15 @@ BEACON_SUBSKILLS=(
     "using-beacon"
 )
 
-# Install main beacon skill
+# Install main beacon skill as repo root so Claude can scan
+# ~/.claude/skills/beacon/SKILL.md and packaged tree under skills/beacon/
 echo "Installing main beacon skill..."
 if [ -L "${CLAUDE_SKILLS_DIR}/beacon" ]; then
     echo "  Removing existing beacon symlink"
     rm "${CLAUDE_SKILLS_DIR}/beacon"
 fi
-ln -sf "${SKILLS_SOURCE}" "${CLAUDE_SKILLS_DIR}/beacon"
-echo "  ✓ beacon -> ${SKILLS_SOURCE}"
+ln -sf "${REPO_ROOT_SOURCE}" "${CLAUDE_SKILLS_DIR}/beacon"
+echo "  ✓ beacon -> ${REPO_ROOT_SOURCE}"
 
 # Install all sub-skills as flat symlinks
 echo ""

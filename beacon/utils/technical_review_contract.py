@@ -402,6 +402,11 @@ def materialize_technical_review_contract(
     payload["feature_slug"] = feature_slug(feature)
     payload["version"] = resolved_version
     payload["boundary_principles"] = global_boundary_principle_summaries()
+    review_status = str(payload.get("review_status") or "").strip().lower()
+    approved_by = str(payload.get("approved_by") or "").strip()
+    reviewed_at = str(payload.get("reviewed_at") or "").strip()
+    if review_status in {"approved", "accepted"} and approved_by and not reviewed_at:
+        payload["reviewed_at"] = now_iso()
     json_path = technical_review_contract_json_path(project_root, resolved_version, feature)
     markdown_path = technical_review_contract_markdown_path(project_root, resolved_version, feature)
     write_json(json_path, payload)

@@ -1,5 +1,7 @@
 # User Story: beacon-v1.3.6-visual-management-console-and-material-viewer
 
+**Status**: `prototype-source`
+
 ## Story
 
 **As a** CEO / 一人公司经营者 / 项目负责人 / Beacon 运行治理者,  
@@ -50,7 +52,41 @@
 
 ### US-011: 页面实现必须回链 `v1.3.5` wireframe freeze
 
-作为需求冻结者，我希望 `v1.3.6` 的正式页面都能回链到 `v1.3.5` 的 wireframe artifact，而不是继续依赖 HTML 高保真原型。
+作为需求冻结者，我希望 `v1.3.6` 的正式页面都能回链到 `v1.3.5` 的 wireframe artifact，并明确承接 `v1.3.4` 管理看板的首页、总览、详情、运行中心、恢复诊断主轴，而不是继续依赖 HTML 高保真原型。
+
+## Prototype Contract
+
+本线 prototype 的整理目标，不是重新发明一套新后台，而是把 `v1.3.4` 已经冻结的 Beacon 管理看板主轴，用 `v1.3.5+` 的最新 wireframe surface 重新编译成 `v1.3.6` 的 7 页草图包：
+
+- 保留 `v1.3.4` 的首页、管理总览、项目详情、运行中心、恢复诊断五页骨架。
+- 在 `v1.3.6` 增补项目物料查看器与物料文档详情两页只读文档流。
+- 让 CEO 总览、项目接力、runtime 下钻、恢复诊断和物料查看形成一条连续导航，而不是分裂为两套原型。
+
+ui_visualization_required: true
+prototype_mode: wireframe
+prototype_freeze_required: true
+coverage_mode: requirement-page-freeze
+prototype_archetype: admin-workbench
+theme_primary: #1F6FEB
+theme_secondary: #0F172A
+surface_style: lifecycle-first management board with read-only material viewer
+required_pages: home, management-overview, project-detail, runtime-center, recovery-diagnostics, material-viewer, material-document-detail
+primary_entry: home
+primary_exit: material-viewer
+jump_map:
+- home->management-overview: 首页进入项目组合总览，延续 v1.3.4 的 CEO 总览主轴。
+- home->project-detail: 首页重点项目卡片直接进入项目详情，保留经营判断到项目接力的快捷路径。
+- management-overview->project-detail: 总览项目行点击进入详情，继续作为多项目密集管理面的主下钻。
+- management-overview->home: 总览可返回首页，维持总览与经营首屏之间的双向切换。
+- project-detail->runtime-center: 项目详情从 runtime 摘要进入运行中心，只在这里展开 single / team / ralph。
+- project-detail->recovery-diagnostics: 项目详情从恢复诊断入口进入诊断页，解释 degraded / rebuild / doctor。
+- project-detail->material-viewer: 项目详情进入项目物料查看器，把版本包与需求物料并到同一接力流。
+- project-detail->management-overview: 项目详情可返回管理总览，保持 v1.3.4 看板回路完整。
+- runtime-center->project-detail: 运行中心返回项目详情，不让 runtime 下钻抢走项目主轴。
+- recovery-diagnostics->project-detail: 恢复诊断返回项目详情，保持 diagnosis 只是解释层而不成为主入口。
+- material-viewer->material-document-detail: 物料查看器打开单篇文档详情，进入只读阅读状态。
+- material-viewer->project-detail: 物料查看器支持返回项目详情，避免文档流与项目流脱节。
+- material-document-detail->material-viewer: 文档详情返回物料查看器，形成版本/类型/feature 浏览闭环。
 
 ## Acceptance Criteria
 
@@ -70,6 +106,7 @@
 - AC-014 四个真实项目并板正确：`rolo / slow_uni_bmtop / shopxo_canada / beacon` 必须都可进入看板，并能解释其 `project_kind / lifecycle / debug state / next step`。
 - AC-015 页面实现回链 freeze：项目页面的结构实现、路由关系与状态说明必须能回链到 `v1.3.5` wireframe artifact。
 - AC-016 人类心智优先：在屏蔽机器交互细节时，管理端仍必须给出足够的人类可决策信息，不得因隐藏 runtime 细节而让项目状态不可判断。
+- AC-017 `v1.3.4` 看板主轴必须被保留并重编译：`home -> management-overview -> project-detail -> runtime-center / recovery-diagnostics` 的管理看板骨架必须在 `v1.3.6` 中继续成立，并与 `material-viewer / material-document-detail` 只读文档流正确接合。
 
 ## Metadata
 
