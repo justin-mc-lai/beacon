@@ -5,7 +5,7 @@
 - version: `v1.3.6`
 - revision_id: `R1`
 - baseline_hash: `sha256:915c21100211f663304d9e0bac8f67f9daa2dc8e6e9eafc374f5be1d38cfb4f4`
-- plan_hash: `sha256:81e7ba0a4820fdf0b822c84390e4161d6c775093bfac8ddc92f81108886d8419`
+- plan_hash: `sha256:4cd776c3c32a927dfb4b23d1650633075893e1b3e6c5481203fb1ada7d42160a`
 - status: `completed`
 
 ## Source Refs

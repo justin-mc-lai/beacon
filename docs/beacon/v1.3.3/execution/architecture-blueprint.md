@@ -123,3 +123,31 @@ external command execution
 1. core/compatibility 边界已经讲清
 2. 不会破坏 `v1.3.2` 已验收主线
 3. 每个拟动区域都能归到“收口”而不是“加新能力”
+
+<!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:START -->
+## Implementation Delivery Baseline
+
+- baseline_id: `impl-delivery-baseline-v1.3.3-partner-rule-adjustment-r0`
+- transaction_id: `tx-ccb1b2003e503f798`
+- source_hash: `sha256:2242326ed3f607b9e7c7feecd3367fbcca6f2d2cbb26684774417dc760b7ccde`
+- projection_seq: `1`
+- version: `v1.3.3`
+- feature: `partner-rule-adjustment`
+- branch_strategy: `single-branch`
+- base_branch: `main`
+- default_target_branch: `beacon/v1.3.3`
+- branch_prefix: `beacon/`
+- use_git_worktree: `False`
+- worktree_root: `.`
+- workspace_root: `.`
+
+### Delivery Service Scope
+- direct_delivery_services: .
+- writable_services: .
+- reference_only_services: docs
+
+### Plan-Time Gate Contract
+- canonical envelope is the only delivery baseline source.
+- deterministic implementation contract, git workflow contract, and implementation plan are projections.
+- gates must block if projection metadata or service/branch/worktree fields drift.
+<!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:END -->

@@ -3,14 +3,14 @@
 - feature: `beacon-v1.3.6-visual-management-console-and-material-viewer`
 - feature_slug: `beacon-v1.3.6-visual-management-console-and-material-viewer`
 - version: `v1.3.6`
-- run_id: `run-20260421T135426Z-5222`
+- run_id: `run-20260422T142730Z-2118`
 - runner: `codex-subagents`
 - profile_id: ``
-- git_commit: `6efe6998c0c82b66b2888330f35b73ea7f05c9c1`
+- git_commit: `3ade2f4374996eceeef3f9ece249fdc36cca309e`
 
 ## Traceability
-- request_path: `.beacon/implement/run-20260421T135426Z-5222/request.json`
-- result_path: `.beacon/implement/run-20260421T135426Z-5222/result.json`
+- request_path: `.beacon/implement/run-20260422T142730Z-2118/request.json`
+- result_path: `.beacon/implement/run-20260422T142730Z-2118/result.json`
 - stdout_path: ``
 - stderr_path: ``
 
@@ -31,62 +31,114 @@
 - none
 
 ## Changed Files
+- `.beacon/auto-test-status.json`
+- `.beacon/coverage-summary.json`
+- `.beacon/evidence-manifest.json`
+- `.beacon/evidence-signature-chain.json`
+- `.beacon/gate-report.json`
+- `.beacon/qa/status.json`
 - `.beacon/state/memory-friction-evolution/latest.json`
-- `.codex/INSTALL-MULTI-AI.md`
-- `.codex/INSTALL.md`
 - `.omc/project-memory.json`
-- `README.md`
-- `beacon/commands/implement/__init__.py`
+- `beacon-console-ui/IMPLEMENTATION.md`
+- `beacon-console-ui/README.md`
+- `beacon-console-ui/index.html`
+- `beacon-console-ui/package.json`
+- `beacon-console-ui/src/components/Layout/index.css`
+- `beacon-console-ui/src/components/Layout/index.tsx`
+- `beacon-console-ui/src/data/consoleData.ts`
+- `beacon-console-ui/src/index.css`
+- `beacon-console-ui/src/pages/HomePage/index.tsx`
+- `beacon-console-ui/src/pages/ManagementOverviewPage/index.tsx`
+- `beacon-console-ui/src/pages/MaterialDocumentDetailPage/index.tsx`
+- `beacon-console-ui/src/pages/MaterialViewerPage/index.tsx`
+- `beacon-console-ui/src/pages/ProjectDetailPage/index.tsx`
+- `beacon-console-ui/src/pages/RecoveryDiagnosticsPage/index.tsx`
+- `beacon-console-ui/src/pages/RuntimeCenterPage/index.tsx`
+- `beacon-console-ui/src/router/index.tsx`
+- `beacon-console-ui/src/types/project.ts`
+- `beacon-console-ui/src/utils/labels.ts`
+- `beacon-console-ui/vite.config.ts`
+- `beacon/cli_factory.py`
+- `beacon/command_catalog.py`
+- `beacon/commands/gate.py`
+- `beacon/commands/implement.py`
+- `beacon/commands/prototype.py`
+- `beacon/commands/release.py`
+- `beacon/commands/status.py`
+- `beacon/commands/workflow.py`
+- `beacon/utils/delivery_kernel.py`
+- `beacon/utils/help_support.py`
+- `beacon/utils/implement_adapters.py`
+- `beacon/utils/intent_router.py`
+- `beacon/utils/llm_loop.py`
+- `beacon/utils/memory.py`
+- `beacon/utils/project_skills.py`
+- `beacon/utils/prototype_utils.py`
+- `beacon/utils/release_scorecard.py`
+- `beacon/utils/semantic_runtime.py`
+- `beacon/utils/workflow_memory.py`
 - `docs/beacon/v1.3.6/.machine/execution/beacon-v1.3.6-visual-management-console-and-material-viewer.revision.json`
+- `docs/beacon/v1.3.6/.machine/execution/implementation-plan-beacon-v1.3.6-visual-management-console-and-material-viewer.json`
+- `docs/beacon/v1.3.6/.machine/execution/implementation-plan-beacon-v1.3.6-visual-management-console-and-material-viewer.progress.json`
+- `docs/beacon/v1.3.6/.machine/execution/implementation-summary-beacon-v1.3.6-visual-management-console-and-material-viewer.json`
+- `docs/beacon/v1.3.6/.machine/execution/requirement-rewrite-input-beacon-v1.3.6-visual-management-console-and-material-viewer.json`
+- `docs/beacon/v1.3.6/.machine/execution/technical-implementation-beacon-v1.3.6-visual-management-console-and-material-viewer.json`
+- `docs/beacon/v1.3.6/.machine/qa/beacon-v1.3.6-visual-management-console-and-material-viewer.qa9-matrix.json`
 - `docs/beacon/v1.3.6/.machine/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.json`
-- `docs/beacon/v1.3.6/SUMMARY.md`
-- `docs/beacon/v1.3.6/prd/beacon-v1-3-6-visual-management-console-and-material-viewer.md`
-- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/canonical-envelope.json`
-- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/component-catalog.json`
-- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/component-catalog.md`
-- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/coverage-report.json`
-- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/freeze.json`
-- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/implementation-map.json`
-- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/interaction-map.json`
-- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/machine-view/index.json`
-- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/manifest.json`
-- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/navigation-map.json`
-- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/navigation-map.md`
-- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/home.json`
-- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/management-overview.json`
-- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/material-document-detail.json`
-- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/material-viewer.json`
-- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/project-detail.json`
-- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/recovery-diagnostics.json`
-- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/runtime-center.json`
-- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/pages/home.md`
-- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/pages/management-overview.md`
-- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/pages/material-document-detail.md`
-- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/pages/material-viewer.md`
-- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/pages/project-detail.md`
-- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/pages/recovery-diagnostics.md`
-- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/pages/runtime-center.md`
-- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/platform-variants.json`
-- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/prototype-plan.json`
-- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/prototype-review.json`
-- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/prototype-review.md`
-- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/route-closure-contract.json`
-- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/source-map.json`
-- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/state-flow-map.json`
-- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/state-flow-map.md`
-- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/theme.json`
-- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/tokens.css`
-- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/wireframe-manifest.json`
-- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/wireframe-summary.md`
+- `docs/beacon/v1.3.6/execution/evo-harness-contract.md`
+- `docs/beacon/v1.3.6/execution/evo-scorecard-contract.md`
+- `docs/beacon/v1.3.6/execution/implementation-plan-beacon-v1.3.6-visual-management-console-and-material-viewer.md`
+- `docs/beacon/v1.3.6/execution/implementation-summary-beacon-v1.3.6-visual-management-console-and-material-viewer.md`
+- `docs/beacon/v1.3.6/execution/technical-implementation-beacon-v1.3.6-visual-management-console-and-material-viewer.md`
+- `docs/beacon/v1.3.6/research/README.md`
+- `docs/beacon/v1.3.6/research/beacon-oss-sync-memory-agents-absorption-analysis.md`
+- `tests/test_gate_memory_closure_contract.py`
+- `tests/test_release_check_contract.py`
+- `tests/test_report_memory_metrics.py`
+- `tests/test_v103_workflow_attempt_contract.py`
+- `tests/test_v103_workflow_interactive_and_closure.py`
+- `tests/test_v103_workflow_interactive_timeout_contract.py`
+- `tests/test_v112_version_truth_profile_boundary_governance.py`
+- `tests/test_v113_command_layering.py`
+- `tests/test_v117_project_skill_orchestration.py`
+- `tests/test_v135_prototype_wireframe_mode.py`
+- `tests/test_v136_delivery_kernel_read_model.py`
+- `tests/test_workflow_continue_progress.py`
+- `tests/test_workflow_memory_lifecycle.py`
 
 ## Modules Touched
+- `.beacon/auto-test-status.json`
+- `.beacon/coverage-summary.json`
+- `.beacon/evidence-manifest.json`
+- `.beacon/evidence-signature-chain.json`
+- `.beacon/gate-report.json`
+- `.beacon/qa`
 - `.beacon/state`
-- `.codex/INSTALL-MULTI-AI.md`
-- `.codex/INSTALL.md`
 - `.omc/project-memory.json`
-- `README.md`
+- `beacon-console-ui/IMPLEMENTATION.md`
+- `beacon-console-ui/README.md`
+- `beacon-console-ui/index.html`
+- `beacon-console-ui/package.json`
+- `beacon-console-ui/src`
+- `beacon-console-ui/vite.config.ts`
+- `beacon/cli_factory.py`
+- `beacon/command_catalog.py`
 - `beacon/commands`
+- `beacon/utils`
 - `docs/beacon`
+- `tests/test_gate_memory_closure_contract.py`
+- `tests/test_release_check_contract.py`
+- `tests/test_report_memory_metrics.py`
+- `tests/test_v103_workflow_attempt_contract.py`
+- `tests/test_v103_workflow_interactive_and_closure.py`
+- `tests/test_v103_workflow_interactive_timeout_contract.py`
+- `tests/test_v112_version_truth_profile_boundary_governance.py`
+- `tests/test_v113_command_layering.py`
+- `tests/test_v117_project_skill_orchestration.py`
+- `tests/test_v135_prototype_wireframe_mode.py`
+- `tests/test_v136_delivery_kernel_read_model.py`
+- `tests/test_workflow_continue_progress.py`
+- `tests/test_workflow_memory_lifecycle.py`
 
 ## Additions
 - none
@@ -123,7 +175,7 @@
 
 ## Verification
 - {'command': 'beacon implement run --runner codex-subagents', 'status': 'passed'}
-- {'command': 'auto-test-status', 'status': 'passed', 'evidence': '.beacon/auto-test-status.json'}
+- {'command': 'auto-test-status', 'status': 'failed', 'evidence': '.beacon/auto-test-status.json'}
 
 ## Scope Guard
 - in_scope: `True`

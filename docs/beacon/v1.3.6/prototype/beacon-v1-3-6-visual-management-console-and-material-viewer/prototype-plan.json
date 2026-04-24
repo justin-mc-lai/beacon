@@ -3,7 +3,7 @@
   "feature": "beacon-v1.3.6-visual-management-console-and-material-viewer",
   "feature_slug": "beacon-v1-3-6-visual-management-console-and-material-viewer",
   "version": "v1.3.6",
-  "generated_at": "2026-04-21T14:39:19Z",
+  "generated_at": "2026-04-22T15:38:05Z",
   "prototype_mode": "wireframe",
   "ui_kit": "wireframe-markdown-v1",
   "source_documents": [
@@ -15,7 +15,7 @@
     {
       "type": "prd",
       "path": "docs/beacon/v1.3.6/prd/beacon-v1-3-6-visual-management-console-and-material-viewer.md",
-      "fingerprint": "761debf4a4294465f1ff726b1b732e161fff9e6c5763423af83d5cb4a537b686"
+      "fingerprint": "7226ff4dd5cc9a634e6f1ff08ada03865fa60f04a1b75b03186c20fc5756b25a"
     },
     {
       "type": "test-case",
@@ -1871,6 +1871,152 @@
       }
     ]
   },
+  "semantic_layer": {
+    "artifacts": {
+      "semantic_contract": "docs/beacon/v1.3.6/execution/semantic/beacon-v1-3-6-visual-management-console-and-material-viewer/semantic-contract.json",
+      "semantic_dictionary": "docs/beacon/v1.3.6/execution/semantic/beacon-v1-3-6-visual-management-console-and-material-viewer/semantic-dictionary.md",
+      "semantic_usage_guidelines": "docs/beacon/v1.3.6/execution/semantic/beacon-v1-3-6-visual-management-console-and-material-viewer/semantic-usage-guidelines.md",
+      "semantic_review": "docs/beacon/v1.3.6/execution/semantic/beacon-v1-3-6-visual-management-console-and-material-viewer/semantic-review.json"
+    },
+    "default_design_bridge": {
+      "repo": "https://github.com/Leonxlnx/taste-skill",
+      "skill_id": "taste-skill",
+      "entry": "",
+      "detected": false,
+      "kind": "external-default-bridge",
+      "supported_stages": [
+        "prototype",
+        "implement"
+      ],
+      "capabilities": [
+        "prototype",
+        "implement",
+        "taste-design",
+        "semantic-normalization"
+      ],
+      "install_hint": "npx skills add https://github.com/Leonxlnx/taste-skill --skill taste-skill"
+    },
+    "official_language": {
+      "page_names": [
+        {
+          "label": "可视化管理端与项目物料查看器",
+          "slug": "semantic-layer",
+          "source": "requirement_truth"
+        },
+        {
+          "label": "管理端看板的页面",
+          "slug": "semantic-layer",
+          "source": "requirement_truth"
+        },
+        {
+          "label": "文档查看器",
+          "slug": "semantic-layer",
+          "source": "requirement_truth"
+        },
+        {
+          "label": "管理端看板",
+          "slug": "semantic-layer",
+          "source": "requirement_truth"
+        },
+        {
+          "label": "还没冻结页面",
+          "slug": "semantic-layer",
+          "source": "requirement_truth"
+        },
+        {
+          "label": "物料查看器",
+          "slug": "semantic-layer",
+          "source": "requirement_truth"
+        },
+        {
+          "label": "中的页面",
+          "slug": "semantic-layer",
+          "source": "requirement_truth"
+        },
+        {
+          "label": "项目物料查看器",
+          "slug": "semantic-layer",
+          "source": "requirement_truth"
+        }
+      ],
+      "status_labels": [
+        "需求冻结",
+        "运行中",
+        "阻塞",
+        "可接力",
+        "正常",
+        "加载中",
+        "错误"
+      ],
+      "module_labels": [
+        "数据视图",
+        "角色化信息",
+        "页面状态",
+        "管理总览",
+        "角色视图和页面信息",
+        "管理总览必须提供多项目密集视图",
+        "进度摘要",
+        "运行态摘要",
+        "需求物料状态",
+        "为什么是这个状态"
+      ],
+      "action_labels": [
+        "查看器",
+        "查看器体验仍停留在冻结说明",
+        "进入",
+        "查看",
+        "查看器成品体验",
+        "查看必须正式化",
+        "查看器是正式产品功能",
+        "恢复诊断页",
+        "查看器必须支持按版本只读查看",
+        "查看版本包文档"
+      ],
+      "preferred_terms": [
+        {
+          "from": "implementation",
+          "to": "implement",
+          "scope": "stage_vocabulary"
+        },
+        {
+          "from": "verify",
+          "to": "qa",
+          "scope": "stage_vocabulary"
+        },
+        {
+          "from": "review",
+          "to": "qa",
+          "scope": "stage_vocabulary"
+        },
+        {
+          "from": "delivery",
+          "to": "release",
+          "scope": "stage_vocabulary"
+        },
+        {
+          "from": "raw runtime log",
+          "to": "运行摘要",
+          "scope": "product_copy"
+        },
+        {
+          "from": "machine contract",
+          "to": "机器内部契约",
+          "scope": "product_copy"
+        }
+      ],
+      "banned_terms": [
+        "implementation",
+        "verify",
+        "review",
+        "delivery",
+        "machine contract",
+        "canonical-envelope",
+        "raw runtime log",
+        "transaction_id",
+        "projection_seq"
+      ]
+    }
+  },
   "platform_variants": {
     "global_platforms": [
       "Web",
@@ -1938,7 +2084,9 @@
   "contract": {
     "prototype_archetype": "admin-workbench",
     "wireframe_only": true,
-    "design_governance_required": false,
+    "design_governance_required": true,
+    "semantic_governance_required": true,
+    "semantic_contract_path": "docs/beacon/v1.3.6/execution/semantic/beacon-v1-3-6-visual-management-console-and-material-viewer/semantic-contract.json",
     "route_closure_required": false,
     "required_files": [
       "wireframe-summary.md",
