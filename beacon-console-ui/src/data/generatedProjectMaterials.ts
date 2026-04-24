@@ -574,6 +574,44 @@ export const generatedProjectMaterials: Record<string, MaterialDocument[]> = {
   ],
   "rolo": [
     {
+      "id": "rolo-docs-beacon-v1-3-8-research-beacon-v1-3-8-post-freeze-team-ralph-sequencing-and-host-prompt-trace-analysis-md",
+      "title": "Beacon v1.3.8 Post-Freeze Team-Ralph Sequencing and Host Prompt Trace Analysis",
+      "version": "v1.3.8",
+      "type": "research",
+      "feature": "beacon-v1.3.8-post-freeze-team-ralph-sequencing-and-host-prompt-trace-analysis",
+      "path": "docs/beacon/v1.3.8/research/beacon-v1.3.8-post-freeze-team-ralph-sequencing-and-host-prompt-trace-analysis.md",
+      "summary": "Date : 2026 04 24",
+      "content": "# Beacon v1.3.8 Post-Freeze Team-Ralph Sequencing and Host Prompt Trace Analysis\n\n**Date**: 2026-04-24  \n**Method**: 基于 Rolo 真实项目 `memory-friction-evolution-v1.3.3-partner-rule-adjustment-team-ralph-sequencing-20260424` 报告、当前 `implement` runtime 面与 `v1.3.7` delivery contract 做收敛分析  \n**Purpose**: 判断 Beacon 是否应把冻结后的 `team -> ralph` 顺序正式产品化，并把宿主提示词到执行命令的映射纳入 formal evidence。\n\n---\n\n## 1. Summary\n\n这条调研的核心结论是：\n\n- 在真实多服务交付中，`team first, ralph second` 已经是稳定可复现的工作模式。\n- Beacon 现在有这些能力碎片：\n  - `implement team-plan`\n  - `implement team-run`\n  - `implement run --mode ralph`\n  - `implement ralph-status`\n- 但它仍没有把这条顺序做成一条显式的 public execution contract。\n- 同时，真正驱动用户工作的并不是裸命令，而是宿主提示词。\n- 如果 Beacon 只记录执行命令，不记录 `host prompt -> mapped command -> produced artifact`，就会丢掉最有价值的演进信号。\n\n一句话：\n\n> `v1.3.8` 应该把“冻结后多服务快速推进，再做主审收口”的真实序列正式产品化，并把宿主调用链变成结构化证据。\n\n---\n\n## 2. Problem Statement\n\n这条 friction 不是“有没有 team/ralph 模式”，而是三件事没有闭环：\n\n1. 执行顺序没有产品化  \n2. 宿主提示词没有留证  \n3. plan 质量不足以支撑 team 和 Ralph 两阶段闭环\n\n这会导致：\n\n- 用户每次都要重复表达“先 team 再 ralph”\n- Ralph 的语义仍被误解成 team reviewer 的重复物\n- memory/friction 只能看到低层 CLI，学不到用户真实工作路径\n\n---\n\n## 3. Current Baseline\n\n### 3.1 已有能力\n\n- 冻结前：\n  - requirement clarity\n  - technical review contract\n- 冻结后：\n  - implementation plan\n  - team-plan\n  - team-run\n  - ralph run\n  - ralph status\n  - branch check\n\n### 3.2 现状缺口\n\n- 顺序关系不是 contract，只是人工习惯\n- host prompt trace 没有正式 artifact\n- plan 对多服务 feature 仍可能退化为占位任务\n- branch preflight 更像“报错器”，不是“操作建议器”\n\n---\n\n## 4. Direct Evidence\n\n来自 Rolo report 的直接信号：\n\n1. 先冻结，再开发  \n2. 多服务交付优先 `implement team`  \n3. `ralph` 不是替代 `team`，而是 team 之后的第二阶段总审  \n4. 发布前必须收口到规范分支  \n\n对应直接证据：\n\n- `.beacon/state/requirement-clarity-partner-rule-adjustment.json`\n- `.beacon/state/technical-review-contract-partner-rule-adjustment.json`\n- `docs/beacon/v1.3.3/.machine/execution/implementation-plan-partner-rule-adjustment.json`\n- `docs/beacon/v1.3.3/.machine/execution/git-workflow-partner-rule-adjustment.json`\n- `.beacon/raw-command-log.jsonl`\n\n---\n\n## 5. Host Prompt Trace Signal\n\n这次最强的产品信号来自宿主提示词序列，而不是命令本身：\n\n1. `beacon-prd-bootstrap`\n2. `beacon-toolkit-lighthouse`\n3. `beacon-brainstorm`\n4. `beacon status`\n5. `beacon-implement mode=team`\n6. `beacon-implement mode=ralph`\n7. `beacon implement check-branch`\n\n说明：\n\n- 对人类来说，这是一条自然工作流\n- 对 Beacon 来说，这条链还没有进入 formal runtime evidence\n\n所以 `v1.3.8` 的关键不是再加一个 mode，而是把真实宿主驱动面纳入 writeback。\n\n---\n\n## 6. Research Direction\n\n### 6.1 方向 A: 保持现状，只在文档里建议 `team -> ralph`\n\n优点：\n\n- 实现简单\n\n缺点：\n\n- 仍然依赖人工解释\n- status / HUD 无法读出顺序状态\n- memory/friction 仍缺少 formal host trace\n\n结论：\n\n- 不够。\n\n### 6.2 方向 B: 把 `team -> ralph` 做成显式顺序合同\n\n优点：\n\n- 更贴近真实交付心智\n- status / HUD 可以直接展示 phase\n- release 前的 closure 路径更清晰\n\n缺点：\n\n- 需要对 implement runtime、status、maybe HUD 做状态建模\n\n结论：\n\n- 推荐。\n\n### 6.3 方向 C: 只做 prompt trace，不做顺序合同\n\n优点：\n\n- 能改善学习面\n\n缺点：\n\n- 用户执行心智仍然没有产品化\n- 解决不了 phase 可视化和 branch closure 问题\n\n结论：\n\n- 不够。\n\n---\n\n## 7. Proposed v1.3.8 Scope\n\n### 7.1 Explicit Post-Freeze Execution Sequence\n\n推荐公开表达：\n\n```text\nfreeze pass\n-> implement team-plan\n-> implement team-run\n-> implement ralph\n-> qa\n-> release\n```\n\n推荐命令形态：\n\n```bash\nbeacon implement run \"<feature>\" --mode team --post-review ralph --json\n```\n\n### 7.2 Host Prompt Trace Artifact\n\n推荐记录：\n\n- original host prompt\n- inferred surface\n- mapped command\n- generated artifacts\n- route success or blocked\n\n### 7.3 Phase Projection\n\n让 `status` / HUD 至少显示：\n\n- freeze status\n- team phase\n- team done or blocked\n- ralph pending or active\n- ralph stop_state\n- ralph next_action\n\n### 7.4 Actionable Branch Preflight\n\n推荐输出：\n\n- affected service\n- current branch\n- expected branch\n- dirty worktree state\n- recommended safe relocation action\n\n---\n\n## 8. Boundaries\n\n`v1.3.8` 不应：\n\n- 新增新的公开主生命周期 stage\n- 让 `team`、`ralph` 使用不同 requirement truth\n- 用 prompt trace 替代 formal execution evidence\n\n`v1.3.8` 应：\n\n- 把真实顺序变成 contract\n- 把宿主驱动面变成 evidence\n- 保持 frozen truth 不变\n\n---\n\n## 9. Preliminary Conclusion\n\n这条演进是值得做的，而且适合定义成 Beacon 的一条正式 feature：\n\n- `team -> ralph` 是执行合同增强\n- `host_prompt_trace` 是证据合同增强\n\n两者合在一起，Beacon 才能既服务真实交付，又学习真实用法。\n\n## 10. Recommended Next Step\n\n基于这份调研，下一步适合起一条正式 feature：\n\n- `beacon-v1.3.8-post-freeze-team-ralph-sequencing-and-host-prompt-trace`\n\n## Source Refs\n\n- `/Users/apple/Developer/Company/rolo/.beacon/analysis/memory-friction-evolution-v1.3.3-partner-rule-adjustment-team-ralph-sequencing-20260424.md`\n- `beacon/commands/implement.py`\n- `skills/beacon/beacon-implement/SKILL.md`\n- `docs/beacon/v1.3.7/execution/architecture-blueprint.md`\n- `docs/beacon/v1.3.7/execution/boundaries.md`\n",
+      "relatedIds": [
+        "rolo-docs-beacon-v1-3-8-research-beacon-v1-3-8-prd-executable-diagram-truth-layer-analysis-md",
+        "rolo-docs-beacon-v1-3-4-research-beacon-v1-3-4-one-person-company-ops-board-model-md",
+        "rolo-docs-beacon-v1-3-4-research-beacon-v1-3-4-real-project-board-acceptance-brainstorm-md",
+        "rolo-docs-beacon-v1-1-12-research-beacon-practice-boundary-learning-analysis-md",
+        "rolo-docs-beacon-v1-1-12-research-beacon-requirement-anchor-divergence-closure-analysis-md"
+      ],
+      "createdAt": "2026-04-24",
+      "updatedAt": "2026-04-24"
+    },
+    {
+      "id": "rolo-docs-beacon-v1-3-8-research-beacon-v1-3-8-prd-executable-diagram-truth-layer-analysis-md",
+      "title": "Beacon v1.3.8 PRD Executable Diagram Truth Layer Analysis",
+      "version": "v1.3.8",
+      "type": "research",
+      "feature": "beacon-v1.3.8-prd-executable-diagram-truth-layer-analysis",
+      "path": "docs/beacon/v1.3.8/research/beacon-v1.3.8-prd-executable-diagram-truth-layer-analysis.md",
+      "summary": "Date : 2026 04 24",
+      "content": "# Beacon v1.3.8 PRD Executable Diagram Truth Layer Analysis\n\n**Date**: 2026-04-24  \n**Method**: 基于 Rolo 真实项目 `memory-friction-evolution-prd-state-machine-guidance-20260424` 报告、当前 `prd -> implement -> qa` 传导链与 `v1.3.7` truth discipline 做收敛分析  \n**Purpose**: 判断 Beacon 是否应在复杂业务 feature 上，把 PRD 从叙述型说明升级为带 branch-flow / state-machine / decision-priority 的实现约束真相面。\n\n---\n\n## 1. Summary\n\n这条调研的核心结论是：\n\n- 对复杂业务 feature，PRD 只写段落不够。\n- 当一个 feature 同时牵涉多状态轴、多服务联调、归属与奖励口径切换时，PRD 必须带图层。\n- 图层的价值不是“文档更完整”，而是：\n  - freeze 前把语义定清\n  - implement plan 能读到\n  - QA 能覆盖到\n\n一句话：\n\n> `v1.3.8` 应该把复杂业务 PRD 升级成“实现约束真相面”，而不是停留在“可读说明书”。\n\n---\n\n## 2. Problem Statement\n\n当前复杂 feature 的主要风险不是没人写 PRD，而是：\n\n- PRD 没有表达状态迁移\n- PRD 没有表达分支优先级\n- PRD 没有表达独立状态轴\n\n结果就是：\n\n- 后端压缩字段语义\n- 前端用文案反推逻辑\n- settlement / read-model / H5 各自补语义\n- freeze 之后仍要靠口头解释维持一致\n\n---\n\n## 3. Direct Evidence\n\n来自 Rolo report 的直接结论：\n\n1. 复杂业务需求不能只靠叙述型 PRD。  \n2. PRD 中加入 branch flow 和 state machine 后，truth 从“可读”升级成“可执行”。  \n3. Beacon 下一版应主动引导，而不是等用户手工补图。  \n\n对应材料：\n\n- `docs/beacon/v1.3.3/prd/partner-rule-adjustment.md`\n- `docs/beacon/v1.3.3/user-story/partner-rule-adjustment.md`\n- `docs/beacon/v1.3.3/execution/architecture-blueprint.md`\n\n---\n\n## 4. Research Direction\n\n### 4.1 方向 A: 保持 narrative PRD，不新增图层要求\n\n优点：\n\n- 最简单\n\n缺点：\n\n- 无法稳定约束复杂业务实现\n- implement 和 QA 继续只能读 acceptance text\n\n结论：\n\n- 不够。\n\n### 4.2 方向 B: PRD 在复杂业务条件下推荐图层\n\n优点：\n\n- 不强迫所有 feature 复杂化\n- 只在多状态、多分支、多服务 feature 上开启\n\n缺点：\n\n- 需要一套复杂业务识别规则\n\n结论：\n\n- 推荐。\n\n### 4.3 方向 C: PRD 强制图层，但 implement / QA 不吸收\n\n优点：\n\n- 表面上改善 PRD 质量\n\n缺点：\n\n- 价值停留在文档层\n- 无法进入交付内核\n\n结论：\n\n- 不够。\n\n---\n\n## 5. Proposed v1.3.8 Scope\n\n### 5.1 PRD Diagram Truth Layer\n\n对复杂业务 feature，PRD 推荐至少输出：\n\n- branch-flow\n- state-machine\n- decision-priority\n\n推荐命令形态：\n\n```bash\nbeacon prd create \"<feature>\" --include-diagrams branch-flow,state-machine,decision-priority --json\n```\n\n### 5.2 Freeze-Readiness Check\n\n`beacon-brainstorm` 或 freeze readiness 应显式检查：\n\n- 是否存在多状态轴\n- 是否需要 state machine 才能 freeze\n- 是否存在跨服务语义切换\n\n### 5.3 State Axis Modeling\n\nPRD / user-story 应支持显式拆出状态轴，例如：\n\n- relation\n- sale\n- ownership\n- eligibility / permanent binding\n\n### 5.4 Diagram Propagation\n\n图层不是只给人看，还应被：\n\n- implementation-plan 吸收为 tasks / review gates\n- QA 吸收为 branch / transition coverage\n\n---\n\n## 6. Boundaries\n\n`v1.3.8` 不应：\n\n- 要求所有 feature 都画复杂图\n- 把图层当作美化文档的装饰\n- 只改 PRD，不改 implement / QA 传导\n\n`v1.3.8` 应：\n\n- 在复杂业务下主动提示图层\n- 让图层进入交付内核\n- 把复杂语义从口头解释前移到 freeze 前\n\n---\n\n## 7. Preliminary Conclusion\n\n这条演进值得做，而且它本质上不是“PRD 增强”，而是“truth modeling 增强”：\n\n- 把复杂业务的判定路径显式化\n- 把复杂状态迁移前移到 freeze 前\n- 把图层继续传导到 implement 和 QA\n\n## 8. Recommended Next Step\n\n基于这份调研，下一步适合起一条正式 feature：\n\n- `beacon-v1.3.8-prd-executable-diagram-truth-layer`\n\n## Source Refs\n\n- `/Users/apple/Developer/Company/rolo/.beacon/analysis/memory-friction-evolution-prd-state-machine-guidance-20260424.md`\n- `docs/beacon/v1.3.7/execution/architecture-blueprint.md`\n- `docs/beacon/v1.3.7/execution/boundaries.md`\n- `skills/beacon/beacon-brainstorm/SKILL.md`\n",
+      "relatedIds": [
+        "rolo-docs-beacon-v1-3-8-research-beacon-v1-3-8-post-freeze-team-ralph-sequencing-and-host-prompt-trace-analysis-md",
+        "rolo-docs-beacon-v1-3-4-research-beacon-v1-3-4-one-person-company-ops-board-model-md",
+        "rolo-docs-beacon-v1-3-4-research-beacon-v1-3-4-real-project-board-acceptance-brainstorm-md",
+        "rolo-docs-beacon-v1-1-12-research-beacon-practice-boundary-learning-analysis-md",
+        "rolo-docs-beacon-v1-1-12-research-beacon-requirement-anchor-divergence-closure-analysis-md"
+      ],
+      "createdAt": "2026-04-24",
+      "updatedAt": "2026-04-24"
+    },
+    {
       "id": "rolo-docs-beacon-v1-3-6-user-story-beacon-v1-3-6-visual-management-console-and-material-viewer-md",
       "title": "User Story: beacon-v1.3.6-visual-management-console-and-material-viewer",
       "version": "v1.3.6",
@@ -1223,8 +1261,8 @@ export const generatedProjectMaterials: Record<string, MaterialDocument[]> = {
         "rolo-docs-beacon-v1-1-12-qa-test-cases-beacon-version-truth-profile-boundary-governance-md",
         "rolo-docs-beacon-v1-1-12-execution-requirement-anchor-implementation-blueprint-md",
         "rolo-docs-beacon-v1-1-12-research-beacon-requirement-anchor-divergence-closure-analysis-md",
-        "rolo-docs-beacon-v1-3-4-research-beacon-v1-3-4-one-person-company-ops-board-model-md",
-        "rolo-docs-beacon-v1-3-4-research-beacon-v1-3-4-real-project-board-acceptance-brainstorm-md"
+        "rolo-docs-beacon-v1-3-8-research-beacon-v1-3-8-post-freeze-team-ralph-sequencing-and-host-prompt-trace-analysis-md",
+        "rolo-docs-beacon-v1-3-8-research-beacon-v1-3-8-prd-executable-diagram-truth-layer-analysis-md"
       ],
       "createdAt": "2026-04-01",
       "updatedAt": "2026-04-01"
@@ -1245,8 +1283,8 @@ export const generatedProjectMaterials: Record<string, MaterialDocument[]> = {
         "rolo-docs-beacon-v1-1-12-qa-test-cases-beacon-version-truth-profile-boundary-governance-md",
         "rolo-docs-beacon-v1-1-12-execution-requirement-anchor-implementation-blueprint-md",
         "rolo-docs-beacon-v1-1-12-research-beacon-practice-boundary-learning-analysis-md",
-        "rolo-docs-beacon-v1-3-4-research-beacon-v1-3-4-one-person-company-ops-board-model-md",
-        "rolo-docs-beacon-v1-3-4-research-beacon-v1-3-4-real-project-board-acceptance-brainstorm-md"
+        "rolo-docs-beacon-v1-3-8-research-beacon-v1-3-8-post-freeze-team-ralph-sequencing-and-host-prompt-trace-analysis-md",
+        "rolo-docs-beacon-v1-3-8-research-beacon-v1-3-8-prd-executable-diagram-truth-layer-analysis-md"
       ],
       "createdAt": "2026-04-01",
       "updatedAt": "2026-04-01"
