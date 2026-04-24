@@ -1,6 +1,5 @@
 import type { PageTrace } from '../types/common';
 import type {
-  MaterialDocument,
   PortfolioSummary,
   Project,
   RuntimeModeDetail,
@@ -925,20 +924,4 @@ export function getProjectById(projectId?: string): Project | undefined {
 
 export function getPageTrace(pageId: string): PageTrace {
   return pageTraces[pageId];
-}
-
-export function getProjectMaterials(projectId?: string): MaterialDocument[] {
-  return getProjectById(projectId)?.materials ?? [];
-}
-
-export function getMaterialById(
-  projectId: string | undefined,
-  materialId: string | undefined,
-): MaterialDocument | undefined {
-  return getProjectMaterials(projectId).find((material) => material.id === materialId);
-}
-
-export function getUniqueVersions(projectId?: string): string[] {
-  const materials = getProjectMaterials(projectId);
-  return Array.from(new Set(materials.map((material) => material.version)));
 }

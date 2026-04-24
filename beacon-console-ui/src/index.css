@@ -6,20 +6,20 @@
 
 :root {
   color: #0f172a;
-  background-color: #f8fafc;
+  background-color: #f5f7fb;
   font-family: 'Avenir Next', 'IBM Plex Sans', 'Segoe UI', sans-serif;
   line-height: 1.5;
   font-weight: 400;
 }
 
 body {
-  min-width: 1280px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #0f172a;
   background:
-    linear-gradient(180deg, rgba(241, 245, 249, 0.3) 0%, rgba(255, 255, 255, 0.95) 100%),
-    #f8fafc;
+    radial-gradient(circle at top, rgba(59, 130, 246, 0.08), transparent 32%),
+    linear-gradient(180deg, rgba(241, 245, 249, 0.72) 0%, rgba(255, 255, 255, 0.98) 100%),
+    #f5f7fb;
 }
 
 code {
@@ -42,16 +42,21 @@ a {
 
 .console-hero {
   display: flex;
-  align-items: flex-end;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 24px;
   padding: 28px;
   border-radius: 24px;
   background:
-    radial-gradient(circle at top left, rgba(16, 185, 129, 0.18), transparent 32%),
-    linear-gradient(135deg, rgba(15, 23, 42, 0.98), rgba(30, 64, 175, 0.92));
+    radial-gradient(circle at top left, rgba(14, 165, 233, 0.18), transparent 34%),
+    linear-gradient(135deg, rgba(15, 23, 42, 0.98), rgba(15, 118, 110, 0.92));
   color: #f8fafc;
   box-shadow: 0 24px 60px rgba(15, 23, 42, 0.16);
+}
+
+.console-hero > * {
+  flex: 1 1 0;
+  min-width: 0;
 }
 
 .console-hero .ant-typography,
@@ -106,6 +111,47 @@ a {
   background: rgba(59, 130, 246, 0.06);
 }
 
+.console-toolbar {
+  display: grid;
+  grid-template-columns: minmax(240px, 1.8fr) repeat(2, minmax(180px, 0.8fr));
+  gap: 12px;
+}
+
+.console-kpi-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(120px, 1fr));
+  gap: 12px;
+  min-width: min(100%, 360px);
+  align-self: stretch;
+}
+
+.console-kpi {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.console-kpi span {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(241, 245, 249, 0.76);
+}
+
+.console-kpi strong {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.console-panel--full,
+.console-panel--full .ant-card-body {
+  height: 100%;
+}
+
 .trace-card {
   display: grid;
   gap: 24px;
@@ -141,6 +187,15 @@ a {
   border-radius: 18px;
   background: #fcfdff;
   border: 1px solid rgba(148, 163, 184, 0.2);
+  overflow: hidden;
+}
+
+.markdown-surface > :first-child {
+  margin-top: 0;
+}
+
+.markdown-surface > :last-child {
+  margin-bottom: 0;
 }
 
 .markdown-surface h1,
@@ -155,10 +210,25 @@ a {
   margin: 0.5em 0;
 }
 
+.markdown-surface ul,
+.markdown-surface ol {
+  padding-left: 1.5em;
+}
+
+.markdown-surface li + li {
+  margin-top: 0.35em;
+}
+
+.markdown-surface a {
+  color: #0f766e;
+  text-decoration: underline;
+}
+
 .markdown-surface code {
   padding: 0.1em 0.35em;
   border-radius: 6px;
   background: rgba(15, 23, 42, 0.08);
+  word-break: break-word;
 }
 
 .markdown-surface pre {
@@ -169,15 +239,64 @@ a {
   color: #e2e8f0;
 }
 
-@media (max-width: 1280px) {
-  body {
-    min-width: 100%;
-  }
+.markdown-surface pre code {
+  padding: 0;
+  background: transparent;
+  color: inherit;
+}
 
+.markdown-surface table {
+  width: 100%;
+  border-collapse: collapse;
+  display: block;
+  overflow-x: auto;
+  margin: 1em 0;
+}
+
+.markdown-surface th,
+.markdown-surface td {
+  padding: 10px 12px;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  text-align: left;
+  vertical-align: top;
+}
+
+.markdown-surface th {
+  background: rgba(226, 232, 240, 0.5);
+  font-weight: 600;
+}
+
+.markdown-surface blockquote {
+  margin: 1em 0;
+  padding: 12px 16px;
+  border-left: 4px solid rgba(15, 118, 110, 0.45);
+  background: rgba(15, 118, 110, 0.06);
+  color: #334155;
+}
+
+.markdown-surface img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+}
+
+.markdown-surface hr {
+  border: 0;
+  border-top: 1px solid rgba(148, 163, 184, 0.28);
+  margin: 1.25em 0;
+}
+
+@media (max-width: 1280px) {
   .console-hero,
   .console-grid,
   .trace-card {
     grid-template-columns: 1fr;
     flex-direction: column;
+  }
+
+  .console-kpi-strip,
+  .console-toolbar {
+    grid-template-columns: 1fr;
+    min-width: 0;
   }
 }

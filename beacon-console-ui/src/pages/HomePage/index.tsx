@@ -37,7 +37,7 @@ const interventionColumns: ColumnsType<Project> = [
     key: 'currentDelivery',
   },
   {
-    title: 'Blocker',
+    title: '当前阻塞事项',
     dataIndex: 'blocker',
     key: 'blocker',
   },
@@ -62,11 +62,11 @@ export function HomePage() {
     <div className="console-page">
       <div className="console-hero">
         <div>
-          <Tag color="cyan">CEO / Owner View</Tag>
-          <Typography.Title level={1}>先回答经营判断，再决定是否下钻</Typography.Title>
+          <Tag color="cyan">项目组合概览</Tag>
+          <Typography.Title level={1}>先确认管理结论，再进入项目上下文</Typography.Title>
           <Typography.Paragraph className="console-muted">
-            首页默认只给项目组合、阻塞点、当前交付与下一步，不展示 tmux pane、raw event、
-            transcript 或宿主交互洪流。
+            首页默认只呈现项目组合状态、阻塞事项、当前交付与下一步建议，
+            不直接暴露宿主会话明细、原始事件流或临时交互记录。
           </Typography.Paragraph>
         </div>
         <Space wrap>
@@ -96,7 +96,7 @@ export function HomePage() {
         </Col>
         <Col span={6}>
           <Card className="stat-card">
-            <Statistic title="活跃 Runtime" value={summary.activeRuntimeCount} />
+            <Statistic title="活跃执行实例" value={summary.activeRuntimeCount} />
           </Card>
         </Col>
         <Col span={6}>
@@ -108,8 +108,8 @@ export function HomePage() {
 
       <div className="console-grid console-grid--primary">
         <Card
-          title="重点介入区"
-          extra={<Tag color="gold">{summary.interventionCount} 个待介入</Tag>}
+          title="优先介入事项"
+          extra={<Tag color="gold">{summary.interventionCount} 个待处理项目</Tag>}
         >
           <List
             dataSource={interventionProjects.slice(0, 3)}
@@ -155,24 +155,24 @@ export function HomePage() {
             </Space>
             <div className="summary-list">
               <div>
-                <span>主 Feature</span>
+                <span>当前主题</span>
                 <strong>{featuredProject.currentFeature}</strong>
               </div>
               <div>
-                <span>Blocker</span>
+                <span>当前阻塞事项</span>
                 <strong>{featuredProject.blocker}</strong>
               </div>
               <div>
-                <span>Runtime 摘要</span>
+                <span>执行摘要</span>
                 <strong>{featuredProject.runtimeSummary.summary}</strong>
               </div>
             </div>
             <Space wrap>
               <Button type="primary" onClick={() => navigate(buildProjectDetailRoute(featuredProject.id))}>
-                继续接力
+                查看项目详情
               </Button>
               <Button onClick={() => navigate(buildRuntimeCenterRoute(featuredProject.id))}>
-                查看 Runtime 中心
+                查看执行中心
               </Button>
             </Space>
           </Space>
@@ -201,9 +201,9 @@ export function HomePage() {
         <Card title="下一步建议">
           <List
             dataSource={[
-              '先处理 Beacon 本身的 implement / QA evidence，解除 release gate。',
-              '对 blocked 的 shopxo_canada 先稳定回归环境，再让 Ralph 完成闭环。',
-              '对 slow_uni_bmtop 执行最后的 release sign-off，完成真实项目线验收。',
+              '先处理 Beacon 本身的实施证据与验证证据，解除发布门禁。',
+              '对 blocked 的 shopxo_canada 先稳定回归环境，再完成 Ralph 验证闭环。',
+              '对 slow_uni_bmtop 归档真实项目验证材料并形成最终发布结论。',
             ]}
             renderItem={(item) => <List.Item>{item}</List.Item>}
           />
