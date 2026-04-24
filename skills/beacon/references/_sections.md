@@ -2,11 +2,11 @@
 
 - `usage-rules.md` — trigger rules, wrapper behavior, main/supplementary sync rules, and anti-drift structure contract
 - `../examples/basic-workflow.md` — example invocations
-- `../../../docs/beacon/v1.3.6/SUMMARY.md` — current runtime release summary
-- `../../../docs/beacon/v1.3.6/execution/index.md` — current runtime execution index
-- `../../../docs/beacon/v1.3.6/release/v1.3.6.md` — current runtime release notes
-- `../../../docs/beacon/v1.3.6/execution/host-native-llm-and-skill-runtime-blueprint.md` — host-native runtime architecture blueprint
-- `../../../docs/beacon/v1.3.6/release/runtime-promotion-checklist.md` — runtime promotion completion record
+- `../../../docs/beacon/v1.3.7/SUMMARY.md` — current runtime release summary
+- `../../../docs/beacon/v1.3.7/execution/index.md` — current runtime execution index
+- `../../../docs/beacon/v1.3.7/release/v1.3.7.md` — current runtime release notes
+- `../../../docs/beacon/v1.3.7/execution/architecture-blueprint.md` — current runtime architecture blueprint
+- `../../../docs/beacon/v1.3.7/execution/project-skill-qa-evolution-blueprint.md` — current runtime skill / QA evolution blueprint
 - `../../../docs/skill-development-standards.md` — standard skill layout baseline
 
 ## Fixed section contract

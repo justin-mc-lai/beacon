@@ -19,10 +19,11 @@ from beacon.utils.release_scorecard import build_release_scorecard, summarize_re
 from beacon.utils.runtime_projection import build_runtime_projection
 from beacon.utils.runtime_projection_store import list_projects, load_project_detail, sync_projection
 from beacon.utils.runtime import newest_run_id, read_json
+from beacon.utils.semantic_runtime import evaluate_semantic_contract
 from beacon.utils.technical_review_contract import build_technical_review_gate_payload, load_technical_review_state
 from beacon.utils.versioning import describe_project_version_context, resolve_target_version
-from beacon.utils.workflow_memory import compute_memory_metrics, compute_workflow_progress
-from beacon.utils.help_support import build_help_payload
+from beacon.utils.workflow_memory import compute_memory_metrics, compute_workflow_progress, workflow_memory_transaction_contract
+from beacon.utils.help_support import build_help_payload, canonicalize_lifecycle_action, canonicalize_lifecycle_stage
 
 app = typer.Typer(
     name="status",
@@ -70,6 +71,12 @@ def _status_impl(
         if resolved_run_id
         else {}
     )
+    memory_transaction = workflow_memory_transaction_contract(
+        root,
+        run_id=resolved_run_id or None,
+        version=version_filter,
+        feature=feature_filter,
+    )
     terminal_status = str(selected_state.get("status", "unknown")) if isinstance(selected_state, dict) else "unknown"
     coverage_version = (
         version_filter
@@ -107,6 +114,12 @@ def _status_impl(
         if target_feature
         else {}
     )
+    lifecycle = help_payload.get("lifecycle", {}) if isinstance(help_payload.get("lifecycle"), dict) else {}
+    workflow_progress_display = (
+        help_payload.get("workflow_progress_display", {})
+        if isinstance(help_payload.get("workflow_progress_display"), dict)
+        else {}
+    )
     implementation_plan_progress = load_implementation_plan_progress(root, version=coverage_version, feature=target_feature) if target_feature else {}
     requirement_clarity_gate = build_requirement_clarity_gate_payload(root, version=coverage_version, feature=target_feature) if target_feature else {}
     requirement_clarity_state = load_requirement_clarity_state(root, feature=target_feature) if target_feature else {}
@@ -117,6 +130,17 @@ def _status_impl(
     keep_discard_engine = load_keep_discard_engine(root)
     release_scorecard = build_release_scorecard(root, version=coverage_version)
     release_summary = summarize_release_scorecard(release_scorecard)
+    semantic_status = (
+        evaluate_semantic_contract(root, version=coverage_version, feature=target_feature)
+        if target_feature
+        else {
+            "status": "not_applicable",
+            "reason_code": "",
+            "message": "",
+            "artifacts": {},
+            "details": {},
+        }
+    )
     runtime_projection = build_runtime_projection(
         root,
         docs_version=coverage_version or None,
@@ -141,6 +165,7 @@ def _status_impl(
             "selected_run_id": resolved_run_id,
         },
         "memory": memory_metrics,
+        "memory_transaction": memory_transaction,
         "coverage": coverage_metrics,
         "scores": help_payload.get("scores", {}),
         "revision": {
@@ -157,9 +182,12 @@ def _status_impl(
             "blocked_reason": help_payload.get("blocked_reason", ""),
         },
         "next_step": help_payload.get("next_step", {}),
+        "lifecycle": lifecycle,
         "change_loop": help_payload.get("change_loop", {}),
         "project_mode": help_payload.get("project_mode", "greenfield"),
         "execution_surface": help_payload.get("execution_surface", {}),
+        "archive": help_payload.get("archive", {}),
+        "host_prompt_trace": help_payload.get("host_prompt_trace", {}),
         "delivery_read_model": help_payload.get("delivery_read_model", {}),
         "surface_explanation": help_payload.get("surface_explanation", {}),
         "hud": help_payload.get("hud", {}),
@@ -187,6 +215,7 @@ def _status_impl(
             "approved_by": technical_review_state.get("approved_by", ""),
             "state_path": technical_review_state.get("state_path", ""),
         },
+        "semantic": semantic_status,
         "decision_trace": help_payload.get("decision_trace", []),
         "control_plane": resume_contract,
         "qa_status": {
@@ -208,6 +237,7 @@ def _status_impl(
         "version_semantics": help_payload.get("version_semantics", {}) or version_context.get("version_semantics", {}),
         "source_of_truth": source_of_truth,
         "workflow_progress": workflow_progress,
+        "workflow_progress_display": workflow_progress_display,
         "filters": {
             "version": version_filter or "",
             "feature": feature_filter or "",
@@ -224,13 +254,15 @@ def _status_impl(
     if board:
         typer.echo("Beacon Status Board")
         board_summary = runtime_projection.get("board", {}) if isinstance(runtime_projection.get("board"), dict) else {}
+        board_current_stage = canonicalize_lifecycle_stage(board_summary.get("current_stage")) or board_summary.get("current_stage") or "unknown"
+        board_next_action = canonicalize_lifecycle_action(board_summary.get("next_action")) or board_summary.get("next_action") or "none"
         typer.echo(f"- truth.line: {runtime_projection.get('docs_version') or coverage_version or 'unknown'}")
         typer.echo(f"- board.project: {runtime_projection.get('display_name') or root.name}")
         typer.echo(f"- board.project_kind: {board_summary.get('project_kind') or runtime_projection.get('project_kind') or 'unknown'}")
-        typer.echo(f"- board.current_stage: {board_summary.get('current_stage') or 'unknown'}")
+        typer.echo(f"- board.current_stage: {board_current_stage}")
         typer.echo(f"- board.progress: {board_summary.get('progress_label') or 'unknown'}")
         typer.echo(f"- board.blocker: {board_summary.get('blocker') or 'none'}")
-        typer.echo(f"- board.next_action: {board_summary.get('next_action') or 'none'}")
+        typer.echo(f"- board.next_action: {board_next_action}")
         typer.echo(f"- board.debug_state: {board_summary.get('debug_state') or 'no_debug_feed'}")
         typer.echo(f"- board.runtime_corroboration: {board_summary.get('runtime_corroboration') or 'missing'}")
         typer.echo(f"- board.health: {board_summary.get('health_status') or 'unknown'}")
@@ -251,11 +283,13 @@ def _status_impl(
                 typer.echo(f"- board.pocketbase_admin_ui: {control_plane.get('admin_ui')}")
         typer.echo(f"- board.portfolio_projects: {len(portfolio_projects)}")
         for index, project in enumerate(portfolio_projects[:6], start=1):
+            project_stage = canonicalize_lifecycle_stage(project.get("current_stage")) or project.get("current_stage")
+            project_next_action = canonicalize_lifecycle_action(project.get("next_action")) or project.get("next_action")
             typer.echo(
                 f"- portfolio.{index}: "
                 f"{project.get('display_name') or project.get('project_key')} | kind={project.get('project_kind')} | "
-                f"stage={project.get('current_stage')} | debug={project.get('debug_state')} | "
-                f"next={project.get('next_action')}"
+                f"stage={project_stage} | debug={project.get('debug_state')} | "
+                f"next={project_next_action}"
             )
         typer.echo(f"- team.known_teams: {team_count}")
         typer.echo(f"- gate.terminal_status: {terminal_status}")
@@ -295,9 +329,10 @@ def _status_impl(
             f"- release.learning: {release_summary.get('main_kpi')}={release_summary.get('main_kpi_score')} keep/review/discard={release_summary.get('decision_keep')}/{release_summary.get('decision_review')}/{release_summary.get('decision_discard')}"
         )
         typer.echo(f"- memory.closure_complete: {memory_metrics.get('closure_complete')}")
+        typer.echo(f"- memory.transaction: {memory_transaction.get('status')}")
         typer.echo(f"- memory.writebacks: {memory_metrics.get('writebacks')}")
         typer.echo(f"- memory.recall_injections: {memory_metrics.get('recall_injections')}")
-        typer.echo(f"- memory.next_stage: {workflow_progress.get('next_stage') or 'none'}")
+        typer.echo(f"- memory.next_stage: {lifecycle.get('next_stage') or workflow_progress_display.get('next_stage') or canonicalize_lifecycle_stage(workflow_progress.get('next_stage')) or 'none'}")
         if payload.get("implementation_plan", {}).get("plan_id"):
             typer.echo(
                 f"- implementation_plan: {payload.get('implementation_plan', {}).get('status')} "
@@ -313,6 +348,11 @@ def _status_impl(
             typer.echo(
                 f"- technical_review: {payload.get('technical_review', {}).get('status')} "
                 f"review_status={payload.get('technical_review', {}).get('review_status') or 'none'}"
+            )
+        if target_feature:
+            typer.echo(
+                f"- semantic: {payload.get('semantic', {}).get('status')} "
+                f"bridge={((payload.get('semantic', {}).get('details', {}) or {}).get('default_design_bridge', {}) or {}).get('skill_id', 'none')}"
             )
         if target_feature and bool(payload.get("change_loop", {}).get("recommended")):
             typer.echo(
@@ -364,6 +404,10 @@ def _status_impl(
             typer.echo(f"- execution.subagent_runtime: {execution_surface.get('subagent_runtime_status') or 'N/A'}")
             typer.echo(f"- execution.subagent_delegation: {execution_surface.get('subagent_delegation_status') or 'N/A'}")
             typer.echo(f"- execution.ralph_phase: {execution_surface.get('ralph_phase') or 'N/A'}")
+            typer.echo(f"- execution.archive_status: {execution_surface.get('archive_status') or 'N/A'}")
+            typer.echo(f"- execution.freeze_status: {execution_surface.get('freeze_status') or 'N/A'}")
+            typer.echo(f"- execution.team_phase: {execution_surface.get('team_phase') or 'N/A'}")
+            typer.echo(f"- execution.host_prompt_trace_ref: {execution_surface.get('host_prompt_trace_ref') or 'N/A'}")
             typer.echo(f"- execution.ralph_stop_state: {execution_surface.get('ralph_stop_state') or 'N/A'}")
             typer.echo(f"- execution.ralph_next_action: {execution_surface.get('ralph_next_action') or 'N/A'}")
             typer.echo(f"- execution.ralph_round_count: {execution_surface.get('ralph_round_count') or 0}")

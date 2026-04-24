@@ -1,11 +1,47 @@
 """Beacon brainstorm command - Divergent thinking exploration"""
+import json
 import typer
 from typing import Optional
 from pathlib import Path
 
+from beacon.utils.brainstorm import MODES, run_beacon_brainstorm
 from beacon.utils.versioning import resolve_target_version
 
 app = typer.Typer(name="brainstorm", help="Divergent thinking exploration")
+
+
+@app.command("run")
+def run(
+    prompt: str = typer.Argument(..., help="Brainstorm prompt"),
+    project_root: Optional[str] = typer.Option(None, "--project-root", "--project", "-p", help="Project root"),
+    version: str = typer.Option("auto", "--version", help="Beacon docs version"),
+    mode: str = typer.Option("requirement-convergence", "--mode", help=f"Mode: {', '.join(MODES)}"),
+    feature: str = typer.Option("", "--feature", help="Optional Beacon feature name"),
+    output: str = typer.Option("", "--output", "-o", help="Markdown output path"),
+    json_output: bool = typer.Option(False, "--json", help="Print JSON payload"),
+):
+    """Run Beacon's read-only brainstorm sidecar against version materials."""
+    root = Path(project_root) if project_root else Path.cwd()
+    try:
+        payload = run_beacon_brainstorm(
+            root,
+            version=version,
+            prompt=prompt,
+            mode=mode,
+            feature=feature,
+            output=output,
+        )
+    except ValueError as exc:
+        error = {"status": "blocked", "reason_code": "brainstorm_invalid_request", "message": str(exc)}
+        if json_output:
+            typer.echo(json.dumps(error, ensure_ascii=False, indent=2))
+        else:
+            typer.echo(f"Blocked: {exc}")
+        raise typer.Exit(2) from exc
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo(f"✓ Beacon brainstorm created: {payload['output_path']}")
 
 
 @app.command()

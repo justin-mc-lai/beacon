@@ -54,10 +54,10 @@ def test_latest_attempt_status_should_win_over_previous_failure(tmp_path: Path):
     append_lifecycle_event(tmp_path, run_id=run_id, stage="think", event="memory_writeback", source="test")
 
     progress = compute_workflow_progress(tmp_path, run_id=run_id)
-    think = progress.get("stages", {}).get("think", {})
-    assert think.get("status") == "completed"
-    assert think.get("attempt_seq") == 2
-    assert think.get("retry_count") == 1
+    prd = progress.get("stages", {}).get("prd", {})
+    assert prd.get("status") == "completed"
+    assert prd.get("attempt_seq") == 2
+    assert prd.get("retry_count") == 1
 
 
 def test_stage_skipped_should_be_reported_and_gate_stage_should_exist(tmp_path: Path):
@@ -77,7 +77,7 @@ def test_stage_skipped_should_be_reported_and_gate_stage_should_exist(tmp_path: 
     append_lifecycle_event(tmp_path, run_id=run_id, stage="gate", event="stage_skipped", source="test")
     progress = compute_workflow_progress(tmp_path, run_id=run_id)
 
-    assert "gate" in progress.get("stages", {})
-    gate = progress.get("stages", {}).get("gate", {})
-    assert gate.get("status") == "skipped"
+    assert "release" in progress.get("stages", {})
+    release = progress.get("stages", {}).get("release", {})
+    assert release.get("status") == "skipped"
     assert progress.get("closure_complete") is False

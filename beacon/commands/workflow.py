@@ -49,6 +49,7 @@ from beacon.utils.v110_baseline import record_baseline_snapshot
 from beacon.utils.workflow_memory import (
     append_lifecycle_event,
     compute_workflow_progress,
+    normalize_workflow_stage,
     record_stage_writeback,
     resolve_workflow_run_id,
     write_stage_context,
@@ -57,14 +58,13 @@ from beacon.utils.workflow_memory import (
 app = typer.Typer(name="workflow", help="Full product workflow")
 
 WORKFLOW_STAGES = [
-    ("think", "Product thinking (vNext)", "beacon think start"),
-    ("user-story", "Generate user stories", "beacon user-story create"),
-    ("prd", "Generate PRD", "beacon prd create"),
-    ("prototype", "Generate static UI prototype", "beacon prototype create"),
+    ("prd", "Generate PRD from requirement truth", "beacon prd create"),
+    ("user-story", "Generate user stories from PRD", "beacon user-story create"),
     ("test-case", "Generate executable test matrix", "beacon test-case create"),
-    ("implementation", "Align external implementation with docs", "<external implementation command>"),
-    ("verify", "Run multi-layer tests and gate closure", "beacon auto-test create"),
-    ("gate", "Run gate readiness and closure check", "beacon gate check release"),
+    ("prototype", "Generate static UI prototype", "beacon prototype create"),
+    ("implement", "Execute implementation against frozen materials", "beacon implement dev-run"),
+    ("qa", "Run QA verification and evidence closure", "beacon qa run"),
+    ("release", "Run release readiness and closure check", "beacon gate check release"),
 ]
 
 
@@ -1150,11 +1150,6 @@ def _slug(text: str) -> str:
 def _stage_output_candidates(project_root: Path, stage: str, feature: str, version: str) -> list[Path]:
     slug = _slug(feature)
     common = [project_root / ".beacon" / "raw-command-log.jsonl"]
-    if stage == "think":
-        return [
-            project_root / ".beacon" / "state" / "think-progress" / f"{version}.json",
-            project_root / ".beacon" / "state" / "think-progress.json",
-        ] + common
     if stage == "user-story":
         return [
             project_root / "docs" / "beacon" / version / "user-story" / f"{slug}.md",
@@ -1184,15 +1179,15 @@ def _stage_output_candidates(project_root: Path, stage: str, feature: str, versi
             qa_matrix_candidates(project_root, version, slug, "ac-test-matrix")[0],
             qa_matrix_candidates(project_root, version, slug, "qa9-matrix")[0],
         ] + common
-    if stage == "implementation":
+    if stage in {"implement", "implementation"}:
         return [
             project_root / ".beacon" / "state" / f"implementation-{slug}.json",
         ] + common
-    if stage == "verify":
+    if stage in {"qa", "verify"}:
         return [
             project_root / ".beacon" / "auto-test-status.json",
         ] + common
-    if stage == "gate":
+    if stage in {"release", "gate"}:
         return [
             project_root / ".beacon" / "gate-report.json",
         ] + common
@@ -1392,7 +1387,7 @@ def _render_workflow_hud(
     gate_status = str(gate_payload.get("status", "")).strip().lower() if gate_payload else ""
     auto_test_status = _read_auto_test_status(project_root)
     gate_ready = (
-        str(progress.get("next_stage") or "none") in {"gate", "none"}
+        str(progress.get("next_stage") or "none") in {"release", "none"}
         and auto_test_status == "passed"
     )
 
@@ -1467,7 +1462,7 @@ def _render_workflow_hud(
         typer.echo(f"closure      : {hud_payload['workflow_progress']['closure_complete']}")
         typer.echo(f"missing      : {hud_payload['workflow_progress']['missing_closure_stages']}")
         typer.echo(f"auto_test    : {hud_payload['quality']['auto_test_status']}")
-        typer.echo(f"gate_status  : {hud_payload['quality']['gate_status']}")
+        typer.echo(f"release_gate : {hud_payload['quality']['gate_status']}")
         typer.echo(f"coverage_full: {hud_payload['quality']['coverage_full']}")
         typer.echo(
             f"debug_mode   : {hud_payload['debug']['enabled']} "
@@ -1484,7 +1479,7 @@ def _render_workflow_hud(
 def _print_interactive_menu() -> None:
     typer.echo("\n[Next Step]")
     typer.echo("1) 执行 next_stage（single-step）")
-    typer.echo("2) 自动补齐到 gate（auto-run）")
+    typer.echo("2) 自动补齐到 release（auto-run）")
     typer.echo("3) 查看阻塞详情（reason_code/open_questions/conflicts）")
     typer.echo("4) 执行反馈修订（feedback extract+apply）")
     typer.echo("5) 暂停并保存（pause）")
@@ -1693,9 +1688,9 @@ def _execute_stage(
         "BEACON_STAGE_CONTEXT_PATH": str(context_path),
     }
 
-    if stage == "think":
+    if stage == "prd":
         result = run_beacon_command(
-            ["think", "start", feature, "--project", str(project_root), "--version", version],
+            ["prd", "create", feature, "--project", str(project_root), "--version", version],
             project_root,
             run_id=run_id,
             stage=stage,
@@ -1711,9 +1706,9 @@ def _execute_stage(
             extra_env=stage_env,
         )
         rc = int(result.returncode)
-    elif stage == "prd":
+    elif stage == "think":
         result = run_beacon_command(
-            ["prd", "create", feature, "--project", str(project_root), "--version", version],
+            ["think", "start", feature, "--project", str(project_root), "--version", version],
             project_root,
             run_id=run_id,
             stage=stage,
@@ -1756,11 +1751,11 @@ def _execute_stage(
             extra_env=stage_env,
         )
         rc = int(result.returncode)
-    elif stage == "implementation":
+    elif stage in {"implement", "implementation"}:
         resolved_implementation_command = str(implementation_command or "").strip()
         command_source = "cli"
         resolved_runner = str(implementation_runner or "").strip()
-        attempted_strategy = f"implementation:{resolved_runner or 'command'}"
+        attempted_strategy = f"implement:{resolved_runner or 'command'}"
         if resolved_implementation_command:
             env = os.environ.copy()
             env.update(stage_env)
@@ -1786,7 +1781,7 @@ def _execute_stage(
                     {
                         "schema_version": "1.0",
                         "run_id": run_id,
-                        "stage": "implementation",
+                        "stage": "implement",
                         "feature": feature,
                         "version": version,
                         "command": resolved_implementation_command,
@@ -1826,9 +1821,9 @@ def _execute_stage(
                 if env_command:
                     resolved_implementation_command = env_command
                     command_source = "env"
-                    attempted_strategy = "implementation:env-command"
+                    attempted_strategy = "implement:env-command"
                 if not resolved_implementation_command:
-                    typer.echo("Blocked: implementation stage requires explicit external command execution")
+                    typer.echo("Blocked: implement stage requires explicit external command execution")
                     _log_raw_command(
                         project_root,
                         run_id=run_id,
@@ -1863,7 +1858,7 @@ def _execute_stage(
                             {
                                 "schema_version": "1.0",
                                 "run_id": run_id,
-                                "stage": "implementation",
+                                "stage": "implement",
                                 "feature": feature,
                                 "version": version,
                                 "command": resolved_implementation_command,
@@ -1872,8 +1867,8 @@ def _execute_stage(
                                 "generated_at": now_iso(),
                             },
                         )
-    elif stage == "verify":
-        attempted_strategy = f"verify:{(verify_scope or 'all').strip().lower()}"
+    elif stage in {"qa", "verify"}:
+        attempted_strategy = f"qa:{(verify_scope or 'all').strip().lower()}"
         verify_scope_norm = (verify_scope or "all").strip().lower()
         require_ui_actions_effective = verify_require_ui_actions and verify_scope_norm in {
             "ui",
@@ -1972,8 +1967,8 @@ def _execute_stage(
                         "verify_status": verify_status or "unknown",
                         "reason": "verify_not_passed",
                     }
-    elif stage == "gate":
-        attempted_strategy = "gate:release-strict"
+    elif stage in {"release", "gate"}:
+        attempted_strategy = "release:strict"
         verify_payload = _load_json_dict(project_root / ".beacon" / "auto-test-status.json")
         verify_status = str(verify_payload.get("status", "")).strip().lower()
         coverage = compute_coverage_metrics(project_root, version=version, feature=feature)
@@ -2050,6 +2045,8 @@ def _execute_stage(
             or failure_details.get("reason")
             or f"{stage}_failed"
         ).strip()
+        if reason_code == "missing_implementation_command":
+            typer.echo("implementation stage requires explicit external command execution")
         checkpoint_payload = record_stage_failure(
             project_root,
             run_id=run_id,
@@ -2079,8 +2076,8 @@ def start(
     feature: str = typer.Argument(..., help="Feature name"),
     project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
     version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
-    auto: bool = typer.Option(False, "--auto", "-a", help="Auto-run all stages"),
-    skip: Optional[str] = typer.Option(None, "--skip", "-s", help="Skip stages (e.g., think,user-story)"),
+    auto: bool = typer.Option(False, "--auto", "-a", help="Auto-run all stages until release"),
+    skip: Optional[str] = typer.Option(None, "--skip", "-s", help="Skip stages (e.g., prd,user-story)"),
     interactive: Optional[bool] = typer.Option(
         None,
         "--interactive/--no-interactive",
@@ -2132,7 +2129,7 @@ def start(
         "--implementation-skill",
         help="Implementation stage skill override for skill-capable runners",
     ),
-    verify_scope: str = typer.Option("all", "--verify-scope", help="Verify scope: ui/api-curl/unit/smoke/all/qa9"),
+    verify_scope: str = typer.Option("all", "--verify-scope", help="QA scope: ui/api-curl/unit/smoke/all/qa9"),
     verify_config: Optional[str] = typer.Option(None, "--verify-config", help="Verify config path"),
     verify_ui_command: Optional[str] = typer.Option(None, "--verify-ui-command", help="Verify UI command"),
     verify_api_curl_command: Optional[str] = typer.Option(None, "--verify-api-curl-command", help="Verify API curl command"),
@@ -2141,7 +2138,7 @@ def start(
     verify_require_ui_actions: bool = typer.Option(
         False,
         "--verify-require-ui-actions/--no-verify-require-ui-actions",
-        help="Require key UI action evidence in verify stage.",
+        help="Require key UI action evidence in qa stage.",
     ),
     verify_qa_profile: str = typer.Option(
         "web-full",
@@ -2176,7 +2173,7 @@ def start(
     verify_require_fresh_evidence: bool = typer.Option(
         False,
         "--verify-require-fresh-evidence/--no-verify-require-fresh-evidence",
-        help="Verify stage requires current run fresh evidence for matrix artifacts.",
+        help="QA stage requires current run fresh evidence for matrix artifacts.",
     ),
     bridge_execute: bool = typer.Option(
         False,
@@ -2217,12 +2214,16 @@ def start(
     ensure_output_dirs(project_root, resolved_version)
     run_id = generate_run_id(project_root)
     started_at = now_iso()
-    skip_stages = {x.strip() for x in (skip.split(",") if skip else []) if x.strip()}
+    skip_stages = {
+        normalize_workflow_stage(x.strip())
+        for x in (skip.split(",") if skip else [])
+        if x.strip()
+    }
     predicted = build_next_stage_trace(
         feature=feature,
         version=resolved_version,
         run_id=run_id,
-        next_stage="think",
+        next_stage="prd",
         context="workflow.start",
     )
     base_state: dict[str, Any] = {
@@ -2237,7 +2238,7 @@ def start(
         "events": [{"event": "workflow_started", "ts": started_at}],
         "llm_prompts": [predicted],
         "token_usage": merge_token_usage({}, predicted),
-        "tool_calls": [{"name": "workflow.next_stage.predict", "args": {"next_stage": "think"}}],
+        "tool_calls": [{"name": "workflow.next_stage.predict", "args": {"next_stage": "prd"}}],
     }
     save_run_state(
         project_root,
@@ -2674,7 +2675,7 @@ def continue_workflow(  # noqa: A003
     version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
     feature: Optional[str] = typer.Option(None, "--feature", "-f", help="Feature filter"),
     run_id: Optional[str] = typer.Option(None, "--run-id", help="Explicit run id"),
-    auto: bool = typer.Option(False, "--auto", "-a", help="Continue until gate"),
+    auto: bool = typer.Option(False, "--auto", "-a", help="Continue until release"),
     interactive: Optional[bool] = typer.Option(
         None,
         "--interactive/--no-interactive",
@@ -2726,7 +2727,7 @@ def continue_workflow(  # noqa: A003
         "--implementation-skill",
         help="Implementation stage skill override for skill-capable runners",
     ),
-    verify_scope: str = typer.Option("all", "--verify-scope", help="Verify scope: ui/api-curl/unit/smoke/all/qa9"),
+    verify_scope: str = typer.Option("all", "--verify-scope", help="QA scope: ui/api-curl/unit/smoke/all/qa9"),
     verify_config: Optional[str] = typer.Option(None, "--verify-config", help="Verify config path"),
     verify_ui_command: Optional[str] = typer.Option(None, "--verify-ui-command", help="Verify UI command"),
     verify_api_curl_command: Optional[str] = typer.Option(None, "--verify-api-curl-command", help="Verify API curl command"),
@@ -2735,7 +2736,7 @@ def continue_workflow(  # noqa: A003
     verify_require_ui_actions: bool = typer.Option(
         False,
         "--verify-require-ui-actions/--no-verify-require-ui-actions",
-        help="Require key UI action evidence in verify stage.",
+        help="Require key UI action evidence in qa stage.",
     ),
     verify_qa_profile: str = typer.Option(
         "web-full",
@@ -2770,7 +2771,7 @@ def continue_workflow(  # noqa: A003
     verify_require_fresh_evidence: bool = typer.Option(
         False,
         "--verify-require-fresh-evidence/--no-verify-require-fresh-evidence",
-        help="Verify stage requires current run fresh evidence for matrix artifacts.",
+        help="QA stage requires current run fresh evidence for matrix artifacts.",
     ),
     bridge_execute: bool = typer.Option(
         False,
@@ -3370,32 +3371,25 @@ def status(
 
     # Check each stage
     stages = [
-        ("think", ".beacon/state/think-progress.json"),
-        ("user-story", "user-story"),
         ("prd", "prd"),
+        ("user-story", "user-story"),
         ("test-case", "qa/test-cases"),
-        ("implementation", ".beacon/state"),
-        ("verify", ".beacon/auto-test-status.json"),
-        ("gate", ".beacon/gate-report.json"),
+        ("prototype", "prototype"),
+        ("implement", ".beacon/state"),
+        ("qa", ".beacon/auto-test-status.json"),
+        ("release", ".beacon/gate-report.json"),
     ]
 
     for stage, path in stages:
-        if stage == "think":
-            candidates = [
-                project_root / ".beacon" / "state" / "think-progress" / f"{resolved_version}.json",
-                project_root / ".beacon" / "state" / "think-progress.json",
-            ]
-            stage_path = next((p for p in candidates if p.exists()), candidates[-1])
-        else:
-            stage_path = docs_dir / path
-        if stage in {"implementation", "verify", "gate"}:
+        stage_path = docs_dir / path
+        if stage in {"implement", "qa", "release"}:
             stage_path = project_root / path
         if stage_path.exists():
             if stage_path.is_file():
                 typer.echo(f"✓ {stage}: Completed")
             elif stage_path.is_dir():
                 files = list(stage_path.glob("*.md")) + list(stage_path.glob("*/state.json"))
-                if stage == "implementation":
+                if stage == "implement":
                     files.extend(list(stage_path.glob("implementation-*.json")))
                 if files:
                     typer.echo(f"✓ {stage}: Completed ({len(files)} files)")
@@ -3420,7 +3414,7 @@ def status(
         typer.echo(f"feature: {progress.get('feature')}")
     if progress.get("version"):
         typer.echo(f"version: {progress.get('version')}")
-    for stage in progress.get("workflow_stages", ["think", "user-story", "prd", "test-case", "implementation", "verify", "gate"]):
+    for stage in progress.get("workflow_stages", ["prd", "user-story", "test-case", "prototype", "implement", "qa", "release"]):
         item = progress.get("stages", {}).get(stage, {})
         typer.echo(f"{stage:12}: {item.get('status', 'not_started')}")
     typer.echo(f"next_stage   : {progress.get('next_stage') or 'none'}")
@@ -3433,7 +3427,7 @@ def status(
 def gate(
     stage: Optional[str] = typer.Argument(
         None,
-        help="Stage to check (think/user-story/prd/prototype/test-case/implementation/verify/release)",
+        help="Stage to check (prd/user-story/test-case/prototype/implement/qa/release)",
     ),
     project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
     version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
@@ -3443,7 +3437,7 @@ def gate(
     resolved_version = resolve_target_version(project_root, version)
 
     stages = (
-        ["think", "user-story", "prd", "prototype", "test-case", "release"]
+        ["prd", "user-story", "test-case", "prototype", "implement", "qa", "release"]
         if not stage
         else [stage]
     )
@@ -3473,7 +3467,7 @@ def gate(
 
 @app.command()
 def run(
-    command: str = typer.Argument(..., help="Command to run (think/user-story/prd/test-case/analyze/brainstorm/etc)"),
+    command: str = typer.Argument(..., help="Command to run (prd/user-story/test-case/prototype/implement/qa/release/etc)"),
     feature: Optional[str] = typer.Argument(None, help="Feature name"),
     project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
     version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
@@ -3491,6 +3485,10 @@ def run(
         "prd": "prd",
         "test-case": "test-case",
         "test_case": "test-case",
+        "implement": "implement",
+        "implementation": "implement",
+        "qa": "qa",
+        "verify": "qa",
         "analyze": "analyze",
         "brainstorm": "brainstorm",
         "design": "design",
@@ -3502,6 +3500,7 @@ def run(
         "version": "version",
         "doctor": "doctor",
         "status": "status",
+        "help": "help",
         "report": "report",
         "debug": "debug",
         "auto-test": "auto-test",
@@ -3564,12 +3563,19 @@ def run(
         "user-story": {"create", "list"},
         "prd": {"create", "list"},
         "test-case": {"create", "list", "show"},
+        "implement": {"run", "dev-run", "team-run", "plan", "status", "team-plan"},
+        "qa": {"run", "team-run", "team-plan", "status", "evolve"},
+        "release": {"check", "create", "scorecard"},
+        "help": {"show"},
     }
     default_action_map: dict[str, str] = {
         "think": "start",
         "user-story": "create",
         "prd": "create",
         "test-case": "create",
+        "implement": "dev-run",
+        "qa": "run",
+        "release": "check",
     }
 
     feature_token = str(feature or "").strip()
@@ -3589,6 +3595,10 @@ def run(
         "user-story",
         "prd",
         "test-case",
+        "implement",
+        "qa",
+        "release",
+        "help",
         "workflow",
         "status",
         "report",

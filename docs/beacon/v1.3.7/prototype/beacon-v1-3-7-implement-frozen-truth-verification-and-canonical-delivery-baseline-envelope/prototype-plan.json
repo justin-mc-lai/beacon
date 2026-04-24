@@ -1,0 +1,664 @@
+{
+  "schema_version": "1.0",
+  "feature": "Beacon v1.3.7 implement frozen-truth verification and canonical delivery baseline envelope",
+  "feature_slug": "beacon-v1-3-7-implement-frozen-truth-verification-and-canonical-delivery-baseline-envelope",
+  "version": "v1.3.7",
+  "generated_at": "2026-04-23T08:18:26Z",
+  "prototype_mode": "wireframe",
+  "ui_kit": "wireframe-markdown-v1",
+  "source_documents": [
+    {
+      "type": "user-story",
+      "path": "docs/beacon/v1.3.7/user-story/beacon-v1.3.7-implement-frozen-truth-verification-and-canonical-delivery-baseline-envelope.md",
+      "fingerprint": "4aea61718747b6615578978a6a7f9fb5cd1d3f7fdcd1b8d5bf598a100c43090e"
+    },
+    {
+      "type": "prd",
+      "path": "docs/beacon/v1.3.7/prd/beacon-v1.3.7-implement-frozen-truth-verification-and-canonical-delivery-baseline-envelope.md",
+      "fingerprint": "1d5c8370f3d196001b394c4254ae32b6cbf55bbda7d1565eda035f30e298da8f"
+    },
+    {
+      "type": "test-case",
+      "path": "docs/beacon/v1.3.7/qa/test-cases/beacon-v1.3.7-implement-frozen-truth-verification-and-canonical-delivery-baseline-envelope.md",
+      "fingerprint": "d4f8aa7931cfec76a497cf731f71357725f6b7319c77081103096d70af8ecefd"
+    }
+  ],
+  "required_pages": [
+    "runtime-center",
+    "recovery-diagnostics"
+  ],
+  "required_states": [
+    "degraded",
+    "doctor-suggested",
+    "error",
+    "healthy-warning",
+    "idle",
+    "loading",
+    "ralph-active",
+    "rebuild-suggested",
+    "single-active",
+    "team-active"
+  ],
+  "requirement_ids": {
+    "ac_ids": [
+      "AC-001",
+      "AC-002",
+      "AC-003",
+      "AC-004",
+      "AC-005"
+    ],
+    "tc_ids": [
+      "TC-001",
+      "TC-002",
+      "TC-003",
+      "TC-004",
+      "TC-005",
+      "TC-006"
+    ]
+  },
+  "page_specs": [
+    {
+      "page_id": "runtime-center",
+      "name": "运行中心",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "只在这里下钻 single / team / ralph 的 runtime 细节和有限 session metadata。",
+      "sections": [
+        "运行态摘要头部",
+        "single / team / ralph 模式切换",
+        "agent/session 引用",
+        "artifact 与 linked run",
+        "最近结果与 blocker"
+      ],
+      "actions": [],
+      "states": [
+        {
+          "id": "single-active",
+          "label": "Single 运行",
+          "description": "展示单进程执行摘要和 linked run。"
+        },
+        {
+          "id": "team-active",
+          "label": "Team 运行",
+          "description": "展示 agent 数、角色、状态和 host session metadata。"
+        },
+        {
+          "id": "ralph-active",
+          "label": "Ralph 闭环",
+          "description": "展示 round_count、failure_streak、next_action、blocker。"
+        },
+        {
+          "id": "idle",
+          "label": "无活跃运行",
+          "description": "当前没有任何 active runtime。"
+        },
+        {
+          "id": "loading",
+          "label": "加载中",
+          "description": "运行态数据仍在读取。"
+        },
+        {
+          "id": "error",
+          "label": "错误",
+          "description": "运行态投影异常，需要回到诊断页。"
+        }
+      ],
+      "requirement_refs": {
+        "user-story": [
+          "docs/beacon/v1.3.7/user-story/beacon-v1.3.7-implement-frozen-truth-verification-and-canonical-delivery-baseline-envelope.md"
+        ],
+        "prd": [
+          "docs/beacon/v1.3.7/prd/beacon-v1.3.7-implement-frozen-truth-verification-and-canonical-delivery-baseline-envelope.md"
+        ],
+        "test-case": [
+          "docs/beacon/v1.3.7/qa/test-cases/beacon-v1.3.7-implement-frozen-truth-verification-and-canonical-delivery-baseline-envelope.md"
+        ]
+      },
+      "outbound_transitions": [],
+      "analysis": {
+        "target_user": "需要核对运行态的执行者 / 诊断人",
+        "decision_focus": [
+          "当前到底是 single、team 还是 ralph 在推进。",
+          "linked run、artifact、blocker 是否足以解释当前停滞点。",
+          "看完运行态后应该回到项目详情还是继续诊断。"
+        ],
+        "layout_rules": [
+          "模式切换必须固定在头部，便于横向比较三种运行形态。",
+          "session / artifact 只展示必要引用，不在此页堆底层原文。",
+          "最近结果与 blocker 必须直接可读，避免继续翻查多层结构。"
+        ],
+        "noise_guardrail": "运行中心可以下钻运行信息，但仍要压制无边界的机器内部明细。"
+      },
+      "layout_lines": [
+        "+----------------------------------------------------------------------------------+",
+        "| 顶栏：返回项目详情 | 运行中心 | 最近刷新时间 | 当前活跃模式                        |",
+        "+----------------------------------------------------------------------------------+",
+        "| 模式切换： single | team | ralph                                                |",
+        "+----------------------------------------------------------------------------------+",
+        "| 运行态摘要头部: 当前状态 | round_count | failure_streak | 当前执行目标             |",
+        "+----------------------------------------------------------------------------------+",
+        "| agent / session 引用                         | linked run / artifact refs           |",
+        "| - session id / agent 数                      | - latest run                         |",
+        "| - host / lane 摘要                           | - artifact / report                  |",
+        "+----------------------------------------------------------------------------------+",
+        "| recent_result                                | blocker / next_action                |",
+        "| - 最近结果摘要                               | - 当前 blocker                       |",
+        "| - 最近一次状态变化                           | - 下一步动作                         |",
+        "+----------------------------------------------------------------------------------+"
+      ]
+    },
+    {
+      "page_id": "recovery-diagnostics",
+      "name": "恢复诊断",
+      "priority": "P2",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "解释 degraded / rebuild / doctor，明确 truth 仍来自 docs/beacon 与 .beacon。",
+      "sections": [
+        "truth 来源说明",
+        "degraded / rebuild / doctor 诊断卡",
+        "恢复步骤",
+        "风险提示"
+      ],
+      "actions": [
+        {
+          "label": "前往运行中心",
+          "target": "runtime-center",
+          "trigger": "点击运行态关联"
+        }
+      ],
+      "states": [
+        {
+          "id": "healthy-warning",
+          "label": "健康但预警",
+          "description": "当前系统可用但存在恢复风险提示。"
+        },
+        {
+          "id": "degraded",
+          "label": "降级",
+          "description": "SQLite 或 PocketBase 缺失，但 truth 仍可从文档恢复。"
+        },
+        {
+          "id": "rebuild-suggested",
+          "label": "建议重建",
+          "description": "投影层需要重建。"
+        },
+        {
+          "id": "doctor-suggested",
+          "label": "建议 doctor",
+          "description": "推荐执行 doctor 修复上下文。"
+        },
+        {
+          "id": "loading",
+          "label": "加载中",
+          "description": "诊断结果仍在采集。"
+        },
+        {
+          "id": "error",
+          "label": "错误",
+          "description": "诊断页本身无法完成聚合。"
+        }
+      ],
+      "requirement_refs": {
+        "user-story": [
+          "docs/beacon/v1.3.7/user-story/beacon-v1.3.7-implement-frozen-truth-verification-and-canonical-delivery-baseline-envelope.md"
+        ],
+        "prd": [
+          "docs/beacon/v1.3.7/prd/beacon-v1.3.7-implement-frozen-truth-verification-and-canonical-delivery-baseline-envelope.md"
+        ],
+        "test-case": [
+          "docs/beacon/v1.3.7/qa/test-cases/beacon-v1.3.7-implement-frozen-truth-verification-and-canonical-delivery-baseline-envelope.md"
+        ]
+      },
+      "outbound_transitions": [
+        {
+          "from": "recovery-diagnostics",
+          "to": "runtime-center",
+          "trigger": "点击运行态关联",
+          "type": "drill-down"
+        }
+      ],
+      "analysis": {
+        "target_user": "负责恢复上下文的人",
+        "decision_focus": [
+          "当前是 degraded、rebuild 还是 doctor 场景。",
+          "真相是否仍然回到 docs/beacon 与 .beacon。",
+          "用户该做哪一步恢复，而不是读一堆诊断术语。"
+        ],
+        "layout_rules": [
+          "先讲 truth 来源，再给诊断卡和恢复步骤。",
+          "风险提示要比操作细节更醒目，避免误用恢复动作。",
+          "恢复动作要收口成少量步骤，不展开内部实现机制。"
+        ],
+        "noise_guardrail": "诊断页解释机器状态，但不能反客为主替代 requirement truth。"
+      },
+      "layout_lines": [
+        "+----------------------------------------------------------------------------------+",
+        "| 顶栏：返回项目详情 | 恢复诊断 | 当前环境状态                                      |",
+        "+----------------------------------------------------------------------------------+",
+        "| truth 来源说明                                                                    |",
+        "| - 正式真相来自 docs/beacon + .beacon                                              |",
+        "| - 当前页只解释恢复路径，不改写 requirement truth                                   |",
+        "+----------------------------------------------------------------------------------+",
+        "| 诊断卡： degraded | rebuild | doctor                                              |",
+        "| - 当前命中的诊断类型                                                               |",
+        "| - 推荐动作与触发条件                                                               |",
+        "+----------------------------------------------------------------------------------+",
+        "| 恢复步骤                                      | 风险提示                           |",
+        "| 1. 校验上下文                                 | - 不要把投影层当真相              |",
+        "| 2. 执行 doctor / rebuild                      | - 误修复会导致 drift              |",
+        "| 3. 回到项目页验证                             | - 先验证再 freeze                 |",
+        "+----------------------------------------------------------------------------------+"
+      ]
+    }
+  ],
+  "page_inventory": [
+    {
+      "page_id": "runtime-center",
+      "name": "运行中心",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "只在这里下钻 single / team / ralph 的 runtime 细节和有限 session metadata。",
+      "sections": [
+        "运行态摘要头部",
+        "single / team / ralph 模式切换",
+        "agent/session 引用",
+        "artifact 与 linked run",
+        "最近结果与 blocker"
+      ],
+      "actions": [],
+      "states": [
+        {
+          "id": "single-active",
+          "label": "Single 运行",
+          "description": "展示单进程执行摘要和 linked run。"
+        },
+        {
+          "id": "team-active",
+          "label": "Team 运行",
+          "description": "展示 agent 数、角色、状态和 host session metadata。"
+        },
+        {
+          "id": "ralph-active",
+          "label": "Ralph 闭环",
+          "description": "展示 round_count、failure_streak、next_action、blocker。"
+        },
+        {
+          "id": "idle",
+          "label": "无活跃运行",
+          "description": "当前没有任何 active runtime。"
+        },
+        {
+          "id": "loading",
+          "label": "加载中",
+          "description": "运行态数据仍在读取。"
+        },
+        {
+          "id": "error",
+          "label": "错误",
+          "description": "运行态投影异常，需要回到诊断页。"
+        }
+      ],
+      "requirement_refs": {
+        "user-story": [
+          "docs/beacon/v1.3.7/user-story/beacon-v1.3.7-implement-frozen-truth-verification-and-canonical-delivery-baseline-envelope.md"
+        ],
+        "prd": [
+          "docs/beacon/v1.3.7/prd/beacon-v1.3.7-implement-frozen-truth-verification-and-canonical-delivery-baseline-envelope.md"
+        ],
+        "test-case": [
+          "docs/beacon/v1.3.7/qa/test-cases/beacon-v1.3.7-implement-frozen-truth-verification-and-canonical-delivery-baseline-envelope.md"
+        ]
+      },
+      "outbound_transitions": [],
+      "analysis": {
+        "target_user": "需要核对运行态的执行者 / 诊断人",
+        "decision_focus": [
+          "当前到底是 single、team 还是 ralph 在推进。",
+          "linked run、artifact、blocker 是否足以解释当前停滞点。",
+          "看完运行态后应该回到项目详情还是继续诊断。"
+        ],
+        "layout_rules": [
+          "模式切换必须固定在头部，便于横向比较三种运行形态。",
+          "session / artifact 只展示必要引用，不在此页堆底层原文。",
+          "最近结果与 blocker 必须直接可读，避免继续翻查多层结构。"
+        ],
+        "noise_guardrail": "运行中心可以下钻运行信息，但仍要压制无边界的机器内部明细。"
+      },
+      "layout_lines": [
+        "+----------------------------------------------------------------------------------+",
+        "| 顶栏：返回项目详情 | 运行中心 | 最近刷新时间 | 当前活跃模式                        |",
+        "+----------------------------------------------------------------------------------+",
+        "| 模式切换： single | team | ralph                                                |",
+        "+----------------------------------------------------------------------------------+",
+        "| 运行态摘要头部: 当前状态 | round_count | failure_streak | 当前执行目标             |",
+        "+----------------------------------------------------------------------------------+",
+        "| agent / session 引用                         | linked run / artifact refs           |",
+        "| - session id / agent 数                      | - latest run                         |",
+        "| - host / lane 摘要                           | - artifact / report                  |",
+        "+----------------------------------------------------------------------------------+",
+        "| recent_result                                | blocker / next_action                |",
+        "| - 最近结果摘要                               | - 当前 blocker                       |",
+        "| - 最近一次状态变化                           | - 下一步动作                         |",
+        "+----------------------------------------------------------------------------------+"
+      ]
+    },
+    {
+      "page_id": "recovery-diagnostics",
+      "name": "恢复诊断",
+      "priority": "P2",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "解释 degraded / rebuild / doctor，明确 truth 仍来自 docs/beacon 与 .beacon。",
+      "sections": [
+        "truth 来源说明",
+        "degraded / rebuild / doctor 诊断卡",
+        "恢复步骤",
+        "风险提示"
+      ],
+      "actions": [
+        {
+          "label": "前往运行中心",
+          "target": "runtime-center",
+          "trigger": "点击运行态关联"
+        }
+      ],
+      "states": [
+        {
+          "id": "healthy-warning",
+          "label": "健康但预警",
+          "description": "当前系统可用但存在恢复风险提示。"
+        },
+        {
+          "id": "degraded",
+          "label": "降级",
+          "description": "SQLite 或 PocketBase 缺失，但 truth 仍可从文档恢复。"
+        },
+        {
+          "id": "rebuild-suggested",
+          "label": "建议重建",
+          "description": "投影层需要重建。"
+        },
+        {
+          "id": "doctor-suggested",
+          "label": "建议 doctor",
+          "description": "推荐执行 doctor 修复上下文。"
+        },
+        {
+          "id": "loading",
+          "label": "加载中",
+          "description": "诊断结果仍在采集。"
+        },
+        {
+          "id": "error",
+          "label": "错误",
+          "description": "诊断页本身无法完成聚合。"
+        }
+      ],
+      "requirement_refs": {
+        "user-story": [
+          "docs/beacon/v1.3.7/user-story/beacon-v1.3.7-implement-frozen-truth-verification-and-canonical-delivery-baseline-envelope.md"
+        ],
+        "prd": [
+          "docs/beacon/v1.3.7/prd/beacon-v1.3.7-implement-frozen-truth-verification-and-canonical-delivery-baseline-envelope.md"
+        ],
+        "test-case": [
+          "docs/beacon/v1.3.7/qa/test-cases/beacon-v1.3.7-implement-frozen-truth-verification-and-canonical-delivery-baseline-envelope.md"
+        ]
+      },
+      "outbound_transitions": [
+        {
+          "from": "recovery-diagnostics",
+          "to": "runtime-center",
+          "trigger": "点击运行态关联",
+          "type": "drill-down"
+        }
+      ],
+      "analysis": {
+        "target_user": "负责恢复上下文的人",
+        "decision_focus": [
+          "当前是 degraded、rebuild 还是 doctor 场景。",
+          "真相是否仍然回到 docs/beacon 与 .beacon。",
+          "用户该做哪一步恢复，而不是读一堆诊断术语。"
+        ],
+        "layout_rules": [
+          "先讲 truth 来源，再给诊断卡和恢复步骤。",
+          "风险提示要比操作细节更醒目，避免误用恢复动作。",
+          "恢复动作要收口成少量步骤，不展开内部实现机制。"
+        ],
+        "noise_guardrail": "诊断页解释机器状态，但不能反客为主替代 requirement truth。"
+      },
+      "layout_lines": [
+        "+----------------------------------------------------------------------------------+",
+        "| 顶栏：返回项目详情 | 恢复诊断 | 当前环境状态                                      |",
+        "+----------------------------------------------------------------------------------+",
+        "| truth 来源说明                                                                    |",
+        "| - 正式真相来自 docs/beacon + .beacon                                              |",
+        "| - 当前页只解释恢复路径，不改写 requirement truth                                   |",
+        "+----------------------------------------------------------------------------------+",
+        "| 诊断卡： degraded | rebuild | doctor                                              |",
+        "| - 当前命中的诊断类型                                                               |",
+        "| - 推荐动作与触发条件                                                               |",
+        "+----------------------------------------------------------------------------------+",
+        "| 恢复步骤                                      | 风险提示                           |",
+        "| 1. 校验上下文                                 | - 不要把投影层当真相              |",
+        "| 2. 执行 doctor / rebuild                      | - 误修复会导致 drift              |",
+        "| 3. 回到项目页验证                             | - 先验证再 freeze                 |",
+        "+----------------------------------------------------------------------------------+"
+      ]
+    }
+  ],
+  "navigation": {
+    "primary_entry": "runtime-center",
+    "primary_exit": "runtime-center",
+    "transitions": [
+      {
+        "from": "recovery-diagnostics",
+        "to": "runtime-center",
+        "trigger": "点击运行态关联",
+        "type": "drill-down"
+      }
+    ]
+  },
+  "semantic_layer": {
+    "artifacts": {
+      "semantic_contract": "docs/beacon/v1.3.7/execution/semantic/beacon-v1-3-7-implement-frozen-truth-verification-and-canonical-delivery-baseline-envelope/semantic-contract.json",
+      "semantic_dictionary": "docs/beacon/v1.3.7/execution/semantic/beacon-v1-3-7-implement-frozen-truth-verification-and-canonical-delivery-baseline-envelope/semantic-dictionary.md",
+      "semantic_usage_guidelines": "docs/beacon/v1.3.7/execution/semantic/beacon-v1-3-7-implement-frozen-truth-verification-and-canonical-delivery-baseline-envelope/semantic-usage-guidelines.md",
+      "semantic_review": "docs/beacon/v1.3.7/execution/semantic/beacon-v1-3-7-implement-frozen-truth-verification-and-canonical-delivery-baseline-envelope/semantic-review.json"
+    },
+    "default_design_bridge": {
+      "repo": "https://github.com/Leonxlnx/taste-skill",
+      "skill_id": "taste-skill",
+      "entry": "",
+      "detected": false,
+      "kind": "external-default-bridge",
+      "supported_stages": [
+        "prototype",
+        "implement"
+      ],
+      "capabilities": [
+        "prototype",
+        "implement",
+        "taste-design",
+        "semantic-normalization"
+      ],
+      "install_hint": "npx skills add https://github.com/Leonxlnx/taste-skill --skill taste-skill"
+    },
+    "official_language": {
+      "page_names": [
+        {
+          "label": "Beacon v1.3.7 implement frozen-truth verification and canonical delivery baseline envelope",
+          "slug": "beacon-v1-3-7-implement-frozen-truth-verification-and-canonical-delivery-baseline-envelope",
+          "source": "requirement_truth"
+        }
+      ],
+      "status_labels": [
+        "正常",
+        "阻塞",
+        "加载中",
+        "错误"
+      ],
+      "module_labels": [
+        "但人类入口",
+        "各自记一份实现前置信息",
+        "收敛成真正的极简实现入口",
+        "极简入口",
+        "关键信息",
+        "头部摘要",
+        "状态反馈",
+        "推荐动作"
+      ],
+      "action_labels": [
+        "进入实现",
+        "进入实现前",
+        "进入实现前核实流程",
+        "进入实现前核实",
+        "返回",
+        "进入",
+        "进入实现执行",
+        "返回明确",
+        "查看详情",
+        "进入详情"
+      ],
+      "preferred_terms": [
+        {
+          "from": "implementation",
+          "to": "implement",
+          "scope": "stage_vocabulary"
+        },
+        {
+          "from": "verify",
+          "to": "qa",
+          "scope": "stage_vocabulary"
+        },
+        {
+          "from": "review",
+          "to": "qa",
+          "scope": "stage_vocabulary"
+        },
+        {
+          "from": "delivery",
+          "to": "release",
+          "scope": "stage_vocabulary"
+        },
+        {
+          "from": "raw runtime log",
+          "to": "运行摘要",
+          "scope": "product_copy"
+        },
+        {
+          "from": "machine contract",
+          "to": "机器内部契约",
+          "scope": "product_copy"
+        }
+      ],
+      "banned_terms": [
+        "implementation",
+        "verify",
+        "review",
+        "delivery",
+        "machine contract",
+        "canonical-envelope",
+        "raw runtime log",
+        "transaction_id",
+        "projection_seq"
+      ]
+    }
+  },
+  "platform_variants": {
+    "global_platforms": [
+      "Web",
+      "PC"
+    ],
+    "pages": {
+      "runtime-center": {
+        "platforms": [
+          "Web",
+          "PC"
+        ],
+        "notes": []
+      },
+      "recovery-diagnostics": {
+        "platforms": [
+          "Web",
+          "PC"
+        ],
+        "notes": []
+      }
+    },
+    "notes": [
+      "默认展示 Web / PC 线框视图。",
+      "App 只在真实需求明确要求时保留；当前仅 project-detail 做移动差异提示。"
+    ]
+  },
+  "contract": {
+    "prototype_archetype": "admin-workbench",
+    "wireframe_only": true,
+    "design_governance_required": true,
+    "semantic_governance_required": true,
+    "semantic_contract_path": "docs/beacon/v1.3.7/execution/semantic/beacon-v1-3-7-implement-frozen-truth-verification-and-canonical-delivery-baseline-envelope/semantic-contract.json",
+    "route_closure_required": false,
+    "required_files": [
+      "wireframe-summary.md",
+      "wireframe-manifest.json",
+      "navigation-map.md",
+      "navigation-map.json",
+      "state-flow-map.md",
+      "state-flow-map.json",
+      "component-catalog.md",
+      "component-catalog.json",
+      "canonical-envelope.json",
+      "pages/*.md",
+      "freeze.json",
+      "prototype-review.json"
+    ]
+  },
+  "parser": {
+    "page_detection": "requirement-driven-parser",
+    "fallback_used": false,
+    "discovered_page_count": 2,
+    "custom_page_count": 0,
+    "cjk_detected": true,
+    "cjk_parse_failed": false
+  },
+  "compiler": {
+    "requested_mode": "rule",
+    "effective_mode": "rule",
+    "generator_mode": "rule",
+    "fallback_reason": "",
+    "capability_snapshot": {
+      "schema_version": "1.0",
+      "command_name": "prototype",
+      "host_runtime": "codex",
+      "host_bridge_declared": false,
+      "host_response_available": false,
+      "host_response_source": "none",
+      "host_response_path": "",
+      "host_semantic_ready": false,
+      "provider_available": false,
+      "provider_key_present": false,
+      "llm_disabled": false,
+      "disable_env": "BEACON_PROTOTYPE_DISABLE_LLM"
+    },
+    "model": "beacon-prototype-compiler",
+    "llm_trace": {}
+  },
+  "theme": {
+    "ui_kit": "wireframe-markdown-v1",
+    "prototype_archetype": "admin-workbench",
+    "primary": "#2563EB",
+    "secondary": "#0F172A",
+    "surface_note": "Wireframe freeze uses markdown and metadata only, not high-fidelity HTML surfaces."
+  }
+}

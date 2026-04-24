@@ -1,0 +1,1033 @@
+{
+  "schema_version": "1.0",
+  "plan_id": "plan-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation-r2",
+  "feature": "Beacon v1.3.8 archive governance and historical requirement isolation",
+  "feature_slug": "beacon-v1.3.8-archive-governance-and-historical-requirement-isolation",
+  "version": "v1.3.8",
+  "revision_id": "R2",
+  "baseline_hash": "sha256:a7100e1f17e07d0ed2918d3bfee4a53489aa6a0441befb741f312de9d67fa9d5",
+  "plan_hash": "sha256:77125f505361f61f80843996fe79d14e0632eb1ea6b21057ae620c84a862780c",
+  "status": "completed",
+  "source_refs": {
+    "user_story": "docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+    "prd": "docs/beacon/v1.3.8/prd/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+    "test_case": "docs/beacon/v1.3.8/qa/test-cases/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+    "ac_matrix": "docs/beacon/v1.3.8/.machine/qa/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.ac-test-matrix.json",
+    "story_scenario_map": "docs/beacon/v1.3.8/.machine/qa/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.story-scenario-map.json",
+    "qa9_matrix": "docs/beacon/v1.3.8/.machine/qa/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.qa9-matrix.json"
+  },
+  "boundary_principles": [
+    {
+      "id": "explicit_assumptions",
+      "heading": "显式假设与歧义管理"
+    },
+    {
+      "id": "simplicity_first",
+      "heading": "简单优先"
+    },
+    {
+      "id": "surgical_changes",
+      "heading": "外科手术式改动"
+    },
+    {
+      "id": "goal_driven_execution",
+      "heading": "目标驱动验证闭环"
+    },
+    {
+      "id": "trivial_task_exception",
+      "heading": "trivial task 可以轻量处理，但不能越界"
+    }
+  ],
+  "workstreams": [
+    {
+      "workstream_id": "implementation-main",
+      "title": "Implementation Mainline",
+      "task_ids": [
+        "ITASK-001",
+        "ITASK-002",
+        "ITASK-003",
+        "ITASK-004",
+        "ITASK-005"
+      ]
+    }
+  ],
+  "task_mapping_source": "prd-sections",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.3.8",
+    "supported": true,
+    "required": true,
+    "ready": true,
+    "diagram_types": [
+      "branch-flow",
+      "state-machine",
+      "decision-priority"
+    ],
+    "state_axes": [
+      "ownership",
+      "eligibility",
+      "qa",
+      "relation",
+      "visibility",
+      "status"
+    ],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [
+      "归属",
+      "branch-flow",
+      "state-machine",
+      "decision-priority",
+      "state axes",
+      "eligibility",
+      "ownership"
+    ],
+    "review_gates": [
+      "implementation must cover the declared branch-flow split points",
+      "implementation must preserve the declared state-machine transitions",
+      "implementation must preserve decision-priority ordering",
+      "implementation must keep state axes explicit: ownership, eligibility, qa, relation, visibility, status"
+    ],
+    "qa_coverage_hints": [
+      "cover primary and alternate branch-flow paths",
+      "cover state transitions, illegal transitions, and recovery paths",
+      "cover conflicting conditions using declared decision priority",
+      "cover axis combinations across: ownership, eligibility, qa, relation, visibility, status"
+    ],
+    "evidence_lines": {
+      "branch-flow": [
+        "- `archive plan` 生成候选 archive plan 后，若发现历史 truth 仍被当前 delivery plane 引用，则进入 `blocked-for-isolation` 分支，不允许直接 apply。",
+        "- `archive plan` 通过后，进入 `reviewed-plan` 分支；只有 review 通过，才允许执行 `archive apply`。",
+        "- `archive apply` 执行时，若归档目标仍需被学习消费，则进入 `archived-learnable` 分支；若只允许追溯与引用，则进入 `archived-reference-only` 分支。",
+        "- 任一分支如果发现 active truth 与 archived truth 仍存在默认混读，必须回退到 `blocked-for-isolation`，直到 archive boundary 被重新明确。"
+      ],
+      "state-machine": [
+        "- `draft-plan` -> `reviewed-plan` -> `applied-archive` -> `published-index`",
+        "- `active` -> `superseded` -> `archived-learnable` / `archived-reference-only`",
+        "- `blocked-for-isolation` 是显式阻塞态，表示历史 truth 仍未从当前 active delivery plane 中退出",
+        "- `published-index` 后，消费面只能通过 archive metadata 读取历史 truth，不能再把它当作 active truth 默认参与 implement / qa / release"
+      ],
+      "decision-priority": [
+        "1. current active delivery safety 高于 historical learnability",
+        "2. archive boundary correctness 高于 archive convenience",
+        "3. explicit archive metadata 高于 runtime 推断",
+        "4. archived-reference-only 隔离强度高于 archived-learnable"
+      ],
+      "state-axes": [
+        "- `ownership`: 当前 truth 是否仍归属于 active delivery plane",
+        "- `eligibility`: 历史 truth 是否允许继续进入 implement / qa / release 判定",
+        "- `relation`: 当前 feature 与 archived feature 是否仍存在 trace-only、learnable、or active dependency",
+        "- `visibility`: 历史 truth 面向 help/status/brainstorm 是 learnable 还是 reference-only"
+      ]
+    },
+    "generated_at": "2026-04-24T10:29:17.513910+00:00",
+    "feature": "Beacon v1.3.8 archive governance and historical requirement isolation",
+    "feature_slug": "beacon-v1.3.8-archive-governance-and-historical-requirement-isolation",
+    "prd_ref": "docs/beacon/v1.3.8/prd/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+    "user_story_ref": "docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md"
+  },
+  "review_gates": [
+    "implementation must cover the declared branch-flow split points",
+    "implementation must preserve the declared state-machine transitions",
+    "implementation must preserve decision-priority ordering",
+    "implementation must keep state axes explicit: ownership, eligibility, qa, relation, visibility, status"
+  ],
+  "qa_coverage_hints": [
+    "cover primary and alternate branch-flow paths",
+    "cover state transitions, illegal transitions, and recovery paths",
+    "cover conflicting conditions using declared decision priority",
+    "cover axis combinations across: ownership, eligibility, qa, relation, visibility, status"
+  ],
+  "tasks": [
+    {
+      "task_id": "ITASK-001",
+      "title": "FR-001 AC-001",
+      "description": "Beacon 必须定义 machine-readable archive status model，至少包含 `active`、`superseded`、`archived-learnable`、`archived-reference-only`。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-001",
+        "AC-002"
+      ],
+      "mapped_test_ids": [
+        "TC-001",
+        "TC-002",
+        "TC-006",
+        "TC-011",
+        "TC-007",
+        "TC-012"
+      ],
+      "mapped_scenario_ids": [
+        "SC-001",
+        "SC-002",
+        "SC-003",
+        "SC-004",
+        "SC-005",
+        "SC-006",
+        "SC-007",
+        "SC-008",
+        "SC-009",
+        "SC-010",
+        "SC-011",
+        "SC-012",
+        "SC-013",
+        "SC-014",
+        "SC-015",
+        "SC-016",
+        "SC-017",
+        "SC-018",
+        "SC-019",
+        "SC-020",
+        "SC-021",
+        "SC-022",
+        "SC-023",
+        "SC-024",
+        "SC-025",
+        "SC-026",
+        "SC-027",
+        "SC-028",
+        "SC-029",
+        "SC-030"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-001",
+        "TC-002",
+        "TC-006",
+        "TC-007",
+        "TC-011",
+        "TC-012"
+      ],
+      "depends_on": [],
+      "target_modules": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: ownership, eligibility, qa, relation, visibility, status"
+      ],
+      "diagram_state_axes": [
+        "ownership",
+        "eligibility",
+        "qa",
+        "relation",
+        "visibility",
+        "status"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/compatibility/action-transcript.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/compatibility/browser-runner-console.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/compatibility/browser-runner-meta.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/compatibility/browser-runner-report.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/compatibility/browser-runner-result.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/compatibility/command.txt",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/compatibility/current-url.txt",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/compatibility/dom-snapshot.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/compatibility/junit.xml",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/compatibility/network-summary.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/compatibility/pair-evidence.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/compatibility/result.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/compatibility/stderr.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/compatibility/stdout.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/functional/action-transcript.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/functional/browser-runner-console.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/functional/browser-runner-meta.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/functional/browser-runner-report.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/functional/browser-runner-result.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/functional/command.txt",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/functional/current-url.txt",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/functional/dom-snapshot.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/functional/junit.xml",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/functional/network-summary.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/functional/result.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/functional/stderr.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/functional/stdout.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/interface/command.txt",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/interface/junit.xml",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/interface/result.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/interface/stderr.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/interface/stdout.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/smoke/command.txt",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/smoke/junit.xml",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/smoke/result.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/smoke/stderr.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/smoke/stdout.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/summary.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/compatibility/command.txt",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/compatibility/junit.xml",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/compatibility/pair-evidence.json",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/compatibility/result.json",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/compatibility/stderr.log",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/compatibility/stdout.log",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/interface/command.txt",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/interface/junit.xml",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/interface/result.json",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/interface/stderr.log",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/interface/stdout.log",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/qa/features/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/ac-closure.json",
+        ".beacon/qa/features/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/matrix.qa9.json",
+        ".beacon/qa/features/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/scorecard.json",
+        ".beacon/qa/status.json",
+        "run:run-20260424T104600Z-v138-archive-governance",
+        "run:run-20260424T185315726742",
+        "verify:run-20260424T184914321153",
+        "verify:run-20260424T185315726742"
+      ],
+      "changed_files": [
+        "beacon/cli_factory.py",
+        "beacon/command_catalog.py",
+        "beacon/commands/archive.py",
+        "beacon/commands/gate.py",
+        "beacon/commands/qa.py",
+        "beacon/commands/release.py",
+        "beacon/utils/archive_governance.py",
+        "beacon/utils/intent_router.py",
+        "skills/beacon/beacon-archive/SKILL.md",
+        "docs/beacon/v1.3.8/prd/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+        "docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+        "docs/beacon/v1.3.8/qa/test-cases/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+        "docs/beacon/v1.3.8/research/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation-analysis.md",
+        "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/navigation-map.json",
+        "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/route-closure-contract.json",
+        "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/state-flow-map.json",
+        "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/page-specs/runtime-center.json",
+        "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/pages/runtime-center.md",
+        "tests/test_v138_archive_command.py",
+        "tests/test_gate_delivery_execution_artifacts.py",
+        "tests/test_v112_implementation_plan_runtime.py",
+        "tests/test_v131_cognitive_load_gates.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-24T10:49:00.667554+00:00",
+      "completed_at": "2026-04-24T10:49:00.667557+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-002",
+      "title": "FR-002 AC-002",
+      "description": "Beacon 必须暴露顶层 support command `archive`，其最小子命令为 `plan/apply/status/explain`，且明确不是新的 lifecycle stage。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-004",
+        "AC-003"
+      ],
+      "mapped_test_ids": [
+        "TC-004",
+        "TC-003",
+        "TC-008",
+        "TC-013",
+        "TC-009"
+      ],
+      "mapped_scenario_ids": [
+        "SC-031",
+        "SC-032",
+        "SC-033",
+        "SC-034",
+        "SC-035",
+        "SC-036",
+        "SC-037",
+        "SC-038",
+        "SC-039",
+        "SC-040",
+        "SC-041",
+        "SC-042",
+        "SC-043",
+        "SC-044",
+        "SC-045",
+        "SC-046",
+        "SC-047",
+        "SC-048",
+        "SC-049",
+        "SC-050",
+        "SC-051",
+        "SC-052",
+        "SC-053",
+        "SC-054",
+        "SC-055"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-003",
+        "TC-004",
+        "TC-008",
+        "TC-009",
+        "TC-013"
+      ],
+      "depends_on": [
+        "ITASK-001"
+      ],
+      "target_modules": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: ownership, eligibility, qa, relation, visibility, status"
+      ],
+      "diagram_state_axes": [
+        "ownership",
+        "eligibility",
+        "qa",
+        "relation",
+        "visibility",
+        "status"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/compatibility/action-transcript.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/compatibility/browser-runner-console.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/compatibility/browser-runner-meta.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/compatibility/browser-runner-report.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/compatibility/browser-runner-result.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/compatibility/command.txt",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/compatibility/current-url.txt",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/compatibility/dom-snapshot.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/compatibility/junit.xml",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/compatibility/network-summary.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/compatibility/pair-evidence.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/compatibility/result.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/compatibility/stderr.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/compatibility/stdout.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/functional/action-transcript.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/functional/browser-runner-console.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/functional/browser-runner-meta.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/functional/browser-runner-report.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/functional/browser-runner-result.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/functional/command.txt",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/functional/current-url.txt",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/functional/dom-snapshot.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/functional/junit.xml",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/functional/network-summary.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/functional/result.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/functional/stderr.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/functional/stdout.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/interface/command.txt",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/interface/junit.xml",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/interface/result.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/interface/stderr.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/interface/stdout.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/smoke/command.txt",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/smoke/junit.xml",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/smoke/result.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/smoke/stderr.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/smoke/stdout.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/summary.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/compatibility/command.txt",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/compatibility/junit.xml",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/compatibility/pair-evidence.json",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/compatibility/result.json",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/compatibility/stderr.log",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/compatibility/stdout.log",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/interface/command.txt",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/interface/junit.xml",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/interface/result.json",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/interface/stderr.log",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/interface/stdout.log",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260424T185315726742/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/qa/features/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/ac-closure.json",
+        ".beacon/qa/features/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/matrix.qa9.json",
+        ".beacon/qa/features/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/scorecard.json",
+        ".beacon/qa/status.json",
+        "run:run-20260424T104600Z-v138-archive-governance",
+        "run:run-20260424T185315726742",
+        "verify:run-20260424T184914321153",
+        "verify:run-20260424T185315726742"
+      ],
+      "changed_files": [
+        "beacon/cli_factory.py",
+        "beacon/command_catalog.py",
+        "beacon/commands/archive.py",
+        "beacon/commands/gate.py",
+        "beacon/commands/qa.py",
+        "beacon/commands/release.py",
+        "beacon/utils/archive_governance.py",
+        "beacon/utils/intent_router.py",
+        "skills/beacon/beacon-archive/SKILL.md",
+        "docs/beacon/v1.3.8/prd/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+        "docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+        "docs/beacon/v1.3.8/qa/test-cases/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+        "docs/beacon/v1.3.8/research/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation-analysis.md",
+        "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/navigation-map.json",
+        "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/route-closure-contract.json",
+        "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/state-flow-map.json",
+        "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/page-specs/runtime-center.json",
+        "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/pages/runtime-center.md",
+        "tests/test_v138_archive_command.py",
+        "tests/test_gate_delivery_execution_artifacts.py",
+        "tests/test_v112_implementation_plan_runtime.py",
+        "tests/test_v131_cognitive_load_gates.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-24T10:49:00.667569+00:00",
+      "completed_at": "2026-04-24T10:49:00.667571+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-003",
+      "title": "FR-003 AC-003",
+      "description": "Beacon 必须提供 `beacon:beacon-archive` skill，负责把 archive 人类命令路由到正式 archive governance 能力。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-005"
+      ],
+      "mapped_test_ids": [
+        "TC-005",
+        "TC-010"
+      ],
+      "mapped_scenario_ids": [
+        "SC-056",
+        "SC-057",
+        "SC-058",
+        "SC-059",
+        "SC-060",
+        "SC-061",
+        "SC-062",
+        "SC-063",
+        "SC-064",
+        "SC-065"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-005",
+        "TC-010"
+      ],
+      "depends_on": [
+        "ITASK-002"
+      ],
+      "target_modules": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: ownership, eligibility, qa, relation, visibility, status"
+      ],
+      "diagram_state_axes": [
+        "ownership",
+        "eligibility",
+        "qa",
+        "relation",
+        "visibility",
+        "status"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/compatibility/action-transcript.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/compatibility/browser-runner-console.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/compatibility/browser-runner-meta.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/compatibility/browser-runner-report.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/compatibility/browser-runner-result.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/compatibility/command.txt",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/compatibility/current-url.txt",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/compatibility/dom-snapshot.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/compatibility/junit.xml",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/compatibility/network-summary.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/compatibility/pair-evidence.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/compatibility/result.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/compatibility/stderr.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/compatibility/stdout.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/functional/action-transcript.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/functional/browser-runner-console.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/functional/browser-runner-meta.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/functional/browser-runner-report.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/functional/browser-runner-result.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/functional/command.txt",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/functional/current-url.txt",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/functional/dom-snapshot.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/functional/junit.xml",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/functional/network-summary.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/functional/result.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/functional/stderr.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/functional/stdout.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/interface/command.txt",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/interface/junit.xml",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/interface/result.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/interface/stderr.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/interface/stdout.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/smoke/command.txt",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/smoke/junit.xml",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/smoke/result.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/smoke/stderr.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/smoke/stdout.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/summary.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260424T184914321153/unit/stdout.log",
+        ".beacon/flaky-history.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/qa/features/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/ac-closure.json",
+        ".beacon/qa/features/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/matrix.qa9.json",
+        ".beacon/qa/features/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/scorecard.json",
+        ".beacon/qa/status.json",
+        "run:run-20260424T104600Z-v138-archive-governance",
+        "run:run-20260424T185315726742",
+        "verify:run-20260424T184914321153"
+      ],
+      "changed_files": [
+        "beacon/cli_factory.py",
+        "beacon/command_catalog.py",
+        "beacon/commands/archive.py",
+        "beacon/commands/gate.py",
+        "beacon/commands/qa.py",
+        "beacon/commands/release.py",
+        "beacon/utils/archive_governance.py",
+        "beacon/utils/intent_router.py",
+        "skills/beacon/beacon-archive/SKILL.md",
+        "docs/beacon/v1.3.8/prd/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+        "docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+        "docs/beacon/v1.3.8/qa/test-cases/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+        "docs/beacon/v1.3.8/research/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation-analysis.md",
+        "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/navigation-map.json",
+        "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/route-closure-contract.json",
+        "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/state-flow-map.json",
+        "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/page-specs/runtime-center.json",
+        "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/pages/runtime-center.md",
+        "tests/test_v138_archive_command.py",
+        "tests/test_gate_delivery_execution_artifacts.py",
+        "tests/test_v112_implementation_plan_runtime.py",
+        "tests/test_v131_cognitive_load_gates.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-24T10:49:00.667580+00:00",
+      "completed_at": "2026-04-24T10:49:00.667582+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-004",
+      "title": "FR-004 AC-004",
+      "description": "Beacon 必须支持版本级 archive plan / archive index 与 feature-level archive metadata，并让 `help/status/brainstorm/memory-friction-evolution/implement/gate` 读取统一 archive boundary。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-003"
+      ],
+      "target_modules": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: ownership, eligibility, qa, relation, visibility, status"
+      ],
+      "diagram_state_axes": [
+        "ownership",
+        "eligibility",
+        "qa",
+        "relation",
+        "visibility",
+        "status"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/ac-closure.json",
+        ".beacon/qa/features/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/scorecard.json",
+        "run:run-20260424T104600Z-v138-archive-governance",
+        "run:run-20260424T185315726742"
+      ],
+      "changed_files": [
+        "beacon/cli_factory.py",
+        "beacon/command_catalog.py",
+        "beacon/commands/archive.py",
+        "beacon/commands/gate.py",
+        "beacon/commands/qa.py",
+        "beacon/commands/release.py",
+        "beacon/utils/archive_governance.py",
+        "beacon/utils/intent_router.py",
+        "skills/beacon/beacon-archive/SKILL.md",
+        "docs/beacon/v1.3.8/prd/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+        "docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+        "docs/beacon/v1.3.8/qa/test-cases/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+        "docs/beacon/v1.3.8/research/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation-analysis.md",
+        "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/navigation-map.json",
+        "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/route-closure-contract.json",
+        "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/state-flow-map.json",
+        "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/page-specs/runtime-center.json",
+        "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/pages/runtime-center.md",
+        "tests/test_v138_archive_command.py",
+        "tests/test_gate_delivery_execution_artifacts.py",
+        "tests/test_v112_implementation_plan_runtime.py",
+        "tests/test_v131_cognitive_load_gates.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-24T10:49:00.667590+00:00",
+      "completed_at": "2026-04-24T10:49:00.667592+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-005",
+      "title": "FR-005 AC-005",
+      "description": "`beacon-brainstorm` 必须保持 read-only pre-archive 策略边界；archive governance 必须保证历史 truth 继续可追溯，但不再默认进入当前 active delivery plane。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-004"
+      ],
+      "target_modules": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: ownership, eligibility, qa, relation, visibility, status"
+      ],
+      "diagram_state_axes": [
+        "ownership",
+        "eligibility",
+        "qa",
+        "relation",
+        "visibility",
+        "status"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/ac-closure.json",
+        ".beacon/qa/features/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/scorecard.json",
+        "run:run-20260424T104600Z-v138-archive-governance",
+        "run:run-20260424T185315726742"
+      ],
+      "changed_files": [
+        "beacon/cli_factory.py",
+        "beacon/command_catalog.py",
+        "beacon/commands/archive.py",
+        "beacon/commands/gate.py",
+        "beacon/commands/qa.py",
+        "beacon/commands/release.py",
+        "beacon/utils/archive_governance.py",
+        "beacon/utils/intent_router.py",
+        "skills/beacon/beacon-archive/SKILL.md",
+        "docs/beacon/v1.3.8/prd/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+        "docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+        "docs/beacon/v1.3.8/qa/test-cases/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+        "docs/beacon/v1.3.8/research/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation-analysis.md",
+        "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/navigation-map.json",
+        "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/route-closure-contract.json",
+        "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/state-flow-map.json",
+        "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/page-specs/runtime-center.json",
+        "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/pages/runtime-center.md",
+        "tests/test_v138_archive_command.py",
+        "tests/test_gate_delivery_execution_artifacts.py",
+        "tests/test_v112_implementation_plan_runtime.py",
+        "tests/test_v131_cognitive_load_gates.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-24T10:49:00.667600+00:00",
+      "completed_at": "2026-04-24T10:49:00.667601+00:00",
+      "active_run_id": ""
+    }
+  ],
+  "team_mode": {
+    "preferred_surface": "implement-team",
+    "preferred_runner": "codex-subagents",
+    "plan_command": "beacon implement team-plan \"Beacon v1.3.8 archive governance and historical requirement isolation\" --project-root . --version v1.3.8",
+    "run_command": "beacon implement team-run \"Beacon v1.3.8 archive governance and historical requirement isolation\" --project . --version v1.3.8",
+    "dev_run_command": "beacon implement dev-run \"Beacon v1.3.8 archive governance and historical requirement isolation\" --project . --version v1.3.8",
+    "ralph_command": "beacon implement run \"Beacon v1.3.8 archive governance and historical requirement isolation\" --project . --version v1.3.8 --mode ralph",
+    "qa_team_command": "beacon qa team-run \"Beacon v1.3.8 archive governance and historical requirement isolation\" --project . --version v1.3.8",
+    "roles": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "context_isolation": {
+      "role_plane": "implementation",
+      "isolated_from": [
+        "qa-team"
+      ],
+      "shared_inputs": [
+        "docs",
+        "implementation_plan",
+        "evidence_refs"
+      ],
+      "shared_outputs": [
+        "implementation_summary",
+        "technical_archive",
+        "repair_handoff"
+      ],
+      "rule": "qa_must_not_inherit_implement_private_context",
+      "implement_surface": "implement-team",
+      "qa_surface": "qa-team"
+    },
+    "config_source": "beacon/team_roles/implement-team.json",
+    "post_freeze_sequence": [
+      "freeze-pass",
+      "implement-team-plan",
+      "implement-team-run",
+      "implement-ralph",
+      "qa",
+      "release"
+    ],
+    "role_semantics": {
+      "team_reviewer": "checks implementation/spec drift before Ralph or QA closure",
+      "team_tester": "checks implementation evidence and verification readiness before Ralph or QA closure",
+      "ralph": "post-freeze controller that drives next-action routing across implementation, review, qa, and release"
+    },
+    "execution_order": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "formal_writeback_roles": [
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "role_contracts": {
+      "planner": {
+        "purpose": "Compile execution-ready task scope from the frozen revision baseline.",
+        "writes_to_formal_truth": false,
+        "outputs": [
+          "execution_plan_note"
+        ]
+      },
+      "implementation-architect": {
+        "purpose": "Translate frozen requirement truth into implementation-safe module boundaries and service ownership guidance.",
+        "writes_to_formal_truth": false,
+        "reads": [
+          "docs/beacon/<version>/user-story",
+          "docs/beacon/<version>/prd",
+          "docs/beacon/<version>/qa/test-cases",
+          "docs/beacon/<version>/execution/architecture-blueprint.md",
+          "implementation_plan",
+          "git_workflow_contract"
+        ],
+        "outputs": [
+          "implementation_architecture_note"
+        ],
+        "restrictions": [
+          "must_not_modify_frozen_requirement_materials",
+          "must_not_overwrite_architecture_blueprint"
+        ]
+      },
+      "implementer": {
+        "purpose": "Write code inside the frozen scope and the implementation architecture note.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "story_writeback",
+          "implementation_summary"
+        ]
+      },
+      "reviewer": {
+        "purpose": "Review implementation/spec drift and architecture-boundary drift.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_spec"
+        ]
+      },
+      "tester": {
+        "purpose": "Check implementation evidence and verification readiness before acceptance.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_quality"
+        ]
+      }
+    }
+  },
+  "git_workflow": {
+    "schema_version": "1.0",
+    "feature": "Beacon v1.3.8 archive governance and historical requirement isolation",
+    "feature_slug": "beacon-v1.3.8-archive-governance-and-historical-requirement-isolation",
+    "version": "v1.3.8",
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.3.8",
+    "branch_prefix": "beacon/",
+    "base_branch": "main",
+    "use_git_worktree": false,
+    "require_clean_worktree_for_switch": true,
+    "service_directories": [
+      "."
+    ],
+    "direct_delivery_services": [
+      "."
+    ],
+    "writable_services": [
+      "."
+    ],
+    "reference_only_services": [
+      "docs"
+    ],
+    "git_roots": [
+      "."
+    ],
+    "worktree_root": ".",
+    "implementation_preflight": [
+      "Before implementation, verify the target service belongs to: .",
+      "Before implementation, verify the current branch is beacon/v1.3.8.",
+      "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+    ],
+    "source": "technical_review_contract",
+    "generated_at": "2026-04-24T10:29:17.530347+00:00",
+    "baseline_id": "impl-delivery-baseline-v1.3.8-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation-R2",
+    "transaction_id": "tx-82d57a6881e17c9ee",
+    "source_hash": "sha256:c67925f85ec3fff974729b80e6fa96854627a5e47542a62a887690cf4b1a89b3",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.3.8/.machine/execution/implementation-delivery-baseline-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "git_workflow_ref": "docs/beacon/v1.3.8/.machine/execution/git-workflow-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.json",
+  "git_workflow_markdown_ref": "docs/beacon/v1.3.8/execution/git-workflow-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+  "base_branch": "main",
+  "target_branch": "beacon/v1.3.8",
+  "branch_prefix": "beacon/",
+  "use_git_worktree": false,
+  "worktree_root": ".",
+  "direct_delivery_services": [
+    "."
+  ],
+  "writable_services": [
+    "."
+  ],
+  "reference_only_services": [
+    "docs"
+  ],
+  "delivery_baseline": {
+    "baseline_id": "impl-delivery-baseline-v1.3.8-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation-R2",
+    "transaction_id": "tx-82d57a6881e17c9ee",
+    "source_hash": "sha256:c67925f85ec3fff974729b80e6fa96854627a5e47542a62a887690cf4b1a89b3",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.3.8/.machine/execution/implementation-delivery-baseline-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "canonical_envelope_ref": "docs/beacon/v1.3.8/.machine/execution/implementation-delivery-baseline-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.json",
+  "generated_at": "2026-04-24T10:29:17.532166+00:00",
+  "baseline_id": "impl-delivery-baseline-v1.3.8-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation-R2",
+  "transaction_id": "tx-82d57a6881e17c9ee",
+  "source_hash": "sha256:c67925f85ec3fff974729b80e6fa96854627a5e47542a62a887690cf4b1a89b3",
+  "projection_seq": 1,
+  "projection_source": "implementation_delivery_baseline_envelope",
+  "updated_at": "2026-04-24T11:12:30.797313+00:00",
+  "accepted_at": "2026-04-24T10:49:00.702555+00:00",
+  "accepted_by": "codex"
+}

@@ -1,0 +1,43 @@
+# QA Team Role Report: verifier
+
+- role: `verifier`
+- status: `blocked`
+- feature: `Beacon v1.3.8 archive governance and historical requirement isolation`
+- summary: qa-team verifier summarized coverage, blockers, and release readiness
+
+## targeted_scenario_ids
+- SC-006
+- SC-007
+- SC-008
+- SC-009
+- SC-010
+- SC-011
+- SC-012
+- SC-013
+- SC-014
+- SC-015
+- SC-021
+- SC-022
+- SC-023
+- SC-024
+- SC-025
+- SC-036
+- SC-037
+- SC-038
+- SC-039
+- SC-040
+
+## stop_reasons
+- browser_evidence_incomplete
+- implementation_reopened
+- needs_more_evidence
+- needs_replay
+- required_replay_missing
+
+## evidence_refs
+- .beacon/qa/features/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/matrix.qa9.json
+- .beacon/qa/features/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/ac-closure.json
+- .beacon/qa/features/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/scorecard.json
+
+## recommendations
+- Use repair handoff and rerun QA after implementation fix.

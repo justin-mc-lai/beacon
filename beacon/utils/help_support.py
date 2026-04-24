@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 from typing import Any
 
+from beacon.utils.archive_governance import load_archive_read_model
 from beacon.utils.control_plane import build_resume_contract
 from beacon.utils.coverage import compute_coverage_metrics
 from beacon.utils.delivery_kernel import build_surface_explanation, load_delivery_read_model
@@ -18,18 +19,21 @@ from beacon.utils.implementation_plan import (
 )
 from beacon.utils.learning_loop import load_learning_plane_contract
 from beacon.utils.minimal_hud import build_minimal_hud
+from beacon.utils.host_prompt_trace import load_host_prompt_trace
 from beacon.utils.project_skills import (
     default_project_profile,
     evaluate_project_profile_gate,
     load_feature_profile_binding,
     resolve_profile_for_feature,
 )
+from beacon.utils.prototype_support import version_requires_prototype
 from beacon.utils.qa_runtime import load_current_qa_session, load_qa_status
 from beacon.utils.qa_precision import load_feature_qa_scorecard
 from beacon.utils.ralph_runtime import load_ralph_state
 from beacon.utils.requirement_clarity import build_requirement_clarity_gate_payload
 from beacon.utils.revision_state import load_revision_state
 from beacon.utils.runtime import load_run_state
+from beacon.utils.semantic_runtime import evaluate_semantic_contract
 from beacon.utils.skill_discovery import build_discovery_hint, load_skill_discovery
 from beacon.utils.scoring import (
     compute_closure_score,
@@ -75,6 +79,120 @@ def _preferred_qa_command(*, feature: str, project_root: Path, version: str, bas
     if _semver_tuple(version) >= (1, 3, 0):
         return f"beacon qa team-run {quoted_feature} --project {project_root} --version {version}"
     return f"beacon qa run {quoted_feature} --project {project_root} --version {version} --json"
+
+
+_CANONICAL_STAGE_ALIASES = {
+    "think": "prd",
+    "draft": "prd",
+    "refined": "prd",
+    "prd": "prd",
+    "user-story": "user-story",
+    "test-case": "test-case",
+    "prototype": "prototype",
+    "frozen": "implement",
+    "implementation": "implement",
+    "implement": "implement",
+    "implemented": "qa",
+    "verify": "qa",
+    "verifying": "qa",
+    "verified": "qa",
+    "review": "qa",
+    "qa": "qa",
+    "gate": "release",
+    "delivery": "release",
+    "accepted": "release",
+    "released": "release",
+    "release": "release",
+}
+
+_CANONICAL_ACTION_ALIASES = {
+    "implement-plan": "implement",
+    "verify-run": "qa",
+    "review-quality": "qa",
+    "qa-run": "qa",
+    "qa-resume": "qa",
+    "release-check": "release",
+    "workflow-start": "prd",
+}
+
+_CANONICAL_BLOCKING_REASON_ALIASES = {
+    "verify_failed": "qa_failed",
+    "implementation_reopened": "implement_reopened",
+}
+
+_STAGE_SKILL_KEYS = {
+    "prd": ("prd", "think"),
+    "user-story": ("user-story",),
+    "test-case": ("test-case",),
+    "prototype": ("prototype",),
+    "implement": ("implement", "implementation"),
+    "qa": ("qa", "verify", "review"),
+    "release": ("release", "delivery", "gate"),
+}
+
+
+def canonicalize_lifecycle_stage(value: str | None) -> str:
+    text = str(value or "").strip()
+    if not text:
+        return ""
+    return _CANONICAL_STAGE_ALIASES.get(text, text)
+
+
+def canonicalize_lifecycle_action(value: str | None) -> str:
+    text = str(value or "").strip()
+    if not text:
+        return ""
+    return _CANONICAL_ACTION_ALIASES.get(text, canonicalize_lifecycle_stage(text))
+
+
+def canonicalize_blocking_reason(value: str | None) -> str:
+    text = str(value or "").strip()
+    if not text:
+        return ""
+    return _CANONICAL_BLOCKING_REASON_ALIASES.get(text, text)
+
+
+def _canonicalize_reason_list(values: list[str]) -> list[str]:
+    return _unique_reasons_in_order([canonicalize_blocking_reason(value) for value in values])
+
+
+def _blocking_reason_matches(values: list[str], *expected: str) -> bool:
+    normalized = {
+        text
+        for text in (
+            *(str(value or "").strip() for value in values),
+            *(canonicalize_blocking_reason(value) for value in values),
+        )
+        if text
+    }
+    expected_normalized = {
+        text
+        for text in (
+            *(str(value or "").strip() for value in expected),
+            *(canonicalize_blocking_reason(value) for value in expected),
+        )
+        if text
+    }
+    return any(item in normalized for item in expected_normalized)
+
+
+def _canonicalize_workflow_progress(payload: dict[str, Any]) -> dict[str, Any]:
+    if not isinstance(payload, dict):
+        return {}
+    display = dict(payload)
+    display["next_stage"] = canonicalize_lifecycle_stage(payload.get("next_stage"))
+    display["missing_closure_stages"] = [
+        canonicalize_lifecycle_stage(value)
+        for value in payload.get("missing_closure_stages", [])
+        if canonicalize_lifecycle_stage(value)
+    ] if isinstance(payload.get("missing_closure_stages"), list) else []
+    return display
+
+
+def _stage_skill_keys(stage: str) -> tuple[str, ...]:
+    canonical = canonicalize_lifecycle_stage(stage)
+    keys = _STAGE_SKILL_KEYS.get(canonical, (canonical or stage,))
+    return tuple(key for key in keys if key)
 
 
 def _read_json(path: Path) -> dict[str, Any]:
@@ -154,15 +272,21 @@ def _ralph_handoff_is_stale(
 
 def _infer_current_stage(*, revision_state: dict[str, Any], workflow_progress: dict[str, Any]) -> str:
     stages = workflow_progress.get("stages") if isinstance(workflow_progress.get("stages"), dict) else {}
-    next_stage = str(workflow_progress.get("next_stage", "") or "")
+    next_stage = canonicalize_lifecycle_stage(workflow_progress.get("next_stage"))
     if next_stage:
         return next_stage
     delivery = str(revision_state.get("delivery_status", "") or "")
-    if delivery in {"accepted", "released"}:
+    if delivery == "accepted":
         return "accepted"
+    if delivery == "released":
+        return "release"
+    if delivery in {"implemented", "verifying", "verified"}:
+        return "qa"
     if str(stages.get("verify", {}).get("status", "") or "") == "failed":
-        return "verify"
-    return delivery or str(revision_state.get("doc_status", "") or "draft")
+        return "qa"
+    if str(revision_state.get("doc_status", "") or "") == "frozen" and delivery in {"", "idle", "draft"}:
+        return "implement"
+    return canonicalize_lifecycle_stage(delivery) or canonicalize_lifecycle_stage(revision_state.get("doc_status")) or "prd"
 
 
 def _unique_reasons_in_order(values: list[str]) -> list[str]:
@@ -184,6 +308,10 @@ def _profile_binding_source(project_root: Path, *, version: str, feature: str) -
     if default_project_profile(project_root):
         return "default_profile"
     return "none"
+
+
+def _semantic_gate_required(project_root: Path, *, version: str, feature: str) -> bool:
+    return bool(str(feature or "").strip()) and _semver_tuple(version) >= (1, 3, 6) and version_requires_prototype(project_root, version)
 
 
 def _normalize_intent_text(value: str | None) -> str:
@@ -309,22 +437,23 @@ def _stage_local_execution_binding(
     skills = profile.get("skills") if isinstance(profile.get("skills"), dict) else {}
     delivery_status = str(revision_state.get("delivery_status", "") or "")
     doc_status = str(revision_state.get("doc_status", "") or "")
-    next_stage = str(workflow_progress.get("next_stage", "") or "")
+    next_stage = canonicalize_lifecycle_stage(workflow_progress.get("next_stage"))
     stage_candidates: list[str] = []
-    if delivery_status in {"implemented", "verifying", "verified"} or next_stage == "verify":
-        stage_candidates.append("verify")
-    if delivery_status in {"accepted"}:
-        stage_candidates.append("review")
+    if delivery_status in {"implemented", "verifying", "verified"} or next_stage == "qa":
+        stage_candidates.append("qa")
+    if delivery_status in {"accepted", "released"}:
+        stage_candidates.append("release")
     if doc_status == "frozen" and delivery_status in {"", "idle", "draft"}:
-        stage_candidates.append("implementation")
+        stage_candidates.append("implement")
     if next_stage:
         stage_candidates.append(next_stage)
     for stage in stage_candidates:
-        skill_id = str(skills.get(stage, "") or "").strip()
-        if skill_id:
-            return {"stage": stage, "skill_id": skill_id, "status": "bound"}
+        for skill_stage in _stage_skill_keys(stage):
+            skill_id = str(skills.get(skill_stage, "") or "").strip()
+            if skill_id:
+                return {"stage": stage, "skill_id": skill_id, "status": "bound"}
     return {
-        "stage": stage_candidates[0] if stage_candidates else "",
+        "stage": canonicalize_lifecycle_stage(stage_candidates[0]) if stage_candidates else "",
         "skill_id": "",
         "status": "not_bound",
     }
@@ -342,14 +471,16 @@ def _blocking_reasons(
     takeover_gate: dict[str, Any] | None = None,
     implementation_plan_gate: dict[str, Any] | None = None,
     requirement_clarity_gate: dict[str, Any] | None = None,
+    semantic_contract: dict[str, Any] | None = None,
 ) -> list[str]:
     reasons: list[str] = []
     feature_scorecard = feature_scorecard if isinstance(feature_scorecard, dict) else {}
     delivery_status = str(revision_state.get("delivery_status", "") or "")
     continue_decision = str(feature_scorecard.get("continue_decision") or "").strip()
     scorecard_release_ready = bool(feature_scorecard.get("release_ready", False))
+    profile_gate_pass = isinstance(profile_gate, dict) and str(profile_gate.get("status", "") or "").strip() == "pass"
     freeze_gate_exempt = delivery_status in {"implemented", "verifying", "verified", "accepted", "released"} or continue_decision == "ready_for_release"
-    qa_closure_authoritative = scorecard_release_ready or continue_decision == "ready_for_release"
+    qa_closure_authoritative = scorecard_release_ready or continue_decision == "ready_for_release" or profile_gate_pass
 
     if isinstance(version_guard, dict) and str(version_guard.get("status", "") or "") == "blocked":
         code = str(version_guard.get("reason_code", "") or "").strip()
@@ -369,7 +500,7 @@ def _blocking_reasons(
         reasons.append("verify_failed")
     if str(revision_state.get("superseded_by", "") or ""):
         reasons.append("revision_superseded")
-    if (coverage.get("planned_story", 0) or 0) <= 0:
+    if (coverage.get("planned_story", 0) or 0) <= 0 and not qa_closure_authoritative:
         reasons.append("missing_user_story")
     if (
         delivery_status in {"implemented", "verifying", "verified", "accepted", "released"}
@@ -403,6 +534,11 @@ def _blocking_reasons(
         code = str(implementation_plan_gate.get("reason_code", "") or "").strip()
         if code:
             reasons.append(code)
+    if isinstance(semantic_contract, dict) and semantic_contract:
+        status = str(semantic_contract.get("status", "") or "").strip().lower()
+        code = str(semantic_contract.get("reason_code", "") or "").strip()
+        if status not in {"", "pass"} and code:
+            reasons.append(code)
     return _unique_reasons_in_order(reasons)
 
 
@@ -426,15 +562,17 @@ def _next_step(
     version_guard: dict[str, Any] | None = None,
     discovery_hint: dict[str, Any] | None = None,
     change_loop: dict[str, Any] | None = None,
+    semantic_contract: dict[str, Any] | None = None,
 ) -> dict[str, str]:
     quoted_feature = json.dumps(feature, ensure_ascii=False)
     base = f'--project-root {project_root} --version {version}'
-    next_stage = str(workflow_progress.get("next_stage", "") or "")
+    next_stage = canonicalize_lifecycle_stage(workflow_progress.get("next_stage"))
     run_id = str(workflow_progress.get("run_id", "") or "")
     feature_scorecard = feature_scorecard if isinstance(feature_scorecard, dict) else {}
     stage_binding = stage_binding if isinstance(stage_binding, dict) else {}
     delivery_status = str(revision_state.get("delivery_status", "") or "")
     change_loop = change_loop if isinstance(change_loop, dict) else {}
+    semantic_contract = semantic_contract if isinstance(semantic_contract, dict) else {}
 
     if bool(change_loop.get("recommended", False)):
         return {
@@ -450,7 +588,7 @@ def _next_step(
             "command": f"beacon doctor advise --project-root {project_root} --version {version} --feature {quoted_feature}",
         }
 
-    if delivery_status in {"accepted", "released"} and (
+    if not blocked and delivery_status in {"accepted", "released"} and (
         bool(feature_scorecard.get("release_ready", False)) or bool(workflow_progress.get("gate_pass", False))
     ):
         return {
@@ -462,7 +600,7 @@ def _next_step(
     continue_decision = str(feature_scorecard.get("continue_decision") or "").strip()
     if continue_decision == "stop_for_repair":
         stop_reasons = [str(item).strip() for item in (feature_scorecard.get("stop_reasons") or []) if str(item).strip()]
-        if any(reason in {"implementation_reopened", "bug_filed"} for reason in stop_reasons):
+        if _blocking_reason_matches(stop_reasons, "implementation_reopened", "implement_reopened", "bug_filed"):
             return {
                 "action": "implement",
                 "reason": "qa round found an implementation blocker that must be fixed before the next round",
@@ -486,12 +624,12 @@ def _next_step(
             profile_id = str((profile or {}).get("profile_id", "") or (profile_gate or {}).get("profile_id", "") or "")
             profile_arg = f" --profile {profile_id}" if profile_id else ""
             return {
-                "action": "verify-run",
+                "action": "qa",
                 "reason": "project workflow or evidence gate is still blocking the QA round",
                 "command": f"beacon verify run {quoted_feature} {base}{profile_arg}",
             }
         return {
-            "action": "qa-resume",
+            "action": "qa",
             "reason": "qa stopped for repair; close the blocker and then resume through Beacon help",
             "command": str(feature_scorecard.get("resume_command") or f"beacon help {base} --feature {quoted_feature}"),
         }
@@ -503,7 +641,7 @@ def _next_step(
                 "command": f"beacon test-case create {quoted_feature} {base}",
             }
         return {
-            "action": "qa-run",
+            "action": "qa",
             "reason": "qa coverage is incomplete but no severe blocker requires stopping the round",
             "command": _preferred_qa_command(feature=feature, project_root=project_root, version=version, base=base),
         }
@@ -534,6 +672,28 @@ def _next_step(
             }
         if any(
             reason in {
+                "semantic_contract_missing",
+                "semantic_dictionary_missing",
+                "semantic_usage_guidelines_missing",
+                "semantic_official_language_missing",
+                "semantic_default_taste_bridge_drift",
+                "semantic_prototype_binding_drift",
+            }
+            for reason in blocking_reasons
+        ):
+            return {
+                "action": "prototype",
+                "reason": "prototype semantic contract is incomplete or drifted and must be regenerated from requirement truth",
+                "command": f"beacon prototype create {quoted_feature} --project {project_root} --version {version} --json",
+            }
+        if "semantic_review_missing" in blocking_reasons:
+            return {
+                "action": "prototype-review",
+                "reason": "semantic review is not ready; re-run prototype review before implementation or release",
+                "command": f"beacon prototype review {quoted_feature} --project {project_root} --version {version} --json",
+            }
+        if any(
+            reason in {
                 "technical_review_contract_missing",
                 "technical_review_contract_invalid",
                 "implementation_plan_missing",
@@ -561,8 +721,14 @@ def _next_step(
                     "reason": str((discovery_hint or {}).get("reason") or "project skill onboarding is not configured; discover a bounded project profile before implementation planning"),
                     "command": str((discovery_hint or {}).get("command") or f"beacon skill discover --project-root {project_root} --json"),
                 }
+            if "implementation_plan_missing" in blocking_reasons:
+                return {
+                    "action": "implement-plan",
+                    "reason": "implementation requires execution-ready planning aligned to the active frozen revision",
+                    "command": _preferred_plan_or_dev_command(feature=feature, project_root=project_root, version=version),
+                }
             return {
-                "action": "implement-plan",
+                "action": "implement",
                 "reason": "implementation requires execution-ready planning aligned to the active frozen revision",
                 "command": _preferred_plan_or_dev_command(feature=feature, project_root=project_root, version=version),
             }
@@ -584,7 +750,7 @@ def _next_step(
             profile_id = str((profile or {}).get("profile_id", "") or (profile_gate or {}).get("profile_id", "") or "")
             profile_arg = f" --profile {profile_id}" if profile_id else ""
             return {
-                "action": "verify-run",
+                "action": "qa",
                 "reason": "project profile requires missing verification evidence before accept",
                 "command": f"beacon verify run {quoted_feature} {base}{profile_arg}",
             }
@@ -600,15 +766,15 @@ def _next_step(
                 "reason": "implementation requires a frozen revision baseline",
                 "command": f"beacon freeze {quoted_feature} {base}",
             }
-        if "verify_failed" in blocking_reasons:
+        if _blocking_reason_matches(blocking_reasons, "verify_failed", "qa_failed"):
             return {
-                "action": "review-quality",
+                "action": "qa",
                 "reason": "verification is failing and quality review / fixes are required",
                 "command": f"beacon review quality {quoted_feature} {base}",
             }
         if "coverage_incomplete" in blocking_reasons:
             return {
-                "action": "qa-run",
+                "action": "qa",
                 "reason": "coverage is still incomplete; do not advance to release-check until remaining AC/test evidence is closed",
                 "command": _preferred_qa_command(feature=feature, project_root=project_root, version=version, base=base),
             }
@@ -639,7 +805,7 @@ def _next_step(
         if delivery_status in {"implemented", "verifying", "verified"}:
             if gate_status == "blocked" and str(stage_binding.get("skill_id", "") or "").strip():
                 return {
-                    "action": "verify-run",
+                    "action": "qa",
                     "reason": "project profile still has missing evidence or required cases",
                     "command": f"beacon verify run {quoted_feature} {base} --profile {profile_id}",
                 }
@@ -650,13 +816,13 @@ def _next_step(
                     "command": f"beacon doctor advise --project-root {project_root} --version {version} --feature {quoted_feature}",
                 }
             return {
-                "action": "review-quality",
+                "action": "qa",
                 "reason": "project profile verification evidence is satisfied; move into formal quality review",
                 "command": f"beacon review quality {quoted_feature} {base}",
             }
         if doc_status == "frozen" and delivery_status in {"", "idle", "draft"} and str(stage_binding.get("skill_id", "") or "").strip():
             return {
-                "action": "orchestrate-run",
+                "action": str(stage_binding.get("stage") or "implement"),
                 "reason": "project profile defines a stage-local implementation surface for this feature",
                 "command": f"beacon orchestrate run {quoted_feature} {base} --profile {profile_id} --stage {stage_binding.get('stage') or 'implementation'}",
             }
@@ -670,7 +836,7 @@ def _next_step(
     if doc_status == "frozen" and delivery_status in {"", "idle", "draft"}:
         if isinstance(implementation_plan_gate, dict) and bool(implementation_plan_gate.get("blocked")):
             return {
-                "action": "implement-plan",
+                "action": "implement",
                 "reason": "implementation requires execution-ready planning aligned to the frozen revision baseline",
                 "command": _preferred_plan_or_dev_command(feature=feature, project_root=project_root, version=version),
             }
@@ -680,9 +846,9 @@ def _next_step(
             "command": _preferred_implement_command(feature=feature, project_root=project_root, version=version, base=base),
         }
 
-    if delivery_status in {"implemented", "verifying", "verified"} or next_stage == "verify":
+    if delivery_status in {"implemented", "verifying", "verified"} or next_stage == "qa":
         return {
-            "action": "review-quality",
+            "action": "qa",
             "reason": "implementation exists; next step is verification/review closure",
             "command": f"beacon review quality {quoted_feature} {base}",
         }
@@ -696,14 +862,14 @@ def _next_step(
 
     if not run_id:
         return {
-            "action": "workflow-start",
+            "action": "prd",
             "reason": "no active workflow run found for the requested feature/version",
             "command": f"beacon workflow start {quoted_feature} --project {project_root} --version {version}",
         }
 
-    if next_stage in {"think", "user-story", "prd", "prototype", "test-case"}:
+    if next_stage in {"prd", "user-story", "prototype", "test-case"}:
         return {
-            "action": "workflow-continue",
+            "action": next_stage,
             "reason": f"next workflow stage is {next_stage}",
             "command": f"beacon workflow continue --project-root {project_root} --version {version} --run-id {run_id}",
         }
@@ -715,7 +881,7 @@ def _next_step(
             "command": f"beacon gate check release --project-root {project_root} --version {version}",
         }
     return {
-        "action": next_stage or "status",
+        "action": canonicalize_lifecycle_action(next_stage) or "status",
         "reason": "follow workflow progression to the next stage",
         "command": f"beacon workflow continue --project-root {project_root} --version {version}",
     }
@@ -788,6 +954,11 @@ def build_help_payload(
         if feature_name
         else {}
     )
+    semantic_contract = (
+        evaluate_semantic_contract(project_root, version=resolved_version, feature=feature_name)
+        if _semantic_gate_required(project_root, version=resolved_version, feature=feature_name)
+        else {}
+    )
     if isinstance(requirement_clarity_gate, dict) and feature_name:
         requirement_clarity_gate["report_json_path"] = f"docs/beacon/{resolved_version}/.machine/execution/requirement-clarity-{feature_slug(feature_name)}.json"
     stage_binding = _stage_local_execution_binding(
@@ -815,6 +986,7 @@ def build_help_payload(
         takeover_gate=takeover_gate,
         implementation_plan_gate=implementation_plan_gate,
         requirement_clarity_gate=requirement_clarity_gate,
+        semantic_contract=semantic_contract,
     )
     scorecard_release_ready = bool(feature_scorecard.get("release_ready", False))
     scorecard_continue_decision = str(feature_scorecard.get("continue_decision", "") or "").strip()
@@ -838,6 +1010,8 @@ def build_help_payload(
             blocking = [stop_state]
     blocked = bool(blocking)
     current_stage = _infer_current_stage(revision_state=revision_state, workflow_progress=workflow_progress)
+    workflow_progress_display = _canonicalize_workflow_progress(workflow_progress)
+    blocking_display = _canonicalize_reason_list(blocking)
     profile_binding_source = (
         _profile_binding_source(project_root, version=resolved_version, feature=feature_name)
         if feature_name
@@ -861,6 +1035,24 @@ def build_help_payload(
     )
     if not delegation_precheck and feature_name:
         delegation_precheck = delegation_readiness_precheck(project_root, feature=feature_name, version=resolved_version)
+    archive_boundary = load_archive_read_model(project_root, version=resolved_version, feature=feature_name) if feature_name else {}
+    feature_archive = archive_boundary.get("feature") if isinstance(archive_boundary.get("feature"), dict) else {}
+    host_prompt_trace = load_host_prompt_trace(project_root, version=resolved_version, feature=feature_name) if feature_name else {}
+    archive_status = str(feature_archive.get("status", "") or "active")
+    if archive_status in {"archived-learnable", "archived-reference-only"}:
+        blocking = _unique_reasons_in_order([*blocking, "feature_archived_from_current_delivery"])
+        blocked = True
+        blocking_display = _canonicalize_reason_list(blocking)
+    implement_mode = str(implement_state.get("mode", "") or "")
+    freeze_status = "pass" if str(revision_state.get("doc_status", "") or "") == "frozen" else str(revision_state.get("doc_status", "") or "draft")
+    team_phase = ""
+    if implement_mode == "team":
+        team_phase = str(implement_state.get("status", "") or "")
+    elif bool((feature_archive or {}).get("active_delivery", False)) and str(revision_state.get("delivery_status", "") or "") in {"implemented", "verifying", "verified"}:
+        team_phase = "completed"
+    ralph_status = "active" if (str(ralph_state.get("phase", "") or "").strip() and not ralph_handoff_stale) else ""
+    if _semver_tuple(resolved_version) >= (1, 3, 8) and team_phase in {"completed", "passed"} and not ralph_status and not qa_closure_authoritative:
+        ralph_status = "pending"
     execution_surface = {
         "project_mode": project_mode,
         "profile_binding_source": profile_binding_source,
@@ -876,17 +1068,29 @@ def build_help_payload(
         "native_fallback_allowed": not bool(profile and str(stage_binding.get("skill_id", "") or "").strip()),
         "takeover_gate": takeover_gate,
         "host_runtime": host_runtime,
-        "implement_mode": str(implement_state.get("mode", "") or ""),
+        "implement_mode": implement_mode,
         "implement_runner": str(implement_state.get("runner", "") or ""),
+        "freeze_status": freeze_status,
+        "team_phase": team_phase,
         "subagent_runtime_status": str(runtime_precheck.get("status", "") or ""),
         "subagent_delegation_status": str(delegation_precheck.get("status", "") or ""),
+        "archive_status": archive_status,
+        "archive_reason": str(feature_archive.get("reason", "") or ""),
         "ralph_phase": "" if ralph_handoff_stale else str(ralph_state.get("phase", "") or ""),
+        "ralph_status": ralph_status,
         "ralph_stop_state": "" if ralph_handoff_stale else str(ralph_state.get("stop_state", "") or ""),
         "ralph_next_action": "" if ralph_handoff_stale else str(ralph_state.get("next_action", "") or ""),
         "ralph_round_count": 0 if ralph_handoff_stale else int(ralph_state.get("round_count", 0) or 0),
         "ralph_last_round_ref": "" if ralph_handoff_stale else str(ralph_state.get("last_round_ref", "") or ""),
         "ralph_failure_streak": 0 if ralph_handoff_stale else int(ralph_state.get("failure_streak", 0) or 0),
         "ralph_no_delta_streak": 0 if ralph_handoff_stale else int(ralph_state.get("no_delta_streak", 0) or 0),
+        "host_prompt_trace_ref": (
+            f"docs/beacon/{resolved_version}/.machine/execution/host-prompt-trace-{feature_slug(feature_name)}.json"
+            if feature_name and host_prompt_trace
+            else ""
+        ),
+        "host_prompt_trace_status": str(((host_prompt_trace.get("latest_event") or {}) if isinstance(host_prompt_trace, dict) else {}).get("route_status", "") or ""),
+        "host_prompt_trace_command": str(((host_prompt_trace.get("latest_event") or {}) if isinstance(host_prompt_trace, dict) else {}).get("mapped_command", "") or ""),
         "qa_execution_mode": str(qa_status.get("execution_mode", "") or ""),
         "qa_current_session_id": str(current_qa_session.get("session_id", "") or ""),
         "qa_runner_type": str(current_qa_session.get("runner_type", "") or ""),
@@ -933,6 +1137,7 @@ def build_help_payload(
         version_guard=version_guard,
         discovery_hint=discovery_hint,
         change_loop=change_loop,
+        semantic_contract=semantic_contract,
     )
     if (
         isinstance(ralph_state, dict)
@@ -941,9 +1146,22 @@ def build_help_payload(
         and not ralph_handoff_stale
     ):
         next_step = {
-            "action": str(ralph_state.get("next_action", "") or "ralph"),
-            "reason": str(ralph_state.get("current_blocker", "") or "follow Ralph controller next step"),
+            "action": canonicalize_lifecycle_action(ralph_state.get("next_action")) or "ralph",
+            "reason": canonicalize_blocking_reason(ralph_state.get("current_blocker")) or "follow Ralph controller next step",
             "command": str(ralph_state.get("recommended_command", "") or ""),
+        }
+    quoted_feature = json.dumps(feature_name, ensure_ascii=False)
+    if archive_status in {"archived-learnable", "archived-reference-only"}:
+        next_step = {
+            "action": "archive",
+            "reason": "feature truth is archived and excluded from the current delivery plane",
+            "command": f"beacon archive status --project-root {project_root} --version {resolved_version} --feature {quoted_feature} --json",
+        }
+    elif _semver_tuple(resolved_version) >= (1, 3, 8) and team_phase in {"completed", "passed"} and ralph_status == "pending" and not qa_closure_authoritative:
+        next_step = {
+            "action": "ralph",
+            "reason": "post-freeze execution contract requires Ralph after implement-team before QA/release closure",
+            "command": f"beacon implement run {quoted_feature} --project {project_root} --version {resolved_version} --mode ralph",
         }
     plan_counts = implementation_plan_progress.get("counts") if isinstance(implementation_plan_progress.get("counts"), dict) else {}
     progress_total = int(plan_counts.get("total", 0) or 0)
@@ -972,11 +1190,14 @@ def build_help_payload(
                 "total": progress_total,
                 "round": int(execution_surface.get("ralph_round_count", 0) or 0),
             },
+            "phase_summary": (
+                f"freeze:{freeze_status} team:{team_phase or 'pending'} ralph:{ralph_status or 'idle'}"
+            ),
             "circuit_status": "trip" if blocker_level == "blocked" else "warn" if blocker_level == "warn" else "ok",
         },
         "blocker": {
             "level": blocker_level,
-            "reason": blocking[0] if blocking else "",
+            "reason": blocking_display[0] if blocking_display else "",
             "recommended_command": str(next_step.get("command", "") or ""),
         },
         "next_action": str(next_step.get("action", "") or ""),
@@ -1031,7 +1252,7 @@ def build_help_payload(
         {
             "step": "stage_local_execution_binding",
             "status": str(stage_binding.get("status", "") or "not_configured"),
-            "stage": str(stage_binding.get("stage", "") or ""),
+            "stage": canonicalize_lifecycle_stage(stage_binding.get("stage")),
             "skill_id": str(stage_binding.get("skill_id", "") or ""),
         },
         {
@@ -1045,6 +1266,12 @@ def build_help_payload(
             "plan_id": str(implementation_plan.get("plan_id", "") or ""),
             "next_task_id": str(implementation_plan_progress.get("next_task_id", "") or ""),
             "reason_code": str(implementation_plan_gate.get("reason_code", "") or ""),
+        },
+        {
+            "step": "semantic_contract",
+            "status": str(semantic_contract.get("status", "not_required") or "not_required"),
+            "reason_code": str(semantic_contract.get("reason_code", "") or ""),
+            "artifacts": dict(semantic_contract.get("artifacts", {})) if isinstance(semantic_contract.get("artifacts"), dict) else {},
         },
     ]
     scores = {
@@ -1087,9 +1314,18 @@ def build_help_payload(
         "doc_status": str(revision_state.get("doc_status", "") or "draft"),
         "delivery_status": str(revision_state.get("delivery_status", "") or "idle"),
         "blocked": blocked,
-        "blocking_reasons": blocking,
-        "blocked_reason": blocking[0] if blocking else "",
+        "blocking_reasons": blocking_display,
+        "blocked_reason": blocking_display[0] if blocking_display else "",
+        "blocking_reasons_raw": blocking,
+        "blocked_reason_raw": blocking[0] if blocking else "",
         "next_step": next_step,
+        "lifecycle": {
+            "current_stage": current_stage,
+            "next_stage": str(workflow_progress_display.get("next_stage", "") or ""),
+            "blocking_reasons": blocking_display,
+            "blocked_reason": blocking_display[0] if blocking_display else "",
+            "next_action": str(next_step.get("action", "") or ""),
+        },
         "change_loop": change_loop,
         "revision_lineage": {
             "revision_id": str(revision_state.get("revision_id", "") or ""),
@@ -1104,6 +1340,7 @@ def build_help_payload(
         "coverage": coverage,
         "story_summary": story_summary,
         "workflow_progress": workflow_progress,
+        "workflow_progress_display": workflow_progress_display,
         "run_state": load_run_state(project_root, resolved_run_id) if resolved_run_id else None,
         "project_profile": {
             "profile_id": str((profile or {}).get("profile_id", "") or ""),
@@ -1116,6 +1353,8 @@ def build_help_payload(
         "project_gate": profile_gate,
         "execution_surface": execution_surface,
         "delivery_read_model": delivery_read_model,
+        "archive": archive_boundary,
+        "host_prompt_trace": host_prompt_trace,
         "surface_explanation": surface_explanation,
         "hud": hud_refs,
         "minimal_hud": {
@@ -1128,6 +1367,7 @@ def build_help_payload(
         "implementation_plan_gate": implementation_plan_gate,
         "implementation_plan_progress": implementation_plan_progress,
         "requirement_clarity_gate": requirement_clarity_gate,
+        "semantic": semantic_contract,
         "decision_trace": decision_trace,
         "takeover_gate": takeover_gate,
         "feature_scorecard": feature_scorecard if isinstance(feature_scorecard, dict) else {},

@@ -19,6 +19,7 @@ from beacon.utils.artifact_paths import (
     human_execution_file,
     qa_matrix_candidates,
 )
+from beacon.utils.archive_governance import load_feature_archive_boundary
 from beacon.utils.circuit_breaker import CircuitBreaker
 from beacon.utils.artifact_update_obligations import write_artifact_update_obligations
 from beacon.utils.delivery_kernel import build_delivery_contract
@@ -54,6 +55,8 @@ from beacon.utils.implement_adapters import (
     resolve_default_runner,
 )
 from beacon.utils.learning_loop import write_requirement_rewrite_input
+from beacon.utils.host_prompt_trace import record_host_prompt_trace
+from beacon.utils.semantic_runtime import load_or_build_semantic_layer
 from beacon.utils.ralph_runtime import (
     append_ralph_round,
     finalize_ralph_state,
@@ -62,9 +65,15 @@ from beacon.utils.ralph_runtime import (
     mark_ralph_handoff_required,
     save_ralph_state,
 )
-from beacon.utils.runtime import generate_run_id, now_iso, write_json
+from beacon.utils.runtime import generate_run_id, now_iso, read_json, write_json
 from beacon.utils.story_state import load_story_state
-from beacon.utils.subagent_readiness import delegation_readiness_precheck, detect_host_runtime, runtime_readiness_precheck
+from beacon.utils.subagent_readiness import (
+    delegation_readiness_precheck,
+    detect_host_runtime,
+    runtime_context_not_required_precheck,
+    runtime_context_precheck_required,
+    runtime_readiness_precheck,
+)
 from beacon.utils.team_surface import write_implement_to_qa_handoff
 from beacon.utils.v115_delivery import refresh_evidence_manifest
 from beacon.utils.versioning import normalize_version, release_line_key, resolve_target_version
@@ -105,6 +114,105 @@ def _summary_paths(project_root: Path, version: str, feature: str) -> dict[str, 
         "json": execution_file_output(project_root, version, f"implementation-summary-{slug}.json"),
         "md": human_execution_file(project_root, version, f"implementation-summary-{slug}.md"),
     }
+
+
+def _trace_artifacts_from_payload(payload: dict[str, Any]) -> list[str]:
+    refs: list[str] = []
+    for key in (
+        "plan_path",
+        "plan_markdown_path",
+        "progress_path",
+        "git_workflow_ref",
+        "git_workflow_markdown_ref",
+        "branch_preflight_path",
+        "plan_preflight_path",
+        "request_path",
+        "result_path",
+        "stdout_path",
+        "stderr_path",
+        "implementation_plan",
+        "implementation_marker",
+        "implement_to_qa_handoff",
+        "host_prompt_trace_ref",
+    ):
+        text = str(payload.get(key, "") or "").strip()
+        if text and text not in refs:
+            refs.append(text)
+    for key in ("technical_archive", "change_document", "review_spec", "review_quality"):
+        item = payload.get(key)
+        if not isinstance(item, dict):
+            continue
+        for value in item.values():
+            text = str(value or "").strip()
+            if text and text not in refs:
+                refs.append(text)
+    return refs
+
+
+def _capture_host_prompt_trace(
+    *,
+    project_root: Path,
+    version: str,
+    feature: str,
+    host_prompt: str,
+    surface: str,
+    mapped_command: str,
+    payload: dict[str, Any],
+) -> dict[str, Any]:
+    trace = record_host_prompt_trace(
+        project_root,
+        version=version,
+        feature=feature,
+        original_host_prompt=host_prompt,
+        surface=surface,
+        mapped_command=mapped_command,
+        produced_artifacts=_trace_artifacts_from_payload(payload),
+        route_status=str(payload.get("status", "") or "unknown"),
+        run_id=str(payload.get("run_id", "") or ""),
+        freeze_status="pass" if str(payload.get("version", "") or "").strip() and str(payload.get("status", "") or "") else "",
+        team_phase=str(payload.get("status", "") or "") if str(payload.get("team_surface", "") or "") == "implement-team" else "",
+        ralph_phase=str(payload.get("phase", "") or ""),
+        stop_state=str(payload.get("stop_state", "") or ""),
+        next_action=str(payload.get("next_action", "") or ""),
+        reason_code=str(payload.get("reason_code", "") or ""),
+        execution_sequence=[
+            "freeze-pass",
+            "implement-team-plan",
+            "implement-team-run",
+            "implement-ralph",
+            "qa",
+            "release",
+        ],
+    )
+    if not trace:
+        return {}
+    run_id = str(payload.get("run_id", "") or "").strip()
+    if run_id:
+        state_path = project_root / ".beacon" / "implement" / run_id / "state.json"
+        state_payload = read_json(state_path, {})
+        if isinstance(state_payload, dict) and state_payload:
+            state_payload["host_prompt_trace_ref"] = str(trace.get("json_ref", "") or "")
+            state_payload["host_prompt_trace_markdown_ref"] = str(trace.get("markdown_ref", "") or "")
+            write_json(state_path, state_payload)
+    payload["host_prompt_trace"] = trace
+    payload["host_prompt_trace_ref"] = str(trace.get("json_ref", "") or "")
+    payload["host_prompt_trace_markdown_ref"] = str(trace.get("markdown_ref", "") or "")
+    return trace
+
+
+def _apply_post_team_ralph_handoff(payload: dict[str, Any], *, project_root: Path, version: str, feature: str) -> None:
+    if _semver_tuple(version) < (1, 3, 8):
+        return
+    if str(payload.get("status", "") or "").strip().lower() != "completed":
+        return
+    if str(payload.get("team_surface", "") or "").strip() != "implement-team":
+        return
+    payload["next_action"] = str(payload.get("next_action", "") or "ralph")
+    payload["phase"] = str(payload.get("phase", "") or "team_completed_waiting_ralph")
+    payload["recommended_command"] = (
+        str(payload.get("recommended_command", "") or "")
+        or f'beacon implement run "{feature}" --project {project_root} --version {version} --mode ralph'
+    )
 
 
 def _refresh_ralph_state_after_resume(
@@ -1290,6 +1398,21 @@ def run_implement_stage(  # noqa: PLR0913
     team_runtime: str | None = None,
 ) -> tuple[int, dict[str, Any]]:
     resolved_version = resolve_target_version(project_root, version)
+    archive_boundary = load_feature_archive_boundary(project_root, version=resolved_version, feature=feature)
+    if bool(archive_boundary.get("archived", False)):
+        payload = {
+            "schema_version": "1.0",
+            "status": "blocked",
+            "reason_code": "feature_archived_from_current_delivery",
+            "feature": feature,
+            "feature_slug": _slug(feature),
+            "version": resolved_version,
+            "archive_boundary": archive_boundary,
+            "recommended_command": (
+                f'beacon archive status --project-root {project_root} --version {resolved_version} --feature "{feature}" --json'
+            ),
+        }
+        return 2, payload
     resolved_mode = _normalize_mode(mode)
     if resolved_mode == "ralph" and not str(run_id_override or "").strip():
         return _run_ralph_controller(
@@ -1473,7 +1596,25 @@ def run_implement_stage(  # noqa: PLR0913
         "delegation_readiness": {},
     }
     if _requires_host_native_prechecks(adapter_id=adapter_id, adapter=adapter, mode=resolved_mode):
-        runtime_precheck = runtime_readiness_precheck(project_root, host_runtime=resolved_host_runtime)
+        adapter_type_text = str(adapter.get("adapter_type", "") or "")
+        runtime_family_text = str(adapter.get("runtime_family", "") or "")
+        if runtime_context_precheck_required(
+            version=resolved_version,
+            adapter_id=adapter_id,
+            adapter_type=adapter_type_text,
+            runtime_family=runtime_family_text,
+            mode=resolved_mode,
+            runtime=team_runtime,
+        ):
+            runtime_precheck = runtime_readiness_precheck(project_root, host_runtime=resolved_host_runtime)
+        else:
+            runtime_precheck = runtime_context_not_required_precheck(
+                host_runtime=resolved_host_runtime,
+                detail=(
+                    "Local native team runtime for this Beacon surface is driven by Beacon-managed execution artifacts; "
+                    "project AGENTS/CLAUDE context files are not required to proceed."
+                ),
+            )
         delegation_precheck = delegation_readiness_precheck(
             project_root,
             feature=feature,
@@ -1519,6 +1660,26 @@ def run_implement_stage(  # noqa: PLR0913
             return 2, payload
 
     artifacts = _artifacts(project_root, resolved_version, feature)
+    semantic_layer = load_or_build_semantic_layer(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        stage="implement",
+        run_id=run_id,
+        persist=not dry_run,
+    )
+    semantic_artifacts = {
+        key: str(value)
+        for key, value in (semantic_layer.get("artifacts", {}) if isinstance(semantic_layer.get("artifacts"), dict) else {}).items()
+        if str(value).strip()
+    }
+    if semantic_artifacts:
+        artifacts = {**artifacts, **semantic_artifacts}
+    default_design_bridge = (
+        semantic_layer.get("default_design_bridge", {})
+        if isinstance(semantic_layer.get("default_design_bridge"), dict)
+        else {}
+    )
     request_path = Path(f".beacon/implement/{run_id}/request.json")
     request_md_path = Path(
         format_template(
@@ -1552,6 +1713,11 @@ def run_implement_stage(  # noqa: PLR0913
         "request_file": str(request_path),
         "result_file": str(result_path),
         "source_of_truth_root": artifacts["source_of_truth_root"],
+        "semantic_contract": str(semantic_artifacts.get("semantic_contract", "")),
+        "semantic_dictionary": str(semantic_artifacts.get("semantic_dictionary", "")),
+        "semantic_usage_guidelines": str(semantic_artifacts.get("semantic_usage_guidelines", "")),
+        "semantic_review": str(semantic_artifacts.get("semantic_review", "")),
+        "default_design_bridge_skill": str(default_design_bridge.get("skill_id", "")),
     }
     implementation_plan_file = (
         str(implementation_plan_json_path(project_root, resolved_version, feature).relative_to(project_root))
@@ -1566,6 +1732,8 @@ def run_implement_stage(  # noqa: PLR0913
         feature_slug=feature_slug,
         result_file=str(result_path),
         implementation_plan_file=implementation_plan_file,
+        semantic_artifact_refs=semantic_artifacts,
+        default_design_bridge=default_design_bridge,
     )
     rendered_task_template = str(task_template or adapter.get("task_template") or "").strip()
     task_prompt = format_template(rendered_task_template, {**context, "task_prompt": default_prompt}) if rendered_task_template else default_prompt
@@ -1595,6 +1763,7 @@ def run_implement_stage(  # noqa: PLR0913
             artifacts["user_story"],
             artifacts["test_case"],
             artifacts["ac_matrix"],
+            *[value for value in semantic_artifacts.values() if value],
             str(request_path),
             str(result_path),
         ],
@@ -1628,6 +1797,10 @@ def run_implement_stage(  # noqa: PLR0913
         "implementation_plan": implementation_plan_file,
         "git_workflow": git_workflow_contract,
         "generated_at": now_iso(),
+        "semantic_layer": {
+            "artifacts": semantic_artifacts,
+            "default_design_bridge": default_design_bridge,
+        },
         "delivery_contract": request_delivery_contract,
         "host_native_delivery": request_delivery_contract,
     }
@@ -1652,6 +1825,10 @@ def run_implement_stage(  # noqa: PLR0913
         "generated_at": now_iso(),
         "status": "planned",
         "subagent_prechecks": subagent_prechecks,
+        "semantic_layer": {
+            "artifacts": semantic_artifacts,
+            "default_design_bridge": default_design_bridge,
+        },
         "delivery_contract": request_delivery_contract,
         "host_native_delivery": request_delivery_contract,
     }
@@ -1667,7 +1844,11 @@ def run_implement_stage(  # noqa: PLR0913
             "implementation_plan": implementation_plan_file,
         }
         if request_md_path is not None:
-            payload["request_markdown"] = str(request_md_path.relative_to(project_root))
+            payload["request_markdown"] = (
+                str(request_md_path.relative_to(project_root))
+                if request_md_path.is_absolute()
+                else str(request_md_path)
+            )
         write_json(state_path, payload)
         return 0, payload
     if adapter_type == "native":
@@ -2510,6 +2691,7 @@ def run(
     auto_qa_max_rounds: int = typer.Option(0, "--auto-qa-max-rounds", help="Maximum QA rounds in the auto-qa follow-handoff loop"),
     auto_switch_branch: bool = typer.Option(False, "--auto-switch-branch", help="Explicitly switch/create the expected Beacon version branch before implementation"),
     runtime: str = typer.Option("file", "--runtime", help="Team runtime for native-team/codex-subagents: file/tmux/auto"),
+    prompt_trace: str = typer.Option("", "--host-prompt", help="Original host prompt for structured prompt trace"),
     json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
 ):
     """Run implementation using the resolved skill adapter."""
@@ -2534,6 +2716,21 @@ def run(
         auto_switch_branch=auto_switch_branch,
         team_runtime=runtime,
     )
+    resolved_version = resolve_target_version(project_root, version)
+    _apply_post_team_ralph_handoff(payload, project_root=project_root, version=resolved_version, feature=feature)
+    if prompt_trace:
+        mapped_command = f'beacon implement run "{feature}" --project {project_root} --version {resolved_version}'
+        if mode:
+            mapped_command += f" --mode {mode}"
+        _capture_host_prompt_trace(
+            project_root=project_root,
+            version=resolved_version,
+            feature=feature,
+            host_prompt=prompt_trace,
+            surface="implement-run",
+            mapped_command=mapped_command,
+            payload=payload,
+        )
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
     else:
@@ -2603,6 +2800,7 @@ def dev_run(
     auto_switch_branch: bool = typer.Option(True, "--auto-switch-branch/--no-auto-switch-branch", help="Auto repair branch/workspace alignment before entering implementation"),
     auto_review_spec: bool = typer.Option(True, "--auto-review-spec/--no-auto-review-spec", help="Auto trigger review spec"),
     auto_review_quality: bool = typer.Option(False, "--auto-review-quality/--no-auto-review-quality", help="Auto trigger review quality"),
+    prompt_trace: str = typer.Option("", "--host-prompt", help="Original host prompt for structured prompt trace"),
     json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
 ):
     """Compile safe pre-implement artifacts/gates, then enter implementation."""
@@ -2735,6 +2933,17 @@ def dev_run(
         **preflight_resolution,
         "status": "completed" if code == 0 else "blocked",
     }
+    _apply_post_team_ralph_handoff(payload, project_root=project_root, version=resolved_version, feature=feature)
+    if prompt_trace:
+        _capture_host_prompt_trace(
+            project_root=project_root,
+            version=resolved_version,
+            feature=feature,
+            host_prompt=prompt_trace,
+            surface="implement-dev-run",
+            mapped_command=f'beacon implement dev-run "{feature}" --project {project_root} --version {resolved_version}',
+            payload=payload,
+        )
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
     else:
@@ -2782,9 +2991,20 @@ def sync_git_workflow(
     raise typer.Exit(code=0)
 
 
-def _plan_impl(feature: str, project: Optional[str], version: str, json_output: bool) -> int:
+def _plan_impl(feature: str, project: Optional[str], version: str, json_output: bool, host_prompt: str = "") -> int:
     project_root = Path(project) if project else Path.cwd()
     code, payload = compile_implementation_plan(project_root, version=version, feature=feature)
+    resolved_version = resolve_target_version(project_root, version)
+    if host_prompt:
+        _capture_host_prompt_trace(
+            project_root=project_root,
+            version=resolved_version,
+            feature=feature,
+            host_prompt=host_prompt,
+            surface="implement-plan",
+            mapped_command=f'beacon implement plan "{feature}" --project-root {project_root} --version {resolved_version}',
+            payload=payload,
+        )
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
     else:
@@ -2798,7 +3018,7 @@ def _plan_impl(feature: str, project: Optional[str], version: str, json_output: 
     return code
 
 
-def _team_plan_impl(feature: str, project: Optional[str], version: str, json_output: bool) -> int:
+def _team_plan_impl(feature: str, project: Optional[str], version: str, json_output: bool, host_prompt: str = "") -> int:
     project_root = Path(project) if project else Path.cwd()
     code, payload = compile_implementation_plan(project_root, version=version, feature=feature)
     resolved_version = resolve_target_version(project_root, version)
@@ -2815,6 +3035,16 @@ def _team_plan_impl(feature: str, project: Optional[str], version: str, json_out
         "team_mode": payload.get("team_mode", {}) or team_mode,
         "recommended_command": str((payload.get("team_mode", {}) or team_mode).get("run_command") or ""),
     }
+    if host_prompt:
+        _capture_host_prompt_trace(
+            project_root=project_root,
+            version=resolved_version,
+            feature=feature,
+            host_prompt=host_prompt,
+            surface="implement-team-plan",
+            mapped_command=f'beacon implement team-plan "{feature}" --project-root {project_root} --version {resolved_version}',
+            payload=payload,
+        )
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
     else:
@@ -2830,10 +3060,11 @@ def plan(
     feature: str = typer.Argument(..., help="Feature name"),
     project: Optional[str] = typer.Option(None, "--project", "--project-root", "-p", help="Project root"),
     version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
+    host_prompt: str = typer.Option("", "--host-prompt", help="Original host prompt for structured prompt trace"),
     json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
 ):
     """Compile PRD/user-story/test-case into an implementation plan."""
-    raise typer.Exit(code=_plan_impl(feature, project, version, json_output))
+    raise typer.Exit(code=_plan_impl(feature, project, version, json_output, host_prompt))
 
 
 @app.command("team-plan")
@@ -2841,10 +3072,11 @@ def team_plan(
     feature: str = typer.Argument(..., help="Feature name"),
     project: Optional[str] = typer.Option(None, "--project", "--project-root", "-p", help="Project root"),
     version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
+    host_prompt: str = typer.Option("", "--host-prompt", help="Original host prompt for structured prompt trace"),
     json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
 ):
     """Compile an implementation plan with explicit implement-team guidance."""
-    raise typer.Exit(code=_team_plan_impl(feature, project, version, json_output))
+    raise typer.Exit(code=_team_plan_impl(feature, project, version, json_output, host_prompt))
 
 
 @app.command("compile-plan")
@@ -2852,10 +3084,11 @@ def compile_plan(
     feature: str = typer.Argument(..., help="Feature name"),
     project: Optional[str] = typer.Option(None, "--project", "--project-root", "-p", help="Project root"),
     version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
+    host_prompt: str = typer.Option("", "--host-prompt", help="Original host prompt for structured prompt trace"),
     json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
 ):
     """Alias of `implement plan`."""
-    raise typer.Exit(code=_plan_impl(feature, project, version, json_output))
+    raise typer.Exit(code=_plan_impl(feature, project, version, json_output, host_prompt))
 
 
 @app.command("team-run")
@@ -2866,6 +3099,7 @@ def team_run(
     auto_review_spec: bool = typer.Option(True, "--auto-review-spec/--no-auto-review-spec", help="Auto trigger review spec"),
     auto_review_quality: bool = typer.Option(False, "--auto-review-quality/--no-auto-review-quality", help="Auto trigger review quality"),
     runtime: str = typer.Option("file", "--runtime", help="Runtime mode: file/tmux/auto"),
+    host_prompt: str = typer.Option("", "--host-prompt", help="Original host prompt for structured prompt trace"),
     json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
 ):
     """Run implementation through the explicit implement-team surface."""
@@ -2879,6 +3113,18 @@ def team_run(
         auto_review_quality=auto_review_quality,
         team_runtime=runtime,
     )
+    resolved_version = resolve_target_version(project_root, version)
+    _apply_post_team_ralph_handoff(payload, project_root=project_root, version=resolved_version, feature=feature)
+    if host_prompt:
+        _capture_host_prompt_trace(
+            project_root=project_root,
+            version=resolved_version,
+            feature=feature,
+            host_prompt=host_prompt,
+            surface="implement-team-run",
+            mapped_command=f'beacon implement team-run "{feature}" --project {project_root} --version {resolved_version}',
+            payload=payload,
+        )
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
     else:

@@ -72,6 +72,7 @@ def build_minimal_hud(payload: dict[str, Any]) -> dict[str, Any]:
     done = int(progress.get("done", 0) or 0)
     total = int(progress.get("total", 0) or 0)
     round_count = int(progress.get("round", 0) or 0)
+    phase_summary = _text(execution.get("phase_summary"), "")
     circuit_status = _text(execution.get("circuit_status"), "ok").lower()
     time_fragment = _execution_time_fragment(execution)
 
@@ -92,11 +93,11 @@ def build_minimal_hud(payload: dict[str, Any]) -> dict[str, Any]:
 
     if scenario in {"S2", "S3", "S4", "S5", "S6"}:
         if mode == "ralph":
-            line2 = f"▸ round:{round_count} circuit:{circuit_status} {time_fragment}"
+            line2 = f"▸ {phase_summary} | round:{round_count} circuit:{circuit_status} {time_fragment}" if phase_summary else f"▸ round:{round_count} circuit:{circuit_status} {time_fragment}"
         elif mode in {"single", "team"}:
-            line2 = f"▸ progress:{done}/{total} {time_fragment}"
+            line2 = f"▸ {phase_summary} | progress:{done}/{total} {time_fragment}" if phase_summary else f"▸ progress:{done}/{total} {time_fragment}"
         else:
-            line2 = f"▸ state:{circuit_status} {time_fragment}"
+            line2 = f"▸ {phase_summary} | state:{circuit_status} {time_fragment}" if phase_summary else f"▸ state:{circuit_status} {time_fragment}"
         lines.append(_clip(line2))
 
     if scenario in {"S5", "S6"}:

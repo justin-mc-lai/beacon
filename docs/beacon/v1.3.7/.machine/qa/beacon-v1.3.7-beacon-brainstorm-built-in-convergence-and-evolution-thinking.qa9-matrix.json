@@ -1,0 +1,560 @@
+{
+  "schema_version": "1.0.2",
+  "feature": "Beacon v1.3.7 beacon-brainstorm built-in convergence and evolution thinking",
+  "feature_slug": "beacon-v1.3.7-beacon-brainstorm-built-in-convergence-and-evolution-thinking",
+  "version": "v1.3.7",
+  "compiler": {
+    "requested_mode": "auto",
+    "effective_mode": "rule",
+    "generator_mode": "rule",
+    "fallback_reason": "llm_unavailable",
+    "capability_snapshot": {
+      "schema_version": "1.0",
+      "command_name": "test-case",
+      "host_runtime": "codex",
+      "host_bridge_declared": false,
+      "host_response_available": false,
+      "host_response_source": "none",
+      "host_response_path": "",
+      "host_semantic_ready": false,
+      "provider_available": false,
+      "provider_key_present": false,
+      "llm_disabled": false,
+      "disable_env": "BEACON_TEST_CASE_DISABLE_LLM"
+    },
+    "model": "beacon-test-case-compiler"
+  },
+  "qa_profile": "web-full",
+  "qa_types": [
+    "unit",
+    "interface",
+    "contract",
+    "integration",
+    "smoke",
+    "functional",
+    "regression",
+    "exception",
+    "compatibility"
+  ],
+  "llm_plan": {
+    "mode": "rule",
+    "model": "beacon-rule-llm-v1",
+    "project_scan": {
+      "language": "python",
+      "framework": "python-app",
+      "frontend": "unknown",
+      "api_spec_refs": [],
+      "risk_points": [
+        "authz/authn boundary",
+        "cross-browser ui behavior",
+        "api contract drift",
+        "exception handling and replay safety"
+      ]
+    },
+    "project_type": "ai-agent-skill",
+    "generated_at": "2026-04-23T18:03:42.103361",
+    "prompt_ref": "beacon.qa9.llm.plan.v1.0.2",
+    "skip_reason": "",
+    "qa_types": [
+      "unit",
+      "interface",
+      "contract",
+      "integration",
+      "smoke",
+      "functional",
+      "regression",
+      "exception",
+      "compatibility"
+    ]
+  },
+  "qa_strategy": {
+    "schema_version": "1.0.2",
+    "generated_at": "2026-04-23T18:03:42.102544",
+    "project_type": "ai-agent-skill",
+    "project_scan": {
+      "language": "python",
+      "framework": "python-app",
+      "frontend": "unknown",
+      "api_spec_refs": [],
+      "risk_points": [
+        "authz/authn boundary",
+        "cross-browser ui behavior",
+        "api contract drift",
+        "exception handling and replay safety"
+      ]
+    },
+    "qa_applicability": {
+      "unit": "required",
+      "interface": "required",
+      "contract": "required",
+      "integration": "required",
+      "smoke": "required",
+      "functional": "conditional",
+      "regression": "required",
+      "exception": "required",
+      "compatibility": "conditional"
+    },
+    "qa_required_types": [
+      "unit",
+      "interface",
+      "contract",
+      "integration",
+      "smoke",
+      "functional",
+      "regression",
+      "exception",
+      "compatibility"
+    ],
+    "runner_policy": {
+      "functional": {
+        "primary": "browser-use",
+        "fallback": [
+          "playwright",
+          "cypress",
+          "agent-browser"
+        ]
+      },
+      "compatibility": {
+        "primary": "playwright",
+        "fallback": [
+          "cypress"
+        ]
+      },
+      "api_layers": {
+        "interface": "schemathesis/newman/pytest",
+        "contract": "schemathesis/pact",
+        "integration": "pytest+testcontainers"
+      }
+    },
+    "command_baseline": {
+      "unit": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "interface": "python3 -m pytest -q -k interface --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "contract": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "integration": "python3 -m pytest -q -k integration --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "smoke": "python3 -m pytest -q -m smoke --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "functional": "python3 -m beacon.adapters.browser_use_runner --mode functional --fallback-cmd \"python3 -m pytest -q -k functional --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "regression": "python3 -m pytest -q -k regression --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "exception": "python3 -m pytest -q -k exception --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "compatibility": "python3 -m beacon.adapters.browser_use_runner --mode compatibility --fallback-cmd \"python3 -m pytest -q -k compatibility --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\""
+    },
+    "ui_runner": "browser-use"
+  },
+  "qa_requirements": [
+    {
+      "qa_type": "unit",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "interface",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "contract",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "integration",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "smoke",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "functional",
+      "required": false,
+      "automation_required": false,
+      "min_cases": 0,
+      "applicability": "conditional",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "regression",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "exception",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "compatibility",
+      "required": false,
+      "automation_required": false,
+      "min_cases": 0,
+      "applicability": "conditional",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    }
+  ],
+  "automation_target_rate": 0.85,
+  "entries": [
+    {
+      "tc_id": "TC-001",
+      "ac_id": "AC-001",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "Beacon v1.3.7 beacon-brainstorm built-in convergence and evolution thinking unit :: 存在一个 Beacon 内建的 `beacon-brainstorm` 子 skill，定位为 host-visible 但非主流程。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.7-beacon-brainstorm-built-in-convergence-and-evolution-thinking/{run_id}/TC-001.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.7/user-story/beacon-v1.3.7-beacon-brainstorm-built-in-convergence-and-evolution-thinking.md"
+    },
+    {
+      "tc_id": "TC-002",
+      "ac_id": "AC-002",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "Beacon v1.3.7 beacon-brainstorm built-in convergence and evolution thinking unit :: 该 skill 能基于 `docs/beacon/<version>/` 的正式材料继续头暴、补齐和收敛。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.7-beacon-brainstorm-built-in-convergence-and-evolution-thinking/{run_id}/TC-002.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.7/user-story/beacon-v1.3.7-beacon-brainstorm-built-in-convergence-and-evolution-thinking.md"
+    },
+    {
+      "tc_id": "TC-003",
+      "ac_id": "AC-003",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "Beacon v1.3.7 beacon-brainstorm built-in convergence and evolution thinking unit :: 该 skill 至少支持 requirement convergence、frozen-truth delta、evolution exploration、re",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.7-beacon-brainstorm-built-in-convergence-and-evolution-thinking/{run_id}/TC-003.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.7/user-story/beacon-v1.3.7-beacon-brainstorm-built-in-convergence-and-evolution-thinking.md"
+    },
+    {
+      "tc_id": "TC-004",
+      "ac_id": "AC-004",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "Beacon v1.3.7 beacon-brainstorm built-in convergence and evolution thinking unit :: 该 skill 的输出显式体现第一性原理、苏格拉底提问、奥卡姆剃刀三类思考协议。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.7-beacon-brainstorm-built-in-convergence-and-evolution-thinking/{run_id}/TC-004.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.7/user-story/beacon-v1.3.7-beacon-brainstorm-built-in-convergence-and-evolution-thinking.md"
+    },
+    {
+      "tc_id": "TC-005",
+      "ac_id": "AC-005",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "Beacon v1.3.7 beacon-brainstorm built-in convergence and evolution thinking unit :: 该 skill 只做思考与建议，不直接改 truth、不直接执行 implement，并能生成单一 Markdown 产物。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.7-beacon-brainstorm-built-in-convergence-and-evolution-thinking/{run_id}/TC-005.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.7/user-story/beacon-v1.3.7-beacon-brainstorm-built-in-convergence-and-evolution-thinking.md"
+    },
+    {
+      "tc_id": "TC-006",
+      "ac_id": "AC-001",
+      "layer": "api-curl",
+      "qa_type": "interface",
+      "title": "Beacon v1.3.7 beacon-brainstorm built-in convergence and evolution thinking interface coverage",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k interface --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "HTTP status and schema assertions pass",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260423T182625330184/qa9-tc/TC-006/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "user-story:docs/beacon/v1.3.7/user-story/beacon-v1.3.7-beacon-brainstorm-built-in-convergence-and-evolution-thinking.md",
+      "last_run_id": "run-20260423T182625330184"
+    },
+    {
+      "tc_id": "TC-007",
+      "ac_id": "AC-002",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "Beacon v1.3.7 beacon-brainstorm built-in convergence and evolution thinking contract coverage",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260423T182625330184/qa9-tc/TC-007/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "user-story:docs/beacon/v1.3.7/user-story/beacon-v1.3.7-beacon-brainstorm-built-in-convergence-and-evolution-thinking.md",
+      "last_run_id": "run-20260423T182625330184"
+    },
+    {
+      "tc_id": "TC-008",
+      "ac_id": "AC-003",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "Beacon v1.3.7 beacon-brainstorm built-in convergence and evolution thinking integration coverage",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k integration --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Integration flow assertions pass",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260423T182625330184/qa9-tc/TC-008/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "user-story:docs/beacon/v1.3.7/user-story/beacon-v1.3.7-beacon-brainstorm-built-in-convergence-and-evolution-thinking.md",
+      "last_run_id": "run-20260423T182625330184"
+    },
+    {
+      "tc_id": "TC-009",
+      "ac_id": "AC-004",
+      "layer": "smoke",
+      "qa_type": "smoke",
+      "title": "Beacon v1.3.7 beacon-brainstorm built-in convergence and evolution thinking smoke coverage",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -m smoke --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Critical path assertions pass",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260423T182625330184/qa9-tc/TC-009/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "user-story:docs/beacon/v1.3.7/user-story/beacon-v1.3.7-beacon-brainstorm-built-in-convergence-and-evolution-thinking.md",
+      "last_run_id": "run-20260423T182625330184"
+    },
+    {
+      "tc_id": "TC-010",
+      "ac_id": "AC-005",
+      "layer": "ui",
+      "qa_type": "functional",
+      "title": "Beacon v1.3.7 beacon-brainstorm built-in convergence and evolution thinking functional coverage",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m beacon.adapters.browser_use_runner --mode functional --fallback-cmd \"python3 -m pytest -q -k functional --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "assertion": "Web UI assertions and key actions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.7-beacon-brainstorm-built-in-convergence-and-evolution-thinking/{run_id}/TC-010.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.7/user-story/beacon-v1.3.7-beacon-brainstorm-built-in-convergence-and-evolution-thinking.md"
+    },
+    {
+      "tc_id": "TC-011",
+      "ac_id": "AC-001",
+      "layer": "regression",
+      "qa_type": "regression",
+      "title": "Beacon v1.3.7 beacon-brainstorm built-in convergence and evolution thinking regression coverage",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k regression --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "No known behavior regression found",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260423T182625330184/qa9-tc/TC-011/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "user-story:docs/beacon/v1.3.7/user-story/beacon-v1.3.7-beacon-brainstorm-built-in-convergence-and-evolution-thinking.md",
+      "last_run_id": "run-20260423T182625330184"
+    },
+    {
+      "tc_id": "TC-012",
+      "ac_id": "AC-002",
+      "layer": "exception",
+      "qa_type": "exception",
+      "title": "Beacon v1.3.7 beacon-brainstorm built-in convergence and evolution thinking exception coverage",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k exception --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Negative-path assertions pass",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260423T182625330184/qa9-tc/TC-012/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "user-story:docs/beacon/v1.3.7/user-story/beacon-v1.3.7-beacon-brainstorm-built-in-convergence-and-evolution-thinking.md",
+      "last_run_id": "run-20260423T182625330184"
+    },
+    {
+      "tc_id": "TC-013",
+      "ac_id": "AC-003",
+      "layer": "compatibility",
+      "qa_type": "compatibility",
+      "title": "Beacon v1.3.7 beacon-brainstorm built-in convergence and evolution thinking compatibility coverage",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m beacon.adapters.browser_use_runner --mode compatibility --fallback-cmd \"python3 -m pytest -q -k compatibility --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "assertion": "Cross-browser/device assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.7-beacon-brainstorm-built-in-convergence-and-evolution-thinking/{run_id}/TC-013.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.7/user-story/beacon-v1.3.7-beacon-brainstorm-built-in-convergence-and-evolution-thinking.md"
+    }
+  ],
+  "compatibility_matrix": {
+    "browsers": [
+      "chromium",
+      "firefox",
+      "webkit"
+    ],
+    "devices": [
+      "desktop",
+      "iphone14"
+    ],
+    "required_pairs": [
+      {
+        "browser": "chromium",
+        "device": "desktop"
+      },
+      {
+        "browser": "firefox",
+        "device": "desktop"
+      },
+      {
+        "browser": "webkit",
+        "device": "desktop"
+      }
+    ]
+  },
+  "generated_at": "2026-04-23T18:03:42.103386"
+}

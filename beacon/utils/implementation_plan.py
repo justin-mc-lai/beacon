@@ -9,6 +9,14 @@ from pathlib import Path
 from typing import Any, Iterable
 
 from beacon.utils.artifact_paths import human_execution_file, machine_execution_file, qa_matrix_candidates
+from beacon.utils.delivery_baseline import (
+    baseline_revision_id,
+    load_implementation_delivery_baseline,
+    materialize_implementation_delivery_baseline,
+    projection_metadata,
+    validate_projection_against_baseline,
+)
+from beacon.utils.diagram_truth import load_feature_diagram_truth
 from beacon.utils.global_boundaries import global_boundary_principle_summaries
 from beacon.utils.implement_adapters import load_beacon_config
 from beacon.utils.revision_state import load_revision_state
@@ -18,6 +26,8 @@ from beacon.utils.team_surface import implement_team_contract
 from beacon.utils.technical_review_contract import (
     approved_technical_review_contract,
     build_technical_review_gate_payload,
+    load_technical_review_contract,
+    materialize_technical_review_contract,
     technical_review_git_workflow_seed,
 )
 from beacon.utils.versioning import normalize_version, release_line_key, resolve_target_version
@@ -140,6 +150,9 @@ def _default_git_workflow_contract(project_root: Path, *, version: str, feature:
     if approved_contract:
         payload = technical_review_git_workflow_seed(approved_contract)
         if payload:
+            envelope = load_implementation_delivery_baseline(project_root, version=version, feature=feature)
+            if envelope:
+                payload.update(projection_metadata(envelope, project_root=project_root, version=version, feature=feature))
             return payload
     config = load_beacon_config(project_root)
     implementation_cfg = config.get("implementation") if isinstance(config.get("implementation"), dict) else {}
@@ -148,10 +161,11 @@ def _default_git_workflow_contract(project_root: Path, *, version: str, feature:
     branch_prefix = str(branch_guard_cfg.get("branch_prefix", "") or "").strip()
     if not branch_prefix:
         branch_prefix = expected_branch.split("/", 1)[0] + "/" if "/" in expected_branch else "beacon/"
-    service_directories = _normalize_string_list(branch_guard_cfg.get("git_roots"))
+    configured_service_directories = _normalize_string_list(branch_guard_cfg.get("git_roots"))
+    service_directories = configured_service_directories or ["."]
     direct_delivery_services = list(service_directories)
-    mode = "workspace" if service_directories else "single-repo"
-    return {
+    mode = "workspace" if configured_service_directories else "single-repo"
+    payload = {
         "schema_version": "1.0",
         "feature": feature,
         "feature_slug": feature_slug(feature),
@@ -173,6 +187,11 @@ def _default_git_workflow_contract(project_root: Path, *, version: str, feature:
         "source": "project_config_seed" if branch_guard_cfg else "version_default",
         "generated_at": now_iso(),
     }
+    envelope = load_implementation_delivery_baseline(project_root, version=version, feature=feature)
+    if not envelope:
+        envelope = materialize_implementation_delivery_baseline(project_root, version=version, feature=feature, seed=payload)
+    payload.update(projection_metadata(envelope, project_root=project_root, version=version, feature=feature))
+    return payload
 
 
 def _render_git_workflow_markdown(payload: dict[str, Any]) -> str:
@@ -224,6 +243,10 @@ def materialize_implementation_git_workflow_contract(project_root: Path, *, vers
     resolved_version = resolve_target_version(project_root, version)
     json_path = implementation_git_workflow_json_path(project_root, resolved_version, feature)
     payload = _default_git_workflow_contract(project_root, version=resolved_version, feature=feature)
+    baseline = load_implementation_delivery_baseline(project_root, version=resolved_version, feature=feature)
+    if not baseline:
+        baseline = materialize_implementation_delivery_baseline(project_root, version=resolved_version, feature=feature, seed=payload)
+    payload.update(projection_metadata(baseline, project_root=project_root, version=resolved_version, feature=feature))
     existing = read_json(json_path, {})
     if (
         isinstance(existing, dict)
@@ -849,6 +872,8 @@ def _render_plan_markdown(payload: dict[str, Any]) -> str:
         f"- version: `{payload.get('version', '')}`",
         f"- revision_id: `{payload.get('revision_id', '')}`",
         f"- baseline_hash: `{payload.get('baseline_hash', '')}`",
+        f"- delivery_baseline_id: `{payload.get('baseline_id', '')}`",
+        f"- delivery_baseline_source_hash: `{payload.get('source_hash', '')}`",
         f"- plan_hash: `{payload.get('plan_hash', '')}`",
         f"- status: `{payload.get('status', '')}`",
         "",
@@ -903,6 +928,20 @@ def _render_plan_markdown(payload: dict[str, Any]) -> str:
                 f"- git_workflow_ref: `{payload.get('git_workflow_ref', '')}`",
             ]
         )
+    diagram_truth = payload.get("diagram_truth") if isinstance(payload.get("diagram_truth"), dict) else {}
+    if diagram_truth:
+        lines.extend(
+            [
+                "",
+                "## Diagram Truth",
+                f"- required: `{bool(diagram_truth.get('required', False))}`",
+                f"- ready: `{bool(diagram_truth.get('ready', False))}`",
+                f"- diagram_types: {', '.join(diagram_truth.get('diagram_types', [])) or '-'}",
+                f"- state_axes: {', '.join(diagram_truth.get('state_axes', [])) or '-'}",
+                f"- review_gates: {', '.join(diagram_truth.get('review_gates', [])) or '-'}",
+                f"- qa_coverage_hints: {', '.join(diagram_truth.get('qa_coverage_hints', [])) or '-'}",
+            ]
+        )
     lines.extend(["", "## Tasks"])
     tasks = [task for task in payload.get("tasks", []) if isinstance(task, dict)]
     if not tasks:
@@ -919,6 +958,7 @@ def _render_plan_markdown(payload: dict[str, Any]) -> str:
                 f"- mapped_qa_case_ids: {', '.join(task.get('mapped_qa_case_ids', [])) or '-'}",
                 f"- depends_on: {', '.join(task.get('depends_on', [])) or '-'}",
                 f"- target_modules: {', '.join(task.get('target_modules', [])) or '-'}",
+                f"- diagram_review_gates: {', '.join(task.get('diagram_review_gates', [])) or '-'}",
             ]
         )
     return "\n".join(lines) + "\n"
@@ -1026,6 +1066,14 @@ def compile_implementation_plan(project_root: Path, *, version: str = "auto", fe
             "recommended_command": f'beacon freeze "{feature}" --project-root {project_root} --version {resolved_version}',
         }
         return 2, payload
+    existing_contract = load_technical_review_contract(project_root, version=resolved_version, feature=feature)
+    if existing_contract:
+        materialize_technical_review_contract(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            revision_id=str(revision.get("revision_id", "") or ""),
+        )
     technical_review_gate = build_technical_review_gate_payload(
         project_root,
         version=resolved_version,
@@ -1083,9 +1131,32 @@ def compile_implementation_plan(project_root: Path, *, version: str = "auto", fe
             "missing_source_refs": missing_refs,
         }
         return 2, payload
+    diagram_truth = load_feature_diagram_truth(project_root, version=resolved_version, feature=feature)
+    if bool(diagram_truth.get("required")) and not bool(diagram_truth.get("ready")):
+        payload = {
+            "schema_version": "1.0",
+            "status": "blocked",
+            "blocked": True,
+            "reason_code": "diagram_truth_missing",
+            "feature": feature,
+            "feature_slug": feature_slug(feature),
+            "version": resolved_version,
+            "diagram_truth": diagram_truth,
+            "recommended_command": (
+                f'beacon brainstorm run "补齐 {feature} 的 diagram truth layer" '
+                f'--project-root {project_root} --version {resolved_version} --feature "{feature}" --json'
+            ),
+        }
+        return 2, payload
 
     prd_content = _read_text(project_root / source_refs["prd"])
     prd_candidates = _extract_prd_task_candidates(prd_content)
+    diagram_task_projection = {
+        "diagram_types": list(diagram_truth.get("diagram_types", [])),
+        "state_axes": list(diagram_truth.get("state_axes", [])),
+        "review_gates": list(diagram_truth.get("review_gates", [])),
+        "qa_coverage_hints": list(diagram_truth.get("qa_coverage_hints", [])),
+    }
     tasks: list[dict[str, Any]] = []
     previous_task_id = ""
     if prd_candidates:
@@ -1114,6 +1185,8 @@ def compile_implementation_plan(project_root: Path, *, version: str = "auto", fe
                 "mapped_qa_case_ids": _qa_case_ids(project_root, resolved_version, feature, mapped_ac_ids, normalized_test_ids),
                 "depends_on": [previous_task_id] if previous_task_id else [],
                 "target_modules": [],
+                "diagram_review_gates": list(diagram_task_projection["review_gates"]),
+                "diagram_state_axes": list(diagram_task_projection["state_axes"]),
                 "status": "planned",
                 "evidence_refs": [],
                 "changed_files": [],
@@ -1143,6 +1216,8 @@ def compile_implementation_plan(project_root: Path, *, version: str = "auto", fe
                 "mapped_qa_case_ids": _qa_case_ids(project_root, resolved_version, feature, [ac_id], normalized_test_ids),
                 "depends_on": [previous_task_id] if previous_task_id else [],
                 "target_modules": [],
+                "diagram_review_gates": list(diagram_task_projection["review_gates"]),
+                "diagram_state_axes": list(diagram_task_projection["state_axes"]),
                 "status": "planned",
                 "evidence_refs": [],
                 "changed_files": [],
@@ -1165,6 +1240,8 @@ def compile_implementation_plan(project_root: Path, *, version: str = "auto", fe
                 "mapped_qa_case_ids": [],
                 "depends_on": [],
                 "target_modules": [],
+                "diagram_review_gates": list(diagram_task_projection["review_gates"]),
+                "diagram_state_axes": list(diagram_task_projection["state_axes"]),
                 "status": "planned",
                 "evidence_refs": [],
                 "changed_files": [],
@@ -1175,6 +1252,18 @@ def compile_implementation_plan(project_root: Path, *, version: str = "auto", fe
         )
 
     git_workflow = materialize_implementation_git_workflow_contract(project_root, version=resolved_version, feature=feature)
+    baseline = load_implementation_delivery_baseline(project_root, version=resolved_version, feature=feature)
+    expected_revision_id = str(revision.get("revision_id", "") or "")
+    if not baseline or baseline_revision_id(baseline) != expected_revision_id:
+        baseline = materialize_implementation_delivery_baseline(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            revision_id=expected_revision_id,
+            seed=git_workflow,
+        )
+    baseline_projection = projection_metadata(baseline, project_root=project_root, version=resolved_version, feature=feature)
+    git_workflow.update(baseline_projection)
     payload = {
         "schema_version": "1.0",
         "plan_id": f"plan-{feature_slug(feature)}-{str(revision.get('revision_id', 'R1') or 'R1').lower()}",
@@ -1195,13 +1284,29 @@ def compile_implementation_plan(project_root: Path, *, version: str = "auto", fe
             }
         ],
         "task_mapping_source": "prd-sections" if prd_candidates else "acceptance-criteria",
+        "diagram_truth": diagram_truth,
+        "review_gates": list(diagram_truth.get("review_gates", [])),
+        "qa_coverage_hints": list(diagram_truth.get("qa_coverage_hints", [])),
         "tasks": tasks,
         "team_mode": _team_mode_contract(project_root, version=resolved_version, feature=feature),
         "git_workflow": git_workflow,
         "git_workflow_ref": str(implementation_git_workflow_json_path(project_root, resolved_version, feature).relative_to(project_root)),
         "git_workflow_markdown_ref": str(implementation_git_workflow_markdown_path(project_root, resolved_version, feature).relative_to(project_root)),
+        "base_branch": str(git_workflow.get("base_branch", "") or ""),
+        "target_branch": str(git_workflow.get("expected_branch", "") or ""),
+        "branch_prefix": str(git_workflow.get("branch_prefix", "") or ""),
+        "use_git_worktree": bool(git_workflow.get("use_git_worktree", False)),
+        "worktree_root": str(git_workflow.get("worktree_root", "") or ""),
+        "direct_delivery_services": _normalize_string_list(git_workflow.get("direct_delivery_services")) or ["."],
+        "writable_services": _normalize_string_list(git_workflow.get("writable_services"))
+        or _normalize_string_list(git_workflow.get("direct_delivery_services"))
+        or ["."],
+        "reference_only_services": _normalize_string_list(git_workflow.get("reference_only_services")) or ["docs"],
+        "delivery_baseline": baseline_projection,
+        "canonical_envelope_ref": str(baseline_projection.get("canonical_envelope_ref", "") or ""),
         "generated_at": now_iso(),
     }
+    payload.update(baseline_projection)
     written = _write_implementation_plan(project_root, version=resolved_version, feature=feature, payload=payload)
     return 0, {
         "schema_version": "1.0",
@@ -1221,6 +1326,7 @@ def compile_implementation_plan(project_root: Path, *, version: str = "auto", fe
         "counts": _task_counts(tasks),
         "team_mode": payload.get("team_mode", {}),
         "git_workflow": payload.get("git_workflow", {}),
+        "diagram_truth": payload.get("diagram_truth", {}),
     }
 
 
@@ -1291,6 +1397,23 @@ def build_implementation_plan_gate_payload(project_root: Path, *, version: str =
         return payload
     if str(plan.get("baseline_hash", "") or "") != str(revision.get("baseline_hash", "") or ""):
         payload.update({"status": "blocked", "blocked": True, "reason_code": "implementation_plan_baseline_mismatch"})
+        return payload
+    baseline = load_implementation_delivery_baseline(project_root, version=resolved_version, feature=feature)
+    if not baseline:
+        payload.update({"status": "blocked", "blocked": True, "reason_code": "delivery_baseline_missing"})
+        return payload
+    plan_projection_issues = validate_projection_against_baseline(plan, baseline, projection_name="implementation_plan")
+    git_workflow = plan.get("git_workflow") if isinstance(plan.get("git_workflow"), dict) else {}
+    git_projection_issues = validate_projection_against_baseline(git_workflow, baseline, projection_name="git_workflow") if git_workflow else []
+    if plan_projection_issues or git_projection_issues:
+        payload.update(
+            {
+                "status": "blocked",
+                "blocked": True,
+                "reason_code": "delivery_baseline_projection_drift",
+                "projection_issues": [*plan_projection_issues, *git_projection_issues],
+            }
+        )
         return payload
     payload.update(
         {

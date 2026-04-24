@@ -10,6 +10,7 @@ import os
 
 from beacon.utils.artifact_update_obligations import load_artifact_update_obligations
 from beacon.utils.artifact_paths import execution_file_candidates, human_execution_dir, machine_execution_dir
+from beacon.utils.archive_governance import load_feature_archive_boundary
 from beacon.utils.control_plane import build_resume_contract
 from beacon.utils.coverage import compute_coverage_metrics
 from beacon.utils.debug_feedback import (
@@ -41,12 +42,13 @@ from beacon.utils.technical_review_contract import (
     build_technical_review_gate_payload,
     load_technical_review_state,
 )
+from beacon.utils.semantic_runtime import evaluate_semantic_contract
 from beacon.utils.versioning import project_runtime_feature_enabled, resolve_runtime_version, resolve_target_version
 from beacon.utils.v110_baseline import (
     load_latest_baseline_snapshot,
     load_latest_spec_fingerprint,
 )
-from beacon.utils.workflow_memory import compute_memory_metrics, load_lifecycle_events
+from beacon.utils.workflow_memory import compute_memory_metrics, load_lifecycle_events, workflow_memory_transaction_contract
 
 app = typer.Typer(name="gate", help="Run gate checks for workflow stages")
 
@@ -190,6 +192,14 @@ REASON_CODES = [
     "prototype_surface_unbound",
     "prototype_route_closure_drift",
     "prototype_fake_jump",
+    "semantic_contract_missing",
+    "semantic_dictionary_missing",
+    "semantic_usage_guidelines_missing",
+    "semantic_review_missing",
+    "semantic_transaction_metadata_missing",
+    "semantic_official_language_missing",
+    "semantic_default_taste_bridge_drift",
+    "semantic_prototype_binding_drift",
     "runtime_projection_failed_transaction",
     "runtime_projection_drift",
     "formal_package_closure_missing",
@@ -924,6 +934,22 @@ def check_memory_closure(project_root: Path, mode: GateMode, stage: str, version
             }
         )
 
+    tx_contract = workflow_memory_transaction_contract(
+        project_root,
+        run_id=target_run_id or None,
+        version=version,
+    )
+    if str(tx_contract.get("status") or "").lower() == "fail":
+        issues.append(
+            {
+                "reason_code": str(tx_contract.get("reason_code") or "workflow_memory_failed_transaction"),
+                "severity": "critical",
+                "message": str(tx_contract.get("message") or "workflow memory transaction contract failed"),
+                "blocked": True,
+                "details": tx_contract.get("details", {}),
+            }
+        )
+
     bad_evidence = []
     for item in run_events:
         if not isinstance(item, dict):
@@ -1044,6 +1070,7 @@ def check_release_memory_profile(project_root: Path, mode: GateMode, stage: str,
             }
         )
 
+    resolved_version = _resolved_gate_version(project_root, version)
     release_events = [
         item
         for item in events
@@ -1051,6 +1078,16 @@ def check_release_memory_profile(project_root: Path, mode: GateMode, stage: str,
         and str(item.get("stage", "")) == "release"
         and str(item.get("event", "")) == "release_decision_recorded"
     ]
+    if resolved_version:
+        release_events = [
+            item
+            for item in release_events
+            if (
+                str(((item.get("details") or {}) if isinstance(item.get("details"), dict) else {}).get("version") or "").strip()
+                == resolved_version
+            )
+            or str(item.get("run_id") or "").strip() == f"release:{resolved_version}"
+        ]
     if not release_events:
         issues.append(
             {
@@ -1420,6 +1457,85 @@ def check_runtime_projection_transaction_contract(
     ]
 
 
+def check_semantic_contract(
+    project_root: Path,
+    mode: GateMode,
+    stage: str,
+    version: Optional[str] = None,
+) -> List[Dict[str, Any]]:
+    if stage not in {"prototype", "qa", "release"}:
+        return []
+    resolved_version = resolve_target_version(project_root, version)
+    if _parse_semver_tuple(resolved_version) < (1, 3, 6):
+        return []
+    if not version_requires_prototype(project_root, resolved_version):
+        return []
+    proto_root = project_root / "docs" / "beacon" / resolved_version / "prototype"
+    if not proto_root.exists():
+        return []
+
+    issues: list[dict[str, Any]] = []
+    for feature_dir in sorted(path for path in proto_root.iterdir() if path.is_dir()):
+        feature = feature_dir.name
+        contract = evaluate_semantic_contract(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+        )
+        status = str(contract.get("status", "warn") or "warn").strip().lower()
+        if status == "pass":
+            plan_path = feature_dir / "prototype-plan.json"
+            if plan_path.exists():
+                try:
+                    plan_payload = json.loads(plan_path.read_text(encoding="utf-8"))
+                except Exception:  # noqa: BLE001
+                    plan_payload = {}
+                semantic_artifacts = (
+                    (plan_payload.get("semantic_layer") or {}).get("artifacts", {})
+                    if isinstance(plan_payload, dict)
+                    else {}
+                )
+                expected_contract = str((contract.get("artifacts") or {}).get("semantic_contract", "") or "")
+                if expected_contract and str(semantic_artifacts.get("semantic_contract", "") or "") != expected_contract:
+                    issues.append(
+                        {
+                            "reason_code": "semantic_prototype_binding_drift",
+                            "blocked": True,
+                            "message": f"prototype semantic binding drift for feature {feature}",
+                            "details": {
+                                "expected_contract": expected_contract,
+                                "bound_contract": str(semantic_artifacts.get("semantic_contract", "") or ""),
+                            },
+                        }
+                    )
+            continue
+
+        blocked = status == "fail" or mode == GateMode.STRICT
+        details = contract.get("details", {}) if isinstance(contract.get("details"), dict) else {}
+        missing_artifacts = details.get("missing_artifacts") if isinstance(details.get("missing_artifacts"), list) else []
+        reason_code = str(contract.get("reason_code", "semantic_contract_missing") or "semantic_contract_missing")
+        if missing_artifacts:
+            mapping = {
+                "semantic_dictionary": "semantic_dictionary_missing",
+                "semantic_usage_guidelines": "semantic_usage_guidelines_missing",
+                "semantic_review": "semantic_review_missing",
+            }
+            reason_code = mapping.get(str(missing_artifacts[0]), reason_code)
+        issues.append(
+            {
+                "reason_code": reason_code,
+                "blocked": blocked,
+                "message": f"{feature}: {contract.get('message', 'semantic contract invalid')}",
+                "details": {
+                    "feature": feature,
+                    "artifacts": contract.get("artifacts", {}),
+                    **details,
+                },
+            }
+        )
+    return issues
+
+
 def _load_json_file(path: Path) -> tuple[Optional[Dict[str, Any]], str]:
     if not path.exists():
         return None, "missing"
@@ -1580,6 +1696,16 @@ def check_delivery_execution_artifacts(project_root: Path, mode: GateMode, stage
         expected_branches: set[str] = set()
         for plan_path in sorted(machine_exec_dir.glob("implementation-plan-*.json")):
             if str(plan_path.name).endswith(".progress.json"):
+                continue
+            plan_payload = _load_json_object(plan_path)
+            if (
+                str(plan_path.name) == "implementation-plan-support.json"
+                or (
+                    bool(plan_payload.get("supported"))
+                    and not str(plan_payload.get("feature") or "").strip()
+                    and not str(plan_payload.get("feature_slug") or "").strip()
+                )
+            ):
                 continue
             workflow_path = machine_exec_dir / plan_path.name.replace("implementation-plan-", "git-workflow-")
             if not workflow_path.exists():
@@ -1742,7 +1868,7 @@ def check_v110_precision_contract(
     if _parse_semver_tuple(resolved_version) < (1, 1, 10):
         return issues
 
-    qa_status = load_qa_status(project_root)
+    qa_status = _load_scoped_qa_status(project_root, version=resolved_version)
     if not qa_status:
         issues.append(
             {
@@ -1852,17 +1978,24 @@ def check_v110_precision_contract(
     return issues
 
 
-def _latest_implement_feature(project_root: Path) -> str:
+def _latest_implement_feature(project_root: Path, *, version: Optional[str] = None) -> str:
     implement_root = project_root / ".beacon" / "implement"
     if not implement_root.exists():
         return ""
-    for state_path in reversed(sorted(implement_root.glob("*/state.json"))):
-        try:
-            payload = json.loads(state_path.read_text(encoding="utf-8"))
-        except Exception:  # noqa: BLE001
+    candidates: list[tuple[Path, dict[str, Any]]] = []
+    for state_path in implement_root.glob("*/state.json"):
+        payload = _load_json_object(state_path)
+        if not payload:
             continue
-        if not isinstance(payload, dict):
+        payload_version = str(payload.get("version") or "").strip()
+        if version and payload_version and payload_version != version:
             continue
+        if version and not payload_version:
+            continue
+        feature = str(payload.get("feature", "") or "").strip()
+        if feature:
+            candidates.append((state_path, payload))
+    for state_path, payload in sorted(candidates, key=lambda item: _gate_state_sort_key(item[0], item[1]), reverse=True):
         feature = str(payload.get("feature", "") or "").strip()
         if feature:
             return feature
@@ -1884,14 +2017,24 @@ def check_v112_implementation_plan_contract(
     if not implementation_plan_supported(resolved_version):
         return issues
 
-    qa_status = load_qa_status(project_root)
-    feature_name = str(qa_status.get("feature", "") or "").strip() or _latest_implement_feature(project_root)
+    feature_name = _resolve_release_feature_context(project_root, version=resolved_version)
     if not feature_name:
         issues.append(
             {
                 "reason_code": "implementation_plan_missing",
                 "severity": "critical",
                 "message": "release requires implementation plan truth but no feature context could be resolved",
+                "blocked": True,
+            }
+        )
+        return issues
+    archive_boundary = load_feature_archive_boundary(project_root, version=resolved_version, feature=feature_name)
+    if bool(archive_boundary.get("archived", False)):
+        issues.append(
+            {
+                "reason_code": "feature_archived_from_current_delivery",
+                "severity": "critical",
+                "message": f"feature {feature_name} is archived and excluded from current delivery",
                 "blocked": True,
             }
         )
@@ -1929,6 +2072,22 @@ def check_v112_implementation_plan_contract(
                 "blocked": True,
             }
         )
+    diagram_truth = plan.get("diagram_truth") if isinstance(plan.get("diagram_truth"), dict) else {}
+    if bool(diagram_truth.get("required", False)):
+        missing_diagram_projection = [
+            str(task.get("task_id", "") or "")
+            for task in plan.get("tasks", [])
+            if isinstance(task, dict) and not list(task.get("diagram_review_gates", []))
+        ]
+        if missing_diagram_projection:
+            issues.append(
+                {
+                    "reason_code": "diagram_truth_plan_projection_missing",
+                    "severity": "critical",
+                    "message": f"implementation plan tasks missing diagram review gates: {missing_diagram_projection}",
+                    "blocked": True,
+                }
+            )
 
     source_refs = plan.get("source_refs") if isinstance(plan.get("source_refs"), dict) else {}
     matrix_ref = str(source_refs.get("ac_matrix", "") or "").strip()
@@ -2053,7 +2212,7 @@ def check_v131_human_loop_contract(
     ):
         return issues
 
-    feature_name = str(load_qa_status(project_root).get("feature") or "").strip() or _latest_implement_feature(project_root)
+    feature_name = _resolve_release_feature_context(project_root, version=resolved_version)
     if not feature_name:
         issues.append(
             {
@@ -2903,7 +3062,7 @@ def check_test_execution_integrity(project_root: Path, mode: GateMode, stage: st
     layers = execution.get("layers") if isinstance(execution, dict) else None
     run_id = str(execution.get("run_id", "")).strip() if isinstance(execution, dict) else ""
     runtime_version = str(status_data.get("version") or "").strip()
-    qa_status = load_qa_status(project_root)
+    qa_status = _load_scoped_qa_status(project_root, version=runtime_version or None)
     current_feature = str(qa_status.get("feature_slug") or qa_status.get("feature") or "").strip()
     signature_chain_path = project_root / ".beacon" / "evidence-signature-chain.json"
     if not signature_chain_path.exists():
@@ -3182,6 +3341,61 @@ def _parse_semver_tuple(value: str) -> tuple[int, int, int]:
     return (numbers[0], numbers[1], numbers[2])
 
 
+def _gate_state_sort_key(path: Path, payload: dict[str, Any]) -> tuple[str, str, str, str, str, str, int, str]:
+    return (
+        str(payload.get("frozen_at") or ""),
+        str(payload.get("accepted_at") or ""),
+        str(payload.get("completed_at") or ""),
+        str(payload.get("updated_at") or ""),
+        str(payload.get("created_at") or ""),
+        str(payload.get("written_at") or ""),
+        path.stat().st_mtime_ns if path.exists() else 0,
+        path.name,
+    )
+
+
+def _load_scoped_qa_status(project_root: Path, *, version: Optional[str] = None) -> dict[str, Any]:
+    payload = load_qa_status(project_root)
+    if not isinstance(payload, dict) or not payload:
+        return {}
+    if not version:
+        return payload
+    resolved_version = _resolved_gate_version(project_root, version)
+    qa_version = str(payload.get("version") or "").strip()
+    if qa_version and qa_version != resolved_version:
+        return {}
+    return payload
+
+
+def _latest_revision_feature(project_root: Path, *, version: str) -> str:
+    revision_root = project_root / "docs" / "beacon" / version / ".machine" / "execution"
+    if not revision_root.exists():
+        return ""
+    candidates: list[tuple[Path, dict[str, Any]]] = []
+    for state_path in revision_root.glob("*.revision.json"):
+        payload = _load_json_object(state_path)
+        feature = str(payload.get("feature") or "").strip()
+        if feature:
+            candidates.append((state_path, payload))
+    for state_path, payload in sorted(candidates, key=lambda item: _gate_state_sort_key(item[0], item[1]), reverse=True):
+        feature = str(payload.get("feature") or "").strip()
+        if feature:
+            return feature
+    return ""
+
+
+def _resolve_release_feature_context(project_root: Path, *, version: Optional[str] = None) -> str:
+    resolved_version = _resolved_gate_version(project_root, version)
+    qa_status = _load_scoped_qa_status(project_root, version=resolved_version)
+    feature_name = str(qa_status.get("feature") or "").strip()
+    if feature_name:
+        return feature_name
+    return _latest_revision_feature(project_root, version=resolved_version) or _latest_implement_feature(
+        project_root,
+        version=resolved_version,
+    )
+
+
 def _is_v110_consistency_enabled(project_root: Path, *, version: Optional[str]) -> tuple[bool, str]:
     resolved_version = _resolved_gate_version(project_root, version)
     baseline_latest = project_root / ".beacon" / "state" / "baselines" / resolved_version / "latest.json"
@@ -3445,6 +3659,7 @@ def run_gate_checks(
                 typer.echo("[DEBUG] [stage-local] Checking test execution integrity...")
             all_issues.extend(check_test_execution_integrity(project_root, mode, stage))
             all_issues.extend(check_prototype_contract(project_root, mode, stage, version))
+            all_issues.extend(check_semantic_contract(project_root, mode, stage, version))
             all_issues.extend(check_runtime_projection_transaction_contract(project_root, mode, stage, version))
             if mode == GateMode.DEBUG:
                 typer.echo("[DEBUG] [stage-local] Checking coverage metrics...")
@@ -3487,6 +3702,7 @@ def run_gate_checks(
         all_issues.extend(check_v131_human_loop_contract(project_root, mode, stage, version))
         all_issues.extend(check_v110_precision_contract(project_root, mode, stage, version))
         all_issues.extend(check_prototype_contract(project_root, mode, stage, version))
+        all_issues.extend(check_semantic_contract(project_root, mode, stage, version))
         all_issues.extend(check_runtime_projection_transaction_contract(project_root, mode, stage, version))
 
         if mode == GateMode.STRICT or mode == GateMode.DEBUG:

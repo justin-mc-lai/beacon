@@ -19,13 +19,18 @@ SUPPORTED_INTENTS = (
     "user-story",
     "prd",
     "test-case",
-    "workflow",
+    "prototype",
+    "implement",
+    "qa",
+    "verify",
+    "release",
+    "help",
     "status",
+    "doctor",
+    "archive",
+    "workflow",
     "resume",
     "gate",
-    "release",
-    "doctor",
-    "prototype",
     "version",
     "test-progress",
     "feedback",
@@ -33,7 +38,6 @@ SUPPORTED_INTENTS = (
     "recall",
     "report",
     "init",
-    "qa",
     "auto-test",
     "debug",
     "analyze",
@@ -54,31 +58,24 @@ SUPPORTED_INTENTS = (
 )
 
 DEFAULT_ROUTABLE_INTENTS = (
-    "think",
-    "user-story",
-    "prd",
-    "test-case",
-    "workflow",
-    "status",
     "resume",
-    "gate",
-    "release",
-    "doctor",
+    "prd",
+    "user-story",
+    "test-case",
     "prototype",
-    "version",
-    "test-progress",
-    "feedback",
-    "remember",
-    "recall",
-    "report",
-    "init",
+    "implement",
     "qa",
-    "auto-test",
-    "debug",
+    "release",
+    "version",
+    "help",
+    "status",
+    "doctor",
+    "archive",
 )
 
 EXPLICIT_ONLY_COMMAND_HINTS: dict[str, tuple[str, ...]] = {
     "analyze": ("beacon analyze",),
+    "archive": ("beacon archive",),
     "api-design": ("beacon api-design",),
     "brainstorm": ("beacon brainstorm",),
     "data-dictionary": ("beacon data-dictionary",),
@@ -92,6 +89,10 @@ EXPLICIT_ONLY_COMMAND_HINTS: dict[str, tuple[str, ...]] = {
     "ui-spec": ("beacon ui-spec",),
     "run": ("beacon run",),
     "team": ("beacon team",),
+    "think": ("beacon think",),
+    "workflow": ("beacon workflow",),
+    "gate": ("beacon gate",),
+    "verify": ("beacon verify",),
 }
 
 DEFAULT_INTENT_KEYWORDS: dict[str, tuple[str, ...]] = {
@@ -99,14 +100,17 @@ DEFAULT_INTENT_KEYWORDS: dict[str, tuple[str, ...]] = {
     "user-story": ("user story", "user-story", "用户故事", "验收标准", "ac"),
     "prd": ("prd", "需求文档", "产品文档", "spec", "规格说明", "prd 文档"),
     "test-case": ("test-case", "test case", "测试用例", "测试矩阵", "验收测试", "ac->tc"),
+    "implement": ("implement", "implementation", "实现", "开发实现", "进入实现", "开发阶段", "工程实现"),
     "workflow": ("workflow", "工作流", "主链", "阶段流程", "全流程"),
     "run": ("run", "执行模式", "dry-run", "strict", "debug 模式", "运行流程"),
     "status": ("status", "状态", "看板", "进度", "当前进展", "workflow status"),
+    "help": ("help", "下一步", "下一步做什么", "该做什么", "怎么继续", "如何继续", "给我指引"),
     "resume": ("resume", "续跑", "继续", "恢复", "continue", "接着跑", "继续上次", "继续 workflow"),
     "team": ("team", "多人协作", "并行执行", "executor", "协同"),
     "gate": ("gate", "放行", "门禁", "准入", "验收门"),
     "release": ("release", "发布", "上线", "回滚", "发版"),
     "doctor": ("doctor", "诊断", "环境诊断", "健康检查", "环境检查", "setup", "install", "uninstall", "安装", "升级"),
+    "archive": ("archive", "归档", "历史隔离", "历史需求隔离", "archive governance", "historical requirement isolation"),
     "analyze": ("analyze", "竞品", "竞品分析", "竞争分析", "对标分析", "competitor analysis", "benchmark"),
     "api-design": ("api-design", "api design", "接口设计", "api 设计", "openapi", "endpoint design", "接口文档"),
     "data-dictionary": (
@@ -165,14 +169,15 @@ DEFAULT_INTENT_KEYWORDS: dict[str, tuple[str, ...]] = {
     "save": ("save", "保存会话", "保存状态", "存档会话", "session save"),
     "report": ("report", "运行报告", "执行报告", "总结报告", "报告"),
     "init": ("init", "初始化", "初始化项目", "创建 beacon 项目", "bootstrap"),
-    "qa": ("qa", "验收", "qa", "浏览器验收", "测试验收", "登录态测试"),
+    "qa": ("qa", "验收", "浏览器验收", "测试验收", "登录态测试", "verify", "验证", "回归验收"),
+    "verify": ("verify", "验证", "验证阶段"),
     "auto-test": ("auto-test", "自动测试", "自动化测试", "回归测试", "冒烟测试", "qa 执行"),
 }
 
 # Keep public name for backward compatibility with tests/importers.
 INTENT_KEYWORDS = DEFAULT_INTENT_KEYWORDS
 
-STAGE_HINTS = ("think", "user-story", "prd", "test-case", "release")
+STAGE_HINTS = ("prd", "user-story", "test-case", "prototype", "implement", "qa", "release")
 
 OUTSIDE_BOUNDARY_KEYWORDS = (
     "写代码",
@@ -226,9 +231,11 @@ DEFAULT_INTENT_COMMAND_TEMPLATES: dict[str, Any] = {
         "--version",
         "{version}",
     ],
+    "implement": ["implement", "dev-run", "{feature}", "--project", "{project_root}", "--version", "{version}"],
     "workflow": ["workflow", "start", "{feature}", "--project", "{project_root}", "--version", "{version}"],
     "run": ["run", "workflow", "--feature", "{feature}", "--version", "{version}", "--project-root", "{project_root}"],
     "status": ["status", "--board", "--project-root", "{project_root}"],
+    "help": ["help", "--project-root", "{project_root}", "--feature", "{feature}", "--version", "{version}"],
     "resume": ["workflow", "continue", "--project", "{project_root}", "--version", "{version}"],
     "team": ["team", "status", "--project", "{project_root}"],
     "gate": ["gate", "check", "{stage}", "--project-root", "{project_root}", "--profile", "auto"],
@@ -256,6 +263,7 @@ DEFAULT_INTENT_COMMAND_TEMPLATES: dict[str, Any] = {
     "report": ["report", "generate", "latest", "--project-root", "{project_root}"],
     "init": ["init", "--project-root", "{project_root}", "--dry-run"],
     "qa": ["qa", "run", "all", "--project", "{project_root}", "--version", "{version}"],
+    "verify": ["verify", "run", "{feature}", "--project-root", "{project_root}", "--version", "{version}"],
     "auto-test": ["auto-test", "create", "all", "--project", "{project_root}", "--version", "{version}"],
     "outside-boundary": ["status", "--board", "--project-root", "{project_root}"],
 }
@@ -268,7 +276,9 @@ INTENT_PRIORITY: dict[str, int] = {
     "gate": 85,
     "release": 85,
     "doctor": 85,
+    "help": 85,
     "qa": 86,
+    "implement": 87,
     "auto-test": 85,
     "test-progress": 84,
     "report": 84,
@@ -317,13 +327,16 @@ _PROMPT_TEMPLATE_BY_INTENT: dict[str, str] = {
     "user-story": "请用 Beacon 为「{feature}」生成 user-story 与验收标准，version={version}。",
     "prd": "请用 Beacon 为「{feature}」生成 PRD，覆盖目标、范围、约束和风险，version={version}。",
     "test-case": "请用 Beacon 为「{feature}」生成测试用例、AC→TC 映射和覆盖缺口，version={version}。",
+    "implement": "请用 Beacon 为「{feature}」进入 implement 阶段，生成实现执行建议与所需前置检查，version={version}。",
     "workflow": "请用 Beacon 为「{feature}」启动完整工作流，并告诉我主链下一步该执行什么，version={version}。",
+    "help": "请用 Beacon 基于当前 run 与材料状态，为「{feature}」判断下一步该做什么，version={version}。",
     "status": "请用 Beacon 查看当前 workflow 状态，并说明下一步推荐动作，version={version}。",
     "resume": "请用 Beacon 继续上次 workflow，先识别 run/feature，再输出恢复建议，version={version}。",
     "gate": "请用 Beacon 检查当前 release gate 状态，并说明阻塞项与放行建议，version={version}。",
     "release": "请用 Beacon 检查「{feature}」的 release 准备度，输出 release 风险与缺失工件，version={version}。",
     "doctor": "请用 Beacon 做环境与上下文诊断，输出 doctor 结论、风险和下一步命令，version={version}。",
     "qa": "请用 Beacon 为「{feature}」执行 QA 验收规划或回归分析，version={version}。",
+    "verify": "请用 Beacon 为「{feature}」执行 verify/QA 兼容检查，并输出失败原因与下一步命令，version={version}。",
     "auto-test": "请用 Beacon 为「{feature}」生成自动测试/回归执行建议，version={version}。",
     "version": "请用 Beacon 为「{feature}」输出下一版本演进建议、范围边界、候选方向与推荐命令，version={version}。",
     "debug": "请用 Beacon debug 分析这次提示词为什么没有进入正确主链，输出意图、边界、推荐命令和规范化重写建议，version={version}。",
@@ -390,12 +403,14 @@ def _extract_stage_hint(goal: str) -> str:
         if stage in text:
             return stage
     if "需求" in text:
-        return "think"
+        return "prd"
+    if "实现" in text or "开发" in text:
+        return "implement"
     if "测试" in text:
-        return "test-case"
+        return "qa"
     if "发布" in text or "上线" in text:
         return "release"
-    return "release"
+    return "prd"
 
 
 def _extract_run_id(goal: str) -> str:
@@ -515,9 +530,9 @@ def _rule_route(goal: str, *, intent_keywords: dict[str, tuple[str, ...]]) -> di
     text = _normalize_text(goal)
     if not text:
         return {
-            "intent": "think",
+            "intent": "prd",
             "confidence": 0.35,
-            "reason": "empty_input_default_to_think",
+            "reason": "empty_input_default_to_prd",
             "router_mode": "rule",
         }
 
@@ -561,9 +576,9 @@ def _rule_route(goal: str, *, intent_keywords: dict[str, tuple[str, ...]]) -> di
         key=lambda item: (item[1], INTENT_PRIORITY.get(item[0], 0)),
         reverse=True,
     )
-    best_intent, best_score = ranked[0] if ranked else ("think", 0)
+    best_intent, best_score = ranked[0] if ranked else ("prd", 0)
     if best_score <= 0:
-        best_intent = "think"
+        best_intent = "prd"
     second_score = ranked[1][1] if len(ranked) > 1 else 0
 
     confidence = 0.45
@@ -571,7 +586,7 @@ def _rule_route(goal: str, *, intent_keywords: dict[str, tuple[str, ...]]) -> di
         confidence = min(0.95, 0.55 + 0.12 * best_score - 0.05 * second_score)
 
     return {
-        "intent": best_intent if best_score > 0 else "think",
+        "intent": best_intent if best_score > 0 else "prd",
         "confidence": round(confidence, 2),
         "reason": f"keyword_rule(best={best_intent},score={best_score})",
         "router_mode": "rule",
@@ -635,7 +650,7 @@ def _llm_route(goal: str) -> dict[str, Any]:
 
     intent = str(parsed.get("intent", "")).strip().lower()
     if intent not in SUPPORTED_INTENTS:
-        intent = "think"
+        intent = "prd"
     confidence = float(parsed.get("confidence", 0.5) or 0.5)
     confidence = max(0.0, min(1.0, confidence))
     return {
@@ -653,7 +668,7 @@ def _host_route(goal: str) -> dict[str, Any]:
         raise RuntimeError("host semantic response missing")
     intent = str(payload.get("intent", "")).strip().lower()
     if intent not in SUPPORTED_INTENTS:
-        intent = "think"
+        intent = "prd"
     confidence = float(payload.get("confidence", 0.8) or 0.8)
     confidence = max(0.0, min(1.0, confidence))
     return {
@@ -821,9 +836,9 @@ def optimize_prompt_to_plan(
         outside_boundary_keywords=router_config["outside_boundary_keywords"],
     )
 
-    intent = str(route.get("intent", "think"))
+    intent = str(route.get("intent", "prd"))
     if intent not in SUPPORTED_INTENTS:
-        intent = "think"
+        intent = "prd"
     stage_hint = str(route.get("stage_hint", "")).strip().lower()
     args, command = _build_command_plan(
         intent=intent,
@@ -902,7 +917,7 @@ def build_prompt_adaptation_pack(
     version: str,
 ) -> dict[str, Any]:
     """Translate routing output into a user-facing prompt normalization guide."""
-    intent = str(plan.get("intent", "think") or "think")
+    intent = str(plan.get("intent", "prd") or "prd")
     confidence = round(float(plan.get("confidence", 0.0) or 0.0), 2)
     boundary = plan.get("boundary", {}) if isinstance(plan.get("boundary"), dict) else {}
     boundary_state = str(boundary.get("state", "in_scope") or "in_scope")

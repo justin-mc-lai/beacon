@@ -19,8 +19,10 @@ from beacon.utils.qa_precision import load_feature_qa_scorecard
 from beacon.utils.qa_runtime import load_qa_status
 from beacon.utils.requirement_clarity import build_requirement_clarity_gate_payload, load_requirement_clarity_state
 from beacon.utils.revision_state import load_revision_state
+from beacon.utils.semantic_runtime import evaluate_semantic_contract
 from beacon.utils.story_state import feature_slug
 from beacon.utils.technical_review_contract import build_technical_review_gate_payload, load_technical_review_state
+from beacon.utils.prototype_support import version_requires_prototype
 from beacon.utils.versioning import (
     project_runtime_feature_enabled,
     resolve_runtime_version,
@@ -193,6 +195,19 @@ def _delivery_type(revision_state: dict[str, Any], feature_change: dict[str, Any
     return "revised"
 
 
+def _semantic_gate_required(project_root: Path, *, version: str, runtime_version: str, feature: str) -> bool:
+    return (
+        bool(str(feature or "").strip())
+        and project_runtime_feature_enabled(
+            project_root,
+            "v1.3.6",
+            docs_version=version,
+            runtime_version=runtime_version,
+        )
+        and version_requires_prototype(project_root, version)
+    )
+
+
 def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, Any]:
     resolved_version = resolve_target_version(project_root, version)
     resolved_runtime = resolve_runtime_version(project_root, "auto")
@@ -237,6 +252,12 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
     )
     technical_review_state = load_technical_review_state(project_root, feature=feature) if feature else {}
     change_documents = _version_change_status(project_root, version=resolved_version, current_feature=feature)
+    semantic = (
+        evaluate_semantic_contract(project_root, version=resolved_version, feature=feature)
+        if _semantic_gate_required(project_root, version=resolved_version, runtime_version=resolved_runtime, feature=feature)
+        else {}
+    )
+    semantic_pass = (not semantic) or str(semantic.get("status") or "").strip().lower() == "pass"
     blocked_count = len(
         [item for item in gate_report.get("issues", []) if isinstance(item, dict) and bool(item.get("blocked"))]
     ) if isinstance(gate_report.get("issues"), list) else 0
@@ -291,6 +312,7 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
             release_ready
             and bool(feature)
             and bool(revision_binding.get("gate_bound_to_latest_revision", False))
+            and semantic_pass
             and not bool(requirement_clarity_gate.get("blocked", False))
             and bool(requirement_clarity_state)
             and not bool(technical_review_gate.get("blocked", False))
@@ -305,6 +327,7 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
         runtime_feature_supported("v1.1.10", runtime_version=resolved_runtime)
         and feature_scorecard_authoritative
         and bool(revision_binding.get("gate_bound_to_latest_revision", False))
+        and semantic_pass
         and project_gate_status in {"pass", "not_configured"}
         and bool(change_documents.get("markdown_exists", False))
         and bool(change_documents.get("json_exists", False))
@@ -324,7 +347,9 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
             "qa": {
                 "status": str(qa_status.get("status") or "unknown"),
             },
+            "semantic": semantic if isinstance(semantic, dict) else {},
             "revision_binding": revision_binding,
+            "risk_flags": [str(semantic.get("reason_code") or "").strip()] if semantic and not semantic_pass else [],
         },
     ) if feature else {
         "schema_version": "1.0",
@@ -333,14 +358,23 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
         "contract": {},
         "implement": {"delivery_contract": {}},
         "qa": {"delivery_contract": {}},
-        "release": {"gate_status": str(gate_report.get("status") or "unknown"), "release_ready": release_ready, "revision_binding": revision_binding},
+        "release": {
+            "gate_status": str(gate_report.get("status") or "unknown"),
+            "release_ready": release_ready,
+            "semantic": semantic if isinstance(semantic, dict) else {},
+            "revision_binding": revision_binding,
+        },
         "traceability": {"requirement_binding": {}, "requirement_refs": [], "runtime_refs": []},
-        "risk_flags": [],
+        "risk_flags": [str(semantic.get("reason_code") or "").strip()] if semantic and not semantic_pass else [],
     }
+    host_native_reason_codes = list(release_delivery_read_model.get("risk_flags") or [])
+    if semantic and not semantic_pass:
+        host_native_reason_codes.append(str(semantic.get("reason_code") or "semantic_not_ready"))
     host_native_delivery = {
         "schema_version": "1.0",
         "implement": (release_delivery_read_model.get("implement") or {}).get("delivery_contract", {}),
         "qa": (release_delivery_read_model.get("qa") or {}).get("delivery_contract", {}),
+        "semantic": semantic if isinstance(semantic, dict) else {},
         "status": (
             "pass"
             if release_ready
@@ -348,7 +382,7 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
             if list(release_delivery_read_model.get("risk_flags") or [])
             else "warn"
         ),
-        "reason_codes": list(release_delivery_read_model.get("risk_flags") or []),
+        "reason_codes": sorted({code for code in host_native_reason_codes if str(code).strip()}),
         "traceability": dict(release_delivery_read_model.get("traceability") or {}),
     }
     return {
@@ -378,6 +412,7 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
             "revision_id": str(revision_state.get("revision_id") or ""),
             "source_revision_id": str(revision_state.get("source_revision_id") or ""),
         },
+        "semantic": semantic if isinstance(semantic, dict) else {},
         "revision_binding": revision_binding,
         "exhaustiveness": exhaustiveness if isinstance(exhaustiveness, dict) else {},
         "feature_qa_scorecard": feature_scorecard if isinstance(feature_scorecard, dict) else {},
@@ -432,6 +467,7 @@ def summarize_release_scorecard(scorecard: dict[str, Any] | None) -> dict[str, A
     technical_review = payload.get("technical_review") if isinstance(payload.get("technical_review"), dict) else {}
     change_documents = payload.get("change_documents") if isinstance(payload.get("change_documents"), dict) else {}
     delivery = payload.get("delivery") if isinstance(payload.get("delivery"), dict) else {}
+    semantic = payload.get("semantic") if isinstance(payload.get("semantic"), dict) else {}
     revision_binding = payload.get("revision_binding") if isinstance(payload.get("revision_binding"), dict) else {}
     decisions = learning.get("decision_summary") if isinstance(learning.get("decision_summary"), dict) else {}
     latest_experiment = payload.get("latest_experiment") if isinstance(payload.get("latest_experiment"), dict) else {}
@@ -480,6 +516,8 @@ def summarize_release_scorecard(scorecard: dict[str, Any] | None) -> dict[str, A
         "delivery_type": str(delivery.get("type") or ""),
         "delivery_revision_id": str(delivery.get("revision_id") or ""),
         "delivery_source_revision_id": str(delivery.get("source_revision_id") or ""),
+        "semantic_status": str(semantic.get("status") or ""),
+        "semantic_reason_code": str(semantic.get("reason_code") or ""),
         "release_revision_binding_status": str(revision_binding.get("status") or ""),
         "release_revision_binding_reason": str(revision_binding.get("reason_code") or ""),
         "release_revision_current": bool(revision_binding.get("gate_bound_to_latest_revision", False)),

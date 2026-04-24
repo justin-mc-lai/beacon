@@ -1,14 +1,14 @@
 ---
 name: using-beacon
-description: Use when Beacon should become the primary workflow router in Codex or Claude for requirements, implementation, QA, release readiness, or next-step guidance. Route the user through Beacon's current v1.3.6 runtime surface instead of exposing the full CLI catalog.
+description: Use when Beacon should become the primary workflow router in Codex or Claude for requirements, implementation, QA, release readiness, or next-step guidance. Route the user through Beacon's current v1.3.7 runtime surface instead of exposing the full CLI catalog.
 ---
 
 # Using Beacon
 
 Use Beacon as a host-native human-facing workflow pack.
 
-The public surface follows the current `v1.3.6` runtime line.
-The `v1.3.6` docs define the active host-native LLM orchestration and shared delivery/read-model behavior.
+The public surface follows the current `v1.3.7` runtime line.
+The `v1.3.7` docs define the active host-native delivery baseline, brainstorm sidecar, and shared delivery/read-model behavior.
 
 ## Public routing targets
 
@@ -16,6 +16,7 @@ The `v1.3.6` docs define the active host-native LLM orchestration and shared del
 - `beacon-user-story`
 - `beacon-test-case`
 - `beacon-change`
+- `beacon-brainstorm`
 - `beacon-implement`
 - `beacon-qa`
 - `beacon-release`
@@ -33,11 +34,13 @@ The `v1.3.6` docs define the active host-native LLM orchestration and shared del
    use `beacon-test-case`
 4. Frozen feature scope change, requirement supplement after freeze, or re-freeze loops:
    use `beacon-change`
-5. Implementation handoff or execution:
+5. Continue brainstorming, converge a requirement gap, challenge assumptions, or explore project evolution without changing truth:
+   use `beacon-brainstorm`
+6. Implementation handoff or execution:
    use `beacon-implement`
-6. Verification, acceptance, new findings, or release confidence:
+7. Verification, acceptance, new findings, or release confidence:
    use `beacon-qa` or `beacon-release`
-7. Blocked / lost / next-step questions:
+8. Blocked / lost / next-step questions:
    use `beacon-help`, `beacon-status`, or `beacon-doctor`
 
 ## Development pairing

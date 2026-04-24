@@ -110,7 +110,7 @@ def test_status_board_should_show_next_stage_with_version_filter(tmp_path: Path)
 
     board = _invoke(["status", "--board", "--project-root", str(tmp_path), "--version", "v2.0.0"])
     assert board.exit_code == 0
-    assert "memory.next_stage: think" in board.stdout
+    assert "memory.next_stage: prd" in board.stdout
 
 
 def test_status_should_use_same_resolved_run_for_terminal_status_and_progress(tmp_path: Path):

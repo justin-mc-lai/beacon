@@ -598,6 +598,39 @@ def test_v112_release_gate_should_block_when_implementation_plan_is_incomplete_a
     assert issues == []
 
 
+def test_v112_release_gate_should_ignore_cross_version_qa_status_and_fallback_to_current_revision(tmp_path: Path):
+    _seed_docs(tmp_path)
+    _seed_release_contract_artifacts(tmp_path)
+    assert _invoke(["freeze", FEATURE, "--project", str(tmp_path), "--version", VERSION]).exit_code == 0
+    assert _invoke(["implement", "plan", FEATURE, "--project-root", str(tmp_path), "--version", VERSION]).exit_code == 0
+
+    (tmp_path / ".beacon" / "qa" / "status.json").write_text(
+        json.dumps(
+            {
+                "feature": "Old Feature",
+                "version": "v9.9.9",
+                "status": "passed",
+                "evidence_done": True,
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+
+    record_implementation_writeback(
+        tmp_path,
+        version=VERSION,
+        feature=FEATURE,
+        run_id="run-impl",
+        implemented_item_ids=["AC-001", "AC-002"],
+        task_ids=["ITASK-001", "ITASK-002"],
+        changed_files=["beacon/commands/implement.py"],
+    )
+
+    issues = check_v112_implementation_plan_contract(tmp_path, GateMode.STRICT, "release", VERSION)
+    assert issues == []
+
+
 def test_v112_gate_release_should_require_scenario_and_qa_alignment_when_materials_exist(tmp_path: Path):
     _seed_docs(tmp_path)
     _seed_release_contract_artifacts(tmp_path)

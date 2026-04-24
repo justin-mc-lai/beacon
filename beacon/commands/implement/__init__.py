@@ -70,10 +70,12 @@ def _load_legacy_cli_module():
 
 _legacy_cli = _load_legacy_cli_module()
 app = _legacy_cli.app
+run_implement_stage = _legacy_cli.run_implement_stage
 
 __all__ = [
     # Typer app
     "app",
+    "run_implement_stage",
     # Modules
     "adapter",
     "git",

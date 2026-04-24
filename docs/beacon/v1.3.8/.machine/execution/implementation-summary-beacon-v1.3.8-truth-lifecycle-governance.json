@@ -1,0 +1,489 @@
+{
+  "schema_version": "1.0",
+  "run_id": "run-20260424T104500Z-v138-truth-lifecycle",
+  "feature": "Beacon v1.3.8 truth lifecycle governance",
+  "feature_slug": "beacon-v1.3.8-truth-lifecycle-governance",
+  "version": "v1.3.8",
+  "runner": "codex-team-closure",
+  "adapter_type": "manual",
+  "mode": "team",
+  "host_runtime": "codex",
+  "skill": "beacon:beacon-implement",
+  "status": "completed",
+  "summary": "Consolidated the v1.3.8 truth lifecycle governance line so truth admission, execution, and retirement close on one canonical version package.",
+  "changed_files": [
+    "docs/beacon/v1.3.8/SUMMARY.md",
+    "docs/beacon/v1.3.8/prd/beacon-v1.3.8-truth-lifecycle-governance.md",
+    "docs/beacon/v1.3.8/user-story/beacon-v1.3.8-truth-lifecycle-governance.md",
+    "docs/beacon/v1.3.8/qa/test-cases/beacon-v1.3.8-truth-lifecycle-governance.md",
+    "docs/beacon/v1.3.8/source-architecture/index.md",
+    "docs/beacon/v1.3.8/source-architecture/overall-system-map.md",
+    "docs/beacon/v1.3.8/source-architecture/workflow-and-artifact-flow.md",
+    "docs/beacon/v1.3.8/source-architecture/lifecycle-memory-and-state.md",
+    "docs/beacon/v1.3.8/source-architecture/command-surface-and-module-map.md",
+    "docs/beacon/v1.3.8/source-architecture/skills-prompts-and-project-workflows.md",
+    "docs/beacon/v1.3.8/source-architecture/qa-implement-release-feedback-loop.md",
+    "docs/beacon/v1.3.8/source-architecture/sync-contract.md",
+    "docs/beacon/v1.3.8/change/v1.3.8.md",
+    "docs/beacon/v1.3.8/release/v1.3.8.md"
+  ],
+  "verification": [
+    {
+      "command": "python3 -m pytest -q tests/test_v138_archive_command.py tests/test_v138_diagram_truth_layer.py tests/test_v138_host_prompt_trace.py",
+      "status": "passed"
+    }
+  ],
+  "implemented_task_ids": [],
+  "verified_task_ids": [
+    "TEST-001",
+    "TEST-002",
+    "TEST-003",
+    "TEST-004",
+    "TEST-005",
+    "TEST-006",
+    "TEST-007",
+    "TEST-008",
+    "TEST-009"
+  ],
+  "blocked_task_ids": [],
+  "failed_task_ids": [],
+  "artifact_updates": {},
+  "request_path": ".beacon/implement/run-20260424T104500Z-v138-truth-lifecycle/request.json",
+  "result_path": ".beacon/implement/run-20260424T104500Z-v138-truth-lifecycle/result.json",
+  "stdout_path": "",
+  "stderr_path": "",
+  "implementation_plan": "",
+  "implementation_plan_progress": {
+    "schema_version": "1.0",
+    "plan_id": "",
+    "feature": "",
+    "version": "",
+    "revision_id": "",
+    "status": "draft",
+    "counts": {
+      "total": 0,
+      "draft": 0,
+      "planned": 0,
+      "in_progress": 0,
+      "blocked": 0,
+      "completed": 0
+    },
+    "blocked_task_ids": [],
+    "completed_task_ids": [],
+    "next_task_id": "",
+    "updated_at": "",
+    "task_states": []
+  },
+  "requirement_traceability": {
+    "source_of_truth_root": "docs/beacon/v1.3.8",
+    "prd": "docs/beacon/v1.3.8/prd/beacon-v1.3.8-truth-lifecycle-governance.md",
+    "user_story": "docs/beacon/v1.3.8/user-story/beacon-v1.3.8-truth-lifecycle-governance.md",
+    "test_case": "docs/beacon/v1.3.8/qa/test-cases/beacon-v1.3.8-truth-lifecycle-governance.md",
+    "ac_matrix": "docs/beacon/v1.3.8/.machine/qa/beacon-v1.3.8-truth-lifecycle-governance.ac-test-matrix.json",
+    "revision_id": "R1",
+    "implemented_item_ids": [
+      "AC-001",
+      "AC-002",
+      "AC-003",
+      "AC-004",
+      "AC-005",
+      "AC-006",
+      "AC-007",
+      "AC-008",
+      "AC-009",
+      "TASK-001"
+    ],
+    "implemented_task_ids": [],
+    "verified_task_ids": [
+      "TEST-001",
+      "TEST-002",
+      "TEST-003",
+      "TEST-004",
+      "TEST-005",
+      "TEST-006",
+      "TEST-007",
+      "TEST-008",
+      "TEST-009"
+    ]
+  },
+  "delivery_surfaces": {
+    "runtime_mode": "team",
+    "shipped_surfaces": [
+      "version package",
+      "source architecture",
+      "release materials"
+    ],
+    "partial_surfaces": [],
+    "deferred_surfaces": [],
+    "downgrade_rationale": ""
+  },
+  "implementation_marker": ".beacon/state/implementation-beacon-v1.3.8-truth-lifecycle-governance.json",
+  "technical_archive": {
+    "json": "docs/beacon/v1.3.8/.machine/execution/technical-implementation-beacon-v1.3.8-truth-lifecycle-governance.json",
+    "md": "docs/beacon/v1.3.8/execution/technical-implementation-beacon-v1.3.8-truth-lifecycle-governance.md"
+  },
+  "change_document": {
+    "json": "docs/beacon/v1.3.8/.machine/change/beacon-v1.3.8-truth-lifecycle-governance.json",
+    "md": "docs/beacon/v1.3.8/change/beacon-v1.3.8-truth-lifecycle-governance.md"
+  },
+  "generated_at": "2026-04-24T10:49:00.625860+00:00",
+  "writeback": {
+    "updated_items": 10,
+    "story": {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "Beacon v1.3.8 truth lifecycle governance",
+      "priority": "medium",
+      "status": "implemented",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "version-theme",
+          "text": "`v1.3.8` requirement package 明确表达 `truth admission -> truth execution -> truth retirement` 的版本级治理主题。",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260424T104500Z-v138-truth-lifecycle",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.3.8/user-story/beacon-v1.3.8-truth-lifecycle-governance.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "diagram-truth",
+          "text": "复杂业务 feature 的 PRD 可以正式承载 branch-flow、state-machine、decision-priority 和 state axis，不再只依赖叙述型文本。",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260424T104500Z-v138-truth-lifecycle",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.3.8/user-story/beacon-v1.3.8-truth-lifecycle-governance.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "freeze-readiness",
+          "text": "在 freeze 前，系统能判断某个 feature 是否因缺少 diagram truth layer 而不适合继续冻结。",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260424T104500Z-v138-truth-lifecycle",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.3.8/user-story/beacon-v1.3.8-truth-lifecycle-governance.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "execution-sequence",
+          "text": "冻结后的 `team -> ralph` 顺序可以被 Beacon 公开表达为正式 execution contract。",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260424T104500Z-v138-truth-lifecycle",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.3.8/user-story/beacon-v1.3.8-truth-lifecycle-governance.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "prompt-trace",
+          "text": "宿主提示词到命令、产物的映射可被结构化记录，并进入 execution evidence。",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260424T104500Z-v138-truth-lifecycle",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.3.8/user-story/beacon-v1.3.8-truth-lifecycle-governance.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "phase-projection",
+          "text": "`status` / HUD 能明确显示当前处于 freeze、team、ralph 哪一阶段，以及 `stop_state` / `next_action`。",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260424T104500Z-v138-truth-lifecycle",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.3.8/user-story/beacon-v1.3.8-truth-lifecycle-governance.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "branch-actionability",
+          "text": "branch preflight 能指出具体服务、当前分支、目标分支、脏工作树风险与推荐操作，而不只是泛化阻断。",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260424T104500Z-v138-truth-lifecycle",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.3.8/user-story/beacon-v1.3.8-truth-lifecycle-governance.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "archive-contract",
+          "text": "Beacon 存在 machine-readable archive contract，能区分 active truth、superseded、archived-learnable、archived-reference-only。",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260424T104500Z-v138-truth-lifecycle",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.3.8/user-story/beacon-v1.3.8-truth-lifecycle-governance.md"
+        },
+        {
+          "id": "AC-009",
+          "kind": "ac",
+          "theme": "archive-consumption",
+          "text": "读取历史资料的主要消费面能够识别 archive 状态，避免历史需求继续进入当前实现与验证路径。",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260424T104500Z-v138-truth-lifecycle",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.3.8/user-story/beacon-v1.3.8-truth-lifecycle-governance.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260424T104500Z-v138-truth-lifecycle",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — `v1.3.8` requirement package 明确表达 `truth admission -> truth execution -> truth retirement` 的版本级治理主题。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.3.8/user-story/beacon-v1.3.8-truth-lifecycle-governance.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — 复杂业务 feature 的 PRD 可以正式承载 branch-flow、state-machine、decision-priority 和 state axis，不再只依赖叙述型文本。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.3.8/user-story/beacon-v1.3.8-truth-lifecycle-governance.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — 在 freeze 前，系统能判断某个 feature 是否因缺少 diagram truth layer 而不适合继续冻结。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.3.8/user-story/beacon-v1.3.8-truth-lifecycle-governance.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — 冻结后的 `team -> ralph` 顺序可以被 Beacon 公开表达为正式 execution contract。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.3.8/user-story/beacon-v1.3.8-truth-lifecycle-governance.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — 宿主提示词到命令、产物的映射可被结构化记录，并进入 execution evidence。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.3.8/user-story/beacon-v1.3.8-truth-lifecycle-governance.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — `status` / HUD 能明确显示当前处于 freeze、team、ralph 哪一阶段，以及 `stop_state` / `next_action`。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.3.8/user-story/beacon-v1.3.8-truth-lifecycle-governance.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — branch preflight 能指出具体服务、当前分支、目标分支、脏工作树风险与推荐操作，而不只是泛化阻断。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.3.8/user-story/beacon-v1.3.8-truth-lifecycle-governance.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — Beacon 存在 machine-readable archive contract，能区分 active truth、superseded、archived-learnable、archived-reference-only。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.3.8/user-story/beacon-v1.3.8-truth-lifecycle-governance.md"
+        },
+        {
+          "id": "TEST-009",
+          "kind": "test",
+          "text": "Verify AC-009 — 读取历史资料的主要消费面能够识别 archive 状态，避免历史需求继续进入当前实现与验证路径。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-009"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.3.8/user-story/beacon-v1.3.8-truth-lifecycle-governance.md"
+        }
+      ],
+      "feature": "Beacon v1.3.8 truth lifecycle governance",
+      "feature_slug": "beacon-v1.3.8-truth-lifecycle-governance",
+      "version": "v1.3.8",
+      "last_changed_files": [
+        "docs/beacon/v1.3.8/SUMMARY.md",
+        "docs/beacon/v1.3.8/prd/beacon-v1.3.8-truth-lifecycle-governance.md",
+        "docs/beacon/v1.3.8/user-story/beacon-v1.3.8-truth-lifecycle-governance.md",
+        "docs/beacon/v1.3.8/qa/test-cases/beacon-v1.3.8-truth-lifecycle-governance.md",
+        "docs/beacon/v1.3.8/source-architecture/index.md",
+        "docs/beacon/v1.3.8/source-architecture/overall-system-map.md",
+        "docs/beacon/v1.3.8/source-architecture/workflow-and-artifact-flow.md",
+        "docs/beacon/v1.3.8/source-architecture/lifecycle-memory-and-state.md",
+        "docs/beacon/v1.3.8/source-architecture/command-surface-and-module-map.md",
+        "docs/beacon/v1.3.8/source-architecture/skills-prompts-and-project-workflows.md",
+        "docs/beacon/v1.3.8/source-architecture/qa-implement-release-feedback-loop.md",
+        "docs/beacon/v1.3.8/source-architecture/sync-contract.md",
+        "docs/beacon/v1.3.8/change/v1.3.8.md",
+        "docs/beacon/v1.3.8/release/v1.3.8.md"
+      ]
+    },
+    "revision": {
+      "schema_version": "1.0",
+      "feature": "beacon-v1.3.8-truth-lifecycle-governance",
+      "feature_slug": "beacon-v1.3.8-truth-lifecycle-governance",
+      "version": "v1.3.8",
+      "revision_id": "R1",
+      "source_revision_id": "",
+      "reason": "freeze",
+      "doc_status": "frozen",
+      "delivery_status": "implemented",
+      "lifecycle_status": "idle",
+      "baseline_hash": "sha256:3b6ecfc465fba10602454a4675a32c64fe359e09b18234b42997f6f22ba51ac0",
+      "superseded_by": "",
+      "created_at": "2026-04-24T04:58:43.508835+00:00",
+      "frozen_at": "2026-04-24T07:24:38.149218+00:00",
+      "accepted_at": "",
+      "last_implementation_run_id": "run-20260424T104500Z-v138-truth-lifecycle",
+      "changed_files": [
+        "docs/beacon/v1.3.8/SUMMARY.md",
+        "docs/beacon/v1.3.8/prd/beacon-v1.3.8-truth-lifecycle-governance.md",
+        "docs/beacon/v1.3.8/user-story/beacon-v1.3.8-truth-lifecycle-governance.md",
+        "docs/beacon/v1.3.8/qa/test-cases/beacon-v1.3.8-truth-lifecycle-governance.md",
+        "docs/beacon/v1.3.8/source-architecture/index.md",
+        "docs/beacon/v1.3.8/source-architecture/overall-system-map.md",
+        "docs/beacon/v1.3.8/source-architecture/workflow-and-artifact-flow.md",
+        "docs/beacon/v1.3.8/source-architecture/lifecycle-memory-and-state.md",
+        "docs/beacon/v1.3.8/source-architecture/command-surface-and-module-map.md",
+        "docs/beacon/v1.3.8/source-architecture/skills-prompts-and-project-workflows.md",
+        "docs/beacon/v1.3.8/source-architecture/qa-implement-release-feedback-loop.md",
+        "docs/beacon/v1.3.8/source-architecture/sync-contract.md",
+        "docs/beacon/v1.3.8/change/v1.3.8.md",
+        "docs/beacon/v1.3.8/release/v1.3.8.md"
+      ]
+    },
+    "implementation_plan": {}
+  },
+  "artifact_writeback_obligations": ".beacon/state/artifact-update-obligations/beacon-v1.3.8-truth-lifecycle-governance.json",
+  "artifact_writeback_open_count": 0,
+  "implement_to_qa_handoff": ".beacon/handoffs/implement-to-qa/beacon-v1.3.8-truth-lifecycle-governance/run-20260424T104500Z-v138-truth-lifecycle.json"
+}

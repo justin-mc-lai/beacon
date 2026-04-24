@@ -1,0 +1,391 @@
+{
+  "schema_version": "1.0",
+  "feature": "Beacon v1.3.7 feature-intent brainstorm sidecar and frozen-truth routing",
+  "feature_slug": "beacon-v1.3.7-feature-intent-brainstorm-sidecar-and-frozen-truth-routing",
+  "version": "v1.3.7",
+  "current_revision_id": "R2",
+  "lifecycle_status": "draft",
+  "updated_at": "2026-04-23T05:16:30.019821+00:00",
+  "revisions": [
+    {
+      "revision_id": "R1",
+      "feature_slug": "beacon-v1.3.7-feature-intent-brainstorm-sidecar-and-frozen-truth-routing",
+      "source_revision_id": null,
+      "reason": "draft",
+      "doc_status": "superseded",
+      "delivery_status": "superseded",
+      "baseline_hash": "sha256:53a9de24ea4be42fd0bbabbe8cd16237b2803306858570b5d26013d64e7fb13f",
+      "superseded_by": "R2",
+      "created_at": "2026-04-23T05:16:30.019825+00:00",
+      "frozen_at": "2026-04-23T05:16:30.020593+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    },
+    {
+      "revision_id": "R2",
+      "feature_slug": "beacon-v1.3.7-feature-intent-brainstorm-sidecar-and-frozen-truth-routing",
+      "source_revision_id": "R1",
+      "reason": "broaden-scope-to-beacon-brainstorm",
+      "doc_status": "draft",
+      "delivery_status": "idle",
+      "baseline_hash": null,
+      "superseded_by": null,
+      "created_at": "2026-04-23T06:57:50.277956+00:00",
+      "frozen_at": null,
+      "accepted_at": null,
+      "accepted_by": null
+    }
+  ],
+  "stories": [
+    {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "Beacon v1.3.7 feature-intent brainstorm sidecar and frozen-truth routing",
+      "priority": "medium",
+      "status": "superseded",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "sidecar-surface",
+          "text": "存在一个明确可见的 `feature-intent brainstorm` sidecar，定位为 host-visible 但非主流程。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "boundary",
+          "text": "该 sidecar 只做分析与路由，不直接改 frozen requirement truth，也不直接执行 implement / change / prd revise。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "classification",
+          "text": "该 sidecar 能把输入稳定分类为 `in_scope_implementation`、`clarification_within_scope`、`requirement_change`、`truth_conflict` 四类之一。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "routing",
+          "text": "该 sidecar 只输出三种推荐路由：`beacon-implement`、`beacon-change`、`beacon-prd`，并且与分类结论一致。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "artifact",
+          "text": "该 sidecar 生成单一 Markdown 分析产物，默认写 `.beacon/analysis/`，并支持 Beacon 源迭代时同步写入版本化 execution 文档。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — 存在一个明确可见的 `feature-intent brainstorm` sidecar，定位为 host-visible 但非主流程。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — 该 sidecar 只做分析与路由，不直接改 frozen requirement truth，也不直接执行 implement / change / prd revise。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — 该 sidecar 能把输入稳定分类为 `in_scope_implementation`、`clarification_within_scope`、`requirement_change`、`truth_conflict` 四类之一。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — 该 sidecar 只输出三种推荐路由：`beacon-implement`、`beacon-change`、`beacon-prd`，并且与分类结论一致。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — 该 sidecar 生成单一 Markdown 分析产物，默认写 `.beacon/analysis/`，并支持 Beacon 源迭代时同步写入版本化 execution 文档。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        }
+      ]
+    },
+    {
+      "story_id": "US-001",
+      "revision_id": "R2",
+      "title": "Beacon v1.3.7 feature-intent brainstorm sidecar and frozen-truth routing",
+      "priority": "medium",
+      "status": "draft",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "sidecar-surface",
+          "text": "存在一个明确可见的 `feature-intent brainstorm` sidecar，定位为 host-visible 但非主流程。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "boundary",
+          "text": "该 sidecar 只做分析与路由，不直接改 frozen requirement truth，也不直接执行 implement / change / prd revise。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "classification",
+          "text": "该 sidecar 能把输入稳定分类为 `in_scope_implementation`、`clarification_within_scope`、`requirement_change`、`truth_conflict` 四类之一。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "routing",
+          "text": "该 sidecar 只输出三种推荐路由：`beacon-implement`、`beacon-change`、`beacon-prd`，并且与分类结论一致。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "artifact",
+          "text": "该 sidecar 生成单一 Markdown 分析产物，默认写 `.beacon/analysis/`，并支持 Beacon 源迭代时同步写入版本化 execution 文档。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — 存在一个明确可见的 `feature-intent brainstorm` sidecar，定位为 host-visible 但非主流程。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — 该 sidecar 只做分析与路由，不直接改 frozen requirement truth，也不直接执行 implement / change / prd revise。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — 该 sidecar 能把输入稳定分类为 `in_scope_implementation`、`clarification_within_scope`、`requirement_change`、`truth_conflict` 四类之一。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — 该 sidecar 只输出三种推荐路由：`beacon-implement`、`beacon-change`、`beacon-prd`，并且与分类结论一致。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — 该 sidecar 生成单一 Markdown 分析产物，默认写 `.beacon/analysis/`，并支持 Beacon 源迭代时同步写入版本化 execution 文档。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        }
+      ]
+    }
+  ]
+}

@@ -63,76 +63,90 @@ def _workflow_stage_evidence(project_root: Path, *, version: str, feature: str) 
     state_root = project_root / ".beacon" / "state"
     qa_root = project_root / ".beacon" / "qa" / "features" / slug
 
+    think_refs = _existing_relative_paths(
+        project_root,
+        [
+            docs_root / "SUMMARY.md",
+            execution_root / "index.md",
+            execution_root / "architecture-blueprint.md",
+        ],
+    )
+    user_story_refs = _existing_relative_paths(
+        project_root,
+        [
+            docs_root / "user-story" / f"{slug}.md",
+            machine_root / "user-story" / f"{slug}.json",
+        ],
+    )
+    prd_refs = _existing_relative_paths(
+        project_root,
+        [
+            docs_root / "prd" / f"{slug}.md",
+            machine_root / "execution" / f"{slug}.revision.json",
+        ],
+    )
+    prototype_refs = _existing_relative_paths(
+        project_root,
+        [
+            prototype["prototype_plan"],
+            prototype["manifest"],
+            prototype["review_json"],
+            prototype["freeze"],
+        ],
+    )
+    test_case_refs = _existing_relative_paths(
+        project_root,
+        [
+            docs_root / "qa" / "test-cases" / f"{slug}.md",
+            machine_root / "qa" / f"{slug}.ac-test-matrix.json",
+            machine_root / "qa" / f"{slug}.qa9-matrix.json",
+            machine_root / "qa" / f"{slug}.story-scenario-map.json",
+        ],
+    )
+    implement_refs = _existing_relative_paths(
+        project_root,
+        [
+            execution_root / f"technical-implementation-{slug}.md",
+            machine_execution_root / f"technical-implementation-{slug}.json",
+            execution_root / f"implementation-summary-{slug}.md",
+            machine_execution_root / f"implementation-summary-{slug}.json",
+            state_root / f"implementation-{slug}.json",
+        ],
+    )
+    qa_refs = _existing_relative_paths(
+        project_root,
+        [
+            project_root / ".beacon" / "auto-test-status.json",
+            execution_root / f"review-quality-{slug}.md",
+            machine_execution_root / f"review-quality-{slug}.json",
+            execution_root / f"review-spec-{slug}.md",
+            machine_execution_root / f"review-spec-{slug}.json",
+            qa_root / "scorecard.json",
+        ],
+    )
+    release_refs = _existing_relative_paths(
+        project_root,
+        [
+            project_root / ".beacon" / "gate-report.json",
+            project_root / ".beacon" / "evidence-manifest.json",
+            machine_execution_root / "terminal.json",
+        ],
+    )
+
     return {
-        "think": _existing_relative_paths(
-            project_root,
-            [
-                docs_root / "SUMMARY.md",
-                execution_root / "index.md",
-                execution_root / "architecture-blueprint.md",
-            ],
-        ),
-        "user-story": _existing_relative_paths(
-            project_root,
-            [
-                docs_root / "user-story" / f"{slug}.md",
-                machine_root / "user-story" / f"{slug}.json",
-            ],
-        ),
-        "prd": _existing_relative_paths(
-            project_root,
-            [
-                docs_root / "prd" / f"{slug}.md",
-                machine_root / "execution" / f"{slug}.revision.json",
-            ],
-        ),
-        "prototype": _existing_relative_paths(
-            project_root,
-            [
-                prototype["prototype_plan"],
-                prototype["manifest"],
-                prototype["review_json"],
-                prototype["freeze"],
-            ],
-        ),
-        "test-case": _existing_relative_paths(
-            project_root,
-            [
-                docs_root / "qa" / "test-cases" / f"{slug}.md",
-                machine_root / "qa" / f"{slug}.ac-test-matrix.json",
-                machine_root / "qa" / f"{slug}.qa9-matrix.json",
-                machine_root / "qa" / f"{slug}.story-scenario-map.json",
-            ],
-        ),
-        "implementation": _existing_relative_paths(
-            project_root,
-            [
-                execution_root / f"technical-implementation-{slug}.md",
-                machine_execution_root / f"technical-implementation-{slug}.json",
-                execution_root / f"implementation-summary-{slug}.md",
-                machine_execution_root / f"implementation-summary-{slug}.json",
-                state_root / f"implementation-{slug}.json",
-            ],
-        ),
-        "verify": _existing_relative_paths(
-            project_root,
-            [
-                project_root / ".beacon" / "auto-test-status.json",
-                execution_root / f"review-quality-{slug}.md",
-                machine_execution_root / f"review-quality-{slug}.json",
-                execution_root / f"review-spec-{slug}.md",
-                machine_execution_root / f"review-spec-{slug}.json",
-                qa_root / "scorecard.json",
-            ],
-        ),
-        "gate": _existing_relative_paths(
-            project_root,
-            [
-                project_root / ".beacon" / "gate-report.json",
-                project_root / ".beacon" / "evidence-manifest.json",
-                machine_execution_root / "terminal.json",
-            ],
-        ),
+        "think": think_refs,
+        "user-story": user_story_refs,
+        "prd": prd_refs,
+        "prototype": prototype_refs,
+        "test-case": test_case_refs,
+        "implement": implement_refs,
+        "implementation": implement_refs,
+        "qa": qa_refs,
+        "verify": qa_refs,
+        "review": qa_refs,
+        "release": release_refs,
+        "gate": release_refs,
+        "delivery": release_refs,
     }
 
 

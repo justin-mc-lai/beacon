@@ -81,7 +81,7 @@ Skill packaging does not change Beacon's delivery truth:
 
 Current line:
 
-- `v1.3.6` = current runtime release line and host-native runtime docs line
+- `v1.3.7` = current runtime release line and host-native runtime docs line
 
 Package docs may still reference historical lines, but they must not describe them as current.
 
@@ -94,7 +94,7 @@ The skill package wraps these CLI commands instead of replacing them:
 - `beacon workflow`
 - `beacon review`
 
-For the `v1.3.6` runtime line, the CLI should be described as:
+For the `v1.3.7` runtime line, the CLI should be described as:
 
 - host-native orchestration layer first
 - structured execution kernel

@@ -48,7 +48,13 @@ from beacon.utils.qa_runtime import (
     write_qa_status,
 )
 from beacon.utils.story_state import feature_slug
-from beacon.utils.subagent_readiness import delegation_readiness_precheck, detect_host_runtime, runtime_readiness_precheck
+from beacon.utils.subagent_readiness import (
+    delegation_readiness_precheck,
+    detect_host_runtime,
+    runtime_context_not_required_precheck,
+    runtime_context_precheck_required,
+    runtime_readiness_precheck,
+)
 from beacon.utils.subagent_runtime import (
     resolve_team_runtime,
     spawn_tmux_workers,
@@ -472,6 +478,74 @@ def _qa_matrix_matches_expected(qa_status: dict[str, Any], expected_matrix_path:
     return False
 
 
+def _qa_status_run_id(qa_status: dict[str, Any]) -> str:
+    if not isinstance(qa_status, dict):
+        return ""
+    execution = qa_status.get("execution") if isinstance(qa_status.get("execution"), dict) else {}
+    return str(qa_status.get("run_id") or execution.get("run_id") or "").strip()
+
+
+def _matching_qa_run_ids(project_root: Path, expected_matrix_path: Path) -> set[str]:
+    run_ids: set[str] = set()
+    current_status = load_qa_status(project_root)
+    if _qa_matrix_matches_expected(current_status, expected_matrix_path):
+        run_id = _qa_status_run_id(current_status)
+        if run_id:
+            run_ids.add(run_id)
+    evidence_root = project_root / ".beacon" / "evidence" / "auto-test"
+    if not evidence_root.exists():
+        return run_ids
+    for summary_path in evidence_root.glob("run-*/summary.json"):
+        try:
+            payload = json.loads(summary_path.read_text(encoding="utf-8"))
+        except Exception:  # noqa: BLE001
+            continue
+        if not isinstance(payload, dict) or not _qa_matrix_matches_expected(payload, expected_matrix_path):
+            continue
+        run_id = _qa_status_run_id(payload)
+        if run_id:
+            run_ids.add(run_id)
+    return run_ids
+
+
+def _resolve_feature_qa_status(
+    project_root: Path,
+    *,
+    expected_matrix_path: Path,
+    exclude_run_ids: set[str] | None = None,
+) -> dict[str, Any]:
+    excluded = {str(item).strip() for item in (exclude_run_ids or set()) if str(item).strip()}
+    current_status = load_qa_status(project_root)
+    current_run_id = _qa_status_run_id(current_status)
+    if (
+        current_run_id
+        and current_run_id not in excluded
+        and _qa_matrix_matches_expected(current_status, expected_matrix_path)
+    ):
+        return current_status
+
+    evidence_root = project_root / ".beacon" / "evidence" / "auto-test"
+    if not evidence_root.exists():
+        return current_status
+
+    candidates: list[tuple[str, dict[str, Any]]] = []
+    for summary_path in evidence_root.glob("run-*/summary.json"):
+        try:
+            payload = json.loads(summary_path.read_text(encoding="utf-8"))
+        except Exception:  # noqa: BLE001
+            continue
+        if not isinstance(payload, dict) or not _qa_matrix_matches_expected(payload, expected_matrix_path):
+            continue
+        run_id = _qa_status_run_id(payload) or summary_path.parent.name
+        if run_id in excluded:
+            continue
+        candidates.append((run_id, payload))
+    if not candidates:
+        return current_status
+    candidates.sort(key=lambda item: item[0], reverse=True)
+    return candidates[0][1]
+
+
 def _looks_like_feature_request(args: list[str]) -> bool:
     positional = _first_positional(args)
     if not positional:
@@ -688,7 +762,23 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
         "delegation_readiness": {},
     }
     if team_mode:
-        runtime_precheck = runtime_readiness_precheck(project_root, host_runtime=resolved_host_runtime)
+        if runtime_context_precheck_required(
+            version=version,
+            adapter_id="qa-team",
+            adapter_type="native",
+            runtime_family="beacon-native",
+            mode="team",
+            runtime=runtime,
+        ):
+            runtime_precheck = runtime_readiness_precheck(project_root, host_runtime=resolved_host_runtime)
+        else:
+            runtime_precheck = runtime_context_not_required_precheck(
+                host_runtime=resolved_host_runtime,
+                detail=(
+                    "Local QA team runtime is executed through Beacon-native orchestration; "
+                    "project AGENTS/CLAUDE context files are not required for this surface."
+                ),
+            )
         delegation_precheck = delegation_readiness_precheck(project_root, feature=feature, version=version)
         subagent_prechecks = {
             "required": True,
@@ -746,6 +836,76 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
         else:
             typer.echo(f"Beacon QA blocked: implementation not recorded for {feature}", err=True)
         return 2, plan
+
+    if not list(plan.get("targeted_entries") or []):
+        current_status = load_qa_status(project_root)
+        if str(current_status.get("status") or "").strip().lower() == "passed":
+            current_run_id = str(current_status.get("run_id") or plan.get("implementation_run_id") or "").strip()
+            coverage_summary_path = write_coverage_summary(
+                project_root,
+                version=version,
+                run_id=current_run_id,
+            )
+            payload = {
+                **current_status,
+                **plan,
+                "run_id": current_run_id,
+                "status": "passed",
+                "implementation_done": True,
+                "evidence_done": True,
+                "feature_matrix_path": str(feature_qa_matrix_path(project_root, feature=feature).relative_to(project_root)),
+                "message": "feature has no executable QA matrix entries; reused existing passed QA status",
+                "team_mode": bool(team_mode),
+                "host_runtime": resolved_host_runtime,
+                "subagent_prechecks": subagent_prechecks,
+                "team_contract": team_contract,
+                "implement_to_qa_handoff": handoff,
+            }
+            _with_delivery_contract(
+                payload,
+                requirement_binding={
+                    "source_of_truth_root": f"docs/beacon/{version}",
+                    "feature_matrix_path": str(feature_qa_matrix_path(project_root, feature=feature).relative_to(project_root)),
+                },
+                traceability_refs=[
+                    str(feature_qa_matrix_path(project_root, feature=feature).relative_to(project_root)),
+                    str(handoff.get("summary_ref") or ""),
+                    str(handoff.get("technical_archive_ref") or ""),
+                ],
+                execution_surface="qa-team" if team_mode else "qa",
+            )
+            if team_mode:
+                payload["team_execution"] = _materialize_qa_team_surface(
+                    project_root,
+                    version=version,
+                    feature=feature,
+                    run_id=current_run_id or plan.get("implementation_run_id") or "feature-qa",
+                    payload=payload,
+                    runtime=runtime,
+                )
+                payload["execution_surface"] = "qa-team"
+                payload["context_isolation"] = payload["team_execution"].get("context_isolation", {})
+            feature_status_file = write_feature_qa_status(project_root, feature=feature, payload=payload)
+            manifest_refs = [str(feature_status_file.relative_to(project_root))]
+            for candidate in (
+                project_root / ".beacon" / "auto-test-status.json",
+                coverage_summary_path,
+                project_root / ".beacon" / "qa" / "status.json",
+            ):
+                if candidate.exists():
+                    manifest_refs.append(str(candidate.relative_to(project_root)))
+            _update_evidence_manifest(
+                project_root,
+                manifest_refs,
+                run_id=current_run_id,
+                version=version,
+            )
+            if json_output:
+                typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+            else:
+                typer.echo(f"✓ Feature QA reused existing pass: {feature}")
+                typer.echo(f"  Reason: {payload['message']}")
+            return 0, payload
 
     if str(plan.get("status") or "") == "up_to_date":
         existing_status = load_feature_qa_status(project_root, feature=feature)
@@ -846,6 +1006,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
             raw_args=args,
         )
     )
+    known_matching_run_ids = _matching_qa_run_ids(project_root, matrix_path)
     command_exit = _beacon_exec_silent(auto_args, cwd=_repo_root()) if json_output else _beacon_exec(auto_args, cwd=_repo_root())
     if command_exit != 0:
         blocked_payload = {
@@ -890,7 +1051,11 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
         else:
             typer.echo("Beacon QA blocked: auto-test qa9 invocation failed", err=True)
         return 2, blocked_payload
-    qa_status = load_qa_status(project_root)
+    qa_status = _resolve_feature_qa_status(
+        project_root,
+        expected_matrix_path=matrix_path,
+        exclude_run_ids=known_matching_run_ids,
+    )
     if not _qa_matrix_matches_expected(qa_status, matrix_path):
         blocked_payload = {
             **plan,

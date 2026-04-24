@@ -384,12 +384,24 @@ def check(
     resolved_runtime = resolve_runtime_version(project_root, "auto")
     release_scorecard = build_release_scorecard(project_root, version=resolved_version)
     change_documents = release_scorecard.get("change_documents") if isinstance(release_scorecard.get("change_documents"), dict) else {}
+    feature_qa_scorecard = (
+        release_scorecard.get("feature_qa_scorecard")
+        if isinstance(release_scorecard.get("feature_qa_scorecard"), dict)
+        else {}
+    )
     enforce_change_documents = project_runtime_feature_enabled(
         project_root,
         "v1.3.1",
         docs_version=resolved_version,
         runtime_version=resolved_runtime,
     )
+    enforce_release_scorecard = project_runtime_feature_enabled(
+        project_root,
+        "v1.3.6",
+        docs_version=resolved_version,
+        runtime_version=resolved_runtime,
+    )
+    authoritative_release_ready = bool(release_scorecard.get("release_ready", False))
 
     typer.echo(f"Checking release conditions for {resolved_version}")
     typer.echo("=" * 40)
@@ -461,8 +473,22 @@ def check(
     checks.append(
         (
             "gate report run_id matches auto-test",
-            bool(gate_run_id) and bool(auto_test_run_id) and gate_run_id == auto_test_run_id,
-            f"gate_run_id={gate_run_id or 'missing'}, auto_test_run_id={auto_test_run_id or 'missing'}",
+            (
+                bool(gate_run_id)
+                and bool(auto_test_run_id)
+                and (
+                    gate_run_id == auto_test_run_id
+                    or (enforce_release_scorecard and authoritative_release_ready and gate_ok and auto_test_ok)
+                )
+            ),
+            (
+                f"gate_run_id={gate_run_id or 'missing'}, auto_test_run_id={auto_test_run_id or 'missing'}"
+                + (
+                    ", authoritative_release_scorecard=true"
+                    if enforce_release_scorecard and authoritative_release_ready and gate_ok and auto_test_ok
+                    else ""
+                )
+            ),
         )
     )
 
@@ -521,6 +547,21 @@ def check(
     elif gate_coverage_full is not None:
         coverage_ok = bool(gate_coverage_full)
         coverage_detail = f"gate_report.coverage.full_coverage={coverage_ok}"
+    if not coverage_ok and enforce_release_scorecard and authoritative_release_ready:
+        coverage_current = (
+            feature_qa_scorecard.get("coverage_current")
+            if isinstance(feature_qa_scorecard.get("coverage_current"), dict)
+            else {}
+        )
+        executed = int(coverage_current.get("executed_scenarios") or 0)
+        required = int(coverage_current.get("required_scenarios") or 0)
+        coverage_rate = coverage_current.get("coverage_rate")
+        if required > 0 and executed >= required:
+            coverage_ok = True
+            coverage_detail = (
+                f"feature_scorecard.coverage_current={executed}/{required} "
+                f"({coverage_rate if coverage_rate is not None else 'n/a'}), authoritative_release_scorecard=true"
+            )
     checks.append(("coverage artifact ready", coverage_ok, coverage_detail))
     if coverage_summary_path.exists():
         checks.append(
@@ -595,6 +636,26 @@ def check(
                 f"current_feature={change_documents.get('current_feature_slug') or 'none'}",
             )
         )
+
+    if enforce_release_scorecard:
+        semantic = release_scorecard.get("semantic") if isinstance(release_scorecard.get("semantic"), dict) else {}
+        semantic_status = str(semantic.get("status") or "unknown")
+        semantic_reason = str(semantic.get("reason_code") or "")
+        checks.append(
+            (
+                "release scorecard ready",
+                bool(release_scorecard.get("release_ready", False)),
+                f"feature={release_scorecard.get('qa', {}).get('feature') or 'none'}, semantic_reason={semantic_reason or '-'}",
+            )
+        )
+        if semantic:
+            checks.append(
+                (
+                    "semantic contract ready",
+                    semantic_status == "pass",
+                    f"status={semantic_status}, reason={semantic_reason or '-'}",
+                )
+            )
 
     all_passed = True
     failed_checks: list[str] = []

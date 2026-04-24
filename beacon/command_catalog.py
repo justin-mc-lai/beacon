@@ -3,32 +3,28 @@
 from __future__ import annotations
 
 CORE_COMMANDS = (
-    "think",
-    "user-story",
     "prd",
-    "prototype",
+    "user-story",
     "test-case",
-    "workflow",
+    "prototype",
+    "implement",
     "qa",
-    "auto-test",
-    "gate",
     "release",
 )
 
 SUPPORT_COMMANDS = (
+    "help",
+    "status",
+    "doctor",
+    "archive",
     "ask",
     "skill",
     "profile",
-    "implement",
-    "verify",
     "orchestrate",
-    "status",
     "report",
     "review",
-    "doctor",
     "feedback",
     "freeze",
-    "help",
     "reopen",
     "remember",
     "recall",
@@ -38,6 +34,14 @@ SUPPORT_COMMANDS = (
     "init",
     "test-progress",
     "debug",
+)
+
+COMPAT_COMMANDS = (
+    "think",
+    "workflow",
+    "gate",
+    "verify",
+    "auto-test",
 )
 
 LABS_COMMANDS = (
@@ -69,12 +73,13 @@ DEPRECATED_COMMANDS = (
 )
 
 DEFAULT_USER_SURFACE = CORE_COMMANDS + SUPPORT_COMMANDS
-ADVANCED_SURFACE = LABS_COMMANDS + BRIDGE_COMMANDS + DEPRECATED_COMMANDS
+ADVANCED_SURFACE = LABS_COMMANDS + BRIDGE_COMMANDS + DEPRECATED_COMMANDS + COMPAT_COMMANDS
 
 # Keep the canonical ordering stable for auto-generated docs/tests.
 SUPPORTED_SUBCOMMANDS = (
     "ask",
     "analyze",
+    "archive",
     "api-design",
     "auto-test",
     "qa",

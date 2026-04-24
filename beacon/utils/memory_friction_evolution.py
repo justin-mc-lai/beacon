@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 from typing import Any
 
+from beacon.utils.archive_governance import load_archive_read_model
 from beacon.utils.lighthouse import generate_lighthouse_artifact
 from beacon.utils.memory import append_memory_entry, load_memory_entries
 from beacon.utils.runtime import now_iso, read_json, utc_compact_ts, write_json
@@ -258,6 +259,7 @@ def run_memory_friction_evolution(
     resolved_version = resolve_target_version(project_root, version)
     run_id = f"mfe-{utc_compact_ts()}"
     generated_at = now_iso()
+    archive_boundary = load_archive_read_model(project_root, version=resolved_version)
 
     memory_candidates: list[dict[str, Any]] = []
     memory_refs: list[str] = []
@@ -345,7 +347,12 @@ def run_memory_friction_evolution(
             "memory_refs": memory_refs,
             "debug_refs": friction_refs,
             "lighthouse_ref": lighthouse_ref,
+            "archive_plan_ref": str((archive_boundary.get("plan") or {}).get("current_version_truth_root", "") or ""),
+            "archive_excluded_ref_count": len((archive_boundary.get("plan") or {}).get("excluded_from_current_delivery_refs", []))
+            if isinstance(archive_boundary.get("plan"), dict)
+            else 0,
         },
+        "archive_boundary": archive_boundary,
         "candidates": final_candidates,
         "decision": decision,
         "writeback": {

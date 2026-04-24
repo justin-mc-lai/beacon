@@ -39,6 +39,70 @@ def _claude_skill_root() -> Path:
     return Path.home() / ".claude" / "skills" / "beacon"
 
 
+def _semver_tuple(version: str | None) -> tuple[int, int, int]:
+    text = str(version or "").strip().lower()
+    if text.startswith("v"):
+        text = text[1:]
+    parts = [part for part in text.split(".") if part]
+    values: list[int] = []
+    for index in range(3):
+        if index >= len(parts):
+            values.append(0)
+            continue
+        try:
+            values.append(int(parts[index]))
+        except ValueError:
+            values.append(0)
+    return tuple(values[:3])  # type: ignore[return-value]
+
+
+def runtime_context_precheck_required(
+    *,
+    version: str | None,
+    adapter_id: str,
+    adapter_type: str,
+    runtime_family: str,
+    mode: str,
+    runtime: str | None = None,
+) -> bool:
+    adapter_type_text = str(adapter_type or "").strip().lower()
+    runtime_family_text = str(runtime_family or "").strip().lower()
+    mode_text = str(mode or "").strip().lower()
+    adapter_id_text = str(adapter_id or "").strip().lower()
+    runtime_text = str(runtime or "").strip().lower()
+
+    if adapter_type_text == "handoff":
+        return False
+    if (
+        _semver_tuple(version) >= (1, 3, 8)
+        and adapter_type_text == "native"
+        and runtime_family_text in {"beacon-native", "codex-native"}
+        and runtime_text in {"", "file", "tmux", "auto"}
+    ):
+        return False
+    return bool(mode_text in {"team", "ralph"} or adapter_id_text == "codex-subagents" or runtime_family_text == "claude-code")
+
+
+def runtime_context_not_required_precheck(
+    *,
+    host_runtime: str | None = None,
+    detail: str = "",
+) -> dict[str, Any]:
+    resolved_host = detect_host_runtime(host_runtime)
+    return {
+        "schema_version": "1.0",
+        "check": "runtime-readiness",
+        "status": "pass",
+        "reason_code": "",
+        "host_runtime": resolved_host,
+        "required": False,
+        "checks": [],
+        "blocked_checks": [],
+        "detail": detail or "Local Beacon-native execution does not require project context files for this surface.",
+        "recommended_command": "",
+    }
+
+
 def runtime_readiness_precheck(
     project_root: Path | str,
     *,

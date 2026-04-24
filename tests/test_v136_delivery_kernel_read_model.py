@@ -14,6 +14,7 @@ from beacon.utils.material_audit import build_delivery_audit
 from beacon.utils.release_scorecard import build_release_scorecard
 from beacon.utils.revision_state import freeze_revision_state
 from beacon.utils.runtime import write_json
+from beacon.utils.semantic_runtime import write_semantic_layer
 from beacon.utils.v115_delivery import repair_v115_delivery_package
 
 
@@ -42,6 +43,29 @@ def _seed_feature_docs(root: Path, *, slug: str) -> None:
 
 def _seed_docs(root: Path) -> None:
     _seed_feature_docs(root, slug=SLUG)
+
+
+def _enable_prototype_requirement(root: Path) -> None:
+    docs = root / "docs" / "beacon" / VERSION
+    marker = "\nprototype: true\n"
+    for path in (
+        docs / "prd" / f"{SLUG}.md",
+        docs / "user-story" / f"{SLUG}.md",
+        docs / "qa" / "test-cases" / f"{SLUG}.md",
+    ):
+        path.write_text(path.read_text(encoding="utf-8") + marker, encoding="utf-8")
+
+
+def _seed_semantic_layer(root: Path) -> None:
+    _enable_prototype_requirement(root)
+    write_semantic_layer(
+        root,
+        version=VERSION,
+        feature=FEATURE,
+        stage="prototype",
+        run_id="run-prototype-001",
+        capability_snapshot={"host_runtime": "codex", "host_semantic_ready": True},
+    )
 
 
 def _seed_execution_state(root: Path) -> None:
@@ -149,6 +173,7 @@ def test_v136_delivery_read_model_should_merge_implement_and_qa_state(tmp_path: 
 def test_v136_release_scorecard_should_include_host_native_delivery_aggregate(tmp_path: Path) -> None:
     _seed_docs(tmp_path)
     _seed_execution_state(tmp_path)
+    _seed_semantic_layer(tmp_path)
     freeze_revision_state(tmp_path, version=VERSION, feature=FEATURE)
 
     scorecard = build_release_scorecard(tmp_path, version=VERSION)
@@ -157,6 +182,8 @@ def test_v136_release_scorecard_should_include_host_native_delivery_aggregate(tm
     assert scorecard["delivery_read_model"]["contract"]["host_runtime"] == "codex"
     assert scorecard["host_native_delivery"]["implement"]["runner"] == "codex-subagents"
     assert scorecard["host_native_delivery"]["qa"]["execution_mode"] == "feature-aware"
+    assert scorecard["semantic"]["status"] == "pass"
+    assert scorecard["delivery_read_model"]["release"]["semantic"]["reason_code"] == "semantic_contract_ok"
 
 
 def test_v136_release_scorecard_should_fallback_to_revision_feature_when_qa_version_mismatches(tmp_path: Path) -> None:
@@ -222,6 +249,7 @@ def test_v136_release_scorecard_should_prefer_latest_frozen_revision_feature_ove
 def test_v136_help_status_and_doctor_advise_should_share_surface_explanation(tmp_path: Path) -> None:
     _seed_docs(tmp_path)
     _seed_execution_state(tmp_path)
+    _seed_semantic_layer(tmp_path)
     freeze_revision_state(tmp_path, version=VERSION, feature=FEATURE)
 
     help_payload = build_help_payload(tmp_path, version=VERSION, feature=FEATURE)
@@ -237,6 +265,104 @@ def test_v136_help_status_and_doctor_advise_should_share_surface_explanation(tmp
     assert advise_payload["surface_explanation"] == help_payload["surface_explanation"]
     assert status_payload["surface_explanation"] == help_payload["surface_explanation"]
     assert status_payload["delivery_read_model"]["contract"]["host_runtime"] == "codex"
+
+
+def test_v136_release_scorecard_should_block_release_when_semantic_contract_missing(tmp_path: Path) -> None:
+    _seed_docs(tmp_path)
+    _seed_execution_state(tmp_path)
+    _seed_semantic_layer(tmp_path)
+    freeze_revision_state(tmp_path, version=VERSION, feature=FEATURE)
+
+    semantic_root = tmp_path / "docs" / "beacon" / VERSION / "execution" / "semantic" / SLUG
+    (semantic_root / "semantic-contract.json").unlink()
+
+    scorecard = build_release_scorecard(tmp_path, version=VERSION)
+
+    assert scorecard["release_ready"] is False
+    assert scorecard["semantic"]["reason_code"] == "semantic_contract_missing"
+    assert "semantic_contract_missing" in scorecard["delivery_read_model"]["risk_flags"]
+    assert "semantic_contract_missing" in scorecard["host_native_delivery"]["reason_codes"]
+
+
+def test_v136_release_scorecard_should_block_release_when_default_taste_bridge_drifts(tmp_path: Path) -> None:
+    _seed_docs(tmp_path)
+    _seed_execution_state(tmp_path)
+    _seed_semantic_layer(tmp_path)
+    freeze_revision_state(tmp_path, version=VERSION, feature=FEATURE)
+
+    semantic_contract = tmp_path / "docs" / "beacon" / VERSION / "execution" / "semantic" / SLUG / "semantic-contract.json"
+    payload = json.loads(semantic_contract.read_text(encoding="utf-8"))
+    payload["default_design_bridge"]["repo"] = "https://example.com/not-official"
+    semantic_contract.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+    scorecard = build_release_scorecard(tmp_path, version=VERSION)
+
+    assert scorecard["release_ready"] is False
+    assert scorecard["semantic"]["reason_code"] == "semantic_default_taste_bridge_drift"
+    assert "semantic_default_taste_bridge_drift" in scorecard["delivery_read_model"]["risk_flags"]
+
+
+def test_v136_help_should_route_to_prototype_when_semantic_contract_missing(tmp_path: Path) -> None:
+    _seed_docs(tmp_path)
+    _seed_execution_state(tmp_path)
+    _enable_prototype_requirement(tmp_path)
+    freeze_revision_state(tmp_path, version=VERSION, feature=FEATURE)
+
+    payload = build_help_payload(tmp_path, version=VERSION, feature=FEATURE)
+
+    assert "semantic_contract_missing" in payload["blocking_reasons"]
+    assert payload["next_step"]["action"] == "prototype"
+    assert payload["next_step"]["command"] == f"beacon prototype create {json.dumps(FEATURE, ensure_ascii=False)} --project {tmp_path} --version {VERSION} --json"
+
+
+def test_v136_help_should_route_to_prototype_review_when_semantic_review_missing(tmp_path: Path) -> None:
+    _seed_docs(tmp_path)
+    _seed_execution_state(tmp_path)
+    _seed_semantic_layer(tmp_path)
+    freeze_revision_state(tmp_path, version=VERSION, feature=FEATURE)
+
+    semantic_review = tmp_path / "docs" / "beacon" / VERSION / "execution" / "semantic" / SLUG / "semantic-review.json"
+    payload = json.loads(semantic_review.read_text(encoding="utf-8"))
+    payload["overall_status"] = "draft"
+    semantic_review.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+    help_payload = build_help_payload(tmp_path, version=VERSION, feature=FEATURE)
+
+    assert "semantic_review_missing" in help_payload["blocking_reasons"]
+    assert help_payload["next_step"]["action"] == "prototype-review"
+    assert help_payload["next_step"]["command"] == f"beacon prototype review {json.dumps(FEATURE, ensure_ascii=False)} --project {tmp_path} --version {VERSION} --json"
+
+
+def test_v136_help_should_not_route_to_release_when_accepted_revision_is_semantic_blocked(tmp_path: Path) -> None:
+    _seed_docs(tmp_path)
+    _seed_execution_state(tmp_path)
+    _enable_prototype_requirement(tmp_path)
+    freeze_revision_state(tmp_path, version=VERSION, feature=FEATURE)
+    revision_path = tmp_path / "docs" / "beacon" / VERSION / ".machine" / "execution" / f"{SLUG}.revision.json"
+    revision_state = json.loads(revision_path.read_text(encoding="utf-8"))
+    revision_state["delivery_status"] = "accepted"
+    write_json(revision_path, revision_state)
+
+    help_payload = build_help_payload(tmp_path, version=VERSION, feature=FEATURE)
+
+    assert "semantic_contract_missing" in help_payload["blocking_reasons"]
+    assert help_payload["next_step"]["action"] == "prototype"
+    assert "beacon prototype create" in help_payload["next_step"]["command"]
+
+
+def test_v136_help_should_not_block_on_missing_user_story_when_authoritative_scorecard_is_ready(tmp_path: Path) -> None:
+    _seed_docs(tmp_path)
+    _seed_execution_state(tmp_path)
+    _seed_semantic_layer(tmp_path)
+    freeze_revision_state(tmp_path, version=VERSION, feature=FEATURE)
+    revision_path = tmp_path / "docs" / "beacon" / VERSION / ".machine" / "execution" / f"{SLUG}.revision.json"
+    revision_state = json.loads(revision_path.read_text(encoding="utf-8"))
+    revision_state["delivery_status"] = "accepted"
+    write_json(revision_path, revision_state)
+
+    help_payload = build_help_payload(tmp_path, version=VERSION, feature=FEATURE)
+
+    assert "missing_user_story" not in help_payload["blocking_reasons"]
 
 
 def test_v136_feature_aware_qa_up_to_date_should_emit_delivery_contract(tmp_path: Path, monkeypatch) -> None:

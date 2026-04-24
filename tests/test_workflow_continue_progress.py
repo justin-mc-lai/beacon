@@ -47,12 +47,12 @@ def test_workflow_manual_start_should_only_plan_without_stage_execution(tmp_path
         item
         for item in items
         if item.get("run_id") == run_id
-        and item.get("stage") in ("think", "user-story", "prd", "test-case", "implementation", "verify")
+        and item.get("stage") in ("prd", "user-story", "test-case", "prototype", "implement", "qa", "release")
     ]
     assert stage_events == []
 
     progress = compute_workflow_progress(tmp_path, run_id=run_id)
-    assert progress.get("next_stage") == "think"
+    assert progress.get("next_stage") == "prd"
     assert progress.get("closure_complete") is False
 
 
@@ -66,7 +66,7 @@ def test_workflow_continue_should_execute_single_next_stage(tmp_path: Path):
 
     progress = compute_workflow_progress(tmp_path, run_id=run_id)
     stages = progress.get("stages", {})
-    assert stages.get("think", {}).get("status") == "completed"
+    assert stages.get("prd", {}).get("status") == "completed"
     assert progress.get("next_stage") == "user-story"
     assert progress.get("closure_complete") is False
 
@@ -118,7 +118,7 @@ def test_workflow_auto_should_block_when_verify_status_is_not_passed(tmp_path: P
     run_id = _latest_run_id(tmp_path)
     run_state = json.loads((tmp_path / ".beacon" / "runs" / run_id / "state.json").read_text(encoding="utf-8"))
     assert run_state.get("status") == "blocked"
-    assert run_state.get("reason") == "verify_failed"
+    assert run_state.get("reason") == "qa_failed"
 
     progress = compute_workflow_progress(tmp_path, run_id=run_id)
-    assert progress.get("stages", {}).get("verify", {}).get("status") == "failed"
+    assert progress.get("stages", {}).get("qa", {}).get("status") == "failed"

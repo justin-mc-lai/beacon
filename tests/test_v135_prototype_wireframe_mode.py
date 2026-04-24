@@ -107,7 +107,7 @@ def test_v135_prototype_llm_mode_should_materialize_llm_generated_layout(tmp_pat
 
     from beacon.utils import prototype_utils
 
-    def _fake_llm_inference(*, feature: str, version: str, docs, model: str):
+    def _fake_llm_inference(*, feature: str, version: str, docs, model: str, semantic_layer=None):
         return {
             "provider_model": "fake-prototype-model",
             "completion": "{}",
@@ -249,7 +249,7 @@ def test_v135_prototype_auto_mode_should_fallback_when_llm_contract_invalid(tmp_
 
     from beacon.utils import prototype_utils
 
-    def _invalid_llm_inference(*, feature: str, version: str, docs, model: str):
+    def _invalid_llm_inference(*, feature: str, version: str, docs, model: str, semantic_layer=None):
         return {
             "provider_model": "fake-prototype-model",
             "completion": "{}",
@@ -287,7 +287,7 @@ def test_v135_prototype_llm_mode_should_generate_semantic_shell_when_layout_miss
 
     from beacon.utils import prototype_utils
 
-    def _shell_only_llm_inference(*, feature: str, version: str, docs, model: str):
+    def _shell_only_llm_inference(*, feature: str, version: str, docs, model: str, semantic_layer=None):
         return {
             "provider_model": "fake-prototype-model",
             "completion": "{}",

@@ -206,6 +206,7 @@ def append_memory_entry(
     reason_codes: list[str] | None = None,
     status: str = "active",
     upsert: bool = False,
+    metadata: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     normalized = normalize_memory_type(mem_type)
     payload = _migrate_legacy_to_v1_if_needed(project_root)
@@ -244,6 +245,11 @@ def append_memory_entry(
                 0.0,
                 min(1.0, float(max(float(row.get("confidence", 0.0) or 0.0), float(confidence)))),
             )
+            if isinstance(metadata, dict):
+                for key, value in metadata.items():
+                    if key in {"memory_id", "type", "content", "content_hash"}:
+                        continue
+                    row[key] = value
             _save_memory_v1(project_root, payload)
             _write_legacy_projection(project_root, payload["items"])
             return row
@@ -279,6 +285,11 @@ def append_memory_entry(
             row["superseded_by"] = entry["memory_id"]
             row["updated_at"] = created_at
             break
+    if isinstance(metadata, dict):
+        for key, value in metadata.items():
+            if key in {"memory_id", "type", "content", "content_hash"}:
+                continue
+            entry[key] = value
 
     items.append(entry)
     _save_memory_v1(project_root, payload)

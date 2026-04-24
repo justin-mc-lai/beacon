@@ -359,6 +359,8 @@ def build_default_task_prompt(
     feature_slug: str,
     result_file: str,
     implementation_plan_file: str = "",
+    semantic_artifact_refs: dict[str, str] | None = None,
+    default_design_bridge: dict[str, Any] | None = None,
 ) -> str:
     lines = [
         "Implement the scoped Beacon feature.",
@@ -371,6 +373,23 @@ def build_default_task_prompt(
     ]
     if str(implementation_plan_file or "").strip():
         lines.append(f"- {implementation_plan_file}")
+    semantic_refs = semantic_artifact_refs if isinstance(semantic_artifact_refs, dict) else {}
+    semantic_contract = str(semantic_refs.get("semantic_contract", "") or "").strip()
+    if semantic_contract:
+        lines.extend(
+            [
+                "Reuse Beacon semantic layer:",
+                f"- {semantic_contract}",
+                f"- {str(semantic_refs.get('semantic_dictionary', '') or '').strip()}",
+                f"- {str(semantic_refs.get('semantic_usage_guidelines', '') or '').strip()}",
+            ]
+        )
+    bridge = default_design_bridge if isinstance(default_design_bridge, dict) else {}
+    if bridge:
+        lines.append(
+            "Default design bridge (augmentation only): "
+            f"{bridge.get('skill_id', '')} @ {bridge.get('repo', '')}"
+        )
     lines.extend(
         [
             "Follow Beacon boundary defaults:",

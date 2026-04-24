@@ -6,6 +6,14 @@ from pathlib import Path
 from typing import Any
 
 from beacon.utils.artifact_paths import human_execution_file, machine_execution_file
+from beacon.utils.delivery_baseline import (
+    baseline_revision_id,
+    implementation_delivery_baseline_path,
+    load_implementation_delivery_baseline,
+    materialize_implementation_delivery_baseline,
+    projection_metadata,
+    validate_projection_against_baseline,
+)
 from beacon.utils.global_boundaries import global_boundary_principle_summaries
 from beacon.utils.implement_adapters import load_beacon_config
 from beacon.utils.runtime import now_iso, write_json
@@ -138,7 +146,7 @@ def technical_review_git_workflow_seed(contract: dict[str, Any]) -> dict[str, An
         f"Before implementation, verify the current branch is {target_branch}.",
         "If a branch switch is needed and the worktree is dirty, stop and clean or stash first.",
     ]
-    return {
+    payload = {
         "schema_version": "1.0",
         "feature": str(contract.get("feature", "") or ""),
         "feature_slug": str(contract.get("feature_slug", "") or ""),
@@ -151,12 +159,18 @@ def technical_review_git_workflow_seed(contract: dict[str, Any]) -> dict[str, An
         "require_clean_worktree_for_switch": bool(contract.get("require_clean_worktree_for_switch", True)),
         "service_directories": service_directories,
         "direct_delivery_services": direct_delivery_services,
+        "writable_services": _normalize_string_list(contract.get("writable_services")) or list(direct_delivery_services),
+        "reference_only_services": _normalize_string_list(contract.get("reference_only_services")) or ["docs"],
         "git_roots": service_directories,
         "worktree_root": str(contract.get("worktree_root", "") or ""),
         "implementation_preflight": implementation_preflight,
         "source": "technical_review_contract",
         "generated_at": now_iso(),
     }
+    for field in ("baseline_id", "transaction_id", "source_hash", "projection_seq", "canonical_envelope_ref", "projection_source"):
+        if field in contract:
+            payload[field] = contract.get(field)
+    return payload
 
 
 def validate_technical_review_contract(payload: dict[str, Any], *, version: str, feature: str, revision_id: str = "") -> dict[str, Any]:
@@ -402,6 +416,17 @@ def materialize_technical_review_contract(
     payload["feature_slug"] = feature_slug(feature)
     payload["version"] = resolved_version
     payload["boundary_principles"] = global_boundary_principle_summaries()
+    envelope = load_implementation_delivery_baseline(project_root, version=resolved_version, feature=feature)
+    expected_revision_id = str(payload.get("revision_id", "") or revision_id)
+    if not envelope or baseline_revision_id(envelope) != expected_revision_id:
+        envelope = materialize_implementation_delivery_baseline(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            revision_id=expected_revision_id,
+            seed=payload,
+        )
+    payload.update(projection_metadata(envelope, project_root=project_root, version=resolved_version, feature=feature))
     review_status = str(payload.get("review_status") or "").strip().lower()
     approved_by = str(payload.get("approved_by") or "").strip()
     reviewed_at = str(payload.get("reviewed_at") or "").strip()
@@ -480,12 +505,17 @@ def build_technical_review_gate_payload(
     validation = validate_technical_review_contract(contract, version=resolved_version, feature=feature, revision_id=revision_id)
     payload["contract"] = contract
     payload["validation"] = validation
-    if not validation["valid"]:
+    baseline = load_implementation_delivery_baseline(project_root, version=resolved_version, feature=feature)
+    projection_issues = validate_projection_against_baseline(contract, baseline, projection_name="technical_review_contract") if baseline else []
+    payload["projection_issues"] = projection_issues
+    if baseline:
+        payload["baseline_path"] = str(implementation_delivery_baseline_path(project_root, resolved_version, feature).relative_to(project_root))
+    if not validation["valid"] or projection_issues:
         payload.update(
             {
                 "blocked": True,
                 "status": "blocked",
-                "reason_code": "technical_review_contract_invalid",
+                "reason_code": "technical_review_contract_invalid" if not validation["valid"] else "delivery_baseline_projection_drift",
             }
         )
         return payload

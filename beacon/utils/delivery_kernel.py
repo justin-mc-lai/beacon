@@ -282,10 +282,14 @@ def build_delivery_read_model(
     release_ready = bool(release_state.get("release_ready", qa_contract.get("release_ready", False)))
     gate = _clean_dict(release_state.get("gate"))
     qa_release = _clean_dict(release_state.get("qa"))
+    semantic = _clean_dict(release_state.get("semantic"))
     revision_binding = _clean_dict(release_state.get("revision_binding"))
     risk_flags = _clean_list(authoritative_contract.get("risk_flags"))
+    risk_flags.extend(_clean_list(release_state.get("risk_flags")))
     if qa_state and _clean_str(qa_state.get("status")).lower() not in {"", "passed"}:
         risk_flags.append("qa_not_ready")
+    if semantic and _clean_str(semantic.get("status")).lower() not in {"", "pass"}:
+        risk_flags.append(_clean_str(semantic.get("reason_code")) or "semantic_not_ready")
     if release_state and not release_ready:
         risk_flags.append("release_not_ready")
     if revision_binding and not bool(revision_binding.get("gate_bound_to_latest_revision", False)):
@@ -321,6 +325,7 @@ def build_delivery_read_model(
         "release": {
             "gate_status": _clean_str(gate.get("status")),
             "release_ready": release_ready,
+            "semantic": semantic,
             "revision_binding": revision_binding,
         },
         "traceability": {

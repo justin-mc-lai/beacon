@@ -19,8 +19,10 @@ from beacon.utils.semantic_runtime import (
     build_semantic_capability_snapshot,
     build_mode_contract,
     llm_unavailable_message,
+    load_or_build_semantic_layer,
     load_host_response_json,
     normalize_requested_mode,
+    render_semantic_prompt_context,
 )
 
 
@@ -2029,6 +2031,7 @@ def _real_prototype_llm_inference(
     version: str,
     docs: list[dict[str, Any]],
     model: str,
+    semantic_layer: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     api_key = str(os.environ.get("BEACON_LLM_API_KEY", "")).strip()
     if not api_key:
@@ -2053,6 +2056,8 @@ def _real_prototype_llm_inference(
 feature={feature}
 version={version}
 known_page_catalog={known_page_names}
+semantic_context:
+{render_semantic_prompt_context(semantic_layer)}
 
 Return JSON with this shape:
 {{
@@ -2245,12 +2250,14 @@ def _assemble_prototype_plan(
     model: str,
     fallback_reason: str,
     capability_snapshot: dict[str, Any],
+    semantic_layer: dict[str, Any] | None = None,
     llm_trace: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     route_closure_required = _extract_field(docs, "route_closure_required", "false").lower() == "true"
     requirement_ids = _extract_requirement_ids(docs)
     page_ids = [str(page.get("page_id") or "").strip() for page in page_specs if str(page.get("page_id") or "").strip()]
     required_states = sorted({state["id"] for page in page_specs for state in page["states"]})
+    semantic_payload = semantic_layer if isinstance(semantic_layer, dict) else {}
     return {
         "schema_version": SCHEMA_VERSION,
         "feature": feature,
@@ -2277,11 +2284,18 @@ def _assemble_prototype_plan(
             "primary_exit": transitions[-1]["to"] if transitions else page_ids[-1],
             "transitions": transitions,
         },
+        "semantic_layer": {
+            "artifacts": dict(semantic_payload.get("artifacts", {})),
+            "default_design_bridge": dict(semantic_payload.get("default_design_bridge", {})),
+            "official_language": dict(semantic_payload.get("official_language", {})),
+        },
         "platform_variants": _build_platform_variants(page_specs),
         "contract": {
             "prototype_archetype": theme["prototype_archetype"],
             "wireframe_only": True,
-            "design_governance_required": False,
+            "design_governance_required": bool(semantic_payload),
+            "semantic_governance_required": bool(semantic_payload),
+            "semantic_contract_path": str((semantic_payload.get("artifacts") or {}).get("semantic_contract", "")),
             "route_closure_required": route_closure_required,
             "required_files": [
                 "wireframe-summary.md",
@@ -2330,6 +2344,7 @@ def _compile_prototype_plan_rule(
     model: str,
     fallback_reason: str,
     capability_snapshot: dict[str, Any],
+    semantic_layer: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     page_ids, fallback_used, page_meta = _detect_pages_with_meta(docs)
     if "material-viewer" in page_ids and "material-document-detail" not in page_ids:
@@ -2356,6 +2371,7 @@ def _compile_prototype_plan_rule(
         model=model,
         fallback_reason=fallback_reason,
         capability_snapshot=capability_snapshot,
+        semantic_layer=semantic_layer,
     )
 
 
@@ -2381,6 +2397,7 @@ def _compile_prototype_plan_from_inference(
     capability_snapshot: dict[str, Any],
     inference_mode: str,
     parser_mode: str,
+    semantic_layer: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     payload = _prototype_inference_payload(inference)
     raw_pages = payload.get("pages")
@@ -2562,6 +2579,7 @@ def _compile_prototype_plan_from_inference(
         model=model,
         fallback_reason="",
         capability_snapshot=capability_snapshot,
+        semantic_layer=semantic_layer,
         llm_trace=llm_trace,
     )
 
@@ -2574,8 +2592,15 @@ def _compile_prototype_plan_llm(
     requested_mode: str,
     model: str,
     capability_snapshot: dict[str, Any],
+    semantic_layer: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    inference = _real_prototype_llm_inference(feature=feature, version=version, docs=docs, model=model)
+    inference = _real_prototype_llm_inference(
+        feature=feature,
+        version=version,
+        docs=docs,
+        model=model,
+        semantic_layer=semantic_layer,
+    )
     return _compile_prototype_plan_from_inference(
         version=version,
         feature=feature,
@@ -2587,6 +2612,7 @@ def _compile_prototype_plan_llm(
         capability_snapshot=capability_snapshot,
         inference_mode="real",
         parser_mode="llm-wireframe-compiler",
+        semantic_layer=semantic_layer,
     )
 
 
@@ -2598,6 +2624,7 @@ def _compile_prototype_plan_host(
     requested_mode: str,
     model: str,
     capability_snapshot: dict[str, Any],
+    semantic_layer: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     inference, _ = load_host_response_json("prototype")
     if not inference:
@@ -2613,6 +2640,7 @@ def _compile_prototype_plan_host(
         capability_snapshot=capability_snapshot,
         inference_mode="host-bridge",
         parser_mode="host-wireframe-compiler",
+        semantic_layer=semantic_layer,
     )
 
 
@@ -2636,6 +2664,13 @@ def compile_prototype_plan(
         "prototype",
         disable_env="BEACON_PROTOTYPE_DISABLE_LLM",
     )
+    semantic_layer = load_or_build_semantic_layer(
+        project_root,
+        version=version,
+        feature=feature,
+        stage="prototype",
+        capability_snapshot=capability_snapshot,
+    )
     if requested_mode == "rule":
         return _compile_prototype_plan_rule(
             project_root,
@@ -2646,6 +2681,7 @@ def compile_prototype_plan(
             model=model,
             fallback_reason="",
             capability_snapshot=capability_snapshot,
+            semantic_layer=semantic_layer,
         )
     if bool(capability_snapshot.get("llm_disabled")):
         if requested_mode == "llm":
@@ -2659,6 +2695,7 @@ def compile_prototype_plan(
             model=model,
             fallback_reason="llm_disabled",
             capability_snapshot=capability_snapshot,
+            semantic_layer=semantic_layer,
         )
     if bool(capability_snapshot.get("host_semantic_ready")):
         try:
@@ -2669,6 +2706,7 @@ def compile_prototype_plan(
                 requested_mode=requested_mode,
                 model=model,
                 capability_snapshot=capability_snapshot,
+                semantic_layer=semantic_layer,
             )
         except PrototypeLLMContractError as exc:
             if not bool(capability_snapshot.get("provider_available")):
@@ -2683,6 +2721,7 @@ def compile_prototype_plan(
                     model=model,
                     fallback_reason="host_contract_validation_failed",
                     capability_snapshot=capability_snapshot,
+                    semantic_layer=semantic_layer,
                 )
         except Exception as exc:  # noqa: BLE001
             if not bool(capability_snapshot.get("provider_available")):
@@ -2697,6 +2736,7 @@ def compile_prototype_plan(
                     model=model,
                     fallback_reason="host_compile_failed",
                     capability_snapshot=capability_snapshot,
+                    semantic_layer=semantic_layer,
                 )
     if not bool(capability_snapshot.get("provider_available")):
         if requested_mode == "llm":
@@ -2710,6 +2750,7 @@ def compile_prototype_plan(
             model=model,
             fallback_reason="llm_unavailable",
             capability_snapshot=capability_snapshot,
+            semantic_layer=semantic_layer,
         )
     try:
         return _compile_prototype_plan_llm(
@@ -2719,6 +2760,7 @@ def compile_prototype_plan(
             requested_mode=requested_mode,
             model=model,
             capability_snapshot=capability_snapshot,
+            semantic_layer=semantic_layer,
         )
     except PrototypeLLMContractError as exc:
         if requested_mode == "llm":
@@ -2732,6 +2774,7 @@ def compile_prototype_plan(
             model=model,
             fallback_reason="llm_contract_validation_failed",
             capability_snapshot=capability_snapshot,
+            semantic_layer=semantic_layer,
         )
     except Exception as exc:  # noqa: BLE001
         if requested_mode == "llm":
@@ -2745,6 +2788,7 @@ def compile_prototype_plan(
             model=model,
             fallback_reason="llm_compile_failed",
             capability_snapshot=capability_snapshot,
+            semantic_layer=semantic_layer,
         )
 
 
@@ -2774,6 +2818,7 @@ def write_prototype_bundle(
     plan = compile_prototype_plan(project_root, version, feature, mode=mode, model=model)
     files = prototype_files(project_root, version, feature)
     feature_slug = str(plan["feature_slug"])
+    semantic_layer = plan.get("semantic_layer", {}) if isinstance(plan.get("semantic_layer"), dict) else {}
     source_hash = _stable_hash([{"type": doc["type"], "fingerprint": doc["fingerprint"]} for doc in source_docs])
     projection_seq = f"pp-{source_hash[:16]}"
     committed_at = now_iso()
@@ -2814,6 +2859,7 @@ def write_prototype_bundle(
         "route_closure_contract": route_closure,
         "coverage_report": coverage,
         "source_map": source_map,
+        "semantic_layer": semantic_layer,
     }
 
     with tempfile.TemporaryDirectory(prefix=f"prototype-{feature_slug}-") as tmpdir:
@@ -2918,6 +2964,7 @@ def write_prototype_bundle(
                     "coverage-report.json",
                     "source-map.json",
                     "route-closure-contract.json",
+                    str((semantic_layer.get("artifacts") or {}).get("semantic_contract", "")),
                 ],
             },
         )
@@ -3003,7 +3050,12 @@ def write_prototype_bundle(
                 "tokens_css": str(files["tokens_css"].relative_to(project_root)),
                 "platform_variants": str(files["platform_variants"].relative_to(project_root)),
                 "freeze": str(files["freeze"].relative_to(project_root)),
+                "semantic_contract": str((semantic_layer.get("artifacts") or {}).get("semantic_contract", "")),
+                "semantic_dictionary": str((semantic_layer.get("artifacts") or {}).get("semantic_dictionary", "")),
+                "semantic_usage_guidelines": str((semantic_layer.get("artifacts") or {}).get("semantic_usage_guidelines", "")),
+                "semantic_review": str((semantic_layer.get("artifacts") or {}).get("semantic_review", "")),
             },
+            "semantic_layer": semantic_layer,
         }
         _write_json(stage_files["manifest"], manifest)
 
@@ -3019,6 +3071,7 @@ def write_prototype_bundle(
             "artifact_fingerprints": _artifact_fingerprints(stage_files, include_optional=False),
             "generated_at": plan["generated_at"],
             "transaction": manifest["transaction"],
+            "semantic_layer": semantic_layer,
         }
         _write_json(stage_files["freeze"], freeze_payload)
 
@@ -3053,6 +3106,7 @@ def write_prototype_bundle(
         "contract": plan["contract"],
         "plan": plan,
         "files": files,
+        "semantic_layer": semantic_layer,
     }
 
 

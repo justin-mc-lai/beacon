@@ -5,6 +5,7 @@ from pathlib import Path
 
 from typer.testing import CliRunner
 
+from beacon.commands import release as release_command
 from beacon.main import app
 
 
@@ -108,4 +109,112 @@ def test_release_check_should_pass_when_coverage_summary_matches_release(tmp_pat
 
     result = _invoke(["release", "check", version, "--project", str(tmp_path)])
     assert result.exit_code == 0, result.stdout
+    assert "Release conditions met" in result.stdout
+
+
+def test_release_check_should_fail_when_v136_scorecard_is_not_release_ready(tmp_path: Path, monkeypatch):
+    version = "v1.3.6"
+    _seed_release_artifacts(tmp_path, version=version, coverage_version=version)
+
+    monkeypatch.setattr(
+        release_command,
+        "build_release_scorecard",
+        lambda *_args, **_kwargs: {
+            "release_ready": False,
+            "qa": {"feature": "feature-a"},
+            "semantic": {"status": "fail", "reason_code": "semantic_contract_missing"},
+            "change_documents": {
+                "markdown_exists": True,
+                "json_exists": True,
+                "version_match": True,
+                "includes_current_feature": True,
+                "markdown_path": f"docs/beacon/{version}/change/{version}.md",
+                "json_path": f"docs/beacon/{version}/.machine/change/{version}.json",
+                "current_feature_slug": "feature-a",
+            },
+        },
+    )
+
+    result = _invoke(["release", "check", version, "--project", str(tmp_path)])
+
+    assert result.exit_code == 1, result.stdout
+    assert "release scorecard ready" in result.stdout
+    assert "semantic contract ready" in result.stdout
+    assert "semantic_contract_missing" in result.stdout
+
+
+def test_release_check_should_accept_authoritative_v136_scorecard_when_gate_run_id_and_coverage_summary_lag(
+    tmp_path: Path,
+    monkeypatch,
+):
+    version = "v1.3.6"
+    _seed_release_artifacts(tmp_path, version=version, coverage_version=version)
+
+    (tmp_path / ".beacon" / "gate-report.json").write_text(
+        json.dumps({"status": "Pass", "version": version, "run_id": "run-gate-lag"}, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+    (tmp_path / ".beacon" / "coverage-summary.json").write_text(
+        json.dumps(
+            {
+                "schema_version": "1.0",
+                "run_id": "run-123",
+                "version": version,
+                "coverage_rate": 0.3333,
+                "full_coverage": False,
+                "details": {
+                    "version": version,
+                    "feature": "",
+                    "planned_story": 3,
+                    "implemented_story": 1,
+                    "story_coverage": 0.3333,
+                    "total_ac": 16,
+                    "tested_ac": 16,
+                    "ac_coverage": 1.0,
+                    "total_tc": 23,
+                    "executed_tc": 16,
+                    "tc_coverage": 0.6957,
+                    "full_coverage": False,
+                    "matrix_errors": [],
+                },
+            },
+            ensure_ascii=False,
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+
+    monkeypatch.setattr(
+        release_command,
+        "build_release_scorecard",
+        lambda *_args, **_kwargs: {
+            "release_ready": True,
+            "qa": {"feature": "feature-a", "status": "passed", "evidence_done": True},
+            "semantic": {"status": "pass", "reason_code": "semantic_contract_ok"},
+            "feature_qa_scorecard": {
+                "release_ready": True,
+                "continue_decision": "ready_for_release",
+                "coverage_current": {
+                    "required_scenarios": 16,
+                    "executed_scenarios": 16,
+                    "coverage_rate": 1.0,
+                },
+            },
+            "change_documents": {
+                "markdown_exists": True,
+                "json_exists": True,
+                "version_match": True,
+                "includes_current_feature": True,
+                "markdown_path": f"docs/beacon/{version}/change/{version}.md",
+                "json_path": f"docs/beacon/{version}/.machine/change/{version}.json",
+                "current_feature_slug": "feature-a",
+                "feature_count": 1,
+            },
+        },
+    )
+
+    result = _invoke(["release", "check", version, "--project", str(tmp_path)])
+
+    assert result.exit_code == 0, result.stdout
+    assert "authoritative_release_scorecard=true" in result.stdout
     assert "Release conditions met" in result.stdout

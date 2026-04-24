@@ -179,3 +179,36 @@ def test_gate_release_should_accept_release_memory_profile_with_evidence(tmp_pat
     payload = _gate_release_payload(tmp_path)
     reason_codes = {item["reason_code"] for item in payload["issues"]}
     assert "release_memory_profile_invalid" not in reason_codes
+
+
+def test_gate_release_should_block_when_workflow_memory_transaction_failed(tmp_path: Path):
+    _write_core_gate_artifacts(tmp_path)
+    _seed_complete_lifecycle(tmp_path, with_evidence=True)
+    tx_root = tmp_path / ".beacon" / "state" / "workflow-memory" / "run-closure"
+    tx_root.mkdir(parents=True, exist_ok=True)
+    (tx_root / "transactions.json").write_text(
+        json.dumps(
+            {
+                "schema_version": "1.0",
+                "items": [
+                    {
+                        "transaction_id": "tx-wf-run-closure-release-memory_writeback-deadbeef",
+                        "run_id": "run-closure",
+                        "stage": "release",
+                        "action": "memory_writeback",
+                        "source_hash": "deadbeef",
+                        "projection_seq": "wf-deadbeef",
+                        "status": "failed_transaction",
+                        "sink_checksums": {"memory_v1": "missing", "workflow_lifecycle": "missing"},
+                        "committed_at": "",
+                        "occurred_at": "2026-01-01T00:00:05Z",
+                    }
+                ],
+                "updated_at": "2026-01-01T00:00:05Z",
+            }
+        ),
+        encoding="utf-8",
+    )
+    payload = _gate_release_payload(tmp_path)
+    reason_codes = {item["reason_code"] for item in payload["issues"]}
+    assert "workflow_memory_failed_transaction" in reason_codes
