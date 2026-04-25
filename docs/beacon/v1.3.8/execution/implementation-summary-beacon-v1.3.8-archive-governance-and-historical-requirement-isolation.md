@@ -2,48 +2,69 @@
 
 - feature: `Beacon v1.3.8 archive governance and historical requirement isolation`
 - version: `v1.3.8`
-- run_id: `run-20260424T104600Z-v138-archive-governance`
+- run_id: `run-20260425T141544Z-43ce`
 - status: `completed`
-- runner: `codex-team-closure`
-- adapter_type: `manual`
+- runner: `codex-subagents`
+- adapter_type: `native`
 - mode: `team`
 - host_runtime: `codex`
-- skill: `beacon:beacon-implement`
-- change_document_md: `docs/beacon/v1.3.8/change/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md`
-- change_document_json: `docs/beacon/v1.3.8/.machine/change/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.json`
 
 ## Changed Files
-- `beacon/cli_factory.py`
-- `beacon/command_catalog.py`
-- `beacon/commands/archive.py`
+- `.claude-plugin/plugin.json`
+- `.codex/INSTALL.md`
+- `.gitignore`
+- `AGENTS.md`
+- `CLAUDE.md`
+- `README.md`
+- `SKILL.md`
+- `beacon/__init__.py`
 - `beacon/commands/gate.py`
-- `beacon/commands/qa.py`
+- `beacon/commands/implement.py`
 - `beacon/commands/release.py`
-- `beacon/utils/archive_governance.py`
-- `beacon/utils/intent_router.py`
-- `skills/beacon/beacon-archive/SKILL.md`
-- `docs/beacon/v1.3.8/prd/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md`
-- `docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md`
-- `docs/beacon/v1.3.8/qa/test-cases/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md`
-- `docs/beacon/v1.3.8/research/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation-analysis.md`
-- `docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/navigation-map.json`
-- `docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/route-closure-contract.json`
-- `docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/state-flow-map.json`
-- `docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/page-specs/runtime-center.json`
-- `docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/pages/runtime-center.md`
-- `tests/test_v138_archive_command.py`
-- `tests/test_gate_delivery_execution_artifacts.py`
-- `tests/test_v112_implementation_plan_runtime.py`
-- `tests/test_v131_cognitive_load_gates.py`
+- `beacon/commands/workflow.py`
+- `beacon/utils/delivery_kernel.py`
+- `beacon/utils/implement_adapters.py`
+- `beacon/utils/implementation_plan.py`
+- `beacon/utils/release_scorecard.py`
+- `beacon/version-truth.json`
+- `docs/beacon/v1.3.8/.machine/execution/git-workflow-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.json`
+- `docs/beacon/v1.3.8/.machine/execution/implementation-plan-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.json`
+- `docs/beacon/v1.3.8/.machine/execution/implementation-plan-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.progress.json`
+- `docs/beacon/v1.3.8/execution/implementation-plan-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md`
+- `docs/beacon/v1.3.8/release/v1.3.8.md`
+- `pyproject.toml`
+- `skills/beacon/SKILL.md`
+- `skills/beacon/beacon-brainstorm/SKILL.md`
+- `skills/beacon/beacon-change/SKILL.md`
+- `skills/beacon/beacon-doctor/SKILL.md`
+- `skills/beacon/beacon-help/SKILL.md`
+- `skills/beacon/beacon-implement/SKILL.md`
+- `skills/beacon/beacon-prd/SKILL.md`
+- `skills/beacon/beacon-prototype/SKILL.md`
+- `skills/beacon/beacon-qa/SKILL.md`
+- `skills/beacon/beacon-release/SKILL.md`
+- `skills/beacon/beacon-status/SKILL.md`
+- `skills/beacon/beacon-test-case/SKILL.md`
+- `skills/beacon/beacon-user-story/SKILL.md`
+- `skills/beacon/examples/basic-workflow.md`
+- `skills/beacon/examples/implementation-with-omx.md`
+- `skills/beacon/examples/release-readiness.md`
+- `skills/beacon/metadata.json`
+- `skills/beacon/references/_sections.md`
+- `skills/beacon/references/usage-rules.md`
+- `skills/beacon/using-beacon/SKILL.md`
+- `tests/test_release_check_contract.py`
+- `tests/test_v114_implement_command.py`
+- `tests/test_v131_host_skill_pack.py`
 
 ## Verification
-- `passed`: python3 -m pytest -q tests/test_v138_archive_command.py
-- `passed`: python3 -m pytest -q tests/test_gate_delivery_execution_artifacts.py -k 'support_implementation_plan_marker'
-- `passed`: python3 -m pytest -q tests/test_v112_implementation_plan_runtime.py -k 'cross_version_qa_status_and_fallback_to_current_revision'
-- `passed`: python3 -m pytest -q tests/test_v131_cognitive_load_gates.py -k 'cross_version_qa_status_and_use_current_revision_feature'
+- `passed`: beacon implement run --runner codex-subagents
+- `passed`: auto-test-status
 
 ## Artifact Updates
-- none
+- `user_story`: required=False reason=story machine state writeback recorded
+- `review_quality`: required=True reason=run quality review after native implementation
+- `acceptance`: required=True reason=acceptance remains a formal post-verify action
 
 ## Requirement Traceability
 - source_of_truth_root: `docs/beacon/v1.3.8`
@@ -53,12 +74,12 @@
 - ac_matrix: `docs/beacon/v1.3.8/.machine/qa/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.ac-test-matrix.json`
 - revision_id: `R2`
 - implemented_item_ids: `AC-001, AC-002, AC-003, AC-004, AC-005, TASK-001`
-- implemented_task_ids: `ITASK-001, ITASK-002, ITASK-003, ITASK-004, ITASK-005`
-- verified_task_ids: `TEST-001, TEST-002, TEST-003, TEST-004, TEST-005`
+- implemented_task_ids: ``
+- verified_task_ids: ``
 
 ## Delivery Surfaces
 - runtime_mode: `team`
-- shipped_surfaces: `archive plan/apply/status/explain, archive skill routing, release gate current-version scoping`
+- shipped_surfaces: ``
 - partial_surfaces: ``
 - deferred_surfaces: ``
 - downgrade_rationale: ``

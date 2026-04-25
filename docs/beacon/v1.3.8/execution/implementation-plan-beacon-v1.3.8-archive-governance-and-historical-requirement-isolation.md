@@ -4,10 +4,10 @@
 - feature: `Beacon v1.3.8 archive governance and historical requirement isolation`
 - version: `v1.3.8`
 - revision_id: `R2`
-- baseline_hash: `sha256:a7100e1f17e07d0ed2918d3bfee4a53489aa6a0441befb741f312de9d67fa9d5`
+- baseline_hash: `sha256:13f615233cc8ee664a2af6183c0028f72771f5bd25c9e21201ce6184cb499ed3`
 - delivery_baseline_id: `impl-delivery-baseline-v1.3.8-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation-R2`
 - delivery_baseline_source_hash: `sha256:c67925f85ec3fff974729b80e6fa96854627a5e47542a62a887690cf4b1a89b3`
-- plan_hash: `sha256:77125f505361f61f80843996fe79d14e0632eb1ea6b21057ae620c84a862780c`
+- plan_hash: `sha256:6d92c964d3474c549986c5582b4e94bbd39f558364ae7a5d6b916aec77409ed0`
 - status: `completed`
 
 ## Source Refs

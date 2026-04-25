@@ -35,7 +35,7 @@ Prefer the labs/hidden command:
 ```bash
 bash skills/beacon/scripts/run_beacon.sh brainstorm run "<prompt>" \
   --project-root . \
-  --version v1.3.7 \
+  --version v1.3.8 \
   --mode requirement-convergence \
   --json
 ```

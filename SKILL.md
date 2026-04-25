@@ -1,22 +1,22 @@
 ---
 name: beacon
-version: 1.3.7
+version: 1.3.8
 description: Evidence-first Product Workflow Kernel for product thinking, user stories, PRDs, test cases, and release workflows
 ---
 
 # Beacon - Evidence-first Product Workflow Kernel
 
-> **Skill Version**: v1.3.7
-> **CLI Version**: v1.3.7
+> **Skill Version**: v1.3.8
+> **CLI Version**: v1.3.8
 > **Last Updated**: 2026-04-21
 
 Beacon 是 AI 产品工作流内核，把 requirement materials、实现证据、QA 结论和 release 决策统一到一个版本化系统。
 
 ## 当前版本 / 发布线
 
-- **当前发布线**：`v1.3.7`
-- **当前包版本**：`1.3.7`
-- **最新已接受文档线**：`v1.3.7`
+- **当前发布线**：`v1.3.8`
+- **当前包版本**：`1.3.8`
+- **最新已接受文档线**：`v1.3.8`
 - **标准打包入口**：`skills/beacon/`
 - **文档主源**：`docs/beacon/{version}/`
 - `beacon <subcommand>`（推荐）
@@ -24,11 +24,11 @@ Beacon 是 AI 产品工作流内核，把 requirement materials、实现证据�
 
 如果你只记一条：
 
-> 当前运行时与文档主线统一到 `docs/beacon/v1.3.7/`，主机入口统一走 `beacon <subcommand>` 和 `skills/beacon/`。
+> 当前运行时与文档主线统一到 `docs/beacon/v1.3.8/`，主机入口统一走 `beacon <subcommand>` 和 `skills/beacon/`。
 
 当前对外口径：
 
-> `docs/beacon/v1.3.7/` 是 Beacon 当前 runtime、host-native orchestration、delivery kernel 和 read-model 的统一文档线。
+> `docs/beacon/v1.3.8/` 是 Beacon 当前 runtime、host-native orchestration、delivery kernel 和 read-model 的统一文档线。
 
 ## 产品定位
 
@@ -56,11 +56,11 @@ Beacon 不是模板生成器。它是把下面这些面压到同一条可审计�
 ## Quick Start / 快速上手
 
 ```bash
-beacon help --project-root . --version v1.3.7 --feature "<feature>" --json
-beacon prd bootstrap "<feature>" --project-root . --version v1.3.7 --dry-run --json
-beacon implement plan "<feature>" --project . --version v1.3.7 --json
-beacon qa run "<feature>" --project . --version v1.3.7 --json
-beacon gate check release --project-root . --version v1.3.7 --json
+beacon help --project-root . --version v1.3.8 --feature "<feature>" --json
+beacon prd bootstrap "<feature>" --project-root . --version v1.3.8 --dry-run --json
+beacon implement plan "<feature>" --project . --version v1.3.8 --json
+beacon qa run "<feature>" --project . --version v1.3.8 --json
+beacon gate check release --project-root . --version v1.3.8 --json
 ```
 
 ## Workflow Model / 主工作流模型
@@ -93,33 +93,35 @@ prd
 
 ## Why This Skill Matters / 为什么重要
 
-- Beacon v1.3.7 把 runtime truth、技能包装、HUD 接线统一到同一条发布线
-- Beacon v1.3.7 把 canonical delivery baseline 与 built-in brainstorm sidecar 收敛进当前运行线
+- Beacon v1.3.8 把 runtime truth、技能包装、HUD 接线统一到同一条发布线
+- Beacon v1.3.8 把 diagram truth、prompt boundary gate、archive 治理一起收敛进当前运行线
 - QA 的 skill 提示词必须遵守第一性原则，不能跳过 requirement evidence
 - 如果关键信号缺失，必须 `stop_for_repair`
 - 需要浏览器证据时可以显式接 `browser-use`，但它不是默认主线
 
 ## Current Runtime Line / 当前运行线
 
-`v1.3.7` 现在就是 Beacon 的正式 runtime 口径，本线要求以下叙事与实现保持一致：
+`v1.3.8` 现在就是 Beacon 的正式 runtime 口径，本线要求以下叙事与实现保持一致：
 
 - skill 运行在 Claude / Codex 中时，默认优先复用宿主原生 LLM
 - Beacon CLI 退回到结构化执行内核：
   - truth read
+  - diagram truth admission
   - semantic envelope validation
   - canonical projection
+  - prompt boundary gate
   - freeze / review / gate / release
-- `implement / qa / release / help / status / doctor` 共享统一 delivery contract 与 read model
+- `implement / qa / release / help / status / doctor / archive` 共享统一 delivery contract 与 read model
 - `BEACON_LLM_API_KEY` 退居 provider fallback，而不是宿主默认前提
 
 ## Recommended Reading Order / 推荐阅读顺序
 
-1. `docs/beacon/v1.3.7/SUMMARY.md`
-2. `docs/beacon/v1.3.7/execution/index.md`
-3. `docs/beacon/v1.3.7/execution/architecture-blueprint.md`
-4. `docs/beacon/v1.3.7/execution/project-skill-qa-evolution-blueprint.md`
-5. `docs/beacon/v1.3.7/execution/boundaries.md`
-6. `docs/beacon/v1.3.7/release/v1.3.7.md`
+1. `docs/beacon/v1.3.8/SUMMARY.md`
+2. `docs/beacon/v1.3.8/execution/index.md`
+3. `docs/beacon/v1.3.8/execution/architecture-blueprint.md`
+4. `docs/beacon/v1.3.8/execution/project-skill-qa-evolution-blueprint.md`
+5. `docs/beacon/v1.3.8/execution/boundaries.md`
+6. `docs/beacon/v1.3.8/release/v1.3.8.md`
 
 ## Common Usage Modes / 常见使用场景
 
@@ -133,10 +135,10 @@ prd
 
 ```bash
 beacon help --project-root . --json
-beacon status --board --project-root . --version v1.3.7
+beacon status --board --project-root . --version v1.3.8
 beacon doctor verify-context --project-root . --strict --json
-beacon doctor setup-codex-hud-hook --project-root . --version v1.3.7 --apply --json
-beacon doctor verify-codex-hud-hook --project-root . --version v1.3.7 --json
+beacon doctor setup-codex-hud-hook --project-root . --version v1.3.8 --apply --json
+beacon doctor verify-codex-hud-hook --project-root . --version v1.3.8 --json
 ```
 
 <!-- AUTO-COMMANDS:START -->
@@ -267,13 +269,13 @@ beacon doctor verify-codex-hud-hook --project-root . --version v1.3.7 --json
 
 - 标准 skill 包：`skills/beacon/`
 - 版本化文档：`docs/beacon/{version}/`
-- 当前 host-native runtime 文档线：`docs/beacon/v1.3.7/`
-- 当前 runtime release note：`docs/beacon/v1.3.7/release/v1.3.7.md`
-- 当前架构蓝图：`docs/beacon/v1.3.7/execution/architecture-blueprint.md`
-- HUD 诊断：`beacon debug codex-fixed-hud --project-root . --version v1.3.7 --json`
+- 当前 host-native runtime 文档线：`docs/beacon/v1.3.8/`
+- 当前 runtime release note：`docs/beacon/v1.3.8/release/v1.3.8.md`
+- 当前架构蓝图：`docs/beacon/v1.3.8/execution/architecture-blueprint.md`
+- HUD 诊断：`beacon debug codex-fixed-hud --project-root . --version v1.3.8 --json`
 - 技能漂移检查：`python3 scripts/check_skill_drift.py --project-root . --json`
 - 安装说明：`.codex/INSTALL.md`
 
 ---
 
-**版本**: v1.3.7
+**版本**: v1.3.8

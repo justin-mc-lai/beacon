@@ -1,5 +1,5 @@
 <!-- BEACON:START -->
-<!-- BEACON:VERSION:v1.3.7 -->
+<!-- BEACON:VERSION:v1.3.8 -->
 <!-- BEACON:DOCS_VERSION:v1.3.8 -->
 # AGENTS.md
 
@@ -11,7 +11,7 @@ This file is Beacon-managed agent operation guidance.
 - Preserve user-authored sections outside Beacon managed blocks.
 
 ## Beacon requirement-material usage
-- Runtime target version: `v1.3.7`
+- Runtime target version: `v1.3.8`
 - Docs target version: `v1.3.8`
 - Use `docs/beacon/global-boundaries.md` as the canonical Beacon-wide global constraint source.
 - Use `docs/beacon/<version>/` as the canonical delivery tree.

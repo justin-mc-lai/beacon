@@ -1,79 +1,601 @@
 {
   "schema_version": "1.0",
-  "run_id": "run-20260424T104600Z-v138-archive-governance",
+  "run_id": "run-20260425T141544Z-43ce",
   "feature": "Beacon v1.3.8 archive governance and historical requirement isolation",
   "feature_slug": "beacon-v1.3.8-archive-governance-and-historical-requirement-isolation",
   "version": "v1.3.8",
-  "runner": "codex-team-closure",
-  "adapter_type": "manual",
   "mode": "team",
   "host_runtime": "codex",
-  "skill": "beacon:beacon-implement",
+  "runner": "codex-subagents",
+  "adapter_type": "native",
+  "request_path": ".beacon/implement/run-20260425T141544Z-43ce/request.json",
+  "result_path": ".beacon/implement/run-20260425T141544Z-43ce/result.json",
+  "branch_preflight_path": ".beacon/implement/run-20260425T141544Z-43ce/branch-preflight.json",
+  "plan_preflight_path": ".beacon/implement/run-20260425T141544Z-43ce/plan-preflight.json",
+  "git_workflow": {
+    "schema_version": "1.0",
+    "feature": "Beacon v1.3.8 archive governance and historical requirement isolation",
+    "feature_slug": "beacon-v1.3.8-archive-governance-and-historical-requirement-isolation",
+    "version": "v1.3.8",
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.3.8",
+    "branch_prefix": "beacon/",
+    "base_branch": "main",
+    "use_git_worktree": false,
+    "require_clean_worktree_for_switch": true,
+    "service_directories": [
+      "."
+    ],
+    "direct_delivery_services": [
+      "."
+    ],
+    "writable_services": [
+      "."
+    ],
+    "reference_only_services": [
+      "docs"
+    ],
+    "git_roots": [
+      "."
+    ],
+    "worktree_root": ".",
+    "implementation_preflight": [
+      "Before implementation, verify the target service belongs to: .",
+      "Before implementation, verify the current branch is beacon/v1.3.8.",
+      "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+    ],
+    "source": "technical_review_contract",
+    "generated_at": "2026-04-25T14:15:44.954468+00:00",
+    "baseline_id": "impl-delivery-baseline-v1.3.8-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation-R2",
+    "transaction_id": "tx-82d57a6881e17c9ee",
+    "source_hash": "sha256:c67925f85ec3fff974729b80e6fa96854627a5e47542a62a887690cf4b1a89b3",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.3.8/.machine/execution/implementation-delivery-baseline-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "generated_at": "2026-04-25T14:15:45.503706+00:00",
   "status": "completed",
-  "summary": "Implemented the archive support command and governance helpers, then repaired release-gate scoping so v1.3.8 closes on current-version archive truth instead of cross-version drift.",
+  "subagent_prechecks": {
+    "required": true,
+    "host_runtime": "codex",
+    "runtime_readiness": {
+      "schema_version": "1.0",
+      "check": "runtime-readiness",
+      "status": "pass",
+      "reason_code": "",
+      "host_runtime": "codex",
+      "required": false,
+      "checks": [],
+      "blocked_checks": [],
+      "detail": "Local native team runtime for this Beacon surface is driven by Beacon-managed execution artifacts; project AGENTS/CLAUDE context files are not required to proceed.",
+      "recommended_command": ""
+    },
+    "delegation_readiness": {
+      "schema_version": "1.0",
+      "check": "delegation-readiness",
+      "status": "pass",
+      "reason_code": "",
+      "feature": "Beacon v1.3.8 archive governance and historical requirement isolation",
+      "version": "v1.3.8",
+      "checks": [
+        {
+          "name": "prd_present",
+          "ok": true,
+          "detail": "docs/beacon/v1.3.8/prd/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md"
+        },
+        {
+          "name": "user_story_present",
+          "ok": true,
+          "detail": "docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md"
+        },
+        {
+          "name": "test_case_present",
+          "ok": true,
+          "detail": "docs/beacon/v1.3.8/qa/test-cases/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md"
+        },
+        {
+          "name": "implementation_plan_present",
+          "ok": true,
+          "detail": "docs/beacon/v1.3.8/.machine/execution/implementation-plan-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.json"
+        },
+        {
+          "name": "git_workflow_present",
+          "ok": true,
+          "detail": "docs/beacon/v1.3.8/.machine/execution/git-workflow-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.json"
+        },
+        {
+          "name": "qa_baseline_bundle_present",
+          "ok": true,
+          "detail": "docs/beacon/v1.3.8/.machine/qa"
+        }
+      ],
+      "blocked_checks": [],
+      "recommended_command": ""
+    }
+  },
+  "semantic_layer": {
+    "artifacts": {
+      "semantic_contract": "docs/beacon/v1.3.8/execution/semantic/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/semantic-contract.json",
+      "semantic_dictionary": "docs/beacon/v1.3.8/execution/semantic/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/semantic-dictionary.md",
+      "semantic_usage_guidelines": "docs/beacon/v1.3.8/execution/semantic/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/semantic-usage-guidelines.md",
+      "semantic_review": "docs/beacon/v1.3.8/execution/semantic/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/semantic-review.json"
+    },
+    "default_design_bridge": {
+      "repo": "https://github.com/Leonxlnx/taste-skill",
+      "skill_id": "taste-skill",
+      "entry": "",
+      "detected": false,
+      "kind": "external-default-bridge",
+      "supported_stages": [
+        "prototype",
+        "implement"
+      ],
+      "capabilities": [
+        "prototype",
+        "implement",
+        "taste-design",
+        "semantic-normalization"
+      ],
+      "install_hint": "npx skills add https://github.com/Leonxlnx/taste-skill --skill taste-skill"
+    }
+  },
+  "delivery_contract": {
+    "schema_version": "1.0",
+    "feature": "Beacon v1.3.8 archive governance and historical requirement isolation",
+    "version": "v1.3.8",
+    "requested_mode": "team",
+    "effective_mode": "team",
+    "generator_mode": "team",
+    "execution_mode": "team",
+    "runner_mode": "codex-subagents",
+    "host_runtime": "codex",
+    "fallback_reason": "",
+    "capability_snapshot": {
+      "schema_version": "1.0",
+      "host_runtime": "codex",
+      "subagent_required": true,
+      "subagent_runtime_status": "pass",
+      "subagent_delegation_status": "pass",
+      "host_semantic_ready": false,
+      "provider_available": false
+    },
+    "subagent_prechecks": {
+      "required": true,
+      "host_runtime": "codex",
+      "runtime_readiness": {
+        "schema_version": "1.0",
+        "check": "runtime-readiness",
+        "status": "pass",
+        "reason_code": "",
+        "host_runtime": "codex",
+        "required": false,
+        "checks": [],
+        "blocked_checks": [],
+        "detail": "Local native team runtime for this Beacon surface is driven by Beacon-managed execution artifacts; project AGENTS/CLAUDE context files are not required to proceed.",
+        "recommended_command": ""
+      },
+      "delegation_readiness": {
+        "schema_version": "1.0",
+        "check": "delegation-readiness",
+        "status": "pass",
+        "reason_code": "",
+        "feature": "Beacon v1.3.8 archive governance and historical requirement isolation",
+        "version": "v1.3.8",
+        "checks": [
+          {
+            "name": "prd_present",
+            "ok": true,
+            "detail": "docs/beacon/v1.3.8/prd/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md"
+          },
+          {
+            "name": "user_story_present",
+            "ok": true,
+            "detail": "docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md"
+          },
+          {
+            "name": "test_case_present",
+            "ok": true,
+            "detail": "docs/beacon/v1.3.8/qa/test-cases/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md"
+          },
+          {
+            "name": "implementation_plan_present",
+            "ok": true,
+            "detail": "docs/beacon/v1.3.8/.machine/execution/implementation-plan-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.json"
+          },
+          {
+            "name": "git_workflow_present",
+            "ok": true,
+            "detail": "docs/beacon/v1.3.8/.machine/execution/git-workflow-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.json"
+          },
+          {
+            "name": "qa_baseline_bundle_present",
+            "ok": true,
+            "detail": "docs/beacon/v1.3.8/.machine/qa"
+          }
+        ],
+        "blocked_checks": [],
+        "recommended_command": ""
+      }
+    },
+    "requirement_binding": {
+      "source_of_truth_root": "docs/beacon/v1.3.8",
+      "prd": "docs/beacon/v1.3.8/prd/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+      "user_story": "docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+      "test_case": "docs/beacon/v1.3.8/qa/test-cases/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+      "ac_matrix": "docs/beacon/v1.3.8/.machine/qa/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.ac-test-matrix.json",
+      "revision_id": "R2",
+      "implemented_item_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "TASK-001"
+      ],
+      "implemented_task_ids": [],
+      "verified_task_ids": []
+    },
+    "traceability_refs": [
+      "docs/beacon/v1.3.8/prd/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+      "docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+      "docs/beacon/v1.3.8/qa/test-cases/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+      "docs/beacon/v1.3.8/.machine/qa/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.ac-test-matrix.json",
+      ".beacon/implement/run-20260425T141544Z-43ce/request.json",
+      ".beacon/implement/run-20260425T141544Z-43ce/result.json"
+    ],
+    "runner": "codex-subagents",
+    "adapter_type": "native",
+    "execution_surface": "implement-team",
+    "team_mode": true,
+    "qa_status": "",
+    "gate_status": "",
+    "release_ready": false,
+    "risk_flags": []
+  },
+  "host_native_delivery": {
+    "schema_version": "1.0",
+    "feature": "Beacon v1.3.8 archive governance and historical requirement isolation",
+    "version": "v1.3.8",
+    "requested_mode": "team",
+    "effective_mode": "team",
+    "generator_mode": "team",
+    "execution_mode": "team",
+    "runner_mode": "codex-subagents",
+    "host_runtime": "codex",
+    "fallback_reason": "",
+    "capability_snapshot": {
+      "schema_version": "1.0",
+      "host_runtime": "codex",
+      "subagent_required": true,
+      "subagent_runtime_status": "pass",
+      "subagent_delegation_status": "pass",
+      "host_semantic_ready": false,
+      "provider_available": false
+    },
+    "subagent_prechecks": {
+      "required": true,
+      "host_runtime": "codex",
+      "runtime_readiness": {
+        "schema_version": "1.0",
+        "check": "runtime-readiness",
+        "status": "pass",
+        "reason_code": "",
+        "host_runtime": "codex",
+        "required": false,
+        "checks": [],
+        "blocked_checks": [],
+        "detail": "Local native team runtime for this Beacon surface is driven by Beacon-managed execution artifacts; project AGENTS/CLAUDE context files are not required to proceed.",
+        "recommended_command": ""
+      },
+      "delegation_readiness": {
+        "schema_version": "1.0",
+        "check": "delegation-readiness",
+        "status": "pass",
+        "reason_code": "",
+        "feature": "Beacon v1.3.8 archive governance and historical requirement isolation",
+        "version": "v1.3.8",
+        "checks": [
+          {
+            "name": "prd_present",
+            "ok": true,
+            "detail": "docs/beacon/v1.3.8/prd/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md"
+          },
+          {
+            "name": "user_story_present",
+            "ok": true,
+            "detail": "docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md"
+          },
+          {
+            "name": "test_case_present",
+            "ok": true,
+            "detail": "docs/beacon/v1.3.8/qa/test-cases/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md"
+          },
+          {
+            "name": "implementation_plan_present",
+            "ok": true,
+            "detail": "docs/beacon/v1.3.8/.machine/execution/implementation-plan-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.json"
+          },
+          {
+            "name": "git_workflow_present",
+            "ok": true,
+            "detail": "docs/beacon/v1.3.8/.machine/execution/git-workflow-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.json"
+          },
+          {
+            "name": "qa_baseline_bundle_present",
+            "ok": true,
+            "detail": "docs/beacon/v1.3.8/.machine/qa"
+          }
+        ],
+        "blocked_checks": [],
+        "recommended_command": ""
+      }
+    },
+    "requirement_binding": {
+      "source_of_truth_root": "docs/beacon/v1.3.8",
+      "prd": "docs/beacon/v1.3.8/prd/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+      "user_story": "docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+      "test_case": "docs/beacon/v1.3.8/qa/test-cases/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+      "ac_matrix": "docs/beacon/v1.3.8/.machine/qa/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.ac-test-matrix.json",
+      "revision_id": "R2",
+      "implemented_item_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "TASK-001"
+      ],
+      "implemented_task_ids": [],
+      "verified_task_ids": []
+    },
+    "traceability_refs": [
+      "docs/beacon/v1.3.8/prd/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+      "docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+      "docs/beacon/v1.3.8/qa/test-cases/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+      "docs/beacon/v1.3.8/.machine/qa/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.ac-test-matrix.json",
+      ".beacon/implement/run-20260425T141544Z-43ce/request.json",
+      ".beacon/implement/run-20260425T141544Z-43ce/result.json"
+    ],
+    "runner": "codex-subagents",
+    "adapter_type": "native",
+    "execution_surface": "implement-team",
+    "team_mode": true,
+    "qa_status": "",
+    "gate_status": "",
+    "release_ready": false,
+    "risk_flags": []
+  },
+  "prompt_boundary": {
+    "schema_version": "1.0",
+    "feature": "Beacon v1.3.8 archive governance and historical requirement isolation",
+    "feature_slug": "beacon-v1.3.8-archive-governance-and-historical-requirement-isolation",
+    "version": "v1.3.8",
+    "required": true,
+    "prompt": "Implement Beacon v1.3.8 archive governance and historical requirement isolation for release closure using the frozen PRD, user story, and test cases as-is.",
+    "classification": "in_scope_implementation",
+    "blocked": false,
+    "status": "pass",
+    "reason_code": "",
+    "next_action": "",
+    "recommended_command": "",
+    "matched_signals": [],
+    "frozen_refs": [
+      "docs/beacon/v1.3.8/prd/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+      "docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+      "docs/beacon/v1.3.8/qa/test-cases/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md"
+    ]
+  },
+  "skill": "",
+  "summary": "codex-subagents implementation completed via implement-team flow",
   "changed_files": [
-    "beacon/cli_factory.py",
-    "beacon/command_catalog.py",
-    "beacon/commands/archive.py",
+    ".claude-plugin/plugin.json",
+    ".codex/INSTALL.md",
+    ".gitignore",
+    "AGENTS.md",
+    "CLAUDE.md",
+    "README.md",
+    "SKILL.md",
+    "beacon/__init__.py",
     "beacon/commands/gate.py",
-    "beacon/commands/qa.py",
+    "beacon/commands/implement.py",
     "beacon/commands/release.py",
-    "beacon/utils/archive_governance.py",
-    "beacon/utils/intent_router.py",
-    "skills/beacon/beacon-archive/SKILL.md",
-    "docs/beacon/v1.3.8/prd/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
-    "docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
-    "docs/beacon/v1.3.8/qa/test-cases/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
-    "docs/beacon/v1.3.8/research/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation-analysis.md",
-    "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/navigation-map.json",
-    "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/route-closure-contract.json",
-    "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/state-flow-map.json",
-    "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/page-specs/runtime-center.json",
-    "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/pages/runtime-center.md",
-    "tests/test_v138_archive_command.py",
-    "tests/test_gate_delivery_execution_artifacts.py",
-    "tests/test_v112_implementation_plan_runtime.py",
-    "tests/test_v131_cognitive_load_gates.py"
+    "beacon/commands/workflow.py",
+    "beacon/utils/delivery_kernel.py",
+    "beacon/utils/implement_adapters.py",
+    "beacon/utils/implementation_plan.py",
+    "beacon/utils/release_scorecard.py",
+    "beacon/version-truth.json",
+    "docs/beacon/v1.3.8/.machine/execution/git-workflow-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.json",
+    "docs/beacon/v1.3.8/.machine/execution/implementation-plan-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.json",
+    "docs/beacon/v1.3.8/.machine/execution/implementation-plan-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.progress.json",
+    "docs/beacon/v1.3.8/execution/implementation-plan-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+    "docs/beacon/v1.3.8/release/v1.3.8.md",
+    "pyproject.toml",
+    "skills/beacon/SKILL.md",
+    "skills/beacon/beacon-brainstorm/SKILL.md",
+    "skills/beacon/beacon-change/SKILL.md",
+    "skills/beacon/beacon-doctor/SKILL.md",
+    "skills/beacon/beacon-help/SKILL.md",
+    "skills/beacon/beacon-implement/SKILL.md",
+    "skills/beacon/beacon-prd/SKILL.md",
+    "skills/beacon/beacon-prototype/SKILL.md",
+    "skills/beacon/beacon-qa/SKILL.md",
+    "skills/beacon/beacon-release/SKILL.md",
+    "skills/beacon/beacon-status/SKILL.md",
+    "skills/beacon/beacon-test-case/SKILL.md",
+    "skills/beacon/beacon-user-story/SKILL.md",
+    "skills/beacon/examples/basic-workflow.md",
+    "skills/beacon/examples/implementation-with-omx.md",
+    "skills/beacon/examples/release-readiness.md",
+    "skills/beacon/metadata.json",
+    "skills/beacon/references/_sections.md",
+    "skills/beacon/references/usage-rules.md",
+    "skills/beacon/using-beacon/SKILL.md",
+    "tests/test_release_check_contract.py",
+    "tests/test_v114_implement_command.py",
+    "tests/test_v131_host_skill_pack.py"
   ],
   "verification": [
     {
-      "command": "python3 -m pytest -q tests/test_v138_archive_command.py",
+      "command": "beacon implement run --runner codex-subagents",
       "status": "passed"
     },
     {
-      "command": "python3 -m pytest -q tests/test_gate_delivery_execution_artifacts.py -k 'support_implementation_plan_marker'",
-      "status": "passed"
-    },
-    {
-      "command": "python3 -m pytest -q tests/test_v112_implementation_plan_runtime.py -k 'cross_version_qa_status_and_fallback_to_current_revision'",
-      "status": "passed"
-    },
-    {
-      "command": "python3 -m pytest -q tests/test_v131_cognitive_load_gates.py -k 'cross_version_qa_status_and_use_current_revision_feature'",
-      "status": "passed"
+      "command": "auto-test-status",
+      "status": "passed",
+      "evidence": ".beacon/auto-test-status.json"
     }
   ],
-  "implemented_task_ids": [
-    "ITASK-001",
-    "ITASK-002",
-    "ITASK-003",
-    "ITASK-004",
-    "ITASK-005"
-  ],
-  "verified_task_ids": [
-    "TEST-001",
-    "TEST-002",
-    "TEST-003",
-    "TEST-004",
-    "TEST-005"
-  ],
+  "implemented_task_ids": [],
+  "verified_task_ids": [],
   "blocked_task_ids": [],
   "failed_task_ids": [],
-  "artifact_updates": {},
-  "request_path": ".beacon/implement/run-20260424T104600Z-v138-archive-governance/request.json",
-  "result_path": ".beacon/implement/run-20260424T104600Z-v138-archive-governance/result.json",
-  "stdout_path": "",
-  "stderr_path": "",
+  "artifact_updates": {
+    "user_story": {
+      "required": false,
+      "reason": "story machine state writeback recorded"
+    },
+    "review_quality": {
+      "required": true,
+      "reason": "run quality review after native implementation"
+    },
+    "acceptance": {
+      "required": true,
+      "reason": "acceptance remains a formal post-verify action"
+    }
+  },
+  "branch_preflight": {
+    "schema_version": "1.0",
+    "status": "pass",
+    "summary": "implement branch preflight passed on workspace branch beacon/v1.3.8",
+    "blocked": false,
+    "version": "v1.3.8",
+    "expected_branch": "beacon/v1.3.8",
+    "current_branch": "beacon/v1.3.8",
+    "current_tag": "",
+    "branch_exists": true,
+    "dirty_worktree": true,
+    "require_clean_worktree_for_switch": true,
+    "recommended_command": "",
+    "recommended_commands": [],
+    "direct_delivery_services": [
+      "."
+    ],
+    "service_scope": {
+      "status": "pass",
+      "direct_delivery_services": [
+        "."
+      ],
+      "verified_roots": [
+        "."
+      ],
+      "unresolved_services": []
+    },
+    "reason_codes": [],
+    "git_alignment": {
+      "mode": "workspace",
+      "repo_detected": true,
+      "target_branch": "beacon/v1.3.8",
+      "worktree_path": ".",
+      "workspace_repos": [
+        {
+          "repo_root": "/Users/apple/Developer/Personal/products/beacon",
+          "relative_root": ".",
+          "dirty_worktree": true,
+          "repo_url": "https://github.com/justin-mc-lai/beacon.git",
+          "base_branch": "main",
+          "target_branch": "beacon/v1.3.8",
+          "current_branch": "beacon/v1.3.8",
+          "current_commit": "e177e630ee579993a04592f70f8aea6a217c0495",
+          "current_tag": "",
+          "worktree_path": "/Users/apple/Developer/Personal/products/beacon",
+          "version_ref": "v1.3.8",
+          "allowed_refs": [
+            "branch"
+          ],
+          "enforce_branch_prefix": "beacon/",
+          "branch_matches_target": true,
+          "branch_has_required_prefix": true,
+          "tag_matches_version": false,
+          "version_ref_satisfied": true,
+          "reason_codes": [],
+          "blocked": false,
+          "detached_head": false,
+          "repo_detected": true
+        }
+      ],
+      "blocked": false,
+      "reason_codes": []
+    },
+    "run_id": "run-20260425T141544Z-43ce",
+    "feature": "Beacon v1.3.8 archive governance and historical requirement isolation",
+    "feature_slug": "beacon-v1.3.8-archive-governance-and-historical-requirement-isolation",
+    "generated_at": "2026-04-25T14:15:45.370535+00:00",
+    "git_workflow": {
+      "schema_version": "1.0",
+      "feature": "Beacon v1.3.8 archive governance and historical requirement isolation",
+      "feature_slug": "beacon-v1.3.8-archive-governance-and-historical-requirement-isolation",
+      "version": "v1.3.8",
+      "mode": "single-repo",
+      "expected_branch": "beacon/v1.3.8",
+      "branch_prefix": "beacon/",
+      "base_branch": "main",
+      "use_git_worktree": false,
+      "require_clean_worktree_for_switch": true,
+      "service_directories": [
+        "."
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "writable_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "git_roots": [
+        "."
+      ],
+      "worktree_root": ".",
+      "implementation_preflight": [
+        "Before implementation, verify the target service belongs to: .",
+        "Before implementation, verify the current branch is beacon/v1.3.8.",
+        "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+      ],
+      "source": "technical_review_contract",
+      "generated_at": "2026-04-25T14:15:44.954468+00:00",
+      "baseline_id": "impl-delivery-baseline-v1.3.8-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation-R2",
+      "transaction_id": "tx-82d57a6881e17c9ee",
+      "source_hash": "sha256:c67925f85ec3fff974729b80e6fa96854627a5e47542a62a887690cf4b1a89b3",
+      "projection_seq": 1,
+      "canonical_envelope_ref": "docs/beacon/v1.3.8/.machine/execution/implementation-delivery-baseline-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.json",
+      "projection_source": "implementation_delivery_baseline_envelope"
+    },
+    "branch_preflight_path": ".beacon/implement/run-20260425T141544Z-43ce/branch-preflight.json"
+  },
+  "plan_preflight": {
+    "schema_version": "1.0",
+    "run_id": "run-20260425T141544Z-43ce",
+    "feature": "Beacon v1.3.8 archive governance and historical requirement isolation",
+    "feature_slug": "beacon-v1.3.8-archive-governance-and-historical-requirement-isolation",
+    "version": "v1.3.8",
+    "expected_plan": "docs/beacon/v1.3.8/.machine/execution/implementation-plan-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.json",
+    "expected_revision_id": "R2",
+    "baseline_hash": "sha256:13f615233cc8ee664a2af6183c0028f72771f5bd25c9e21201ce6184cb499ed3",
+    "recommended_command": "beacon implement plan \"Beacon v1.3.8 archive governance and historical requirement isolation\" --project-root . --version v1.3.8",
+    "generated_at": "2026-04-25T14:15:45.371782+00:00",
+    "status": "pass",
+    "blocked": false,
+    "plan_id": "plan-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation-r2",
+    "plan_path": "docs/beacon/v1.3.8/.machine/execution/implementation-plan-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.json",
+    "progress_path": "docs/beacon/v1.3.8/.machine/execution/implementation-plan-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.progress.json"
+  },
+  "implementation_marker": ".beacon/state/implementation-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.json",
+  "technical_archive": {
+    "json": "docs/beacon/v1.3.8/.machine/execution/technical-implementation-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.json",
+    "md": "docs/beacon/v1.3.8/execution/technical-implementation-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md"
+  },
   "implementation_plan": "docs/beacon/v1.3.8/.machine/execution/implementation-plan-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.json",
   "implementation_plan_progress": {
     "schema_version": "1.0",
@@ -254,7 +776,7 @@
         "mapped_qa_case_ids": []
       }
     ],
-    "updated_at": "2026-04-24T10:49:00.667614+00:00"
+    "updated_at": "2026-04-25T14:15:45.458324+00:00"
   },
   "requirement_traceability": {
     "source_of_truth_root": "docs/beacon/v1.3.8",
@@ -271,1033 +793,184 @@
       "AC-005",
       "TASK-001"
     ],
-    "implemented_task_ids": [
-      "ITASK-001",
-      "ITASK-002",
-      "ITASK-003",
-      "ITASK-004",
-      "ITASK-005"
+    "implemented_task_ids": [],
+    "verified_task_ids": []
+  },
+  "delivery_surfaces": {
+    "runtime_mode": "team",
+    "shipped_surfaces": [],
+    "partial_surfaces": [],
+    "deferred_surfaces": [],
+    "downgrade_rationale": ""
+  },
+  "traceability_refs": [
+    "docs/beacon/v1.3.8/prd/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+    "docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+    "docs/beacon/v1.3.8/qa/test-cases/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+    "docs/beacon/v1.3.8/.machine/qa/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.ac-test-matrix.json",
+    ".beacon/implement/run-20260425T141544Z-43ce/request.json",
+    ".beacon/implement/run-20260425T141544Z-43ce/result.json"
+  ],
+  "implemented_items": [
+    "AC-001",
+    "AC-002",
+    "AC-003",
+    "AC-004",
+    "AC-005",
+    "TASK-001"
+  ],
+  "verified_items": [
+    "AC-001",
+    "AC-002",
+    "AC-003",
+    "AC-004",
+    "AC-005",
+    "TEST-001",
+    "TEST-002",
+    "TEST-003",
+    "TEST-004",
+    "TEST-005"
+  ],
+  "blocked_items": [],
+  "runner_mode": "codex-subagents",
+  "revision_id": "R2",
+  "team_execution": {
+    "team_name": "implement-team-run-20260425T141544Z-43ce",
+    "team_surface": "implement-team",
+    "state_path": ".beacon/team/implement-team-run-20260425T141544Z-43ce/manifest.json",
+    "artifact_dir": "docs/beacon/v1.3.8/execution/codex-subagents/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/run-20260425T141544Z-43ce",
+    "final_state": "terminal",
+    "terminal_status": "Pass",
+    "runtime": "file",
+    "tmux_session": "",
+    "roles": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
     ],
-    "verified_task_ids": [
+    "role_reports": {
+      "planner": {
+        "role": "planner",
+        "status": "completed",
+        "json": "docs/beacon/v1.3.8/execution/codex-subagents/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/run-20260425T141544Z-43ce/planner.json",
+        "markdown": "docs/beacon/v1.3.8/execution/codex-subagents/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/run-20260425T141544Z-43ce/planner.md"
+      },
+      "implementation-architect": {
+        "role": "implementation-architect",
+        "status": "completed",
+        "json": "docs/beacon/v1.3.8/execution/codex-subagents/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/run-20260425T141544Z-43ce/implementation-architect.json",
+        "markdown": "docs/beacon/v1.3.8/execution/codex-subagents/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/run-20260425T141544Z-43ce/implementation-architect.md"
+      },
+      "implementer": {
+        "role": "implementer",
+        "status": "completed",
+        "json": "docs/beacon/v1.3.8/execution/codex-subagents/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/run-20260425T141544Z-43ce/implementer.json",
+        "markdown": "docs/beacon/v1.3.8/execution/codex-subagents/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/run-20260425T141544Z-43ce/implementer.md"
+      },
+      "reviewer": {
+        "role": "reviewer",
+        "status": "pass",
+        "json": "docs/beacon/v1.3.8/execution/codex-subagents/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/run-20260425T141544Z-43ce/reviewer.json",
+        "markdown": "docs/beacon/v1.3.8/execution/codex-subagents/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/run-20260425T141544Z-43ce/reviewer.md"
+      },
+      "tester": {
+        "role": "tester",
+        "status": "completed",
+        "json": "docs/beacon/v1.3.8/execution/codex-subagents/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/run-20260425T141544Z-43ce/tester.json",
+        "markdown": "docs/beacon/v1.3.8/execution/codex-subagents/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/run-20260425T141544Z-43ce/tester.md"
+      }
+    },
+    "review_gates": {
+      "spec": {
+        "status": "pass",
+        "reviewer": "reviewer"
+      },
+      "quality": {
+        "status": "pass",
+        "reviewer": "tester"
+      }
+    },
+    "implemented_items": [
+      "AC-001",
+      "AC-002",
+      "AC-003",
+      "AC-004",
+      "AC-005",
+      "TASK-001"
+    ],
+    "verified_items": [
+      "AC-001",
+      "AC-002",
+      "AC-003",
+      "AC-004",
+      "AC-005",
       "TEST-001",
       "TEST-002",
       "TEST-003",
       "TEST-004",
       "TEST-005"
-    ]
-  },
-  "delivery_surfaces": {
-    "runtime_mode": "team",
-    "shipped_surfaces": [
-      "archive plan/apply/status/explain",
-      "archive skill routing",
-      "release gate current-version scoping"
     ],
-    "partial_surfaces": [],
-    "deferred_surfaces": [],
-    "downgrade_rationale": ""
-  },
-  "implementation_marker": ".beacon/state/implementation-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.json",
-  "technical_archive": {
-    "json": "docs/beacon/v1.3.8/.machine/execution/technical-implementation-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.json",
-    "md": "docs/beacon/v1.3.8/execution/technical-implementation-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md"
-  },
-  "change_document": {
-    "json": "docs/beacon/v1.3.8/.machine/change/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.json",
-    "md": "docs/beacon/v1.3.8/change/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md"
-  },
-  "generated_at": "2026-04-24T10:49:00.697113+00:00",
-  "writeback": {
-    "updated_items": 6,
-    "story": {
-      "story_id": "US-001",
-      "revision_id": "R2",
-      "title": "Beacon v1.3.8 archive governance and historical requirement isolation",
-      "priority": "medium",
-      "status": "implemented",
-      "items": [
-        {
-          "id": "AC-001",
-          "kind": "ac",
-          "theme": "archive-status",
-          "text": "Beacon 存在 machine-readable archive status model。",
-          "required": true,
-          "status": "implemented",
-          "implemented_by_run_id": "run-20260424T104600Z-v138-archive-governance",
-          "verified_by_run_id": null,
-          "accepted_at": null,
-          "changed_in_revision": "R2",
-          "story_id": "",
-          "details": [],
-          "source": "user-story:docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md"
-        },
-        {
-          "id": "AC-002",
-          "kind": "ac",
-          "theme": "support-command",
-          "text": "Beacon 对外存在 `beacon archive plan/apply/status/explain`，并明确归属 support command，而非新 lifecycle stage。",
-          "required": true,
-          "status": "implemented",
-          "implemented_by_run_id": "run-20260424T104600Z-v138-archive-governance",
-          "verified_by_run_id": null,
-          "accepted_at": null,
-          "changed_in_revision": "R2",
-          "story_id": "",
-          "details": [],
-          "source": "user-story:docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md"
-        },
-        {
-          "id": "AC-003",
-          "kind": "ac",
-          "theme": "skill-routing",
-          "text": "Beacon 对外存在 `beacon:beacon-archive` skill，负责 archive 命令路由。",
-          "required": true,
-          "status": "implemented",
-          "implemented_by_run_id": "run-20260424T104600Z-v138-archive-governance",
-          "verified_by_run_id": null,
-          "accepted_at": null,
-          "changed_in_revision": "R2",
-          "story_id": "",
-          "details": [],
-          "source": "user-story:docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md"
-        },
-        {
-          "id": "AC-004",
-          "kind": "ac",
-          "theme": "archive-consumption",
-          "text": "Beacon 存在版本级 archive plan / archive index、feature-level archive metadata，且 `help` / `status` / `brainstorm` / `memory-friction-evolution` / `implement` / `gate` 能识别 archive boundary。",
-          "required": true,
-          "status": "implemented",
-          "implemented_by_run_id": "run-20260424T104600Z-v138-archive-governance",
-          "verified_by_run_id": null,
-          "accepted_at": null,
-          "changed_in_revision": "R2",
-          "story_id": "",
-          "details": [],
-          "source": "user-story:docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md"
-        },
-        {
-          "id": "AC-005",
-          "kind": "ac",
-          "theme": "boundary-and-isolation",
-          "text": "`beacon-brainstorm` 只负责归档前策略讨论；历史 requirement 与历史 truth 可追溯，但不会继续默认进入当前 active delivery plane。",
-          "required": true,
-          "status": "implemented",
-          "implemented_by_run_id": "run-20260424T104600Z-v138-archive-governance",
-          "verified_by_run_id": null,
-          "accepted_at": null,
-          "changed_in_revision": "R2",
-          "story_id": "",
-          "details": [],
-          "source": "user-story:docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md"
-        },
-        {
-          "id": "TASK-001",
-          "kind": "task",
-          "text": "Implement current frozen revision",
-          "required": true,
-          "status": "implemented",
-          "implemented_by_run_id": "run-20260424T104600Z-v138-archive-governance",
-          "verified_by_run_id": null,
-          "accepted_at": null,
-          "changed_in_revision": "R2"
-        },
-        {
-          "id": "TEST-001",
-          "kind": "test",
-          "text": "Verify AC-001 — Beacon 存在 machine-readable archive status model。",
-          "required": true,
-          "status": "draft",
-          "implemented_by_run_id": null,
-          "verified_by_run_id": null,
-          "accepted_at": null,
-          "changed_in_revision": "R2",
-          "covers": [
-            "AC-001"
-          ],
-          "story_id": "",
-          "source": "user-story:docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md"
-        },
-        {
-          "id": "TEST-002",
-          "kind": "test",
-          "text": "Verify AC-002 — Beacon 对外存在 `beacon archive plan/apply/status/explain`，并明确归属 support command，而非新 lifecycle stage。",
-          "required": true,
-          "status": "draft",
-          "implemented_by_run_id": null,
-          "verified_by_run_id": null,
-          "accepted_at": null,
-          "changed_in_revision": "R2",
-          "covers": [
-            "AC-002"
-          ],
-          "story_id": "",
-          "source": "user-story:docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md"
-        },
-        {
-          "id": "TEST-003",
-          "kind": "test",
-          "text": "Verify AC-003 — Beacon 对外存在 `beacon:beacon-archive` skill，负责 archive 命令路由。",
-          "required": true,
-          "status": "draft",
-          "implemented_by_run_id": null,
-          "verified_by_run_id": null,
-          "accepted_at": null,
-          "changed_in_revision": "R2",
-          "covers": [
-            "AC-003"
-          ],
-          "story_id": "",
-          "source": "user-story:docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md"
-        },
-        {
-          "id": "TEST-004",
-          "kind": "test",
-          "text": "Verify AC-004 — Beacon 存在版本级 archive plan / archive index、feature-level archive metadata，且 `help` / `status` / `brainstorm` / `memory-friction-evolution` / `implement` / `gate` 能识别 archive boundary。",
-          "required": true,
-          "status": "draft",
-          "implemented_by_run_id": null,
-          "verified_by_run_id": null,
-          "accepted_at": null,
-          "changed_in_revision": "R2",
-          "covers": [
-            "AC-004"
-          ],
-          "story_id": "",
-          "source": "user-story:docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md"
-        },
-        {
-          "id": "TEST-005",
-          "kind": "test",
-          "text": "Verify AC-005 — `beacon-brainstorm` 只负责归档前策略讨论；历史 requirement 与历史 truth 可追溯，但不会继续默认进入当前 active delivery plane。",
-          "required": true,
-          "status": "draft",
-          "implemented_by_run_id": null,
-          "verified_by_run_id": null,
-          "accepted_at": null,
-          "changed_in_revision": "R2",
-          "covers": [
-            "AC-005"
-          ],
-          "story_id": "",
-          "source": "user-story:docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md"
-        }
+    "blocked_items": [],
+    "verification_entries": [
+      {
+        "command": "auto-test-status",
+        "status": "passed",
+        "evidence": ".beacon/auto-test-status.json"
+      }
+    ],
+    "context_isolation": {
+      "role_plane": "implementation",
+      "isolated_from": [
+        "qa-team"
       ],
-      "feature": "Beacon v1.3.8 archive governance and historical requirement isolation",
-      "feature_slug": "beacon-v1.3.8-archive-governance-and-historical-requirement-isolation",
-      "version": "v1.3.8",
-      "last_changed_files": [
-        "beacon/cli_factory.py",
-        "beacon/command_catalog.py",
-        "beacon/commands/archive.py",
-        "beacon/commands/gate.py",
-        "beacon/commands/qa.py",
-        "beacon/commands/release.py",
-        "beacon/utils/archive_governance.py",
-        "beacon/utils/intent_router.py",
-        "skills/beacon/beacon-archive/SKILL.md",
-        "docs/beacon/v1.3.8/prd/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
-        "docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
-        "docs/beacon/v1.3.8/qa/test-cases/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
-        "docs/beacon/v1.3.8/research/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation-analysis.md",
-        "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/navigation-map.json",
-        "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/route-closure-contract.json",
-        "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/state-flow-map.json",
-        "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/page-specs/runtime-center.json",
-        "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/pages/runtime-center.md",
-        "tests/test_v138_archive_command.py",
-        "tests/test_gate_delivery_execution_artifacts.py",
-        "tests/test_v112_implementation_plan_runtime.py",
-        "tests/test_v131_cognitive_load_gates.py"
-      ]
+      "shared_inputs": [
+        "docs/beacon/<version>/user-story",
+        "docs/beacon/<version>/prd",
+        "implementation-plan"
+      ],
+      "shared_outputs": [
+        "implementation_summary",
+        "technical_archive",
+        "story_writeback",
+        "evidence_refs"
+      ],
+      "rule": "qa_must_not_inherit_implement_private_context"
     },
-    "revision": {
-      "schema_version": "1.0",
-      "feature": "beacon-v1.3.8-archive-governance-and-historical-requirement-isolation",
-      "feature_slug": "beacon-v1.3.8-archive-governance-and-historical-requirement-isolation",
-      "version": "v1.3.8",
-      "revision_id": "R2",
-      "source_revision_id": "R1",
-      "reason": "freeze",
-      "doc_status": "frozen",
-      "delivery_status": "implemented",
-      "lifecycle_status": "idle",
-      "baseline_hash": "sha256:13f615233cc8ee664a2af6183c0028f72771f5bd25c9e21201ce6184cb499ed3",
-      "superseded_by": "",
-      "created_at": "2026-04-24T06:39:03.322920+00:00",
-      "frozen_at": "2026-04-24T10:29:08.650809+00:00",
-      "accepted_at": "",
-      "last_implementation_run_id": "run-20260424T104600Z-v138-archive-governance",
-      "changed_files": [
-        "beacon/cli_factory.py",
-        "beacon/command_catalog.py",
-        "beacon/commands/archive.py",
-        "beacon/commands/gate.py",
-        "beacon/commands/qa.py",
-        "beacon/commands/release.py",
-        "beacon/utils/archive_governance.py",
-        "beacon/utils/intent_router.py",
-        "skills/beacon/beacon-archive/SKILL.md",
-        "docs/beacon/v1.3.8/prd/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
-        "docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
-        "docs/beacon/v1.3.8/qa/test-cases/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
-        "docs/beacon/v1.3.8/research/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation-analysis.md",
-        "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/navigation-map.json",
-        "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/route-closure-contract.json",
-        "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/state-flow-map.json",
-        "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/page-specs/runtime-center.json",
-        "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/pages/runtime-center.md",
-        "tests/test_v138_archive_command.py",
-        "tests/test_gate_delivery_execution_artifacts.py",
-        "tests/test_v112_implementation_plan_runtime.py",
-        "tests/test_v131_cognitive_load_gates.py"
-      ]
-    },
-    "implementation_plan": {
-      "schema_version": "1.0",
-      "plan_id": "plan-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation-r2",
-      "feature": "Beacon v1.3.8 archive governance and historical requirement isolation",
-      "feature_slug": "beacon-v1.3.8-archive-governance-and-historical-requirement-isolation",
-      "version": "v1.3.8",
-      "revision_id": "R2",
-      "baseline_hash": "sha256:a7100e1f17e07d0ed2918d3bfee4a53489aa6a0441befb741f312de9d67fa9d5",
-      "plan_hash": "sha256:59e91b2eed57f47be8ec51c08569f49cab4900a0df514fd73ca5e45f56cc3419",
-      "status": "completed",
-      "source_refs": {
-        "user_story": "docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
-        "prd": "docs/beacon/v1.3.8/prd/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
-        "test_case": "docs/beacon/v1.3.8/qa/test-cases/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
-        "ac_matrix": "docs/beacon/v1.3.8/.machine/qa/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.ac-test-matrix.json",
-        "story_scenario_map": "docs/beacon/v1.3.8/.machine/qa/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.story-scenario-map.json",
-        "qa9_matrix": "docs/beacon/v1.3.8/.machine/qa/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.qa9-matrix.json"
-      },
-      "boundary_principles": [
-        {
-          "id": "explicit_assumptions",
-          "heading": "显式假设与歧义管理"
-        },
-        {
-          "id": "simplicity_first",
-          "heading": "简单优先"
-        },
-        {
-          "id": "surgical_changes",
-          "heading": "外科手术式改动"
-        },
-        {
-          "id": "goal_driven_execution",
-          "heading": "目标驱动验证闭环"
-        },
-        {
-          "id": "trivial_task_exception",
-          "heading": "trivial task 可以轻量处理，但不能越界"
-        }
-      ],
-      "workstreams": [
-        {
-          "workstream_id": "implementation-main",
-          "title": "Implementation Mainline",
-          "task_ids": [
-            "ITASK-001",
-            "ITASK-002",
-            "ITASK-003",
-            "ITASK-004",
-            "ITASK-005"
-          ]
-        }
-      ],
-      "task_mapping_source": "prd-sections",
-      "diagram_truth": {
-        "schema_version": "1.0",
-        "version": "v1.3.8",
-        "supported": true,
-        "required": true,
-        "ready": true,
-        "diagram_types": [
-          "branch-flow",
-          "state-machine",
-          "decision-priority"
-        ],
-        "state_axes": [
-          "ownership",
-          "eligibility",
-          "qa",
-          "relation",
-          "visibility",
-          "status"
-        ],
-        "missing_diagram_types": [],
-        "missing_state_axes": false,
-        "complexity_signals": [
-          "归属",
-          "branch-flow",
-          "state-machine",
-          "decision-priority",
-          "state axes",
-          "eligibility",
-          "ownership"
-        ],
-        "review_gates": [
-          "implementation must cover the declared branch-flow split points",
-          "implementation must preserve the declared state-machine transitions",
-          "implementation must preserve decision-priority ordering",
-          "implementation must keep state axes explicit: ownership, eligibility, qa, relation, visibility, status"
-        ],
-        "qa_coverage_hints": [
-          "cover primary and alternate branch-flow paths",
-          "cover state transitions, illegal transitions, and recovery paths",
-          "cover conflicting conditions using declared decision priority",
-          "cover axis combinations across: ownership, eligibility, qa, relation, visibility, status"
-        ],
-        "evidence_lines": {
-          "branch-flow": [
-            "- `archive plan` 生成候选 archive plan 后，若发现历史 truth 仍被当前 delivery plane 引用，则进入 `blocked-for-isolation` 分支，不允许直接 apply。",
-            "- `archive plan` 通过后，进入 `reviewed-plan` 分支；只有 review 通过，才允许执行 `archive apply`。",
-            "- `archive apply` 执行时，若归档目标仍需被学习消费，则进入 `archived-learnable` 分支；若只允许追溯与引用，则进入 `archived-reference-only` 分支。",
-            "- 任一分支如果发现 active truth 与 archived truth 仍存在默认混读，必须回退到 `blocked-for-isolation`，直到 archive boundary 被重新明确。"
-          ],
-          "state-machine": [
-            "- `draft-plan` -> `reviewed-plan` -> `applied-archive` -> `published-index`",
-            "- `active` -> `superseded` -> `archived-learnable` / `archived-reference-only`",
-            "- `blocked-for-isolation` 是显式阻塞态，表示历史 truth 仍未从当前 active delivery plane 中退出",
-            "- `published-index` 后，消费面只能通过 archive metadata 读取历史 truth，不能再把它当作 active truth 默认参与 implement / qa / release"
-          ],
-          "decision-priority": [
-            "1. current active delivery safety 高于 historical learnability",
-            "2. archive boundary correctness 高于 archive convenience",
-            "3. explicit archive metadata 高于 runtime 推断",
-            "4. archived-reference-only 隔离强度高于 archived-learnable"
-          ],
-          "state-axes": [
-            "- `ownership`: 当前 truth 是否仍归属于 active delivery plane",
-            "- `eligibility`: 历史 truth 是否允许继续进入 implement / qa / release 判定",
-            "- `relation`: 当前 feature 与 archived feature 是否仍存在 trace-only、learnable、or active dependency",
-            "- `visibility`: 历史 truth 面向 help/status/brainstorm 是 learnable 还是 reference-only"
-          ]
-        },
-        "generated_at": "2026-04-24T10:29:17.513910+00:00",
-        "feature": "Beacon v1.3.8 archive governance and historical requirement isolation",
-        "feature_slug": "beacon-v1.3.8-archive-governance-and-historical-requirement-isolation",
-        "prd_ref": "docs/beacon/v1.3.8/prd/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
-        "user_story_ref": "docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md"
-      },
-      "review_gates": [
-        "implementation must cover the declared branch-flow split points",
-        "implementation must preserve the declared state-machine transitions",
-        "implementation must preserve decision-priority ordering",
-        "implementation must keep state axes explicit: ownership, eligibility, qa, relation, visibility, status"
-      ],
-      "qa_coverage_hints": [
-        "cover primary and alternate branch-flow paths",
-        "cover state transitions, illegal transitions, and recovery paths",
-        "cover conflicting conditions using declared decision priority",
-        "cover axis combinations across: ownership, eligibility, qa, relation, visibility, status"
-      ],
-      "tasks": [
-        {
-          "task_id": "ITASK-001",
-          "title": "FR-001 AC-001",
-          "description": "Beacon 必须定义 machine-readable archive status model，至少包含 `active`、`superseded`、`archived-learnable`、`archived-reference-only`。",
-          "mapped_story_ids": [
-            "US-001"
-          ],
-          "mapped_ac_ids": [
-            "AC-001",
-            "AC-002"
-          ],
-          "mapped_test_ids": [
-            "TC-001",
-            "TC-002",
-            "TC-006",
-            "TC-011",
-            "TC-007",
-            "TC-012"
-          ],
-          "mapped_scenario_ids": [
-            "SC-001",
-            "SC-002",
-            "SC-003",
-            "SC-004",
-            "SC-005",
-            "SC-006",
-            "SC-007",
-            "SC-008",
-            "SC-009",
-            "SC-010",
-            "SC-011",
-            "SC-012",
-            "SC-013",
-            "SC-014",
-            "SC-015",
-            "SC-016",
-            "SC-017",
-            "SC-018",
-            "SC-019",
-            "SC-020",
-            "SC-021",
-            "SC-022",
-            "SC-023",
-            "SC-024",
-            "SC-025",
-            "SC-026",
-            "SC-027",
-            "SC-028",
-            "SC-029",
-            "SC-030"
-          ],
-          "mapped_qa_case_ids": [
-            "TC-001",
-            "TC-002",
-            "TC-006",
-            "TC-007",
-            "TC-011",
-            "TC-012"
-          ],
-          "depends_on": [],
-          "target_modules": [],
-          "diagram_review_gates": [
-            "implementation must cover the declared branch-flow split points",
-            "implementation must preserve the declared state-machine transitions",
-            "implementation must preserve decision-priority ordering",
-            "implementation must keep state axes explicit: ownership, eligibility, qa, relation, visibility, status"
-          ],
-          "diagram_state_axes": [
-            "ownership",
-            "eligibility",
-            "qa",
-            "relation",
-            "visibility",
-            "status"
-          ],
-          "status": "completed",
-          "evidence_refs": [
-            "run:run-20260424T104600Z-v138-archive-governance"
-          ],
-          "changed_files": [
-            "beacon/cli_factory.py",
-            "beacon/command_catalog.py",
-            "beacon/commands/archive.py",
-            "beacon/commands/gate.py",
-            "beacon/commands/qa.py",
-            "beacon/commands/release.py",
-            "beacon/utils/archive_governance.py",
-            "beacon/utils/intent_router.py",
-            "skills/beacon/beacon-archive/SKILL.md",
-            "docs/beacon/v1.3.8/prd/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
-            "docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
-            "docs/beacon/v1.3.8/qa/test-cases/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
-            "docs/beacon/v1.3.8/research/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation-analysis.md",
-            "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/navigation-map.json",
-            "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/route-closure-contract.json",
-            "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/state-flow-map.json",
-            "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/page-specs/runtime-center.json",
-            "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/pages/runtime-center.md",
-            "tests/test_v138_archive_command.py",
-            "tests/test_gate_delivery_execution_artifacts.py",
-            "tests/test_v112_implementation_plan_runtime.py",
-            "tests/test_v131_cognitive_load_gates.py"
-          ],
-          "blocked_reason": "",
-          "started_at": "2026-04-24T10:49:00.667554+00:00",
-          "completed_at": "2026-04-24T10:49:00.667557+00:00",
-          "active_run_id": ""
-        },
-        {
-          "task_id": "ITASK-002",
-          "title": "FR-002 AC-002",
-          "description": "Beacon 必须暴露顶层 support command `archive`，其最小子命令为 `plan/apply/status/explain`，且明确不是新的 lifecycle stage。",
-          "mapped_story_ids": [
-            "US-001"
-          ],
-          "mapped_ac_ids": [
-            "AC-004",
-            "AC-003"
-          ],
-          "mapped_test_ids": [
-            "TC-004",
-            "TC-003",
-            "TC-008",
-            "TC-013",
-            "TC-009"
-          ],
-          "mapped_scenario_ids": [
-            "SC-031",
-            "SC-032",
-            "SC-033",
-            "SC-034",
-            "SC-035",
-            "SC-036",
-            "SC-037",
-            "SC-038",
-            "SC-039",
-            "SC-040",
-            "SC-041",
-            "SC-042",
-            "SC-043",
-            "SC-044",
-            "SC-045",
-            "SC-046",
-            "SC-047",
-            "SC-048",
-            "SC-049",
-            "SC-050",
-            "SC-051",
-            "SC-052",
-            "SC-053",
-            "SC-054",
-            "SC-055"
-          ],
-          "mapped_qa_case_ids": [
-            "TC-003",
-            "TC-004",
-            "TC-008",
-            "TC-009",
-            "TC-013"
-          ],
-          "depends_on": [
-            "ITASK-001"
-          ],
-          "target_modules": [],
-          "diagram_review_gates": [
-            "implementation must cover the declared branch-flow split points",
-            "implementation must preserve the declared state-machine transitions",
-            "implementation must preserve decision-priority ordering",
-            "implementation must keep state axes explicit: ownership, eligibility, qa, relation, visibility, status"
-          ],
-          "diagram_state_axes": [
-            "ownership",
-            "eligibility",
-            "qa",
-            "relation",
-            "visibility",
-            "status"
-          ],
-          "status": "completed",
-          "evidence_refs": [
-            "run:run-20260424T104600Z-v138-archive-governance"
-          ],
-          "changed_files": [
-            "beacon/cli_factory.py",
-            "beacon/command_catalog.py",
-            "beacon/commands/archive.py",
-            "beacon/commands/gate.py",
-            "beacon/commands/qa.py",
-            "beacon/commands/release.py",
-            "beacon/utils/archive_governance.py",
-            "beacon/utils/intent_router.py",
-            "skills/beacon/beacon-archive/SKILL.md",
-            "docs/beacon/v1.3.8/prd/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
-            "docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
-            "docs/beacon/v1.3.8/qa/test-cases/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
-            "docs/beacon/v1.3.8/research/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation-analysis.md",
-            "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/navigation-map.json",
-            "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/route-closure-contract.json",
-            "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/state-flow-map.json",
-            "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/page-specs/runtime-center.json",
-            "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/pages/runtime-center.md",
-            "tests/test_v138_archive_command.py",
-            "tests/test_gate_delivery_execution_artifacts.py",
-            "tests/test_v112_implementation_plan_runtime.py",
-            "tests/test_v131_cognitive_load_gates.py"
-          ],
-          "blocked_reason": "",
-          "started_at": "2026-04-24T10:49:00.667569+00:00",
-          "completed_at": "2026-04-24T10:49:00.667571+00:00",
-          "active_run_id": ""
-        },
-        {
-          "task_id": "ITASK-003",
-          "title": "FR-003 AC-003",
-          "description": "Beacon 必须提供 `beacon:beacon-archive` skill，负责把 archive 人类命令路由到正式 archive governance 能力。",
-          "mapped_story_ids": [
-            "US-001"
-          ],
-          "mapped_ac_ids": [
-            "AC-005"
-          ],
-          "mapped_test_ids": [
-            "TC-005",
-            "TC-010"
-          ],
-          "mapped_scenario_ids": [
-            "SC-056",
-            "SC-057",
-            "SC-058",
-            "SC-059",
-            "SC-060",
-            "SC-061",
-            "SC-062",
-            "SC-063",
-            "SC-064",
-            "SC-065"
-          ],
-          "mapped_qa_case_ids": [
-            "TC-005",
-            "TC-010"
-          ],
-          "depends_on": [
-            "ITASK-002"
-          ],
-          "target_modules": [],
-          "diagram_review_gates": [
-            "implementation must cover the declared branch-flow split points",
-            "implementation must preserve the declared state-machine transitions",
-            "implementation must preserve decision-priority ordering",
-            "implementation must keep state axes explicit: ownership, eligibility, qa, relation, visibility, status"
-          ],
-          "diagram_state_axes": [
-            "ownership",
-            "eligibility",
-            "qa",
-            "relation",
-            "visibility",
-            "status"
-          ],
-          "status": "completed",
-          "evidence_refs": [
-            "run:run-20260424T104600Z-v138-archive-governance"
-          ],
-          "changed_files": [
-            "beacon/cli_factory.py",
-            "beacon/command_catalog.py",
-            "beacon/commands/archive.py",
-            "beacon/commands/gate.py",
-            "beacon/commands/qa.py",
-            "beacon/commands/release.py",
-            "beacon/utils/archive_governance.py",
-            "beacon/utils/intent_router.py",
-            "skills/beacon/beacon-archive/SKILL.md",
-            "docs/beacon/v1.3.8/prd/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
-            "docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
-            "docs/beacon/v1.3.8/qa/test-cases/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
-            "docs/beacon/v1.3.8/research/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation-analysis.md",
-            "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/navigation-map.json",
-            "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/route-closure-contract.json",
-            "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/state-flow-map.json",
-            "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/page-specs/runtime-center.json",
-            "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/pages/runtime-center.md",
-            "tests/test_v138_archive_command.py",
-            "tests/test_gate_delivery_execution_artifacts.py",
-            "tests/test_v112_implementation_plan_runtime.py",
-            "tests/test_v131_cognitive_load_gates.py"
-          ],
-          "blocked_reason": "",
-          "started_at": "2026-04-24T10:49:00.667580+00:00",
-          "completed_at": "2026-04-24T10:49:00.667582+00:00",
-          "active_run_id": ""
-        },
-        {
-          "task_id": "ITASK-004",
-          "title": "FR-004 AC-004",
-          "description": "Beacon 必须支持版本级 archive plan / archive index 与 feature-level archive metadata，并让 `help/status/brainstorm/memory-friction-evolution/implement/gate` 读取统一 archive boundary。",
-          "mapped_story_ids": [
-            "US-001"
-          ],
-          "mapped_ac_ids": [],
-          "mapped_test_ids": [],
-          "mapped_scenario_ids": [],
-          "mapped_qa_case_ids": [],
-          "depends_on": [
-            "ITASK-003"
-          ],
-          "target_modules": [],
-          "diagram_review_gates": [
-            "implementation must cover the declared branch-flow split points",
-            "implementation must preserve the declared state-machine transitions",
-            "implementation must preserve decision-priority ordering",
-            "implementation must keep state axes explicit: ownership, eligibility, qa, relation, visibility, status"
-          ],
-          "diagram_state_axes": [
-            "ownership",
-            "eligibility",
-            "qa",
-            "relation",
-            "visibility",
-            "status"
-          ],
-          "status": "completed",
-          "evidence_refs": [
-            "run:run-20260424T104600Z-v138-archive-governance"
-          ],
-          "changed_files": [
-            "beacon/cli_factory.py",
-            "beacon/command_catalog.py",
-            "beacon/commands/archive.py",
-            "beacon/commands/gate.py",
-            "beacon/commands/qa.py",
-            "beacon/commands/release.py",
-            "beacon/utils/archive_governance.py",
-            "beacon/utils/intent_router.py",
-            "skills/beacon/beacon-archive/SKILL.md",
-            "docs/beacon/v1.3.8/prd/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
-            "docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
-            "docs/beacon/v1.3.8/qa/test-cases/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
-            "docs/beacon/v1.3.8/research/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation-analysis.md",
-            "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/navigation-map.json",
-            "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/route-closure-contract.json",
-            "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/state-flow-map.json",
-            "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/page-specs/runtime-center.json",
-            "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/pages/runtime-center.md",
-            "tests/test_v138_archive_command.py",
-            "tests/test_gate_delivery_execution_artifacts.py",
-            "tests/test_v112_implementation_plan_runtime.py",
-            "tests/test_v131_cognitive_load_gates.py"
-          ],
-          "blocked_reason": "",
-          "started_at": "2026-04-24T10:49:00.667590+00:00",
-          "completed_at": "2026-04-24T10:49:00.667592+00:00",
-          "active_run_id": ""
-        },
-        {
-          "task_id": "ITASK-005",
-          "title": "FR-005 AC-005",
-          "description": "`beacon-brainstorm` 必须保持 read-only pre-archive 策略边界；archive governance 必须保证历史 truth 继续可追溯，但不再默认进入当前 active delivery plane。",
-          "mapped_story_ids": [
-            "US-001"
-          ],
-          "mapped_ac_ids": [],
-          "mapped_test_ids": [],
-          "mapped_scenario_ids": [],
-          "mapped_qa_case_ids": [],
-          "depends_on": [
-            "ITASK-004"
-          ],
-          "target_modules": [],
-          "diagram_review_gates": [
-            "implementation must cover the declared branch-flow split points",
-            "implementation must preserve the declared state-machine transitions",
-            "implementation must preserve decision-priority ordering",
-            "implementation must keep state axes explicit: ownership, eligibility, qa, relation, visibility, status"
-          ],
-          "diagram_state_axes": [
-            "ownership",
-            "eligibility",
-            "qa",
-            "relation",
-            "visibility",
-            "status"
-          ],
-          "status": "completed",
-          "evidence_refs": [
-            "run:run-20260424T104600Z-v138-archive-governance"
-          ],
-          "changed_files": [
-            "beacon/cli_factory.py",
-            "beacon/command_catalog.py",
-            "beacon/commands/archive.py",
-            "beacon/commands/gate.py",
-            "beacon/commands/qa.py",
-            "beacon/commands/release.py",
-            "beacon/utils/archive_governance.py",
-            "beacon/utils/intent_router.py",
-            "skills/beacon/beacon-archive/SKILL.md",
-            "docs/beacon/v1.3.8/prd/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
-            "docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
-            "docs/beacon/v1.3.8/qa/test-cases/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
-            "docs/beacon/v1.3.8/research/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation-analysis.md",
-            "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/navigation-map.json",
-            "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/route-closure-contract.json",
-            "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/state-flow-map.json",
-            "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/page-specs/runtime-center.json",
-            "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/pages/runtime-center.md",
-            "tests/test_v138_archive_command.py",
-            "tests/test_gate_delivery_execution_artifacts.py",
-            "tests/test_v112_implementation_plan_runtime.py",
-            "tests/test_v131_cognitive_load_gates.py"
-          ],
-          "blocked_reason": "",
-          "started_at": "2026-04-24T10:49:00.667600+00:00",
-          "completed_at": "2026-04-24T10:49:00.667601+00:00",
-          "active_run_id": ""
-        }
-      ],
-      "team_mode": {
-        "preferred_surface": "implement-team",
-        "preferred_runner": "codex-subagents",
-        "plan_command": "beacon implement team-plan \"Beacon v1.3.8 archive governance and historical requirement isolation\" --project-root . --version v1.3.8",
-        "run_command": "beacon implement team-run \"Beacon v1.3.8 archive governance and historical requirement isolation\" --project . --version v1.3.8",
-        "dev_run_command": "beacon implement dev-run \"Beacon v1.3.8 archive governance and historical requirement isolation\" --project . --version v1.3.8",
-        "ralph_command": "beacon implement run \"Beacon v1.3.8 archive governance and historical requirement isolation\" --project . --version v1.3.8 --mode ralph",
-        "qa_team_command": "beacon qa team-run \"Beacon v1.3.8 archive governance and historical requirement isolation\" --project . --version v1.3.8",
-        "roles": [
-          "planner",
-          "implementation-architect",
-          "implementer",
-          "reviewer",
-          "tester"
-        ],
-        "context_isolation": {
-          "role_plane": "implementation",
-          "isolated_from": [
-            "qa-team"
-          ],
-          "shared_inputs": [
-            "docs",
-            "implementation_plan",
-            "evidence_refs"
-          ],
-          "shared_outputs": [
-            "implementation_summary",
-            "technical_archive",
-            "repair_handoff"
-          ],
-          "rule": "qa_must_not_inherit_implement_private_context",
-          "implement_surface": "implement-team",
-          "qa_surface": "qa-team"
-        },
-        "config_source": "beacon/team_roles/implement-team.json",
-        "post_freeze_sequence": [
-          "freeze-pass",
-          "implement-team-plan",
-          "implement-team-run",
-          "implement-ralph",
-          "qa",
-          "release"
-        ],
-        "role_semantics": {
-          "team_reviewer": "checks implementation/spec drift before Ralph or QA closure",
-          "team_tester": "checks implementation evidence and verification readiness before Ralph or QA closure",
-          "ralph": "post-freeze controller that drives next-action routing across implementation, review, qa, and release"
-        },
-        "execution_order": [
-          "planner",
-          "implementation-architect",
-          "implementer",
-          "reviewer",
-          "tester"
-        ],
-        "formal_writeback_roles": [
-          "implementer",
-          "reviewer",
-          "tester"
-        ],
-        "role_contracts": {
-          "planner": {
-            "purpose": "Compile execution-ready task scope from the frozen revision baseline.",
-            "writes_to_formal_truth": false,
-            "outputs": [
-              "execution_plan_note"
-            ]
-          },
-          "implementation-architect": {
-            "purpose": "Translate frozen requirement truth into implementation-safe module boundaries and service ownership guidance.",
-            "writes_to_formal_truth": false,
-            "reads": [
-              "docs/beacon/<version>/user-story",
-              "docs/beacon/<version>/prd",
-              "docs/beacon/<version>/qa/test-cases",
-              "docs/beacon/<version>/execution/architecture-blueprint.md",
-              "implementation_plan",
-              "git_workflow_contract"
-            ],
-            "outputs": [
-              "implementation_architecture_note"
-            ],
-            "restrictions": [
-              "must_not_modify_frozen_requirement_materials",
-              "must_not_overwrite_architecture_blueprint"
-            ]
-          },
-          "implementer": {
-            "purpose": "Write code inside the frozen scope and the implementation architecture note.",
-            "writes_to_formal_truth": true,
-            "outputs": [
-              "story_writeback",
-              "implementation_summary"
-            ]
-          },
-          "reviewer": {
-            "purpose": "Review implementation/spec drift and architecture-boundary drift.",
-            "writes_to_formal_truth": true,
-            "outputs": [
-              "review_gate_spec"
-            ]
-          },
-          "tester": {
-            "purpose": "Check implementation evidence and verification readiness before acceptance.",
-            "writes_to_formal_truth": true,
-            "outputs": [
-              "review_gate_quality"
-            ]
-          }
-        }
-      },
-      "git_workflow": {
-        "schema_version": "1.0",
-        "feature": "Beacon v1.3.8 archive governance and historical requirement isolation",
-        "feature_slug": "beacon-v1.3.8-archive-governance-and-historical-requirement-isolation",
-        "version": "v1.3.8",
-        "mode": "single-repo",
-        "expected_branch": "beacon/v1.3.8",
-        "branch_prefix": "beacon/",
-        "base_branch": "main",
-        "use_git_worktree": false,
-        "require_clean_worktree_for_switch": true,
-        "service_directories": [
-          "."
-        ],
-        "direct_delivery_services": [
-          "."
-        ],
-        "writable_services": [
-          "."
-        ],
-        "reference_only_services": [
-          "docs"
-        ],
-        "git_roots": [
-          "."
-        ],
-        "worktree_root": ".",
-        "implementation_preflight": [
-          "Before implementation, verify the target service belongs to: .",
-          "Before implementation, verify the current branch is beacon/v1.3.8.",
-          "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
-        ],
-        "source": "technical_review_contract",
-        "generated_at": "2026-04-24T10:29:17.530347+00:00",
-        "baseline_id": "impl-delivery-baseline-v1.3.8-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation-R2",
-        "transaction_id": "tx-82d57a6881e17c9ee",
-        "source_hash": "sha256:c67925f85ec3fff974729b80e6fa96854627a5e47542a62a887690cf4b1a89b3",
-        "projection_seq": 1,
-        "canonical_envelope_ref": "docs/beacon/v1.3.8/.machine/execution/implementation-delivery-baseline-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.json",
-        "projection_source": "implementation_delivery_baseline_envelope"
-      },
-      "git_workflow_ref": "docs/beacon/v1.3.8/.machine/execution/git-workflow-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.json",
-      "git_workflow_markdown_ref": "docs/beacon/v1.3.8/execution/git-workflow-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
-      "base_branch": "main",
-      "target_branch": "beacon/v1.3.8",
-      "branch_prefix": "beacon/",
-      "use_git_worktree": false,
-      "worktree_root": ".",
-      "direct_delivery_services": [
-        "."
-      ],
-      "writable_services": [
-        "."
-      ],
-      "reference_only_services": [
-        "docs"
-      ],
-      "delivery_baseline": {
-        "baseline_id": "impl-delivery-baseline-v1.3.8-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation-R2",
-        "transaction_id": "tx-82d57a6881e17c9ee",
-        "source_hash": "sha256:c67925f85ec3fff974729b80e6fa96854627a5e47542a62a887690cf4b1a89b3",
-        "projection_seq": 1,
-        "canonical_envelope_ref": "docs/beacon/v1.3.8/.machine/execution/implementation-delivery-baseline-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.json",
-        "projection_source": "implementation_delivery_baseline_envelope"
-      },
-      "canonical_envelope_ref": "docs/beacon/v1.3.8/.machine/execution/implementation-delivery-baseline-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.json",
-      "generated_at": "2026-04-24T10:29:17.532166+00:00",
-      "baseline_id": "impl-delivery-baseline-v1.3.8-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation-R2",
-      "transaction_id": "tx-82d57a6881e17c9ee",
-      "source_hash": "sha256:c67925f85ec3fff974729b80e6fa96854627a5e47542a62a887690cf4b1a89b3",
-      "projection_seq": 1,
-      "projection_source": "implementation_delivery_baseline_envelope",
-      "updated_at": "2026-04-24T10:49:00.667614+00:00"
+    "hud": {
+      "json": ".beacon/state/team-hud/implement-team-run-20260425T141544Z-43ce.json",
+      "html": "docs/beacon/v1.3.8/execution/codex-subagents/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/run-20260425T141544Z-43ce/index.html"
     }
   },
+  "team_surface": "implement-team",
+  "context_isolation": {
+    "role_plane": "implementation",
+    "isolated_from": [
+      "qa-team"
+    ],
+    "shared_inputs": [
+      "docs/beacon/<version>/user-story",
+      "docs/beacon/<version>/prd",
+      "implementation-plan"
+    ],
+    "shared_outputs": [
+      "implementation_summary",
+      "technical_archive",
+      "story_writeback",
+      "evidence_refs"
+    ],
+    "rule": "qa_must_not_inherit_implement_private_context"
+  },
   "artifact_writeback_obligations": ".beacon/state/artifact-update-obligations/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.json",
-  "artifact_writeback_open_count": 0,
-  "implement_to_qa_handoff": ".beacon/handoffs/implement-to-qa/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/run-20260424T104600Z-v138-archive-governance.json"
+  "artifact_writeback_open_count": 2,
+  "requirement_rewrite_input": "docs/beacon/v1.3.8/.machine/execution/requirement-rewrite-input-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.json",
+  "implement_to_qa_handoff": ".beacon/handoffs/implement-to-qa/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/run-20260425T141544Z-43ce.json",
+  "auto_qa": {
+    "enabled": false,
+    "triggered": false,
+    "args": [],
+    "follow_handoff": false,
+    "max_rounds": 2
+  }
 }

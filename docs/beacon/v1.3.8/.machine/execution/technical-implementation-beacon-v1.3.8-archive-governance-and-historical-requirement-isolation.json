@@ -3,13 +3,13 @@
   "feature": "Beacon v1.3.8 archive governance and historical requirement isolation",
   "feature_slug": "beacon-v1.3.8-archive-governance-and-historical-requirement-isolation",
   "version": "v1.3.8",
-  "revision_id": "R2",
-  "run_id": "run-20260424T104600Z-v138-archive-governance",
-  "implemented_at": "2026-04-24T10:49:00.669447+00:00",
-  "runner": "codex-team-closure",
-  "skill": "beacon:beacon-implement",
+  "revision_id": "",
+  "run_id": "run-20260425T141544Z-43ce",
+  "implemented_at": "2026-04-25T14:15:45.503780+00:00",
+  "runner": "codex-subagents",
+  "skill": "",
   "profile_id": "",
-  "git_commit": "3ade2f4374996eceeef3f9ece249fdc36cca309e",
+  "git_commit": "e177e630ee579993a04592f70f8aea6a217c0495",
   "services": [],
   "boundary_principles": [
     {
@@ -33,66 +33,82 @@
       "heading": "trivial task 可以轻量处理，但不能越界"
     }
   ],
-  "implementation_scope_summary": "Implemented the archive support command and governance helpers, then repaired release-gate scoping so v1.3.8 closes on current-version archive truth instead of cross-version drift.",
-  "business_goal_summary": "Ship archive governance as a formal support command with historical isolation and release-safe gate behavior.",
-  "acceptance_scope": [
-    "AC-001",
-    "AC-002",
-    "AC-003",
-    "AC-004",
-    "AC-005",
-    "TASK-001"
-  ],
+  "implementation_scope_summary": "codex-subagents implementation completed via implement-team flow",
+  "business_goal_summary": "codex-subagents implementation completed via implement-team flow",
+  "acceptance_scope": [],
   "assumptions": [],
-  "simplicity_notes": [
-    "Keep v1.3.8 closed on the frozen requirement package and current-version release truth."
-  ],
+  "simplicity_notes": [],
   "scope_guard": {
     "in_scope": true,
-    "summary": "v1.3.8 delivery closure only",
-    "allowed_paths": [
-      "beacon",
-      "skills",
-      "docs/beacon/v1.3.8",
-      "tests",
-      ".beacon"
-    ]
+    "summary": "",
+    "allowed_paths": []
   },
   "changed_files": [
-    "beacon/cli_factory.py",
-    "beacon/command_catalog.py",
-    "beacon/commands/archive.py",
+    ".claude-plugin/plugin.json",
+    ".codex/INSTALL.md",
+    ".gitignore",
+    "AGENTS.md",
+    "CLAUDE.md",
+    "README.md",
+    "SKILL.md",
+    "beacon/__init__.py",
     "beacon/commands/gate.py",
-    "beacon/commands/qa.py",
+    "beacon/commands/implement.py",
     "beacon/commands/release.py",
-    "beacon/utils/archive_governance.py",
-    "beacon/utils/intent_router.py",
-    "skills/beacon/beacon-archive/SKILL.md",
-    "docs/beacon/v1.3.8/prd/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
-    "docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
-    "docs/beacon/v1.3.8/qa/test-cases/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
-    "docs/beacon/v1.3.8/research/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation-analysis.md",
-    "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/navigation-map.json",
-    "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/route-closure-contract.json",
-    "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/state-flow-map.json",
-    "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/page-specs/runtime-center.json",
-    "docs/beacon/v1.3.8/prototype/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/pages/runtime-center.md",
-    "tests/test_v138_archive_command.py",
-    "tests/test_gate_delivery_execution_artifacts.py",
-    "tests/test_v112_implementation_plan_runtime.py",
-    "tests/test_v131_cognitive_load_gates.py"
+    "beacon/commands/workflow.py",
+    "beacon/utils/delivery_kernel.py",
+    "beacon/utils/implement_adapters.py",
+    "beacon/utils/implementation_plan.py",
+    "beacon/utils/release_scorecard.py",
+    "beacon/version-truth.json",
+    "docs/beacon/v1.3.8/.machine/execution/git-workflow-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.json",
+    "docs/beacon/v1.3.8/.machine/execution/implementation-plan-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.json",
+    "docs/beacon/v1.3.8/.machine/execution/implementation-plan-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.progress.json",
+    "docs/beacon/v1.3.8/execution/implementation-plan-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+    "docs/beacon/v1.3.8/release/v1.3.8.md",
+    "pyproject.toml",
+    "skills/beacon/SKILL.md",
+    "skills/beacon/beacon-brainstorm/SKILL.md",
+    "skills/beacon/beacon-change/SKILL.md",
+    "skills/beacon/beacon-doctor/SKILL.md",
+    "skills/beacon/beacon-help/SKILL.md",
+    "skills/beacon/beacon-implement/SKILL.md",
+    "skills/beacon/beacon-prd/SKILL.md",
+    "skills/beacon/beacon-prototype/SKILL.md",
+    "skills/beacon/beacon-qa/SKILL.md",
+    "skills/beacon/beacon-release/SKILL.md",
+    "skills/beacon/beacon-status/SKILL.md",
+    "skills/beacon/beacon-test-case/SKILL.md",
+    "skills/beacon/beacon-user-story/SKILL.md",
+    "skills/beacon/examples/basic-workflow.md",
+    "skills/beacon/examples/implementation-with-omx.md",
+    "skills/beacon/examples/release-readiness.md",
+    "skills/beacon/metadata.json",
+    "skills/beacon/references/_sections.md",
+    "skills/beacon/references/usage-rules.md",
+    "skills/beacon/using-beacon/SKILL.md",
+    "tests/test_release_check_contract.py",
+    "tests/test_v114_implement_command.py",
+    "tests/test_v131_host_skill_pack.py"
   ],
   "modules_touched": [
-    "beacon/cli_factory.py",
-    "beacon/command_catalog.py",
+    ".claude-plugin/plugin.json",
+    ".codex/INSTALL.md",
+    ".gitignore",
+    "AGENTS.md",
+    "CLAUDE.md",
+    "README.md",
+    "SKILL.md",
+    "beacon/__init__.py",
     "beacon/commands",
     "beacon/utils",
+    "beacon/version-truth.json",
     "docs/beacon",
+    "pyproject.toml",
     "skills/beacon",
-    "tests/test_gate_delivery_execution_artifacts.py",
-    "tests/test_v112_implementation_plan_runtime.py",
-    "tests/test_v131_cognitive_load_gates.py",
-    "tests/test_v138_archive_command.py"
+    "tests/test_release_check_contract.py",
+    "tests/test_v114_implement_command.py",
+    "tests/test_v131_host_skill_pack.py"
   ],
   "additions": [],
   "modifications": [],
@@ -123,34 +139,40 @@
   "deployment_notes": [],
   "verification": [
     {
-      "command": "python3 -m pytest -q tests/test_v138_archive_command.py",
+      "command": "beacon implement run --runner codex-subagents",
       "status": "passed"
     },
     {
-      "command": "python3 -m pytest -q tests/test_gate_delivery_execution_artifacts.py -k 'support_implementation_plan_marker'",
-      "status": "passed"
-    },
-    {
-      "command": "python3 -m pytest -q tests/test_v112_implementation_plan_runtime.py -k 'cross_version_qa_status_and_fallback_to_current_revision'",
-      "status": "passed"
-    },
-    {
-      "command": "python3 -m pytest -q tests/test_v131_cognitive_load_gates.py -k 'cross_version_qa_status_and_use_current_revision_feature'",
-      "status": "passed"
+      "command": "auto-test-status",
+      "status": "passed",
+      "evidence": ".beacon/auto-test-status.json"
     }
   ],
   "verification_signals": {
-    "count": 4,
-    "has_acceptance_scope": true,
+    "count": 2,
+    "has_acceptance_scope": false,
     "has_assumptions": false
   },
   "known_risks": [],
   "rollback_notes": [],
   "compatibility_notes": [],
-  "artifact_updates": {},
+  "artifact_updates": {
+    "user_story": {
+      "required": false,
+      "reason": "story machine state writeback recorded"
+    },
+    "review_quality": {
+      "required": true,
+      "reason": "run quality review after native implementation"
+    },
+    "acceptance": {
+      "required": true,
+      "reason": "acceptance remains a formal post-verify action"
+    }
+  },
   "traceability": {
-    "request_path": ".beacon/implement/run-20260424T104600Z-v138-archive-governance/request.json",
-    "result_path": ".beacon/implement/run-20260424T104600Z-v138-archive-governance/result.json",
+    "request_path": ".beacon/implement/run-20260425T141544Z-43ce/request.json",
+    "result_path": ".beacon/implement/run-20260425T141544Z-43ce/result.json",
     "stdout_path": "",
     "stderr_path": ""
   }

@@ -1,20 +1,21 @@
 ---
 name: using-beacon
-description: Use when Beacon should become the primary workflow router in Codex or Claude for requirements, implementation, QA, release readiness, or next-step guidance. Route the user through Beacon's current v1.3.7 runtime surface instead of exposing the full CLI catalog.
+description: Use when Beacon should become the primary workflow router in Codex or Claude for requirements, implementation, QA, release readiness, or next-step guidance. Route the user through Beacon's current v1.3.8 runtime surface instead of exposing the full CLI catalog.
 ---
 
 # Using Beacon
 
 Use Beacon as a host-native human-facing workflow pack.
 
-The public surface follows the current `v1.3.7` runtime line.
-The `v1.3.7` docs define the active host-native delivery baseline, brainstorm sidecar, and shared delivery/read-model behavior.
+The public surface follows the current `v1.3.8` runtime line.
+The `v1.3.8` docs define the active host-native delivery baseline, brainstorm sidecar, archive governance, and shared delivery/read-model behavior.
 
 ## Public routing targets
 
 - `beacon-prd`
 - `beacon-user-story`
 - `beacon-test-case`
+- `beacon-prototype`
 - `beacon-change`
 - `beacon-brainstorm`
 - `beacon-implement`
@@ -23,6 +24,7 @@ The `v1.3.7` docs define the active host-native delivery baseline, brainstorm si
 - `beacon-help`
 - `beacon-status`
 - `beacon-doctor`
+- `beacon-archive`
 
 ## Routing rules
 
@@ -32,15 +34,19 @@ The `v1.3.7` docs define the active host-native delivery baseline, brainstorm si
    use `beacon-user-story`
 3. Test and acceptance coverage design:
    use `beacon-test-case`
-4. Frozen feature scope change, requirement supplement after freeze, or re-freeze loops:
+4. Requirement-driven wireframe freeze or screen-level handoff before implementation:
+   use `beacon-prototype`
+5. Frozen feature scope change, requirement supplement after freeze, or re-freeze loops:
    use `beacon-change`
-5. Continue brainstorming, converge a requirement gap, challenge assumptions, or explore project evolution without changing truth:
+6. Continue brainstorming, converge a requirement gap, challenge assumptions, or explore project evolution without changing truth:
    use `beacon-brainstorm`
-6. Implementation handoff or execution:
+7. Implementation handoff or execution:
    use `beacon-implement`
-7. Verification, acceptance, new findings, or release confidence:
+8. Verification, acceptance, new findings, or release confidence:
    use `beacon-qa` or `beacon-release`
-8. Blocked / lost / next-step questions:
+9. Historical requirement isolation, archive planning, or archive state explanation:
+   use `beacon-archive`
+10. Blocked / lost / next-step questions:
    use `beacon-help`, `beacon-status`, or `beacon-doctor`
 
 ## Development pairing

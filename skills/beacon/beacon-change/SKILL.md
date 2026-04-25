@@ -7,7 +7,7 @@ description: Use when the user wants to adjust a frozen Beacon feature, reopen i
 
 This skill is the host-visible router for post-freeze requirement change loops.
 
-It preserves the current `v1.3.7` public runtime surface while aligning change refresh work to the `v1.3.7` host-native runtime line.
+It preserves the current `v1.3.8` public runtime surface while aligning change refresh work to the `v1.3.8` host-native runtime line.
 
 It does not create a new Beacon primary stage.
 It routes the user back into the existing requirement truth and delivery chain.
