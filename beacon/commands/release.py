@@ -6,7 +6,7 @@ from datetime import datetime
 import json
 import re
 
-from beacon.utils.artifact_paths import change_docs_file, change_file_output, machine_change_dir
+from beacon.utils.artifact_paths import change_docs_file, change_file_output, machine_change_dir, release_checklist_file
 from beacon.utils.memory import append_memory_entry
 from beacon.utils.release_scorecard import build_release_scorecard
 from beacon.utils.runtime_projection_store import runtime_projection_transaction_contract
@@ -75,6 +75,14 @@ def _dedupe_strings(values: list) -> list[str]:
         seen.add(text)
         out.append(text)
     return out
+
+
+def _payload_without_generated_at(payload: dict) -> dict:
+    if not isinstance(payload, dict):
+        return {}
+    normalized = dict(payload)
+    normalized.pop("generated_at", None)
+    return normalized
 
 
 def _feature_change_paths(project_root: Path, version: str, slug: str) -> tuple[Path, Path]:
@@ -233,6 +241,19 @@ def _build_version_change_payload(project_root: Path, *, version: str) -> dict:
     }
 
 
+def _stabilize_version_change_payload(project_root: Path, *, version: str, payload: dict) -> dict:
+    existing_payload = _load_json(change_file_output(project_root, version, f"{version}.json"))
+    existing_generated_at = str(existing_payload.get("generated_at") or "").strip()
+    if (
+        existing_generated_at
+        and _payload_without_generated_at(existing_payload) == _payload_without_generated_at(payload)
+    ):
+        stabilized = dict(payload)
+        stabilized["generated_at"] = existing_generated_at
+        return stabilized
+    return payload
+
+
 def _render_version_change_markdown(payload: dict) -> str:
     def _section(title: str, items: list[str]) -> list[str]:
         lines = ["", f"## {title}"]
@@ -281,6 +302,11 @@ def create(
     project_root = Path(project) if project else Path.cwd()
     resolved_version = resolve_target_version(project_root, version)
     version_change_payload = _build_version_change_payload(project_root, version=resolved_version)
+    version_change_payload = _stabilize_version_change_payload(
+        project_root,
+        version=resolved_version,
+        payload=version_change_payload,
+    )
     version_change_md = change_docs_file(project_root, resolved_version, f"{resolved_version}.md")
     version_change_json = change_file_output(project_root, resolved_version, f"{resolved_version}.json")
     version_change_md.parent.mkdir(parents=True, exist_ok=True)
@@ -340,12 +366,12 @@ def create(
         [Path(output)]
         if output
         else [
-            project_root / "docs" / "beacon" / resolved_version / "release" / f"{resolved_version}.md",
+            release_checklist_file(project_root, resolved_version),
         ]
     )
     for output_path in output_paths:
         output_path.parent.mkdir(parents=True, exist_ok=True)
-        output_path.write_text(release_content)
+        output_path.write_text(release_content, encoding="utf-8")
     output_path = output_paths[0]
 
     rel = str(output_path.relative_to(project_root))

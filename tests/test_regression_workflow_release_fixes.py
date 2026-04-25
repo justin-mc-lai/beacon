@@ -9,8 +9,9 @@ from pathlib import Path
 from typer.testing import CliRunner
 
 from beacon.commands.gate import GateMode, check_test_execution_integrity
+from beacon.commands.release import _build_version_change_payload, _render_version_change_markdown
 from beacon.main import app
-from beacon.utils.artifact_paths import change_docs_file, change_file_output, machine_execution_dir
+from beacon.utils.artifact_paths import change_docs_file, change_file_output, machine_execution_dir, release_checklist_file
 from beacon.utils.revision_state import freeze_revision_state
 from beacon.utils.runtime import load_run_state, save_run_state
 from beacon.utils.writeback import record_implementation_writeback, record_verification_writeback
@@ -288,7 +289,7 @@ def test_release_create_should_use_resolved_version_in_file_content(tmp_path: Pa
     result = _invoke(["release", "create", "latest", "--project", str(tmp_path)])
     assert result.exit_code == 0
 
-    out = tmp_path / "docs" / "beacon" / "v2.0.0" / "release" / "v2.0.0.md"
+    out = release_checklist_file(tmp_path, "v2.0.0")
     assert out.exists()
     text = out.read_text(encoding="utf-8")
     assert "# Release Checklist: v2.0.0" in text
@@ -336,9 +337,63 @@ def test_release_create_should_aggregate_version_change_document(tmp_path: Path)
     assert "[feature-a] Added contract A" in change_text
     assert "[feature-b] Fixed edge case B" in change_text
 
-    release_text = (tmp_path / "docs" / "beacon" / version / "release" / f"{version}.md").read_text(encoding="utf-8")
+    release_text = release_checklist_file(tmp_path, version).read_text(encoding="utf-8")
     assert f"docs/beacon/{version}/change/{version}.md" in release_text
     assert f"docs/beacon/{version}/.machine/change/{version}.json" in release_text
+
+
+def test_release_create_should_not_overwrite_canonical_release_note(tmp_path: Path):
+    version = "v2.1.0"
+    release_dir = tmp_path / "docs" / "beacon" / version / "release"
+    release_dir.mkdir(parents=True, exist_ok=True)
+    canonical_release_note = release_dir / f"{version}.md"
+    canonical_release_note.write_text("# Canonical release note\n", encoding="utf-8")
+
+    result = _invoke(["release", "create", version, "--project", str(tmp_path)])
+    assert result.exit_code == 0
+
+    assert canonical_release_note.read_text(encoding="utf-8") == "# Canonical release note\n"
+    checklist = release_checklist_file(tmp_path, version)
+    assert checklist.exists()
+    assert "# Release Checklist: v2.1.0" in checklist.read_text(encoding="utf-8")
+
+
+def test_release_create_should_preserve_version_change_timestamp_when_scope_is_unchanged(tmp_path: Path):
+    version = "v2.1.1"
+    slug = "feature-a"
+    change_json = change_file_output(tmp_path, version, f"{slug}.json")
+    change_md = change_docs_file(tmp_path, version, f"{slug}.md")
+    change_json.parent.mkdir(parents=True, exist_ok=True)
+    change_md.parent.mkdir(parents=True, exist_ok=True)
+    payload = {
+        "schema_version": "1.0",
+        "version": version,
+        "feature": "Feature A",
+        "feature_slug": slug,
+        "status": "completed",
+        "summary": "Feature A landed",
+        "added": ["Added contract A"],
+        "removed": [],
+        "fixed": [],
+        "traceability_refs": [f"docs/beacon/{version}/execution/implementation-summary-{slug}.json"],
+    }
+    change_json.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    change_md.write_text("# feature-a\n", encoding="utf-8")
+
+    prior_version_payload = _build_version_change_payload(tmp_path, version=version)
+    prior_version_payload["generated_at"] = "2026-04-24 19:15"
+    version_change_json = change_file_output(tmp_path, version, f"{version}.json")
+    version_change_md = change_docs_file(tmp_path, version, f"{version}.md")
+    version_change_json.write_text(json.dumps(prior_version_payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    version_change_md.write_text(_render_version_change_markdown(prior_version_payload), encoding="utf-8")
+
+    result = _invoke(["release", "create", version, "--project", str(tmp_path)])
+    assert result.exit_code == 0
+
+    current_payload = json.loads(version_change_json.read_text(encoding="utf-8"))
+    assert current_payload["generated_at"] == "2026-04-24 19:15"
+    current_markdown = version_change_md.read_text(encoding="utf-8")
+    assert "**Generated**: 2026-04-24 19:15" in current_markdown
 
 
 def test_release_create_should_synthesize_feature_changes_from_technical_archive_when_missing(tmp_path: Path):

@@ -456,6 +456,8 @@ class TestBeaconRelease:
         """Test release create"""
         result = runner.invoke(app, ["release", "create", "v1.0.0", "--project", str(tmp_path)])
         assert result.exit_code == 0
+        assert (tmp_path / "docs" / "beacon" / "v1.0.0" / "release" / "checklist-v1.0.0.md").exists()
+        assert not (tmp_path / "docs" / "beacon" / "v1.0.0" / "release" / "v1.0.0.md").exists()
 
 
 class TestBeaconApiDesign:
