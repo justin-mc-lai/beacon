@@ -361,6 +361,8 @@ def build_default_task_prompt(
     implementation_plan_file: str = "",
     semantic_artifact_refs: dict[str, str] | None = None,
     default_design_bridge: dict[str, Any] | None = None,
+    operator_prompt: str = "",
+    prompt_boundary: dict[str, Any] | None = None,
 ) -> str:
     lines = [
         "Implement the scoped Beacon feature.",
@@ -373,6 +375,17 @@ def build_default_task_prompt(
     ]
     if str(implementation_plan_file or "").strip():
         lines.append(f"- {implementation_plan_file}")
+    prompt_boundary_payload = prompt_boundary if isinstance(prompt_boundary, dict) else {}
+    classification = str(prompt_boundary_payload.get("classification", "") or "").strip()
+    if str(operator_prompt or "").strip():
+        lines.extend(
+            [
+                "Operator prompt under frozen-truth review:",
+                f"- {str(operator_prompt).strip()}",
+            ]
+        )
+    if classification:
+        lines.append(f"- prompt_boundary_classification: {classification}")
     semantic_refs = semantic_artifact_refs if isinstance(semantic_artifact_refs, dict) else {}
     semantic_contract = str(semantic_refs.get("semantic_contract", "") or "").strip()
     if semantic_contract:
@@ -394,6 +407,9 @@ def build_default_task_prompt(
         [
             "Follow Beacon boundary defaults:",
             *[f"- {line}" for line in global_boundary_prompt_lines()],
+            "Implement only against the frozen PRD, user-story, and test-case truth above.",
+            "Do not invent new user stories, acceptance criteria, or test scope.",
+            "If the work would require requirement change or conflicts with frozen truth, stop and route to beacon-change/refreeze instead of coding around it.",
             "Structured result should include: assumptions, simplicity_notes, scope_guard, verification.",
             "Run relevant verification.",
             f"Write structured result to {result_file}",

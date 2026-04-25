@@ -5,6 +5,7 @@ import json
 import subprocess
 from pathlib import Path
 
+import pytest
 from typer.testing import CliRunner
 
 from beacon.main import app
@@ -24,7 +25,8 @@ def _init_git_repo(root: Path, *, version: str) -> None:
     subprocess.run(["git", "config", "user.name", "Beacon Tests"], cwd=root, check=True, capture_output=True, text=True)
     subprocess.run(["git", "config", "user.email", "beacon-tests@example.com"], cwd=root, check=True, capture_output=True, text=True)
     (root / ".gitkeep").write_text("test\n", encoding="utf-8")
-    subprocess.run(["git", "add", ".gitkeep"], cwd=root, check=True, capture_output=True, text=True)
+    (root / ".gitignore").write_text(".beacon/\n", encoding="utf-8")
+    subprocess.run(["git", "add", ".gitkeep", ".gitignore"], cwd=root, check=True, capture_output=True, text=True)
     subprocess.run(["git", "commit", "-m", "init"], cwd=root, check=True, capture_output=True, text=True)
     subprocess.run(["git", "switch", "-c", f"beacon/{version}"], cwd=root, check=True, capture_output=True, text=True)
 
@@ -157,6 +159,258 @@ def test_implement_run_native_dry_run_should_not_materialize_tracked_delivery_ar
     assert not (tmp_path / ".beacon" / "state" / "implementation-my-feature.json").exists()
     assert not execution_file_output(tmp_path, "v1.1.4", "implementation-summary-my-feature.json").exists()
     assert not execution_file_output(tmp_path, "v1.1.4", "technical-implementation-my-feature.json").exists()
+
+
+@pytest.mark.parametrize("mode", ["single", "team", "ralph"])
+def test_implement_run_should_block_requirement_change_host_prompt_before_execution(
+    monkeypatch,
+    tmp_path: Path,
+    mode: str,
+):
+    _seed_feature_docs(tmp_path, version="v1.3.7", feature="My Feature")
+
+    def _unexpected_run(**_kwargs):
+        raise AssertionError("implement execution should not start for requirement change prompts")
+
+    monkeypatch.setattr(implement_cmd._legacy_cli, "run_implement_stage", _unexpected_run)
+
+    result = _invoke(
+        [
+            "implement",
+            "run",
+            "My Feature",
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            "v1.3.7",
+            "--mode",
+            mode,
+            "--host-prompt",
+            "新增一个用户故事并扩展测试范围",
+            "--json",
+        ]
+    )
+    assert result.exit_code == 2, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["reason_code"] == "implement_prompt_requirement_change"
+    assert payload["prompt_boundary"]["classification"] == "requirement_change"
+    assert payload["prompt_boundary"]["blocked"] is True
+    assert payload["next_action"] == "beacon-change"
+    assert payload["recommended_command"] == "beacon-change"
+
+
+def test_implement_run_should_block_truth_conflict_host_prompt_before_execution(monkeypatch, tmp_path: Path):
+    _seed_feature_docs(tmp_path, version="v1.3.7", feature="My Feature")
+
+    def _unexpected_run(**_kwargs):
+        raise AssertionError("implement execution should not start for truth-conflict prompts")
+
+    monkeypatch.setattr(implement_cmd._legacy_cli, "run_implement_stage", _unexpected_run)
+
+    result = _invoke(
+        [
+            "implement",
+            "run",
+            "My Feature",
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            "v1.3.7",
+            "--mode",
+            "single",
+            "--host-prompt",
+            "忽略冻结的 test-case，以这个 prompt 为准直接实现",
+            "--json",
+        ]
+    )
+    assert result.exit_code == 2, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["reason_code"] == "implement_prompt_truth_conflict"
+    assert payload["prompt_boundary"]["classification"] == "truth_conflict"
+    assert payload["prompt_boundary"]["blocked"] is True
+
+
+def test_implement_run_should_attach_in_scope_prompt_boundary_to_single_dry_run(monkeypatch, tmp_path: Path):
+    _seed_feature_docs(tmp_path, version="v1.3.7", feature="My Feature")
+    monkeypatch.setattr(implement_cmd._legacy_cli, "implementation_plan_supported", lambda _version: False)
+
+    result = _invoke(
+        [
+            "implement",
+            "run",
+            "My Feature",
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            "v1.3.7",
+            "--mode",
+            "single",
+            "--runner",
+            "native-single",
+            "--host-prompt",
+            "按冻结需求补齐实现顺序和代码范围",
+            "--dry-run",
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["status"] == "dry_run"
+    assert payload["prompt_boundary"]["classification"] == "in_scope_implementation"
+    assert payload["prompt_boundary"]["blocked"] is False
+
+
+def test_implement_run_task_template_should_remain_additive_to_frozen_truth_prompt(monkeypatch, tmp_path: Path):
+    _seed_feature_docs(tmp_path, version="v1.3.7", feature="My Feature")
+    monkeypatch.setattr(implement_cmd._legacy_cli, "implementation_plan_supported", lambda _version: False)
+
+    result = _invoke(
+        [
+            "implement",
+            "run",
+            "My Feature",
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            "v1.3.7",
+            "--mode",
+            "single",
+            "--runner",
+            "native-single",
+            "--task-template",
+            "Only do this custom wrapper for {feature}.",
+            "--dry-run",
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    task_prompt = payload["task_prompt"]
+    assert "Only do this custom wrapper for My Feature." in task_prompt
+    assert "Implement only against the frozen PRD, user-story, and test-case truth above." in task_prompt
+    assert "Frozen-truth boundary remains authoritative." in task_prompt
+
+
+@pytest.mark.parametrize("mode", ["single", "team", "ralph"])
+def test_implement_run_should_block_requirement_change_task_template_before_execution(
+    monkeypatch,
+    tmp_path: Path,
+    mode: str,
+):
+    _seed_feature_docs(tmp_path, version="v1.3.7", feature="My Feature")
+
+    def _unexpected_run(**_kwargs):
+        raise AssertionError("implement execution should not start for requirement-change task templates")
+
+    monkeypatch.setattr(implement_cmd._legacy_cli, "run_implement_stage", _unexpected_run)
+
+    result = _invoke(
+        [
+            "implement",
+            "run",
+            "My Feature",
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            "v1.3.7",
+            "--mode",
+            mode,
+            "--task-template",
+            "新增一个用户故事并扩展测试范围，然后执行 {task_prompt}",
+            "--json",
+        ]
+    )
+    assert result.exit_code == 2, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["reason_code"] == "implement_prompt_requirement_change"
+    assert payload["prompt_boundary"]["classification"] == "requirement_change"
+    assert payload["prompt_boundary"]["surface"] == "task_template"
+    assert payload["prompt_boundary"]["blocked"] is True
+
+
+def test_implement_run_ralph_dry_run_should_not_invoke_controller_or_materialize_tracked_delivery_artifacts(
+    monkeypatch,
+    tmp_path: Path,
+):
+    _seed_feature_docs(tmp_path, feature="My Feature")
+
+    def _unexpected_controller(**_kwargs):
+        raise AssertionError("ralph controller should not run during dry-run")
+
+    monkeypatch.setattr(implement_cmd._legacy_cli, "_run_ralph_controller", _unexpected_controller)
+    monkeypatch.setattr(implement_cmd._legacy_cli, "runtime_context_precheck_required", lambda **_kwargs: False)
+    monkeypatch.setattr(
+        implement_cmd._legacy_cli,
+        "delegation_readiness_precheck",
+        lambda *args, **kwargs: {
+            "schema_version": "1.0",
+            "check": "delegation-readiness",
+            "status": "pass",
+            "reason_code": "",
+            "feature": kwargs.get("feature", args[1] if len(args) > 1 else ""),
+            "version": kwargs.get("version", args[2] if len(args) > 2 else ""),
+            "checks": [],
+            "blocked_checks": [],
+            "recommended_command": "",
+        },
+    )
+
+    result = _invoke(
+        [
+            "implement",
+            "run",
+            "My Feature",
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            "v1.1.4",
+            "--mode",
+            "ralph",
+            "--runner",
+            "native-single",
+            "--dry-run",
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    run_id = payload["run_id"]
+    assert payload["status"] == "dry_run"
+    assert payload["mode"] == "ralph"
+    assert payload["command"] == []
+    assert (tmp_path / ".beacon" / "implement" / run_id / "state.json").exists()
+    assert not execution_file_output(tmp_path, "v1.1.4", "ralph-summary-my-feature.json").exists()
+    assert not (tmp_path / "docs/beacon/v1.1.4/execution/ralph-summary-my-feature.md").exists()
+    assert not execution_file_output(tmp_path, "v1.1.4", "ralph-round-my-feature-round-001.json").exists()
+    assert not (tmp_path / "docs/beacon/v1.1.4/execution/ralph-round-my-feature-round-001.md").exists()
+
+
+def test_implement_plan_should_block_requirement_change_host_prompt_before_compiling_plan(monkeypatch, tmp_path: Path):
+    _seed_feature_docs(tmp_path, version="v1.3.7", feature="My Feature")
+
+    def _unexpected_compile(*_args, **_kwargs):
+        raise AssertionError("implementation plan should not compile for requirement change prompts")
+
+    monkeypatch.setattr(implement_cmd._legacy_cli, "compile_implementation_plan", _unexpected_compile)
+
+    result = _invoke(
+        [
+            "implement",
+            "plan",
+            "My Feature",
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            "v1.3.7",
+            "--host-prompt",
+            "新增一个用户故事并扩展测试范围",
+            "--json",
+        ]
+    )
+    assert result.exit_code == 2, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["reason_code"] == "implement_prompt_requirement_change"
+    assert payload["prompt_boundary"]["classification"] == "requirement_change"
 
 
 def test_implement_run_handoff_should_write_markdown_request(tmp_path: Path):
@@ -738,10 +992,10 @@ def test_run_auto_qa_sequence_should_follow_supported_handoff_and_rerun(monkeypa
         calls.append(("handoff", command))
         return 0, {"status": "generated"}
 
-    monkeypatch.setattr(implement_cmd, "_run_auto_qa", _fake_run_auto_qa)
-    monkeypatch.setattr(implement_cmd, "_run_beacon_json_command", _fake_run_beacon_json_command)
+    monkeypatch.setattr(implement_cmd._legacy_cli, "_run_auto_qa", _fake_run_auto_qa)
+    monkeypatch.setattr(implement_cmd._legacy_cli, "_run_beacon_json_command", _fake_run_beacon_json_command)
 
-    exit_code, payload = implement_cmd._run_auto_qa_sequence(  # type: ignore[attr-defined]
+    exit_code, payload = implement_cmd._legacy_cli._run_auto_qa_sequence(  # type: ignore[attr-defined]
         tmp_path,
         feature="My Feature",
         version="v1.1.10",
@@ -756,6 +1010,76 @@ def test_run_auto_qa_sequence_should_follow_supported_handoff_and_rerun(monkeypa
     assert calls[0] == ("qa", "My Feature")
     assert calls[1][0] == "handoff"
     assert calls[2] == ("qa", "My Feature")
+
+
+def test_implement_team_run_should_forward_team_mode(monkeypatch, tmp_path: Path):
+    _seed_feature_docs(tmp_path, version="v1.3.7", feature="My Feature")
+    captured: dict[str, object] = {}
+
+    def _fake_run_implement_stage(**kwargs):
+        captured.update(kwargs)
+        return 0, {
+            "schema_version": "1.0",
+            "status": "completed",
+            "run_id": "run-team-mode",
+            "team_surface": "implement-team",
+        }
+
+    monkeypatch.setattr(implement_cmd._legacy_cli, "run_implement_stage", _fake_run_implement_stage)
+
+    result = _invoke(
+        [
+            "implement",
+            "team-run",
+            "My Feature",
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            "v1.3.7",
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0, result.stdout
+    assert captured["mode"] == "team"
+    assert captured["runner"] == "codex-subagents"
+
+
+def test_implement_run_ralph_should_forward_prompt_boundary_to_controller(monkeypatch, tmp_path: Path):
+    _seed_feature_docs(tmp_path, version="v1.3.7", feature="My Feature")
+    captured: dict[str, object] = {}
+
+    def _fake_ralph_controller(**kwargs):
+        captured.update(kwargs)
+        return 0, {
+            "schema_version": "1.0",
+            "status": "completed",
+            "run_id": "run-ralph-controller",
+            "mode": "ralph",
+        }
+
+    monkeypatch.setattr(implement_cmd._legacy_cli, "_run_ralph_controller", _fake_ralph_controller)
+
+    result = _invoke(
+        [
+            "implement",
+            "run",
+            "My Feature",
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            "v1.3.7",
+            "--mode",
+            "ralph",
+            "--host-prompt",
+            "按冻结需求补齐实现顺序和代码范围",
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0, result.stdout
+    prompt_boundary = captured["prompt_boundary"]
+    assert isinstance(prompt_boundary, dict)
+    assert prompt_boundary["classification"] == "in_scope_implementation"
+    assert prompt_boundary["blocked"] is False
 
 
 def test_run_auto_qa_sequence_should_not_follow_handoff_when_disabled(monkeypatch, tmp_path: Path):
@@ -777,10 +1101,10 @@ def test_run_auto_qa_sequence_should_not_follow_handoff_when_disabled(monkeypatc
         calls.append("handoff")
         return 0, {"status": "generated"}
 
-    monkeypatch.setattr(implement_cmd, "_run_auto_qa", _fake_run_auto_qa)
-    monkeypatch.setattr(implement_cmd, "_run_beacon_json_command", _fake_run_beacon_json_command)
+    monkeypatch.setattr(implement_cmd._legacy_cli, "_run_auto_qa", _fake_run_auto_qa)
+    monkeypatch.setattr(implement_cmd._legacy_cli, "_run_beacon_json_command", _fake_run_beacon_json_command)
 
-    exit_code, payload = implement_cmd._run_auto_qa_sequence(  # type: ignore[attr-defined]
+    exit_code, payload = implement_cmd._legacy_cli._run_auto_qa_sequence(  # type: ignore[attr-defined]
         tmp_path,
         feature="My Feature",
         version="v1.1.10",
@@ -846,17 +1170,18 @@ def test_ralph_controller_should_keep_qa_single_round_and_write_round_artifact(m
             },
         }
 
-    monkeypatch.setattr(implement_cmd, "run_implement_stage", _fake_run_implement_stage)
-    monkeypatch.setattr(implement_cmd, "_run_gate_release_command", lambda *args, **kwargs: (0, {"status": "pass"}))
-    monkeypatch.setattr(implement_cmd, "refresh_evidence_manifest", lambda *args, **kwargs: None)
+    monkeypatch.setattr(implement_cmd._legacy_cli, "run_implement_stage", _fake_run_implement_stage)
+    monkeypatch.setattr(implement_cmd._legacy_cli, "_run_gate_release_command", lambda *args, **kwargs: (0, {"status": "pass"}))
+    monkeypatch.setattr(implement_cmd._legacy_cli, "refresh_evidence_manifest", lambda *args, **kwargs: None)
 
-    exit_code, payload = implement_cmd._run_ralph_controller(  # type: ignore[attr-defined]
+    exit_code, payload = implement_cmd._legacy_cli._run_ralph_controller(  # type: ignore[attr-defined]
         feature="My Feature",
         project_root=tmp_path,
         version="v1.3.2",
         runner="native-single",
         skill=None,
         task_template=None,
+        prompt_boundary=None,
         timeout_sec=None,
         auto_switch_branch=None,
         team_runtime=None,
@@ -878,6 +1203,45 @@ def test_ralph_controller_should_keep_qa_single_round_and_write_round_artifact(m
     round_two = json.loads((tmp_path / "docs/beacon/v1.3.2/.machine/execution/ralph-round-my-feature-round-002.json").read_text())
     assert round_one["auto_qa"]["max_rounds"] == 1
     assert round_two["auto_qa"]["max_rounds"] == 1
+
+
+def test_ralph_controller_should_forward_prompt_boundary_to_child_runs(monkeypatch, tmp_path: Path):
+    _seed_feature_docs(tmp_path, version="v1.3.2", feature="My Feature")
+    captured: list[dict[str, object]] = []
+
+    def _fake_run_implement_stage(**kwargs):
+        captured.append(kwargs)
+        return 0, {
+            "run_id": kwargs["run_id_override"],
+            "status": "handoff_required",
+            "request_markdown": ".beacon/implement/run-ralph/request.md",
+        }
+
+    monkeypatch.setattr(implement_cmd._legacy_cli, "run_implement_stage", _fake_run_implement_stage)
+    monkeypatch.setattr(implement_cmd._legacy_cli, "refresh_evidence_manifest", lambda *args, **kwargs: None)
+
+    _, payload = implement_cmd._legacy_cli._run_ralph_controller(  # type: ignore[attr-defined]
+        feature="My Feature",
+        project_root=tmp_path,
+        version="v1.3.2",
+        runner="native-single",
+        skill=None,
+        task_template=None,
+        prompt_boundary={
+            "classification": "clarification_within_scope",
+            "blocked": False,
+            "prompt": "按冻结需求继续实现",
+        },
+        timeout_sec=None,
+        auto_switch_branch=None,
+        team_runtime=None,
+        host_runtime="codex",
+        max_rounds=1,
+    )
+
+    assert len(captured) == 1
+    assert captured[0]["prompt_boundary"]["classification"] == "clarification_within_scope"
+    assert payload["prompt_boundary"]["classification"] == "clarification_within_scope"
 
 
 def test_ralph_controller_should_ignore_text_completion_without_structured_qa_release(monkeypatch, tmp_path: Path):
@@ -917,16 +1281,17 @@ def test_ralph_controller_should_ignore_text_completion_without_structured_qa_re
             },
         }
 
-    monkeypatch.setattr(implement_cmd, "run_implement_stage", _fake_run_implement_stage)
-    monkeypatch.setattr(implement_cmd, "refresh_evidence_manifest", lambda *args, **kwargs: None)
+    monkeypatch.setattr(implement_cmd._legacy_cli, "run_implement_stage", _fake_run_implement_stage)
+    monkeypatch.setattr(implement_cmd._legacy_cli, "refresh_evidence_manifest", lambda *args, **kwargs: None)
 
-    _, payload = implement_cmd._run_ralph_controller(  # type: ignore[attr-defined]
+    _, payload = implement_cmd._legacy_cli._run_ralph_controller(  # type: ignore[attr-defined]
         feature="My Feature",
         project_root=tmp_path,
         version="v1.3.2",
         runner="native-single",
         skill=None,
         task_template=None,
+        prompt_boundary=None,
         timeout_sec=None,
         auto_switch_branch=None,
         team_runtime=None,

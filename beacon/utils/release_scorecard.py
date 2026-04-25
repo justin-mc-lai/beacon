@@ -367,6 +367,33 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
         "traceability": {"requirement_binding": {}, "requirement_refs": [], "runtime_refs": []},
         "risk_flags": [str(semantic.get("reason_code") or "").strip()] if semantic and not semantic_pass else [],
     }
+    prompt_boundary = (
+        ((release_delivery_read_model.get("implement") or {}).get("prompt_boundary"))
+        if isinstance(release_delivery_read_model.get("implement"), dict)
+        else {}
+    )
+    prompt_boundary = prompt_boundary if isinstance(prompt_boundary, dict) else {}
+    prompt_boundary_ok = (not prompt_boundary) or (
+        (not bool(prompt_boundary.get("required", False)))
+        or (
+            str(prompt_boundary.get("status") or "").strip().lower() == "pass"
+            and not bool(prompt_boundary.get("blocked", False))
+        )
+    )
+    if project_runtime_feature_enabled(
+        project_root,
+        "v1.3.7",
+        docs_version=resolved_version,
+        runtime_version=resolved_runtime,
+    ):
+        release_ready = release_ready and prompt_boundary_ok
+        release_section = (
+            release_delivery_read_model.get("release")
+            if isinstance(release_delivery_read_model.get("release"), dict)
+            else {}
+        )
+        if isinstance(release_section, dict):
+            release_section["release_ready"] = release_ready
     host_native_reason_codes = list(release_delivery_read_model.get("risk_flags") or [])
     if semantic and not semantic_pass:
         host_native_reason_codes.append(str(semantic.get("reason_code") or "semantic_not_ready"))
@@ -442,6 +469,7 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
             "contract_json_path": str(technical_review_gate.get("contract_json_path") or ""),
             "contract_markdown_path": str(technical_review_gate.get("contract_markdown_path") or ""),
         },
+        "prompt_boundary": prompt_boundary,
         "change_documents": change_documents,
         "learning_scorecard": {
             "main_kpi": str(scorecard_state.get("main_kpi") or "false_complete_rate"),
@@ -465,6 +493,7 @@ def summarize_release_scorecard(scorecard: dict[str, Any] | None) -> dict[str, A
     git_workflow = payload.get("git_workflow") if isinstance(payload.get("git_workflow"), dict) else {}
     requirement_clarity = payload.get("requirement_clarity") if isinstance(payload.get("requirement_clarity"), dict) else {}
     technical_review = payload.get("technical_review") if isinstance(payload.get("technical_review"), dict) else {}
+    prompt_boundary = payload.get("prompt_boundary") if isinstance(payload.get("prompt_boundary"), dict) else {}
     change_documents = payload.get("change_documents") if isinstance(payload.get("change_documents"), dict) else {}
     delivery = payload.get("delivery") if isinstance(payload.get("delivery"), dict) else {}
     semantic = payload.get("semantic") if isinstance(payload.get("semantic"), dict) else {}
@@ -513,6 +542,12 @@ def summarize_release_scorecard(scorecard: dict[str, Any] | None) -> dict[str, A
         "technical_review_status": str(technical_review.get("status") or ""),
         "technical_review_blocked": bool(technical_review.get("blocked", False)),
         "technical_review_review_status": str(technical_review.get("review_status") or ""),
+        "prompt_boundary_required": bool(prompt_boundary.get("required", False)),
+        "prompt_boundary_status": str(prompt_boundary.get("status") or ""),
+        "prompt_boundary_blocked": bool(prompt_boundary.get("blocked", False)),
+        "prompt_boundary_classification": str(prompt_boundary.get("classification") or ""),
+        "prompt_boundary_reason_code": str(prompt_boundary.get("reason_code") or ""),
+        "prompt_boundary_surface": str(prompt_boundary.get("surface") or ""),
         "delivery_type": str(delivery.get("type") or ""),
         "delivery_revision_id": str(delivery.get("revision_id") or ""),
         "delivery_source_revision_id": str(delivery.get("source_revision_id") or ""),

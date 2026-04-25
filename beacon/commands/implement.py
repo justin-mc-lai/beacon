@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -56,6 +57,7 @@ from beacon.utils.implement_adapters import (
 )
 from beacon.utils.learning_loop import write_requirement_rewrite_input
 from beacon.utils.host_prompt_trace import record_host_prompt_trace
+from beacon.utils.implement_prompt_boundary import evaluate_implement_prompt_boundary
 from beacon.utils.semantic_runtime import load_or_build_semantic_layer
 from beacon.utils.ralph_runtime import (
     append_ralph_round,
@@ -198,6 +200,98 @@ def _capture_host_prompt_trace(
     payload["host_prompt_trace_ref"] = str(trace.get("json_ref", "") or "")
     payload["host_prompt_trace_markdown_ref"] = str(trace.get("markdown_ref", "") or "")
     return trace
+
+
+def _resolve_host_prompt_boundary(
+    *,
+    project_root: Path,
+    version: str,
+    feature: str,
+    host_prompt: str,
+) -> dict[str, Any]:
+    prompt = str(host_prompt or "").strip()
+    if not prompt:
+        return {}
+    payload = evaluate_implement_prompt_boundary(
+        project_root,
+        version=version,
+        feature=feature,
+        host_prompt=prompt,
+    )
+    return payload if isinstance(payload, dict) else {}
+
+
+def _resolve_task_template_boundary(
+    *,
+    project_root: Path,
+    version: str,
+    feature: str,
+    task_template: str,
+) -> dict[str, Any]:
+    template = str(task_template or "").strip()
+    if not template:
+        return {}
+    boundary_input = re.sub(r"\{[^{}]+\}", " ", template)
+    payload = _resolve_host_prompt_boundary(
+        project_root=project_root,
+        version=version,
+        feature=feature,
+        host_prompt=boundary_input,
+    )
+    if payload:
+        payload["surface"] = "task_template"
+        payload["prompt"] = template
+    return payload
+
+
+def _blocked_prompt_boundary_payload(
+    *,
+    project_root: Path,
+    version: str,
+    feature: str,
+    prompt_boundary: dict[str, Any],
+) -> dict[str, Any]:
+    resolved_version = resolve_target_version(project_root, version)
+    return {
+        "schema_version": "1.0",
+        "status": "blocked",
+        "reason_code": str(prompt_boundary.get("reason_code", "") or "implement_prompt_boundary_blocked"),
+        "feature": feature,
+        "feature_slug": _slug(feature),
+        "version": resolved_version,
+        "prompt_boundary": prompt_boundary,
+        "next_action": str(prompt_boundary.get("next_action", "") or ""),
+        "recommended_command": str(prompt_boundary.get("recommended_command", "") or ""),
+        "source_of_truth_root": f"docs/beacon/{resolved_version}",
+        "generated_at": now_iso(),
+    }
+
+
+def _render_effective_task_prompt(
+    *,
+    default_prompt: str,
+    task_template: str | None,
+    context: dict[str, Any],
+) -> str:
+    rendered_task_template = str(task_template or "").strip()
+    if not rendered_task_template:
+        return default_prompt
+    rendered = format_template(rendered_task_template, {**context, "task_prompt": default_prompt})
+    if "{task_prompt}" not in rendered_task_template:
+        rendered = "\n".join(
+            [
+                default_prompt,
+                "",
+                "Additional operator instructions:",
+                rendered,
+            ]
+        )
+    boundary_guard = (
+        "Frozen-truth boundary remains authoritative. "
+        "If any instruction conflicts with the frozen PRD, user-story, test-case, or implementation plan, "
+        "stop and route to beacon-change/refreeze."
+    )
+    return f"{rendered}\n\n{boundary_guard}"
 
 
 def _apply_post_team_ralph_handoff(payload: dict[str, Any], *, project_root: Path, version: str, feature: str) -> None:
@@ -585,6 +679,7 @@ def _run_ralph_controller(  # noqa: PLR0913
     runner: str | None,
     skill: str | None,
     task_template: str | None,
+    prompt_boundary: dict[str, Any] | None,
     timeout_sec: int | None,
     auto_switch_branch: bool | None,
     team_runtime: str | None,
@@ -635,6 +730,7 @@ def _run_ralph_controller(  # noqa: PLR0913
             runner=child_runner,
             skill=skill,
             task_template=task_template,
+            prompt_boundary=prompt_boundary,
             dry_run=False,
             timeout_sec=timeout_sec,
             auto_review_spec=True,
@@ -789,6 +885,8 @@ def _run_ralph_controller(  # noqa: PLR0913
         },
         "last_round": last_payload,
     }
+    if isinstance(prompt_boundary, dict) and prompt_boundary:
+        payload["prompt_boundary"] = prompt_boundary
     write_json(project_root / _branch_preflight_path(controller_run_id).with_name("state.json"), payload)
     return last_exit_code if str(controller_state.get("stop_state", "") or "") != "release_ready" else 0, payload
 
@@ -1386,6 +1484,7 @@ def run_implement_stage(  # noqa: PLR0913
     runner: str | None = None,
     skill: str | None = None,
     task_template: str | None = None,
+    prompt_boundary: dict[str, Any] | None = None,
     dry_run: bool = False,
     timeout_sec: int | None = None,
     auto_review_spec: bool | None = None,
@@ -1398,6 +1497,7 @@ def run_implement_stage(  # noqa: PLR0913
     team_runtime: str | None = None,
 ) -> tuple[int, dict[str, Any]]:
     resolved_version = resolve_target_version(project_root, version)
+    prompt_boundary_payload = prompt_boundary if isinstance(prompt_boundary, dict) else {}
     archive_boundary = load_feature_archive_boundary(project_root, version=resolved_version, feature=feature)
     if bool(archive_boundary.get("archived", False)):
         payload = {
@@ -1414,7 +1514,7 @@ def run_implement_stage(  # noqa: PLR0913
         }
         return 2, payload
     resolved_mode = _normalize_mode(mode)
-    if resolved_mode == "ralph" and not str(run_id_override or "").strip():
+    if resolved_mode == "ralph" and not dry_run and not str(run_id_override or "").strip():
         return _run_ralph_controller(
             feature=feature,
             project_root=project_root,
@@ -1422,6 +1522,7 @@ def run_implement_stage(  # noqa: PLR0913
             runner=runner,
             skill=skill,
             task_template=task_template,
+            prompt_boundary=prompt_boundary_payload,
             timeout_sec=timeout_sec,
             auto_switch_branch=auto_switch_branch,
             team_runtime=team_runtime,
@@ -1734,9 +1835,14 @@ def run_implement_stage(  # noqa: PLR0913
         implementation_plan_file=implementation_plan_file,
         semantic_artifact_refs=semantic_artifacts,
         default_design_bridge=default_design_bridge,
+        operator_prompt=str(prompt_boundary_payload.get("prompt", "") or ""),
+        prompt_boundary=prompt_boundary_payload,
     )
-    rendered_task_template = str(task_template or adapter.get("task_template") or "").strip()
-    task_prompt = format_template(rendered_task_template, {**context, "task_prompt": default_prompt}) if rendered_task_template else default_prompt
+    task_prompt = _render_effective_task_prompt(
+        default_prompt=default_prompt,
+        task_template=task_template or adapter.get("task_template") or None,
+        context=context,
+    )
     if rendered_skill:
         task_prompt = f"{rendered_skill}\n{task_prompt}"
     context["task_prompt"] = task_prompt
@@ -1804,6 +1910,8 @@ def run_implement_stage(  # noqa: PLR0913
         "delivery_contract": request_delivery_contract,
         "host_native_delivery": request_delivery_contract,
     }
+    if prompt_boundary_payload:
+        request_payload["prompt_boundary"] = prompt_boundary_payload
     write_json(project_root / request_path, request_payload)
 
     state_path = impl_dir / "state.json"
@@ -1832,6 +1940,8 @@ def run_implement_stage(  # noqa: PLR0913
         "delivery_contract": request_delivery_contract,
         "host_native_delivery": request_delivery_contract,
     }
+    if prompt_boundary_payload:
+        base_state["prompt_boundary"] = prompt_boundary_payload
     if dry_run and adapter_type in {"native", "handoff", "claude-skill"}:
         payload = {
             **base_state,
@@ -1963,6 +2073,8 @@ def run_implement_stage(  # noqa: PLR0913
             "traceability_refs": summary_traceability_refs,
             "generated_at": now_iso(),
         }
+        if prompt_boundary_payload:
+            summary_payload["prompt_boundary"] = prompt_boundary_payload
         summary_delivery_contract = build_delivery_contract(
             feature=feature,
             version=resolved_version,
@@ -2442,6 +2554,8 @@ def run_implement_stage(  # noqa: PLR0913
         "generated_at": now_iso(),
         "writeback": writeback_payload,
     }
+    if prompt_boundary_payload:
+        summary_payload["prompt_boundary"] = prompt_boundary_payload
     summary_delivery_contract = build_delivery_contract(
         feature=feature,
         version=resolved_version,
@@ -2696,6 +2810,45 @@ def run(
 ):
     """Run implementation using the resolved skill adapter."""
     project_root = Path(project) if project else Path.cwd()
+    prompt_boundary = _resolve_host_prompt_boundary(
+        project_root=project_root,
+        version=version,
+        feature=feature,
+        host_prompt=prompt_trace,
+    )
+    if not prompt_boundary:
+        prompt_boundary = _resolve_task_template_boundary(
+            project_root=project_root,
+            version=version,
+            feature=feature,
+            task_template=task_template,
+        )
+    if prompt_boundary.get("blocked"):
+        resolved_version = resolve_target_version(project_root, version)
+        payload = _blocked_prompt_boundary_payload(
+            project_root=project_root,
+            version=resolved_version,
+            feature=feature,
+            prompt_boundary=prompt_boundary,
+        )
+        if prompt_trace:
+            mapped_command = f'beacon implement run "{feature}" --project {project_root} --version {resolved_version}'
+            if mode:
+                mapped_command += f" --mode {mode}"
+            _capture_host_prompt_trace(
+                project_root=project_root,
+                version=resolved_version,
+                feature=feature,
+                host_prompt=prompt_trace,
+                surface="implement-run",
+                mapped_command=mapped_command,
+                payload=payload,
+            )
+        if json_output:
+            typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        else:
+            typer.echo(f"Beacon implement blocked: {payload.get('reason_code')}")
+        raise typer.Exit(code=2)
     code, payload = run_implement_stage(
         feature=feature,
         project_root=project_root,
@@ -2705,6 +2858,7 @@ def run(
         runner=runner,
         skill=skill or None,
         task_template=task_template or None,
+        prompt_boundary=prompt_boundary or None,
         dry_run=dry_run,
         timeout_sec=timeout_sec or None,
         auto_review_spec=auto_review_spec,
@@ -2717,6 +2871,8 @@ def run(
         team_runtime=runtime,
     )
     resolved_version = resolve_target_version(project_root, version)
+    if prompt_boundary:
+        payload["prompt_boundary"] = prompt_boundary
     _apply_post_team_ralph_handoff(payload, project_root=project_root, version=resolved_version, feature=feature)
     if prompt_trace:
         mapped_command = f'beacon implement run "{feature}" --project {project_root} --version {resolved_version}'
@@ -2806,6 +2962,34 @@ def dev_run(
     """Compile safe pre-implement artifacts/gates, then enter implementation."""
     project_root = Path(project) if project else Path.cwd()
     resolved_version = resolve_target_version(project_root, version)
+    prompt_boundary = _resolve_host_prompt_boundary(
+        project_root=project_root,
+        version=resolved_version,
+        feature=feature,
+        host_prompt=prompt_trace,
+    )
+    if prompt_boundary.get("blocked"):
+        payload = _blocked_prompt_boundary_payload(
+            project_root=project_root,
+            version=resolved_version,
+            feature=feature,
+            prompt_boundary=prompt_boundary,
+        )
+        if prompt_trace:
+            _capture_host_prompt_trace(
+                project_root=project_root,
+                version=resolved_version,
+                feature=feature,
+                host_prompt=prompt_trace,
+                surface="implement-dev-run",
+                mapped_command=f'beacon implement dev-run "{feature}" --project {project_root} --version {resolved_version}',
+                payload=payload,
+            )
+        if json_output:
+            typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        else:
+            typer.echo(f"Beacon implement dev-run blocked: {payload.get('reason_code')}")
+        raise typer.Exit(code=2)
     preflight_resolution: dict[str, Any] = {
         "schema_version": "1.0",
         "feature": feature,
@@ -2924,6 +3108,7 @@ def dev_run(
         project_root=project_root,
         version=resolved_version,
         runner=runner,
+        prompt_boundary=prompt_boundary or None,
         auto_switch_branch=False,
         auto_review_spec=auto_review_spec,
         auto_review_quality=auto_review_quality,
@@ -2933,6 +3118,8 @@ def dev_run(
         **preflight_resolution,
         "status": "completed" if code == 0 else "blocked",
     }
+    if prompt_boundary:
+        payload["prompt_boundary"] = prompt_boundary
     _apply_post_team_ralph_handoff(payload, project_root=project_root, version=resolved_version, feature=feature)
     if prompt_trace:
         _capture_host_prompt_trace(
@@ -2993,8 +3180,38 @@ def sync_git_workflow(
 
 def _plan_impl(feature: str, project: Optional[str], version: str, json_output: bool, host_prompt: str = "") -> int:
     project_root = Path(project) if project else Path.cwd()
-    code, payload = compile_implementation_plan(project_root, version=version, feature=feature)
+    prompt_boundary = _resolve_host_prompt_boundary(
+        project_root=project_root,
+        version=version,
+        feature=feature,
+        host_prompt=host_prompt,
+    )
     resolved_version = resolve_target_version(project_root, version)
+    if prompt_boundary.get("blocked"):
+        payload = _blocked_prompt_boundary_payload(
+            project_root=project_root,
+            version=resolved_version,
+            feature=feature,
+            prompt_boundary=prompt_boundary,
+        )
+        if host_prompt:
+            _capture_host_prompt_trace(
+                project_root=project_root,
+                version=resolved_version,
+                feature=feature,
+                host_prompt=host_prompt,
+                surface="implement-plan",
+                mapped_command=f'beacon implement plan "{feature}" --project-root {project_root} --version {resolved_version}',
+                payload=payload,
+            )
+        if json_output:
+            typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        else:
+            typer.echo(f"Beacon implementation plan blocked: {payload.get('reason_code')}")
+        return 2
+    code, payload = compile_implementation_plan(project_root, version=version, feature=feature)
+    if prompt_boundary:
+        payload["prompt_boundary"] = prompt_boundary
     if host_prompt:
         _capture_host_prompt_trace(
             project_root=project_root,
@@ -3020,8 +3237,36 @@ def _plan_impl(feature: str, project: Optional[str], version: str, json_output: 
 
 def _team_plan_impl(feature: str, project: Optional[str], version: str, json_output: bool, host_prompt: str = "") -> int:
     project_root = Path(project) if project else Path.cwd()
-    code, payload = compile_implementation_plan(project_root, version=version, feature=feature)
+    prompt_boundary = _resolve_host_prompt_boundary(
+        project_root=project_root,
+        version=version,
+        feature=feature,
+        host_prompt=host_prompt,
+    )
     resolved_version = resolve_target_version(project_root, version)
+    if prompt_boundary.get("blocked"):
+        payload = _blocked_prompt_boundary_payload(
+            project_root=project_root,
+            version=resolved_version,
+            feature=feature,
+            prompt_boundary=prompt_boundary,
+        )
+        if host_prompt:
+            _capture_host_prompt_trace(
+                project_root=project_root,
+                version=resolved_version,
+                feature=feature,
+                host_prompt=host_prompt,
+                surface="implement-team-plan",
+                mapped_command=f'beacon implement team-plan "{feature}" --project-root {project_root} --version {resolved_version}',
+                payload=payload,
+            )
+        if json_output:
+            typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        else:
+            typer.echo(f"Beacon implement team-plan blocked: {payload.get('reason_code')}")
+        return 2
+    code, payload = compile_implementation_plan(project_root, version=version, feature=feature)
     team_mode = {
         "preferred_surface": "implement-team",
         "preferred_runner": "codex-subagents" if _semver_tuple(resolved_version) >= (1, 3, 0) else "native-team",
@@ -3035,6 +3280,8 @@ def _team_plan_impl(feature: str, project: Optional[str], version: str, json_out
         "team_mode": payload.get("team_mode", {}) or team_mode,
         "recommended_command": str((payload.get("team_mode", {}) or team_mode).get("run_command") or ""),
     }
+    if prompt_boundary:
+        payload["prompt_boundary"] = prompt_boundary
     if host_prompt:
         _capture_host_prompt_trace(
             project_root=project_root,
@@ -3104,16 +3351,48 @@ def team_run(
 ):
     """Run implementation through the explicit implement-team surface."""
     project_root = Path(project) if project else Path.cwd()
+    prompt_boundary = _resolve_host_prompt_boundary(
+        project_root=project_root,
+        version=version,
+        feature=feature,
+        host_prompt=host_prompt,
+    )
+    resolved_version = resolve_target_version(project_root, version)
+    if prompt_boundary.get("blocked"):
+        payload = _blocked_prompt_boundary_payload(
+            project_root=project_root,
+            version=resolved_version,
+            feature=feature,
+            prompt_boundary=prompt_boundary,
+        )
+        if host_prompt:
+            _capture_host_prompt_trace(
+                project_root=project_root,
+                version=resolved_version,
+                feature=feature,
+                host_prompt=host_prompt,
+                surface="implement-team-run",
+                mapped_command=f'beacon implement team-run "{feature}" --project {project_root} --version {resolved_version}',
+                payload=payload,
+            )
+        if json_output:
+            typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        else:
+            typer.echo(f"Beacon implement team-run blocked: {payload.get('reason_code')}")
+        raise typer.Exit(code=2)
     code, payload = run_implement_stage(
         feature=feature,
         project_root=project_root,
         version=version,
+        mode="team",
         runner="codex-subagents",
+        prompt_boundary=prompt_boundary or None,
         auto_review_spec=auto_review_spec,
         auto_review_quality=auto_review_quality,
         team_runtime=runtime,
     )
-    resolved_version = resolve_target_version(project_root, version)
+    if prompt_boundary:
+        payload["prompt_boundary"] = prompt_boundary
     _apply_post_team_ralph_handoff(payload, project_root=project_root, version=resolved_version, feature=feature)
     if host_prompt:
         _capture_host_prompt_trace(

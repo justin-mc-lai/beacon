@@ -5,6 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
+from beacon.utils.implement_prompt_boundary import implement_prompt_boundary_supported
 from beacon.utils.qa_feature import load_feature_qa_status
 from beacon.utils.runtime import read_json
 from beacon.utils.story_state import feature_slug
@@ -222,6 +223,49 @@ def _default_traceability_refs(payload: dict[str, Any]) -> list[str]:
     return _clean_list(refs)
 
 
+def _normalize_prompt_boundary(payload: dict[str, Any] | None, *, version: str) -> dict[str, Any]:
+    required = implement_prompt_boundary_supported(version)
+    raw = _clean_dict(payload)
+    normalized = {
+        "required": required,
+        "status": "not_required" if not required else "missing",
+        "blocked": False if not required else True,
+        "classification": "",
+        "reason_code": "",
+        "next_action": "",
+        "recommended_command": "",
+        "surface": "",
+    }
+    if not required:
+        return normalized
+    if not raw:
+        normalized["reason_code"] = "implement_prompt_boundary_missing"
+        return normalized
+
+    classification = _clean_str(raw.get("classification"))
+    blocked = bool(raw.get("blocked", False))
+    status = _clean_str(raw.get("status")) or ("blocked" if blocked else "pass")
+    reason_code = _clean_str(raw.get("reason_code"))
+    allowed_classes = {"in_scope_implementation", "clarification_within_scope"}
+    if classification and classification not in allowed_classes and not blocked:
+        blocked = True
+        status = "blocked"
+        reason_code = reason_code or "implement_prompt_boundary_invalid"
+
+    normalized.update(
+        {
+            "status": status or ("blocked" if blocked else "pass"),
+            "blocked": blocked,
+            "classification": classification,
+            "reason_code": reason_code or ("implement_prompt_boundary_missing" if not classification else ""),
+            "next_action": _clean_str(raw.get("next_action")),
+            "recommended_command": _clean_str(raw.get("recommended_command")),
+            "surface": _clean_str(raw.get("surface")) or "host_prompt",
+        }
+    )
+    return normalized
+
+
 def build_delivery_read_model(
     *,
     feature: str,
@@ -284,6 +328,7 @@ def build_delivery_read_model(
     qa_release = _clean_dict(release_state.get("qa"))
     semantic = _clean_dict(release_state.get("semantic"))
     revision_binding = _clean_dict(release_state.get("revision_binding"))
+    prompt_boundary = _normalize_prompt_boundary(implement_state.get("prompt_boundary"), version=resolved_version)
     risk_flags = _clean_list(authoritative_contract.get("risk_flags"))
     risk_flags.extend(_clean_list(release_state.get("risk_flags")))
     if qa_state and _clean_str(qa_state.get("status")).lower() not in {"", "passed"}:
@@ -294,6 +339,11 @@ def build_delivery_read_model(
         risk_flags.append("release_not_ready")
     if revision_binding and not bool(revision_binding.get("gate_bound_to_latest_revision", False)):
         risk_flags.append(_clean_str(revision_binding.get("reason_code")) or "revision_not_bound")
+    if prompt_boundary.get("required") and (
+        bool(prompt_boundary.get("blocked", False))
+        or _clean_str(prompt_boundary.get("status")) not in {"pass", "not_required"}
+    ):
+        risk_flags.append(_clean_str(prompt_boundary.get("reason_code")) or "implement_prompt_boundary_missing")
 
     requirement_binding = _clean_dict(authoritative_contract.get("requirement_binding"))
     requirement_refs = _clean_list(authoritative_contract.get("traceability_refs"))
@@ -314,6 +364,7 @@ def build_delivery_read_model(
             "status": _clean_str(implement_state.get("status")),
             "run_id": _clean_str(implement_state.get("run_id")),
             "delivery_contract": implement_contract,
+            "prompt_boundary": prompt_boundary,
         },
         "qa": {
             "status": _clean_str(qa_state.get("status") or qa_release.get("status")),
@@ -327,6 +378,7 @@ def build_delivery_read_model(
             "release_ready": release_ready,
             "semantic": semantic,
             "revision_binding": revision_binding,
+            "prompt_boundary": prompt_boundary,
         },
         "traceability": {
             "requirement_binding": requirement_binding,

@@ -384,6 +384,7 @@ def check(
     resolved_runtime = resolve_runtime_version(project_root, "auto")
     release_scorecard = build_release_scorecard(project_root, version=resolved_version)
     change_documents = release_scorecard.get("change_documents") if isinstance(release_scorecard.get("change_documents"), dict) else {}
+    prompt_boundary = release_scorecard.get("prompt_boundary") if isinstance(release_scorecard.get("prompt_boundary"), dict) else {}
     feature_qa_scorecard = (
         release_scorecard.get("feature_qa_scorecard")
         if isinstance(release_scorecard.get("feature_qa_scorecard"), dict)
@@ -398,6 +399,12 @@ def check(
     enforce_release_scorecard = project_runtime_feature_enabled(
         project_root,
         "v1.3.6",
+        docs_version=resolved_version,
+        runtime_version=resolved_runtime,
+    )
+    enforce_prompt_boundary = project_runtime_feature_enabled(
+        project_root,
+        "v1.3.7",
         docs_version=resolved_version,
         runtime_version=resolved_runtime,
     )
@@ -656,6 +663,24 @@ def check(
                     f"status={semantic_status}, reason={semantic_reason or '-'}",
                 )
             )
+
+    if enforce_prompt_boundary:
+        prompt_boundary_status = str(prompt_boundary.get("status") or "missing")
+        prompt_boundary_reason = str(prompt_boundary.get("reason_code") or "")
+        prompt_boundary_classification = str(prompt_boundary.get("classification") or "")
+        prompt_boundary_surface = str(prompt_boundary.get("surface") or "")
+        checks.append(
+            (
+                "implement prompt boundary verdict pass",
+                prompt_boundary_status.lower() == "pass" and not bool(prompt_boundary.get("blocked", False)),
+                (
+                    f"status={prompt_boundary_status}, "
+                    f"classification={prompt_boundary_classification or '-'}, "
+                    f"surface={prompt_boundary_surface or '-'}, "
+                    f"reason={prompt_boundary_reason or '-'}"
+                ),
+            )
+        )
 
     all_passed = True
     failed_checks: list[str] = []

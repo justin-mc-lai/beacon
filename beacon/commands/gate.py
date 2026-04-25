@@ -30,6 +30,7 @@ from beacon.utils.implementation_plan import (
     load_implementation_plan_progress,
 )
 from beacon.utils.qa_precision import load_feature_qa_ac_closure, load_feature_qa_scorecard
+from beacon.utils.release_scorecard import build_release_scorecard
 from beacon.utils.prototype_support import feature_requires_route_closure, prototype_status, version_requires_prototype
 from beacon.utils.runtime_projection_store import runtime_projection_transaction_contract
 from beacon.utils.requirement_clarity import (
@@ -209,6 +210,10 @@ REASON_CODES = [
     "implementation_requirement_traceability_missing",
     "implementation_delivery_summary_missing",
     "delivery_surface_downgrade_unapproved",
+    "implement_prompt_boundary_missing",
+    "implement_prompt_boundary_invalid",
+    "implement_prompt_requirement_change",
+    "implement_prompt_truth_conflict",
 ]
 
 # Default gate evaluation stages
@@ -2191,6 +2196,70 @@ def check_v112_implementation_plan_contract(
     return issues
 
 
+def check_v137_implement_prompt_boundary_contract(
+    project_root: Path,
+    mode: GateMode,
+    stage: str,
+    version: Optional[str] = None,
+) -> List[Dict[str, Any]]:
+    issues: list[dict[str, Any]] = []
+    if stage != "release":
+        return issues
+    if mode not in {GateMode.STRICT, GateMode.DEBUG}:
+        return issues
+    resolved_version = _resolved_gate_version(project_root, version)
+    resolved_runtime = resolve_runtime_version(project_root, "auto")
+    if not project_runtime_feature_enabled(
+        project_root,
+        "v1.3.7",
+        docs_version=resolved_version,
+        runtime_version=resolved_runtime,
+    ):
+        return issues
+
+    release_scorecard = build_release_scorecard(project_root, version=resolved_version)
+    prompt_boundary = (
+        release_scorecard.get("prompt_boundary")
+        if isinstance(release_scorecard.get("prompt_boundary"), dict)
+        else {}
+    )
+    feature_name = str(
+        ((release_scorecard.get("qa") or {}).get("feature"))
+        if isinstance(release_scorecard.get("qa"), dict)
+        else ""
+    ).strip() or _resolve_release_feature_context(project_root, version=resolved_version)
+    if not prompt_boundary:
+        issues.append(
+            {
+                "reason_code": "implement_prompt_boundary_missing",
+                "severity": "critical",
+                "message": f"release requires auditable implement prompt boundary verdict for feature {feature_name or 'unknown'}",
+                "blocked": True,
+            }
+        )
+        return issues
+
+    prompt_status = str(prompt_boundary.get("status") or "").strip().lower()
+    prompt_blocked = bool(prompt_boundary.get("blocked", False))
+    if prompt_status != "pass" or prompt_blocked:
+        reason_code = str(prompt_boundary.get("reason_code") or "implement_prompt_boundary_missing").strip() or "implement_prompt_boundary_missing"
+        issues.append(
+            {
+                "reason_code": reason_code,
+                "severity": "critical",
+                "message": (
+                    f"implement prompt boundary verdict is not release-safe for feature {feature_name or 'unknown'}: "
+                    f"status={prompt_status or 'missing'}, "
+                    f"classification={str(prompt_boundary.get('classification') or '').strip() or '-'}, "
+                    f"surface={str(prompt_boundary.get('surface') or '').strip() or '-'}"
+                ),
+                "blocked": True,
+                "details": prompt_boundary,
+            }
+        )
+    return issues
+
+
 def check_v131_human_loop_contract(
     project_root: Path,
     mode: GateMode,
@@ -3699,6 +3768,7 @@ def run_gate_checks(
         all_issues.extend(check_formal_version_package_closure(project_root, mode, stage, version))
         all_issues.extend(check_v119_control_learning_contract(project_root, mode, stage, version))
         all_issues.extend(check_v112_implementation_plan_contract(project_root, mode, stage, version))
+        all_issues.extend(check_v137_implement_prompt_boundary_contract(project_root, mode, stage, version))
         all_issues.extend(check_v131_human_loop_contract(project_root, mode, stage, version))
         all_issues.extend(check_v110_precision_contract(project_root, mode, stage, version))
         all_issues.extend(check_prototype_contract(project_root, mode, stage, version))

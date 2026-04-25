@@ -36,6 +36,7 @@ from beacon.utils.llm_loop import build_next_stage_trace, merge_token_usage
 from beacon.utils.memory import append_memory_entry
 from beacon.utils.implement_adapters import load_beacon_config_file, project_config_path
 from beacon.utils.qa9 import normalize_qa_type, parse_qa_types
+from beacon.utils.release_scorecard import build_release_scorecard
 from beacon.utils.runtime import (
     append_jsonl,
     generate_run_id,
@@ -1972,7 +1973,12 @@ def _execute_stage(
         verify_payload = _load_json_dict(project_root / ".beacon" / "auto-test-status.json")
         verify_status = str(verify_payload.get("status", "")).strip().lower()
         coverage = compute_coverage_metrics(project_root, version=version, feature=feature)
-        gate_status = "Pass" if verify_status == "passed" else "Blocked"
+        release_scorecard = build_release_scorecard(project_root, version=version)
+        prompt_boundary = (
+            release_scorecard.get("prompt_boundary")
+            if isinstance(release_scorecard.get("prompt_boundary"), dict)
+            else {}
+        )
         issues: list[dict[str, Any]] = []
         if verify_status != "passed":
             issues.append(
@@ -1983,6 +1989,24 @@ def _execute_stage(
                     "blocked": True,
                 }
             )
+        prompt_boundary_required = bool(prompt_boundary.get("required", False))
+        prompt_boundary_status = str(prompt_boundary.get("status", "")).strip().lower()
+        prompt_boundary_blocked = bool(prompt_boundary.get("blocked", False))
+        if prompt_boundary_required and (prompt_boundary_status != "pass" or prompt_boundary_blocked):
+            issues.append(
+                {
+                    "reason_code": str(prompt_boundary.get("reason_code") or "implement_prompt_boundary_missing"),
+                    "severity": "critical",
+                    "message": (
+                        "implement prompt boundary verdict is not release-safe: "
+                        f"status={prompt_boundary_status or 'missing'}, "
+                        f"classification={str(prompt_boundary.get('classification') or '').strip() or '-'}"
+                    ),
+                    "blocked": True,
+                    "details": prompt_boundary,
+                }
+            )
+        gate_status = "Pass" if not any(bool(issue.get("blocked")) for issue in issues) else "Blocked"
         gate_payload = {
             "stage": "release",
             "mode": "strict",
@@ -1990,6 +2014,7 @@ def _execute_stage(
             "issues": issues,
             "run_id": run_id,
             "version": version,
+            "prompt_boundary": prompt_boundary,
             "coverage": {
                 "full_coverage": bool(coverage.get("full_coverage")),
                 "story_coverage": coverage.get("story_coverage"),

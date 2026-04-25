@@ -145,7 +145,13 @@ def list_implementation_git_workflow_contracts(project_root: Path, *, version: s
     return out
 
 
-def _default_git_workflow_contract(project_root: Path, *, version: str, feature: str) -> dict[str, Any]:
+def _default_git_workflow_contract(
+    project_root: Path,
+    *,
+    version: str,
+    feature: str,
+    materialize_baseline: bool = True,
+) -> dict[str, Any]:
     approved_contract = approved_technical_review_contract(project_root, version=version, feature=feature)
     if approved_contract:
         payload = technical_review_git_workflow_seed(approved_contract)
@@ -188,9 +194,10 @@ def _default_git_workflow_contract(project_root: Path, *, version: str, feature:
         "generated_at": now_iso(),
     }
     envelope = load_implementation_delivery_baseline(project_root, version=version, feature=feature)
-    if not envelope:
+    if not envelope and materialize_baseline:
         envelope = materialize_implementation_delivery_baseline(project_root, version=version, feature=feature, seed=payload)
-    payload.update(projection_metadata(envelope, project_root=project_root, version=version, feature=feature))
+    if envelope:
+        payload.update(projection_metadata(envelope, project_root=project_root, version=version, feature=feature))
     return payload
 
 
@@ -276,7 +283,12 @@ def load_or_seed_implementation_git_workflow_contract(project_root: Path, *, ver
             return payload
     if has_implementation_git_workflow_contract(project_root, version=resolved_version, feature=feature):
         return load_implementation_git_workflow_contract(project_root, version=resolved_version, feature=feature)
-    return _default_git_workflow_contract(project_root, version=resolved_version, feature=feature)
+    return _default_git_workflow_contract(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        materialize_baseline=False,
+    )
 
 
 def ensure_implementation_git_workflow_contract(
