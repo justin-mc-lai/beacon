@@ -451,6 +451,12 @@ def review_spec(
                 recommendations.append("通过 implement 生成带 requirement_traceability 的标准 implementation summary。")
             elif reason_code == "implementation_delivery_summary_missing":
                 recommendations.append("补齐 delivery_surfaces 固定结构，确保 single/team/ralph 输出同形摘要。")
+            elif reason_code == "revision_cleanup_delta_missing":
+                recommendations.append("先重新 freeze 当前 changed revision，生成最新 revision delta，再重新生成 implement plan。")
+            elif reason_code == "superseded_surface_cleanup_missing":
+                recommendations.append("在 implementation summary 中补齐 revision_cleanup，明确旧实现已删除或被保留及其依据。")
+            elif reason_code == "superseded_surface_retention_unjustified":
+                recommendations.append("为保留的 legacy surface 写出 cleanup rationale，说明为什么它仍被最新 frozen truth 保留。")
 
     status = "pass"
     if any(item.get("severity") == "critical" for item in issues):

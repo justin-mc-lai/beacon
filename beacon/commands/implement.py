@@ -58,6 +58,7 @@ from beacon.utils.implement_adapters import (
 from beacon.utils.learning_loop import write_requirement_rewrite_input
 from beacon.utils.host_prompt_trace import record_host_prompt_trace
 from beacon.utils.implement_prompt_boundary import evaluate_implement_prompt_boundary
+from beacon.utils.revision_delta import load_revision_delta
 from beacon.utils.semantic_runtime import load_or_build_semantic_layer
 from beacon.utils.ralph_runtime import (
     append_ralph_round,
@@ -964,6 +965,18 @@ def _render_summary_markdown(payload: dict[str, Any]) -> str:
         lines.append(f"- downgrade_rationale: `{delivery_surfaces.get('downgrade_rationale', '')}`")
     else:
         lines.append("- none")
+    revision_cleanup = payload.get("revision_cleanup") if isinstance(payload.get("revision_cleanup"), dict) else {}
+    lines.extend(["", "## Revision Cleanup"])
+    if revision_cleanup:
+        lines.append(f"- cleanup_required: `{bool(revision_cleanup.get('cleanup_required', False))}`")
+        lines.append(f"- cleanup_review_completed: `{bool(revision_cleanup.get('cleanup_review_completed', False))}`")
+        lines.append(f"- source_revision_id: `{revision_cleanup.get('source_revision_id', '')}`")
+        lines.append(f"- revision_delta_ref: `{revision_cleanup.get('revision_delta_ref', '')}`")
+        lines.append(f"- removed_surfaces: `{', '.join(_normalize_list(revision_cleanup.get('removed_surfaces')))}`")
+        lines.append(f"- retained_legacy_surfaces: `{', '.join(_normalize_list(revision_cleanup.get('retained_legacy_surfaces')))}`")
+        lines.append(f"- cleanup_rationale: `{revision_cleanup.get('cleanup_rationale', '')}`")
+    else:
+        lines.append("- none")
     return "\n".join(lines) + "\n"
 
 
@@ -1043,6 +1056,42 @@ def _dedupe_strings(values: list[Any]) -> list[str]:
     return out
 
 
+def _revision_cleanup_payload(*, result_payload: dict[str, Any], revision_delta: dict[str, Any]) -> dict[str, Any]:
+    if not isinstance(revision_delta, dict) or not revision_delta:
+        return {}
+    removed_requirement_surfaces = [
+        {
+            "id": str(item.get("id", "") or "").strip(),
+            "text": str(item.get("text", "") or "").strip(),
+            "label": f"{str(item.get('id', '') or '').strip()}: {str(item.get('text', '') or '').strip()}".strip(": "),
+            "signature": str(item.get("signature", "") or "").strip(),
+        }
+        for item in _normalize_list(revision_delta.get("removed_requirement_surfaces"))
+        if isinstance(item, dict)
+    ]
+    removed_surfaces = _dedupe_strings(
+        _normalize_list(result_payload.get("removed_surfaces"))
+        or _normalize_list(result_payload.get("deletions"))
+    )
+    retained_legacy_surfaces = _dedupe_strings(_normalize_list(result_payload.get("retained_legacy_surfaces")))
+    cleanup_rationale = str(result_payload.get("cleanup_rationale", "") or "").strip()
+    cleanup_required = bool(revision_delta.get("cleanup_required", False))
+    cleanup_review_completed = bool(result_payload.get("cleanup_review_completed", False)) or not cleanup_required
+    return {
+        "schema_version": "1.0",
+        "revision_id": str(revision_delta.get("revision_id", "") or ""),
+        "source_revision_id": str(revision_delta.get("source_revision_id", "") or ""),
+        "revision_delta_ref": str(revision_delta.get("json_ref", "") or ""),
+        "revision_delta_markdown_ref": str(revision_delta.get("markdown_ref", "") or ""),
+        "cleanup_required": cleanup_required,
+        "cleanup_review_completed": cleanup_review_completed,
+        "removed_requirement_surfaces": removed_requirement_surfaces,
+        "removed_surfaces": removed_surfaces,
+        "retained_legacy_surfaces": retained_legacy_surfaces,
+        "cleanup_rationale": cleanup_rationale,
+    }
+
+
 def _feature_change_payload(
     *,
     feature: str,
@@ -1053,7 +1102,16 @@ def _feature_change_payload(
     technical_payload: dict[str, Any],
 ) -> dict[str, Any]:
     added = _dedupe_strings(_normalize_list(technical_payload.get("additions")))
-    removed = _dedupe_strings(_normalize_list(technical_payload.get("deletions")))
+    revision_cleanup = technical_payload.get("revision_cleanup") if isinstance(technical_payload.get("revision_cleanup"), dict) else {}
+    removed = _dedupe_strings(
+        _normalize_list(technical_payload.get("deletions"))
+        + _normalize_list(revision_cleanup.get("removed_surfaces"))
+        + [
+            str(item.get("label", "") or item.get("text", "") or item.get("id", "") or "").strip()
+            for item in _normalize_list(revision_cleanup.get("removed_requirement_surfaces"))
+            if isinstance(item, dict)
+        ]
+    )
     fixed = _dedupe_strings(
         _normalize_list(technical_payload.get("modifications"))
         + _normalize_list(technical_payload.get("refactors"))
@@ -1162,6 +1220,7 @@ def _technical_archive_payload(
     stdout_path: str,
     stderr_path: str,
     result_payload: dict[str, Any],
+    revision_cleanup: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     slug = _slug(feature)
     changed_files = [str(x) for x in _normalize_list(result_payload.get("changed_files")) if str(x).strip()]
@@ -1174,6 +1233,7 @@ def _technical_archive_payload(
     simplicity_notes = _normalize_list(result_payload.get("simplicity_notes"))
     scope_guard = result_payload.get("scope_guard") if isinstance(result_payload.get("scope_guard"), dict) else {}
     verification = _normalize_list(result_payload.get("verification"))
+    revision_cleanup_payload = revision_cleanup if isinstance(revision_cleanup, dict) else {}
     payload = {
         "schema_version": "1.0",
         "feature": feature,
@@ -1226,6 +1286,7 @@ def _technical_archive_payload(
         "rollback_notes": _normalize_list(result_payload.get("rollback_notes")),
         "compatibility_notes": _normalize_list(result_payload.get("compatibility_notes")),
         "artifact_updates": result_payload.get("artifact_updates") if isinstance(result_payload.get("artifact_updates"), dict) else {},
+        "revision_cleanup": revision_cleanup_payload,
         "traceability": {
             "request_path": request_path,
             "result_path": result_path,
@@ -1281,6 +1342,21 @@ def _render_technical_archive_markdown(payload: dict[str, Any]) -> str:
     lines.extend(_render_section("Known Risks", payload.get("known_risks", [])))
     lines.extend(_render_section("Rollback Notes", payload.get("rollback_notes", [])))
     lines.extend(_render_section("Verification", [str(item) for item in payload.get("verification", [])]))
+    revision_cleanup = payload.get("revision_cleanup") if isinstance(payload.get("revision_cleanup"), dict) else {}
+    if revision_cleanup:
+        lines.extend(
+            [
+                "",
+                "## Revision Cleanup",
+                f"- cleanup_required: `{bool(revision_cleanup.get('cleanup_required', False))}`",
+                f"- cleanup_review_completed: `{bool(revision_cleanup.get('cleanup_review_completed', False))}`",
+                f"- source_revision_id: `{revision_cleanup.get('source_revision_id', '')}`",
+                f"- revision_delta_ref: `{revision_cleanup.get('revision_delta_ref', '')}`",
+                f"- removed_surfaces: `{', '.join(_normalize_list(revision_cleanup.get('removed_surfaces')))}`",
+                f"- retained_legacy_surfaces: `{', '.join(_normalize_list(revision_cleanup.get('retained_legacy_surfaces')))}`",
+                f"- cleanup_rationale: `{revision_cleanup.get('cleanup_rationale', '')}`",
+            ]
+        )
     lines.extend(
         [
             "",
@@ -1323,6 +1399,13 @@ def _validate_result(payload: dict[str, Any]) -> list[str]:
     updates = payload.get("artifact_updates")
     if updates is not None and not isinstance(updates, dict):
         problems.append("artifact_updates must be an object")
+    cleanup_review_completed = payload.get("cleanup_review_completed")
+    if cleanup_review_completed is not None and not isinstance(cleanup_review_completed, bool):
+        problems.append("cleanup_review_completed must be a boolean")
+    for key in ("removed_surfaces", "retained_legacy_surfaces"):
+        value = payload.get(key)
+        if value is not None and not isinstance(value, list):
+            problems.append(f"{key} must be a list")
     for key in ("implemented_task_ids", "verified_task_ids", "blocked_task_ids", "failed_task_ids"):
         value = payload.get(key)
         if value is not None and not isinstance(value, list):
@@ -1825,6 +1908,10 @@ def run_implement_stage(  # noqa: PLR0913
         if implementation_plan_supported(resolved_version)
         else ""
     )
+    revision_delta = load_revision_delta(project_root, version=resolved_version, feature=feature)
+    if revision_delta:
+        revision_delta["json_ref"] = str(revision_delta.get("json_ref", "") or f"docs/beacon/{resolved_version}/.machine/execution/revision-delta-{feature_slug}.json")
+        revision_delta["markdown_ref"] = str(revision_delta.get("markdown_ref", "") or f"docs/beacon/{resolved_version}/execution/revision-delta-{feature_slug}.md")
     rendered_skill = str(skill or adapter.get("skill_prefix", "") or "").strip()
     default_prompt = build_default_task_prompt(
         feature=feature,
@@ -1835,6 +1922,7 @@ def run_implement_stage(  # noqa: PLR0913
         implementation_plan_file=implementation_plan_file,
         semantic_artifact_refs=semantic_artifacts,
         default_design_bridge=default_design_bridge,
+        revision_cleanup=revision_delta,
         operator_prompt=str(prompt_boundary_payload.get("prompt", "") or ""),
         prompt_boundary=prompt_boundary_payload,
     )
@@ -1869,6 +1957,7 @@ def run_implement_stage(  # noqa: PLR0913
             artifacts["user_story"],
             artifacts["test_case"],
             artifacts["ac_matrix"],
+            str(revision_delta.get("json_ref", "") or ""),
             *[value for value in semantic_artifacts.values() if value],
             str(request_path),
             str(result_path),
@@ -1901,6 +1990,7 @@ def run_implement_stage(  # noqa: PLR0913
         "task_prompt": task_prompt,
         "result_file": str(result_path),
         "implementation_plan": implementation_plan_file,
+        "revision_delta": revision_delta,
         "git_workflow": git_workflow_contract,
         "generated_at": now_iso(),
         "semantic_layer": {
@@ -1929,6 +2019,7 @@ def run_implement_stage(  # noqa: PLR0913
         "result_path": str(result_path),
         "branch_preflight_path": str(branch_preflight_path),
         "plan_preflight_path": str(plan_preflight_path),
+        "revision_delta": revision_delta,
         "git_workflow": git_workflow_contract,
         "generated_at": now_iso(),
         "status": "planned",
@@ -2012,6 +2103,7 @@ def run_implement_stage(  # noqa: PLR0913
         if not implemented_item_ids:
             implemented_item_ids = _story_item_ids(story_state, kinds={"ac", "task"})
         implemented_task_ids = [str(item) for item in _normalize_string_list(result_payload.get("implemented_task_ids"))]
+        revision_cleanup_summary = _revision_cleanup_payload(result_payload=result_payload, revision_delta=revision_delta)
         requirement_traceability = {
             "source_of_truth_root": artifacts["source_of_truth_root"],
             "prd": artifacts["prd"],
@@ -2036,6 +2128,7 @@ def run_implement_stage(  # noqa: PLR0913
                 artifacts["user_story"],
                 artifacts["test_case"],
                 artifacts["ac_matrix"],
+                str(revision_cleanup_summary.get("revision_delta_ref", "") or ""),
                 str(request_path),
                 str(result_path),
             ]
@@ -2070,6 +2163,7 @@ def run_implement_stage(  # noqa: PLR0913
             "implementation_plan_progress": load_implementation_plan_progress(project_root, version=resolved_version, feature=feature),
             "requirement_traceability": requirement_traceability,
             "delivery_surfaces": delivery_surfaces,
+            "revision_cleanup": revision_cleanup_summary,
             "traceability_refs": summary_traceability_refs,
             "generated_at": now_iso(),
         }
@@ -2109,6 +2203,7 @@ def run_implement_stage(  # noqa: PLR0913
             stdout_path="",
             stderr_path="",
             result_payload=result_payload,
+            revision_cleanup=revision_cleanup_summary,
         )
         current_revision_id = str(story_state.get("current_revision_id", "") or "")
         technical_payload["revision_id"] = current_revision_id
@@ -2479,6 +2574,7 @@ def run_implement_stage(  # noqa: PLR0913
         task_ids=implemented_task_ids,
         changed_files=result_payload.get("changed_files", []),
     )
+    revision_cleanup_summary = _revision_cleanup_payload(result_payload=result_payload, revision_delta=revision_delta)
     requirement_traceability = {
         "source_of_truth_root": artifacts["source_of_truth_root"],
         "prd": artifacts["prd"],
@@ -2503,6 +2599,7 @@ def run_implement_stage(  # noqa: PLR0913
             artifacts["user_story"],
             artifacts["test_case"],
             artifacts["ac_matrix"],
+            str(revision_cleanup_summary.get("revision_delta_ref", "") or ""),
             str(request_path),
             str(result_path),
             str(stdout_path),
@@ -2539,6 +2636,7 @@ def run_implement_stage(  # noqa: PLR0913
         "implementation_plan_progress": load_implementation_plan_progress(project_root, version=resolved_version, feature=feature),
         "requirement_traceability": requirement_traceability,
         "delivery_surfaces": delivery_surfaces,
+        "revision_cleanup": revision_cleanup_summary,
         "traceability_refs": summary_traceability_refs,
         "implementation_marker": str(marker.relative_to(project_root)),
         "technical_archive": {
@@ -2586,6 +2684,7 @@ def run_implement_stage(  # noqa: PLR0913
         stdout_path=str(stdout_path),
         stderr_path=str(stderr_path),
         result_payload=result_payload,
+        revision_cleanup=revision_cleanup_summary,
     )
     technical_payload["revision_id"] = str(story_state.get("current_revision_id", "") or "")
     write_json(archive_paths["json"], technical_payload)

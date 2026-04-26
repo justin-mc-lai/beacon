@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Any
 
 from beacon import __toolkit_version__
-from beacon.utils.help_support import build_help_payload
+from beacon.utils.help_support import build_help_payload, canonicalize_lifecycle_stage
 from beacon.utils.project_skills import project_skill_config_path
 from beacon.utils.qa_runtime import (
     list_qa_sessions,
@@ -274,12 +274,12 @@ def _runtime_corroboration(help_payload: dict[str, Any], debug_state: dict[str, 
 
 
 def _derive_stage(help_payload: dict[str, Any]) -> str:
-    current_stage = str(help_payload.get("current_stage") or "").strip()
-    if current_stage in {"accepted", "released"}:
+    current_stage = canonicalize_lifecycle_stage(help_payload.get("current_stage"))
+    if current_stage == "release":
         return "release"
-    if current_stage in {"verify", "verified"}:
+    if current_stage == "qa":
         return "qa"
-    if current_stage in {"implemented", "implementation"}:
+    if current_stage == "implement":
         return "implement"
     return "requirements"
 

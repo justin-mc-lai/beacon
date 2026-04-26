@@ -13,8 +13,9 @@ from beacon.utils.requirement_clarity import (
     write_requirement_clarity_report,
     write_requirement_clarity_writeback,
 )
+from beacon.utils.revision_delta import materialize_revision_delta
 from beacon.utils.revision_state import freeze_revision_state
-from beacon.utils.story_state import freeze_story_state, feature_slug
+from beacon.utils.story_state import freeze_story_state, feature_slug, sync_story_state_from_docs
 from beacon.utils.versioning import resolve_target_version
 
 app = typer.Typer(name="freeze", help="Freeze current feature revision as implementation baseline", invoke_without_command=True, no_args_is_help=False)
@@ -54,8 +55,10 @@ def _freeze_impl(feature: str, project: Optional[str], version: str, json_output
         else:
             typer.echo("Beacon freeze blocked: requirement clarity issues remain")
         return 2
+    sync_story_state_from_docs(project_root, resolved_version, feature)
     revision = freeze_revision_state(project_root, version=resolved_version, feature=feature)
     freeze_story_state(project_root, version=resolved_version, feature=feature)
+    revision_delta = materialize_revision_delta(project_root, version=resolved_version, feature=feature)
     payload = {
         "schema_version": "1.0",
         "feature": feature,
@@ -64,6 +67,7 @@ def _freeze_impl(feature: str, project: Optional[str], version: str, json_output
         "status": "frozen",
         "baseline_hash": revision.get("baseline_hash", ""),
         "story_path": str((project_root / "docs" / "beacon" / resolved_version / ".machine" / "user-story" / f"{feature_slug(feature)}.json").relative_to(project_root)),
+        "revision_delta": revision_delta,
         "requirement_clarity_gate": clarity_gate,
         "requirement_clarity_report": clarity_report,
         "requirement_clarity_writeback": clarity_writeback,

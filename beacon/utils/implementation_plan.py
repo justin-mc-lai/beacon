@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from copy import deepcopy
 import hashlib
 import json
 import re
@@ -19,6 +20,13 @@ from beacon.utils.delivery_baseline import (
 from beacon.utils.diagram_truth import load_feature_diagram_truth
 from beacon.utils.global_boundaries import global_boundary_principle_summaries
 from beacon.utils.implement_adapters import load_beacon_config
+from beacon.utils.revision_delta import (
+    load_revision_delta,
+    materialize_revision_delta,
+    revision_delta_json_path,
+    revision_delta_markdown_path,
+    revision_delta_supported,
+)
 from beacon.utils.revision_state import load_revision_state
 from beacon.utils.runtime import now_iso, read_json, write_json
 from beacon.utils.story_state import feature_slug, load_story_state
@@ -107,6 +115,159 @@ def _default_implementation_preflight_rules(
         f"Before implementation, verify every direct delivery service is on {branch_label}.",
         "If a branch switch is needed and the worktree is dirty, stop and clean or stash first.",
     ]
+
+
+def _revision_cleanup_task(
+    *,
+    story_id: str,
+    task_id: str,
+    previous_task_id: str,
+    revision_delta: dict[str, Any],
+) -> dict[str, Any]:
+    removed_surfaces = [
+        item
+        for item in (revision_delta.get("removed_requirement_surfaces") if isinstance(revision_delta.get("removed_requirement_surfaces"), list) else [])
+        if isinstance(item, dict)
+    ]
+    removed_labels = [
+        f"{str(item.get('id', '') or '').strip()}: {str(item.get('text', '') or '').strip()}".strip(": ")
+        for item in removed_surfaces
+        if str(item.get("text", "") or "").strip() or str(item.get("id", "") or "").strip()
+    ]
+    source_revision_id = str(revision_delta.get("source_revision_id", "") or "")
+    revision_id = str(revision_delta.get("revision_id", "") or "")
+    return {
+        "task_id": task_id,
+        "title": f"Cleanup superseded surfaces from {source_revision_id}",
+        "description": (
+            "Audit the latest frozen revision against superseded frozen truth and remove or justify any legacy "
+            f"implementation surfaces not retained in {revision_id}."
+        ),
+        "mapped_story_ids": [story_id or "US-001"],
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": [],
+        "depends_on": [previous_task_id] if previous_task_id else [],
+        "target_modules": [],
+        "diagram_review_gates": [],
+        "diagram_state_axes": [],
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": "",
+        "started_at": "",
+        "completed_at": "",
+        "required_cleanup": True,
+        "revision_delta_ref": str(revision_delta.get("json_ref", "") or ""),
+        "source_revision_id": source_revision_id,
+        "cleanup_surface_signatures": [str(item.get("signature", "") or "") for item in removed_surfaces if str(item.get("signature", "") or "").strip()],
+        "cleanup_surface_ids": [str(item.get("id", "") or "") for item in removed_surfaces if str(item.get("id", "") or "").strip()],
+        "cleanup_surface_labels": removed_labels,
+    }
+
+
+def _next_implementation_task_id(tasks: list[dict[str, Any]]) -> str:
+    highest = 0
+    for task in tasks:
+        match = re.fullmatch(r"ITASK-(\d+)", str(task.get("task_id", "") or "").strip(), flags=re.I)
+        if match:
+            highest = max(highest, int(match.group(1)))
+    return f"ITASK-{highest + 1:03d}"
+
+
+def _plan_is_completed(plan: dict[str, Any], tasks: list[dict[str, Any]]) -> bool:
+    if str(plan.get("status", "") or "").strip().lower() == "completed":
+        return True
+    task_statuses = [str(task.get("status", "") or "").strip().lower() for task in tasks if isinstance(task, dict)]
+    return bool(task_statuses) and all(status == "completed" for status in task_statuses)
+
+
+def _normalize_legacy_revision_cleanup_plan(
+    project_root: Path,
+    *,
+    version: str,
+    feature: str,
+    plan: dict[str, Any],
+    revision: dict[str, Any],
+    revision_delta: dict[str, Any],
+) -> dict[str, Any]:
+    if not plan:
+        return {}
+    if not bool(revision_delta.get("cleanup_required", False)):
+        return plan
+    source_revision_id = str(revision.get("source_revision_id", "") or "").strip()
+    revision_id = str(revision.get("revision_id", "") or "").strip()
+    if not source_revision_id or not revision_id:
+        return plan
+
+    normalized = deepcopy(plan)
+    tasks = [task for task in normalized.get("tasks", []) if isinstance(task, dict)]
+    completed_plan = _plan_is_completed(normalized, tasks)
+    has_cleanup_task = any(bool(task.get("required_cleanup")) for task in tasks)
+    if not completed_plan and not has_cleanup_task:
+        return plan
+    source_refs = normalized.get("source_refs") if isinstance(normalized.get("source_refs"), dict) else {}
+    expected_json_ref = str(
+        revision_delta.get("json_ref", "")
+        or revision_delta_json_path(project_root, version, feature).relative_to(project_root)
+    )
+    expected_markdown_ref = str(
+        revision_delta.get("markdown_ref", "")
+        or revision_delta_markdown_path(project_root, version, feature).relative_to(project_root)
+    )
+
+    normalized["source_refs"] = {**source_refs, "revision_delta": expected_json_ref}
+    normalized["revision_delta"] = revision_delta
+    normalized["revision_delta_ref"] = expected_json_ref
+    normalized["revision_delta_markdown_ref"] = expected_markdown_ref
+    normalized["revision_cleanup_required"] = True
+    normalized["source_revision_id"] = source_revision_id
+
+    if has_cleanup_task:
+        normalized["tasks"] = tasks
+        return normalized
+
+    story = load_story_state(
+        project_root,
+        version,
+        feature,
+        create_if_missing=False,
+        revision_id=revision_id,
+    ) or {}
+    story_id = str(story.get("story_id", "") or "").strip()
+    if not story_id:
+        for task in tasks:
+            story_ids = task.get("mapped_story_ids") if isinstance(task.get("mapped_story_ids"), list) else []
+            story_id = next((str(item).strip() for item in story_ids if str(item).strip()), "")
+            if story_id:
+                break
+    previous_task_id = next((str(task.get("task_id", "") or "").strip() for task in reversed(tasks) if str(task.get("task_id", "") or "").strip()), "")
+    cleanup_task = _revision_cleanup_task(
+        story_id=story_id or "US-001",
+        task_id=_next_implementation_task_id(tasks),
+        previous_task_id=previous_task_id,
+        revision_delta=revision_delta,
+    )
+    if completed_plan:
+        completed_at = str(normalized.get("updated_at", "") or "")
+        cleanup_task["status"] = "completed"
+        cleanup_task["started_at"] = completed_at
+        cleanup_task["completed_at"] = completed_at
+    tasks.append(cleanup_task)
+    normalized["tasks"] = tasks
+
+    workstreams = normalized.get("workstreams")
+    if isinstance(workstreams, list) and workstreams:
+        head = workstreams[0]
+        if isinstance(head, dict):
+            task_ids = [str(item).strip() for item in head.get("task_ids", []) if str(item).strip()]
+            if cleanup_task["task_id"] not in task_ids:
+                normalized_workstream = dict(head)
+                normalized_workstream["task_ids"] = [*task_ids, cleanup_task["task_id"]]
+                workstreams[0] = normalized_workstream
+                normalized["workstreams"] = workstreams
+    return normalized
 
 
 def implementation_git_workflow_json_path(project_root: Path, version: str, feature: str) -> Path:
@@ -954,6 +1115,18 @@ def _render_plan_markdown(payload: dict[str, Any]) -> str:
                 f"- qa_coverage_hints: {', '.join(diagram_truth.get('qa_coverage_hints', [])) or '-'}",
             ]
         )
+    revision_delta = payload.get("revision_delta") if isinstance(payload.get("revision_delta"), dict) else {}
+    if revision_delta:
+        lines.extend(
+            [
+                "",
+                "## Revision Delta",
+                f"- revision_id: `{revision_delta.get('revision_id', '')}`",
+                f"- source_revision_id: `{revision_delta.get('source_revision_id', '')}`",
+                f"- cleanup_required: `{bool(revision_delta.get('cleanup_required', False))}`",
+                f"- revision_delta_ref: `{payload.get('revision_delta_ref', '')}`",
+            ]
+        )
     lines.extend(["", "## Tasks"])
     tasks = [task for task in payload.get("tasks", []) if isinstance(task, dict)]
     if not tasks:
@@ -973,6 +1146,12 @@ def _render_plan_markdown(payload: dict[str, Any]) -> str:
                 f"- diagram_review_gates: {', '.join(task.get('diagram_review_gates', [])) or '-'}",
             ]
         )
+        if bool(task.get("required_cleanup")):
+            lines.append("- required_cleanup: `True`")
+            lines.append(f"- source_revision_id: `{task.get('source_revision_id', '')}`")
+            lines.append(f"- revision_delta_ref: `{task.get('revision_delta_ref', '')}`")
+            labels = task.get("cleanup_surface_labels") if isinstance(task.get("cleanup_surface_labels"), list) else []
+            lines.append(f"- cleanup_surface_labels: {', '.join(labels) or '-'}")
     return "\n".join(lines) + "\n"
 
 
@@ -1116,11 +1295,32 @@ def compile_implementation_plan(project_root: Path, *, version: str = "auto", fe
     items = [item for item in story.get("items", []) if isinstance(item, dict)]
     ac_items = [item for item in items if str(item.get("kind", "") or "") == "ac" and bool(item.get("required", True))]
     test_items = [item for item in items if str(item.get("kind", "") or "") == "test" and bool(item.get("required", True))]
+    revision_delta: dict[str, Any] = {}
+    if revision_delta_supported(resolved_version) and str(revision.get("source_revision_id", "") or "").strip():
+        revision_delta = materialize_revision_delta(project_root, version=resolved_version, feature=feature)
+        revision_delta["json_ref"] = str(revision_delta_json_path(project_root, resolved_version, feature).relative_to(project_root))
+        revision_delta["markdown_ref"] = str(revision_delta_markdown_path(project_root, resolved_version, feature).relative_to(project_root))
+        if str(revision_delta.get("status", "") or "") != "ready":
+            payload = {
+                "schema_version": "1.0",
+                "status": "blocked",
+                "blocked": True,
+                "reason_code": "revision_cleanup_delta_missing",
+                "feature": feature,
+                "feature_slug": feature_slug(feature),
+                "version": resolved_version,
+                "revision_id": str(revision.get("revision_id", "") or ""),
+                "source_revision_id": str(revision.get("source_revision_id", "") or ""),
+                "revision_delta": revision_delta,
+            }
+            return 2, payload
     source_refs = {
         "user_story": str((project_root / "docs" / "beacon" / resolved_version / "user-story" / f"{feature_slug(feature)}.md").relative_to(project_root)),
         "prd": str((project_root / "docs" / "beacon" / resolved_version / "prd" / f"{feature_slug(feature)}.md").relative_to(project_root)),
         "test_case": str((project_root / "docs" / "beacon" / resolved_version / "qa" / "test-cases" / f"{feature_slug(feature)}.md").relative_to(project_root)),
     }
+    if revision_delta:
+        source_refs["revision_delta"] = str(revision_delta.get("json_ref", "") or "")
     ac_matrix_candidate = next((path for path in qa_matrix_candidates(project_root, resolved_version, feature_slug(feature), "ac-test-matrix") if path.exists()), None)
     if ac_matrix_candidate is not None:
         source_refs["ac_matrix"] = str(ac_matrix_candidate.relative_to(project_root))
@@ -1262,6 +1462,17 @@ def compile_implementation_plan(project_root: Path, *, version: str = "auto", fe
                 "completed_at": "",
             }
         )
+    if bool(revision_delta.get("cleanup_required", False)):
+        cleanup_task_id = f"ITASK-{len(tasks) + 1:03d}"
+        tasks.append(
+            _revision_cleanup_task(
+                story_id=str(story.get("story_id", "US-001") or "US-001"),
+                task_id=cleanup_task_id,
+                previous_task_id=previous_task_id,
+                revision_delta=revision_delta,
+            )
+        )
+        previous_task_id = cleanup_task_id
 
     git_workflow = materialize_implementation_git_workflow_contract(project_root, version=resolved_version, feature=feature)
     baseline = load_implementation_delivery_baseline(project_root, version=resolved_version, feature=feature)
@@ -1300,6 +1511,9 @@ def compile_implementation_plan(project_root: Path, *, version: str = "auto", fe
         "review_gates": list(diagram_truth.get("review_gates", [])),
         "qa_coverage_hints": list(diagram_truth.get("qa_coverage_hints", [])),
         "tasks": tasks,
+        "revision_delta": revision_delta,
+        "revision_delta_ref": str(revision_delta.get("json_ref", "") or ""),
+        "revision_delta_markdown_ref": str(revision_delta.get("markdown_ref", "") or ""),
         "team_mode": _team_mode_contract(project_root, version=resolved_version, feature=feature),
         "git_workflow": git_workflow,
         "git_workflow_ref": str(implementation_git_workflow_json_path(project_root, resolved_version, feature).relative_to(project_root)),
@@ -1336,9 +1550,11 @@ def compile_implementation_plan(project_root: Path, *, version: str = "auto", fe
         "git_workflow_ref": str(implementation_git_workflow_json_path(project_root, resolved_version, feature).relative_to(project_root)),
         "git_workflow_markdown_ref": str(implementation_git_workflow_markdown_path(project_root, resolved_version, feature).relative_to(project_root)),
         "counts": _task_counts(tasks),
+        "revision_cleanup_required": bool(revision_delta.get("cleanup_required", False)),
         "team_mode": payload.get("team_mode", {}),
         "git_workflow": payload.get("git_workflow", {}),
         "diagram_truth": payload.get("diagram_truth", {}),
+        "revision_delta": revision_delta,
     }
 
 
@@ -1385,12 +1601,45 @@ def build_implementation_plan_gate_payload(project_root: Path, *, version: str =
     if not isinstance(plan, dict) or not plan:
         payload.update({"status": "blocked", "blocked": True, "reason_code": "implementation_plan_invalid"})
         return payload
+    revision_delta: dict[str, Any] = {}
+    cleanup_required = False
+    if revision_delta_supported(resolved_version) and str(revision.get("source_revision_id", "") or "").strip():
+        revision_delta = load_revision_delta(project_root, version=resolved_version, feature=feature)
+        cleanup_required = bool(revision_delta.get("cleanup_required", False))
+        if not revision_delta or str(revision_delta.get("revision_id", "") or "") != str(revision.get("revision_id", "") or ""):
+            payload.update(
+                {
+                    "status": "blocked",
+                    "blocked": True,
+                    "reason_code": "revision_cleanup_delta_missing",
+                    "revision_delta_ref": str(revision_delta_json_path(project_root, resolved_version, feature).relative_to(project_root)),
+                }
+            )
+            return payload
+        if cleanup_required:
+            plan = _normalize_legacy_revision_cleanup_plan(
+                project_root,
+                version=resolved_version,
+                feature=feature,
+                plan=plan,
+                revision=revision,
+                revision_delta=revision_delta,
+            )
     source_refs = plan.get("source_refs") if isinstance(plan.get("source_refs"), dict) else {}
     tasks = plan.get("tasks") if isinstance(plan.get("tasks"), list) else None
     if not source_refs or not tasks:
         payload.update({"status": "blocked", "blocked": True, "reason_code": "implementation_plan_invalid"})
         return payload
-    missing_refs = [str(path) for path in source_refs.values() if not (project_root / str(path)).exists()]
+    virtual_refs: set[str] = set()
+    expected_revision_delta_ref = str(revision_delta_json_path(project_root, resolved_version, feature).relative_to(project_root))
+    revision_delta_ref = str(source_refs.get("revision_delta", "") or "")
+    if revision_delta and revision_delta_ref == expected_revision_delta_ref and not (project_root / revision_delta_ref).exists():
+        virtual_refs.add(revision_delta_ref)
+    missing_refs = [
+        str(path)
+        for path in source_refs.values()
+        if str(path) not in virtual_refs and not (project_root / str(path)).exists()
+    ]
     if missing_refs:
         payload.update(
             {
@@ -1409,6 +1658,26 @@ def build_implementation_plan_gate_payload(project_root: Path, *, version: str =
         return payload
     if str(plan.get("baseline_hash", "") or "") != str(revision.get("baseline_hash", "") or ""):
         payload.update({"status": "blocked", "blocked": True, "reason_code": "implementation_plan_baseline_mismatch"})
+        return payload
+    if revision_delta and str(source_refs.get("revision_delta", "") or "") != str(revision_delta_json_path(project_root, resolved_version, feature).relative_to(project_root)):
+        payload.update(
+            {
+                "status": "blocked",
+                "blocked": True,
+                "reason_code": "implementation_plan_cleanup_missing",
+                "revision_delta_ref": str(revision_delta_json_path(project_root, resolved_version, feature).relative_to(project_root)),
+            }
+        )
+        return payload
+    if cleanup_required and not any(bool(task.get("required_cleanup")) for task in tasks if isinstance(task, dict)):
+        payload.update(
+            {
+                "status": "blocked",
+                "blocked": True,
+                "reason_code": "implementation_plan_cleanup_missing",
+                "revision_delta_ref": str(revision_delta_json_path(project_root, resolved_version, feature).relative_to(project_root)),
+            }
+        )
         return payload
     baseline = load_implementation_delivery_baseline(project_root, version=resolved_version, feature=feature)
     if not baseline:

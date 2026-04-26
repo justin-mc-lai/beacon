@@ -29,6 +29,7 @@ from beacon.utils.project_skills import (
 from beacon.utils.prototype_support import version_requires_prototype
 from beacon.utils.qa_runtime import load_current_qa_session, load_qa_status
 from beacon.utils.qa_precision import load_feature_qa_scorecard
+from beacon.utils.release_scorecard import build_release_scorecard, summarize_release_scorecard
 from beacon.utils.ralph_runtime import load_ralph_state
 from beacon.utils.requirement_clarity import build_requirement_clarity_gate_payload
 from beacon.utils.revision_state import load_revision_state
@@ -468,6 +469,7 @@ def _blocking_reasons(
     profile_gate: dict[str, Any] | None = None,
     control_plane: dict[str, Any] | None = None,
     feature_scorecard: dict[str, Any] | None = None,
+    release_summary: dict[str, Any] | None = None,
     takeover_gate: dict[str, Any] | None = None,
     implementation_plan_gate: dict[str, Any] | None = None,
     requirement_clarity_gate: dict[str, Any] | None = None,
@@ -475,6 +477,7 @@ def _blocking_reasons(
 ) -> list[str]:
     reasons: list[str] = []
     feature_scorecard = feature_scorecard if isinstance(feature_scorecard, dict) else {}
+    release_summary = release_summary if isinstance(release_summary, dict) else {}
     delivery_status = str(revision_state.get("delivery_status", "") or "")
     continue_decision = str(feature_scorecard.get("continue_decision") or "").strip()
     scorecard_release_ready = bool(feature_scorecard.get("release_ready", False))
@@ -522,6 +525,13 @@ def _blocking_reasons(
         reasons.extend(
             str(item).strip()
             for item in (feature_scorecard.get("stop_reasons") or [])
+            if str(item).strip()
+        )
+    if str(release_summary.get("gate_status") or "").strip().lower() == "blocked":
+        reasons.append("release_gate_blocked")
+        reasons.extend(
+            str(item).strip()
+            for item in (release_summary.get("gate_reason_codes") or [])
             if str(item).strip()
         )
     if isinstance(control_plane, dict) and int(control_plane.get("failure_streak", 0) or 0) > 0:
@@ -653,6 +663,15 @@ def _next_step(
         }
 
     if blocked:
+        if "release_gate_blocked" in blocking_reasons or any(
+            reason.startswith("evidence_sha256_manifest")
+            for reason in blocking_reasons
+        ):
+            return {
+                "action": "release-check",
+                "reason": "release governance is currently blocked and must be reconciled before publishing",
+                "command": f"beacon gate check release --project-root {project_root} --version {version}",
+            }
         if "context_version_mismatch" in blocking_reasons:
             recommended_version = str((version_guard or {}).get("recommended_version", "") or "")
             command_version = recommended_version or version
@@ -938,6 +957,8 @@ def build_help_payload(
         else {}
     )
     feature_scorecard = load_feature_qa_scorecard(project_root, feature=feature_name) if feature_name else {}
+    release_scorecard = build_release_scorecard(project_root, version=resolved_version) if feature_name else {}
+    release_summary = summarize_release_scorecard(release_scorecard) if release_scorecard else {}
     discovery_state = load_skill_discovery(project_root) if _supports_skill_discover(resolved_version) else None
     discovery_hint = build_discovery_hint(project_root) if _supports_skill_discover(resolved_version) and feature_name else {}
     control_plane = build_resume_contract(project_root, run_id=resolved_run_id or None)
@@ -983,6 +1004,7 @@ def build_help_payload(
         profile_gate=profile_gate,
         control_plane=control_plane,
         feature_scorecard=feature_scorecard,
+        release_summary=release_summary,
         takeover_gate=takeover_gate,
         implementation_plan_gate=implementation_plan_gate,
         requirement_clarity_gate=requirement_clarity_gate,
@@ -1010,6 +1032,13 @@ def build_help_payload(
             blocking = [stop_state]
     blocked = bool(blocking)
     current_stage = _infer_current_stage(revision_state=revision_state, workflow_progress=workflow_progress)
+    release_gate_status = str(release_summary.get("gate_status") or "").strip().lower()
+    if feature_name and (
+        str(feature_scorecard.get("continue_decision") or "").strip() == "ready_for_release"
+        or bool(release_summary.get("release_ready", False))
+        or release_gate_status == "blocked"
+    ):
+        current_stage = "release"
     workflow_progress_display = _canonicalize_workflow_progress(workflow_progress)
     blocking_display = _canonicalize_reason_list(blocking)
     profile_binding_source = (
@@ -1336,6 +1365,7 @@ def build_help_payload(
         },
         "scores": {k: v.get("score") if isinstance(v, dict) else v for k, v in scores.items()},
         "score_details": scores,
+        "release_summary": release_summary,
         "control_plane": control_plane,
         "coverage": coverage,
         "story_summary": story_summary,

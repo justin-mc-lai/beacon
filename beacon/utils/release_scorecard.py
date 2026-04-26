@@ -8,6 +8,7 @@ from typing import Any
 
 from beacon.utils.artifact_paths import change_docs_file, change_file_output
 from beacon.utils.delivery_kernel import load_delivery_read_model
+from beacon.utils.evidence_manifest import validate_evidence_manifest
 from beacon.utils.exhaustiveness import load_exhaustiveness_report
 from beacon.utils.implementation_plan import (
     implementation_plan_supported,
@@ -212,6 +213,7 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
     resolved_version = resolve_target_version(project_root, version)
     resolved_runtime = resolve_runtime_version(project_root, "auto")
     gate_report = _load_json(project_root / ".beacon" / "gate-report.json")
+    evidence_manifest = validate_evidence_manifest(project_root)
     qa_status = load_qa_status(project_root)
     gate_version = str(gate_report.get("version") or "").strip()
     gate_version_match = not gate_version or gate_version == resolved_version
@@ -261,6 +263,28 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
     blocked_count = len(
         [item for item in gate_report.get("issues", []) if isinstance(item, dict) and bool(item.get("blocked"))]
     ) if isinstance(gate_report.get("issues"), list) else 0
+    gate_status = str(gate_report.get("status") or "unknown")
+    gate_reason_codes = sorted(
+        {
+            str(item.get("reason_code") or "").strip()
+            for item in (gate_report.get("issues") if isinstance(gate_report.get("issues"), list) else [])
+            if isinstance(item, dict) and str(item.get("reason_code") or "").strip()
+        }
+    )
+    if bool(evidence_manifest.get("blocked")):
+        gate_status = "Blocked"
+        blocked_count = max(blocked_count, int(evidence_manifest.get("blocked_count") or 0))
+        gate_reason_codes = sorted(
+            {
+                *gate_reason_codes,
+                *[
+                    str(item.get("reason_code") or "").strip()
+                    for item in (evidence_manifest.get("issues") if isinstance(evidence_manifest.get("issues"), list) else [])
+                    if isinstance(item, dict) and str(item.get("reason_code") or "").strip()
+                ],
+            }
+        )
+    gate_pass = gate_status.strip().lower() == "pass"
     decision_summary = scorecard_state.get("counts") if isinstance(scorecard_state.get("counts"), dict) else {}
     project_profile_gate = qa_status.get("project_profile_gate") if isinstance(qa_status.get("project_profile_gate"), dict) else {}
     if not project_profile_gate and isinstance(feature_scorecard, dict):
@@ -281,7 +305,7 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
         and not list(feature_scorecard.get("unresolved_closure_outcomes") or [])
     )
     legacy_release_ready = (
-        str(gate_report.get("status") or "").strip().lower() == "pass"
+        gate_pass
         and qa_passed
         and qa_evidence_done
         and exhaustiveness_pass
@@ -291,7 +315,7 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
     release_ready = legacy_release_ready
     if runtime_feature_supported("v1.1.10", runtime_version=resolved_runtime):
         release_ready = (
-            str(gate_report.get("status") or "").strip().lower() == "pass"
+            gate_pass
             and qa_passed
             and (qa_evidence_done or feature_scorecard_release_ready or feature_scorecard_continue_decision == "ready_for_release")
             and bool(feature_scorecard)
@@ -325,6 +349,7 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
         )
     if (
         runtime_feature_supported("v1.1.10", runtime_version=resolved_runtime)
+        and gate_pass
         and feature_scorecard_authoritative
         and bool(revision_binding.get("gate_bound_to_latest_revision", False))
         and semantic_pass
@@ -342,7 +367,7 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
         release_payload={
             "release_ready": release_ready,
             "gate": {
-                "status": str(gate_report.get("status") or "unknown"),
+                "status": gate_status,
             },
             "qa": {
                 "status": str(qa_status.get("status") or "unknown"),
@@ -359,7 +384,7 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
         "implement": {"delivery_contract": {}},
         "qa": {"delivery_contract": {}},
         "release": {
-            "gate_status": str(gate_report.get("status") or "unknown"),
+            "gate_status": gate_status,
             "release_ready": release_ready,
             "semantic": semantic if isinstance(semantic, dict) else {},
             "revision_binding": revision_binding,
@@ -418,11 +443,12 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
         "runtime_version": resolved_runtime,
         "release_ready": release_ready,
         "gate": {
-            "status": str(gate_report.get("status") or "unknown"),
+            "status": gate_status,
             "blocked_count": blocked_count,
             "run_id": str(gate_report.get("run_id") or ""),
             "artifact_version": gate_version,
             "version_match": gate_version_match,
+            "reason_codes": gate_reason_codes,
         },
         "qa": {
             "feature": feature,
@@ -477,6 +503,7 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
             "candidate_count": len(scorecard_state.get("candidates", [])) if isinstance(scorecard_state.get("candidates"), list) else 0,
         },
         "latest_experiment": latest_experiment if isinstance(latest_experiment, dict) else {},
+        "evidence_manifest": evidence_manifest,
         "delivery_read_model": release_delivery_read_model,
         "host_native_delivery": host_native_delivery,
     }
@@ -505,6 +532,7 @@ def summarize_release_scorecard(scorecard: dict[str, Any] | None) -> dict[str, A
         "release_ready": bool(payload.get("release_ready", False)),
         "gate_status": str(gate.get("status") or "unknown"),
         "gate_blocked_count": int(gate.get("blocked_count") or 0),
+        "gate_reason_codes": list(gate.get("reason_codes") or []),
         "qa_status": str(qa.get("status") or "unknown"),
         "qa_execution_mode": str(qa.get("execution_mode") or "feature-aware"),
         "qa_evidence_done": bool(qa.get("evidence_done", False)),

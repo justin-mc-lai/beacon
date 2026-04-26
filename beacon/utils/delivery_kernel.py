@@ -5,6 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
+from beacon.utils.artifact_paths import execution_file_candidates
 from beacon.utils.implement_prompt_boundary import implement_prompt_boundary_supported
 from beacon.utils.qa_feature import load_feature_qa_status
 from beacon.utils.runtime import read_json
@@ -206,6 +207,46 @@ def _load_latest_implement_state(project_root: Path, *, version: str, feature: s
     return sorted(candidates, key=lambda item: item[0], reverse=True)[0][1]
 
 
+def _load_authoritative_implementation_summary(project_root: Path, *, version: str, feature: str) -> dict[str, Any]:
+    slug = feature_slug(feature)
+    for path in execution_file_candidates(project_root, version, f"implementation-summary-{slug}.json"):
+        payload = read_json(path, {})
+        if isinstance(payload, dict) and payload:
+            return payload
+    return {}
+
+
+def _merge_implement_state(authoritative: dict[str, Any], runtime_state: dict[str, Any]) -> dict[str, Any]:
+    summary = _clean_dict(authoritative)
+    runtime = _clean_dict(runtime_state)
+    if not summary:
+        return runtime
+    if not runtime:
+        return summary
+
+    merged = dict(summary)
+    for key, value in runtime.items():
+        if key in {"prompt_boundary", "delivery_contract", "requirement_traceability", "traceability_refs"}:
+            if not merged.get(key):
+                merged[key] = value
+            continue
+        if key in {"status", "run_id", "request_path", "result_path", "stdout_path", "stderr_path", "reason_code", "generated_at"}:
+            if _clean_str(value):
+                merged[key] = value
+            continue
+        if key in {"plan_preflight", "branch_preflight", "subagent_prechecks", "semantic_layer", "host_native_delivery"}:
+            if value:
+                merged[key] = value
+            continue
+        if key in {"mode", "host_runtime", "runner", "adapter_type", "phase", "next_action", "team_surface"}:
+            if _clean_str(value):
+                merged[key] = value
+            continue
+        if key not in merged:
+            merged[key] = value
+    return merged
+
+
 def _default_requirement_binding(payload: dict[str, Any]) -> dict[str, Any]:
     binding = _clean_dict(payload.get("requirement_traceability"))
     if binding:
@@ -397,7 +438,9 @@ def load_delivery_read_model(
     release_payload: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     resolved_version = resolve_target_version(project_root, version)
-    implement_state = _load_latest_implement_state(project_root, version=resolved_version, feature=feature)
+    authoritative_summary = _load_authoritative_implementation_summary(project_root, version=resolved_version, feature=feature)
+    latest_runtime_state = _load_latest_implement_state(project_root, version=resolved_version, feature=feature)
+    implement_state = _merge_implement_state(authoritative_summary, latest_runtime_state)
     qa_state = load_feature_qa_status(project_root, feature=feature) if _clean_str(feature) else {}
     if qa_state and _clean_str(qa_state.get("version")) not in {"", resolved_version}:
         qa_state = {}

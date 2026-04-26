@@ -166,8 +166,17 @@ def _feature_change_payloads(project_root: Path, version: str) -> list[dict]:
                 continue
             if str(payload.get("version") or "").strip() not in {"", version}:
                 continue
+            revision_cleanup = payload.get("revision_cleanup") if isinstance(payload.get("revision_cleanup"), dict) else {}
             added = [str(item).strip() for item in payload.get("additions", []) if str(item).strip()]
-            removed = [str(item).strip() for item in payload.get("deletions", []) if str(item).strip()]
+            removed = [
+                *[str(item).strip() for item in payload.get("deletions", []) if str(item).strip()],
+                *[str(item).strip() for item in revision_cleanup.get("removed_surfaces", []) if str(item).strip()],
+                *[
+                    str(item.get("label", "") or item.get("text", "") or item.get("id", "") or "").strip()
+                    for item in (revision_cleanup.get("removed_requirement_surfaces") if isinstance(revision_cleanup.get("removed_requirement_surfaces"), list) else [])
+                    if isinstance(item, dict) and str(item.get("label", "") or item.get("text", "") or item.get("id", "") or "").strip()
+                ],
+            ]
             fixed = [
                 *[str(item).strip() for item in payload.get("modifications", []) if str(item).strip()],
                 *[str(item).strip() for item in payload.get("refactors", []) if str(item).strip()],
@@ -477,6 +486,7 @@ def check(
         )
     )
 
+    scorecard_gate = release_scorecard.get("gate") if isinstance(release_scorecard.get("gate"), dict) else {}
     gate_ok = False
     gate_status = "missing"
     gate_coverage_full: Optional[bool] = None
@@ -495,6 +505,13 @@ def check(
         if isinstance(coverage_payload, dict) and "full_coverage" in coverage_payload:
             gate_coverage_full = bool(coverage_payload.get("full_coverage"))
         evidence_refs.append(str(gate_report_path.relative_to(project_root)))
+    if scorecard_gate:
+        gate_status = str(scorecard_gate.get("status") or gate_status or "unknown")
+        gate_ok = gate_status.lower() == "pass"
+        if scorecard_gate.get("run_id"):
+            gate_run_id = str(scorecard_gate.get("run_id") or gate_run_id)
+        if scorecard_gate.get("artifact_version"):
+            gate_version = str(scorecard_gate.get("artifact_version") or gate_version)
     checks.append(("gate report pass", gate_ok, f"status={gate_status or 'unknown'}"))
     checks.append(
         (

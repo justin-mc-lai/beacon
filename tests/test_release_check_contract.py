@@ -266,3 +266,62 @@ def test_release_check_should_fail_when_v137_prompt_boundary_verdict_is_missing(
     assert result.exit_code == 1, result.stdout
     assert "implement prompt boundary verdict pass" in result.stdout
     assert "implement_prompt_boundary_missing" in result.stdout
+
+
+def test_release_check_should_fail_when_scorecard_gate_is_blocked_even_if_gate_report_artifact_passes(
+    tmp_path: Path,
+    monkeypatch,
+):
+    version = "v1.3.8"
+    _seed_release_artifacts(tmp_path, version=version, coverage_version=version)
+
+    monkeypatch.setattr(
+        release_command,
+        "build_release_scorecard",
+        lambda *_args, **_kwargs: {
+            "release_ready": False,
+            "gate": {
+                "status": "Blocked",
+                "blocked_count": 1,
+                "run_id": "run-123",
+                "artifact_version": version,
+                "version_match": True,
+                "reason_codes": ["evidence_sha256_manifest_mismatch"],
+            },
+            "qa": {"feature": "feature-a", "status": "passed", "evidence_done": True},
+            "semantic": {"status": "pass", "reason_code": "semantic_contract_ok"},
+            "feature_qa_scorecard": {
+                "release_ready": False,
+                "continue_decision": "qa-repair",
+                "coverage_current": {
+                    "required_scenarios": 1,
+                    "executed_scenarios": 1,
+                    "coverage_rate": 1.0,
+                },
+            },
+            "change_documents": {
+                "markdown_exists": True,
+                "json_exists": True,
+                "version_match": True,
+                "includes_current_feature": True,
+                "markdown_path": f"docs/beacon/{version}/change/{version}.md",
+                "json_path": f"docs/beacon/{version}/.machine/change/{version}.json",
+                "current_feature_slug": "feature-a",
+                "feature_count": 1,
+            },
+            "prompt_boundary": {
+                "required": True,
+                "status": "pass",
+                "blocked": False,
+                "classification": "in_scope_implementation",
+                "reason_code": "",
+                "surface": "host_prompt",
+            },
+        },
+    )
+
+    result = _invoke(["release", "check", version, "--project", str(tmp_path)])
+
+    assert result.exit_code == 1, result.stdout
+    assert "gate report pass" in result.stdout
+    assert "status=Blocked" in result.stdout

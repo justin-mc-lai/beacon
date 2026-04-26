@@ -361,6 +361,7 @@ def build_default_task_prompt(
     implementation_plan_file: str = "",
     semantic_artifact_refs: dict[str, str] | None = None,
     default_design_bridge: dict[str, Any] | None = None,
+    revision_cleanup: dict[str, Any] | None = None,
     operator_prompt: str = "",
     prompt_boundary: dict[str, Any] | None = None,
 ) -> str:
@@ -375,6 +376,22 @@ def build_default_task_prompt(
     ]
     if str(implementation_plan_file or "").strip():
         lines.append(f"- {implementation_plan_file}")
+    revision_cleanup_payload = revision_cleanup if isinstance(revision_cleanup, dict) else {}
+    if bool(revision_cleanup_payload.get("cleanup_required", False)):
+        lines.extend(
+            [
+                "Changed revision cleanup obligation:",
+                f"- revision_delta: {str(revision_cleanup_payload.get('revision_delta_ref', '') or '').strip()}",
+                f"- source_revision_id: {str(revision_cleanup_payload.get('source_revision_id', '') or '').strip()}",
+            ]
+        )
+        removed_surfaces = revision_cleanup_payload.get("removed_requirement_surfaces") if isinstance(revision_cleanup_payload.get("removed_requirement_surfaces"), list) else []
+        for item in removed_surfaces:
+            if not isinstance(item, dict):
+                continue
+            label = f"{str(item.get('id', '') or '').strip()} {str(item.get('text', '') or '').strip()}".strip()
+            if label:
+                lines.append(f"- removed_requirement_surface: {label}")
     prompt_boundary_payload = prompt_boundary if isinstance(prompt_boundary, dict) else {}
     classification = str(prompt_boundary_payload.get("classification", "") or "").strip()
     if str(operator_prompt or "").strip():
@@ -411,6 +428,10 @@ def build_default_task_prompt(
             "Do not invent new user stories, acceptance criteria, or test scope.",
             "If the work would require requirement change or conflicts with frozen truth, stop and route to beacon-change/refreeze instead of coding around it.",
             "Structured result should include: assumptions, simplicity_notes, scope_guard, verification.",
+            (
+                "For changed revisions with cleanup obligation, structured result must also include: "
+                "cleanup_review_completed, removed_surfaces, retained_legacy_surfaces, cleanup_rationale."
+            ),
             "Run relevant verification.",
             f"Write structured result to {result_file}",
         ]

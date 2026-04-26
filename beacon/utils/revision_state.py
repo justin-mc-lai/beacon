@@ -2,14 +2,13 @@
 
 from __future__ import annotations
 
-import hashlib
 from pathlib import Path
 from typing import Any
 
 from beacon.utils.artifact_paths import machine_execution_dir
 from beacon.utils.runtime import now_iso, read_json, write_json
 from beacon.utils.versioning import resolve_target_version
-from beacon.utils.story_state import feature_slug, user_story_markdown_path
+from beacon.utils.story_state import _baseline_hash, feature_slug
 
 
 def revision_state_file(project_root: Path, version: str, feature: str) -> Path:
@@ -86,10 +85,7 @@ def save_revision_state(project_root: Path, *, version: str, feature: str, state
 def freeze_revision_state(project_root: Path, *, version: str = "auto", feature: str) -> dict[str, Any]:
     state = load_revision_state(project_root, version=version, feature=feature, create_if_missing=True)
     resolved_version = str(state.get("version"))
-    md_path = user_story_markdown_path(project_root, resolved_version, feature)
-    baseline_hash = ""
-    if md_path.exists():
-        baseline_hash = "sha256:" + hashlib.sha256(md_path.read_text(encoding="utf-8").encode("utf-8")).hexdigest()
+    baseline_hash = _baseline_hash(project_root, resolved_version, feature)
     state["reason"] = "freeze"
     state["doc_status"] = "frozen"
     state["lifecycle_status"] = "frozen"
