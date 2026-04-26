@@ -15,3 +15,4 @@
 - `.beacon/` remains runtime internal state only.
 - `./evo-harness-contract.md`
 - `./evo-scorecard-contract.md`
+- `./real-project-validation-alignment.md`

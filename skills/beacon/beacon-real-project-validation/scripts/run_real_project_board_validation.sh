@@ -21,9 +21,10 @@ Usage:
                                       [--target "label|project_root|feature|version"]...
 
 Description:
-  Read-only capture pack for Beacon multi-project board validation.
+  Read-only capture pack for Beacon specialized multi-project board validation.
   It does not mutate target projects. Outputs are written under the Beacon repo,
   and an isolated runtime ledger is created inside the capture pack.
+  This script does not replace current-version real-project release proof.
 
 Examples:
   bash skills/beacon/beacon-real-project-validation/scripts/run_real_project_board_validation.sh
@@ -235,9 +236,15 @@ write_acceptance_record() {
     printf -- '- feature: `%s`\n' 'beacon-v1.3.4-global-runtime-projection-and-pocketbase-control-plane'
     printf -- '- requested_version: `%s`\n' "${REQUESTED_VERSION}"
     printf -- '- validation_mode: `read-only multi-project board acceptance`\n'
+    printf -- '- validation_scope: `specialized-board-acceptance-only`\n'
+    printf -- '- not_a_substitute_for: `current-version real-project release proof`\n'
     printf -- '- executed_at: `%s`\n' "${executed_at}"
     printf -- '- executor: `capture-script`\n'
     printf -- '- output_dir: `%s`\n\n' "${OUTPUT_DIR}"
+    printf '## 0. Boundary\n\n'
+    printf -- '- This capture is specialized board acceptance only.\n'
+    printf -- '- It does not prove the latest Beacon line is fully validated on a single real project.\n'
+    printf -- '- Record companion current-version release-proof evidence separately when needed.\n\n'
     printf '## 1. Validation Scope\n\n'
     printf '### Projects\n\n'
     local row=""
@@ -344,6 +351,7 @@ write_acceptance_record() {
 }
 
 printf 'requested_version=%s\n' "${REQUESTED_VERSION}" >"${OUTPUT_DIR}/capture.env"
+printf 'validation_scope=%s\n' "specialized-board-acceptance-only" >>"${OUTPUT_DIR}/capture.env"
 printf 'executed_at=%s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" >>"${OUTPUT_DIR}/capture.env"
 printf 'beacon_root=%s\n' "${ROOT_DIR}" >>"${OUTPUT_DIR}/capture.env"
 printf 'ledger_root=%s\n' "${LEDGER_ROOT}" >>"${OUTPUT_DIR}/capture.env"
@@ -450,9 +458,10 @@ for index, row in enumerate(rows, start=1):
 PY
 
 cat >"${OUTPUT_DIR}/README.md" <<EOF
-# Beacon Real Project Board Validation Capture
+# Beacon Specialized Real Project Board Validation Capture
 
 - requested_version: \`${REQUESTED_VERSION}\`
+- validation_scope: \`specialized-board-acceptance-only\`
 - executed_at: \`$(date -u +%Y-%m-%dT%H:%M:%SZ)\`
 - output_dir: \`${OUTPUT_DIR}\`
 - isolated_ledger_root: \`${LEDGER_ROOT}\`
@@ -467,6 +476,11 @@ $(for row in "${TARGET_ROWS[@]}"; do IFS='|' read -r label project_root feature 
 - \`portfolio-board.json\`
 - \`acceptance-record.md\`
 - \`runtime-ledger/\`
+
+## Boundary
+
+- This pack is only for specialized multi-project board acceptance.
+- It does not replace current-version real-project release proof.
 
 ## Next Step
 

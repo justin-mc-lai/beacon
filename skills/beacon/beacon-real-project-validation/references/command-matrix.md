@@ -6,6 +6,28 @@ Use these placeholders:
 - `VERSION` = docs line such as `v1.0.0`
 - `FEATURE` = one existing feature such as `friend-match`
 
+Default validation goal:
+
+- current-version real-project release proof
+
+Specialized validation goal:
+
+- multi-project board acceptance
+
+Do not use the specialized board path as a substitute for the default current-version release proof.
+
+## Version Overlay Sources
+
+Before treating the matrix as complete, inspect the current version sources:
+
+- `ROOT/AGENTS.md`
+- `ROOT/docs/beacon/VERSION/SUMMARY.md`
+- `ROOT/docs/beacon/VERSION/execution/index.md`
+- `ROOT/docs/beacon/VERSION/release/VERSION.md`
+- `skills/beacon/SKILL.md`
+
+Use those files to derive which shipped features must be proven on the real project for the requested Beacon line.
+
 ## Preflight
 
 ```bash
@@ -30,12 +52,33 @@ beacon prd list -p ROOT -v VERSION
 beacon user-story list -p ROOT -v VERSION
 beacon test-case list -p ROOT -v VERSION
 beacon test-case gate FEATURE -p ROOT -v VERSION
+beacon prototype list -p ROOT -v VERSION
+beacon prototype status FEATURE -p ROOT -v VERSION --json
 beacon implement status FEATURE -p ROOT -v VERSION --json
 beacon qa status -p ROOT --json
 beacon qa evolve FEATURE -p ROOT -v VERSION --no-write-matrix --json
 beacon release check VERSION -p ROOT
 beacon release scorecard VERSION -p ROOT --json
+beacon archive status -p ROOT -v VERSION --feature FEATURE --json
+beacon archive explain -p ROOT -v VERSION --json
+beacon archive plan -p ROOT -v VERSION --feature FEATURE --json
+beacon gate check prototype --project-root ROOT --version VERSION --json
+beacon gate check release --project-root ROOT --version VERSION --json
 ```
+
+For current Beacon lines, this baseline is the minimum public-surface proof. Missing `prototype`, `archive`, or `gate check release` means the latest human surface is not fully covered.
+
+## Current-Version Feature Overlay
+
+For Beacon `v1.3.8`, the real-project proof should explicitly classify whether the public surface proves:
+
+- diagram truth admission
+- post-freeze host prompt trace
+- prompt-boundary gate / release convergence
+- archive governance support command behavior
+- canonical delivery baseline convergence across implement / qa / release
+
+If a capability is not applicable to the target feature, classify it as `not_applicable` rather than silently skipping it.
 
 ## Team / Ralph Dry-Run Surface
 
@@ -71,7 +114,10 @@ Interpret carefully:
 - Count the surface as operational when it returns structured output or a clear human-readable status.
 - Do not count `qa blocked`, `release_ready=false`, or failed release checks as Beacon defects by themselves.
 - Do not count version-line package closure gaps as Beacon defects when current-feature closure is already ready.
+- Do not count structured `prototype`, `archive`, or `gate` warnings as Beacon defects by themselves.
 - Count the surface as defective when it crashes, routes to the wrong version, selects the wrong run, or mutates tracked docs during read-only validation.
+- Count the surface as defective when current-version published features cannot be proven on the public surface, even though release docs claim they shipped.
+- Count it as a classification error when a specialized board-acceptance pack is used as if it were full current-version release proof.
 
 ## Write-Path Validation In Isolation Only
 
@@ -97,7 +143,9 @@ beacon qa team-run FEATURE -p ROOT -v VERSION --host-runtime codex --json
 
 ## Multi-Project Board Acceptance Pack
 
-Use this path when validating a lifecycle-first board / projection feature across multiple real projects.
+Use this path only when validating a lifecycle-first board / projection feature across multiple real projects.
+
+This pack is specialized acceptance only. It does not replace current-version release proof.
 
 ### Capture Script
 
@@ -150,3 +198,4 @@ using:
 - per-project `projection-determinism.json`
 - top-level `portfolio-board.txt`
 - homepage / detail / deterministic projection / debug tri-state judgments
+- explicit note that this pack is a specialized board acceptance artifact, not the default latest-version release-proof record

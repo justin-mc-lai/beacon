@@ -25,6 +25,8 @@
    - 冻结后的 `team -> ralph` 顺序与宿主提示词驱动面需要进入 formal execution evidence。
 3. **truth retirement**
    - 历史 truth 需要可归档、可追溯，但不能继续进入当前 active delivery plane。
+4. **truth proof on real projects**
+   - 当前版本真实项目验收必须证明 Beacon 的最新 human surface 与已发布特性，而不是只停留在旧版本专项验收模型。
 
 ## User Stories
 
@@ -44,6 +46,14 @@
 
 作为长期维护 Beacon 版本线的治理者，我希望历史 requirement、历史 feature truth、历史 technical archive 可以被区分为 active、learnable archive 和 reference-only archive，避免旧线持续污染当前迭代。
 
+### US-005: 当前版本真实项目验收必须跟随最新 Beacon surface 与 shipped features
+
+作为在真实项目上验证 Beacon 发布质量的操作者，我希望 `beacon-real-project-validation` 默认先证明当前版本单项目 release proof，再按需进入专项 board acceptance，这样我能知道：
+
+- 当前 human surface 是否完整可用
+- 当前版本新 ship 的能力是否真能在真实项目上被证明
+- 多项目并板专项验收是不是只是某类 feature 的附加路径，而不是默认替代物
+
 ## Acceptance Criteria
 
 | AC ID | Theme | Description |
@@ -57,6 +67,10 @@
 | AC-007 | branch-actionability | branch preflight 能指出具体服务、当前分支、目标分支、脏工作树风险与推荐操作，而不只是泛化阻断。 |
 | AC-008 | archive-contract | Beacon 存在 machine-readable archive contract，能区分 active truth、superseded、archived-learnable、archived-reference-only。 |
 | AC-009 | archive-consumption | 读取历史资料的主要消费面能够识别 archive 状态，避免历史需求继续进入当前实现与验证路径。 |
+| AC-010 | human-surface-acceptance | `beacon-real-project-validation` 把 `prototype`、`archive`、`gate check release` 纳入当前版本真实项目验收基线，并默认保持只读。 |
+| AC-011 | version-overlay | `beacon-real-project-validation` 能从当前版本 docs / release / skill 面派生 shipped-feature acceptance overlay。 |
+| AC-012 | v138-feature-proof | `v1.3.8` 的 diagram truth、prompt trace / prompt-boundary、archive governance、canonical baseline / gate / release convergence 都存在明确真实项目验收映射。 |
+| AC-013 | specialized-acceptance-boundary | 单项目当前版本真实项目验收与多项目 board acceptance 被清晰分层，后者不能替代前者。 |
 
 ## Metadata
 

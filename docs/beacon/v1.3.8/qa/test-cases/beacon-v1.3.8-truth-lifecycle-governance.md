@@ -18,12 +18,18 @@
 | TC-007 | AC-007 | 多服务 feature 存在 branch mismatch 与 dirty worktree | integration | branch preflight 返回服务级风险与推荐安全迁移动作。 |
 | TC-008 | AC-008 | 版本线进入 archive governance writeback | integration | 系统存在 machine-readable archive contract，并能区分 active、superseded、archived-learnable、archived-reference-only。 |
 | TC-009 | AC-009 | help/status/brainstorm/memory/implement/gate 读取历史资料 | integration | 主要消费面能识别 archive 状态，不把历史 requirement 继续当成当前 active truth。 |
+| TC-010 | AC-010 | 在真实项目上运行 `beacon-real-project-validation` 的默认只读基线 | integration | 验收矩阵覆盖 `prototype`、`archive`、`gate check release`，且不要求先进入写路径。 |
+| TC-011 | AC-011 | 针对 `v1.3.8` 读取 `SUMMARY / execution index / release note / beacon skill` | integration | 验收器能派生当前版本 shipped-feature overlay，而不是只复用固定历史矩阵。 |
+| TC-012 | AC-012 | 在真实项目上校验 `v1.3.8` 最新发布能力 | integration | 验收结果能分别说明 diagram truth、prompt trace / prompt-boundary、archive governance、canonical baseline / gate / release 收敛是否被证明。 |
+| TC-013 | AC-013 | 同时存在单项目当前版本验收与多项目并板专项验收路径 | integration | 系统把 board acceptance 归类为专项路径，不把它误判成完整最新版本真实项目覆盖。 |
 
 ## Execution Notes
 
 - version: `v1.3.8`
-- AC-001 到 AC-009 都必须有至少一条明确测试覆盖。
+- AC-001 到 AC-013 都必须有至少一条明确测试覆盖。
 - 测试时应区分：
   - truth admission correctness
   - truth execution evidence completeness
   - truth retirement isolation correctness
+  - current-version real-project proof
+  - specialized board acceptance scope

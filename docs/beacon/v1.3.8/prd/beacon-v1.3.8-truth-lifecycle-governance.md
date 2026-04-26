@@ -34,6 +34,18 @@
    - 历史版本需求、历史 feature truth、历史 technical archive 仍容易继续影响当前迭代。
    - Beacon 缺少正式 archive governance 来隔离“历史可追溯”和“当前仍生效”。
 
+此外，Beacon 虽然已经存在 `beacon-real-project-validation` 路径，但它当前更接近：
+
+- 真实项目上的最小 CLI 可用性验证
+- `v1.3.4` 并板 / projection 专项验收
+
+它还没有完全随 `v1.3.8` 的发布承诺升级为“当前版本真实项目验收面”，因此仍存在四个缺口：
+
+1. `prototype`、`archive`、`gate check release` 还没有被正式纳入最新 human surface 验收基线。
+2. 验收矩阵还没有从 `SUMMARY.md`、`execution/index.md`、`release/<version>.md`、`skills/beacon/SKILL.md` 派生版本级 overlay。
+3. `v1.3.8` 新发布的 diagram truth、post-freeze host prompt trace / prompt-boundary closure、archive governance、canonical delivery baseline 收敛，还没有被逐条映射成真实项目验收项。
+4. 单项目“最新版本 release proof”和多项目并板专项验收仍容易被混成同一条验证路径。
+
 如果这三段不连起来，Beacon 仍会面临三类风险：
 
 1. 新 truth 进入系统时结构不够强。
@@ -64,6 +76,7 @@ truth admission
    - active truth
    - learnable archive
    - reference-only archive
+6. `beacon-real-project-validation` 能把“当前版本真实项目验收”与“专项 board acceptance”区分开，并以当前版本 human surface + shipped features 作为主验收面。
 
 ## 3. Non-goals
 
@@ -74,6 +87,8 @@ truth admission
 - 不把 `beacon-brainstorm` 变成新的主链 stage
 - 不物理删除历史 requirement 文档
 - 不要求所有 feature 都强制绘制复杂状态图
+- 不把 `beacon-real-project-validation` 升格成新的 Beacon primary stage
+- 不要求所有版本都必须先通过多项目并板专项验收，才算当前版本真实项目验收完成
 
 ## 4. Core Product Semantics
 
@@ -132,6 +147,37 @@ Beacon 至少要能区分：
 - archived-learnable
 - archived-reference-only
 
+### 4.5 Real-Project Acceptance Contract
+
+`v1.3.8` 发布后的真实项目验收，不能只证明 Beacon “能跑起来”，还必须证明 Beacon “当前版本声称 ship 的能力”能在真实项目上被读路径和公开 surface 证明。
+
+最小验收模型应分三层：
+
+1. **Base human-surface baseline**
+   - 至少覆盖：
+     - `help`
+     - `status`
+     - `doctor`
+     - `prd`
+     - `user-story`
+     - `test-case`
+     - `prototype`
+     - `implement`
+     - `qa`
+     - `release`
+     - `archive`
+     - `gate check release`
+2. **Version-specific acceptance overlay**
+   - 必须从当前版本的：
+     - `docs/beacon/<version>/SUMMARY.md`
+     - `docs/beacon/<version>/execution/index.md`
+     - `docs/beacon/<version>/release/<version>.md`
+     - `skills/beacon/SKILL.md`
+   - 派生“本版本到底承诺了什么真实项目验收项”
+3. **Specialized acceptance overlay**
+   - 只有在目标能力本身是 cross-project board / runtime projection / portfolio board 时，才进入多项目并板专项验收
+   - 多项目并板专项验收不能替代当前版本单项目 release proof
+
 ## 5. Functional Requirements
 
 | FR ID | Related AC | Requirement |
@@ -145,6 +191,10 @@ Beacon 至少要能区分：
 | FR-007 | AC-007 | branch preflight 必须输出服务级 branch mismatch 与推荐安全迁移动作，而不只是 generic block message。 |
 | FR-008 | AC-008 | Beacon 必须新增 archive governance，定义 active truth、superseded、archived-learnable、archived-reference-only 的最小状态模型。 |
 | FR-009 | AC-009 | history/archive 状态必须被 `help`、`status`、`brainstorm`、`memory-friction-evolution`、`implement`、`gate` 等消费面读取，避免历史需求继续污染当前实现面。 |
+| FR-010 | AC-010 | `beacon-real-project-validation` 必须把当前 Beacon human surface 真实项目验收基线扩展到 `prototype`、`archive` 与 `gate check release`，并保持默认读路径验证。 |
+| FR-011 | AC-011 | `beacon-real-project-validation` 必须从当前版本 `SUMMARY / execution index / release note / beacon skill` 派生 version-specific acceptance overlay，而不是只依赖固定历史命令矩阵。 |
+| FR-012 | AC-012 | 对 `v1.3.8`，真实项目验收 overlay 必须显式覆盖 diagram truth admission、post-freeze host prompt trace / prompt-boundary closure、archive governance surface，以及 canonical delivery baseline 与 gate / release 收敛。 |
+| FR-013 | AC-013 | 单项目当前版本真实项目验收必须是默认 release proof；多项目 board acceptance 只能作为专项兼容验收路径，不能被误判为完整最新版本覆盖。 |
 
 ## 6. Acceptance Traceability
 
@@ -159,6 +209,10 @@ Beacon 至少要能区分：
 | AC-007 | branch-actionability | branch preflight 能指出具体服务、当前分支、目标分支、脏工作树风险与推荐操作，而不只是泛化阻断。 |
 | AC-008 | archive-contract | Beacon 存在 machine-readable archive contract，能区分 active truth、superseded、archived-learnable、archived-reference-only。 |
 | AC-009 | archive-consumption | 读取历史资料的主要消费面能够识别 archive 状态，避免历史需求继续进入当前实现与验证路径。 |
+| AC-010 | human-surface-acceptance | `beacon-real-project-validation` 把 `prototype`、`archive`、`gate check release` 纳入当前版本真实项目验收基线，并默认保持只读。 |
+| AC-011 | version-overlay | `beacon-real-project-validation` 能从当前版本 docs / release / skill 面派生 shipped-feature acceptance overlay。 |
+| AC-012 | v138-feature-proof | `v1.3.8` 的 diagram truth、prompt trace / prompt-boundary、archive governance、canonical baseline / gate / release convergence 都存在明确真实项目验收映射。 |
+| AC-013 | specialized-acceptance-boundary | 单项目当前版本真实项目验收与多项目 board acceptance 被清晰分层，后者不能替代前者。 |
 
 ## 7. Freeze Deliverables
 
@@ -171,17 +225,22 @@ Beacon 至少要能区分：
 - `docs/beacon/v1.3.8/prd/beacon-v1.3.8-truth-lifecycle-governance.md`
 - `docs/beacon/v1.3.8/user-story/beacon-v1.3.8-truth-lifecycle-governance.md`
 - `docs/beacon/v1.3.8/qa/test-cases/beacon-v1.3.8-truth-lifecycle-governance.md`
+- `docs/beacon/v1.3.8/execution/real-project-validation-alignment.md`
 
 ## 8. Risks
 
 - 如果 archive governance 先行，但 admission truth 仍弱，系统会归档一批低质量 requirement truth。
 - 如果 `team -> ralph` 只做执行顺序，不做 prompt trace，memory 仍学不到真实宿主使用模式。
 - 如果 diagram truth layer 只留在 PRD，不传导到 implement 与 QA，就会停留在文档增强层。
+- 如果真实项目验收仍停留在旧版本命令矩阵，Beacon 会出现“版本已发布，但最新能力无法在真实项目上被证明”的 release 假闭环。
 
 ## 9. Release Guard
 
 - 本 requirement line 的冻结前提是：
   - 无 unresolved requirement clarity findings
-  - PRD / user-story / test-case 对 AC-001 到 AC-009 一一映射
+  - PRD / user-story / test-case 对 AC-001 到 AC-013 一一映射
   - freeze deliverables 全部存在
+- 真实项目验收对齐必须明确区分：
+  - 当前版本单项目 release proof
+  - 多项目 board / projection 专项验收
 - 本 line 的 release readiness 需要后续 feature-level implement / QA / release 收口，不在本 PRD 阶段直接宣告。
