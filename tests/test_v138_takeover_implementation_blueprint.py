@@ -285,9 +285,16 @@ def test_v138_takeover_implementation_materials_should_render_technical_delta_an
     assert "## Technical Delta Blueprint" in blueprint
     assert "#### F1 审核与直属推荐关系建立" in blueprint
     assert "#### F2 H5 业绩详情与手机号动态可见" in blueprint
+    assert "- write_path:" in blueprint
+    assert "- storage_changes:" in blueprint
+    assert "- verification_focus:" in blueprint
+    assert "```mermaid" in blueprint
     assert "### Must Change" in blueprint
     assert "current_state_service_map" in blueprint
+    assert "### Available Entry Surfaces" in blueprint
     assert "## Implementation Delivery Baseline" in blueprint
+    assert "target_modules:" not in blueprint
+    assert "  - modules:" not in blueprint
 
     assert plan["architecture_blueprint_ref"].endswith("execution/architecture-blueprint.md")
     assert plan["task_mapping_source"] == "prd-sections"
@@ -303,3 +310,36 @@ def test_v138_takeover_implementation_materials_should_render_technical_delta_an
     )
     assert "marketing_distributor_fe" in plan["tasks"][1]["direct_delivery_services"]
     assert plan["tasks"][1]["mapped_test_ids"] == ["TC-003", "TC-004"]
+
+
+def test_v138_implement_plan_should_refresh_existing_blueprint_projection(tmp_path: Path):
+    _seed_takeover_project(tmp_path)
+    assert _invoke(["freeze", FEATURE, "--project", str(tmp_path), "--version", VERSION]).exit_code == 0
+    _write_contract(tmp_path)
+
+    first = _invoke(["implement", "plan", FEATURE, "--project-root", str(tmp_path), "--version", VERSION, "--json"])
+    assert first.exit_code == 0, first.stdout
+
+    blueprint_path = tmp_path / "docs" / "beacon" / VERSION / "execution" / "architecture-blueprint.md"
+    blueprint_path.write_text(
+        "\n".join(
+            [
+                "# Architecture Blueprint",
+                "",
+                "<!-- BEACON:TECHNICAL-DELTA-BLUEPRINT:START -->",
+                "## Technical Delta Blueprint",
+                "- target_modules: legacy/path.py",
+                "<!-- BEACON:TECHNICAL-DELTA-BLUEPRINT:END -->",
+            ]
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    second = _invoke(["implement", "plan", FEATURE, "--project-root", str(tmp_path), "--version", VERSION, "--json"])
+    assert second.exit_code == 0, second.stdout
+    blueprint = blueprint_path.read_text(encoding="utf-8")
+
+    assert "- write_path:" in blueprint
+    assert "```mermaid" in blueprint
+    assert "target_modules:" not in blueprint

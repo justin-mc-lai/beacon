@@ -206,6 +206,11 @@ def _render_technical_delta_projection(envelope: dict[str, Any]) -> str:
     change_surface = technical_delta.get("change_surface") if isinstance(technical_delta.get("change_surface"), list) else []
     source_refs = technical_delta.get("source_refs") if isinstance(technical_delta.get("source_refs"), dict) else {}
     service_catalog = current_state.get("services") if isinstance(current_state.get("services"), list) else []
+    entry_point_groups = current_state.get("entry_point_groups") if isinstance(current_state.get("entry_point_groups"), dict) else {}
+
+    def _append_bullets(title: str, values: list[str]) -> None:
+        lines.append(f"- {title}:")
+        lines.extend(f"  - {str(item).strip()}" for item in values if str(item).strip())
 
     lines = [
         _TECHNICAL_DELTA_START,
@@ -238,12 +243,40 @@ def _render_technical_delta_projection(envelope: dict[str, Any]) -> str:
             lines.append(
                 f"- reference_only_services: {', '.join(slice_payload.get('reference_only_services', [])) or '-'}"
             )
-            lines.append(f"- target_modules: {', '.join(slice_payload.get('target_modules', [])) or '-'}")
-            bullets = slice_payload.get("bullets") if isinstance(slice_payload.get("bullets"), list) else []
-            if bullets:
-                lines.append("- scope_points:")
-                lines.extend(f"  - {item}" for item in bullets[:6] if str(item).strip())
+            change_axes = slice_payload.get("change_axes") if isinstance(slice_payload.get("change_axes"), list) else []
+            if change_axes:
+                lines.append(f"- change_axes: {', '.join(str(item).strip() for item in change_axes if str(item).strip())}")
+            for key, label in (
+                ("entry_points", "entry_points"),
+                ("implementation_focus", "implementation_focus"),
+                ("write_path", "write_path"),
+                ("storage_changes", "storage_changes"),
+                ("derived_rules", "derived_rules"),
+                ("read_path", "read_path"),
+                ("downstream_contracts", "downstream_contracts"),
+                ("compatibility_notes", "compatibility_notes"),
+                ("rollout_notes", "rollout_notes"),
+                ("verification_focus", "verification_focus"),
+            ):
+                values = slice_payload.get(key) if isinstance(slice_payload.get(key), list) else []
+                if values:
+                    _append_bullets(label, [str(item).strip() for item in values[:6] if str(item).strip()])
+            diagram = str(slice_payload.get("call_chain_diagram", "") or "").strip()
+            if diagram:
+                lines.append("- call_chain_diagram:")
+                lines.append("")
+                lines.append(diagram)
             lines.append("")
+    else:
+        lines.append("- none")
+
+    lines.extend(["### Available Entry Surfaces"])
+    if entry_point_groups:
+        for title, items in entry_point_groups.items():
+            values = [str(item).strip() for item in items if str(item).strip()]
+            if not values:
+                continue
+            lines.append(f"- {title}: {' / '.join(values[:4])}")
     else:
         lines.append("- none")
 
@@ -257,11 +290,8 @@ def _render_technical_delta_projection(envelope: dict[str, Any]) -> str:
                 continue
             lines.append(f"- `{service_name}`")
             summaries = service_payload.get("summary") if isinstance(service_payload.get("summary"), list) else []
-            modules = service_payload.get("modules") if isinstance(service_payload.get("modules"), list) else []
             if summaries:
                 lines.append(f"  - summary: {' / '.join(str(item).strip() for item in summaries[:3] if str(item).strip())}")
-            if modules:
-                lines.append(f"  - modules: {', '.join(str(item).strip() for item in modules[:6] if str(item).strip())}")
     else:
         lines.append("- none")
 

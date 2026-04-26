@@ -1473,6 +1473,14 @@ def compile_implementation_plan(project_root: Path, *, version: str = "auto", fe
             revision_id=expected_revision_id,
             seed=git_workflow,
         )
+    else:
+        baseline = materialize_implementation_delivery_baseline(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            revision_id=expected_revision_id,
+            seed=git_workflow,
+        )
     baseline_projection = projection_metadata(baseline, project_root=project_root, version=resolved_version, feature=feature)
     git_workflow.update(baseline_projection)
     technical_delta = baseline.get("technical_delta") if isinstance(baseline.get("technical_delta"), dict) else {}
