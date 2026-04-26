@@ -8,12 +8,17 @@ from pathlib import Path
 from typing import Any
 
 from beacon.utils.artifact_paths import human_execution_file, machine_execution_file
+from beacon.utils.implementation_design import build_technical_delta
 from beacon.utils.runtime import now_iso, read_json, write_json
 from beacon.utils.story_state import feature_slug
 from beacon.utils.versioning import resolve_target_version
 
 
 PROJECTION_FIELDS = ("baseline_id", "transaction_id", "source_hash", "projection_seq")
+_TECHNICAL_DELTA_START = "<!-- BEACON:TECHNICAL-DELTA-BLUEPRINT:START -->"
+_TECHNICAL_DELTA_END = "<!-- BEACON:TECHNICAL-DELTA-BLUEPRINT:END -->"
+_BASELINE_START = "<!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:START -->"
+_BASELINE_END = "<!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:END -->"
 
 
 def implementation_delivery_baseline_path(project_root: Path, version: str, feature: str) -> Path:
@@ -82,6 +87,13 @@ def build_implementation_delivery_baseline(
         "service_branch_map": service_branch_map,
         "service_worktree_map": service_worktree_map,
     }
+    technical_delta = build_technical_delta(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        direct_delivery_services=direct_delivery_services,
+        reference_only_services=reference_only_services,
+    )
     source_payload = {
         "version": resolved_version,
         "feature": feature,
@@ -99,6 +111,7 @@ def build_implementation_delivery_baseline(
         "service_branch_map": service_branch_map,
         "service_worktree_map": service_worktree_map,
         "feature_overlays": {slug: feature_overlay},
+        "technical_delta": technical_delta,
     }
     source_hash = _stable_hash(source_payload)
     baseline_id = f"impl-delivery-baseline-{resolved_version}-{slug}-{feature_overlay['revision_id'] or 'r0'}"
@@ -126,6 +139,7 @@ def build_implementation_delivery_baseline(
         "service_branch_map": service_branch_map,
         "service_worktree_map": service_worktree_map,
         "feature_overlays": {slug: feature_overlay},
+        "technical_delta": technical_delta,
         "source_payload": source_payload,
         "generated_at": now_iso(),
     }
@@ -144,7 +158,7 @@ def _render_architecture_projection(envelope: dict[str, Any]) -> str:
     writable = envelope.get("writable_services") if isinstance(envelope.get("writable_services"), list) else []
     reference = envelope.get("reference_only_services") if isinstance(envelope.get("reference_only_services"), list) else []
     lines = [
-        "<!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:START -->",
+        _BASELINE_START,
         "## Implementation Delivery Baseline",
         "",
         f"- baseline_id: `{envelope.get('baseline_id', '')}`",
@@ -170,20 +184,123 @@ def _render_architecture_projection(envelope: dict[str, Any]) -> str:
         "- canonical envelope is the only delivery baseline source.",
         "- deterministic implementation contract, git workflow contract, and implementation plan are projections.",
         "- gates must block if projection metadata or service/branch/worktree fields drift.",
-        "<!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:END -->",
+        _BASELINE_END,
     ]
     return "\n".join(lines) + "\n"
 
 
-def _replace_projection_block(existing: str, projection: str) -> str:
-    start = "<!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:START -->"
-    end = "<!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:END -->"
-    if start in existing and end in existing:
-        before = existing.split(start, 1)[0].rstrip()
-        after = existing.split(end, 1)[1].lstrip()
-        return f"{before}\n\n{projection.rstrip()}\n\n{after}".rstrip() + "\n"
-    prefix = existing.rstrip() or "# Architecture Blueprint"
-    return f"{prefix}\n\n{projection}"
+def _strip_managed_block(text: str, start_marker: str, end_marker: str) -> str:
+    if start_marker not in text or end_marker not in text:
+        return text
+    before = text.split(start_marker, 1)[0].rstrip()
+    after = text.split(end_marker, 1)[1].lstrip()
+    if before and after:
+        return f"{before}\n\n{after}".rstrip() + "\n"
+    return (before or after).rstrip() + "\n"
+
+
+def _render_technical_delta_projection(envelope: dict[str, Any]) -> str:
+    technical_delta = envelope.get("technical_delta") if isinstance(envelope.get("technical_delta"), dict) else {}
+    current_state = technical_delta.get("current_state") if isinstance(technical_delta.get("current_state"), dict) else {}
+    refactor = technical_delta.get("refactor_boundaries") if isinstance(technical_delta.get("refactor_boundaries"), dict) else {}
+    change_surface = technical_delta.get("change_surface") if isinstance(technical_delta.get("change_surface"), list) else []
+    source_refs = technical_delta.get("source_refs") if isinstance(technical_delta.get("source_refs"), dict) else {}
+    service_catalog = current_state.get("services") if isinstance(current_state.get("services"), list) else []
+
+    lines = [
+        _TECHNICAL_DELTA_START,
+        "## Technical Delta Blueprint",
+        "",
+        f"- project_mode: `{technical_delta.get('project_mode', '')}`",
+        f"- feature: `{envelope.get('feature', '')}`",
+        f"- version: `{envelope.get('version', '')}`",
+        "",
+        "### Source Refs",
+    ]
+    if source_refs:
+        for key, value in source_refs.items():
+            lines.append(f"- {key}: `{value}`")
+    else:
+        lines.append("- none")
+
+    lines.extend(["", "### Delivery Change Surface"])
+    if change_surface:
+        for slice_payload in change_surface:
+            if not isinstance(slice_payload, dict):
+                continue
+            title = str(slice_payload.get("title", "") or "").strip()
+            heading = str(slice_payload.get("slice_id", "") or "").strip()
+            lines.append(f"#### {heading} {title}".strip())
+            lines.append(f"- summary: {str(slice_payload.get('description', '') or '').strip() or '-'}")
+            lines.append(
+                f"- direct_delivery_services: {', '.join(slice_payload.get('direct_delivery_services', [])) or '-'}"
+            )
+            lines.append(
+                f"- reference_only_services: {', '.join(slice_payload.get('reference_only_services', [])) or '-'}"
+            )
+            lines.append(f"- target_modules: {', '.join(slice_payload.get('target_modules', [])) or '-'}")
+            bullets = slice_payload.get("bullets") if isinstance(slice_payload.get("bullets"), list) else []
+            if bullets:
+                lines.append("- scope_points:")
+                lines.extend(f"  - {item}" for item in bullets[:6] if str(item).strip())
+            lines.append("")
+    else:
+        lines.append("- none")
+
+    lines.extend(["### Current Service Facts"])
+    if service_catalog:
+        for service_payload in service_catalog:
+            if not isinstance(service_payload, dict):
+                continue
+            service_name = str(service_payload.get("service", "") or "").strip()
+            if not service_name:
+                continue
+            lines.append(f"- `{service_name}`")
+            summaries = service_payload.get("summary") if isinstance(service_payload.get("summary"), list) else []
+            modules = service_payload.get("modules") if isinstance(service_payload.get("modules"), list) else []
+            if summaries:
+                lines.append(f"  - summary: {' / '.join(str(item).strip() for item in summaries[:3] if str(item).strip())}")
+            if modules:
+                lines.append(f"  - modules: {', '.join(str(item).strip() for item in modules[:6] if str(item).strip())}")
+    else:
+        lines.append("- none")
+
+    def _list_section(title: str, key: str) -> None:
+        values = refactor.get(key) if isinstance(refactor.get(key), list) else []
+        lines.extend(["", f"### {title}"])
+        if values:
+            lines.extend(f"- {str(item).strip()}" for item in values if str(item).strip())
+        else:
+            lines.append("- none")
+
+    _list_section("Must Change", "must_change")
+    _list_section("Can Reuse", "can_reuse")
+    _list_section("No-Expand Guardrails", "must_not_change")
+    _list_section("Compatibility Rules", "compatibility_rules")
+    _list_section("Delivery Constraints", "delivery_constraints")
+
+    handoff = current_state.get("target_handoff") if isinstance(current_state.get("target_handoff"), list) else []
+    lines.extend(["", "### Implement Handoff"])
+    if handoff:
+        lines.extend(f"- {str(item).strip()}" for item in handoff if str(item).strip())
+    else:
+        lines.append("- none")
+    lines.append(_TECHNICAL_DELTA_END)
+    return "\n".join(lines).rstrip() + "\n"
+
+
+def _render_blueprint_document(existing: str, envelope: dict[str, Any], *, version: str) -> str:
+    cleaned = _strip_managed_block(existing, _TECHNICAL_DELTA_START, _TECHNICAL_DELTA_END)
+    cleaned = _strip_managed_block(cleaned, _BASELINE_START, _BASELINE_END)
+    cleaned = cleaned.rstrip()
+    if not cleaned:
+        cleaned = f"# Beacon {version} Architecture Blueprint"
+    parts = [
+        cleaned,
+        _render_technical_delta_projection(envelope).rstrip(),
+        _render_architecture_projection(envelope).rstrip(),
+    ]
+    return "\n\n".join(part for part in parts if part).rstrip() + "\n"
 
 
 def materialize_implementation_delivery_baseline(
@@ -201,7 +318,10 @@ def materialize_implementation_delivery_baseline(
     blueprint_path = architecture_blueprint_path(project_root, resolved_version)
     existing = blueprint_path.read_text(encoding="utf-8") if blueprint_path.exists() else f"# Beacon {resolved_version} Architecture Blueprint\n"
     blueprint_path.parent.mkdir(parents=True, exist_ok=True)
-    blueprint_path.write_text(_replace_projection_block(existing, _render_architecture_projection(envelope)), encoding="utf-8")
+    blueprint_path.write_text(
+        _render_blueprint_document(existing, envelope, version=resolved_version),
+        encoding="utf-8",
+    )
     return envelope
 
 

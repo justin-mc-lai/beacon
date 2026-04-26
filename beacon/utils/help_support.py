@@ -527,7 +527,11 @@ def _blocking_reasons(
             for item in (feature_scorecard.get("stop_reasons") or [])
             if str(item).strip()
         )
-    if str(release_summary.get("gate_status") or "").strip().lower() == "blocked":
+    if str(release_summary.get("gate_status") or "").strip().lower() == "blocked" and (
+        delivery_status in {"implemented", "verifying", "verified", "accepted", "released"}
+        or continue_decision == "ready_for_release"
+        or scorecard_release_ready
+    ):
         reasons.append("release_gate_blocked")
         reasons.extend(
             str(item).strip()
@@ -726,9 +730,19 @@ def _next_step(
         ):
             if any(reason in {"technical_review_contract_missing", "technical_review_contract_invalid"} for reason in blocking_reasons):
                 contract_path = ""
+                replan_command = ""
                 if isinstance(implementation_plan_gate, dict):
                     tech_gate = implementation_plan_gate.get("technical_review_gate") if isinstance(implementation_plan_gate.get("technical_review_gate"), dict) else {}
                     contract_path = str(tech_gate.get("contract_json_path", "") or "")
+                    recommended = str(implementation_plan_gate.get("recommended_command", "") or "").strip()
+                    if recommended.startswith("beacon implement plan "):
+                        replan_command = recommended
+                if replan_command:
+                    return {
+                        "action": "implement-plan",
+                        "reason": "the frozen revision advanced and implementation projections must be regenerated from the canonical delivery baseline",
+                        "command": replan_command,
+                    }
                 return {
                     "action": "technical-review-contract",
                     "reason": "implementation requires a deterministic technical review contract before planning or coding can proceed",

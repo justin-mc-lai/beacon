@@ -20,6 +20,7 @@ from beacon.utils.delivery_baseline import (
 from beacon.utils.diagram_truth import load_feature_diagram_truth
 from beacon.utils.global_boundaries import global_boundary_principle_summaries
 from beacon.utils.implement_adapters import load_beacon_config
+from beacon.utils.implementation_design import extract_prd_feature_sections
 from beacon.utils.revision_delta import (
     load_revision_delta,
     materialize_revision_delta,
@@ -803,6 +804,21 @@ def _extract_prd_task_candidates(content: str) -> list[dict[str, str]]:
             else:
                 current_lines.append(stripped)
     _flush()
+    if candidates:
+        return candidates
+    for section in extract_prd_feature_sections(content):
+        heading = str(section.get("heading", "") or "").strip()
+        title = str(section.get("title", "") or "").strip()
+        description = str(section.get("description", "") or "").strip()
+        if not heading and not title:
+            continue
+        candidates.append(
+            {
+                "candidate_id": str(section.get("feature_id", "") or "").strip().upper(),
+                "title": heading or title,
+                "description": description,
+            }
+        )
     return candidates
 
 
@@ -1036,6 +1052,85 @@ def _map_candidates_to_ac_ids(
     return [list(dict.fromkeys(group)) for group in mappings]
 
 
+def _change_surface_score(candidate_id: str, title: str, description: str, surface: dict[str, Any]) -> int:
+    score = 0
+    normalized_candidate_id = str(candidate_id or "").strip().upper()
+    normalized_surface_id = str(surface.get("slice_id", "") or "").strip().upper()
+    if normalized_candidate_id and normalized_surface_id and normalized_candidate_id == normalized_surface_id:
+        score += 10_000
+    normalized_title = str(title or "").strip().lower()
+    normalized_description = str(description or "").strip().lower()
+    normalized_source = " ".join([normalized_title, normalized_description]).strip()
+    if normalized_title and normalized_title == str(surface.get("heading", "") or "").strip().lower():
+        score += 2_000
+    if normalized_title and normalized_title == str(surface.get("title", "") or "").strip().lower():
+        score += 1_500
+    surface_text = " ".join(
+        [
+            str(surface.get("heading", "") or ""),
+            str(surface.get("title", "") or ""),
+            str(surface.get("description", "") or ""),
+            " ".join(str(item) for item in surface.get("bullets", []) if str(item).strip()),
+        ]
+    ).lower()
+    if normalized_source and normalized_source in surface_text:
+        score += 300
+    candidate_tokens = _tokenize_for_match(normalized_source)
+    surface_tokens = _tokenize_for_match(surface_text)
+    overlap = len(candidate_tokens & surface_tokens)
+    if overlap:
+        score += overlap * 25
+    return score
+
+
+def _task_change_surface(
+    candidate: dict[str, Any] | None,
+    *,
+    fallback_title: str,
+    fallback_description: str,
+    technical_delta: dict[str, Any],
+    direct_delivery_services: list[str],
+    reference_only_services: list[str],
+) -> dict[str, list[str]]:
+    change_surface = technical_delta.get("change_surface") if isinstance(technical_delta.get("change_surface"), list) else []
+    if not change_surface:
+        return {
+            "direct_delivery_services": list(direct_delivery_services),
+            "reference_only_services": list(reference_only_services),
+            "target_modules": list(direct_delivery_services or ["."]),
+            "scope_points": [],
+        }
+    title = str((candidate or {}).get("title", "") or fallback_title).strip()
+    description = str((candidate or {}).get("description", "") or fallback_description).strip()
+    candidate_id = str((candidate or {}).get("candidate_id", "") or "").strip().upper()
+    scored = sorted(
+        (
+            (
+                _change_surface_score(candidate_id, title, description, surface if isinstance(surface, dict) else {}),
+                surface,
+            )
+            for surface in change_surface
+            if isinstance(surface, dict)
+        ),
+        key=lambda pair: pair[0],
+        reverse=True,
+    )
+    if not scored or scored[0][0] <= 0:
+        return {
+            "direct_delivery_services": list(direct_delivery_services),
+            "reference_only_services": list(reference_only_services),
+            "target_modules": list(direct_delivery_services or ["."]),
+            "scope_points": [],
+        }
+    best = scored[0][1]
+    return {
+        "direct_delivery_services": [str(item) for item in best.get("direct_delivery_services", []) if str(item).strip()],
+        "reference_only_services": [str(item) for item in best.get("reference_only_services", []) if str(item).strip()],
+        "target_modules": [str(item) for item in best.get("target_modules", []) if str(item).strip()],
+        "scope_points": [str(item) for item in best.get("bullets", []) if str(item).strip()],
+    }
+
+
 def _render_plan_markdown(payload: dict[str, Any]) -> str:
     lines = [
         "# Beacon Implementation Plan",
@@ -1058,6 +1153,7 @@ def _render_plan_markdown(payload: dict[str, Any]) -> str:
             lines.append(f"- {key}: `{value}`")
     else:
         lines.append("- none")
+    lines.append(f"- architecture_blueprint: `{payload.get('architecture_blueprint_ref', '')}`")
     boundary_principles = payload.get("boundary_principles") if isinstance(payload.get("boundary_principles"), list) else []
     lines.extend(["", "## Boundary Principles"])
     if boundary_principles:
@@ -1142,10 +1238,15 @@ def _render_plan_markdown(payload: dict[str, Any]) -> str:
                 f"- mapped_scenario_ids: {', '.join(task.get('mapped_scenario_ids', [])) or '-'}",
                 f"- mapped_qa_case_ids: {', '.join(task.get('mapped_qa_case_ids', [])) or '-'}",
                 f"- depends_on: {', '.join(task.get('depends_on', [])) or '-'}",
+                f"- direct_delivery_services: {', '.join(task.get('direct_delivery_services', [])) or '-'}",
+                f"- reference_only_services: {', '.join(task.get('reference_only_services', [])) or '-'}",
                 f"- target_modules: {', '.join(task.get('target_modules', [])) or '-'}",
                 f"- diagram_review_gates: {', '.join(task.get('diagram_review_gates', [])) or '-'}",
             ]
         )
+        scope_points = task.get("scope_points") if isinstance(task.get("scope_points"), list) else []
+        if scope_points:
+            lines.append(f"- scope_points: {' / '.join(str(item).strip() for item in scope_points[:4] if str(item).strip())}")
         if bool(task.get("required_cleanup")):
             lines.append("- required_cleanup: `True`")
             lines.append(f"- source_revision_id: `{task.get('source_revision_id', '')}`")
@@ -1361,6 +1462,27 @@ def compile_implementation_plan(project_root: Path, *, version: str = "auto", fe
         }
         return 2, payload
 
+    git_workflow = materialize_implementation_git_workflow_contract(project_root, version=resolved_version, feature=feature)
+    baseline = load_implementation_delivery_baseline(project_root, version=resolved_version, feature=feature)
+    expected_revision_id = str(revision.get("revision_id", "") or "")
+    if not baseline or baseline_revision_id(baseline) != expected_revision_id:
+        baseline = materialize_implementation_delivery_baseline(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            revision_id=expected_revision_id,
+            seed=git_workflow,
+        )
+    baseline_projection = projection_metadata(baseline, project_root=project_root, version=resolved_version, feature=feature)
+    git_workflow.update(baseline_projection)
+    technical_delta = baseline.get("technical_delta") if isinstance(baseline.get("technical_delta"), dict) else {}
+    direct_delivery_services = _normalize_string_list(git_workflow.get("direct_delivery_services")) or _normalize_string_list(
+        baseline.get("direct_delivery_services")
+    ) or ["."]
+    reference_only_services = _normalize_string_list(git_workflow.get("reference_only_services")) or _normalize_string_list(
+        baseline.get("reference_only_services")
+    ) or ["docs"]
+
     prd_content = _read_text(project_root / source_refs["prd"])
     prd_candidates = _extract_prd_task_candidates(prd_content)
     diagram_task_projection = {
@@ -1385,6 +1507,14 @@ def compile_implementation_plan(project_root: Path, *, version: str = "auto", fe
             description = candidate.get("description", "").strip()
             if not description and mapped_ac_ids:
                 description = " / ".join(str(ac_lookup.get(ac_id, {}).get("text", "")).strip() for ac_id in mapped_ac_ids if ac_lookup.get(ac_id))
+            task_change_surface = _task_change_surface(
+                candidate,
+                fallback_title=candidate.get("title", "").strip() or f"FR task {idx}",
+                fallback_description=description or "Implementation task",
+                technical_delta=technical_delta,
+                direct_delivery_services=direct_delivery_services,
+                reference_only_services=reference_only_services,
+            )
             task_id = f"ITASK-{idx:03d}"
             task = {
                 "task_id": task_id,
@@ -1396,7 +1526,10 @@ def compile_implementation_plan(project_root: Path, *, version: str = "auto", fe
                 "mapped_scenario_ids": _scenario_ids(project_root, resolved_version, feature, mapped_ac_ids, normalized_test_ids),
                 "mapped_qa_case_ids": _qa_case_ids(project_root, resolved_version, feature, mapped_ac_ids, normalized_test_ids),
                 "depends_on": [previous_task_id] if previous_task_id else [],
-                "target_modules": [],
+                "direct_delivery_services": task_change_surface["direct_delivery_services"],
+                "reference_only_services": task_change_surface["reference_only_services"],
+                "target_modules": task_change_surface["target_modules"],
+                "scope_points": task_change_surface["scope_points"],
                 "diagram_review_gates": list(diagram_task_projection["review_gates"]),
                 "diagram_state_axes": list(diagram_task_projection["state_axes"]),
                 "status": "planned",
@@ -1417,6 +1550,14 @@ def compile_implementation_plan(project_root: Path, *, version: str = "auto", fe
             mapped_test_ids.extend(_scenario_test_ids(project_root, resolved_version, feature, [ac_id], mapped_test_ids))
             mapped_test_ids.extend(_qa_test_ids(project_root, resolved_version, feature, [ac_id], mapped_test_ids))
             normalized_test_ids = _normalize_text_list(_normalize_test_id(test_id) for test_id in mapped_test_ids)
+            task_change_surface = _task_change_surface(
+                None,
+                fallback_title=_task_title(ac_id, text),
+                fallback_description=text,
+                technical_delta=technical_delta,
+                direct_delivery_services=direct_delivery_services,
+                reference_only_services=reference_only_services,
+            )
             task = {
                 "task_id": task_id,
                 "title": _task_title(ac_id, text),
@@ -1427,7 +1568,10 @@ def compile_implementation_plan(project_root: Path, *, version: str = "auto", fe
                 "mapped_scenario_ids": _scenario_ids(project_root, resolved_version, feature, [ac_id], normalized_test_ids),
                 "mapped_qa_case_ids": _qa_case_ids(project_root, resolved_version, feature, [ac_id], normalized_test_ids),
                 "depends_on": [previous_task_id] if previous_task_id else [],
-                "target_modules": [],
+                "direct_delivery_services": task_change_surface["direct_delivery_services"],
+                "reference_only_services": task_change_surface["reference_only_services"],
+                "target_modules": task_change_surface["target_modules"],
+                "scope_points": task_change_surface["scope_points"],
                 "diagram_review_gates": list(diagram_task_projection["review_gates"]),
                 "diagram_state_axes": list(diagram_task_projection["state_axes"]),
                 "status": "planned",
@@ -1451,7 +1595,10 @@ def compile_implementation_plan(project_root: Path, *, version: str = "auto", fe
                 "mapped_scenario_ids": [],
                 "mapped_qa_case_ids": [],
                 "depends_on": [],
-                "target_modules": [],
+                "direct_delivery_services": list(direct_delivery_services),
+                "reference_only_services": list(reference_only_services),
+                "target_modules": list(direct_delivery_services or ["."]),
+                "scope_points": [],
                 "diagram_review_gates": list(diagram_task_projection["review_gates"]),
                 "diagram_state_axes": list(diagram_task_projection["state_axes"]),
                 "status": "planned",
@@ -1474,19 +1621,6 @@ def compile_implementation_plan(project_root: Path, *, version: str = "auto", fe
         )
         previous_task_id = cleanup_task_id
 
-    git_workflow = materialize_implementation_git_workflow_contract(project_root, version=resolved_version, feature=feature)
-    baseline = load_implementation_delivery_baseline(project_root, version=resolved_version, feature=feature)
-    expected_revision_id = str(revision.get("revision_id", "") or "")
-    if not baseline or baseline_revision_id(baseline) != expected_revision_id:
-        baseline = materialize_implementation_delivery_baseline(
-            project_root,
-            version=resolved_version,
-            feature=feature,
-            revision_id=expected_revision_id,
-            seed=git_workflow,
-        )
-    baseline_projection = projection_metadata(baseline, project_root=project_root, version=resolved_version, feature=feature)
-    git_workflow.update(baseline_projection)
     payload = {
         "schema_version": "1.0",
         "plan_id": f"plan-{feature_slug(feature)}-{str(revision.get('revision_id', 'R1') or 'R1').lower()}",
@@ -1498,6 +1632,7 @@ def compile_implementation_plan(project_root: Path, *, version: str = "auto", fe
         "plan_hash": "",
         "status": "planned",
         "source_refs": source_refs,
+        "architecture_blueprint_ref": str(human_execution_file(project_root, resolved_version, "architecture-blueprint.md").relative_to(project_root)),
         "boundary_principles": global_boundary_principle_summaries(),
         "workstreams": [
             {
@@ -1528,6 +1663,7 @@ def compile_implementation_plan(project_root: Path, *, version: str = "auto", fe
         or _normalize_string_list(git_workflow.get("direct_delivery_services"))
         or ["."],
         "reference_only_services": _normalize_string_list(git_workflow.get("reference_only_services")) or ["docs"],
+        "technical_delta": technical_delta,
         "delivery_baseline": baseline_projection,
         "canonical_envelope_ref": str(baseline_projection.get("canonical_envelope_ref", "") or ""),
         "generated_at": now_iso(),
@@ -1584,13 +1720,27 @@ def build_implementation_plan_gate_payload(project_root: Path, *, version: str =
         revision_id=str(revision.get("revision_id", "") or ""),
     )
     if bool(technical_review_gate.get("blocked")):
+        validation = technical_review_gate.get("validation") if isinstance(technical_review_gate.get("validation"), dict) else {}
+        invalid_fields = {
+            str(item).strip()
+            for item in (validation.get("invalid_fields") or [])
+            if str(item).strip()
+        }
+        revision_only_drift = (
+            str(technical_review_gate.get("reason_code", "") or "").strip() == "technical_review_contract_invalid"
+            and invalid_fields == {"revision_id"}
+        )
         payload.update(
             {
                 "status": "blocked",
                 "blocked": True,
                 "reason_code": str(technical_review_gate.get("reason_code") or "technical_review_contract_missing"),
                 "technical_review_gate": technical_review_gate,
-                "recommended_command": str(technical_review_gate.get("contract_json_path") or ""),
+                "recommended_command": (
+                    f'beacon implement plan "{feature}" --project-root {project_root} --version {resolved_version}'
+                    if revision_only_drift
+                    else str(technical_review_gate.get("contract_json_path") or "")
+                ),
             }
         )
         return payload

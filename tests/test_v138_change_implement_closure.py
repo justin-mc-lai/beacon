@@ -7,6 +7,7 @@ from pathlib import Path
 from typer.testing import CliRunner
 
 from beacon.main import app
+from beacon.utils.help_support import build_help_payload
 from beacon.utils.implementation_plan import load_implementation_plan
 from beacon.utils.revision_state import load_revision_state
 from beacon.utils.story_state import load_story_state
@@ -292,3 +293,27 @@ def test_v138_freeze_baseline_hash_should_include_prd_and_test_case_changes(tmp_
 
     assert freeze_r2_payload["revision_id"] == "R2"
     assert freeze_r2_payload["baseline_hash"] != baseline_r1
+
+
+def test_v138_help_should_route_stale_revision_contract_to_implement_plan(tmp_path: Path) -> None:
+    _seed_docs(tmp_path)
+
+    freeze_r1 = _invoke(["freeze", FEATURE, "--project", str(tmp_path), "--version", VERSION, "--json"])
+    assert freeze_r1.exit_code == 0, freeze_r1.stdout
+    _sync_contract(tmp_path, revision_id="R1")
+
+    plan_r1 = _invoke(["implement", "plan", FEATURE, "--project-root", str(tmp_path), "--version", VERSION, "--json"])
+    assert plan_r1.exit_code == 0, plan_r1.stdout
+
+    reopened = _invoke(["reopen", FEATURE, "--project-root", str(tmp_path), "--version", VERSION, "--reason", "change-request", "--json"])
+    assert reopened.exit_code == 0, reopened.stdout
+    _write_r2_docs(tmp_path)
+    freeze_r2 = _invoke(["freeze", FEATURE, "--project", str(tmp_path), "--version", VERSION, "--json"])
+    assert freeze_r2.exit_code == 0, freeze_r2.stdout
+
+    payload = build_help_payload(tmp_path, version=VERSION, feature=FEATURE)
+    assert "technical_review_contract_invalid" in payload["blocking_reasons"]
+    assert payload["next_step"]["action"] == "implement-plan"
+    assert payload["next_step"]["command"].startswith("beacon implement plan ")
+    gate = payload["implementation_plan_gate"]
+    assert gate["recommended_command"].startswith("beacon implement plan ")

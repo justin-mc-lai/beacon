@@ -245,6 +245,34 @@ def test_v112_prd_requirement_parser_should_support_heading_bullet_numbered_and_
     assert "next task and blocked task" in candidates[3]["description"]
 
 
+def test_v112_prd_requirement_parser_should_fallback_to_feature_scope_sections():
+    candidates = _extract_prd_task_candidates(
+        "\n".join(
+            [
+                "# PRD",
+                "",
+                "## 3. 功能范围",
+                "",
+                "### 3.1 F1 审核与直属推荐关系建立",
+                "- 后台审核通过时必须选择 partner_level",
+                "- 推荐合伙人按原型可选",
+                "",
+                "### 3.2 F2 客户状态流转",
+                "- 新绑定客户进入 90 天保护期",
+                "- 间接绑定客户通过专属链接成交后转为直接绑定",
+            ]
+        )
+        + "\n"
+    )
+
+    assert [item["title"] for item in candidates] == [
+        "F1 审核与直属推荐关系建立",
+        "F2 客户状态流转",
+    ]
+    assert "partner_level" in candidates[0]["description"]
+    assert "90 天保护期" in candidates[1]["description"]
+
+
 def test_v112_implement_plan_should_use_requirement_parser_and_ordered_alignment_for_prd_mapping(tmp_path: Path):
     _seed_docs(tmp_path)
     base = tmp_path / "docs" / "beacon" / VERSION
