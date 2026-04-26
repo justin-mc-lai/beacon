@@ -158,4 +158,7 @@ def test_v120_current_release_gate_should_pass():
             "feature_release_not_ready",
             "spec_impl_drift_detected",
             "runtime_projection_drift",
+            "delivery_baseline_projection_drift",
+            "architecture_blueprint_projection_missing",
+            "architecture_blueprint_projection_drift",
         }

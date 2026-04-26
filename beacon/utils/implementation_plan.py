@@ -15,6 +15,7 @@ from beacon.utils.delivery_baseline import (
     load_implementation_delivery_baseline,
     materialize_implementation_delivery_baseline,
     projection_metadata,
+    validate_architecture_blueprint_projection,
     validate_projection_against_baseline,
 )
 from beacon.utils.diagram_truth import load_feature_diagram_truth
@@ -1840,6 +1841,24 @@ def build_implementation_plan_gate_payload(project_root: Path, *, version: str =
     baseline = load_implementation_delivery_baseline(project_root, version=resolved_version, feature=feature)
     if not baseline:
         payload.update({"status": "blocked", "blocked": True, "reason_code": "delivery_baseline_missing"})
+        return payload
+    blueprint_projection_gate = validate_architecture_blueprint_projection(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        envelope=baseline,
+    )
+    payload["architecture_blueprint_projection_gate"] = blueprint_projection_gate
+    if bool(blueprint_projection_gate.get("blocked")):
+        payload.update(
+            {
+                "status": "blocked",
+                "blocked": True,
+                "reason_code": str(
+                    blueprint_projection_gate.get("reason_code", "") or "architecture_blueprint_projection_missing"
+                ),
+            }
+        )
         return payload
     plan_projection_issues = validate_projection_against_baseline(plan, baseline, projection_name="implementation_plan")
     git_workflow = plan.get("git_workflow") if isinstance(plan.get("git_workflow"), dict) else {}

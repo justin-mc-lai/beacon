@@ -167,6 +167,8 @@ def _render_architecture_projection(envelope: dict[str, Any]) -> str:
         f"- projection_seq: `{envelope.get('projection_seq', '')}`",
         f"- version: `{envelope.get('version', '')}`",
         f"- feature: `{envelope.get('feature', '')}`",
+        "- lifecycle_role: `pre-implement delivery blueprint projection`",
+        "- projection_refresh_trigger: `implement plan against the active frozen revision`",
         f"- branch_strategy: `{envelope.get('branch_strategy', '')}`",
         f"- base_branch: `{envelope.get('base_branch', '')}`",
         f"- default_target_branch: `{envelope.get('default_target_branch', '')}`",
@@ -197,6 +199,15 @@ def _strip_managed_block(text: str, start_marker: str, end_marker: str) -> str:
     if before and after:
         return f"{before}\n\n{after}".rstrip() + "\n"
     return (before or after).rstrip() + "\n"
+
+
+def _extract_managed_block(text: str, start_marker: str, end_marker: str) -> str:
+    if start_marker not in text or end_marker not in text:
+        return ""
+    start = text.index(start_marker)
+    end = text.index(end_marker, start) + len(end_marker)
+    block = text[start:end]
+    return block.rstrip() + "\n"
 
 
 def _render_technical_delta_projection(envelope: dict[str, Any]) -> str:
@@ -398,3 +409,100 @@ def validate_projection_against_baseline(
         if list_field in projection and _normalize_string_list(projection.get(list_field)) != _normalize_string_list(envelope.get(list_field)):
             issues.append({"projection": projection_name, "field": list_field, "expected": envelope.get(list_field), "actual": projection.get(list_field)})
     return issues
+
+
+def validate_architecture_blueprint_projection(
+    project_root: Path,
+    *,
+    version: str,
+    feature: str,
+    envelope: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    resolved_version = resolve_target_version(project_root, version)
+    blueprint_path = architecture_blueprint_path(project_root, resolved_version)
+    baseline = envelope if isinstance(envelope, dict) and envelope else load_implementation_delivery_baseline(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+    )
+    payload: dict[str, Any] = {
+        "status": "pass",
+        "blocked": False,
+        "reason_code": "",
+        "path": str(blueprint_path.relative_to(project_root)),
+        "feature": feature,
+        "version": resolved_version,
+        "issues": [],
+    }
+    if not baseline:
+        payload.update(
+            {
+                "status": "blocked",
+                "blocked": True,
+                "reason_code": "delivery_baseline_missing",
+                "issues": [{"section": "baseline", "message": "canonical implementation delivery baseline missing"}],
+            }
+        )
+        return payload
+    if not blueprint_path.exists():
+        payload.update(
+            {
+                "status": "blocked",
+                "blocked": True,
+                "reason_code": "architecture_blueprint_projection_missing",
+                "issues": [{"section": "document", "message": "architecture blueprint document missing"}],
+            }
+        )
+        return payload
+    text = blueprint_path.read_text(encoding="utf-8")
+    expected_technical_delta = _render_technical_delta_projection(baseline).strip()
+    expected_baseline = _render_architecture_projection(baseline).strip()
+    actual_technical_delta = _extract_managed_block(text, _TECHNICAL_DELTA_START, _TECHNICAL_DELTA_END).strip()
+    actual_baseline = _extract_managed_block(text, _BASELINE_START, _BASELINE_END).strip()
+    missing_sections: list[str] = []
+    if not actual_technical_delta:
+        missing_sections.append("technical_delta_blueprint")
+    if not actual_baseline:
+        missing_sections.append("implementation_delivery_baseline")
+    if missing_sections:
+        payload.update(
+            {
+                "status": "blocked",
+                "blocked": True,
+                "reason_code": "architecture_blueprint_projection_missing",
+                "issues": [
+                    {
+                        "section": section,
+                        "message": f"managed projection block missing: {section}",
+                    }
+                    for section in missing_sections
+                ],
+            }
+        )
+        return payload
+    drifted_sections: list[dict[str, Any]] = []
+    if actual_technical_delta != expected_technical_delta:
+        drifted_sections.append(
+            {
+                "section": "technical_delta_blueprint",
+                "message": "technical delta blueprint drifted from canonical implementation delivery baseline",
+            }
+        )
+    if actual_baseline != expected_baseline:
+        drifted_sections.append(
+            {
+                "section": "implementation_delivery_baseline",
+                "message": "implementation delivery baseline block drifted from canonical envelope",
+            }
+        )
+    if drifted_sections:
+        payload.update(
+            {
+                "status": "blocked",
+                "blocked": True,
+                "reason_code": "architecture_blueprint_projection_drift",
+                "issues": drifted_sections,
+            }
+        )
+        return payload
+    return payload

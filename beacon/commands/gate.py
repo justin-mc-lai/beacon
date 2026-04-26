@@ -24,6 +24,7 @@ from beacon.utils.qa9 import QA9_TYPES, normalize_qa_type, parse_qa_types
 from beacon.utils.qa_runtime import load_qa_status
 from beacon.utils.exhaustiveness import load_exhaustiveness_report
 from beacon.utils.implementation_plan import (
+    build_implementation_plan_gate_payload,
     implementation_plan_supported,
     list_implementation_git_workflow_contracts,
     load_implementation_plan,
@@ -137,9 +138,14 @@ REASON_CODES = [
     "browser_evidence_incomplete",
     "required_scenario_family_missing",
     "implementation_plan_missing",
+    "implementation_plan_invalid",
     "implementation_plan_blocked",
     "implementation_plan_incomplete",
     "implementation_plan_matrix_alignment_missing",
+    "implementation_plan_feature_version_mismatch",
+    "implementation_plan_revision_mismatch",
+    "implementation_plan_baseline_mismatch",
+    "implementation_plan_cleanup_missing",
     "evidence_timestamp_out_of_window",
     "assertion_count_zero_pass",
     "junit_missing_or_invalid",
@@ -203,6 +209,8 @@ REASON_CODES = [
     "semantic_prototype_binding_drift",
     "runtime_projection_failed_transaction",
     "runtime_projection_drift",
+    "delivery_baseline_missing",
+    "delivery_baseline_projection_drift",
     "formal_package_closure_missing",
     "user_story_acceptance_missing",
     "test_case_traceability_missing",
@@ -213,6 +221,11 @@ REASON_CODES = [
     "revision_cleanup_delta_missing",
     "superseded_surface_cleanup_missing",
     "superseded_surface_retention_unjustified",
+    "revision_not_frozen",
+    "technical_review_contract_missing",
+    "technical_review_contract_invalid",
+    "architecture_blueprint_projection_missing",
+    "architecture_blueprint_projection_drift",
     "implement_prompt_boundary_missing",
     "implement_prompt_boundary_invalid",
     "implement_prompt_requirement_change",
@@ -2044,6 +2057,31 @@ def check_v112_implementation_plan_contract(
                 "severity": "critical",
                 "message": f"feature {feature_name} is archived and excluded from current delivery",
                 "blocked": True,
+            }
+        )
+        return issues
+
+    implementation_plan_gate = build_implementation_plan_gate_payload(
+        project_root,
+        version=resolved_version,
+        feature=feature_name,
+    )
+    if bool(implementation_plan_gate.get("blocked")):
+        issues.append(
+            {
+                "reason_code": str(implementation_plan_gate.get("reason_code") or "implementation_plan_blocked"),
+                "severity": "critical",
+                "message": f"implementation plan gate blocked for feature {feature_name}",
+                "blocked": True,
+                "details": {
+                    "recommended_command": str(implementation_plan_gate.get("recommended_command", "") or ""),
+                    "plan_path": str(implementation_plan_gate.get("expected_plan", "") or ""),
+                    "architecture_blueprint_projection_gate": implementation_plan_gate.get(
+                        "architecture_blueprint_projection_gate",
+                        {},
+                    ),
+                    "technical_review_gate": implementation_plan_gate.get("technical_review_gate", {}),
+                },
             }
         )
         return issues

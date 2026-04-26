@@ -725,6 +725,11 @@ def _next_step(
                 "implementation_plan_revision_mismatch",
                 "implementation_plan_baseline_mismatch",
                 "implementation_plan_source_refs_incomplete",
+                "implementation_plan_cleanup_missing",
+                "delivery_baseline_missing",
+                "delivery_baseline_projection_drift",
+                "architecture_blueprint_projection_missing",
+                "architecture_blueprint_projection_drift",
             }
             for reason in blocking_reasons
         ):

@@ -6,6 +6,7 @@ from pathlib import Path
 
 from typer.testing import CliRunner
 
+from beacon.commands.gate import GateMode, check_v112_implementation_plan_contract
 from beacon.main import app
 from beacon.utils.technical_review_contract import technical_review_contract_json_path
 
@@ -271,6 +272,30 @@ def _write_contract(root: Path) -> None:
     )
 
 
+def _sync_contract(root: Path, revision_id: str = "R1") -> None:
+    result = _invoke(
+        [
+            "doctor",
+            "sync-technical-review-contract",
+            FEATURE,
+            "--project-root",
+            str(root),
+            "--version",
+            VERSION,
+            "--revision-id",
+            revision_id,
+            "--review-status",
+            "approved",
+            "--approved-by",
+            "test",
+            "--reviewed-at",
+            "2026-04-26T12:00:00+08:00",
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0, result.stdout
+
+
 def test_v138_takeover_implementation_materials_should_render_technical_delta_and_concrete_tasks(tmp_path: Path):
     _seed_takeover_project(tmp_path)
     assert _invoke(["freeze", FEATURE, "--project", str(tmp_path), "--version", VERSION]).exit_code == 0
@@ -293,6 +318,8 @@ def test_v138_takeover_implementation_materials_should_render_technical_delta_an
     assert "current_state_service_map" in blueprint
     assert "### Available Entry Surfaces" in blueprint
     assert "## Implementation Delivery Baseline" in blueprint
+    assert "- lifecycle_role: `pre-implement delivery blueprint projection`" in blueprint
+    assert "- projection_refresh_trigger: `implement plan against the active frozen revision`" in blueprint
     assert "target_modules:" not in blueprint
     assert "  - modules:" not in blueprint
 
@@ -343,3 +370,62 @@ def test_v138_implement_plan_should_refresh_existing_blueprint_projection(tmp_pa
     assert "- write_path:" in blueprint
     assert "```mermaid" in blueprint
     assert "target_modules:" not in blueprint
+
+
+def test_v138_implement_run_should_block_when_architecture_blueprint_projection_is_missing(tmp_path: Path):
+    _seed_takeover_project(tmp_path)
+    assert _invoke(["freeze", FEATURE, "--project", str(tmp_path), "--version", VERSION]).exit_code == 0
+    _sync_contract(tmp_path)
+    assert _invoke(["implement", "plan", FEATURE, "--project-root", str(tmp_path), "--version", VERSION, "--json"]).exit_code == 0
+    _sync_contract(tmp_path)
+
+    blueprint_path = tmp_path / "docs" / "beacon" / VERSION / "execution" / "architecture-blueprint.md"
+    blueprint_path.write_text("# Architecture Blueprint\n", encoding="utf-8")
+    subprocess.run(["git", "add", str(blueprint_path.relative_to(tmp_path))], cwd=tmp_path, check=True, capture_output=True, text=True)
+    subprocess.run(["git", "commit", "-m", "break blueprint projection"], cwd=tmp_path, check=True, capture_output=True, text=True)
+
+    result = _invoke(
+        [
+            "implement",
+            "run",
+            FEATURE,
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            VERSION,
+            "--mode",
+            "single",
+            "--runner",
+            "native-single",
+            "--dry-run",
+            "--json",
+        ]
+    )
+    assert result.exit_code == 2, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["reason_code"] == "architecture_blueprint_projection_missing"
+    assert payload["plan_preflight"]["reason_code"] == "architecture_blueprint_projection_missing"
+    assert payload["recommended_command"].startswith("beacon implement plan ")
+
+
+def test_v138_release_gate_should_fail_when_architecture_blueprint_projection_drifts(tmp_path: Path):
+    _seed_takeover_project(tmp_path)
+    assert _invoke(["freeze", FEATURE, "--project", str(tmp_path), "--version", VERSION]).exit_code == 0
+    _sync_contract(tmp_path)
+    assert _invoke(["implement", "plan", FEATURE, "--project-root", str(tmp_path), "--version", VERSION, "--json"]).exit_code == 0
+    _sync_contract(tmp_path)
+
+    blueprint_path = tmp_path / "docs" / "beacon" / VERSION / "execution" / "architecture-blueprint.md"
+    blueprint = blueprint_path.read_text(encoding="utf-8")
+    blueprint_path.write_text(
+        blueprint.replace(
+            "- lifecycle_role: `pre-implement delivery blueprint projection`",
+            "- lifecycle_role: `post-implementation summary`",
+        ),
+        encoding="utf-8",
+    )
+
+    issues = check_v112_implementation_plan_contract(tmp_path, GateMode.STRICT, "release", VERSION)
+    assert len(issues) == 1
+    assert issues[0]["reason_code"] == "architecture_blueprint_projection_drift"
+    assert issues[0]["details"]["recommended_command"].startswith("beacon implement plan ")
