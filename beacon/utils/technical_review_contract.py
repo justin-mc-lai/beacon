@@ -506,7 +506,16 @@ def build_technical_review_gate_payload(
     payload["contract"] = contract
     payload["validation"] = validation
     baseline = load_implementation_delivery_baseline(project_root, version=resolved_version, feature=feature)
-    projection_issues = validate_projection_against_baseline(contract, baseline, projection_name="technical_review_contract") if baseline else []
+    projection_issues = (
+        validate_projection_against_baseline(
+            contract,
+            baseline,
+            projection_name="technical_review_contract",
+            project_root=project_root,
+        )
+        if baseline
+        else []
+    )
     payload["projection_issues"] = projection_issues
     if baseline:
         payload["baseline_path"] = str(implementation_delivery_baseline_path(project_root, resolved_version, feature).relative_to(project_root))

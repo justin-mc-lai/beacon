@@ -1,14 +1,54 @@
 # Beacon v1.3.8 Architecture Blueprint
 
+<!-- BEACON:TECHNICAL-DELTA-BLUEPRINT:START -->
+## Technical Delta Blueprint
+
+- project_mode: `greenfield`
+- feature: `Beacon v1.3.8 archive governance and historical requirement isolation`
+- version: `v1.3.8`
+
+### Source Refs
+- prd: `docs/beacon/v1.3.8/prd/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md`
+- user_story: `docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md`
+- test_case: `docs/beacon/v1.3.8/qa/test-cases/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md`
+
+### Delivery Change Surface
+- none
+### Available Entry Surfaces
+- none
+### Current Service Facts
+- none
+
+### Must Change
+- none
+
+### Can Reuse
+- none
+
+### No-Expand Guardrails
+- none
+
+### Compatibility Rules
+- none
+
+### Delivery Constraints
+- none
+
+### Implement Handoff
+- none
+<!-- BEACON:TECHNICAL-DELTA-BLUEPRINT:END -->
+
 <!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:START -->
 ## Implementation Delivery Baseline
 
 - baseline_id: `impl-delivery-baseline-v1.3.8-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation-R2`
-- transaction_id: `tx-82d57a6881e17c9ee`
-- source_hash: `sha256:c67925f85ec3fff974729b80e6fa96854627a5e47542a62a887690cf4b1a89b3`
+- transaction_id: `tx-1e02d533175ae9da7`
+- source_hash: `sha256:0b8a34ebe5cb782ed9d75d5101735452cd3b51b10c1642b678e50bda2d79538a`
 - projection_seq: `1`
 - version: `v1.3.8`
 - feature: `Beacon v1.3.8 archive governance and historical requirement isolation`
+- lifecycle_role: `pre-implement delivery blueprint projection`
+- projection_refresh_trigger: `implement plan against the active frozen revision`
 - branch_strategy: `single-branch`
 - base_branch: `main`
 - default_target_branch: `beacon/v1.3.8`

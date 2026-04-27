@@ -46,6 +46,19 @@ def _stable_hash(payload: dict[str, Any]) -> str:
     return "sha256:" + hashlib.sha256(json.dumps(payload, ensure_ascii=False, sort_keys=True).encode("utf-8")).hexdigest()
 
 
+def _normalize_path_value(value: Any, *, project_root: Path | None = None) -> str:
+    text = str(value or "").strip()
+    if not text:
+        return ""
+    path = Path(text).expanduser()
+    if project_root is not None and not path.is_absolute():
+        path = project_root / path
+    try:
+        return str(path.resolve())
+    except Exception:  # noqa: BLE001
+        return str(path)
+
+
 def _field_value(seed: dict[str, Any], *names: str, default: Any = "") -> Any:
     for name in names:
         value = seed.get(name)
@@ -387,6 +400,7 @@ def validate_projection_against_baseline(
     envelope: dict[str, Any],
     *,
     projection_name: str,
+    project_root: Path | None = None,
 ) -> list[dict[str, Any]]:
     issues: list[dict[str, Any]] = []
     for field in PROJECTION_FIELDS:
@@ -403,7 +417,15 @@ def validate_projection_against_baseline(
     if "expected_branch" in projection:
         comparisons["expected_branch"] = "default_target_branch"
     for projection_field, envelope_field in comparisons.items():
-        if str(projection.get(projection_field, "") or "") != str(envelope.get(envelope_field, "") or ""):
+        actual = projection.get(projection_field, "")
+        expected = envelope.get(envelope_field, "")
+        if projection_field == "worktree_root":
+            actual_value = _normalize_path_value(actual, project_root=project_root)
+            expected_value = _normalize_path_value(expected, project_root=project_root)
+        else:
+            actual_value = str(actual or "")
+            expected_value = str(expected or "")
+        if actual_value != expected_value:
             issues.append({"projection": projection_name, "field": projection_field, "expected": envelope.get(envelope_field), "actual": projection.get(projection_field)})
     for list_field in ("direct_delivery_services", "writable_services", "reference_only_services"):
         if list_field in projection and _normalize_string_list(projection.get(list_field)) != _normalize_string_list(envelope.get(list_field)):

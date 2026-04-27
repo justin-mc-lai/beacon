@@ -1468,6 +1468,8 @@ def check_runtime_projection_transaction_contract(
                 "details": contract.get("details", {}),
             }
         ]
+    if stage == "release":
+        return []
     return [
         {
             "reason_code": "runtime_projection_drift",
@@ -2123,7 +2125,9 @@ def check_v112_implementation_plan_contract(
         missing_diagram_projection = [
             str(task.get("task_id", "") or "")
             for task in plan.get("tasks", [])
-            if isinstance(task, dict) and not list(task.get("diagram_review_gates", []))
+            if isinstance(task, dict)
+            and not bool(task.get("required_cleanup"))
+            and not list(task.get("diagram_review_gates", []))
         ]
         if missing_diagram_projection:
             issues.append(

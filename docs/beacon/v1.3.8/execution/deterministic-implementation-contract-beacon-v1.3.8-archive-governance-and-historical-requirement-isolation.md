@@ -5,7 +5,7 @@
 - revision_id: `R2`
 - review_status: `approved`
 - approved_by: `codex`
-- reviewed_at: `2026-04-24T18:20:00+08:00`
+- reviewed_at: `2026-04-27T10:52:00+08:00`
 
 ## Git
 - base_branch: `main`

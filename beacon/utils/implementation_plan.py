@@ -7,6 +7,7 @@ import hashlib
 import json
 import re
 from pathlib import Path
+import subprocess
 from typing import Any, Iterable
 
 from beacon.utils.artifact_paths import human_execution_file, machine_execution_file, qa_matrix_candidates
@@ -544,6 +545,122 @@ def _task_counts(tasks: list[dict[str, Any]]) -> dict[str, int]:
             status = "draft"
         counts[status] += 1
     return counts
+
+
+def _task_progress_key(task: dict[str, Any]) -> tuple[str, str]:
+    return (
+        str(task.get("task_id", "") or "").strip(),
+        str(task.get("title", "") or "").strip(),
+    )
+
+
+def _plan_matches_revision_identity(
+    plan: dict[str, Any] | None,
+    *,
+    feature: str,
+    version: str,
+    revision_id: str,
+    baseline_hash: str,
+) -> bool:
+    if not isinstance(plan, dict) or not plan:
+        return False
+    return (
+        str(plan.get("feature", "") or "") == feature
+        and str(plan.get("version", "") or "") == version
+        and str(plan.get("revision_id", "") or "") == revision_id
+        and str(plan.get("baseline_hash", "") or "") == baseline_hash
+    )
+
+
+def _load_git_head_implementation_plan(project_root: Path, *, version: str, feature: str) -> dict[str, Any]:
+    plan_path = implementation_plan_json_path(project_root, version, feature)
+    try:
+        relative_path = plan_path.relative_to(project_root).as_posix()
+    except ValueError:
+        return {}
+    result = subprocess.run(
+        ["git", "show", f"HEAD:{relative_path}"],
+        cwd=project_root,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if result.returncode != 0:
+        return {}
+    try:
+        payload = json.loads(result.stdout)
+    except Exception:  # noqa: BLE001
+        return {}
+    return payload if isinstance(payload, dict) else {}
+
+
+def _recover_progress_source_plan(
+    project_root: Path,
+    *,
+    version: str,
+    feature: str,
+    revision_id: str,
+    baseline_hash: str,
+    existing_plan: dict[str, Any] | None,
+) -> dict[str, Any] | None:
+    if _plan_matches_revision_identity(
+        existing_plan,
+        feature=feature,
+        version=version,
+        revision_id=revision_id,
+        baseline_hash=baseline_hash,
+    ):
+        existing_tasks = [task for task in existing_plan.get("tasks", []) if isinstance(task, dict)]
+        if _plan_is_completed(existing_plan, existing_tasks):
+            return existing_plan
+    head_plan = _load_git_head_implementation_plan(project_root, version=version, feature=feature)
+    if not _plan_matches_revision_identity(
+        head_plan,
+        feature=feature,
+        version=version,
+        revision_id=revision_id,
+        baseline_hash=baseline_hash,
+    ):
+        return existing_plan
+    head_tasks = [task for task in head_plan.get("tasks", []) if isinstance(task, dict)]
+    if _plan_is_completed(head_plan, head_tasks):
+        return head_plan
+    return existing_plan
+
+
+def _reapply_existing_task_progress(existing_plan: dict[str, Any] | None, tasks: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    if not isinstance(existing_plan, dict) or not existing_plan:
+        return tasks
+    existing_tasks = [task for task in existing_plan.get("tasks", []) if isinstance(task, dict)]
+    if not existing_tasks:
+        return tasks
+    existing_by_key = {
+        _task_progress_key(task): task
+        for task in existing_tasks
+        if any(_task_progress_key(task))
+    }
+    existing_completed_plan = _plan_is_completed(existing_plan, existing_tasks)
+    completed_at = str(existing_plan.get("updated_at", "") or existing_plan.get("generated_at", "") or now_iso())
+    for task in tasks:
+        match = existing_by_key.get(_task_progress_key(task))
+        if match:
+            for key in (
+                "status",
+                "evidence_refs",
+                "changed_files",
+                "blocked_reason",
+                "started_at",
+                "completed_at",
+                "active_run_id",
+            ):
+                if key in match:
+                    task[key] = deepcopy(match.get(key))
+            continue
+        if bool(task.get("required_cleanup")) and existing_completed_plan:
+            task["status"] = "completed"
+            task["started_at"] = str(task.get("started_at", "") or completed_at)
+            task["completed_at"] = str(task.get("completed_at", "") or completed_at)
+    return tasks
 
 
 def _derive_plan_status(tasks: list[dict[str, Any]]) -> str:
@@ -1421,6 +1538,7 @@ def compile_implementation_plan(project_root: Path, *, version: str = "auto", fe
         "prd": str((project_root / "docs" / "beacon" / resolved_version / "prd" / f"{feature_slug(feature)}.md").relative_to(project_root)),
         "test_case": str((project_root / "docs" / "beacon" / resolved_version / "qa" / "test-cases" / f"{feature_slug(feature)}.md").relative_to(project_root)),
     }
+    existing_plan = load_implementation_plan(project_root, version=resolved_version, feature=feature)
     if revision_delta:
         source_refs["revision_delta"] = str(revision_delta.get("json_ref", "") or "")
     ac_matrix_candidate = next((path for path in qa_matrix_candidates(project_root, resolved_version, feature_slug(feature), "ac-test-matrix") if path.exists()), None)
@@ -1629,6 +1747,31 @@ def compile_implementation_plan(project_root: Path, *, version: str = "auto", fe
             )
         )
         previous_task_id = cleanup_task_id
+    progress_source_plan = _recover_progress_source_plan(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        revision_id=str(revision.get("revision_id", "") or ""),
+        baseline_hash=str(revision.get("baseline_hash", "") or ""),
+        existing_plan=existing_plan,
+    )
+    if _plan_matches_revision_identity(
+        progress_source_plan,
+        feature=feature,
+        version=resolved_version,
+        revision_id=str(revision.get("revision_id", "") or ""),
+        baseline_hash=str(revision.get("baseline_hash", "") or ""),
+    ):
+        if revision_delta:
+            progress_source_plan = _normalize_legacy_revision_cleanup_plan(
+                project_root,
+                version=resolved_version,
+                feature=feature,
+                plan=progress_source_plan,
+                revision=revision,
+                revision_delta=revision_delta,
+            )
+        tasks = _reapply_existing_task_progress(progress_source_plan, tasks)
 
     payload = {
         "schema_version": "1.0",
@@ -1860,9 +2003,23 @@ def build_implementation_plan_gate_payload(project_root: Path, *, version: str =
             }
         )
         return payload
-    plan_projection_issues = validate_projection_against_baseline(plan, baseline, projection_name="implementation_plan")
+    plan_projection_issues = validate_projection_against_baseline(
+        plan,
+        baseline,
+        projection_name="implementation_plan",
+        project_root=project_root,
+    )
     git_workflow = plan.get("git_workflow") if isinstance(plan.get("git_workflow"), dict) else {}
-    git_projection_issues = validate_projection_against_baseline(git_workflow, baseline, projection_name="git_workflow") if git_workflow else []
+    git_projection_issues = (
+        validate_projection_against_baseline(
+            git_workflow,
+            baseline,
+            projection_name="git_workflow",
+            project_root=project_root,
+        )
+        if git_workflow
+        else []
+    )
     if plan_projection_issues or git_projection_issues:
         payload.update(
             {
