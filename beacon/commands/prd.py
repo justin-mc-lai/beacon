@@ -14,6 +14,7 @@ import typer
 
 from beacon.utils.artifact_paths import machine_root
 from beacon.utils.diagram_truth import normalize_diagram_types, normalize_state_axes, render_diagram_truth_section
+from beacon.utils.project_metadata import metadata_machine_path, resolve_project_metadata_view
 from beacon.utils.runtime import now_iso, write_json
 from beacon.utils.semantic_runtime import (
     build_mode_contract,
@@ -88,6 +89,9 @@ def _source_refs(project_root: Path, version: str, existing_prds: list[str]) -> 
     debug_index = project_root / ".beacon" / "debug" / "index.json"
     if debug_index.exists():
         refs.append(debug_index)
+    metadata_path = metadata_machine_path(project_root)
+    if metadata_path.exists():
+        refs.append(metadata_path)
     output: list[str] = []
     for path in refs:
         if path.exists():
@@ -921,6 +925,11 @@ def create(
     compile_path = machine_dir / f"{slug}.compile.json"
     canonical_path = machine_dir / f"{slug}.canonical.json"
     source_refs = _source_refs(project_root, resolved_version, existing_prds)
+    metadata_path = metadata_machine_path(project_root)
+    project_metadata_context = {
+        "metadata_ref": str(metadata_path.relative_to(project_root)) if metadata_path.exists() else "",
+        "resolved_metadata_view": resolve_project_metadata_view(project_root, version=resolved_version),
+    }
 
     canonical = {
         "schema_version": "1.0",
@@ -942,6 +951,7 @@ def create(
             "state_axes": requested_state_axes,
         },
         "source_refs": source_refs,
+        "project_metadata_context": project_metadata_context,
         "contract": contract,
         "markdown": md_content,
     }
@@ -1009,6 +1019,7 @@ def create(
             "fallback_reason": fallback_reason,
             "capability_snapshot": capability_snapshot,
             "source_refs": source_refs,
+            "project_metadata_context": project_metadata_context,
             "constraint_hits": contract.get("semantic_hits", {}),
             "missing_headings": contract.get("missing_headings", []),
             "open_questions": contract.get("placeholder_hits", []),

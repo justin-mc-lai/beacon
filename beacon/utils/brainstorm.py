@@ -7,6 +7,7 @@ from typing import Any
 
 from beacon.utils.archive_governance import load_archive_read_model
 from beacon.utils.diagram_truth import load_feature_diagram_truth
+from beacon.utils.project_metadata import metadata_machine_path, resolve_project_metadata_view
 from beacon.utils.runtime import now_iso
 from beacon.utils.story_state import feature_slug
 from beacon.utils.versioning import resolve_target_version
@@ -170,6 +171,8 @@ def run_beacon_brainstorm(
     source_text = _joined_excerpts(materials)
     archive_boundary = load_archive_read_model(project_root, version=resolved_version, feature=feature) if feature else {}
     diagram_truth = load_feature_diagram_truth(project_root, version=resolved_version, feature=feature) if feature else {}
+    resolved_metadata_view = resolve_project_metadata_view(project_root, version=resolved_version)
+    metadata_path = metadata_machine_path(project_root)
     recommendation, next_route = _mode_recommendation(mode)
     facts = [
         f"Beacon version material root is docs/beacon/{resolved_version}.",
@@ -183,6 +186,15 @@ def run_beacon_brainstorm(
         facts.append(f"Archive boundary status: {archive_status}.")
     if feature and isinstance(diagram_truth, dict) and diagram_truth.get("required") and not diagram_truth.get("ready"):
         facts.append("Diagram truth layer is still incomplete for this complex feature.")
+    topology_kind = str(resolved_metadata_view.get("topology_kind") or "").strip()
+    if topology_kind:
+        facts.append(f"Resolved project topology: {topology_kind}.")
+    selected_service = str(resolved_metadata_view.get("selected_service") or "").strip()
+    if selected_service:
+        facts.append(f"Resolved execution service: {selected_service}.")
+    selected_branch = str(resolved_metadata_view.get("selected_branch") or "").strip()
+    if selected_branch:
+        facts.append(f"Resolved canonical branch: {selected_branch}.")
     assumptions = [
         "The prompt may represent a requirement gap, an evolution idea, or implementation-risk question until mapped to frozen evidence.",
         "Any accepted requirement change must be routed through the Beacon requirement/change loop before implementation.",
@@ -232,6 +244,8 @@ def run_beacon_brainstorm(
         "material_signals": evidence_lines,
         "archive_boundary": archive_boundary,
         "diagram_truth": diagram_truth,
+        "resolved_metadata_view": resolved_metadata_view,
+        "metadata_ref": _rel(project_root, metadata_path) if metadata_path.exists() else "",
         "converged_recommendation": recommendation,
         "next_route": next_route,
         "output_path": _rel(project_root, output_path),
@@ -296,6 +310,19 @@ def render_brainstorm_markdown(payload: dict[str, Any]) -> str:
                 f"- ready: `{bool(diagram_truth.get('ready', False))}`",
                 f"- diagram_types: {', '.join(diagram_truth.get('diagram_types', [])) or 'none'}",
                 f"- state_axes: {', '.join(diagram_truth.get('state_axes', [])) or 'none'}",
+                "",
+            ]
+        )
+    metadata_view = payload.get("resolved_metadata_view") if isinstance(payload.get("resolved_metadata_view"), dict) else {}
+    metadata_ref = str(payload.get("metadata_ref", "") or "").strip()
+    if metadata_ref or metadata_view:
+        lines.extend(
+            [
+                "## project_metadata",
+                f"- metadata_ref: `{metadata_ref or 'none'}`",
+                f"- topology_kind: `{metadata_view.get('topology_kind', '')}`",
+                f"- selected_service: `{metadata_view.get('selected_service', '')}`",
+                f"- selected_branch: `{metadata_view.get('selected_branch', '')}`",
                 "",
             ]
         )

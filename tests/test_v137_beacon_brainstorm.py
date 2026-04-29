@@ -9,6 +9,7 @@ from beacon.command_catalog import DEFAULT_USER_SURFACE, LABS_COMMANDS, SUPPORTE
 from beacon.main import app
 from beacon.utils.delivery_baseline import implementation_delivery_baseline_path
 from beacon.utils.implementation_plan import build_implementation_plan_gate_payload, implementation_plan_json_path
+from beacon.utils.runtime import write_json
 
 
 runner = CliRunner()
@@ -33,6 +34,40 @@ def _seed_v137_docs(root: Path) -> None:
     (version_root / "prd" / f"{slug}.md").write_text("# PRD\nFR-001 brainstorm convergence\n", encoding="utf-8")
     (version_root / "user-story" / f"{slug}.md").write_text("# User Story\nAC-001 converge requirements\n", encoding="utf-8")
     (version_root / "qa" / "test-cases" / f"{slug}.md").write_text("# Test Case\nTC-001 run brainstorm\n", encoding="utf-8")
+
+
+def _seed_project_metadata(root: Path, *, version: str, service: str, branch: str) -> None:
+    write_json(
+        root / ".beacon" / "metadata" / "project-version-metadata.json",
+        {
+            "schema_version": "1.0",
+            "project_root": str(root.resolve()),
+            "global_project_metadata": {
+                "project_root": str(root.resolve()),
+                "topology_kind": "monorepo",
+                "default_execution_service": service,
+                "service_bindings": [
+                    {
+                        "service_key": service,
+                        "repo_root": str((root / "services" / service).resolve()),
+                        "repo_root_relative": f"services/{service}",
+                        "role": "service",
+                        "writable": True,
+                        "worktree_path_policy": "follow-repo-root",
+                    }
+                ],
+            },
+            "version_scoped_metadata": {
+                version: {
+                    "participating_services": [service],
+                    "per_service_canonical_branch": {service: branch},
+                    "branch_guard_mode": "strict",
+                    "validation_state": "verified",
+                }
+            },
+            "transaction": {},
+        },
+    )
 
 
 def test_v137_beacon_brainstorm_should_remain_labs_sidecar() -> None:
@@ -132,6 +167,32 @@ def test_v137_brainstorm_modes_should_run(tmp_path: Path) -> None:
         )
         assert result.exit_code == 0, result.stdout
         assert json.loads(result.stdout)["mode"] == mode
+
+
+def test_v137_brainstorm_should_emit_resolved_project_metadata_view(tmp_path: Path) -> None:
+    _seed_v137_docs(tmp_path)
+    _seed_project_metadata(tmp_path, version="v1.3.7", service="api", branch="beacon/v1.3.7")
+    result = _invoke(
+        [
+            "brainstorm",
+            "run",
+            "核实 monorepo branch contract",
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            "v1.3.7",
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["resolved_metadata_view"]["topology_kind"] == "monorepo"
+    assert payload["resolved_metadata_view"]["selected_service"] == "api"
+    assert payload["resolved_metadata_view"]["selected_branch"] == "beacon/v1.3.7"
+    assert payload["metadata_ref"] == ".beacon/metadata/project-version-metadata.json"
+    text = (tmp_path / payload["output_path"]).read_text(encoding="utf-8")
+    assert "## project_metadata" in text
+    assert "- selected_branch: `beacon/v1.3.7`" in text
 
 
 def test_v137_brainstorm_should_refuse_requirement_truth_output(tmp_path: Path) -> None:

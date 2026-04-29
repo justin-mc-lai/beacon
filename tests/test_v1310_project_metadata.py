@@ -225,6 +225,60 @@ def test_v1310_implement_branch_guard_inputs_should_consume_project_metadata(tmp
     assert view["selected_service"] == "worker"
 
 
+def test_v1310_prd_should_embed_project_metadata_context(tmp_path: Path) -> None:
+    _seed_v1310_docs(tmp_path)
+    service_root = tmp_path / "services" / "api"
+    service_root.mkdir(parents=True, exist_ok=True)
+    create = runner.invoke(
+        app,
+        [
+            "doctor",
+            "metadata",
+            "create",
+            "--project-root",
+            str(tmp_path),
+            "--topology-kind",
+            "monorepo",
+            "--default-execution-service",
+            "api",
+            "--service-key",
+            "api",
+            "--repo-root",
+            str(service_root),
+            "--version",
+            "v1.3.10",
+            "--branch",
+            "beacon/v1.3.10",
+            "--json",
+        ],
+    )
+    assert create.exit_code == 0, create.stdout
+
+    result = runner.invoke(
+        app,
+        [
+            "prd",
+            "create",
+            "Beacon Metadata Contract",
+            "--project",
+            str(tmp_path),
+            "--version",
+            "v1.3.10",
+            "--mode",
+            "rule",
+            "--json",
+        ],
+    )
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    canonical = json.loads(Path(payload["canonical_path"]).read_text(encoding="utf-8"))
+    compile_payload = json.loads(Path(payload["compile_path"]).read_text(encoding="utf-8"))
+    assert canonical["project_metadata_context"]["metadata_ref"] == ".beacon/metadata/project-version-metadata.json"
+    assert canonical["project_metadata_context"]["resolved_metadata_view"]["selected_service"] == "api"
+    assert compile_payload["project_metadata_context"]["resolved_metadata_view"]["selected_branch"] == "beacon/v1.3.10"
+    assert ".beacon/metadata/project-version-metadata.json" in canonical["source_refs"]
+
+
 def test_v1310_qa_should_block_when_project_metadata_branch_contract_fails(tmp_path: Path, monkeypatch) -> None:
     monkeypatch.setenv("BEACON_RUNTIME_LEDGER_ROOT", str(tmp_path / ".runtime-ledger"))
     _seed_v1310_docs(tmp_path)
