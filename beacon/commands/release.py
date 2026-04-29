@@ -8,6 +8,7 @@ import re
 
 from beacon.utils.artifact_paths import change_docs_file, change_file_output, machine_change_dir, release_checklist_file
 from beacon.utils.memory import append_memory_entry
+from beacon.utils.project_metadata import metadata_machine_path, verify_project_metadata
 from beacon.utils.release_scorecard import build_release_scorecard
 from beacon.utils.runtime_projection_store import runtime_projection_transaction_contract
 from beacon.utils.writeback import acceptance_projection_transaction_contract
@@ -674,6 +675,22 @@ def check(
                 "acceptance projection transaction contract",
                 acceptance_tx_ok,
                 f"status={acceptance_tx_contract.get('status') or 'unknown'}, reason={acceptance_tx_contract.get('reason_code') or '-'}",
+            )
+        )
+
+    if metadata_machine_path(project_root).exists():
+        metadata_verdict = verify_project_metadata(project_root, version=resolved_version)
+        metadata_ok = str(metadata_verdict.get("status") or "").lower() != "fail"
+        failing_checks = [
+            f"{item.get('name')}={item.get('details', {})}"
+            for item in metadata_verdict.get("checks", [])
+            if isinstance(item, dict) and str(item.get("status") or "").lower() == "fail"
+        ]
+        checks.append(
+            (
+                "project metadata contract",
+                metadata_ok,
+                "; ".join(failing_checks) if failing_checks else f"status={metadata_verdict.get('status') or 'unknown'}",
             )
         )
 
