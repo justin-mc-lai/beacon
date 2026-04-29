@@ -1,0 +1,722 @@
+{
+  "schema_version": "1.0",
+  "feature": "Beacon v1.3.9 beacon-friction-intake and sqlite governance queue",
+  "feature_slug": "beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue",
+  "version": "v1.3.9",
+  "current_revision_id": "R1",
+  "lifecycle_status": "draft",
+  "updated_at": "2026-04-28T09:39:24.957184+00:00",
+  "revisions": [
+    {
+      "revision_id": "R1",
+      "feature_slug": "beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue",
+      "source_revision_id": null,
+      "reason": "draft",
+      "doc_status": "draft",
+      "delivery_status": "idle",
+      "baseline_hash": null,
+      "superseded_by": null,
+      "created_at": "2026-04-28T09:14:02.044643+00:00",
+      "frozen_at": null,
+      "accepted_at": null,
+      "accepted_by": null
+    }
+  ],
+  "stories": [
+    {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "Beacon v1.3.9 beacon-friction-intake and sqlite governance queue",
+      "priority": "medium",
+      "status": "accepted",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "naming",
+          "text": "Beacon 对外存在统一的 `beacon-friction-intake` 能力定义，作为长期推荐入口。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "manual-v139-friction-intake-implement-20260428",
+          "verified_by_run_id": "run-20260428T173908043826",
+          "accepted_at": "2026-04-28T09:39:24.956923+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "compatibility",
+          "text": "旧的 `memory-friction-evolution` 可以作为兼容实现来源存在，但不再作为长期主语义。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "manual-v139-friction-intake-implement-20260428",
+          "verified_by_run_id": "run-20260428T173908043826",
+          "accepted_at": "2026-04-28T09:39:24.956923+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "boundary",
+          "text": "`beacon-friction-intake` 被定义为 support-surface 入口，而不是新的主 Beacon stage。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "manual-v139-friction-intake-implement-20260428",
+          "verified_by_run_id": "run-20260428T173908043826",
+          "accepted_at": "2026-04-28T09:39:24.956923+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "AC-101",
+          "kind": "ac",
+          "theme": "scan-mode",
+          "text": "在 Beacon 源码项目中可以执行 `scan` 模式，自动提取项目摩擦、阻塞、bug 或重复问题。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "manual-v139-friction-intake-implement-20260428",
+          "verified_by_run_id": "run-20260428T173908043826",
+          "accepted_at": "2026-04-28T09:39:24.956923+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "AC-102",
+          "kind": "ac",
+          "theme": "evidence",
+          "text": "`scan` 结果能够绑定项目内证据来源，如 `.beacon/debug/`、`.beacon/memory/`、`.beacon/analysis/` 或等价运行证据。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "manual-v139-friction-intake-implement-20260428",
+          "verified_by_run_id": "run-20260428T173908043826",
+          "accepted_at": "2026-04-28T09:39:24.956923+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "AC-103",
+          "kind": "ac",
+          "theme": "classification",
+          "text": "`scan` 结果会被标准化成统一 friction item，而不是只产出一次性的分析报告。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "manual-v139-friction-intake-implement-20260428",
+          "verified_by_run_id": "run-20260428T173908043826",
+          "accepted_at": "2026-04-28T09:39:24.956923+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "AC-201",
+          "kind": "ac",
+          "theme": "capture-mode",
+          "text": "在目标开发项目中可以执行 `capture` 模式，记录一次人工输入的上下文摩擦。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "manual-v139-friction-intake-implement-20260428",
+          "verified_by_run_id": "run-20260428T173908043826",
+          "accepted_at": "2026-04-28T09:39:24.956923+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "AC-202",
+          "kind": "ac",
+          "theme": "llm-normalization",
+          "text": "系统会对人工记录执行 summary 规范化、分类、严重级别判断、领域判断与证据引用绑定。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "manual-v139-friction-intake-implement-20260428",
+          "verified_by_run_id": "run-20260428T173908043826",
+          "accepted_at": "2026-04-28T09:39:24.956923+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "AC-203",
+          "kind": "ac",
+          "theme": "source-type",
+          "text": "人工记录项与自动扫描项会通过 `source_type` 或等价字段区分，但进入同一治理队列。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "manual-v139-friction-intake-implement-20260428",
+          "verified_by_run_id": "run-20260428T173908043826",
+          "accepted_at": "2026-04-28T09:39:24.956923+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "AC-301",
+          "kind": "ac",
+          "theme": "dual-write",
+          "text": "任一 `scan` 或 `capture` 完成后，项目内证据可保留，同时全局 sqlite 中出现对应 friction item。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "manual-v139-friction-intake-implement-20260428",
+          "verified_by_run_id": "run-20260428T173908043826",
+          "accepted_at": "2026-04-28T09:39:24.956923+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "AC-302",
+          "kind": "ac",
+          "theme": "queue-state",
+          "text": "friction item 至少具有可治理的状态流，如 `queued`、`claimed`、`resolved`、`reopened` 或等价状态。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "manual-v139-friction-intake-implement-20260428",
+          "verified_by_run_id": "run-20260428T173908043826",
+          "accepted_at": "2026-04-28T09:39:24.956923+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "AC-303",
+          "kind": "ac",
+          "theme": "sqlite-recovery",
+          "text": "当 sqlite 暂时不可用时，dual-write 失败会显式记录，且后续支持恢复与重放。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "manual-v139-friction-intake-implement-20260428",
+          "verified_by_run_id": "run-20260428T173908043826",
+          "accepted_at": "2026-04-28T09:39:24.956923+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "AC-401",
+          "kind": "ac",
+          "theme": "item-class",
+          "text": "每条 friction item 至少会落入 `blocking_bug`、`improvement`、`optimization_enhancement` 之一。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "manual-v139-friction-intake-implement-20260428",
+          "verified_by_run_id": "run-20260428T173908043826",
+          "accepted_at": "2026-04-28T09:39:24.956923+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "AC-402",
+          "kind": "ac",
+          "theme": "governance-fields",
+          "text": "每条 friction item 至少具备 summary、source_type、severity、domain、queue_status、project_root、evidence_refs、first_seen_at、last_seen_at 或等价字段。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "manual-v139-friction-intake-implement-20260428",
+          "verified_by_run_id": "run-20260428T173908043826",
+          "accepted_at": "2026-04-28T09:39:24.956923+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "AC-403",
+          "kind": "ac",
+          "theme": "projection-boundary",
+          "text": "`debug_issues` 保持 runtime projection 快照定位，不能直接替代治理队列。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "manual-v139-friction-intake-implement-20260428",
+          "verified_by_run_id": "run-20260428T173908043826",
+          "accepted_at": "2026-04-28T09:39:24.956923+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "AC-501",
+          "kind": "ac",
+          "theme": "default-queue-only",
+          "text": "新摩擦项默认只进入治理队列，不自动进入 `prd`、`user-story`、`test-case`、`implement`、`qa` 或 `release`。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "manual-v139-friction-intake-implement-20260428",
+          "verified_by_run_id": "run-20260428T173908043826",
+          "accepted_at": "2026-04-28T09:39:24.956923+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "AC-502",
+          "kind": "ac",
+          "theme": "explicit-gate",
+          "text": "只有进入 `accepted_for_requirement` 或等价显式接受状态后，摩擦项才允许路由到 `beacon-prd` 或 `beacon-change`。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "manual-v139-friction-intake-implement-20260428",
+          "verified_by_run_id": "run-20260428T173908043826",
+          "accepted_at": "2026-04-28T09:39:24.956923+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "AC-503",
+          "kind": "ac",
+          "theme": "truth-protection",
+          "text": "requirement truth 的更新仍由正式 requirement/change surface 负责，而非 intake 入口直接写入。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "manual-v139-friction-intake-implement-20260428",
+          "verified_by_run_id": "run-20260428T173908043826",
+          "accepted_at": "2026-04-28T09:39:24.956923+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "AC-601",
+          "kind": "ac",
+          "theme": "local-truth",
+          "text": "`.beacon/debug/`、`.beacon/memory/`、`.beacon/analysis/` 或等价项目内产物继续承担原始证据 truth。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "manual-v139-friction-intake-implement-20260428",
+          "verified_by_run_id": "run-20260428T173908043826",
+          "accepted_at": "2026-04-28T09:39:24.956923+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "AC-602",
+          "kind": "ac",
+          "theme": "no-second-truth",
+          "text": "全局 sqlite 只存治理必需的索引、分类、状态与引用，不存第二份完整正文 truth。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "manual-v139-friction-intake-implement-20260428",
+          "verified_by_run_id": "run-20260428T173908043826",
+          "accepted_at": "2026-04-28T09:39:24.956923+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "AC-603",
+          "kind": "ac",
+          "theme": "replay",
+          "text": "当全局 sqlite 被删除、重建或临时不可用时，系统仍可从项目内原始证据重新驱动 intake/replay。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "manual-v139-friction-intake-implement-20260428",
+          "verified_by_run_id": "run-20260428T173908043826",
+          "accepted_at": "2026-04-28T09:39:24.956923+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "manual-v139-friction-intake-implement-20260428",
+          "verified_by_run_id": null,
+          "accepted_at": "2026-04-28T09:20:59.346023+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — Beacon 对外存在统一的 `beacon-friction-intake` 能力定义，作为长期推荐入口。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "manual-v139-friction-intake-implement-20260428",
+          "verified_by_run_id": "run-20260428T173908043826",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — 旧的 `memory-friction-evolution` 可以作为兼容实现来源存在，但不再作为长期主语义。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "manual-v139-friction-intake-implement-20260428",
+          "verified_by_run_id": "run-20260428T173908043826",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — `beacon-friction-intake` 被定义为 support-surface 入口，而不是新的主 Beacon stage。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "manual-v139-friction-intake-implement-20260428",
+          "verified_by_run_id": "run-20260428T173908043826",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-101 — 在 Beacon 源码项目中可以执行 `scan` 模式，自动提取项目摩擦、阻塞、bug 或重复问题。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "manual-v139-friction-intake-implement-20260428",
+          "verified_by_run_id": "run-20260428T173908043826",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-101"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-102 — `scan` 结果能够绑定项目内证据来源，如 `.beacon/debug/`、`.beacon/memory/`、`.beacon/analysis/` 或等价运行证据。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "manual-v139-friction-intake-implement-20260428",
+          "verified_by_run_id": "run-20260428T173908043826",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-102"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-103 — `scan` 结果会被标准化成统一 friction item，而不是只产出一次性的分析报告。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "manual-v139-friction-intake-implement-20260428",
+          "verified_by_run_id": "run-20260428T173908043826",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-103"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-201 — 在目标开发项目中可以执行 `capture` 模式，记录一次人工输入的上下文摩擦。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "manual-v139-friction-intake-implement-20260428",
+          "verified_by_run_id": "run-20260428T173908043826",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-201"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-202 — 系统会对人工记录执行 summary 规范化、分类、严重级别判断、领域判断与证据引用绑定。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "manual-v139-friction-intake-implement-20260428",
+          "verified_by_run_id": "run-20260428T173908043826",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-202"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TEST-009",
+          "kind": "test",
+          "text": "Verify AC-203 — 人工记录项与自动扫描项会通过 `source_type` 或等价字段区分，但进入同一治理队列。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "manual-v139-friction-intake-implement-20260428",
+          "verified_by_run_id": "run-20260428T173908043826",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-203"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TEST-010",
+          "kind": "test",
+          "text": "Verify AC-301 — 任一 `scan` 或 `capture` 完成后，项目内证据可保留，同时全局 sqlite 中出现对应 friction item。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "manual-v139-friction-intake-implement-20260428",
+          "verified_by_run_id": "run-20260428T173908043826",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-301"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TEST-011",
+          "kind": "test",
+          "text": "Verify AC-302 — friction item 至少具有可治理的状态流，如 `queued`、`claimed`、`resolved`、`reopened` 或等价状态。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "manual-v139-friction-intake-implement-20260428",
+          "verified_by_run_id": "run-20260428T173908043826",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-302"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TEST-012",
+          "kind": "test",
+          "text": "Verify AC-303 — 当 sqlite 暂时不可用时，dual-write 失败会显式记录，且后续支持恢复与重放。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "manual-v139-friction-intake-implement-20260428",
+          "verified_by_run_id": "run-20260428T173908043826",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-303"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TEST-013",
+          "kind": "test",
+          "text": "Verify AC-401 — 每条 friction item 至少会落入 `blocking_bug`、`improvement`、`optimization_enhancement` 之一。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "manual-v139-friction-intake-implement-20260428",
+          "verified_by_run_id": "run-20260428T173908043826",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-401"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TEST-014",
+          "kind": "test",
+          "text": "Verify AC-402 — 每条 friction item 至少具备 summary、source_type、severity、domain、queue_status、project_root、evidence_refs、first_seen_at、last_seen_at 或等价字段。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "manual-v139-friction-intake-implement-20260428",
+          "verified_by_run_id": "run-20260428T173908043826",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-402"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TEST-015",
+          "kind": "test",
+          "text": "Verify AC-403 — `debug_issues` 保持 runtime projection 快照定位，不能直接替代治理队列。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "manual-v139-friction-intake-implement-20260428",
+          "verified_by_run_id": "run-20260428T173908043826",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-403"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TEST-016",
+          "kind": "test",
+          "text": "Verify AC-501 — 新摩擦项默认只进入治理队列，不自动进入 `prd`、`user-story`、`test-case`、`implement`、`qa` 或 `release`。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "manual-v139-friction-intake-implement-20260428",
+          "verified_by_run_id": "run-20260428T173908043826",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-501"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TEST-017",
+          "kind": "test",
+          "text": "Verify AC-502 — 只有进入 `accepted_for_requirement` 或等价显式接受状态后，摩擦项才允许路由到 `beacon-prd` 或 `beacon-change`。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "manual-v139-friction-intake-implement-20260428",
+          "verified_by_run_id": "run-20260428T173908043826",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-502"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TEST-018",
+          "kind": "test",
+          "text": "Verify AC-503 — requirement truth 的更新仍由正式 requirement/change surface 负责，而非 intake 入口直接写入。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "manual-v139-friction-intake-implement-20260428",
+          "verified_by_run_id": "run-20260428T173908043826",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-503"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TEST-019",
+          "kind": "test",
+          "text": "Verify AC-601 — `.beacon/debug/`、`.beacon/memory/`、`.beacon/analysis/` 或等价项目内产物继续承担原始证据 truth。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "manual-v139-friction-intake-implement-20260428",
+          "verified_by_run_id": "run-20260428T173908043826",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-601"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TEST-020",
+          "kind": "test",
+          "text": "Verify AC-602 — 全局 sqlite 只存治理必需的索引、分类、状态与引用，不存第二份完整正文 truth。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "manual-v139-friction-intake-implement-20260428",
+          "verified_by_run_id": "run-20260428T173908043826",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-602"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        },
+        {
+          "id": "TEST-021",
+          "kind": "test",
+          "text": "Verify AC-603 — 当全局 sqlite 被删除、重建或临时不可用时，系统仍可从项目内原始证据重新驱动 intake/replay。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "manual-v139-friction-intake-implement-20260428",
+          "verified_by_run_id": "run-20260428T173908043826",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-603"
+          ],
+          "story_id": "",
+          "source": "user-story:markdown"
+        }
+      ],
+      "feature": "Beacon v1.3.9 beacon-friction-intake and sqlite governance queue",
+      "feature_slug": "beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue",
+      "version": "v1.3.9",
+      "last_changed_files": [
+        "beacon/commands/friction_intake.py",
+        "beacon/utils/friction_intake.py",
+        "beacon/utils/runtime_projection_store.py",
+        "beacon/cli_factory.py",
+        "beacon/command_catalog.py",
+        "skills/beacon/SKILL.md",
+        "skills/beacon/beacon-friction-intake/SKILL.md",
+        "skills/beacon/beacon-memory-friction-evolution/SKILL.md",
+        "tests/test_v139_friction_intake.py"
+      ],
+      "verification_evidence": [
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        "docs/beacon/v1.3.9/.machine/qa/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue/ac-closure.json",
+        ".beacon/qa/features/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue/scorecard.json"
+      ],
+      "accepted_at": "2026-04-28T09:39:24.956923+00:00",
+      "accepted_by": "qa"
+    }
+  ]
+}

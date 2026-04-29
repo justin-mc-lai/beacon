@@ -1,0 +1,180 @@
+{
+  "schema_version": "1.0",
+  "feature": "Beacon v1.3.9 execution projection convergence and QA acceptance dual-write",
+  "feature_slug": "beacon-v1-3-9-execution-projection-convergence-and-qa-acceptance-dual-write",
+  "version": "v1.3.9",
+  "prototype_mode": "wireframe",
+  "prototype_type": "generic-wireframe",
+  "pages": [
+    {
+      "page_id": "home",
+      "name": "首页",
+      "priority": "P0",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "先回答经营判断，展示项目数、阻塞数、当前交付和介入点。",
+      "file": "pages/home.md"
+    },
+    {
+      "page_id": "management-overview",
+      "name": "管理总览",
+      "priority": "P0",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "提供多项目密集管理视图，稳定扫描版本、阶段、进度、健康态和下一步。",
+      "file": "pages/management-overview.md"
+    },
+    {
+      "page_id": "project-detail",
+      "name": "项目详情",
+      "priority": "P0",
+      "platforms": [
+        "Web",
+        "PC",
+        "App"
+      ],
+      "responsibility": "成为接力页，展示版本线、主 PRD、并行 PRD、需求闭环和推荐动作。",
+      "file": "pages/project-detail.md"
+    },
+    {
+      "page_id": "runtime-center",
+      "name": "运行中心",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "只在这里下钻 single / team / ralph 的 runtime 细节和有限 session metadata。",
+      "file": "pages/runtime-center.md"
+    },
+    {
+      "page_id": "recovery-diagnostics",
+      "name": "恢复诊断",
+      "priority": "P2",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "解释 degraded / rebuild / doctor，明确 truth 仍来自 docs/beacon 与 .beacon。",
+      "file": "pages/recovery-diagnostics.md"
+    },
+    {
+      "page_id": "material-viewer",
+      "name": "项目物料查看器",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "按 version -> document type -> feature 提供只读 Markdown 浏览。",
+      "file": "pages/material-viewer.md"
+    },
+    {
+      "page_id": "material-document-detail",
+      "name": "物料文档详情",
+      "priority": "P2",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "冻结文档阅读状态，包括来源路径、版本切换和同类文档切换。",
+      "file": "pages/material-document-detail.md"
+    }
+  ],
+  "transitions": [
+    {
+      "from": "home",
+      "to": "management-overview",
+      "trigger": "点击项目组合入口",
+      "type": "primary"
+    },
+    {
+      "from": "home",
+      "to": "project-detail",
+      "trigger": "点击重点项目卡片",
+      "type": "primary"
+    },
+    {
+      "from": "management-overview",
+      "to": "project-detail",
+      "trigger": "点击项目行/卡片",
+      "type": "primary"
+    },
+    {
+      "from": "management-overview",
+      "to": "home",
+      "trigger": "点击首页导航",
+      "type": "return"
+    },
+    {
+      "from": "project-detail",
+      "to": "runtime-center",
+      "trigger": "点击运行态摘要",
+      "type": "drill-down"
+    },
+    {
+      "from": "project-detail",
+      "to": "recovery-diagnostics",
+      "trigger": "点击恢复诊断入口",
+      "type": "drill-down"
+    },
+    {
+      "from": "project-detail",
+      "to": "material-viewer",
+      "trigger": "点击文档查看入口",
+      "type": "drill-down"
+    },
+    {
+      "from": "project-detail",
+      "to": "management-overview",
+      "trigger": "点击返回",
+      "type": "return"
+    },
+    {
+      "from": "runtime-center",
+      "to": "project-detail",
+      "trigger": "点击返回",
+      "type": "return"
+    },
+    {
+      "from": "runtime-center",
+      "to": "management-overview",
+      "trigger": "点击面包屑",
+      "type": "return"
+    },
+    {
+      "from": "recovery-diagnostics",
+      "to": "project-detail",
+      "trigger": "点击返回",
+      "type": "return"
+    },
+    {
+      "from": "recovery-diagnostics",
+      "to": "runtime-center",
+      "trigger": "点击运行态关联",
+      "type": "drill-down"
+    },
+    {
+      "from": "material-viewer",
+      "to": "project-detail",
+      "trigger": "点击返回",
+      "type": "return"
+    },
+    {
+      "from": "material-viewer",
+      "to": "material-document-detail",
+      "trigger": "点击文档列表项",
+      "type": "drill-down"
+    },
+    {
+      "from": "material-document-detail",
+      "to": "material-viewer",
+      "trigger": "点击返回",
+      "type": "return"
+    }
+  ]
+}

@@ -1,0 +1,702 @@
+{
+  "schema_version": "1.0",
+  "plan_id": "plan-beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue-r1",
+  "feature": "Beacon v1.3.9 beacon-friction-intake and sqlite governance queue",
+  "feature_slug": "beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue",
+  "version": "v1.3.9",
+  "revision_id": "R1",
+  "baseline_hash": "sha256:dd1553cd9253fc8d1504178d1cfdb909bac2b45d15dcab8122b97e7d50c7b123",
+  "plan_hash": "sha256:7f3907541d6d06172daf5f7bec2f9f0d71f8ca0aabb1e71d27059017e7563f05",
+  "status": "completed",
+  "source_refs": {
+    "user_story": "docs/beacon/v1.3.9/user-story/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.md",
+    "prd": "docs/beacon/v1.3.9/prd/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.md",
+    "test_case": "docs/beacon/v1.3.9/qa/test-cases/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.md",
+    "ac_matrix": "docs/beacon/v1.3.9/.machine/qa/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.ac-test-matrix.json",
+    "story_scenario_map": "docs/beacon/v1.3.9/.machine/qa/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.story-scenario-map.json"
+  },
+  "architecture_blueprint_ref": "docs/beacon/v1.3.9/execution/architecture-blueprint.md",
+  "boundary_principles": [
+    {
+      "id": "explicit_assumptions",
+      "heading": "显式假设与歧义管理"
+    },
+    {
+      "id": "simplicity_first",
+      "heading": "简单优先"
+    },
+    {
+      "id": "surgical_changes",
+      "heading": "外科手术式改动"
+    },
+    {
+      "id": "goal_driven_execution",
+      "heading": "目标驱动验证闭环"
+    },
+    {
+      "id": "trivial_task_exception",
+      "heading": "trivial task 可以轻量处理，但不能越界"
+    }
+  ],
+  "workstreams": [
+    {
+      "workstream_id": "implementation-main",
+      "title": "Implementation Mainline",
+      "task_ids": [
+        "ITASK-001",
+        "ITASK-002",
+        "ITASK-003",
+        "ITASK-004",
+        "ITASK-005",
+        "ITASK-006"
+      ]
+    }
+  ],
+  "task_mapping_source": "prd-sections",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.3.9",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [
+      "state-machine"
+    ],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [
+      "implementation must preserve the declared state-machine transitions"
+    ],
+    "qa_coverage_hints": [
+      "cover state transitions, illegal transitions, and recovery paths"
+    ],
+    "evidence_lines": {
+      "state-machine": [
+        "```text",
+        "scan/capture",
+        "-> classified",
+        "-> queued",
+        "-> claimed",
+        "-> resolved",
+        "```",
+        "补充分支："
+      ]
+    },
+    "generated_at": "2026-04-28T11:35:06.522428+00:00",
+    "feature": "Beacon v1.3.9 beacon-friction-intake and sqlite governance queue",
+    "feature_slug": "beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue",
+    "prd_ref": "docs/beacon/v1.3.9/prd/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.md",
+    "user_story_ref": "docs/beacon/v1.3.9/user-story/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.md"
+  },
+  "review_gates": [
+    "implementation must preserve the declared state-machine transitions"
+  ],
+  "qa_coverage_hints": [
+    "cover state transitions, illegal transitions, and recovery paths"
+  ],
+  "tasks": [
+    {
+      "task_id": "ITASK-001",
+      "title": "FR-001 `beacon-friction-intake` 必须是统一摩擦录入入口",
+      "description": "新入口对人类语义是“录入摩擦”，不是“生成分析报告”。 旧的 `memory-friction-evolution` 应视为底层实现来源或待兼容入口，而不是长期主语义。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-001",
+        "AC-002"
+      ],
+      "mapped_test_ids": [
+        "TC-001",
+        "TC-002"
+      ],
+      "mapped_scenario_ids": [
+        "SC-001",
+        "SC-002"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must preserve the declared state-machine transitions"
+      ],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "docs/beacon/v1.3.9/.machine/execution/implementation-summary-beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.json",
+        "docs/beacon/v1.3.9/.machine/execution/qa-acceptance-beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.json",
+        "run:manual-v139-friction-intake-implement-20260428"
+      ],
+      "changed_files": [
+        "beacon/commands/friction_intake.py",
+        "beacon/utils/friction_intake.py",
+        "beacon/utils/runtime_projection_store.py",
+        "beacon/cli_factory.py",
+        "beacon/command_catalog.py",
+        "skills/beacon/SKILL.md",
+        "skills/beacon/beacon-friction-intake/SKILL.md",
+        "skills/beacon/beacon-memory-friction-evolution/SKILL.md",
+        "tests/test_v139_friction_intake.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-28T11:35:57.041607+00:00",
+      "completed_at": "2026-04-28T11:35:57.041919+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-002",
+      "title": "FR-002 必须支持 `scan` 与 `capture` 双模式",
+      "description": "`scan` 适用于 Beacon 源码项目 自动扫描项目摩擦、阻塞、bug、重复出现的问题 `capture` 适用于目标开发项目 接收人工输入的一次上下文摩擦记录 再由 LLM 做标准化、分类与证据绑定",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-101"
+      ],
+      "mapped_test_ids": [
+        "TC-004"
+      ],
+      "mapped_scenario_ids": [
+        "SC-004"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-001"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must preserve the declared state-machine transitions"
+      ],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "docs/beacon/v1.3.9/.machine/execution/implementation-summary-beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.json",
+        "docs/beacon/v1.3.9/.machine/execution/qa-acceptance-beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.json",
+        "run:manual-v139-friction-intake-implement-20260428"
+      ],
+      "changed_files": [
+        "beacon/commands/friction_intake.py",
+        "beacon/utils/friction_intake.py",
+        "beacon/utils/runtime_projection_store.py",
+        "beacon/cli_factory.py",
+        "beacon/command_catalog.py",
+        "skills/beacon/SKILL.md",
+        "skills/beacon/beacon-friction-intake/SKILL.md",
+        "skills/beacon/beacon-memory-friction-evolution/SKILL.md",
+        "tests/test_v139_friction_intake.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-28T11:35:57.041934+00:00",
+      "completed_at": "2026-04-28T11:35:57.041936+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-003",
+      "title": "FR-003 双模式都必须进入全局 sqlite 队列治理",
+      "description": "任一 `scan` 或 `capture` 完成后： 项目内分析与证据可继续保留 全局 sqlite 中必须出现对应 friction item 与治理状态 若 sqlite 暂时不可用： 项目内 truth 必须继续保留 dual-write 失败必须显式记录 后续必须支持恢复语义与重放",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-301"
+      ],
+      "mapped_test_ids": [
+        "TC-010",
+        "TC-011"
+      ],
+      "mapped_scenario_ids": [
+        "SC-010",
+        "SC-011"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-002"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must preserve the declared state-machine transitions"
+      ],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "docs/beacon/v1.3.9/.machine/execution/implementation-summary-beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.json",
+        "docs/beacon/v1.3.9/.machine/execution/qa-acceptance-beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.json",
+        "run:manual-v139-friction-intake-implement-20260428"
+      ],
+      "changed_files": [
+        "beacon/commands/friction_intake.py",
+        "beacon/utils/friction_intake.py",
+        "beacon/utils/runtime_projection_store.py",
+        "beacon/cli_factory.py",
+        "beacon/command_catalog.py",
+        "skills/beacon/SKILL.md",
+        "skills/beacon/beacon-friction-intake/SKILL.md",
+        "skills/beacon/beacon-memory-friction-evolution/SKILL.md",
+        "tests/test_v139_friction_intake.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-28T11:35:57.041943+00:00",
+      "completed_at": "2026-04-28T11:35:57.041945+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-004",
+      "title": "FR-004 分类模型必须可被 Beacon 产品治理直接消费",
+      "description": "任一 friction item 至少带有： `item_class` `severity` `domain` `queue_status` `source_type` `project_key` `project_root` `summary` `evidence_refs` `first_seen_at` `last_seen_at` 最小分类集： `item_class`: `blocking_bug | improvement | optimization_enhancement` `source_type`: `scan | manual_capture`",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-402"
+      ],
+      "mapped_test_ids": [
+        "TC-017",
+        "TC-014"
+      ],
+      "mapped_scenario_ids": [
+        "SC-014",
+        "SC-017"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-003"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must preserve the declared state-machine transitions"
+      ],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "docs/beacon/v1.3.9/.machine/execution/implementation-summary-beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.json",
+        "docs/beacon/v1.3.9/.machine/execution/qa-acceptance-beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.json",
+        "run:manual-v139-friction-intake-implement-20260428"
+      ],
+      "changed_files": [
+        "beacon/commands/friction_intake.py",
+        "beacon/utils/friction_intake.py",
+        "beacon/utils/runtime_projection_store.py",
+        "beacon/cli_factory.py",
+        "beacon/command_catalog.py",
+        "skills/beacon/SKILL.md",
+        "skills/beacon/beacon-friction-intake/SKILL.md",
+        "skills/beacon/beacon-memory-friction-evolution/SKILL.md",
+        "tests/test_v139_friction_intake.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-28T11:35:57.041951+00:00",
+      "completed_at": "2026-04-28T11:35:57.041952+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-005",
+      "title": "FR-005 `debug_issues` 不得直接替代 friction queue",
+      "description": "`debug_issues` 继续服务 runtime projection board / status / doctor。 friction queue 必须作为独立治理层存在。 两者可以引用，但不能混表覆盖。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-302",
+        "AC-403",
+        "AC-501"
+      ],
+      "mapped_test_ids": [
+        "TC-012",
+        "TC-013",
+        "TC-018",
+        "TC-019",
+        "TC-011",
+        "TC-015",
+        "TC-016"
+      ],
+      "mapped_scenario_ids": [
+        "SC-011",
+        "SC-012",
+        "SC-013",
+        "SC-015",
+        "SC-016",
+        "SC-018",
+        "SC-019"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-004"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must preserve the declared state-machine transitions"
+      ],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "docs/beacon/v1.3.9/.machine/execution/implementation-summary-beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.json",
+        "docs/beacon/v1.3.9/.machine/execution/qa-acceptance-beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.json",
+        "run:manual-v139-friction-intake-implement-20260428"
+      ],
+      "changed_files": [
+        "beacon/commands/friction_intake.py",
+        "beacon/utils/friction_intake.py",
+        "beacon/utils/runtime_projection_store.py",
+        "beacon/cli_factory.py",
+        "beacon/command_catalog.py",
+        "skills/beacon/SKILL.md",
+        "skills/beacon/beacon-friction-intake/SKILL.md",
+        "skills/beacon/beacon-memory-friction-evolution/SKILL.md",
+        "tests/test_v139_friction_intake.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-28T11:35:57.041959+00:00",
+      "completed_at": "2026-04-28T11:35:57.041960+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-006",
+      "title": "FR-006 requirement/change 路由必须显式接受",
+      "description": "默认状态下，friction item 只进入治理队列。 只有被显式推进到 `accepted_for_requirement` 或等价状态时： 才允许进入 `beacon-prd` 或进入 `beacon-change` ## 6. 数据 / 状态 / 集成 ### 6.1 建议最小数据模型 `friction_items` 当前 item 主状态与分类 `friction_refs` 项目内证据引用 `friction_events` 追加式治理事件 ### 6.2 与现有 runtime ledger 的关系 复用 `~/.beacon/runtime-ledger/runtime-ledger.sqlite3` 复用现有 sqlite 连接、迁移、WAL、verify、export/rebuild 机制 不新增第二个全局 sqlite ### 6.3 双模式统一输出 `scan` 与 `capture` 都输出到同一治理队列。 差异只体现在 `source_type` 与 evidence 生成方式。 ### 6.4 状态机 ```text scan/capture -> classified -> queued -> claimed -> resolved ``` 补充分支： ```text queued -> discarded resolved -> reopened claimed -> accepted_for_requirement -> beacon-prd / beacon-change ``` ### 6.5 恢复语义 sqlite 不可用时，必须保留项目内 truth，并允许后续恢复后 replay。 已关闭项若因新证据漂移重新成立，必须支持 reopen。 ## 7. 风险与缓解 | 风险 | 影响 | 缓解 | |------|------|------| | 继续沿用 `memory-friction-evolution` 旧语义，导致入口被误解为分析工具 | 高 | 对外统一命名为 `beacon-friction-intake`，把分析降为内部机制 | | `scan` 与 `capture` 分裂成两套流程 | 高 | 统一进入同一 sqlite 队列，只保留 `source_type` 差异 | | `debug_issues` 与 friction queue 混层 | 高 | 保持 projection 快照与治理队列分层 | | 全局 sqlite 存储过多原始正文，形成第二份 truth | 高 | 仅存最小治理索引与 evidence refs | | 自动路由 requirement，污染 frozen truth | 高 | 只允许显式 accepted 后进入 `beacon-prd` / `beacon-change` | ## 8. 验收标准 ### AC-001 统一入口语义成立 Beacon 存在明确的 `beacon-friction-intake` 能力定义。 人类能理解它是“摩擦录入入口”，而不是“分析报告工具”。 ### AC-002 双模式录入成立 Beacon 源码项目中可以执行 `scan` 来抽取项目摩擦、阻塞、bug。 目标开发项目中可以执行 `capture` 来记录一次人工上下文摩擦。 ### AC-003 sqlite 治理队列成立 任一 `scan` 或 `capture` 完成后，都能在全局 sqlite 中看到对应 queue item。 dual-write 失败时有明确诊断与恢复路径。 ### AC-004 requirement/change 路由保持显式 新摩擦默认只进入治理队列。 只有显式 accepted 后，才会进入 `beacon-prd` 或 `beacon-change`。 ### AC-005 项目内原始证据不丢失 全局 sqlite 可重建时，项目内 `.beacon/debug/`、`.beacon/memory/`、`.beacon/analysis/` 仍能作为原始 truth 驱动恢复。 ## 9. 成功指标 Beacon 可以跨项目持续沉淀摩擦，而不再只能回看零散分析文件。 Beacon 可以明确区分“阻塞 bug / 改进 / 优化增强”并统一排队治理。 Beacon 的产品改进线索只在显式接受后进入 requirement/change，避免持续调试噪音污染主线。 ## 10. 与主 PRD 的关系 本并行 PRD 不重新定义 Beacon 主生命周期。 它补的是 Beacon 支持面中的“摩擦录入与治理入口”。 它为 `beacon-prd` / `beacon-change` 提供前置 intake 队列，但不替代正式 requirement surface。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-003",
+        "AC-102",
+        "AC-103",
+        "AC-201",
+        "AC-202",
+        "AC-203",
+        "AC-303",
+        "AC-401",
+        "AC-502",
+        "AC-503",
+        "AC-601",
+        "AC-602",
+        "AC-603"
+      ],
+      "mapped_test_ids": [
+        "TC-003",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-014",
+        "TC-015",
+        "TC-016",
+        "TC-020",
+        "TC-021",
+        "TC-022",
+        "TC-023",
+        "TC-024",
+        "TC-012",
+        "TC-013",
+        "TC-017",
+        "TC-018",
+        "TC-019"
+      ],
+      "mapped_scenario_ids": [
+        "SC-003",
+        "SC-005",
+        "SC-006",
+        "SC-007",
+        "SC-008",
+        "SC-009",
+        "SC-012",
+        "SC-013",
+        "SC-014",
+        "SC-015",
+        "SC-016",
+        "SC-017",
+        "SC-018",
+        "SC-019",
+        "SC-020",
+        "SC-021"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-005"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must preserve the declared state-machine transitions"
+      ],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "docs/beacon/v1.3.9/.machine/execution/implementation-summary-beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.json",
+        "docs/beacon/v1.3.9/.machine/execution/qa-acceptance-beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.json",
+        "run:manual-v139-friction-intake-implement-20260428"
+      ],
+      "changed_files": [
+        "beacon/commands/friction_intake.py",
+        "beacon/utils/friction_intake.py",
+        "beacon/utils/runtime_projection_store.py",
+        "beacon/cli_factory.py",
+        "beacon/command_catalog.py",
+        "skills/beacon/SKILL.md",
+        "skills/beacon/beacon-friction-intake/SKILL.md",
+        "skills/beacon/beacon-memory-friction-evolution/SKILL.md",
+        "tests/test_v139_friction_intake.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-04-28T11:35:57.041970+00:00",
+      "completed_at": "2026-04-28T11:35:57.041971+00:00",
+      "active_run_id": ""
+    }
+  ],
+  "revision_delta": {},
+  "revision_delta_ref": "",
+  "revision_delta_markdown_ref": "",
+  "team_mode": {
+    "preferred_surface": "implement-team",
+    "preferred_runner": "codex-subagents",
+    "plan_command": "beacon implement team-plan \"Beacon v1.3.9 beacon-friction-intake and sqlite governance queue\" --project-root . --version v1.3.9",
+    "run_command": "beacon implement team-run \"Beacon v1.3.9 beacon-friction-intake and sqlite governance queue\" --project . --version v1.3.9",
+    "dev_run_command": "beacon implement dev-run \"Beacon v1.3.9 beacon-friction-intake and sqlite governance queue\" --project . --version v1.3.9",
+    "ralph_command": "beacon implement run \"Beacon v1.3.9 beacon-friction-intake and sqlite governance queue\" --project . --version v1.3.9 --mode ralph",
+    "qa_team_command": "beacon qa team-run \"Beacon v1.3.9 beacon-friction-intake and sqlite governance queue\" --project . --version v1.3.9",
+    "roles": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "context_isolation": {
+      "role_plane": "implementation",
+      "isolated_from": [
+        "qa-team"
+      ],
+      "shared_inputs": [
+        "docs",
+        "implementation_plan",
+        "evidence_refs"
+      ],
+      "shared_outputs": [
+        "implementation_summary",
+        "technical_archive",
+        "repair_handoff"
+      ],
+      "rule": "qa_must_not_inherit_implement_private_context",
+      "implement_surface": "implement-team",
+      "qa_surface": "qa-team"
+    },
+    "config_source": "beacon/team_roles/implement-team.json",
+    "post_freeze_sequence": [
+      "freeze-pass",
+      "implement-team-plan",
+      "implement-team-run",
+      "implement-ralph",
+      "qa",
+      "release"
+    ],
+    "role_semantics": {
+      "team_reviewer": "checks implementation/spec drift before Ralph or QA closure",
+      "team_tester": "checks implementation evidence and verification readiness before Ralph or QA closure",
+      "ralph": "post-freeze controller that drives next-action routing across implementation, review, qa, and release"
+    },
+    "execution_order": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "formal_writeback_roles": [
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "role_contracts": {
+      "planner": {
+        "purpose": "Compile execution-ready task scope from the frozen revision baseline.",
+        "writes_to_formal_truth": false,
+        "outputs": [
+          "execution_plan_note"
+        ]
+      },
+      "implementation-architect": {
+        "purpose": "Translate frozen requirement truth into implementation-safe module boundaries and service ownership guidance.",
+        "writes_to_formal_truth": false,
+        "reads": [
+          "docs/beacon/<version>/user-story",
+          "docs/beacon/<version>/prd",
+          "docs/beacon/<version>/qa/test-cases",
+          "docs/beacon/<version>/execution/architecture-blueprint.md",
+          "implementation_plan",
+          "git_workflow_contract"
+        ],
+        "outputs": [
+          "implementation_architecture_note"
+        ],
+        "restrictions": [
+          "must_not_modify_frozen_requirement_materials",
+          "must_not_overwrite_architecture_blueprint"
+        ]
+      },
+      "implementer": {
+        "purpose": "Write code inside the frozen scope and the implementation architecture note.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "story_writeback",
+          "implementation_summary"
+        ]
+      },
+      "reviewer": {
+        "purpose": "Review implementation/spec drift and architecture-boundary drift.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_spec"
+        ]
+      },
+      "tester": {
+        "purpose": "Check implementation evidence and verification readiness before acceptance.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_quality"
+        ]
+      }
+    }
+  },
+  "git_workflow": {
+    "schema_version": "1.0",
+    "feature": "Beacon v1.3.9 beacon-friction-intake and sqlite governance queue",
+    "feature_slug": "beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue",
+    "version": "v1.3.9",
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.3.9",
+    "branch_prefix": "beacon/",
+    "base_branch": "main",
+    "use_git_worktree": false,
+    "require_clean_worktree_for_switch": true,
+    "service_directories": [
+      "."
+    ],
+    "direct_delivery_services": [
+      "."
+    ],
+    "writable_services": [
+      "."
+    ],
+    "reference_only_services": [
+      "docs"
+    ],
+    "git_roots": [
+      "."
+    ],
+    "worktree_root": ".",
+    "implementation_preflight": [
+      "Before implementation, verify the target service belongs to: .",
+      "Before implementation, verify the current branch is beacon/v1.3.9.",
+      "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+    ],
+    "source": "technical_review_contract",
+    "generated_at": "2026-04-28T11:35:06.522608+00:00",
+    "baseline_id": "impl-delivery-baseline-v1.3.9-beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue-R1",
+    "transaction_id": "tx-18f6c95d09ff604ed",
+    "source_hash": "sha256:4cf70da3f0d380875d31ce7bdf7b55f6733d27f2dea5c4f295cb41d037fe5854",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.3.9/.machine/execution/implementation-delivery-baseline-beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "git_workflow_ref": "docs/beacon/v1.3.9/.machine/execution/git-workflow-beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.json",
+  "git_workflow_markdown_ref": "docs/beacon/v1.3.9/execution/git-workflow-beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.md",
+  "base_branch": "main",
+  "target_branch": "beacon/v1.3.9",
+  "branch_prefix": "beacon/",
+  "use_git_worktree": false,
+  "worktree_root": ".",
+  "direct_delivery_services": [
+    "."
+  ],
+  "writable_services": [
+    "."
+  ],
+  "reference_only_services": [
+    "docs"
+  ],
+  "technical_delta": {
+    "project_mode": "greenfield",
+    "source_refs": {
+      "prd": "docs/beacon/v1.3.9/prd/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.md",
+      "user_story": "docs/beacon/v1.3.9/user-story/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.md",
+      "test_case": "docs/beacon/v1.3.9/qa/test-cases/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.md"
+    },
+    "current_state": {},
+    "refactor_boundaries": {},
+    "feature_sections": [],
+    "change_surface": []
+  },
+  "delivery_baseline": {
+    "baseline_id": "impl-delivery-baseline-v1.3.9-beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue-R1",
+    "transaction_id": "tx-18f6c95d09ff604ed",
+    "source_hash": "sha256:4cf70da3f0d380875d31ce7bdf7b55f6733d27f2dea5c4f295cb41d037fe5854",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.3.9/.machine/execution/implementation-delivery-baseline-beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "canonical_envelope_ref": "docs/beacon/v1.3.9/.machine/execution/implementation-delivery-baseline-beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.json",
+  "generated_at": "2026-04-28T11:35:06.564862+00:00",
+  "baseline_id": "impl-delivery-baseline-v1.3.9-beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue-R1",
+  "transaction_id": "tx-18f6c95d09ff604ed",
+  "source_hash": "sha256:4cf70da3f0d380875d31ce7bdf7b55f6733d27f2dea5c4f295cb41d037fe5854",
+  "projection_seq": 1,
+  "projection_source": "implementation_delivery_baseline_envelope",
+  "updated_at": "2026-04-28T11:35:57.044856+00:00",
+  "accepted_at": "2026-04-28T11:35:57.044840+00:00",
+  "accepted_by": "codex"
+}

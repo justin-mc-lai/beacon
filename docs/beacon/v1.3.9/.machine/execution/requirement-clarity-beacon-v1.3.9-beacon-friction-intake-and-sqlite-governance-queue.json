@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.0",
+  "feature": "Beacon v1.3.9 beacon-friction-intake and sqlite governance queue",
+  "feature_slug": "beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue",
+  "version": "v1.3.9",
+  "runtime_version": "v1.3.8",
+  "runtime_capability_line": "v1.3.3",
+  "required": true,
+  "reason_code": "",
+  "blocked": false,
+  "status": "pass",
+  "findings": [],
+  "report_json_path": "docs/beacon/v1.3.9/.machine/execution/requirement-clarity-beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.json",
+  "report_markdown_path": "docs/beacon/v1.3.9/execution/requirement-clarity-beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.md",
+  "state_path": ".beacon/state/requirement-clarity-beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.json",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.3.9",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [
+      "state-machine"
+    ],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [
+      "implementation must preserve the declared state-machine transitions"
+    ],
+    "qa_coverage_hints": [
+      "cover state transitions, illegal transitions, and recovery paths"
+    ],
+    "evidence_lines": {
+      "state-machine": [
+        "```text",
+        "scan/capture",
+        "-> classified",
+        "-> queued",
+        "-> claimed",
+        "-> resolved",
+        "```",
+        "补充分支："
+      ]
+    },
+    "generated_at": "2026-04-28T11:31:32.421709+00:00",
+    "feature": "Beacon v1.3.9 beacon-friction-intake and sqlite governance queue",
+    "feature_slug": "beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue",
+    "prd_ref": "docs/beacon/v1.3.9/prd/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.md",
+    "user_story_ref": "docs/beacon/v1.3.9/user-story/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.md"
+  },
+  "required_artifacts": [],
+  "scanned_files": [
+    "docs/beacon/v1.3.9/prd/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.md",
+    "docs/beacon/v1.3.9/user-story/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.md"
+  ]
+}

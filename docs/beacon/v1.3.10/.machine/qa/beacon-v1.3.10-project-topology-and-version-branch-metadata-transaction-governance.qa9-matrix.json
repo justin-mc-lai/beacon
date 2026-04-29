@@ -1,0 +1,806 @@
+{
+  "schema_version": "1.0.2",
+  "feature": "beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance",
+  "feature_slug": "beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance",
+  "version": "v1.3.10",
+  "compiler": {
+    "requested_mode": "auto",
+    "effective_mode": "rule",
+    "generator_mode": "rule",
+    "fallback_reason": "llm_unavailable",
+    "capability_snapshot": {
+      "schema_version": "1.0",
+      "command_name": "test-case",
+      "host_runtime": "codex",
+      "host_bridge_declared": false,
+      "host_response_available": false,
+      "host_response_source": "none",
+      "host_response_path": "",
+      "host_semantic_ready": false,
+      "provider_available": false,
+      "provider_key_present": false,
+      "llm_disabled": false,
+      "disable_env": "BEACON_TEST_CASE_DISABLE_LLM"
+    },
+    "model": "beacon-test-case-compiler"
+  },
+  "qa_profile": "web-full",
+  "qa_types": [
+    "unit",
+    "interface",
+    "contract",
+    "integration",
+    "smoke",
+    "functional",
+    "regression",
+    "exception",
+    "compatibility"
+  ],
+  "llm_plan": {
+    "mode": "rule",
+    "model": "beacon-rule-llm-v1",
+    "project_scan": {
+      "language": "python",
+      "framework": "python-app",
+      "frontend": "unknown",
+      "api_spec_refs": [],
+      "risk_points": [
+        "authz/authn boundary",
+        "cross-browser ui behavior",
+        "api contract drift",
+        "exception handling and replay safety"
+      ]
+    },
+    "project_type": "ai-agent-skill",
+    "generated_at": "2026-04-29T23:12:04.228108",
+    "prompt_ref": "beacon.qa9.llm.plan.v1.0.2",
+    "skip_reason": "",
+    "qa_types": [
+      "unit",
+      "interface",
+      "contract",
+      "integration",
+      "smoke",
+      "functional",
+      "regression",
+      "exception",
+      "compatibility"
+    ]
+  },
+  "qa_strategy": {
+    "schema_version": "1.0.2",
+    "generated_at": "2026-04-29T23:12:04.226187",
+    "project_type": "ai-agent-skill",
+    "project_scan": {
+      "language": "python",
+      "framework": "python-app",
+      "frontend": "unknown",
+      "api_spec_refs": [],
+      "risk_points": [
+        "authz/authn boundary",
+        "cross-browser ui behavior",
+        "api contract drift",
+        "exception handling and replay safety"
+      ]
+    },
+    "qa_applicability": {
+      "unit": "required",
+      "interface": "required",
+      "contract": "required",
+      "integration": "required",
+      "smoke": "required",
+      "functional": "conditional",
+      "regression": "required",
+      "exception": "required",
+      "compatibility": "conditional"
+    },
+    "qa_required_types": [
+      "unit",
+      "interface",
+      "contract",
+      "integration",
+      "smoke",
+      "functional",
+      "regression",
+      "exception",
+      "compatibility"
+    ],
+    "runner_policy": {
+      "functional": {
+        "primary": "browser-use",
+        "fallback": [
+          "playwright",
+          "cypress",
+          "agent-browser"
+        ]
+      },
+      "compatibility": {
+        "primary": "playwright",
+        "fallback": [
+          "cypress"
+        ]
+      },
+      "api_layers": {
+        "interface": "schemathesis/newman/pytest",
+        "contract": "schemathesis/pact",
+        "integration": "pytest+testcontainers"
+      }
+    },
+    "command_baseline": {
+      "unit": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "interface": "python3 -m pytest -q -k interface --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "contract": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "integration": "python3 -m pytest -q -k integration --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "smoke": "python3 -m pytest -q -m smoke --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "functional": "python3 -m beacon.adapters.browser_use_runner --mode functional --fallback-cmd \"python3 -m pytest -q -k functional --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "regression": "python3 -m pytest -q -k regression --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "exception": "python3 -m pytest -q -k exception --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "compatibility": "python3 -m beacon.adapters.browser_use_runner --mode compatibility --fallback-cmd \"python3 -m pytest -q -k compatibility --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\""
+    },
+    "ui_runner": "browser-use"
+  },
+  "qa_requirements": [
+    {
+      "qa_type": "unit",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "interface",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "contract",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "integration",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "smoke",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "functional",
+      "required": false,
+      "automation_required": false,
+      "min_cases": 0,
+      "applicability": "conditional",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "regression",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "exception",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "compatibility",
+      "required": false,
+      "automation_required": false,
+      "min_cases": 0,
+      "applicability": "conditional",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    }
+  ],
+  "automation_target_rate": 0.85,
+  "entries": [
+    {
+      "tc_id": "TC-001",
+      "ac_id": "AC-001",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance unit :: Beacon 能持久化项目拓扑类型，至少区分 `single_repo` 与 `monorepo`。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance/{run_id}/TC-001.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+    },
+    {
+      "tc_id": "TC-002",
+      "ac_id": "AC-002",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance unit :: 当项目为 monorepo 时，Beacon 能持久化 `project_root -> service repo roots`、service key、角色与",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance/{run_id}/TC-002.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+    },
+    {
+      "tc_id": "TC-003",
+      "ac_id": "AC-003",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance unit :: 当元信息已存在时，Beacon 执行前能直接确定目标 service repo，而不是重新探测。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance/{run_id}/TC-003.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+    },
+    {
+      "tc_id": "TC-004",
+      "ac_id": "AC-101",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance unit :: Beacon 能为某个版本保存参与交付的 service set。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance/{run_id}/TC-004.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+    },
+    {
+      "tc_id": "TC-005",
+      "ac_id": "AC-102",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance unit :: Beacon 能为每个参与 service 保存该版本线对应的 canonical branch contract。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance/{run_id}/TC-005.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+    },
+    {
+      "tc_id": "TC-006",
+      "ac_id": "AC-103",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance unit :: Beacon 能表达 protected branch 禁写、可写分支约束与违例处理策略。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance/{run_id}/TC-006.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+    },
+    {
+      "tc_id": "TC-007",
+      "ac_id": "AC-201",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance unit :: 任一元信息变更都先形成单一 canonical metadata envelope。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance/{run_id}/TC-007.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+    },
+    {
+      "tc_id": "TC-008",
+      "ac_id": "AC-202",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance unit :: 同一笔元信息事务会共享一致 transaction metadata，并投影到 human sink、machine sink、sqlite sink。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance/{run_id}/TC-008.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+    },
+    {
+      "tc_id": "TC-009",
+      "ac_id": "AC-203",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance unit :: status/doctor/gate/review 能检测元信息投影缺失、校验和漂移、失败事务或过期 sqlite projection。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance/{run_id}/TC-009.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+    },
+    {
+      "tc_id": "TC-010",
+      "ac_id": "AC-301",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance unit :: 当 metadata 已存在时，prompt 层把项目拓扑、service repo、canonical branch 当作固定输入，而不是重新推断。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance/{run_id}/TC-010.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+    },
+    {
+      "tc_id": "TC-011",
+      "ac_id": "AC-302",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance unit :: runtime 层在 implement/qa/release 前直接读取 metadata contract 进行 repo/branch/worktree ",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance/{run_id}/TC-011.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+    },
+    {
+      "tc_id": "TC-012",
+      "ac_id": "AC-303",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance unit :: 当前 service、branch 或 worktree 状态不满足 contract 时，Beacon 会确定性阻断并给出修复指引。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance/{run_id}/TC-012.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+    },
+    {
+      "tc_id": "TC-013",
+      "ac_id": "AC-401",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance unit :: Beacon 提供专门面向人类的 metadata support surface；它可以表现为新的子 skill、support command，或二者组合。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance/{run_id}/TC-013.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+    },
+    {
+      "tc_id": "TC-014",
+      "ac_id": "AC-402",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance unit :: 该 surface 至少支持新增、查询、修改、删除 metadata contract，以及列表查看当前绑定状态。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance/{run_id}/TC-014.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+    },
+    {
+      "tc_id": "TC-015",
+      "ac_id": "AC-403",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance unit :: 该 surface 至少支持显式校验当前 runtime state 与 metadata contract 是否一致。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance/{run_id}/TC-015.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+    },
+    {
+      "tc_id": "TC-016",
+      "ac_id": "AC-404",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance unit :: 该 surface 的增删改动作必须走 canonical transaction，而不是直接改某一个 sink。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance/{run_id}/TC-016.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+    },
+    {
+      "tc_id": "TC-017",
+      "ac_id": "AC-501",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance unit :: 人类可见输出会显式显示绝对 `project_root`。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance/{run_id}/TC-017.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+    },
+    {
+      "tc_id": "TC-018",
+      "ac_id": "AC-502",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance unit :: 元信息相关的人类可见输出能清楚标识 human sink、machine sink 与 sqlite transaction 标识。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance/{run_id}/TC-018.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+    },
+    {
+      "tc_id": "TC-019",
+      "ac_id": "AC-503",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance unit :: 在 cross-project / monorepo 场景下，路径报告不会让操作者误判产物属于 Beacon 核心仓还是目标项目仓。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance/{run_id}/TC-019.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+    },
+    {
+      "tc_id": "TC-020",
+      "ac_id": "AC-001",
+      "layer": "api-curl",
+      "qa_type": "interface",
+      "title": "beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance interface coverage",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k interface --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "HTTP status and schema assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance/{run_id}/TC-020.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+    },
+    {
+      "tc_id": "TC-021",
+      "ac_id": "AC-002",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance contract coverage",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance/{run_id}/TC-021.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+    },
+    {
+      "tc_id": "TC-022",
+      "ac_id": "AC-003",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance integration coverage",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k integration --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Integration flow assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance/{run_id}/TC-022.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+    },
+    {
+      "tc_id": "TC-023",
+      "ac_id": "AC-101",
+      "layer": "smoke",
+      "qa_type": "smoke",
+      "title": "beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance smoke coverage",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -m smoke --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Critical path assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance/{run_id}/TC-023.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+    },
+    {
+      "tc_id": "TC-024",
+      "ac_id": "AC-102",
+      "layer": "regression",
+      "qa_type": "regression",
+      "title": "beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance regression coverage",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k regression --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "No known behavior regression found",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance/{run_id}/TC-024.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+    },
+    {
+      "tc_id": "TC-025",
+      "ac_id": "AC-103",
+      "layer": "exception",
+      "qa_type": "exception",
+      "title": "beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance exception coverage",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k exception --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Negative-path assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance/{run_id}/TC-025.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+    }
+  ],
+  "compatibility_matrix": {
+    "browsers": [
+      "chromium",
+      "firefox",
+      "webkit"
+    ],
+    "devices": [
+      "desktop",
+      "iphone14"
+    ],
+    "required_pairs": [
+      {
+        "browser": "chromium",
+        "device": "desktop"
+      },
+      {
+        "browser": "firefox",
+        "device": "desktop"
+      },
+      {
+        "browser": "webkit",
+        "device": "desktop"
+      }
+    ]
+  },
+  "generated_at": "2026-04-29T23:12:04.228139"
+}

@@ -1,0 +1,176 @@
+{
+  "schema_version": "1.0",
+  "semantic_contract_version": "1.0",
+  "feature": "Beacon v1.3.9 runtime skill admission and host-validated third-party skill compatibility",
+  "feature_slug": "beacon-v1-3-9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility",
+  "version": "v1.3.9",
+  "stage": "prototype",
+  "generated_at": "2026-04-28T02:51:49.395051+00:00",
+  "source_hash": "eb9a489159562a8d65841562c7053d99f2ec5f47b70f2c6ae460e5753b3f563e",
+  "projection_seq": "semantic-eb9a489159562a8d",
+  "transaction_id": "tx-semantic-beacon-v1-3-9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility-semantic-eb9a489159562a8d",
+  "source_documents": [
+    {
+      "type": "prd",
+      "path": "docs/beacon/v1.3.9/prd/beacon-v1.3.9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility.md",
+      "fingerprint": "4e0ee76767f692aac7b826051ed3b396d60951065e0329e802046f888f97cdb8"
+    },
+    {
+      "type": "user-story",
+      "path": "docs/beacon/v1.3.9/user-story/beacon-v1.3.9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility.md",
+      "fingerprint": "b55b53a3fa22b5a1cd12efa9986b212772253d6a4aaa69f44708206fdd3f83b3"
+    },
+    {
+      "type": "test-case",
+      "path": "docs/beacon/v1.3.9/qa/test-cases/beacon-v1.3.9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility.md",
+      "fingerprint": "3dd1167d26227676e5db11486401cc427c8338850c0a71af2a28adc4cf1bec02"
+    }
+  ],
+  "stage_context": {
+    "schema_version": "1.0",
+    "run_id": "",
+    "stage": "prototype",
+    "feature": "Beacon v1.3.9 runtime skill admission and host-validated third-party skill compatibility",
+    "version": "v1.3.9",
+    "generated_at": "2026-04-28T02:51:49.392862+00:00",
+    "memory_recall": [],
+    "lifecycle_events": [],
+    "requirement_refs": [
+      "docs/beacon/v1.3.9/prd/beacon-v1.3.9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility.md",
+      "docs/beacon/v1.3.9/user-story/beacon-v1.3.9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility.md",
+      "docs/beacon/v1.3.9/qa/test-cases/beacon-v1.3.9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility.md"
+    ],
+    "evidence_refs": [],
+    "decision_trace": [],
+    "blockers": [],
+    "transaction_lineage": {
+      "current_transaction_id": "",
+      "projection_seq": "",
+      "source_hash": "",
+      "previous_transaction_id": "",
+      "recent_transaction_ids": [],
+      "attempt_seq": null,
+      "action": "semantic_stage_context"
+    },
+    "semantic_context_source": "requirement-docs"
+  },
+  "official_language": {
+    "page_names": [
+      {
+        "label": "关键步骤具备可追踪日志与最小化诊断",
+        "slug": "semantic-layer",
+        "source": "requirement_truth"
+      },
+      {
+        "label": "Beacon v1.3.9 runtime skill admission and host-validated third-party skill compatibility",
+        "slug": "beacon-v1-3-9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility",
+        "source": "requirement_truth"
+      }
+    ],
+    "status_labels": [
+      "错误",
+      "正常",
+      "阻塞",
+      "加载中"
+    ],
+    "module_labels": [
+      "关键步骤具备可追踪日志与最小化诊断信息",
+      "关闭状态",
+      "头部摘要",
+      "状态反馈",
+      "推荐动作"
+    ],
+    "action_labels": [
+      "进入",
+      "返回可读错误",
+      "恢复并提供下一步指引",
+      "查看详情",
+      "进入详情",
+      "返回总览"
+    ],
+    "preferred_terms": [
+      {
+        "from": "implementation",
+        "to": "implement",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "verify",
+        "to": "qa",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "review",
+        "to": "qa",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "delivery",
+        "to": "release",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "raw runtime log",
+        "to": "运行摘要",
+        "scope": "product_copy"
+      },
+      {
+        "from": "machine contract",
+        "to": "机器内部契约",
+        "scope": "product_copy"
+      }
+    ],
+    "banned_terms": [
+      "implementation",
+      "verify",
+      "review",
+      "delivery",
+      "machine contract",
+      "canonical-envelope",
+      "raw runtime log",
+      "transaction_id",
+      "projection_seq"
+    ]
+  },
+  "usage_guidelines": [
+    "先引用 semantic-contract.json，再进入 prototype 或 implement，不要在阶段内临时翻译需求。",
+    "页面名、状态名、模块名优先复用官方词表，避免 implementation / verify / delivery 这类旧阶段词汇出现在前台。",
+    "允许 taste-skill 做设计增强，但不得覆盖 requirement truth 或反向改写 semantic contract。",
+    "发现语义漂移时，优先重建 semantic layer，再继续 prototype freeze 或 implement delivery。"
+  ],
+  "default_design_bridge": {
+    "repo": "https://github.com/Leonxlnx/taste-skill",
+    "skill_id": "taste-skill",
+    "entry": "",
+    "detected": false,
+    "kind": "external-default-bridge",
+    "supported_stages": [
+      "prototype",
+      "implement"
+    ],
+    "capabilities": [
+      "prototype",
+      "implement",
+      "taste-design",
+      "semantic-normalization"
+    ],
+    "install_hint": "npx skills add https://github.com/Leonxlnx/taste-skill --skill taste-skill"
+  },
+  "compiler": {
+    "semantic_context_source": "requirement-docs",
+    "capability_snapshot": {
+      "schema_version": "1.0",
+      "command_name": "prototype",
+      "host_runtime": "codex",
+      "host_bridge_declared": false,
+      "host_response_available": false,
+      "host_response_source": "none",
+      "host_response_path": "",
+      "host_semantic_ready": false,
+      "provider_available": false,
+      "provider_key_present": false,
+      "llm_disabled": false,
+      "disable_env": "BEACON_PROTOTYPE_DISABLE_LLM"
+    }
+  }
+}

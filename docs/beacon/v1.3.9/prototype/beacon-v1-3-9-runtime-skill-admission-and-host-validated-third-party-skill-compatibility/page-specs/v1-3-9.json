@@ -1,0 +1,69 @@
+{
+  "page_id": "v1-3-9",
+  "name": "目标版本: `v1.3.9",
+  "priority": "P1",
+  "platforms": [
+    "Web",
+    "PC"
+  ],
+  "responsibility": "冻结 `目标版本: `v1.3.9` 的页面结构、关键动作和状态说明，确保与 requirement 材料一致。",
+  "sections": [
+    "页面头部",
+    "关键内容区",
+    "主要操作区",
+    "状态与反馈区"
+  ],
+  "actions": [],
+  "states": [
+    {
+      "id": "ready",
+      "label": "可用",
+      "description": "页面数据齐备，用户可完成核心操作。"
+    },
+    {
+      "id": "loading",
+      "label": "加载中",
+      "description": "页面数据正在加载。"
+    },
+    {
+      "id": "error",
+      "label": "错误",
+      "description": "页面加载或提交失败，需提示恢复动作。"
+    }
+  ],
+  "requirement_refs": {
+    "user-story": [
+      "docs/beacon/v1.3.9/user-story/beacon-v1.3.9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility.md"
+    ],
+    "prd": [
+      "docs/beacon/v1.3.9/prd/beacon-v1.3.9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility.md"
+    ],
+    "test-case": [
+      "docs/beacon/v1.3.9/qa/test-cases/beacon-v1.3.9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility.md"
+    ]
+  },
+  "outbound_transitions": [],
+  "analysis": {
+    "target_user": "需要完成页面判断与下钻的 Beacon 使用者",
+    "decision_focus": [
+      "冻结 `目标版本: `v1.3.9` 的页面结构、关键动作和状态说明，确保与 requirement 材料一致。",
+      "确认是否继续停留当前页或进入下一层。"
+    ],
+    "layout_rules": [
+      "首屏先回答当前页最重要的问题。",
+      "主体区只保留支撑判断的结构，不展开高保真视觉。"
+    ],
+    "noise_guardrail": "页面说明只保留人类审阅需要的信息，不混入机器合同细节。"
+  },
+  "layout_lines": [
+    "+-----------------------------+",
+    "| 页面头部                     |",
+    "+-----------------------------+",
+    "| 关键内容区                    |",
+    "+-----------------------------+",
+    "| 主要操作区                    |",
+    "+-----------------------------+",
+    "| 状态与反馈区                   |",
+    "+-----------------------------+"
+  ]
+}

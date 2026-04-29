@@ -1,0 +1,369 @@
+{
+  "schema_version": "1.0",
+  "semantic_contract_version": "1.0",
+  "feature": "Beacon v1.3.9 execution projection convergence and QA acceptance dual-write",
+  "feature_slug": "beacon-v1-3-9-execution-projection-convergence-and-qa-acceptance-dual-write",
+  "version": "v1.3.9",
+  "stage": "implement",
+  "generated_at": "2026-04-27T14:31:34.797012+00:00",
+  "source_hash": "8223724505acc187316a9b91653aeb6bf93486ac2dd53979eac337eada0acd40",
+  "projection_seq": "semantic-8223724505acc187",
+  "transaction_id": "tx-semantic-beacon-v1-3-9-execution-projection-convergence-and-qa-acceptance-dual-write-semantic-8223724505acc187",
+  "source_documents": [
+    {
+      "type": "prd",
+      "path": "docs/beacon/v1.3.9/prd/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+      "fingerprint": "3e1010ac2fb8b87ecbc465c3e55503ff79033f321a4fa88b47a47530fb9bef73"
+    },
+    {
+      "type": "user-story",
+      "path": "docs/beacon/v1.3.9/user-story/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+      "fingerprint": "8c97a3c09afe0bf81884f867a30f48944305a9e6b9d96b033871c582da047e70"
+    },
+    {
+      "type": "test-case",
+      "path": "docs/beacon/v1.3.9/qa/test-cases/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+      "fingerprint": "a04a0dafcd338bfe6f79797d8bb56ed4113df2b026d6dd3c05f4846f508c68f5"
+    }
+  ],
+  "stage_context": {
+    "schema_version": "1.0",
+    "run_id": "run-20260427T143134Z-a58b",
+    "stage": "implement",
+    "feature": "Beacon v1.3.9 execution projection convergence and QA acceptance dual-write",
+    "version": "v1.3.9",
+    "generated_at": "2026-04-27T14:31:34.787302+00:00",
+    "memory_recall": [
+      {
+        "memory_id": "4c2500a0-d43e-4832-b617-7f5c6a483c58",
+        "type": "decision",
+        "status": "active",
+        "content": "[release.check] version=v1.3.8 status=pass",
+        "content_hash": "sha256:d490a448a94ca6de19ab98a435412e6c3ac8515b65d3c1ecfc59acfdbdda9144",
+        "source_session_id": "release:v1.3.8",
+        "source": "release.check",
+        "evidence_ref": [
+          ".beacon/auto-test-status.json",
+          ".beacon/coverage-summary.json",
+          ".beacon/evidence-manifest.json",
+          ".beacon/gate-report.json",
+          "docs/beacon/v1.3.8/.machine/change/v1.3.8.json",
+          "docs/beacon/v1.3.8/change/v1.3.8.md"
+        ],
+        "reason_codes": [],
+        "confidence": 0.75,
+        "tags": [
+          "gate",
+          "pass",
+          "release"
+        ],
+        "created_at": "2026-04-27T03:02:17.025980+00:00",
+        "updated_at": "2026-04-27T03:02:17.025980+00:00",
+        "decision": "[release.check] version=v1.3.8 status=pass"
+      },
+      {
+        "memory_id": "2afbe7bc-a785-44a7-bc40-653d2e529b00",
+        "type": "decision",
+        "status": "active",
+        "content": "[release.check] version=v1.3.8 status=blocked",
+        "content_hash": "sha256:ce90152caccbc0cffcd093da0a1dcaa38b67db30effcb052a1f9bc343bd1fedf",
+        "source_session_id": "release:v1.3.8",
+        "source": "release.check",
+        "evidence_ref": [
+          ".beacon/auto-test-status.json",
+          ".beacon/coverage-summary.json",
+          ".beacon/evidence-manifest.json",
+          ".beacon/gate-report.json",
+          "docs/beacon/v1.3.8/.machine/change/v1.3.8.json",
+          "docs/beacon/v1.3.8/change/v1.3.8.md"
+        ],
+        "reason_codes": [],
+        "confidence": 0.75,
+        "tags": [
+          "blocked",
+          "gate",
+          "release"
+        ],
+        "created_at": "2026-04-27T03:01:17.736994+00:00",
+        "updated_at": "2026-04-27T03:01:17.736994+00:00",
+        "decision": "[release.check] version=v1.3.8 status=blocked"
+      },
+      {
+        "memory_id": "b1a14a8b-2d5a-4587-b58a-569a35096df9",
+        "type": "decision",
+        "status": "active",
+        "content": "[release.check] version=v1.3.8 status=pass",
+        "content_hash": "sha256:d490a448a94ca6de19ab98a435412e6c3ac8515b65d3c1ecfc59acfdbdda9144",
+        "source_session_id": "release:v1.3.8",
+        "source": "release.check",
+        "evidence_ref": [
+          ".beacon/auto-test-status.json",
+          ".beacon/coverage-summary.json",
+          ".beacon/evidence-manifest.json",
+          ".beacon/gate-report.json",
+          "docs/beacon/v1.3.8/.machine/change/v1.3.8.json",
+          "docs/beacon/v1.3.8/change/v1.3.8.md"
+        ],
+        "reason_codes": [],
+        "confidence": 0.75,
+        "tags": [
+          "gate",
+          "pass",
+          "release"
+        ],
+        "created_at": "2026-04-27T02:51:08.479585+00:00",
+        "updated_at": "2026-04-27T02:51:08.479585+00:00",
+        "decision": "[release.check] version=v1.3.8 status=pass"
+      },
+      {
+        "memory_id": "39ffd032-df68-4967-b4d6-63ac3f9f05e9",
+        "type": "decision",
+        "status": "active",
+        "content": "[release.check] version=v1.3.8 status=blocked",
+        "content_hash": "sha256:ce90152caccbc0cffcd093da0a1dcaa38b67db30effcb052a1f9bc343bd1fedf",
+        "source_session_id": "release:v1.3.8",
+        "source": "release.check",
+        "evidence_ref": [
+          ".beacon/auto-test-status.json",
+          ".beacon/coverage-summary.json",
+          ".beacon/evidence-manifest.json",
+          ".beacon/gate-report.json",
+          "docs/beacon/v1.3.8/.machine/change/v1.3.8.json",
+          "docs/beacon/v1.3.8/change/v1.3.8.md"
+        ],
+        "reason_codes": [],
+        "confidence": 0.75,
+        "tags": [
+          "blocked",
+          "gate",
+          "release"
+        ],
+        "created_at": "2026-04-27T02:43:07.272775+00:00",
+        "updated_at": "2026-04-27T02:43:07.272775+00:00",
+        "decision": "[release.check] version=v1.3.8 status=blocked"
+      },
+      {
+        "memory_id": "61551bd4-2c2d-4b32-aef1-4a7546bb300c",
+        "type": "decision",
+        "status": "active",
+        "content": "[release.check] version=v1.3.8 status=blocked",
+        "content_hash": "sha256:ce90152caccbc0cffcd093da0a1dcaa38b67db30effcb052a1f9bc343bd1fedf",
+        "source_session_id": "release:v1.3.8",
+        "source": "release.check",
+        "evidence_ref": [
+          ".beacon/auto-test-status.json",
+          ".beacon/coverage-summary.json",
+          ".beacon/evidence-manifest.json",
+          ".beacon/gate-report.json",
+          "docs/beacon/v1.3.8/.machine/change/v1.3.8.json",
+          "docs/beacon/v1.3.8/change/v1.3.8.md"
+        ],
+        "reason_codes": [],
+        "confidence": 0.75,
+        "tags": [
+          "blocked",
+          "gate",
+          "release"
+        ],
+        "created_at": "2026-04-27T02:41:32.749644+00:00",
+        "updated_at": "2026-04-27T02:41:32.749644+00:00",
+        "decision": "[release.check] version=v1.3.8 status=blocked"
+      },
+      {
+        "memory_id": "ae3f23a9-a011-4164-a671-09beb78de0a8",
+        "type": "decision",
+        "status": "active",
+        "content": "[release.check] version=v1.3.8 status=pass",
+        "content_hash": "sha256:d490a448a94ca6de19ab98a435412e6c3ac8515b65d3c1ecfc59acfdbdda9144",
+        "source_session_id": "release:v1.3.8",
+        "source": "release.check",
+        "evidence_ref": [
+          ".beacon/auto-test-status.json",
+          ".beacon/coverage-summary.json",
+          ".beacon/evidence-manifest.json",
+          ".beacon/gate-report.json",
+          "docs/beacon/v1.3.8/.machine/change/v1.3.8.json",
+          "docs/beacon/v1.3.8/change/v1.3.8.md"
+        ],
+        "reason_codes": [],
+        "confidence": 0.75,
+        "tags": [
+          "gate",
+          "pass",
+          "release"
+        ],
+        "created_at": "2026-04-27T02:40:29.457314+00:00",
+        "updated_at": "2026-04-27T02:40:29.457314+00:00",
+        "decision": "[release.check] version=v1.3.8 status=pass"
+      },
+      {
+        "memory_id": "e3ebd9c1-d883-4f80-b172-c3e931ed7549",
+        "type": "decision",
+        "status": "active",
+        "content": "[release.create] release checklist created for v1.3.8",
+        "content_hash": "sha256:25fd0c42646b913da67a68b70f609897371280113fd3ffe01def6bb4d978aa44",
+        "source_session_id": "release:v1.3.8",
+        "source": "release.create",
+        "evidence_ref": [
+          "docs/beacon/v1.3.8/release/checklist-v1.3.8.md",
+          "docs/beacon/v1.3.8/change/v1.3.8.md",
+          "docs/beacon/v1.3.8/.machine/change/v1.3.8.json"
+        ],
+        "reason_codes": [],
+        "confidence": 0.8,
+        "tags": [
+          "release",
+          "workflow-loop"
+        ],
+        "created_at": "2026-04-26T15:07:16.523884+00:00",
+        "updated_at": "2026-04-26T15:07:16.523884+00:00",
+        "decision": "[release.create] release checklist created for v1.3.8"
+      },
+      {
+        "memory_id": "9d23843a-a383-45d0-abe7-525f5944daf7",
+        "type": "decision",
+        "status": "active",
+        "content": "[release.check] version=v1.3.8 status=pass",
+        "content_hash": "sha256:d490a448a94ca6de19ab98a435412e6c3ac8515b65d3c1ecfc59acfdbdda9144",
+        "source_session_id": "release:v1.3.8",
+        "source": "release.check",
+        "evidence_ref": [
+          ".beacon/auto-test-status.json",
+          ".beacon/coverage-summary.json",
+          ".beacon/evidence-manifest.json",
+          ".beacon/gate-report.json",
+          "docs/beacon/v1.3.8/.machine/change/v1.3.8.json",
+          "docs/beacon/v1.3.8/change/v1.3.8.md"
+        ],
+        "reason_codes": [],
+        "confidence": 0.75,
+        "tags": [
+          "gate",
+          "pass",
+          "release"
+        ],
+        "created_at": "2026-04-26T15:06:41.383443+00:00",
+        "updated_at": "2026-04-26T15:06:41.383443+00:00",
+        "decision": "[release.check] version=v1.3.8 status=pass"
+      }
+    ],
+    "lifecycle_events": [],
+    "requirement_refs": [
+      "docs/beacon/v1.3.9/prd/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+      "docs/beacon/v1.3.9/user-story/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+      "docs/beacon/v1.3.9/qa/test-cases/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md"
+    ],
+    "evidence_refs": [],
+    "decision_trace": [],
+    "blockers": [],
+    "transaction_lineage": {
+      "current_transaction_id": "",
+      "projection_seq": "",
+      "source_hash": "",
+      "previous_transaction_id": "",
+      "recent_transaction_ids": [],
+      "attempt_seq": null,
+      "action": ""
+    },
+    "semantic_context_source": "workflow-memory"
+  },
+  "official_language": {
+    "page_names": [
+      {
+        "label": "Beacon v1.3.9 execution projection convergence and QA acceptance dual-write",
+        "slug": "beacon-v1-3-9-execution-projection-convergence-and-qa-acceptance-dual-write",
+        "source": "requirement_truth"
+      }
+    ],
+    "status_labels": [
+      "降级",
+      "正常",
+      "阻塞",
+      "加载中",
+      "错误"
+    ],
+    "module_labels": [
+      "头部摘要",
+      "状态反馈",
+      "推荐动作"
+    ],
+    "action_labels": [
+      "进入",
+      "返回解释型结果",
+      "查看详情",
+      "进入详情",
+      "返回总览"
+    ],
+    "preferred_terms": [
+      {
+        "from": "implementation",
+        "to": "implement",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "verify",
+        "to": "qa",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "review",
+        "to": "qa",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "delivery",
+        "to": "release",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "raw runtime log",
+        "to": "运行摘要",
+        "scope": "product_copy"
+      },
+      {
+        "from": "machine contract",
+        "to": "机器内部契约",
+        "scope": "product_copy"
+      }
+    ],
+    "banned_terms": [
+      "implementation",
+      "verify",
+      "review",
+      "delivery",
+      "machine contract",
+      "canonical-envelope",
+      "raw runtime log",
+      "transaction_id",
+      "projection_seq"
+    ]
+  },
+  "usage_guidelines": [
+    "先引用 semantic-contract.json，再进入 prototype 或 implement，不要在阶段内临时翻译需求。",
+    "页面名、状态名、模块名优先复用官方词表，避免 implementation / verify / delivery 这类旧阶段词汇出现在前台。",
+    "允许 taste-skill 做设计增强，但不得覆盖 requirement truth 或反向改写 semantic contract。",
+    "发现语义漂移时，优先重建 semantic layer，再继续 prototype freeze 或 implement delivery。"
+  ],
+  "default_design_bridge": {
+    "repo": "https://github.com/Leonxlnx/taste-skill",
+    "skill_id": "taste-skill",
+    "entry": "",
+    "detected": false,
+    "kind": "external-default-bridge",
+    "supported_stages": [
+      "prototype",
+      "implement"
+    ],
+    "capabilities": [
+      "prototype",
+      "implement",
+      "taste-design",
+      "semantic-normalization"
+    ],
+    "install_hint": "npx skills add https://github.com/Leonxlnx/taste-skill --skill taste-skill"
+  },
+  "compiler": {
+    "semantic_context_source": "workflow-memory",
+    "capability_snapshot": {}
+  }
+}

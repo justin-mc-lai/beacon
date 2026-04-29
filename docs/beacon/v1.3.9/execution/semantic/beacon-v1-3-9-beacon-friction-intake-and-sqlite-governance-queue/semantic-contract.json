@@ -1,0 +1,439 @@
+{
+  "schema_version": "1.0",
+  "semantic_contract_version": "1.0",
+  "feature": "Beacon v1.3.9 beacon-friction-intake and sqlite governance queue",
+  "feature_slug": "beacon-v1-3-9-beacon-friction-intake-and-sqlite-governance-queue",
+  "version": "v1.3.9",
+  "stage": "implement",
+  "generated_at": "2026-04-28T11:34:23.776733+00:00",
+  "source_hash": "339915d326871cf246dcf2d32cf493b6378a931efde2b3ea4e636b9dd5d32597",
+  "projection_seq": "semantic-339915d326871cf2",
+  "transaction_id": "tx-semantic-beacon-v1-3-9-beacon-friction-intake-and-sqlite-governance-queue-semantic-339915d326871cf2",
+  "source_documents": [
+    {
+      "type": "prd",
+      "path": "docs/beacon/v1.3.9/prd/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.md",
+      "fingerprint": "0b9e6065cfd1d610842d4dbd7807b442da3ba55107e87f4b0eb325b5b3dfc54a"
+    },
+    {
+      "type": "user-story",
+      "path": "docs/beacon/v1.3.9/user-story/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.md",
+      "fingerprint": "8fa4961147e385244f82980d596e61b83c4240b4825ccdd56eb469a9afa5b10b"
+    },
+    {
+      "type": "test-case",
+      "path": "docs/beacon/v1.3.9/qa/test-cases/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.md",
+      "fingerprint": "5fa1528e13234fbe9bcff77ae01761b0db2560815497c312fa656d6b11e8ef3c"
+    }
+  ],
+  "stage_context": {
+    "schema_version": "1.0",
+    "run_id": "manual-v139-friction-intake-implement-20260428",
+    "stage": "implement",
+    "feature": "Beacon v1.3.9 beacon-friction-intake and sqlite governance queue",
+    "version": "v1.3.9",
+    "generated_at": "2026-04-28T11:34:23.765303+00:00",
+    "memory_recall": [
+      {
+        "memory_id": "b3b3fc9e-8a1a-40c2-b61e-e2f4cd7e0412",
+        "type": "decision",
+        "status": "active",
+        "content": "[release.check] version=v1.3.9 status=blocked",
+        "content_hash": "sha256:300251e044e1cd4fc240d742ac2fb21e37a14cdf6b4fc255318f623b763ac9cc",
+        "source_session_id": "release:v1.3.9",
+        "source": "release.check",
+        "evidence_ref": [
+          ".beacon/auto-test-status.json",
+          ".beacon/coverage-summary.json",
+          ".beacon/evidence-manifest.json",
+          ".beacon/gate-report.json",
+          "docs/beacon/v1.3.9/.machine/change/v1.3.9.json",
+          "docs/beacon/v1.3.9/change/v1.3.9.md"
+        ],
+        "reason_codes": [],
+        "confidence": 0.75,
+        "tags": [
+          "blocked",
+          "gate",
+          "release"
+        ],
+        "created_at": "2026-04-28T11:26:04.725235+00:00",
+        "updated_at": "2026-04-28T11:26:04.725235+00:00",
+        "decision": "[release.check] version=v1.3.9 status=blocked"
+      },
+      {
+        "memory_id": "0f01a49d-6146-43a6-b331-b1ee7f9ae451",
+        "type": "decision",
+        "status": "active",
+        "content": "[qa] Beacon v1.3.9 beacon-friction-intake and sqlite governance queue => accepted",
+        "content_hash": "sha256:857a13a2abf86a93000f169049db3f81aa3902282cc1a44476368a1796f6bb05",
+        "source_session_id": "run-20260428T173908043826",
+        "source": "workflow.qa.writeback",
+        "evidence_ref": [
+          ".beacon/auto-test-status.json",
+          ".beacon/qa/status.json",
+          "docs/beacon/v1.3.9/.machine/qa/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.ac-test-matrix.json",
+          ".beacon/coverage-summary.json",
+          ".beacon/qa/features/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue/ac-closure.json",
+          ".beacon/qa/features/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue/scorecard.json"
+        ],
+        "reason_codes": [],
+        "confidence": 0.8,
+        "tags": [
+          "accepted",
+          "qa",
+          "workflow-lifecycle"
+        ],
+        "created_at": "2026-04-28T09:39:24.969744+00:00",
+        "updated_at": "2026-04-28T09:39:24.969744+00:00",
+        "decision": "[qa] Beacon v1.3.9 beacon-friction-intake and sqlite governance queue => accepted",
+        "run_id": "run-20260428T173908043826",
+        "stage": "qa",
+        "feature": "Beacon v1.3.9 beacon-friction-intake and sqlite governance queue",
+        "version": "",
+        "transaction_id": "tx-wf-run-20260428T173908043826-qa-memory_writeback-a342a3bd9f27",
+        "source_hash": "a342a3bd9f27f14dee2c1873369597d7573068ea0d58d605fe5839900736301f",
+        "projection_seq": "wf-a342a3bd9f27f14d",
+        "attempt_seq": 1
+      },
+      {
+        "memory_id": "bdc6d6c7-6a8a-4a93-8941-a7f86b5bfbed",
+        "type": "decision",
+        "status": "active",
+        "content": "[qa] Beacon v1.3.9 beacon-friction-intake and sqlite governance queue => accepted",
+        "content_hash": "sha256:857a13a2abf86a93000f169049db3f81aa3902282cc1a44476368a1796f6bb05",
+        "source_session_id": "run-20260428T171451473415",
+        "source": "workflow.qa.writeback",
+        "evidence_ref": [
+          ".beacon/auto-test-status.json",
+          ".beacon/qa/status.json",
+          "docs/beacon/v1.3.9/.machine/qa/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.ac-test-matrix.json",
+          ".beacon/coverage-summary.json",
+          ".beacon/qa/features/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue/ac-closure.json",
+          ".beacon/qa/features/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue/scorecard.json"
+        ],
+        "reason_codes": [],
+        "confidence": 0.8,
+        "tags": [
+          "accepted",
+          "qa",
+          "workflow-lifecycle"
+        ],
+        "created_at": "2026-04-28T09:26:58.748935+00:00",
+        "updated_at": "2026-04-28T09:26:58.748935+00:00",
+        "decision": "[qa] Beacon v1.3.9 beacon-friction-intake and sqlite governance queue => accepted",
+        "run_id": "run-20260428T171451473415",
+        "stage": "qa",
+        "feature": "Beacon v1.3.9 beacon-friction-intake and sqlite governance queue",
+        "version": "",
+        "transaction_id": "tx-wf-run-20260428T171451473415-qa-memory_writeback-1dcd6cfa0f08",
+        "source_hash": "1dcd6cfa0f081866aabd7cba2a5e8df1bcd9a9c0f30ae0da6e6204949b4ff47e",
+        "projection_seq": "wf-1dcd6cfa0f081866",
+        "attempt_seq": 1
+      },
+      {
+        "memory_id": "10c15196-dcee-4ad4-a816-2dec646e4375",
+        "type": "decision",
+        "status": "active",
+        "content": "[qa] Beacon v1.3.9 beacon-friction-intake and sqlite governance queue => accepted",
+        "content_hash": "sha256:857a13a2abf86a93000f169049db3f81aa3902282cc1a44476368a1796f6bb05",
+        "source_session_id": "run-20260428T172601762091",
+        "source": "workflow.qa.writeback",
+        "evidence_ref": [
+          ".beacon/auto-test-status.json",
+          ".beacon/qa/status.json",
+          "docs/beacon/v1.3.9/.machine/qa/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.ac-test-matrix.json",
+          ".beacon/coverage-summary.json",
+          ".beacon/qa/features/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue/ac-closure.json",
+          ".beacon/qa/features/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue/scorecard.json"
+        ],
+        "reason_codes": [],
+        "confidence": 0.8,
+        "tags": [
+          "accepted",
+          "qa",
+          "workflow-lifecycle"
+        ],
+        "created_at": "2026-04-28T09:26:16.701863+00:00",
+        "updated_at": "2026-04-28T09:26:16.701863+00:00",
+        "decision": "[qa] Beacon v1.3.9 beacon-friction-intake and sqlite governance queue => accepted",
+        "run_id": "run-20260428T172601762091",
+        "stage": "qa",
+        "feature": "Beacon v1.3.9 beacon-friction-intake and sqlite governance queue",
+        "version": "",
+        "transaction_id": "tx-wf-run-20260428T172601762091-qa-memory_writeback-eb05ba8d6e51",
+        "source_hash": "eb05ba8d6e51d0fecc5441281cf36ea1f5613c9bcc06ea8664ba8643eb09b390",
+        "projection_seq": "wf-eb05ba8d6e51d0fe",
+        "attempt_seq": 1
+      },
+      {
+        "memory_id": "faa48a4f-3601-4b3b-9d99-01c8766ce4dc",
+        "type": "decision",
+        "status": "active",
+        "content": "[qa] Beacon v1.3.9 beacon-friction-intake and sqlite governance queue => accepted",
+        "content_hash": "sha256:857a13a2abf86a93000f169049db3f81aa3902282cc1a44476368a1796f6bb05",
+        "source_session_id": "run-20260428T172053964363",
+        "source": "workflow.qa.writeback",
+        "evidence_ref": [
+          ".beacon/auto-test-status.json",
+          ".beacon/qa/status.json",
+          "docs/beacon/v1.3.9/.machine/qa/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.ac-test-matrix.json",
+          ".beacon/coverage-summary.json",
+          ".beacon/qa/features/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue/ac-closure.json",
+          ".beacon/qa/features/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue/scorecard.json"
+        ],
+        "reason_codes": [],
+        "confidence": 0.8,
+        "tags": [
+          "accepted",
+          "qa",
+          "workflow-lifecycle"
+        ],
+        "created_at": "2026-04-28T09:20:59.357714+00:00",
+        "updated_at": "2026-04-28T09:20:59.357714+00:00",
+        "decision": "[qa] Beacon v1.3.9 beacon-friction-intake and sqlite governance queue => accepted",
+        "run_id": "run-20260428T172053964363",
+        "stage": "qa",
+        "feature": "Beacon v1.3.9 beacon-friction-intake and sqlite governance queue",
+        "version": "",
+        "transaction_id": "tx-wf-run-20260428T172053964363-qa-memory_writeback-7e32d2210663",
+        "source_hash": "7e32d221066351335c5012d500a631c630aba0de2e54a227bd8889625aaf02b6",
+        "projection_seq": "wf-7e32d22106635133",
+        "attempt_seq": 1
+      },
+      {
+        "memory_id": "b40207c2-df8d-4d37-a040-4025392870c8",
+        "type": "decision",
+        "status": "active",
+        "content": "[release.check] version=v1.3.9 status=pass",
+        "content_hash": "sha256:ff8b1addb00406671bc7aae676ce9599b0f57219f2a771281b733b01ee90c2a0",
+        "source_session_id": "release:v1.3.9",
+        "source": "release.check",
+        "evidence_ref": [
+          ".beacon/auto-test-status.json",
+          ".beacon/coverage-summary.json",
+          ".beacon/evidence-manifest.json",
+          ".beacon/gate-report.json",
+          "docs/beacon/v1.3.9/.machine/change/v1.3.9.json",
+          "docs/beacon/v1.3.9/change/v1.3.9.md"
+        ],
+        "reason_codes": [],
+        "confidence": 0.75,
+        "tags": [
+          "gate",
+          "pass",
+          "release"
+        ],
+        "created_at": "2026-04-28T06:21:27.325868+00:00",
+        "updated_at": "2026-04-28T06:21:27.325868+00:00",
+        "decision": "[release.check] version=v1.3.9 status=pass"
+      },
+      {
+        "memory_id": "e891c746-57c6-49ca-9959-83dba020060c",
+        "type": "decision",
+        "status": "active",
+        "content": "[qa] Beacon v1.3.9 runtime skill admission and host-validated third-party skill compatibility => accepted",
+        "content_hash": "sha256:ab8f22fb087d9c22fbe48340f8c8b6661e0c7e7a9fc7153d087287190debdefc",
+        "source_session_id": "run-20260428T141933273082",
+        "source": "workflow.qa.writeback",
+        "evidence_ref": [
+          ".beacon/auto-test-status.json",
+          ".beacon/qa/status.json",
+          "docs/beacon/v1.3.9/.machine/qa/beacon-v1.3.9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility.qa9-matrix.json",
+          ".beacon/coverage-summary.json",
+          ".beacon/qa/features/beacon-v1.3.9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility/ac-closure.json",
+          ".beacon/qa/features/beacon-v1.3.9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility/scorecard.json"
+        ],
+        "reason_codes": [],
+        "confidence": 0.8,
+        "tags": [
+          "accepted",
+          "qa",
+          "workflow-lifecycle"
+        ],
+        "created_at": "2026-04-28T06:21:12.913666+00:00",
+        "updated_at": "2026-04-28T06:21:12.913666+00:00",
+        "decision": "[qa] Beacon v1.3.9 runtime skill admission and host-validated third-party skill compatibility => accepted",
+        "run_id": "run-20260428T141933273082",
+        "stage": "qa",
+        "feature": "Beacon v1.3.9 runtime skill admission and host-validated third-party skill compatibility",
+        "version": "",
+        "transaction_id": "tx-wf-run-20260428T141933273082-qa-memory_writeback-03a3c668674d",
+        "source_hash": "03a3c668674deaa126a71398e575cf290552034043e035b8aa36f777bffbb5c1",
+        "projection_seq": "wf-03a3c668674deaa1",
+        "attempt_seq": 1
+      },
+      {
+        "memory_id": "3e3d5bb5-bc5a-4bce-89ac-e91bab6a5c3e",
+        "type": "insight",
+        "status": "active",
+        "content": "[workflow.v110.baseline] run=run-20260428T062109Z-c3aa status=planned",
+        "content_hash": "sha256:753d39ce77050a100d12acb024ae92d9a4b99eb282d99f17cf906094c0d7953d",
+        "source_session_id": "run-20260428T062109Z-c3aa",
+        "source": "workflow.v110.baseline",
+        "evidence_ref": [
+          ".beacon/state/spec-fingerprints/v1.3.8/run-20260428T062109Z-c3aa.json",
+          ".beacon/state/baselines/v1.3.8/bl-run-20260428T062109Z-c3aa-001.json",
+          ".beacon/state/change-impact/run-20260428T062109Z-c3aa.json"
+        ],
+        "reason_codes": [],
+        "confidence": 0.8,
+        "tags": [
+          "baseline",
+          "planned",
+          "v110"
+        ],
+        "created_at": "2026-04-28T06:21:09.758080+00:00",
+        "updated_at": "2026-04-28T06:21:09.758080+00:00"
+      }
+    ],
+    "lifecycle_events": [],
+    "requirement_refs": [
+      "docs/beacon/v1.3.9/prd/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.md",
+      "docs/beacon/v1.3.9/user-story/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.md",
+      "docs/beacon/v1.3.9/qa/test-cases/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.md",
+      "docs/beacon/v1.3.9/release/v1.3.9.md"
+    ],
+    "evidence_refs": [],
+    "decision_trace": [],
+    "blockers": [],
+    "transaction_lineage": {
+      "current_transaction_id": "",
+      "projection_seq": "",
+      "source_hash": "",
+      "previous_transaction_id": "",
+      "recent_transaction_ids": [],
+      "attempt_seq": null,
+      "action": ""
+    },
+    "semantic_context_source": "workflow-memory"
+  },
+  "official_language": {
+    "page_names": [
+      {
+        "label": "失败时有明确诊断",
+        "slug": "semantic-layer",
+        "source": "requirement_truth"
+      },
+      {
+        "label": "失败有显式诊断",
+        "slug": "semantic-layer",
+        "source": "requirement_truth"
+      },
+      {
+        "label": "Beacon v1.3.9 beacon-friction-intake and sqlite governance queue",
+        "slug": "beacon-v1-3-9-beacon-friction-intake-and-sqlite-governance-queue",
+        "source": "requirement_truth"
+      }
+    ],
+    "status_labels": [
+      "阻塞",
+      "正常",
+      "错误",
+      "加载中"
+    ],
+    "module_labels": [
+      "可长期积累的摩擦录入入口",
+      "的统一入口",
+      "的摩擦录入入口",
+      "是唯一推荐的人类入口",
+      "同一入口",
+      "只承接治理必需的最小索引与队列状态",
+      "分析报告是辅助视图",
+      "必须是统一摩擦录入入口",
+      "应视为底层实现来源或待兼容入口",
+      "与治理状态"
+    ],
+    "action_labels": [
+      "进入正式需求",
+      "进入全局",
+      "进入",
+      "恢复语义与重放",
+      "进入治理队列",
+      "恢复语义",
+      "恢复后",
+      "进入同一",
+      "恢复路径",
+      "恢复"
+    ],
+    "preferred_terms": [
+      {
+        "from": "implementation",
+        "to": "implement",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "verify",
+        "to": "qa",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "review",
+        "to": "qa",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "delivery",
+        "to": "release",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "raw runtime log",
+        "to": "运行摘要",
+        "scope": "product_copy"
+      },
+      {
+        "from": "machine contract",
+        "to": "机器内部契约",
+        "scope": "product_copy"
+      }
+    ],
+    "banned_terms": [
+      "implementation",
+      "verify",
+      "review",
+      "delivery",
+      "machine contract",
+      "canonical-envelope",
+      "raw runtime log",
+      "transaction_id",
+      "projection_seq"
+    ]
+  },
+  "usage_guidelines": [
+    "先引用 semantic-contract.json，再进入 prototype 或 implement，不要在阶段内临时翻译需求。",
+    "页面名、状态名、模块名优先复用官方词表，避免 implementation / verify / delivery 这类旧阶段词汇出现在前台。",
+    "允许 taste-skill 做设计增强，但不得覆盖 requirement truth 或反向改写 semantic contract。",
+    "发现语义漂移时，优先重建 semantic layer，再继续 prototype freeze 或 implement delivery。"
+  ],
+  "default_design_bridge": {
+    "repo": "https://github.com/Leonxlnx/taste-skill",
+    "skill_id": "taste-skill",
+    "entry": "",
+    "detected": false,
+    "kind": "external-default-bridge",
+    "supported_stages": [
+      "prototype",
+      "implement"
+    ],
+    "capabilities": [
+      "prototype",
+      "implement",
+      "taste-design",
+      "semantic-normalization"
+    ],
+    "install_hint": "npx skills add https://github.com/Leonxlnx/taste-skill --skill taste-skill"
+  },
+  "compiler": {
+    "semantic_context_source": "workflow-memory",
+    "capability_snapshot": {
+      "schema_version": "1.0",
+      "host_runtime": "codex",
+      "subagent_required": false,
+      "subagent_runtime_status": "",
+      "subagent_delegation_status": "",
+      "host_semantic_ready": false,
+      "provider_available": false
+    }
+  }
+}

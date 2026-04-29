@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "node_count": 3,
+  "edge_count": 2,
+  "nodes": [
+    {
+      "state_key": "v1-3-9:ready",
+      "page_id": "v1-3-9",
+      "state_id": "ready",
+      "label": "可用",
+      "description": "页面数据齐备，用户可完成核心操作。"
+    },
+    {
+      "state_key": "v1-3-9:loading",
+      "page_id": "v1-3-9",
+      "state_id": "loading",
+      "label": "加载中",
+      "description": "页面数据正在加载。"
+    },
+    {
+      "state_key": "v1-3-9:error",
+      "page_id": "v1-3-9",
+      "state_id": "error",
+      "label": "错误",
+      "description": "页面加载或提交失败，需提示恢复动作。"
+    }
+  ],
+  "edges": [
+    {
+      "from": "v1-3-9:loading",
+      "to": "v1-3-9:ready",
+      "event": "data_loaded",
+      "guard": "data_fetch_success",
+      "kind": "intra-page",
+      "fallback": null,
+      "test_refs": [
+        "TC-001",
+        "TC-002"
+      ]
+    },
+    {
+      "from": "v1-3-9:ready",
+      "to": "v1-3-9:error",
+      "event": "data_failure",
+      "guard": "runtime_or_projection_error",
+      "kind": "intra-page",
+      "fallback": "recovery-diagnostics:ready",
+      "test_refs": [
+        "TC-001",
+        "TC-002"
+      ]
+    }
+  ]
+}

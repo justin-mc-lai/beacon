@@ -1,0 +1,247 @@
+{
+  "schema_version": "1.0",
+  "feature": "Beacon v1.3.9 runtime skill admission and host-validated third-party skill compatibility",
+  "feature_slug": "beacon-v1.3.9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility",
+  "version": "v1.3.9",
+  "current_revision_id": "R1",
+  "lifecycle_status": "frozen",
+  "updated_at": "2026-04-28T06:21:12.899679+00:00",
+  "revisions": [
+    {
+      "revision_id": "R1",
+      "feature_slug": "beacon-v1.3.9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility",
+      "source_revision_id": null,
+      "reason": "draft",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:46e0bc2cdeca38e38f4021e198f3bba8440929fde6b5fa1d374efb60c9951a1e",
+      "superseded_by": null,
+      "created_at": "2026-04-28T02:31:02.257396+00:00",
+      "frozen_at": "2026-04-28T02:31:02.259978+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    }
+  ],
+  "stories": [
+    {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "Beacon v1.3.9 runtime skill admission and host-validated third-party skill compatibility",
+      "priority": "medium",
+      "status": "accepted",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "happy-path",
+          "text": "用户可以完成「Beacon v1.3.9 runtime skill admission and host-validated third-party skill compatibility」主流程，满足：Beacon v1.3.9 需要新增一条并行 requirement 子线，把第三方 skill 的接入从静态 beacon.config.yaml 自动生成，收敛为 runtime skill admission 模型。目标是让 Beacon 在 implement --skill 调用前，借助当前 host runtime（codex 或 claude）直接分析和验证 skill 的可消费性，而不是先信任静态配置。要求：1）Codex/Claude 继续负责 skill 创建，Beacon 不再造 skill create 包装器；2）Beacon 只定义并消费 Beacon-compatible skill contract；3）implement --skill 在运行前必须做 skill discovery、host-runtime compatibility analysis、admission validation、admission cache writeback；4）beacon.config.yaml 只保留最小提示层，不再承担完整 contract truth；5）该模型必须支持非编码实现面，如 storyverse 这类长任务 workbench / content production；6）runtime admission 的结果要能被 qa/release/gate 消费，并进入 evidence/acceptance 闭环。",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260428T031331Z-a854",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-04-28T03:13:09.740336+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.3.9/user-story/beacon-v1.3.9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "validation",
+          "text": "输入校验规则明确，非法输入会返回可读错误。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260428T031331Z-a854",
+          "verified_by_run_id": "run-20260428T141933273082",
+          "accepted_at": "2026-04-28T06:21:12.899519+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.3.9/user-story/beacon-v1.3.9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "error-handling",
+          "text": "依赖失败时系统可恢复并提供下一步指引。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260428T031331Z-a854",
+          "verified_by_run_id": "run-20260428T141933273082",
+          "accepted_at": "2026-04-28T06:21:12.899519+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.3.9/user-story/beacon-v1.3.9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "observability",
+          "text": "关键步骤具备可追踪日志与最小化诊断信息。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260428T031331Z-a854",
+          "verified_by_run_id": "run-20260428T141933273082",
+          "accepted_at": "2026-04-28T06:21:12.899519+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.3.9/user-story/beacon-v1.3.9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "security",
+          "text": "仅授权用户可执行敏感操作，越权请求被拒绝。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260428T031331Z-a854",
+          "verified_by_run_id": "run-20260428T141933273082",
+          "accepted_at": "2026-04-28T06:21:12.899519+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.3.9/user-story/beacon-v1.3.9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260428T031331Z-a854",
+          "verified_by_run_id": null,
+          "accepted_at": "2026-04-28T06:21:12.899519+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — 用户可以完成「Beacon v1.3.9 runtime skill admission and host-validated third-party skill compatibility」主流程，满足：Beacon v1.3.9 需要新增一条并行 requirement 子线，把第三方 skill 的接入从静态 beacon.config.yaml 自动生成，收敛为 runtime skill admission 模型。目标是让 Beacon 在 implement --skill 调用前，借助当前 host runtime（codex 或 claude）直接分析和验证 skill 的可消费性，而不是先信任静态配置。要求：1）Codex/Claude 继续负责 skill 创建，Beacon 不再造 skill create 包装器；2）Beacon 只定义并消费 Beacon-compatible skill contract；3）implement --skill 在运行前必须做 skill discovery、host-runtime compatibility analysis、admission validation、admission cache writeback；4）beacon.config.yaml 只保留最小提示层，不再承担完整 contract truth；5）该模型必须支持非编码实现面，如 storyverse 这类长任务 workbench / content production；6）runtime admission 的结果要能被 qa/release/gate 消费，并进入 evidence/acceptance 闭环。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-04-28T03:13:09.740336+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.3.9/user-story/beacon-v1.3.9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — 输入校验规则明确，非法输入会返回可读错误。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-04-28T03:13:09.740336+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.3.9/user-story/beacon-v1.3.9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — 依赖失败时系统可恢复并提供下一步指引。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-04-28T03:13:09.740336+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.3.9/user-story/beacon-v1.3.9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — 关键步骤具备可追踪日志与最小化诊断信息。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-04-28T03:13:09.740336+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.3.9/user-story/beacon-v1.3.9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — 仅授权用户可执行敏感操作，越权请求被拒绝。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-04-28T03:13:09.740336+00:00",
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.3.9/user-story/beacon-v1.3.9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility.md"
+        }
+      ],
+      "feature": "Beacon v1.3.9 runtime skill admission and host-validated third-party skill compatibility",
+      "feature_slug": "beacon-v1.3.9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility",
+      "version": "v1.3.9",
+      "last_changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/qa/status.json",
+        "beacon/commands/archive.py",
+        "beacon/commands/doctor.py",
+        "beacon/commands/gate.py",
+        "beacon/commands/help.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/qa.py",
+        "beacon/commands/status.py",
+        "beacon/commands/test_case.py",
+        "beacon/utils/help_navigation.py",
+        "beacon/utils/help_support.py",
+        "beacon/utils/prototype_utils.py",
+        "beacon/utils/release_scorecard.py",
+        "beacon/utils/story_scenarios.py",
+        "beacon/utils/writeback.py",
+        "docs/beacon/v1.3.8/.machine/execution/change-impact.json",
+        "docs/beacon/v1.3.8/.machine/execution/config.json",
+        "docs/beacon/v1.3.8/.machine/execution/delivery-manifest.json",
+        "docs/beacon/v1.3.8/.machine/execution/git-alignment.json",
+        "docs/beacon/v1.3.8/.machine/execution/source.json",
+        "tests/test_v116_navigator_support.py",
+        "tests/test_v135_prototype_projection_consistency.py",
+        "tests/test_v135_qa_team_run_guards.py",
+        "tests/test_v136_delivery_kernel_read_model.py",
+        "tests/test_v138_release_scorecard_gate_alignment.py"
+      ],
+      "verification_evidence": [
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        "docs/beacon/v1.3.9/.machine/qa/beacon-v1.3.9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility.qa9-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-v1.3.9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility/ac-closure.json",
+        ".beacon/qa/features/beacon-v1.3.9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility/scorecard.json"
+      ],
+      "accepted_at": "2026-04-28T06:21:12.899519+00:00",
+      "accepted_by": "qa"
+    }
+  ]
+}

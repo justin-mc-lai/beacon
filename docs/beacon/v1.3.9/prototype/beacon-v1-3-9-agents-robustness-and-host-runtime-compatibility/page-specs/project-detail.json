@@ -1,0 +1,151 @@
+{
+  "page_id": "project-detail",
+  "name": "项目详情",
+  "priority": "P0",
+  "platforms": [
+    "Web",
+    "PC",
+    "App"
+  ],
+  "responsibility": "成为接力页，展示版本线、主 PRD、并行 PRD、需求闭环和推荐动作。",
+  "sections": [
+    "项目头部摘要",
+    "版本与分支信息",
+    "主 PRD 与并行 PRD",
+    "需求物料闭环状态",
+    "最近交付与下一步",
+    "运行态摘要卡"
+  ],
+  "actions": [
+    {
+      "label": "查看运行中心",
+      "target": "runtime-center",
+      "trigger": "点击运行态摘要"
+    },
+    {
+      "label": "查看恢复诊断",
+      "target": "recovery-diagnostics",
+      "trigger": "点击恢复诊断入口"
+    },
+    {
+      "label": "查看项目物料",
+      "target": "material-viewer",
+      "trigger": "点击文档查看入口"
+    },
+    {
+      "label": "返回管理总览",
+      "target": "management-overview",
+      "trigger": "点击返回"
+    }
+  ],
+  "states": [
+    {
+      "id": "ready",
+      "label": "可接力",
+      "description": "版本、PRD、需求闭环和下一步信息完整。"
+    },
+    {
+      "id": "requirement-missing",
+      "label": "需求缺口",
+      "description": "PRD / user-story / test-case 存在缺口。"
+    },
+    {
+      "id": "draft",
+      "label": "需求草稿",
+      "description": "需求已建立但未冻结。"
+    },
+    {
+      "id": "frozen",
+      "label": "需求冻结",
+      "description": "需求链与 prototype 都已冻结。"
+    },
+    {
+      "id": "runtime-active",
+      "label": "运行中",
+      "description": "存在 single / team / ralph 运行摘要。"
+    },
+    {
+      "id": "loading",
+      "label": "加载中",
+      "description": "项目详情正在聚合。"
+    },
+    {
+      "id": "error",
+      "label": "错误",
+      "description": "详情聚合失败但给出恢复链路。"
+    }
+  ],
+  "requirement_refs": {
+    "user-story": [
+      "docs/beacon/v1.3.9/user-story/beacon-v1.3.9-agents-robustness-and-host-runtime-compatibility.md"
+    ],
+    "prd": [
+      "docs/beacon/v1.3.9/prd/beacon-v1.3.9-agents-robustness-and-host-runtime-compatibility.md"
+    ],
+    "test-case": [
+      "docs/beacon/v1.3.9/qa/test-cases/beacon-v1.3.9-agents-robustness-and-host-runtime-compatibility.md"
+    ]
+  },
+  "outbound_transitions": [
+    {
+      "from": "project-detail",
+      "to": "runtime-center",
+      "trigger": "点击运行态摘要",
+      "type": "drill-down"
+    },
+    {
+      "from": "project-detail",
+      "to": "recovery-diagnostics",
+      "trigger": "点击恢复诊断入口",
+      "type": "drill-down"
+    },
+    {
+      "from": "project-detail",
+      "to": "material-viewer",
+      "trigger": "点击文档查看入口",
+      "type": "drill-down"
+    },
+    {
+      "from": "project-detail",
+      "to": "management-overview",
+      "trigger": "点击返回",
+      "type": "return"
+    }
+  ],
+  "analysis": {
+    "target_user": "单项目 owner / 接力执行者",
+    "decision_focus": [
+      "这条版本线当前停在哪个阶段，下一步应该推进哪里。",
+      "需求闭环是否完整，是否已经具备 implement / qa 的前提。",
+      "应该去 runtime、恢复诊断，还是去看项目物料。"
+    ],
+    "layout_rules": [
+      "项目头部先建立上下文，再展开需求闭环。",
+      "主 PRD 与并行 PRD 要并排出现，避免真相散落。",
+      "最近交付、下一步、推荐动作要形成明确收口。"
+    ],
+    "noise_guardrail": "项目详情是接力页，不直接承载底层日志和实现细节。"
+  },
+  "layout_lines": [
+    "+-----------------------------------------------------------------------------------+",
+    "| 顶栏：返回总览 | 项目名 | 项目类型 | owner | 当前阶段                               |",
+    "+-----------------------------------------------------------------------------------+",
+    "| 项目头部摘要                                  | 当前版本 / git / worktree           |",
+    "| - 当前目标                                    | - version: v1.3.6                   |",
+    "| - 为什么停在这里                              | - branch/worktree 状态              |",
+    "+-----------------------------------------------------------------------------------+",
+    "| 主 PRD                              | 并行 PRD / 子线                            |",
+    "| - 主线 feature                     | - 并行 feature A                           |",
+    "| - 当前承诺面                       | - 并行 feature B                           |",
+    "+-----------------------------------------------------------------------------------+",
+    "| 需求闭环状态: prd | user-story | test-case | prototype | qa 准备度                |",
+    "+-----------------------------------------------------------------------------------+",
+    "| 最近交付                                      | 下一步 / 推荐动作                     |",
+    "| - 最新冻结产物                                | - 继续 implement / qa / review       |",
+    "| - 最近一次 review 结论                        | - 推荐 skill                          |",
+    "+-----------------------------------------------------------------------------------+",
+    "| runtime 摘要卡                                | 文档查看 / 恢复诊断入口               |",
+    "| - single/team/ralph 摘要                      | [查看项目物料] [查看恢复诊断]         |",
+    "+-----------------------------------------------------------------------------------+"
+  ]
+}

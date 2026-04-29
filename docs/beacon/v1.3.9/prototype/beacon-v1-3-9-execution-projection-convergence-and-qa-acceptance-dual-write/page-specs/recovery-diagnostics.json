@@ -1,0 +1,117 @@
+{
+  "page_id": "recovery-diagnostics",
+  "name": "恢复诊断",
+  "priority": "P2",
+  "platforms": [
+    "Web",
+    "PC"
+  ],
+  "responsibility": "解释 degraded / rebuild / doctor，明确 truth 仍来自 docs/beacon 与 .beacon。",
+  "sections": [
+    "truth 来源说明",
+    "degraded / rebuild / doctor 诊断卡",
+    "恢复步骤",
+    "风险提示"
+  ],
+  "actions": [
+    {
+      "label": "返回项目详情",
+      "target": "project-detail",
+      "trigger": "点击返回"
+    },
+    {
+      "label": "前往运行中心",
+      "target": "runtime-center",
+      "trigger": "点击运行态关联"
+    }
+  ],
+  "states": [
+    {
+      "id": "healthy-warning",
+      "label": "健康但预警",
+      "description": "当前系统可用但存在恢复风险提示。"
+    },
+    {
+      "id": "degraded",
+      "label": "降级",
+      "description": "SQLite 或 PocketBase 缺失，但 truth 仍可从文档恢复。"
+    },
+    {
+      "id": "rebuild-suggested",
+      "label": "建议重建",
+      "description": "投影层需要重建。"
+    },
+    {
+      "id": "doctor-suggested",
+      "label": "建议 doctor",
+      "description": "推荐执行 doctor 修复上下文。"
+    },
+    {
+      "id": "loading",
+      "label": "加载中",
+      "description": "诊断结果仍在采集。"
+    },
+    {
+      "id": "error",
+      "label": "错误",
+      "description": "诊断页本身无法完成聚合。"
+    }
+  ],
+  "requirement_refs": {
+    "user-story": [
+      "docs/beacon/v1.3.9/user-story/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md"
+    ],
+    "prd": [
+      "docs/beacon/v1.3.9/prd/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md"
+    ],
+    "test-case": [
+      "docs/beacon/v1.3.9/qa/test-cases/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md"
+    ]
+  },
+  "outbound_transitions": [
+    {
+      "from": "recovery-diagnostics",
+      "to": "project-detail",
+      "trigger": "点击返回",
+      "type": "return"
+    },
+    {
+      "from": "recovery-diagnostics",
+      "to": "runtime-center",
+      "trigger": "点击运行态关联",
+      "type": "drill-down"
+    }
+  ],
+  "analysis": {
+    "target_user": "负责恢复上下文的人",
+    "decision_focus": [
+      "当前是 degraded、rebuild 还是 doctor 场景。",
+      "真相是否仍然回到 docs/beacon 与 .beacon。",
+      "用户该做哪一步恢复，而不是读一堆诊断术语。"
+    ],
+    "layout_rules": [
+      "先讲 truth 来源，再给诊断卡和恢复步骤。",
+      "风险提示要比操作细节更醒目，避免误用恢复动作。",
+      "恢复动作要收口成少量步骤，不展开内部实现机制。"
+    ],
+    "noise_guardrail": "诊断页解释机器状态，但不能反客为主替代 requirement truth。"
+  },
+  "layout_lines": [
+    "+----------------------------------------------------------------------------------+",
+    "| 顶栏：返回项目详情 | 恢复诊断 | 当前环境状态                                      |",
+    "+----------------------------------------------------------------------------------+",
+    "| truth 来源说明                                                                    |",
+    "| - 正式真相来自 docs/beacon + .beacon                                              |",
+    "| - 当前页只解释恢复路径，不改写 requirement truth                                   |",
+    "+----------------------------------------------------------------------------------+",
+    "| 诊断卡： degraded | rebuild | doctor                                              |",
+    "| - 当前命中的诊断类型                                                               |",
+    "| - 推荐动作与触发条件                                                               |",
+    "+----------------------------------------------------------------------------------+",
+    "| 恢复步骤                                      | 风险提示                           |",
+    "| 1. 校验上下文                                 | - 不要把投影层当真相              |",
+    "| 2. 执行 doctor / rebuild                      | - 误修复会导致 drift              |",
+    "| 3. 回到项目页验证                             | - 先验证再 freeze                 |",
+    "+----------------------------------------------------------------------------------+"
+  ]
+}

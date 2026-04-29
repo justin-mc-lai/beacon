@@ -1,0 +1,145 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write",
+  "feature_slug": "beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write",
+  "version": "v1.3.9",
+  "revision_id": "R2",
+  "source_revision_id": "R1",
+  "status": "ready",
+  "cleanup_required": false,
+  "removed_requirement_count": 0,
+  "added_requirement_count": 3,
+  "retained_requirement_count": 8,
+  "removed_requirement_surfaces": [],
+  "added_requirement_surfaces": [
+    {
+      "revision_id": "R2",
+      "id": "AC-009",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "prototype-non-template",
+      "text": "`prototype auto` 在 host/LLM compile 失败时不会静默落到固定模板成功路径；系统会显式 downgrade 或阻断。",
+      "details": [],
+      "source": "user-story:docs/beacon/v1.3.9/user-story/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+      "signature": "ac::::prototype-non-template::`prototype auto` 在 host/llm compile 失败时不会静默落到固定模板成功路径；系统会显式 downgrade 或阻断。::"
+    },
+    {
+      "revision_id": "R2",
+      "id": "AC-010",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "qa-three-sink-transaction",
+      "text": "QA acceptance transaction 共享一致事务元数据，并覆盖 machine sink、human sink、runtime projection sink。",
+      "details": [],
+      "source": "user-story:docs/beacon/v1.3.9/user-story/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+      "signature": "ac::::qa-three-sink-transaction::qa acceptance transaction 共享一致事务元数据，并覆盖 machine sink、human sink、runtime projection sink。::"
+    },
+    {
+      "revision_id": "R2",
+      "id": "AC-011",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "transaction-contract-consumers",
+      "text": "`status / doctor / gate / release` 读取同一 transaction contract，并在 drift / failed transaction / missing projection 时阻断 pass verdict。",
+      "details": [],
+      "source": "user-story:docs/beacon/v1.3.9/user-story/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+      "signature": "ac::::transaction-contract-consumers::`status / doctor / gate / release` 读取同一 transaction contract，并在 drift / failed transaction / missing projection 时阻断 pass verdict。::"
+    }
+  ],
+  "retained_requirement_surfaces": [
+    {
+      "revision_id": "R2",
+      "id": "AC-001",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "artifact-taxonomy",
+      "text": "`v1.3.9` 明确 execution artifact taxonomy，至少区分 canonical envelope、required human projection、optional derived projection、deprecated template artifact。",
+      "details": [],
+      "source": "user-story:docs/beacon/v1.3.9/user-story/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+      "signature": "ac::::artifact-taxonomy::`v1.3.9` 明确 execution artifact taxonomy，至少区分 canonical envelope、required human projection、optional derived projection、deprecated template artifact。::"
+    },
+    {
+      "revision_id": "R2",
+      "id": "AC-008",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "capability-reuse",
+      "text": "新方案复用 Beacon 既有 writeback、transaction lineage、canonical projection 与 host-native orchestration 能力。",
+      "details": [],
+      "source": "user-story:docs/beacon/v1.3.9/user-story/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+      "signature": "ac::::capability-reuse::新方案复用 beacon 既有 writeback、transaction lineage、canonical projection 与 host-native orchestration 能力。::"
+    },
+    {
+      "revision_id": "R2",
+      "id": "AC-005",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "operator-facing-docs",
+      "text": "保留的 execution human docs 必须直接说明 public command usage、inputs、outputs、evidence refs 与 next step。",
+      "details": [],
+      "source": "user-story:docs/beacon/v1.3.9/user-story/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+      "signature": "ac::::operator-facing-docs::保留的 execution human docs 必须直接说明 public command usage、inputs、outputs、evidence refs 与 next step。::"
+    },
+    {
+      "revision_id": "R2",
+      "id": "AC-003",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "qa-dual-write",
+      "text": "同一笔 QA acceptance transaction 会自动双写 machine sink 与 human-readable execution artifact。",
+      "details": [],
+      "source": "user-story:docs/beacon/v1.3.9/user-story/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+      "signature": "ac::::qa-dual-write::同一笔 qa acceptance transaction 会自动双写 machine sink 与 human-readable execution artifact。::"
+    },
+    {
+      "revision_id": "R2",
+      "id": "AC-002",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "qa-envelope",
+      "text": "`qa` 在 evidence-backed verdict 后会生成 machine-readable acceptance envelope。",
+      "details": [],
+      "source": "user-story:docs/beacon/v1.3.9/user-story/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+      "signature": "ac::::qa-envelope::`qa` 在 evidence-backed verdict 后会生成 machine-readable acceptance envelope。::"
+    },
+    {
+      "revision_id": "R2",
+      "id": "AC-004",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "release-gate-convergence",
+      "text": "`release` 与 `gate` 消费同一 acceptance/readiness truth，不再各自产生平级 readiness source。",
+      "details": [],
+      "source": "user-story:docs/beacon/v1.3.9/user-story/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+      "signature": "ac::::release-gate-convergence::`release` 与 `gate` 消费同一 acceptance/readiness truth，不再各自产生平级 readiness source。::"
+    },
+    {
+      "revision_id": "R2",
+      "id": "AC-006",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "support-surface-simplification",
+      "text": "`help / status / doctor / archive` 作为解释层复用统一 read-model truth，不再默认扩张模板文档。",
+      "details": [],
+      "source": "user-story:docs/beacon/v1.3.9/user-story/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+      "signature": "ac::::support-surface-simplification::`help / status / doctor / archive` 作为解释层复用统一 read-model truth，不再默认扩张模板文档。::"
+    },
+    {
+      "revision_id": "R2",
+      "id": "AC-007",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "template-reduction",
+      "text": "execution 目录存在一份明确迁移策略，说明哪些旧模板保留、合并、按需生成或废弃。",
+      "details": [],
+      "source": "user-story:docs/beacon/v1.3.9/user-story/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+      "signature": "ac::::template-reduction::execution 目录存在一份明确迁移策略，说明哪些旧模板保留、合并、按需生成或废弃。::"
+    }
+  ],
+  "current_baseline_hash": "sha256:da0b4e5fdd2fe575ff8cba7c68d037f006f57fa168bda7f1d30ed7c8c9dd91c3",
+  "source_baseline_hash": "sha256:a889701cd0fd03a8ccd9aebef3c236b28adba7d5645304f23bfe1e1f357798eb",
+  "story_state_ref": "docs/beacon/v1.3.9/.machine/user-story/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.json",
+  "generated_at": "2026-04-29T03:24:41.969453+00:00",
+  "json_ref": "docs/beacon/v1.3.9/.machine/execution/revision-delta-beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.json",
+  "markdown_ref": "docs/beacon/v1.3.9/execution/revision-delta-beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md"
+}

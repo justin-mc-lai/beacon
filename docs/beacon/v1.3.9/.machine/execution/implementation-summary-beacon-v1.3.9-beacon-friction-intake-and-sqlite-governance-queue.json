@@ -1,0 +1,262 @@
+{
+  "schema_version": "1.0",
+  "feature": "Beacon v1.3.9 beacon-friction-intake and sqlite governance queue",
+  "feature_slug": "beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue",
+  "version": "v1.3.9",
+  "run_id": "manual-v139-friction-intake-implement-20260428",
+  "status": "completed",
+  "runner": "native-single",
+  "adapter_type": "native",
+  "mode": "single",
+  "host_runtime": "codex",
+  "skill": "beacon-friction-intake",
+  "changed_files": [
+    "beacon/commands/friction_intake.py",
+    "beacon/utils/friction_intake.py",
+    "beacon/utils/runtime_projection_store.py",
+    "beacon/cli_factory.py",
+    "beacon/command_catalog.py",
+    "skills/beacon/SKILL.md",
+    "skills/beacon/beacon-friction-intake/SKILL.md",
+    "skills/beacon/beacon-memory-friction-evolution/SKILL.md",
+    "tests/test_v139_friction_intake.py"
+  ],
+  "verification": [
+    {
+      "command": "python3 -m pytest -q tests/test_v139_friction_intake.py",
+      "status": "passed"
+    },
+    {
+      "command": "python3 -m beacon.main qa run \"Beacon v1.3.9 beacon-friction-intake and sqlite governance queue\" --project-root . --version v1.3.9 --json",
+      "status": "passed"
+    }
+  ],
+  "artifact_updates": {
+    "user_story": {
+      "required": false,
+      "reason": "story machine state writeback recorded"
+    },
+    "review_quality": {
+      "required": false,
+      "reason": "feature line closed through qa acceptance envelope"
+    },
+    "acceptance": {
+      "required": true,
+      "reason": "acceptance remains a formal post-verify action"
+    },
+    "semantic": {
+      "required": true,
+      "reason": "release scorecard requires semantic contract artifacts"
+    }
+  },
+  "requirement_traceability": {
+    "source_of_truth_root": "docs/beacon/v1.3.9",
+    "prd": "docs/beacon/v1.3.9/prd/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.md",
+    "user_story": "docs/beacon/v1.3.9/user-story/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.md",
+    "test_case": "docs/beacon/v1.3.9/qa/test-cases/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.md",
+    "ac_matrix": "docs/beacon/v1.3.9/.machine/qa/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.ac-test-matrix.json",
+    "revision_id": "R1",
+    "implemented_item_ids": [
+      "AC-001",
+      "AC-002",
+      "AC-003",
+      "AC-101",
+      "AC-102",
+      "AC-103",
+      "AC-201",
+      "AC-202",
+      "AC-203",
+      "AC-301",
+      "AC-302",
+      "AC-303",
+      "AC-401",
+      "AC-402",
+      "AC-403",
+      "AC-501",
+      "AC-502",
+      "AC-503",
+      "AC-601",
+      "AC-602",
+      "AC-603",
+      "TASK-001"
+    ],
+    "implemented_task_ids": [],
+    "verified_task_ids": []
+  },
+  "delivery_surfaces": {
+    "runtime_mode": "single",
+    "shipped_surfaces": [
+      "friction-intake",
+      "sqlite-governance-queue"
+    ],
+    "partial_surfaces": [],
+    "deferred_surfaces": [
+      "auto-route-to-requirement-without-accept"
+    ],
+    "downgrade_rationale": ""
+  },
+  "revision_cleanup": {
+    "schema_version": "1.0",
+    "revision_id": "R1",
+    "source_revision_id": "",
+    "revision_delta_ref": "docs/beacon/v1.3.9/.machine/execution/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.revision.json",
+    "cleanup_required": false,
+    "cleanup_review_completed": true,
+    "removed_surfaces": [],
+    "retained_legacy_surfaces": [
+      "memory-friction-evolution compatibility surface"
+    ],
+    "cleanup_rationale": "legacy entry retained only for compatibility"
+  },
+  "prompt_boundary": {
+    "schema_version": "1.0",
+    "feature": "Beacon v1.3.9 beacon-friction-intake and sqlite governance queue",
+    "feature_slug": "beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue",
+    "version": "v1.3.9",
+    "required": true,
+    "prompt": "Implement Beacon v1.3.9 beacon-friction-intake and sqlite governance queue within the frozen requirement truth.",
+    "classification": "in_scope_implementation",
+    "blocked": false,
+    "status": "pass",
+    "reason_code": "",
+    "next_action": "",
+    "recommended_command": "",
+    "matched_signals": [],
+    "frozen_refs": [
+      "docs/beacon/v1.3.9/prd/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.md",
+      "docs/beacon/v1.3.9/user-story/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.md",
+      "docs/beacon/v1.3.9/qa/test-cases/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.md"
+    ]
+  },
+  "delivery_contract": {
+    "schema_version": "1.0",
+    "feature": "Beacon v1.3.9 beacon-friction-intake and sqlite governance queue",
+    "version": "v1.3.9",
+    "requested_mode": "single",
+    "effective_mode": "single",
+    "generator_mode": "single",
+    "execution_mode": "single",
+    "runner_mode": "native-single",
+    "host_runtime": "codex",
+    "fallback_reason": "",
+    "capability_snapshot": {
+      "schema_version": "1.0",
+      "host_runtime": "codex",
+      "subagent_required": false,
+      "subagent_runtime_status": "",
+      "subagent_delegation_status": "",
+      "host_semantic_ready": false,
+      "provider_available": false
+    },
+    "subagent_prechecks": {
+      "required": false,
+      "host_runtime": "codex",
+      "runtime_readiness": {},
+      "delegation_readiness": {}
+    },
+    "requirement_binding": {
+      "source_of_truth_root": "docs/beacon/v1.3.9",
+      "prd": "docs/beacon/v1.3.9/prd/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.md",
+      "user_story": "docs/beacon/v1.3.9/user-story/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.md",
+      "test_case": "docs/beacon/v1.3.9/qa/test-cases/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.md",
+      "ac_matrix": "docs/beacon/v1.3.9/.machine/qa/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.ac-test-matrix.json",
+      "revision_id": "R1",
+      "implemented_item_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-101",
+        "AC-102",
+        "AC-103",
+        "AC-201",
+        "AC-202",
+        "AC-203",
+        "AC-301",
+        "AC-302",
+        "AC-303",
+        "AC-401",
+        "AC-402",
+        "AC-403",
+        "AC-501",
+        "AC-502",
+        "AC-503",
+        "AC-601",
+        "AC-602",
+        "AC-603",
+        "TASK-001"
+      ],
+      "implemented_task_ids": [],
+      "verified_task_ids": []
+    },
+    "traceability_refs": [
+      "docs/beacon/v1.3.9/prd/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.md",
+      "docs/beacon/v1.3.9/user-story/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.md",
+      "docs/beacon/v1.3.9/qa/test-cases/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.md",
+      "docs/beacon/v1.3.9/.machine/qa/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.ac-test-matrix.json",
+      "docs/beacon/v1.3.9/.machine/execution/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.revision.json",
+      "docs/beacon/v1.3.9/.machine/execution/requirement-clarity-beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.json",
+      "docs/beacon/v1.3.9/.machine/execution/deterministic-implementation-contract-beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.json",
+      "docs/beacon/v1.3.9/.machine/execution/qa-acceptance-beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.json",
+      "docs/beacon/v1.3.9/execution/semantic/beacon-v1-3-9-beacon-friction-intake-and-sqlite-governance-queue/semantic-contract.json",
+      "docs/beacon/v1.3.9/execution/semantic/beacon-v1-3-9-beacon-friction-intake-and-sqlite-governance-queue/semantic-dictionary.md",
+      "docs/beacon/v1.3.9/execution/semantic/beacon-v1-3-9-beacon-friction-intake-and-sqlite-governance-queue/semantic-usage-guidelines.md",
+      "docs/beacon/v1.3.9/execution/semantic/beacon-v1-3-9-beacon-friction-intake-and-sqlite-governance-queue/semantic-review.json"
+    ],
+    "runner": "native-single",
+    "adapter_type": "native",
+    "execution_surface": "native-single",
+    "team_mode": false,
+    "qa_status": "",
+    "gate_status": "",
+    "release_ready": false,
+    "risk_flags": []
+  },
+  "requirement_binding": {
+    "source_of_truth_root": "docs/beacon/v1.3.9",
+    "prd": "docs/beacon/v1.3.9/prd/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.md",
+    "user_story": "docs/beacon/v1.3.9/user-story/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.md",
+    "test_case": "docs/beacon/v1.3.9/qa/test-cases/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.md",
+    "ac_matrix": "docs/beacon/v1.3.9/.machine/qa/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.ac-test-matrix.json",
+    "revision_id": "R1",
+    "implemented_item_ids": [
+      "AC-001",
+      "AC-002",
+      "AC-003",
+      "AC-101",
+      "AC-102",
+      "AC-103",
+      "AC-201",
+      "AC-202",
+      "AC-203",
+      "AC-301",
+      "AC-302",
+      "AC-303",
+      "AC-401",
+      "AC-402",
+      "AC-403",
+      "AC-501",
+      "AC-502",
+      "AC-503",
+      "AC-601",
+      "AC-602",
+      "AC-603",
+      "TASK-001"
+    ],
+    "implemented_task_ids": [],
+    "verified_task_ids": []
+  },
+  "traceability_refs": [
+    "docs/beacon/v1.3.9/prd/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.md",
+    "docs/beacon/v1.3.9/user-story/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.md",
+    "docs/beacon/v1.3.9/qa/test-cases/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.md",
+    "docs/beacon/v1.3.9/.machine/qa/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.ac-test-matrix.json",
+    "docs/beacon/v1.3.9/.machine/execution/beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.revision.json",
+    "docs/beacon/v1.3.9/.machine/execution/requirement-clarity-beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.json",
+    "docs/beacon/v1.3.9/.machine/execution/deterministic-implementation-contract-beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.json",
+    "docs/beacon/v1.3.9/.machine/execution/qa-acceptance-beacon-v1.3.9-beacon-friction-intake-and-sqlite-governance-queue.json",
+    "docs/beacon/v1.3.9/execution/semantic/beacon-v1-3-9-beacon-friction-intake-and-sqlite-governance-queue/semantic-contract.json",
+    "docs/beacon/v1.3.9/execution/semantic/beacon-v1-3-9-beacon-friction-intake-and-sqlite-governance-queue/semantic-dictionary.md",
+    "docs/beacon/v1.3.9/execution/semantic/beacon-v1-3-9-beacon-friction-intake-and-sqlite-governance-queue/semantic-usage-guidelines.md",
+    "docs/beacon/v1.3.9/execution/semantic/beacon-v1-3-9-beacon-friction-intake-and-sqlite-governance-queue/semantic-review.json"
+  ]
+}
