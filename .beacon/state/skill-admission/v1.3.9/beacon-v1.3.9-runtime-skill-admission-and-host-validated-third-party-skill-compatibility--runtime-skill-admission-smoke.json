@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.0",
+  "feature": "Beacon v1.3.9 runtime skill admission and host-validated third-party skill compatibility",
+  "feature_slug": "beacon-v1.3.9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility",
+  "version": "v1.3.9",
+  "stage": "implement",
+  "skill_ref": "runtime-skill-admission-smoke",
+  "skill_id": "runtime-skill-admission-smoke",
+  "host_runtime": "codex",
+  "adapter_id": "native-single",
+  "adapter_type": "native",
+  "generated_at": "2026-04-28T03:13:32.244492+00:00",
+  "artifacts": {
+    "state_path": ".beacon/state/skill-admission/v1.3.9/beacon-v1.3.9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility--runtime-skill-admission-smoke.json",
+    "machine_path": "docs/beacon/v1.3.9/.machine/execution/skill-admission-beacon-v1.3.9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility.json"
+  },
+  "discovery": {
+    "status": "pass",
+    "skill_root": ".agents/skills/runtime-skill-admission-smoke",
+    "contract_path": ".agents/skills/runtime-skill-admission-smoke/beacon-skill-contract.json",
+    "used_hint": false
+  },
+  "validation": {
+    "status": "pass",
+    "issues": []
+  },
+  "compatibility": {
+    "status": "pass",
+    "supported": true,
+    "supported_host_runtimes": [
+      "codex",
+      "claude"
+    ],
+    "supported_stages": [
+      "implement"
+    ]
+  },
+  "contract": {
+    "schema_version": "1.0",
+    "skill_id": "runtime-skill-admission-smoke",
+    "supported_stages": [
+      "implement"
+    ],
+    "supported_host_runtimes": [
+      "codex",
+      "claude"
+    ],
+    "surface_kind": "content-production",
+    "input_contract": {
+      "required_inputs": [
+        "feature",
+        "version",
+        "result_file"
+      ]
+    },
+    "output_contract": {
+      "result_file_required": true,
+      "structured_result": true
+    },
+    "evidence_contract": [
+      "implementation_summary",
+      "story_writeback"
+    ],
+    "resume_contract": {
+      "context_resume_supported": true
+    }
+  },
+  "status": "pass",
+  "reason_code": ""
+}

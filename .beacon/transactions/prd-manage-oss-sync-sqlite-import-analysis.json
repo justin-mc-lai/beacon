@@ -1,0 +1,78 @@
+{
+  "canonical_envelope": {
+    "schema_version": "1.0",
+    "feature": "manage-oss-sync-sqlite-import-analysis",
+    "feature_slug": "manage-oss-sync-sqlite-import-analysis",
+    "version": "v1.3.8",
+    "track": "parallel",
+    "family": "runtime_control_plane",
+    "label": "并行 PRD / runtime-control-plane",
+    "requested_mode": "auto",
+    "effective_mode": "llm",
+    "generator_mode": "llm",
+    "fallback_reason": "",
+    "capability_snapshot": {
+      "schema_version": "1.0",
+      "command_name": "prd",
+      "host_runtime": "codex",
+      "host_bridge_declared": false,
+      "host_response_available": false,
+      "host_response_source": "none",
+      "host_response_path": "",
+      "host_semantic_ready": false,
+      "provider_available": false,
+      "provider_key_present": false,
+      "llm_disabled": false,
+      "disable_env": "BEACON_PRD_DISABLE_LLM"
+    },
+    "model": "beacon-prd-compiler",
+    "diagram_truth_request": {
+      "diagram_types": [],
+      "state_axes": []
+    },
+    "source_refs": [
+      "docs/beacon/global-boundaries.md",
+      "docs/beacon/v1.3.8/SUMMARY.md",
+      "docs/beacon/v1.3.8/execution/index.md",
+      "docs/beacon/v1.3.8/prd/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+      "docs/beacon/v1.3.8/prd/beacon-v1.3.8-post-freeze-team-ralph-sequencing-and-host-prompt-trace.md",
+      "docs/beacon/v1.3.8/prd/beacon-v1.3.8-prd-executable-diagram-truth-layer.md",
+      "docs/beacon/v1.3.8/prd/beacon-v1.3.8-truth-lifecycle-governance.md",
+      ".beacon/debug/index.json"
+    ],
+    "contract": {
+      "ok": true,
+      "missing_headings": [],
+      "placeholder_hits": [],
+      "semantic_hits": {
+        "boundary": true,
+        "layering": true,
+        "recovery": true,
+        "acceptance": true,
+        "risk_mitigation": true
+      }
+    },
+    "markdown": "# PRD：manage-oss-sync-sqlite-import-analysis\n\n**Feature**: `manage-oss-sync-sqlite-import-analysis`  \n**Version**: `v1.3.8`  \n**Date**: `2026-04-28`  \n**Status**: `draft semantic-compiled`  \n**Track**: `parallel`  \n**Scenario**: `runtime_control_plane`  \n**Semantic Label**: `运行态投影治理`  \n\n## Context\n\n- Global boundaries: `docs/beacon/global-boundaries.md`\n- Version summary: `docs/beacon/v1.3.8/SUMMARY.md`\n- Execution index: `docs/beacon/v1.3.8/execution/index.md`\n- Existing PRDs in line: `beacon-v1.3.8-archive-governance-and-historical-requirement-isolation`, `beacon-v1.3.8-post-freeze-team-ralph-sequencing-and-host-prompt-trace`, `beacon-v1.3.8-prd-executable-diagram-truth-layer`, `beacon-v1.3.8-truth-lifecycle-governance`\n\n## 1. 问题\n\n### 1.1 当前断层\n- 当前 `运行态投影治理` 仍存在 requirement truth 与投影/执行结果之间的稳定性缺口。\n\n### 1.2 触发信号\n- 真实项目运行中出现状态噪音、证据链断点或命令语义漂移，需要在版本包内正式收敛。\n\n### 1.3 为什么现在做\n- 若不在本版本修复，后续 prototype/implement/qa/release 会继续放大漂移风险。\n\n## 2. 目标\n\n### 2.1 主要目标\n- 把本需求的边界、分层、恢复策略和验收链固化为可执行 contract。\n\n### 2.2 非目标\n- 不新增公开一级主命令，不改写 Beacon 既有主流程心智面。\n\n## 3. 设计原则\n\n### 3.1 Canonical First\n- 先形成 canonical 输入，再投影到 human/machine/runtime 各面，禁止多源并写。\n\n### 3.2 Transaction First\n- 写入流程遵循 prepare/validate/stage/commit/publish/verify，失败必须显式可观测。\n\n### 3.3 Truth Boundary\n- 正式真相保持在 `docs/beacon/<version>/` 与 `.beacon/`，投影层仅做管理与观察。\n\n## 4. 范围\n\n### In scope\n- 本 feature 的需求冻结、执行约束、验收闭环与证据写回。\n- 与主线一致的 gate/review/doctor/status 判定口径。\n\n### Out of scope\n- UI 高保真实现与非本版本产品化扩展能力。\n- 与本 feature 无关的跨域重构。\n\n## 5. 功能需求\n\n### FR-001 输入与输出 contract\n- 需求输入、执行状态与交付证据必须可追溯，并可被机器校验。\n\n### FR-002 失败语义与恢复策略\n- 任一关键写入失败必须留下失败记录并阻断关键 gate，恢复路径可执行。\n\n### FR-003 验收链路一致\n- `prd -> user-story -> test-case -> implement -> qa -> release` 的映射关系持续一致。\n\n## 6. 边界 / 分层 / 恢复策略\n\n### 6.1 边界\n- 人类面用于评审与决策，机器面用于校验与自动化，不允许相互反向漂移。\n\n### 6.2 分层\n- requirement layer 负责定义承诺；execution layer 负责实现；qa/release layer 负责验证与准入。\n\n### 6.3 恢复策略\n- 事务失败后优先重建 canonical 投影，再重跑 gate/review；禁止带病继续发布。\n\n## 7. 风险与缓解\n\n| 风险 | 影响 | 缓解 |\n|------|------|------|\n| 需求语义退化为模板占位 | 高 | 增加 contract 校验与 machine 编译证据，失败时降级并记录原因 |\n| 多写入点状态不一致 | 高 | 事务元数据统一并在 gate/review/release 阶段强校验 |\n\n## 8. 验收标准\n\n### AC-001 主路径验收\n- 关键功能按 requirement chain 全量可追溯，且存在对应测试与证据。\n\n### AC-002 失败可恢复\n- 失败事务可被显式识别并触发恢复流程，关键 gate 会阻断。\n\n### AC-003 文档与实现一致\n- PRD、User Story、Test Case 与实现证据之间无结构性漂移。\n\n### AC-004 风险可审计\n- 所有降级、fallback 与未决项都在 machine 证据中可查询。\n\n## 9. 成功指标\n\n- 主指标：关键 gate 阻断原因可解释且可复现。\n- 辅指标：版本线 requirement closure 与执行证据一致性持续提升。\n\n## 10. 与主 PRD 的关系\n\n- 主线锚点：`beacon-v1.3.8-archive-governance-and-historical-requirement-isolation`\n- 本并行线只补强主线已承诺能力，不单独定义产品真相。\n- 需求、实现、验收均回写同一版本包，避免并行线漂移。\n\n---\n\n**Created**: 2026-04-28  \n**Version**: v1.3.8  \n**Status**: draft semantic-compiled\n",
+    "transaction": {
+      "transaction_id": "tx-prd-manage-oss-sync-sqlite-import-analysis-prd-059be8014ff23548",
+      "source_hash": "059be8014ff23548a7a268a89925a9b1818f0110d5adfb8e06e26fd7fe21259e",
+      "projection_seq": "prd-059be8014ff23548",
+      "committed_at": "2026-04-28T03:07:39.374054+00:00",
+      "sink_checksums": {
+        "human": "c6adfa34555fe5bd097a827ebcb49b0b7f46705124daceccc1e4a476c7d14fdb",
+        "machine": "94bd017e9c9f61bdd7e47d3f4a92b5d11eb86b5fb3146d55a338f789ac7b039f"
+      },
+      "status": "applied"
+    }
+  },
+  "sinks": [
+    {
+      "path": "docs/beacon/v1.3.8/prd/manage-oss-sync-sqlite-import-analysis.md",
+      "kind": "human"
+    },
+    {
+      "path": ".beacon/prd/manage-oss-sync-sqlite-import-analysis.json",
+      "kind": "machine"
+    }
+  ]
+}

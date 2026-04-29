@@ -1,61 +1,33 @@
 {
   "scope": "qa9",
-  "timestamp": "2026-04-24T11:12:30.748299+00:00",
+  "timestamp": "2026-04-29T14:17:09.018741",
   "project": "/Users/apple/Developer/Personal/products/beacon",
-  "version": "v1.3.8",
-  "run_id": "run-20260424T185315726742",
-  "spec_fingerprint_hash": "ec580d03ee6f7670057a026aeed97db3b171d1ac7cf513ce450f2f0610057f20",
+  "version": "v1.3.9",
+  "run_id": "run-20260429T141709018183",
+  "spec_fingerprint_hash": "2afeca5d9041d81412c29229593929bc3ee3e15d494c7cd817747b8c6c497727",
   "status": "passed",
   "selected_layers": [
-    "compatibility",
     "contract",
     "integration",
-    "interface",
-    "regression"
+    "regression",
+    "smoke"
   ],
   "execution": {
-    "run_id": "run-20260424T185315726742",
-    "version": "v1.3.8",
-    "evidence_dir": ".beacon/evidence/auto-test/run-20260424T185315726742",
+    "run_id": "run-20260429T141709018183",
+    "version": "v1.3.9",
+    "evidence_dir": ".beacon/evidence/auto-test/run-20260429T141709018183",
     "spec_fingerprint": {
-      "fingerprint_hash": "ec580d03ee6f7670057a026aeed97db3b171d1ac7cf513ce450f2f0610057f20",
-      "version": "v1.3.8",
-      "generated_at": "2026-04-24T10:55:26.541593+00:00"
+      "fingerprint_hash": "2afeca5d9041d81412c29229593929bc3ee3e15d494c7cd817747b8c6c497727",
+      "version": "v1.3.9",
+      "generated_at": "2026-04-29T06:18:50.518001+00:00"
     },
     "layers": [
       {
-        "layer": "compatibility",
-        "command": "python3 -m pytest -q -k interface --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "exit_code": 0,
-        "status": "passed",
-        "assertion_count": 2,
-        "was_flaky": false,
-        "attempt_count": 1,
-        "attempts": [
-          {
-            "attempt": 1,
-            "exit_code": 0
-          }
-        ],
-        "execution_fingerprint": "31fefad7c03cdc4e59b61d21077f3d72585806038af2ba71059bbce7d50fe5b2",
-        "started_at": "2026-04-24T18:53:15.728694",
-        "ended_at": "2026-04-24T18:53:18.804220",
-        "junit_path": ".beacon/evidence/auto-test/run-20260424T185315726742/compatibility/junit.xml",
-        "junit_valid": true,
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260424T185315726742/compatibility/command.txt",
-          ".beacon/evidence/auto-test/run-20260424T185315726742/compatibility/stdout.log",
-          ".beacon/evidence/auto-test/run-20260424T185315726742/compatibility/stderr.log",
-          ".beacon/evidence/auto-test/run-20260424T185315726742/compatibility/junit.xml",
-          ".beacon/evidence/auto-test/run-20260424T185315726742/compatibility/result.json"
-        ]
-      },
-      {
         "layer": "contract",
-        "command": "python3 -m pytest -q tests/test_v138_archive_command.py tests/test_gate_delivery_execution_artifacts.py tests/test_v112_implementation_plan_runtime.py tests/test_v131_cognitive_load_gates.py -k \"test_v138_archive_command_should_materialize_governance_and_block_delivery or test_gate_release_should_ignore_support_implementation_plan_marker or test_v112_release_gate_should_ignore_cross_version_qa_status_and_fallback_to_current_revision or test_v131_gate_release_should_ignore_cross_version_qa_status_and_use_current_revision_feature\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
         "exit_code": 0,
         "status": "passed",
-        "assertion_count": 4,
+        "assertion_count": 200,
         "was_flaky": false,
         "attempt_count": 1,
         "attempts": [
@@ -64,17 +36,17 @@
             "exit_code": 0
           }
         ],
-        "execution_fingerprint": "5f245f0a19eb698bcabc10ad0dc1d7a01637135ec0d96f83f50bbcd53463e731",
-        "started_at": "2026-04-24T18:53:18.805227",
-        "ended_at": "2026-04-24T18:53:20.419224",
-        "junit_path": ".beacon/evidence/auto-test/run-20260424T185315726742/contract/junit.xml",
+        "execution_fingerprint": "3afcdfb86abd2aa54ad75205fd45557316966c536d1c7b4dae396c377e7ee755",
+        "started_at": "2026-04-29T14:17:09.019029",
+        "ended_at": "2026-04-29T14:17:42.025498",
+        "junit_path": ".beacon/evidence/auto-test/run-20260429T141709018183/contract/junit.xml",
         "junit_valid": true,
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260424T185315726742/contract/command.txt",
-          ".beacon/evidence/auto-test/run-20260424T185315726742/contract/stdout.log",
-          ".beacon/evidence/auto-test/run-20260424T185315726742/contract/stderr.log",
-          ".beacon/evidence/auto-test/run-20260424T185315726742/contract/junit.xml",
-          ".beacon/evidence/auto-test/run-20260424T185315726742/contract/result.json"
+          ".beacon/evidence/auto-test/run-20260429T141709018183/contract/command.txt",
+          ".beacon/evidence/auto-test/run-20260429T141709018183/contract/stdout.log",
+          ".beacon/evidence/auto-test/run-20260429T141709018183/contract/stderr.log",
+          ".beacon/evidence/auto-test/run-20260429T141709018183/contract/junit.xml",
+          ".beacon/evidence/auto-test/run-20260429T141709018183/contract/result.json"
         ]
       },
       {
@@ -91,44 +63,17 @@
             "exit_code": 0
           }
         ],
-        "execution_fingerprint": "f96ebe01f485dfcb3d5a23561d1f9726357656269f0387edb7432befff5e4824",
-        "started_at": "2026-04-24T18:53:20.419891",
-        "ended_at": "2026-04-24T18:53:25.837891",
-        "junit_path": ".beacon/evidence/auto-test/run-20260424T185315726742/integration/junit.xml",
+        "execution_fingerprint": "b29f8ad72d9be4e9c2fa0a118ff5b8572a627eea485469a80e9d30b99fe909f2",
+        "started_at": "2026-04-29T14:17:42.026874",
+        "ended_at": "2026-04-29T14:17:47.820652",
+        "junit_path": ".beacon/evidence/auto-test/run-20260429T141709018183/integration/junit.xml",
         "junit_valid": true,
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260424T185315726742/integration/command.txt",
-          ".beacon/evidence/auto-test/run-20260424T185315726742/integration/stdout.log",
-          ".beacon/evidence/auto-test/run-20260424T185315726742/integration/stderr.log",
-          ".beacon/evidence/auto-test/run-20260424T185315726742/integration/junit.xml",
-          ".beacon/evidence/auto-test/run-20260424T185315726742/integration/result.json"
-        ]
-      },
-      {
-        "layer": "interface",
-        "command": "python3 -m pytest -q -k interface --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "exit_code": 0,
-        "status": "passed",
-        "assertion_count": 2,
-        "was_flaky": false,
-        "attempt_count": 1,
-        "attempts": [
-          {
-            "attempt": 1,
-            "exit_code": 0
-          }
-        ],
-        "execution_fingerprint": "61f7b4facf423b6c0984e052322444e249a0035a1c0f90d7b3acc9fa355f53d0",
-        "started_at": "2026-04-24T18:53:25.838850",
-        "ended_at": "2026-04-24T18:53:28.650007",
-        "junit_path": ".beacon/evidence/auto-test/run-20260424T185315726742/interface/junit.xml",
-        "junit_valid": true,
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260424T185315726742/interface/command.txt",
-          ".beacon/evidence/auto-test/run-20260424T185315726742/interface/stdout.log",
-          ".beacon/evidence/auto-test/run-20260424T185315726742/interface/stderr.log",
-          ".beacon/evidence/auto-test/run-20260424T185315726742/interface/junit.xml",
-          ".beacon/evidence/auto-test/run-20260424T185315726742/interface/result.json"
+          ".beacon/evidence/auto-test/run-20260429T141709018183/integration/command.txt",
+          ".beacon/evidence/auto-test/run-20260429T141709018183/integration/stdout.log",
+          ".beacon/evidence/auto-test/run-20260429T141709018183/integration/stderr.log",
+          ".beacon/evidence/auto-test/run-20260429T141709018183/integration/junit.xml",
+          ".beacon/evidence/auto-test/run-20260429T141709018183/integration/result.json"
         ]
       },
       {
@@ -136,7 +81,7 @@
         "command": "python3 -m pytest -q -k regression --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
         "exit_code": 0,
         "status": "passed",
-        "assertion_count": 20,
+        "assertion_count": 22,
         "was_flaky": false,
         "attempt_count": 1,
         "attempts": [
@@ -145,39 +90,65 @@
             "exit_code": 0
           }
         ],
-        "execution_fingerprint": "40f023e55c0a8bc71fc2f87a5982d7e5cc4fbb86c72a16f899f7b91900220b5f",
-        "started_at": "2026-04-24T18:53:28.651006",
-        "ended_at": "2026-04-24T18:53:35.306160",
-        "junit_path": ".beacon/evidence/auto-test/run-20260424T185315726742/regression/junit.xml",
+        "execution_fingerprint": "7c5c13eb78cf96774916530b532fee75a9ec7aed5cdc0562c6f6807563842d89",
+        "started_at": "2026-04-29T14:17:47.821440",
+        "ended_at": "2026-04-29T14:17:56.270850",
+        "junit_path": ".beacon/evidence/auto-test/run-20260429T141709018183/regression/junit.xml",
         "junit_valid": true,
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260424T185315726742/regression/command.txt",
-          ".beacon/evidence/auto-test/run-20260424T185315726742/regression/stdout.log",
-          ".beacon/evidence/auto-test/run-20260424T185315726742/regression/stderr.log",
-          ".beacon/evidence/auto-test/run-20260424T185315726742/regression/junit.xml",
-          ".beacon/evidence/auto-test/run-20260424T185315726742/regression/result.json"
+          ".beacon/evidence/auto-test/run-20260429T141709018183/regression/command.txt",
+          ".beacon/evidence/auto-test/run-20260429T141709018183/regression/stdout.log",
+          ".beacon/evidence/auto-test/run-20260429T141709018183/regression/stderr.log",
+          ".beacon/evidence/auto-test/run-20260429T141709018183/regression/junit.xml",
+          ".beacon/evidence/auto-test/run-20260429T141709018183/regression/result.json"
+        ]
+      },
+      {
+        "layer": "smoke",
+        "command": "python3 -m pytest -q -m smoke --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "exit_code": 0,
+        "status": "passed",
+        "assertion_count": 1,
+        "was_flaky": false,
+        "attempt_count": 1,
+        "attempts": [
+          {
+            "attempt": 1,
+            "exit_code": 0
+          }
+        ],
+        "execution_fingerprint": "6673ce8168002a8dde9f9d3d9b51ce27caf4e4dfa1b11446744338605bf571ca",
+        "started_at": "2026-04-29T14:17:56.272010",
+        "ended_at": "2026-04-29T14:17:59.636988",
+        "junit_path": ".beacon/evidence/auto-test/run-20260429T141709018183/smoke/junit.xml",
+        "junit_valid": true,
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260429T141709018183/smoke/command.txt",
+          ".beacon/evidence/auto-test/run-20260429T141709018183/smoke/stdout.log",
+          ".beacon/evidence/auto-test/run-20260429T141709018183/smoke/stderr.log",
+          ".beacon/evidence/auto-test/run-20260429T141709018183/smoke/junit.xml",
+          ".beacon/evidence/auto-test/run-20260429T141709018183/smoke/result.json"
         ]
       }
     ],
     "ui_action_evidence": {},
+    "matrix_report": {
+      "status": "ok",
+      "matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write/matrix.qa9.json",
+      "evidence_generated": 4,
+      "entry_count": 4,
+      "freshness_violations": []
+    },
     "artifacts": [
-      ".beacon/evidence/auto-test/run-20260424T185315726742/compatibility/pair-evidence.json",
-      ".beacon/evidence/auto-test/run-20260424T185315726742/qa9/tc-execution-map.json",
-      ".beacon/evidence/auto-test/run-20260424T185315726742/qa9/tc-results.json",
-      ".beacon/evidence/auto-test/run-20260424T185315726742/summary.json",
+      ".beacon/evidence/auto-test/run-20260429T141709018183/qa9/tc-execution-map.json",
+      ".beacon/evidence/auto-test/run-20260429T141709018183/qa9/tc-results.json",
+      ".beacon/evidence/auto-test/run-20260429T141709018183/summary.json",
       ".beacon/flaky-history.json",
       ".beacon/evidence-signature-chain.json"
     ],
-    "matrix_report": {
-      "status": "ok",
-      "matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/matrix.qa9.json",
-      "evidence_generated": 20,
-      "entry_count": 20,
-      "freshness_violations": []
-    },
     "qa9_matrix_schema_version": "1.0",
     "flaky": {
-      "pass_count": 5,
+      "pass_count": 4,
       "flaky_pass_count": 0,
       "flaky_rate": 0.0,
       "max_flaky_rate": 0.02
@@ -186,13 +157,12 @@
   "qa9": {
     "qa_profile": "web-full",
     "qa_types": [
-      "compatibility",
       "contract",
       "integration",
-      "interface",
-      "regression"
+      "regression",
+      "smoke"
     ],
-    "qa_matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/matrix.qa9.json",
+    "qa_matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write/matrix.qa9.json",
     "ui_runner": "browser-use",
     "quality_requirements": {
       "require_junit": true,
@@ -205,546 +175,62 @@
       "executed_pairs": []
     },
     "summary": {
-      "cases_total": 20,
-      "passed": 20,
+      "cases_total": 4,
+      "passed": 4,
       "failed": 0,
       "blocked": 0,
       "pending": 0,
       "pass_rate": 1.0,
       "automation_rate": 1.0,
-      "auto_cases_total": 20,
-      "auto_cases_executed": 20,
+      "auto_cases_total": 4,
+      "auto_cases_executed": 4,
       "round_stop_triggered": false,
       "round_stop_reasons": []
     },
     "tc_results": [
       {
-        "tc_id": "TC-006-HAPPY",
-        "ac_id": "AC-001",
-        "source_tc_id": "TC-006",
-        "scenario_id": "SC-006",
-        "scenario_family": "happy",
-        "qa_type": "interface",
-        "layer": "api-curl",
-        "automation": "auto",
-        "status": "passed",
-        "layer_status": "passed",
-        "reason_code": "",
-        "assertion_count": 4,
-        "command": "python3 -m pytest -q -k interface --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260424T185315726742",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/tc-006-happy/__RUN_ID__.json",
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-006-HAPPY/browser-evidence-pack.json",
-          ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-006-HAPPY/replay/result.json",
-          ".beacon/evidence/qa-feature/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/tc-006-happy/run-20260424T185315726742.json"
-        ],
-        "execution_fingerprint": "aac4f44766900f96a6f981c5af6d52350e99eb8ddeacc3471600f1faee631150",
-        "started_at": "2026-04-24T18:53:35.311956",
-        "ended_at": "2026-04-24T18:53:41.215510",
-        "junit_path": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-006-HAPPY/replay/junit.xml",
-        "junit_valid": true,
-        "browser_required": true,
-        "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-006-HAPPY/browser-evidence-pack.json",
-        "replay_required": true,
-        "replay_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-006-HAPPY/replay/result.json",
-        "stop_on_fail": true,
-        "round_stop_trigger": false,
-        "round_stop_reasons": [],
-        "round_stop_anchor": ""
-      },
-      {
-        "tc_id": "TC-006-NEGATIVE",
-        "ac_id": "AC-001",
-        "source_tc_id": "TC-006",
-        "scenario_id": "SC-007",
-        "scenario_family": "negative",
-        "qa_type": "interface",
-        "layer": "api-curl",
-        "automation": "auto",
-        "status": "passed",
-        "layer_status": "passed",
-        "reason_code": "",
-        "assertion_count": 4,
-        "command": "python3 -m pytest -q -k interface --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260424T185315726742",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/tc-006-negative/__RUN_ID__.json",
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-006-NEGATIVE/browser-evidence-pack.json",
-          ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-006-NEGATIVE/replay/result.json",
-          ".beacon/evidence/qa-feature/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/tc-006-negative/run-20260424T185315726742.json"
-        ],
-        "execution_fingerprint": "9bd43ddc540d179fcc501744ec77210a497e7edca1ba91ffe3840327b7fe4c27",
-        "started_at": "2026-04-24T18:53:41.218310",
-        "ended_at": "2026-04-24T18:53:47.179943",
-        "junit_path": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-006-NEGATIVE/replay/junit.xml",
-        "junit_valid": true,
-        "browser_required": true,
-        "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-006-NEGATIVE/browser-evidence-pack.json",
-        "replay_required": true,
-        "replay_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-006-NEGATIVE/replay/result.json",
-        "stop_on_fail": false,
-        "round_stop_trigger": false,
-        "round_stop_reasons": [],
-        "round_stop_anchor": ""
-      },
-      {
-        "tc_id": "TC-006-BOUNDARY",
-        "ac_id": "AC-001",
-        "source_tc_id": "TC-006",
-        "scenario_id": "SC-008",
-        "scenario_family": "boundary",
-        "qa_type": "interface",
-        "layer": "api-curl",
-        "automation": "auto",
-        "status": "passed",
-        "layer_status": "passed",
-        "reason_code": "",
-        "assertion_count": 2,
-        "command": "python3 -m pytest -q -k interface --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260424T185315726742",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/tc-006-boundary/__RUN_ID__.json",
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-006-BOUNDARY/browser-evidence-pack.json",
-          ".beacon/evidence/qa-feature/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/tc-006-boundary/run-20260424T185315726742.json"
-        ],
-        "execution_fingerprint": "06a843fdada54831406c031288b5fa3fed46bacdd7d933da63e24d448f2aa8f3",
-        "started_at": "2026-04-24T18:53:47.186720",
-        "ended_at": "2026-04-24T18:53:50.127173",
-        "junit_path": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-006-BOUNDARY/explore/junit.xml",
-        "junit_valid": true,
-        "browser_required": true,
-        "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-006-BOUNDARY/browser-evidence-pack.json",
-        "replay_required": false,
-        "replay_ref": "",
-        "stop_on_fail": false,
-        "round_stop_trigger": false,
-        "round_stop_reasons": [],
-        "round_stop_anchor": ""
-      },
-      {
-        "tc_id": "TC-006-RECOVERY",
-        "ac_id": "AC-001",
-        "source_tc_id": "TC-006",
-        "scenario_id": "SC-009",
-        "scenario_family": "recovery",
-        "qa_type": "interface",
-        "layer": "api-curl",
-        "automation": "auto",
-        "status": "passed",
-        "layer_status": "passed",
-        "reason_code": "",
-        "assertion_count": 2,
-        "command": "python3 -m pytest -q -k interface --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260424T185315726742",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/tc-006-recovery/__RUN_ID__.json",
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-006-RECOVERY/browser-evidence-pack.json",
-          ".beacon/evidence/qa-feature/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/tc-006-recovery/run-20260424T185315726742.json"
-        ],
-        "execution_fingerprint": "d6a46e62762b635e479657c02b891c19a0d5b4f4f5c4c0fc313f39d50fe7905e",
-        "started_at": "2026-04-24T18:53:50.129118",
-        "ended_at": "2026-04-24T18:53:53.152772",
-        "junit_path": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-006-RECOVERY/explore/junit.xml",
-        "junit_valid": true,
-        "browser_required": true,
-        "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-006-RECOVERY/browser-evidence-pack.json",
-        "replay_required": false,
-        "replay_ref": "",
-        "stop_on_fail": false,
-        "round_stop_trigger": false,
-        "round_stop_reasons": [],
-        "round_stop_anchor": ""
-      },
-      {
-        "tc_id": "TC-006-COMPATIBILITY",
-        "ac_id": "AC-001",
-        "source_tc_id": "TC-006",
-        "scenario_id": "SC-010",
-        "scenario_family": "compatibility",
-        "qa_type": "compatibility",
-        "layer": "compatibility",
-        "automation": "auto",
-        "status": "passed",
-        "layer_status": "passed",
-        "reason_code": "",
-        "assertion_count": 2,
-        "command": "python3 -m pytest -q -k interface --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260424T185315726742",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/tc-006-compatibility/__RUN_ID__.json",
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-006-COMPATIBILITY/browser-evidence-pack.json",
-          ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-006-COMPATIBILITY/replay/result.json",
-          ".beacon/evidence/qa-feature/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/tc-006-compatibility/run-20260424T185315726742.json"
-        ],
-        "execution_fingerprint": "bd1dffa5fb1a23f5d0afd088fb557f0f5cf67a14de26c4f1c200f320a584f520",
-        "started_at": "2026-04-24T18:53:53.154733",
-        "ended_at": "2026-04-24T18:53:59.922786",
-        "junit_path": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-006-COMPATIBILITY/explore/junit.xml",
-        "junit_valid": true,
-        "browser_required": true,
-        "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-006-COMPATIBILITY/browser-evidence-pack.json",
-        "replay_required": true,
-        "replay_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-006-COMPATIBILITY/replay/result.json",
-        "stop_on_fail": false,
-        "round_stop_trigger": false,
-        "round_stop_reasons": [],
-        "round_stop_anchor": ""
-      },
-      {
-        "tc_id": "TC-011-HAPPY",
-        "ac_id": "AC-001",
-        "source_tc_id": "TC-011",
-        "scenario_id": "SC-011",
-        "scenario_family": "happy",
-        "qa_type": "regression",
-        "layer": "regression",
-        "automation": "auto",
-        "status": "passed",
-        "layer_status": "passed",
-        "reason_code": "",
-        "assertion_count": 40,
-        "command": "python3 -m pytest -q -k regression --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260424T185315726742",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/tc-011-happy/__RUN_ID__.json",
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-011-HAPPY/browser-evidence-pack.json",
-          ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-011-HAPPY/replay/result.json",
-          ".beacon/evidence/qa-feature/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/tc-011-happy/run-20260424T185315726742.json"
-        ],
-        "execution_fingerprint": "08c9bdc1c7180cfe377d0a527babd59667c0260eaa71a785c143e4a8fb1ed90e",
-        "started_at": "2026-04-24T18:53:59.925067",
-        "ended_at": "2026-04-24T18:54:13.271747",
-        "junit_path": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-011-HAPPY/replay/junit.xml",
-        "junit_valid": true,
-        "browser_required": true,
-        "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-011-HAPPY/browser-evidence-pack.json",
-        "replay_required": true,
-        "replay_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-011-HAPPY/replay/result.json",
-        "stop_on_fail": true,
-        "round_stop_trigger": false,
-        "round_stop_reasons": [],
-        "round_stop_anchor": ""
-      },
-      {
-        "tc_id": "TC-011-NEGATIVE",
-        "ac_id": "AC-001",
-        "source_tc_id": "TC-011",
-        "scenario_id": "SC-012",
-        "scenario_family": "negative",
-        "qa_type": "regression",
-        "layer": "regression",
-        "automation": "auto",
-        "status": "passed",
-        "layer_status": "passed",
-        "reason_code": "",
-        "assertion_count": 40,
-        "command": "python3 -m pytest -q -k regression --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260424T185315726742",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/tc-011-negative/__RUN_ID__.json",
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-011-NEGATIVE/browser-evidence-pack.json",
-          ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-011-NEGATIVE/replay/result.json",
-          ".beacon/evidence/qa-feature/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/tc-011-negative/run-20260424T185315726742.json"
-        ],
-        "execution_fingerprint": "84d1af5c2f613b326b9afde342b4f5aae5b55ac8661c1dc007ead6e196a906e8",
-        "started_at": "2026-04-24T18:54:13.274048",
-        "ended_at": "2026-04-24T18:54:26.332536",
-        "junit_path": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-011-NEGATIVE/replay/junit.xml",
-        "junit_valid": true,
-        "browser_required": true,
-        "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-011-NEGATIVE/browser-evidence-pack.json",
-        "replay_required": true,
-        "replay_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-011-NEGATIVE/replay/result.json",
-        "stop_on_fail": false,
-        "round_stop_trigger": false,
-        "round_stop_reasons": [],
-        "round_stop_anchor": ""
-      },
-      {
-        "tc_id": "TC-011-BOUNDARY",
-        "ac_id": "AC-001",
-        "source_tc_id": "TC-011",
-        "scenario_id": "SC-013",
-        "scenario_family": "boundary",
-        "qa_type": "regression",
-        "layer": "regression",
-        "automation": "auto",
-        "status": "passed",
-        "layer_status": "passed",
-        "reason_code": "",
-        "assertion_count": 20,
-        "command": "python3 -m pytest -q -k regression --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260424T185315726742",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/tc-011-boundary/__RUN_ID__.json",
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-011-BOUNDARY/browser-evidence-pack.json",
-          ".beacon/evidence/qa-feature/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/tc-011-boundary/run-20260424T185315726742.json"
-        ],
-        "execution_fingerprint": "b4aecdd8dc5ba2a1717dce16c7489a7ec7e7b7fd1519afb554a961330413a78d",
-        "started_at": "2026-04-24T18:54:26.334754",
-        "ended_at": "2026-04-24T18:54:32.973874",
-        "junit_path": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-011-BOUNDARY/explore/junit.xml",
-        "junit_valid": true,
-        "browser_required": true,
-        "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-011-BOUNDARY/browser-evidence-pack.json",
-        "replay_required": false,
-        "replay_ref": "",
-        "stop_on_fail": false,
-        "round_stop_trigger": false,
-        "round_stop_reasons": [],
-        "round_stop_anchor": ""
-      },
-      {
-        "tc_id": "TC-011-RECOVERY",
-        "ac_id": "AC-001",
-        "source_tc_id": "TC-011",
-        "scenario_id": "SC-014",
-        "scenario_family": "recovery",
-        "qa_type": "regression",
-        "layer": "regression",
-        "automation": "auto",
-        "status": "passed",
-        "layer_status": "passed",
-        "reason_code": "",
-        "assertion_count": 20,
-        "command": "python3 -m pytest -q -k regression --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260424T185315726742",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/tc-011-recovery/__RUN_ID__.json",
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-011-RECOVERY/browser-evidence-pack.json",
-          ".beacon/evidence/qa-feature/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/tc-011-recovery/run-20260424T185315726742.json"
-        ],
-        "execution_fingerprint": "29e3db3afa9b9dfc2483cc63855ce025fd78ae6d9c42560c4ac806d03b0e36fd",
-        "started_at": "2026-04-24T18:54:32.976822",
-        "ended_at": "2026-04-24T18:54:39.596176",
-        "junit_path": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-011-RECOVERY/explore/junit.xml",
-        "junit_valid": true,
-        "browser_required": true,
-        "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-011-RECOVERY/browser-evidence-pack.json",
-        "replay_required": false,
-        "replay_ref": "",
-        "stop_on_fail": false,
-        "round_stop_trigger": false,
-        "round_stop_reasons": [],
-        "round_stop_anchor": ""
-      },
-      {
-        "tc_id": "TC-011-COMPATIBILITY",
-        "ac_id": "AC-001",
-        "source_tc_id": "TC-011",
-        "scenario_id": "SC-015",
-        "scenario_family": "compatibility",
-        "qa_type": "compatibility",
-        "layer": "compatibility",
-        "automation": "auto",
-        "status": "passed",
-        "layer_status": "passed",
-        "reason_code": "",
-        "assertion_count": 20,
-        "command": "python3 -m pytest -q -k regression --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260424T185315726742",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/tc-011-compatibility/__RUN_ID__.json",
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-011-COMPATIBILITY/browser-evidence-pack.json",
-          ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-011-COMPATIBILITY/replay/result.json",
-          ".beacon/evidence/qa-feature/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/tc-011-compatibility/run-20260424T185315726742.json"
-        ],
-        "execution_fingerprint": "05bf9a6afe8a065016e88d68e22f490a21ff0ddd1c6dd66ef4f7c94e07952a8d",
-        "started_at": "2026-04-24T18:54:39.598403",
-        "ended_at": "2026-04-24T18:54:48.508015",
-        "junit_path": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-011-COMPATIBILITY/explore/junit.xml",
-        "junit_valid": true,
-        "browser_required": true,
-        "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-011-COMPATIBILITY/browser-evidence-pack.json",
-        "replay_required": true,
-        "replay_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-011-COMPATIBILITY/replay/result.json",
-        "stop_on_fail": false,
-        "round_stop_trigger": false,
-        "round_stop_reasons": [],
-        "round_stop_anchor": ""
-      },
-      {
-        "tc_id": "TC-007-HAPPY",
+        "tc_id": "TC-013",
         "ac_id": "AC-002",
-        "source_tc_id": "TC-007",
-        "scenario_id": "SC-021",
-        "scenario_family": "happy",
+        "source_tc_id": "TC-013",
+        "scenario_id": "",
+        "scenario_family": "",
         "qa_type": "contract",
         "layer": "contract",
         "automation": "auto",
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
-        "assertion_count": 8,
-        "command": "python3 -m pytest -q tests/test_v138_archive_command.py tests/test_gate_delivery_execution_artifacts.py tests/test_v112_implementation_plan_runtime.py tests/test_v131_cognitive_load_gates.py -k \"test_v138_archive_command_should_materialize_governance_and_block_delivery or test_gate_release_should_ignore_support_implementation_plan_marker or test_v112_release_gate_should_ignore_cross_version_qa_status_and_fallback_to_current_revision or test_v131_gate_release_should_ignore_cross_version_qa_status_and_use_current_revision_feature\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260424T185315726742",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/tc-007-happy/__RUN_ID__.json",
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-007-HAPPY/browser-evidence-pack.json",
-          ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-007-HAPPY/replay/result.json",
-          ".beacon/evidence/qa-feature/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/tc-007-happy/run-20260424T185315726742.json"
-        ],
-        "execution_fingerprint": "7434c7668a9d705d984316b06e87a67a7c34b96ca083add41d8e704083c27bea",
-        "started_at": "2026-04-24T18:54:48.510452",
-        "ended_at": "2026-04-24T18:54:51.853850",
-        "junit_path": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-007-HAPPY/replay/junit.xml",
-        "junit_valid": true,
-        "browser_required": true,
-        "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-007-HAPPY/browser-evidence-pack.json",
-        "replay_required": true,
-        "replay_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-007-HAPPY/replay/result.json",
-        "stop_on_fail": true,
-        "round_stop_trigger": false,
-        "round_stop_reasons": [],
-        "round_stop_anchor": ""
-      },
-      {
-        "tc_id": "TC-007-NEGATIVE",
-        "ac_id": "AC-002",
-        "source_tc_id": "TC-007",
-        "scenario_id": "SC-022",
-        "scenario_family": "negative",
-        "qa_type": "contract",
-        "layer": "contract",
-        "automation": "auto",
-        "status": "passed",
-        "layer_status": "passed",
-        "reason_code": "",
-        "assertion_count": 8,
-        "command": "python3 -m pytest -q tests/test_v138_archive_command.py tests/test_gate_delivery_execution_artifacts.py tests/test_v112_implementation_plan_runtime.py tests/test_v131_cognitive_load_gates.py -k \"test_v138_archive_command_should_materialize_governance_and_block_delivery or test_gate_release_should_ignore_support_implementation_plan_marker or test_v112_release_gate_should_ignore_cross_version_qa_status_and_fallback_to_current_revision or test_v131_gate_release_should_ignore_cross_version_qa_status_and_use_current_revision_feature\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260424T185315726742",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/tc-007-negative/__RUN_ID__.json",
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-007-NEGATIVE/browser-evidence-pack.json",
-          ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-007-NEGATIVE/replay/result.json",
-          ".beacon/evidence/qa-feature/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/tc-007-negative/run-20260424T185315726742.json"
-        ],
-        "execution_fingerprint": "be0a2e2bc92ccc6466534e0c0b3a17f36483c880be03cbf8da86429c56452fb1",
-        "started_at": "2026-04-24T18:54:51.855849",
-        "ended_at": "2026-04-24T18:54:55.222815",
-        "junit_path": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-007-NEGATIVE/replay/junit.xml",
-        "junit_valid": true,
-        "browser_required": true,
-        "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-007-NEGATIVE/browser-evidence-pack.json",
-        "replay_required": true,
-        "replay_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-007-NEGATIVE/replay/result.json",
-        "stop_on_fail": false,
-        "round_stop_trigger": false,
-        "round_stop_reasons": [],
-        "round_stop_anchor": ""
-      },
-      {
-        "tc_id": "TC-007-BOUNDARY",
-        "ac_id": "AC-002",
-        "source_tc_id": "TC-007",
-        "scenario_id": "SC-023",
-        "scenario_family": "boundary",
-        "qa_type": "contract",
-        "layer": "contract",
-        "automation": "auto",
-        "status": "passed",
-        "layer_status": "passed",
-        "reason_code": "",
-        "assertion_count": 4,
-        "command": "python3 -m pytest -q tests/test_v138_archive_command.py tests/test_gate_delivery_execution_artifacts.py tests/test_v112_implementation_plan_runtime.py tests/test_v131_cognitive_load_gates.py -k \"test_v138_archive_command_should_materialize_governance_and_block_delivery or test_gate_release_should_ignore_support_implementation_plan_marker or test_v112_release_gate_should_ignore_cross_version_qa_status_and_fallback_to_current_revision or test_v131_gate_release_should_ignore_cross_version_qa_status_and_use_current_revision_feature\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260424T185315726742",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/tc-007-boundary/__RUN_ID__.json",
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-007-BOUNDARY/browser-evidence-pack.json",
-          ".beacon/evidence/qa-feature/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/tc-007-boundary/run-20260424T185315726742.json"
-        ],
-        "execution_fingerprint": "b3649dac76275584253ee2f584c52b1109888bd3f294b97ec38066f0f1097f66",
-        "started_at": "2026-04-24T18:54:55.226312",
-        "ended_at": "2026-04-24T18:54:56.969474",
-        "junit_path": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-007-BOUNDARY/explore/junit.xml",
-        "junit_valid": true,
-        "browser_required": true,
-        "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-007-BOUNDARY/browser-evidence-pack.json",
-        "replay_required": false,
-        "replay_ref": "",
-        "stop_on_fail": false,
-        "round_stop_trigger": false,
-        "round_stop_reasons": [],
-        "round_stop_anchor": ""
-      },
-      {
-        "tc_id": "TC-007-RECOVERY",
-        "ac_id": "AC-002",
-        "source_tc_id": "TC-007",
-        "scenario_id": "SC-024",
-        "scenario_family": "recovery",
-        "qa_type": "contract",
-        "layer": "contract",
-        "automation": "auto",
-        "status": "passed",
-        "layer_status": "passed",
-        "reason_code": "",
-        "assertion_count": 4,
-        "command": "python3 -m pytest -q tests/test_v138_archive_command.py tests/test_gate_delivery_execution_artifacts.py tests/test_v112_implementation_plan_runtime.py tests/test_v131_cognitive_load_gates.py -k \"test_v138_archive_command_should_materialize_governance_and_block_delivery or test_gate_release_should_ignore_support_implementation_plan_marker or test_v112_release_gate_should_ignore_cross_version_qa_status_and_fallback_to_current_revision or test_v131_gate_release_should_ignore_cross_version_qa_status_and_use_current_revision_feature\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260424T185315726742",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/tc-007-recovery/__RUN_ID__.json",
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-007-RECOVERY/browser-evidence-pack.json",
-          ".beacon/evidence/qa-feature/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/tc-007-recovery/run-20260424T185315726742.json"
-        ],
-        "execution_fingerprint": "a94a631be48894e573030ed44ee271a41d74f2d0e7fa40ca33c5a1ea72a9a8ab",
-        "started_at": "2026-04-24T18:54:56.972080",
-        "ended_at": "2026-04-24T18:54:58.670138",
-        "junit_path": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-007-RECOVERY/explore/junit.xml",
-        "junit_valid": true,
-        "browser_required": true,
-        "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-007-RECOVERY/browser-evidence-pack.json",
-        "replay_required": false,
-        "replay_ref": "",
-        "stop_on_fail": false,
-        "round_stop_trigger": false,
-        "round_stop_reasons": [],
-        "round_stop_anchor": ""
-      },
-      {
-        "tc_id": "TC-007-COMPATIBILITY",
-        "ac_id": "AC-002",
-        "source_tc_id": "TC-007",
-        "scenario_id": "SC-025",
-        "scenario_family": "compatibility",
-        "qa_type": "compatibility",
-        "layer": "compatibility",
-        "automation": "auto",
-        "status": "passed",
-        "layer_status": "passed",
-        "reason_code": "",
-        "assertion_count": 186,
+        "assertion_count": 200,
         "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260424T185315726742",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/tc-007-compatibility/__RUN_ID__.json",
+        "run_id": "run-20260429T141709018183",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write/tc-013/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-007-COMPATIBILITY/browser-evidence-pack.json",
-          ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-007-COMPATIBILITY/replay/result.json",
-          ".beacon/evidence/qa-feature/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/tc-007-compatibility/run-20260424T185315726742.json"
+          ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-013/command.txt",
+          ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-013/stdout.log",
+          ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-013/stderr.log",
+          ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-013/junit.xml",
+          ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-013/result.json"
         ],
-        "execution_fingerprint": "d6f490eceda16a3026499935c698526ae3efd952a2f56573395d2901be7e3ebb",
-        "started_at": "2026-04-24T18:54:58.672271",
-        "ended_at": "2026-04-24T18:55:26.446643",
-        "junit_path": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-007-COMPATIBILITY/explore/junit.xml",
+        "execution_fingerprint": "d32e7ef202d95fd08f7756f6d786206aa5e376a6f44bef96e26b7ce6f93c1ce2",
+        "started_at": "2026-04-29T14:17:59.638852",
+        "ended_at": "2026-04-29T14:18:32.682166",
+        "junit_path": ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-013/junit.xml",
         "junit_valid": true,
-        "browser_required": true,
-        "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-007-COMPATIBILITY/browser-evidence-pack.json",
-        "replay_required": true,
-        "replay_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-007-COMPATIBILITY/replay/result.json",
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
         "stop_on_fail": false,
-        "round_stop_trigger": true,
-        "round_stop_reasons": [
-          "required_replay_missing"
-        ],
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-008-HAPPY",
+        "tc_id": "TC-014",
         "ac_id": "AC-003",
-        "source_tc_id": "TC-008",
-        "scenario_id": "SC-036",
-        "scenario_family": "happy",
+        "source_tc_id": "TC-014",
+        "scenario_id": "",
+        "scenario_family": "",
         "qa_type": "integration",
         "layer": "integration",
         "automation": "auto",
@@ -753,237 +239,159 @@
         "reason_code": "",
         "assertion_count": 13,
         "command": "python3 -m pytest -q -k integration --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260424T185315726742",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/tc-008-happy/__RUN_ID__.json",
+        "run_id": "run-20260429T141709018183",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write/tc-014/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-008-HAPPY/browser-evidence-pack.json",
-          ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-008-HAPPY/replay/result.json",
-          ".beacon/evidence/qa-feature/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/tc-008-happy/run-20260424T185315726742.json"
+          ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-014/command.txt",
+          ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-014/stdout.log",
+          ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-014/stderr.log",
+          ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-014/junit.xml",
+          ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-014/result.json"
         ],
-        "execution_fingerprint": "",
-        "started_at": "",
-        "ended_at": "",
-        "junit_path": "",
-        "junit_valid": false,
-        "browser_required": true,
-        "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-008-HAPPY/browser-evidence-pack.json",
-        "replay_required": true,
-        "replay_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-008-HAPPY/replay/result.json",
-        "stop_on_fail": true,
-        "round_stop_trigger": false,
-        "round_stop_reasons": [
-          "required_replay_missing"
-        ],
-        "round_stop_anchor": "TC-007-COMPATIBILITY"
-      },
-      {
-        "tc_id": "TC-008-NEGATIVE",
-        "ac_id": "AC-003",
-        "source_tc_id": "TC-008",
-        "scenario_id": "SC-037",
-        "scenario_family": "negative",
-        "qa_type": "integration",
-        "layer": "integration",
-        "automation": "auto",
-        "status": "passed",
-        "layer_status": "passed",
-        "reason_code": "",
-        "assertion_count": 13,
-        "command": "python3 -m pytest -q -k integration --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260424T185315726742",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/tc-008-negative/__RUN_ID__.json",
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-008-NEGATIVE/browser-evidence-pack.json",
-          ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-008-NEGATIVE/replay/result.json",
-          ".beacon/evidence/qa-feature/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/tc-008-negative/run-20260424T185315726742.json"
-        ],
-        "execution_fingerprint": "",
-        "started_at": "",
-        "ended_at": "",
-        "junit_path": "",
-        "junit_valid": false,
-        "browser_required": true,
-        "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-008-NEGATIVE/browser-evidence-pack.json",
-        "replay_required": true,
-        "replay_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-008-NEGATIVE/replay/result.json",
-        "stop_on_fail": false,
-        "round_stop_trigger": false,
-        "round_stop_reasons": [
-          "required_replay_missing"
-        ],
-        "round_stop_anchor": "TC-007-COMPATIBILITY"
-      },
-      {
-        "tc_id": "TC-008-BOUNDARY",
-        "ac_id": "AC-003",
-        "source_tc_id": "TC-008",
-        "scenario_id": "SC-038",
-        "scenario_family": "boundary",
-        "qa_type": "integration",
-        "layer": "integration",
-        "automation": "auto",
-        "status": "passed",
-        "layer_status": "passed",
-        "reason_code": "",
-        "assertion_count": 13,
-        "command": "python3 -m pytest -q -k integration --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260424T185315726742",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/tc-008-boundary/__RUN_ID__.json",
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-008-BOUNDARY/browser-evidence-pack.json",
-          ".beacon/evidence/qa-feature/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/tc-008-boundary/run-20260424T185315726742.json"
-        ],
-        "execution_fingerprint": "",
-        "started_at": "",
-        "ended_at": "",
-        "junit_path": "",
-        "junit_valid": false,
-        "browser_required": true,
-        "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-008-BOUNDARY/browser-evidence-pack.json",
+        "execution_fingerprint": "40bc2074dfbd7591e73a576a3054d4274213b27f81bf6dbb4a66aa26ea58b01f",
+        "started_at": "2026-04-29T14:18:32.683053",
+        "ended_at": "2026-04-29T14:18:38.686351",
+        "junit_path": ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-014/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
         "replay_required": false,
         "replay_ref": "",
         "stop_on_fail": false,
         "round_stop_trigger": false,
-        "round_stop_reasons": [
-          "required_replay_missing"
-        ],
-        "round_stop_anchor": "TC-007-COMPATIBILITY"
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-008-RECOVERY",
-        "ac_id": "AC-003",
-        "source_tc_id": "TC-008",
-        "scenario_id": "SC-039",
-        "scenario_family": "recovery",
-        "qa_type": "integration",
-        "layer": "integration",
+        "tc_id": "TC-015",
+        "ac_id": "AC-004",
+        "source_tc_id": "TC-015",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "smoke",
+        "layer": "smoke",
         "automation": "auto",
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
-        "assertion_count": 13,
-        "command": "python3 -m pytest -q -k integration --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260424T185315726742",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/tc-008-recovery/__RUN_ID__.json",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q -m smoke --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260429T141709018183",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write/tc-015/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-008-RECOVERY/browser-evidence-pack.json",
-          ".beacon/evidence/qa-feature/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/tc-008-recovery/run-20260424T185315726742.json"
+          ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-015/command.txt",
+          ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-015/stdout.log",
+          ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-015/stderr.log",
+          ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-015/junit.xml",
+          ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-015/result.json"
         ],
-        "execution_fingerprint": "",
-        "started_at": "",
-        "ended_at": "",
-        "junit_path": "",
-        "junit_valid": false,
-        "browser_required": true,
-        "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-008-RECOVERY/browser-evidence-pack.json",
+        "execution_fingerprint": "847d4585fb58a7fcd594e7bced0f0a32b94fc6b321201318acaf511a04ecb3e1",
+        "started_at": "2026-04-29T14:18:38.687707",
+        "ended_at": "2026-04-29T14:18:41.400856",
+        "junit_path": ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-015/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
         "replay_required": false,
         "replay_ref": "",
         "stop_on_fail": false,
         "round_stop_trigger": false,
-        "round_stop_reasons": [
-          "required_replay_missing"
-        ],
-        "round_stop_anchor": "TC-007-COMPATIBILITY"
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-008-COMPATIBILITY",
-        "ac_id": "AC-003",
-        "source_tc_id": "TC-008",
-        "scenario_id": "SC-040",
-        "scenario_family": "compatibility",
-        "qa_type": "compatibility",
-        "layer": "compatibility",
+        "tc_id": "TC-016",
+        "ac_id": "AC-005",
+        "source_tc_id": "TC-016",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "regression",
+        "layer": "regression",
         "automation": "auto",
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
-        "assertion_count": 2,
-        "command": "python3 -m pytest -q -k integration --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260424T185315726742",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/tc-008-compatibility/__RUN_ID__.json",
+        "assertion_count": 22,
+        "command": "python3 -m pytest -q -k regression --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260429T141709018183",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write/tc-016/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-008-COMPATIBILITY/browser-evidence-pack.json",
-          ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-008-COMPATIBILITY/replay/result.json",
-          ".beacon/evidence/qa-feature/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/tc-008-compatibility/run-20260424T185315726742.json"
+          ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-016/command.txt",
+          ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-016/stdout.log",
+          ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-016/stderr.log",
+          ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-016/junit.xml",
+          ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-016/result.json"
         ],
-        "execution_fingerprint": "",
-        "started_at": "",
-        "ended_at": "",
-        "junit_path": "",
-        "junit_valid": false,
-        "browser_required": true,
-        "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-008-COMPATIBILITY/browser-evidence-pack.json",
-        "replay_required": true,
-        "replay_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-008-COMPATIBILITY/replay/result.json",
+        "execution_fingerprint": "e8255d2bb51215af93c3b82d165d38fd9f5c63efb18919f0e101395c9c2370a1",
+        "started_at": "2026-04-29T14:18:41.401631",
+        "ended_at": "2026-04-29T14:18:50.357124",
+        "junit_path": ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-016/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
         "stop_on_fail": false,
         "round_stop_trigger": false,
-        "round_stop_reasons": [
-          "required_replay_missing"
-        ],
-        "round_stop_anchor": "TC-007-COMPATIBILITY"
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
       }
     ]
   },
   "quality_issues": [],
   "schema_version": "1.0",
-  "updated_at": "2026-04-24T11:13:14.982262+00:00",
-  "feature": "Beacon v1.3.8 archive governance and historical requirement isolation",
-  "feature_slug": "beacon-v1.3.8-archive-governance-and-historical-requirement-isolation",
+  "updated_at": "2026-04-29T06:18:50.437895+00:00",
+  "feature": "Beacon v1.3.9 execution projection convergence and QA acceptance dual-write",
+  "feature_slug": "beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write",
   "implementation_done": true,
   "evidence_done": true,
   "story_sequence": [
     {
       "ac_id": "AC-001",
-      "theme": "archive-status",
-      "text": "Beacon 存在 machine-readable archive status model。",
+      "theme": "artifact-taxonomy",
+      "text": "`v1.3.9` 明确 execution artifact taxonomy，至少区分 canonical envelope、required human projection、optional derived projection、deprecated template artifact。",
       "tc_ids": [
         "TC-001",
-        "TC-006",
-        "TC-011"
+        "TC-012"
       ],
       "qa_types": [
         "interface",
-        "regression",
         "unit"
       ]
     },
     {
       "ac_id": "AC-002",
-      "theme": "support-command",
-      "text": "Beacon 对外存在 `beacon archive plan/apply/status/explain`，并明确归属 support command，而非新 lifecycle stage。",
+      "theme": "qa-envelope",
+      "text": "`qa` 在 evidence-backed verdict 后会生成 machine-readable acceptance envelope。",
       "tc_ids": [
         "TC-002",
-        "TC-007",
-        "TC-012"
+        "TC-013"
       ],
       "qa_types": [
         "contract",
-        "exception",
         "unit"
       ]
     },
     {
       "ac_id": "AC-003",
-      "theme": "skill-routing",
-      "text": "Beacon 对外存在 `beacon:beacon-archive` skill，负责 archive 命令路由。",
+      "theme": "qa-dual-write",
+      "text": "同一笔 QA acceptance transaction 会自动双写 machine sink 与 human-readable execution artifact。",
       "tc_ids": [
         "TC-003",
-        "TC-008",
-        "TC-013"
+        "TC-014"
       ],
       "qa_types": [
-        "compatibility",
         "integration",
         "unit"
       ]
     },
     {
       "ac_id": "AC-004",
-      "theme": "archive-consumption",
-      "text": "Beacon 存在版本级 archive plan / archive index、feature-level archive metadata，且 `help` / `status` / `brainstorm` / `memory-friction-evolution` / `implement` / `gate` 能识别 archive boundary。",
+      "theme": "release-gate-convergence",
+      "text": "`release` 与 `gate` 消费同一 acceptance/readiness truth，不再各自产生平级 readiness source。",
       "tc_ids": [
         "TC-004",
-        "TC-009"
+        "TC-015"
       ],
       "qa_types": [
         "smoke",
@@ -992,14 +400,82 @@
     },
     {
       "ac_id": "AC-005",
-      "theme": "boundary-and-isolation",
-      "text": "`beacon-brainstorm` 只负责归档前策略讨论；历史 requirement 与历史 truth 可追溯，但不会继续默认进入当前 active delivery plane。",
+      "theme": "operator-facing-docs",
+      "text": "保留的 execution human docs 必须直接说明 public command usage、inputs、outputs、evidence refs 与 next step。",
       "tc_ids": [
         "TC-005",
+        "TC-016"
+      ],
+      "qa_types": [
+        "regression",
+        "unit"
+      ]
+    },
+    {
+      "ac_id": "AC-006",
+      "theme": "support-surface-simplification",
+      "text": "`help / status / doctor / archive` 作为解释层复用统一 read-model truth，不再默认扩张模板文档。",
+      "tc_ids": [
+        "TC-006",
+        "TC-017"
+      ],
+      "qa_types": [
+        "exception",
+        "unit"
+      ]
+    },
+    {
+      "ac_id": "AC-007",
+      "theme": "template-reduction",
+      "text": "execution 目录存在一份明确迁移策略，说明哪些旧模板保留、合并、按需生成或废弃。",
+      "tc_ids": [
+        "TC-007"
+      ],
+      "qa_types": [
+        "unit"
+      ]
+    },
+    {
+      "ac_id": "AC-008",
+      "theme": "capability-reuse",
+      "text": "新方案复用 Beacon 既有 writeback、transaction lineage、canonical projection 与 host-native orchestration 能力。",
+      "tc_ids": [
+        "TC-008"
+      ],
+      "qa_types": [
+        "unit"
+      ]
+    },
+    {
+      "ac_id": "AC-009",
+      "theme": "prototype-non-template",
+      "text": "`prototype auto` 在 host/LLM compile 失败时不会静默落到固定模板成功路径；系统会显式 downgrade 或阻断。",
+      "tc_ids": [
+        "TC-009"
+      ],
+      "qa_types": [
+        "unit"
+      ]
+    },
+    {
+      "ac_id": "AC-010",
+      "theme": "qa-three-sink-transaction",
+      "text": "QA acceptance transaction 共享一致事务元数据，并覆盖 machine sink、human sink、runtime projection sink。",
+      "tc_ids": [
         "TC-010"
       ],
       "qa_types": [
-        "functional",
+        "unit"
+      ]
+    },
+    {
+      "ac_id": "AC-011",
+      "theme": "transaction-contract-consumers",
+      "text": "`status / doctor / gate / release` 读取同一 transaction contract，并在 drift / failed transaction / missing projection 时阻断 pass verdict。",
+      "tc_ids": [
+        "TC-011"
+      ],
+      "qa_types": [
         "unit"
       ]
     }
@@ -1007,517 +483,138 @@
   "targeted_rerun": {
     "required": true,
     "reason_codes": [
-      "previous_feature_qa_not_passed",
-      "spec_fingerprint_changed"
+      "spec_fingerprint_changed",
+      "artifact_updates_pending"
     ],
     "targeted_layers": [
-      "compatibility",
       "contract",
       "integration",
-      "interface",
-      "regression"
+      "regression",
+      "smoke"
     ],
     "targeted_ac_ids": [
-      "AC-001",
       "AC-002",
-      "AC-003"
+      "AC-003",
+      "AC-004",
+      "AC-005"
     ],
     "targeted_tc_ids": [
-      "TC-006-BOUNDARY",
-      "TC-006-COMPATIBILITY",
-      "TC-006-HAPPY",
-      "TC-006-NEGATIVE",
-      "TC-006-RECOVERY",
-      "TC-007-BOUNDARY",
-      "TC-007-COMPATIBILITY",
-      "TC-007-HAPPY",
-      "TC-007-NEGATIVE",
-      "TC-007-RECOVERY",
-      "TC-008-BOUNDARY",
-      "TC-008-COMPATIBILITY",
-      "TC-008-HAPPY",
-      "TC-008-NEGATIVE",
-      "TC-008-RECOVERY",
-      "TC-011-BOUNDARY",
-      "TC-011-COMPATIBILITY",
-      "TC-011-HAPPY",
-      "TC-011-NEGATIVE",
-      "TC-011-RECOVERY"
+      "TC-013",
+      "TC-014",
+      "TC-015",
+      "TC-016"
     ],
-    "targeted_scenario_ids": [
-      "SC-006",
-      "SC-007",
-      "SC-008",
-      "SC-009",
-      "SC-010",
-      "SC-011",
-      "SC-012",
-      "SC-013",
-      "SC-014",
-      "SC-015",
-      "SC-021",
-      "SC-022",
-      "SC-023",
-      "SC-024",
-      "SC-025",
-      "SC-036",
-      "SC-037",
-      "SC-038",
-      "SC-039",
-      "SC-040"
-    ],
-    "targeted_scenario_families": [
-      "boundary",
-      "compatibility",
-      "happy",
-      "negative",
-      "recovery"
-    ]
+    "targeted_scenario_ids": [],
+    "targeted_scenario_families": []
   },
   "boundary_evidence": {
     "boundary_principles": [],
     "assumption_capture_required": true,
     "goal_driven_verification_required": true,
     "targeted_scope_only": true,
-    "verification_item_count": 20
+    "verification_item_count": 4
   },
-  "feature_matrix_path": ".beacon/qa/features/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/matrix.qa9.json",
-  "blocking_artifact_updates": [],
-  "per_item_results": [
+  "feature_matrix_path": ".beacon/qa/features/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write/matrix.qa9.json",
+  "blocking_artifact_updates": [
     {
-      "ac_id": "AC-001",
-      "tc_id": "TC-006-HAPPY",
-      "source_tc_id": "TC-006",
-      "scenario_id": "SC-006",
-      "scenario_family": "happy",
-      "test_item_id": "TEST-006",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "interface",
-      "browser_required": true,
-      "replay_required": true,
-      "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-006-HAPPY/browser-evidence-pack.json",
-      "replay_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-006-HAPPY/replay/result.json",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-006-HAPPY/browser-evidence-pack.json",
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-006-HAPPY/replay/result.json"
-      ],
-      "layer_status": "passed",
-      "assertion_count": 1,
-      "run_id": "run-20260424T185315726742"
-    },
-    {
-      "ac_id": "AC-001",
-      "tc_id": "TC-006-NEGATIVE",
-      "source_tc_id": "TC-006",
-      "scenario_id": "SC-007",
-      "scenario_family": "negative",
-      "test_item_id": "TEST-006",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "interface",
-      "browser_required": true,
-      "replay_required": true,
-      "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-006-NEGATIVE/browser-evidence-pack.json",
-      "replay_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-006-NEGATIVE/replay/result.json",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-006-NEGATIVE/browser-evidence-pack.json",
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-006-NEGATIVE/replay/result.json"
-      ],
-      "layer_status": "passed",
-      "assertion_count": 1,
-      "run_id": "run-20260424T185315726742"
-    },
-    {
-      "ac_id": "AC-001",
-      "tc_id": "TC-006-BOUNDARY",
-      "source_tc_id": "TC-006",
-      "scenario_id": "SC-008",
-      "scenario_family": "boundary",
-      "test_item_id": "TEST-006",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "interface",
-      "browser_required": true,
-      "replay_required": false,
-      "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-006-BOUNDARY/browser-evidence-pack.json",
-      "replay_ref": "",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-006-BOUNDARY/browser-evidence-pack.json"
-      ],
-      "layer_status": "passed",
-      "assertion_count": 1,
-      "run_id": "run-20260424T185315726742"
-    },
-    {
-      "ac_id": "AC-001",
-      "tc_id": "TC-006-RECOVERY",
-      "source_tc_id": "TC-006",
-      "scenario_id": "SC-009",
-      "scenario_family": "recovery",
-      "test_item_id": "TEST-006",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "interface",
-      "browser_required": true,
-      "replay_required": false,
-      "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-006-RECOVERY/browser-evidence-pack.json",
-      "replay_ref": "",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-006-RECOVERY/browser-evidence-pack.json"
-      ],
-      "layer_status": "passed",
-      "assertion_count": 1,
-      "run_id": "run-20260424T185315726742"
-    },
-    {
-      "ac_id": "AC-001",
-      "tc_id": "TC-006-COMPATIBILITY",
-      "source_tc_id": "TC-006",
-      "scenario_id": "SC-010",
-      "scenario_family": "compatibility",
-      "test_item_id": "TEST-006",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "compatibility",
-      "browser_required": true,
-      "replay_required": true,
-      "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-006-COMPATIBILITY/browser-evidence-pack.json",
-      "replay_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-006-COMPATIBILITY/replay/result.json",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-006-COMPATIBILITY/browser-evidence-pack.json",
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-006-COMPATIBILITY/replay/result.json"
-      ],
-      "layer_status": "passed",
-      "assertion_count": 1,
-      "run_id": "run-20260424T185315726742"
-    },
-    {
-      "ac_id": "AC-001",
-      "tc_id": "TC-011-HAPPY",
-      "source_tc_id": "TC-011",
-      "scenario_id": "SC-011",
-      "scenario_family": "happy",
-      "test_item_id": "TEST-011",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "regression",
-      "browser_required": true,
-      "replay_required": true,
-      "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-011-HAPPY/browser-evidence-pack.json",
-      "replay_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-011-HAPPY/replay/result.json",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-011-HAPPY/browser-evidence-pack.json",
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-011-HAPPY/replay/result.json"
-      ],
-      "layer_status": "passed",
-      "assertion_count": 1,
-      "run_id": "run-20260424T185315726742"
-    },
-    {
-      "ac_id": "AC-001",
-      "tc_id": "TC-011-NEGATIVE",
-      "source_tc_id": "TC-011",
-      "scenario_id": "SC-012",
-      "scenario_family": "negative",
-      "test_item_id": "TEST-011",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "regression",
-      "browser_required": true,
-      "replay_required": true,
-      "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-011-NEGATIVE/browser-evidence-pack.json",
-      "replay_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-011-NEGATIVE/replay/result.json",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-011-NEGATIVE/browser-evidence-pack.json",
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-011-NEGATIVE/replay/result.json"
-      ],
-      "layer_status": "passed",
-      "assertion_count": 1,
-      "run_id": "run-20260424T185315726742"
-    },
-    {
-      "ac_id": "AC-001",
-      "tc_id": "TC-011-BOUNDARY",
-      "source_tc_id": "TC-011",
-      "scenario_id": "SC-013",
-      "scenario_family": "boundary",
-      "test_item_id": "TEST-011",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "regression",
-      "browser_required": true,
-      "replay_required": false,
-      "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-011-BOUNDARY/browser-evidence-pack.json",
-      "replay_ref": "",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-011-BOUNDARY/browser-evidence-pack.json"
-      ],
-      "layer_status": "passed",
-      "assertion_count": 1,
-      "run_id": "run-20260424T185315726742"
-    },
-    {
-      "ac_id": "AC-001",
-      "tc_id": "TC-011-RECOVERY",
-      "source_tc_id": "TC-011",
-      "scenario_id": "SC-014",
-      "scenario_family": "recovery",
-      "test_item_id": "TEST-011",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "regression",
-      "browser_required": true,
-      "replay_required": false,
-      "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-011-RECOVERY/browser-evidence-pack.json",
-      "replay_ref": "",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-011-RECOVERY/browser-evidence-pack.json"
-      ],
-      "layer_status": "passed",
-      "assertion_count": 1,
-      "run_id": "run-20260424T185315726742"
-    },
-    {
-      "ac_id": "AC-001",
-      "tc_id": "TC-011-COMPATIBILITY",
-      "source_tc_id": "TC-011",
-      "scenario_id": "SC-015",
-      "scenario_family": "compatibility",
-      "test_item_id": "TEST-011",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "compatibility",
-      "browser_required": true,
-      "replay_required": true,
-      "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-011-COMPATIBILITY/browser-evidence-pack.json",
-      "replay_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-011-COMPATIBILITY/replay/result.json",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-011-COMPATIBILITY/browser-evidence-pack.json",
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-011-COMPATIBILITY/replay/result.json"
-      ],
-      "layer_status": "passed",
-      "assertion_count": 1,
-      "run_id": "run-20260424T185315726742"
-    },
-    {
-      "ac_id": "AC-002",
-      "tc_id": "TC-007-HAPPY",
-      "source_tc_id": "TC-007",
-      "scenario_id": "SC-021",
-      "scenario_family": "happy",
-      "test_item_id": "TEST-007",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "contract",
-      "browser_required": true,
-      "replay_required": true,
-      "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-007-HAPPY/browser-evidence-pack.json",
-      "replay_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-007-HAPPY/replay/result.json",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-007-HAPPY/browser-evidence-pack.json",
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-007-HAPPY/replay/result.json"
-      ],
-      "layer_status": "passed",
-      "assertion_count": 1,
-      "run_id": "run-20260424T185315726742"
-    },
-    {
-      "ac_id": "AC-002",
-      "tc_id": "TC-007-NEGATIVE",
-      "source_tc_id": "TC-007",
-      "scenario_id": "SC-022",
-      "scenario_family": "negative",
-      "test_item_id": "TEST-007",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "contract",
-      "browser_required": true,
-      "replay_required": true,
-      "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-007-NEGATIVE/browser-evidence-pack.json",
-      "replay_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-007-NEGATIVE/replay/result.json",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-007-NEGATIVE/browser-evidence-pack.json",
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-007-NEGATIVE/replay/result.json"
-      ],
-      "layer_status": "passed",
-      "assertion_count": 1,
-      "run_id": "run-20260424T185315726742"
-    },
-    {
-      "ac_id": "AC-002",
-      "tc_id": "TC-007-BOUNDARY",
-      "source_tc_id": "TC-007",
-      "scenario_id": "SC-023",
-      "scenario_family": "boundary",
-      "test_item_id": "TEST-007",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "contract",
-      "browser_required": true,
-      "replay_required": false,
-      "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-007-BOUNDARY/browser-evidence-pack.json",
-      "replay_ref": "",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-007-BOUNDARY/browser-evidence-pack.json"
-      ],
-      "layer_status": "passed",
-      "assertion_count": 1,
-      "run_id": "run-20260424T185315726742"
-    },
-    {
-      "ac_id": "AC-002",
-      "tc_id": "TC-007-RECOVERY",
-      "source_tc_id": "TC-007",
-      "scenario_id": "SC-024",
-      "scenario_family": "recovery",
-      "test_item_id": "TEST-007",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "contract",
-      "browser_required": true,
-      "replay_required": false,
-      "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-007-RECOVERY/browser-evidence-pack.json",
-      "replay_ref": "",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-007-RECOVERY/browser-evidence-pack.json"
-      ],
-      "layer_status": "passed",
-      "assertion_count": 1,
-      "run_id": "run-20260424T185315726742"
-    },
-    {
-      "ac_id": "AC-002",
-      "tc_id": "TC-007-COMPATIBILITY",
-      "source_tc_id": "TC-007",
-      "scenario_id": "SC-025",
-      "scenario_family": "compatibility",
-      "test_item_id": "TEST-007",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "compatibility",
-      "browser_required": true,
-      "replay_required": true,
-      "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-007-COMPATIBILITY/browser-evidence-pack.json",
-      "replay_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-007-COMPATIBILITY/replay/result.json",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-007-COMPATIBILITY/browser-evidence-pack.json",
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-007-COMPATIBILITY/replay/result.json"
-      ],
-      "layer_status": "passed",
-      "assertion_count": 1,
-      "run_id": "run-20260424T185315726742"
-    },
-    {
-      "ac_id": "AC-003",
-      "tc_id": "TC-008-HAPPY",
-      "source_tc_id": "TC-008",
-      "scenario_id": "SC-036",
-      "scenario_family": "happy",
-      "test_item_id": "TEST-008",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "integration",
-      "browser_required": true,
-      "replay_required": true,
-      "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-008-HAPPY/browser-evidence-pack.json",
-      "replay_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-008-HAPPY/replay/result.json",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-008-HAPPY/browser-evidence-pack.json",
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-008-HAPPY/replay/result.json"
-      ],
-      "layer_status": "passed",
-      "assertion_count": 1,
-      "run_id": "run-20260424T185315726742"
-    },
-    {
-      "ac_id": "AC-003",
-      "tc_id": "TC-008-NEGATIVE",
-      "source_tc_id": "TC-008",
-      "scenario_id": "SC-037",
-      "scenario_family": "negative",
-      "test_item_id": "TEST-008",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "integration",
-      "browser_required": true,
-      "replay_required": true,
-      "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-008-NEGATIVE/browser-evidence-pack.json",
-      "replay_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-008-NEGATIVE/replay/result.json",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-008-NEGATIVE/browser-evidence-pack.json",
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-008-NEGATIVE/replay/result.json"
-      ],
-      "layer_status": "passed",
-      "assertion_count": 1,
-      "run_id": "run-20260424T185315726742"
-    },
-    {
-      "ac_id": "AC-003",
-      "tc_id": "TC-008-BOUNDARY",
-      "source_tc_id": "TC-008",
-      "scenario_id": "SC-038",
-      "scenario_family": "boundary",
-      "test_item_id": "TEST-008",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "integration",
-      "browser_required": true,
-      "replay_required": false,
-      "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-008-BOUNDARY/browser-evidence-pack.json",
-      "replay_ref": "",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-008-BOUNDARY/browser-evidence-pack.json"
-      ],
-      "layer_status": "passed",
-      "assertion_count": 1,
-      "run_id": "run-20260424T185315726742"
-    },
-    {
-      "ac_id": "AC-003",
-      "tc_id": "TC-008-RECOVERY",
-      "source_tc_id": "TC-008",
-      "scenario_id": "SC-039",
-      "scenario_family": "recovery",
-      "test_item_id": "TEST-008",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "integration",
-      "browser_required": true,
-      "replay_required": false,
-      "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-008-RECOVERY/browser-evidence-pack.json",
-      "replay_ref": "",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-008-RECOVERY/browser-evidence-pack.json"
-      ],
-      "layer_status": "passed",
-      "assertion_count": 1,
-      "run_id": "run-20260424T185315726742"
-    },
-    {
-      "ac_id": "AC-003",
-      "tc_id": "TC-008-COMPATIBILITY",
-      "source_tc_id": "TC-008",
-      "scenario_id": "SC-040",
-      "scenario_family": "compatibility",
-      "test_item_id": "TEST-008",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "compatibility",
-      "browser_required": true,
-      "replay_required": true,
-      "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-008-COMPATIBILITY/browser-evidence-pack.json",
-      "replay_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-008-COMPATIBILITY/replay/result.json",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-008-COMPATIBILITY/browser-evidence-pack.json",
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-008-COMPATIBILITY/replay/result.json"
-      ],
-      "layer_status": "passed",
-      "assertion_count": 1,
-      "run_id": "run-20260424T185315726742"
+      "artifact": "review_quality",
+      "required": true,
+      "reason": "run quality review after native implementation",
+      "status": "open",
+      "notes": ""
     }
   ],
-  "execution_mode": "story-exhaustive",
+  "per_item_results": [
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-013",
+      "source_tc_id": "TC-013",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-013",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-013/command.txt",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-013/stdout.log",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-013/stderr.log",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-013/junit.xml",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-013/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-014",
+      "source_tc_id": "TC-014",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-014",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "integration",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-014/command.txt",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-014/stdout.log",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-014/stderr.log",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-014/junit.xml",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-014/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-015",
+      "source_tc_id": "TC-015",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-015",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "smoke",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-015/command.txt",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-015/stdout.log",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-015/stderr.log",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-015/junit.xml",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-015/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-005",
+      "tc_id": "TC-016",
+      "source_tc_id": "TC-016",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-016",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "regression",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-016/command.txt",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-016/stdout.log",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-016/stderr.log",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-016/junit.xml",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-016/result.json"
+      ]
+    }
+  ],
+  "execution_mode": "feature-aware",
   "project_profile": {},
   "project_profile_gate": {
     "status": "not_configured",
@@ -1529,30 +626,18 @@
   },
   "project_orchestration": {},
   "current_session_id": "",
-  "canonical_matrix_path": "docs/beacon/v1.3.8/.machine/qa/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.qa9-matrix.json",
+  "canonical_matrix_path": "docs/beacon/v1.3.9/.machine/qa/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.qa9-matrix.json",
   "exhaustiveness": {
     "schema_version": "1.0",
-    "feature": "Beacon v1.3.8 archive governance and historical requirement isolation",
-    "feature_slug": "beacon-v1.3.8-archive-governance-and-historical-requirement-isolation",
-    "run_id": "run-20260424T185315726742",
-    "generated_at": "2026-04-24T11:12:30.785515+00:00",
-    "execution_mode": "story-exhaustive",
-    "scenario_count": 20,
-    "browser_scenario_count": 20,
-    "required_families": [
-      "boundary",
-      "compatibility",
-      "happy",
-      "negative",
-      "recovery"
-    ],
-    "passed_families": [
-      "boundary",
-      "compatibility",
-      "happy",
-      "negative",
-      "recovery"
-    ],
+    "feature": "Beacon v1.3.9 execution projection convergence and QA acceptance dual-write",
+    "feature_slug": "beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write",
+    "run_id": "run-20260429T141709018183",
+    "generated_at": "2026-04-29T06:18:50.510269+00:00",
+    "execution_mode": "feature-aware",
+    "scenario_count": 4,
+    "browser_scenario_count": 0,
+    "required_families": [],
+    "passed_families": [],
     "missing_axes": [],
     "missing_replay_scenarios": [],
     "missing_browser_evidence_scenarios": [],
@@ -1561,7 +646,7 @@
     "replay_coverage_rate": 1.0,
     "browser_evidence_rate": 1.0,
     "score": 1.0,
-    "threshold": 0.8,
+    "threshold": 0.6,
     "status": "passed",
     "required_next_action": "continue_current_plan",
     "failure_streak": 0,
@@ -1569,328 +654,12 @@
   },
   "scenario_results_v2": [
     {
-      "scenario_id": "SC-006",
-      "tc_id": "TC-006-HAPPY",
-      "source_tc_id": "TC-006",
-      "ac_id": "AC-001",
-      "feature_slug": "beacon-v1.3.8-archive-governance-and-historical-requirement-isolation",
-      "scenario_family": "happy",
-      "status": "passed",
-      "closure_outcome": "accepted",
-      "confidence_raw": 1.0,
-      "confidence_calibrated": 1.0,
-      "confidence_band": "high",
-      "requires_human_review": false,
-      "evidence_sufficiency": "strong",
-      "root_cause_type": "none",
-      "reason_code": "",
-      "browser_required": true,
-      "replay_required": true,
-      "replay_present": true,
-      "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-006-HAPPY/browser-evidence-pack.json",
-      "judge_signals": {
-        "status_score": 1.0,
-        "evidence_score": 1.0,
-        "replay_score": 1.0,
-        "trace_score": 1.0,
-        "flake_penalty": 0.0
-      },
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-006-HAPPY/browser-evidence-pack.json",
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-006-HAPPY/replay/result.json"
-      ]
-    },
-    {
-      "scenario_id": "SC-007",
-      "tc_id": "TC-006-NEGATIVE",
-      "source_tc_id": "TC-006",
-      "ac_id": "AC-001",
-      "feature_slug": "beacon-v1.3.8-archive-governance-and-historical-requirement-isolation",
-      "scenario_family": "negative",
-      "status": "passed",
-      "closure_outcome": "accepted",
-      "confidence_raw": 1.0,
-      "confidence_calibrated": 1.0,
-      "confidence_band": "high",
-      "requires_human_review": false,
-      "evidence_sufficiency": "strong",
-      "root_cause_type": "none",
-      "reason_code": "",
-      "browser_required": true,
-      "replay_required": true,
-      "replay_present": true,
-      "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-006-NEGATIVE/browser-evidence-pack.json",
-      "judge_signals": {
-        "status_score": 1.0,
-        "evidence_score": 1.0,
-        "replay_score": 1.0,
-        "trace_score": 1.0,
-        "flake_penalty": 0.0
-      },
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-006-NEGATIVE/browser-evidence-pack.json",
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-006-NEGATIVE/replay/result.json"
-      ]
-    },
-    {
-      "scenario_id": "SC-008",
-      "tc_id": "TC-006-BOUNDARY",
-      "source_tc_id": "TC-006",
-      "ac_id": "AC-001",
-      "feature_slug": "beacon-v1.3.8-archive-governance-and-historical-requirement-isolation",
-      "scenario_family": "boundary",
-      "status": "passed",
-      "closure_outcome": "accepted",
-      "confidence_raw": 1.0,
-      "confidence_calibrated": 1.0,
-      "confidence_band": "high",
-      "requires_human_review": false,
-      "evidence_sufficiency": "strong",
-      "root_cause_type": "none",
-      "reason_code": "",
-      "browser_required": true,
-      "replay_required": false,
-      "replay_present": false,
-      "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-006-BOUNDARY/browser-evidence-pack.json",
-      "judge_signals": {
-        "status_score": 1.0,
-        "evidence_score": 1.0,
-        "replay_score": 1.0,
-        "trace_score": 1.0,
-        "flake_penalty": 0.0
-      },
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-006-BOUNDARY/browser-evidence-pack.json"
-      ]
-    },
-    {
-      "scenario_id": "SC-009",
-      "tc_id": "TC-006-RECOVERY",
-      "source_tc_id": "TC-006",
-      "ac_id": "AC-001",
-      "feature_slug": "beacon-v1.3.8-archive-governance-and-historical-requirement-isolation",
-      "scenario_family": "recovery",
-      "status": "passed",
-      "closure_outcome": "accepted",
-      "confidence_raw": 1.0,
-      "confidence_calibrated": 1.0,
-      "confidence_band": "high",
-      "requires_human_review": false,
-      "evidence_sufficiency": "strong",
-      "root_cause_type": "none",
-      "reason_code": "",
-      "browser_required": true,
-      "replay_required": false,
-      "replay_present": false,
-      "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-006-RECOVERY/browser-evidence-pack.json",
-      "judge_signals": {
-        "status_score": 1.0,
-        "evidence_score": 1.0,
-        "replay_score": 1.0,
-        "trace_score": 1.0,
-        "flake_penalty": 0.0
-      },
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-006-RECOVERY/browser-evidence-pack.json"
-      ]
-    },
-    {
-      "scenario_id": "SC-010",
-      "tc_id": "TC-006-COMPATIBILITY",
-      "source_tc_id": "TC-006",
-      "ac_id": "AC-001",
-      "feature_slug": "beacon-v1.3.8-archive-governance-and-historical-requirement-isolation",
-      "scenario_family": "compatibility",
-      "status": "passed",
-      "closure_outcome": "accepted",
-      "confidence_raw": 1.0,
-      "confidence_calibrated": 1.0,
-      "confidence_band": "high",
-      "requires_human_review": false,
-      "evidence_sufficiency": "strong",
-      "root_cause_type": "none",
-      "reason_code": "",
-      "browser_required": true,
-      "replay_required": true,
-      "replay_present": true,
-      "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-006-COMPATIBILITY/browser-evidence-pack.json",
-      "judge_signals": {
-        "status_score": 1.0,
-        "evidence_score": 1.0,
-        "replay_score": 1.0,
-        "trace_score": 1.0,
-        "flake_penalty": 0.0
-      },
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-006-COMPATIBILITY/browser-evidence-pack.json",
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-006-COMPATIBILITY/replay/result.json"
-      ]
-    },
-    {
-      "scenario_id": "SC-011",
-      "tc_id": "TC-011-HAPPY",
-      "source_tc_id": "TC-011",
-      "ac_id": "AC-001",
-      "feature_slug": "beacon-v1.3.8-archive-governance-and-historical-requirement-isolation",
-      "scenario_family": "happy",
-      "status": "passed",
-      "closure_outcome": "accepted",
-      "confidence_raw": 1.0,
-      "confidence_calibrated": 1.0,
-      "confidence_band": "high",
-      "requires_human_review": false,
-      "evidence_sufficiency": "strong",
-      "root_cause_type": "none",
-      "reason_code": "",
-      "browser_required": true,
-      "replay_required": true,
-      "replay_present": true,
-      "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-011-HAPPY/browser-evidence-pack.json",
-      "judge_signals": {
-        "status_score": 1.0,
-        "evidence_score": 1.0,
-        "replay_score": 1.0,
-        "trace_score": 1.0,
-        "flake_penalty": 0.0
-      },
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-011-HAPPY/browser-evidence-pack.json",
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-011-HAPPY/replay/result.json"
-      ]
-    },
-    {
-      "scenario_id": "SC-012",
-      "tc_id": "TC-011-NEGATIVE",
-      "source_tc_id": "TC-011",
-      "ac_id": "AC-001",
-      "feature_slug": "beacon-v1.3.8-archive-governance-and-historical-requirement-isolation",
-      "scenario_family": "negative",
-      "status": "passed",
-      "closure_outcome": "accepted",
-      "confidence_raw": 1.0,
-      "confidence_calibrated": 1.0,
-      "confidence_band": "high",
-      "requires_human_review": false,
-      "evidence_sufficiency": "strong",
-      "root_cause_type": "none",
-      "reason_code": "",
-      "browser_required": true,
-      "replay_required": true,
-      "replay_present": true,
-      "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-011-NEGATIVE/browser-evidence-pack.json",
-      "judge_signals": {
-        "status_score": 1.0,
-        "evidence_score": 1.0,
-        "replay_score": 1.0,
-        "trace_score": 1.0,
-        "flake_penalty": 0.0
-      },
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-011-NEGATIVE/browser-evidence-pack.json",
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-011-NEGATIVE/replay/result.json"
-      ]
-    },
-    {
-      "scenario_id": "SC-013",
-      "tc_id": "TC-011-BOUNDARY",
-      "source_tc_id": "TC-011",
-      "ac_id": "AC-001",
-      "feature_slug": "beacon-v1.3.8-archive-governance-and-historical-requirement-isolation",
-      "scenario_family": "boundary",
-      "status": "passed",
-      "closure_outcome": "accepted",
-      "confidence_raw": 1.0,
-      "confidence_calibrated": 1.0,
-      "confidence_band": "high",
-      "requires_human_review": false,
-      "evidence_sufficiency": "strong",
-      "root_cause_type": "none",
-      "reason_code": "",
-      "browser_required": true,
-      "replay_required": false,
-      "replay_present": false,
-      "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-011-BOUNDARY/browser-evidence-pack.json",
-      "judge_signals": {
-        "status_score": 1.0,
-        "evidence_score": 1.0,
-        "replay_score": 1.0,
-        "trace_score": 1.0,
-        "flake_penalty": 0.0
-      },
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-011-BOUNDARY/browser-evidence-pack.json"
-      ]
-    },
-    {
-      "scenario_id": "SC-014",
-      "tc_id": "TC-011-RECOVERY",
-      "source_tc_id": "TC-011",
-      "ac_id": "AC-001",
-      "feature_slug": "beacon-v1.3.8-archive-governance-and-historical-requirement-isolation",
-      "scenario_family": "recovery",
-      "status": "passed",
-      "closure_outcome": "accepted",
-      "confidence_raw": 1.0,
-      "confidence_calibrated": 1.0,
-      "confidence_band": "high",
-      "requires_human_review": false,
-      "evidence_sufficiency": "strong",
-      "root_cause_type": "none",
-      "reason_code": "",
-      "browser_required": true,
-      "replay_required": false,
-      "replay_present": false,
-      "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-011-RECOVERY/browser-evidence-pack.json",
-      "judge_signals": {
-        "status_score": 1.0,
-        "evidence_score": 1.0,
-        "replay_score": 1.0,
-        "trace_score": 1.0,
-        "flake_penalty": 0.0
-      },
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-011-RECOVERY/browser-evidence-pack.json"
-      ]
-    },
-    {
-      "scenario_id": "SC-015",
-      "tc_id": "TC-011-COMPATIBILITY",
-      "source_tc_id": "TC-011",
-      "ac_id": "AC-001",
-      "feature_slug": "beacon-v1.3.8-archive-governance-and-historical-requirement-isolation",
-      "scenario_family": "compatibility",
-      "status": "passed",
-      "closure_outcome": "accepted",
-      "confidence_raw": 1.0,
-      "confidence_calibrated": 1.0,
-      "confidence_band": "high",
-      "requires_human_review": false,
-      "evidence_sufficiency": "strong",
-      "root_cause_type": "none",
-      "reason_code": "",
-      "browser_required": true,
-      "replay_required": true,
-      "replay_present": true,
-      "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-011-COMPATIBILITY/browser-evidence-pack.json",
-      "judge_signals": {
-        "status_score": 1.0,
-        "evidence_score": 1.0,
-        "replay_score": 1.0,
-        "trace_score": 1.0,
-        "flake_penalty": 0.0
-      },
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-011-COMPATIBILITY/browser-evidence-pack.json",
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-011-COMPATIBILITY/replay/result.json"
-      ]
-    },
-    {
-      "scenario_id": "SC-021",
-      "tc_id": "TC-007-HAPPY",
-      "source_tc_id": "TC-007",
+      "scenario_id": "TC-013",
+      "tc_id": "TC-013",
+      "source_tc_id": "TC-013",
       "ac_id": "AC-002",
-      "feature_slug": "beacon-v1.3.8-archive-governance-and-historical-requirement-isolation",
-      "scenario_family": "happy",
+      "feature_slug": "beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write",
+      "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
       "confidence_raw": 1.0,
@@ -1900,74 +669,10 @@
       "evidence_sufficiency": "strong",
       "root_cause_type": "none",
       "reason_code": "",
-      "browser_required": true,
-      "replay_required": true,
-      "replay_present": true,
-      "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-007-HAPPY/browser-evidence-pack.json",
-      "judge_signals": {
-        "status_score": 1.0,
-        "evidence_score": 1.0,
-        "replay_score": 1.0,
-        "trace_score": 1.0,
-        "flake_penalty": 0.0
-      },
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-007-HAPPY/browser-evidence-pack.json",
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-007-HAPPY/replay/result.json"
-      ]
-    },
-    {
-      "scenario_id": "SC-022",
-      "tc_id": "TC-007-NEGATIVE",
-      "source_tc_id": "TC-007",
-      "ac_id": "AC-002",
-      "feature_slug": "beacon-v1.3.8-archive-governance-and-historical-requirement-isolation",
-      "scenario_family": "negative",
-      "status": "passed",
-      "closure_outcome": "accepted",
-      "confidence_raw": 1.0,
-      "confidence_calibrated": 1.0,
-      "confidence_band": "high",
-      "requires_human_review": false,
-      "evidence_sufficiency": "strong",
-      "root_cause_type": "none",
-      "reason_code": "",
-      "browser_required": true,
-      "replay_required": true,
-      "replay_present": true,
-      "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-007-NEGATIVE/browser-evidence-pack.json",
-      "judge_signals": {
-        "status_score": 1.0,
-        "evidence_score": 1.0,
-        "replay_score": 1.0,
-        "trace_score": 1.0,
-        "flake_penalty": 0.0
-      },
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-007-NEGATIVE/browser-evidence-pack.json",
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-007-NEGATIVE/replay/result.json"
-      ]
-    },
-    {
-      "scenario_id": "SC-023",
-      "tc_id": "TC-007-BOUNDARY",
-      "source_tc_id": "TC-007",
-      "ac_id": "AC-002",
-      "feature_slug": "beacon-v1.3.8-archive-governance-and-historical-requirement-isolation",
-      "scenario_family": "boundary",
-      "status": "passed",
-      "closure_outcome": "accepted",
-      "confidence_raw": 1.0,
-      "confidence_calibrated": 1.0,
-      "confidence_band": "high",
-      "requires_human_review": false,
-      "evidence_sufficiency": "strong",
-      "root_cause_type": "none",
-      "reason_code": "",
-      "browser_required": true,
+      "browser_required": false,
       "replay_required": false,
       "replay_present": false,
-      "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-007-BOUNDARY/browser-evidence-pack.json",
+      "browser_evidence_pack_ref": "",
       "judge_signals": {
         "status_score": 1.0,
         "evidence_score": 1.0,
@@ -1976,16 +681,20 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-007-BOUNDARY/browser-evidence-pack.json"
+        ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-013/command.txt",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-013/stdout.log",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-013/stderr.log",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-013/junit.xml",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-013/result.json"
       ]
     },
     {
-      "scenario_id": "SC-024",
-      "tc_id": "TC-007-RECOVERY",
-      "source_tc_id": "TC-007",
-      "ac_id": "AC-002",
-      "feature_slug": "beacon-v1.3.8-archive-governance-and-historical-requirement-isolation",
-      "scenario_family": "recovery",
+      "scenario_id": "TC-014",
+      "tc_id": "TC-014",
+      "source_tc_id": "TC-014",
+      "ac_id": "AC-003",
+      "feature_slug": "beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write",
+      "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
       "confidence_raw": 1.0,
@@ -1995,10 +704,10 @@
       "evidence_sufficiency": "strong",
       "root_cause_type": "none",
       "reason_code": "",
-      "browser_required": true,
+      "browser_required": false,
       "replay_required": false,
       "replay_present": false,
-      "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-007-RECOVERY/browser-evidence-pack.json",
+      "browser_evidence_pack_ref": "",
       "judge_signals": {
         "status_score": 1.0,
         "evidence_score": 1.0,
@@ -2007,16 +716,20 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-007-RECOVERY/browser-evidence-pack.json"
+        ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-014/command.txt",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-014/stdout.log",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-014/stderr.log",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-014/junit.xml",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-014/result.json"
       ]
     },
     {
-      "scenario_id": "SC-025",
-      "tc_id": "TC-007-COMPATIBILITY",
-      "source_tc_id": "TC-007",
-      "ac_id": "AC-002",
-      "feature_slug": "beacon-v1.3.8-archive-governance-and-historical-requirement-isolation",
-      "scenario_family": "compatibility",
+      "scenario_id": "TC-015",
+      "tc_id": "TC-015",
+      "source_tc_id": "TC-015",
+      "ac_id": "AC-004",
+      "feature_slug": "beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write",
+      "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
       "confidence_raw": 1.0,
@@ -2026,106 +739,10 @@
       "evidence_sufficiency": "strong",
       "root_cause_type": "none",
       "reason_code": "",
-      "browser_required": true,
-      "replay_required": true,
-      "replay_present": true,
-      "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-007-COMPATIBILITY/browser-evidence-pack.json",
-      "judge_signals": {
-        "status_score": 1.0,
-        "evidence_score": 1.0,
-        "replay_score": 1.0,
-        "trace_score": 1.0,
-        "flake_penalty": 0.0
-      },
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-007-COMPATIBILITY/browser-evidence-pack.json",
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-007-COMPATIBILITY/replay/result.json"
-      ]
-    },
-    {
-      "scenario_id": "SC-036",
-      "tc_id": "TC-008-HAPPY",
-      "source_tc_id": "TC-008",
-      "ac_id": "AC-003",
-      "feature_slug": "beacon-v1.3.8-archive-governance-and-historical-requirement-isolation",
-      "scenario_family": "happy",
-      "status": "passed",
-      "closure_outcome": "accepted",
-      "confidence_raw": 1.0,
-      "confidence_calibrated": 1.0,
-      "confidence_band": "high",
-      "requires_human_review": false,
-      "evidence_sufficiency": "strong",
-      "root_cause_type": "none",
-      "reason_code": "",
-      "browser_required": true,
-      "replay_required": true,
-      "replay_present": true,
-      "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-008-HAPPY/browser-evidence-pack.json",
-      "judge_signals": {
-        "status_score": 1.0,
-        "evidence_score": 1.0,
-        "replay_score": 1.0,
-        "trace_score": 1.0,
-        "flake_penalty": 0.0
-      },
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-008-HAPPY/browser-evidence-pack.json",
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-008-HAPPY/replay/result.json"
-      ]
-    },
-    {
-      "scenario_id": "SC-037",
-      "tc_id": "TC-008-NEGATIVE",
-      "source_tc_id": "TC-008",
-      "ac_id": "AC-003",
-      "feature_slug": "beacon-v1.3.8-archive-governance-and-historical-requirement-isolation",
-      "scenario_family": "negative",
-      "status": "passed",
-      "closure_outcome": "accepted",
-      "confidence_raw": 1.0,
-      "confidence_calibrated": 1.0,
-      "confidence_band": "high",
-      "requires_human_review": false,
-      "evidence_sufficiency": "strong",
-      "root_cause_type": "none",
-      "reason_code": "",
-      "browser_required": true,
-      "replay_required": true,
-      "replay_present": true,
-      "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-008-NEGATIVE/browser-evidence-pack.json",
-      "judge_signals": {
-        "status_score": 1.0,
-        "evidence_score": 1.0,
-        "replay_score": 1.0,
-        "trace_score": 1.0,
-        "flake_penalty": 0.0
-      },
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-008-NEGATIVE/browser-evidence-pack.json",
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-008-NEGATIVE/replay/result.json"
-      ]
-    },
-    {
-      "scenario_id": "SC-038",
-      "tc_id": "TC-008-BOUNDARY",
-      "source_tc_id": "TC-008",
-      "ac_id": "AC-003",
-      "feature_slug": "beacon-v1.3.8-archive-governance-and-historical-requirement-isolation",
-      "scenario_family": "boundary",
-      "status": "passed",
-      "closure_outcome": "accepted",
-      "confidence_raw": 1.0,
-      "confidence_calibrated": 1.0,
-      "confidence_band": "high",
-      "requires_human_review": false,
-      "evidence_sufficiency": "strong",
-      "root_cause_type": "none",
-      "reason_code": "",
-      "browser_required": true,
+      "browser_required": false,
       "replay_required": false,
       "replay_present": false,
-      "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-008-BOUNDARY/browser-evidence-pack.json",
+      "browser_evidence_pack_ref": "",
       "judge_signals": {
         "status_score": 1.0,
         "evidence_score": 1.0,
@@ -2134,16 +751,20 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-008-BOUNDARY/browser-evidence-pack.json"
+        ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-015/command.txt",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-015/stdout.log",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-015/stderr.log",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-015/junit.xml",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-015/result.json"
       ]
     },
     {
-      "scenario_id": "SC-039",
-      "tc_id": "TC-008-RECOVERY",
-      "source_tc_id": "TC-008",
-      "ac_id": "AC-003",
-      "feature_slug": "beacon-v1.3.8-archive-governance-and-historical-requirement-isolation",
-      "scenario_family": "recovery",
+      "scenario_id": "TC-016",
+      "tc_id": "TC-016",
+      "source_tc_id": "TC-016",
+      "ac_id": "AC-005",
+      "feature_slug": "beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write",
+      "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
       "confidence_raw": 1.0,
@@ -2153,10 +774,10 @@
       "evidence_sufficiency": "strong",
       "root_cause_type": "none",
       "reason_code": "",
-      "browser_required": true,
+      "browser_required": false,
       "replay_required": false,
       "replay_present": false,
-      "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-008-RECOVERY/browser-evidence-pack.json",
+      "browser_evidence_pack_ref": "",
       "judge_signals": {
         "status_score": 1.0,
         "evidence_score": 1.0,
@@ -2165,53 +786,25 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-008-RECOVERY/browser-evidence-pack.json"
-      ]
-    },
-    {
-      "scenario_id": "SC-040",
-      "tc_id": "TC-008-COMPATIBILITY",
-      "source_tc_id": "TC-008",
-      "ac_id": "AC-003",
-      "feature_slug": "beacon-v1.3.8-archive-governance-and-historical-requirement-isolation",
-      "scenario_family": "compatibility",
-      "status": "passed",
-      "closure_outcome": "accepted",
-      "confidence_raw": 1.0,
-      "confidence_calibrated": 1.0,
-      "confidence_band": "high",
-      "requires_human_review": false,
-      "evidence_sufficiency": "strong",
-      "root_cause_type": "none",
-      "reason_code": "",
-      "browser_required": true,
-      "replay_required": true,
-      "replay_present": true,
-      "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-008-COMPATIBILITY/browser-evidence-pack.json",
-      "judge_signals": {
-        "status_score": 1.0,
-        "evidence_score": 1.0,
-        "replay_score": 1.0,
-        "trace_score": 1.0,
-        "flake_penalty": 0.0
-      },
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-008-COMPATIBILITY/browser-evidence-pack.json",
-        ".beacon/evidence/auto-test/run-20260424T185315726742/qa9-tc/TC-008-COMPATIBILITY/replay/result.json"
+        ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-016/command.txt",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-016/stdout.log",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-016/stderr.log",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-016/junit.xml",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/qa9-tc/TC-016/result.json"
       ]
     }
   ],
-  "ac_closure_path": ".beacon/qa/features/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/ac-closure.json",
-  "feature_scorecard_path": ".beacon/qa/features/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/scorecard.json",
+  "ac_closure_path": ".beacon/qa/features/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write/ac-closure.json",
+  "feature_scorecard_path": ".beacon/qa/features/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write/scorecard.json",
   "feature_scorecard": {
     "schema_version": "1.0",
-    "feature": "Beacon v1.3.8 archive governance and historical requirement isolation",
-    "feature_slug": "beacon-v1.3.8-archive-governance-and-historical-requirement-isolation",
-    "run_id": "run-20260424T185315726742",
-    "ac_total": 3,
-    "ac_accepted": 3,
-    "scenario_total": 20,
-    "scenario_passed": 20,
+    "feature": "Beacon v1.3.9 execution projection convergence and QA acceptance dual-write",
+    "feature_slug": "beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write",
+    "run_id": "run-20260429T141709018183",
+    "ac_total": 4,
+    "ac_accepted": 4,
+    "scenario_total": 4,
+    "scenario_passed": 4,
     "release_confidence_min": 1.0,
     "release_confidence_avg": 1.0,
     "review_required_count": 0,
@@ -2221,8 +814,8 @@
     "project_profile_gate_status": "not_configured",
     "project_profile_id": "",
     "coverage_current": {
-      "required_scenarios": 20,
-      "executed_scenarios": 20,
+      "required_scenarios": 4,
+      "executed_scenarios": 4,
       "coverage_rate": 1.0,
       "required_scenario_families": [
         "boundary",
@@ -2232,11 +825,7 @@
         "recovery"
       ],
       "covered_scenario_families": [
-        "boundary",
-        "compatibility",
-        "happy",
-        "negative",
-        "recovery"
+        "primary"
       ],
       "missing_scenario_families": [],
       "missing_test_case_ids": []
@@ -2253,30 +842,30 @@
       "boundary_principles": [],
       "assumption_capture_required": true,
       "goal_driven_verification_required": true,
-      "verification_item_count": 20,
+      "verification_item_count": 4,
       "targeted_scope_only": true
     },
     "continue_decision": "ready_for_release",
     "stop_reasons": [],
     "test_case_backfill_required": false,
-    "resume_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.3.8 --feature \"Beacon v1.3.8 archive governance and historical requirement isolation\"",
+    "resume_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.3.9 --feature \"Beacon v1.3.9 execution projection convergence and QA acceptance dual-write\"",
     "repair_handoff": {
-      "action": "release",
-      "reason": "release_ready",
-      "command": "beacon release check v1.3.8 --project /Users/apple/Developer/Personal/products/beacon"
+      "action": "qa-repair",
+      "reason": "qa_round_incomplete",
+      "command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.3.9 --feature \"Beacon v1.3.9 execution projection convergence and QA acceptance dual-write\""
     },
     "release_ready": true
   },
   "release_ready": true,
   "delivery_contract": {
     "schema_version": "1.0",
-    "feature": "Beacon v1.3.8 archive governance and historical requirement isolation",
-    "version": "v1.3.8",
-    "requested_mode": "story-exhaustive",
-    "effective_mode": "story-exhaustive",
-    "generator_mode": "story-exhaustive",
-    "execution_mode": "story-exhaustive",
-    "runner_mode": "qa-team",
+    "feature": "Beacon v1.3.9 execution projection convergence and QA acceptance dual-write",
+    "version": "v1.3.9",
+    "requested_mode": "feature-aware",
+    "effective_mode": "feature-aware",
+    "generator_mode": "feature-aware",
+    "execution_mode": "feature-aware",
+    "runner_mode": "qa",
     "host_runtime": "codex",
     "fallback_reason": "",
     "capability_snapshot": {
@@ -2290,22 +879,22 @@
     },
     "subagent_prechecks": {},
     "requirement_binding": {
-      "source_of_truth_root": "docs/beacon/v1.3.8",
-      "feature_matrix_path": ".beacon/qa/features/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/matrix.qa9.json",
-      "canonical_matrix_path": "docs/beacon/v1.3.8/.machine/qa/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.qa9-matrix.json"
+      "source_of_truth_root": "docs/beacon/v1.3.9",
+      "feature_matrix_path": ".beacon/qa/features/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write/matrix.qa9.json",
+      "canonical_matrix_path": "docs/beacon/v1.3.9/.machine/qa/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.qa9-matrix.json"
     },
     "traceability_refs": [
-      ".beacon/qa/features/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/matrix.qa9.json",
-      "docs/beacon/v1.3.8/.machine/qa/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.qa9-matrix.json",
-      ".beacon/qa/features/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/ac-closure.json",
-      ".beacon/qa/features/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/scorecard.json",
-      "docs/beacon/v1.3.8/.machine/execution/implementation-summary-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.json",
-      "docs/beacon/v1.3.8/.machine/execution/technical-implementation-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.json"
+      ".beacon/qa/features/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write/matrix.qa9.json",
+      "docs/beacon/v1.3.9/.machine/qa/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.qa9-matrix.json",
+      ".beacon/qa/features/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write/ac-closure.json",
+      ".beacon/qa/features/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write/scorecard.json",
+      "docs/beacon/v1.3.9/.machine/execution/implementation-summary-beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.json",
+      "docs/beacon/v1.3.9/.machine/execution/technical-implementation-beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.json"
     ],
     "runner": "",
     "adapter_type": "",
-    "execution_surface": "qa-team",
-    "team_mode": true,
+    "execution_surface": "qa",
+    "team_mode": false,
     "qa_status": "passed",
     "gate_status": "",
     "release_ready": true,
@@ -2313,13 +902,13 @@
   },
   "host_native_delivery": {
     "schema_version": "1.0",
-    "feature": "Beacon v1.3.8 archive governance and historical requirement isolation",
-    "version": "v1.3.8",
-    "requested_mode": "story-exhaustive",
-    "effective_mode": "story-exhaustive",
-    "generator_mode": "story-exhaustive",
-    "execution_mode": "story-exhaustive",
-    "runner_mode": "qa-team",
+    "feature": "Beacon v1.3.9 execution projection convergence and QA acceptance dual-write",
+    "version": "v1.3.9",
+    "requested_mode": "feature-aware",
+    "effective_mode": "feature-aware",
+    "generator_mode": "feature-aware",
+    "execution_mode": "feature-aware",
+    "runner_mode": "qa",
     "host_runtime": "codex",
     "fallback_reason": "",
     "capability_snapshot": {
@@ -2333,29 +922,26 @@
     },
     "subagent_prechecks": {},
     "requirement_binding": {
-      "source_of_truth_root": "docs/beacon/v1.3.8",
-      "feature_matrix_path": ".beacon/qa/features/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/matrix.qa9.json",
-      "canonical_matrix_path": "docs/beacon/v1.3.8/.machine/qa/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.qa9-matrix.json"
+      "source_of_truth_root": "docs/beacon/v1.3.9",
+      "feature_matrix_path": ".beacon/qa/features/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write/matrix.qa9.json",
+      "canonical_matrix_path": "docs/beacon/v1.3.9/.machine/qa/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.qa9-matrix.json"
     },
     "traceability_refs": [
-      ".beacon/qa/features/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/matrix.qa9.json",
-      "docs/beacon/v1.3.8/.machine/qa/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.qa9-matrix.json",
-      ".beacon/qa/features/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/ac-closure.json",
-      ".beacon/qa/features/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation/scorecard.json",
-      "docs/beacon/v1.3.8/.machine/execution/implementation-summary-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.json",
-      "docs/beacon/v1.3.8/.machine/execution/technical-implementation-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.json"
+      ".beacon/qa/features/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write/matrix.qa9.json",
+      "docs/beacon/v1.3.9/.machine/qa/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.qa9-matrix.json",
+      ".beacon/qa/features/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write/ac-closure.json",
+      ".beacon/qa/features/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write/scorecard.json",
+      "docs/beacon/v1.3.9/.machine/execution/implementation-summary-beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.json",
+      "docs/beacon/v1.3.9/.machine/execution/technical-implementation-beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.json"
     ],
     "runner": "",
     "adapter_type": "",
-    "execution_surface": "qa-team",
-    "team_mode": true,
-    "qa_status": "blocked",
+    "execution_surface": "qa",
+    "team_mode": false,
+    "qa_status": "passed",
     "gate_status": "",
-    "release_ready": false,
-    "risk_flags": [],
-    "status": "pass",
-    "reason_codes": [],
-    "traceability": {}
+    "release_ready": true,
+    "risk_flags": []
   },
-  "current_spec_fingerprint_hash": "ec580d03ee6f7670057a026aeed97db3b171d1ac7cf513ce450f2f0610057f20"
+  "current_spec_fingerprint_hash": "2afeca5d9041d81412c29229593929bc3ee3e15d494c7cd817747b8c6c497727"
 }
