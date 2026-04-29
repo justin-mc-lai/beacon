@@ -150,6 +150,8 @@ def _print_advise_result(payload: dict[str, Any]) -> None:
     typer.echo(f"doc_status      : {payload.get('doc_status') or 'N/A'}")
     typer.echo(f"delivery_status : {payload.get('delivery_status') or 'N/A'}")
     typer.echo(f"blocked         : {bool(payload.get('blocked'))}")
+    projection = payload.get("support_surface_projection") if isinstance(payload.get("support_surface_projection"), dict) else {}
+    typer.echo(f"operator_doc    : {projection.get('primary_operator_doc_ref') or 'N/A'}")
 
     scores = payload.get('scores') if isinstance(payload.get('scores'), dict) else {}
     typer.echo("\nScores")

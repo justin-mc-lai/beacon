@@ -3,6 +3,9 @@
 from __future__ import annotations
 
 import json
+import os
+import subprocess
+import sys
 from pathlib import Path
 from typing import Any
 
@@ -30,6 +33,7 @@ from beacon.utils.v110_metrics import (
     compute_memory_governance_metrics,
 )
 from beacon.utils.v115_delivery import refresh_evidence_manifest
+from beacon.utils.versioning import runtime_feature_supported
 from beacon.utils.workflow_memory import (
     compute_memory_metrics,
     compute_workflow_progress,
@@ -470,6 +474,321 @@ def _report_impl(
     else:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
     return 0
+
+
+def _git_status_lines(project_root: Path) -> list[str]:
+    try:
+        result = subprocess.run(
+            ["git", "-C", str(project_root), "status", "--short"],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+    except Exception:  # noqa: BLE001
+        return []
+    if result.returncode != 0:
+        return []
+    return [line for line in (result.stdout or "").splitlines() if line.strip()]
+
+
+def _run_real_project_validation_command(project_root: Path, args: list[str]) -> dict[str, Any]:
+    package_root = Path(__file__).resolve().parents[2]
+    env = dict(os.environ)
+    existing_pythonpath = str(env.get("PYTHONPATH") or "").strip()
+    env["PYTHONPATH"] = (
+        str(package_root)
+        if not existing_pythonpath
+        else f"{package_root}{os.pathsep}{existing_pythonpath}"
+    )
+    env["BEACON_ALLOW_CONTEXT_VERSION_DRIFT"] = "1"
+    result = subprocess.run(
+        [sys.executable, "-m", "beacon.main", *args],
+        cwd=project_root,
+        capture_output=True,
+        text=True,
+        check=False,
+        env=env,
+    )
+    stdout = str(result.stdout or "")
+    stderr = str(result.stderr or "")
+    parsed: dict[str, Any] | None = None
+    for candidate in (stdout.strip(), stderr.strip()):
+        if not candidate:
+            continue
+        try:
+            loaded = json.loads(candidate)
+        except Exception:  # noqa: BLE001
+            continue
+        if isinstance(loaded, dict):
+            parsed = loaded
+            break
+    return {
+        "command": " ".join(args),
+        "args": list(args),
+        "exit_code": int(result.returncode),
+        "stdout": stdout,
+        "stderr": stderr,
+        "json": parsed or {},
+    }
+
+
+def _classify_validation_surface(result: dict[str, Any]) -> str:
+    exit_code = int(result.get("exit_code") or 0)
+    payload = result.get("json") if isinstance(result.get("json"), dict) else {}
+    stdout = str(result.get("stdout") or "").strip()
+    stderr = str(result.get("stderr") or "").strip()
+    combined = "\n".join(part for part in (stdout, stderr) if part).lower()
+    if exit_code == 0:
+        return "operational"
+    if "no such option" in combined or "traceback" in combined:
+        return "beacon_cli_defect"
+    if payload:
+        return "project_state_blocker"
+    if "blocked" in combined or "not ready" in combined or "release_ready=false" in combined:
+        return "project_state_blocker"
+    return "beacon_cli_defect"
+
+
+def _surface_status_record(name: str, result: dict[str, Any]) -> dict[str, Any]:
+    payload = result.get("json") if isinstance(result.get("json"), dict) else {}
+    return {
+        "name": name,
+        "command": str(result.get("command") or ""),
+        "exit_code": int(result.get("exit_code") or 0),
+        "classification": _classify_validation_surface(result),
+        "structured": bool(payload),
+        "status": str(
+            payload.get("status")
+            or payload.get("review_status")
+            or payload.get("gate_status")
+            or payload.get("release_ready")
+            or ""
+        ),
+        "reason_codes": sorted(
+            {
+                str(item.get("reason_code") or "").strip()
+                for item in (
+                    payload.get("issues")
+                    if isinstance(payload.get("issues"), list)
+                    else payload.get("findings")
+                    if isinstance(payload.get("findings"), list)
+                    else []
+                )
+                if isinstance(item, dict) and str(item.get("reason_code") or "").strip()
+            }
+        ),
+        "stdout_tail": "\n".join(str(result.get("stdout") or "").splitlines()[-8:]),
+        "stderr_tail": "\n".join(str(result.get("stderr") or "").splitlines()[-8:]),
+    }
+
+
+def _real_project_command_specs(project_root: Path, version: str, feature: str, *, extended: bool) -> list[tuple[str, list[str]]]:
+    specs: list[tuple[str, list[str]]] = [
+        ("help", ["help", "--project-root", str(project_root), "--version", version, "--feature", feature, "--json"]),
+        ("doctor", ["doctor", "--json", "--project-root", str(project_root)]),
+        ("status", ["status", "show-status", "--project-root", str(project_root), "--version", version, "--feature", feature, "--board"]),
+        ("prd_list", ["prd", "list", "-p", str(project_root), "-v", version]),
+        ("user_story_list", ["user-story", "list", "-p", str(project_root), "-v", version]),
+        ("test_case_list", ["test-case", "list", "-p", str(project_root), "-v", version]),
+        ("test_case_gate", ["test-case", "gate", feature, "-p", str(project_root), "-v", version]),
+        ("prototype_list", ["prototype", "list", "-p", str(project_root), "-v", version]),
+        ("prototype_status", ["prototype", "status", feature, "-p", str(project_root), "-v", version, "--json"]),
+        ("implement_status", ["implement", "status", feature, "-p", str(project_root), "-v", version, "--json"]),
+        ("qa_status", ["qa", "status", "-p", str(project_root), "--json"]),
+        ("qa_evolve", ["qa", "evolve", feature, "-p", str(project_root), "-v", version, "--no-write-matrix", "--json"]),
+        ("release_check", ["release", "check", version, "--project-root", str(project_root), "--json"]),
+        ("release_scorecard", ["release", "scorecard", version, "-p", str(project_root), "--json"]),
+        ("archive_status", ["archive", "status", "-p", str(project_root), "-v", version, "--feature", feature, "--json"]),
+        ("archive_explain", ["archive", "explain", "-p", str(project_root), "-v", version, "--json"]),
+        ("archive_plan", ["archive", "plan", "-p", str(project_root), "-v", version, "--feature", feature, "--json"]),
+        ("gate_prototype", ["gate", "check", "prototype", "--project-root", str(project_root), "--version", version, "--json"]),
+        ("gate_release", ["gate", "check", "release", "--project-root", str(project_root), "--version", version, "--json"]),
+    ]
+    if extended and runtime_feature_supported("v1.3.0", runtime_version=version):
+        specs.extend(
+            [
+                ("doctor_verify_subagent_runtime_codex", ["doctor", "verify-subagent-runtime", "--project-root", str(project_root), "--host-runtime", "codex", "--json"]),
+                ("doctor_verify_subagent_runtime_claude", ["doctor", "verify-subagent-runtime", "--project-root", str(project_root), "--host-runtime", "claude", "--json"]),
+                ("doctor_verify_subagent_delegation", ["doctor", "verify-subagent-delegation", feature, "--project-root", str(project_root), "--version", version, "--json"]),
+                ("implement_team_dry_run_codex", ["implement", "run", feature, "--project", str(project_root), "--version", version, "--mode", "team", "--runner", "codex-subagents", "--host-runtime", "codex", "--dry-run", "--json"]),
+                ("implement_team_dry_run_claude", ["implement", "run", feature, "--project", str(project_root), "--version", version, "--mode", "team", "--runner", "gstack", "--host-runtime", "claude", "--dry-run", "--json"]),
+                ("implement_ralph_dry_run_codex", ["implement", "run", feature, "--project", str(project_root), "--version", version, "--mode", "ralph", "--runner", "codex-subagents", "--host-runtime", "codex", "--dry-run", "--json"]),
+                ("implement_ralph_dry_run_claude", ["implement", "run", feature, "--project", str(project_root), "--version", version, "--mode", "ralph", "--runner", "gstack", "--host-runtime", "claude", "--dry-run", "--json"]),
+                ("implement_ralph_status", ["implement", "ralph-status", feature, "--project-root", str(project_root), "--json"]),
+                ("qa_session_list", ["qa", "session", "list", "-p", str(project_root), "--json"]),
+                ("qa_run", ["qa", "run", feature, "-p", str(project_root), "-v", version, "--json"]),
+                ("qa_team_run_codex", ["qa", "team-run", feature, "-p", str(project_root), "-v", version, "--host-runtime", "codex", "--json"]),
+                ("qa_team_run_claude", ["qa", "team-run", feature, "-p", str(project_root), "-v", version, "--host-runtime", "claude", "--json"]),
+            ]
+        )
+    return specs
+
+
+def _real_project_overlay(
+    *,
+    version: str,
+    surface_results: dict[str, dict[str, Any]],
+    release_scorecard: dict[str, Any],
+) -> dict[str, Any]:
+    summary = summarize_release_scorecard(release_scorecard)
+    gate_prototype = surface_results.get("gate_prototype", {})
+    gate_prototype_payload = gate_prototype.get("json") if isinstance(gate_prototype.get("json"), dict) else {}
+    gate_prototype_issues = gate_prototype_payload.get("issues") if isinstance(gate_prototype_payload.get("issues"), list) else []
+    gate_prototype_reason_codes = {
+        str(item.get("reason_code") or "").strip()
+        for item in gate_prototype_issues
+        if isinstance(item, dict) and str(item.get("reason_code") or "").strip()
+    }
+    checks: list[dict[str, Any]] = []
+    if runtime_feature_supported("v1.3.8", runtime_version=version):
+        archive_operational = all(
+            _classify_validation_surface(surface_results.get(name, {})) == "operational"
+            for name in ("archive_status", "archive_explain", "archive_plan")
+        )
+        checks.extend(
+            [
+                {
+                    "id": "post_freeze_host_prompt_trace",
+                    "status": "pass" if str(summary.get("prompt_boundary_status") or "").strip().lower() == "pass" else "blocked",
+                    "source": "release_scorecard.prompt_boundary",
+                },
+                {
+                    "id": "prompt_boundary_gate_release_convergence",
+                    "status": "pass"
+                    if str(summary.get("prompt_boundary_status") or "").strip().lower() == "pass"
+                    and str(summary.get("gate_status") or "").strip().lower() == "pass"
+                    else "blocked",
+                    "source": "release_scorecard+gate_release",
+                },
+                {
+                    "id": "archive_governance_support_surface",
+                    "status": "pass" if archive_operational else "blocked",
+                    "source": "archive_status+archive_explain+archive_plan",
+                },
+                {
+                    "id": "canonical_delivery_baseline_convergence",
+                    "status": "pass" if str(summary.get("host_native_delivery_status") or "").strip().lower() != "blocked" else "blocked",
+                    "source": "release_scorecard.host_native_delivery",
+                },
+            ]
+        )
+    if runtime_feature_supported("v1.3.9", runtime_version=version):
+        checks.extend(
+            [
+                {
+                    "id": "acceptance_projection_transaction_dual_write",
+                    "status": "pass" if str(release_scorecard.get("qa", {}).get("acceptance_transaction_status") or "").strip().lower() == "pass" else "blocked",
+                    "source": "release_scorecard.qa.acceptance_transaction_status",
+                },
+                {
+                    "id": "prototype_auto_template_downgrade_guard",
+                    "status": "pass" if "prototype_auto_template_downgrade_blocked" not in gate_prototype_reason_codes else "blocked",
+                    "source": "gate_check_prototype",
+                },
+            ]
+        )
+    return {
+        "version": version,
+        "checks": checks,
+    }
+
+
+@app.command("real-project-validation")
+def real_project_validation(
+    project_root: str = typer.Option("", "--project-root", help="Real project root path."),
+    version: str = typer.Option("auto", "--version", "-v", help="Docs version line."),
+    feature: str = typer.Option("", "--feature", "-f", help="Primary feature to validate."),
+    extended: bool = typer.Option(False, "--extended", help="Also run team/ralph/browser-support validation surfaces."),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON output."),
+):
+    """Run current-version real-project release proof on the public Beacon surface."""
+    root = Path(project_root) if project_root else Path.cwd()
+    resolved_version = resolve_target_version(root, version)
+    docs_root = root / "docs" / "beacon" / resolved_version
+    if not docs_root.exists():
+        raise typer.BadParameter(f"docs version not found: {docs_root}")
+
+    release_scorecard = build_release_scorecard(root, version=resolved_version)
+    primary_feature = str(feature or ((release_scorecard.get("qa") or {}).get("feature")) or "").strip()
+    if not primary_feature:
+        raise typer.BadParameter("feature is required for real-project validation")
+
+    worktree_lines = _git_status_lines(root)
+    executed: list[dict[str, Any]] = []
+    by_name: dict[str, dict[str, Any]] = {}
+    for name, args in _real_project_command_specs(root, resolved_version, primary_feature, extended=extended):
+        result = _run_real_project_validation_command(root, args)
+        record = _surface_status_record(name, result)
+        executed.append(record)
+        by_name[name] = {"record": record, "json": result.get("json") if isinstance(result.get("json"), dict) else {}}
+
+    operational = [item for item in executed if item["classification"] == "operational"]
+    blockers = [item for item in executed if item["classification"] == "project_state_blocker"]
+    defects = [item for item in executed if item["classification"] == "beacon_cli_defect"]
+    release_summary = summarize_release_scorecard(release_scorecard)
+    overlay = _real_project_overlay(
+        version=resolved_version,
+        surface_results={key: {"json": value.get("json") or {}, "exit_code": (value.get("record") or {}).get("exit_code", 1)} for key, value in by_name.items()},
+        release_scorecard=release_scorecard,
+    )
+    current_feature_ready = bool(release_scorecard.get("release_ready", False))
+    version_line_open = str(release_summary.get("change_documents_status") or "").strip().lower() != "pass"
+    if defects:
+        recommendation = "blocked until Beacon defect is fixed"
+    elif blockers:
+        recommendation = "safe for read-only use only"
+    else:
+        recommendation = "safe to use on this project"
+
+    payload = {
+        "schema_version": "1.0",
+        "validation_scope": "current-version-release-proof",
+        "project_root": str(root),
+        "docs_version": resolved_version,
+        "primary_feature": primary_feature,
+        "touched_real_project_worktree": False,
+        "worktree_dirty": bool(worktree_lines),
+        "worktree_status": worktree_lines,
+        "overlay_sources": [
+            "AGENTS.md",
+            f"docs/beacon/{resolved_version}/SUMMARY.md",
+            f"docs/beacon/{resolved_version}/execution/index.md",
+            f"docs/beacon/{resolved_version}/release/{resolved_version}.md",
+            "skills/beacon/SKILL.md",
+        ],
+        "executed_commands": [item["command"] for item in executed],
+        "surfaces": {
+            "operational": operational,
+            "project_state_blockers": blockers,
+            "beacon_defects": defects,
+        },
+        "current_feature_closure_ready": current_feature_ready,
+        "version_line_package_change_doc_closure_open": version_line_open,
+        "release_scorecard": {
+            "release_ready": bool(release_scorecard.get("release_ready", False)),
+            "summary": release_summary,
+        },
+        "latest_feature_overlay": overlay,
+        "covered_paths": {
+            "current_version_release_proof": True,
+            "specialized_board_acceptance": False,
+            "extended_support_surfaces": bool(extended),
+        },
+        "recommendation": recommendation,
+    }
+
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo(f"validated project root: {payload['project_root']}")
+        typer.echo(f"validated docs version: {payload['docs_version']}")
+        typer.echo(f"primary feature: {payload['primary_feature']}")
+        typer.echo(f"operational surfaces: {len(operational)}")
+        typer.echo(f"project-state blockers: {len(blockers)}")
+        typer.echo(f"beacon defects: {len(defects)}")
+        typer.echo(f"current-feature closure ready: {payload['current_feature_closure_ready']}")
+        typer.echo(f"version-line package/change-doc closure open: {payload['version_line_package_change_doc_closure_open']}")
+        typer.echo(f"recommendation: {payload['recommendation']}")
 
 
 @app.callback(invoke_without_command=True)

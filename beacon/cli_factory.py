@@ -82,6 +82,7 @@ def build_app(*, package_version: str) -> typer.Typer:
     from .commands.help import help_entry
     from .commands.ask import ask_entry
     from .commands.prompt import app as prompt_app
+    from .commands.report import real_project_validation as real_project_validation_entry
     from .commands.resume import resume_entry
     from .commands.think import app as think_app
     from .commands.user_story import app as user_story_app
@@ -112,6 +113,7 @@ def build_app(*, package_version: str) -> typer.Typer:
     # Design & Collaboration commands
     from .commands.ui_spec import app as ui_spec_app
     from .commands.prototype import app as prototype_app
+    from .commands.friction_intake import app as friction_intake_app
     from .commands.lighthouse import app as lighthouse_app
     from .commands.memory_friction_evolution import app as memory_friction_evolution_app
     from .commands.prd_bootstrap import app as prd_bootstrap_app
@@ -143,10 +145,12 @@ def build_app(*, package_version: str) -> typer.Typer:
     app.command("freeze")(freeze_entry)
     app.command("reopen")(reopen_entry)
     app.add_typer(report_app, name="report")
+    app.command("real-project-validation")(real_project_validation_entry)
     app.add_typer(review_app, name="review")
     app.add_typer(verify_app, name="verify", hidden=True)
     app.add_typer(orchestrate_app, name="orchestrate")
     app.add_typer(debug_app, name="debug")
+    app.add_typer(friction_intake_app, name="friction-intake")
     app.add_typer(feedback_app, name="feedback", hidden=True)
     app.add_typer(prompt_app, name="prompt", hidden=True)
 

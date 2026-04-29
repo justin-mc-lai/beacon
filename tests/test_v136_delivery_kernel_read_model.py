@@ -45,6 +45,16 @@ def _seed_docs(root: Path) -> None:
     _seed_feature_docs(root, slug=SLUG)
 
 
+def _seed_support_projection_docs(root: Path) -> None:
+    beacon_docs_root = root / "docs" / "beacon"
+    beacon_docs_root.mkdir(parents=True, exist_ok=True)
+    (beacon_docs_root / "global-boundaries.md").write_text("# Global Boundaries\n", encoding="utf-8")
+    execution = root / "docs" / "beacon" / VERSION / "execution"
+    execution.mkdir(parents=True, exist_ok=True)
+    (execution / "index.md").write_text("# Execution Index\n", encoding="utf-8")
+    (execution / "architecture-blueprint.md").write_text("# Architecture Blueprint\n", encoding="utf-8")
+
+
 def _enable_prototype_requirement(root: Path) -> None:
     docs = root / "docs" / "beacon" / VERSION
     marker = "\nprototype: true\n"
@@ -248,6 +258,7 @@ def test_v136_release_scorecard_should_prefer_latest_frozen_revision_feature_ove
 
 def test_v136_help_status_and_doctor_advise_should_share_surface_explanation(tmp_path: Path) -> None:
     _seed_docs(tmp_path)
+    _seed_support_projection_docs(tmp_path)
     _seed_execution_state(tmp_path)
     _seed_semantic_layer(tmp_path)
     freeze_revision_state(tmp_path, version=VERSION, feature=FEATURE)
@@ -265,6 +276,35 @@ def test_v136_help_status_and_doctor_advise_should_share_surface_explanation(tmp
     assert advise_payload["surface_explanation"] == help_payload["surface_explanation"]
     assert status_payload["surface_explanation"] == help_payload["surface_explanation"]
     assert status_payload["delivery_read_model"]["contract"]["host_runtime"] == "codex"
+    assert advise_payload["support_surface_projection"] == help_payload["support_surface_projection"]
+    assert status_payload["support_surface_projection"] == help_payload["support_surface_projection"]
+    taxonomy = help_payload["support_surface_projection"]["artifact_taxonomy"]
+    assert help_payload["support_surface_projection"]["support_mode"] == "explanation-layer"
+    assert help_payload["support_surface_projection"]["primary_operator_doc_ref"] == f"docs/beacon/{VERSION}/execution/index.md"
+    assert taxonomy["required_human_projection"]["refs"][0] == "docs/beacon/global-boundaries.md"
+    assert f"docs/beacon/{VERSION}/execution/architecture-blueprint.md" in taxonomy["required_human_projection"]["refs"]
+
+
+def test_v136_archive_support_surfaces_should_expose_shared_operator_projection(tmp_path: Path) -> None:
+    _seed_docs(tmp_path)
+    _seed_support_projection_docs(tmp_path)
+
+    explain_result = runner.invoke(
+        app,
+        ["archive", "explain", "--project-root", str(tmp_path), "--version", VERSION, "--json"],
+    )
+    status_result = runner.invoke(
+        app,
+        ["archive", "status", "--project-root", str(tmp_path), "--version", VERSION, "--feature", FEATURE, "--json"],
+    )
+
+    assert explain_result.exit_code == 0, explain_result.stdout
+    assert status_result.exit_code == 0, status_result.stdout
+    explain_payload = json.loads(explain_result.stdout)
+    status_payload = json.loads(status_result.stdout)
+    assert explain_payload["support_surface_projection"]["support_mode"] == "explanation-layer"
+    assert status_payload["support_surface_projection"]["primary_operator_doc_ref"] == f"docs/beacon/{VERSION}/execution/index.md"
+    assert status_payload["support_surface_projection"]["artifact_taxonomy"]["canonical_envelope"]["default_root"] == f"docs/beacon/{VERSION}/.machine/execution"
 
 
 def test_v136_release_scorecard_should_block_release_when_semantic_contract_missing(tmp_path: Path) -> None:

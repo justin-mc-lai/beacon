@@ -10,6 +10,7 @@ from beacon.utils.artifact_paths import change_docs_file, change_file_output, ma
 from beacon.utils.memory import append_memory_entry
 from beacon.utils.release_scorecard import build_release_scorecard
 from beacon.utils.runtime_projection_store import runtime_projection_transaction_contract
+from beacon.utils.writeback import acceptance_projection_transaction_contract
 from beacon.utils.versioning import project_runtime_feature_enabled, resolve_runtime_version, resolve_target_version
 from beacon.utils.workflow_memory import append_lifecycle_event
 
@@ -411,7 +412,8 @@ def create(
 @app.command()
 def check(
     version: str = typer.Argument(..., help="Release version"),
-    project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
+    project: Optional[str] = typer.Option(None, "--project", "--project-root", "-p", help="Project root"),
+    json_output: bool = typer.Option(False, "--json", help="JSON output"),
 ):
     """Check release conditions"""
     project_root = Path(project) if project else Path.cwd()
@@ -443,10 +445,13 @@ def check(
         docs_version=resolved_version,
         runtime_version=resolved_runtime,
     )
+    enforce_acceptance_transaction = project_runtime_feature_enabled(
+        project_root,
+        "v1.3.9",
+        docs_version=resolved_version,
+        runtime_version=resolved_runtime,
+    )
     authoritative_release_ready = bool(release_scorecard.get("release_ready", False))
-
-    typer.echo(f"Checking release conditions for {resolved_version}")
-    typer.echo("=" * 40)
 
     auto_test_path = project_root / ".beacon" / "auto-test-status.json"
     gate_report_path = project_root / ".beacon" / "gate-report.json"
@@ -651,6 +656,27 @@ def check(
             )
         )
 
+    if enforce_acceptance_transaction:
+        acceptance = release_scorecard.get("acceptance") if isinstance(release_scorecard.get("acceptance"), dict) else {}
+        qa_summary = release_scorecard.get("qa") if isinstance(release_scorecard.get("qa"), dict) else {}
+        acceptance_feature = str(acceptance.get("feature") or qa_summary.get("feature") or "").strip()
+        acceptance_tx_contract = acceptance_projection_transaction_contract(
+            project_root,
+            version=resolved_version,
+            feature=acceptance_feature,
+        ) if acceptance_feature else {
+            "status": "warn",
+            "reason_code": "acceptance_feature_missing",
+        }
+        acceptance_tx_ok = str(acceptance_tx_contract.get("status") or "warn").lower() == "pass"
+        checks.append(
+            (
+                "acceptance projection transaction contract",
+                acceptance_tx_ok,
+                f"status={acceptance_tx_contract.get('status') or 'unknown'}, reason={acceptance_tx_contract.get('reason_code') or '-'}",
+            )
+        )
+
     if enforce_change_documents:
         change_md_ref = str(change_documents.get("markdown_path") or "")
         change_json_ref = str(change_documents.get("json_path") or "")
@@ -727,19 +753,42 @@ def check(
 
     all_passed = True
     failed_checks: list[str] = []
+    check_records: list[dict[str, Any]] = []
     for check_name, passed, detail in checks:
-        status = "✓ PASS" if passed else "✗ FAIL"
-        typer.echo(f"{status}: {check_name} ({detail})")
+        check_records.append(
+            {
+                "name": check_name,
+                "passed": bool(passed),
+                "detail": detail,
+            }
+        )
         if not passed:
             all_passed = False
             failed_checks.append(check_name)
 
-    if all_passed:
-        typer.echo("\n✓ Release conditions met")
-        status = "pass"
+    status = "pass" if all_passed else "blocked"
+    payload = {
+        "version": resolved_version,
+        "runtime_version": resolved_runtime,
+        "project_root": str(project_root),
+        "status": status,
+        "release_ready": all_passed,
+        "failed_checks": failed_checks,
+        "checks": check_records,
+    }
+
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
     else:
-        typer.echo("\n✗ Some checks failed")
-        status = "blocked"
+        typer.echo(f"Checking release conditions for {resolved_version}")
+        typer.echo("=" * 40)
+        for record in check_records:
+            marker = "✓ PASS" if record["passed"] else "✗ FAIL"
+            typer.echo(f"{marker}: {record['name']} ({record['detail']})")
+        if all_passed:
+            typer.echo("\n✓ Release conditions met")
+        else:
+            typer.echo("\n✗ Some checks failed")
 
     append_memory_entry(
         project_root=project_root,

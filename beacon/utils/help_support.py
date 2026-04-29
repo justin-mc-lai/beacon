@@ -44,6 +44,7 @@ from beacon.utils.scoring import (
 )
 from beacon.utils.story_state import feature_slug, load_story_state, summarize_story_items
 from beacon.utils.subagent_readiness import delegation_readiness_precheck, detect_host_runtime, runtime_readiness_precheck
+from beacon.utils.support_surface_projection import build_support_surface_projection
 from beacon.utils.versioning import describe_project_version_context, normalize_version, release_line_key, resolve_docs_version
 from beacon.utils.workflow_memory import compute_workflow_progress, resolve_workflow_run_id
 
@@ -588,6 +589,29 @@ def _next_step(
     change_loop = change_loop if isinstance(change_loop, dict) else {}
     semantic_contract = semantic_contract if isinstance(semantic_contract, dict) else {}
 
+    if any(
+        reason in {
+            "semantic_contract_missing",
+            "semantic_dictionary_missing",
+            "semantic_usage_guidelines_missing",
+            "semantic_official_language_missing",
+            "semantic_default_taste_bridge_drift",
+            "semantic_prototype_binding_drift",
+        }
+        for reason in blocking_reasons
+    ):
+        return {
+            "action": "prototype",
+            "reason": "prototype semantic contract is incomplete or drifted and must be regenerated from requirement truth",
+            "command": f"beacon prototype create {quoted_feature} --project {project_root} --version {version} --json",
+        }
+    if "semantic_review_missing" in blocking_reasons:
+        return {
+            "action": "prototype-review",
+            "reason": "semantic review is not ready; re-run prototype review before implementation or release",
+            "command": f"beacon prototype review {quoted_feature} --project {project_root} --version {version} --json",
+        }
+
     if bool(change_loop.get("recommended", False)):
         return {
             "action": "beacon-change",
@@ -692,28 +716,6 @@ def _next_step(
                 "action": "requirement-clarity",
                 "reason": "requirements still contain unresolved or ambiguous items and must be clarified before freeze",
                 "command": report_path or f"beacon doctor sync-requirement-clarity {quoted_feature} --project-root {project_root} --version {version} --json",
-            }
-        if any(
-            reason in {
-                "semantic_contract_missing",
-                "semantic_dictionary_missing",
-                "semantic_usage_guidelines_missing",
-                "semantic_official_language_missing",
-                "semantic_default_taste_bridge_drift",
-                "semantic_prototype_binding_drift",
-            }
-            for reason in blocking_reasons
-        ):
-            return {
-                "action": "prototype",
-                "reason": "prototype semantic contract is incomplete or drifted and must be regenerated from requirement truth",
-                "command": f"beacon prototype create {quoted_feature} --project {project_root} --version {version} --json",
-            }
-        if "semantic_review_missing" in blocking_reasons:
-            return {
-                "action": "prototype-review",
-                "reason": "semantic review is not ready; re-run prototype review before implementation or release",
-                "command": f"beacon prototype review {quoted_feature} --project {project_root} --version {version} --json",
             }
         if any(
             reason in {
@@ -1052,7 +1054,7 @@ def build_help_payload(
     blocked = bool(blocking)
     current_stage = _infer_current_stage(revision_state=revision_state, workflow_progress=workflow_progress)
     release_gate_status = str(release_summary.get("gate_status") or "").strip().lower()
-    if feature_name and (
+    if feature_name and current_stage != "accepted" and (
         str(feature_scorecard.get("continue_decision") or "").strip() == "ready_for_release"
         or bool(release_summary.get("release_ready", False))
         or release_gate_status == "blocked"
@@ -1263,6 +1265,11 @@ def build_help_payload(
         fallback_allowed=bool(execution_surface.get("native_fallback_allowed", False)),
         fallback_reason_code=str(delivery_contract.get("fallback_reason") or ""),
     )
+    support_surface_projection = build_support_surface_projection(
+        project_root,
+        version=resolved_version,
+        feature=feature_name,
+    )
     decision_trace = [
         {
             "step": "version_truth",
@@ -1402,6 +1409,7 @@ def build_help_payload(
         "project_gate": profile_gate,
         "execution_surface": execution_surface,
         "delivery_read_model": delivery_read_model,
+        "support_surface_projection": support_surface_projection,
         "archive": archive_boundary,
         "host_prompt_trace": host_prompt_trace,
         "surface_explanation": surface_explanation,

@@ -38,6 +38,7 @@ def _render_human(payload: dict[str, object]) -> str:
     version_context = payload.get("version_context", {}) if isinstance(payload.get("version_context"), dict) else {}
     version_guard = payload.get("context_version_guard", {}) if isinstance(payload.get("context_version_guard"), dict) else {}
     execution_surface = payload.get("execution_surface", {}) if isinstance(payload.get("execution_surface"), dict) else {}
+    support_surface_projection = payload.get("support_surface_projection", {}) if isinstance(payload.get("support_surface_projection"), dict) else {}
     minimal_hud = payload.get("minimal_hud", {}) if isinstance(payload.get("minimal_hud"), dict) else {}
     hud_lines = minimal_hud.get("lines", []) if isinstance(minimal_hud.get("lines"), list) else []
     lines = [
@@ -70,6 +71,7 @@ def _render_human(payload: dict[str, object]) -> str:
         f"qa mode         : {execution_surface.get('qa_execution_mode', '') or 'N/A'}",
         f"qa session      : {execution_surface.get('qa_current_session_id', '') or 'N/A'}",
         f"qa runner       : {execution_surface.get('qa_runner_type', '') or 'N/A'}",
+        f"operator doc    : {support_surface_projection.get('primary_operator_doc_ref', '') or 'N/A'}",
     ]
     if hud_lines:
         lines.extend(["", "minimal hud"])

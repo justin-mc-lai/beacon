@@ -22,6 +22,7 @@ from beacon.utils.runtime import newest_run_id, read_json
 from beacon.utils.semantic_runtime import evaluate_semantic_contract
 from beacon.utils.technical_review_contract import build_technical_review_gate_payload, load_technical_review_state
 from beacon.utils.versioning import describe_project_version_context, resolve_target_version
+from beacon.utils.writeback import acceptance_projection_transaction_contract
 from beacon.utils.workflow_memory import compute_memory_metrics, compute_workflow_progress, workflow_memory_transaction_contract
 from beacon.utils.help_support import build_help_payload, canonicalize_lifecycle_action, canonicalize_lifecycle_stage
 
@@ -130,6 +131,20 @@ def _status_impl(
     keep_discard_engine = load_keep_discard_engine(root)
     release_scorecard = build_release_scorecard(root, version=coverage_version)
     release_summary = summarize_release_scorecard(release_scorecard)
+    acceptance_feature = (
+        target_feature
+        or str(((release_scorecard.get("acceptance") or {}).get("feature")) if isinstance(release_scorecard.get("acceptance"), dict) else "")
+        or str(qa_status.get("feature") or "")
+    )
+    acceptance_transaction = (
+        acceptance_projection_transaction_contract(
+            root,
+            version=coverage_version,
+            feature=acceptance_feature,
+        )
+        if acceptance_feature
+        else {}
+    )
     semantic_status = (
         evaluate_semantic_contract(root, version=coverage_version, feature=target_feature)
         if target_feature
@@ -189,6 +204,7 @@ def _status_impl(
         "archive": help_payload.get("archive", {}),
         "host_prompt_trace": help_payload.get("host_prompt_trace", {}),
         "delivery_read_model": help_payload.get("delivery_read_model", {}),
+        "support_surface_projection": help_payload.get("support_surface_projection", {}),
         "surface_explanation": help_payload.get("surface_explanation", {}),
         "hud": help_payload.get("hud", {}),
         "minimal_hud": help_payload.get("minimal_hud", {}),
@@ -223,6 +239,7 @@ def _status_impl(
             "status": qa_status.get("status"),
             "evidence_done": qa_status.get("evidence_done"),
         },
+        "acceptance_transaction": acceptance_transaction if isinstance(acceptance_transaction, dict) else {},
         "learning_plane": {
             "decision_summary": keep_discard_engine.get("decision_summary", {}),
             "decision_engine_path": ".beacon/state/evo/decision-engine.json",

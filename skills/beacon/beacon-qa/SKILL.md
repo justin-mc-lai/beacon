@@ -1,13 +1,13 @@
 ---
 name: beacon-qa
-description: Use when the user wants to verify a Beacon feature, inspect new findings, improve coverage, or assess whether a feature is ready for release through Beacon's current v1.3.8 runtime surface.
+description: Use when the user wants to verify a Beacon feature, inspect new findings, improve coverage, or assess whether a feature is ready for release through Beacon's current v1.3.9 runtime surface.
 ---
 
 # Beacon QA
 
 This skill routes verification work through Beacon's `qa` surface.
 
-The public command stays on the `v1.3.8` runtime line while `v1.3.8` defines the shared delivery kernel, read model, and host-native QA contract.
+The public command stays on the `v1.3.9` runtime line while `v1.3.9` defines the shared delivery kernel, read model, and host-native QA contract.
 
 ## Use for
 

@@ -15,6 +15,7 @@ from beacon.utils.archive_governance import (
     load_archive_read_model,
     materialize_archive_governance,
 )
+from beacon.utils.support_surface_projection import build_support_surface_projection
 from beacon.utils.versioning import resolve_target_version
 
 
@@ -119,10 +120,16 @@ def status(
     root = Path(project_root) if project_root else Path.cwd()
     payload = load_archive_read_model(root, version=version, feature=feature)
     payload["status"] = "pass"
+    payload["support_surface_projection"] = build_support_surface_projection(
+        root,
+        version=str(payload.get("version") or version),
+        feature=feature,
+    )
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
     else:
         typer.echo(f"Beacon archive status: {payload.get('version', '')}")
+        typer.echo(f"operator_doc: {payload['support_surface_projection'].get('primary_operator_doc_ref', '')}")
         feature_payload = payload.get("feature") if isinstance(payload.get("feature"), dict) else {}
         if feature_payload:
             typer.echo(f"feature: {feature_payload.get('feature', '')}")
@@ -152,6 +159,7 @@ def explain(
         ],
         "skill": "beacon:beacon-archive",
         "boundary": "brainstorm remains read-only before archive; archive writes formal governance truth",
+        "support_surface_projection": build_support_surface_projection(root, version=resolved_version),
     }
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
@@ -159,3 +167,4 @@ def explain(
         typer.echo("Beacon archive explain")
         typer.echo("status_model: active, superseded, archived-learnable, archived-reference-only")
         typer.echo("support_position: support-command")
+        typer.echo(f"operator_doc: {payload['support_surface_projection'].get('primary_operator_doc_ref', '')}")

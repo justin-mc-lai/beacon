@@ -16,6 +16,7 @@ from urllib.parse import urlsplit
 import typer
 
 from beacon.utils.browser_task_compiler import build_browser_task, default_browser_runner_command, write_browser_task
+from beacon.utils.coverage import write_coverage_summary
 from beacon.utils.qa9 import (
     QA9_TYPES,
     default_command_for_qa_type,
@@ -1947,8 +1948,9 @@ def create(
     effective_require_junit = bool(require_junit) or is_qa9_scope
     effective_require_assertion_count = bool(require_assertion_count) or is_qa9_scope
     selected_layers = _resolve_layers(scope_norm)
+    explicit_qa_types = parse_qa_types(qa_types, profile=qa_profile) if qa_types else []
     if is_qa9_scope:
-        selected_layers = parse_qa_types(qa_types, profile=qa_profile)
+        selected_layers = explicit_qa_types or parse_qa_types(qa_types, profile=qa_profile)
     if visual_threshold < 0 or visual_threshold > 1:
         raise typer.BadParameter("--visual-threshold must be between 0 and 1")
     if max_flaky_rate < 0 or max_flaky_rate > 1:
@@ -1997,7 +1999,10 @@ def create(
         if loaded.get("payload"):
             qa9_matrix_payload = loaded["payload"]
             active_matrix_path = qa9_matrix_resolve_path
-            selected_layers = parse_qa_types(qa9_matrix_payload.get("qa_types"), profile=qa_profile)
+            if explicit_qa_types:
+                selected_layers = explicit_qa_types
+            else:
+                selected_layers = parse_qa_types(qa9_matrix_payload.get("qa_types"), profile=qa_profile)
             for layer, cmd in _qa9_commands_from_matrix(qa9_matrix_payload).items():
                 if not commands.get(layer):
                     commands[layer] = cmd
@@ -2425,6 +2430,11 @@ def create(
     execution_payload.setdefault("artifacts", []).append(flaky_history_ref)
 
     status_paths = write_qa_status(project_root, test_status)
+    coverage_summary_path = write_coverage_summary(
+        project_root,
+        version=resolved_version,
+        run_id=run_id,
+    )
 
     gate_report_path = project_root / ".beacon" / "gate-report.json"
     gate_issues = [
@@ -2463,6 +2473,7 @@ def create(
     manifest_refs.extend(
         [
             str(summary_path.relative_to(project_root)),
+            str(coverage_summary_path.relative_to(project_root)),
             status_paths["legacy"],
             status_paths["canonical"],
             str(gate_report_path.relative_to(project_root)),

@@ -258,6 +258,21 @@ def test_v135_run_feature_aware_qa_should_resolve_matching_summary_when_global_s
     monkeypatch.setattr(qa_command, "load_qa_status", lambda *_args, **_kwargs: stale_status)
     monkeypatch.setattr(qa_command, "collect_verification_writeback", lambda **kwargs: (["AC-002", "TEST-008"], [], []))
     monkeypatch.setattr(qa_command, "record_verification_writeback", lambda *args, **kwargs: {})
+    acceptance_calls: dict[str, object] = {}
+    monkeypatch.setattr(
+        qa_command,
+        "record_acceptance_writeback",
+        lambda *args, **kwargs: acceptance_calls.update({"kwargs": kwargs})
+        or {
+            "machine_path": "docs/beacon/v1.3.5/.machine/execution/qa-acceptance-feature.json",
+            "markdown_path": "docs/beacon/v1.3.5/execution/qa-acceptance-feature.md",
+            "acceptance_envelope": {
+                "transaction_id": "tx-qa-acceptance-feature",
+                "source_hash": "sha256:acceptance",
+                "projection_seq": 1,
+            },
+        },
+    )
     monkeypatch.setattr(qa_command, "writeback_feature_matrix_evidence", lambda *args, **kwargs: matrix_path)
     monkeypatch.setattr(qa_command, "build_exhaustiveness_report", lambda *args, **kwargs: {"status": "passed"})
     monkeypatch.setattr(qa_command, "write_exhaustiveness_report", lambda *args, **kwargs: tmp_path / "exhaustiveness.json")
@@ -291,6 +306,11 @@ def test_v135_run_feature_aware_qa_should_resolve_matching_summary_when_global_s
     assert exit_code == 0
     assert payload["status"] == "passed"
     assert payload["run_id"] == "run-20260423T200000123456"
+    assert payload["acceptance_writeback"]["status"] == "completed"
+    assert payload["acceptance_writeback"]["transaction_id"] == "tx-qa-acceptance-feature"
+    assert acceptance_calls["kwargs"]["accepted_by"] == "qa"
+    assert acceptance_calls["kwargs"]["verdict"] == "passed"
+    assert ".beacon/coverage-summary.json" in acceptance_calls["kwargs"]["evidence_ref"]
 
 
 def test_v135_previous_evidence_done_should_reject_zero_coverage_status() -> None:

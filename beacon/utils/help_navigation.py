@@ -83,6 +83,7 @@ def build_doctor_advise_payload(project_root: Path, *, version: str | None = Non
         "next_step": next_step,
         "execution_surface": dict(help_payload.get("execution_surface", {})),
         "delivery_read_model": dict(help_payload.get("delivery_read_model", {})),
+        "support_surface_projection": dict(help_payload.get("support_surface_projection", {})),
         "surface_explanation": dict(help_payload.get("surface_explanation", {})),
         "change_loop": dict(help_payload.get("change_loop", {})),
         "decision_trace": list(help_payload.get("decision_trace", [])),

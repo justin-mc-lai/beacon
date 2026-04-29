@@ -1,13 +1,13 @@
 ---
 name: beacon-prd
-description: Use when the user wants to draft, refine, clarify, or review a product requirements document through Beacon's current v1.3.8 runtime surface. Keep brainstorm embedded inside the PRD loop rather than sending the user to a standalone brainstorm stage unless explicitly requested.
+description: Use when the user wants to draft, refine, clarify, or review a product requirements document through Beacon's current v1.3.9 runtime surface. Keep brainstorm embedded inside the PRD loop rather than sending the user to a standalone brainstorm stage unless explicitly requested.
 ---
 
 # Beacon PRD
 
 This skill routes requirement work through Beacon's `prd` surface.
 
-The public command stays on the `v1.3.8` runtime line while `v1.3.8` defines the host-native semantic compile target for requirement commands.
+The public command stays on the `v1.3.9` runtime line while `v1.3.9` defines the host-native semantic compile target for requirement commands.
 
 ## Use for
 

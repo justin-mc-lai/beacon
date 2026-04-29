@@ -70,7 +70,7 @@ from beacon.utils.team_surface import (
 )
 from beacon.utils.v110_baseline import generate_spec_fingerprint
 from beacon.utils.v115_delivery import refresh_evidence_manifest
-from beacon.utils.writeback import record_verification_writeback
+from beacon.utils.writeback import record_acceptance_writeback, record_verification_writeback
 
 app = typer.Typer(name="qa", help="QA primary surface (v1.1.10)")
 session_app = typer.Typer(name="session", help="QA login/session state helpers")
@@ -1254,6 +1254,59 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
             str(feature_scorecard_path.relative_to(project_root)),
         ]
     )
+    acceptance_writeback: dict[str, Any] | None = None
+    if bool(qa_status.get("evidence_done")) and str(qa_status.get("status") or "").strip().lower() == "passed":
+        accepted_ac_ids = [
+            str(item.get("ac_id") or "").strip()
+            for item in (ac_closure.get("reports") if isinstance(ac_closure.get("reports"), list) else [])
+            if isinstance(item, dict) and str(item.get("closure_status") or "").strip() == "accepted" and str(item.get("ac_id") or "").strip()
+        ]
+        accepted_test_ids = sorted(
+            {
+                str(item.get("source_tc_id") or item.get("tc_id") or "").strip()
+                for item in scenario_results_v2
+                if str(item.get("closure_outcome") or "").strip() == "accepted"
+                and str(item.get("source_tc_id") or item.get("tc_id") or "").strip()
+            }
+        )
+        record_verification_writeback(
+            project_root,
+            version=version,
+            feature=feature,
+            run_id=str(qa_status.get("run_id") or plan.get("implementation_run_id") or "feature-qa"),
+            verified_item_ids=[*accepted_ac_ids, *accepted_test_ids],
+            failed_item_ids=[],
+            evidence_ref=manifest_refs,
+        )
+        acceptance_result = record_acceptance_writeback(
+            project_root,
+            version=version,
+            feature=feature,
+            accepted_by="qa",
+            verdict="passed",
+            run_id=str(qa_status.get("run_id") or plan.get("implementation_run_id") or "feature-qa"),
+            evidence_ref=manifest_refs,
+            source_command=f'beacon qa run "{feature}" --project-root {project_root} --version {version}',
+            accepted_ac_ids=accepted_ac_ids,
+            accepted_test_ids=accepted_test_ids,
+        )
+        acceptance_writeback = {
+            "status": "completed",
+            "machine_path": str(acceptance_result.get("machine_path") or ""),
+            "markdown_path": str(acceptance_result.get("markdown_path") or ""),
+            "runtime_path": str(acceptance_result.get("runtime_path") or ""),
+            "transaction_id": str(acceptance_result.get("acceptance_envelope", {}).get("transaction_id", "") or ""),
+            "source_hash": str(acceptance_result.get("acceptance_envelope", {}).get("source_hash", "") or ""),
+            "projection_seq": acceptance_result.get("acceptance_envelope", {}).get("projection_seq"),
+            "transaction_status": str(acceptance_result.get("acceptance_envelope", {}).get("transaction_status", "") or ""),
+        }
+        manifest_refs.extend(
+            [
+                str(acceptance_result.get("machine_path") or ""),
+                str(acceptance_result.get("markdown_path") or ""),
+                str(acceptance_result.get("runtime_path") or ""),
+            ]
+        )
     payload = {
         **plan,
         "run_id": str(qa_status.get("run_id") or ""),
@@ -1282,6 +1335,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
         "subagent_prechecks": subagent_prechecks,
         "team_contract": team_contract,
         "implement_to_qa_handoff": handoff,
+        "acceptance_writeback": acceptance_writeback or {"status": "skipped"},
     }
     _with_delivery_contract(
         payload,

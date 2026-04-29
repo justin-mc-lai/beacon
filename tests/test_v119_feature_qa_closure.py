@@ -7,6 +7,7 @@ from pathlib import Path
 from typer.testing import CliRunner
 
 from beacon.main import app
+from beacon.utils.qa_feature import writeback_feature_matrix_evidence
 from beacon.utils.v110_baseline import load_latest_spec_fingerprint
 
 
@@ -412,6 +413,144 @@ def test_v119_materialized_feature_qa_matrix_should_use_run_scoped_evidence_path
         assert "__RUN_ID__" in entry["evidence_path"]
         assert f".beacon/evidence/qa-feature/{SLUG}/" in entry["evidence_path"]
     assert plan["targeted_tc_ids"] == ["TC-001", "TC-002"]
+
+
+def test_v119_qa_writeback_should_preserve_run_scoped_matrix_evidence_templates(tmp_path: Path):
+    _seed_feature_docs(tmp_path)
+    source_matrix_path = tmp_path / "docs" / "beacon" / VERSION / ".machine" / "qa" / f"{SLUG}.qa9-matrix.json"
+    source_matrix = json.loads(
+        (tmp_path / "docs" / "beacon" / VERSION / ".machine" / "qa" / f"{SLUG}.ac-test-matrix.json").read_text(encoding="utf-8")
+    )
+    for entry in source_matrix["entries"]:
+        tc_id = entry["tc_id"]
+        entry["qa_type"] = entry["layer"]
+        entry["evidence_path"] = f".beacon/evidence/test-results/{SLUG}/{{run_id}}/{tc_id}.json"
+    source_matrix_path.write_text(json.dumps(source_matrix, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    plan = {
+        "source_matrix_path": str(source_matrix_path.relative_to(tmp_path)),
+    }
+    per_item_results = [
+        {
+            "source_tc_id": "TC-001",
+            "status": "passed",
+            "evidence_ref": [".beacon/evidence/auto-test/run-123/qa9-tc/TC-001/command.txt"],
+        },
+        {
+            "source_tc_id": "TC-002",
+            "status": "passed",
+            "evidence_ref": [".beacon/evidence/auto-test/run-123/qa9-tc/TC-002/command.txt"],
+        },
+    ]
+
+    updated = writeback_feature_matrix_evidence(
+        tmp_path,
+        plan=plan,
+        per_item_results=per_item_results,
+        run_id="run-123",
+    )
+    assert updated == source_matrix_path
+
+    source_matrix = json.loads(source_matrix_path.read_text(encoding="utf-8"))
+    for entry in source_matrix["entries"]:
+        assert "{run_id}" in entry["evidence_path"]
+    tc001 = next(entry for entry in source_matrix["entries"] if entry["tc_id"] == "TC-001")
+    tc002 = next(entry for entry in source_matrix["entries"] if entry["tc_id"] == "TC-002")
+    assert tc001["last_run_id"] == "run-123"
+    assert tc002["last_run_id"] == "run-123"
+    assert tc001["last_evidence_ref"].startswith(".beacon/evidence/auto-test/")
+    assert tc002["last_evidence_ref"].startswith(".beacon/evidence/auto-test/")
+
+
+def test_v119_auto_test_should_refresh_coverage_summary_for_current_run(tmp_path: Path):
+    _seed_feature_docs(tmp_path)
+    _mark_implemented(tmp_path)
+    script = _write_passing_layer_script(tmp_path)
+    qa_matrix = tmp_path / "docs" / "beacon" / VERSION / ".machine" / "qa" / f"{SLUG}.ac-test-matrix.json"
+    qa9_matrix = tmp_path / "docs" / "beacon" / VERSION / ".machine" / "qa" / f"{SLUG}.qa9-matrix.json"
+    qa9_matrix.write_text(qa_matrix.read_text(encoding="utf-8"), encoding="utf-8")
+
+    result = _invoke(
+        [
+            "auto-test",
+            "create",
+            "qa9",
+            "--project",
+            str(tmp_path),
+            "--version",
+            VERSION,
+            "--qa-matrix-path",
+            str(qa9_matrix),
+            "--layer-command",
+            f"contract=sh {script}",
+            "--layer-command",
+            f"integration=sh {script}",
+        ]
+    )
+    assert result.exit_code == 0, result.stdout
+
+    auto_status = json.loads((tmp_path / ".beacon" / "auto-test-status.json").read_text(encoding="utf-8"))
+    coverage_summary = json.loads((tmp_path / ".beacon" / "coverage-summary.json").read_text(encoding="utf-8"))
+    assert coverage_summary["run_id"] == auto_status["run_id"]
+    assert coverage_summary["version"] == VERSION
+
+
+def test_v119_auto_test_should_respect_explicit_qa_types_over_matrix_defaults(tmp_path: Path):
+    _seed_feature_docs(tmp_path)
+    _mark_implemented(tmp_path)
+    script = _write_passing_layer_script(tmp_path)
+    qa9_matrix = tmp_path / "docs" / "beacon" / VERSION / ".machine" / "qa" / f"{SLUG}.qa9-matrix.json"
+    qa9_payload = {
+        "schema_version": "1.0",
+        "feature": SLUG,
+        "feature_slug": SLUG,
+        "version": VERSION,
+        "qa_types": ["contract", "integration", "functional", "compatibility"],
+        "entries": [
+            {
+                "tc_id": "TC-001",
+                "ac_id": "AC-001",
+                "layer": "contract",
+                "qa_type": "contract",
+                "command": f"sh {script}",
+                "automation": "auto",
+                "assertion": "contract passes",
+                "evidence_path": f".beacon/evidence/test-results/{SLUG}/{{run_id}}/TC-001.json",
+            },
+            {
+                "tc_id": "TC-002",
+                "ac_id": "AC-002",
+                "layer": "integration",
+                "qa_type": "integration",
+                "command": f"sh {script}",
+                "automation": "auto",
+                "assertion": "integration passes",
+                "evidence_path": f".beacon/evidence/test-results/{SLUG}/{{run_id}}/TC-002.json",
+            },
+        ],
+    }
+    qa9_matrix.write_text(json.dumps(qa9_payload, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    result = _invoke(
+        [
+            "auto-test",
+            "create",
+            "qa9",
+            "--project",
+            str(tmp_path),
+            "--version",
+            VERSION,
+            "--qa-matrix-path",
+            str(qa9_matrix),
+            "--qa-types",
+            "contract,integration",
+        ]
+    )
+    assert result.exit_code == 0, result.stdout
+
+    auto_status = json.loads((tmp_path / ".beacon" / "auto-test-status.json").read_text(encoding="utf-8"))
+    assert auto_status["status"] == "passed"
+    assert auto_status["selected_layers"] == ["contract", "integration"]
 
 
 

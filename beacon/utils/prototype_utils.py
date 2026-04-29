@@ -28,6 +28,7 @@ from beacon.utils.semantic_runtime import (
 
 PROTOTYPE_MODE = "wireframe"
 PROTOTYPE_UI_KIT = "wireframe-markdown-v1"
+DEFAULT_PROTOTYPE_ARCHETYPE = "generic-wireframe"
 SCHEMA_VERSION = "1.0"
 REQUIRED_SOURCE_TYPES = ("user-story", "prd", "test-case")
 AC_PATTERN = re.compile(r"\bAC-\d{3}[A-Z]?\b", re.IGNORECASE)
@@ -44,6 +45,29 @@ PAGE_ORDER_DEFAULT = (
     "recovery-diagnostics",
     "material-viewer",
 )
+
+
+def _semver_tuple(value: str | None) -> tuple[int, int, int]:
+    text = str(value or "").strip().lower()
+    if text.startswith("v"):
+        text = text[1:]
+    parts = text.split(".")
+    numbers: list[int] = []
+    for part in parts[:3]:
+        digits = "".join(ch for ch in part if ch.isdigit())
+        numbers.append(int(digits or "0"))
+    while len(numbers) < 3:
+        numbers.append(0)
+    return tuple(numbers[:3])
+
+
+def _prototype_auto_fallback_blocked(version: str, compiler: dict[str, Any] | None) -> bool:
+    payload = compiler if isinstance(compiler, dict) else {}
+    return (
+        _semver_tuple(version) >= (1, 3, 9)
+        and str(payload.get("requested_mode") or "").strip().lower() == "auto"
+        and bool(str(payload.get("fallback_reason") or "").strip())
+    )
 
 PAGE_CATALOG: dict[str, dict[str, Any]] = {
     "home": {
@@ -385,6 +409,14 @@ STOP_PAGE_TOKENS = (
     "网页内",
 )
 TRANSITION_HINT_PATTERN = re.compile(r"(->|→|=>|跳转|进入|返回|to\b)", re.IGNORECASE)
+PAGE_DECLARATION_HINT_PATTERN = re.compile(
+    r"(?:^#{1,6}\s+.*(?:pages?|screens?|views?|页面列表|正式页面|页面名称|required pages)\b|(?:正式页面|页面名称固定为|只允许冻结以下正式页面|required_pages)\s*[:：]?)",
+    re.IGNORECASE,
+)
+FORBIDDEN_PAGE_CONTEXT_PATTERN = re.compile(
+    r"(?:不是页面名|禁止作为页面名|不应生成|不得出现|禁止生成|错误提升为页面|不能生成)",
+    re.IGNORECASE,
+)
 
 
 def _stable_hash(payload: Any) -> str:
@@ -563,6 +595,35 @@ def _extract_field(docs: list[dict[str, Any]], field: str, default: str) -> str:
     return default
 
 
+def _explicit_page_label_from_line(line: str) -> str:
+    stripped = str(line or "").strip()
+    if not stripped:
+        return ""
+    if re.search(r"\b(?:AC|TC)-\d+\b", stripped, flags=re.IGNORECASE):
+        return ""
+    if re.match(r"^\s*[-*]\s+", stripped):
+        return ""
+    if re.match(r"^#{1,6}\s+", stripped):
+        return ""
+    candidate = _clean_page_label(stripped)
+    if not candidate:
+        return ""
+    if _known_page_id_for_text(candidate):
+        return candidate
+    if not _looks_like_page_label(candidate):
+        return ""
+    return candidate
+
+
+def _is_page_declaration_line(line: str) -> bool:
+    return bool(PAGE_DECLARATION_HINT_PATTERN.search(str(line or "").strip()))
+
+
+def _is_forbidden_page_context_line(line: str) -> bool:
+    stripped = str(line or "").strip()
+    return bool(FORBIDDEN_PAGE_CONTEXT_PATTERN.search(stripped))
+
+
 def _doc_contains(doc: dict[str, Any], keyword: str) -> int:
     text = doc.get("text", "")
     idx = text.lower().find(keyword.lower())
@@ -618,7 +679,37 @@ def _looks_like_page_label(label: str) -> bool:
     return bool(PAGE_HINT_PATTERN.search(cleaned))
 
 
+def _looks_like_declared_page_label(label: str) -> bool:
+    cleaned = _clean_page_label(label)
+    if len(cleaned) < 2:
+        return False
+    if len(cleaned) > 64:
+        return False
+    if re.search(r"[，。！？；;]", cleaned):
+        return False
+    lowered = cleaned.lower()
+    if re.match(r"^(?:us|fr|ac|tc)-\d+", lowered):
+        return False
+    if re.search(r"\b(?:ac|tc)-\d+\b", lowered):
+        return False
+    if re.match(r"^(?:as a|given|when|then|作为|当|如果|打开|查看|点击|页面必须|首页必须)\b", lowered):
+        return False
+    if TRANSITION_HINT_PATTERN.search(cleaned):
+        return False
+    return True
+
+
 def _known_page_id_for_text(text: str) -> str:
+    lowered = str(text or "").lower()
+    for page_id, meta in PAGE_CATALOG.items():
+        for keyword in (page_id, *meta["keywords"]):
+            keyword_str = str(keyword).strip().lower()
+            if keyword_str and keyword_str == lowered:
+                return page_id
+    return ""
+
+
+def _known_page_id_from_phrase(text: str) -> str:
     lowered = str(text or "").lower()
     for page_id, meta in PAGE_CATALOG.items():
         for keyword in (page_id, *meta["keywords"]):
@@ -643,9 +734,24 @@ def _extract_declared_page_labels(line: str) -> list[str]:
     if re.search(r"\b(?:AC|TC)-\d+\b", stripped, flags=re.IGNORECASE):
         return []
     candidates: list[str] = []
-    bullet = re.match(r"^\s*[-*]\s+(.+)$", stripped)
+    metadata_match = re.match(
+        r"^(required_pages|primary_entry|primary_exit)\s*[:=]\s*(.+)$",
+        stripped,
+        flags=re.IGNORECASE,
+    )
+    if metadata_match:
+        field_name = metadata_match.group(1).lower()
+        raw_value = metadata_match.group(2).strip()
+        if field_name == "required_pages":
+            candidates.extend(part.strip() for part in raw_value.split(",") if part.strip())
+        elif raw_value:
+            candidates.append(raw_value)
+    bullet = re.match(r"^(\s*)[-*]\s+(.+)$", str(line or ""))
     if bullet:
-        bullet_text = bullet.group(1).strip()
+        indent = bullet.group(1)
+        bullet_text = bullet.group(2).strip()
+        if indent and len(indent) > 1:
+            bullet_text = ""
         if re.search(r"(->|→|=>)", bullet_text):
             for part in re.split(r"(?:->|→|=>)", bullet_text):
                 token = part.strip()
@@ -678,9 +784,35 @@ def _extract_declared_page_labels(line: str) -> list[str]:
     cleaned: list[str] = []
     for item in candidates:
         normalized = _clean_page_label(item)
-        if _looks_like_page_label(normalized):
+        if _looks_like_declared_page_label(normalized):
             cleaned.append(normalized)
     return cleaned
+
+
+def _collect_forbidden_page_ids(docs: list[dict[str, Any]]) -> set[str]:
+    forbidden_ids: set[str] = set()
+    in_forbidden_block = False
+    for row in _iter_doc_lines(docs):
+        line = str(row.get("line") or "")
+        stripped = line.strip()
+        if not stripped:
+            continue
+        if re.match(r"^#{1,6}\s+", stripped):
+            in_forbidden_block = _is_forbidden_page_context_line(stripped)
+            continue
+        if _is_forbidden_page_context_line(stripped):
+            in_forbidden_block = True
+        if not in_forbidden_block:
+            continue
+        labels = _extract_declared_page_labels(stripped)
+        explicit_label = _explicit_page_label_from_line(stripped)
+        if explicit_label:
+            labels.append(explicit_label)
+        for label in labels:
+            mapped_known_id = _known_page_id_from_phrase(label)
+            if mapped_known_id:
+                forbidden_ids.add(mapped_known_id)
+    return forbidden_ids
 
 
 def _default_custom_page_meta(page_id: str, label: str) -> dict[str, Any]:
@@ -713,22 +845,44 @@ def _detect_pages_with_meta(docs: list[dict[str, Any]]) -> tuple[list[str], bool
     seen: set[str] = set()
     label_to_page: dict[str, str] = {}
     custom_index = 1
+    forbidden_page_ids = _collect_forbidden_page_ids(docs)
+    in_page_declaration_block = False
+    in_forbidden_block = False
 
     for row in rows:
         line = str(row.get("line") or "")
-        if not line.strip():
+        stripped = line.strip()
+        if not stripped:
             continue
         offset = int(row.get("offset") or 0)
+        if re.match(r"^#{1,6}\s+", stripped):
+            in_page_declaration_block = _is_page_declaration_line(stripped)
+            in_forbidden_block = _is_forbidden_page_context_line(stripped)
+            continue
+        if _is_forbidden_page_context_line(stripped):
+            in_forbidden_block = True
+            in_page_declaration_block = False
+        elif _is_page_declaration_line(stripped):
+            in_page_declaration_block = True
+            in_forbidden_block = False
 
-        known_id = _known_page_id_for_text(line)
-        if known_id and known_id not in seen:
-            discovered.append((offset, known_id, PAGE_CATALOG[known_id]["name"], False))
-            page_meta[known_id] = dict(PAGE_CATALOG[known_id])
-            seen.add(known_id)
+        if in_forbidden_block:
+            continue
 
-        for label in _extract_declared_page_labels(line):
+        explicit_label = _explicit_page_label_from_line(stripped)
+        if explicit_label:
+            known_id = _known_page_id_for_text(explicit_label)
+            if known_id and known_id not in forbidden_page_ids and known_id not in seen:
+                discovered.append((offset, known_id, PAGE_CATALOG[known_id]["name"], False))
+                page_meta[known_id] = dict(PAGE_CATALOG[known_id])
+                seen.add(known_id)
+
+        labels = _extract_declared_page_labels(line) if in_page_declaration_block else []
+        for label in labels:
             mapped_known_id = _known_page_id_for_text(label)
             if mapped_known_id:
+                if mapped_known_id in forbidden_page_ids:
+                    continue
                 if mapped_known_id not in seen:
                     discovered.append((offset, mapped_known_id, PAGE_CATALOG[mapped_known_id]["name"], False))
                     page_meta[mapped_known_id] = dict(PAGE_CATALOG[mapped_known_id])
@@ -762,7 +916,8 @@ def _detect_pages_with_meta(docs: list[dict[str, Any]]) -> tuple[list[str], bool
         return ordered, fallback_used, page_meta
 
     fallback_used = False
-    ordered_discovered = sorted(discovered, key=lambda item: item[0])
+    filtered_discovered = [item for item in discovered if item[1] not in forbidden_page_ids]
+    ordered_discovered = sorted(filtered_discovered, key=lambda item: item[0])
     page_ids = [page_id for _, page_id, _, _ in ordered_discovered]
     ordered_known = [page_id for page_id in PAGE_ORDER_DEFAULT if page_id in page_ids]
     ordered_custom = [page_id for page_id in page_ids if page_id not in ordered_known]
@@ -1195,7 +1350,7 @@ def _build_route_closure_contract(page_specs: list[dict[str, Any]], transitions:
 def _build_theme_payload(docs: list[dict[str, Any]]) -> dict[str, Any]:
     primary = _extract_field(docs, "theme_primary", "#2563EB")
     secondary = _extract_field(docs, "theme_secondary", "#0F172A")
-    archetype = _extract_field(docs, "prototype_archetype", "admin-workbench")
+    archetype = _extract_field(docs, "prototype_archetype", DEFAULT_PROTOTYPE_ARCHETYPE)
     return {
         "ui_kit": PROTOTYPE_UI_KIT,
         "prototype_archetype": archetype,
@@ -2061,7 +2216,7 @@ semantic_context:
 
 Return JSON with this shape:
 {{
-  "prototype_archetype": "admin-workbench|...",
+  "prototype_archetype": "{DEFAULT_PROTOTYPE_ARCHETYPE}|...",
   "theme": {{"primary":"#2563EB","secondary":"#0F172A"}},
   "pages": [
     {{
@@ -2329,6 +2484,8 @@ def _assemble_prototype_plan(
             ),
             "model": model,
             "llm_trace": llm_trace or {},
+            "downgraded_from_auto": requested_mode == "auto" and bool(fallback_reason),
+            "downgrade_blocking": requested_mode == "auto" and bool(fallback_reason) and _semver_tuple(version) >= (1, 3, 9),
         },
         "theme": theme,
     }
@@ -3170,6 +3327,7 @@ def review_prototype_bundle(project_root: Path, version: str, feature: str) -> d
     page_specs = plan.get("page_specs") if isinstance(plan.get("page_specs"), list) else []
     required_pages = [str(item).strip() for item in (plan.get("required_pages") or []) if str(item).strip()]
     required_states = [str(item).strip() for item in (plan.get("required_states") or []) if str(item).strip()]
+    forbidden_page_ids = _collect_forbidden_page_ids(load_source_documents(project_root, version, feature))
     transaction = manifest.get("transaction") if isinstance(manifest.get("transaction"), dict) else {}
     transaction_id = str(transaction.get("transaction_id") or "")
     sqlite_projection = _read_prototype_projection_sqlite(transaction_id)
@@ -3243,6 +3401,16 @@ def review_prototype_bundle(project_root: Path, version: str, feature: str) -> d
             "required_pages_materialized",
             "pass" if not missing_pages else "fail",
             "all required page markdown files should exist" if not missing_pages else f"missing page files: {missing_pages}",
+        )
+    )
+    forbidden_pages_present = [page_id for page_id in required_pages if page_id in forbidden_page_ids]
+    checks.append(
+        _review_check(
+            "forbidden_page_inventory_clear",
+            "pass" if not forbidden_pages_present else "fail",
+            "required page inventory excludes forbidden pages"
+            if not forbidden_pages_present
+            else f"forbidden pages detected in required inventory: {forbidden_pages_present}",
         )
     )
 
@@ -3628,6 +3796,8 @@ def evaluate_prototype_status(project_root: Path, version: str, feature: str) ->
     )
     if drift_status != "consistent":
         inconsistent_reasons.append("cross_sink_drift_detected")
+    if _prototype_auto_fallback_blocked(version, compiler):
+        inconsistent_reasons.append("auto_mode_fixed_template_downgrade_blocked")
 
     if inconsistent_reasons:
         status = "inconsistent"
@@ -3638,7 +3808,7 @@ def evaluate_prototype_status(project_root: Path, version: str, feature: str) ->
     else:
         status = "draft"
 
-    gate_ready = status == "frozen" and review_status == "pass"
+    gate_ready = status == "frozen" and review_status == "pass" and not _prototype_auto_fallback_blocked(version, compiler)
     return {
         "status": status,
         "exists": True,

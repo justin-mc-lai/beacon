@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 from typing import Any
 
-from beacon.utils.artifact_paths import change_docs_file, change_file_output
+from beacon.utils.artifact_paths import change_docs_file, change_file_output, machine_execution_dir
 from beacon.utils.delivery_kernel import load_delivery_read_model
 from beacon.utils.evidence_manifest import validate_evidence_manifest
 from beacon.utils.exhaustiveness import load_exhaustiveness_report
@@ -30,6 +30,7 @@ from beacon.utils.versioning import (
     resolve_target_version,
     runtime_feature_supported,
 )
+from beacon.utils.writeback import acceptance_projection_transaction_contract
 
 
 def _load_json(path: Path) -> dict[str, Any]:
@@ -148,6 +149,21 @@ def _feature_change_payload(project_root: Path, *, version: str, feature: str) -
     return payload
 
 
+def _acceptance_envelope_payload(project_root: Path, *, version: str, feature: str) -> dict[str, Any]:
+    if not feature:
+        return {}
+    path = machine_execution_dir(project_root, version) / f"qa-acceptance-{feature_slug(feature)}.json"
+    payload = _load_json(path)
+    if not payload:
+        return {}
+    payload_version = str(payload.get("version") or "").strip()
+    if payload_version and payload_version != version:
+        return {}
+    normalized = dict(payload)
+    normalized["_machine_path"] = str(path.relative_to(project_root))
+    return normalized
+
+
 def _revision_binding(revision_state: dict[str, Any]) -> dict[str, Any]:
     if not isinstance(revision_state, dict) or not revision_state:
         return {
@@ -209,6 +225,108 @@ def _semantic_gate_required(project_root: Path, *, version: str, runtime_version
     )
 
 
+def _resolve_acceptance_truth(
+    qa_status: dict[str, Any],
+    feature_scorecard: dict[str, Any],
+    acceptance_envelope: dict[str, Any],
+) -> dict[str, Any]:
+    qa_payload = qa_status if isinstance(qa_status, dict) else {}
+    scorecard_payload = feature_scorecard if isinstance(feature_scorecard, dict) else {}
+    acceptance_payload = acceptance_envelope if isinstance(acceptance_envelope, dict) else {}
+    qa_embedded_scorecard = (
+        qa_payload.get("feature_scorecard")
+        if isinstance(qa_payload.get("feature_scorecard"), dict)
+        else {}
+    )
+    effective_scorecard = scorecard_payload or qa_embedded_scorecard
+
+    feature = str(qa_payload.get("feature") or effective_scorecard.get("feature") or "").strip()
+    qa_status_value = str(qa_payload.get("status") or "").strip().lower()
+    qa_release_ready = bool(qa_payload.get("release_ready", False))
+    qa_evidence_done = bool(qa_payload.get("evidence_done", False))
+    continue_decision = str(
+        effective_scorecard.get("continue_decision")
+        or qa_embedded_scorecard.get("continue_decision")
+        or ""
+    ).strip()
+    unresolved = [
+        str(item).strip()
+        for item in (effective_scorecard.get("unresolved_closure_outcomes") or [])
+        if str(item).strip()
+    ]
+    project_profile_gate_status = str(
+        (
+            (qa_payload.get("project_profile_gate") or {}).get("status")
+            if isinstance(qa_payload.get("project_profile_gate"), dict)
+            else ""
+        )
+        or effective_scorecard.get("project_profile_gate_status")
+        or "not_configured"
+    ).strip()
+
+    source = "none"
+    if acceptance_payload:
+        source = "qa_acceptance_envelope"
+    elif scorecard_payload and qa_embedded_scorecard:
+        source = "feature_qa_scorecard+qa_status"
+    elif scorecard_payload:
+        source = "feature_qa_scorecard"
+    elif qa_embedded_scorecard:
+        source = "qa_status_embedded_scorecard"
+    elif qa_release_ready:
+        source = "qa_status"
+
+    acceptance_verdict = str(acceptance_payload.get("verdict") or "").strip().lower()
+    acceptance_release_ready = acceptance_verdict == "passed"
+    legacy_qa_acceptance = qa_status_value == "passed" and qa_evidence_done
+    if source == "none" and legacy_qa_acceptance:
+        source = "qa_status"
+    release_ready_signal = (
+        bool(effective_scorecard.get("release_ready", False))
+        or qa_release_ready
+        or acceptance_release_ready
+        or legacy_qa_acceptance
+    )
+    review_required_count = int(effective_scorecard.get("review_required_count") or 0)
+    needs_replay_count = int(effective_scorecard.get("needs_replay_count") or 0)
+    status = "missing"
+    if source != "none":
+        status = "blocked"
+        if (
+            (qa_status_value == "passed" or acceptance_release_ready)
+            and project_profile_gate_status in {"pass", "not_configured"}
+            and release_ready_signal
+            and (continue_decision == "ready_for_release" or qa_release_ready or legacy_qa_acceptance)
+            and not unresolved
+            and review_required_count == 0
+            and needs_replay_count == 0
+        ):
+            status = "pass"
+
+    return {
+        "status": status,
+        "source": source,
+        "feature": feature,
+        "qa_status": qa_status_value or "unknown",
+        "evidence_done": qa_evidence_done or acceptance_release_ready,
+        "release_ready": release_ready_signal,
+        "continue_decision": continue_decision,
+        "project_profile_gate_status": project_profile_gate_status or "not_configured",
+        "unresolved_closure_outcomes": unresolved,
+        "review_required_count": review_required_count,
+        "needs_replay_count": int(effective_scorecard.get("needs_replay_count") or 0),
+        "release_confidence_min": float(effective_scorecard.get("release_confidence_min") or 0.0),
+        "coverage_current": (
+            effective_scorecard.get("coverage_current")
+            if isinstance(effective_scorecard.get("coverage_current"), dict)
+            else {}
+        ),
+        "acceptance_envelope_path": str(acceptance_payload.get("_machine_path") or ""),
+        "acceptance_transaction_id": str(acceptance_payload.get("transaction_id") or ""),
+        "acceptance_verdict": acceptance_verdict,
+    }
+
+
 def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, Any]:
     resolved_version = resolve_target_version(project_root, version)
     resolved_runtime = resolve_runtime_version(project_root, "auto")
@@ -224,6 +342,7 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
     feature = _resolve_scorecard_feature(project_root, version=resolved_version, qa_status=qa_status)
     exhaustiveness = load_exhaustiveness_report(project_root, feature=feature) if feature else {}
     feature_scorecard = load_feature_qa_scorecard(project_root, feature=feature) if feature else {}
+    acceptance_envelope = _acceptance_envelope_payload(project_root, version=resolved_version, feature=feature) if feature else {}
     implementation_plan = (
         load_implementation_plan_progress(project_root, version=resolved_version, feature=feature)
         if feature and implementation_plan_supported(resolved_version)
@@ -271,7 +390,12 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
             if isinstance(item, dict) and str(item.get("reason_code") or "").strip()
         }
     )
-    if bool(evidence_manifest.get("blocked")):
+    if bool(evidence_manifest.get("blocked")) and project_runtime_feature_enabled(
+        project_root,
+        "v1.3.8",
+        docs_version=resolved_version,
+        runtime_version=resolved_runtime,
+    ):
         gate_status = "Blocked"
         blocked_count = max(blocked_count, int(evidence_manifest.get("blocked_count") or 0))
         gate_reason_codes = sorted(
@@ -294,15 +418,25 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
         }
     project_gate_status = str(project_profile_gate.get("status") or "not_configured")
     qa_passed = str(qa_status.get("status") or "").strip().lower() == "passed"
-    feature_scorecard_release_ready = bool(feature_scorecard.get("release_ready", False))
-    feature_scorecard_continue_decision = str(feature_scorecard.get("continue_decision") or "").strip()
     qa_evidence_done = bool(qa_status.get("evidence_done", False))
+    acceptance = _resolve_acceptance_truth(qa_status, feature_scorecard, acceptance_envelope)
+    acceptance_transaction = (
+        acceptance_projection_transaction_contract(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+        )
+        if feature
+        else {}
+    )
+    feature_scorecard_release_ready = bool(acceptance.get("release_ready", False))
+    feature_scorecard_continue_decision = str(acceptance.get("continue_decision") or "").strip()
     exhaustiveness_pass = (not exhaustiveness) or str(exhaustiveness.get("status") or "").strip().lower() == "passed"
     feature_scorecard_authoritative = (
-        bool(feature_scorecard)
+        bool(acceptance.get("source") and acceptance.get("source") != "none")
         and feature_scorecard_release_ready
         and feature_scorecard_continue_decision == "ready_for_release"
-        and not list(feature_scorecard.get("unresolved_closure_outcomes") or [])
+        and not list(acceptance.get("unresolved_closure_outcomes") or [])
     )
     legacy_release_ready = (
         gate_pass
@@ -318,10 +452,10 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
             gate_pass
             and qa_passed
             and (qa_evidence_done or feature_scorecard_release_ready or feature_scorecard_continue_decision == "ready_for_release")
-            and bool(feature_scorecard)
+            and bool(acceptance.get("source") and acceptance.get("source") != "none")
             and feature_scorecard_release_ready
-            and project_gate_status in {"pass", "not_configured"}
-            and not list(feature_scorecard.get("unresolved_closure_outcomes") or [])
+            and str(acceptance.get("project_profile_gate_status") or project_gate_status or "not_configured") in {"pass", "not_configured"}
+            and not list(acceptance.get("unresolved_closure_outcomes") or [])
             and (exhaustiveness_pass or feature_scorecard_authoritative)
             and gate_version_match
             and qa_version_match
@@ -347,17 +481,33 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
             and bool(change_documents.get("version_match", False))
             and bool(change_documents.get("includes_current_feature", False))
         )
+    if project_runtime_feature_enabled(
+        project_root,
+        "v1.3.9",
+        docs_version=resolved_version,
+        runtime_version=resolved_runtime,
+    ):
+        release_ready = release_ready and str(acceptance_transaction.get("status") or "warn").strip().lower() == "pass"
     if (
         runtime_feature_supported("v1.1.10", runtime_version=resolved_runtime)
         and gate_pass
         and feature_scorecard_authoritative
         and bool(revision_binding.get("gate_bound_to_latest_revision", False))
         and semantic_pass
-        and project_gate_status in {"pass", "not_configured"}
+        and str(acceptance.get("project_profile_gate_status") or project_gate_status or "not_configured") in {"pass", "not_configured"}
         and bool(change_documents.get("markdown_exists", False))
         and bool(change_documents.get("json_exists", False))
         and bool(change_documents.get("version_match", False))
         and bool(change_documents.get("includes_current_feature", False))
+        and (
+            not project_runtime_feature_enabled(
+                project_root,
+                "v1.3.9",
+                docs_version=resolved_version,
+                runtime_version=resolved_runtime,
+            )
+            or str(acceptance_transaction.get("status") or "warn").strip().lower() == "pass"
+        )
     ):
         release_ready = True
     release_delivery_read_model = load_delivery_read_model(
@@ -453,12 +603,18 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
         "qa": {
             "feature": feature,
             "status": str(qa_status.get("status") or "unknown"),
-            "evidence_done": bool(qa_status.get("evidence_done", False)),
+            "evidence_done": bool(qa_status.get("evidence_done", False) or acceptance.get("acceptance_verdict") == "passed"),
+            "release_ready": bool(acceptance.get("release_ready", False)),
             "execution_mode": str(qa_status.get("execution_mode") or "feature-aware"),
             "project_profile_id": str(project_profile_gate.get("profile_id") or ""),
-            "project_profile_gate_status": project_gate_status,
+            "project_profile_gate_status": str(acceptance.get("project_profile_gate_status") or project_gate_status or "not_configured"),
             "artifact_version": qa_version,
             "version_match": qa_version_match,
+            "acceptance_envelope_path": str(acceptance.get("acceptance_envelope_path") or ""),
+            "acceptance_transaction_id": str(acceptance.get("acceptance_transaction_id") or ""),
+            "acceptance_verdict": str(acceptance.get("acceptance_verdict") or ""),
+            "acceptance_transaction_status": str(acceptance_transaction.get("status") or "warn"),
+            "acceptance_transaction_reason_code": str(acceptance_transaction.get("reason_code") or ""),
         },
         "delivery": {
             "type": delivery_type,
@@ -468,6 +624,8 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
         "semantic": semantic if isinstance(semantic, dict) else {},
         "revision_binding": revision_binding,
         "exhaustiveness": exhaustiveness if isinstance(exhaustiveness, dict) else {},
+        "acceptance": acceptance,
+        "acceptance_transaction": acceptance_transaction if isinstance(acceptance_transaction, dict) else {},
         "feature_qa_scorecard": feature_scorecard if isinstance(feature_scorecard, dict) else {},
         "implementation_plan": implementation_plan if isinstance(implementation_plan, dict) else {},
         "git_workflow": {
@@ -513,6 +671,7 @@ def summarize_release_scorecard(scorecard: dict[str, Any] | None) -> dict[str, A
     payload = scorecard if isinstance(scorecard, dict) else {}
     gate = payload.get("gate") if isinstance(payload.get("gate"), dict) else {}
     qa = payload.get("qa") if isinstance(payload.get("qa"), dict) else {}
+    acceptance = payload.get("acceptance") if isinstance(payload.get("acceptance"), dict) else {}
     exhaustiveness = payload.get("exhaustiveness") if isinstance(payload.get("exhaustiveness"), dict) else {}
     feature_scorecard = payload.get("feature_qa_scorecard") if isinstance(payload.get("feature_qa_scorecard"), dict) else {}
     learning = payload.get("learning_scorecard") if isinstance(payload.get("learning_scorecard"), dict) else {}
@@ -536,8 +695,11 @@ def summarize_release_scorecard(scorecard: dict[str, Any] | None) -> dict[str, A
         "qa_status": str(qa.get("status") or "unknown"),
         "qa_execution_mode": str(qa.get("execution_mode") or "feature-aware"),
         "qa_evidence_done": bool(qa.get("evidence_done", False)),
+        "qa_release_ready": bool(qa.get("release_ready", False)),
         "qa_project_profile_id": str(qa.get("project_profile_id") or ""),
         "qa_project_profile_gate_status": str(qa.get("project_profile_gate_status") or "not_configured"),
+        "acceptance_status": str(acceptance.get("status") or ""),
+        "acceptance_source": str(acceptance.get("source") or ""),
         "exhaustiveness_status": str(exhaustiveness.get("status") or ""),
         "exhaustiveness_score": exhaustiveness.get("score"),
         "exhaustiveness_threshold": exhaustiveness.get("threshold"),

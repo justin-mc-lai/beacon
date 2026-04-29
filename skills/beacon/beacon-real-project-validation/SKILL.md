@@ -11,6 +11,10 @@ Default to:
 
 - `current-version real-project release proof`
 
+Preferred public shortcut:
+
+- `beacon real-project-validation --project-root <root> --version <version> --feature "<feature>" --json`
+
 Only switch to:
 
 - `specialized multi-project board acceptance`

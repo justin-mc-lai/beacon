@@ -6,6 +6,7 @@ description: Use when the user wants Beacon to analyze memory signals, debug fri
 # Beacon Memory Friction Evolution
 
 This skill routes optional analysis work through Beacon's `memory-friction-evolution` toolkit surface.
+For the new primary friction-governance entry, prefer `beacon-friction-intake`.
 
 ## Use for
 
@@ -21,6 +22,7 @@ Keep this skill outside the main workflow by default.
 
 Prefer:
 
+- `beacon friction-intake run ...` for the primary scan/capture governance flow
 - `beacon memory-friction-evolution run ...`
 - or `bash skills/beacon/scripts/run_beacon.sh memory-friction-evolution run ...`
 

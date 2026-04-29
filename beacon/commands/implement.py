@@ -60,6 +60,7 @@ from beacon.utils.host_prompt_trace import record_host_prompt_trace
 from beacon.utils.implement_prompt_boundary import evaluate_implement_prompt_boundary
 from beacon.utils.revision_delta import load_revision_delta
 from beacon.utils.semantic_runtime import load_or_build_semantic_layer
+from beacon.utils.skill_admission import admit_runtime_skill
 from beacon.utils.ralph_runtime import (
     append_ralph_round,
     finalize_ralph_state,
@@ -1773,6 +1774,37 @@ def run_implement_stage(  # noqa: PLR0913
         adapter=adapter,
         explicit_host_runtime=host_runtime,
     )
+    adapter_type = str(adapter.get("adapter_type", "")).strip()
+    skill_admission: dict[str, Any] = {}
+    if str(skill or "").strip():
+        skill_admission = admit_runtime_skill(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            skill=str(skill or "").strip(),
+            host_runtime=resolved_host_runtime,
+            stage="implement",
+            adapter_id=adapter_id,
+            adapter_type=adapter_type,
+        )
+        if str(skill_admission.get("status", "")).strip().lower() != "pass":
+            payload = {
+                "schema_version": "1.0",
+                "status": "blocked",
+                "reason_code": str(skill_admission.get("reason_code", "skill_admission_blocked") or "skill_admission_blocked"),
+                "feature": feature,
+                "version": resolved_version,
+                "run_id": run_id,
+                "feature_slug": feature_slug,
+                "host_runtime": resolved_host_runtime,
+                "mode": resolved_mode or "",
+                "runner": adapter_id,
+                "adapter_type": adapter_type,
+                "skill_admission": skill_admission,
+                "recommended_command": str(skill_admission.get("recommended_command", "") or ""),
+            }
+            write_json(state_path, payload)
+            return 2, payload
     subagent_prechecks: dict[str, Any] = {
         "required": False,
         "host_runtime": resolved_host_runtime,
@@ -1934,7 +1966,6 @@ def run_implement_stage(  # noqa: PLR0913
     if rendered_skill:
         task_prompt = f"{rendered_skill}\n{task_prompt}"
     context["task_prompt"] = task_prompt
-    adapter_type = str(adapter.get("adapter_type", "")).strip()
 
     request_delivery_contract = build_delivery_contract(
         feature=feature,
@@ -1959,6 +1990,7 @@ def run_implement_stage(  # noqa: PLR0913
             artifacts["ac_matrix"],
             str(revision_delta.get("json_ref", "") or ""),
             *[value for value in semantic_artifacts.values() if value],
+            str((skill_admission.get("artifacts") or {}).get("machine_path", "") or ""),
             str(request_path),
             str(result_path),
         ],
@@ -1966,6 +1998,19 @@ def run_implement_stage(  # noqa: PLR0913
         adapter_type=adapter_type,
         execution_surface="implement-team" if resolved_mode == "team" else adapter_id,
         team_mode=resolved_mode == "team",
+        capability_snapshot={
+            "skill_admission_status": str(skill_admission.get("status", "") or ""),
+            "skill_admission_mode": str(skill_admission.get("admission_mode", "") or ""),
+            "skill_id": str(skill_admission.get("skill_id", "") or ""),
+            "skill_surface_kind": str(((skill_admission.get("contract") or {}).get("surface_kind", "") if isinstance(skill_admission.get("contract"), dict) else "") or ""),
+            "skill_non_code_supported": bool(
+                str((((skill_admission.get("contract") or {}).get("surface_kind", "")) if isinstance(skill_admission.get("contract"), dict) else "") or "").strip().lower()
+                not in {"", "code-only"}
+            ),
+        },
+        risk_flags=[
+            str(skill_admission.get("reason_code", "") or "")
+        ] if str(skill_admission.get("reason_code", "") or "").strip() else [],
     )
 
     request_payload = {
@@ -1997,6 +2042,7 @@ def run_implement_stage(  # noqa: PLR0913
             "artifacts": semantic_artifacts,
             "default_design_bridge": default_design_bridge,
         },
+        "skill_admission": skill_admission,
         "delivery_contract": request_delivery_contract,
         "host_native_delivery": request_delivery_contract,
     }
@@ -2028,6 +2074,7 @@ def run_implement_stage(  # noqa: PLR0913
             "artifacts": semantic_artifacts,
             "default_design_bridge": default_design_bridge,
         },
+        "skill_admission": skill_admission,
         "delivery_contract": request_delivery_contract,
         "host_native_delivery": request_delivery_contract,
     }
@@ -2052,6 +2099,30 @@ def run_implement_stage(  # noqa: PLR0913
             )
         write_json(state_path, payload)
         return 0, payload
+    if adapter_type == "native" and str(skill or "").strip():
+        mark_implementation_plan_failed(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            run_id=run_id,
+            reason_code="native_skill_execution_unsupported",
+        )
+        payload = {
+            **base_state,
+            "status": "blocked",
+            "reason_code": "native_skill_execution_unsupported",
+            "recommended_command": (
+                f'beacon implement run "{feature}" --project {project_root} '
+                f"--version {resolved_version} --runner {adapter_id} --skill {str(skill or '').strip()} --dry-run"
+            ),
+            "detail": (
+                "Beacon native runners currently validate skill admission and delivery context, "
+                "but do not execute external/project skill work as a real host-native implementation bridge."
+            ),
+            "supported_execution_adapters": ["command-skill", "claude-skill"],
+        }
+        write_json(state_path, payload)
+        return 2, payload
     if adapter_type == "native":
         mark_implementation_plan_started(
             project_root,
@@ -2129,6 +2200,7 @@ def run_implement_stage(  # noqa: PLR0913
                 artifacts["test_case"],
                 artifacts["ac_matrix"],
                 str(revision_cleanup_summary.get("revision_delta_ref", "") or ""),
+                str((skill_admission.get("artifacts") or {}).get("machine_path", "") or ""),
                 str(request_path),
                 str(result_path),
             ]
@@ -2164,6 +2236,7 @@ def run_implement_stage(  # noqa: PLR0913
             "requirement_traceability": requirement_traceability,
             "delivery_surfaces": delivery_surfaces,
             "revision_cleanup": revision_cleanup_summary,
+            "skill_admission": skill_admission,
             "traceability_refs": summary_traceability_refs,
             "generated_at": now_iso(),
         }
@@ -2184,6 +2257,19 @@ def run_implement_stage(  # noqa: PLR0913
             adapter_type=adapter_type,
             execution_surface="implement-team" if resolved_mode == "team" else adapter_id,
             team_mode=resolved_mode == "team",
+            capability_snapshot={
+                "skill_admission_status": str(skill_admission.get("status", "") or ""),
+                "skill_admission_mode": str(skill_admission.get("admission_mode", "") or ""),
+                "skill_id": str(skill_admission.get("skill_id", "") or ""),
+                "skill_surface_kind": str(((skill_admission.get("contract") or {}).get("surface_kind", "") if isinstance(skill_admission.get("contract"), dict) else "") or ""),
+                "skill_non_code_supported": bool(
+                    str((((skill_admission.get("contract") or {}).get("surface_kind", "")) if isinstance(skill_admission.get("contract"), dict) else "") or "").strip().lower()
+                    not in {"", "code-only"}
+                ),
+            },
+            risk_flags=[
+                str(skill_admission.get("reason_code", "") or "")
+            ] if str(skill_admission.get("reason_code", "") or "").strip() else [],
         )
         summary_payload["delivery_contract"] = summary_delivery_contract
         summary_payload["host_native_delivery"] = summary_delivery_contract
@@ -2600,6 +2686,7 @@ def run_implement_stage(  # noqa: PLR0913
             artifacts["test_case"],
             artifacts["ac_matrix"],
             str(revision_cleanup_summary.get("revision_delta_ref", "") or ""),
+            str((skill_admission.get("artifacts") or {}).get("machine_path", "") or ""),
             str(request_path),
             str(result_path),
             str(stdout_path),
@@ -2637,6 +2724,7 @@ def run_implement_stage(  # noqa: PLR0913
         "requirement_traceability": requirement_traceability,
         "delivery_surfaces": delivery_surfaces,
         "revision_cleanup": revision_cleanup_summary,
+        "skill_admission": skill_admission,
         "traceability_refs": summary_traceability_refs,
         "implementation_marker": str(marker.relative_to(project_root)),
         "technical_archive": {
@@ -2669,6 +2757,19 @@ def run_implement_stage(  # noqa: PLR0913
         adapter_type=adapter_type,
         execution_surface="implement-team" if resolved_mode == "team" else adapter_id,
         team_mode=resolved_mode == "team",
+        capability_snapshot={
+            "skill_admission_status": str(skill_admission.get("status", "") or ""),
+            "skill_admission_mode": str(skill_admission.get("admission_mode", "") or ""),
+            "skill_id": str(skill_admission.get("skill_id", "") or ""),
+            "skill_surface_kind": str(((skill_admission.get("contract") or {}).get("surface_kind", "") if isinstance(skill_admission.get("contract"), dict) else "") or ""),
+            "skill_non_code_supported": bool(
+                str((((skill_admission.get("contract") or {}).get("surface_kind", "")) if isinstance(skill_admission.get("contract"), dict) else "") or "").strip().lower()
+                not in {"", "code-only"}
+            ),
+        },
+        risk_flags=[
+            str(skill_admission.get("reason_code", "") or "")
+        ] if str(skill_admission.get("reason_code", "") or "").strip() else [],
     )
     summary_payload["delivery_contract"] = summary_delivery_contract
     summary_payload["host_native_delivery"] = summary_delivery_contract

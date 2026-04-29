@@ -36,6 +36,14 @@ beacon doctor --json --project-root ROOT
 beacon help --project-root ROOT --version VERSION --feature FEATURE --json
 ```
 
+## Preferred Shortcut
+
+```bash
+beacon real-project-validation --project-root ROOT --version VERSION --feature FEATURE --json
+```
+
+The shortcut must still cover current-version public release proof. It cannot replace the underlying command matrix by silently skipping `prototype`, `archive`, `gate`, acceptance transaction, prompt-boundary, or latest-version acceptance overlays.
+
 ## Modern Runtime Prechecks
 
 ```bash
@@ -57,7 +65,7 @@ beacon prototype status FEATURE -p ROOT -v VERSION --json
 beacon implement status FEATURE -p ROOT -v VERSION --json
 beacon qa status -p ROOT --json
 beacon qa evolve FEATURE -p ROOT -v VERSION --no-write-matrix --json
-beacon release check VERSION -p ROOT
+beacon release check VERSION --project-root ROOT --json
 beacon release scorecard VERSION -p ROOT --json
 beacon archive status -p ROOT -v VERSION --feature FEATURE --json
 beacon archive explain -p ROOT -v VERSION --json

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from pathlib import Path
 from typing import Any
 
@@ -19,6 +20,38 @@ DEFAULT_BROWSER_FAMILIES: tuple[str, ...] = (
     "compatibility",
 )
 BROWSER_QA_TYPES: set[str] = {"functional", "compatibility", "smoke"}
+_BROWSER_HINT_TOKENS: tuple[str, ...] = (
+    "ui",
+    "browser",
+    "page",
+    "form",
+    "click",
+    "login",
+    "dashboard",
+    "viewport",
+    "页面",
+    "表单",
+    "浏览器",
+    "点击",
+    "登录",
+)
+_ASCII_BROWSER_HINT_TOKENS: tuple[str, ...] = (
+    "ui",
+    "browser",
+    "page",
+    "form",
+    "click",
+    "login",
+    "dashboard",
+    "viewport",
+)
+_CJK_BROWSER_HINT_TOKENS: tuple[str, ...] = (
+    "页面",
+    "表单",
+    "浏览器",
+    "点击",
+    "登录",
+)
 
 
 def is_browser_relevant_qa_type(qa_type: str) -> bool:
@@ -54,20 +87,31 @@ def flatten_story_scenarios(payload: dict[str, Any]) -> list[dict[str, Any]]:
     return [item for item in scenarios if isinstance(item, dict)]
 
 
-def _entry_browser_required(entry: dict[str, Any]) -> bool:
+def _text_suggests_browser(*parts: str) -> bool:
+    text = " ".join(str(part or "") for part in parts).lower()
+    if any(re.search(rf"\\b{re.escape(token)}\\b", text) for token in _ASCII_BROWSER_HINT_TOKENS):
+        return True
+    return any(token in text for token in _CJK_BROWSER_HINT_TOKENS)
+
+
+def _entry_browser_required(
+    entry: dict[str, Any],
+    *,
+    story_text: str = "",
+    feature: str = "",
+    theme: str = "",
+) -> bool:
     if bool(entry.get("browser_required")):
         return True
     qa_type = normalize_qa_type(str(entry.get("qa_type") or entry.get("layer") or "").strip())
-    if qa_type in BROWSER_QA_TYPES:
+    assertion = str(entry.get("assertion") or "").strip()
+    title = str(entry.get("title") or "").strip()
+    entry_text = str(entry.get("text") or "").strip()
+    default_assertion = default_assertion_for_qa_type(qa_type)
+    assertion_signal = assertion if assertion and assertion != default_assertion else ""
+    if _text_suggests_browser(story_text, feature, theme, entry_text, title, assertion_signal):
         return True
-    text = " ".join(
-        [
-            str(entry.get("assertion") or ""),
-            str(entry.get("title") or ""),
-            str(entry.get("text") or ""),
-        ]
-    ).lower()
-    return any(token in text for token in ("ui", "browser", "page", "form", "click", "login", "dashboard", "页面", "表单", "浏览器", "点击"))
+    return False
 
 
 def _scenario_qa_type(base_qa_type: str, family: str) -> str:
@@ -174,7 +218,12 @@ def expand_story_scenarios(
         story_scenarios: list[dict[str, Any]] = []
         for entry in related:
             qa_type = normalize_qa_type(str(entry.get("qa_type") or entry.get("layer") or "contract"))
-            browser_required = _entry_browser_required(entry)
+            browser_required = _entry_browser_required(
+                entry,
+                story_text=str(item.get("text") or ""),
+                feature=feature,
+                theme=str(item.get("theme") or ""),
+            )
             families = _scenario_families(browser_required, scenario_depth)
             source_tc_id = str(entry.get("source_tc_id") or entry.get("tc_id") or "").strip()
             title_seed = str(entry.get("assertion") or item.get("text") or item.get("theme") or ac_id).strip()

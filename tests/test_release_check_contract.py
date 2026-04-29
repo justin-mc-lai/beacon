@@ -112,6 +112,21 @@ def test_release_check_should_pass_when_coverage_summary_matches_release(tmp_pat
     assert "Release conditions met" in result.stdout
 
 
+def test_release_check_should_support_project_root_alias_and_json_output(tmp_path: Path):
+    version = "v1.3.4"
+    _seed_release_artifacts(tmp_path, version=version, coverage_version=version)
+
+    result = _invoke(["release", "check", version, "--project-root", str(tmp_path), "--json"])
+
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["version"] == version
+    assert payload["status"] == "pass"
+    assert payload["release_ready"] is True
+    assert payload["failed_checks"] == []
+    assert any(item["name"] == "coverage summary version matches release version" for item in payload["checks"])
+
+
 def test_release_check_should_fail_when_v136_scorecard_is_not_release_ready(tmp_path: Path, monkeypatch):
     version = "v1.3.6"
     _seed_release_artifacts(tmp_path, version=version, coverage_version=version)

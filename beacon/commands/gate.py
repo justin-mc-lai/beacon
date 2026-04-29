@@ -34,6 +34,7 @@ from beacon.utils.qa_precision import load_feature_qa_ac_closure, load_feature_q
 from beacon.utils.release_scorecard import build_release_scorecard
 from beacon.utils.prototype_support import feature_requires_route_closure, prototype_status, version_requires_prototype
 from beacon.utils.runtime_projection_store import runtime_projection_transaction_contract
+from beacon.utils.writeback import acceptance_projection_transaction_contract
 from beacon.utils.requirement_clarity import (
     build_requirement_clarity_gate_payload,
     load_requirement_clarity_state,
@@ -1099,6 +1100,7 @@ def check_release_memory_profile(project_root: Path, mode: GateMode, stage: str,
         and str(item.get("stage", "")) == "release"
         and str(item.get("event", "")) == "release_decision_recorded"
     ]
+    unfiltered_release_events = list(release_events)
     if resolved_version:
         release_events = [
             item
@@ -1109,6 +1111,8 @@ def check_release_memory_profile(project_root: Path, mode: GateMode, stage: str,
             )
             or str(item.get("run_id") or "").strip() == f"release:{resolved_version}"
         ]
+    if not release_events and unfiltered_release_events:
+        release_events = unfiltered_release_events
     if not release_events:
         issues.append(
             {
@@ -1225,6 +1229,7 @@ def check_prototype_contract(
             or payload.get("prototype_mode")
             or ""
         ).strip().lower()
+        compiler = plan_payload.get("compiler") if isinstance(plan_payload.get("compiler"), dict) else {}
         if payload.get("status") == "missing":
             issues.append({
                 "reason_code": "prototype_missing",
@@ -1237,6 +1242,20 @@ def check_prototype_contract(
                 "reason_code": "prototype_source_untraceable",
                 "blocked": True,
                 "message": f"prototype freeze/source metadata missing for feature {feature_dir.name}",
+            })
+        if (
+            _parse_semver_tuple(resolved_version) >= (1, 3, 9)
+            and str(compiler.get("requested_mode") or "").strip().lower() == "auto"
+            and bool(str(compiler.get("fallback_reason") or "").strip())
+        ):
+            issues.append({
+                "reason_code": "prototype_auto_template_downgrade_blocked",
+                "blocked": True,
+                "message": f"prototype auto mode degraded to fixed-template output for feature {feature_dir.name}",
+                "details": {
+                    "fallback_reason": str(compiler.get("fallback_reason") or ""),
+                    "generator_mode": str(compiler.get("generator_mode") or ""),
+                },
             })
         if payload.get("status") == "draft":
             issues.append({
@@ -1391,23 +1410,24 @@ def check_prototype_contract(
                     "blocked": True,
                     "message": f"{key} missing for feature {feature_dir.name}",
                 })
-        if payload.get("review_status") == "missing":
+        review_status_value = str(payload.get("review_status") or review_payload.get("overall_status") or "missing")
+        failed_checks = {
+            str(item.get("name") or "")
+            for item in (review_payload.get("checks") or [])
+            if isinstance(item, dict) and str(item.get("status") or "") == "fail"
+        }
+        if review_status_value == "missing":
             issues.append({
                 "reason_code": "prototype_review_missing",
                 "blocked": True,
                 "message": f"prototype review missing for feature {feature_dir.name}",
             })
-        if payload.get("review_status") == "fail":
+        if review_status_value == "fail":
             issues.append({
                 "reason_code": "prototype_review_failed",
                 "blocked": True,
                 "message": f"prototype review failed for feature {feature_dir.name}",
             })
-            failed_checks = {
-                str(item.get("name") or "")
-                for item in (review_payload.get("checks") or [])
-                if isinstance(item, dict) and str(item.get("status") or "") == "fail"
-            }
             if "route_closure_binding_complete" in failed_checks:
                 issues.append({
                     "reason_code": "prototype_surface_unbound",
@@ -1419,6 +1439,12 @@ def check_prototype_contract(
                     "reason_code": "prototype_artifact_inconsistent",
                     "blocked": True,
                     "message": f"artifact consistency failed for feature {feature_dir.name}",
+                })
+            if "forbidden_page_inventory_clear" in failed_checks:
+                issues.append({
+                    "reason_code": "prototype_forbidden_page_present",
+                    "blocked": True,
+                    "message": f"forbidden prototype pages detected for feature {feature_dir.name}",
                 })
             if "prototype_cjk_parse_failed" in failed_checks:
                 issues.append({
@@ -1478,6 +1504,46 @@ def check_runtime_projection_transaction_contract(
             "details": contract.get("details", {}),
         }
     ]
+
+
+def check_acceptance_projection_transaction_contract(
+    project_root: Path,
+    mode: GateMode,
+    stage: str,
+    version: Optional[str] = None,
+) -> List[Dict[str, Any]]:
+    if stage not in {"qa", "release"}:
+        return []
+    if mode not in {GateMode.STRICT, GateMode.DEBUG}:
+        return []
+    resolved_version = resolve_target_version(project_root, version)
+    if _parse_semver_tuple(resolved_version) < (1, 3, 9):
+        return []
+    release_scorecard = build_release_scorecard(project_root, version=resolved_version)
+    acceptance = release_scorecard.get("acceptance") if isinstance(release_scorecard.get("acceptance"), dict) else {}
+    qa_summary = release_scorecard.get("qa") if isinstance(release_scorecard.get("qa"), dict) else {}
+    feature = str(acceptance.get("feature") or qa_summary.get("feature") or "").strip()
+    if not feature:
+        return [{
+            "reason_code": "acceptance_feature_missing",
+            "blocked": True,
+            "message": "v1.3.9 acceptance transaction contract requires a resolved feature",
+            "details": {},
+        }]
+    contract = acceptance_projection_transaction_contract(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+    )
+    status = str(contract.get("status") or "warn").lower()
+    if status == "pass":
+        return []
+    return [{
+        "reason_code": str(contract.get("reason_code") or "acceptance_projection_missing"),
+        "blocked": True,
+        "message": str(contract.get("message") or "qa acceptance transaction contract failed"),
+        "details": contract.get("details", {}),
+    }]
 
 
 def check_semantic_contract(
@@ -1889,6 +1955,102 @@ def check_v110_precision_contract(
         return issues
     resolved_version = _resolved_gate_version(project_root, version)
     if _parse_semver_tuple(resolved_version) < (1, 1, 10):
+        return issues
+
+    if _parse_semver_tuple(resolved_version) >= (1, 3, 9):
+        release_scorecard = build_release_scorecard(project_root, version=resolved_version)
+        acceptance = (
+            release_scorecard.get("acceptance")
+            if isinstance(release_scorecard.get("acceptance"), dict)
+            else {}
+        )
+        qa_summary = release_scorecard.get("qa") if isinstance(release_scorecard.get("qa"), dict) else {}
+
+        if not acceptance or str(acceptance.get("source") or "").strip() in {"", "none"}:
+            issues.append(
+                {
+                    "reason_code": "feature_qa_missing",
+                    "severity": "critical",
+                    "message": "v1.3.9 release requires converged QA acceptance/readiness truth",
+                    "blocked": True,
+                }
+            )
+            return issues
+
+        feature_name = str(acceptance.get("feature") or qa_summary.get("feature") or "").strip()
+        if not feature_name:
+            issues.append(
+                {
+                    "reason_code": "feature_name_missing",
+                    "severity": "critical",
+                    "message": "v1.3.9 release requires acceptance truth to resolve the feature name",
+                    "blocked": True,
+                }
+            )
+            return issues
+
+        project_gate_status = str(
+            acceptance.get("project_profile_gate_status")
+            or qa_summary.get("project_profile_gate_status")
+            or "not_configured"
+        )
+        if project_gate_status == "blocked":
+            issues.append(
+                {
+                    "reason_code": "project_profile_gate_blocked",
+                    "severity": "critical",
+                    "message": "project-specific verify workflow gate is blocked",
+                    "blocked": True,
+                }
+            )
+
+        unresolved = [str(item) for item in (acceptance.get("unresolved_closure_outcomes") or []) if str(item).strip()]
+        if unresolved:
+            issues.append(
+                {
+                    "reason_code": "unresolved_closure_outcome",
+                    "severity": "critical",
+                    "message": f"unresolved closure outcomes remain: {unresolved}",
+                    "blocked": True,
+                }
+            )
+        if int(acceptance.get("review_required_count") or 0) > 0:
+            issues.append(
+                {
+                    "reason_code": "review_required_open",
+                    "severity": "critical",
+                    "message": f"review-required scenarios remain: {acceptance.get('review_required_count')}",
+                    "blocked": True,
+                }
+            )
+        if int(acceptance.get("needs_replay_count") or 0) > 0:
+            issues.append(
+                {
+                    "reason_code": "needs_replay_open",
+                    "severity": "critical",
+                    "message": f"needs-replay scenarios remain: {acceptance.get('needs_replay_count')}",
+                    "blocked": True,
+                }
+            )
+        release_confidence_min = float(acceptance.get("release_confidence_min") or 0.0)
+        if release_confidence_min < 0.85:
+            issues.append(
+                {
+                    "reason_code": "release_confidence_below_threshold",
+                    "severity": "critical",
+                    "message": f"release confidence floor {release_confidence_min} < 0.85",
+                    "blocked": True,
+                }
+            )
+        if not bool(acceptance.get("release_ready", False)):
+            issues.append(
+                {
+                    "reason_code": "feature_release_not_ready",
+                    "severity": "critical",
+                    "message": "converged QA acceptance truth is not release-ready",
+                    "blocked": True,
+                }
+            )
         return issues
 
     qa_status = _load_scoped_qa_status(project_root, version=resolved_version)
@@ -3775,6 +3937,7 @@ def run_gate_checks(
             all_issues.extend(check_prototype_contract(project_root, mode, stage, version))
             all_issues.extend(check_semantic_contract(project_root, mode, stage, version))
             all_issues.extend(check_runtime_projection_transaction_contract(project_root, mode, stage, version))
+            all_issues.extend(check_acceptance_projection_transaction_contract(project_root, mode, stage, version))
             if mode == GateMode.DEBUG:
                 typer.echo("[DEBUG] [stage-local] Checking coverage metrics...")
             all_issues.extend(check_coverage_metrics(project_root, mode, stage, version=version))
@@ -3819,6 +3982,7 @@ def run_gate_checks(
         all_issues.extend(check_prototype_contract(project_root, mode, stage, version))
         all_issues.extend(check_semantic_contract(project_root, mode, stage, version))
         all_issues.extend(check_runtime_projection_transaction_contract(project_root, mode, stage, version))
+        all_issues.extend(check_acceptance_projection_transaction_contract(project_root, mode, stage, version))
 
         if mode == GateMode.STRICT or mode == GateMode.DEBUG:
             if mode == GateMode.DEBUG:
