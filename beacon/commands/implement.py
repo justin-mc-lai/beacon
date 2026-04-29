@@ -61,6 +61,7 @@ from beacon.utils.implement_prompt_boundary import evaluate_implement_prompt_bou
 from beacon.utils.revision_delta import load_revision_delta
 from beacon.utils.semantic_runtime import load_or_build_semantic_layer
 from beacon.utils.skill_admission import admit_runtime_skill
+from beacon.utils.project_metadata import resolve_project_metadata_view
 from beacon.utils.ralph_runtime import (
     append_ralph_round,
     finalize_ralph_state,
@@ -1546,7 +1547,7 @@ def _branch_guard_inputs(project_root: Path, *, version: str, feature: str) -> d
     require_clean = bool(
         contract.get("require_clean_worktree_for_switch", branch_guard_cfg.get("require_clean_worktree_for_switch", True))
     )
-    return {
+    payload = {
         "git_workflow": contract,
         "expected_branch": expected_branch,
         "branch_prefix": branch_prefix,
@@ -1555,6 +1556,34 @@ def _branch_guard_inputs(project_root: Path, *, version: str, feature: str) -> d
         "direct_delivery_services": direct_delivery_services,
         "require_clean_worktree_for_switch": require_clean,
     }
+    metadata_view = resolve_project_metadata_view(project_root, version=version)
+    version_contract = metadata_view.get("version_contract") if isinstance(metadata_view.get("version_contract"), dict) else {}
+    selected_service = str(metadata_view.get("selected_service") or "").strip()
+    service_binding = metadata_view.get("selected_service_binding") if isinstance(metadata_view.get("selected_service_binding"), dict) else {}
+    if version_contract and selected_service and service_binding:
+        per_service = version_contract.get("per_service_canonical_branch") if isinstance(version_contract.get("per_service_canonical_branch"), dict) else {}
+        selected_branch = str(per_service.get(selected_service) or "").strip()
+        participating = version_contract.get("participating_services") if isinstance(version_contract.get("participating_services"), list) else []
+        if selected_branch:
+            payload["expected_branch"] = selected_branch
+            if "/" in selected_branch:
+                payload["branch_prefix"] = selected_branch.split("/", 1)[0] + "/"
+        git_roots = [
+            str(item.get("repo_root") or "")
+            for item in metadata_view.get("service_bindings", [])
+            if isinstance(item, dict) and str(item.get("service_key") or "") in participating and str(item.get("repo_root") or "").strip()
+        ]
+        if git_roots:
+            payload["git_roots"] = git_roots
+        if participating:
+            payload["direct_delivery_services"] = [str(item) for item in participating]
+        payload["metadata_contract"] = {
+            "project_root": metadata_view.get("project_root", ""),
+            "topology_kind": metadata_view.get("topology_kind", ""),
+            "selected_service": selected_service,
+            "machine_path": metadata_view.get("paths", {}).get("machine", ""),
+        }
+    return payload
 
 
 def run_implement_stage(  # noqa: PLR0913

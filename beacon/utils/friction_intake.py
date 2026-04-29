@@ -65,6 +65,9 @@ def _classify_item(summary: str) -> tuple[str, str, str]:
 
     domain = "workflow"
     domain_rules = (
+        ("monorepo", ("monorepo", "multi-service", "no .git", "没有 .git", "topology")),
+        ("branch-governance", ("canonical branch", "wrong branch", "protected branch", "branch governance", "分支治理", "错误分支")),
+        ("repo-binding", ("repo binding", "service repo", "repo root", "project root", "service root", "仓库绑定")),
         ("host_runtime", ("host runtime", "runtime", "codex", "claude")),
         ("memory", ("memory", "记忆")),
         ("skill", ("skill", "技能")),
@@ -123,6 +126,8 @@ def _capture_candidates(project_root: Path, note: str) -> tuple[list[dict[str, A
         "item_class": item_class,
         "severity": severity,
         "domain": domain,
+        "project_root": str(project_root.resolve()),
+        "evidence_abs_path": str(note_path.resolve()),
     }
     write_json(note_path, payload)
     rel = str(note_path.relative_to(project_root))
@@ -152,11 +157,14 @@ def _render_markdown(payload: dict[str, Any]) -> str:
         f"- docs_version: `{payload.get('docs_version', '')}`",
         f"- mode: `{payload.get('mode', '')}`",
         f"- generated_at: `{payload.get('generated_at', '')}`",
+        f"- project_root: `{payload.get('project_root', '')}`",
         "",
         "## Inputs",
         f"- evidence_refs: `{len(payload.get('evidence_refs', []))}`",
         f"- sqlite_status: `{governance.get('status', '')}`",
         f"- sqlite_db: `{governance.get('db_path', '')}`",
+        f"- json_abs_path: `{payload.get('paths', {}).get('json_abs', '')}`",
+        f"- markdown_abs_path: `{payload.get('paths', {}).get('markdown_abs', '')}`",
         "",
         "## Items",
     ]
@@ -176,6 +184,8 @@ def _render_markdown(payload: dict[str, Any]) -> str:
             )
             refs = item.get("evidence_refs") if isinstance(item.get("evidence_refs"), list) else []
             lines.append(f"  - evidence_refs: {', '.join(f'`{ref}`' for ref in refs) if refs else 'none'}")
+            abs_refs = item.get("evidence_abs_paths") if isinstance(item.get("evidence_abs_paths"), list) else []
+            lines.append(f"  - evidence_abs_paths: {', '.join(f'`{ref}`' for ref in abs_refs) if abs_refs else 'none'}")
     return "\n".join(lines) + "\n"
 
 
@@ -219,6 +229,7 @@ def run_friction_intake(
         "docs_version": resolved_version,
         "mode": normalized_mode,
         "generated_at": generated_at,
+        "project_root": str(root),
         "evidence_refs": evidence_refs,
         "items": final_items,
         "governance": governance,
@@ -227,6 +238,18 @@ def run_friction_intake(
     analysis_dir.mkdir(parents=True, exist_ok=True)
     json_path = analysis_dir / f"friction-intake-{run_id}.json"
     md_path = analysis_dir / f"friction-intake-{run_id}.md"
+    payload["paths"] = {
+        "json": str(json_path.relative_to(root)),
+        "markdown": str(md_path.relative_to(root)),
+        "json_abs": str(json_path),
+        "markdown_abs": str(md_path),
+        "evidence_abs": [str((root / ref).resolve()) for ref in evidence_refs],
+    }
+    for item in payload["items"]:
+        if not isinstance(item, dict):
+            continue
+        refs = item.get("evidence_refs") if isinstance(item.get("evidence_refs"), list) else []
+        item["evidence_abs_paths"] = [str((root / ref).resolve()) for ref in refs]
     write_json(json_path, payload)
     md_path.write_text(_render_markdown(payload), encoding="utf-8")
     write_json(
@@ -235,14 +258,13 @@ def run_friction_intake(
             "schema_version": "1.0",
             "run_id": run_id,
             "generated_at": generated_at,
+            "project_root": str(root),
             "payload_path": str(json_path.relative_to(root)),
             "markdown_path": str(md_path.relative_to(root)),
+            "payload_abs_path": str(json_path),
+            "markdown_abs_path": str(md_path),
         },
     )
-    payload["paths"] = {
-        "json": str(json_path.relative_to(root)),
-        "markdown": str(md_path.relative_to(root)),
-    }
     return payload
 
 
@@ -275,6 +297,7 @@ def render_friction_intake_human(payload: dict[str, Any]) -> str:
         f"docs_version     : {payload.get('docs_version', '')}",
         f"mode             : {payload.get('mode', '')}",
         f"generated_at     : {payload.get('generated_at', '')}",
+        f"project_root     : {payload.get('project_root', '')}",
         f"items            : {len(items)}",
         f"sqlite_status    : {governance.get('status', '')}",
     ]
@@ -292,7 +315,17 @@ def render_friction_intake_human(payload: dict[str, Any]) -> str:
             )
     paths = payload.get("paths") if isinstance(payload.get("paths"), dict) else {}
     if paths:
-        lines.extend(["", f"json report      : {paths.get('json', '')}", f"markdown report  : {paths.get('markdown', '')}"])
+        lines.extend(
+            [
+                "",
+                "落盘位置",
+                f"json report      : {paths.get('json_abs', paths.get('json', ''))}",
+                f"markdown report  : {paths.get('markdown_abs', paths.get('markdown', ''))}",
+            ]
+        )
+        evidence_abs = paths.get("evidence_abs") if isinstance(paths.get("evidence_abs"), list) else []
+        for idx, ref in enumerate(evidence_abs, start=1):
+            lines.append(f"evidence[{idx}]    : {ref}")
     return "\n".join(lines)
 
 

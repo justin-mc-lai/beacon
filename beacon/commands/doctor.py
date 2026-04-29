@@ -36,6 +36,13 @@ from beacon.utils.doctor_orchestrator import (
     run_subagent_runtime_verify,
     run_technical_review_contract_sync,
 )
+from beacon.utils.project_metadata import (
+    create_or_update_project_metadata,
+    delete_project_metadata,
+    load_project_metadata,
+    resolve_project_metadata_view,
+    verify_project_metadata,
+)
 
 app = typer.Typer(
     name="doctor",
@@ -43,6 +50,8 @@ app = typer.Typer(
     invoke_without_command=True,
     no_args_is_help=False,
 )
+metadata_app = typer.Typer(name="metadata", help="Manage project topology and version metadata.")
+app.add_typer(metadata_app, name="metadata")
 
 
 def _print_doctor_report(payload: dict[str, Any]) -> None:
@@ -263,6 +272,23 @@ def _print_codex_hud_hook_verify_result(payload: dict[str, Any]) -> None:
         typer.echo(f"- {state}: {item.get('name')} ({item.get('detail')})")
 
 
+def _print_project_metadata_result(title: str, result: dict[str, Any]) -> None:
+    typer.echo(title)
+    typer.echo("=" * len(title))
+    typer.echo(f"project_root: {result.get('project_root', '')}")
+    summary = result.get("summary") if isinstance(result.get("summary"), dict) else {}
+    if summary:
+        typer.echo(f"transaction_id: {summary.get('transaction_id', '')}")
+        typer.echo(f"machine_path: {summary.get('payload_abs_path', '')}")
+        typer.echo(f"human_path: {summary.get('markdown_abs_path', '')}")
+    resolved = result.get("resolved_metadata_view") if isinstance(result.get("resolved_metadata_view"), dict) else {}
+    if resolved:
+        typer.echo(f"topology_kind: {resolved.get('topology_kind', '')}")
+        typer.echo(f"default_execution_service: {resolved.get('default_execution_service', '')}")
+        typer.echo(f"selected_service: {resolved.get('selected_service', '')}")
+        typer.echo(f"selected_branch: {resolved.get('selected_branch', '')}")
+
+
 @app.callback(invoke_without_command=True)
 def doctor_callback(
     ctx: typer.Context,
@@ -283,6 +309,129 @@ def doctor_callback(
                 strict=strict,
             )
         )
+
+
+@metadata_app.command("show")
+def metadata_show(
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    version: str = typer.Option("", "--version", "-v", help="Version-scoped resolved view"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Show current project-version metadata and resolved view."""
+    root = Path(project_root).expanduser().resolve() if project_root else Path.cwd()
+    result = {
+        "project_root": str(root),
+        "payload": load_project_metadata(root),
+        "resolved_metadata_view": resolve_project_metadata_view(root, version=version),
+    }
+    payload = {"schema_version": "1.0", "action": "doctor-metadata-show", "result": result}
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        _print_project_metadata_result("Beacon Doctor Metadata Show", result)
+    raise typer.Exit(code=0)
+
+
+@metadata_app.command("list")
+def metadata_list(
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """List service bindings and version contracts."""
+    root = Path(project_root).expanduser().resolve() if project_root else Path.cwd()
+    current = load_project_metadata(root)
+    result = {
+        "project_root": str(root),
+        "service_bindings": current.get("global_project_metadata", {}).get("service_bindings", []),
+        "version_scoped_metadata": current.get("version_scoped_metadata", {}),
+    }
+    payload = {"schema_version": "1.0", "action": "doctor-metadata-list", "result": result}
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo(json.dumps(result, ensure_ascii=False, indent=2))
+    raise typer.Exit(code=0)
+
+
+@metadata_app.command("create")
+@metadata_app.command("update")
+def metadata_upsert(
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    topology_kind: str = typer.Option("", "--topology-kind", help="single_repo|monorepo"),
+    default_execution_service: str = typer.Option("", "--default-execution-service", help="Default service key"),
+    service_key: str = typer.Option("", "--service-key", help="Service key"),
+    repo_root: str = typer.Option("", "--repo-root", help="Service repo root"),
+    role: str = typer.Option("service", "--role", help="Service role"),
+    writable: bool = typer.Option(True, "--writable/--reference-only", help="Writable or reference-only binding"),
+    worktree_path_policy: str = typer.Option("follow-repo-root", "--worktree-path-policy", help="Worktree path policy"),
+    version: str = typer.Option("", "--version", "-v", help="Version contract key"),
+    branch: str = typer.Option("", "--branch", help="Canonical branch for the service under the version"),
+    branch_guard_mode: str = typer.Option("strict", "--branch-guard-mode", help="Branch guard mode"),
+    validation_state: str = typer.Option("active", "--validation-state", help="Validation state"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Create or update project-version metadata."""
+    root = Path(project_root).expanduser().resolve() if project_root else Path.cwd()
+    result = create_or_update_project_metadata(
+        root,
+        topology_kind=topology_kind,
+        default_execution_service=default_execution_service,
+        service_key=service_key,
+        repo_root=repo_root,
+        role=role,
+        writable=writable,
+        worktree_path_policy=worktree_path_policy,
+        version=version,
+        branch=branch,
+        branch_guard_mode=branch_guard_mode,
+        validation_state=validation_state,
+        event_type="update",
+    )
+    payload = {"schema_version": "1.0", "action": "doctor-metadata-upsert", "result": result}
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        rendered = dict(result)
+        rendered["resolved_metadata_view"] = resolve_project_metadata_view(root, version=version)
+        _print_project_metadata_result("Beacon Doctor Metadata Upsert", rendered)
+    raise typer.Exit(code=0)
+
+
+@metadata_app.command("delete")
+def metadata_delete(
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    service_key: str = typer.Option("", "--service-key", help="Service key to delete"),
+    version: str = typer.Option("", "--version", "-v", help="Version contract to delete"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Delete a service binding and/or version contract."""
+    root = Path(project_root).expanduser().resolve() if project_root else Path.cwd()
+    result = delete_project_metadata(root, service_key=service_key, version=version)
+    payload = {"schema_version": "1.0", "action": "doctor-metadata-delete", "result": result}
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        rendered = dict(result)
+        rendered["resolved_metadata_view"] = resolve_project_metadata_view(root, version=version)
+        _print_project_metadata_result("Beacon Doctor Metadata Delete", rendered)
+    raise typer.Exit(code=0)
+
+
+@metadata_app.command("verify")
+def metadata_verify(
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    version: str = typer.Option("", "--version", "-v", help="Version contract to verify"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Verify current runtime state against project-version metadata contract."""
+    root = Path(project_root).expanduser().resolve() if project_root else Path.cwd()
+    result = verify_project_metadata(root, version=version)
+    payload = {"schema_version": "1.0", "action": "doctor-metadata-verify", "result": result}
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        _print_verification_result("Beacon Doctor Metadata Verify", result)
+    raise typer.Exit(code=0 if result.get("status") != "fail" else 2)
 
 
 @app.command("diagnose")
