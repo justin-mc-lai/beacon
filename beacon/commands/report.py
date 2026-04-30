@@ -554,6 +554,7 @@ def _classify_validation_surface(result: dict[str, Any]) -> str:
 def _surface_status_record(name: str, result: dict[str, Any]) -> dict[str, Any]:
     payload = result.get("json") if isinstance(result.get("json"), dict) else {}
     result_payload = payload.get("result") if isinstance(payload.get("result"), dict) else {}
+    next_step = payload.get("next_step") if isinstance(payload.get("next_step"), dict) else {}
     reason_codes: set[str] = {
         str(item.get("reason_code") or "").strip()
         for item in (
@@ -585,7 +586,13 @@ def _surface_status_record(name: str, result: dict[str, Any]) -> dict[str, Any]:
             or payload.get("release_ready")
             or ""
         ),
+        "blocked": bool(payload.get("blocked")) if "blocked" in payload else False,
         "reason_codes": sorted(code for code in reason_codes if code),
+        "next_step": {
+            "action": str(next_step.get("action") or ""),
+            "reason": str(next_step.get("reason") or ""),
+            "command": str(next_step.get("command") or ""),
+        } if next_step else {},
         "stdout_tail": "\n".join(str(result.get("stdout") or "").splitlines()[-8:]),
         "stderr_tail": "\n".join(str(result.get("stderr") or "").splitlines()[-8:]),
     }

@@ -416,6 +416,115 @@ def test_report_real_project_validation_should_include_requirement_package_contr
     assert check_ids["requirement_package_dual_write_contract"] == "blocked"
 
 
+def test_report_real_project_validation_should_capture_help_next_step_for_requirement_package_remediation(
+    monkeypatch,
+    tmp_path: Path,
+) -> None:
+    version = "v1.3.10"
+    feature = "Feature"
+    _seed_docs(tmp_path, version)
+
+    def fake_run(_root: Path, args: list[str]) -> dict:
+        command = " ".join(args)
+        if args[:1] == ["help"]:
+            payload = {
+                "schema_version": "1.0",
+                "feature": feature,
+                "blocked": True,
+                "blocking_reasons": ["requirement_package_contract_blocked", "baseline_hash_mismatch"],
+                "next_step": {
+                    "action": "beacon-change",
+                    "reason": "frozen requirement package drifted from the approved baseline and must re-enter the change loop",
+                    "command": "beacon-change",
+                },
+                "requirement_package_gate": {
+                    "status": "blocked",
+                    "failure_categories": ["baseline_hash_mismatch"],
+                    "recommended_action": "beacon-change",
+                    "recommended_command": "beacon-change",
+                },
+            }
+            return {
+                "command": command,
+                "exit_code": 0,
+                "stdout": json.dumps(payload, ensure_ascii=False),
+                "stderr": "",
+                "json": payload,
+            }
+        if args[:2] == ["doctor", "verify-materials"]:
+            payload = {
+                "schema_version": "2.0",
+                "action": "verify-materials",
+                "status": "FAIL",
+                "result": {
+                    "status": "fail",
+                    "checks": [
+                        {
+                            "name": "change_loop_requirement_package_sync",
+                            "status": "fail",
+                            "details": {
+                                "drift_by_feature": {
+                                    "feature": {"reason": "baseline_hash_mismatch"}
+                                }
+                            },
+                        }
+                    ],
+                },
+            }
+            return {
+                "command": command,
+                "exit_code": 2,
+                "stdout": json.dumps(payload, ensure_ascii=False),
+                "stderr": "",
+                "json": payload,
+            }
+        return {
+            "command": command,
+            "exit_code": 0,
+            "stdout": json.dumps({"status": "pass"}, ensure_ascii=False),
+            "stderr": "",
+            "json": {"status": "pass"},
+        }
+
+    monkeypatch.setattr(report_module, "_run_real_project_validation_command", fake_run)
+    monkeypatch.setattr(report_module, "_git_status_lines", lambda _root: [])
+    monkeypatch.setattr(
+        report_module,
+        "build_release_scorecard",
+        lambda _root, version: {
+            "version": version,
+            "release_ready": True,
+            "gate": {"status": "Pass", "blocked_count": 0, "reason_codes": []},
+            "qa": {"feature": feature, "status": "passed", "evidence_done": True, "release_ready": True, "acceptance_transaction_status": "pass"},
+            "feature_qa_scorecard": {"continue_decision": "ready_for_release", "review_required_count": 0, "needs_replay_count": 0, "unresolved_closure_outcomes": []},
+            "prompt_boundary": {"required": True, "status": "pass", "blocked": False},
+            "change_documents": {"status": "pass", "markdown_exists": True, "json_exists": True, "version_match": True, "includes_current_feature": True},
+            "host_native_delivery": {"status": "pass", "reason_codes": []},
+        },
+    )
+
+    result = runner.invoke(
+        app,
+        [
+            "real-project-validation",
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            version,
+            "--feature",
+            feature,
+            "--json",
+        ],
+    )
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    help_surface = next(item for item in payload["surfaces"]["operational"] if item["name"] == "help")
+    assert help_surface["blocked"] is True
+    assert help_surface["next_step"]["action"] == "beacon-change"
+    assert help_surface["next_step"]["command"] == "beacon-change"
+    assert help_surface["next_step"]["reason"] == "frozen requirement package drifted from the approved baseline and must re-enter the change loop"
+
+
 def test_report_real_project_validation_runner_should_allow_context_version_drift(monkeypatch, tmp_path: Path) -> None:
     captured: dict[str, object] = {}
 
