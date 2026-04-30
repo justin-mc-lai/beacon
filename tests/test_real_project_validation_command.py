@@ -352,6 +352,11 @@ def test_report_real_project_validation_should_include_requirement_package_contr
                         {
                             "name": "change_loop_requirement_package_sync",
                             "status": "fail",
+                            "details": {
+                                "drift_by_feature": {
+                                    "feature": {"reason": "baseline_hash_mismatch"}
+                                }
+                            },
                         }
                     ],
                 },
@@ -405,6 +410,8 @@ def test_report_real_project_validation_should_include_requirement_package_contr
     payload = json.loads(result.stdout)
     blocker_names = {item["name"] for item in payload["surfaces"]["project_state_blockers"]}
     assert "doctor_verify_materials" in blocker_names
+    material_blocker = next(item for item in payload["surfaces"]["project_state_blockers"] if item["name"] == "doctor_verify_materials")
+    assert "change_loop_requirement_package_sync" in material_blocker["reason_codes"]
     check_ids = {item["id"]: item["status"] for item in payload["latest_feature_overlay"]["checks"]}
     assert check_ids["requirement_package_dual_write_contract"] == "blocked"
 

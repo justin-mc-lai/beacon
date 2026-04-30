@@ -553,6 +553,25 @@ def _classify_validation_surface(result: dict[str, Any]) -> str:
 
 def _surface_status_record(name: str, result: dict[str, Any]) -> dict[str, Any]:
     payload = result.get("json") if isinstance(result.get("json"), dict) else {}
+    result_payload = payload.get("result") if isinstance(payload.get("result"), dict) else {}
+    reason_codes: set[str] = {
+        str(item.get("reason_code") or "").strip()
+        for item in (
+            payload.get("issues")
+            if isinstance(payload.get("issues"), list)
+            else payload.get("findings")
+            if isinstance(payload.get("findings"), list)
+            else []
+        )
+        if isinstance(item, dict) and str(item.get("reason_code") or "").strip()
+    }
+    if str(payload.get("action") or "") == "verify-materials":
+        for item in result_payload.get("checks", []) if isinstance(result_payload.get("checks"), list) else []:
+            if not isinstance(item, dict) or str(item.get("status") or "").lower() != "fail":
+                continue
+            name_code = str(item.get("name") or "").strip()
+            if name_code:
+                reason_codes.add(name_code)
     return {
         "name": name,
         "command": str(result.get("command") or ""),
@@ -566,19 +585,7 @@ def _surface_status_record(name: str, result: dict[str, Any]) -> dict[str, Any]:
             or payload.get("release_ready")
             or ""
         ),
-        "reason_codes": sorted(
-            {
-                str(item.get("reason_code") or "").strip()
-                for item in (
-                    payload.get("issues")
-                    if isinstance(payload.get("issues"), list)
-                    else payload.get("findings")
-                    if isinstance(payload.get("findings"), list)
-                    else []
-                )
-                if isinstance(item, dict) and str(item.get("reason_code") or "").strip()
-            }
-        ),
+        "reason_codes": sorted(code for code in reason_codes if code),
         "stdout_tail": "\n".join(str(result.get("stdout") or "").splitlines()[-8:]),
         "stderr_tail": "\n".join(str(result.get("stderr") or "").splitlines()[-8:]),
     }

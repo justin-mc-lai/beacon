@@ -63,6 +63,64 @@ def _feature_names(directory: Path) -> set[str]:
     return names
 
 
+def _requirement_package_failure_summary(checks: list[dict[str, Any]]) -> dict[str, Any]:
+    categories: list[str] = []
+    details: list[dict[str, Any]] = []
+
+    def _push(category: str, detail: dict[str, Any]) -> None:
+        if category not in categories:
+            categories.append(category)
+        details.append({"category": category, **detail})
+
+    for item in checks:
+        if not isinstance(item, dict) or str(item.get("status") or "").lower() != "fail":
+            continue
+        name = str(item.get("name") or "").strip()
+        info = item.get("details") if isinstance(item.get("details"), dict) else {}
+        if name == "main_chain_feature_completeness":
+            missing_by_feature = info.get("missing_by_feature") if isinstance(info.get("missing_by_feature"), dict) else {}
+            for feature, missing in missing_by_feature.items():
+                if not isinstance(missing, list):
+                    continue
+                for missing_item in missing:
+                    category = {
+                        "user-story": "missing_human_user_story",
+                        "prd": "missing_human_prd",
+                        "test-case": "missing_human_test_case",
+                        "ac-test-matrix": "missing_machine_ac_matrix",
+                        "machine-user-story": "missing_machine_user_story",
+                        "story-scenario-map": "missing_machine_story_scenario_map",
+                        "qa9-matrix": "missing_machine_qa9_matrix",
+                    }.get(str(missing_item), "missing_requirement_artifact")
+                    _push(category, {"feature": str(feature), "artifact": str(missing_item)})
+        elif name == "change_loop_requirement_package_sync":
+            drift_by_feature = info.get("drift_by_feature") if isinstance(info.get("drift_by_feature"), dict) else {}
+            for feature, drift in drift_by_feature.items():
+                if not isinstance(drift, dict):
+                    continue
+                reason = str(drift.get("reason") or "requirement_package_drift")
+                category = {
+                    "revision_state_missing": "missing_revision_state",
+                    "baseline_hash_missing": "baseline_hash_missing",
+                    "baseline_hash_mismatch": "baseline_hash_mismatch",
+                }.get(reason, "requirement_package_drift")
+                _push(
+                    category,
+                    {
+                        "feature": str(feature),
+                        "path": str(drift.get("path") or ""),
+                        "expected_hash": str(drift.get("expected_hash") or ""),
+                        "actual_hash": str(drift.get("actual_hash") or ""),
+                    },
+                )
+        else:
+            _push(f"material_check_failed:{name}", {"check": name})
+    return {
+        "categories": categories,
+        "details": details,
+    }
+
+
 def build_material_audit(project_root: Path | str, *, version: str | None = None, strict: bool = False) -> dict[str, Any]:
     root = Path(project_root)
     resolved_version = resolve_target_version(root, version)
@@ -537,6 +595,7 @@ def build_requirement_package_gate(
         item for item in audit.get("checks", [])
         if isinstance(item, dict) and str(item.get("status") or "").lower() == "fail"
     ]
+    failure_summary = _requirement_package_failure_summary(failing_checks)
     return {
         "schema_version": "1.0",
         "status": "pass" if status == "pass" else "blocked",
@@ -545,6 +604,8 @@ def build_requirement_package_gate(
         "feature": feature,
         "reason_code": "" if status == "pass" else "requirement_package_contract_blocked",
         "failing_checks": failing_checks,
+        "failure_categories": failure_summary.get("categories", []),
+        "failure_details": failure_summary.get("details", []),
         "audit": audit,
         "recommended_command": (
             f'beacon-change'

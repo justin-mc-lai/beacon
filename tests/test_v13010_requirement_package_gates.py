@@ -107,6 +107,7 @@ def test_v13010_implement_should_block_when_requirement_package_drifts_after_fre
     payload = json.loads(result.stdout)
     assert payload["reason_code"] == "requirement_package_contract_blocked"
     assert payload["requirement_package_gate"]["status"] == "blocked"
+    assert "baseline_hash_mismatch" in payload["requirement_package_gate"]["failure_categories"]
 
 
 def test_v13010_qa_should_block_when_requirement_package_drifts_after_freeze(tmp_path: Path) -> None:
@@ -130,6 +131,7 @@ def test_v13010_qa_should_block_when_requirement_package_drifts_after_freeze(tmp
     payload = json.loads(result.stdout)
     assert "requirement_package_contract_blocked" in payload["reason_codes"]
     assert payload["requirement_package_gate"]["status"] == "blocked"
+    assert "baseline_hash_mismatch" in payload["requirement_package_gate"]["failure_categories"]
 
 
 def test_v13010_release_should_block_when_requirement_package_drifts_after_freeze(tmp_path: Path) -> None:
@@ -151,3 +153,4 @@ def test_v13010_release_should_block_when_requirement_package_drifts_after_freez
     payload = json.loads(result.stdout)
     assert payload["reason_code"] == "requirement_package_contract_blocked"
     assert payload["requirement_package_gate"]["status"] == "blocked"
+    assert "baseline_hash_mismatch" in payload["requirement_package_gate"]["failure_categories"]
