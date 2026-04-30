@@ -683,6 +683,24 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
     args = _strip_option_with_value(args, "--runtime")
     current_session = load_current_qa_session(project_root)
 
+    if metadata_machine_path(project_root).exists():
+        metadata_verdict = verify_project_metadata(project_root, version=version if version != "auto" else "")
+        if str(metadata_verdict.get("status") or "").lower() == "fail":
+            blocked_payload = {
+                "schema_version": "1.0",
+                "feature": feature,
+                "version": version,
+                "status": "blocked",
+                "reason_codes": ["project_metadata_contract_blocked"],
+                "project_metadata_verification": metadata_verdict,
+                "recommended_command": f"beacon doctor metadata verify --project-root {project_root} --version {version}",
+            }
+            if json_output:
+                typer.echo(json.dumps(blocked_payload, ensure_ascii=False, indent=2))
+            else:
+                typer.echo("Beacon QA blocked: project metadata contract blocked", err=True)
+            return 2, blocked_payload
+
     requirement_package_gate = build_requirement_package_gate(
         project_root,
         version=version if version != "auto" else None,
@@ -704,24 +722,6 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
         else:
             typer.echo("Beacon QA blocked: requirement package contract blocked", err=True)
         return 2, blocked_payload
-
-    if metadata_machine_path(project_root).exists():
-        metadata_verdict = verify_project_metadata(project_root, version=version if version != "auto" else "")
-        if str(metadata_verdict.get("status") or "").lower() == "fail":
-            blocked_payload = {
-                "schema_version": "1.0",
-                "feature": feature,
-                "version": version,
-                "status": "blocked",
-                "reason_codes": ["project_metadata_contract_blocked"],
-                "project_metadata_verification": metadata_verdict,
-                "recommended_command": f"beacon doctor metadata verify --project-root {project_root} --version {version}",
-            }
-            if json_output:
-                typer.echo(json.dumps(blocked_payload, ensure_ascii=False, indent=2))
-            else:
-                typer.echo("Beacon QA blocked: project metadata contract blocked", err=True)
-            return 2, blocked_payload
 
     def _with_delivery_contract(
         payload: dict[str, Any],

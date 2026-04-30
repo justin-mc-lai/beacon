@@ -421,6 +421,30 @@ def check(
     project_root = Path(project) if project else Path.cwd()
     resolved_version = resolve_target_version(project_root, version)
     resolved_runtime = resolve_runtime_version(project_root, "auto")
+    if metadata_machine_path(project_root).exists():
+        metadata_verdict = verify_project_metadata(project_root, version=resolved_version)
+        if str(metadata_verdict.get("status") or "").lower() == "fail":
+            failing_checks = [
+                item for item in metadata_verdict.get("checks", [])
+                if isinstance(item, dict) and str(item.get("status") or "").lower() == "fail"
+            ]
+            payload = {
+                "schema_version": "1.0",
+                "version": resolved_version,
+                "status": "blocked",
+                "reason_code": "project_metadata_contract_blocked",
+                "project_metadata_verification": metadata_verdict,
+                "recommended_command": f"beacon doctor metadata verify --project-root {project_root} --version {resolved_version}",
+            }
+            if json_output:
+                typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+            else:
+                typer.echo("Beacon release blocked: project metadata contract blocked")
+                for item in failing_checks:
+                    typer.echo(
+                        f"- {item.get('name')}: {json.dumps(item.get('details', {}), ensure_ascii=False, sort_keys=True)}"
+                    )
+            raise typer.Exit(code=1)
     requirement_package_gate = build_requirement_package_gate(
         project_root,
         version=resolved_version,
