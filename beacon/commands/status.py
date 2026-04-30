@@ -12,7 +12,7 @@ from beacon.utils.control_plane import build_resume_contract
 from beacon.utils.coverage import compute_coverage_metrics
 from beacon.utils.implementation_plan import load_implementation_plan_progress
 from beacon.utils.learning_loop import load_keep_discard_engine
-from beacon.utils.material_audit import build_material_audit
+from beacon.utils.material_audit import build_material_audit, build_requirement_package_gate
 from beacon.utils.qa_runtime import load_qa_status
 from beacon.utils.requirement_clarity import build_requirement_clarity_gate_payload, load_requirement_clarity_state
 from beacon.utils.release_scorecard import build_release_scorecard, summarize_release_scorecard
@@ -90,6 +90,12 @@ def _status_impl(
         feature=feature_filter,
     )
     material_audit = build_material_audit(root, version=coverage_version, strict=False)
+    requirement_package_gate = build_requirement_package_gate(
+        root,
+        version=coverage_version,
+        feature=feature_filter or "",
+        strict=True,
+    )
     version_context = describe_project_version_context(root, docs_version=coverage_version or None)
     source_of_truth = {
         "root": f"docs/beacon/{coverage_version}",
@@ -101,6 +107,10 @@ def _status_impl(
         ),
         "runtime_state_root": ".beacon",
         "formal_package_closure": material_audit.get("status", "unknown"),
+        "requirement_package_gate": requirement_package_gate.get("status", "pass"),
+        "requirement_package_failure_categories": requirement_package_gate.get("failure_categories", []),
+        "requirement_package_recommended_action": requirement_package_gate.get("recommended_action", ""),
+        "requirement_package_recommended_command": requirement_package_gate.get("recommended_command", ""),
     }
 
     target_feature = feature_filter or str(workflow_progress.get("feature", "") or "")
@@ -416,6 +426,19 @@ def _status_impl(
         typer.echo(
             f"- source_of_truth.version_line_package_closure: {source_of_truth.get('formal_package_closure')}"
         )
+        if requirement_package_gate.get("enabled"):
+            typer.echo(
+                f"- source_of_truth.requirement_package_gate: {source_of_truth.get('requirement_package_gate')}"
+            )
+            failure_categories = source_of_truth.get("requirement_package_failure_categories", [])
+            if failure_categories:
+                typer.echo(
+                    f"- source_of_truth.requirement_package_failures: {', '.join(str(item) for item in failure_categories)}"
+                )
+            if source_of_truth.get("requirement_package_recommended_command"):
+                typer.echo(
+                    f"- source_of_truth.requirement_package_next: {source_of_truth.get('requirement_package_recommended_command')}"
+                )
         execution_surface = payload.get("execution_surface", {}) if isinstance(payload.get("execution_surface"), dict) else {}
         if execution_surface:
             typer.echo(f"- execution.host_runtime: {execution_surface.get('host_runtime') or 'N/A'}")

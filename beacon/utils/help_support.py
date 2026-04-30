@@ -18,6 +18,7 @@ from beacon.utils.implementation_plan import (
     load_implementation_plan_progress,
 )
 from beacon.utils.learning_loop import load_learning_plane_contract
+from beacon.utils.material_audit import build_requirement_package_gate
 from beacon.utils.minimal_hud import build_minimal_hud
 from beacon.utils.host_prompt_trace import load_host_prompt_trace
 from beacon.utils.project_skills import (
@@ -489,6 +490,7 @@ def _blocking_reasons(
     takeover_gate: dict[str, Any] | None = None,
     implementation_plan_gate: dict[str, Any] | None = None,
     requirement_clarity_gate: dict[str, Any] | None = None,
+    requirement_package_gate: dict[str, Any] | None = None,
     semantic_contract: dict[str, Any] | None = None,
 ) -> list[str]:
     reasons: list[str] = []
@@ -560,6 +562,15 @@ def _blocking_reasons(
         code = str(requirement_clarity_gate.get("reason_code", "") or "").strip()
         if code:
             reasons.append(code)
+    if isinstance(requirement_package_gate, dict) and str(requirement_package_gate.get("status", "") or "") == "blocked":
+        code = str(requirement_package_gate.get("reason_code", "") or "").strip()
+        if code:
+            reasons.append(code)
+        reasons.extend(
+            str(item).strip()
+            for item in (requirement_package_gate.get("failure_categories") or [])
+            if str(item).strip()
+        )
     if isinstance(implementation_plan_gate, dict) and bool(implementation_plan_gate.get("blocked")):
         code = str(implementation_plan_gate.get("reason_code", "") or "").strip()
         if code:
@@ -589,6 +600,7 @@ def _next_step(
     stage_binding: dict[str, str] | None = None,
     implementation_plan_gate: dict[str, Any] | None = None,
     requirement_clarity_gate: dict[str, Any] | None = None,
+    requirement_package_gate: dict[str, Any] | None = None,
     version_guard: dict[str, Any] | None = None,
     discovery_hint: dict[str, Any] | None = None,
     change_loop: dict[str, Any] | None = None,
@@ -603,6 +615,7 @@ def _next_step(
     delivery_status = str(revision_state.get("delivery_status", "") or "")
     change_loop = change_loop if isinstance(change_loop, dict) else {}
     semantic_contract = semantic_contract if isinstance(semantic_contract, dict) else {}
+    requirement_package_gate = requirement_package_gate if isinstance(requirement_package_gate, dict) else {}
 
     if any(
         reason in {
@@ -706,6 +719,16 @@ def _next_step(
         }
 
     if blocked:
+        if "requirement_package_contract_blocked" in blocking_reasons:
+            action = str(requirement_package_gate.get("recommended_action", "") or "").strip()
+            reason = str(requirement_package_gate.get("recommended_reason", "") or "").strip()
+            command = str(requirement_package_gate.get("recommended_command", "") or "").strip()
+            if action and command:
+                return {
+                    "action": action,
+                    "reason": reason or "requirement package closure is blocked and must be reconciled before execution continues",
+                    "command": command,
+                }
         if "release_gate_blocked" in blocking_reasons or any(
             reason.startswith("evidence_sha256_manifest")
             for reason in blocking_reasons
@@ -1011,6 +1034,12 @@ def build_help_payload(
         if feature_name
         else {}
     )
+    requirement_package_gate = build_requirement_package_gate(
+        project_root,
+        version=resolved_version,
+        feature=feature_name,
+        strict=True,
+    )
     semantic_contract = (
         evaluate_semantic_contract(project_root, version=resolved_version, feature=feature_name)
         if _semantic_gate_required(project_root, version=resolved_version, feature=feature_name)
@@ -1044,6 +1073,7 @@ def build_help_payload(
         takeover_gate=takeover_gate,
         implementation_plan_gate=implementation_plan_gate,
         requirement_clarity_gate=requirement_clarity_gate,
+        requirement_package_gate=requirement_package_gate,
         semantic_contract=semantic_contract,
     )
     scorecard_release_ready = bool(feature_scorecard.get("release_ready", False))
@@ -1199,6 +1229,7 @@ def build_help_payload(
         stage_binding=stage_binding,
         implementation_plan_gate=implementation_plan_gate,
         requirement_clarity_gate=requirement_clarity_gate,
+        requirement_package_gate=requirement_package_gate,
         version_guard=version_guard,
         discovery_hint=discovery_hint,
         change_loop=change_loop,
@@ -1338,6 +1369,13 @@ def build_help_payload(
             "reason_code": str(implementation_plan_gate.get("reason_code", "") or ""),
         },
         {
+            "step": "requirement_package",
+            "status": str(requirement_package_gate.get("status", "pass") or "pass"),
+            "reason_code": str(requirement_package_gate.get("reason_code", "") or ""),
+            "failure_categories": list(requirement_package_gate.get("failure_categories", [])),
+            "remediation_mode": str(requirement_package_gate.get("remediation_mode", "") or ""),
+        },
+        {
             "step": "semantic_contract",
             "status": str(semantic_contract.get("status", "not_required") or "not_required"),
             "reason_code": str(semantic_contract.get("reason_code", "") or ""),
@@ -1445,6 +1483,7 @@ def build_help_payload(
         "implementation_plan_gate": implementation_plan_gate,
         "implementation_plan_progress": implementation_plan_progress,
         "requirement_clarity_gate": requirement_clarity_gate,
+        "requirement_package_gate": requirement_package_gate,
         "semantic": semantic_contract,
         "decision_trace": decision_trace,
         "takeover_gate": takeover_gate,

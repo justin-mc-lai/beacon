@@ -587,6 +587,10 @@ def build_requirement_package_gate(
             "version": resolved_version,
             "feature": feature,
             "reason_code": "",
+            "remediation_mode": "not_required",
+            "recommended_action": "",
+            "recommended_reason": "",
+            "recommended_command": "",
             "audit": {},
         }
     audit = build_material_audit(root, version=resolved_version, strict=strict)
@@ -596,6 +600,37 @@ def build_requirement_package_gate(
         if isinstance(item, dict) and str(item.get("status") or "").lower() == "fail"
     ]
     failure_summary = _requirement_package_failure_summary(failing_checks)
+    failure_categories = failure_summary.get("categories", [])
+    drift_categories = {"missing_human_user_story", "missing_human_prd", "missing_human_test_case", "missing_revision_state", "baseline_hash_missing", "baseline_hash_mismatch"}
+    machine_repair_categories = {
+        "missing_machine_ac_matrix",
+        "missing_machine_user_story",
+        "missing_machine_story_scenario_map",
+        "missing_machine_qa9_matrix",
+    }
+    recommended_action = ""
+    recommended_reason = ""
+    remediation_mode = "none" if status == "pass" else "verify"
+    recommended_command = ""
+    if status != "pass":
+        if str(feature or "").strip() and any(category in drift_categories for category in failure_categories):
+            remediation_mode = "change-loop"
+            recommended_action = "beacon-change"
+            recommended_reason = "frozen requirement package drifted from the approved baseline and must re-enter the change loop"
+            recommended_command = "beacon-change"
+        elif str(feature or "").strip() and any(category in machine_repair_categories for category in failure_categories):
+            remediation_mode = "repair"
+            recommended_action = "doctor-sync-materials"
+            recommended_reason = "machine requirement artifacts are missing and should be rebuilt from the current human package"
+            recommended_command = (
+                f"beacon doctor sync-materials --project-root {root} --version {resolved_version} "
+                f"--feature {feature} --single-feature"
+            )
+        else:
+            remediation_mode = "verify"
+            recommended_action = "doctor-verify-materials"
+            recommended_reason = "version-line requirement package closure is incomplete and must be diagnosed before repair"
+            recommended_command = f"beacon doctor verify-materials --project-root {root} --version {resolved_version} --strict"
     return {
         "schema_version": "1.0",
         "status": "pass" if status == "pass" else "blocked",
@@ -604,12 +639,11 @@ def build_requirement_package_gate(
         "feature": feature,
         "reason_code": "" if status == "pass" else "requirement_package_contract_blocked",
         "failing_checks": failing_checks,
-        "failure_categories": failure_summary.get("categories", []),
+        "failure_categories": failure_categories,
         "failure_details": failure_summary.get("details", []),
+        "remediation_mode": remediation_mode,
+        "recommended_action": recommended_action,
+        "recommended_reason": recommended_reason,
         "audit": audit,
-        "recommended_command": (
-            f'beacon-change'
-            if str(feature or "").strip()
-            else f"beacon doctor verify-materials --project-root {root} --version {resolved_version} --strict"
-        ),
+        "recommended_command": recommended_command,
     }

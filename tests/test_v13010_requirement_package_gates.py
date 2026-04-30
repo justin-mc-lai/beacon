@@ -154,3 +154,81 @@ def test_v13010_release_should_block_when_requirement_package_drifts_after_freez
     assert payload["reason_code"] == "requirement_package_contract_blocked"
     assert payload["requirement_package_gate"]["status"] == "blocked"
     assert "baseline_hash_mismatch" in payload["requirement_package_gate"]["failure_categories"]
+
+
+def test_v13010_help_should_route_doc_drift_to_beacon_change(tmp_path: Path) -> None:
+    _seed_docs(tmp_path)
+    _freeze(tmp_path)
+    _mutate_docs_after_freeze(tmp_path)
+
+    result = _invoke(
+        [
+            "help",
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            VERSION,
+            "--feature",
+            FEATURE,
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["requirement_package_gate"]["status"] == "blocked"
+    assert "requirement_package_contract_blocked" in payload["blocking_reasons"]
+    assert "baseline_hash_mismatch" in payload["requirement_package_gate"]["failure_categories"]
+    assert payload["next_step"]["action"] == "beacon-change"
+    assert payload["next_step"]["command"] == "beacon-change"
+
+
+def test_v13010_help_should_route_missing_machine_artifact_to_sync_materials(tmp_path: Path) -> None:
+    _seed_docs(tmp_path)
+    _freeze(tmp_path)
+    machine_story = tmp_path / "docs" / "beacon" / VERSION / ".machine" / "user-story" / f"{SLUG}.json"
+    assert machine_story.exists()
+    machine_story.unlink()
+
+    result = _invoke(
+        [
+            "help",
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            VERSION,
+            "--feature",
+            FEATURE,
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["requirement_package_gate"]["status"] == "blocked"
+    assert "missing_machine_user_story" in payload["requirement_package_gate"]["failure_categories"]
+    assert payload["next_step"]["action"] == "doctor-sync-materials"
+    assert "beacon doctor sync-materials" in payload["next_step"]["command"]
+    assert f"--feature {FEATURE}" in payload["next_step"]["command"]
+
+
+def test_v13010_status_board_should_surface_requirement_package_failure_categories(tmp_path: Path) -> None:
+    _seed_docs(tmp_path)
+    _freeze(tmp_path)
+    _mutate_docs_after_freeze(tmp_path)
+
+    result = _invoke(
+        [
+            "status",
+            "show-status",
+            "--board",
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            VERSION,
+            "--feature",
+            FEATURE,
+        ]
+    )
+    assert result.exit_code == 0, result.stdout
+    assert "- source_of_truth.requirement_package_gate: blocked" in result.stdout
+    assert "- source_of_truth.requirement_package_failures: baseline_hash_mismatch" in result.stdout
+    assert "- source_of_truth.requirement_package_next: beacon-change" in result.stdout

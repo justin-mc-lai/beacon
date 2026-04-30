@@ -91,6 +91,20 @@ def _render_human(payload: dict[str, object]) -> str:
         f"- command : {next_step.get('command', '')}",
     ])
     change_loop = payload.get("change_loop", {}) if isinstance(payload.get("change_loop"), dict) else {}
+    requirement_package = payload.get("requirement_package_gate", {}) if isinstance(payload.get("requirement_package_gate"), dict) else {}
+    if bool(requirement_package.get("enabled")):
+        lines.extend(
+            [
+                "",
+                "requirement package",
+                f"- status      : {requirement_package.get('status', 'pass')}",
+                f"- remediation : {requirement_package.get('remediation_mode', '') or 'none'}",
+            ]
+        )
+        failure_categories = requirement_package.get("failure_categories", []) if isinstance(requirement_package.get("failure_categories"), list) else []
+        lines.append(f"- failures    : {', '.join(str(item) for item in failure_categories) if failure_categories else 'none'}")
+        if requirement_package.get("recommended_command"):
+            lines.append(f"- command     : {requirement_package.get('recommended_command', '')}")
     if change_loop.get("intent") or bool(change_loop.get("recommended")):
         lines.extend(
             [
