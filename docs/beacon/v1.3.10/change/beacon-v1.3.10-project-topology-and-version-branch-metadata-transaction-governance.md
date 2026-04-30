@@ -27,7 +27,7 @@
 ## Added
 
 - 新增 `v1.3.10` PRD：
-  - `docs/beacon/v1.3.10/prd/beacon-v1-3-10-project-topology-and-version-branch-metadata-transaction-governance.md`
+  - `docs/beacon/v1.3.10/prd/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md`
 - 新增 `v1.3.10` User Story：
   - `docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md`
 - 新增 `v1.3.10` Test Cases：
@@ -72,9 +72,9 @@
 
 ## Traceability Refs
 
-- `docs/beacon/v1.3.10/prd/beacon-v1-3-10-project-topology-and-version-branch-metadata-transaction-governance.md`
+- `docs/beacon/v1.3.10/prd/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md`
 - `docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md`
 - `docs/beacon/v1.3.10/qa/test-cases/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md`
-- `docs/beacon/v1.3.10/.machine/prd/beacon-v1-3-10-project-topology-and-version-branch-metadata-transaction-governance.canonical.json`
+- `docs/beacon/v1.3.10/.machine/prd/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.canonical.json`
 - `docs/beacon/v1.3.10/.machine/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.json`
 - `docs/beacon/v1.3.10/.machine/qa/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.ac-test-matrix.json`
