@@ -25,6 +25,7 @@ The `v1.3.9` docs define the active host-native delivery baseline, brainstorm si
 - `beacon-status`
 - `beacon-doctor`
 - `beacon-archive`
+- `beacon-toolkit-metadata`
 
 ## Routing rules
 
@@ -46,7 +47,9 @@ The `v1.3.9` docs define the active host-native delivery baseline, brainstorm si
    use `beacon-qa` or `beacon-release`
 9. Historical requirement isolation, archive planning, or archive state explanation:
    use `beacon-archive`
-10. Blocked / lost / next-step questions:
+10. Project/version metadata inspection, CRUD, or contract verification:
+   use `beacon-toolkit-metadata`
+11. Blocked / lost / next-step questions:
    use `beacon-help`, `beacon-status`, or `beacon-doctor`
 
 ## Development pairing

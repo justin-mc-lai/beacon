@@ -451,7 +451,8 @@ def check(
         feature="",
         strict=True,
     )
-    if str(requirement_package_gate.get("status") or "").lower() == "blocked":
+    requirement_package_gate_blocked = str(requirement_package_gate.get("status") or "").lower() == "blocked"
+    if requirement_package_gate_blocked and json_output:
         payload = {
             "schema_version": "1.0",
             "version": resolved_version,
@@ -509,6 +510,15 @@ def check(
 
     checks: list[tuple[str, bool, str]] = []
     evidence_refs: list[str] = []
+
+    if requirement_package_gate_blocked:
+        checks.append(
+            (
+                "requirement package contract",
+                False,
+                str(requirement_package_gate.get("reason_code") or "requirement_package_contract_blocked"),
+            )
+        )
 
     auto_test_ok = False
     auto_test_status = "missing"

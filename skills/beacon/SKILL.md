@@ -88,8 +88,8 @@ Optional supplemental skills:
 - `beacon-brainstorm`: read-only first-principles / Socratic / Occam sidecar for requirement convergence and project evolution thinking
 - `beacon-archive`: formal archive governance for isolating active truth from historical truth
 - `beacon-toolkit-lighthouse`: fast single-file analysis without entering the main workflow
+- `beacon-toolkit-metadata`: deterministic metadata toolkit for project/version topology, branch binding, CRUD, and verify
 - `beacon-friction-intake`: host-visible friction intake entry for scan/capture plus sqlite queue governance
-- `beacon-memory-friction-evolution`: host-visible memory / friction evolution toolkit for optional analysis and writeback planning
 - `beacon-real-project-validation`: prove Beacon works against a real target project
 
 ## Current v1.3.9 Additions
@@ -159,13 +159,10 @@ bash skills/beacon/scripts/run_beacon.sh friction-intake run \
   --version v1.3.9 \
   --mode scan \
   --json
-```
-
 ```bash
-bash skills/beacon/scripts/run_beacon.sh memory-friction-evolution run \
+bash skills/beacon/scripts/run_beacon.sh doctor metadata show \
   --project-root . \
   --version v1.3.9 \
-  --mode both \
   --json
 ```
 
