@@ -544,6 +544,8 @@ def _classify_validation_surface(result: dict[str, Any]) -> str:
         return "beacon_cli_defect"
     if payload:
         return "project_state_blocker"
+    if "✗ fail:" in combined or "\nfail:" in combined or "ac matrix not found" in combined:
+        return "project_state_blocker"
     if "blocked" in combined or "not ready" in combined or "release_ready=false" in combined:
         return "project_state_blocker"
     return "beacon_cli_defect"
@@ -586,6 +588,8 @@ def _real_project_command_specs(project_root: Path, version: str, feature: str, 
     specs: list[tuple[str, list[str]]] = [
         ("help", ["help", "--project-root", str(project_root), "--version", version, "--feature", feature, "--json"]),
         ("doctor", ["doctor", "--json", "--project-root", str(project_root)]),
+        ("doctor_metadata_show", ["doctor", "metadata", "show", "--project-root", str(project_root), "--version", version, "--json"]),
+        ("doctor_metadata_verify", ["doctor", "metadata", "verify", "--project-root", str(project_root), "--version", version, "--json"]),
         ("status", ["status", "show-status", "--project-root", str(project_root), "--version", version, "--feature", feature, "--board"]),
         ("prd_list", ["prd", "list", "-p", str(project_root), "-v", version]),
         ("user_story_list", ["user-story", "list", "-p", str(project_root), "-v", version]),
@@ -631,6 +635,11 @@ def _real_project_overlay(
     release_scorecard: dict[str, Any],
 ) -> dict[str, Any]:
     summary = summarize_release_scorecard(release_scorecard)
+    metadata_verify = surface_results.get("doctor_metadata_verify", {})
+    metadata_verify_payload = metadata_verify.get("json") if isinstance(metadata_verify.get("json"), dict) else {}
+    metadata_verify_result = (
+        metadata_verify_payload.get("result") if isinstance(metadata_verify_payload.get("result"), dict) else {}
+    )
     gate_prototype = surface_results.get("gate_prototype", {})
     gate_prototype_payload = gate_prototype.get("json") if isinstance(gate_prototype.get("json"), dict) else {}
     gate_prototype_issues = gate_prototype_payload.get("issues") if isinstance(gate_prototype_payload.get("issues"), list) else []
@@ -640,6 +649,14 @@ def _real_project_overlay(
         if isinstance(item, dict) and str(item.get("reason_code") or "").strip()
     }
     checks: list[dict[str, Any]] = []
+    if metadata_verify_payload:
+        checks.append(
+            {
+                "id": "project_metadata_governance_contract",
+                "status": "pass" if str(metadata_verify_result.get("status") or "").strip().lower() == "pass" else "blocked",
+                "source": "doctor_metadata_verify",
+            }
+        )
     if runtime_feature_supported("v1.3.8", runtime_version=version):
         archive_operational = all(
             _classify_validation_surface(surface_results.get(name, {})) == "operational"
