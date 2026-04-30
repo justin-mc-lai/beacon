@@ -588,6 +588,7 @@ def _real_project_command_specs(project_root: Path, version: str, feature: str, 
     specs: list[tuple[str, list[str]]] = [
         ("help", ["help", "--project-root", str(project_root), "--version", version, "--feature", feature, "--json"]),
         ("doctor", ["doctor", "--json", "--project-root", str(project_root)]),
+        ("doctor_verify_materials", ["doctor", "verify-materials", "--project-root", str(project_root), "--version", version, "--strict", "--json"]),
         ("doctor_metadata_show", ["doctor", "metadata", "show", "--project-root", str(project_root), "--version", version, "--json"]),
         ("doctor_metadata_verify", ["doctor", "metadata", "verify", "--project-root", str(project_root), "--version", version, "--json"]),
         ("status", ["status", "show-status", "--project-root", str(project_root), "--version", version, "--feature", feature, "--board"]),
@@ -635,6 +636,11 @@ def _real_project_overlay(
     release_scorecard: dict[str, Any],
 ) -> dict[str, Any]:
     summary = summarize_release_scorecard(release_scorecard)
+    materials_verify = surface_results.get("doctor_verify_materials", {})
+    materials_verify_payload = materials_verify.get("json") if isinstance(materials_verify.get("json"), dict) else {}
+    materials_verify_result = (
+        materials_verify_payload.get("result") if isinstance(materials_verify_payload.get("result"), dict) else {}
+    )
     metadata_verify = surface_results.get("doctor_metadata_verify", {})
     metadata_verify_payload = metadata_verify.get("json") if isinstance(metadata_verify.get("json"), dict) else {}
     metadata_verify_result = (
@@ -655,6 +661,14 @@ def _real_project_overlay(
                 "id": "project_metadata_governance_contract",
                 "status": "pass" if str(metadata_verify_result.get("status") or "").strip().lower() == "pass" else "blocked",
                 "source": "doctor_metadata_verify",
+            }
+        )
+    if materials_verify_payload:
+        checks.append(
+            {
+                "id": "requirement_package_dual_write_contract",
+                "status": "pass" if str(materials_verify_result.get("status") or "").strip().lower() == "pass" else "blocked",
+                "source": "doctor_verify_materials",
             }
         )
     if runtime_feature_supported("v1.3.8", runtime_version=version):

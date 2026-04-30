@@ -331,6 +331,84 @@ def test_report_real_project_validation_should_include_metadata_contract_and_hum
     assert check_ids["project_metadata_governance_contract"] == "blocked"
 
 
+def test_report_real_project_validation_should_include_requirement_package_contract_as_blocker(
+    monkeypatch,
+    tmp_path: Path,
+) -> None:
+    version = "v1.3.10"
+    feature = "Feature"
+    _seed_docs(tmp_path, version)
+
+    def fake_run(_root: Path, args: list[str]) -> dict:
+        command = " ".join(args)
+        if args[:2] == ["doctor", "verify-materials"]:
+            payload = {
+                "schema_version": "2.0",
+                "action": "verify-materials",
+                "status": "FAIL",
+                "result": {
+                    "status": "fail",
+                    "checks": [
+                        {
+                            "name": "change_loop_requirement_package_sync",
+                            "status": "fail",
+                        }
+                    ],
+                },
+            }
+            return {
+                "command": command,
+                "exit_code": 2,
+                "stdout": json.dumps(payload, ensure_ascii=False),
+                "stderr": "",
+                "json": payload,
+            }
+        return {
+            "command": command,
+            "exit_code": 0,
+            "stdout": json.dumps({"status": "pass"}, ensure_ascii=False),
+            "stderr": "",
+            "json": {"status": "pass"},
+        }
+
+    monkeypatch.setattr(report_module, "_run_real_project_validation_command", fake_run)
+    monkeypatch.setattr(report_module, "_git_status_lines", lambda _root: [])
+    monkeypatch.setattr(
+        report_module,
+        "build_release_scorecard",
+        lambda _root, version: {
+            "version": version,
+            "release_ready": True,
+            "gate": {"status": "Pass", "blocked_count": 0, "reason_codes": []},
+            "qa": {"feature": feature, "status": "passed", "evidence_done": True, "release_ready": True, "acceptance_transaction_status": "pass"},
+            "feature_qa_scorecard": {"continue_decision": "ready_for_release", "review_required_count": 0, "needs_replay_count": 0, "unresolved_closure_outcomes": []},
+            "prompt_boundary": {"required": True, "status": "pass", "blocked": False},
+            "change_documents": {"status": "pass", "markdown_exists": True, "json_exists": True, "version_match": True, "includes_current_feature": True},
+            "host_native_delivery": {"status": "pass", "reason_codes": []},
+        },
+    )
+
+    result = runner.invoke(
+        app,
+        [
+            "real-project-validation",
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            version,
+            "--feature",
+            feature,
+            "--json",
+        ],
+    )
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    blocker_names = {item["name"] for item in payload["surfaces"]["project_state_blockers"]}
+    assert "doctor_verify_materials" in blocker_names
+    check_ids = {item["id"]: item["status"] for item in payload["latest_feature_overlay"]["checks"]}
+    assert check_ids["requirement_package_dual_write_contract"] == "blocked"
+
+
 def test_report_real_project_validation_runner_should_allow_context_version_drift(monkeypatch, tmp_path: Path) -> None:
     captured: dict[str, object] = {}
 
