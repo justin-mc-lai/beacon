@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0",
+  "skill_id": "runtime-skill-admission-smoke",
+  "supported_stages": [
+    "implement"
+  ],
+  "supported_host_runtimes": [
+    "codex",
+    "claude"
+  ],
+  "surface_kind": "content-production",
+  "input_contract": {
+    "required_inputs": [
+      "feature",
+      "version",
+      "result_file"
+    ]
+  },
+  "output_contract": {
+    "result_file_required": true,
+    "structured_result": true
+  },
+  "evidence_contract": [
+    "implementation_summary",
+    "story_writeback"
+  ],
+  "resume_contract": {
+    "context_resume_supported": true
+  }
+}

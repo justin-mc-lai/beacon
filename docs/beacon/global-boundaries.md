@@ -39,6 +39,12 @@ prd
 - `help`
 - `status`
 - `doctor`
+- `archive`
+
+其中：
+
+- `archive` 是 support command，不是新的 lifecycle stage
+- 它负责历史 truth 退出当前 delivery plane 的正式治理动作
 
 它们是支持面，不是新主流程。
 

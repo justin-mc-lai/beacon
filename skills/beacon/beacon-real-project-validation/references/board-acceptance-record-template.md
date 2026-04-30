@@ -3,10 +3,18 @@
 - feature: `FEATURE_SLUG`
 - requested_version: `VERSION_OR_AUTO`
 - validation_mode: `read-only multi-project board acceptance`
+- validation_scope: `specialized-board-acceptance-only`
+- not_a_substitute_for: `current-version real-project release proof`
 - executed_at: `YYYY-MM-DDTHH:MM:SSZ`
 - executor: `NAME`
 - output_dir: `OUTPUT_DIR`
 - canonical_homepage_artifact: `portfolio-board.txt`
+
+## 0. Boundary
+
+- This record is only for specialized board / projection acceptance.
+- It does not prove that the latest Beacon line is fully validated on a single real project.
+- Companion current-version release-proof evidence should be recorded separately when latest-version rollout confidence is required.
 
 ## 1. Validation Scope
 
@@ -39,6 +47,8 @@ Additional manual commands:
 # add any follow-up read-only commands here
 ```
 
+If current-version release proof was also run, link it separately instead of merging the records.
+
 ## 3. Homepage Summary Result
 
 ### Verdict
@@ -54,6 +64,7 @@ Additional manual commands:
 - Did homepage stay lifecycle-first and low-noise?
 - Could CEO distinguish the four projects in one scan?
 - Use `portfolio-board.txt` / `portfolio-board.json` as the canonical homepage evidence, not the per-project detail boards.
+- Do not use this section alone to claim `prototype` / `archive` / `gate check release` coverage for the latest Beacon line.
 
 ## 4. Project Detail Result
 
@@ -175,6 +186,7 @@ Verdict:
 ## 10. Linked Artifacts
 
 - capture directory:
+- companion current-version release-proof record:
 - doctor outputs:
 - help/status/release outputs:
 - board exports:

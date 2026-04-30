@@ -261,10 +261,62 @@ project_skills:
     assert payload["orchestration"]["status"] == "blocked"
     node = payload["orchestration"]["nodes"][0]
     reason_codes = {item["reason_code"] for item in node["issues"]}
-    assert "project_skill_stage_unsupported" in reason_codes
-    assert "project_skill_capability_missing" in reason_codes
     assert "project_skill_evidence_contract_mismatch" in reason_codes
+    assert node["stage"] == "qa"
+    assert node["execution_boundary"]["supported_stages"] == ["qa"]
     assert not (tmp_path / ".beacon" / "should-not-run.txt").exists()
+
+
+def test_v112_project_skill_boundary_should_accept_legacy_alias_stage_as_canonical_qa(tmp_path: Path):
+    _seed_feature_docs(tmp_path)
+    (tmp_path / "beacon.config.yaml").write_text(
+        """
+project_skills:
+  registry:
+    shell-skill:
+      id: shell-skill
+      kind: external
+      entry: /bin/sh
+      capabilities:
+        - verify
+      supported_stages:
+        - verify
+      evidence_contract:
+        - uat_pipeline_run
+  profiles:
+    boundary:
+      project: demo
+      profile_id: boundary
+      description: Boundary profile
+      skills:
+        verify: shell-skill
+      required_evidence:
+        - uat_pipeline_run
+      required_cases: []
+      orchestration:
+        nodes:
+          -
+            id: valid
+            stage: verify
+            skill: shell-skill
+            command_template: "python3 -c 'from pathlib import Path; p=Path(r\"{project_root}/.beacon/alias-stage.txt\"); p.parent.mkdir(parents=True, exist_ok=True); p.write_text(\"ok\")'"
+            produces_evidence:
+              - uat_pipeline_run
+  default_profile: boundary
+""".strip()
+        + "\n",
+        encoding="utf-8",
+    )
+    bind = _invoke(["skill", "bind", FEATURE, "--profile", "boundary", "--project-root", str(tmp_path), "--version", VERSION, "--json"])
+    assert bind.exit_code == 0, bind.stdout
+
+    result = _invoke(["verify", "run", FEATURE, "--project-root", str(tmp_path), "--version", VERSION, "--json"])
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["orchestration"]["stage"] == "qa"
+    assert payload["orchestration"]["nodes"][0]["stage"] == "qa"
+    assert payload["orchestration"]["nodes"][0]["execution_boundary"]["supported_stages"] == ["qa"]
+    assert (tmp_path / ".beacon" / "alias-stage.txt").exists()
 
 
 def test_v112_learning_plane_contract_should_be_typed_and_forbid_execution_surfaces(tmp_path: Path):

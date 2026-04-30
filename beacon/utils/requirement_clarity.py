@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any
 
 from beacon.utils.artifact_paths import human_execution_file, machine_execution_file
+from beacon.utils.diagram_truth import diagram_truth_findings, load_feature_diagram_truth
 from beacon.utils.runtime import now_iso, read_json, write_json
 from beacon.utils.story_state import feature_slug
 from beacon.utils.versioning import (
@@ -227,6 +228,10 @@ def build_requirement_clarity_gate_payload(project_root: Path, *, version: str =
     for path in _version_root(project_root, resolved_version, feature):
         scanned_files.append(str(path.relative_to(project_root)))
         findings.extend(_scan_file(path))
+
+    diagram_truth = load_feature_diagram_truth(project_root, version=resolved_version, feature=feature)
+    payload["diagram_truth"] = diagram_truth
+    findings.extend(diagram_truth_findings(project_root, version=resolved_version, feature=feature))
 
     required_artifacts = _extract_required_artifacts(prd_path)
     payload["required_artifacts"] = [str(item.get("path") or "") for item in required_artifacts]

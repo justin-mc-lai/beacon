@@ -13,6 +13,8 @@ from typing import Optional
 import typer
 
 from beacon.utils.artifact_paths import machine_root
+from beacon.utils.diagram_truth import normalize_diagram_types, normalize_state_axes, render_diagram_truth_section
+from beacon.utils.project_metadata import metadata_machine_path, resolve_project_metadata_view
 from beacon.utils.runtime import now_iso, write_json
 from beacon.utils.semantic_runtime import (
     build_mode_contract,
@@ -87,6 +89,9 @@ def _source_refs(project_root: Path, version: str, existing_prds: list[str]) -> 
     debug_index = project_root / ".beacon" / "debug" / "index.json"
     if debug_index.exists():
         refs.append(debug_index)
+    metadata_path = metadata_machine_path(project_root)
+    if metadata_path.exists():
+        refs.append(metadata_path)
     output: list[str] = []
     for path in refs:
         if path.exists():
@@ -772,6 +777,8 @@ def create(
     family: Optional[str] = typer.Option(None, "--family", help="Legacy compatibility override for family."),
     mode: str = typer.Option("auto", "--mode", help="Compile mode: auto/llm/rule"),
     model: str = typer.Option("beacon-prd-compiler", "--model", help="Compiler model label for evidence"),
+    include_diagrams: list[str] = typer.Option(None, "--include-diagrams", help="Repeatable diagram truth types"),
+    state_axis: list[str] = typer.Option(None, "--state-axis", help="Repeatable explicit state axis"),
     json_output: bool = typer.Option(False, "--json", help="Emit JSON payload"),
 ):
     """Create a PRD"""
@@ -790,6 +797,8 @@ def create(
         raise typer.Exit(2)
 
     memory_context_path = os.environ.get("BEACON_STAGE_CONTEXT_PATH", "").strip()
+    requested_diagrams = normalize_diagram_types(list(include_diagrams or []))
+    requested_state_axes = normalize_state_axes(list(state_axis or []))
     slug = _slugify(feature)
     existing_prds = _existing_prd_names(project_root, resolved_version, exclude_slug=slug)
     template = _classify_prd(feature, existing_prds=existing_prds)
@@ -900,6 +909,14 @@ def create(
                 )
                 contract = _validate_contract(md_content, require_no_placeholders=False)
 
+    diagram_truth_section = render_diagram_truth_section(
+        include_diagrams=requested_diagrams,
+        state_axes=requested_state_axes,
+    )
+    if diagram_truth_section and "## 11. Diagram Truth Layer" not in md_content:
+        md_content = md_content.rstrip() + "\n" + diagram_truth_section
+        contract = _validate_contract(md_content, require_no_placeholders=effective_mode in {"host", "llm"})
+
     if output:
         output_path = Path(output)
     else:
@@ -908,6 +925,11 @@ def create(
     compile_path = machine_dir / f"{slug}.compile.json"
     canonical_path = machine_dir / f"{slug}.canonical.json"
     source_refs = _source_refs(project_root, resolved_version, existing_prds)
+    metadata_path = metadata_machine_path(project_root)
+    project_metadata_context = {
+        "metadata_ref": str(metadata_path.relative_to(project_root)) if metadata_path.exists() else "",
+        "resolved_metadata_view": resolve_project_metadata_view(project_root, version=resolved_version),
+    }
 
     canonical = {
         "schema_version": "1.0",
@@ -924,7 +946,12 @@ def create(
             capability_snapshot=capability_snapshot,
         ),
         "model": model,
+        "diagram_truth_request": {
+            "diagram_types": requested_diagrams,
+            "state_axes": requested_state_axes,
+        },
         "source_refs": source_refs,
+        "project_metadata_context": project_metadata_context,
         "contract": contract,
         "markdown": md_content,
     }
@@ -985,9 +1012,14 @@ def create(
             "generator_mode": generator_mode,
             "requested_mode": requested_mode,
             "model": model,
+            "diagram_truth_request": {
+                "diagram_types": requested_diagrams,
+                "state_axes": requested_state_axes,
+            },
             "fallback_reason": fallback_reason,
             "capability_snapshot": capability_snapshot,
             "source_refs": source_refs,
+            "project_metadata_context": project_metadata_context,
             "constraint_hits": contract.get("semantic_hits", {}),
             "missing_headings": contract.get("missing_headings", []),
             "open_questions": contract.get("placeholder_hits", []),

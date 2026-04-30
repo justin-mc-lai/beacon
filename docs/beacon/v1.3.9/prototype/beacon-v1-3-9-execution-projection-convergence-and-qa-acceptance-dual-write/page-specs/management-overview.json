@@ -1,0 +1,113 @@
+{
+  "page_id": "management-overview",
+  "name": "管理总览",
+  "priority": "P0",
+  "platforms": [
+    "Web",
+    "PC"
+  ],
+  "responsibility": "提供多项目密集管理视图，稳定扫描版本、阶段、进度、健康态和下一步。",
+  "sections": [
+    "筛选与排序条",
+    "项目注册表",
+    "阶段分布摘要",
+    "风险与调试摘要",
+    "推荐 skill 区"
+  ],
+  "actions": [
+    {
+      "label": "进入项目详情",
+      "target": "project-detail",
+      "trigger": "点击项目行或卡片"
+    },
+    {
+      "label": "返回首页",
+      "target": "home",
+      "trigger": "点击首页导航"
+    }
+  ],
+  "states": [
+    {
+      "id": "ready",
+      "label": "多项目已加载",
+      "description": "密集展示多项目当前状态。"
+    },
+    {
+      "id": "filtered",
+      "label": "已筛选",
+      "description": "按阶段、版本、健康态筛选项目。"
+    },
+    {
+      "id": "empty",
+      "label": "无项目",
+      "description": "没有任何受管项目进入注册表。"
+    },
+    {
+      "id": "loading",
+      "label": "加载中",
+      "description": "项目注册表正在聚合。"
+    },
+    {
+      "id": "error",
+      "label": "错误",
+      "description": "总览聚合失败但保留恢复提示。"
+    }
+  ],
+  "requirement_refs": {
+    "user-story": [
+      "docs/beacon/v1.3.9/user-story/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md"
+    ],
+    "prd": [
+      "docs/beacon/v1.3.9/prd/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md"
+    ],
+    "test-case": [
+      "docs/beacon/v1.3.9/qa/test-cases/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md"
+    ]
+  },
+  "outbound_transitions": [
+    {
+      "from": "management-overview",
+      "to": "project-detail",
+      "trigger": "点击项目行/卡片",
+      "type": "primary"
+    },
+    {
+      "from": "management-overview",
+      "to": "home",
+      "trigger": "点击首页导航",
+      "type": "return"
+    }
+  ],
+  "analysis": {
+    "target_user": "管理端值守人 / 组合视角负责人",
+    "decision_focus": [
+      "多项目之间谁健康、谁阻塞、谁接近可发布。",
+      "是否需要通过筛选和排序快速收敛到一批项目。",
+      "什么时候应该从组合视图下钻到单项目接力页。"
+    ],
+    "layout_rules": [
+      "工具栏必须紧贴项目注册表，减少扫描跳跃。",
+      "项目注册表承担密集比较，不承担深度解释。",
+      "风险、debug、推荐 skill 放在表格侧边或下方收口，不抢主扫描节奏。"
+    ],
+    "noise_guardrail": "总览页只展示管理判断信号，不直接展开 doctor 或 runtime 原始上下文。"
+  },
+  "layout_lines": [
+    "+-----------------------------------------------------------------------------------+",
+    "| 顶栏：返回首页 | 管理总览 | 更新时间 | 批量筛选已生效数                            |",
+    "+-----------------------------------------------------------------------------------+",
+    "| 筛选与排序条: 项目类型 | 当前版本 | 阶段 | 健康态 | debug | 需求物料状态 | 排序    |",
+    "+-----------------------------------------------------------------------------------+",
+    "| 阶段分布摘要: draft 2 | prototype 3 | implement 4 | qa 1 | release 1              |",
+    "+-----------------------------------------------------------------------------------+",
+    "| 项目注册表                                                                         |",
+    "| 项目 | 类型 | 当前版本 | 主 feature | 阶段 | 进度 | 健康态 | debug | 下一步       |",
+    "| A    | 产品 | v1.3.6   | 管理看板   | prototype | 70% | risk | warn | 进详情       |",
+    "| B    | 工具 | v1.2.4   | 物料查看器 | implement | 90% | good | ok   | 做验证       |",
+    "+-----------------------------------------------------------------------------------+",
+    "| 风险与调试摘要                               | 推荐 skill 区                        |",
+    "| - 2 个项目存在 blocker                        | - prototype review                  |",
+    "| - 1 个项目 debug 态异常                       | - doctor verify-context             |",
+    "+-----------------------------------------------------------------------------------+"
+  ]
+}

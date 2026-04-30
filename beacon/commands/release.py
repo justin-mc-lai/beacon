@@ -6,10 +6,13 @@ from datetime import datetime
 import json
 import re
 
-from beacon.utils.artifact_paths import change_docs_file, change_file_output, machine_change_dir
+from beacon.utils.artifact_paths import change_docs_file, change_file_output, machine_change_dir, release_checklist_file
+from beacon.utils.material_audit import build_requirement_package_gate
 from beacon.utils.memory import append_memory_entry
+from beacon.utils.project_metadata import metadata_machine_path, verify_project_metadata
 from beacon.utils.release_scorecard import build_release_scorecard
 from beacon.utils.runtime_projection_store import runtime_projection_transaction_contract
+from beacon.utils.writeback import acceptance_projection_transaction_contract
 from beacon.utils.versioning import project_runtime_feature_enabled, resolve_runtime_version, resolve_target_version
 from beacon.utils.workflow_memory import append_lifecycle_event
 
@@ -75,6 +78,14 @@ def _dedupe_strings(values: list) -> list[str]:
         seen.add(text)
         out.append(text)
     return out
+
+
+def _payload_without_generated_at(payload: dict) -> dict:
+    if not isinstance(payload, dict):
+        return {}
+    normalized = dict(payload)
+    normalized.pop("generated_at", None)
+    return normalized
 
 
 def _feature_change_paths(project_root: Path, version: str, slug: str) -> tuple[Path, Path]:
@@ -158,8 +169,17 @@ def _feature_change_payloads(project_root: Path, version: str) -> list[dict]:
                 continue
             if str(payload.get("version") or "").strip() not in {"", version}:
                 continue
+            revision_cleanup = payload.get("revision_cleanup") if isinstance(payload.get("revision_cleanup"), dict) else {}
             added = [str(item).strip() for item in payload.get("additions", []) if str(item).strip()]
-            removed = [str(item).strip() for item in payload.get("deletions", []) if str(item).strip()]
+            removed = [
+                *[str(item).strip() for item in payload.get("deletions", []) if str(item).strip()],
+                *[str(item).strip() for item in revision_cleanup.get("removed_surfaces", []) if str(item).strip()],
+                *[
+                    str(item.get("label", "") or item.get("text", "") or item.get("id", "") or "").strip()
+                    for item in (revision_cleanup.get("removed_requirement_surfaces") if isinstance(revision_cleanup.get("removed_requirement_surfaces"), list) else [])
+                    if isinstance(item, dict) and str(item.get("label", "") or item.get("text", "") or item.get("id", "") or "").strip()
+                ],
+            ]
             fixed = [
                 *[str(item).strip() for item in payload.get("modifications", []) if str(item).strip()],
                 *[str(item).strip() for item in payload.get("refactors", []) if str(item).strip()],
@@ -233,6 +253,19 @@ def _build_version_change_payload(project_root: Path, *, version: str) -> dict:
     }
 
 
+def _stabilize_version_change_payload(project_root: Path, *, version: str, payload: dict) -> dict:
+    existing_payload = _load_json(change_file_output(project_root, version, f"{version}.json"))
+    existing_generated_at = str(existing_payload.get("generated_at") or "").strip()
+    if (
+        existing_generated_at
+        and _payload_without_generated_at(existing_payload) == _payload_without_generated_at(payload)
+    ):
+        stabilized = dict(payload)
+        stabilized["generated_at"] = existing_generated_at
+        return stabilized
+    return payload
+
+
 def _render_version_change_markdown(payload: dict) -> str:
     def _section(title: str, items: list[str]) -> list[str]:
         lines = ["", f"## {title}"]
@@ -281,6 +314,11 @@ def create(
     project_root = Path(project) if project else Path.cwd()
     resolved_version = resolve_target_version(project_root, version)
     version_change_payload = _build_version_change_payload(project_root, version=resolved_version)
+    version_change_payload = _stabilize_version_change_payload(
+        project_root,
+        version=resolved_version,
+        payload=version_change_payload,
+    )
     version_change_md = change_docs_file(project_root, resolved_version, f"{resolved_version}.md")
     version_change_json = change_file_output(project_root, resolved_version, f"{resolved_version}.json")
     version_change_md.parent.mkdir(parents=True, exist_ok=True)
@@ -340,12 +378,12 @@ def create(
         [Path(output)]
         if output
         else [
-            project_root / "docs" / "beacon" / resolved_version / "release" / f"{resolved_version}.md",
+            release_checklist_file(project_root, resolved_version),
         ]
     )
     for output_path in output_paths:
         output_path.parent.mkdir(parents=True, exist_ok=True)
-        output_path.write_text(release_content)
+        output_path.write_text(release_content, encoding="utf-8")
     output_path = output_paths[0]
 
     rel = str(output_path.relative_to(project_root))
@@ -376,23 +414,94 @@ def create(
 @app.command()
 def check(
     version: str = typer.Argument(..., help="Release version"),
-    project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
+    project: Optional[str] = typer.Option(None, "--project", "--project-root", "-p", help="Project root"),
+    json_output: bool = typer.Option(False, "--json", help="JSON output"),
 ):
     """Check release conditions"""
     project_root = Path(project) if project else Path.cwd()
     resolved_version = resolve_target_version(project_root, version)
     resolved_runtime = resolve_runtime_version(project_root, "auto")
+    if metadata_machine_path(project_root).exists():
+        metadata_verdict = verify_project_metadata(project_root, version=resolved_version)
+        if str(metadata_verdict.get("status") or "").lower() == "fail":
+            failing_checks = [
+                item for item in metadata_verdict.get("checks", [])
+                if isinstance(item, dict) and str(item.get("status") or "").lower() == "fail"
+            ]
+            payload = {
+                "schema_version": "1.0",
+                "version": resolved_version,
+                "status": "blocked",
+                "reason_code": "project_metadata_contract_blocked",
+                "project_metadata_verification": metadata_verdict,
+                "recommended_command": f"beacon doctor metadata verify --project-root {project_root} --version {resolved_version}",
+            }
+            if json_output:
+                typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+            else:
+                typer.echo("Beacon release blocked: project metadata contract blocked")
+                for item in failing_checks:
+                    typer.echo(
+                        f"- {item.get('name')}: {json.dumps(item.get('details', {}), ensure_ascii=False, sort_keys=True)}"
+                    )
+            raise typer.Exit(code=1)
+    requirement_package_gate = build_requirement_package_gate(
+        project_root,
+        version=resolved_version,
+        feature="",
+        strict=True,
+    )
+    requirement_package_gate_blocked = str(requirement_package_gate.get("status") or "").lower() == "blocked"
+    if requirement_package_gate_blocked and json_output:
+        payload = {
+            "schema_version": "1.0",
+            "version": resolved_version,
+            "status": "blocked",
+            "reason_code": str(requirement_package_gate.get("reason_code") or "requirement_package_contract_blocked"),
+            "requirement_package_gate": requirement_package_gate,
+            "recommended_command": str(
+                requirement_package_gate.get("recommended_command")
+                or f"beacon doctor verify-materials --project-root {project_root} --version {resolved_version} --strict"
+            ),
+        }
+        if json_output:
+            typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        else:
+            typer.echo("Beacon release blocked: requirement package contract blocked")
+        raise typer.Exit(code=2)
     release_scorecard = build_release_scorecard(project_root, version=resolved_version)
     change_documents = release_scorecard.get("change_documents") if isinstance(release_scorecard.get("change_documents"), dict) else {}
+    prompt_boundary = release_scorecard.get("prompt_boundary") if isinstance(release_scorecard.get("prompt_boundary"), dict) else {}
+    feature_qa_scorecard = (
+        release_scorecard.get("feature_qa_scorecard")
+        if isinstance(release_scorecard.get("feature_qa_scorecard"), dict)
+        else {}
+    )
     enforce_change_documents = project_runtime_feature_enabled(
         project_root,
         "v1.3.1",
         docs_version=resolved_version,
         runtime_version=resolved_runtime,
     )
-
-    typer.echo(f"Checking release conditions for {resolved_version}")
-    typer.echo("=" * 40)
+    enforce_release_scorecard = project_runtime_feature_enabled(
+        project_root,
+        "v1.3.6",
+        docs_version=resolved_version,
+        runtime_version=resolved_runtime,
+    )
+    enforce_prompt_boundary = project_runtime_feature_enabled(
+        project_root,
+        "v1.3.7",
+        docs_version=resolved_version,
+        runtime_version=resolved_runtime,
+    )
+    enforce_acceptance_transaction = project_runtime_feature_enabled(
+        project_root,
+        "v1.3.9",
+        docs_version=resolved_version,
+        runtime_version=resolved_runtime,
+    )
+    authoritative_release_ready = bool(release_scorecard.get("release_ready", False))
 
     auto_test_path = project_root / ".beacon" / "auto-test-status.json"
     gate_report_path = project_root / ".beacon" / "gate-report.json"
@@ -401,6 +510,15 @@ def check(
 
     checks: list[tuple[str, bool, str]] = []
     evidence_refs: list[str] = []
+
+    if requirement_package_gate_blocked:
+        checks.append(
+            (
+                "requirement package contract",
+                False,
+                str(requirement_package_gate.get("reason_code") or "requirement_package_contract_blocked"),
+            )
+        )
 
     auto_test_ok = False
     auto_test_status = "missing"
@@ -432,6 +550,7 @@ def check(
         )
     )
 
+    scorecard_gate = release_scorecard.get("gate") if isinstance(release_scorecard.get("gate"), dict) else {}
     gate_ok = False
     gate_status = "missing"
     gate_coverage_full: Optional[bool] = None
@@ -450,6 +569,13 @@ def check(
         if isinstance(coverage_payload, dict) and "full_coverage" in coverage_payload:
             gate_coverage_full = bool(coverage_payload.get("full_coverage"))
         evidence_refs.append(str(gate_report_path.relative_to(project_root)))
+    if scorecard_gate:
+        gate_status = str(scorecard_gate.get("status") or gate_status or "unknown")
+        gate_ok = gate_status.lower() == "pass"
+        if scorecard_gate.get("run_id"):
+            gate_run_id = str(scorecard_gate.get("run_id") or gate_run_id)
+        if scorecard_gate.get("artifact_version"):
+            gate_version = str(scorecard_gate.get("artifact_version") or gate_version)
     checks.append(("gate report pass", gate_ok, f"status={gate_status or 'unknown'}"))
     checks.append(
         (
@@ -461,8 +587,22 @@ def check(
     checks.append(
         (
             "gate report run_id matches auto-test",
-            bool(gate_run_id) and bool(auto_test_run_id) and gate_run_id == auto_test_run_id,
-            f"gate_run_id={gate_run_id or 'missing'}, auto_test_run_id={auto_test_run_id or 'missing'}",
+            (
+                bool(gate_run_id)
+                and bool(auto_test_run_id)
+                and (
+                    gate_run_id == auto_test_run_id
+                    or (enforce_release_scorecard and authoritative_release_ready and gate_ok and auto_test_ok)
+                )
+            ),
+            (
+                f"gate_run_id={gate_run_id or 'missing'}, auto_test_run_id={auto_test_run_id or 'missing'}"
+                + (
+                    ", authoritative_release_scorecard=true"
+                    if enforce_release_scorecard and authoritative_release_ready and gate_ok and auto_test_ok
+                    else ""
+                )
+            ),
         )
     )
 
@@ -521,6 +661,21 @@ def check(
     elif gate_coverage_full is not None:
         coverage_ok = bool(gate_coverage_full)
         coverage_detail = f"gate_report.coverage.full_coverage={coverage_ok}"
+    if not coverage_ok and enforce_release_scorecard and authoritative_release_ready:
+        coverage_current = (
+            feature_qa_scorecard.get("coverage_current")
+            if isinstance(feature_qa_scorecard.get("coverage_current"), dict)
+            else {}
+        )
+        executed = int(coverage_current.get("executed_scenarios") or 0)
+        required = int(coverage_current.get("required_scenarios") or 0)
+        coverage_rate = coverage_current.get("coverage_rate")
+        if required > 0 and executed >= required:
+            coverage_ok = True
+            coverage_detail = (
+                f"feature_scorecard.coverage_current={executed}/{required} "
+                f"({coverage_rate if coverage_rate is not None else 'n/a'}), authoritative_release_scorecard=true"
+            )
     checks.append(("coverage artifact ready", coverage_ok, coverage_detail))
     if coverage_summary_path.exists():
         checks.append(
@@ -560,6 +715,43 @@ def check(
             )
         )
 
+    if enforce_acceptance_transaction:
+        acceptance = release_scorecard.get("acceptance") if isinstance(release_scorecard.get("acceptance"), dict) else {}
+        qa_summary = release_scorecard.get("qa") if isinstance(release_scorecard.get("qa"), dict) else {}
+        acceptance_feature = str(acceptance.get("feature") or qa_summary.get("feature") or "").strip()
+        acceptance_tx_contract = acceptance_projection_transaction_contract(
+            project_root,
+            version=resolved_version,
+            feature=acceptance_feature,
+        ) if acceptance_feature else {
+            "status": "warn",
+            "reason_code": "acceptance_feature_missing",
+        }
+        acceptance_tx_ok = str(acceptance_tx_contract.get("status") or "warn").lower() == "pass"
+        checks.append(
+            (
+                "acceptance projection transaction contract",
+                acceptance_tx_ok,
+                f"status={acceptance_tx_contract.get('status') or 'unknown'}, reason={acceptance_tx_contract.get('reason_code') or '-'}",
+            )
+        )
+
+    if metadata_machine_path(project_root).exists():
+        metadata_verdict = verify_project_metadata(project_root, version=resolved_version)
+        metadata_ok = str(metadata_verdict.get("status") or "").lower() != "fail"
+        failing_checks = [
+            f"{item.get('name')}={item.get('details', {})}"
+            for item in metadata_verdict.get("checks", [])
+            if isinstance(item, dict) and str(item.get("status") or "").lower() == "fail"
+        ]
+        checks.append(
+            (
+                "project metadata contract",
+                metadata_ok,
+                "; ".join(failing_checks) if failing_checks else f"status={metadata_verdict.get('status') or 'unknown'}",
+            )
+        )
+
     if enforce_change_documents:
         change_md_ref = str(change_documents.get("markdown_path") or "")
         change_json_ref = str(change_documents.get("json_path") or "")
@@ -596,21 +788,82 @@ def check(
             )
         )
 
+    if enforce_release_scorecard:
+        semantic = release_scorecard.get("semantic") if isinstance(release_scorecard.get("semantic"), dict) else {}
+        semantic_status = str(semantic.get("status") or "unknown")
+        semantic_reason = str(semantic.get("reason_code") or "")
+        checks.append(
+            (
+                "release scorecard ready",
+                bool(release_scorecard.get("release_ready", False)),
+                f"feature={release_scorecard.get('qa', {}).get('feature') or 'none'}, semantic_reason={semantic_reason or '-'}",
+            )
+        )
+        if semantic:
+            checks.append(
+                (
+                    "semantic contract ready",
+                    semantic_status == "pass",
+                    f"status={semantic_status}, reason={semantic_reason or '-'}",
+                )
+            )
+
+    if enforce_prompt_boundary:
+        prompt_boundary_status = str(prompt_boundary.get("status") or "missing")
+        prompt_boundary_reason = str(prompt_boundary.get("reason_code") or "")
+        prompt_boundary_classification = str(prompt_boundary.get("classification") or "")
+        prompt_boundary_surface = str(prompt_boundary.get("surface") or "")
+        checks.append(
+            (
+                "implement prompt boundary verdict pass",
+                prompt_boundary_status.lower() == "pass" and not bool(prompt_boundary.get("blocked", False)),
+                (
+                    f"status={prompt_boundary_status}, "
+                    f"classification={prompt_boundary_classification or '-'}, "
+                    f"surface={prompt_boundary_surface or '-'}, "
+                    f"reason={prompt_boundary_reason or '-'}"
+                ),
+            )
+        )
+
     all_passed = True
     failed_checks: list[str] = []
+    check_records: list[dict[str, Any]] = []
     for check_name, passed, detail in checks:
-        status = "✓ PASS" if passed else "✗ FAIL"
-        typer.echo(f"{status}: {check_name} ({detail})")
+        check_records.append(
+            {
+                "name": check_name,
+                "passed": bool(passed),
+                "detail": detail,
+            }
+        )
         if not passed:
             all_passed = False
             failed_checks.append(check_name)
 
-    if all_passed:
-        typer.echo("\n✓ Release conditions met")
-        status = "pass"
+    status = "pass" if all_passed else "blocked"
+    payload = {
+        "version": resolved_version,
+        "runtime_version": resolved_runtime,
+        "project_root": str(project_root),
+        "status": status,
+        "release_ready": all_passed,
+        "failed_checks": failed_checks,
+        "checks": check_records,
+    }
+
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
     else:
-        typer.echo("\n✗ Some checks failed")
-        status = "blocked"
+        typer.echo(f"Checking release conditions for {resolved_version}")
+        typer.echo("=" * 40)
+        for record in check_records:
+            marker = "✓ PASS" if record["passed"] else "✗ FAIL"
+            typer.echo(f"{marker}: {record['name']} ({record['detail']})")
+        if all_passed:
+            typer.echo("\n✓ Release conditions met")
+        else:
+            typer.echo("\n✗ Some checks failed")
 
     append_memory_entry(
         project_root=project_root,

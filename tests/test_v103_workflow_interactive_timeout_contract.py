@@ -11,7 +11,7 @@ def test_interactive_menu_should_list_six_actions(capsys):
     out = capsys.readouterr().out
     for snippet in (
         "1) 执行 next_stage",
-        "2) 自动补齐到 gate",
+        "2) 自动补齐到 release",
         "3) 查看阻塞详情",
         "4) 执行反馈修订",
         "5) 暂停并保存",

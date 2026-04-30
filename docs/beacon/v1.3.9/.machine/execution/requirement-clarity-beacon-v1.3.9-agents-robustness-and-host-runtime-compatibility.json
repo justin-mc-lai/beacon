@@ -1,0 +1,118 @@
+{
+  "schema_version": "1.0",
+  "feature": "Beacon v1.3.9 agents robustness and host runtime compatibility",
+  "feature_slug": "beacon-v1.3.9-agents-robustness-and-host-runtime-compatibility",
+  "version": "v1.3.9",
+  "runtime_version": "v1.3.8",
+  "runtime_capability_line": "v1.3.3",
+  "required": true,
+  "reason_code": "",
+  "blocked": false,
+  "status": "pass",
+  "findings": [],
+  "report_json_path": "docs/beacon/v1.3.9/.machine/execution/requirement-clarity-beacon-v1.3.9-agents-robustness-and-host-runtime-compatibility.json",
+  "report_markdown_path": "docs/beacon/v1.3.9/execution/requirement-clarity-beacon-v1.3.9-agents-robustness-and-host-runtime-compatibility.md",
+  "state_path": ".beacon/state/requirement-clarity-beacon-v1.3.9-agents-robustness-and-host-runtime-compatibility.json",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.3.9",
+    "supported": true,
+    "required": true,
+    "ready": true,
+    "diagram_types": [
+      "branch-flow",
+      "state-machine",
+      "decision-priority"
+    ],
+    "state_axes": [
+      "host_runtime_axis",
+      "codex",
+      "claude",
+      "lifecycle_surface_axis",
+      "implement",
+      "qa",
+      "release-support",
+      "doctor",
+      "archive-validation",
+      "agent_contract_axis",
+      "run-contract",
+      "handoff-envelope",
+      "guardrail-taxonomy",
+      "trace-projection",
+      "session-resume",
+      "human-surface-axis",
+      "minimal-human-surface-preserved",
+      "runtime-detail-hidden",
+      "explanation-projection-available"
+    ],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [
+      "state axes",
+      "branch flow",
+      "state machine",
+      "decision priority"
+    ],
+    "review_gates": [
+      "implementation must cover the declared branch-flow split points",
+      "implementation must preserve the declared state-machine transitions",
+      "implementation must preserve decision-priority ordering",
+      "implementation must keep state axes explicit: host_runtime_axis, codex, claude, lifecycle_surface_axis, implement, qa, release-support, doctor, archive-validation, agent_contract_axis, run-contract, handoff-envelope, guardrail-taxonomy, trace-projection, session-resume, human-surface-axis, minimal-human-surface-preserved, runtime-detail-hidden, explanation-projection-available"
+    ],
+    "qa_coverage_hints": [
+      "cover primary and alternate branch-flow paths",
+      "cover state transitions, illegal transitions, and recovery paths",
+      "cover conflicting conditions using declared decision priority",
+      "cover axis combinations across: host_runtime_axis, codex, claude, lifecycle_surface_axis, implement, qa, release-support, doctor, archive-validation, agent_contract_axis, run-contract, handoff-envelope, guardrail-taxonomy, trace-projection, session-resume, human-surface-axis, minimal-human-surface-preserved, runtime-detail-hidden, explanation-projection-available"
+    ],
+    "evidence_lines": {
+      "branch-flow": [
+        "```text",
+        "requirement truth",
+        "-> host runtime compatibility split",
+        "-> agent run / handoff / guardrail / trace / resume contracts",
+        "-> lifecycle-specific rollout",
+        "-> implement / qa / release-support / doctor / archive validation consumption",
+        "```"
+      ],
+      "state-machine": [
+        "```text",
+        "draft",
+        "-> requirement-clarified",
+        "-> frozen",
+        "-> host-compatibility-bound",
+        "-> lifecycle-agentized",
+        "-> validated",
+        "-> released"
+      ],
+      "decision-priority": [
+        "本子线的决策优先级必须保持：",
+        "1. 不扩张公开一级命令面",
+        "2. requirement truth / acceptance semantics / transaction truth 不能因 host runtime 不同而漂移",
+        "3. Codex / Claude Code 可以 execution shape 不同，但必须 contract-compatible",
+        "4. agent trace 先保证高信号 human projection，再考虑更多 raw detail",
+        "5. 新增 agent 场景先覆盖 `qa / doctor / release-support`，最后才考虑 requirement-side增强"
+      ],
+      "state-axes": [
+        "本子线至少显式建模以下 state axes：",
+        "- `host_runtime_axis`",
+        "- `codex`",
+        "- `claude`",
+        "- `lifecycle_surface_axis`",
+        "- `implement`",
+        "- `qa`",
+        "- `release-support`"
+      ]
+    },
+    "generated_at": "2026-04-27T15:57:11.730264+00:00",
+    "feature": "Beacon v1.3.9 agents robustness and host runtime compatibility",
+    "feature_slug": "beacon-v1.3.9-agents-robustness-and-host-runtime-compatibility",
+    "prd_ref": "docs/beacon/v1.3.9/prd/beacon-v1.3.9-agents-robustness-and-host-runtime-compatibility.md",
+    "user_story_ref": "docs/beacon/v1.3.9/user-story/beacon-v1.3.9-agents-robustness-and-host-runtime-compatibility.md"
+  },
+  "required_artifacts": [],
+  "scanned_files": [
+    "docs/beacon/v1.3.9/prd/beacon-v1.3.9-agents-robustness-and-host-runtime-compatibility.md",
+    "docs/beacon/v1.3.9/user-story/beacon-v1.3.9-agents-robustness-and-host-runtime-compatibility.md"
+  ]
+}

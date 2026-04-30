@@ -1,0 +1,779 @@
+{
+  "schema_version": "1.0",
+  "feature": "Beacon v1.3.9 runtime skill admission and host-validated third-party skill compatibility",
+  "feature_slug": "beacon-v1-3-9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility",
+  "version": "v1.3.9",
+  "prototype_mode": "wireframe",
+  "source_hash": "da208c7890ae3fefb63bb444bc998798f22195ac14c43f693e2fa9c1ed3dd131",
+  "projection_seq": "pp-da208c7890ae3fef",
+  "transaction_id": "tx-beacon-v1-3-9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility-pp-da208c7890ae3fef",
+  "committed_at": "2026-04-29T03:55:22Z",
+  "plan": {
+    "schema_version": "1.0",
+    "feature": "Beacon v1.3.9 runtime skill admission and host-validated third-party skill compatibility",
+    "feature_slug": "beacon-v1-3-9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility",
+    "version": "v1.3.9",
+    "generated_at": "2026-04-29T03:55:22Z",
+    "prototype_mode": "wireframe",
+    "ui_kit": "wireframe-markdown-v1",
+    "source_documents": [
+      {
+        "type": "user-story",
+        "path": "docs/beacon/v1.3.9/user-story/beacon-v1.3.9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility.md",
+        "fingerprint": "b55b53a3fa22b5a1cd12efa9986b212772253d6a4aaa69f44708206fdd3f83b3"
+      },
+      {
+        "type": "prd",
+        "path": "docs/beacon/v1.3.9/prd/beacon-v1.3.9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility.md",
+        "fingerprint": "4e0ee76767f692aac7b826051ed3b396d60951065e0329e802046f888f97cdb8"
+      },
+      {
+        "type": "test-case",
+        "path": "docs/beacon/v1.3.9/qa/test-cases/beacon-v1.3.9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility.md",
+        "fingerprint": "3dd1167d26227676e5db11486401cc427c8338850c0a71af2a28adc4cf1bec02"
+      }
+    ],
+    "required_pages": [
+      "v1-3-9"
+    ],
+    "required_states": [
+      "error",
+      "loading",
+      "ready"
+    ],
+    "requirement_ids": {
+      "ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005"
+      ],
+      "tc_ids": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005"
+      ]
+    },
+    "page_specs": [
+      {
+        "page_id": "v1-3-9",
+        "name": "目标版本: `v1.3.9",
+        "priority": "P1",
+        "platforms": [
+          "Web",
+          "PC"
+        ],
+        "responsibility": "冻结 `目标版本: `v1.3.9` 的页面结构、关键动作和状态说明，确保与 requirement 材料一致。",
+        "sections": [
+          "页面头部",
+          "关键内容区",
+          "主要操作区",
+          "状态与反馈区"
+        ],
+        "actions": [],
+        "states": [
+          {
+            "id": "ready",
+            "label": "可用",
+            "description": "页面数据齐备，用户可完成核心操作。"
+          },
+          {
+            "id": "loading",
+            "label": "加载中",
+            "description": "页面数据正在加载。"
+          },
+          {
+            "id": "error",
+            "label": "错误",
+            "description": "页面加载或提交失败，需提示恢复动作。"
+          }
+        ],
+        "requirement_refs": {
+          "user-story": [
+            "docs/beacon/v1.3.9/user-story/beacon-v1.3.9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility.md"
+          ],
+          "prd": [
+            "docs/beacon/v1.3.9/prd/beacon-v1.3.9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility.md"
+          ],
+          "test-case": [
+            "docs/beacon/v1.3.9/qa/test-cases/beacon-v1.3.9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility.md"
+          ]
+        },
+        "outbound_transitions": [],
+        "analysis": {
+          "target_user": "需要完成页面判断与下钻的 Beacon 使用者",
+          "decision_focus": [
+            "冻结 `目标版本: `v1.3.9` 的页面结构、关键动作和状态说明，确保与 requirement 材料一致。",
+            "确认是否继续停留当前页或进入下一层。"
+          ],
+          "layout_rules": [
+            "首屏先回答当前页最重要的问题。",
+            "主体区只保留支撑判断的结构，不展开高保真视觉。"
+          ],
+          "noise_guardrail": "页面说明只保留人类审阅需要的信息，不混入机器合同细节。"
+        },
+        "layout_lines": [
+          "+-----------------------------+",
+          "| 页面头部                     |",
+          "+-----------------------------+",
+          "| 关键内容区                    |",
+          "+-----------------------------+",
+          "| 主要操作区                    |",
+          "+-----------------------------+",
+          "| 状态与反馈区                   |",
+          "+-----------------------------+"
+        ]
+      }
+    ],
+    "page_inventory": [
+      {
+        "page_id": "v1-3-9",
+        "name": "目标版本: `v1.3.9",
+        "priority": "P1",
+        "platforms": [
+          "Web",
+          "PC"
+        ],
+        "responsibility": "冻结 `目标版本: `v1.3.9` 的页面结构、关键动作和状态说明，确保与 requirement 材料一致。",
+        "sections": [
+          "页面头部",
+          "关键内容区",
+          "主要操作区",
+          "状态与反馈区"
+        ],
+        "actions": [],
+        "states": [
+          {
+            "id": "ready",
+            "label": "可用",
+            "description": "页面数据齐备，用户可完成核心操作。"
+          },
+          {
+            "id": "loading",
+            "label": "加载中",
+            "description": "页面数据正在加载。"
+          },
+          {
+            "id": "error",
+            "label": "错误",
+            "description": "页面加载或提交失败，需提示恢复动作。"
+          }
+        ],
+        "requirement_refs": {
+          "user-story": [
+            "docs/beacon/v1.3.9/user-story/beacon-v1.3.9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility.md"
+          ],
+          "prd": [
+            "docs/beacon/v1.3.9/prd/beacon-v1.3.9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility.md"
+          ],
+          "test-case": [
+            "docs/beacon/v1.3.9/qa/test-cases/beacon-v1.3.9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility.md"
+          ]
+        },
+        "outbound_transitions": [],
+        "analysis": {
+          "target_user": "需要完成页面判断与下钻的 Beacon 使用者",
+          "decision_focus": [
+            "冻结 `目标版本: `v1.3.9` 的页面结构、关键动作和状态说明，确保与 requirement 材料一致。",
+            "确认是否继续停留当前页或进入下一层。"
+          ],
+          "layout_rules": [
+            "首屏先回答当前页最重要的问题。",
+            "主体区只保留支撑判断的结构，不展开高保真视觉。"
+          ],
+          "noise_guardrail": "页面说明只保留人类审阅需要的信息，不混入机器合同细节。"
+        },
+        "layout_lines": [
+          "+-----------------------------+",
+          "| 页面头部                     |",
+          "+-----------------------------+",
+          "| 关键内容区                    |",
+          "+-----------------------------+",
+          "| 主要操作区                    |",
+          "+-----------------------------+",
+          "| 状态与反馈区                   |",
+          "+-----------------------------+"
+        ]
+      }
+    ],
+    "navigation": {
+      "primary_entry": "v1-3-9",
+      "primary_exit": "v1-3-9",
+      "transitions": []
+    },
+    "semantic_layer": {
+      "artifacts": {
+        "semantic_contract": "docs/beacon/v1.3.9/execution/semantic/beacon-v1-3-9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility/semantic-contract.json",
+        "semantic_dictionary": "docs/beacon/v1.3.9/execution/semantic/beacon-v1-3-9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility/semantic-dictionary.md",
+        "semantic_usage_guidelines": "docs/beacon/v1.3.9/execution/semantic/beacon-v1-3-9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility/semantic-usage-guidelines.md",
+        "semantic_review": "docs/beacon/v1.3.9/execution/semantic/beacon-v1-3-9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility/semantic-review.json"
+      },
+      "default_design_bridge": {
+        "repo": "https://github.com/Leonxlnx/taste-skill",
+        "skill_id": "taste-skill",
+        "entry": "",
+        "detected": false,
+        "kind": "external-default-bridge",
+        "supported_stages": [
+          "prototype",
+          "implement"
+        ],
+        "capabilities": [
+          "prototype",
+          "implement",
+          "taste-design",
+          "semantic-normalization"
+        ],
+        "install_hint": "npx skills add https://github.com/Leonxlnx/taste-skill --skill taste-skill"
+      },
+      "official_language": {
+        "page_names": [
+          {
+            "label": "关键步骤具备可追踪日志与最小化诊断",
+            "slug": "semantic-layer",
+            "source": "requirement_truth"
+          },
+          {
+            "label": "Beacon v1.3.9 runtime skill admission and host-validated third-party skill compatibility",
+            "slug": "beacon-v1-3-9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility",
+            "source": "requirement_truth"
+          }
+        ],
+        "status_labels": [
+          "错误",
+          "正常",
+          "阻塞",
+          "加载中"
+        ],
+        "module_labels": [
+          "关键步骤具备可追踪日志与最小化诊断信息",
+          "关闭状态",
+          "头部摘要",
+          "状态反馈",
+          "推荐动作"
+        ],
+        "action_labels": [
+          "进入",
+          "返回可读错误",
+          "恢复并提供下一步指引",
+          "查看详情",
+          "进入详情",
+          "返回总览"
+        ],
+        "preferred_terms": [
+          {
+            "from": "implementation",
+            "to": "implement",
+            "scope": "stage_vocabulary"
+          },
+          {
+            "from": "verify",
+            "to": "qa",
+            "scope": "stage_vocabulary"
+          },
+          {
+            "from": "review",
+            "to": "qa",
+            "scope": "stage_vocabulary"
+          },
+          {
+            "from": "delivery",
+            "to": "release",
+            "scope": "stage_vocabulary"
+          },
+          {
+            "from": "raw runtime log",
+            "to": "运行摘要",
+            "scope": "product_copy"
+          },
+          {
+            "from": "machine contract",
+            "to": "机器内部契约",
+            "scope": "product_copy"
+          }
+        ],
+        "banned_terms": [
+          "implementation",
+          "verify",
+          "review",
+          "delivery",
+          "machine contract",
+          "canonical-envelope",
+          "raw runtime log",
+          "transaction_id",
+          "projection_seq"
+        ]
+      }
+    },
+    "platform_variants": {
+      "global_platforms": [
+        "Web",
+        "PC"
+      ],
+      "pages": {
+        "v1-3-9": {
+          "platforms": [
+            "Web",
+            "PC"
+          ],
+          "notes": []
+        }
+      },
+      "notes": [
+        "默认展示 Web / PC 线框视图。",
+        "App 只在真实需求明确要求时保留；当前仅 project-detail 做移动差异提示。"
+      ]
+    },
+    "contract": {
+      "prototype_archetype": "generic-wireframe",
+      "wireframe_only": true,
+      "design_governance_required": true,
+      "semantic_governance_required": true,
+      "semantic_contract_path": "docs/beacon/v1.3.9/execution/semantic/beacon-v1-3-9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility/semantic-contract.json",
+      "route_closure_required": false,
+      "required_files": [
+        "wireframe-summary.md",
+        "wireframe-manifest.json",
+        "navigation-map.md",
+        "navigation-map.json",
+        "state-flow-map.md",
+        "state-flow-map.json",
+        "component-catalog.md",
+        "component-catalog.json",
+        "canonical-envelope.json",
+        "pages/*.md",
+        "freeze.json",
+        "prototype-review.json"
+      ]
+    },
+    "parser": {
+      "page_detection": "requirement-driven-parser",
+      "fallback_used": false,
+      "discovered_page_count": 1,
+      "custom_page_count": 1,
+      "cjk_detected": true,
+      "cjk_parse_failed": false
+    },
+    "compiler": {
+      "requested_mode": "rule",
+      "effective_mode": "rule",
+      "generator_mode": "rule",
+      "fallback_reason": "",
+      "capability_snapshot": {
+        "schema_version": "1.0",
+        "command_name": "prototype",
+        "host_runtime": "codex",
+        "host_bridge_declared": false,
+        "host_response_available": false,
+        "host_response_source": "none",
+        "host_response_path": "",
+        "host_semantic_ready": false,
+        "provider_available": false,
+        "provider_key_present": false,
+        "llm_disabled": false,
+        "disable_env": "BEACON_PROTOTYPE_DISABLE_LLM"
+      },
+      "model": "beacon-prototype-compiler",
+      "llm_trace": {},
+      "downgraded_from_auto": false,
+      "downgrade_blocking": false
+    },
+    "theme": {
+      "ui_kit": "wireframe-markdown-v1",
+      "prototype_archetype": "generic-wireframe",
+      "primary": "#2563EB",
+      "secondary": "#0F172A",
+      "surface_note": "Wireframe freeze uses markdown and metadata only, not high-fidelity HTML surfaces."
+    }
+  },
+  "navigation_map": {
+    "primary_entry": "v1-3-9",
+    "primary_exit": "v1-3-9",
+    "transitions": []
+  },
+  "state_flow_map": {
+    "schema_version": "1.0",
+    "node_count": 3,
+    "edge_count": 2,
+    "nodes": [
+      {
+        "state_key": "v1-3-9:ready",
+        "page_id": "v1-3-9",
+        "state_id": "ready",
+        "label": "可用",
+        "description": "页面数据齐备，用户可完成核心操作。"
+      },
+      {
+        "state_key": "v1-3-9:loading",
+        "page_id": "v1-3-9",
+        "state_id": "loading",
+        "label": "加载中",
+        "description": "页面数据正在加载。"
+      },
+      {
+        "state_key": "v1-3-9:error",
+        "page_id": "v1-3-9",
+        "state_id": "error",
+        "label": "错误",
+        "description": "页面加载或提交失败，需提示恢复动作。"
+      }
+    ],
+    "edges": [
+      {
+        "from": "v1-3-9:loading",
+        "to": "v1-3-9:ready",
+        "event": "data_loaded",
+        "guard": "data_fetch_success",
+        "kind": "intra-page",
+        "fallback": null,
+        "test_refs": [
+          "TC-001",
+          "TC-002"
+        ]
+      },
+      {
+        "from": "v1-3-9:ready",
+        "to": "v1-3-9:error",
+        "event": "data_failure",
+        "guard": "runtime_or_projection_error",
+        "kind": "intra-page",
+        "fallback": "recovery-diagnostics:ready",
+        "test_refs": [
+          "TC-001",
+          "TC-002"
+        ]
+      }
+    ]
+  },
+  "component_catalog": {
+    "schema_version": "1.0",
+    "component_count": 4,
+    "components": [
+      {
+        "component_id": "v1-3-9-component-01",
+        "page_id": "v1-3-9",
+        "name": "页面头部",
+        "responsibility": "页面头部 模块负责承载 `目标版本: `v1.3.9` 的关键信息与操作。",
+        "data_source": [
+          "prototype-plan.page_specs",
+          "source-map.requirement_refs"
+        ],
+        "interaction": {
+          "label": "无直接动作",
+          "trigger": "被动展示",
+          "target": "v1-3-9"
+        },
+        "state_refs": [
+          "ready",
+          "loading",
+          "error"
+        ],
+        "ac_refs": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004",
+          "AC-005"
+        ],
+        "tc_refs": [
+          "TC-001",
+          "TC-002",
+          "TC-003",
+          "TC-004",
+          "TC-005"
+        ],
+        "story_refs": [
+          "docs/beacon/v1.3.9/user-story/beacon-v1.3.9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility.md"
+        ]
+      },
+      {
+        "component_id": "v1-3-9-component-02",
+        "page_id": "v1-3-9",
+        "name": "关键内容区",
+        "responsibility": "关键内容区 模块负责承载 `目标版本: `v1.3.9` 的关键信息与操作。",
+        "data_source": [
+          "prototype-plan.page_specs",
+          "source-map.requirement_refs"
+        ],
+        "interaction": {
+          "label": "无直接动作",
+          "trigger": "被动展示",
+          "target": "v1-3-9"
+        },
+        "state_refs": [
+          "ready",
+          "loading",
+          "error"
+        ],
+        "ac_refs": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004",
+          "AC-005"
+        ],
+        "tc_refs": [
+          "TC-001",
+          "TC-002",
+          "TC-003",
+          "TC-004",
+          "TC-005"
+        ],
+        "story_refs": [
+          "docs/beacon/v1.3.9/user-story/beacon-v1.3.9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility.md"
+        ]
+      },
+      {
+        "component_id": "v1-3-9-component-03",
+        "page_id": "v1-3-9",
+        "name": "主要操作区",
+        "responsibility": "主要操作区 模块负责承载 `目标版本: `v1.3.9` 的关键信息与操作。",
+        "data_source": [
+          "prototype-plan.page_specs",
+          "source-map.requirement_refs"
+        ],
+        "interaction": {
+          "label": "无直接动作",
+          "trigger": "被动展示",
+          "target": "v1-3-9"
+        },
+        "state_refs": [
+          "ready",
+          "loading",
+          "error"
+        ],
+        "ac_refs": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004",
+          "AC-005"
+        ],
+        "tc_refs": [
+          "TC-001",
+          "TC-002",
+          "TC-003",
+          "TC-004",
+          "TC-005"
+        ],
+        "story_refs": [
+          "docs/beacon/v1.3.9/user-story/beacon-v1.3.9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility.md"
+        ]
+      },
+      {
+        "component_id": "v1-3-9-component-04",
+        "page_id": "v1-3-9",
+        "name": "状态与反馈区",
+        "responsibility": "状态与反馈区 模块负责承载 `目标版本: `v1.3.9` 的关键信息与操作。",
+        "data_source": [
+          "prototype-plan.page_specs",
+          "source-map.requirement_refs"
+        ],
+        "interaction": {
+          "label": "无直接动作",
+          "trigger": "被动展示",
+          "target": "v1-3-9"
+        },
+        "state_refs": [
+          "ready",
+          "loading",
+          "error"
+        ],
+        "ac_refs": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004",
+          "AC-005"
+        ],
+        "tc_refs": [
+          "TC-001",
+          "TC-002",
+          "TC-003",
+          "TC-004",
+          "TC-005"
+        ],
+        "story_refs": [
+          "docs/beacon/v1.3.9/user-story/beacon-v1.3.9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility.md"
+        ]
+      }
+    ]
+  },
+  "route_closure_contract": {
+    "required": false,
+    "closure_cases": [],
+    "notes": "Wireframe freeze 只冻结跳转关系，不冻结最终实现路由。"
+  },
+  "coverage_report": {
+    "schema_version": "1.0",
+    "feature": "Beacon v1.3.9 runtime skill admission and host-validated third-party skill compatibility",
+    "feature_slug": "beacon-v1-3-9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility",
+    "prototype_mode": "wireframe",
+    "required_pages": [
+      "v1-3-9"
+    ],
+    "generated_pages": [
+      "v1-3-9"
+    ],
+    "required_states": [
+      "error",
+      "loading",
+      "ready"
+    ],
+    "missing_state_variants": [],
+    "compact_mode_detected": false,
+    "page_count": 1,
+    "transition_count": 0
+  },
+  "source_map": {
+    "schema_version": "1.0",
+    "feature": "Beacon v1.3.9 runtime skill admission and host-validated third-party skill compatibility",
+    "feature_slug": "beacon-v1-3-9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility",
+    "derived_from": [
+      "user-story",
+      "prd",
+      "test-case"
+    ],
+    "sources": [
+      {
+        "type": "user-story",
+        "path": "docs/beacon/v1.3.9/user-story/beacon-v1.3.9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility.md",
+        "fingerprint": "b55b53a3fa22b5a1cd12efa9986b212772253d6a4aaa69f44708206fdd3f83b3"
+      },
+      {
+        "type": "prd",
+        "path": "docs/beacon/v1.3.9/prd/beacon-v1.3.9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility.md",
+        "fingerprint": "4e0ee76767f692aac7b826051ed3b396d60951065e0329e802046f888f97cdb8"
+      },
+      {
+        "type": "test-case",
+        "path": "docs/beacon/v1.3.9/qa/test-cases/beacon-v1.3.9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility.md",
+        "fingerprint": "3dd1167d26227676e5db11486401cc427c8338850c0a71af2a28adc4cf1bec02"
+      }
+    ],
+    "page_requirements": [
+      {
+        "page_id": "v1-3-9",
+        "refs": {
+          "user-story": [
+            "docs/beacon/v1.3.9/user-story/beacon-v1.3.9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility.md"
+          ],
+          "prd": [
+            "docs/beacon/v1.3.9/prd/beacon-v1.3.9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility.md"
+          ],
+          "test-case": [
+            "docs/beacon/v1.3.9/qa/test-cases/beacon-v1.3.9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility.md"
+          ]
+        }
+      }
+    ],
+    "generated_at": "2026-04-29T03:55:22Z"
+  },
+  "semantic_layer": {
+    "artifacts": {
+      "semantic_contract": "docs/beacon/v1.3.9/execution/semantic/beacon-v1-3-9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility/semantic-contract.json",
+      "semantic_dictionary": "docs/beacon/v1.3.9/execution/semantic/beacon-v1-3-9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility/semantic-dictionary.md",
+      "semantic_usage_guidelines": "docs/beacon/v1.3.9/execution/semantic/beacon-v1-3-9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility/semantic-usage-guidelines.md",
+      "semantic_review": "docs/beacon/v1.3.9/execution/semantic/beacon-v1-3-9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility/semantic-review.json"
+    },
+    "default_design_bridge": {
+      "repo": "https://github.com/Leonxlnx/taste-skill",
+      "skill_id": "taste-skill",
+      "entry": "",
+      "detected": false,
+      "kind": "external-default-bridge",
+      "supported_stages": [
+        "prototype",
+        "implement"
+      ],
+      "capabilities": [
+        "prototype",
+        "implement",
+        "taste-design",
+        "semantic-normalization"
+      ],
+      "install_hint": "npx skills add https://github.com/Leonxlnx/taste-skill --skill taste-skill"
+    },
+    "official_language": {
+      "page_names": [
+        {
+          "label": "关键步骤具备可追踪日志与最小化诊断",
+          "slug": "semantic-layer",
+          "source": "requirement_truth"
+        },
+        {
+          "label": "Beacon v1.3.9 runtime skill admission and host-validated third-party skill compatibility",
+          "slug": "beacon-v1-3-9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility",
+          "source": "requirement_truth"
+        }
+      ],
+      "status_labels": [
+        "错误",
+        "正常",
+        "阻塞",
+        "加载中"
+      ],
+      "module_labels": [
+        "关键步骤具备可追踪日志与最小化诊断信息",
+        "关闭状态",
+        "头部摘要",
+        "状态反馈",
+        "推荐动作"
+      ],
+      "action_labels": [
+        "进入",
+        "返回可读错误",
+        "恢复并提供下一步指引",
+        "查看详情",
+        "进入详情",
+        "返回总览"
+      ],
+      "preferred_terms": [
+        {
+          "from": "implementation",
+          "to": "implement",
+          "scope": "stage_vocabulary"
+        },
+        {
+          "from": "verify",
+          "to": "qa",
+          "scope": "stage_vocabulary"
+        },
+        {
+          "from": "review",
+          "to": "qa",
+          "scope": "stage_vocabulary"
+        },
+        {
+          "from": "delivery",
+          "to": "release",
+          "scope": "stage_vocabulary"
+        },
+        {
+          "from": "raw runtime log",
+          "to": "运行摘要",
+          "scope": "product_copy"
+        },
+        {
+          "from": "machine contract",
+          "to": "机器内部契约",
+          "scope": "product_copy"
+        }
+      ],
+      "banned_terms": [
+        "implementation",
+        "verify",
+        "review",
+        "delivery",
+        "machine contract",
+        "canonical-envelope",
+        "raw runtime log",
+        "transaction_id",
+        "projection_seq"
+      ]
+    }
+  }
+}

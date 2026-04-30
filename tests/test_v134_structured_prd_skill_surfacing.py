@@ -98,15 +98,19 @@ def test_v134_prd_create_should_generate_parallel_tooling_skeleton_when_line_has
     assert "### AC-003 toolkit skill 在宿主面可发现" in text
 
 
-def test_v134_skill_pack_should_surface_memory_friction_optional_subskill() -> None:
+def test_v134_skill_pack_should_surface_metadata_toolkit_and_hide_memory_friction_subskill() -> None:
     host_skill = ROOT / "skills" / "beacon" / "SKILL.md"
     text = host_skill.read_text(encoding="utf-8")
-    assert "`beacon-memory-friction-evolution`" in text
-    assert "memory-friction-evolution run" in text
+    assert "`beacon-toolkit-metadata`" in text
+    assert "doctor metadata show" in text
+    assert "`beacon-memory-friction-evolution`" not in text
 
-    subskill = ROOT / "skills" / "beacon" / "beacon-memory-friction-evolution" / "SKILL.md"
+    subskill = ROOT / "skills" / "beacon" / "beacon-toolkit-metadata" / "SKILL.md"
     subskill_text = subskill.read_text(encoding="utf-8")
     assert subskill_text.startswith("---\n")
-    assert "name: beacon-memory-friction-evolution" in subskill_text
+    assert "name: beacon-toolkit-metadata" in subskill_text
     assert "Keep this skill outside the main workflow by default." in subskill_text
     assert "Do not automatically route into:" in subskill_text
+
+    removed = ROOT / "skills" / "beacon" / "beacon-memory-friction-evolution" / "SKILL.md"
+    assert not removed.exists()

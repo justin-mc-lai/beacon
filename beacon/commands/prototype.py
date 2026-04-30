@@ -116,6 +116,7 @@ def create(
         "fallback_reason": (result["plan"].get("compiler") or {}).get("fallback_reason"),
         "capability_snapshot": (result["plan"].get("compiler") or {}).get("capability_snapshot", {}),
         "paths": {k: str(v.relative_to(project_root)) for k, v in result["files"].items() if k != "root"},
+        "semantic_layer": result.get("semantic_layer", {}),
     }
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))

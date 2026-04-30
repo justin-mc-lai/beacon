@@ -1,0 +1,161 @@
+{
+  "schema_version": "1.0",
+  "node_count": 6,
+  "edge_count": 10,
+  "nodes": [
+    {
+      "state_key": "runtime-center:single-active",
+      "page_id": "runtime-center",
+      "state_id": "single-active",
+      "label": "Single 运行",
+      "description": "展示单进程执行摘要和 linked run。"
+    },
+    {
+      "state_key": "runtime-center:team-active",
+      "page_id": "runtime-center",
+      "state_id": "team-active",
+      "label": "Team 运行",
+      "description": "展示 agent 数、角色、状态和 host session metadata。"
+    },
+    {
+      "state_key": "runtime-center:ralph-active",
+      "page_id": "runtime-center",
+      "state_id": "ralph-active",
+      "label": "Ralph 闭环",
+      "description": "展示 round_count、failure_streak、next_action、blocker。"
+    },
+    {
+      "state_key": "runtime-center:idle",
+      "page_id": "runtime-center",
+      "state_id": "idle",
+      "label": "无活跃运行",
+      "description": "当前没有任何 active runtime。"
+    },
+    {
+      "state_key": "runtime-center:loading",
+      "page_id": "runtime-center",
+      "state_id": "loading",
+      "label": "加载中",
+      "description": "运行态数据仍在读取。"
+    },
+    {
+      "state_key": "runtime-center:error",
+      "page_id": "runtime-center",
+      "state_id": "error",
+      "label": "错误",
+      "description": "运行态投影异常，需要回到诊断页。"
+    }
+  ],
+  "edges": [
+    {
+      "from": "runtime-center:loading",
+      "to": "runtime-center:idle",
+      "event": "加载完成但无活跃运行",
+      "guard": "no_active_runtime",
+      "kind": "intra-page",
+      "fallback": "runtime-center:error",
+      "test_refs": [
+        "TC-001"
+      ]
+    },
+    {
+      "from": "runtime-center:loading",
+      "to": "runtime-center:single-active",
+      "event": "加载完成并切到 single",
+      "guard": "single_runtime_available",
+      "kind": "intra-page",
+      "fallback": "runtime-center:error",
+      "test_refs": [
+        "TC-001"
+      ]
+    },
+    {
+      "from": "runtime-center:loading",
+      "to": "runtime-center:team-active",
+      "event": "加载完成并切到 team",
+      "guard": "team_runtime_available",
+      "kind": "intra-page",
+      "fallback": "runtime-center:error",
+      "test_refs": [
+        "TC-002"
+      ]
+    },
+    {
+      "from": "runtime-center:loading",
+      "to": "runtime-center:ralph-active",
+      "event": "加载完成并切到 ralph",
+      "guard": "ralph_runtime_available",
+      "kind": "intra-page",
+      "fallback": "runtime-center:error",
+      "test_refs": [
+        "TC-003"
+      ]
+    },
+    {
+      "from": "runtime-center:idle",
+      "to": "runtime-center:single-active",
+      "event": "点击 single 模式",
+      "guard": "single_runtime_available",
+      "kind": "intra-page",
+      "fallback": "runtime-center:idle",
+      "test_refs": [
+        "TC-001"
+      ]
+    },
+    {
+      "from": "runtime-center:idle",
+      "to": "runtime-center:team-active",
+      "event": "点击 team 模式",
+      "guard": "team_runtime_available",
+      "kind": "intra-page",
+      "fallback": "runtime-center:idle",
+      "test_refs": [
+        "TC-002"
+      ]
+    },
+    {
+      "from": "runtime-center:idle",
+      "to": "runtime-center:ralph-active",
+      "event": "点击 ralph 模式",
+      "guard": "ralph_runtime_available",
+      "kind": "intra-page",
+      "fallback": "runtime-center:idle",
+      "test_refs": [
+        "TC-003"
+      ]
+    },
+    {
+      "from": "runtime-center:single-active",
+      "to": "runtime-center:team-active",
+      "event": "切换到 team",
+      "guard": "team_runtime_available",
+      "kind": "intra-page",
+      "fallback": "runtime-center:single-active",
+      "test_refs": [
+        "TC-004"
+      ]
+    },
+    {
+      "from": "runtime-center:team-active",
+      "to": "runtime-center:ralph-active",
+      "event": "切换到 ralph",
+      "guard": "ralph_runtime_available",
+      "kind": "intra-page",
+      "fallback": "runtime-center:team-active",
+      "test_refs": [
+        "TC-004"
+      ]
+    },
+    {
+      "from": "runtime-center:error",
+      "to": "runtime-center:loading",
+      "event": "点击刷新 / 重试",
+      "guard": "retry_requested",
+      "kind": "recovery",
+      "fallback": "runtime-center:error",
+      "test_refs": [
+        "TC-005"
+      ]
+    }
+  ]
+}

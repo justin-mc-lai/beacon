@@ -944,6 +944,46 @@ def test_v131_gate_release_should_pass_when_human_loop_contracts_are_closed(tmp_
     assert issues == []
 
 
+def test_v131_gate_release_should_ignore_cross_version_qa_status_and_use_current_revision_feature(tmp_path: Path):
+    _seed_docs(tmp_path, unresolved=False)
+    assert _invoke(["freeze", FEATURE, "--project", str(tmp_path), "--version", VERSION]).exit_code == 0
+    _invoke(
+        [
+            "doctor",
+            "sync-technical-review-contract",
+            FEATURE,
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            VERSION,
+            "--revision-id",
+            "R1",
+            "--review-status",
+            "approved",
+            "--approved-by",
+            "tech-lead",
+            "--reviewed-at",
+            "2026-04-13T09:00:00+08:00",
+        ]
+    )
+    qa_root = tmp_path / ".beacon" / "qa"
+    (qa_root / "features" / SLUG).mkdir(parents=True, exist_ok=True)
+    (qa_root / "status.json").write_text(
+        json.dumps(
+            {
+                "feature": "Old Feature",
+                "version": "v9.9.9",
+                "status": "passed",
+                "evidence_done": True,
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    issues = check_v131_human_loop_contract(tmp_path, GateMode.STRICT, "release", VERSION)
+    assert issues == []
+
+
 def test_v131_implement_plan_should_pass_with_technical_review_contract(tmp_path: Path):
     _seed_docs(tmp_path, unresolved=False)
     assert _invoke(["freeze", FEATURE, "--project", str(tmp_path), "--version", VERSION]).exit_code == 0

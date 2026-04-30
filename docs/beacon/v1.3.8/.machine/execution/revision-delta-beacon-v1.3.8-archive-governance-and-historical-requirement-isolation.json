@@ -1,0 +1,124 @@
+{
+  "schema_version": "1.0",
+  "feature": "Beacon v1.3.8 archive governance and historical requirement isolation",
+  "feature_slug": "beacon-v1.3.8-archive-governance-and-historical-requirement-isolation",
+  "version": "v1.3.8",
+  "revision_id": "R2",
+  "source_revision_id": "R1",
+  "status": "ready",
+  "cleanup_required": true,
+  "removed_requirement_count": 4,
+  "added_requirement_count": 4,
+  "retained_requirement_count": 1,
+  "removed_requirement_surfaces": [
+    {
+      "revision_id": "R1",
+      "id": "AC-004",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "archive-consumption",
+      "text": "`help` / `status` / `brainstorm` / `memory-friction-evolution` / `implement` / `gate` 能识别 archive boundary。",
+      "details": [],
+      "source": "user-story:docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+      "signature": "ac::::archive-consumption::`help` / `status` / `brainstorm` / `memory-friction-evolution` / `implement` / `gate` 能识别 archive boundary。::"
+    },
+    {
+      "revision_id": "R1",
+      "id": "AC-003",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "feature-archive-metadata",
+      "text": "feature-level truth 能携带 archive metadata。",
+      "details": [],
+      "source": "user-story:docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+      "signature": "ac::::feature-archive-metadata::feature-level truth 能携带 archive metadata。::"
+    },
+    {
+      "revision_id": "R1",
+      "id": "AC-005",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "historical-isolation",
+      "text": "历史 requirement 与历史 truth 可追溯，但不会继续默认进入当前 active delivery plane。",
+      "details": [],
+      "source": "user-story:docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+      "signature": "ac::::historical-isolation::历史 requirement 与历史 truth 可追溯，但不会继续默认进入当前 active delivery plane。::"
+    },
+    {
+      "revision_id": "R1",
+      "id": "AC-002",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "version-archive-plan",
+      "text": "Beacon 存在版本级 archive plan / archive index。",
+      "details": [],
+      "source": "user-story:docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+      "signature": "ac::::version-archive-plan::beacon 存在版本级 archive plan / archive index。::"
+    }
+  ],
+  "added_requirement_surfaces": [
+    {
+      "revision_id": "R2",
+      "id": "AC-004",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "archive-consumption",
+      "text": "Beacon 存在版本级 archive plan / archive index、feature-level archive metadata，且 `help` / `status` / `brainstorm` / `memory-friction-evolution` / `implement` / `gate` 能识别 archive boundary。",
+      "details": [],
+      "source": "user-story:docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+      "signature": "ac::::archive-consumption::beacon 存在版本级 archive plan / archive index、feature-level archive metadata，且 `help` / `status` / `brainstorm` / `memory-friction-evolution` / `implement` / `gate` 能识别 archive boundary。::"
+    },
+    {
+      "revision_id": "R2",
+      "id": "AC-005",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "boundary-and-isolation",
+      "text": "`beacon-brainstorm` 只负责归档前策略讨论；历史 requirement 与历史 truth 可追溯，但不会继续默认进入当前 active delivery plane。",
+      "details": [],
+      "source": "user-story:docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+      "signature": "ac::::boundary-and-isolation::`beacon-brainstorm` 只负责归档前策略讨论；历史 requirement 与历史 truth 可追溯，但不会继续默认进入当前 active delivery plane。::"
+    },
+    {
+      "revision_id": "R2",
+      "id": "AC-003",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "skill-routing",
+      "text": "Beacon 对外存在 `beacon:beacon-archive` skill，负责 archive 命令路由。",
+      "details": [],
+      "source": "user-story:docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+      "signature": "ac::::skill-routing::beacon 对外存在 `beacon:beacon-archive` skill，负责 archive 命令路由。::"
+    },
+    {
+      "revision_id": "R2",
+      "id": "AC-002",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "support-command",
+      "text": "Beacon 对外存在 `beacon archive plan/apply/status/explain`，并明确归属 support command，而非新 lifecycle stage。",
+      "details": [],
+      "source": "user-story:docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+      "signature": "ac::::support-command::beacon 对外存在 `beacon archive plan/apply/status/explain`，并明确归属 support command，而非新 lifecycle stage。::"
+    }
+  ],
+  "retained_requirement_surfaces": [
+    {
+      "revision_id": "R2",
+      "id": "AC-001",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "archive-status",
+      "text": "Beacon 存在 machine-readable archive status model。",
+      "details": [],
+      "source": "user-story:docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+      "signature": "ac::::archive-status::beacon 存在 machine-readable archive status model。::"
+    }
+  ],
+  "current_baseline_hash": "sha256:13f615233cc8ee664a2af6183c0028f72771f5bd25c9e21201ce6184cb499ed3",
+  "source_baseline_hash": "sha256:7052e462c720123be32345e5e130beac0c0a4be42641f07109486d39c0c8e95f",
+  "story_state_ref": "docs/beacon/v1.3.8/.machine/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.json",
+  "generated_at": "2026-04-27T03:00:25.467840+00:00",
+  "json_ref": "docs/beacon/v1.3.8/.machine/execution/revision-delta-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.json",
+  "markdown_ref": "docs/beacon/v1.3.8/execution/revision-delta-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md"
+}

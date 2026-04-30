@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.0",
+  "feature": "Beacon v1.3.7 implement frozen-truth verification and canonical delivery baseline envelope",
+  "feature_slug": "beacon-v1-3-7-implement-frozen-truth-verification-and-canonical-delivery-baseline-envelope",
+  "version": "v1.3.7",
+  "prototype_mode": "wireframe",
+  "prototype_type": "admin-workbench",
+  "pages": [
+    {
+      "page_id": "runtime-center",
+      "name": "运行中心",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "只在这里下钻 single / team / ralph 的 runtime 细节和有限 session metadata。",
+      "file": "pages/runtime-center.md"
+    },
+    {
+      "page_id": "recovery-diagnostics",
+      "name": "恢复诊断",
+      "priority": "P2",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "解释 degraded / rebuild / doctor，明确 truth 仍来自 docs/beacon 与 .beacon。",
+      "file": "pages/recovery-diagnostics.md"
+    }
+  ],
+  "transitions": [
+    {
+      "from": "recovery-diagnostics",
+      "to": "runtime-center",
+      "trigger": "点击运行态关联",
+      "type": "drill-down"
+    }
+  ]
+}

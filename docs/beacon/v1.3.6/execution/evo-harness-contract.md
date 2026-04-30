@@ -33,3 +33,4 @@
 - label: `Beacon v1.1.12 design governance autoresearch`
 - selected_candidates: `2`
 - verdict: `discard`
+

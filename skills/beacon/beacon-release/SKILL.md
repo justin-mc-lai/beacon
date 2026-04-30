@@ -1,13 +1,13 @@
 ---
 name: beacon-release
-description: Use when the user wants Beacon to judge release readiness, inspect final blocking conditions, or run the last release-facing checks through Beacon's current v1.3.6 runtime surface.
+description: Use when the user wants Beacon to judge release readiness, inspect final blocking conditions, or run the last release-facing checks through Beacon's current v1.3.9 runtime surface.
 ---
 
 # Beacon Release
 
 This skill routes final ship / release-readiness work through Beacon's `release` surface.
 
-The public command stays on the current `v1.3.6` runtime line and uses the shared delivery kernel and release-scorecard behavior defined by the `v1.3.6` docs.
+The public command stays on the current `v1.3.9` runtime line and uses the shared delivery kernel and release-scorecard behavior defined by the `v1.3.9` docs.
 
 ## Use for
 

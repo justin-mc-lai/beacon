@@ -242,7 +242,195 @@ not for:
 
 That is the right product boundary. The gap is not “memory exists or not”; the gap is “memory is still mostly flattened into summary items”.
 
-## 7. Dependencies / Infra Chain
+## 7. Memory Implementation Approaches
+
+### 7.1 MemPalace implementation pattern
+
+MemPalace is the clearest `verbatim-first` memory implementation in this set.
+
+Its core design is:
+
+- `drawers` store the original chunked memory as the truth layer
+- `closets` store compact topic/entity pointer lines as the searchable index layer
+- direct drawer search is always the floor
+- closet hits only act as a ranking signal, never as a gate
+
+That means its retrieval discipline is:
+
+- preserve raw recall first
+- project navigation structure second
+- never let indexing heuristics hide the original memory
+
+It then adds two higher-order structures:
+
+- a local temporal knowledge graph in SQLite with `valid_from / valid_to` and provenance
+- a 4-layer wake-up stack (`L0/L1/L2/L3`) that controls how much context gets loaded
+
+Implementation-wise, this is the strongest example of:
+
+- raw evidence retention
+- deterministic addressing
+- layered recall with bounded context cost
+
+### 7.2 gBrain implementation pattern
+
+gBrain implements memory as a full knowledge operating system rather than a lightweight memory add-on.
+
+Its core design is:
+
+- one `BrainEngine` abstraction for pages, chunks, links, timeline, versions, raw data, stats, and migrations
+- one contract-first operation layer shared by CLI, MCP, and other callers
+- one graph/timeline projection system built from page writes and link extraction
+
+Its retrieval discipline is much heavier than Beacon's current recall:
+
+- keyword search
+- vector search
+- RRF fusion
+- compiled-truth boost
+- cosine re-score
+- backlink boost
+- dedup
+
+It also includes durable background work via `Minions`, which is a transactional job queue with:
+
+- idempotency keys
+- parent/child jobs
+- retries
+- delayed runs
+- terminal-state cleanup
+
+Implementation-wise, gBrain is the strongest example of:
+
+- hybrid retrieval engineering
+- graph-backed knowledge projection
+- durable background maintenance jobs
+
+### 7.3 Evolver implementation pattern
+
+Evolver is not primarily a memory store. It is an evolution-control system over memory and runtime history.
+
+Its core design is:
+
+- scan recent memory/history/event streams
+- extract signals from logs and outcomes
+- suppress over-processed signals
+- detect repair loops, empty cycles, and failure streaks
+- emit the next structured evolution prompt
+
+This makes it much closer to:
+
+- memory governance
+- friction governance
+- evolution control
+
+than to:
+
+- raw memory storage
+- graph retrieval
+
+Implementation-wise, Evolver is the strongest example of:
+
+- recurrence detection
+- saturation detection
+- repair-loop suppression
+- failure-ratio-aware control
+
+### 7.4 Hermes implementation pattern
+
+Hermes is best understood as a host-agent runtime with a closed learning loop, not as a memory kernel-first project.
+
+From the public README, the visible design emphasis is:
+
+- agent-curated memory
+- periodic nudges
+- autonomous skill creation
+- cross-session search
+- user modeling
+- scheduler + subagents + messaging surfaces
+
+Architecturally, the useful inference is:
+
+- memory sits behind the host agent experience
+- recall quality is part of the product feeling
+- memory, skills, and user model are integrated into one runtime surface
+
+But compared with MemPalace and gBrain, Hermes exposes less of a clean, separable memory-core architecture in the repository entry docs. This section is therefore partly an inference from the README surface, not only from low-level source inspection.
+
+### 7.5 Beacon current implementation pattern
+
+Beacon currently implements memory as a workflow-native JSON memory surface.
+
+Its core design is:
+
+- canonical typed memory in `memory-v1.json`
+- legacy projections preserved for compatibility
+- workflow lifecycle events in `workflow-lifecycle.json`
+- stage/run/attempt/evidence traceability
+- memory/friction candidate convergence via `memory-friction-evolution`
+
+Its recall path is still shallow compared with MemPalace and gBrain:
+
+- `keyword`: direct substring match
+- `semantic`: term-overlap ratio
+- `hybrid`: direct-match-or-overlap
+
+So Beacon today is strongest at:
+
+- lifecycle traceability
+- release/debug evidence closure
+- workflow-stage memory
+
+and weakest at:
+
+- raw evidence retention
+- graph-backed recall
+- ranking discipline across many artifacts
+
+## 8. Implementation Comparison
+
+### 8.1 By storage model
+
+| Project | Truth layer | Index / projection layer | Notes |
+|---|---|---|---|
+| MemPalace | verbatim drawers | closets + temporal KG | best raw-memory split |
+| gBrain | pages/chunks/raw data | links + timeline + graph + search indexes | full knowledge OS |
+| Evolver | event/history inputs | signals + evolution events | governance, not main storage |
+| Hermes | host runtime memory surface | search + skills + user model | integrated runtime product |
+| Beacon current | typed JSON memory + lifecycle | flat summaries + evidence refs | workflow-native but shallow |
+
+### 8.2 By retrieval model
+
+| Project | Retrieval path | Strength | Main limitation |
+|---|---|---|---|
+| MemPalace | drawer search + closet boost + layered loading | preserves verbatim recall | less complete knowledge plane |
+| gBrain | keyword + vector + RRF + cosine + backlinks + dedup | strongest ranking stack | system complexity is high |
+| Evolver | signal extraction over history | strongest governance signal loop | not for content recall |
+| Hermes | cross-session search + summarization | strong user-facing continuity | memory core less explicit |
+| Beacon current | substring + overlap ratio | simple and local | not true semantic/hybrid retrieval |
+
+### 8.3 By operational model
+
+| Project | Background work | Determinism | Fit for Beacon |
+|---|---|---|---|
+| MemPalace | background filing/hooks | medium | high for evidence capture |
+| gBrain | Minions queue | high | high for projection maintenance |
+| Evolver | evolution loop | high | high for friction governance |
+| Hermes | scheduler + subagents | medium-high | medium for UX ideas |
+| Beacon current | workflow/debug toolkits | high | base layer already exists |
+
+### 8.4 Architectural conclusion
+
+There is no single open-source project here that Beacon should copy wholesale.
+
+The correct split is:
+
+- learn `memory truth + layered recall` mostly from MemPalace
+- learn `knowledge projection + retrieval ranking` mostly from gBrain
+- learn `governance heuristics` mostly from Evolver
+- learn `host experience packaging` only selectively from Hermes
+
+## 9. Dependencies / Infra Chain
 
 | Project | Core storage | Retrieval | Graph | Background execution | Fit for Beacon |
 |---|---|---|---|---|---|
@@ -252,7 +440,7 @@ That is the right product boundary. The gap is not “memory exists or not”; t
 | Hermes | agent runtime + pluggable memory | cross-session search | user modeling / skills | scheduler + subagents | Medium |
 | Beacon current | JSON files under `.beacon` | simple text overlap search | stage-event graph only | workflow/debug toolkits | Base |
 
-## 8. Confirmed Facts
+## 10. Confirmed Facts
 
 ### Beacon should absorb now
 
@@ -268,7 +456,7 @@ That is the right product boundary. The gap is not “memory exists or not”; t
 3. `Hermes` host-agent runtime
 4. `gBrain` person/company enrichment and social graph
 
-## 9. Inferred Structure
+## 11. Inferred Structure
 
 ### Best absorption split
 
@@ -294,7 +482,7 @@ That means every absorbed feature must strengthen:
 - implementation/release evidence closure
 - debug recurrence learning
 
-## 10. Recommended Next Steps
+## 12. Recommended Next Steps
 
 ### P0: absorb immediately
 
@@ -337,7 +525,7 @@ That means every absorbed feature must strengthen:
 3. Do not turn Beacon into a people/company CRM brain
 4. Do not make Postgres/pgvector a prerequisite
 
-## 11. Proposed Beacon Work Items
+## 13. Proposed Beacon Work Items
 
 ### Slice A: evidence-backed memory
 
@@ -362,7 +550,7 @@ That means every absorbed feature must strengthen:
   - repair-loop policy
   - “keep/review/discard” confidence that considers recurrence trend, not only static count
 
-## 12. Key Source Refs
+## 14. Key Source Refs
 
 - Beacon
   - [`beacon/utils/memory.py`](../../../../beacon/utils/memory.py)

@@ -1,0 +1,100 @@
+{
+  "schema_version": "1.0",
+  "feature": "Beacon v1.3.8 archive governance and historical requirement isolation",
+  "feature_slug": "beacon-v1.3.8-archive-governance-and-historical-requirement-isolation",
+  "version": "v1.3.8",
+  "runtime_version": "v1.3.7",
+  "runtime_capability_line": "v1.3.3",
+  "required": true,
+  "reason_code": "",
+  "blocked": false,
+  "status": "pass",
+  "findings": [],
+  "report_json_path": "docs/beacon/v1.3.8/.machine/execution/requirement-clarity-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.json",
+  "report_markdown_path": "docs/beacon/v1.3.8/execution/requirement-clarity-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+  "state_path": ".beacon/state/requirement-clarity-beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.json",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.3.8",
+    "supported": true,
+    "required": true,
+    "ready": true,
+    "diagram_types": [
+      "branch-flow",
+      "state-machine",
+      "decision-priority"
+    ],
+    "state_axes": [
+      "ownership",
+      "eligibility",
+      "qa",
+      "relation",
+      "visibility",
+      "status"
+    ],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [
+      "归属",
+      "branch-flow",
+      "state-machine",
+      "decision-priority",
+      "state axes",
+      "eligibility",
+      "ownership"
+    ],
+    "review_gates": [
+      "implementation must cover the declared branch-flow split points",
+      "implementation must preserve the declared state-machine transitions",
+      "implementation must preserve decision-priority ordering",
+      "implementation must keep state axes explicit: ownership, eligibility, qa, relation, visibility, status"
+    ],
+    "qa_coverage_hints": [
+      "cover primary and alternate branch-flow paths",
+      "cover state transitions, illegal transitions, and recovery paths",
+      "cover conflicting conditions using declared decision priority",
+      "cover axis combinations across: ownership, eligibility, qa, relation, visibility, status"
+    ],
+    "evidence_lines": {
+      "branch-flow": [
+        "- `archive plan` 生成候选 archive plan 后，若发现历史 truth 仍被当前 delivery plane 引用，则进入 `blocked-for-isolation` 分支，不允许直接 apply。",
+        "- `archive plan` 通过后，进入 `reviewed-plan` 分支；只有 review 通过，才允许执行 `archive apply`。",
+        "- `archive apply` 执行时，若归档目标仍需被学习消费，则进入 `archived-learnable` 分支；若只允许追溯与引用，则进入 `archived-reference-only` 分支。",
+        "- 任一分支如果发现 active truth 与 archived truth 仍存在默认混读，必须回退到 `blocked-for-isolation`，直到 archive boundary 被重新明确。"
+      ],
+      "state-machine": [
+        "- `draft-plan` -> `reviewed-plan` -> `applied-archive` -> `published-index`",
+        "- `active` -> `superseded` -> `archived-learnable` / `archived-reference-only`",
+        "- `blocked-for-isolation` 是显式阻塞态，表示历史 truth 仍未从当前 active delivery plane 中退出",
+        "- `published-index` 后，消费面只能通过 archive metadata 读取历史 truth，不能再把它当作 active truth 默认参与 implement / qa / release"
+      ],
+      "decision-priority": [
+        "1. current active delivery safety 高于 historical learnability",
+        "2. archive boundary correctness 高于 archive convenience",
+        "3. explicit archive metadata 高于 runtime 推断",
+        "4. archived-reference-only 隔离强度高于 archived-learnable"
+      ],
+      "state-axes": [
+        "- `ownership`: 当前 truth 是否仍归属于 active delivery plane",
+        "- `eligibility`: 历史 truth 是否允许继续进入 implement / qa / release 判定",
+        "- `relation`: 当前 feature 与 archived feature 是否仍存在 trace-only、learnable、or active dependency",
+        "- `visibility`: 历史 truth 面向 help/status/brainstorm 是 learnable 还是 reference-only"
+      ]
+    },
+    "generated_at": "2026-04-24T10:29:08.523678+00:00",
+    "feature": "Beacon v1.3.8 archive governance and historical requirement isolation",
+    "feature_slug": "beacon-v1.3.8-archive-governance-and-historical-requirement-isolation",
+    "prd_ref": "docs/beacon/v1.3.8/prd/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+    "user_story_ref": "docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md"
+  },
+  "required_artifacts": [
+    "docs/beacon/v1.3.8/research/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation-analysis.md",
+    "docs/beacon/v1.3.8/prd/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+    "docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+    "docs/beacon/v1.3.8/qa/test-cases/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md"
+  ],
+  "scanned_files": [
+    "docs/beacon/v1.3.8/prd/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+    "docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md"
+  ]
+}

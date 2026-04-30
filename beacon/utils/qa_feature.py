@@ -1258,16 +1258,16 @@ def writeback_feature_matrix_evidence(
             continue
         result = by_tc[tc_id]
         refs = result.get("evidence_ref") if isinstance(result.get("evidence_ref"), list) else []
-        chosen = str(refs[0]).strip() if refs else str(entry.get("evidence_path") or "").strip()
-        if "{run_id}" in chosen:
-            chosen = chosen.replace("{run_id}", run_id)
-        if "__RUN_ID__" in chosen:
-            chosen = chosen.replace("__RUN_ID__", run_id)
-        if "$RUN_ID" in chosen:
-            chosen = chosen.replace("$RUN_ID", run_id)
-        entry["evidence_path"] = chosen
+        existing_evidence_path = str(entry.get("evidence_path") or "").strip()
+        has_run_placeholder = any(token in existing_evidence_path for token in ("{run_id}", "__RUN_ID__", "$RUN_ID"))
+        if has_run_placeholder:
+            entry["evidence_path"] = existing_evidence_path
+        else:
+            entry["evidence_path"] = str(refs[0]).strip() if refs else existing_evidence_path
         entry["status"] = str(result.get("status") or "planned").strip().lower() or "planned"
         entry["last_run_id"] = run_id
+        if refs:
+            entry["last_evidence_ref"] = str(refs[0]).strip()
         changed = True
     if changed:
         write_json(source_path, payload)

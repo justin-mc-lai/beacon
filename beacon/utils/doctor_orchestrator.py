@@ -11,6 +11,7 @@ from beacon.utils.doctor_setup import resolve_bin_dir
 from beacon.utils.doctor_registry import get_doctor_handler
 from beacon.utils.technical_review_contract import technical_review_contract_json_path, technical_review_contract_markdown_path
 from beacon.utils.versioning import describe_project_version_context, resolve_target_version
+from beacon.utils.writeback import acceptance_projection_transaction_contract
 
 
 @dataclass(frozen=True)
@@ -83,6 +84,20 @@ def merge_check_statuses(checks: list[dict[str, Any]], *, strict: bool = False) 
     if any(status == "warn" for status in statuses):
         return "fail" if strict else "warn"
     return "pass"
+
+
+def _semver_tuple(value: str | None) -> tuple[int, int, int]:
+    text = str(value or "").strip().lower()
+    if text.startswith("v"):
+        text = text[1:]
+    parts = text.split(".")
+    numbers: list[int] = []
+    for part in parts[:3]:
+        digits = "".join(ch for ch in part if ch.isdigit())
+        numbers.append(int(digits or "0"))
+    while len(numbers) < 3:
+        numbers.append(0)
+    return tuple(numbers[:3])
 
 
 def build_single_check_payload(
@@ -619,6 +634,33 @@ def run_delivery_verify(
         version=version or None,
         strict=strict,
     )
+    resolved_version = resolve_target_version(ctx.project_root, version or None)
+    if _semver_tuple(resolved_version) >= (1, 3, 9):
+        from beacon.utils.release_scorecard import build_release_scorecard
+
+        release_scorecard = build_release_scorecard(ctx.project_root, version=resolved_version)
+        acceptance = release_scorecard.get("acceptance") if isinstance(release_scorecard.get("acceptance"), dict) else {}
+        qa_summary = release_scorecard.get("qa") if isinstance(release_scorecard.get("qa"), dict) else {}
+        acceptance_feature = str(acceptance.get("feature") or qa_summary.get("feature") or "").strip()
+        contract = acceptance_projection_transaction_contract(
+            ctx.project_root,
+            version=resolved_version,
+            feature=acceptance_feature,
+        ) if acceptance_feature else {
+            "status": "warn",
+            "reason_code": "acceptance_feature_missing",
+            "details": {},
+        }
+        checks = result.get("checks") if isinstance(result.get("checks"), list) else []
+        checks.append(
+            {
+                "name": "acceptance_projection_transaction_contract",
+                "status": str(contract.get("status") or "warn"),
+                "details": contract,
+            }
+        )
+        result["checks"] = checks
+        result["status"] = merge_check_statuses(checks, strict=False)
     return _delivery_payload("verify-delivery", result, strict=strict)
 
 

@@ -9,6 +9,7 @@ from beacon.utils.revision_state import freeze_revision_state, load_revision_sta
 from beacon.utils.runtime import write_json
 from beacon.utils.story_state import load_story_state
 from beacon.utils.writeback import (
+    acceptance_projection_transaction_contract,
     record_acceptance_writeback,
     record_implementation_writeback,
     record_verification_writeback,
@@ -109,6 +110,69 @@ def test_partial_verification_writeback_should_not_promote_story_or_revision_to_
     )
     assert verify["story"]["status"] == "implemented"
     assert verify["revision"]["delivery_status"] == "implemented"
+
+
+def test_acceptance_writeback_should_write_machine_human_and_runtime_projection(tmp_path: Path):
+    _seed_user_story(tmp_path)
+    freeze_revision_state(tmp_path, version=VERSION, feature=FEATURE)
+    record_implementation_writeback(
+        tmp_path,
+        version=VERSION,
+        feature=FEATURE,
+        run_id="run-impl",
+        implemented_item_ids=["AC-001", "AC-002", "TEST-001", "TEST-002"],
+        changed_files=["beacon/commands/qa.py"],
+    )
+    record_verification_writeback(
+        tmp_path,
+        version=VERSION,
+        feature=FEATURE,
+        run_id="run-qa",
+        verified_item_ids=["AC-001", "AC-002", "TEST-001", "TEST-002"],
+        failed_item_ids=[],
+        evidence_ref=[".beacon/qa/status.json", "docs/beacon/v1.1.6/qa/test-cases/navigator-feature.md"],
+    )
+    run_dir = tmp_path / ".beacon" / "runs" / "run-qa"
+    run_dir.mkdir(parents=True, exist_ok=True)
+    write_json(
+        run_dir / "state.json",
+        {"workflow": "workflow.start", "run_id": "run-qa", "version": VERSION, "feature": FEATURE},
+    )
+
+    result = record_acceptance_writeback(
+        tmp_path,
+        version=VERSION,
+        feature=FEATURE,
+        accepted_by="qa",
+        verdict="passed",
+        run_id="run-qa",
+        evidence_ref=[".beacon/qa/status.json"],
+        source_command='beacon qa run "Navigator Feature" --project-root . --version v1.1.6',
+    )
+
+    envelope_path = tmp_path / result["machine_path"]
+    markdown_path = tmp_path / result["markdown_path"]
+    runtime_path = tmp_path / result["runtime_path"]
+    assert envelope_path.exists()
+    assert markdown_path.exists()
+    assert runtime_path.exists()
+    envelope = json.loads(envelope_path.read_text(encoding="utf-8"))
+    assert envelope["artifact"] == "qa_acceptance_envelope"
+    assert envelope["verdict"] == "passed"
+    assert envelope["transaction_id"]
+    assert envelope["canonical_envelope_ref"] == result["machine_path"]
+    assert envelope["markdown_ref"] == result["markdown_path"]
+    assert envelope["runtime_projection_ref"] == result["runtime_path"]
+    assert envelope["transaction_status"] == "applied"
+    assert "docs/beacon/v1.1.6/qa/test-cases/navigator-feature.md" in envelope["test_case_refs"]
+    assert ".beacon/qa/status.json" in envelope["evidence_refs"]
+    assert envelope["transaction_lineage"]["workflow_memory_ref"]
+    markdown = markdown_path.read_text(encoding="utf-8")
+    assert "# QA Acceptance: Navigator Feature" in markdown
+    assert "beacon qa run" in markdown
+    contract = acceptance_projection_transaction_contract(tmp_path, version=VERSION, feature=FEATURE)
+    assert contract["status"] == "pass"
+    assert result["revision"]["delivery_status"] == "accepted"
 
 
 def test_help_payload_should_recommend_freeze_then_implement_then_quality(tmp_path: Path):

@@ -7,7 +7,7 @@ from typing import Optional
 
 import typer
 
-from .command_catalog import ADVANCED_SURFACE, BRIDGE_COMMANDS, CORE_COMMANDS, DEPRECATED_COMMANDS, LABS_COMMANDS, SUPPORT_COMMANDS
+from .command_catalog import ADVANCED_SURFACE, BRIDGE_COMMANDS, COMPAT_COMMANDS, CORE_COMMANDS, DEPRECATED_COMMANDS, LABS_COMMANDS, SUPPORT_COMMANDS
 
 
 def build_app(*, package_version: str) -> typer.Typer:
@@ -17,7 +17,8 @@ def build_app(*, package_version: str) -> typer.Typer:
         name="beacon",
         help=(
             "Beacon - Evidence-first Product Workflow Kernel\n\n"
-            "Mainline: think -> user-story -> prd -> test-case -> prototype -> implement -> qa -> gate -> release"
+            "Mainline: prd -> user-story -> test-case -> prototype -> implement -> qa -> release\n"
+            "Support: help | status | doctor | archive"
         ),
         add_completion=False,
         no_args_is_help=True,
@@ -46,6 +47,7 @@ def build_app(*, package_version: str) -> typer.Typer:
             "advanced": ADVANCED_SURFACE,
             "labs": LABS_COMMANDS,
             "bridge": BRIDGE_COMMANDS,
+            "compat": COMPAT_COMMANDS,
             "deprecated": DEPRECATED_COMMANDS,
         },
     )
@@ -67,6 +69,7 @@ def build_app(*, package_version: str) -> typer.Typer:
     from .commands.gate import app as gate_app
     from .commands.init import app as init_app
     from .commands.status import app as status_app
+    from .commands.archive import app as archive_app
     from .commands.report import app as report_app
     from .commands.review import app as review_app
     from .commands.skill import app as skill_app
@@ -79,6 +82,7 @@ def build_app(*, package_version: str) -> typer.Typer:
     from .commands.help import help_entry
     from .commands.ask import ask_entry
     from .commands.prompt import app as prompt_app
+    from .commands.report import real_project_validation as real_project_validation_entry
     from .commands.resume import resume_entry
     from .commands.think import app as think_app
     from .commands.user_story import app as user_story_app
@@ -109,6 +113,7 @@ def build_app(*, package_version: str) -> typer.Typer:
     # Design & Collaboration commands
     from .commands.ui_spec import app as ui_spec_app
     from .commands.prototype import app as prototype_app
+    from .commands.friction_intake import app as friction_intake_app
     from .commands.lighthouse import app as lighthouse_app
     from .commands.memory_friction_evolution import app as memory_friction_evolution_app
     from .commands.prd_bootstrap import app as prd_bootstrap_app
@@ -118,19 +123,21 @@ def build_app(*, package_version: str) -> typer.Typer:
     from .commands.team import app as team_app
     from .commands.ralph_bridge import app as ralph_bridge_app
 
-    app.add_typer(think_app, name="think")
-    app.add_typer(user_story_app, name="user-story")
+    app.add_typer(think_app, name="think", hidden=True)
     app.add_typer(prd_app, name="prd")
+    app.add_typer(user_story_app, name="user-story")
     app.add_typer(test_case_app, name="test-case")
+    app.add_typer(prototype_app, name="prototype")
     app.add_typer(implement_app, name="implement")
     app.add_typer(qa_app, name="qa")
-    app.add_typer(gate_app, name="gate")
+    app.add_typer(gate_app, name="gate", hidden=True)
     app.add_typer(release_app, name="release")
     app.command("ask")(ask_entry)
     app.command("help")(help_entry)
     app.add_typer(status_app, name="status")
     app.add_typer(doctor_app, name="doctor")
-    app.add_typer(workflow_app, name="workflow")
+    app.add_typer(archive_app, name="archive")
+    app.add_typer(workflow_app, name="workflow", hidden=True)
     app.add_typer(init_app, name="init")
     app.add_typer(profile_app, name="profile")
     app.add_typer(skill_app, name="skill")
@@ -138,10 +145,12 @@ def build_app(*, package_version: str) -> typer.Typer:
     app.command("freeze")(freeze_entry)
     app.command("reopen")(reopen_entry)
     app.add_typer(report_app, name="report")
+    app.command("real-project-validation")(real_project_validation_entry)
     app.add_typer(review_app, name="review")
-    app.add_typer(verify_app, name="verify")
+    app.add_typer(verify_app, name="verify", hidden=True)
     app.add_typer(orchestrate_app, name="orchestrate")
     app.add_typer(debug_app, name="debug")
+    app.add_typer(friction_intake_app, name="friction-intake")
     app.add_typer(feedback_app, name="feedback", hidden=True)
     app.add_typer(prompt_app, name="prompt", hidden=True)
 
@@ -168,7 +177,6 @@ def build_app(*, package_version: str) -> typer.Typer:
     app.add_typer(lighthouse_app, name="lighthouse", hidden=True)
     app.add_typer(memory_friction_evolution_app, name="memory-friction-evolution", hidden=True)
     app.add_typer(prd_bootstrap_app, name="prd-bootstrap", hidden=True)
-    app.add_typer(prototype_app, name="prototype")
     app.add_typer(save_app, name="save", hidden=True)
     app.add_typer(recall_app, name="recall", hidden=True)
     app.add_typer(remember_app, name="remember", hidden=True)

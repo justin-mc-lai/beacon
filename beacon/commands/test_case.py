@@ -359,6 +359,46 @@ def _build_entries_from_qa_case_rows(
         )
     return entries
 
+_BROWSER_HINT_TOKENS: tuple[str, ...] = (
+    "ui",
+    "browser",
+    "page",
+    "form",
+    "click",
+    "login",
+    "dashboard",
+    "viewport",
+    "页面",
+    "表单",
+    "浏览器",
+    "点击",
+    "登录",
+)
+_ASCII_BROWSER_HINT_TOKENS: tuple[str, ...] = (
+    "ui",
+    "browser",
+    "page",
+    "form",
+    "click",
+    "login",
+    "dashboard",
+    "viewport",
+)
+_CJK_BROWSER_HINT_TOKENS: tuple[str, ...] = (
+    "页面",
+    "表单",
+    "浏览器",
+    "点击",
+    "登录",
+)
+
+
+def _ac_pool_requires_browser(ac_items: list[dict]) -> bool:
+    text = " ".join(str(item.get("text") or "") for item in ac_items if isinstance(item, dict)).lower()
+    if any(re.search(rf"\\b{re.escape(token)}\\b", text) for token in _ASCII_BROWSER_HINT_TOKENS):
+        return True
+    return any(token in text for token in _CJK_BROWSER_HINT_TOKENS)
+
 
 def _build_qa9_entries(
     *,
@@ -377,6 +417,7 @@ def _build_qa9_entries(
     baseline = command_baseline or {}
     present_types: set[str] = set()
     idx = 0
+    browser_semantics_required = _ac_pool_requires_browser(ac_items)
 
     # Rule 1: each AC must map to at least one executable TC.
     for ac_idx, ac in enumerate(ac_items, start=1):
@@ -407,6 +448,8 @@ def _build_qa9_entries(
     # Rule 2: required qa_types must be fully covered.
     for qa_type in qa_pool:
         if qa_type in present_types:
+            continue
+        if qa_type in {"functional", "compatibility"} and not browser_semantics_required:
             continue
         idx += 1
         ac = ac_items[(idx - 1) % len(ac_items)]
@@ -472,6 +515,7 @@ def _normalize_existing_qa9_entries(
 ) -> list[dict]:
     normalized: list[dict] = []
     ac_seed = ac_items or [{"ac_id": "AC-001", "text": f"{feature} core flow works", "source": "fallback"}]
+    browser_semantics_required = _ac_pool_requires_browser(ac_seed)
     for index, item in enumerate(entries, start=1):
         if not isinstance(item, dict):
             continue
@@ -483,6 +527,14 @@ def _normalize_existing_qa9_entries(
             qa_type = normalize_qa_type(_infer_layer_from_ac(str(ac.get("text") or "")))
         if qa_type not in QA9_TYPES:
             qa_type = "contract"
+        assertion = str(item.get("assertion") or default_assertion_for_qa_type(qa_type))
+        if (
+            qa_type in {"functional", "compatibility"}
+            and not browser_semantics_required
+            and not bool(item.get("browser_required"))
+            and assertion == default_assertion_for_qa_type(qa_type)
+        ):
+            continue
         tc_id = str(item.get("tc_id") or item.get("id") or f"TC-{index:03d}").strip() or f"TC-{index:03d}"
         normalized.append(
             {
@@ -494,7 +546,7 @@ def _normalize_existing_qa9_entries(
                 "priority": str(item.get("priority") or _default_priority_for_qa_type(qa_type)),
                 "automation": str(item.get("automation") or "auto"),
                 "command": str(item.get("command") or "").strip() or default_command_for_qa_type(qa_type, ui_runner=ui_runner),
-                "assertion": str(item.get("assertion") or default_assertion_for_qa_type(qa_type)),
+                "assertion": assertion,
                 "evidence_path": str(item.get("evidence_path") or f".beacon/evidence/test-results/{feature_slug}/{{run_id}}/{tc_id}.json"),
                 "required_files": item.get("required_files") if isinstance(item.get("required_files"), list) else ["command.txt", "stdout.log", "stderr.log", "result.json", "junit.xml"],
                 "status": str(item.get("status") or "pending"),

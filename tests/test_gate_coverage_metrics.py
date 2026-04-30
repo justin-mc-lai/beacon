@@ -320,3 +320,47 @@ def test_write_coverage_summary_should_recompute_from_live_qa9_evidence(tmp_path
     assert payload["coverage_rate"] == 1.0
     assert payload["full_coverage"] is True
     assert payload["details"]["executed_tc"] == 1
+
+
+def test_gate_should_prefer_release_ready_feature_scorecard_aggregate_for_version_coverage(tmp_path: Path, monkeypatch):
+    version = "v1.3.9"
+    monkeypatch.setenv("BEACON_VERSION", version)
+    story_dir = tmp_path / "docs" / "beacon" / version / "user-story"
+    qa_root = tmp_path / ".beacon" / "qa" / "features"
+    impl_root = tmp_path / ".beacon" / "state"
+    story_dir.mkdir(parents=True, exist_ok=True)
+    qa_root.mkdir(parents=True, exist_ok=True)
+    impl_root.mkdir(parents=True, exist_ok=True)
+
+    for slug, ac_total, scenario_total in (
+        ("feature-a", 2, 3),
+        ("feature-b", 4, 5),
+    ):
+        (story_dir / f"{slug}.md").write_text("# story\n", encoding="utf-8")
+        (impl_root / f"implementation-{slug}.json").write_text(json.dumps({"status": "completed"}), encoding="utf-8")
+        feature_dir = qa_root / slug
+        feature_dir.mkdir(parents=True, exist_ok=True)
+        (feature_dir / "scorecard.json").write_text(
+            json.dumps(
+                {
+                    "feature": slug,
+                    "feature_slug": slug,
+                    "release_ready": True,
+                    "continue_decision": "ready_for_release",
+                    "unresolved_closure_outcomes": [],
+                    "ac_total": ac_total,
+                    "ac_accepted": ac_total,
+                    "scenario_total": scenario_total,
+                    "scenario_passed": scenario_total,
+                    "coverage_current": {
+                        "required_scenarios": scenario_total,
+                        "executed_scenarios": scenario_total,
+                        "coverage_rate": 1.0,
+                    },
+                }
+            ),
+            encoding="utf-8",
+        )
+
+    issues = check_coverage_metrics(tmp_path, GateMode.STRICT, "release")
+    assert issues == []

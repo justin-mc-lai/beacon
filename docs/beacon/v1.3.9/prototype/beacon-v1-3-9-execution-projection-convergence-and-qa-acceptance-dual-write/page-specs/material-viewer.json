@@ -1,0 +1,118 @@
+{
+  "page_id": "material-viewer",
+  "name": "项目物料查看器",
+  "priority": "P1",
+  "platforms": [
+    "Web",
+    "PC"
+  ],
+  "responsibility": "按 version -> document type -> feature 提供只读 Markdown 浏览。",
+  "sections": [
+    "版本树",
+    "文档类型列表",
+    "feature 目录",
+    "文档阅读面板",
+    "来源路径信息"
+  ],
+  "actions": [
+    {
+      "label": "打开文档",
+      "target": "material-document-detail",
+      "trigger": "点击文档列表项"
+    },
+    {
+      "label": "返回项目详情",
+      "target": "project-detail",
+      "trigger": "点击返回"
+    }
+  ],
+  "states": [
+    {
+      "id": "ready",
+      "label": "可浏览",
+      "description": "版本树和文档列表已加载。"
+    },
+    {
+      "id": "document-open",
+      "label": "文档已打开",
+      "description": "右侧阅读区显示当前文档正文。"
+    },
+    {
+      "id": "source-missing",
+      "label": "来源缺失",
+      "description": "目标文档不存在或暂不可读。"
+    },
+    {
+      "id": "loading",
+      "label": "加载中",
+      "description": "文档列表或内容仍在加载。"
+    },
+    {
+      "id": "empty",
+      "label": "空状态",
+      "description": "该版本或类型下没有可读文档。"
+    },
+    {
+      "id": "error",
+      "label": "错误",
+      "description": "文档读取失败。"
+    }
+  ],
+  "requirement_refs": {
+    "user-story": [
+      "docs/beacon/v1.3.9/user-story/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md"
+    ],
+    "prd": [
+      "docs/beacon/v1.3.9/prd/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md"
+    ],
+    "test-case": [
+      "docs/beacon/v1.3.9/qa/test-cases/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md"
+    ]
+  },
+  "outbound_transitions": [
+    {
+      "from": "material-viewer",
+      "to": "project-detail",
+      "trigger": "点击返回",
+      "type": "return"
+    },
+    {
+      "from": "material-viewer",
+      "to": "material-document-detail",
+      "trigger": "点击文档列表项",
+      "type": "drill-down"
+    }
+  ],
+  "analysis": {
+    "target_user": "查看 Beacon 物料的人",
+    "decision_focus": [
+      "当前要看哪个版本、哪类文档、哪个 feature。",
+      "Markdown 物料是否存在，并能否稳定切换浏览。",
+      "这只是只读消费面，真相仍在本地 docs/beacon 与 .beacon。"
+    ],
+    "layout_rules": [
+      "左侧负责层级导航，右侧负责稳定阅读，职责不能混乱。",
+      "来源路径只做可信来源说明，不压过正文阅读体验。",
+      "版本切换要靠近树和目录，不要藏到正文底部。"
+    ],
+    "noise_guardrail": "物料页必须坚持只读查看，不暴露机器索引或编辑入口。"
+  },
+  "layout_lines": [
+    "+-----------------------------------------------------------------------------------+",
+    "| 顶栏：返回项目详情 | 项目物料查看器 | 当前项目 | 只读模式                         |",
+    "+-----------------------------------------------------------------------------------+",
+    "| 左侧导航                                                                           |",
+    "| 版本树            | 文档类型列表            | feature / 文档目录                  |",
+    "| v1.3.6            | prd                    | beacon-v1.3.6...md                   |",
+    "| v1.3.5            | user-story             | ...                                   |",
+    "| v1.3.4            | test-case              |                                       |",
+    "+-----------------------------------------------------------------------------------+",
+    "| 文档阅读面板                                                                       |",
+    "| - 文档标题 / 简介                                                                  |",
+    "| - Markdown 正文预览                                                                |",
+    "+-----------------------------------------------------------------------------------+",
+    "| 来源路径信息                                | 只读说明 / 版本切换                  |",
+    "| - docs/beacon/...                            | - 真相仍在本地文档树                 |",
+    "+-----------------------------------------------------------------------------------+"
+  ]
+}

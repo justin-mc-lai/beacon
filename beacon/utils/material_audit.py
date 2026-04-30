@@ -7,6 +7,8 @@ from typing import Any
 
 from beacon.utils.artifact_paths import execution_file_candidates, qa_matrix_candidates
 from beacon.utils.implementation_plan import list_implementation_git_workflow_contracts
+from beacon.utils.revision_state import load_revision_state, revision_state_file
+from beacon.utils.story_state import _baseline_hash, machine_story_path
 from beacon.utils.versioning import normalize_version, release_line_key, resolve_target_version
 
 
@@ -61,10 +63,69 @@ def _feature_names(directory: Path) -> set[str]:
     return names
 
 
+def _requirement_package_failure_summary(checks: list[dict[str, Any]]) -> dict[str, Any]:
+    categories: list[str] = []
+    details: list[dict[str, Any]] = []
+
+    def _push(category: str, detail: dict[str, Any]) -> None:
+        if category not in categories:
+            categories.append(category)
+        details.append({"category": category, **detail})
+
+    for item in checks:
+        if not isinstance(item, dict) or str(item.get("status") or "").lower() != "fail":
+            continue
+        name = str(item.get("name") or "").strip()
+        info = item.get("details") if isinstance(item.get("details"), dict) else {}
+        if name == "main_chain_feature_completeness":
+            missing_by_feature = info.get("missing_by_feature") if isinstance(info.get("missing_by_feature"), dict) else {}
+            for feature, missing in missing_by_feature.items():
+                if not isinstance(missing, list):
+                    continue
+                for missing_item in missing:
+                    category = {
+                        "user-story": "missing_human_user_story",
+                        "prd": "missing_human_prd",
+                        "test-case": "missing_human_test_case",
+                        "ac-test-matrix": "missing_machine_ac_matrix",
+                        "machine-user-story": "missing_machine_user_story",
+                        "story-scenario-map": "missing_machine_story_scenario_map",
+                        "qa9-matrix": "missing_machine_qa9_matrix",
+                    }.get(str(missing_item), "missing_requirement_artifact")
+                    _push(category, {"feature": str(feature), "artifact": str(missing_item)})
+        elif name == "change_loop_requirement_package_sync":
+            drift_by_feature = info.get("drift_by_feature") if isinstance(info.get("drift_by_feature"), dict) else {}
+            for feature, drift in drift_by_feature.items():
+                if not isinstance(drift, dict):
+                    continue
+                reason = str(drift.get("reason") or "requirement_package_drift")
+                category = {
+                    "revision_state_missing": "missing_revision_state",
+                    "baseline_hash_missing": "baseline_hash_missing",
+                    "baseline_hash_mismatch": "baseline_hash_mismatch",
+                }.get(reason, "requirement_package_drift")
+                _push(
+                    category,
+                    {
+                        "feature": str(feature),
+                        "path": str(drift.get("path") or ""),
+                        "expected_hash": str(drift.get("expected_hash") or ""),
+                        "actual_hash": str(drift.get("actual_hash") or ""),
+                    },
+                )
+        else:
+            _push(f"material_check_failed:{name}", {"check": name})
+    return {
+        "categories": categories,
+        "details": details,
+    }
+
+
 def build_material_audit(project_root: Path | str, *, version: str | None = None, strict: bool = False) -> dict[str, Any]:
     root = Path(project_root)
     resolved_version = resolve_target_version(root, version)
     requires_minimum_closure = _parse_semver_tuple(resolved_version) >= (1, 1, 3)
+    requires_change_loop_dual_write = _parse_semver_tuple(resolved_version) >= (1, 3, 10)
     source_root = root / "docs" / "beacon" / resolved_version
     research_dir = source_root / "research"
     us_dir = source_root / "user-story"
@@ -120,12 +181,46 @@ def build_material_audit(project_root: Path | str, *, version: str | None = None
             missing.append("test-case")
         if not any(path.exists() for path in qa_matrix_candidates(root, resolved_version, name, "ac-test-matrix")):
             missing.append("ac-test-matrix")
+        if requires_change_loop_dual_write and not machine_story_path(root, resolved_version, name).exists():
+            missing.append("machine-user-story")
+        if requires_change_loop_dual_write and not any(
+            path.exists() for path in qa_matrix_candidates(root, resolved_version, name, "story-scenario-map")
+        ):
+            missing.append("story-scenario-map")
         if not requires_minimum_closure and not any(
             path.exists() for path in qa_matrix_candidates(root, resolved_version, name, "qa9-matrix")
         ):
             missing.append("qa9-matrix")
         if missing:
             missing_by_feature[name] = missing
+
+    revision_drift_by_feature: dict[str, dict[str, Any]] = {}
+    if requires_change_loop_dual_write:
+        for name in feature_names:
+            revision_path = revision_state_file(root, resolved_version, name)
+            if not revision_path.exists():
+                revision_drift_by_feature[name] = {
+                    "reason": "revision_state_missing",
+                    "path": str(revision_path.relative_to(root)),
+                }
+                continue
+            revision = load_revision_state(root, version=resolved_version, feature=name, create_if_missing=False)
+            expected_hash = str(revision.get("baseline_hash") or "").strip()
+            actual_hash = str(_baseline_hash(root, resolved_version, name) or "").strip()
+            if not expected_hash:
+                revision_drift_by_feature[name] = {
+                    "reason": "baseline_hash_missing",
+                    "path": str(revision_path.relative_to(root)),
+                    "actual_hash": actual_hash,
+                }
+                continue
+            if expected_hash != actual_hash:
+                revision_drift_by_feature[name] = {
+                    "reason": "baseline_hash_mismatch",
+                    "path": str(revision_path.relative_to(root)),
+                    "expected_hash": expected_hash,
+                    "actual_hash": actual_hash,
+                }
 
     feature_status = "pass"
     if not feature_names:
@@ -143,6 +238,18 @@ def build_material_audit(project_root: Path | str, *, version: str | None = None
             },
         }
     )
+    if requires_change_loop_dual_write:
+        revision_drift_status = "pass" if not revision_drift_by_feature else ("fail" if strict else "warn")
+        checks.append(
+            {
+                "name": "change_loop_requirement_package_sync",
+                "status": revision_drift_status,
+                "details": {
+                    "feature_count": len(feature_names),
+                    "drift_by_feature": revision_drift_by_feature,
+                },
+            }
+        )
 
     checks.append(
         {
@@ -460,4 +567,83 @@ def build_delivery_audit(project_root: Path | str, *, version: str | None = None
         "status": overall,
         "ok": overall == "pass",
         "checks": checks,
+    }
+
+
+def build_requirement_package_gate(
+    project_root: Path | str,
+    *,
+    version: str | None = None,
+    feature: str = "",
+    strict: bool = True,
+) -> dict[str, Any]:
+    root = Path(project_root)
+    resolved_version = resolve_target_version(root, version)
+    if _parse_semver_tuple(resolved_version) < (1, 3, 10):
+        return {
+            "schema_version": "1.0",
+            "status": "pass",
+            "enabled": False,
+            "version": resolved_version,
+            "feature": feature,
+            "reason_code": "",
+            "remediation_mode": "not_required",
+            "recommended_action": "",
+            "recommended_reason": "",
+            "recommended_command": "",
+            "audit": {},
+        }
+    audit = build_material_audit(root, version=resolved_version, strict=strict)
+    status = str(audit.get("status") or "fail").lower()
+    failing_checks = [
+        item for item in audit.get("checks", [])
+        if isinstance(item, dict) and str(item.get("status") or "").lower() == "fail"
+    ]
+    failure_summary = _requirement_package_failure_summary(failing_checks)
+    failure_categories = failure_summary.get("categories", [])
+    drift_categories = {"missing_human_user_story", "missing_human_prd", "missing_human_test_case", "missing_revision_state", "baseline_hash_missing", "baseline_hash_mismatch"}
+    machine_repair_categories = {
+        "missing_machine_ac_matrix",
+        "missing_machine_user_story",
+        "missing_machine_story_scenario_map",
+        "missing_machine_qa9_matrix",
+    }
+    recommended_action = ""
+    recommended_reason = ""
+    remediation_mode = "none" if status == "pass" else "verify"
+    recommended_command = ""
+    if status != "pass":
+        if str(feature or "").strip() and any(category in drift_categories for category in failure_categories):
+            remediation_mode = "change-loop"
+            recommended_action = "beacon-change"
+            recommended_reason = "frozen requirement package drifted from the approved baseline and must re-enter the change loop"
+            recommended_command = "beacon-change"
+        elif str(feature or "").strip() and any(category in machine_repair_categories for category in failure_categories):
+            remediation_mode = "repair"
+            recommended_action = "doctor-sync-materials"
+            recommended_reason = "machine requirement artifacts are missing and should be rebuilt from the current human package"
+            recommended_command = (
+                f"beacon doctor sync-materials --project-root {root} --version {resolved_version} "
+                f"--feature {feature} --single-feature"
+            )
+        else:
+            remediation_mode = "verify"
+            recommended_action = "doctor-verify-materials"
+            recommended_reason = "version-line requirement package closure is incomplete and must be diagnosed before repair"
+            recommended_command = f"beacon doctor verify-materials --project-root {root} --version {resolved_version} --strict"
+    return {
+        "schema_version": "1.0",
+        "status": "pass" if status == "pass" else "blocked",
+        "enabled": True,
+        "version": resolved_version,
+        "feature": feature,
+        "reason_code": "" if status == "pass" else "requirement_package_contract_blocked",
+        "failing_checks": failing_checks,
+        "failure_categories": failure_categories,
+        "failure_details": failure_summary.get("details", []),
+        "remediation_mode": remediation_mode,
+        "recommended_action": recommended_action,
+        "recommended_reason": recommended_reason,
+        "audit": audit,
+        "recommended_command": recommended_command,
     }

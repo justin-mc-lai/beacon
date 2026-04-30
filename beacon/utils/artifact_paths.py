@@ -110,6 +110,18 @@ def change_file_output(project_root: Path, version: str, filename: str) -> Path:
     return change_docs_file(project_root, version, filename)
 
 
+def release_docs_dir(project_root: Path, version: str) -> Path:
+    return version_root(project_root, version) / "release"
+
+
+def release_note_file(project_root: Path, version: str) -> Path:
+    return release_docs_dir(project_root, version) / f"{version}.md"
+
+
+def release_checklist_file(project_root: Path, version: str) -> Path:
+    return release_docs_dir(project_root, version) / f"checklist-{version}.md"
+
+
 def qa_matrix_candidates(project_root: Path, version: str, feature_slug: str, kind: str) -> list[Path]:
     filename = f"{feature_slug}.{kind}.json"
     if not uses_machine_surface(version):

@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.7] - 2026-04-23
+
+### Added
+
+- Added the `docs/beacon/v1.3.7/` release package as the current runtime line, including summary, execution docs, change materials, release note, machine execution artifacts, and feature-level QA evidence.
+- Added canonical implementation delivery baseline enforcement to the promoted runtime line so implementation-plan, deterministic implementation contract, and git workflow projections remain single-source and gate-verifiable.
+- Added `beacon-brainstorm` as a built-in host-visible sidecar for requirement convergence and project evolution thinking, with explicit first-principles / Socratic / Occam guidance.
+
+### Changed
+
+- Promoted Beacon runtime/package/docs default line to `v1.3.7`.
+- Updated managed `AGENTS.md` / `CLAUDE.md` guidance, root/package skill docs, install docs, metadata, and examples to treat `v1.3.7` as the public runtime release line.
+- Reframed `v1.3.7` current-release architecture docs around the layered model: frozen truth, canonical baseline, projection, execution, verification/release governance, and brainstorm sidecar.
+- Refreshed release evidence so the `v1.3.7` release note and evidence manifest align with the current promoted line.
+
+### Verified
+
+- docs/runtime alignment slice: `python3 -m pytest -q tests/test_docs_current_contract.py tests/test_skill_standard_layout.py tests/test_v131_host_skill_pack.py tests/test_v120_runtime_release_alignment.py tests/test_v120_release_line_alignment.py`
+- v1.3.7 feature/runtime slice: `python3 -m pytest -q tests/test_v137_beacon_brainstorm.py`
+- release gate: `BEACON_ALLOW_CONTEXT_VERSION_DRIFT=1 bash skills/beacon/scripts/run_beacon.sh gate check release --project-root . --version v1.3.7 --json`
+- release readiness: `BEACON_ALLOW_CONTEXT_VERSION_DRIFT=1 bash skills/beacon/scripts/run_beacon.sh release check v1.3.7 --project .`
+
 ## [1.2.0] - 2026-04-09
 
 ### Added

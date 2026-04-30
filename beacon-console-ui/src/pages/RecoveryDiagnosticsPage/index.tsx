@@ -4,6 +4,12 @@ import { Navigate, useParams } from 'react-router-dom';
 import { PageTraceCard } from '../../components/PageTrace';
 import { ROUTES } from '../../constants/routes';
 import { getPageTrace, getProjectById } from '../../data/consoleData';
+import {
+  getRecoveryStatusLabel,
+  getRecoveryStatusTone,
+  getSeverityLabel,
+  getSeverityTone,
+} from '../../utils/labels';
 
 export function RecoveryDiagnosticsPage() {
   const { id } = useParams();
@@ -27,13 +33,17 @@ export function RecoveryDiagnosticsPage() {
         type="warning"
         showIcon
         message="正式真相仍来自 docs/beacon 与 .beacon"
-        description="PocketBase / SQLite / runtime projection 只提供读模型。当前页面只解释 degraded / rebuild / doctor，不替代 requirement truth。"
+        description="PocketBase、SQLite 与运行态投影只提供只读视图。当前页面用于解释降级、重建与诊断动作，不替代需求真相与交付真相。"
       />
 
       <div className="console-grid console-grid--primary" style={{ marginTop: 16 }}>
         <Card
           title="诊断状态"
-          extra={<Tag color={project.recovery.status === 'healthy-warning' ? 'blue' : 'gold'}>{project.recovery.status}</Tag>}
+          extra={
+            <Tag color={getRecoveryStatusTone(project.recovery.status)}>
+              {getRecoveryStatusLabel(project.recovery.status)}
+            </Tag>
+          }
         >
           <List
             dataSource={project.recovery.truthSources}
@@ -55,7 +65,7 @@ export function RecoveryDiagnosticsPage() {
               key={issue.title}
               size="small"
               title={issue.title}
-              extra={<Tag color={issue.severity === 'critical' ? 'red' : issue.severity === 'warning' ? 'gold' : 'blue'}>{issue.severity}</Tag>}
+              extra={<Tag color={getSeverityTone(issue.severity)}>{getSeverityLabel(issue.severity)}</Tag>}
             >
               <Typography.Paragraph>{issue.detail}</Typography.Paragraph>
               <Typography.Text className="console-muted">

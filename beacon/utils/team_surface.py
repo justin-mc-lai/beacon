@@ -53,10 +53,24 @@ def implement_team_contract(project_root: Path, *, version: str, feature: str) -
         "plan_command": f'beacon implement team-plan "{feature_text}" --project-root {project_root} --version {version}',
         "run_command": f'beacon implement team-run "{feature_text}" --project {project_root} --version {version}',
         "dev_run_command": f'beacon implement dev-run "{feature_text}" --project {project_root} --version {version}',
+        "ralph_command": f'beacon implement run "{feature_text}" --project {project_root} --version {version} --mode ralph',
         "qa_team_command": f'beacon qa team-run "{feature_text}" --project {project_root} --version {version}',
         "roles": list(config.get("roles", [])),
         "context_isolation": dict(context),
         "config_source": str(config.get("source_path", "")),
+        "post_freeze_sequence": [
+            "freeze-pass",
+            "implement-team-plan",
+            "implement-team-run",
+            "implement-ralph",
+            "qa",
+            "release",
+        ],
+        "role_semantics": {
+            "team_reviewer": "checks implementation/spec drift before Ralph or QA closure",
+            "team_tester": "checks implementation evidence and verification readiness before Ralph or QA closure",
+            "ralph": "post-freeze controller that drives next-action routing across implementation, review, qa, and release",
+        },
     }
     if isinstance(config.get("execution_order"), list):
         contract["execution_order"] = list(config.get("execution_order", []))

@@ -5,6 +5,7 @@ from pathlib import Path
 
 from typer.testing import CliRunner
 
+from beacon.commands import release as release_command
 from beacon.main import app
 
 
@@ -109,3 +110,233 @@ def test_release_check_should_pass_when_coverage_summary_matches_release(tmp_pat
     result = _invoke(["release", "check", version, "--project", str(tmp_path)])
     assert result.exit_code == 0, result.stdout
     assert "Release conditions met" in result.stdout
+
+
+def test_release_check_should_support_project_root_alias_and_json_output(tmp_path: Path):
+    version = "v1.3.4"
+    _seed_release_artifacts(tmp_path, version=version, coverage_version=version)
+
+    result = _invoke(["release", "check", version, "--project-root", str(tmp_path), "--json"])
+
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["version"] == version
+    assert payload["status"] == "pass"
+    assert payload["release_ready"] is True
+    assert payload["failed_checks"] == []
+    assert any(item["name"] == "coverage summary version matches release version" for item in payload["checks"])
+
+
+def test_release_check_should_fail_when_v136_scorecard_is_not_release_ready(tmp_path: Path, monkeypatch):
+    version = "v1.3.6"
+    _seed_release_artifacts(tmp_path, version=version, coverage_version=version)
+
+    monkeypatch.setattr(
+        release_command,
+        "build_release_scorecard",
+        lambda *_args, **_kwargs: {
+            "release_ready": False,
+            "qa": {"feature": "feature-a"},
+            "semantic": {"status": "fail", "reason_code": "semantic_contract_missing"},
+            "change_documents": {
+                "markdown_exists": True,
+                "json_exists": True,
+                "version_match": True,
+                "includes_current_feature": True,
+                "markdown_path": f"docs/beacon/{version}/change/{version}.md",
+                "json_path": f"docs/beacon/{version}/.machine/change/{version}.json",
+                "current_feature_slug": "feature-a",
+            },
+        },
+    )
+
+    result = _invoke(["release", "check", version, "--project", str(tmp_path)])
+
+    assert result.exit_code == 1, result.stdout
+    assert "release scorecard ready" in result.stdout
+    assert "semantic contract ready" in result.stdout
+    assert "semantic_contract_missing" in result.stdout
+
+
+def test_release_check_should_accept_authoritative_v136_scorecard_when_gate_run_id_and_coverage_summary_lag(
+    tmp_path: Path,
+    monkeypatch,
+):
+    version = "v1.3.6"
+    _seed_release_artifacts(tmp_path, version=version, coverage_version=version)
+
+    (tmp_path / ".beacon" / "gate-report.json").write_text(
+        json.dumps({"status": "Pass", "version": version, "run_id": "run-gate-lag"}, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+    (tmp_path / ".beacon" / "coverage-summary.json").write_text(
+        json.dumps(
+            {
+                "schema_version": "1.0",
+                "run_id": "run-123",
+                "version": version,
+                "coverage_rate": 0.3333,
+                "full_coverage": False,
+                "details": {
+                    "version": version,
+                    "feature": "",
+                    "planned_story": 3,
+                    "implemented_story": 1,
+                    "story_coverage": 0.3333,
+                    "total_ac": 16,
+                    "tested_ac": 16,
+                    "ac_coverage": 1.0,
+                    "total_tc": 23,
+                    "executed_tc": 16,
+                    "tc_coverage": 0.6957,
+                    "full_coverage": False,
+                    "matrix_errors": [],
+                },
+            },
+            ensure_ascii=False,
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+
+    monkeypatch.setattr(
+        release_command,
+        "build_release_scorecard",
+        lambda *_args, **_kwargs: {
+            "release_ready": True,
+            "qa": {"feature": "feature-a", "status": "passed", "evidence_done": True},
+            "semantic": {"status": "pass", "reason_code": "semantic_contract_ok"},
+            "feature_qa_scorecard": {
+                "release_ready": True,
+                "continue_decision": "ready_for_release",
+                "coverage_current": {
+                    "required_scenarios": 16,
+                    "executed_scenarios": 16,
+                    "coverage_rate": 1.0,
+                },
+            },
+            "change_documents": {
+                "markdown_exists": True,
+                "json_exists": True,
+                "version_match": True,
+                "includes_current_feature": True,
+                "markdown_path": f"docs/beacon/{version}/change/{version}.md",
+                "json_path": f"docs/beacon/{version}/.machine/change/{version}.json",
+                "current_feature_slug": "feature-a",
+                "feature_count": 1,
+            },
+        },
+    )
+
+    result = _invoke(["release", "check", version, "--project", str(tmp_path)])
+
+    assert result.exit_code == 0, result.stdout
+    assert "authoritative_release_scorecard=true" in result.stdout
+    assert "Release conditions met" in result.stdout
+
+
+def test_release_check_should_fail_when_v137_prompt_boundary_verdict_is_missing(tmp_path: Path, monkeypatch):
+    version = "v1.3.7"
+    _seed_release_artifacts(tmp_path, version=version, coverage_version=version)
+
+    monkeypatch.setattr(
+        release_command,
+        "build_release_scorecard",
+        lambda *_args, **_kwargs: {
+            "release_ready": False,
+            "qa": {"feature": "feature-a", "status": "passed", "evidence_done": True},
+            "semantic": {"status": "pass", "reason_code": "semantic_contract_ok"},
+            "prompt_boundary": {
+                "required": True,
+                "status": "missing",
+                "blocked": True,
+                "classification": "",
+                "reason_code": "implement_prompt_boundary_missing",
+                "surface": "host_prompt",
+            },
+            "change_documents": {
+                "markdown_exists": True,
+                "json_exists": True,
+                "version_match": True,
+                "includes_current_feature": True,
+                "markdown_path": f"docs/beacon/{version}/change/{version}.md",
+                "json_path": f"docs/beacon/{version}/.machine/change/{version}.json",
+                "current_feature_slug": "feature-a",
+                "feature_count": 1,
+            },
+            "feature_qa_scorecard": {
+                "release_ready": True,
+                "continue_decision": "ready_for_release",
+                "coverage_current": {
+                    "required_scenarios": 1,
+                    "executed_scenarios": 1,
+                    "coverage_rate": 1.0,
+                },
+            },
+        },
+    )
+
+    result = _invoke(["release", "check", version, "--project", str(tmp_path)])
+
+    assert result.exit_code == 1, result.stdout
+    assert "implement prompt boundary verdict pass" in result.stdout
+    assert "implement_prompt_boundary_missing" in result.stdout
+
+
+def test_release_check_should_fail_when_scorecard_gate_is_blocked_even_if_gate_report_artifact_passes(
+    tmp_path: Path,
+    monkeypatch,
+):
+    version = "v1.3.8"
+    _seed_release_artifacts(tmp_path, version=version, coverage_version=version)
+
+    monkeypatch.setattr(
+        release_command,
+        "build_release_scorecard",
+        lambda *_args, **_kwargs: {
+            "release_ready": False,
+            "gate": {
+                "status": "Blocked",
+                "blocked_count": 1,
+                "run_id": "run-123",
+                "artifact_version": version,
+                "version_match": True,
+                "reason_codes": ["evidence_sha256_manifest_mismatch"],
+            },
+            "qa": {"feature": "feature-a", "status": "passed", "evidence_done": True},
+            "semantic": {"status": "pass", "reason_code": "semantic_contract_ok"},
+            "feature_qa_scorecard": {
+                "release_ready": False,
+                "continue_decision": "qa-repair",
+                "coverage_current": {
+                    "required_scenarios": 1,
+                    "executed_scenarios": 1,
+                    "coverage_rate": 1.0,
+                },
+            },
+            "change_documents": {
+                "markdown_exists": True,
+                "json_exists": True,
+                "version_match": True,
+                "includes_current_feature": True,
+                "markdown_path": f"docs/beacon/{version}/change/{version}.md",
+                "json_path": f"docs/beacon/{version}/.machine/change/{version}.json",
+                "current_feature_slug": "feature-a",
+                "feature_count": 1,
+            },
+            "prompt_boundary": {
+                "required": True,
+                "status": "pass",
+                "blocked": False,
+                "classification": "in_scope_implementation",
+                "reason_code": "",
+                "surface": "host_prompt",
+            },
+        },
+    )
+
+    result = _invoke(["release", "check", version, "--project", str(tmp_path)])
+
+    assert result.exit_code == 1, result.stdout
+    assert "gate report pass" in result.stdout
+    assert "status=Blocked" in result.stdout

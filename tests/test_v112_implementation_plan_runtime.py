@@ -245,6 +245,34 @@ def test_v112_prd_requirement_parser_should_support_heading_bullet_numbered_and_
     assert "next task and blocked task" in candidates[3]["description"]
 
 
+def test_v112_prd_requirement_parser_should_fallback_to_feature_scope_sections():
+    candidates = _extract_prd_task_candidates(
+        "\n".join(
+            [
+                "# PRD",
+                "",
+                "## 3. 功能范围",
+                "",
+                "### 3.1 F1 审核与直属推荐关系建立",
+                "- 后台审核通过时必须选择 partner_level",
+                "- 推荐合伙人按原型可选",
+                "",
+                "### 3.2 F2 客户状态流转",
+                "- 新绑定客户进入 90 天保护期",
+                "- 间接绑定客户通过专属链接成交后转为直接绑定",
+            ]
+        )
+        + "\n"
+    )
+
+    assert [item["title"] for item in candidates] == [
+        "F1 审核与直属推荐关系建立",
+        "F2 客户状态流转",
+    ]
+    assert "partner_level" in candidates[0]["description"]
+    assert "90 天保护期" in candidates[1]["description"]
+
+
 def test_v112_implement_plan_should_use_requirement_parser_and_ordered_alignment_for_prd_mapping(tmp_path: Path):
     _seed_docs(tmp_path)
     base = tmp_path / "docs" / "beacon" / VERSION
@@ -596,6 +624,207 @@ def test_v112_release_gate_should_block_when_implementation_plan_is_incomplete_a
     )
     issues = check_v112_implementation_plan_contract(tmp_path, GateMode.STRICT, "release", VERSION)
     assert issues == []
+
+
+def test_v112_release_gate_should_ignore_cross_version_qa_status_and_fallback_to_current_revision(tmp_path: Path):
+    _seed_docs(tmp_path)
+    _seed_release_contract_artifacts(tmp_path)
+    assert _invoke(["freeze", FEATURE, "--project", str(tmp_path), "--version", VERSION]).exit_code == 0
+    assert _invoke(["implement", "plan", FEATURE, "--project-root", str(tmp_path), "--version", VERSION]).exit_code == 0
+
+    (tmp_path / ".beacon" / "qa" / "status.json").write_text(
+        json.dumps(
+            {
+                "feature": "Old Feature",
+                "version": "v9.9.9",
+                "status": "passed",
+                "evidence_done": True,
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+
+    record_implementation_writeback(
+        tmp_path,
+        version=VERSION,
+        feature=FEATURE,
+        run_id="run-impl",
+        implemented_item_ids=["AC-001", "AC-002"],
+        task_ids=["ITASK-001", "ITASK-002"],
+        changed_files=["beacon/commands/implement.py"],
+    )
+
+    issues = check_v112_implementation_plan_contract(tmp_path, GateMode.STRICT, "release", VERSION)
+    assert issues == []
+
+
+def test_v112_replanning_same_revision_should_preserve_completed_task_progress(tmp_path: Path):
+    _seed_docs(tmp_path)
+    _seed_release_contract_artifacts(tmp_path)
+    assert _invoke(["freeze", FEATURE, "--project", str(tmp_path), "--version", VERSION]).exit_code == 0
+    assert _invoke(["implement", "plan", FEATURE, "--project-root", str(tmp_path), "--version", VERSION]).exit_code == 0
+
+    record_implementation_writeback(
+        tmp_path,
+        version=VERSION,
+        feature=FEATURE,
+        run_id="run-impl",
+        implemented_item_ids=["AC-001", "AC-002"],
+        task_ids=["ITASK-001", "ITASK-002"],
+        changed_files=["beacon/commands/implement.py"],
+    )
+
+    progress_before = load_implementation_plan_progress(tmp_path, version=VERSION, feature=FEATURE)
+    assert progress_before["counts"]["completed"] == 2
+
+    assert _invoke(["implement", "plan", FEATURE, "--project-root", str(tmp_path), "--version", VERSION]).exit_code == 0
+
+    progress_after = load_implementation_plan_progress(tmp_path, version=VERSION, feature=FEATURE)
+    assert progress_after["counts"]["completed"] == 2
+    assert progress_after["counts"]["planned"] == 0
+    assert progress_after["status"] == "completed"
+    issues = check_v112_implementation_plan_contract(tmp_path, GateMode.STRICT, "release", VERSION)
+    assert issues == []
+
+
+def test_v112_replanning_should_recover_completed_progress_from_git_head(tmp_path: Path):
+    _seed_docs(tmp_path)
+    _seed_release_contract_artifacts(tmp_path)
+    assert _invoke(["freeze", FEATURE, "--project", str(tmp_path), "--version", VERSION]).exit_code == 0
+    assert _invoke(["implement", "plan", FEATURE, "--project-root", str(tmp_path), "--version", VERSION]).exit_code == 0
+
+    record_implementation_writeback(
+        tmp_path,
+        version=VERSION,
+        feature=FEATURE,
+        run_id="run-impl",
+        implemented_item_ids=["AC-001", "AC-002"],
+        task_ids=["ITASK-001", "ITASK-002"],
+        changed_files=["beacon/commands/implement.py"],
+    )
+
+    plan_path = tmp_path / "docs" / "beacon" / VERSION / ".machine" / "execution" / f"implementation-plan-{SLUG}.json"
+    progress_path = tmp_path / "docs" / "beacon" / VERSION / ".machine" / "execution" / f"implementation-plan-{SLUG}.progress.json"
+    subprocess.run(["git", "add", str(plan_path.relative_to(tmp_path)), str(progress_path.relative_to(tmp_path))], cwd=tmp_path, check=True, capture_output=True, text=True)
+    subprocess.run(["git", "commit", "-m", "persist completed plan"], cwd=tmp_path, check=True, capture_output=True, text=True)
+
+    plan_payload = json.loads(plan_path.read_text(encoding="utf-8"))
+    for task in plan_payload["tasks"]:
+        task["status"] = "planned"
+        task["evidence_refs"] = []
+        task["changed_files"] = []
+        task["started_at"] = ""
+        task["completed_at"] = ""
+    plan_payload["status"] = "planned"
+    plan_path.write_text(json.dumps(plan_payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    progress_path.write_text(
+        json.dumps(
+            {
+                "schema_version": "1.0",
+                "plan_id": plan_payload["plan_id"],
+                "feature": FEATURE,
+                "version": VERSION,
+                "revision_id": plan_payload["revision_id"],
+                "status": "planned",
+                "counts": {"total": 2, "draft": 0, "planned": 2, "in_progress": 0, "blocked": 0, "completed": 0},
+                "blocked_task_ids": [],
+                "completed_task_ids": [],
+                "next_task_id": "ITASK-001",
+                "task_states": [
+                    {"task_id": "ITASK-001", "status": "planned", "blocked_reason": "", "mapped_ac_ids": ["AC-001"], "mapped_test_ids": [], "mapped_scenario_ids": [], "mapped_qa_case_ids": []},
+                    {"task_id": "ITASK-002", "status": "planned", "blocked_reason": "", "mapped_ac_ids": ["AC-002"], "mapped_test_ids": [], "mapped_scenario_ids": [], "mapped_qa_case_ids": []},
+                ],
+                "updated_at": "2026-04-27T03:10:00+00:00",
+            },
+            ensure_ascii=False,
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+
+    assert _invoke(["implement", "plan", FEATURE, "--project-root", str(tmp_path), "--version", VERSION]).exit_code == 0
+
+    progress_after = load_implementation_plan_progress(tmp_path, version=VERSION, feature=FEATURE)
+    assert progress_after["counts"]["completed"] == 2
+    assert progress_after["counts"]["planned"] == 0
+    assert progress_after["status"] == "completed"
+
+
+def test_v112_release_gate_should_ignore_required_cleanup_task_for_diagram_projection(tmp_path: Path):
+    _seed_docs(tmp_path)
+    _seed_release_contract_artifacts(tmp_path)
+    assert _invoke(["freeze", FEATURE, "--project", str(tmp_path), "--version", VERSION]).exit_code == 0
+    assert _invoke(["implement", "plan", FEATURE, "--project-root", str(tmp_path), "--version", VERSION]).exit_code == 0
+
+    plan_path = tmp_path / "docs" / "beacon" / VERSION / ".machine" / "execution" / f"implementation-plan-{SLUG}.json"
+    progress_path = tmp_path / "docs" / "beacon" / VERSION / ".machine" / "execution" / f"implementation-plan-{SLUG}.progress.json"
+    plan_payload = json.loads(plan_path.read_text(encoding="utf-8"))
+    plan_payload["diagram_truth"] = {"required": True}
+    diagram_review_gates = list(plan_payload.get("review_gates", [])) or ["implementation must preserve diagram truth"]
+    diagram_state_axes = list((plan_payload.get("diagram_truth") or {}).get("state_axes", []))
+    for task in plan_payload["tasks"]:
+        task["status"] = "completed"
+        task["completed_at"] = "2026-04-27T03:00:00+00:00"
+        task["diagram_review_gates"] = list(diagram_review_gates)
+        task["diagram_state_axes"] = list(diagram_state_axes)
+    plan_payload["tasks"].append(
+        {
+            "task_id": "ITASK-003",
+            "title": "Cleanup superseded surfaces",
+            "description": "cleanup",
+            "mapped_story_ids": ["US-001"],
+            "mapped_ac_ids": [],
+            "mapped_test_ids": [],
+            "mapped_scenario_ids": [],
+            "mapped_qa_case_ids": [],
+            "depends_on": ["ITASK-002"],
+            "direct_delivery_services": ["."],
+            "reference_only_services": ["docs"],
+            "target_modules": [],
+            "scope_points": [],
+            "diagram_review_gates": [],
+            "diagram_state_axes": [],
+            "status": "completed",
+            "evidence_refs": [],
+            "changed_files": [],
+            "blocked_reason": "",
+            "started_at": "2026-04-27T03:00:00+00:00",
+            "completed_at": "2026-04-27T03:00:00+00:00",
+            "required_cleanup": True,
+        }
+    )
+    plan_payload["status"] = "completed"
+    plan_path.write_text(json.dumps(plan_payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    progress_path.write_text(
+        json.dumps(
+            {
+                "schema_version": "1.0",
+                "plan_id": plan_payload["plan_id"],
+                "feature": FEATURE,
+                "version": VERSION,
+                "revision_id": plan_payload["revision_id"],
+                "status": "completed",
+                "counts": {"total": 3, "draft": 0, "planned": 0, "in_progress": 0, "blocked": 0, "completed": 3},
+                "blocked_task_ids": [],
+                "completed_task_ids": ["ITASK-001", "ITASK-002", "ITASK-003"],
+                "next_task_id": "",
+                "task_states": [
+                    {"task_id": "ITASK-001", "status": "completed", "blocked_reason": "", "mapped_ac_ids": ["AC-001"], "mapped_test_ids": [], "mapped_scenario_ids": [], "mapped_qa_case_ids": []},
+                    {"task_id": "ITASK-002", "status": "completed", "blocked_reason": "", "mapped_ac_ids": ["AC-002"], "mapped_test_ids": [], "mapped_scenario_ids": [], "mapped_qa_case_ids": []},
+                    {"task_id": "ITASK-003", "status": "completed", "blocked_reason": "", "mapped_ac_ids": [], "mapped_test_ids": [], "mapped_scenario_ids": [], "mapped_qa_case_ids": []},
+                ],
+                "updated_at": "2026-04-27T03:00:00+00:00",
+            },
+            ensure_ascii=False,
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+
+    issues = check_v112_implementation_plan_contract(tmp_path, GateMode.STRICT, "release", VERSION)
+    codes = {item["reason_code"] for item in issues}
+    assert "diagram_truth_plan_projection_missing" not in codes
 
 
 def test_v112_gate_release_should_require_scenario_and_qa_alignment_when_materials_exist(tmp_path: Path):

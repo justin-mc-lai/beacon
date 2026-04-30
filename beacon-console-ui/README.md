@@ -1,6 +1,6 @@
 # Beacon 可视化管理端
 
-Beacon v1.3.6 的 lifecycle-first 管理端前端。当前实现覆盖首页、管理总览、项目详情、运行中心、恢复诊断、项目物料查看器和物料文档详情 7 页，并以内置真实项目投影数据支撑 AC-001 到 AC-017 的结构验收。
+Beacon v1.3.6 的受管项目组合前端。当前实现覆盖首页、管理总览、项目详情、执行中心、恢复诊断、项目物料查看器和物料文档详情 7 页，并以内置真实项目投影数据支撑 AC-001 到 AC-017 的结构验收。
 
 ## 快速开始
 
@@ -20,12 +20,19 @@ npm run preview
 
 ## 当前实现边界
 
-- 首页只展示经营判断，不暴露 runtime 洪流。
+- 首页只展示管理判断，不暴露宿主交互洪流。
 - 管理总览只收 Beacon 项目，不引入 `omc / omx` 等外部系统。
 - 项目详情表达版本线、主/并行 PRD、需求闭环、最近交付与推荐动作。
-- Runtime 中心下钻 single / team / ralph，并只展示有限 session metadata。
+- 执行中心下钻 `single / team / ralph`，并只展示有限会话元数据。
 - 物料流按 `version -> document type -> feature` 组织，且只读。
 - 每页都回链 v1.3.5 wireframe freeze 与 v1.3.6 page spec。
+
+## 受管文档来源
+
+- 开发与构建前会自动执行 `scripts/generate-material-catalog.mjs`。
+- 文档目录只扫描 Beacon 仓内 `docs/beacon` 下已经归档的真实项目材料。
+- `slow-uni-bmtop` 等项目的物料页读取生成后的 `src/data/generatedProjectMaterials.ts`，不直接扫描外部项目仓。
+- 物料目录数据通过 `src/data/materialCatalog.ts` 按需加载，不进入首页主入口包。
 
 ## 技术栈
 
@@ -41,7 +48,7 @@ npm run preview
 ```text
 src/
 ├── components/      # Layout、HealthTag、PageTrace 等共享组件
-├── data/            # 四个真实项目的投影数据与页面 trace
+├── data/            # 项目投影数据、页面 trace 与受管物料目录
 ├── pages/           # 7 个管理端页面
 ├── router/          # RouterProvider 与页面路由
 ├── types/           # Project / Runtime / Material 类型

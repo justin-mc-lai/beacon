@@ -1,12 +1,14 @@
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 from pathlib import Path
 
 from typer.testing import CliRunner
 
 from beacon.main import app
+from beacon.utils.material_sync import sync_feature_requirement_materials
 
 
 runner = CliRunner()
@@ -50,6 +52,9 @@ def test_freeze_reopen_and_native_implement_should_write_machine_state(tmp_path:
     assert freeze.exit_code == 0, freeze.stdout
     freeze_payload = json.loads(freeze.stdout)
     assert freeze_payload["status"] == "frozen"
+    assert freeze_payload["requirement_package"]["status"] == "synced"
+    assert (tmp_path / freeze_payload["requirement_package"]["qa_matrix_path"]).exists()
+    assert (tmp_path / freeze_payload["requirement_package"]["story_scenario_map_path"]).exists()
 
     impl = _invoke(["implement", "run", FEATURE, "--project", str(tmp_path), "--version", VERSION, "--runner", "native-single", "--json"])
     assert impl.exit_code == 0, impl.stdout
@@ -66,6 +71,11 @@ def test_freeze_reopen_and_native_implement_should_write_machine_state(tmp_path:
     assert reopen.exit_code == 0, reopen.stdout
     reopen_payload = json.loads(reopen.stdout)
     assert reopen_payload["new_revision_id"] == "R2"
+    assert reopen_payload["requirement_package"]["status"] == "synced"
+    assert (tmp_path / reopen_payload["requirement_package"]["qa_matrix_path"]).exists()
+    assert (tmp_path / reopen_payload["requirement_package"]["story_scenario_map_path"]).exists()
+    story_payload = json.loads(machine_story.read_text(encoding="utf-8"))
+    assert story_payload["current_revision_id"] == "R2"
 
 
 def test_review_accept_should_require_frozen_revision_and_auto_test_pass(tmp_path: Path):
@@ -131,3 +141,23 @@ def test_native_team_should_write_verification_when_auto_test_passes(tmp_path: P
     statuses = {item["id"]: item["status"] for item in active_story["items"]}
     assert statuses["AC-001"] == "verified"
     assert statuses["TEST-001"] == "passed"
+
+
+def test_requirement_package_sync_should_enable_context_version_drift_override(monkeypatch, tmp_path: Path):
+    _seed_docs(tmp_path)
+    captured: dict[str, str] = {}
+
+    def fake_create_test_case(*args, **kwargs):
+        captured["override"] = os.environ.get("BEACON_ALLOW_CONTEXT_VERSION_DRIFT", "")
+
+    monkeypatch.setattr("beacon.utils.material_sync.create_test_case", fake_create_test_case)
+
+    result = sync_feature_requirement_materials(
+        tmp_path,
+        version=VERSION,
+        feature=FEATURE,
+        dry_run=False,
+    )
+    assert result["status"] == "synced"
+    assert captured["override"] == "1"
+    assert os.environ.get("BEACON_ALLOW_CONTEXT_VERSION_DRIFT", "") == ""

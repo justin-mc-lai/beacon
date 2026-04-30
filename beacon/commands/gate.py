@@ -10,6 +10,7 @@ import os
 
 from beacon.utils.artifact_update_obligations import load_artifact_update_obligations
 from beacon.utils.artifact_paths import execution_file_candidates, human_execution_dir, machine_execution_dir
+from beacon.utils.archive_governance import load_feature_archive_boundary
 from beacon.utils.control_plane import build_resume_contract
 from beacon.utils.coverage import compute_coverage_metrics
 from beacon.utils.debug_feedback import (
@@ -23,14 +24,17 @@ from beacon.utils.qa9 import QA9_TYPES, normalize_qa_type, parse_qa_types
 from beacon.utils.qa_runtime import load_qa_status
 from beacon.utils.exhaustiveness import load_exhaustiveness_report
 from beacon.utils.implementation_plan import (
+    build_implementation_plan_gate_payload,
     implementation_plan_supported,
     list_implementation_git_workflow_contracts,
     load_implementation_plan,
     load_implementation_plan_progress,
 )
 from beacon.utils.qa_precision import load_feature_qa_ac_closure, load_feature_qa_scorecard
+from beacon.utils.release_scorecard import build_release_scorecard
 from beacon.utils.prototype_support import feature_requires_route_closure, prototype_status, version_requires_prototype
 from beacon.utils.runtime_projection_store import runtime_projection_transaction_contract
+from beacon.utils.writeback import acceptance_projection_transaction_contract
 from beacon.utils.requirement_clarity import (
     build_requirement_clarity_gate_payload,
     load_requirement_clarity_state,
@@ -41,12 +45,13 @@ from beacon.utils.technical_review_contract import (
     build_technical_review_gate_payload,
     load_technical_review_state,
 )
+from beacon.utils.semantic_runtime import evaluate_semantic_contract
 from beacon.utils.versioning import project_runtime_feature_enabled, resolve_runtime_version, resolve_target_version
 from beacon.utils.v110_baseline import (
     load_latest_baseline_snapshot,
     load_latest_spec_fingerprint,
 )
-from beacon.utils.workflow_memory import compute_memory_metrics, load_lifecycle_events
+from beacon.utils.workflow_memory import compute_memory_metrics, load_lifecycle_events, workflow_memory_transaction_contract
 
 app = typer.Typer(name="gate", help="Run gate checks for workflow stages")
 
@@ -134,9 +139,14 @@ REASON_CODES = [
     "browser_evidence_incomplete",
     "required_scenario_family_missing",
     "implementation_plan_missing",
+    "implementation_plan_invalid",
     "implementation_plan_blocked",
     "implementation_plan_incomplete",
     "implementation_plan_matrix_alignment_missing",
+    "implementation_plan_feature_version_mismatch",
+    "implementation_plan_revision_mismatch",
+    "implementation_plan_baseline_mismatch",
+    "implementation_plan_cleanup_missing",
     "evidence_timestamp_out_of_window",
     "assertion_count_zero_pass",
     "junit_missing_or_invalid",
@@ -190,8 +200,18 @@ REASON_CODES = [
     "prototype_surface_unbound",
     "prototype_route_closure_drift",
     "prototype_fake_jump",
+    "semantic_contract_missing",
+    "semantic_dictionary_missing",
+    "semantic_usage_guidelines_missing",
+    "semantic_review_missing",
+    "semantic_transaction_metadata_missing",
+    "semantic_official_language_missing",
+    "semantic_default_taste_bridge_drift",
+    "semantic_prototype_binding_drift",
     "runtime_projection_failed_transaction",
     "runtime_projection_drift",
+    "delivery_baseline_missing",
+    "delivery_baseline_projection_drift",
     "formal_package_closure_missing",
     "user_story_acceptance_missing",
     "test_case_traceability_missing",
@@ -199,6 +219,18 @@ REASON_CODES = [
     "implementation_requirement_traceability_missing",
     "implementation_delivery_summary_missing",
     "delivery_surface_downgrade_unapproved",
+    "revision_cleanup_delta_missing",
+    "superseded_surface_cleanup_missing",
+    "superseded_surface_retention_unjustified",
+    "revision_not_frozen",
+    "technical_review_contract_missing",
+    "technical_review_contract_invalid",
+    "architecture_blueprint_projection_missing",
+    "architecture_blueprint_projection_drift",
+    "implement_prompt_boundary_missing",
+    "implement_prompt_boundary_invalid",
+    "implement_prompt_requirement_change",
+    "implement_prompt_truth_conflict",
 ]
 
 # Default gate evaluation stages
@@ -924,6 +956,22 @@ def check_memory_closure(project_root: Path, mode: GateMode, stage: str, version
             }
         )
 
+    tx_contract = workflow_memory_transaction_contract(
+        project_root,
+        run_id=target_run_id or None,
+        version=version,
+    )
+    if str(tx_contract.get("status") or "").lower() == "fail":
+        issues.append(
+            {
+                "reason_code": str(tx_contract.get("reason_code") or "workflow_memory_failed_transaction"),
+                "severity": "critical",
+                "message": str(tx_contract.get("message") or "workflow memory transaction contract failed"),
+                "blocked": True,
+                "details": tx_contract.get("details", {}),
+            }
+        )
+
     bad_evidence = []
     for item in run_events:
         if not isinstance(item, dict):
@@ -1044,6 +1092,7 @@ def check_release_memory_profile(project_root: Path, mode: GateMode, stage: str,
             }
         )
 
+    resolved_version = _resolved_gate_version(project_root, version)
     release_events = [
         item
         for item in events
@@ -1051,6 +1100,19 @@ def check_release_memory_profile(project_root: Path, mode: GateMode, stage: str,
         and str(item.get("stage", "")) == "release"
         and str(item.get("event", "")) == "release_decision_recorded"
     ]
+    unfiltered_release_events = list(release_events)
+    if resolved_version:
+        release_events = [
+            item
+            for item in release_events
+            if (
+                str(((item.get("details") or {}) if isinstance(item.get("details"), dict) else {}).get("version") or "").strip()
+                == resolved_version
+            )
+            or str(item.get("run_id") or "").strip() == f"release:{resolved_version}"
+        ]
+    if not release_events and unfiltered_release_events:
+        release_events = unfiltered_release_events
     if not release_events:
         issues.append(
             {
@@ -1167,6 +1229,7 @@ def check_prototype_contract(
             or payload.get("prototype_mode")
             or ""
         ).strip().lower()
+        compiler = plan_payload.get("compiler") if isinstance(plan_payload.get("compiler"), dict) else {}
         if payload.get("status") == "missing":
             issues.append({
                 "reason_code": "prototype_missing",
@@ -1179,6 +1242,20 @@ def check_prototype_contract(
                 "reason_code": "prototype_source_untraceable",
                 "blocked": True,
                 "message": f"prototype freeze/source metadata missing for feature {feature_dir.name}",
+            })
+        if (
+            _parse_semver_tuple(resolved_version) >= (1, 3, 9)
+            and str(compiler.get("requested_mode") or "").strip().lower() == "auto"
+            and bool(str(compiler.get("fallback_reason") or "").strip())
+        ):
+            issues.append({
+                "reason_code": "prototype_auto_template_downgrade_blocked",
+                "blocked": True,
+                "message": f"prototype auto mode degraded to fixed-template output for feature {feature_dir.name}",
+                "details": {
+                    "fallback_reason": str(compiler.get("fallback_reason") or ""),
+                    "generator_mode": str(compiler.get("generator_mode") or ""),
+                },
             })
         if payload.get("status") == "draft":
             issues.append({
@@ -1333,23 +1410,24 @@ def check_prototype_contract(
                     "blocked": True,
                     "message": f"{key} missing for feature {feature_dir.name}",
                 })
-        if payload.get("review_status") == "missing":
+        review_status_value = str(payload.get("review_status") or review_payload.get("overall_status") or "missing")
+        failed_checks = {
+            str(item.get("name") or "")
+            for item in (review_payload.get("checks") or [])
+            if isinstance(item, dict) and str(item.get("status") or "") == "fail"
+        }
+        if review_status_value == "missing":
             issues.append({
                 "reason_code": "prototype_review_missing",
                 "blocked": True,
                 "message": f"prototype review missing for feature {feature_dir.name}",
             })
-        if payload.get("review_status") == "fail":
+        if review_status_value == "fail":
             issues.append({
                 "reason_code": "prototype_review_failed",
                 "blocked": True,
                 "message": f"prototype review failed for feature {feature_dir.name}",
             })
-            failed_checks = {
-                str(item.get("name") or "")
-                for item in (review_payload.get("checks") or [])
-                if isinstance(item, dict) and str(item.get("status") or "") == "fail"
-            }
             if "route_closure_binding_complete" in failed_checks:
                 issues.append({
                     "reason_code": "prototype_surface_unbound",
@@ -1361,6 +1439,12 @@ def check_prototype_contract(
                     "reason_code": "prototype_artifact_inconsistent",
                     "blocked": True,
                     "message": f"artifact consistency failed for feature {feature_dir.name}",
+                })
+            if "forbidden_page_inventory_clear" in failed_checks:
+                issues.append({
+                    "reason_code": "prototype_forbidden_page_present",
+                    "blocked": True,
+                    "message": f"forbidden prototype pages detected for feature {feature_dir.name}",
                 })
             if "prototype_cjk_parse_failed" in failed_checks:
                 issues.append({
@@ -1410,6 +1494,8 @@ def check_runtime_projection_transaction_contract(
                 "details": contract.get("details", {}),
             }
         ]
+    if stage == "release":
+        return []
     return [
         {
             "reason_code": "runtime_projection_drift",
@@ -1418,6 +1504,125 @@ def check_runtime_projection_transaction_contract(
             "details": contract.get("details", {}),
         }
     ]
+
+
+def check_acceptance_projection_transaction_contract(
+    project_root: Path,
+    mode: GateMode,
+    stage: str,
+    version: Optional[str] = None,
+) -> List[Dict[str, Any]]:
+    if stage not in {"qa", "release"}:
+        return []
+    if mode not in {GateMode.STRICT, GateMode.DEBUG}:
+        return []
+    resolved_version = resolve_target_version(project_root, version)
+    if _parse_semver_tuple(resolved_version) < (1, 3, 9):
+        return []
+    release_scorecard = build_release_scorecard(project_root, version=resolved_version)
+    acceptance = release_scorecard.get("acceptance") if isinstance(release_scorecard.get("acceptance"), dict) else {}
+    qa_summary = release_scorecard.get("qa") if isinstance(release_scorecard.get("qa"), dict) else {}
+    feature = str(acceptance.get("feature") or qa_summary.get("feature") or "").strip()
+    if not feature:
+        return [{
+            "reason_code": "acceptance_feature_missing",
+            "blocked": True,
+            "message": "v1.3.9 acceptance transaction contract requires a resolved feature",
+            "details": {},
+        }]
+    contract = acceptance_projection_transaction_contract(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+    )
+    status = str(contract.get("status") or "warn").lower()
+    if status == "pass":
+        return []
+    return [{
+        "reason_code": str(contract.get("reason_code") or "acceptance_projection_missing"),
+        "blocked": True,
+        "message": str(contract.get("message") or "qa acceptance transaction contract failed"),
+        "details": contract.get("details", {}),
+    }]
+
+
+def check_semantic_contract(
+    project_root: Path,
+    mode: GateMode,
+    stage: str,
+    version: Optional[str] = None,
+) -> List[Dict[str, Any]]:
+    if stage not in {"prototype", "qa", "release"}:
+        return []
+    resolved_version = resolve_target_version(project_root, version)
+    if _parse_semver_tuple(resolved_version) < (1, 3, 6):
+        return []
+    if not version_requires_prototype(project_root, resolved_version):
+        return []
+    proto_root = project_root / "docs" / "beacon" / resolved_version / "prototype"
+    if not proto_root.exists():
+        return []
+
+    issues: list[dict[str, Any]] = []
+    for feature_dir in sorted(path for path in proto_root.iterdir() if path.is_dir()):
+        feature = feature_dir.name
+        contract = evaluate_semantic_contract(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+        )
+        status = str(contract.get("status", "warn") or "warn").strip().lower()
+        if status == "pass":
+            plan_path = feature_dir / "prototype-plan.json"
+            if plan_path.exists():
+                try:
+                    plan_payload = json.loads(plan_path.read_text(encoding="utf-8"))
+                except Exception:  # noqa: BLE001
+                    plan_payload = {}
+                semantic_artifacts = (
+                    (plan_payload.get("semantic_layer") or {}).get("artifacts", {})
+                    if isinstance(plan_payload, dict)
+                    else {}
+                )
+                expected_contract = str((contract.get("artifacts") or {}).get("semantic_contract", "") or "")
+                if expected_contract and str(semantic_artifacts.get("semantic_contract", "") or "") != expected_contract:
+                    issues.append(
+                        {
+                            "reason_code": "semantic_prototype_binding_drift",
+                            "blocked": True,
+                            "message": f"prototype semantic binding drift for feature {feature}",
+                            "details": {
+                                "expected_contract": expected_contract,
+                                "bound_contract": str(semantic_artifacts.get("semantic_contract", "") or ""),
+                            },
+                        }
+                    )
+            continue
+
+        blocked = status == "fail" or mode == GateMode.STRICT
+        details = contract.get("details", {}) if isinstance(contract.get("details"), dict) else {}
+        missing_artifacts = details.get("missing_artifacts") if isinstance(details.get("missing_artifacts"), list) else []
+        reason_code = str(contract.get("reason_code", "semantic_contract_missing") or "semantic_contract_missing")
+        if missing_artifacts:
+            mapping = {
+                "semantic_dictionary": "semantic_dictionary_missing",
+                "semantic_usage_guidelines": "semantic_usage_guidelines_missing",
+                "semantic_review": "semantic_review_missing",
+            }
+            reason_code = mapping.get(str(missing_artifacts[0]), reason_code)
+        issues.append(
+            {
+                "reason_code": reason_code,
+                "blocked": blocked,
+                "message": f"{feature}: {contract.get('message', 'semantic contract invalid')}",
+                "details": {
+                    "feature": feature,
+                    "artifacts": contract.get("artifacts", {}),
+                    **details,
+                },
+            }
+        )
+    return issues
 
 
 def _load_json_file(path: Path) -> tuple[Optional[Dict[str, Any]], str]:
@@ -1581,6 +1786,16 @@ def check_delivery_execution_artifacts(project_root: Path, mode: GateMode, stage
         for plan_path in sorted(machine_exec_dir.glob("implementation-plan-*.json")):
             if str(plan_path.name).endswith(".progress.json"):
                 continue
+            plan_payload = _load_json_object(plan_path)
+            if (
+                str(plan_path.name) == "implementation-plan-support.json"
+                or (
+                    bool(plan_payload.get("supported"))
+                    and not str(plan_payload.get("feature") or "").strip()
+                    and not str(plan_payload.get("feature_slug") or "").strip()
+                )
+            ):
+                continue
             workflow_path = machine_exec_dir / plan_path.name.replace("implementation-plan-", "git-workflow-")
             if not workflow_path.exists():
                 missing_contracts.append(str(workflow_path.relative_to(project_root)))
@@ -1742,7 +1957,103 @@ def check_v110_precision_contract(
     if _parse_semver_tuple(resolved_version) < (1, 1, 10):
         return issues
 
-    qa_status = load_qa_status(project_root)
+    if _parse_semver_tuple(resolved_version) >= (1, 3, 9):
+        release_scorecard = build_release_scorecard(project_root, version=resolved_version)
+        acceptance = (
+            release_scorecard.get("acceptance")
+            if isinstance(release_scorecard.get("acceptance"), dict)
+            else {}
+        )
+        qa_summary = release_scorecard.get("qa") if isinstance(release_scorecard.get("qa"), dict) else {}
+
+        if not acceptance or str(acceptance.get("source") or "").strip() in {"", "none"}:
+            issues.append(
+                {
+                    "reason_code": "feature_qa_missing",
+                    "severity": "critical",
+                    "message": "v1.3.9 release requires converged QA acceptance/readiness truth",
+                    "blocked": True,
+                }
+            )
+            return issues
+
+        feature_name = str(acceptance.get("feature") or qa_summary.get("feature") or "").strip()
+        if not feature_name:
+            issues.append(
+                {
+                    "reason_code": "feature_name_missing",
+                    "severity": "critical",
+                    "message": "v1.3.9 release requires acceptance truth to resolve the feature name",
+                    "blocked": True,
+                }
+            )
+            return issues
+
+        project_gate_status = str(
+            acceptance.get("project_profile_gate_status")
+            or qa_summary.get("project_profile_gate_status")
+            or "not_configured"
+        )
+        if project_gate_status == "blocked":
+            issues.append(
+                {
+                    "reason_code": "project_profile_gate_blocked",
+                    "severity": "critical",
+                    "message": "project-specific verify workflow gate is blocked",
+                    "blocked": True,
+                }
+            )
+
+        unresolved = [str(item) for item in (acceptance.get("unresolved_closure_outcomes") or []) if str(item).strip()]
+        if unresolved:
+            issues.append(
+                {
+                    "reason_code": "unresolved_closure_outcome",
+                    "severity": "critical",
+                    "message": f"unresolved closure outcomes remain: {unresolved}",
+                    "blocked": True,
+                }
+            )
+        if int(acceptance.get("review_required_count") or 0) > 0:
+            issues.append(
+                {
+                    "reason_code": "review_required_open",
+                    "severity": "critical",
+                    "message": f"review-required scenarios remain: {acceptance.get('review_required_count')}",
+                    "blocked": True,
+                }
+            )
+        if int(acceptance.get("needs_replay_count") or 0) > 0:
+            issues.append(
+                {
+                    "reason_code": "needs_replay_open",
+                    "severity": "critical",
+                    "message": f"needs-replay scenarios remain: {acceptance.get('needs_replay_count')}",
+                    "blocked": True,
+                }
+            )
+        release_confidence_min = float(acceptance.get("release_confidence_min") or 0.0)
+        if release_confidence_min < 0.85:
+            issues.append(
+                {
+                    "reason_code": "release_confidence_below_threshold",
+                    "severity": "critical",
+                    "message": f"release confidence floor {release_confidence_min} < 0.85",
+                    "blocked": True,
+                }
+            )
+        if not bool(acceptance.get("release_ready", False)):
+            issues.append(
+                {
+                    "reason_code": "feature_release_not_ready",
+                    "severity": "critical",
+                    "message": "converged QA acceptance truth is not release-ready",
+                    "blocked": True,
+                }
+            )
+        return issues
+
+    qa_status = _load_scoped_qa_status(project_root, version=resolved_version)
     if not qa_status:
         issues.append(
             {
@@ -1852,17 +2163,24 @@ def check_v110_precision_contract(
     return issues
 
 
-def _latest_implement_feature(project_root: Path) -> str:
+def _latest_implement_feature(project_root: Path, *, version: Optional[str] = None) -> str:
     implement_root = project_root / ".beacon" / "implement"
     if not implement_root.exists():
         return ""
-    for state_path in reversed(sorted(implement_root.glob("*/state.json"))):
-        try:
-            payload = json.loads(state_path.read_text(encoding="utf-8"))
-        except Exception:  # noqa: BLE001
+    candidates: list[tuple[Path, dict[str, Any]]] = []
+    for state_path in implement_root.glob("*/state.json"):
+        payload = _load_json_object(state_path)
+        if not payload:
             continue
-        if not isinstance(payload, dict):
+        payload_version = str(payload.get("version") or "").strip()
+        if version and payload_version and payload_version != version:
             continue
+        if version and not payload_version:
+            continue
+        feature = str(payload.get("feature", "") or "").strip()
+        if feature:
+            candidates.append((state_path, payload))
+    for state_path, payload in sorted(candidates, key=lambda item: _gate_state_sort_key(item[0], item[1]), reverse=True):
         feature = str(payload.get("feature", "") or "").strip()
         if feature:
             return feature
@@ -1884,8 +2202,7 @@ def check_v112_implementation_plan_contract(
     if not implementation_plan_supported(resolved_version):
         return issues
 
-    qa_status = load_qa_status(project_root)
-    feature_name = str(qa_status.get("feature", "") or "").strip() or _latest_implement_feature(project_root)
+    feature_name = _resolve_release_feature_context(project_root, version=resolved_version)
     if not feature_name:
         issues.append(
             {
@@ -1893,6 +2210,42 @@ def check_v112_implementation_plan_contract(
                 "severity": "critical",
                 "message": "release requires implementation plan truth but no feature context could be resolved",
                 "blocked": True,
+            }
+        )
+        return issues
+    archive_boundary = load_feature_archive_boundary(project_root, version=resolved_version, feature=feature_name)
+    if bool(archive_boundary.get("archived", False)):
+        issues.append(
+            {
+                "reason_code": "feature_archived_from_current_delivery",
+                "severity": "critical",
+                "message": f"feature {feature_name} is archived and excluded from current delivery",
+                "blocked": True,
+            }
+        )
+        return issues
+
+    implementation_plan_gate = build_implementation_plan_gate_payload(
+        project_root,
+        version=resolved_version,
+        feature=feature_name,
+    )
+    if bool(implementation_plan_gate.get("blocked")):
+        issues.append(
+            {
+                "reason_code": str(implementation_plan_gate.get("reason_code") or "implementation_plan_blocked"),
+                "severity": "critical",
+                "message": f"implementation plan gate blocked for feature {feature_name}",
+                "blocked": True,
+                "details": {
+                    "recommended_command": str(implementation_plan_gate.get("recommended_command", "") or ""),
+                    "plan_path": str(implementation_plan_gate.get("expected_plan", "") or ""),
+                    "architecture_blueprint_projection_gate": implementation_plan_gate.get(
+                        "architecture_blueprint_projection_gate",
+                        {},
+                    ),
+                    "technical_review_gate": implementation_plan_gate.get("technical_review_gate", {}),
+                },
             }
         )
         return issues
@@ -1929,6 +2282,24 @@ def check_v112_implementation_plan_contract(
                 "blocked": True,
             }
         )
+    diagram_truth = plan.get("diagram_truth") if isinstance(plan.get("diagram_truth"), dict) else {}
+    if bool(diagram_truth.get("required", False)):
+        missing_diagram_projection = [
+            str(task.get("task_id", "") or "")
+            for task in plan.get("tasks", [])
+            if isinstance(task, dict)
+            and not bool(task.get("required_cleanup"))
+            and not list(task.get("diagram_review_gates", []))
+        ]
+        if missing_diagram_projection:
+            issues.append(
+                {
+                    "reason_code": "diagram_truth_plan_projection_missing",
+                    "severity": "critical",
+                    "message": f"implementation plan tasks missing diagram review gates: {missing_diagram_projection}",
+                    "blocked": True,
+                }
+            )
 
     source_refs = plan.get("source_refs") if isinstance(plan.get("source_refs"), dict) else {}
     matrix_ref = str(source_refs.get("ac_matrix", "") or "").strip()
@@ -2032,6 +2403,70 @@ def check_v112_implementation_plan_contract(
     return issues
 
 
+def check_v137_implement_prompt_boundary_contract(
+    project_root: Path,
+    mode: GateMode,
+    stage: str,
+    version: Optional[str] = None,
+) -> List[Dict[str, Any]]:
+    issues: list[dict[str, Any]] = []
+    if stage != "release":
+        return issues
+    if mode not in {GateMode.STRICT, GateMode.DEBUG}:
+        return issues
+    resolved_version = _resolved_gate_version(project_root, version)
+    resolved_runtime = resolve_runtime_version(project_root, "auto")
+    if not project_runtime_feature_enabled(
+        project_root,
+        "v1.3.7",
+        docs_version=resolved_version,
+        runtime_version=resolved_runtime,
+    ):
+        return issues
+
+    release_scorecard = build_release_scorecard(project_root, version=resolved_version)
+    prompt_boundary = (
+        release_scorecard.get("prompt_boundary")
+        if isinstance(release_scorecard.get("prompt_boundary"), dict)
+        else {}
+    )
+    feature_name = str(
+        ((release_scorecard.get("qa") or {}).get("feature"))
+        if isinstance(release_scorecard.get("qa"), dict)
+        else ""
+    ).strip() or _resolve_release_feature_context(project_root, version=resolved_version)
+    if not prompt_boundary:
+        issues.append(
+            {
+                "reason_code": "implement_prompt_boundary_missing",
+                "severity": "critical",
+                "message": f"release requires auditable implement prompt boundary verdict for feature {feature_name or 'unknown'}",
+                "blocked": True,
+            }
+        )
+        return issues
+
+    prompt_status = str(prompt_boundary.get("status") or "").strip().lower()
+    prompt_blocked = bool(prompt_boundary.get("blocked", False))
+    if prompt_status != "pass" or prompt_blocked:
+        reason_code = str(prompt_boundary.get("reason_code") or "implement_prompt_boundary_missing").strip() or "implement_prompt_boundary_missing"
+        issues.append(
+            {
+                "reason_code": reason_code,
+                "severity": "critical",
+                "message": (
+                    f"implement prompt boundary verdict is not release-safe for feature {feature_name or 'unknown'}: "
+                    f"status={prompt_status or 'missing'}, "
+                    f"classification={str(prompt_boundary.get('classification') or '').strip() or '-'}, "
+                    f"surface={str(prompt_boundary.get('surface') or '').strip() or '-'}"
+                ),
+                "blocked": True,
+                "details": prompt_boundary,
+            }
+        )
+    return issues
+
+
 def check_v131_human_loop_contract(
     project_root: Path,
     mode: GateMode,
@@ -2053,7 +2488,7 @@ def check_v131_human_loop_contract(
     ):
         return issues
 
-    feature_name = str(load_qa_status(project_root).get("feature") or "").strip() or _latest_implement_feature(project_root)
+    feature_name = _resolve_release_feature_context(project_root, version=resolved_version)
     if not feature_name:
         issues.append(
             {
@@ -2903,7 +3338,7 @@ def check_test_execution_integrity(project_root: Path, mode: GateMode, stage: st
     layers = execution.get("layers") if isinstance(execution, dict) else None
     run_id = str(execution.get("run_id", "")).strip() if isinstance(execution, dict) else ""
     runtime_version = str(status_data.get("version") or "").strip()
-    qa_status = load_qa_status(project_root)
+    qa_status = _load_scoped_qa_status(project_root, version=runtime_version or None)
     current_feature = str(qa_status.get("feature_slug") or qa_status.get("feature") or "").strip()
     signature_chain_path = project_root / ".beacon" / "evidence-signature-chain.json"
     if not signature_chain_path.exists():
@@ -3182,6 +3617,61 @@ def _parse_semver_tuple(value: str) -> tuple[int, int, int]:
     return (numbers[0], numbers[1], numbers[2])
 
 
+def _gate_state_sort_key(path: Path, payload: dict[str, Any]) -> tuple[str, str, str, str, str, str, int, str]:
+    return (
+        str(payload.get("frozen_at") or ""),
+        str(payload.get("accepted_at") or ""),
+        str(payload.get("completed_at") or ""),
+        str(payload.get("updated_at") or ""),
+        str(payload.get("created_at") or ""),
+        str(payload.get("written_at") or ""),
+        path.stat().st_mtime_ns if path.exists() else 0,
+        path.name,
+    )
+
+
+def _load_scoped_qa_status(project_root: Path, *, version: Optional[str] = None) -> dict[str, Any]:
+    payload = load_qa_status(project_root)
+    if not isinstance(payload, dict) or not payload:
+        return {}
+    if not version:
+        return payload
+    resolved_version = _resolved_gate_version(project_root, version)
+    qa_version = str(payload.get("version") or "").strip()
+    if qa_version and qa_version != resolved_version:
+        return {}
+    return payload
+
+
+def _latest_revision_feature(project_root: Path, *, version: str) -> str:
+    revision_root = project_root / "docs" / "beacon" / version / ".machine" / "execution"
+    if not revision_root.exists():
+        return ""
+    candidates: list[tuple[Path, dict[str, Any]]] = []
+    for state_path in revision_root.glob("*.revision.json"):
+        payload = _load_json_object(state_path)
+        feature = str(payload.get("feature") or "").strip()
+        if feature:
+            candidates.append((state_path, payload))
+    for state_path, payload in sorted(candidates, key=lambda item: _gate_state_sort_key(item[0], item[1]), reverse=True):
+        feature = str(payload.get("feature") or "").strip()
+        if feature:
+            return feature
+    return ""
+
+
+def _resolve_release_feature_context(project_root: Path, *, version: Optional[str] = None) -> str:
+    resolved_version = _resolved_gate_version(project_root, version)
+    qa_status = _load_scoped_qa_status(project_root, version=resolved_version)
+    feature_name = str(qa_status.get("feature") or "").strip()
+    if feature_name:
+        return feature_name
+    return _latest_revision_feature(project_root, version=resolved_version) or _latest_implement_feature(
+        project_root,
+        version=resolved_version,
+    )
+
+
 def _is_v110_consistency_enabled(project_root: Path, *, version: Optional[str]) -> tuple[bool, str]:
     resolved_version = _resolved_gate_version(project_root, version)
     baseline_latest = project_root / ".beacon" / "state" / "baselines" / resolved_version / "latest.json"
@@ -3445,7 +3935,9 @@ def run_gate_checks(
                 typer.echo("[DEBUG] [stage-local] Checking test execution integrity...")
             all_issues.extend(check_test_execution_integrity(project_root, mode, stage))
             all_issues.extend(check_prototype_contract(project_root, mode, stage, version))
+            all_issues.extend(check_semantic_contract(project_root, mode, stage, version))
             all_issues.extend(check_runtime_projection_transaction_contract(project_root, mode, stage, version))
+            all_issues.extend(check_acceptance_projection_transaction_contract(project_root, mode, stage, version))
             if mode == GateMode.DEBUG:
                 typer.echo("[DEBUG] [stage-local] Checking coverage metrics...")
             all_issues.extend(check_coverage_metrics(project_root, mode, stage, version=version))
@@ -3484,10 +3976,13 @@ def run_gate_checks(
         all_issues.extend(check_formal_version_package_closure(project_root, mode, stage, version))
         all_issues.extend(check_v119_control_learning_contract(project_root, mode, stage, version))
         all_issues.extend(check_v112_implementation_plan_contract(project_root, mode, stage, version))
+        all_issues.extend(check_v137_implement_prompt_boundary_contract(project_root, mode, stage, version))
         all_issues.extend(check_v131_human_loop_contract(project_root, mode, stage, version))
         all_issues.extend(check_v110_precision_contract(project_root, mode, stage, version))
         all_issues.extend(check_prototype_contract(project_root, mode, stage, version))
+        all_issues.extend(check_semantic_contract(project_root, mode, stage, version))
         all_issues.extend(check_runtime_projection_transaction_contract(project_root, mode, stage, version))
+        all_issues.extend(check_acceptance_projection_transaction_contract(project_root, mode, stage, version))
 
         if mode == GateMode.STRICT or mode == GateMode.DEBUG:
             if mode == GateMode.DEBUG:

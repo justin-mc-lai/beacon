@@ -1,0 +1,341 @@
+{
+  "schema_version": "1.0",
+  "run_id": "run-20260424T104540Z-v138-host-trace",
+  "feature": "Beacon v1.3.8 post-freeze team ralph sequencing and host prompt trace",
+  "feature_slug": "beacon-v1.3.8-post-freeze-team-ralph-sequencing-and-host-prompt-trace",
+  "version": "v1.3.8",
+  "runner": "codex-team-closure",
+  "adapter_type": "manual",
+  "mode": "team",
+  "host_runtime": "codex",
+  "skill": "beacon:beacon-implement",
+  "status": "completed",
+  "summary": "Closed the post-freeze team/Ralph execution trace so host prompt input, sequencing, and runtime lane evidence are persisted for v1.3.8 delivery.",
+  "changed_files": [
+    "beacon/commands/implement.py",
+    "beacon/utils/host_prompt_trace.py",
+    "beacon/utils/implement_adapters.py",
+    "beacon/utils/subagent_readiness.py",
+    "skills/beacon/beacon-implement/SKILL.md",
+    "docs/beacon/v1.3.8/prd/beacon-v1.3.8-post-freeze-team-ralph-sequencing-and-host-prompt-trace.md",
+    "docs/beacon/v1.3.8/user-story/beacon-v1.3.8-post-freeze-team-ralph-sequencing-and-host-prompt-trace.md",
+    "docs/beacon/v1.3.8/qa/test-cases/beacon-v1.3.8-post-freeze-team-ralph-sequencing-and-host-prompt-trace.md",
+    "docs/beacon/v1.3.8/research/beacon-v1.3.8-post-freeze-team-ralph-sequencing-and-host-prompt-trace-analysis.md",
+    "tests/test_v138_host_prompt_trace.py"
+  ],
+  "verification": [
+    {
+      "command": "python3 -m pytest -q tests/test_v138_host_prompt_trace.py",
+      "status": "passed"
+    }
+  ],
+  "implemented_task_ids": [],
+  "verified_task_ids": [
+    "TEST-001",
+    "TEST-002",
+    "TEST-003",
+    "TEST-004",
+    "TEST-005"
+  ],
+  "blocked_task_ids": [],
+  "failed_task_ids": [],
+  "artifact_updates": {},
+  "request_path": ".beacon/implement/run-20260424T104540Z-v138-host-trace/request.json",
+  "result_path": ".beacon/implement/run-20260424T104540Z-v138-host-trace/result.json",
+  "stdout_path": "",
+  "stderr_path": "",
+  "implementation_plan": "",
+  "implementation_plan_progress": {
+    "schema_version": "1.0",
+    "plan_id": "",
+    "feature": "",
+    "version": "",
+    "revision_id": "",
+    "status": "draft",
+    "counts": {
+      "total": 0,
+      "draft": 0,
+      "planned": 0,
+      "in_progress": 0,
+      "blocked": 0,
+      "completed": 0
+    },
+    "blocked_task_ids": [],
+    "completed_task_ids": [],
+    "next_task_id": "",
+    "updated_at": "",
+    "task_states": []
+  },
+  "requirement_traceability": {
+    "source_of_truth_root": "docs/beacon/v1.3.8",
+    "prd": "docs/beacon/v1.3.8/prd/beacon-v1.3.8-post-freeze-team-ralph-sequencing-and-host-prompt-trace.md",
+    "user_story": "docs/beacon/v1.3.8/user-story/beacon-v1.3.8-post-freeze-team-ralph-sequencing-and-host-prompt-trace.md",
+    "test_case": "docs/beacon/v1.3.8/qa/test-cases/beacon-v1.3.8-post-freeze-team-ralph-sequencing-and-host-prompt-trace.md",
+    "ac_matrix": "docs/beacon/v1.3.8/.machine/qa/beacon-v1.3.8-post-freeze-team-ralph-sequencing-and-host-prompt-trace.ac-test-matrix.json",
+    "revision_id": "R1",
+    "implemented_item_ids": [
+      "AC-001",
+      "AC-002",
+      "AC-003",
+      "AC-004",
+      "AC-005",
+      "TASK-001"
+    ],
+    "implemented_task_ids": [],
+    "verified_task_ids": [
+      "TEST-001",
+      "TEST-002",
+      "TEST-003",
+      "TEST-004",
+      "TEST-005"
+    ]
+  },
+  "delivery_surfaces": {
+    "runtime_mode": "team",
+    "shipped_surfaces": [
+      "host prompt trace",
+      "team sequencing",
+      "ralph traceability"
+    ],
+    "partial_surfaces": [],
+    "deferred_surfaces": [],
+    "downgrade_rationale": ""
+  },
+  "implementation_marker": ".beacon/state/implementation-beacon-v1.3.8-post-freeze-team-ralph-sequencing-and-host-prompt-trace.json",
+  "technical_archive": {
+    "json": "docs/beacon/v1.3.8/.machine/execution/technical-implementation-beacon-v1.3.8-post-freeze-team-ralph-sequencing-and-host-prompt-trace.json",
+    "md": "docs/beacon/v1.3.8/execution/technical-implementation-beacon-v1.3.8-post-freeze-team-ralph-sequencing-and-host-prompt-trace.md"
+  },
+  "change_document": {
+    "json": "docs/beacon/v1.3.8/.machine/change/beacon-v1.3.8-post-freeze-team-ralph-sequencing-and-host-prompt-trace.json",
+    "md": "docs/beacon/v1.3.8/change/beacon-v1.3.8-post-freeze-team-ralph-sequencing-and-host-prompt-trace.md"
+  },
+  "generated_at": "2026-04-24T10:49:00.662743+00:00",
+  "writeback": {
+    "updated_items": 6,
+    "story": {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "Beacon v1.3.8 post-freeze team ralph sequencing and host prompt trace",
+      "priority": "medium",
+      "status": "implemented",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "execution-sequence",
+          "text": "冻结后的 `team -> ralph` 顺序可以被 Beacon 公开表达为 execution contract。",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260424T104540Z-v138-host-trace",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.3.8/user-story/beacon-v1.3.8-post-freeze-team-ralph-sequencing-and-host-prompt-trace.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "host-prompt-trace",
+          "text": "宿主提示词到命令、产物的映射可被结构化记录。",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260424T104540Z-v138-host-trace",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.3.8/user-story/beacon-v1.3.8-post-freeze-team-ralph-sequencing-and-host-prompt-trace.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "phase-projection",
+          "text": "`status` / HUD 能显示 freeze/team/ralph phase、stop_state 与 next_action。",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260424T104540Z-v138-host-trace",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.3.8/user-story/beacon-v1.3.8-post-freeze-team-ralph-sequencing-and-host-prompt-trace.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "branch-actionability",
+          "text": "branch preflight 能指出具体服务、当前分支、目标分支、脏工作树风险与推荐操作。",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260424T104540Z-v138-host-trace",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.3.8/user-story/beacon-v1.3.8-post-freeze-team-ralph-sequencing-and-host-prompt-trace.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "role-semantics",
+          "text": "`team reviewer/tester` 与 `ralph` 的职责边界在 docs 与状态面中清晰可见。",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260424T104540Z-v138-host-trace",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.3.8/user-story/beacon-v1.3.8-post-freeze-team-ralph-sequencing-and-host-prompt-trace.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260424T104540Z-v138-host-trace",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — 冻结后的 `team -> ralph` 顺序可以被 Beacon 公开表达为 execution contract。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.3.8/user-story/beacon-v1.3.8-post-freeze-team-ralph-sequencing-and-host-prompt-trace.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — 宿主提示词到命令、产物的映射可被结构化记录。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.3.8/user-story/beacon-v1.3.8-post-freeze-team-ralph-sequencing-and-host-prompt-trace.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — `status` / HUD 能显示 freeze/team/ralph phase、stop_state 与 next_action。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.3.8/user-story/beacon-v1.3.8-post-freeze-team-ralph-sequencing-and-host-prompt-trace.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — branch preflight 能指出具体服务、当前分支、目标分支、脏工作树风险与推荐操作。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.3.8/user-story/beacon-v1.3.8-post-freeze-team-ralph-sequencing-and-host-prompt-trace.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — `team reviewer/tester` 与 `ralph` 的职责边界在 docs 与状态面中清晰可见。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.3.8/user-story/beacon-v1.3.8-post-freeze-team-ralph-sequencing-and-host-prompt-trace.md"
+        }
+      ],
+      "feature": "Beacon v1.3.8 post-freeze team ralph sequencing and host prompt trace",
+      "feature_slug": "beacon-v1.3.8-post-freeze-team-ralph-sequencing-and-host-prompt-trace",
+      "version": "v1.3.8",
+      "last_changed_files": [
+        "beacon/commands/implement.py",
+        "beacon/utils/host_prompt_trace.py",
+        "beacon/utils/implement_adapters.py",
+        "beacon/utils/subagent_readiness.py",
+        "skills/beacon/beacon-implement/SKILL.md",
+        "docs/beacon/v1.3.8/prd/beacon-v1.3.8-post-freeze-team-ralph-sequencing-and-host-prompt-trace.md",
+        "docs/beacon/v1.3.8/user-story/beacon-v1.3.8-post-freeze-team-ralph-sequencing-and-host-prompt-trace.md",
+        "docs/beacon/v1.3.8/qa/test-cases/beacon-v1.3.8-post-freeze-team-ralph-sequencing-and-host-prompt-trace.md",
+        "docs/beacon/v1.3.8/research/beacon-v1.3.8-post-freeze-team-ralph-sequencing-and-host-prompt-trace-analysis.md",
+        "tests/test_v138_host_prompt_trace.py"
+      ]
+    },
+    "revision": {
+      "schema_version": "1.0",
+      "feature": "beacon-v1.3.8-post-freeze-team-ralph-sequencing-and-host-prompt-trace",
+      "feature_slug": "beacon-v1.3.8-post-freeze-team-ralph-sequencing-and-host-prompt-trace",
+      "version": "v1.3.8",
+      "revision_id": "R1",
+      "source_revision_id": "",
+      "reason": "freeze",
+      "doc_status": "frozen",
+      "delivery_status": "implemented",
+      "lifecycle_status": "idle",
+      "baseline_hash": "sha256:6c9b1c0b8fa742b0084a365415f21dd6896807beae732af54d2ef8c4dfe39cfd",
+      "superseded_by": "",
+      "created_at": "2026-04-24T05:10:57.851235+00:00",
+      "frozen_at": "2026-04-24T07:24:42.620418+00:00",
+      "accepted_at": "",
+      "last_implementation_run_id": "run-20260424T104540Z-v138-host-trace",
+      "changed_files": [
+        "beacon/commands/implement.py",
+        "beacon/utils/host_prompt_trace.py",
+        "beacon/utils/implement_adapters.py",
+        "beacon/utils/subagent_readiness.py",
+        "skills/beacon/beacon-implement/SKILL.md",
+        "docs/beacon/v1.3.8/prd/beacon-v1.3.8-post-freeze-team-ralph-sequencing-and-host-prompt-trace.md",
+        "docs/beacon/v1.3.8/user-story/beacon-v1.3.8-post-freeze-team-ralph-sequencing-and-host-prompt-trace.md",
+        "docs/beacon/v1.3.8/qa/test-cases/beacon-v1.3.8-post-freeze-team-ralph-sequencing-and-host-prompt-trace.md",
+        "docs/beacon/v1.3.8/research/beacon-v1.3.8-post-freeze-team-ralph-sequencing-and-host-prompt-trace-analysis.md",
+        "tests/test_v138_host_prompt_trace.py"
+      ]
+    },
+    "implementation_plan": {}
+  },
+  "artifact_writeback_obligations": ".beacon/state/artifact-update-obligations/beacon-v1.3.8-post-freeze-team-ralph-sequencing-and-host-prompt-trace.json",
+  "artifact_writeback_open_count": 0,
+  "implement_to_qa_handoff": ".beacon/handoffs/implement-to-qa/beacon-v1.3.8-post-freeze-team-ralph-sequencing-and-host-prompt-trace/run-20260424T104540Z-v138-host-trace.json"
+}

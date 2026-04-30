@@ -1,0 +1,881 @@
+{
+  "schema_version": "1.0",
+  "items": [
+    {
+      "run_id": "repair-v1.3.9-20260427T202402580539Z0000",
+      "stage": "prd",
+      "action": "stage_context",
+      "feature": "Beacon v1.3.9 execution projection convergence and QA acceptance dual-write",
+      "version": "v1.3.9",
+      "evidence_ref": [],
+      "requirement_refs": [
+        "docs/beacon/v1.3.9/prd/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+        "docs/beacon/v1.3.9/user-story/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+        "docs/beacon/v1.3.9/qa/test-cases/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+        "docs/beacon/v1.3.9/release/v1.3.9.md"
+      ],
+      "decision_trace": [
+        {
+          "memory_id": "1365d0f4-39d4-4813-a10b-f1e7d81d8714",
+          "summary": "[prd] Beacon v1.3.9 execution projection convergence and QA acceptance dual-write => completed",
+          "source": "workflow.prd.writeback",
+          "updated_at": "2026-04-29T04:01:33.446365+00:00"
+        },
+        {
+          "memory_id": "b83eabaa-78a0-4058-b478-87b88a6007e4",
+          "summary": "[prd] Beacon v1.3.9 execution projection convergence and QA acceptance dual-write => completed",
+          "source": "workflow.prd.writeback",
+          "updated_at": "2026-04-29T03:56:24.122459+00:00"
+        },
+        {
+          "memory_id": "ac4ba4a0-64b1-4db9-ba1a-987ca52024d8",
+          "summary": "[workflow.release-profile] run=repair-v1.3.9-20260427T202402580539Z0000 status=completed reason=doctor_repair_package",
+          "source": "workflow.release-profile",
+          "updated_at": "2026-04-27T20:24:02.873030+00:00"
+        }
+      ],
+      "blockers": [],
+      "attempt_seq": 1,
+      "previous_transaction_id": "",
+      "lineage_ids": [],
+      "transaction_id": "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-prd-stage_context-eb8509f3aebf",
+      "source_hash": "eb8509f3aebfd0422c21fa1ea56a825413502eafa28447d8d1a4e0ba3d3ebdab",
+      "projection_seq": "wf-eb8509f3aebfd042",
+      "occurred_at": "2026-04-29T07:23:40.171333+00:00",
+      "status": "applied",
+      "committed_at": "2026-04-29T07:23:40.208434+00:00",
+      "sink_paths": {
+        "context_pack": ".beacon/state/workflow-memory/repair-v1.3.9-20260427T202402580539Z0000/prd-context.json",
+        "workflow_lifecycle": ".beacon/memory/workflow-lifecycle.json"
+      },
+      "sink_checksums": {
+        "context_pack": "fb0d3d21ffd4460c2a1405f5dd88c1235f94d31d1e43e11ef04df608c02e591b",
+        "workflow_lifecycle": "e900d599b5ed0f8c63da2c1a5d9bf270b5b772283640afa225f2d00e8980b908"
+      },
+      "event_id": "c9595000-3c60-4bfc-bd30-6aa8cfe715e7"
+    },
+    {
+      "run_id": "repair-v1.3.9-20260427T202402580539Z0000",
+      "stage": "prd",
+      "action": "memory_writeback",
+      "feature": "Beacon v1.3.9 execution projection convergence and QA acceptance dual-write",
+      "version": "v1.3.9",
+      "evidence_ref": [
+        "docs/beacon/v1.3.9/prd/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md"
+      ],
+      "requirement_refs": [
+        "docs/beacon/v1.3.9/prd/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+        "docs/beacon/v1.3.9/user-story/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+        "docs/beacon/v1.3.9/qa/test-cases/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+        "docs/beacon/v1.3.9/release/v1.3.9.md"
+      ],
+      "decision_trace": [
+        {
+          "memory_id": "1365d0f4-39d4-4813-a10b-f1e7d81d8714",
+          "summary": "[prd] Beacon v1.3.9 execution projection convergence and QA acceptance dual-write => completed",
+          "source": "workflow.prd.writeback",
+          "updated_at": "2026-04-29T04:01:33.446365+00:00"
+        },
+        {
+          "memory_id": "b83eabaa-78a0-4058-b478-87b88a6007e4",
+          "summary": "[prd] Beacon v1.3.9 execution projection convergence and QA acceptance dual-write => completed",
+          "source": "workflow.prd.writeback",
+          "updated_at": "2026-04-29T03:56:24.122459+00:00"
+        },
+        {
+          "memory_id": "ac4ba4a0-64b1-4db9-ba1a-987ca52024d8",
+          "summary": "[workflow.release-profile] run=repair-v1.3.9-20260427T202402580539Z0000 status=completed reason=doctor_repair_package",
+          "source": "workflow.release-profile",
+          "updated_at": "2026-04-27T20:24:02.873030+00:00"
+        }
+      ],
+      "blockers": [],
+      "attempt_seq": 1,
+      "previous_transaction_id": "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-prd-stage_context-eb8509f3aebf",
+      "lineage_ids": [
+        "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-prd-stage_context-eb8509f3aebf"
+      ],
+      "transaction_id": "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-prd-memory_writeback-8c0396c9f9bb",
+      "source_hash": "8c0396c9f9bb749c91fafdadf5e322a816fc98a737da585315f4c635562271e6",
+      "projection_seq": "wf-8c0396c9f9bb749c",
+      "occurred_at": "2026-04-29T07:23:40.241799+00:00",
+      "status": "applied",
+      "committed_at": "2026-04-29T07:23:40.287415+00:00",
+      "memory_id": "38a134c0-d6dd-4329-ae6a-b3a68600729d",
+      "event_id": "d26ff84b-08d0-469c-b276-e5298c715adf",
+      "sink_paths": {
+        "memory_v1": ".beacon/memory/memory-v1.json",
+        "legacy_projection": ".beacon/memory/decisions.json",
+        "workflow_lifecycle": ".beacon/memory/workflow-lifecycle.json"
+      },
+      "sink_checksums": {
+        "memory_v1": "6c255e3bce8ee7677beee27932a8a9e1dcd7e8f26ddbe5d2960cca1322abf58f",
+        "legacy_projection": "02422aa89001175226ce58d89b9bd08fd11523fb3f51cf42ce69adf688477b25",
+        "workflow_lifecycle": "d53cabcbccee146c61c35c1f0e2df3a8c946a1a20d72d01863f3cc536baff5ae"
+      }
+    },
+    {
+      "run_id": "repair-v1.3.9-20260427T202402580539Z0000",
+      "stage": "user-story",
+      "action": "stage_context",
+      "feature": "Beacon v1.3.9 execution projection convergence and QA acceptance dual-write",
+      "version": "v1.3.9",
+      "evidence_ref": [],
+      "requirement_refs": [
+        "docs/beacon/v1.3.9/prd/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+        "docs/beacon/v1.3.9/user-story/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+        "docs/beacon/v1.3.9/qa/test-cases/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+        "docs/beacon/v1.3.9/release/v1.3.9.md"
+      ],
+      "decision_trace": [
+        {
+          "memory_id": "38a134c0-d6dd-4329-ae6a-b3a68600729d",
+          "summary": "[prd] Beacon v1.3.9 execution projection convergence and QA acceptance dual-write => completed",
+          "source": "workflow.prd.writeback",
+          "updated_at": "2026-04-29T07:23:40.244250+00:00"
+        },
+        {
+          "memory_id": "35a44235-9f15-4f14-a8b5-7f46f8f6fad3",
+          "summary": "[user-story] Beacon v1.3.9 execution projection convergence and QA acceptance dual-write => completed",
+          "source": "workflow.user-story.writeback",
+          "updated_at": "2026-04-29T04:01:33.587511+00:00"
+        },
+        {
+          "memory_id": "28c12235-c91e-4563-8dbf-56e70a2433cf",
+          "summary": "[user-story] Beacon v1.3.9 execution projection convergence and QA acceptance dual-write => completed",
+          "source": "workflow.user-story.writeback",
+          "updated_at": "2026-04-29T03:56:24.262464+00:00"
+        },
+        {
+          "memory_id": "ac4ba4a0-64b1-4db9-ba1a-987ca52024d8",
+          "summary": "[workflow.release-profile] run=repair-v1.3.9-20260427T202402580539Z0000 status=completed reason=doctor_repair_package",
+          "source": "workflow.release-profile",
+          "updated_at": "2026-04-27T20:24:02.873030+00:00"
+        }
+      ],
+      "blockers": [],
+      "attempt_seq": 1,
+      "previous_transaction_id": "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-prd-memory_writeback-8c0396c9f9bb",
+      "lineage_ids": [
+        "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-prd-stage_context-eb8509f3aebf",
+        "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-prd-memory_writeback-8c0396c9f9bb"
+      ],
+      "transaction_id": "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-user-story-stage_context-baed2d11f8bd",
+      "source_hash": "baed2d11f8bd26caeebcafcb8ad45bbeb6ae153fd77011bed979cf05c6dd912d",
+      "projection_seq": "wf-baed2d11f8bd26ca",
+      "occurred_at": "2026-04-29T07:23:40.317081+00:00",
+      "status": "applied",
+      "committed_at": "2026-04-29T07:23:40.354446+00:00",
+      "sink_paths": {
+        "context_pack": ".beacon/state/workflow-memory/repair-v1.3.9-20260427T202402580539Z0000/user-story-context.json",
+        "workflow_lifecycle": ".beacon/memory/workflow-lifecycle.json"
+      },
+      "sink_checksums": {
+        "context_pack": "53ba0a60c17c55c8d27f78cb082be59f0752546c8de54f5f2bd5b254560dd379",
+        "workflow_lifecycle": "b4976a313396ccbbeb8676987aec091052a1fa3e4f7d264cc6371cb050ef78e7"
+      },
+      "event_id": "1804b904-3d37-4592-acdb-9aa74bbec847"
+    },
+    {
+      "run_id": "repair-v1.3.9-20260427T202402580539Z0000",
+      "stage": "user-story",
+      "action": "memory_writeback",
+      "feature": "Beacon v1.3.9 execution projection convergence and QA acceptance dual-write",
+      "version": "v1.3.9",
+      "evidence_ref": [
+        "docs/beacon/v1.3.9/user-story/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md"
+      ],
+      "requirement_refs": [
+        "docs/beacon/v1.3.9/prd/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+        "docs/beacon/v1.3.9/user-story/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+        "docs/beacon/v1.3.9/qa/test-cases/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+        "docs/beacon/v1.3.9/release/v1.3.9.md"
+      ],
+      "decision_trace": [
+        {
+          "memory_id": "38a134c0-d6dd-4329-ae6a-b3a68600729d",
+          "summary": "[prd] Beacon v1.3.9 execution projection convergence and QA acceptance dual-write => completed",
+          "source": "workflow.prd.writeback",
+          "updated_at": "2026-04-29T07:23:40.244250+00:00"
+        },
+        {
+          "memory_id": "35a44235-9f15-4f14-a8b5-7f46f8f6fad3",
+          "summary": "[user-story] Beacon v1.3.9 execution projection convergence and QA acceptance dual-write => completed",
+          "source": "workflow.user-story.writeback",
+          "updated_at": "2026-04-29T04:01:33.587511+00:00"
+        },
+        {
+          "memory_id": "28c12235-c91e-4563-8dbf-56e70a2433cf",
+          "summary": "[user-story] Beacon v1.3.9 execution projection convergence and QA acceptance dual-write => completed",
+          "source": "workflow.user-story.writeback",
+          "updated_at": "2026-04-29T03:56:24.262464+00:00"
+        },
+        {
+          "memory_id": "ac4ba4a0-64b1-4db9-ba1a-987ca52024d8",
+          "summary": "[workflow.release-profile] run=repair-v1.3.9-20260427T202402580539Z0000 status=completed reason=doctor_repair_package",
+          "source": "workflow.release-profile",
+          "updated_at": "2026-04-27T20:24:02.873030+00:00"
+        }
+      ],
+      "blockers": [],
+      "attempt_seq": 1,
+      "previous_transaction_id": "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-user-story-stage_context-baed2d11f8bd",
+      "lineage_ids": [
+        "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-prd-stage_context-eb8509f3aebf",
+        "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-prd-memory_writeback-8c0396c9f9bb",
+        "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-user-story-stage_context-baed2d11f8bd"
+      ],
+      "transaction_id": "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-user-story-memory_writeback-9b7038311945",
+      "source_hash": "9b7038311945ec1bcd430b937fd75a84478f191361799f04e53bba13ed4a98e4",
+      "projection_seq": "wf-9b7038311945ec1b",
+      "occurred_at": "2026-04-29T07:23:40.383504+00:00",
+      "status": "applied",
+      "committed_at": "2026-04-29T07:23:40.428626+00:00",
+      "memory_id": "f6fb34ef-0f59-416c-a8d3-888e0b88d4ed",
+      "event_id": "14ff7ee7-d5db-4c15-8ff1-32c46a71ff71",
+      "sink_paths": {
+        "memory_v1": ".beacon/memory/memory-v1.json",
+        "legacy_projection": ".beacon/memory/decisions.json",
+        "workflow_lifecycle": ".beacon/memory/workflow-lifecycle.json"
+      },
+      "sink_checksums": {
+        "memory_v1": "64dd0cc77972894623f6294bb2bb2fba9ece3a5dc141f89df794074ff16381c6",
+        "legacy_projection": "cf3f5825236c1c009ee6394972412c98f987f647c9726ce7193ec505bad70c07",
+        "workflow_lifecycle": "a64e1efe9377b372b0fde1326ca6f58742f6c133d75c32b8e0d1ecd0aafc54c3"
+      }
+    },
+    {
+      "run_id": "repair-v1.3.9-20260427T202402580539Z0000",
+      "stage": "test-case",
+      "action": "stage_context",
+      "feature": "Beacon v1.3.9 execution projection convergence and QA acceptance dual-write",
+      "version": "v1.3.9",
+      "evidence_ref": [],
+      "requirement_refs": [
+        "docs/beacon/v1.3.9/prd/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+        "docs/beacon/v1.3.9/user-story/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+        "docs/beacon/v1.3.9/qa/test-cases/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+        "docs/beacon/v1.3.9/release/v1.3.9.md"
+      ],
+      "decision_trace": [
+        {
+          "memory_id": "f6fb34ef-0f59-416c-a8d3-888e0b88d4ed",
+          "summary": "[user-story] Beacon v1.3.9 execution projection convergence and QA acceptance dual-write => completed",
+          "source": "workflow.user-story.writeback",
+          "updated_at": "2026-04-29T07:23:40.385759+00:00"
+        },
+        {
+          "memory_id": "38a134c0-d6dd-4329-ae6a-b3a68600729d",
+          "summary": "[prd] Beacon v1.3.9 execution projection convergence and QA acceptance dual-write => completed",
+          "source": "workflow.prd.writeback",
+          "updated_at": "2026-04-29T07:23:40.244250+00:00"
+        },
+        {
+          "memory_id": "90062c1a-28d7-4f73-841e-6c03b375116a",
+          "summary": "[test-case] Beacon v1.3.9 execution projection convergence and QA acceptance dual-write => completed",
+          "source": "workflow.test-case.writeback",
+          "updated_at": "2026-04-29T04:01:33.732090+00:00"
+        },
+        {
+          "memory_id": "1a1434ec-4afe-4542-a95f-099b74f20168",
+          "summary": "[test-case] Beacon v1.3.9 execution projection convergence and QA acceptance dual-write => completed",
+          "source": "workflow.test-case.writeback",
+          "updated_at": "2026-04-29T03:56:24.404434+00:00"
+        },
+        {
+          "memory_id": "ac4ba4a0-64b1-4db9-ba1a-987ca52024d8",
+          "summary": "[workflow.release-profile] run=repair-v1.3.9-20260427T202402580539Z0000 status=completed reason=doctor_repair_package",
+          "source": "workflow.release-profile",
+          "updated_at": "2026-04-27T20:24:02.873030+00:00"
+        }
+      ],
+      "blockers": [],
+      "attempt_seq": 1,
+      "previous_transaction_id": "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-user-story-memory_writeback-9b7038311945",
+      "lineage_ids": [
+        "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-prd-stage_context-eb8509f3aebf",
+        "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-prd-memory_writeback-8c0396c9f9bb",
+        "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-user-story-stage_context-baed2d11f8bd",
+        "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-user-story-memory_writeback-9b7038311945"
+      ],
+      "transaction_id": "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-test-case-stage_context-31443b1a0ddf",
+      "source_hash": "31443b1a0ddfedb9cccacc51f94f15ddcae94d5ec44d11d7d419177b4ae95419",
+      "projection_seq": "wf-31443b1a0ddfedb9",
+      "occurred_at": "2026-04-29T07:23:40.458702+00:00",
+      "status": "applied",
+      "committed_at": "2026-04-29T07:23:40.496473+00:00",
+      "sink_paths": {
+        "context_pack": ".beacon/state/workflow-memory/repair-v1.3.9-20260427T202402580539Z0000/test-case-context.json",
+        "workflow_lifecycle": ".beacon/memory/workflow-lifecycle.json"
+      },
+      "sink_checksums": {
+        "context_pack": "32da12b4eafdc41194e6c0455d534762d5631878d6baee070a2b71f3c9af4216",
+        "workflow_lifecycle": "04d6a2e5563645e528ee00873a216cbb46f7f277b6e2dd6784bfe623be6c4b5d"
+      },
+      "event_id": "8090b61b-5d17-4464-aa9a-9d6fc8410f53"
+    },
+    {
+      "run_id": "repair-v1.3.9-20260427T202402580539Z0000",
+      "stage": "test-case",
+      "action": "memory_writeback",
+      "feature": "Beacon v1.3.9 execution projection convergence and QA acceptance dual-write",
+      "version": "v1.3.9",
+      "evidence_ref": [
+        "docs/beacon/v1.3.9/qa/test-cases/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md"
+      ],
+      "requirement_refs": [
+        "docs/beacon/v1.3.9/prd/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+        "docs/beacon/v1.3.9/user-story/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+        "docs/beacon/v1.3.9/qa/test-cases/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+        "docs/beacon/v1.3.9/release/v1.3.9.md"
+      ],
+      "decision_trace": [
+        {
+          "memory_id": "f6fb34ef-0f59-416c-a8d3-888e0b88d4ed",
+          "summary": "[user-story] Beacon v1.3.9 execution projection convergence and QA acceptance dual-write => completed",
+          "source": "workflow.user-story.writeback",
+          "updated_at": "2026-04-29T07:23:40.385759+00:00"
+        },
+        {
+          "memory_id": "38a134c0-d6dd-4329-ae6a-b3a68600729d",
+          "summary": "[prd] Beacon v1.3.9 execution projection convergence and QA acceptance dual-write => completed",
+          "source": "workflow.prd.writeback",
+          "updated_at": "2026-04-29T07:23:40.244250+00:00"
+        },
+        {
+          "memory_id": "90062c1a-28d7-4f73-841e-6c03b375116a",
+          "summary": "[test-case] Beacon v1.3.9 execution projection convergence and QA acceptance dual-write => completed",
+          "source": "workflow.test-case.writeback",
+          "updated_at": "2026-04-29T04:01:33.732090+00:00"
+        },
+        {
+          "memory_id": "1a1434ec-4afe-4542-a95f-099b74f20168",
+          "summary": "[test-case] Beacon v1.3.9 execution projection convergence and QA acceptance dual-write => completed",
+          "source": "workflow.test-case.writeback",
+          "updated_at": "2026-04-29T03:56:24.404434+00:00"
+        },
+        {
+          "memory_id": "ac4ba4a0-64b1-4db9-ba1a-987ca52024d8",
+          "summary": "[workflow.release-profile] run=repair-v1.3.9-20260427T202402580539Z0000 status=completed reason=doctor_repair_package",
+          "source": "workflow.release-profile",
+          "updated_at": "2026-04-27T20:24:02.873030+00:00"
+        }
+      ],
+      "blockers": [],
+      "attempt_seq": 1,
+      "previous_transaction_id": "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-test-case-stage_context-31443b1a0ddf",
+      "lineage_ids": [
+        "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-prd-stage_context-eb8509f3aebf",
+        "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-prd-memory_writeback-8c0396c9f9bb",
+        "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-user-story-stage_context-baed2d11f8bd",
+        "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-user-story-memory_writeback-9b7038311945",
+        "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-test-case-stage_context-31443b1a0ddf"
+      ],
+      "transaction_id": "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-test-case-memory_writeback-98020b5690c6",
+      "source_hash": "98020b5690c6babe4cb90c7c922628f44f7a34683adc21f51a1a35a6179d208c",
+      "projection_seq": "wf-98020b5690c6babe",
+      "occurred_at": "2026-04-29T07:23:40.525963+00:00",
+      "status": "applied",
+      "committed_at": "2026-04-29T07:23:40.571004+00:00",
+      "memory_id": "fa8617df-cc45-4a1d-b4e3-87a06b6c8ced",
+      "event_id": "544463fa-aab7-41b8-a6ae-9cdf35a24fa0",
+      "sink_paths": {
+        "memory_v1": ".beacon/memory/memory-v1.json",
+        "legacy_projection": ".beacon/memory/decisions.json",
+        "workflow_lifecycle": ".beacon/memory/workflow-lifecycle.json"
+      },
+      "sink_checksums": {
+        "memory_v1": "f2a1a5a6dab579ce8c728916b84cd02e0fdc5ef2adf73fbb875e2228d7ef1beb",
+        "legacy_projection": "2f4749dd2e7b6c730df441b24e151b5b41fb5bcb05d623ce6d852d27eaef4005",
+        "workflow_lifecycle": "857b56773c7bdd1845aa554ca11b2b61059bf457cbf321607f119b15e8ab1357"
+      }
+    },
+    {
+      "run_id": "repair-v1.3.9-20260427T202402580539Z0000",
+      "stage": "implement",
+      "action": "stage_context",
+      "feature": "Beacon v1.3.9 execution projection convergence and QA acceptance dual-write",
+      "version": "v1.3.9",
+      "evidence_ref": [],
+      "requirement_refs": [
+        "docs/beacon/v1.3.9/prd/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+        "docs/beacon/v1.3.9/user-story/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+        "docs/beacon/v1.3.9/qa/test-cases/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+        "docs/beacon/v1.3.9/release/v1.3.9.md"
+      ],
+      "decision_trace": [
+        {
+          "memory_id": "fa8617df-cc45-4a1d-b4e3-87a06b6c8ced",
+          "summary": "[test-case] Beacon v1.3.9 execution projection convergence and QA acceptance dual-write => completed",
+          "source": "workflow.test-case.writeback",
+          "updated_at": "2026-04-29T07:23:40.528266+00:00"
+        },
+        {
+          "memory_id": "f6fb34ef-0f59-416c-a8d3-888e0b88d4ed",
+          "summary": "[user-story] Beacon v1.3.9 execution projection convergence and QA acceptance dual-write => completed",
+          "source": "workflow.user-story.writeback",
+          "updated_at": "2026-04-29T07:23:40.385759+00:00"
+        },
+        {
+          "memory_id": "38a134c0-d6dd-4329-ae6a-b3a68600729d",
+          "summary": "[prd] Beacon v1.3.9 execution projection convergence and QA acceptance dual-write => completed",
+          "source": "workflow.prd.writeback",
+          "updated_at": "2026-04-29T07:23:40.244250+00:00"
+        },
+        {
+          "memory_id": "87e6f4ee-68aa-481a-8227-9163690eaf25",
+          "summary": "[implement] Beacon v1.3.9 execution projection convergence and QA acceptance dual-write => completed",
+          "source": "workflow.implement.writeback",
+          "updated_at": "2026-04-29T04:01:33.875873+00:00"
+        },
+        {
+          "memory_id": "65918617-cf21-418f-baa6-901e41c481ae",
+          "summary": "[implement] Beacon v1.3.9 execution projection convergence and QA acceptance dual-write => completed",
+          "source": "workflow.implement.writeback",
+          "updated_at": "2026-04-29T03:56:24.543430+00:00"
+        },
+        {
+          "memory_id": "ac4ba4a0-64b1-4db9-ba1a-987ca52024d8",
+          "summary": "[workflow.release-profile] run=repair-v1.3.9-20260427T202402580539Z0000 status=completed reason=doctor_repair_package",
+          "source": "workflow.release-profile",
+          "updated_at": "2026-04-27T20:24:02.873030+00:00"
+        }
+      ],
+      "blockers": [],
+      "attempt_seq": 1,
+      "previous_transaction_id": "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-test-case-memory_writeback-98020b5690c6",
+      "lineage_ids": [
+        "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-prd-stage_context-eb8509f3aebf",
+        "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-prd-memory_writeback-8c0396c9f9bb",
+        "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-user-story-stage_context-baed2d11f8bd",
+        "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-user-story-memory_writeback-9b7038311945",
+        "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-test-case-stage_context-31443b1a0ddf",
+        "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-test-case-memory_writeback-98020b5690c6"
+      ],
+      "transaction_id": "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-implement-stage_context-a5f278a718c3",
+      "source_hash": "a5f278a718c363bc8fc6d4d5f678399828aeb926b290c012f793741a267c6b0b",
+      "projection_seq": "wf-a5f278a718c363bc",
+      "occurred_at": "2026-04-29T07:23:40.605563+00:00",
+      "status": "applied",
+      "committed_at": "2026-04-29T07:23:40.643148+00:00",
+      "sink_paths": {
+        "context_pack": ".beacon/state/workflow-memory/repair-v1.3.9-20260427T202402580539Z0000/implement-context.json",
+        "workflow_lifecycle": ".beacon/memory/workflow-lifecycle.json"
+      },
+      "sink_checksums": {
+        "context_pack": "e6623c6dc8124236e46e9fa41a8829637a33d6d6ccb8698d7120eb399dd6d78d",
+        "workflow_lifecycle": "d1e0fd01a20c36689e2c06e8402a29eceac749fae9bb9b1e7f72a82525336c55"
+      },
+      "event_id": "0f16d933-85df-4198-8b6b-79c11c4a9aeb"
+    },
+    {
+      "run_id": "repair-v1.3.9-20260427T202402580539Z0000",
+      "stage": "implement",
+      "action": "memory_writeback",
+      "feature": "Beacon v1.3.9 execution projection convergence and QA acceptance dual-write",
+      "version": "v1.3.9",
+      "evidence_ref": [
+        "docs/beacon/v1.3.9/change/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+        "docs/beacon/v1.3.9/execution/architecture-blueprint.md"
+      ],
+      "requirement_refs": [
+        "docs/beacon/v1.3.9/prd/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+        "docs/beacon/v1.3.9/user-story/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+        "docs/beacon/v1.3.9/qa/test-cases/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+        "docs/beacon/v1.3.9/release/v1.3.9.md"
+      ],
+      "decision_trace": [
+        {
+          "memory_id": "fa8617df-cc45-4a1d-b4e3-87a06b6c8ced",
+          "summary": "[test-case] Beacon v1.3.9 execution projection convergence and QA acceptance dual-write => completed",
+          "source": "workflow.test-case.writeback",
+          "updated_at": "2026-04-29T07:23:40.528266+00:00"
+        },
+        {
+          "memory_id": "f6fb34ef-0f59-416c-a8d3-888e0b88d4ed",
+          "summary": "[user-story] Beacon v1.3.9 execution projection convergence and QA acceptance dual-write => completed",
+          "source": "workflow.user-story.writeback",
+          "updated_at": "2026-04-29T07:23:40.385759+00:00"
+        },
+        {
+          "memory_id": "38a134c0-d6dd-4329-ae6a-b3a68600729d",
+          "summary": "[prd] Beacon v1.3.9 execution projection convergence and QA acceptance dual-write => completed",
+          "source": "workflow.prd.writeback",
+          "updated_at": "2026-04-29T07:23:40.244250+00:00"
+        },
+        {
+          "memory_id": "87e6f4ee-68aa-481a-8227-9163690eaf25",
+          "summary": "[implement] Beacon v1.3.9 execution projection convergence and QA acceptance dual-write => completed",
+          "source": "workflow.implement.writeback",
+          "updated_at": "2026-04-29T04:01:33.875873+00:00"
+        },
+        {
+          "memory_id": "65918617-cf21-418f-baa6-901e41c481ae",
+          "summary": "[implement] Beacon v1.3.9 execution projection convergence and QA acceptance dual-write => completed",
+          "source": "workflow.implement.writeback",
+          "updated_at": "2026-04-29T03:56:24.543430+00:00"
+        },
+        {
+          "memory_id": "ac4ba4a0-64b1-4db9-ba1a-987ca52024d8",
+          "summary": "[workflow.release-profile] run=repair-v1.3.9-20260427T202402580539Z0000 status=completed reason=doctor_repair_package",
+          "source": "workflow.release-profile",
+          "updated_at": "2026-04-27T20:24:02.873030+00:00"
+        }
+      ],
+      "blockers": [],
+      "attempt_seq": 1,
+      "previous_transaction_id": "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-implement-stage_context-a5f278a718c3",
+      "lineage_ids": [
+        "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-prd-memory_writeback-8c0396c9f9bb",
+        "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-user-story-stage_context-baed2d11f8bd",
+        "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-user-story-memory_writeback-9b7038311945",
+        "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-test-case-stage_context-31443b1a0ddf",
+        "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-test-case-memory_writeback-98020b5690c6",
+        "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-implement-stage_context-a5f278a718c3"
+      ],
+      "transaction_id": "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-implement-memory_writeback-2095a0bedd9e",
+      "source_hash": "2095a0bedd9e006ff4397a1b565a6f911eb06c39921a49d70cc09ad101777e87",
+      "projection_seq": "wf-2095a0bedd9e006f",
+      "occurred_at": "2026-04-29T07:23:40.672981+00:00",
+      "status": "applied",
+      "committed_at": "2026-04-29T07:23:40.719219+00:00",
+      "memory_id": "c7585e32-5dae-4880-8568-29ff84c3fedf",
+      "event_id": "d91fc5e4-a6af-4b41-9e88-cc43c2389280",
+      "sink_paths": {
+        "memory_v1": ".beacon/memory/memory-v1.json",
+        "legacy_projection": ".beacon/memory/decisions.json",
+        "workflow_lifecycle": ".beacon/memory/workflow-lifecycle.json"
+      },
+      "sink_checksums": {
+        "memory_v1": "d115d6f1b168597bdd66fbca0f41f09a1ecfb15b3e4949b0487c4cfa3553ac3d",
+        "legacy_projection": "ce790f41969b6b6c5c3fe4c5ae634ee40f86016a3ae96cb04675200e3cb68bed",
+        "workflow_lifecycle": "e887d1d1b646a9d9eca2ae25a7461ac5bf1166000d64ccb5fbbb05a874679774"
+      }
+    },
+    {
+      "run_id": "repair-v1.3.9-20260427T202402580539Z0000",
+      "stage": "qa",
+      "action": "stage_context",
+      "feature": "Beacon v1.3.9 execution projection convergence and QA acceptance dual-write",
+      "version": "v1.3.9",
+      "evidence_ref": [],
+      "requirement_refs": [
+        "docs/beacon/v1.3.9/prd/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+        "docs/beacon/v1.3.9/user-story/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+        "docs/beacon/v1.3.9/qa/test-cases/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+        "docs/beacon/v1.3.9/release/v1.3.9.md"
+      ],
+      "decision_trace": [
+        {
+          "memory_id": "c7585e32-5dae-4880-8568-29ff84c3fedf",
+          "summary": "[implement] Beacon v1.3.9 execution projection convergence and QA acceptance dual-write => completed",
+          "source": "workflow.implement.writeback",
+          "updated_at": "2026-04-29T07:23:40.675248+00:00"
+        },
+        {
+          "memory_id": "fa8617df-cc45-4a1d-b4e3-87a06b6c8ced",
+          "summary": "[test-case] Beacon v1.3.9 execution projection convergence and QA acceptance dual-write => completed",
+          "source": "workflow.test-case.writeback",
+          "updated_at": "2026-04-29T07:23:40.528266+00:00"
+        },
+        {
+          "memory_id": "f6fb34ef-0f59-416c-a8d3-888e0b88d4ed",
+          "summary": "[user-story] Beacon v1.3.9 execution projection convergence and QA acceptance dual-write => completed",
+          "source": "workflow.user-story.writeback",
+          "updated_at": "2026-04-29T07:23:40.385759+00:00"
+        },
+        {
+          "memory_id": "38a134c0-d6dd-4329-ae6a-b3a68600729d",
+          "summary": "[prd] Beacon v1.3.9 execution projection convergence and QA acceptance dual-write => completed",
+          "source": "workflow.prd.writeback",
+          "updated_at": "2026-04-29T07:23:40.244250+00:00"
+        },
+        {
+          "memory_id": "b677c528-cd74-4d31-a076-aa25e832a34a",
+          "summary": "[qa] Beacon v1.3.9 execution projection convergence and QA acceptance dual-write => accepted",
+          "source": "workflow.qa.writeback",
+          "updated_at": "2026-04-29T06:18:50.546782+00:00"
+        },
+        {
+          "memory_id": "3dba6f26-6775-4083-8e7a-7e8027e026a3",
+          "summary": "[qa] Beacon v1.3.9 execution projection convergence and QA acceptance dual-write => accepted",
+          "source": "workflow.qa.writeback",
+          "updated_at": "2026-04-29T03:59:47.870899+00:00"
+        }
+      ],
+      "blockers": [],
+      "attempt_seq": 1,
+      "previous_transaction_id": "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-implement-memory_writeback-2095a0bedd9e",
+      "lineage_ids": [
+        "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-user-story-stage_context-baed2d11f8bd",
+        "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-user-story-memory_writeback-9b7038311945",
+        "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-test-case-stage_context-31443b1a0ddf",
+        "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-test-case-memory_writeback-98020b5690c6",
+        "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-implement-stage_context-a5f278a718c3",
+        "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-implement-memory_writeback-2095a0bedd9e"
+      ],
+      "transaction_id": "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-qa-stage_context-86fae92377ea",
+      "source_hash": "86fae92377ea466e6820f807b1823935aff0d63dee8cf95e0dc5eccebc9bf1c4",
+      "projection_seq": "wf-86fae92377ea466e",
+      "occurred_at": "2026-04-29T07:23:40.749007+00:00",
+      "status": "applied",
+      "committed_at": "2026-04-29T07:23:40.786136+00:00",
+      "sink_paths": {
+        "context_pack": ".beacon/state/workflow-memory/repair-v1.3.9-20260427T202402580539Z0000/qa-context.json",
+        "workflow_lifecycle": ".beacon/memory/workflow-lifecycle.json"
+      },
+      "sink_checksums": {
+        "context_pack": "ff3d2598dc3f1d2c57941835c21950957fce77f874a81087ccb357d894b987f6",
+        "workflow_lifecycle": "4fe6f6335f8a2b35f03f1a50357d7026a200d8f77add6de0d38984766fd44429"
+      },
+      "event_id": "80b2206b-a51b-4874-bdd5-61fe5d53acc2"
+    },
+    {
+      "run_id": "repair-v1.3.9-20260427T202402580539Z0000",
+      "stage": "qa",
+      "action": "memory_writeback",
+      "feature": "Beacon v1.3.9 execution projection convergence and QA acceptance dual-write",
+      "version": "v1.3.9",
+      "evidence_ref": [
+        ".beacon/qa/features/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write/ac-closure.json",
+        ".beacon/qa/features/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write/status.json"
+      ],
+      "requirement_refs": [
+        "docs/beacon/v1.3.9/prd/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+        "docs/beacon/v1.3.9/user-story/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+        "docs/beacon/v1.3.9/qa/test-cases/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+        "docs/beacon/v1.3.9/release/v1.3.9.md"
+      ],
+      "decision_trace": [
+        {
+          "memory_id": "c7585e32-5dae-4880-8568-29ff84c3fedf",
+          "summary": "[implement] Beacon v1.3.9 execution projection convergence and QA acceptance dual-write => completed",
+          "source": "workflow.implement.writeback",
+          "updated_at": "2026-04-29T07:23:40.675248+00:00"
+        },
+        {
+          "memory_id": "fa8617df-cc45-4a1d-b4e3-87a06b6c8ced",
+          "summary": "[test-case] Beacon v1.3.9 execution projection convergence and QA acceptance dual-write => completed",
+          "source": "workflow.test-case.writeback",
+          "updated_at": "2026-04-29T07:23:40.528266+00:00"
+        },
+        {
+          "memory_id": "f6fb34ef-0f59-416c-a8d3-888e0b88d4ed",
+          "summary": "[user-story] Beacon v1.3.9 execution projection convergence and QA acceptance dual-write => completed",
+          "source": "workflow.user-story.writeback",
+          "updated_at": "2026-04-29T07:23:40.385759+00:00"
+        },
+        {
+          "memory_id": "38a134c0-d6dd-4329-ae6a-b3a68600729d",
+          "summary": "[prd] Beacon v1.3.9 execution projection convergence and QA acceptance dual-write => completed",
+          "source": "workflow.prd.writeback",
+          "updated_at": "2026-04-29T07:23:40.244250+00:00"
+        },
+        {
+          "memory_id": "b677c528-cd74-4d31-a076-aa25e832a34a",
+          "summary": "[qa] Beacon v1.3.9 execution projection convergence and QA acceptance dual-write => accepted",
+          "source": "workflow.qa.writeback",
+          "updated_at": "2026-04-29T06:18:50.546782+00:00"
+        },
+        {
+          "memory_id": "3dba6f26-6775-4083-8e7a-7e8027e026a3",
+          "summary": "[qa] Beacon v1.3.9 execution projection convergence and QA acceptance dual-write => accepted",
+          "source": "workflow.qa.writeback",
+          "updated_at": "2026-04-29T03:59:47.870899+00:00"
+        }
+      ],
+      "blockers": [],
+      "attempt_seq": 1,
+      "previous_transaction_id": "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-qa-stage_context-86fae92377ea",
+      "lineage_ids": [
+        "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-user-story-memory_writeback-9b7038311945",
+        "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-test-case-stage_context-31443b1a0ddf",
+        "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-test-case-memory_writeback-98020b5690c6",
+        "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-implement-stage_context-a5f278a718c3",
+        "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-implement-memory_writeback-2095a0bedd9e",
+        "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-qa-stage_context-86fae92377ea"
+      ],
+      "transaction_id": "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-qa-memory_writeback-be64f11fa2aa",
+      "source_hash": "be64f11fa2aa0283e1f04eda97cb2124db07d2ff32fcd4a1de0bcdca8137f6fb",
+      "projection_seq": "wf-be64f11fa2aa0283",
+      "occurred_at": "2026-04-29T07:23:40.815670+00:00",
+      "status": "applied",
+      "committed_at": "2026-04-29T07:23:40.859595+00:00",
+      "memory_id": "dffd76ac-3889-43b7-97aa-e95a8496958e",
+      "event_id": "55abc7c4-1fa5-43c0-8af8-82d0587f214d",
+      "sink_paths": {
+        "memory_v1": ".beacon/memory/memory-v1.json",
+        "legacy_projection": ".beacon/memory/decisions.json",
+        "workflow_lifecycle": ".beacon/memory/workflow-lifecycle.json"
+      },
+      "sink_checksums": {
+        "memory_v1": "421cb4b50be68d05700b5faf30b59c360decf0840131d1380fd02e1aa4ccb682",
+        "legacy_projection": "f8be69ad0a9497b4bc0448ba16e182038534e8b7c97daa9b7ae8633dff6bf2fc",
+        "workflow_lifecycle": "7c84ab66fd9b419b57741c1d510c7303aa7ae61fcb4d50c3e98a9bd48bf9c975"
+      }
+    },
+    {
+      "run_id": "repair-v1.3.9-20260427T202402580539Z0000",
+      "stage": "release",
+      "action": "stage_context",
+      "feature": "Beacon v1.3.9 execution projection convergence and QA acceptance dual-write",
+      "version": "v1.3.9",
+      "evidence_ref": [],
+      "requirement_refs": [
+        "docs/beacon/v1.3.9/prd/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+        "docs/beacon/v1.3.9/user-story/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+        "docs/beacon/v1.3.9/qa/test-cases/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+        "docs/beacon/v1.3.9/release/v1.3.9.md"
+      ],
+      "decision_trace": [
+        {
+          "memory_id": "dffd76ac-3889-43b7-97aa-e95a8496958e",
+          "summary": "[qa] Beacon v1.3.9 execution projection convergence and QA acceptance dual-write => completed",
+          "source": "workflow.qa.writeback",
+          "updated_at": "2026-04-29T07:23:40.818001+00:00"
+        },
+        {
+          "memory_id": "c7585e32-5dae-4880-8568-29ff84c3fedf",
+          "summary": "[implement] Beacon v1.3.9 execution projection convergence and QA acceptance dual-write => completed",
+          "source": "workflow.implement.writeback",
+          "updated_at": "2026-04-29T07:23:40.675248+00:00"
+        },
+        {
+          "memory_id": "fa8617df-cc45-4a1d-b4e3-87a06b6c8ced",
+          "summary": "[test-case] Beacon v1.3.9 execution projection convergence and QA acceptance dual-write => completed",
+          "source": "workflow.test-case.writeback",
+          "updated_at": "2026-04-29T07:23:40.528266+00:00"
+        },
+        {
+          "memory_id": "f6fb34ef-0f59-416c-a8d3-888e0b88d4ed",
+          "summary": "[user-story] Beacon v1.3.9 execution projection convergence and QA acceptance dual-write => completed",
+          "source": "workflow.user-story.writeback",
+          "updated_at": "2026-04-29T07:23:40.385759+00:00"
+        },
+        {
+          "memory_id": "38a134c0-d6dd-4329-ae6a-b3a68600729d",
+          "summary": "[prd] Beacon v1.3.9 execution projection convergence and QA acceptance dual-write => completed",
+          "source": "workflow.prd.writeback",
+          "updated_at": "2026-04-29T07:23:40.244250+00:00"
+        },
+        {
+          "memory_id": "7832d740-4723-4279-b8d4-4c2478f3db4e",
+          "summary": "[release] Beacon v1.3.9 execution projection convergence and QA acceptance dual-write => completed",
+          "source": "workflow.release.writeback",
+          "updated_at": "2026-04-29T04:01:34.145830+00:00"
+        }
+      ],
+      "blockers": [],
+      "attempt_seq": 1,
+      "previous_transaction_id": "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-qa-memory_writeback-be64f11fa2aa",
+      "lineage_ids": [
+        "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-test-case-stage_context-31443b1a0ddf",
+        "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-test-case-memory_writeback-98020b5690c6",
+        "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-implement-stage_context-a5f278a718c3",
+        "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-implement-memory_writeback-2095a0bedd9e",
+        "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-qa-stage_context-86fae92377ea",
+        "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-qa-memory_writeback-be64f11fa2aa"
+      ],
+      "transaction_id": "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-release-stage_context-50a736f958a1",
+      "source_hash": "50a736f958a1688846425e87a6d2c22fbb3738b84bb4d98e2fa2f4e81f04f9ad",
+      "projection_seq": "wf-50a736f958a16888",
+      "occurred_at": "2026-04-29T07:23:40.893167+00:00",
+      "status": "applied",
+      "committed_at": "2026-04-29T07:23:40.930785+00:00",
+      "sink_paths": {
+        "context_pack": ".beacon/state/workflow-memory/repair-v1.3.9-20260427T202402580539Z0000/release-context.json",
+        "workflow_lifecycle": ".beacon/memory/workflow-lifecycle.json"
+      },
+      "sink_checksums": {
+        "context_pack": "e9d9a496c979f5d0f84a0488d0ac3d875e9f8dab0f7130626361d3c302848830",
+        "workflow_lifecycle": "75e3ce51a1287e7f90321aaf5ca207f39d9ff7139263bd05b59a6788875feea5"
+      },
+      "event_id": "9d924b12-3c61-4503-853b-7470c0e55bb3"
+    },
+    {
+      "run_id": "repair-v1.3.9-20260427T202402580539Z0000",
+      "stage": "release",
+      "action": "memory_writeback",
+      "feature": "Beacon v1.3.9 execution projection convergence and QA acceptance dual-write",
+      "version": "v1.3.9",
+      "evidence_ref": [
+        "docs/beacon/v1.3.9/execution/boundaries.md",
+        "docs/beacon/v1.3.9/release/v1.3.9.md"
+      ],
+      "requirement_refs": [
+        "docs/beacon/v1.3.9/prd/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+        "docs/beacon/v1.3.9/user-story/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+        "docs/beacon/v1.3.9/qa/test-cases/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+        "docs/beacon/v1.3.9/release/v1.3.9.md"
+      ],
+      "decision_trace": [
+        {
+          "memory_id": "dffd76ac-3889-43b7-97aa-e95a8496958e",
+          "summary": "[qa] Beacon v1.3.9 execution projection convergence and QA acceptance dual-write => completed",
+          "source": "workflow.qa.writeback",
+          "updated_at": "2026-04-29T07:23:40.818001+00:00"
+        },
+        {
+          "memory_id": "c7585e32-5dae-4880-8568-29ff84c3fedf",
+          "summary": "[implement] Beacon v1.3.9 execution projection convergence and QA acceptance dual-write => completed",
+          "source": "workflow.implement.writeback",
+          "updated_at": "2026-04-29T07:23:40.675248+00:00"
+        },
+        {
+          "memory_id": "fa8617df-cc45-4a1d-b4e3-87a06b6c8ced",
+          "summary": "[test-case] Beacon v1.3.9 execution projection convergence and QA acceptance dual-write => completed",
+          "source": "workflow.test-case.writeback",
+          "updated_at": "2026-04-29T07:23:40.528266+00:00"
+        },
+        {
+          "memory_id": "f6fb34ef-0f59-416c-a8d3-888e0b88d4ed",
+          "summary": "[user-story] Beacon v1.3.9 execution projection convergence and QA acceptance dual-write => completed",
+          "source": "workflow.user-story.writeback",
+          "updated_at": "2026-04-29T07:23:40.385759+00:00"
+        },
+        {
+          "memory_id": "38a134c0-d6dd-4329-ae6a-b3a68600729d",
+          "summary": "[prd] Beacon v1.3.9 execution projection convergence and QA acceptance dual-write => completed",
+          "source": "workflow.prd.writeback",
+          "updated_at": "2026-04-29T07:23:40.244250+00:00"
+        },
+        {
+          "memory_id": "7832d740-4723-4279-b8d4-4c2478f3db4e",
+          "summary": "[release] Beacon v1.3.9 execution projection convergence and QA acceptance dual-write => completed",
+          "source": "workflow.release.writeback",
+          "updated_at": "2026-04-29T04:01:34.145830+00:00"
+        }
+      ],
+      "blockers": [],
+      "attempt_seq": 1,
+      "previous_transaction_id": "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-release-stage_context-50a736f958a1",
+      "lineage_ids": [
+        "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-test-case-memory_writeback-98020b5690c6",
+        "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-implement-stage_context-a5f278a718c3",
+        "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-implement-memory_writeback-2095a0bedd9e",
+        "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-qa-stage_context-86fae92377ea",
+        "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-qa-memory_writeback-be64f11fa2aa",
+        "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-release-stage_context-50a736f958a1"
+      ],
+      "transaction_id": "tx-wf-repair-v1.3.9-20260427T202402580539Z0000-release-memory_writeback-4ff5c004d1a5",
+      "source_hash": "4ff5c004d1a5a59dd209b88484545d00f05f22df6ebbeddefbf9d8db476106bb",
+      "projection_seq": "wf-4ff5c004d1a5a59d",
+      "occurred_at": "2026-04-29T07:23:40.960371+00:00",
+      "status": "applied",
+      "committed_at": "2026-04-29T07:23:41.004233+00:00",
+      "memory_id": "b7f9fca7-5000-4e2e-9054-5596a289669e",
+      "event_id": "9fa24651-e562-472a-9910-5084b255a8ee",
+      "sink_paths": {
+        "memory_v1": ".beacon/memory/memory-v1.json",
+        "legacy_projection": ".beacon/memory/decisions.json",
+        "workflow_lifecycle": ".beacon/memory/workflow-lifecycle.json"
+      },
+      "sink_checksums": {
+        "memory_v1": "b2c12dbfddc638d0f10c284c7b17915a1abf642bf97818b1f15670374e2eac40",
+        "legacy_projection": "0a2d711090f2d53afc1d4d8df8feeb572f53d7cfb942533410ec4ddc38c52f07",
+        "workflow_lifecycle": "a111bf4a257ceaca3034818c57ae55b75980e059670abd7daa9d4449e02d0280"
+      }
+    }
+  ],
+  "updated_at": "2026-04-29T07:23:41.005779+00:00"
+}

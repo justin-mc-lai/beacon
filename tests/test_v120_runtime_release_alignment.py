@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import importlib
 import json
 from pathlib import Path
 
@@ -7,6 +8,7 @@ from typer.testing import CliRunner
 
 from beacon import __toolkit_version__, __version__
 from beacon.main import app
+from beacon.utils.delivery_baseline import validate_projection_against_baseline
 from beacon.utils.runtime import save_run_state
 from beacon.utils.technical_review_contract import (
     materialize_technical_review_contract,
@@ -17,6 +19,7 @@ from beacon.utils.workflow_memory import append_lifecycle_event, resolve_workflo
 
 ROOT = Path(__file__).resolve().parents[1]
 runner = CliRunner()
+gate_module = importlib.import_module("beacon.commands.gate")
 
 
 def _invoke(args: list[str]):
@@ -122,40 +125,81 @@ def test_v120_technical_review_contract_should_backfill_reviewed_at_when_approve
 
 def test_v120_current_release_gate_should_pass():
     result = _invoke(["gate", "check", "release", "--project-root", str(ROOT), "--version", __toolkit_version__, "--json"])
-    assert result.exit_code in {0, 2}, result.stdout
+    assert result.exit_code == 0, result.stdout
     payload = json.loads(result.stdout)
-    assert payload["status"] in {"Pass", "Blocked"}
-    if payload["status"] == "Pass":
-        assert payload["blocked_count"] == 0
-    else:
-        reason_codes = {item["reason_code"] for item in payload.get("issues", []) if isinstance(item, dict)}
-        assert reason_codes <= {
-            "ac_tc_evidence_chain_broken",
-            "baseline_snapshot_missing",
-            "change_impact_missing",
-            "coverage_incomplete",
-            "delivery_manifest_missing",
-            "execution_config_missing",
-            "formal_package_closure_missing",
-            "git_alignment_blocked",
-            "git_alignment_missing",
-            "git_workflow_contract_missing",
-            "evidence_sha256_manifest_mismatch",
-            "gate_consistency_conflict",
-            "implementation_plan_missing",
-            "implementation_plan_blocked",
-            "implementation_plan_incomplete",
-            "requirement_clarity_markdown_missing",
-            "requirement_clarity_report_missing",
-            "source_info_missing",
-            "technical_review_contract_invalid",
-            "technical_review_contract_missing",
-            "terminal_artifact_missing",
-            "unresolved_closure_outcome",
-            "review_required_open",
-            "release_confidence_below_threshold",
-            "release_memory_profile_invalid",
-            "feature_release_not_ready",
-            "spec_impl_drift_detected",
-            "runtime_projection_drift",
-        }
+    assert payload["status"] == "Pass"
+    assert payload["blocked_count"] == 0
+
+
+def test_v120_release_gate_should_ignore_runtime_projection_context_warn(monkeypatch, tmp_path: Path):
+    version = "v1.3.8"
+    monkeypatch.setattr(gate_module, "resolve_target_version", lambda *_args, **_kwargs: version)
+    monkeypatch.setattr(
+        gate_module,
+        "runtime_projection_transaction_contract",
+        lambda **_kwargs: {
+            "status": "warn",
+            "blocked": False,
+            "reason_code": "runtime_projection_transaction_context_missing",
+            "message": "runtime projection transaction for current context is missing; rebuild runtime ledger for this docs/feature context",
+            "details": {"projection_seq": "ps-1"},
+        },
+    )
+
+    release_issues = gate_module.check_runtime_projection_transaction_contract(
+        tmp_path,
+        gate_module.GateMode.STRICT,
+        "release",
+        version,
+    )
+    prototype_issues = gate_module.check_runtime_projection_transaction_contract(
+        tmp_path,
+        gate_module.GateMode.STRICT,
+        "prototype",
+        version,
+    )
+
+    assert release_issues == []
+    assert len(prototype_issues) == 1
+    assert prototype_issues[0]["reason_code"] == "runtime_projection_drift"
+    assert prototype_issues[0]["blocked"] is False
+
+
+def test_v120_projection_validation_should_treat_relative_and_absolute_worktree_root_as_same_path(tmp_path: Path):
+    envelope = {
+        "baseline_id": "baseline-1",
+        "transaction_id": "tx-1",
+        "source_hash": "sha256:abc",
+        "projection_seq": 1,
+        "base_branch": "main",
+        "branch_prefix": "beacon/",
+        "default_target_branch": "beacon/v1.3.8",
+        "use_git_worktree": False,
+        "worktree_root": ".",
+        "direct_delivery_services": ["."],
+        "writable_services": ["."],
+        "reference_only_services": ["docs"],
+    }
+    projection = {
+        "baseline_id": "baseline-1",
+        "transaction_id": "tx-1",
+        "source_hash": "sha256:abc",
+        "projection_seq": 1,
+        "base_branch": "main",
+        "branch_prefix": "beacon/",
+        "target_branch": "beacon/v1.3.8",
+        "use_git_worktree": False,
+        "worktree_root": str(tmp_path.resolve()),
+        "direct_delivery_services": ["."],
+        "writable_services": ["."],
+        "reference_only_services": ["docs"],
+    }
+
+    issues = validate_projection_against_baseline(
+        projection,
+        envelope,
+        projection_name="technical_review_contract",
+        project_root=tmp_path,
+    )
+
+    assert issues == []

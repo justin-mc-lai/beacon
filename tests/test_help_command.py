@@ -41,7 +41,7 @@ def test_help_json_with_planned_workflow_should_recommend_freeze_until_revision_
     assert payload["run_id"] == run_id
     assert payload["next_step"]["action"] == "freeze"
     assert "beacon freeze" in payload["next_step"]["command"]
-    assert payload["current_stage"] == "think"
+    assert payload["current_stage"] == "prd"
 
 
 def test_help_human_output_should_include_scores_and_next_step(tmp_path: Path):

@@ -43,49 +43,71 @@ def _project_skills_section(config: dict[str, Any]) -> dict[str, Any]:
     return section
 
 
-def builtin_skill_registry() -> dict[str, dict[str, Any]]:
-    return {
-        "native-single": {
-            "id": "native-single",
-            "kind": "builtin",
-            "entry": "beacon implement run --runner native-single",
-            "capabilities": ["implementation"],
-            "supported_stages": ["implementation"],
-            "evidence_contract": ["implementation_summary", "story_writeback"],
-        },
-        "native-team": {
-            "id": "native-team",
-            "kind": "builtin",
-            "entry": "beacon implement run --runner native-team",
-            "capabilities": ["implementation", "coordination"],
-            "supported_stages": ["implementation"],
-            "evidence_contract": ["implementation_summary", "team_execution", "story_writeback"],
-        },
-        "codex-subagents": {
-            "id": "codex-subagents",
-            "kind": "builtin",
-            "entry": "beacon implement run --runner codex-subagents",
-            "capabilities": ["implementation", "coordination", "codex-native-team"],
-            "supported_stages": ["implementation"],
-            "evidence_contract": ["implementation_summary", "team_execution", "story_writeback", "context_isolation"],
-        },
-        "qa9-default": {
-            "id": "qa9-default",
-            "kind": "builtin",
-            "entry": "beacon auto-test create qa9",
-            "capabilities": ["verify", "qa"],
-            "supported_stages": ["verify"],
-            "evidence_contract": ["auto_test_status", "qa_matrix_evidence"],
-        },
-        "review-quality": {
-            "id": "review-quality",
-            "kind": "builtin",
-            "entry": "beacon review quality",
-            "capabilities": ["review", "gate"],
-            "supported_stages": ["review"],
-            "evidence_contract": ["review_quality_report"],
-        },
-    }
+_CANONICAL_STAGE_ALIASES: dict[str, str] = {
+    "prototype": "prototype",
+    "implement": "implement",
+    "implementation": "implement",
+    "qa": "qa",
+    "verify": "qa",
+    "review": "qa",
+    "release": "release",
+    "delivery": "release",
+    "debug": "debug",
+    "pipeline": "pipeline",
+}
+
+_CANONICAL_STAGE_ALTERNATES: dict[str, list[str]] = {
+    "prototype": ["prototype"],
+    "implement": ["implement", "implementation"],
+    "qa": ["qa", "verify", "review"],
+    "release": ["release", "delivery"],
+    "debug": ["debug"],
+    "pipeline": ["pipeline"],
+}
+
+
+def _normalize_stage_name(stage: str | None) -> str:
+    normalized = str(stage or "").strip().lower()
+    return _CANONICAL_STAGE_ALIASES.get(normalized, normalized)
+
+
+def _canonical_stage_aliases(stage: str | None) -> list[str]:
+    canonical = _normalize_stage_name(stage)
+    if not canonical:
+        return []
+    return list(_CANONICAL_STAGE_ALTERNATES.get(canonical, [canonical]))
+
+
+def _normalize_stage_list(stages: list[Any]) -> list[str]:
+    normalized: list[str] = []
+    seen: set[str] = set()
+    for item in stages:
+        stage = _normalize_stage_name(str(item))
+        if not stage or stage in seen:
+            continue
+        seen.add(stage)
+        normalized.append(stage)
+    return normalized
+
+
+def _expand_capabilities(capabilities: list[Any]) -> set[str]:
+    expanded: set[str] = set()
+    for item in capabilities:
+        raw = str(item or "").strip().lower()
+        if not raw:
+            continue
+        expanded.add(raw)
+        expanded.add(_normalize_stage_name(raw))
+    expanded.discard("")
+    return expanded
+
+
+def _resolve_profile_skill_id(profile_skills: dict[str, Any], stage: str) -> str:
+    for key in _canonical_stage_aliases(stage):
+        skill_id = str(profile_skills.get(key, "") or "").strip()
+        if skill_id:
+            return skill_id
+    return ""
 
 
 def _default_external_entry(skill_id: str) -> str:
@@ -99,6 +121,61 @@ def _default_external_entry(skill_id: str) -> str:
         if candidates:
             return str(candidates[0])
     return ""
+
+
+def builtin_skill_registry() -> dict[str, dict[str, Any]]:
+    return {
+        "native-single": {
+            "id": "native-single",
+            "kind": "builtin",
+            "entry": "beacon implement run --runner native-single",
+            "capabilities": ["implement", "implementation"],
+            "supported_stages": ["implement"],
+            "evidence_contract": ["implementation_summary", "story_writeback"],
+        },
+        "native-team": {
+            "id": "native-team",
+            "kind": "builtin",
+            "entry": "beacon implement run --runner native-team",
+            "capabilities": ["implement", "implementation", "coordination"],
+            "supported_stages": ["implement"],
+            "evidence_contract": ["implementation_summary", "team_execution", "story_writeback"],
+        },
+        "codex-subagents": {
+            "id": "codex-subagents",
+            "kind": "builtin",
+            "entry": "beacon implement run --runner codex-subagents",
+            "capabilities": ["implement", "implementation", "coordination", "codex-native-team"],
+            "supported_stages": ["implement"],
+            "evidence_contract": ["implementation_summary", "team_execution", "story_writeback", "context_isolation"],
+        },
+        "qa9-default": {
+            "id": "qa9-default",
+            "kind": "builtin",
+            "entry": "beacon auto-test create qa9",
+            "capabilities": ["qa", "verify"],
+            "supported_stages": ["qa"],
+            "evidence_contract": ["auto_test_status", "qa_matrix_evidence"],
+        },
+        "review-quality": {
+            "id": "review-quality",
+            "kind": "builtin",
+            "entry": "beacon review quality",
+            "capabilities": ["qa", "review", "gate", "release-readiness"],
+            "supported_stages": ["qa"],
+            "evidence_contract": ["review_quality_report"],
+        },
+        "taste-skill": {
+            "id": "taste-skill",
+            "kind": "external-default-bridge",
+            "entry": _default_external_entry("taste-skill"),
+            "repo": "https://github.com/Leonxlnx/taste-skill",
+            "install_hint": "npx skills add https://github.com/Leonxlnx/taste-skill --skill taste-skill",
+            "capabilities": ["prototype", "implement", "taste-design", "semantic-normalization"],
+            "supported_stages": ["prototype", "implement"],
+            "evidence_contract": ["semantic_dictionary", "semantic_usage_guidelines", "design_review_notes"],
+        },
+    }
 
 
 def load_skill_registry(project_root: Path) -> dict[str, dict[str, Any]]:
@@ -117,6 +194,7 @@ def load_skill_registry(project_root: Path) -> dict[str, dict[str, Any]]:
             merged.setdefault("capabilities", [])
             merged.setdefault("supported_stages", [])
             merged.setdefault("evidence_contract", [])
+            merged["supported_stages"] = _normalize_stage_list(list(merged.get("supported_stages", [])))
             registry[str(skill_id)] = merged
     return registry
 
@@ -132,7 +210,7 @@ def list_skill_registry(project_root: Path) -> list[dict[str, Any]]:
                 "entry": entry,
                 "detected": bool(entry and Path(entry).exists()) or str(payload.get("kind", "")) == "builtin",
                 "capabilities": list(payload.get("capabilities", [])),
-                "supported_stages": list(payload.get("supported_stages", [])),
+                "supported_stages": _normalize_stage_list(list(payload.get("supported_stages", []))),
                 "evidence_contract": list(payload.get("evidence_contract", [])),
             }
         )
@@ -148,7 +226,7 @@ def _rolo_profile_example() -> dict[str, Any]:
                 "kind": "external",
                 "entry": rolo_entry,
                 "capabilities": ["verify", "delivery", "debug", "pipeline", "uat-smoke"],
-                "supported_stages": ["verify", "delivery", "debug", "pipeline"],
+                "supported_stages": ["qa", "release", "debug", "pipeline"],
                 "evidence_contract": ["uat_pipeline_run", "gateway_smoke", "interface_response", "log_sql_snapshot"],
             }
         },
@@ -158,8 +236,8 @@ def _rolo_profile_example() -> dict[str, Any]:
                 "profile_id": "rolo-uat",
                 "description": "Rolo UAT multi-service verification profile.",
                 "skills": {
-                    "verify": "rolo-dev",
-                    "delivery": "rolo-dev",
+                    "qa": "rolo-dev",
+                    "release": "rolo-dev",
                     "debug": "rolo-dev",
                     "pipeline": "rolo-dev",
                 },
@@ -199,14 +277,14 @@ def _rolo_profile_example() -> dict[str, Any]:
                     "nodes": [
                         {
                             "id": "pipeline",
-                            "stage": "verify",
+                            "stage": "qa",
                             "skill": "rolo-dev",
                             "command_template": "{skill_entry} pipeline --service {service_name}",
                             "produces_evidence": ["uat_pipeline_run"],
                         },
                         {
                             "id": "gateway-smoke",
-                            "stage": "verify",
+                            "stage": "qa",
                             "skill": "rolo-dev",
                             "command_template": "{skill_entry} uat-smoke --jwt {jwt_token}",
                             "produces_evidence": ["gateway_smoke", "interface_response"],
@@ -369,15 +447,14 @@ def _profile_context(
 
 
 def _stage_capabilities(stage: str) -> list[str]:
-    normalized = str(stage or "").strip().lower()
+    normalized = _normalize_stage_name(stage)
     mapping = {
-        "implementation": ["implementation"],
-        "verify": ["verify", "qa"],
-        "review": ["review", "gate"],
-        "delivery": ["delivery"],
+        "prototype": ["prototype"],
+        "implement": ["implement", "implementation"],
+        "qa": ["qa", "verify", "review", "gate"],
+        "release": ["release", "delivery", "gate", "release-readiness"],
         "debug": ["debug"],
         "pipeline": ["pipeline"],
-        "qa": ["qa", "verify"],
     }
     return mapping.get(normalized, [normalized] if normalized else [])
 
@@ -398,9 +475,10 @@ def _validate_orchestration_node(
     node: dict[str, Any],
 ) -> list[dict[str, Any]]:
     issues: list[dict[str, Any]] = []
-    node_stage = str(node.get("stage", "") or "").strip()
-    supported_stages = {str(item).strip() for item in skill_payload.get("supported_stages", []) if str(item).strip()}
-    capabilities = {str(item).strip() for item in skill_payload.get("capabilities", []) if str(item).strip()}
+    requested_stage = str(node.get("stage", "") or "").strip()
+    node_stage = _normalize_stage_name(requested_stage)
+    supported_stages = set(_normalize_stage_list(list(skill_payload.get("supported_stages", []))))
+    capabilities = _expand_capabilities(list(skill_payload.get("capabilities", [])))
     evidence_contract = {str(item).strip() for item in skill_payload.get("evidence_contract", []) if str(item).strip()}
     entry = str(skill_payload.get("entry", "") or "").strip()
 
@@ -408,8 +486,9 @@ def _validate_orchestration_node(
         issues.append(
             {
                 "reason_code": "project_skill_stage_unsupported",
-                "message": f"skill does not support stage `{node_stage or '-'}'",
+                "message": f"skill does not support stage `{node_stage or requested_stage or '-'}'",
                 "stage": node_stage,
+                "requested_stage": requested_stage,
                 "supported_stages": sorted(supported_stages),
             }
         )
@@ -484,8 +563,11 @@ def run_profile_orchestration(
     nodes = profile.get("orchestration", {}).get("nodes", [])
     if not isinstance(nodes, list):
         nodes = []
+    normalized_stage = _normalize_stage_name(stage)
     selected_nodes = [
-        dict(node) for node in nodes if isinstance(node, dict) and (not stage or str(node.get("stage", "") or "") == stage)
+        dict(node)
+        for node in nodes
+        if isinstance(node, dict) and (not normalized_stage or _normalize_stage_name(str(node.get("stage", "") or "")) == normalized_stage)
     ]
     run_id = generate_run_id(project_root)
     param_map = {str(k): str(v) for k, v in (params or {}).items()}
@@ -496,7 +578,9 @@ def run_profile_orchestration(
 
     for node in selected_nodes:
         node_id = str(node.get("id", "") or f"node-{len(node_results)+1:03d}")
-        skill_id = str(node.get("skill", "") or profile.get("skills", {}).get(str(node.get("stage", "")), "") or "")
+        node_stage = _normalize_stage_name(str(node.get("stage", "") or ""))
+        profile_skills = profile.get("skills", {}) if isinstance(profile.get("skills"), dict) else {}
+        skill_id = str(node.get("skill", "") or _resolve_profile_skill_id(profile_skills, node_stage) or "")
         skill_payload = registry.get(skill_id, {})
         skill_entry = str(skill_payload.get("entry", "") or "")
         context = _profile_context(
@@ -512,7 +596,7 @@ def run_profile_orchestration(
         command = format_template(command_template, context) if command_template else ""
         result_payload = {
             "node_id": node_id,
-            "stage": str(node.get("stage", "") or ""),
+            "stage": node_stage,
             "skill_id": skill_id,
             "skill_kind": str(skill_payload.get("kind", "")),
             "command": command,
@@ -523,7 +607,7 @@ def run_profile_orchestration(
             "execution_boundary": {
                 "mode": "validated_shell_template" if command_template else "missing_command_template",
                 "skill_entry": skill_entry,
-                "supported_stages": list(skill_payload.get("supported_stages", [])),
+                "supported_stages": _normalize_stage_list(list(skill_payload.get("supported_stages", []))),
                 "capabilities": list(skill_payload.get("capabilities", [])),
                 "evidence_contract": list(skill_payload.get("evidence_contract", [])),
             },
@@ -606,7 +690,7 @@ def run_profile_orchestration(
         "version": resolved_version,
         "profile_id": resolved_profile_id,
         "run_id": run_id,
-        "stage": stage or "",
+        "stage": normalized_stage or "",
         "status": "dry_run" if dry_run else status,
         "generated_at": now_iso(),
         "nodes": node_results,

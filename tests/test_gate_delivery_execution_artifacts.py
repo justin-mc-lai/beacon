@@ -141,6 +141,28 @@ def test_gate_release_should_require_git_workflow_contract_for_v130_plans(tmp_pa
     assert "git_workflow_contract_missing" in reason_codes
 
 
+def test_gate_release_should_ignore_support_implementation_plan_marker(tmp_path: Path):
+    version = "v1.3.0"
+    _seed_release_execution(tmp_path, version=version, pending_task=False)
+    machine_dir = tmp_path / "docs" / "beacon" / version / ".machine" / "execution"
+    machine_dir.mkdir(parents=True, exist_ok=True)
+    (machine_dir / "implementation-plan-support.json").write_text(
+        json.dumps(
+            {
+                "schema_version": "1.0",
+                "version": version,
+                "supported": True,
+                "notes": ["feature-specific implementation plans are generated on demand"],
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    issues = check_delivery_execution_artifacts(tmp_path, GateMode.STRICT, "release", version)
+    reason_codes = {item["reason_code"] for item in issues}
+    assert "git_workflow_contract_missing" not in reason_codes
+
+
 def test_gate_release_should_detect_delivery_manifest_git_workflow_mismatch(tmp_path: Path):
     version = "v1.3.0"
     _seed_release_execution(tmp_path, version=version, pending_task=False)

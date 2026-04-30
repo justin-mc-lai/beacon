@@ -1,0 +1,869 @@
+{
+  "schema_version": "1.0",
+  "feature": "Beacon v1.3.8 archive governance and historical requirement isolation",
+  "feature_slug": "beacon-v1-3-8-archive-governance-and-historical-requirement-isolation",
+  "version": "v1.3.8",
+  "prototype_mode": "wireframe",
+  "source_hash": "2a89ba1c9d25a2f4b545a4e4130ccb759ff9b55f640b55ea8b7abdb138260f19",
+  "projection_seq": "pp-2a89ba1c9d25a2f4",
+  "transaction_id": "tx-beacon-v1-3-8-archive-governance-and-historical-requirement-isolation-pp-2a89ba1c9d25a2f4",
+  "committed_at": "2026-04-24T10:29:24Z",
+  "plan": {
+    "schema_version": "1.0",
+    "feature": "Beacon v1.3.8 archive governance and historical requirement isolation",
+    "feature_slug": "beacon-v1-3-8-archive-governance-and-historical-requirement-isolation",
+    "version": "v1.3.8",
+    "generated_at": "2026-04-24T10:29:24Z",
+    "prototype_mode": "wireframe",
+    "ui_kit": "wireframe-markdown-v1",
+    "source_documents": [
+      {
+        "type": "user-story",
+        "path": "docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+        "fingerprint": "a7100e1f17e07d0ed2918d3bfee4a53489aa6a0441befb741f312de9d67fa9d5"
+      },
+      {
+        "type": "prd",
+        "path": "docs/beacon/v1.3.8/prd/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+        "fingerprint": "c1b653d33aefde421ee187b769815b5bfc6410887ce190395cd107bf715f0d0e"
+      },
+      {
+        "type": "test-case",
+        "path": "docs/beacon/v1.3.8/qa/test-cases/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+        "fingerprint": "20e36852c24b5fd2559e620f42ff4c160a77f7b4fb0e01a46d842423096a48e3"
+      }
+    ],
+    "required_pages": [
+      "runtime-center"
+    ],
+    "required_states": [
+      "error",
+      "idle",
+      "loading",
+      "ralph-active",
+      "single-active",
+      "team-active"
+    ],
+    "requirement_ids": {
+      "ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005"
+      ],
+      "tc_ids": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005"
+      ]
+    },
+    "page_specs": [
+      {
+        "page_id": "runtime-center",
+        "name": "运行中心",
+        "priority": "P1",
+        "platforms": [
+          "Web",
+          "PC"
+        ],
+        "responsibility": "只在这里下钻 single / team / ralph 的 runtime 细节和有限 session metadata。",
+        "sections": [
+          "运行态摘要头部",
+          "single / team / ralph 模式切换",
+          "agent/session 引用",
+          "artifact 与 linked run",
+          "最近结果与 blocker"
+        ],
+        "actions": [],
+        "states": [
+          {
+            "id": "single-active",
+            "label": "Single 运行",
+            "description": "展示单进程执行摘要和 linked run。"
+          },
+          {
+            "id": "team-active",
+            "label": "Team 运行",
+            "description": "展示 agent 数、角色、状态和 host session metadata。"
+          },
+          {
+            "id": "ralph-active",
+            "label": "Ralph 闭环",
+            "description": "展示 round_count、failure_streak、next_action、blocker。"
+          },
+          {
+            "id": "idle",
+            "label": "无活跃运行",
+            "description": "当前没有任何 active runtime。"
+          },
+          {
+            "id": "loading",
+            "label": "加载中",
+            "description": "运行态数据仍在读取。"
+          },
+          {
+            "id": "error",
+            "label": "错误",
+            "description": "运行态投影异常，需要回到诊断页。"
+          }
+        ],
+        "requirement_refs": {
+          "user-story": [
+            "docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md"
+          ],
+          "prd": [
+            "docs/beacon/v1.3.8/prd/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md"
+          ],
+          "test-case": [
+            "docs/beacon/v1.3.8/qa/test-cases/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md"
+          ]
+        },
+        "outbound_transitions": [],
+        "analysis": {
+          "target_user": "需要核对运行态的执行者 / 诊断人",
+          "decision_focus": [
+            "当前到底是 single、team 还是 ralph 在推进。",
+            "linked run、artifact、blocker 是否足以解释当前停滞点。",
+            "看完运行态后应该回到项目详情还是继续诊断。"
+          ],
+          "layout_rules": [
+            "模式切换必须固定在头部，便于横向比较三种运行形态。",
+            "session / artifact 只展示必要引用，不在此页堆底层原文。",
+            "最近结果与 blocker 必须直接可读，避免继续翻查多层结构。"
+          ],
+          "noise_guardrail": "运行中心可以下钻运行信息，但仍要压制无边界的机器内部明细。"
+        },
+        "layout_lines": [
+          "+----------------------------------------------------------------------------------+",
+          "| 顶栏：返回项目详情 | 运行中心 | 最近刷新时间 | 当前活跃模式                        |",
+          "+----------------------------------------------------------------------------------+",
+          "| 模式切换： single | team | ralph                                                |",
+          "+----------------------------------------------------------------------------------+",
+          "| 运行态摘要头部: 当前状态 | round_count | failure_streak | 当前执行目标             |",
+          "+----------------------------------------------------------------------------------+",
+          "| agent / session 引用                         | linked run / artifact refs           |",
+          "| - session id / agent 数                      | - latest run                         |",
+          "| - host / lane 摘要                           | - artifact / report                  |",
+          "+----------------------------------------------------------------------------------+",
+          "| recent_result                                | blocker / next_action                |",
+          "| - 最近结果摘要                               | - 当前 blocker                       |",
+          "| - 最近一次状态变化                           | - 下一步动作                         |",
+          "+----------------------------------------------------------------------------------+"
+        ]
+      }
+    ],
+    "page_inventory": [
+      {
+        "page_id": "runtime-center",
+        "name": "运行中心",
+        "priority": "P1",
+        "platforms": [
+          "Web",
+          "PC"
+        ],
+        "responsibility": "只在这里下钻 single / team / ralph 的 runtime 细节和有限 session metadata。",
+        "sections": [
+          "运行态摘要头部",
+          "single / team / ralph 模式切换",
+          "agent/session 引用",
+          "artifact 与 linked run",
+          "最近结果与 blocker"
+        ],
+        "actions": [],
+        "states": [
+          {
+            "id": "single-active",
+            "label": "Single 运行",
+            "description": "展示单进程执行摘要和 linked run。"
+          },
+          {
+            "id": "team-active",
+            "label": "Team 运行",
+            "description": "展示 agent 数、角色、状态和 host session metadata。"
+          },
+          {
+            "id": "ralph-active",
+            "label": "Ralph 闭环",
+            "description": "展示 round_count、failure_streak、next_action、blocker。"
+          },
+          {
+            "id": "idle",
+            "label": "无活跃运行",
+            "description": "当前没有任何 active runtime。"
+          },
+          {
+            "id": "loading",
+            "label": "加载中",
+            "description": "运行态数据仍在读取。"
+          },
+          {
+            "id": "error",
+            "label": "错误",
+            "description": "运行态投影异常，需要回到诊断页。"
+          }
+        ],
+        "requirement_refs": {
+          "user-story": [
+            "docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md"
+          ],
+          "prd": [
+            "docs/beacon/v1.3.8/prd/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md"
+          ],
+          "test-case": [
+            "docs/beacon/v1.3.8/qa/test-cases/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md"
+          ]
+        },
+        "outbound_transitions": [],
+        "analysis": {
+          "target_user": "需要核对运行态的执行者 / 诊断人",
+          "decision_focus": [
+            "当前到底是 single、team 还是 ralph 在推进。",
+            "linked run、artifact、blocker 是否足以解释当前停滞点。",
+            "看完运行态后应该回到项目详情还是继续诊断。"
+          ],
+          "layout_rules": [
+            "模式切换必须固定在头部，便于横向比较三种运行形态。",
+            "session / artifact 只展示必要引用，不在此页堆底层原文。",
+            "最近结果与 blocker 必须直接可读，避免继续翻查多层结构。"
+          ],
+          "noise_guardrail": "运行中心可以下钻运行信息，但仍要压制无边界的机器内部明细。"
+        },
+        "layout_lines": [
+          "+----------------------------------------------------------------------------------+",
+          "| 顶栏：返回项目详情 | 运行中心 | 最近刷新时间 | 当前活跃模式                        |",
+          "+----------------------------------------------------------------------------------+",
+          "| 模式切换： single | team | ralph                                                |",
+          "+----------------------------------------------------------------------------------+",
+          "| 运行态摘要头部: 当前状态 | round_count | failure_streak | 当前执行目标             |",
+          "+----------------------------------------------------------------------------------+",
+          "| agent / session 引用                         | linked run / artifact refs           |",
+          "| - session id / agent 数                      | - latest run                         |",
+          "| - host / lane 摘要                           | - artifact / report                  |",
+          "+----------------------------------------------------------------------------------+",
+          "| recent_result                                | blocker / next_action                |",
+          "| - 最近结果摘要                               | - 当前 blocker                       |",
+          "| - 最近一次状态变化                           | - 下一步动作                         |",
+          "+----------------------------------------------------------------------------------+"
+        ]
+      }
+    ],
+    "navigation": {
+      "primary_entry": "runtime-center",
+      "primary_exit": "runtime-center",
+      "transitions": []
+    },
+    "semantic_layer": {
+      "artifacts": {
+        "semantic_contract": "docs/beacon/v1.3.8/execution/semantic/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/semantic-contract.json",
+        "semantic_dictionary": "docs/beacon/v1.3.8/execution/semantic/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/semantic-dictionary.md",
+        "semantic_usage_guidelines": "docs/beacon/v1.3.8/execution/semantic/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/semantic-usage-guidelines.md",
+        "semantic_review": "docs/beacon/v1.3.8/execution/semantic/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/semantic-review.json"
+      },
+      "default_design_bridge": {
+        "repo": "https://github.com/Leonxlnx/taste-skill",
+        "skill_id": "taste-skill",
+        "entry": "",
+        "detected": false,
+        "kind": "external-default-bridge",
+        "supported_stages": [
+          "prototype",
+          "implement"
+        ],
+        "capabilities": [
+          "prototype",
+          "implement",
+          "taste-design",
+          "semantic-normalization"
+        ],
+        "install_hint": "npx skills add https://github.com/Leonxlnx/taste-skill --skill taste-skill"
+      },
+      "official_language": {
+        "page_names": [
+          {
+            "label": "Beacon v1.3.8 archive governance and historical requirement isolation",
+            "slug": "beacon-v1-3-8-archive-governance-and-historical-requirement-isolation",
+            "source": "requirement_truth"
+          }
+        ],
+        "status_labels": [
+          "降级",
+          "阻塞",
+          "正常",
+          "加载中",
+          "错误"
+        ],
+        "module_labels": [
+          "最小状态",
+          "头部摘要",
+          "状态反馈",
+          "推荐动作"
+        ],
+        "action_labels": [
+          "进入当前",
+          "进入",
+          "返回",
+          "查看详情",
+          "进入详情",
+          "返回总览"
+        ],
+        "preferred_terms": [
+          {
+            "from": "implementation",
+            "to": "implement",
+            "scope": "stage_vocabulary"
+          },
+          {
+            "from": "verify",
+            "to": "qa",
+            "scope": "stage_vocabulary"
+          },
+          {
+            "from": "review",
+            "to": "qa",
+            "scope": "stage_vocabulary"
+          },
+          {
+            "from": "delivery",
+            "to": "release",
+            "scope": "stage_vocabulary"
+          },
+          {
+            "from": "raw runtime log",
+            "to": "运行摘要",
+            "scope": "product_copy"
+          },
+          {
+            "from": "machine contract",
+            "to": "机器内部契约",
+            "scope": "product_copy"
+          }
+        ],
+        "banned_terms": [
+          "implementation",
+          "verify",
+          "review",
+          "delivery",
+          "machine contract",
+          "canonical-envelope",
+          "raw runtime log",
+          "transaction_id",
+          "projection_seq"
+        ]
+      }
+    },
+    "platform_variants": {
+      "global_platforms": [
+        "Web",
+        "PC"
+      ],
+      "pages": {
+        "runtime-center": {
+          "platforms": [
+            "Web",
+            "PC"
+          ],
+          "notes": []
+        }
+      },
+      "notes": [
+        "默认展示 Web / PC 线框视图。",
+        "App 只在真实需求明确要求时保留；当前仅 project-detail 做移动差异提示。"
+      ]
+    },
+    "contract": {
+      "prototype_archetype": "admin-workbench",
+      "wireframe_only": true,
+      "design_governance_required": true,
+      "semantic_governance_required": true,
+      "semantic_contract_path": "docs/beacon/v1.3.8/execution/semantic/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/semantic-contract.json",
+      "route_closure_required": false,
+      "required_files": [
+        "wireframe-summary.md",
+        "wireframe-manifest.json",
+        "navigation-map.md",
+        "navigation-map.json",
+        "state-flow-map.md",
+        "state-flow-map.json",
+        "component-catalog.md",
+        "component-catalog.json",
+        "canonical-envelope.json",
+        "pages/*.md",
+        "freeze.json",
+        "prototype-review.json"
+      ]
+    },
+    "parser": {
+      "page_detection": "requirement-driven-parser",
+      "fallback_used": false,
+      "discovered_page_count": 1,
+      "custom_page_count": 0,
+      "cjk_detected": true,
+      "cjk_parse_failed": false
+    },
+    "compiler": {
+      "requested_mode": "auto",
+      "effective_mode": "rule",
+      "generator_mode": "rule",
+      "fallback_reason": "llm_unavailable",
+      "capability_snapshot": {
+        "schema_version": "1.0",
+        "command_name": "prototype",
+        "host_runtime": "codex",
+        "host_bridge_declared": false,
+        "host_response_available": false,
+        "host_response_source": "none",
+        "host_response_path": "",
+        "host_semantic_ready": false,
+        "provider_available": false,
+        "provider_key_present": false,
+        "llm_disabled": false,
+        "disable_env": "BEACON_PROTOTYPE_DISABLE_LLM"
+      },
+      "model": "beacon-prototype-compiler",
+      "llm_trace": {}
+    },
+    "theme": {
+      "ui_kit": "wireframe-markdown-v1",
+      "prototype_archetype": "admin-workbench",
+      "primary": "#2563EB",
+      "secondary": "#0F172A",
+      "surface_note": "Wireframe freeze uses markdown and metadata only, not high-fidelity HTML surfaces."
+    }
+  },
+  "navigation_map": {
+    "primary_entry": "runtime-center",
+    "primary_exit": "runtime-center",
+    "transitions": []
+  },
+  "state_flow_map": {
+    "schema_version": "1.0",
+    "node_count": 6,
+    "edge_count": 0,
+    "nodes": [
+      {
+        "state_key": "runtime-center:single-active",
+        "page_id": "runtime-center",
+        "state_id": "single-active",
+        "label": "Single 运行",
+        "description": "展示单进程执行摘要和 linked run。"
+      },
+      {
+        "state_key": "runtime-center:team-active",
+        "page_id": "runtime-center",
+        "state_id": "team-active",
+        "label": "Team 运行",
+        "description": "展示 agent 数、角色、状态和 host session metadata。"
+      },
+      {
+        "state_key": "runtime-center:ralph-active",
+        "page_id": "runtime-center",
+        "state_id": "ralph-active",
+        "label": "Ralph 闭环",
+        "description": "展示 round_count、failure_streak、next_action、blocker。"
+      },
+      {
+        "state_key": "runtime-center:idle",
+        "page_id": "runtime-center",
+        "state_id": "idle",
+        "label": "无活跃运行",
+        "description": "当前没有任何 active runtime。"
+      },
+      {
+        "state_key": "runtime-center:loading",
+        "page_id": "runtime-center",
+        "state_id": "loading",
+        "label": "加载中",
+        "description": "运行态数据仍在读取。"
+      },
+      {
+        "state_key": "runtime-center:error",
+        "page_id": "runtime-center",
+        "state_id": "error",
+        "label": "错误",
+        "description": "运行态投影异常，需要回到诊断页。"
+      }
+    ],
+    "edges": []
+  },
+  "component_catalog": {
+    "schema_version": "1.0",
+    "component_count": 5,
+    "components": [
+      {
+        "component_id": "runtime-center-component-01",
+        "page_id": "runtime-center",
+        "name": "运行态摘要头部",
+        "responsibility": "运行态摘要头部 模块负责承载 `运行中心` 的关键信息与操作。",
+        "data_source": [
+          "prototype-plan.page_specs",
+          "source-map.requirement_refs"
+        ],
+        "interaction": {
+          "label": "无直接动作",
+          "trigger": "被动展示",
+          "target": "runtime-center"
+        },
+        "state_refs": [
+          "single-active",
+          "team-active",
+          "ralph-active",
+          "idle",
+          "loading",
+          "error"
+        ],
+        "ac_refs": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004",
+          "AC-005"
+        ],
+        "tc_refs": [
+          "TC-001",
+          "TC-002",
+          "TC-003",
+          "TC-004",
+          "TC-005"
+        ],
+        "story_refs": [
+          "docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md"
+        ]
+      },
+      {
+        "component_id": "runtime-center-component-02",
+        "page_id": "runtime-center",
+        "name": "single / team / ralph 模式切换",
+        "responsibility": "single / team / ralph 模式切换 模块负责承载 `运行中心` 的关键信息与操作。",
+        "data_source": [
+          "prototype-plan.page_specs",
+          "source-map.requirement_refs"
+        ],
+        "interaction": {
+          "label": "无直接动作",
+          "trigger": "被动展示",
+          "target": "runtime-center"
+        },
+        "state_refs": [
+          "single-active",
+          "team-active",
+          "ralph-active",
+          "idle",
+          "loading",
+          "error"
+        ],
+        "ac_refs": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004",
+          "AC-005"
+        ],
+        "tc_refs": [
+          "TC-001",
+          "TC-002",
+          "TC-003",
+          "TC-004",
+          "TC-005"
+        ],
+        "story_refs": [
+          "docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md"
+        ]
+      },
+      {
+        "component_id": "runtime-center-component-03",
+        "page_id": "runtime-center",
+        "name": "agent/session 引用",
+        "responsibility": "agent/session 引用 模块负责承载 `运行中心` 的关键信息与操作。",
+        "data_source": [
+          "prototype-plan.page_specs",
+          "source-map.requirement_refs"
+        ],
+        "interaction": {
+          "label": "无直接动作",
+          "trigger": "被动展示",
+          "target": "runtime-center"
+        },
+        "state_refs": [
+          "single-active",
+          "team-active",
+          "ralph-active",
+          "idle",
+          "loading",
+          "error"
+        ],
+        "ac_refs": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004",
+          "AC-005"
+        ],
+        "tc_refs": [
+          "TC-001",
+          "TC-002",
+          "TC-003",
+          "TC-004",
+          "TC-005"
+        ],
+        "story_refs": [
+          "docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md"
+        ]
+      },
+      {
+        "component_id": "runtime-center-component-04",
+        "page_id": "runtime-center",
+        "name": "artifact 与 linked run",
+        "responsibility": "artifact 与 linked run 模块负责承载 `运行中心` 的关键信息与操作。",
+        "data_source": [
+          "prototype-plan.page_specs",
+          "source-map.requirement_refs"
+        ],
+        "interaction": {
+          "label": "无直接动作",
+          "trigger": "被动展示",
+          "target": "runtime-center"
+        },
+        "state_refs": [
+          "single-active",
+          "team-active",
+          "ralph-active",
+          "idle",
+          "loading",
+          "error"
+        ],
+        "ac_refs": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004",
+          "AC-005"
+        ],
+        "tc_refs": [
+          "TC-001",
+          "TC-002",
+          "TC-003",
+          "TC-004",
+          "TC-005"
+        ],
+        "story_refs": [
+          "docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md"
+        ]
+      },
+      {
+        "component_id": "runtime-center-component-05",
+        "page_id": "runtime-center",
+        "name": "最近结果与 blocker",
+        "responsibility": "最近结果与 blocker 模块负责承载 `运行中心` 的关键信息与操作。",
+        "data_source": [
+          "prototype-plan.page_specs",
+          "source-map.requirement_refs"
+        ],
+        "interaction": {
+          "label": "无直接动作",
+          "trigger": "被动展示",
+          "target": "runtime-center"
+        },
+        "state_refs": [
+          "single-active",
+          "team-active",
+          "ralph-active",
+          "idle",
+          "loading",
+          "error"
+        ],
+        "ac_refs": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004",
+          "AC-005"
+        ],
+        "tc_refs": [
+          "TC-001",
+          "TC-002",
+          "TC-003",
+          "TC-004",
+          "TC-005"
+        ],
+        "story_refs": [
+          "docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md"
+        ]
+      }
+    ]
+  },
+  "route_closure_contract": {
+    "required": false,
+    "closure_cases": [],
+    "notes": "Wireframe freeze 只冻结跳转关系，不冻结最终实现路由。"
+  },
+  "coverage_report": {
+    "schema_version": "1.0",
+    "feature": "Beacon v1.3.8 archive governance and historical requirement isolation",
+    "feature_slug": "beacon-v1-3-8-archive-governance-and-historical-requirement-isolation",
+    "prototype_mode": "wireframe",
+    "required_pages": [
+      "runtime-center"
+    ],
+    "generated_pages": [
+      "runtime-center"
+    ],
+    "required_states": [
+      "error",
+      "idle",
+      "loading",
+      "ralph-active",
+      "single-active",
+      "team-active"
+    ],
+    "missing_state_variants": [],
+    "compact_mode_detected": false,
+    "page_count": 1,
+    "transition_count": 0
+  },
+  "source_map": {
+    "schema_version": "1.0",
+    "feature": "Beacon v1.3.8 archive governance and historical requirement isolation",
+    "feature_slug": "beacon-v1-3-8-archive-governance-and-historical-requirement-isolation",
+    "derived_from": [
+      "user-story",
+      "prd",
+      "test-case"
+    ],
+    "sources": [
+      {
+        "type": "user-story",
+        "path": "docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+        "fingerprint": "a7100e1f17e07d0ed2918d3bfee4a53489aa6a0441befb741f312de9d67fa9d5"
+      },
+      {
+        "type": "prd",
+        "path": "docs/beacon/v1.3.8/prd/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+        "fingerprint": "c1b653d33aefde421ee187b769815b5bfc6410887ce190395cd107bf715f0d0e"
+      },
+      {
+        "type": "test-case",
+        "path": "docs/beacon/v1.3.8/qa/test-cases/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md",
+        "fingerprint": "20e36852c24b5fd2559e620f42ff4c160a77f7b4fb0e01a46d842423096a48e3"
+      }
+    ],
+    "page_requirements": [
+      {
+        "page_id": "runtime-center",
+        "refs": {
+          "user-story": [
+            "docs/beacon/v1.3.8/user-story/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md"
+          ],
+          "prd": [
+            "docs/beacon/v1.3.8/prd/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md"
+          ],
+          "test-case": [
+            "docs/beacon/v1.3.8/qa/test-cases/beacon-v1.3.8-archive-governance-and-historical-requirement-isolation.md"
+          ]
+        }
+      }
+    ],
+    "generated_at": "2026-04-24T10:29:24Z"
+  },
+  "semantic_layer": {
+    "artifacts": {
+      "semantic_contract": "docs/beacon/v1.3.8/execution/semantic/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/semantic-contract.json",
+      "semantic_dictionary": "docs/beacon/v1.3.8/execution/semantic/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/semantic-dictionary.md",
+      "semantic_usage_guidelines": "docs/beacon/v1.3.8/execution/semantic/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/semantic-usage-guidelines.md",
+      "semantic_review": "docs/beacon/v1.3.8/execution/semantic/beacon-v1-3-8-archive-governance-and-historical-requirement-isolation/semantic-review.json"
+    },
+    "default_design_bridge": {
+      "repo": "https://github.com/Leonxlnx/taste-skill",
+      "skill_id": "taste-skill",
+      "entry": "",
+      "detected": false,
+      "kind": "external-default-bridge",
+      "supported_stages": [
+        "prototype",
+        "implement"
+      ],
+      "capabilities": [
+        "prototype",
+        "implement",
+        "taste-design",
+        "semantic-normalization"
+      ],
+      "install_hint": "npx skills add https://github.com/Leonxlnx/taste-skill --skill taste-skill"
+    },
+    "official_language": {
+      "page_names": [
+        {
+          "label": "Beacon v1.3.8 archive governance and historical requirement isolation",
+          "slug": "beacon-v1-3-8-archive-governance-and-historical-requirement-isolation",
+          "source": "requirement_truth"
+        }
+      ],
+      "status_labels": [
+        "降级",
+        "阻塞",
+        "正常",
+        "加载中",
+        "错误"
+      ],
+      "module_labels": [
+        "最小状态",
+        "头部摘要",
+        "状态反馈",
+        "推荐动作"
+      ],
+      "action_labels": [
+        "进入当前",
+        "进入",
+        "返回",
+        "查看详情",
+        "进入详情",
+        "返回总览"
+      ],
+      "preferred_terms": [
+        {
+          "from": "implementation",
+          "to": "implement",
+          "scope": "stage_vocabulary"
+        },
+        {
+          "from": "verify",
+          "to": "qa",
+          "scope": "stage_vocabulary"
+        },
+        {
+          "from": "review",
+          "to": "qa",
+          "scope": "stage_vocabulary"
+        },
+        {
+          "from": "delivery",
+          "to": "release",
+          "scope": "stage_vocabulary"
+        },
+        {
+          "from": "raw runtime log",
+          "to": "运行摘要",
+          "scope": "product_copy"
+        },
+        {
+          "from": "machine contract",
+          "to": "机器内部契约",
+          "scope": "product_copy"
+        }
+      ],
+      "banned_terms": [
+        "implementation",
+        "verify",
+        "review",
+        "delivery",
+        "machine contract",
+        "canonical-envelope",
+        "raw runtime log",
+        "transaction_id",
+        "projection_seq"
+      ]
+    }
+  }
+}

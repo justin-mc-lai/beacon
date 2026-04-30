@@ -30,7 +30,12 @@ export type MaterialType =
   | 'test-case'
   | 'prototype'
   | 'execution'
-  | 'release';
+  | 'release'
+  | 'architecture'
+  | 'research'
+  | 'plan'
+  | 'report'
+  | 'guide';
 
 export interface GitStatus {
   branch: string;

@@ -5,6 +5,8 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
+from beacon.utils.artifact_paths import execution_file_candidates
+from beacon.utils.implement_prompt_boundary import implement_prompt_boundary_supported
 from beacon.utils.qa_feature import load_feature_qa_status
 from beacon.utils.runtime import read_json
 from beacon.utils.story_state import feature_slug
@@ -205,6 +207,46 @@ def _load_latest_implement_state(project_root: Path, *, version: str, feature: s
     return sorted(candidates, key=lambda item: item[0], reverse=True)[0][1]
 
 
+def _load_authoritative_implementation_summary(project_root: Path, *, version: str, feature: str) -> dict[str, Any]:
+    slug = feature_slug(feature)
+    for path in execution_file_candidates(project_root, version, f"implementation-summary-{slug}.json"):
+        payload = read_json(path, {})
+        if isinstance(payload, dict) and payload:
+            return payload
+    return {}
+
+
+def _merge_implement_state(authoritative: dict[str, Any], runtime_state: dict[str, Any]) -> dict[str, Any]:
+    summary = _clean_dict(authoritative)
+    runtime = _clean_dict(runtime_state)
+    if not summary:
+        return runtime
+    if not runtime:
+        return summary
+
+    merged = dict(summary)
+    for key, value in runtime.items():
+        if key in {"prompt_boundary", "delivery_contract", "requirement_traceability", "traceability_refs"}:
+            if not merged.get(key):
+                merged[key] = value
+            continue
+        if key in {"status", "run_id", "request_path", "result_path", "stdout_path", "stderr_path", "reason_code", "generated_at"}:
+            if _clean_str(value):
+                merged[key] = value
+            continue
+        if key in {"plan_preflight", "branch_preflight", "subagent_prechecks", "semantic_layer", "host_native_delivery"}:
+            if value:
+                merged[key] = value
+            continue
+        if key in {"mode", "host_runtime", "runner", "adapter_type", "phase", "next_action", "team_surface"}:
+            if _clean_str(value):
+                merged[key] = value
+            continue
+        if key not in merged:
+            merged[key] = value
+    return merged
+
+
 def _default_requirement_binding(payload: dict[str, Any]) -> dict[str, Any]:
     binding = _clean_dict(payload.get("requirement_traceability"))
     if binding:
@@ -220,6 +262,49 @@ def _default_traceability_refs(payload: dict[str, Any]) -> list[str]:
         if value:
             refs.append(value)
     return _clean_list(refs)
+
+
+def _normalize_prompt_boundary(payload: dict[str, Any] | None, *, version: str) -> dict[str, Any]:
+    required = implement_prompt_boundary_supported(version)
+    raw = _clean_dict(payload)
+    normalized = {
+        "required": required,
+        "status": "not_required" if not required else "missing",
+        "blocked": False if not required else True,
+        "classification": "",
+        "reason_code": "",
+        "next_action": "",
+        "recommended_command": "",
+        "surface": "",
+    }
+    if not required:
+        return normalized
+    if not raw:
+        normalized["reason_code"] = "implement_prompt_boundary_missing"
+        return normalized
+
+    classification = _clean_str(raw.get("classification"))
+    blocked = bool(raw.get("blocked", False))
+    status = _clean_str(raw.get("status")) or ("blocked" if blocked else "pass")
+    reason_code = _clean_str(raw.get("reason_code"))
+    allowed_classes = {"in_scope_implementation", "clarification_within_scope"}
+    if classification and classification not in allowed_classes and not blocked:
+        blocked = True
+        status = "blocked"
+        reason_code = reason_code or "implement_prompt_boundary_invalid"
+
+    normalized.update(
+        {
+            "status": status or ("blocked" if blocked else "pass"),
+            "blocked": blocked,
+            "classification": classification,
+            "reason_code": reason_code or ("implement_prompt_boundary_missing" if not classification else ""),
+            "next_action": _clean_str(raw.get("next_action")),
+            "recommended_command": _clean_str(raw.get("recommended_command")),
+            "surface": _clean_str(raw.get("surface")) or "host_prompt",
+        }
+    )
+    return normalized
 
 
 def build_delivery_read_model(
@@ -282,14 +367,24 @@ def build_delivery_read_model(
     release_ready = bool(release_state.get("release_ready", qa_contract.get("release_ready", False)))
     gate = _clean_dict(release_state.get("gate"))
     qa_release = _clean_dict(release_state.get("qa"))
+    semantic = _clean_dict(release_state.get("semantic"))
     revision_binding = _clean_dict(release_state.get("revision_binding"))
+    prompt_boundary = _normalize_prompt_boundary(implement_state.get("prompt_boundary"), version=resolved_version)
     risk_flags = _clean_list(authoritative_contract.get("risk_flags"))
+    risk_flags.extend(_clean_list(release_state.get("risk_flags")))
     if qa_state and _clean_str(qa_state.get("status")).lower() not in {"", "passed"}:
         risk_flags.append("qa_not_ready")
+    if semantic and _clean_str(semantic.get("status")).lower() not in {"", "pass"}:
+        risk_flags.append(_clean_str(semantic.get("reason_code")) or "semantic_not_ready")
     if release_state and not release_ready:
         risk_flags.append("release_not_ready")
     if revision_binding and not bool(revision_binding.get("gate_bound_to_latest_revision", False)):
         risk_flags.append(_clean_str(revision_binding.get("reason_code")) or "revision_not_bound")
+    if prompt_boundary.get("required") and (
+        bool(prompt_boundary.get("blocked", False))
+        or _clean_str(prompt_boundary.get("status")) not in {"pass", "not_required"}
+    ):
+        risk_flags.append(_clean_str(prompt_boundary.get("reason_code")) or "implement_prompt_boundary_missing")
 
     requirement_binding = _clean_dict(authoritative_contract.get("requirement_binding"))
     requirement_refs = _clean_list(authoritative_contract.get("traceability_refs"))
@@ -310,6 +405,7 @@ def build_delivery_read_model(
             "status": _clean_str(implement_state.get("status")),
             "run_id": _clean_str(implement_state.get("run_id")),
             "delivery_contract": implement_contract,
+            "prompt_boundary": prompt_boundary,
         },
         "qa": {
             "status": _clean_str(qa_state.get("status") or qa_release.get("status")),
@@ -321,7 +417,9 @@ def build_delivery_read_model(
         "release": {
             "gate_status": _clean_str(gate.get("status")),
             "release_ready": release_ready,
+            "semantic": semantic,
             "revision_binding": revision_binding,
+            "prompt_boundary": prompt_boundary,
         },
         "traceability": {
             "requirement_binding": requirement_binding,
@@ -340,7 +438,9 @@ def load_delivery_read_model(
     release_payload: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     resolved_version = resolve_target_version(project_root, version)
-    implement_state = _load_latest_implement_state(project_root, version=resolved_version, feature=feature)
+    authoritative_summary = _load_authoritative_implementation_summary(project_root, version=resolved_version, feature=feature)
+    latest_runtime_state = _load_latest_implement_state(project_root, version=resolved_version, feature=feature)
+    implement_state = _merge_implement_state(authoritative_summary, latest_runtime_state)
     qa_state = load_feature_qa_status(project_root, feature=feature) if _clean_str(feature) else {}
     if qa_state and _clean_str(qa_state.get("version")) not in {"", resolved_version}:
         qa_state = {}

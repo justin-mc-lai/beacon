@@ -50,7 +50,7 @@ def test_workflow_auto_should_create_lifecycle_memory_loop(tmp_path: Path):
     items = payload.get("items", [])
     assert items
 
-    for stage in ("think", "user-story", "prd", "test-case", "implementation", "verify"):
+    for stage in ("prd", "user-story", "test-case", "implement", "qa", "release"):
         stage_events = [i for i in items if i.get("run_id") == run_id and i.get("stage") == stage]
         names = {i.get("event") for i in stage_events}
         assert "stage_started" in names

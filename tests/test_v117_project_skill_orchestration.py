@@ -148,7 +148,7 @@ def test_profile_create_rolo_example_should_write_profile_and_registry(tmp_path:
     profile_payload = json.loads(show.stdout)
     profile = profile_payload["profile"]
     assert profile["project"] == "rolo"
-    assert profile["skills"]["verify"] == "rolo-dev"
+    assert profile["skills"]["qa"] == "rolo-dev"
     assert "upload_mp4_success" in profile["required_cases"]
 
 
@@ -223,6 +223,59 @@ def test_review_accept_should_block_when_project_required_cases_missing(tmp_path
     payload = json.loads(result.stdout)
     assert payload["reason"] == "project_profile_gate_blocked"
     assert any(item.get("reason_code") == "required_case_missing" for item in payload.get("issues", []))
+
+
+def test_verify_run_should_accept_canonical_qa_stage_profile_and_normalize_output(tmp_path: Path):
+    _seed_docs(tmp_path)
+    (tmp_path / "beacon.config.yaml").write_text(
+        """
+project_skills:
+  registry:
+    shell-skill:
+      id: shell-skill
+      kind: external
+      entry: /bin/sh
+      capabilities:
+        - qa
+      supported_stages:
+        - qa
+      evidence_contract:
+        - gateway_smoke
+  profiles:
+    demo:
+      project: demo
+      profile_id: demo
+      description: Demo profile
+      skills:
+        qa: shell-skill
+      required_evidence:
+        - gateway_smoke
+      required_cases: []
+      orchestration:
+        nodes:
+          -
+            id: gateway
+            stage: qa
+            skill: shell-skill
+            command_template: "python3 -c 'from pathlib import Path; p=Path(r\"{project_root}/.beacon/gateway-qa.txt\"); p.parent.mkdir(parents=True, exist_ok=True); p.write_text(\"ok\")'"
+            produces_evidence:
+              - gateway_smoke
+  default_profile: demo
+""".strip()
+        + "\n",
+        encoding="utf-8",
+    )
+    bind = _invoke(["skill", "bind", FEATURE, "--profile", "demo", "--project-root", str(tmp_path), "--version", VERSION, "--json"])
+    assert bind.exit_code == 0, bind.stdout
+
+    result = _invoke(["verify", "run", FEATURE, "--project-root", str(tmp_path), "--version", VERSION, "--json"])
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["orchestration"]["status"] == "completed"
+    assert payload["orchestration"]["stage"] == "qa"
+    assert payload["orchestration"]["nodes"][0]["stage"] == "qa"
+    assert payload["orchestration"]["nodes"][0]["execution_boundary"]["supported_stages"] == ["qa"]
+    assert (tmp_path / ".beacon" / "gateway-qa.txt").exists()
 
 
 def test_doctor_advise_should_surface_contract_drift_from_profile(tmp_path: Path):

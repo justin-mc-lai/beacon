@@ -164,6 +164,73 @@ def _feature_scorecard_coverage_metrics(
     }
 
 
+def _aggregate_feature_scorecard_coverage_metrics(
+    project_root: Path,
+    *,
+    version: str,
+    story_slugs: set[str],
+    planned_story: int,
+    implemented_story: int,
+) -> dict[str, Any] | None:
+    if not story_slugs or planned_story <= 1:
+        return None
+
+    qa_root = project_root / ".beacon" / "qa" / "features"
+    if not qa_root.exists():
+        return None
+
+    total_ac = 0
+    tested_ac = 0
+    total_tc = 0
+    executed_tc = 0
+
+    for story_slug in sorted(story_slugs):
+        scorecard = _read_json(qa_root / story_slug / "scorecard.json")
+        if not scorecard:
+            return None
+        if not bool(scorecard.get("release_ready", False)):
+            return None
+        if str(scorecard.get("continue_decision") or "").strip() != "ready_for_release":
+            return None
+        unresolved = [str(item).strip() for item in (scorecard.get("unresolved_closure_outcomes") or []) if str(item).strip()]
+        if unresolved:
+            return None
+
+        total_ac += int(scorecard.get("ac_total") or 0)
+        tested_ac += int(scorecard.get("ac_accepted") or 0)
+        coverage_current = scorecard.get("coverage_current") if isinstance(scorecard.get("coverage_current"), dict) else {}
+        total_tc += int(coverage_current.get("required_scenarios") or scorecard.get("scenario_total") or 0)
+        executed_tc += int(coverage_current.get("executed_scenarios") or scorecard.get("scenario_passed") or 0)
+
+    story_coverage = _safe_ratio(implemented_story, planned_story)
+    ac_coverage = _safe_ratio(tested_ac, total_ac)
+    tc_coverage = _safe_ratio(executed_tc, total_tc)
+    full_coverage = (
+        planned_story > 0
+        and total_ac > 0
+        and total_tc > 0
+        and story_coverage >= 1.0
+        and ac_coverage >= 1.0
+        and tc_coverage >= 1.0
+    )
+    return {
+        "version": version,
+        "feature": "",
+        "planned_story": planned_story,
+        "implemented_story": implemented_story,
+        "story_coverage": story_coverage,
+        "total_ac": total_ac,
+        "tested_ac": tested_ac,
+        "ac_coverage": ac_coverage,
+        "total_tc": total_tc,
+        "executed_tc": executed_tc,
+        "tc_coverage": tc_coverage,
+        "full_coverage": full_coverage,
+        "matrix_errors": [],
+        "source": "feature_qa_scorecard_aggregate",
+    }
+
+
 def _story_files(project_root: Path, version: str, feature: str | None = None) -> list[Path]:
     roots = [
         project_root / "docs" / "beacon" / version / "user-story",
@@ -258,6 +325,16 @@ def compute_coverage_metrics(
     )
     if feature_scorecard_metrics is not None:
         return feature_scorecard_metrics
+
+    aggregate_feature_scorecard_metrics = _aggregate_feature_scorecard_coverage_metrics(
+        project_root,
+        version=ver,
+        story_slugs=story_slugs,
+        planned_story=planned_story,
+        implemented_story=implemented_story,
+    )
+    if aggregate_feature_scorecard_metrics is not None:
+        return aggregate_feature_scorecard_metrics
 
     projected = _projected_coverage_metrics(project_root, ver, feature_filter or None) if use_projected else None
     if projected is not None:

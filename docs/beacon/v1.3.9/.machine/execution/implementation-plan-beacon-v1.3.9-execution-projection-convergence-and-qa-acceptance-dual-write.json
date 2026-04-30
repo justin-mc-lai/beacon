@@ -1,0 +1,1099 @@
+{
+  "schema_version": "1.0",
+  "plan_id": "plan-beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write-r2",
+  "feature": "Beacon v1.3.9 execution projection convergence and QA acceptance dual-write",
+  "feature_slug": "beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write",
+  "version": "v1.3.9",
+  "revision_id": "R2",
+  "baseline_hash": "sha256:da0b4e5fdd2fe575ff8cba7c68d037f006f57fa168bda7f1d30ed7c8c9dd91c3",
+  "plan_hash": "sha256:e68b83e73cda87a5ccefd9e5097478a9123684a70b6cab50505df1453fa00683",
+  "status": "completed",
+  "source_refs": {
+    "user_story": "docs/beacon/v1.3.9/user-story/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+    "prd": "docs/beacon/v1.3.9/prd/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+    "test_case": "docs/beacon/v1.3.9/qa/test-cases/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+    "revision_delta": "docs/beacon/v1.3.9/.machine/execution/revision-delta-beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.json",
+    "ac_matrix": "docs/beacon/v1.3.9/.machine/qa/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.ac-test-matrix.json",
+    "story_scenario_map": "docs/beacon/v1.3.9/.machine/qa/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.story-scenario-map.json",
+    "qa9_matrix": "docs/beacon/v1.3.9/.machine/qa/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.qa9-matrix.json"
+  },
+  "architecture_blueprint_ref": "docs/beacon/v1.3.9/execution/architecture-blueprint.md",
+  "boundary_principles": [
+    {
+      "id": "explicit_assumptions",
+      "heading": "显式假设与歧义管理"
+    },
+    {
+      "id": "simplicity_first",
+      "heading": "简单优先"
+    },
+    {
+      "id": "surgical_changes",
+      "heading": "外科手术式改动"
+    },
+    {
+      "id": "goal_driven_execution",
+      "heading": "目标驱动验证闭环"
+    },
+    {
+      "id": "trivial_task_exception",
+      "heading": "trivial task 可以轻量处理，但不能越界"
+    }
+  ],
+  "workstreams": [
+    {
+      "workstream_id": "implementation-main",
+      "title": "Implementation Mainline",
+      "task_ids": [
+        "ITASK-001",
+        "ITASK-002",
+        "ITASK-003",
+        "ITASK-004",
+        "ITASK-005",
+        "ITASK-006",
+        "ITASK-007",
+        "ITASK-008",
+        "ITASK-009",
+        "ITASK-010",
+        "ITASK-011"
+      ]
+    }
+  ],
+  "task_mapping_source": "prd-sections",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.3.9",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-04-29T03:24:41.973399+00:00",
+    "feature": "beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write",
+    "feature_slug": "beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write",
+    "prd_ref": "docs/beacon/v1.3.9/prd/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+    "user_story_ref": "docs/beacon/v1.3.9/user-story/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md"
+  },
+  "review_gates": [],
+  "qa_coverage_hints": [],
+  "tasks": [
+    {
+      "task_id": "ITASK-001",
+      "title": "FR-001 AC-001",
+      "description": "`v1.3.9` 必须把 `qa / release / gate / support` 的 execution delivery 收敛到统一 artifact taxonomy，而不是继续扩张低信号模板文件。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-001"
+      ],
+      "mapped_test_ids": [
+        "TC-001",
+        "TC-009"
+      ],
+      "mapped_scenario_ids": [
+        "SC-001",
+        "SC-002",
+        "SC-003",
+        "SC-004",
+        "SC-005",
+        "SC-006"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-001",
+        "TC-009"
+      ],
+      "depends_on": [],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-04-29T04:01:01.146980+00:00"
+    },
+    {
+      "task_id": "ITASK-002",
+      "title": "FR-002 AC-002",
+      "description": "`qa` 必须在 evidence-backed verdict 后自动生成 canonical acceptance envelope。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-002",
+        "AC-003"
+      ],
+      "mapped_test_ids": [
+        "TC-002",
+        "TC-003",
+        "TC-010",
+        "TC-011"
+      ],
+      "mapped_scenario_ids": [
+        "SC-007",
+        "SC-008",
+        "SC-009",
+        "SC-010"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-002",
+        "TC-003",
+        "TC-010",
+        "TC-011"
+      ],
+      "depends_on": [
+        "ITASK-001"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/smoke/command.txt",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/smoke/stdout.log",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/smoke/stderr.log",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/smoke/junit.xml",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/smoke/result.json",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260429T115003076964",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.3.9/.machine/qa/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.qa9-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write/ac-closure.json",
+        ".beacon/qa/features/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write/scorecard.json",
+        ".beacon/evidence/auto-test/run-20260429T115807257575/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260429T115807257575/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260429T115807257575/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260429T115807257575/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260429T115807257575/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260429T115807257575/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260429T115807257575/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260429T115807257575/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260429T115807257575/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260429T115807257575/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260429T115807257575/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260429T115807257575/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260429T115807257575/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260429T115807257575/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260429T115807257575/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260429T115807257575/smoke/command.txt",
+        ".beacon/evidence/auto-test/run-20260429T115807257575/smoke/stdout.log",
+        ".beacon/evidence/auto-test/run-20260429T115807257575/smoke/stderr.log",
+        ".beacon/evidence/auto-test/run-20260429T115807257575/smoke/junit.xml",
+        ".beacon/evidence/auto-test/run-20260429T115807257575/smoke/result.json",
+        ".beacon/evidence/auto-test/run-20260429T115807257575/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260429T115807257575/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260429T115807257575/summary.json",
+        "verify:run-20260429T115807257575",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/smoke/command.txt",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/smoke/stdout.log",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/smoke/stderr.log",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/smoke/junit.xml",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/smoke/result.json",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/summary.json",
+        "verify:run-20260429T141709018183"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-04-29T03:51:42.121398+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-003",
+      "title": "FR-003 AC-003",
+      "description": "同一笔 QA acceptance transaction 必须双写 machine sink 与 human-readable execution artifact。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-010",
+        "AC-005",
+        "AC-004",
+        "AC-008",
+        "AC-007"
+      ],
+      "mapped_test_ids": [
+        "TEST-010",
+        "TC-005",
+        "TC-004",
+        "TC-008",
+        "TC-007",
+        "TC-012",
+        "TC-013",
+        "TC-015",
+        "TC-016"
+      ],
+      "mapped_scenario_ids": [
+        "SC-011",
+        "SC-012",
+        "SC-013",
+        "SC-014",
+        "SC-015",
+        "SC-016",
+        "SC-017",
+        "SC-018",
+        "SC-019",
+        "SC-020",
+        "SC-021",
+        "SC-022",
+        "SC-025",
+        "SC-026",
+        "SC-027",
+        "SC-028",
+        "SC-029",
+        "SC-030",
+        "SC-031",
+        "SC-032"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-004",
+        "TC-005",
+        "TC-007",
+        "TC-008",
+        "TC-012",
+        "TC-013",
+        "TC-015",
+        "TC-016"
+      ],
+      "depends_on": [
+        "ITASK-002"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/smoke/command.txt",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/smoke/stdout.log",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/smoke/stderr.log",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/smoke/junit.xml",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/smoke/result.json",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260429T115003076964",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.3.9/.machine/qa/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.qa9-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write/ac-closure.json",
+        ".beacon/qa/features/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write/scorecard.json",
+        ".beacon/evidence/auto-test/run-20260429T115807257575/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260429T115807257575/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260429T115807257575/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260429T115807257575/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260429T115807257575/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260429T115807257575/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260429T115807257575/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260429T115807257575/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260429T115807257575/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260429T115807257575/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260429T115807257575/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260429T115807257575/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260429T115807257575/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260429T115807257575/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260429T115807257575/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260429T115807257575/smoke/command.txt",
+        ".beacon/evidence/auto-test/run-20260429T115807257575/smoke/stdout.log",
+        ".beacon/evidence/auto-test/run-20260429T115807257575/smoke/stderr.log",
+        ".beacon/evidence/auto-test/run-20260429T115807257575/smoke/junit.xml",
+        ".beacon/evidence/auto-test/run-20260429T115807257575/smoke/result.json",
+        ".beacon/evidence/auto-test/run-20260429T115807257575/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260429T115807257575/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260429T115807257575/summary.json",
+        "verify:run-20260429T115807257575",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/smoke/command.txt",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/smoke/stdout.log",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/smoke/stderr.log",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/smoke/junit.xml",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/smoke/result.json",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260429T141709018183/summary.json",
+        "verify:run-20260429T141709018183"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-04-29T03:51:42.121421+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-004",
+      "title": "FR-004 AC-004",
+      "description": "`release` 与 `gate` 必须消费同一 acceptance/readiness envelope，不得各自产生平级 readiness truth。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-006",
+        "AC-011"
+      ],
+      "mapped_test_ids": [
+        "TC-006",
+        "TEST-011",
+        "TC-014"
+      ],
+      "mapped_scenario_ids": [
+        "SC-023",
+        "SC-024"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-006",
+        "TC-014"
+      ],
+      "depends_on": [
+        "ITASK-003"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/smoke/command.txt",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/smoke/stdout.log",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/smoke/stderr.log",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/smoke/junit.xml",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/smoke/result.json",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260429T115003076964/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260429T115003076964",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.3.9/.machine/qa/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.qa9-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write/ac-closure.json",
+        ".beacon/qa/features/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write/scorecard.json",
+        "verify:run-20260429T115807257575",
+        "verify:run-20260429T141709018183"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-04-29T03:51:42.121435+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-005",
+      "title": "FR-005 AC-005",
+      "description": "human-readable projected docs 必须包含最小 public command invocation / operator usage note。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-009"
+      ],
+      "mapped_test_ids": [
+        "TC-009"
+      ],
+      "mapped_scenario_ids": [
+        "SC-015"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-009"
+      ],
+      "depends_on": [
+        "ITASK-004"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-04-29T04:01:01.146980+00:00"
+    },
+    {
+      "task_id": "ITASK-006",
+      "title": "FR-006 AC-006",
+      "description": "`help / status / doctor / archive` 必须作为解释层复用 canonical/read-model truth，不再默认扩张模板 execution 文档。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-005"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-04-29T04:01:01.146980+00:00"
+    },
+    {
+      "task_id": "ITASK-007",
+      "title": "FR-007 AC-007",
+      "description": "execution 目录中的旧模板型低信号文件必须被标记为保留、合并、按需生成或废弃。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-006"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-04-29T04:01:01.146980+00:00"
+    },
+    {
+      "task_id": "ITASK-008",
+      "title": "FR-008 AC-008",
+      "description": "全链路必须复用 Beacon 已有 transaction、writeback、canonical projection、host-native orchestration 能力，不引入平行 truth pipeline。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-007"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-04-29T04:01:01.146980+00:00"
+    },
+    {
+      "task_id": "ITASK-009",
+      "title": "FR-009 AC-009",
+      "description": "`prototype auto` 默认不得静默回退到固定模板产出；任何 rule/template fallback 必须显式标记 downgrade 或阻断后续 freeze / implement planning。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-008"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-04-29T04:01:01.146980+00:00"
+    },
+    {
+      "task_id": "ITASK-010",
+      "title": "FR-010 AC-010",
+      "description": "QA acceptance transaction 必须把 runtime projection sink 纳入同一事务元数据与 sink checksum 合约，而不是停留在 machine/human 二写。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-009"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-04-29T04:01:01.146980+00:00"
+    },
+    {
+      "task_id": "ITASK-011",
+      "title": "FR-011 AC-011",
+      "description": "`status / doctor / gate / release` 必须消费与检查同一 acceptance/prototype transaction contract，在发现 transaction drift 或 failed transaction 时阻断 pass verdict。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-010"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-04-29T04:01:01.146980+00:00"
+    }
+  ],
+  "revision_delta": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write",
+    "feature_slug": "beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write",
+    "version": "v1.3.9",
+    "revision_id": "R2",
+    "source_revision_id": "R1",
+    "status": "ready",
+    "cleanup_required": false,
+    "removed_requirement_count": 0,
+    "added_requirement_count": 3,
+    "retained_requirement_count": 8,
+    "removed_requirement_surfaces": [],
+    "added_requirement_surfaces": [
+      {
+        "revision_id": "R2",
+        "id": "AC-009",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "prototype-non-template",
+        "text": "`prototype auto` 在 host/LLM compile 失败时不会静默落到固定模板成功路径；系统会显式 downgrade 或阻断。",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.3.9/user-story/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+        "signature": "ac::::prototype-non-template::`prototype auto` 在 host/llm compile 失败时不会静默落到固定模板成功路径；系统会显式 downgrade 或阻断。::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-010",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "qa-three-sink-transaction",
+        "text": "QA acceptance transaction 共享一致事务元数据，并覆盖 machine sink、human sink、runtime projection sink。",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.3.9/user-story/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+        "signature": "ac::::qa-three-sink-transaction::qa acceptance transaction 共享一致事务元数据，并覆盖 machine sink、human sink、runtime projection sink。::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-011",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "transaction-contract-consumers",
+        "text": "`status / doctor / gate / release` 读取同一 transaction contract，并在 drift / failed transaction / missing projection 时阻断 pass verdict。",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.3.9/user-story/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+        "signature": "ac::::transaction-contract-consumers::`status / doctor / gate / release` 读取同一 transaction contract，并在 drift / failed transaction / missing projection 时阻断 pass verdict。::"
+      }
+    ],
+    "retained_requirement_surfaces": [
+      {
+        "revision_id": "R2",
+        "id": "AC-001",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "artifact-taxonomy",
+        "text": "`v1.3.9` 明确 execution artifact taxonomy，至少区分 canonical envelope、required human projection、optional derived projection、deprecated template artifact。",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.3.9/user-story/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+        "signature": "ac::::artifact-taxonomy::`v1.3.9` 明确 execution artifact taxonomy，至少区分 canonical envelope、required human projection、optional derived projection、deprecated template artifact。::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-008",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "capability-reuse",
+        "text": "新方案复用 Beacon 既有 writeback、transaction lineage、canonical projection 与 host-native orchestration 能力。",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.3.9/user-story/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+        "signature": "ac::::capability-reuse::新方案复用 beacon 既有 writeback、transaction lineage、canonical projection 与 host-native orchestration 能力。::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-005",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "operator-facing-docs",
+        "text": "保留的 execution human docs 必须直接说明 public command usage、inputs、outputs、evidence refs 与 next step。",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.3.9/user-story/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+        "signature": "ac::::operator-facing-docs::保留的 execution human docs 必须直接说明 public command usage、inputs、outputs、evidence refs 与 next step。::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-003",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "qa-dual-write",
+        "text": "同一笔 QA acceptance transaction 会自动双写 machine sink 与 human-readable execution artifact。",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.3.9/user-story/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+        "signature": "ac::::qa-dual-write::同一笔 qa acceptance transaction 会自动双写 machine sink 与 human-readable execution artifact。::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-002",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "qa-envelope",
+        "text": "`qa` 在 evidence-backed verdict 后会生成 machine-readable acceptance envelope。",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.3.9/user-story/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+        "signature": "ac::::qa-envelope::`qa` 在 evidence-backed verdict 后会生成 machine-readable acceptance envelope。::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-004",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "release-gate-convergence",
+        "text": "`release` 与 `gate` 消费同一 acceptance/readiness truth，不再各自产生平级 readiness source。",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.3.9/user-story/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+        "signature": "ac::::release-gate-convergence::`release` 与 `gate` 消费同一 acceptance/readiness truth，不再各自产生平级 readiness source。::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-006",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "support-surface-simplification",
+        "text": "`help / status / doctor / archive` 作为解释层复用统一 read-model truth，不再默认扩张模板文档。",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.3.9/user-story/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+        "signature": "ac::::support-surface-simplification::`help / status / doctor / archive` 作为解释层复用统一 read-model truth，不再默认扩张模板文档。::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-007",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "template-reduction",
+        "text": "execution 目录存在一份明确迁移策略，说明哪些旧模板保留、合并、按需生成或废弃。",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.3.9/user-story/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+        "signature": "ac::::template-reduction::execution 目录存在一份明确迁移策略，说明哪些旧模板保留、合并、按需生成或废弃。::"
+      }
+    ],
+    "current_baseline_hash": "sha256:da0b4e5fdd2fe575ff8cba7c68d037f006f57fa168bda7f1d30ed7c8c9dd91c3",
+    "source_baseline_hash": "sha256:a889701cd0fd03a8ccd9aebef3c236b28adba7d5645304f23bfe1e1f357798eb",
+    "story_state_ref": "docs/beacon/v1.3.9/.machine/user-story/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.json",
+    "generated_at": "2026-04-29T03:24:41.969453+00:00",
+    "json_ref": "docs/beacon/v1.3.9/.machine/execution/revision-delta-beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.json",
+    "markdown_ref": "docs/beacon/v1.3.9/execution/revision-delta-beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md"
+  },
+  "revision_delta_ref": "docs/beacon/v1.3.9/.machine/execution/revision-delta-beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.json",
+  "revision_delta_markdown_ref": "docs/beacon/v1.3.9/execution/revision-delta-beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+  "team_mode": {
+    "preferred_surface": "implement-team",
+    "preferred_runner": "codex-subagents",
+    "plan_command": "beacon implement team-plan \"beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write\" --project-root . --version v1.3.9",
+    "run_command": "beacon implement team-run \"beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write\" --project . --version v1.3.9",
+    "dev_run_command": "beacon implement dev-run \"beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write\" --project . --version v1.3.9",
+    "ralph_command": "beacon implement run \"beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write\" --project . --version v1.3.9 --mode ralph",
+    "qa_team_command": "beacon qa team-run \"beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write\" --project . --version v1.3.9",
+    "roles": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "context_isolation": {
+      "role_plane": "implementation",
+      "isolated_from": [
+        "qa-team"
+      ],
+      "shared_inputs": [
+        "docs",
+        "implementation_plan",
+        "evidence_refs"
+      ],
+      "shared_outputs": [
+        "implementation_summary",
+        "technical_archive",
+        "repair_handoff"
+      ],
+      "rule": "qa_must_not_inherit_implement_private_context",
+      "implement_surface": "implement-team",
+      "qa_surface": "qa-team"
+    },
+    "config_source": "beacon/team_roles/implement-team.json",
+    "post_freeze_sequence": [
+      "freeze-pass",
+      "implement-team-plan",
+      "implement-team-run",
+      "implement-ralph",
+      "qa",
+      "release"
+    ],
+    "role_semantics": {
+      "team_reviewer": "checks implementation/spec drift before Ralph or QA closure",
+      "team_tester": "checks implementation evidence and verification readiness before Ralph or QA closure",
+      "ralph": "post-freeze controller that drives next-action routing across implementation, review, qa, and release"
+    },
+    "execution_order": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "formal_writeback_roles": [
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "role_contracts": {
+      "planner": {
+        "purpose": "Compile execution-ready task scope from the frozen revision baseline.",
+        "writes_to_formal_truth": false,
+        "outputs": [
+          "execution_plan_note"
+        ]
+      },
+      "implementation-architect": {
+        "purpose": "Translate frozen requirement truth into implementation-safe module boundaries and service ownership guidance.",
+        "writes_to_formal_truth": false,
+        "reads": [
+          "docs/beacon/<version>/user-story",
+          "docs/beacon/<version>/prd",
+          "docs/beacon/<version>/qa/test-cases",
+          "docs/beacon/<version>/execution/architecture-blueprint.md",
+          "implementation_plan",
+          "git_workflow_contract"
+        ],
+        "outputs": [
+          "implementation_architecture_note"
+        ],
+        "restrictions": [
+          "must_not_modify_frozen_requirement_materials",
+          "must_not_overwrite_architecture_blueprint"
+        ]
+      },
+      "implementer": {
+        "purpose": "Write code inside the frozen scope and the implementation architecture note.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "story_writeback",
+          "implementation_summary"
+        ]
+      },
+      "reviewer": {
+        "purpose": "Review implementation/spec drift and architecture-boundary drift.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_spec"
+        ]
+      },
+      "tester": {
+        "purpose": "Check implementation evidence and verification readiness before acceptance.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_quality"
+        ]
+      }
+    }
+  },
+  "git_workflow": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write",
+    "feature_slug": "beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write",
+    "version": "v1.3.9",
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.3.9",
+    "branch_prefix": "beacon/",
+    "base_branch": "main",
+    "use_git_worktree": false,
+    "require_clean_worktree_for_switch": true,
+    "service_directories": [
+      "."
+    ],
+    "direct_delivery_services": [
+      "."
+    ],
+    "writable_services": [
+      "."
+    ],
+    "reference_only_services": [
+      "docs"
+    ],
+    "git_roots": [
+      "."
+    ],
+    "worktree_root": ".",
+    "implementation_preflight": [
+      "Before implementation, verify the target service belongs to: .",
+      "Before implementation, verify the current branch is beacon/v1.3.9.",
+      "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+    ],
+    "source": "technical_review_contract",
+    "generated_at": "2026-04-29T03:24:41.973558+00:00",
+    "baseline_id": "impl-delivery-baseline-v1.3.9-beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write-R2",
+    "transaction_id": "tx-cf4d533ced5944cf9",
+    "source_hash": "sha256:8c87a12c3593af8c46faf7b940daaf5327a21a31001b1cf102396f04dcb01116",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.3.9/.machine/execution/implementation-delivery-baseline-beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "git_workflow_ref": "docs/beacon/v1.3.9/.machine/execution/git-workflow-beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.json",
+  "git_workflow_markdown_ref": "docs/beacon/v1.3.9/execution/git-workflow-beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+  "base_branch": "main",
+  "target_branch": "beacon/v1.3.9",
+  "branch_prefix": "beacon/",
+  "use_git_worktree": false,
+  "worktree_root": ".",
+  "direct_delivery_services": [
+    "."
+  ],
+  "writable_services": [
+    "."
+  ],
+  "reference_only_services": [
+    "docs"
+  ],
+  "technical_delta": {
+    "project_mode": "greenfield",
+    "source_refs": {
+      "prd": "docs/beacon/v1.3.9/prd/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+      "user_story": "docs/beacon/v1.3.9/user-story/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md",
+      "test_case": "docs/beacon/v1.3.9/qa/test-cases/beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.md"
+    },
+    "current_state": {},
+    "refactor_boundaries": {},
+    "feature_sections": [],
+    "change_surface": []
+  },
+  "delivery_baseline": {
+    "baseline_id": "impl-delivery-baseline-v1.3.9-beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write-R2",
+    "transaction_id": "tx-cf4d533ced5944cf9",
+    "source_hash": "sha256:8c87a12c3593af8c46faf7b940daaf5327a21a31001b1cf102396f04dcb01116",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.3.9/.machine/execution/implementation-delivery-baseline-beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "canonical_envelope_ref": "docs/beacon/v1.3.9/.machine/execution/implementation-delivery-baseline-beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write.json",
+  "generated_at": "2026-04-29T03:24:42.015515+00:00",
+  "baseline_id": "impl-delivery-baseline-v1.3.9-beacon-v1.3.9-execution-projection-convergence-and-qa-acceptance-dual-write-R2",
+  "transaction_id": "tx-cf4d533ced5944cf9",
+  "source_hash": "sha256:8c87a12c3593af8c46faf7b940daaf5327a21a31001b1cf102396f04dcb01116",
+  "projection_seq": 1,
+  "projection_source": "implementation_delivery_baseline_envelope",
+  "updated_at": "2026-04-29T06:18:50.601108+00:00",
+  "accepted_at": "2026-04-29T06:18:50.601093+00:00",
+  "accepted_by": "qa"
+}

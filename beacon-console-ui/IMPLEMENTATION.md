@@ -11,7 +11,8 @@
 
 - 修正 `package.json` 依赖声明，补齐 `antd`、`react-router-dom`、`react-markdown`、`remark-gfm`
 - 移除过时的 TS `baseUrl` 配置，修复 Vite 8 `manualChunks` 类型问题
-- 通过 `npm run build`，构建输出稳定
+- 将页面路由改为懒加载，并将受管文档目录拆为独立数据包，避免首页入口包携带全量 Markdown 文档
+- 通过 `npm run build`，构建输出稳定且无大包告警
 
 ### 数据与类型
 
@@ -22,6 +23,8 @@
   - `rolo`
   - `shopxo_canada`
 - 将 `single / team / ralph`、有限 session metadata、artifact refs、recovery issues、material docs 统一到同一数据面
+- 新增 `scripts/generate-material-catalog.mjs`，只从 Beacon 仓内 `docs/beacon` 归档材料生成真实项目文档目录
+- 新增 `src/data/materialCatalog.ts`，以按需加载方式为物料页提供受管文档目录
 
 ### 页面闭环
 
@@ -49,10 +52,12 @@
   - `version -> document type -> feature` 树形浏览
   - Markdown 只读预览
   - 来源路径保留
+  - 正式来源说明与空状态处理
 - `MaterialDocumentDetailPage`
   - 文档详情阅读态
   - 同类文档切换
   - 只读约束说明
+  - 完整 Markdown 结构样式支持
 
 ### AC 对齐
 
@@ -84,6 +89,7 @@
 ```bash
 npm install
 npm run build
+npm run dev -- --host 127.0.0.1 --port 4173
 ```
 
 ## 参考文档

@@ -39,12 +39,13 @@ def test_v120_interface_help_surface_should_prioritize_mainline():
     result = _invoke(["--help"])
     assert result.exit_code == 0
     lines = [line.strip() for line in result.stdout.splitlines()]
-    think_idx = next(i for i, line in enumerate(lines) if line.startswith("│ think"))
-    skill_idx = next(i for i, line in enumerate(lines) if line.startswith("│ skill"))
+    prd_idx = next(i for i, line in enumerate(lines) if line.startswith("│ prd"))
+    prototype_idx = next(i for i, line in enumerate(lines) if line.startswith("│ prototype"))
     implement_idx = next(i for i, line in enumerate(lines) if line.startswith("│ implement"))
-    debug_idx = next(i for i, line in enumerate(lines) if line.startswith("│ debug"))
-    assert think_idx < skill_idx
-    assert implement_idx < debug_idx
+    qa_idx = next(i for i, line in enumerate(lines) if line.startswith("│ qa"))
+    release_idx = next(i for i, line in enumerate(lines) if line.startswith("│ release"))
+    assert prd_idx < prototype_idx < implement_idx < qa_idx < release_idx
+    assert "think" not in result.stdout.lower()
     assert "labs" not in result.stdout.lower()
 
 

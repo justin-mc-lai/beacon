@@ -1,0 +1,117 @@
+{
+  "page_id": "runtime-center",
+  "name": "运行中心",
+  "priority": "P1",
+  "platforms": [
+    "Web",
+    "PC"
+  ],
+  "responsibility": "只在这里下钻 single / team / ralph 的 runtime 细节和有限 session metadata。",
+  "sections": [
+    "运行态摘要头部",
+    "single / team / ralph 模式切换",
+    "agent/session 引用",
+    "artifact 与 linked run",
+    "最近结果与 blocker"
+  ],
+  "actions": [
+    {
+      "label": "返回项目详情",
+      "target": "project-detail",
+      "trigger": "点击返回"
+    },
+    {
+      "label": "返回管理总览",
+      "target": "management-overview",
+      "trigger": "点击面包屑"
+    }
+  ],
+  "states": [
+    {
+      "id": "single-active",
+      "label": "Single 运行",
+      "description": "展示单进程执行摘要和 linked run。"
+    },
+    {
+      "id": "team-active",
+      "label": "Team 运行",
+      "description": "展示 agent 数、角色、状态和 host session metadata。"
+    },
+    {
+      "id": "ralph-active",
+      "label": "Ralph 闭环",
+      "description": "展示 round_count、failure_streak、next_action、blocker。"
+    },
+    {
+      "id": "idle",
+      "label": "无活跃运行",
+      "description": "当前没有任何 active runtime。"
+    },
+    {
+      "id": "loading",
+      "label": "加载中",
+      "description": "运行态数据仍在读取。"
+    },
+    {
+      "id": "error",
+      "label": "错误",
+      "description": "运行态投影异常，需要回到诊断页。"
+    }
+  ],
+  "requirement_refs": {
+    "user-story": [
+      "docs/beacon/v1.3.7/user-story/beacon-v1.3.7-beacon-brainstorm-built-in-convergence-and-evolution-thinking.md"
+    ],
+    "prd": [
+      "docs/beacon/v1.3.7/prd/beacon-v1.3.7-beacon-brainstorm-built-in-convergence-and-evolution-thinking.md"
+    ],
+    "test-case": [
+      "docs/beacon/v1.3.7/qa/test-cases/beacon-v1.3.7-beacon-brainstorm-built-in-convergence-and-evolution-thinking.md"
+    ]
+  },
+  "outbound_transitions": [
+    {
+      "from": "runtime-center",
+      "to": "project-detail",
+      "trigger": "点击返回",
+      "type": "return"
+    },
+    {
+      "from": "runtime-center",
+      "to": "management-overview",
+      "trigger": "点击面包屑",
+      "type": "return"
+    }
+  ],
+  "analysis": {
+    "target_user": "需要核对运行态的执行者 / 诊断人",
+    "decision_focus": [
+      "当前到底是 single、team 还是 ralph 在推进。",
+      "linked run、artifact、blocker 是否足以解释当前停滞点。",
+      "看完运行态后应该回到项目详情还是继续诊断。"
+    ],
+    "layout_rules": [
+      "模式切换必须固定在头部，便于横向比较三种运行形态。",
+      "session / artifact 只展示必要引用，不在此页堆底层原文。",
+      "最近结果与 blocker 必须直接可读，避免继续翻查多层结构。"
+    ],
+    "noise_guardrail": "运行中心可以下钻运行信息，但仍要压制无边界的机器内部明细。"
+  },
+  "layout_lines": [
+    "+----------------------------------------------------------------------------------+",
+    "| 顶栏：返回项目详情 | 运行中心 | 最近刷新时间 | 当前活跃模式                        |",
+    "+----------------------------------------------------------------------------------+",
+    "| 模式切换： single | team | ralph                                                |",
+    "+----------------------------------------------------------------------------------+",
+    "| 运行态摘要头部: 当前状态 | round_count | failure_streak | 当前执行目标             |",
+    "+----------------------------------------------------------------------------------+",
+    "| agent / session 引用                         | linked run / artifact refs           |",
+    "| - session id / agent 数                      | - latest run                         |",
+    "| - host / lane 摘要                           | - artifact / report                  |",
+    "+----------------------------------------------------------------------------------+",
+    "| recent_result                                | blocker / next_action                |",
+    "| - 最近结果摘要                               | - 当前 blocker                       |",
+    "| - 最近一次状态变化                           | - 下一步动作                         |",
+    "+----------------------------------------------------------------------------------+"
+  ]
+}

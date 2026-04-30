@@ -8,6 +8,8 @@ from typing import Any
 
 from beacon.utils.artifact_paths import execution_file_candidates, qa_matrix_candidates
 from beacon.utils.requirement_parsing import build_feature_ac_items, extract_explicit_ac_items
+from beacon.utils.revision_delta import load_revision_delta, revision_delta_json_path, revision_delta_supported
+from beacon.utils.revision_state import load_revision_state
 from beacon.utils.versioning import normalize_version
 
 
@@ -63,6 +65,24 @@ def _normalize_string_list(value: Any) -> list[str]:
     if not isinstance(value, list):
         return []
     return _dedupe_strings(list(value))
+
+
+def _normalize_cleanup_list(value: Any) -> list[str]:
+    if not isinstance(value, list):
+        return []
+    out: list[str] = []
+    seen: set[str] = set()
+    for item in value:
+        text = ""
+        if isinstance(item, dict):
+            text = str(item.get("label", "") or item.get("text", "") or item.get("id", "") or "").strip()
+        else:
+            text = str(item or "").strip()
+        if not text or text in seen:
+            continue
+        seen.add(text)
+        out.append(text)
+    return out
 
 
 def _feature_paths(project_root: Path, version: str, feature: str) -> dict[str, Any]:
@@ -209,6 +229,26 @@ def build_requirement_closure(
         if isinstance(implementation_summary_payload.get("delivery_surfaces"), dict)
         else {}
     )
+    revision_cleanup = (
+        implementation_summary_payload.get("revision_cleanup")
+        if isinstance(implementation_summary_payload.get("revision_cleanup"), dict)
+        else {}
+    )
+    revision_state = load_revision_state(project_root, version=version, feature=feature, create_if_missing=False)
+    revision_delta: dict[str, Any] = {}
+    if revision_delta_supported(version) and str(revision_state.get("source_revision_id", "") or "").strip():
+        revision_delta = load_revision_delta(project_root, version=version, feature=feature)
+        if not revision_delta:
+            issues.append(
+                {
+                    "reason_code": "revision_cleanup_delta_missing",
+                    "severity": "critical",
+                    "message": "changed frozen revision is missing the revision cleanup delta artifact",
+                    "evidence": [
+                        str(revision_delta_json_path(project_root, version, feature).relative_to(project_root)),
+                    ],
+                }
+            )
     if implementation_summary_payload:
         required_traceability_keys = [
             "source_of_truth_root",
@@ -263,6 +303,58 @@ def build_requirement_closure(
                     "surfaces": partial_or_deferred,
                 }
             )
+    if bool(revision_delta.get("cleanup_required", False)):
+        removed_requirement_surfaces = _normalize_cleanup_list(revision_delta.get("removed_requirement_surfaces"))
+        if not implementation_summary_payload:
+            issues.append(
+                {
+                    "reason_code": "superseded_surface_cleanup_missing",
+                    "severity": "critical",
+                    "message": "changed frozen revision requires cleanup evidence but no implementation summary was found",
+                    "surfaces": removed_requirement_surfaces,
+                    "evidence": [
+                        str(revision_delta_json_path(project_root, version, feature).relative_to(project_root)),
+                    ],
+                }
+            )
+        else:
+            cleanup_review_completed = bool(revision_cleanup.get("cleanup_review_completed", False))
+            removed_surfaces = _normalize_cleanup_list(revision_cleanup.get("removed_surfaces"))
+            retained_legacy_surfaces = _normalize_cleanup_list(revision_cleanup.get("retained_legacy_surfaces"))
+            cleanup_rationale = str(revision_cleanup.get("cleanup_rationale", "") or "").strip()
+            if (
+                str(revision_cleanup.get("revision_id", "") or "") != str(revision_delta.get("revision_id", "") or "")
+                or str(revision_cleanup.get("source_revision_id", "") or "") != str(revision_delta.get("source_revision_id", "") or "")
+                or not str(revision_cleanup.get("revision_delta_ref", "") or "").strip()
+            ):
+                issues.append(
+                    {
+                        "reason_code": "superseded_surface_cleanup_missing",
+                        "severity": "critical",
+                        "message": "implementation summary cleanup evidence is not bound to the latest revision delta",
+                        "evidence": _normalize_string_list(implementation_summary_payload.get("traceability_refs")),
+                    }
+                )
+            elif not cleanup_review_completed or (not removed_surfaces and not retained_legacy_surfaces):
+                issues.append(
+                    {
+                        "reason_code": "superseded_surface_cleanup_missing",
+                        "severity": "critical",
+                        "message": "superseded frozen requirement surfaces were not explicitly removed or retained with evidence",
+                        "surfaces": removed_requirement_surfaces,
+                        "evidence": _normalize_string_list(implementation_summary_payload.get("traceability_refs")),
+                    }
+                )
+            elif retained_legacy_surfaces and not cleanup_rationale:
+                issues.append(
+                    {
+                        "reason_code": "superseded_surface_retention_unjustified",
+                        "severity": "critical",
+                        "message": "retained legacy implementation surfaces require cleanup rationale after refreeze",
+                        "surfaces": retained_legacy_surfaces,
+                        "evidence": _normalize_string_list(implementation_summary_payload.get("traceability_refs")),
+                    }
+                )
 
     status = "pass"
     if any(str(item.get("severity", "")).lower() == "critical" for item in issues):
@@ -282,5 +374,7 @@ def build_requirement_closure(
             "implementation_summary_present": bool(implementation_summary_payload),
             "requirement_traceability_keys": sorted(requirement_traceability.keys()),
             "delivery_surface_keys": sorted(delivery_surfaces.keys()),
+            "revision_cleanup_required": bool(revision_delta.get("cleanup_required", False)),
+            "removed_requirement_count": int(revision_delta.get("removed_requirement_count") or 0),
         },
     }

@@ -66,7 +66,7 @@ def test_workflow_auto_skip_should_not_mark_completed_without_closure(tmp_path: 
             "Skip Gate Feature",
             "--auto",
             "--skip",
-            "gate",
+            "release",
             "--project",
             str(tmp_path),
             *IMPLEMENTATION_ARGS,
@@ -127,8 +127,8 @@ def test_resume_continue_should_match_workflow_continue_non_interactive(tmp_path
 
     progress_a = compute_workflow_progress(tmp_path, run_id=run_a)
     progress_b = compute_workflow_progress(tmp_path, run_id=run_b)
-    assert progress_a.get("stages", {}).get("think", {}).get("status") == "completed"
-    assert progress_b.get("stages", {}).get("think", {}).get("status") == "completed"
+    assert progress_a.get("stages", {}).get("prd", {}).get("status") == "completed"
+    assert progress_b.get("stages", {}).get("prd", {}).get("status") == "completed"
 
 
 def test_failed_stage_should_be_recoverable_in_progress_computation(tmp_path: Path):
@@ -151,6 +151,6 @@ def test_failed_stage_should_be_recoverable_in_progress_computation(tmp_path: Pa
     append_lifecycle_event(tmp_path, run_id=run_id, stage="think", event="memory_writeback", source="test")
 
     progress = compute_workflow_progress(tmp_path, run_id=run_id)
-    think = progress.get("stages", {}).get("think", {})
-    assert think.get("status") == "completed"
-    assert think.get("retry_count") == 1
+    prd = progress.get("stages", {}).get("prd", {})
+    assert prd.get("status") == "completed"
+    assert prd.get("retry_count") == 1

@@ -23,7 +23,15 @@ import {
   buildRuntimeCenterRoute,
 } from '../../constants/routes';
 import { getPageTrace, getProjectById } from '../../data/consoleData';
-import { getDebugLabel, getDebugTone, getLifecycleLabel, getRequirementLabel, getRequirementTone } from '../../utils/labels';
+import {
+  getDebugLabel,
+  getDebugTone,
+  getLifecycleLabel,
+  getProjectKindLabel,
+  getRequirementLabel,
+  getRequirementTone,
+  getRuntimeModeLabel,
+} from '../../utils/labels';
 
 const lifecycleOrder = ['prd', 'user-story', 'test-case', 'prototype', 'implement', 'qa', 'release'];
 
@@ -62,7 +70,7 @@ export function ProjectDetailPage() {
         }
         extra={
           <Space wrap>
-            <Button onClick={() => navigate(buildRuntimeCenterRoute(project.id))}>运行中心</Button>
+            <Button onClick={() => navigate(buildRuntimeCenterRoute(project.id))}>执行中心</Button>
             <Button onClick={() => navigate(buildRecoveryDiagnosticsRoute(project.id))}>
               恢复诊断
             </Button>
@@ -75,37 +83,41 @@ export function ProjectDetailPage() {
         <Row gutter={[16, 16]}>
           <Col span={14}>
             <Descriptions column={2} size="small">
-              <Descriptions.Item label="项目类型">{project.kind}</Descriptions.Item>
-              <Descriptions.Item label="Owner">{project.owner}</Descriptions.Item>
+              <Descriptions.Item label="项目类型">
+                {getProjectKindLabel(project.kind)}
+              </Descriptions.Item>
+              <Descriptions.Item label="项目负责人">{project.owner}</Descriptions.Item>
               <Descriptions.Item label="当前阶段">
                 {getLifecycleLabel(project.lifecycle)}
               </Descriptions.Item>
-              <Descriptions.Item label="推荐 Skill">{project.recommendedSkill}</Descriptions.Item>
+              <Descriptions.Item label="建议执行入口">
+                {project.recommendedSkill}
+              </Descriptions.Item>
               <Descriptions.Item label="工作目录" span={2}>
                 <code>{project.rootPath}</code>
               </Descriptions.Item>
-              <Descriptions.Item label="Blocker" span={2}>
+              <Descriptions.Item label="当前阻塞事项" span={2}>
                 {project.blocker}
               </Descriptions.Item>
             </Descriptions>
           </Col>
           <Col span={10}>
-            <Card size="small" title="版本 / Git / Worktree">
+            <Card size="small" title="版本 / Git / 工作树">
               <div className="summary-list">
                 <div>
                   <span>当前分支</span>
                   <strong>{project.gitStatus.branch}</strong>
                 </div>
-                <div>
-                  <span>目标分支</span>
-                  <strong>{project.gitStatus.expectedBranch ?? 'n/a'}</strong>
-                </div>
-                <div>
-                  <span>Worktree</span>
-                  <strong>{project.gitStatus.dirty ? 'dirty' : 'clean'}</strong>
-                </div>
+              <div>
+                <span>目标分支</span>
+                <strong>{project.gitStatus.expectedBranch ?? 'n/a'}</strong>
               </div>
-            </Card>
+              <div>
+                <span>工作树状态</span>
+                <strong>{project.gitStatus.dirty ? '存在未提交变更' : '干净'}</strong>
+              </div>
+            </div>
+          </Card>
           </Col>
         </Row>
       </Card>
@@ -130,9 +142,9 @@ export function ProjectDetailPage() {
           </div>
         </Card>
 
-        <Card title="运行态摘要">
+        <Card title="执行态摘要">
           <Space direction="vertical" style={{ width: '100%' }}>
-            <Tag color="purple">{project.runtimeSummary.activeMode.toUpperCase()}</Tag>
+            <Tag color="purple">{getRuntimeModeLabel(project.runtimeSummary.activeMode)}</Tag>
             <Typography.Paragraph>{project.runtimeSummary.summary}</Typography.Paragraph>
             <div className="summary-list">
               <div>
@@ -140,19 +152,19 @@ export function ProjectDetailPage() {
                 <strong>{project.runtimeSummary.activeRuns}</strong>
               </div>
               <div>
-                <span>Linked run</span>
+                <span>关联执行批次</span>
                 <strong>{project.runtimeSummary.linkedRun}</strong>
               </div>
             </div>
             <Typography.Text className="console-muted">
-              首页与详情页只展示摘要，Team / Ralph 明细统一下钻到运行中心。
+              首页与详情页只展示摘要，协同执行与 Ralph 验证明细统一下钻到执行中心。
             </Typography.Text>
           </Space>
         </Card>
       </div>
 
       <div className="console-grid" style={{ marginTop: 16 }}>
-        <Card title="主 PRD / 主线 Feature">
+        <Card title="主需求主线">
           <List
             dataSource={project.mainTracks}
             renderItem={(track) => (
@@ -170,9 +182,9 @@ export function ProjectDetailPage() {
             )}
           />
         </Card>
-        <Card title="并行 PRD / 子线">
+        <Card title="并行需求支线">
           <List
-            locale={{ emptyText: '当前没有并行 PRD。' }}
+            locale={{ emptyText: '当前没有并行需求支线。' }}
             dataSource={project.parallelTracks}
             renderItem={(track) => (
               <List.Item>
@@ -194,25 +206,25 @@ export function ProjectDetailPage() {
       <Card title="需求闭环状态" style={{ marginTop: 16 }}>
         <Space wrap>
           <Tag color={getRequirementTone(project.requirementClosure.prd)}>
-            PRD {getRequirementLabel(project.requirementClosure.prd)}
+            {getLifecycleLabel('prd')} {getRequirementLabel(project.requirementClosure.prd)}
           </Tag>
           <Tag color={getRequirementTone(project.requirementClosure.userStory)}>
-            User Story {getRequirementLabel(project.requirementClosure.userStory)}
+            {getLifecycleLabel('user-story')} {getRequirementLabel(project.requirementClosure.userStory)}
           </Tag>
           <Tag color={getRequirementTone(project.requirementClosure.testCase)}>
-            Test Case {getRequirementLabel(project.requirementClosure.testCase)}
+            {getLifecycleLabel('test-case')} {getRequirementLabel(project.requirementClosure.testCase)}
           </Tag>
           <Tag color={getRequirementTone(project.requirementClosure.prototype)}>
-            Prototype {getRequirementLabel(project.requirementClosure.prototype)}
+            {getLifecycleLabel('prototype')} {getRequirementLabel(project.requirementClosure.prototype)}
           </Tag>
           <Tag color={getRequirementTone(project.requirementClosure.implement)}>
-            Implement {getRequirementLabel(project.requirementClosure.implement)}
+            {getLifecycleLabel('implement')} {getRequirementLabel(project.requirementClosure.implement)}
           </Tag>
           <Tag color={getRequirementTone(project.requirementClosure.qa)}>
-            QA {getRequirementLabel(project.requirementClosure.qa)}
+            {getLifecycleLabel('qa')} {getRequirementLabel(project.requirementClosure.qa)}
           </Tag>
           <Tag color={getRequirementTone(project.requirementClosure.release)}>
-            Release {getRequirementLabel(project.requirementClosure.release)}
+            {getLifecycleLabel('release')} {getRequirementLabel(project.requirementClosure.release)}
           </Tag>
         </Space>
       </Card>
@@ -228,7 +240,7 @@ export function ProjectDetailPage() {
           <List
             dataSource={[
               project.nextStep,
-              `推荐 skill：${project.recommendedSkill}`,
+              `建议执行入口：${project.recommendedSkill}`,
               `介入原因：${project.interventionReason}`,
             ]}
             renderItem={(item) => <List.Item>{item}</List.Item>}

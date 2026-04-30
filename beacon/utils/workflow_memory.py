@@ -1,25 +1,56 @@
 """Workflow lifecycle memory helpers.
 
-This module builds a PTK-style memory loop for the default workflow path:
-think -> user-story -> prd -> [prototype] -> test-case -> implementation -> verify -> gate.
+This module projects legacy workflow lifecycle events onto Beacon's canonical
+human-facing lifecycle:
+prd -> user-story -> test-case -> [prototype] -> implement -> qa -> release.
 """
 
 from __future__ import annotations
 
+import hashlib
 import json
 import re
 import uuid
 from pathlib import Path
 from typing import Any
 
-from beacon.utils.memory import append_memory_entry, load_memory_entries
+from beacon.utils.memory import append_memory_entry, load_memory_entries, memory_dir, memory_v1_path
 from beacon.utils.runtime import load_run_state, now_iso, runs_dir
 
 LIFECYCLE_FILE = "workflow-lifecycle.json"
 LIFECYCLE_INDEX_FILE = "workflow-lifecycle.index.json"
 LIFECYCLE_SCHEMA_FILE = "workflow-lifecycle.schema.json"
-WORKFLOW_STAGES = ("think", "user-story", "prd", "test-case", "implementation", "verify", "gate")
+WORKFLOW_TRANSACTION_FILE = "transactions.json"
+WORKFLOW_STAGES = ("prd", "user-story", "test-case", "implement", "qa", "release")
 OPTIONAL_WORKFLOW_STAGES = ("prototype",)
+_LEGACY_STAGE_ALIASES = {
+    "think": "prd",
+    "implementation": "implement",
+    "verify": "qa",
+    "review": "qa",
+    "gate": "release",
+    "delivery": "release",
+}
+
+
+def normalize_workflow_stage(stage: str | None) -> str:
+    normalized = str(stage or "").strip().lower()
+    return _LEGACY_STAGE_ALIASES.get(normalized, normalized)
+
+
+def lifecycle_stage_aliases(stage: str | None) -> tuple[str, ...]:
+    canonical = normalize_workflow_stage(stage)
+    if canonical == "prd":
+        return ("prd", "think")
+    if canonical == "implement":
+        return ("implement", "implementation")
+    if canonical == "qa":
+        return ("qa", "verify", "review")
+    if canonical == "release":
+        return ("release", "gate", "delivery")
+    if canonical:
+        return (canonical,)
+    return ()
 
 _ALLOW_REPEAT_EVENTS = {
     # stage retry trace
@@ -95,11 +126,11 @@ def workflow_stages_for_run(
     seen_events = events if isinstance(events, list) else (load_lifecycle_events(project_root, run_id=run_id) if run_id else [])
     prototype_enabled = bool((state or {}).get("prototype_enabled"))
     prototype_seen = any(
-        isinstance(item, dict) and str(item.get("stage", "")) == "prototype"
+        isinstance(item, dict) and normalize_workflow_stage(str(item.get("stage", ""))) == "prototype"
         for item in seen_events
     )
     if prototype_enabled or prototype_seen:
-        return ("think", "user-story", "prd", "prototype", "test-case", "implementation", "verify", "gate")
+        return ("prd", "user-story", "test-case", "prototype", "implement", "qa", "release")
     return WORKFLOW_STAGES
 
 
@@ -116,7 +147,12 @@ def lifecycle_schema_path(project_root: Path) -> Path:
 
 
 def stage_context_path(project_root: Path, run_id: str, stage: str) -> Path:
-    return project_root / ".beacon" / "state" / "workflow-memory" / run_id / f"{stage}-context.json"
+    canonical_stage = normalize_workflow_stage(stage)
+    return project_root / ".beacon" / "state" / "workflow-memory" / run_id / f"{canonical_stage}-context.json"
+
+
+def workflow_transaction_path(project_root: Path, run_id: str) -> Path:
+    return project_root / ".beacon" / "state" / "workflow-memory" / run_id / WORKFLOW_TRANSACTION_FILE
 
 
 def _read_json(path: Path, fallback: dict[str, Any]) -> dict[str, Any]:
@@ -136,6 +172,21 @@ def _write_json(path: Path, payload: dict[str, Any]) -> None:
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
+def _stable_hash_payload(payload: Any) -> str:
+    encoded = json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    return hashlib.sha256(encoded).hexdigest()
+
+
+def _stable_hash_file(path: Path) -> str:
+    if not path.exists() or not path.is_file():
+        return "missing"
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def _slug(text: str) -> str:
+    return re.sub(r"[^a-z0-9]+", "-", str(text or "").strip().lower()).strip("-")
+
+
 def ensure_lifecycle_files(project_root: Path) -> None:
     root = _memory_root(project_root)
     root.mkdir(parents=True, exist_ok=True)
@@ -151,6 +202,181 @@ def ensure_lifecycle_files(project_root: Path) -> None:
     schema = lifecycle_schema_path(project_root)
     if not schema.exists():
         _write_json(schema, _LIFECYCLE_SCHEMA)
+
+
+def _load_transaction_journal(project_root: Path, run_id: str) -> dict[str, Any]:
+    path = workflow_transaction_path(project_root, run_id)
+    payload = _read_json(path, {"schema_version": "1.0", "items": [], "updated_at": now_iso()})
+    if not isinstance(payload.get("items"), list):
+        payload["items"] = []
+    payload.setdefault("schema_version", "1.0")
+    payload.setdefault("updated_at", now_iso())
+    return payload
+
+
+def _save_transaction_journal(project_root: Path, run_id: str, payload: dict[str, Any]) -> None:
+    path = workflow_transaction_path(project_root, run_id)
+    payload["schema_version"] = "1.0"
+    payload["updated_at"] = now_iso()
+    _write_json(path, payload)
+
+
+def list_workflow_transactions(
+    project_root: Path,
+    *,
+    run_id: str,
+    stage: str | None = None,
+    action: str | None = None,
+) -> list[dict[str, Any]]:
+    payload = _load_transaction_journal(project_root, run_id)
+    items = payload.get("items")
+    if not isinstance(items, list):
+        return []
+    canonical_stage = normalize_workflow_stage(stage) if stage else ""
+    out: list[dict[str, Any]] = []
+    for item in items:
+        if not isinstance(item, dict):
+            continue
+        if canonical_stage and normalize_workflow_stage(str(item.get("stage", ""))) != canonical_stage:
+            continue
+        if action and str(item.get("action", "")).strip() != str(action).strip():
+            continue
+        out.append(dict(item))
+    out.sort(key=lambda row: str(row.get("committed_at") or row.get("occurred_at") or ""))
+    return out
+
+
+def _requirement_refs(project_root: Path, *, version: str, feature: str) -> list[str]:
+    slug = _slug(feature)
+    docs_root = project_root / "docs" / "beacon" / version
+    candidates = [
+        docs_root / "prd" / f"{slug}.md",
+        docs_root / "user-story" / f"{slug}.md",
+        docs_root / "qa" / "test-cases" / f"{slug}.md",
+        docs_root / "prototype" / slug / "freeze.json",
+        docs_root / "prototype" / slug / "prototype-review.json",
+        docs_root / "release" / f"{version}.md",
+    ]
+    refs: list[str] = []
+    for path in candidates:
+        if path.exists():
+            refs.append(str(path.relative_to(project_root)))
+    return refs
+
+
+def _decision_trace(project_root: Path, *, run_id: str, stage: str, feature: str, limit: int = 6) -> list[dict[str, Any]]:
+    canonical_stage = normalize_workflow_stage(stage)
+    feature_l = str(feature or "").strip().lower()
+    items = load_memory_entries(project_root, mem_type="decision")
+    trace: list[dict[str, Any]] = []
+    for item in items:
+        if not isinstance(item, dict):
+            continue
+        tags = [str(x).strip().lower() for x in item.get("tags", []) if str(x).strip()]
+        content = str(item.get("content", "")).strip()
+        source_session_id = str(item.get("source_session_id", "") or "")
+        if source_session_id != run_id and feature_l and feature_l not in content.lower():
+            continue
+        if canonical_stage and canonical_stage not in tags and source_session_id != run_id:
+            continue
+        trace.append(
+            {
+                "memory_id": str(item.get("memory_id", "") or ""),
+                "summary": content[:160],
+                "source": str(item.get("source", "") or ""),
+                "updated_at": str(item.get("updated_at", "") or ""),
+            }
+        )
+        if len(trace) >= limit:
+            break
+    return trace
+
+
+def _blockers(project_root: Path, *, run_id: str, stage: str, version: str) -> list[str]:
+    blockers: list[str] = []
+    state = load_run_state(project_root, run_id) or {}
+    reason = str(state.get("reason", "") or "").strip()
+    if reason:
+        blockers.append(reason)
+    think_state = _read_json(project_root / ".beacon" / "state" / "think-progress" / f"{version}.json", {})
+    open_questions = think_state.get("open_questions") if isinstance(think_state.get("open_questions"), list) else []
+    conflicts = think_state.get("conflicts") if isinstance(think_state.get("conflicts"), list) else []
+    blockers.extend(str(item).strip() for item in open_questions if str(item).strip())
+    blockers.extend(str(item).strip() for item in conflicts if str(item).strip())
+    progress = compute_workflow_progress(project_root, run_id=run_id)
+    stage_payload = progress.get("stages", {}).get(normalize_workflow_stage(stage), {}) if isinstance(progress.get("stages"), dict) else {}
+    latest_failure = str(stage_payload.get("latest_failure_ts", "") or "").strip()
+    if latest_failure:
+        blockers.append(f"{normalize_workflow_stage(stage)}_failed@{latest_failure}")
+    return blockers[:8]
+
+
+def _prepare_workflow_transaction(
+    project_root: Path,
+    *,
+    run_id: str,
+    stage: str,
+    action: str,
+    feature: str,
+    version: str,
+    evidence_ref: list[str],
+) -> dict[str, Any]:
+    canonical_stage = normalize_workflow_stage(stage)
+    journal_items = list_workflow_transactions(project_root, run_id=run_id)
+    stage_items = [item for item in journal_items if normalize_workflow_stage(str(item.get("stage", ""))) == canonical_stage]
+    previous_transaction_id = str(journal_items[-1].get("transaction_id", "") or "") if journal_items else ""
+    lineage_ids = [str(item.get("transaction_id", "") or "") for item in journal_items[-6:] if str(item.get("transaction_id", "") or "").strip()]
+    attempt_seq = 1
+    for item in stage_items:
+        try:
+            value = int(item.get("attempt_seq", 0) or 0)
+        except Exception:  # noqa: BLE001
+            value = 0
+        if value > attempt_seq:
+            attempt_seq = value
+    if action == "stage_context":
+        attempt_seq = max(1, attempt_seq if stage_items else 1)
+    payload = {
+        "run_id": run_id,
+        "stage": canonical_stage,
+        "action": action,
+        "feature": feature,
+        "version": version,
+        "evidence_ref": sorted(set(str(x) for x in evidence_ref if str(x).strip())),
+        "requirement_refs": _requirement_refs(project_root, version=version, feature=feature),
+        "decision_trace": _decision_trace(project_root, run_id=run_id, stage=canonical_stage, feature=feature),
+        "blockers": _blockers(project_root, run_id=run_id, stage=canonical_stage, version=version),
+        "attempt_seq": attempt_seq,
+        "previous_transaction_id": previous_transaction_id,
+        "lineage_ids": lineage_ids,
+    }
+    source_hash = _stable_hash_payload(payload)
+    projection_seq = f"wf-{source_hash[:16]}"
+    transaction_id = f"tx-wf-{run_id}-{canonical_stage}-{action}-{source_hash[:12]}"
+    return {
+        **payload,
+        "transaction_id": transaction_id,
+        "source_hash": source_hash,
+        "projection_seq": projection_seq,
+        "occurred_at": now_iso(),
+    }
+
+
+def _record_workflow_transaction(
+    project_root: Path,
+    *,
+    run_id: str,
+    record: dict[str, Any],
+) -> dict[str, Any]:
+    payload = _load_transaction_journal(project_root, run_id)
+    items = payload.get("items")
+    if not isinstance(items, list):
+        items = []
+        payload["items"] = items
+    items.append(record)
+    payload["items"] = items[-200:]
+    _save_transaction_journal(project_root, run_id, payload)
+    return record
 
 
 def _dedupe_key(
@@ -179,6 +405,8 @@ def append_lifecycle_event(
     ensure_lifecycle_files(project_root)
     lifecycle_file = lifecycle_path(project_root)
     index_file = lifecycle_index_path(project_root)
+    raw_stage = str(stage or "").strip()
+    canonical_stage = normalize_workflow_stage(raw_stage)
 
     lifecycle = _read_json(lifecycle_file, {"schema_version": "1.0", "items": [], "updated_at": now_iso()})
     index = _read_json(index_file, {"schema_version": "1.0", "dedupe_keys": [], "updated_at": now_iso()})
@@ -195,7 +423,11 @@ def append_lifecycle_event(
     stage_events = [
         item
         for item in items
-        if isinstance(item, dict) and item.get("run_id") == run_id and item.get("stage") == stage
+        if (
+            isinstance(item, dict)
+            and item.get("run_id") == run_id
+            and normalize_workflow_stage(str(item.get("stage", ""))) == canonical_stage
+        )
     ]
     latest_attempt_seq = 0
     for item in stage_events:
@@ -214,28 +446,28 @@ def append_lifecycle_event(
             explicit_attempt_seq = None
 
     attempt_seq = 0
-    if stage in WORKFLOW_STAGES or stage in OPTIONAL_WORKFLOW_STAGES:
+    if canonical_stage in WORKFLOW_STAGES or canonical_stage in OPTIONAL_WORKFLOW_STAGES:
         if explicit_attempt_seq is not None and explicit_attempt_seq > 0:
             attempt_seq = explicit_attempt_seq
         elif event == "stage_started":
             attempt_seq = latest_attempt_seq + 1 if latest_attempt_seq > 0 else 1
         else:
             attempt_seq = latest_attempt_seq if latest_attempt_seq > 0 else 1
-    attempt_id = f"{stage}@attempt-{attempt_seq}" if attempt_seq > 0 and (stage in WORKFLOW_STAGES or stage in OPTIONAL_WORKFLOW_STAGES) else None
+    attempt_id = f"{raw_stage}@attempt-{attempt_seq}" if attempt_seq > 0 and (canonical_stage in WORKFLOW_STAGES or canonical_stage in OPTIONAL_WORKFLOW_STAGES) else None
 
     supersedes_event_id = None
-    if (stage in WORKFLOW_STAGES or stage in OPTIONAL_WORKFLOW_STAGES) and event == "stage_started":
+    if (canonical_stage in WORKFLOW_STAGES or canonical_stage in OPTIONAL_WORKFLOW_STAGES) and event == "stage_started":
         if stage_events:
             supersedes_event_id = str(stage_events[-1].get("event_id", "") or "") or None
     if details and isinstance(details, dict) and details.get("supersedes_event_id"):
         supersedes_event_id = str(details.get("supersedes_event_id"))
-    key = _dedupe_key(run_id=run_id, stage=stage, event=event, evidence_ref=refs, source=source)
+    key = _dedupe_key(run_id=run_id, stage=canonical_stage or raw_stage, event=event, evidence_ref=refs, source=source)
     if event not in _ALLOW_REPEAT_EVENTS and key in dedupe_keys:
         # Return existing latest event with same dedupe key.
         for item in reversed(items):
             if (
                 item.get("run_id") == run_id
-                and item.get("stage") == stage
+                and normalize_workflow_stage(str(item.get("stage", ""))) == canonical_stage
                 and item.get("event") == event
                 and item.get("source") == source
             ):
@@ -244,7 +476,7 @@ def append_lifecycle_event(
     payload = {
         "event_id": str(uuid.uuid4()),
         "run_id": run_id,
-        "stage": stage,
+        "stage": raw_stage,
         "event": event,
         "source": source,
         "source_session_id": source_session_id or run_id,
@@ -286,12 +518,13 @@ def load_lifecycle_events(
     if not isinstance(items, list):
         items = []
     out: list[dict[str, Any]] = []
+    target_stage = normalize_workflow_stage(stage) if stage else ""
     for item in items:
         if not isinstance(item, dict):
             continue
         if run_id and item.get("run_id") != run_id:
             continue
-        if stage and item.get("stage") != stage:
+        if target_stage and normalize_workflow_stage(str(item.get("stage", ""))) != target_stage:
             continue
         if event and item.get("event") != event:
             continue
@@ -308,11 +541,25 @@ def build_stage_context(
     run_id: str,
     stage: str,
     feature: str,
+    version: str | None = None,
+    transaction: dict[str, Any] | None = None,
     limit: int = 8,
 ) -> dict[str, Any]:
     memories = load_memory_entries(project_root)
     lifecycle = load_lifecycle_events(project_root, run_id=run_id, limit=20)
     feature_l = (feature or "").lower()
+    state = load_run_state(project_root, run_id) or {}
+    resolved_version = str(version or state.get("version", "") or "").strip()
+    tx = transaction if isinstance(transaction, dict) else {}
+    evidence_refs = sorted(
+        {
+            str(ref).strip()
+            for item in lifecycle[-limit:]
+            if isinstance(item, dict)
+            for ref in (item.get("evidence_ref") or [])
+            if str(ref).strip()
+        }
+    )
 
     selected_memories: list[dict[str, Any]] = []
     for item in memories:
@@ -334,9 +581,23 @@ def build_stage_context(
         "run_id": run_id,
         "stage": stage,
         "feature": feature,
+        "version": resolved_version,
         "generated_at": now_iso(),
         "memory_recall": selected_memories[:limit],
         "lifecycle_events": lifecycle[-limit:],
+        "requirement_refs": _requirement_refs(project_root, version=resolved_version, feature=feature) if resolved_version else [],
+        "evidence_refs": evidence_refs,
+        "decision_trace": _decision_trace(project_root, run_id=run_id, stage=stage, feature=feature),
+        "blockers": _blockers(project_root, run_id=run_id, stage=stage, version=resolved_version) if resolved_version else [],
+        "transaction_lineage": {
+            "current_transaction_id": str(tx.get("transaction_id", "") or ""),
+            "projection_seq": str(tx.get("projection_seq", "") or ""),
+            "source_hash": str(tx.get("source_hash", "") or ""),
+            "previous_transaction_id": str(tx.get("previous_transaction_id", "") or ""),
+            "recent_transaction_ids": list(tx.get("lineage_ids", []) or []),
+            "attempt_seq": tx.get("attempt_seq"),
+            "action": str(tx.get("action", "") or ""),
+        },
     }
 
 
@@ -347,18 +608,57 @@ def write_stage_context(
     stage: str,
     feature: str,
 ) -> Path:
-    payload = build_stage_context(project_root, run_id=run_id, stage=stage, feature=feature)
-    path = stage_context_path(project_root, run_id, stage)
-    _write_json(path, payload)
-    append_lifecycle_event(
+    canonical_stage = normalize_workflow_stage(stage)
+    state = load_run_state(project_root, run_id) or {}
+    version = str(state.get("version", "") or "")
+    transaction = _prepare_workflow_transaction(
         project_root,
         run_id=run_id,
-        stage=stage,
+        stage=canonical_stage,
+        action="stage_context",
+        feature=feature,
+        version=version,
+        evidence_ref=[],
+    )
+    payload = build_stage_context(
+        project_root,
+        run_id=run_id,
+        stage=canonical_stage,
+        feature=feature,
+        version=version,
+        transaction=transaction,
+    )
+    path = stage_context_path(project_root, run_id, canonical_stage)
+    _write_json(path, payload)
+    lifecycle_event = append_lifecycle_event(
+        project_root,
+        run_id=run_id,
+        stage=canonical_stage,
         event="stage_context_injected",
         source="workflow.memory.recall",
         evidence_ref=[str(path.relative_to(project_root))],
-        details={"recall_count": len(payload.get("memory_recall", []))},
+        details={
+            "recall_count": len(payload.get("memory_recall", [])),
+            "transaction_id": transaction["transaction_id"],
+            "source_hash": transaction["source_hash"],
+            "projection_seq": transaction["projection_seq"],
+        },
     )
+    record = {
+        **transaction,
+        "status": "applied",
+        "committed_at": now_iso(),
+        "sink_paths": {
+            "context_pack": str(path.relative_to(project_root)),
+            "workflow_lifecycle": str(lifecycle_path(project_root).relative_to(project_root)),
+        },
+        "sink_checksums": {
+            "context_pack": _stable_hash_file(path),
+            "workflow_lifecycle": _stable_hash_file(lifecycle_path(project_root)),
+        },
+        "event_id": str(lifecycle_event.get("event_id", "") or ""),
+    }
+    _record_workflow_transaction(project_root, run_id=run_id, record=record)
     return path
 
 
@@ -371,27 +671,74 @@ def record_stage_writeback(
     evidence_ref: list[str],
     status: str,
 ) -> dict[str, Any]:
-    mem_type = "insight" if stage == "think" else "decision"
-    summary = f"[{stage}] {feature} => {status}"
+    canonical_stage = normalize_workflow_stage(stage)
+    state = load_run_state(project_root, run_id) or {}
+    version = str(state.get("version", "") or "")
+    tx = _prepare_workflow_transaction(
+        project_root,
+        run_id=run_id,
+        stage=canonical_stage,
+        action="memory_writeback",
+        feature=feature,
+        version=version,
+        evidence_ref=evidence_ref,
+    )
+    mem_type = "decision"
+    summary = f"[{canonical_stage}] {feature} => {status}"
     entry = append_memory_entry(
         project_root=project_root,
         mem_type=mem_type,
         text=summary,
         source_session_id=run_id,
-        source=f"workflow.{stage}.writeback",
+        source=f"workflow.{canonical_stage}.writeback",
         evidence_ref=evidence_ref,
         confidence=0.8,
-        tags=["workflow-lifecycle", stage, status.lower()],
+        tags=["workflow-lifecycle", canonical_stage, status.lower()],
+        metadata={
+            "run_id": run_id,
+            "stage": canonical_stage,
+            "feature": feature,
+            "version": version,
+            "transaction_id": tx["transaction_id"],
+            "source_hash": tx["source_hash"],
+            "projection_seq": tx["projection_seq"],
+            "attempt_seq": tx["attempt_seq"],
+        },
     )
-    append_lifecycle_event(
+    lifecycle_event = append_lifecycle_event(
         project_root,
         run_id=run_id,
-        stage=stage,
+        stage=canonical_stage,
         event="memory_writeback",
         source="workflow.memory.writeback",
         evidence_ref=evidence_ref,
-        details={"memory_id": entry.get("memory_id"), "memory_type": mem_type},
+        details={
+            "memory_id": entry.get("memory_id"),
+            "memory_type": mem_type,
+            "transaction_id": tx["transaction_id"],
+            "source_hash": tx["source_hash"],
+            "projection_seq": tx["projection_seq"],
+        },
     )
+    legacy_projection_path = memory_dir(project_root) / "decisions.json"
+    record = {
+        **tx,
+        "status": "applied",
+        "committed_at": now_iso(),
+        "memory_id": str(entry.get("memory_id", "") or ""),
+        "event_id": str(lifecycle_event.get("event_id", "") or ""),
+        "sink_paths": {
+            "memory_v1": str(memory_v1_path(project_root).relative_to(project_root)),
+            "legacy_projection": str(legacy_projection_path.relative_to(project_root)),
+            "workflow_lifecycle": str(lifecycle_path(project_root).relative_to(project_root)),
+        },
+        "sink_checksums": {
+            "memory_v1": _stable_hash_file(memory_v1_path(project_root)),
+            "legacy_projection": _stable_hash_file(legacy_projection_path),
+            "workflow_lifecycle": _stable_hash_file(lifecycle_path(project_root)),
+        },
+    }
+    _record_workflow_transaction(project_root, run_id=run_id, record=record)
     return entry
 
 
@@ -548,7 +895,7 @@ def _select_default_run_id(events: list[dict[str, Any]]) -> str | None:
         if not isinstance(item, dict):
             continue
         run_id = str(item.get("run_id", "") or "")
-        stage = str(item.get("stage", "") or "")
+        stage = normalize_workflow_stage(str(item.get("stage", "") or ""))
         event = str(item.get("event", "") or "")
         ts = str(item.get("ts", "") or "")
         if not run_id.startswith("run-"):
@@ -591,7 +938,7 @@ def compute_workflow_progress(
             return 0
 
     for stage in workflow_stages:
-        stage_events = [e for e in events if str(e.get("stage", "")) == stage]
+        stage_events = [e for e in events if normalize_workflow_stage(str(e.get("stage", ""))) == stage]
         stage_events.sort(key=lambda x: str(x.get("ts", "")))
         has_skipped_any = any(str(e.get("event", "")) == "stage_skipped" for e in stage_events)
         latest_attempt_seq = 0
@@ -632,6 +979,7 @@ def compute_workflow_progress(
 
         stage_status[stage] = {
             "status": status,
+            "canonical_stage": stage,
             "has_started": has_started,
             "has_context": has_context,
             "has_finished": has_finished,
@@ -644,6 +992,13 @@ def compute_workflow_progress(
             "latest_failure_ts": latest_failure_ts or None,
             "latest_completion_ts": latest_completion_ts or None,
             "event_count": len(stage_events),
+            "source_stages": sorted(
+                {
+                    str(item.get("stage", "")).strip()
+                    for item in stage_events
+                    if str(item.get("stage", "")).strip()
+                }
+            ),
         }
 
     ordered = [stage for stage in workflow_stages if stage_status[stage]["status"] != "completed"]
@@ -653,17 +1008,17 @@ def compute_workflow_progress(
 
     run_feature = str(run_state.get("feature", "")) if isinstance(run_state, dict) else ""
     run_version = str(run_state.get("version", "")) if isinstance(run_state, dict) else ""
-    gate_stage_status = str(stage_status.get("gate", {}).get("status", "not_started"))
+    release_stage_status = str(stage_status.get("release", {}).get("status", "not_started"))
     gate_status = "unknown"
     gate_pass = False
-    if gate_stage_status == "completed":
+    if release_stage_status == "completed":
         gate_status = "Pass"
         gate_pass = True
-    elif gate_stage_status == "failed":
+    elif release_stage_status == "failed":
         gate_status = "Blocked"
-    elif gate_stage_status == "skipped":
+    elif release_stage_status == "skipped":
         gate_status = "Skipped"
-    elif gate_stage_status in {"in_progress", "not_started"}:
+    elif release_stage_status in {"in_progress", "not_started"}:
         gate_status = "unknown"
 
     return {
@@ -700,10 +1055,18 @@ def compute_memory_metrics(
     writebacks = [e for e in run_events if e.get("event") == "memory_writeback"]
     recalls = [e for e in run_events if e.get("event") == "stage_context_injected"]
     feedback_items = [e for e in run_events if e.get("event") == "feedback_memory_assimilated"]
-    starts = {(e.get("stage"), e.get("event")) for e in run_events if e.get("event") == "stage_started"}
-    finishes = {(e.get("stage"), e.get("event")) for e in run_events if e.get("event") == "stage_finished"}
-    writeback_stages = {e.get("stage") for e in writebacks}
-    recall_stages = {e.get("stage") for e in recalls}
+    starts = {
+        (normalize_workflow_stage(str(e.get("stage", ""))), e.get("event"))
+        for e in run_events
+        if e.get("event") == "stage_started"
+    }
+    finishes = {
+        (normalize_workflow_stage(str(e.get("stage", ""))), e.get("event"))
+        for e in run_events
+        if e.get("event") == "stage_finished"
+    }
+    writeback_stages = {normalize_workflow_stage(str(e.get("stage", ""))) for e in writebacks}
+    recall_stages = {normalize_workflow_stage(str(e.get("stage", ""))) for e in recalls}
     progress = compute_workflow_progress(project_root, run_id=target_run_id)
 
     missing_stages: list[str] = []
@@ -726,4 +1089,64 @@ def compute_memory_metrics(
         "closure_complete": len(missing_stages) == 0 and bool(target_run_id),
         "missing_closure_stages": missing_stages,
         "next_stage": progress.get("next_stage"),
+    }
+
+
+def workflow_memory_transaction_contract(
+    project_root: Path,
+    *,
+    run_id: str | None = None,
+    version: str | None = None,
+    feature: str | None = None,
+) -> dict[str, Any]:
+    target_run_id = resolve_workflow_run_id(project_root, run_id=run_id, version=version, feature=feature)
+    if not target_run_id:
+        return {
+            "status": "warn",
+            "blocked": False,
+            "reason_code": "workflow_memory_transaction_missing",
+            "message": "workflow memory transaction record missing",
+            "run_id": "",
+            "details": {},
+        }
+    items = list_workflow_transactions(project_root, run_id=target_run_id)
+    if not items:
+        return {
+            "status": "warn",
+            "blocked": False,
+            "reason_code": "workflow_memory_transaction_missing",
+            "message": "workflow memory transaction record missing",
+            "run_id": target_run_id,
+            "details": {},
+        }
+    latest = items[-1]
+    status = str(latest.get("status", "") or "").strip().lower()
+    sink_checksums = latest.get("sink_checksums") if isinstance(latest.get("sink_checksums"), dict) else {}
+    metadata_ok = bool(latest.get("transaction_id")) and bool(latest.get("source_hash")) and bool(latest.get("projection_seq"))
+    checksum_ok = bool(sink_checksums) and all(str(value or "").strip() not in {"", "missing"} for value in sink_checksums.values())
+    if status == "failed_transaction":
+        return {
+            "status": "fail",
+            "blocked": True,
+            "reason_code": "workflow_memory_failed_transaction",
+            "message": "workflow memory transaction failed; stage closure is not fully committed",
+            "run_id": target_run_id,
+            "details": latest,
+        }
+    if not metadata_ok or not checksum_ok:
+        return {
+            "status": "fail",
+            "blocked": True,
+            "reason_code": "workflow_memory_transaction_drift",
+            "message": "workflow memory transaction metadata/checksum drift detected",
+            "run_id": target_run_id,
+            "details": latest,
+        }
+    return {
+        "status": "pass",
+        "blocked": False,
+        "reason_code": "workflow_memory_transaction_ok",
+        "message": "workflow memory transaction metadata is consistent",
+        "run_id": target_run_id,
+        "details": latest,
     }

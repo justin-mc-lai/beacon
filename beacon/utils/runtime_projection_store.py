@@ -492,6 +492,51 @@ def ensure_runtime_projection_schema(conn: sqlite3.Connection) -> None:
             PRIMARY KEY (project_key, issue_id)
         );
 
+        CREATE TABLE IF NOT EXISTS friction_items (
+            project_key TEXT NOT NULL,
+            item_id TEXT NOT NULL,
+            docs_version TEXT NOT NULL,
+            tool_name TEXT NOT NULL,
+            source_type TEXT NOT NULL,
+            item_class TEXT NOT NULL,
+            severity TEXT NOT NULL,
+            domain TEXT NOT NULL,
+            queue_status TEXT NOT NULL,
+            requirement_route_status TEXT NOT NULL DEFAULT 'queue_only',
+            feature TEXT NOT NULL DEFAULT '',
+            feature_slug TEXT NOT NULL DEFAULT '',
+            host_runtime TEXT NOT NULL DEFAULT '',
+            source_run_id TEXT NOT NULL,
+            summary TEXT NOT NULL,
+            project_root TEXT NOT NULL,
+            first_seen_at TEXT NOT NULL,
+            last_seen_at TEXT NOT NULL,
+            occurrence_count INTEGER NOT NULL DEFAULT 1,
+            accepted_at TEXT NOT NULL DEFAULT '',
+            PRIMARY KEY (project_key, item_id)
+        );
+
+        CREATE TABLE IF NOT EXISTS friction_refs (
+            project_key TEXT NOT NULL,
+            item_id TEXT NOT NULL,
+            ref_path TEXT NOT NULL,
+            ref_kind TEXT NOT NULL,
+            ref_scope TEXT NOT NULL,
+            sha256 TEXT NOT NULL DEFAULT '',
+            PRIMARY KEY (project_key, item_id, ref_path)
+        );
+
+        CREATE TABLE IF NOT EXISTS friction_events (
+            event_id TEXT PRIMARY KEY,
+            project_key TEXT NOT NULL,
+            item_id TEXT NOT NULL,
+            event_type TEXT NOT NULL,
+            event_at TEXT NOT NULL,
+            from_status TEXT NOT NULL DEFAULT '',
+            to_status TEXT NOT NULL DEFAULT '',
+            payload_json TEXT NOT NULL DEFAULT '{}'
+        );
+
         CREATE TABLE IF NOT EXISTS projection_writes (
             projection_seq TEXT PRIMARY KEY,
             transaction_id TEXT NOT NULL DEFAULT '',
@@ -583,6 +628,11 @@ def _project_row(envelope: dict[str, Any]) -> tuple[Any, ...]:
 
 def _json_text(value: Any) -> str:
     return json.dumps(value, ensure_ascii=False, sort_keys=True)
+
+
+def _stable_json_hash(value: Any) -> str:
+    encoded = json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    return hashlib.sha256(encoded).hexdigest()
 
 
 def _insert_rows(conn: sqlite3.Connection, table: str, columns: list[str], rows: list[tuple[Any, ...]]) -> None:
@@ -1353,6 +1403,268 @@ def load_project_detail(project_key: str) -> dict[str, Any]:
     path = pocketbase_projection_root() / "collections" / "projects" / f"{project_key}.json"
     payload = read_json(path, {})
     return payload if isinstance(payload, dict) else {}
+
+
+def _runtime_project_key(project_root: Path) -> str:
+    root = project_root.expanduser().resolve()
+    path_hash = hashlib.sha1(str(root).encode("utf-8")).hexdigest()[:10]  # noqa: S324
+    return f"{root.name}--{path_hash}"
+
+
+def _friction_event_id(project_key: str, item_id: str, event_type: str, event_at: str, payload: dict[str, Any]) -> str:
+    digest = _stable_json_hash(
+        {
+            "project_key": project_key,
+            "item_id": item_id,
+            "event_type": event_type,
+            "event_at": event_at,
+            "payload": payload,
+        }
+    )[:16]
+    return f"{project_key}:{item_id}:{event_type}:{digest}"
+
+
+def write_friction_queue_batch(
+    *,
+    project_root: Path,
+    docs_version: str,
+    tool_name: str,
+    run_id: str,
+    source_type: str,
+    items: list[dict[str, Any]],
+) -> dict[str, Any]:
+    project_root = project_root.expanduser().resolve()
+    project_key = _runtime_project_key(project_root)
+    db_path = runtime_ledger_db_path()
+    item_ids: list[str] = []
+    try:
+        with _connect() as conn:
+            for item in items:
+                if not isinstance(item, dict):
+                    continue
+                item_id = str(item.get("item_id") or item.get("candidate_id") or "").strip()
+                if not item_id:
+                    continue
+                now = str(item.get("observed_at") or now_iso())
+                row = conn.execute(
+                    """
+                    SELECT first_seen_at, occurrence_count, queue_status, requirement_route_status
+                    FROM friction_items
+                    WHERE project_key = ? AND item_id = ?
+                    """,
+                    (project_key, item_id),
+                ).fetchone()
+                first_seen_at = str((row["first_seen_at"] if row else "") or now)
+                occurrence_count = int((row["occurrence_count"] if row else 0) or 0) + 1
+                queue_status = str((row["queue_status"] if row else "") or item.get("queue_status") or "queued")
+                requirement_route_status = str(
+                    (row["requirement_route_status"] if row else "")
+                    or item.get("requirement_route_status")
+                    or "queue_only"
+                )
+                conn.execute(
+                    """
+                    INSERT INTO friction_items (
+                        project_key, item_id, docs_version, tool_name, source_type, item_class, severity, domain,
+                        queue_status, requirement_route_status, feature, feature_slug, host_runtime, source_run_id,
+                        summary, project_root, first_seen_at, last_seen_at, occurrence_count, accepted_at
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    ON CONFLICT(project_key, item_id) DO UPDATE SET
+                        docs_version=excluded.docs_version,
+                        tool_name=excluded.tool_name,
+                        source_type=excluded.source_type,
+                        item_class=excluded.item_class,
+                        severity=excluded.severity,
+                        domain=excluded.domain,
+                        queue_status=excluded.queue_status,
+                        requirement_route_status=excluded.requirement_route_status,
+                        feature=excluded.feature,
+                        feature_slug=excluded.feature_slug,
+                        host_runtime=excluded.host_runtime,
+                        source_run_id=excluded.source_run_id,
+                        summary=excluded.summary,
+                        project_root=excluded.project_root,
+                        last_seen_at=excluded.last_seen_at,
+                        occurrence_count=excluded.occurrence_count,
+                        accepted_at=CASE
+                            WHEN excluded.requirement_route_status = 'accepted_for_requirement' AND excluded.accepted_at <> ''
+                            THEN excluded.accepted_at
+                            ELSE friction_items.accepted_at
+                        END
+                    """,
+                    (
+                        project_key,
+                        item_id,
+                        str(docs_version or ""),
+                        str(tool_name or ""),
+                        str(source_type or ""),
+                        str(item.get("item_class") or "improvement"),
+                        str(item.get("severity") or "P2"),
+                        str(item.get("domain") or "workflow"),
+                        queue_status,
+                        requirement_route_status,
+                        str(item.get("feature") or ""),
+                        str(item.get("feature_slug") or ""),
+                        str(item.get("host_runtime") or ""),
+                        str(run_id or ""),
+                        str(item.get("summary") or item.get("friction_summary") or ""),
+                        str(project_root),
+                        first_seen_at,
+                        now,
+                        occurrence_count,
+                        str(item.get("accepted_at") or ""),
+                    ),
+                )
+                conn.execute(
+                    "DELETE FROM friction_refs WHERE project_key = ? AND item_id = ?",
+                    (project_key, item_id),
+                )
+                for ref in item.get("evidence_refs", []) if isinstance(item.get("evidence_refs"), list) else []:
+                    ref_path = str(ref or "").strip()
+                    if not ref_path:
+                        continue
+                    conn.execute(
+                        """
+                        INSERT OR REPLACE INTO friction_refs (
+                            project_key, item_id, ref_path, ref_kind, ref_scope, sha256
+                        ) VALUES (?, ?, ?, ?, ?, ?)
+                        """,
+                        (
+                            project_key,
+                            item_id,
+                            ref_path,
+                            "evidence",
+                            "project_local",
+                            "",
+                        ),
+                    )
+                event_type = "captured" if row is None else "observed"
+                payload = {
+                    "tool_name": tool_name,
+                    "source_type": source_type,
+                    "summary": str(item.get("summary") or item.get("friction_summary") or ""),
+                    "run_id": str(run_id or ""),
+                }
+                conn.execute(
+                    """
+                    INSERT OR REPLACE INTO friction_events (
+                        event_id, project_key, item_id, event_type, event_at, from_status, to_status, payload_json
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                    """,
+                    (
+                        _friction_event_id(project_key, item_id, event_type, now, payload),
+                        project_key,
+                        item_id,
+                        event_type,
+                        now,
+                        str((row["queue_status"] if row else "") or ""),
+                        queue_status,
+                        _json_text(payload),
+                    ),
+                )
+                item_ids.append(item_id)
+            conn.commit()
+        return {
+            "status": "ok",
+            "db_path": str(db_path),
+            "project_key": project_key,
+            "item_ids": item_ids,
+        }
+    except Exception as exc:  # noqa: BLE001
+        return {
+            "status": "error",
+            "db_path": str(db_path),
+            "project_key": project_key,
+            "item_ids": item_ids,
+            "error": str(exc),
+        }
+
+
+def list_friction_items(*, project_root: Path, limit: int = 20) -> list[dict[str, Any]]:
+    project_key = _runtime_project_key(project_root)
+    try:
+        with _connect() as conn:
+            rows = conn.execute(
+                """
+                SELECT project_key, item_id, docs_version, tool_name, source_type, item_class, severity, domain,
+                       queue_status, requirement_route_status, feature, feature_slug, host_runtime, source_run_id,
+                       summary, project_root, first_seen_at, last_seen_at, occurrence_count, accepted_at
+                FROM friction_items
+                WHERE project_key = ?
+                ORDER BY last_seen_at DESC, item_id ASC
+                LIMIT ?
+                """,
+                (project_key, max(1, limit)),
+            ).fetchall()
+        return [dict(row) for row in rows]
+    except Exception:  # noqa: BLE001
+        return []
+
+
+def transition_friction_item(*, project_root: Path, item_id: str, action: str) -> dict[str, Any]:
+    normalized_action = str(action or "").strip().lower()
+    transitions = {
+        "claim": ("queue_status", "claimed", "claimed"),
+        "resolve": ("queue_status", "resolved", "resolved"),
+        "reopen": ("queue_status", "reopened", "reopened"),
+        "accept": ("requirement_route_status", "accepted_for_requirement", "accepted_for_requirement"),
+    }
+    if normalized_action not in transitions:
+        raise ValueError(f"unsupported friction action: {action}")
+    field_name, next_value, event_type = transitions[normalized_action]
+    project_key = _runtime_project_key(project_root)
+    now = now_iso()
+    with _connect() as conn:
+        row = conn.execute(
+            """
+            SELECT project_key, item_id, queue_status, requirement_route_status
+            FROM friction_items
+            WHERE project_key = ? AND item_id = ?
+            """,
+            (project_key, item_id),
+        ).fetchone()
+        if row is None:
+            raise ValueError(f"friction item not found: {item_id}")
+        from_status = str(row[field_name] or "")
+        conn.execute(
+            f"""
+            UPDATE friction_items
+            SET {field_name} = ?, accepted_at = CASE
+                WHEN ? = 'accept' THEN ?
+                ELSE accepted_at
+            END, last_seen_at = ?
+            WHERE project_key = ? AND item_id = ?
+            """,
+            (next_value, normalized_action, now, now, project_key, item_id),
+        )
+        payload = {"action": normalized_action}
+        conn.execute(
+            """
+            INSERT OR REPLACE INTO friction_events (
+                event_id, project_key, item_id, event_type, event_at, from_status, to_status, payload_json
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            (
+                _friction_event_id(project_key, item_id, event_type, now, payload),
+                project_key,
+                item_id,
+                event_type,
+                now,
+                from_status,
+                next_value,
+                _json_text(payload),
+            ),
+        )
+        conn.commit()
+        updated = conn.execute(
+            """
+            SELECT project_key, item_id, queue_status, requirement_route_status, accepted_at, last_seen_at
+            FROM friction_items
+            WHERE project_key = ? AND item_id = ?
+            """,
+            (project_key, item_id),
+        ).fetchone()
+    return dict(updated) if updated is not None else {}
 
 
 def _latest_projection_write_from_sqlite(

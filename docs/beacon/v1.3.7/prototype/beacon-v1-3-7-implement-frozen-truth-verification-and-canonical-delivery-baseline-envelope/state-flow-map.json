@@ -1,0 +1,104 @@
+{
+  "schema_version": "1.0",
+  "node_count": 12,
+  "edge_count": 1,
+  "nodes": [
+    {
+      "state_key": "runtime-center:single-active",
+      "page_id": "runtime-center",
+      "state_id": "single-active",
+      "label": "Single 运行",
+      "description": "展示单进程执行摘要和 linked run。"
+    },
+    {
+      "state_key": "runtime-center:team-active",
+      "page_id": "runtime-center",
+      "state_id": "team-active",
+      "label": "Team 运行",
+      "description": "展示 agent 数、角色、状态和 host session metadata。"
+    },
+    {
+      "state_key": "runtime-center:ralph-active",
+      "page_id": "runtime-center",
+      "state_id": "ralph-active",
+      "label": "Ralph 闭环",
+      "description": "展示 round_count、failure_streak、next_action、blocker。"
+    },
+    {
+      "state_key": "runtime-center:idle",
+      "page_id": "runtime-center",
+      "state_id": "idle",
+      "label": "无活跃运行",
+      "description": "当前没有任何 active runtime。"
+    },
+    {
+      "state_key": "runtime-center:loading",
+      "page_id": "runtime-center",
+      "state_id": "loading",
+      "label": "加载中",
+      "description": "运行态数据仍在读取。"
+    },
+    {
+      "state_key": "runtime-center:error",
+      "page_id": "runtime-center",
+      "state_id": "error",
+      "label": "错误",
+      "description": "运行态投影异常，需要回到诊断页。"
+    },
+    {
+      "state_key": "recovery-diagnostics:healthy-warning",
+      "page_id": "recovery-diagnostics",
+      "state_id": "healthy-warning",
+      "label": "健康但预警",
+      "description": "当前系统可用但存在恢复风险提示。"
+    },
+    {
+      "state_key": "recovery-diagnostics:degraded",
+      "page_id": "recovery-diagnostics",
+      "state_id": "degraded",
+      "label": "降级",
+      "description": "SQLite 或 PocketBase 缺失，但 truth 仍可从文档恢复。"
+    },
+    {
+      "state_key": "recovery-diagnostics:rebuild-suggested",
+      "page_id": "recovery-diagnostics",
+      "state_id": "rebuild-suggested",
+      "label": "建议重建",
+      "description": "投影层需要重建。"
+    },
+    {
+      "state_key": "recovery-diagnostics:doctor-suggested",
+      "page_id": "recovery-diagnostics",
+      "state_id": "doctor-suggested",
+      "label": "建议 doctor",
+      "description": "推荐执行 doctor 修复上下文。"
+    },
+    {
+      "state_key": "recovery-diagnostics:loading",
+      "page_id": "recovery-diagnostics",
+      "state_id": "loading",
+      "label": "加载中",
+      "description": "诊断结果仍在采集。"
+    },
+    {
+      "state_key": "recovery-diagnostics:error",
+      "page_id": "recovery-diagnostics",
+      "state_id": "error",
+      "label": "错误",
+      "description": "诊断页本身无法完成聚合。"
+    }
+  ],
+  "edges": [
+    {
+      "from": "recovery-diagnostics:ready",
+      "to": "runtime-center:ready",
+      "event": "点击运行态关联",
+      "guard": "route_allowed",
+      "kind": "inter-page",
+      "fallback": "recovery-diagnostics:ready",
+      "test_refs": [
+        "TC-001"
+      ]
+    }
+  ]
+}

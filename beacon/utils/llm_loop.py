@@ -11,7 +11,15 @@ from urllib import request
 from beacon.utils.runtime import now_iso
 from beacon.utils.semantic_runtime import load_host_response_json
 
-STAGE_ORDER = ("think", "user-story", "prd", "test-case", "implementation", "verify", "none")
+STAGE_ORDER = ("prd", "user-story", "test-case", "prototype", "implement", "qa", "release", "none")
+_LEGACY_STAGE_ALIASES = {
+    "think": "prd",
+    "implementation": "implement",
+    "verify": "qa",
+    "review": "qa",
+    "gate": "release",
+    "delivery": "release",
+}
 
 
 def _estimate_tokens(text: str) -> int:
@@ -20,6 +28,7 @@ def _estimate_tokens(text: str) -> int:
 
 def _sanitize_stage(value: str | None, fallback: str) -> str:
     raw = str(value or "").strip().lower().replace("_", "-")
+    raw = _LEGACY_STAGE_ALIASES.get(raw, raw)
     if raw in STAGE_ORDER:
         return raw
     for stage in STAGE_ORDER:
@@ -72,7 +81,7 @@ def _real_llm_inference(
     system_prompt = (
         "You are Beacon workflow orchestrator. "
         "Return compact JSON: "
-        '{"next_stage":"think|user-story|prd|test-case|implementation|verify|none","risk":"low|medium|high","reason":"..."}'
+        '{"next_stage":"prd|user-story|test-case|prototype|implement|qa|release|none","risk":"low|medium|high","reason":"..."}'
     )
     user_prompt = (
         f"feature={feature}\nversion={version}\nrun_id={run_id}\n"
@@ -213,7 +222,7 @@ def build_next_stage_trace(
     completion = (
         f"Predicted next_stage={fallback_stage}. "
         "Reasoning policy: lifecycle closure order "
-        "(think->user-story->prd->test-case->implementation->verify)."
+        "(prd->user-story->test-case->prototype->implement->qa->release)."
     )
     return {
         "ts": now_iso(),

@@ -1,19 +1,22 @@
 {
   "schema_version": "1.0",
   "version": "v1.3.6",
-  "feature": "beacon-v1.3.6-visual-management-console-and-material-viewer",
-  "run_id": "run-20260421T081540Z-ad12",
-  "generated_at": "2026-04-21T14:22:54.522644+00:00",
+  "feature": "登录功能",
+  "run_id": "run-20260423T102755Z-4df9",
+  "generated_at": "2026-04-23T10:27:55.844511+00:00",
   "source_of_truth_root": "docs/beacon/v1.3.6",
-  "delivery_status": "completed",
-  "strict_delivery_ready": true,
-  "reason_codes": [],
+  "delivery_status": "draft",
+  "strict_delivery_ready": false,
+  "reason_codes": [
+    "git_branch_target_mismatch",
+    "git_version_ref_not_satisfied"
+  ],
   "affected_projects": [
     {
-      "name": "",
-      "project_root": ".",
+      "name": "beacon",
+      "project_root": "/Users/apple/Developer/Personal/products/beacon",
       "repo_url": "https://github.com/justin-mc-lai/beacon.git",
-      "change_scope": "workflow_delivery",
+      "change_scope": "docs_governance",
       "changed_layers": [
         "research",
         "user-story",
@@ -23,11 +26,11 @@
       ],
       "base_branch": "main",
       "target_branch": "beacon/v1.3.6",
-      "current_branch": "beacon/v1.3.6",
-      "commit": "6efe6998c0c82b66b2888330f35b73ea7f05c9c1",
+      "current_branch": "beacon/v1.3.7",
+      "commit": "3ade2f4374996eceeef3f9ece249fdc36cca309e",
       "tag": "",
-      "worktree_path": ".",
-      "alignment_status": "aligned"
+      "worktree_path": "/Users/apple/Developer/Personal/products/beacon",
+      "alignment_status": "recorded_pending_alignment"
     }
   ],
   "deliverables": [
@@ -38,32 +41,17 @@
     },
     {
       "type": "research",
+      "path": "docs/beacon/v1.3.6/research/beacon-oss-sync-memory-agents-absorption-analysis.md",
+      "status": "completed"
+    },
+    {
+      "type": "research",
+      "path": "docs/beacon/v1.3.6/research/beacon-requirement-delivery-closure-and-official-console-semantics.md",
+      "status": "completed"
+    },
+    {
+      "type": "research",
       "path": "docs/beacon/v1.3.6/research/openai-eval-skills-beacon-integration.md",
-      "status": "completed"
-    },
-    {
-      "type": "user-story",
-      "path": "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-visual-management-console-and-material-viewer.md",
-      "status": "completed"
-    },
-    {
-      "type": "prd",
-      "path": "docs/beacon/v1.3.6/prd/beacon-v1.3.6-visual-management-console-and-material-viewer.md",
-      "status": "completed"
-    },
-    {
-      "type": "test-case",
-      "path": "docs/beacon/v1.3.6/qa/test-cases/beacon-v1.3.6-visual-management-console-and-material-viewer.md",
-      "status": "completed"
-    },
-    {
-      "type": "ac-matrix",
-      "path": "docs/beacon/v1.3.6/.machine/qa/beacon-v1.3.6-visual-management-console-and-material-viewer.ac-test-matrix.json",
-      "status": "completed"
-    },
-    {
-      "type": "qa9-matrix",
-      "path": "docs/beacon/v1.3.6/.machine/qa/beacon-v1.3.6-visual-management-console-and-material-viewer.qa9-matrix.json",
       "status": "completed"
     },
     {
@@ -99,7 +87,7 @@
   ],
   "notes": [
     "多项目/多仓库交付范围必须通过 affected_projects 显式声明。",
-    "Current workflow status snapshot: completed.",
+    "Current workflow status snapshot: planned.",
     "execution artifacts are emitted only under docs/beacon."
   ]
 }

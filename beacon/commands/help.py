@@ -38,6 +38,7 @@ def _render_human(payload: dict[str, object]) -> str:
     version_context = payload.get("version_context", {}) if isinstance(payload.get("version_context"), dict) else {}
     version_guard = payload.get("context_version_guard", {}) if isinstance(payload.get("context_version_guard"), dict) else {}
     execution_surface = payload.get("execution_surface", {}) if isinstance(payload.get("execution_surface"), dict) else {}
+    support_surface_projection = payload.get("support_surface_projection", {}) if isinstance(payload.get("support_surface_projection"), dict) else {}
     minimal_hud = payload.get("minimal_hud", {}) if isinstance(payload.get("minimal_hud"), dict) else {}
     hud_lines = minimal_hud.get("lines", []) if isinstance(minimal_hud.get("lines"), list) else []
     lines = [
@@ -53,11 +54,16 @@ def _render_human(payload: dict[str, object]) -> str:
         f"delivery status : {payload.get('delivery_status', '')}",
         f"current stage   : {payload.get('current_stage', '')}",
         f"host runtime    : {execution_surface.get('host_runtime', '') or 'N/A'}",
+        f"archive status  : {execution_surface.get('archive_status', '') or 'N/A'}",
+        f"freeze status   : {execution_surface.get('freeze_status', '') or 'N/A'}",
         f"implement mode  : {execution_surface.get('implement_mode', '') or 'N/A'}",
+        f"team phase      : {execution_surface.get('team_phase', '') or 'N/A'}",
         f"implement runner: {execution_surface.get('implement_runner', '') or 'N/A'}",
         f"subagent runtime: {execution_surface.get('subagent_runtime_status', '') or 'N/A'}",
         f"subagent deleg. : {execution_surface.get('subagent_delegation_status', '') or 'N/A'}",
+        f"host trace ref  : {execution_surface.get('host_prompt_trace_ref', '') or 'N/A'}",
         f"ralph phase     : {execution_surface.get('ralph_phase', '') or 'N/A'}",
+        f"ralph status    : {execution_surface.get('ralph_status', '') or 'N/A'}",
         f"ralph stop      : {execution_surface.get('ralph_stop_state', '') or 'N/A'}",
         f"ralph next      : {execution_surface.get('ralph_next_action', '') or 'N/A'}",
         f"ralph rounds    : {execution_surface.get('ralph_round_count', 0) or 0}",
@@ -65,6 +71,7 @@ def _render_human(payload: dict[str, object]) -> str:
         f"qa mode         : {execution_surface.get('qa_execution_mode', '') or 'N/A'}",
         f"qa session      : {execution_surface.get('qa_current_session_id', '') or 'N/A'}",
         f"qa runner       : {execution_surface.get('qa_runner_type', '') or 'N/A'}",
+        f"operator doc    : {support_surface_projection.get('primary_operator_doc_ref', '') or 'N/A'}",
     ]
     if hud_lines:
         lines.extend(["", "minimal hud"])
@@ -84,6 +91,20 @@ def _render_human(payload: dict[str, object]) -> str:
         f"- command : {next_step.get('command', '')}",
     ])
     change_loop = payload.get("change_loop", {}) if isinstance(payload.get("change_loop"), dict) else {}
+    requirement_package = payload.get("requirement_package_gate", {}) if isinstance(payload.get("requirement_package_gate"), dict) else {}
+    if bool(requirement_package.get("enabled")):
+        lines.extend(
+            [
+                "",
+                "requirement package",
+                f"- status      : {requirement_package.get('status', 'pass')}",
+                f"- remediation : {requirement_package.get('remediation_mode', '') or 'none'}",
+            ]
+        )
+        failure_categories = requirement_package.get("failure_categories", []) if isinstance(requirement_package.get("failure_categories"), list) else []
+        lines.append(f"- failures    : {', '.join(str(item) for item in failure_categories) if failure_categories else 'none'}")
+        if requirement_package.get("recommended_command"):
+            lines.append(f"- command     : {requirement_package.get('recommended_command', '')}")
     if change_loop.get("intent") or bool(change_loop.get("recommended")):
         lines.extend(
             [
