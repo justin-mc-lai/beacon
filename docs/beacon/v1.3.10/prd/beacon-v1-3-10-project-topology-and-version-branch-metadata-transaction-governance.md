@@ -24,13 +24,14 @@ Beacon 已经具备全局 sqlite runtime ledger、git scope 投影、以及事�
 `rolo` 的 monorepo 摩擦把这条缺口暴露得很清楚：
 
 1. Beacon 能判断目标项目根目录没有 `.git`，但不能把 `project_root -> service repo roots` 固化成可复用、可强校验的契约真相。
-2. Beacon 还没有一套可直接被 `implement / qa / release` 消费的强校验 `version -> service set -> canonical branch` 元数据模型。
+2. Beacon 还没有一套可直接被 `implement / qa / release` 消费的强校验 `version -> service set -> per-service allowed working branch` 元数据模型。
 3. 因此提示层、运行层、以及面向人类的 support surface 仍会反复依赖 LLM 或启发式判断：
    - 该项目是 monorepo 还是 single-repo
    - 当前执行目标到底是哪一个 service repo
-   - 当前 Beacon 版本线对应的 canonical 可写分支是什么
+   - 当前 Beacon 版本线对应的 per-service allowed working branch 是什么
 4. 即便 sqlite 中已经存在部分 git 投影表，它们也还没有上升为一套“项目版本元信息契约”，并通过人类面、机器面、sqlite 面共享同一事务一致性。
 5. 人类操作者目前也缺少一套显式的元信息 support surface 来做增删改查与校验，因此文档、运行投影、执行行为之间会持续累积 drift。
+6. 当前 `beacon-change -> reopen -> revise -> freeze` 链路仍不是 requirement package 的确定性双写事务：human docs 更新后，`.machine` requirement materials 仍可能需要后续再跑一次 `doctor sync-materials` 才补齐。
 
 当前 `rolo` 真实证据还暴露出四个已经可复现的缺口：
 
@@ -59,6 +60,7 @@ Beacon 已经具备全局 sqlite runtime ledger、git scope 投影、以及事�
 - 让 prompt/runtime/support surface 直接消费该元信息，减少后续执行过程中重复的 LLM 推断。
 - 增加面向人类的元信息 support surface 或子 skill，支持显式增删改查与校验，并纳入同一多写事务契约。
 - 让 `implement / qa / release` 在 repo、service、branch 与 contract 不匹配时确定性阻断。
+- 让 `beacon-change / reopen / freeze` 对 requirement package 本身也形成确定性双写闭环，不再把 `.machine` 同步留给后置人工补丁步骤。
 
 ### 2.2 非目标
 
@@ -66,13 +68,14 @@ Beacon 已经具备全局 sqlite runtime ledger、git scope 投影、以及事�
 - 不把 sqlite 变成唯一 truth source。
 - 不允许 human-readable docs 反向驱动 machine truth。
 - 不在没有明确操作者意图的前提下自动修改 service repo 或自动切换分支。
-- 不把本 feature 扩张成泛化的项目编排系统；本次只收口项目拓扑与分支治理元信息。
+- 不把本 feature 扩张成泛化的项目编排系统；本次只收口项目拓扑、repo 绑定与最小 working-branch guard 元信息。
+- 不把项目级 `mainline -> all -> testing -> uat` 之类协作 workflow 编进 Beacon 核心 metadata。
 
 ## 3. 设计原则
 
 ### 3.1 元信息是契约，不是提示
 
-项目拓扑、service 映射、canonical branch 规则必须成为固定模型值并具备显式校验语义，不能继续作为后续 prompt 的宽松提示。
+项目拓扑、service 映射、per-service allowed working branch 规则必须成为固定模型值并具备显式校验语义，不能继续作为后续 prompt 的宽松提示。
 
 ### 3.2 Canonical first，projection second
 
@@ -96,6 +99,10 @@ Beacon 已经具备全局 sqlite runtime ledger、git scope 投影、以及事�
 
 元信息变更属于治理动作，必须显式、可审计、可回滚，并通过 support surface 暴露，而不是依赖隐藏副作用。
 
+### 3.6 Change loop 必须直接产出完整 requirement package
+
+`beacon-change / reopen / freeze` 不允许只更新 human docs 再把 `.machine` requirement materials 留给后置 repair。正常 change 闭环必须直接提交完整 requirement package；`doctor sync-materials` 只保留为 repair / rebuild surface。
+
 ## 4. 范围
 
 ### In scope
@@ -106,6 +113,7 @@ Beacon 已经具备全局 sqlite runtime ledger、git scope 投影、以及事�
 - 元信息增删改查与校验 support command / 子 skill
 - `implement`、`qa`、`release` 前的元信息硬校验
 - 元信息消费或变更时的 cross-project / monorepo 安全路径报告
+- `beacon-change / reopen / freeze` 对 requirement package 的 human + machine 同事务刷新
 
 ### Out of scope
 
@@ -128,7 +136,6 @@ Beacon 已经具备全局 sqlite runtime ledger、git scope 投影、以及事�
 - `default_execution_service`
 - `service_bindings[]`
 - `version_contracts[]`
-- `protected_branch_rules[]`
 - `metadata_status`
 
 每条 `service_binding` 至少必须表达：
@@ -143,8 +150,7 @@ Beacon 已经具备全局 sqlite runtime ledger、git scope 投影、以及事�
 
 - Beacon version
 - participating service set
-- per-service canonical branch
-- expected branch rule
+- per-service allowed working branch
 - branch guard mode
 - violation behavior
 
@@ -159,17 +165,22 @@ Beacon 已经具备全局 sqlite runtime ledger、git scope 投影、以及事�
      - `service_repo_roots`
      - `service bindings`
      - `default_execution_service`
-     - 全局 protected branch baseline policy
 
 2. 版本级元信息
    - 与某个明确的 `vX.Y.Z` 绑定
    - 描述该版本线的交付契约
    - 至少包括：
      - `version -> service set`
-     - `version -> per-service canonical branch`
+     - `version -> per-service allowed working branch`
      - `version-specific writable scope`
      - `version-specific branch guard mode`
      - `version-specific validation state`
+
+该模型的边界必须保持极简：
+
+- Beacon 核心 metadata 只表达“当前允许执行的 working branch truth”。
+- Beacon 核心 metadata 不表达完整项目 Git workflow，例如 integration branch、testing branch、uat branch、merge flow graph。
+- 若项目需要 `service dev branch -> shared integration branch -> testing/uat` 之类协作规则，必须通过项目内 skill / policy 管理，而不是扩张 Beacon 核心 schema。
 
 ### FR-002 Beacon 必须把拓扑与分支元信息持久化为 canonical transaction truth
 
@@ -181,13 +192,9 @@ Beacon 已经具备全局 sqlite runtime ledger、git scope 投影、以及事�
 
 事务必须可审计，并在 sink 不一致时 fail closed。
 
-### FR-003 Beacon 必须提供确定性的人类面元信息 skill，并支持增删改查与校验
+### FR-003 Beacon 必须提供确定性的人类面元信息 support surface，并支持增删改查与校验
 
-Beacon 必须暴露确定性的人类面元信息 skill，名称固定为：
-
-- `beacon:beacon-project-metadata`
-
-同时，其宿主命令面必须保持 Beacon 的极简人类操作面设计，不新增新的一级公开命令，而是收敛在现有 support surface 下。默认命令形态固定为：
+Beacon 必须暴露确定性的人类面元信息 support surface。其宿主命令面必须保持 Beacon 的极简人类操作面设计，不新增新的一级公开命令，而是收敛在现有 support surface 下。默认命令形态固定为：
 
 - `beacon doctor metadata show`
 - `beacon doctor metadata create ...`
@@ -200,7 +207,7 @@ Beacon 必须暴露确定性的人类面元信息 skill，名称固定为：
 
 - 查询当前 metadata
 - 新增 topology / service / version contract
-- 修改 topology / service binding / branch contract
+- 修改 topology / service binding / working-branch contract
 - 删除已失效的 service binding 或 version contract
 - 列表查看当前版本与服务映射
 - 校验当前 runtime state 是否满足 metadata contract
@@ -213,7 +220,7 @@ Beacon 必须暴露确定性的人类面元信息 skill，名称固定为：
 
 - 目标项目是 monorepo 还是 single-repo
 - 当前执行目标是哪一个 service repo
-- 当前版本线对应的 canonical 可写分支是什么
+- 当前版本线对应的 per-service allowed working branch 是什么
 - 当前 repo / branch / worktree 状态是否有效
 
 后续 prompt 可以解释为什么这样判定，但不能重新决定已经被 metadata contract 固定下来的事实。
@@ -227,7 +234,7 @@ Beacon 必须暴露确定性的人类面元信息 skill，名称固定为：
 - Beacon 运行层必须产出一份 resolved metadata view，供 prompt 层、runtime 层、support surface 直接消费。
 - prompt 层只能消费 resolved metadata view，不能绕过运行层自行再决策。
 
-同时，`friction-intake`、`brainstorm`、`change` 等 Beacon 相关 support skill 在显式带上 `vX.Y.Z` 时，也必须走同一 resolved metadata view，不能各自重新决定 topology、service repo 或 canonical branch。
+同时，`friction-intake`、`brainstorm`、`change` 等 Beacon 相关 support skill 在显式带上 `vX.Y.Z` 时，也必须走同一 resolved metadata view，不能各自重新决定 topology、service repo 或 working branch。
 
 ### FR-005 `implement`、`qa`、`release` 必须在 metadata contract 违例时硬阻断
 
@@ -251,6 +258,23 @@ Beacon 的 `status / review / doctor / gate` 等 surface 必须能检测并报�
 - failed / partial metadata transaction
 
 任何一个 sink 都不允许静默独占权威性。
+
+### FR-006A `beacon-change / reopen / freeze` 必须对 requirement package 做确定性双写
+
+当操作者进入 `beacon-change` 闭环并执行 `reopen / prd revise / user-story refresh / test-case refresh / freeze` 时，Beacon 必须把以下 requirement package 视为同一 canonical transaction 的投影结果：
+
+- human requirement docs
+- `.machine` requirement materials
+- revision / story state
+
+冻结成功的定义不能只是 human docs 已更新；必须同时满足 `.machine` requirement package 已更新并与当前 revision 对齐。
+
+进一步要求：
+
+- `freeze` 必须直接产出当前 feature 的完整 machine requirement package，而不是只冻结 revision/story 状态。
+- `reopen` 后产生的新 revision 必须立即拥有可继续编辑和校验的 machine requirement skeleton 或 active projection。
+- `doctor sync-materials` 不再是正常 `beacon-change` 闭环的必经步骤，只作为 repair / rebuild / drift recovery surface 保留。
+- 若 human requirement docs 与 `.machine` requirement package 之间存在未同步缺口，`freeze`、`implement`、`qa`、`release` 必须 fail closed。
 
 ### FR-007 Cross-project artifact reporting 必须是 metadata-safe
 
@@ -339,8 +363,7 @@ Beacon 必须投影一份可供人类评审的 metadata 文档，至少解释：
 - project topology classification
 - service repo mapping
 - version to service set mapping
-- per-service canonical branches
-- protected branch rules
+- per-service allowed working branches
 - current validation status
 - 绝对 `project_root`
 - 各关键 artifact 的绝对路径
@@ -374,7 +397,7 @@ Metadata mutation 必须留下足够的 append-only transaction history，用于
 ### AC-001 元信息双层模型冻结
 
 - Beacon 明确定义全局项目级元信息与版本级元信息两层模型。
-- `topology_kind`、`service bindings`、`version contracts`、`canonical branch`、`branch guard mode` 都有固定字段边界。
+- `topology_kind`、`service bindings`、`version contracts`、`per-service allowed working branch`、`branch guard mode` 都有固定字段边界。
 
 ### AC-002 提示层按版本读取 resolved metadata view
 
@@ -385,9 +408,14 @@ Metadata mutation 必须留下足够的 append-only transaction history，用于
 
 ### AC-003 人类面 metadata support surface 闭环成立
 
-- `beacon:beacon-project-metadata` 名称固定。
 - `beacon doctor metadata show/create/update/delete/list/verify` 命令面固定。
 - 增删改查与校验都走 canonical transaction。
+
+### AC-003A Change loop requirement package dual-write is closed
+
+- `beacon-change / reopen / freeze` 成功结束时，human requirement docs、`.machine` requirement materials、revision/story state 已在同一 canonical transaction 下对齐。
+- 正常变更路径不再要求操作者追加执行 `doctor sync-materials` 来补齐 `.machine`。
+- `doctor sync-materials` 只作为 repair / rebuild 手段保留。
 
 ### AC-004 Cross-project 输出无歧义
 
@@ -412,7 +440,7 @@ Metadata mutation 必须留下足够的 append-only transaction history，用于
 | Metadata becomes a second informal hint layer instead of hard contract | High | Force runtime consumers to read canonical metadata first and hard-block on violations |
 | Human sink and sqlite sink drift | High | Shared transaction metadata, checksum verification, and doctor/gate drift reporting |
 | Operators bypass metadata commands and patch one sink directly | High | Expose explicit support commands and make verification surfaces detect out-of-band drift |
-| Model is too loose for monorepo realities | High | Require topology kind, service bindings, version contracts, and protected branch rules as structured fields |
+| Model is too loose for monorepo realities | High | Require topology kind, service bindings, version contracts, and working-branch guard fields as structured data |
 | LLM continues to re-infer service/branch facts even when metadata exists | High | Prompt/runtime contract must treat metadata as fixed truth inputs |
 
 ## 8. 验收标准
@@ -425,9 +453,13 @@ Beacon 能持久化 project-version metadata，并以确定性方式表达 monor
 
 A metadata mutation results in one canonical transaction whose human sink, machine sink, and sqlite sink share the same transaction lineage and consistency metadata.
 
-### AC-003 Human metadata skill exists for explicit governance
+### AC-003 Human metadata governance surface exists for explicit governance
 
-操作者能通过 `beacon:beacon-project-metadata` 以及 `beacon doctor metadata ...` 显式新增、查询、修改、删除、校验 topology / service / branch metadata，而不是手改各类 sink。
+操作者能通过 `beacon doctor metadata ...` 显式新增、查询、修改、删除、校验 topology / service / working-branch metadata，而不是手改各类 sink。项目如需更复杂的人类协作引导，可通过项目内 skill 承载。
+
+### AC-003A Requirement package dual-write is closed inside the change loop
+
+`beacon-change / reopen / freeze` 的正常路径会直接对齐 human requirement docs、`.machine` requirement materials、revision/story state，不再要求人工补跑 `doctor sync-materials`。
 
 ### AC-004 Runtime contract consumption is deterministic
 
@@ -456,5 +488,5 @@ Human-visible metadata outputs identify the absolute project root and artifact l
 
 - Decide whether metadata human sink lives under `docs/beacon/<version>/execution/` or another version-scoped governance path
 - Decide whether current git ledger tables are extended or wrapped by a new canonical projection layer
-- Decide exact public naming for metadata support commands
+- Keep metadata support commands on `beacon doctor metadata ...`; do not add a new primary public command
 - Define rollback semantics for metadata transactions that partially validate but fail to publish

@@ -8,19 +8,20 @@
 | TC-002 | AC-002 | monorepo 项目能持久化 `project_root -> service repo roots`、service key、角色、可写边界 | integration | service binding 被写入 canonical metadata，并可被读取 |
 | TC-003 | AC-003 | 已存在 metadata 时，运行前不再重复 repo 探测，而是直接按 contract 解析目标 service repo | integration | 目标 service repo 的解析结果稳定且可重复 |
 | TC-004 | AC-101 | 某个 Beacon version 能绑定参与交付的 service set | unit | version contract 包含明确 service set |
-| TC-005 | AC-102 | 每个参与 service 都能绑定 canonical branch contract | unit | version -> service -> canonical branch 映射可读取 |
-| TC-006 | AC-103 | protected branch 禁写、可写分支约束与违例处理策略可结构化表达 | unit | branch guard 规则进入 metadata contract |
+| TC-005 | AC-102 | 每个参与 service 都能绑定 allowed working branch contract | unit | version -> service -> allowed working branch 映射可读取 |
+| TC-006 | AC-103 | Beacon 只表达最小 working-branch guard，而不引入项目级 workflow 图 | unit | branch guard 规则保持最小边界 |
 | TC-006A | AC-104 | metadata 明确拆成“全局项目级元信息 + 版本级元信息”两层 | unit | 两层字段边界明确，版本字段不污染全局项目事实 |
 | TC-007 | AC-201 | 任一元信息变更先形成 canonical metadata envelope | integration | human/machine/sqlite 不会各自独立起写 |
 | TC-008 | AC-202 | 同一笔元信息事务会双写或三写到 human sink、machine sink、sqlite sink | integration | 共享 transaction_id/source_hash/projection_seq/sink_checksums |
 | TC-009 | AC-203 | status/doctor/gate/review 能发现 metadata sink 缺失、checksum drift、failed transaction | integration | drift 与 failed transaction 可报告且可阻断 |
-| TC-010 | AC-301 | prompt 层读取固定 metadata，而不是重新推断 monorepo/service/branch | integration | 提示输入引用 metadata truth，而非再次决策事实 |
+| TC-009A | AC-204 | 正常 `beacon-change / reopen / freeze` 闭环后不再需要额外执行 `doctor sync-materials` | integration | human requirement docs 与 `.machine` requirement materials 已同步完成 |
+| TC-010 | AC-301 | prompt 层读取固定 metadata，而不是重新推断 monorepo/service/working-branch | integration | 提示输入引用 metadata truth，而非再次决策事实 |
 | TC-011 | AC-302 | runtime 层在 implement/qa/release 前读取 metadata contract 做 repo/branch/worktree 校验 | integration | 前置校验读取同一份 metadata truth |
 | TC-012 | AC-303 | 当前 service、branch 或 worktree 不满足 contract 时确定性阻断 | integration | 停止执行并给出明确修复指引 |
 | TC-012A | AC-304 | 当用户以 `beacon:子skill + vX.Y.Z` 或显式 `--version vX.Y.Z` 调用 Beacon 子 skill 时，运行层先解析全局项目级元信息与对应版本级元信息 | integration | 运行层返回 resolved metadata view，而不是把推断责任留给 prompt 层 |
 | TC-012B | AC-305 | prompt 层不得绕过运行层再次推断 topology/service/branch 事实 | integration | prompt 输入只能消费运行层 resolved metadata view |
 | TC-012C | AC-306 | `friction-intake`、`brainstorm`、`change` 等 support skill 带版本调用时复用同一 resolved metadata view | integration | support skill 不会各自重跑 monorepo/service/branch 推断 |
-| TC-013 | AC-401 | Beacon 提供确定性人类面元信息子 skill，名称固定为 `beacon:beacon-project-metadata` | unit | skill 名称与用途稳定，不再处于开放命名状态 |
+| TC-013 | AC-401 | Beacon 提供确定性人类面元信息 support surface，并固定收口到 `beacon doctor metadata ...` | unit | support surface 稳定，不新增一级公开命令 |
 | TC-014 | AC-402 | 宿主命令面固定收口到 `beacon doctor metadata show/create/update/delete/list/verify` | unit | 不新增一级公开命令，同时命令集具备确定性 |
 | TC-015 | AC-403 | 人类元信息 surface 支持新增 metadata contract | integration | create 动作进入 canonical metadata transaction |
 | TC-016 | AC-403 | 人类元信息 surface 支持查询 / 列表 metadata contract | integration | read/list 动作返回当前 topology、service、version、branch 绑定 |
@@ -39,6 +40,13 @@
 | TC-029 | AC-702 | 版本分支治理问题命中 `branch-governance` domain 规则 | unit | 分类结果进入元信息治理域 |
 | TC-030 | AC-703 | `project_root -> service repo root` 绑定问题命中 `repo-binding` domain 规则 | unit | repo binding 问题被正确分类 |
 | TC-031 | AC-704 | 满足证据条件的元信息治理问题不会静默回退为 `prompt` | integration | domain classifier 稳定保留 metadata governance 语义 |
+| TC-032 | AC-801 | 核心 metadata 字段只覆盖 topology、service binding、participating services、per-service allowed working branch | unit | schema 不引入额外项目级 workflow 字段 |
+| TC-033 | AC-802 | 核心 metadata 不内建 integration/testing/uat/merge-flow graph | unit | PRD 与 schema 边界保持极简 |
+| TC-034 | AC-803 | 项目级复杂协作规则通过项目内 skill/policy 扩展 | review | 核心 requirement truth 显式声明扩展边界 |
+| TC-035 | AC-901 | `freeze` 成功后，human docs、`.machine` requirement package、revision/story state 同时完成冻结对齐 | integration | 不存在“文档已变但机器面未刷新”的成功态 |
+| TC-036 | AC-902 | `reopen` 生成新 revision 时，machine requirement projection 同步切换到新 active revision | integration | 新 revision 立即可继续编辑/校验 |
+| TC-037 | AC-903 | 正常 change 闭环不依赖 `doctor sync-materials`，该命令仅用于 repair/rebuild | integration | 主路径不再包含额外机器面补齐步骤 |
+| TC-038 | AC-904 | human docs 与 `.machine` requirement materials 不一致时，`freeze`/`implement`/`qa`/`release` 被阻断 | integration | material gap 被显式报告并 fail closed |
 
 ## Regression Focus
 
@@ -46,7 +54,9 @@
 - sqlite 不得单独成为唯一 truth source
 - human sink 不得反向驱动 machine truth
 - 元信息 CRUD 动作不得绕开 canonical transaction
-- implement / qa / release 不得在 branch/service mismatch 时继续推进
+- implement / qa / release 不得在 working-branch/service mismatch 时继续推进
+- 正常 `beacon-change` 闭环不得再要求人工补跑 `.machine` materials sync
+- 核心 metadata 不得膨胀成项目级 Git workflow engine
 - `friction-intake` 输出不得再次退化为仅相对路径
 - 元信息治理类 domain 不得被回退分类成 `prompt`
 
@@ -56,4 +66,4 @@
 - upstream_prd: `docs/beacon/v1.3.10/prd/beacon-v1-3-10-project-topology-and-version-branch-metadata-transaction-governance.md`
 - upstream_user_story: `docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md`
 - machine_matrix: `docs/beacon/v1.3.10/.machine/qa/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.ac-test-matrix.json`
-- 本测试矩阵优先覆盖 topology metadata、version-branch contract、事务级多写一致性、人类元信息 surface 的 CRUD + verify 闭环，以及 `friction-intake` 输出契约与 domain classifier 修正。
+- 本测试矩阵优先覆盖 topology metadata、version-scoped working-branch contract、事务级多写一致性、人类元信息 surface 的 CRUD + verify 闭环，以及 `friction-intake` 输出契约与 domain classifier 修正。
