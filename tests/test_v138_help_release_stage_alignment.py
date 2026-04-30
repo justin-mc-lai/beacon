@@ -88,3 +88,68 @@ def test_v138_help_should_project_release_stage_when_release_gate_is_blocked(mon
     assert "evidence_sha256_manifest_mismatch" in payload["blocking_reasons_raw"]
     assert payload["next_step"]["action"] == "release-check"
     assert payload["release_summary"]["gate_status"] == "Blocked"
+
+
+def test_v138_help_should_not_block_release_ready_feature_when_feature_arg_is_slug(monkeypatch, tmp_path: Path) -> None:
+    _seed_docs(tmp_path)
+    _seed_execution_state(tmp_path)
+    freeze_revision_state(tmp_path, version=VERSION, feature=FEATURE)
+
+    from beacon.utils import help_support as help_support_module
+    from beacon.utils.revision_state import load_revision_state, save_revision_state
+    from beacon.utils.runtime import write_json
+
+    revision_state = load_revision_state(tmp_path, version=VERSION, feature=FEATURE, create_if_missing=True)
+    revision_state["delivery_status"] = "accepted"
+    save_revision_state(tmp_path, version=VERSION, feature=FEATURE, state=revision_state)
+
+    write_json(
+        tmp_path / "docs" / "beacon" / VERSION / ".machine" / "execution" / f"deterministic-implementation-contract-{SLUG}.json",
+        {
+            "schema_version": "1.0",
+            "feature": FEATURE,
+            "feature_slug": SLUG,
+            "version": VERSION,
+            "revision_id": "R1",
+            "base_branch": "main",
+            "target_branch": "beacon/v1.3.8",
+            "branch_prefix": "beacon/",
+            "worktree_root": str(tmp_path),
+            "environment_mode": "local-dev",
+            "isolation_strategy": "repo-local isolation",
+            "review_status": "approved",
+            "approved_by": "codex",
+            "reviewed_at": "2026-04-30T00:00:00+00:00",
+            "use_git_worktree": False,
+            "service_directories": ["."],
+            "writable_services": ["."],
+            "reference_only_services": ["docs"],
+        },
+    )
+
+    monkeypatch.setattr(
+        help_support_module,
+        "build_implementation_plan_gate_payload",
+        lambda *_args, **_kwargs: {
+            "status": "blocked",
+            "blocked": True,
+            "reason_code": "technical_review_contract_invalid",
+        },
+    )
+    monkeypatch.setattr(
+        help_support_module,
+        "build_release_scorecard",
+        lambda *_args, **_kwargs: {
+            "release_ready": True,
+            "gate": {"status": "Pass", "blocked_count": 0, "reason_codes": []},
+            "qa": {"status": "passed", "release_ready": True, "evidence_done": True},
+            "acceptance": {"status": "pass", "release_ready": True, "continue_decision": "ready_for_release"},
+        },
+    )
+
+    payload = build_help_payload(tmp_path, version=VERSION, feature=SLUG)
+
+    assert payload["feature"] == FEATURE
+    assert payload["blocked"] is False
+    assert "technical_review_contract_invalid" not in payload["blocking_reasons_raw"]
+    assert payload["next_step"]["action"] == "release-check"

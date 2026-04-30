@@ -444,6 +444,27 @@ def _supports_skill_discover(version: str) -> bool:
     return (major, minor, patch) >= (1, 2, 0)
 
 
+def _resolve_canonical_feature_name(
+    *,
+    requested_feature: str,
+    revision_state: dict[str, Any] | None,
+    story_state: dict[str, Any] | None,
+) -> str:
+    requested = str(requested_feature or "").strip()
+    revision_state = revision_state if isinstance(revision_state, dict) else {}
+    story_state = story_state if isinstance(story_state, dict) else {}
+    candidates = [
+        str(story_state.get("title") or "").strip(),
+        str(story_state.get("feature") or "").strip(),
+        str(revision_state.get("feature") or "").strip(),
+        requested,
+    ]
+    for value in candidates:
+        if value:
+            return value
+    return requested
+
+
 def _stage_local_execution_binding(
     *,
     profile: dict[str, Any] | None,
@@ -571,7 +592,8 @@ def _blocking_reasons(
             for item in (requirement_package_gate.get("failure_categories") or [])
             if str(item).strip()
         )
-    if isinstance(implementation_plan_gate, dict) and bool(implementation_plan_gate.get("blocked")):
+    implementation_gate_relevant = delivery_status not in {"accepted", "released"} and not qa_closure_authoritative
+    if implementation_gate_relevant and isinstance(implementation_plan_gate, dict) and bool(implementation_plan_gate.get("blocked")):
         code = str(implementation_plan_gate.get("reason_code", "") or "").strip()
         if code:
             reasons.append(code)
@@ -989,6 +1011,11 @@ def build_help_payload(
         feature=feature_name,
         create_if_missing=False,
         revision_id=str(revision_state.get("revision_id", "R1") or "R1"),
+    )
+    feature_name = _resolve_canonical_feature_name(
+        requested_feature=feature_name,
+        revision_state=revision_state,
+        story_state=story_state,
     )
     resolved_run_id = (
         resolve_workflow_run_id(project_root, run_id=run_id, version=resolved_version, feature=feature_name) or ""

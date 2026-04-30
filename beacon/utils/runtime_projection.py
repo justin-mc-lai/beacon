@@ -190,6 +190,71 @@ def detect_debug_state(project_root: Path) -> dict[str, Any]:
     }
 
 
+def _debug_issue_relevance(
+    payload: dict[str, Any],
+    *,
+    docs_version: str,
+    feature: str,
+    active_run_ids: set[str],
+) -> str:
+    payload = payload if isinstance(payload, dict) else {}
+    feature_candidates = {
+        str(payload.get("feature") or "").strip(),
+        str(payload.get("feature_slug") or "").strip(),
+    }
+    feature_candidates.discard("")
+    if feature and (
+        feature in feature_candidates
+        or feature_slug(feature) in feature_candidates
+    ):
+        return "current_delivery"
+
+    version_candidates = {
+        str(payload.get("version") or "").strip(),
+        str(payload.get("docs_version") or "").strip(),
+    }
+    version_candidates.discard("")
+    if docs_version and docs_version in version_candidates:
+        return "current_delivery"
+
+    run_ids = {
+        str(payload.get("run_id") or "").strip(),
+        *(str(item).strip() for item in (payload.get("run_ids") or []) if str(item).strip()),
+    }
+    run_ids.discard("")
+    if active_run_ids and run_ids.intersection(active_run_ids):
+        return "current_delivery"
+
+    return "historical_learning"
+
+
+def _effective_debug_state(debug_issues: list[dict[str, Any]], debug_state: dict[str, Any]) -> dict[str, Any]:
+    base = dict(debug_state if isinstance(debug_state, dict) else {})
+    current_delivery_count = len(
+        [
+            item
+            for item in debug_issues
+            if str(item.get("delivery_relevance") or "") == "current_delivery"
+            and str(item.get("materialization_state") or "") == "materialized_issue"
+        ]
+    )
+    historical_count = len(
+        [
+            item
+            for item in debug_issues
+            if str(item.get("delivery_relevance") or "") == "historical_learning"
+            and str(item.get("materialization_state") or "") == "materialized_issue"
+        ]
+    )
+    base["current_delivery_issue_count"] = current_delivery_count
+    base["historical_issue_count"] = historical_count
+    if current_delivery_count > 0:
+        base["state"] = "materialized_issue"
+    elif historical_count > 0:
+        base["state"] = "historical_learning_only"
+    return base
+
+
 def _resolve_primary_feature(project_root: Path, docs_version: str, feature: str | None = None) -> str:
     explicit = str(feature or "").strip()
     if explicit:
@@ -859,6 +924,9 @@ def _collect_debug_issues(
     *,
     project_key: str,
     debug_state: dict[str, Any],
+    docs_version: str,
+    feature: str,
+    active_run_ids: set[str],
 ) -> list[dict[str, Any]]:
     debug_root = project_root / ".beacon" / "debug"
     issues_root = debug_root / "issues"
@@ -866,6 +934,12 @@ def _collect_debug_issues(
     for issue_path in sorted(issues_root.glob("*.json")) if issues_root.exists() else []:
         payload = read_json(issue_path, {})
         payload = payload if isinstance(payload, dict) else {}
+        relevance = _debug_issue_relevance(
+            payload,
+            docs_version=docs_version,
+            feature=feature,
+            active_run_ids=active_run_ids,
+        )
         rows.append(
             {
                 "project_key": project_key,
@@ -873,8 +947,9 @@ def _collect_debug_issues(
                 "reason_code": str(payload.get("reason_code") or payload.get("code") or ""),
                 "issue_status": str(payload.get("status") or "open"),
                 "materialization_state": "materialized_issue",
-                "latest_event_at": str(payload.get("updated_at") or payload.get("ts") or ""),
-                "sample": str(payload.get("summary") or payload.get("note") or issue_path.name),
+                "delivery_relevance": relevance,
+                "latest_event_at": str(payload.get("latest_event_at") or payload.get("updated_at") or payload.get("ts") or ""),
+                "sample": str(payload.get("sample") or payload.get("summary") or payload.get("note") or issue_path.name),
                 "suggested_capability": str(payload.get("suggested_capability") or "beacon-doctor"),
                 "source_run_id": str(payload.get("run_id") or ""),
                 "truth_refs": [_safe_relative(issue_path, project_root)],
@@ -889,6 +964,7 @@ def _collect_debug_issues(
                 "reason_code": "runtime_feed_only",
                 "issue_status": "observed",
                 "materialization_state": "runtime_feed_only",
+                "delivery_relevance": "current_delivery",
                 "latest_event_at": "",
                 "sample": "debug runtime feed observed without materialized issue",
                 "suggested_capability": "beacon-doctor",
@@ -943,6 +1019,8 @@ def _collect_health_snapshots(
     notes: list[str] = []
     if str(debug_state.get("state") or "") == "materialized_issue":
         notes.append("materialized_debug_issue_present")
+    elif str(debug_state.get("state") or "") == "historical_learning_only":
+        notes.append("historical_debug_issue_present")
     if str(runtime_corroboration.get("status") or "") == "missing":
         notes.append("runtime_corroboration_missing")
     return [
@@ -1084,12 +1162,26 @@ def build_runtime_projection(
         help_payload=help_payload,
         runs=runs,
     )
-    debug_issues = _collect_debug_issues(root, project_key=project_key, debug_state=debug_state)
+    active_run_ids = {
+        str(active_run_id or "").strip(),
+        str(debug_state.get("latest_run_id") or "").strip(),
+        *(str(row.get("run_id") or "").strip() for row in runs if str(row.get("run_id") or "").strip()),
+    }
+    active_run_ids.discard("")
+    debug_issues = _collect_debug_issues(
+        root,
+        project_key=project_key,
+        debug_state=debug_state,
+        docs_version=resolved_version,
+        feature=primary_feature,
+        active_run_ids=active_run_ids,
+    )
+    effective_debug_state = _effective_debug_state(debug_issues, debug_state)
     health_snapshots = _collect_health_snapshots(
         project_key=project_key,
         preflight_status=preflight_status,
         blocked=bool(help_payload.get("blocked", False)),
-        debug_state=debug_state,
+        debug_state=effective_debug_state,
         git_scopes=git_scopes,
         runtime_corroboration=runtime_corroboration,
         runs=runs,
@@ -1109,7 +1201,7 @@ def build_runtime_projection(
         help_payload=help_payload,
         materials=materials,
         runtime_mode=runtime_mode,
-        debug_state=debug_state,
+        debug_state=effective_debug_state,
         truth_refs=truth_refs,
     )
     stage_material_status = _collect_stage_material_status(
@@ -1159,7 +1251,7 @@ def build_runtime_projection(
             "worker_count": len(run_workers),
             "host_session_count": len(host_sessions),
         },
-        "debug": debug_state,
+        "debug": effective_debug_state,
         "git_scopes": git_scopes,
         "sessions": {
             "qa_session_id": str(current_session.get("session_id") or ""),
@@ -1205,7 +1297,7 @@ def build_runtime_projection(
             "progress_label": _derive_progress_label(help_payload, materials),
             "blocker": str(help_payload.get("blocked_reason") or "none"),
             "next_action": str((help_payload.get("next_step") or {}).get("action") or "none"),
-            "debug_state": str(debug_state.get("state") or "no_debug_feed"),
+            "debug_state": str(effective_debug_state.get("state") or "no_debug_feed"),
             "runtime_corroboration": str(runtime_corroboration.get("status") or "missing"),
             "health_status": health_status,
             "active_runs": len([row for row in runs if str(row.get("status") or "").strip() in active_statuses]),

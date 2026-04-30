@@ -216,6 +216,52 @@ def test_v134_build_runtime_projection_should_be_deterministic_and_multi_repo_aw
     assert str(envelope1["project_key"]).startswith(f"{tmp_path.name}--")
 
 
+def test_v134_runtime_projection_should_keep_historical_debug_issues_out_of_board_warn(
+    monkeypatch, tmp_path: Path
+) -> None:
+    _seed_docs(tmp_path, version="v1.3.10")
+    issues_root = tmp_path / ".beacon" / "debug" / "issues"
+    issues_root.mkdir(parents=True, exist_ok=True)
+    (issues_root / "legacy.json").write_text(
+        json.dumps(
+            {
+                "issue_id": "legacy",
+                "reason_code": "historical_gap",
+                "sample": "legacy beacon-core issue",
+                "latest_event_at": "2026-04-18T00:00:00Z",
+                "run_ids": ["debug-legacy-001"],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    monkeypatch.setattr(runtime_projection_module, "resolve_target_version", lambda *_args, **_kwargs: "v1.3.10")
+    monkeypatch.setattr(runtime_projection_module, "discover_git_scopes", lambda _root: [])
+    monkeypatch.setattr(
+        runtime_projection_module,
+        "build_help_payload",
+        lambda *_args, **_kwargs: {
+            "current_stage": "accepted",
+            "blocked": False,
+            "blocked_reason": "",
+            "next_step": {"action": "release-check"},
+            "execution_surface": {},
+            "hud": {},
+        },
+    )
+
+    envelope = runtime_projection_module.build_runtime_projection(
+        tmp_path,
+        docs_version="v1.3.10",
+        feature="Beacon Runtime Ledger",
+    )
+
+    assert envelope["debug"]["state"] == "historical_learning_only"
+    assert envelope["board"]["debug_state"] == "historical_learning_only"
+    assert envelope["board"]["health_status"] == "healthy"
+    assert envelope["debug_issues"][0]["delivery_relevance"] == "historical_learning"
+
+
 def test_v134_runtime_projection_store_should_sync_and_list_portfolio(monkeypatch, tmp_path: Path) -> None:
     ledger_root = tmp_path / "ledger"
     monkeypatch.setenv("BEACON_RUNTIME_LEDGER_ROOT", str(ledger_root))
