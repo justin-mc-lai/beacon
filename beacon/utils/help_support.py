@@ -26,6 +26,7 @@ from beacon.utils.project_skills import (
     load_feature_profile_binding,
     resolve_profile_for_feature,
 )
+from beacon.utils.project_metadata import metadata_machine_path, resolve_project_metadata_view
 from beacon.utils.prototype_support import version_requires_prototype
 from beacon.utils.qa_runtime import load_current_qa_session, load_qa_status
 from beacon.utils.qa_precision import load_feature_qa_scorecard
@@ -361,9 +362,16 @@ def _build_change_loop_payload(
     superseded_by = str(revision_state.get("superseded_by", "") or "")
     has_post_freeze_context = bool(doc_status == "frozen" or source_revision_id or superseded_by)
     intent_detected = _detect_post_freeze_change_intent(intent_text)
+    metadata_path = metadata_machine_path(project_root)
+    project_metadata_context = {
+        "metadata_ref": str(metadata_path.relative_to(project_root)) if metadata_path.exists() else "",
+        "resolved_metadata_view": resolve_project_metadata_view(project_root, version=version),
+    }
     ladder = [
         "beacon-change",
         "reopen",
+        "doctor metadata verify",
+        "doctor metadata update",
         "prd revise",
         "user-story refresh",
         "test-case refresh",
@@ -385,10 +393,17 @@ def _build_change_loop_payload(
             else ""
         ),
         "ladder": ladder,
+        "project_metadata_context": project_metadata_context,
         "reopen_command": (
             f"beacon reopen {json.dumps(feature, ensure_ascii=False)} --project-root {project_root} --version {version} --reason change-request"
             if feature
             else ""
+        ),
+        "metadata_verify_command": (
+            f"beacon doctor metadata verify --project-root {project_root} --version {version} --json"
+        ),
+        "metadata_update_command": (
+            f"beacon doctor metadata update --project-root {project_root} --version {version} --json"
         ),
     }
 
@@ -1380,6 +1395,12 @@ def build_help_payload(
             "blocking_reasons": blocking_display,
             "blocked_reason": blocking_display[0] if blocking_display else "",
             "next_action": str(next_step.get("action", "") or ""),
+        },
+        "project_metadata_context": {
+            "metadata_ref": str(metadata_machine_path(project_root).relative_to(project_root))
+            if metadata_machine_path(project_root).exists()
+            else "",
+            "resolved_metadata_view": resolve_project_metadata_view(project_root, version=resolved_version),
         },
         "change_loop": change_loop,
         "revision_lineage": {

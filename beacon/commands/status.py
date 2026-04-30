@@ -199,6 +199,7 @@ def _status_impl(
         "next_step": help_payload.get("next_step", {}),
         "lifecycle": lifecycle,
         "change_loop": help_payload.get("change_loop", {}),
+        "project_metadata_context": help_payload.get("project_metadata_context", {}),
         "project_mode": help_payload.get("project_mode", "greenfield"),
         "execution_surface": help_payload.get("execution_surface", {}),
         "archive": help_payload.get("archive", {}),

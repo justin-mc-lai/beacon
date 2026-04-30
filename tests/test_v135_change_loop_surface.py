@@ -7,6 +7,7 @@ from typer.testing import CliRunner
 
 from beacon.main import app
 from beacon.utils.help_support import build_help_payload
+from beacon.utils.runtime import write_json
 from beacon.utils.release_scorecard import build_release_scorecard, summarize_release_scorecard
 from beacon.utils.revision_state import reopen_revision_state
 
@@ -169,8 +170,43 @@ def _write_release_ready_runtime(root: Path) -> None:
     )
 
 
+def _seed_project_metadata(root: Path) -> None:
+    write_json(
+        root / ".beacon" / "metadata" / "project-version-metadata.json",
+        {
+            "schema_version": "1.0",
+            "project_root": str(root.resolve()),
+            "global_project_metadata": {
+                "project_root": str(root.resolve()),
+                "topology_kind": "monorepo",
+                "default_execution_service": "api",
+                "service_bindings": [
+                    {
+                        "service_key": "api",
+                        "repo_root": str((root / "services" / "api").resolve()),
+                        "repo_root_relative": "services/api",
+                        "role": "service",
+                        "writable": True,
+                        "worktree_path_policy": "follow-repo-root",
+                    }
+                ],
+            },
+            "version_scoped_metadata": {
+                VERSION: {
+                    "participating_services": ["api"],
+                    "per_service_canonical_branch": {"api": "beacon/v1.3.5"},
+                    "branch_guard_mode": "strict",
+                    "validation_state": "verified",
+                }
+            },
+            "transaction": {},
+        },
+    )
+
+
 def test_v135_help_and_status_should_route_change_intent_to_beacon_change(tmp_path: Path) -> None:
     _seed_docs(tmp_path)
+    _seed_project_metadata(tmp_path)
     _freeze_feature(tmp_path)
 
     help_payload = build_help_payload(
@@ -182,6 +218,11 @@ def test_v135_help_and_status_should_route_change_intent_to_beacon_change(tmp_pa
     assert help_payload["change_loop"]["recommended"] is True
     assert help_payload["next_step"]["action"] == "beacon-change"
     assert help_payload["next_step"]["command"] == "beacon-change"
+    assert help_payload["project_metadata_context"]["metadata_ref"] == ".beacon/metadata/project-version-metadata.json"
+    assert help_payload["project_metadata_context"]["resolved_metadata_view"]["selected_branch"] == "beacon/v1.3.5"
+    assert help_payload["change_loop"]["project_metadata_context"]["resolved_metadata_view"]["selected_service"] == "api"
+    assert "doctor metadata verify" in help_payload["change_loop"]["ladder"]
+    assert "doctor metadata update" in help_payload["change_loop"]["ladder"]
     assert "qa delta-run" in help_payload["change_loop"]["ladder"]
 
     result = _invoke(
@@ -202,6 +243,8 @@ def test_v135_help_and_status_should_route_change_intent_to_beacon_change(tmp_pa
     assert payload["change_loop"]["recommended"] is True
     assert payload["next_step"]["action"] == "beacon-change"
     assert payload["change_loop"]["route"] == "beacon-change"
+    assert payload["project_metadata_context"]["resolved_metadata_view"]["topology_kind"] == "monorepo"
+    assert payload["change_loop"]["metadata_verify_command"].startswith("beacon doctor metadata verify ")
 
 
 def test_v135_release_scorecard_should_block_stale_release_when_revision_reopened(tmp_path: Path) -> None:
