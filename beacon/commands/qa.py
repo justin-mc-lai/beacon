@@ -15,6 +15,7 @@ from beacon.commands.team import TeamState, TerminalStatus, get_team_state_file,
 from beacon.utils.delivery_kernel import build_delivery_contract
 from beacon.utils.coverage import write_coverage_summary
 from beacon.utils.implement_adapters import format_template
+from beacon.utils.material_audit import build_requirement_package_gate
 from beacon.utils.project_metadata import metadata_machine_path, verify_project_metadata
 from beacon.utils.exhaustiveness import build_exhaustiveness_report, write_exhaustiveness_report
 from beacon.utils.exhaustiveness import feature_exhaustiveness_report_path
@@ -681,6 +682,28 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
     args = _strip_option_with_value(args, "--mode")
     args = _strip_option_with_value(args, "--runtime")
     current_session = load_current_qa_session(project_root)
+
+    requirement_package_gate = build_requirement_package_gate(
+        project_root,
+        version=version if version != "auto" else None,
+        feature=feature or "",
+        strict=True,
+    )
+    if str(requirement_package_gate.get("status") or "").lower() == "blocked":
+        blocked_payload = {
+            "schema_version": "1.0",
+            "feature": feature,
+            "version": version,
+            "status": "blocked",
+            "reason_codes": ["requirement_package_contract_blocked"],
+            "requirement_package_gate": requirement_package_gate,
+            "recommended_command": str(requirement_package_gate.get("recommended_command") or "beacon-change"),
+        }
+        if json_output:
+            typer.echo(json.dumps(blocked_payload, ensure_ascii=False, indent=2))
+        else:
+            typer.echo("Beacon QA blocked: requirement package contract blocked", err=True)
+        return 2, blocked_payload
 
     if metadata_machine_path(project_root).exists():
         metadata_verdict = verify_project_metadata(project_root, version=version if version != "auto" else "")

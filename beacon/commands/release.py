@@ -7,6 +7,7 @@ import json
 import re
 
 from beacon.utils.artifact_paths import change_docs_file, change_file_output, machine_change_dir, release_checklist_file
+from beacon.utils.material_audit import build_requirement_package_gate
 from beacon.utils.memory import append_memory_entry
 from beacon.utils.project_metadata import metadata_machine_path, verify_project_metadata
 from beacon.utils.release_scorecard import build_release_scorecard
@@ -420,6 +421,29 @@ def check(
     project_root = Path(project) if project else Path.cwd()
     resolved_version = resolve_target_version(project_root, version)
     resolved_runtime = resolve_runtime_version(project_root, "auto")
+    requirement_package_gate = build_requirement_package_gate(
+        project_root,
+        version=resolved_version,
+        feature="",
+        strict=True,
+    )
+    if str(requirement_package_gate.get("status") or "").lower() == "blocked":
+        payload = {
+            "schema_version": "1.0",
+            "version": resolved_version,
+            "status": "blocked",
+            "reason_code": str(requirement_package_gate.get("reason_code") or "requirement_package_contract_blocked"),
+            "requirement_package_gate": requirement_package_gate,
+            "recommended_command": str(
+                requirement_package_gate.get("recommended_command")
+                or f"beacon doctor verify-materials --project-root {project_root} --version {resolved_version} --strict"
+            ),
+        }
+        if json_output:
+            typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        else:
+            typer.echo("Beacon release blocked: requirement package contract blocked")
+        raise typer.Exit(code=2)
     release_scorecard = build_release_scorecard(project_root, version=resolved_version)
     change_documents = release_scorecard.get("change_documents") if isinstance(release_scorecard.get("change_documents"), dict) else {}
     prompt_boundary = release_scorecard.get("prompt_boundary") if isinstance(release_scorecard.get("prompt_boundary"), dict) else {}

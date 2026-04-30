@@ -7,6 +7,8 @@ from typing import Any
 
 from beacon.utils.artifact_paths import execution_file_candidates, qa_matrix_candidates
 from beacon.utils.implementation_plan import list_implementation_git_workflow_contracts
+from beacon.utils.revision_state import load_revision_state, revision_state_file
+from beacon.utils.story_state import _baseline_hash, machine_story_path
 from beacon.utils.versioning import normalize_version, release_line_key, resolve_target_version
 
 
@@ -65,6 +67,7 @@ def build_material_audit(project_root: Path | str, *, version: str | None = None
     root = Path(project_root)
     resolved_version = resolve_target_version(root, version)
     requires_minimum_closure = _parse_semver_tuple(resolved_version) >= (1, 1, 3)
+    requires_change_loop_dual_write = _parse_semver_tuple(resolved_version) >= (1, 3, 10)
     source_root = root / "docs" / "beacon" / resolved_version
     research_dir = source_root / "research"
     us_dir = source_root / "user-story"
@@ -120,12 +123,46 @@ def build_material_audit(project_root: Path | str, *, version: str | None = None
             missing.append("test-case")
         if not any(path.exists() for path in qa_matrix_candidates(root, resolved_version, name, "ac-test-matrix")):
             missing.append("ac-test-matrix")
+        if requires_change_loop_dual_write and not machine_story_path(root, resolved_version, name).exists():
+            missing.append("machine-user-story")
+        if requires_change_loop_dual_write and not any(
+            path.exists() for path in qa_matrix_candidates(root, resolved_version, name, "story-scenario-map")
+        ):
+            missing.append("story-scenario-map")
         if not requires_minimum_closure and not any(
             path.exists() for path in qa_matrix_candidates(root, resolved_version, name, "qa9-matrix")
         ):
             missing.append("qa9-matrix")
         if missing:
             missing_by_feature[name] = missing
+
+    revision_drift_by_feature: dict[str, dict[str, Any]] = {}
+    if requires_change_loop_dual_write:
+        for name in feature_names:
+            revision_path = revision_state_file(root, resolved_version, name)
+            if not revision_path.exists():
+                revision_drift_by_feature[name] = {
+                    "reason": "revision_state_missing",
+                    "path": str(revision_path.relative_to(root)),
+                }
+                continue
+            revision = load_revision_state(root, version=resolved_version, feature=name, create_if_missing=False)
+            expected_hash = str(revision.get("baseline_hash") or "").strip()
+            actual_hash = str(_baseline_hash(root, resolved_version, name) or "").strip()
+            if not expected_hash:
+                revision_drift_by_feature[name] = {
+                    "reason": "baseline_hash_missing",
+                    "path": str(revision_path.relative_to(root)),
+                    "actual_hash": actual_hash,
+                }
+                continue
+            if expected_hash != actual_hash:
+                revision_drift_by_feature[name] = {
+                    "reason": "baseline_hash_mismatch",
+                    "path": str(revision_path.relative_to(root)),
+                    "expected_hash": expected_hash,
+                    "actual_hash": actual_hash,
+                }
 
     feature_status = "pass"
     if not feature_names:
@@ -143,6 +180,18 @@ def build_material_audit(project_root: Path | str, *, version: str | None = None
             },
         }
     )
+    if requires_change_loop_dual_write:
+        revision_drift_status = "pass" if not revision_drift_by_feature else ("fail" if strict else "warn")
+        checks.append(
+            {
+                "name": "change_loop_requirement_package_sync",
+                "status": revision_drift_status,
+                "details": {
+                    "feature_count": len(feature_names),
+                    "drift_by_feature": revision_drift_by_feature,
+                },
+            }
+        )
 
     checks.append(
         {
@@ -460,4 +509,46 @@ def build_delivery_audit(project_root: Path | str, *, version: str | None = None
         "status": overall,
         "ok": overall == "pass",
         "checks": checks,
+    }
+
+
+def build_requirement_package_gate(
+    project_root: Path | str,
+    *,
+    version: str | None = None,
+    feature: str = "",
+    strict: bool = True,
+) -> dict[str, Any]:
+    root = Path(project_root)
+    resolved_version = resolve_target_version(root, version)
+    if _parse_semver_tuple(resolved_version) < (1, 3, 10):
+        return {
+            "schema_version": "1.0",
+            "status": "pass",
+            "enabled": False,
+            "version": resolved_version,
+            "feature": feature,
+            "reason_code": "",
+            "audit": {},
+        }
+    audit = build_material_audit(root, version=resolved_version, strict=strict)
+    status = str(audit.get("status") or "fail").lower()
+    failing_checks = [
+        item for item in audit.get("checks", [])
+        if isinstance(item, dict) and str(item.get("status") or "").lower() == "fail"
+    ]
+    return {
+        "schema_version": "1.0",
+        "status": "pass" if status == "pass" else "blocked",
+        "enabled": True,
+        "version": resolved_version,
+        "feature": feature,
+        "reason_code": "" if status == "pass" else "requirement_package_contract_blocked",
+        "failing_checks": failing_checks,
+        "audit": audit,
+        "recommended_command": (
+            f'beacon-change'
+            if str(feature or "").strip()
+            else f"beacon doctor verify-materials --project-root {root} --version {resolved_version} --strict"
+        ),
     }

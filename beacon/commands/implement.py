@@ -58,6 +58,7 @@ from beacon.utils.implement_adapters import (
 from beacon.utils.learning_loop import write_requirement_rewrite_input
 from beacon.utils.host_prompt_trace import record_host_prompt_trace
 from beacon.utils.implement_prompt_boundary import evaluate_implement_prompt_boundary
+from beacon.utils.material_audit import build_requirement_package_gate
 from beacon.utils.revision_delta import load_revision_delta
 from beacon.utils.semantic_runtime import load_or_build_semantic_layer
 from beacon.utils.skill_admission import admit_runtime_skill
@@ -1624,6 +1625,24 @@ def run_implement_stage(  # noqa: PLR0913
             "recommended_command": (
                 f'beacon archive status --project-root {project_root} --version {resolved_version} --feature "{feature}" --json'
             ),
+        }
+        return 2, payload
+    requirement_package_gate = build_requirement_package_gate(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        strict=True,
+    )
+    if str(requirement_package_gate.get("status") or "").lower() == "blocked":
+        payload = {
+            "schema_version": "1.0",
+            "status": "blocked",
+            "reason_code": str(requirement_package_gate.get("reason_code") or "requirement_package_contract_blocked"),
+            "feature": feature,
+            "feature_slug": _slug(feature),
+            "version": resolved_version,
+            "requirement_package_gate": requirement_package_gate,
+            "recommended_command": str(requirement_package_gate.get("recommended_command") or "beacon-change"),
         }
         return 2, payload
     resolved_mode = _normalize_mode(mode)
