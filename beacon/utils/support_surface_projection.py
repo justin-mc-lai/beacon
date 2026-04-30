@@ -15,11 +15,15 @@ _OPTIONAL_DERIVED_PATTERNS = (
     "implementation-plan-{slug}.md",
     "git-workflow-{slug}.md",
     "deterministic-implementation-contract-{slug}.md",
+    "implementation-brief-{slug}.md",
+    "qa-acceptance-brief-{slug}.md",
+    "release-closure-brief-{slug}.md",
 )
 
 _DEPRECATED_TEMPLATE_PATTERNS = (
     "implementation-summary-{slug}.md",
     "technical-implementation-{slug}.md",
+    "qa-acceptance-{slug}.md",
 )
 
 

@@ -168,7 +168,7 @@ def test_acceptance_writeback_should_write_machine_human_and_runtime_projection(
     assert ".beacon/qa/status.json" in envelope["evidence_refs"]
     assert envelope["transaction_lineage"]["workflow_memory_ref"]
     markdown = markdown_path.read_text(encoding="utf-8")
-    assert "# QA Acceptance: Navigator Feature" in markdown
+    assert "# QA Acceptance Brief: Navigator Feature" in markdown
     assert "beacon qa run" in markdown
     contract = acceptance_projection_transaction_contract(tmp_path, version=VERSION, feature=FEATURE)
     assert contract["status"] == "pass"
@@ -345,7 +345,7 @@ def test_help_payload_should_expose_ralph_round_and_qa_observability(tmp_path: P
             "next_action": "implement",
             "recommended_command": f'beacon implement run "{FEATURE}" --project {tmp_path} --version {VERSION} --runner native-single',
             "round_count": 2,
-            "last_round_ref": f"docs/beacon/{VERSION}/.machine/execution/ralph-round-{SLUG}-round-002.json",
+            "last_round_ref": f"docs/beacon/{VERSION}/.machine/trace/ralph/{SLUG}/ralph-round-{SLUG}-round-002.json",
             "failure_streak": 1,
             "no_delta_streak": 0,
         },

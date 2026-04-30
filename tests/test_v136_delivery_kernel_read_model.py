@@ -313,7 +313,7 @@ def test_v136_release_scorecard_should_block_release_when_semantic_contract_miss
     _seed_semantic_layer(tmp_path)
     freeze_revision_state(tmp_path, version=VERSION, feature=FEATURE)
 
-    semantic_root = tmp_path / "docs" / "beacon" / VERSION / "execution" / "semantic" / SLUG
+    semantic_root = tmp_path / "docs" / "beacon" / VERSION / ".machine" / "trace" / "semantic" / SLUG
     (semantic_root / "semantic-contract.json").unlink()
 
     scorecard = build_release_scorecard(tmp_path, version=VERSION)
@@ -330,7 +330,7 @@ def test_v136_release_scorecard_should_block_release_when_default_taste_bridge_d
     _seed_semantic_layer(tmp_path)
     freeze_revision_state(tmp_path, version=VERSION, feature=FEATURE)
 
-    semantic_contract = tmp_path / "docs" / "beacon" / VERSION / "execution" / "semantic" / SLUG / "semantic-contract.json"
+    semantic_contract = tmp_path / "docs" / "beacon" / VERSION / ".machine" / "trace" / "semantic" / SLUG / "semantic-contract.json"
     payload = json.loads(semantic_contract.read_text(encoding="utf-8"))
     payload["default_design_bridge"]["repo"] = "https://example.com/not-official"
     semantic_contract.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
@@ -361,7 +361,7 @@ def test_v136_help_should_route_to_prototype_review_when_semantic_review_missing
     _seed_semantic_layer(tmp_path)
     freeze_revision_state(tmp_path, version=VERSION, feature=FEATURE)
 
-    semantic_review = tmp_path / "docs" / "beacon" / VERSION / "execution" / "semantic" / SLUG / "semantic-review.json"
+    semantic_review = tmp_path / "docs" / "beacon" / VERSION / ".machine" / "trace" / "semantic" / SLUG / "semantic-review.json"
     payload = json.loads(semantic_review.read_text(encoding="utf-8"))
     payload["overall_status"] = "draft"
     semantic_review.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

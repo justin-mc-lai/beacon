@@ -81,6 +81,7 @@ def _seed_feature_matrix(root: Path) -> None:
 
 
 def _mark_implemented(root: Path, *, run_id: str = "run-v132-impl-001") -> None:
+    freeze_revision_state(root, version=VERSION, feature=FEATURE)
     marker = root / ".beacon" / "state"
     marker.mkdir(parents=True, exist_ok=True)
     (marker / f"implementation-{SLUG}.json").write_text(
@@ -198,7 +199,7 @@ def test_v132_functional_help_should_expose_implement_mode_runner_and_browser_ob
             "next_action": "implement",
             "recommended_command": f'beacon implement run "{FEATURE}" --project {tmp_path} --version {VERSION} --runner native-single',
             "round_count": 2,
-            "last_round_ref": f"docs/beacon/{VERSION}/.machine/execution/ralph-round-{SLUG}-round-002.json",
+            "last_round_ref": f"docs/beacon/{VERSION}/.machine/trace/ralph/{SLUG}/ralph-round-{SLUG}-round-002.json",
             "failure_streak": 1,
             "no_delta_streak": 0,
         },

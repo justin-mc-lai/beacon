@@ -3,7 +3,7 @@
   "feature": "Beacon v1.3.10 project topology and version-branch metadata transaction governance",
   "feature_slug": "beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance",
   "version": "v1.3.10",
-  "generated_at": "2026-04-30T04:01:13.975730+00:00",
+  "generated_at": "2026-04-30T08:34:27.455438+00:00",
   "expansion_profile": "pua-web",
   "scenario_depth": "standard",
   "families_required": [
@@ -39,8 +39,8 @@
         },
         {
           "scenario_id": "SC-002",
-          "source_tc_id": "TC-045",
-          "tc_id": "TC-045-PRIMARY",
+          "source_tc_id": "TC-051",
+          "tc_id": "TC-051-PRIMARY",
           "scenario_family": "primary",
           "qa_type": "interface",
           "browser_required": false,
@@ -73,8 +73,8 @@
         },
         {
           "scenario_id": "SC-004",
-          "source_tc_id": "TC-046",
-          "tc_id": "TC-046-PRIMARY",
+          "source_tc_id": "TC-052",
+          "tc_id": "TC-052-PRIMARY",
           "scenario_family": "primary",
           "qa_type": "contract",
           "browser_required": false,
@@ -107,8 +107,8 @@
         },
         {
           "scenario_id": "SC-006",
-          "source_tc_id": "TC-047",
-          "tc_id": "TC-047-PRIMARY",
+          "source_tc_id": "TC-053",
+          "tc_id": "TC-053-PRIMARY",
           "scenario_family": "primary",
           "qa_type": "integration",
           "browser_required": false,
@@ -130,8 +130,8 @@
       "scenarios": [
         {
           "scenario_id": "SC-007",
-          "source_tc_id": "TC-041",
-          "tc_id": "TC-041-PRIMARY",
+          "source_tc_id": "TC-047",
+          "tc_id": "TC-047-PRIMARY",
           "scenario_family": "primary",
           "qa_type": "unit",
           "browser_required": false,
@@ -153,8 +153,8 @@
       "scenarios": [
         {
           "scenario_id": "SC-008",
-          "source_tc_id": "TC-042",
-          "tc_id": "TC-042-PRIMARY",
+          "source_tc_id": "TC-048",
+          "tc_id": "TC-048-PRIMARY",
           "scenario_family": "primary",
           "qa_type": "unit",
           "browser_required": false,
@@ -176,8 +176,8 @@
       "scenarios": [
         {
           "scenario_id": "SC-009",
-          "source_tc_id": "TC-043",
-          "tc_id": "TC-043-PRIMARY",
+          "source_tc_id": "TC-049",
+          "tc_id": "TC-049-PRIMARY",
           "scenario_family": "primary",
           "qa_type": "unit",
           "browser_required": false,
@@ -199,8 +199,8 @@
       "scenarios": [
         {
           "scenario_id": "SC-010",
-          "source_tc_id": "TC-044",
-          "tc_id": "TC-044-PRIMARY",
+          "source_tc_id": "TC-050",
+          "tc_id": "TC-050-PRIMARY",
           "scenario_family": "primary",
           "qa_type": "unit",
           "browser_required": false,
@@ -399,6 +399,60 @@
     },
     {
       "ac_id": "AC-029",
+      "theme": "human-execution-contract",
+      "text": "human execution 固定收口为 `index.md`、`architecture-blueprint.md`、`implementation-brief-<feature>.md`、`qa-acceptance-brief-<feature>.md`、`release-closure-brief-<feature>.md` 或版本级 release summary。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-030",
+      "theme": "summary-first",
+      "text": "human execution 文档以 LLM 总结后的结论为主，默认正文不再以 run/transaction/round 字段为主体。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-031",
+      "theme": "no-trace-pollution",
+      "text": "`ralph/*`、`qa-team/*`、`codex-subagents/*`、`semantic/*.json` 不再落到 human execution 面。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-032",
+      "theme": "machine-trace-layer",
+      "text": "上述运行痕迹若需要保留，必须下沉到 `.machine/trace/` 或 `.beacon/`，而不是继续出现在 `docs/beacon/<version>/execution/`。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-033",
+      "theme": "machine-execution-unchanged",
+      "text": "现有 `.machine/execution/*` 继续保留确定性 envelope / contract / transaction truth，不因人类面瘦身而丢失。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-034",
+      "theme": "brief-over-dump",
+      "text": "`implementation`、`qa acceptance`、`release closure` 的人类文档形态必须优先输出 brief / summary，而不是把 changed files、implemented item ids、round refs 大段直出。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-035",
       "theme": "absolute-root",
       "text": "人类可见输出会显式显示绝对 `project_root`。",
       "scenario_ids": [],
@@ -407,7 +461,7 @@
       "scenarios": []
     },
     {
-      "ac_id": "AC-030",
+      "ac_id": "AC-036",
       "theme": "artifact-clarity",
       "text": "元信息相关的人类可见输出能清楚标识 human sink、machine sink 与 sqlite transaction 标识。",
       "scenario_ids": [],
@@ -416,7 +470,7 @@
       "scenarios": []
     },
     {
-      "ac_id": "AC-031",
+      "ac_id": "AC-037",
       "theme": "cross-project-safety",
       "text": "在 cross-project / monorepo 场景下，路径报告不会让操作者误判产物属于 Beacon 核心仓还是目标项目仓。",
       "scenario_ids": [],
@@ -425,7 +479,7 @@
       "scenarios": []
     },
     {
-      "ac_id": "AC-032",
+      "ac_id": "AC-038",
       "theme": "latest-pointer-absolute-paths",
       "text": "`latest.json` 这类 machine pointer 除相对路径外，还会补充 `project_root` 与绝对 artifact path。",
       "scenario_ids": [],
@@ -434,7 +488,7 @@
       "scenarios": []
     },
     {
-      "ac_id": "AC-033",
+      "ac_id": "AC-039",
       "theme": "human-drop-location-absolute",
       "text": "人类提示中的“落盘位置”至少在 cross-project 模式下打印绝对路径。",
       "scenario_ids": [],
@@ -443,7 +497,7 @@
       "scenarios": []
     },
     {
-      "ac_id": "AC-034",
+      "ac_id": "AC-040",
       "theme": "human-output-root",
       "text": "`friction-intake` 的 human-readable 输出显式包含绝对 `project_root`。",
       "scenario_ids": [],
@@ -452,7 +506,7 @@
       "scenarios": []
     },
     {
-      "ac_id": "AC-035",
+      "ac_id": "AC-041",
       "theme": "json-output-root",
       "text": "`friction-intake` 的 json 输出显式包含绝对 `project_root`。",
       "scenario_ids": [],
@@ -461,7 +515,7 @@
       "scenarios": []
     },
     {
-      "ac_id": "AC-036",
+      "ac_id": "AC-042",
       "theme": "absolute-artifact-paths",
       "text": "human/json 输出都能标识 human artifact、machine artifact、capture evidence 的绝对路径。",
       "scenario_ids": [],
@@ -470,7 +524,7 @@
       "scenarios": []
     },
     {
-      "ac_id": "AC-037",
+      "ac_id": "AC-043",
       "theme": "monorepo-domain",
       "text": "monorepo 拓扑绑定问题能命中 `monorepo` domain 规则。",
       "scenario_ids": [],
@@ -479,7 +533,7 @@
       "scenarios": []
     },
     {
-      "ac_id": "AC-038",
+      "ac_id": "AC-044",
       "theme": "branch-domain",
       "text": "版本到 per-service allowed working branch 的治理问题能命中 `branch-governance` domain 规则。",
       "scenario_ids": [],
@@ -488,7 +542,7 @@
       "scenarios": []
     },
     {
-      "ac_id": "AC-039",
+      "ac_id": "AC-045",
       "theme": "repo-binding-domain",
       "text": "`project_root -> service repo root` 绑定问题能命中 `repo-binding` domain 规则。",
       "scenario_ids": [],
@@ -497,7 +551,7 @@
       "scenarios": []
     },
     {
-      "ac_id": "AC-040",
+      "ac_id": "AC-046",
       "theme": "no-prompt-fallback",
       "text": "以上问题在已满足证据条件时，不会被静默回退分类为 `prompt`。",
       "scenario_ids": [],
@@ -506,7 +560,7 @@
       "scenarios": []
     },
     {
-      "ac_id": "AC-041",
+      "ac_id": "AC-047",
       "theme": "general",
       "text": "Cross-project 输出无歧义",
       "scenario_ids": [],
@@ -515,7 +569,7 @@
       "scenarios": []
     },
     {
-      "ac_id": "AC-042",
+      "ac_id": "AC-048",
       "theme": "general",
       "text": "元信息类 friction 不再误分到 `prompt`",
       "scenario_ids": [],
@@ -524,7 +578,7 @@
       "scenarios": []
     },
     {
-      "ac_id": "AC-043",
+      "ac_id": "AC-049",
       "theme": "general",
       "text": "分支与仓绑定违例时硬阻断",
       "scenario_ids": [],
@@ -533,7 +587,7 @@
       "scenarios": []
     },
     {
-      "ac_id": "AC-044",
+      "ac_id": "AC-050",
       "theme": "general",
       "text": "Cross-project reporting is unambiguous",
       "scenario_ids": [],
@@ -580,8 +634,8 @@
     },
     {
       "scenario_id": "SC-002",
-      "source_tc_id": "TC-045",
-      "tc_id": "TC-045-PRIMARY",
+      "source_tc_id": "TC-051",
+      "tc_id": "TC-051-PRIMARY",
       "ac_id": "AC-001",
       "qa_type": "interface",
       "layer": "api-curl",
@@ -604,7 +658,7 @@
       "command": "python3 -m pytest -q -k interface --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
       "assertion": "HTTP status and schema assertions pass",
       "priority": "P1",
-      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance/{run_id}/TC-045-PRIMARY.json",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance/{run_id}/TC-051-PRIMARY.json",
       "required_files": [
         "command.txt",
         "stdout.log",
@@ -650,8 +704,8 @@
     },
     {
       "scenario_id": "SC-004",
-      "source_tc_id": "TC-046",
-      "tc_id": "TC-046-PRIMARY",
+      "source_tc_id": "TC-052",
+      "tc_id": "TC-052-PRIMARY",
       "ac_id": "AC-002",
       "qa_type": "contract",
       "layer": "contract",
@@ -674,7 +728,7 @@
       "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
       "assertion": "Provider/consumer contract assertions pass",
       "priority": "P1",
-      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance/{run_id}/TC-046-PRIMARY.json",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance/{run_id}/TC-052-PRIMARY.json",
       "required_files": [
         "command.txt",
         "stdout.log",
@@ -720,8 +774,8 @@
     },
     {
       "scenario_id": "SC-006",
-      "source_tc_id": "TC-047",
-      "tc_id": "TC-047-PRIMARY",
+      "source_tc_id": "TC-053",
+      "tc_id": "TC-053-PRIMARY",
       "ac_id": "AC-003",
       "qa_type": "integration",
       "layer": "integration",
@@ -744,7 +798,7 @@
       "command": "python3 -m pytest -q -k integration --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
       "assertion": "Integration flow assertions pass",
       "priority": "P1",
-      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance/{run_id}/TC-047-PRIMARY.json",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance/{run_id}/TC-053-PRIMARY.json",
       "required_files": [
         "command.txt",
         "stdout.log",
@@ -755,8 +809,8 @@
     },
     {
       "scenario_id": "SC-007",
-      "source_tc_id": "TC-041",
-      "tc_id": "TC-041-PRIMARY",
+      "source_tc_id": "TC-047",
+      "tc_id": "TC-047-PRIMARY",
       "ac_id": "AC-004",
       "qa_type": "unit",
       "layer": "unit",
@@ -779,7 +833,7 @@
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
       "assertion": "All unit assertions pass",
       "priority": "P1",
-      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance/{run_id}/TC-041-PRIMARY.json",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance/{run_id}/TC-047-PRIMARY.json",
       "required_files": [
         "command.txt",
         "stdout.log",
@@ -790,8 +844,8 @@
     },
     {
       "scenario_id": "SC-008",
-      "source_tc_id": "TC-042",
-      "tc_id": "TC-042-PRIMARY",
+      "source_tc_id": "TC-048",
+      "tc_id": "TC-048-PRIMARY",
       "ac_id": "AC-005",
       "qa_type": "unit",
       "layer": "unit",
@@ -814,7 +868,7 @@
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
       "assertion": "All unit assertions pass",
       "priority": "P1",
-      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance/{run_id}/TC-042-PRIMARY.json",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance/{run_id}/TC-048-PRIMARY.json",
       "required_files": [
         "command.txt",
         "stdout.log",
@@ -825,8 +879,8 @@
     },
     {
       "scenario_id": "SC-009",
-      "source_tc_id": "TC-043",
-      "tc_id": "TC-043-PRIMARY",
+      "source_tc_id": "TC-049",
+      "tc_id": "TC-049-PRIMARY",
       "ac_id": "AC-006",
       "qa_type": "unit",
       "layer": "unit",
@@ -849,7 +903,7 @@
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
       "assertion": "All unit assertions pass",
       "priority": "P1",
-      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance/{run_id}/TC-043-PRIMARY.json",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance/{run_id}/TC-049-PRIMARY.json",
       "required_files": [
         "command.txt",
         "stdout.log",
@@ -860,8 +914,8 @@
     },
     {
       "scenario_id": "SC-010",
-      "source_tc_id": "TC-044",
-      "tc_id": "TC-044-PRIMARY",
+      "source_tc_id": "TC-050",
+      "tc_id": "TC-050-PRIMARY",
       "ac_id": "AC-007",
       "qa_type": "unit",
       "layer": "unit",
@@ -884,7 +938,7 @@
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
       "assertion": "All unit assertions pass",
       "priority": "P1",
-      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance/{run_id}/TC-044-PRIMARY.json",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance/{run_id}/TC-050-PRIMARY.json",
       "required_files": [
         "command.txt",
         "stdout.log",

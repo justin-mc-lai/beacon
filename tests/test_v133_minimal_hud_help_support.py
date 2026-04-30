@@ -48,7 +48,7 @@ def test_v133_help_payload_should_include_minimal_hud_and_hud_refs(tmp_path: Pat
             "team_execution": {
                 "hud": {
                     "json": ".beacon/state/team-hud/impl-team.json",
-                    "html": f"docs/beacon/{VERSION}/execution/codex-subagents/{SLUG}/run-impl-001/index.html",
+                    "html": f"docs/beacon/{VERSION}/.machine/trace/codex-subagents/{SLUG}/run-impl-001/index.html",
                 }
             },
         },

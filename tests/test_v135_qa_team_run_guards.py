@@ -266,7 +266,7 @@ def test_v135_run_feature_aware_qa_should_resolve_matching_summary_when_global_s
         lambda *args, **kwargs: acceptance_calls.update({"kwargs": kwargs})
         or {
             "machine_path": "docs/beacon/v1.3.5/.machine/execution/qa-acceptance-feature.json",
-            "markdown_path": "docs/beacon/v1.3.5/execution/qa-acceptance-feature.md",
+            "markdown_path": "docs/beacon/v1.3.5/execution/qa-acceptance-brief-feature.md",
             "acceptance_envelope": {
                 "transaction_id": "tx-qa-acceptance-feature",
                 "source_hash": "sha256:acceptance",

@@ -172,7 +172,7 @@ def _write_version_change_docs(root: Path, *, version: str = VERSION, feature: s
         "added": ["Added human-loop release contract"],
         "removed": [],
         "fixed": [],
-        "traceability_refs": [f"docs/beacon/{version}/execution/implementation-summary-{slug}.json"],
+        "traceability_refs": [f"docs/beacon/{version}/.machine/execution/implementation-summary-{slug}.json"],
     }
     version_payload = {
         "schema_version": "1.0",
@@ -1003,7 +1003,7 @@ def test_v131_runtime_capability_should_block_freeze_on_legacy_docs_line(tmp_pat
     payload = json.loads(result.stdout)
     assert payload["version"] == LEGACY_DOCS_VERSION
     assert payload["requirement_clarity_gate"]["required"] is True
-    assert payload["requirement_clarity_gate"]["runtime_capability_line"] == VERSION
+    assert payload["requirement_clarity_gate"]["runtime_capability_line"] == CLARITY_VERSION
     assert payload["requirement_clarity_gate"]["blocked"] is True
     assert (tmp_path / "docs" / "beacon" / VERSION).exists() is False
 

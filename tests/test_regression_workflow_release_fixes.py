@@ -115,9 +115,13 @@ def _seed_review_acceptance_feature(project_root: Path, *, version: str, feature
     ):
         (prototype_root / rel).write_text(json.dumps({"feature": feature}, ensure_ascii=False), encoding="utf-8")
 
+    (docs_root / ".machine" / "trace" / "implementation" / slug).mkdir(parents=True, exist_ok=True)
+    ((docs_root / ".machine" / "trace" / "implementation" / slug) / f"technical-implementation-{slug}.md").write_text(
+        f"# technical-implementation-{slug}.md\n",
+        encoding="utf-8",
+    )
     for rel in (
-        f"technical-implementation-{slug}.md",
-        f"implementation-summary-{slug}.md",
+        f"implementation-brief-{slug}.md",
         f"review-quality-{slug}.md",
         f"review-spec-{slug}.md",
     ):
@@ -317,7 +321,7 @@ def test_release_create_should_aggregate_version_change_document(tmp_path: Path)
             "added": [item] if field == "added" else [],
             "removed": [],
             "fixed": [item] if field == "fixed" else [],
-            "traceability_refs": [f"docs/beacon/{version}/execution/implementation-summary-{slug}.json"],
+            "traceability_refs": [f"docs/beacon/{version}/.machine/execution/implementation-summary-{slug}.json"],
         }
         change_json.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
         change_md.write_text(f"# {slug}\n", encoding="utf-8")
@@ -375,7 +379,7 @@ def test_release_create_should_preserve_version_change_timestamp_when_scope_is_u
         "added": ["Added contract A"],
         "removed": [],
         "fixed": [],
-        "traceability_refs": [f"docs/beacon/{version}/execution/implementation-summary-{slug}.json"],
+        "traceability_refs": [f"docs/beacon/{version}/.machine/execution/implementation-summary-{slug}.json"],
     }
     change_json.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     change_md.write_text("# feature-a\n", encoding="utf-8")
@@ -423,9 +427,8 @@ def test_release_create_should_synthesize_feature_changes_from_technical_archive
         ),
         encoding="utf-8",
     )
-    (exec_dir / f"technical-implementation-{slug}.md").write_text("# tech\n", encoding="utf-8")
     (machine_exec / f"implementation-summary-{slug}.json").write_text("{}", encoding="utf-8")
-    (exec_dir / f"implementation-summary-{slug}.md").write_text("# summary\n", encoding="utf-8")
+    (exec_dir / f"implementation-brief-{slug}.md").write_text("# summary\n", encoding="utf-8")
 
     result = _invoke(["release", "create", version, "--project", str(tmp_path)])
     assert result.exit_code == 0

@@ -17,6 +17,7 @@ from beacon.commands.team import (
     get_team_state_file,
     save_team_state,
 )
+from beacon.utils.artifact_paths import machine_trace_dir
 from beacon.utils.revision_state import load_revision_state
 from beacon.utils.story_state import feature_slug, load_story_state
 from beacon.utils.subagent_runtime import (
@@ -102,7 +103,7 @@ def _role_artifact_dir(
     *,
     surface_dir: str = "native-team",
 ) -> Path:
-    return project_root / "docs" / "beacon" / version / "execution" / surface_dir / feature_slug(feature) / run_id
+    return machine_trace_dir(project_root, version, surface_dir, feature_slug(feature), run_id)
 
 
 def _render_role_markdown(role: str, payload: dict[str, Any]) -> str:

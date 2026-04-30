@@ -18,6 +18,7 @@ from beacon.utils.artifact_paths import (
     execution_file_candidates,
     execution_file_output,
     human_execution_file,
+    machine_trace_file,
     qa_matrix_candidates,
 )
 from beacon.utils.archive_governance import load_feature_archive_boundary
@@ -118,7 +119,7 @@ def _summary_paths(project_root: Path, version: str, feature: str) -> dict[str, 
     slug = _slug(feature)
     return {
         "json": execution_file_output(project_root, version, f"implementation-summary-{slug}.json"),
-        "md": human_execution_file(project_root, version, f"implementation-summary-{slug}.md"),
+        "md": human_execution_file(project_root, version, f"implementation-brief-{slug}.md"),
     }
 
 
@@ -380,7 +381,7 @@ def _refresh_ralph_state_after_resume(
 def _technical_archive_paths(project_root: Path, version: str, feature: str) -> dict[str, Path]:
     slug = _slug(feature)
     return {
-        "md": human_execution_file(project_root, version, f"technical-implementation-{slug}.md"),
+        "md": machine_trace_file(project_root, version, f"technical-implementation-{slug}.md", "implementation", slug),
         "json": execution_file_output(project_root, version, f"technical-implementation-{slug}.json"),
     }
 
@@ -396,8 +397,8 @@ def _change_document_paths(project_root: Path, version: str, feature: str) -> di
 def _ralph_summary_paths(project_root: Path, version: str, feature: str) -> dict[str, Path]:
     slug = _slug(feature)
     return {
-        "json": execution_file_output(project_root, version, f"ralph-summary-{slug}.json"),
-        "md": human_execution_file(project_root, version, f"ralph-summary-{slug}.md"),
+        "json": machine_trace_file(project_root, version, f"ralph-summary-{slug}.json", "ralph", slug),
+        "md": machine_trace_file(project_root, version, f"ralph-summary-{slug}.md", "ralph", slug),
     }
 
 
@@ -405,8 +406,8 @@ def _ralph_round_paths(project_root: Path, version: str, feature: str, round_ind
     slug = _slug(feature)
     round_name = f"round-{int(round_index):03d}"
     return {
-        "json": execution_file_output(project_root, version, f"ralph-round-{slug}-{round_name}.json"),
-        "md": human_execution_file(project_root, version, f"ralph-round-{slug}-{round_name}.md"),
+        "json": machine_trace_file(project_root, version, f"ralph-round-{slug}-{round_name}.json", "ralph", slug),
+        "md": machine_trace_file(project_root, version, f"ralph-round-{slug}-{round_name}.md", "ralph", slug),
     }
 
 

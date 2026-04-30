@@ -71,6 +71,19 @@ def machine_execution_file(project_root: Path, version: str, filename: str) -> P
     return machine_execution_dir(project_root, version) / filename
 
 
+def machine_trace_dir(project_root: Path, version: str, *segments: str) -> Path:
+    root = machine_root(project_root, version) / "trace"
+    for segment in segments:
+        text = str(segment or "").strip().strip("/")
+        if text:
+            root = root / text
+    return root
+
+
+def machine_trace_file(project_root: Path, version: str, filename: str, *segments: str) -> Path:
+    return machine_trace_dir(project_root, version, *segments) / filename
+
+
 def qa_docs_dir(project_root: Path, version: str) -> Path:
     return version_root(project_root, version) / "qa" / "test-cases"
 

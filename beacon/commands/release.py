@@ -200,9 +200,9 @@ def _feature_change_payloads(project_root: Path, version: str) -> list[dict]:
                     "fixed": fixed,
                     "traceability_refs": [
                         str(path.relative_to(project_root)),
-                        f"docs/beacon/{version}/execution/technical-implementation-{slug}.md",
+                        f"docs/beacon/{version}/.machine/execution/technical-implementation-{slug}.json",
                         f"docs/beacon/{version}/.machine/execution/implementation-summary-{slug}.json",
-                        f"docs/beacon/{version}/execution/implementation-summary-{slug}.md",
+                        f"docs/beacon/{version}/execution/implementation-brief-{slug}.md",
                     ],
                 }
             )

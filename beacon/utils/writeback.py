@@ -7,7 +7,7 @@ import json
 from pathlib import Path
 from typing import Any, Iterable
 
-from beacon.utils.artifact_paths import human_execution_file, machine_execution_dir
+from beacon.utils.artifact_paths import human_execution_file, machine_execution_dir, machine_trace_dir
 from beacon.utils.revision_state import load_revision_state, save_revision_state
 from beacon.utils.prototype_utils import prototype_files
 from beacon.utils.implementation_plan import (
@@ -75,7 +75,7 @@ def _acceptance_machine_path(project_root: Path, version: str, feature: str) -> 
 
 
 def _acceptance_human_path(project_root: Path, version: str, feature: str) -> Path:
-    return human_execution_file(project_root, version, f"qa-acceptance-{feature_slug(feature)}.md")
+    return human_execution_file(project_root, version, f"qa-acceptance-brief-{feature_slug(feature)}.md")
 
 
 def _acceptance_runtime_path(project_root: Path, feature: str) -> Path:
@@ -114,8 +114,10 @@ def _render_acceptance_markdown(envelope: dict[str, Any]) -> str:
     requirement_refs = envelope.get("requirement_refs") if isinstance(envelope.get("requirement_refs"), list) else []
     evidence_refs = envelope.get("evidence_refs") if isinstance(envelope.get("evidence_refs"), list) else []
     test_case_refs = envelope.get("test_case_refs") if isinstance(envelope.get("test_case_refs"), list) else []
+    verdict = str(envelope.get("verdict", "") or "")
+    summary_line = "可以进入 release 检查与收口。" if verdict == "passed" else "仍需根据证据处理阻塞项。"
     lines = [
-        f"# QA Acceptance: {envelope.get('feature', '')}",
+        f"# QA Acceptance Brief: {envelope.get('feature', '')}",
         "",
         f"- version: `{envelope.get('version', '')}`",
         f"- feature: `{envelope.get('feature', '')}`",
@@ -123,14 +125,10 @@ def _render_acceptance_markdown(envelope: dict[str, Any]) -> str:
         f"- verdict: `{envelope.get('verdict', '')}`",
         f"- accepted_at: `{envelope.get('accepted_at', '')}`",
         f"- accepted_by: `{envelope.get('accepted_by', '')}`",
-        f"- run_id: `{envelope.get('run_id', '')}`",
-        f"- transaction_id: `{envelope.get('transaction_id', '')}`",
-        f"- source_hash: `{envelope.get('source_hash', '')}`",
-        f"- projection_seq: `{envelope.get('projection_seq', '')}`",
         "",
-        "## Human Call Surface",
+        "## Summary",
+        f"- {summary_line}",
         f"- source_command: `{envelope.get('source_command', '')}`",
-        "- trigger_rule: `qa evidence-backed passed verdict auto-write acceptance projection`",
         "",
         "## Requirement Refs",
     ]
@@ -147,12 +145,6 @@ def _render_acceptance_markdown(envelope: dict[str, Any]) -> str:
             f"- required_test_count: `{envelope.get('required_test_count', 0)}`",
             f"- story_status: `{envelope.get('story_status', '')}`",
             f"- revision_delivery_status: `{envelope.get('revision_delivery_status', '')}`",
-            "",
-            "## Machine Envelope",
-            f"- canonical_envelope_ref: `{envelope.get('canonical_envelope_ref', '')}`",
-            f"- markdown_ref: `{envelope.get('markdown_ref', '')}`",
-            f"- runtime_projection_ref: `{envelope.get('runtime_projection_ref', '')}`",
-            f"- transaction_status: `{envelope.get('transaction_status', '')}`",
         ]
     )
     return "\n".join(lines) + "\n"
@@ -378,9 +370,9 @@ def _workflow_stage_evidence(project_root: Path, *, version: str, feature: str) 
     implement_refs = _existing_relative_paths(
         project_root,
         [
-            execution_root / f"technical-implementation-{slug}.md",
+            machine_trace_dir(project_root, version, "implementation", slug) / f"technical-implementation-{slug}.md",
             machine_execution_root / f"technical-implementation-{slug}.json",
-            execution_root / f"implementation-summary-{slug}.md",
+            execution_root / f"implementation-brief-{slug}.md",
             machine_execution_root / f"implementation-summary-{slug}.json",
             state_root / f"implementation-{slug}.json",
         ],

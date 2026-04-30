@@ -12,6 +12,7 @@ import typer
 
 from beacon.commands.auto_test import _update_evidence_manifest
 from beacon.commands.team import TeamState, TerminalStatus, get_team_state_file, save_team_state
+from beacon.utils.artifact_paths import machine_trace_dir
 from beacon.utils.delivery_kernel import build_delivery_contract
 from beacon.utils.coverage import write_coverage_summary
 from beacon.utils.implement_adapters import format_template
@@ -250,7 +251,7 @@ def _materialize_qa_team_surface(
     }
     save_team_state(project_root, team_name, state)
 
-    artifact_dir = project_root / "docs" / "beacon" / version / "execution" / "qa-team" / feature_key / run_id
+    artifact_dir = machine_trace_dir(project_root, version, "qa-team", feature_key, run_id)
     role_reports: dict[str, dict[str, str]] = {}
     feature_scorecard = payload.get("feature_scorecard") if isinstance(payload.get("feature_scorecard"), dict) else {}
     stop_reasons = [str(item) for item in feature_scorecard.get("stop_reasons", []) if str(item).strip()]

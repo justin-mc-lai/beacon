@@ -100,6 +100,21 @@
 | AC-903 | doctor-repair-only | `doctor sync-materials` 只作为 repair/rebuild/drift recovery surface 保留，不再是正常 `beacon-change` 闭环的必经步骤。 |
 | AC-904 | fail-closed-on-material-gap | 若 human docs 与 `.machine` requirement materials 存在未同步缺口，`freeze`、`implement`、`qa`、`release` 必须明确阻断。 |
 
+## Story 11: execution human surface 必须瘦身为结论层
+
+作为 Beacon 人类操作者，我希望 `docs/beacon/<version>/execution/` 只保留稳定的人类结论文档，而不是 run、ralph、subagent、qa-team 之类运行轨迹，这样默认阅读面不会被机器过程件污染。
+
+### Acceptance Criteria
+
+| AC ID | Theme | Description |
+| --- | --- | --- |
+| AC-1001 | human-execution-contract | human execution 固定收口为 `index.md`、`architecture-blueprint.md`、`implementation-brief-<feature>.md`、`qa-acceptance-brief-<feature>.md`、`release-closure-brief-<feature>.md` 或版本级 release summary。 |
+| AC-1002 | summary-first | human execution 文档以 LLM 总结后的结论为主，默认正文不再以 run/transaction/round 字段为主体。 |
+| AC-1003 | no-trace-pollution | `ralph/*`、`qa-team/*`、`codex-subagents/*`、`semantic/*.json` 不再落到 human execution 面。 |
+| AC-1004 | machine-trace-layer | 上述运行痕迹若需要保留，必须下沉到 `.machine/trace/` 或 `.beacon/`，而不是继续出现在 `docs/beacon/<version>/execution/`。 |
+| AC-1005 | machine-execution-unchanged | 现有 `.machine/execution/*` 继续保留确定性 envelope / contract / transaction truth，不因人类面瘦身而丢失。 |
+| AC-1006 | brief-over-dump | `implementation`、`qa acceptance`、`release closure` 的人类文档形态必须优先输出 brief / summary，而不是把 changed files、implemented item ids、round refs 大段直出。 |
+
 ## Story 6: Cross-project 报告必须无歧义
 
 作为跨项目操作者，我希望 Beacon 在报告元信息产物和决策结果时显式显示绝对 `project_root`、service repo root 和关键 artifact path，这样我不会在 Beacon 仓与目标项目仓之间混淆路径。

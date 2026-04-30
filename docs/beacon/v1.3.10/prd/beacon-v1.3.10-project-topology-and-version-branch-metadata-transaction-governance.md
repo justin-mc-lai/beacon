@@ -61,6 +61,8 @@ Beacon 已经具备全局 sqlite runtime ledger、git scope 投影、以及事�
 - 增加面向人类的元信息 support surface 或子 skill，支持显式增删改查与校验，并纳入同一多写事务契约。
 - 让 `implement / qa / release` 在 repo、service、branch 与 contract 不匹配时确定性阻断。
 - 让 `beacon-change / reopen / freeze` 对 requirement package 本身也形成确定性双写闭环，不再把 `.machine` 同步留给后置人工补丁步骤。
+- 将 `docs/beacon/<version>/execution/` 收口为人类结论层，只保留稳定、可阅读、LLM 总结后的执行结论。
+- 将运行轮次与编排痕迹从人类 execution 面移出，避免人类默认阅读时被 run / ralph / subagent 轨迹淹没。
 
 ### 2.2 非目标
 
@@ -121,6 +123,7 @@ Beacon 已经具备全局 sqlite runtime ledger、git scope 投影、以及事�
 - 任意 CI/CD pipeline 管理
 - 超出“确定性阻断 + 显式修复指引”之外的脏 git 状态自动修复
 - 用完全无关的新存储模型替换现有 git/runtime 表
+- 把运行痕迹删除到完全不可审计；本次只做 surface slimming，不做证据丢弃
 
 ## 5. 功能需求
 
@@ -258,6 +261,87 @@ Beacon 的 `status / review / doctor / gate` 等 surface 必须能检测并报�
 - failed / partial metadata transaction
 
 任何一个 sink 都不允许静默独占权威性。
+
+### FR-007 Beacon 必须收敛 execution human surface 为结论层
+
+`docs/beacon/<version>/execution/` 必须只承载面向人类的稳定结论文档，不再承载运行轮次痕迹或 agent 过程件。
+
+human execution contract 固定收口为：
+
+- `index.md`
+- `architecture-blueprint.md`
+- `implementation-brief-<feature>.md`
+- `qa-acceptance-brief-<feature>.md`
+- `release-closure-brief-<feature>.md`
+- 或版本级 `release summary`
+
+这些 human execution 文档的内容目标必须是：
+
+- 本次实现/验收/发布结论
+- 关键决策与非目标
+- 主要风险与剩余动作
+- 对应 requirement truth 的摘要引用
+
+而不是：
+
+- agent round 明细
+- run 级过程回放
+- subagent 分工日志
+- verifier / repair-writer 中间文稿
+- 机器 envelope 字段的大段直出
+
+### FR-008 machine execution 与 runtime trace 必须显式分层
+
+Beacon 必须把 execution 相关产物拆成三层：
+
+1. `human execution`
+   - `docs/beacon/<version>/execution/`
+   - 只保留稳定结论层文档
+
+2. `machine execution`
+   - `docs/beacon/<version>/.machine/execution/*`
+   - 继续保留全部确定性 envelope / contract / transaction projection
+
+3. `runtime traces`
+   - `ralph/*`
+   - `qa-team/*`
+   - `codex-subagents/*`
+   - `semantic/*` 中 json
+   - 必须退出 human execution 面
+   - machine trace 统一下沉到 `docs/beacon/<version>/.machine/trace/`
+   - 运行态细节可继续保留在 `.beacon/`
+
+### FR-009 human execution 必须以 LLM 总结类产出为主
+
+human execution 文档必须优先输出经 Beacon/LLM 总结后的可阅读结论，而不是把机器字段直接转写为 markdown。
+
+至少必须满足：
+
+- 默认正文不以 `run_id`、`transaction_id`、`source_hash`、`projection_seq` 为主体
+- 默认正文不列出大段 changed files、implemented_item_ids、round refs
+- 如需保留机器证据引用，应放在精简的 “machine refs / audit refs” 区，而不是占据结论正文
+- 人类默认阅读面优先回答：
+  - 做了什么
+  - 为什么这么做
+  - 结果是什么
+  - 风险与下一步是什么
+
+### FR-010 Beacon 必须阻止新的运行痕迹继续污染 human execution
+
+后续 `implement / qa / release / report / ralph / team` 等执行链路不得继续把以下内容写入 `docs/beacon/<version>/execution/`：
+
+- `ralph-round-*.md`
+- `ralph-summary-*.md`
+- `qa-team/run-*/**`
+- `codex-subagents/run-*/**`
+- `semantic/*.json`
+
+如果需要保留对应证据，必须写入：
+
+- `.machine/execution/*` 或 `.machine/trace/*`
+- `.beacon/*`
+
+而人类结论层只保留对应的 brief / summary 文档。
 
 ### FR-006A `beacon-change / reopen / freeze` 必须对 requirement package 做确定性双写
 

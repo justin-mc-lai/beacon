@@ -47,6 +47,12 @@
 | TC-036 | AC-902 | `reopen` 生成新 revision 时，machine requirement projection 同步切换到新 active revision | integration | 新 revision 立即可继续编辑/校验 |
 | TC-037 | AC-903 | 正常 change 闭环不依赖 `doctor sync-materials`，该命令仅用于 repair/rebuild | integration | 主路径不再包含额外机器面补齐步骤 |
 | TC-038 | AC-904 | human docs 与 `.machine` requirement materials 不一致时，`freeze`/`implement`/`qa`/`release` 被阻断 | integration | material gap 被显式报告并 fail closed |
+| TC-039 | AC-1001 | human execution 目录只保留约定的 summary/brief 文档 contract | review | `execution/` 默认阅读面不再扩散成 run artifact 容器 |
+| TC-040 | AC-1002 | human execution 默认正文以结论为主，而不是 run_id/transaction_id/round fields | review | 人类文档可直接阅读，不需要先理解机器事务字段 |
+| TC-041 | AC-1003 | `ralph/*`、`qa-team/*`、`codex-subagents/*`、`semantic/*.json` 不再写入 human execution 面 | integration | 执行后 `docs/beacon/<version>/execution/` 不再产生这些运行痕迹文件 |
+| TC-042 | AC-1004 | 运行痕迹保留时，统一下沉到 `.machine/trace/` 或 `.beacon/` | integration | 机器 trace 可审计，但不污染 human execution |
+| TC-043 | AC-1005 | `.machine/execution/*` 继续保留 execution contract / transaction truth | integration | human surface slimming 不会损坏 machine execution 审计能力 |
+| TC-044 | AC-1006 | `implementation`、`qa acceptance`、`release closure` 的人类文档改为 brief/summary，而不是直出大段 changed files / implemented ids / round refs | review | 人类执行面聚焦结论、风险与下一步 |
 
 ## Regression Focus
 
@@ -59,6 +65,8 @@
 - 核心 metadata 不得膨胀成项目级 Git workflow engine
 - `friction-intake` 输出不得再次退化为仅相对路径
 - 元信息治理类 domain 不得被回退分类成 `prompt`
+- execution human surface 不得再次被 run / ralph / subagent / qa-team 轨迹污染
+- machine trace 下沉后不得丢失确定性审计能力
 
 ## Execution Notes
 

@@ -380,9 +380,9 @@ def test_implement_run_ralph_dry_run_should_not_invoke_controller_or_materialize
     assert payload["command"] == []
     assert (tmp_path / ".beacon" / "implement" / run_id / "state.json").exists()
     assert not execution_file_output(tmp_path, "v1.1.4", "ralph-summary-my-feature.json").exists()
-    assert not (tmp_path / "docs/beacon/v1.1.4/execution/ralph-summary-my-feature.md").exists()
+    assert not (tmp_path / "docs/beacon/v1.1.4/.machine/trace/ralph/my-feature/ralph-summary-my-feature.md").exists()
     assert not execution_file_output(tmp_path, "v1.1.4", "ralph-round-my-feature-round-001.json").exists()
-    assert not (tmp_path / "docs/beacon/v1.1.4/execution/ralph-round-my-feature-round-001.md").exists()
+    assert not (tmp_path / "docs/beacon/v1.1.4/.machine/trace/ralph/my-feature/ralph-round-my-feature-round-001.md").exists()
 
 
 def test_implement_plan_should_block_requirement_change_host_prompt_before_compiling_plan(monkeypatch, tmp_path: Path):
@@ -1133,7 +1133,7 @@ def test_ralph_controller_should_keep_qa_single_round_and_write_round_artifact(m
             "run_id": kwargs["run_id_override"],
             "status": "completed",
             "summary": "runner finished",
-            "summary_paths": {"json": "docs/beacon/v1.3.2/execution/implementation-summary-my-feature.json"},
+            "summary_paths": {"json": "docs/beacon/v1.3.2/.machine/execution/implementation-summary-my-feature.json"},
             "review_quality": {
                 "exit_code": 0,
                 "payload": {"gate_ready": False},
@@ -1197,10 +1197,10 @@ def test_ralph_controller_should_keep_qa_single_round_and_write_round_artifact(m
     assert ralph["current_blocker"] == "needs human review"
     assert ralph["last_round_ref"].endswith("ralph-round-my-feature-round-002.json")
     assert (tmp_path / ralph["last_round_ref"]).exists()
-    assert (tmp_path / "docs/beacon/v1.3.2/execution/ralph-round-my-feature-round-001.md").exists()
-    assert (tmp_path / "docs/beacon/v1.3.2/execution/ralph-round-my-feature-round-002.md").exists()
-    round_one = json.loads((tmp_path / "docs/beacon/v1.3.2/.machine/execution/ralph-round-my-feature-round-001.json").read_text())
-    round_two = json.loads((tmp_path / "docs/beacon/v1.3.2/.machine/execution/ralph-round-my-feature-round-002.json").read_text())
+    assert (tmp_path / "docs/beacon/v1.3.2/.machine/trace/ralph/my-feature/ralph-round-my-feature-round-001.md").exists()
+    assert (tmp_path / "docs/beacon/v1.3.2/.machine/trace/ralph/my-feature/ralph-round-my-feature-round-002.md").exists()
+    round_one = json.loads((tmp_path / "docs/beacon/v1.3.2/.machine/trace/ralph/my-feature/ralph-round-my-feature-round-001.json").read_text())
+    round_two = json.loads((tmp_path / "docs/beacon/v1.3.2/.machine/trace/ralph/my-feature/ralph-round-my-feature-round-002.json").read_text())
     assert round_one["auto_qa"]["max_rounds"] == 1
     assert round_two["auto_qa"]["max_rounds"] == 1
 

@@ -101,7 +101,7 @@ def _write_change_docs(root: Path, *, added: list[str], removed: list[str], fixe
         "added": added,
         "removed": removed,
         "fixed": fixed,
-        "traceability_refs": [f"docs/beacon/{VERSION}/execution/implementation-summary-{SLUG}.json"],
+        "traceability_refs": [f"docs/beacon/{VERSION}/.machine/execution/implementation-summary-{SLUG}.json"],
     }
     version_payload = {
         "schema_version": "1.0",

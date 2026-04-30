@@ -11,6 +11,7 @@ import time
 from pathlib import Path
 from typing import Any
 
+from beacon.utils.artifact_paths import machine_trace_dir
 from beacon.utils.runtime import now_iso, write_json
 
 
@@ -61,6 +62,8 @@ def team_hud_json_path(project_root: Path, *, team_name: str) -> Path:
 
 
 def team_hud_html_path(project_root: Path, *, version: str, feature: str, run_id: str, surface_dir: str) -> Path:
+    if surface_dir in {"qa-team", "native-team", "codex-subagents"}:
+        return machine_trace_dir(project_root, version, surface_dir, feature, run_id) / "index.html"
     return (
         project_root
         / "docs"

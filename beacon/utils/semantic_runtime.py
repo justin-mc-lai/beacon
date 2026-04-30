@@ -9,6 +9,7 @@ import re
 from pathlib import Path
 from typing import Any
 
+from beacon.utils.artifact_paths import machine_trace_dir
 from beacon.utils.project_skills import load_skill_registry
 from beacon.utils.runtime import now_iso
 from beacon.utils.subagent_readiness import detect_host_runtime
@@ -218,7 +219,7 @@ def _relative_path(path: Path, project_root: Path) -> str:
 
 
 def semantic_artifact_dir(project_root: Path, version: str, feature: str) -> Path:
-    return project_root / "docs" / "beacon" / version / "execution" / "semantic" / _slugify(feature)
+    return machine_trace_dir(project_root, version, "semantic", _slugify(feature))
 
 
 def semantic_artifact_paths(project_root: Path, version: str, feature: str) -> dict[str, Path]:
