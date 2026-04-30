@@ -6,23 +6,10 @@
   "runtime_version": "v1.3.9",
   "runtime_capability_line": "v1.3.3",
   "required": true,
-  "reason_code": "requirement_clarity_open",
-  "blocked": true,
-  "status": "blocked",
-  "findings": [
-    {
-      "file": "docs/beacon/v1.3.10/prd/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md",
-      "line": 1,
-      "kind": "diagram_truth_missing",
-      "text": "missing diagram truth types: branch-flow, state-machine, decision-priority"
-    },
-    {
-      "file": "docs/beacon/v1.3.10/prd/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md",
-      "line": 1,
-      "kind": "state_axis_missing",
-      "text": "complex feature requires explicit state axes before freeze"
-    }
-  ],
+  "reason_code": "",
+  "blocked": false,
+  "status": "pass",
+  "findings": [],
   "report_json_path": "docs/beacon/v1.3.10/.machine/execution/requirement-clarity-beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.json",
   "report_markdown_path": "docs/beacon/v1.3.10/execution/requirement-clarity-beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md",
   "state_path": ".beacon/state/requirement-clarity-beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.json",
@@ -31,20 +18,99 @@
     "version": "v1.3.10",
     "supported": true,
     "required": true,
-    "ready": false,
-    "diagram_types": [],
-    "state_axes": [],
-    "missing_diagram_types": [
+    "ready": true,
+    "diagram_types": [
       "branch-flow",
       "state-machine",
       "decision-priority"
     ],
-    "missing_state_axes": true,
-    "complexity_signals": [],
-    "review_gates": [],
-    "qa_coverage_hints": [],
-    "evidence_lines": {},
-    "generated_at": "2026-04-30T03:51:11.641838+00:00",
+    "state_axes": [
+      "topology_axis",
+      "single_repo",
+      "monorepo",
+      "metadata_scope_axis",
+      "global_project_metadata",
+      "version_scoped_metadata",
+      "resolved_metadata_view",
+      "requirement_package_axis",
+      "human_docs_synced",
+      "machine_package_synced",
+      "revision_baseline_bound",
+      "drift_blocked",
+      "remediation_axis",
+      "beacon_change",
+      "doctor_sync_materials",
+      "doctor_verify_materials",
+      "execution_surface_axis",
+      "implement",
+      "qa",
+      "release",
+      "help",
+      "status",
+      "real_project_validation"
+    ],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [
+      "归属",
+      "branch-flow",
+      "state-machine",
+      "decision-priority",
+      "state axes"
+    ],
+    "review_gates": [
+      "implementation must cover the declared branch-flow split points",
+      "implementation must preserve the declared state-machine transitions",
+      "implementation must preserve decision-priority ordering",
+      "implementation must keep state axes explicit: topology_axis, single_repo, monorepo, metadata_scope_axis, global_project_metadata, version_scoped_metadata, resolved_metadata_view, requirement_package_axis, human_docs_synced, machine_package_synced, revision_baseline_bound, drift_blocked, remediation_axis, beacon_change, doctor_sync_materials, doctor_verify_materials, execution_surface_axis, implement, qa, release, help, status, real_project_validation"
+    ],
+    "qa_coverage_hints": [
+      "cover primary and alternate branch-flow paths",
+      "cover state transitions, illegal transitions, and recovery paths",
+      "cover conflicting conditions using declared decision priority",
+      "cover axis combinations across: topology_axis, single_repo, monorepo, metadata_scope_axis, global_project_metadata, version_scoped_metadata, resolved_metadata_view, requirement_package_axis, human_docs_synced, machine_package_synced, revision_baseline_bound, drift_blocked, remediation_axis, beacon_change, doctor_sync_materials, doctor_verify_materials, execution_surface_axis, implement, qa, release, help, status, real_project_validation"
+    ],
+    "evidence_lines": {
+      "branch-flow": [
+        "```text",
+        "real-project friction",
+        "-> classify as metadata-governance",
+        "-> resolve project-level metadata",
+        "-> resolve version-scoped metadata",
+        "-> build resolved metadata view",
+        "-> choose execution surface",
+        "-> metadata contract pass"
+      ],
+      "state-machine": [
+        "```text",
+        "metadata_absent",
+        "-> metadata_curated",
+        "-> metadata_verified",
+        "-> resolved_view_active",
+        "-> execution_guarded",
+        "-> remediation_proven",
+        "```"
+      ],
+      "decision-priority": [
+        "本子线的决策优先级必须保持：",
+        "1. 版本与项目元信息的确定性校验，高于 prompt 期重新推断",
+        "2. `beacon-change` 主路径双写闭环，高于后置人工 repair",
+        "3. requirement package fail-closed，高于“带漂移继续执行”",
+        "4. 核心 metadata 极简边界，高于把项目级 Git workflow 编进 Beacon 核心",
+        "5. real-project proof 可回放性，高于只在局部单测里成立"
+      ],
+      "state-axes": [
+        "本子线至少显式建模以下 state axes：",
+        "- `topology_axis`",
+        "- `single_repo`",
+        "- `monorepo`",
+        "- `metadata_scope_axis`",
+        "- `global_project_metadata`",
+        "- `version_scoped_metadata`",
+        "- `resolved_metadata_view`"
+      ]
+    },
+    "generated_at": "2026-04-30T04:01:11.280098+00:00",
     "feature": "Beacon v1.3.10 project topology and version-branch metadata transaction governance",
     "feature_slug": "beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance",
     "prd_ref": "docs/beacon/v1.3.10/prd/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md",
@@ -54,6 +120,5 @@
   "scanned_files": [
     "docs/beacon/v1.3.10/prd/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md",
     "docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
-  ],
-  "recommended_action": "resolve_prd_and_user_story_open_questions_before_freeze"
+  ]
 }

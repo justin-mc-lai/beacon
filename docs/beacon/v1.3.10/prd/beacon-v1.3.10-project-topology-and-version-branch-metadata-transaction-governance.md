@@ -433,6 +433,112 @@ Metadata mutation 必须留下足够的 append-only transaction history，用于
 - `implement / qa / release` 在 repo/service/branch/worktree 与 metadata contract 不一致时停止执行。
 - 错误输出包含确定性修复指引与关联 metadata artifact 定位。
 
+## 6. Diagram Truth Layer
+
+### 6.1 Branch-flow
+
+```text
+real-project friction
+-> classify as metadata-governance
+-> resolve project-level metadata
+-> resolve version-scoped metadata
+-> build resolved metadata view
+-> choose execution surface
+   -> metadata contract pass
+      -> implement / qa / release continue
+   -> requirement package drift
+      -> beacon-change
+   -> machine requirement artifact missing
+      -> doctor sync-materials
+   -> version-line package closure missing
+      -> doctor verify-materials --strict
+   -> repo / branch / worktree mismatch
+      -> hard block with repair guidance
+```
+
+- 若真实项目摩擦被识别为 `monorepo / branch-governance / repo-binding`，必须进入 metadata governance 主线，而不是回退到 `prompt`。
+- 若 metadata contract 已存在，prompt/runtime/support surface 必须先消费 resolved metadata view，再决定是否继续执行。
+- 若 requirement package 漂移属于变更闭环问题，优先回到 `beacon-change`。
+- 若问题是 machine requirement artifact 缺件，优先进入 `doctor sync-materials` repair 路径。
+- 若问题是 version-line package closure 缺口，优先进入 `doctor verify-materials --strict` 诊断路径。
+
+### 6.2 State-machine
+
+```text
+metadata_absent
+-> metadata_curated
+-> metadata_verified
+-> resolved_view_active
+-> execution_guarded
+-> remediation_proven
+```
+
+异常回路：
+
+```text
+execution_guarded
+-> requirement_package_drift_detected
+-> change_loop_repair | machine_repair | version_line_verify
+-> execution_guarded
+```
+
+```text
+metadata_verified
+-> branch_or_repo_mismatch
+-> blocked_with_guidance
+-> metadata_update_or_branch_fix
+-> metadata_verified
+```
+
+- `metadata_absent`：项目与版本元信息尚未建立
+- `metadata_curated`：human/machine/sqlite 材料已落盘
+- `metadata_verified`：`doctor metadata verify` 与 `doctor verify-materials --strict` 均满足当前版本线契约
+- `resolved_view_active`：prompt/runtime/support surface 统一消费 resolved metadata view
+- `execution_guarded`：implement/qa/release 已受 metadata 与 requirement package 强门禁保护
+- `remediation_proven`：`help / status / real-project-validation` 已能证明 remediation 分流动作
+
+### 6.3 Decision-priority
+
+本子线的决策优先级必须保持：
+
+1. 版本与项目元信息的确定性校验，高于 prompt 期重新推断
+2. `beacon-change` 主路径双写闭环，高于后置人工 repair
+3. requirement package fail-closed，高于“带漂移继续执行”
+4. 核心 metadata 极简边界，高于把项目级 Git workflow 编进 Beacon 核心
+5. real-project proof 可回放性，高于只在局部单测里成立
+
+### 6.4 State Axes
+
+本子线至少显式建模以下 state axes：
+
+- `topology_axis`
+  - `single_repo`
+  - `monorepo`
+
+- `metadata_scope_axis`
+  - `global_project_metadata`
+  - `version_scoped_metadata`
+  - `resolved_metadata_view`
+
+- `requirement_package_axis`
+  - `human_docs_synced`
+  - `machine_package_synced`
+  - `revision_baseline_bound`
+  - `drift_blocked`
+
+- `remediation_axis`
+  - `beacon_change`
+  - `doctor_sync_materials`
+  - `doctor_verify_materials`
+
+- `execution_surface_axis`
+  - `implement`
+  - `qa`
+  - `release`
+  - `help`
+  - `status`
+  - `real_project_validation`
+
 ## 7. 风险与缓解
 
 | Risk | Impact | Mitigation |

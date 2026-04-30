@@ -1,12 +1,14 @@
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 from pathlib import Path
 
 from typer.testing import CliRunner
 
 from beacon.main import app
+from beacon.utils.material_sync import sync_feature_requirement_materials
 
 
 runner = CliRunner()
@@ -139,3 +141,23 @@ def test_native_team_should_write_verification_when_auto_test_passes(tmp_path: P
     statuses = {item["id"]: item["status"] for item in active_story["items"]}
     assert statuses["AC-001"] == "verified"
     assert statuses["TEST-001"] == "passed"
+
+
+def test_requirement_package_sync_should_enable_context_version_drift_override(monkeypatch, tmp_path: Path):
+    _seed_docs(tmp_path)
+    captured: dict[str, str] = {}
+
+    def fake_create_test_case(*args, **kwargs):
+        captured["override"] = os.environ.get("BEACON_ALLOW_CONTEXT_VERSION_DRIFT", "")
+
+    monkeypatch.setattr("beacon.utils.material_sync.create_test_case", fake_create_test_case)
+
+    result = sync_feature_requirement_materials(
+        tmp_path,
+        version=VERSION,
+        feature=FEATURE,
+        dry_run=False,
+    )
+    assert result["status"] == "synced"
+    assert captured["override"] == "1"
+    assert os.environ.get("BEACON_ALLOW_CONTEXT_VERSION_DRIFT", "") == ""

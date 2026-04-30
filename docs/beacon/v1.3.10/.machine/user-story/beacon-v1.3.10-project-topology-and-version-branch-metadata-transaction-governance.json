@@ -4,8 +4,8 @@
   "feature_slug": "beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance",
   "version": "v1.3.10",
   "current_revision_id": "R2",
-  "lifecycle_status": "draft",
-  "updated_at": "2026-04-29T15:34:51.269864+00:00",
+  "lifecycle_status": "frozen",
+  "updated_at": "2026-04-30T04:01:11.493314+00:00",
   "revisions": [
     {
       "revision_id": "R1",
@@ -26,12 +26,12 @@
       "feature_slug": "beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance",
       "source_revision_id": "R1",
       "reason": "clarify-two-layer-metadata-and-runtime-resolve",
-      "doc_status": "draft",
+      "doc_status": "frozen",
       "delivery_status": "idle",
-      "baseline_hash": null,
+      "baseline_hash": "sha256:0c0dc5aa337957fc02ae51e97d926e8a8c2a3d502d72d8d9e960c642dfde7e6f",
       "superseded_by": null,
       "created_at": "2026-04-29T15:47:57.655594+00:00",
-      "frozen_at": null,
+      "frozen_at": "2026-04-30T04:01:13.980862+00:00",
       "accepted_at": null,
       "accepted_by": null
     }
@@ -675,7 +675,7 @@
       "revision_id": "R2",
       "title": "Beacon v1.3.10 project topology and version-branch metadata transaction governance",
       "priority": "medium",
-      "status": "draft",
+      "status": "frozen",
       "items": [
         {
           "id": "AC-001",
@@ -690,7 +690,7 @@
           "changed_in_revision": "R2",
           "story_id": "",
           "details": [],
-          "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
         },
         {
           "id": "AC-002",
@@ -705,7 +705,7 @@
           "changed_in_revision": "R2",
           "story_id": "",
           "details": [],
-          "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
         },
         {
           "id": "AC-003",
@@ -720,7 +720,7 @@
           "changed_in_revision": "R2",
           "story_id": "",
           "details": [],
-          "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
         },
         {
           "id": "AC-004",
@@ -735,13 +735,13 @@
           "changed_in_revision": "R2",
           "story_id": "",
           "details": [],
-          "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
         },
         {
           "id": "AC-005",
           "kind": "ac",
-          "theme": "canonical-branch",
-          "text": "Beacon 能为每个参与 service 保存该版本线对应的 canonical branch contract。",
+          "theme": "working-branch",
+          "text": "Beacon 能为每个参与 service 保存该版本线对应的 allowed working branch contract。",
           "required": true,
           "status": "draft",
           "implemented_by_run_id": null,
@@ -750,13 +750,13 @@
           "changed_in_revision": "R2",
           "story_id": "",
           "details": [],
-          "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
         },
         {
           "id": "AC-006",
           "kind": "ac",
-          "theme": "protected-branch-rules",
-          "text": "Beacon 能表达 protected branch 禁写、可写分支约束与违例处理策略。",
+          "theme": "minimal-branch-guard",
+          "text": "Beacon 只表达最小 working-branch guard 与违例处理策略，不扩张为完整项目 Git workflow。",
           "required": true,
           "status": "draft",
           "implemented_by_run_id": null,
@@ -765,10 +765,25 @@
           "changed_in_revision": "R2",
           "story_id": "",
           "details": [],
-          "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
         },
         {
           "id": "AC-007",
+          "kind": "ac",
+          "theme": "two-layer-model",
+          "text": "Beacon 明确把 metadata 拆成“全局项目级元信息”和“版本级元信息”两层，而不是把所有字段混成单层模型。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+        },
+        {
+          "id": "AC-008",
           "kind": "ac",
           "theme": "canonical-envelope",
           "text": "任一元信息变更都先形成单一 canonical metadata envelope。",
@@ -780,10 +795,10 @@
           "changed_in_revision": "R2",
           "story_id": "",
           "details": [],
-          "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
         },
         {
-          "id": "AC-008",
+          "id": "AC-009",
           "kind": "ac",
           "theme": "three-sink-transaction",
           "text": "同一笔元信息事务会共享一致 transaction metadata，并投影到 human sink、machine sink、sqlite sink。",
@@ -795,10 +810,10 @@
           "changed_in_revision": "R2",
           "story_id": "",
           "details": [],
-          "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
         },
         {
-          "id": "AC-009",
+          "id": "AC-010",
           "kind": "ac",
           "theme": "drift-detectable",
           "text": "status/doctor/gate/review 能检测元信息投影缺失、校验和漂移、失败事务或过期 sqlite projection。",
@@ -810,13 +825,13 @@
           "changed_in_revision": "R2",
           "story_id": "",
           "details": [],
-          "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
         },
         {
-          "id": "AC-010",
+          "id": "AC-011",
           "kind": "ac",
-          "theme": "prompt-consumption",
-          "text": "当 metadata 已存在时，prompt 层把项目拓扑、service repo、canonical branch 当作固定输入，而不是重新推断。",
+          "theme": "no-post-sync-gap",
+          "text": "正常 `beacon-change / reopen / freeze` 闭环结束时，human requirement docs 与 `.machine` requirement materials 已经同事务对齐，不再要求后置人工执行 `doctor sync-materials`。",
           "required": true,
           "status": "draft",
           "implemented_by_run_id": null,
@@ -825,10 +840,25 @@
           "changed_in_revision": "R2",
           "story_id": "",
           "details": [],
-          "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
         },
         {
-          "id": "AC-011",
+          "id": "AC-012",
+          "kind": "ac",
+          "theme": "prompt-consumption",
+          "text": "当 metadata 已存在时，prompt 层把项目拓扑、service repo、allowed working branch 当作固定输入，而不是重新推断。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+        },
+        {
+          "id": "AC-013",
           "kind": "ac",
           "theme": "runtime-consumption",
           "text": "runtime 层在 implement/qa/release 前直接读取 metadata contract 进行 repo/branch/worktree 校验。",
@@ -840,10 +870,10 @@
           "changed_in_revision": "R2",
           "story_id": "",
           "details": [],
-          "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
         },
         {
-          "id": "AC-012",
+          "id": "AC-014",
           "kind": "ac",
           "theme": "deterministic-block",
           "text": "当前 service、branch 或 worktree 状态不满足 contract 时，Beacon 会确定性阻断并给出修复指引。",
@@ -855,40 +885,85 @@
           "changed_in_revision": "R2",
           "story_id": "",
           "details": [],
-          "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
-        },
-        {
-          "id": "AC-013",
-          "kind": "ac",
-          "theme": "support-surface",
-          "text": "Beacon 提供确定性的人类面元信息子 skill，名称固定为 `beacon:beacon-project-metadata`。",
-          "required": true,
-          "status": "draft",
-          "implemented_by_run_id": null,
-          "verified_by_run_id": null,
-          "accepted_at": null,
-          "changed_in_revision": "R2",
-          "story_id": "",
-          "details": [],
-          "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
-        },
-        {
-          "id": "AC-014",
-          "kind": "ac",
-          "theme": "minimal-human-surface",
-          "text": "该 skill 的宿主命令面固定收口到 `beacon doctor metadata show/create/update/delete/list/verify`，不新增一级公开命令。",
-          "required": true,
-          "status": "draft",
-          "implemented_by_run_id": null,
-          "verified_by_run_id": null,
-          "accepted_at": null,
-          "changed_in_revision": "R2",
-          "story_id": "",
-          "details": [],
-          "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
         },
         {
           "id": "AC-015",
+          "kind": "ac",
+          "theme": "version-bound-resolve",
+          "text": "当用户以 `beacon:子skill + vX.Y.Z` 或显式 `--version vX.Y.Z` 调用 Beacon 子 skill 时，运行层会先解析“全局项目级元信息 + 对应版本级元信息”，并返回 resolved metadata view 给提示层消费。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+        },
+        {
+          "id": "AC-016",
+          "kind": "ac",
+          "theme": "no-prompt-reinference",
+          "text": "提示层不得绕过 Beacon 运行层重新推断项目拓扑、service repo 或版本分支事实。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+        },
+        {
+          "id": "AC-017",
+          "kind": "ac",
+          "theme": "support-skill-consistency",
+          "text": "`friction-intake`、`brainstorm`、`change` 等 Beacon 相关 support skill 在显式带版本调用时，也只能消费同一 resolved metadata view。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+        },
+        {
+          "id": "AC-018",
+          "kind": "ac",
+          "theme": "support-surface",
+          "text": "Beacon 提供确定性的人类面元信息 support surface，固定收口到 `beacon doctor metadata ...`。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+        },
+        {
+          "id": "AC-019",
+          "kind": "ac",
+          "theme": "minimal-human-surface",
+          "text": "该 support surface 的宿主命令面固定收口到 `beacon doctor metadata show/create/update/delete/list/verify`，不新增一级公开命令。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+        },
+        {
+          "id": "AC-020",
           "kind": "ac",
           "theme": "crud-verify-coverage",
           "text": "该 surface 至少支持新增、查询、修改、删除、列表查看与显式校验 metadata contract。",
@@ -897,13 +972,13 @@
           "implemented_by_run_id": null,
           "verified_by_run_id": null,
           "accepted_at": null,
-          "changed_in_revision": "R2",
+          "changed_in_revision": null,
           "story_id": "",
           "details": [],
-          "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
         },
         {
-          "id": "AC-016",
+          "id": "AC-021",
           "kind": "ac",
           "theme": "transaction-boundary",
           "text": "该 surface 的增删改动作必须走 canonical transaction，而不是直接改某一个 sink。",
@@ -912,13 +987,118 @@
           "implemented_by_run_id": null,
           "verified_by_run_id": null,
           "accepted_at": null,
-          "changed_in_revision": "R2",
+          "changed_in_revision": null,
           "story_id": "",
           "details": [],
-          "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
         },
         {
-          "id": "AC-017",
+          "id": "AC-022",
+          "kind": "ac",
+          "theme": "minimal-core",
+          "text": "Beacon 核心 metadata 只覆盖 topology、service binding、participating services、per-service allowed working branch。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+        },
+        {
+          "id": "AC-023",
+          "kind": "ac",
+          "theme": "no-project-workflow-engine",
+          "text": "Beacon 核心 metadata 不内建 integration branch、testing branch、uat branch、merge flow graph 等项目级 workflow 结构。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+        },
+        {
+          "id": "AC-024",
+          "kind": "ac",
+          "theme": "project-skill-extension",
+          "text": "若项目需要更复杂协作规则，应通过项目内 skill / policy 扩展，而不是挤入 Beacon 核心 metadata schema。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+        },
+        {
+          "id": "AC-025",
+          "kind": "ac",
+          "theme": "freeze-dual-write",
+          "text": "`freeze` 成功时，不仅 revision/story state 冻结，当前 feature 的 `.machine` requirement package 也已与 human docs 对齐。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+        },
+        {
+          "id": "AC-026",
+          "kind": "ac",
+          "theme": "reopen-active-machine-state",
+          "text": "`reopen` 生成新 revision 后，machine 侧会同步切到可继续编辑/校验的 active projection，而不是只改 revision 编号。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+        },
+        {
+          "id": "AC-027",
+          "kind": "ac",
+          "theme": "doctor-repair-only",
+          "text": "`doctor sync-materials` 只作为 repair/rebuild/drift recovery surface 保留，不再是正常 `beacon-change` 闭环的必经步骤。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+        },
+        {
+          "id": "AC-028",
+          "kind": "ac",
+          "theme": "fail-closed-on-material-gap",
+          "text": "若 human docs 与 `.machine` requirement materials 存在未同步缺口，`freeze`、`implement`、`qa`、`release` 必须明确阻断。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+        },
+        {
+          "id": "AC-029",
           "kind": "ac",
           "theme": "absolute-root",
           "text": "人类可见输出会显式显示绝对 `project_root`。",
@@ -927,13 +1107,13 @@
           "implemented_by_run_id": null,
           "verified_by_run_id": null,
           "accepted_at": null,
-          "changed_in_revision": "R2",
+          "changed_in_revision": null,
           "story_id": "",
           "details": [],
-          "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
         },
         {
-          "id": "AC-018",
+          "id": "AC-030",
           "kind": "ac",
           "theme": "artifact-clarity",
           "text": "元信息相关的人类可见输出能清楚标识 human sink、machine sink 与 sqlite transaction 标识。",
@@ -942,13 +1122,13 @@
           "implemented_by_run_id": null,
           "verified_by_run_id": null,
           "accepted_at": null,
-          "changed_in_revision": "R2",
+          "changed_in_revision": null,
           "story_id": "",
           "details": [],
-          "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
         },
         {
-          "id": "AC-019",
+          "id": "AC-031",
           "kind": "ac",
           "theme": "cross-project-safety",
           "text": "在 cross-project / monorepo 场景下，路径报告不会让操作者误判产物属于 Beacon 核心仓还是目标项目仓。",
@@ -957,10 +1137,205 @@
           "implemented_by_run_id": null,
           "verified_by_run_id": null,
           "accepted_at": null,
-          "changed_in_revision": "R2",
+          "changed_in_revision": null,
           "story_id": "",
           "details": [],
-          "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+        },
+        {
+          "id": "AC-032",
+          "kind": "ac",
+          "theme": "latest-pointer-absolute-paths",
+          "text": "`latest.json` 这类 machine pointer 除相对路径外，还会补充 `project_root` 与绝对 artifact path。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+        },
+        {
+          "id": "AC-033",
+          "kind": "ac",
+          "theme": "human-drop-location-absolute",
+          "text": "人类提示中的“落盘位置”至少在 cross-project 模式下打印绝对路径。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+        },
+        {
+          "id": "AC-034",
+          "kind": "ac",
+          "theme": "human-output-root",
+          "text": "`friction-intake` 的 human-readable 输出显式包含绝对 `project_root`。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+        },
+        {
+          "id": "AC-035",
+          "kind": "ac",
+          "theme": "json-output-root",
+          "text": "`friction-intake` 的 json 输出显式包含绝对 `project_root`。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+        },
+        {
+          "id": "AC-036",
+          "kind": "ac",
+          "theme": "absolute-artifact-paths",
+          "text": "human/json 输出都能标识 human artifact、machine artifact、capture evidence 的绝对路径。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+        },
+        {
+          "id": "AC-037",
+          "kind": "ac",
+          "theme": "monorepo-domain",
+          "text": "monorepo 拓扑绑定问题能命中 `monorepo` domain 规则。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+        },
+        {
+          "id": "AC-038",
+          "kind": "ac",
+          "theme": "branch-domain",
+          "text": "版本到 per-service allowed working branch 的治理问题能命中 `branch-governance` domain 规则。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+        },
+        {
+          "id": "AC-039",
+          "kind": "ac",
+          "theme": "repo-binding-domain",
+          "text": "`project_root -> service repo root` 绑定问题能命中 `repo-binding` domain 规则。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+        },
+        {
+          "id": "AC-040",
+          "kind": "ac",
+          "theme": "no-prompt-fallback",
+          "text": "以上问题在已满足证据条件时，不会被静默回退分类为 `prompt`。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+        },
+        {
+          "id": "AC-041",
+          "kind": "ac",
+          "theme": "general",
+          "text": "Cross-project 输出无歧义",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "prd:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/prd/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+        },
+        {
+          "id": "AC-042",
+          "kind": "ac",
+          "theme": "general",
+          "text": "元信息类 friction 不再误分到 `prompt`",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "prd:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/prd/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+        },
+        {
+          "id": "AC-043",
+          "kind": "ac",
+          "theme": "general",
+          "text": "分支与仓绑定违例时硬阻断",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "prd:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/prd/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+        },
+        {
+          "id": "AC-044",
+          "kind": "ac",
+          "theme": "general",
+          "text": "Cross-project reporting is unambiguous",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "prd:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/prd/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
         },
         {
           "id": "TASK-001",
@@ -987,7 +1362,7 @@
             "AC-001"
           ],
           "story_id": "",
-          "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
         },
         {
           "id": "TEST-002",
@@ -1003,7 +1378,7 @@
             "AC-002"
           ],
           "story_id": "",
-          "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
         },
         {
           "id": "TEST-003",
@@ -1019,7 +1394,7 @@
             "AC-003"
           ],
           "story_id": "",
-          "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
         },
         {
           "id": "TEST-004",
@@ -1035,12 +1410,12 @@
             "AC-004"
           ],
           "story_id": "",
-          "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
         },
         {
           "id": "TEST-005",
           "kind": "test",
-          "text": "Verify AC-005 — Beacon 能为每个参与 service 保存该版本线对应的 canonical branch contract。",
+          "text": "Verify AC-005 — Beacon 能为每个参与 service 保存该版本线对应的 allowed working branch contract。",
           "required": true,
           "status": "draft",
           "implemented_by_run_id": null,
@@ -1051,12 +1426,12 @@
             "AC-005"
           ],
           "story_id": "",
-          "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
         },
         {
           "id": "TEST-006",
           "kind": "test",
-          "text": "Verify AC-006 — Beacon 能表达 protected branch 禁写、可写分支约束与违例处理策略。",
+          "text": "Verify AC-006 — Beacon 只表达最小 working-branch guard 与违例处理策略，不扩张为完整项目 Git workflow。",
           "required": true,
           "status": "draft",
           "implemented_by_run_id": null,
@@ -1067,12 +1442,12 @@
             "AC-006"
           ],
           "story_id": "",
-          "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
         },
         {
           "id": "TEST-007",
           "kind": "test",
-          "text": "Verify AC-007 — 任一元信息变更都先形成单一 canonical metadata envelope。",
+          "text": "Verify AC-007 — Beacon 明确把 metadata 拆成“全局项目级元信息”和“版本级元信息”两层，而不是把所有字段混成单层模型。",
           "required": true,
           "status": "draft",
           "implemented_by_run_id": null,
@@ -1083,12 +1458,12 @@
             "AC-007"
           ],
           "story_id": "",
-          "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
         },
         {
           "id": "TEST-008",
           "kind": "test",
-          "text": "Verify AC-008 — 同一笔元信息事务会共享一致 transaction metadata，并投影到 human sink、machine sink、sqlite sink。",
+          "text": "Verify AC-008 — 任一元信息变更都先形成单一 canonical metadata envelope。",
           "required": true,
           "status": "draft",
           "implemented_by_run_id": null,
@@ -1099,12 +1474,12 @@
             "AC-008"
           ],
           "story_id": "",
-          "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
         },
         {
           "id": "TEST-009",
           "kind": "test",
-          "text": "Verify AC-009 — status/doctor/gate/review 能检测元信息投影缺失、校验和漂移、失败事务或过期 sqlite projection。",
+          "text": "Verify AC-009 — 同一笔元信息事务会共享一致 transaction metadata，并投影到 human sink、machine sink、sqlite sink。",
           "required": true,
           "status": "draft",
           "implemented_by_run_id": null,
@@ -1115,12 +1490,12 @@
             "AC-009"
           ],
           "story_id": "",
-          "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
         },
         {
           "id": "TEST-010",
           "kind": "test",
-          "text": "Verify AC-010 — 当 metadata 已存在时，prompt 层把项目拓扑、service repo、canonical branch 当作固定输入，而不是重新推断。",
+          "text": "Verify AC-010 — status/doctor/gate/review 能检测元信息投影缺失、校验和漂移、失败事务或过期 sqlite projection。",
           "required": true,
           "status": "draft",
           "implemented_by_run_id": null,
@@ -1131,12 +1506,12 @@
             "AC-010"
           ],
           "story_id": "",
-          "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
         },
         {
           "id": "TEST-011",
           "kind": "test",
-          "text": "Verify AC-011 — runtime 层在 implement/qa/release 前直接读取 metadata contract 进行 repo/branch/worktree 校验。",
+          "text": "Verify AC-011 — 正常 `beacon-change / reopen / freeze` 闭环结束时，human requirement docs 与 `.machine` requirement materials 已经同事务对齐，不再要求后置人工执行 `doctor sync-materials`。",
           "required": true,
           "status": "draft",
           "implemented_by_run_id": null,
@@ -1147,12 +1522,12 @@
             "AC-011"
           ],
           "story_id": "",
-          "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
         },
         {
           "id": "TEST-012",
           "kind": "test",
-          "text": "Verify AC-012 — 当前 service、branch 或 worktree 状态不满足 contract 时，Beacon 会确定性阻断并给出修复指引。",
+          "text": "Verify AC-012 — 当 metadata 已存在时，prompt 层把项目拓扑、service repo、allowed working branch 当作固定输入，而不是重新推断。",
           "required": true,
           "status": "draft",
           "implemented_by_run_id": null,
@@ -1163,12 +1538,12 @@
             "AC-012"
           ],
           "story_id": "",
-          "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
         },
         {
           "id": "TEST-013",
           "kind": "test",
-          "text": "Verify AC-013 — Beacon 提供确定性的人类面元信息子 skill，名称固定为 `beacon:beacon-project-metadata`。",
+          "text": "Verify AC-013 — runtime 层在 implement/qa/release 前直接读取 metadata contract 进行 repo/branch/worktree 校验。",
           "required": true,
           "status": "draft",
           "implemented_by_run_id": null,
@@ -1179,12 +1554,12 @@
             "AC-013"
           ],
           "story_id": "",
-          "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
         },
         {
           "id": "TEST-014",
           "kind": "test",
-          "text": "Verify AC-014 — 该 skill 的宿主命令面固定收口到 `beacon doctor metadata show/create/update/delete/list/verify`，不新增一级公开命令。",
+          "text": "Verify AC-014 — 当前 service、branch 或 worktree 状态不满足 contract 时，Beacon 会确定性阻断并给出修复指引。",
           "required": true,
           "status": "draft",
           "implemented_by_run_id": null,
@@ -1195,12 +1570,12 @@
             "AC-014"
           ],
           "story_id": "",
-          "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
         },
         {
           "id": "TEST-015",
           "kind": "test",
-          "text": "Verify AC-015 — 该 surface 至少支持新增、查询、修改、删除、列表查看与显式校验 metadata contract。",
+          "text": "Verify AC-015 — 当用户以 `beacon:子skill + vX.Y.Z` 或显式 `--version vX.Y.Z` 调用 Beacon 子 skill 时，运行层会先解析“全局项目级元信息 + 对应版本级元信息”，并返回 resolved metadata view 给提示层消费。",
           "required": true,
           "status": "draft",
           "implemented_by_run_id": null,
@@ -1211,12 +1586,12 @@
             "AC-015"
           ],
           "story_id": "",
-          "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
         },
         {
           "id": "TEST-016",
           "kind": "test",
-          "text": "Verify AC-016 — 该 surface 的增删改动作必须走 canonical transaction，而不是直接改某一个 sink。",
+          "text": "Verify AC-016 — 提示层不得绕过 Beacon 运行层重新推断项目拓扑、service repo 或版本分支事实。",
           "required": true,
           "status": "draft",
           "implemented_by_run_id": null,
@@ -1227,12 +1602,12 @@
             "AC-016"
           ],
           "story_id": "",
-          "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
         },
         {
           "id": "TEST-017",
           "kind": "test",
-          "text": "Verify AC-017 — 人类可见输出会显式显示绝对 `project_root`。",
+          "text": "Verify AC-017 — `friction-intake`、`brainstorm`、`change` 等 Beacon 相关 support skill 在显式带版本调用时，也只能消费同一 resolved metadata view。",
           "required": true,
           "status": "draft",
           "implemented_by_run_id": null,
@@ -1243,12 +1618,12 @@
             "AC-017"
           ],
           "story_id": "",
-          "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
         },
         {
           "id": "TEST-018",
           "kind": "test",
-          "text": "Verify AC-018 — 元信息相关的人类可见输出能清楚标识 human sink、machine sink 与 sqlite transaction 标识。",
+          "text": "Verify AC-018 — Beacon 提供确定性的人类面元信息 support surface，固定收口到 `beacon doctor metadata ...`。",
           "required": true,
           "status": "draft",
           "implemented_by_run_id": null,
@@ -1259,12 +1634,12 @@
             "AC-018"
           ],
           "story_id": "",
-          "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
         },
         {
           "id": "TEST-019",
           "kind": "test",
-          "text": "Verify AC-019 — 在 cross-project / monorepo 场景下，路径报告不会让操作者误判产物属于 Beacon 核心仓还是目标项目仓。",
+          "text": "Verify AC-019 — 该 support surface 的宿主命令面固定收口到 `beacon doctor metadata show/create/update/delete/list/verify`，不新增一级公开命令。",
           "required": true,
           "status": "draft",
           "implemented_by_run_id": null,
@@ -1275,7 +1650,407 @@
             "AC-019"
           ],
           "story_id": "",
-          "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+        },
+        {
+          "id": "TEST-020",
+          "kind": "test",
+          "text": "Verify AC-020 — 该 surface 至少支持新增、查询、修改、删除、列表查看与显式校验 metadata contract。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-020"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+        },
+        {
+          "id": "TEST-021",
+          "kind": "test",
+          "text": "Verify AC-021 — 该 surface 的增删改动作必须走 canonical transaction，而不是直接改某一个 sink。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-021"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+        },
+        {
+          "id": "TEST-022",
+          "kind": "test",
+          "text": "Verify AC-022 — Beacon 核心 metadata 只覆盖 topology、service binding、participating services、per-service allowed working branch。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-022"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+        },
+        {
+          "id": "TEST-023",
+          "kind": "test",
+          "text": "Verify AC-023 — Beacon 核心 metadata 不内建 integration branch、testing branch、uat branch、merge flow graph 等项目级 workflow 结构。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-023"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+        },
+        {
+          "id": "TEST-024",
+          "kind": "test",
+          "text": "Verify AC-024 — 若项目需要更复杂协作规则，应通过项目内 skill / policy 扩展，而不是挤入 Beacon 核心 metadata schema。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-024"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+        },
+        {
+          "id": "TEST-025",
+          "kind": "test",
+          "text": "Verify AC-025 — `freeze` 成功时，不仅 revision/story state 冻结，当前 feature 的 `.machine` requirement package 也已与 human docs 对齐。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-025"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+        },
+        {
+          "id": "TEST-026",
+          "kind": "test",
+          "text": "Verify AC-026 — `reopen` 生成新 revision 后，machine 侧会同步切到可继续编辑/校验的 active projection，而不是只改 revision 编号。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-026"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+        },
+        {
+          "id": "TEST-027",
+          "kind": "test",
+          "text": "Verify AC-027 — `doctor sync-materials` 只作为 repair/rebuild/drift recovery surface 保留，不再是正常 `beacon-change` 闭环的必经步骤。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-027"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+        },
+        {
+          "id": "TEST-028",
+          "kind": "test",
+          "text": "Verify AC-028 — 若 human docs 与 `.machine` requirement materials 存在未同步缺口，`freeze`、`implement`、`qa`、`release` 必须明确阻断。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-028"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+        },
+        {
+          "id": "TEST-029",
+          "kind": "test",
+          "text": "Verify AC-029 — 人类可见输出会显式显示绝对 `project_root`。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-029"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+        },
+        {
+          "id": "TEST-030",
+          "kind": "test",
+          "text": "Verify AC-030 — 元信息相关的人类可见输出能清楚标识 human sink、machine sink 与 sqlite transaction 标识。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-030"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+        },
+        {
+          "id": "TEST-031",
+          "kind": "test",
+          "text": "Verify AC-031 — 在 cross-project / monorepo 场景下，路径报告不会让操作者误判产物属于 Beacon 核心仓还是目标项目仓。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-031"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+        },
+        {
+          "id": "TEST-032",
+          "kind": "test",
+          "text": "Verify AC-032 — `latest.json` 这类 machine pointer 除相对路径外，还会补充 `project_root` 与绝对 artifact path。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-032"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+        },
+        {
+          "id": "TEST-033",
+          "kind": "test",
+          "text": "Verify AC-033 — 人类提示中的“落盘位置”至少在 cross-project 模式下打印绝对路径。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-033"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+        },
+        {
+          "id": "TEST-034",
+          "kind": "test",
+          "text": "Verify AC-034 — `friction-intake` 的 human-readable 输出显式包含绝对 `project_root`。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-034"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+        },
+        {
+          "id": "TEST-035",
+          "kind": "test",
+          "text": "Verify AC-035 — `friction-intake` 的 json 输出显式包含绝对 `project_root`。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-035"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+        },
+        {
+          "id": "TEST-036",
+          "kind": "test",
+          "text": "Verify AC-036 — human/json 输出都能标识 human artifact、machine artifact、capture evidence 的绝对路径。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-036"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+        },
+        {
+          "id": "TEST-037",
+          "kind": "test",
+          "text": "Verify AC-037 — monorepo 拓扑绑定问题能命中 `monorepo` domain 规则。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-037"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+        },
+        {
+          "id": "TEST-038",
+          "kind": "test",
+          "text": "Verify AC-038 — 版本到 per-service allowed working branch 的治理问题能命中 `branch-governance` domain 规则。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-038"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+        },
+        {
+          "id": "TEST-039",
+          "kind": "test",
+          "text": "Verify AC-039 — `project_root -> service repo root` 绑定问题能命中 `repo-binding` domain 规则。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-039"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+        },
+        {
+          "id": "TEST-040",
+          "kind": "test",
+          "text": "Verify AC-040 — 以上问题在已满足证据条件时，不会被静默回退分类为 `prompt`。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-040"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+        },
+        {
+          "id": "TEST-041",
+          "kind": "test",
+          "text": "Verify AC-041 — Cross-project 输出无歧义",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-041"
+          ],
+          "story_id": "",
+          "source": "prd:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/prd/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+        },
+        {
+          "id": "TEST-042",
+          "kind": "test",
+          "text": "Verify AC-042 — 元信息类 friction 不再误分到 `prompt`",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-042"
+          ],
+          "story_id": "",
+          "source": "prd:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/prd/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+        },
+        {
+          "id": "TEST-043",
+          "kind": "test",
+          "text": "Verify AC-043 — 分支与仓绑定违例时硬阻断",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-043"
+          ],
+          "story_id": "",
+          "source": "prd:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/prd/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
+        },
+        {
+          "id": "TEST-044",
+          "kind": "test",
+          "text": "Verify AC-044 — Cross-project reporting is unambiguous",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-044"
+          ],
+          "story_id": "",
+          "source": "prd:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.3.10/prd/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md"
         }
       ]
     }

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import io
+import os
 from contextlib import redirect_stderr, redirect_stdout
 from pathlib import Path
 from typing import Any
@@ -45,30 +46,38 @@ def sync_feature_requirement_materials(
     story_sync = sync_story_state_from_docs(project_root, resolved_version, feature)
     stdout_capture = io.StringIO()
     stderr_capture = io.StringIO()
-    with redirect_stdout(stdout_capture), redirect_stderr(stderr_capture):
-        try:
-            create_test_case(
-                feature=feature,
-                test_type="all",
-                version=resolved_version,
-                project=str(project_root),
-                output=None,
-                overwrite_doc=overwrite_test_doc,
-                qa_profile="web-full",
-                qa_types=None,
-                llm_auto=True,
-                llm_mode="auto",
-                automation_target_rate=0.85,
-                matrix_output=None,
-                expansion_profile="pua-web",
-                scenario_depth="standard",
-                mode="auto",
-                model="beacon-test-case-compiler",
-                json_output=False,
-                ui_runner=ui_runner,
-            )
-        except typer.Exit as exc:  # pragma: no cover - defensive, command exits via Typer only on parameter errors
-            raise RuntimeError(f"test_case_sync_failed:{exc.exit_code}") from exc
+    previous_override = os.environ.get("BEACON_ALLOW_CONTEXT_VERSION_DRIFT")
+    os.environ["BEACON_ALLOW_CONTEXT_VERSION_DRIFT"] = "1"
+    try:
+        with redirect_stdout(stdout_capture), redirect_stderr(stderr_capture):
+            try:
+                create_test_case(
+                    feature=feature,
+                    test_type="all",
+                    version=resolved_version,
+                    project=str(project_root),
+                    output=None,
+                    overwrite_doc=overwrite_test_doc,
+                    qa_profile="web-full",
+                    qa_types=None,
+                    llm_auto=True,
+                    llm_mode="auto",
+                    automation_target_rate=0.85,
+                    matrix_output=None,
+                    expansion_profile="pua-web",
+                    scenario_depth="standard",
+                    mode="auto",
+                    model="beacon-test-case-compiler",
+                    json_output=False,
+                    ui_runner=ui_runner,
+                )
+            except typer.Exit as exc:  # pragma: no cover - defensive, command exits via Typer only on parameter errors
+                raise RuntimeError(f"test_case_sync_failed:{exc.exit_code}") from exc
+    finally:
+        if previous_override is None:
+            os.environ.pop("BEACON_ALLOW_CONTEXT_VERSION_DRIFT", None)
+        else:
+            os.environ["BEACON_ALLOW_CONTEXT_VERSION_DRIFT"] = previous_override
 
     slug = str(story_sync.get("feature") or feature).strip().lower().replace(" ", "-")
     return {
