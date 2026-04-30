@@ -116,3 +116,35 @@ def sync_project_requirement_materials(
         "feature_count": len(results),
         "results": results,
     }
+
+
+def sync_change_loop_requirement_package(
+    project_root: Path,
+    *,
+    version: str,
+    feature: str,
+    overwrite_test_doc: bool = False,
+    ui_runner: str = "",
+) -> dict[str, Any]:
+    """Refresh the active machine requirement package during reopen/freeze change loops."""
+    resolved_version = resolve_target_version(project_root, version)
+    result = sync_feature_requirement_materials(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        dry_run=False,
+        overwrite_test_doc=overwrite_test_doc,
+        ui_runner=ui_runner,
+    )
+    return {
+        "schema_version": "1.0",
+        "project_root": str(project_root),
+        "version": resolved_version,
+        "feature": feature,
+        "status": str(result.get("status") or "synced"),
+        "story_path": str(result.get("story_sync", {}).get("path") or ""),
+        "qa_matrix_path": str(result.get("qa_matrix_path") or ""),
+        "qa9_matrix_path": str(result.get("qa9_matrix_path") or ""),
+        "story_scenario_map_path": str(result.get("story_scenario_map_path") or ""),
+        "story_sync": result.get("story_sync", {}),
+    }

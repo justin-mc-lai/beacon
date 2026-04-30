@@ -50,6 +50,9 @@ def test_freeze_reopen_and_native_implement_should_write_machine_state(tmp_path:
     assert freeze.exit_code == 0, freeze.stdout
     freeze_payload = json.loads(freeze.stdout)
     assert freeze_payload["status"] == "frozen"
+    assert freeze_payload["requirement_package"]["status"] == "synced"
+    assert (tmp_path / freeze_payload["requirement_package"]["qa_matrix_path"]).exists()
+    assert (tmp_path / freeze_payload["requirement_package"]["story_scenario_map_path"]).exists()
 
     impl = _invoke(["implement", "run", FEATURE, "--project", str(tmp_path), "--version", VERSION, "--runner", "native-single", "--json"])
     assert impl.exit_code == 0, impl.stdout
@@ -66,6 +69,11 @@ def test_freeze_reopen_and_native_implement_should_write_machine_state(tmp_path:
     assert reopen.exit_code == 0, reopen.stdout
     reopen_payload = json.loads(reopen.stdout)
     assert reopen_payload["new_revision_id"] == "R2"
+    assert reopen_payload["requirement_package"]["status"] == "synced"
+    assert (tmp_path / reopen_payload["requirement_package"]["qa_matrix_path"]).exists()
+    assert (tmp_path / reopen_payload["requirement_package"]["story_scenario_map_path"]).exists()
+    story_payload = json.loads(machine_story.read_text(encoding="utf-8"))
+    assert story_payload["current_revision_id"] == "R2"
 
 
 def test_review_accept_should_require_frozen_revision_and_auto_test_pass(tmp_path: Path):

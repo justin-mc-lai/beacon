@@ -8,6 +8,7 @@ from typing import Optional
 
 import typer
 
+from beacon.utils.material_sync import sync_change_loop_requirement_package
 from beacon.utils.revision_state import reopen_revision_state
 from beacon.utils.story_state import reopen_story_state
 from beacon.utils.versioning import resolve_target_version
@@ -20,6 +21,29 @@ def _reopen_impl(feature: str, project: Optional[str], version: str, reason: str
     resolved_version = resolve_target_version(project_root, version)
     previous_revision, next_revision = reopen_revision_state(project_root, version=resolved_version, feature=feature, reason=reason)
     reopen_story_state(project_root, version=resolved_version, feature=feature, reason=reason)
+    try:
+        requirement_package = sync_change_loop_requirement_package(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+        )
+    except Exception as exc:  # noqa: BLE001
+        payload = {
+            "schema_version": "1.0",
+            "feature": feature,
+            "version": resolved_version,
+            "status": "blocked",
+            "reason_code": "requirement_package_sync_failed",
+            "message": f"failed to sync machine requirement package: {exc}",
+            "previous_revision_id": previous_revision.get("revision_id", ""),
+            "new_revision_id": next_revision.get("revision_id", ""),
+            "reason": reason,
+        }
+        if json_output:
+            typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        else:
+            typer.echo("Beacon reopen blocked: machine requirement package sync failed")
+        return 2
     payload = {
         "schema_version": "1.0",
         "feature": feature,
@@ -28,6 +52,7 @@ def _reopen_impl(feature: str, project: Optional[str], version: str, reason: str
         "previous_revision_id": previous_revision.get("revision_id", ""),
         "new_revision_id": next_revision.get("revision_id", ""),
         "reason": reason,
+        "requirement_package": requirement_package,
     }
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
