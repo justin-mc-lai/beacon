@@ -64,6 +64,7 @@ def test_v135_run_feature_aware_qa_should_block_when_auto_test_invocation_fails(
 
     monkeypatch.setattr(qa_command, "resolve_profile_for_feature", lambda *args, **kwargs: {})
     monkeypatch.setattr(qa_command, "evaluate_project_profile_gate", lambda *args, **kwargs: {})
+    monkeypatch.setattr(qa_command, "build_requirement_package_gate", lambda *args, **kwargs: {"status": "pass"})
     monkeypatch.setattr(qa_command, "load_current_qa_session", lambda *_args, **_kwargs: {})
     monkeypatch.setattr(qa_command, "build_feature_qa_plan", lambda *args, **kwargs: plan)
     monkeypatch.setattr(qa_command, "qa_team_contract", lambda *args, **kwargs: {})
@@ -335,4 +336,66 @@ def test_v135_previous_evidence_done_should_reject_zero_coverage_status() -> Non
             source_matrix_path="docs/matrix.json",
         )
         is False
+    )
+
+
+def test_v135_run_feature_aware_qa_should_refresh_manifest_with_plan_when_reusing_existing_pass(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    feature = "Beacon Feature"
+    captured_manifest: dict[str, object] = {}
+
+    monkeypatch.setattr(qa_command, "resolve_profile_for_feature", lambda *args, **kwargs: {})
+    monkeypatch.setattr(qa_command, "evaluate_project_profile_gate", lambda *args, **kwargs: {})
+    monkeypatch.setattr(qa_command, "build_requirement_package_gate", lambda *args, **kwargs: {"status": "pass"})
+    monkeypatch.setattr(qa_command, "load_current_qa_session", lambda *_args, **_kwargs: {})
+    monkeypatch.setattr(
+        qa_command,
+        "build_feature_qa_plan",
+        lambda *args, **kwargs: {
+            "schema_version": "1.0",
+            "feature": feature,
+            "feature_slug": "feature",
+            "version": "v1.3.10",
+            "status": "up_to_date",
+            "implementation_done": True,
+            "implementation_run_id": "impl-run-1",
+            "targeted_entries": [],
+        },
+    )
+    monkeypatch.setattr(qa_command, "qa_team_contract", lambda *args, **kwargs: {})
+    monkeypatch.setattr(qa_command, "load_implement_to_qa_handoff", lambda *args, **kwargs: {})
+    monkeypatch.setattr(qa_command, "detect_host_runtime", lambda value=None: value or "codex")
+    monkeypatch.setattr(
+        qa_command,
+        "load_qa_status",
+        lambda *_args, **_kwargs: {
+            "status": "passed",
+            "run_id": "run-123",
+        },
+    )
+    monkeypatch.setattr(
+        qa_command,
+        "write_feature_qa_status",
+        lambda _project_root, *, feature, payload: tmp_path / ".beacon" / "qa" / "features" / "feature" / "status.json",
+    )
+    monkeypatch.setattr(qa_command, "write_coverage_summary", lambda *args, **kwargs: tmp_path / ".beacon" / "coverage-summary.json")
+    monkeypatch.setattr(
+        qa_command,
+        "_update_evidence_manifest",
+        lambda _project_root, refs, run_id, version: captured_manifest.update(
+            {"refs": list(refs), "run_id": run_id, "version": version}
+        ),
+    )
+
+    exit_code, payload = qa_command._run_feature_aware_qa(
+        ["Beacon Feature", "--project", str(tmp_path), "--version", "v1.3.10", "--json"]
+    )
+
+    assert exit_code == 0
+    assert payload["status"] == "passed"
+    assert (
+        ".beacon/qa/features/beacon-feature/plan.json"
+        in captured_manifest["refs"]
     )

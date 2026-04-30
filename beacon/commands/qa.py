@@ -928,7 +928,10 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
                 payload["execution_surface"] = "qa-team"
                 payload["context_isolation"] = payload["team_execution"].get("context_isolation", {})
             feature_status_file = write_feature_qa_status(project_root, feature=feature, payload=payload)
-            manifest_refs = [str(feature_status_file.relative_to(project_root))]
+            manifest_refs = [
+                str(feature_status_file.relative_to(project_root)),
+                str(feature_qa_plan_path(project_root, feature=feature).relative_to(project_root)),
+            ]
             for candidate in (
                 project_root / ".beacon" / "auto-test-status.json",
                 coverage_summary_path,
@@ -994,7 +997,10 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
             payload["execution_surface"] = "qa-team"
             payload["context_isolation"] = payload["team_execution"].get("context_isolation", {})
         feature_status_path = write_feature_qa_status(project_root, feature=feature, payload=payload)
-        manifest_refs = [str(feature_status_path.relative_to(project_root))]
+        manifest_refs = [
+            str(feature_status_path.relative_to(project_root)),
+            str(feature_qa_plan_path(project_root, feature=feature).relative_to(project_root)),
+        ]
         for candidate in (
             project_root / ".beacon" / "auto-test-status.json",
             coverage_summary_path,

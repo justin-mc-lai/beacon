@@ -410,6 +410,7 @@ def test_v136_feature_aware_qa_up_to_date_should_emit_delivery_contract(tmp_path
     matrix_path.parent.mkdir(parents=True, exist_ok=True)
     matrix_path.write_text('{"entries":[]}\n', encoding="utf-8")
     captured: dict[str, object] = {}
+    manifest_capture: dict[str, object] = {}
 
     monkeypatch.setattr(qa_command, "resolve_profile_for_feature", lambda *args, **kwargs: {})
     monkeypatch.setattr(qa_command, "evaluate_project_profile_gate", lambda *args, **kwargs: {})
@@ -441,7 +442,13 @@ def test_v136_feature_aware_qa_up_to_date_should_emit_delivery_contract(tmp_path
         lambda _project_root, *, feature, payload: captured.update({"payload": payload}) or (tmp_path / "feature-status.json"),
     )
     monkeypatch.setattr(qa_command, "load_qa_status", lambda *_args, **_kwargs: {"run_id": "impl-run-1"})
-    monkeypatch.setattr(qa_command, "_update_evidence_manifest", lambda *args, **kwargs: None)
+    monkeypatch.setattr(
+        qa_command,
+        "_update_evidence_manifest",
+        lambda _project_root, refs, run_id, version: manifest_capture.update(
+            {"refs": list(refs), "run_id": run_id, "version": version}
+        ),
+    )
 
     exit_code, payload = qa_command._run_feature_aware_qa(
         ["Beacon Feature", "--project", str(tmp_path), "--version", VERSION, "--json"]
@@ -451,6 +458,7 @@ def test_v136_feature_aware_qa_up_to_date_should_emit_delivery_contract(tmp_path
     assert payload["delivery_contract"]["host_runtime"] == "codex"
     assert payload["host_native_delivery"]["execution_mode"] == "feature-aware"
     assert captured["payload"]["delivery_contract"]["runner"] == "browser-use"
+    assert ".beacon/qa/features/beacon-feature/plan.json" in manifest_capture["refs"]
 
 
 def test_v136_repair_package_should_synthesize_execution_governance_artifacts(tmp_path: Path) -> None:
