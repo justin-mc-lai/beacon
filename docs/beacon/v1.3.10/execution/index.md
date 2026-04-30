@@ -25,3 +25,5 @@
 - 不在核心 metadata 中编码 integration/testing/uat workflow
 - 不把 `doctor sync-materials` 重新提升为 change-loop 主路径
 - 不新增新的一级公开主命令
+- `./evo-harness-contract.md`
+- `./evo-scorecard-contract.md`

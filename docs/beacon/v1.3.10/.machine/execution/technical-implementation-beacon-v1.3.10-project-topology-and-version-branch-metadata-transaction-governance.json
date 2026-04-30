@@ -1,0 +1,183 @@
+{
+  "schema_version": "1.0",
+  "feature": "Beacon v1.3.10 project topology and version-branch metadata transaction governance",
+  "feature_slug": "beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance",
+  "version": "v1.3.10",
+  "revision_id": "",
+  "run_id": "run-20260430T060149Z-731d",
+  "implemented_at": "2026-04-30T06:01:50.370856+00:00",
+  "runner": "native-single",
+  "skill": "",
+  "profile_id": "",
+  "git_commit": "e4aee5eff2d6bb725ff5f6c7dc068d3004365591",
+  "services": [],
+  "boundary_principles": [
+    {
+      "id": "explicit_assumptions",
+      "heading": "显式假设与歧义管理"
+    },
+    {
+      "id": "simplicity_first",
+      "heading": "简单优先"
+    },
+    {
+      "id": "surgical_changes",
+      "heading": "外科手术式改动"
+    },
+    {
+      "id": "goal_driven_execution",
+      "heading": "目标驱动验证闭环"
+    },
+    {
+      "id": "trivial_task_exception",
+      "heading": "trivial task 可以轻量处理，但不能越界"
+    }
+  ],
+  "implementation_scope_summary": "native-single implementation completed",
+  "business_goal_summary": "native-single implementation completed",
+  "acceptance_scope": [],
+  "assumptions": [],
+  "simplicity_notes": [],
+  "scope_guard": {
+    "in_scope": true,
+    "summary": "",
+    "allowed_paths": []
+  },
+  "changed_files": [
+    ".beacon/auto-test-status.json",
+    ".beacon/coverage-summary.json",
+    ".beacon/evidence-manifest.json",
+    ".beacon/evidence-signature-chain.json",
+    ".beacon/gate-report.json",
+    ".beacon/qa/status.json",
+    "README.md",
+    "beacon/commands/release.py",
+    "docs/beacon/v1.3.10/.machine/execution/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.revision.json",
+    "docs/beacon/v1.3.10/.machine/execution/revision-delta-beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.json",
+    "docs/beacon/v1.3.10/.machine/qa/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.qa9-matrix.json",
+    "docs/beacon/v1.3.10/.machine/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.json",
+    "docs/beacon/v1.3.10/execution/architecture-blueprint.md",
+    "docs/beacon/v1.3.10/execution/index.md",
+    "docs/beacon/v1.3.9/.machine/execution/change-impact.json",
+    "docs/beacon/v1.3.9/.machine/execution/config.json",
+    "docs/beacon/v1.3.9/.machine/execution/delivery-manifest.json",
+    "docs/beacon/v1.3.9/.machine/execution/git-alignment.json",
+    "docs/beacon/v1.3.9/.machine/execution/source.json"
+  ],
+  "modules_touched": [
+    ".beacon/auto-test-status.json",
+    ".beacon/coverage-summary.json",
+    ".beacon/evidence-manifest.json",
+    ".beacon/evidence-signature-chain.json",
+    ".beacon/gate-report.json",
+    ".beacon/qa",
+    "README.md",
+    "beacon/commands",
+    "docs/beacon"
+  ],
+  "additions": [],
+  "modifications": [],
+  "deletions": [],
+  "refactors": [],
+  "data_operations": [],
+  "db_changes": {
+    "none": true,
+    "new_tables": [],
+    "altered_tables": [],
+    "indexes": [],
+    "migrations": []
+  },
+  "cache_changes": [],
+  "event_contract_changes": [],
+  "api_changes": {
+    "none": true,
+    "new_endpoints": [],
+    "changed_endpoints": [],
+    "removed_endpoints": []
+  },
+  "external_integrations": [],
+  "queue_or_job_changes": [],
+  "cron_changes": [],
+  "config_changes": [],
+  "env_changes": [],
+  "feature_flags": [],
+  "deployment_notes": [],
+  "verification": [
+    {
+      "command": "beacon implement run --runner native-single",
+      "status": "passed"
+    }
+  ],
+  "verification_signals": {
+    "count": 1,
+    "has_acceptance_scope": false,
+    "has_assumptions": false
+  },
+  "known_risks": [],
+  "rollback_notes": [],
+  "compatibility_notes": [],
+  "artifact_updates": {
+    "user_story": {
+      "required": false,
+      "reason": "story machine state writeback recorded"
+    },
+    "review_quality": {
+      "required": true,
+      "reason": "run quality review after native implementation"
+    },
+    "acceptance": {
+      "required": true,
+      "reason": "acceptance remains a formal post-verify action"
+    }
+  },
+  "revision_cleanup": {
+    "schema_version": "1.0",
+    "revision_id": "R2",
+    "source_revision_id": "R1",
+    "revision_delta_ref": "docs/beacon/v1.3.10/.machine/execution/revision-delta-beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.json",
+    "revision_delta_markdown_ref": "docs/beacon/v1.3.10/execution/revision-delta-beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md",
+    "cleanup_required": true,
+    "cleanup_review_completed": false,
+    "removed_requirement_surfaces": [
+      {
+        "id": "AC-005",
+        "text": "Beacon 能为每个参与 service 保存该版本线对应的 canonical branch contract。",
+        "label": "AC-005: Beacon 能为每个参与 service 保存该版本线对应的 canonical branch contract。",
+        "signature": "ac::::canonical-branch::beacon 能为每个参与 service 保存该版本线对应的 canonical branch contract。::"
+      },
+      {
+        "id": "AC-014",
+        "text": "该 skill 的宿主命令面固定收口到 `beacon doctor metadata show/create/update/delete/list/verify`，不新增一级公开命令。",
+        "label": "AC-014: 该 skill 的宿主命令面固定收口到 `beacon doctor metadata show/create/update/delete/list/verify`，不新增一级公开命令。",
+        "signature": "ac::::minimal-human-surface::该 skill 的宿主命令面固定收口到 `beacon doctor metadata show/create/update/delete/list/verify`，不新增一级公开命令。::"
+      },
+      {
+        "id": "AC-010",
+        "text": "当 metadata 已存在时，prompt 层把项目拓扑、service repo、canonical branch 当作固定输入，而不是重新推断。",
+        "label": "AC-010: 当 metadata 已存在时，prompt 层把项目拓扑、service repo、canonical branch 当作固定输入，而不是重新推断。",
+        "signature": "ac::::prompt-consumption::当 metadata 已存在时，prompt 层把项目拓扑、service repo、canonical branch 当作固定输入，而不是重新推断。::"
+      },
+      {
+        "id": "AC-006",
+        "text": "Beacon 能表达 protected branch 禁写、可写分支约束与违例处理策略。",
+        "label": "AC-006: Beacon 能表达 protected branch 禁写、可写分支约束与违例处理策略。",
+        "signature": "ac::::protected-branch-rules::beacon 能表达 protected branch 禁写、可写分支约束与违例处理策略。::"
+      },
+      {
+        "id": "AC-013",
+        "text": "Beacon 提供确定性的人类面元信息子 skill，名称固定为 `beacon:beacon-project-metadata`。",
+        "label": "AC-013: Beacon 提供确定性的人类面元信息子 skill，名称固定为 `beacon:beacon-project-metadata`。",
+        "signature": "ac::::support-surface::beacon 提供确定性的人类面元信息子 skill，名称固定为 `beacon:beacon-project-metadata`。::"
+      }
+    ],
+    "removed_surfaces": [],
+    "retained_legacy_surfaces": [],
+    "cleanup_rationale": ""
+  },
+  "traceability": {
+    "request_path": ".beacon/implement/run-20260430T060149Z-731d/request.json",
+    "result_path": ".beacon/implement/run-20260430T060149Z-731d/result.json",
+    "stdout_path": "",
+    "stderr_path": ""
+  }
+}
