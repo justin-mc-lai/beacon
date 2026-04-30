@@ -7,6 +7,8 @@ import json
 from pathlib import Path
 from typing import Any
 
+from beacon.utils.runtime import now_iso
+
 
 _ROLLING_POINTER_PREFIXES = (
     ".beacon/state/spec-fingerprints/",
@@ -21,6 +23,48 @@ def _issue(reason_code: str, message: str, *, blocked: bool, severity: str) -> d
         "message": message,
         "blocked": blocked,
     }
+
+
+def build_manifest_entry(project_root: Path, rel_path: str) -> dict[str, Any] | None:
+    normalized = str(rel_path or "").strip()
+    if not normalized or normalized.startswith("/") or "\\" in normalized:
+        return None
+    full_path = project_root / normalized
+    if not full_path.exists() or not full_path.is_file():
+        return None
+    return {
+        "path": normalized,
+        "sha256": hashlib.sha256(full_path.read_bytes()).hexdigest(),
+        "updated_at": now_iso(),
+    }
+
+
+def merge_manifest_entries(
+    project_root: Path,
+    *,
+    existing_entries: list[Any] | None,
+    evidence_refs: list[str] | None,
+    exclude_paths: set[str] | None = None,
+) -> list[dict[str, Any]]:
+    excluded = {str(item).strip() for item in (exclude_paths or set()) if str(item).strip()}
+    by_path: dict[str, dict[str, Any]] = {}
+    for entry in existing_entries or []:
+        if not isinstance(entry, dict):
+            continue
+        rel_path = str(entry.get("path", "")).strip()
+        if not rel_path or rel_path in excluded:
+            continue
+        rebuilt = build_manifest_entry(project_root, rel_path)
+        if rebuilt is not None:
+            by_path[rel_path] = rebuilt
+    for ref in evidence_refs or []:
+        rel_path = str(ref or "").strip()
+        if not rel_path or rel_path in excluded:
+            continue
+        rebuilt = build_manifest_entry(project_root, rel_path)
+        if rebuilt is not None:
+            by_path[rel_path] = rebuilt
+    return [by_path[path] for path in sorted(by_path)]
 
 
 def validate_evidence_manifest(project_root: Path) -> dict[str, Any]:

@@ -31,6 +31,7 @@ from beacon.utils.qa_runtime import (
     qa_session_manifest_path,
     write_qa_status,
 )
+from beacon.utils.evidence_manifest import merge_manifest_entries
 from beacon.utils.runtime import append_jsonl, now_iso, write_json
 from beacon.utils.versioning import resolve_target_version
 from beacon.utils.v110_baseline import generate_spec_fingerprint, load_latest_spec_fingerprint
@@ -139,37 +140,14 @@ def _update_evidence_manifest(
     entries = payload.get("entries")
     if not isinstance(entries, list):
         entries = []
-    by_path: dict[str, dict[str, Any]] = {
-        str(item.get("path")): item
-        for item in entries
-        if (
-            isinstance(item, dict)
-            and str(item.get("path", "")).strip()
-            and str(item.get("path", "")).strip() != manifest_rel
-        )
-    }
-    by_path = {
-        ref_path: item
-        for ref_path, item in by_path.items()
-        if (project_root / ref_path).exists() and (project_root / ref_path).is_file()
-    }
-    for ref in evidence_refs:
-        ref_path = str(ref or "").strip()
-        if not ref_path:
-            continue
-        if ref_path == manifest_rel:
-            continue
-        full = project_root / ref_path
-        if not full.exists() or not full.is_file():
-            continue
-        by_path[ref_path] = {
-            "path": ref_path,
-            "sha256": hashlib.sha256(full.read_bytes()).hexdigest(),
-            "updated_at": now_iso(),
-        }
     output_payload: dict[str, Any] = {
         "schema_version": "1.0",
-        "entries": list(by_path.values()),
+        "entries": merge_manifest_entries(
+            project_root,
+            existing_entries=entries,
+            evidence_refs=evidence_refs,
+            exclude_paths={manifest_rel},
+        ),
         "updated_at": now_iso(),
     }
     next_run_id = str(run_id or payload.get("run_id") or "").strip()

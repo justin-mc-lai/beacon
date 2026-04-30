@@ -16,6 +16,7 @@ from beacon.utils.artifact_paths import (
     qa_docs_dir,
     uses_machine_surface,
 )
+from beacon.utils.evidence_manifest import merge_manifest_entries
 from beacon.utils.runtime import now_iso, write_json
 from beacon.utils.versioning import resolve_target_version
 
@@ -206,30 +207,14 @@ def refresh_evidence_manifest(
     if not isinstance(entries, list):
         entries = []
     manifest_rel = str(manifest_path.relative_to(project_root))
-    by_path: dict[str, dict[str, Any]] = {
-        ref_path: item
-        for item in entries
-        if isinstance(item, dict)
-        and (ref_path := str(item.get("path", "")).strip())
-        and ref_path != manifest_rel
-        and (project_root / ref_path).exists()
-        and (project_root / ref_path).is_file()
-    }
-    for ref in refs:
-        ref_path = str(ref or "").strip()
-        if not ref_path or ref_path == manifest_rel:
-            continue
-        full = project_root / ref_path
-        if not full.exists() or not full.is_file():
-            continue
-        by_path[ref_path] = {
-            "path": ref_path,
-            "sha256": hashlib.sha256(full.read_bytes()).hexdigest(),
-            "updated_at": now_iso(),
-        }
     output_payload: dict[str, Any] = {
         "schema_version": "1.0",
-        "entries": list(by_path.values()),
+        "entries": merge_manifest_entries(
+            project_root,
+            existing_entries=entries,
+            evidence_refs=refs,
+            exclude_paths={manifest_rel},
+        ),
         "updated_at": now_iso(),
         "version": version,
     }

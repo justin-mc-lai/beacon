@@ -11,6 +11,7 @@ from typing import Any
 
 from beacon.utils.artifact_paths import execution_file_output, human_execution_file
 from beacon.utils.coverage import compute_coverage_metrics
+from beacon.utils.evidence_manifest import merge_manifest_entries
 from beacon.utils.runtime import now_iso, write_json
 from beacon.utils.versioning import resolve_target_version
 
@@ -276,30 +277,12 @@ def _update_evidence_manifest(
     entries = payload.get("entries")
     if not isinstance(entries, list):
         entries = []
-    by_path: dict[str, dict[str, Any]] = {
-        str(item.get("path")): item
-        for item in entries
-        if isinstance(item, dict) and str(item.get("path", "")).strip()
-    }
-    by_path = {
-        ref_path: item
-        for ref_path, item in by_path.items()
-        if (project_root / ref_path).exists() and (project_root / ref_path).is_file()
-    }
-    for ref in evidence_refs:
-        ref_path = str(ref or "").strip()
-        if not ref_path:
-            continue
-        full = project_root / ref_path
-        if not full.exists() or not full.is_file():
-            continue
-        by_path[ref_path] = {
-            "path": ref_path,
-            "sha256": hashlib.sha256(full.read_bytes()).hexdigest(),
-            "updated_at": now_iso(),
-        }
     output_payload: dict[str, Any] = {
-        "entries": list(by_path.values()),
+        "entries": merge_manifest_entries(
+            project_root,
+            existing_entries=entries,
+            evidence_refs=evidence_refs,
+        ),
         "updated_at": now_iso(),
     }
     if run_id:
