@@ -187,6 +187,13 @@ REASON_CODES = [
     "prototype_web_guideline_review_missing",
     "prototype_plan_missing",
     "prototype_coverage_missing",
+    "prototype_ux_prd_missing",
+    "prototype_design_asset_missing",
+    "prototype_design_context_missing",
+    "prototype_design_reasoning_missing",
+    "prototype_ux_contract_missing",
+    "prototype_page_intent_missing",
+    "prototype_state_visibility_missing",
     "prototype_page_inventory_missing",
     "prototype_required_page_missing",
     "prototype_required_state_missing",
@@ -1194,6 +1201,7 @@ def check_prototype_contract(
 
     for feature_dir in sorted(feature_dirs):
         payload = prototype_status(project_root, resolved_version, feature_dir.name)
+        ux_truth_required = _parse_semver_tuple(resolved_version) >= (1, 3, 10)
         files = payload.get("files", {})
         plan_path = Path(files.get("prototype_plan")) if isinstance(files, dict) and files.get("prototype_plan") else None
         coverage_path = Path(files.get("coverage_report")) if isinstance(files, dict) and files.get("coverage_report") else None
@@ -1399,6 +1407,15 @@ def check_prototype_contract(
             "review_json": "prototype_review_missing",
             "review_md": "prototype_review_missing",
         }
+        if ux_truth_required:
+            required_contracts.update(
+                {
+                    "ux_prd": "prototype_ux_prd_missing",
+                    "design_md": "prototype_design_asset_missing",
+                    "preview_html": "prototype_design_asset_missing",
+                    "preview_dark_html": "prototype_design_asset_missing",
+                }
+            )
         if feature_requires_route_closure(project_root, resolved_version, feature_dir.name):
             required_contracts["route_closure_contract"] = "prototype_route_closure_contract_missing"
             required_contracts["implementation_map"] = "prototype_implementation_map_missing"
@@ -1451,6 +1468,36 @@ def check_prototype_contract(
                     "reason_code": "prototype_cjk_parse_failed",
                     "blocked": True,
                     "message": f"CJK parse failure detected for feature {feature_dir.name}",
+                })
+            if "design_context_complete" in failed_checks or "design_context_explicit" in failed_checks:
+                issues.append({
+                    "reason_code": "prototype_design_context_missing",
+                    "blocked": True,
+                    "message": f"design context incomplete for feature {feature_dir.name}",
+                })
+            if "design_reasoning_complete" in failed_checks:
+                issues.append({
+                    "reason_code": "prototype_design_reasoning_missing",
+                    "blocked": True,
+                    "message": f"design reasoning incomplete for feature {feature_dir.name}",
+                })
+            if "ux_contract_complete" in failed_checks:
+                issues.append({
+                    "reason_code": "prototype_ux_contract_missing",
+                    "blocked": True,
+                    "message": f"ux contract incomplete for feature {feature_dir.name}",
+                })
+            if "page_intent_contract_complete" in failed_checks:
+                issues.append({
+                    "reason_code": "prototype_page_intent_missing",
+                    "blocked": True,
+                    "message": f"page intent contract incomplete for feature {feature_dir.name}",
+                })
+            if "state_visibility_contract_complete" in failed_checks:
+                issues.append({
+                    "reason_code": "prototype_state_visibility_missing",
+                    "blocked": True,
+                    "message": f"state visibility contract incomplete for feature {feature_dir.name}",
                 })
         if str(payload.get("design_review_outcome") or "pass") == "blocked":
             issues.append({

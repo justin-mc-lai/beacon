@@ -1,0 +1,2374 @@
+{
+  "schema_version": "1.0",
+  "plan_id": "plan-beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection-r1",
+  "feature": "Beacon v1.3.10 prototype UX PRD closure and design-asset projection",
+  "feature_slug": "beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection",
+  "version": "v1.3.10",
+  "revision_id": "R1",
+  "baseline_hash": "sha256:d33ab0e28cf70c1b6226e43356b3914a91233d2fe7ac30622945b054b0c45edf",
+  "plan_hash": "sha256:cde790526b992a772c538298b24721182555ba91bf41fe33f9ed1ec4476cc93e",
+  "status": "completed",
+  "source_refs": {
+    "user_story": "docs/beacon/v1.3.10/user-story/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md",
+    "prd": "docs/beacon/v1.3.10/prd/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md",
+    "test_case": "docs/beacon/v1.3.10/qa/test-cases/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md",
+    "ac_matrix": "docs/beacon/v1.3.10/.machine/qa/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.ac-test-matrix.json",
+    "story_scenario_map": "docs/beacon/v1.3.10/.machine/qa/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.story-scenario-map.json",
+    "qa9_matrix": "docs/beacon/v1.3.10/.machine/qa/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.qa9-matrix.json"
+  },
+  "architecture_blueprint_ref": "docs/beacon/v1.3.10/execution/architecture-blueprint.md",
+  "boundary_principles": [
+    {
+      "id": "explicit_assumptions",
+      "heading": "显式假设与歧义管理"
+    },
+    {
+      "id": "simplicity_first",
+      "heading": "简单优先"
+    },
+    {
+      "id": "surgical_changes",
+      "heading": "外科手术式改动"
+    },
+    {
+      "id": "goal_driven_execution",
+      "heading": "目标驱动验证闭环"
+    },
+    {
+      "id": "trivial_task_exception",
+      "heading": "trivial task 可以轻量处理，但不能越界"
+    }
+  ],
+  "workstreams": [
+    {
+      "workstream_id": "implementation-main",
+      "title": "Implementation Mainline",
+      "task_ids": [
+        "ITASK-001",
+        "ITASK-002",
+        "ITASK-003",
+        "ITASK-004",
+        "ITASK-005",
+        "ITASK-006",
+        "ITASK-007",
+        "ITASK-008",
+        "ITASK-009",
+        "ITASK-010",
+        "ITASK-011",
+        "ITASK-012",
+        "ITASK-013",
+        "ITASK-014",
+        "ITASK-015",
+        "ITASK-016",
+        "ITASK-017",
+        "ITASK-018"
+      ]
+    }
+  ],
+  "task_mapping_source": "prd-sections",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.3.10",
+    "supported": true,
+    "required": true,
+    "ready": true,
+    "diagram_types": [
+      "branch-flow",
+      "state-machine",
+      "decision-priority"
+    ],
+    "state_axes": [
+      "prototype_semantic_axis",
+      "structure_only_candidate",
+      "ux_truth_compiled",
+      "freeze_ready",
+      "design_context_axis",
+      "target_audience_explicit",
+      "use_case_explicit",
+      "operator_state_explicit",
+      "usage_environment_explicit",
+      "brand_tone_explicit",
+      "density_preference_explicit",
+      "design_projection_axis",
+      "ux_prd_projected",
+      "design_md_projected",
+      "preview_assets_projected",
+      "transaction_consistent",
+      "review_gate_axis",
+      "generic_wireframe_blocked",
+      "static_explanation_blocked",
+      "state_feedback_complete",
+      "page_decision_complete",
+      "component_contract_axis",
+      "component_state_contract_complete",
+      "component_feedback_traceable",
+      "transition_contract_axis",
+      "cross_page_transition_explicit",
+      "fallback_path_explicit",
+      "route_runtime_evidence_bound",
+      "automation_priority_axis",
+      "release_blockers_identified",
+      "primary_automation_ready",
+      "manual_acceptable_explicit",
+      "takeover_audit_axis",
+      "current_state_inventory_ready",
+      "route_state_map_ready",
+      "ui_style_analysis_ready",
+      "design_md_freezable"
+    ],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [
+      "branch-flow",
+      "state-machine",
+      "decision-priority",
+      "state axes"
+    ],
+    "review_gates": [
+      "implementation must cover the declared branch-flow split points",
+      "implementation must preserve the declared state-machine transitions",
+      "implementation must preserve decision-priority ordering",
+      "implementation must keep state axes explicit: prototype_semantic_axis, structure_only_candidate, ux_truth_compiled, freeze_ready, design_context_axis, target_audience_explicit, use_case_explicit, operator_state_explicit, usage_environment_explicit, brand_tone_explicit, density_preference_explicit, design_projection_axis, ux_prd_projected, design_md_projected, preview_assets_projected, transaction_consistent, review_gate_axis, generic_wireframe_blocked, static_explanation_blocked, state_feedback_complete, page_decision_complete, component_contract_axis, component_state_contract_complete, component_feedback_traceable, transition_contract_axis, cross_page_transition_explicit, fallback_path_explicit, route_runtime_evidence_bound, automation_priority_axis, release_blockers_identified, primary_automation_ready, manual_acceptable_explicit, takeover_audit_axis, current_state_inventory_ready, route_state_map_ready, ui_style_analysis_ready, design_md_freezable"
+    ],
+    "qa_coverage_hints": [
+      "cover primary and alternate branch-flow paths",
+      "cover state transitions, illegal transitions, and recovery paths",
+      "cover conflicting conditions using declared decision priority",
+      "cover axis combinations across: prototype_semantic_axis, structure_only_candidate, ux_truth_compiled, freeze_ready, design_context_axis, target_audience_explicit, use_case_explicit, operator_state_explicit, usage_environment_explicit, brand_tone_explicit, density_preference_explicit, design_projection_axis, ux_prd_projected, design_md_projected, preview_assets_projected, transaction_consistent, review_gate_axis, generic_wireframe_blocked, static_explanation_blocked, state_feedback_complete, page_decision_complete, component_contract_axis, component_state_contract_complete, component_feedback_traceable, transition_contract_axis, cross_page_transition_explicit, fallback_path_explicit, route_runtime_evidence_bound, automation_priority_axis, release_blockers_identified, primary_automation_ready, manual_acceptable_explicit, takeover_audit_axis, current_state_inventory_ready, route_state_map_ready, ui_style_analysis_ready, design_md_freezable"
+    ],
+    "evidence_lines": {
+      "branch-flow": [
+        "本子线至少显式冻结以下 branch-flow：",
+        "```text",
+        "requirement_truth_ready",
+        "-> design_context_explicit | design_context_missing",
+        "-> ux_truth_compiled | structure_only_candidate",
+        "-> review_pass | review_blocked",
+        "-> freeze_ready | refreeze_required",
+        "```"
+      ],
+      "state-machine": [
+        "本子线的核心状态机至少包括：",
+        "- `structure_only_candidate`",
+        "- 已生成页面、路由、状态、组件结构",
+        "- 但尚未满足 UX freeze",
+        "- `ux_truth_compiled`",
+        "- `design_context`",
+        "- `design_reasoning`",
+        "- `ux_contract`"
+      ],
+      "decision-priority": [
+        "本子线的决策优先级必须保持：",
+        "1. requirement truth 显式设计上下文，高于运行时临场猜测",
+        "2. UX closure truth 完整性，高于仅有结构 freeze 的“差不多可用”",
+        "3. canonical single-source projection，高于手工补写 `DESIGN.md` 或 preview",
+        "4. review/gate fail-closed，高于“先实现再补 UX 说明”",
+        "5. implement / qa 绑定同一 UX truth，高于不同 runtime lane 的局部便利"
+      ],
+      "state-axes": [
+        "本子线至少显式建模以下 state axes：",
+        "- `prototype_semantic_axis`",
+        "- `structure_only_candidate`",
+        "- `ux_truth_compiled`",
+        "- `freeze_ready`",
+        "- `design_context_axis`",
+        "- `target_audience_explicit`",
+        "- `use_case_explicit`"
+      ]
+    },
+    "generated_at": "2026-05-01T02:39:17.198698+00:00",
+    "feature": "Beacon v1.3.10 prototype UX PRD closure and design-asset projection",
+    "feature_slug": "beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection",
+    "prd_ref": "docs/beacon/v1.3.10/prd/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md",
+    "user_story_ref": "docs/beacon/v1.3.10/user-story/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md"
+  },
+  "review_gates": [
+    "implementation must cover the declared branch-flow split points",
+    "implementation must preserve the declared state-machine transitions",
+    "implementation must preserve decision-priority ordering",
+    "implementation must keep state axes explicit: prototype_semantic_axis, structure_only_candidate, ux_truth_compiled, freeze_ready, design_context_axis, target_audience_explicit, use_case_explicit, operator_state_explicit, usage_environment_explicit, brand_tone_explicit, density_preference_explicit, design_projection_axis, ux_prd_projected, design_md_projected, preview_assets_projected, transaction_consistent, review_gate_axis, generic_wireframe_blocked, static_explanation_blocked, state_feedback_complete, page_decision_complete, component_contract_axis, component_state_contract_complete, component_feedback_traceable, transition_contract_axis, cross_page_transition_explicit, fallback_path_explicit, route_runtime_evidence_bound, automation_priority_axis, release_blockers_identified, primary_automation_ready, manual_acceptable_explicit, takeover_audit_axis, current_state_inventory_ready, route_state_map_ready, ui_style_analysis_ready, design_md_freezable"
+  ],
+  "qa_coverage_hints": [
+    "cover primary and alternate branch-flow paths",
+    "cover state transitions, illegal transitions, and recovery paths",
+    "cover conflicting conditions using declared decision priority",
+    "cover axis combinations across: prototype_semantic_axis, structure_only_candidate, ux_truth_compiled, freeze_ready, design_context_axis, target_audience_explicit, use_case_explicit, operator_state_explicit, usage_environment_explicit, brand_tone_explicit, density_preference_explicit, design_projection_axis, ux_prd_projected, design_md_projected, preview_assets_projected, transaction_consistent, review_gate_axis, generic_wireframe_blocked, static_explanation_blocked, state_feedback_complete, page_decision_complete, component_contract_axis, component_state_contract_complete, component_feedback_traceable, transition_contract_axis, cross_page_transition_explicit, fallback_path_explicit, route_runtime_evidence_bound, automation_priority_axis, release_blockers_identified, primary_automation_ready, manual_acceptable_explicit, takeover_audit_axis, current_state_inventory_ready, route_state_map_ready, ui_style_analysis_ready, design_md_freezable"
+  ],
+  "tasks": [
+    {
+      "task_id": "ITASK-001",
+      "title": "FR-001 Prototype canonical truth 必须新增 `design_context`",
+      "description": "Beacon 必须在 prototype canonical envelope 中新增 `design_context`，至少包含： `target_audience` `primary_use_cases[]` `operator_mental_state` `usage_environment` `brand_tone[]` `density_preference` 规则： 缺少该字段时，prototype 只能停留在结构 freeze candidate 不得判定为 UX freeze ready",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-001",
+        "AC-002"
+      ],
+      "mapped_test_ids": [
+        "TC-001",
+        "TC-002",
+        "TC-041",
+        "TC-042"
+      ],
+      "mapped_scenario_ids": [
+        "SC-001",
+        "SC-002",
+        "SC-003",
+        "SC-004"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-001",
+        "TC-002",
+        "TC-041",
+        "TC-042"
+      ],
+      "depends_on": [],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: prototype_semantic_axis, structure_only_candidate, ux_truth_compiled, freeze_ready, design_context_axis, target_audience_explicit, use_case_explicit, operator_state_explicit, usage_environment_explicit, brand_tone_explicit, density_preference_explicit, design_projection_axis, ux_prd_projected, design_md_projected, preview_assets_projected, transaction_consistent, review_gate_axis, generic_wireframe_blocked, static_explanation_blocked, state_feedback_complete, page_decision_complete, component_contract_axis, component_state_contract_complete, component_feedback_traceable, transition_contract_axis, cross_page_transition_explicit, fallback_path_explicit, route_runtime_evidence_bound, automation_priority_axis, release_blockers_identified, primary_automation_ready, manual_acceptable_explicit, takeover_audit_axis, current_state_inventory_ready, route_state_map_ready, ui_style_analysis_ready, design_md_freezable"
+      ],
+      "diagram_state_axes": [
+        "prototype_semantic_axis",
+        "structure_only_candidate",
+        "ux_truth_compiled",
+        "freeze_ready",
+        "design_context_axis",
+        "target_audience_explicit",
+        "use_case_explicit",
+        "operator_state_explicit",
+        "usage_environment_explicit",
+        "brand_tone_explicit",
+        "density_preference_explicit",
+        "design_projection_axis",
+        "ux_prd_projected",
+        "design_md_projected",
+        "preview_assets_projected",
+        "transaction_consistent",
+        "review_gate_axis",
+        "generic_wireframe_blocked",
+        "static_explanation_blocked",
+        "state_feedback_complete",
+        "page_decision_complete",
+        "component_contract_axis",
+        "component_state_contract_complete",
+        "component_feedback_traceable",
+        "transition_contract_axis",
+        "cross_page_transition_explicit",
+        "fallback_path_explicit",
+        "route_runtime_evidence_bound",
+        "automation_priority_axis",
+        "release_blockers_identified",
+        "primary_automation_ready",
+        "manual_acceptable_explicit",
+        "takeover_audit_axis",
+        "current_state_inventory_ready",
+        "route_state_map_ready",
+        "ui_style_analysis_ready",
+        "design_md_freezable"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "docs/beacon/v1.3.10/.machine/execution/implementation-summary-beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.json",
+        "docs/beacon/v1.3.10/.machine/execution/technical-implementation-beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.json",
+        ".beacon/implement/run-20260430T122649Z-6f87/result.json",
+        "run:run-20260430T122649Z-6f87",
+        ".beacon/auto-test-status.json",
+        "verify:review.accept"
+      ],
+      "changed_files": [
+        ".claude-plugin/plugin.json",
+        "beacon/commands/gate.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/ui_spec.py",
+        "beacon/commands/workflow.py",
+        "beacon/utils/git_alignment.py",
+        "beacon/utils/prototype_utils.py",
+        "docs/beacon/v1.3.10/SUMMARY.md",
+        "docs/beacon/v1.3.10/execution/architecture-blueprint.md",
+        "docs/beacon/v1.3.10/qa/test-cases/index.md",
+        "skills/beacon/beacon-prototype/SKILL.md",
+        "skills/beacon/beacon-prototype/agents/openai.yaml",
+        "tests/test_beacon.py",
+        "tests/test_v1310_project_metadata.py",
+        "tests/test_v131_host_skill_pack.py",
+        "tests/test_v135_prototype_projection_consistency.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-01T02:43:49.729252+00:00",
+      "completed_at": "2026-05-01T02:43:49.729567+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-002",
+      "title": "FR-002 Prototype canonical truth 必须新增 `design_reasoning`",
+      "description": "Beacon 必须新增 `design_reasoning`，至少包含： `product_surface_type` `interaction_model` `recommended_layout_pattern` `visual_priority_rules[]` `anti_patterns[]` `design_checklist[]` 这层用于吸收： `ui-ux-pro-max-skill` 的产品类型 -> 模式 -> 反模式推理 Beacon 项目本地的 requirement-derived layout logic",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-003"
+      ],
+      "mapped_test_ids": [
+        "TC-035"
+      ],
+      "mapped_scenario_ids": [
+        "SC-005"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-035"
+      ],
+      "depends_on": [
+        "ITASK-001"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: prototype_semantic_axis, structure_only_candidate, ux_truth_compiled, freeze_ready, design_context_axis, target_audience_explicit, use_case_explicit, operator_state_explicit, usage_environment_explicit, brand_tone_explicit, density_preference_explicit, design_projection_axis, ux_prd_projected, design_md_projected, preview_assets_projected, transaction_consistent, review_gate_axis, generic_wireframe_blocked, static_explanation_blocked, state_feedback_complete, page_decision_complete, component_contract_axis, component_state_contract_complete, component_feedback_traceable, transition_contract_axis, cross_page_transition_explicit, fallback_path_explicit, route_runtime_evidence_bound, automation_priority_axis, release_blockers_identified, primary_automation_ready, manual_acceptable_explicit, takeover_audit_axis, current_state_inventory_ready, route_state_map_ready, ui_style_analysis_ready, design_md_freezable"
+      ],
+      "diagram_state_axes": [
+        "prototype_semantic_axis",
+        "structure_only_candidate",
+        "ux_truth_compiled",
+        "freeze_ready",
+        "design_context_axis",
+        "target_audience_explicit",
+        "use_case_explicit",
+        "operator_state_explicit",
+        "usage_environment_explicit",
+        "brand_tone_explicit",
+        "density_preference_explicit",
+        "design_projection_axis",
+        "ux_prd_projected",
+        "design_md_projected",
+        "preview_assets_projected",
+        "transaction_consistent",
+        "review_gate_axis",
+        "generic_wireframe_blocked",
+        "static_explanation_blocked",
+        "state_feedback_complete",
+        "page_decision_complete",
+        "component_contract_axis",
+        "component_state_contract_complete",
+        "component_feedback_traceable",
+        "transition_contract_axis",
+        "cross_page_transition_explicit",
+        "fallback_path_explicit",
+        "route_runtime_evidence_bound",
+        "automation_priority_axis",
+        "release_blockers_identified",
+        "primary_automation_ready",
+        "manual_acceptable_explicit",
+        "takeover_audit_axis",
+        "current_state_inventory_ready",
+        "route_state_map_ready",
+        "ui_style_analysis_ready",
+        "design_md_freezable"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "docs/beacon/v1.3.10/.machine/execution/implementation-summary-beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.json",
+        "docs/beacon/v1.3.10/.machine/execution/technical-implementation-beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.json",
+        ".beacon/implement/run-20260430T122649Z-6f87/result.json",
+        "run:run-20260430T122649Z-6f87",
+        ".beacon/auto-test-status.json",
+        "verify:review.accept"
+      ],
+      "changed_files": [
+        ".claude-plugin/plugin.json",
+        "beacon/commands/gate.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/ui_spec.py",
+        "beacon/commands/workflow.py",
+        "beacon/utils/git_alignment.py",
+        "beacon/utils/prototype_utils.py",
+        "docs/beacon/v1.3.10/SUMMARY.md",
+        "docs/beacon/v1.3.10/execution/architecture-blueprint.md",
+        "docs/beacon/v1.3.10/qa/test-cases/index.md",
+        "skills/beacon/beacon-prototype/SKILL.md",
+        "skills/beacon/beacon-prototype/agents/openai.yaml",
+        "tests/test_beacon.py",
+        "tests/test_v1310_project_metadata.py",
+        "tests/test_v131_host_skill_pack.py",
+        "tests/test_v135_prototype_projection_consistency.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-01T02:43:49.729584+00:00",
+      "completed_at": "2026-05-01T02:43:49.729586+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-003",
+      "title": "FR-003 Prototype canonical truth 必须新增 `ux_contract`",
+      "description": "Beacon 必须把 UI/UX 类 PRD 冻结成正式 `ux_contract`，至少包含： `first_glance_question` `primary_decision` `action_hierarchy` `recognition_over_recall_rules[]` `error_recovery_policy[]` `allowed_machine_noise[]` `forbidden_machine_noise[]` 规则： 这不是最终视觉细节 这是体验闭环要求",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-006",
+        "AC-004"
+      ],
+      "mapped_test_ids": [
+        "TC-038",
+        "TC-036"
+      ],
+      "mapped_scenario_ids": [
+        "SC-006",
+        "SC-012"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-036",
+        "TC-038"
+      ],
+      "depends_on": [
+        "ITASK-002"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: prototype_semantic_axis, structure_only_candidate, ux_truth_compiled, freeze_ready, design_context_axis, target_audience_explicit, use_case_explicit, operator_state_explicit, usage_environment_explicit, brand_tone_explicit, density_preference_explicit, design_projection_axis, ux_prd_projected, design_md_projected, preview_assets_projected, transaction_consistent, review_gate_axis, generic_wireframe_blocked, static_explanation_blocked, state_feedback_complete, page_decision_complete, component_contract_axis, component_state_contract_complete, component_feedback_traceable, transition_contract_axis, cross_page_transition_explicit, fallback_path_explicit, route_runtime_evidence_bound, automation_priority_axis, release_blockers_identified, primary_automation_ready, manual_acceptable_explicit, takeover_audit_axis, current_state_inventory_ready, route_state_map_ready, ui_style_analysis_ready, design_md_freezable"
+      ],
+      "diagram_state_axes": [
+        "prototype_semantic_axis",
+        "structure_only_candidate",
+        "ux_truth_compiled",
+        "freeze_ready",
+        "design_context_axis",
+        "target_audience_explicit",
+        "use_case_explicit",
+        "operator_state_explicit",
+        "usage_environment_explicit",
+        "brand_tone_explicit",
+        "density_preference_explicit",
+        "design_projection_axis",
+        "ux_prd_projected",
+        "design_md_projected",
+        "preview_assets_projected",
+        "transaction_consistent",
+        "review_gate_axis",
+        "generic_wireframe_blocked",
+        "static_explanation_blocked",
+        "state_feedback_complete",
+        "page_decision_complete",
+        "component_contract_axis",
+        "component_state_contract_complete",
+        "component_feedback_traceable",
+        "transition_contract_axis",
+        "cross_page_transition_explicit",
+        "fallback_path_explicit",
+        "route_runtime_evidence_bound",
+        "automation_priority_axis",
+        "release_blockers_identified",
+        "primary_automation_ready",
+        "manual_acceptable_explicit",
+        "takeover_audit_axis",
+        "current_state_inventory_ready",
+        "route_state_map_ready",
+        "ui_style_analysis_ready",
+        "design_md_freezable"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "docs/beacon/v1.3.10/.machine/execution/implementation-summary-beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.json",
+        "docs/beacon/v1.3.10/.machine/execution/technical-implementation-beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.json",
+        ".beacon/implement/run-20260430T122649Z-6f87/result.json",
+        "run:run-20260430T122649Z-6f87",
+        ".beacon/auto-test-status.json",
+        "verify:review.accept"
+      ],
+      "changed_files": [
+        ".claude-plugin/plugin.json",
+        "beacon/commands/gate.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/ui_spec.py",
+        "beacon/commands/workflow.py",
+        "beacon/utils/git_alignment.py",
+        "beacon/utils/prototype_utils.py",
+        "docs/beacon/v1.3.10/SUMMARY.md",
+        "docs/beacon/v1.3.10/execution/architecture-blueprint.md",
+        "docs/beacon/v1.3.10/qa/test-cases/index.md",
+        "skills/beacon/beacon-prototype/SKILL.md",
+        "skills/beacon/beacon-prototype/agents/openai.yaml",
+        "tests/test_beacon.py",
+        "tests/test_v1310_project_metadata.py",
+        "tests/test_v131_host_skill_pack.py",
+        "tests/test_v135_prototype_projection_consistency.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-01T02:43:49.729595+00:00",
+      "completed_at": "2026-05-01T02:43:49.729597+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-004",
+      "title": "FR-004 每个页面必须新增 `page_intent_contract`",
+      "description": "每个 page spec 除现有页面职责外，还必须至少包含： `why_this_page_exists` `decision_supported` `must_show_first[]` `must_not_show[]` `entry_conditions[]` `exit_actions[]` 页面没有 `decision_supported` 时，`prototype review` 必须 fail。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-007"
+      ],
+      "mapped_test_ids": [
+        "TC-039"
+      ],
+      "mapped_scenario_ids": [
+        "SC-013",
+        "SC-014",
+        "SC-015",
+        "SC-016",
+        "SC-017"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-039"
+      ],
+      "depends_on": [
+        "ITASK-003"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: prototype_semantic_axis, structure_only_candidate, ux_truth_compiled, freeze_ready, design_context_axis, target_audience_explicit, use_case_explicit, operator_state_explicit, usage_environment_explicit, brand_tone_explicit, density_preference_explicit, design_projection_axis, ux_prd_projected, design_md_projected, preview_assets_projected, transaction_consistent, review_gate_axis, generic_wireframe_blocked, static_explanation_blocked, state_feedback_complete, page_decision_complete, component_contract_axis, component_state_contract_complete, component_feedback_traceable, transition_contract_axis, cross_page_transition_explicit, fallback_path_explicit, route_runtime_evidence_bound, automation_priority_axis, release_blockers_identified, primary_automation_ready, manual_acceptable_explicit, takeover_audit_axis, current_state_inventory_ready, route_state_map_ready, ui_style_analysis_ready, design_md_freezable"
+      ],
+      "diagram_state_axes": [
+        "prototype_semantic_axis",
+        "structure_only_candidate",
+        "ux_truth_compiled",
+        "freeze_ready",
+        "design_context_axis",
+        "target_audience_explicit",
+        "use_case_explicit",
+        "operator_state_explicit",
+        "usage_environment_explicit",
+        "brand_tone_explicit",
+        "density_preference_explicit",
+        "design_projection_axis",
+        "ux_prd_projected",
+        "design_md_projected",
+        "preview_assets_projected",
+        "transaction_consistent",
+        "review_gate_axis",
+        "generic_wireframe_blocked",
+        "static_explanation_blocked",
+        "state_feedback_complete",
+        "page_decision_complete",
+        "component_contract_axis",
+        "component_state_contract_complete",
+        "component_feedback_traceable",
+        "transition_contract_axis",
+        "cross_page_transition_explicit",
+        "fallback_path_explicit",
+        "route_runtime_evidence_bound",
+        "automation_priority_axis",
+        "release_blockers_identified",
+        "primary_automation_ready",
+        "manual_acceptable_explicit",
+        "takeover_audit_axis",
+        "current_state_inventory_ready",
+        "route_state_map_ready",
+        "ui_style_analysis_ready",
+        "design_md_freezable"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "docs/beacon/v1.3.10/.machine/execution/implementation-summary-beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.json",
+        "docs/beacon/v1.3.10/.machine/execution/technical-implementation-beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.json",
+        ".beacon/implement/run-20260430T122649Z-6f87/result.json",
+        "run:run-20260430T122649Z-6f87",
+        ".beacon/auto-test-status.json",
+        "verify:review.accept"
+      ],
+      "changed_files": [
+        ".claude-plugin/plugin.json",
+        "beacon/commands/gate.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/ui_spec.py",
+        "beacon/commands/workflow.py",
+        "beacon/utils/git_alignment.py",
+        "beacon/utils/prototype_utils.py",
+        "docs/beacon/v1.3.10/SUMMARY.md",
+        "docs/beacon/v1.3.10/execution/architecture-blueprint.md",
+        "docs/beacon/v1.3.10/qa/test-cases/index.md",
+        "skills/beacon/beacon-prototype/SKILL.md",
+        "skills/beacon/beacon-prototype/agents/openai.yaml",
+        "tests/test_beacon.py",
+        "tests/test_v1310_project_metadata.py",
+        "tests/test_v131_host_skill_pack.py",
+        "tests/test_v135_prototype_projection_consistency.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-01T02:43:49.729609+00:00",
+      "completed_at": "2026-05-01T02:43:49.729611+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-005",
+      "title": "FR-005 每个关键状态必须新增 `state_visibility_contract`",
+      "description": "对 `loading / empty / error / blocked / stale / success` 等关键状态，Beacon 必须为每个状态明确： `user_question` `required_feedback[]` `recovery_actions[]` `forbidden_feedback[]` 规则： `test-case` 必须能消费这些状态 contract `qa` 必须能把它们变成正式验收检查对象",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-008"
+      ],
+      "mapped_test_ids": [
+        "TC-040"
+      ],
+      "mapped_scenario_ids": [
+        "SC-018"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-040"
+      ],
+      "depends_on": [
+        "ITASK-004"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: prototype_semantic_axis, structure_only_candidate, ux_truth_compiled, freeze_ready, design_context_axis, target_audience_explicit, use_case_explicit, operator_state_explicit, usage_environment_explicit, brand_tone_explicit, density_preference_explicit, design_projection_axis, ux_prd_projected, design_md_projected, preview_assets_projected, transaction_consistent, review_gate_axis, generic_wireframe_blocked, static_explanation_blocked, state_feedback_complete, page_decision_complete, component_contract_axis, component_state_contract_complete, component_feedback_traceable, transition_contract_axis, cross_page_transition_explicit, fallback_path_explicit, route_runtime_evidence_bound, automation_priority_axis, release_blockers_identified, primary_automation_ready, manual_acceptable_explicit, takeover_audit_axis, current_state_inventory_ready, route_state_map_ready, ui_style_analysis_ready, design_md_freezable"
+      ],
+      "diagram_state_axes": [
+        "prototype_semantic_axis",
+        "structure_only_candidate",
+        "ux_truth_compiled",
+        "freeze_ready",
+        "design_context_axis",
+        "target_audience_explicit",
+        "use_case_explicit",
+        "operator_state_explicit",
+        "usage_environment_explicit",
+        "brand_tone_explicit",
+        "density_preference_explicit",
+        "design_projection_axis",
+        "ux_prd_projected",
+        "design_md_projected",
+        "preview_assets_projected",
+        "transaction_consistent",
+        "review_gate_axis",
+        "generic_wireframe_blocked",
+        "static_explanation_blocked",
+        "state_feedback_complete",
+        "page_decision_complete",
+        "component_contract_axis",
+        "component_state_contract_complete",
+        "component_feedback_traceable",
+        "transition_contract_axis",
+        "cross_page_transition_explicit",
+        "fallback_path_explicit",
+        "route_runtime_evidence_bound",
+        "automation_priority_axis",
+        "release_blockers_identified",
+        "primary_automation_ready",
+        "manual_acceptable_explicit",
+        "takeover_audit_axis",
+        "current_state_inventory_ready",
+        "route_state_map_ready",
+        "ui_style_analysis_ready",
+        "design_md_freezable"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "docs/beacon/v1.3.10/.machine/execution/implementation-summary-beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.json",
+        "docs/beacon/v1.3.10/.machine/execution/technical-implementation-beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.json",
+        ".beacon/implement/run-20260430T122649Z-6f87/result.json",
+        "run:run-20260430T122649Z-6f87",
+        ".beacon/auto-test-status.json",
+        "verify:review.accept"
+      ],
+      "changed_files": [
+        ".claude-plugin/plugin.json",
+        "beacon/commands/gate.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/ui_spec.py",
+        "beacon/commands/workflow.py",
+        "beacon/utils/git_alignment.py",
+        "beacon/utils/prototype_utils.py",
+        "docs/beacon/v1.3.10/SUMMARY.md",
+        "docs/beacon/v1.3.10/execution/architecture-blueprint.md",
+        "docs/beacon/v1.3.10/qa/test-cases/index.md",
+        "skills/beacon/beacon-prototype/SKILL.md",
+        "skills/beacon/beacon-prototype/agents/openai.yaml",
+        "tests/test_beacon.py",
+        "tests/test_v1310_project_metadata.py",
+        "tests/test_v131_host_skill_pack.py",
+        "tests/test_v135_prototype_projection_consistency.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-01T02:43:49.729621+00:00",
+      "completed_at": "2026-05-01T02:43:49.729623+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-006",
+      "title": "FR-006 Prototype 必须产出 `ux-prd.md`",
+      "description": "在原有 summary / manifest / map 之外，Beacon 必须新增： `ux-prd.md` 该文档面向人类，负责收口： design context design reasoning UX contract page intent contracts state visibility rules AC/TC traceability 它是人类可读的“UI/UX 类 PRD”。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-009"
+      ],
+      "mapped_test_ids": [
+        "TEST-009"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-005"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: prototype_semantic_axis, structure_only_candidate, ux_truth_compiled, freeze_ready, design_context_axis, target_audience_explicit, use_case_explicit, operator_state_explicit, usage_environment_explicit, brand_tone_explicit, density_preference_explicit, design_projection_axis, ux_prd_projected, design_md_projected, preview_assets_projected, transaction_consistent, review_gate_axis, generic_wireframe_blocked, static_explanation_blocked, state_feedback_complete, page_decision_complete, component_contract_axis, component_state_contract_complete, component_feedback_traceable, transition_contract_axis, cross_page_transition_explicit, fallback_path_explicit, route_runtime_evidence_bound, automation_priority_axis, release_blockers_identified, primary_automation_ready, manual_acceptable_explicit, takeover_audit_axis, current_state_inventory_ready, route_state_map_ready, ui_style_analysis_ready, design_md_freezable"
+      ],
+      "diagram_state_axes": [
+        "prototype_semantic_axis",
+        "structure_only_candidate",
+        "ux_truth_compiled",
+        "freeze_ready",
+        "design_context_axis",
+        "target_audience_explicit",
+        "use_case_explicit",
+        "operator_state_explicit",
+        "usage_environment_explicit",
+        "brand_tone_explicit",
+        "density_preference_explicit",
+        "design_projection_axis",
+        "ux_prd_projected",
+        "design_md_projected",
+        "preview_assets_projected",
+        "transaction_consistent",
+        "review_gate_axis",
+        "generic_wireframe_blocked",
+        "static_explanation_blocked",
+        "state_feedback_complete",
+        "page_decision_complete",
+        "component_contract_axis",
+        "component_state_contract_complete",
+        "component_feedback_traceable",
+        "transition_contract_axis",
+        "cross_page_transition_explicit",
+        "fallback_path_explicit",
+        "route_runtime_evidence_bound",
+        "automation_priority_axis",
+        "release_blockers_identified",
+        "primary_automation_ready",
+        "manual_acceptable_explicit",
+        "takeover_audit_axis",
+        "current_state_inventory_ready",
+        "route_state_map_ready",
+        "ui_style_analysis_ready",
+        "design_md_freezable"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "docs/beacon/v1.3.10/.machine/execution/implementation-summary-beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.json",
+        "docs/beacon/v1.3.10/.machine/execution/technical-implementation-beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.json",
+        ".beacon/implement/run-20260430T122649Z-6f87/result.json",
+        "run:run-20260430T122649Z-6f87",
+        ".beacon/auto-test-status.json",
+        "verify:review.accept"
+      ],
+      "changed_files": [
+        ".claude-plugin/plugin.json",
+        "beacon/commands/gate.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/ui_spec.py",
+        "beacon/commands/workflow.py",
+        "beacon/utils/git_alignment.py",
+        "beacon/utils/prototype_utils.py",
+        "docs/beacon/v1.3.10/SUMMARY.md",
+        "docs/beacon/v1.3.10/execution/architecture-blueprint.md",
+        "docs/beacon/v1.3.10/qa/test-cases/index.md",
+        "skills/beacon/beacon-prototype/SKILL.md",
+        "skills/beacon/beacon-prototype/agents/openai.yaml",
+        "tests/test_beacon.py",
+        "tests/test_v1310_project_metadata.py",
+        "tests/test_v131_host_skill_pack.py",
+        "tests/test_v135_prototype_projection_consistency.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-01T02:43:49.729630+00:00",
+      "completed_at": "2026-05-01T02:43:49.729632+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-007",
+      "title": "FR-007 Prototype 必须产出 `DESIGN.md`",
+      "description": "Beacon 必须把设计治理结果投影成 agent-friendly 资产： `DESIGN.md` 其内容至少覆盖： visual theme & atmosphere color palette & roles typography rules component stylings layout principles do / don't responsive behavior agent prompt guide 该文件必须由 canonical truth 单向投影生成。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-010"
+      ],
+      "mapped_test_ids": [
+        "TEST-010"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-006"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: prototype_semantic_axis, structure_only_candidate, ux_truth_compiled, freeze_ready, design_context_axis, target_audience_explicit, use_case_explicit, operator_state_explicit, usage_environment_explicit, brand_tone_explicit, density_preference_explicit, design_projection_axis, ux_prd_projected, design_md_projected, preview_assets_projected, transaction_consistent, review_gate_axis, generic_wireframe_blocked, static_explanation_blocked, state_feedback_complete, page_decision_complete, component_contract_axis, component_state_contract_complete, component_feedback_traceable, transition_contract_axis, cross_page_transition_explicit, fallback_path_explicit, route_runtime_evidence_bound, automation_priority_axis, release_blockers_identified, primary_automation_ready, manual_acceptable_explicit, takeover_audit_axis, current_state_inventory_ready, route_state_map_ready, ui_style_analysis_ready, design_md_freezable"
+      ],
+      "diagram_state_axes": [
+        "prototype_semantic_axis",
+        "structure_only_candidate",
+        "ux_truth_compiled",
+        "freeze_ready",
+        "design_context_axis",
+        "target_audience_explicit",
+        "use_case_explicit",
+        "operator_state_explicit",
+        "usage_environment_explicit",
+        "brand_tone_explicit",
+        "density_preference_explicit",
+        "design_projection_axis",
+        "ux_prd_projected",
+        "design_md_projected",
+        "preview_assets_projected",
+        "transaction_consistent",
+        "review_gate_axis",
+        "generic_wireframe_blocked",
+        "static_explanation_blocked",
+        "state_feedback_complete",
+        "page_decision_complete",
+        "component_contract_axis",
+        "component_state_contract_complete",
+        "component_feedback_traceable",
+        "transition_contract_axis",
+        "cross_page_transition_explicit",
+        "fallback_path_explicit",
+        "route_runtime_evidence_bound",
+        "automation_priority_axis",
+        "release_blockers_identified",
+        "primary_automation_ready",
+        "manual_acceptable_explicit",
+        "takeover_audit_axis",
+        "current_state_inventory_ready",
+        "route_state_map_ready",
+        "ui_style_analysis_ready",
+        "design_md_freezable"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "docs/beacon/v1.3.10/.machine/execution/implementation-summary-beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.json",
+        "docs/beacon/v1.3.10/.machine/execution/technical-implementation-beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.json",
+        ".beacon/implement/run-20260430T122649Z-6f87/result.json",
+        "run:run-20260430T122649Z-6f87",
+        ".beacon/auto-test-status.json",
+        "verify:review.accept"
+      ],
+      "changed_files": [
+        ".claude-plugin/plugin.json",
+        "beacon/commands/gate.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/ui_spec.py",
+        "beacon/commands/workflow.py",
+        "beacon/utils/git_alignment.py",
+        "beacon/utils/prototype_utils.py",
+        "docs/beacon/v1.3.10/SUMMARY.md",
+        "docs/beacon/v1.3.10/execution/architecture-blueprint.md",
+        "docs/beacon/v1.3.10/qa/test-cases/index.md",
+        "skills/beacon/beacon-prototype/SKILL.md",
+        "skills/beacon/beacon-prototype/agents/openai.yaml",
+        "tests/test_beacon.py",
+        "tests/test_v1310_project_metadata.py",
+        "tests/test_v131_host_skill_pack.py",
+        "tests/test_v135_prototype_projection_consistency.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-01T02:43:49.729640+00:00",
+      "completed_at": "2026-05-01T02:43:49.729642+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-008",
+      "title": "FR-008 Prototype 必须产出 preview assets",
+      "description": "Beacon 必须新增以下资产投影： `preview.html` `preview-dark.html` 用途： 让人类快速 review 设计规范是否可理解 让 agent 有稳定的视觉资产参考 注意： preview 不是产品页面实现 preview 是 design asset catalog",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-011"
+      ],
+      "mapped_test_ids": [
+        "TEST-011"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-007"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: prototype_semantic_axis, structure_only_candidate, ux_truth_compiled, freeze_ready, design_context_axis, target_audience_explicit, use_case_explicit, operator_state_explicit, usage_environment_explicit, brand_tone_explicit, density_preference_explicit, design_projection_axis, ux_prd_projected, design_md_projected, preview_assets_projected, transaction_consistent, review_gate_axis, generic_wireframe_blocked, static_explanation_blocked, state_feedback_complete, page_decision_complete, component_contract_axis, component_state_contract_complete, component_feedback_traceable, transition_contract_axis, cross_page_transition_explicit, fallback_path_explicit, route_runtime_evidence_bound, automation_priority_axis, release_blockers_identified, primary_automation_ready, manual_acceptable_explicit, takeover_audit_axis, current_state_inventory_ready, route_state_map_ready, ui_style_analysis_ready, design_md_freezable"
+      ],
+      "diagram_state_axes": [
+        "prototype_semantic_axis",
+        "structure_only_candidate",
+        "ux_truth_compiled",
+        "freeze_ready",
+        "design_context_axis",
+        "target_audience_explicit",
+        "use_case_explicit",
+        "operator_state_explicit",
+        "usage_environment_explicit",
+        "brand_tone_explicit",
+        "density_preference_explicit",
+        "design_projection_axis",
+        "ux_prd_projected",
+        "design_md_projected",
+        "preview_assets_projected",
+        "transaction_consistent",
+        "review_gate_axis",
+        "generic_wireframe_blocked",
+        "static_explanation_blocked",
+        "state_feedback_complete",
+        "page_decision_complete",
+        "component_contract_axis",
+        "component_state_contract_complete",
+        "component_feedback_traceable",
+        "transition_contract_axis",
+        "cross_page_transition_explicit",
+        "fallback_path_explicit",
+        "route_runtime_evidence_bound",
+        "automation_priority_axis",
+        "release_blockers_identified",
+        "primary_automation_ready",
+        "manual_acceptable_explicit",
+        "takeover_audit_axis",
+        "current_state_inventory_ready",
+        "route_state_map_ready",
+        "ui_style_analysis_ready",
+        "design_md_freezable"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "docs/beacon/v1.3.10/.machine/execution/implementation-summary-beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.json",
+        "docs/beacon/v1.3.10/.machine/execution/technical-implementation-beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.json",
+        ".beacon/implement/run-20260430T122649Z-6f87/result.json",
+        "run:run-20260430T122649Z-6f87",
+        ".beacon/auto-test-status.json",
+        "verify:review.accept"
+      ],
+      "changed_files": [
+        ".claude-plugin/plugin.json",
+        "beacon/commands/gate.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/ui_spec.py",
+        "beacon/commands/workflow.py",
+        "beacon/utils/git_alignment.py",
+        "beacon/utils/prototype_utils.py",
+        "docs/beacon/v1.3.10/SUMMARY.md",
+        "docs/beacon/v1.3.10/execution/architecture-blueprint.md",
+        "docs/beacon/v1.3.10/qa/test-cases/index.md",
+        "skills/beacon/beacon-prototype/SKILL.md",
+        "skills/beacon/beacon-prototype/agents/openai.yaml",
+        "tests/test_beacon.py",
+        "tests/test_v1310_project_metadata.py",
+        "tests/test_v131_host_skill_pack.py",
+        "tests/test_v135_prototype_projection_consistency.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-01T02:43:49.729649+00:00",
+      "completed_at": "2026-05-01T02:43:49.729651+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-009",
+      "title": "FR-009 Beacon 必须提供默认 design preset contract",
+      "description": "Beacon 必须定义默认 `design_preset` 机制，至少支持： `apple-inspired-design-md` 默认 preset 至少约束： quiet neutral surfaces restrained primary accent SF Pro / system typography bias low-noise navigation content-first hierarchy no marketing-hero dashboard anti-pattern 项目显式 requirement 允许覆盖 preset，但覆盖必须被记录。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-015"
+      ],
+      "mapped_test_ids": [
+        "TEST-015"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-008"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: prototype_semantic_axis, structure_only_candidate, ux_truth_compiled, freeze_ready, design_context_axis, target_audience_explicit, use_case_explicit, operator_state_explicit, usage_environment_explicit, brand_tone_explicit, density_preference_explicit, design_projection_axis, ux_prd_projected, design_md_projected, preview_assets_projected, transaction_consistent, review_gate_axis, generic_wireframe_blocked, static_explanation_blocked, state_feedback_complete, page_decision_complete, component_contract_axis, component_state_contract_complete, component_feedback_traceable, transition_contract_axis, cross_page_transition_explicit, fallback_path_explicit, route_runtime_evidence_bound, automation_priority_axis, release_blockers_identified, primary_automation_ready, manual_acceptable_explicit, takeover_audit_axis, current_state_inventory_ready, route_state_map_ready, ui_style_analysis_ready, design_md_freezable"
+      ],
+      "diagram_state_axes": [
+        "prototype_semantic_axis",
+        "structure_only_candidate",
+        "ux_truth_compiled",
+        "freeze_ready",
+        "design_context_axis",
+        "target_audience_explicit",
+        "use_case_explicit",
+        "operator_state_explicit",
+        "usage_environment_explicit",
+        "brand_tone_explicit",
+        "density_preference_explicit",
+        "design_projection_axis",
+        "ux_prd_projected",
+        "design_md_projected",
+        "preview_assets_projected",
+        "transaction_consistent",
+        "review_gate_axis",
+        "generic_wireframe_blocked",
+        "static_explanation_blocked",
+        "state_feedback_complete",
+        "page_decision_complete",
+        "component_contract_axis",
+        "component_state_contract_complete",
+        "component_feedback_traceable",
+        "transition_contract_axis",
+        "cross_page_transition_explicit",
+        "fallback_path_explicit",
+        "route_runtime_evidence_bound",
+        "automation_priority_axis",
+        "release_blockers_identified",
+        "primary_automation_ready",
+        "manual_acceptable_explicit",
+        "takeover_audit_axis",
+        "current_state_inventory_ready",
+        "route_state_map_ready",
+        "ui_style_analysis_ready",
+        "design_md_freezable"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "docs/beacon/v1.3.10/.machine/execution/implementation-summary-beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.json",
+        "docs/beacon/v1.3.10/.machine/execution/technical-implementation-beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.json",
+        ".beacon/implement/run-20260430T122649Z-6f87/result.json",
+        "run:run-20260430T122649Z-6f87",
+        ".beacon/auto-test-status.json",
+        "verify:review.accept"
+      ],
+      "changed_files": [
+        ".claude-plugin/plugin.json",
+        "beacon/commands/gate.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/ui_spec.py",
+        "beacon/commands/workflow.py",
+        "beacon/utils/git_alignment.py",
+        "beacon/utils/prototype_utils.py",
+        "docs/beacon/v1.3.10/SUMMARY.md",
+        "docs/beacon/v1.3.10/execution/architecture-blueprint.md",
+        "docs/beacon/v1.3.10/qa/test-cases/index.md",
+        "skills/beacon/beacon-prototype/SKILL.md",
+        "skills/beacon/beacon-prototype/agents/openai.yaml",
+        "tests/test_beacon.py",
+        "tests/test_v1310_project_metadata.py",
+        "tests/test_v131_host_skill_pack.py",
+        "tests/test_v135_prototype_projection_consistency.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-01T02:43:49.729658+00:00",
+      "completed_at": "2026-05-01T02:43:49.729660+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-010",
+      "title": "FR-010 Prototype review 必须新增 UX/heuristic gate",
+      "description": "`prototype review` 必须除结构校验外，新增 UX/heuristic 审查。 最小检查面至少包括： visibility of system status match between system and real world user control and freedom recognition rather than recall aesthetic and minimalist discipline error recovery clarity 规则： 可以采用评分与 finding 混合模式 review 必须产出 machine-readable 结果",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-017"
+      ],
+      "mapped_test_ids": [
+        "TEST-017"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-009"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: prototype_semantic_axis, structure_only_candidate, ux_truth_compiled, freeze_ready, design_context_axis, target_audience_explicit, use_case_explicit, operator_state_explicit, usage_environment_explicit, brand_tone_explicit, density_preference_explicit, design_projection_axis, ux_prd_projected, design_md_projected, preview_assets_projected, transaction_consistent, review_gate_axis, generic_wireframe_blocked, static_explanation_blocked, state_feedback_complete, page_decision_complete, component_contract_axis, component_state_contract_complete, component_feedback_traceable, transition_contract_axis, cross_page_transition_explicit, fallback_path_explicit, route_runtime_evidence_bound, automation_priority_axis, release_blockers_identified, primary_automation_ready, manual_acceptable_explicit, takeover_audit_axis, current_state_inventory_ready, route_state_map_ready, ui_style_analysis_ready, design_md_freezable"
+      ],
+      "diagram_state_axes": [
+        "prototype_semantic_axis",
+        "structure_only_candidate",
+        "ux_truth_compiled",
+        "freeze_ready",
+        "design_context_axis",
+        "target_audience_explicit",
+        "use_case_explicit",
+        "operator_state_explicit",
+        "usage_environment_explicit",
+        "brand_tone_explicit",
+        "density_preference_explicit",
+        "design_projection_axis",
+        "ux_prd_projected",
+        "design_md_projected",
+        "preview_assets_projected",
+        "transaction_consistent",
+        "review_gate_axis",
+        "generic_wireframe_blocked",
+        "static_explanation_blocked",
+        "state_feedback_complete",
+        "page_decision_complete",
+        "component_contract_axis",
+        "component_state_contract_complete",
+        "component_feedback_traceable",
+        "transition_contract_axis",
+        "cross_page_transition_explicit",
+        "fallback_path_explicit",
+        "route_runtime_evidence_bound",
+        "automation_priority_axis",
+        "release_blockers_identified",
+        "primary_automation_ready",
+        "manual_acceptable_explicit",
+        "takeover_audit_axis",
+        "current_state_inventory_ready",
+        "route_state_map_ready",
+        "ui_style_analysis_ready",
+        "design_md_freezable"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "docs/beacon/v1.3.10/.machine/execution/implementation-summary-beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.json",
+        "docs/beacon/v1.3.10/.machine/execution/technical-implementation-beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.json",
+        ".beacon/implement/run-20260430T122649Z-6f87/result.json",
+        "run:run-20260430T122649Z-6f87",
+        ".beacon/auto-test-status.json",
+        "verify:review.accept"
+      ],
+      "changed_files": [
+        ".claude-plugin/plugin.json",
+        "beacon/commands/gate.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/ui_spec.py",
+        "beacon/commands/workflow.py",
+        "beacon/utils/git_alignment.py",
+        "beacon/utils/prototype_utils.py",
+        "docs/beacon/v1.3.10/SUMMARY.md",
+        "docs/beacon/v1.3.10/execution/architecture-blueprint.md",
+        "docs/beacon/v1.3.10/qa/test-cases/index.md",
+        "skills/beacon/beacon-prototype/SKILL.md",
+        "skills/beacon/beacon-prototype/agents/openai.yaml",
+        "tests/test_beacon.py",
+        "tests/test_v1310_project_metadata.py",
+        "tests/test_v131_host_skill_pack.py",
+        "tests/test_v135_prototype_projection_consistency.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-01T02:43:49.729667+00:00",
+      "completed_at": "2026-05-01T02:43:49.729668+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-011",
+      "title": "FR-011 Prototype gate 必须正式阻断 generic wireframe",
+      "description": "以下任一情况成立时，`prototype freeze` 或相关 gate 不得判定 pass： 缺少 `design_context` 缺少 `design_reasoning` 页面缺少 `primary_decision` 关键状态缺少 `required_feedback` 缺少 `DESIGN.md` 缺少 preview assets 命中 `generic wireframe` / `static explanation only` 检测",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-018",
+        "AC-012"
+      ],
+      "mapped_test_ids": [
+        "TEST-018",
+        "TEST-012"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-010"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: prototype_semantic_axis, structure_only_candidate, ux_truth_compiled, freeze_ready, design_context_axis, target_audience_explicit, use_case_explicit, operator_state_explicit, usage_environment_explicit, brand_tone_explicit, density_preference_explicit, design_projection_axis, ux_prd_projected, design_md_projected, preview_assets_projected, transaction_consistent, review_gate_axis, generic_wireframe_blocked, static_explanation_blocked, state_feedback_complete, page_decision_complete, component_contract_axis, component_state_contract_complete, component_feedback_traceable, transition_contract_axis, cross_page_transition_explicit, fallback_path_explicit, route_runtime_evidence_bound, automation_priority_axis, release_blockers_identified, primary_automation_ready, manual_acceptable_explicit, takeover_audit_axis, current_state_inventory_ready, route_state_map_ready, ui_style_analysis_ready, design_md_freezable"
+      ],
+      "diagram_state_axes": [
+        "prototype_semantic_axis",
+        "structure_only_candidate",
+        "ux_truth_compiled",
+        "freeze_ready",
+        "design_context_axis",
+        "target_audience_explicit",
+        "use_case_explicit",
+        "operator_state_explicit",
+        "usage_environment_explicit",
+        "brand_tone_explicit",
+        "density_preference_explicit",
+        "design_projection_axis",
+        "ux_prd_projected",
+        "design_md_projected",
+        "preview_assets_projected",
+        "transaction_consistent",
+        "review_gate_axis",
+        "generic_wireframe_blocked",
+        "static_explanation_blocked",
+        "state_feedback_complete",
+        "page_decision_complete",
+        "component_contract_axis",
+        "component_state_contract_complete",
+        "component_feedback_traceable",
+        "transition_contract_axis",
+        "cross_page_transition_explicit",
+        "fallback_path_explicit",
+        "route_runtime_evidence_bound",
+        "automation_priority_axis",
+        "release_blockers_identified",
+        "primary_automation_ready",
+        "manual_acceptable_explicit",
+        "takeover_audit_axis",
+        "current_state_inventory_ready",
+        "route_state_map_ready",
+        "ui_style_analysis_ready",
+        "design_md_freezable"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "docs/beacon/v1.3.10/.machine/execution/implementation-summary-beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.json",
+        "docs/beacon/v1.3.10/.machine/execution/technical-implementation-beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.json",
+        ".beacon/implement/run-20260430T122649Z-6f87/result.json",
+        "run:run-20260430T122649Z-6f87",
+        ".beacon/auto-test-status.json",
+        "verify:review.accept"
+      ],
+      "changed_files": [
+        ".claude-plugin/plugin.json",
+        "beacon/commands/gate.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/ui_spec.py",
+        "beacon/commands/workflow.py",
+        "beacon/utils/git_alignment.py",
+        "beacon/utils/prototype_utils.py",
+        "docs/beacon/v1.3.10/SUMMARY.md",
+        "docs/beacon/v1.3.10/execution/architecture-blueprint.md",
+        "docs/beacon/v1.3.10/qa/test-cases/index.md",
+        "skills/beacon/beacon-prototype/SKILL.md",
+        "skills/beacon/beacon-prototype/agents/openai.yaml",
+        "tests/test_beacon.py",
+        "tests/test_v1310_project_metadata.py",
+        "tests/test_v131_host_skill_pack.py",
+        "tests/test_v135_prototype_projection_consistency.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-01T02:43:49.729676+00:00",
+      "completed_at": "2026-05-01T02:43:49.729678+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-012",
+      "title": "FR-012 Implement 必须消费 prototype UX closure truth",
+      "description": "`implement` 不得只消费： `page_specs` `navigation_map` 还必须能消费： `ux_contract` `page_intent_contract` `design_context` `DESIGN.md` 规则： implement 可以改变代码实现手段 不能改变已经冻结的 UX closure truth",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-020",
+        "AC-013"
+      ],
+      "mapped_test_ids": [
+        "TEST-020",
+        "TEST-013"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-011"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: prototype_semantic_axis, structure_only_candidate, ux_truth_compiled, freeze_ready, design_context_axis, target_audience_explicit, use_case_explicit, operator_state_explicit, usage_environment_explicit, brand_tone_explicit, density_preference_explicit, design_projection_axis, ux_prd_projected, design_md_projected, preview_assets_projected, transaction_consistent, review_gate_axis, generic_wireframe_blocked, static_explanation_blocked, state_feedback_complete, page_decision_complete, component_contract_axis, component_state_contract_complete, component_feedback_traceable, transition_contract_axis, cross_page_transition_explicit, fallback_path_explicit, route_runtime_evidence_bound, automation_priority_axis, release_blockers_identified, primary_automation_ready, manual_acceptable_explicit, takeover_audit_axis, current_state_inventory_ready, route_state_map_ready, ui_style_analysis_ready, design_md_freezable"
+      ],
+      "diagram_state_axes": [
+        "prototype_semantic_axis",
+        "structure_only_candidate",
+        "ux_truth_compiled",
+        "freeze_ready",
+        "design_context_axis",
+        "target_audience_explicit",
+        "use_case_explicit",
+        "operator_state_explicit",
+        "usage_environment_explicit",
+        "brand_tone_explicit",
+        "density_preference_explicit",
+        "design_projection_axis",
+        "ux_prd_projected",
+        "design_md_projected",
+        "preview_assets_projected",
+        "transaction_consistent",
+        "review_gate_axis",
+        "generic_wireframe_blocked",
+        "static_explanation_blocked",
+        "state_feedback_complete",
+        "page_decision_complete",
+        "component_contract_axis",
+        "component_state_contract_complete",
+        "component_feedback_traceable",
+        "transition_contract_axis",
+        "cross_page_transition_explicit",
+        "fallback_path_explicit",
+        "route_runtime_evidence_bound",
+        "automation_priority_axis",
+        "release_blockers_identified",
+        "primary_automation_ready",
+        "manual_acceptable_explicit",
+        "takeover_audit_axis",
+        "current_state_inventory_ready",
+        "route_state_map_ready",
+        "ui_style_analysis_ready",
+        "design_md_freezable"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "docs/beacon/v1.3.10/.machine/execution/implementation-summary-beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.json",
+        "docs/beacon/v1.3.10/.machine/execution/technical-implementation-beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.json",
+        ".beacon/implement/run-20260430T122649Z-6f87/result.json",
+        "run:run-20260430T122649Z-6f87",
+        ".beacon/auto-test-status.json",
+        "verify:review.accept"
+      ],
+      "changed_files": [
+        ".claude-plugin/plugin.json",
+        "beacon/commands/gate.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/ui_spec.py",
+        "beacon/commands/workflow.py",
+        "beacon/utils/git_alignment.py",
+        "beacon/utils/prototype_utils.py",
+        "docs/beacon/v1.3.10/SUMMARY.md",
+        "docs/beacon/v1.3.10/execution/architecture-blueprint.md",
+        "docs/beacon/v1.3.10/qa/test-cases/index.md",
+        "skills/beacon/beacon-prototype/SKILL.md",
+        "skills/beacon/beacon-prototype/agents/openai.yaml",
+        "tests/test_beacon.py",
+        "tests/test_v1310_project_metadata.py",
+        "tests/test_v131_host_skill_pack.py",
+        "tests/test_v135_prototype_projection_consistency.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-01T02:43:49.729686+00:00",
+      "completed_at": "2026-05-01T02:43:49.729687+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-013",
+      "title": "FR-013 QA 必须消费 prototype UX closure truth",
+      "description": "`qa` 必须能够对以下项给出正式 verdict： 页面首要判断是否可完成 状态反馈是否满足 `state_visibility_contract` 设计资产与实现之间是否发生显著 drift machine noise 是否越界进入人类主界面",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-028",
+        "AC-021",
+        "AC-022",
+        "AC-023",
+        "AC-034"
+      ],
+      "mapped_test_ids": [
+        "TEST-028",
+        "TEST-021",
+        "TEST-022",
+        "TEST-023",
+        "TEST-034"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-012"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: prototype_semantic_axis, structure_only_candidate, ux_truth_compiled, freeze_ready, design_context_axis, target_audience_explicit, use_case_explicit, operator_state_explicit, usage_environment_explicit, brand_tone_explicit, density_preference_explicit, design_projection_axis, ux_prd_projected, design_md_projected, preview_assets_projected, transaction_consistent, review_gate_axis, generic_wireframe_blocked, static_explanation_blocked, state_feedback_complete, page_decision_complete, component_contract_axis, component_state_contract_complete, component_feedback_traceable, transition_contract_axis, cross_page_transition_explicit, fallback_path_explicit, route_runtime_evidence_bound, automation_priority_axis, release_blockers_identified, primary_automation_ready, manual_acceptable_explicit, takeover_audit_axis, current_state_inventory_ready, route_state_map_ready, ui_style_analysis_ready, design_md_freezable"
+      ],
+      "diagram_state_axes": [
+        "prototype_semantic_axis",
+        "structure_only_candidate",
+        "ux_truth_compiled",
+        "freeze_ready",
+        "design_context_axis",
+        "target_audience_explicit",
+        "use_case_explicit",
+        "operator_state_explicit",
+        "usage_environment_explicit",
+        "brand_tone_explicit",
+        "density_preference_explicit",
+        "design_projection_axis",
+        "ux_prd_projected",
+        "design_md_projected",
+        "preview_assets_projected",
+        "transaction_consistent",
+        "review_gate_axis",
+        "generic_wireframe_blocked",
+        "static_explanation_blocked",
+        "state_feedback_complete",
+        "page_decision_complete",
+        "component_contract_axis",
+        "component_state_contract_complete",
+        "component_feedback_traceable",
+        "transition_contract_axis",
+        "cross_page_transition_explicit",
+        "fallback_path_explicit",
+        "route_runtime_evidence_bound",
+        "automation_priority_axis",
+        "release_blockers_identified",
+        "primary_automation_ready",
+        "manual_acceptable_explicit",
+        "takeover_audit_axis",
+        "current_state_inventory_ready",
+        "route_state_map_ready",
+        "ui_style_analysis_ready",
+        "design_md_freezable"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "docs/beacon/v1.3.10/.machine/execution/implementation-summary-beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.json",
+        "docs/beacon/v1.3.10/.machine/execution/technical-implementation-beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.json",
+        ".beacon/implement/run-20260430T122649Z-6f87/result.json",
+        "run:run-20260430T122649Z-6f87",
+        ".beacon/auto-test-status.json",
+        "verify:review.accept"
+      ],
+      "changed_files": [
+        ".claude-plugin/plugin.json",
+        "beacon/commands/gate.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/ui_spec.py",
+        "beacon/commands/workflow.py",
+        "beacon/utils/git_alignment.py",
+        "beacon/utils/prototype_utils.py",
+        "docs/beacon/v1.3.10/SUMMARY.md",
+        "docs/beacon/v1.3.10/execution/architecture-blueprint.md",
+        "docs/beacon/v1.3.10/qa/test-cases/index.md",
+        "skills/beacon/beacon-prototype/SKILL.md",
+        "skills/beacon/beacon-prototype/agents/openai.yaml",
+        "tests/test_beacon.py",
+        "tests/test_v1310_project_metadata.py",
+        "tests/test_v131_host_skill_pack.py",
+        "tests/test_v135_prototype_projection_consistency.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-01T02:43:49.729696+00:00",
+      "completed_at": "2026-05-01T02:43:49.729697+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-014",
+      "title": "FR-014 Prototype 子 skill 必须完成语义升级",
+      "description": "Beacon 内部 prototype 相关子 skill / prompt / rule surface 必须从： “线框生成器” 升级为： “UX PRD closure compiler” 它的提示与规则必须默认吸收： `impeccable` 的显式上下文要求 `ui-ux-pro-max-skill` 的设计推理与反模式约束 `awesome-design-md` 的 DESIGN.md 资产投影形态",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-014",
+        "AC-005"
+      ],
+      "mapped_test_ids": [
+        "TEST-014",
+        "TC-037"
+      ],
+      "mapped_scenario_ids": [
+        "SC-007",
+        "SC-008",
+        "SC-009",
+        "SC-010",
+        "SC-011"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-037"
+      ],
+      "depends_on": [
+        "ITASK-013"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: prototype_semantic_axis, structure_only_candidate, ux_truth_compiled, freeze_ready, design_context_axis, target_audience_explicit, use_case_explicit, operator_state_explicit, usage_environment_explicit, brand_tone_explicit, density_preference_explicit, design_projection_axis, ux_prd_projected, design_md_projected, preview_assets_projected, transaction_consistent, review_gate_axis, generic_wireframe_blocked, static_explanation_blocked, state_feedback_complete, page_decision_complete, component_contract_axis, component_state_contract_complete, component_feedback_traceable, transition_contract_axis, cross_page_transition_explicit, fallback_path_explicit, route_runtime_evidence_bound, automation_priority_axis, release_blockers_identified, primary_automation_ready, manual_acceptable_explicit, takeover_audit_axis, current_state_inventory_ready, route_state_map_ready, ui_style_analysis_ready, design_md_freezable"
+      ],
+      "diagram_state_axes": [
+        "prototype_semantic_axis",
+        "structure_only_candidate",
+        "ux_truth_compiled",
+        "freeze_ready",
+        "design_context_axis",
+        "target_audience_explicit",
+        "use_case_explicit",
+        "operator_state_explicit",
+        "usage_environment_explicit",
+        "brand_tone_explicit",
+        "density_preference_explicit",
+        "design_projection_axis",
+        "ux_prd_projected",
+        "design_md_projected",
+        "preview_assets_projected",
+        "transaction_consistent",
+        "review_gate_axis",
+        "generic_wireframe_blocked",
+        "static_explanation_blocked",
+        "state_feedback_complete",
+        "page_decision_complete",
+        "component_contract_axis",
+        "component_state_contract_complete",
+        "component_feedback_traceable",
+        "transition_contract_axis",
+        "cross_page_transition_explicit",
+        "fallback_path_explicit",
+        "route_runtime_evidence_bound",
+        "automation_priority_axis",
+        "release_blockers_identified",
+        "primary_automation_ready",
+        "manual_acceptable_explicit",
+        "takeover_audit_axis",
+        "current_state_inventory_ready",
+        "route_state_map_ready",
+        "ui_style_analysis_ready",
+        "design_md_freezable"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "docs/beacon/v1.3.10/.machine/execution/implementation-summary-beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.json",
+        "docs/beacon/v1.3.10/.machine/execution/technical-implementation-beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.json",
+        ".beacon/implement/run-20260430T122649Z-6f87/result.json",
+        "run:run-20260430T122649Z-6f87",
+        ".beacon/auto-test-status.json",
+        "verify:review.accept"
+      ],
+      "changed_files": [
+        ".claude-plugin/plugin.json",
+        "beacon/commands/gate.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/ui_spec.py",
+        "beacon/commands/workflow.py",
+        "beacon/utils/git_alignment.py",
+        "beacon/utils/prototype_utils.py",
+        "docs/beacon/v1.3.10/SUMMARY.md",
+        "docs/beacon/v1.3.10/execution/architecture-blueprint.md",
+        "docs/beacon/v1.3.10/qa/test-cases/index.md",
+        "skills/beacon/beacon-prototype/SKILL.md",
+        "skills/beacon/beacon-prototype/agents/openai.yaml",
+        "tests/test_beacon.py",
+        "tests/test_v1310_project_metadata.py",
+        "tests/test_v131_host_skill_pack.py",
+        "tests/test_v135_prototype_projection_consistency.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-01T02:43:49.729705+00:00",
+      "completed_at": "2026-05-01T02:43:49.729707+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-015",
+      "title": "FR-015 Multi-sink 一致性仍然必须受事务约束",
+      "description": "新增 `ux-prd.md`、`DESIGN.md`、preview assets 之后，prototype 多写入点必须继续遵循： `prepare -> validate -> commit -> publish -> verify` 新增 sink 也必须纳入： `source_hash` `projection_seq` `transaction_id` `committed_at` `sink_checksums`",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-025"
+      ],
+      "mapped_test_ids": [
+        "TEST-025"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-014"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: prototype_semantic_axis, structure_only_candidate, ux_truth_compiled, freeze_ready, design_context_axis, target_audience_explicit, use_case_explicit, operator_state_explicit, usage_environment_explicit, brand_tone_explicit, density_preference_explicit, design_projection_axis, ux_prd_projected, design_md_projected, preview_assets_projected, transaction_consistent, review_gate_axis, generic_wireframe_blocked, static_explanation_blocked, state_feedback_complete, page_decision_complete, component_contract_axis, component_state_contract_complete, component_feedback_traceable, transition_contract_axis, cross_page_transition_explicit, fallback_path_explicit, route_runtime_evidence_bound, automation_priority_axis, release_blockers_identified, primary_automation_ready, manual_acceptable_explicit, takeover_audit_axis, current_state_inventory_ready, route_state_map_ready, ui_style_analysis_ready, design_md_freezable"
+      ],
+      "diagram_state_axes": [
+        "prototype_semantic_axis",
+        "structure_only_candidate",
+        "ux_truth_compiled",
+        "freeze_ready",
+        "design_context_axis",
+        "target_audience_explicit",
+        "use_case_explicit",
+        "operator_state_explicit",
+        "usage_environment_explicit",
+        "brand_tone_explicit",
+        "density_preference_explicit",
+        "design_projection_axis",
+        "ux_prd_projected",
+        "design_md_projected",
+        "preview_assets_projected",
+        "transaction_consistent",
+        "review_gate_axis",
+        "generic_wireframe_blocked",
+        "static_explanation_blocked",
+        "state_feedback_complete",
+        "page_decision_complete",
+        "component_contract_axis",
+        "component_state_contract_complete",
+        "component_feedback_traceable",
+        "transition_contract_axis",
+        "cross_page_transition_explicit",
+        "fallback_path_explicit",
+        "route_runtime_evidence_bound",
+        "automation_priority_axis",
+        "release_blockers_identified",
+        "primary_automation_ready",
+        "manual_acceptable_explicit",
+        "takeover_audit_axis",
+        "current_state_inventory_ready",
+        "route_state_map_ready",
+        "ui_style_analysis_ready",
+        "design_md_freezable"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "docs/beacon/v1.3.10/.machine/execution/implementation-summary-beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.json",
+        "docs/beacon/v1.3.10/.machine/execution/technical-implementation-beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.json",
+        ".beacon/implement/run-20260430T122649Z-6f87/result.json",
+        "run:run-20260430T122649Z-6f87",
+        ".beacon/auto-test-status.json",
+        "verify:review.accept"
+      ],
+      "changed_files": [
+        ".claude-plugin/plugin.json",
+        "beacon/commands/gate.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/ui_spec.py",
+        "beacon/commands/workflow.py",
+        "beacon/utils/git_alignment.py",
+        "beacon/utils/prototype_utils.py",
+        "docs/beacon/v1.3.10/SUMMARY.md",
+        "docs/beacon/v1.3.10/execution/architecture-blueprint.md",
+        "docs/beacon/v1.3.10/qa/test-cases/index.md",
+        "skills/beacon/beacon-prototype/SKILL.md",
+        "skills/beacon/beacon-prototype/agents/openai.yaml",
+        "tests/test_beacon.py",
+        "tests/test_v1310_project_metadata.py",
+        "tests/test_v131_host_skill_pack.py",
+        "tests/test_v135_prototype_projection_consistency.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-01T02:43:49.729714+00:00",
+      "completed_at": "2026-05-01T02:43:49.729716+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-016",
+      "title": "FR-016 Component catalog 必须升级为 state-aware contract",
+      "description": "Beacon 必须把现有 `component-catalog` 从 page-global section inventory 升级为可追踪的组件责任契约，至少表达： `component_id` `page_id` `state_refs[]` `state_feedback_responsibilities[]` `ac_refs[]` `tc_refs[]` `interaction_responsibilities[]` 规则： 组件契约不得只停留在“这个区块存在”，必须说明它在何种状态下承担何种反馈责任。 `implement` 与 `qa` 必须能够追踪“某个状态反馈由哪个组件负责呈现”。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-026"
+      ],
+      "mapped_test_ids": [
+        "TEST-026"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-015"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: prototype_semantic_axis, structure_only_candidate, ux_truth_compiled, freeze_ready, design_context_axis, target_audience_explicit, use_case_explicit, operator_state_explicit, usage_environment_explicit, brand_tone_explicit, density_preference_explicit, design_projection_axis, ux_prd_projected, design_md_projected, preview_assets_projected, transaction_consistent, review_gate_axis, generic_wireframe_blocked, static_explanation_blocked, state_feedback_complete, page_decision_complete, component_contract_axis, component_state_contract_complete, component_feedback_traceable, transition_contract_axis, cross_page_transition_explicit, fallback_path_explicit, route_runtime_evidence_bound, automation_priority_axis, release_blockers_identified, primary_automation_ready, manual_acceptable_explicit, takeover_audit_axis, current_state_inventory_ready, route_state_map_ready, ui_style_analysis_ready, design_md_freezable"
+      ],
+      "diagram_state_axes": [
+        "prototype_semantic_axis",
+        "structure_only_candidate",
+        "ux_truth_compiled",
+        "freeze_ready",
+        "design_context_axis",
+        "target_audience_explicit",
+        "use_case_explicit",
+        "operator_state_explicit",
+        "usage_environment_explicit",
+        "brand_tone_explicit",
+        "density_preference_explicit",
+        "design_projection_axis",
+        "ux_prd_projected",
+        "design_md_projected",
+        "preview_assets_projected",
+        "transaction_consistent",
+        "review_gate_axis",
+        "generic_wireframe_blocked",
+        "static_explanation_blocked",
+        "state_feedback_complete",
+        "page_decision_complete",
+        "component_contract_axis",
+        "component_state_contract_complete",
+        "component_feedback_traceable",
+        "transition_contract_axis",
+        "cross_page_transition_explicit",
+        "fallback_path_explicit",
+        "route_runtime_evidence_bound",
+        "automation_priority_axis",
+        "release_blockers_identified",
+        "primary_automation_ready",
+        "manual_acceptable_explicit",
+        "takeover_audit_axis",
+        "current_state_inventory_ready",
+        "route_state_map_ready",
+        "ui_style_analysis_ready",
+        "design_md_freezable"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "docs/beacon/v1.3.10/.machine/execution/implementation-summary-beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.json",
+        "docs/beacon/v1.3.10/.machine/execution/technical-implementation-beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.json",
+        ".beacon/implement/run-20260430T122649Z-6f87/result.json",
+        "run:run-20260430T122649Z-6f87",
+        ".beacon/auto-test-status.json",
+        "verify:review.accept"
+      ],
+      "changed_files": [
+        ".claude-plugin/plugin.json",
+        "beacon/commands/gate.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/ui_spec.py",
+        "beacon/commands/workflow.py",
+        "beacon/utils/git_alignment.py",
+        "beacon/utils/prototype_utils.py",
+        "docs/beacon/v1.3.10/SUMMARY.md",
+        "docs/beacon/v1.3.10/execution/architecture-blueprint.md",
+        "docs/beacon/v1.3.10/qa/test-cases/index.md",
+        "skills/beacon/beacon-prototype/SKILL.md",
+        "skills/beacon/beacon-prototype/agents/openai.yaml",
+        "tests/test_beacon.py",
+        "tests/test_v1310_project_metadata.py",
+        "tests/test_v131_host_skill_pack.py",
+        "tests/test_v135_prototype_projection_consistency.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-01T02:43:49.729725+00:00",
+      "completed_at": "2026-05-01T02:43:49.729727+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-017",
+      "title": "FR-017 Cross-page business transition 必须冻结为正式 contract",
+      "description": "Beacon 必须把跨页业务迁移从简单 ready-to-ready route map 升级为正式 `cross_page_transition_contract`，至少包含： `from_page` `from_state` `to_page` `to_state` `event` `guard` `fallback` `route_or_runtime_evidence` `ac_refs[]` `tc_refs[]` 规则： checkout / retry / fallback / handoff / return-path 等跨页业务流必须能被显式建模。 不允许只靠“目标页 ready 状态”隐式代替跨页业务语义。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-029"
+      ],
+      "mapped_test_ids": [
+        "TEST-029"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-016"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: prototype_semantic_axis, structure_only_candidate, ux_truth_compiled, freeze_ready, design_context_axis, target_audience_explicit, use_case_explicit, operator_state_explicit, usage_environment_explicit, brand_tone_explicit, density_preference_explicit, design_projection_axis, ux_prd_projected, design_md_projected, preview_assets_projected, transaction_consistent, review_gate_axis, generic_wireframe_blocked, static_explanation_blocked, state_feedback_complete, page_decision_complete, component_contract_axis, component_state_contract_complete, component_feedback_traceable, transition_contract_axis, cross_page_transition_explicit, fallback_path_explicit, route_runtime_evidence_bound, automation_priority_axis, release_blockers_identified, primary_automation_ready, manual_acceptable_explicit, takeover_audit_axis, current_state_inventory_ready, route_state_map_ready, ui_style_analysis_ready, design_md_freezable"
+      ],
+      "diagram_state_axes": [
+        "prototype_semantic_axis",
+        "structure_only_candidate",
+        "ux_truth_compiled",
+        "freeze_ready",
+        "design_context_axis",
+        "target_audience_explicit",
+        "use_case_explicit",
+        "operator_state_explicit",
+        "usage_environment_explicit",
+        "brand_tone_explicit",
+        "density_preference_explicit",
+        "design_projection_axis",
+        "ux_prd_projected",
+        "design_md_projected",
+        "preview_assets_projected",
+        "transaction_consistent",
+        "review_gate_axis",
+        "generic_wireframe_blocked",
+        "static_explanation_blocked",
+        "state_feedback_complete",
+        "page_decision_complete",
+        "component_contract_axis",
+        "component_state_contract_complete",
+        "component_feedback_traceable",
+        "transition_contract_axis",
+        "cross_page_transition_explicit",
+        "fallback_path_explicit",
+        "route_runtime_evidence_bound",
+        "automation_priority_axis",
+        "release_blockers_identified",
+        "primary_automation_ready",
+        "manual_acceptable_explicit",
+        "takeover_audit_axis",
+        "current_state_inventory_ready",
+        "route_state_map_ready",
+        "ui_style_analysis_ready",
+        "design_md_freezable"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "docs/beacon/v1.3.10/.machine/execution/implementation-summary-beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.json",
+        "docs/beacon/v1.3.10/.machine/execution/technical-implementation-beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.json",
+        ".beacon/implement/run-20260430T122649Z-6f87/result.json",
+        "run:run-20260430T122649Z-6f87",
+        ".beacon/auto-test-status.json",
+        "verify:review.accept"
+      ],
+      "changed_files": [
+        ".claude-plugin/plugin.json",
+        "beacon/commands/gate.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/ui_spec.py",
+        "beacon/commands/workflow.py",
+        "beacon/utils/git_alignment.py",
+        "beacon/utils/prototype_utils.py",
+        "docs/beacon/v1.3.10/SUMMARY.md",
+        "docs/beacon/v1.3.10/execution/architecture-blueprint.md",
+        "docs/beacon/v1.3.10/qa/test-cases/index.md",
+        "skills/beacon/beacon-prototype/SKILL.md",
+        "skills/beacon/beacon-prototype/agents/openai.yaml",
+        "tests/test_beacon.py",
+        "tests/test_v1310_project_metadata.py",
+        "tests/test_v131_host_skill_pack.py",
+        "tests/test_v135_prototype_projection_consistency.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-01T02:43:49.729735+00:00",
+      "completed_at": "2026-05-01T02:43:49.729736+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-018",
+      "title": "FR-018 Prototype 必须产出 automation priority matrix",
+      "description": "Beacon 必须根据： page priority product surface type state visibility contract cross-page transition contract AC/TC traceability 编译正式 `automation-priority-matrix`，至少包含： `target_id` `target_type` (`page` / `state` / `transition` / `component`) `priority_class` (`release-blocker` / `primary-automation` / `smoke-only` / `manual-acceptable`) `reason` `ac_refs[]` `tc_refs[]` 规则： QA 不得再只看到 AC/TC 列表，而必须看到自动化优先级判断。 同一套 priority truth 必须被 `implement / qa / release` 共用。 ## 6. 数据 / 状态 / 集成 ### 6.1 Truth 来源 本线新增 truth 仍然必须完全从以下来源编译： `prd` `user-story` `test-case` 已批准的 design preset / local project profile 不得直接从： implement 代码现状 手工设计文档 preview HTML 本身 反向推导 canonical truth。 ### 6.2 Prototype canonical envelope 增量字段 本线要求 prototype canonical envelope 至少新增： `design_context` `design_reasoning` `ux_contract` `page_intent_contracts[]` `state_visibility_contracts[]` `component_state_contracts[]` `cross_page_transition_contracts[]` `automation_priority_matrix` `design_asset_contract` `review_heuristics` ### 6.3 资产投影 human-readable projections 至少新增： `ux-prd.md` `DESIGN.md` `automation-priority-matrix.md` preview projections 至少新增： `preview.html` `preview-dark.html` machine-readable projections 至少新增： `ux-contract.json` `design-asset-contract.json` `heuristic-review.json` `automation-priority-matrix.json` ### 6.4 与已有 prototype 工件的关系 现有工件继续保留： `wireframe-summary` `navigation-map` `state-flow-map` `component-catalog` `route-closure-contract` 但它们不再足以单独代表 UX closure complete。 ### 6.5 Branch-flow 本子线至少显式冻结以下 branch-flow： ```text requirement_truth_ready -> design_context_explicit | design_context_missing -> ux_truth_compiled | structure_only_candidate -> review_pass | review_blocked -> freeze_ready | refreeze_required ``` ```text canonical_truth_committed -> design_assets_projected | asset_projection_missing -> implement_consumes_same_truth | gate_blocked ``` ```text state_and_transition_truth_compiled -> component_state_contract_complete | component_contract_blocked -> automation_priority_ready | qa_priority_blocked ``` 异常分支： ```text prototype_bundle_present -> generic_wireframe_detected -> review_blocked -> requirement_or_projection_fix -> prototype_bundle_present ``` ```text current_state_takeover_mode -> current_state_inventory_ready | ui_style_analysis_missing -> design_md_frozen | takeover_prototype_blocked ``` ### 6.6 State-machine 本子线的核心状态机至少包括： `structure_only_candidate` 已生成页面、路由、状态、组件结构 但尚未满足 UX freeze `ux_truth_compiled` `design_context` `design_reasoning` `ux_contract` `page_intent_contract` `state_visibility_contract` 已完成编译 `design_assets_projected` `ux-prd.md` `DESIGN.md` `preview.html` `preview-dark.html` 已由 canonical truth 单向投影生成 `review_blocked` 任一 UX truth 缺失 命中 generic wireframe / static explanation only 设计资产缺失 `freeze_ready` review / projection / traceability / transaction consistency 全部通过 `implement_bound` implement 与 qa 已绑定同一套 UX closure truth ### 6.7 Decision-priority 本子线的决策优先级必须保持： 1. requirement truth 显式设计上下文，高于运行时临场猜测 2. UX closure truth 完整性，高于仅有结构 freeze 的“差不多可用” 3. canonical single-source projection，高于手工补写 `DESIGN.md` 或 preview 4. review/gate fail-closed，高于“先实现再补 UX 说明” 5. implement / qa 绑定同一 UX truth，高于不同 runtime lane 的局部便利 ### 6.8 State Axes 本子线至少显式建模以下 state axes： `prototype_semantic_axis` `structure_only_candidate` `ux_truth_compiled` `freeze_ready` `design_context_axis` `target_audience_explicit` `use_case_explicit` `operator_state_explicit` `usage_environment_explicit` `brand_tone_explicit` `density_preference_explicit` `design_projection_axis` `ux_prd_projected` `design_md_projected` `preview_assets_projected` `transaction_consistent` `review_gate_axis` `generic_wireframe_blocked` `static_explanation_blocked` `state_feedback_complete` `page_decision_complete` `component_contract_axis` `component_state_contract_complete` `component_feedback_traceable` `transition_contract_axis` `cross_page_transition_explicit` `fallback_path_explicit` `route_runtime_evidence_bound` `automation_priority_axis` `release_blockers_identified` `primary_automation_ready` `manual_acceptable_explicit` `takeover_audit_axis` `current_state_inventory_ready` `route_state_map_ready` `ui_style_analysis_ready` `design_md_freezable` ## 7. 风险与缓解 | 风险 | 影响 | 缓解 | |------|------|------| | 把 prototype 扩成高保真设计阶段 | 破坏全局边界 | 明确 `ux-prd freeze` 不是 final visual approval | | 设计字段过多导致人类负担变高 | 生命周期变重 | 保持外部主命令不变，把上下文编译与 review 复杂度内收 | | DESIGN.md 变成手工维护文档 | truth 漂移 | 只允许 canonical 单向投影生成 | | implement 忽略 UX closure truth | 体验重发明 | gate / qa 正式消费 UX contracts | | 默认 Apple preset 误伤其他项目 | 风格僵化 | 允许 requirement 显式 override，并记录 override reason | ## 8. 验收标准 ### AC-001 Prototype 能输出正式 UX PRD truth `prototype create` 成功后，必须产生： `ux-prd.md` `ux-contract.json` `design_context` `design_reasoning` 并且这些内容可追溯到 requirement truth。 ### AC-002 Prototype 能输出正式 design assets `prototype create` 成功后，必须产生： `DESIGN.md` `preview.html` `preview-dark.html` 且这些资产由 canonical projection 生成。 ### AC-003 Generic wireframe 会被阻断 在缺少 design context、page decision、state feedback 或 design asset 的情况下： `prototype review` 或 `freeze` 必须 fail closed ### AC-004 Implement 与 QA 能消费同一套 UX closure truth 同一 feature line 中： implement 能读取并使用 `DESIGN.md` 与 `ux_contract` QA 能对 UX contract 与 state visibility rules 给出正式 verdict ### AC-005 默认 design preset 已固定 Beacon 默认项目设计规范必须固定支持： `apple-inspired-design-md` 并在 prototype / ui-spec 默认输出中可见。 ### AC-006 Component-state 责任边界已冻结 prototype create / review 成功后，组件契约必须能够明确说明： 哪个组件负责哪些状态反馈 这些反馈绑定哪组 AC/TC implement / qa 可以按组件级责任追踪 UX closure ### AC-007 Cross-page business transition 已冻结 prototype create / review 成功后，至少关键跨页迁移必须显式表达： from/to page+state event / guard / fallback route 或 runtime evidence AC/TC traceability ### AC-008 Automation priority matrix 已冻结 prototype create / review 成功后，必须存在正式的 automation priority matrix，并使 QA 能区分： release blockers primary automation smoke-only manual-acceptable ## 9. 成功指标 至少 1 条真实 Beacon prototype line 能从 `prd -> user-story -> test-case -> prototype` 输出： `ux-prd.md` `DESIGN.md` preview assets heuristic review 至少 1 条真实 takeover / 二开项目 prototype line 能输出： state-aware component contract cross-page business transitions automation priority matrix 至少 1 条真实 implement / qa line 能证明： 实现没有重新发明页面主判断、关键状态反馈和设计基线 ## 10. 与主 PRD 的关系 主线锚点：`beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance` 主线解决的是： project topology repo binding branch governance requirement package dual-write 本并行线解决的是： requirement package 中 prototype 面的 UX closure 缺口 design asset projection 缺口 两者关系是： 1. 主线保证 Beacon 在正确项目、正确 repo、正确 branch 上推进 2. 本线保证 Beacon 即使在正确执行面上，也不会产出“结构正确但体验无用”的 prototype truth 因此本并行线是对 `v1.3.10` requirement package 完整性的直接补强，而不是独立产品方向。 --- **Created**: 2026-04-30 **Version**: v1.3.10 **Status**: freeze_ready **Memory Context**: Derived from Beacon brainstorm + prior prototype governance lines + mirrored external design references",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-032",
+        "AC-019",
+        "AC-016",
+        "AC-024",
+        "AC-027",
+        "AC-030",
+        "AC-031",
+        "AC-033",
+        "AC-035",
+        "AC-036",
+        "AC-037",
+        "AC-038",
+        "AC-039",
+        "AC-040"
+      ],
+      "mapped_test_ids": [
+        "TEST-032",
+        "TEST-019",
+        "TEST-016",
+        "TEST-024",
+        "TEST-027",
+        "TEST-030",
+        "TEST-031",
+        "TEST-033",
+        "TEST-035",
+        "TEST-036",
+        "TEST-037",
+        "TEST-038",
+        "TEST-039",
+        "TEST-040"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-017"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: prototype_semantic_axis, structure_only_candidate, ux_truth_compiled, freeze_ready, design_context_axis, target_audience_explicit, use_case_explicit, operator_state_explicit, usage_environment_explicit, brand_tone_explicit, density_preference_explicit, design_projection_axis, ux_prd_projected, design_md_projected, preview_assets_projected, transaction_consistent, review_gate_axis, generic_wireframe_blocked, static_explanation_blocked, state_feedback_complete, page_decision_complete, component_contract_axis, component_state_contract_complete, component_feedback_traceable, transition_contract_axis, cross_page_transition_explicit, fallback_path_explicit, route_runtime_evidence_bound, automation_priority_axis, release_blockers_identified, primary_automation_ready, manual_acceptable_explicit, takeover_audit_axis, current_state_inventory_ready, route_state_map_ready, ui_style_analysis_ready, design_md_freezable"
+      ],
+      "diagram_state_axes": [
+        "prototype_semantic_axis",
+        "structure_only_candidate",
+        "ux_truth_compiled",
+        "freeze_ready",
+        "design_context_axis",
+        "target_audience_explicit",
+        "use_case_explicit",
+        "operator_state_explicit",
+        "usage_environment_explicit",
+        "brand_tone_explicit",
+        "density_preference_explicit",
+        "design_projection_axis",
+        "ux_prd_projected",
+        "design_md_projected",
+        "preview_assets_projected",
+        "transaction_consistent",
+        "review_gate_axis",
+        "generic_wireframe_blocked",
+        "static_explanation_blocked",
+        "state_feedback_complete",
+        "page_decision_complete",
+        "component_contract_axis",
+        "component_state_contract_complete",
+        "component_feedback_traceable",
+        "transition_contract_axis",
+        "cross_page_transition_explicit",
+        "fallback_path_explicit",
+        "route_runtime_evidence_bound",
+        "automation_priority_axis",
+        "release_blockers_identified",
+        "primary_automation_ready",
+        "manual_acceptable_explicit",
+        "takeover_audit_axis",
+        "current_state_inventory_ready",
+        "route_state_map_ready",
+        "ui_style_analysis_ready",
+        "design_md_freezable"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "docs/beacon/v1.3.10/.machine/execution/implementation-summary-beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.json",
+        "docs/beacon/v1.3.10/.machine/execution/technical-implementation-beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.json",
+        ".beacon/implement/run-20260430T122649Z-6f87/result.json",
+        "run:run-20260430T122649Z-6f87",
+        ".beacon/auto-test-status.json",
+        "verify:review.accept"
+      ],
+      "changed_files": [
+        ".claude-plugin/plugin.json",
+        "beacon/commands/gate.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/ui_spec.py",
+        "beacon/commands/workflow.py",
+        "beacon/utils/git_alignment.py",
+        "beacon/utils/prototype_utils.py",
+        "docs/beacon/v1.3.10/SUMMARY.md",
+        "docs/beacon/v1.3.10/execution/architecture-blueprint.md",
+        "docs/beacon/v1.3.10/qa/test-cases/index.md",
+        "skills/beacon/beacon-prototype/SKILL.md",
+        "skills/beacon/beacon-prototype/agents/openai.yaml",
+        "tests/test_beacon.py",
+        "tests/test_v1310_project_metadata.py",
+        "tests/test_v131_host_skill_pack.py",
+        "tests/test_v135_prototype_projection_consistency.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-01T02:43:49.729747+00:00",
+      "completed_at": "2026-05-01T02:43:49.729748+00:00",
+      "active_run_id": ""
+    }
+  ],
+  "revision_delta": {},
+  "revision_delta_ref": "",
+  "revision_delta_markdown_ref": "",
+  "team_mode": {
+    "preferred_surface": "implement-team",
+    "preferred_runner": "codex-subagents",
+    "plan_command": "beacon implement team-plan \"Beacon v1.3.10 prototype UX PRD closure and design-asset projection\" --project-root . --version v1.3.10",
+    "run_command": "beacon implement team-run \"Beacon v1.3.10 prototype UX PRD closure and design-asset projection\" --project . --version v1.3.10",
+    "dev_run_command": "beacon implement dev-run \"Beacon v1.3.10 prototype UX PRD closure and design-asset projection\" --project . --version v1.3.10",
+    "ralph_command": "beacon implement run \"Beacon v1.3.10 prototype UX PRD closure and design-asset projection\" --project . --version v1.3.10 --mode ralph",
+    "qa_team_command": "beacon qa team-run \"Beacon v1.3.10 prototype UX PRD closure and design-asset projection\" --project . --version v1.3.10",
+    "roles": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "context_isolation": {
+      "role_plane": "implementation",
+      "isolated_from": [
+        "qa-team"
+      ],
+      "shared_inputs": [
+        "docs",
+        "implementation_plan",
+        "evidence_refs"
+      ],
+      "shared_outputs": [
+        "implementation_summary",
+        "technical_archive",
+        "repair_handoff"
+      ],
+      "rule": "qa_must_not_inherit_implement_private_context",
+      "implement_surface": "implement-team",
+      "qa_surface": "qa-team"
+    },
+    "config_source": "beacon/team_roles/implement-team.json",
+    "post_freeze_sequence": [
+      "freeze-pass",
+      "implement-team-plan",
+      "implement-team-run",
+      "implement-ralph",
+      "qa",
+      "release"
+    ],
+    "role_semantics": {
+      "team_reviewer": "checks implementation/spec drift before Ralph or QA closure",
+      "team_tester": "checks implementation evidence and verification readiness before Ralph or QA closure",
+      "ralph": "post-freeze controller that drives next-action routing across implementation, review, qa, and release"
+    },
+    "execution_order": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "formal_writeback_roles": [
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "role_contracts": {
+      "planner": {
+        "purpose": "Compile execution-ready task scope from the frozen revision baseline.",
+        "writes_to_formal_truth": false,
+        "outputs": [
+          "execution_plan_note"
+        ]
+      },
+      "implementation-architect": {
+        "purpose": "Translate frozen requirement truth into implementation-safe module boundaries and service ownership guidance.",
+        "writes_to_formal_truth": false,
+        "reads": [
+          "docs/beacon/<version>/user-story",
+          "docs/beacon/<version>/prd",
+          "docs/beacon/<version>/qa/test-cases",
+          "docs/beacon/<version>/execution/architecture-blueprint.md",
+          "implementation_plan",
+          "git_workflow_contract"
+        ],
+        "outputs": [
+          "implementation_architecture_note"
+        ],
+        "restrictions": [
+          "must_not_modify_frozen_requirement_materials",
+          "must_not_overwrite_architecture_blueprint"
+        ]
+      },
+      "implementer": {
+        "purpose": "Write code inside the frozen scope and the implementation architecture note.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "story_writeback",
+          "implementation_summary"
+        ]
+      },
+      "reviewer": {
+        "purpose": "Review implementation/spec drift and architecture-boundary drift.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_spec"
+        ]
+      },
+      "tester": {
+        "purpose": "Check implementation evidence and verification readiness before acceptance.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_quality"
+        ]
+      }
+    }
+  },
+  "git_workflow": {
+    "schema_version": "1.0",
+    "feature": "Beacon v1.3.10 prototype UX PRD closure and design-asset projection",
+    "feature_slug": "beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection",
+    "version": "v1.3.10",
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.3.10",
+    "branch_prefix": "beacon/",
+    "base_branch": "main",
+    "use_git_worktree": false,
+    "require_clean_worktree_for_switch": true,
+    "service_directories": [
+      "."
+    ],
+    "direct_delivery_services": [
+      "."
+    ],
+    "writable_services": [
+      "."
+    ],
+    "reference_only_services": [
+      "docs"
+    ],
+    "git_roots": [
+      "."
+    ],
+    "worktree_root": ".",
+    "implementation_preflight": [
+      "Before implementation, verify the target service belongs to: .",
+      "Before implementation, verify the current branch is beacon/v1.3.10.",
+      "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+    ],
+    "source": "technical_review_contract",
+    "generated_at": "2026-05-01T02:39:17.198870+00:00",
+    "baseline_id": "impl-delivery-baseline-v1.3.10-beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection-R1",
+    "transaction_id": "tx-ee990b0591f944f93",
+    "source_hash": "sha256:92af234c0f427e8179cd771827a8d5aa9611667543b7d20aad80f21cb1dcc541",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.3.10/.machine/execution/implementation-delivery-baseline-beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "git_workflow_ref": "docs/beacon/v1.3.10/.machine/execution/git-workflow-beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.json",
+  "git_workflow_markdown_ref": "docs/beacon/v1.3.10/execution/git-workflow-beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md",
+  "base_branch": "main",
+  "target_branch": "beacon/v1.3.10",
+  "branch_prefix": "beacon/",
+  "use_git_worktree": false,
+  "worktree_root": ".",
+  "direct_delivery_services": [
+    "."
+  ],
+  "writable_services": [
+    "."
+  ],
+  "reference_only_services": [
+    "docs"
+  ],
+  "technical_delta": {
+    "project_mode": "greenfield",
+    "source_refs": {
+      "prd": "docs/beacon/v1.3.10/prd/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md",
+      "user_story": "docs/beacon/v1.3.10/user-story/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md",
+      "test_case": "docs/beacon/v1.3.10/qa/test-cases/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md"
+    },
+    "current_state": {},
+    "refactor_boundaries": {},
+    "feature_sections": [],
+    "change_surface": []
+  },
+  "delivery_baseline": {
+    "baseline_id": "impl-delivery-baseline-v1.3.10-beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection-R1",
+    "transaction_id": "tx-ee990b0591f944f93",
+    "source_hash": "sha256:92af234c0f427e8179cd771827a8d5aa9611667543b7d20aad80f21cb1dcc541",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.3.10/.machine/execution/implementation-delivery-baseline-beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "canonical_envelope_ref": "docs/beacon/v1.3.10/.machine/execution/implementation-delivery-baseline-beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.json",
+  "generated_at": "2026-05-01T02:39:17.296585+00:00",
+  "baseline_id": "impl-delivery-baseline-v1.3.10-beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection-R1",
+  "transaction_id": "tx-ee990b0591f944f93",
+  "source_hash": "sha256:92af234c0f427e8179cd771827a8d5aa9611667543b7d20aad80f21cb1dcc541",
+  "projection_seq": 1,
+  "projection_source": "implementation_delivery_baseline_envelope",
+  "updated_at": "2026-05-01T02:43:58.478273+00:00",
+  "accepted_at": "2026-05-01T02:43:58.478256+00:00",
+  "accepted_by": "qa"
+}

@@ -185,7 +185,12 @@ def build_implement_branch_guard_payload(
         reason_codes: list[str] = []
         for item in alignments:
             reason_codes.extend(list(item.get("reason_codes", [])))
-        unresolved_services = [item for item in delivery_services if item not in roots]
+        root_aliases = set(roots)
+        for item in roots:
+            name = Path(item).name.strip()
+            if name:
+                root_aliases.add(name)
+        unresolved_services = [item for item in delivery_services if item not in root_aliases]
         if unresolved_services:
             blocked = True
             reason_codes.append("implement_direct_delivery_service_scope_unresolved")

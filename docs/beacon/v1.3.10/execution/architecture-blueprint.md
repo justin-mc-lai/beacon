@@ -29,13 +29,13 @@
 ## Technical Delta Blueprint
 
 - project_mode: `greenfield`
-- feature: `Beacon v1.3.10 project topology and version-branch metadata transaction governance`
+- feature: `Beacon v1.3.10 prototype UX PRD closure and design-asset projection`
 - version: `v1.3.10`
 
 ### Source Refs
-- prd: `docs/beacon/v1.3.10/prd/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md`
-- user_story: `docs/beacon/v1.3.10/user-story/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md`
-- test_case: `docs/beacon/v1.3.10/qa/test-cases/beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance.md`
+- prd: `docs/beacon/v1.3.10/prd/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md`
+- user_story: `docs/beacon/v1.3.10/user-story/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md`
+- test_case: `docs/beacon/v1.3.10/qa/test-cases/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md`
 
 ### Delivery Change Surface
 - none
@@ -66,12 +66,12 @@
 <!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:START -->
 ## Implementation Delivery Baseline
 
-- baseline_id: `impl-delivery-baseline-v1.3.10-beacon-v1.3.10-project-topology-and-version-branch-metadata-transaction-governance-R2`
-- transaction_id: `tx-7e4a107f30884e4a3`
-- source_hash: `sha256:683819b4930b4ae2316210f02a051a5654e2d85ac9b264f21e864d2aec0e043d`
+- baseline_id: `impl-delivery-baseline-v1.3.10-beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection-R1`
+- transaction_id: `tx-ee990b0591f944f93`
+- source_hash: `sha256:92af234c0f427e8179cd771827a8d5aa9611667543b7d20aad80f21cb1dcc541`
 - projection_seq: `1`
 - version: `v1.3.10`
-- feature: `Beacon v1.3.10 project topology and version-branch metadata transaction governance`
+- feature: `Beacon v1.3.10 prototype UX PRD closure and design-asset projection`
 - lifecycle_role: `pre-implement delivery blueprint projection`
 - projection_refresh_trigger: `implement plan against the active frozen revision`
 - branch_strategy: `single-branch`
@@ -79,8 +79,8 @@
 - default_target_branch: `beacon/v1.3.10`
 - branch_prefix: `beacon/`
 - use_git_worktree: `False`
-- worktree_root: `/Users/apple/Developer/Personal/products/beacon`
-- workspace_root: `/Users/apple/Developer/Personal/products/beacon`
+- worktree_root: `.`
+- workspace_root: `.`
 
 ### Delivery Service Scope
 - direct_delivery_services: .

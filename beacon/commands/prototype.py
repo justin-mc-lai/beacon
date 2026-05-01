@@ -13,6 +13,7 @@ from beacon.utils.prototype_utils import (
     bind_prototype_bundle,
     compile_prototype_plan,
     evaluate_prototype_status,
+    legacy_prototype_source_path,
     freeze_prototype,
     prototype_dir,
     review_prototype_bundle,
@@ -310,6 +311,8 @@ def status(
         serializable = dict(payload)
         serializable["root"] = str(payload["root"])
         serializable["files"] = {k: str(v) for k, v in payload["files"].items()}
+        if "legacy_source_path" in serializable:
+            serializable["legacy_source_path"] = str(serializable["legacy_source_path"])
         typer.echo(json.dumps(serializable, ensure_ascii=False, indent=2))
         return
 
@@ -328,6 +331,8 @@ def status(
     typer.echo(f"drift        : {payload.get('drift_status')}")
     typer.echo(f"gate_ready   : {bool(payload.get('gate_ready'))}")
     typer.echo(f"path         : {payload['files']['wireframe_summary']}")
+    if payload.get("legacy_source_status") == "present":
+        typer.echo(f"legacy_source: {payload.get('legacy_source_path')}")
     typer.echo(f"stale        : {bool(payload.get('stale'))}")
 
 
@@ -336,19 +341,29 @@ def _list(
     project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
     version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
 ):
-    """List all generated prototypes."""
+    """List generated prototypes and legacy single-file prototype sources."""
     project_root = Path(project) if project else Path.cwd()
     resolved_version = resolve_target_version(project_root, version)
     root = project_root / "docs" / "beacon" / resolved_version / "prototype"
     if not root.exists():
         typer.echo("No prototypes found")
         return
-    candidates = sorted([p for p in root.iterdir() if p.is_dir()])
+    candidates: list[str] = []
+    for path in sorted(root.iterdir()):
+        if path.is_dir():
+            candidates.append(path.name)
+            continue
+        if path.is_file() and path.suffix == ".md":
+            feature = path.stem
+            if feature not in candidates:
+                candidates.append(feature)
     if not candidates:
         typer.echo("No prototypes found")
         return
     typer.echo(f"Prototypes ({len(candidates)} found):")
-    for entry in candidates:
-        feature = entry.name
+    for feature in candidates:
         state = evaluate_prototype_status(project_root, resolved_version, feature)
-        typer.echo(f"  - {entry.name}: {state.get('status')} / review={state.get('review_status')} / gate_ready={state.get('gate_ready')}")
+        suffix = ""
+        if state.get("legacy_source_status") == "present":
+            suffix = f" / legacy_source={legacy_prototype_source_path(project_root, resolved_version, feature)}"
+        typer.echo(f"  - {feature}: {state.get('status')} / review={state.get('review_status')} / gate_ready={state.get('gate_ready')}{suffix}")

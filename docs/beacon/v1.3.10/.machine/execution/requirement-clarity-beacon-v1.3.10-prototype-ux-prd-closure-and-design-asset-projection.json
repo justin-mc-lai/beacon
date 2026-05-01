@@ -1,0 +1,126 @@
+{
+  "schema_version": "1.0",
+  "feature": "Beacon v1.3.10 prototype UX PRD closure and design-asset projection",
+  "feature_slug": "beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection",
+  "version": "v1.3.10",
+  "runtime_version": "v1.3.9",
+  "runtime_capability_line": "v1.3.3",
+  "required": true,
+  "reason_code": "",
+  "blocked": false,
+  "status": "pass",
+  "findings": [],
+  "report_json_path": "docs/beacon/v1.3.10/.machine/execution/requirement-clarity-beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.json",
+  "report_markdown_path": "docs/beacon/v1.3.10/execution/requirement-clarity-beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md",
+  "state_path": ".beacon/state/requirement-clarity-beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.json",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.3.10",
+    "supported": true,
+    "required": true,
+    "ready": true,
+    "diagram_types": [
+      "branch-flow",
+      "state-machine",
+      "decision-priority"
+    ],
+    "state_axes": [
+      "prototype_semantic_axis",
+      "structure_only_candidate",
+      "ux_truth_compiled",
+      "freeze_ready",
+      "design_context_axis",
+      "target_audience_explicit",
+      "use_case_explicit",
+      "operator_state_explicit",
+      "usage_environment_explicit",
+      "brand_tone_explicit",
+      "density_preference_explicit",
+      "design_projection_axis",
+      "ux_prd_projected",
+      "design_md_projected",
+      "preview_assets_projected",
+      "transaction_consistent",
+      "review_gate_axis",
+      "generic_wireframe_blocked",
+      "static_explanation_blocked",
+      "state_feedback_complete",
+      "page_decision_complete",
+      "takeover_audit_axis",
+      "current_state_inventory_ready",
+      "route_state_map_ready",
+      "ui_style_analysis_ready",
+      "design_md_freezable"
+    ],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [
+      "branch-flow",
+      "state-machine",
+      "decision-priority",
+      "state axes"
+    ],
+    "review_gates": [
+      "implementation must cover the declared branch-flow split points",
+      "implementation must preserve the declared state-machine transitions",
+      "implementation must preserve decision-priority ordering",
+      "implementation must keep state axes explicit: prototype_semantic_axis, structure_only_candidate, ux_truth_compiled, freeze_ready, design_context_axis, target_audience_explicit, use_case_explicit, operator_state_explicit, usage_environment_explicit, brand_tone_explicit, density_preference_explicit, design_projection_axis, ux_prd_projected, design_md_projected, preview_assets_projected, transaction_consistent, review_gate_axis, generic_wireframe_blocked, static_explanation_blocked, state_feedback_complete, page_decision_complete, takeover_audit_axis, current_state_inventory_ready, route_state_map_ready, ui_style_analysis_ready, design_md_freezable"
+    ],
+    "qa_coverage_hints": [
+      "cover primary and alternate branch-flow paths",
+      "cover state transitions, illegal transitions, and recovery paths",
+      "cover conflicting conditions using declared decision priority",
+      "cover axis combinations across: prototype_semantic_axis, structure_only_candidate, ux_truth_compiled, freeze_ready, design_context_axis, target_audience_explicit, use_case_explicit, operator_state_explicit, usage_environment_explicit, brand_tone_explicit, density_preference_explicit, design_projection_axis, ux_prd_projected, design_md_projected, preview_assets_projected, transaction_consistent, review_gate_axis, generic_wireframe_blocked, static_explanation_blocked, state_feedback_complete, page_decision_complete, takeover_audit_axis, current_state_inventory_ready, route_state_map_ready, ui_style_analysis_ready, design_md_freezable"
+    ],
+    "evidence_lines": {
+      "branch-flow": [
+        "本子线至少显式冻结以下 branch-flow：",
+        "```text",
+        "requirement_truth_ready",
+        "-> design_context_explicit | design_context_missing",
+        "-> ux_truth_compiled | structure_only_candidate",
+        "-> review_pass | review_blocked",
+        "-> freeze_ready | refreeze_required",
+        "```"
+      ],
+      "state-machine": [
+        "本子线的核心状态机至少包括：",
+        "- `structure_only_candidate`",
+        "- 已生成页面、路由、状态、组件结构",
+        "- 但尚未满足 UX freeze",
+        "- `ux_truth_compiled`",
+        "- `design_context`",
+        "- `design_reasoning`",
+        "- `ux_contract`"
+      ],
+      "decision-priority": [
+        "本子线的决策优先级必须保持：",
+        "1. requirement truth 显式设计上下文，高于运行时临场猜测",
+        "2. UX closure truth 完整性，高于仅有结构 freeze 的“差不多可用”",
+        "3. canonical single-source projection，高于手工补写 `DESIGN.md` 或 preview",
+        "4. review/gate fail-closed，高于“先实现再补 UX 说明”",
+        "5. implement / qa 绑定同一 UX truth，高于不同 runtime lane 的局部便利"
+      ],
+      "state-axes": [
+        "本子线至少显式建模以下 state axes：",
+        "- `prototype_semantic_axis`",
+        "- `structure_only_candidate`",
+        "- `ux_truth_compiled`",
+        "- `freeze_ready`",
+        "- `design_context_axis`",
+        "- `target_audience_explicit`",
+        "- `use_case_explicit`"
+      ]
+    },
+    "generated_at": "2026-04-30T12:52:36.017541+00:00",
+    "feature": "Beacon v1.3.10 prototype UX PRD closure and design-asset projection",
+    "feature_slug": "beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection",
+    "prd_ref": "docs/beacon/v1.3.10/prd/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md",
+    "user_story_ref": "docs/beacon/v1.3.10/user-story/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md"
+  },
+  "required_artifacts": [],
+  "scanned_files": [
+    "docs/beacon/v1.3.10/prd/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md",
+    "docs/beacon/v1.3.10/user-story/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md"
+  ]
+}

@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Beacon v1.3.10 prototype UX PRD closure and design-asset projection Design Preview Dark</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #111111;
+      --fg: #F5F5F7;
+      --card: #1C1C1E;
+      --border: #3A3A3C;
+      --accent: #0071E3;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif; background: var(--bg); color: var(--fg); }
+    main { max-width: 1100px; margin: 0 auto; padding: 32px 20px 56px; }
+    .hero { display: grid; gap: 12px; margin-bottom: 24px; }
+    .eyebrow { font-size: 12px; color: var(--accent); text-transform: uppercase; }
+    h1, h2 { margin: 0; font-weight: 600; }
+    p, li { line-height: 1.5; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 16px; display: grid; gap: 10px; }
+    ul { margin: 0; padding-left: 18px; }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="hero">
+      <div class="eyebrow">apple-inspired-design-md · Dark preview</div>
+      <h1>Beacon v1.3.10 prototype UX PRD closure and design-asset projection</h1>
+      <p>This preview is a design asset catalog projected from prototype truth, not a product implementation page.</p>
+    </section>
+    <section class="grid">
+      
+            <section class="card">
+              <div class="eyebrow">P0 · Web, PC</div>
+              <h2>首页</h2>
+              <p>今天先盯哪些项目，而不是先看所有项目明细。</p>
+              <ul>
+                <li>First: 经营总览条, 重点介入区</li>
+                <li>Noise Guard: 首页不承载 session、agent、原始 requirement 路径等机器噪音。</li>
+              </ul>
+            </section>
+            
+            <section class="card">
+              <div class="eyebrow">P0 · Web, PC</div>
+              <h2>管理总览</h2>
+              <p>多项目之间谁健康、谁阻塞、谁接近可发布。</p>
+              <ul>
+                <li>First: 筛选与排序条, 项目注册表</li>
+                <li>Noise Guard: 总览页只展示管理判断信号，不直接展开 doctor 或 runtime 原始上下文。</li>
+              </ul>
+            </section>
+            
+            <section class="card">
+              <div class="eyebrow">P0 · Web, PC, App</div>
+              <h2>项目详情</h2>
+              <p>这条版本线当前停在哪个阶段，下一步应该推进哪里。</p>
+              <ul>
+                <li>First: 项目头部摘要, 版本与分支信息</li>
+                <li>Noise Guard: 项目详情是接力页，不直接承载底层日志和实现细节。</li>
+              </ul>
+            </section>
+            
+            <section class="card">
+              <div class="eyebrow">P1 · Web, PC</div>
+              <h2>运行中心</h2>
+              <p>当前到底是 single、team 还是 ralph 在推进。</p>
+              <ul>
+                <li>First: 运行态摘要头部, single / team / ralph 模式切换</li>
+                <li>Noise Guard: 运行中心可以下钻运行信息，但仍要压制无边界的机器内部明细。</li>
+              </ul>
+            </section>
+            
+            <section class="card">
+              <div class="eyebrow">P2 · Web, PC</div>
+              <h2>恢复诊断</h2>
+              <p>当前是 degraded、rebuild 还是 doctor 场景。</p>
+              <ul>
+                <li>First: truth 来源说明, degraded / rebuild / doctor 诊断卡</li>
+                <li>Noise Guard: 诊断页解释机器状态，但不能反客为主替代 requirement truth。</li>
+              </ul>
+            </section>
+            
+            <section class="card">
+              <div class="eyebrow">P1 · Web, PC</div>
+              <h2>项目物料查看器</h2>
+              <p>当前要看哪个版本、哪类文档、哪个 feature。</p>
+              <ul>
+                <li>First: 版本树, 文档类型列表</li>
+                <li>Noise Guard: 物料页必须坚持只读查看，不暴露机器索引或编辑入口。</li>
+              </ul>
+            </section>
+            
+    </section>
+  </main>
+</body>
+</html>

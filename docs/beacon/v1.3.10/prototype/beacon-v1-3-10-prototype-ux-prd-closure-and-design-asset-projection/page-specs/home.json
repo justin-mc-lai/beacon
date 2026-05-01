@@ -1,0 +1,283 @@
+{
+  "page_id": "home",
+  "name": "首页",
+  "priority": "P0",
+  "platforms": [
+    "Web",
+    "PC"
+  ],
+  "responsibility": "先回答经营判断，展示项目数、阻塞数、当前交付和介入点。",
+  "decision_supported": "",
+  "sections": [
+    "经营总览条",
+    "重点介入区",
+    "项目推进摘要",
+    "当前交付卡片",
+    "下一步建议"
+  ],
+  "actions": [
+    {
+      "label": "查看管理总览",
+      "target": "management-overview",
+      "trigger": "点击项目组合入口"
+    },
+    {
+      "label": "进入重点项目",
+      "target": "project-detail",
+      "trigger": "点击重点项目卡片"
+    }
+  ],
+  "states": [
+    {
+      "id": "ready",
+      "label": "正常总览",
+      "description": "展示项目数、阻塞数、当前交付和下一步。",
+      "state_visibility_contract": {
+        "user_question": "首页 当前发生了什么，我下一步该做什么？",
+        "required_feedback": [
+          "展示项目数、阻塞数、当前交付和下一步。"
+        ],
+        "primary_actions": [
+          "查看管理总览",
+          "进入重点项目"
+        ],
+        "recovery_actions": [
+          "继续主要操作",
+          "进入下一层或返回上层"
+        ],
+        "acceptance_refs": {
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        "forbidden_feedback": [
+          "完成状态仍要求用户猜下一步"
+        ]
+      }
+    },
+    {
+      "id": "blocked",
+      "label": "阻塞高亮",
+      "description": "把阻塞项目和介入点提升到首屏。",
+      "state_visibility_contract": {
+        "user_question": "首页 当前发生了什么，我下一步该做什么？",
+        "required_feedback": [
+          "把阻塞项目和介入点提升到首屏。",
+          "明确恢复动作与回退路径。"
+        ],
+        "primary_actions": [
+          "查看管理总览",
+          "进入重点项目"
+        ],
+        "recovery_actions": [
+          "返回上一层",
+          "重试当前动作"
+        ],
+        "acceptance_refs": {
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        "forbidden_feedback": [
+          "只显示技术错误码",
+          "隐藏下一步动作"
+        ]
+      }
+    },
+    {
+      "id": "intervention-needed",
+      "label": "需介入",
+      "description": "强调需要 CEO / 负责人介入的项目。",
+      "state_visibility_contract": {
+        "user_question": "首页 当前发生了什么，我下一步该做什么？",
+        "required_feedback": [
+          "强调需要 CEO / 负责人介入的项目。"
+        ],
+        "primary_actions": [
+          "查看管理总览",
+          "进入重点项目"
+        ],
+        "recovery_actions": [
+          "返回上一层",
+          "重试当前动作"
+        ],
+        "acceptance_refs": {
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        "forbidden_feedback": [
+          "只显示技术错误码",
+          "隐藏下一步动作"
+        ]
+      }
+    },
+    {
+      "id": "loading",
+      "label": "加载中",
+      "description": "首页摘要数据仍在汇总。",
+      "state_visibility_contract": {
+        "user_question": "首页 当前发生了什么，我下一步该做什么？",
+        "required_feedback": [
+          "首页摘要数据仍在汇总。"
+        ],
+        "primary_actions": [
+          "查看管理总览",
+          "进入重点项目"
+        ],
+        "recovery_actions": [
+          "继续等待数据加载",
+          "返回上一层"
+        ],
+        "acceptance_refs": {
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        "forbidden_feedback": [
+          "页面结构抖动",
+          "空白无提示"
+        ]
+      }
+    },
+    {
+      "id": "empty",
+      "label": "空状态",
+      "description": "当前没有受管项目。",
+      "state_visibility_contract": {
+        "user_question": "首页 当前发生了什么，我下一步该做什么？",
+        "required_feedback": [
+          "当前没有受管项目。",
+          "解释为什么为空，以及回到哪里继续。"
+        ],
+        "primary_actions": [
+          "查看管理总览",
+          "进入重点项目"
+        ],
+        "recovery_actions": [
+          "返回上一层",
+          "重试当前动作"
+        ],
+        "acceptance_refs": {
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        "forbidden_feedback": [
+          "只显示技术错误码",
+          "隐藏下一步动作"
+        ]
+      }
+    },
+    {
+      "id": "error",
+      "label": "错误",
+      "description": "摘要聚合失败，但提示可以进入详情或 doctor。",
+      "state_visibility_contract": {
+        "user_question": "首页 当前发生了什么，我下一步该做什么？",
+        "required_feedback": [
+          "摘要聚合失败，但提示可以进入详情或 doctor。",
+          "明确恢复动作与回退路径。"
+        ],
+        "primary_actions": [
+          "查看管理总览",
+          "进入重点项目"
+        ],
+        "recovery_actions": [
+          "返回上一层",
+          "重试当前动作"
+        ],
+        "acceptance_refs": {
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        "forbidden_feedback": [
+          "只显示技术错误码",
+          "隐藏下一步动作"
+        ]
+      }
+    }
+  ],
+  "requirement_refs": {
+    "user-story": [
+      "docs/beacon/v1.3.10/user-story/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md"
+    ],
+    "prd": [
+      "docs/beacon/v1.3.10/prd/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md"
+    ],
+    "test-case": [
+      "docs/beacon/v1.3.10/qa/test-cases/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md"
+    ]
+  },
+  "outbound_transitions": [
+    {
+      "from": "home",
+      "to": "management-overview",
+      "trigger": "点击项目组合入口",
+      "type": "primary"
+    },
+    {
+      "from": "home",
+      "to": "project-detail",
+      "trigger": "点击重点项目卡片",
+      "type": "primary"
+    }
+  ],
+  "analysis": {
+    "target_user": "Beacon 管理者 / owner / 负责人",
+    "decision_focus": [
+      "今天先盯哪些项目，而不是先看所有项目明细。",
+      "哪些阻塞已经升级成需要人工介入的经营问题。",
+      "当前交付是否继续按版本线推进，还是需要下钻到项目详情。"
+    ],
+    "layout_rules": [
+      "首屏先给经营判断，不先铺完整表格。",
+      "阻塞与介入信息必须比常规进度更靠上。",
+      "runtime 只保留摘要，不在首页展开机器内部细节。"
+    ],
+    "noise_guardrail": "首页不承载 session、agent、原始 requirement 路径等机器噪音。"
+  },
+  "page_intent_contract": {
+    "why_this_page_exists": "先回答经营判断，展示项目数、阻塞数、当前交付和介入点。",
+    "decision_supported": "今天先盯哪些项目，而不是先看所有项目明细。",
+    "must_show_first": [
+      "经营总览条",
+      "重点介入区"
+    ],
+    "must_not_show": [
+      "transaction_id",
+      "projection metadata",
+      "无边界 runtime 明细"
+    ],
+    "entry_conditions": [
+      "用户进入 `home` 需要先获得当前上下文。",
+      "当前 requirement truth 已经明确该页承担的主判断。"
+    ],
+    "exit_actions": [
+      {
+        "label": "查看管理总览",
+        "target": "management-overview"
+      },
+      {
+        "label": "进入重点项目",
+        "target": "project-detail"
+      }
+    ]
+  },
+  "layout_lines": [
+    "+----------------------------------------------------------------------------------+",
+    "| 顶栏：Beacon 管理端 | 时间范围 | 视角: CEO / Owner | 进入项目组合总览            |",
+    "+----------------------------------------------------------------------------------+",
+    "| 指标条: 活跃项目 | 阻塞项目 | 活跃 runtime | 今日交付 | 需介入项目                 |",
+    "+----------------------------------------------------------------------------------+",
+    "| 重点介入区                                                                       |",
+    "| - P0 项目A: 卡在 qa，等待 owner 决策                                              |",
+    "| - P1 项目B: docs 缺口，需补 test-case                                             |",
+    "| [进入重点项目] [查看全部介入项]                                                   |",
+    "+----------------------------------------------------------------------------------+",
+    "| 项目推进摘要列表                                                                  |",
+    "| 项目 | 当前版本 | 当前阶段 | 健康态 | 当前交付 | blocker | 下一步                 |",
+    "| A    | v1.3.6   | prototype | risk   | 首页草图  | qa 缺口 | 进详情               |",
+    "| B    | v1.2.4   | implement | good   | 文档查看器 | 无      | 继续验证            |",
+    "+----------------------------------------------------------------------------------+",
+    "| 当前交付                                      | 下一步建议                         |",
+    "| - v1.3.6 首页/总览骨架已冻结                  | - 先处理阻塞项目A                  |",
+    "| - 物料查看器只读流已接入                      | - 再进入 management overview 扫描  |",
+    "+----------------------------------------------------------------------------------+"
+  ]
+}

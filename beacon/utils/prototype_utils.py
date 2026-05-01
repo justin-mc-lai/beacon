@@ -383,9 +383,19 @@ TRANSITION_LIBRARY = [
 
 FIELD_PATTERNS = {
     "prototype_archetype": re.compile(r"prototype_archetype\s*[:=]\s*([A-Za-z0-9_-]+)", re.IGNORECASE),
+    "prototype_ux_prd_required": re.compile(r"prototype_ux_prd_required\s*[:=]\s*(true|false)", re.IGNORECASE),
+    "product_surface_type": re.compile(r"product_surface_type\s*[:=]\s*([A-Za-z0-9_-]+)", re.IGNORECASE),
     "theme_primary": re.compile(r"theme_primary\s*[:=]\s*(#[0-9A-Fa-f]{6})", re.IGNORECASE),
     "theme_secondary": re.compile(r"theme_secondary\s*[:=]\s*(#[0-9A-Fa-f]{6})", re.IGNORECASE),
     "route_closure_required": re.compile(r"route_closure_required\s*[:=]\s*(true|false)", re.IGNORECASE),
+    "target_audience": re.compile(r"target_audience\s*[:=]\s*(.+)", re.IGNORECASE),
+    "primary_use_cases": re.compile(r"primary_use_cases\s*[:=]\s*(.+)", re.IGNORECASE),
+    "operator_mental_state": re.compile(r"operator_mental_state\s*[:=]\s*(.+)", re.IGNORECASE),
+    "usage_environment": re.compile(r"usage_environment\s*[:=]\s*(.+)", re.IGNORECASE),
+    "brand_tone": re.compile(r"brand_tone\s*[:=]\s*(.+)", re.IGNORECASE),
+    "density_preference": re.compile(r"density_preference\s*[:=]\s*(.+)", re.IGNORECASE),
+    "design_preset": re.compile(r"design_preset\s*[:=]\s*([A-Za-z0-9_-]+)", re.IGNORECASE),
+    "design_preset_override_reason": re.compile(r"design_preset_override_reason\s*[:=]\s*(.+)", re.IGNORECASE),
 }
 
 PAGE_HINT_PATTERN = re.compile(
@@ -410,7 +420,7 @@ STOP_PAGE_TOKENS = (
 )
 TRANSITION_HINT_PATTERN = re.compile(r"(->|→|=>|跳转|进入|返回|to\b)", re.IGNORECASE)
 PAGE_DECLARATION_HINT_PATTERN = re.compile(
-    r"(?:^#{1,6}\s+.*(?:pages?|screens?|views?|页面列表|正式页面|页面名称|required pages)\b|(?:正式页面|页面名称固定为|只允许冻结以下正式页面|required_pages)\s*[:：]?)",
+    r"(?:^#{1,6}\s+.*(?:pages\b|screens\b|views\b|page inventory\b|页面列表|正式页面|页面名称|required pages)\b|(?:正式页面|页面名称固定为|只允许冻结以下正式页面|required_pages)\s*[:：]?)",
     re.IGNORECASE,
 )
 FORBIDDEN_PAGE_CONTEXT_PATTERN = re.compile(
@@ -503,6 +513,14 @@ def prototype_files(project_root: Path, version: str, feature: str) -> dict[str,
         "state_flow_map_md": _prefer(root / "state-flow-map.md", human_view_dir / "state-flow-map.md"),
         "component_catalog": _prefer(root / "component-catalog.json", machine_view_dir / "component-catalog.json"),
         "component_catalog_md": _prefer(root / "component-catalog.md", human_view_dir / "component-catalog.md"),
+        "automation_priority_matrix": _prefer(
+            root / "automation-priority-matrix.json",
+            machine_view_dir / "automation-priority-matrix.json",
+        ),
+        "automation_priority_matrix_md": _prefer(
+            root / "automation-priority-matrix.md",
+            human_view_dir / "automation-priority-matrix.md",
+        ),
         "interaction_map": _prefer(root / "interaction-map.json", machine_view_dir / "interaction-map.json"),
         "coverage_report": _prefer(root / "coverage-report.json", machine_view_dir / "coverage-report.json"),
         "theme": _prefer(root / "theme.json", assets_dir / "theme.json"),
@@ -515,6 +533,10 @@ def prototype_files(project_root: Path, version: str, feature: str) -> dict[str,
         ),
         "pages_dir": _prefer(root / "pages", human_view_dir / "wireframes"),
         "page_specs_dir": _prefer(root / "page-specs", machine_view_dir / "page-specs"),
+        "ux_prd": _prefer(root / "ux-prd.md", human_view_dir / "ux-prd.md"),
+        "design_md": _prefer(root / "DESIGN.md", assets_dir / "DESIGN.md"),
+        "preview_html": _prefer(root / "preview.html", assets_dir / "preview.html"),
+        "preview_dark_html": _prefer(root / "preview-dark.html", assets_dir / "preview-dark.html"),
         "index_html": root / "index.html",
     }
 
@@ -536,6 +558,10 @@ def source_doc_paths(project_root: Path, version: str, feature: str) -> dict[str
         "prd": _resolve_feature_doc_path(base / "prd", feature),
         "test-case": _resolve_feature_doc_path(base / "qa" / "test-cases", feature),
     }
+
+
+def legacy_prototype_source_path(project_root: Path, version: str, feature: str) -> Path:
+    return _resolve_feature_doc_path(project_root / "docs" / "beacon" / version / "prototype", feature)
 
 
 def sha256_text(text: str) -> str:
@@ -581,6 +607,18 @@ def load_source_documents(project_root: Path, version: str, feature: str) -> lis
                 "fingerprint": sha256_text(text),
             }
         )
+    prototype_source = legacy_prototype_source_path(project_root, version, feature)
+    if prototype_source.exists() and prototype_source.is_file():
+        text = prototype_source.read_text(encoding="utf-8")
+        docs.append(
+            {
+                "type": "prototype-source",
+                "path": prototype_source,
+                "relative_path": str(prototype_source.relative_to(project_root)),
+                "text": text,
+                "fingerprint": sha256_text(text),
+            }
+        )
     return docs
 
 
@@ -593,6 +631,36 @@ def _extract_field(docs: list[dict[str, Any]], field: str, default: str) -> str:
         if match:
             return match.group(1).strip()
     return default
+
+
+def _extract_list_field(docs: list[dict[str, Any]], field: str, default: list[str]) -> list[str]:
+    raw = _extract_field(docs, field, "")
+    if not raw:
+        return list(default)
+    normalized = raw.replace("|", ",").replace(";", ",")
+    items = [item.strip(" -") for item in normalized.split(",") if item.strip(" -")]
+    return items or list(default)
+
+
+def _version_supports_ux_truth(version: str) -> bool:
+    return _semver_tuple(version) >= (1, 3, 10)
+
+
+def _supports_ux_truth(version: str, docs: list[dict[str, Any]]) -> bool:
+    if _version_supports_ux_truth(version):
+        return True
+    explicit_flag = _extract_field(docs, "prototype_ux_prd_required", "false").lower() == "true"
+    if explicit_flag:
+        return True
+    explicit_context_fields = [
+        _extract_field(docs, "target_audience", ""),
+        _extract_field(docs, "primary_use_cases", ""),
+        _extract_field(docs, "operator_mental_state", ""),
+        _extract_field(docs, "usage_environment", ""),
+        _extract_field(docs, "brand_tone", ""),
+        _extract_field(docs, "density_preference", ""),
+    ]
+    return any(bool(value.strip()) for value in explicit_context_fields)
 
 
 def _explicit_page_label_from_line(line: str) -> str:
@@ -925,6 +993,7 @@ def _detect_pages_with_meta(docs: list[dict[str, Any]]) -> tuple[list[str], bool
     if "material-viewer" in ordered and "material-document-detail" not in ordered:
         ordered.append("material-document-detail")
         page_meta["material-document-detail"] = dict(PAGE_CATALOG["material-document-detail"])
+    page_meta = _overlay_explicit_page_meta(docs, page_meta)
     return ordered, fallback_used, page_meta
 
 
@@ -937,6 +1006,178 @@ def _resolve_page_name(page_id: str, page_meta: dict[str, dict[str, Any]]) -> st
     meta = page_meta.get(page_id) or PAGE_CATALOG.get(page_id) or {}
     name = str(meta.get("name") or "").strip()
     return name or page_id
+
+
+def _resolve_page_id_from_label(label: str, page_meta: dict[str, dict[str, Any]]) -> str:
+    normalized = _clean_page_label(label).lower()
+    if not normalized:
+        return ""
+    for page_id, meta in page_meta.items():
+        tokens = [page_id, str(meta.get("name") or "")]
+        tokens.extend(str(keyword) for keyword in (meta.get("keywords") or []) if str(keyword).strip())
+        for token in tokens:
+            if _clean_page_label(token).lower() == normalized:
+                return page_id
+    return ""
+
+
+def _parse_action_specs(raw: str, page_meta: dict[str, dict[str, Any]]) -> list[dict[str, str]]:
+    specs: list[dict[str, str]] = []
+    normalized = str(raw or "").replace("|", ";")
+    for chunk in [item.strip() for item in normalized.split(";") if item.strip()]:
+        if "->" in chunk:
+            label_raw, target_raw = chunk.split("->", 1)
+        elif "→" in chunk:
+            label_raw, target_raw = chunk.split("→", 1)
+        else:
+            continue
+        label = _clean_page_label(label_raw)
+        target_label = _clean_page_label(target_raw)
+        target = _resolve_page_id_from_label(target_label, page_meta)
+        if label and target:
+            specs.append({"label": label, "target": target, "trigger": f"点击{label}"})
+    return specs[:8]
+
+
+def _humanize_state_label(state_id: str) -> str:
+    text = str(state_id or "").strip().replace("_", " ").replace("-", " ")
+    text = re.sub(r"\s+", " ", text).strip()
+    if not text:
+        return "State"
+    return " ".join(part[:1].upper() + part[1:] for part in text.split(" "))
+
+
+def _parse_reference_values(raw: str, *, pattern: re.Pattern[str] | None = None) -> list[str]:
+    text = str(raw or "").strip()
+    if not text:
+        return []
+    if pattern is not None:
+        matches = [match.upper() for match in pattern.findall(text)]
+        if matches:
+            seen: set[str] = set()
+            ordered: list[str] = []
+            for match in matches:
+                if match in seen:
+                    continue
+                seen.add(match)
+                ordered.append(match)
+            return ordered[:8]
+    chunks = re.split(r"[,\s;/]+", text)
+    seen: set[str] = set()
+    normalized: list[str] = []
+    for chunk in chunks:
+        ref = chunk.strip().upper()
+        if not ref or ref in seen:
+            continue
+        seen.add(ref)
+        normalized.append(ref)
+    return normalized[:8]
+
+
+def _parse_state_specs(raw: str) -> list[dict[str, str]]:
+    normalized_raw = re.sub(r"^[-*]\s+", "", str(raw or "").strip())
+    if not normalized_raw:
+        return []
+    chunks = [item.strip() for item in normalized_raw.split(";") if item.strip()]
+    if not chunks:
+        chunks = [normalized_raw]
+    states: list[dict[str, str]] = []
+    for chunk in chunks[:8]:
+        parts = [part.strip() for part in chunk.split("|")]
+        extras = parts[3:] if len(parts) >= 4 else []
+        if len(parts) >= 3:
+            state_id, label, description = parts[0], parts[1], parts[2]
+        elif len(parts) == 2:
+            state_id, description = parts[0], parts[1]
+            label = _humanize_state_label(state_id)
+        else:
+            state_id = parts[0]
+            label = _humanize_state_label(state_id)
+            description = f"{label} state should provide explicit business feedback."
+        state_slug = slugify_feature(state_id).replace("prototype-feature", "state")
+        if not state_slug:
+            continue
+        state_payload: dict[str, Any] = {
+            "id": state_slug,
+            "label": label or _humanize_state_label(state_slug),
+            "description": description.strip() or f"{label or state_slug} state should provide explicit business feedback.",
+        }
+        for extra in extras:
+            lowered = extra.lower()
+            if lowered.startswith("ac_refs="):
+                state_payload["ac_refs"] = _parse_reference_values(extra.split("=", 1)[1], pattern=AC_PATTERN)
+            elif lowered.startswith("tc_refs="):
+                state_payload["tc_refs"] = _parse_reference_values(extra.split("=", 1)[1], pattern=TC_PATTERN)
+        states.append(state_payload)
+    return states[:8]
+
+
+def _overlay_explicit_page_meta(docs: list[dict[str, Any]], page_meta: dict[str, dict[str, Any]]) -> dict[str, dict[str, Any]]:
+    rows = _iter_doc_lines(docs)
+    current_page_id = ""
+    in_actions_block = False
+    in_states_block = False
+    for row in rows:
+        stripped = str(row.get("line") or "").strip()
+        if not stripped:
+            continue
+        heading = re.match(r"^#{3,6}\s+(.+)$", stripped)
+        if heading:
+            current_page_id = _resolve_page_id_from_label(heading.group(1), page_meta)
+            in_actions_block = False
+            in_states_block = False
+            continue
+        if not current_page_id:
+            continue
+        meta = page_meta.get(current_page_id)
+        if not isinstance(meta, dict):
+            continue
+        normalized = re.sub(r"^[-*]\s+", "", stripped)
+        lower = normalized.lower()
+        if lower.startswith("responsibility:"):
+            meta["responsibility"] = normalized.split(":", 1)[1].strip()
+            continue
+        if lower.startswith("decision_supported:"):
+            meta["decision_supported"] = normalized.split(":", 1)[1].strip()
+            continue
+        if lower.startswith("sections:"):
+            raw_sections = normalized.split(":", 1)[1].strip().replace("|", ",")
+            meta["sections"] = [item.strip() for item in raw_sections.split(",") if item.strip()][:6]
+            continue
+        if lower.startswith("priority:"):
+            meta["priority"] = normalized.split(":", 1)[1].strip() or meta.get("priority", "P1")
+            continue
+        if lower.startswith("platforms:"):
+            raw_platforms = normalized.split(":", 1)[1].strip().replace("|", ",").replace("/", ",")
+            meta["platforms"] = [item.strip() for item in raw_platforms.split(",") if item.strip()][:4]
+            continue
+        if lower.startswith("actions:"):
+            parsed = _parse_action_specs(normalized.split(":", 1)[1].strip(), page_meta)
+            if parsed:
+                meta["actions"] = parsed
+            in_actions_block = True
+            in_states_block = False
+            continue
+        if lower.startswith("states:"):
+            parsed = _parse_state_specs(normalized.split(":", 1)[1].strip())
+            if parsed:
+                meta["states"] = parsed
+            in_actions_block = False
+            in_states_block = True
+            continue
+        if in_actions_block and re.match(r"^[-*]\s+", stripped):
+            parsed = _parse_action_specs(normalized, page_meta)
+            if parsed:
+                meta["actions"] = list(meta.get("actions") or []) + parsed
+                continue
+        if in_states_block and re.match(r"^[-*]\s+", stripped):
+            parsed = _parse_state_specs(normalized)
+            if parsed:
+                meta["states"] = list(meta.get("states") or []) + parsed
+                continue
+        in_actions_block = False
+        in_states_block = False
+    return page_meta
 
 
 def _line_page_mentions(line: str, page_ids: list[str], page_meta: dict[str, dict[str, Any]]) -> list[str]:
@@ -1080,20 +1321,30 @@ def _build_page_specs(
                 "responsibility": meta.get(
                     "responsibility", f"冻结 `{meta.get('name', page_id)}` 的页面结构、动作和状态说明。"
                 ),
+                "decision_supported": str(meta.get("decision_supported") or "").strip(),
                 "sections": list(meta.get("sections") or ["页面头部", "关键内容区", "主要操作区", "状态与反馈区"]),
                 "actions": filtered_actions,
-                "states": list(
+                "states": [
+                    {
+                        **state,
+                    }
+                    for state in list(
                     meta.get("states")
                     or [
                         {"id": "ready", "label": "可用", "description": "页面数据齐备，用户可完成核心操作。"},
                         {"id": "loading", "label": "加载中", "description": "页面数据正在加载。"},
                         {"id": "error", "label": "错误", "description": "页面加载或提交失败，需提示恢复动作。"},
                     ]
-                ),
+                    )
+                ],
                 "requirement_refs": refs,
                 "outbound_transitions": outbound.get(page_id, []),
             }
         )
+        page_specs[-1]["analysis"] = PAGE_ANALYSIS_CATALOG.get(page_id, _default_page_analysis(page_specs[-1]))
+        page_specs[-1]["page_intent_contract"] = _build_page_intent_contract(page_specs[-1])
+        for state in page_specs[-1]["states"]:
+            state["state_visibility_contract"] = _build_state_visibility_contract(page_specs[-1], state)
     return page_specs
 
 
@@ -1151,9 +1402,43 @@ def _build_component_catalog(
         page_id = str(page.get("page_id") or "").strip()
         state_refs = [str(item.get("id") or "").strip() for item in page.get("states", []) if str(item.get("id") or "").strip()]
         actions = list(page.get("actions") or [])
+        states = [state for state in page.get("states", []) if isinstance(state, dict)]
         for index, section in enumerate(page.get("sections", []), start=1):
             component_id = f"{page_id}-component-{index:02d}"
             action = actions[index - 1] if index - 1 < len(actions) else None
+            state_feedback_responsibilities = []
+            component_ac_refs: list[str] = []
+            component_tc_refs: list[str] = []
+            for state in states[:6]:
+                state_id = str(state.get("id") or "").strip()
+                if not state_id:
+                    continue
+                state_ac_refs = [str(item).strip().upper() for item in (state.get("ac_refs") or []) if str(item).strip()]
+                state_tc_refs = [str(item).strip().upper() for item in (state.get("tc_refs") or []) if str(item).strip()]
+                if state_id in {"ready", "success", "document-open", "frozen"}:
+                    feedback = f"{section} must preserve primary content hierarchy and next-step clarity."
+                elif state_id in {"loading"}:
+                    feedback = f"{section} must keep visible loading feedback without collapsing layout."
+                elif state_id in {"error", "blocked", "stale", "source-missing"}:
+                    feedback = f"{section} must show recovery guidance and explicit fallback action."
+                elif state_id in {"empty", "idle"}:
+                    feedback = f"{section} must explain why content is empty and where to continue."
+                else:
+                    feedback = str(state.get("description") or "").strip() or f"{section} must reflect `{state_id}` business state."
+                state_feedback_responsibilities.append(
+                    {
+                        "state_id": state_id,
+                        "feedback": feedback,
+                        "ac_refs": state_ac_refs,
+                        "tc_refs": state_tc_refs,
+                    }
+                )
+                component_ac_refs.extend(state_ac_refs)
+                component_tc_refs.extend(state_tc_refs)
+            if not component_ac_refs:
+                component_ac_refs = list(ac_ids)
+            if not component_tc_refs:
+                component_tc_refs = list(tc_ids)
             components.append(
                 {
                     "component_id": component_id,
@@ -1178,8 +1463,18 @@ def _build_component_catalog(
                         }
                     ),
                     "state_refs": state_refs,
-                    "ac_refs": ac_ids,
-                    "tc_refs": tc_ids,
+                    "state_feedback_responsibilities": state_feedback_responsibilities,
+                    "ac_refs": _parse_reference_values(component_ac_refs, pattern=AC_PATTERN),
+                    "tc_refs": _parse_reference_values(component_tc_refs, pattern=TC_PATTERN),
+                    "interaction_responsibilities": [
+                        {
+                            "label": str(action.get("label") or "").strip(),
+                            "trigger": str(action.get("trigger") or "").strip(),
+                            "target": str(action.get("target") or "").strip(),
+                        }
+                    ]
+                    if isinstance(action, dict)
+                    else [],
                     "story_refs": list((page.get("requirement_refs") or {}).get("user-story") or []),
                 }
             )
@@ -1194,16 +1489,22 @@ def _render_component_catalog_md(feature: str, payload: dict[str, Any]) -> str:
     lines = [
         f"# 组件契约清单：{feature}",
         "",
-        "| Component ID | Page | Name | State Refs | AC Refs | TC Refs |",
-        "|---|---|---|---|---|---|",
+        "| Component ID | Page | Name | State Refs | Feedback Responsibilities | AC Refs | TC Refs |",
+        "|---|---|---|---|---|---|---|",
     ]
     for component in payload.get("components", []):
+        feedback_summary = ", ".join(
+            f"{item.get('state_id')}:{str(item.get('feedback') or '').strip()[:24]}"
+            for item in (component.get("state_feedback_responsibilities") or [])[:3]
+            if isinstance(item, dict)
+        )
         lines.append(
-            "| `{}` | `{}` | {} | {} | {} | {} |".format(
+            "| `{}` | `{}` | {} | {} | {} | {} | {} |".format(
                 component.get("component_id", ""),
                 component.get("page_id", ""),
                 component.get("name", ""),
                 ", ".join(component.get("state_refs", [])[:6]) or "-",
+                feedback_summary or "-",
                 ", ".join(component.get("ac_refs", [])[:4]) or "-",
                 ", ".join(component.get("tc_refs", [])[:4]) or "-",
             )
@@ -1226,6 +1527,7 @@ def _build_state_flow_map(
 ) -> dict[str, Any]:
     nodes: list[dict[str, Any]] = []
     edges: list[dict[str, Any]] = []
+    state_index: dict[tuple[str, str], dict[str, Any]] = {}
     tc_ids = list(requirement_ids.get("tc_ids") or [])
     for page in page_specs:
         page_id = str(page.get("page_id") or "")
@@ -1235,6 +1537,7 @@ def _build_state_flow_map(
             state_id = str(state.get("id") or "").strip()
             if not state_id:
                 continue
+            state_index[(page_id, state_id)] = state
             node_key = f"{page_id}:{state_id}"
             nodes.append(
                 {
@@ -1243,9 +1546,12 @@ def _build_state_flow_map(
                     "state_id": state_id,
                     "label": str(state.get("label") or state_id),
                     "description": str(state.get("description") or ""),
+                    "ac_refs": [str(item).strip().upper() for item in (state.get("ac_refs") or []) if str(item).strip()],
+                    "tc_refs": [str(item).strip().upper() for item in (state.get("tc_refs") or []) if str(item).strip()],
                 }
             )
         if "loading" in state_ids and "ready" in state_ids:
+            ready_state = state_index.get((page_id, "ready"), {})
             edges.append(
                 {
                     "from": f"{page_id}:loading",
@@ -1254,11 +1560,13 @@ def _build_state_flow_map(
                     "guard": "data_fetch_success",
                     "kind": "intra-page",
                     "fallback": None,
-                    "test_refs": tc_ids[:2],
+                    "ac_refs": [str(item).strip().upper() for item in (ready_state.get("ac_refs") or []) if str(item).strip()],
+                    "test_refs": [str(item).strip().upper() for item in (ready_state.get("tc_refs") or []) if str(item).strip()] or tc_ids[:2],
                 }
             )
         if "ready" in state_ids and "error" in state_ids:
             fallback_page = "recovery-diagnostics" if page_id != "recovery-diagnostics" else page_id
+            error_state = state_index.get((page_id, "error"), {})
             edges.append(
                 {
                     "from": f"{page_id}:ready",
@@ -1267,7 +1575,25 @@ def _build_state_flow_map(
                     "guard": "runtime_or_projection_error",
                     "kind": "intra-page",
                     "fallback": f"{fallback_page}:ready",
-                    "test_refs": tc_ids[:2],
+                    "ac_refs": [str(item).strip().upper() for item in (error_state.get("ac_refs") or []) if str(item).strip()],
+                    "test_refs": [str(item).strip().upper() for item in (error_state.get("tc_refs") or []) if str(item).strip()] or tc_ids[:2],
+                }
+            )
+        meaningful_states = [state for state in states if str(state.get("id") or "").strip() not in {"ready", "loading", "error"}]
+        for state in meaningful_states[:8]:
+            state_id = str(state.get("id") or "").strip()
+            if not state_id:
+                continue
+            edges.append(
+                {
+                    "from": f"{page_id}:ready",
+                    "to": f"{page_id}:{state_id}",
+                    "event": f"enter_{state_id.replace('-', '_')}",
+                    "guard": "business_condition_detected",
+                    "kind": "intra-page-business",
+                    "fallback": f"{page_id}:ready",
+                    "ac_refs": [str(item).strip().upper() for item in (state.get("ac_refs") or []) if str(item).strip()],
+                    "test_refs": [str(item).strip().upper() for item in (state.get("tc_refs") or []) if str(item).strip()],
                 }
             )
     for transition in transitions:
@@ -1275,15 +1601,25 @@ def _build_state_flow_map(
         target_page = str(transition.get("to") or "")
         if not source_page or not target_page:
             continue
+        target_ready_state = state_index.get((target_page, "ready"), {})
         edges.append(
             {
                 "from": f"{source_page}:ready",
                 "to": f"{target_page}:ready",
+                "from_page": source_page,
+                "from_state": "ready",
+                "to_page": target_page,
+                "to_state": "ready",
                 "event": str(transition.get("trigger") or "navigate"),
                 "guard": "route_allowed",
-                "kind": "inter-page",
+                "kind": "cross-page-transition",
                 "fallback": f"{source_page}:ready",
-                "test_refs": tc_ids[:1],
+                "route_or_runtime_evidence": [
+                    f"navigation-map:{source_page}->{target_page}",
+                    f"implementation:{target_page}",
+                ],
+                "ac_refs": [str(item).strip().upper() for item in (target_ready_state.get("ac_refs") or []) if str(item).strip()] or list(requirement_ids.get("ac_ids") or [])[:1],
+                "test_refs": [str(item).strip().upper() for item in (target_ready_state.get("tc_refs") or []) if str(item).strip()] or tc_ids[:1],
             }
         )
     return {
@@ -1299,17 +1635,19 @@ def _render_state_flow_map_md(feature: str, payload: dict[str, Any]) -> str:
     lines = [
         f"# 状态流冻结图：{feature}",
         "",
-        "| From | To | Event | Guard | Fallback |",
-        "|---|---|---|---|---|",
+        "| From | To | Event | Guard | Fallback | AC Refs | TC Refs |",
+        "|---|---|---|---|---|---|---|",
     ]
     for edge in payload.get("edges", []):
         lines.append(
-            "| `{}` | `{}` | {} | {} | {} |".format(
+            "| `{}` | `{}` | {} | {} | {} | {} | {} |".format(
                 edge.get("from", ""),
                 edge.get("to", ""),
                 edge.get("event", ""),
                 edge.get("guard", ""),
                 edge.get("fallback", "-") or "-",
+                ", ".join(edge.get("ac_refs", [])[:4]) or "-",
+                ", ".join(edge.get("test_refs", [])[:4]) or "-",
             )
         )
     lines.extend(
@@ -1320,6 +1658,124 @@ def _render_state_flow_map_md(feature: str, payload: dict[str, Any]) -> str:
             "- 每条边都应可追溯到 test-case 场景。",
         ]
     )
+    return "\n".join(lines)
+
+
+def _build_automation_priority_matrix(
+    page_specs: list[dict[str, Any]],
+    state_flow_map: dict[str, Any],
+    component_catalog: dict[str, Any],
+    design_reasoning: dict[str, Any],
+) -> dict[str, Any]:
+    page_by_id = {
+        str(page.get("page_id") or "").strip(): page
+        for page in page_specs
+        if isinstance(page, dict) and str(page.get("page_id") or "").strip()
+    }
+    entries: list[dict[str, Any]] = []
+
+    def _priority_class(page_priority: str, *, has_meaningful_refs: bool, target_type: str, state_id: str = "") -> str:
+        normalized = str(page_priority or "P1").strip().upper()
+        if normalized == "P0" and has_meaningful_refs:
+            return "release-blocker" if target_type in {"transition", "state"} or state_id not in {"ready", ""} else "primary-automation"
+        if has_meaningful_refs:
+            return "primary-automation"
+        if target_type in {"page", "component"}:
+            return "smoke-only"
+        return "manual-acceptable"
+
+    for page in page_specs:
+        if not isinstance(page, dict):
+            continue
+        page_id = str(page.get("page_id") or "").strip()
+        page_priority = str(page.get("priority") or "P1").strip().upper()
+        for state in page.get("states", []):
+            if not isinstance(state, dict):
+                continue
+            state_id = str(state.get("id") or "").strip()
+            if not state_id:
+                continue
+            ac_refs = [str(item).strip().upper() for item in (state.get("ac_refs") or []) if str(item).strip()]
+            tc_refs = [str(item).strip().upper() for item in (state.get("tc_refs") or []) if str(item).strip()]
+            entries.append(
+                {
+                    "target_id": f"{page_id}:{state_id}",
+                    "target_type": "state",
+                    "priority_class": _priority_class(page_priority, has_meaningful_refs=bool(ac_refs or tc_refs), target_type="state", state_id=state_id),
+                    "reason": str(state.get("description") or "").strip() or "State visibility must stay verifiable.",
+                    "product_surface_type": str(design_reasoning.get("product_surface_type") or ""),
+                    "page_priority": page_priority,
+                    "ac_refs": ac_refs,
+                    "tc_refs": tc_refs,
+                }
+            )
+
+    for edge in (state_flow_map.get("edges") or []):
+        if not isinstance(edge, dict):
+            continue
+        if str(edge.get("kind") or "") != "cross-page-transition":
+            continue
+        to_page = str(edge.get("to_page") or "").strip() or str(edge.get("to", "")).split(":")[0]
+        page_priority = str((page_by_id.get(to_page) or {}).get("priority") or "P1").strip().upper()
+        ac_refs = [str(item).strip().upper() for item in (edge.get("ac_refs") or []) if str(item).strip()]
+        tc_refs = [str(item).strip().upper() for item in (edge.get("test_refs") or []) if str(item).strip()]
+        entries.append(
+            {
+                "target_id": f"{edge.get('from')}->{edge.get('to')}",
+                "target_type": "transition",
+                "priority_class": _priority_class(page_priority, has_meaningful_refs=bool(ac_refs or tc_refs), target_type="transition"),
+                "reason": f"{edge.get('event', 'navigate')} transition must preserve guard, fallback, and evidence binding.",
+                "product_surface_type": str(design_reasoning.get("product_surface_type") or ""),
+                "page_priority": page_priority,
+                "ac_refs": ac_refs,
+                "tc_refs": tc_refs,
+            }
+        )
+
+    for component in (component_catalog.get("components") or []):
+        if not isinstance(component, dict):
+            continue
+        page_priority = str((page_by_id.get(str(component.get("page_id") or "").strip()) or {}).get("priority") or "P1").strip().upper()
+        ac_refs = [str(item).strip().upper() for item in (component.get("ac_refs") or []) if str(item).strip()]
+        tc_refs = [str(item).strip().upper() for item in (component.get("tc_refs") or []) if str(item).strip()]
+        entries.append(
+            {
+                "target_id": str(component.get("component_id") or ""),
+                "target_type": "component",
+                "priority_class": _priority_class(page_priority, has_meaningful_refs=bool(ac_refs or tc_refs), target_type="component"),
+                "reason": f"{component.get('name', 'Component')} owns visible state feedback and interaction continuity.",
+                "product_surface_type": str(design_reasoning.get("product_surface_type") or ""),
+                "page_priority": page_priority,
+                "ac_refs": ac_refs,
+                "tc_refs": tc_refs,
+            }
+        )
+
+    return {
+        "schema_version": SCHEMA_VERSION,
+        "entry_count": len(entries),
+        "entries": entries,
+    }
+
+
+def _render_automation_priority_matrix_md(feature: str, payload: dict[str, Any]) -> str:
+    lines = [
+        f"# 自动化优先级矩阵：{feature}",
+        "",
+        "| Target ID | Target Type | Priority Class | Reason | AC Refs | TC Refs |",
+        "|---|---|---|---|---|---|",
+    ]
+    for item in payload.get("entries", []):
+        lines.append(
+            "| `{}` | `{}` | `{}` | {} | {} | {} |".format(
+                item.get("target_id", ""),
+                item.get("target_type", ""),
+                item.get("priority_class", ""),
+                item.get("reason", ""),
+                ", ".join(item.get("ac_refs", [])[:4]) or "-",
+                ", ".join(item.get("tc_refs", [])[:4]) or "-",
+            )
+        )
     return "\n".join(lines)
 
 
@@ -1348,15 +1804,206 @@ def _build_route_closure_contract(page_specs: list[dict[str, Any]], transitions:
 
 
 def _build_theme_payload(docs: list[dict[str, Any]]) -> dict[str, Any]:
-    primary = _extract_field(docs, "theme_primary", "#2563EB")
-    secondary = _extract_field(docs, "theme_secondary", "#0F172A")
+    primary = _extract_field(docs, "theme_primary", "#0071E3")
+    secondary = _extract_field(docs, "theme_secondary", "#F5F5F7")
     archetype = _extract_field(docs, "prototype_archetype", DEFAULT_PROTOTYPE_ARCHETYPE)
+    design_preset = _extract_field(docs, "design_preset", "apple-inspired-design-md")
+    product_surface_type = _extract_field(docs, "product_surface_type", "")
+    override_reason = _extract_field(docs, "design_preset_override_reason", "")
     return {
         "ui_kit": PROTOTYPE_UI_KIT,
+        "design_preset": design_preset,
+        "product_surface_type": product_surface_type,
+        "design_preset_override_reason": override_reason,
+        "design_preset_overridden": bool(override_reason) or design_preset != "apple-inspired-design-md",
         "prototype_archetype": archetype,
         "primary": primary,
         "secondary": secondary,
-        "surface_note": "Wireframe freeze uses markdown and metadata only, not high-fidelity HTML surfaces.",
+        "surface_note": "Wireframe freeze uses Apple-inspired quiet neutrals and restrained accent metadata, not high-fidelity HTML surfaces.",
+    }
+
+
+def _build_design_context(
+    docs: list[dict[str, Any]],
+    page_specs: list[dict[str, Any]],
+    theme: dict[str, Any],
+) -> dict[str, Any]:
+    target_audience = _extract_field(docs, "target_audience", "Beacon 管理者 / 需求 owner / 实现协作者")
+    use_cases = _extract_list_field(
+        docs,
+        "primary_use_cases",
+        [
+            "快速理解页面先服务哪一个判断",
+            "冻结页面下钻路径与状态反馈",
+            "为 implement / qa 提供统一的 UX truth",
+        ],
+    )
+    operator_state = _extract_field(docs, "operator_mental_state", "需要在有限时间内完成判断与推进，而不是阅读泛化说明。")
+    usage_environment = _extract_field(docs, "usage_environment", "桌面优先的管理工作台与需求协作评审环境。")
+    brand_tone = _extract_list_field(
+        docs,
+        "brand_tone",
+        ["quiet", "precise", "operational", "content-first"],
+    )
+    density_preference = _extract_field(docs, "density_preference", "workbench-medium")
+    explicit_fields = [
+        key
+        for key in (
+            "target_audience",
+            "primary_use_cases",
+            "operator_mental_state",
+            "usage_environment",
+            "brand_tone",
+            "density_preference",
+        )
+        if _extract_field(docs, key, "")
+    ]
+    return {
+        "target_audience": target_audience,
+        "primary_use_cases": use_cases,
+        "operator_mental_state": operator_state,
+        "usage_environment": usage_environment,
+        "brand_tone": brand_tone,
+        "density_preference": density_preference,
+        "design_preset": str(theme.get("design_preset") or "apple-inspired-design-md"),
+        "design_preset_override_reason": str(theme.get("design_preset_override_reason") or ""),
+        "explicit_context_fields": explicit_fields,
+        "explicit_context_complete": len(explicit_fields) == 6,
+        "page_count": len(page_specs),
+    }
+
+
+def _build_design_reasoning(page_specs: list[dict[str, Any]], theme: dict[str, Any]) -> dict[str, Any]:
+    explicit_surface_type = str(theme.get("product_surface_type") or "").strip()
+    product_surface_type = explicit_surface_type or ("management-workbench" if len(page_specs) >= 3 else "task-oriented-flow")
+    return {
+        "product_surface_type": product_surface_type,
+        "interaction_model": "recognition-first navigation with low-noise drill-down and explicit recovery paths",
+        "recommended_layout_pattern": "header -> primary judgment -> supporting context -> next action",
+        "visual_priority_rules": [
+            "首屏先回答当前页面最重要的问题，再展示支撑信息。",
+            "阻塞、错误、恢复动作优先于普通说明文案。",
+            "机器内部元数据只能出现在必要的引用区，不能进入主内容区。",
+            "保持 Apple-inspired quiet neutral baseline，强调内容而不是装饰。",
+        ],
+        "anti_patterns": [
+            "marketing hero dashboard",
+            "generic blue SaaS shell",
+            "machine noise in primary UI copy",
+            "用路由或草图替代页面意图说明",
+        ],
+        "design_checklist": [
+            "每个页面都要说明主判断与 first glance 信息。",
+            "每个关键状态都要有反馈与恢复动作。",
+            "设计资产必须由 canonical truth 单向投影生成。",
+            "实现可以换代码结构，但不能重写已冻结的信息层级。",
+        ],
+        "preset_alignment": {
+            "design_preset": str(theme.get("design_preset") or ""),
+            "quiet_neutral_surfaces": True,
+            "restrained_accent": True,
+            "content_first_hierarchy": True,
+            "workbench_density": True,
+        },
+    }
+
+
+def _build_ux_contract(page_specs: list[dict[str, Any]]) -> dict[str, Any]:
+    primary_page = page_specs[0] if page_specs else {}
+    primary_name = str(primary_page.get("name") or primary_page.get("page_id") or "当前页面")
+    action_hierarchy = [
+        str(action.get("label") or "").strip()
+        for page in page_specs[:3]
+        for action in (page.get("actions") or [])
+        if isinstance(action, dict) and str(action.get("label") or "").strip()
+    ]
+    return {
+        "first_glance_question": f"用户进入 {primary_name} 后，第一眼需要先判断什么？",
+        "primary_decision": "继续下钻、停留处理当前信息，还是先执行恢复/返回动作。",
+        "action_hierarchy": action_hierarchy[:6] or ["查看当前判断", "进入下一层", "返回上层"],
+        "recognition_over_recall_rules": [
+            "把关键判断放在首屏，不要求用户回忆上一页信息。",
+            "使用稳定的页面结构和动作命名，减少重新学习成本。",
+            "状态反馈必须直接说明发生了什么以及下一步去哪里。",
+        ],
+        "error_recovery_policy": [
+            "error / blocked / stale 状态必须给出可执行恢复动作。",
+            "恢复动作优先回到可信真相或上层页面，而不是停留在死路。",
+        ],
+        "allowed_machine_noise": [
+            "来源路径",
+            "文档版本",
+            "必要的 runtime 引用",
+        ],
+        "forbidden_machine_noise": [
+            "transaction_id",
+            "projection_seq",
+            "sink_checksums",
+            "canonical-envelope",
+            "raw runtime log",
+        ],
+    }
+
+
+def _build_page_intent_contract(page: dict[str, Any]) -> dict[str, Any]:
+    analysis = page.get("analysis") if isinstance(page.get("analysis"), dict) else _default_page_analysis(page)
+    sections = [str(item).strip() for item in (page.get("sections") or []) if str(item).strip()]
+    actions = [item for item in (page.get("actions") or []) if isinstance(item, dict)]
+    return {
+        "why_this_page_exists": str(page.get("responsibility") or "").strip() or f"冻结 `{page.get('name')}` 的判断与动作边界。",
+        "decision_supported": str(page.get("decision_supported") or "").strip() or str((analysis.get("decision_focus") or ["完成当前页主判断。"])[0]).strip(),
+        "must_show_first": sections[:2] or ["页面头部", "关键内容区"],
+        "must_not_show": [
+            "transaction_id",
+            "projection metadata",
+            "无边界 runtime 明细",
+        ],
+        "entry_conditions": [
+            f"用户进入 `{page.get('page_id')}` 需要先获得当前上下文。",
+            "当前 requirement truth 已经明确该页承担的主判断。",
+        ],
+        "exit_actions": [
+            {
+                "label": str(action.get("label") or "").strip(),
+                "target": str(action.get("target") or "").strip(),
+            }
+            for action in actions[:6]
+            if str(action.get("label") or "").strip()
+        ] or [{"label": "停留当前页继续阅读", "target": str(page.get("page_id") or "").strip()}],
+    }
+
+
+def _build_state_visibility_contract(page: dict[str, Any], state: dict[str, Any]) -> dict[str, Any]:
+    page_name = str(page.get("name") or page.get("page_id") or "当前页")
+    state_id = str(state.get("id") or "").strip()
+    description = str(state.get("description") or "").strip()
+    ac_refs = [str(item).strip().upper() for item in (state.get("ac_refs") or []) if str(item).strip()]
+    tc_refs = [str(item).strip().upper() for item in (state.get("tc_refs") or []) if str(item).strip()]
+    primary_actions = [str(action.get("label") or "").strip() for action in (page.get("actions") or []) if isinstance(action, dict) and str(action.get("label") or "").strip()][:3]
+    recovery_actions = ["返回上一层", "重试当前动作"]
+    forbidden_feedback = ["只显示技术错误码", "隐藏下一步动作"]
+    user_question = f"{page_name} 当前发生了什么，我下一步该做什么？"
+    required_feedback = [description or f"{state_id} 状态需要有明确反馈。"]
+    if state_id == "loading":
+        recovery_actions = ["继续等待数据加载", "返回上一层"]
+        forbidden_feedback = ["页面结构抖动", "空白无提示"]
+    elif state_id in {"empty", "idle"}:
+        required_feedback.append("解释为什么为空，以及回到哪里继续。")
+    elif state_id in {"error", "blocked", "stale", "source-missing"}:
+        required_feedback.append("明确恢复动作与回退路径。")
+    elif state_id in {"ready", "success", "document-open", "frozen"}:
+        recovery_actions = ["继续主要操作", "进入下一层或返回上层"]
+        forbidden_feedback = ["完成状态仍要求用户猜下一步"]
+    return {
+        "user_question": user_question,
+        "required_feedback": required_feedback,
+        "primary_actions": primary_actions or ["保持当前页上下文", "执行当前页主动作"],
+        "recovery_actions": recovery_actions,
+        "acceptance_refs": {
+            "ac_refs": ac_refs,
+            "tc_refs": tc_refs,
+        },
+        "forbidden_feedback": forbidden_feedback,
     }
 
 
@@ -1639,6 +2286,9 @@ def _human_view_files() -> list[str]:
     return [
         "wireframe-summary.md",
         "navigation-map.md",
+        "state-flow-map.md",
+        "component-catalog.md",
+        "automation-priority-matrix.md",
         "pages/*.md",
     ]
 
@@ -1868,6 +2518,199 @@ def _render_wireframe_summary(plan: dict[str, Any]) -> str:
         ]
     )
     return "\n".join(lines)
+
+
+def _render_ux_prd_md(plan: dict[str, Any]) -> str:
+    design_context = plan.get("design_context") if isinstance(plan.get("design_context"), dict) else {}
+    design_reasoning = plan.get("design_reasoning") if isinstance(plan.get("design_reasoning"), dict) else {}
+    ux_contract = plan.get("ux_contract") if isinstance(plan.get("ux_contract"), dict) else {}
+    lines = [
+        f"# UX PRD：{plan['feature']}",
+        "",
+        f"**Feature**: `{plan['feature_slug']}`",
+        f"**Version**: `{plan['version']}`",
+        "",
+        "## Design Context",
+        f"- Target Audience: {design_context.get('target_audience', '-')}",
+        f"- Primary Use Cases: {', '.join(design_context.get('primary_use_cases', [])[:5]) or '-'}",
+        f"- Operator Mental State: {design_context.get('operator_mental_state', '-')}",
+        f"- Usage Environment: {design_context.get('usage_environment', '-')}",
+        f"- Brand Tone: {', '.join(design_context.get('brand_tone', [])[:5]) or '-'}",
+        f"- Density Preference: {design_context.get('density_preference', '-')}",
+        "",
+        "## Design Reasoning",
+        f"- Product Surface Type: {design_reasoning.get('product_surface_type', '-')}",
+        f"- Interaction Model: {design_reasoning.get('interaction_model', '-')}",
+        f"- Layout Pattern: {design_reasoning.get('recommended_layout_pattern', '-')}",
+        "",
+        "## UX Contract",
+        f"- First Glance Question: {ux_contract.get('first_glance_question', '-')}",
+        f"- Primary Decision: {ux_contract.get('primary_decision', '-')}",
+        f"- Action Hierarchy: {', '.join(ux_contract.get('action_hierarchy', [])[:6]) or '-'}",
+        "",
+        "## Page Intent Contracts",
+    ]
+    for page in plan.get("page_specs", []):
+        if not isinstance(page, dict):
+            continue
+        intent = page.get("page_intent_contract") if isinstance(page.get("page_intent_contract"), dict) else {}
+        lines.extend(
+            [
+                f"### {page.get('name', page.get('page_id', 'page'))}",
+                f"- Why: {intent.get('why_this_page_exists', '-')}",
+                f"- Decision Supported: {intent.get('decision_supported', '-')}",
+                f"- Must Show First: {', '.join(intent.get('must_show_first', [])[:4]) or '-'}",
+                f"- Must Not Show: {', '.join(intent.get('must_not_show', [])[:4]) or '-'}",
+            ]
+        )
+    lines.append("")
+    lines.append("## State Visibility Contracts")
+    seen_states: set[str] = set()
+    for page in plan.get("page_specs", []):
+        if not isinstance(page, dict):
+            continue
+        for state in page.get("states", []):
+            if not isinstance(state, dict):
+                continue
+            state_id = str(state.get("id") or "").strip()
+            if not state_id or state_id in seen_states:
+                continue
+            seen_states.add(state_id)
+            contract = state.get("state_visibility_contract") if isinstance(state.get("state_visibility_contract"), dict) else {}
+            lines.extend(
+                [
+                    f"- `{state_id}`: {contract.get('user_question', '-')}",
+                    f"  - Required Feedback: {', '.join(contract.get('required_feedback', [])[:4]) or '-'}",
+                    f"  - Primary Actions: {', '.join(contract.get('primary_actions', [])[:4]) or '-'}",
+                    f"  - Recovery Actions: {', '.join(contract.get('recovery_actions', [])[:4]) or '-'}",
+                    f"  - AC Refs: {', '.join(((contract.get('acceptance_refs') or {}).get('ac_refs') or [])[:4]) or '-'}",
+                    f"  - TC Refs: {', '.join(((contract.get('acceptance_refs') or {}).get('tc_refs') or [])[:4]) or '-'}",
+                ]
+            )
+    lines.extend(
+        [
+            "",
+            "## Traceability",
+            f"- AC Refs: {', '.join((plan.get('requirement_ids') or {}).get('ac_ids', [])[:12]) or '-'}",
+            f"- TC Refs: {', '.join((plan.get('requirement_ids') or {}).get('tc_ids', [])[:12]) or '-'}",
+        ]
+    )
+    return "\n".join(lines)
+
+
+def _render_design_md(plan: dict[str, Any], theme: dict[str, Any]) -> str:
+    design_context = plan.get("design_context") if isinstance(plan.get("design_context"), dict) else {}
+    design_reasoning = plan.get("design_reasoning") if isinstance(plan.get("design_reasoning"), dict) else {}
+    return "\n".join(
+        [
+            f"# DESIGN.md: {plan['feature']}",
+            "",
+            "## Visual Theme",
+            f"- Design Preset: `{theme.get('design_preset', 'apple-inspired-design-md')}`",
+            f"- Primary Accent: `{theme.get('primary', '#0071E3')}`",
+            f"- Secondary Surface: `{theme.get('secondary', '#F5F5F7')}`",
+            "- Atmosphere: quiet neutrals, restrained emphasis, dense but readable workbench hierarchy.",
+            "",
+            "## Typography",
+            "- Bias toward SF Pro / system sans.",
+            "- Hero-scale text is disallowed in workbench pages unless a real first-screen signal demands it.",
+            "",
+            "## Layout Principles",
+            f"- Recommended Pattern: {design_reasoning.get('recommended_layout_pattern', '-')}",
+            "- First screen answers the main question before secondary detail.",
+            "- Keep navigation low-noise and avoid decorative dashboard filler.",
+            "",
+            "## Component Styling",
+            "- Compact toolbars, restrained cards, explicit empty/error/loading states.",
+            "- Buttons and controls should privilege recognition over recall.",
+            "",
+            "## Do",
+            "- Show recovery actions when blocked, stale, or error states appear.",
+            "- Keep source paths and machine references in secondary disclosure zones only.",
+            "",
+            "## Don't",
+            "- Do not produce a marketing hero dashboard.",
+            "- Do not surface transaction metadata in primary UI copy.",
+            "- Do not use a generic blue SaaS shell as the default design answer.",
+            "",
+            "## Responsive",
+            "- Preserve hierarchy and next-action clarity on desktop-first workbench layouts.",
+            "- Collapse secondary detail before primary judgment content.",
+            "",
+            "## Agent Prompt Guide",
+            f"- Primary audience: {design_context.get('target_audience', '-')}",
+            "- Preserve page intent contracts and state visibility contracts during implementation.",
+            "- Treat this file as projection from prototype truth, not an editable source of truth.",
+        ]
+    )
+
+
+def _render_preview_html(plan: dict[str, Any], theme: dict[str, Any], *, dark: bool) -> str:
+    bg = "#111111" if dark else "#F5F5F7"
+    fg = "#F5F5F7" if dark else "#1D1D1F"
+    card = "#1C1C1E" if dark else "#FFFFFF"
+    border = "#3A3A3C" if dark else "#D2D2D7"
+    accent = str(theme.get("primary") or "#0071E3")
+    page_cards = []
+    for page in (plan.get("page_specs") or [])[:6]:
+        if not isinstance(page, dict):
+            continue
+        intent = page.get("page_intent_contract") if isinstance(page.get("page_intent_contract"), dict) else {}
+        page_cards.append(
+            f"""
+            <section class="card">
+              <div class="eyebrow">{page.get('priority', 'P1')} · {', '.join(page.get('platforms', [])[:3])}</div>
+              <h2>{page.get('name', page.get('page_id', 'Page'))}</h2>
+              <p>{intent.get('decision_supported', page.get('responsibility', ''))}</p>
+              <ul>
+                <li>First: {', '.join(intent.get('must_show_first', [])[:2]) or '-'}</li>
+                <li>Noise Guard: {((page.get('analysis') or {}).get('noise_guardrail', '-'))}</li>
+              </ul>
+            </section>
+            """
+        )
+    mode = "Dark" if dark else "Light"
+    return f"""<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{plan['feature']} Design Preview {mode}</title>
+  <style>
+    :root {{
+      color-scheme: {'dark' if dark else 'light'};
+      --bg: {bg};
+      --fg: {fg};
+      --card: {card};
+      --border: {border};
+      --accent: {accent};
+    }}
+    * {{ box-sizing: border-box; }}
+    body {{ margin: 0; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif; background: var(--bg); color: var(--fg); }}
+    main {{ max-width: 1100px; margin: 0 auto; padding: 32px 20px 56px; }}
+    .hero {{ display: grid; gap: 12px; margin-bottom: 24px; }}
+    .eyebrow {{ font-size: 12px; color: var(--accent); text-transform: uppercase; }}
+    h1, h2 {{ margin: 0; font-weight: 600; }}
+    p, li {{ line-height: 1.5; }}
+    .grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }}
+    .card {{ background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 16px; display: grid; gap: 10px; }}
+    ul {{ margin: 0; padding-left: 18px; }}
+  </style>
+</head>
+<body>
+  <main>
+    <section class="hero">
+      <div class="eyebrow">{theme.get('design_preset', 'apple-inspired-design-md')} · {mode} preview</div>
+      <h1>{plan['feature']}</h1>
+      <p>This preview is a design asset catalog projected from prototype truth, not a product implementation page.</p>
+    </section>
+    <section class="grid">
+      {''.join(page_cards)}
+    </section>
+  </main>
+</body>
+</html>
+"""
 
 
 def _render_navigation_map_md(plan: dict[str, Any]) -> str:
@@ -2217,7 +3060,7 @@ semantic_context:
 Return JSON with this shape:
 {{
   "prototype_archetype": "{DEFAULT_PROTOTYPE_ARCHETYPE}|...",
-  "theme": {{"primary":"#2563EB","secondary":"#0F172A"}},
+  "theme": {{"primary":"#0071E3","secondary":"#F5F5F7"}},
   "pages": [
     {{
       "page_id": "home",
@@ -2344,8 +3187,8 @@ def _normalize_action_list(actions: Any) -> list[dict[str, str]]:
     return normalized
 
 
-def _normalize_state_list(states: Any) -> list[dict[str, str]]:
-    normalized: list[dict[str, str]] = []
+def _normalize_state_list(states: Any) -> list[dict[str, Any]]:
+    normalized: list[dict[str, Any]] = []
     if isinstance(states, list):
         for item in states[:8]:
             if not isinstance(item, dict):
@@ -2355,11 +3198,19 @@ def _normalize_state_list(states: Any) -> list[dict[str, str]]:
             description = str(item.get("description") or "").strip() or f"{label} 状态说明待补充。"
             if not state_id:
                 continue
-            normalized.append({"id": state_id, "label": label, "description": description})
+            normalized.append(
+                {
+                    "id": state_id,
+                    "label": label,
+                    "description": description,
+                    "ac_refs": _parse_reference_values(item.get("ac_refs"), pattern=AC_PATTERN),
+                    "tc_refs": _parse_reference_values(item.get("tc_refs"), pattern=TC_PATTERN),
+                }
+            )
     defaults = [
-        {"id": "ready", "label": "可用", "description": "页面数据齐备，用户可完成核心操作。"},
-        {"id": "loading", "label": "加载中", "description": "页面数据正在加载。"},
-        {"id": "error", "label": "错误", "description": "页面加载或提交失败，需提示恢复动作。"},
+        {"id": "ready", "label": "可用", "description": "页面数据齐备，用户可完成核心操作。", "ac_refs": [], "tc_refs": []},
+        {"id": "loading", "label": "加载中", "description": "页面数据正在加载。", "ac_refs": [], "tc_refs": []},
+        {"id": "error", "label": "错误", "description": "页面加载或提交失败，需提示恢复动作。", "ac_refs": [], "tc_refs": []},
     ]
     if not normalized:
         return defaults
@@ -2413,6 +3264,11 @@ def _assemble_prototype_plan(
     page_ids = [str(page.get("page_id") or "").strip() for page in page_specs if str(page.get("page_id") or "").strip()]
     required_states = sorted({state["id"] for page in page_specs for state in page["states"]})
     semantic_payload = semantic_layer if isinstance(semantic_layer, dict) else {}
+    theme_payload = dict(theme)
+    supports_ux_truth = _supports_ux_truth(version, docs)
+    design_context = _build_design_context(docs, page_specs, theme_payload) if supports_ux_truth else {}
+    design_reasoning = _build_design_reasoning(page_specs, theme_payload) if supports_ux_truth else {}
+    ux_contract = _build_ux_contract(page_specs) if supports_ux_truth else {}
     return {
         "schema_version": SCHEMA_VERSION,
         "feature": feature,
@@ -2439,6 +3295,9 @@ def _assemble_prototype_plan(
             "primary_exit": transitions[-1]["to"] if transitions else page_ids[-1],
             "transitions": transitions,
         },
+        "design_context": design_context,
+        "design_reasoning": design_reasoning,
+        "ux_contract": ux_contract,
         "semantic_layer": {
             "artifacts": dict(semantic_payload.get("artifacts", {})),
             "default_design_bridge": dict(semantic_payload.get("default_design_bridge", {})),
@@ -2448,6 +3307,7 @@ def _assemble_prototype_plan(
         "contract": {
             "prototype_archetype": theme["prototype_archetype"],
             "wireframe_only": True,
+            "ux_truth_required": supports_ux_truth,
             "design_governance_required": bool(semantic_payload),
             "semantic_governance_required": bool(semantic_payload),
             "semantic_contract_path": str((semantic_payload.get("artifacts") or {}).get("semantic_contract", "")),
@@ -2461,10 +3321,22 @@ def _assemble_prototype_plan(
                 "state-flow-map.json",
                 "component-catalog.md",
                 "component-catalog.json",
+                "automation-priority-matrix.md",
+                "automation-priority-matrix.json",
                 "canonical-envelope.json",
                 "pages/*.md",
                 "freeze.json",
                 "prototype-review.json",
+                *(
+                    [
+                        "ux-prd.md",
+                        "DESIGN.md",
+                        "preview.html",
+                        "preview-dark.html",
+                    ]
+                    if supports_ux_truth
+                    else []
+                ),
             ],
         },
         "parser": {
@@ -2487,7 +3359,7 @@ def _assemble_prototype_plan(
             "downgraded_from_auto": requested_mode == "auto" and bool(fallback_reason),
             "downgrade_blocking": requested_mode == "auto" and bool(fallback_reason) and _semver_tuple(version) >= (1, 3, 9),
         },
-        "theme": theme,
+        "theme": theme_payload,
     }
 
 
@@ -2614,6 +3486,9 @@ def _compile_prototype_plan_from_inference(
                 "analysis": raw_page.get("analysis"),
             }
         )
+        page["page_intent_contract"] = _build_page_intent_contract(page)
+        for state in page["states"]:
+            state["state_visibility_contract"] = _build_state_visibility_contract(page, state)
         normalized_pages.append(page)
         page_aliases[page_id.lower()] = page_id
         page_aliases[name.lower()] = page_id
@@ -2976,6 +3851,10 @@ def write_prototype_bundle(
     files = prototype_files(project_root, version, feature)
     feature_slug = str(plan["feature_slug"])
     semantic_layer = plan.get("semantic_layer", {}) if isinstance(plan.get("semantic_layer"), dict) else {}
+    design_context = plan.get("design_context", {}) if isinstance(plan.get("design_context"), dict) else {}
+    design_reasoning = plan.get("design_reasoning", {}) if isinstance(plan.get("design_reasoning"), dict) else {}
+    ux_contract = plan.get("ux_contract", {}) if isinstance(plan.get("ux_contract"), dict) else {}
+    supports_ux_truth = _supports_ux_truth(version, source_docs)
     source_hash = _stable_hash([{"type": doc["type"], "fingerprint": doc["fingerprint"]} for doc in source_docs])
     projection_seq = f"pp-{source_hash[:16]}"
     committed_at = now_iso()
@@ -2987,6 +3866,15 @@ def write_prototype_bundle(
     interaction_map = _build_interaction_map(plan["page_specs"], transitions)
     state_flow_map = _build_state_flow_map(plan["page_specs"], transitions, requirement_ids)
     component_catalog = _build_component_catalog(plan["page_specs"], requirement_ids)
+    cross_page_transition_contracts = [
+        edge for edge in (state_flow_map.get("edges") or []) if isinstance(edge, dict) and str(edge.get("kind") or "") == "cross-page-transition"
+    ]
+    automation_priority_matrix = _build_automation_priority_matrix(
+        plan["page_specs"],
+        state_flow_map,
+        component_catalog,
+        design_reasoning,
+    )
     route_closure = _build_route_closure_contract(
         plan["page_specs"],
         transitions,
@@ -3013,9 +3901,15 @@ def write_prototype_bundle(
         },
         "state_flow_map": state_flow_map,
         "component_catalog": component_catalog,
+        "component_state_contracts": component_catalog.get("components", []),
+        "cross_page_transition_contracts": cross_page_transition_contracts,
+        "automation_priority_matrix": automation_priority_matrix,
         "route_closure_contract": route_closure,
         "coverage_report": coverage,
         "source_map": source_map,
+        "design_context": design_context,
+        "design_reasoning": design_reasoning,
+        "ux_contract": ux_contract,
         "semantic_layer": semantic_layer,
     }
 
@@ -3033,10 +3927,16 @@ def write_prototype_bundle(
         stage_files["page_specs_dir"].mkdir(parents=True, exist_ok=True)
         stage_files["human_view_dir"].mkdir(parents=True, exist_ok=True)
         stage_files["machine_view_dir"].mkdir(parents=True, exist_ok=True)
+        stage_files["theme"].parent.mkdir(parents=True, exist_ok=True)
 
         _write_json(stage_files["prototype_plan"], plan)
         _write_json(stage_files["canonical_envelope"], canonical_envelope)
         _write_text(stage_files["wireframe_summary"], _render_wireframe_summary(plan))
+        if supports_ux_truth:
+            _write_text(stage_files["ux_prd"], _render_ux_prd_md(plan))
+            _write_text(stage_files["design_md"], _render_design_md(plan, theme_payload))
+            _write_text(stage_files["preview_html"], _render_preview_html(plan, theme_payload, dark=False))
+            _write_text(stage_files["preview_dark_html"], _render_preview_html(plan, theme_payload, dark=True))
         _write_json(stage_files["wireframe_manifest"], wireframe_manifest)
         _write_text(stage_files["navigation_map_md"], _render_navigation_map_md(plan))
         _write_json(
@@ -3058,6 +3958,11 @@ def write_prototype_bundle(
         _write_text(stage_files["state_flow_map_md"], _render_state_flow_map_md(feature, state_flow_map))
         _write_json(stage_files["component_catalog"], component_catalog)
         _write_text(stage_files["component_catalog_md"], _render_component_catalog_md(feature, component_catalog))
+        _write_json(stage_files["automation_priority_matrix"], automation_priority_matrix)
+        _write_text(
+            stage_files["automation_priority_matrix_md"],
+            _render_automation_priority_matrix_md(feature, automation_priority_matrix),
+        )
         _write_json(stage_files["interaction_map"], interaction_map)
         _write_json(stage_files["coverage_report"], coverage)
         _write_json(stage_files["route_closure_contract"], route_closure)
@@ -3077,7 +3982,20 @@ def write_prototype_bundle(
         )
         _write_json(
             stage_files["prototype_brief"],
-            {"prototype_mode": PROTOTYPE_MODE, "theme": theme_payload, "page_count": len(plan["page_specs"])},
+            {
+                "prototype_mode": PROTOTYPE_MODE,
+                "theme": theme_payload,
+                "page_count": len(plan["page_specs"]),
+                "design_context": design_context,
+                "design_reasoning": design_reasoning,
+                "ux_contract": ux_contract,
+                "design_assets": {
+                    "ux_prd": "ux-prd.md" if supports_ux_truth else "",
+                    "design_md": "DESIGN.md" if supports_ux_truth else "",
+                    "preview_html": "preview.html" if supports_ux_truth else "",
+                    "preview_dark_html": "preview-dark.html" if supports_ux_truth else "",
+                },
+            },
         )
         _write_json(stage_files["theme"], theme_payload)
         _write_json(stage_files["platform_variants"], plan["platform_variants"])
@@ -3103,7 +4021,7 @@ def write_prototype_bundle(
             stage_files["human_view_dir"] / "index.json",
             {
                 "schema_version": SCHEMA_VERSION,
-                "files": _human_view_files(),
+                "files": _human_view_files() + (["ux-prd.md"] if supports_ux_truth else []),
             },
         )
         _write_json(
@@ -3117,10 +4035,20 @@ def write_prototype_bundle(
                     "navigation-map.json",
                     "state-flow-map.json",
                     "component-catalog.json",
+                    "automation-priority-matrix.json",
                     "interaction-map.json",
                     "coverage-report.json",
                     "source-map.json",
                     "route-closure-contract.json",
+                    *(
+                        [
+                            "design_context",
+                            "design_reasoning",
+                            "ux_contract",
+                        ]
+                        if supports_ux_truth
+                        else []
+                    ),
                     str((semantic_layer.get("artifacts") or {}).get("semantic_contract", "")),
                 ],
             },
@@ -3133,7 +4061,7 @@ def write_prototype_bundle(
                 continue
             rel = str(path.relative_to(stage_files["root"]))
             fingerprint = sha256_file(path)
-            if rel.endswith(".md") or rel.endswith(".css"):
+            if rel.endswith(".md") or rel.endswith(".css") or rel.endswith(".html"):
                 human_fingerprints[rel] = fingerprint
             if rel.endswith(".json"):
                 machine_fingerprints[rel] = fingerprint
@@ -3193,6 +4121,8 @@ def write_prototype_bundle(
                 "state_flow_map_md": str(files["state_flow_map_md"].relative_to(project_root)),
                 "component_catalog": str(files["component_catalog"].relative_to(project_root)),
                 "component_catalog_md": str(files["component_catalog_md"].relative_to(project_root)),
+                "automation_priority_matrix": str(files["automation_priority_matrix"].relative_to(project_root)),
+                "automation_priority_matrix_md": str(files["automation_priority_matrix_md"].relative_to(project_root)),
                 "interaction_map": str(files["interaction_map"].relative_to(project_root)),
                 "coverage_report": str(files["coverage_report"].relative_to(project_root)),
                 "route_closure_contract": str(files["route_closure_contract"].relative_to(project_root)),
@@ -3206,12 +4136,19 @@ def write_prototype_bundle(
                 "theme": str(files["theme"].relative_to(project_root)),
                 "tokens_css": str(files["tokens_css"].relative_to(project_root)),
                 "platform_variants": str(files["platform_variants"].relative_to(project_root)),
+                "ux_prd": str(files["ux_prd"].relative_to(project_root)),
+                "design_md": str(files["design_md"].relative_to(project_root)),
+                "preview_html": str(files["preview_html"].relative_to(project_root)),
+                "preview_dark_html": str(files["preview_dark_html"].relative_to(project_root)),
                 "freeze": str(files["freeze"].relative_to(project_root)),
                 "semantic_contract": str((semantic_layer.get("artifacts") or {}).get("semantic_contract", "")),
                 "semantic_dictionary": str((semantic_layer.get("artifacts") or {}).get("semantic_dictionary", "")),
                 "semantic_usage_guidelines": str((semantic_layer.get("artifacts") or {}).get("semantic_usage_guidelines", "")),
                 "semantic_review": str((semantic_layer.get("artifacts") or {}).get("semantic_review", "")),
             },
+            "design_context": design_context,
+            "design_reasoning": design_reasoning,
+            "ux_contract": ux_contract,
             "semantic_layer": semantic_layer,
         }
         _write_json(stage_files["manifest"], manifest)
@@ -3322,15 +4259,21 @@ def review_prototype_bundle(project_root: Path, version: str, feature: str) -> d
     canonical_envelope = _read_json(files["canonical_envelope"])
     state_flow_map = _read_json(files["state_flow_map"])
     component_catalog = _read_json(files["component_catalog"])
+    automation_priority_matrix = _read_json(files["automation_priority_matrix"])
     route_closure = _read_json(files["route_closure_contract"])
     implementation_map = _read_json(files["implementation_map"])
     page_specs = plan.get("page_specs") if isinstance(plan.get("page_specs"), list) else []
     required_pages = [str(item).strip() for item in (plan.get("required_pages") or []) if str(item).strip()]
     required_states = [str(item).strip() for item in (plan.get("required_states") or []) if str(item).strip()]
-    forbidden_page_ids = _collect_forbidden_page_ids(load_source_documents(project_root, version, feature))
+    source_docs = load_source_documents(project_root, version, feature)
+    forbidden_page_ids = _collect_forbidden_page_ids(source_docs)
     transaction = manifest.get("transaction") if isinstance(manifest.get("transaction"), dict) else {}
     transaction_id = str(transaction.get("transaction_id") or "")
     sqlite_projection = _read_prototype_projection_sqlite(transaction_id)
+    supports_ux_truth = _supports_ux_truth(version, source_docs)
+    design_context = plan.get("design_context") if isinstance(plan.get("design_context"), dict) else {}
+    design_reasoning = plan.get("design_reasoning") if isinstance(plan.get("design_reasoning"), dict) else {}
+    ux_contract = plan.get("ux_contract") if isinstance(plan.get("ux_contract"), dict) else {}
 
     checks = [
         _review_check(
@@ -3362,6 +4305,11 @@ def review_prototype_bundle(project_root: Path, version: str, feature: str) -> d
             "component_catalog_present",
             "pass" if files["component_catalog"].exists() and files["component_catalog_md"].exists() else "fail",
             "component-catalog.md/json should exist",
+        ),
+        _review_check(
+            "automation_priority_matrix_present",
+            "pass" if files["automation_priority_matrix"].exists() and files["automation_priority_matrix_md"].exists() else "fail",
+            "automation-priority-matrix.md/json should exist",
         ),
         _review_check(
             "pages_directory_present",
@@ -3497,6 +4445,9 @@ def review_prototype_bundle(project_root: Path, version: str, feature: str) -> d
         if not component.get("state_refs"):
             missing_component_refs.append(str(component.get("component_id") or "unknown"))
             continue
+        if not component.get("state_feedback_responsibilities"):
+            missing_component_refs.append(str(component.get("component_id") or "unknown"))
+            continue
         if require_ac_refs and not component.get("ac_refs"):
             missing_component_refs.append(str(component.get("component_id") or "unknown"))
             continue
@@ -3509,6 +4460,42 @@ def review_prototype_bundle(project_root: Path, version: str, feature: str) -> d
             "component catalog should map state + AC + TC"
             if component_items and not missing_component_refs
             else f"missing component trace refs: {missing_component_refs[:10]}",
+        )
+    )
+    cross_page_transition_items = [
+        edge for edge in state_edges if isinstance(edge, dict) and str(edge.get("kind") or "") == "cross-page-transition"
+    ]
+    missing_transition_contracts = []
+    for edge in cross_page_transition_items:
+        required_keys = ("from_page", "from_state", "to_page", "to_state", "event", "guard", "fallback", "route_or_runtime_evidence")
+        if not all(edge.get(key) for key in required_keys):
+            missing_transition_contracts.append(f"{edge.get('from')}->{edge.get('to')}")
+            continue
+        if require_ac_refs and not edge.get("ac_refs"):
+            missing_transition_contracts.append(f"{edge.get('from')}->{edge.get('to')}")
+            continue
+        if require_tc_refs and not edge.get("test_refs"):
+            missing_transition_contracts.append(f"{edge.get('from')}->{edge.get('to')}")
+    checks.append(
+        _review_check(
+            "cross_page_transition_contract_complete",
+            "pass" if cross_page_transition_items and not missing_transition_contracts else "fail",
+            "cross-page business transitions should expose explicit state/event/fallback/evidence contracts"
+            if cross_page_transition_items and not missing_transition_contracts
+            else f"missing cross-page transition contracts: {missing_transition_contracts[:10]}",
+        )
+    )
+    priority_entries = automation_priority_matrix.get("entries") if isinstance(automation_priority_matrix.get("entries"), list) else []
+    priority_classes = {str(item.get("priority_class") or "") for item in priority_entries if isinstance(item, dict)}
+    checks.append(
+        _review_check(
+            "automation_priority_matrix_complete",
+            "pass"
+            if priority_entries
+            and all(str(item.get("priority_class") or "").strip() for item in priority_entries if isinstance(item, dict))
+            and priority_classes <= {"release-blocker", "primary-automation", "smoke-only", "manual-acceptable"}
+            else "fail",
+            "automation priority matrix should assign valid priority classes to generated targets",
         )
     )
     checks.append(
@@ -3564,11 +4551,208 @@ def review_prototype_bundle(project_root: Path, version: str, feature: str) -> d
             "canonical envelope and manifest transaction metadata should stay consistent",
         )
     )
+    if supports_ux_truth:
+        explicit_fields = list(design_context.get("explicit_context_fields") or [])
+        required_context_fields = [
+            "target_audience",
+            "primary_use_cases",
+            "operator_mental_state",
+            "usage_environment",
+            "brand_tone",
+            "density_preference",
+        ]
+        missing_context_fields = [
+            field
+            for field in required_context_fields
+            if not design_context.get(field)
+        ]
+        checks.extend(
+            [
+                _review_check(
+                    "design_context_complete",
+                    "pass" if not missing_context_fields else "fail",
+                    "design context must include all required fields"
+                    if not missing_context_fields
+                    else f"missing design context fields: {missing_context_fields}",
+                ),
+                _review_check(
+                    "design_context_explicit",
+                    "pass" if bool(design_context.get("explicit_context_complete")) else "fail",
+                    "design context is explicitly frozen in requirement truth"
+                    if bool(design_context.get("explicit_context_complete"))
+                    else f"explicit design context incomplete: {explicit_fields}",
+                ),
+                _review_check(
+                    "design_reasoning_complete",
+                    "pass"
+                    if all(
+                        design_reasoning.get(key)
+                        for key in (
+                            "product_surface_type",
+                            "interaction_model",
+                            "recommended_layout_pattern",
+                            "visual_priority_rules",
+                            "anti_patterns",
+                            "design_checklist",
+                        )
+                    )
+                    else "fail",
+                    "design reasoning must freeze layout logic, anti-patterns, and review checklist",
+                ),
+                _review_check(
+                    "ux_contract_complete",
+                    "pass"
+                    if all(
+                        ux_contract.get(key)
+                        for key in (
+                            "first_glance_question",
+                            "primary_decision",
+                            "action_hierarchy",
+                            "recognition_over_recall_rules",
+                            "error_recovery_policy",
+                            "allowed_machine_noise",
+                            "forbidden_machine_noise",
+                        )
+                    )
+                    else "fail",
+                    "ux contract must freeze first glance, decision, action hierarchy, and machine-noise boundary",
+                ),
+                _review_check(
+                    "ux_prd_present",
+                    "pass" if files["ux_prd"].exists() else "fail",
+                    "ux-prd.md should exist",
+                ),
+                _review_check(
+                    "design_assets_present",
+                    "pass"
+                    if files["design_md"].exists() and files["preview_html"].exists() and files["preview_dark_html"].exists()
+                    else "fail",
+                    "DESIGN.md and preview assets should exist",
+                ),
+                _review_check(
+                    "default_design_preset_stable",
+                    "pass"
+                    if str((plan.get("theme") or {}).get("design_preset") or "") == "apple-inspired-design-md"
+                    or bool((plan.get("theme") or {}).get("design_preset_override_reason"))
+                    else "fail",
+                    "design preset must default to apple-inspired-design-md or record an explicit override reason",
+                ),
+            ]
+        )
+        page_intent_missing = []
+        state_contract_missing = []
+        for page in page_specs:
+            if not isinstance(page, dict):
+                continue
+            intent = page.get("page_intent_contract") if isinstance(page.get("page_intent_contract"), dict) else {}
+            if not all(
+                intent.get(key)
+                for key in (
+                    "why_this_page_exists",
+                    "decision_supported",
+                    "must_show_first",
+                    "must_not_show",
+                    "entry_conditions",
+                    "exit_actions",
+                )
+            ):
+                page_intent_missing.append(str(page.get("page_id") or "unknown"))
+            for state in page.get("states", []):
+                if not isinstance(state, dict):
+                    continue
+                contract = state.get("state_visibility_contract") if isinstance(state.get("state_visibility_contract"), dict) else {}
+                if not all(
+                    contract.get(key)
+                    for key in (
+                        "user_question",
+                        "required_feedback",
+                        "recovery_actions",
+                        "forbidden_feedback",
+                    )
+                ):
+                    state_contract_missing.append(f"{page.get('page_id')}:{state.get('id')}")
+        checks.extend(
+            [
+                _review_check(
+                    "page_intent_contract_complete",
+                    "pass" if not page_intent_missing else "fail",
+                    "every page exposes a page_intent_contract"
+                    if not page_intent_missing
+                    else f"page intent missing for: {page_intent_missing[:10]}",
+                ),
+                _review_check(
+                    "state_visibility_contract_complete",
+                    "pass" if not state_contract_missing else "fail",
+                    "every state exposes a state_visibility_contract"
+                    if not state_contract_missing
+                    else f"state visibility contract missing for: {state_contract_missing[:10]}",
+                ),
+            ]
+        )
+        heuristic_checks = [
+            (
+                "heuristic_system_status",
+                all(any(str(state.get("id") or "").strip() in {"loading", "error", "ready"} for state in page.get("states", [])) for page in page_specs),
+                "pages should expose visible status transitions",
+            ),
+            (
+                "heuristic_real_world_match",
+                all(not _contains_machine_noise(str((page.get("analysis") or {}).get("target_user") or "")) for page in page_specs),
+                "page analysis should describe human goals rather than machine internals",
+            ),
+            (
+                "heuristic_user_control",
+                any(any(str(action.get("target") or "").strip() != str(page.get("page_id") or "").strip() for action in page.get("actions", [])) for page in page_specs),
+                "prototype should offer controlled next-step or return actions",
+            ),
+            (
+                "heuristic_recognition_over_recall",
+                bool(ux_contract.get("recognition_over_recall_rules")),
+                "recognition-over-recall rules should be explicitly frozen",
+            ),
+            (
+                "heuristic_minimalist_discipline",
+                "marketing hero dashboard" in [str(item) for item in design_reasoning.get("anti_patterns", [])],
+                "design reasoning should explicitly block generic marketing-dashboard answers",
+            ),
+            (
+                "heuristic_error_recovery_clarity",
+                any(
+                    any(str(state.get("id") or "").strip() in {"error", "blocked", "stale"} for state in page.get("states", []))
+                    for page in page_specs
+                ),
+                "prototype should define error/blocked/stale recovery semantics",
+            ),
+        ]
+        for name, passed, message in heuristic_checks:
+            checks.append(_review_check(name, "pass" if passed else "fail", message))
 
     blocking_failures = [item for item in checks if item["blocking"] and item["status"] == "fail"]
     overall_status = "pass" if not blocking_failures else "fail"
-    human_view_status = "pass" if files["wireframe_summary"].exists() and files["navigation_map_md"].exists() and files["state_flow_map_md"].exists() and files["component_catalog_md"].exists() else "fail"
-    machine_contract_status = "pass" if files["canonical_envelope"].exists() and files["wireframe_manifest"].exists() and files["navigation_map"].exists() and files["state_flow_map"].exists() and files["component_catalog"].exists() and files["coverage_report"].exists() else "fail"
+    human_view_status = (
+        "pass"
+        if files["wireframe_summary"].exists()
+        and files["navigation_map_md"].exists()
+        and files["state_flow_map_md"].exists()
+        and files["component_catalog_md"].exists()
+        and files["automation_priority_matrix_md"].exists()
+        and (
+            not supports_ux_truth
+            or (files["ux_prd"].exists() and files["design_md"].exists() and files["preview_html"].exists() and files["preview_dark_html"].exists())
+        )
+        else "fail"
+    )
+    machine_contract_status = (
+        "pass"
+        if files["canonical_envelope"].exists()
+        and files["wireframe_manifest"].exists()
+        and files["navigation_map"].exists()
+        and files["state_flow_map"].exists()
+        and files["component_catalog"].exists()
+        and files["automation_priority_matrix"].exists()
+        and files["coverage_report"].exists()
+        else "fail"
+    )
     sqlite_projection_status = "pass" if sqlite_projection.get("status") == "committed" else "fail"
     drift_status = (
         "consistent"
@@ -3667,10 +4851,14 @@ def freeze_prototype(project_root: Path, version: str, feature: str) -> dict[str
 def evaluate_prototype_status(project_root: Path, version: str, feature: str) -> dict[str, Any]:
     files = prototype_files(project_root, version, feature)
     root = files["root"]
+    source_docs = load_source_documents(project_root, version, feature)
+    supports_ux_truth = _supports_ux_truth(version, source_docs)
+    legacy_source_path = legacy_prototype_source_path(project_root, version, feature)
     if not root.exists():
+        legacy_source_exists = legacy_source_path.exists() and legacy_source_path.is_file()
         return {
-            "status": "missing",
-            "exists": False,
+            "status": "legacy_source_only" if legacy_source_exists else "missing",
+            "exists": legacy_source_exists,
             "frozen": False,
             "stale": False,
             "inconsistent": False,
@@ -3691,6 +4879,8 @@ def evaluate_prototype_status(project_root: Path, version: str, feature: str) ->
             "sqlite_projection_status": "missing",
             "drift_status": "missing",
             "transaction": {},
+            "legacy_source_status": "present" if legacy_source_exists else "missing",
+            "legacy_source_path": legacy_source_path,
         }
 
     manifest = _read_json(files["manifest"])
@@ -3700,7 +4890,7 @@ def evaluate_prototype_status(project_root: Path, version: str, feature: str) ->
     compiler = plan.get("compiler") if isinstance(plan.get("compiler"), dict) else {}
     transaction = manifest.get("transaction") if isinstance(manifest.get("transaction"), dict) else {}
     sqlite_projection = _read_prototype_projection_sqlite(str(transaction.get("transaction_id") or ""))
-    current_source = {doc["type"]: doc["fingerprint"] for doc in load_source_documents(project_root, version, feature)}
+    current_source = {doc["type"]: doc["fingerprint"] for doc in source_docs}
     recorded_source = freeze_payload.get("source_fingerprints") if isinstance(freeze_payload.get("source_fingerprints"), dict) else {}
     if not recorded_source:
         recorded_source = manifest.get("source_fingerprints") if isinstance(manifest.get("source_fingerprints"), dict) else {}
@@ -3721,6 +4911,8 @@ def evaluate_prototype_status(project_root: Path, version: str, feature: str) ->
         "state_flow_map_md": files["state_flow_map_md"],
         "component_catalog": files["component_catalog"],
         "component_catalog_md": files["component_catalog_md"],
+        "automation_priority_matrix": files["automation_priority_matrix"],
+        "automation_priority_matrix_md": files["automation_priority_matrix_md"],
         "interaction_map": files["interaction_map"],
         "coverage_report": files["coverage_report"],
         "review_json": files["review_json"],
@@ -3729,6 +4921,15 @@ def evaluate_prototype_status(project_root: Path, version: str, feature: str) ->
         "human_view_dir": files["human_view_dir"],
         "machine_view_dir": files["machine_view_dir"],
     }
+    if supports_ux_truth:
+        required_paths.update(
+            {
+                "ux_prd": files["ux_prd"],
+                "design_md": files["design_md"],
+                "preview_html": files["preview_html"],
+                "preview_dark_html": files["preview_dark_html"],
+            }
+        )
     for key, path in required_paths.items():
         if key.endswith("_dir"):
             if not path.exists() or not path.is_dir():
@@ -3756,6 +4957,17 @@ def evaluate_prototype_status(project_root: Path, version: str, feature: str) ->
                 files["navigation_map_md"],
                 files["state_flow_map_md"],
                 files["component_catalog_md"],
+                files["automation_priority_matrix_md"],
+                *(
+                    (
+                        files["ux_prd"],
+                        files["design_md"],
+                        files["preview_html"],
+                        files["preview_dark_html"],
+                    )
+                    if supports_ux_truth
+                    else ()
+                ),
             )
         )
         else "fail"
@@ -3770,6 +4982,7 @@ def evaluate_prototype_status(project_root: Path, version: str, feature: str) ->
                 files["navigation_map"],
                 files["state_flow_map"],
                 files["component_catalog"],
+                files["automation_priority_matrix"],
                 files["interaction_map"],
                 files["coverage_report"],
                 files["source_map"],
@@ -3832,4 +5045,6 @@ def evaluate_prototype_status(project_root: Path, version: str, feature: str) ->
         "sqlite_projection_status": sqlite_projection_status,
         "drift_status": drift_status,
         "transaction": transaction if isinstance(transaction, dict) else {},
+        "legacy_source_status": "present" if legacy_source_path.exists() and legacy_source_path.is_file() else "missing",
+        "legacy_source_path": legacy_source_path,
     }

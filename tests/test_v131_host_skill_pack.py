@@ -87,6 +87,27 @@ def test_packaged_beacon_skill_should_describe_v131_host_visible_subskills():
     text = (ROOT / "skills" / "beacon" / "SKILL.md").read_text(encoding="utf-8")
     assert "This package is the canonical `skills/beacon/` wrapper for Codex and Claude." in text
     assert "The public Codex / Claude surfaces are:" in text
-    assert "## Current v1.3.8 Additions" in text
+    assert "## Current v1.3.9 Additions" in text
     for name in PUBLIC_HOST_SKILLS:
         assert f"`{name}`" in text
+
+
+def test_beacon_prototype_skill_should_describe_v1310_ux_closure_contract():
+    skill_text = (ROOT / "skills" / "beacon" / "beacon-prototype" / "SKILL.md").read_text(encoding="utf-8")
+    assert "wireframe + UX PRD closure bundles" in skill_text
+    assert "`design_context`" in skill_text
+    assert "`design_reasoning`" in skill_text
+    assert "`ux_contract`" in skill_text
+    assert "`DESIGN.md`" in skill_text
+    assert "`preview-dark.html`" in skill_text
+    assert "apple-inspired-design-md" in skill_text
+    assert "ui-ux-pro-max-skill" in skill_text
+    assert "awesome-design-md" in skill_text
+
+
+def test_beacon_prototype_agent_prompt_should_match_v1310_ux_closure_surface():
+    agent_yaml = (ROOT / "skills" / "beacon" / "beacon-prototype" / "agents" / "openai.yaml").read_text(encoding="utf-8")
+    assert "Beacon Prototype UX Closure" in agent_yaml
+    assert "wireframe plus UX PRD closure bundles" in agent_yaml
+    assert "design_context" in agent_yaml
+    assert "DESIGN.md" in agent_yaml

@@ -1,0 +1,279 @@
+{
+  "page_id": "material-viewer",
+  "name": "项目物料查看器",
+  "priority": "P1",
+  "platforms": [
+    "Web",
+    "PC"
+  ],
+  "responsibility": "按 version -> document type -> feature 提供只读 Markdown 浏览。",
+  "decision_supported": "",
+  "sections": [
+    "版本树",
+    "文档类型列表",
+    "feature 目录",
+    "文档阅读面板",
+    "来源路径信息"
+  ],
+  "actions": [
+    {
+      "label": "打开文档",
+      "target": "material-document-detail",
+      "trigger": "点击文档列表项"
+    },
+    {
+      "label": "返回项目详情",
+      "target": "project-detail",
+      "trigger": "点击返回"
+    }
+  ],
+  "states": [
+    {
+      "id": "ready",
+      "label": "可浏览",
+      "description": "版本树和文档列表已加载。",
+      "state_visibility_contract": {
+        "user_question": "项目物料查看器 当前发生了什么，我下一步该做什么？",
+        "required_feedback": [
+          "版本树和文档列表已加载。"
+        ],
+        "primary_actions": [
+          "打开文档",
+          "返回项目详情"
+        ],
+        "recovery_actions": [
+          "继续主要操作",
+          "进入下一层或返回上层"
+        ],
+        "acceptance_refs": {
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        "forbidden_feedback": [
+          "完成状态仍要求用户猜下一步"
+        ]
+      }
+    },
+    {
+      "id": "document-open",
+      "label": "文档已打开",
+      "description": "右侧阅读区显示当前文档正文。",
+      "state_visibility_contract": {
+        "user_question": "项目物料查看器 当前发生了什么，我下一步该做什么？",
+        "required_feedback": [
+          "右侧阅读区显示当前文档正文。"
+        ],
+        "primary_actions": [
+          "打开文档",
+          "返回项目详情"
+        ],
+        "recovery_actions": [
+          "继续主要操作",
+          "进入下一层或返回上层"
+        ],
+        "acceptance_refs": {
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        "forbidden_feedback": [
+          "完成状态仍要求用户猜下一步"
+        ]
+      }
+    },
+    {
+      "id": "source-missing",
+      "label": "来源缺失",
+      "description": "目标文档不存在或暂不可读。",
+      "state_visibility_contract": {
+        "user_question": "项目物料查看器 当前发生了什么，我下一步该做什么？",
+        "required_feedback": [
+          "目标文档不存在或暂不可读。",
+          "明确恢复动作与回退路径。"
+        ],
+        "primary_actions": [
+          "打开文档",
+          "返回项目详情"
+        ],
+        "recovery_actions": [
+          "返回上一层",
+          "重试当前动作"
+        ],
+        "acceptance_refs": {
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        "forbidden_feedback": [
+          "只显示技术错误码",
+          "隐藏下一步动作"
+        ]
+      }
+    },
+    {
+      "id": "loading",
+      "label": "加载中",
+      "description": "文档列表或内容仍在加载。",
+      "state_visibility_contract": {
+        "user_question": "项目物料查看器 当前发生了什么，我下一步该做什么？",
+        "required_feedback": [
+          "文档列表或内容仍在加载。"
+        ],
+        "primary_actions": [
+          "打开文档",
+          "返回项目详情"
+        ],
+        "recovery_actions": [
+          "继续等待数据加载",
+          "返回上一层"
+        ],
+        "acceptance_refs": {
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        "forbidden_feedback": [
+          "页面结构抖动",
+          "空白无提示"
+        ]
+      }
+    },
+    {
+      "id": "empty",
+      "label": "空状态",
+      "description": "该版本或类型下没有可读文档。",
+      "state_visibility_contract": {
+        "user_question": "项目物料查看器 当前发生了什么，我下一步该做什么？",
+        "required_feedback": [
+          "该版本或类型下没有可读文档。",
+          "解释为什么为空，以及回到哪里继续。"
+        ],
+        "primary_actions": [
+          "打开文档",
+          "返回项目详情"
+        ],
+        "recovery_actions": [
+          "返回上一层",
+          "重试当前动作"
+        ],
+        "acceptance_refs": {
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        "forbidden_feedback": [
+          "只显示技术错误码",
+          "隐藏下一步动作"
+        ]
+      }
+    },
+    {
+      "id": "error",
+      "label": "错误",
+      "description": "文档读取失败。",
+      "state_visibility_contract": {
+        "user_question": "项目物料查看器 当前发生了什么，我下一步该做什么？",
+        "required_feedback": [
+          "文档读取失败。",
+          "明确恢复动作与回退路径。"
+        ],
+        "primary_actions": [
+          "打开文档",
+          "返回项目详情"
+        ],
+        "recovery_actions": [
+          "返回上一层",
+          "重试当前动作"
+        ],
+        "acceptance_refs": {
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        "forbidden_feedback": [
+          "只显示技术错误码",
+          "隐藏下一步动作"
+        ]
+      }
+    }
+  ],
+  "requirement_refs": {
+    "user-story": [
+      "docs/beacon/v1.3.10/user-story/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md"
+    ],
+    "prd": [
+      "docs/beacon/v1.3.10/prd/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md"
+    ],
+    "test-case": [
+      "docs/beacon/v1.3.10/qa/test-cases/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md"
+    ]
+  },
+  "outbound_transitions": [
+    {
+      "from": "material-viewer",
+      "to": "project-detail",
+      "trigger": "点击返回",
+      "type": "return"
+    },
+    {
+      "from": "material-viewer",
+      "to": "material-document-detail",
+      "trigger": "点击文档列表项",
+      "type": "drill-down"
+    }
+  ],
+  "analysis": {
+    "target_user": "查看 Beacon 物料的人",
+    "decision_focus": [
+      "当前要看哪个版本、哪类文档、哪个 feature。",
+      "Markdown 物料是否存在，并能否稳定切换浏览。",
+      "这只是只读消费面，真相仍在本地 docs/beacon 与 .beacon。"
+    ],
+    "layout_rules": [
+      "左侧负责层级导航，右侧负责稳定阅读，职责不能混乱。",
+      "来源路径只做可信来源说明，不压过正文阅读体验。",
+      "版本切换要靠近树和目录，不要藏到正文底部。"
+    ],
+    "noise_guardrail": "物料页必须坚持只读查看，不暴露机器索引或编辑入口。"
+  },
+  "page_intent_contract": {
+    "why_this_page_exists": "按 version -> document type -> feature 提供只读 Markdown 浏览。",
+    "decision_supported": "当前要看哪个版本、哪类文档、哪个 feature。",
+    "must_show_first": [
+      "版本树",
+      "文档类型列表"
+    ],
+    "must_not_show": [
+      "transaction_id",
+      "projection metadata",
+      "无边界 runtime 明细"
+    ],
+    "entry_conditions": [
+      "用户进入 `material-viewer` 需要先获得当前上下文。",
+      "当前 requirement truth 已经明确该页承担的主判断。"
+    ],
+    "exit_actions": [
+      {
+        "label": "打开文档",
+        "target": "material-document-detail"
+      },
+      {
+        "label": "返回项目详情",
+        "target": "project-detail"
+      }
+    ]
+  },
+  "layout_lines": [
+    "+-----------------------------------------------------------------------------------+",
+    "| 顶栏：返回项目详情 | 项目物料查看器 | 当前项目 | 只读模式                         |",
+    "+-----------------------------------------------------------------------------------+",
+    "| 左侧导航                                                                           |",
+    "| 版本树            | 文档类型列表            | feature / 文档目录                  |",
+    "| v1.3.6            | prd                    | beacon-v1.3.6...md                   |",
+    "| v1.3.5            | user-story             | ...                                   |",
+    "| v1.3.4            | test-case              |                                       |",
+    "+-----------------------------------------------------------------------------------+",
+    "| 文档阅读面板                                                                       |",
+    "| - 文档标题 / 简介                                                                  |",
+    "| - Markdown 正文预览                                                                |",
+    "+-----------------------------------------------------------------------------------+",
+    "| 来源路径信息                                | 只读说明 / 版本切换                  |",
+    "| - docs/beacon/...                            | - 真相仍在本地文档树                 |",
+    "+-----------------------------------------------------------------------------------+"
+  ]
+}

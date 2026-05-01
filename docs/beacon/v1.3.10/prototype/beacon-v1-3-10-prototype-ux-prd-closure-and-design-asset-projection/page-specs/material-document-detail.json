@@ -1,0 +1,218 @@
+{
+  "page_id": "material-document-detail",
+  "name": "物料文档详情",
+  "priority": "P2",
+  "platforms": [
+    "Web",
+    "PC"
+  ],
+  "responsibility": "冻结文档阅读状态，包括来源路径、版本切换和同类文档切换。",
+  "decision_supported": "",
+  "sections": [
+    "文档头部信息",
+    "版本 / 类型 / feature 面包屑",
+    "Markdown 正文区",
+    "同类文档切换",
+    "来源路径与只读说明"
+  ],
+  "actions": [
+    {
+      "label": "返回物料查看器",
+      "target": "material-viewer",
+      "trigger": "点击返回"
+    },
+    {
+      "label": "切换同版本文档",
+      "target": "material-document-detail",
+      "trigger": "点击侧栏文档"
+    }
+  ],
+  "states": [
+    {
+      "id": "ready",
+      "label": "文档已打开",
+      "description": "显示文档正文与来源路径。",
+      "state_visibility_contract": {
+        "user_question": "物料文档详情 当前发生了什么，我下一步该做什么？",
+        "required_feedback": [
+          "显示文档正文与来源路径。"
+        ],
+        "primary_actions": [
+          "返回物料查看器",
+          "切换同版本文档"
+        ],
+        "recovery_actions": [
+          "继续主要操作",
+          "进入下一层或返回上层"
+        ],
+        "acceptance_refs": {
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        "forbidden_feedback": [
+          "完成状态仍要求用户猜下一步"
+        ]
+      }
+    },
+    {
+      "id": "sibling-switch",
+      "label": "切换同类文档",
+      "description": "在阅读区切换相邻文档。",
+      "state_visibility_contract": {
+        "user_question": "物料文档详情 当前发生了什么，我下一步该做什么？",
+        "required_feedback": [
+          "在阅读区切换相邻文档。"
+        ],
+        "primary_actions": [
+          "返回物料查看器",
+          "切换同版本文档"
+        ],
+        "recovery_actions": [
+          "返回上一层",
+          "重试当前动作"
+        ],
+        "acceptance_refs": {
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        "forbidden_feedback": [
+          "只显示技术错误码",
+          "隐藏下一步动作"
+        ]
+      }
+    },
+    {
+      "id": "version-switch",
+      "label": "切换版本",
+      "description": "切换到同类型的其他版本文档。",
+      "state_visibility_contract": {
+        "user_question": "物料文档详情 当前发生了什么，我下一步该做什么？",
+        "required_feedback": [
+          "切换到同类型的其他版本文档。"
+        ],
+        "primary_actions": [
+          "返回物料查看器",
+          "切换同版本文档"
+        ],
+        "recovery_actions": [
+          "返回上一层",
+          "重试当前动作"
+        ],
+        "acceptance_refs": {
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        "forbidden_feedback": [
+          "只显示技术错误码",
+          "隐藏下一步动作"
+        ]
+      }
+    },
+    {
+      "id": "source-missing",
+      "label": "来源缺失",
+      "description": "文档不存在或来源路径不可达。",
+      "state_visibility_contract": {
+        "user_question": "物料文档详情 当前发生了什么，我下一步该做什么？",
+        "required_feedback": [
+          "文档不存在或来源路径不可达。",
+          "明确恢复动作与回退路径。"
+        ],
+        "primary_actions": [
+          "返回物料查看器",
+          "切换同版本文档"
+        ],
+        "recovery_actions": [
+          "返回上一层",
+          "重试当前动作"
+        ],
+        "acceptance_refs": {
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        "forbidden_feedback": [
+          "只显示技术错误码",
+          "隐藏下一步动作"
+        ]
+      }
+    }
+  ],
+  "requirement_refs": {
+    "user-story": [
+      "docs/beacon/v1.3.10/user-story/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md"
+    ],
+    "prd": [
+      "docs/beacon/v1.3.10/prd/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md"
+    ],
+    "test-case": [
+      "docs/beacon/v1.3.10/qa/test-cases/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md"
+    ]
+  },
+  "outbound_transitions": [
+    {
+      "from": "material-document-detail",
+      "to": "material-viewer",
+      "trigger": "点击返回",
+      "type": "return"
+    }
+  ],
+  "analysis": {
+    "target_user": "需要持续阅读单篇物料的审阅者",
+    "decision_focus": [
+      "当前读的是哪一版、哪一类、哪个 feature 的文档。",
+      "如何在同类文档之间切换，而不丢失阅读上下文。",
+      "当来源缺失时，用户如何回退到上层查看器。"
+    ],
+    "layout_rules": [
+      "面包屑和文档头部先稳定上下文，再展开正文。",
+      "正文区必须占据视觉主体，切换控件退居辅助位置。",
+      "来源路径只作为可信性补充，不与正文争抢注意力。"
+    ],
+    "noise_guardrail": "详情阅读页不展示机器合同或 requirement 文件路径原文。"
+  },
+  "page_intent_contract": {
+    "why_this_page_exists": "冻结文档阅读状态，包括来源路径、版本切换和同类文档切换。",
+    "decision_supported": "当前读的是哪一版、哪一类、哪个 feature 的文档。",
+    "must_show_first": [
+      "文档头部信息",
+      "版本 / 类型 / feature 面包屑"
+    ],
+    "must_not_show": [
+      "transaction_id",
+      "projection metadata",
+      "无边界 runtime 明细"
+    ],
+    "entry_conditions": [
+      "用户进入 `material-document-detail` 需要先获得当前上下文。",
+      "当前 requirement truth 已经明确该页承担的主判断。"
+    ],
+    "exit_actions": [
+      {
+        "label": "返回物料查看器",
+        "target": "material-viewer"
+      },
+      {
+        "label": "切换同版本文档",
+        "target": "material-document-detail"
+      }
+    ]
+  },
+  "layout_lines": [
+    "+-----------------------------------------------------------------------------------+",
+    "| 顶栏：返回物料查看器 | 文档详情 | 当前版本 / 类型 / feature                        |",
+    "+-----------------------------------------------------------------------------------+",
+    "| 文档头部信息                                                                       |",
+    "| 标题 | 更新时间 | 来源版本 | 文档类型                                              |",
+    "+-----------------------------------------------------------------------------------+",
+    "| 面包屑： version / document type / feature / current document                      |",
+    "+-----------------------------------------------------------------------------------+",
+    "| Markdown 正文区                                                                    |",
+    "| # 文档标题                                                                         |",
+    "| 段落 / 列表 / 冻结说明 / requirement 内容预览                                     |",
+    "+-----------------------------------------------------------------------------------+",
+    "| 同类文档切换                               | 来源路径 / 只读说明                    |",
+    "| - 上一篇 / 下一篇                          | - docs/beacon/...                     |",
+    "| - 同版本相邻文档                           | - 不提供网页内编辑                     |",
+    "+-----------------------------------------------------------------------------------+"
+  ]
+}

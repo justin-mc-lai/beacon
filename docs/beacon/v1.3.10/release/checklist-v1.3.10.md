@@ -1,46 +1,45 @@
 # Release Checklist: v1.3.10
 
 **Version**: v1.3.10
-**Created**: 2026-04-30 16:20
-**Status**: In Progress
+**Created**: 2026-04-30 20:51
+**Status**: Pending
 
 ---
 
 ## Pre-Release Checks
 
-- [x] Requirement package drift gate implemented
-- [x] Help/status/report remediation proof implemented
-- [x] Targeted regression tests passing
-- [x] Version materials updated
-- [ ] Final release scorecard reviewed
-- [ ] Final release gate executed
+- [ ] All tests passing
+- [ ] Code coverage >= 80%
+- [ ] No critical bugs open
+- [ ] Security scan completed
+- [ ] Performance benchmarks passed
+- [ ] Documentation updated
 
-## Material Freeze
+## Build
 
-- [x] Summary generated: `docs/beacon/v1.3.10/SUMMARY.md`
-- [x] Version change document generated: `docs/beacon/v1.3.10/change/v1.3.10.md`
-- [x] Version change machine payload generated: `docs/beacon/v1.3.10/.machine/change/v1.3.10.json`
-- [x] Release note draft generated: `docs/beacon/v1.3.10/release/v1.3.10.md`
-- [x] Execution boundaries generated: `docs/beacon/v1.3.10/execution/boundaries.md`
-- [x] Project skill QA blueprint generated: `docs/beacon/v1.3.10/execution/project-skill-qa-evolution-blueprint.md`
-- [x] Source architecture index generated: `docs/beacon/v1.3.10/source-architecture/index.md`
+- [ ] Build successful
+- [ ] No linting errors
+- [ ] Type checks passing
 
-## Proof
+## Deployment
 
-- [x] `beacon-change` remediation proof covered
-- [x] `doctor sync-materials` remediation proof covered
-- [x] `doctor verify-materials` remediation proof covered
-- [x] Real-project-validation captures help next step
+- [ ] Staging deployment successful
+- [ ] Smoke tests passed
+- [ ] Database migrations tested
 
 ## Release
 
-- [ ] `release scorecard v1.3.10 --json`
-- [ ] `release check v1.3.10 --json`
-- [ ] `gate check release --version v1.3.10 --json`
-- [ ] Release reviewer confirms scope and final status
+- [ ] Production deployment
+- [ ] Health checks passing
+- [ ] Rollback plan ready
+
+## Change Documents
+
+- [x] Version change document generated: `docs/beacon/v1.3.10/change/v1.3.10.md`
+- [x] Version change machine payload generated: `docs/beacon/v1.3.10/.machine/change/v1.3.10.json`
+- [ ] Release reviewer confirmed included feature packages match intended scope
 
 ---
 
 ## Notes
 
-- 当前清单代表“版本材料冻结完成”，不代表正式 `release-ready` 已宣告。

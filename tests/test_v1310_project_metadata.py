@@ -22,6 +22,7 @@ assert _IMPLEMENT_SPEC and _IMPLEMENT_SPEC.loader
 _IMPLEMENT_MODULE = importlib.util.module_from_spec(_IMPLEMENT_SPEC)
 _IMPLEMENT_SPEC.loader.exec_module(_IMPLEMENT_MODULE)
 _branch_guard_inputs = _IMPLEMENT_MODULE._branch_guard_inputs
+_run_branch_preflight = _IMPLEMENT_MODULE._run_branch_preflight
 
 
 def _git(cmd: list[str], cwd: Path) -> None:
@@ -223,6 +224,57 @@ def test_v1310_implement_branch_guard_inputs_should_consume_project_metadata(tmp
     assert "worker" in inputs["direct_delivery_services"]
     view = resolve_project_metadata_view(tmp_path, version="v1.3.10")
     assert view["selected_service"] == "worker"
+
+
+def test_v1310_single_repo_branch_preflight_should_accept_service_key_alias(tmp_path: Path) -> None:
+    _git(["git", "init", "-b", "main"], cwd=tmp_path)
+    _git(["git", "config", "user.name", "Beacon Test"], cwd=tmp_path)
+    _git(["git", "config", "user.email", "beacon@example.com"], cwd=tmp_path)
+    (tmp_path / "README.md").write_text("test\n", encoding="utf-8")
+    _git(["git", "add", "README.md"], cwd=tmp_path)
+    _git(["git", "commit", "-m", "init"], cwd=tmp_path)
+
+    result = runner.invoke(
+        app,
+        [
+            "doctor",
+            "metadata",
+            "create",
+            "--project-root",
+            str(tmp_path),
+            "--topology-kind",
+            "single_repo",
+            "--default-execution-service",
+            "beacon",
+            "--service-key",
+            "beacon",
+            "--repo-root",
+            str(tmp_path),
+            "--version",
+            "v1.3.10",
+            "--branch",
+            "main",
+            "--json",
+        ],
+    )
+    assert result.exit_code == 0, result.stdout
+
+    inputs = _branch_guard_inputs(tmp_path, version="v1.3.10", feature="demo")
+    payload = _run_branch_preflight(
+        project_root=tmp_path,
+        version="v1.3.10",
+        run_id="run-test",
+        feature="demo",
+        auto_switch_branch=False,
+        require_clean_worktree_for_switch=True,
+        expected_branch=str(inputs["expected_branch"]),
+        branch_prefix=str(inputs["branch_prefix"]),
+        base_branch=str(inputs["base_branch"]),
+        git_roots=list(inputs["git_roots"]),
+        direct_delivery_services=list(inputs["direct_delivery_services"]),
+    )
+    assert payload["service_scope"]["unresolved_services"] == []
+    assert "implement_direct_delivery_service_scope_unresolved" not in payload.get("reason_codes", [])
 
 
 def test_v1310_prd_should_embed_project_metadata_context(tmp_path: Path) -> None:

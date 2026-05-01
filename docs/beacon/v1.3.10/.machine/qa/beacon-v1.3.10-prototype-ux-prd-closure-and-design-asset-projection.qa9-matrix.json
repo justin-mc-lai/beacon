@@ -1,0 +1,1302 @@
+{
+  "schema_version": "1.0.2",
+  "feature": "beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection",
+  "feature_slug": "beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection",
+  "version": "v1.3.10",
+  "compiler": {
+    "requested_mode": "auto",
+    "effective_mode": "rule",
+    "generator_mode": "rule",
+    "fallback_reason": "llm_unavailable",
+    "capability_snapshot": {
+      "schema_version": "1.0",
+      "command_name": "test-case",
+      "host_runtime": "codex",
+      "host_bridge_declared": false,
+      "host_response_available": false,
+      "host_response_source": "none",
+      "host_response_path": "",
+      "host_semantic_ready": false,
+      "provider_available": false,
+      "provider_key_present": false,
+      "llm_disabled": false,
+      "disable_env": "BEACON_TEST_CASE_DISABLE_LLM"
+    },
+    "model": "beacon-test-case-compiler"
+  },
+  "qa_profile": "web-full",
+  "qa_types": [
+    "unit",
+    "interface",
+    "contract",
+    "integration",
+    "smoke",
+    "functional",
+    "regression",
+    "exception",
+    "compatibility"
+  ],
+  "llm_plan": {
+    "mode": "rule",
+    "model": "beacon-rule-llm-v1",
+    "project_scan": {
+      "language": "python",
+      "framework": "python-app",
+      "frontend": "unknown",
+      "api_spec_refs": [],
+      "risk_points": [
+        "authz/authn boundary",
+        "cross-browser ui behavior",
+        "api contract drift",
+        "exception handling and replay safety"
+      ]
+    },
+    "project_type": "ai-agent-skill",
+    "generated_at": "2026-05-01T09:47:15.425456",
+    "prompt_ref": "beacon.qa9.llm.plan.v1.0.2",
+    "skip_reason": "",
+    "qa_types": [
+      "unit",
+      "interface",
+      "contract",
+      "integration",
+      "smoke",
+      "functional",
+      "regression",
+      "exception",
+      "compatibility"
+    ]
+  },
+  "qa_strategy": {
+    "schema_version": "1.0.2",
+    "generated_at": "2026-05-01T09:47:15.423384",
+    "project_type": "ai-agent-skill",
+    "project_scan": {
+      "language": "python",
+      "framework": "python-app",
+      "frontend": "unknown",
+      "api_spec_refs": [],
+      "risk_points": [
+        "authz/authn boundary",
+        "cross-browser ui behavior",
+        "api contract drift",
+        "exception handling and replay safety"
+      ]
+    },
+    "qa_applicability": {
+      "unit": "required",
+      "interface": "required",
+      "contract": "required",
+      "integration": "required",
+      "smoke": "required",
+      "functional": "conditional",
+      "regression": "required",
+      "exception": "required",
+      "compatibility": "conditional"
+    },
+    "qa_required_types": [
+      "unit",
+      "interface",
+      "contract",
+      "integration",
+      "smoke",
+      "functional",
+      "regression",
+      "exception",
+      "compatibility"
+    ],
+    "runner_policy": {
+      "functional": {
+        "primary": "browser-use",
+        "fallback": [
+          "playwright",
+          "cypress",
+          "agent-browser"
+        ]
+      },
+      "compatibility": {
+        "primary": "playwright",
+        "fallback": [
+          "cypress"
+        ]
+      },
+      "api_layers": {
+        "interface": "schemathesis/newman/pytest",
+        "contract": "schemathesis/pact",
+        "integration": "pytest+testcontainers"
+      }
+    },
+    "command_baseline": {
+      "unit": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "interface": "python3 -m pytest -q -k interface --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "contract": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "integration": "python3 -m pytest -q -k integration --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "smoke": "python3 -m pytest -q -m smoke --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "functional": "python3 -m beacon.adapters.browser_use_runner --mode functional --fallback-cmd \"python3 -m pytest -q -k functional --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "regression": "python3 -m pytest -q -k regression --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "exception": "python3 -m pytest -q -k exception --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "compatibility": "python3 -m beacon.adapters.browser_use_runner --mode compatibility --fallback-cmd \"python3 -m pytest -q -k compatibility --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\""
+    },
+    "ui_runner": "browser-use"
+  },
+  "qa_requirements": [
+    {
+      "qa_type": "unit",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "interface",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "contract",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "integration",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "smoke",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "functional",
+      "required": false,
+      "automation_required": false,
+      "min_cases": 0,
+      "applicability": "conditional",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "regression",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "exception",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "compatibility",
+      "required": false,
+      "automation_required": false,
+      "min_cases": 0,
+      "applicability": "conditional",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    }
+  ],
+  "automation_target_rate": 0.85,
+  "entries": [
+    {
+      "tc_id": "TC-001",
+      "ac_id": "AC-001",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection unit :: prototype canonical truth 必须包含 `target_audience`、`primary_use_cases`、`operator_m",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection/{run_id}/TC-001.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md"
+    },
+    {
+      "tc_id": "TC-002",
+      "ac_id": "AC-002",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection unit :: 缺少显式 design context 时，prototype 只能停留在结构 freeze candidate，不得被判定为 UX freeze ready。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection/{run_id}/TC-002.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md"
+    },
+    {
+      "tc_id": "TC-003",
+      "ac_id": "AC-101",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection unit :: prototype canonical truth 必须包含 `product_surface_type`、`interaction_model`、`recom",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection/{run_id}/TC-003.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md"
+    },
+    {
+      "tc_id": "TC-004",
+      "ac_id": "AC-102",
+      "layer": "ui",
+      "qa_type": "functional",
+      "title": "beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection functional :: 设计推理层必须能吸收 `ui-ux-pro-max-skill` 的产品类型/布局模式/反模式约束，同时保持 Beacon requirement-derive",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m beacon.adapters.browser_use_runner --mode functional --fallback-cmd \"python3 -m pytest -q -k functional --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "assertion": "Web UI assertions and key actions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection/{run_id}/TC-004.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md",
+      "last_run_id": "run-20260501T095948220375",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260501T095948220375/qa9-tc/TC-004/explore/command.txt"
+    },
+    {
+      "tc_id": "TC-005",
+      "ac_id": "AC-103",
+      "layer": "ui",
+      "qa_type": "functional",
+      "title": "beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection functional :: implement 可以改变代码实现方式，但不能绕过已经冻结的设计推理重新定义页面主判断与信息层级。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m beacon.adapters.browser_use_runner --mode functional --fallback-cmd \"python3 -m pytest -q -k functional --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "assertion": "Web UI assertions and key actions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection/{run_id}/TC-005.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md",
+      "last_run_id": "run-20260501T095948220375",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260501T095948220375/qa9-tc/TC-005/explore/command.txt"
+    },
+    {
+      "tc_id": "TC-006",
+      "ac_id": "AC-201",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection unit :: prototype 必须新增正式 `ux_contract`，至少表达 `first_glance_question`、`primary_decision`、`",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection/{run_id}/TC-006.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md"
+    },
+    {
+      "tc_id": "TC-007",
+      "ac_id": "AC-202",
+      "layer": "ui",
+      "qa_type": "functional",
+      "title": "beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection functional :: 每个页面都必须表达 `why_this_page_exists`、`decision_supported`、`must_show_first`、`must_no",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m beacon.adapters.browser_use_runner --mode functional --fallback-cmd \"python3 -m pytest -q -k functional --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "assertion": "Web UI assertions and key actions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection/{run_id}/TC-007.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md",
+      "last_run_id": "run-20260501T095948220375",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260501T095948220375/qa9-tc/TC-007/explore/command.txt"
+    },
+    {
+      "tc_id": "TC-008",
+      "ac_id": "AC-203",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection unit :: loading / empty / error / blocked / stale / success 等关键状态必须表达 `user_question`、`r",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection/{run_id}/TC-008.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md"
+    },
+    {
+      "tc_id": "TC-009",
+      "ac_id": "AC-204",
+      "layer": "ui",
+      "qa_type": "functional",
+      "title": "beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection functional :: prototype 必须产出人类可读的 `ux-prd.md`，收口 design context、design reasoning、page intent、s",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m beacon.adapters.browser_use_runner --mode functional --fallback-cmd \"python3 -m pytest -q -k functional --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "assertion": "Web UI assertions and key actions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection/{run_id}/TC-009.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md",
+      "last_run_id": "run-20260501T095948220375",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260501T095948220375/qa9-tc/TC-009/explore/command.txt"
+    },
+    {
+      "tc_id": "TC-010",
+      "ac_id": "AC-301",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection unit :: prototype 必须产出 `DESIGN.md`，覆盖 visual theme、palette、typography、components、layout、",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection/{run_id}/TC-010.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md"
+    },
+    {
+      "tc_id": "TC-011",
+      "ac_id": "AC-302",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection unit :: prototype 必须产出 `preview.html` 与 `preview-dark.html`，作为 design asset catalog，而不是产",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection/{run_id}/TC-011.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md"
+    },
+    {
+      "tc_id": "TC-012",
+      "ac_id": "AC-303",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection unit :: `DESIGN.md` 与 preview assets 必须由 canonical truth 单向投影生成，不允许手工编辑文档再反驱 machine tru",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection/{run_id}/TC-012.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md"
+    },
+    {
+      "tc_id": "TC-013",
+      "ac_id": "AC-304",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection unit :: prototype 资产形态必须对齐 `awesome-design-md` 的人/agent 双消费模式，但语义仍然是 Beacon requirement ",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection/{run_id}/TC-013.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md"
+    },
+    {
+      "tc_id": "TC-014",
+      "ac_id": "AC-401",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection unit :: Beacon 默认 design preset 固定支持 `apple-inspired-design-md`。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection/{run_id}/TC-014.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md"
+    },
+    {
+      "tc_id": "TC-015",
+      "ac_id": "AC-402",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection unit :: 该 preset 至少约束 quiet neutral surfaces、restrained accent、system/SF Pro typography ",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection/{run_id}/TC-015.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md"
+    },
+    {
+      "tc_id": "TC-016",
+      "ac_id": "AC-403",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection unit :: 项目 requirement 可以显式覆盖默认 preset，但覆盖原因必须被记录，而不是静默漂移。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection/{run_id}/TC-016.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md"
+    },
+    {
+      "tc_id": "TC-017",
+      "ac_id": "AC-501",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection unit :: prototype review 必须新增 UX/heuristic 检查，至少覆盖 system status、real-world match、user c",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection/{run_id}/TC-017.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md"
+    },
+    {
+      "tc_id": "TC-018",
+      "ac_id": "AC-502",
+      "layer": "ui",
+      "qa_type": "functional",
+      "title": "beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection functional :: 缺少 design context、design reasoning、page decision、state feedback 或 design assets ",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m beacon.adapters.browser_use_runner --mode functional --fallback-cmd \"python3 -m pytest -q -k functional --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "assertion": "Web UI assertions and key actions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection/{run_id}/TC-018.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md",
+      "last_run_id": "run-20260501T095948220375",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260501T095948220375/qa9-tc/TC-018/explore/command.txt"
+    },
+    {
+      "tc_id": "TC-019",
+      "ac_id": "AC-503",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection unit :: 仅有结构化说明、没有正式 UX closure truth 的 prototype 不得通过 freeze。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection/{run_id}/TC-019.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md"
+    },
+    {
+      "tc_id": "TC-020",
+      "ac_id": "AC-601",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection unit :: implement 至少能消费 `ux_contract`、`page_intent_contract`、`design_context`、`DESIGN.md",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection/{run_id}/TC-020.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md"
+    },
+    {
+      "tc_id": "TC-021",
+      "ac_id": "AC-602",
+      "layer": "ui",
+      "qa_type": "functional",
+      "title": "beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection functional :: qa 至少能验证页面主判断、状态反馈、machine noise 边界与设计资产偏离。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m beacon.adapters.browser_use_runner --mode functional --fallback-cmd \"python3 -m pytest -q -k functional --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "assertion": "Web UI assertions and key actions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection/{run_id}/TC-021.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md",
+      "last_run_id": "run-20260501T095948220375",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260501T095948220375/qa9-tc/TC-021/explore/command.txt"
+    },
+    {
+      "tc_id": "TC-022",
+      "ac_id": "AC-603",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection unit :: runtime mode 或前端代码实现细节不得改变已经冻结的 UX closure truth。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection/{run_id}/TC-022.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md"
+    },
+    {
+      "tc_id": "TC-023",
+      "ac_id": "AC-701",
+      "layer": "ui",
+      "qa_type": "functional",
+      "title": "beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection functional :: prototype 子 skill / prompt / rule 默认吸收 `impeccable` 的上下文要求、`ui-ux-pro-max-skill`",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m beacon.adapters.browser_use_runner --mode functional --fallback-cmd \"python3 -m pytest -q -k functional --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "assertion": "Web UI assertions and key actions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection/{run_id}/TC-023.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md",
+      "last_run_id": "run-20260501T095948220375",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260501T095948220375/qa9-tc/TC-023/explore/command.txt"
+    },
+    {
+      "tc_id": "TC-024",
+      "ac_id": "AC-702",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection unit :: 该升级不新增新的公开 lifecycle stage，仍然对人类表现为 `prototype`。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection/{run_id}/TC-024.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md"
+    },
+    {
+      "tc_id": "TC-025",
+      "ac_id": "AC-703",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection unit :: 新增 `ux-prd.md`、`DESIGN.md`、preview assets 后，多写入点仍遵循同一 canonical transaction cont",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection/{run_id}/TC-025.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md"
+    },
+    {
+      "tc_id": "TC-026",
+      "ac_id": "AC-801",
+      "layer": "ui",
+      "qa_type": "functional",
+      "title": "beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection functional :: prototype canonical truth 必须把组件责任表达为 state-aware contract，而不是仅有 page-global sect",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m beacon.adapters.browser_use_runner --mode functional --fallback-cmd \"python3 -m pytest -q -k functional --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "assertion": "Web UI assertions and key actions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection/{run_id}/TC-026.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md",
+      "last_run_id": "run-20260501T095948220375",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260501T095948220375/qa9-tc/TC-026/explore/command.txt"
+    },
+    {
+      "tc_id": "TC-027",
+      "ac_id": "AC-802",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection unit :: 每个关键状态反馈至少能追溯到一个负责呈现的 component contract，并绑定对应 AC/TC。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection/{run_id}/TC-027.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md"
+    },
+    {
+      "tc_id": "TC-028",
+      "ac_id": "AC-803",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection unit :: implement 与 qa 至少能读取同一套 component-state contract，避免组件层的 UX 责任漂移。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection/{run_id}/TC-028.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md"
+    },
+    {
+      "tc_id": "TC-029",
+      "ac_id": "AC-901",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection unit :: prototype canonical truth 必须显式表达关键跨页业务迁移的 `from_page/from_state -> to_page/to_st",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection/{run_id}/TC-029.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md"
+    },
+    {
+      "tc_id": "TC-030",
+      "ac_id": "AC-902",
+      "layer": "ui",
+      "qa_type": "functional",
+      "title": "beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection functional :: 关键跨页业务迁移必须绑定 route 或 runtime evidence，而不是只借用目标页 `ready` 状态。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m beacon.adapters.browser_use_runner --mode functional --fallback-cmd \"python3 -m pytest -q -k functional --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "assertion": "Web UI assertions and key actions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection/{run_id}/TC-030.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md",
+      "last_run_id": "run-20260501T095948220375",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260501T095948220375/qa9-tc/TC-030/explore/command.txt"
+    },
+    {
+      "tc_id": "TC-031",
+      "ac_id": "AC-903",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection unit :: 跨页业务迁移必须具备 AC/TC traceability，并能被 prototype review / QA 正式消费。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection/{run_id}/TC-031.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md"
+    },
+    {
+      "tc_id": "TC-032",
+      "ac_id": "AC-1001",
+      "layer": "ui",
+      "qa_type": "functional",
+      "title": "beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection functional :: prototype 必须产出正式 `automation-priority-matrix`，覆盖 page/state/transition/component",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m beacon.adapters.browser_use_runner --mode functional --fallback-cmd \"python3 -m pytest -q -k functional --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "assertion": "Web UI assertions and key actions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection/{run_id}/TC-032.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md",
+      "last_run_id": "run-20260501T095948220375",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260501T095948220375/qa9-tc/TC-032/explore/command.txt"
+    },
+    {
+      "tc_id": "TC-033",
+      "ac_id": "AC-1002",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection unit :: 该矩阵至少区分 `release-blocker`、`primary-automation`、`smoke-only`、`manual-acceptable`。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection/{run_id}/TC-033.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md"
+    },
+    {
+      "tc_id": "TC-034",
+      "ac_id": "AC-1003",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection unit :: implement / qa / release 必须消费同一套 automation priority truth，而不是各自临时判断。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection/{run_id}/TC-034.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md"
+    },
+    {
+      "tc_id": "TC-035",
+      "ac_id": "AC-003",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection unit :: Generic wireframe 会被阻断",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection/{run_id}/TC-035.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "prd:docs/beacon/v1.3.10/prd/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md"
+    },
+    {
+      "tc_id": "TC-036",
+      "ac_id": "AC-004",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection unit :: Implement 与 QA 能消费同一套 UX closure truth",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection/{run_id}/TC-036.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "prd:docs/beacon/v1.3.10/prd/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md"
+    },
+    {
+      "tc_id": "TC-037",
+      "ac_id": "AC-005",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection unit :: 默认 design preset 已固定",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection/{run_id}/TC-037.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "prd:docs/beacon/v1.3.10/prd/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md"
+    },
+    {
+      "tc_id": "TC-038",
+      "ac_id": "AC-006",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection unit :: Component-state 责任边界已冻结",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection/{run_id}/TC-038.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "prd:docs/beacon/v1.3.10/prd/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md"
+    },
+    {
+      "tc_id": "TC-039",
+      "ac_id": "AC-007",
+      "layer": "ui",
+      "qa_type": "functional",
+      "title": "beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection functional :: Cross-page business transition 已冻结",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m beacon.adapters.browser_use_runner --mode functional --fallback-cmd \"python3 -m pytest -q -k functional --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "assertion": "Web UI assertions and key actions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection/{run_id}/TC-039.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "prd:docs/beacon/v1.3.10/prd/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md",
+      "last_run_id": "run-20260501T095948220375",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260501T095948220375/qa9-tc/TC-039/explore/command.txt"
+    },
+    {
+      "tc_id": "TC-040",
+      "ac_id": "AC-008",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection unit :: Automation priority matrix 已冻结",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection/{run_id}/TC-040.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "prd:docs/beacon/v1.3.10/prd/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md"
+    },
+    {
+      "tc_id": "TC-041",
+      "ac_id": "AC-001",
+      "layer": "api-curl",
+      "qa_type": "interface",
+      "title": "beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection interface coverage",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k interface --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "HTTP status and schema assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection/{run_id}/TC-041.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md"
+    },
+    {
+      "tc_id": "TC-042",
+      "ac_id": "AC-002",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection contract coverage",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection/{run_id}/TC-042.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md",
+      "last_run_id": "run-20260501T095948220375",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260501T095948220375/qa9-tc/TC-042/command.txt"
+    },
+    {
+      "tc_id": "TC-043",
+      "ac_id": "AC-101",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection integration coverage",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k integration --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Integration flow assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection/{run_id}/TC-043.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md",
+      "last_run_id": "run-20260501T095948220375",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260501T095948220375/qa9-tc/TC-043/command.txt"
+    },
+    {
+      "tc_id": "TC-044",
+      "ac_id": "AC-102",
+      "layer": "smoke",
+      "qa_type": "smoke",
+      "title": "beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection smoke coverage",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -m smoke --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Critical path assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection/{run_id}/TC-044.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md",
+      "last_run_id": "run-20260501T095948220375",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260501T095948220375/qa9-tc/TC-044/command.txt"
+    },
+    {
+      "tc_id": "TC-045",
+      "ac_id": "AC-103",
+      "layer": "regression",
+      "qa_type": "regression",
+      "title": "beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection regression coverage",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k regression --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "No known behavior regression found",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection/{run_id}/TC-045.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md",
+      "last_run_id": "run-20260501T095948220375",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260501T095948220375/qa9-tc/TC-045/command.txt"
+    },
+    {
+      "tc_id": "TC-046",
+      "ac_id": "AC-201",
+      "layer": "exception",
+      "qa_type": "exception",
+      "title": "beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection exception coverage",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k exception --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Negative-path assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection/{run_id}/TC-046.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md",
+      "last_run_id": "run-20260501T095948220375",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260501T095948220375/qa9-tc/TC-046/command.txt"
+    },
+    {
+      "tc_id": "TC-047",
+      "ac_id": "AC-202",
+      "layer": "compatibility",
+      "qa_type": "compatibility",
+      "title": "beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection compatibility coverage",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m beacon.adapters.browser_use_runner --mode compatibility --fallback-cmd \"python3 -m pytest -q -k compatibility --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "assertion": "Cross-browser/device assertions pass",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection/{run_id}/TC-047.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "user-story:docs/beacon/v1.3.10/user-story/beacon-v1.3.10-prototype-ux-prd-closure-and-design-asset-projection.md",
+      "last_run_id": "run-20260501T095948220375",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260501T095948220375/qa9-tc/TC-047/explore/command.txt"
+    }
+  ],
+  "compatibility_matrix": {
+    "browsers": [
+      "chromium",
+      "firefox",
+      "webkit"
+    ],
+    "devices": [
+      "desktop",
+      "iphone14"
+    ],
+    "required_pairs": [
+      {
+        "browser": "chromium",
+        "device": "desktop"
+      },
+      {
+        "browser": "firefox",
+        "device": "desktop"
+      },
+      {
+        "browser": "webkit",
+        "device": "desktop"
+      }
+    ]
+  },
+  "generated_at": "2026-05-01T09:47:15.425479"
+}

@@ -1579,6 +1579,9 @@ def _branch_guard_inputs(project_root: Path, *, version: str, feature: str) -> d
             payload["git_roots"] = git_roots
         if participating:
             payload["direct_delivery_services"] = [str(item) for item in participating]
+            if str(metadata_view.get("topology_kind") or "").strip() == "single_repo":
+                repo_aliases = [Path(item).name for item in git_roots if str(item).strip()]
+                payload["direct_delivery_services"] = list(dict.fromkeys(repo_aliases or payload["direct_delivery_services"]))
         payload["metadata_contract"] = {
             "project_root": metadata_view.get("project_root", ""),
             "topology_kind": metadata_view.get("topology_kind", ""),
