@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import re
 from pathlib import Path
@@ -29,6 +30,19 @@ def _read_json(path: Path) -> dict[str, Any] | None:
     except Exception:  # noqa: BLE001
         return None
     return data if isinstance(data, dict) else None
+
+
+def _read_text(path: Path) -> str:
+    if not path.exists():
+        return ""
+    try:
+        return path.read_text(encoding="utf-8")
+    except Exception:  # noqa: BLE001
+        return ""
+
+
+def _stable_hash(payload: str) -> str:
+    return hashlib.sha256(str(payload or "").encode("utf-8")).hexdigest()
 
 
 def _status_from_checks(checks: list[dict[str, Any]]) -> str:
@@ -113,6 +127,20 @@ def _requirement_package_failure_summary(checks: list[dict[str, Any]]) -> dict[s
                         "actual_hash": str(drift.get("actual_hash") or ""),
                     },
                 )
+        elif name == "prd_machine_mirror_sync":
+            drift_by_feature = info.get("drift_by_feature") if isinstance(info.get("drift_by_feature"), dict) else {}
+            for feature, drift in drift_by_feature.items():
+                if not isinstance(drift, dict):
+                    continue
+                for drift_code, drift_detail in drift.items():
+                    category = {
+                        "legacy_machine_mirror_sync": "stale_prd_legacy_mirror",
+                        "canonical_machine_mirror_sync": "stale_prd_canonical_mirror",
+                        "compile_machine_mirror_sync": "stale_prd_compile_mirror",
+                        "latest_transaction_pointer_sync": "stale_prd_latest_transaction_pointer",
+                    }.get(str(drift_code), "stale_prd_machine_mirror")
+                    detail = drift_detail if isinstance(drift_detail, dict) else {"value": drift_detail}
+                    _push(category, {"feature": str(feature), **detail})
         else:
             _push(f"material_check_failed:{name}", {"check": name})
     return {
@@ -126,6 +154,7 @@ def build_material_audit(project_root: Path | str, *, version: str | None = None
     resolved_version = resolve_target_version(root, version)
     requires_minimum_closure = _parse_semver_tuple(resolved_version) >= (1, 1, 3)
     requires_change_loop_dual_write = _parse_semver_tuple(resolved_version) >= (1, 3, 10)
+    requires_prd_mirror_dual_write = _parse_semver_tuple(resolved_version) >= (1, 3, 11)
     source_root = root / "docs" / "beacon" / resolved_version
     research_dir = source_root / "research"
     us_dir = source_root / "user-story"
@@ -195,6 +224,7 @@ def build_material_audit(project_root: Path | str, *, version: str | None = None
             missing_by_feature[name] = missing
 
     revision_drift_by_feature: dict[str, dict[str, Any]] = {}
+    prd_mirror_drift_by_feature: dict[str, dict[str, Any]] = {}
     if requires_change_loop_dual_write:
         for name in feature_names:
             revision_path = revision_state_file(root, resolved_version, name)
@@ -221,6 +251,65 @@ def build_material_audit(project_root: Path | str, *, version: str | None = None
                     "expected_hash": expected_hash,
                     "actual_hash": actual_hash,
                 }
+            if requires_prd_mirror_dual_write:
+                prd_path = prd_dir / f"{name}.md"
+                if not prd_path.exists():
+                    continue
+                markdown_raw = _read_text(prd_path)
+                markdown = markdown_raw.strip()
+                drift: dict[str, dict[str, Any]] = {}
+                legacy_path = root / ".beacon" / "prd" / f"{name}.json"
+                legacy_payload = _read_json(legacy_path)
+                legacy_markdown = ""
+                if isinstance(legacy_payload, dict):
+                    legacy_markdown = str(legacy_payload.get("content") or legacy_payload.get("markdown") or "").strip()
+                if not legacy_path.exists() or legacy_markdown != markdown:
+                    drift["legacy_machine_mirror_sync"] = {
+                        "path": str(legacy_path.relative_to(root)) if legacy_path.exists() else str(legacy_path),
+                        "exists": legacy_path.exists(),
+                    }
+                canonical_path = root / "docs" / "beacon" / resolved_version / ".machine" / "prd" / f"{name}.canonical.json"
+                canonical_payload = _read_json(canonical_path)
+                canonical_markdown = str(canonical_payload.get("markdown") or "").strip() if isinstance(canonical_payload, dict) else ""
+                if not canonical_path.exists() or canonical_markdown != markdown:
+                    drift["canonical_machine_mirror_sync"] = {
+                        "path": str(canonical_path.relative_to(root)) if canonical_path.exists() else str(canonical_path),
+                        "exists": canonical_path.exists(),
+                    }
+                compile_path = root / "docs" / "beacon" / resolved_version / ".machine" / "prd" / f"{name}.compile.json"
+                compile_payload = _read_json(compile_path)
+                compile_hash = str(compile_payload.get("compile_hash") or "").strip() if isinstance(compile_payload, dict) else ""
+                expected_compile_hash = _stable_hash(markdown_raw)
+                compile_contract_ok = bool(compile_payload.get("contract_ok", False)) if isinstance(compile_payload, dict) else False
+                if not compile_path.exists() or compile_hash != expected_compile_hash or not compile_contract_ok:
+                    drift["compile_machine_mirror_sync"] = {
+                        "path": str(compile_path.relative_to(root)) if compile_path.exists() else str(compile_path),
+                        "exists": compile_path.exists(),
+                        "compile_hash": compile_hash,
+                        "expected_compile_hash": expected_compile_hash,
+                        "compile_contract_ok": compile_contract_ok,
+                    }
+                latest_pointer_path = root / ".beacon" / "state" / "prd-transactions" / f"latest-{name}.json"
+                latest_pointer = _read_json(latest_pointer_path)
+                canonical_transaction = canonical_payload.get("transaction") if isinstance(canonical_payload, dict) else {}
+                latest_tx_id = str(latest_pointer.get("transaction_id") or "").strip() if isinstance(latest_pointer, dict) else ""
+                canonical_tx_id = str(canonical_transaction.get("transaction_id") or "").strip() if isinstance(canonical_transaction, dict) else ""
+                latest_source_hash = str(latest_pointer.get("source_hash") or "").strip() if isinstance(latest_pointer, dict) else ""
+                canonical_source_hash = str(canonical_transaction.get("source_hash") or "").strip() if isinstance(canonical_transaction, dict) else ""
+                if (
+                    not latest_pointer_path.exists()
+                    or not latest_tx_id
+                    or latest_tx_id != canonical_tx_id
+                    or latest_source_hash != canonical_source_hash
+                ):
+                    drift["latest_transaction_pointer_sync"] = {
+                        "path": str(latest_pointer_path.relative_to(root)) if latest_pointer_path.exists() else str(latest_pointer_path),
+                        "exists": latest_pointer_path.exists(),
+                        "latest_transaction_id": latest_tx_id,
+                        "canonical_transaction_id": canonical_tx_id,
+                    }
+                if drift:
+                    prd_mirror_drift_by_feature[name] = drift
 
     feature_status = "pass"
     if not feature_names:
@@ -250,6 +339,18 @@ def build_material_audit(project_root: Path | str, *, version: str | None = None
                 },
             }
         )
+        if requires_prd_mirror_dual_write:
+            prd_mirror_status = "pass" if not prd_mirror_drift_by_feature else ("fail" if strict else "warn")
+            checks.append(
+                {
+                    "name": "prd_machine_mirror_sync",
+                    "status": prd_mirror_status,
+                    "details": {
+                        "feature_count": len(feature_names),
+                        "drift_by_feature": prd_mirror_drift_by_feature,
+                    },
+                }
+            )
 
     checks.append(
         {
@@ -601,7 +702,18 @@ def build_requirement_package_gate(
     ]
     failure_summary = _requirement_package_failure_summary(failing_checks)
     failure_categories = failure_summary.get("categories", [])
-    drift_categories = {"missing_human_user_story", "missing_human_prd", "missing_human_test_case", "missing_revision_state", "baseline_hash_missing", "baseline_hash_mismatch"}
+    drift_categories = {
+        "missing_human_user_story",
+        "missing_human_prd",
+        "missing_human_test_case",
+        "missing_revision_state",
+        "baseline_hash_missing",
+        "baseline_hash_mismatch",
+        "stale_prd_legacy_mirror",
+        "stale_prd_canonical_mirror",
+        "stale_prd_compile_mirror",
+        "stale_prd_latest_transaction_pointer",
+    }
     machine_repair_categories = {
         "missing_machine_ac_matrix",
         "missing_machine_user_story",

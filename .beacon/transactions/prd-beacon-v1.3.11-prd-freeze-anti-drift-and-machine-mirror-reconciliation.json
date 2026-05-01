@@ -1,0 +1,132 @@
+{
+  "canonical_envelope": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation",
+    "feature_slug": "beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation",
+    "version": "v1.3.11",
+    "track": "parallel",
+    "family": "general",
+    "label": "并行 PRD / general",
+    "requested_mode": "rule",
+    "effective_mode": "rule",
+    "generator_mode": "rule",
+    "fallback_reason": "",
+    "capability_snapshot": {
+      "schema_version": "1.0",
+      "command_name": "prd",
+      "host_runtime": "codex",
+      "host_bridge_declared": false,
+      "host_response_available": false,
+      "host_response_source": "none",
+      "host_response_path": "",
+      "host_semantic_ready": false,
+      "provider_available": false,
+      "provider_key_present": false,
+      "llm_disabled": false,
+      "disable_env": "BEACON_PRD_DISABLE_LLM"
+    },
+    "model": "beacon-prd-compiler",
+    "diagram_truth_request": {
+      "diagram_types": [],
+      "state_axes": []
+    },
+    "source_refs": [
+      "docs/beacon/global-boundaries.md",
+      "docs/beacon/v1.3.11/SUMMARY.md",
+      "docs/beacon/v1.3.11/execution/index.md",
+      "docs/beacon/v1.3.11/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+      ".beacon/debug/index.json",
+      ".beacon/metadata/project-version-metadata.json"
+    ],
+    "project_metadata_context": {
+      "metadata_ref": ".beacon/metadata/project-version-metadata.json",
+      "resolved_metadata_view": {
+        "project_root": "/Users/apple/Developer/Personal/products/beacon",
+        "topology_kind": "single_repo",
+        "default_execution_service": "beacon",
+        "service_bindings": [
+          {
+            "service_key": "beacon",
+            "repo_root": "/Users/apple/Developer/Personal/products/beacon",
+            "repo_root_relative": ".",
+            "role": "app",
+            "writable": true,
+            "worktree_path_policy": "follow-repo-root"
+          }
+        ],
+        "service_bindings_by_key": {
+          "beacon": {
+            "service_key": "beacon",
+            "repo_root": "/Users/apple/Developer/Personal/products/beacon",
+            "repo_root_relative": ".",
+            "role": "app",
+            "writable": true,
+            "worktree_path_policy": "follow-repo-root"
+          }
+        },
+        "version": "v1.3.11",
+        "version_contract": {},
+        "selected_service": "beacon",
+        "selected_service_binding": {
+          "service_key": "beacon",
+          "repo_root": "/Users/apple/Developer/Personal/products/beacon",
+          "repo_root_relative": ".",
+          "role": "app",
+          "writable": true,
+          "worktree_path_policy": "follow-repo-root"
+        },
+        "selected_branch": "",
+        "paths": {
+          "machine": "/Users/apple/Developer/Personal/products/beacon/.beacon/metadata/project-version-metadata.json",
+          "human": "/Users/apple/Developer/Personal/products/beacon/.beacon/metadata/project-version-metadata.md",
+          "state": "/Users/apple/Developer/Personal/products/beacon/.beacon/state/project-metadata/latest.json"
+        },
+        "transaction": {
+          "transaction_id": "tx-project-metadata-5c11abd8bd65bb08",
+          "event_type": "update",
+          "committed_at": "2026-04-30T08:11:50.106787+00:00",
+          "source_hash": "5c11abd8bd65bb08bb80b4e9b8d364324740c5b80ca14821f22b92aff69ef20c"
+        }
+      }
+    },
+    "contract": {
+      "ok": true,
+      "missing_headings": [],
+      "placeholder_hits": [],
+      "semantic_hits": {
+        "boundary": true,
+        "layering": true,
+        "recovery": true,
+        "acceptance": true,
+        "risk_mitigation": true
+      }
+    },
+    "markdown": "# PRD: Beacon v1.3.11 PRD freeze anti-drift and machine-mirror reconciliation\n\n**Feature**: `beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation`  \n**Version**: `v1.3.11`  \n**Date**: `2026-05-01`  \n**Status**: `draft`  \n**Track**: `parallel`  \n**Scenario**: `requirement_package_governance`  \n**Template**: `并行 PRD / anti-drift-governance`\n\n## Context\n\n- Global boundaries: `docs/beacon/global-boundaries.md`\n- Version summary: `docs/beacon/v1.3.11/SUMMARY.md`\n- Upstream runtime PRD: `docs/beacon/v1.3.11/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md`\n- Change document: `docs/beacon/v1.3.11/change/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md`\n\n## 1. 问题\n\n`v1.3.11` 已经暴露出一条真实 requirement gap：\n\n- human PRD markdown 在正式修订后可以变新\n- `.beacon/prd` 与 `docs/beacon/<version>/.machine/prd` 仍可能停留在旧 projection\n- `validate` 只知道 markdown contract，`audit` 又只查 legacy mirror\n\n结果是：\n\n- 需求冻结会出现 human / machine 漂移\n- 操作者容易以为“validate pass 就等于 freeze 完整”\n- 后续 `freeze / implement / qa / release` 可能站在旧 machine truth 上继续推进\n\n## 2. 目标\n\n### 2.1 主要目标\n\n为 `PRD freeze` 增加正式 anti-drift 闭环，使 Beacon 能：\n\n1. 把当前 markdown 作为可重投影 truth\n2. 统一 reconcile human 与 machine mirror\n3. 扩展 audit 到 full mirror 审计\n4. 明确 transaction latest / supersedes 语义\n5. 在 stale mirror 出现时 fail-closed，并提供恢复路径\n\n### 2.2 非目标\n\n- 不新增新的一级公开主命令\n- 不把 `doctor sync-materials` 重新提升为正常 PRD revise 主路径\n- 不让 repair fallback 替代正常 reconcile\n\n### 2.3 Truth 与 Execution 边界 / 分层\n\n本线必须明确 requirement 分层：\n\n1. human truth：`docs/beacon/<version>/prd/*.md`\n2. machine mirror：`.beacon/prd/*.json` 与 `docs/beacon/<version>/.machine/prd/*`\n3. repair / execution support：`doctor` 与 change-loop support surface\n\n其中：\n\n- truth 可以被正式修订\n- machine mirror 必须可重投影\n- repair 只负责恢复，不负责定义 truth\n\n## 3. 设计原则\n\n### 3.1 markdown 可编辑，但 mirror 不能静默滞后\n\n人类可以修订 PRD，但 machine mirror 不允许继续静默保留旧版本。\n\n### 3.2 reconcile 属于正常主路径，repair 属于异常路径\n\n`reconcile` 是正常 requirement refresh 动作；`doctor` repair 只在损坏或缺失时使用。\n\n### 3.3 stale mirror 必须可见、可审计、可恢复\n\n系统必须显式暴露 stale mirror，而不是让其在 gate 前继续潜伏。\n\n## 4. 范围\n\n### In scope\n\n- PRD reconcile contract\n- full mirror audit\n- transaction latest / supersedes 语义\n- stale mirror detection\n- doctor fallback boundary\n\n### Out of scope\n\n- 多租户 PRD control plane\n- 数据库化 requirement source of truth\n- 自动改写 user-story / test-case / prototype\n\n## 5. 功能需求\n\n### FR-001 PRD markdown 必须支持重投影\n\nBeacon 必须允许当前 `PRD markdown` 作为 authoritative truth 被重新投影到 machine mirror。\n\n### FR-002 audit 必须覆盖 full mirror\n\nBeacon 必须把 PRD audit 扩展到：\n\n- `docs/beacon/<version>/prd/*.md`\n- `.beacon/prd/*.json`\n- `docs/beacon/<version>/.machine/prd/*.canonical.json`\n- `docs/beacon/<version>/.machine/prd/*.compile.json`\n\n### FR-003 transaction 必须支持 latest / supersedes\n\nBeacon 必须让多次 PRD transaction 之间存在当前 active pointer 与 superseded 关系。\n\n### FR-004 stale mirror 必须 fail-closed\n\n当 human truth 与 machine mirror 漂移时，系统必须明确阻断后续 freeze / implement / qa / release。\n\n### FR-005 doctor fallback 必须可恢复\n\n当 machine sink 缺失、损坏或不可信时，`doctor` fallback 必须给出明确恢复步骤，并允许回到正常验收路径。\n\n## 6. 数据 / 状态 / 集成\n\n### 6.1 Truth 来源\n\n- `docs/beacon/<version>/prd/*.md`\n- `.beacon/prd/*.json`\n- `docs/beacon/<version>/.machine/prd/*`\n\n### 6.2 Mirror 状态层\n\n- PRD canonical envelope\n- compile payload\n- legacy machine mirror\n- transaction lineage\n\n### 6.3 恢复面\n\n- `doctor sync-materials`\n- `doctor repair-package`\n- `doctor verify-materials`\n\n## 7. 风险与缓解\n\n| 风险 | 影响 | 缓解 |\n|------|------|------|\n| human 改了 markdown 但 machine 继续旧版本 | 高 | 引入 reconcile 和 full mirror audit |\n| repair surface 挤占主路径 | 中 | 明确区分 reconcile 与 doctor fallback 边界 |\n| 历史 transaction 混淆当前 truth | 高 | 增加 latest / supersedes 语义 |\n\n## 8. 验收标准\n\n### AC-001 PRD 可重投影\n\nhuman markdown 修订后，Beacon 能在不手工 patch JSON 的前提下重新生成 machine mirror。\n\n### AC-002 audit 能定位 mirror 漂移\n\n系统能明确指出 stale mirror 是发生在 legacy mirror、canonical、compile，还是多个 sink 同时失配。\n\n### AC-003 transaction 当前性可判断\n\n系统能判断谁是当前 active transaction，谁已经 superseded。\n\n### AC-004 stale mirror 会阻断主链\n\n当 stale mirror 已被识别时，freeze / implement / qa / release 不会继续通过。\n\n### AC-005 doctor fallback 可回主链\n\nrepair 完成后，系统能重新回到 `validate -> audit -> freeze readiness` 路径。\n",
+    "transaction": {
+      "transaction_id": "tx-prd-beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation-prd-58e8029df0c75f92",
+      "source_hash": "58e8029df0c75f926d8d58702c443eb8260f03f3b4ef3db7bcdc44b7de28faa5",
+      "projection_seq": "prd-58e8029df0c75f92",
+      "committed_at": "2026-05-01T05:07:53.688329+00:00",
+      "sink_checksums": {
+        "human": "87151725fde2db258da725cbd44ad97b097fd0260dbe0c527b3b5b1fcad30c83",
+        "machine": "54c093986512432e7cd331b59094b26dc85ee739c5c8f930f21ac4956120c387"
+      },
+      "status": "applied",
+      "supersedes_transaction_id": "",
+      "supersedes_projection_seq": "",
+      "supersedes_source_hash": ""
+    }
+  },
+  "sinks": [
+    {
+      "path": "docs/beacon/v1.3.11/prd/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md",
+      "kind": "human"
+    },
+    {
+      "path": ".beacon/prd/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.json",
+      "kind": "machine"
+    }
+  ],
+  "latest_transaction_id": "tx-prd-beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation-prd-58e8029df0c75f92",
+  "supersedes_transaction_id": ""
+}

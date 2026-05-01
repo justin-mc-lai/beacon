@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.0",
+  "version": "v1.3.11",
+  "feature": "Beacon v1.3.11 PRD freeze anti-drift and machine-mirror reconciliation",
+  "run_id": "change-v1-3-11-prd-freeze-anti-drift",
+  "generated_at": "2026-05-01T12:45:00+08:00",
+  "baseline_run_id": "tx-prd-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance-prd-38c952ca4330dd7a",
+  "affected_projects": [
+    "."
+  ],
+  "doc_chain_update_required": true,
+  "changed_layers": [
+    "prd",
+    "change",
+    "execution",
+    "machine-prd",
+    "change-loop"
+  ],
+  "tasks": [
+    {
+      "task": "formalize-prd-freeze-anti-drift-change",
+      "status": "completed",
+      "owner": "codex",
+      "evidence": "docs/beacon/v1.3.11/change/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
+    },
+    {
+      "task": "revise-user-story-for-prd-reconcile-contract",
+      "status": "pending",
+      "owner": "",
+      "evidence": "docs/beacon/v1.3.11/user-story/"
+    },
+    {
+      "task": "refresh-test-case-for-validate-audit-reconcile-path",
+      "status": "pending",
+      "owner": "",
+      "evidence": "docs/beacon/v1.3.11/qa/test-cases/"
+    },
+    {
+      "task": "implement-prd-reconcile-and-extended-audit",
+      "status": "pending",
+      "owner": "",
+      "evidence": "beacon/commands/prd.py"
+    }
+  ],
+  "research_converged": true,
+  "main_chain_converged": false,
+  "delivery_manifest_ready": false,
+  "full_delivery_closed": false,
+  "pending_blockers": [
+    "user-story refresh not started",
+    "test-case refresh not started",
+    "implementation contract for reconcile/audit extension not frozen"
+  ],
+  "notes": [
+    "This change-impact record formalizes the freeze anti-drift requirement gap before implementation.",
+    "The requirement chain is intentionally reopened because markdown truth and machine mirrors previously drifted after manual PRD revision."
+  ]
+}

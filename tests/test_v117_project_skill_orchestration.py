@@ -171,9 +171,52 @@ def test_verify_run_should_execute_profile_orchestration_and_satisfy_gate(tmp_pa
     assert result.exit_code == 0, result.stdout
     payload = json.loads(result.stdout)
     assert payload["orchestration"]["status"] == "completed"
+    assert payload["orchestration"]["runtime_mode"] == "local_subprocess"
+    assert payload["orchestration"]["runtime_board"]["status_counts"]["completed"] == 2
+    assert payload["orchestration"]["nodes"][0]["run_record"]["status"] == "completed"
     assert payload["gate"]["status"] == "pass"
     assert (tmp_path / ".beacon" / "pipeline.txt").exists()
     assert (tmp_path / ".beacon" / "gateway.txt").exists()
+
+
+def test_orchestrate_run_should_emit_work_item_and_runtime_board_contract(tmp_path: Path):
+    _seed_docs(tmp_path)
+    _write_demo_profile(tmp_path)
+    bind = _invoke(["skill", "bind", FEATURE, "--profile", "demo", "--project-root", str(tmp_path), "--version", VERSION, "--json"])
+    assert bind.exit_code == 0, bind.stdout
+
+    result = _invoke([
+        "orchestrate",
+        "run",
+        FEATURE,
+        "--project-root",
+        str(tmp_path),
+        "--version",
+        VERSION,
+        "--dry-run",
+        "--json",
+    ])
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["status"] == "dry_run"
+    assert payload["runtime_mode"] == "dry_run"
+    assert payload["next_action"] == "dispatch"
+    assert len(payload["work_items"]) == 2
+    first = payload["work_items"][0]
+    assert first["item_id"]
+    assert first["item_type"] == "qa_repair"
+    assert first["feature"] == FEATURE
+    assert first["version"] == VERSION
+    assert first["source_surface"] == "project_profile_orchestration"
+    assert first["requested_action"] == "qa"
+    assert first["status"] == "queued"
+    assert any(ref.endswith(f"docs/beacon/{VERSION}/prd/{SLUG}.md") for ref in first["truth_refs"])
+    assert payload["runtime_board"]["status_counts"]["queued"] == 2
+    state_path = tmp_path / "docs" / "beacon" / VERSION / ".machine" / "execution" / f"{SLUG}.orchestration.json"
+    assert state_path.exists()
+    state = json.loads(state_path.read_text(encoding="utf-8"))
+    assert state["runtime_board"]["status_counts"]["queued"] == 2
+    assert state["nodes"][0]["run_record"]["status"] == "queued"
 
 
 def test_help_should_be_profile_aware_and_recommend_verify_run(tmp_path: Path):
@@ -187,7 +230,7 @@ def test_help_should_be_profile_aware_and_recommend_verify_run(tmp_path: Path):
     assert result.exit_code == 0, result.stdout
     payload = json.loads(result.stdout)
     assert payload["project_profile"]["profile_id"] == "demo"
-    assert payload["next_step"]["action"] == "verify-run"
+    assert payload["next_step"]["action"] == "qa"
     assert "beacon verify run" in payload["next_step"]["command"]
 
 
@@ -205,7 +248,7 @@ def test_help_should_recommend_review_quality_after_profile_verify_passes(tmp_pa
     assert result.exit_code == 0, result.stdout
     payload = json.loads(result.stdout)
     assert payload["blocked"] is False
-    assert payload["next_step"]["action"] == "review-quality"
+    assert payload["next_step"]["action"] == "qa"
     assert "beacon review quality" in payload["next_step"]["command"]
 
 

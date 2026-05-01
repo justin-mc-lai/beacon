@@ -19,19 +19,19 @@ def _invoke(args: list[str]):
     return runner.invoke(app, args)
 
 
-def _init_git_repo(root: Path) -> None:
+def _init_git_repo(root: Path, *, version: str = VERSION) -> None:
     subprocess.run(["git", "init"], cwd=root, check=True, capture_output=True, text=True)
     subprocess.run(["git", "config", "user.name", "Beacon Tests"], cwd=root, check=True, capture_output=True, text=True)
     subprocess.run(["git", "config", "user.email", "beacon-tests@example.com"], cwd=root, check=True, capture_output=True, text=True)
     (root / ".gitkeep").write_text("test\n", encoding="utf-8")
     subprocess.run(["git", "add", ".gitkeep"], cwd=root, check=True, capture_output=True, text=True)
     subprocess.run(["git", "commit", "-m", "init"], cwd=root, check=True, capture_output=True, text=True)
-    subprocess.run(["git", "switch", "-c", f"beacon/{VERSION}"], cwd=root, check=True, capture_output=True, text=True)
+    subprocess.run(["git", "switch", "-c", f"beacon/{version}"], cwd=root, check=True, capture_output=True, text=True)
 
 
-def _seed_docs(root: Path) -> None:
-    _init_git_repo(root)
-    base = root / "docs" / "beacon" / VERSION
+def _seed_docs(root: Path, *, version: str = VERSION) -> None:
+    _init_git_repo(root, version=version)
+    base = root / "docs" / "beacon" / version
     (root / "docs" / "beacon").mkdir(parents=True, exist_ok=True)
     (root / "docs" / "beacon" / "global-boundaries.md").write_text("# Global Boundaries\n", encoding="utf-8")
     (base / "prd").mkdir(parents=True, exist_ok=True)
@@ -46,7 +46,7 @@ def _seed_docs(root: Path) -> None:
     (base / "execution" / "boundaries.md").write_text("# Boundaries\n", encoding="utf-8")
     (base / "execution" / "project-skill-qa-evolution-blueprint.md").write_text("# Project Skill QA Blueprint\n", encoding="utf-8")
     (base / "source-architecture" / "index.md").write_text("# Source Architecture\n", encoding="utf-8")
-    (base / "release" / f"{VERSION}.md").write_text("# Release\n", encoding="utf-8")
+    (base / "release" / f"{version}.md").write_text("# Release\n", encoding="utf-8")
     (base / "prd" / f"{SLUG}.md").write_text(
         "# PRD\n\n## Functional Requirements\n\n### FR-001 Primary flow\n- keep requirement package aligned\n",
         encoding="utf-8",
@@ -66,13 +66,13 @@ def _seed_docs(root: Path) -> None:
     )
 
 
-def _freeze(root: Path) -> None:
-    result = _invoke(["freeze", FEATURE, "--project-root", str(root), "--version", VERSION, "--json"])
+def _freeze(root: Path, *, version: str = VERSION, feature: str = FEATURE) -> None:
+    result = _invoke(["freeze", feature, "--project-root", str(root), "--version", version, "--json"])
     assert result.exit_code == 0, result.stdout
 
 
-def _mutate_docs_after_freeze(root: Path) -> None:
-    story_path = root / "docs" / "beacon" / VERSION / "user-story" / f"{SLUG}.md"
+def _mutate_docs_after_freeze(root: Path, *, version: str = VERSION) -> None:
+    story_path = root / "docs" / "beacon" / version / "user-story" / f"{SLUG}.md"
     story_path.write_text(
         (
             "# User Story\n\n"
@@ -208,6 +208,48 @@ def test_v13010_help_should_route_missing_machine_artifact_to_sync_materials(tmp
     assert payload["next_step"]["action"] == "doctor-sync-materials"
     assert "beacon doctor sync-materials" in payload["next_step"]["command"]
     assert f"--feature {FEATURE}" in payload["next_step"]["command"]
+
+
+def test_v13010_help_should_route_stale_prd_machine_mirror_to_beacon_change(tmp_path: Path) -> None:
+    version = "v1.3.11"
+    _seed_docs(tmp_path, version=version)
+    result = _invoke(
+        [
+            "prd",
+            "create",
+            FEATURE,
+            "--version",
+            version,
+            "--project-root",
+            str(tmp_path),
+        ]
+    )
+    assert result.exit_code == 0, result.stdout
+    _freeze(tmp_path, version=version, feature=FEATURE)
+    legacy_prd = tmp_path / ".beacon" / "prd" / f"{SLUG}.json"
+    payload = json.loads(legacy_prd.read_text(encoding="utf-8"))
+    payload["markdown"] = payload["markdown"] + "\nDRIFT\n"
+    payload["content"] = payload["markdown"]
+    legacy_prd.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    result = _invoke(
+        [
+            "help",
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            version,
+            "--feature",
+            FEATURE,
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["requirement_package_gate"]["status"] == "blocked"
+    assert "stale_prd_legacy_mirror" in payload["requirement_package_gate"]["failure_categories"]
+    assert payload["requirement_package_gate"]["recommended_action"] == "beacon-change"
+    assert payload["requirement_package_gate"]["recommended_command"] == "beacon-change"
 
 
 def test_v13010_status_board_should_surface_requirement_package_failure_categories(tmp_path: Path) -> None:

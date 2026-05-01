@@ -1,0 +1,2079 @@
+{
+  "schema_version": "1.0",
+  "plan_id": "plan-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance-r1",
+  "feature": "beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance",
+  "feature_slug": "beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance",
+  "version": "v1.3.11",
+  "revision_id": "R1",
+  "baseline_hash": "sha256:99d77761f3248af5df3d18418b90fe04fcb27855fccf394d6e18f89cb740dc3c",
+  "plan_hash": "sha256:e5bd7e2fc43634e4ad0a524dd7d0d818cfd2363e06ee6b81b10735f26f475b86",
+  "status": "completed",
+  "source_refs": {
+    "user_story": "docs/beacon/v1.3.11/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+    "prd": "docs/beacon/v1.3.11/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+    "test_case": "docs/beacon/v1.3.11/qa/test-cases/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+    "ac_matrix": "docs/beacon/v1.3.11/.machine/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.ac-test-matrix.json",
+    "story_scenario_map": "docs/beacon/v1.3.11/.machine/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.story-scenario-map.json",
+    "qa9_matrix": "docs/beacon/v1.3.11/.machine/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.qa9-matrix.json"
+  },
+  "architecture_blueprint_ref": "docs/beacon/v1.3.11/execution/architecture-blueprint.md",
+  "boundary_principles": [
+    {
+      "id": "explicit_assumptions",
+      "heading": "显式假设与歧义管理"
+    },
+    {
+      "id": "simplicity_first",
+      "heading": "简单优先"
+    },
+    {
+      "id": "surgical_changes",
+      "heading": "外科手术式改动"
+    },
+    {
+      "id": "goal_driven_execution",
+      "heading": "目标驱动验证闭环"
+    },
+    {
+      "id": "trivial_task_exception",
+      "heading": "trivial task 可以轻量处理，但不能越界"
+    }
+  ],
+  "workstreams": [
+    {
+      "workstream_id": "implementation-main",
+      "title": "Implementation Mainline",
+      "task_ids": [
+        "ITASK-001",
+        "ITASK-002",
+        "ITASK-003",
+        "ITASK-004",
+        "ITASK-005",
+        "ITASK-006",
+        "ITASK-007",
+        "ITASK-008",
+        "ITASK-009",
+        "ITASK-010",
+        "ITASK-011",
+        "ITASK-012"
+      ]
+    }
+  ],
+  "task_mapping_source": "prd-sections",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.3.11",
+    "supported": true,
+    "required": true,
+    "ready": true,
+    "diagram_types": [
+      "branch-flow",
+      "state-machine",
+      "decision-priority"
+    ],
+    "state_axes": [
+      "runtime_item_axis",
+      "team_task",
+      "ralph_step",
+      "real_project_validation_case",
+      "implement_delivery",
+      "qa_repair",
+      "release_closure",
+      "run_status_axis",
+      "queued",
+      "running",
+      "retry_waiting",
+      "blocked",
+      "handoff_required",
+      "completed",
+      "cancelled",
+      "workspace_axis",
+      "isolated_workspace",
+      "shared_workspace_blocked",
+      "recovery_axis",
+      "retry_path_explicit",
+      "repair_resume_explicit",
+      "human_intervention_explicit",
+      "delivery_bridge_axis",
+      "truth_read_only",
+      "runtime_bridge_only",
+      "release_gate_preserved"
+    ],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [
+      "branch-flow",
+      "state-machine",
+      "decision-priority",
+      "state axes",
+      "eligibility"
+    ],
+    "review_gates": [
+      "implementation must cover the declared branch-flow split points",
+      "implementation must preserve the declared state-machine transitions",
+      "implementation must preserve decision-priority ordering",
+      "implementation must keep state axes explicit: runtime_item_axis, team_task, ralph_step, real_project_validation_case, implement_delivery, qa_repair, release_closure, run_status_axis, queued, running, retry_waiting, blocked, handoff_required, completed, cancelled, workspace_axis, isolated_workspace, shared_workspace_blocked, recovery_axis, retry_path_explicit, repair_resume_explicit, human_intervention_explicit, delivery_bridge_axis, truth_read_only, runtime_bridge_only, release_gate_preserved"
+    ],
+    "qa_coverage_hints": [
+      "cover primary and alternate branch-flow paths",
+      "cover state transitions, illegal transitions, and recovery paths",
+      "cover conflicting conditions using declared decision priority",
+      "cover axis combinations across: runtime_item_axis, team_task, ralph_step, real_project_validation_case, implement_delivery, qa_repair, release_closure, run_status_axis, queued, running, retry_waiting, blocked, handoff_required, completed, cancelled, workspace_axis, isolated_workspace, shared_workspace_blocked, recovery_axis, retry_path_explicit, repair_resume_explicit, human_intervention_explicit, delivery_bridge_axis, truth_read_only, runtime_bridge_only, release_gate_preserved"
+    ],
+    "evidence_lines": {
+      "branch-flow": [
+        "- `branch-flow`"
+      ],
+      "state-machine": [
+        "- `state-machine`"
+      ],
+      "decision-priority": [
+        "- `decision-priority`"
+      ],
+      "state-axes": [
+        "- `runtime_item_axis`",
+        "- `team_task`",
+        "- `ralph_step`",
+        "- `real_project_validation_case`",
+        "- `implement_delivery`",
+        "- `qa_repair`",
+        "- `release_closure`",
+        "- `run_status_axis`"
+      ]
+    },
+    "generated_at": "2026-05-01T09:56:49.136626+00:00",
+    "feature": "beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance",
+    "feature_slug": "beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance",
+    "prd_ref": "docs/beacon/v1.3.11/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+    "user_story_ref": "docs/beacon/v1.3.11/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md"
+  },
+  "review_gates": [
+    "implementation must cover the declared branch-flow split points",
+    "implementation must preserve the declared state-machine transitions",
+    "implementation must preserve decision-priority ordering",
+    "implementation must keep state axes explicit: runtime_item_axis, team_task, ralph_step, real_project_validation_case, implement_delivery, qa_repair, release_closure, run_status_axis, queued, running, retry_waiting, blocked, handoff_required, completed, cancelled, workspace_axis, isolated_workspace, shared_workspace_blocked, recovery_axis, retry_path_explicit, repair_resume_explicit, human_intervention_explicit, delivery_bridge_axis, truth_read_only, runtime_bridge_only, release_gate_preserved"
+  ],
+  "qa_coverage_hints": [
+    "cover primary and alternate branch-flow paths",
+    "cover state transitions, illegal transitions, and recovery paths",
+    "cover conflicting conditions using declared decision priority",
+    "cover axis combinations across: runtime_item_axis, team_task, ralph_step, real_project_validation_case, implement_delivery, qa_repair, release_closure, run_status_axis, queued, running, retry_waiting, blocked, handoff_required, completed, cancelled, workspace_axis, isolated_workspace, shared_workspace_blocked, recovery_axis, retry_path_explicit, repair_resume_explicit, human_intervention_explicit, delivery_bridge_axis, truth_read_only, runtime_bridge_only, release_gate_preserved"
+  ],
+  "tasks": [
+    {
+      "task_id": "ITASK-001",
+      "title": "FR-001 Beacon 必须定义统一的 work item 模型",
+      "description": "Beacon 必须支持统一 work item 模型，用于描述可被 orchestration runtime 调度的执行单元。 每个 work item 至少必须表达： `item_id` `item_type` `feature` `version` `source_surface` `priority` `requested_action` `truth_refs` `status` 最小 `item_type` 至少覆盖： `team_task` `ralph_step` `real_project_validation_case` `implement_delivery` `qa_repair` `release_closure`",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-001",
+        "AC-002"
+      ],
+      "mapped_test_ids": [
+        "TC-001",
+        "TC-002",
+        "TC-018",
+        "TC-019"
+      ],
+      "mapped_scenario_ids": [
+        "SC-001",
+        "SC-002",
+        "SC-003",
+        "SC-004"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-001",
+        "TC-002",
+        "TC-018",
+        "TC-019"
+      ],
+      "depends_on": [],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: runtime_item_axis, team_task, ralph_step, real_project_validation_case, implement_delivery, qa_repair, release_closure, run_status_axis, queued, running, retry_waiting, blocked, handoff_required, completed, cancelled, workspace_axis, isolated_workspace, shared_workspace_blocked, recovery_axis, retry_path_explicit, repair_resume_explicit, human_intervention_explicit, delivery_bridge_axis, truth_read_only, runtime_bridge_only, release_gate_preserved"
+      ],
+      "diagram_state_axes": [
+        "runtime_item_axis",
+        "team_task",
+        "ralph_step",
+        "real_project_validation_case",
+        "implement_delivery",
+        "qa_repair",
+        "release_closure",
+        "run_status_axis",
+        "queued",
+        "running",
+        "retry_waiting",
+        "blocked",
+        "handoff_required",
+        "completed",
+        "cancelled",
+        "workspace_axis",
+        "isolated_workspace",
+        "shared_workspace_blocked",
+        "recovery_axis",
+        "retry_path_explicit",
+        "repair_resume_explicit",
+        "human_intervention_explicit",
+        "delivery_bridge_axis",
+        "truth_read_only",
+        "runtime_bridge_only",
+        "release_gate_preserved"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260501T095813Z-1521",
+        ".beacon/qa/features/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260501T175831925938",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.3.11/.machine/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.qa9-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance/ac-closure.json",
+        ".beacon/qa/features/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance/scorecard.json",
+        "run:run-20260501T101910Z-52c5"
+      ],
+      "changed_files": [
+        ".beacon/evidence-manifest.json",
+        ".beacon/metadata/project-version-metadata.json",
+        ".beacon/metadata/project-version-metadata.md",
+        ".beacon/state/project-metadata/latest.json",
+        "beacon/commands/prd.py",
+        "beacon/utils/material_audit.py",
+        "beacon/utils/project_skills.py",
+        "tests/commands/test_prd.py",
+        "tests/test_v117_project_skill_orchestration.py",
+        "tests/test_v13010_requirement_package_gates.py",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/qa/status.json",
+        "docs/beacon/v1.3.10/.machine/execution/change-impact.json",
+        "docs/beacon/v1.3.10/.machine/execution/config.json",
+        "docs/beacon/v1.3.10/.machine/execution/delivery-manifest.json",
+        "docs/beacon/v1.3.10/.machine/execution/git-alignment.json",
+        "docs/beacon/v1.3.10/.machine/execution/source.json"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-01T09:58:14.155141+00:00",
+      "completed_at": "2026-05-01T10:19:10.794940+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-002",
+      "title": "FR-002 Beacon 必须定义统一的 run 模型",
+      "description": "每个 work item 被派发后，必须创建 run 级记录。 每个 run 至少必须表达： `run_id` `item_id` `workspace_ref` `runtime_mode` `status` `attempt_seq` `started_at` `updated_at` `next_action` `needs_human_intervention` `evidence_refs` run 状态至少支持： `queued` `running` `retry_waiting` `blocked` `handoff_required` `completed` `cancelled`",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-004"
+      ],
+      "mapped_test_ids": [
+        "TC-004",
+        "TC-021"
+      ],
+      "mapped_scenario_ids": [
+        "SC-007",
+        "SC-008"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-004",
+        "TC-021"
+      ],
+      "depends_on": [
+        "ITASK-001"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: runtime_item_axis, team_task, ralph_step, real_project_validation_case, implement_delivery, qa_repair, release_closure, run_status_axis, queued, running, retry_waiting, blocked, handoff_required, completed, cancelled, workspace_axis, isolated_workspace, shared_workspace_blocked, recovery_axis, retry_path_explicit, repair_resume_explicit, human_intervention_explicit, delivery_bridge_axis, truth_read_only, runtime_bridge_only, release_gate_preserved"
+      ],
+      "diagram_state_axes": [
+        "runtime_item_axis",
+        "team_task",
+        "ralph_step",
+        "real_project_validation_case",
+        "implement_delivery",
+        "qa_repair",
+        "release_closure",
+        "run_status_axis",
+        "queued",
+        "running",
+        "retry_waiting",
+        "blocked",
+        "handoff_required",
+        "completed",
+        "cancelled",
+        "workspace_axis",
+        "isolated_workspace",
+        "shared_workspace_blocked",
+        "recovery_axis",
+        "retry_path_explicit",
+        "repair_resume_explicit",
+        "human_intervention_explicit",
+        "delivery_bridge_axis",
+        "truth_read_only",
+        "runtime_bridge_only",
+        "release_gate_preserved"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260501T095813Z-1521",
+        ".beacon/qa/features/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260501T175831925938",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.3.11/.machine/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.qa9-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance/ac-closure.json",
+        ".beacon/qa/features/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance/scorecard.json",
+        "run:run-20260501T101910Z-52c5"
+      ],
+      "changed_files": [
+        ".beacon/evidence-manifest.json",
+        ".beacon/metadata/project-version-metadata.json",
+        ".beacon/metadata/project-version-metadata.md",
+        ".beacon/state/project-metadata/latest.json",
+        "beacon/commands/prd.py",
+        "beacon/utils/material_audit.py",
+        "beacon/utils/project_skills.py",
+        "tests/commands/test_prd.py",
+        "tests/test_v117_project_skill_orchestration.py",
+        "tests/test_v13010_requirement_package_gates.py",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/qa/status.json",
+        "docs/beacon/v1.3.10/.machine/execution/change-impact.json",
+        "docs/beacon/v1.3.10/.machine/execution/config.json",
+        "docs/beacon/v1.3.10/.machine/execution/delivery-manifest.json",
+        "docs/beacon/v1.3.10/.machine/execution/git-alignment.json",
+        "docs/beacon/v1.3.10/.machine/execution/source.json"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-01T09:58:14.201818+00:00",
+      "completed_at": "2026-05-01T10:19:10.794976+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-003",
+      "title": "FR-003 Beacon 必须提供统一 run scheduler",
+      "description": "Beacon 必须提供统一 run scheduler，而不是让各 surface 自己调度。 它至少必须支持： 入队 派发 并发限制 continuation 失败重试 人工介入挂起 run 取消 调度决策必须可追踪，不得成为黑盒副作用。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-005"
+      ],
+      "mapped_test_ids": [
+        "TC-017"
+      ],
+      "mapped_scenario_ids": [
+        "SC-009"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-017"
+      ],
+      "depends_on": [
+        "ITASK-002"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: runtime_item_axis, team_task, ralph_step, real_project_validation_case, implement_delivery, qa_repair, release_closure, run_status_axis, queued, running, retry_waiting, blocked, handoff_required, completed, cancelled, workspace_axis, isolated_workspace, shared_workspace_blocked, recovery_axis, retry_path_explicit, repair_resume_explicit, human_intervention_explicit, delivery_bridge_axis, truth_read_only, runtime_bridge_only, release_gate_preserved"
+      ],
+      "diagram_state_axes": [
+        "runtime_item_axis",
+        "team_task",
+        "ralph_step",
+        "real_project_validation_case",
+        "implement_delivery",
+        "qa_repair",
+        "release_closure",
+        "run_status_axis",
+        "queued",
+        "running",
+        "retry_waiting",
+        "blocked",
+        "handoff_required",
+        "completed",
+        "cancelled",
+        "workspace_axis",
+        "isolated_workspace",
+        "shared_workspace_blocked",
+        "recovery_axis",
+        "retry_path_explicit",
+        "repair_resume_explicit",
+        "human_intervention_explicit",
+        "delivery_bridge_axis",
+        "truth_read_only",
+        "runtime_bridge_only",
+        "release_gate_preserved"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260501T095813Z-1521",
+        ".beacon/qa/features/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260501T175831925938",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.3.11/.machine/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.qa9-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance/ac-closure.json",
+        ".beacon/qa/features/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance/scorecard.json",
+        "run:run-20260501T101910Z-52c5"
+      ],
+      "changed_files": [
+        ".beacon/evidence-manifest.json",
+        ".beacon/metadata/project-version-metadata.json",
+        ".beacon/metadata/project-version-metadata.md",
+        ".beacon/state/project-metadata/latest.json",
+        "beacon/commands/prd.py",
+        "beacon/utils/material_audit.py",
+        "beacon/utils/project_skills.py",
+        "tests/commands/test_prd.py",
+        "tests/test_v117_project_skill_orchestration.py",
+        "tests/test_v13010_requirement_package_gates.py",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/qa/status.json",
+        "docs/beacon/v1.3.10/.machine/execution/change-impact.json",
+        "docs/beacon/v1.3.10/.machine/execution/config.json",
+        "docs/beacon/v1.3.10/.machine/execution/delivery-manifest.json",
+        "docs/beacon/v1.3.10/.machine/execution/git-alignment.json",
+        "docs/beacon/v1.3.10/.machine/execution/source.json"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-01T09:58:14.201827+00:00",
+      "completed_at": "2026-05-01T10:19:10.795002+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-004",
+      "title": "FR-004 Beacon 必须提供 run 级 workspace isolation",
+      "description": "每个 run 必须有独立 workspace 语义。 该能力至少必须支持： 生成安全 workspace 路径 绑定 run_id 与 workspace 在 run 完成或取消时清理/保留策略 禁止 run 越界写入不允许目录 为真实项目验证与未来 remote worker 预留 worker_host 扩展位",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-006"
+      ],
+      "mapped_test_ids": [
+        "TEST-006"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-003"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: runtime_item_axis, team_task, ralph_step, real_project_validation_case, implement_delivery, qa_repair, release_closure, run_status_axis, queued, running, retry_waiting, blocked, handoff_required, completed, cancelled, workspace_axis, isolated_workspace, shared_workspace_blocked, recovery_axis, retry_path_explicit, repair_resume_explicit, human_intervention_explicit, delivery_bridge_axis, truth_read_only, runtime_bridge_only, release_gate_preserved"
+      ],
+      "diagram_state_axes": [
+        "runtime_item_axis",
+        "team_task",
+        "ralph_step",
+        "real_project_validation_case",
+        "implement_delivery",
+        "qa_repair",
+        "release_closure",
+        "run_status_axis",
+        "queued",
+        "running",
+        "retry_waiting",
+        "blocked",
+        "handoff_required",
+        "completed",
+        "cancelled",
+        "workspace_axis",
+        "isolated_workspace",
+        "shared_workspace_blocked",
+        "recovery_axis",
+        "retry_path_explicit",
+        "repair_resume_explicit",
+        "human_intervention_explicit",
+        "delivery_bridge_axis",
+        "truth_read_only",
+        "runtime_bridge_only",
+        "release_gate_preserved"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260501T095813Z-1521",
+        ".beacon/qa/features/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260501T175831925938",
+        "run:run-20260501T101910Z-52c5"
+      ],
+      "changed_files": [
+        ".beacon/evidence-manifest.json",
+        ".beacon/metadata/project-version-metadata.json",
+        ".beacon/metadata/project-version-metadata.md",
+        ".beacon/state/project-metadata/latest.json",
+        "beacon/commands/prd.py",
+        "beacon/utils/material_audit.py",
+        "beacon/utils/project_skills.py",
+        "tests/commands/test_prd.py",
+        "tests/test_v117_project_skill_orchestration.py",
+        "tests/test_v13010_requirement_package_gates.py",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/qa/status.json",
+        "docs/beacon/v1.3.10/.machine/execution/change-impact.json",
+        "docs/beacon/v1.3.10/.machine/execution/config.json",
+        "docs/beacon/v1.3.10/.machine/execution/delivery-manifest.json",
+        "docs/beacon/v1.3.10/.machine/execution/git-alignment.json",
+        "docs/beacon/v1.3.10/.machine/execution/source.json"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-01T09:58:14.201835+00:00",
+      "completed_at": "2026-05-01T10:19:10.795027+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-005",
+      "title": "FR-005 Beacon 必须提供 worker runtime 生命周期记录",
+      "description": "每次 run 实际执行时，必须记录 worker runtime 生命周期，至少包括： 当前执行 surface 当前会话 id 当前 turn / step 最后状态更新时间 最后关键事件 tokens / runtime metrics（若宿主支持） 该生命周期记录是 runtime board 的直接输入，不得只存在命令行 stdout 中。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-009"
+      ],
+      "mapped_test_ids": [
+        "TEST-009"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-004"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: runtime_item_axis, team_task, ralph_step, real_project_validation_case, implement_delivery, qa_repair, release_closure, run_status_axis, queued, running, retry_waiting, blocked, handoff_required, completed, cancelled, workspace_axis, isolated_workspace, shared_workspace_blocked, recovery_axis, retry_path_explicit, repair_resume_explicit, human_intervention_explicit, delivery_bridge_axis, truth_read_only, runtime_bridge_only, release_gate_preserved"
+      ],
+      "diagram_state_axes": [
+        "runtime_item_axis",
+        "team_task",
+        "ralph_step",
+        "real_project_validation_case",
+        "implement_delivery",
+        "qa_repair",
+        "release_closure",
+        "run_status_axis",
+        "queued",
+        "running",
+        "retry_waiting",
+        "blocked",
+        "handoff_required",
+        "completed",
+        "cancelled",
+        "workspace_axis",
+        "isolated_workspace",
+        "shared_workspace_blocked",
+        "recovery_axis",
+        "retry_path_explicit",
+        "repair_resume_explicit",
+        "human_intervention_explicit",
+        "delivery_bridge_axis",
+        "truth_read_only",
+        "runtime_bridge_only",
+        "release_gate_preserved"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260501T095813Z-1521",
+        ".beacon/qa/features/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260501T175831925938",
+        "run:run-20260501T101910Z-52c5"
+      ],
+      "changed_files": [
+        ".beacon/evidence-manifest.json",
+        ".beacon/metadata/project-version-metadata.json",
+        ".beacon/metadata/project-version-metadata.md",
+        ".beacon/state/project-metadata/latest.json",
+        "beacon/commands/prd.py",
+        "beacon/utils/material_audit.py",
+        "beacon/utils/project_skills.py",
+        "tests/commands/test_prd.py",
+        "tests/test_v117_project_skill_orchestration.py",
+        "tests/test_v13010_requirement_package_gates.py",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/qa/status.json",
+        "docs/beacon/v1.3.10/.machine/execution/change-impact.json",
+        "docs/beacon/v1.3.10/.machine/execution/config.json",
+        "docs/beacon/v1.3.10/.machine/execution/delivery-manifest.json",
+        "docs/beacon/v1.3.10/.machine/execution/git-alignment.json",
+        "docs/beacon/v1.3.10/.machine/execution/source.json"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-01T09:58:14.201843+00:00",
+      "completed_at": "2026-05-01T10:19:10.795050+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-006",
+      "title": "FR-006 Beacon 必须提供 retry / reconciliation 机制",
+      "description": "Beacon 必须显式支持： backoff retry stale run detection work item eligibility re-check blocked -> repair -> resume abandoned run reconciliation 尤其对 `real-project-validation` 和 `qa repair`，必须允许失败后进入明确的恢复状态，而不是只能重新手工跑整条命令。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-007"
+      ],
+      "mapped_test_ids": [
+        "TEST-007"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-005"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: runtime_item_axis, team_task, ralph_step, real_project_validation_case, implement_delivery, qa_repair, release_closure, run_status_axis, queued, running, retry_waiting, blocked, handoff_required, completed, cancelled, workspace_axis, isolated_workspace, shared_workspace_blocked, recovery_axis, retry_path_explicit, repair_resume_explicit, human_intervention_explicit, delivery_bridge_axis, truth_read_only, runtime_bridge_only, release_gate_preserved"
+      ],
+      "diagram_state_axes": [
+        "runtime_item_axis",
+        "team_task",
+        "ralph_step",
+        "real_project_validation_case",
+        "implement_delivery",
+        "qa_repair",
+        "release_closure",
+        "run_status_axis",
+        "queued",
+        "running",
+        "retry_waiting",
+        "blocked",
+        "handoff_required",
+        "completed",
+        "cancelled",
+        "workspace_axis",
+        "isolated_workspace",
+        "shared_workspace_blocked",
+        "recovery_axis",
+        "retry_path_explicit",
+        "repair_resume_explicit",
+        "human_intervention_explicit",
+        "delivery_bridge_axis",
+        "truth_read_only",
+        "runtime_bridge_only",
+        "release_gate_preserved"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260501T095813Z-1521",
+        ".beacon/qa/features/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260501T175831925938",
+        "run:run-20260501T101910Z-52c5"
+      ],
+      "changed_files": [
+        ".beacon/evidence-manifest.json",
+        ".beacon/metadata/project-version-metadata.json",
+        ".beacon/metadata/project-version-metadata.md",
+        ".beacon/state/project-metadata/latest.json",
+        "beacon/commands/prd.py",
+        "beacon/utils/material_audit.py",
+        "beacon/utils/project_skills.py",
+        "tests/commands/test_prd.py",
+        "tests/test_v117_project_skill_orchestration.py",
+        "tests/test_v13010_requirement_package_gates.py",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/qa/status.json",
+        "docs/beacon/v1.3.10/.machine/execution/change-impact.json",
+        "docs/beacon/v1.3.10/.machine/execution/config.json",
+        "docs/beacon/v1.3.10/.machine/execution/delivery-manifest.json",
+        "docs/beacon/v1.3.10/.machine/execution/git-alignment.json",
+        "docs/beacon/v1.3.10/.machine/execution/source.json"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-01T09:58:14.201853+00:00",
+      "completed_at": "2026-05-01T10:19:10.795072+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-007",
+      "title": "FR-007 Beacon 必须提供 runtime board",
+      "description": "Beacon 必须提供人类可读的运行面板，至少展示： 当前 running runs retry queue blocked / handoff_required runs 当前 stage 分布 当前需要人工介入项 每个 run 的 next action runtime board 必须优先呈现运行态判断，而不是原始 machine noise。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-010"
+      ],
+      "mapped_test_ids": [
+        "TEST-010"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-006"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: runtime_item_axis, team_task, ralph_step, real_project_validation_case, implement_delivery, qa_repair, release_closure, run_status_axis, queued, running, retry_waiting, blocked, handoff_required, completed, cancelled, workspace_axis, isolated_workspace, shared_workspace_blocked, recovery_axis, retry_path_explicit, repair_resume_explicit, human_intervention_explicit, delivery_bridge_axis, truth_read_only, runtime_bridge_only, release_gate_preserved"
+      ],
+      "diagram_state_axes": [
+        "runtime_item_axis",
+        "team_task",
+        "ralph_step",
+        "real_project_validation_case",
+        "implement_delivery",
+        "qa_repair",
+        "release_closure",
+        "run_status_axis",
+        "queued",
+        "running",
+        "retry_waiting",
+        "blocked",
+        "handoff_required",
+        "completed",
+        "cancelled",
+        "workspace_axis",
+        "isolated_workspace",
+        "shared_workspace_blocked",
+        "recovery_axis",
+        "retry_path_explicit",
+        "repair_resume_explicit",
+        "human_intervention_explicit",
+        "delivery_bridge_axis",
+        "truth_read_only",
+        "runtime_bridge_only",
+        "release_gate_preserved"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260501T095813Z-1521",
+        ".beacon/qa/features/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260501T175831925938",
+        "run:run-20260501T101910Z-52c5"
+      ],
+      "changed_files": [
+        ".beacon/evidence-manifest.json",
+        ".beacon/metadata/project-version-metadata.json",
+        ".beacon/metadata/project-version-metadata.md",
+        ".beacon/state/project-metadata/latest.json",
+        "beacon/commands/prd.py",
+        "beacon/utils/material_audit.py",
+        "beacon/utils/project_skills.py",
+        "tests/commands/test_prd.py",
+        "tests/test_v117_project_skill_orchestration.py",
+        "tests/test_v13010_requirement_package_gates.py",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/qa/status.json",
+        "docs/beacon/v1.3.10/.machine/execution/change-impact.json",
+        "docs/beacon/v1.3.10/.machine/execution/config.json",
+        "docs/beacon/v1.3.10/.machine/execution/delivery-manifest.json",
+        "docs/beacon/v1.3.10/.machine/execution/git-alignment.json",
+        "docs/beacon/v1.3.10/.machine/execution/source.json"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-01T09:58:14.201861+00:00",
+      "completed_at": "2026-05-01T10:19:10.795095+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-008",
+      "title": "FR-008 Beacon 必须提供 delivery closure bridge",
+      "description": "orchestration runtime 必须能桥接到现有： `implement` `qa` `release` 但桥接方式必须满足： 1. `implement / qa / release` 仍是唯一正式执行与闭环入口 2. 调度层只能在外侧编排与记录运行态 3. 最终 acceptance / gate / release 结果仍落到当前 delivery kernel",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-011"
+      ],
+      "mapped_test_ids": [
+        "TEST-011"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-007"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: runtime_item_axis, team_task, ralph_step, real_project_validation_case, implement_delivery, qa_repair, release_closure, run_status_axis, queued, running, retry_waiting, blocked, handoff_required, completed, cancelled, workspace_axis, isolated_workspace, shared_workspace_blocked, recovery_axis, retry_path_explicit, repair_resume_explicit, human_intervention_explicit, delivery_bridge_axis, truth_read_only, runtime_bridge_only, release_gate_preserved"
+      ],
+      "diagram_state_axes": [
+        "runtime_item_axis",
+        "team_task",
+        "ralph_step",
+        "real_project_validation_case",
+        "implement_delivery",
+        "qa_repair",
+        "release_closure",
+        "run_status_axis",
+        "queued",
+        "running",
+        "retry_waiting",
+        "blocked",
+        "handoff_required",
+        "completed",
+        "cancelled",
+        "workspace_axis",
+        "isolated_workspace",
+        "shared_workspace_blocked",
+        "recovery_axis",
+        "retry_path_explicit",
+        "repair_resume_explicit",
+        "human_intervention_explicit",
+        "delivery_bridge_axis",
+        "truth_read_only",
+        "runtime_bridge_only",
+        "release_gate_preserved"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260501T095813Z-1521",
+        ".beacon/qa/features/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260501T175831925938",
+        "run:run-20260501T101910Z-52c5"
+      ],
+      "changed_files": [
+        ".beacon/evidence-manifest.json",
+        ".beacon/metadata/project-version-metadata.json",
+        ".beacon/metadata/project-version-metadata.md",
+        ".beacon/state/project-metadata/latest.json",
+        "beacon/commands/prd.py",
+        "beacon/utils/material_audit.py",
+        "beacon/utils/project_skills.py",
+        "tests/commands/test_prd.py",
+        "tests/test_v117_project_skill_orchestration.py",
+        "tests/test_v13010_requirement_package_gates.py",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/qa/status.json",
+        "docs/beacon/v1.3.10/.machine/execution/change-impact.json",
+        "docs/beacon/v1.3.10/.machine/execution/config.json",
+        "docs/beacon/v1.3.10/.machine/execution/delivery-manifest.json",
+        "docs/beacon/v1.3.10/.machine/execution/git-alignment.json",
+        "docs/beacon/v1.3.10/.machine/execution/source.json"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-01T09:58:14.201868+00:00",
+      "completed_at": "2026-05-01T10:19:10.795117+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-009",
+      "title": "FR-009 `team` 必须优先接入 orchestration runtime",
+      "description": "`team` 在本版本中必须被定义为 orchestration runtime 的首批消费方之一。 目标不是替换 `team`，而是让其： 以 work item 形式派发任务 以 run 形式观察任务 以 runtime board 形式管理整体运行态",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-013"
+      ],
+      "mapped_test_ids": [
+        "TEST-013"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-008"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: runtime_item_axis, team_task, ralph_step, real_project_validation_case, implement_delivery, qa_repair, release_closure, run_status_axis, queued, running, retry_waiting, blocked, handoff_required, completed, cancelled, workspace_axis, isolated_workspace, shared_workspace_blocked, recovery_axis, retry_path_explicit, repair_resume_explicit, human_intervention_explicit, delivery_bridge_axis, truth_read_only, runtime_bridge_only, release_gate_preserved"
+      ],
+      "diagram_state_axes": [
+        "runtime_item_axis",
+        "team_task",
+        "ralph_step",
+        "real_project_validation_case",
+        "implement_delivery",
+        "qa_repair",
+        "release_closure",
+        "run_status_axis",
+        "queued",
+        "running",
+        "retry_waiting",
+        "blocked",
+        "handoff_required",
+        "completed",
+        "cancelled",
+        "workspace_axis",
+        "isolated_workspace",
+        "shared_workspace_blocked",
+        "recovery_axis",
+        "retry_path_explicit",
+        "repair_resume_explicit",
+        "human_intervention_explicit",
+        "delivery_bridge_axis",
+        "truth_read_only",
+        "runtime_bridge_only",
+        "release_gate_preserved"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260501T095813Z-1521",
+        ".beacon/qa/features/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260501T175831925938",
+        "run:run-20260501T101910Z-52c5"
+      ],
+      "changed_files": [
+        ".beacon/evidence-manifest.json",
+        ".beacon/metadata/project-version-metadata.json",
+        ".beacon/metadata/project-version-metadata.md",
+        ".beacon/state/project-metadata/latest.json",
+        "beacon/commands/prd.py",
+        "beacon/utils/material_audit.py",
+        "beacon/utils/project_skills.py",
+        "tests/commands/test_prd.py",
+        "tests/test_v117_project_skill_orchestration.py",
+        "tests/test_v13010_requirement_package_gates.py",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/qa/status.json",
+        "docs/beacon/v1.3.10/.machine/execution/change-impact.json",
+        "docs/beacon/v1.3.10/.machine/execution/config.json",
+        "docs/beacon/v1.3.10/.machine/execution/delivery-manifest.json",
+        "docs/beacon/v1.3.10/.machine/execution/git-alignment.json",
+        "docs/beacon/v1.3.10/.machine/execution/source.json"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-01T09:58:14.201875+00:00",
+      "completed_at": "2026-05-01T10:19:10.795139+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-010",
+      "title": "FR-010 `ralph` 必须作为 controller 而不是直接执行器接入",
+      "description": "`ralph` 在本版本中必须被明确定位为： 决策层 升级/继续/修复/暂停控制器 而不是直接持有所有执行态。 换言之： `ralph` 决定 `what next` orchestration runtime 决定 `how it runs`",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-014"
+      ],
+      "mapped_test_ids": [
+        "TEST-014"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-009"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: runtime_item_axis, team_task, ralph_step, real_project_validation_case, implement_delivery, qa_repair, release_closure, run_status_axis, queued, running, retry_waiting, blocked, handoff_required, completed, cancelled, workspace_axis, isolated_workspace, shared_workspace_blocked, recovery_axis, retry_path_explicit, repair_resume_explicit, human_intervention_explicit, delivery_bridge_axis, truth_read_only, runtime_bridge_only, release_gate_preserved"
+      ],
+      "diagram_state_axes": [
+        "runtime_item_axis",
+        "team_task",
+        "ralph_step",
+        "real_project_validation_case",
+        "implement_delivery",
+        "qa_repair",
+        "release_closure",
+        "run_status_axis",
+        "queued",
+        "running",
+        "retry_waiting",
+        "blocked",
+        "handoff_required",
+        "completed",
+        "cancelled",
+        "workspace_axis",
+        "isolated_workspace",
+        "shared_workspace_blocked",
+        "recovery_axis",
+        "retry_path_explicit",
+        "repair_resume_explicit",
+        "human_intervention_explicit",
+        "delivery_bridge_axis",
+        "truth_read_only",
+        "runtime_bridge_only",
+        "release_gate_preserved"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260501T095813Z-1521",
+        ".beacon/qa/features/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260501T175831925938",
+        "run:run-20260501T101910Z-52c5"
+      ],
+      "changed_files": [
+        ".beacon/evidence-manifest.json",
+        ".beacon/metadata/project-version-metadata.json",
+        ".beacon/metadata/project-version-metadata.md",
+        ".beacon/state/project-metadata/latest.json",
+        "beacon/commands/prd.py",
+        "beacon/utils/material_audit.py",
+        "beacon/utils/project_skills.py",
+        "tests/commands/test_prd.py",
+        "tests/test_v117_project_skill_orchestration.py",
+        "tests/test_v13010_requirement_package_gates.py",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/qa/status.json",
+        "docs/beacon/v1.3.10/.machine/execution/change-impact.json",
+        "docs/beacon/v1.3.10/.machine/execution/config.json",
+        "docs/beacon/v1.3.10/.machine/execution/delivery-manifest.json",
+        "docs/beacon/v1.3.10/.machine/execution/git-alignment.json",
+        "docs/beacon/v1.3.10/.machine/execution/source.json"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-01T09:58:14.201882+00:00",
+      "completed_at": "2026-05-01T10:19:10.795162+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-011",
+      "title": "FR-011 `real-project-validation` 必须接入 run 级隔离",
+      "description": "`real-project-validation` 在本版本中必须成为另一条首批消费方。 它至少必须支持： validation case -> work item per-case run creation per-run workspace failure -> retry / repair 统一 runtime board 可见",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-015",
+        "AC-012"
+      ],
+      "mapped_test_ids": [
+        "TEST-015",
+        "TEST-012"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-010"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: runtime_item_axis, team_task, ralph_step, real_project_validation_case, implement_delivery, qa_repair, release_closure, run_status_axis, queued, running, retry_waiting, blocked, handoff_required, completed, cancelled, workspace_axis, isolated_workspace, shared_workspace_blocked, recovery_axis, retry_path_explicit, repair_resume_explicit, human_intervention_explicit, delivery_bridge_axis, truth_read_only, runtime_bridge_only, release_gate_preserved"
+      ],
+      "diagram_state_axes": [
+        "runtime_item_axis",
+        "team_task",
+        "ralph_step",
+        "real_project_validation_case",
+        "implement_delivery",
+        "qa_repair",
+        "release_closure",
+        "run_status_axis",
+        "queued",
+        "running",
+        "retry_waiting",
+        "blocked",
+        "handoff_required",
+        "completed",
+        "cancelled",
+        "workspace_axis",
+        "isolated_workspace",
+        "shared_workspace_blocked",
+        "recovery_axis",
+        "retry_path_explicit",
+        "repair_resume_explicit",
+        "human_intervention_explicit",
+        "delivery_bridge_axis",
+        "truth_read_only",
+        "runtime_bridge_only",
+        "release_gate_preserved"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260501T095813Z-1521",
+        ".beacon/qa/features/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260501T175831925938",
+        "run:run-20260501T101910Z-52c5"
+      ],
+      "changed_files": [
+        ".beacon/evidence-manifest.json",
+        ".beacon/metadata/project-version-metadata.json",
+        ".beacon/metadata/project-version-metadata.md",
+        ".beacon/state/project-metadata/latest.json",
+        "beacon/commands/prd.py",
+        "beacon/utils/material_audit.py",
+        "beacon/utils/project_skills.py",
+        "tests/commands/test_prd.py",
+        "tests/test_v117_project_skill_orchestration.py",
+        "tests/test_v13010_requirement_package_gates.py",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/qa/status.json",
+        "docs/beacon/v1.3.10/.machine/execution/change-impact.json",
+        "docs/beacon/v1.3.10/.machine/execution/config.json",
+        "docs/beacon/v1.3.10/.machine/execution/delivery-manifest.json",
+        "docs/beacon/v1.3.10/.machine/execution/git-alignment.json",
+        "docs/beacon/v1.3.10/.machine/execution/source.json"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-01T09:58:14.201890+00:00",
+      "completed_at": "2026-05-01T10:19:10.795185+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-012",
+      "title": "FR-012 orchestration runtime 不得反向写 requirement truth",
+      "description": "Beacon 必须明确阻断以下行为： run state 自动改写 PRD runtime inference 自动改写 user-story/test-case execution board 自动改写 prototype truth tracker / run queue 取代 requirement package 成为 source of truth 若运行时发现需求变化，系统只能输出： change recommendation repair recommendation escalation recommendation ## 6. 数据 / 状态 / 集成 ### 6.1 Truth 来源 本版本要求 orchestration runtime 只消费以下 truth 来源： `docs/beacon/<version>/prd/` `docs/beacon/<version>/user-story/` `docs/beacon/<version>/qa/test-cases/` `docs/beacon/<version>/prototype/` `docs/beacon/<version>/.machine/` `.beacon/metadata/` ### 6.2 Runtime 状态层 建议的最小 runtime 状态层至少包括： `.beacon/runs/` `.beacon/state/orchestration/` `.beacon/runtime/board/` 其中至少应能投影： work item 列表 run 状态 workspace 引用 retry 队列 handoff / escalation 状态 ### 6.3 兼容与集成 本版本允许 orchestration runtime 先只依赖 Beacon 现有本地状态与宿主运行态。 SQLite、PocketBase、外部 tracker adapter 可以作为兼容层或后续扩展位，但不应成为本版本必须交付的唯一路径。 ## 7. 风险与缓解 | 风险 | 影响 | 缓解 | |------|------|------| | 执行层范围膨胀成新平台 | 高 | 明确只做最小 orchestration runtime，不做多租户平台 | | 调度层反向污染 truth | 高 | 把 runtime 层写权限限制在 `.beacon/state` 与 run artifacts，不直接写 requirement docs | | `team / ralph / validation` 各自继续造轮子 | 中 | 先冻结统一 work item / run / scheduler 契约，再让各 surface 接入 | | board 成为 machine noise 展示墙 | 中 | 以 next action / blocked / retry / human intervention 为主，不直接暴露内部噪声 | | 多 run 并发导致 workspace 污染 | 高 | 强制 run 级 workspace isolation 与路径安全 | ## 8. 验收标准 ### AC-001 Beacon 能统一注册并派发至少三类长任务 至少以下三类 work item 必须能用统一模型注册并进入 run scheduler： `team_task` `ralph_step` `real_project_validation_case` ### AC-002 每个 run 都有独立 workspace 与状态记录 对于同一版本下并发或串行的多个 run，系统必须能证明： workspace 不混用 run 状态独立 证据引用独立 ### AC-003 失败任务存在明确 retry / repair 语义 对于至少一条 `real-project-validation` 或 `qa repair` run，系统必须能证明： 失败后不会直接静默丢失 可进入 `retry_waiting` 或 `blocked` 有明确恢复动作或人工介入语义 ### AC-004 runtime board 能直接回答“现在发生了什么” runtime board 至少必须能让人类直接判断： 当前有哪些 run 在跑 哪些 run 卡住了 哪些在重试 哪些需要人工介入 下一步该做什么 ### AC-005 `implement / qa / release` 与 orchestration runtime 边界稳定 系统必须证明： `implement / qa / release` 仍是唯一正式闭环入口 orchestration runtime 只做调度、状态、证据与桥接 runtime 不反向改写 requirement truth ## 9. 成功指标 主指标：需要人工重新手工拼接长任务上下文的次数显著下降 辅指标：对于 `team / ralph / real-project-validation`，run 级恢复与继续推进时间缩短 ## 10. 依赖与开放问题 需要后续在 `user-story` 阶段明确 `work item` 与 `run` 的最小字段集合 需要后续决定 runtime board 是扩展 `status --board` 还是独立 support surface 需要后续决定 remote worker / ssh worker 是否进入 `v1.3.11` 主线还是保留为扩展位 需要后续决定 `implement / qa / release` 哪些子路径优先接入 orchestration runtime ## 11. Diagram Truth Layer ### 11.1 Diagram Types `branch-flow` `state-machine` `decision-priority` ### 11.2 State Axes `runtime_item_axis` `team_task` `ralph_step` `real_project_validation_case` `implement_delivery` `qa_repair` `release_closure` `run_status_axis` `queued` `running` `retry_waiting` `blocked` `handoff_required` `completed` `cancelled` `workspace_axis` `isolated_workspace` `shared_workspace_blocked` `recovery_axis` `retry_path_explicit` `repair_resume_explicit` `human_intervention_explicit` `delivery_bridge_axis` `truth_read_only` `runtime_bridge_only` `release_gate_preserved` ### 11.3 Propagation Contract Diagram truth must stay explicit through freeze readiness, implementation planning, and QA coverage. State axes must not be silently compressed into one implicit status field. --- **Created**: 2026-05-01 **Version**: v1.3.11 **Status**: draft **Memory Context**: Symphony execution-layer research + Beacon v1.3.10 release closure",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-003",
+        "AC-008",
+        "AC-016",
+        "AC-017"
+      ],
+      "mapped_test_ids": [
+        "TC-003",
+        "TEST-008",
+        "TEST-016",
+        "TEST-017",
+        "TC-020"
+      ],
+      "mapped_scenario_ids": [
+        "SC-005",
+        "SC-006"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-003",
+        "TC-020"
+      ],
+      "depends_on": [
+        "ITASK-011"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: runtime_item_axis, team_task, ralph_step, real_project_validation_case, implement_delivery, qa_repair, release_closure, run_status_axis, queued, running, retry_waiting, blocked, handoff_required, completed, cancelled, workspace_axis, isolated_workspace, shared_workspace_blocked, recovery_axis, retry_path_explicit, repair_resume_explicit, human_intervention_explicit, delivery_bridge_axis, truth_read_only, runtime_bridge_only, release_gate_preserved"
+      ],
+      "diagram_state_axes": [
+        "runtime_item_axis",
+        "team_task",
+        "ralph_step",
+        "real_project_validation_case",
+        "implement_delivery",
+        "qa_repair",
+        "release_closure",
+        "run_status_axis",
+        "queued",
+        "running",
+        "retry_waiting",
+        "blocked",
+        "handoff_required",
+        "completed",
+        "cancelled",
+        "workspace_axis",
+        "isolated_workspace",
+        "shared_workspace_blocked",
+        "recovery_axis",
+        "retry_path_explicit",
+        "repair_resume_explicit",
+        "human_intervention_explicit",
+        "delivery_bridge_axis",
+        "truth_read_only",
+        "runtime_bridge_only",
+        "release_gate_preserved"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260501T095813Z-1521",
+        ".beacon/qa/features/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/interface/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/smoke/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260501T175831925938/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260501T175831925938",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.3.11/.machine/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.qa9-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance/ac-closure.json",
+        ".beacon/qa/features/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance/scorecard.json",
+        "run:run-20260501T101910Z-52c5"
+      ],
+      "changed_files": [
+        ".beacon/evidence-manifest.json",
+        ".beacon/metadata/project-version-metadata.json",
+        ".beacon/metadata/project-version-metadata.md",
+        ".beacon/state/project-metadata/latest.json",
+        "beacon/commands/prd.py",
+        "beacon/utils/material_audit.py",
+        "beacon/utils/project_skills.py",
+        "tests/commands/test_prd.py",
+        "tests/test_v117_project_skill_orchestration.py",
+        "tests/test_v13010_requirement_package_gates.py",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/qa/status.json",
+        "docs/beacon/v1.3.10/.machine/execution/change-impact.json",
+        "docs/beacon/v1.3.10/.machine/execution/config.json",
+        "docs/beacon/v1.3.10/.machine/execution/delivery-manifest.json",
+        "docs/beacon/v1.3.10/.machine/execution/git-alignment.json",
+        "docs/beacon/v1.3.10/.machine/execution/source.json"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-01T09:58:14.201898+00:00",
+      "completed_at": "2026-05-01T10:19:10.795208+00:00",
+      "active_run_id": ""
+    }
+  ],
+  "revision_delta": {},
+  "revision_delta_ref": "",
+  "revision_delta_markdown_ref": "",
+  "team_mode": {
+    "preferred_surface": "implement-team",
+    "preferred_runner": "codex-subagents",
+    "plan_command": "beacon implement team-plan \"beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance\" --project-root . --version v1.3.11",
+    "run_command": "beacon implement team-run \"beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance\" --project . --version v1.3.11",
+    "dev_run_command": "beacon implement dev-run \"beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance\" --project . --version v1.3.11",
+    "ralph_command": "beacon implement run \"beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance\" --project . --version v1.3.11 --mode ralph",
+    "qa_team_command": "beacon qa team-run \"beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance\" --project . --version v1.3.11",
+    "roles": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "context_isolation": {
+      "role_plane": "implementation",
+      "isolated_from": [
+        "qa-team"
+      ],
+      "shared_inputs": [
+        "docs",
+        "implementation_plan",
+        "evidence_refs"
+      ],
+      "shared_outputs": [
+        "implementation_summary",
+        "technical_archive",
+        "repair_handoff"
+      ],
+      "rule": "qa_must_not_inherit_implement_private_context",
+      "implement_surface": "implement-team",
+      "qa_surface": "qa-team"
+    },
+    "config_source": "beacon/team_roles/implement-team.json",
+    "post_freeze_sequence": [
+      "freeze-pass",
+      "implement-team-plan",
+      "implement-team-run",
+      "implement-ralph",
+      "qa",
+      "release"
+    ],
+    "role_semantics": {
+      "team_reviewer": "checks implementation/spec drift before Ralph or QA closure",
+      "team_tester": "checks implementation evidence and verification readiness before Ralph or QA closure",
+      "ralph": "post-freeze controller that drives next-action routing across implementation, review, qa, and release"
+    },
+    "execution_order": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "formal_writeback_roles": [
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "role_contracts": {
+      "planner": {
+        "purpose": "Compile execution-ready task scope from the frozen revision baseline.",
+        "writes_to_formal_truth": false,
+        "outputs": [
+          "execution_plan_note"
+        ]
+      },
+      "implementation-architect": {
+        "purpose": "Translate frozen requirement truth into implementation-safe module boundaries and service ownership guidance.",
+        "writes_to_formal_truth": false,
+        "reads": [
+          "docs/beacon/<version>/user-story",
+          "docs/beacon/<version>/prd",
+          "docs/beacon/<version>/qa/test-cases",
+          "docs/beacon/<version>/execution/architecture-blueprint.md",
+          "implementation_plan",
+          "git_workflow_contract"
+        ],
+        "outputs": [
+          "implementation_architecture_note"
+        ],
+        "restrictions": [
+          "must_not_modify_frozen_requirement_materials",
+          "must_not_overwrite_architecture_blueprint"
+        ]
+      },
+      "implementer": {
+        "purpose": "Write code inside the frozen scope and the implementation architecture note.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "story_writeback",
+          "implementation_summary"
+        ]
+      },
+      "reviewer": {
+        "purpose": "Review implementation/spec drift and architecture-boundary drift.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_spec"
+        ]
+      },
+      "tester": {
+        "purpose": "Check implementation evidence and verification readiness before acceptance.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_quality"
+        ]
+      }
+    }
+  },
+  "git_workflow": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance",
+    "feature_slug": "beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance",
+    "version": "v1.3.11",
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.3.11",
+    "branch_prefix": "beacon/",
+    "base_branch": "main",
+    "use_git_worktree": false,
+    "require_clean_worktree_for_switch": true,
+    "service_directories": [
+      "."
+    ],
+    "direct_delivery_services": [
+      "."
+    ],
+    "writable_services": [
+      "."
+    ],
+    "reference_only_services": [
+      "docs"
+    ],
+    "git_roots": [
+      "."
+    ],
+    "worktree_root": ".",
+    "implementation_preflight": [
+      "Before implementation, verify the target service belongs to: .",
+      "Before implementation, verify the current branch is beacon/v1.3.11.",
+      "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+    ],
+    "source": "technical_review_contract",
+    "generated_at": "2026-05-01T09:56:49.136822+00:00",
+    "baseline_id": "impl-delivery-baseline-v1.3.11-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance-R1",
+    "transaction_id": "tx-abf08f1f3304f0b4f",
+    "source_hash": "sha256:261c27861deb0e3356c691bb270583d9a837037189ff5f6dd5f74ca7b7e9b3f6",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.3.11/.machine/execution/implementation-delivery-baseline-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "git_workflow_ref": "docs/beacon/v1.3.11/.machine/execution/git-workflow-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
+  "git_workflow_markdown_ref": "docs/beacon/v1.3.11/execution/git-workflow-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+  "base_branch": "main",
+  "target_branch": "beacon/v1.3.11",
+  "branch_prefix": "beacon/",
+  "use_git_worktree": false,
+  "worktree_root": ".",
+  "direct_delivery_services": [
+    "."
+  ],
+  "writable_services": [
+    "."
+  ],
+  "reference_only_services": [
+    "docs"
+  ],
+  "technical_delta": {
+    "project_mode": "greenfield",
+    "source_refs": {
+      "prd": "docs/beacon/v1.3.11/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+      "user_story": "docs/beacon/v1.3.11/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+      "test_case": "docs/beacon/v1.3.11/qa/test-cases/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md"
+    },
+    "current_state": {},
+    "refactor_boundaries": {},
+    "feature_sections": [],
+    "change_surface": []
+  },
+  "delivery_baseline": {
+    "baseline_id": "impl-delivery-baseline-v1.3.11-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance-R1",
+    "transaction_id": "tx-abf08f1f3304f0b4f",
+    "source_hash": "sha256:261c27861deb0e3356c691bb270583d9a837037189ff5f6dd5f74ca7b7e9b3f6",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.3.11/.machine/execution/implementation-delivery-baseline-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "canonical_envelope_ref": "docs/beacon/v1.3.11/.machine/execution/implementation-delivery-baseline-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
+  "generated_at": "2026-05-01T09:56:49.180182+00:00",
+  "baseline_id": "impl-delivery-baseline-v1.3.11-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance-R1",
+  "transaction_id": "tx-abf08f1f3304f0b4f",
+  "source_hash": "sha256:261c27861deb0e3356c691bb270583d9a837037189ff5f6dd5f74ca7b7e9b3f6",
+  "projection_seq": 1,
+  "projection_source": "implementation_delivery_baseline_envelope",
+  "updated_at": "2026-05-01T10:19:10.795238+00:00",
+  "accepted_at": "2026-05-01T10:01:33.114518+00:00",
+  "accepted_by": "qa"
+}

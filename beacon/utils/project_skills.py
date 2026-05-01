@@ -424,6 +424,64 @@ def _node_evidence_path(project_root: Path, feature: str, run_id: str, node_id: 
     return project_root / ".beacon" / "evidence" / "orchestration" / feature_slug(feature) / run_id / f"{node_id}.json"
 
 
+def _truth_refs_for_feature(project_root: Path, *, version: str, feature: str) -> list[str]:
+    slug = feature_slug(feature)
+    refs: list[str] = []
+    candidates = [
+        project_root / "docs" / "beacon" / version / "prd" / f"{slug}.md",
+        project_root / "docs" / "beacon" / version / "user-story" / f"{slug}.md",
+        project_root / "docs" / "beacon" / version / "qa" / "test-cases" / f"{slug}.md",
+    ]
+    for path in candidates:
+        if path.exists():
+            refs.append(str(path.relative_to(project_root)))
+    return refs
+
+
+def _default_work_item_type(stage: str) -> str:
+    normalized = _normalize_stage_name(stage)
+    return {
+        "implement": "implement_delivery",
+        "qa": "qa_repair",
+        "release": "release_closure",
+        "debug": "ralph_step",
+        "prototype": "team_task",
+        "pipeline": "team_task",
+    }.get(normalized, "team_task")
+
+
+def _runtime_next_action(status: str) -> str:
+    return {
+        "queued": "dispatch",
+        "running": "observe",
+        "retry_waiting": "repair",
+        "blocked": "repair",
+        "handoff_required": "handoff",
+        "completed": "close",
+        "cancelled": "close",
+    }.get(status, "observe")
+
+
+def _runtime_board_summary(work_items: list[dict[str, Any]]) -> dict[str, Any]:
+    counts: dict[str, int] = {}
+    next_actions: list[str] = []
+    for item in work_items:
+        status = str(item.get("status") or "queued")
+        counts[status] = counts.get(status, 0) + 1
+        action = _runtime_next_action(status)
+        if action not in next_actions:
+            next_actions.append(action)
+    return {
+        "status_counts": counts,
+        "running_runs": counts.get("running", 0),
+        "retry_queue": counts.get("retry_waiting", 0),
+        "blocked_runs": counts.get("blocked", 0),
+        "handoff_runs": counts.get("handoff_required", 0),
+        "completed_runs": counts.get("completed", 0),
+        "next_actions": next_actions,
+    }
+
+
 def _profile_context(
     *,
     project_root: Path,
@@ -574,11 +632,14 @@ def run_profile_orchestration(
     node_results: list[dict[str, Any]] = []
     produced_evidence: list[dict[str, Any]] = []
     produced_cases: list[dict[str, Any]] = []
+    truth_refs = _truth_refs_for_feature(project_root, version=resolved_version, feature=feature)
+    work_items: list[dict[str, Any]] = []
     status = "completed"
 
     for node in selected_nodes:
         node_id = str(node.get("id", "") or f"node-{len(node_results)+1:03d}")
         node_stage = _normalize_stage_name(str(node.get("stage", "") or ""))
+        item_id = f"{run_id}-{node_id}"
         profile_skills = profile.get("skills", {}) if isinstance(profile.get("skills"), dict) else {}
         skill_id = str(node.get("skill", "") or _resolve_profile_skill_id(profile_skills, node_stage) or "")
         skill_payload = registry.get(skill_id, {})
@@ -594,6 +655,17 @@ def run_profile_orchestration(
         )
         command_template = str(node.get("command_template", "") or "")
         command = format_template(command_template, context) if command_template else ""
+        work_item = {
+            "item_id": item_id,
+            "item_type": str(node.get("item_type") or _default_work_item_type(node_stage)),
+            "feature": feature,
+            "version": resolved_version,
+            "source_surface": "project_profile_orchestration",
+            "priority": str(node.get("priority") or "normal"),
+            "requested_action": node_stage or "run",
+            "truth_refs": truth_refs,
+            "status": "queued" if dry_run else "running",
+        }
         result_payload = {
             "node_id": node_id,
             "stage": node_stage,
@@ -601,6 +673,17 @@ def run_profile_orchestration(
             "skill_kind": str(skill_payload.get("kind", "")),
             "command": command,
             "status": "planned" if dry_run else "pending",
+            "work_item": work_item,
+            "run_record": {
+                "run_id": run_id,
+                "item_id": item_id,
+                "workspace_ref": str(project_root),
+                "runtime_mode": "dry_run" if dry_run else "local_subprocess",
+                "status": "queued" if dry_run else "running",
+                "attempt_seq": 1,
+                "next_action": "dispatch" if dry_run else "observe",
+                "evidence_refs": [],
+            },
             "evidence_path": str(_node_evidence_path(project_root, feature, run_id, node_id).relative_to(project_root)),
             "produces_evidence": list(node.get("produces_evidence", [])),
             "produces_cases": list(node.get("produces_cases", [])),
@@ -612,10 +695,14 @@ def run_profile_orchestration(
                 "evidence_contract": list(skill_payload.get("evidence_contract", [])),
             },
         }
+        work_items.append(work_item)
 
         node_issues = _validate_orchestration_node(skill_payload=skill_payload, node=node)
         if node_issues:
             result_payload["status"] = "blocked"
+            result_payload["work_item"]["status"] = "blocked"
+            result_payload["run_record"]["status"] = "blocked"
+            result_payload["run_record"]["next_action"] = "repair"
             result_payload["issues"] = node_issues
             result_payload["reason_code"] = _first_reason_code(node_issues) or "project_skill_boundary_blocked"
             status = "blocked"
@@ -629,7 +716,10 @@ def run_profile_orchestration(
 
         if not command:
             result_payload["status"] = "blocked"
+            result_payload["work_item"]["status"] = "blocked"
             result_payload["reason_code"] = "orchestration_command_missing"
+            result_payload["run_record"]["status"] = "blocked"
+            result_payload["run_record"]["next_action"] = "repair"
             status = "blocked"
             node_results.append(result_payload)
             break
@@ -638,6 +728,9 @@ def run_profile_orchestration(
             command_argv = shlex.split(command)
         except ValueError as exc:
             result_payload["status"] = "blocked"
+            result_payload["work_item"]["status"] = "blocked"
+            result_payload["run_record"]["status"] = "blocked"
+            result_payload["run_record"]["next_action"] = "repair"
             result_payload["reason_code"] = "project_skill_command_parse_failed"
             result_payload["stderr"] = str(exc)
             status = "blocked"
@@ -646,6 +739,9 @@ def run_profile_orchestration(
             break
         if not command_argv:
             result_payload["status"] = "blocked"
+            result_payload["work_item"]["status"] = "blocked"
+            result_payload["run_record"]["status"] = "blocked"
+            result_payload["run_record"]["next_action"] = "repair"
             result_payload["reason_code"] = "project_skill_command_parse_failed"
             result_payload["stderr"] = "empty argv after parsing"
             status = "blocked"
@@ -668,6 +764,10 @@ def run_profile_orchestration(
                 "stderr": completed.stderr,
             }
         )
+        result_payload["work_item"]["status"] = "completed" if completed.returncode == 0 else "blocked"
+        result_payload["run_record"]["status"] = "completed" if completed.returncode == 0 else "blocked"
+        result_payload["run_record"]["next_action"] = "close" if completed.returncode == 0 else "repair"
+        result_payload["run_record"]["evidence_refs"] = [result_payload["evidence_path"]]
         write_json(_node_evidence_path(project_root, feature, run_id, node_id), result_payload)
         node_results.append(result_payload)
         if completed.returncode != 0:
@@ -692,7 +792,12 @@ def run_profile_orchestration(
         "run_id": run_id,
         "stage": normalized_stage or "",
         "status": "dry_run" if dry_run else status,
+        "runtime_mode": "dry_run" if dry_run else "local_subprocess",
+        "next_action": "dispatch" if dry_run else ("close" if status == "completed" else "repair" if status in {"failed", "blocked"} else "observe"),
         "generated_at": now_iso(),
+        "truth_refs": truth_refs,
+        "work_items": work_items,
+        "runtime_board": _runtime_board_summary(work_items),
         "nodes": node_results,
         "produced_evidence": produced_evidence,
         "produced_cases": produced_cases,

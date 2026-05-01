@@ -1,0 +1,932 @@
+{
+  "schema_version": "1.0",
+  "plan_id": "plan-beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation-r1",
+  "feature": "beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation",
+  "feature_slug": "beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation",
+  "version": "v1.3.11",
+  "revision_id": "R1",
+  "baseline_hash": "sha256:9dcfcdb939173649da64eb6f08a6a521d561c04dd33e6ef5cbd0cae4e7c7a476",
+  "plan_hash": "sha256:b8d42db96614c1a259d8c3278135db0d0272c9a787a83ff1aa9b0e955823d394",
+  "status": "completed",
+  "source_refs": {
+    "user_story": "docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md",
+    "prd": "docs/beacon/v1.3.11/prd/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md",
+    "test_case": "docs/beacon/v1.3.11/qa/test-cases/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md",
+    "ac_matrix": "docs/beacon/v1.3.11/.machine/qa/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.ac-test-matrix.json",
+    "story_scenario_map": "docs/beacon/v1.3.11/.machine/qa/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.story-scenario-map.json",
+    "qa9_matrix": "docs/beacon/v1.3.11/.machine/qa/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.qa9-matrix.json"
+  },
+  "architecture_blueprint_ref": "docs/beacon/v1.3.11/execution/architecture-blueprint.md",
+  "boundary_principles": [
+    {
+      "id": "explicit_assumptions",
+      "heading": "显式假设与歧义管理"
+    },
+    {
+      "id": "simplicity_first",
+      "heading": "简单优先"
+    },
+    {
+      "id": "surgical_changes",
+      "heading": "外科手术式改动"
+    },
+    {
+      "id": "goal_driven_execution",
+      "heading": "目标驱动验证闭环"
+    },
+    {
+      "id": "trivial_task_exception",
+      "heading": "trivial task 可以轻量处理，但不能越界"
+    }
+  ],
+  "workstreams": [
+    {
+      "workstream_id": "implementation-main",
+      "title": "Implementation Mainline",
+      "task_ids": [
+        "ITASK-001",
+        "ITASK-002",
+        "ITASK-003",
+        "ITASK-004",
+        "ITASK-005"
+      ]
+    }
+  ],
+  "task_mapping_source": "prd-sections",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.3.11",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-05-01T09:56:49.463099+00:00",
+    "feature": "beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation",
+    "feature_slug": "beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation",
+    "prd_ref": "docs/beacon/v1.3.11/prd/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md",
+    "user_story_ref": "docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
+  },
+  "review_gates": [],
+  "qa_coverage_hints": [],
+  "tasks": [
+    {
+      "task_id": "ITASK-001",
+      "title": "FR-001 PRD markdown 必须支持重投影",
+      "description": "Beacon 必须允许当前 `PRD markdown` 作为 authoritative truth 被重新投影到 machine mirror。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-001",
+        "AC-002"
+      ],
+      "mapped_test_ids": [
+        "TC-001",
+        "TC-002",
+        "TC-022",
+        "TC-023"
+      ],
+      "mapped_scenario_ids": [
+        "SC-001",
+        "SC-002",
+        "SC-003",
+        "SC-004"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-001",
+        "TC-002",
+        "TC-022",
+        "TC-023"
+      ],
+      "depends_on": [],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260501T095658Z-13ac",
+        ".beacon/qa/features/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/interface/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/interface/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/interface/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/interface/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/interface/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/smoke/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/smoke/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/smoke/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/smoke/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/smoke/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260501T175831917995",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.3.11/.machine/qa/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.qa9-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation/ac-closure.json",
+        ".beacon/qa/features/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation/scorecard.json",
+        "run:run-20260501T101930Z-4a12",
+        ".beacon/evidence/auto-test/run-20260501T181931954666/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T181931954666/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T181931954666/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T181931954666/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T181931954666/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260501T181931954666/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T181931954666/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T181931954666/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T181931954666/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T181931954666/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260501T181931954666/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T181931954666/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T181931954666/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T181931954666/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T181931954666/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260501T181931954666/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T181931954666/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T181931954666/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T181931954666/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T181931954666/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260501T181931954666/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260501T181931954666/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260501T181931954666/summary.json",
+        "verify:run-20260501T181931954666"
+      ],
+      "changed_files": [
+        ".beacon/metadata/project-version-metadata.json",
+        ".beacon/metadata/project-version-metadata.md",
+        ".beacon/state/project-metadata/latest.json",
+        "beacon/commands/prd.py",
+        "beacon/utils/material_audit.py",
+        "beacon/utils/project_skills.py",
+        "tests/commands/test_prd.py",
+        "tests/test_v117_project_skill_orchestration.py",
+        "tests/test_v13010_requirement_package_gates.py",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/qa/status.json",
+        "docs/beacon/v1.3.10/.machine/execution/change-impact.json",
+        "docs/beacon/v1.3.10/.machine/execution/config.json",
+        "docs/beacon/v1.3.10/.machine/execution/delivery-manifest.json",
+        "docs/beacon/v1.3.10/.machine/execution/git-alignment.json",
+        "docs/beacon/v1.3.10/.machine/execution/source.json"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-01T09:56:58.953820+00:00",
+      "completed_at": "2026-05-01T10:19:30.991210+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-002",
+      "title": "FR-002 audit 必须覆盖 full mirror",
+      "description": "Beacon 必须把 PRD audit 扩展到： `docs/beacon/<version>/prd/*.md` `.beacon/prd/*.json` `docs/beacon/<version>/.machine/prd/*.canonical.json` `docs/beacon/<version>/.machine/prd/*.compile.json`",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-005"
+      ],
+      "mapped_test_ids": [
+        "TC-021"
+      ],
+      "mapped_scenario_ids": [
+        "SC-009"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-021"
+      ],
+      "depends_on": [
+        "ITASK-001"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260501T095658Z-13ac",
+        ".beacon/qa/features/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/interface/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/interface/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/interface/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/interface/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/interface/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/smoke/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/smoke/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/smoke/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/smoke/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/smoke/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260501T175831917995",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.3.11/.machine/qa/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.qa9-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation/ac-closure.json",
+        ".beacon/qa/features/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation/scorecard.json",
+        "run:run-20260501T101930Z-4a12"
+      ],
+      "changed_files": [
+        ".beacon/metadata/project-version-metadata.json",
+        ".beacon/metadata/project-version-metadata.md",
+        ".beacon/state/project-metadata/latest.json",
+        "beacon/commands/prd.py",
+        "beacon/utils/material_audit.py",
+        "beacon/utils/project_skills.py",
+        "tests/commands/test_prd.py",
+        "tests/test_v117_project_skill_orchestration.py",
+        "tests/test_v13010_requirement_package_gates.py",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/qa/status.json",
+        "docs/beacon/v1.3.10/.machine/execution/change-impact.json",
+        "docs/beacon/v1.3.10/.machine/execution/config.json",
+        "docs/beacon/v1.3.10/.machine/execution/delivery-manifest.json",
+        "docs/beacon/v1.3.10/.machine/execution/git-alignment.json",
+        "docs/beacon/v1.3.10/.machine/execution/source.json"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-01T09:56:59.004229+00:00",
+      "completed_at": "2026-05-01T10:19:30.991244+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-003",
+      "title": "FR-003 transaction 必须支持 latest / supersedes",
+      "description": "Beacon 必须让多次 PRD transaction 之间存在当前 active pointer 与 superseded 关系。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-009"
+      ],
+      "mapped_test_ids": [
+        "TEST-009"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-002"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260501T095658Z-13ac",
+        ".beacon/qa/features/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/interface/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/interface/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/interface/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/interface/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/interface/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/smoke/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/smoke/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/smoke/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/smoke/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/smoke/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260501T175831917995",
+        "run:run-20260501T101930Z-4a12"
+      ],
+      "changed_files": [
+        ".beacon/metadata/project-version-metadata.json",
+        ".beacon/metadata/project-version-metadata.md",
+        ".beacon/state/project-metadata/latest.json",
+        "beacon/commands/prd.py",
+        "beacon/utils/material_audit.py",
+        "beacon/utils/project_skills.py",
+        "tests/commands/test_prd.py",
+        "tests/test_v117_project_skill_orchestration.py",
+        "tests/test_v13010_requirement_package_gates.py",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/qa/status.json",
+        "docs/beacon/v1.3.10/.machine/execution/change-impact.json",
+        "docs/beacon/v1.3.10/.machine/execution/config.json",
+        "docs/beacon/v1.3.10/.machine/execution/delivery-manifest.json",
+        "docs/beacon/v1.3.10/.machine/execution/git-alignment.json",
+        "docs/beacon/v1.3.10/.machine/execution/source.json"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-01T09:56:59.004240+00:00",
+      "completed_at": "2026-05-01T10:19:30.991269+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-004",
+      "title": "FR-004 stale mirror 必须 fail-closed",
+      "description": "当 human truth 与 machine mirror 漂移时，系统必须明确阻断后续 freeze / implement / qa / release。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-015"
+      ],
+      "mapped_test_ids": [
+        "TEST-015"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-003"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260501T095658Z-13ac",
+        ".beacon/qa/features/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/interface/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/interface/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/interface/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/interface/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/interface/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/smoke/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/smoke/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/smoke/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/smoke/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/smoke/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260501T175831917995",
+        "run:run-20260501T101930Z-4a12"
+      ],
+      "changed_files": [
+        ".beacon/metadata/project-version-metadata.json",
+        ".beacon/metadata/project-version-metadata.md",
+        ".beacon/state/project-metadata/latest.json",
+        "beacon/commands/prd.py",
+        "beacon/utils/material_audit.py",
+        "beacon/utils/project_skills.py",
+        "tests/commands/test_prd.py",
+        "tests/test_v117_project_skill_orchestration.py",
+        "tests/test_v13010_requirement_package_gates.py",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/qa/status.json",
+        "docs/beacon/v1.3.10/.machine/execution/change-impact.json",
+        "docs/beacon/v1.3.10/.machine/execution/config.json",
+        "docs/beacon/v1.3.10/.machine/execution/delivery-manifest.json",
+        "docs/beacon/v1.3.10/.machine/execution/git-alignment.json",
+        "docs/beacon/v1.3.10/.machine/execution/source.json"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-01T09:56:59.004247+00:00",
+      "completed_at": "2026-05-01T10:19:30.991303+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-005",
+      "title": "FR-005 doctor fallback 必须可恢复",
+      "description": "当 machine sink 缺失、损坏或不可信时，`doctor` fallback 必须给出明确恢复步骤，并允许回到正常验收路径。 ## 6. 数据 / 状态 / 集成 ### 6.1 Truth 来源 `docs/beacon/<version>/prd/*.md` `.beacon/prd/*.json` `docs/beacon/<version>/.machine/prd/*` ### 6.2 Mirror 状态层 PRD canonical envelope compile payload legacy machine mirror transaction lineage ### 6.3 恢复面 `doctor sync-materials` `doctor repair-package` `doctor verify-materials` ## 7. 风险与缓解 | 风险 | 影响 | 缓解 | |------|------|------| | human 改了 markdown 但 machine 继续旧版本 | 高 | 引入 reconcile 和 full mirror audit | | repair surface 挤占主路径 | 中 | 明确区分 reconcile 与 doctor fallback 边界 | | 历史 transaction 混淆当前 truth | 高 | 增加 latest / supersedes 语义 | ## 8. 验收标准 ### AC-001 PRD 可重投影 human markdown 修订后，Beacon 能在不手工 patch JSON 的前提下重新生成 machine mirror。 ### AC-002 audit 能定位 mirror 漂移 系统能明确指出 stale mirror 是发生在 legacy mirror、canonical、compile，还是多个 sink 同时失配。 ### AC-003 transaction 当前性可判断 系统能判断谁是当前 active transaction，谁已经 superseded。 ### AC-004 stale mirror 会阻断主链 当 stale mirror 已被识别时，freeze / implement / qa / release 不会继续通过。 ### AC-005 doctor fallback 可回主链 repair 完成后，系统能重新回到 `validate -> audit -> freeze readiness` 路径。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-003",
+        "AC-004",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013",
+        "AC-014",
+        "AC-016",
+        "AC-017",
+        "AC-018",
+        "AC-019",
+        "AC-020",
+        "AC-021"
+      ],
+      "mapped_test_ids": [
+        "TC-003",
+        "TC-004",
+        "TEST-006",
+        "TEST-007",
+        "TEST-008",
+        "TEST-010",
+        "TEST-011",
+        "TEST-012",
+        "TEST-013",
+        "TEST-014",
+        "TEST-016",
+        "TEST-017",
+        "TEST-018",
+        "TEST-019",
+        "TEST-020",
+        "TEST-021",
+        "TC-024",
+        "TC-025"
+      ],
+      "mapped_scenario_ids": [
+        "SC-005",
+        "SC-006",
+        "SC-007",
+        "SC-008"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-003",
+        "TC-004",
+        "TC-024",
+        "TC-025"
+      ],
+      "depends_on": [
+        "ITASK-004"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260501T095658Z-13ac",
+        ".beacon/qa/features/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/interface/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/interface/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/interface/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/interface/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/interface/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/smoke/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/smoke/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/smoke/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/smoke/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/smoke/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260501T175831917995/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260501T175831917995",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.3.11/.machine/qa/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.qa9-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation/ac-closure.json",
+        ".beacon/qa/features/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation/scorecard.json",
+        "run:run-20260501T101930Z-4a12",
+        ".beacon/evidence/auto-test/run-20260501T181931954666/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T181931954666/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T181931954666/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T181931954666/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T181931954666/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260501T181931954666/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T181931954666/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T181931954666/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T181931954666/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T181931954666/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260501T181931954666/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T181931954666/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T181931954666/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T181931954666/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T181931954666/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260501T181931954666/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T181931954666/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T181931954666/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T181931954666/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T181931954666/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260501T181931954666/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260501T181931954666/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260501T181931954666/summary.json",
+        "verify:run-20260501T181931954666"
+      ],
+      "changed_files": [
+        ".beacon/metadata/project-version-metadata.json",
+        ".beacon/metadata/project-version-metadata.md",
+        ".beacon/state/project-metadata/latest.json",
+        "beacon/commands/prd.py",
+        "beacon/utils/material_audit.py",
+        "beacon/utils/project_skills.py",
+        "tests/commands/test_prd.py",
+        "tests/test_v117_project_skill_orchestration.py",
+        "tests/test_v13010_requirement_package_gates.py",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/qa/status.json",
+        "docs/beacon/v1.3.10/.machine/execution/change-impact.json",
+        "docs/beacon/v1.3.10/.machine/execution/config.json",
+        "docs/beacon/v1.3.10/.machine/execution/delivery-manifest.json",
+        "docs/beacon/v1.3.10/.machine/execution/git-alignment.json",
+        "docs/beacon/v1.3.10/.machine/execution/source.json"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-01T09:56:59.004258+00:00",
+      "completed_at": "2026-05-01T10:19:30.991329+00:00",
+      "active_run_id": ""
+    }
+  ],
+  "revision_delta": {},
+  "revision_delta_ref": "",
+  "revision_delta_markdown_ref": "",
+  "team_mode": {
+    "preferred_surface": "implement-team",
+    "preferred_runner": "codex-subagents",
+    "plan_command": "beacon implement team-plan \"beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation\" --project-root . --version v1.3.11",
+    "run_command": "beacon implement team-run \"beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation\" --project . --version v1.3.11",
+    "dev_run_command": "beacon implement dev-run \"beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation\" --project . --version v1.3.11",
+    "ralph_command": "beacon implement run \"beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation\" --project . --version v1.3.11 --mode ralph",
+    "qa_team_command": "beacon qa team-run \"beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation\" --project . --version v1.3.11",
+    "roles": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "context_isolation": {
+      "role_plane": "implementation",
+      "isolated_from": [
+        "qa-team"
+      ],
+      "shared_inputs": [
+        "docs",
+        "implementation_plan",
+        "evidence_refs"
+      ],
+      "shared_outputs": [
+        "implementation_summary",
+        "technical_archive",
+        "repair_handoff"
+      ],
+      "rule": "qa_must_not_inherit_implement_private_context",
+      "implement_surface": "implement-team",
+      "qa_surface": "qa-team"
+    },
+    "config_source": "beacon/team_roles/implement-team.json",
+    "post_freeze_sequence": [
+      "freeze-pass",
+      "implement-team-plan",
+      "implement-team-run",
+      "implement-ralph",
+      "qa",
+      "release"
+    ],
+    "role_semantics": {
+      "team_reviewer": "checks implementation/spec drift before Ralph or QA closure",
+      "team_tester": "checks implementation evidence and verification readiness before Ralph or QA closure",
+      "ralph": "post-freeze controller that drives next-action routing across implementation, review, qa, and release"
+    },
+    "execution_order": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "formal_writeback_roles": [
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "role_contracts": {
+      "planner": {
+        "purpose": "Compile execution-ready task scope from the frozen revision baseline.",
+        "writes_to_formal_truth": false,
+        "outputs": [
+          "execution_plan_note"
+        ]
+      },
+      "implementation-architect": {
+        "purpose": "Translate frozen requirement truth into implementation-safe module boundaries and service ownership guidance.",
+        "writes_to_formal_truth": false,
+        "reads": [
+          "docs/beacon/<version>/user-story",
+          "docs/beacon/<version>/prd",
+          "docs/beacon/<version>/qa/test-cases",
+          "docs/beacon/<version>/execution/architecture-blueprint.md",
+          "implementation_plan",
+          "git_workflow_contract"
+        ],
+        "outputs": [
+          "implementation_architecture_note"
+        ],
+        "restrictions": [
+          "must_not_modify_frozen_requirement_materials",
+          "must_not_overwrite_architecture_blueprint"
+        ]
+      },
+      "implementer": {
+        "purpose": "Write code inside the frozen scope and the implementation architecture note.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "story_writeback",
+          "implementation_summary"
+        ]
+      },
+      "reviewer": {
+        "purpose": "Review implementation/spec drift and architecture-boundary drift.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_spec"
+        ]
+      },
+      "tester": {
+        "purpose": "Check implementation evidence and verification readiness before acceptance.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_quality"
+        ]
+      }
+    }
+  },
+  "git_workflow": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation",
+    "feature_slug": "beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation",
+    "version": "v1.3.11",
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.3.11",
+    "branch_prefix": "beacon/",
+    "base_branch": "main",
+    "use_git_worktree": false,
+    "require_clean_worktree_for_switch": true,
+    "service_directories": [
+      "."
+    ],
+    "direct_delivery_services": [
+      "."
+    ],
+    "writable_services": [
+      "."
+    ],
+    "reference_only_services": [
+      "docs"
+    ],
+    "git_roots": [
+      "."
+    ],
+    "worktree_root": ".",
+    "implementation_preflight": [
+      "Before implementation, verify the target service belongs to: .",
+      "Before implementation, verify the current branch is beacon/v1.3.11.",
+      "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+    ],
+    "source": "technical_review_contract",
+    "generated_at": "2026-05-01T09:56:49.463283+00:00",
+    "baseline_id": "impl-delivery-baseline-v1.3.11-beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation-R1",
+    "transaction_id": "tx-9cc1d572b20926f41",
+    "source_hash": "sha256:f49e85f06cd897749e84088083b6c272a721e65a6674196c92303d31083149a1",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.3.11/.machine/execution/implementation-delivery-baseline-beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "git_workflow_ref": "docs/beacon/v1.3.11/.machine/execution/git-workflow-beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.json",
+  "git_workflow_markdown_ref": "docs/beacon/v1.3.11/execution/git-workflow-beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md",
+  "base_branch": "main",
+  "target_branch": "beacon/v1.3.11",
+  "branch_prefix": "beacon/",
+  "use_git_worktree": false,
+  "worktree_root": ".",
+  "direct_delivery_services": [
+    "."
+  ],
+  "writable_services": [
+    "."
+  ],
+  "reference_only_services": [
+    "docs"
+  ],
+  "technical_delta": {
+    "project_mode": "greenfield",
+    "source_refs": {
+      "prd": "docs/beacon/v1.3.11/prd/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md",
+      "user_story": "docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md",
+      "test_case": "docs/beacon/v1.3.11/qa/test-cases/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
+    },
+    "current_state": {},
+    "refactor_boundaries": {},
+    "feature_sections": [],
+    "change_surface": []
+  },
+  "delivery_baseline": {
+    "baseline_id": "impl-delivery-baseline-v1.3.11-beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation-R1",
+    "transaction_id": "tx-9cc1d572b20926f41",
+    "source_hash": "sha256:f49e85f06cd897749e84088083b6c272a721e65a6674196c92303d31083149a1",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.3.11/.machine/execution/implementation-delivery-baseline-beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "canonical_envelope_ref": "docs/beacon/v1.3.11/.machine/execution/implementation-delivery-baseline-beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.json",
+  "generated_at": "2026-05-01T09:56:49.503775+00:00",
+  "baseline_id": "impl-delivery-baseline-v1.3.11-beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation-R1",
+  "transaction_id": "tx-9cc1d572b20926f41",
+  "source_hash": "sha256:f49e85f06cd897749e84088083b6c272a721e65a6674196c92303d31083149a1",
+  "projection_seq": 1,
+  "projection_source": "implementation_delivery_baseline_envelope",
+  "updated_at": "2026-05-01T10:21:27.235790+00:00",
+  "accepted_at": "2026-05-01T10:21:27.235776+00:00",
+  "accepted_by": "qa"
+}

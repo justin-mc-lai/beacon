@@ -1,0 +1,733 @@
+{
+  "schema_version": "1.0",
+  "feature": "Beacon v1.3.11 PRD freeze anti-drift and machine-mirror reconciliation",
+  "feature_slug": "beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation",
+  "version": "v1.3.11",
+  "current_revision_id": "R1",
+  "lifecycle_status": "frozen",
+  "updated_at": "2026-05-01T10:21:27.234537+00:00",
+  "revisions": [
+    {
+      "revision_id": "R1",
+      "feature_slug": "beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation",
+      "source_revision_id": null,
+      "reason": "draft",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:9dcfcdb939173649da64eb6f08a6a521d561c04dd33e6ef5cbd0cae4e7c7a476",
+      "superseded_by": null,
+      "created_at": "2026-05-01T04:49:59.425133+00:00",
+      "frozen_at": "2026-05-01T04:58:30.527252+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    }
+  ],
+  "stories": [
+    {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "Beacon v1.3.11 PRD freeze anti-drift and machine-mirror reconciliation",
+      "priority": "medium",
+      "status": "accepted",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "authoritative-markdown",
+          "text": "当人类明确编辑 `docs/beacon/<version>/prd/*.md` 后，Beacon 能把当前 markdown 视为可重投影的 authoritative truth，而不是强制要求重新从 skeleton 生成。",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260501T101930Z-4a12",
+          "verified_by_run_id": "run-20260501T175831917995",
+          "accepted_at": "2026-05-01T10:01:44.304978+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "reconcile-sinks",
+          "text": "`prd reconcile` 或等价正式 surface 会同步更新至少三类 sink：`docs/beacon/<version>/prd/*.md`、`docs/beacon/<version>/.machine/prd/` 下的 canonical/compile 文件、以及 `.beacon/prd/*.json`。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260501T101930Z-4a12",
+          "verified_by_run_id": "run-20260501T181931954666",
+          "accepted_at": "2026-05-01T10:21:27.164737+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "deterministic-projection",
+          "text": "同一份 markdown 在未变化时重复 reconcile，生成的 `source_hash / projection_seq / sink_checksums` 结果必须稳定可解释。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260501T101930Z-4a12",
+          "verified_by_run_id": "run-20260501T181931954666",
+          "accepted_at": "2026-05-01T10:21:27.164737+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "no-manual-json-patch",
+          "text": "正常闭环下，操作者不需要手工 patch machine JSON 才能让 PRD 重回 audit-pass 状态。",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260501T101930Z-4a12",
+          "verified_by_run_id": "run-20260501T175831917995",
+          "accepted_at": "2026-05-01T10:01:44.304978+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "audit-legacy-and-machine",
+          "text": "`prd audit` 至少同时检查 `docs/beacon/<version>/prd/*.md`、`.beacon/prd/*.json`、`docs/beacon/<version>/.machine/prd/*.canonical.json`、`docs/beacon/<version>/.machine/prd/*.compile.json`。",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260501T101930Z-4a12",
+          "verified_by_run_id": "run-20260501T175831917995",
+          "accepted_at": "2026-05-01T10:01:44.304978+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "mismatch-localization",
+          "text": "当任一 sink 漂移时，audit 输出必须指出是哪一类 sink 失配，而不是只给出笼统的 drift 结论。",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260501T101930Z-4a12",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "contract-vs-mirror-split",
+          "text": "audit 输出必须能区分“markdown contract 无效”和“markdown contract 有效但 machine mirror stale”这两类问题。",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260501T101930Z-4a12",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "freeze-gate-usable",
+          "text": "audit 结果必须能直接被后续 freeze / gate / doctor verify-materials 消费，而不是只作为一次性调试信息。",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260501T101930Z-4a12",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
+        },
+        {
+          "id": "AC-009",
+          "kind": "ac",
+          "theme": "latest-transaction-pointer",
+          "text": "PRD transaction 面必须存在可确定解析的 latest pointer，能够指向当前 active transaction。",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260501T101930Z-4a12",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
+        },
+        {
+          "id": "AC-010",
+          "kind": "ac",
+          "theme": "supersedes-link",
+          "text": "新 transaction 生成后，系统能表达其与前一 transaction 的 supersedes 关系，而不是只靠时间排序猜测。",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260501T101930Z-4a12",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
+        },
+        {
+          "id": "AC-011",
+          "kind": "ac",
+          "theme": "revision-readable",
+          "text": "人类和 machine surface 都能判断某一 transaction 是 `pending / applied / superseded / stale` 中的哪一种。",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260501T101930Z-4a12",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
+        },
+        {
+          "id": "AC-012",
+          "kind": "ac",
+          "theme": "stale-history-safe",
+          "text": "历史 transaction 允许保留，但不得继续被 audit / doctor / release 错认成当前 truth。",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260501T101930Z-4a12",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
+        },
+        {
+          "id": "AC-013",
+          "kind": "ac",
+          "theme": "stale-mirror-detection",
+          "text": "change-loop 至少能识别 `markdown_changed_but_machine_stale` 这一类 requirement package 状态。",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260501T101930Z-4a12",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
+        },
+        {
+          "id": "AC-014",
+          "kind": "ac",
+          "theme": "change-route-clarity",
+          "text": "当识别到 stale mirror 时，系统推荐动作必须明确指向 `beacon-change` 内的 reconcile/repair 路径，而不是继续放行 implement / qa / release。",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260501T101930Z-4a12",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
+        },
+        {
+          "id": "AC-015",
+          "kind": "ac",
+          "theme": "fail-closed",
+          "text": "对于已识别的 stale mirror，`freeze`、`implement`、`qa`、`release` 必须 fail-closed，而不是带着旧 machine truth 继续前进。",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260501T101930Z-4a12",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
+        },
+        {
+          "id": "AC-016",
+          "kind": "ac",
+          "theme": "status-help-surface",
+          "text": "`status / help / doctor advise` 这类 support surface 必须能把 stale mirror 原因明确投影给操作者。",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260501T101930Z-4a12",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
+        },
+        {
+          "id": "AC-017",
+          "kind": "ac",
+          "theme": "reconcile-vs-repair",
+          "text": "系统明确区分正常 `reconcile` 与异常 `doctor sync-materials / repair-package` 的职责边界。",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260501T101930Z-4a12",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
+        },
+        {
+          "id": "AC-018",
+          "kind": "ac",
+          "theme": "doctor-fallback-only",
+          "text": "`doctor` 相关 repair surface 仅在 machine sink 缺失、损坏或历史状态不可信时作为 fallback 推荐，而不是 PRD revise 后的默认下一步。",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260501T101930Z-4a12",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
+        },
+        {
+          "id": "AC-019",
+          "kind": "ac",
+          "theme": "recovery-instructions",
+          "text": "当进入 repair fallback 时，输出必须说明触发原因、恢复步骤、以及恢复后如何重新回到 change/freeze 主链。",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260501T101930Z-4a12",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
+        },
+        {
+          "id": "AC-020",
+          "kind": "ac",
+          "theme": "post-repair-reentry",
+          "text": "repair 完成后，系统能重新回到可审计的 `validate -> audit -> freeze readiness` 路径，而不是停留在 repair-only 状态。",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260501T101930Z-4a12",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
+        },
+        {
+          "id": "AC-021",
+          "kind": "ac",
+          "theme": "general",
+          "text": "doctor fallback 可回主链",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260501T101930Z-4a12",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "prd:docs/beacon/v1.3.11/prd/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260501T101930Z-4a12",
+          "verified_by_run_id": null,
+          "accepted_at": "2026-05-01T10:21:27.164737+00:00",
+          "changed_in_revision": "R1"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — 当人类明确编辑 `docs/beacon/<version>/prd/*.md` 后，Beacon 能把当前 markdown 视为可重投影的 authoritative truth，而不是强制要求重新从 skeleton 生成。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260501T175831917995",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — `prd reconcile` 或等价正式 surface 会同步更新至少三类 sink：`docs/beacon/<version>/prd/*.md`、`docs/beacon/<version>/.machine/prd/` 下的 canonical/compile 文件、以及 `.beacon/prd/*.json`。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260501T175831917995",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — 同一份 markdown 在未变化时重复 reconcile，生成的 `source_hash / projection_seq / sink_checksums` 结果必须稳定可解释。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260501T175831917995",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — 正常闭环下，操作者不需要手工 patch machine JSON 才能让 PRD 重回 audit-pass 状态。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260501T175831917995",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — `prd audit` 至少同时检查 `docs/beacon/<version>/prd/*.md`、`.beacon/prd/*.json`、`docs/beacon/<version>/.machine/prd/*.canonical.json`、`docs/beacon/<version>/.machine/prd/*.compile.json`。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260501T175831917995",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — 当任一 sink 漂移时，audit 输出必须指出是哪一类 sink 失配，而不是只给出笼统的 drift 结论。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260501T175831917995",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — audit 输出必须能区分“markdown contract 无效”和“markdown contract 有效但 machine mirror stale”这两类问题。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260501T175831917995",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — audit 结果必须能直接被后续 freeze / gate / doctor verify-materials 消费，而不是只作为一次性调试信息。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260501T175831917995",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
+        },
+        {
+          "id": "TEST-009",
+          "kind": "test",
+          "text": "Verify AC-009 — PRD transaction 面必须存在可确定解析的 latest pointer，能够指向当前 active transaction。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260501T175831917995",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-009"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
+        },
+        {
+          "id": "TEST-010",
+          "kind": "test",
+          "text": "Verify AC-010 — 新 transaction 生成后，系统能表达其与前一 transaction 的 supersedes 关系，而不是只靠时间排序猜测。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260501T175831917995",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-010"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
+        },
+        {
+          "id": "TEST-011",
+          "kind": "test",
+          "text": "Verify AC-011 — 人类和 machine surface 都能判断某一 transaction 是 `pending / applied / superseded / stale` 中的哪一种。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260501T175831917995",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-011"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
+        },
+        {
+          "id": "TEST-012",
+          "kind": "test",
+          "text": "Verify AC-012 — 历史 transaction 允许保留，但不得继续被 audit / doctor / release 错认成当前 truth。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260501T175831917995",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-012"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
+        },
+        {
+          "id": "TEST-013",
+          "kind": "test",
+          "text": "Verify AC-013 — change-loop 至少能识别 `markdown_changed_but_machine_stale` 这一类 requirement package 状态。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260501T175831917995",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-013"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
+        },
+        {
+          "id": "TEST-014",
+          "kind": "test",
+          "text": "Verify AC-014 — 当识别到 stale mirror 时，系统推荐动作必须明确指向 `beacon-change` 内的 reconcile/repair 路径，而不是继续放行 implement / qa / release。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260501T175831917995",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-014"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
+        },
+        {
+          "id": "TEST-015",
+          "kind": "test",
+          "text": "Verify AC-015 — 对于已识别的 stale mirror，`freeze`、`implement`、`qa`、`release` 必须 fail-closed，而不是带着旧 machine truth 继续前进。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260501T175831917995",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-015"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
+        },
+        {
+          "id": "TEST-016",
+          "kind": "test",
+          "text": "Verify AC-016 — `status / help / doctor advise` 这类 support surface 必须能把 stale mirror 原因明确投影给操作者。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260501T175831917995",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-016"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
+        },
+        {
+          "id": "TEST-017",
+          "kind": "test",
+          "text": "Verify AC-017 — 系统明确区分正常 `reconcile` 与异常 `doctor sync-materials / repair-package` 的职责边界。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260501T175831917995",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-017"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
+        },
+        {
+          "id": "TEST-018",
+          "kind": "test",
+          "text": "Verify AC-018 — `doctor` 相关 repair surface 仅在 machine sink 缺失、损坏或历史状态不可信时作为 fallback 推荐，而不是 PRD revise 后的默认下一步。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260501T175831917995",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-018"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
+        },
+        {
+          "id": "TEST-019",
+          "kind": "test",
+          "text": "Verify AC-019 — 当进入 repair fallback 时，输出必须说明触发原因、恢复步骤、以及恢复后如何重新回到 change/freeze 主链。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260501T175831917995",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-019"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
+        },
+        {
+          "id": "TEST-020",
+          "kind": "test",
+          "text": "Verify AC-020 — repair 完成后，系统能重新回到可审计的 `validate -> audit -> freeze readiness` 路径，而不是停留在 repair-only 状态。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260501T175831917995",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-020"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
+        },
+        {
+          "id": "TEST-021",
+          "kind": "test",
+          "text": "Verify AC-021 — doctor fallback 可回主链",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260501T175831917995",
+          "accepted_at": null,
+          "changed_in_revision": "R1",
+          "covers": [
+            "AC-021"
+          ],
+          "story_id": "",
+          "source": "prd:docs/beacon/v1.3.11/prd/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
+        }
+      ],
+      "feature": "beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation",
+      "feature_slug": "beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation",
+      "version": "v1.3.11",
+      "last_changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/metadata/project-version-metadata.json",
+        ".beacon/metadata/project-version-metadata.md",
+        ".beacon/qa/status.json",
+        ".beacon/state/project-metadata/latest.json",
+        "beacon/commands/prd.py",
+        "beacon/utils/material_audit.py",
+        "beacon/utils/project_skills.py",
+        "docs/beacon/v1.3.10/.machine/execution/change-impact.json",
+        "docs/beacon/v1.3.10/.machine/execution/config.json",
+        "docs/beacon/v1.3.10/.machine/execution/delivery-manifest.json",
+        "docs/beacon/v1.3.10/.machine/execution/git-alignment.json",
+        "docs/beacon/v1.3.10/.machine/execution/source.json",
+        "tests/commands/test_prd.py",
+        "tests/test_v117_project_skill_orchestration.py",
+        "tests/test_v13010_requirement_package_gates.py"
+      ],
+      "verification_evidence": [
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        "docs/beacon/v1.3.11/.machine/qa/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.qa9-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation/ac-closure.json",
+        ".beacon/qa/features/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation/scorecard.json"
+      ],
+      "accepted_at": "2026-05-01T10:21:27.164737+00:00",
+      "accepted_by": "qa"
+    }
+  ]
+}

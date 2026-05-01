@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0",
+  "version": "v1.3.11",
+  "feature": "Beacon v1.3.11 PRD freeze anti-drift and machine-mirror reconciliation",
+  "feature_slug": "beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation",
+  "status": "reopened",
+  "summary": "formalized the PRD freeze anti-drift requirement gap exposed by stale machine mirrors after markdown-only revision",
+  "added": [
+    "Added PRD freeze anti-drift requirement line",
+    "Added machine-mirror reconciliation requirement line",
+    "Added traceability requirement for authoritative markdown to machine re-projection"
+  ],
+  "removed": [],
+  "fixed": [
+    "Clarified that `prd create` is create-time dual-write only",
+    "Clarified that `prd validate` does not update machine sinks",
+    "Clarified that `prd audit` must evolve beyond legacy `.beacon/prd` comparison",
+    "Clarified that transaction history needs a latest/supersedes interpretation"
+  ],
+  "traceability_refs": [
+    "docs/beacon/v1.3.11/change/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md",
+    "docs/beacon/v1.3.11/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+    "docs/beacon/v1.3.11/.machine/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.canonical.json",
+    "docs/beacon/v1.3.11/.machine/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.compile.json",
+    ".beacon/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json"
+  ]
+}

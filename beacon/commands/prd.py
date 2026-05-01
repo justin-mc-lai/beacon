@@ -58,6 +58,19 @@ def _slugify(value: str) -> str:
     return text.strip("-") or "untitled-prd"
 
 
+def _resolve_existing_prd_slug(project_root: Path, *, version: str, feature: str) -> str:
+    direct = str(feature or "").strip()
+    if direct:
+        direct_path = project_root / "docs" / "beacon" / version / "prd" / f"{direct}.md"
+        if direct_path.exists():
+            return direct
+    slug = _slugify(feature)
+    slug_path = project_root / "docs" / "beacon" / version / "prd" / f"{slug}.md"
+    if slug_path.exists():
+        return slug
+    return slug
+
+
 def _stable_hash(payload: object) -> str:
     if isinstance(payload, str):
         encoded = payload.encode("utf-8")
@@ -310,6 +323,32 @@ def _machine_prd_dir(project_root: Path, version: str) -> Path:
     return machine_root(project_root, version) / "prd"
 
 
+def _legacy_prd_path(project_root: Path, slug: str) -> Path:
+    return project_root / ".beacon" / "prd" / f"{slug}.json"
+
+
+def _legacy_prd_transaction_path(project_root: Path, slug: str) -> Path:
+    return project_root / ".beacon" / "transactions" / f"prd-{slug}.json"
+
+
+def _prd_transaction_dir(project_root: Path) -> Path:
+    return project_root / ".beacon" / "state" / "prd-transactions"
+
+
+def _latest_prd_transaction_path(project_root: Path, slug: str) -> Path:
+    return _prd_transaction_dir(project_root) / f"latest-{slug}.json"
+
+
+def _read_json_dict(path: Path) -> dict[str, object]:
+    if not path.exists():
+        return {}
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:  # noqa: BLE001
+        return {}
+    return payload if isinstance(payload, dict) else {}
+
+
 def _write_text_atomic(path: Path, content: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     temp = path.with_suffix(path.suffix + ".tmp")
@@ -335,6 +374,348 @@ def _write_outputs_transactional(outputs: dict[Path, str]) -> None:
             if path.exists():
                 path.unlink(missing_ok=True)
         raise
+
+
+def _project_metadata_context(project_root: Path, *, version: str) -> dict[str, object]:
+    metadata_path = metadata_machine_path(project_root)
+    return {
+        "metadata_ref": str(metadata_path.relative_to(project_root)) if metadata_path.exists() else "",
+        "resolved_metadata_view": resolve_project_metadata_view(project_root, version=version),
+    }
+
+
+def _persist_prd_projection(
+    *,
+    project_root: Path,
+    output_path: Path,
+    compile_path: Path,
+    canonical_path: Path,
+    feature: str,
+    slug: str,
+    version: str,
+    template: dict[str, str],
+    requested_mode: str,
+    effective_mode: str,
+    generator_mode: str,
+    fallback_reason: str,
+    capability_snapshot: dict[str, object],
+    model: str,
+    requested_diagrams: list[str],
+    requested_state_axes: list[str],
+    md_content: str,
+    contract: dict[str, object],
+    source_refs: list[str],
+    project_metadata_context: dict[str, object],
+) -> dict[str, object]:
+    canonical = {
+        "schema_version": "1.0",
+        "feature": feature,
+        "feature_slug": slug,
+        "version": version,
+        "track": template["track"],
+        "family": template["family"],
+        "label": template["label"],
+        **build_mode_contract(
+            requested_mode=requested_mode,
+            effective_mode=effective_mode,
+            fallback_reason=fallback_reason,
+            capability_snapshot=capability_snapshot,
+        ),
+        "model": model,
+        "diagram_truth_request": {
+            "diagram_types": requested_diagrams,
+            "state_axes": requested_state_axes,
+        },
+        "source_refs": source_refs,
+        "project_metadata_context": project_metadata_context,
+        "contract": contract,
+        "markdown": md_content,
+    }
+    source_hash = _stable_hash(canonical)
+    projection_seq = f"prd-{source_hash[:16]}"
+    transaction_id = f"tx-prd-{slug}-{projection_seq}"
+    latest_pointer_path = _latest_prd_transaction_path(project_root, slug)
+    previous_latest = _read_json_dict(latest_pointer_path)
+    previous_transaction_id = str(previous_latest.get("transaction_id") or "").strip()
+    previous_projection_seq = str(previous_latest.get("projection_seq") or "").strip()
+    previous_source_hash = str(previous_latest.get("source_hash") or "").strip()
+    supersedes_transaction_id = previous_transaction_id if previous_transaction_id and previous_transaction_id != transaction_id else ""
+    supersedes_projection_seq = previous_projection_seq if supersedes_transaction_id else ""
+    supersedes_source_hash = previous_source_hash if supersedes_transaction_id else ""
+
+    canonical["transaction"] = {
+        "transaction_id": transaction_id,
+        "source_hash": source_hash,
+        "projection_seq": projection_seq,
+        "committed_at": "",
+        "sink_checksums": {
+            "human": "missing",
+            "machine": "missing",
+        },
+        "status": "pending",
+        "supersedes_transaction_id": supersedes_transaction_id,
+        "supersedes_projection_seq": supersedes_projection_seq,
+        "supersedes_source_hash": supersedes_source_hash,
+    }
+
+    transaction_record = {
+        "schema_version": "1.0",
+        "transaction_id": transaction_id,
+        "feature_slug": slug,
+        "version": version,
+        "requested_mode": requested_mode,
+        "effective_mode": effective_mode,
+        "generator_mode": generator_mode,
+        "fallback_reason": fallback_reason,
+        "source_hash": source_hash,
+        "projection_seq": projection_seq,
+        "status": "failed_transaction",
+        "committed_at": "",
+        "sink_checksums": {
+            "human": "missing",
+            "machine": "missing",
+        },
+        "source_refs": source_refs,
+        "error": "",
+        "supersedes_transaction_id": supersedes_transaction_id,
+        "supersedes_projection_seq": supersedes_projection_seq,
+        "supersedes_source_hash": supersedes_source_hash,
+    }
+    tx_record_path = _prd_transaction_dir(project_root) / f"{transaction_id}.json"
+    tx_record_path.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        _write_outputs_transactional(
+            {
+                output_path: md_content,
+                canonical_path: json.dumps(canonical, ensure_ascii=False, indent=2),
+            }
+        )
+        sink_checksums = {
+            "human": _stable_hash(output_path.read_text(encoding="utf-8")),
+            "machine": _stable_hash(canonical_path.read_text(encoding="utf-8")),
+        }
+        committed_at = now_iso()
+        compile_payload = {
+            "schema_version": "1.0",
+            "feature": feature,
+            "feature_slug": slug,
+            "version": version,
+            "effective_mode": effective_mode,
+            "generator_mode": generator_mode,
+            "requested_mode": requested_mode,
+            "model": model,
+            "diagram_truth_request": {
+                "diagram_types": requested_diagrams,
+                "state_axes": requested_state_axes,
+            },
+            "fallback_reason": fallback_reason,
+            "capability_snapshot": capability_snapshot,
+            "source_refs": source_refs,
+            "project_metadata_context": project_metadata_context,
+            "constraint_hits": contract.get("semantic_hits", {}),
+            "missing_headings": contract.get("missing_headings", []),
+            "open_questions": contract.get("placeholder_hits", []),
+            "contract_ok": bool(contract.get("ok", False)),
+            "compile_hash": _stable_hash(md_content),
+            "source_hash": source_hash,
+            "projection_seq": projection_seq,
+            "transaction_id": transaction_id,
+            "committed_at": committed_at,
+            "sink_checksums": sink_checksums,
+            "status": "applied",
+            "supersedes_transaction_id": supersedes_transaction_id,
+            "supersedes_projection_seq": supersedes_projection_seq,
+        }
+        write_json(compile_path, compile_payload)
+        canonical["transaction"] = {
+            "transaction_id": transaction_id,
+            "source_hash": source_hash,
+            "projection_seq": projection_seq,
+            "committed_at": committed_at,
+            "sink_checksums": sink_checksums,
+            "status": "applied",
+            "supersedes_transaction_id": supersedes_transaction_id,
+            "supersedes_projection_seq": supersedes_projection_seq,
+            "supersedes_source_hash": supersedes_source_hash,
+        }
+        write_json(canonical_path, canonical)
+        transaction_record.update(
+            {
+                "status": "applied",
+                "committed_at": committed_at,
+                "sink_checksums": sink_checksums,
+            }
+        )
+    except Exception as exc:  # noqa: BLE001
+        transaction_record.update({"error": str(exc)})
+        write_json(tx_record_path, transaction_record)
+        raise
+
+    write_json(tx_record_path, transaction_record)
+    legacy_machine_path = _legacy_prd_path(project_root, slug)
+    legacy_machine_path.parent.mkdir(parents=True, exist_ok=True)
+    legacy_machine_payload = {
+        "metadata": {
+            "feature": feature,
+            "feature_slug": slug,
+            "version": version,
+        },
+        "content": md_content,
+        "markdown": md_content,
+        "semantic_payload": {
+            "track": template["track"],
+            "family": template["family"],
+            "label": template["label"],
+        },
+        "mode_contract": {
+            "compilation_mode": requested_mode,
+            "effective_mode": effective_mode,
+            "generator_mode": generator_mode,
+            "fallback_reason": fallback_reason,
+        },
+        "transaction": canonical["transaction"],
+    }
+    write_json(legacy_machine_path, legacy_machine_payload)
+    legacy_transaction_path = _legacy_prd_transaction_path(project_root, slug)
+    legacy_transaction_path.parent.mkdir(parents=True, exist_ok=True)
+    write_json(
+        legacy_transaction_path,
+        {
+            "canonical_envelope": canonical,
+            "sinks": [
+                {"path": str(output_path.relative_to(project_root)), "kind": "human"},
+                {"path": str(legacy_machine_path.relative_to(project_root)), "kind": "machine"},
+            ],
+            "latest_transaction_id": transaction_id,
+            "supersedes_transaction_id": supersedes_transaction_id,
+        },
+    )
+    latest_pointer = {
+        "schema_version": "1.0",
+        "feature": feature,
+        "feature_slug": slug,
+        "version": version,
+        "transaction_id": transaction_id,
+        "source_hash": source_hash,
+        "projection_seq": projection_seq,
+        "canonical_path": str(canonical_path.relative_to(project_root)),
+        "compile_path": str(compile_path.relative_to(project_root)),
+        "legacy_machine_path": str(legacy_machine_path.relative_to(project_root)),
+        "updated_at": str(canonical["transaction"].get("committed_at") or now_iso()),
+        "supersedes_transaction_id": supersedes_transaction_id,
+        "supersedes_projection_seq": supersedes_projection_seq,
+        "supersedes_source_hash": supersedes_source_hash,
+        "status": "applied",
+    }
+    write_json(latest_pointer_path, latest_pointer)
+    return {
+        "canonical": canonical,
+        "compile_path": compile_path,
+        "canonical_path": canonical_path,
+        "transaction_path": tx_record_path,
+        "legacy_machine_path": legacy_machine_path,
+        "legacy_transaction_path": legacy_transaction_path,
+        "latest_transaction_path": latest_pointer_path,
+        "transaction_id": transaction_id,
+        "projection_seq": projection_seq,
+        "source_hash": source_hash,
+    }
+
+
+def _build_prd_audit_payload(project_root: Path, *, version: str, feature: str) -> dict[str, object]:
+    slug = _resolve_existing_prd_slug(project_root, version=version, feature=feature)
+    prd_path = project_root / "docs" / "beacon" / version / "prd" / f"{slug}.md"
+    payload: dict[str, object] = {
+        "feature": feature,
+        "feature_slug": slug,
+        "version": version,
+        "prd_path": str(prd_path),
+        "exists": prd_path.exists(),
+        "checks": [],
+        "failure_codes": [],
+        "status": "missing",
+        "contract": {},
+    }
+    if not prd_path.exists():
+        payload["failure_codes"] = ["human_prd_missing"]
+        return payload
+    markdown = prd_path.read_text(encoding="utf-8")
+    contract = _validate_contract(markdown, require_no_placeholders=False)
+    payload["contract"] = contract
+    checks: list[dict[str, object]] = [
+        {
+            "name": "markdown_contract",
+            "status": "pass" if bool(contract.get("ok")) else "fail",
+            "details": {
+                "missing_headings": contract.get("missing_headings", []),
+                "placeholder_hits": contract.get("placeholder_hits", []),
+                "semantic_hits": contract.get("semantic_hits", {}),
+            },
+        }
+    ]
+    failure_codes: list[str] = []
+
+    def _append_check(name: str, ok: bool, **details: object) -> None:
+        checks.append({"name": name, "status": "pass" if ok else "fail", "details": details})
+        if not ok:
+            failure_codes.append(name)
+
+    legacy_path = _legacy_prd_path(project_root, slug)
+    legacy_payload = _read_json_dict(legacy_path)
+    legacy_markdown = str(legacy_payload.get("content") or legacy_payload.get("markdown") or "")
+    _append_check(
+        "legacy_machine_mirror_sync",
+        legacy_path.exists() and legacy_markdown.strip() == markdown.strip(),
+        path=str(legacy_path.relative_to(project_root)) if legacy_path.exists() else str(legacy_path),
+        exists=legacy_path.exists(),
+    )
+
+    canonical_path = _machine_prd_dir(project_root, version) / f"{slug}.canonical.json"
+    canonical_payload = _read_json_dict(canonical_path)
+    canonical_markdown = str(canonical_payload.get("markdown") or "")
+    _append_check(
+        "canonical_machine_mirror_sync",
+        canonical_path.exists() and canonical_markdown.strip() == markdown.strip(),
+        path=str(canonical_path.relative_to(project_root)) if canonical_path.exists() else str(canonical_path),
+        exists=canonical_path.exists(),
+    )
+
+    compile_path = _machine_prd_dir(project_root, version) / f"{slug}.compile.json"
+    compile_payload = _read_json_dict(compile_path)
+    compile_hash = str(compile_payload.get("compile_hash") or "").strip()
+    _append_check(
+        "compile_machine_mirror_sync",
+        compile_path.exists() and compile_hash == _stable_hash(markdown) and bool(compile_payload.get("contract_ok", False)) == bool(contract.get("ok", False)),
+        path=str(compile_path.relative_to(project_root)) if compile_path.exists() else str(compile_path),
+        exists=compile_path.exists(),
+        compile_hash=compile_hash,
+        expected_compile_hash=_stable_hash(markdown),
+        compile_contract_ok=bool(compile_payload.get("contract_ok", False)),
+        current_contract_ok=bool(contract.get("ok", False)),
+    )
+
+    latest_pointer_path = _latest_prd_transaction_path(project_root, slug)
+    latest_pointer = _read_json_dict(latest_pointer_path)
+    canonical_transaction = canonical_payload.get("transaction") if isinstance(canonical_payload.get("transaction"), dict) else {}
+    latest_tx_id = str(latest_pointer.get("transaction_id") or "").strip()
+    canonical_tx_id = str(canonical_transaction.get("transaction_id") or "").strip()
+    _append_check(
+        "latest_transaction_pointer_sync",
+        latest_pointer_path.exists()
+        and bool(latest_tx_id)
+        and latest_tx_id == canonical_tx_id
+        and str(latest_pointer.get("source_hash") or "").strip() == str(canonical_transaction.get("source_hash") or "").strip(),
+        path=str(latest_pointer_path.relative_to(project_root)) if latest_pointer_path.exists() else str(latest_pointer_path),
+        exists=latest_pointer_path.exists(),
+        latest_transaction_id=latest_tx_id,
+        canonical_transaction_id=canonical_tx_id,
+    )
+
+    overall_ok = bool(contract.get("ok")) and not failure_codes
+    payload["checks"] = checks
+    payload["failure_codes"] = failure_codes
+    payload["status"] = "pass" if overall_ok else ("contract_invalid" if not bool(contract.get("ok")) else "drift")
+    return payload
 
 
 def _existing_prd_names(project_root: Path, version: str, *, exclude_slug: str) -> list[str]:
@@ -925,172 +1306,33 @@ def create(
     compile_path = machine_dir / f"{slug}.compile.json"
     canonical_path = machine_dir / f"{slug}.canonical.json"
     source_refs = _source_refs(project_root, resolved_version, existing_prds)
-    metadata_path = metadata_machine_path(project_root)
-    project_metadata_context = {
-        "metadata_ref": str(metadata_path.relative_to(project_root)) if metadata_path.exists() else "",
-        "resolved_metadata_view": resolve_project_metadata_view(project_root, version=resolved_version),
-    }
-
-    canonical = {
-        "schema_version": "1.0",
-        "feature": feature,
-        "feature_slug": slug,
-        "version": resolved_version,
-        "track": template["track"],
-        "family": template["family"],
-        "label": template["label"],
-        **build_mode_contract(
+    project_metadata_context = _project_metadata_context(project_root, version=resolved_version)
+    try:
+        projection = _persist_prd_projection(
+            project_root=project_root,
+            output_path=output_path,
+            compile_path=compile_path,
+            canonical_path=canonical_path,
+            feature=feature,
+            slug=slug,
+            version=resolved_version,
+            template=template,
             requested_mode=requested_mode,
             effective_mode=effective_mode,
+            generator_mode=generator_mode,
             fallback_reason=fallback_reason,
             capability_snapshot=capability_snapshot,
-        ),
-        "model": model,
-        "diagram_truth_request": {
-            "diagram_types": requested_diagrams,
-            "state_axes": requested_state_axes,
-        },
-        "source_refs": source_refs,
-        "project_metadata_context": project_metadata_context,
-        "contract": contract,
-        "markdown": md_content,
-    }
-    source_hash = _stable_hash(canonical)
-    projection_seq = f"prd-{source_hash[:16]}"
-    transaction_id = f"tx-prd-{slug}-{projection_seq}"
-    canonical["transaction"] = {
-        "transaction_id": transaction_id,
-        "source_hash": source_hash,
-        "projection_seq": projection_seq,
-        "committed_at": "",
-        "sink_checksums": {
-            "human": "missing",
-            "machine": "missing",
-        },
-        "status": "pending",
-    }
-
-    transaction_record = {
-        "schema_version": "1.0",
-        "transaction_id": transaction_id,
-        "feature_slug": slug,
-        "version": resolved_version,
-        "requested_mode": requested_mode,
-        "effective_mode": effective_mode,
-        "generator_mode": generator_mode,
-        "fallback_reason": fallback_reason,
-        "source_hash": source_hash,
-        "projection_seq": projection_seq,
-        "status": "failed_transaction",
-        "committed_at": "",
-        "sink_checksums": {
-            "human": "missing",
-            "machine": "missing",
-        },
-        "source_refs": source_refs,
-        "error": "",
-    }
-    tx_record_path = project_root / ".beacon" / "state" / "prd-transactions" / f"{transaction_id}.json"
-    tx_record_path.parent.mkdir(parents=True, exist_ok=True)
-    try:
-        _write_outputs_transactional(
-            {
-                output_path: md_content,
-                canonical_path: json.dumps(canonical, ensure_ascii=False, indent=2),
-            }
-        )
-        sink_checksums = {
-            "human": _stable_hash(output_path.read_text(encoding="utf-8")),
-            "machine": _stable_hash(canonical_path.read_text(encoding="utf-8")),
-        }
-        compile_payload = {
-            "schema_version": "1.0",
-            "feature": feature,
-            "feature_slug": slug,
-            "version": resolved_version,
-            "effective_mode": effective_mode,
-            "generator_mode": generator_mode,
-            "requested_mode": requested_mode,
-            "model": model,
-            "diagram_truth_request": {
-                "diagram_types": requested_diagrams,
-                "state_axes": requested_state_axes,
-            },
-            "fallback_reason": fallback_reason,
-            "capability_snapshot": capability_snapshot,
-            "source_refs": source_refs,
-            "project_metadata_context": project_metadata_context,
-            "constraint_hits": contract.get("semantic_hits", {}),
-            "missing_headings": contract.get("missing_headings", []),
-            "open_questions": contract.get("placeholder_hits", []),
-            "contract_ok": bool(contract.get("ok", False)),
-            "compile_hash": _stable_hash(md_content),
-            "source_hash": source_hash,
-            "projection_seq": projection_seq,
-            "transaction_id": transaction_id,
-            "committed_at": now_iso(),
-            "sink_checksums": sink_checksums,
-            "status": "applied",
-        }
-        write_json(compile_path, compile_payload)
-        canonical["transaction"] = {
-            "transaction_id": transaction_id,
-            "source_hash": source_hash,
-            "projection_seq": projection_seq,
-            "committed_at": compile_payload["committed_at"],
-            "sink_checksums": sink_checksums,
-            "status": "applied",
-        }
-        write_json(canonical_path, canonical)
-        transaction_record.update(
-            {
-                "status": "applied",
-                "committed_at": compile_payload["committed_at"],
-                "sink_checksums": sink_checksums,
-            }
+            model=model,
+            requested_diagrams=requested_diagrams,
+            requested_state_axes=requested_state_axes,
+            md_content=md_content,
+            contract=contract,
+            source_refs=source_refs,
+            project_metadata_context=project_metadata_context,
         )
     except Exception as exc:  # noqa: BLE001
-        transaction_record.update({"error": str(exc)})
-        write_json(tx_record_path, transaction_record)
         typer.echo(f"PRD transaction failed: {exc}", err=True)
         raise typer.Exit(2)
-
-    write_json(tx_record_path, transaction_record)
-    legacy_machine_path = project_root / ".beacon" / "prd" / f"{slug}.json"
-    legacy_machine_path.parent.mkdir(parents=True, exist_ok=True)
-    legacy_machine_payload = {
-        "metadata": {
-            "feature": feature,
-            "feature_slug": slug,
-            "version": resolved_version,
-        },
-        "content": md_content,
-        "markdown": md_content,
-        "semantic_payload": {
-            "track": template["track"],
-            "family": template["family"],
-            "label": template["label"],
-        },
-        "mode_contract": {
-            "compilation_mode": requested_mode,
-            "effective_mode": effective_mode,
-            "generator_mode": generator_mode,
-            "fallback_reason": fallback_reason,
-        },
-    }
-    write_json(legacy_machine_path, legacy_machine_payload)
-    legacy_transaction_path = project_root / ".beacon" / "transactions" / f"prd-{slug}.json"
-    legacy_transaction_path.parent.mkdir(parents=True, exist_ok=True)
-    write_json(
-        legacy_transaction_path,
-        {
-            "canonical_envelope": canonical,
-            "sinks": [
-                {"path": str(output_path.relative_to(project_root)), "kind": "human"},
-                {"path": str(legacy_machine_path.relative_to(project_root)), "kind": "machine"},
-            ],
-        },
-    )
     if json_output:
         typer.echo(
             json.dumps(
@@ -1106,9 +1348,10 @@ def create(
                     "capability_snapshot": capability_snapshot,
                     "contract_ok": bool(contract.get("ok", False)),
                     "output_path": str(output_path),
-                    "compile_path": str(compile_path),
-                    "canonical_path": str(canonical_path),
-                    "transaction_path": str(tx_record_path),
+                    "compile_path": str(projection["compile_path"]),
+                    "canonical_path": str(projection["canonical_path"]),
+                    "transaction_path": str(projection["transaction_path"]),
+                    "latest_transaction_path": str(projection["latest_transaction_path"]),
                 },
                 ensure_ascii=False,
                 indent=2,
@@ -1116,6 +1359,127 @@ def create(
         )
         return
     typer.echo(f"✓ PRD created: {output_path}")
+
+
+@app.command("reconcile")
+def reconcile_prd(
+    feature: str = typer.Argument(..., help="Feature name"),
+    project: Optional[str] = typer.Option(None, "--project", "-p", "--project-root", help="Project root"),
+    version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON payload"),
+):
+    """Re-project the current human PRD markdown into machine mirrors."""
+    project_root = Path(project) if project else Path.cwd()
+    resolved_version = resolve_target_version(project_root, version)
+    slug = _resolve_existing_prd_slug(project_root, version=resolved_version, feature=feature)
+    prd_path = project_root / "docs" / "beacon" / resolved_version / "prd" / f"{slug}.md"
+    if not prd_path.exists():
+        typer.echo(f"PRD not found: {prd_path}", err=True)
+        raise typer.Exit(2)
+    md_content = prd_path.read_text(encoding="utf-8")
+    contract = _validate_contract(md_content, require_no_placeholders=False)
+    if not bool(contract.get("ok")):
+        typer.echo(
+            json.dumps(
+                {
+                    "status": "blocked",
+                    "reason_code": "contract_invalid",
+                    "feature": feature,
+                    "version": resolved_version,
+                    "missing_headings": contract.get("missing_headings", []),
+                    "semantic_hits": contract.get("semantic_hits", {}),
+                },
+                ensure_ascii=False,
+                indent=2,
+            )
+            if json_output
+            else f"Contract invalid: missing_headings={contract.get('missing_headings', [])} semantic_hits={contract.get('semantic_hits', {})}",
+            err=True,
+        )
+        raise typer.Exit(2)
+
+    machine_dir = _machine_prd_dir(project_root, resolved_version)
+    canonical_path = machine_dir / f"{slug}.canonical.json"
+    existing_prds = _existing_prd_names(project_root, resolved_version, exclude_slug=slug)
+    template = _classify_prd(feature, existing_prds=existing_prds)
+    requested_mode = "rule"
+    effective_mode = "rule"
+    generator_mode = "rule"
+    fallback_reason = ""
+    capability_snapshot = build_semantic_capability_snapshot("prd", disable_env="BEACON_PRD_DISABLE_LLM")
+    model = "beacon-prd-compiler"
+    requested_diagrams: list[str] = []
+    requested_state_axes: list[str] = []
+    feature_display = feature
+    existing_canonical = _read_json_dict(canonical_path)
+    if existing_canonical:
+        feature_display = str(existing_canonical.get("feature") or feature).strip() or feature
+        template = {
+            "track": str(existing_canonical.get("track") or template["track"]),
+            "family": str(existing_canonical.get("family") or template["family"]),
+            "label": str(existing_canonical.get("label") or template["label"]),
+        }
+        requested_mode = str(existing_canonical.get("requested_mode") or requested_mode)
+        effective_mode = str(existing_canonical.get("effective_mode") or effective_mode)
+        generator_mode = str(existing_canonical.get("generator_mode") or generator_mode)
+        fallback_reason = str(existing_canonical.get("fallback_reason") or fallback_reason)
+        capability_snapshot = existing_canonical.get("capability_snapshot") if isinstance(existing_canonical.get("capability_snapshot"), dict) else capability_snapshot
+        model = str(existing_canonical.get("model") or model)
+        diagram_truth_request = existing_canonical.get("diagram_truth_request") if isinstance(existing_canonical.get("diagram_truth_request"), dict) else {}
+        requested_diagrams = normalize_diagram_types(list(diagram_truth_request.get("diagram_types") or []))
+        requested_state_axes = normalize_state_axes(list(diagram_truth_request.get("state_axes") or []))
+
+    output_path = prd_path
+    compile_path = machine_dir / f"{slug}.compile.json"
+    source_refs = _source_refs(project_root, resolved_version, existing_prds)
+    project_metadata_context = _project_metadata_context(project_root, version=resolved_version)
+    try:
+        projection = _persist_prd_projection(
+            project_root=project_root,
+            output_path=output_path,
+            compile_path=compile_path,
+            canonical_path=canonical_path,
+            feature=feature_display,
+            slug=slug,
+            version=resolved_version,
+            template=template,
+            requested_mode=requested_mode,
+            effective_mode=effective_mode,
+            generator_mode=generator_mode,
+            fallback_reason=fallback_reason,
+            capability_snapshot=capability_snapshot,
+            model=model,
+            requested_diagrams=requested_diagrams,
+            requested_state_axes=requested_state_axes,
+            md_content=md_content,
+            contract=contract,
+            source_refs=source_refs,
+            project_metadata_context=project_metadata_context,
+        )
+    except Exception as exc:  # noqa: BLE001
+        typer.echo(f"PRD reconcile failed: {exc}", err=True)
+        raise typer.Exit(2)
+
+    if json_output:
+        typer.echo(
+            json.dumps(
+                {
+                    "status": "ok",
+                    "feature": feature_display,
+                    "feature_slug": slug,
+                    "version": resolved_version,
+                    "output_path": str(output_path),
+                    "compile_path": str(projection["compile_path"]),
+                    "canonical_path": str(projection["canonical_path"]),
+                    "transaction_path": str(projection["transaction_path"]),
+                    "latest_transaction_path": str(projection["latest_transaction_path"]),
+                },
+                ensure_ascii=False,
+                indent=2,
+            )
+        )
+        return
+    typer.echo(f"✓ PRD reconciled: {output_path}")
 
 
 @app.command("validate")
@@ -1127,7 +1491,7 @@ def validate_prd(
     """Validate PRD markdown against the public PRD contract."""
     project_root = Path(project) if project else Path.cwd()
     resolved_version = resolve_target_version(project_root, version)
-    slug = _slugify(feature)
+    slug = _resolve_existing_prd_slug(project_root, version=resolved_version, feature=feature)
     prd_path = project_root / "docs" / "beacon" / resolved_version / "prd" / f"{slug}.md"
     if not prd_path.exists():
         typer.echo(f"PRD not found: {prd_path}", err=True)
@@ -1145,20 +1509,22 @@ def audit_prd(
     project: Optional[str] = typer.Option(None, "--project", "-p", "--project-root", help="Project root"),
     version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
 ):
-    """Audit PRD markdown against the machine mirror to detect drift."""
+    """Audit PRD markdown against all machine mirrors to detect drift."""
     project_root = Path(project) if project else Path.cwd()
     resolved_version = resolve_target_version(project_root, version)
-    slug = _slugify(feature)
-    prd_path = project_root / "docs" / "beacon" / resolved_version / "prd" / f"{slug}.md"
-    machine_path = project_root / ".beacon" / "prd" / f"{slug}.json"
-    if not prd_path.exists() or not machine_path.exists():
-        typer.echo("PRD audit requires both markdown and machine JSON artifacts.", err=True)
+    payload = _build_prd_audit_payload(project_root, version=resolved_version, feature=feature)
+    if not bool(payload.get("exists")):
+        typer.echo(f"PRD not found: {payload.get('prd_path')}", err=True)
         raise typer.Exit(2)
-    markdown = prd_path.read_text(encoding="utf-8")
-    machine_payload = json.loads(machine_path.read_text(encoding="utf-8"))
-    machine_markdown = str(machine_payload.get("content") or machine_payload.get("markdown") or "").strip()
-    if markdown.strip() != machine_markdown:
-        typer.echo("Drift detected between markdown and machine PRD.", err=True)
+    if str(payload.get("status")) == "contract_invalid":
+        contract = payload.get("contract") if isinstance(payload.get("contract"), dict) else {}
+        typer.echo(
+            f"Contract invalid: missing_headings={contract.get('missing_headings', [])} semantic_hits={contract.get('semantic_hits', {})}",
+            err=True,
+        )
+        raise typer.Exit(2)
+    if str(payload.get("status")) != "pass":
+        typer.echo(f"Drift detected: {', '.join(str(item) for item in payload.get('failure_codes', []))}", err=True)
         raise typer.Exit(2)
     typer.echo("No drift detected")
 
