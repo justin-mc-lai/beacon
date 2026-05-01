@@ -7,11 +7,15 @@ import json
 import re
 
 from beacon.utils.artifact_paths import change_docs_file, change_file_output, machine_change_dir, release_checklist_file
+from beacon.utils.implementation_plan import load_implementation_plan_progress
 from beacon.utils.material_audit import build_requirement_package_gate
 from beacon.utils.memory import append_memory_entry
 from beacon.utils.project_metadata import metadata_machine_path, verify_project_metadata
 from beacon.utils.release_scorecard import build_release_scorecard
+from beacon.utils.revision_state import load_revision_state
 from beacon.utils.runtime_projection_store import runtime_projection_transaction_contract
+from beacon.utils.story_state import feature_slug
+from beacon.utils.technical_review_contract import load_technical_review_contract
 from beacon.utils.writeback import acceptance_projection_transaction_contract
 from beacon.utils.versioning import project_runtime_feature_enabled, resolve_runtime_version, resolve_target_version
 from beacon.utils.workflow_memory import append_lifecycle_event
@@ -211,6 +215,132 @@ def _feature_change_payloads(project_root: Path, version: str) -> list[dict]:
     return items
 
 
+def _normalize_string_list(values: object) -> list[str]:
+    if not isinstance(values, list):
+        return []
+    out: list[str] = []
+    for value in values:
+        text = str(value or "").strip()
+        if text and text not in out:
+            out.append(text)
+    return out
+
+
+def _feature_order_sort_key(item: dict) -> tuple[str, str, str, str]:
+    return (
+        str(item.get("frozen_at") or ""),
+        str(item.get("reviewed_at") or ""),
+        str(item.get("updated_at") or ""),
+        str(item.get("feature_slug") or ""),
+    )
+
+
+def _analyze_feature_implementation_order(project_root: Path, *, version: str, feature_payloads: list[dict]) -> dict:
+    if not feature_payloads:
+        return {
+            "status": "empty",
+            "feature_count": 0,
+            "ordered_feature_slugs": [],
+            "waves": [],
+        }
+
+    enriched: list[dict] = []
+    for payload in feature_payloads:
+        feature = str(payload.get("feature") or "").strip()
+        slug = str(payload.get("feature_slug") or "").strip()
+        if not slug:
+            continue
+        revision = load_revision_state(project_root, version=version, feature=feature or slug, create_if_missing=False)
+        contract = load_technical_review_contract(project_root, version=version, feature=feature or slug)
+        plan_progress = load_implementation_plan_progress(project_root, version=version, feature=feature or slug)
+        direct_services = (
+            _normalize_string_list(contract.get("direct_delivery_services"))
+            or _normalize_string_list(contract.get("service_directories"))
+            or _normalize_string_list(contract.get("writable_services"))
+        )
+        writable_services = _normalize_string_list(contract.get("writable_services")) or list(direct_services)
+        explicit_deps = _normalize_string_list(payload.get("depends_on_features"))
+        enriched.append(
+            {
+                "feature": feature or slug,
+                "feature_slug": slug,
+                "summary": str(payload.get("summary") or "").strip(),
+                "direct_delivery_services": direct_services,
+                "writable_services": writable_services,
+                "depends_on_features": explicit_deps,
+                "revision_id": str(revision.get("revision_id") or ""),
+                "frozen_at": str(revision.get("frozen_at") or ""),
+                "reviewed_at": str(contract.get("reviewed_at") or ""),
+                "updated_at": str(plan_progress.get("updated_at") or payload.get("updated_at") or ""),
+                "plan_status": str(plan_progress.get("status") or ""),
+            }
+        )
+
+    ordered_inputs = sorted(enriched, key=_feature_order_sort_key)
+    computed: dict[str, dict] = {}
+    ordered_slugs: list[str] = []
+    for item in ordered_inputs:
+        slug = str(item.get("feature_slug") or "")
+        explicit_deps = [dep for dep in _normalize_string_list(item.get("depends_on_features")) if dep in computed]
+        conflict_deps: list[str] = []
+        item_services = set(_normalize_string_list(item.get("writable_services")) or _normalize_string_list(item.get("direct_delivery_services")))
+        if not explicit_deps and item_services:
+            for prior_slug in reversed(ordered_slugs):
+                prior = computed.get(prior_slug) or {}
+                prior_services = set(
+                    _normalize_string_list(prior.get("writable_services")) or _normalize_string_list(prior.get("direct_delivery_services"))
+                )
+                if item_services.intersection(prior_services):
+                    conflict_deps = [prior_slug]
+                    break
+        deps = explicit_deps or conflict_deps
+        wave = 1
+        if deps:
+            wave = max(int((computed.get(dep) or {}).get("wave") or 1) for dep in deps) + 1
+        reason = "parallel_no_conflict"
+        if explicit_deps:
+            reason = "explicit_feature_dependency"
+        elif conflict_deps:
+            reason = "shared_delivery_service_conflict"
+        computed[slug] = {
+            **item,
+            "depends_on_features": deps,
+            "wave": wave,
+            "parallelizable": not deps,
+            "reason_code": reason,
+        }
+        ordered_slugs.append(slug)
+
+    waves_map: dict[int, list[dict]] = {}
+    for slug in ordered_slugs:
+        item = computed[slug]
+        waves_map.setdefault(int(item["wave"]), []).append(
+            {
+                "feature": item["feature"],
+                "feature_slug": slug,
+                "depends_on_features": item["depends_on_features"],
+                "direct_delivery_services": item["direct_delivery_services"],
+                "writable_services": item["writable_services"],
+                "parallelizable": item["parallelizable"],
+                "reason_code": item["reason_code"],
+            }
+        )
+    waves = [
+        {
+            "wave": wave,
+            "parallelizable": len(items) > 1 and all(bool(item.get("parallelizable")) for item in items),
+            "features": items,
+        }
+        for wave, items in sorted(waves_map.items())
+    ]
+    return {
+        "status": "analyzed",
+        "feature_count": len(ordered_slugs),
+        "ordered_feature_slugs": ordered_slugs,
+        "waves": waves,
+    }
+
+
 def _build_version_change_payload(project_root: Path, *, version: str) -> dict:
     feature_payloads = _feature_change_payloads(project_root, version)
     features = []
@@ -238,6 +368,11 @@ def _build_version_change_payload(project_root: Path, *, version: str) -> dict:
         )
         traceability_refs.append(str(change_file_output(project_root, version, f"{slug}.json").relative_to(project_root)))
         traceability_refs.append(str(change_docs_file(project_root, version, f"{slug}.md").relative_to(project_root)))
+    implementation_order = _analyze_feature_implementation_order(
+        project_root,
+        version=version,
+        feature_payloads=feature_payloads,
+    )
 
     return {
         "schema_version": "1.0",
@@ -245,6 +380,7 @@ def _build_version_change_payload(project_root: Path, *, version: str) -> dict:
         "status": "generated",
         "feature_count": len(features),
         "features": features,
+        "implementation_order": implementation_order,
         "added": _dedupe_strings(added),
         "removed": _dedupe_strings(removed),
         "fixed": _dedupe_strings(fixed),
@@ -296,6 +432,35 @@ def _render_version_change_markdown(payload: dict) -> str:
             slug = str(item.get("feature_slug") or "").strip()
             summary = str(item.get("summary") or "").strip()
             lines.append(f"- `{slug}`: {summary or 'No summary provided'}")
+    implementation_order = payload.get("implementation_order") if isinstance(payload.get("implementation_order"), dict) else {}
+    waves = implementation_order.get("waves") if isinstance(implementation_order.get("waves"), list) else []
+    lines.append("")
+    lines.append("## Implementation Order")
+    if not waves:
+        lines.append("- none")
+    else:
+        for wave in waves:
+            if not isinstance(wave, dict):
+                continue
+            wave_no = int(wave.get("wave") or 0)
+            parallel = bool(wave.get("parallelizable"))
+            lines.append(f"- wave {wave_no}: `{'parallel' if parallel else 'serial'}`")
+            for item in wave.get("features", []):
+                if not isinstance(item, dict):
+                    continue
+                slug = str(item.get("feature_slug") or "").strip()
+                deps = _normalize_string_list(item.get("depends_on_features"))
+                services = _normalize_string_list(item.get("writable_services")) or _normalize_string_list(item.get("direct_delivery_services"))
+                reason = str(item.get("reason_code") or "").strip()
+                suffix_parts: list[str] = []
+                if deps:
+                    suffix_parts.append(f"depends_on={', '.join(deps)}")
+                if services:
+                    suffix_parts.append(f"services={', '.join(services)}")
+                if reason:
+                    suffix_parts.append(f"reason={reason}")
+                suffix = f" ({'; '.join(suffix_parts)})" if suffix_parts else ""
+                lines.append(f"  - `{slug}`{suffix}")
 
     lines.extend(_section("Added", [str(x) for x in payload.get("added", [])]))
     lines.extend(_section("Removed / Reduced", [str(x) for x in payload.get("removed", [])]))
