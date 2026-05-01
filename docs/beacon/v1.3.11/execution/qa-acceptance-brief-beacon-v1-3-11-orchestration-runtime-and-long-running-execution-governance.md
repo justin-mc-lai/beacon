@@ -2,9 +2,9 @@
 
 - version: `v1.3.11`
 - feature: `beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance`
-- revision_id: `R1`
+- revision_id: `R2`
 - verdict: `passed`
-- accepted_at: `2026-05-01T10:01:33.045215+00:00`
+- accepted_at: `2026-05-01T10:43:52.726569+00:00`
 - accepted_by: `qa`
 
 ## Summary
@@ -29,7 +29,7 @@
 - `.beacon/qa/features/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance/scorecard.json`
 
 ## Verdict Summary
-- required_ac_count: `5`
+- required_ac_count: `3`
 - required_test_count: `0`
 - story_status: `implemented`
 - revision_delivery_status: `implemented`

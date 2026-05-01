@@ -26,17 +26,17 @@
 - `doctor verify-materials --strict`
 - `freeze / implement / qa / release` 对 stale mirror 的 fail-closed
 
-<!-- BEACON:TECHNICAL-DELTA-BLUEPRINT:START -->
+<!-- BEACON:TECHNICAL-DELTA-BLUEPRINT:beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance:START -->
 ## Technical Delta Blueprint
 
 - project_mode: `greenfield`
-- feature: `beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation`
+- feature: `beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance`
 - version: `v1.3.11`
 
 ### Source Refs
-- prd: `docs/beacon/v1.3.11/prd/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md`
-- user_story: `docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md`
-- test_case: `docs/beacon/v1.3.11/qa/test-cases/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md`
+- prd: `docs/beacon/v1.3.11/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md`
+- user_story: `docs/beacon/v1.3.11/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md`
+- test_case: `docs/beacon/v1.3.11/qa/test-cases/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md`
 
 ### Delivery Change Surface
 - none
@@ -62,17 +62,17 @@
 
 ### Implement Handoff
 - none
-<!-- BEACON:TECHNICAL-DELTA-BLUEPRINT:END -->
+<!-- BEACON:TECHNICAL-DELTA-BLUEPRINT:beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance:END -->
 
-<!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:START -->
+<!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance:START -->
 ## Implementation Delivery Baseline
 
-- baseline_id: `impl-delivery-baseline-v1.3.11-beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation-R1`
-- transaction_id: `tx-9cc1d572b20926f41`
-- source_hash: `sha256:f49e85f06cd897749e84088083b6c272a721e65a6674196c92303d31083149a1`
+- baseline_id: `impl-delivery-baseline-v1.3.11-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance-R2`
+- transaction_id: `tx-4502dadc120eedf14`
+- source_hash: `sha256:f7acadffa038bb23b595f6864c57adf4ebe2c2aae8324944cb808d6318110675`
 - projection_seq: `1`
 - version: `v1.3.11`
-- feature: `beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation`
+- feature: `beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance`
 - lifecycle_role: `pre-implement delivery blueprint projection`
 - projection_refresh_trigger: `implement plan against the active frozen revision`
 - branch_strategy: `single-branch`
@@ -92,4 +92,4 @@
 - canonical envelope is the only delivery baseline source.
 - deterministic implementation contract, git workflow contract, and implementation plan are projections.
 - gates must block if projection metadata or service/branch/worktree fields drift.
-<!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:END -->
+<!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance:END -->

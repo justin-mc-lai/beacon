@@ -224,6 +224,8 @@ Beacon 必须优先建立统一 run scheduler，再让这些 surface 接入。
 - Beacon 统一 `work item` 抽象
 - Beacon 统一 `run` 抽象
 - run scheduler 与最小并发/派发/取消/重试语义
+- 同版本多个 feature package 的 execution blueprint 共存与按 feature 投影
+- 版本内 feature implementation order / wave 分析
 - 每 run workspace isolation
 - worker runtime 生命周期记录
 - retry / reconciliation 机制
@@ -425,6 +427,48 @@ Beacon 必须明确阻断以下行为：
 - repair recommendation
 - escalation recommendation
 
+### FR-013 同版本多个 feature package 的 execution blueprint 投影必须可并存
+
+当同一版本下存在多个 feature package 时，Beacon 必须保证：
+
+- `execution/architecture-blueprint.md` 不再只能容纳单一 feature 的 implementation projection
+- blueprint 中的 managed projection 至少能按 `feature_slug` 独立投影与独立校验
+- `implement plan / implement run / release gate` 只校验当前 feature 对应的 projection block
+- 后续 feature 的 implementation baseline materialization 不得覆盖前一 feature 已存在的 projection block
+
+该能力的目标不是让 blueprint 升格为新的 truth source，而是让它成为：
+
+- 版本级 human-readable execution mirror
+- feature-aware projection host
+- 多 feature 并行/串行 delivery 的稳定观察面
+
+### FR-014 Beacon 必须提供版本内 feature implementation order 分析
+
+当同一版本下存在多个 feature package 时，Beacon 必须能够生成稳定的 implementation ordering 结果，用于指导：
+
+- 哪些 feature 可并行推进
+- 哪些 feature 必须串行推进
+- 哪些 feature 依赖前置 feature 完成后才能进入下一 wave
+
+该能力至少必须支持以下排序信号：
+
+- 显式 feature dependency（如 `depends_on_features`）
+- writable/direct delivery service 冲突
+- 当前 revision / technical review / implementation progress 的时间与状态信号
+
+排序结果至少必须表达：
+
+- `ordered_feature_slugs`
+- `waves`
+- 每个 feature 的 `depends_on_features`
+- `parallelizable`
+- `reason_code`
+
+并且至少必须投影到版本级：
+
+- change payload / change markdown
+- release-facing version planning surface
+
 ## 6. 数据 / 状态 / 集成
 
 ### 6.1 Truth 来源
@@ -514,10 +558,29 @@ runtime board 至少必须能让人类直接判断：
 - orchestration runtime 只做调度、状态、证据与桥接
 - runtime 不反向改写 requirement truth
 
+### AC-006 同版本多个 feature 的 blueprint 投影不会相互覆盖
+
+对于同一版本下至少两个 feature package，系统必须能证明：
+
+- `execution/architecture-blueprint.md` 中可同时存在两个以上 feature-aware projection block
+- 重新 materialize 某一 feature baseline 后，不会删除或覆盖其他 feature 的 projection block
+- `implement` 与 `release` 的 gate 只校验当前 feature 对应的 block，而不会误把其他 feature 的 block 当成 drift
+
+### AC-007 系统能自动给出版本内 feature 的推荐实现顺序
+
+对于同一版本下至少三个 feature package，系统必须能证明：
+
+- 至少能把“共享 writable/direct delivery service 的 feature”自动串行化
+- 至少能把“无服务冲突、无显式依赖的 feature”归入同一并行 wave
+- 输出中能明确表达 `depends_on_features / wave / reason_code`
+- 结果至少在版本级 change/release 观察面中可读，而不是只能藏在内部状态文件
+
 ## 9. 成功指标
 
 - 主指标：需要人工重新手工拼接长任务上下文的次数显著下降
 - 辅指标：对于 `team / ralph / real-project-validation`，run 级恢复与继续推进时间缩短
+- 版本级指标：同版本多 feature 交付时，不再因 blueprint projection 覆盖导致 implement/release gate 漂移
+- 排序指标：版本操作者无需手工维护 feature 串并行顺序表，即可获得可解释的 implementation wave 建议
 
 ## 10. 依赖与开放问题
 

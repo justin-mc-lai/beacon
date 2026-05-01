@@ -4,10 +4,12 @@
 
 - version: `v1.3.11`
 - feature: `beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance`
-- status: `prd_frozen`
+- status: `prd_revised_after_reopen`
 - upstream_prd: `docs/beacon/v1.3.11/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md`
+- current_revision: `R2`
+- source_revision: `R1`
 
-本故事线只覆盖 Beacon 在 `v1.3.11` 中的 orchestration runtime requirement line，不扩展成新的一级公开 stage，也不让 runtime 反向篡改 requirement truth。
+本故事线覆盖 Beacon 在 `v1.3.11` 中的 orchestration runtime requirement line，并补充同版本多 feature 共存与自动实现顺序分析。它不扩展成新的一级公开 stage，也不让 runtime 反向篡改 requirement truth。
 
 ## Story 1: 统一 work item 与 run 模型
 
@@ -61,17 +63,31 @@
 | AC-303 | validation-consumer | `real-project-validation` 支持 validation case -> work item -> per-run workspace -> retry/repair 的 runtime 接入路径。 |
 | AC-304 | no-fragmented-schedulers | `team / ralph / validation / implement / qa` 不再各自维护不可见的私有调度语义。 |
 
+## Story 5: 同版本多 feature 共存与自动实现顺序分析
+
+作为版本操作者，我希望同一版本下多个 feature package 可以共存而不互相覆盖，并且系统能自动给出推荐实现顺序，这样我不需要手工维护 blueprint 覆盖关系和 feature 串并行表。
+
+### Acceptance Criteria
+
+| AC ID | Theme | Description |
+| --- | --- | --- |
+| AC-401 | feature-aware-blueprint | `execution/architecture-blueprint.md` 的 managed projection 至少按 `feature_slug` 独立投影与独立校验，同版本多个 feature 不会互相覆盖。 |
+| AC-402 | feature-scoped-gate | `implement plan / implement run / release gate` 只校验当前 feature 对应的 blueprint projection block，不把其他 feature block 误判成 drift。 |
+| AC-403 | implementation-order-analysis | Beacon 能基于显式 feature dependency 与 writable/direct delivery service 冲突，自动生成 `ordered_feature_slugs / waves / depends_on_features / reason_code`。 |
+| AC-404 | version-level-order-surface | 版本级 change/release 面能把 implementation order 结果以人类可读方式投影出来，明确哪些 feature 可并行、哪些必须串行。 |
+
 ## Delivery Notes
 
 - 本故事线是 orchestration runtime 的版本级 requirement truth，不代表已经实现。
-- 下一阶段应基于本 story 补齐 test-case，并进入实现闭环。
+- `R2` 相比 `R1` 补充了 feature-aware blueprint projection 与 version-scoped implementation ordering。
+- 下一阶段应基于本 story 进入实现修订、delta QA 与 release recheck，而不是继续停留在“手工重投影 baseline”。
 
 ## Metadata
 
 | Field | Value |
 | --- | --- |
 | Priority | high |
-| Story Points | 13 |
-| Status | draft-frozen-prd-line |
+| Story Points | 16 |
+| Status | revised-after-reopen-R2 |
 | Created | 2026-05-01 |
-| Change Scope | orchestration-runtime / scheduler / runtime-board / delivery-bridge |
+| Change Scope | orchestration-runtime / scheduler / runtime-board / delivery-bridge / feature-aware-blueprint / implementation-ordering |

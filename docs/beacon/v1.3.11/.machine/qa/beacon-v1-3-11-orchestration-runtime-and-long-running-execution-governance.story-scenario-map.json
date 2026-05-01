@@ -3,7 +3,7 @@
   "feature": "beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance",
   "feature_slug": "beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance",
   "version": "v1.3.11",
-  "generated_at": "2026-05-01T04:59:09.640083+00:00",
+  "generated_at": "2026-05-01T10:39:40.601357+00:00",
   "expansion_profile": "pua-web",
   "scenario_depth": "standard",
   "families_required": [
@@ -39,8 +39,8 @@
         },
         {
           "scenario_id": "SC-002",
-          "source_tc_id": "TC-018",
-          "tc_id": "TC-018-PRIMARY",
+          "source_tc_id": "TC-024",
+          "tc_id": "TC-024-PRIMARY",
           "scenario_family": "primary",
           "qa_type": "interface",
           "browser_required": false,
@@ -73,8 +73,8 @@
         },
         {
           "scenario_id": "SC-004",
-          "source_tc_id": "TC-019",
-          "tc_id": "TC-019-PRIMARY",
+          "source_tc_id": "TC-025",
+          "tc_id": "TC-025-PRIMARY",
           "scenario_family": "primary",
           "qa_type": "contract",
           "browser_required": false,
@@ -107,8 +107,8 @@
         },
         {
           "scenario_id": "SC-006",
-          "source_tc_id": "TC-020",
-          "tc_id": "TC-020-PRIMARY",
+          "source_tc_id": "TC-026",
+          "tc_id": "TC-026-PRIMARY",
           "scenario_family": "primary",
           "qa_type": "integration",
           "browser_required": false,
@@ -141,8 +141,8 @@
         },
         {
           "scenario_id": "SC-008",
-          "source_tc_id": "TC-021",
-          "tc_id": "TC-021-PRIMARY",
+          "source_tc_id": "TC-027",
+          "tc_id": "TC-027-PRIMARY",
           "scenario_family": "primary",
           "qa_type": "functional",
           "browser_required": false,
@@ -164,8 +164,8 @@
       "scenarios": [
         {
           "scenario_id": "SC-009",
-          "source_tc_id": "TC-017",
-          "tc_id": "TC-017-PRIMARY",
+          "source_tc_id": "TC-021",
+          "tc_id": "TC-021-PRIMARY",
           "scenario_family": "primary",
           "qa_type": "unit",
           "browser_required": false,
@@ -177,19 +177,47 @@
       "ac_id": "AC-006",
       "theme": "workspace-isolation",
       "text": "每个 run 都有独立 workspace boundary，并且能够绑定 run_id、控制清理策略、阻断越界写入。",
-      "scenario_ids": [],
-      "scenario_families": [],
+      "scenario_ids": [
+        "SC-010"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
       "required_families": [],
-      "scenarios": []
+      "scenarios": [
+        {
+          "scenario_id": "SC-010",
+          "source_tc_id": "TC-022",
+          "tc_id": "TC-022-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "unit",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
     },
     {
       "ac_id": "AC-007",
       "theme": "retry-reconciliation",
       "text": "Beacon 显式支持 backoff retry、stale run detection、eligibility re-check、blocked -> repair -> resume、abandoned run reconciliation。",
-      "scenario_ids": [],
-      "scenario_families": [],
+      "scenario_ids": [
+        "SC-011"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
       "required_families": [],
-      "scenarios": []
+      "scenarios": [
+        {
+          "scenario_id": "SC-011",
+          "source_tc_id": "TC-023",
+          "tc_id": "TC-023-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "unit",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
     },
     {
       "ac_id": "AC-008",
@@ -274,8 +302,62 @@
     },
     {
       "ac_id": "AC-017",
+      "theme": "feature-aware-blueprint",
+      "text": "`execution/architecture-blueprint.md` 的 managed projection 至少按 `feature_slug` 独立投影与独立校验，同版本多个 feature 不会互相覆盖。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-018",
+      "theme": "feature-scoped-gate",
+      "text": "`implement plan / implement run / release gate` 只校验当前 feature 对应的 blueprint projection block，不把其他 feature block 误判成 drift。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-019",
+      "theme": "implementation-order-analysis",
+      "text": "Beacon 能基于显式 feature dependency 与 writable/direct delivery service 冲突，自动生成 `ordered_feature_slugs / waves / depends_on_features / reason_code`。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-020",
+      "theme": "version-level-order-surface",
+      "text": "版本级 change/release 面能把 implementation order 结果以人类可读方式投影出来，明确哪些 feature 可并行、哪些必须串行。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-021",
       "theme": "general",
       "text": "`implement / qa / release` 与 orchestration runtime 边界稳定",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-022",
+      "theme": "general",
+      "text": "同版本多个 feature 的 blueprint 投影不会相互覆盖",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-023",
+      "theme": "general",
+      "text": "系统能自动给出版本内 feature 的推荐实现顺序",
       "scenario_ids": [],
       "scenario_families": [],
       "required_families": [],
@@ -320,8 +402,8 @@
     },
     {
       "scenario_id": "SC-002",
-      "source_tc_id": "TC-018",
-      "tc_id": "TC-018-PRIMARY",
+      "source_tc_id": "TC-024",
+      "tc_id": "TC-024-PRIMARY",
       "ac_id": "AC-001",
       "qa_type": "interface",
       "layer": "api-curl",
@@ -344,7 +426,7 @@
       "command": "python3 -m pytest -q -k interface --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
       "assertion": "HTTP status and schema assertions pass",
       "priority": "P1",
-      "evidence_path": ".beacon/evidence/test-results/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance/{run_id}/TC-018-PRIMARY.json",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance/{run_id}/TC-024-PRIMARY.json",
       "required_files": [
         "command.txt",
         "stdout.log",
@@ -390,8 +472,8 @@
     },
     {
       "scenario_id": "SC-004",
-      "source_tc_id": "TC-019",
-      "tc_id": "TC-019-PRIMARY",
+      "source_tc_id": "TC-025",
+      "tc_id": "TC-025-PRIMARY",
       "ac_id": "AC-002",
       "qa_type": "contract",
       "layer": "contract",
@@ -414,7 +496,7 @@
       "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
       "assertion": "Provider/consumer contract assertions pass",
       "priority": "P1",
-      "evidence_path": ".beacon/evidence/test-results/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance/{run_id}/TC-019-PRIMARY.json",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance/{run_id}/TC-025-PRIMARY.json",
       "required_files": [
         "command.txt",
         "stdout.log",
@@ -460,8 +542,8 @@
     },
     {
       "scenario_id": "SC-006",
-      "source_tc_id": "TC-020",
-      "tc_id": "TC-020-PRIMARY",
+      "source_tc_id": "TC-026",
+      "tc_id": "TC-026-PRIMARY",
       "ac_id": "AC-003",
       "qa_type": "integration",
       "layer": "integration",
@@ -484,7 +566,7 @@
       "command": "python3 -m pytest -q -k integration --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
       "assertion": "Integration flow assertions pass",
       "priority": "P1",
-      "evidence_path": ".beacon/evidence/test-results/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance/{run_id}/TC-020-PRIMARY.json",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance/{run_id}/TC-026-PRIMARY.json",
       "required_files": [
         "command.txt",
         "stdout.log",
@@ -530,8 +612,8 @@
     },
     {
       "scenario_id": "SC-008",
-      "source_tc_id": "TC-021",
-      "tc_id": "TC-021-PRIMARY",
+      "source_tc_id": "TC-027",
+      "tc_id": "TC-027-PRIMARY",
       "ac_id": "AC-004",
       "qa_type": "functional",
       "layer": "ui",
@@ -554,7 +636,7 @@
       "command": "python3 -m pytest -q -m smoke --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
       "assertion": "Web UI assertions and key actions pass",
       "priority": "P1",
-      "evidence_path": ".beacon/evidence/test-results/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance/{run_id}/TC-021-PRIMARY.json",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance/{run_id}/TC-027-PRIMARY.json",
       "required_files": [
         "command.txt",
         "stdout.log",
@@ -565,8 +647,8 @@
     },
     {
       "scenario_id": "SC-009",
-      "source_tc_id": "TC-017",
-      "tc_id": "TC-017-PRIMARY",
+      "source_tc_id": "TC-021",
+      "tc_id": "TC-021-PRIMARY",
       "ac_id": "AC-005",
       "qa_type": "unit",
       "layer": "unit",
@@ -589,7 +671,77 @@
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
       "assertion": "All unit assertions pass",
       "priority": "P1",
-      "evidence_path": ".beacon/evidence/test-results/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance/{run_id}/TC-017-PRIMARY.json",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance/{run_id}/TC-021-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-010",
+      "source_tc_id": "TC-022",
+      "tc_id": "TC-022-PRIMARY",
+      "ac_id": "AC-006",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "primary",
+      "title": "AC-006 primary path :: All unit assertions pass",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance/{run_id}/TC-022-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-011",
+      "source_tc_id": "TC-023",
+      "tc_id": "TC-023-PRIMARY",
+      "ac_id": "AC-007",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "primary",
+      "title": "AC-007 primary path :: All unit assertions pass",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance/{run_id}/TC-023-PRIMARY.json",
       "required_files": [
         "command.txt",
         "stdout.log",

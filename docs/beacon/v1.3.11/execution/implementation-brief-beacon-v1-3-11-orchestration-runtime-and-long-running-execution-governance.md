@@ -2,33 +2,40 @@
 
 - feature: `beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance`
 - version: `v1.3.11`
-- run_id: `run-20260501T101910Z-52c5`
+- run_id: `run-20260501T104149Z-036d`
 - status: `completed`
 - runner: `native-single`
 - adapter_type: `native`
 - host_runtime: `codex`
 
 ## Changed Files
-- `.beacon/auto-test-status.json`
-- `.beacon/coverage-summary.json`
-- `.beacon/evidence-manifest.json`
-- `.beacon/evidence-signature-chain.json`
-- `.beacon/gate-report.json`
-- `.beacon/metadata/project-version-metadata.json`
-- `.beacon/metadata/project-version-metadata.md`
-- `.beacon/qa/status.json`
-- `.beacon/state/project-metadata/latest.json`
-- `beacon/commands/prd.py`
-- `beacon/utils/material_audit.py`
-- `beacon/utils/project_skills.py`
-- `docs/beacon/v1.3.10/.machine/execution/change-impact.json`
-- `docs/beacon/v1.3.10/.machine/execution/config.json`
-- `docs/beacon/v1.3.10/.machine/execution/delivery-manifest.json`
-- `docs/beacon/v1.3.10/.machine/execution/git-alignment.json`
-- `docs/beacon/v1.3.10/.machine/execution/source.json`
-- `tests/commands/test_prd.py`
-- `tests/test_v117_project_skill_orchestration.py`
-- `tests/test_v13010_requirement_package_gates.py`
+- `.beacon/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json`
+- `.beacon/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json`
+- `.beacon/state/prd-transactions/latest-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json`
+- `.beacon/transactions/prd-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json`
+- `docs/beacon/v1.3.11/.machine/execution/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.revision.json`
+- `docs/beacon/v1.3.11/.machine/execution/deterministic-implementation-contract-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json`
+- `docs/beacon/v1.3.11/.machine/execution/git-workflow-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json`
+- `docs/beacon/v1.3.11/.machine/execution/host-prompt-trace-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json`
+- `docs/beacon/v1.3.11/.machine/execution/implementation-delivery-baseline-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json`
+- `docs/beacon/v1.3.11/.machine/execution/implementation-plan-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json`
+- `docs/beacon/v1.3.11/.machine/execution/implementation-plan-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.progress.json`
+- `docs/beacon/v1.3.11/.machine/execution/requirement-clarity-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json`
+- `docs/beacon/v1.3.11/.machine/execution/revision-delta-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json`
+- `docs/beacon/v1.3.11/.machine/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.canonical.json`
+- `docs/beacon/v1.3.11/.machine/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.compile.json`
+- `docs/beacon/v1.3.11/.machine/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.ac-test-matrix.json`
+- `docs/beacon/v1.3.11/.machine/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.qa9-matrix.json`
+- `docs/beacon/v1.3.11/.machine/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.story-scenario-map.json`
+- `docs/beacon/v1.3.11/.machine/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json`
+- `docs/beacon/v1.3.11/execution/architecture-blueprint.md`
+- `docs/beacon/v1.3.11/execution/deterministic-implementation-contract-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md`
+- `docs/beacon/v1.3.11/execution/host-prompt-trace-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md`
+- `docs/beacon/v1.3.11/execution/implementation-plan-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md`
+- `docs/beacon/v1.3.11/execution/revision-delta-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md`
+- `docs/beacon/v1.3.11/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md`
+- `docs/beacon/v1.3.11/qa/test-cases/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md`
+- `docs/beacon/v1.3.11/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md`
 
 ## Verification
 - `passed`: beacon implement run --runner native-single
@@ -44,8 +51,8 @@
 - user_story: `docs/beacon/v1.3.11/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md`
 - test_case: `docs/beacon/v1.3.11/qa/test-cases/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md`
 - ac_matrix: `docs/beacon/v1.3.11/.machine/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.ac-test-matrix.json`
-- revision_id: `R1`
-- implemented_item_ids: `AC-001, AC-002, AC-003, AC-004, AC-005, AC-006, AC-007, AC-008, AC-009, AC-010, AC-011, AC-012, AC-013, AC-014, AC-015, AC-016, AC-017, TASK-001`
+- revision_id: `R2`
+- implemented_item_ids: `AC-001, AC-002, AC-003, AC-004, AC-005, AC-006, AC-007, AC-008, AC-009, AC-010, AC-011, AC-012, AC-013, AC-014, AC-015, AC-016, AC-017, AC-018, AC-019, AC-020, AC-021, AC-022, AC-023, TASK-001`
 - implemented_task_ids: ``
 - verified_task_ids: ``
 
@@ -59,7 +66,7 @@
 ## Revision Cleanup
 - cleanup_required: `False`
 - cleanup_review_completed: `True`
-- source_revision_id: ``
+- source_revision_id: `R1`
 - revision_delta_ref: `docs/beacon/v1.3.11/.machine/execution/revision-delta-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json`
 - removed_surfaces: ``
 - retained_legacy_surfaces: ``

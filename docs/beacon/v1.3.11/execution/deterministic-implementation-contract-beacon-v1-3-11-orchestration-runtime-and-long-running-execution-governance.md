@@ -2,7 +2,7 @@
 
 - feature: `beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance`
 - version: `v1.3.11`
-- revision_id: `R1`
+- revision_id: `R2`
 - review_status: `approved`
 - approved_by: `codex`
 - reviewed_at: `2026-05-01T09:57:57.727229+00:00`
