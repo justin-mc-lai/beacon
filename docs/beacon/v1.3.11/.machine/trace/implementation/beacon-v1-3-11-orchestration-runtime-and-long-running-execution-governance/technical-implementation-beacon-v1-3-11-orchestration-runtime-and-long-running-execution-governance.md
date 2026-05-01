@@ -3,14 +3,14 @@
 - feature: `beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance`
 - feature_slug: `beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance`
 - version: `v1.3.11`
-- run_id: `run-20260501T104149Z-036d`
+- run_id: `run-20260501T124310Z-4294`
 - runner: `native-single`
 - profile_id: ``
-- git_commit: `e322f46b5c694aa78ee3818ac3eb9cfb5ed7b78b`
+- git_commit: `d2302b5c0b0fffba6a25e6153e6f59b225e6b054`
 
 ## Traceability
-- request_path: `.beacon/implement/run-20260501T104149Z-036d/request.json`
-- result_path: `.beacon/implement/run-20260501T104149Z-036d/result.json`
+- request_path: `.beacon/implement/run-20260501T124310Z-4294/request.json`
+- result_path: `.beacon/implement/run-20260501T124310Z-4294/result.json`
 - stdout_path: ``
 - stderr_path: ``
 
@@ -35,10 +35,11 @@
 - `.beacon/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json`
 - `.beacon/state/prd-transactions/latest-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json`
 - `.beacon/transactions/prd-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json`
+- `beacon/commands/release.py`
+- `beacon/utils/delivery_baseline.py`
 - `docs/beacon/v1.3.11/.machine/execution/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.revision.json`
 - `docs/beacon/v1.3.11/.machine/execution/deterministic-implementation-contract-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json`
 - `docs/beacon/v1.3.11/.machine/execution/git-workflow-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json`
-- `docs/beacon/v1.3.11/.machine/execution/host-prompt-trace-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json`
 - `docs/beacon/v1.3.11/.machine/execution/implementation-delivery-baseline-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json`
 - `docs/beacon/v1.3.11/.machine/execution/implementation-plan-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json`
 - `docs/beacon/v1.3.11/.machine/execution/implementation-plan-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.progress.json`
@@ -50,21 +51,28 @@
 - `docs/beacon/v1.3.11/.machine/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.qa9-matrix.json`
 - `docs/beacon/v1.3.11/.machine/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.story-scenario-map.json`
 - `docs/beacon/v1.3.11/.machine/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json`
+- `docs/beacon/v1.3.11/change/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md`
+- `docs/beacon/v1.3.11/change/v1.3.11.md`
 - `docs/beacon/v1.3.11/execution/architecture-blueprint.md`
 - `docs/beacon/v1.3.11/execution/deterministic-implementation-contract-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md`
-- `docs/beacon/v1.3.11/execution/host-prompt-trace-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md`
 - `docs/beacon/v1.3.11/execution/implementation-plan-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md`
 - `docs/beacon/v1.3.11/execution/revision-delta-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md`
 - `docs/beacon/v1.3.11/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md`
 - `docs/beacon/v1.3.11/qa/test-cases/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md`
 - `docs/beacon/v1.3.11/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md`
+- `tests/test_regression_workflow_release_fixes.py`
+- `tests/test_v1312_feature_aware_architecture_blueprint.py`
 
 ## Modules Touched
 - `.beacon/prd`
 - `.beacon/qa`
 - `.beacon/state`
 - `.beacon/transactions`
+- `beacon/commands`
+- `beacon/utils`
 - `docs/beacon`
+- `tests/test_regression_workflow_release_fixes.py`
+- `tests/test_v1312_feature_aware_architecture_blueprint.py`
 
 ## Additions
 - none
@@ -105,7 +113,7 @@
 ## Revision Cleanup
 - cleanup_required: `False`
 - cleanup_review_completed: `True`
-- source_revision_id: `R1`
+- source_revision_id: `R2`
 - revision_delta_ref: `docs/beacon/v1.3.11/.machine/execution/revision-delta-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json`
 - removed_surfaces: ``
 - retained_legacy_surfaces: ``

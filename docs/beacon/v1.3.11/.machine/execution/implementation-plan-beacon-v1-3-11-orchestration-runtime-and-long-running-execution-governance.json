@@ -1,12 +1,12 @@
 {
   "schema_version": "1.0",
-  "plan_id": "plan-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance-r2",
+  "plan_id": "plan-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance-r3",
   "feature": "beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance",
   "feature_slug": "beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance",
   "version": "v1.3.11",
-  "revision_id": "R2",
-  "baseline_hash": "sha256:fe24402c6ec7e16ad21e8732b43c805bc57a174583faccf7e62fc72bd3232e9c",
-  "plan_hash": "sha256:ba468a98741653f77b0d4ef661b8b0a1b11eff928086d55f754dd2f5076aab7c",
+  "revision_id": "R3",
+  "baseline_hash": "sha256:7f9e98b94c2a078eacee0dbe62273188cbbf783af4734119bf8b624d9b7cf0db",
+  "plan_hash": "sha256:016f23a96efb9ce95b29cf2e354fe9cc84f1e95890fe4ba9f26db921a46cb2a6",
   "status": "completed",
   "source_refs": {
     "user_story": "docs/beacon/v1.3.11/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
@@ -58,7 +58,8 @@
         "ITASK-011",
         "ITASK-012",
         "ITASK-013",
-        "ITASK-014"
+        "ITASK-014",
+        "ITASK-015"
       ]
     }
   ],
@@ -144,7 +145,7 @@
         "- `run_status_axis`"
       ]
     },
-    "generated_at": "2026-05-01T10:41:23.748602+00:00",
+    "generated_at": "2026-05-01T12:43:01.952555+00:00",
     "feature": "beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance",
     "feature_slug": "beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance",
     "prd_ref": "docs/beacon/v1.3.11/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
@@ -177,8 +178,8 @@
       "mapped_test_ids": [
         "TC-001",
         "TC-002",
-        "TC-024",
-        "TC-025"
+        "TC-028",
+        "TC-029"
       ],
       "mapped_scenario_ids": [
         "SC-001",
@@ -189,8 +190,8 @@
       "mapped_qa_case_ids": [
         "TC-001",
         "TC-002",
-        "TC-024",
-        "TC-025"
+        "TC-028",
+        "TC-029"
       ],
       "depends_on": [],
       "direct_delivery_services": [
@@ -239,41 +240,36 @@
       ],
       "status": "completed",
       "evidence_refs": [
-        "run:run-20260501T104149Z-036d",
+        "run:run-20260501T124310Z-4294",
         ".beacon/qa/features/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance/matrix.qa9.json",
         ".beacon/qa/status.json",
         ".beacon/qa/current-session.json",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/contract/command.txt",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/contract/stdout.log",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/contract/stderr.log",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/contract/junit.xml",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/contract/result.json",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/exception/command.txt",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/exception/stdout.log",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/exception/stderr.log",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/exception/junit.xml",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/exception/result.json",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/integration/command.txt",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/integration/stdout.log",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/integration/stderr.log",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/integration/junit.xml",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/integration/result.json",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/regression/command.txt",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/regression/stdout.log",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/regression/stderr.log",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/regression/junit.xml",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/regression/result.json",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/smoke/command.txt",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/smoke/stdout.log",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/smoke/stderr.log",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/smoke/junit.xml",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/smoke/result.json",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/qa9/tc-execution-map.json",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/qa9/tc-results.json",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/summary.json",
+        ".beacon/evidence/auto-test/run-20260501T204429301913/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T204429301913/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T204429301913/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T204429301913/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T204429301913/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260501T204429301913/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T204429301913/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T204429301913/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T204429301913/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T204429301913/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260501T204429301913/interface/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T204429301913/interface/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T204429301913/interface/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T204429301913/interface/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T204429301913/interface/result.json",
+        ".beacon/evidence/auto-test/run-20260501T204429301913/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T204429301913/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T204429301913/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T204429301913/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T204429301913/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260501T204429301913/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260501T204429301913/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260501T204429301913/summary.json",
         ".beacon/flaky-history.json",
         ".beacon/evidence-signature-chain.json",
-        "verify:run-20260501T184150947492",
+        "verify:run-20260501T204429301913",
         ".beacon/auto-test-status.json",
         "docs/beacon/v1.3.11/.machine/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.qa9-matrix.json",
         ".beacon/coverage-summary.json",
@@ -285,10 +281,11 @@
         ".beacon/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         ".beacon/state/prd-transactions/latest-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         ".beacon/transactions/prd-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
+        "beacon/commands/release.py",
+        "beacon/utils/delivery_baseline.py",
         "docs/beacon/v1.3.11/.machine/execution/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.revision.json",
         "docs/beacon/v1.3.11/.machine/execution/deterministic-implementation-contract-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/git-workflow-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
-        "docs/beacon/v1.3.11/.machine/execution/host-prompt-trace-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/implementation-delivery-baseline-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/implementation-plan-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/implementation-plan-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.progress.json",
@@ -300,18 +297,21 @@
         "docs/beacon/v1.3.11/.machine/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.qa9-matrix.json",
         "docs/beacon/v1.3.11/.machine/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.story-scenario-map.json",
         "docs/beacon/v1.3.11/.machine/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
+        "docs/beacon/v1.3.11/change/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+        "docs/beacon/v1.3.11/change/v1.3.11.md",
         "docs/beacon/v1.3.11/execution/architecture-blueprint.md",
         "docs/beacon/v1.3.11/execution/deterministic-implementation-contract-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
-        "docs/beacon/v1.3.11/execution/host-prompt-trace-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/execution/implementation-plan-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/execution/revision-delta-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/qa/test-cases/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
-        "docs/beacon/v1.3.11/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md"
+        "docs/beacon/v1.3.11/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+        "tests/test_regression_workflow_release_fixes.py",
+        "tests/test_v1312_feature_aware_architecture_blueprint.py"
       ],
       "blocked_reason": "",
-      "started_at": "2026-05-01T10:41:49.937227+00:00",
-      "completed_at": "2026-05-01T10:41:49.990637+00:00",
+      "started_at": "2026-05-01T12:43:10.679391+00:00",
+      "completed_at": "2026-05-01T12:43:10.737000+00:00",
       "active_run_id": ""
     },
     {
@@ -326,7 +326,7 @@
       ],
       "mapped_test_ids": [
         "TC-004",
-        "TC-027"
+        "TC-031"
       ],
       "mapped_scenario_ids": [
         "SC-007",
@@ -334,7 +334,7 @@
       ],
       "mapped_qa_case_ids": [
         "TC-004",
-        "TC-027"
+        "TC-031"
       ],
       "depends_on": [
         "ITASK-001"
@@ -385,56 +385,18 @@
       ],
       "status": "completed",
       "evidence_refs": [
-        "run:run-20260501T104149Z-036d",
-        ".beacon/qa/features/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance/matrix.qa9.json",
-        ".beacon/qa/status.json",
-        ".beacon/qa/current-session.json",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/contract/command.txt",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/contract/stdout.log",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/contract/stderr.log",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/contract/junit.xml",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/contract/result.json",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/exception/command.txt",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/exception/stdout.log",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/exception/stderr.log",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/exception/junit.xml",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/exception/result.json",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/integration/command.txt",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/integration/stdout.log",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/integration/stderr.log",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/integration/junit.xml",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/integration/result.json",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/regression/command.txt",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/regression/stdout.log",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/regression/stderr.log",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/regression/junit.xml",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/regression/result.json",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/smoke/command.txt",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/smoke/stdout.log",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/smoke/stderr.log",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/smoke/junit.xml",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/smoke/result.json",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/qa9/tc-execution-map.json",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/qa9/tc-results.json",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/summary.json",
-        ".beacon/flaky-history.json",
-        ".beacon/evidence-signature-chain.json",
-        "verify:run-20260501T184150947492",
-        ".beacon/auto-test-status.json",
-        "docs/beacon/v1.3.11/.machine/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.qa9-matrix.json",
-        ".beacon/coverage-summary.json",
-        ".beacon/qa/features/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance/ac-closure.json",
-        ".beacon/qa/features/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance/scorecard.json"
+        "run:run-20260501T124310Z-4294"
       ],
       "changed_files": [
         ".beacon/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         ".beacon/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         ".beacon/state/prd-transactions/latest-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         ".beacon/transactions/prd-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
+        "beacon/commands/release.py",
+        "beacon/utils/delivery_baseline.py",
         "docs/beacon/v1.3.11/.machine/execution/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.revision.json",
         "docs/beacon/v1.3.11/.machine/execution/deterministic-implementation-contract-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/git-workflow-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
-        "docs/beacon/v1.3.11/.machine/execution/host-prompt-trace-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/implementation-delivery-baseline-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/implementation-plan-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/implementation-plan-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.progress.json",
@@ -446,18 +408,21 @@
         "docs/beacon/v1.3.11/.machine/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.qa9-matrix.json",
         "docs/beacon/v1.3.11/.machine/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.story-scenario-map.json",
         "docs/beacon/v1.3.11/.machine/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
+        "docs/beacon/v1.3.11/change/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+        "docs/beacon/v1.3.11/change/v1.3.11.md",
         "docs/beacon/v1.3.11/execution/architecture-blueprint.md",
         "docs/beacon/v1.3.11/execution/deterministic-implementation-contract-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
-        "docs/beacon/v1.3.11/execution/host-prompt-trace-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/execution/implementation-plan-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/execution/revision-delta-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/qa/test-cases/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
-        "docs/beacon/v1.3.11/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md"
+        "docs/beacon/v1.3.11/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+        "tests/test_regression_workflow_release_fixes.py",
+        "tests/test_v1312_feature_aware_architecture_blueprint.py"
       ],
       "blocked_reason": "",
-      "started_at": "2026-05-01T10:41:49.990656+00:00",
-      "completed_at": "2026-05-01T10:41:49.990659+00:00",
+      "started_at": "2026-05-01T12:43:10.737020+00:00",
+      "completed_at": "2026-05-01T12:43:10.737022+00:00",
       "active_run_id": ""
     },
     {
@@ -471,13 +436,13 @@
         "AC-005"
       ],
       "mapped_test_ids": [
-        "TC-021"
+        "TC-023"
       ],
       "mapped_scenario_ids": [
         "SC-009"
       ],
       "mapped_qa_case_ids": [
-        "TC-021"
+        "TC-023"
       ],
       "depends_on": [
         "ITASK-002"
@@ -528,17 +493,18 @@
       ],
       "status": "completed",
       "evidence_refs": [
-        "run:run-20260501T104149Z-036d"
+        "run:run-20260501T124310Z-4294"
       ],
       "changed_files": [
         ".beacon/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         ".beacon/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         ".beacon/state/prd-transactions/latest-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         ".beacon/transactions/prd-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
+        "beacon/commands/release.py",
+        "beacon/utils/delivery_baseline.py",
         "docs/beacon/v1.3.11/.machine/execution/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.revision.json",
         "docs/beacon/v1.3.11/.machine/execution/deterministic-implementation-contract-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/git-workflow-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
-        "docs/beacon/v1.3.11/.machine/execution/host-prompt-trace-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/implementation-delivery-baseline-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/implementation-plan-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/implementation-plan-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.progress.json",
@@ -550,18 +516,21 @@
         "docs/beacon/v1.3.11/.machine/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.qa9-matrix.json",
         "docs/beacon/v1.3.11/.machine/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.story-scenario-map.json",
         "docs/beacon/v1.3.11/.machine/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
+        "docs/beacon/v1.3.11/change/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+        "docs/beacon/v1.3.11/change/v1.3.11.md",
         "docs/beacon/v1.3.11/execution/architecture-blueprint.md",
         "docs/beacon/v1.3.11/execution/deterministic-implementation-contract-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
-        "docs/beacon/v1.3.11/execution/host-prompt-trace-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/execution/implementation-plan-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/execution/revision-delta-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/qa/test-cases/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
-        "docs/beacon/v1.3.11/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md"
+        "docs/beacon/v1.3.11/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+        "tests/test_regression_workflow_release_fixes.py",
+        "tests/test_v1312_feature_aware_architecture_blueprint.py"
       ],
       "blocked_reason": "",
-      "started_at": "2026-05-01T10:41:49.990669+00:00",
-      "completed_at": "2026-05-01T10:41:49.990671+00:00",
+      "started_at": "2026-05-01T12:43:10.737034+00:00",
+      "completed_at": "2026-05-01T12:43:10.737035+00:00",
       "active_run_id": ""
     },
     {
@@ -575,13 +544,13 @@
         "AC-006"
       ],
       "mapped_test_ids": [
-        "TC-022"
+        "TC-024"
       ],
       "mapped_scenario_ids": [
         "SC-010"
       ],
       "mapped_qa_case_ids": [
-        "TC-022"
+        "TC-024"
       ],
       "depends_on": [
         "ITASK-003"
@@ -632,17 +601,18 @@
       ],
       "status": "completed",
       "evidence_refs": [
-        "run:run-20260501T104149Z-036d"
+        "run:run-20260501T124310Z-4294"
       ],
       "changed_files": [
         ".beacon/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         ".beacon/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         ".beacon/state/prd-transactions/latest-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         ".beacon/transactions/prd-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
+        "beacon/commands/release.py",
+        "beacon/utils/delivery_baseline.py",
         "docs/beacon/v1.3.11/.machine/execution/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.revision.json",
         "docs/beacon/v1.3.11/.machine/execution/deterministic-implementation-contract-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/git-workflow-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
-        "docs/beacon/v1.3.11/.machine/execution/host-prompt-trace-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/implementation-delivery-baseline-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/implementation-plan-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/implementation-plan-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.progress.json",
@@ -654,18 +624,21 @@
         "docs/beacon/v1.3.11/.machine/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.qa9-matrix.json",
         "docs/beacon/v1.3.11/.machine/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.story-scenario-map.json",
         "docs/beacon/v1.3.11/.machine/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
+        "docs/beacon/v1.3.11/change/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+        "docs/beacon/v1.3.11/change/v1.3.11.md",
         "docs/beacon/v1.3.11/execution/architecture-blueprint.md",
         "docs/beacon/v1.3.11/execution/deterministic-implementation-contract-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
-        "docs/beacon/v1.3.11/execution/host-prompt-trace-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/execution/implementation-plan-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/execution/revision-delta-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/qa/test-cases/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
-        "docs/beacon/v1.3.11/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md"
+        "docs/beacon/v1.3.11/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+        "tests/test_regression_workflow_release_fixes.py",
+        "tests/test_v1312_feature_aware_architecture_blueprint.py"
       ],
       "blocked_reason": "",
-      "started_at": "2026-05-01T10:41:49.990681+00:00",
-      "completed_at": "2026-05-01T10:41:49.990682+00:00",
+      "started_at": "2026-05-01T12:43:10.737046+00:00",
+      "completed_at": "2026-05-01T12:43:10.737048+00:00",
       "active_run_id": ""
     },
     {
@@ -679,10 +652,14 @@
         "AC-009"
       ],
       "mapped_test_ids": [
-        "TEST-009"
+        "TC-027"
       ],
-      "mapped_scenario_ids": [],
-      "mapped_qa_case_ids": [],
+      "mapped_scenario_ids": [
+        "SC-013"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-027"
+      ],
       "depends_on": [
         "ITASK-004"
       ],
@@ -732,17 +709,18 @@
       ],
       "status": "completed",
       "evidence_refs": [
-        "run:run-20260501T104149Z-036d"
+        "run:run-20260501T124310Z-4294"
       ],
       "changed_files": [
         ".beacon/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         ".beacon/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         ".beacon/state/prd-transactions/latest-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         ".beacon/transactions/prd-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
+        "beacon/commands/release.py",
+        "beacon/utils/delivery_baseline.py",
         "docs/beacon/v1.3.11/.machine/execution/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.revision.json",
         "docs/beacon/v1.3.11/.machine/execution/deterministic-implementation-contract-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/git-workflow-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
-        "docs/beacon/v1.3.11/.machine/execution/host-prompt-trace-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/implementation-delivery-baseline-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/implementation-plan-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/implementation-plan-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.progress.json",
@@ -754,18 +732,21 @@
         "docs/beacon/v1.3.11/.machine/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.qa9-matrix.json",
         "docs/beacon/v1.3.11/.machine/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.story-scenario-map.json",
         "docs/beacon/v1.3.11/.machine/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
+        "docs/beacon/v1.3.11/change/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+        "docs/beacon/v1.3.11/change/v1.3.11.md",
         "docs/beacon/v1.3.11/execution/architecture-blueprint.md",
         "docs/beacon/v1.3.11/execution/deterministic-implementation-contract-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
-        "docs/beacon/v1.3.11/execution/host-prompt-trace-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/execution/implementation-plan-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/execution/revision-delta-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/qa/test-cases/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
-        "docs/beacon/v1.3.11/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md"
+        "docs/beacon/v1.3.11/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+        "tests/test_regression_workflow_release_fixes.py",
+        "tests/test_v1312_feature_aware_architecture_blueprint.py"
       ],
       "blocked_reason": "",
-      "started_at": "2026-05-01T10:41:49.990692+00:00",
-      "completed_at": "2026-05-01T10:41:49.990694+00:00",
+      "started_at": "2026-05-01T12:43:10.737061+00:00",
+      "completed_at": "2026-05-01T12:43:10.737062+00:00",
       "active_run_id": ""
     },
     {
@@ -779,13 +760,13 @@
         "AC-007"
       ],
       "mapped_test_ids": [
-        "TC-023"
+        "TC-025"
       ],
       "mapped_scenario_ids": [
         "SC-011"
       ],
       "mapped_qa_case_ids": [
-        "TC-023"
+        "TC-025"
       ],
       "depends_on": [
         "ITASK-005"
@@ -836,17 +817,18 @@
       ],
       "status": "completed",
       "evidence_refs": [
-        "run:run-20260501T104149Z-036d"
+        "run:run-20260501T124310Z-4294"
       ],
       "changed_files": [
         ".beacon/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         ".beacon/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         ".beacon/state/prd-transactions/latest-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         ".beacon/transactions/prd-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
+        "beacon/commands/release.py",
+        "beacon/utils/delivery_baseline.py",
         "docs/beacon/v1.3.11/.machine/execution/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.revision.json",
         "docs/beacon/v1.3.11/.machine/execution/deterministic-implementation-contract-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/git-workflow-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
-        "docs/beacon/v1.3.11/.machine/execution/host-prompt-trace-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/implementation-delivery-baseline-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/implementation-plan-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/implementation-plan-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.progress.json",
@@ -858,18 +840,21 @@
         "docs/beacon/v1.3.11/.machine/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.qa9-matrix.json",
         "docs/beacon/v1.3.11/.machine/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.story-scenario-map.json",
         "docs/beacon/v1.3.11/.machine/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
+        "docs/beacon/v1.3.11/change/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+        "docs/beacon/v1.3.11/change/v1.3.11.md",
         "docs/beacon/v1.3.11/execution/architecture-blueprint.md",
         "docs/beacon/v1.3.11/execution/deterministic-implementation-contract-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
-        "docs/beacon/v1.3.11/execution/host-prompt-trace-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/execution/implementation-plan-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/execution/revision-delta-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/qa/test-cases/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
-        "docs/beacon/v1.3.11/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md"
+        "docs/beacon/v1.3.11/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+        "tests/test_regression_workflow_release_fixes.py",
+        "tests/test_v1312_feature_aware_architecture_blueprint.py"
       ],
       "blocked_reason": "",
-      "started_at": "2026-05-01T10:41:49.990706+00:00",
-      "completed_at": "2026-05-01T10:41:49.990707+00:00",
+      "started_at": "2026-05-01T12:43:10.737075+00:00",
+      "completed_at": "2026-05-01T12:43:10.737076+00:00",
       "active_run_id": ""
     },
     {
@@ -936,17 +921,18 @@
       ],
       "status": "completed",
       "evidence_refs": [
-        "run:run-20260501T104149Z-036d"
+        "run:run-20260501T124310Z-4294"
       ],
       "changed_files": [
         ".beacon/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         ".beacon/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         ".beacon/state/prd-transactions/latest-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         ".beacon/transactions/prd-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
+        "beacon/commands/release.py",
+        "beacon/utils/delivery_baseline.py",
         "docs/beacon/v1.3.11/.machine/execution/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.revision.json",
         "docs/beacon/v1.3.11/.machine/execution/deterministic-implementation-contract-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/git-workflow-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
-        "docs/beacon/v1.3.11/.machine/execution/host-prompt-trace-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/implementation-delivery-baseline-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/implementation-plan-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/implementation-plan-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.progress.json",
@@ -958,18 +944,21 @@
         "docs/beacon/v1.3.11/.machine/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.qa9-matrix.json",
         "docs/beacon/v1.3.11/.machine/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.story-scenario-map.json",
         "docs/beacon/v1.3.11/.machine/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
+        "docs/beacon/v1.3.11/change/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+        "docs/beacon/v1.3.11/change/v1.3.11.md",
         "docs/beacon/v1.3.11/execution/architecture-blueprint.md",
         "docs/beacon/v1.3.11/execution/deterministic-implementation-contract-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
-        "docs/beacon/v1.3.11/execution/host-prompt-trace-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/execution/implementation-plan-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/execution/revision-delta-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/qa/test-cases/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
-        "docs/beacon/v1.3.11/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md"
+        "docs/beacon/v1.3.11/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+        "tests/test_regression_workflow_release_fixes.py",
+        "tests/test_v1312_feature_aware_architecture_blueprint.py"
       ],
       "blocked_reason": "",
-      "started_at": "2026-05-01T10:41:49.990720+00:00",
-      "completed_at": "2026-05-01T10:41:49.990722+00:00",
+      "started_at": "2026-05-01T12:43:10.737087+00:00",
+      "completed_at": "2026-05-01T12:43:10.737088+00:00",
       "active_run_id": ""
     },
     {
@@ -1036,17 +1025,18 @@
       ],
       "status": "completed",
       "evidence_refs": [
-        "run:run-20260501T104149Z-036d"
+        "run:run-20260501T124310Z-4294"
       ],
       "changed_files": [
         ".beacon/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         ".beacon/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         ".beacon/state/prd-transactions/latest-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         ".beacon/transactions/prd-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
+        "beacon/commands/release.py",
+        "beacon/utils/delivery_baseline.py",
         "docs/beacon/v1.3.11/.machine/execution/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.revision.json",
         "docs/beacon/v1.3.11/.machine/execution/deterministic-implementation-contract-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/git-workflow-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
-        "docs/beacon/v1.3.11/.machine/execution/host-prompt-trace-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/implementation-delivery-baseline-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/implementation-plan-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/implementation-plan-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.progress.json",
@@ -1058,18 +1048,21 @@
         "docs/beacon/v1.3.11/.machine/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.qa9-matrix.json",
         "docs/beacon/v1.3.11/.machine/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.story-scenario-map.json",
         "docs/beacon/v1.3.11/.machine/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
+        "docs/beacon/v1.3.11/change/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+        "docs/beacon/v1.3.11/change/v1.3.11.md",
         "docs/beacon/v1.3.11/execution/architecture-blueprint.md",
         "docs/beacon/v1.3.11/execution/deterministic-implementation-contract-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
-        "docs/beacon/v1.3.11/execution/host-prompt-trace-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/execution/implementation-plan-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/execution/revision-delta-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/qa/test-cases/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
-        "docs/beacon/v1.3.11/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md"
+        "docs/beacon/v1.3.11/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+        "tests/test_regression_workflow_release_fixes.py",
+        "tests/test_v1312_feature_aware_architecture_blueprint.py"
       ],
       "blocked_reason": "",
-      "started_at": "2026-05-01T10:41:49.990731+00:00",
-      "completed_at": "2026-05-01T10:41:49.990733+00:00",
+      "started_at": "2026-05-01T12:43:10.737099+00:00",
+      "completed_at": "2026-05-01T12:43:10.737100+00:00",
       "active_run_id": ""
     },
     {
@@ -1136,17 +1129,18 @@
       ],
       "status": "completed",
       "evidence_refs": [
-        "run:run-20260501T104149Z-036d"
+        "run:run-20260501T124310Z-4294"
       ],
       "changed_files": [
         ".beacon/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         ".beacon/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         ".beacon/state/prd-transactions/latest-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         ".beacon/transactions/prd-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
+        "beacon/commands/release.py",
+        "beacon/utils/delivery_baseline.py",
         "docs/beacon/v1.3.11/.machine/execution/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.revision.json",
         "docs/beacon/v1.3.11/.machine/execution/deterministic-implementation-contract-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/git-workflow-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
-        "docs/beacon/v1.3.11/.machine/execution/host-prompt-trace-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/implementation-delivery-baseline-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/implementation-plan-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/implementation-plan-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.progress.json",
@@ -1158,18 +1152,21 @@
         "docs/beacon/v1.3.11/.machine/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.qa9-matrix.json",
         "docs/beacon/v1.3.11/.machine/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.story-scenario-map.json",
         "docs/beacon/v1.3.11/.machine/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
+        "docs/beacon/v1.3.11/change/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+        "docs/beacon/v1.3.11/change/v1.3.11.md",
         "docs/beacon/v1.3.11/execution/architecture-blueprint.md",
         "docs/beacon/v1.3.11/execution/deterministic-implementation-contract-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
-        "docs/beacon/v1.3.11/execution/host-prompt-trace-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/execution/implementation-plan-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/execution/revision-delta-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/qa/test-cases/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
-        "docs/beacon/v1.3.11/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md"
+        "docs/beacon/v1.3.11/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+        "tests/test_regression_workflow_release_fixes.py",
+        "tests/test_v1312_feature_aware_architecture_blueprint.py"
       ],
       "blocked_reason": "",
-      "started_at": "2026-05-01T10:41:49.990742+00:00",
-      "completed_at": "2026-05-01T10:41:49.990744+00:00",
+      "started_at": "2026-05-01T12:43:10.737111+00:00",
+      "completed_at": "2026-05-01T12:43:10.737112+00:00",
       "active_run_id": ""
     },
     {
@@ -1236,17 +1233,18 @@
       ],
       "status": "completed",
       "evidence_refs": [
-        "run:run-20260501T104149Z-036d"
+        "run:run-20260501T124310Z-4294"
       ],
       "changed_files": [
         ".beacon/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         ".beacon/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         ".beacon/state/prd-transactions/latest-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         ".beacon/transactions/prd-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
+        "beacon/commands/release.py",
+        "beacon/utils/delivery_baseline.py",
         "docs/beacon/v1.3.11/.machine/execution/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.revision.json",
         "docs/beacon/v1.3.11/.machine/execution/deterministic-implementation-contract-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/git-workflow-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
-        "docs/beacon/v1.3.11/.machine/execution/host-prompt-trace-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/implementation-delivery-baseline-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/implementation-plan-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/implementation-plan-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.progress.json",
@@ -1258,18 +1256,21 @@
         "docs/beacon/v1.3.11/.machine/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.qa9-matrix.json",
         "docs/beacon/v1.3.11/.machine/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.story-scenario-map.json",
         "docs/beacon/v1.3.11/.machine/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
+        "docs/beacon/v1.3.11/change/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+        "docs/beacon/v1.3.11/change/v1.3.11.md",
         "docs/beacon/v1.3.11/execution/architecture-blueprint.md",
         "docs/beacon/v1.3.11/execution/deterministic-implementation-contract-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
-        "docs/beacon/v1.3.11/execution/host-prompt-trace-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/execution/implementation-plan-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/execution/revision-delta-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/qa/test-cases/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
-        "docs/beacon/v1.3.11/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md"
+        "docs/beacon/v1.3.11/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+        "tests/test_regression_workflow_release_fixes.py",
+        "tests/test_v1312_feature_aware_architecture_blueprint.py"
       ],
       "blocked_reason": "",
-      "started_at": "2026-05-01T10:41:49.990753+00:00",
-      "completed_at": "2026-05-01T10:41:49.990755+00:00",
+      "started_at": "2026-05-01T12:43:10.737122+00:00",
+      "completed_at": "2026-05-01T12:43:10.737124+00:00",
       "active_run_id": ""
     },
     {
@@ -1338,17 +1339,18 @@
       ],
       "status": "completed",
       "evidence_refs": [
-        "run:run-20260501T104149Z-036d"
+        "run:run-20260501T124310Z-4294"
       ],
       "changed_files": [
         ".beacon/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         ".beacon/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         ".beacon/state/prd-transactions/latest-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         ".beacon/transactions/prd-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
+        "beacon/commands/release.py",
+        "beacon/utils/delivery_baseline.py",
         "docs/beacon/v1.3.11/.machine/execution/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.revision.json",
         "docs/beacon/v1.3.11/.machine/execution/deterministic-implementation-contract-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/git-workflow-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
-        "docs/beacon/v1.3.11/.machine/execution/host-prompt-trace-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/implementation-delivery-baseline-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/implementation-plan-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/implementation-plan-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.progress.json",
@@ -1360,18 +1362,21 @@
         "docs/beacon/v1.3.11/.machine/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.qa9-matrix.json",
         "docs/beacon/v1.3.11/.machine/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.story-scenario-map.json",
         "docs/beacon/v1.3.11/.machine/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
+        "docs/beacon/v1.3.11/change/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+        "docs/beacon/v1.3.11/change/v1.3.11.md",
         "docs/beacon/v1.3.11/execution/architecture-blueprint.md",
         "docs/beacon/v1.3.11/execution/deterministic-implementation-contract-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
-        "docs/beacon/v1.3.11/execution/host-prompt-trace-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/execution/implementation-plan-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/execution/revision-delta-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/qa/test-cases/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
-        "docs/beacon/v1.3.11/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md"
+        "docs/beacon/v1.3.11/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+        "tests/test_regression_workflow_release_fixes.py",
+        "tests/test_v1312_feature_aware_architecture_blueprint.py"
       ],
       "blocked_reason": "",
-      "started_at": "2026-05-01T10:41:49.990764+00:00",
-      "completed_at": "2026-05-01T10:41:49.990766+00:00",
+      "started_at": "2026-05-01T12:43:10.737135+00:00",
+      "completed_at": "2026-05-01T12:43:10.737136+00:00",
       "active_run_id": ""
     },
     {
@@ -1382,19 +1387,23 @@
         "US-001"
       ],
       "mapped_ac_ids": [
-        "AC-003"
+        "AC-003",
+        "AC-008"
       ],
       "mapped_test_ids": [
         "TC-003",
-        "TC-026"
+        "TC-026",
+        "TC-030"
       ],
       "mapped_scenario_ids": [
         "SC-005",
-        "SC-006"
+        "SC-006",
+        "SC-012"
       ],
       "mapped_qa_case_ids": [
         "TC-003",
-        "TC-026"
+        "TC-026",
+        "TC-030"
       ],
       "depends_on": [
         "ITASK-011"
@@ -1445,41 +1454,36 @@
       ],
       "status": "completed",
       "evidence_refs": [
-        "run:run-20260501T104149Z-036d",
+        "run:run-20260501T124310Z-4294",
         ".beacon/qa/features/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance/matrix.qa9.json",
         ".beacon/qa/status.json",
         ".beacon/qa/current-session.json",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/contract/command.txt",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/contract/stdout.log",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/contract/stderr.log",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/contract/junit.xml",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/contract/result.json",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/exception/command.txt",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/exception/stdout.log",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/exception/stderr.log",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/exception/junit.xml",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/exception/result.json",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/integration/command.txt",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/integration/stdout.log",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/integration/stderr.log",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/integration/junit.xml",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/integration/result.json",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/regression/command.txt",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/regression/stdout.log",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/regression/stderr.log",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/regression/junit.xml",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/regression/result.json",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/smoke/command.txt",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/smoke/stdout.log",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/smoke/stderr.log",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/smoke/junit.xml",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/smoke/result.json",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/qa9/tc-execution-map.json",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/qa9/tc-results.json",
-        ".beacon/evidence/auto-test/run-20260501T184150947492/summary.json",
+        ".beacon/evidence/auto-test/run-20260501T204429301913/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T204429301913/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T204429301913/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T204429301913/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T204429301913/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260501T204429301913/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T204429301913/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T204429301913/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T204429301913/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T204429301913/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260501T204429301913/interface/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T204429301913/interface/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T204429301913/interface/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T204429301913/interface/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T204429301913/interface/result.json",
+        ".beacon/evidence/auto-test/run-20260501T204429301913/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260501T204429301913/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260501T204429301913/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260501T204429301913/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260501T204429301913/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260501T204429301913/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260501T204429301913/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260501T204429301913/summary.json",
         ".beacon/flaky-history.json",
         ".beacon/evidence-signature-chain.json",
-        "verify:run-20260501T184150947492",
+        "verify:run-20260501T204429301913",
         ".beacon/auto-test-status.json",
         "docs/beacon/v1.3.11/.machine/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.qa9-matrix.json",
         ".beacon/coverage-summary.json",
@@ -1491,10 +1495,11 @@
         ".beacon/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         ".beacon/state/prd-transactions/latest-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         ".beacon/transactions/prd-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
+        "beacon/commands/release.py",
+        "beacon/utils/delivery_baseline.py",
         "docs/beacon/v1.3.11/.machine/execution/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.revision.json",
         "docs/beacon/v1.3.11/.machine/execution/deterministic-implementation-contract-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/git-workflow-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
-        "docs/beacon/v1.3.11/.machine/execution/host-prompt-trace-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/implementation-delivery-baseline-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/implementation-plan-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/implementation-plan-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.progress.json",
@@ -1506,24 +1511,27 @@
         "docs/beacon/v1.3.11/.machine/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.qa9-matrix.json",
         "docs/beacon/v1.3.11/.machine/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.story-scenario-map.json",
         "docs/beacon/v1.3.11/.machine/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
+        "docs/beacon/v1.3.11/change/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+        "docs/beacon/v1.3.11/change/v1.3.11.md",
         "docs/beacon/v1.3.11/execution/architecture-blueprint.md",
         "docs/beacon/v1.3.11/execution/deterministic-implementation-contract-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
-        "docs/beacon/v1.3.11/execution/host-prompt-trace-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/execution/implementation-plan-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/execution/revision-delta-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/qa/test-cases/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
-        "docs/beacon/v1.3.11/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md"
+        "docs/beacon/v1.3.11/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+        "tests/test_regression_workflow_release_fixes.py",
+        "tests/test_v1312_feature_aware_architecture_blueprint.py"
       ],
       "blocked_reason": "",
-      "started_at": "2026-05-01T10:41:49.990775+00:00",
-      "completed_at": "2026-05-01T10:41:49.990777+00:00",
+      "started_at": "2026-05-01T12:43:10.737147+00:00",
+      "completed_at": "2026-05-01T12:43:10.737148+00:00",
       "active_run_id": ""
     },
     {
       "task_id": "ITASK-013",
       "title": "FR-013 同版本多个 feature package 的 execution blueprint 投影必须可并存",
-      "description": "当同一版本下存在多个 feature package 时，Beacon 必须保证： `execution/architecture-blueprint.md` 不再只能容纳单一 feature 的 implementation projection blueprint 中的 managed projection 至少能按 `feature_slug` 独立投影与独立校验 `implement plan / implement run / release gate` 只校验当前 feature 对应的 projection block 后续 feature 的 implementation baseline materialization 不得覆盖前一 feature 已存在的 projection block 该能力的目标不是让 blueprint 升格为新的 truth source，而是让它成为： 版本级 human-readable execution mirror feature-aware projection host 多 feature 并行/串行 delivery 的稳定观察面",
+      "description": "当同一版本下存在多个 feature package 时，Beacon 必须保证： `execution/architecture-blueprint.md` 不再只能容纳单一 feature 的 implementation projection 系统必须存在版本级 `implementation-delivery-host` 作为同版本多 feature baseline 的统一宿主视图 blueprint 中的 managed projection 至少能按 `feature_slug` 独立投影与独立校验 `implement plan / implement run / release gate` 只校验当前 feature 对应的 projection block 后续 feature 的 implementation baseline materialization 不得覆盖前一 feature 已存在的 projection block 该能力的目标不是让 blueprint 升格为新的 truth source，而是让它成为： 版本级 human-readable execution mirror feature-aware projection host version-level baseline host projection surface 多 feature 并行/串行 delivery 的稳定观察面",
       "mapped_story_ids": [
         "US-001"
       ],
@@ -1586,17 +1594,18 @@
       ],
       "status": "completed",
       "evidence_refs": [
-        "run:run-20260501T104149Z-036d"
+        "run:run-20260501T124310Z-4294"
       ],
       "changed_files": [
         ".beacon/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         ".beacon/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         ".beacon/state/prd-transactions/latest-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         ".beacon/transactions/prd-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
+        "beacon/commands/release.py",
+        "beacon/utils/delivery_baseline.py",
         "docs/beacon/v1.3.11/.machine/execution/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.revision.json",
         "docs/beacon/v1.3.11/.machine/execution/deterministic-implementation-contract-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/git-workflow-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
-        "docs/beacon/v1.3.11/.machine/execution/host-prompt-trace-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/implementation-delivery-baseline-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/implementation-plan-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/implementation-plan-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.progress.json",
@@ -1608,44 +1617,35 @@
         "docs/beacon/v1.3.11/.machine/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.qa9-matrix.json",
         "docs/beacon/v1.3.11/.machine/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.story-scenario-map.json",
         "docs/beacon/v1.3.11/.machine/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
+        "docs/beacon/v1.3.11/change/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+        "docs/beacon/v1.3.11/change/v1.3.11.md",
         "docs/beacon/v1.3.11/execution/architecture-blueprint.md",
         "docs/beacon/v1.3.11/execution/deterministic-implementation-contract-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
-        "docs/beacon/v1.3.11/execution/host-prompt-trace-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/execution/implementation-plan-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/execution/revision-delta-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/qa/test-cases/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
-        "docs/beacon/v1.3.11/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md"
+        "docs/beacon/v1.3.11/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+        "tests/test_regression_workflow_release_fixes.py",
+        "tests/test_v1312_feature_aware_architecture_blueprint.py"
       ],
       "blocked_reason": "",
-      "started_at": "2026-05-01T10:41:49.990787+00:00",
-      "completed_at": "2026-05-01T10:41:49.990788+00:00",
+      "started_at": "2026-05-01T12:43:10.737159+00:00",
+      "completed_at": "2026-05-01T12:43:10.737160+00:00",
       "active_run_id": ""
     },
     {
       "task_id": "ITASK-014",
       "title": "FR-014 Beacon 必须提供版本内 feature implementation order 分析",
-      "description": "当同一版本下存在多个 feature package 时，Beacon 必须能够生成稳定的 implementation ordering 结果，用于指导： 哪些 feature 可并行推进 哪些 feature 必须串行推进 哪些 feature 依赖前置 feature 完成后才能进入下一 wave 该能力至少必须支持以下排序信号： 显式 feature dependency（如 `depends_on_features`） writable/direct delivery service 冲突 当前 revision / technical review / implementation progress 的时间与状态信号 排序结果至少必须表达： `ordered_feature_slugs` `waves` 每个 feature 的 `depends_on_features` `parallelizable` `reason_code` 并且至少必须投影到版本级： change payload / change markdown release-facing version planning surface ## 6. 数据 / 状态 / 集成 ### 6.1 Truth 来源 本版本要求 orchestration runtime 只消费以下 truth 来源： `docs/beacon/<version>/prd/` `docs/beacon/<version>/user-story/` `docs/beacon/<version>/qa/test-cases/` `docs/beacon/<version>/prototype/` `docs/beacon/<version>/.machine/` `.beacon/metadata/` ### 6.2 Runtime 状态层 建议的最小 runtime 状态层至少包括： `.beacon/runs/` `.beacon/state/orchestration/` `.beacon/runtime/board/` 其中至少应能投影： work item 列表 run 状态 workspace 引用 retry 队列 handoff / escalation 状态 ### 6.3 兼容与集成 本版本允许 orchestration runtime 先只依赖 Beacon 现有本地状态与宿主运行态。 SQLite、PocketBase、外部 tracker adapter 可以作为兼容层或后续扩展位，但不应成为本版本必须交付的唯一路径。 ## 7. 风险与缓解 | 风险 | 影响 | 缓解 | |------|------|------| | 执行层范围膨胀成新平台 | 高 | 明确只做最小 orchestration runtime，不做多租户平台 | | 调度层反向污染 truth | 高 | 把 runtime 层写权限限制在 `.beacon/state` 与 run artifacts，不直接写 requirement docs | | `team / ralph / validation` 各自继续造轮子 | 中 | 先冻结统一 work item / run / scheduler 契约，再让各 surface 接入 | | board 成为 machine noise 展示墙 | 中 | 以 next action / blocked / retry / human intervention 为主，不直接暴露内部噪声 | | 多 run 并发导致 workspace 污染 | 高 | 强制 run 级 workspace isolation 与路径安全 | ## 8. 验收标准 ### AC-001 Beacon 能统一注册并派发至少三类长任务 至少以下三类 work item 必须能用统一模型注册并进入 run scheduler： `team_task` `ralph_step` `real_project_validation_case` ### AC-002 每个 run 都有独立 workspace 与状态记录 对于同一版本下并发或串行的多个 run，系统必须能证明： workspace 不混用 run 状态独立 证据引用独立 ### AC-003 失败任务存在明确 retry / repair 语义 对于至少一条 `real-project-validation` 或 `qa repair` run，系统必须能证明： 失败后不会直接静默丢失 可进入 `retry_waiting` 或 `blocked` 有明确恢复动作或人工介入语义 ### AC-004 runtime board 能直接回答“现在发生了什么” runtime board 至少必须能让人类直接判断： 当前有哪些 run 在跑 哪些 run 卡住了 哪些在重试 哪些需要人工介入 下一步该做什么 ### AC-005 `implement / qa / release` 与 orchestration runtime 边界稳定 系统必须证明： `implement / qa / release` 仍是唯一正式闭环入口 orchestration runtime 只做调度、状态、证据与桥接 runtime 不反向改写 requirement truth ### AC-006 同版本多个 feature 的 blueprint 投影不会相互覆盖 对于同一版本下至少两个 feature package，系统必须能证明： `execution/architecture-blueprint.md` 中可同时存在两个以上 feature-aware projection block 重新 materialize 某一 feature baseline 后，不会删除或覆盖其他 feature 的 projection block `implement` 与 `release` 的 gate 只校验当前 feature 对应的 block，而不会误把其他 feature 的 block 当成 drift ### AC-007 系统能自动给出版本内 feature 的推荐实现顺序 对于同一版本下至少三个 feature package，系统必须能证明： 至少能把“共享 writable/direct delivery service 的 feature”自动串行化 至少能把“无服务冲突、无显式依赖的 feature”归入同一并行 wave 输出中能明确表达 `depends_on_features / wave / reason_code` 结果至少在版本级 change/release 观察面中可读，而不是只能藏在内部状态文件 ## 9. 成功指标 主指标：需要人工重新手工拼接长任务上下文的次数显著下降 辅指标：对于 `team / ralph / real-project-validation`，run 级恢复与继续推进时间缩短 版本级指标：同版本多 feature 交付时，不再因 blueprint projection 覆盖导致 implement/release gate 漂移 排序指标：版本操作者无需手工维护 feature 串并行顺序表，即可获得可解释的 implementation wave 建议 ## 10. 依赖与开放问题 需要后续在 `user-story` 阶段明确 `work item` 与 `run` 的最小字段集合 需要后续决定 runtime board 是扩展 `status --board` 还是独立 support surface 需要后续决定 remote worker / ssh worker 是否进入 `v1.3.11` 主线还是保留为扩展位 需要后续决定 `implement / qa / release` 哪些子路径优先接入 orchestration runtime ## 11. Diagram Truth Layer ### 11.1 Diagram Types `branch-flow` `state-machine` `decision-priority` ### 11.2 State Axes `runtime_item_axis` `team_task` `ralph_step` `real_project_validation_case` `implement_delivery` `qa_repair` `release_closure` `run_status_axis` `queued` `running` `retry_waiting` `blocked` `handoff_required` `completed` `cancelled` `workspace_axis` `isolated_workspace` `shared_workspace_blocked` `recovery_axis` `retry_path_explicit` `repair_resume_explicit` `human_intervention_explicit` `delivery_bridge_axis` `truth_read_only` `runtime_bridge_only` `release_gate_preserved` ### 11.3 Propagation Contract Diagram truth must stay explicit through freeze readiness, implementation planning, and QA coverage. State axes must not be silently compressed into one implicit status field. --- **Created**: 2026-05-01 **Version**: v1.3.11 **Status**: draft **Memory Context**: Symphony execution-layer research + Beacon v1.3.10 release closure",
+      "description": "当同一版本下存在多个 feature package 时，Beacon 必须能够生成稳定的 implementation ordering 结果，用于指导： 哪些 feature 可并行推进 哪些 feature 必须串行推进 哪些 feature 依赖前置 feature 完成后才能进入下一 wave 该能力至少必须支持以下排序信号： 显式 feature dependency（如 `depends_on_features`） writable/direct delivery service 冲突 版本级 baseline host 中已登记的 `target_branch / writable_services / baseline_ref` 当前 revision / technical review / implementation progress 的时间与状态信号 排序结果至少必须表达： `ordered_feature_slugs` `waves` 每个 feature 的 `depends_on_features` `parallelizable` `reason_code` 并且至少必须投影到版本级： change payload / change markdown release-facing version planning surface",
       "mapped_story_ids": [
         "US-001"
       ],
       "mapped_ac_ids": [
-        "AC-019",
-        "AC-008",
-        "AC-016",
-        "AC-020",
-        "AC-021",
-        "AC-022",
-        "AC-023"
+        "AC-019"
       ],
       "mapped_test_ids": [
-        "TEST-019",
-        "TEST-008",
-        "TEST-016",
-        "TEST-020",
-        "TEST-021",
-        "TEST-022",
-        "TEST-023"
+        "TEST-019"
       ],
       "mapped_scenario_ids": [],
       "mapped_qa_case_ids": [],
@@ -1698,17 +1698,18 @@
       ],
       "status": "completed",
       "evidence_refs": [
-        "run:run-20260501T104149Z-036d"
+        "run:run-20260501T124310Z-4294"
       ],
       "changed_files": [
         ".beacon/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         ".beacon/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         ".beacon/state/prd-transactions/latest-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         ".beacon/transactions/prd-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
+        "beacon/commands/release.py",
+        "beacon/utils/delivery_baseline.py",
         "docs/beacon/v1.3.11/.machine/execution/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.revision.json",
         "docs/beacon/v1.3.11/.machine/execution/deterministic-implementation-contract-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/git-workflow-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
-        "docs/beacon/v1.3.11/.machine/execution/host-prompt-trace-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/implementation-delivery-baseline-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/implementation-plan-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
         "docs/beacon/v1.3.11/.machine/execution/implementation-plan-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.progress.json",
@@ -1720,18 +1721,141 @@
         "docs/beacon/v1.3.11/.machine/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.qa9-matrix.json",
         "docs/beacon/v1.3.11/.machine/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.story-scenario-map.json",
         "docs/beacon/v1.3.11/.machine/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
+        "docs/beacon/v1.3.11/change/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+        "docs/beacon/v1.3.11/change/v1.3.11.md",
         "docs/beacon/v1.3.11/execution/architecture-blueprint.md",
         "docs/beacon/v1.3.11/execution/deterministic-implementation-contract-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
-        "docs/beacon/v1.3.11/execution/host-prompt-trace-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/execution/implementation-plan-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/execution/revision-delta-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
         "docs/beacon/v1.3.11/qa/test-cases/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
-        "docs/beacon/v1.3.11/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md"
+        "docs/beacon/v1.3.11/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+        "tests/test_regression_workflow_release_fixes.py",
+        "tests/test_v1312_feature_aware_architecture_blueprint.py"
       ],
       "blocked_reason": "",
-      "started_at": "2026-05-01T10:41:49.990799+00:00",
-      "completed_at": "2026-05-01T10:41:49.990800+00:00",
+      "started_at": "2026-05-01T12:43:10.737171+00:00",
+      "completed_at": "2026-05-01T12:43:10.737172+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-015",
+      "title": "FR-015 Beacon 必须维护版本级 implementation delivery host",
+      "description": "当同一版本下存在多个 feature package 时，Beacon 必须维护稳定的版本级 baseline host，至少用于： 注册该版本已存在的 feature baseline 给 `implement / release / change` 提供统一读取面 作为同版本多 feature 串并行分析的优先输入源 该 host 至少必须注册： `feature_slug` `revision_id` `baseline_ref` `writable_services` `depends_on_features` `target_branch` 并且必须满足： host 由 canonical baseline envelope 单向投影生成，而不是人工手写维护 host block 可投影到 `execution/architecture-blueprint.md` 重新 materialize 某个 feature baseline 时，host registry 必须同步刷新，但不得破坏其他 feature 的已注册记录 ## 6. 数据 / 状态 / 集成 ### 6.1 Truth 来源 本版本要求 orchestration runtime 只消费以下 truth 来源： `docs/beacon/<version>/prd/` `docs/beacon/<version>/user-story/` `docs/beacon/<version>/qa/test-cases/` `docs/beacon/<version>/prototype/` `docs/beacon/<version>/.machine/` `.beacon/metadata/` ### 6.2 Runtime 状态层 建议的最小 runtime 状态层至少包括： `.beacon/runs/` `.beacon/state/orchestration/` `.beacon/runtime/board/` 其中至少应能投影： work item 列表 run 状态 workspace 引用 retry 队列 handoff / escalation 状态 ### 6.3 兼容与集成 本版本允许 orchestration runtime 先只依赖 Beacon 现有本地状态与宿主运行态。 SQLite、PocketBase、外部 tracker adapter 可以作为兼容层或后续扩展位，但不应成为本版本必须交付的唯一路径。 ## 7. 风险与缓解 | 风险 | 影响 | 缓解 | |------|------|------| | 执行层范围膨胀成新平台 | 高 | 明确只做最小 orchestration runtime，不做多租户平台 | | 调度层反向污染 truth | 高 | 把 runtime 层写权限限制在 `.beacon/state` 与 run artifacts，不直接写 requirement docs | | `team / ralph / validation` 各自继续造轮子 | 中 | 先冻结统一 work item / run / scheduler 契约，再让各 surface 接入 | | board 成为 machine noise 展示墙 | 中 | 以 next action / blocked / retry / human intervention 为主，不直接暴露内部噪声 | | 多 run 并发导致 workspace 污染 | 高 | 强制 run 级 workspace isolation 与路径安全 | ## 8. 验收标准 ### AC-001 Beacon 能统一注册并派发至少三类长任务 至少以下三类 work item 必须能用统一模型注册并进入 run scheduler： `team_task` `ralph_step` `real_project_validation_case` ### AC-002 每个 run 都有独立 workspace 与状态记录 对于同一版本下并发或串行的多个 run，系统必须能证明： workspace 不混用 run 状态独立 证据引用独立 ### AC-003 失败任务存在明确 retry / repair 语义 对于至少一条 `real-project-validation` 或 `qa repair` run，系统必须能证明： 失败后不会直接静默丢失 可进入 `retry_waiting` 或 `blocked` 有明确恢复动作或人工介入语义 ### AC-004 runtime board 能直接回答“现在发生了什么” runtime board 至少必须能让人类直接判断： 当前有哪些 run 在跑 哪些 run 卡住了 哪些在重试 哪些需要人工介入 下一步该做什么 ### AC-005 `implement / qa / release` 与 orchestration runtime 边界稳定 系统必须证明： `implement / qa / release` 仍是唯一正式闭环入口 orchestration runtime 只做调度、状态、证据与桥接 runtime 不反向改写 requirement truth ### AC-006 同版本多个 feature 的 blueprint 投影不会相互覆盖 对于同一版本下至少两个 feature package，系统必须能证明： `execution/architecture-blueprint.md` 中可同时存在两个以上 feature-aware projection block 重新 materialize 某一 feature baseline 后，不会删除或覆盖其他 feature 的 projection block `implement` 与 `release` 的 gate 只校验当前 feature 对应的 block，而不会误把其他 feature 的 block 当成 drift ### AC-007 系统能自动给出版本内 feature 的推荐实现顺序 对于同一版本下至少三个 feature package，系统必须能证明： 至少能把“共享 writable/direct delivery service 的 feature”自动串行化 至少能把“无服务冲突、无显式依赖的 feature”归入同一并行 wave 输出中能明确表达 `depends_on_features / wave / reason_code` 结果至少在版本级 change/release 观察面中可读，而不是只能藏在内部状态文件 ### AC-008 系统维护版本级 baseline host 作为同版本多 feature 的唯一宿主视图 对于同一版本下至少两个 feature package，系统必须能证明： 存在版本级 `implementation-delivery-host` host 至少登记 `feature_slug / revision_id / baseline_ref / writable_services / depends_on_features / target_branch` host 由 canonical baseline envelope 单向投影生成，而不是独立手填 host 与 blueprint 中的版本级投影块保持一致 ### AC-009 implementation ordering 优先读取 baseline host 对于同一版本下至少三个 feature package，系统必须能证明： implementation ordering 优先读取 baseline host，而不是只依赖 technical review contract 当部分 feature 尚未形成完整 technical review contract 时，系统仍能基于 host registry 给出稳定的串并行建议 对显式 `depends_on_features` 与共享 writable service 冲突，输出能明确区分 `reason_code` ## 9. 成功指标 主指标：需要人工重新手工拼接长任务上下文的次数显著下降 辅指标：对于 `team / ralph / real-project-validation`，run 级恢复与继续推进时间缩短 版本级指标：同版本多 feature 交付时，不再因 blueprint projection 覆盖导致 implement/release gate 漂移 排序指标：版本操作者无需手工维护 feature 串并行顺序表，即可获得可解释的 implementation wave 建议 ## 10. 依赖与开放问题 需要后续在 `user-story` 阶段明确 `work item` 与 `run` 的最小字段集合 需要后续决定 runtime board 是扩展 `status --board` 还是独立 support surface 需要后续决定 remote worker / ssh worker 是否进入 `v1.3.11` 主线还是保留为扩展位 需要后续决定 `implement / qa / release` 哪些子路径优先接入 orchestration runtime ## 11. Diagram Truth Layer ### 11.1 Diagram Types `branch-flow` `state-machine` `decision-priority` ### 11.2 State Axes `runtime_item_axis` `team_task` `ralph_step` `real_project_validation_case` `implement_delivery` `qa_repair` `release_closure` `run_status_axis` `queued` `running` `retry_waiting` `blocked` `handoff_required` `completed` `cancelled` `workspace_axis` `isolated_workspace` `shared_workspace_blocked` `recovery_axis` `retry_path_explicit` `repair_resume_explicit` `human_intervention_explicit` `delivery_bridge_axis` `truth_read_only` `runtime_bridge_only` `release_gate_preserved` ### 11.3 Propagation Contract Diagram truth must stay explicit through freeze readiness, implementation planning, and QA coverage. State axes must not be silently compressed into one implicit status field. --- **Created**: 2026-05-01 **Version**: v1.3.11 **Status**: draft **Memory Context**: Symphony execution-layer research + Beacon v1.3.10 release closure",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-021",
+        "AC-016",
+        "AC-020",
+        "AC-022",
+        "AC-023",
+        "AC-024",
+        "AC-025",
+        "AC-026",
+        "AC-027"
+      ],
+      "mapped_test_ids": [
+        "TEST-021",
+        "TEST-016",
+        "TEST-020",
+        "TEST-022",
+        "TEST-023",
+        "TEST-024",
+        "TEST-025",
+        "TEST-026",
+        "TEST-027"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-014"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: runtime_item_axis, team_task, ralph_step, real_project_validation_case, implement_delivery, qa_repair, release_closure, run_status_axis, queued, running, retry_waiting, blocked, handoff_required, completed, cancelled, workspace_axis, isolated_workspace, shared_workspace_blocked, recovery_axis, retry_path_explicit, repair_resume_explicit, human_intervention_explicit, delivery_bridge_axis, truth_read_only, runtime_bridge_only, release_gate_preserved"
+      ],
+      "diagram_state_axes": [
+        "runtime_item_axis",
+        "team_task",
+        "ralph_step",
+        "real_project_validation_case",
+        "implement_delivery",
+        "qa_repair",
+        "release_closure",
+        "run_status_axis",
+        "queued",
+        "running",
+        "retry_waiting",
+        "blocked",
+        "handoff_required",
+        "completed",
+        "cancelled",
+        "workspace_axis",
+        "isolated_workspace",
+        "shared_workspace_blocked",
+        "recovery_axis",
+        "retry_path_explicit",
+        "repair_resume_explicit",
+        "human_intervention_explicit",
+        "delivery_bridge_axis",
+        "truth_read_only",
+        "runtime_bridge_only",
+        "release_gate_preserved"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260501T124310Z-4294"
+      ],
+      "changed_files": [
+        ".beacon/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
+        ".beacon/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
+        ".beacon/state/prd-transactions/latest-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
+        ".beacon/transactions/prd-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
+        "beacon/commands/release.py",
+        "beacon/utils/delivery_baseline.py",
+        "docs/beacon/v1.3.11/.machine/execution/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.revision.json",
+        "docs/beacon/v1.3.11/.machine/execution/deterministic-implementation-contract-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
+        "docs/beacon/v1.3.11/.machine/execution/git-workflow-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
+        "docs/beacon/v1.3.11/.machine/execution/implementation-delivery-baseline-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
+        "docs/beacon/v1.3.11/.machine/execution/implementation-plan-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
+        "docs/beacon/v1.3.11/.machine/execution/implementation-plan-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.progress.json",
+        "docs/beacon/v1.3.11/.machine/execution/requirement-clarity-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
+        "docs/beacon/v1.3.11/.machine/execution/revision-delta-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
+        "docs/beacon/v1.3.11/.machine/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.canonical.json",
+        "docs/beacon/v1.3.11/.machine/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.compile.json",
+        "docs/beacon/v1.3.11/.machine/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.ac-test-matrix.json",
+        "docs/beacon/v1.3.11/.machine/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.qa9-matrix.json",
+        "docs/beacon/v1.3.11/.machine/qa/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.story-scenario-map.json",
+        "docs/beacon/v1.3.11/.machine/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
+        "docs/beacon/v1.3.11/change/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+        "docs/beacon/v1.3.11/change/v1.3.11.md",
+        "docs/beacon/v1.3.11/execution/architecture-blueprint.md",
+        "docs/beacon/v1.3.11/execution/deterministic-implementation-contract-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+        "docs/beacon/v1.3.11/execution/implementation-plan-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+        "docs/beacon/v1.3.11/execution/revision-delta-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+        "docs/beacon/v1.3.11/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+        "docs/beacon/v1.3.11/qa/test-cases/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+        "docs/beacon/v1.3.11/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+        "tests/test_regression_workflow_release_fixes.py",
+        "tests/test_v1312_feature_aware_architecture_blueprint.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-01T12:43:10.737185+00:00",
+      "completed_at": "2026-05-01T12:43:10.737186+00:00",
       "active_run_id": ""
     }
   ],
@@ -1740,85 +1864,41 @@
     "feature": "beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance",
     "feature_slug": "beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance",
     "version": "v1.3.11",
-    "revision_id": "R2",
-    "source_revision_id": "R1",
+    "revision_id": "R3",
+    "source_revision_id": "R2",
     "status": "ready",
     "cleanup_required": false,
     "removed_requirement_count": 0,
-    "added_requirement_count": 6,
-    "retained_requirement_count": 17,
+    "added_requirement_count": 2,
+    "retained_requirement_count": 25,
     "removed_requirement_surfaces": [],
     "added_requirement_surfaces": [
       {
-        "revision_id": "R2",
-        "id": "AC-017",
-        "story_id": "",
-        "kind": "ac",
-        "theme": "feature-aware-blueprint",
-        "text": "`execution/architecture-blueprint.md` 的 managed projection 至少按 `feature_slug` 独立投影与独立校验，同版本多个 feature 不会互相覆盖。",
-        "details": [],
-        "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
-        "signature": "ac::::feature-aware-blueprint::`execution/architecture-blueprint.md` 的 managed projection 至少按 `feature_slug` 独立投影与独立校验，同版本多个 feature 不会互相覆盖。::"
-      },
-      {
-        "revision_id": "R2",
-        "id": "AC-018",
-        "story_id": "",
-        "kind": "ac",
-        "theme": "feature-scoped-gate",
-        "text": "`implement plan / implement run / release gate` 只校验当前 feature 对应的 blueprint projection block，不把其他 feature block 误判成 drift。",
-        "details": [],
-        "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
-        "signature": "ac::::feature-scoped-gate::`implement plan / implement run / release gate` 只校验当前 feature 对应的 blueprint projection block，不把其他 feature block 误判成 drift。::"
-      },
-      {
-        "revision_id": "R2",
-        "id": "AC-022",
+        "revision_id": "R3",
+        "id": "AC-027",
         "story_id": "",
         "kind": "ac",
         "theme": "general",
-        "text": "同版本多个 feature 的 blueprint 投影不会相互覆盖",
+        "text": "implementation ordering 优先读取 baseline host",
         "details": [],
         "source": "prd:docs/beacon/v1.3.11/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
-        "signature": "ac::::general::同版本多个 feature 的 blueprint 投影不会相互覆盖::"
+        "signature": "ac::::general::implementation ordering 优先读取 baseline host::"
       },
       {
-        "revision_id": "R2",
-        "id": "AC-023",
+        "revision_id": "R3",
+        "id": "AC-026",
         "story_id": "",
         "kind": "ac",
         "theme": "general",
-        "text": "系统能自动给出版本内 feature 的推荐实现顺序",
+        "text": "系统维护版本级 baseline host 作为同版本多 feature 的唯一宿主视图",
         "details": [],
         "source": "prd:docs/beacon/v1.3.11/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
-        "signature": "ac::::general::系统能自动给出版本内 feature 的推荐实现顺序::"
-      },
-      {
-        "revision_id": "R2",
-        "id": "AC-019",
-        "story_id": "",
-        "kind": "ac",
-        "theme": "implementation-order-analysis",
-        "text": "Beacon 能基于显式 feature dependency 与 writable/direct delivery service 冲突，自动生成 `ordered_feature_slugs / waves / depends_on_features / reason_code`。",
-        "details": [],
-        "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
-        "signature": "ac::::implementation-order-analysis::beacon 能基于显式 feature dependency 与 writable/direct delivery service 冲突，自动生成 `ordered_feature_slugs / waves / depends_on_features / reason_code`。::"
-      },
-      {
-        "revision_id": "R2",
-        "id": "AC-020",
-        "story_id": "",
-        "kind": "ac",
-        "theme": "version-level-order-surface",
-        "text": "版本级 change/release 面能把 implementation order 结果以人类可读方式投影出来，明确哪些 feature 可并行、哪些必须串行。",
-        "details": [],
-        "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
-        "signature": "ac::::version-level-order-surface::版本级 change/release 面能把 implementation order 结果以人类可读方式投影出来，明确哪些 feature 可并行、哪些必须串行。::"
+        "signature": "ac::::general::系统维护版本级 baseline host 作为同版本多 feature 的唯一宿主视图::"
       }
     ],
     "retained_requirement_surfaces": [
       {
-        "revision_id": "R2",
+        "revision_id": "R3",
         "id": "AC-011",
         "story_id": "",
         "kind": "ac",
@@ -1829,7 +1909,7 @@
         "signature": "ac::::delivery-bridge::orchestration runtime 能桥接 `implement / qa / release`，但不替代其正式闭环角色。::"
       },
       {
-        "revision_id": "R2",
+        "revision_id": "R3",
         "id": "AC-008",
         "story_id": "",
         "kind": "ac",
@@ -1840,7 +1920,7 @@
         "signature": "ac::::deterministic-recovery::对 `real-project-validation` 与 `qa repair` 一类失败 run，系统能给出明确恢复路径，而不是只能整条命令重跑。::"
       },
       {
-        "revision_id": "R2",
+        "revision_id": "R3",
         "id": "AC-010",
         "story_id": "",
         "kind": "ac",
@@ -1851,8 +1931,30 @@
         "signature": "ac::::evidence-driven-board::runtime board 优先显示高信号运行判断，而不是直接暴露 machine noise。::"
       },
       {
-        "revision_id": "R2",
-        "id": "AC-021",
+        "revision_id": "R3",
+        "id": "AC-017",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "feature-aware-blueprint",
+        "text": "`execution/architecture-blueprint.md` 的 managed projection 至少按 `feature_slug` 独立投影与独立校验，同版本多个 feature 不会互相覆盖。",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+        "signature": "ac::::feature-aware-blueprint::`execution/architecture-blueprint.md` 的 managed projection 至少按 `feature_slug` 独立投影与独立校验，同版本多个 feature 不会互相覆盖。::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-018",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "feature-scoped-gate",
+        "text": "`implement plan / implement run / release gate` 只校验当前 feature 对应的 blueprint projection block，不把其他 feature block 误判成 drift。",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+        "signature": "ac::::feature-scoped-gate::`implement plan / implement run / release gate` 只校验当前 feature 对应的 blueprint projection block，不把其他 feature block 误判成 drift。::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-023",
         "story_id": "",
         "kind": "ac",
         "theme": "general",
@@ -1862,7 +1964,51 @@
         "signature": "ac::::general::`implement / qa / release` 与 orchestration runtime 边界稳定::"
       },
       {
-        "revision_id": "R2",
+        "revision_id": "R3",
+        "id": "AC-024",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "general",
+        "text": "同版本多个 feature 的 blueprint 投影不会相互覆盖",
+        "details": [],
+        "source": "prd:docs/beacon/v1.3.11/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+        "signature": "ac::::general::同版本多个 feature 的 blueprint 投影不会相互覆盖::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-025",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "general",
+        "text": "系统能自动给出版本内 feature 的推荐实现顺序",
+        "details": [],
+        "source": "prd:docs/beacon/v1.3.11/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+        "signature": "ac::::general::系统能自动给出版本内 feature 的推荐实现顺序::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-022",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "host-driven-ordering",
+        "text": "版本级 implementation ordering 必须优先读取 baseline host；当部分 feature 的 technical review contract 尚未完整时，系统仍能基于 host registry 给出稳定的串并行建议。",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+        "signature": "ac::::host-driven-ordering::版本级 implementation ordering 必须优先读取 baseline host；当部分 feature 的 technical review contract 尚未完整时，系统仍能基于 host registry 给出稳定的串并行建议。::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-019",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "implementation-order-analysis",
+        "text": "Beacon 能基于显式 feature dependency 与 writable/direct delivery service 冲突，自动生成 `ordered_feature_slugs / waves / depends_on_features / reason_code`。",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+        "signature": "ac::::implementation-order-analysis::beacon 能基于显式 feature dependency 与 writable/direct delivery service 冲突，自动生成 `ordered_feature_slugs / waves / depends_on_features / reason_code`。::"
+      },
+      {
+        "revision_id": "R3",
         "id": "AC-016",
         "story_id": "",
         "kind": "ac",
@@ -1873,7 +2019,7 @@
         "signature": "ac::::no-fragmented-schedulers::`team / ralph / validation / implement / qa` 不再各自维护不可见的私有调度语义。::"
       },
       {
-        "revision_id": "R2",
+        "revision_id": "R3",
         "id": "AC-014",
         "story_id": "",
         "kind": "ac",
@@ -1884,7 +2030,7 @@
         "signature": "ac::::ralph-controller::`ralph` 被明确定位为 `what next` controller，而不是直接持有所有执行态的执行器。::"
       },
       {
-        "revision_id": "R2",
+        "revision_id": "R3",
         "id": "AC-007",
         "story_id": "",
         "kind": "ac",
@@ -1895,7 +2041,7 @@
         "signature": "ac::::retry-reconciliation::beacon 显式支持 backoff retry、stale run detection、eligibility re-check、blocked -> repair -> resume、abandoned run reconciliation。::"
       },
       {
-        "revision_id": "R2",
+        "revision_id": "R3",
         "id": "AC-002",
         "story_id": "",
         "kind": "ac",
@@ -1906,7 +2052,7 @@
         "signature": "ac::::run-model::每个已派发 work item 都会生成统一 run 记录，至少包含 `run_id / item_id / workspace_ref / runtime_mode / status / attempt_seq / next_action / evidence_refs`。::"
       },
       {
-        "revision_id": "R2",
+        "revision_id": "R3",
         "id": "AC-009",
         "story_id": "",
         "kind": "ac",
@@ -1917,7 +2063,7 @@
         "signature": "ac::::runtime-board::beacon 提供 runtime board，至少展示 running runs、retry queue、blocked/handoff runs、stage 分布、人工介入项与 next action。::"
       },
       {
-        "revision_id": "R2",
+        "revision_id": "R3",
         "id": "AC-005",
         "story_id": "",
         "kind": "ac",
@@ -1928,7 +2074,7 @@
         "signature": "ac::::scheduler-contract::beacon 提供统一 run scheduler，至少支持入队、派发、并发限制、continuation、失败重试、人工介入挂起与取消。::"
       },
       {
-        "revision_id": "R2",
+        "revision_id": "R3",
         "id": "AC-004",
         "story_id": "",
         "kind": "ac",
@@ -1939,7 +2085,7 @@
         "signature": "ac::::status-contract::run 状态至少覆盖 `queued / running / retry_waiting / blocked / handoff_required / completed / cancelled`。::"
       },
       {
-        "revision_id": "R2",
+        "revision_id": "R3",
         "id": "AC-003",
         "story_id": "",
         "kind": "ac",
@@ -1950,7 +2096,7 @@
         "signature": "ac::::supported-item-types::最小 item type 集合至少覆盖 `team_task / ralph_step / real_project_validation_case / implement_delivery / qa_repair / release_closure`。::"
       },
       {
-        "revision_id": "R2",
+        "revision_id": "R3",
         "id": "AC-013",
         "story_id": "",
         "kind": "ac",
@@ -1961,7 +2107,7 @@
         "signature": "ac::::team-consumer::`team` 能以 work item 派发任务、以 run 观察任务、以 runtime board 观察整体运行态。::"
       },
       {
-        "revision_id": "R2",
+        "revision_id": "R3",
         "id": "AC-012",
         "story_id": "",
         "kind": "ac",
@@ -1972,7 +2118,7 @@
         "signature": "ac::::truth-boundary::runtime 只做调度、状态、证据与桥接，不反向改写 `prd / user-story / test-case / prototype`。::"
       },
       {
-        "revision_id": "R2",
+        "revision_id": "R3",
         "id": "AC-015",
         "story_id": "",
         "kind": "ac",
@@ -1983,7 +2129,29 @@
         "signature": "ac::::validation-consumer::`real-project-validation` 支持 validation case -> work item -> per-run workspace -> retry/repair 的 runtime 接入路径。::"
       },
       {
-        "revision_id": "R2",
+        "revision_id": "R3",
+        "id": "AC-021",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "version-level-baseline-host",
+        "text": "Beacon 必须维护版本级 `implementation-delivery-host`，至少注册 `feature_slug / revision_id / baseline_ref / writable_services / depends_on_features / target_branch`，作为同版本多 feature baseline 的唯一宿主视图。",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+        "signature": "ac::::version-level-baseline-host::beacon 必须维护版本级 `implementation-delivery-host`，至少注册 `feature_slug / revision_id / baseline_ref / writable_services / depends_on_features / target_branch`，作为同版本多 feature baseline 的唯一宿主视图。::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-020",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "version-level-order-surface",
+        "text": "版本级 change/release 面能把 implementation order 结果以人类可读方式投影出来，明确哪些 feature 可并行、哪些必须串行。",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+        "signature": "ac::::version-level-order-surface::版本级 change/release 面能把 implementation order 结果以人类可读方式投影出来，明确哪些 feature 可并行、哪些必须串行。::"
+      },
+      {
+        "revision_id": "R3",
         "id": "AC-001",
         "story_id": "",
         "kind": "ac",
@@ -1994,7 +2162,7 @@
         "signature": "ac::::work-item-model::beacon 能定义统一 work item 模型，至少覆盖 `item_id / item_type / feature / version / source_surface / priority / requested_action / truth_refs / status`。::"
       },
       {
-        "revision_id": "R2",
+        "revision_id": "R3",
         "id": "AC-006",
         "story_id": "",
         "kind": "ac",
@@ -2005,10 +2173,10 @@
         "signature": "ac::::workspace-isolation::每个 run 都有独立 workspace boundary，并且能够绑定 run_id、控制清理策略、阻断越界写入。::"
       }
     ],
-    "current_baseline_hash": "sha256:fe24402c6ec7e16ad21e8732b43c805bc57a174583faccf7e62fc72bd3232e9c",
-    "source_baseline_hash": "sha256:99d77761f3248af5df3d18418b90fe04fcb27855fccf394d6e18f89cb740dc3c",
+    "current_baseline_hash": "sha256:7f9e98b94c2a078eacee0dbe62273188cbbf783af4734119bf8b624d9b7cf0db",
+    "source_baseline_hash": "sha256:5767c01d3df70daa943b868af6cc3ba2c77ac83923810747a65e1be11436d7e4",
     "story_state_ref": "docs/beacon/v1.3.11/.machine/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
-    "generated_at": "2026-05-01T10:41:23.742683+00:00",
+    "generated_at": "2026-05-01T12:43:01.945441+00:00",
     "json_ref": "docs/beacon/v1.3.11/.machine/execution/revision-delta-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
     "markdown_ref": "docs/beacon/v1.3.11/execution/revision-delta-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md"
   },
@@ -2158,10 +2326,10 @@
       "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
     ],
     "source": "technical_review_contract",
-    "generated_at": "2026-05-01T10:41:23.748799+00:00",
-    "baseline_id": "impl-delivery-baseline-v1.3.11-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance-R2",
-    "transaction_id": "tx-4502dadc120eedf14",
-    "source_hash": "sha256:f7acadffa038bb23b595f6864c57adf4ebe2c2aae8324944cb808d6318110675",
+    "generated_at": "2026-05-01T12:43:01.952832+00:00",
+    "baseline_id": "impl-delivery-baseline-v1.3.11-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance-R3",
+    "transaction_id": "tx-0c852b16d531bb8f3",
+    "source_hash": "sha256:c710b62629a70578e181456a6b56654fa0f6f3cf9e0ccc775811db68608e9819",
     "projection_seq": 1,
     "canonical_envelope_ref": "docs/beacon/v1.3.11/.machine/execution/implementation-delivery-baseline-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
     "projection_source": "implementation_delivery_baseline_envelope"
@@ -2195,21 +2363,21 @@
     "change_surface": []
   },
   "delivery_baseline": {
-    "baseline_id": "impl-delivery-baseline-v1.3.11-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance-R2",
-    "transaction_id": "tx-4502dadc120eedf14",
-    "source_hash": "sha256:f7acadffa038bb23b595f6864c57adf4ebe2c2aae8324944cb808d6318110675",
+    "baseline_id": "impl-delivery-baseline-v1.3.11-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance-R3",
+    "transaction_id": "tx-0c852b16d531bb8f3",
+    "source_hash": "sha256:c710b62629a70578e181456a6b56654fa0f6f3cf9e0ccc775811db68608e9819",
     "projection_seq": 1,
     "canonical_envelope_ref": "docs/beacon/v1.3.11/.machine/execution/implementation-delivery-baseline-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
     "projection_source": "implementation_delivery_baseline_envelope"
   },
   "canonical_envelope_ref": "docs/beacon/v1.3.11/.machine/execution/implementation-delivery-baseline-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
-  "generated_at": "2026-05-01T10:41:23.808648+00:00",
-  "baseline_id": "impl-delivery-baseline-v1.3.11-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance-R2",
-  "transaction_id": "tx-4502dadc120eedf14",
-  "source_hash": "sha256:f7acadffa038bb23b595f6864c57adf4ebe2c2aae8324944cb808d6318110675",
+  "generated_at": "2026-05-01T12:43:02.016987+00:00",
+  "baseline_id": "impl-delivery-baseline-v1.3.11-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance-R3",
+  "transaction_id": "tx-0c852b16d531bb8f3",
+  "source_hash": "sha256:c710b62629a70578e181456a6b56654fa0f6f3cf9e0ccc775811db68608e9819",
   "projection_seq": 1,
   "projection_source": "implementation_delivery_baseline_envelope",
-  "updated_at": "2026-05-01T10:43:52.806757+00:00",
-  "accepted_at": "2026-05-01T10:43:52.806739+00:00",
+  "updated_at": "2026-05-01T12:46:22.581590+00:00",
+  "accepted_at": "2026-05-01T12:46:22.581575+00:00",
   "accepted_by": "qa"
 }

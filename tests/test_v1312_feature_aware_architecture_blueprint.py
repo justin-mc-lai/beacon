@@ -3,6 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from beacon.utils.delivery_baseline import (
+    load_implementation_delivery_host,
     materialize_implementation_delivery_baseline,
     validate_architecture_blueprint_projection,
 )
@@ -67,13 +68,21 @@ def test_v1312_architecture_blueprint_should_keep_multiple_feature_projections_w
     blueprint = (tmp_path / "docs" / "beacon" / VERSION / "execution" / "architecture-blueprint.md").read_text(
         encoding="utf-8"
     )
+    host = load_implementation_delivery_host(tmp_path, version=VERSION)
 
+    assert "<!-- BEACON:IMPLEMENTATION-DELIVERY-HOST:START -->" in blueprint
     assert "<!-- BEACON:TECHNICAL-DELTA-BLUEPRINT:beacon-v1.3.12-feature-aware-blueprint-alpha:START -->" in blueprint
     assert "<!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:beacon-v1.3.12-feature-aware-blueprint-alpha:START -->" in blueprint
     assert "<!-- BEACON:TECHNICAL-DELTA-BLUEPRINT:beacon-v1.3.12-feature-aware-blueprint-beta:START -->" in blueprint
     assert "<!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:beacon-v1.3.12-feature-aware-blueprint-beta:START -->" in blueprint
+    assert "## Implementation Delivery Host" in blueprint
     assert blueprint.count("## Implementation Delivery Baseline") == 2
     assert blueprint.count("## Technical Delta Blueprint") == 2
+    assert host["feature_count"] == 2
+    assert host["feature_slugs"] == [
+        "beacon-v1.3.12-feature-aware-blueprint-alpha",
+        "beacon-v1.3.12-feature-aware-blueprint-beta",
+    ]
 
     first_gate = validate_architecture_blueprint_projection(
         tmp_path,
@@ -90,4 +99,3 @@ def test_v1312_architecture_blueprint_should_keep_multiple_feature_projections_w
     assert first_gate["blocked"] is False
     assert second_gate["status"] == "pass"
     assert second_gate["blocked"] is False
-

@@ -7,6 +7,7 @@ import json
 import re
 
 from beacon.utils.artifact_paths import change_docs_file, change_file_output, machine_change_dir, release_checklist_file
+from beacon.utils.delivery_baseline import load_implementation_delivery_host
 from beacon.utils.implementation_plan import load_implementation_plan_progress
 from beacon.utils.material_audit import build_requirement_package_gate
 from beacon.utils.memory import append_memory_entry
@@ -244,22 +245,41 @@ def _analyze_feature_implementation_order(project_root: Path, *, version: str, f
             "waves": [],
         }
 
+    host = load_implementation_delivery_host(project_root, version=version)
+    host_features = host.get("features") if isinstance(host.get("features"), list) else []
+    host_by_slug = {
+        str(item.get("feature_slug") or "").strip(): item
+        for item in host_features
+        if isinstance(item, dict) and str(item.get("feature_slug") or "").strip()
+    }
+
     enriched: list[dict] = []
     for payload in feature_payloads:
         feature = str(payload.get("feature") or "").strip()
         slug = str(payload.get("feature_slug") or "").strip()
         if not slug:
             continue
+        host_entry = host_by_slug.get(slug) if isinstance(host_by_slug.get(slug), dict) else {}
         revision = load_revision_state(project_root, version=version, feature=feature or slug, create_if_missing=False)
         contract = load_technical_review_contract(project_root, version=version, feature=feature or slug)
         plan_progress = load_implementation_plan_progress(project_root, version=version, feature=feature or slug)
         direct_services = (
+            _normalize_string_list(host_entry.get("direct_delivery_services"))
+            or _normalize_string_list(host_entry.get("writable_services"))
+            or
             _normalize_string_list(contract.get("direct_delivery_services"))
             or _normalize_string_list(contract.get("service_directories"))
             or _normalize_string_list(contract.get("writable_services"))
         )
-        writable_services = _normalize_string_list(contract.get("writable_services")) or list(direct_services)
-        explicit_deps = _normalize_string_list(payload.get("depends_on_features"))
+        writable_services = (
+            _normalize_string_list(host_entry.get("writable_services"))
+            or _normalize_string_list(contract.get("writable_services"))
+            or list(direct_services)
+        )
+        explicit_deps = (
+            _normalize_string_list(payload.get("depends_on_features"))
+            or _normalize_string_list(host_entry.get("depends_on_features"))
+        )
         enriched.append(
             {
                 "feature": feature or slug,
@@ -269,10 +289,11 @@ def _analyze_feature_implementation_order(project_root: Path, *, version: str, f
                 "writable_services": writable_services,
                 "depends_on_features": explicit_deps,
                 "revision_id": str(revision.get("revision_id") or ""),
-                "frozen_at": str(revision.get("frozen_at") or ""),
-                "reviewed_at": str(contract.get("reviewed_at") or ""),
-                "updated_at": str(plan_progress.get("updated_at") or payload.get("updated_at") or ""),
+                "frozen_at": str(revision.get("frozen_at") or host_entry.get("updated_at") or ""),
+                "reviewed_at": str(contract.get("reviewed_at") or host_entry.get("updated_at") or ""),
+                "updated_at": str(plan_progress.get("updated_at") or host_entry.get("updated_at") or payload.get("updated_at") or ""),
                 "plan_status": str(plan_progress.get("status") or ""),
+                "baseline_ref": str(host_entry.get("baseline_ref") or ""),
             }
         )
 

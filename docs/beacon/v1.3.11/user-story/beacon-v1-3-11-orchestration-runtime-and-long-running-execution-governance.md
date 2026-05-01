@@ -9,7 +9,7 @@
 - current_revision: `R2`
 - source_revision: `R1`
 
-本故事线覆盖 Beacon 在 `v1.3.11` 中的 orchestration runtime requirement line，并补充同版本多 feature 共存与自动实现顺序分析。它不扩展成新的一级公开 stage，也不让 runtime 反向篡改 requirement truth。
+本故事线覆盖 Beacon 在 `v1.3.11` 中的 orchestration runtime requirement line，并补充同版本多 feature 共存、版本级 baseline host，以及 host-driven 自动实现顺序分析。它不扩展成新的一级公开 stage，也不让 runtime 反向篡改 requirement truth。
 
 ## Story 1: 统一 work item 与 run 模型
 
@@ -65,7 +65,7 @@
 
 ## Story 5: 同版本多 feature 共存与自动实现顺序分析
 
-作为版本操作者，我希望同一版本下多个 feature package 可以共存而不互相覆盖，并且系统能自动给出推荐实现顺序，这样我不需要手工维护 blueprint 覆盖关系和 feature 串并行表。
+作为版本操作者，我希望同一版本下多个 feature package 可以共存而不互相覆盖，并且系统能通过版本级 baseline host 自动给出推荐实现顺序，这样我不需要手工维护 blueprint 覆盖关系、feature baseline 注册表和 feature 串并行表。
 
 ### Acceptance Criteria
 
@@ -75,11 +75,14 @@
 | AC-402 | feature-scoped-gate | `implement plan / implement run / release gate` 只校验当前 feature 对应的 blueprint projection block，不把其他 feature block 误判成 drift。 |
 | AC-403 | implementation-order-analysis | Beacon 能基于显式 feature dependency 与 writable/direct delivery service 冲突，自动生成 `ordered_feature_slugs / waves / depends_on_features / reason_code`。 |
 | AC-404 | version-level-order-surface | 版本级 change/release 面能把 implementation order 结果以人类可读方式投影出来，明确哪些 feature 可并行、哪些必须串行。 |
+| AC-405 | version-level-baseline-host | Beacon 必须维护版本级 `implementation-delivery-host`，至少注册 `feature_slug / revision_id / baseline_ref / writable_services / depends_on_features / target_branch`，作为同版本多 feature baseline 的唯一宿主视图。 |
+| AC-406 | host-driven-ordering | 版本级 implementation ordering 必须优先读取 baseline host；当部分 feature 的 technical review contract 尚未完整时，系统仍能基于 host registry 给出稳定的串并行建议。 |
 
 ## Delivery Notes
 
 - 本故事线是 orchestration runtime 的版本级 requirement truth，不代表已经实现。
 - `R2` 相比 `R1` 补充了 feature-aware blueprint projection 与 version-scoped implementation ordering。
+- 当前补充进一步把模型层下沉到 `version-level baseline host + host-driven ordering`，避免多 feature 共存仍共享隐式单容器语义。
 - 下一阶段应基于本 story 进入实现修订、delta QA 与 release recheck，而不是继续停留在“手工重投影 baseline”。
 
 ## Metadata
@@ -87,7 +90,7 @@
 | Field | Value |
 | --- | --- |
 | Priority | high |
-| Story Points | 16 |
+| Story Points | 18 |
 | Status | revised-after-reopen-R2 |
 | Created | 2026-05-01 |
-| Change Scope | orchestration-runtime / scheduler / runtime-board / delivery-bridge / feature-aware-blueprint / implementation-ordering |
+| Change Scope | orchestration-runtime / scheduler / runtime-board / delivery-bridge / feature-aware-blueprint / version-level-baseline-host / implementation-ordering |

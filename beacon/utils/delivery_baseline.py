@@ -17,11 +17,17 @@ from beacon.utils.versioning import resolve_target_version
 PROJECTION_FIELDS = ("baseline_id", "transaction_id", "source_hash", "projection_seq")
 _TECHNICAL_DELTA_MARKER = "BEACON:TECHNICAL-DELTA-BLUEPRINT"
 _BASELINE_MARKER = "BEACON:IMPLEMENTATION-DELIVERY-BASELINE"
+_HOST_MARKER = "BEACON:IMPLEMENTATION-DELIVERY-HOST"
 
 
 def implementation_delivery_baseline_path(project_root: Path, version: str, feature: str) -> Path:
     resolved_version = resolve_target_version(project_root, version)
     return machine_execution_file(project_root, resolved_version, f"implementation-delivery-baseline-{feature_slug(feature)}.json")
+
+
+def implementation_delivery_host_path(project_root: Path, version: str) -> Path:
+    resolved_version = resolve_target_version(project_root, version)
+    return machine_execution_file(project_root, resolved_version, "implementation-delivery-host.json")
 
 
 def architecture_blueprint_path(project_root: Path, version: str) -> Path:
@@ -83,6 +89,7 @@ def build_implementation_delivery_baseline(
     direct_delivery_services = _normalize_string_list(source.get("direct_delivery_services")) or list(service_directories)
     writable_services = _normalize_string_list(source.get("writable_services")) or list(direct_delivery_services)
     reference_only_services = _normalize_string_list(source.get("reference_only_services")) or ["docs"]
+    depends_on_features = _normalize_string_list(source.get("depends_on_features"))
     worktree_root = str(_field_value(source, "worktree_root", default=".") or ".")
     workspace_root = str(_field_value(source, "workspace_root", default=worktree_root) or worktree_root)
     use_git_worktree = bool(source.get("use_git_worktree", False))
@@ -95,6 +102,7 @@ def build_implementation_delivery_baseline(
         "direct_delivery_services": direct_delivery_services,
         "writable_services": writable_services,
         "reference_only_services": reference_only_services,
+        "depends_on_features": depends_on_features,
         "service_branch_map": service_branch_map,
         "service_worktree_map": service_worktree_map,
     }
@@ -119,6 +127,7 @@ def build_implementation_delivery_baseline(
         "direct_delivery_services": direct_delivery_services,
         "writable_services": writable_services,
         "reference_only_services": reference_only_services,
+        "depends_on_features": depends_on_features,
         "service_branch_map": service_branch_map,
         "service_worktree_map": service_worktree_map,
         "feature_overlays": {slug: feature_overlay},
@@ -147,6 +156,7 @@ def build_implementation_delivery_baseline(
         "direct_delivery_services": direct_delivery_services,
         "writable_services": writable_services,
         "reference_only_services": reference_only_services,
+        "depends_on_features": depends_on_features,
         "service_branch_map": service_branch_map,
         "service_worktree_map": service_worktree_map,
         "feature_overlays": {slug: feature_overlay},
@@ -205,6 +215,7 @@ def _render_architecture_projection(envelope: dict[str, Any]) -> str:
         f"- direct_delivery_services: {', '.join(services) or '-'}",
         f"- writable_services: {', '.join(writable) or '-'}",
         f"- reference_only_services: {', '.join(reference) or '-'}",
+        f"- depends_on_features: {', '.join(_normalize_string_list(envelope.get('depends_on_features'))) or '-'}",
         "",
         "### Plan-Time Gate Contract",
         "- canonical envelope is the only delivery baseline source.",
@@ -212,6 +223,113 @@ def _render_architecture_projection(envelope: dict[str, Any]) -> str:
         "- gates must block if projection metadata or service/branch/worktree fields drift.",
         end_marker,
     ]
+    return "\n".join(lines) + "\n"
+
+
+def _host_feature_entry(envelope: dict[str, Any], *, project_root: Path, version: str) -> dict[str, Any]:
+    return {
+        "feature": str(envelope.get("feature", "") or ""),
+        "feature_slug": str(envelope.get("feature_slug", "") or ""),
+        "revision_id": baseline_revision_id(envelope),
+        "baseline_id": str(envelope.get("baseline_id", "") or ""),
+        "transaction_id": str(envelope.get("transaction_id", "") or ""),
+        "source_hash": str(envelope.get("source_hash", "") or ""),
+        "baseline_ref": str(implementation_delivery_baseline_path(project_root, version, str(envelope.get("feature", "") or "")).relative_to(project_root)),
+        "default_target_branch": str(envelope.get("default_target_branch", "") or ""),
+        "worktree_root": str(envelope.get("worktree_root", "") or ""),
+        "workspace_root": str(envelope.get("workspace_root", "") or ""),
+        "direct_delivery_services": _normalize_string_list(envelope.get("direct_delivery_services")),
+        "writable_services": _normalize_string_list(envelope.get("writable_services")),
+        "reference_only_services": _normalize_string_list(envelope.get("reference_only_services")),
+        "depends_on_features": _normalize_string_list(envelope.get("depends_on_features")),
+        "updated_at": str(envelope.get("generated_at", "") or ""),
+    }
+
+
+def _load_all_implementation_delivery_baselines(project_root: Path, version: str) -> list[dict[str, Any]]:
+    resolved_version = resolve_target_version(project_root, version)
+    root = implementation_delivery_host_path(project_root, resolved_version).parent
+    baselines: list[dict[str, Any]] = []
+    if not root.exists():
+        return baselines
+    for path in sorted(root.glob("implementation-delivery-baseline-*.json")):
+        payload = read_json(path, {})
+        if not isinstance(payload, dict) or not payload:
+            continue
+        if str(payload.get("version", "") or "") != resolved_version:
+            continue
+        baselines.append(payload)
+    return baselines
+
+
+def build_implementation_delivery_host(project_root: Path, *, version: str) -> dict[str, Any]:
+    resolved_version = resolve_target_version(project_root, version)
+    features = [
+        _host_feature_entry(envelope, project_root=project_root, version=resolved_version)
+        for envelope in _load_all_implementation_delivery_baselines(project_root, resolved_version)
+    ]
+    features = sorted(features, key=lambda item: (str(item.get("feature_slug") or ""), str(item.get("revision_id") or "")))
+    services_map: dict[str, list[str]] = {}
+    for item in features:
+        for service in _normalize_string_list(item.get("writable_services")) or _normalize_string_list(item.get("direct_delivery_services")):
+            services_map.setdefault(service, [])
+            slug = str(item.get("feature_slug") or "")
+            if slug and slug not in services_map[service]:
+                services_map[service].append(slug)
+    source_payload = {
+        "version": resolved_version,
+        "feature_count": len(features),
+        "features": features,
+        "services_map": services_map,
+    }
+    source_hash = _stable_hash(source_payload)
+    transaction_id = _stable_hash({"version": resolved_version, "source_hash": source_hash})[:24].replace("sha256:", "tx-")
+    return {
+        "schema_version": "1.0",
+        "artifact": "implementation_delivery_host",
+        "version": resolved_version,
+        "feature_count": len(features),
+        "feature_slugs": [str(item.get("feature_slug") or "") for item in features if str(item.get("feature_slug") or "").strip()],
+        "features": features,
+        "services_map": services_map,
+        "source_hash": source_hash,
+        "transaction_id": transaction_id,
+        "generated_at": now_iso(),
+    }
+
+
+def load_implementation_delivery_host(project_root: Path, *, version: str) -> dict[str, Any]:
+    payload = read_json(implementation_delivery_host_path(project_root, version), {})
+    return payload if isinstance(payload, dict) else {}
+
+
+def _render_host_projection(host: dict[str, Any]) -> str:
+    start_marker, end_marker = _managed_block_markers(_HOST_MARKER)
+    features = host.get("features") if isinstance(host.get("features"), list) else []
+    lines = [
+        start_marker,
+        "## Implementation Delivery Host",
+        "",
+        f"- version: `{host.get('version', '')}`",
+        f"- feature_count: `{host.get('feature_count', 0)}`",
+        f"- transaction_id: `{host.get('transaction_id', '')}`",
+        f"- source_hash: `{host.get('source_hash', '')}`",
+        "",
+        "### Registered Feature Baselines",
+    ]
+    if features:
+        for item in features:
+            slug = str(item.get("feature_slug", "") or "").strip()
+            branch = str(item.get("default_target_branch", "") or "").strip() or "-"
+            services = ", ".join(_normalize_string_list(item.get("writable_services")) or _normalize_string_list(item.get("direct_delivery_services"))) or "-"
+            deps = ", ".join(_normalize_string_list(item.get("depends_on_features"))) or "-"
+            baseline_ref = str(item.get("baseline_ref", "") or "").strip() or "-"
+            lines.append(
+                f"- `{slug}` | revision=`{item.get('revision_id', '')}` | branch=`{branch}` | writable_services={services} | depends_on={deps} | baseline_ref=`{baseline_ref}`"
+            )
+    else:
+        lines.append("- none")
+    lines.append(end_marker)
     return "\n".join(lines) + "\n"
 
 
@@ -376,15 +494,18 @@ def _render_technical_delta_projection(envelope: dict[str, Any]) -> str:
     return "\n".join(lines).rstrip() + "\n"
 
 
-def _render_blueprint_document(existing: str, envelope: dict[str, Any], *, version: str) -> str:
+def _render_blueprint_document(existing: str, envelope: dict[str, Any], *, project_root: Path, version: str) -> str:
     slug = str(envelope.get("feature_slug", "") or "")
+    host = build_implementation_delivery_host(project_root=project_root, version=version)
     cleaned = _strip_managed_block_variants(existing, _TECHNICAL_DELTA_MARKER, slug=slug)
     cleaned = _strip_managed_block_variants(cleaned, _BASELINE_MARKER, slug=slug)
+    cleaned = _strip_managed_block_variants(cleaned, _HOST_MARKER)
     cleaned = cleaned.rstrip()
     if not cleaned:
         cleaned = f"# Beacon {version} Architecture Blueprint"
     parts = [
         cleaned,
+        _render_host_projection(host).rstrip(),
         _render_technical_delta_projection(envelope).rstrip(),
         _render_architecture_projection(envelope).rstrip(),
     ]
@@ -403,11 +524,13 @@ def materialize_implementation_delivery_baseline(
     envelope = build_implementation_delivery_baseline(project_root, version=resolved_version, feature=feature, revision_id=revision_id, seed=seed)
     path = implementation_delivery_baseline_path(project_root, resolved_version, feature)
     write_json(path, envelope)
+    host_path = implementation_delivery_host_path(project_root, resolved_version)
+    write_json(host_path, build_implementation_delivery_host(project_root, version=resolved_version))
     blueprint_path = architecture_blueprint_path(project_root, resolved_version)
     existing = blueprint_path.read_text(encoding="utf-8") if blueprint_path.exists() else f"# Beacon {resolved_version} Architecture Blueprint\n"
     blueprint_path.parent.mkdir(parents=True, exist_ok=True)
     blueprint_path.write_text(
-        _render_blueprint_document(existing, envelope, version=resolved_version),
+        _render_blueprint_document(existing, envelope, project_root=project_root, version=resolved_version),
         encoding="utf-8",
     )
     return envelope
@@ -511,12 +634,17 @@ def validate_architecture_blueprint_projection(
         )
         return payload
     text = blueprint_path.read_text(encoding="utf-8")
+    host = build_implementation_delivery_host(project_root, version=resolved_version)
     expected_technical_delta = _render_technical_delta_projection(baseline).strip()
     expected_baseline = _render_architecture_projection(baseline).strip()
+    expected_host = _render_host_projection(host).strip()
     slug = str(baseline.get("feature_slug", "") or feature_slug(feature))
+    actual_host = _extract_managed_block_variants(text, _HOST_MARKER).strip()
     actual_technical_delta = _extract_managed_block_variants(text, _TECHNICAL_DELTA_MARKER, slug=slug).strip()
     actual_baseline = _extract_managed_block_variants(text, _BASELINE_MARKER, slug=slug).strip()
     missing_sections: list[str] = []
+    if not actual_host:
+        missing_sections.append("implementation_delivery_host")
     if not actual_technical_delta:
         missing_sections.append("technical_delta_blueprint")
     if not actual_baseline:
@@ -538,6 +666,13 @@ def validate_architecture_blueprint_projection(
         )
         return payload
     drifted_sections: list[dict[str, Any]] = []
+    if actual_host != expected_host:
+        drifted_sections.append(
+            {
+                "section": "implementation_delivery_host",
+                "message": "implementation delivery host block drifted from version host registry",
+            }
+        )
     if actual_technical_delta != expected_technical_delta:
         drifted_sections.append(
             {

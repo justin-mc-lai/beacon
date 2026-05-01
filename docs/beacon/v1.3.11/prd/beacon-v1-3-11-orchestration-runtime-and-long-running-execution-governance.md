@@ -432,6 +432,7 @@ Beacon 必须明确阻断以下行为：
 当同一版本下存在多个 feature package 时，Beacon 必须保证：
 
 - `execution/architecture-blueprint.md` 不再只能容纳单一 feature 的 implementation projection
+- 系统必须存在版本级 `implementation-delivery-host` 作为同版本多 feature baseline 的统一宿主视图
 - blueprint 中的 managed projection 至少能按 `feature_slug` 独立投影与独立校验
 - `implement plan / implement run / release gate` 只校验当前 feature 对应的 projection block
 - 后续 feature 的 implementation baseline materialization 不得覆盖前一 feature 已存在的 projection block
@@ -440,6 +441,7 @@ Beacon 必须明确阻断以下行为：
 
 - 版本级 human-readable execution mirror
 - feature-aware projection host
+- version-level baseline host projection surface
 - 多 feature 并行/串行 delivery 的稳定观察面
 
 ### FR-014 Beacon 必须提供版本内 feature implementation order 分析
@@ -454,6 +456,7 @@ Beacon 必须明确阻断以下行为：
 
 - 显式 feature dependency（如 `depends_on_features`）
 - writable/direct delivery service 冲突
+- 版本级 baseline host 中已登记的 `target_branch / writable_services / baseline_ref`
 - 当前 revision / technical review / implementation progress 的时间与状态信号
 
 排序结果至少必须表达：
@@ -468,6 +471,29 @@ Beacon 必须明确阻断以下行为：
 
 - change payload / change markdown
 - release-facing version planning surface
+
+### FR-015 Beacon 必须维护版本级 implementation delivery host
+
+当同一版本下存在多个 feature package 时，Beacon 必须维护稳定的版本级 baseline host，至少用于：
+
+- 注册该版本已存在的 feature baseline
+- 给 `implement / release / change` 提供统一读取面
+- 作为同版本多 feature 串并行分析的优先输入源
+
+该 host 至少必须注册：
+
+- `feature_slug`
+- `revision_id`
+- `baseline_ref`
+- `writable_services`
+- `depends_on_features`
+- `target_branch`
+
+并且必须满足：
+
+- host 由 canonical baseline envelope 单向投影生成，而不是人工手写维护
+- host block 可投影到 `execution/architecture-blueprint.md`
+- 重新 materialize 某个 feature baseline 时，host registry 必须同步刷新，但不得破坏其他 feature 的已注册记录
 
 ## 6. 数据 / 状态 / 集成
 
@@ -574,6 +600,23 @@ runtime board 至少必须能让人类直接判断：
 - 至少能把“无服务冲突、无显式依赖的 feature”归入同一并行 wave
 - 输出中能明确表达 `depends_on_features / wave / reason_code`
 - 结果至少在版本级 change/release 观察面中可读，而不是只能藏在内部状态文件
+
+### AC-008 系统维护版本级 baseline host 作为同版本多 feature 的唯一宿主视图
+
+对于同一版本下至少两个 feature package，系统必须能证明：
+
+- 存在版本级 `implementation-delivery-host`
+- host 至少登记 `feature_slug / revision_id / baseline_ref / writable_services / depends_on_features / target_branch`
+- host 由 canonical baseline envelope 单向投影生成，而不是独立手填
+- host 与 blueprint 中的版本级投影块保持一致
+
+### AC-009 implementation ordering 优先读取 baseline host
+
+对于同一版本下至少三个 feature package，系统必须能证明：
+
+- implementation ordering 优先读取 baseline host，而不是只依赖 technical review contract
+- 当部分 feature 尚未形成完整 technical review contract 时，系统仍能基于 host registry 给出稳定的串并行建议
+- 对显式 `depends_on_features` 与共享 writable service 冲突，输出能明确区分 `reason_code`
 
 ## 9. 成功指标
 

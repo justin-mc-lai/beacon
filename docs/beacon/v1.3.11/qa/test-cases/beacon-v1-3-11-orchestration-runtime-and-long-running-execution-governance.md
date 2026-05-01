@@ -5,7 +5,7 @@
 **Feature**: beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance
 **Test Type**: ALL
 **Version**: v1.3.11
-**Generated**: 2026-05-01 18:39
+**Generated**: 2026-05-01 19:18
 **Requested Mode**: auto
 **Effective Mode**: rule
 **Fallback Reason**: llm_unavailable
@@ -44,6 +44,8 @@
 | AC-402 | TC-018 | unit | `python3 -m pytest -q -k unit --junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"` | All unit assertions pass | `.beacon/evidence/test-results/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance/TC-018.json` |
 | AC-403 | TC-019 | unit | `python3 -m pytest -q -k unit --junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"` | All unit assertions pass | `.beacon/evidence/test-results/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance/TC-019.json` |
 | AC-404 | TC-020 | unit | `python3 -m pytest -q -k unit --junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"` | All unit assertions pass | `.beacon/evidence/test-results/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance/TC-020.json` |
+| AC-405 | TC-024 | unit | `python3 -m pytest -q tests/test_v1312_feature_aware_architecture_blueprint.py --junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"` | Version-level baseline host is projected and validated together with multi-feature blueprint blocks | `.beacon/evidence/test-results/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance/TC-024.json` |
+| AC-406 | TC-025 | unit | `python3 -m pytest -q tests/test_regression_workflow_release_fixes.py -k "delivery_host_for_ordering" --junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"` | Release ordering remains stable when host registry exists and technical review contracts are incomplete | `.beacon/evidence/test-results/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance/TC-025.json` |
 | AC-005 | TC-021 | unit | `python3 -m pytest -q -k unit --junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"` | All unit assertions pass | `.beacon/evidence/test-results/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance/TC-021.json` |
 | AC-006 | TC-022 | unit | `python3 -m pytest -q -k unit --junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"` | All unit assertions pass | `.beacon/evidence/test-results/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance/TC-022.json` |
 | AC-007 | TC-023 | unit | `python3 -m pytest -q -k unit --junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"` | All unit assertions pass | `.beacon/evidence/test-results/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance/TC-023.json` |
@@ -74,6 +76,8 @@
 | TC-018 | Pending | from AC-402 |
 | TC-019 | Pending | from AC-403 |
 | TC-020 | Pending | from AC-404 |
+| TC-024 | Pending | from AC-405 |
+| TC-025 | Pending | from AC-406 |
 | TC-021 | Pending | from AC-005 |
 | TC-022 | Pending | from AC-006 |
 | TC-023 | Pending | from AC-007 |

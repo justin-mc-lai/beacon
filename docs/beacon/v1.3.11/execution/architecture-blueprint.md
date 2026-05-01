@@ -26,6 +26,19 @@
 - `doctor verify-materials --strict`
 - `freeze / implement / qa / release` 对 stale mirror 的 fail-closed
 
+<!-- BEACON:IMPLEMENTATION-DELIVERY-HOST:START -->
+## Implementation Delivery Host
+
+- version: `v1.3.11`
+- feature_count: `2`
+- transaction_id: `tx-b96e6e6859ff76203`
+- source_hash: `sha256:3a62e046701daae936a03f130f61175d45b00586c889f7b3bd6bdaeea8b15012`
+
+### Registered Feature Baselines
+- `beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance` | revision=`R3` | branch=`beacon/v1.3.11` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.3.11/.machine/execution/implementation-delivery-baseline-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json`
+- `beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation` | revision=`R1` | branch=`beacon/v1.3.11` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.3.11/.machine/execution/implementation-delivery-baseline-beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.json`
+<!-- BEACON:IMPLEMENTATION-DELIVERY-HOST:END -->
+
 <!-- BEACON:TECHNICAL-DELTA-BLUEPRINT:beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance:START -->
 ## Technical Delta Blueprint
 
@@ -67,9 +80,9 @@
 <!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance:START -->
 ## Implementation Delivery Baseline
 
-- baseline_id: `impl-delivery-baseline-v1.3.11-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance-R2`
-- transaction_id: `tx-4502dadc120eedf14`
-- source_hash: `sha256:f7acadffa038bb23b595f6864c57adf4ebe2c2aae8324944cb808d6318110675`
+- baseline_id: `impl-delivery-baseline-v1.3.11-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance-R3`
+- transaction_id: `tx-0c852b16d531bb8f3`
+- source_hash: `sha256:c710b62629a70578e181456a6b56654fa0f6f3cf9e0ccc775811db68608e9819`
 - projection_seq: `1`
 - version: `v1.3.11`
 - feature: `beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance`
@@ -87,6 +100,7 @@
 - direct_delivery_services: .
 - writable_services: .
 - reference_only_services: docs
+- depends_on_features: -
 
 ### Plan-Time Gate Contract
 - canonical envelope is the only delivery baseline source.

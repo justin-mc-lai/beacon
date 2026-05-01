@@ -12,6 +12,7 @@ from beacon.commands.gate import GateMode, check_test_execution_integrity
 from beacon.commands.release import _build_version_change_payload, _render_version_change_markdown
 from beacon.main import app
 from beacon.utils.artifact_paths import change_docs_file, change_file_output, machine_execution_dir, release_checklist_file
+from beacon.utils.delivery_baseline import materialize_implementation_delivery_baseline
 from beacon.utils.revision_state import freeze_revision_state
 from beacon.utils.runtime import load_run_state, save_run_state
 from beacon.utils.technical_review_contract import technical_review_contract_json_path
@@ -384,6 +385,91 @@ def test_version_change_payload_should_analyze_multi_feature_implementation_orde
     assert f"`{alpha_slug}`" in markdown
     assert f"`{beta_slug}`" in markdown
     assert "depends_on=feature-alpha" in markdown
+
+
+def test_version_change_payload_should_use_delivery_host_for_ordering_when_contracts_are_missing(tmp_path: Path):
+    version = "v1.3.12"
+    docs_root = tmp_path / "docs" / "beacon" / version
+    (docs_root / "execution").mkdir(parents=True, exist_ok=True)
+    (docs_root / "execution" / "architecture-blueprint.md").write_text("# Blueprint\n", encoding="utf-8")
+    (docs_root / "SUMMARY.md").write_text("# Summary\n", encoding="utf-8")
+    (tmp_path / "docs" / "beacon" / "global-boundaries.md").write_text("# Global\n", encoding="utf-8")
+
+    alpha = "Feature Alpha"
+    beta = "Feature Beta"
+    gamma = "Feature Gamma"
+    alpha_slug = _seed_review_acceptance_feature(tmp_path, version=version, feature=alpha)
+    beta_slug = _seed_review_acceptance_feature(tmp_path, version=version, feature=beta)
+    gamma_slug = _seed_review_acceptance_feature(tmp_path, version=version, feature=gamma)
+
+    freeze_revision_state(tmp_path, version=version, feature=alpha)
+    freeze_revision_state(tmp_path, version=version, feature=beta)
+    freeze_revision_state(tmp_path, version=version, feature=gamma)
+
+    materialize_implementation_delivery_baseline(
+        tmp_path,
+        version=version,
+        feature=alpha,
+        revision_id="R1",
+        seed={"service_directories": ["api"], "writable_services": ["api"], "reference_only_services": ["docs"]},
+    )
+    materialize_implementation_delivery_baseline(
+        tmp_path,
+        version=version,
+        feature=beta,
+        revision_id="R1",
+        seed={
+            "service_directories": ["worker"],
+            "writable_services": ["worker"],
+            "reference_only_services": ["docs"],
+            "depends_on_features": [alpha_slug],
+        },
+    )
+    materialize_implementation_delivery_baseline(
+        tmp_path,
+        version=version,
+        feature=gamma,
+        revision_id="R1",
+        seed={"service_directories": ["api"], "writable_services": ["api"], "reference_only_services": ["docs"]},
+    )
+
+    machine_change = docs_root / ".machine" / "change"
+    machine_change.mkdir(parents=True, exist_ok=True)
+    for feature, slug in ((alpha, alpha_slug), (beta, beta_slug), (gamma, gamma_slug)):
+        (machine_change / f"{slug}.json").write_text(
+            json.dumps(
+                {
+                    "schema_version": "1.0",
+                    "version": version,
+                    "feature": feature,
+                    "feature_slug": slug,
+                    "status": "completed",
+                    "summary": f"{feature} summary",
+                    "added": [],
+                    "removed": [],
+                    "fixed": [],
+                    "traceability_refs": [],
+                },
+                ensure_ascii=False,
+                indent=2,
+            ),
+            encoding="utf-8",
+        )
+
+    payload = _build_version_change_payload(tmp_path, version=version)
+    order = payload["implementation_order"]
+
+    assert order["status"] == "analyzed"
+    assert order["feature_count"] == 3
+    assert [item["feature_slug"] for item in order["waves"][0]["features"]] == [alpha_slug]
+    assert [item["feature_slug"] for item in order["waves"][1]["features"]] == [beta_slug, gamma_slug]
+    assert order["waves"][1]["parallelizable"] is False
+    beta_item = order["waves"][1]["features"][0]
+    gamma_item = order["waves"][1]["features"][1]
+    assert beta_item["depends_on_features"] == [alpha_slug]
+    assert beta_item["reason_code"] == "explicit_feature_dependency"
+    assert gamma_item["depends_on_features"] == [alpha_slug]
+    assert gamma_item["reason_code"] == "shared_delivery_service_conflict"
 
 
 def test_release_create_should_use_resolved_version_in_file_content(tmp_path: Path):
