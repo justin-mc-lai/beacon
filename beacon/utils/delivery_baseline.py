@@ -15,10 +15,8 @@ from beacon.utils.versioning import resolve_target_version
 
 
 PROJECTION_FIELDS = ("baseline_id", "transaction_id", "source_hash", "projection_seq")
-_TECHNICAL_DELTA_START = "<!-- BEACON:TECHNICAL-DELTA-BLUEPRINT:START -->"
-_TECHNICAL_DELTA_END = "<!-- BEACON:TECHNICAL-DELTA-BLUEPRINT:END -->"
-_BASELINE_START = "<!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:START -->"
-_BASELINE_END = "<!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:END -->"
+_TECHNICAL_DELTA_MARKER = "BEACON:TECHNICAL-DELTA-BLUEPRINT"
+_BASELINE_MARKER = "BEACON:IMPLEMENTATION-DELIVERY-BASELINE"
 
 
 def implementation_delivery_baseline_path(project_root: Path, version: str, feature: str) -> Path:
@@ -166,12 +164,25 @@ def projection_metadata(envelope: dict[str, Any], *, project_root: Path | None =
     return metadata
 
 
+def _managed_block_markers(marker: str, *, slug: str = "") -> tuple[str, str]:
+    if slug:
+        return (
+            f"<!-- {marker}:{slug}:START -->",
+            f"<!-- {marker}:{slug}:END -->",
+        )
+    return (
+        f"<!-- {marker}:START -->",
+        f"<!-- {marker}:END -->",
+    )
+
+
 def _render_architecture_projection(envelope: dict[str, Any]) -> str:
+    start_marker, end_marker = _managed_block_markers(_BASELINE_MARKER, slug=str(envelope.get("feature_slug", "") or ""))
     services = envelope.get("direct_delivery_services") if isinstance(envelope.get("direct_delivery_services"), list) else []
     writable = envelope.get("writable_services") if isinstance(envelope.get("writable_services"), list) else []
     reference = envelope.get("reference_only_services") if isinstance(envelope.get("reference_only_services"), list) else []
     lines = [
-        _BASELINE_START,
+        start_marker,
         "## Implementation Delivery Baseline",
         "",
         f"- baseline_id: `{envelope.get('baseline_id', '')}`",
@@ -199,7 +210,7 @@ def _render_architecture_projection(envelope: dict[str, Any]) -> str:
         "- canonical envelope is the only delivery baseline source.",
         "- deterministic implementation contract, git workflow contract, and implementation plan are projections.",
         "- gates must block if projection metadata or service/branch/worktree fields drift.",
-        _BASELINE_END,
+        end_marker,
     ]
     return "\n".join(lines) + "\n"
 
@@ -223,7 +234,29 @@ def _extract_managed_block(text: str, start_marker: str, end_marker: str) -> str
     return block.rstrip() + "\n"
 
 
+def _strip_managed_block_variants(text: str, marker: str, *, slug: str = "") -> str:
+    updated = text
+    for start_marker, end_marker in (
+        _managed_block_markers(marker, slug=slug),
+        _managed_block_markers(marker),
+    ):
+        updated = _strip_managed_block(updated, start_marker, end_marker)
+    return updated
+
+
+def _extract_managed_block_variants(text: str, marker: str, *, slug: str = "") -> str:
+    for start_marker, end_marker in (
+        _managed_block_markers(marker, slug=slug),
+        _managed_block_markers(marker),
+    ):
+        block = _extract_managed_block(text, start_marker, end_marker)
+        if block:
+            return block
+    return ""
+
+
 def _render_technical_delta_projection(envelope: dict[str, Any]) -> str:
+    start_marker, end_marker = _managed_block_markers(_TECHNICAL_DELTA_MARKER, slug=str(envelope.get("feature_slug", "") or ""))
     technical_delta = envelope.get("technical_delta") if isinstance(envelope.get("technical_delta"), dict) else {}
     current_state = technical_delta.get("current_state") if isinstance(technical_delta.get("current_state"), dict) else {}
     refactor = technical_delta.get("refactor_boundaries") if isinstance(technical_delta.get("refactor_boundaries"), dict) else {}
@@ -237,7 +270,7 @@ def _render_technical_delta_projection(envelope: dict[str, Any]) -> str:
         lines.extend(f"  - {str(item).strip()}" for item in values if str(item).strip())
 
     lines = [
-        _TECHNICAL_DELTA_START,
+        start_marker,
         "## Technical Delta Blueprint",
         "",
         f"- project_mode: `{technical_delta.get('project_mode', '')}`",
@@ -339,13 +372,14 @@ def _render_technical_delta_projection(envelope: dict[str, Any]) -> str:
         lines.extend(f"- {str(item).strip()}" for item in handoff if str(item).strip())
     else:
         lines.append("- none")
-    lines.append(_TECHNICAL_DELTA_END)
+    lines.append(end_marker)
     return "\n".join(lines).rstrip() + "\n"
 
 
 def _render_blueprint_document(existing: str, envelope: dict[str, Any], *, version: str) -> str:
-    cleaned = _strip_managed_block(existing, _TECHNICAL_DELTA_START, _TECHNICAL_DELTA_END)
-    cleaned = _strip_managed_block(cleaned, _BASELINE_START, _BASELINE_END)
+    slug = str(envelope.get("feature_slug", "") or "")
+    cleaned = _strip_managed_block_variants(existing, _TECHNICAL_DELTA_MARKER, slug=slug)
+    cleaned = _strip_managed_block_variants(cleaned, _BASELINE_MARKER, slug=slug)
     cleaned = cleaned.rstrip()
     if not cleaned:
         cleaned = f"# Beacon {version} Architecture Blueprint"
@@ -479,8 +513,9 @@ def validate_architecture_blueprint_projection(
     text = blueprint_path.read_text(encoding="utf-8")
     expected_technical_delta = _render_technical_delta_projection(baseline).strip()
     expected_baseline = _render_architecture_projection(baseline).strip()
-    actual_technical_delta = _extract_managed_block(text, _TECHNICAL_DELTA_START, _TECHNICAL_DELTA_END).strip()
-    actual_baseline = _extract_managed_block(text, _BASELINE_START, _BASELINE_END).strip()
+    slug = str(baseline.get("feature_slug", "") or feature_slug(feature))
+    actual_technical_delta = _extract_managed_block_variants(text, _TECHNICAL_DELTA_MARKER, slug=slug).strip()
+    actual_baseline = _extract_managed_block_variants(text, _BASELINE_MARKER, slug=slug).strip()
     missing_sections: list[str] = []
     if not actual_technical_delta:
         missing_sections.append("technical_delta_blueprint")

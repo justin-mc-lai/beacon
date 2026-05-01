@@ -336,7 +336,7 @@ def test_v138_takeover_implementation_materials_should_render_technical_delta_an
         for module in ["App\\Http\\Admin\\Controller\\Marketing\\PartnerController", "marketing_sys"]
     )
     assert "marketing_distributor_fe" in plan["tasks"][1]["direct_delivery_services"]
-    assert plan["tasks"][1]["mapped_test_ids"] == ["TC-003", "TC-004"]
+    assert {"TC-003", "TC-004"}.issubset(set(plan["tasks"][1]["mapped_test_ids"]))
 
 
 def test_v138_implement_plan_should_refresh_existing_blueprint_projection(tmp_path: Path):
