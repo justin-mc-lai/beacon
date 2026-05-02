@@ -1,0 +1,215 @@
+{
+  "schema_version": "1.0",
+  "semantic_contract_version": "1.0",
+  "feature": "Beacon Operator Workbench And Board Launcher",
+  "feature_slug": "beacon-operator-workbench-and-board-launcher",
+  "version": "v1.3.11",
+  "stage": "prototype",
+  "generated_at": "2026-05-02T15:03:15.786063+00:00",
+  "source_hash": "b79349685078302e333aca2edf5042fa084a2203b0ce1795c3232dc78cb1337b",
+  "projection_seq": "semantic-b79349685078302e",
+  "transaction_id": "tx-semantic-beacon-operator-workbench-and-board-launcher-semantic-b79349685078302e",
+  "source_documents": [
+    {
+      "type": "prd",
+      "path": "docs/beacon/v1.3.11/prd/beacon-operator-workbench-and-board-launcher.md",
+      "fingerprint": "e9cc610006c7d3ca641b32515ead9ee4c1c72057da1821678563f8634a6ed4e5"
+    },
+    {
+      "type": "user-story",
+      "path": "docs/beacon/v1.3.11/user-story/beacon-operator-workbench-and-board-launcher.md",
+      "fingerprint": "27e0a2646d295b6d153bc693ec8120a217f5fd1292dd1491278fc73605e51d02"
+    },
+    {
+      "type": "test-case",
+      "path": "docs/beacon/v1.3.11/qa/test-cases/beacon-operator-workbench-and-board-launcher.md",
+      "fingerprint": "76756f2b889fb173bcb0759ab69087e5575697088359ca0585a1d402c3dee7f5"
+    }
+  ],
+  "stage_context": {
+    "schema_version": "1.0",
+    "run_id": "",
+    "stage": "prototype",
+    "feature": "Beacon Operator Workbench And Board Launcher",
+    "version": "v1.3.11",
+    "generated_at": "2026-05-02T15:03:15.778876+00:00",
+    "memory_recall": [],
+    "lifecycle_events": [],
+    "requirement_refs": [
+      "docs/beacon/v1.3.11/prd/beacon-operator-workbench-and-board-launcher.md",
+      "docs/beacon/v1.3.11/user-story/beacon-operator-workbench-and-board-launcher.md",
+      "docs/beacon/v1.3.11/qa/test-cases/beacon-operator-workbench-and-board-launcher.md"
+    ],
+    "evidence_refs": [],
+    "decision_trace": [],
+    "blockers": [],
+    "transaction_lineage": {
+      "current_transaction_id": "",
+      "projection_seq": "",
+      "source_hash": "",
+      "previous_transaction_id": "",
+      "recent_transaction_ids": [],
+      "attempt_seq": null,
+      "action": "semantic_stage_context"
+    },
+    "semantic_context_source": "requirement-docs"
+  },
+  "official_language": {
+    "page_names": [
+      {
+        "label": "而是执行工作台",
+        "slug": "semantic-layer",
+        "source": "requirement_truth"
+      },
+      {
+        "label": "后续若要提供本地可执行看板",
+        "slug": "semantic-layer",
+        "source": "requirement_truth"
+      },
+      {
+        "label": "机器材料引用只能下沉到二级展开或详情",
+        "slug": "semantic-layer",
+        "source": "requirement_truth"
+      },
+      {
+        "label": "至少包含以下正式页面",
+        "slug": "semantic-layer",
+        "source": "requirement_truth"
+      },
+      {
+        "label": "执行主看板",
+        "slug": "semantic-layer",
+        "source": "requirement_truth"
+      },
+      {
+        "label": "每类诊断",
+        "slug": "semantic-layer",
+        "source": "requirement_truth"
+      },
+      {
+        "label": "必须优先展示诊断",
+        "slug": "semantic-layer",
+        "source": "requirement_truth"
+      },
+      {
+        "label": "这样后续执行看板",
+        "slug": "semantic-layer",
+        "source": "requirement_truth"
+      }
+    ],
+    "status_labels": [
+      "阻塞",
+      "正常",
+      "加载中",
+      "错误"
+    ],
+    "module_labels": [
+      "治理摘要",
+      "自己发明状态",
+      "都有同一入口",
+      "真实当前状态",
+      "而不是只显示被动信息",
+      "应成为正式入口",
+      "首屏必须先回答当前状态",
+      "视图与下钻视图",
+      "至少包含以下正式页面或视图",
+      "每个视图"
+    ],
+    "action_labels": [
+      "恢复告警与",
+      "重试",
+      "恢复路径",
+      "返回",
+      "恢复文案句式",
+      "进入",
+      "进入二级展开的路径",
+      "进入二级展开",
+      "进入可交付状态",
+      "恢复策略"
+    ],
+    "preferred_terms": [
+      {
+        "from": "implementation",
+        "to": "implement",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "verify",
+        "to": "qa",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "review",
+        "to": "qa",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "delivery",
+        "to": "release",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "raw runtime log",
+        "to": "运行摘要",
+        "scope": "product_copy"
+      },
+      {
+        "from": "machine contract",
+        "to": "机器内部契约",
+        "scope": "product_copy"
+      }
+    ],
+    "banned_terms": [
+      "implementation",
+      "verify",
+      "review",
+      "delivery",
+      "machine contract",
+      "canonical-envelope",
+      "raw runtime log",
+      "transaction_id",
+      "projection_seq"
+    ]
+  },
+  "usage_guidelines": [
+    "先引用 semantic-contract.json，再进入 prototype 或 implement，不要在阶段内临时翻译需求。",
+    "页面名、状态名、模块名优先复用官方词表，避免 implementation / verify / delivery 这类旧阶段词汇出现在前台。",
+    "允许 taste-skill 做设计增强，但不得覆盖 requirement truth 或反向改写 semantic contract。",
+    "发现语义漂移时，优先重建 semantic layer，再继续 prototype freeze 或 implement delivery。"
+  ],
+  "default_design_bridge": {
+    "repo": "https://github.com/Leonxlnx/taste-skill",
+    "skill_id": "taste-skill",
+    "entry": "",
+    "detected": false,
+    "kind": "external-default-bridge",
+    "supported_stages": [
+      "prototype",
+      "implement"
+    ],
+    "capabilities": [
+      "prototype",
+      "implement",
+      "taste-design",
+      "semantic-normalization"
+    ],
+    "install_hint": "npx skills add https://github.com/Leonxlnx/taste-skill --skill taste-skill"
+  },
+  "compiler": {
+    "semantic_context_source": "requirement-docs",
+    "capability_snapshot": {
+      "schema_version": "1.0",
+      "command_name": "prototype",
+      "host_runtime": "codex",
+      "host_bridge_declared": false,
+      "host_response_available": false,
+      "host_response_source": "none",
+      "host_response_path": "",
+      "host_semantic_ready": false,
+      "provider_available": false,
+      "provider_key_present": false,
+      "llm_disabled": false,
+      "disable_env": "BEACON_PROTOTYPE_DISABLE_LLM"
+    }
+  }
+}

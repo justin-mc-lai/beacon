@@ -1,0 +1,637 @@
+{
+  "schema_version": "1.0",
+  "node_count": 30,
+  "edge_count": 28,
+  "nodes": [
+    {
+      "state_key": "recovery-diagnostics:healthy-warning",
+      "page_id": "recovery-diagnostics",
+      "state_id": "healthy-warning",
+      "label": "健康但预警",
+      "description": "当前系统可用但存在恢复风险提示。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "recovery-diagnostics:degraded",
+      "page_id": "recovery-diagnostics",
+      "state_id": "degraded",
+      "label": "降级",
+      "description": "SQLite 或 PocketBase 缺失，但 truth 仍可从文档恢复。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "recovery-diagnostics:rebuild-suggested",
+      "page_id": "recovery-diagnostics",
+      "state_id": "rebuild-suggested",
+      "label": "建议重建",
+      "description": "投影层需要重建。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "recovery-diagnostics:doctor-suggested",
+      "page_id": "recovery-diagnostics",
+      "state_id": "doctor-suggested",
+      "label": "建议 doctor",
+      "description": "推荐执行 doctor 修复上下文。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "recovery-diagnostics:loading",
+      "page_id": "recovery-diagnostics",
+      "state_id": "loading",
+      "label": "加载中",
+      "description": "诊断结果仍在采集。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "recovery-diagnostics:error",
+      "page_id": "recovery-diagnostics",
+      "state_id": "error",
+      "label": "错误",
+      "description": "诊断页本身无法完成聚合。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "portfolio-board:ready",
+      "page_id": "portfolio-board",
+      "state_id": "ready",
+      "label": "可用",
+      "description": "组合状态已汇总，可继续下钻。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "portfolio-board:blocked",
+      "page_id": "portfolio-board",
+      "state_id": "blocked",
+      "label": "阻塞",
+      "description": "存在需要优先介入的阻塞 feature。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "portfolio-board:needs-review",
+      "page_id": "portfolio-board",
+      "state_id": "needs-review",
+      "label": "待验收",
+      "description": "存在需要进入验收面的 feature。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "portfolio-board:loading",
+      "page_id": "portfolio-board",
+      "state_id": "loading",
+      "label": "加载中",
+      "description": "组合状态仍在汇总。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "portfolio-board:error",
+      "page_id": "portfolio-board",
+      "state_id": "error",
+      "label": "错误",
+      "description": "组合聚合失败，必须给出恢复入口。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "execution-board:ready",
+      "page_id": "execution-board",
+      "state_id": "ready",
+      "label": "可用",
+      "description": "当前运行态完整，可执行继续、停止或重试。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "execution-board:blocked",
+      "page_id": "execution-board",
+      "state_id": "blocked",
+      "label": "阻塞",
+      "description": "存在阻塞运行，必须优先判断恢复路径。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "execution-board:needs-review",
+      "page_id": "execution-board",
+      "state_id": "needs-review",
+      "label": "待验收",
+      "description": "存在待验收运行，需要进入验收面。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "execution-board:retry-scheduled",
+      "page_id": "execution-board",
+      "state_id": "retry-scheduled",
+      "label": "已排队重试",
+      "description": "存在待重试运行，需确认是否继续。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "execution-board:loading",
+      "page_id": "execution-board",
+      "state_id": "loading",
+      "label": "加载中",
+      "description": "运行状态仍在读取。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "execution-board:error",
+      "page_id": "execution-board",
+      "state_id": "error",
+      "label": "错误",
+      "description": "运行状态读取失败，必须暴露恢复路径。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "feature-detail:ready",
+      "page_id": "feature-detail",
+      "state_id": "ready",
+      "label": "可用",
+      "description": "功能状态完整，可判断下一步。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "feature-detail:blocked",
+      "page_id": "feature-detail",
+      "state_id": "blocked",
+      "label": "阻塞",
+      "description": "功能依赖或基线存在阻塞。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "feature-detail:needs-review",
+      "page_id": "feature-detail",
+      "state_id": "needs-review",
+      "label": "待验收",
+      "description": "功能已进入待验收状态。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "feature-detail:error",
+      "page_id": "feature-detail",
+      "state_id": "error",
+      "label": "错误",
+      "description": "功能状态聚合失败，需进入恢复路径。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "run-detail:running",
+      "page_id": "run-detail",
+      "state_id": "running",
+      "label": "运行中",
+      "description": "当前运行仍在推进。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "run-detail:blocked",
+      "page_id": "run-detail",
+      "state_id": "blocked",
+      "label": "阻塞",
+      "description": "当前运行被阻断，必须优先判断恢复动作。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "run-detail:needs-review",
+      "page_id": "run-detail",
+      "state_id": "needs-review",
+      "label": "待验收",
+      "description": "当前运行等待验收。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "run-detail:retry-scheduled",
+      "page_id": "run-detail",
+      "state_id": "retry-scheduled",
+      "label": "已排队重试",
+      "description": "当前运行等待重试。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "run-detail:error",
+      "page_id": "run-detail",
+      "state_id": "error",
+      "label": "错误",
+      "description": "当前运行状态不一致，必须暴露恢复路径。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "review-surface:ready",
+      "page_id": "review-surface",
+      "state_id": "ready",
+      "label": "可验收",
+      "description": "验收证据完整，可判断是否放行。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "review-surface:needs-evidence",
+      "page_id": "review-surface",
+      "state_id": "needs-evidence",
+      "label": "证据不足",
+      "description": "验收证据不足，不能放行。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "review-surface:blocked",
+      "page_id": "review-surface",
+      "state_id": "blocked",
+      "label": "阻塞",
+      "description": "验收存在阻塞，必须进入回修路径。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "review-surface:error",
+      "page_id": "review-surface",
+      "state_id": "error",
+      "label": "错误",
+      "description": "验收聚合失败，需优先给出恢复动作。",
+      "ac_refs": [],
+      "tc_refs": []
+    }
+  ],
+  "edges": [
+    {
+      "from": "recovery-diagnostics:ready",
+      "to": "recovery-diagnostics:healthy-warning",
+      "event": "enter_healthy_warning",
+      "guard": "business_condition_detected",
+      "kind": "intra-page-business",
+      "fallback": "recovery-diagnostics:ready",
+      "ac_refs": [],
+      "test_refs": []
+    },
+    {
+      "from": "recovery-diagnostics:ready",
+      "to": "recovery-diagnostics:degraded",
+      "event": "enter_degraded",
+      "guard": "business_condition_detected",
+      "kind": "intra-page-business",
+      "fallback": "recovery-diagnostics:ready",
+      "ac_refs": [],
+      "test_refs": []
+    },
+    {
+      "from": "recovery-diagnostics:ready",
+      "to": "recovery-diagnostics:rebuild-suggested",
+      "event": "enter_rebuild_suggested",
+      "guard": "business_condition_detected",
+      "kind": "intra-page-business",
+      "fallback": "recovery-diagnostics:ready",
+      "ac_refs": [],
+      "test_refs": []
+    },
+    {
+      "from": "recovery-diagnostics:ready",
+      "to": "recovery-diagnostics:doctor-suggested",
+      "event": "enter_doctor_suggested",
+      "guard": "business_condition_detected",
+      "kind": "intra-page-business",
+      "fallback": "recovery-diagnostics:ready",
+      "ac_refs": [],
+      "test_refs": []
+    },
+    {
+      "from": "portfolio-board:loading",
+      "to": "portfolio-board:ready",
+      "event": "data_loaded",
+      "guard": "data_fetch_success",
+      "kind": "intra-page",
+      "fallback": null,
+      "ac_refs": [],
+      "test_refs": [
+        "TC-001",
+        "TC-002"
+      ]
+    },
+    {
+      "from": "portfolio-board:ready",
+      "to": "portfolio-board:error",
+      "event": "data_failure",
+      "guard": "runtime_or_projection_error",
+      "kind": "intra-page",
+      "fallback": "recovery-diagnostics:ready",
+      "ac_refs": [],
+      "test_refs": [
+        "TC-001",
+        "TC-002"
+      ]
+    },
+    {
+      "from": "portfolio-board:ready",
+      "to": "portfolio-board:blocked",
+      "event": "enter_blocked",
+      "guard": "business_condition_detected",
+      "kind": "intra-page-business",
+      "fallback": "portfolio-board:ready",
+      "ac_refs": [],
+      "test_refs": []
+    },
+    {
+      "from": "portfolio-board:ready",
+      "to": "portfolio-board:needs-review",
+      "event": "enter_needs_review",
+      "guard": "business_condition_detected",
+      "kind": "intra-page-business",
+      "fallback": "portfolio-board:ready",
+      "ac_refs": [],
+      "test_refs": []
+    },
+    {
+      "from": "execution-board:loading",
+      "to": "execution-board:ready",
+      "event": "data_loaded",
+      "guard": "data_fetch_success",
+      "kind": "intra-page",
+      "fallback": null,
+      "ac_refs": [],
+      "test_refs": [
+        "TC-001",
+        "TC-002"
+      ]
+    },
+    {
+      "from": "execution-board:ready",
+      "to": "execution-board:error",
+      "event": "data_failure",
+      "guard": "runtime_or_projection_error",
+      "kind": "intra-page",
+      "fallback": "recovery-diagnostics:ready",
+      "ac_refs": [],
+      "test_refs": [
+        "TC-001",
+        "TC-002"
+      ]
+    },
+    {
+      "from": "execution-board:ready",
+      "to": "execution-board:blocked",
+      "event": "enter_blocked",
+      "guard": "business_condition_detected",
+      "kind": "intra-page-business",
+      "fallback": "execution-board:ready",
+      "ac_refs": [],
+      "test_refs": []
+    },
+    {
+      "from": "execution-board:ready",
+      "to": "execution-board:needs-review",
+      "event": "enter_needs_review",
+      "guard": "business_condition_detected",
+      "kind": "intra-page-business",
+      "fallback": "execution-board:ready",
+      "ac_refs": [],
+      "test_refs": []
+    },
+    {
+      "from": "execution-board:ready",
+      "to": "execution-board:retry-scheduled",
+      "event": "enter_retry_scheduled",
+      "guard": "business_condition_detected",
+      "kind": "intra-page-business",
+      "fallback": "execution-board:ready",
+      "ac_refs": [],
+      "test_refs": []
+    },
+    {
+      "from": "feature-detail:ready",
+      "to": "feature-detail:error",
+      "event": "data_failure",
+      "guard": "runtime_or_projection_error",
+      "kind": "intra-page",
+      "fallback": "recovery-diagnostics:ready",
+      "ac_refs": [],
+      "test_refs": [
+        "TC-001",
+        "TC-002"
+      ]
+    },
+    {
+      "from": "feature-detail:ready",
+      "to": "feature-detail:blocked",
+      "event": "enter_blocked",
+      "guard": "business_condition_detected",
+      "kind": "intra-page-business",
+      "fallback": "feature-detail:ready",
+      "ac_refs": [],
+      "test_refs": []
+    },
+    {
+      "from": "feature-detail:ready",
+      "to": "feature-detail:needs-review",
+      "event": "enter_needs_review",
+      "guard": "business_condition_detected",
+      "kind": "intra-page-business",
+      "fallback": "feature-detail:ready",
+      "ac_refs": [],
+      "test_refs": []
+    },
+    {
+      "from": "run-detail:ready",
+      "to": "run-detail:running",
+      "event": "enter_running",
+      "guard": "business_condition_detected",
+      "kind": "intra-page-business",
+      "fallback": "run-detail:ready",
+      "ac_refs": [],
+      "test_refs": []
+    },
+    {
+      "from": "run-detail:ready",
+      "to": "run-detail:blocked",
+      "event": "enter_blocked",
+      "guard": "business_condition_detected",
+      "kind": "intra-page-business",
+      "fallback": "run-detail:ready",
+      "ac_refs": [],
+      "test_refs": []
+    },
+    {
+      "from": "run-detail:ready",
+      "to": "run-detail:needs-review",
+      "event": "enter_needs_review",
+      "guard": "business_condition_detected",
+      "kind": "intra-page-business",
+      "fallback": "run-detail:ready",
+      "ac_refs": [],
+      "test_refs": []
+    },
+    {
+      "from": "run-detail:ready",
+      "to": "run-detail:retry-scheduled",
+      "event": "enter_retry_scheduled",
+      "guard": "business_condition_detected",
+      "kind": "intra-page-business",
+      "fallback": "run-detail:ready",
+      "ac_refs": [],
+      "test_refs": []
+    },
+    {
+      "from": "review-surface:ready",
+      "to": "review-surface:error",
+      "event": "data_failure",
+      "guard": "runtime_or_projection_error",
+      "kind": "intra-page",
+      "fallback": "recovery-diagnostics:ready",
+      "ac_refs": [],
+      "test_refs": [
+        "TC-001",
+        "TC-002"
+      ]
+    },
+    {
+      "from": "review-surface:ready",
+      "to": "review-surface:needs-evidence",
+      "event": "enter_needs_evidence",
+      "guard": "business_condition_detected",
+      "kind": "intra-page-business",
+      "fallback": "review-surface:ready",
+      "ac_refs": [],
+      "test_refs": []
+    },
+    {
+      "from": "review-surface:ready",
+      "to": "review-surface:blocked",
+      "event": "enter_blocked",
+      "guard": "business_condition_detected",
+      "kind": "intra-page-business",
+      "fallback": "review-surface:ready",
+      "ac_refs": [],
+      "test_refs": []
+    },
+    {
+      "from": "recovery-diagnostics:ready",
+      "to": "portfolio-board:ready",
+      "from_page": "recovery-diagnostics",
+      "from_state": "ready",
+      "to_page": "portfolio-board",
+      "to_state": "ready",
+      "event": "点击跳转",
+      "guard": "route_allowed",
+      "kind": "cross-page-transition",
+      "fallback": "recovery-diagnostics:ready",
+      "route_or_runtime_evidence": [
+        "navigation-map:recovery-diagnostics->portfolio-board",
+        "implementation:portfolio-board"
+      ],
+      "ac_refs": [
+        "AC-001"
+      ],
+      "test_refs": [
+        "TC-001"
+      ]
+    },
+    {
+      "from": "portfolio-board:ready",
+      "to": "execution-board:ready",
+      "from_page": "portfolio-board",
+      "from_state": "ready",
+      "to_page": "execution-board",
+      "to_state": "ready",
+      "event": "点击跳转",
+      "guard": "route_allowed",
+      "kind": "cross-page-transition",
+      "fallback": "portfolio-board:ready",
+      "route_or_runtime_evidence": [
+        "navigation-map:portfolio-board->execution-board",
+        "implementation:execution-board"
+      ],
+      "ac_refs": [
+        "AC-001"
+      ],
+      "test_refs": [
+        "TC-001"
+      ]
+    },
+    {
+      "from": "execution-board:ready",
+      "to": "feature-detail:ready",
+      "from_page": "execution-board",
+      "from_state": "ready",
+      "to_page": "feature-detail",
+      "to_state": "ready",
+      "event": "点击跳转",
+      "guard": "route_allowed",
+      "kind": "cross-page-transition",
+      "fallback": "execution-board:ready",
+      "route_or_runtime_evidence": [
+        "navigation-map:execution-board->feature-detail",
+        "implementation:feature-detail"
+      ],
+      "ac_refs": [
+        "AC-001"
+      ],
+      "test_refs": [
+        "TC-001"
+      ]
+    },
+    {
+      "from": "feature-detail:ready",
+      "to": "run-detail:ready",
+      "from_page": "feature-detail",
+      "from_state": "ready",
+      "to_page": "run-detail",
+      "to_state": "ready",
+      "event": "点击跳转",
+      "guard": "route_allowed",
+      "kind": "cross-page-transition",
+      "fallback": "feature-detail:ready",
+      "route_or_runtime_evidence": [
+        "navigation-map:feature-detail->run-detail",
+        "implementation:run-detail"
+      ],
+      "ac_refs": [
+        "AC-001"
+      ],
+      "test_refs": [
+        "TC-001"
+      ]
+    },
+    {
+      "from": "run-detail:ready",
+      "to": "review-surface:ready",
+      "from_page": "run-detail",
+      "from_state": "ready",
+      "to_page": "review-surface",
+      "to_state": "ready",
+      "event": "点击跳转",
+      "guard": "route_allowed",
+      "kind": "cross-page-transition",
+      "fallback": "run-detail:ready",
+      "route_or_runtime_evidence": [
+        "navigation-map:run-detail->review-surface",
+        "implementation:review-surface"
+      ],
+      "ac_refs": [
+        "AC-001"
+      ],
+      "test_refs": [
+        "TC-001"
+      ]
+    }
+  ]
+}

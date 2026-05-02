@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Beacon 执行工作台</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f5f5f7;
+      --panel: #ffffff;
+      --muted: #6e6e73;
+      --fg: #1d1d1f;
+      --line: #d2d2d7;
+      --accent: #0071e3;
+      --good: #1d7f4e;
+      --warn: #9a6700;
+      --bad: #b42318;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif; background: var(--bg); color: var(--fg); }
+    a { color: var(--accent); text-decoration: none; }
+    main { max-width: 1280px; margin: 0 auto; padding: 24px; display: grid; gap: 20px; }
+    header { display: grid; gap: 10px; }
+    .eyebrow { color: var(--accent); font-size: 12px; text-transform: uppercase; letter-spacing: 0; }
+    .hero { display: flex; align-items: start; justify-content: space-between; gap: 16px; }
+    .hero h1 { margin: 0; font-size: 28px; }
+    .subtle { color: var(--muted); font-size: 13px; }
+    nav { display: flex; flex-wrap: wrap; gap: 12px; font-size: 14px; }
+    .hero-copy { display: grid; gap: 8px; }
+    .hero-kicker { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .hero-kicker strong { font-size: 18px; }
+    .judgment-grid { display: grid; gap: 16px; grid-template-columns: 1.2fr 0.8fr; }
+    .summary-card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 18px; display: grid; gap: 12px; }
+    .metric-grid { display: grid; gap: 12px; grid-template-columns: repeat(5, minmax(0, 1fr)); }
+    .metric-card { border: 1px solid var(--line); border-radius: 8px; padding: 12px; background: #fcfcfd; display: grid; gap: 6px; }
+    .metric-value { font-size: 24px; line-height: 1; }
+    .action-row { display: flex; flex-wrap: wrap; gap: 10px; }
+    .action-pill { display: inline-flex; align-items: center; gap: 8px; border-radius: 999px; border: 1px solid var(--line); padding: 8px 12px; background: #fff; }
+    details.panel-details { border: 1px solid var(--line); border-radius: 8px; background: #fcfcfd; padding: 14px; }
+    details.panel-details > summary { cursor: pointer; font-weight: 600; }
+    section.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 18px; display: grid; gap: 14px; }
+    .grid-3 { display: grid; gap: 16px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid-2 { display: grid; gap: 16px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .lane-grid { display: grid; gap: 16px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .lane, .diag { border: 1px solid var(--line); border-radius: 8px; padding: 14px; background: #fcfcfd; display: grid; gap: 10px; }
+    .lane-head, .diag-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .kv { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid #ececef; }
+    .kv:last-child { border-bottom: 0; }
+    .chip { display: inline-flex; align-items: center; border-radius: 999px; padding: 3px 8px; font-size: 12px; border: 1px solid var(--line); }
+    .chip-good { color: var(--good); border-color: color-mix(in srgb, var(--good) 24%, white); background: color-mix(in srgb, var(--good) 9%, white); }
+    .chip-warn { color: var(--warn); border-color: color-mix(in srgb, var(--warn) 24%, white); background: color-mix(in srgb, var(--warn) 10%, white); }
+    .chip-bad { color: var(--bad); border-color: color-mix(in srgb, var(--bad) 24%, white); background: color-mix(in srgb, var(--bad) 10%, white); }
+    .chip-neutral { color: var(--fg); background: #f0f1f4; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid #ececef; vertical-align: top; }
+    th { color: var(--muted); font-weight: 600; }
+    ul { margin: 0; padding-left: 18px; }
+    code { white-space: pre-wrap; word-break: break-word; background: #f7f7fa; border: 1px solid #ececef; border-radius: 6px; padding: 8px; display: block; font-size: 12px; }
+    .empty { color: var(--muted); font-size: 13px; }
+    @media (max-width: 980px) {
+      .grid-3, .grid-2, .lane-grid, .judgment-grid, .metric-grid { grid-template-columns: 1fr; }
+      .hero { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div class="eyebrow">Beacon 执行工作台 · Runtime Backed</div>
+      <div class="hero">
+        <div class="hero-copy">
+          <h1>Beacon 执行工作台</h1>
+          <div class="hero-kicker">
+            <strong>缺少技术评审合同</strong>
+            <span class="chip chip-bad">阻塞</span>
+          </div>
+          <div class="subtle">版本 v1.3.11 · 原型 已冻结 · 漂移 一致</div>
+        </div>
+        <div><span class="chip chip-bad">发版</span></div>
+      </div>
+      <nav>
+        <a href="#recovery-diagnostics">恢复诊断</a>
+        <a href="#portfolio-board">全局看板</a>
+        <a href="#execution-board">执行看板</a>
+        <a href="#feature-detail">需求详情</a>
+        <a href="#run-detail">运行详情</a>
+        <a href="#review-surface">评审界面</a>
+        <a href="./preview.html">原型预览</a>
+      </nav>
+    </header>
+
+    <section class="summary-card" id="recovery-diagnostics">
+      <div class="eyebrow">首屏判断</div>
+      <div class="judgment-grid">
+        <div>
+          <h2>恢复判断</h2>
+          <p>当前版本承诺的记忆摩擦工具链仍缺少对外可见的子技能入口，导致技能路由无法直接使用这条能力。</p>
+          <div class="subtle">当前主要原因：缺少技术评审合同</div>
+        </div>
+        <div>
+          <h2>下一步动作</h2>
+          <div class="action-row">
+            <span class="action-pill"><strong>建议动作</strong><span>技术评审合同</span></span>
+            <span class="action-pill"><strong>当前需求</strong><span>执行工作台看板</span></span>
+          </div>
+          <div class="subtle">优先先确认阻塞原因，再决定继续、重试或进入 doctor 修复。</div>
+        </div>
+      </div>
+      <div class="grid-2">
+          <div><div class='kv'><span>恢复标题</span><strong>治理诊断</strong></div><div class='kv'><span>原因代码</span><strong>缺少记忆摩擦子技能</strong></div><div class='kv'><span>可自修复</span><strong>是</strong></div></div>
+        <div><div class='kv'><span>推荐命令</span><strong>beacon doctor advise --project-root . --version v1.3.11</strong></div><div class='kv'><span>当前阶段</span><strong>发版</strong></div><div class='kv'><span>总体健康</span><strong>阻塞</strong></div></div>
+      </div>
+    </section>
+
+    <section class="panel" id="execution-board">
+      <h2>执行看板</h2>
+      <div class="grid-2">
+        <div><div class='kv'><span>执行计划</span><strong>草稿</strong></div><div class='kv'><span>下一任务</span><strong>待生成</strong></div><div class='kv'><span>阻塞任务</span><strong>无</strong></div></div>
+        <div><div class='kv'><span>Baseline 宿主</span><strong>阻塞</strong></div><div class='kv'><span>运行佐证</span><strong>可用</strong></div><div class='kv'><span>Git 范围</span><strong>1</strong></div></div>
+      </div>
+      <div class="metric-grid"><article class='metric-card'><div class='subtle'>排队中</div><strong class='metric-value'>222</strong><div class='subtle'>登录功能</div></article><article class='metric-card'><div class='subtle'>进行中</div><strong class='metric-value'></strong><div class='subtle'>当前无重点项</div></article><article class='metric-card'><div class='subtle'>阻塞</div><strong class='metric-value'></strong><div class='subtle'>当前无重点项</div></article><article class='metric-card'><div class='subtle'>待重试</div><strong class='metric-value'></strong><div class='subtle'>当前无重点项</div></article><article class='metric-card'><div class='subtle'>待审阅</div><strong class='metric-value'>397</strong><div class='subtle'>执行工作台看板</div></article></div>
+      <details class="panel-details">
+        <summary>展开运行明细</summary>
+        <div class="lane-grid" style="margin-top:12px;">
+          <section class='lane'><div class='lane-head'><h3>排队中</h3><span class="chip chip-neutral">222</span></div><table><thead><tr><th>运行 ID</th><th>需求</th><th>状态</th><th>模式</th><th>开始时间</th></tr></thead><tbody><tr><td>run-20260501T124618Z-36ea</td><td>登录功能</td><td><span class="chip chip-warn">已规划</span></td><td>手动</td><td>2026-05-01T12:46:18.965029+00:00</td></tr><tr><td>run-20260501T124522Z-d267</td><td>登录功能</td><td><span class="chip chip-warn">已规划</span></td><td>手动</td><td>2026-05-01T12:45:22.338972+00:00</td></tr><tr><td>run-20260501T104345Z-60e7</td><td>登录功能</td><td><span class="chip chip-warn">已规划</span></td><td>手动</td><td>2026-05-01T10:43:45.172380+00:00</td></tr><tr><td>run-20260501T104244Z-dcad</td><td>登录功能</td><td><span class="chip chip-warn">已规划</span></td><td>手动</td><td>2026-05-01T10:42:44.136383+00:00</td></tr><tr><td>run-20260501T102120Z-329c</td><td>登录功能</td><td><span class="chip chip-warn">已规划</span></td><td>手动</td><td>2026-05-01T10:21:20.107757+00:00</td></tr><tr><td>run-20260501T102027Z-0abc</td><td>登录功能</td><td><span class="chip chip-warn">已规划</span></td><td>手动</td><td>2026-05-01T10:20:27.932803+00:00</td></tr><tr><td>run-20260501T100137Z-8175</td><td>登录功能</td><td><span class="chip chip-warn">已规划</span></td><td>手动</td><td>2026-05-01T10:01:37.917412+00:00</td></tr><tr><td>run-20260501T100126Z-50da</td><td>登录功能</td><td><span class="chip chip-warn">已规划</span></td><td>手动</td><td>2026-05-01T10:01:26.610593+00:00</td></tr></tbody></table></section>
+          <section class='lane'><div class='lane-head'><h3>进行中</h3><span class="chip chip-neutral"></span></div><div class="empty">当前分组没有运行项。</div></section>
+          <section class='lane'><div class='lane-head'><h3>阻塞</h3><span class="chip chip-neutral"></span></div><div class="empty">当前分组没有运行项。</div></section>
+          <section class='lane'><div class='lane-head'><h3>待重试</h3><span class="chip chip-neutral"></span></div><div class="empty">当前分组没有运行项。</div></section>
+          <section class='lane'><div class='lane-head'><h3>待审阅</h3><span class="chip chip-neutral">397</span></div><table><thead><tr><th>运行 ID</th><th>需求</th><th>状态</th><th>模式</th><th>开始时间</th></tr></thead><tbody><tr><td>run-20260501T124532Z-9c85</td><td>执行工作台看板</td><td><span class="chip chip-good">已完成</span></td><td>演练</td><td>2026-05-01T12:45:32.317673+00:00</td></tr><tr><td>run-20260501T124432Z-684a</td><td>执行工作台看板</td><td><span class="chip chip-good">已完成</span></td><td>演练</td><td>2026-05-01T12:44:32.349963+00:00</td></tr><tr><td>run-20260501T104253Z-a991</td><td>执行工作台看板</td><td><span class="chip chip-good">已完成</span></td><td>演练</td><td>2026-05-01T10:42:53.872917+00:00</td></tr><tr><td>run-20260501T104154Z-5810</td><td>执行工作台看板</td><td><span class="chip chip-good">已完成</span></td><td>演练</td><td>2026-05-01T10:41:54.074300+00:00</td></tr><tr><td>run-20260501T102035Z-7afa</td><td>执行工作台看板</td><td><span class="chip chip-good">已完成</span></td><td>演练</td><td>2026-05-01T10:20:35.003732+00:00</td></tr><tr><td>run-20260501T101935Z-62ad</td><td>执行工作台看板</td><td><span class="chip chip-good">已完成</span></td><td>演练</td><td>2026-05-01T10:19:35.599191+00:00</td></tr><tr><td>run-20260501T100050Z-5c97</td><td>执行工作台看板</td><td><span class="chip chip-good">已完成</span></td><td>演练</td><td>2026-05-01T10:00:50.066119+00:00</td></tr><tr><td>run-20260501T100037Z-cc56</td><td>执行工作台看板</td><td><span class="chip chip-good">已完成</span></td><td>演练</td><td>2026-05-01T10:00:37.461114+00:00</td></tr></tbody></table></section>
+        </div>
+      </details>
+    </section>
+
+    <section class="panel" id="portfolio-board">
+      <h2>全局看板</h2>
+      <div class="grid-3">
+        <div><div class='kv'><span>项目</span><strong>beacon</strong></div><div class='kv'><span>阶段</span><strong>发版</strong></div><div class='kv'><span>推进状态</span><strong>技术评审合同</strong></div></div>
+        <div><div class='kv'><span>下一步</span><strong>技术评审合同</strong></div><div class='kv'><span>健康度</span><strong>阻塞</strong></div><div class='kv'><span>PRD</span><strong>已冻结</strong></div></div>
+        <div><div class='kv'><span>用户故事</span><strong>草稿</strong></div><div class='kv'><span>测试用例</span><strong>草稿</strong></div><div class='kv'><span>项目键</span><strong>beacon--33960a3828</strong></div></div>
+      </div>
+    </section>
+
+    <section class="panel" id="feature-detail">
+      <h2>需求详情</h2>
+      <div class="grid-2">
+        <div><div class='kv'><span>需求</span><strong>执行工作台看板</strong></div><div class='kv'><span>阶段</span><strong>发版</strong></div><div class='kv'><span>是否阻塞</span><strong>是</strong></div><div class='kv'><span>阻塞原因</span><strong>缺少技术评审合同</strong></div></div>
+        <div><div class='kv'><span>计划状态</span><strong>草稿</strong></div><div class='kv'><span>计划编号</span><strong>未生成</strong></div><div class='kv'><span>下一任务</span><strong>待生成</strong></div><div class='kv'><span>可写服务</span><strong>未声明</strong></div></div>
+      </div>
+    </section>
+
+    <section class="panel" id="run-detail">
+      <h2>运行详情</h2>
+      <div class="grid-2">
+        <div><div class='kv'><span>当前运行</span><strong>run-20260428T001723950250</strong></div><div class='kv'><span>状态</span><strong>已完成</strong></div><div class='kv'><span>模式</span><strong>单人</strong></div><div class='kv'><span>操作者建议</span><strong>技术评审合同</strong></div></div>
+        <div><div class='kv'><span>可写服务</span><strong>未声明</strong></div><div class='kv'><span>重试历史</span><strong>8</strong></div><div class='kv'><span>证据数量</span><strong>2</strong></div><div class='kv'><span>时间线事件</span><strong></strong></div></div>
+      </div>
+      <div>
+        <h3>建议动作</h3>
+        <div class="grid-2"><article class='diag'><div class='diag-head'><strong>Continue</strong><span class="chip chip-warn">受控</span></div><p>resume the current workflow run through the existing resume/workflow control plane</p><code>beacon resume continue --run-id run-20260428T001723950250 --project-root &quot;.&quot; --version v1.3.11</code><div class='subtle'>must execute through workflow/resume runtime contract; UI cannot mutate state files directly</div></article><article class='diag'><div class='diag-head'><strong>Stop</strong><span class="chip chip-warn">受控</span></div><p>stop remains a guarded interactive abort because there is no standalone force-stop write surface</p><code>beacon workflow continue --project &quot;.&quot; --version v1.3.11 --run-id run-20260428T001723950250 --interactive --on-timeout abort</code><div class='subtle'>must route through workflow interactive abort path; board only surfaces the exact command</div></article><article class='diag'><div class='diag-head'><strong>Retry</strong><span class="chip chip-warn">受控</span></div><p>retry uses the recorded recommended command when available, otherwise falls back to the narrowest safe resume path</p><code>beacon resume continue --run-id run-20260428T001723950250 --project-root &quot;.&quot; --version v1.3.11</code><div class='subtle'>must respect the recommended repair command or resume contract; no direct file rewrite</div></article><article class='diag'><div class='diag-head'><strong>Open Repair Path</strong><span class="chip chip-good">可执行</span></div><p>open the highest-priority repair path derived from diagnostics/help/runtime evidence</p><code>beacon doctor advise --project-root &quot;.&quot; --version v1.3.11</code><div class='subtle'>repair path is advisory and CLI-routed; board stays read-only on requirement truth</div></article></div>
+      </div>
+      <details class="panel-details">
+        <summary>展开运行证据与时间线</summary>
+        <div class="grid-2" style="margin-top:12px;">
+          <div>
+            <h3>时间线</h3>
+            <div class="empty">当前没有时间线事件。</div>
+          </div>
+          <div>
+            <h3>证据</h3>
+            <table><thead><tr><th>类型</th><th>路径</th><th>状态</th></tr></thead><tbody><tr><td>run_state</td><td>.beacon/runs/run-20260428T001723950250/state.json</td><td><span class="chip chip-good">存在</span></td></tr><tr><td>run_events</td><td>.beacon/runs/run-20260428T001723950250/events.jsonl</td><td><span class="chip chip-bad">缺失</span></td></tr></tbody></table>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <section class="panel" id="review-surface">
+      <h2>评审界面</h2>
+      <div class="grid-2">
+        <div><div class='kv'><span>修订</span><strong>R3</strong></div><div class='kv'><span>验收</span><strong>通过</strong></div><div class='kv'><span>交付类型</span><strong>hotfix</strong></div></div>
+        <div>
+          <h3>评审提示</h3>
+          <ul><li>acceptance:pass</li><li>delivery:hotfix</li></ul>
+        </div>
+      </div>
+    </section>
+    <details class="panel-details">
+      <summary>展开全部恢复诊断</summary>
+      <div class="grid-2" style="margin-top:12px;"><article class='diag'><div class='diag-head'><strong>治理诊断</strong><span class="chip chip-warn">缺少记忆摩擦子技能</span></div><p>当前版本承诺的记忆摩擦工具链仍缺少对外可见的子技能入口，导致技能路由无法直接使用这条能力。</p><code>beacon doctor advise --project-root . --version v1.3.11</code><div class='subtle'>可自修复：是</div></article><article class='diag'><div class='diag-head'><strong>治理诊断</strong><span class="chip chip-warn">PocketBase 控制平面缺失</span></div><p>PocketBase 控制平面仍停留在材料或镜像层，没有形成可运行的管理后台与运维入口。</p><code>beacon doctor advise --project-root . --version v1.3.11</code><div class='subtle'>可自修复：是</div></article><article class='diag'><div class='diag-head'><strong>治理诊断</strong><span class="chip chip-warn">PRD 生成器仍是通用模板</span></div><p>PRD 创建能力仍输出通用模板，缺少按版本和场景收敛的正式骨架。</p><code>beacon doctor advise --project-root . --version v1.3.11</code><div class='subtle'>可自修复：是</div></article><article class='diag'><div class='diag-head'><strong>治理诊断</strong><span class="chip chip-warn">PRD 与实现交付缺少漂移门禁</span></div><p>PRD 承诺面与实际交付面之间还没有稳定的阻断门禁，存在实现漂移风险。</p><code>beacon doctor advise --project-root . --version v1.3.11</code><div class='subtle'>可自修复：是</div></article><article class='diag'><div class='diag-head'><strong>治理诊断</strong><span class="chip chip-warn">原型参考包视觉质量漂移</span></div><p>原型参考包的视觉质量与信息表达还不稳定，难以直接支撑高质量管理工作台评审。</p><code>beacon doctor advise --project-root . --version v1.3.11</code><div class='subtle'>可自修复：是</div></article><article class='diag'><div class='diag-head'><strong>运行反馈</strong><span class="chip chip-warn">运行时反馈待整理</span></div><p>当前存在一条运行时反馈，需要先整理成正式需求或修复项，再继续推进执行。</p><code>beacon doctor advise --project-root . --version v1.3.11</code><div class='subtle'>可自修复：是</div></article><article class='diag'><div class='diag-head'><strong>工作区漂移</strong><span class="chip chip-warn">工作区漂移</span></div><p>当前工作区与预期执行面存在漂移，继续操作前应先核对 git 对齐状态。</p><code>beacon doctor verify-git-alignment --project-root . --version v1.3.11</code><div class='subtle'>可自修复：是</div></article></div>
+    </details>
+  </main>
+</body>
+</html>

@@ -1,0 +1,125 @@
+{
+  "generated_at": "2026-05-02T15:22:23Z",
+  "source_hash": "ad0280a8e219c02de07248428e30a96009dc071296f4ccdf254a2d4aa9e44915",
+  "source_feature": "beacon-execution-runtime-kernel",
+  "source_requirement_refs": [
+    "docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md",
+    "docs/beacon/v1.3.11/prd/beacon-execution-runtime-kernel.md",
+    "docs/beacon/v1.3.11/qa/test-cases/beacon-execution-runtime-kernel.md"
+  ],
+  "projection_role": "design-intelligence",
+  "pages": [
+    {
+      "page_id": "home",
+      "pattern": "header -> primary judgment -> supporting context -> next action",
+      "sections": [
+        "经营总览条",
+        "重点介入区",
+        "项目推进摘要",
+        "当前交付卡片",
+        "下一步建议"
+      ],
+      "layout_rules": [
+        "首屏先给经营判断，不先铺完整表格。",
+        "阻塞与介入信息必须比常规进度更靠上。",
+        "runtime 只保留摘要，不在首页展开机器内部细节。"
+      ]
+    },
+    {
+      "page_id": "management-overview",
+      "pattern": "header -> primary judgment -> supporting context -> next action",
+      "sections": [
+        "筛选与排序条",
+        "项目注册表",
+        "阶段分布摘要",
+        "风险与调试摘要",
+        "推荐 skill 区"
+      ],
+      "layout_rules": [
+        "工具栏必须紧贴项目注册表，减少扫描跳跃。",
+        "项目注册表承担密集比较，不承担深度解释。",
+        "风险、debug、推荐 skill 放在表格侧边或下方收口，不抢主扫描节奏。"
+      ]
+    },
+    {
+      "page_id": "project-detail",
+      "pattern": "header -> primary judgment -> supporting context -> next action",
+      "sections": [
+        "项目头部摘要",
+        "版本与分支信息",
+        "主 PRD 与并行 PRD",
+        "需求物料闭环状态",
+        "最近交付与下一步",
+        "运行态摘要卡"
+      ],
+      "layout_rules": [
+        "项目头部先建立上下文，再展开需求闭环。",
+        "主 PRD 与并行 PRD 要并排出现，避免真相散落。",
+        "最近交付、下一步、推荐动作要形成明确收口。"
+      ]
+    },
+    {
+      "page_id": "runtime-center",
+      "pattern": "header -> primary judgment -> supporting context -> next action",
+      "sections": [
+        "运行态摘要头部",
+        "single / team / ralph 模式切换",
+        "agent/session 引用",
+        "artifact 与 linked run",
+        "最近结果与 blocker"
+      ],
+      "layout_rules": [
+        "模式切换必须固定在头部，便于横向比较三种运行形态。",
+        "session / artifact 只展示必要引用，不在此页堆底层原文。",
+        "最近结果与 blocker 必须直接可读，避免继续翻查多层结构。"
+      ]
+    },
+    {
+      "page_id": "recovery-diagnostics",
+      "pattern": "header -> primary judgment -> supporting context -> next action",
+      "sections": [
+        "truth 来源说明",
+        "degraded / rebuild / doctor 诊断卡",
+        "恢复步骤",
+        "风险提示"
+      ],
+      "layout_rules": [
+        "先讲 truth 来源，再给诊断卡和恢复步骤。",
+        "风险提示要比操作细节更醒目，避免误用恢复动作。",
+        "恢复动作要收口成少量步骤，不展开内部实现机制。"
+      ]
+    },
+    {
+      "page_id": "material-viewer",
+      "pattern": "header -> primary judgment -> supporting context -> next action",
+      "sections": [
+        "版本树",
+        "文档类型列表",
+        "feature 目录",
+        "文档阅读面板",
+        "来源路径信息"
+      ],
+      "layout_rules": [
+        "左侧负责层级导航，右侧负责稳定阅读，职责不能混乱。",
+        "来源路径只做可信来源说明，不压过正文阅读体验。",
+        "版本切换要靠近树和目录，不要藏到正文底部。"
+      ]
+    },
+    {
+      "page_id": "material-document-detail",
+      "pattern": "header -> primary judgment -> supporting context -> next action",
+      "sections": [
+        "文档头部信息",
+        "版本 / 类型 / feature 面包屑",
+        "Markdown 正文区",
+        "同类文档切换",
+        "来源路径与只读说明"
+      ],
+      "layout_rules": [
+        "面包屑和文档头部先稳定上下文，再展开正文。",
+        "正文区必须占据视觉主体，切换控件退居辅助位置。",
+        "来源路径只作为可信性补充，不与正文争抢注意力。"
+      ]
+    }
+  ]
+}

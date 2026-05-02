@@ -3,9 +3,13 @@
 ## 版本状态
 
 - `v1.3.11` 当前主题已经从 `v1.3.10` 的 metadata / prototype 闭环，正式推进到 `orchestration runtime + PRD freeze anti-drift`。
-- 当前版本包含两条互相咬合的需求线：
+- 当前版本包含五条互相咬合的需求线：
   - `Beacon orchestration runtime and long-running execution governance`
   - `PRD freeze anti-drift and machine-mirror reconciliation`
+  - `beacon-execution-runtime-kernel`
+  - `beacon-operator-workbench-and-board-launcher`
+  - `prototype-design-intelligence-and-governed-rendering-separation`
+- 其中 `beacon-operator-workbench-and-board-launcher` 已补充一条模型层 change：`prototype UI copy de-explanation / contract-to-ui projection split`，用于阻断治理合同话术直接上屏。
 - 当前版本材料状态：`requirement-frozen-and-implementation-in-progress`
 
 ## 版本目标
@@ -25,25 +29,41 @@
 - PRD
   - `docs/beacon/v1.3.11/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md`
   - `docs/beacon/v1.3.11/prd/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md`
+  - `docs/beacon/v1.3.11/prd/beacon-execution-runtime-kernel.md`
+  - `docs/beacon/v1.3.11/prd/beacon-operator-workbench-and-board-launcher.md`
+  - `docs/beacon/v1.3.11/prd/prototype-design-intelligence-and-governed-rendering-separation.md`
 - Change
   - `docs/beacon/v1.3.11/change/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md`
 - User Story
   - `docs/beacon/v1.3.11/user-story/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md`
   - `docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md`
+  - `docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md`
+  - `docs/beacon/v1.3.11/user-story/beacon-operator-workbench-and-board-launcher.md`
+  - `docs/beacon/v1.3.11/user-story/prototype-design-intelligence-and-governed-rendering-separation.md`
 - Test Cases
   - `docs/beacon/v1.3.11/qa/test-cases/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md`
   - `docs/beacon/v1.3.11/qa/test-cases/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md`
+  - `docs/beacon/v1.3.11/qa/test-cases/beacon-execution-runtime-kernel.md`
+  - `docs/beacon/v1.3.11/qa/test-cases/beacon-operator-workbench-and-board-launcher.md`
+  - `docs/beacon/v1.3.11/qa/test-cases/prototype-design-intelligence-and-governed-rendering-separation.md`
 
 ## 正式子线
 
 - `beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance`
 - `beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation`
+- `beacon-execution-runtime-kernel`
+- `beacon-operator-workbench-and-board-launcher`
+- `prototype-design-intelligence-and-governed-rendering-separation`
 
 ## 当前冻结判断
 
 - orchestration runtime 主线：`prd-frozen / story-frozen / test-case-seeded / runtime-contract-backed`
 - freeze anti-drift 变更线：`change-frozen / story-frozen / test-case-backed / source-implemented`
-- 当前版本结论：`还不能进入 release-ready，但版本级 freeze 与关键实现闭环已建立`
+- execution runtime kernel：`prd-drafted / story-split / test-case-seeded / gate-pass / intended-as-runtime-substrate`
+- operator workbench and board launcher：`prd-drafted / story-split / test-case-seeded / gate-pass / depends-on-runtime-kernel`
+- prototype design intelligence and governed rendering separation：`prd-frozen / story-frozen / test-case-seeded / intended-as-prototype-and-implement-shared-contract`
+- operator workbench and board launcher 当前补充 change 重点：`internal contract copy != production-visible copy`
+- 当前版本结论：`旧两条主线已进入实现闭环，新两条 feature 已补齐 requirement package 并进入 implementation-ready 收敛`
 
 ## 当前收口结论
 
@@ -64,6 +84,8 @@
 - `docs/beacon/v1.3.11/qa/test-cases/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md`
 - `docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md`
 - `docs/beacon/v1.3.11/qa/test-cases/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md`
+- `docs/beacon/v1.3.11/user-story/prototype-design-intelligence-and-governed-rendering-separation.md`
+- `docs/beacon/v1.3.11/qa/test-cases/prototype-design-intelligence-and-governed-rendering-separation.md`
 - `docs/beacon/v1.3.11/.machine/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.canonical.json`
 - `docs/beacon/v1.3.11/.machine/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.json`
 - `docs/beacon/v1.3.11/.machine/qa/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.ac-test-matrix.json`

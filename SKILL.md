@@ -148,8 +148,10 @@ beacon doctor verify-codex-hud-hook --project-root . --version v1.3.9 --json
 |--------|------------|
 | `beacon ask` | `ask` |
 | `beacon analyze` | `analyze` |
+| `beacon archive` | `archive` |
 | `beacon api-design` | `api-design` |
 | `beacon auto-test` | `auto-test` |
+| `beacon board` | `board` |
 | `beacon qa` | `qa` |
 | `beacon brainstorm` | `brainstorm` |
 | `beacon data-dictionary` | `data-dictionary` |
@@ -158,6 +160,7 @@ beacon doctor verify-codex-hud-hook --project-root . --version v1.3.9 --json
 | `beacon doctor` | `doctor` |
 | `beacon evolution-summary` | `evolution-summary` |
 | `beacon feedback` | `feedback` |
+| `beacon friction-intake` | `friction-intake` |
 | `beacon freeze` | `freeze` |
 | `beacon help` | `help` |
 | `beacon gate` | `gate` |
@@ -176,6 +179,7 @@ beacon doctor verify-codex-hud-hook --project-root . --version v1.3.9 --json
 | `beacon qa` | `qa` |
 | `beacon orchestrate` | `orchestrate` |
 | `beacon ralph-bridge` | `ralph-bridge` |
+| `beacon real-project-validation` | `real-project-validation` |
 | `beacon recall` | `recall` |
 | `beacon release` | `release` |
 | `beacon reopen` | `reopen` |
@@ -205,8 +209,10 @@ beacon doctor verify-codex-hud-hook --project-root . --version v1.3.9 --json
 |-------|----------|
 | `ask` | `beacon ask` |
 | `analyze` | `beacon analyze` |
+| `archive` | `beacon archive` |
 | `api-design` | `beacon api-design` |
 | `auto-test` | `beacon auto-test` |
+| `board` | `beacon board` |
 | `qa` | `beacon qa` |
 | `brainstorm` | `beacon brainstorm` |
 | `data-dictionary` | `beacon data-dictionary` |
@@ -215,6 +221,7 @@ beacon doctor verify-codex-hud-hook --project-root . --version v1.3.9 --json
 | `doctor` | `beacon doctor` |
 | `evolution-summary` | `beacon evolution-summary` |
 | `feedback` | `beacon feedback` |
+| `friction-intake` | `beacon friction-intake` |
 | `freeze` | `beacon freeze` |
 | `help` | `beacon help` |
 | `gate` | `beacon gate` |
@@ -233,6 +240,7 @@ beacon doctor verify-codex-hud-hook --project-root . --version v1.3.9 --json
 | `qa` | `beacon qa` |
 | `orchestrate` | `beacon orchestrate` |
 | `ralph-bridge` | `beacon ralph-bridge` |
+| `real-project-validation` | `beacon real-project-validation` |
 | `recall` | `beacon recall` |
 | `release` | `beacon release` |
 | `reopen` | `beacon reopen` |

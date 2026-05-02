@@ -1,0 +1,1048 @@
+{
+  "schema_version": "1.0",
+  "entry_count": 59,
+  "entries": [
+    {
+      "target_id": "recovery-diagnostics:healthy-warning",
+      "target_type": "state",
+      "priority_class": "manual-acceptable",
+      "reason": "当前系统可用但存在恢复风险提示。",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P2",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "target_id": "recovery-diagnostics:degraded",
+      "target_type": "state",
+      "priority_class": "manual-acceptable",
+      "reason": "SQLite 或 PocketBase 缺失，但 truth 仍可从文档恢复。",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P2",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "target_id": "recovery-diagnostics:rebuild-suggested",
+      "target_type": "state",
+      "priority_class": "manual-acceptable",
+      "reason": "投影层需要重建。",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P2",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "target_id": "recovery-diagnostics:doctor-suggested",
+      "target_type": "state",
+      "priority_class": "manual-acceptable",
+      "reason": "推荐执行 doctor 修复上下文。",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P2",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "target_id": "recovery-diagnostics:loading",
+      "target_type": "state",
+      "priority_class": "manual-acceptable",
+      "reason": "诊断结果仍在采集。",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P2",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "target_id": "recovery-diagnostics:error",
+      "target_type": "state",
+      "priority_class": "manual-acceptable",
+      "reason": "诊断页本身无法完成聚合。",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P2",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "target_id": "portfolio-board:ready",
+      "target_type": "state",
+      "priority_class": "manual-acceptable",
+      "reason": "组合状态已汇总，可继续下钻。",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P1",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "target_id": "portfolio-board:blocked",
+      "target_type": "state",
+      "priority_class": "manual-acceptable",
+      "reason": "存在需要优先介入的阻塞 feature。",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P1",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "target_id": "portfolio-board:needs-review",
+      "target_type": "state",
+      "priority_class": "manual-acceptable",
+      "reason": "存在需要进入验收面的 feature。",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P1",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "target_id": "portfolio-board:loading",
+      "target_type": "state",
+      "priority_class": "manual-acceptable",
+      "reason": "组合状态仍在汇总。",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P1",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "target_id": "portfolio-board:error",
+      "target_type": "state",
+      "priority_class": "manual-acceptable",
+      "reason": "组合聚合失败，必须给出恢复入口。",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P1",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "target_id": "execution-board:ready",
+      "target_type": "state",
+      "priority_class": "manual-acceptable",
+      "reason": "当前运行态完整，可执行继续、停止或重试。",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P0",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "target_id": "execution-board:blocked",
+      "target_type": "state",
+      "priority_class": "manual-acceptable",
+      "reason": "存在阻塞运行，必须优先判断恢复路径。",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P0",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "target_id": "execution-board:needs-review",
+      "target_type": "state",
+      "priority_class": "manual-acceptable",
+      "reason": "存在待验收运行，需要进入验收面。",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P0",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "target_id": "execution-board:retry-scheduled",
+      "target_type": "state",
+      "priority_class": "manual-acceptable",
+      "reason": "存在待重试运行，需确认是否继续。",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P0",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "target_id": "execution-board:loading",
+      "target_type": "state",
+      "priority_class": "manual-acceptable",
+      "reason": "运行状态仍在读取。",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P0",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "target_id": "execution-board:error",
+      "target_type": "state",
+      "priority_class": "manual-acceptable",
+      "reason": "运行状态读取失败，必须暴露恢复路径。",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P0",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "target_id": "feature-detail:ready",
+      "target_type": "state",
+      "priority_class": "manual-acceptable",
+      "reason": "功能状态完整，可判断下一步。",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P1",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "target_id": "feature-detail:blocked",
+      "target_type": "state",
+      "priority_class": "manual-acceptable",
+      "reason": "功能依赖或基线存在阻塞。",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P1",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "target_id": "feature-detail:needs-review",
+      "target_type": "state",
+      "priority_class": "manual-acceptable",
+      "reason": "功能已进入待验收状态。",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P1",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "target_id": "feature-detail:error",
+      "target_type": "state",
+      "priority_class": "manual-acceptable",
+      "reason": "功能状态聚合失败，需进入恢复路径。",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P1",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "target_id": "run-detail:running",
+      "target_type": "state",
+      "priority_class": "manual-acceptable",
+      "reason": "当前运行仍在推进。",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P1",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "target_id": "run-detail:blocked",
+      "target_type": "state",
+      "priority_class": "manual-acceptable",
+      "reason": "当前运行被阻断，必须优先判断恢复动作。",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P1",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "target_id": "run-detail:needs-review",
+      "target_type": "state",
+      "priority_class": "manual-acceptable",
+      "reason": "当前运行等待验收。",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P1",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "target_id": "run-detail:retry-scheduled",
+      "target_type": "state",
+      "priority_class": "manual-acceptable",
+      "reason": "当前运行等待重试。",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P1",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "target_id": "run-detail:error",
+      "target_type": "state",
+      "priority_class": "manual-acceptable",
+      "reason": "当前运行状态不一致，必须暴露恢复路径。",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P1",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "target_id": "review-surface:ready",
+      "target_type": "state",
+      "priority_class": "manual-acceptable",
+      "reason": "验收证据完整，可判断是否放行。",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P1",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "target_id": "review-surface:needs-evidence",
+      "target_type": "state",
+      "priority_class": "manual-acceptable",
+      "reason": "验收证据不足，不能放行。",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P1",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "target_id": "review-surface:blocked",
+      "target_type": "state",
+      "priority_class": "manual-acceptable",
+      "reason": "验收存在阻塞，必须进入回修路径。",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P1",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "target_id": "review-surface:error",
+      "target_type": "state",
+      "priority_class": "manual-acceptable",
+      "reason": "验收聚合失败，需优先给出恢复动作。",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P1",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "target_id": "recovery-diagnostics:ready->portfolio-board:ready",
+      "target_type": "transition",
+      "priority_class": "primary-automation",
+      "reason": "点击跳转 transition must preserve guard, fallback, and evidence binding.",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P1",
+      "ac_refs": [
+        "AC-001"
+      ],
+      "tc_refs": [
+        "TC-001"
+      ]
+    },
+    {
+      "target_id": "portfolio-board:ready->execution-board:ready",
+      "target_type": "transition",
+      "priority_class": "release-blocker",
+      "reason": "点击跳转 transition must preserve guard, fallback, and evidence binding.",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P0",
+      "ac_refs": [
+        "AC-001"
+      ],
+      "tc_refs": [
+        "TC-001"
+      ]
+    },
+    {
+      "target_id": "execution-board:ready->feature-detail:ready",
+      "target_type": "transition",
+      "priority_class": "primary-automation",
+      "reason": "点击跳转 transition must preserve guard, fallback, and evidence binding.",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P1",
+      "ac_refs": [
+        "AC-001"
+      ],
+      "tc_refs": [
+        "TC-001"
+      ]
+    },
+    {
+      "target_id": "feature-detail:ready->run-detail:ready",
+      "target_type": "transition",
+      "priority_class": "primary-automation",
+      "reason": "点击跳转 transition must preserve guard, fallback, and evidence binding.",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P1",
+      "ac_refs": [
+        "AC-001"
+      ],
+      "tc_refs": [
+        "TC-001"
+      ]
+    },
+    {
+      "target_id": "run-detail:ready->review-surface:ready",
+      "target_type": "transition",
+      "priority_class": "primary-automation",
+      "reason": "点击跳转 transition must preserve guard, fallback, and evidence binding.",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P1",
+      "ac_refs": [
+        "AC-001"
+      ],
+      "tc_refs": [
+        "TC-001"
+      ]
+    },
+    {
+      "target_id": "recovery-diagnostics-component-01",
+      "target_type": "component",
+      "priority_class": "primary-automation",
+      "reason": "truth 来源说明 owns visible state feedback and interaction continuity.",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P2",
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ]
+    },
+    {
+      "target_id": "recovery-diagnostics-component-02",
+      "target_type": "component",
+      "priority_class": "primary-automation",
+      "reason": "degraded / rebuild / doctor 诊断卡 owns visible state feedback and interaction continuity.",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P2",
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ]
+    },
+    {
+      "target_id": "recovery-diagnostics-component-03",
+      "target_type": "component",
+      "priority_class": "primary-automation",
+      "reason": "恢复步骤 owns visible state feedback and interaction continuity.",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P2",
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ]
+    },
+    {
+      "target_id": "recovery-diagnostics-component-04",
+      "target_type": "component",
+      "priority_class": "primary-automation",
+      "reason": "风险提示 owns visible state feedback and interaction continuity.",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P2",
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ]
+    },
+    {
+      "target_id": "portfolio-board-component-01",
+      "target_type": "component",
+      "priority_class": "primary-automation",
+      "reason": "状态摘要 owns visible state feedback and interaction continuity.",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P1",
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ]
+    },
+    {
+      "target_id": "portfolio-board-component-02",
+      "target_type": "component",
+      "priority_class": "primary-automation",
+      "reason": "阻塞分组 owns visible state feedback and interaction continuity.",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P1",
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ]
+    },
+    {
+      "target_id": "portfolio-board-component-03",
+      "target_type": "component",
+      "priority_class": "primary-automation",
+      "reason": "待验收分组 owns visible state feedback and interaction continuity.",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P1",
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ]
+    },
+    {
+      "target_id": "portfolio-board-component-04",
+      "target_type": "component",
+      "priority_class": "primary-automation",
+      "reason": "下一步动作 owns visible state feedback and interaction continuity.",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P1",
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ]
+    },
+    {
+      "target_id": "execution-board-component-01",
+      "target_type": "component",
+      "priority_class": "primary-automation",
+      "reason": "当前状态 owns visible state feedback and interaction continuity.",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P0",
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ]
+    },
+    {
+      "target_id": "execution-board-component-02",
+      "target_type": "component",
+      "priority_class": "primary-automation",
+      "reason": "当前阻塞 owns visible state feedback and interaction continuity.",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P0",
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ]
+    },
+    {
+      "target_id": "execution-board-component-03",
+      "target_type": "component",
+      "priority_class": "primary-automation",
+      "reason": "下一步动作 owns visible state feedback and interaction continuity.",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P0",
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ]
+    },
+    {
+      "target_id": "execution-board-component-04",
+      "target_type": "component",
+      "priority_class": "primary-automation",
+      "reason": "运行分组 owns visible state feedback and interaction continuity.",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P0",
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ]
+    },
+    {
+      "target_id": "feature-detail-component-01",
+      "target_type": "component",
+      "priority_class": "primary-automation",
+      "reason": "功能摘要 owns visible state feedback and interaction continuity.",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P1",
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ]
+    },
+    {
+      "target_id": "feature-detail-component-02",
+      "target_type": "component",
+      "priority_class": "primary-automation",
+      "reason": "依赖与基线 owns visible state feedback and interaction continuity.",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P1",
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ]
+    },
+    {
+      "target_id": "feature-detail-component-03",
+      "target_type": "component",
+      "priority_class": "primary-automation",
+      "reason": "状态与风险 owns visible state feedback and interaction continuity.",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P1",
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ]
+    },
+    {
+      "target_id": "feature-detail-component-04",
+      "target_type": "component",
+      "priority_class": "primary-automation",
+      "reason": "下一步动作 owns visible state feedback and interaction continuity.",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P1",
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ]
+    },
+    {
+      "target_id": "run-detail-component-01",
+      "target_type": "component",
+      "priority_class": "primary-automation",
+      "reason": "运行状态 owns visible state feedback and interaction continuity.",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P1",
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ]
+    },
+    {
+      "target_id": "run-detail-component-02",
+      "target_type": "component",
+      "priority_class": "primary-automation",
+      "reason": "阻塞原因 owns visible state feedback and interaction continuity.",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P1",
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ]
+    },
+    {
+      "target_id": "run-detail-component-03",
+      "target_type": "component",
+      "priority_class": "primary-automation",
+      "reason": "建议动作 owns visible state feedback and interaction continuity.",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P1",
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ]
+    },
+    {
+      "target_id": "run-detail-component-04",
+      "target_type": "component",
+      "priority_class": "primary-automation",
+      "reason": "二级明细 owns visible state feedback and interaction continuity.",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P1",
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ]
+    },
+    {
+      "target_id": "review-surface-component-01",
+      "target_type": "component",
+      "priority_class": "primary-automation",
+      "reason": "验收状态 owns visible state feedback and interaction continuity.",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P1",
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ]
+    },
+    {
+      "target_id": "review-surface-component-02",
+      "target_type": "component",
+      "priority_class": "primary-automation",
+      "reason": "差异入口 owns visible state feedback and interaction continuity.",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P1",
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ]
+    },
+    {
+      "target_id": "review-surface-component-03",
+      "target_type": "component",
+      "priority_class": "primary-automation",
+      "reason": "证据入口 owns visible state feedback and interaction continuity.",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P1",
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ]
+    },
+    {
+      "target_id": "review-surface-component-04",
+      "target_type": "component",
+      "priority_class": "primary-automation",
+      "reason": "放行建议 owns visible state feedback and interaction continuity.",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P1",
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ]
+    }
+  ]
+}

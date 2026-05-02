@@ -13,6 +13,7 @@ CORE_COMMANDS = (
 )
 
 SUPPORT_COMMANDS = (
+    "board",
     "help",
     "status",
     "doctor",
@@ -84,6 +85,7 @@ SUPPORTED_SUBCOMMANDS = (
     "archive",
     "api-design",
     "auto-test",
+    "board",
     "qa",
     "brainstorm",
     "data-dictionary",

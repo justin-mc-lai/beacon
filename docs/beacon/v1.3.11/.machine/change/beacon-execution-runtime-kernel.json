@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0",
+  "version": "v1.3.11",
+  "feature": "beacon-execution-runtime-kernel",
+  "feature_slug": "beacon-execution-runtime-kernel",
+  "status": "reopened",
+  "summary": "formalized runtime kernel closure around version-level baseline hosting, host-driven implementation ordering, and recovery-safe execution governance",
+  "added": [
+    "Added `version-level-baseline-host` as the only stable multi-feature baseline container",
+    "Added `host-driven-implementation-ordering` as a formal runtime requirement line",
+    "Added fail-closed runtime admission validation around baseline host, workspace scope, writable services, evidence sink, and blocked dependency state",
+    "Added runtime read model authority boundary for operator workbench surfaces"
+  ],
+  "removed": [],
+  "fixed": [
+    "Clarified that runtime kernel must own ordering, recovery, workspace isolation, and evidence isolation rather than delegating them to surface-local scripts",
+    "Clarified that multi-feature coexistence requires feature-aware host validation before run admission",
+    "Clarified that runtime drift, workspace drift, blocked dependency, and retry orphan states require reason code and repair path coverage"
+  ],
+  "traceability_refs": [
+    "docs/beacon/v1.3.11/change/beacon-execution-runtime-kernel.md",
+    "docs/beacon/v1.3.11/prd/beacon-execution-runtime-kernel.md",
+    "docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md",
+    "docs/beacon/v1.3.11/qa/test-cases/beacon-execution-runtime-kernel.md",
+    "docs/beacon/v1.3.11/prd/beacon-operator-workbench-and-board-launcher.md"
+  ]
+}

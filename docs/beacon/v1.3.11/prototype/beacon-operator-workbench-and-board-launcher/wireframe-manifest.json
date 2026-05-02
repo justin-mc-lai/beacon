@@ -1,0 +1,108 @@
+{
+  "schema_version": "1.0",
+  "feature": "Beacon Operator Workbench And Board Launcher",
+  "feature_slug": "beacon-operator-workbench-and-board-launcher",
+  "version": "v1.3.11",
+  "prototype_mode": "wireframe",
+  "prototype_type": "generic-wireframe",
+  "pages": [
+    {
+      "page_id": "recovery-diagnostics",
+      "name": "恢复诊断",
+      "priority": "P2",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "解释 degraded / rebuild / doctor，明确 truth 仍来自 docs/beacon 与 .beacon。",
+      "file": "pages/recovery-diagnostics.md"
+    },
+    {
+      "page_id": "portfolio-board",
+      "name": "项目组合看板",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "汇总当前版本线的 feature 状态、阻塞分布与建议波次，支持先判断先处理哪一组事项。",
+      "file": "pages/portfolio-board.md"
+    },
+    {
+      "page_id": "execution-board",
+      "name": "执行看板",
+      "priority": "P0",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "先暴露当前运行状态、阻塞项与下一步动作，而不是先展示全量运行历史。",
+      "file": "pages/execution-board.md"
+    },
+    {
+      "page_id": "feature-detail",
+      "name": "功能详情",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "聚合单个 feature 的基线、依赖、当前状态与建议动作，支持判断是否继续实现或先回修。",
+      "file": "pages/feature-detail.md"
+    },
+    {
+      "page_id": "run-detail",
+      "name": "运行详情",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "聚合单次运行的状态时间线、写入范围、证据与建议动作，避免操作者在散落材料中自行拼接上下文。",
+      "file": "pages/run-detail.md"
+    },
+    {
+      "page_id": "review-surface",
+      "name": "验收面",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "集中展示差异入口、验收证据与发布提示，支持判断是否放行或回修。",
+      "file": "pages/review-surface.md"
+    }
+  ],
+  "transitions": [
+    {
+      "from": "recovery-diagnostics",
+      "to": "portfolio-board",
+      "trigger": "点击跳转",
+      "type": "primary"
+    },
+    {
+      "from": "portfolio-board",
+      "to": "execution-board",
+      "trigger": "点击跳转",
+      "type": "primary"
+    },
+    {
+      "from": "execution-board",
+      "to": "feature-detail",
+      "trigger": "点击跳转",
+      "type": "primary"
+    },
+    {
+      "from": "feature-detail",
+      "to": "run-detail",
+      "trigger": "点击跳转",
+      "type": "primary"
+    },
+    {
+      "from": "run-detail",
+      "to": "review-surface",
+      "trigger": "点击跳转",
+      "type": "primary"
+    }
+  ]
+}

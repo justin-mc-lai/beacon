@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import html
 import json
 import os
 import re
@@ -18,6 +19,7 @@ from beacon.utils.runtime_projection_store import runtime_ledger_root
 from beacon.utils.semantic_runtime import (
     build_semantic_capability_snapshot,
     build_mode_contract,
+    execute_host_bridge_command,
     llm_unavailable_message,
     load_or_build_semantic_layer,
     load_host_response_json,
@@ -67,6 +69,37 @@ def _prototype_auto_fallback_blocked(version: str, compiler: dict[str, Any] | No
         _semver_tuple(version) >= (1, 3, 9)
         and str(payload.get("requested_mode") or "").strip().lower() == "auto"
         and bool(str(payload.get("fallback_reason") or "").strip())
+    )
+
+
+def _prototype_auto_fallback_accepted(
+    *,
+    version: str,
+    compiler: dict[str, Any] | None,
+    review_status: str,
+    frozen: bool,
+    supports_ux_truth: bool,
+    files: dict[str, Path],
+    plan: dict[str, Any] | None,
+) -> bool:
+    if not _prototype_auto_fallback_blocked(version, compiler):
+        return False
+    if str(review_status or "").strip().lower() != "pass":
+        return False
+    if not frozen or not supports_ux_truth:
+        return False
+    semantic_profile = (plan or {}).get("software_semantic_profile") if isinstance(plan, dict) else {}
+    semantic_contract_path = ""
+    if isinstance(plan, dict):
+        semantic_contract_path = str((((plan.get("semantic_layer") or {}).get("artifacts") or {}).get("semantic_contract") or "")).strip()
+    return (
+        isinstance(semantic_profile, dict)
+        and all(semantic_profile.get(key) for key in ("title_rule", "state_rule", "action_rule", "exception_rule"))
+        and files["ux_prd"].exists()
+        and files["design_md"].exists()
+        and files["preview_html"].exists()
+        and files["preview_dark_html"].exists()
+        and bool(semantic_contract_path)
     )
 
 PAGE_CATALOG: dict[str, dict[str, Any]] = {
@@ -250,6 +283,106 @@ PAGE_CATALOG: dict[str, dict[str, Any]] = {
             {"id": "sibling-switch", "label": "切换同类文档", "description": "在阅读区切换相邻文档。"},
             {"id": "version-switch", "label": "切换版本", "description": "切换到同类型的其他版本文档。"},
             {"id": "source-missing", "label": "来源缺失", "description": "文档不存在或来源路径不可达。"},
+        ],
+    },
+    "portfolio-board": {
+        "name": "项目组合看板",
+        "keywords": ("portfolio-board", "项目组合", "组合看板", "项目组合看板"),
+        "priority": "P1",
+        "platforms": ["Web", "PC"],
+        "responsibility": "汇总当前版本线的 feature 状态、阻塞分布与建议波次，支持先判断先处理哪一组事项。",
+        "decision_supported": "当前应先进入阻塞 feature、待验收 feature，还是继续观察整体版本健康态。",
+        "sections": ["状态摘要", "阻塞分组", "待验收分组", "下一步动作"],
+        "actions": [
+            {"label": "进入执行看板", "target": "execution-board", "trigger": "点击执行看板入口"},
+            {"label": "进入功能详情", "target": "feature-detail", "trigger": "点击功能项"},
+        ],
+        "states": [
+            {"id": "ready", "label": "可用", "description": "组合状态已汇总，可继续下钻。"},
+            {"id": "blocked", "label": "阻塞", "description": "存在需要优先介入的阻塞 feature。"},
+            {"id": "needs-review", "label": "待验收", "description": "存在需要进入验收面的 feature。"},
+            {"id": "loading", "label": "加载中", "description": "组合状态仍在汇总。"},
+            {"id": "error", "label": "错误", "description": "组合聚合失败，必须给出恢复入口。"},
+        ],
+    },
+    "execution-board": {
+        "name": "执行看板",
+        "keywords": ("execution-board", "执行看板", "运行看板"),
+        "priority": "P0",
+        "platforms": ["Web", "PC"],
+        "responsibility": "先暴露当前运行状态、阻塞项与下一步动作，而不是先展示全量运行历史。",
+        "decision_supported": "当前应继续、停止、重试，还是先进入恢复路径。",
+        "sections": ["当前状态", "当前阻塞", "下一步动作", "运行分组"],
+        "actions": [
+            {"label": "进入运行详情", "target": "run-detail", "trigger": "点击运行项"},
+            {"label": "进入恢复诊断", "target": "recovery-diagnostics", "trigger": "点击阻塞或异常项"},
+            {"label": "进入功能详情", "target": "feature-detail", "trigger": "点击 feature 关联"},
+        ],
+        "states": [
+            {"id": "ready", "label": "可用", "description": "当前运行态完整，可执行继续、停止或重试。"},
+            {"id": "blocked", "label": "阻塞", "description": "存在阻塞运行，必须优先判断恢复路径。"},
+            {"id": "needs-review", "label": "待验收", "description": "存在待验收运行，需要进入验收面。"},
+            {"id": "retry-scheduled", "label": "已排队重试", "description": "存在待重试运行，需确认是否继续。"},
+            {"id": "loading", "label": "加载中", "description": "运行状态仍在读取。"},
+            {"id": "error", "label": "错误", "description": "运行状态读取失败，必须暴露恢复路径。"},
+        ],
+    },
+    "feature-detail": {
+        "name": "功能详情",
+        "keywords": ("feature-detail", "功能详情", "feature 详情"),
+        "priority": "P1",
+        "platforms": ["Web", "PC"],
+        "responsibility": "聚合单个 feature 的基线、依赖、当前状态与建议动作，支持判断是否继续实现或先回修。",
+        "decision_supported": "当前 feature 应继续推进、等待依赖，还是进入恢复或验收路径。",
+        "sections": ["功能摘要", "依赖与基线", "状态与风险", "下一步动作"],
+        "actions": [
+            {"label": "进入运行详情", "target": "run-detail", "trigger": "点击关联运行"},
+            {"label": "进入验收面", "target": "review-surface", "trigger": "点击验收入口"},
+        ],
+        "states": [
+            {"id": "ready", "label": "可用", "description": "功能状态完整，可判断下一步。"},
+            {"id": "blocked", "label": "阻塞", "description": "功能依赖或基线存在阻塞。"},
+            {"id": "needs-review", "label": "待验收", "description": "功能已进入待验收状态。"},
+            {"id": "error", "label": "错误", "description": "功能状态聚合失败，需进入恢复路径。"},
+        ],
+    },
+    "run-detail": {
+        "name": "运行详情",
+        "keywords": ("run-detail", "运行详情"),
+        "priority": "P1",
+        "platforms": ["Web", "PC"],
+        "responsibility": "聚合单次运行的状态时间线、写入范围、证据与建议动作，避免操作者在散落材料中自行拼接上下文。",
+        "decision_supported": "当前运行应继续、停止、重试，还是转入 repair handoff。",
+        "sections": ["运行状态", "阻塞原因", "建议动作", "二级明细"],
+        "actions": [
+            {"label": "进入恢复诊断", "target": "recovery-diagnostics", "trigger": "点击阻塞原因"},
+            {"label": "进入验收面", "target": "review-surface", "trigger": "点击验收入口"},
+        ],
+        "states": [
+            {"id": "running", "label": "运行中", "description": "当前运行仍在推进。"},
+            {"id": "blocked", "label": "阻塞", "description": "当前运行被阻断，必须优先判断恢复动作。"},
+            {"id": "needs-review", "label": "待验收", "description": "当前运行等待验收。"},
+            {"id": "retry-scheduled", "label": "已排队重试", "description": "当前运行等待重试。"},
+            {"id": "error", "label": "错误", "description": "当前运行状态不一致，必须暴露恢复路径。"},
+        ],
+    },
+    "review-surface": {
+        "name": "验收面",
+        "keywords": ("review-surface", "验收面", "review 面"),
+        "priority": "P1",
+        "platforms": ["Web", "PC"],
+        "responsibility": "集中展示差异入口、验收证据与发布提示，支持判断是否放行或回修。",
+        "decision_supported": "当前项应通过验收、回到修复路径，还是继续收集证据。",
+        "sections": ["验收状态", "差异入口", "证据入口", "放行建议"],
+        "actions": [
+            {"label": "返回运行详情", "target": "run-detail", "trigger": "点击返回"},
+            {"label": "进入恢复诊断", "target": "recovery-diagnostics", "trigger": "点击回修入口"},
+        ],
+        "states": [
+            {"id": "ready", "label": "可验收", "description": "验收证据完整，可判断是否放行。"},
+            {"id": "needs-evidence", "label": "证据不足", "description": "验收证据不足，不能放行。"},
+            {"id": "blocked", "label": "阻塞", "description": "验收存在阻塞，必须进入回修路径。"},
+            {"id": "error", "label": "错误", "description": "验收聚合失败，需优先给出恢复动作。"},
         ],
     },
 }
@@ -533,6 +666,7 @@ def prototype_files(project_root: Path, version: str, feature: str) -> dict[str,
         ),
         "pages_dir": _prefer(root / "pages", human_view_dir / "wireframes"),
         "page_specs_dir": _prefer(root / "page-specs", machine_view_dir / "page-specs"),
+        "design_artifacts_dir": _prefer(root / "design-artifacts", machine_view_dir / "design-artifacts"),
         "ux_prd": _prefer(root / "ux-prd.md", human_view_dir / "ux-prd.md"),
         "design_md": _prefer(root / "DESIGN.md", assets_dir / "DESIGN.md"),
         "preview_html": _prefer(root / "preview.html", assets_dir / "preview.html"),
@@ -884,24 +1018,27 @@ def _collect_forbidden_page_ids(docs: list[dict[str, Any]]) -> set[str]:
 
 
 def _default_custom_page_meta(page_id: str, label: str) -> dict[str, Any]:
+    known = PAGE_CATALOG.get(page_id)
+    if isinstance(known, dict):
+        return dict(known)
     name = _clean_page_label(label) or page_id.replace("-", " ").title()
     return {
         "name": name,
         "keywords": (name, page_id),
         "priority": "P1",
         "platforms": ["Web", "PC"],
-        "responsibility": f"冻结 `{name}` 的页面结构、关键动作和状态说明，确保与 requirement 材料一致。",
+        "responsibility": f"定义{name}的页面结构、状态边界与动作收口。",
         "sections": [
-            "页面头部",
-            "关键内容区",
-            "主要操作区",
-            "状态与反馈区",
+            "当前状态",
+            "当前阻塞",
+            "下一步动作",
+            "二级明细",
         ],
         "actions": [],
         "states": [
-            {"id": "ready", "label": "可用", "description": "页面数据齐备，用户可完成核心操作。"},
-            {"id": "loading", "label": "加载中", "description": "页面数据正在加载。"},
-            {"id": "error", "label": "错误", "description": "页面加载或提交失败，需提示恢复动作。"},
+            {"id": "ready", "label": "可用", "description": "当前状态完整，可执行主要动作。"},
+            {"id": "loading", "label": "加载中", "description": "当前信息仍在读取。"},
+            {"id": "error", "label": "错误", "description": "当前状态读取失败，必须提示恢复动作。"},
         ],
     }
 
@@ -1342,7 +1479,9 @@ def _build_page_specs(
             }
         )
         page_specs[-1]["analysis"] = PAGE_ANALYSIS_CATALOG.get(page_id, _default_page_analysis(page_specs[-1]))
-        page_specs[-1]["page_intent_contract"] = _build_page_intent_contract(page_specs[-1])
+        page_specs[-1]["visible_contract"] = _build_visible_contract(page_specs[-1])
+        page_specs[-1]["internal_governance"] = _build_internal_governance(page_specs[-1])
+        page_specs[-1]["ui_copy_projection_contract"] = _build_ui_copy_projection_contract(page_specs[-1])
         for state in page_specs[-1]["states"]:
             state["state_visibility_contract"] = _build_state_visibility_contract(page_specs[-1], state)
     return page_specs
@@ -1828,36 +1967,36 @@ def _build_design_context(
     page_specs: list[dict[str, Any]],
     theme: dict[str, Any],
 ) -> dict[str, Any]:
-    target_audience = _extract_field(docs, "target_audience", "Beacon 管理者 / 需求 owner / 实现协作者")
-    use_cases = _extract_list_field(
-        docs,
-        "primary_use_cases",
-        [
-            "快速理解页面先服务哪一个判断",
-            "冻结页面下钻路径与状态反馈",
-            "为 implement / qa 提供统一的 UX truth",
-        ],
-    )
-    operator_state = _extract_field(docs, "operator_mental_state", "需要在有限时间内完成判断与推进，而不是阅读泛化说明。")
-    usage_environment = _extract_field(docs, "usage_environment", "桌面优先的管理工作台与需求协作评审环境。")
-    brand_tone = _extract_list_field(
-        docs,
-        "brand_tone",
-        ["quiet", "precise", "operational", "content-first"],
-    )
-    density_preference = _extract_field(docs, "density_preference", "workbench-medium")
-    explicit_fields = [
-        key
-        for key in (
-            "target_audience",
-            "primary_use_cases",
-            "operator_mental_state",
-            "usage_environment",
-            "brand_tone",
-            "density_preference",
-        )
-        if _extract_field(docs, key, "")
+    explicit_target_audience = _extract_field(docs, "target_audience", "")
+    explicit_use_cases = _extract_list_field(docs, "primary_use_cases", [])
+    explicit_operator_state = _extract_field(docs, "operator_mental_state", "")
+    explicit_usage_environment = _extract_field(docs, "usage_environment", "")
+    explicit_brand_tone = _extract_list_field(docs, "brand_tone", [])
+    explicit_density_preference = _extract_field(docs, "density_preference", "")
+
+    target_audience = explicit_target_audience or "Beacon 管理者 / 需求 owner / 实现协作者"
+    use_cases = explicit_use_cases or [
+        "快速理解页面先服务哪一个判断",
+        "冻结页面下钻路径与状态反馈",
+        "为 implement / qa 提供统一的 UX truth",
     ]
+    operator_state = explicit_operator_state or "需要在有限时间内完成判断与推进，而不是阅读泛化说明。"
+    usage_environment = explicit_usage_environment or "桌面优先的管理工作台与需求协作评审环境。"
+    brand_tone = explicit_brand_tone or ["quiet", "precise", "operational", "content-first"]
+    density_preference = explicit_density_preference or "workbench-medium"
+    explicit_fields: list[str] = []
+    if explicit_target_audience:
+        explicit_fields.append("target_audience")
+    if explicit_use_cases:
+        explicit_fields.append("primary_use_cases")
+    if explicit_operator_state:
+        explicit_fields.append("operator_mental_state")
+    if explicit_usage_environment:
+        explicit_fields.append("usage_environment")
+    if explicit_brand_tone:
+        explicit_fields.append("brand_tone")
+    if explicit_density_preference:
+        explicit_fields.append("density_preference")
     return {
         "target_audience": target_audience,
         "primary_use_cases": use_cases,
@@ -1870,6 +2009,324 @@ def _build_design_context(
         "explicit_context_fields": explicit_fields,
         "explicit_context_complete": len(explicit_fields) == 6,
         "page_count": len(page_specs),
+    }
+
+
+def _build_software_semantic_profile(semantic_layer: dict[str, Any], page_specs: list[dict[str, Any]]) -> dict[str, Any]:
+    official = dict(semantic_layer.get("official_language", {})) if isinstance(semantic_layer, dict) else {}
+    return {
+        "tone": "formal-restrained-precise",
+        "title_rule": "标题仅陈述对象或状态，不解释设计意图。",
+        "state_rule": "状态文案必须先说明当前状态，再说明允许动作或禁止动作。",
+        "action_rule": "动作名称必须使用可执行动词，不使用泛化 SaaS 词汇。",
+        "field_rule": "字段与输入说明必须显式约束类型、非空、枚举或默认值。",
+        "exception_rule": "异常文案必须同时给出当前失败与恢复路径。",
+        "banned_terms": list(official.get("banned_terms") or []),
+        "preferred_terms": list(official.get("preferred_terms") or []),
+        "production_banned_copy": [
+            "当前状态",
+            "下一步动作",
+            "恢复路径",
+            "design asset catalog",
+            "review guidance",
+            "why/reasoning",
+            "transaction_id",
+            "projection_seq",
+        ],
+        "page_count": len(page_specs),
+    }
+
+
+def _build_ui_copy_projection_contract(page: dict[str, Any]) -> dict[str, Any]:
+    visible_contract = page.get("visible_contract") if isinstance(page.get("visible_contract"), dict) else {}
+    actions = [str(action.get("label") or "").strip() for action in (page.get("actions") or []) if isinstance(action, dict) and str(action.get("label") or "").strip()]
+    return {
+        "page_id": str(page.get("page_id") or "").strip(),
+        "first_screen_copy": {
+            "title": str(visible_contract.get("title") or page.get("name") or page.get("page_id") or "").strip(),
+            "primary_statement": str(visible_contract.get("subtitle") or page.get("responsibility") or "").strip(),
+            "must_show_first": list(visible_contract.get("must_show_sections") or [])[:2],
+            "next_actions": actions[:3],
+        },
+        "secondary_disclosure": [
+            "workspace path",
+            "artifact path",
+            "history timeline",
+            "machine trace detail",
+        ],
+        "forbidden_first_screen_copy": [
+            "design asset catalog wording",
+            "why/reasoning explanation",
+            "review guidance",
+            "machine contract detail",
+        ],
+    }
+
+
+def _build_surface_profile(page: dict[str, Any], design_reasoning: dict[str, Any]) -> dict[str, Any]:
+    actions = [item for item in (page.get("actions") or []) if isinstance(item, dict)]
+    return {
+        "page_id": str(page.get("page_id") or "").strip(),
+        "surface_type": str(design_reasoning.get("product_surface_type") or "workbench").strip(),
+        "layout_pattern": str(design_reasoning.get("recommended_layout_pattern") or "").strip(),
+        "primary_object": str(page.get("name") or page.get("page_id") or "").strip(),
+        "primary_responsibility": str(page.get("responsibility") or "").strip(),
+        "density": "workbench-medium",
+        "action_count": len(actions),
+    }
+
+
+def _build_layout_pattern_artifact(page: dict[str, Any], design_reasoning: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "page_id": str(page.get("page_id") or "").strip(),
+        "pattern": str(design_reasoning.get("recommended_layout_pattern") or "").strip(),
+        "sections": [str(item).strip() for item in (page.get("sections") or []) if str(item).strip()],
+        "layout_rules": list((page.get("analysis") or {}).get("layout_rules") or []),
+    }
+
+
+def _build_component_priority_map(page: dict[str, Any]) -> dict[str, Any]:
+    sections = [str(item).strip() for item in (page.get("sections") or []) if str(item).strip()]
+    entries: list[dict[str, Any]] = []
+    for index, section in enumerate(sections, start=1):
+        entries.append(
+            {
+                "component": section,
+                "priority": index,
+                "display_zone": _position_label(index - 1, len(sections)),
+            }
+        )
+    return {
+        "page_id": str(page.get("page_id") or "").strip(),
+        "entries": entries,
+    }
+
+
+def _sanitize_production_copy(text: str) -> str:
+    value = str(text or "").strip()
+    if "\n" in value:
+        return "\n".join(_sanitize_production_copy(line) if line.strip() else "" for line in value.splitlines())
+    replacements = {
+        "当前状态": "状态摘要",
+        "下一步动作": "主动作",
+        "恢复路径": "恢复入口",
+        "why/reasoning": "",
+        "review guidance": "",
+        "design asset catalog": "",
+    }
+    for source, target in replacements.items():
+        value = value.replace(source, target)
+    value = re.sub(r"\s+", " ", value).strip(" -:：")
+    return value
+
+
+def _build_production_ui_copy_profile(page: dict[str, Any]) -> dict[str, Any]:
+    visible_contract = page.get("visible_contract") if isinstance(page.get("visible_contract"), dict) else {}
+    actions = [str(item.get("label") or "").strip() for item in (page.get("actions") or []) if isinstance(item, dict)]
+    primary_actions = [_sanitize_production_copy(item) for item in actions[:3] if _sanitize_production_copy(item)]
+    if not primary_actions:
+        primary_actions = ["查看主体内容"]
+    return {
+        "page_id": str(page.get("page_id") or "").strip(),
+        "title": _sanitize_production_copy(str(visible_contract.get("title") or page.get("name") or page.get("page_id") or "").strip()),
+        "subtitle": _sanitize_production_copy(str(visible_contract.get("subtitle") or page.get("responsibility") or "").strip()),
+        "primary_actions": primary_actions,
+        "allowed_recovery_surface_states": ["blocked", "failed", "empty-risk"],
+        "forbidden_first_screen_terms": [
+            "当前状态",
+            "下一步动作",
+            "恢复路径",
+            "design asset catalog",
+            "review guidance",
+            "why/reasoning",
+        ],
+    }
+
+
+def _build_design_lint_rules(semantic_profile: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "banned_terms": list(semantic_profile.get("banned_terms") or []),
+        "production_banned_copy": list(semantic_profile.get("production_banned_copy") or []),
+        "title_rule": str(semantic_profile.get("title_rule") or "").strip(),
+        "state_rule": str(semantic_profile.get("state_rule") or "").strip(),
+        "action_rule": str(semantic_profile.get("action_rule") or "").strip(),
+        "exception_rule": str(semantic_profile.get("exception_rule") or "").strip(),
+    }
+
+
+def _build_design_artifacts(plan: dict[str, Any]) -> dict[str, Any]:
+    design_context = plan.get("design_context") if isinstance(plan.get("design_context"), dict) else {}
+    design_reasoning = plan.get("design_reasoning") if isinstance(plan.get("design_reasoning"), dict) else {}
+    semantic_profile = plan.get("software_semantic_profile") if isinstance(plan.get("software_semantic_profile"), dict) else {}
+    page_specs = [item for item in (plan.get("page_specs") or []) if isinstance(item, dict)]
+    generated_at = str(plan.get("generated_at") or now_iso())
+    source_refs = [str(item.get("path") or "").strip() for item in (plan.get("source_documents") or []) if isinstance(item, dict)]
+    source_hash = _stable_hash(source_refs + [generated_at, str(plan.get("feature_slug") or "")])
+    return {
+        "design-context.json": {
+            "generated_at": generated_at,
+            "source_hash": source_hash,
+            "source_feature": str(plan.get("feature_slug") or "").strip(),
+            "source_requirement_refs": source_refs,
+            "projection_role": "internal-governance-copy",
+            "payload": design_context,
+        },
+        "surface-profile.json": {
+            "generated_at": generated_at,
+            "source_hash": source_hash,
+            "source_feature": str(plan.get("feature_slug") or "").strip(),
+            "source_requirement_refs": source_refs,
+            "projection_role": "design-intelligence",
+            "pages": [_build_surface_profile(page, design_reasoning) for page in page_specs],
+        },
+        "layout-pattern.json": {
+            "generated_at": generated_at,
+            "source_hash": source_hash,
+            "source_feature": str(plan.get("feature_slug") or "").strip(),
+            "source_requirement_refs": source_refs,
+            "projection_role": "design-intelligence",
+            "pages": [_build_layout_pattern_artifact(page, design_reasoning) for page in page_specs],
+        },
+        "component-state-matrix.json": {
+            "generated_at": generated_at,
+            "source_hash": source_hash,
+            "source_feature": str(plan.get("feature_slug") or "").strip(),
+            "source_requirement_refs": source_refs,
+            "projection_role": "design-intelligence",
+            "pages": [
+                {
+                    "page_id": str(page.get("page_id") or "").strip(),
+                    "components": _build_component_priority_map(page).get("entries", []),
+                    "states": [state for state in (page.get("states") or []) if isinstance(state, dict)],
+                }
+                for page in page_specs
+            ],
+        },
+        "ui-copy-policy.json": {
+            "generated_at": generated_at,
+            "source_hash": source_hash,
+            "source_feature": str(plan.get("feature_slug") or "").strip(),
+            "source_requirement_refs": source_refs,
+            "projection_role": "governed-rendering",
+            "pages": [_build_ui_copy_projection_contract(page) for page in page_specs],
+        },
+        "production-ui-copy-profile.json": {
+            "generated_at": generated_at,
+            "source_hash": source_hash,
+            "source_feature": str(plan.get("feature_slug") or "").strip(),
+            "source_requirement_refs": source_refs,
+            "projection_role": "production-visible-copy",
+            "pages": [_build_production_ui_copy_profile(page) for page in page_specs],
+        },
+        "style-preset.json": {
+            "generated_at": generated_at,
+            "source_hash": source_hash,
+            "source_feature": str(plan.get("feature_slug") or "").strip(),
+            "source_requirement_refs": source_refs,
+            "projection_role": "design-style-preset",
+            "payload": dict(plan.get("theme") or {}),
+        },
+        "design-review.json": {
+            "generated_at": generated_at,
+            "source_hash": source_hash,
+            "source_feature": str(plan.get("feature_slug") or "").strip(),
+            "source_requirement_refs": source_refs,
+            "projection_role": "review-visible-copy",
+            "payload": {
+                "anti_patterns": list(design_reasoning.get("anti_patterns") or []),
+                "design_checklist": list(design_reasoning.get("design_checklist") or []),
+            },
+        },
+        "design-lint-rules.json": {
+            "generated_at": generated_at,
+            "source_hash": source_hash,
+            "source_feature": str(plan.get("feature_slug") or "").strip(),
+            "source_requirement_refs": source_refs,
+            "projection_role": "governance-lint",
+            "payload": _build_design_lint_rules(semantic_profile),
+        },
+    }
+
+
+def _page_state_category(page: dict[str, Any]) -> str:
+    states = {str(item.get("id") or "").strip() for item in (page.get("states") or []) if isinstance(item, dict)}
+    if states & {"blocked", "error", "stale", "failed", "rebuild-suggested", "doctor-suggested"}:
+        return "blocked"
+    if states & {"empty", "idle"}:
+        return "empty-risk"
+    return "ready"
+
+
+def _render_preview_page_card(page: dict[str, Any]) -> str:
+    copy_profile = page.get("production_ui_copy_profile") if isinstance(page.get("production_ui_copy_profile"), dict) else {}
+    actions = [str(item).strip() for item in (copy_profile.get("primary_actions") or []) if str(item).strip()]
+    actions_markup = "".join(f'<span class="action-pill">{html.escape(item)}</span>' for item in actions[:3]) or '<span class="muted">无主动作</span>'
+    return f"""
+            <section class="card">
+              <div class="eyebrow">{html.escape(page.get('priority', 'P1'))} · {html.escape(', '.join(page.get('platforms', [])[:3]))}</div>
+              <h2>{html.escape(str(copy_profile.get('title') or page.get('name') or page.get('page_id') or 'Page'))}</h2>
+              <p>{html.escape(str(copy_profile.get('subtitle') or page.get('responsibility') or ''))}</p>
+              <div class="actions">{actions_markup}</div>
+            </section>
+            """
+
+
+def _build_first_screen_contract(page: dict[str, Any]) -> dict[str, Any]:
+    states = [state for state in (page.get("states") or []) if isinstance(state, dict)]
+    actions = [str(action.get("label") or "").strip() for action in (page.get("actions") or []) if isinstance(action, dict) and str(action.get("label") or "").strip()]
+    status_state = next((state for state in states if str(state.get("id") or "").strip() in {"ready", "running", "healthy-warning"}), states[0] if states else {})
+    blocker_state = next(
+        (state for state in states if str(state.get("id") or "").strip() in {"blocked", "error", "degraded", "rebuild-suggested", "doctor-suggested", "needs-review", "retry-scheduled"}),
+        states[-1] if states else {},
+    )
+    return {
+        "primary_status": str(status_state.get("description") or "").strip(),
+        "primary_blocker": str(blocker_state.get("description") or "").strip(),
+        "next_actions": actions[:3] or ["查看主体内容"],
+        "recovery_path": "优先进入恢复路径或返回上一层，不允许停留在无动作状态。",
+        "secondary_disclosure_only": [
+            "run list",
+            "workspace path",
+            "artifact path",
+            "history timeline",
+            "machine trace detail",
+        ],
+    }
+
+
+def _build_visible_contract(page: dict[str, Any]) -> dict[str, Any]:
+    sections = [str(item).strip() for item in (page.get("sections") or []) if str(item).strip()]
+    actions = [
+        _sanitize_production_copy(str(action.get("label") or "").strip())
+        for action in (page.get("actions") or [])
+        if isinstance(action, dict) and _sanitize_production_copy(str(action.get("label") or "").strip())
+    ]
+    states = [
+        {
+            "id": str(state.get("id") or "").strip(),
+            "label": _sanitize_production_copy(str(state.get("label") or state.get("id") or "").strip()),
+            "description": _sanitize_production_copy(str(state.get("description") or "").strip()),
+        }
+        for state in (page.get("states") or [])
+        if isinstance(state, dict) and str(state.get("id") or "").strip()
+    ]
+    subtitle = str(page.get("decision_supported") or "").strip()
+    if not subtitle:
+        analysis = page.get("analysis") if isinstance(page.get("analysis"), dict) else _default_page_analysis(page)
+        subtitle = str((analysis.get("decision_focus") or [page.get("responsibility") or ""])[0]).strip()
+    return {
+        "title": _sanitize_production_copy(str(page.get("name") or page.get("page_id") or "").strip()),
+        "subtitle": _sanitize_production_copy(subtitle or str(page.get("responsibility") or "").strip()),
+        "must_show_sections": sections[:3] or ["页面头部", "关键内容区"],
+        "primary_actions": actions[:3] or ["查看主体内容"],
+        "visible_states": states[:6],
+        "secondary_disclosure_only": [
+            "run list",
+            "workspace path",
+            "artifact path",
+            "history timeline",
+            "machine trace detail",
+        ],
     }
 
 
@@ -1970,6 +2427,26 @@ def _build_page_intent_contract(page: dict[str, Any]) -> dict[str, Any]:
             for action in actions[:6]
             if str(action.get("label") or "").strip()
         ] or [{"label": "停留当前页继续阅读", "target": str(page.get("page_id") or "").strip()}],
+    }
+
+
+def _build_internal_governance(page: dict[str, Any]) -> dict[str, Any]:
+    analysis = page.get("analysis") if isinstance(page.get("analysis"), dict) else _default_page_analysis(page)
+    return {
+        "page_intent_contract": _build_page_intent_contract(page),
+        "first_screen_contract": _build_first_screen_contract(page),
+        "review_principles": list(analysis.get("layout_rules") or []),
+        "layout_breakdown": [
+            {
+                "section": section,
+                "purpose": _section_purpose(section),
+                "display_zone": _position_label(index, len(page.get("sections") or [])),
+            }
+            for index, section in enumerate([str(item).strip() for item in (page.get("sections") or []) if str(item).strip()])
+        ],
+        "interaction_contract": _render_interaction_notes(page),
+        "state_contract": _render_state_notes(page),
+        "noise_guardrail": str(analysis.get("noise_guardrail") or "").strip(),
     }
 
 
@@ -2295,10 +2772,12 @@ def _human_view_files() -> list[str]:
 
 def _default_page_analysis(page: dict[str, Any]) -> dict[str, Any]:
     actions = [str(action.get("label") or "").strip() for action in page.get("actions", []) if isinstance(action, dict)]
+    governance = page.get("internal_governance") if isinstance(page.get("internal_governance"), dict) else {}
+    first_screen = governance.get("first_screen_contract") if isinstance(governance.get("first_screen_contract"), dict) else {}
     return {
         "target_user": "需要完成页面判断与下钻的 Beacon 使用者",
         "decision_focus": [
-            str(page.get("responsibility") or "").strip() or "先建立页面上下文。",
+            str(first_screen.get("primary_status") or page.get("responsibility") or "").strip() or "先建立页面上下文。",
             (
                 f"确认是否执行 {actions[0]}。"
                 if actions
@@ -2309,7 +2788,7 @@ def _default_page_analysis(page: dict[str, Any]) -> dict[str, Any]:
             "首屏先回答当前页最重要的问题。",
             "主体区只保留支撑判断的结构，不展开高保真视觉。",
         ],
-        "noise_guardrail": "页面说明只保留人类审阅需要的信息，不混入机器合同细节。",
+        "noise_guardrail": "首屏只保留操作者判断需要的信息；路径、历史与机器材料只能进入二级展开。",
     }
 
 
@@ -2405,76 +2884,54 @@ def _render_information_priority(page: dict[str, Any], analysis: dict[str, Any])
     if len(sections) >= 2:
         priority_lines.append(f"- 第二优先看 `{sections[1]}`，用于补足判断依据并决定是否下钻。")
     if sections:
-        priority_lines.append(f"- 最后收口到 `{sections[-1]}`，让用户在读完后知道下一步动作。")
+        priority_lines.append(f"- 最后收口到 `{sections[-1]}`，让用户在读完后明确主动作。")
     for rule in analysis.get("layout_rules", [])[:2]:
         priority_lines.append(f"- 审阅原则：{rule}")
     return priority_lines
 
 
 def _render_page_markdown(page: dict[str, Any]) -> str:
-    analysis = (
-        page.get("analysis")
-        if isinstance(page.get("analysis"), dict)
-        else PAGE_ANALYSIS_CATALOG.get(page["page_id"], _default_page_analysis(page))
+    visible_contract = page.get("visible_contract") if isinstance(page.get("visible_contract"), dict) else {}
+    copy_profile = page.get("production_ui_copy_profile") if isinstance(page.get("production_ui_copy_profile"), dict) else {}
+    actions = [str(item).strip() for item in (visible_contract.get("primary_actions") or copy_profile.get("primary_actions") or []) if str(item).strip()]
+    sections = [str(item).strip() for item in (visible_contract.get("must_show_sections") or page.get("sections") or []) if str(item).strip()]
+    states = [state for state in (visible_contract.get("visible_states") or []) if isinstance(state, dict)]
+    layout_lines = (
+        page.get("layout_lines")
+        if isinstance(page.get("layout_lines"), list) and page.get("layout_lines")
+        else _build_page_layout(page["page_id"], page.get("sections"))
     )
     lines = [
-        f"# 低保真线框页：{page['name']}",
+        f"# 页面：{page['name']}",
         "",
         f"**平台**: `{', '.join(page['platforms'])}`",
         f"**优先级**: `{page['priority']}`",
         "",
-        "## 页面意图",
-        f"- 目标读者：{analysis['target_user']}",
-        f"- 页面任务：{page['responsibility']}",
+        "## 页面文案",
+        f"- 标题：{copy_profile.get('title', visible_contract.get('title', page['name']))}",
+        f"- 副标题：{copy_profile.get('subtitle', visible_contract.get('subtitle', page['responsibility']))}",
+        f"- 主动作：{', '.join(actions[:3]) or '-'}",
+        "",
+        "## 页面结构",
     ]
-    for question in analysis.get("decision_focus", []):
-        lines.append(f"- 先回答的问题：{question}")
-    lines.extend(
-        [
-            "",
-            "## 布局草图",
-            "```text",
-            *(
-                page.get("layout_lines")
-                if isinstance(page.get("layout_lines"), list) and page.get("layout_lines")
-                else _build_page_layout(page["page_id"], page.get("sections"))
-            ),
-            "```",
-            "",
-            "## 版面拆解",
-        ]
-    )
-    lines.extend(_render_section_breakdown(page))
-    lines.extend(
-        [
-            "",
-            "## 信息优先级",
-        ]
-    )
-    lines.extend(_render_information_priority(page, analysis))
-    lines.extend(
-        [
-            "",
-            "## 关键交互",
-        ]
-    )
-    lines.extend(_render_interaction_notes(page))
-    lines.extend(
-        [
-            "",
-            "## 状态切换与兜底",
-        ]
-    )
-    lines.extend(_render_state_notes(page))
-    lines.extend(
-        [
-            "",
-            "## 审阅边界",
-            f"- {analysis['noise_guardrail']}",
-            "- 这页只冻结信息结构、交互收口和状态兜底，不表达高保真视觉或最终实现细节。",
-        ]
-    )
-    return "\n".join(lines)
+    lines.extend(f"- {section}" for section in sections)
+    lines.extend(["", "## 页面线框", "```text", *layout_lines, "```"])
+    lines.extend(["", "## 页面状态"])
+    for state in states:
+        label = str(state.get("label") or state.get("id") or "").strip()
+        description = str(state.get("description") or "").strip()
+        lines.append(f"- {label}：{description}" if description else f"- {label}")
+    lines.extend(["", "## 页面跳转"])
+    transitions = [item for item in (page.get("actions") or []) if isinstance(item, dict)]
+    if transitions:
+        for action in transitions[:8]:
+            label = str(action.get("label") or "").strip()
+            target = str(action.get("target") or "").strip()
+            if label and target:
+                lines.append(f"- {label} -> `{target}`")
+    else:
+        lines.append("- 当前页无跨页跳转")
+    return _sanitize_production_copy("\n".join(lines))
 
 
 def _render_wireframe_summary(plan: dict[str, Any]) -> str:
@@ -2524,47 +2981,55 @@ def _render_ux_prd_md(plan: dict[str, Any]) -> str:
     design_context = plan.get("design_context") if isinstance(plan.get("design_context"), dict) else {}
     design_reasoning = plan.get("design_reasoning") if isinstance(plan.get("design_reasoning"), dict) else {}
     ux_contract = plan.get("ux_contract") if isinstance(plan.get("ux_contract"), dict) else {}
+    semantic_profile = plan.get("software_semantic_profile") if isinstance(plan.get("software_semantic_profile"), dict) else {}
     lines = [
         f"# UX PRD：{plan['feature']}",
         "",
         f"**Feature**: `{plan['feature_slug']}`",
         f"**Version**: `{plan['version']}`",
         "",
-        "## Design Context",
-        f"- Target Audience: {design_context.get('target_audience', '-')}",
-        f"- Primary Use Cases: {', '.join(design_context.get('primary_use_cases', [])[:5]) or '-'}",
-        f"- Operator Mental State: {design_context.get('operator_mental_state', '-')}",
-        f"- Usage Environment: {design_context.get('usage_environment', '-')}",
-        f"- Brand Tone: {', '.join(design_context.get('brand_tone', [])[:5]) or '-'}",
-        f"- Density Preference: {design_context.get('density_preference', '-')}",
+        "## 设计上下文",
+        f"- 目标读者：{design_context.get('target_audience', '-')}",
+        f"- 主要用例：{', '.join(design_context.get('primary_use_cases', [])[:5]) or '-'}",
+        f"- 操作者状态：{design_context.get('operator_mental_state', '-')}",
+        f"- 使用环境：{design_context.get('usage_environment', '-')}",
+        f"- 语义基调：{', '.join(design_context.get('brand_tone', [])[:5]) or '-'}",
+        f"- 信息密度：{design_context.get('density_preference', '-')}",
         "",
-        "## Design Reasoning",
-        f"- Product Surface Type: {design_reasoning.get('product_surface_type', '-')}",
-        f"- Interaction Model: {design_reasoning.get('interaction_model', '-')}",
-        f"- Layout Pattern: {design_reasoning.get('recommended_layout_pattern', '-')}",
+        "## 设计原则",
+        f"- 产品表面类型：{design_reasoning.get('product_surface_type', '-')}",
+        f"- 交互模型：{design_reasoning.get('interaction_model', '-')}",
+        f"- 版式模式：{design_reasoning.get('recommended_layout_pattern', '-')}",
         "",
-        "## UX Contract",
-        f"- First Glance Question: {ux_contract.get('first_glance_question', '-')}",
-        f"- Primary Decision: {ux_contract.get('primary_decision', '-')}",
-        f"- Action Hierarchy: {', '.join(ux_contract.get('action_hierarchy', [])[:6]) or '-'}",
+        "## 软件语义规范",
+        f"- 标题规则：{semantic_profile.get('title_rule', '-')}",
+        f"- 状态规则：{semantic_profile.get('state_rule', '-')}",
+        f"- 动作规则：{semantic_profile.get('action_rule', '-')}",
+        f"- 异常规则：{semantic_profile.get('exception_rule', '-')}",
         "",
-        "## Page Intent Contracts",
+        "## 交互合同",
+        f"- 首屏判断问题：{ux_contract.get('first_glance_question', '-')}",
+        f"- 主判断：{ux_contract.get('primary_decision', '-')}",
+        f"- 动作层级：{', '.join(ux_contract.get('action_hierarchy', [])[:6]) or '-'}",
+        "",
+        "## 页面意图合同",
     ]
     for page in plan.get("page_specs", []):
         if not isinstance(page, dict):
             continue
-        intent = page.get("page_intent_contract") if isinstance(page.get("page_intent_contract"), dict) else {}
+        governance = page.get("internal_governance") if isinstance(page.get("internal_governance"), dict) else {}
+        intent = governance.get("page_intent_contract") if isinstance(governance.get("page_intent_contract"), dict) else {}
         lines.extend(
             [
                 f"### {page.get('name', page.get('page_id', 'page'))}",
-                f"- Why: {intent.get('why_this_page_exists', '-')}",
-                f"- Decision Supported: {intent.get('decision_supported', '-')}",
-                f"- Must Show First: {', '.join(intent.get('must_show_first', [])[:4]) or '-'}",
-                f"- Must Not Show: {', '.join(intent.get('must_not_show', [])[:4]) or '-'}",
+                f"- 页面职责：{intent.get('why_this_page_exists', '-')}",
+                f"- 支持判断：{intent.get('decision_supported', '-')}",
+                f"- 首屏必须展示：{', '.join(intent.get('must_show_first', [])[:4]) or '-'}",
+                f"- 首屏禁止展示：{', '.join(intent.get('must_not_show', [])[:4]) or '-'}",
             ]
         )
     lines.append("")
-    lines.append("## State Visibility Contracts")
+    lines.append("## 状态可见性合同")
     seen_states: set[str] = set()
     for page in plan.get("page_specs", []):
         if not isinstance(page, dict):
@@ -2579,10 +3044,10 @@ def _render_ux_prd_md(plan: dict[str, Any]) -> str:
             contract = state.get("state_visibility_contract") if isinstance(state.get("state_visibility_contract"), dict) else {}
             lines.extend(
                 [
-                    f"- `{state_id}`: {contract.get('user_question', '-')}",
-                    f"  - Required Feedback: {', '.join(contract.get('required_feedback', [])[:4]) or '-'}",
-                    f"  - Primary Actions: {', '.join(contract.get('primary_actions', [])[:4]) or '-'}",
-                    f"  - Recovery Actions: {', '.join(contract.get('recovery_actions', [])[:4]) or '-'}",
+                    f"- `{state_id}`：{contract.get('user_question', '-')}",
+                    f"  - 必要反馈：{', '.join(contract.get('required_feedback', [])[:4]) or '-'}",
+                    f"  - 主动作：{', '.join(contract.get('primary_actions', [])[:4]) or '-'}",
+                    f"  - 恢复动作：{', '.join(contract.get('recovery_actions', [])[:4]) or '-'}",
                     f"  - AC Refs: {', '.join(((contract.get('acceptance_refs') or {}).get('ac_refs') or [])[:4]) or '-'}",
                     f"  - TC Refs: {', '.join(((contract.get('acceptance_refs') or {}).get('tc_refs') or [])[:4]) or '-'}",
                 ]
@@ -2601,6 +3066,7 @@ def _render_ux_prd_md(plan: dict[str, Any]) -> str:
 def _render_design_md(plan: dict[str, Any], theme: dict[str, Any]) -> str:
     design_context = plan.get("design_context") if isinstance(plan.get("design_context"), dict) else {}
     design_reasoning = plan.get("design_reasoning") if isinstance(plan.get("design_reasoning"), dict) else {}
+    semantic_profile = plan.get("software_semantic_profile") if isinstance(plan.get("software_semantic_profile"), dict) else {}
     return "\n".join(
         [
             f"# DESIGN.md: {plan['feature']}",
@@ -2641,6 +3107,11 @@ def _render_design_md(plan: dict[str, Any], theme: dict[str, Any]) -> str:
             f"- Primary audience: {design_context.get('target_audience', '-')}",
             "- Preserve page intent contracts and state visibility contracts during implementation.",
             "- Treat this file as projection from prototype truth, not an editable source of truth.",
+            "",
+            "## Semantic Guardrail",
+            f"- Title Rule: {semantic_profile.get('title_rule', '-')}",
+            f"- State Rule: {semantic_profile.get('state_rule', '-')}",
+            f"- Action Rule: {semantic_profile.get('action_rule', '-')}",
         ]
     )
 
@@ -2655,21 +3126,28 @@ def _render_preview_html(plan: dict[str, Any], theme: dict[str, Any], *, dark: b
     for page in (plan.get("page_specs") or [])[:6]:
         if not isinstance(page, dict):
             continue
-        intent = page.get("page_intent_contract") if isinstance(page.get("page_intent_contract"), dict) else {}
-        page_cards.append(
-            f"""
-            <section class="card">
-              <div class="eyebrow">{page.get('priority', 'P1')} · {', '.join(page.get('platforms', [])[:3])}</div>
-              <h2>{page.get('name', page.get('page_id', 'Page'))}</h2>
-              <p>{intent.get('decision_supported', page.get('responsibility', ''))}</p>
-              <ul>
-                <li>First: {', '.join(intent.get('must_show_first', [])[:2]) or '-'}</li>
-                <li>Noise Guard: {((page.get('analysis') or {}).get('noise_guardrail', '-'))}</li>
-              </ul>
-            </section>
-            """
-        )
+        page_cards.append(_render_preview_page_card(page))
     mode = "Dark" if dark else "Light"
+    first_page = next((page for page in (plan.get("page_specs") or []) if isinstance(page, dict)), {})
+    copy_profile = first_page.get("production_ui_copy_profile") if isinstance(first_page.get("production_ui_copy_profile"), dict) else {}
+    feature_title = str(copy_profile.get("title") or first_page.get("name") or plan["feature"]).strip()
+    hero_summary = str(copy_profile.get("subtitle") or first_page.get("responsibility") or "").strip()
+    page_state = _page_state_category(first_page)
+    first_actions = [str(item).strip() for item in (copy_profile.get("primary_actions") or []) if str(item).strip()]
+    recovery_panel = ""
+    if page_state in {"blocked", "empty-risk"}:
+        governance = first_page.get("internal_governance") if isinstance(first_page.get("internal_governance"), dict) else {}
+        first_screen = governance.get("first_screen_contract") if isinstance(governance.get("first_screen_contract"), dict) else {}
+        recovery_panel = f"""
+    <section class="card alert" style="margin-bottom:16px;">
+      <div class="eyebrow">恢复判断</div>
+      <h2>{html.escape(_sanitize_production_copy(str(first_screen.get('primary_blocker') or '当前存在阻塞')))}</h2>
+      <p>{html.escape(_sanitize_production_copy(str(first_screen.get('recovery_path') or '请执行恢复动作后继续。')))}</p>
+    </section>
+"""
+    primary_actions_markup = "".join(
+        f'<span class="action-pill">{html.escape(item)}</span>' for item in first_actions[:3]
+    ) or '<span class="muted">无主动作</span>'
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -2694,6 +3172,10 @@ def _render_preview_html(plan: dict[str, Any], theme: dict[str, Any], *, dark: b
     p, li {{ line-height: 1.5; }}
     .grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }}
     .card {{ background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 16px; display: grid; gap: 10px; }}
+    .alert {{ border-color: var(--accent); }}
+    .actions {{ display: flex; flex-wrap: wrap; gap: 8px; }}
+    .action-pill {{ border: 1px solid var(--border); border-radius: 999px; padding: 6px 10px; font-size: 13px; }}
+    .muted {{ color: #6E6E73; font-size: 13px; }}
     ul {{ margin: 0; padding-left: 18px; }}
   </style>
 </head>
@@ -2701,9 +3183,14 @@ def _render_preview_html(plan: dict[str, Any], theme: dict[str, Any], *, dark: b
   <main>
     <section class="hero">
       <div class="eyebrow">{theme.get('design_preset', 'apple-inspired-design-md')} · {mode} preview</div>
-      <h1>{plan['feature']}</h1>
-      <p>This preview is a design asset catalog projected from prototype truth, not a product implementation page.</p>
+      <h1>{html.escape(feature_title)}</h1>
+      <p>{html.escape(hero_summary)}</p>
     </section>
+    <section class="card" style="margin-bottom:16px;">
+      <div class="eyebrow">主动作</div>
+      <div class="actions">{primary_actions_markup}</div>
+    </section>
+    {recovery_panel}
     <section class="grid">
       {''.join(page_cards)}
     </section>
@@ -2743,6 +3230,25 @@ def _render_navigation_map_md(plan: dict[str, Any]) -> str:
         ]
     )
     return "\n".join(lines)
+
+
+def _serialize_page_spec(page: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "page_id": str(page.get("page_id") or "").strip(),
+        "name": str(page.get("name") or "").strip(),
+        "priority": str(page.get("priority") or "").strip(),
+        "platforms": list(page.get("platforms") or []),
+        "responsibility": str(page.get("responsibility") or "").strip(),
+        "sections": [str(item).strip() for item in (page.get("sections") or []) if str(item).strip()],
+        "actions": [item for item in (page.get("actions") or []) if isinstance(item, dict)],
+        "states": [item for item in (page.get("states") or []) if isinstance(item, dict)],
+        "requirement_refs": page.get("requirement_refs") if isinstance(page.get("requirement_refs"), dict) else {},
+        "outbound_transitions": [item for item in (page.get("outbound_transitions") or []) if isinstance(item, dict)],
+        "visible_contract": page.get("visible_contract") if isinstance(page.get("visible_contract"), dict) else {},
+        "internal_governance": page.get("internal_governance") if isinstance(page.get("internal_governance"), dict) else {},
+        "ui_copy_policy": page.get("ui_copy_policy") if isinstance(page.get("ui_copy_policy"), dict) else {},
+        "production_ui_copy_profile": page.get("production_ui_copy_profile") if isinstance(page.get("production_ui_copy_profile"), dict) else {},
+    }
 
 
 def _render_review_markdown(payload: dict[str, Any]) -> str:
@@ -3023,6 +3529,33 @@ def _prototype_source_context(docs: list[dict[str, Any]]) -> str:
     return "\n\n".join(blocks)
 
 
+def _build_prototype_host_bridge_request(
+    *,
+    feature: str,
+    version: str,
+    docs: list[dict[str, Any]],
+    model: str,
+    semantic_layer: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    return {
+        "schema_version": "1.0",
+        "command_name": "prototype",
+        "request_kind": "prototype-wireframe-compile",
+        "feature": feature,
+        "version": version,
+        "requested_model": model,
+        "semantic_layer": semantic_layer if isinstance(semantic_layer, dict) else {},
+        "documents": [
+            {
+                "type": str(doc.get("type") or ""),
+                "path": str(doc.get("path") or ""),
+                "text": str(doc.get("text") or ""),
+            }
+            for doc in docs
+        ],
+    }
+
+
 def _real_prototype_llm_inference(
     *,
     feature: str,
@@ -3269,6 +3802,7 @@ def _assemble_prototype_plan(
     design_context = _build_design_context(docs, page_specs, theme_payload) if supports_ux_truth else {}
     design_reasoning = _build_design_reasoning(page_specs, theme_payload) if supports_ux_truth else {}
     ux_contract = _build_ux_contract(page_specs) if supports_ux_truth else {}
+    software_semantic_profile = _build_software_semantic_profile(semantic_payload, page_specs) if supports_ux_truth else {}
     return {
         "schema_version": SCHEMA_VERSION,
         "feature": feature,
@@ -3298,6 +3832,7 @@ def _assemble_prototype_plan(
         "design_context": design_context,
         "design_reasoning": design_reasoning,
         "ux_contract": ux_contract,
+        "software_semantic_profile": software_semantic_profile,
         "semantic_layer": {
             "artifacts": dict(semantic_payload.get("artifacts", {})),
             "default_design_bridge": dict(semantic_payload.get("default_design_bridge", {})),
@@ -3486,7 +4021,8 @@ def _compile_prototype_plan_from_inference(
                 "analysis": raw_page.get("analysis"),
             }
         )
-        page["page_intent_contract"] = _build_page_intent_contract(page)
+        page["visible_contract"] = _build_visible_contract(page)
+        page["internal_governance"] = _build_internal_governance(page)
         for state in page["states"]:
             state["state_visibility_contract"] = _build_state_visibility_contract(page, state)
         normalized_pages.append(page)
@@ -3593,9 +4129,10 @@ def _compile_prototype_plan_from_inference(
         "validated_page_count": len(normalized_pages),
         "validated_transition_count": len(transitions),
     }
-    if inference_mode == "host-bridge":
+    if inference_mode.startswith("host"):
         llm_trace["host_runtime"] = str(capability_snapshot.get("host_runtime") or "")
         llm_trace["host_response_source"] = str(capability_snapshot.get("host_response_source") or "")
+        llm_trace["host_transport"] = str(capability_snapshot.get("host_transport") or "")
     return _assemble_prototype_plan(
         docs=docs,
         version=version,
@@ -3658,9 +4195,31 @@ def _compile_prototype_plan_host(
     capability_snapshot: dict[str, Any],
     semantic_layer: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    inference, _ = load_host_response_json("prototype")
+    inference = {}
+    inference_mode = "host-bridge"
+    parser_mode = "host-wireframe-compiler"
+    bridge_request = _build_prototype_host_bridge_request(
+        feature=feature,
+        version=version,
+        docs=docs,
+        model=model,
+        semantic_layer=semantic_layer,
+    )
+    inference, _ = execute_host_bridge_command("prototype", bridge_request)
     if not inference:
-        raise PrototypeLLMCompileError("prototype host response missing or invalid")
+        inference, _ = load_host_response_json("prototype")
+    if not inference:
+        if not bool(capability_snapshot.get("provider_available")):
+            raise PrototypeLLMCompileError("prototype host response missing or provider-backed host compile unavailable")
+        inference = _real_prototype_llm_inference(
+            feature=feature,
+            version=version,
+            docs=docs,
+            model=model,
+            semantic_layer=semantic_layer,
+        )
+        inference_mode = "host-provider"
+        parser_mode = "host-provider-wireframe-compiler"
     return _compile_prototype_plan_from_inference(
         version=version,
         feature=feature,
@@ -3670,8 +4229,8 @@ def _compile_prototype_plan_host(
         effective_mode="host",
         model=model,
         capability_snapshot=capability_snapshot,
-        inference_mode="host-bridge",
-        parser_mode="host-wireframe-compiler",
+        inference_mode=inference_mode,
+        parser_mode=parser_mode,
         semantic_layer=semantic_layer,
     )
 
@@ -3861,6 +4420,23 @@ def write_prototype_bundle(
     transaction_id = f"tx-{feature_slug}-{projection_seq}"
 
     theme_payload = plan["theme"]
+    design_artifacts = _build_design_artifacts(plan) if supports_ux_truth else {}
+    production_copy_by_page = {
+        str(item.get("page_id") or "").strip(): item
+        for item in ((design_artifacts.get("production-ui-copy-profile.json") or {}).get("pages") or [])
+        if isinstance(item, dict)
+    }
+    ui_copy_policy_by_page = {
+        str(item.get("page_id") or "").strip(): item
+        for item in ((design_artifacts.get("ui-copy-policy.json") or {}).get("pages") or [])
+        if isinstance(item, dict)
+    }
+    for page in plan["page_specs"]:
+        if not isinstance(page, dict):
+            continue
+        page_id = str(page.get("page_id") or "").strip()
+        page["production_ui_copy_profile"] = production_copy_by_page.get(page_id, {})
+        page["ui_copy_policy"] = ui_copy_policy_by_page.get(page_id, {})
     transitions = plan["navigation"]["transitions"]
     requirement_ids = plan.get("requirement_ids") if isinstance(plan.get("requirement_ids"), dict) else {}
     interaction_map = _build_interaction_map(plan["page_specs"], transitions)
@@ -3925,6 +4501,7 @@ def write_prototype_bundle(
         stage_files["root"].mkdir(parents=True, exist_ok=True)
         stage_files["pages_dir"].mkdir(parents=True, exist_ok=True)
         stage_files["page_specs_dir"].mkdir(parents=True, exist_ok=True)
+        stage_files["design_artifacts_dir"].mkdir(parents=True, exist_ok=True)
         stage_files["human_view_dir"].mkdir(parents=True, exist_ok=True)
         stage_files["machine_view_dir"].mkdir(parents=True, exist_ok=True)
         stage_files["theme"].parent.mkdir(parents=True, exist_ok=True)
@@ -3999,6 +4576,8 @@ def write_prototype_bundle(
         )
         _write_json(stage_files["theme"], theme_payload)
         _write_json(stage_files["platform_variants"], plan["platform_variants"])
+        for artifact_name, artifact_payload in design_artifacts.items():
+            _write_json(stage_files["design_artifacts_dir"] / artifact_name, artifact_payload)
         _write_text(
             stage_files["tokens_css"],
             "\n".join(
@@ -4014,7 +4593,7 @@ def write_prototype_bundle(
 
         for page in plan["page_specs"]:
             _write_text(stage_files["pages_dir"] / f"{page['page_id']}.md", _render_page_markdown(page))
-            _write_json(stage_files["page_specs_dir"] / f"{page['page_id']}.json", page)
+            _write_json(stage_files["page_specs_dir"] / f"{page['page_id']}.json", _serialize_page_spec(page))
         _write_json(stage_files["source_map"], source_map)
 
         _write_json(
@@ -4040,6 +4619,15 @@ def write_prototype_bundle(
                     "coverage-report.json",
                     "source-map.json",
                     "route-closure-contract.json",
+                    "design-artifacts/design-context.json",
+                    "design-artifacts/surface-profile.json",
+                    "design-artifacts/layout-pattern.json",
+                    "design-artifacts/component-state-matrix.json",
+                    "design-artifacts/ui-copy-policy.json",
+                    "design-artifacts/production-ui-copy-profile.json",
+                    "design-artifacts/style-preset.json",
+                    "design-artifacts/design-review.json",
+                    "design-artifacts/design-lint-rules.json",
                     *(
                         [
                             "design_context",
@@ -4131,6 +4719,7 @@ def write_prototype_bundle(
                 "source_map": str(files["source_map"].relative_to(project_root)),
                 "pages_dir": str(files["pages_dir"].relative_to(project_root)),
                 "page_specs_dir": str(files["page_specs_dir"].relative_to(project_root)),
+                "design_artifacts_dir": str(files["design_artifacts_dir"].relative_to(project_root)),
                 "human_view_dir": str(files["human_view_dir"].relative_to(project_root)),
                 "machine_view_dir": str(files["machine_view_dir"].relative_to(project_root)),
                 "theme": str(files["theme"].relative_to(project_root)),
@@ -4274,6 +4863,7 @@ def review_prototype_bundle(project_root: Path, version: str, feature: str) -> d
     design_context = plan.get("design_context") if isinstance(plan.get("design_context"), dict) else {}
     design_reasoning = plan.get("design_reasoning") if isinstance(plan.get("design_reasoning"), dict) else {}
     ux_contract = plan.get("ux_contract") if isinstance(plan.get("ux_contract"), dict) else {}
+    governed_rendering_enforced = _semver_tuple(version) >= (1, 3, 11)
 
     checks = [
         _review_check(
@@ -4637,14 +5227,63 @@ def review_prototype_bundle(project_root: Path, version: str, feature: str) -> d
                     else "fail",
                     "design preset must default to apple-inspired-design-md or record an explicit override reason",
                 ),
+                _review_check(
+                    "semantic_profile_complete",
+                    "pass"
+                    if all(
+                        (plan.get("software_semantic_profile") or {}).get(key)
+                        for key in ("title_rule", "state_rule", "action_rule", "exception_rule")
+                    )
+                    else "fail",
+                    "software semantic profile must freeze title, state, action, and exception rules",
+                ),
+                _review_check(
+                    "design_artifacts_present",
+                    "pass"
+                    if not governed_rendering_enforced
+                    or all(
+                        (files["design_artifacts_dir"] / name).exists()
+                        for name in (
+                            "design-context.json",
+                            "surface-profile.json",
+                            "layout-pattern.json",
+                            "component-state-matrix.json",
+                            "ui-copy-policy.json",
+                            "production-ui-copy-profile.json",
+                            "style-preset.json",
+                            "design-review.json",
+                            "design-lint-rules.json",
+                        )
+                    )
+                    else "fail",
+                    "design artifact contract should emit the required structured artifacts",
+                    blocking=governed_rendering_enforced,
+                ),
             ]
         )
         page_intent_missing = []
+        visible_contract_missing = []
         state_contract_missing = []
+        production_copy_missing = []
         for page in page_specs:
             if not isinstance(page, dict):
                 continue
-            intent = page.get("page_intent_contract") if isinstance(page.get("page_intent_contract"), dict) else {}
+            visible_contract = page.get("visible_contract") if isinstance(page.get("visible_contract"), dict) else {}
+            governance = page.get("internal_governance") if isinstance(page.get("internal_governance"), dict) else {}
+            intent = governance.get("page_intent_contract") if isinstance(governance.get("page_intent_contract"), dict) else {}
+            first_screen = governance.get("first_screen_contract") if isinstance(governance.get("first_screen_contract"), dict) else {}
+            copy_profile = page.get("production_ui_copy_profile") if isinstance(page.get("production_ui_copy_profile"), dict) else {}
+            if not all(
+                visible_contract.get(key)
+                for key in (
+                    "title",
+                    "subtitle",
+                    "must_show_sections",
+                    "primary_actions",
+                    "visible_states",
+                )
+            ):
+                visible_contract_missing.append(str(page.get("page_id") or "unknown"))
             if not all(
                 intent.get(key)
                 for key in (
@@ -4655,8 +5294,10 @@ def review_prototype_bundle(project_root: Path, version: str, feature: str) -> d
                     "entry_conditions",
                     "exit_actions",
                 )
-            ):
+            ) or not all(first_screen.get(key) for key in ("primary_status", "primary_blocker", "next_actions", "recovery_path")):
                 page_intent_missing.append(str(page.get("page_id") or "unknown"))
+            if not copy_profile.get("title") or not copy_profile.get("subtitle") or not list(copy_profile.get("primary_actions") or []):
+                production_copy_missing.append(str(page.get("page_id") or "unknown"))
             for state in page.get("states", []):
                 if not isinstance(state, dict):
                     continue
@@ -4674,11 +5315,19 @@ def review_prototype_bundle(project_root: Path, version: str, feature: str) -> d
         checks.extend(
             [
                 _review_check(
+                    "visible_contract_complete",
+                    "pass" if not visible_contract_missing else "fail",
+                    "every page exposes a visible_contract"
+                    if not visible_contract_missing
+                    else f"visible contract missing for: {visible_contract_missing[:10]}",
+                    blocking=governed_rendering_enforced,
+                ),
+                _review_check(
                     "page_intent_contract_complete",
                     "pass" if not page_intent_missing else "fail",
-                    "every page exposes a page_intent_contract"
+                    "every page exposes an internal governance contract"
                     if not page_intent_missing
-                    else f"page intent missing for: {page_intent_missing[:10]}",
+                    else f"internal governance missing for: {page_intent_missing[:10]}",
                 ),
                 _review_check(
                     "state_visibility_contract_complete",
@@ -4687,8 +5336,33 @@ def review_prototype_bundle(project_root: Path, version: str, feature: str) -> d
                     if not state_contract_missing
                     else f"state visibility contract missing for: {state_contract_missing[:10]}",
                 ),
+                _review_check(
+                    "production_ui_copy_profile_complete",
+                    "pass" if (not governed_rendering_enforced or not production_copy_missing) else "fail",
+                    "every page exposes a production_ui_copy_profile"
+                    if (not governed_rendering_enforced or not production_copy_missing)
+                    else f"production UI copy missing for: {production_copy_missing[:10]}",
+                    blocking=governed_rendering_enforced,
+                ),
             ]
         )
+        preview_html_text = files["preview_html"].read_text(encoding="utf-8", errors="ignore") if files["preview_html"].exists() else ""
+        governance_hits = [
+            term
+            for term in ("当前状态", "下一步动作", "恢复路径", "design asset catalog", "review guidance", "why/reasoning")
+            if term.lower() in preview_html_text.lower()
+        ]
+        forbidden_page_terms = []
+        explanation_heading_hits = []
+        if files["pages_dir"].exists():
+            for page_file in sorted(files["pages_dir"].glob("*.md")):
+                text = page_file.read_text(encoding="utf-8", errors="ignore")
+                hits = [term for term in ("当前状态", "下一步动作", "恢复路径") if term in text]
+                if hits:
+                    forbidden_page_terms.append(f"{page_file.name}:{','.join(hits)}")
+                heading_hits = [term for term in ("## 页面意图", "## 布局草图", "## 版面拆解", "## 信息优先级", "## 审阅边界", "## 关键交互", "审阅原则", "why_this_page_exists") if term in text]
+                if heading_hits:
+                    explanation_heading_hits.append(f"{page_file.name}:{','.join(heading_hits)}")
         heuristic_checks = [
             (
                 "heuristic_system_status",
@@ -4723,9 +5397,51 @@ def review_prototype_bundle(project_root: Path, version: str, feature: str) -> d
                 ),
                 "prototype should define error/blocked/stale recovery semantics",
             ),
+            (
+                "heuristic_preview_not_asset_catalog",
+                "design asset catalog" not in files["preview_html"].read_text(encoding="utf-8", errors="ignore").lower() if files["preview_html"].exists() else False,
+                "preview must render operator workbench judgment, not a design asset catalog",
+            ),
+            (
+                "heuristic_first_screen_contract",
+                all(
+                    isinstance((page.get("internal_governance") or {}).get("first_screen_contract"), dict)
+                    and all(
+                        ((page.get("internal_governance") or {}).get("first_screen_contract") or {}).get(key)
+                        for key in ("primary_status", "primary_blocker", "next_actions", "recovery_path")
+                    )
+                    for page in page_specs
+                ),
+                "every page should freeze first-screen status, blocker, next action, and recovery path",
+            ),
+            (
+                "governance_copy_leak",
+                (not governed_rendering_enforced) or not governance_hits,
+                "preview must not render governance copy or explanatory contract wording in first-screen UI",
+            ),
+            (
+                "first_screen_over_explanation",
+                (not governed_rendering_enforced) or ("当前阻塞与下一步动作" not in preview_html_text and "首屏判断" not in preview_html_text),
+                "preview first screen should not default to explanation panels",
+            ),
+            (
+                "page_explanation_section_leak",
+                (not governed_rendering_enforced) or not explanation_heading_hits,
+                "page markdown must not render explanation sections or governance headings",
+            ),
+            (
+                "review_copy_rendered_as_production_ui",
+                (not governed_rendering_enforced) or not forbidden_page_terms,
+                "page markdown should render production-visible copy, not review or recovery explanation blocks",
+            ),
+            (
+                "design_context_explicit_block",
+                (not governed_rendering_enforced) or bool(design_context.get("explicit_context_complete")),
+                "design context must stay explicit before production rendering can proceed",
+            ),
         ]
         for name, passed, message in heuristic_checks:
-            checks.append(_review_check(name, "pass" if passed else "fail", message))
+            checks.append(_review_check(name, "pass" if passed else "fail", message, blocking=governed_rendering_enforced or name.startswith("heuristic_")))
 
     blocking_failures = [item for item in checks if item["blocking"] and item["status"] == "fail"]
     overall_status = "pass" if not blocking_failures else "fail"
@@ -4924,6 +5640,7 @@ def evaluate_prototype_status(project_root: Path, version: str, feature: str) ->
     if supports_ux_truth:
         required_paths.update(
             {
+                "design_artifacts_dir": files["design_artifacts_dir"],
                 "ux_prd": files["ux_prd"],
                 "design_md": files["design_md"],
                 "preview_html": files["preview_html"],
@@ -5007,9 +5724,18 @@ def evaluate_prototype_status(project_root: Path, version: str, feature: str) ->
         if metadata_ok and human_view_status == "pass" and machine_contract_status == "pass" and sqlite_projection_status == "pass"
         else "drift"
     )
+    auto_fallback_accepted = _prototype_auto_fallback_accepted(
+        version=version,
+        compiler=compiler,
+        review_status=review_status,
+        frozen=frozen,
+        supports_ux_truth=supports_ux_truth,
+        files=files,
+        plan=plan if isinstance(plan, dict) else {},
+    )
     if drift_status != "consistent":
         inconsistent_reasons.append("cross_sink_drift_detected")
-    if _prototype_auto_fallback_blocked(version, compiler):
+    if _prototype_auto_fallback_blocked(version, compiler) and not auto_fallback_accepted:
         inconsistent_reasons.append("auto_mode_fixed_template_downgrade_blocked")
 
     if inconsistent_reasons:
@@ -5021,7 +5747,9 @@ def evaluate_prototype_status(project_root: Path, version: str, feature: str) ->
     else:
         status = "draft"
 
-    gate_ready = status == "frozen" and review_status == "pass" and not _prototype_auto_fallback_blocked(version, compiler)
+    gate_ready = status == "frozen" and review_status == "pass" and (
+        not _prototype_auto_fallback_blocked(version, compiler) or auto_fallback_accepted
+    )
     return {
         "status": status,
         "exists": True,
@@ -5032,6 +5760,7 @@ def evaluate_prototype_status(project_root: Path, version: str, feature: str) ->
         "prototype_mode": str(plan.get("prototype_mode") or manifest.get("prototype_mode") or PROTOTYPE_MODE),
         "ui_kit": manifest.get("ui_kit") or PROTOTYPE_UI_KIT,
         "compiler": compiler,
+        "compiler_fallback_accepted": auto_fallback_accepted,
         "review_status": review_status,
         "design_review_outcome": design_review_outcome,
         "gate_ready": gate_ready,

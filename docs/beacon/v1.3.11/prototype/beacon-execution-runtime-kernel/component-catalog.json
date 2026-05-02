@@ -1,0 +1,2978 @@
+{
+  "schema_version": "1.0",
+  "component_count": 35,
+  "components": [
+    {
+      "component_id": "home-component-01",
+      "page_id": "home",
+      "name": "经营总览条",
+      "responsibility": "经营总览条 模块负责承载 `首页` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "查看管理总览",
+        "trigger": "点击项目组合入口",
+        "target": "management-overview"
+      },
+      "state_refs": [
+        "ready",
+        "blocked",
+        "intervention-needed",
+        "loading",
+        "empty",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "ready",
+          "feedback": "经营总览条 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "blocked",
+          "feedback": "经营总览条 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "intervention-needed",
+          "feedback": "强调需要 CEO / 负责人介入的项目。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "loading",
+          "feedback": "经营总览条 must keep visible loading feedback without collapsing layout.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "empty",
+          "feedback": "经营总览条 must explain why content is empty and where to continue.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "经营总览条 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [
+        {
+          "label": "查看管理总览",
+          "trigger": "点击项目组合入口",
+          "target": "management-overview"
+        }
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      ]
+    },
+    {
+      "component_id": "home-component-02",
+      "page_id": "home",
+      "name": "重点介入区",
+      "responsibility": "重点介入区 模块负责承载 `首页` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "进入重点项目",
+        "trigger": "点击重点项目卡片",
+        "target": "project-detail"
+      },
+      "state_refs": [
+        "ready",
+        "blocked",
+        "intervention-needed",
+        "loading",
+        "empty",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "ready",
+          "feedback": "重点介入区 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "blocked",
+          "feedback": "重点介入区 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "intervention-needed",
+          "feedback": "强调需要 CEO / 负责人介入的项目。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "loading",
+          "feedback": "重点介入区 must keep visible loading feedback without collapsing layout.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "empty",
+          "feedback": "重点介入区 must explain why content is empty and where to continue.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "重点介入区 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [
+        {
+          "label": "进入重点项目",
+          "trigger": "点击重点项目卡片",
+          "target": "project-detail"
+        }
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      ]
+    },
+    {
+      "component_id": "home-component-03",
+      "page_id": "home",
+      "name": "项目推进摘要",
+      "responsibility": "项目推进摘要 模块负责承载 `首页` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "home"
+      },
+      "state_refs": [
+        "ready",
+        "blocked",
+        "intervention-needed",
+        "loading",
+        "empty",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "ready",
+          "feedback": "项目推进摘要 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "blocked",
+          "feedback": "项目推进摘要 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "intervention-needed",
+          "feedback": "强调需要 CEO / 负责人介入的项目。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "loading",
+          "feedback": "项目推进摘要 must keep visible loading feedback without collapsing layout.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "empty",
+          "feedback": "项目推进摘要 must explain why content is empty and where to continue.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "项目推进摘要 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      ]
+    },
+    {
+      "component_id": "home-component-04",
+      "page_id": "home",
+      "name": "当前交付卡片",
+      "responsibility": "当前交付卡片 模块负责承载 `首页` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "home"
+      },
+      "state_refs": [
+        "ready",
+        "blocked",
+        "intervention-needed",
+        "loading",
+        "empty",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "ready",
+          "feedback": "当前交付卡片 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "blocked",
+          "feedback": "当前交付卡片 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "intervention-needed",
+          "feedback": "强调需要 CEO / 负责人介入的项目。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "loading",
+          "feedback": "当前交付卡片 must keep visible loading feedback without collapsing layout.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "empty",
+          "feedback": "当前交付卡片 must explain why content is empty and where to continue.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "当前交付卡片 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      ]
+    },
+    {
+      "component_id": "home-component-05",
+      "page_id": "home",
+      "name": "下一步建议",
+      "responsibility": "下一步建议 模块负责承载 `首页` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "home"
+      },
+      "state_refs": [
+        "ready",
+        "blocked",
+        "intervention-needed",
+        "loading",
+        "empty",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "ready",
+          "feedback": "下一步建议 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "blocked",
+          "feedback": "下一步建议 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "intervention-needed",
+          "feedback": "强调需要 CEO / 负责人介入的项目。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "loading",
+          "feedback": "下一步建议 must keep visible loading feedback without collapsing layout.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "empty",
+          "feedback": "下一步建议 must explain why content is empty and where to continue.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "下一步建议 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      ]
+    },
+    {
+      "component_id": "management-overview-component-01",
+      "page_id": "management-overview",
+      "name": "筛选与排序条",
+      "responsibility": "筛选与排序条 模块负责承载 `管理总览` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "进入项目详情",
+        "trigger": "点击项目行或卡片",
+        "target": "project-detail"
+      },
+      "state_refs": [
+        "ready",
+        "filtered",
+        "empty",
+        "loading",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "ready",
+          "feedback": "筛选与排序条 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "filtered",
+          "feedback": "按阶段、版本、健康态筛选项目。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "empty",
+          "feedback": "筛选与排序条 must explain why content is empty and where to continue.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "loading",
+          "feedback": "筛选与排序条 must keep visible loading feedback without collapsing layout.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "筛选与排序条 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [
+        {
+          "label": "进入项目详情",
+          "trigger": "点击项目行或卡片",
+          "target": "project-detail"
+        }
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      ]
+    },
+    {
+      "component_id": "management-overview-component-02",
+      "page_id": "management-overview",
+      "name": "项目注册表",
+      "responsibility": "项目注册表 模块负责承载 `管理总览` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "返回首页",
+        "trigger": "点击首页导航",
+        "target": "home"
+      },
+      "state_refs": [
+        "ready",
+        "filtered",
+        "empty",
+        "loading",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "ready",
+          "feedback": "项目注册表 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "filtered",
+          "feedback": "按阶段、版本、健康态筛选项目。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "empty",
+          "feedback": "项目注册表 must explain why content is empty and where to continue.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "loading",
+          "feedback": "项目注册表 must keep visible loading feedback without collapsing layout.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "项目注册表 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [
+        {
+          "label": "返回首页",
+          "trigger": "点击首页导航",
+          "target": "home"
+        }
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      ]
+    },
+    {
+      "component_id": "management-overview-component-03",
+      "page_id": "management-overview",
+      "name": "阶段分布摘要",
+      "responsibility": "阶段分布摘要 模块负责承载 `管理总览` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "management-overview"
+      },
+      "state_refs": [
+        "ready",
+        "filtered",
+        "empty",
+        "loading",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "ready",
+          "feedback": "阶段分布摘要 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "filtered",
+          "feedback": "按阶段、版本、健康态筛选项目。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "empty",
+          "feedback": "阶段分布摘要 must explain why content is empty and where to continue.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "loading",
+          "feedback": "阶段分布摘要 must keep visible loading feedback without collapsing layout.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "阶段分布摘要 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      ]
+    },
+    {
+      "component_id": "management-overview-component-04",
+      "page_id": "management-overview",
+      "name": "风险与调试摘要",
+      "responsibility": "风险与调试摘要 模块负责承载 `管理总览` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "management-overview"
+      },
+      "state_refs": [
+        "ready",
+        "filtered",
+        "empty",
+        "loading",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "ready",
+          "feedback": "风险与调试摘要 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "filtered",
+          "feedback": "按阶段、版本、健康态筛选项目。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "empty",
+          "feedback": "风险与调试摘要 must explain why content is empty and where to continue.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "loading",
+          "feedback": "风险与调试摘要 must keep visible loading feedback without collapsing layout.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "风险与调试摘要 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      ]
+    },
+    {
+      "component_id": "management-overview-component-05",
+      "page_id": "management-overview",
+      "name": "推荐 skill 区",
+      "responsibility": "推荐 skill 区 模块负责承载 `管理总览` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "management-overview"
+      },
+      "state_refs": [
+        "ready",
+        "filtered",
+        "empty",
+        "loading",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "ready",
+          "feedback": "推荐 skill 区 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "filtered",
+          "feedback": "按阶段、版本、健康态筛选项目。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "empty",
+          "feedback": "推荐 skill 区 must explain why content is empty and where to continue.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "loading",
+          "feedback": "推荐 skill 区 must keep visible loading feedback without collapsing layout.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "推荐 skill 区 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      ]
+    },
+    {
+      "component_id": "project-detail-component-01",
+      "page_id": "project-detail",
+      "name": "项目头部摘要",
+      "responsibility": "项目头部摘要 模块负责承载 `项目详情` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "查看运行中心",
+        "trigger": "点击运行态摘要",
+        "target": "runtime-center"
+      },
+      "state_refs": [
+        "ready",
+        "requirement-missing",
+        "draft",
+        "frozen",
+        "runtime-active",
+        "loading",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "ready",
+          "feedback": "项目头部摘要 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "requirement-missing",
+          "feedback": "PRD / user-story / test-case 存在缺口。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "draft",
+          "feedback": "需求已建立但未冻结。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "frozen",
+          "feedback": "项目头部摘要 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "runtime-active",
+          "feedback": "存在 single / team / ralph 运行摘要。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "loading",
+          "feedback": "项目头部摘要 must keep visible loading feedback without collapsing layout.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [
+        {
+          "label": "查看运行中心",
+          "trigger": "点击运行态摘要",
+          "target": "runtime-center"
+        }
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      ]
+    },
+    {
+      "component_id": "project-detail-component-02",
+      "page_id": "project-detail",
+      "name": "版本与分支信息",
+      "responsibility": "版本与分支信息 模块负责承载 `项目详情` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "查看恢复诊断",
+        "trigger": "点击恢复诊断入口",
+        "target": "recovery-diagnostics"
+      },
+      "state_refs": [
+        "ready",
+        "requirement-missing",
+        "draft",
+        "frozen",
+        "runtime-active",
+        "loading",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "ready",
+          "feedback": "版本与分支信息 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "requirement-missing",
+          "feedback": "PRD / user-story / test-case 存在缺口。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "draft",
+          "feedback": "需求已建立但未冻结。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "frozen",
+          "feedback": "版本与分支信息 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "runtime-active",
+          "feedback": "存在 single / team / ralph 运行摘要。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "loading",
+          "feedback": "版本与分支信息 must keep visible loading feedback without collapsing layout.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [
+        {
+          "label": "查看恢复诊断",
+          "trigger": "点击恢复诊断入口",
+          "target": "recovery-diagnostics"
+        }
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      ]
+    },
+    {
+      "component_id": "project-detail-component-03",
+      "page_id": "project-detail",
+      "name": "主 PRD 与并行 PRD",
+      "responsibility": "主 PRD 与并行 PRD 模块负责承载 `项目详情` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "查看项目物料",
+        "trigger": "点击文档查看入口",
+        "target": "material-viewer"
+      },
+      "state_refs": [
+        "ready",
+        "requirement-missing",
+        "draft",
+        "frozen",
+        "runtime-active",
+        "loading",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "ready",
+          "feedback": "主 PRD 与并行 PRD must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "requirement-missing",
+          "feedback": "PRD / user-story / test-case 存在缺口。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "draft",
+          "feedback": "需求已建立但未冻结。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "frozen",
+          "feedback": "主 PRD 与并行 PRD must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "runtime-active",
+          "feedback": "存在 single / team / ralph 运行摘要。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "loading",
+          "feedback": "主 PRD 与并行 PRD must keep visible loading feedback without collapsing layout.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [
+        {
+          "label": "查看项目物料",
+          "trigger": "点击文档查看入口",
+          "target": "material-viewer"
+        }
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      ]
+    },
+    {
+      "component_id": "project-detail-component-04",
+      "page_id": "project-detail",
+      "name": "需求物料闭环状态",
+      "responsibility": "需求物料闭环状态 模块负责承载 `项目详情` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "返回管理总览",
+        "trigger": "点击返回",
+        "target": "management-overview"
+      },
+      "state_refs": [
+        "ready",
+        "requirement-missing",
+        "draft",
+        "frozen",
+        "runtime-active",
+        "loading",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "ready",
+          "feedback": "需求物料闭环状态 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "requirement-missing",
+          "feedback": "PRD / user-story / test-case 存在缺口。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "draft",
+          "feedback": "需求已建立但未冻结。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "frozen",
+          "feedback": "需求物料闭环状态 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "runtime-active",
+          "feedback": "存在 single / team / ralph 运行摘要。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "loading",
+          "feedback": "需求物料闭环状态 must keep visible loading feedback without collapsing layout.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [
+        {
+          "label": "返回管理总览",
+          "trigger": "点击返回",
+          "target": "management-overview"
+        }
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      ]
+    },
+    {
+      "component_id": "project-detail-component-05",
+      "page_id": "project-detail",
+      "name": "最近交付与下一步",
+      "responsibility": "最近交付与下一步 模块负责承载 `项目详情` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "project-detail"
+      },
+      "state_refs": [
+        "ready",
+        "requirement-missing",
+        "draft",
+        "frozen",
+        "runtime-active",
+        "loading",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "ready",
+          "feedback": "最近交付与下一步 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "requirement-missing",
+          "feedback": "PRD / user-story / test-case 存在缺口。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "draft",
+          "feedback": "需求已建立但未冻结。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "frozen",
+          "feedback": "最近交付与下一步 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "runtime-active",
+          "feedback": "存在 single / team / ralph 运行摘要。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "loading",
+          "feedback": "最近交付与下一步 must keep visible loading feedback without collapsing layout.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      ]
+    },
+    {
+      "component_id": "project-detail-component-06",
+      "page_id": "project-detail",
+      "name": "运行态摘要卡",
+      "responsibility": "运行态摘要卡 模块负责承载 `项目详情` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "project-detail"
+      },
+      "state_refs": [
+        "ready",
+        "requirement-missing",
+        "draft",
+        "frozen",
+        "runtime-active",
+        "loading",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "ready",
+          "feedback": "运行态摘要卡 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "requirement-missing",
+          "feedback": "PRD / user-story / test-case 存在缺口。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "draft",
+          "feedback": "需求已建立但未冻结。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "frozen",
+          "feedback": "运行态摘要卡 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "runtime-active",
+          "feedback": "存在 single / team / ralph 运行摘要。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "loading",
+          "feedback": "运行态摘要卡 must keep visible loading feedback without collapsing layout.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      ]
+    },
+    {
+      "component_id": "runtime-center-component-01",
+      "page_id": "runtime-center",
+      "name": "运行态摘要头部",
+      "responsibility": "运行态摘要头部 模块负责承载 `运行中心` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "返回项目详情",
+        "trigger": "点击返回",
+        "target": "project-detail"
+      },
+      "state_refs": [
+        "single-active",
+        "team-active",
+        "ralph-active",
+        "idle",
+        "loading",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "single-active",
+          "feedback": "展示单进程执行摘要和 linked run。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "team-active",
+          "feedback": "展示 agent 数、角色、状态和 host session metadata。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "ralph-active",
+          "feedback": "展示 round_count、failure_streak、next_action、blocker。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "idle",
+          "feedback": "运行态摘要头部 must explain why content is empty and where to continue.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "loading",
+          "feedback": "运行态摘要头部 must keep visible loading feedback without collapsing layout.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "运行态摘要头部 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [
+        {
+          "label": "返回项目详情",
+          "trigger": "点击返回",
+          "target": "project-detail"
+        }
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      ]
+    },
+    {
+      "component_id": "runtime-center-component-02",
+      "page_id": "runtime-center",
+      "name": "single / team / ralph 模式切换",
+      "responsibility": "single / team / ralph 模式切换 模块负责承载 `运行中心` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "返回管理总览",
+        "trigger": "点击面包屑",
+        "target": "management-overview"
+      },
+      "state_refs": [
+        "single-active",
+        "team-active",
+        "ralph-active",
+        "idle",
+        "loading",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "single-active",
+          "feedback": "展示单进程执行摘要和 linked run。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "team-active",
+          "feedback": "展示 agent 数、角色、状态和 host session metadata。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "ralph-active",
+          "feedback": "展示 round_count、failure_streak、next_action、blocker。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "idle",
+          "feedback": "single / team / ralph 模式切换 must explain why content is empty and where to continue.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "loading",
+          "feedback": "single / team / ralph 模式切换 must keep visible loading feedback without collapsing layout.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "single / team / ralph 模式切换 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [
+        {
+          "label": "返回管理总览",
+          "trigger": "点击面包屑",
+          "target": "management-overview"
+        }
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      ]
+    },
+    {
+      "component_id": "runtime-center-component-03",
+      "page_id": "runtime-center",
+      "name": "agent/session 引用",
+      "responsibility": "agent/session 引用 模块负责承载 `运行中心` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "runtime-center"
+      },
+      "state_refs": [
+        "single-active",
+        "team-active",
+        "ralph-active",
+        "idle",
+        "loading",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "single-active",
+          "feedback": "展示单进程执行摘要和 linked run。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "team-active",
+          "feedback": "展示 agent 数、角色、状态和 host session metadata。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "ralph-active",
+          "feedback": "展示 round_count、failure_streak、next_action、blocker。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "idle",
+          "feedback": "agent/session 引用 must explain why content is empty and where to continue.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "loading",
+          "feedback": "agent/session 引用 must keep visible loading feedback without collapsing layout.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "agent/session 引用 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      ]
+    },
+    {
+      "component_id": "runtime-center-component-04",
+      "page_id": "runtime-center",
+      "name": "artifact 与 linked run",
+      "responsibility": "artifact 与 linked run 模块负责承载 `运行中心` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "runtime-center"
+      },
+      "state_refs": [
+        "single-active",
+        "team-active",
+        "ralph-active",
+        "idle",
+        "loading",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "single-active",
+          "feedback": "展示单进程执行摘要和 linked run。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "team-active",
+          "feedback": "展示 agent 数、角色、状态和 host session metadata。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "ralph-active",
+          "feedback": "展示 round_count、failure_streak、next_action、blocker。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "idle",
+          "feedback": "artifact 与 linked run must explain why content is empty and where to continue.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "loading",
+          "feedback": "artifact 与 linked run must keep visible loading feedback without collapsing layout.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "artifact 与 linked run must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      ]
+    },
+    {
+      "component_id": "runtime-center-component-05",
+      "page_id": "runtime-center",
+      "name": "最近结果与 blocker",
+      "responsibility": "最近结果与 blocker 模块负责承载 `运行中心` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "runtime-center"
+      },
+      "state_refs": [
+        "single-active",
+        "team-active",
+        "ralph-active",
+        "idle",
+        "loading",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "single-active",
+          "feedback": "展示单进程执行摘要和 linked run。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "team-active",
+          "feedback": "展示 agent 数、角色、状态和 host session metadata。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "ralph-active",
+          "feedback": "展示 round_count、failure_streak、next_action、blocker。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "idle",
+          "feedback": "最近结果与 blocker must explain why content is empty and where to continue.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "loading",
+          "feedback": "最近结果与 blocker must keep visible loading feedback without collapsing layout.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "最近结果与 blocker must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      ]
+    },
+    {
+      "component_id": "recovery-diagnostics-component-01",
+      "page_id": "recovery-diagnostics",
+      "name": "truth 来源说明",
+      "responsibility": "truth 来源说明 模块负责承载 `恢复诊断` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "返回项目详情",
+        "trigger": "点击返回",
+        "target": "project-detail"
+      },
+      "state_refs": [
+        "healthy-warning",
+        "degraded",
+        "rebuild-suggested",
+        "doctor-suggested",
+        "loading",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "healthy-warning",
+          "feedback": "当前系统可用但存在恢复风险提示。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "degraded",
+          "feedback": "SQLite 或 PocketBase 缺失，但 truth 仍可从文档恢复。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "rebuild-suggested",
+          "feedback": "投影层需要重建。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "doctor-suggested",
+          "feedback": "推荐执行 doctor 修复上下文。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "loading",
+          "feedback": "truth 来源说明 must keep visible loading feedback without collapsing layout.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "truth 来源说明 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [
+        {
+          "label": "返回项目详情",
+          "trigger": "点击返回",
+          "target": "project-detail"
+        }
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      ]
+    },
+    {
+      "component_id": "recovery-diagnostics-component-02",
+      "page_id": "recovery-diagnostics",
+      "name": "degraded / rebuild / doctor 诊断卡",
+      "responsibility": "degraded / rebuild / doctor 诊断卡 模块负责承载 `恢复诊断` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "前往运行中心",
+        "trigger": "点击运行态关联",
+        "target": "runtime-center"
+      },
+      "state_refs": [
+        "healthy-warning",
+        "degraded",
+        "rebuild-suggested",
+        "doctor-suggested",
+        "loading",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "healthy-warning",
+          "feedback": "当前系统可用但存在恢复风险提示。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "degraded",
+          "feedback": "SQLite 或 PocketBase 缺失，但 truth 仍可从文档恢复。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "rebuild-suggested",
+          "feedback": "投影层需要重建。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "doctor-suggested",
+          "feedback": "推荐执行 doctor 修复上下文。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "loading",
+          "feedback": "degraded / rebuild / doctor 诊断卡 must keep visible loading feedback without collapsing layout.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "degraded / rebuild / doctor 诊断卡 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [
+        {
+          "label": "前往运行中心",
+          "trigger": "点击运行态关联",
+          "target": "runtime-center"
+        }
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      ]
+    },
+    {
+      "component_id": "recovery-diagnostics-component-03",
+      "page_id": "recovery-diagnostics",
+      "name": "恢复步骤",
+      "responsibility": "恢复步骤 模块负责承载 `恢复诊断` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "recovery-diagnostics"
+      },
+      "state_refs": [
+        "healthy-warning",
+        "degraded",
+        "rebuild-suggested",
+        "doctor-suggested",
+        "loading",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "healthy-warning",
+          "feedback": "当前系统可用但存在恢复风险提示。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "degraded",
+          "feedback": "SQLite 或 PocketBase 缺失，但 truth 仍可从文档恢复。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "rebuild-suggested",
+          "feedback": "投影层需要重建。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "doctor-suggested",
+          "feedback": "推荐执行 doctor 修复上下文。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "loading",
+          "feedback": "恢复步骤 must keep visible loading feedback without collapsing layout.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "恢复步骤 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      ]
+    },
+    {
+      "component_id": "recovery-diagnostics-component-04",
+      "page_id": "recovery-diagnostics",
+      "name": "风险提示",
+      "responsibility": "风险提示 模块负责承载 `恢复诊断` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "recovery-diagnostics"
+      },
+      "state_refs": [
+        "healthy-warning",
+        "degraded",
+        "rebuild-suggested",
+        "doctor-suggested",
+        "loading",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "healthy-warning",
+          "feedback": "当前系统可用但存在恢复风险提示。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "degraded",
+          "feedback": "SQLite 或 PocketBase 缺失，但 truth 仍可从文档恢复。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "rebuild-suggested",
+          "feedback": "投影层需要重建。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "doctor-suggested",
+          "feedback": "推荐执行 doctor 修复上下文。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "loading",
+          "feedback": "风险提示 must keep visible loading feedback without collapsing layout.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "风险提示 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      ]
+    },
+    {
+      "component_id": "material-viewer-component-01",
+      "page_id": "material-viewer",
+      "name": "版本树",
+      "responsibility": "版本树 模块负责承载 `项目物料查看器` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "打开文档",
+        "trigger": "点击文档列表项",
+        "target": "material-document-detail"
+      },
+      "state_refs": [
+        "ready",
+        "document-open",
+        "source-missing",
+        "loading",
+        "empty",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "ready",
+          "feedback": "版本树 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "document-open",
+          "feedback": "版本树 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "source-missing",
+          "feedback": "版本树 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "loading",
+          "feedback": "版本树 must keep visible loading feedback without collapsing layout.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "empty",
+          "feedback": "版本树 must explain why content is empty and where to continue.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "版本树 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [
+        {
+          "label": "打开文档",
+          "trigger": "点击文档列表项",
+          "target": "material-document-detail"
+        }
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      ]
+    },
+    {
+      "component_id": "material-viewer-component-02",
+      "page_id": "material-viewer",
+      "name": "文档类型列表",
+      "responsibility": "文档类型列表 模块负责承载 `项目物料查看器` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "返回项目详情",
+        "trigger": "点击返回",
+        "target": "project-detail"
+      },
+      "state_refs": [
+        "ready",
+        "document-open",
+        "source-missing",
+        "loading",
+        "empty",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "ready",
+          "feedback": "文档类型列表 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "document-open",
+          "feedback": "文档类型列表 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "source-missing",
+          "feedback": "文档类型列表 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "loading",
+          "feedback": "文档类型列表 must keep visible loading feedback without collapsing layout.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "empty",
+          "feedback": "文档类型列表 must explain why content is empty and where to continue.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "文档类型列表 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [
+        {
+          "label": "返回项目详情",
+          "trigger": "点击返回",
+          "target": "project-detail"
+        }
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      ]
+    },
+    {
+      "component_id": "material-viewer-component-03",
+      "page_id": "material-viewer",
+      "name": "feature 目录",
+      "responsibility": "feature 目录 模块负责承载 `项目物料查看器` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "material-viewer"
+      },
+      "state_refs": [
+        "ready",
+        "document-open",
+        "source-missing",
+        "loading",
+        "empty",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "ready",
+          "feedback": "feature 目录 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "document-open",
+          "feedback": "feature 目录 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "source-missing",
+          "feedback": "feature 目录 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "loading",
+          "feedback": "feature 目录 must keep visible loading feedback without collapsing layout.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "empty",
+          "feedback": "feature 目录 must explain why content is empty and where to continue.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "feature 目录 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      ]
+    },
+    {
+      "component_id": "material-viewer-component-04",
+      "page_id": "material-viewer",
+      "name": "文档阅读面板",
+      "responsibility": "文档阅读面板 模块负责承载 `项目物料查看器` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "material-viewer"
+      },
+      "state_refs": [
+        "ready",
+        "document-open",
+        "source-missing",
+        "loading",
+        "empty",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "ready",
+          "feedback": "文档阅读面板 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "document-open",
+          "feedback": "文档阅读面板 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "source-missing",
+          "feedback": "文档阅读面板 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "loading",
+          "feedback": "文档阅读面板 must keep visible loading feedback without collapsing layout.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "empty",
+          "feedback": "文档阅读面板 must explain why content is empty and where to continue.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "文档阅读面板 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      ]
+    },
+    {
+      "component_id": "material-viewer-component-05",
+      "page_id": "material-viewer",
+      "name": "来源路径信息",
+      "responsibility": "来源路径信息 模块负责承载 `项目物料查看器` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "material-viewer"
+      },
+      "state_refs": [
+        "ready",
+        "document-open",
+        "source-missing",
+        "loading",
+        "empty",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "ready",
+          "feedback": "来源路径信息 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "document-open",
+          "feedback": "来源路径信息 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "source-missing",
+          "feedback": "来源路径信息 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "loading",
+          "feedback": "来源路径信息 must keep visible loading feedback without collapsing layout.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "empty",
+          "feedback": "来源路径信息 must explain why content is empty and where to continue.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "来源路径信息 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      ]
+    },
+    {
+      "component_id": "material-document-detail-component-01",
+      "page_id": "material-document-detail",
+      "name": "文档头部信息",
+      "responsibility": "文档头部信息 模块负责承载 `物料文档详情` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "返回物料查看器",
+        "trigger": "点击返回",
+        "target": "material-viewer"
+      },
+      "state_refs": [
+        "ready",
+        "sibling-switch",
+        "version-switch",
+        "source-missing"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "ready",
+          "feedback": "文档头部信息 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "sibling-switch",
+          "feedback": "在阅读区切换相邻文档。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "version-switch",
+          "feedback": "切换到同类型的其他版本文档。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "source-missing",
+          "feedback": "文档头部信息 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [
+        {
+          "label": "返回物料查看器",
+          "trigger": "点击返回",
+          "target": "material-viewer"
+        }
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      ]
+    },
+    {
+      "component_id": "material-document-detail-component-02",
+      "page_id": "material-document-detail",
+      "name": "版本 / 类型 / feature 面包屑",
+      "responsibility": "版本 / 类型 / feature 面包屑 模块负责承载 `物料文档详情` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "切换同版本文档",
+        "trigger": "点击侧栏文档",
+        "target": "material-document-detail"
+      },
+      "state_refs": [
+        "ready",
+        "sibling-switch",
+        "version-switch",
+        "source-missing"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "ready",
+          "feedback": "版本 / 类型 / feature 面包屑 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "sibling-switch",
+          "feedback": "在阅读区切换相邻文档。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "version-switch",
+          "feedback": "切换到同类型的其他版本文档。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "source-missing",
+          "feedback": "版本 / 类型 / feature 面包屑 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [
+        {
+          "label": "切换同版本文档",
+          "trigger": "点击侧栏文档",
+          "target": "material-document-detail"
+        }
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      ]
+    },
+    {
+      "component_id": "material-document-detail-component-03",
+      "page_id": "material-document-detail",
+      "name": "Markdown 正文区",
+      "responsibility": "Markdown 正文区 模块负责承载 `物料文档详情` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "material-document-detail"
+      },
+      "state_refs": [
+        "ready",
+        "sibling-switch",
+        "version-switch",
+        "source-missing"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "ready",
+          "feedback": "Markdown 正文区 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "sibling-switch",
+          "feedback": "在阅读区切换相邻文档。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "version-switch",
+          "feedback": "切换到同类型的其他版本文档。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "source-missing",
+          "feedback": "Markdown 正文区 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      ]
+    },
+    {
+      "component_id": "material-document-detail-component-04",
+      "page_id": "material-document-detail",
+      "name": "同类文档切换",
+      "responsibility": "同类文档切换 模块负责承载 `物料文档详情` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "material-document-detail"
+      },
+      "state_refs": [
+        "ready",
+        "sibling-switch",
+        "version-switch",
+        "source-missing"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "ready",
+          "feedback": "同类文档切换 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "sibling-switch",
+          "feedback": "在阅读区切换相邻文档。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "version-switch",
+          "feedback": "切换到同类型的其他版本文档。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "source-missing",
+          "feedback": "同类文档切换 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      ]
+    },
+    {
+      "component_id": "material-document-detail-component-05",
+      "page_id": "material-document-detail",
+      "name": "来源路径与只读说明",
+      "responsibility": "来源路径与只读说明 模块负责承载 `物料文档详情` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "material-document-detail"
+      },
+      "state_refs": [
+        "ready",
+        "sibling-switch",
+        "version-switch",
+        "source-missing"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "ready",
+          "feedback": "来源路径与只读说明 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "sibling-switch",
+          "feedback": "在阅读区切换相邻文档。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "version-switch",
+          "feedback": "切换到同类型的其他版本文档。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "source-missing",
+          "feedback": "来源路径与只读说明 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      ]
+    }
+  ]
+}

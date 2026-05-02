@@ -1,0 +1,122 @@
+{
+  "states": [
+    "blocked",
+    "degraded",
+    "doctor-suggested",
+    "error",
+    "healthy-warning",
+    "loading",
+    "needs-evidence",
+    "needs-review",
+    "ready",
+    "rebuild-suggested",
+    "retry-scheduled",
+    "running"
+  ],
+  "ctas": [
+    {
+      "page_id": "recovery-diagnostics",
+      "label": "进入项目组合看板",
+      "target": "portfolio-board",
+      "trigger": "点击跳转"
+    },
+    {
+      "page_id": "portfolio-board",
+      "label": "进入执行看板",
+      "target": "execution-board",
+      "trigger": "点击执行看板入口"
+    },
+    {
+      "page_id": "portfolio-board",
+      "label": "进入功能详情",
+      "target": "feature-detail",
+      "trigger": "点击功能项"
+    },
+    {
+      "page_id": "execution-board",
+      "label": "进入运行详情",
+      "target": "run-detail",
+      "trigger": "点击运行项"
+    },
+    {
+      "page_id": "execution-board",
+      "label": "进入恢复诊断",
+      "target": "recovery-diagnostics",
+      "trigger": "点击阻塞或异常项"
+    },
+    {
+      "page_id": "execution-board",
+      "label": "进入功能详情",
+      "target": "feature-detail",
+      "trigger": "点击 feature 关联"
+    },
+    {
+      "page_id": "feature-detail",
+      "label": "进入运行详情",
+      "target": "run-detail",
+      "trigger": "点击关联运行"
+    },
+    {
+      "page_id": "feature-detail",
+      "label": "进入验收面",
+      "target": "review-surface",
+      "trigger": "点击验收入口"
+    },
+    {
+      "page_id": "run-detail",
+      "label": "进入恢复诊断",
+      "target": "recovery-diagnostics",
+      "trigger": "点击阻塞原因"
+    },
+    {
+      "page_id": "run-detail",
+      "label": "进入验收面",
+      "target": "review-surface",
+      "trigger": "点击验收入口"
+    },
+    {
+      "page_id": "review-surface",
+      "label": "返回运行详情",
+      "target": "run-detail",
+      "trigger": "点击返回"
+    },
+    {
+      "page_id": "review-surface",
+      "label": "进入恢复诊断",
+      "target": "recovery-diagnostics",
+      "trigger": "点击回修入口"
+    }
+  ],
+  "jump_map": [
+    {
+      "from": "recovery-diagnostics",
+      "to": "portfolio-board",
+      "trigger": "点击跳转",
+      "type": "primary"
+    },
+    {
+      "from": "portfolio-board",
+      "to": "execution-board",
+      "trigger": "点击跳转",
+      "type": "primary"
+    },
+    {
+      "from": "execution-board",
+      "to": "feature-detail",
+      "trigger": "点击跳转",
+      "type": "primary"
+    },
+    {
+      "from": "feature-detail",
+      "to": "run-detail",
+      "trigger": "点击跳转",
+      "type": "primary"
+    },
+    {
+      "from": "run-detail",
+      "to": "review-surface",
+      "trigger": "点击跳转",
+      "type": "primary"
+    }
+  ]
+}

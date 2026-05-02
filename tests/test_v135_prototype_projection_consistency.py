@@ -571,7 +571,8 @@ def test_v135_explicit_page_meta_should_override_default_page_responsibility(tmp
     assert landing["responsibility"].startswith("First screen establishes trust")
     assert landing["sections"][:2] == ["Hero promise", "Trust proof"]
     assert landing["actions"][0]["label"] == "Review trust proof"
-    assert landing["page_intent_contract"]["why_this_page_exists"].startswith("First screen establishes trust")
+    assert landing["internal_governance"]["page_intent_contract"]["why_this_page_exists"].startswith("First screen establishes trust")
+    assert landing["visible_contract"]["title"] == "Landing Page"
 
 
 def test_v135_explicit_page_meta_should_override_decision_supported_and_surface_type(tmp_path: Path):
@@ -610,7 +611,8 @@ product_surface_type: public-marketing-surface
     plan = json.loads((root / "prototype-plan.json").read_text(encoding="utf-8"))
     landing = next(page for page in plan["page_specs"] if page["page_id"] == "landing-page")
     assert plan["design_reasoning"]["product_surface_type"] == "public-marketing-surface"
-    assert landing["page_intent_contract"]["decision_supported"] == "Decide whether this supplier platform is credible enough to continue."
+    assert landing["internal_governance"]["page_intent_contract"]["decision_supported"] == "Decide whether this supplier platform is credible enough to continue."
+    assert landing["visible_contract"]["subtitle"] == "Decide whether this supplier platform is credible enough to continue."
 
 
 def test_v135_explicit_page_meta_should_parse_business_states(tmp_path: Path):
@@ -744,7 +746,8 @@ def test_v1310_prototype_should_emit_ux_truth_and_design_assets(tmp_path: Path):
     assert canonical["design_context"]["explicit_context_complete"] is True
     assert canonical["design_reasoning"]["product_surface_type"]
     assert canonical["ux_contract"]["primary_decision"]
-    assert plan["page_specs"][0]["page_intent_contract"]["decision_supported"]
+    assert plan["page_specs"][0]["internal_governance"]["page_intent_contract"]["decision_supported"]
+    assert plan["page_specs"][0]["visible_contract"]["primary_actions"]
     assert plan["page_specs"][0]["states"][0]["state_visibility_contract"]["required_feedback"]
     assert (root / "ux-prd.md").exists()
     assert (root / "DESIGN.md").exists()
@@ -837,6 +840,10 @@ def test_v1310_state_flow_map_should_emit_cross_page_transition_contracts(tmp_pa
     version = "v1.3.10"
     feature_slug = "cross-page-transition-demo"
     feature = "Cross Page Transition Demo"
+def test_v1310_state_flow_map_should_emit_cross_page_transition_contracts(tmp_path: Path):
+    version = "v1.3.10"
+    feature_slug = "cross-page-transition-demo"
+    feature = "Cross Page Transition Demo"
     content = """# PRD
 
 target_audience: Product owner and frontend implementer
@@ -871,6 +878,105 @@ TC-001 verify cross page contract
     assert cross_page_edge["from_page"] == "cart-page"
     assert cross_page_edge["to_page"] == "checkout-page"
     assert cross_page_edge["route_or_runtime_evidence"]
+
+
+def test_v1311_prototype_should_emit_design_artifact_contract_and_de_explained_preview(tmp_path: Path):
+    version = "v1.3.11"
+    feature_slug = "design-artifact-contract-demo"
+    feature = "Design Artifact Contract Demo"
+    _prepare_v1310_sources_with_design_context(tmp_path, feature_slug, version)
+
+    create = _invoke(["prototype", "create", feature, "--project", str(tmp_path), "--version", version, "--mode", "rule", "--json"])
+    assert create.exit_code == 0, create.stdout
+
+    root = tmp_path / "docs" / "beacon" / version / "prototype" / feature_slug
+    design_artifacts = root / "design-artifacts"
+    assert (design_artifacts / "design-context.json").exists()
+    assert (design_artifacts / "surface-profile.json").exists()
+    assert (design_artifacts / "layout-pattern.json").exists()
+    assert (design_artifacts / "component-state-matrix.json").exists()
+    assert (design_artifacts / "ui-copy-policy.json").exists()
+    assert (design_artifacts / "production-ui-copy-profile.json").exists()
+    assert (design_artifacts / "style-preset.json").exists()
+    assert (design_artifacts / "design-review.json").exists()
+    assert (design_artifacts / "design-lint-rules.json").exists()
+
+    page_spec = json.loads((root / "page-specs" / "home-page.json").read_text(encoding="utf-8"))
+    assert "page_intent_contract" not in page_spec
+    assert "first_screen_contract" not in page_spec
+    assert page_spec["visible_contract"]["title"]
+    assert page_spec["internal_governance"]["page_intent_contract"]["decision_supported"]
+    assert page_spec["production_ui_copy_profile"]["title"]
+    assert page_spec["production_ui_copy_profile"]["subtitle"]
+    assert page_spec["ui_copy_policy"]["forbidden_first_screen_copy"]
+
+    preview_html = (root / "preview.html").read_text(encoding="utf-8")
+    assert "当前阻塞与下一步动作" not in preview_html
+    assert "首屏判断" not in preview_html
+    assert "design asset catalog" not in preview_html.lower()
+
+    page_markdown = (root / "pages" / "home-page.md").read_text(encoding="utf-8")
+    assert "## 首屏合同" not in page_markdown
+    assert "## 页面意图" not in page_markdown
+    assert "## 布局草图" not in page_markdown
+    assert "## 版面拆解" not in page_markdown
+    assert "## 信息优先级" not in page_markdown
+    assert "## 审阅边界" not in page_markdown
+    assert "当前状态" not in page_markdown
+    assert "下一步动作" not in page_markdown
+    assert "恢复路径" not in page_markdown
+
+    review = _invoke(["prototype", "review", feature, "--project", str(tmp_path), "--version", version, "--json"])
+    assert review.exit_code == 0, review.stdout
+    review_payload = json.loads(review.stdout)
+    assert review_payload["overall_status"] == "pass"
+    failed_checks = {item["name"] for item in review_payload["checks"] if item["status"] == "fail"}
+    assert "design_artifacts_present" not in failed_checks
+    assert "visible_contract_complete" not in failed_checks
+    assert "governance_copy_leak" not in failed_checks
+    assert "first_screen_over_explanation" not in failed_checks
+    assert "page_explanation_section_leak" not in failed_checks
+    assert "review_copy_rendered_as_production_ui" not in failed_checks
+
+
+def test_v1311_gate_should_block_governance_copy_leak_and_over_explanation(tmp_path: Path):
+    version = "v1.3.11"
+    feature_slug = "governance-leak-demo"
+    feature = "Governance Leak Demo"
+    _prepare_v1310_sources_with_design_context(tmp_path, feature_slug, version)
+
+    create = _invoke(["prototype", "create", feature, "--project", str(tmp_path), "--version", version, "--mode", "rule", "--json"])
+    assert create.exit_code == 0, create.stdout
+
+    review = _invoke(["prototype", "review", feature, "--project", str(tmp_path), "--version", version, "--json"])
+    assert review.exit_code == 0, review.stdout
+
+    root = tmp_path / "docs" / "beacon" / version / "prototype" / feature_slug
+    (root / "preview.html").write_text(
+        """<!doctype html><html><body><section>首屏判断</section><section>当前阻塞与下一步动作</section><section>恢复路径</section></body></html>""",
+        encoding="utf-8",
+    )
+    (root / "pages" / "home-page.md").write_text(
+        "# 页面\n\n## 页面意图\n- why_this_page_exists\n\n## 首屏合同\n- 当前状态：阻塞\n- 下一步动作：重试\n- 恢复路径：返回上一层\n",
+        encoding="utf-8",
+    )
+
+    review = _invoke(["prototype", "review", feature, "--project", str(tmp_path), "--version", version, "--json"])
+    assert review.exit_code == 0, review.stdout
+    review_payload = json.loads(review.stdout)
+    assert review_payload["overall_status"] == "fail"
+    failed_checks = {item["name"] for item in review_payload["checks"] if item["status"] == "fail"}
+    assert "governance_copy_leak" in failed_checks
+    assert "first_screen_over_explanation" in failed_checks
+    assert "page_explanation_section_leak" in failed_checks
+    assert "review_copy_rendered_as_production_ui" in failed_checks
+
+    issues = check_prototype_contract(tmp_path, GateMode.STRICT, "prototype", version=version)
+    reason_codes = {item.get("reason_code") for item in issues if isinstance(item, dict)}
+    assert "prototype_governance_copy_leak" in reason_codes
+    assert "prototype_first_screen_over_explanation" in reason_codes
+    assert "prototype_page_explanation_leak" in reason_codes
+    assert "prototype_review_copy_leak" in reason_codes
 
 
 def test_v1310_prototype_should_emit_automation_priority_matrix(tmp_path: Path):

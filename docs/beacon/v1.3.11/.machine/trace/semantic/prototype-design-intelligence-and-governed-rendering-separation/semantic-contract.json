@@ -1,0 +1,216 @@
+{
+  "schema_version": "1.0",
+  "semantic_contract_version": "1.0",
+  "feature": "Prototype Design Intelligence And Governed Rendering Separation",
+  "feature_slug": "prototype-design-intelligence-and-governed-rendering-separation",
+  "version": "v1.3.11",
+  "stage": "prototype",
+  "generated_at": "2026-05-02T15:02:49.896567+00:00",
+  "source_hash": "dcee10e1d67378c225ff697ce4a0d75c5893307da117f622bf7239708c412d49",
+  "projection_seq": "semantic-dcee10e1d67378c2",
+  "transaction_id": "tx-semantic-prototype-design-intelligence-and-governed-rendering-separation-semantic-dcee10e1d67378c2",
+  "source_documents": [
+    {
+      "type": "prd",
+      "path": "docs/beacon/v1.3.11/prd/prototype-design-intelligence-and-governed-rendering-separation.md",
+      "fingerprint": "58558745b9b7fae549720872511279588995c5c84ff9e941782acf615d7c1ed8"
+    },
+    {
+      "type": "user-story",
+      "path": "docs/beacon/v1.3.11/user-story/prototype-design-intelligence-and-governed-rendering-separation.md",
+      "fingerprint": "6bb40d8c88f2c9e9da6ce559999ead0a1ddab2aa32e2f0646c6db9ad00f463c9"
+    },
+    {
+      "type": "test-case",
+      "path": "docs/beacon/v1.3.11/qa/test-cases/prototype-design-intelligence-and-governed-rendering-separation.md",
+      "fingerprint": "174917fd42babf5c4fe745f7fb3691f41dc13dbc65de65c03df32f47d3be9d7a"
+    }
+  ],
+  "stage_context": {
+    "schema_version": "1.0",
+    "run_id": "",
+    "stage": "prototype",
+    "feature": "Prototype Design Intelligence And Governed Rendering Separation",
+    "version": "v1.3.11",
+    "generated_at": "2026-05-02T15:02:49.891011+00:00",
+    "memory_recall": [],
+    "lifecycle_events": [],
+    "requirement_refs": [
+      "docs/beacon/v1.3.11/prd/prototype-design-intelligence-and-governed-rendering-separation.md",
+      "docs/beacon/v1.3.11/user-story/prototype-design-intelligence-and-governed-rendering-separation.md",
+      "docs/beacon/v1.3.11/qa/test-cases/prototype-design-intelligence-and-governed-rendering-separation.md"
+    ],
+    "evidence_refs": [],
+    "decision_trace": [],
+    "blockers": [],
+    "transaction_lineage": {
+      "current_transaction_id": "",
+      "projection_seq": "",
+      "source_hash": "",
+      "previous_transaction_id": "",
+      "recent_transaction_ids": [],
+      "attempt_seq": null,
+      "action": "semantic_stage_context"
+    },
+    "semantic_context_source": "requirement-docs"
+  },
+  "official_language": {
+    "page_names": [
+      {
+        "label": "推导出的页面",
+        "slug": "semantic-layer",
+        "source": "requirement_truth"
+      },
+      {
+        "label": "原型页面",
+        "slug": "semantic-layer",
+        "source": "requirement_truth"
+      },
+      {
+        "label": "全量页面",
+        "slug": "semantic-layer",
+        "source": "requirement_truth"
+      },
+      {
+        "label": "用于页面",
+        "slug": "semantic-layer",
+        "source": "requirement_truth"
+      },
+      {
+        "label": "不允许直接写入终态页面",
+        "slug": "semantic-layer",
+        "source": "requirement_truth"
+      },
+      {
+        "label": "标题只描述页面对象与页面",
+        "slug": "semantic-layer",
+        "source": "requirement_truth"
+      },
+      {
+        "label": "首屏只允许显示页面",
+        "slug": "semantic-layer",
+        "source": "requirement_truth"
+      },
+      {
+        "label": "路径列表",
+        "slug": "semantic-layer",
+        "source": "requirement_truth"
+      }
+    ],
+    "status_labels": [
+      "降级",
+      "正常",
+      "阻塞",
+      "加载中",
+      "错误"
+    ],
+    "module_labels": [
+      "推导出的页面目标与状态",
+      "状态文案只描述状态",
+      "必要状态反馈",
+      "当前状态",
+      "路径列表",
+      "当页面状态",
+      "允许显示恢复信息",
+      "恢复信息",
+      "主动作和必要状态反馈",
+      "仅当页面状态"
+    ],
+    "action_labels": [
+      "进入",
+      "恢复路径",
+      "恢复信息",
+      "恢复信息必须由",
+      "恢复策略",
+      "返回阻断结果与",
+      "恢复信息只包含",
+      "查看详情",
+      "进入详情",
+      "返回总览"
+    ],
+    "preferred_terms": [
+      {
+        "from": "implementation",
+        "to": "implement",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "verify",
+        "to": "qa",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "review",
+        "to": "qa",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "delivery",
+        "to": "release",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "raw runtime log",
+        "to": "运行摘要",
+        "scope": "product_copy"
+      },
+      {
+        "from": "machine contract",
+        "to": "机器内部契约",
+        "scope": "product_copy"
+      }
+    ],
+    "banned_terms": [
+      "implementation",
+      "verify",
+      "review",
+      "delivery",
+      "machine contract",
+      "canonical-envelope",
+      "raw runtime log",
+      "transaction_id",
+      "projection_seq"
+    ]
+  },
+  "usage_guidelines": [
+    "先引用 semantic-contract.json，再进入 prototype 或 implement，不要在阶段内临时翻译需求。",
+    "页面名、状态名、模块名优先复用官方词表，避免 implementation / verify / delivery 这类旧阶段词汇出现在前台。",
+    "允许 taste-skill 做设计增强，但不得覆盖 requirement truth 或反向改写 semantic contract。",
+    "发现语义漂移时，优先重建 semantic layer，再继续 prototype freeze 或 implement delivery。"
+  ],
+  "default_design_bridge": {
+    "repo": "https://github.com/Leonxlnx/taste-skill",
+    "skill_id": "taste-skill",
+    "entry": "",
+    "detected": false,
+    "kind": "external-default-bridge",
+    "supported_stages": [
+      "prototype",
+      "implement"
+    ],
+    "capabilities": [
+      "prototype",
+      "implement",
+      "taste-design",
+      "semantic-normalization"
+    ],
+    "install_hint": "npx skills add https://github.com/Leonxlnx/taste-skill --skill taste-skill"
+  },
+  "compiler": {
+    "semantic_context_source": "requirement-docs",
+    "capability_snapshot": {
+      "schema_version": "1.0",
+      "command_name": "prototype",
+      "host_runtime": "codex",
+      "host_bridge_declared": false,
+      "host_response_available": false,
+      "host_response_source": "none",
+      "host_response_path": "",
+      "host_semantic_ready": false,
+      "provider_available": false,
+      "provider_key_present": false,
+      "llm_disabled": false,
+      "disable_env": "BEACON_PROTOTYPE_DISABLE_LLM"
+    }
+  }
+}

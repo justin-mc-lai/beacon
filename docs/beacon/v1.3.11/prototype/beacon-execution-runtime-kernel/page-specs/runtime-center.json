@@ -1,0 +1,411 @@
+{
+  "page_id": "runtime-center",
+  "name": "运行中心",
+  "priority": "P1",
+  "platforms": [
+    "Web",
+    "PC"
+  ],
+  "responsibility": "只在这里下钻 single / team / ralph 的 runtime 细节和有限 session metadata。",
+  "sections": [
+    "运行态摘要头部",
+    "single / team / ralph 模式切换",
+    "agent/session 引用",
+    "artifact 与 linked run",
+    "最近结果与 blocker"
+  ],
+  "actions": [
+    {
+      "label": "返回项目详情",
+      "target": "project-detail",
+      "trigger": "点击返回"
+    },
+    {
+      "label": "返回管理总览",
+      "target": "management-overview",
+      "trigger": "点击面包屑"
+    }
+  ],
+  "states": [
+    {
+      "id": "single-active",
+      "label": "Single 运行",
+      "description": "展示单进程执行摘要和 linked run。",
+      "state_visibility_contract": {
+        "user_question": "运行中心 当前发生了什么，我下一步该做什么？",
+        "required_feedback": [
+          "展示单进程执行摘要和 linked run。"
+        ],
+        "primary_actions": [
+          "返回项目详情",
+          "返回管理总览"
+        ],
+        "recovery_actions": [
+          "返回上一层",
+          "重试当前动作"
+        ],
+        "acceptance_refs": {
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        "forbidden_feedback": [
+          "只显示技术错误码",
+          "隐藏下一步动作"
+        ]
+      }
+    },
+    {
+      "id": "team-active",
+      "label": "Team 运行",
+      "description": "展示 agent 数、角色、状态和 host session metadata。",
+      "state_visibility_contract": {
+        "user_question": "运行中心 当前发生了什么，我下一步该做什么？",
+        "required_feedback": [
+          "展示 agent 数、角色、状态和 host session metadata。"
+        ],
+        "primary_actions": [
+          "返回项目详情",
+          "返回管理总览"
+        ],
+        "recovery_actions": [
+          "返回上一层",
+          "重试当前动作"
+        ],
+        "acceptance_refs": {
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        "forbidden_feedback": [
+          "只显示技术错误码",
+          "隐藏下一步动作"
+        ]
+      }
+    },
+    {
+      "id": "ralph-active",
+      "label": "Ralph 闭环",
+      "description": "展示 round_count、failure_streak、next_action、blocker。",
+      "state_visibility_contract": {
+        "user_question": "运行中心 当前发生了什么，我下一步该做什么？",
+        "required_feedback": [
+          "展示 round_count、failure_streak、next_action、blocker。"
+        ],
+        "primary_actions": [
+          "返回项目详情",
+          "返回管理总览"
+        ],
+        "recovery_actions": [
+          "返回上一层",
+          "重试当前动作"
+        ],
+        "acceptance_refs": {
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        "forbidden_feedback": [
+          "只显示技术错误码",
+          "隐藏下一步动作"
+        ]
+      }
+    },
+    {
+      "id": "idle",
+      "label": "无活跃运行",
+      "description": "当前没有任何 active runtime。",
+      "state_visibility_contract": {
+        "user_question": "运行中心 当前发生了什么，我下一步该做什么？",
+        "required_feedback": [
+          "当前没有任何 active runtime。",
+          "解释为什么为空，以及回到哪里继续。"
+        ],
+        "primary_actions": [
+          "返回项目详情",
+          "返回管理总览"
+        ],
+        "recovery_actions": [
+          "返回上一层",
+          "重试当前动作"
+        ],
+        "acceptance_refs": {
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        "forbidden_feedback": [
+          "只显示技术错误码",
+          "隐藏下一步动作"
+        ]
+      }
+    },
+    {
+      "id": "loading",
+      "label": "加载中",
+      "description": "运行态数据仍在读取。",
+      "state_visibility_contract": {
+        "user_question": "运行中心 当前发生了什么，我下一步该做什么？",
+        "required_feedback": [
+          "运行态数据仍在读取。"
+        ],
+        "primary_actions": [
+          "返回项目详情",
+          "返回管理总览"
+        ],
+        "recovery_actions": [
+          "继续等待数据加载",
+          "返回上一层"
+        ],
+        "acceptance_refs": {
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        "forbidden_feedback": [
+          "页面结构抖动",
+          "空白无提示"
+        ]
+      }
+    },
+    {
+      "id": "error",
+      "label": "错误",
+      "description": "运行态投影异常，需要回到诊断页。",
+      "state_visibility_contract": {
+        "user_question": "运行中心 当前发生了什么，我下一步该做什么？",
+        "required_feedback": [
+          "运行态投影异常，需要回到诊断页。",
+          "明确恢复动作与回退路径。"
+        ],
+        "primary_actions": [
+          "返回项目详情",
+          "返回管理总览"
+        ],
+        "recovery_actions": [
+          "返回上一层",
+          "重试当前动作"
+        ],
+        "acceptance_refs": {
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        "forbidden_feedback": [
+          "只显示技术错误码",
+          "隐藏下一步动作"
+        ]
+      }
+    }
+  ],
+  "requirement_refs": {
+    "user-story": [
+      "docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+    ],
+    "prd": [
+      "docs/beacon/v1.3.11/prd/beacon-execution-runtime-kernel.md"
+    ],
+    "test-case": [
+      "docs/beacon/v1.3.11/qa/test-cases/beacon-execution-runtime-kernel.md"
+    ]
+  },
+  "outbound_transitions": [
+    {
+      "from": "runtime-center",
+      "to": "project-detail",
+      "trigger": "点击返回",
+      "type": "return"
+    },
+    {
+      "from": "runtime-center",
+      "to": "management-overview",
+      "trigger": "点击面包屑",
+      "type": "return"
+    }
+  ],
+  "visible_contract": {
+    "title": "运行中心",
+    "subtitle": "当前到底是 single、team 还是 ralph 在推进。",
+    "must_show_sections": [
+      "运行态摘要头部",
+      "single / team / ralph 模式切换",
+      "agent/session 引用"
+    ],
+    "primary_actions": [
+      "返回项目详情",
+      "返回管理总览"
+    ],
+    "visible_states": [
+      {
+        "id": "single-active",
+        "label": "Single 运行",
+        "description": "展示单进程执行摘要和 linked run。"
+      },
+      {
+        "id": "team-active",
+        "label": "Team 运行",
+        "description": "展示 agent 数、角色、状态和 host session metadata。"
+      },
+      {
+        "id": "ralph-active",
+        "label": "Ralph 闭环",
+        "description": "展示 round_count、failure_streak、next_action、blocker。"
+      },
+      {
+        "id": "idle",
+        "label": "无活跃运行",
+        "description": "当前没有任何 active runtime。"
+      },
+      {
+        "id": "loading",
+        "label": "加载中",
+        "description": "运行态数据仍在读取。"
+      },
+      {
+        "id": "error",
+        "label": "错误",
+        "description": "运行态投影异常，需要回到诊断页。"
+      }
+    ],
+    "secondary_disclosure_only": [
+      "run list",
+      "workspace path",
+      "artifact path",
+      "history timeline",
+      "machine trace detail"
+    ]
+  },
+  "internal_governance": {
+    "page_intent_contract": {
+      "why_this_page_exists": "只在这里下钻 single / team / ralph 的 runtime 细节和有限 session metadata。",
+      "decision_supported": "当前到底是 single、team 还是 ralph 在推进。",
+      "must_show_first": [
+        "运行态摘要头部",
+        "single / team / ralph 模式切换"
+      ],
+      "must_not_show": [
+        "transaction_id",
+        "projection metadata",
+        "无边界 runtime 明细"
+      ],
+      "entry_conditions": [
+        "用户进入 `runtime-center` 需要先获得当前上下文。",
+        "当前 requirement truth 已经明确该页承担的主判断。"
+      ],
+      "exit_actions": [
+        {
+          "label": "返回项目详情",
+          "target": "project-detail"
+        },
+        {
+          "label": "返回管理总览",
+          "target": "management-overview"
+        }
+      ]
+    },
+    "first_screen_contract": {
+      "primary_status": "展示单进程执行摘要和 linked run。",
+      "primary_blocker": "运行态投影异常，需要回到诊断页。",
+      "next_actions": [
+        "返回项目详情",
+        "返回管理总览"
+      ],
+      "recovery_path": "优先进入恢复路径或返回上一层，不允许停留在无动作状态。",
+      "secondary_disclosure_only": [
+        "run list",
+        "workspace path",
+        "artifact path",
+        "history timeline",
+        "machine trace detail"
+      ]
+    },
+    "review_principles": [
+      "模式切换必须固定在头部，便于横向比较三种运行形态。",
+      "session / artifact 只展示必要引用，不在此页堆底层原文。",
+      "最近结果与 blocker 必须直接可读，避免继续翻查多层结构。"
+    ],
+    "layout_breakdown": [
+      {
+        "section": "运行态摘要头部",
+        "purpose": "先建立上下文，让人快速判断当前局面。",
+        "display_zone": "首屏"
+      },
+      {
+        "section": "single / team / ralph 模式切换",
+        "purpose": "承载该页完成核心判断所需的最小信息块。",
+        "display_zone": "主体区"
+      },
+      {
+        "section": "agent/session 引用",
+        "purpose": "只展示运行态必要信息，不展开底层机器细节。",
+        "display_zone": "主体区"
+      },
+      {
+        "section": "artifact 与 linked run",
+        "purpose": "只展示运行态必要信息，不展开底层机器细节。",
+        "display_zone": "主体区"
+      },
+      {
+        "section": "最近结果与 blocker",
+        "purpose": "承载该页完成核心判断所需的最小信息块。",
+        "display_zone": "收口区"
+      }
+    ],
+    "interaction_contract": [
+      "- `返回项目详情`: 通过 点击返回 回到 `project-detail`，用于撤销下钻并保留上层判断。",
+      "- `返回管理总览`: 通过 点击面包屑 回到 `management-overview`，用于撤销下钻并保留上层判断。"
+    ],
+    "state_contract": [
+      "- `Single 运行`: 展示单进程执行摘要和 linked run。",
+      "- `Team 运行`: 展示 agent 数、角色、状态和 host session metadata。",
+      "- `Ralph 闭环`: 展示 round_count、failure_streak、next_action、blocker。",
+      "- `无活跃运行`: 当前没有任何 active runtime。 空态要说明为什么为空，以及下一步该回哪里。",
+      "- `加载中`: 运行态数据仍在读取。 加载态只保留骨架结构，避免造成页面重新排版。",
+      "- `错误`: 运行态投影异常，需要回到诊断页。 页面要优先给出回退或恢复入口，而不是只报错。"
+    ],
+    "noise_guardrail": "运行中心可以下钻运行信息，但仍要压制无边界的机器内部明细。"
+  },
+  "ui_copy_policy": {
+    "page_id": "runtime-center",
+    "first_screen_copy": {
+      "title": "运行中心",
+      "primary_statement": "当前到底是 single、team 还是 ralph 在推进。",
+      "must_show_first": [
+        "运行态摘要头部",
+        "single / team / ralph 模式切换"
+      ],
+      "next_actions": [
+        "返回项目详情",
+        "返回管理总览"
+      ]
+    },
+    "secondary_disclosure": [
+      "workspace path",
+      "artifact path",
+      "history timeline",
+      "machine trace detail"
+    ],
+    "forbidden_first_screen_copy": [
+      "design asset catalog wording",
+      "why/reasoning explanation",
+      "review guidance",
+      "machine contract detail"
+    ]
+  },
+  "production_ui_copy_profile": {
+    "page_id": "runtime-center",
+    "title": "运行中心",
+    "subtitle": "当前到底是 single、team 还是 ralph 在推进。",
+    "primary_actions": [
+      "返回项目详情",
+      "返回管理总览"
+    ],
+    "allowed_recovery_surface_states": [
+      "blocked",
+      "failed",
+      "empty-risk"
+    ],
+    "forbidden_first_screen_terms": [
+      "当前状态",
+      "下一步动作",
+      "恢复路径",
+      "design asset catalog",
+      "review guidance",
+      "why/reasoning"
+    ]
+  }
+}

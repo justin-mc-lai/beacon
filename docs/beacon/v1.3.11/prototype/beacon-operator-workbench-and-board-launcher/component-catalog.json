@@ -1,0 +1,1950 @@
+{
+  "schema_version": "1.0",
+  "component_count": 24,
+  "components": [
+    {
+      "component_id": "recovery-diagnostics-component-01",
+      "page_id": "recovery-diagnostics",
+      "name": "truth 来源说明",
+      "responsibility": "truth 来源说明 模块负责承载 `恢复诊断` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "进入项目组合看板",
+        "trigger": "点击跳转",
+        "target": "portfolio-board"
+      },
+      "state_refs": [
+        "healthy-warning",
+        "degraded",
+        "rebuild-suggested",
+        "doctor-suggested",
+        "loading",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "healthy-warning",
+          "feedback": "当前系统可用但存在恢复风险提示。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "degraded",
+          "feedback": "SQLite 或 PocketBase 缺失，但 truth 仍可从文档恢复。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "rebuild-suggested",
+          "feedback": "投影层需要重建。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "doctor-suggested",
+          "feedback": "推荐执行 doctor 修复上下文。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "loading",
+          "feedback": "truth 来源说明 must keep visible loading feedback without collapsing layout.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "truth 来源说明 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [
+        {
+          "label": "进入项目组合看板",
+          "trigger": "点击跳转",
+          "target": "portfolio-board"
+        }
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-operator-workbench-and-board-launcher.md"
+      ]
+    },
+    {
+      "component_id": "recovery-diagnostics-component-02",
+      "page_id": "recovery-diagnostics",
+      "name": "degraded / rebuild / doctor 诊断卡",
+      "responsibility": "degraded / rebuild / doctor 诊断卡 模块负责承载 `恢复诊断` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "recovery-diagnostics"
+      },
+      "state_refs": [
+        "healthy-warning",
+        "degraded",
+        "rebuild-suggested",
+        "doctor-suggested",
+        "loading",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "healthy-warning",
+          "feedback": "当前系统可用但存在恢复风险提示。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "degraded",
+          "feedback": "SQLite 或 PocketBase 缺失，但 truth 仍可从文档恢复。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "rebuild-suggested",
+          "feedback": "投影层需要重建。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "doctor-suggested",
+          "feedback": "推荐执行 doctor 修复上下文。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "loading",
+          "feedback": "degraded / rebuild / doctor 诊断卡 must keep visible loading feedback without collapsing layout.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "degraded / rebuild / doctor 诊断卡 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-operator-workbench-and-board-launcher.md"
+      ]
+    },
+    {
+      "component_id": "recovery-diagnostics-component-03",
+      "page_id": "recovery-diagnostics",
+      "name": "恢复步骤",
+      "responsibility": "恢复步骤 模块负责承载 `恢复诊断` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "recovery-diagnostics"
+      },
+      "state_refs": [
+        "healthy-warning",
+        "degraded",
+        "rebuild-suggested",
+        "doctor-suggested",
+        "loading",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "healthy-warning",
+          "feedback": "当前系统可用但存在恢复风险提示。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "degraded",
+          "feedback": "SQLite 或 PocketBase 缺失，但 truth 仍可从文档恢复。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "rebuild-suggested",
+          "feedback": "投影层需要重建。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "doctor-suggested",
+          "feedback": "推荐执行 doctor 修复上下文。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "loading",
+          "feedback": "恢复步骤 must keep visible loading feedback without collapsing layout.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "恢复步骤 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-operator-workbench-and-board-launcher.md"
+      ]
+    },
+    {
+      "component_id": "recovery-diagnostics-component-04",
+      "page_id": "recovery-diagnostics",
+      "name": "风险提示",
+      "responsibility": "风险提示 模块负责承载 `恢复诊断` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "recovery-diagnostics"
+      },
+      "state_refs": [
+        "healthy-warning",
+        "degraded",
+        "rebuild-suggested",
+        "doctor-suggested",
+        "loading",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "healthy-warning",
+          "feedback": "当前系统可用但存在恢复风险提示。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "degraded",
+          "feedback": "SQLite 或 PocketBase 缺失，但 truth 仍可从文档恢复。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "rebuild-suggested",
+          "feedback": "投影层需要重建。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "doctor-suggested",
+          "feedback": "推荐执行 doctor 修复上下文。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "loading",
+          "feedback": "风险提示 must keep visible loading feedback without collapsing layout.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "风险提示 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-operator-workbench-and-board-launcher.md"
+      ]
+    },
+    {
+      "component_id": "portfolio-board-component-01",
+      "page_id": "portfolio-board",
+      "name": "状态摘要",
+      "responsibility": "状态摘要 模块负责承载 `项目组合看板` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "进入执行看板",
+        "trigger": "点击执行看板入口",
+        "target": "execution-board"
+      },
+      "state_refs": [
+        "ready",
+        "blocked",
+        "needs-review",
+        "loading",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "ready",
+          "feedback": "状态摘要 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "blocked",
+          "feedback": "状态摘要 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "needs-review",
+          "feedback": "存在需要进入验收面的 feature。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "loading",
+          "feedback": "状态摘要 must keep visible loading feedback without collapsing layout.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "状态摘要 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [
+        {
+          "label": "进入执行看板",
+          "trigger": "点击执行看板入口",
+          "target": "execution-board"
+        }
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-operator-workbench-and-board-launcher.md"
+      ]
+    },
+    {
+      "component_id": "portfolio-board-component-02",
+      "page_id": "portfolio-board",
+      "name": "阻塞分组",
+      "responsibility": "阻塞分组 模块负责承载 `项目组合看板` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "进入功能详情",
+        "trigger": "点击功能项",
+        "target": "feature-detail"
+      },
+      "state_refs": [
+        "ready",
+        "blocked",
+        "needs-review",
+        "loading",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "ready",
+          "feedback": "阻塞分组 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "blocked",
+          "feedback": "阻塞分组 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "needs-review",
+          "feedback": "存在需要进入验收面的 feature。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "loading",
+          "feedback": "阻塞分组 must keep visible loading feedback without collapsing layout.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "阻塞分组 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [
+        {
+          "label": "进入功能详情",
+          "trigger": "点击功能项",
+          "target": "feature-detail"
+        }
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-operator-workbench-and-board-launcher.md"
+      ]
+    },
+    {
+      "component_id": "portfolio-board-component-03",
+      "page_id": "portfolio-board",
+      "name": "待验收分组",
+      "responsibility": "待验收分组 模块负责承载 `项目组合看板` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "portfolio-board"
+      },
+      "state_refs": [
+        "ready",
+        "blocked",
+        "needs-review",
+        "loading",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "ready",
+          "feedback": "待验收分组 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "blocked",
+          "feedback": "待验收分组 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "needs-review",
+          "feedback": "存在需要进入验收面的 feature。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "loading",
+          "feedback": "待验收分组 must keep visible loading feedback without collapsing layout.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "待验收分组 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-operator-workbench-and-board-launcher.md"
+      ]
+    },
+    {
+      "component_id": "portfolio-board-component-04",
+      "page_id": "portfolio-board",
+      "name": "下一步动作",
+      "responsibility": "下一步动作 模块负责承载 `项目组合看板` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "portfolio-board"
+      },
+      "state_refs": [
+        "ready",
+        "blocked",
+        "needs-review",
+        "loading",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "ready",
+          "feedback": "下一步动作 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "blocked",
+          "feedback": "下一步动作 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "needs-review",
+          "feedback": "存在需要进入验收面的 feature。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "loading",
+          "feedback": "下一步动作 must keep visible loading feedback without collapsing layout.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "下一步动作 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-operator-workbench-and-board-launcher.md"
+      ]
+    },
+    {
+      "component_id": "execution-board-component-01",
+      "page_id": "execution-board",
+      "name": "当前状态",
+      "responsibility": "当前状态 模块负责承载 `执行看板` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "进入运行详情",
+        "trigger": "点击运行项",
+        "target": "run-detail"
+      },
+      "state_refs": [
+        "ready",
+        "blocked",
+        "needs-review",
+        "retry-scheduled",
+        "loading",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "ready",
+          "feedback": "当前状态 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "blocked",
+          "feedback": "当前状态 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "needs-review",
+          "feedback": "存在待验收运行，需要进入验收面。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "retry-scheduled",
+          "feedback": "存在待重试运行，需确认是否继续。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "loading",
+          "feedback": "当前状态 must keep visible loading feedback without collapsing layout.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "当前状态 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [
+        {
+          "label": "进入运行详情",
+          "trigger": "点击运行项",
+          "target": "run-detail"
+        }
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-operator-workbench-and-board-launcher.md"
+      ]
+    },
+    {
+      "component_id": "execution-board-component-02",
+      "page_id": "execution-board",
+      "name": "当前阻塞",
+      "responsibility": "当前阻塞 模块负责承载 `执行看板` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "进入恢复诊断",
+        "trigger": "点击阻塞或异常项",
+        "target": "recovery-diagnostics"
+      },
+      "state_refs": [
+        "ready",
+        "blocked",
+        "needs-review",
+        "retry-scheduled",
+        "loading",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "ready",
+          "feedback": "当前阻塞 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "blocked",
+          "feedback": "当前阻塞 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "needs-review",
+          "feedback": "存在待验收运行，需要进入验收面。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "retry-scheduled",
+          "feedback": "存在待重试运行，需确认是否继续。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "loading",
+          "feedback": "当前阻塞 must keep visible loading feedback without collapsing layout.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "当前阻塞 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [
+        {
+          "label": "进入恢复诊断",
+          "trigger": "点击阻塞或异常项",
+          "target": "recovery-diagnostics"
+        }
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-operator-workbench-and-board-launcher.md"
+      ]
+    },
+    {
+      "component_id": "execution-board-component-03",
+      "page_id": "execution-board",
+      "name": "下一步动作",
+      "responsibility": "下一步动作 模块负责承载 `执行看板` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "进入功能详情",
+        "trigger": "点击 feature 关联",
+        "target": "feature-detail"
+      },
+      "state_refs": [
+        "ready",
+        "blocked",
+        "needs-review",
+        "retry-scheduled",
+        "loading",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "ready",
+          "feedback": "下一步动作 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "blocked",
+          "feedback": "下一步动作 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "needs-review",
+          "feedback": "存在待验收运行，需要进入验收面。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "retry-scheduled",
+          "feedback": "存在待重试运行，需确认是否继续。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "loading",
+          "feedback": "下一步动作 must keep visible loading feedback without collapsing layout.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "下一步动作 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [
+        {
+          "label": "进入功能详情",
+          "trigger": "点击 feature 关联",
+          "target": "feature-detail"
+        }
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-operator-workbench-and-board-launcher.md"
+      ]
+    },
+    {
+      "component_id": "execution-board-component-04",
+      "page_id": "execution-board",
+      "name": "运行分组",
+      "responsibility": "运行分组 模块负责承载 `执行看板` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "execution-board"
+      },
+      "state_refs": [
+        "ready",
+        "blocked",
+        "needs-review",
+        "retry-scheduled",
+        "loading",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "ready",
+          "feedback": "运行分组 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "blocked",
+          "feedback": "运行分组 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "needs-review",
+          "feedback": "存在待验收运行，需要进入验收面。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "retry-scheduled",
+          "feedback": "存在待重试运行，需确认是否继续。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "loading",
+          "feedback": "运行分组 must keep visible loading feedback without collapsing layout.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "运行分组 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-operator-workbench-and-board-launcher.md"
+      ]
+    },
+    {
+      "component_id": "feature-detail-component-01",
+      "page_id": "feature-detail",
+      "name": "功能摘要",
+      "responsibility": "功能摘要 模块负责承载 `功能详情` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "进入运行详情",
+        "trigger": "点击关联运行",
+        "target": "run-detail"
+      },
+      "state_refs": [
+        "ready",
+        "blocked",
+        "needs-review",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "ready",
+          "feedback": "功能摘要 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "blocked",
+          "feedback": "功能摘要 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "needs-review",
+          "feedback": "功能已进入待验收状态。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "功能摘要 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [
+        {
+          "label": "进入运行详情",
+          "trigger": "点击关联运行",
+          "target": "run-detail"
+        }
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-operator-workbench-and-board-launcher.md"
+      ]
+    },
+    {
+      "component_id": "feature-detail-component-02",
+      "page_id": "feature-detail",
+      "name": "依赖与基线",
+      "responsibility": "依赖与基线 模块负责承载 `功能详情` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "进入验收面",
+        "trigger": "点击验收入口",
+        "target": "review-surface"
+      },
+      "state_refs": [
+        "ready",
+        "blocked",
+        "needs-review",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "ready",
+          "feedback": "依赖与基线 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "blocked",
+          "feedback": "依赖与基线 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "needs-review",
+          "feedback": "功能已进入待验收状态。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "依赖与基线 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [
+        {
+          "label": "进入验收面",
+          "trigger": "点击验收入口",
+          "target": "review-surface"
+        }
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-operator-workbench-and-board-launcher.md"
+      ]
+    },
+    {
+      "component_id": "feature-detail-component-03",
+      "page_id": "feature-detail",
+      "name": "状态与风险",
+      "responsibility": "状态与风险 模块负责承载 `功能详情` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "feature-detail"
+      },
+      "state_refs": [
+        "ready",
+        "blocked",
+        "needs-review",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "ready",
+          "feedback": "状态与风险 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "blocked",
+          "feedback": "状态与风险 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "needs-review",
+          "feedback": "功能已进入待验收状态。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "状态与风险 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-operator-workbench-and-board-launcher.md"
+      ]
+    },
+    {
+      "component_id": "feature-detail-component-04",
+      "page_id": "feature-detail",
+      "name": "下一步动作",
+      "responsibility": "下一步动作 模块负责承载 `功能详情` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "feature-detail"
+      },
+      "state_refs": [
+        "ready",
+        "blocked",
+        "needs-review",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "ready",
+          "feedback": "下一步动作 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "blocked",
+          "feedback": "下一步动作 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "needs-review",
+          "feedback": "功能已进入待验收状态。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "下一步动作 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-operator-workbench-and-board-launcher.md"
+      ]
+    },
+    {
+      "component_id": "run-detail-component-01",
+      "page_id": "run-detail",
+      "name": "运行状态",
+      "responsibility": "运行状态 模块负责承载 `运行详情` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "进入恢复诊断",
+        "trigger": "点击阻塞原因",
+        "target": "recovery-diagnostics"
+      },
+      "state_refs": [
+        "running",
+        "blocked",
+        "needs-review",
+        "retry-scheduled",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "running",
+          "feedback": "当前运行仍在推进。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "blocked",
+          "feedback": "运行状态 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "needs-review",
+          "feedback": "当前运行等待验收。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "retry-scheduled",
+          "feedback": "当前运行等待重试。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "运行状态 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [
+        {
+          "label": "进入恢复诊断",
+          "trigger": "点击阻塞原因",
+          "target": "recovery-diagnostics"
+        }
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-operator-workbench-and-board-launcher.md"
+      ]
+    },
+    {
+      "component_id": "run-detail-component-02",
+      "page_id": "run-detail",
+      "name": "阻塞原因",
+      "responsibility": "阻塞原因 模块负责承载 `运行详情` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "进入验收面",
+        "trigger": "点击验收入口",
+        "target": "review-surface"
+      },
+      "state_refs": [
+        "running",
+        "blocked",
+        "needs-review",
+        "retry-scheduled",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "running",
+          "feedback": "当前运行仍在推进。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "blocked",
+          "feedback": "阻塞原因 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "needs-review",
+          "feedback": "当前运行等待验收。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "retry-scheduled",
+          "feedback": "当前运行等待重试。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "阻塞原因 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [
+        {
+          "label": "进入验收面",
+          "trigger": "点击验收入口",
+          "target": "review-surface"
+        }
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-operator-workbench-and-board-launcher.md"
+      ]
+    },
+    {
+      "component_id": "run-detail-component-03",
+      "page_id": "run-detail",
+      "name": "建议动作",
+      "responsibility": "建议动作 模块负责承载 `运行详情` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "run-detail"
+      },
+      "state_refs": [
+        "running",
+        "blocked",
+        "needs-review",
+        "retry-scheduled",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "running",
+          "feedback": "当前运行仍在推进。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "blocked",
+          "feedback": "建议动作 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "needs-review",
+          "feedback": "当前运行等待验收。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "retry-scheduled",
+          "feedback": "当前运行等待重试。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "建议动作 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-operator-workbench-and-board-launcher.md"
+      ]
+    },
+    {
+      "component_id": "run-detail-component-04",
+      "page_id": "run-detail",
+      "name": "二级明细",
+      "responsibility": "二级明细 模块负责承载 `运行详情` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "run-detail"
+      },
+      "state_refs": [
+        "running",
+        "blocked",
+        "needs-review",
+        "retry-scheduled",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "running",
+          "feedback": "当前运行仍在推进。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "blocked",
+          "feedback": "二级明细 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "needs-review",
+          "feedback": "当前运行等待验收。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "retry-scheduled",
+          "feedback": "当前运行等待重试。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "二级明细 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-operator-workbench-and-board-launcher.md"
+      ]
+    },
+    {
+      "component_id": "review-surface-component-01",
+      "page_id": "review-surface",
+      "name": "验收状态",
+      "responsibility": "验收状态 模块负责承载 `验收面` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "返回运行详情",
+        "trigger": "点击返回",
+        "target": "run-detail"
+      },
+      "state_refs": [
+        "ready",
+        "needs-evidence",
+        "blocked",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "ready",
+          "feedback": "验收状态 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "needs-evidence",
+          "feedback": "验收证据不足，不能放行。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "blocked",
+          "feedback": "验收状态 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "验收状态 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [
+        {
+          "label": "返回运行详情",
+          "trigger": "点击返回",
+          "target": "run-detail"
+        }
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-operator-workbench-and-board-launcher.md"
+      ]
+    },
+    {
+      "component_id": "review-surface-component-02",
+      "page_id": "review-surface",
+      "name": "差异入口",
+      "responsibility": "差异入口 模块负责承载 `验收面` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "进入恢复诊断",
+        "trigger": "点击回修入口",
+        "target": "recovery-diagnostics"
+      },
+      "state_refs": [
+        "ready",
+        "needs-evidence",
+        "blocked",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "ready",
+          "feedback": "差异入口 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "needs-evidence",
+          "feedback": "验收证据不足，不能放行。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "blocked",
+          "feedback": "差异入口 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "差异入口 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [
+        {
+          "label": "进入恢复诊断",
+          "trigger": "点击回修入口",
+          "target": "recovery-diagnostics"
+        }
+      ],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-operator-workbench-and-board-launcher.md"
+      ]
+    },
+    {
+      "component_id": "review-surface-component-03",
+      "page_id": "review-surface",
+      "name": "证据入口",
+      "responsibility": "证据入口 模块负责承载 `验收面` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "review-surface"
+      },
+      "state_refs": [
+        "ready",
+        "needs-evidence",
+        "blocked",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "ready",
+          "feedback": "证据入口 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "needs-evidence",
+          "feedback": "验收证据不足，不能放行。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "blocked",
+          "feedback": "证据入口 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "证据入口 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-operator-workbench-and-board-launcher.md"
+      ]
+    },
+    {
+      "component_id": "review-surface-component-04",
+      "page_id": "review-surface",
+      "name": "放行建议",
+      "responsibility": "放行建议 模块负责承载 `验收面` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "review-surface"
+      },
+      "state_refs": [
+        "ready",
+        "needs-evidence",
+        "blocked",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "ready",
+          "feedback": "放行建议 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "needs-evidence",
+          "feedback": "验收证据不足，不能放行。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "blocked",
+          "feedback": "放行建议 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "放行建议 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [],
+      "story_refs": [
+        "docs/beacon/v1.3.11/user-story/beacon-operator-workbench-and-board-launcher.md"
+      ]
+    }
+  ]
+}

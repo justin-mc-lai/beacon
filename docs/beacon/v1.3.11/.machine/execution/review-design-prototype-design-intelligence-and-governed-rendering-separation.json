@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.0",
+  "review_type": "design",
+  "feature": "prototype-design-intelligence-and-governed-rendering-separation",
+  "feature_slug": "prototype-design-intelligence-and-governed-rendering-separation",
+  "version": "v1.3.11",
+  "generated_at": "2026-05-02T14:00:12.780844+00:00",
+  "status": "fail",
+  "gate_ready": false,
+  "prototype_review_status": "pass",
+  "design_review_outcome": "pass",
+  "prototype_review": {
+    "overall_status": "pass",
+    "iteration_writeback_path": ""
+  },
+  "security_design_review": {
+    "mode": "cso-inspired-design-review",
+    "status": "fail",
+    "security_dimensions": [
+      "privileged_action_boundaries",
+      "upload_and_file_constraints",
+      "secret_handling_surfaces",
+      "external_integration_boundaries",
+      "auditability_and_evidence"
+    ],
+    "severity_counts": {
+      "high": 1,
+      "medium": 0
+    },
+    "findings": [
+      {
+        "reason_code": "upload_constraints_missing",
+        "severity": "high",
+        "message": "upload-like surfaces appear in the design, but file constraints and validation boundaries are unspecified",
+        "evidence": [
+          "prototype-design-intelligence-and-governed-rendering-separation.md",
+          "prototype-design-intelligence-and-governed-rendering-separation.md"
+        ]
+      }
+    ]
+  },
+  "issues": [
+    {
+      "reason_code": "upload_constraints_missing",
+      "severity": "critical",
+      "message": "upload-like surfaces appear in the design, but file constraints and validation boundaries are unspecified"
+    }
+  ],
+  "recommendations": [
+    "Add explicit role/auth boundaries, sensitive-surface controls, and validation constraints to the user-story/PRD."
+  ]
+}

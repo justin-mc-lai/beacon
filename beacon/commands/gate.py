@@ -1475,6 +1475,12 @@ def check_prototype_contract(
                     "blocked": True,
                     "message": f"design context incomplete for feature {feature_dir.name}",
                 })
+            if "design_context_explicit_block" in failed_checks:
+                issues.append({
+                    "reason_code": "prototype_design_context_missing",
+                    "blocked": True,
+                    "message": f"design context blocked production rendering for feature {feature_dir.name}",
+                })
             if "design_reasoning_complete" in failed_checks:
                 issues.append({
                     "reason_code": "prototype_design_reasoning_missing",
@@ -1498,6 +1504,48 @@ def check_prototype_contract(
                     "reason_code": "prototype_state_visibility_missing",
                     "blocked": True,
                     "message": f"state visibility contract incomplete for feature {feature_dir.name}",
+                })
+            if "design_artifacts_present" in failed_checks:
+                issues.append({
+                    "reason_code": "prototype_design_artifact_missing",
+                    "blocked": True,
+                    "message": f"design artifacts missing for feature {feature_dir.name}",
+                })
+            if "production_ui_copy_profile_complete" in failed_checks:
+                issues.append({
+                    "reason_code": "prototype_ui_copy_projection_missing",
+                    "blocked": True,
+                    "message": f"production UI copy projection incomplete for feature {feature_dir.name}",
+                })
+            if "visible_contract_complete" in failed_checks:
+                issues.append({
+                    "reason_code": "prototype_visible_contract_missing",
+                    "blocked": True,
+                    "message": f"visible contract incomplete for feature {feature_dir.name}",
+                })
+            if "governance_copy_leak" in failed_checks:
+                issues.append({
+                    "reason_code": "prototype_governance_copy_leak",
+                    "blocked": True,
+                    "message": f"governance copy leaked into production preview for feature {feature_dir.name}",
+                })
+            if "first_screen_over_explanation" in failed_checks:
+                issues.append({
+                    "reason_code": "prototype_first_screen_over_explanation",
+                    "blocked": True,
+                    "message": f"first-screen explanation panels still dominate preview for feature {feature_dir.name}",
+                })
+            if "review_copy_rendered_as_production_ui" in failed_checks:
+                issues.append({
+                    "reason_code": "prototype_review_copy_leak",
+                    "blocked": True,
+                    "message": f"review or recovery explanation copy rendered as production UI for feature {feature_dir.name}",
+                })
+            if "page_explanation_section_leak" in failed_checks:
+                issues.append({
+                    "reason_code": "prototype_page_explanation_leak",
+                    "blocked": True,
+                    "message": f"page explanation sections leaked into production-visible markdown for feature {feature_dir.name}",
                 })
         if str(payload.get("design_review_outcome") or "pass") == "blocked":
             issues.append({

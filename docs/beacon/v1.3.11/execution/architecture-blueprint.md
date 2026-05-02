@@ -26,19 +26,6 @@
 - `doctor verify-materials --strict`
 - `freeze / implement / qa / release` 对 stale mirror 的 fail-closed
 
-<!-- BEACON:IMPLEMENTATION-DELIVERY-HOST:START -->
-## Implementation Delivery Host
-
-- version: `v1.3.11`
-- feature_count: `2`
-- transaction_id: `tx-b96e6e6859ff76203`
-- source_hash: `sha256:3a62e046701daae936a03f130f61175d45b00586c889f7b3bd6bdaeea8b15012`
-
-### Registered Feature Baselines
-- `beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance` | revision=`R3` | branch=`beacon/v1.3.11` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.3.11/.machine/execution/implementation-delivery-baseline-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json`
-- `beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation` | revision=`R1` | branch=`beacon/v1.3.11` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.3.11/.machine/execution/implementation-delivery-baseline-beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.json`
-<!-- BEACON:IMPLEMENTATION-DELIVERY-HOST:END -->
-
 <!-- BEACON:TECHNICAL-DELTA-BLUEPRINT:beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance:START -->
 ## Technical Delta Blueprint
 
@@ -107,3 +94,86 @@
 - deterministic implementation contract, git workflow contract, and implementation plan are projections.
 - gates must block if projection metadata or service/branch/worktree fields drift.
 <!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance:END -->
+
+<!-- BEACON:IMPLEMENTATION-DELIVERY-HOST:START -->
+## Implementation Delivery Host
+
+- version: `v1.3.11`
+- feature_count: `3`
+- transaction_id: `tx-3628e55fe33394553`
+- source_hash: `sha256:4f41b8de5b4a5305191c938ac354d88d6da811dbb62ca5aa36d83de8ebba4485`
+
+### Registered Feature Baselines
+- `beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance` | revision=`R3` | branch=`beacon/v1.3.11` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.3.11/.machine/execution/implementation-delivery-baseline-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json`
+- `beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation` | revision=`R1` | branch=`beacon/v1.3.11` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.3.11/.machine/execution/implementation-delivery-baseline-beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.json`
+- `prototype-design-intelligence-and-governed-rendering-separation` | revision=`R1` | branch=`beacon/v1.3.11` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.3.11/.machine/execution/implementation-delivery-baseline-prototype-design-intelligence-and-governed-rendering-separation.json`
+<!-- BEACON:IMPLEMENTATION-DELIVERY-HOST:END -->
+
+<!-- BEACON:TECHNICAL-DELTA-BLUEPRINT:prototype-design-intelligence-and-governed-rendering-separation:START -->
+## Technical Delta Blueprint
+
+- project_mode: `greenfield`
+- feature: `prototype-design-intelligence-and-governed-rendering-separation`
+- version: `v1.3.11`
+
+### Source Refs
+- prd: `docs/beacon/v1.3.11/prd/prototype-design-intelligence-and-governed-rendering-separation.md`
+- user_story: `docs/beacon/v1.3.11/user-story/prototype-design-intelligence-and-governed-rendering-separation.md`
+- test_case: `docs/beacon/v1.3.11/qa/test-cases/prototype-design-intelligence-and-governed-rendering-separation.md`
+
+### Delivery Change Surface
+- none
+### Available Entry Surfaces
+- none
+### Current Service Facts
+- none
+
+### Must Change
+- none
+
+### Can Reuse
+- none
+
+### No-Expand Guardrails
+- none
+
+### Compatibility Rules
+- none
+
+### Delivery Constraints
+- none
+
+### Implement Handoff
+- none
+<!-- BEACON:TECHNICAL-DELTA-BLUEPRINT:prototype-design-intelligence-and-governed-rendering-separation:END -->
+
+<!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:prototype-design-intelligence-and-governed-rendering-separation:START -->
+## Implementation Delivery Baseline
+
+- baseline_id: `impl-delivery-baseline-v1.3.11-prototype-design-intelligence-and-governed-rendering-separation-R1`
+- transaction_id: `tx-14a71e54c4af5ff0d`
+- source_hash: `sha256:c18319db14d159b5f063e98680391adb0b8c31a10c3e716293af2d2cf067c9fc`
+- projection_seq: `1`
+- version: `v1.3.11`
+- feature: `prototype-design-intelligence-and-governed-rendering-separation`
+- lifecycle_role: `pre-implement delivery blueprint projection`
+- projection_refresh_trigger: `implement plan against the active frozen revision`
+- branch_strategy: `single-branch`
+- base_branch: `main`
+- default_target_branch: `beacon/v1.3.11`
+- branch_prefix: `beacon/`
+- use_git_worktree: `False`
+- worktree_root: `.`
+- workspace_root: `.`
+
+### Delivery Service Scope
+- direct_delivery_services: .
+- writable_services: .
+- reference_only_services: docs
+- depends_on_features: -
+
+### Plan-Time Gate Contract
+- canonical envelope is the only delivery baseline source.
+- deterministic implementation contract, git workflow contract, and implementation plan are projections.
+- gates must block if projection metadata or service/branch/worktree fields drift.
+<!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:prototype-design-intelligence-and-governed-rendering-separation:END -->

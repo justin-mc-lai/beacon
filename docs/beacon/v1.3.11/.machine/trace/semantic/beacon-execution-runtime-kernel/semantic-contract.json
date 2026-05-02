@@ -1,0 +1,195 @@
+{
+  "schema_version": "1.0",
+  "semantic_contract_version": "1.0",
+  "feature": "Beacon Execution Runtime Kernel",
+  "feature_slug": "beacon-execution-runtime-kernel",
+  "version": "v1.3.11",
+  "stage": "prototype",
+  "generated_at": "2026-05-02T15:21:29.818773+00:00",
+  "source_hash": "e513c749781b0e51781744ae8418842604f038a4e3f118ecdc63b41f4e8ab6fc",
+  "projection_seq": "semantic-e513c749781b0e51",
+  "transaction_id": "tx-semantic-beacon-execution-runtime-kernel-semantic-e513c749781b0e51",
+  "source_documents": [
+    {
+      "type": "prd",
+      "path": "docs/beacon/v1.3.11/prd/beacon-execution-runtime-kernel.md",
+      "fingerprint": "86b3e1821bb331ad0542bf2596ced0faaa3957fee442b141f3054c623ea0f9f6"
+    },
+    {
+      "type": "user-story",
+      "path": "docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md",
+      "fingerprint": "4dc1a2c55819146158d4a3f2bf396f67c861cfb008a1bb80de9e10cb48f6507c"
+    },
+    {
+      "type": "test-case",
+      "path": "docs/beacon/v1.3.11/qa/test-cases/beacon-execution-runtime-kernel.md",
+      "fingerprint": "8da617c7f3e9bb7c79a24f961f43b3282fdeee9c9358e8a477c6ca654a7b1119"
+    }
+  ],
+  "stage_context": {
+    "schema_version": "1.0",
+    "run_id": "",
+    "stage": "prototype",
+    "feature": "Beacon Execution Runtime Kernel",
+    "version": "v1.3.11",
+    "generated_at": "2026-05-02T15:21:29.811759+00:00",
+    "memory_recall": [],
+    "lifecycle_events": [],
+    "requirement_refs": [
+      "docs/beacon/v1.3.11/prd/beacon-execution-runtime-kernel.md",
+      "docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md",
+      "docs/beacon/v1.3.11/qa/test-cases/beacon-execution-runtime-kernel.md"
+    ],
+    "evidence_refs": [],
+    "decision_trace": [],
+    "blockers": [],
+    "transaction_lineage": {
+      "current_transaction_id": "",
+      "projection_seq": "",
+      "source_hash": "",
+      "previous_transaction_id": "",
+      "recent_transaction_ids": [],
+      "attempt_seq": null,
+      "action": "semantic_stage_context"
+    },
+    "semantic_context_source": "requirement-docs"
+  },
+  "official_language": {
+    "page_names": [
+      {
+        "label": "证明执行工作台",
+        "slug": "semantic-layer",
+        "source": "requirement_truth"
+      },
+      {
+        "label": "式控制台页面",
+        "slug": "semantic-layer",
+        "source": "requirement_truth"
+      },
+      {
+        "label": "暴露的运行态总览",
+        "slug": "semantic-layer",
+        "source": "requirement_truth"
+      },
+      {
+        "label": "Beacon Execution Runtime Kernel",
+        "slug": "beacon-execution-runtime-kernel",
+        "source": "requirement_truth"
+      }
+    ],
+    "status_labels": [
+      "错误",
+      "正常",
+      "阻塞",
+      "加载中"
+    ],
+    "module_labels": [
+      "只会把现有离散状态",
+      "提供稳定状态",
+      "为唯一入口",
+      "自己的当前状态",
+      "而不是各自维护分散状态",
+      "负责调度与状态",
+      "暴露可消费状态",
+      "只把旧命令状态",
+      "自己拼状态",
+      "任一关键状态"
+    ],
+    "action_labels": [
+      "恢复",
+      "重试仍依赖人工心智",
+      "恢复面",
+      "重试等稳定",
+      "恢复语义",
+      "恢复场景提供稳定的",
+      "恢复策略",
+      "恢复路径",
+      "恢复顺序必须优先",
+      "恢复路径明确且可重放"
+    ],
+    "preferred_terms": [
+      {
+        "from": "implementation",
+        "to": "implement",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "verify",
+        "to": "qa",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "review",
+        "to": "qa",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "delivery",
+        "to": "release",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "raw runtime log",
+        "to": "运行摘要",
+        "scope": "product_copy"
+      },
+      {
+        "from": "machine contract",
+        "to": "机器内部契约",
+        "scope": "product_copy"
+      }
+    ],
+    "banned_terms": [
+      "implementation",
+      "verify",
+      "review",
+      "delivery",
+      "machine contract",
+      "canonical-envelope",
+      "raw runtime log",
+      "transaction_id",
+      "projection_seq"
+    ]
+  },
+  "usage_guidelines": [
+    "先引用 semantic-contract.json，再进入 prototype 或 implement，不要在阶段内临时翻译需求。",
+    "页面名、状态名、模块名优先复用官方词表，避免 implementation / verify / delivery 这类旧阶段词汇出现在前台。",
+    "允许 taste-skill 做设计增强，但不得覆盖 requirement truth 或反向改写 semantic contract。",
+    "发现语义漂移时，优先重建 semantic layer，再继续 prototype freeze 或 implement delivery。"
+  ],
+  "default_design_bridge": {
+    "repo": "https://github.com/Leonxlnx/taste-skill",
+    "skill_id": "taste-skill",
+    "entry": "",
+    "detected": false,
+    "kind": "external-default-bridge",
+    "supported_stages": [
+      "prototype",
+      "implement"
+    ],
+    "capabilities": [
+      "prototype",
+      "implement",
+      "taste-design",
+      "semantic-normalization"
+    ],
+    "install_hint": "npx skills add https://github.com/Leonxlnx/taste-skill --skill taste-skill"
+  },
+  "compiler": {
+    "semantic_context_source": "requirement-docs",
+    "capability_snapshot": {
+      "schema_version": "1.0",
+      "command_name": "prototype",
+      "host_runtime": "codex",
+      "host_bridge_declared": false,
+      "host_response_available": false,
+      "host_response_source": "none",
+      "host_response_path": "",
+      "host_semantic_ready": false,
+      "provider_available": false,
+      "provider_key_present": false,
+      "llm_disabled": false,
+      "disable_env": "BEACON_PROTOTYPE_DISABLE_LLM"
+    }
+  }
+}

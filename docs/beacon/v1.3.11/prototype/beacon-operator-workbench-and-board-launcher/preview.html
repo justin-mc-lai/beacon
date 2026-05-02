@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Beacon Operator Workbench And Board Launcher Design Preview Light</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #F5F5F7;
+      --fg: #1D1D1F;
+      --card: #FFFFFF;
+      --border: #D2D2D7;
+      --accent: #0071E3;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif; background: var(--bg); color: var(--fg); }
+    main { max-width: 1100px; margin: 0 auto; padding: 32px 20px 56px; }
+    .hero { display: grid; gap: 12px; margin-bottom: 24px; }
+    .eyebrow { font-size: 12px; color: var(--accent); text-transform: uppercase; }
+    h1, h2 { margin: 0; font-weight: 600; }
+    p, li { line-height: 1.5; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 16px; display: grid; gap: 10px; }
+    .alert { border-color: var(--accent); }
+    .actions { display: flex; flex-wrap: wrap; gap: 8px; }
+    .action-pill { border: 1px solid var(--border); border-radius: 999px; padding: 6px 10px; font-size: 13px; }
+    .muted { color: #6E6E73; font-size: 13px; }
+    ul { margin: 0; padding-left: 18px; }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="hero">
+      <div class="eyebrow">apple-inspired-design-md · Light preview</div>
+      <h1>恢复诊断</h1>
+      <p>当前是 degraded、rebuild 还是 doctor 场景。</p>
+    </section>
+    <section class="card" style="margin-bottom:16px;">
+      <div class="eyebrow">主动作</div>
+      <div class="actions"><span class="action-pill">进入项目组合看板</span></div>
+    </section>
+    
+    <section class="card alert" style="margin-bottom:16px;">
+      <div class="eyebrow">恢复判断</div>
+      <h2>SQLite 或 PocketBase 缺失，但 truth 仍可从文档恢复。</h2>
+      <p>优先进入恢复入口或返回上一层，不允许停留在无动作状态。</p>
+    </section>
+
+    <section class="grid">
+      
+            <section class="card">
+              <div class="eyebrow">P2 · Web, PC</div>
+              <h2>恢复诊断</h2>
+              <p>当前是 degraded、rebuild 还是 doctor 场景。</p>
+              <div class="actions"><span class="action-pill">进入项目组合看板</span></div>
+            </section>
+            
+            <section class="card">
+              <div class="eyebrow">P1 · Web, PC</div>
+              <h2>项目组合看板</h2>
+              <p>当前应先进入阻塞 feature、待验收 feature，还是继续观察整体版本健康态。</p>
+              <div class="actions"><span class="action-pill">进入执行看板</span><span class="action-pill">进入功能详情</span></div>
+            </section>
+            
+            <section class="card">
+              <div class="eyebrow">P0 · Web, PC</div>
+              <h2>执行看板</h2>
+              <p>当前应继续、停止、重试，还是先进入恢复入口。</p>
+              <div class="actions"><span class="action-pill">进入运行详情</span><span class="action-pill">进入恢复诊断</span><span class="action-pill">进入功能详情</span></div>
+            </section>
+            
+            <section class="card">
+              <div class="eyebrow">P1 · Web, PC</div>
+              <h2>功能详情</h2>
+              <p>当前 feature 应继续推进、等待依赖，还是进入恢复或验收路径。</p>
+              <div class="actions"><span class="action-pill">进入运行详情</span><span class="action-pill">进入验收面</span></div>
+            </section>
+            
+            <section class="card">
+              <div class="eyebrow">P1 · Web, PC</div>
+              <h2>运行详情</h2>
+              <p>当前运行应继续、停止、重试，还是转入 repair handoff。</p>
+              <div class="actions"><span class="action-pill">进入恢复诊断</span><span class="action-pill">进入验收面</span></div>
+            </section>
+            
+            <section class="card">
+              <div class="eyebrow">P1 · Web, PC</div>
+              <h2>验收面</h2>
+              <p>当前项应通过验收、回到修复路径，还是继续收集证据。</p>
+              <div class="actions"><span class="action-pill">返回运行详情</span><span class="action-pill">进入恢复诊断</span></div>
+            </section>
+            
+    </section>
+  </main>
+</body>
+</html>

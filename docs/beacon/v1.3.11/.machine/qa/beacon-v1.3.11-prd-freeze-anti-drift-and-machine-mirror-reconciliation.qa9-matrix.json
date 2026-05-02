@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0.2",
-  "feature": "Beacon v1.3.11 PRD freeze anti-drift and machine-mirror reconciliation",
+  "feature": "beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation",
   "feature_slug": "beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation",
   "version": "v1.3.11",
   "compiler": {
@@ -52,7 +52,7 @@
       ]
     },
     "project_type": "ai-agent-skill",
-    "generated_at": "2026-05-01T12:58:30.521323",
+    "generated_at": "2026-05-01T23:05:49.248388",
     "prompt_ref": "beacon.qa9.llm.plan.v1.0.2",
     "skip_reason": "",
     "qa_types": [
@@ -69,7 +69,7 @@
   },
   "qa_strategy": {
     "schema_version": "1.0.2",
-    "generated_at": "2026-05-01T12:58:30.519496",
+    "generated_at": "2026-05-01T23:05:49.246749",
     "project_type": "ai-agent-skill",
     "project_scan": {
       "language": "python",
@@ -256,7 +256,7 @@
       "ac_id": "AC-001",
       "layer": "unit",
       "qa_type": "unit",
-      "title": "Beacon v1.3.11 PRD freeze anti-drift and machine-mirror reconciliation unit :: 当人类明确编辑 `docs/beacon/<version>/prd/*.md` 后，Beacon 能把当前 markdown 视为可重投影的 authorit",
+      "title": "beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation unit :: 当人类明确编辑 `docs/beacon/<version>/prd/*.md` 后，Beacon 能把当前 markdown 视为可重投影的 authorit",
       "priority": "P0",
       "automation": "auto",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
@@ -269,17 +269,15 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "passed",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md",
-      "last_run_id": "run-20260501T175831917995",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260501T175831917995/qa9-tc/TC-001/command.txt"
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
     },
     {
       "tc_id": "TC-002",
       "ac_id": "AC-002",
       "layer": "unit",
       "qa_type": "unit",
-      "title": "Beacon v1.3.11 PRD freeze anti-drift and machine-mirror reconciliation unit :: `prd reconcile` 或等价正式 surface 会同步更新至少三类 sink：`docs/beacon/<version>/prd/*.md`、`d",
+      "title": "beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation unit :: `prd reconcile` 或等价正式 surface 会同步更新至少三类 sink：`docs/beacon/<version>/prd/*.md`、`d",
       "priority": "P0",
       "automation": "auto",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
@@ -292,17 +290,15 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "passed",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md",
-      "last_run_id": "run-20260501T175831917995",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260501T175831917995/qa9-tc/TC-002/command.txt"
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
     },
     {
       "tc_id": "TC-003",
       "ac_id": "AC-003",
       "layer": "unit",
       "qa_type": "unit",
-      "title": "Beacon v1.3.11 PRD freeze anti-drift and machine-mirror reconciliation unit :: 同一份 markdown 在未变化时重复 reconcile，生成的 `source_hash / projection_seq / sink_checksum",
+      "title": "beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation unit :: 同一份 markdown 在未变化时重复 reconcile，生成的 `source_hash / projection_seq / sink_checksum",
       "priority": "P0",
       "automation": "auto",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
@@ -315,17 +311,15 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "passed",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md",
-      "last_run_id": "run-20260501T175831917995",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260501T175831917995/qa9-tc/TC-003/command.txt"
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
     },
     {
       "tc_id": "TC-004",
       "ac_id": "AC-004",
       "layer": "unit",
       "qa_type": "unit",
-      "title": "Beacon v1.3.11 PRD freeze anti-drift and machine-mirror reconciliation unit :: 正常闭环下，操作者不需要手工 patch machine JSON 才能让 PRD 重回 audit-pass 状态。",
+      "title": "beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation unit :: 正常闭环下，操作者不需要手工 patch machine JSON 才能让 PRD 重回 audit-pass 状态。",
       "priority": "P0",
       "automation": "auto",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
@@ -338,17 +332,15 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "passed",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md",
-      "last_run_id": "run-20260501T175831917995",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260501T175831917995/qa9-tc/TC-004/command.txt"
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
     },
     {
       "tc_id": "TC-005",
       "ac_id": "AC-101",
       "layer": "unit",
       "qa_type": "unit",
-      "title": "Beacon v1.3.11 PRD freeze anti-drift and machine-mirror reconciliation unit :: `prd audit` 至少同时检查 `docs/beacon/<version>/prd/*.md`、`.beacon/prd/*.json`、`docs/b",
+      "title": "beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation unit :: `prd audit` 至少同时检查 `docs/beacon/<version>/prd/*.md`、`.beacon/prd/*.json`、`docs/b",
       "priority": "P0",
       "automation": "auto",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
@@ -361,17 +353,15 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "passed",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md",
-      "last_run_id": "run-20260501T175831917995",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260501T175831917995/qa9-tc/TC-005/command.txt"
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
     },
     {
       "tc_id": "TC-006",
       "ac_id": "AC-102",
       "layer": "unit",
       "qa_type": "unit",
-      "title": "Beacon v1.3.11 PRD freeze anti-drift and machine-mirror reconciliation unit :: 当任一 sink 漂移时，audit 输出必须指出是哪一类 sink 失配，而不是只给出笼统的 drift 结论。",
+      "title": "beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation unit :: 当任一 sink 漂移时，audit 输出必须指出是哪一类 sink 失配，而不是只给出笼统的 drift 结论。",
       "priority": "P0",
       "automation": "auto",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
@@ -384,17 +374,15 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "passed",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md",
-      "last_run_id": "run-20260501T175831917995",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260501T175831917995/qa9-tc/TC-006/command.txt"
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
     },
     {
       "tc_id": "TC-007",
       "ac_id": "AC-103",
       "layer": "unit",
       "qa_type": "unit",
-      "title": "Beacon v1.3.11 PRD freeze anti-drift and machine-mirror reconciliation unit :: audit 输出必须能区分“markdown contract 无效”和“markdown contract 有效但 machine mirror stale”",
+      "title": "beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation unit :: audit 输出必须能区分“markdown contract 无效”和“markdown contract 有效但 machine mirror stale”",
       "priority": "P0",
       "automation": "auto",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
@@ -407,17 +395,15 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "passed",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md",
-      "last_run_id": "run-20260501T175831917995",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260501T175831917995/qa9-tc/TC-007/command.txt"
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
     },
     {
       "tc_id": "TC-008",
       "ac_id": "AC-104",
       "layer": "unit",
       "qa_type": "unit",
-      "title": "Beacon v1.3.11 PRD freeze anti-drift and machine-mirror reconciliation unit :: audit 结果必须能直接被后续 freeze / gate / doctor verify-materials 消费，而不是只作为一次性调试信息。",
+      "title": "beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation unit :: audit 结果必须能直接被后续 freeze / gate / doctor verify-materials 消费，而不是只作为一次性调试信息。",
       "priority": "P0",
       "automation": "auto",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
@@ -430,17 +416,15 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "passed",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md",
-      "last_run_id": "run-20260501T175831917995",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260501T175831917995/qa9-tc/TC-008/command.txt"
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
     },
     {
       "tc_id": "TC-009",
       "ac_id": "AC-201",
       "layer": "unit",
       "qa_type": "unit",
-      "title": "Beacon v1.3.11 PRD freeze anti-drift and machine-mirror reconciliation unit :: PRD transaction 面必须存在可确定解析的 latest pointer，能够指向当前 active transaction。",
+      "title": "beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation unit :: PRD transaction 面必须存在可确定解析的 latest pointer，能够指向当前 active transaction。",
       "priority": "P0",
       "automation": "auto",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
@@ -453,17 +437,15 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "passed",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md",
-      "last_run_id": "run-20260501T175831917995",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260501T175831917995/qa9-tc/TC-009/command.txt"
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
     },
     {
       "tc_id": "TC-010",
       "ac_id": "AC-202",
       "layer": "unit",
       "qa_type": "unit",
-      "title": "Beacon v1.3.11 PRD freeze anti-drift and machine-mirror reconciliation unit :: 新 transaction 生成后，系统能表达其与前一 transaction 的 supersedes 关系，而不是只靠时间排序猜测。",
+      "title": "beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation unit :: 新 transaction 生成后，系统能表达其与前一 transaction 的 supersedes 关系，而不是只靠时间排序猜测。",
       "priority": "P0",
       "automation": "auto",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
@@ -476,17 +458,15 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "passed",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md",
-      "last_run_id": "run-20260501T175831917995",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260501T175831917995/qa9-tc/TC-010/command.txt"
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
     },
     {
       "tc_id": "TC-011",
       "ac_id": "AC-203",
       "layer": "unit",
       "qa_type": "unit",
-      "title": "Beacon v1.3.11 PRD freeze anti-drift and machine-mirror reconciliation unit :: 人类和 machine surface 都能判断某一 transaction 是 `pending / applied / superseded / stale",
+      "title": "beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation unit :: 人类和 machine surface 都能判断某一 transaction 是 `pending / applied / superseded / stale",
       "priority": "P0",
       "automation": "auto",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
@@ -499,17 +479,15 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "passed",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md",
-      "last_run_id": "run-20260501T175831917995",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260501T175831917995/qa9-tc/TC-011/command.txt"
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
     },
     {
       "tc_id": "TC-012",
       "ac_id": "AC-204",
       "layer": "unit",
       "qa_type": "unit",
-      "title": "Beacon v1.3.11 PRD freeze anti-drift and machine-mirror reconciliation unit :: 历史 transaction 允许保留，但不得继续被 audit / doctor / release 错认成当前 truth。",
+      "title": "beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation unit :: 历史 transaction 允许保留，但不得继续被 audit / doctor / release 错认成当前 truth。",
       "priority": "P0",
       "automation": "auto",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
@@ -522,17 +500,15 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "passed",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md",
-      "last_run_id": "run-20260501T175831917995",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260501T175831917995/qa9-tc/TC-012/command.txt"
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
     },
     {
       "tc_id": "TC-013",
       "ac_id": "AC-301",
       "layer": "unit",
       "qa_type": "unit",
-      "title": "Beacon v1.3.11 PRD freeze anti-drift and machine-mirror reconciliation unit :: change-loop 至少能识别 `markdown_changed_but_machine_stale` 这一类 requirement package 状",
+      "title": "beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation unit :: change-loop 至少能识别 `markdown_changed_but_machine_stale` 这一类 requirement package 状",
       "priority": "P0",
       "automation": "auto",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
@@ -545,17 +521,15 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "passed",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md",
-      "last_run_id": "run-20260501T175831917995",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260501T175831917995/qa9-tc/TC-013/command.txt"
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
     },
     {
       "tc_id": "TC-014",
       "ac_id": "AC-302",
       "layer": "unit",
       "qa_type": "unit",
-      "title": "Beacon v1.3.11 PRD freeze anti-drift and machine-mirror reconciliation unit :: 当识别到 stale mirror 时，系统推荐动作必须明确指向 `beacon-change` 内的 reconcile/repair 路径，而不是继续放行 ",
+      "title": "beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation unit :: 当识别到 stale mirror 时，系统推荐动作必须明确指向 `beacon-change` 内的 reconcile/repair 路径，而不是继续放行 ",
       "priority": "P0",
       "automation": "auto",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
@@ -568,17 +542,15 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "passed",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md",
-      "last_run_id": "run-20260501T175831917995",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260501T175831917995/qa9-tc/TC-014/command.txt"
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
     },
     {
       "tc_id": "TC-015",
       "ac_id": "AC-303",
       "layer": "unit",
       "qa_type": "unit",
-      "title": "Beacon v1.3.11 PRD freeze anti-drift and machine-mirror reconciliation unit :: 对于已识别的 stale mirror，`freeze`、`implement`、`qa`、`release` 必须 fail-closed，而不是带着旧 ma",
+      "title": "beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation unit :: 对于已识别的 stale mirror，`freeze`、`implement`、`qa`、`release` 必须 fail-closed，而不是带着旧 ma",
       "priority": "P0",
       "automation": "auto",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
@@ -591,17 +563,15 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "passed",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md",
-      "last_run_id": "run-20260501T175831917995",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260501T175831917995/qa9-tc/TC-015/command.txt"
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
     },
     {
       "tc_id": "TC-016",
       "ac_id": "AC-304",
       "layer": "unit",
       "qa_type": "unit",
-      "title": "Beacon v1.3.11 PRD freeze anti-drift and machine-mirror reconciliation unit :: `status / help / doctor advise` 这类 support surface 必须能把 stale mirror 原因明确投影给操作者。",
+      "title": "beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation unit :: `status / help / doctor advise` 这类 support surface 必须能把 stale mirror 原因明确投影给操作者。",
       "priority": "P0",
       "automation": "auto",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
@@ -614,17 +584,15 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "passed",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md",
-      "last_run_id": "run-20260501T175831917995",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260501T175831917995/qa9-tc/TC-016/command.txt"
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
     },
     {
       "tc_id": "TC-017",
       "ac_id": "AC-401",
       "layer": "unit",
       "qa_type": "unit",
-      "title": "Beacon v1.3.11 PRD freeze anti-drift and machine-mirror reconciliation unit :: 系统明确区分正常 `reconcile` 与异常 `doctor sync-materials / repair-package` 的职责边界。",
+      "title": "beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation unit :: 系统明确区分正常 `reconcile` 与异常 `doctor sync-materials / repair-package` 的职责边界。",
       "priority": "P0",
       "automation": "auto",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
@@ -637,17 +605,15 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "passed",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md",
-      "last_run_id": "run-20260501T175831917995",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260501T175831917995/qa9-tc/TC-017/command.txt"
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
     },
     {
       "tc_id": "TC-018",
       "ac_id": "AC-402",
       "layer": "unit",
       "qa_type": "unit",
-      "title": "Beacon v1.3.11 PRD freeze anti-drift and machine-mirror reconciliation unit :: `doctor` 相关 repair surface 仅在 machine sink 缺失、损坏或历史状态不可信时作为 fallback 推荐，而不是 PRD ",
+      "title": "beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation unit :: `doctor` 相关 repair surface 仅在 machine sink 缺失、损坏或历史状态不可信时作为 fallback 推荐，而不是 PRD ",
       "priority": "P0",
       "automation": "auto",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
@@ -660,17 +626,15 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "passed",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md",
-      "last_run_id": "run-20260501T175831917995",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260501T175831917995/qa9-tc/TC-018/command.txt"
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
     },
     {
       "tc_id": "TC-019",
       "ac_id": "AC-403",
       "layer": "unit",
       "qa_type": "unit",
-      "title": "Beacon v1.3.11 PRD freeze anti-drift and machine-mirror reconciliation unit :: 当进入 repair fallback 时，输出必须说明触发原因、恢复步骤、以及恢复后如何重新回到 change/freeze 主链。",
+      "title": "beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation unit :: 当进入 repair fallback 时，输出必须说明触发原因、恢复步骤、以及恢复后如何重新回到 change/freeze 主链。",
       "priority": "P0",
       "automation": "auto",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
@@ -683,17 +647,15 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "passed",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md",
-      "last_run_id": "run-20260501T175831917995",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260501T175831917995/qa9-tc/TC-019/command.txt"
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
     },
     {
       "tc_id": "TC-020",
       "ac_id": "AC-404",
       "layer": "unit",
       "qa_type": "unit",
-      "title": "Beacon v1.3.11 PRD freeze anti-drift and machine-mirror reconciliation unit :: repair 完成后，系统能重新回到可审计的 `validate -> audit -> freeze readiness` 路径，而不是停留在 repair-",
+      "title": "beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation unit :: repair 完成后，系统能重新回到可审计的 `validate -> audit -> freeze readiness` 路径，而不是停留在 repair-",
       "priority": "P0",
       "automation": "auto",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
@@ -706,17 +668,15 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "passed",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md",
-      "last_run_id": "run-20260501T175831917995",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260501T175831917995/qa9-tc/TC-020/command.txt"
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
     },
     {
       "tc_id": "TC-021",
       "ac_id": "AC-005",
       "layer": "unit",
       "qa_type": "unit",
-      "title": "Beacon v1.3.11 PRD freeze anti-drift and machine-mirror reconciliation unit :: doctor fallback 可回主链",
+      "title": "beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation unit :: doctor fallback 可回主链",
       "priority": "P0",
       "automation": "auto",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
@@ -729,17 +689,15 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "passed",
-      "source": "prd:docs/beacon/v1.3.11/prd/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md",
-      "last_run_id": "run-20260501T175831917995",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260501T175831917995/qa9-tc/TC-021/command.txt"
+      "status": "pending",
+      "source": "prd:docs/beacon/v1.3.11/prd/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
     },
     {
       "tc_id": "TC-022",
       "ac_id": "AC-001",
       "layer": "api-curl",
       "qa_type": "interface",
-      "title": "Beacon v1.3.11 PRD freeze anti-drift and machine-mirror reconciliation interface coverage",
+      "title": "beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation interface coverage",
       "priority": "P0",
       "automation": "auto",
       "command": "python3 -m pytest -q -k interface --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
@@ -752,17 +710,15 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "passed",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md",
-      "last_run_id": "run-20260501T175831917995",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260501T175831917995/qa9-tc/TC-022/command.txt"
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
     },
     {
       "tc_id": "TC-023",
       "ac_id": "AC-002",
       "layer": "contract",
       "qa_type": "contract",
-      "title": "Beacon v1.3.11 PRD freeze anti-drift and machine-mirror reconciliation contract coverage",
+      "title": "beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation contract coverage",
       "priority": "P1",
       "automation": "auto",
       "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
@@ -775,17 +731,15 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "passed",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md",
-      "last_run_id": "run-20260501T181931954666",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260501T181931954666/qa9-tc/TC-023/command.txt"
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
     },
     {
       "tc_id": "TC-024",
       "ac_id": "AC-003",
       "layer": "integration",
       "qa_type": "integration",
-      "title": "Beacon v1.3.11 PRD freeze anti-drift and machine-mirror reconciliation integration coverage",
+      "title": "beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation integration coverage",
       "priority": "P1",
       "automation": "auto",
       "command": "python3 -m pytest -q -k integration --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
@@ -798,17 +752,15 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "passed",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md",
-      "last_run_id": "run-20260501T181931954666",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260501T181931954666/qa9-tc/TC-024/command.txt"
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
     },
     {
       "tc_id": "TC-025",
       "ac_id": "AC-004",
       "layer": "smoke",
       "qa_type": "smoke",
-      "title": "Beacon v1.3.11 PRD freeze anti-drift and machine-mirror reconciliation smoke coverage",
+      "title": "beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation smoke coverage",
       "priority": "P0",
       "automation": "auto",
       "command": "python3 -m pytest -q -m smoke --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
@@ -821,17 +773,15 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "passed",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md",
-      "last_run_id": "run-20260501T175831917995",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260501T175831917995/qa9-tc/TC-025/command.txt"
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
     },
     {
       "tc_id": "TC-026",
       "ac_id": "AC-101",
       "layer": "regression",
       "qa_type": "regression",
-      "title": "Beacon v1.3.11 PRD freeze anti-drift and machine-mirror reconciliation regression coverage",
+      "title": "beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation regression coverage",
       "priority": "P1",
       "automation": "auto",
       "command": "python3 -m pytest -q -k regression --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
@@ -844,17 +794,15 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "passed",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md",
-      "last_run_id": "run-20260501T181931954666",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260501T181931954666/qa9-tc/TC-026/command.txt"
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
     },
     {
       "tc_id": "TC-027",
       "ac_id": "AC-102",
       "layer": "exception",
       "qa_type": "exception",
-      "title": "Beacon v1.3.11 PRD freeze anti-drift and machine-mirror reconciliation exception coverage",
+      "title": "beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation exception coverage",
       "priority": "P1",
       "automation": "auto",
       "command": "python3 -m pytest -q -k exception --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
@@ -867,10 +815,8 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "passed",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md",
-      "last_run_id": "run-20260501T181931954666",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260501T181931954666/qa9-tc/TC-027/command.txt"
+      "status": "pending",
+      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md"
     }
   ],
   "compatibility_matrix": {
@@ -898,5 +844,5 @@
       }
     ]
   },
-  "generated_at": "2026-05-01T12:58:30.521345"
+  "generated_at": "2026-05-01T23:05:49.248411"
 }

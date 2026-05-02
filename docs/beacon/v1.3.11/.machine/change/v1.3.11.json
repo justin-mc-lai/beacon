@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "version": "v1.3.11",
   "status": "generated",
-  "feature_count": 2,
+  "feature_count": 4,
   "features": [
     {
       "feature": "Beacon v1.3.11 PRD freeze anti-drift and machine-mirror reconciliation",
@@ -15,12 +15,30 @@
       "feature_slug": "beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance",
       "summary": "native-single implementation completed",
       "status": "completed"
+    },
+    {
+      "feature": "beacon-execution-runtime-kernel",
+      "feature_slug": "beacon-execution-runtime-kernel",
+      "summary": "formalized runtime kernel closure around version-level baseline hosting, host-driven implementation ordering, and recovery-safe execution governance",
+      "status": "reopened"
+    },
+    {
+      "feature": "beacon-operator-workbench-and-board-launcher",
+      "feature_slug": "beacon-operator-workbench-and-board-launcher",
+      "summary": "formalized semantic governance and operator-first prototype projection closure for board and workbench surfaces",
+      "status": "reopened"
     }
   ],
   "added": [
     "[beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation] Added PRD freeze anti-drift requirement line",
     "[beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation] Added machine-mirror reconciliation requirement line",
-    "[beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation] Added traceability requirement for authoritative markdown to machine re-projection"
+    "[beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation] Added traceability requirement for authoritative markdown to machine re-projection",
+    "[beacon-execution-runtime-kernel] Added version-level baseline host as the only stable multi-feature baseline container",
+    "[beacon-execution-runtime-kernel] Added host-driven implementation ordering as a formal runtime requirement line",
+    "[beacon-execution-runtime-kernel] Added runtime admission and recovery fail-closed validation around workspace, evidence, and blocked dependency state",
+    "[beacon-operator-workbench-and-board-launcher] Added software semantic profile for operator workbench and prototype surfaces",
+    "[beacon-operator-workbench-and-board-launcher] Added UI copy projection contract between page intent and rendered workbench copy",
+    "[beacon-operator-workbench-and-board-launcher] Added semantic lint and freeze gate for preview, prototype, and board export surfaces"
   ],
   "removed": [],
   "fixed": [
@@ -37,11 +55,18 @@
     "[beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance] Updated `beacon/utils/project_skills.py`",
     "[beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance] Updated `tests/commands/test_prd.py`",
     "[beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance] Updated `tests/test_v117_project_skill_orchestration.py`",
-    "[beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance] Updated `tests/test_v13010_requirement_package_gates.py`"
+    "[beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance] Updated `tests/test_v13010_requirement_package_gates.py`",
+    "[beacon-execution-runtime-kernel] Clarified that runtime kernel must own ordering, recovery, workspace isolation, and evidence isolation rather than delegating them to surface-local scripts",
+    "[beacon-execution-runtime-kernel] Clarified that multi-feature coexistence requires feature-aware host validation before run admission",
+    "[beacon-operator-workbench-and-board-launcher] Clarified that the first screen must prioritize recovery judgment and next action over run lists, file paths, and history noise",
+    "[beacon-operator-workbench-and-board-launcher] Clarified that preview is an operator workbench prototype, not a design asset catalog",
+    "[beacon-operator-workbench-and-board-launcher] Clarified that enterprise software semantic rules apply across ux-prd, page-spec, pages, component catalog, and preview"
   ],
   "traceability_refs": [
     "docs/beacon/v1.3.11/change/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md",
     "docs/beacon/v1.3.11/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+    "docs/beacon/v1.3.11/change/beacon-execution-runtime-kernel.md",
+    "docs/beacon/v1.3.11/change/beacon-operator-workbench-and-board-launcher.md",
     "docs/beacon/v1.3.11/.machine/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.canonical.json",
     "docs/beacon/v1.3.11/.machine/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.compile.json",
     ".beacon/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
@@ -50,7 +75,9 @@
     "docs/beacon/v1.3.11/.machine/execution/implementation-summary-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
     "docs/beacon/v1.3.11/execution/implementation-brief-beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
     "docs/beacon/v1.3.11/.machine/change/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.json",
-    "docs/beacon/v1.3.11/change/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md"
+    "docs/beacon/v1.3.11/change/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+    "docs/beacon/v1.3.11/.machine/change/beacon-execution-runtime-kernel.json",
+    "docs/beacon/v1.3.11/.machine/change/beacon-operator-workbench-and-board-launcher.json"
   ],
   "generated_at": "2026-05-01 18:18"
 }

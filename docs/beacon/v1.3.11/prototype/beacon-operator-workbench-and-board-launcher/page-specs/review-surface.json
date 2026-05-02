@@ -1,0 +1,324 @@
+{
+  "page_id": "review-surface",
+  "name": "验收面",
+  "priority": "P1",
+  "platforms": [
+    "Web",
+    "PC"
+  ],
+  "responsibility": "集中展示差异入口、验收证据与发布提示，支持判断是否放行或回修。",
+  "sections": [
+    "验收状态",
+    "差异入口",
+    "证据入口",
+    "放行建议"
+  ],
+  "actions": [
+    {
+      "label": "返回运行详情",
+      "target": "run-detail",
+      "trigger": "点击返回"
+    },
+    {
+      "label": "进入恢复诊断",
+      "target": "recovery-diagnostics",
+      "trigger": "点击回修入口"
+    }
+  ],
+  "states": [
+    {
+      "id": "ready",
+      "label": "可验收",
+      "description": "验收证据完整，可判断是否放行。",
+      "state_visibility_contract": {
+        "user_question": "验收面 当前发生了什么，我下一步该做什么？",
+        "required_feedback": [
+          "验收证据完整，可判断是否放行。"
+        ],
+        "primary_actions": [
+          "返回运行详情",
+          "进入恢复诊断"
+        ],
+        "recovery_actions": [
+          "继续主要操作",
+          "进入下一层或返回上层"
+        ],
+        "acceptance_refs": {
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        "forbidden_feedback": [
+          "完成状态仍要求用户猜下一步"
+        ]
+      }
+    },
+    {
+      "id": "needs-evidence",
+      "label": "证据不足",
+      "description": "验收证据不足，不能放行。",
+      "state_visibility_contract": {
+        "user_question": "验收面 当前发生了什么，我下一步该做什么？",
+        "required_feedback": [
+          "验收证据不足，不能放行。"
+        ],
+        "primary_actions": [
+          "返回运行详情",
+          "进入恢复诊断"
+        ],
+        "recovery_actions": [
+          "返回上一层",
+          "重试当前动作"
+        ],
+        "acceptance_refs": {
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        "forbidden_feedback": [
+          "只显示技术错误码",
+          "隐藏下一步动作"
+        ]
+      }
+    },
+    {
+      "id": "blocked",
+      "label": "阻塞",
+      "description": "验收存在阻塞，必须进入回修路径。",
+      "state_visibility_contract": {
+        "user_question": "验收面 当前发生了什么，我下一步该做什么？",
+        "required_feedback": [
+          "验收存在阻塞，必须进入回修路径。",
+          "明确恢复动作与回退路径。"
+        ],
+        "primary_actions": [
+          "返回运行详情",
+          "进入恢复诊断"
+        ],
+        "recovery_actions": [
+          "返回上一层",
+          "重试当前动作"
+        ],
+        "acceptance_refs": {
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        "forbidden_feedback": [
+          "只显示技术错误码",
+          "隐藏下一步动作"
+        ]
+      }
+    },
+    {
+      "id": "error",
+      "label": "错误",
+      "description": "验收聚合失败，需优先给出恢复动作。",
+      "state_visibility_contract": {
+        "user_question": "验收面 当前发生了什么，我下一步该做什么？",
+        "required_feedback": [
+          "验收聚合失败，需优先给出恢复动作。",
+          "明确恢复动作与回退路径。"
+        ],
+        "primary_actions": [
+          "返回运行详情",
+          "进入恢复诊断"
+        ],
+        "recovery_actions": [
+          "返回上一层",
+          "重试当前动作"
+        ],
+        "acceptance_refs": {
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        "forbidden_feedback": [
+          "只显示技术错误码",
+          "隐藏下一步动作"
+        ]
+      }
+    }
+  ],
+  "requirement_refs": {
+    "user-story": [
+      "docs/beacon/v1.3.11/user-story/beacon-operator-workbench-and-board-launcher.md"
+    ],
+    "prd": [
+      "docs/beacon/v1.3.11/prd/beacon-operator-workbench-and-board-launcher.md"
+    ],
+    "test-case": [
+      "docs/beacon/v1.3.11/qa/test-cases/beacon-operator-workbench-and-board-launcher.md"
+    ]
+  },
+  "outbound_transitions": [],
+  "visible_contract": {
+    "title": "验收面",
+    "subtitle": "当前项应通过验收、回到修复路径，还是继续收集证据。",
+    "must_show_sections": [
+      "验收状态",
+      "差异入口",
+      "证据入口"
+    ],
+    "primary_actions": [
+      "返回运行详情",
+      "进入恢复诊断"
+    ],
+    "visible_states": [
+      {
+        "id": "ready",
+        "label": "可验收",
+        "description": "验收证据完整，可判断是否放行。"
+      },
+      {
+        "id": "needs-evidence",
+        "label": "证据不足",
+        "description": "验收证据不足，不能放行。"
+      },
+      {
+        "id": "blocked",
+        "label": "阻塞",
+        "description": "验收存在阻塞，必须进入回修路径。"
+      },
+      {
+        "id": "error",
+        "label": "错误",
+        "description": "验收聚合失败，需优先给出恢复动作。"
+      }
+    ],
+    "secondary_disclosure_only": [
+      "run list",
+      "workspace path",
+      "artifact path",
+      "history timeline",
+      "machine trace detail"
+    ]
+  },
+  "internal_governance": {
+    "page_intent_contract": {
+      "why_this_page_exists": "集中展示差异入口、验收证据与发布提示，支持判断是否放行或回修。",
+      "decision_supported": "当前项应通过验收、回到修复路径，还是继续收集证据。",
+      "must_show_first": [
+        "验收状态",
+        "差异入口"
+      ],
+      "must_not_show": [
+        "transaction_id",
+        "projection metadata",
+        "无边界 runtime 明细"
+      ],
+      "entry_conditions": [
+        "用户进入 `review-surface` 需要先获得当前上下文。",
+        "当前 requirement truth 已经明确该页承担的主判断。"
+      ],
+      "exit_actions": [
+        {
+          "label": "返回运行详情",
+          "target": "run-detail"
+        },
+        {
+          "label": "进入恢复诊断",
+          "target": "recovery-diagnostics"
+        }
+      ]
+    },
+    "first_screen_contract": {
+      "primary_status": "验收证据完整，可判断是否放行。",
+      "primary_blocker": "验收存在阻塞，必须进入回修路径。",
+      "next_actions": [
+        "返回运行详情",
+        "进入恢复诊断"
+      ],
+      "recovery_path": "优先进入恢复路径或返回上一层，不允许停留在无动作状态。",
+      "secondary_disclosure_only": [
+        "run list",
+        "workspace path",
+        "artifact path",
+        "history timeline",
+        "machine trace detail"
+      ]
+    },
+    "review_principles": [
+      "首屏先回答当前页最重要的问题。",
+      "主体区只保留支撑判断的结构，不展开高保真视觉。"
+    ],
+    "layout_breakdown": [
+      {
+        "section": "验收状态",
+        "purpose": "承载该页完成核心判断所需的最小信息块。",
+        "display_zone": "首屏"
+      },
+      {
+        "section": "差异入口",
+        "purpose": "承载该页完成核心判断所需的最小信息块。",
+        "display_zone": "主体区"
+      },
+      {
+        "section": "证据入口",
+        "purpose": "承载该页完成核心判断所需的最小信息块。",
+        "display_zone": "主体区"
+      },
+      {
+        "section": "放行建议",
+        "purpose": "承载该页完成核心判断所需的最小信息块。",
+        "display_zone": "收口区"
+      }
+    ],
+    "interaction_contract": [
+      "- `返回运行详情`: 通过 点击返回 进入 `run-detail`，把当前判断转交到下一层页面完成。",
+      "- `进入恢复诊断`: 通过 点击回修入口 进入 `recovery-diagnostics`，把当前判断转交到下一层页面完成。"
+    ],
+    "state_contract": [
+      "- `可验收`: 验收证据完整，可判断是否放行。",
+      "- `证据不足`: 验收证据不足，不能放行。",
+      "- `阻塞`: 验收存在阻塞，必须进入回修路径。",
+      "- `错误`: 验收聚合失败，需优先给出恢复动作。 页面要优先给出回退或恢复入口，而不是只报错。"
+    ],
+    "noise_guardrail": "首屏只保留操作者判断需要的信息；路径、历史与机器材料只能进入二级展开。"
+  },
+  "ui_copy_policy": {
+    "page_id": "review-surface",
+    "first_screen_copy": {
+      "title": "验收面",
+      "primary_statement": "当前项应通过验收、回到修复路径，还是继续收集证据。",
+      "must_show_first": [
+        "验收状态",
+        "差异入口"
+      ],
+      "next_actions": [
+        "返回运行详情",
+        "进入恢复诊断"
+      ]
+    },
+    "secondary_disclosure": [
+      "workspace path",
+      "artifact path",
+      "history timeline",
+      "machine trace detail"
+    ],
+    "forbidden_first_screen_copy": [
+      "design asset catalog wording",
+      "why/reasoning explanation",
+      "review guidance",
+      "machine contract detail"
+    ]
+  },
+  "production_ui_copy_profile": {
+    "page_id": "review-surface",
+    "title": "验收面",
+    "subtitle": "当前项应通过验收、回到修复路径，还是继续收集证据。",
+    "primary_actions": [
+      "返回运行详情",
+      "进入恢复诊断"
+    ],
+    "allowed_recovery_surface_states": [
+      "blocked",
+      "failed",
+      "empty-risk"
+    ],
+    "forbidden_first_screen_terms": [
+      "当前状态",
+      "下一步动作",
+      "恢复路径",
+      "design asset catalog",
+      "review guidance",
+      "why/reasoning"
+    ]
+  }
+}

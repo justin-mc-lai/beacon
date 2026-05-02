@@ -1,0 +1,133 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-execution-runtime-kernel",
+  "feature_slug": "beacon-execution-runtime-kernel",
+  "version": "v1.3.11",
+  "runtime_version": "v1.3.9",
+  "runtime_capability_line": "v1.3.3",
+  "required": true,
+  "reason_code": "",
+  "blocked": false,
+  "status": "pass",
+  "findings": [],
+  "report_json_path": "docs/beacon/v1.3.11/.machine/execution/requirement-clarity-beacon-execution-runtime-kernel.json",
+  "report_markdown_path": "docs/beacon/v1.3.11/execution/requirement-clarity-beacon-execution-runtime-kernel.md",
+  "state_path": ".beacon/state/requirement-clarity-beacon-execution-runtime-kernel.json",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.3.11",
+    "supported": true,
+    "required": true,
+    "ready": true,
+    "diagram_types": [
+      "branch-flow",
+      "state-machine",
+      "decision-priority"
+    ],
+    "state_axes": [
+      "feature_host_axis",
+      "baseline_host_registered",
+      "baseline_host_stale",
+      "ordering_axis",
+      "ordered",
+      "conflicted",
+      "manual_intervention_required",
+      "run_status_axis",
+      "queued",
+      "admitted",
+      "running",
+      "blocked",
+      "needs_review",
+      "retry_scheduled",
+      "stopped",
+      "completed",
+      "failed",
+      "workspace_axis",
+      "workspace_bound",
+      "workspace_drifted",
+      "evidence_axis",
+      "evidence_ready",
+      "evidence_sink_missing",
+      "recovery_axis",
+      "reconcile_required",
+      "retry_path_explicit",
+      "repair_handoff_explicit",
+      "truth_boundary_axis",
+      "truth_read_only",
+      "runtime_contract_only",
+      "release_gate_preserved"
+    ],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [
+      "branch-flow",
+      "state-machine",
+      "decision-priority",
+      "state axes",
+      "branch flow",
+      "state machine",
+      "decision priority"
+    ],
+    "review_gates": [
+      "implementation must cover the declared branch-flow split points",
+      "implementation must preserve the declared state-machine transitions",
+      "implementation must preserve decision-priority ordering",
+      "implementation must keep state axes explicit: feature_host_axis, baseline_host_registered, baseline_host_stale, ordering_axis, ordered, conflicted, manual_intervention_required, run_status_axis, queued, admitted, running, blocked, needs_review, retry_scheduled, stopped, completed, failed, workspace_axis, workspace_bound, workspace_drifted, evidence_axis, evidence_ready, evidence_sink_missing, recovery_axis, reconcile_required, retry_path_explicit, repair_handoff_explicit, truth_boundary_axis, truth_read_only, runtime_contract_only, release_gate_preserved"
+    ],
+    "qa_coverage_hints": [
+      "cover primary and alternate branch-flow paths",
+      "cover state transitions, illegal transitions, and recovery paths",
+      "cover conflicting conditions using declared decision priority",
+      "cover axis combinations across: feature_host_axis, baseline_host_registered, baseline_host_stale, ordering_axis, ordered, conflicted, manual_intervention_required, run_status_axis, queued, admitted, running, blocked, needs_review, retry_scheduled, stopped, completed, failed, workspace_axis, workspace_bound, workspace_drifted, evidence_axis, evidence_ready, evidence_sink_missing, recovery_axis, reconcile_required, retry_path_explicit, repair_handoff_explicit, truth_boundary_axis, truth_read_only, runtime_contract_only, release_gate_preserved"
+    ],
+    "evidence_lines": {
+      "branch-flow": [
+        "- `branch-flow`",
+        "1. `frozen truth ready -> baseline host registered -> ordering projected -> run admitted -> workspace bound -> execution starts`",
+        "2. `frozen truth missing or stale -> admission blocked -> route to beacon-change / doctor / reconcile`",
+        "3. `workspace drift or evidence sink missing -> recovery diagnostics raised -> reconcile before continue/retry`",
+        "4. `dependency conflict or writable scope conflict -> ordering blocked -> manual intervention required`",
+        "5. `run failed but recovery path valid -> retry scheduled or repair-handoff issued -> operator resumes after reconcile`"
+      ],
+      "state-machine": [
+        "- `state-machine`",
+        "- `queued -> admitted -> running -> completed`",
+        "- `queued -> blocked`",
+        "- `admitted -> blocked`",
+        "- `running -> needs_review`",
+        "- `running -> retry_scheduled`",
+        "- `running -> stopped`",
+        "- `running -> failed`"
+      ],
+      "decision-priority": [
+        "- `decision-priority`",
+        "当多个条件同时出现时，kernel 必须按以下优先级决策：",
+        "1. `frozen truth / baseline hash / requirement package` 不一致优先阻断",
+        "2. `baseline host stale / ordering stale` 次级阻断",
+        "3. `workspace binding / writable scope / evidence sink` 校验失败阻断 continue/retry",
+        "4. `dependency conflict / branch conflict` 阻断 admission 与 wave 排序",
+        "5. 只有在以上都通过后，才允许 `start / continue / retry / repair-handoff`"
+      ],
+      "state-axes": [
+        "- `feature_host_axis`",
+        "- `baseline_host_registered`",
+        "- `baseline_host_stale`",
+        "- `ordering_axis`",
+        "- `ordered`",
+        "- `conflicted`",
+        "- `manual_intervention_required`",
+        "- `run_status_axis`"
+      ]
+    },
+    "generated_at": "2026-05-02T05:32:04.018412+00:00",
+    "feature": "beacon-execution-runtime-kernel",
+    "feature_slug": "beacon-execution-runtime-kernel",
+    "prd_ref": "docs/beacon/v1.3.11/prd/beacon-execution-runtime-kernel.md",
+    "user_story_ref": "docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+  },
+  "required_artifacts": [],
+  "scanned_files": [
+    "docs/beacon/v1.3.11/prd/beacon-execution-runtime-kernel.md",
+    "docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+  ]
+}

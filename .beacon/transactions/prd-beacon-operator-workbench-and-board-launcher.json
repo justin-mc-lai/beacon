@@ -1,0 +1,145 @@
+{
+  "canonical_envelope": {
+    "schema_version": "1.0",
+    "feature": "beacon-operator-workbench-and-board-launcher",
+    "feature_slug": "beacon-operator-workbench-and-board-launcher",
+    "version": "v1.3.11",
+    "track": "parallel",
+    "family": "runtime_control_plane",
+    "label": "并行 PRD / runtime-control-plane",
+    "requested_mode": "auto",
+    "effective_mode": "llm",
+    "generator_mode": "llm",
+    "fallback_reason": "",
+    "capability_snapshot": {
+      "schema_version": "1.0",
+      "command_name": "prd",
+      "host_runtime": "codex",
+      "host_bridge_declared": false,
+      "host_response_available": false,
+      "host_response_source": "none",
+      "host_response_path": "",
+      "host_semantic_ready": false,
+      "provider_available": false,
+      "provider_key_present": false,
+      "llm_disabled": false,
+      "disable_env": "BEACON_PRD_DISABLE_LLM"
+    },
+    "model": "beacon-prd-compiler",
+    "diagram_truth_request": {
+      "diagram_types": [],
+      "state_axes": []
+    },
+    "source_refs": [
+      "docs/beacon/global-boundaries.md",
+      "docs/beacon/v1.3.11/SUMMARY.md",
+      "docs/beacon/v1.3.11/execution/index.md",
+      "docs/beacon/v1.3.11/prd/beacon-execution-runtime-kernel.md",
+      "docs/beacon/v1.3.11/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md",
+      "docs/beacon/v1.3.11/prd/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md",
+      "docs/beacon/v1.3.11/prd/prototype-design-intelligence-and-governed-rendering-separation.md",
+      ".beacon/debug/index.json",
+      ".beacon/metadata/project-version-metadata.json"
+    ],
+    "project_metadata_context": {
+      "metadata_ref": ".beacon/metadata/project-version-metadata.json",
+      "resolved_metadata_view": {
+        "project_root": "/Users/apple/Developer/Personal/products/beacon",
+        "topology_kind": "single_repo",
+        "default_execution_service": "beacon",
+        "service_bindings": [
+          {
+            "service_key": "beacon",
+            "repo_root": "/Users/apple/Developer/Personal/products/beacon",
+            "repo_root_relative": ".",
+            "role": "app",
+            "writable": true,
+            "worktree_path_policy": "follow-repo-root"
+          }
+        ],
+        "service_bindings_by_key": {
+          "beacon": {
+            "service_key": "beacon",
+            "repo_root": "/Users/apple/Developer/Personal/products/beacon",
+            "repo_root_relative": ".",
+            "role": "app",
+            "writable": true,
+            "worktree_path_policy": "follow-repo-root"
+          }
+        },
+        "version": "v1.3.11",
+        "version_contract": {
+          "version": "v1.3.11",
+          "participating_services": [
+            "beacon"
+          ],
+          "per_service_canonical_branch": {
+            "beacon": "main"
+          },
+          "branch_guard_mode": "strict",
+          "validation_state": "active"
+        },
+        "selected_service": "beacon",
+        "selected_service_binding": {
+          "service_key": "beacon",
+          "repo_root": "/Users/apple/Developer/Personal/products/beacon",
+          "repo_root_relative": ".",
+          "role": "app",
+          "writable": true,
+          "worktree_path_policy": "follow-repo-root"
+        },
+        "selected_branch": "main",
+        "paths": {
+          "machine": "/Users/apple/Developer/Personal/products/beacon/.beacon/metadata/project-version-metadata.json",
+          "human": "/Users/apple/Developer/Personal/products/beacon/.beacon/metadata/project-version-metadata.md",
+          "state": "/Users/apple/Developer/Personal/products/beacon/.beacon/state/project-metadata/latest.json"
+        },
+        "transaction": {
+          "transaction_id": "tx-project-metadata-489aee6dda8b5b13",
+          "event_type": "update",
+          "committed_at": "2026-05-01T15:38:12.390372+00:00",
+          "source_hash": "489aee6dda8b5b1325c50233c90cf313ac5fb3d52bb25fc9c55acef782e17684"
+        }
+      }
+    },
+    "contract": {
+      "ok": true,
+      "missing_headings": [],
+      "placeholder_hits": [],
+      "semantic_hits": {
+        "boundary": true,
+        "layering": true,
+        "recovery": true,
+        "acceptance": true,
+        "risk_mitigation": true
+      }
+    },
+    "markdown": "# PRD：beacon-operator-workbench-and-board-launcher\n\n**Feature**: `beacon-operator-workbench-and-board-launcher`  \n**Version**: `v1.3.11`  \n**Date**: `2026-05-01`  \n**Status**: `draft`  \n**Track**: `parallel`  \n**Scenario**: `runtime_control_plane`  \n**Semantic Label**: `运行态投影治理`  \n\ntarget_audience: Beacon operator、交付负责人、需求冻结维护者\nprimary_use_cases: 判断当前执行波次, 处理阻塞 run, 进入恢复路径, 校验交付闭环\noperator_mental_state: 需要先判断当前状态、当前阻塞与下一步动作，再决定是否继续、重试或回修\nusage_environment: 桌面优先的本地执行工作台与版本交付审阅环境\nbrand_tone: formal, restrained, precise, operational\ndensity_preference: workbench-medium\ndesign_preset: apple-inspired-design-md\n\n## Context\n\n- Global boundaries: `docs/beacon/global-boundaries.md`\n- Version summary: `docs/beacon/v1.3.11/SUMMARY.md`\n- Execution index: `docs/beacon/v1.3.11/execution/index.md`\n- Runtime substrate dependency:\n  - `docs/beacon/v1.3.11/prd/beacon-execution-runtime-kernel.md`\n- Main runtime anchor PRD:\n  - `docs/beacon/v1.3.11/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md`\n- External reference mirrors:\n  - `/Users/apple/Developer/Personal/oss-sync/agents/agent-systems/vibe-kanban`\n  - `/Users/apple/Developer/Personal/oss-sync/agents/agent-skills/symphony`\n\n## 1. 问题\n\n### 1.1 当前断层\n\nBeacon 当前已有：\n\n- requirement truth board\n- runtime projection summary\n- portfolio/project detail\n- release/readiness 类状态展示\n\n但仍没有真正的 operator workbench。\n\n当前 board 更像“治理摘要”，不能真正承担：\n\n- 长任务队列观察\n- run drilldown\n- workspace/diff/log/preview 跳转\n- retry/continue/stop/reconcile 操作\n- 恢复告警与 repair path 导航\n\n当前 prototype 与 board 还存在两类失真：\n\n- 原型失真：输出更像通用后台资产页，不是 operator workbench prototype\n- 语义失真：输出仍包含解释式、设计评审式、通用 SaaS 式文案，不满足正式、克制、严谨、专业、简洁、准确的软件语义约束\n\n### 1.2 触发信号\n\n- `vibe-kanban` 证明 operator 需要的不是更大号 status 页面，而是执行工作台\n- `symphony` 证明 dashboard 只能建立在稳定 runtime 之上\n- Beacon 真实项目验证已经开始需要“从 requirement truth 回看当前执行面”，仅靠 `status --board` 不够\n- 后续若要提供本地可执行看板或桌面壳，必须先定义 workbench contract\n\n### 1.3 为什么现在做\n\n如果 Beacon 继续只强化 board 摘要而不建立 workbench，就会出现两种退化：\n\n- 要么 UI 只负责展示，无法帮助 operator 干预长任务\n- 要么 UI 自己发明状态逻辑，反向绕开 runtime kernel\n\n## 2. 目标\n\n### 2.1 主要目标\n\n- 把 Beacon 当前 board 演进为真正的 operator workbench\n- 保持 requirement-first lifecycle 不变，同时给长任务执行提供可视化管理面\n- 提供统一 launcher contract，让本地启动 web board、桌面壳或只读 public board 都有同一入口语义\n\n### 2.2 非目标\n\n- 不让 workbench 成为新的 requirement source of truth\n- 不在本 feature 内实现完整 cloud multi-tenant 平台\n- 不在本 feature 内要求所有能力都必须是 GUI，CLI 仍保留\n- 不把 Beacon 改造成通用 IDE 替代品\n\n## 3. 设计原则\n\n### 3.1 Runtime-Backed, Not UI-Invented\n\n- workbench 只能消费 runtime kernel 的 read model 与 operator action contract\n- UI 不得自行推导“真实当前状态”\n\n### 3.2 Operate, Not Merely Report\n\n- 页面必须支持 operator 执行动作，而不是只显示被动信息\n- 至少要能帮助 operator 判断何时继续、停止、重试、回修、验收\n\n### 3.3 Local-First Launcher\n\n- 第一阶段优先本地启动体验\n- `beacon board` 应成为正式入口，再决定是否增加 desktop 壳\n\n### 3.4 Lifecycle Above Runtime Mode\n\n- 主导航应先体现 requirement / execution / delivery 闭环\n- `single / team / ralph / validation` 等只是运行模式和运行来源，不应喧宾夺主\n\n### 3.5 Read-Only Public Surface And Writable Operator Surface Must Be Separated\n\n- public board 可以是静态或只读\n- operator workbench 必须是受控写操作面\n\n### 3.6 Semantic Governance Before Visual Polish\n\n- prototype、preview、board 首先服从软件语义合同，其次才讨论视觉样式\n- 不允许把 `why / reasoning / review guidance / asset catalog wording` 直接投影为首屏 UI 文案\n\n### 3.7 Recovery Judgment Before Artifact Noise\n\n- 首屏必须先回答当前状态、当前阻塞、下一步动作、恢复路径\n- run 列表、路径、历史噪声、机器材料引用只能下沉到二级展开或详情页\n\n## 4. 范围\n\n### In scope\n\n- operator workbench 信息架构\n- runtime board 视图与下钻视图\n- launcher contract\n- local web board / desktop shell 预留边界\n- operator actions 与 recovery diagnostics surface\n\n### Out of scope\n\n- 完整视觉实现、动效细节、品牌设计系统重做\n- 云端账号体系、组织级权限管理\n- 与 runtime kernel 无关的 requirement 文档编辑器\n\n## 5. 功能需求\n\n### FR-001 Workbench Information Architecture\n\nWorkbench 至少包含以下正式页面或视图：\n\n- `portfolio-board`\n- `execution-board`\n- `feature-detail`\n- `run-detail`\n- `review-surface`\n- `recovery-diagnostics`\n\n每个视图都必须有明确输入 contract，禁止“页面自己去猜文件目录结构”。\n\n### FR-002 Execution Board\n\n执行主看板至少能展示：\n\n- queued runs\n- active runs\n- blocked runs\n- retry scheduled runs\n- needs review runs\n- feature ordering / wave grouping\n- baseline host health\n\n并支持最小操作：\n\n- open run detail\n- continue\n- stop\n- retry\n- open repair path\n\n### FR-003 Run Detail And Review Surface\n\nRun detail 至少能聚合：\n\n- work item metadata\n- run status timeline\n- workspace root / writable services\n- latest evidence refs\n- retry history\n- operator recommendations\n\nReview surface 至少能聚合：\n\n- diff entrypoint\n- acceptance evidence entrypoint\n- related feature / revision / baseline host\n- QA and release readiness hints\n\n### FR-004 Launcher Contract\n\nBeacon 必须提供正式 board 启动 contract，至少覆盖：\n\n- `beacon board`\n- `beacon board --open`\n- `beacon board --host ... --port ...`\n- `beacon board --desktop` 的未来扩展位\n\nlauncher contract 至少返回：\n\n- resolved runtime source\n- board url / socket endpoint\n- mode\n- readiness status\n- failure reason if startup blocked\n\n### FR-005 Local-First Executable Surface\n\nworkbench 首选形态为本地可执行启动面：\n\n- CLI 启动本地 web console\n- 可选封装为桌面壳\n- 保留 public board 的只读导出或静态入口\n\n此能力必须与现有 `status --board` 语义兼容，但不能继续局限于文本摘要。\n\n### FR-006 Recovery Diagnostics Surface\n\nWorkbench 必须暴露 recovery diagnostics，而不是只显示“失败了”：\n\n- stale baseline host\n- stale mirror\n- workspace drift\n- retry orphan\n- blocked dependency\n- missing evidence sink\n\n每类诊断都要给出：\n\n- reason code\n- affected feature/run\n- recommended command or path\n- whether operator can self-repair\n\n### FR-007 Software Semantic Profile\n\nWorkbench、prototype、preview 必须共享正式 `software-semantic-profile`，至少约束：\n\n- 标题句式\n- 状态文案句式\n- 动作文案句式\n- 字段约束句式\n- 异常与恢复文案句式\n- 禁用词与弱约束词\n- 标准业务动词与状态枚举\n\n该 profile 必须禁止主观词、口语词、泛化 SaaS 词、设计愿景词直接进入 operator-facing UI copy。\n\n### FR-008 UI Copy Projection Contract\n\n`page intent / state visibility / action hierarchy / recovery diagnostics` 到 UI copy 的投影必须经过正式 contract，至少区分：\n\n- 可渲染到首屏的 operator 文案\n- 只能保留在 PRD / ux-prd / review material 的解释文案\n- 必须进入二级展开的路径、历史、机器材料引用\n\n禁止以下内容直接作为首屏输出：\n\n- design asset catalog wording\n- review guidance\n- why/reasoning 原文\n- 路径清单与运行历史噪声\n\n### FR-009 First-Screen Recovery And Next-Action Contract\n\nexecution board 首屏必须优先显示：\n\n- 当前状态\n- 当前阻塞\n- 下一步动作\n- 恢复路径\n\n首屏默认禁止以下内容抢占主区：\n\n- 全量 run 列表\n- workspace path\n- artifact path\n- 历史时间线\n- 机器 trace 明细\n\n上述信息仅允许进入二级展开、run detail、review surface、recovery diagnostics detail。\n\n### FR-010 Semantic Lint And Freeze Gate\n\nprototype freeze、preview render、board export 前必须执行统一语义校验，至少覆盖：\n\n- 禁用词校验\n- 标准术语校验\n- 状态枚举校验\n- 正反约束成对校验\n- 默认值显式校验\n- operator-first first-screen 校验\n\n未通过语义校验时，prototype 与 board 不得进入可交付状态。\n\n## 6. 边界 / 分层 / 恢复策略\n\n### 6.1 边界\n\n- workbench 不是 requirement 编辑器\n- workbench 不是 runtime kernel 本身\n- launcher 不是独立 truth source\n- desktop shell 只是 packaging，不是新的 product layer\n\n### 6.2 分层\n\n本 feature 依赖并消费：\n\n1. Runtime Kernel Layer\n2. Operator Read Model Layer\n3. UI / Launcher Layer\n\n职责分离：\n\n- kernel 产生权威状态\n- read model 组织给 operator 的高信号视图\n- workbench / launcher 负责可视化与控制动作转发\n\n### 6.3 恢复策略\n\n若以下前置条件不满足，launcher 必须 fail-closed：\n\n- runtime source unavailable\n- baseline host stale\n- required read model missing\n- version context unresolved\n\n若 board 已启动但 run 状态漂移，workbench 必须优先展示诊断与 repair path，而不是继续允许误操作。\n\n## 7. 风险与缓解\n\n| 风险 | 影响 | 缓解 |\n|------|------|------|\n| 只做 UI 美化，没有执行帮助 | 高 | 强制定义 execution board、run detail、operator action、recovery diagnostics |\n| workbench 自己维护一套状态 | 高 | 所有视图必须绑定 runtime read model 和 action contract |\n| board 与 `status --board` 分叉成两套语义 | 中 | `status --board` 继续保留摘要角色，workbench 作为 richer operator surface，共享同一状态源 |\n| desktop 壳过早进入实现，挤压 runtime 核心 | 中 | local web launcher 优先，desktop 只保留 contract 扩展位 |\n| 页面过度围绕 agent 模式，丢失 lifecycle 主轴 | 中 | IA 先看 lifecycle / execution / delivery，再暴露 team/ralph 等模式信息 |\n\n## 8. 验收标准\n\n### AC-001 Workbench IA Frozen\n\n- portfolio / execution / feature / run / review / recovery 六类视图均已定义并可追溯到 machine contract\n\n### AC-002 Operator Actions Governed\n\n- continue / stop / retry / repair 等动作均有正式 action contract，且不绕过 runtime kernel\n\n### AC-003 Launcher Contract Available\n\n- Beacon 存在正式 `board` 启动 contract，能表达 readiness、url、mode、failure reason\n\n### AC-004 Local-First Surface Confirmed\n\n- 默认交付路径明确是本地 web console first，desktop shell 为后续可插拔包装\n\n### AC-005 Recovery Diagnostics Integrated\n\n- board/workbench 能直接显示恢复原因与推荐路径，而不是要求 operator 手工翻找 artifacts\n\n### AC-006 Truth Boundary Preserved\n\n- workbench 不会反向成为 requirement truth 或 runtime truth 的新写入源\n\n### AC-007 Semantic Profile Enforced\n\n- `ux-prd / page-spec / pages / component catalog / preview / board` 共享同一语义合同，operator-facing 文案不再出现解释式或设计评审式漂移\n\n### AC-008 First-Screen Operator Priority\n\n- 首屏优先呈现 `当前状态 / 当前阻塞 / 下一步动作 / 恢复路径`，run 列表、路径、历史噪声不占据主区\n\n### AC-009 Preview Anti-Drift Closed\n\n- preview 被定义并渲染为 operator workbench prototype，而不是 design asset catalog；语义 lint 不通过时禁止 freeze/export\n\n## 9. 成功指标\n\n- 主指标：operator 能直接在 board 中完成长任务观察、判断和干预\n- 主指标：`status --board` 与 richer workbench 共享统一状态语义\n- 辅指标：真实项目长任务不再依赖人工记忆定位 workspace、retry、review 路径\n- 辅指标：本地启动 board 成为正式可发现入口\n\n## 10. 与主 PRD 的关系\n\n- 本 feature 直接依赖 `beacon-execution-runtime-kernel`\n- kernel 解决“状态和调度是否稳定”，workbench 解决“operator 是否真的能使用”\n- 两者共同收敛 `vibe-kanban` 与 `symphony` 对 Beacon 的启发，但 Beacon 仍保持 requirement-first\n- 后续任何桌面化、远端化、team 化扩展都应先建立在本 feature contract 之上\n\n---\n\n**Created**: 2026-05-01  \n**Version**: v1.3.11  \n**Status**: draft\n",
+    "transaction": {
+      "transaction_id": "tx-prd-beacon-operator-workbench-and-board-launcher-prd-92e1f92caadd4fe0",
+      "source_hash": "92e1f92caadd4fe01e0e906df1241bb8a00f5b976d1d667d71321bbe6aff4e01",
+      "projection_seq": "prd-92e1f92caadd4fe0",
+      "committed_at": "2026-05-02T15:07:19.911508+00:00",
+      "sink_checksums": {
+        "human": "f410ad3e2be5307901237fc69d3e45a2e09804684b8a8d4cafc8a400b8829b16",
+        "machine": "572fec954c778ba3d3fa33a0d42db567c36e55b02f1a61a3bae12b40db60e17d"
+      },
+      "status": "applied",
+      "supersedes_transaction_id": "tx-prd-beacon-operator-workbench-and-board-launcher-prd-3cfbe1dcc56cc065",
+      "supersedes_projection_seq": "prd-3cfbe1dcc56cc065",
+      "supersedes_source_hash": "3cfbe1dcc56cc065c7f7ff8f42a5d7e72a46464df47ea0ff144ca3f5a5c632b3"
+    }
+  },
+  "sinks": [
+    {
+      "path": "docs/beacon/v1.3.11/prd/beacon-operator-workbench-and-board-launcher.md",
+      "kind": "human"
+    },
+    {
+      "path": ".beacon/prd/beacon-operator-workbench-and-board-launcher.json",
+      "kind": "machine"
+    }
+  ],
+  "latest_transaction_id": "tx-prd-beacon-operator-workbench-and-board-launcher-prd-92e1f92caadd4fe0",
+  "supersedes_transaction_id": "tx-prd-beacon-operator-workbench-and-board-launcher-prd-3cfbe1dcc56cc065"
+}
