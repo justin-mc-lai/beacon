@@ -49,6 +49,20 @@ def test_standard_skill_wrapper_script_should_launch_beacon_version():
     assert f"Beacon CLI {CURRENT_RELEASE}" in result.stdout
 
 
+def test_standard_skill_wrapper_script_should_export_host_bridge_contract():
+    script = ROOT / "skills" / "beacon" / "scripts" / "run_beacon.sh"
+    text = script.read_text(encoding="utf-8")
+    assert 'BEACON_HOST_RUNTIME' in text
+    assert 'BEACON_HOST_PRD_BRIDGE_CMD' in text
+    assert 'BEACON_HOST_USER_STORY_BRIDGE_CMD' in text
+    assert 'BEACON_HOST_TEST_CASE_BRIDGE_CMD' in text
+    assert 'BEACON_HOST_PROTOTYPE_BRIDGE_CMD' in text
+    assert 'prd host-bridge' in text
+    assert 'user-story host-bridge' in text
+    assert 'test-case host-bridge' in text
+    assert 'prototype host-bridge' in text
+
+
 def test_basic_workflow_example_should_align_with_v115_docs_and_flow():
     example = (ROOT / "skills" / "beacon" / "examples" / "basic-workflow.md").read_text(encoding="utf-8")
     assert f"../../../docs/beacon/{CURRENT_RELEASE}/SUMMARY.md" in example

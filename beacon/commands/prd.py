@@ -6,6 +6,7 @@ import hashlib
 import json
 import os
 import re
+import sys
 from datetime import datetime
 from pathlib import Path
 from typing import Optional
@@ -19,6 +20,7 @@ from beacon.utils.runtime import now_iso, write_json
 from beacon.utils.semantic_runtime import (
     build_mode_contract,
     build_semantic_capability_snapshot,
+    execute_host_bridge_command,
     load_host_response_json,
     normalize_requested_mode,
 )
@@ -317,6 +319,86 @@ def _extract_host_prd_markdown() -> str:
         if text:
             return text
     return ""
+
+
+def _load_bridge_payload(payload_json: str = "") -> dict[str, object]:
+    raw = str(payload_json or "").strip()
+    if not raw:
+        raw = sys.stdin.read().strip()
+    if not raw:
+        raise typer.BadParameter("bridge payload missing")
+    try:
+        payload = json.loads(raw)
+    except Exception as exc:  # noqa: BLE001
+        raise typer.BadParameter(f"invalid bridge payload: {exc}") from exc
+    if not isinstance(payload, dict):
+        raise typer.BadParameter("bridge payload must be a JSON object")
+    return payload
+
+
+def _build_prd_host_bridge_request(
+    *,
+    feature: str,
+    version: str,
+    track: str,
+    family: str,
+    existing_prds: list[str],
+    slug: str,
+) -> dict[str, object]:
+    return {
+        "schema_version": "1.0",
+        "command_name": "prd",
+        "request_kind": "prd-semantic-compile",
+        "feature": feature,
+        "version": version,
+        "track": track,
+        "family": family,
+        "existing_prds": list(existing_prds),
+        "slug": slug,
+    }
+
+
+def _extract_host_prd_markdown_with_bridge(request_payload: dict[str, object]) -> str:
+    payload, _ = execute_host_bridge_command("prd", request_payload)
+    candidates: list[object] = []
+    if isinstance(payload, dict):
+        candidates.extend([payload.get("markdown"), payload.get("content")])
+        nested = payload.get("payload")
+        if isinstance(nested, dict):
+            candidates.extend([nested.get("markdown"), nested.get("content")])
+    if not payload:
+        return _extract_host_prd_markdown()
+    for item in candidates:
+        text = str(item or "").strip()
+        if text:
+            return text
+    return _extract_host_prd_markdown()
+
+
+@app.command("host-bridge", hidden=True)
+def host_bridge(
+    payload_json: str = typer.Argument("", help="Optional bridge request JSON; default reads stdin"),
+):
+    """Hidden host-native bridge endpoint for PRD semantic compile."""
+    try:
+        payload = _load_bridge_payload(payload_json)
+    except typer.BadParameter as exc:
+        typer.echo(str(exc), err=True)
+        raise typer.Exit(2) from exc
+
+    if str(payload.get("request_kind") or "").strip() != "prd-semantic-compile":
+        typer.echo("unsupported prd bridge request_kind", err=True)
+        raise typer.Exit(2)
+
+    markdown = _render_semantic_prd(
+        str(payload.get("feature") or "").strip(),
+        version=str(payload.get("version") or "").strip(),
+        track=str(payload.get("track") or "main").strip() or "main",
+        family=str(payload.get("family") or "general").strip() or "general",
+        existing_prds=[str(item).strip() for item in (payload.get("existing_prds") or []) if str(item).strip()],
+        slug=str(payload.get("slug") or "").strip() or _slugify(str(payload.get("feature") or "")),
+    )
+    typer.echo(json.dumps({"markdown": markdown, "model": "beacon-prd-host-bridge"}, ensure_ascii=False))
 
 
 def _machine_prd_dir(project_root: Path, version: str) -> Path:
@@ -1247,7 +1329,16 @@ def create(
         else:
             host_markdown = ""
             if bool(capability_snapshot.get("host_semantic_ready")):
-                host_markdown = _extract_host_prd_markdown()
+                host_markdown = _extract_host_prd_markdown_with_bridge(
+                    _build_prd_host_bridge_request(
+                        feature=feature,
+                        version=resolved_version,
+                        track=template["track"],
+                        family=template["family"],
+                        existing_prds=existing_prds,
+                        slug=slug,
+                    )
+                )
                 if host_markdown:
                     effective_mode = "host"
                 else:

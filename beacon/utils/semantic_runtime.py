@@ -6,6 +6,9 @@ import hashlib
 import json
 import os
 import re
+import shlex
+import subprocess
+import sys
 from pathlib import Path
 from typing import Any
 
@@ -84,6 +87,33 @@ def _host_response_env_names(command_name: str) -> tuple[list[str], list[str]]:
     return json_names, file_names
 
 
+def _host_bridge_command_env_names(command_name: str) -> list[str]:
+    command_key = _command_env_key(command_name)
+    names: list[str] = []
+    if command_key:
+        names.append(f"BEACON_HOST_{command_key}_BRIDGE_CMD")
+    names.append("BEACON_HOST_SEMANTIC_BRIDGE_CMD")
+    return names
+
+
+def host_bridge_command_source(command_name: str) -> dict[str, Any]:
+    for env_name in _host_bridge_command_env_names(command_name):
+        raw = str(os.environ.get(env_name, "") or "").strip()
+        if raw:
+            return {
+                "available": True,
+                "source": "env_cmd",
+                "env_name": env_name,
+                "command": raw,
+            }
+    return {
+        "available": False,
+        "source": "none",
+        "env_name": "",
+        "command": "",
+    }
+
+
 def host_response_source(command_name: str) -> dict[str, Any]:
     json_names, file_names = _host_response_env_names(command_name)
     for env_name in json_names:
@@ -133,6 +163,62 @@ def load_host_response_json(command_name: str) -> tuple[dict[str, Any], dict[str
     return payload if isinstance(payload, dict) else {}, source
 
 
+def execute_host_bridge_command(command_name: str, request_payload: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any]]:
+    source = host_bridge_command_source(command_name)
+    if not bool(source.get("available")):
+        return {}, source
+    raw_command = str(source.get("command") or "").strip()
+    if not raw_command:
+        return {}, source
+    try:
+        completed = subprocess.run(
+            shlex.split(raw_command),
+            input=(json.dumps(request_payload, ensure_ascii=False) + "\n").encode("utf-8"),
+            capture_output=True,
+            check=False,
+        )
+    except Exception as exc:  # noqa: BLE001
+        return {}, {
+            **source,
+            "error": str(exc),
+            "returncode": None,
+            "stderr": "",
+            "stdout": "",
+        }
+
+    stdout = completed.stdout.decode("utf-8", errors="replace").strip()
+    stderr = completed.stderr.decode("utf-8", errors="replace").strip()
+    meta = {
+        **source,
+        "returncode": int(completed.returncode),
+        "stdout": stdout,
+        "stderr": stderr,
+    }
+    if completed.returncode != 0 or not stdout:
+        return {}, meta
+    try:
+        payload = json.loads(stdout)
+    except Exception as exc:  # noqa: BLE001
+        return {}, {**meta, "error": str(exc)}
+    return payload if isinstance(payload, dict) else {}, meta
+
+
+def ensure_default_host_bridge_env(command_name: str, *, host_runtime: str | None = None) -> str:
+    resolved_host_runtime = detect_host_runtime(host_runtime)
+    if resolved_host_runtime not in _SUPPORTED_HOSTS:
+        return ""
+    source = host_bridge_command_source(command_name)
+    if bool(source.get("available")):
+        return str(source.get("command") or "")
+    command_key = _command_env_key(command_name)
+    if not command_key:
+        return ""
+    env_name = f"BEACON_HOST_{command_key}_BRIDGE_CMD"
+    default_command = f"{shlex.quote(sys.executable)} -m beacon.main {command_name} host-bridge"
+    os.environ[env_name] = default_command
+    return default_command
+
+
 def build_semantic_capability_snapshot(
     command_name: str,
     *,
@@ -140,20 +226,41 @@ def build_semantic_capability_snapshot(
     host_runtime: str | None = None,
 ) -> dict[str, Any]:
     resolved_host_runtime = detect_host_runtime(host_runtime)
+    bridge = host_bridge_command_source(command_name)
     response = host_response_source(command_name)
+    host_bridge_command_available = bool(bridge.get("available"))
     host_response_available = bool(response.get("available"))
-    host_bridge_declared = _truthy(os.environ.get("BEACON_HOST_SEMANTIC_BRIDGE")) or host_response_available
+    host_runtime_supported = resolved_host_runtime in _SUPPORTED_HOSTS
+    host_bridge_declared = (
+        _truthy(os.environ.get("BEACON_HOST_SEMANTIC_BRIDGE"))
+        or host_bridge_command_available
+        or host_response_available
+        or host_runtime_supported
+    )
     provider_available = bool(str(os.environ.get("BEACON_LLM_API_KEY", "") or "").strip())
     llm_disabled = _truthy(os.environ.get(disable_env))
+    host_transport = "none"
+    if host_bridge_command_available:
+        host_transport = "command-bridge"
+    elif host_response_available:
+        host_transport = "injected-response"
+    elif host_runtime_supported and provider_available:
+        host_transport = "provider-bridge"
     return {
         "schema_version": "1.0",
         "command_name": command_name,
         "host_runtime": resolved_host_runtime,
+        "host_runtime_supported": host_runtime_supported,
         "host_bridge_declared": host_bridge_declared,
+        "host_bridge_command_available": host_bridge_command_available,
+        "host_bridge_command_source": str(bridge.get("source") or "none"),
+        "host_bridge_command_env": str(bridge.get("env_name") or ""),
         "host_response_available": host_response_available,
         "host_response_source": str(response.get("source") or "none"),
         "host_response_path": str(response.get("path") or ""),
-        "host_semantic_ready": resolved_host_runtime in _SUPPORTED_HOSTS and host_response_available,
+        "host_transport": host_transport,
+        "host_semantic_ready": host_runtime_supported
+        and (host_bridge_command_available or host_response_available or provider_available),
         "provider_available": provider_available,
         "provider_key_present": provider_available,
         "llm_disabled": llm_disabled,
@@ -178,7 +285,7 @@ def build_mode_contract(
 
 
 def llm_unavailable_message(command_label: str) -> str:
-    return f"{command_label} semantic compile requires host semantic response or BEACON_LLM_API_KEY."
+    return f"{command_label} semantic compile requires host-native runtime transport or BEACON_LLM_API_KEY."
 
 
 def _slugify(value: str) -> str:

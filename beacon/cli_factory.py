@@ -8,6 +8,7 @@ from typing import Optional
 import typer
 
 from .command_catalog import ADVANCED_SURFACE, BRIDGE_COMMANDS, COMPAT_COMMANDS, CORE_COMMANDS, DEPRECATED_COMMANDS, LABS_COMMANDS, SUPPORT_COMMANDS
+from .utils.semantic_runtime import ensure_default_host_bridge_env
 
 
 def build_app(*, package_version: str) -> typer.Typer:
@@ -37,6 +38,8 @@ def build_app(*, package_version: str) -> typer.Typer:
         if version_flag:
             typer.echo(f"Beacon CLI v{package_version}")
             raise typer.Exit()
+        for command_name in ("prd", "user-story", "test-case", "prototype"):
+            ensure_default_host_bridge_env(command_name)
 
     setattr(
         app,
@@ -74,6 +77,7 @@ def build_app(*, package_version: str) -> typer.Typer:
     from .commands.review import app as review_app
     from .commands.skill import app as skill_app
     from .commands.profile import app as profile_app
+    from .commands.board import app as board_app
     from .commands.implement import app as implement_app
     from .commands.verify import app as verify_app
     from .commands.orchestrate import app as orchestrate_app
@@ -134,6 +138,7 @@ def build_app(*, package_version: str) -> typer.Typer:
     app.add_typer(release_app, name="release")
     app.command("ask")(ask_entry)
     app.command("help")(help_entry)
+    app.add_typer(board_app, name="board")
     app.add_typer(status_app, name="status")
     app.add_typer(doctor_app, name="doctor")
     app.add_typer(archive_app, name="archive")

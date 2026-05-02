@@ -2,14 +2,16 @@
 
 from __future__ import annotations
 
+import json
+import sys
 from pathlib import Path
 import shutil
 from typing import Optional
 
-import json
 import typer
 
 from beacon.utils.prototype_utils import (
+    _real_prototype_llm_inference,
     bind_prototype_bundle,
     compile_prototype_plan,
     evaluate_prototype_status,
@@ -25,12 +27,62 @@ from beacon.utils.versioning import resolve_operational_docs_version, resolve_ta
 app = typer.Typer(name="prototype", help="Generate and manage requirement-driven wireframe freezes")
 
 
+def _load_bridge_payload(payload_json: str = "") -> dict:
+    raw = str(payload_json or "").strip()
+    if not raw:
+        raw = sys.stdin.read().strip()
+    if not raw:
+        raise typer.BadParameter("bridge payload missing")
+    try:
+        payload = json.loads(raw)
+    except Exception as exc:  # noqa: BLE001
+        raise typer.BadParameter(f"invalid bridge payload: {exc}") from exc
+    if not isinstance(payload, dict):
+        raise typer.BadParameter("bridge payload must be a JSON object")
+    return payload
+
+
 def _resolved_operational_version(project_root: Path, version: str, command_name: str) -> str:
     try:
         return resolve_operational_docs_version(project_root, version, command_name=command_name)
     except ValueError as exc:
         typer.echo(str(exc), err=True)
         raise typer.Exit(2) from exc
+
+
+@app.command("host-bridge", hidden=True)
+def host_bridge(
+    payload_json: str = typer.Argument("", help="Optional bridge request JSON; default reads stdin"),
+):
+    """Hidden host-native bridge endpoint for prototype semantic compile."""
+    try:
+        payload = _load_bridge_payload(payload_json)
+    except typer.BadParameter as exc:
+        typer.echo(str(exc), err=True)
+        raise typer.Exit(2) from exc
+
+    request_kind = str(payload.get("request_kind") or "").strip()
+    if request_kind != "prototype-wireframe-compile":
+        typer.echo("unsupported prototype bridge request_kind", err=True)
+        raise typer.Exit(2)
+
+    documents = payload.get("documents")
+    docs = documents if isinstance(documents, list) else []
+    normalized_docs = [item for item in docs if isinstance(item, dict)]
+    semantic_layer = payload.get("semantic_layer") if isinstance(payload.get("semantic_layer"), dict) else {}
+    try:
+        inference = _real_prototype_llm_inference(
+            feature=str(payload.get("feature") or "").strip(),
+            version=str(payload.get("version") or "").strip(),
+            docs=normalized_docs,
+            model=str(payload.get("requested_model") or "beacon-prototype-compiler").strip(),
+            semantic_layer=semantic_layer,
+        )
+    except Exception as exc:  # noqa: BLE001
+        typer.echo(str(exc), err=True)
+        raise typer.Exit(2) from exc
+
+    typer.echo(json.dumps(inference, ensure_ascii=False))
 
 
 @app.command()

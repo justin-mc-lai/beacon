@@ -72,6 +72,23 @@ It delegates to:
 python3 -m beacon.main "$@"
 ```
 
+For host-native requirement execution, the wrapper must also export:
+
+- `BEACON_HOST_RUNTIME`
+- `BEACON_HOST_PRD_BRIDGE_CMD`
+- `BEACON_HOST_USER_STORY_BRIDGE_CMD`
+- `BEACON_HOST_TEST_CASE_BRIDGE_CMD`
+- `BEACON_HOST_PROTOTYPE_BRIDGE_CMD`
+
+Default requirement bridge targets:
+
+```bash
+bash skills/beacon/scripts/run_beacon.sh prd host-bridge
+bash skills/beacon/scripts/run_beacon.sh user-story host-bridge
+bash skills/beacon/scripts/run_beacon.sh test-case host-bridge
+bash skills/beacon/scripts/run_beacon.sh prototype host-bridge
+```
+
 ## Rule 5: Source of truth is still docs/beacon
 
 Skill packaging does not change Beacon's delivery truth:

@@ -104,12 +104,14 @@ Optional supplemental skills:
 ## Current v1.3.9 Runtime Line
 
 - **Host-native requirement compile**: `prd / user-story / test-case / prototype` 默认优先复用宿主原生语义能力。
+- **Requirement bridge family**: `skills/beacon/scripts/run_beacon.sh` 默认导出 `prd / user-story / test-case / prototype` 四条 host bridge 命令，requirement surface 先走 command bridge，再退回兼容注入面。
+- **Truth-projected story and QA compile**: `user-story / test-case` 不再只走最小模板占位；bridge 现在会回读目标项目的 requirement truth，生成更贴近冻结材料的 story payload 与 test entries。
 - **Delivery kernel convergence**: `implement / qa / release` 统一落到共享 delivery contract。
 - **Canonical projection governance**: implementation projections are single-source and gate-verifiable against the canonical delivery baseline.
 - **Prompt-boundary enforcement**: release readiness now consumes the same auditable prompt-boundary verdict as gate.
 - **Brainstorm sidecar boundary**: brainstorm 读取版本真相、输出独立 markdown，并在需求需要变动时路由回 change/refreeze，而不是直接改写 truth。
 - **Support/read model convergence**: `help / status / doctor / archive` 读取同一 delivery read model 与 surface explanation。
-- **Provider fallback demotion**: `BEACON_LLM_API_KEY` 仅保留给纯 CLI / provider fallback。
+- **Provider fallback demotion**: `BEACON_LLM_API_KEY` 仅保留给纯 CLI / provider fallback，不再作为 requirement surface 默认主路径。
 
 ## Quick Start
 

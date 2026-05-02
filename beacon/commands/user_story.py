@@ -2,15 +2,18 @@
 import typer
 from typing import Optional
 import json
+import sys
 from pathlib import Path
 from datetime import datetime
 import os
 
 from beacon.utils.versioning import resolve_operational_docs_version, resolve_target_version
 from beacon.utils.revision_state import load_revision_state
+from beacon.utils.requirement_parsing import build_feature_ac_items, extract_qa_case_rows
 from beacon.utils.semantic_runtime import (
     build_mode_contract,
     build_semantic_capability_snapshot,
+    execute_host_bridge_command,
     load_host_response_json,
     normalize_requested_mode,
 )
@@ -35,6 +38,147 @@ def _extract_host_story_payload() -> dict:
         if isinstance(candidate, dict):
             return candidate
     return {}
+
+
+def _load_bridge_payload(payload_json: str = "") -> dict:
+    raw = str(payload_json or "").strip()
+    if not raw:
+        raw = sys.stdin.read().strip()
+    if not raw:
+        raise typer.BadParameter("bridge payload missing")
+    try:
+        payload = json.loads(raw)
+    except Exception as exc:  # noqa: BLE001
+        raise typer.BadParameter(f"invalid bridge payload: {exc}") from exc
+    if not isinstance(payload, dict):
+        raise typer.BadParameter("bridge payload must be a JSON object")
+    return payload
+
+
+def _build_story_host_bridge_request(feature: str, version: str, project_root: Path) -> dict:
+    return {
+        "schema_version": "1.0",
+        "command_name": "user-story",
+        "request_kind": "user-story-semantic-compile",
+        "feature": feature,
+        "version": version,
+        "project_root": str(project_root),
+    }
+
+
+def _extract_host_story_payload_with_bridge(request_payload: dict) -> dict:
+    payload, _ = execute_host_bridge_command("user-story", request_payload)
+    for candidate in (
+        payload.get("story") if isinstance(payload, dict) else None,
+        payload.get("payload") if isinstance(payload, dict) else None,
+        payload,
+    ):
+        if isinstance(candidate, dict):
+            return candidate
+    return _extract_host_story_payload()
+
+
+@app.command("host-bridge", hidden=True)
+def host_bridge(
+    payload_json: str = typer.Argument("", help="Optional bridge request JSON; default reads stdin"),
+):
+    """Hidden host-native bridge endpoint for user-story semantic compile."""
+    try:
+        payload = _load_bridge_payload(payload_json)
+    except typer.BadParameter as exc:
+        typer.echo(str(exc), err=True)
+        raise typer.Exit(2) from exc
+    if str(payload.get("request_kind") or "").strip() != "user-story-semantic-compile":
+        typer.echo("unsupported user-story bridge request_kind", err=True)
+        raise typer.Exit(2)
+    bridge_project_root = Path(str(payload.get("project_root") or Path.cwd())).resolve()
+    story = _generate_story_from_truth(
+        str(payload.get("feature") or "").strip(),
+        bridge_project_root,
+        version=str(payload.get("version") or "auto").strip() or "auto",
+    )
+    typer.echo(json.dumps({"story": story, "model": "beacon-user-story-host-bridge"}, ensure_ascii=False))
+
+
+def _read_requirement_truth(project_root: Path, version: str, feature: str) -> tuple[str, str, str]:
+    resolved_version = resolve_target_version(project_root, version)
+    slug = feature_slug(feature)
+    prd_path = project_root / "docs" / "beacon" / resolved_version / "prd" / f"{slug}.md"
+    user_story_path = project_root / "docs" / "beacon" / resolved_version / "user-story" / f"{slug}.md"
+    test_case_path = project_root / "docs" / "beacon" / resolved_version / "qa" / "test-cases" / f"{slug}.md"
+    prd_text = prd_path.read_text(encoding="utf-8") if prd_path.exists() else ""
+    user_story_text = user_story_path.read_text(encoding="utf-8") if user_story_path.exists() else ""
+    test_case_text = test_case_path.read_text(encoding="utf-8") if test_case_path.exists() else ""
+    return user_story_text, prd_text, test_case_text
+
+
+def _keyword_bucket(text: str) -> str:
+    lowered = str(text or "").lower()
+    if any(token in lowered for token in ("性能", "并发", "latency", "timeout", "响应时间", "throughput")):
+        return "performance"
+    if any(token in lowered for token in ("安全", "权限", "auth", "token", "隐私", "风控")):
+        return "security"
+    if any(token in lowered for token in ("兼容", "ios", "android", "browser", "设备", "跨端")):
+        return "compatibility"
+    if any(token in lowered for token in ("异常", "错误", "失败", "恢复", "拦截", "重试")):
+        return "error_handling"
+    if any(token in lowered for token in ("页面", "交互", "按钮", "表单", "流程", "体验", "展示", "列表", "详情")):
+        return "ux"
+    if any(token in lowered for token in ("字段", "数据", "库存", "订单", "金额", "api", "接口", "同步")):
+        return "data"
+    return "functionality"
+
+
+def _derive_story_actor(feature: str, prd_text: str, qa_text: str) -> str:
+    corpus = f"{feature}\n{prd_text}\n{qa_text}".lower()
+    if any(token in corpus for token in ("admin", "管理", "后台", "运营", "merchant", "seller")):
+        return "operator"
+    if any(token in corpus for token in ("顾客", "用户", "buyer", "customer", "shopper")):
+        return "customer"
+    return "user"
+
+
+def _generate_story_from_truth(feature: str, project_root: Path, *, version: str) -> dict:
+    story = generate_user_story(feature, project_root)
+    user_story_text, prd_text, qa_text = _read_requirement_truth(project_root, version, feature)
+    ac_items = build_feature_ac_items(
+        user_story_content=user_story_text,
+        prd_content=prd_text,
+        qa_content=qa_text,
+        user_story_source="user-story:host-bridge",
+        prd_source="prd:host-bridge",
+        qa_source="qa:test-cases:host-bridge",
+    )
+    qa_rows = extract_qa_case_rows(qa_text, "qa:test-cases:host-bridge")
+    actor = _derive_story_actor(feature, prd_text, qa_text)
+    story["as_a"] = actor
+    story["i_want"] = f"to complete {feature.lower()}"
+    story["so_that"] = "the frozen requirement flow can be executed and verified"
+    criteria: dict[str, list[str]] = {key: [] for key in story["acceptance_criteria"]}
+    for item in ac_items:
+        text = str(item.get("text") or "").strip()
+        bucket = _keyword_bucket(text)
+        if text and text not in criteria[bucket]:
+            criteria[bucket].append(text)
+        for detail in item.get("details") or []:
+            detail_text = str(detail or "").strip()
+            if not detail_text:
+                continue
+            detail_bucket = _keyword_bucket(detail_text)
+            if detail_text not in criteria[detail_bucket]:
+                criteria[detail_bucket].append(detail_text)
+    for row in qa_rows:
+        expected = str(row.get("expected_result") or "").strip()
+        if not expected:
+            continue
+        bucket = _keyword_bucket(expected)
+        if expected not in criteria[bucket]:
+            criteria[bucket].append(expected)
+    story["acceptance_criteria"] = criteria
+    story["story_points"] = max(3, min(8, len(ac_items) + (1 if qa_rows else 0)))
+    if len(ac_items) >= 4 or len(qa_rows) >= 3:
+        story["priority"] = "high"
+    return story
 
 
 def generate_user_story(topic: str, project_root: Path, *, semantic_payload: Optional[dict] = None) -> dict:
@@ -119,7 +263,9 @@ def create(
         effective_mode = "rule"
         fallback_reason = "llm_disabled"
     elif bool(capability_snapshot.get("host_semantic_ready")):
-        semantic_payload = _extract_host_story_payload()
+        semantic_payload = _extract_host_story_payload_with_bridge(
+            _build_story_host_bridge_request(feature, resolved_version, project_root)
+        )
         if semantic_payload:
             effective_mode = "host"
         elif requested_mode == "llm":

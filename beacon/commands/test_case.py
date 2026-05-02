@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import os
 import re
+import sys
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Optional
@@ -27,6 +28,7 @@ from beacon.utils.requirement_parsing import build_feature_ac_items, extract_qa_
 from beacon.utils.semantic_runtime import (
     build_mode_contract,
     build_semantic_capability_snapshot,
+    execute_host_bridge_command,
     load_host_response_json,
     normalize_requested_mode,
 )
@@ -566,6 +568,109 @@ def _extract_host_test_case_payload() -> dict[str, Any]:
     return {}
 
 
+def _load_bridge_payload(payload_json: str = "") -> dict[str, Any]:
+    raw = str(payload_json or "").strip()
+    if not raw:
+        raw = sys.stdin.read().strip()
+    if not raw:
+        raise typer.BadParameter("bridge payload missing")
+    try:
+        payload = json.loads(raw)
+    except Exception as exc:  # noqa: BLE001
+        raise typer.BadParameter(f"invalid bridge payload: {exc}") from exc
+    if not isinstance(payload, dict):
+        raise typer.BadParameter("bridge payload must be a JSON object")
+    return payload
+
+
+def _build_test_case_host_bridge_request(
+    feature: str,
+    feature_slug: str,
+    ac_items: list[dict[str, Any]],
+    qa_case_rows: list[dict[str, Any]],
+    ui_runner: str,
+    project_root: Path,
+) -> dict[str, Any]:
+    return {
+        "schema_version": "1.0",
+        "command_name": "test-case",
+        "request_kind": "test-case-semantic-compile",
+        "feature": feature,
+        "feature_slug": feature_slug,
+        "ac_items": ac_items,
+        "qa_case_rows": qa_case_rows,
+        "ui_runner": ui_runner,
+        "project_root": str(project_root),
+    }
+
+
+def _extract_host_test_case_payload_with_bridge(request_payload: dict[str, Any]) -> dict[str, Any]:
+    payload, _ = execute_host_bridge_command("test-case", request_payload)
+    for candidate in (
+        payload.get("test_case") if isinstance(payload, dict) else None,
+        payload.get("payload") if isinstance(payload, dict) else None,
+        payload,
+    ):
+        if isinstance(candidate, dict):
+            return candidate
+    return _extract_host_test_case_payload()
+
+
+@app.command("host-bridge", hidden=True)
+def host_bridge(
+    payload_json: str = typer.Argument("", help="Optional bridge request JSON; default reads stdin"),
+):
+    """Hidden host-native bridge endpoint for test-case semantic compile."""
+    try:
+        payload = _load_bridge_payload(payload_json)
+    except typer.BadParameter as exc:
+        typer.echo(str(exc), err=True)
+        raise typer.Exit(2) from exc
+    if str(payload.get("request_kind") or "").strip() != "test-case-semantic-compile":
+        typer.echo("unsupported test-case bridge request_kind", err=True)
+        raise typer.Exit(2)
+    bridge_project_root = Path(str(payload.get("project_root") or Path.cwd())).resolve()
+    feature = str(payload.get("feature") or "").strip()
+    feature_slug = str(payload.get("feature_slug") or _slug(feature)).strip() or _slug(feature)
+    raw_items = payload.get("ac_items")
+    ac_items = [item for item in raw_items if isinstance(item, dict)] if isinstance(raw_items, list) else []
+    raw_qa_rows = payload.get("qa_case_rows")
+    qa_case_rows = [item for item in raw_qa_rows if isinstance(item, dict)] if isinstance(raw_qa_rows, list) else []
+    ui_runner = str(payload.get("ui_runner") or "").strip()
+    if qa_case_rows:
+        entries = _build_entries_from_qa_case_rows(
+            feature=feature,
+            feature_slug=feature_slug,
+            qa_rows=qa_case_rows,
+            ac_items=ac_items,
+            ui_runner=ui_runner or "browser-use",
+        )
+    else:
+        entries: list[dict[str, Any]] = []
+        seed = ac_items or [{"ac_id": "AC-001", "text": f"{feature} core flow works"}]
+        idx = 0
+        for ac in seed:
+            ac_id = str(ac.get("ac_id") or f"AC-{idx + 1:03d}").strip() or f"AC-{idx + 1:03d}"
+            candidate_texts = [str(ac.get("text") or "").strip()]
+            candidate_texts.extend(str(item).strip() for item in (ac.get("details") or []) if str(item).strip())
+            for candidate in [item for item in candidate_texts if item]:
+                idx += 1
+                layer = _infer_layer_from_ac(candidate)
+                entries.append(
+                    {
+                        "tc_id": f"TC-{idx:03d}",
+                        "ac_id": ac_id,
+                        "layer": layer,
+                        "command": _default_command_for_layer(layer),
+                        "assertion": candidate,
+                        "evidence_path": f".beacon/evidence/test-results/{feature_slug}/TC-{idx:03d}.json",
+                        "status": "pending",
+                        "source": "host-bridge",
+                    }
+                )
+    typer.echo(json.dumps({"entries": entries, "model": "beacon-test-case-host-bridge"}, ensure_ascii=False))
+
+
 def _normalize_host_matrix_entries(
     *,
     feature: str,
@@ -942,6 +1047,7 @@ def create(
     fallback_reason = ""
     effective_mode = requested_mode
     host_payload: dict[str, Any] = {}
+    host_requested = False
     if requested_mode == "rule":
         effective_mode = "rule"
     elif bool(capability_snapshot.get("llm_disabled")):
@@ -951,28 +1057,13 @@ def create(
         effective_mode = "rule"
         fallback_reason = "llm_disabled"
     elif bool(capability_snapshot.get("host_semantic_ready")):
-        host_payload = _extract_host_test_case_payload()
-        if host_payload:
-            effective_mode = "host"
-        elif requested_mode == "llm":
-            typer.echo("Test case semantic compile requires host semantic response.", err=True)
-            raise typer.Exit(2)
-        else:
-            effective_mode = "rule"
-            fallback_reason = "host_compile_failed"
+        host_requested = True
     else:
         if requested_mode == "llm":
             typer.echo("Test case semantic compile requires host semantic response.", err=True)
             raise typer.Exit(2)
         effective_mode = "rule"
         fallback_reason = "llm_unavailable"
-    compiler = build_mode_contract(
-        requested_mode=requested_mode,
-        effective_mode=effective_mode,
-        fallback_reason=fallback_reason,
-        capability_snapshot=capability_snapshot,
-    )
-
     # Read ACs from existing user-story/prd docs
     us_path, us_content = _read_first_existing(
         _candidate_doc_paths(project_root, resolved_version, "user-story", feature_slug)
@@ -1021,6 +1112,25 @@ def create(
                 raise typer.Exit(2)
             ac_items = [{"ac_id": "AC-001", "text": f"{feature} core flow works", "source": "fallback"}]
     qa_case_rows = extract_qa_case_rows(qa_content, f"qa:test-cases:{qa_path}" if qa_path else "qa:test-cases:missing")
+
+    if host_requested:
+        host_payload = _extract_host_test_case_payload_with_bridge(
+            _build_test_case_host_bridge_request(feature, feature_slug, ac_items, qa_case_rows, ui_runner, project_root)
+        )
+        if host_payload:
+            effective_mode = "host"
+        elif requested_mode == "llm":
+            typer.echo("Test case semantic compile requires host semantic response.", err=True)
+            raise typer.Exit(2)
+        else:
+            effective_mode = "rule"
+            fallback_reason = "host_compile_failed"
+    compiler = build_mode_contract(
+        requested_mode=requested_mode,
+        effective_mode=effective_mode,
+        fallback_reason=fallback_reason,
+        capability_snapshot=capability_snapshot,
+    )
 
     prototype_navigation, prototype_interaction = _load_prototype_contract_artifacts(
         project_root, resolved_version, feature_slug
