@@ -319,6 +319,116 @@ def test_v138_release_scorecard_should_prefer_authoritative_summary_prompt_bound
     assert payload["prompt_boundary"]["blocked"] is False
 
 
+def test_v138_release_scorecard_should_prefer_latest_release_ready_feature_over_stale_global_qa_feature(
+    tmp_path,
+    monkeypatch,
+):
+    version = "v1.3.8"
+    docs_root = tmp_path / "docs" / "beacon" / version
+    (docs_root / "execution").mkdir(parents=True, exist_ok=True)
+    (docs_root / ".machine" / "change").mkdir(parents=True, exist_ok=True)
+    (docs_root / "change").mkdir(parents=True, exist_ok=True)
+    (docs_root / ".machine" / "change" / f"{version}.json").write_text(
+        json.dumps({"version": version, "features": [{"feature_slug": "admin-merchandising-analytics"}]}, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+    (docs_root / "change" / f"{version}.md").write_text("# change\n", encoding="utf-8")
+    (tmp_path / ".beacon" / "qa" / "features" / "admin-merchandising-analytics").mkdir(parents=True, exist_ok=True)
+    (tmp_path / ".beacon" / "qa" / "features" / "admin-merchandising-analytics" / "scorecard.json").write_text(
+        json.dumps(
+            {
+                "feature": "admin-merchandising-analytics",
+                "feature_slug": "admin-merchandising-analytics",
+                "release_ready": True,
+                "continue_decision": "ready_for_release",
+                "unresolved_closure_outcomes": [],
+                "updated_at": "2026-05-03T10:00:00Z",
+                "coverage_current": {
+                    "required_scenarios": 2,
+                    "executed_scenarios": 2,
+                    "coverage_rate": 1.0,
+                },
+            },
+            ensure_ascii=False,
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+    (tmp_path / ".beacon").mkdir(parents=True, exist_ok=True)
+    (tmp_path / ".beacon" / "gate-report.json").write_text(
+        json.dumps({"status": "Pass", "version": version, "run_id": "run-123", "issues": []}, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+
+    monkeypatch.setattr(release_scorecard_module, "resolve_target_version", lambda *_args, **_kwargs: version)
+    monkeypatch.setattr(release_scorecard_module, "resolve_runtime_version", lambda *_args, **_kwargs: version)
+    monkeypatch.setattr(release_scorecard_module, "runtime_feature_supported", lambda *_args, **_kwargs: True)
+    monkeypatch.setattr(release_scorecard_module, "project_runtime_feature_enabled", lambda *_args, **_kwargs: True)
+    monkeypatch.setattr(release_scorecard_module, "version_requires_prototype", lambda *_args, **_kwargs: False)
+    monkeypatch.setattr(release_scorecard_module, "implementation_plan_supported", lambda *_args, **_kwargs: False)
+    monkeypatch.setattr(
+        release_scorecard_module,
+        "validate_evidence_manifest",
+        lambda *_args, **_kwargs: {"status": "pass", "blocked": False, "issues": [], "blocked_count": 0},
+    )
+    monkeypatch.setattr(
+        release_scorecard_module,
+        "load_qa_status",
+        lambda *_args, **_kwargs: {
+            "feature": "evis-supply-website-core",
+            "version": version,
+            "status": "passed",
+            "evidence_done": True,
+        },
+    )
+    monkeypatch.setattr(release_scorecard_module, "load_exhaustiveness_report", lambda *_args, **_kwargs: {"status": "passed"})
+    monkeypatch.setattr(
+        release_scorecard_module,
+        "load_feature_qa_scorecard",
+        lambda _project_root, feature=None, **_kwargs: json.loads(
+            (
+                tmp_path / ".beacon" / "qa" / "features" / (feature or "") / "scorecard.json"
+            ).read_text(encoding="utf-8")
+        )
+        if feature == "admin-merchandising-analytics"
+        else {},
+    )
+    monkeypatch.setattr(release_scorecard_module, "load_implementation_plan_progress", lambda *_args, **_kwargs: {})
+    monkeypatch.setattr(release_scorecard_module, "load_latest_evo_experiment", lambda *_args, **_kwargs: {})
+    monkeypatch.setattr(release_scorecard_module, "list_implementation_git_workflow_contracts", lambda *_args, **_kwargs: [])
+    monkeypatch.setattr(
+        release_scorecard_module,
+        "load_revision_state",
+        lambda *_args, **_kwargs: {
+            "revision_id": "R1",
+            "source_revision_id": "",
+            "doc_status": "frozen",
+            "delivery_status": "verified",
+        },
+    )
+    monkeypatch.setattr(release_scorecard_module, "build_requirement_clarity_gate_payload", lambda *_args, **_kwargs: {"blocked": False})
+    monkeypatch.setattr(release_scorecard_module, "load_requirement_clarity_state", lambda *_args, **_kwargs: {"status": "pass"})
+    monkeypatch.setattr(release_scorecard_module, "build_technical_review_gate_payload", lambda *_args, **_kwargs: {"blocked": False})
+    monkeypatch.setattr(release_scorecard_module, "load_technical_review_state", lambda *_args, **_kwargs: {"review_status": "approved"})
+    monkeypatch.setattr(release_scorecard_module, "evaluate_semantic_contract", lambda *_args, **_kwargs: {})
+    monkeypatch.setattr(
+        release_scorecard_module,
+        "load_delivery_read_model",
+        lambda *_args, **_kwargs: {
+            "implement": {"prompt_boundary": {"required": False, "status": "not_required", "blocked": False}, "delivery_contract": {}},
+            "qa": {"delivery_contract": {}},
+            "release": {"release_ready": True},
+            "traceability": {},
+            "risk_flags": [],
+        },
+    )
+
+    payload = release_scorecard_module.build_release_scorecard(tmp_path, version=version)
+
+    assert payload["qa"]["feature"] == "admin-merchandising-analytics"
+    assert payload["change_documents"]["current_feature_slug"] == "admin-merchandising-analytics"
+
+
 def test_v138_release_scorecard_should_not_mark_v139_release_ready_without_acceptance_transaction(
     tmp_path,
     monkeypatch,

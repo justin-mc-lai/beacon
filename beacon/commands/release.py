@@ -688,6 +688,9 @@ def check(
         runtime_version=resolved_runtime,
     )
     authoritative_release_ready = bool(release_scorecard.get("release_ready", False))
+    scorecard_authoritative = authoritative_release_ready and bool(
+        ((release_scorecard.get("qa") or {}) if isinstance(release_scorecard.get("qa"), dict) else {}).get("feature")
+    )
 
     auto_test_path = project_root / ".beacon" / "auto-test-status.json"
     gate_report_path = project_root / ".beacon" / "gate-report.json"
@@ -737,6 +740,8 @@ def check(
     )
 
     scorecard_gate = release_scorecard.get("gate") if isinstance(release_scorecard.get("gate"), dict) else {}
+    qa_summary = release_scorecard.get("qa") if isinstance(release_scorecard.get("qa"), dict) else {}
+    authoritative_feature = str(qa_summary.get("feature") or "").strip()
     gate_ok = False
     gate_status = "missing"
     gate_coverage_full: Optional[bool] = None
@@ -778,14 +783,14 @@ def check(
                 and bool(auto_test_run_id)
                 and (
                     gate_run_id == auto_test_run_id
-                    or (enforce_release_scorecard and authoritative_release_ready and gate_ok and auto_test_ok)
+                    or (scorecard_authoritative and gate_ok and auto_test_ok)
                 )
             ),
             (
                 f"gate_run_id={gate_run_id or 'missing'}, auto_test_run_id={auto_test_run_id or 'missing'}"
                 + (
                     ", authoritative_release_scorecard=true"
-                    if enforce_release_scorecard and authoritative_release_ready and gate_ok and auto_test_ok
+                    if scorecard_authoritative and gate_ok and auto_test_ok
                     else ""
                 )
             ),
@@ -820,8 +825,26 @@ def check(
     checks.append(
         (
             "evidence manifest run_id matches test artifacts",
-            bool(manifest_run_id) and bool(expected_run_id) and manifest_run_id == expected_run_id,
-            f"manifest_run_id={manifest_run_id or 'missing'}, expected={expected_run_id or 'missing'}",
+            (
+                bool(manifest_run_id)
+                and bool(expected_run_id)
+                and (
+                    manifest_run_id == expected_run_id
+                    or (
+                        scorecard_authoritative
+                        and bool(authoritative_feature)
+                        and manifest_ok
+                    )
+                )
+            ),
+            (
+                f"manifest_run_id={manifest_run_id or 'missing'}, expected={expected_run_id or 'missing'}"
+                + (
+                    ", authoritative_release_scorecard=true"
+                    if scorecard_authoritative and bool(authoritative_feature) and manifest_ok
+                    else ""
+                )
+            ),
         )
     )
 
@@ -847,7 +870,7 @@ def check(
     elif gate_coverage_full is not None:
         coverage_ok = bool(gate_coverage_full)
         coverage_detail = f"gate_report.coverage.full_coverage={coverage_ok}"
-    if not coverage_ok and enforce_release_scorecard and authoritative_release_ready:
+    if not coverage_ok and scorecard_authoritative:
         coverage_current = (
             feature_qa_scorecard.get("coverage_current")
             if isinstance(feature_qa_scorecard.get("coverage_current"), dict)
@@ -874,8 +897,26 @@ def check(
         checks.append(
             (
                 "coverage summary run_id matches test artifacts",
-                bool(coverage_run_id) and bool(expected_run_id) and coverage_run_id == expected_run_id,
-                f"coverage_run_id={coverage_run_id or 'missing'}, expected={expected_run_id or 'missing'}",
+                (
+                    bool(coverage_run_id)
+                    and bool(expected_run_id)
+                    and (
+                        coverage_run_id == expected_run_id
+                        or (
+                            scorecard_authoritative
+                            and bool(authoritative_feature)
+                            and coverage_ok
+                        )
+                    )
+                ),
+                (
+                    f"coverage_run_id={coverage_run_id or 'missing'}, expected={expected_run_id or 'missing'}"
+                    + (
+                        ", authoritative_release_scorecard=true"
+                        if scorecard_authoritative and bool(authoritative_feature) and coverage_ok
+                        else ""
+                    )
+                ),
             )
         )
 

@@ -3,8 +3,10 @@
 from __future__ import annotations
 
 import json
+import importlib
 from pathlib import Path
 
+gate_module = importlib.import_module("beacon.commands.gate")
 from beacon.commands.gate import GateMode, check_coverage_metrics
 from beacon.utils.coverage import write_coverage_summary
 
@@ -363,4 +365,35 @@ def test_gate_should_prefer_release_ready_feature_scorecard_aggregate_for_versio
         )
 
     issues = check_coverage_metrics(tmp_path, GateMode.STRICT, "release")
+    assert issues == []
+
+
+def test_gate_should_accept_authoritative_release_scorecard_for_legacy_docs_version_coverage(tmp_path: Path, monkeypatch):
+    version = "v1.0.0"
+    monkeypatch.setenv("BEACON_VERSION", "v1.3.9")
+    story_dir = tmp_path / "docs" / "beacon" / version / "user-story"
+    impl_root = tmp_path / ".beacon" / "state"
+    story_dir.mkdir(parents=True, exist_ok=True)
+    impl_root.mkdir(parents=True, exist_ok=True)
+
+    for slug in ("website-core", "admin-merchandising-analytics", "client-core"):
+        (story_dir / f"{slug}.md").write_text("# story\n", encoding="utf-8")
+        (impl_root / f"implementation-{slug}.json").write_text(json.dumps({"status": "completed"}), encoding="utf-8")
+
+    monkeypatch.setattr(
+        gate_module,
+        "build_release_scorecard",
+        lambda *_args, **_kwargs: {
+            "release_ready": True,
+            "acceptance": {
+                "coverage_current": {
+                    "required_scenarios": 7,
+                    "executed_scenarios": 7,
+                    "coverage_rate": 1.0,
+                }
+            },
+        },
+    )
+
+    issues = check_coverage_metrics(tmp_path, GateMode.STRICT, "release", version=version)
     assert issues == []

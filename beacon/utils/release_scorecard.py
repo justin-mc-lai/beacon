@@ -92,6 +92,9 @@ def _latest_revision_feature(project_root: Path, *, version: str) -> str:
 
 
 def _resolve_scorecard_feature(project_root: Path, *, version: str, qa_status: dict[str, Any]) -> str:
+    release_ready_feature = _latest_release_ready_feature(project_root, version=version)
+    if release_ready_feature:
+        return release_ready_feature
     feature = str(qa_status.get("feature") or "").strip()
     if feature:
         return feature
@@ -99,6 +102,53 @@ def _resolve_scorecard_feature(project_root: Path, *, version: str, qa_status: d
         project_root,
         version=version,
     )
+
+
+def _scorecard_sort_key(path: Path, payload: dict[str, Any]) -> tuple[str, str, str, int, str]:
+    return (
+        str(payload.get("accepted_at") or ""),
+        str(payload.get("updated_at") or ""),
+        str(payload.get("generated_at") or ""),
+        path.stat().st_mtime_ns if path.exists() else 0,
+        path.name,
+    )
+
+
+def _scorecard_is_release_ready(payload: dict[str, Any]) -> bool:
+    if not isinstance(payload, dict) or not payload:
+        return False
+    if not bool(payload.get("release_ready", False)):
+        return False
+    if str(payload.get("continue_decision") or "").strip() != "ready_for_release":
+        return False
+    unresolved = [str(item).strip() for item in (payload.get("unresolved_closure_outcomes") or []) if str(item).strip()]
+    return not unresolved
+
+
+def _latest_release_ready_feature(project_root: Path, *, version: str) -> str:
+    qa_root = project_root / ".beacon" / "qa" / "features"
+    if not qa_root.exists():
+        return ""
+    candidates: list[tuple[Path, dict[str, Any]]] = []
+    for scorecard_path in qa_root.glob("*/scorecard.json"):
+        payload = _load_json(scorecard_path)
+        if not _scorecard_is_release_ready(payload):
+            continue
+        feature = str(payload.get("feature") or payload.get("feature_slug") or scorecard_path.parent.name).strip()
+        if not feature:
+            continue
+        acceptance = _acceptance_envelope_payload(project_root, version=version, feature=feature)
+        verdict = str(acceptance.get("verdict") or "").strip().lower()
+        if acceptance and verdict not in {"", "passed"}:
+            continue
+        payload = dict(payload)
+        payload["_candidate_feature"] = feature
+        candidates.append((scorecard_path, payload))
+    for scorecard_path, payload in sorted(candidates, key=lambda item: _scorecard_sort_key(item[0], item[1]), reverse=True):
+        feature = str(payload.get("_candidate_feature") or "").strip()
+        if feature:
+            return feature
+    return ""
 
 
 def _version_change_status(project_root: Path, *, version: str, current_feature: str) -> dict[str, Any]:

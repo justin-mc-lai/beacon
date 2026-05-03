@@ -235,6 +235,112 @@ def test_release_check_should_accept_authoritative_v136_scorecard_when_gate_run_
     assert "Release conditions met" in result.stdout
 
 
+def test_release_check_should_accept_authoritative_scorecard_when_manifest_and_coverage_run_id_lag(
+    tmp_path: Path,
+    monkeypatch,
+):
+    version = "v1.3.8"
+    _seed_release_artifacts(tmp_path, version=version, coverage_version=version)
+
+    (tmp_path / ".beacon" / "evidence-manifest.json").write_text(
+        json.dumps(
+            {
+                "version": version,
+                "run_id": "run-stale",
+                "entries": [
+                    {"path": ".beacon/auto-test-status.json"},
+                    {"path": ".beacon/gate-report.json"},
+                    {"path": ".beacon/coverage-summary.json"},
+                ],
+            },
+            ensure_ascii=False,
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+    (tmp_path / ".beacon" / "coverage-summary.json").write_text(
+        json.dumps(
+            {
+                "schema_version": "1.0",
+                "run_id": "run-stale",
+                "version": version,
+                "coverage_rate": 1.0,
+                "full_coverage": True,
+                "details": {
+                    "version": version,
+                    "feature": "feature-a",
+                    "planned_story": 1,
+                    "implemented_story": 1,
+                    "story_coverage": 1.0,
+                    "total_ac": 1,
+                    "tested_ac": 1,
+                    "ac_coverage": 1.0,
+                    "total_tc": 1,
+                    "executed_tc": 1,
+                    "tc_coverage": 1.0,
+                    "full_coverage": True,
+                    "matrix_errors": [],
+                },
+            },
+            ensure_ascii=False,
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+
+    monkeypatch.setattr(
+        release_command,
+        "build_release_scorecard",
+        lambda *_args, **_kwargs: {
+            "release_ready": True,
+            "gate": {
+                "status": "Pass",
+                "blocked_count": 0,
+                "run_id": "run-123",
+                "artifact_version": version,
+                "version_match": True,
+                "reason_codes": [],
+            },
+            "qa": {"feature": "feature-a", "status": "passed", "evidence_done": True},
+            "semantic": {"status": "pass", "reason_code": ""},
+            "feature_qa_scorecard": {
+                "release_ready": True,
+                "continue_decision": "ready_for_release",
+                "coverage_current": {
+                    "required_scenarios": 1,
+                    "executed_scenarios": 1,
+                    "coverage_rate": 1.0,
+                },
+            },
+            "change_documents": {
+                "markdown_exists": True,
+                "json_exists": True,
+                "version_match": True,
+                "includes_current_feature": True,
+                "markdown_path": f"docs/beacon/{version}/change/{version}.md",
+                "json_path": f"docs/beacon/{version}/.machine/change/{version}.json",
+                "current_feature_slug": "feature-a",
+                "feature_count": 1,
+            },
+            "prompt_boundary": {
+                "required": True,
+                "status": "pass",
+                "blocked": False,
+                "classification": "in_scope_implementation",
+                "reason_code": "",
+                "surface": "host_prompt",
+            },
+        },
+    )
+
+    result = _invoke(["release", "check", version, "--project", str(tmp_path)])
+
+    assert result.exit_code == 0, result.stdout
+    assert "evidence manifest run_id matches test artifacts" in result.stdout
+    assert "coverage summary run_id matches test artifacts" in result.stdout
+    assert "authoritative_release_scorecard=true" in result.stdout
+
+
 def test_release_check_should_fail_when_v137_prompt_boundary_verdict_is_missing(tmp_path: Path, monkeypatch):
     version = "v1.3.7"
     _seed_release_artifacts(tmp_path, version=version, coverage_version=version)

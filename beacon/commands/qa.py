@@ -18,6 +18,7 @@ from beacon.utils.coverage import write_coverage_summary
 from beacon.utils.implement_adapters import format_template
 from beacon.utils.material_audit import build_requirement_package_gate
 from beacon.utils.project_metadata import metadata_machine_path, verify_project_metadata
+from beacon.utils.process_lock import project_process_lock
 from beacon.utils.exhaustiveness import build_exhaustiveness_report, write_exhaustiveness_report
 from beacon.utils.exhaustiveness import feature_exhaustiveness_report_path
 from beacon.utils.project_skills import (
@@ -1056,7 +1057,19 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
         )
     )
     known_matching_run_ids = _matching_qa_run_ids(project_root, matrix_path)
-    command_exit = _beacon_exec_silent(auto_args, cwd=_repo_root()) if json_output else _beacon_exec(auto_args, cwd=_repo_root())
+    lock_metadata = {
+        "feature": feature,
+        "version": version,
+        "mode": str(plan.get("execution_mode") or mode),
+        "team_mode": bool(team_mode),
+    }
+    with project_process_lock(
+        project_root,
+        name="qa-feature-aware",
+        owner=f"qa:{feature}",
+        metadata=lock_metadata,
+    ):
+        command_exit = _beacon_exec_silent(auto_args, cwd=_repo_root()) if json_output else _beacon_exec(auto_args, cwd=_repo_root())
     if command_exit != 0:
         blocked_payload = {
             **plan,

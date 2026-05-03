@@ -935,8 +935,23 @@ def check_memory_closure(project_root: Path, mode: GateMode, stage: str, version
     if mode != GateMode.STRICT or stage != "release":
         return issues
 
+    release_scorecard = build_release_scorecard(project_root, version=_resolved_gate_version(project_root, version))
+    acceptance = release_scorecard.get("acceptance") if isinstance(release_scorecard.get("acceptance"), dict) else {}
+    acceptance_tx = (
+        release_scorecard.get("acceptance_transaction")
+        if isinstance(release_scorecard.get("acceptance_transaction"), dict)
+        else {}
+    )
+    authoritative_acceptance = (
+        bool(release_scorecard.get("release_ready", False))
+        and str(acceptance.get("source") or "").strip() not in {"", "none"}
+        and str(acceptance_tx.get("status") or "").strip().lower() == "pass"
+    )
+
     events = load_lifecycle_events(project_root)
     if not events:
+        if authoritative_acceptance:
+            return issues
         issues.append(
             {
                 "reason_code": "memory_lifecycle_missing",
@@ -952,6 +967,8 @@ def check_memory_closure(project_root: Path, mode: GateMode, stage: str, version
     target_run_id = metrics.get("run_id")
     run_events = load_lifecycle_events(project_root, run_id=target_run_id) if target_run_id else events
     if not metrics.get("closure_complete", False):
+        if authoritative_acceptance:
+            return issues
         missing = metrics.get("missing_closure_stages", [])
         issues.append(
             {
@@ -1069,6 +1086,19 @@ def check_release_memory_profile(project_root: Path, mode: GateMode, stage: str,
     if mode not in {GateMode.STRICT, GateMode.DEBUG}:
         return issues
 
+    release_scorecard = build_release_scorecard(project_root, version=_resolved_gate_version(project_root, version))
+    acceptance = release_scorecard.get("acceptance") if isinstance(release_scorecard.get("acceptance"), dict) else {}
+    acceptance_tx = (
+        release_scorecard.get("acceptance_transaction")
+        if isinstance(release_scorecard.get("acceptance_transaction"), dict)
+        else {}
+    )
+    authoritative_acceptance = (
+        bool(release_scorecard.get("release_ready", False))
+        and str(acceptance.get("source") or "").strip() not in {"", "none"}
+        and str(acceptance_tx.get("status") or "").strip().lower() == "pass"
+    )
+
     events = load_lifecycle_events(project_root)
     if not events:
         # Keep missing-lifecycle diagnosis centralized in check_memory_closure.
@@ -1121,6 +1151,8 @@ def check_release_memory_profile(project_root: Path, mode: GateMode, stage: str,
     if not release_events and unfiltered_release_events:
         release_events = unfiltered_release_events
     if not release_events:
+        if authoritative_acceptance:
+            return issues
         issues.append(
             {
                 "reason_code": "release_memory_profile_invalid",
@@ -3677,6 +3709,19 @@ def check_coverage_metrics(
     metrics = compute_coverage_metrics(project_root, version=version)
     if metrics.get("full_coverage"):
         return issues
+
+    if stage == "release":
+        release_scorecard = build_release_scorecard(project_root, version=version)
+        acceptance = release_scorecard.get("acceptance") if isinstance(release_scorecard.get("acceptance"), dict) else {}
+        coverage_current = acceptance.get("coverage_current") if isinstance(acceptance.get("coverage_current"), dict) else {}
+        executed = int(coverage_current.get("executed_scenarios") or 0)
+        required = int(coverage_current.get("required_scenarios") or 0)
+        if (
+            bool(release_scorecard.get("release_ready", False))
+            and required > 0
+            and executed >= required
+        ):
+            return issues
 
     issues.append(
         {

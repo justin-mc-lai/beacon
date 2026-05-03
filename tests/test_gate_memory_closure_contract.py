@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import importlib
 import json
 from pathlib import Path
 
@@ -12,6 +13,7 @@ from beacon.main import app
 
 
 runner = CliRunner()
+gate_module = importlib.import_module("beacon.commands.gate")
 
 
 def _invoke(args: list[str]):
@@ -212,3 +214,19 @@ def test_gate_release_should_block_when_workflow_memory_transaction_failed(tmp_p
     payload = _gate_release_payload(tmp_path)
     reason_codes = {item["reason_code"] for item in payload["issues"]}
     assert "workflow_memory_failed_transaction" in reason_codes
+
+
+def test_gate_release_should_allow_authoritative_acceptance_without_workflow_memory(tmp_path: Path, monkeypatch):
+    _write_core_gate_artifacts(tmp_path)
+    monkeypatch.setattr(
+        gate_module,
+        "build_release_scorecard",
+        lambda *_args, **_kwargs: {
+            "release_ready": True,
+            "acceptance": {"source": "qa_acceptance_envelope"},
+            "acceptance_transaction": {"status": "pass"},
+        },
+    )
+
+    assert gate_module.check_memory_closure(tmp_path, gate_module.GateMode.STRICT, "release", "v1.0.0") == []
+    assert gate_module.check_release_memory_profile(tmp_path, gate_module.GateMode.STRICT, "release", "v1.0.0") == []
