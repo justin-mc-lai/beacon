@@ -1,4 +1,4 @@
-# 组件契约清单：Beacon Execution Runtime Kernel
+# 组件契约清单：beacon-execution-runtime-kernel
 
 | Component ID | Page | Name | State Refs | Feedback Responsibilities | AC Refs | TC Refs |
 |---|---|---|---|---|---|---|

@@ -1,4 +1,4 @@
-# Semantic Usage Guidelines: Beacon Execution Runtime Kernel
+# Semantic Usage Guidelines: beacon-execution-runtime-kernel
 
 ## 使用规则
 

@@ -1,4 +1,4 @@
-# 状态流冻结图：Beacon Execution Runtime Kernel
+# 状态流冻结图：beacon-execution-runtime-kernel
 
 | From | To | Event | Guard | Fallback | AC Refs | TC Refs |
 |---|---|---|---|---|---|---|

@@ -15,4 +15,4 @@
 - `v1.3.10` services=`beacon` branch_guard_mode=`strict` validation_state=`active`
   - `beacon` -> `main`
 - `v1.3.11` services=`beacon` branch_guard_mode=`strict` validation_state=`active`
-  - `beacon` -> `main`
+  - `beacon` -> `beacon/v1.3.11`

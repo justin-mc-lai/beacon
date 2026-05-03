@@ -1,9 +1,9 @@
-# 线框草图汇总：Beacon Execution Runtime Kernel
+# 线框草图汇总：beacon-execution-runtime-kernel
 
 **Feature**: `beacon-execution-runtime-kernel`
 **Version**: `v1.3.11`
 **Mode**: `wireframe`
-**Generated At**: `2026-05-02T15:22:23Z`
+**Generated At**: `2026-05-03T15:08:25Z`
 
 ## 页面清单
 

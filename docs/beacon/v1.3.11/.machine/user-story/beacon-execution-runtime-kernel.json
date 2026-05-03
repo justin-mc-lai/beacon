@@ -5,7 +5,7 @@
   "version": "v1.3.11",
   "current_revision_id": "R1",
   "lifecycle_status": "frozen",
-  "updated_at": "2026-05-02T05:42:27.473226+00:00",
+  "updated_at": "2026-05-03T15:12:12.342825+00:00",
   "revisions": [
     {
       "revision_id": "R1",
@@ -14,7 +14,7 @@
       "reason": "draft",
       "doc_status": "frozen",
       "delivery_status": "idle",
-      "baseline_hash": "sha256:4b91a029b5f7da6aa2cc18d0954a83b2df05ce25bbc696eb287245e20ade2d1e",
+      "baseline_hash": "sha256:964b519879e4d76371fcaadafbe2c8a8ca8eb0b5a3f971b6218b6eb9ce9c5fdb",
       "superseded_by": null,
       "created_at": "2026-05-01T13:21:42.154539+00:00",
       "frozen_at": "2026-05-02T05:32:07.807302+00:00",
@@ -28,7 +28,7 @@
       "revision_id": "R1",
       "title": "beacon-execution-runtime-kernel",
       "priority": "high",
-      "status": "accepted",
+      "status": "frozen",
       "items": [
         {
           "id": "AC-001",
@@ -393,8 +393,8 @@
         {
           "id": "AC-025",
           "kind": "ac",
-          "theme": "general",
-          "text": "Shared Runtime Contract",
+          "theme": "prototype-host-admission",
+          "text": "prototype capability snapshot 必须把 host runtime support 与 host execution transport 分开表达，不能再把 `host_response_available` 直接当作唯一 host-ready 判据。",
           "required": true,
           "status": "implemented",
           "implemented_by_run_id": "run-20260502T054010Z-ea8c",
@@ -403,13 +403,13 @@
           "changed_in_revision": "R1",
           "story_id": "",
           "details": [],
-          "source": "prd:docs/beacon/v1.3.11/prd/beacon-execution-runtime-kernel.md"
+          "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
         },
         {
           "id": "AC-026",
           "kind": "ac",
-          "theme": "general",
-          "text": "Workbench-Ready Read Model",
+          "theme": "provider-backed-host",
+          "text": "当 `codex",
           "required": true,
           "status": "implemented",
           "implemented_by_run_id": "run-20260502T054010Z-ea8c",
@@ -418,13 +418,13 @@
           "changed_in_revision": "R1",
           "story_id": "",
           "details": [],
-          "source": "prd:docs/beacon/v1.3.11/prd/beacon-execution-runtime-kernel.md"
+          "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
         },
         {
           "id": "AC-027",
           "kind": "ac",
-          "theme": "general",
-          "text": "Shared Reason Code Contract",
+          "theme": "legacy-injection-compatibility",
+          "text": "旧的 env/file response transport 仅作为兼容输入面保留，不能继续冒充默认 host-native execution 模式。",
           "required": true,
           "status": "implemented",
           "implemented_by_run_id": "run-20260502T054010Z-ea8c",
@@ -433,19 +433,79 @@
           "changed_in_revision": "R1",
           "story_id": "",
           "details": [],
-          "source": "prd:docs/beacon/v1.3.11/prd/beacon-execution-runtime-kernel.md"
+          "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
         },
         {
           "id": "AC-028",
           "kind": "ac",
-          "theme": "general",
-          "text": "Cross-Surface Host Consistency",
+          "theme": "prototype-host-precedence",
+          "text": "`prototype create` 在 `auto` 模式下必须遵循 `host-native -> provider-backed host -> rule fallback` 的优先级，并输出稳定 `fallback_reason / inference_mode / capability_snapshot`。",
           "required": true,
           "status": "implemented",
           "implemented_by_run_id": "run-20260502T054010Z-ea8c",
           "verified_by_run_id": null,
           "accepted_at": null,
           "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+        },
+        {
+          "id": "AC-029",
+          "kind": "ac",
+          "theme": "general",
+          "text": "Shared Runtime Contract",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "prd:docs/beacon/v1.3.11/prd/beacon-execution-runtime-kernel.md"
+        },
+        {
+          "id": "AC-030",
+          "kind": "ac",
+          "theme": "general",
+          "text": "Workbench-Ready Read Model",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "prd:docs/beacon/v1.3.11/prd/beacon-execution-runtime-kernel.md"
+        },
+        {
+          "id": "AC-031",
+          "kind": "ac",
+          "theme": "general",
+          "text": "Shared Reason Code Contract",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "prd:docs/beacon/v1.3.11/prd/beacon-execution-runtime-kernel.md"
+        },
+        {
+          "id": "AC-032",
+          "kind": "ac",
+          "theme": "general",
+          "text": "Cross-Surface Host Consistency",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
           "story_id": "",
           "details": [],
           "source": "prd:docs/beacon/v1.3.11/prd/beacon-execution-runtime-kernel.md"
@@ -848,7 +908,7 @@
         {
           "id": "TEST-025",
           "kind": "test",
-          "text": "Verify AC-025 — Shared Runtime Contract",
+          "text": "Verify AC-025 — prototype capability snapshot 必须把 host runtime support 与 host execution transport 分开表达，不能再把 `host_response_available` 直接当作唯一 host-ready 判据。",
           "required": true,
           "status": "draft",
           "implemented_by_run_id": null,
@@ -859,12 +919,12 @@
             "AC-025"
           ],
           "story_id": "",
-          "source": "prd:docs/beacon/v1.3.11/prd/beacon-execution-runtime-kernel.md"
+          "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
         },
         {
           "id": "TEST-026",
           "kind": "test",
-          "text": "Verify AC-026 — Workbench-Ready Read Model",
+          "text": "Verify AC-026 — 当 `codex",
           "required": true,
           "status": "draft",
           "implemented_by_run_id": null,
@@ -875,12 +935,12 @@
             "AC-026"
           ],
           "story_id": "",
-          "source": "prd:docs/beacon/v1.3.11/prd/beacon-execution-runtime-kernel.md"
+          "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
         },
         {
           "id": "TEST-027",
           "kind": "test",
-          "text": "Verify AC-027 — Shared Reason Code Contract",
+          "text": "Verify AC-027 — 旧的 env/file response transport 仅作为兼容输入面保留，不能继续冒充默认 host-native execution 模式。",
           "required": true,
           "status": "draft",
           "implemented_by_run_id": null,
@@ -891,12 +951,12 @@
             "AC-027"
           ],
           "story_id": "",
-          "source": "prd:docs/beacon/v1.3.11/prd/beacon-execution-runtime-kernel.md"
+          "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
         },
         {
           "id": "TEST-028",
           "kind": "test",
-          "text": "Verify AC-028 — Cross-Surface Host Consistency",
+          "text": "Verify AC-028 — `prototype create` 在 `auto` 模式下必须遵循 `host-native -> provider-backed host -> rule fallback` 的优先级，并输出稳定 `fallback_reason / inference_mode / capability_snapshot`。",
           "required": true,
           "status": "draft",
           "implemented_by_run_id": null,
@@ -905,6 +965,70 @@
           "changed_in_revision": null,
           "covers": [
             "AC-028"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+        },
+        {
+          "id": "TEST-029",
+          "kind": "test",
+          "text": "Verify AC-029 — Shared Runtime Contract",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-029"
+          ],
+          "story_id": "",
+          "source": "prd:docs/beacon/v1.3.11/prd/beacon-execution-runtime-kernel.md"
+        },
+        {
+          "id": "TEST-030",
+          "kind": "test",
+          "text": "Verify AC-030 — Workbench-Ready Read Model",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-030"
+          ],
+          "story_id": "",
+          "source": "prd:docs/beacon/v1.3.11/prd/beacon-execution-runtime-kernel.md"
+        },
+        {
+          "id": "TEST-031",
+          "kind": "test",
+          "text": "Verify AC-031 — Shared Reason Code Contract",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-031"
+          ],
+          "story_id": "",
+          "source": "prd:docs/beacon/v1.3.11/prd/beacon-execution-runtime-kernel.md"
+        },
+        {
+          "id": "TEST-032",
+          "kind": "test",
+          "text": "Verify AC-032 — Cross-Surface Host Consistency",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-032"
           ],
           "story_id": "",
           "source": "prd:docs/beacon/v1.3.11/prd/beacon-execution-runtime-kernel.md"
