@@ -1,16 +1,16 @@
 {
   "schema_version": "1.0",
-  "feature": "Prototype Design Intelligence And Governed Rendering Separation",
+  "feature": "prototype-design-intelligence-and-governed-rendering-separation",
   "feature_slug": "prototype-design-intelligence-and-governed-rendering-separation",
   "version": "v1.3.11",
   "prototype_mode": "wireframe",
   "source_hash": "5784cca08dac8b278a2b8ee0b7b1f8e9a994ad20892ff592ea46cbd9ad5f342f",
   "projection_seq": "pp-5784cca08dac8b27",
   "transaction_id": "tx-prototype-design-intelligence-and-governed-rendering-separation-pp-5784cca08dac8b27",
-  "committed_at": "2026-05-02T15:13:51Z",
+  "committed_at": "2026-05-03T16:46:30Z",
   "plan": {
     "schema_version": "1.0",
-    "feature": "Prototype Design Intelligence And Governed Rendering Separation",
+    "feature": "prototype-design-intelligence-and-governed-rendering-separation",
     "feature_slug": "prototype-design-intelligence-and-governed-rendering-separation",
     "version": "v1.3.11",
     "generated_at": "2026-05-02T15:13:51Z",
@@ -7182,7 +7182,8 @@
       "primary": "#0071E3",
       "secondary": "#F5F5F7",
       "surface_note": "Wireframe freeze uses Apple-inspired quiet neutrals and restrained accent metadata, not high-fidelity HTML surfaces."
-    }
+    },
+    "canonical_truth_source": "prototype-brief"
   },
   "navigation_map": {
     "primary_entry": "home",
@@ -16336,7 +16337,7 @@
   },
   "coverage_report": {
     "schema_version": "1.0",
-    "feature": "Prototype Design Intelligence And Governed Rendering Separation",
+    "feature": "prototype-design-intelligence-and-governed-rendering-separation",
     "feature_slug": "prototype-design-intelligence-and-governed-rendering-separation",
     "prototype_mode": "wireframe",
     "required_pages": [
@@ -16389,7 +16390,7 @@
   },
   "source_map": {
     "schema_version": "1.0",
-    "feature": "Prototype Design Intelligence And Governed Rendering Separation",
+    "feature": "prototype-design-intelligence-and-governed-rendering-separation",
     "feature_slug": "prototype-design-intelligence-and-governed-rendering-separation",
     "derived_from": [
       "user-story",
@@ -16750,5 +16751,78 @@
         "projection_seq"
       ]
     }
+  },
+  "software_semantic_profile": {
+    "tone": "formal-restrained-precise",
+    "title_rule": "标题仅陈述对象或状态，不解释设计意图。",
+    "state_rule": "状态文案必须先说明当前状态，再说明允许动作或禁止动作。",
+    "action_rule": "动作名称必须使用可执行动词，不使用泛化 SaaS 词汇。",
+    "field_rule": "字段与输入说明必须显式约束类型、非空、枚举或默认值。",
+    "exception_rule": "异常文案必须同时给出当前失败与恢复路径。",
+    "banned_terms": [
+      "implementation",
+      "verify",
+      "review",
+      "delivery",
+      "machine contract",
+      "canonical-envelope",
+      "raw runtime log",
+      "transaction_id",
+      "projection_seq"
+    ],
+    "preferred_terms": [
+      {
+        "from": "implementation",
+        "to": "implement",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "verify",
+        "to": "qa",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "review",
+        "to": "qa",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "delivery",
+        "to": "release",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "raw runtime log",
+        "to": "运行摘要",
+        "scope": "product_copy"
+      },
+      {
+        "from": "machine contract",
+        "to": "机器内部契约",
+        "scope": "product_copy"
+      }
+    ],
+    "production_banned_copy": [
+      "当前状态",
+      "下一步动作",
+      "恢复路径",
+      "design asset catalog",
+      "review guidance",
+      "why/reasoning",
+      "transaction_id",
+      "projection_seq"
+    ],
+    "page_count": 7
+  },
+  "theme": {
+    "ui_kit": "wireframe-markdown-v1",
+    "design_preset": "apple-inspired-design-md",
+    "product_surface_type": "",
+    "design_preset_override_reason": "",
+    "design_preset_overridden": false,
+    "prototype_archetype": "generic-wireframe",
+    "primary": "#0071E3",
+    "secondary": "#F5F5F7",
+    "surface_note": "Wireframe freeze uses Apple-inspired quiet neutrals and restrained accent metadata, not high-fidelity HTML surfaces."
   }
 }

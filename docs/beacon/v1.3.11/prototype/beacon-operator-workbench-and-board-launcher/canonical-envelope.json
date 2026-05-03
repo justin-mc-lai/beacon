@@ -1,16 +1,16 @@
 {
   "schema_version": "1.0",
-  "feature": "Beacon Operator Workbench And Board Launcher",
+  "feature": "beacon-operator-workbench-and-board-launcher",
   "feature_slug": "beacon-operator-workbench-and-board-launcher",
   "version": "v1.3.11",
   "prototype_mode": "wireframe",
   "source_hash": "835a72927ccedc800d92eb739e897e4919394abee7f199bdf16b85e10ddb037a",
   "projection_seq": "pp-835a72927ccedc80",
   "transaction_id": "tx-beacon-operator-workbench-and-board-launcher-pp-835a72927ccedc80",
-  "committed_at": "2026-05-02T15:13:51Z",
+  "committed_at": "2026-05-03T16:46:29Z",
   "plan": {
     "schema_version": "1.0",
-    "feature": "Beacon Operator Workbench And Board Launcher",
+    "feature": "beacon-operator-workbench-and-board-launcher",
     "feature_slug": "beacon-operator-workbench-and-board-launcher",
     "version": "v1.3.11",
     "generated_at": "2026-05-02T15:13:51Z",
@@ -5602,7 +5602,8 @@
       "primary": "#0071E3",
       "secondary": "#F5F5F7",
       "surface_note": "Wireframe freeze uses Apple-inspired quiet neutrals and restrained accent metadata, not high-fidelity HTML surfaces."
-    }
+    },
+    "canonical_truth_source": "prototype-brief"
   },
   "navigation_map": {
     "primary_entry": "recovery-diagnostics",
@@ -11386,7 +11387,7 @@
   },
   "coverage_report": {
     "schema_version": "1.0",
-    "feature": "Beacon Operator Workbench And Board Launcher",
+    "feature": "beacon-operator-workbench-and-board-launcher",
     "feature_slug": "beacon-operator-workbench-and-board-launcher",
     "prototype_mode": "wireframe",
     "required_pages": [
@@ -11426,7 +11427,7 @@
   },
   "source_map": {
     "schema_version": "1.0",
-    "feature": "Beacon Operator Workbench And Board Launcher",
+    "feature": "beacon-operator-workbench-and-board-launcher",
     "feature_slug": "beacon-operator-workbench-and-board-launcher",
     "derived_from": [
       "user-story",
@@ -11773,5 +11774,78 @@
         "projection_seq"
       ]
     }
+  },
+  "software_semantic_profile": {
+    "tone": "formal-restrained-precise",
+    "title_rule": "标题仅陈述对象或状态，不解释设计意图。",
+    "state_rule": "状态文案必须先说明当前状态，再说明允许动作或禁止动作。",
+    "action_rule": "动作名称必须使用可执行动词，不使用泛化 SaaS 词汇。",
+    "field_rule": "字段与输入说明必须显式约束类型、非空、枚举或默认值。",
+    "exception_rule": "异常文案必须同时给出当前失败与恢复路径。",
+    "banned_terms": [
+      "implementation",
+      "verify",
+      "review",
+      "delivery",
+      "machine contract",
+      "canonical-envelope",
+      "raw runtime log",
+      "transaction_id",
+      "projection_seq"
+    ],
+    "preferred_terms": [
+      {
+        "from": "implementation",
+        "to": "implement",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "verify",
+        "to": "qa",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "review",
+        "to": "qa",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "delivery",
+        "to": "release",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "raw runtime log",
+        "to": "运行摘要",
+        "scope": "product_copy"
+      },
+      {
+        "from": "machine contract",
+        "to": "机器内部契约",
+        "scope": "product_copy"
+      }
+    ],
+    "production_banned_copy": [
+      "当前状态",
+      "下一步动作",
+      "恢复路径",
+      "design asset catalog",
+      "review guidance",
+      "why/reasoning",
+      "transaction_id",
+      "projection_seq"
+    ],
+    "page_count": 6
+  },
+  "theme": {
+    "ui_kit": "wireframe-markdown-v1",
+    "design_preset": "apple-inspired-design-md",
+    "product_surface_type": "",
+    "design_preset_override_reason": "",
+    "design_preset_overridden": false,
+    "prototype_archetype": "generic-wireframe",
+    "primary": "#0071E3",
+    "secondary": "#F5F5F7",
+    "surface_note": "Wireframe freeze uses Apple-inspired quiet neutrals and restrained accent metadata, not high-fidelity HTML surfaces."
   }
 }

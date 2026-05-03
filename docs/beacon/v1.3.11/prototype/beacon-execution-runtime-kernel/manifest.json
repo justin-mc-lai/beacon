@@ -47,11 +47,11 @@
     "source_hash": "6448e1af4c856a121d490d6194b2815f49e89b1c28b3c529d466bea90f7d0ce7",
     "projection_seq": "pp-6448e1af4c856a12",
     "transaction_id": "tx-beacon-execution-runtime-kernel-pp-6448e1af4c856a12",
-    "committed_at": "2026-05-03T15:08:25Z",
+    "committed_at": "2026-05-03T16:46:29Z",
     "sink_checksums": {
-      "human": "e7020cd27fd7dc375b143202b71424f6342a25adf8abc57d8ee2ce3f9c212bb2",
-      "machine": "eda8917284d9f282c258421554a1b1193f29e44eea8a443da2a2cda6bee97c03",
-      "sqlite": "bf2fd519d1bca914e0a91f3df6c3c37f76017c19117244ce4da266494fa61f0b"
+      "human": "291ff9d8c4d0315077949260acfbb6ad73001a4648d6efadc4317071b911cb55",
+      "machine": "2426ea3fda631e6f265cade7d255ab54f8df9581aadedf526df1de2559b10f03",
+      "sqlite": "16bd2b2d51607aaea00837e1146e8419a59f7131744ef6c21236aa719138e01c"
     },
     "sqlite_write": {
       "status": "committed",
@@ -314,5 +314,67 @@
   "machine_contract_status": "pass",
   "sqlite_projection_status": "pass",
   "drift_status": "consistent",
-  "frozen_at": "2026-05-03T15:08:38Z"
+  "frozen_at": "2026-05-03T16:47:32Z",
+  "software_semantic_profile": {
+    "tone": "formal-restrained-precise",
+    "title_rule": "标题仅陈述对象或状态，不解释设计意图。",
+    "state_rule": "状态文案必须先说明当前状态，再说明允许动作或禁止动作。",
+    "action_rule": "动作名称必须使用可执行动词，不使用泛化 SaaS 词汇。",
+    "field_rule": "字段与输入说明必须显式约束类型、非空、枚举或默认值。",
+    "exception_rule": "异常文案必须同时给出当前失败与恢复路径。",
+    "banned_terms": [
+      "implementation",
+      "verify",
+      "review",
+      "delivery",
+      "machine contract",
+      "canonical-envelope",
+      "raw runtime log",
+      "transaction_id",
+      "projection_seq"
+    ],
+    "preferred_terms": [
+      {
+        "from": "implementation",
+        "to": "implement",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "verify",
+        "to": "qa",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "review",
+        "to": "qa",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "delivery",
+        "to": "release",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "raw runtime log",
+        "to": "运行摘要",
+        "scope": "product_copy"
+      },
+      {
+        "from": "machine contract",
+        "to": "机器内部契约",
+        "scope": "product_copy"
+      }
+    ],
+    "production_banned_copy": [
+      "当前状态",
+      "下一步动作",
+      "恢复路径",
+      "design asset catalog",
+      "review guidance",
+      "why/reasoning",
+      "transaction_id",
+      "projection_seq"
+    ],
+    "page_count": 7
+  }
 }

@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "feature": "Beacon Operator Workbench And Board Launcher",
+  "feature": "beacon-operator-workbench-and-board-launcher",
   "feature_slug": "beacon-operator-workbench-and-board-launcher",
   "version": "v1.3.11",
   "prototype_mode": "wireframe",
@@ -42,11 +42,11 @@
     "source_hash": "835a72927ccedc800d92eb739e897e4919394abee7f199bdf16b85e10ddb037a",
     "projection_seq": "pp-835a72927ccedc80",
     "transaction_id": "tx-beacon-operator-workbench-and-board-launcher-pp-835a72927ccedc80",
-    "committed_at": "2026-05-02T15:13:51Z",
+    "committed_at": "2026-05-03T16:46:29Z",
     "sink_checksums": {
-      "human": "9728db08d9d42256201c80eaf0be143a6dc88e436ab53adaa4864b336bc30e79",
-      "machine": "11a73a81f304dcf55487ebe73a378ed864f8a231b1fae66b817549aad4f10735",
-      "sqlite": "436bdaf256b35f532bc8da3bd203177dd55e9086467f027f8703db3804cba4f7"
+      "human": "491e5907ef3b9ed71138d225016dfe83ac18043f101bf73e3f6286221ae6962b",
+      "machine": "74d9cbbbaa1dc5595c65c73acab7c698a64fbff7ae71121cde9cc3f05d0dc5b6",
+      "sqlite": "1cdc25f62e95fe9fa0d95dd9d1efa623caaf81f1fcec11f27434c115044057dd"
     },
     "sqlite_write": {
       "status": "committed",
@@ -329,5 +329,67 @@
   "machine_contract_status": "pass",
   "sqlite_projection_status": "pass",
   "drift_status": "consistent",
-  "frozen_at": "2026-05-02T15:15:23Z"
+  "frozen_at": "2026-05-03T16:47:32Z",
+  "software_semantic_profile": {
+    "tone": "formal-restrained-precise",
+    "title_rule": "标题仅陈述对象或状态，不解释设计意图。",
+    "state_rule": "状态文案必须先说明当前状态，再说明允许动作或禁止动作。",
+    "action_rule": "动作名称必须使用可执行动词，不使用泛化 SaaS 词汇。",
+    "field_rule": "字段与输入说明必须显式约束类型、非空、枚举或默认值。",
+    "exception_rule": "异常文案必须同时给出当前失败与恢复路径。",
+    "banned_terms": [
+      "implementation",
+      "verify",
+      "review",
+      "delivery",
+      "machine contract",
+      "canonical-envelope",
+      "raw runtime log",
+      "transaction_id",
+      "projection_seq"
+    ],
+    "preferred_terms": [
+      {
+        "from": "implementation",
+        "to": "implement",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "verify",
+        "to": "qa",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "review",
+        "to": "qa",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "delivery",
+        "to": "release",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "raw runtime log",
+        "to": "运行摘要",
+        "scope": "product_copy"
+      },
+      {
+        "from": "machine contract",
+        "to": "机器内部契约",
+        "scope": "product_copy"
+      }
+    ],
+    "production_banned_copy": [
+      "当前状态",
+      "下一步动作",
+      "恢复路径",
+      "design asset catalog",
+      "review guidance",
+      "why/reasoning",
+      "transaction_id",
+      "projection_seq"
+    ],
+    "page_count": 6
+  }
 }

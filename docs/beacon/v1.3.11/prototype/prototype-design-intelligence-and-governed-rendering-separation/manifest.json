@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "feature": "Prototype Design Intelligence And Governed Rendering Separation",
+  "feature": "prototype-design-intelligence-and-governed-rendering-separation",
   "feature_slug": "prototype-design-intelligence-and-governed-rendering-separation",
   "version": "v1.3.11",
   "prototype_mode": "wireframe",
@@ -42,11 +42,11 @@
     "source_hash": "5784cca08dac8b278a2b8ee0b7b1f8e9a994ad20892ff592ea46cbd9ad5f342f",
     "projection_seq": "pp-5784cca08dac8b27",
     "transaction_id": "tx-prototype-design-intelligence-and-governed-rendering-separation-pp-5784cca08dac8b27",
-    "committed_at": "2026-05-02T15:13:51Z",
+    "committed_at": "2026-05-03T16:46:30Z",
     "sink_checksums": {
-      "human": "12baefc138ccada0e8277877ff9f9323fee9de0aaf4f06777ff55690359c567c",
-      "machine": "967bbae562cb772a229e0456ba53fac937c86f1961c907f7a0d9066265c9a09a",
-      "sqlite": "58e1c7214435843650b4458e368c244215538747e3444c84f1f6c671d1944c47"
+      "human": "d21377101179bc8a1b57d7fde00c5c5bf599b979fa408059283161b4f7fe1224",
+      "machine": "fa427537f16d8a344f2fb5da6a16f86e4848561b7c527b5d232c323d6d05738d",
+      "sqlite": "b90e7192572ea07b72ab3a77c15530ebe073a20bd6f801cb5ce0e8b2b79cc3bf"
     },
     "sqlite_write": {
       "status": "committed",
@@ -329,5 +329,67 @@
   "machine_contract_status": "pass",
   "sqlite_projection_status": "pass",
   "drift_status": "consistent",
-  "frozen_at": "2026-05-02T15:15:23Z"
+  "frozen_at": "2026-05-03T16:47:32Z",
+  "software_semantic_profile": {
+    "tone": "formal-restrained-precise",
+    "title_rule": "标题仅陈述对象或状态，不解释设计意图。",
+    "state_rule": "状态文案必须先说明当前状态，再说明允许动作或禁止动作。",
+    "action_rule": "动作名称必须使用可执行动词，不使用泛化 SaaS 词汇。",
+    "field_rule": "字段与输入说明必须显式约束类型、非空、枚举或默认值。",
+    "exception_rule": "异常文案必须同时给出当前失败与恢复路径。",
+    "banned_terms": [
+      "implementation",
+      "verify",
+      "review",
+      "delivery",
+      "machine contract",
+      "canonical-envelope",
+      "raw runtime log",
+      "transaction_id",
+      "projection_seq"
+    ],
+    "preferred_terms": [
+      {
+        "from": "implementation",
+        "to": "implement",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "verify",
+        "to": "qa",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "review",
+        "to": "qa",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "delivery",
+        "to": "release",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "raw runtime log",
+        "to": "运行摘要",
+        "scope": "product_copy"
+      },
+      {
+        "from": "machine contract",
+        "to": "机器内部契约",
+        "scope": "product_copy"
+      }
+    ],
+    "production_banned_copy": [
+      "当前状态",
+      "下一步动作",
+      "恢复路径",
+      "design asset catalog",
+      "review guidance",
+      "why/reasoning",
+      "transaction_id",
+      "projection_seq"
+    ],
+    "page_count": 7
+  }
 }
