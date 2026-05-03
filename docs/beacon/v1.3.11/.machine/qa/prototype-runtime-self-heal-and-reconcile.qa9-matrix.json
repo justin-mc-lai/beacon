@@ -1,0 +1,838 @@
+{
+  "schema_version": "1.0.2",
+  "feature": "prototype-runtime-self-heal-and-reconcile",
+  "feature_slug": "prototype-runtime-self-heal-and-reconcile",
+  "version": "v1.3.11",
+  "compiler": {
+    "requested_mode": "auto",
+    "effective_mode": "host",
+    "generator_mode": "host",
+    "fallback_reason": "",
+    "capability_snapshot": {
+      "schema_version": "1.0",
+      "command_name": "test-case",
+      "host_runtime": "codex",
+      "host_runtime_supported": true,
+      "host_bridge_declared": true,
+      "host_bridge_command_available": true,
+      "host_bridge_command_source": "env_cmd",
+      "host_bridge_command_env": "BEACON_HOST_TEST_CASE_BRIDGE_CMD",
+      "host_response_available": false,
+      "host_response_source": "none",
+      "host_response_path": "",
+      "host_transport": "command-bridge",
+      "host_semantic_ready": true,
+      "provider_available": false,
+      "provider_key_present": false,
+      "llm_disabled": false,
+      "disable_env": "BEACON_TEST_CASE_DISABLE_LLM"
+    },
+    "model": "beacon-test-case-compiler"
+  },
+  "qa_profile": "web-full",
+  "qa_types": [
+    "unit",
+    "interface",
+    "contract",
+    "integration",
+    "smoke",
+    "functional",
+    "regression",
+    "exception",
+    "compatibility"
+  ],
+  "llm_plan": {
+    "mode": "rule",
+    "model": "beacon-rule-llm-v1",
+    "project_scan": {
+      "language": "python",
+      "framework": "python-app",
+      "frontend": "unknown",
+      "api_spec_refs": [],
+      "risk_points": [
+        "authz/authn boundary",
+        "cross-browser ui behavior",
+        "api contract drift",
+        "exception handling and replay safety"
+      ]
+    },
+    "project_type": "ai-agent-skill",
+    "generated_at": "2026-05-04T00:36:41.522993",
+    "prompt_ref": "beacon.qa9.llm.plan.v1.0.2",
+    "skip_reason": "",
+    "qa_types": [
+      "unit",
+      "interface",
+      "contract",
+      "integration",
+      "smoke",
+      "functional",
+      "regression",
+      "exception",
+      "compatibility"
+    ]
+  },
+  "qa_strategy": {
+    "schema_version": "1.0.2",
+    "generated_at": "2026-05-04T00:36:41.521965",
+    "project_type": "ai-agent-skill",
+    "project_scan": {
+      "language": "python",
+      "framework": "python-app",
+      "frontend": "unknown",
+      "api_spec_refs": [],
+      "risk_points": [
+        "authz/authn boundary",
+        "cross-browser ui behavior",
+        "api contract drift",
+        "exception handling and replay safety"
+      ]
+    },
+    "qa_applicability": {
+      "unit": "required",
+      "interface": "required",
+      "contract": "required",
+      "integration": "required",
+      "smoke": "required",
+      "functional": "conditional",
+      "regression": "required",
+      "exception": "required",
+      "compatibility": "conditional"
+    },
+    "qa_required_types": [
+      "unit",
+      "interface",
+      "contract",
+      "integration",
+      "smoke",
+      "functional",
+      "regression",
+      "exception",
+      "compatibility"
+    ],
+    "runner_policy": {
+      "functional": {
+        "primary": "browser-use",
+        "fallback": [
+          "playwright",
+          "cypress",
+          "agent-browser"
+        ]
+      },
+      "compatibility": {
+        "primary": "playwright",
+        "fallback": [
+          "cypress"
+        ]
+      },
+      "api_layers": {
+        "interface": "schemathesis/newman/pytest",
+        "contract": "schemathesis/pact",
+        "integration": "pytest+testcontainers"
+      }
+    },
+    "command_baseline": {
+      "unit": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "interface": "python3 -m pytest -q -k interface --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "contract": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "integration": "python3 -m pytest -q -k integration --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "smoke": "python3 -m pytest -q -m smoke --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "functional": "python3 -m beacon.adapters.browser_use_runner --mode functional --fallback-cmd \"python3 -m pytest -q -k functional --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "regression": "python3 -m pytest -q -k regression --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "exception": "python3 -m pytest -q -k exception --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "compatibility": "python3 -m beacon.adapters.browser_use_runner --mode compatibility --fallback-cmd \"python3 -m pytest -q -k compatibility --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\""
+    },
+    "ui_runner": "browser-use"
+  },
+  "qa_requirements": [
+    {
+      "qa_type": "unit",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "interface",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "contract",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "integration",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "smoke",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "functional",
+      "required": false,
+      "automation_required": false,
+      "min_cases": 0,
+      "applicability": "conditional",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "regression",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "exception",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "compatibility",
+      "required": false,
+      "automation_required": false,
+      "min_cases": 0,
+      "applicability": "conditional",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    }
+  ],
+  "automation_target_rate": 0.85,
+  "entries": [
+    {
+      "tc_id": "TC-001",
+      "ac_id": "AC-001",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "prototype-runtime-self-heal-and-reconcile unit :: prototype runtime 明确单一 canonical truth source，`prototype-plan / manifest / canon",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "prototype runtime 明确单一 canonical truth source，`prototype-plan / manifest / canonical-envelope / freeze` 都只允许从该真相单向投影。",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-001/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "host-bridge",
+      "last_run_id": "run-20260504T004341306394",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-001/command.txt"
+    },
+    {
+      "tc_id": "TC-002",
+      "ac_id": "AC-002",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "prototype-runtime-self-heal-and-reconcile unit :: `review / freeze / status / gate` 不得再各自选择不同 sink 作为真相源。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "`review / freeze / status / gate` 不得再各自选择不同 sink 作为真相源。",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-002/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "host-bridge",
+      "last_run_id": "run-20260504T004341306394",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-002/command.txt"
+    },
+    {
+      "tc_id": "TC-003",
+      "ac_id": "AC-003",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "prototype-runtime-self-heal-and-reconcile unit :: 当 `plan / manifest / canonical-envelope / freeze` 任一 sink 与 canonical truth 不一致时",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "当 `plan / manifest / canonical-envelope / freeze` 任一 sink 与 canonical truth 不一致时，系统必须标记 drift。",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-003/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "host-bridge",
+      "last_run_id": "run-20260504T004341306394",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-003/command.txt"
+    },
+    {
+      "tc_id": "TC-004",
+      "ac_id": "AC-004",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "prototype-runtime-self-heal-and-reconcile unit :: canonical truth 与各 sink 都保留 `feature / version / source_hash / transaction_id-or",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "canonical truth 与各 sink 都保留 `feature / version / source_hash / transaction_id-or-equivalent` 追溯字段。",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-004/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "host-bridge",
+      "last_run_id": "run-20260504T004341306394",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-004/command.txt"
+    },
+    {
+      "tc_id": "TC-005",
+      "ac_id": "AC-101",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "prototype-runtime-self-heal-and-reconcile unit :: Beacon 提供正式 `prototype reconcile` 或等价内部 surface。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Beacon 提供正式 `prototype reconcile` 或等价内部 surface。",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-005/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "host-bridge",
+      "last_run_id": "run-20260504T004341306394",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-005/command.txt"
+    },
+    {
+      "tc_id": "TC-006",
+      "ac_id": "AC-102",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "prototype-runtime-self-heal-and-reconcile unit :: reconcile 至少能重投影 `prototype-plan.json / manifest.json / canonical-envelope.json ",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "reconcile 至少能重投影 `prototype-plan.json / manifest.json / canonical-envelope.json / freeze metadata`。",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-006/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "host-bridge",
+      "last_run_id": "run-20260504T004341306394",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-006/command.txt"
+    },
+    {
+      "tc_id": "TC-007",
+      "ac_id": "AC-103",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "prototype-runtime-self-heal-and-reconcile unit :: reconcile 会同步更新 `source_fingerprints / sink fingerprints / transaction headers`。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "reconcile 会同步更新 `source_fingerprints / sink fingerprints / transaction headers`。",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-007/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "host-bridge",
+      "last_run_id": "run-20260504T004341306394",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-007/command.txt"
+    },
+    {
+      "tc_id": "TC-008",
+      "ac_id": "AC-104",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "prototype-runtime-self-heal-and-reconcile unit :: reconcile 只修复 prototype bundle，不反向改写 `prd / user-story / test-case`。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "reconcile 只修复 prototype bundle，不反向改写 `prd / user-story / test-case`。",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-008/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "host-bridge",
+      "last_run_id": "run-20260504T004341306394",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-008/command.txt"
+    },
+    {
+      "tc_id": "TC-009",
+      "ac_id": "AC-201",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "prototype-runtime-self-heal-and-reconcile unit :: nondestructive refresh 默认不覆盖 `pages/*.md`。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "nondestructive refresh 默认不覆盖 `pages/*.md`。",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-009/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "host-bridge",
+      "last_run_id": "run-20260504T004341306394",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-009/command.txt"
+    },
+    {
+      "tc_id": "TC-010",
+      "ac_id": "AC-202",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "prototype-runtime-self-heal-and-reconcile unit :: nondestructive refresh 默认不覆盖已有 `preview.html / preview-dark.html`。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "nondestructive refresh 默认不覆盖已有 `preview.html / preview-dark.html`。",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-010/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "host-bridge",
+      "last_run_id": "run-20260504T004341306394",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-010/command.txt"
+    },
+    {
+      "tc_id": "TC-011",
+      "ac_id": "AC-203",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "prototype-runtime-self-heal-and-reconcile unit :: 已冻结的 production-visible copy 不得被 machine repair 默认改写。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "已冻结的 production-visible copy 不得被 machine repair 默认改写。",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-011/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "host-bridge",
+      "last_run_id": "run-20260504T004341306394",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-011/command.txt"
+    },
+    {
+      "tc_id": "TC-012",
+      "ac_id": "AC-204",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "prototype-runtime-self-heal-and-reconcile unit :: nondestructive refresh 只更新结构化 machine sink 与必要 metadata。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "nondestructive refresh 只更新结构化 machine sink 与必要 metadata。",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-012/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "host-bridge",
+      "last_run_id": "run-20260504T004341306394",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-012/command.txt"
+    },
+    {
+      "tc_id": "TC-013",
+      "ac_id": "AC-301",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "prototype-runtime-self-heal-and-reconcile unit :: 系统至少区分 `source-drift / metadata-only-drift / sink-drift / transaction-header-dri",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "系统至少区分 `source-drift / metadata-only-drift / sink-drift / transaction-header-drift / canonical-truth-missing / destructive-recreate-required`。",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-013/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "host-bridge",
+      "last_run_id": "run-20260504T004341306394",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-013/command.txt"
+    },
+    {
+      "tc_id": "TC-014",
+      "ac_id": "AC-302",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "prototype-runtime-self-heal-and-reconcile unit :: 当 drift 属于 `metadata-only-drift` 或 `transaction-header-drift` 时，freeze 必须先走 repa",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "当 drift 属于 `metadata-only-drift` 或 `transaction-header-drift` 时，freeze 必须先走 repair/reconcile，再继续 freeze。",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-014/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "host-bridge",
+      "last_run_id": "run-20260504T004341306394",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-014/command.txt"
+    },
+    {
+      "tc_id": "TC-015",
+      "ac_id": "AC-303",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "prototype-runtime-self-heal-and-reconcile unit :: 当 drift 属于 `sink-drift` 时，系统先重投影 machine sink，再重跑 review。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "当 drift 属于 `sink-drift` 时，系统先重投影 machine sink，再重跑 review。",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-015/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "host-bridge",
+      "last_run_id": "run-20260504T004341306394",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-015/command.txt"
+    },
+    {
+      "tc_id": "TC-016",
+      "ac_id": "AC-304",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "prototype-runtime-self-heal-and-reconcile unit :: 仅当属于 `destructive-recreate-required` 时，系统才允许 operator 重新 create，并明确说明覆盖范围。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "仅当属于 `destructive-recreate-required` 时，系统才允许 operator 重新 create，并明确说明覆盖范围。",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-016/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "host-bridge",
+      "last_run_id": "run-20260504T004341306394",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-016/command.txt"
+    },
+    {
+      "tc_id": "TC-017",
+      "ac_id": "AC-401",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "prototype-runtime-self-heal-and-reconcile unit :: `review / freeze / status / gate / implement-readiness / real-project-validation",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "`review / freeze / status / gate / implement-readiness / real-project-validation` 共享同一套 prototype drift `reason_code`。",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-017/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "host-bridge",
+      "last_run_id": "run-20260504T004341306394",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-017/command.txt"
+    },
+    {
+      "tc_id": "TC-018",
+      "ac_id": "AC-402",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "prototype-runtime-self-heal-and-reconcile unit :: 对同一 drift，相关 surface 返回一致 `diagnosis / next_action / repair_path`。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "对同一 drift，相关 surface 返回一致 `diagnosis / next_action / repair_path`。",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-018/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "host-bridge",
+      "last_run_id": "run-20260504T004341306394",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-018/command.txt"
+    },
+    {
+      "tc_id": "TC-019",
+      "ac_id": "AC-403",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "prototype-runtime-self-heal-and-reconcile unit :: 不允许不同 surface 各自产生一套 prototype drift 解释话术。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "不允许不同 surface 各自产生一套 prototype drift 解释话术。",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-019/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "host-bridge",
+      "last_run_id": "run-20260504T004341306394",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-019/command.txt"
+    },
+    {
+      "tc_id": "TC-020",
+      "ac_id": "AC-404",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "prototype-runtime-self-heal-and-reconcile unit :: reason code 命中结果可进入 audit / board / status read model，作为正式机器证据。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "reason code 命中结果可进入 audit / board / status read model，作为正式机器证据。",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-020/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "host-bridge",
+      "last_run_id": "run-20260504T004341306394",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-020/command.txt"
+    },
+    {
+      "tc_id": "TC-021",
+      "ac_id": "AC-501",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "prototype-runtime-self-heal-and-reconcile unit :: 对可 repair drift，runtime 必须直接返回正式 repair action，而不是依赖 host 生成分析型操作建议。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "对可 repair drift，runtime 必须直接返回正式 repair action，而不是依赖 host 生成分析型操作建议。",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-021/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "host-bridge",
+      "last_run_id": "run-20260504T004341306394",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-021/command.txt"
+    },
+    {
+      "tc_id": "TC-022",
+      "ac_id": "AC-502",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "prototype-runtime-self-heal-and-reconcile unit :: runtime 不再把手工 patch `plan / manifest / canonical-envelope / transaction header` ",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "runtime 不再把手工 patch `plan / manifest / canonical-envelope / transaction header` 作为默认操作路径。",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-022/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "host-bridge",
+      "last_run_id": "run-20260504T004341306394",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-022/command.txt"
+    },
+    {
+      "tc_id": "TC-023",
+      "ac_id": "AC-503",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "prototype-runtime-self-heal-and-reconcile unit :: 对每种 drift，next action 必须可直接映射到 `reconcile / repair / review / freeze / recreate`",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "对每种 drift，next action 必须可直接映射到 `reconcile / repair / review / freeze / recreate` 之一。",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-023/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "host-bridge",
+      "last_run_id": "run-20260504T004341306394",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-023/command.txt"
+    },
+    {
+      "tc_id": "TC-024",
+      "ac_id": "AC-504",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "prototype-runtime-self-heal-and-reconcile unit :: 在真实项目 prototype refresh 中，可 repair drift 能通过正式 runtime 闭环收口，不需要额外人工经验。",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "在真实项目 prototype refresh 中，可 repair drift 能通过正式 runtime 闭环收口，不需要额外人工经验。",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-024/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "host-bridge",
+      "last_run_id": "run-20260504T004341306394",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-024/command.txt"
+    }
+  ],
+  "compatibility_matrix": {
+    "browsers": [
+      "chromium",
+      "firefox",
+      "webkit"
+    ],
+    "devices": [
+      "desktop",
+      "iphone14"
+    ],
+    "required_pairs": [
+      {
+        "browser": "chromium",
+        "device": "desktop"
+      },
+      {
+        "browser": "firefox",
+        "device": "desktop"
+      },
+      {
+        "browser": "webkit",
+        "device": "desktop"
+      }
+    ]
+  },
+  "generated_at": "2026-05-04T00:36:41.523016"
+}

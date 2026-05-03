@@ -18,6 +18,7 @@ from beacon.utils.prototype_utils import (
     legacy_prototype_source_path,
     freeze_prototype,
     prototype_dir,
+    reconcile_prototype_bundle,
     review_prototype_bundle,
     write_prototype_plan,
     write_prototype_bundle,
@@ -348,6 +349,30 @@ def freeze(
     )
 
 
+@app.command("reconcile")
+def reconcile(
+    feature: str = typer.Argument(..., help="Feature name"),
+    project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
+    version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON payload"),
+):
+    """Repair prototype bundle metadata and structured sinks without overwriting human-visible pages."""
+    project_root = Path(project) if project else Path.cwd()
+    resolved_version = _resolved_operational_version(project_root, version, "prototype reconcile")
+    try:
+        payload = reconcile_prototype_bundle(project_root, resolved_version, feature)
+    except (FileNotFoundError, ValueError) as exc:
+        typer.echo(str(exc), err=True)
+        raise typer.Exit(2)
+    if json_output:
+        serializable = dict(payload)
+        serializable["root"] = str(payload["root"])
+        typer.echo(json.dumps(serializable, ensure_ascii=False, indent=2))
+        return
+    typer.echo(f"✓ Prototype reconciled: {payload.get('root')}")
+    typer.echo(f"✓ Canonical truth: {payload.get('canonical_truth_source')}")
+
+
 @app.command()
 def status(
     feature: str = typer.Argument(..., help="Feature name"),
@@ -381,6 +406,14 @@ def status(
     typer.echo(f"machine_view : {payload.get('machine_contract_status')}")
     typer.echo(f"sqlite_view  : {payload.get('sqlite_projection_status')}")
     typer.echo(f"drift        : {payload.get('drift_status')}")
+    if payload.get("drift_type"):
+        typer.echo(f"drift_type   : {payload.get('drift_type')}")
+    if payload.get("reason_code"):
+        typer.echo(f"reason_code  : {payload.get('reason_code')}")
+    if payload.get("next_action"):
+        typer.echo(f"next_action  : {payload.get('next_action')}")
+    if payload.get("repair_path"):
+        typer.echo(f"repair_path  : {payload.get('repair_path')}")
     typer.echo(f"gate_ready   : {bool(payload.get('gate_ready'))}")
     typer.echo(f"path         : {payload['files']['wireframe_summary']}")
     if payload.get("legacy_source_status") == "present":

@@ -726,6 +726,453 @@ def _write_text(path: Path, content: str) -> None:
     path.write_text(content.rstrip() + "\n", encoding="utf-8")
 
 
+def _copy_json_object(value: Any) -> dict[str, Any]:
+    if not isinstance(value, dict):
+        return {}
+    return json.loads(json.dumps(value, ensure_ascii=False))
+
+
+def _current_prototype_source_fingerprints(project_root: Path, version: str, feature: str) -> dict[str, str]:
+    return {
+        doc["type"]: doc["fingerprint"]
+        for doc in load_source_documents(project_root, version, feature)
+    }
+
+
+def _current_prototype_source_hash(project_root: Path, version: str, feature: str) -> str:
+    source_docs = load_source_documents(project_root, version, feature)
+    return _stable_hash([{"type": doc["type"], "fingerprint": doc["fingerprint"]} for doc in source_docs])
+
+
+def _collect_runtime_sink_checksums(root: Path) -> dict[str, str]:
+    human_fingerprints: dict[str, str] = {}
+    machine_fingerprints: dict[str, str] = {}
+    if root.exists():
+        for path in sorted(root.rglob("*")):
+            if not path.is_file():
+                continue
+            rel = str(path.relative_to(root))
+            fingerprint = sha256_file(path)
+            if rel.endswith((".md", ".css", ".html")):
+                human_fingerprints[rel] = fingerprint
+            if rel.endswith(".json"):
+                machine_fingerprints[rel] = fingerprint
+    return {
+        "human": _stable_hash(human_fingerprints),
+        "machine": _stable_hash(machine_fingerprints),
+    }
+
+
+def _canonical_truth_fields() -> tuple[str, ...]:
+    return ("design_context", "design_reasoning", "ux_contract", "software_semantic_profile")
+
+
+def _load_prototype_canonical_truth(
+    files: dict[str, Path],
+    *,
+    plan: dict[str, Any] | None = None,
+    manifest: dict[str, Any] | None = None,
+    canonical_envelope: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    plan_payload = plan if isinstance(plan, dict) else _read_json(files["prototype_plan"])
+    manifest_payload = manifest if isinstance(manifest, dict) else _read_json(files["manifest"])
+    canonical_payload = canonical_envelope if isinstance(canonical_envelope, dict) else _read_json(files["canonical_envelope"])
+    brief_payload = _read_json(files["prototype_brief"])
+    theme_payload = _read_json(files["theme"])
+
+    ordered_sources: list[tuple[str, dict[str, Any]]] = []
+    if brief_payload:
+        ordered_sources.append(("prototype-brief", brief_payload))
+    if manifest_payload:
+        ordered_sources.append(("manifest", manifest_payload))
+    if canonical_payload:
+        ordered_sources.append(("canonical-envelope", canonical_payload))
+    if plan_payload:
+        ordered_sources.append(("prototype-plan", plan_payload))
+
+    truth_source = ""
+    truth_payload: dict[str, Any] = {}
+    available = False
+    for source_name, source_payload in ordered_sources:
+        has_truth = any(
+            bool(source_payload.get(field))
+            for field in (*_canonical_truth_fields(), "design_context", "design_reasoning", "ux_contract")
+        )
+        if has_truth:
+            truth_source = source_name
+            truth_payload = source_payload
+            available = True
+            break
+
+    merged: dict[str, Any] = {
+        "truth_source": truth_source or "prototype-plan",
+        "available": available or bool(plan_payload),
+    }
+    for field in _canonical_truth_fields():
+        value: dict[str, Any] = {}
+        for source_name, source_payload in ordered_sources:
+            if field == "software_semantic_profile":
+                candidate = source_payload.get(field)
+                if not isinstance(candidate, dict) and source_name == "canonical-envelope":
+                    plan_block = source_payload.get("plan") if isinstance(source_payload.get("plan"), dict) else {}
+                    candidate = plan_block.get(field)
+            else:
+                candidate = source_payload.get(field)
+                if not isinstance(candidate, dict) and source_name == "canonical-envelope":
+                    plan_block = source_payload.get("plan") if isinstance(source_payload.get("plan"), dict) else {}
+                    candidate = plan_block.get(field)
+            if isinstance(candidate, dict) and candidate:
+                value = _copy_json_object(candidate)
+                break
+        merged[field] = value
+
+    merged_theme = {}
+    if theme_payload:
+        merged_theme = _copy_json_object(theme_payload)
+    else:
+        for source_name, source_payload in ordered_sources:
+            candidate = source_payload.get("theme")
+            if not isinstance(candidate, dict) and source_name == "canonical-envelope":
+                plan_block = source_payload.get("plan") if isinstance(source_payload.get("plan"), dict) else {}
+                candidate = plan_block.get("theme")
+            if isinstance(candidate, dict) and candidate:
+                merged_theme = _copy_json_object(candidate)
+                break
+    merged["theme"] = merged_theme
+    merged["source_payload"] = truth_payload
+    return merged
+
+
+def _apply_canonical_truth_to_plan(
+    plan: dict[str, Any],
+    *,
+    canonical_truth: dict[str, Any],
+) -> dict[str, Any]:
+    updated = _copy_json_object(plan)
+    for field in _canonical_truth_fields():
+        value = canonical_truth.get(field)
+        if isinstance(value, dict) and value:
+            updated[field] = _copy_json_object(value)
+    theme_value = canonical_truth.get("theme")
+    if isinstance(theme_value, dict) and theme_value:
+        updated["theme"] = _copy_json_object(theme_value)
+    updated["canonical_truth_source"] = str(canonical_truth.get("truth_source") or "prototype-plan")
+    return updated
+
+
+def _prototype_sink_truth_mismatches(
+    *,
+    plan: dict[str, Any],
+    manifest: dict[str, Any],
+    canonical_envelope: dict[str, Any],
+    canonical_truth: dict[str, Any],
+) -> dict[str, list[str]]:
+    mismatches: dict[str, list[str]] = {}
+    sink_payloads: list[tuple[str, dict[str, Any]]] = [
+        ("prototype-plan", plan if isinstance(plan, dict) else {}),
+        ("manifest", manifest if isinstance(manifest, dict) else {}),
+        ("canonical-envelope", canonical_envelope if isinstance(canonical_envelope, dict) else {}),
+    ]
+    for sink_name, sink_payload in sink_payloads:
+        sink_mismatches: list[str] = []
+        for field in _canonical_truth_fields():
+            truth_value = canonical_truth.get(field)
+            if not isinstance(truth_value, dict) or not truth_value:
+                continue
+            candidate = sink_payload.get(field)
+            if not isinstance(candidate, dict) and sink_name == "canonical-envelope":
+                plan_block = sink_payload.get("plan") if isinstance(sink_payload.get("plan"), dict) else {}
+                candidate = plan_block.get(field)
+            if not isinstance(candidate, dict) or candidate != truth_value:
+                sink_mismatches.append(field)
+        truth_theme = canonical_truth.get("theme")
+        if isinstance(truth_theme, dict) and truth_theme:
+            if sink_name == "canonical-envelope":
+                plan_block = sink_payload.get("plan") if isinstance(sink_payload.get("plan"), dict) else {}
+                candidate_theme = plan_block.get("theme")
+            else:
+                candidate_theme = sink_payload.get("theme")
+            if isinstance(candidate_theme, dict) and candidate_theme != truth_theme:
+                sink_mismatches.append("theme")
+        if sink_mismatches:
+            mismatches[sink_name] = sorted(set(sink_mismatches))
+    return mismatches
+
+
+def _classify_prototype_runtime_drift(
+    *,
+    current_source: dict[str, str],
+    recorded_source: dict[str, Any],
+    transaction: dict[str, Any],
+    inconsistent_reasons: list[str],
+    sqlite_projection_status: str,
+    canonical_truth: dict[str, Any],
+    sink_truth_mismatches: dict[str, list[str]],
+    current_source_hash: str,
+) -> dict[str, str]:
+    recorded = recorded_source if isinstance(recorded_source, dict) else {}
+    transaction_source_hash = str(transaction.get("source_hash") or "").strip()
+    has_required_truth = bool(canonical_truth.get("available"))
+    if not has_required_truth:
+        return {
+            "drift_type": "canonical-truth-missing",
+            "reason_code": "prototype_canonical_truth_missing",
+            "diagnosis": "prototype canonical truth is missing or unreadable",
+            "next_action": "prototype create",
+            "repair_path": "destructive-recreate-required",
+        }
+    if any(
+        reason.startswith("missing_artifact:manifest")
+        or reason.startswith("missing_artifact:prototype_plan")
+        or reason.startswith("missing_artifact:canonical_envelope")
+        for reason in inconsistent_reasons
+    ):
+        return {
+            "drift_type": "destructive-recreate-required",
+            "reason_code": "prototype_destructive_recreate_required",
+            "diagnosis": "prototype bundle is missing authoritative core artifacts and cannot be repaired safely",
+            "next_action": "prototype create",
+            "repair_path": "destructive-recreate-required",
+        }
+    if sink_truth_mismatches:
+        return {
+            "drift_type": "sink-drift",
+            "reason_code": "prototype_sink_drift",
+            "diagnosis": "structured prototype sinks diverged from canonical truth",
+            "next_action": "prototype reconcile",
+            "repair_path": "nondestructive-reconcile",
+        }
+    if recorded and current_source and recorded != current_source:
+        return {
+            "drift_type": "source-drift",
+            "reason_code": "prototype_source_drift",
+            "diagnosis": "prototype requirement source fingerprints changed after the last recorded freeze or review metadata",
+            "next_action": "prototype reconcile",
+            "repair_path": "reconcile-then-review",
+        }
+    if transaction_source_hash and current_source_hash and transaction_source_hash != current_source_hash:
+        return {
+            "drift_type": "transaction-header-drift",
+            "reason_code": "prototype_transaction_header_drift",
+            "diagnosis": "prototype transaction headers no longer match the current requirement source hash",
+            "next_action": "prototype reconcile",
+            "repair_path": "metadata-repair",
+        }
+    if sqlite_projection_status != "pass" or any(reason.startswith("cross_sink_drift") for reason in inconsistent_reasons):
+        return {
+            "drift_type": "metadata-only-drift",
+            "reason_code": "prototype_metadata_drift",
+            "diagnosis": "prototype metadata or cross-sink projection state is incomplete",
+            "next_action": "prototype reconcile",
+            "repair_path": "metadata-repair",
+        }
+    return {
+        "drift_type": "",
+        "reason_code": "",
+        "diagnosis": "",
+        "next_action": "",
+        "repair_path": "",
+    }
+
+
+def reconcile_prototype_bundle(project_root: Path, version: str, feature: str) -> dict[str, Any]:
+    files = prototype_files(project_root, version, feature)
+    if not files["root"].exists():
+        raise FileNotFoundError("prototype bundle missing; run prototype create first")
+
+    plan = _read_json(files["prototype_plan"])
+    manifest = _read_json(files["manifest"])
+    canonical_envelope = _read_json(files["canonical_envelope"])
+    freeze_payload = _read_json(files["freeze"])
+    review_payload = _read_json(files["review_json"])
+    prototype_brief = _read_json(files["prototype_brief"])
+    theme_payload = _read_json(files["theme"])
+
+    if not plan or not manifest or not canonical_envelope:
+        raise ValueError("prototype core artifacts missing; run `prototype create` to rebuild the bundle")
+
+    canonical_truth = _load_prototype_canonical_truth(
+        files,
+        plan=plan,
+        manifest=manifest,
+        canonical_envelope=canonical_envelope,
+    )
+    if not canonical_truth.get("available"):
+        raise ValueError("prototype canonical truth missing; run `prototype create` to rebuild the bundle")
+
+    source_docs = load_source_documents(project_root, version, feature)
+    feature_slug = str(plan.get("feature_slug") or manifest.get("feature_slug") or slugify_feature(feature))
+    supports_ux_truth = _supports_ux_truth(version, source_docs)
+    current_source_fingerprints = {doc["type"]: doc["fingerprint"] for doc in source_docs}
+    current_source_hash = _stable_hash(
+        [{"type": doc["type"], "fingerprint": doc["fingerprint"]} for doc in source_docs]
+    )
+    projection_seq = f"pp-{current_source_hash[:16]}"
+    committed_at = now_iso()
+    transaction_id = f"tx-{feature_slug}-{projection_seq}"
+
+    plan = _apply_canonical_truth_to_plan(plan, canonical_truth=canonical_truth)
+    plan["version"] = version
+    plan["feature"] = feature
+    plan["feature_slug"] = feature_slug
+    if isinstance(theme_payload, dict) and theme_payload:
+        plan["theme"] = _copy_json_object(theme_payload)
+
+    source_map = _build_source_map(project_root, source_docs, plan)
+    wireframe_manifest = _build_wireframe_manifest(plan)
+    coverage = _build_coverage_report(plan)
+
+    canonical_envelope = _copy_json_object(canonical_envelope)
+    canonical_envelope.update(
+        {
+            "schema_version": SCHEMA_VERSION,
+            "feature": feature,
+            "feature_slug": feature_slug,
+            "version": version,
+            "prototype_mode": PROTOTYPE_MODE,
+            "source_hash": current_source_hash,
+            "projection_seq": projection_seq,
+            "transaction_id": transaction_id,
+            "committed_at": committed_at,
+            "plan": plan,
+            "source_map": source_map,
+            "coverage_report": coverage,
+            "design_context": _copy_json_object(canonical_truth.get("design_context")),
+            "design_reasoning": _copy_json_object(canonical_truth.get("design_reasoning")),
+            "ux_contract": _copy_json_object(canonical_truth.get("ux_contract")),
+        }
+    )
+    if supports_ux_truth:
+        canonical_envelope["software_semantic_profile"] = _copy_json_object(
+            canonical_truth.get("software_semantic_profile")
+        )
+    if isinstance(plan.get("theme"), dict) and plan.get("theme"):
+        canonical_envelope["theme"] = _copy_json_object(plan.get("theme"))
+    if isinstance(canonical_envelope.get("plan"), dict):
+        canonical_envelope["plan"] = _apply_canonical_truth_to_plan(
+            canonical_envelope["plan"],
+            canonical_truth=canonical_truth,
+        )
+        canonical_envelope["plan"]["version"] = version
+        canonical_envelope["plan"]["feature"] = feature
+        canonical_envelope["plan"]["feature_slug"] = feature_slug
+        canonical_envelope["plan"]["theme"] = _copy_json_object(plan.get("theme"))
+
+    manifest = _copy_json_object(manifest)
+    manifest["schema_version"] = SCHEMA_VERSION
+    manifest["feature"] = feature
+    manifest["feature_slug"] = feature_slug
+    manifest["version"] = version
+    manifest["prototype_mode"] = PROTOTYPE_MODE
+    manifest["source_fingerprints"] = current_source_fingerprints
+    manifest["design_context"] = _copy_json_object(canonical_truth.get("design_context"))
+    manifest["design_reasoning"] = _copy_json_object(canonical_truth.get("design_reasoning"))
+    manifest["ux_contract"] = _copy_json_object(canonical_truth.get("ux_contract"))
+    if supports_ux_truth:
+        manifest["software_semantic_profile"] = _copy_json_object(canonical_truth.get("software_semantic_profile"))
+
+    prototype_brief = _copy_json_object(prototype_brief)
+    prototype_brief["prototype_mode"] = PROTOTYPE_MODE
+    prototype_brief["theme"] = _copy_json_object(plan.get("theme"))
+    prototype_brief["page_count"] = len(plan.get("page_specs") or [])
+    prototype_brief["design_context"] = _copy_json_object(canonical_truth.get("design_context"))
+    prototype_brief["design_reasoning"] = _copy_json_object(canonical_truth.get("design_reasoning"))
+    prototype_brief["ux_contract"] = _copy_json_object(canonical_truth.get("ux_contract"))
+    if supports_ux_truth:
+        prototype_brief["software_semantic_profile"] = _copy_json_object(
+            canonical_truth.get("software_semantic_profile")
+        )
+
+    _write_json(files["prototype_plan"], plan)
+    _write_json(files["wireframe_manifest"], wireframe_manifest)
+    _write_json(files["source_map"], source_map)
+    _write_json(files["coverage_report"], coverage)
+    _write_json(files["canonical_envelope"], canonical_envelope)
+    _write_json(files["prototype_brief"], prototype_brief)
+
+    for page in plan.get("page_specs") or []:
+        if not isinstance(page, dict) or not page.get("page_id"):
+            continue
+        _write_json(files["page_specs_dir"] / f"{page['page_id']}.json", _serialize_page_spec(page))
+
+    human_machine_checksums = _collect_runtime_sink_checksums(files["root"])
+    sqlite_payload = {
+        "schema_version": SCHEMA_VERSION,
+        "transaction_id": transaction_id,
+        "feature_slug": feature_slug,
+        "version": version,
+        "projection_seq": projection_seq,
+        "source_hash": current_source_hash,
+        "committed_at": committed_at,
+        "status": "committed",
+        "root_path": str(files["root"]),
+        "sink_checksums": {
+            "human": human_machine_checksums.get("human"),
+            "machine": human_machine_checksums.get("machine"),
+        },
+    }
+    sqlite_write = {"status": "failed", "error": "not_written"}
+    sink_checksums = {
+        "human": human_machine_checksums.get("human"),
+        "machine": human_machine_checksums.get("machine"),
+        "sqlite": "missing",
+    }
+    try:
+        sqlite_write = _write_prototype_projection_sqlite(sqlite_payload)
+        sink_checksums["sqlite"] = _stable_hash(sqlite_payload)
+    except Exception as exc:  # noqa: BLE001
+        sqlite_write = {"status": "failed", "error": str(exc), "db_path": str(_prototype_ledger_db_path())}
+
+    manifest["transaction"] = {
+        "source_hash": current_source_hash,
+        "projection_seq": projection_seq,
+        "transaction_id": transaction_id,
+        "committed_at": committed_at,
+        "sink_checksums": sink_checksums,
+        "sqlite_write": sqlite_write,
+    }
+    manifest["drift_status"] = "consistent"
+    manifest["sqlite_projection_status"] = "pass" if sink_checksums.get("sqlite") != "missing" else "fail"
+    manifest["machine_contract_status"] = "pass"
+    manifest["human_view_status"] = "pass"
+    manifest["status"] = "draft"
+    if str(review_payload.get("overall_status") or "") == "pass":
+        manifest["review_status"] = "pass"
+        manifest["design_review_outcome"] = str(review_payload.get("design_review_outcome") or "pass")
+    else:
+        manifest["review_status"] = "missing"
+        manifest["design_review_outcome"] = "pass"
+
+    _write_json(files["manifest"], manifest)
+
+    if freeze_payload:
+        freeze_payload = _copy_json_object(freeze_payload)
+        freeze_payload["source_fingerprints"] = current_source_fingerprints
+        freeze_payload["artifact_fingerprints"] = _artifact_fingerprints(files)
+        freeze_payload["transaction"] = manifest["transaction"]
+        freeze_payload["status"] = "draft"
+        freeze_payload["review_status"] = manifest["review_status"]
+        _write_json(files["freeze"], freeze_payload)
+
+    return {
+        "status": "reconciled",
+        "feature": feature,
+        "feature_slug": feature_slug,
+        "version": version,
+        "canonical_truth_source": str(canonical_truth.get("truth_source") or "prototype-plan"),
+        "source_fingerprints": current_source_fingerprints,
+        "transaction": manifest["transaction"],
+        "sink_checksums": sink_checksums,
+        "repair_path": "nondestructive-reconcile",
+        "preserved_outputs": [
+            "pages/*.md",
+            "preview.html",
+            "preview-dark.html",
+        ],
+        "root": files["root"],
+    }
+
+
 def load_source_documents(project_root: Path, version: str, feature: str) -> list[dict[str, Any]]:
     docs: list[dict[str, Any]] = []
     for doc_type, path in source_doc_paths(project_root, version, feature).items():
@@ -4851,6 +5298,12 @@ def review_prototype_bundle(project_root: Path, version: str, feature: str) -> d
     automation_priority_matrix = _read_json(files["automation_priority_matrix"])
     route_closure = _read_json(files["route_closure_contract"])
     implementation_map = _read_json(files["implementation_map"])
+    canonical_truth = _load_prototype_canonical_truth(
+        files,
+        plan=plan,
+        manifest=manifest,
+        canonical_envelope=canonical_envelope,
+    )
     page_specs = plan.get("page_specs") if isinstance(plan.get("page_specs"), list) else []
     required_pages = [str(item).strip() for item in (plan.get("required_pages") or []) if str(item).strip()]
     required_states = [str(item).strip() for item in (plan.get("required_states") or []) if str(item).strip()]
@@ -4860,9 +5313,10 @@ def review_prototype_bundle(project_root: Path, version: str, feature: str) -> d
     transaction_id = str(transaction.get("transaction_id") or "")
     sqlite_projection = _read_prototype_projection_sqlite(transaction_id)
     supports_ux_truth = _supports_ux_truth(version, source_docs)
-    design_context = plan.get("design_context") if isinstance(plan.get("design_context"), dict) else {}
-    design_reasoning = plan.get("design_reasoning") if isinstance(plan.get("design_reasoning"), dict) else {}
-    ux_contract = plan.get("ux_contract") if isinstance(plan.get("ux_contract"), dict) else {}
+    design_context = canonical_truth.get("design_context") if isinstance(canonical_truth.get("design_context"), dict) else {}
+    design_reasoning = canonical_truth.get("design_reasoning") if isinstance(canonical_truth.get("design_reasoning"), dict) else {}
+    ux_contract = canonical_truth.get("ux_contract") if isinstance(canonical_truth.get("ux_contract"), dict) else {}
+    plan = _apply_canonical_truth_to_plan(plan, canonical_truth=canonical_truth)
     governed_rendering_enforced = _semver_tuple(version) >= (1, 3, 11)
 
     checks = [
@@ -5490,6 +5944,7 @@ def review_prototype_bundle(project_root: Path, version: str, feature: str) -> d
         "machine_contract_status": machine_contract_status,
         "sqlite_projection_status": sqlite_projection_status,
         "drift_status": drift_status,
+        "canonical_truth_source": str(canonical_truth.get("truth_source") or "prototype-plan"),
         "artifacts": {
             "json": str(files["review_json"].relative_to(project_root)),
             "md": str(files["review_md"].relative_to(project_root)),
@@ -5511,6 +5966,16 @@ def review_prototype_bundle(project_root: Path, version: str, feature: str) -> d
 
 def freeze_prototype(project_root: Path, version: str, feature: str) -> dict[str, Any]:
     files = prototype_files(project_root, version, feature)
+    status_snapshot = evaluate_prototype_status(project_root, version, feature)
+    reason_code = str(status_snapshot.get("reason_code") or "")
+    repair_path = str(status_snapshot.get("repair_path") or "")
+    if reason_code in {"prototype_canonical_truth_missing", "prototype_destructive_recreate_required"}:
+        raise ValueError(str(status_snapshot.get("diagnosis") or "prototype bundle requires recreate before freeze"))
+    if repair_path and repair_path != "destructive-recreate-required":
+        reconcile_prototype_bundle(project_root, version, feature)
+        review_prototype_bundle(project_root, version, feature)
+        status_snapshot = evaluate_prototype_status(project_root, version, feature)
+
     review_payload = _read_json(files["review_json"])
     if str(review_payload.get("overall_status", "missing")) != "pass":
         raise ValueError("Prototype review missing or failing; run `prototype review` until pass before freeze")
@@ -5525,7 +5990,7 @@ def freeze_prototype(project_root: Path, version: str, feature: str) -> dict[str
     source_docs = load_source_documents(project_root, version, feature)
     current_source_hash = _stable_hash([{"type": doc["type"], "fingerprint": doc["fingerprint"]} for doc in source_docs])
     if str(transaction.get("source_hash") or "") != current_source_hash:
-        raise ValueError("Prototype source hash drift detected after create; regenerate and review before freeze")
+        raise ValueError("Prototype source hash drift remains after reconcile; rerun prototype review before freeze")
 
     sink_checksums = transaction.get("sink_checksums") if isinstance(transaction.get("sink_checksums"), dict) else {}
     if not sink_checksums or sink_checksums.get("sqlite") in {None, "", "missing"}:
@@ -5548,6 +6013,7 @@ def freeze_prototype(project_root: Path, version: str, feature: str) -> dict[str
         "machine_contract_status": status_snapshot.get("machine_contract_status"),
         "sqlite_projection_status": status_snapshot.get("sqlite_projection_status"),
         "drift_status": status_snapshot.get("drift_status"),
+        "canonical_truth_source": status_snapshot.get("canonical_truth_source"),
     }
     _write_json(files["freeze"], freeze_payload)
 
@@ -5603,10 +6069,12 @@ def evaluate_prototype_status(project_root: Path, version: str, feature: str) ->
     freeze_payload = _read_json(files["freeze"])
     review_payload = _read_json(files["review_json"])
     plan = _read_json(files["prototype_plan"])
+    canonical_envelope = _read_json(files["canonical_envelope"])
     compiler = plan.get("compiler") if isinstance(plan.get("compiler"), dict) else {}
     transaction = manifest.get("transaction") if isinstance(manifest.get("transaction"), dict) else {}
     sqlite_projection = _read_prototype_projection_sqlite(str(transaction.get("transaction_id") or ""))
     current_source = {doc["type"]: doc["fingerprint"] for doc in source_docs}
+    current_source_hash = _current_prototype_source_hash(project_root, version, feature)
     recorded_source = freeze_payload.get("source_fingerprints") if isinstance(freeze_payload.get("source_fingerprints"), dict) else {}
     if not recorded_source:
         recorded_source = manifest.get("source_fingerprints") if isinstance(manifest.get("source_fingerprints"), dict) else {}
@@ -5738,6 +6206,55 @@ def evaluate_prototype_status(project_root: Path, version: str, feature: str) ->
     if _prototype_auto_fallback_blocked(version, compiler) and not auto_fallback_accepted:
         inconsistent_reasons.append("auto_mode_fixed_template_downgrade_blocked")
 
+    canonical_truth = {
+        "truth_source": "prototype-plan",
+        "available": bool(plan),
+    }
+    sink_truth_mismatches: dict[str, list[str]] = {}
+    drift_diagnosis = {
+        "drift_type": "",
+        "reason_code": "",
+        "diagnosis": "",
+        "next_action": "",
+        "repair_path": "",
+    }
+    if _semver_tuple(version) >= (1, 3, 11):
+        canonical_truth = _load_prototype_canonical_truth(
+            files,
+            plan=plan if isinstance(plan, dict) else None,
+            manifest=manifest if isinstance(manifest, dict) else None,
+            canonical_envelope=canonical_envelope if isinstance(canonical_envelope, dict) else None,
+        )
+        sink_truth_mismatches = _prototype_sink_truth_mismatches(
+            plan=plan if isinstance(plan, dict) else {},
+            manifest=manifest if isinstance(manifest, dict) else {},
+            canonical_envelope=canonical_envelope if isinstance(canonical_envelope, dict) else {},
+            canonical_truth=canonical_truth,
+        )
+        drift_diagnosis = _classify_prototype_runtime_drift(
+            current_source=current_source,
+            recorded_source=recorded_source if isinstance(recorded_source, dict) else {},
+            transaction=transaction if isinstance(transaction, dict) else {},
+            inconsistent_reasons=inconsistent_reasons,
+            sqlite_projection_status=sqlite_projection_status,
+            canonical_truth=canonical_truth,
+            sink_truth_mismatches=sink_truth_mismatches,
+            current_source_hash=current_source_hash,
+        )
+        stale = stale or drift_diagnosis.get("drift_type") == "source-drift"
+        drift_type = str(drift_diagnosis.get("drift_type") or "")
+        if drift_type in {
+            "sink-drift",
+            "metadata-only-drift",
+            "transaction-header-drift",
+            "canonical-truth-missing",
+            "destructive-recreate-required",
+        } and not any(
+            reason == str(drift_diagnosis.get("reason_code") or "")
+            for reason in inconsistent_reasons
+        ):
+            inconsistent_reasons.append(str(drift_diagnosis.get("reason_code") or "prototype_artifact_inconsistent"))
+
     if inconsistent_reasons:
         status = "inconsistent"
     elif stale:
@@ -5773,6 +6290,13 @@ def evaluate_prototype_status(project_root: Path, version: str, feature: str) ->
         "machine_contract_status": machine_contract_status,
         "sqlite_projection_status": sqlite_projection_status,
         "drift_status": drift_status,
+        "canonical_truth_source": str(canonical_truth.get("truth_source") or "prototype-plan"),
+        "drift_type": str(drift_diagnosis.get("drift_type") or ""),
+        "reason_code": str(drift_diagnosis.get("reason_code") or ""),
+        "diagnosis": str(drift_diagnosis.get("diagnosis") or ""),
+        "next_action": str(drift_diagnosis.get("next_action") or ""),
+        "repair_path": str(drift_diagnosis.get("repair_path") or ""),
+        "sink_truth_mismatches": sink_truth_mismatches,
         "transaction": transaction if isinstance(transaction, dict) else {},
         "legacy_source_status": "present" if legacy_source_path.exists() and legacy_source_path.is_file() else "missing",
         "legacy_source_path": legacy_source_path,
