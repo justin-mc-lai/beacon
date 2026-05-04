@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from pathlib import Path
 from typing import Any
 
@@ -111,13 +112,49 @@ def _line_contains_any(text: str, words: tuple[str, ...]) -> list[str]:
     return out
 
 
-def resolve_brainstorm_output_path(project_root: Path, *, prompt: str, output: str = "") -> Path:
+def _prompt_targets_external_context(prompt: str) -> bool:
+    lowered = prompt.lower()
+    external_markers = (
+        "/users/",
+        "shopxo",
+        "rolo",
+        "symphony",
+        "oss-sync",
+        "vibe-kanban",
+        "third-party",
+        "第三方",
+        "供应商",
+        "provider",
+    )
+    return any(marker in lowered for marker in external_markers)
+
+
+def _path_safe_slug(text: str, *, fallback: str) -> str:
+    slug = feature_slug(text)
+    slug = re.sub(r"[\\\\/:]+", "-", slug)
+    slug = re.sub(r"[^0-9a-zA-Z\u4e00-\u9fff._-]+", "-", slug)
+    slug = re.sub(r"-{2,}", "-", slug).strip("-._")
+    return slug or fallback
+
+
+def resolve_brainstorm_output_path(
+    project_root: Path,
+    *,
+    prompt: str,
+    feature: str = "",
+    output: str = "",
+) -> Path:
     if output:
         path = Path(output)
         return path if path.is_absolute() else project_root / path
     date = now_iso()[:10]
-    slug = feature_slug(prompt)[:80] or "beacon-brainstorm"
-    return project_root / "docs" / "brainstorms" / f"{date}-{slug}.md"
+    if feature.strip():
+        slug = _path_safe_slug(feature, fallback="beacon-brainstorm")[:96]
+        return project_root / "docs" / "brainstorms" / f"{date}-{slug}-brainstorm.md"
+    slug = _path_safe_slug(prompt, fallback="beacon-brainstorm")[:80]
+    if _prompt_targets_external_context(prompt):
+        return project_root / "docs" / "brainstorms" / "external" / f"{date}-{slug}.md"
+    return project_root / "docs" / "brainstorms" / f"{date}-beacon-brainstorm-{slug}.md"
 
 
 def assert_not_requirement_truth_path(path: Path, *, project_root: Path, version: str) -> None:
@@ -220,7 +257,7 @@ def run_beacon_brainstorm(
         source_text,
         ("fr-", "ac-", "tc-", "non-goal", "boundary", "baseline", "brainstorm", "implement"),
     )
-    output_path = resolve_brainstorm_output_path(project_root, prompt=prompt, output=output)
+    output_path = resolve_brainstorm_output_path(project_root, prompt=prompt, feature=feature, output=output)
     assert_not_requirement_truth_path(output_path, project_root=project_root, version=resolved_version)
     payload = {
         "schema_version": "1.0",
