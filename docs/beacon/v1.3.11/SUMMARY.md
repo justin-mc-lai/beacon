@@ -84,6 +84,11 @@
 - 当前剩余工作重点不再是 brainstorming，而是把 orchestration runtime 的 scheduler / workspace isolation / repair-resume 继续推到后续子版本实现
 - 新增 prototype runtime 收口重点：`canonical truth / reconcile / nondestructive refresh / freeze repair path`
 
+## 补充调研
+
+- 外部文章调研补充已落盘：`docs/beacon/v1.3.11/research/2026-05-04-微信-flow-kit-文章调研与对-orb-长任务管理的启发.md`
+- 该材料用于补强 `orchestration runtime / long-running governance / guardrail management` 的外部样本，不改变 `v1.3.11` 既有 requirement truth
+
 ## 关键验收锚点
 
 - `docs/beacon/v1.3.11/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md`
