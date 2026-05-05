@@ -1,4 +1,4 @@
-# 状态流冻结图：Prototype Design Intelligence And Governed Rendering Separation
+# 状态流冻结图：prototype-design-intelligence-and-governed-rendering-separation
 
 | From | To | Event | Guard | Fallback | AC Refs | TC Refs |
 |---|---|---|---|---|---|---|

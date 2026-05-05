@@ -900,6 +900,19 @@ def test_v1311_prototype_should_emit_design_artifact_contract_and_de_explained_p
     assert (design_artifacts / "style-preset.json").exists()
     assert (design_artifacts / "design-review.json").exists()
     assert (design_artifacts / "design-lint-rules.json").exists()
+    assert (root / "artifact-topology.json").exists()
+    assert (root / "verification" / "index.json").exists()
+    assert (root / "implementation" / "index.json").exists()
+
+    design_context = json.loads((design_artifacts / "design-context.json").read_text(encoding="utf-8"))
+    surface_profile = json.loads((design_artifacts / "surface-profile.json").read_text(encoding="utf-8"))
+    production_copy = json.loads((design_artifacts / "production-ui-copy-profile.json").read_text(encoding="utf-8"))
+    assert design_context["projection_role"] == "internal-governance-copy"
+    assert surface_profile["projection_role"] == "design-intelligence"
+    assert production_copy["projection_role"] == "production-visible-copy"
+    assert production_copy["pages"][0]["allowed_recovery_surface_states"] == ["blocked", "failed", "empty-risk"]
+    assert "当前状态" in production_copy["pages"][0]["forbidden_first_screen_terms"]
+    assert "why/reasoning" in production_copy["pages"][0]["forbidden_first_screen_terms"]
 
     page_spec = json.loads((root / "page-specs" / "home-page.json").read_text(encoding="utf-8"))
     assert "page_intent_contract" not in page_spec
@@ -937,6 +950,23 @@ def test_v1311_prototype_should_emit_design_artifact_contract_and_de_explained_p
     assert "first_screen_over_explanation" not in failed_checks
     assert "page_explanation_section_leak" not in failed_checks
     assert "review_copy_rendered_as_production_ui" not in failed_checks
+    assert "artifact_topology_present" not in failed_checks
+    assert "implementation_default_entry_present" not in failed_checks
+    assert "review_only_materials_demoted" not in failed_checks
+
+    implementation_index = json.loads((root / "implementation" / "index.json").read_text(encoding="utf-8"))
+    assert implementation_index["surface"] == "implementation-default"
+    assert "machine-view/index.json" in implementation_index["allowed_inputs"]
+    assert "implementation-map.json" in implementation_index["allowed_inputs"]
+    assert "design-artifacts/production-ui-copy-profile.json" in implementation_index["allowed_inputs"]
+    assert "design-artifacts/design-lint-rules.json" in implementation_index["allowed_inputs"]
+    assert "ux-prd.md" in implementation_index["blocked_human_inputs"]
+    assert "DESIGN.md" in implementation_index["blocked_human_inputs"]
+    assert "prototype-review.md" in implementation_index["blocked_human_inputs"]
+
+    topology = json.loads((root / "artifact-topology.json").read_text(encoding="utf-8"))
+    assert topology["default_execution_surface"] == "implementation"
+    assert set(topology["layers"]) == {"authoring", "review", "projection", "implementation"}
 
 
 def test_v1311_gate_should_block_governance_copy_leak_and_over_explanation(tmp_path: Path):
@@ -977,6 +1007,29 @@ def test_v1311_gate_should_block_governance_copy_leak_and_over_explanation(tmp_p
     assert "prototype_first_screen_over_explanation" in reason_codes
     assert "prototype_page_explanation_leak" in reason_codes
     assert "prototype_review_copy_leak" in reason_codes
+
+
+def test_v1311_review_should_fail_when_review_only_materials_reenter_default_implementation_surface(tmp_path: Path):
+    version = "v1.3.11"
+    feature_slug = "implementation-surface-drift-demo"
+    feature = "Implementation Surface Drift Demo"
+    _prepare_v1310_sources_with_design_context(tmp_path, feature_slug, version)
+
+    create = _invoke(["prototype", "create", feature, "--project", str(tmp_path), "--version", version, "--mode", "rule", "--json"])
+    assert create.exit_code == 0, create.stdout
+
+    root = tmp_path / "docs" / "beacon" / version / "prototype" / feature_slug
+    implementation_index_path = root / "implementation" / "index.json"
+    implementation_index = json.loads(implementation_index_path.read_text(encoding="utf-8"))
+    implementation_index["allowed_inputs"].append("ux-prd.md")
+    implementation_index_path.write_text(json.dumps(implementation_index, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    review = _invoke(["prototype", "review", feature, "--project", str(tmp_path), "--version", version, "--json"])
+    assert review.exit_code == 0, review.stdout
+    review_payload = json.loads(review.stdout)
+    assert review_payload["overall_status"] == "fail"
+    failed_checks = {item["name"] for item in review_payload["checks"] if item["status"] == "fail"}
+    assert "review_only_materials_demoted" in failed_checks
 
 
 def test_v1310_prototype_should_emit_automation_priority_matrix(tmp_path: Path):

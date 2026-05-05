@@ -1,4 +1,4 @@
-# 组件契约清单：Prototype Design Intelligence And Governed Rendering Separation
+# 组件契约清单：prototype-design-intelligence-and-governed-rendering-separation
 
 | Component ID | Page | Name | State Refs | Feedback Responsibilities | AC Refs | TC Refs |
 |---|---|---|---|---|---|---|

@@ -18,11 +18,16 @@
       "schema_version": "1.0",
       "command_name": "prototype",
       "host_runtime": "codex",
-      "host_bridge_declared": false,
+      "host_runtime_supported": true,
+      "host_bridge_declared": true,
+      "host_bridge_command_available": true,
+      "host_bridge_command_source": "env_cmd",
+      "host_bridge_command_env": "BEACON_HOST_PROTOTYPE_BRIDGE_CMD",
       "host_response_available": false,
       "host_response_source": "none",
       "host_response_path": "",
-      "host_semantic_ready": false,
+      "host_transport": "command-bridge",
+      "host_semantic_ready": true,
       "provider_available": false,
       "provider_key_present": false,
       "llm_disabled": false,
@@ -34,19 +39,19 @@
     "downgrade_blocking": false
   },
   "source_fingerprints": {
-    "user-story": "6bb40d8c88f2c9e9da6ce559999ead0a1ddab2aa32e2f0646c6db9ad00f463c9",
-    "prd": "58558745b9b7fae549720872511279588995c5c84ff9e941782acf615d7c1ed8",
-    "test-case": "174917fd42babf5c4fe745f7fb3691f41dc13dbc65de65c03df32f47d3be9d7a"
+    "user-story": "90fe9678157057f384b8df4b1f9be14460f77cd862cd92a21e939179f305252e",
+    "prd": "1bfbef8dcac7d2d1034a8f2956cf4594b34fb7985a97ba094800f39a01e63cfd",
+    "test-case": "b7024b0f9850c96e34c41354aaa0ecb15cf6c7386e12f38e0ae2cb488dcf60a7"
   },
   "transaction": {
-    "source_hash": "5784cca08dac8b278a2b8ee0b7b1f8e9a994ad20892ff592ea46cbd9ad5f342f",
-    "projection_seq": "pp-5784cca08dac8b27",
-    "transaction_id": "tx-prototype-design-intelligence-and-governed-rendering-separation-pp-5784cca08dac8b27",
-    "committed_at": "2026-05-03T16:46:30Z",
+    "source_hash": "237040d01c71c405b4db1030100d1b3ed44ca4a35e1c28075bfe66db02ac06c6",
+    "projection_seq": "pp-237040d01c71c405",
+    "transaction_id": "tx-prototype-design-intelligence-and-governed-rendering-separation-pp-237040d01c71c405",
+    "committed_at": "2026-05-04T23:17:17Z",
     "sink_checksums": {
-      "human": "d21377101179bc8a1b57d7fde00c5c5bf599b979fa408059283161b4f7fe1224",
-      "machine": "fa427537f16d8a344f2fb5da6a16f86e4848561b7c527b5d232c323d6d05738d",
-      "sqlite": "b90e7192572ea07b72ab3a77c15530ebe073a20bd6f801cb5ce0e8b2b79cc3bf"
+      "human": "c19ae90575f92be48e49081fcc64e4d0716aa90563a2e36ea611db19fdae21d2",
+      "machine": "76b021f0d7f8ff90de66dbce1bd03279d34b9c1302a9dafe4f05ad9296e0a0ca",
+      "sqlite": "d042e16939ca23927afd781753e54ea674cbc1582c72e205cef5bc7f5c6c55bb"
     },
     "sqlite_write": {
       "status": "committed",
@@ -258,6 +263,7 @@
       ],
       "module_labels": [
         "推导出的页面目标与状态",
+        "是实现层默认且唯一允许读取的入口",
         "状态文案只描述状态",
         "必要状态反馈",
         "当前状态",
@@ -265,11 +271,11 @@
         "当页面状态",
         "允许显示恢复信息",
         "恢复信息",
-        "主动作和必要状态反馈",
-        "仅当页面状态"
+        "实现层必须默认只从以下入口"
       ],
       "action_labels": [
         "进入",
+        "进入最终渲染与实现消费链",
         "恢复路径",
         "恢复信息",
         "恢复信息必须由",
@@ -277,8 +283,7 @@
         "返回阻断结果与",
         "恢复信息只包含",
         "查看详情",
-        "进入详情",
-        "返回总览"
+        "进入详情"
       ],
       "preferred_terms": [
         {
@@ -329,7 +334,6 @@
   "machine_contract_status": "pass",
   "sqlite_projection_status": "pass",
   "drift_status": "consistent",
-  "frozen_at": "2026-05-03T16:47:32Z",
   "software_semantic_profile": {
     "tone": "formal-restrained-precise",
     "title_rule": "标题仅陈述对象或状态，不解释设计意图。",
@@ -391,5 +395,6 @@
       "projection_seq"
     ],
     "page_count": 7
-  }
+  },
+  "frozen_at": "2026-05-04T23:17:17Z"
 }

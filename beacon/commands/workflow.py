@@ -1145,20 +1145,19 @@ def _stage_output_candidates(project_root: Path, stage: str, feature: str, versi
     if stage == "prototype":
         return [
             project_root / "docs" / "beacon" / version / "prototype" / slug / "wireframe-summary.md",
+            project_root / "docs" / "beacon" / version / "prototype" / slug / "artifact-topology.json",
             project_root / "docs" / "beacon" / version / "prototype" / slug / "manifest.json",
             project_root / "docs" / "beacon" / version / "prototype" / slug / "source-map.json",
             project_root / "docs" / "beacon" / version / "prototype" / slug / "prototype-brief.json",
-            project_root / "docs" / "beacon" / version / "prototype" / slug / "ux-prd.md",
-            project_root / "docs" / "beacon" / version / "prototype" / slug / "DESIGN.md",
             project_root / "docs" / "beacon" / version / "prototype" / slug / "theme.json",
             project_root / "docs" / "beacon" / version / "prototype" / slug / "navigation-map.json",
             project_root / "docs" / "beacon" / version / "prototype" / slug / "interaction-map.json",
             project_root / "docs" / "beacon" / version / "prototype" / slug / "coverage-report.json",
-            project_root / "docs" / "beacon" / version / "prototype" / slug / "preview.html",
-            project_root / "docs" / "beacon" / version / "prototype" / slug / "preview-dark.html",
+            project_root / "docs" / "beacon" / version / "prototype" / slug / "machine-view" / "index.json",
+            project_root / "docs" / "beacon" / version / "prototype" / slug / "verification" / "index.json",
+            project_root / "docs" / "beacon" / version / "prototype" / slug / "implementation" / "index.json",
             project_root / "docs" / "beacon" / version / "prototype" / slug / "wireframe-manifest.json",
             project_root / "docs" / "beacon" / version / "prototype" / slug / "prototype-review.json",
-            project_root / "docs" / "beacon" / version / "prototype" / slug / "prototype-review.md",
             project_root / "docs" / "beacon" / version / "prototype" / slug / "freeze.json",
         ] + common
     if stage == "test-case":

@@ -1,10 +1,10 @@
 {
   "schema_version": "1.0",
-  "feature": "Prototype Design Intelligence And Governed Rendering Separation",
+  "feature": "prototype-design-intelligence-and-governed-rendering-separation",
   "feature_slug": "prototype-design-intelligence-and-governed-rendering-separation",
   "version": "v1.3.11",
   "prototype_mode": "wireframe",
-  "generated_at": "2026-05-02T15:15:17Z",
+  "generated_at": "2026-05-04T23:17:17Z",
   "overall_status": "pass",
   "design_review_outcome": "pass",
   "checks": [
@@ -132,6 +132,24 @@
       "name": "state_flow_usable",
       "status": "pass",
       "message": "state-flow map should contain nodes and edges",
+      "blocking": true
+    },
+    {
+      "name": "artifact_topology_present",
+      "status": "pass",
+      "message": "artifact-topology.json must declare authoring/review/projection/implementation layers",
+      "blocking": true
+    },
+    {
+      "name": "implementation_default_entry_present",
+      "status": "pass",
+      "message": "implementation index must expose a fail-closed default entry rooted in machine-view and implementation-map",
+      "blocking": true
+    },
+    {
+      "name": "review_only_materials_demoted",
+      "status": "pass",
+      "message": "review-only human-readable materials must be demoted out of the default implementation surface",
       "blocking": true
     },
     {
@@ -344,6 +362,7 @@
   "machine_contract_status": "pass",
   "sqlite_projection_status": "pass",
   "drift_status": "consistent",
+  "canonical_truth_source": "prototype-brief",
   "artifacts": {
     "json": "docs/beacon/v1.3.11/prototype/prototype-design-intelligence-and-governed-rendering-separation/prototype-review.json",
     "md": "docs/beacon/v1.3.11/prototype/prototype-design-intelligence-and-governed-rendering-separation/prototype-review.md"

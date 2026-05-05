@@ -1,4 +1,4 @@
-# DESIGN.md: Prototype Design Intelligence And Governed Rendering Separation
+# DESIGN.md: prototype-design-intelligence-and-governed-rendering-separation
 
 ## Visual Theme
 - Design Preset: `apple-inspired-design-md`

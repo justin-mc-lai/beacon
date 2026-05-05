@@ -1,4 +1,4 @@
-# Prototype Review: Prototype Design Intelligence And Governed Rendering Separation
+# Prototype Review: prototype-design-intelligence-and-governed-rendering-separation
 
 **Overall Status**: `pass`
 **Prototype Mode**: `wireframe`
@@ -6,7 +6,7 @@
 **Machine Contract Status**: `pass`
 **SQLite Projection Status**: `pass`
 **Drift Status**: `consistent`
-**Generated At**: `2026-05-02T15:15:17Z`
+**Generated At**: `2026-05-04T23:17:17Z`
 
 | Check | Status | Message |
 |-------|--------|---------|
@@ -31,6 +31,9 @@
 | `route_closure_binding_complete` | `pass` | route closure binding is optional for current wireframe package |
 | `source_map_present` | `pass` | source-map.json should record requirement sources |
 | `state_flow_usable` | `pass` | state-flow map should contain nodes and edges |
+| `artifact_topology_present` | `pass` | artifact-topology.json must declare authoring/review/projection/implementation layers |
+| `implementation_default_entry_present` | `pass` | implementation index must expose a fail-closed default entry rooted in machine-view and implementation-map |
+| `review_only_materials_demoted` | `pass` | review-only human-readable materials must be demoted out of the default implementation surface |
 | `component_contract_traceability` | `pass` | component catalog should map state + AC + TC |
 | `cross_page_transition_contract_complete` | `pass` | cross-page business transitions should expose explicit state/event/fallback/evidence contracts |
 | `automation_priority_matrix_complete` | `pass` | automation priority matrix should assign valid priority classes to generated targets |

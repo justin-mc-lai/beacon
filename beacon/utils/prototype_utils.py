@@ -630,14 +630,19 @@ def prototype_files(project_root: Path, version: str, feature: str) -> dict[str,
         "root": root,
         "human_view_dir": human_view_dir,
         "machine_view_dir": machine_view_dir,
+        "verification_dir": verification_dir,
+        "assets_dir": assets_dir,
+        "implementation_dir": implementation_dir,
         "manifest": root / "manifest.json",
         "prototype_plan": root / "prototype-plan.json",
         "prototype_brief": root / "prototype-brief.json",
         "canonical_envelope": root / "canonical-envelope.json",
+        "artifact_topology": root / "artifact-topology.json",
         "source_map": root / "source-map.json",
         "freeze": root / "freeze.json",
         "review_json": _prefer(root / "prototype-review.json", verification_dir / "prototype-review.json"),
         "review_md": _prefer(root / "prototype-review.md", verification_dir / "prototype-review.md"),
+        "verification_index": verification_dir / "index.json",
         "wireframe_summary": _prefer(root / "wireframe-summary.md", human_view_dir / "wireframe-summary.md"),
         "wireframe_manifest": _prefer(root / "wireframe-manifest.json", machine_view_dir / "wireframe-manifest.json"),
         "navigation_map": _prefer(root / "navigation-map.json", machine_view_dir / "navigation-map.json"),
@@ -660,6 +665,7 @@ def prototype_files(project_root: Path, version: str, feature: str) -> dict[str,
         "tokens_css": _prefer(root / "tokens.css", assets_dir / "tokens.css"),
         "platform_variants": _prefer(root / "platform-variants.json", assets_dir / "platform-variants.json"),
         "implementation_map": _prefer(root / "implementation-map.json", implementation_dir / "implementation-map.json"),
+        "implementation_index": implementation_dir / "index.json",
         "route_closure_contract": _prefer(
             root / "route-closure-contract.json",
             machine_view_dir / "route-closure-contract.json",
@@ -2693,6 +2699,42 @@ def _build_design_artifacts(plan: dict[str, Any]) -> dict[str, Any]:
             "payload": _build_design_lint_rules(semantic_profile),
         },
     }
+
+
+def _review_only_human_artifact_paths(*, supports_ux_truth: bool) -> list[str]:
+    files = [
+        "prototype-review.md",
+        "pages/*.md",
+    ]
+    if supports_ux_truth:
+        files.extend(
+            [
+                "ux-prd.md",
+                "DESIGN.md",
+                "preview.html",
+                "preview-dark.html",
+            ]
+        )
+    return files
+
+
+def _allowed_implementation_input_paths(*, supports_ux_truth: bool) -> list[str]:
+    allowed = [
+        "machine-view/index.json",
+        "implementation/index.json",
+        "implementation-map.json",
+        "route-closure-contract.json",
+        "design-artifacts/surface-profile.json",
+        "design-artifacts/layout-pattern.json",
+        "design-artifacts/component-state-matrix.json",
+        "design-artifacts/ui-copy-policy.json",
+        "design-artifacts/production-ui-copy-profile.json",
+        "design-artifacts/style-preset.json",
+        "design-artifacts/design-lint-rules.json",
+    ]
+    if supports_ux_truth:
+        allowed.append("design-artifacts/design-context.json")
+    return allowed
 
 
 def _page_state_category(page: dict[str, Any]) -> str:
@@ -4951,6 +4993,9 @@ def write_prototype_bundle(
         stage_files["design_artifacts_dir"].mkdir(parents=True, exist_ok=True)
         stage_files["human_view_dir"].mkdir(parents=True, exist_ok=True)
         stage_files["machine_view_dir"].mkdir(parents=True, exist_ok=True)
+        stage_files["verification_dir"].mkdir(parents=True, exist_ok=True)
+        stage_files["assets_dir"].mkdir(parents=True, exist_ok=True)
+        stage_files["implementation_dir"].mkdir(parents=True, exist_ok=True)
         stage_files["theme"].parent.mkdir(parents=True, exist_ok=True)
 
         _write_json(stage_files["prototype_plan"], plan)
@@ -5002,6 +5047,55 @@ def write_prototype_bundle(
                 "bound_cases": 0,
                 "generated_at": now_iso(),
                 "path": str(files["implementation_map"]),
+                "default_consumption_entry": {
+                    "surface": "implementation-default",
+                    "mode": "fail-closed",
+                    "allowed_inputs": _allowed_implementation_input_paths(supports_ux_truth=supports_ux_truth),
+                    "blocked_human_inputs": _review_only_human_artifact_paths(supports_ux_truth=supports_ux_truth),
+                },
+            },
+        )
+        _write_json(
+            stage_files["artifact_topology"],
+            {
+                "schema_version": SCHEMA_VERSION,
+                "feature": feature,
+                "feature_slug": feature_slug,
+                "version": version,
+                "prototype_mode": PROTOTYPE_MODE,
+                "generated_at": now_iso(),
+                "layers": {
+                    "authoring": [
+                        "prototype-plan.json",
+                        "canonical-envelope.json",
+                        "manifest.json",
+                        "source-map.json",
+                    ],
+                    "review": _review_only_human_artifact_paths(supports_ux_truth=supports_ux_truth)
+                    + [
+                        "wireframe-summary.md",
+                        "navigation-map.md",
+                        "state-flow-map.md",
+                        "component-catalog.md",
+                        "automation-priority-matrix.md",
+                        "verification/index.json",
+                    ],
+                    "projection": [
+                        "page-specs/*.json",
+                        "design-artifacts/ui-copy-policy.json",
+                        "design-artifacts/production-ui-copy-profile.json",
+                        "preview.html" if supports_ux_truth else "",
+                        "preview-dark.html" if supports_ux_truth else "",
+                    ],
+                    "implementation": [
+                        "machine-view/index.json",
+                        "implementation/index.json",
+                        "implementation-map.json",
+                        *[item for item in _allowed_implementation_input_paths(supports_ux_truth=supports_ux_truth) if item != "implementation/index.json"],
+                    ],
+                },
+                "default_execution_surface": "implementation",
+                "review_only_surface": "review",
             },
         )
         _write_json(
@@ -5047,6 +5141,8 @@ def write_prototype_bundle(
             stage_files["human_view_dir"] / "index.json",
             {
                 "schema_version": SCHEMA_VERSION,
+                "surface": "human-review",
+                "review_only": True,
                 "files": _human_view_files() + (["ux-prd.md"] if supports_ux_truth else []),
             },
         )
@@ -5054,6 +5150,7 @@ def write_prototype_bundle(
             stage_files["machine_view_dir"] / "index.json",
             {
                 "schema_version": SCHEMA_VERSION,
+                "surface": "implementation-readable",
                 "files": [
                     "canonical-envelope.json",
                     "prototype-plan.json",
@@ -5075,17 +5172,31 @@ def write_prototype_bundle(
                     "design-artifacts/style-preset.json",
                     "design-artifacts/design-review.json",
                     "design-artifacts/design-lint-rules.json",
-                    *(
-                        [
-                            "design_context",
-                            "design_reasoning",
-                            "ux_contract",
-                        ]
-                        if supports_ux_truth
-                        else []
-                    ),
                     str((semantic_layer.get("artifacts") or {}).get("semantic_contract", "")),
                 ],
+            },
+        )
+        _write_json(
+            stage_files["verification_index"],
+            {
+                "schema_version": SCHEMA_VERSION,
+                "surface": "review-only",
+                "review_only": True,
+                "files": [
+                    "prototype-review.json",
+                    "prototype-review.md",
+                    *_review_only_human_artifact_paths(supports_ux_truth=supports_ux_truth),
+                ],
+            },
+        )
+        _write_json(
+            stage_files["implementation_index"],
+            {
+                "schema_version": SCHEMA_VERSION,
+                "surface": "implementation-default",
+                "mode": "fail-closed",
+                "allowed_inputs": _allowed_implementation_input_paths(supports_ux_truth=supports_ux_truth),
+                "blocked_human_inputs": _review_only_human_artifact_paths(supports_ux_truth=supports_ux_truth),
             },
         )
 
@@ -5298,6 +5409,9 @@ def review_prototype_bundle(project_root: Path, version: str, feature: str) -> d
     automation_priority_matrix = _read_json(files["automation_priority_matrix"])
     route_closure = _read_json(files["route_closure_contract"])
     implementation_map = _read_json(files["implementation_map"])
+    artifact_topology = _read_json(files["artifact_topology"])
+    implementation_index = _read_json(files["implementation_index"])
+    verification_index = _read_json(files["verification_index"])
     canonical_truth = _load_prototype_canonical_truth(
         files,
         plan=plan,
@@ -5476,6 +5590,40 @@ def review_prototype_bundle(project_root: Path, version: str, feature: str) -> d
             "state_flow_usable",
             "pass" if state_nodes and state_edges else "fail",
             "state-flow map should contain nodes and edges",
+        )
+    )
+    topology_layers = artifact_topology.get("layers") if isinstance(artifact_topology.get("layers"), dict) else {}
+    checks.append(
+        _review_check(
+            "artifact_topology_present",
+            "pass"
+            if all(layer in topology_layers for layer in ("authoring", "review", "projection", "implementation"))
+            else "fail",
+            "artifact-topology.json must declare authoring/review/projection/implementation layers",
+        )
+    )
+    impl_allowed_inputs = implementation_index.get("allowed_inputs") if isinstance(implementation_index.get("allowed_inputs"), list) else []
+    blocked_human_inputs = implementation_index.get("blocked_human_inputs") if isinstance(implementation_index.get("blocked_human_inputs"), list) else []
+    checks.append(
+        _review_check(
+            "implementation_default_entry_present",
+            "pass"
+            if impl_allowed_inputs
+            and "machine-view/index.json" in impl_allowed_inputs
+            and "implementation-map.json" in impl_allowed_inputs
+            else "fail",
+            "implementation index must expose a fail-closed default entry rooted in machine-view and implementation-map",
+        )
+    )
+    checks.append(
+        _review_check(
+            "review_only_materials_demoted",
+            "pass"
+            if verification_index.get("review_only") is True
+            and all(item in blocked_human_inputs for item in _review_only_human_artifact_paths(supports_ux_truth=supports_ux_truth))
+            and all(item not in impl_allowed_inputs for item in _review_only_human_artifact_paths(supports_ux_truth=supports_ux_truth))
+            else "fail",
+            "review-only human-readable materials must be demoted out of the default implementation surface",
         )
     )
     component_items = component_catalog.get("components") if isinstance(component_catalog.get("components"), list) else []

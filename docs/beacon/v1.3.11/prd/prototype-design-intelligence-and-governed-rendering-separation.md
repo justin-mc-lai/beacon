@@ -26,6 +26,7 @@ density_preference: workbench-medium
   - `docs/beacon/v1.3.11/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md`
 - Related change:
   - `docs/beacon/v1.3.11/change/beacon-operator-workbench-and-board-launcher.md`
+  - `docs/beacon/v1.3.11/change/prototype-design-intelligence-and-governed-rendering-separation.md`
 - Brainstorm evidence:
   - `docs/brainstorms/2026-05-02-结合-ui-ux-pro-max-skill、impeccable、awesome-design-md-三个设计-skill-的思路，分析-beacon-pro.md`
 
@@ -187,6 +188,15 @@ Beacon 必须建立正式 `governed-rendering-contract`。该合同至少区分�
 - `review-visible-copy` 仅允许出现在 prototype 审阅面
 - `production-visible-copy` 才允许进入 `pages/*.md`、`page-specs/*.json`、`preview.html`、implement render 输出
 
+此外必须补充正式 `artifact-topology-contract`：
+
+- `authoring artifacts`：仅服务 prototype compiler / requirement projection，默认不进入 review surface 与 implement surface
+- `review artifacts`：仅服务人工审阅与 gate evidence，默认不进入 implement surface
+- `projection artifacts`：服务 preview/page-spec/page copy 投影，是 production-visible surface 的唯一上游
+- `implementation artifacts`：服务 implement renderer，是实现层默认且唯一允许读取的入口
+
+除 `projection artifacts` 与 `implementation artifacts` 外，其他 artifact 不得默认进入最终渲染与实现消费链。
+
 ### FR-005 Production UI Copy Projection
 
 `page intent / state visibility / action hierarchy / recovery diagnostics` 到正式 UI 文案的投影必须经过 `production-ui-copy-profile`。
@@ -246,6 +256,16 @@ implement renderer 禁止直接消费以下输入：
 - ux-prd 解释段落
 - prototype gate 诊断原文
 
+实现层必须默认只从以下入口读取：
+
+- `machine-view/index.json`
+- `design-artifacts/`
+- `implementation-map.json`
+- `production-ui-copy-profile.json`
+- `design-lint-rules.json`
+
+`ux-prd.md`、`DESIGN.md`、`prototype-review.md`、`pages/*.md` 仅作为 review-only human-readable materials 保留，不得再被视为实现层默认输入面。
+
 ### FR-009 Traceability
 
 design intelligence 输出、prototype 输出、implement 输出必须都能追溯到：
@@ -277,6 +297,22 @@ design intelligence 输出、prototype 输出、implement 输出必须都能追�
 4. Governed Rendering Layer
 5. Delivery Render Layer
 
+### 6.2A Artifact Topology
+
+prototype bundle 必须再固定为四层 artifact topology：
+
+1. `authoring artifacts`
+2. `review artifacts`
+3. `projection artifacts`
+4. `implementation artifacts`
+
+拓扑规则：
+
+- 上游只能单向向下游投影
+- human-readable explanation materials 只允许停留在 `review artifacts`
+- implement 不得跨层回读 `authoring artifacts` 与 `review artifacts`
+- 任一 surface 若需要跨层读取，必须通过显式 projection contract，而不是直接读同级 markdown
+
 ### 6.3 恢复策略
 
 - 当 `design artifact missing` 时，回退到 prototype compile
@@ -290,6 +326,7 @@ design intelligence 输出、prototype 输出、implement 输出必须都能追�
 |------|------|------|
 | 设计 skill 输出继续被直接渲染 | 高 | 强制 `governed-rendering-contract` 与 gate 拦截 |
 | prototype 中间工件过少，implement 继续读 markdown 段落 | 高 | 固定结构化 artifact 列表并作为唯一消费面 |
+| human-readable materials 与 implementation artifacts 并排暴露 | 高 | 固定四层 artifact topology，并把 explanation materials 降级为 review-only surface |
 | 正式语义合同未共用，页面文案继续漂移 | 高 | 固定 `software-semantic-profile` 为跨 surface 共享合同 |
 | 设计约束过强导致页面失去业务可读性 | 中 | 限定只约束语义和投影边界，不规定具体视觉风格 |
 
@@ -298,6 +335,8 @@ design intelligence 输出、prototype 输出、implement 输出必须都能追�
 ### AC-001 Design Layer Separation
 
 prototype 输出中存在正式设计中间工件，且工件与页面输出分离存放。
+
+同时必须能区分 `authoring / review / projection / implementation` 四层 artifact topology。
 
 ### AC-002 No Governance Copy Leakage
 
@@ -315,6 +354,8 @@ prototype、preview、board、implement 使用同一 `software-semantic-profile`
 
 implement renderer 能在不读取设计解释原文的前提下，仅依赖结构化设计工件完成页面渲染。
 
+实现层默认读取入口必须收敛到 `machine-view / design-artifacts / implementation-map / projection contracts`，不得把 `ux-prd.md`、`DESIGN.md`、`prototype-review.md` 视为同级默认输入。
+
 ## 9. 成功指标
 
 - 主指标：prototype 首屏解释性说明块命中率降为零
@@ -331,4 +372,4 @@ implement renderer 能在不读取设计解释原文的前提下，仅依赖结�
 
 **Created**: 2026-05-02  
 **Version**: v1.3.11  
-**Status**: draft
+**Status**: reopened-draft-r2

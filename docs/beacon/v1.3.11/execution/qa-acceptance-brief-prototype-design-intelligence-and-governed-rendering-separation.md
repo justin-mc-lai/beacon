@@ -4,7 +4,7 @@
 - feature: `prototype-design-intelligence-and-governed-rendering-separation`
 - revision_id: `R1`
 - verdict: `passed`
-- accepted_at: `2026-05-02T15:19:14.543824+00:00`
+- accepted_at: `2026-05-05T01:30:54.442663+00:00`
 - accepted_by: `qa`
 
 ## Summary
@@ -29,7 +29,7 @@
 - `.beacon/qa/features/prototype-design-intelligence-and-governed-rendering-separation/scorecard.json`
 
 ## Verdict Summary
-- required_ac_count: `4`
+- required_ac_count: `5`
 - required_test_count: `0`
-- story_status: `accepted`
-- revision_delivery_status: `accepted`
+- story_status: `implemented`
+- revision_delivery_status: `implemented`

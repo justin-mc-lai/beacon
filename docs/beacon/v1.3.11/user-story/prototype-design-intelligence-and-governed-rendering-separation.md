@@ -4,13 +4,13 @@
 
 - version: `v1.3.11`
 - feature: `prototype-design-intelligence-and-governed-rendering-separation`
-- status: `draft`
+- status: `reopened`
 - upstream_prd: `docs/beacon/v1.3.11/prd/prototype-design-intelligence-and-governed-rendering-separation.md`
 - related_prd:
   - `docs/beacon/v1.3.11/prd/beacon-operator-workbench-and-board-launcher.md`
   - `docs/beacon/v1.3.11/prd/beacon-execution-runtime-kernel.md`
-- current_revision: `R1`
-- source_revision: `R1`
+- current_revision: `R2`
+- source_revision: `R2`
 
 本故事线覆盖 Beacon 在 `v1.3.11` 中把 prototype 与 implement 之间的设计推导链正式分层，阻断设计治理文案、审阅文案、解释性说明直接渲染到终态 UI。它冻结的是原型编译与受控渲染合同，不是视觉品牌重构项目。
 
@@ -26,6 +26,7 @@
 | AC-002 | design-artifact-set | prototype compiler 至少产出 `design-context / surface-profile / layout-pattern / component-state-matrix / ui-copy-policy / style-preset / design-review` 七类结构化工件。 |
 | AC-003 | artifact-traceability | 每类工件都记录 `source feature / source requirement refs / generated_at / source_hash / projection_role`。 |
 | AC-004 | no-markdown-only-contract | implement 与 preview 不再以 ux-prd 解释段落作为唯一消费面。 |
+| AC-005 | four-layer-artifact-topology | prototype bundle 必须显式区分 `authoring / review / projection / implementation` 四层 artifact topology，并保持单向投影关系。 |
 
 ## Story 2: design skill 必须只作为内部推导与治理输入
 
@@ -52,6 +53,7 @@
 | AC-202 | internal-copy-boundary | `internal-governance-copy` 仅允许出现在 `ux-prd / review material / gate evidence`。 |
 | AC-203 | production-copy-boundary | `production-visible-copy` 才允许进入 `pages/*.md / page-specs/*.json / preview.html / implement render`。 |
 | AC-204 | no-governance-leakage | 默认页面不再出现设计原因、审阅意见、资产目录说明、路径清单、历史噪声。 |
+| AC-205 | review-only-human-materials | `ux-prd.md`、`DESIGN.md`、`prototype-review.md`、解释型页面 markdown 仅作为 review-only human-readable materials 保留，不再属于默认实现输入面。 |
 
 ## Story 4: 首屏投影必须服从正式语义合同
 
@@ -78,6 +80,7 @@
 | AC-402 | fail-closed | 任一阻断项命中时，prototype 不得判定为可交付。 |
 | AC-403 | shared-semantic-profile | prototype、preview、board、implement 共享同一 `software-semantic-profile`，术语、状态枚举、动词口径一致。 |
 | AC-404 | auditability | gate 输出保留 reason code、命中对象、修复建议、对应 artifact ref。 |
+| AC-405 | projection-gate-before-render | 未经 projection contract 允许的 artifact 不得进入 production render surface，不能只在输出后再做词面拦截。 |
 
 ## Story 6: implement 必须只消费受控设计工件
 
@@ -91,6 +94,7 @@
 | AC-502 | blocked-inputs | implement renderer 禁止直接消费 brainstorm 原文、review comments 原文、ux-prd 解释段落、gate 诊断原文。 |
 | AC-503 | traceability | implement 输出可追溯到 requirement source ref、design artifact ref、projection contract ref、review gate verdict。 |
 | AC-504 | closure | 在不读取设计解释原文的前提下，implement 仍可完成页面渲染与状态表达。 |
+| AC-505 | default-consumption-entry | implement 默认且唯一允许读取 `machine-view/index.json`、`design-artifacts/`、`implementation-map.json`、`production-ui-copy-profile.json`、`design-lint-rules.json`。 |
 
 ## Delivery Notes
 
@@ -104,6 +108,6 @@
 | --- | --- |
 | Priority | high |
 | Story Points | 8 |
-| Status | draft-model-line-r1 |
+| Status | reopened-model-line-r2 |
 | Created | 2026-05-02 |
-| Change Scope | design-intelligence-layer / design-artifact-contract / design-skill-role-contract / governed-rendering-contract / production-ui-copy-profile / first-screen-projection / prototype-review-gate / implement-consumption-contract |
+| Change Scope | design-intelligence-layer / design-artifact-contract / four-layer-artifact-topology / review-only-human-materials / design-skill-role-contract / governed-rendering-contract / production-ui-copy-profile / first-screen-projection / prototype-review-gate / implement-consumption-contract |

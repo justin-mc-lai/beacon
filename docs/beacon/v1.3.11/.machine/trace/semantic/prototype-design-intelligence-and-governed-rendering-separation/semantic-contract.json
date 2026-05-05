@@ -1,38 +1,38 @@
 {
   "schema_version": "1.0",
   "semantic_contract_version": "1.0",
-  "feature": "Prototype Design Intelligence And Governed Rendering Separation",
+  "feature": "prototype-design-intelligence-and-governed-rendering-separation",
   "feature_slug": "prototype-design-intelligence-and-governed-rendering-separation",
   "version": "v1.3.11",
   "stage": "prototype",
-  "generated_at": "2026-05-02T15:02:49.896567+00:00",
-  "source_hash": "dcee10e1d67378c225ff697ce4a0d75c5893307da117f622bf7239708c412d49",
-  "projection_seq": "semantic-dcee10e1d67378c2",
-  "transaction_id": "tx-semantic-prototype-design-intelligence-and-governed-rendering-separation-semantic-dcee10e1d67378c2",
+  "generated_at": "2026-05-04T23:16:42.430105+00:00",
+  "source_hash": "520da711347e7ebb1f5ed1d10aec840d5750029613e764723e4b07ec6629a2c0",
+  "projection_seq": "semantic-520da711347e7ebb",
+  "transaction_id": "tx-semantic-prototype-design-intelligence-and-governed-rendering-separation-semantic-520da711347e7ebb",
   "source_documents": [
     {
       "type": "prd",
       "path": "docs/beacon/v1.3.11/prd/prototype-design-intelligence-and-governed-rendering-separation.md",
-      "fingerprint": "58558745b9b7fae549720872511279588995c5c84ff9e941782acf615d7c1ed8"
+      "fingerprint": "1bfbef8dcac7d2d1034a8f2956cf4594b34fb7985a97ba094800f39a01e63cfd"
     },
     {
       "type": "user-story",
       "path": "docs/beacon/v1.3.11/user-story/prototype-design-intelligence-and-governed-rendering-separation.md",
-      "fingerprint": "6bb40d8c88f2c9e9da6ce559999ead0a1ddab2aa32e2f0646c6db9ad00f463c9"
+      "fingerprint": "90fe9678157057f384b8df4b1f9be14460f77cd862cd92a21e939179f305252e"
     },
     {
       "type": "test-case",
       "path": "docs/beacon/v1.3.11/qa/test-cases/prototype-design-intelligence-and-governed-rendering-separation.md",
-      "fingerprint": "174917fd42babf5c4fe745f7fb3691f41dc13dbc65de65c03df32f47d3be9d7a"
+      "fingerprint": "b7024b0f9850c96e34c41354aaa0ecb15cf6c7386e12f38e0ae2cb488dcf60a7"
     }
   ],
   "stage_context": {
     "schema_version": "1.0",
     "run_id": "",
     "stage": "prototype",
-    "feature": "Prototype Design Intelligence And Governed Rendering Separation",
+    "feature": "prototype-design-intelligence-and-governed-rendering-separation",
     "version": "v1.3.11",
-    "generated_at": "2026-05-02T15:02:49.891011+00:00",
+    "generated_at": "2026-05-04T23:16:42.416932+00:00",
     "memory_recall": [],
     "lifecycle_events": [],
     "requirement_refs": [
@@ -106,6 +106,7 @@
     ],
     "module_labels": [
       "推导出的页面目标与状态",
+      "是实现层默认且唯一允许读取的入口",
       "状态文案只描述状态",
       "必要状态反馈",
       "当前状态",
@@ -113,11 +114,11 @@
       "当页面状态",
       "允许显示恢复信息",
       "恢复信息",
-      "主动作和必要状态反馈",
-      "仅当页面状态"
+      "实现层必须默认只从以下入口"
     ],
     "action_labels": [
       "进入",
+      "进入最终渲染与实现消费链",
       "恢复路径",
       "恢复信息",
       "恢复信息必须由",
@@ -125,8 +126,7 @@
       "返回阻断结果与",
       "恢复信息只包含",
       "查看详情",
-      "进入详情",
-      "返回总览"
+      "进入详情"
     ],
     "preferred_terms": [
       {
@@ -202,11 +202,16 @@
       "schema_version": "1.0",
       "command_name": "prototype",
       "host_runtime": "codex",
-      "host_bridge_declared": false,
+      "host_runtime_supported": true,
+      "host_bridge_declared": true,
+      "host_bridge_command_available": true,
+      "host_bridge_command_source": "env_cmd",
+      "host_bridge_command_env": "BEACON_HOST_PROTOTYPE_BRIDGE_CMD",
       "host_response_available": false,
       "host_response_source": "none",
       "host_response_path": "",
-      "host_semantic_ready": false,
+      "host_transport": "command-bridge",
+      "host_semantic_ready": true,
       "provider_available": false,
       "provider_key_present": false,
       "llm_disabled": false,

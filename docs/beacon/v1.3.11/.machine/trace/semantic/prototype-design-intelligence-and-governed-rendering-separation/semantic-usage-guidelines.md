@@ -1,4 +1,4 @@
-# Semantic Usage Guidelines: Prototype Design Intelligence And Governed Rendering Separation
+# Semantic Usage Guidelines: prototype-design-intelligence-and-governed-rendering-separation
 
 ## 使用规则
 
