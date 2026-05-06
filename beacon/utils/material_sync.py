@@ -32,8 +32,12 @@ def sync_feature_requirement_materials(
     ui_runner: str = "",
 ) -> dict[str, Any]:
     resolved_version = resolve_target_version(project_root, version)
+    slug = str(feature or "").strip().lower().replace(" ", "-")
+    preserved_matrix_path = project_root / "docs" / "beacon" / resolved_version / ".machine" / "qa" / f"{slug}.ac-test-matrix.json"
+    preserved_matrix_raw = ""
+    if not overwrite_test_doc and preserved_matrix_path.exists():
+        preserved_matrix_raw = preserved_matrix_path.read_text(encoding="utf-8")
     if dry_run:
-        slug = str(feature or "").strip().lower().replace(" ", "-")
         return {
             "feature": feature,
             "version": resolved_version,
@@ -80,6 +84,8 @@ def sync_feature_requirement_materials(
             os.environ["BEACON_ALLOW_CONTEXT_VERSION_DRIFT"] = previous_override
 
     slug = str(story_sync.get("feature") or feature).strip().lower().replace(" ", "-")
+    if preserved_matrix_raw and preserved_matrix_path.exists():
+        preserved_matrix_path.write_text(preserved_matrix_raw, encoding="utf-8")
     return {
         "feature": feature,
         "version": resolved_version,

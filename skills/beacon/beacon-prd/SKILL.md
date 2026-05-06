@@ -7,7 +7,7 @@ description: Use when the user wants to draft, refine, clarify, or review a prod
 
 This skill routes requirement work through Beacon's `prd` surface.
 
-The public command stays on the `v1.3.9` runtime line while `v1.3.9` defines the host-native semantic compile target for requirement commands.
+The public command stays on the `v1.3.9` runtime line while `v1.3.12` defines the host-native semantic compile target for requirement deepening and human-loop closure.
 
 ## Use for
 
@@ -24,4 +24,4 @@ Prefer Beacon's PRD surface first:
 - `beacon prd ...`
 - or `bash skills/beacon/scripts/run_beacon.sh prd ...`
 
-Keep the human on the `prd -> user-story` path. Do not expand the visible workflow unless the user explicitly asks for deeper internal lanes.
+Keep the human on the `prd -> user-story -> test-case` closure path. Use brainstorm only as a read-only gap sidecar when the PRD needs deeper convergence, and route frozen changes through `beacon-change`.

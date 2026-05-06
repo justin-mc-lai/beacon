@@ -3,21 +3,26 @@
   "feature": "prototype-design-intelligence-and-governed-rendering-separation",
   "feature_slug": "prototype-design-intelligence-and-governed-rendering-separation",
   "version": "v1.3.11",
-  "generated_at": "2026-05-02T21:56:51.795185",
+  "generated_at": "2026-05-05T09:15:45.840206",
   "compiler": {
     "requested_mode": "auto",
-    "effective_mode": "rule",
-    "generator_mode": "rule",
-    "fallback_reason": "llm_unavailable",
+    "effective_mode": "host",
+    "generator_mode": "host",
+    "fallback_reason": "",
     "capability_snapshot": {
       "schema_version": "1.0",
       "command_name": "test-case",
       "host_runtime": "codex",
-      "host_bridge_declared": false,
+      "host_runtime_supported": true,
+      "host_bridge_declared": true,
+      "host_bridge_command_available": true,
+      "host_bridge_command_source": "env_cmd",
+      "host_bridge_command_env": "BEACON_HOST_TEST_CASE_BRIDGE_CMD",
       "host_response_available": false,
       "host_response_source": "none",
       "host_response_path": "",
-      "host_semantic_ready": false,
+      "host_transport": "command-bridge",
+      "host_semantic_ready": true,
       "provider_available": false,
       "provider_key_present": false,
       "llm_disabled": false,
@@ -31,287 +36,287 @@
       "ac_id": "AC-001",
       "layer": "unit",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
+      "assertion": "prototype compiler 接收 `prd / user-story / test-case / prototype freeze context / software-semantic-profile` 作为正式输入。",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-001.json",
       "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/prototype-design-intelligence-and-governed-rendering-separation.md"
+      "source": "host-bridge"
     },
     {
       "tc_id": "TC-002",
       "ac_id": "AC-002",
       "layer": "ui",
       "command": "npx playwright test",
-      "assertion": "Web UI assertions and key actions pass",
+      "assertion": "prototype compiler 至少产出 `design-context / surface-profile / layout-pattern / component-state-matrix / ui-copy-policy / style-preset / design-review` 七类结构化工件。",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-002.json",
       "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/prototype-design-intelligence-and-governed-rendering-separation.md"
+      "source": "host-bridge"
     },
     {
       "tc_id": "TC-003",
       "ac_id": "AC-003",
       "layer": "unit",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
+      "assertion": "每类工件都记录 `source feature / source requirement refs / generated_at / source_hash / projection_role`。",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-003.json",
       "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/prototype-design-intelligence-and-governed-rendering-separation.md"
+      "source": "host-bridge"
     },
     {
       "tc_id": "TC-004",
       "ac_id": "AC-004",
       "layer": "unit",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
+      "assertion": "implement 与 preview 不再以 ux-prd 解释段落作为唯一消费面。",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-004.json",
       "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/prototype-design-intelligence-and-governed-rendering-separation.md"
+      "source": "host-bridge"
     },
     {
       "tc_id": "TC-005",
-      "ac_id": "AC-101",
-      "layer": "ui",
-      "command": "npx playwright test",
-      "assertion": "Web UI assertions and key actions pass",
-      "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-005.json",
-      "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/prototype-design-intelligence-and-governed-rendering-separation.md"
-    },
-    {
-      "tc_id": "TC-006",
-      "ac_id": "AC-102",
-      "layer": "unit",
-      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
-      "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-006.json",
-      "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/prototype-design-intelligence-and-governed-rendering-separation.md"
-    },
-    {
-      "tc_id": "TC-007",
-      "ac_id": "AC-103",
-      "layer": "unit",
-      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
-      "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-007.json",
-      "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/prototype-design-intelligence-and-governed-rendering-separation.md"
-    },
-    {
-      "tc_id": "TC-008",
-      "ac_id": "AC-104",
-      "layer": "ui",
-      "command": "npx playwright test",
-      "assertion": "Web UI assertions and key actions pass",
-      "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-008.json",
-      "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/prototype-design-intelligence-and-governed-rendering-separation.md"
-    },
-    {
-      "tc_id": "TC-009",
-      "ac_id": "AC-201",
-      "layer": "unit",
-      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
-      "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-009.json",
-      "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/prototype-design-intelligence-and-governed-rendering-separation.md"
-    },
-    {
-      "tc_id": "TC-010",
-      "ac_id": "AC-202",
-      "layer": "unit",
-      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
-      "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-010.json",
-      "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/prototype-design-intelligence-and-governed-rendering-separation.md"
-    },
-    {
-      "tc_id": "TC-011",
-      "ac_id": "AC-203",
-      "layer": "ui",
-      "command": "npx playwright test",
-      "assertion": "Web UI assertions and key actions pass",
-      "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-011.json",
-      "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/prototype-design-intelligence-and-governed-rendering-separation.md"
-    },
-    {
-      "tc_id": "TC-012",
-      "ac_id": "AC-204",
-      "layer": "ui",
-      "command": "npx playwright test",
-      "assertion": "Web UI assertions and key actions pass",
-      "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-012.json",
-      "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/prototype-design-intelligence-and-governed-rendering-separation.md"
-    },
-    {
-      "tc_id": "TC-013",
-      "ac_id": "AC-301",
-      "layer": "ui",
-      "command": "npx playwright test",
-      "assertion": "Web UI assertions and key actions pass",
-      "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-013.json",
-      "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/prototype-design-intelligence-and-governed-rendering-separation.md"
-    },
-    {
-      "tc_id": "TC-014",
-      "ac_id": "AC-302",
-      "layer": "ui",
-      "command": "npx playwright test",
-      "assertion": "Web UI assertions and key actions pass",
-      "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-014.json",
-      "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/prototype-design-intelligence-and-governed-rendering-separation.md"
-    },
-    {
-      "tc_id": "TC-015",
-      "ac_id": "AC-303",
-      "layer": "unit",
-      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
-      "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-015.json",
-      "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/prototype-design-intelligence-and-governed-rendering-separation.md"
-    },
-    {
-      "tc_id": "TC-016",
-      "ac_id": "AC-304",
-      "layer": "ui",
-      "command": "npx playwright test",
-      "assertion": "Web UI assertions and key actions pass",
-      "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-016.json",
-      "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/prototype-design-intelligence-and-governed-rendering-separation.md"
-    },
-    {
-      "tc_id": "TC-017",
-      "ac_id": "AC-401",
-      "layer": "unit",
-      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
-      "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-017.json",
-      "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/prototype-design-intelligence-and-governed-rendering-separation.md"
-    },
-    {
-      "tc_id": "TC-018",
-      "ac_id": "AC-402",
-      "layer": "unit",
-      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
-      "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-018.json",
-      "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/prototype-design-intelligence-and-governed-rendering-separation.md"
-    },
-    {
-      "tc_id": "TC-019",
-      "ac_id": "AC-403",
-      "layer": "unit",
-      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
-      "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-019.json",
-      "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/prototype-design-intelligence-and-governed-rendering-separation.md"
-    },
-    {
-      "tc_id": "TC-020",
-      "ac_id": "AC-404",
-      "layer": "unit",
-      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
-      "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-020.json",
-      "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/prototype-design-intelligence-and-governed-rendering-separation.md"
-    },
-    {
-      "tc_id": "TC-021",
-      "ac_id": "AC-501",
-      "layer": "ui",
-      "command": "npx playwright test",
-      "assertion": "Web UI assertions and key actions pass",
-      "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-021.json",
-      "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/prototype-design-intelligence-and-governed-rendering-separation.md"
-    },
-    {
-      "tc_id": "TC-022",
-      "ac_id": "AC-502",
-      "layer": "unit",
-      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
-      "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-022.json",
-      "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/prototype-design-intelligence-and-governed-rendering-separation.md"
-    },
-    {
-      "tc_id": "TC-023",
-      "ac_id": "AC-503",
-      "layer": "unit",
-      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
-      "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-023.json",
-      "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/prototype-design-intelligence-and-governed-rendering-separation.md"
-    },
-    {
-      "tc_id": "TC-024",
-      "ac_id": "AC-504",
-      "layer": "ui",
-      "command": "npx playwright test",
-      "assertion": "Web UI assertions and key actions pass",
-      "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-024.json",
-      "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/prototype-design-intelligence-and-governed-rendering-separation.md"
-    },
-    {
-      "tc_id": "TC-025",
       "ac_id": "AC-005",
       "layer": "unit",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
+      "assertion": "prototype bundle 必须显式区分 `authoring / review / projection / implementation` 四层 artifact topology，并保持单向投影关系。",
+      "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-005.json",
+      "status": "pending",
+      "source": "host-bridge"
+    },
+    {
+      "tc_id": "TC-006",
+      "ac_id": "AC-101",
+      "layer": "ui",
+      "command": "npx playwright test",
+      "assertion": "`ui-ux-pro-max-skill` 仅用于页面目标、布局模式、信息密度、组件组织推导。",
+      "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-006.json",
+      "status": "pending",
+      "source": "host-bridge"
+    },
+    {
+      "tc_id": "TC-007",
+      "ac_id": "AC-102",
+      "layer": "unit",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "`impeccable` 仅用于反模式识别、文案校验、交互与视觉治理。",
+      "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-007.json",
+      "status": "pending",
+      "source": "host-bridge"
+    },
+    {
+      "tc_id": "TC-008",
+      "ac_id": "AC-103",
+      "layer": "unit",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "`awesome-design-md` 仅用于样式预设、设计语法、组件语义基线参考。",
+      "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-008.json",
+      "status": "pending",
+      "source": "host-bridge"
+    },
+    {
+      "tc_id": "TC-009",
+      "ac_id": "AC-104",
+      "layer": "ui",
+      "command": "npx playwright test",
+      "assertion": "上述 design skill 的原始输出不得直接写入 `pages/*.md`、`page-specs/*.json`、`preview.html`、implement render 结果。",
+      "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-009.json",
+      "status": "pending",
+      "source": "host-bridge"
+    },
+    {
+      "tc_id": "TC-010",
+      "ac_id": "AC-201",
+      "layer": "unit",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Beacon 建立正式 `governed-rendering-contract`，至少区分 `internal-governance-copy / review-visible-copy / production-visible-copy`。",
+      "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-010.json",
+      "status": "pending",
+      "source": "host-bridge"
+    },
+    {
+      "tc_id": "TC-011",
+      "ac_id": "AC-202",
+      "layer": "unit",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "`internal-governance-copy` 仅允许出现在 `ux-prd / review material / gate evidence`。",
+      "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-011.json",
+      "status": "pending",
+      "source": "host-bridge"
+    },
+    {
+      "tc_id": "TC-012",
+      "ac_id": "AC-203",
+      "layer": "ui",
+      "command": "npx playwright test",
+      "assertion": "`production-visible-copy` 才允许进入 `pages/*.md / page-specs/*.json / preview.html / implement render`。",
+      "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-012.json",
+      "status": "pending",
+      "source": "host-bridge"
+    },
+    {
+      "tc_id": "TC-013",
+      "ac_id": "AC-204",
+      "layer": "ui",
+      "command": "npx playwright test",
+      "assertion": "默认页面不再出现设计原因、审阅意见、资产目录说明、路径清单、历史噪声。",
+      "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-013.json",
+      "status": "pending",
+      "source": "host-bridge"
+    },
+    {
+      "tc_id": "TC-014",
+      "ac_id": "AC-205",
+      "layer": "ui",
+      "command": "npx playwright test",
+      "assertion": "`ux-prd.md`、`DESIGN.md`、`prototype-review.md`、解释型页面 markdown 仅作为 review-only human-readable materials 保留，不再属于默认实现输入面。",
+      "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-014.json",
+      "status": "pending",
+      "source": "host-bridge"
+    },
+    {
+      "tc_id": "TC-015",
+      "ac_id": "AC-301",
+      "layer": "ui",
+      "command": "npx playwright test",
+      "assertion": "`page intent / state visibility / action hierarchy / recovery diagnostics` 到 UI 文案的投影必须经过 `production-ui-copy-profile`。",
+      "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-015.json",
+      "status": "pending",
+      "source": "host-bridge"
+    },
+    {
+      "tc_id": "TC-016",
+      "ac_id": "AC-302",
+      "layer": "ui",
+      "command": "npx playwright test",
+      "assertion": "一句话只表达一个功能含义；标题只描述页面对象与页面动作。",
+      "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-016.json",
+      "status": "pending",
+      "source": "host-bridge"
+    },
+    {
+      "tc_id": "TC-017",
+      "ac_id": "AC-303",
+      "layer": "unit",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "`当前状态 / 下一步动作 / 恢复路径` 解释块、设计说明、路径列表、历史 run 噪声不得默认占据首屏。",
+      "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-017.json",
+      "status": "pending",
+      "source": "host-bridge"
+    },
+    {
+      "tc_id": "TC-018",
+      "ac_id": "AC-304",
+      "layer": "ui",
+      "command": "npx playwright test",
+      "assertion": "仅当页面状态为 `blocked / failed / empty-risk` 时，允许显示恢复信息；恢复信息只包含 reason code、受影响对象、允许动作。",
+      "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-018.json",
+      "status": "pending",
+      "source": "host-bridge"
+    },
+    {
+      "tc_id": "TC-019",
+      "ac_id": "AC-401",
+      "layer": "unit",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "prototype review gate 至少支持 `design_context_explicit_block / governance_copy_leak / review_copy_rendered_as_production_ui / semantic_profile_violation / first_screen_over_explanation`。",
+      "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-019.json",
+      "status": "pending",
+      "source": "host-bridge"
+    },
+    {
+      "tc_id": "TC-020",
+      "ac_id": "AC-402",
+      "layer": "unit",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "任一阻断项命中时，prototype 不得判定为可交付。",
+      "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-020.json",
+      "status": "pending",
+      "source": "host-bridge"
+    },
+    {
+      "tc_id": "TC-021",
+      "ac_id": "AC-403",
+      "layer": "unit",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "prototype、preview、board、implement 共享同一 `software-semantic-profile`，术语、状态枚举、动词口径一致。",
+      "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-021.json",
+      "status": "pending",
+      "source": "host-bridge"
+    },
+    {
+      "tc_id": "TC-022",
+      "ac_id": "AC-404",
+      "layer": "unit",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "gate 输出保留 reason code、命中对象、修复建议、对应 artifact ref。",
+      "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-022.json",
+      "status": "pending",
+      "source": "host-bridge"
+    },
+    {
+      "tc_id": "TC-023",
+      "ac_id": "AC-405",
+      "layer": "unit",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "未经 projection contract 允许的 artifact 不得进入 production render surface，不能只在输出后再做词面拦截。",
+      "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-023.json",
+      "status": "pending",
+      "source": "host-bridge"
+    },
+    {
+      "tc_id": "TC-024",
+      "ac_id": "AC-501",
+      "layer": "ui",
+      "command": "npx playwright test",
+      "assertion": "implement renderer 只允许消费 `surface-profile / layout-pattern / component-priority-map / production-ui-copy-profile / style-preset / design-lint-rules`。",
+      "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-024.json",
+      "status": "pending",
+      "source": "host-bridge"
+    },
+    {
+      "tc_id": "TC-025",
+      "ac_id": "AC-502",
+      "layer": "unit",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "implement renderer 禁止直接消费 brainstorm 原文、review comments 原文、ux-prd 解释段落、gate 诊断原文。",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-025.json",
       "status": "pending",
-      "source": "prd:docs/beacon/v1.3.11/prd/prototype-design-intelligence-and-governed-rendering-separation.md"
+      "source": "host-bridge"
     },
     {
       "tc_id": "TC-026",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-jump-check')\"",
-      "assertion": "jump home -> management-overview is represented",
+      "ac_id": "AC-503",
+      "layer": "unit",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "implement 输出可追溯到 requirement source ref、design artifact ref、projection contract ref、review gate verdict。",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-026.json",
       "status": "pending",
-      "source": "prototype:navigation-map"
+      "source": "host-bridge"
     },
     {
       "tc_id": "TC-027",
-      "ac_id": "AC-001",
+      "ac_id": "AC-504",
       "layer": "ui",
-      "command": "python3 -c \"print('prototype-jump-check')\"",
-      "assertion": "jump home -> project-detail is represented",
+      "command": "npx playwright test",
+      "assertion": "在不读取设计解释原文的前提下，implement 仍可完成页面渲染与状态表达。",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-027.json",
       "status": "pending",
-      "source": "prototype:navigation-map"
+      "source": "host-bridge"
     },
     {
       "tc_id": "TC-028",
-      "ac_id": "AC-001",
+      "ac_id": "AC-505",
       "layer": "ui",
-      "command": "python3 -c \"print('prototype-jump-check')\"",
-      "assertion": "jump management-overview -> project-detail is represented",
+      "command": "npx playwright test",
+      "assertion": "implement 默认且唯一允许读取 `machine-view/index.json`、`design-artifacts/`、`implementation-map.json`、`production-ui-copy-profile.json`、`design-lint-rules.json`。",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-028.json",
       "status": "pending",
-      "source": "prototype:navigation-map"
+      "source": "host-bridge"
     },
     {
       "tc_id": "TC-029",
       "ac_id": "AC-001",
       "layer": "ui",
       "command": "python3 -c \"print('prototype-jump-check')\"",
-      "assertion": "jump management-overview -> home is represented",
+      "assertion": "jump home -> management-overview is represented",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-029.json",
       "status": "pending",
       "source": "prototype:navigation-map"
@@ -321,7 +326,7 @@
       "ac_id": "AC-001",
       "layer": "ui",
       "command": "python3 -c \"print('prototype-jump-check')\"",
-      "assertion": "jump project-detail -> runtime-center is represented",
+      "assertion": "jump home -> project-detail is represented",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-030.json",
       "status": "pending",
       "source": "prototype:navigation-map"
@@ -331,7 +336,7 @@
       "ac_id": "AC-001",
       "layer": "ui",
       "command": "python3 -c \"print('prototype-jump-check')\"",
-      "assertion": "jump project-detail -> recovery-diagnostics is represented",
+      "assertion": "jump management-overview -> project-detail is represented",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-031.json",
       "status": "pending",
       "source": "prototype:navigation-map"
@@ -341,7 +346,7 @@
       "ac_id": "AC-001",
       "layer": "ui",
       "command": "python3 -c \"print('prototype-jump-check')\"",
-      "assertion": "jump project-detail -> material-viewer is represented",
+      "assertion": "jump management-overview -> home is represented",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-032.json",
       "status": "pending",
       "source": "prototype:navigation-map"
@@ -351,7 +356,7 @@
       "ac_id": "AC-001",
       "layer": "ui",
       "command": "python3 -c \"print('prototype-jump-check')\"",
-      "assertion": "jump project-detail -> management-overview is represented",
+      "assertion": "jump project-detail -> runtime-center is represented",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-033.json",
       "status": "pending",
       "source": "prototype:navigation-map"
@@ -361,7 +366,7 @@
       "ac_id": "AC-001",
       "layer": "ui",
       "command": "python3 -c \"print('prototype-jump-check')\"",
-      "assertion": "jump runtime-center -> project-detail is represented",
+      "assertion": "jump project-detail -> recovery-diagnostics is represented",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-034.json",
       "status": "pending",
       "source": "prototype:navigation-map"
@@ -371,7 +376,7 @@
       "ac_id": "AC-001",
       "layer": "ui",
       "command": "python3 -c \"print('prototype-jump-check')\"",
-      "assertion": "jump runtime-center -> management-overview is represented",
+      "assertion": "jump project-detail -> material-viewer is represented",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-035.json",
       "status": "pending",
       "source": "prototype:navigation-map"
@@ -381,7 +386,7 @@
       "ac_id": "AC-001",
       "layer": "ui",
       "command": "python3 -c \"print('prototype-jump-check')\"",
-      "assertion": "jump recovery-diagnostics -> project-detail is represented",
+      "assertion": "jump project-detail -> management-overview is represented",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-036.json",
       "status": "pending",
       "source": "prototype:navigation-map"
@@ -391,7 +396,7 @@
       "ac_id": "AC-001",
       "layer": "ui",
       "command": "python3 -c \"print('prototype-jump-check')\"",
-      "assertion": "jump recovery-diagnostics -> runtime-center is represented",
+      "assertion": "jump runtime-center -> project-detail is represented",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-037.json",
       "status": "pending",
       "source": "prototype:navigation-map"
@@ -401,7 +406,7 @@
       "ac_id": "AC-001",
       "layer": "ui",
       "command": "python3 -c \"print('prototype-jump-check')\"",
-      "assertion": "jump material-viewer -> project-detail is represented",
+      "assertion": "jump runtime-center -> management-overview is represented",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-038.json",
       "status": "pending",
       "source": "prototype:navigation-map"
@@ -411,7 +416,7 @@
       "ac_id": "AC-001",
       "layer": "ui",
       "command": "python3 -c \"print('prototype-jump-check')\"",
-      "assertion": "jump material-viewer -> material-document-detail is represented",
+      "assertion": "jump recovery-diagnostics -> project-detail is represented",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-039.json",
       "status": "pending",
       "source": "prototype:navigation-map"
@@ -421,7 +426,7 @@
       "ac_id": "AC-001",
       "layer": "ui",
       "command": "python3 -c \"print('prototype-jump-check')\"",
-      "assertion": "jump material-document-detail -> material-viewer is represented",
+      "assertion": "jump recovery-diagnostics -> runtime-center is represented",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-040.json",
       "status": "pending",
       "source": "prototype:navigation-map"
@@ -430,38 +435,38 @@
       "tc_id": "TC-041",
       "ac_id": "AC-001",
       "layer": "ui",
-      "command": "python3 -c \"print('prototype-state-check')\"",
-      "assertion": "state blocked is represented in prototype",
+      "command": "python3 -c \"print('prototype-jump-check')\"",
+      "assertion": "jump material-viewer -> project-detail is represented",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-041.json",
       "status": "pending",
-      "source": "prototype:interaction-map"
+      "source": "prototype:navigation-map"
     },
     {
       "tc_id": "TC-042",
       "ac_id": "AC-001",
       "layer": "ui",
-      "command": "python3 -c \"print('prototype-state-check')\"",
-      "assertion": "state degraded is represented in prototype",
+      "command": "python3 -c \"print('prototype-jump-check')\"",
+      "assertion": "jump material-viewer -> material-document-detail is represented",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-042.json",
       "status": "pending",
-      "source": "prototype:interaction-map"
+      "source": "prototype:navigation-map"
     },
     {
       "tc_id": "TC-043",
       "ac_id": "AC-001",
       "layer": "ui",
-      "command": "python3 -c \"print('prototype-state-check')\"",
-      "assertion": "state doctor-suggested is represented in prototype",
+      "command": "python3 -c \"print('prototype-jump-check')\"",
+      "assertion": "jump material-document-detail -> material-viewer is represented",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-043.json",
       "status": "pending",
-      "source": "prototype:interaction-map"
+      "source": "prototype:navigation-map"
     },
     {
       "tc_id": "TC-044",
       "ac_id": "AC-001",
       "layer": "ui",
       "command": "python3 -c \"print('prototype-state-check')\"",
-      "assertion": "state document-open is represented in prototype",
+      "assertion": "state blocked is represented in prototype",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-044.json",
       "status": "pending",
       "source": "prototype:interaction-map"
@@ -471,7 +476,7 @@
       "ac_id": "AC-001",
       "layer": "ui",
       "command": "python3 -c \"print('prototype-state-check')\"",
-      "assertion": "state draft is represented in prototype",
+      "assertion": "state degraded is represented in prototype",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-045.json",
       "status": "pending",
       "source": "prototype:interaction-map"
@@ -481,7 +486,7 @@
       "ac_id": "AC-001",
       "layer": "ui",
       "command": "python3 -c \"print('prototype-state-check')\"",
-      "assertion": "state empty is represented in prototype",
+      "assertion": "state doctor-suggested is represented in prototype",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-046.json",
       "status": "pending",
       "source": "prototype:interaction-map"
@@ -491,7 +496,7 @@
       "ac_id": "AC-001",
       "layer": "ui",
       "command": "python3 -c \"print('prototype-state-check')\"",
-      "assertion": "state error is represented in prototype",
+      "assertion": "state document-open is represented in prototype",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-047.json",
       "status": "pending",
       "source": "prototype:interaction-map"
@@ -501,7 +506,7 @@
       "ac_id": "AC-001",
       "layer": "ui",
       "command": "python3 -c \"print('prototype-state-check')\"",
-      "assertion": "state filtered is represented in prototype",
+      "assertion": "state draft is represented in prototype",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-048.json",
       "status": "pending",
       "source": "prototype:interaction-map"
@@ -511,7 +516,7 @@
       "ac_id": "AC-001",
       "layer": "ui",
       "command": "python3 -c \"print('prototype-state-check')\"",
-      "assertion": "state frozen is represented in prototype",
+      "assertion": "state empty is represented in prototype",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-049.json",
       "status": "pending",
       "source": "prototype:interaction-map"
@@ -521,7 +526,7 @@
       "ac_id": "AC-001",
       "layer": "ui",
       "command": "python3 -c \"print('prototype-state-check')\"",
-      "assertion": "state healthy-warning is represented in prototype",
+      "assertion": "state error is represented in prototype",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-050.json",
       "status": "pending",
       "source": "prototype:interaction-map"
@@ -531,7 +536,7 @@
       "ac_id": "AC-001",
       "layer": "ui",
       "command": "python3 -c \"print('prototype-state-check')\"",
-      "assertion": "state idle is represented in prototype",
+      "assertion": "state filtered is represented in prototype",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-051.json",
       "status": "pending",
       "source": "prototype:interaction-map"
@@ -541,7 +546,7 @@
       "ac_id": "AC-001",
       "layer": "ui",
       "command": "python3 -c \"print('prototype-state-check')\"",
-      "assertion": "state intervention-needed is represented in prototype",
+      "assertion": "state frozen is represented in prototype",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-052.json",
       "status": "pending",
       "source": "prototype:interaction-map"
@@ -551,7 +556,7 @@
       "ac_id": "AC-001",
       "layer": "ui",
       "command": "python3 -c \"print('prototype-state-check')\"",
-      "assertion": "state loading is represented in prototype",
+      "assertion": "state healthy-warning is represented in prototype",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-053.json",
       "status": "pending",
       "source": "prototype:interaction-map"
@@ -561,7 +566,7 @@
       "ac_id": "AC-001",
       "layer": "ui",
       "command": "python3 -c \"print('prototype-state-check')\"",
-      "assertion": "state ralph-active is represented in prototype",
+      "assertion": "state idle is represented in prototype",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-054.json",
       "status": "pending",
       "source": "prototype:interaction-map"
@@ -571,7 +576,7 @@
       "ac_id": "AC-001",
       "layer": "ui",
       "command": "python3 -c \"print('prototype-state-check')\"",
-      "assertion": "state ready is represented in prototype",
+      "assertion": "state intervention-needed is represented in prototype",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-055.json",
       "status": "pending",
       "source": "prototype:interaction-map"
@@ -581,7 +586,7 @@
       "ac_id": "AC-001",
       "layer": "ui",
       "command": "python3 -c \"print('prototype-state-check')\"",
-      "assertion": "state rebuild-suggested is represented in prototype",
+      "assertion": "state loading is represented in prototype",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-056.json",
       "status": "pending",
       "source": "prototype:interaction-map"
@@ -591,7 +596,7 @@
       "ac_id": "AC-001",
       "layer": "ui",
       "command": "python3 -c \"print('prototype-state-check')\"",
-      "assertion": "state requirement-missing is represented in prototype",
+      "assertion": "state ralph-active is represented in prototype",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-057.json",
       "status": "pending",
       "source": "prototype:interaction-map"
@@ -601,7 +606,7 @@
       "ac_id": "AC-001",
       "layer": "ui",
       "command": "python3 -c \"print('prototype-state-check')\"",
-      "assertion": "state runtime-active is represented in prototype",
+      "assertion": "state ready is represented in prototype",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-058.json",
       "status": "pending",
       "source": "prototype:interaction-map"
@@ -611,7 +616,7 @@
       "ac_id": "AC-001",
       "layer": "ui",
       "command": "python3 -c \"print('prototype-state-check')\"",
-      "assertion": "state sibling-switch is represented in prototype",
+      "assertion": "state rebuild-suggested is represented in prototype",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-059.json",
       "status": "pending",
       "source": "prototype:interaction-map"
@@ -621,7 +626,7 @@
       "ac_id": "AC-001",
       "layer": "ui",
       "command": "python3 -c \"print('prototype-state-check')\"",
-      "assertion": "state single-active is represented in prototype",
+      "assertion": "state requirement-missing is represented in prototype",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-060.json",
       "status": "pending",
       "source": "prototype:interaction-map"
@@ -631,7 +636,7 @@
       "ac_id": "AC-001",
       "layer": "ui",
       "command": "python3 -c \"print('prototype-state-check')\"",
-      "assertion": "state source-missing is represented in prototype",
+      "assertion": "state runtime-active is represented in prototype",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-061.json",
       "status": "pending",
       "source": "prototype:interaction-map"
@@ -641,7 +646,7 @@
       "ac_id": "AC-001",
       "layer": "ui",
       "command": "python3 -c \"print('prototype-state-check')\"",
-      "assertion": "state team-active is represented in prototype",
+      "assertion": "state sibling-switch is represented in prototype",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-062.json",
       "status": "pending",
       "source": "prototype:interaction-map"
@@ -651,7 +656,7 @@
       "ac_id": "AC-001",
       "layer": "ui",
       "command": "python3 -c \"print('prototype-state-check')\"",
-      "assertion": "state version-switch is represented in prototype",
+      "assertion": "state single-active is represented in prototype",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-063.json",
       "status": "pending",
       "source": "prototype:interaction-map"
@@ -660,48 +665,48 @@
       "tc_id": "TC-064",
       "ac_id": "AC-001",
       "layer": "ui",
-      "command": "python3 -c \"print('prototype-coverage-report-check')\"",
-      "assertion": "coverage report is consumed as a first-class prototype artifact",
+      "command": "python3 -c \"print('prototype-state-check')\"",
+      "assertion": "state source-missing is represented in prototype",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-064.json",
       "status": "pending",
-      "source": "prototype:coverage-report"
+      "source": "prototype:interaction-map"
     },
     {
       "tc_id": "TC-065",
       "ac_id": "AC-001",
       "layer": "ui",
-      "command": "python3 -c \"print('prototype-page-spec-check')\"",
-      "assertion": "page-spec home compiles required sections and route targets",
+      "command": "python3 -c \"print('prototype-state-check')\"",
+      "assertion": "state team-active is represented in prototype",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-065.json",
       "status": "pending",
-      "source": "prototype:page-specs"
+      "source": "prototype:interaction-map"
     },
     {
       "tc_id": "TC-066",
       "ac_id": "AC-001",
       "layer": "ui",
-      "command": "python3 -c \"print('prototype-page-spec-check')\"",
-      "assertion": "page-spec management-overview compiles required sections and route targets",
+      "command": "python3 -c \"print('prototype-state-check')\"",
+      "assertion": "state version-switch is represented in prototype",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-066.json",
       "status": "pending",
-      "source": "prototype:page-specs"
+      "source": "prototype:interaction-map"
     },
     {
       "tc_id": "TC-067",
       "ac_id": "AC-001",
       "layer": "ui",
-      "command": "python3 -c \"print('prototype-page-spec-check')\"",
-      "assertion": "page-spec project-detail compiles required sections and route targets",
+      "command": "python3 -c \"print('prototype-coverage-report-check')\"",
+      "assertion": "coverage report is consumed as a first-class prototype artifact",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-067.json",
       "status": "pending",
-      "source": "prototype:page-specs"
+      "source": "prototype:coverage-report"
     },
     {
       "tc_id": "TC-068",
       "ac_id": "AC-001",
       "layer": "ui",
       "command": "python3 -c \"print('prototype-page-spec-check')\"",
-      "assertion": "page-spec runtime-center compiles required sections and route targets",
+      "assertion": "page-spec home compiles required sections and route targets",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-068.json",
       "status": "pending",
       "source": "prototype:page-specs"
@@ -711,7 +716,7 @@
       "ac_id": "AC-001",
       "layer": "ui",
       "command": "python3 -c \"print('prototype-page-spec-check')\"",
-      "assertion": "page-spec recovery-diagnostics compiles required sections and route targets",
+      "assertion": "page-spec management-overview compiles required sections and route targets",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-069.json",
       "status": "pending",
       "source": "prototype:page-specs"
@@ -721,7 +726,7 @@
       "ac_id": "AC-001",
       "layer": "ui",
       "command": "python3 -c \"print('prototype-page-spec-check')\"",
-      "assertion": "page-spec material-viewer compiles required sections and route targets",
+      "assertion": "page-spec project-detail compiles required sections and route targets",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-070.json",
       "status": "pending",
       "source": "prototype:page-specs"
@@ -731,7 +736,7 @@
       "ac_id": "AC-001",
       "layer": "ui",
       "command": "python3 -c \"print('prototype-page-spec-check')\"",
-      "assertion": "page-spec material-document-detail compiles required sections and route targets",
+      "assertion": "page-spec runtime-center compiles required sections and route targets",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-071.json",
       "status": "pending",
       "source": "prototype:page-specs"
@@ -740,38 +745,38 @@
       "tc_id": "TC-072",
       "ac_id": "AC-001",
       "layer": "ui",
-      "command": "python3 -c \"print('prototype-route-closure-check')\"",
-      "assertion": "route closure 首页 -> management-overview remains deterministic",
+      "command": "python3 -c \"print('prototype-page-spec-check')\"",
+      "assertion": "page-spec recovery-diagnostics compiles required sections and route targets",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-072.json",
       "status": "pending",
-      "source": "prototype:route-closure-contract"
+      "source": "prototype:page-specs"
     },
     {
       "tc_id": "TC-073",
       "ac_id": "AC-001",
       "layer": "ui",
-      "command": "python3 -c \"print('prototype-route-closure-check')\"",
-      "assertion": "route closure 首页 -> project-detail remains deterministic",
+      "command": "python3 -c \"print('prototype-page-spec-check')\"",
+      "assertion": "page-spec material-viewer compiles required sections and route targets",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-073.json",
       "status": "pending",
-      "source": "prototype:route-closure-contract"
+      "source": "prototype:page-specs"
     },
     {
       "tc_id": "TC-074",
       "ac_id": "AC-001",
       "layer": "ui",
-      "command": "python3 -c \"print('prototype-route-closure-check')\"",
-      "assertion": "route closure 管理总览 -> project-detail remains deterministic",
+      "command": "python3 -c \"print('prototype-page-spec-check')\"",
+      "assertion": "page-spec material-document-detail compiles required sections and route targets",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-074.json",
       "status": "pending",
-      "source": "prototype:route-closure-contract"
+      "source": "prototype:page-specs"
     },
     {
       "tc_id": "TC-075",
       "ac_id": "AC-001",
       "layer": "ui",
       "command": "python3 -c \"print('prototype-route-closure-check')\"",
-      "assertion": "route closure 管理总览 -> home remains deterministic",
+      "assertion": "route closure 首页 -> management-overview remains deterministic",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-075.json",
       "status": "pending",
       "source": "prototype:route-closure-contract"
@@ -781,7 +786,7 @@
       "ac_id": "AC-001",
       "layer": "ui",
       "command": "python3 -c \"print('prototype-route-closure-check')\"",
-      "assertion": "route closure 项目详情 -> runtime-center remains deterministic",
+      "assertion": "route closure 首页 -> project-detail remains deterministic",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-076.json",
       "status": "pending",
       "source": "prototype:route-closure-contract"
@@ -791,7 +796,7 @@
       "ac_id": "AC-001",
       "layer": "ui",
       "command": "python3 -c \"print('prototype-route-closure-check')\"",
-      "assertion": "route closure 项目详情 -> recovery-diagnostics remains deterministic",
+      "assertion": "route closure 管理总览 -> project-detail remains deterministic",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-077.json",
       "status": "pending",
       "source": "prototype:route-closure-contract"
@@ -801,7 +806,7 @@
       "ac_id": "AC-001",
       "layer": "ui",
       "command": "python3 -c \"print('prototype-route-closure-check')\"",
-      "assertion": "route closure 项目详情 -> material-viewer remains deterministic",
+      "assertion": "route closure 管理总览 -> home remains deterministic",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-078.json",
       "status": "pending",
       "source": "prototype:route-closure-contract"
@@ -811,7 +816,7 @@
       "ac_id": "AC-001",
       "layer": "ui",
       "command": "python3 -c \"print('prototype-route-closure-check')\"",
-      "assertion": "route closure 项目详情 -> management-overview remains deterministic",
+      "assertion": "route closure 项目详情 -> runtime-center remains deterministic",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-079.json",
       "status": "pending",
       "source": "prototype:route-closure-contract"
@@ -821,7 +826,7 @@
       "ac_id": "AC-001",
       "layer": "ui",
       "command": "python3 -c \"print('prototype-route-closure-check')\"",
-      "assertion": "route closure 运行中心 -> project-detail remains deterministic",
+      "assertion": "route closure 项目详情 -> recovery-diagnostics remains deterministic",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-080.json",
       "status": "pending",
       "source": "prototype:route-closure-contract"
@@ -831,7 +836,7 @@
       "ac_id": "AC-001",
       "layer": "ui",
       "command": "python3 -c \"print('prototype-route-closure-check')\"",
-      "assertion": "route closure 运行中心 -> management-overview remains deterministic",
+      "assertion": "route closure 项目详情 -> material-viewer remains deterministic",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-081.json",
       "status": "pending",
       "source": "prototype:route-closure-contract"
@@ -841,7 +846,7 @@
       "ac_id": "AC-001",
       "layer": "ui",
       "command": "python3 -c \"print('prototype-route-closure-check')\"",
-      "assertion": "route closure 恢复诊断 -> project-detail remains deterministic",
+      "assertion": "route closure 项目详情 -> management-overview remains deterministic",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-082.json",
       "status": "pending",
       "source": "prototype:route-closure-contract"
@@ -851,7 +856,7 @@
       "ac_id": "AC-001",
       "layer": "ui",
       "command": "python3 -c \"print('prototype-route-closure-check')\"",
-      "assertion": "route closure 恢复诊断 -> runtime-center remains deterministic",
+      "assertion": "route closure 运行中心 -> project-detail remains deterministic",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-083.json",
       "status": "pending",
       "source": "prototype:route-closure-contract"
@@ -861,7 +866,7 @@
       "ac_id": "AC-001",
       "layer": "ui",
       "command": "python3 -c \"print('prototype-route-closure-check')\"",
-      "assertion": "route closure 项目物料查看器 -> project-detail remains deterministic",
+      "assertion": "route closure 运行中心 -> management-overview remains deterministic",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-084.json",
       "status": "pending",
       "source": "prototype:route-closure-contract"
@@ -871,7 +876,7 @@
       "ac_id": "AC-001",
       "layer": "ui",
       "command": "python3 -c \"print('prototype-route-closure-check')\"",
-      "assertion": "route closure 项目物料查看器 -> material-document-detail remains deterministic",
+      "assertion": "route closure 恢复诊断 -> project-detail remains deterministic",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-085.json",
       "status": "pending",
       "source": "prototype:route-closure-contract"
@@ -881,8 +886,38 @@
       "ac_id": "AC-001",
       "layer": "ui",
       "command": "python3 -c \"print('prototype-route-closure-check')\"",
-      "assertion": "route closure 物料文档详情 -> material-viewer remains deterministic",
+      "assertion": "route closure 恢复诊断 -> runtime-center remains deterministic",
       "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-086.json",
+      "status": "pending",
+      "source": "prototype:route-closure-contract"
+    },
+    {
+      "tc_id": "TC-087",
+      "ac_id": "AC-001",
+      "layer": "ui",
+      "command": "python3 -c \"print('prototype-route-closure-check')\"",
+      "assertion": "route closure 项目物料查看器 -> project-detail remains deterministic",
+      "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-087.json",
+      "status": "pending",
+      "source": "prototype:route-closure-contract"
+    },
+    {
+      "tc_id": "TC-088",
+      "ac_id": "AC-001",
+      "layer": "ui",
+      "command": "python3 -c \"print('prototype-route-closure-check')\"",
+      "assertion": "route closure 项目物料查看器 -> material-document-detail remains deterministic",
+      "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-088.json",
+      "status": "pending",
+      "source": "prototype:route-closure-contract"
+    },
+    {
+      "tc_id": "TC-089",
+      "ac_id": "AC-001",
+      "layer": "ui",
+      "command": "python3 -c \"print('prototype-route-closure-check')\"",
+      "assertion": "route closure 物料文档详情 -> material-viewer remains deterministic",
+      "evidence_path": ".beacon/evidence/test-results/prototype-design-intelligence-and-governed-rendering-separation/TC-089.json",
       "status": "pending",
       "source": "prototype:route-closure-contract"
     }

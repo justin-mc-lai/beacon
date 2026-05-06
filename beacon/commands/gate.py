@@ -200,6 +200,12 @@ REASON_CODES = [
     "prototype_compact_mode_detected",
     "prototype_baseline_regression",
     "prototype_artifact_inconsistent",
+    "prototype_sink_drift",
+    "prototype_source_drift",
+    "prototype_transaction_header_drift",
+    "prototype_metadata_drift",
+    "prototype_canonical_truth_missing",
+    "prototype_destructive_recreate_required",
     "prototype_cjk_parse_failed",
     "prototype_review_missing",
     "prototype_review_failed",
@@ -1305,26 +1311,38 @@ def check_prototype_contract(
             })
         if payload.get("status") == "stale":
             issues.append({
-                "reason_code": "prototype_stale",
+                "reason_code": str(payload.get("reason_code") or "prototype_stale"),
                 "blocked": True,
                 "message": f"prototype stale for feature {feature_dir.name}",
+                "details": {
+                    "drift_type": payload.get("drift_type"),
+                    "next_action": payload.get("next_action"),
+                },
             })
         if payload.get("status") == "inconsistent":
             issues.append({
-                "reason_code": "prototype_artifact_inconsistent",
+                "reason_code": str(payload.get("reason_code") or "prototype_artifact_inconsistent"),
                 "blocked": True,
                 "message": f"prototype artifacts inconsistent for feature {feature_dir.name}",
-                "details": {"reasons": payload.get("inconsistent_reasons", [])},
+                "details": {
+                    "reasons": payload.get("inconsistent_reasons", []),
+                    "drift_type": payload.get("drift_type"),
+                    "next_action": payload.get("next_action"),
+                },
             })
         if str(payload.get("drift_status") or "") == "drift":
             issues.append({
-                "reason_code": "prototype_artifact_inconsistent",
+                "reason_code": str(payload.get("reason_code") or "prototype_artifact_inconsistent"),
                 "blocked": True,
                 "message": f"prototype cross-sink drift detected for feature {feature_dir.name}",
+                "details": {
+                    "drift_type": payload.get("drift_type"),
+                    "next_action": payload.get("next_action"),
+                },
             })
         if str(payload.get("sqlite_projection_status") or "") == "fail":
             issues.append({
-                "reason_code": "prototype_artifact_inconsistent",
+                "reason_code": str(payload.get("reason_code") or "prototype_artifact_inconsistent"),
                 "blocked": True,
                 "message": f"prototype sqlite projection missing for feature {feature_dir.name}",
             })

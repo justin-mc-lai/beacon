@@ -1,0 +1,89 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure",
+  "feature_slug": "beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure",
+  "version": "v1.3.12",
+  "generated_at": "2026-05-06T01:24:38.593571+00:00",
+  "technical_archive_path": "docs/beacon/v1.3.12/.machine/execution/technical-implementation-beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.json",
+  "run_id": "run-20260506T012437Z-2ed7",
+  "modules_touched": [
+    ".beacon/evidence-manifest.json",
+    ".beacon/metadata",
+    ".beacon/state",
+    ".gitignore",
+    "AGENTS.md",
+    "CLAUDE.md",
+    "beacon/commands",
+    "beacon/utils",
+    "skills/beacon",
+    "tests/test_v114_implement_command.py",
+    "tests/test_v1311_board_launcher.py",
+    "tests/test_v133_ralph_resume_state_refresh.py",
+    "tests/test_v137_beacon_brainstorm.py",
+    "tests/test_v138_release_scorecard_gate_alignment.py"
+  ],
+  "changed_files": [
+    ".beacon/evidence-manifest.json",
+    ".beacon/metadata/project-version-metadata.json",
+    ".beacon/metadata/project-version-metadata.md",
+    ".beacon/state/project-metadata/latest.json",
+    ".gitignore",
+    "AGENTS.md",
+    "CLAUDE.md",
+    "beacon/commands/help.py",
+    "beacon/commands/implement.py",
+    "beacon/commands/implement/ralph.py",
+    "beacon/commands/prototype.py",
+    "beacon/commands/qa.py",
+    "beacon/commands/release.py",
+    "beacon/commands/status.py",
+    "beacon/commands/test_case.py",
+    "beacon/commands/user_story.py",
+    "beacon/utils/board_launcher.py",
+    "beacon/utils/brainstorm.py",
+    "beacon/utils/help_support.py",
+    "beacon/utils/material_audit.py",
+    "beacon/utils/material_sync.py",
+    "beacon/utils/prototype_utils.py",
+    "beacon/utils/ralph_runtime.py",
+    "beacon/utils/release_scorecard.py",
+    "beacon/utils/runtime_projection.py",
+    "skills/beacon/SKILL.md",
+    "skills/beacon/beacon-brainstorm/SKILL.md",
+    "skills/beacon/beacon-help/SKILL.md",
+    "skills/beacon/beacon-implement/SKILL.md",
+    "skills/beacon/beacon-prd/SKILL.md",
+    "skills/beacon/beacon-status/SKILL.md",
+    "skills/beacon/beacon-test-case/SKILL.md",
+    "skills/beacon/beacon-user-story/SKILL.md",
+    "skills/beacon/using-beacon/SKILL.md",
+    "tests/test_v114_implement_command.py",
+    "tests/test_v1311_board_launcher.py",
+    "tests/test_v133_ralph_resume_state_refresh.py",
+    "tests/test_v137_beacon_brainstorm.py",
+    "tests/test_v138_release_scorecard_gate_alignment.py"
+  ],
+  "known_risks": [],
+  "rollback_notes": [],
+  "artifact_update_obligations": [
+    "review_quality",
+    "acceptance"
+  ],
+  "verification_commands": [
+    "beacon implement run --runner codex-subagents",
+    "auto-test-status"
+  ],
+  "rewrite_targets": {
+    "prd": [],
+    "test_case": [],
+    "version_research": [
+      "Open artifact writeback obligations: ['review_quality', 'acceptance']"
+    ]
+  },
+  "baseline_uplift_candidates": [
+    "artifact_updates.required items must become explicit follow-up obligations before closure."
+  ],
+  "benchmark_refs": [
+    "docs/beacon/v1.3.12/.machine/execution/technical-implementation-beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.json"
+  ]
+}

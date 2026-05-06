@@ -3,21 +3,26 @@
   "feature": "beacon-execution-runtime-kernel",
   "feature_slug": "beacon-execution-runtime-kernel",
   "version": "v1.3.11",
-  "generated_at": "2026-05-02T13:32:04.378565",
+  "generated_at": "2026-05-03T23:12:12.668061",
   "compiler": {
     "requested_mode": "auto",
-    "effective_mode": "rule",
-    "generator_mode": "rule",
-    "fallback_reason": "llm_unavailable",
+    "effective_mode": "host",
+    "generator_mode": "host",
+    "fallback_reason": "",
     "capability_snapshot": {
       "schema_version": "1.0",
       "command_name": "test-case",
       "host_runtime": "codex",
-      "host_bridge_declared": false,
+      "host_runtime_supported": true,
+      "host_bridge_declared": true,
+      "host_bridge_command_available": true,
+      "host_bridge_command_source": "env_cmd",
+      "host_bridge_command_env": "BEACON_HOST_TEST_CASE_BRIDGE_CMD",
       "host_response_available": false,
       "host_response_source": "none",
       "host_response_path": "",
-      "host_semantic_ready": false,
+      "host_transport": "command-bridge",
+      "host_semantic_ready": true,
       "provider_available": false,
       "provider_key_present": false,
       "llm_disabled": false,
@@ -31,890 +36,320 @@
       "ac_id": "AC-001",
       "layer": "unit",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
+      "assertion": "Beacon 正式定义 `WorkItem / Run / Workspace / AgentSession / RetryEntry / ExecutionHost / OperatorAction` 七类运行实体，并为每类实体保留稳定 machine projection。",
       "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-001.json",
       "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      "source": "host-bridge"
     },
     {
       "tc_id": "TC-002",
       "ac_id": "AC-002",
       "layer": "unit",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
+      "assertion": "每类核心运行实体至少具备 `version / feature_slug / revision_id / status / source_hash-or-transaction / evidence_refs` 字段，保证可追溯。",
       "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-002.json",
       "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      "source": "host-bridge"
     },
     {
       "tc_id": "TC-003",
       "ac_id": "AC-003",
       "layer": "unit",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
+      "assertion": "Beacon 维护统一 execution host，而不是由 `implement / qa / team / ralph / validation` 各自保留一套“当前运行态”。",
       "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-003.json",
       "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      "source": "host-bridge"
     },
     {
       "tc_id": "TC-004",
       "ac_id": "AC-004",
       "layer": "unit",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
+      "assertion": "runtime domain model 只消费冻结 requirement truth，不直接回写 `prd / user-story / test-case / prototype`。",
       "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-004.json",
       "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      "source": "host-bridge"
     },
     {
       "tc_id": "TC-005",
       "ac_id": "AC-101",
       "layer": "ui",
       "command": "npx playwright test",
-      "assertion": "Web UI assertions and key actions pass",
+      "assertion": "Beacon 维护版本级 baseline host，至少注册 `feature_slug / revision_id / baseline_ref / writable_services / depends_on_features / target_branch`。",
       "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-005.json",
       "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      "source": "host-bridge"
     },
     {
       "tc_id": "TC-006",
       "ac_id": "AC-102",
       "layer": "unit",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
+      "assertion": "同版本多个 feature baseline 可以稳定共存，不会因共享单一 blueprint container 而互相覆盖。",
       "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-006.json",
       "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      "source": "host-bridge"
     },
     {
       "tc_id": "TC-007",
       "ac_id": "AC-103",
       "layer": "unit",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
+      "assertion": "Beacon 能基于 `depends_on_features / writable_services / direct delivery services / branch target` 自动生成 `ordered_feature_slugs / waves / conflict_reason_codes`。",
       "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-007.json",
       "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      "source": "host-bridge"
     },
     {
       "tc_id": "TC-008",
       "ac_id": "AC-104",
       "layer": "unit",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
+      "assertion": "当 feature 依赖不完整、baseline host stale 或 writable scope 冲突无法解析时，系统必须阻断继续执行并给出明确人工介入理由。",
       "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-008.json",
       "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      "source": "host-bridge"
     },
     {
       "tc_id": "TC-009",
       "ac_id": "AC-201",
       "layer": "unit",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
+      "assertion": "Kernel 提供统一 run scheduler，至少支持 `queued / admitted / running / blocked / retry_scheduled / stopped / completed / failed` 状态。",
       "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-009.json",
       "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      "source": "host-bridge"
     },
     {
       "tc_id": "TC-010",
       "ac_id": "AC-202",
       "layer": "unit",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
+      "assertion": "Scheduler 至少支持 `start / continue / stop / retry / reconcile / repair-handoff` 等正式 operator action。",
       "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-010.json",
       "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      "source": "host-bridge"
     },
     {
       "tc_id": "TC-011",
       "ac_id": "AC-203",
       "layer": "unit",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
+      "assertion": "每个 run 都有稳定的 `workspace root / writable service scope / baseline binding / evidence output root / recovery metadata`。",
       "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-011.json",
       "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      "source": "host-bridge"
     },
     {
       "tc_id": "TC-012",
       "ac_id": "AC-204",
       "layer": "unit",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
+      "assertion": "对 run interrupted、workspace drift、retry orphan、ordering stale、evidence sink missing 等失败类型，Beacon 存在确定性恢复路径，而不是只能整轮重跑。",
       "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-012.json",
       "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      "source": "host-bridge"
     },
     {
       "tc_id": "TC-013",
       "ac_id": "AC-301",
       "layer": "unit",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
+      "assertion": "Kernel 暴露正式 runtime read model，至少覆盖 `active_runs / blocked_runs / retry_queue / feature_ordering / baseline_host_state / recovery_alerts / latest_events`。",
       "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-013.json",
       "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      "source": "host-bridge"
     },
     {
       "tc_id": "TC-014",
       "ac_id": "AC-302",
       "layer": "unit",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
+      "assertion": "`implement / qa / release` 能消费同一套 runtime host 与 read model，但不替代自身正式放行职责。",
       "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-014.json",
       "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      "source": "host-bridge"
     },
     {
       "tc_id": "TC-015",
       "ac_id": "AC-303",
       "layer": "unit",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
+      "assertion": "`team / ralph / real-project-validation` 至少在运行态层面共享同一 kernel contract，不再各自维护不可见私有 scheduler 语义。",
       "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-015.json",
       "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      "source": "host-bridge"
     },
     {
       "tc_id": "TC-016",
       "ac_id": "AC-304",
       "layer": "ui",
       "command": "npx playwright test",
-      "assertion": "Web UI assertions and key actions pass",
+      "assertion": "runtime read model 足以支撑后续 operator workbench，无需 UI 再自行扫描散落 artifacts 拼装状态。",
       "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-016.json",
       "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      "source": "host-bridge"
     },
     {
       "tc_id": "TC-017",
       "ac_id": "AC-401",
       "layer": "unit",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
+      "assertion": "run admission 前必须校验 frozen truth、baseline host、workspace binding、writable scope 与 ordering projection。",
       "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-017.json",
       "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      "source": "host-bridge"
     },
     {
       "tc_id": "TC-018",
       "ac_id": "AC-402",
       "layer": "unit",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
+      "assertion": "当 baseline host、ordering、workspace 或 evidence sink 漂移时，continue/retry 会被阻断并明确指向 repair path。",
       "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-018.json",
       "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      "source": "host-bridge"
     },
     {
       "tc_id": "TC-019",
       "ac_id": "AC-403",
       "layer": "unit",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
+      "assertion": "runtime kernel 只能产出 execution evidence、diagnosis 和 operator recommendation，不得绕过 `beacon-change` 直接篡改 requirement truth。",
       "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-019.json",
       "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      "source": "host-bridge"
     },
     {
       "tc_id": "TC-020",
       "ac_id": "AC-404",
       "layer": "unit",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
+      "assertion": "`status / board / release / doctor advise` 对当前运行态的解释必须来源一致，不允许一个 surface 通过、另一个 surface 读到 stale runtime 状态。",
       "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-020.json",
       "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      "source": "host-bridge"
     },
     {
       "tc_id": "TC-021",
       "ac_id": "AC-501",
       "layer": "unit",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
+      "assertion": "`baseline host stale / ordering stale / workspace drift / writable scope conflict / blocked dependency / retry orphan / evidence sink missing` 等场景共享稳定 `reason_code / diagnosis / repair_path`。",
       "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-021.json",
       "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      "source": "host-bridge"
     },
     {
       "tc_id": "TC-022",
       "ac_id": "AC-502",
       "layer": "unit",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
+      "assertion": "`implement / qa / release / team / ralph / real-project-validation / board` 对同一 run 的状态、排序、workspace、evidence 解释一致。",
       "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-022.json",
       "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      "source": "host-bridge"
     },
     {
       "tc_id": "TC-023",
       "ac_id": "AC-503",
       "layer": "unit",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
+      "assertion": "不允许不同 surface 再各自产生一套互不兼容的运行错误语义或恢复路径。",
       "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-023.json",
       "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      "source": "host-bridge"
     },
     {
       "tc_id": "TC-024",
       "ac_id": "AC-504",
       "layer": "ui",
       "command": "npx playwright test",
-      "assertion": "Web UI assertions and key actions pass",
+      "assertion": "当 surface 可用性与 host 校验冲突时，必须优先执行 host fail-closed 约束，而不是为保持 UI 或命令连续性跳过校验。",
       "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-024.json",
       "status": "pending",
-      "source": "user-story:docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md"
+      "source": "host-bridge"
     },
     {
       "tc_id": "TC-025",
-      "ac_id": "AC-005",
+      "ac_id": "AC-601",
       "layer": "unit",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
+      "assertion": "prototype capability snapshot 必须把 host runtime support 与 host execution transport 分开表达，不能再把 `host_response_available` 直接当作唯一 host-ready 判据。",
       "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-025.json",
       "status": "pending",
-      "source": "prd:docs/beacon/v1.3.11/prd/beacon-execution-runtime-kernel.md"
+      "source": "host-bridge"
     },
     {
       "tc_id": "TC-026",
-      "ac_id": "AC-006",
+      "ac_id": "AC-602",
       "layer": "unit",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
+      "assertion": "当 `codex",
       "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-026.json",
       "status": "pending",
-      "source": "prd:docs/beacon/v1.3.11/prd/beacon-execution-runtime-kernel.md"
+      "source": "host-bridge"
     },
     {
       "tc_id": "TC-027",
-      "ac_id": "AC-007",
+      "ac_id": "AC-603",
       "layer": "unit",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
+      "assertion": "旧的 env/file response transport 仅作为兼容输入面保留，不能继续冒充默认 host-native execution 模式。",
       "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-027.json",
       "status": "pending",
-      "source": "prd:docs/beacon/v1.3.11/prd/beacon-execution-runtime-kernel.md"
+      "source": "host-bridge"
     },
     {
       "tc_id": "TC-028",
-      "ac_id": "AC-008",
+      "ac_id": "AC-604",
       "layer": "unit",
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
+      "assertion": "`prototype create` 在 `auto` 模式下必须遵循 `host-native -> provider-backed host -> rule fallback` 的优先级，并输出稳定 `fallback_reason / inference_mode / capability_snapshot`。",
       "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-028.json",
       "status": "pending",
-      "source": "prd:docs/beacon/v1.3.11/prd/beacon-execution-runtime-kernel.md"
+      "source": "host-bridge"
     },
     {
       "tc_id": "TC-029",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-jump-check')\"",
-      "assertion": "jump home -> management-overview is represented",
+      "ac_id": "AC-005",
+      "layer": "unit",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Shared Runtime Contract",
       "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-029.json",
       "status": "pending",
-      "source": "prototype:navigation-map"
+      "source": "host-bridge"
     },
     {
       "tc_id": "TC-030",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-jump-check')\"",
-      "assertion": "jump home -> project-detail is represented",
+      "ac_id": "AC-006",
+      "layer": "unit",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Workbench-Ready Read Model",
       "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-030.json",
       "status": "pending",
-      "source": "prototype:navigation-map"
+      "source": "host-bridge"
     },
     {
       "tc_id": "TC-031",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-jump-check')\"",
-      "assertion": "jump management-overview -> project-detail is represented",
+      "ac_id": "AC-007",
+      "layer": "unit",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Shared Reason Code Contract",
       "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-031.json",
       "status": "pending",
-      "source": "prototype:navigation-map"
+      "source": "host-bridge"
     },
     {
       "tc_id": "TC-032",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-jump-check')\"",
-      "assertion": "jump management-overview -> home is represented",
+      "ac_id": "AC-008",
+      "layer": "unit",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Cross-Surface Host Consistency",
       "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-032.json",
       "status": "pending",
-      "source": "prototype:navigation-map"
-    },
-    {
-      "tc_id": "TC-033",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-jump-check')\"",
-      "assertion": "jump project-detail -> runtime-center is represented",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-033.json",
-      "status": "pending",
-      "source": "prototype:navigation-map"
-    },
-    {
-      "tc_id": "TC-034",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-jump-check')\"",
-      "assertion": "jump project-detail -> recovery-diagnostics is represented",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-034.json",
-      "status": "pending",
-      "source": "prototype:navigation-map"
-    },
-    {
-      "tc_id": "TC-035",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-jump-check')\"",
-      "assertion": "jump project-detail -> material-viewer is represented",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-035.json",
-      "status": "pending",
-      "source": "prototype:navigation-map"
-    },
-    {
-      "tc_id": "TC-036",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-jump-check')\"",
-      "assertion": "jump project-detail -> management-overview is represented",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-036.json",
-      "status": "pending",
-      "source": "prototype:navigation-map"
-    },
-    {
-      "tc_id": "TC-037",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-jump-check')\"",
-      "assertion": "jump runtime-center -> project-detail is represented",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-037.json",
-      "status": "pending",
-      "source": "prototype:navigation-map"
-    },
-    {
-      "tc_id": "TC-038",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-jump-check')\"",
-      "assertion": "jump runtime-center -> management-overview is represented",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-038.json",
-      "status": "pending",
-      "source": "prototype:navigation-map"
-    },
-    {
-      "tc_id": "TC-039",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-jump-check')\"",
-      "assertion": "jump recovery-diagnostics -> project-detail is represented",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-039.json",
-      "status": "pending",
-      "source": "prototype:navigation-map"
-    },
-    {
-      "tc_id": "TC-040",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-jump-check')\"",
-      "assertion": "jump recovery-diagnostics -> runtime-center is represented",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-040.json",
-      "status": "pending",
-      "source": "prototype:navigation-map"
-    },
-    {
-      "tc_id": "TC-041",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-jump-check')\"",
-      "assertion": "jump material-viewer -> project-detail is represented",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-041.json",
-      "status": "pending",
-      "source": "prototype:navigation-map"
-    },
-    {
-      "tc_id": "TC-042",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-jump-check')\"",
-      "assertion": "jump material-viewer -> material-document-detail is represented",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-042.json",
-      "status": "pending",
-      "source": "prototype:navigation-map"
-    },
-    {
-      "tc_id": "TC-043",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-jump-check')\"",
-      "assertion": "jump material-document-detail -> material-viewer is represented",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-043.json",
-      "status": "pending",
-      "source": "prototype:navigation-map"
-    },
-    {
-      "tc_id": "TC-044",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-state-check')\"",
-      "assertion": "state blocked is represented in prototype",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-044.json",
-      "status": "pending",
-      "source": "prototype:interaction-map"
-    },
-    {
-      "tc_id": "TC-045",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-state-check')\"",
-      "assertion": "state degraded is represented in prototype",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-045.json",
-      "status": "pending",
-      "source": "prototype:interaction-map"
-    },
-    {
-      "tc_id": "TC-046",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-state-check')\"",
-      "assertion": "state doctor-suggested is represented in prototype",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-046.json",
-      "status": "pending",
-      "source": "prototype:interaction-map"
-    },
-    {
-      "tc_id": "TC-047",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-state-check')\"",
-      "assertion": "state document-open is represented in prototype",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-047.json",
-      "status": "pending",
-      "source": "prototype:interaction-map"
-    },
-    {
-      "tc_id": "TC-048",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-state-check')\"",
-      "assertion": "state draft is represented in prototype",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-048.json",
-      "status": "pending",
-      "source": "prototype:interaction-map"
-    },
-    {
-      "tc_id": "TC-049",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-state-check')\"",
-      "assertion": "state empty is represented in prototype",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-049.json",
-      "status": "pending",
-      "source": "prototype:interaction-map"
-    },
-    {
-      "tc_id": "TC-050",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-state-check')\"",
-      "assertion": "state error is represented in prototype",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-050.json",
-      "status": "pending",
-      "source": "prototype:interaction-map"
-    },
-    {
-      "tc_id": "TC-051",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-state-check')\"",
-      "assertion": "state filtered is represented in prototype",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-051.json",
-      "status": "pending",
-      "source": "prototype:interaction-map"
-    },
-    {
-      "tc_id": "TC-052",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-state-check')\"",
-      "assertion": "state frozen is represented in prototype",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-052.json",
-      "status": "pending",
-      "source": "prototype:interaction-map"
-    },
-    {
-      "tc_id": "TC-053",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-state-check')\"",
-      "assertion": "state healthy-warning is represented in prototype",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-053.json",
-      "status": "pending",
-      "source": "prototype:interaction-map"
-    },
-    {
-      "tc_id": "TC-054",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-state-check')\"",
-      "assertion": "state idle is represented in prototype",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-054.json",
-      "status": "pending",
-      "source": "prototype:interaction-map"
-    },
-    {
-      "tc_id": "TC-055",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-state-check')\"",
-      "assertion": "state intervention-needed is represented in prototype",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-055.json",
-      "status": "pending",
-      "source": "prototype:interaction-map"
-    },
-    {
-      "tc_id": "TC-056",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-state-check')\"",
-      "assertion": "state loading is represented in prototype",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-056.json",
-      "status": "pending",
-      "source": "prototype:interaction-map"
-    },
-    {
-      "tc_id": "TC-057",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-state-check')\"",
-      "assertion": "state ralph-active is represented in prototype",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-057.json",
-      "status": "pending",
-      "source": "prototype:interaction-map"
-    },
-    {
-      "tc_id": "TC-058",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-state-check')\"",
-      "assertion": "state ready is represented in prototype",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-058.json",
-      "status": "pending",
-      "source": "prototype:interaction-map"
-    },
-    {
-      "tc_id": "TC-059",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-state-check')\"",
-      "assertion": "state rebuild-suggested is represented in prototype",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-059.json",
-      "status": "pending",
-      "source": "prototype:interaction-map"
-    },
-    {
-      "tc_id": "TC-060",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-state-check')\"",
-      "assertion": "state requirement-missing is represented in prototype",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-060.json",
-      "status": "pending",
-      "source": "prototype:interaction-map"
-    },
-    {
-      "tc_id": "TC-061",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-state-check')\"",
-      "assertion": "state runtime-active is represented in prototype",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-061.json",
-      "status": "pending",
-      "source": "prototype:interaction-map"
-    },
-    {
-      "tc_id": "TC-062",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-state-check')\"",
-      "assertion": "state sibling-switch is represented in prototype",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-062.json",
-      "status": "pending",
-      "source": "prototype:interaction-map"
-    },
-    {
-      "tc_id": "TC-063",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-state-check')\"",
-      "assertion": "state single-active is represented in prototype",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-063.json",
-      "status": "pending",
-      "source": "prototype:interaction-map"
-    },
-    {
-      "tc_id": "TC-064",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-state-check')\"",
-      "assertion": "state source-missing is represented in prototype",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-064.json",
-      "status": "pending",
-      "source": "prototype:interaction-map"
-    },
-    {
-      "tc_id": "TC-065",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-state-check')\"",
-      "assertion": "state team-active is represented in prototype",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-065.json",
-      "status": "pending",
-      "source": "prototype:interaction-map"
-    },
-    {
-      "tc_id": "TC-066",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-state-check')\"",
-      "assertion": "state version-switch is represented in prototype",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-066.json",
-      "status": "pending",
-      "source": "prototype:interaction-map"
-    },
-    {
-      "tc_id": "TC-067",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-coverage-report-check')\"",
-      "assertion": "coverage report is consumed as a first-class prototype artifact",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-067.json",
-      "status": "pending",
-      "source": "prototype:coverage-report"
-    },
-    {
-      "tc_id": "TC-068",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-page-spec-check')\"",
-      "assertion": "page-spec home compiles required sections and route targets",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-068.json",
-      "status": "pending",
-      "source": "prototype:page-specs"
-    },
-    {
-      "tc_id": "TC-069",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-page-spec-check')\"",
-      "assertion": "page-spec management-overview compiles required sections and route targets",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-069.json",
-      "status": "pending",
-      "source": "prototype:page-specs"
-    },
-    {
-      "tc_id": "TC-070",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-page-spec-check')\"",
-      "assertion": "page-spec project-detail compiles required sections and route targets",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-070.json",
-      "status": "pending",
-      "source": "prototype:page-specs"
-    },
-    {
-      "tc_id": "TC-071",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-page-spec-check')\"",
-      "assertion": "page-spec runtime-center compiles required sections and route targets",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-071.json",
-      "status": "pending",
-      "source": "prototype:page-specs"
-    },
-    {
-      "tc_id": "TC-072",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-page-spec-check')\"",
-      "assertion": "page-spec recovery-diagnostics compiles required sections and route targets",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-072.json",
-      "status": "pending",
-      "source": "prototype:page-specs"
-    },
-    {
-      "tc_id": "TC-073",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-page-spec-check')\"",
-      "assertion": "page-spec material-viewer compiles required sections and route targets",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-073.json",
-      "status": "pending",
-      "source": "prototype:page-specs"
-    },
-    {
-      "tc_id": "TC-074",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-page-spec-check')\"",
-      "assertion": "page-spec material-document-detail compiles required sections and route targets",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-074.json",
-      "status": "pending",
-      "source": "prototype:page-specs"
-    },
-    {
-      "tc_id": "TC-075",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-route-closure-check')\"",
-      "assertion": "route closure 首页 -> management-overview remains deterministic",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-075.json",
-      "status": "pending",
-      "source": "prototype:route-closure-contract"
-    },
-    {
-      "tc_id": "TC-076",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-route-closure-check')\"",
-      "assertion": "route closure 首页 -> project-detail remains deterministic",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-076.json",
-      "status": "pending",
-      "source": "prototype:route-closure-contract"
-    },
-    {
-      "tc_id": "TC-077",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-route-closure-check')\"",
-      "assertion": "route closure 管理总览 -> project-detail remains deterministic",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-077.json",
-      "status": "pending",
-      "source": "prototype:route-closure-contract"
-    },
-    {
-      "tc_id": "TC-078",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-route-closure-check')\"",
-      "assertion": "route closure 管理总览 -> home remains deterministic",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-078.json",
-      "status": "pending",
-      "source": "prototype:route-closure-contract"
-    },
-    {
-      "tc_id": "TC-079",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-route-closure-check')\"",
-      "assertion": "route closure 项目详情 -> runtime-center remains deterministic",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-079.json",
-      "status": "pending",
-      "source": "prototype:route-closure-contract"
-    },
-    {
-      "tc_id": "TC-080",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-route-closure-check')\"",
-      "assertion": "route closure 项目详情 -> recovery-diagnostics remains deterministic",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-080.json",
-      "status": "pending",
-      "source": "prototype:route-closure-contract"
-    },
-    {
-      "tc_id": "TC-081",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-route-closure-check')\"",
-      "assertion": "route closure 项目详情 -> material-viewer remains deterministic",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-081.json",
-      "status": "pending",
-      "source": "prototype:route-closure-contract"
-    },
-    {
-      "tc_id": "TC-082",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-route-closure-check')\"",
-      "assertion": "route closure 项目详情 -> management-overview remains deterministic",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-082.json",
-      "status": "pending",
-      "source": "prototype:route-closure-contract"
-    },
-    {
-      "tc_id": "TC-083",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-route-closure-check')\"",
-      "assertion": "route closure 运行中心 -> project-detail remains deterministic",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-083.json",
-      "status": "pending",
-      "source": "prototype:route-closure-contract"
-    },
-    {
-      "tc_id": "TC-084",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-route-closure-check')\"",
-      "assertion": "route closure 运行中心 -> management-overview remains deterministic",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-084.json",
-      "status": "pending",
-      "source": "prototype:route-closure-contract"
-    },
-    {
-      "tc_id": "TC-085",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-route-closure-check')\"",
-      "assertion": "route closure 恢复诊断 -> project-detail remains deterministic",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-085.json",
-      "status": "pending",
-      "source": "prototype:route-closure-contract"
-    },
-    {
-      "tc_id": "TC-086",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-route-closure-check')\"",
-      "assertion": "route closure 恢复诊断 -> runtime-center remains deterministic",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-086.json",
-      "status": "pending",
-      "source": "prototype:route-closure-contract"
-    },
-    {
-      "tc_id": "TC-087",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-route-closure-check')\"",
-      "assertion": "route closure 项目物料查看器 -> project-detail remains deterministic",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-087.json",
-      "status": "pending",
-      "source": "prototype:route-closure-contract"
-    },
-    {
-      "tc_id": "TC-088",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-route-closure-check')\"",
-      "assertion": "route closure 项目物料查看器 -> material-document-detail remains deterministic",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-088.json",
-      "status": "pending",
-      "source": "prototype:route-closure-contract"
-    },
-    {
-      "tc_id": "TC-089",
-      "ac_id": "AC-001",
-      "layer": "ui",
-      "command": "python3 -c \"print('prototype-route-closure-check')\"",
-      "assertion": "route closure 物料文档详情 -> material-viewer remains deterministic",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-089.json",
-      "status": "pending",
-      "source": "prototype:route-closure-contract"
+      "source": "host-bridge"
     }
   ]
 }

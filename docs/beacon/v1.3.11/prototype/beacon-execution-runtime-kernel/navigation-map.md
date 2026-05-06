@@ -1,4 +1,4 @@
-# 导航图：Beacon Execution Runtime Kernel
+# 导航图：beacon-execution-runtime-kernel
 
 **Primary Entry**: `home`
 **Primary Exit**: `material-viewer`

@@ -1,0 +1,115 @@
+{
+  "schema_version": "1.0",
+  "run_id": "prd-bootstrap-20260428T030252Z",
+  "feature": "manage-oss-sync-sqlite-import-analysis",
+  "feature_slug": "manage-oss-sync-sqlite-import-analysis",
+  "description": "在保持 /Users/apple/Developer/Personal/oss-sync 为唯一 canonical 根目录的前提下，增强 manage-oss-sync：支持通过 skill 调用下载 GitHub 开源项目到 oss-sync 内合适分类；生成和维护索引；使用本地 SQLite 保存开源项目 upstream、owner/repo、本地目录、分类、canonical/snapshot、默认分支、最新 master/main 提交、最后同步时间、分析状态；支持在 manage-oss-sync 中查询、读取、分析和学习项目，产出基础分析结果与中文学习文档。",
+  "version": "v1.3.8",
+  "generated_at": "2026-04-28T03:02:52.612342+00:00",
+  "mode": "dry-run",
+  "dry_run": true,
+  "no_overwrite": true,
+  "strict_context_verify": true,
+  "targets": {
+    "prd": "docs/beacon/v1.3.8/prd/manage-oss-sync-sqlite-import-analysis.md",
+    "user_story": "docs/beacon/v1.3.8/user-story/manage-oss-sync-sqlite-import-analysis.md",
+    "test_case": "docs/beacon/v1.3.8/qa/test-cases/manage-oss-sync-sqlite-import-analysis.md"
+  },
+  "quality": {
+    "max_placeholders": 0,
+    "total_placeholders": 0,
+    "per_doc": {
+      "prd": 0,
+      "user_story": 0,
+      "test_case": 0
+    },
+    "ok": true
+  },
+  "consistency": {
+    "story_ac_ids": [
+      "AC-001",
+      "AC-002",
+      "AC-003",
+      "AC-004",
+      "AC-005"
+    ],
+    "test_case_ac_ids": [
+      "AC-001",
+      "AC-002",
+      "AC-003",
+      "AC-004",
+      "AC-005"
+    ],
+    "missing_in_test_case": [],
+    "ok": true
+  },
+  "context_verify": {
+    "project_root": "/Users/apple/Developer/Personal/products/beacon",
+    "runtime_version": "v1.3.8",
+    "strict": true,
+    "status": "pass",
+    "ok": true,
+    "checks": [
+      {
+        "name": "context_files_presence",
+        "status": "pass",
+        "details": {
+          "missing": []
+        }
+      },
+      {
+        "name": "managed_block_integrity",
+        "status": "pass",
+        "details": {
+          "issues": []
+        }
+      },
+      {
+        "name": "managed_block_version_drift",
+        "status": "pass",
+        "details": {
+          "drifted": [],
+          "unknown": []
+        }
+      },
+      {
+        "name": "global_boundaries_presence",
+        "status": "pass",
+        "details": {
+          "path": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/global-boundaries.md",
+          "exists": true
+        }
+      },
+      {
+        "name": "global_boundaries_inheritance",
+        "status": "pass",
+        "details": {
+          "missing_references": []
+        }
+      }
+    ],
+    "files": {
+      "CLAUDE.md": {
+        "path": "/Users/apple/Developer/Personal/products/beacon/CLAUDE.md",
+        "exists": true,
+        "marker_integrity": "ok",
+        "managed_version": "v1.3.8",
+        "managed_docs_version": "v1.3.8",
+        "version_drift": false
+      },
+      "AGENTS.md": {
+        "path": "/Users/apple/Developer/Personal/products/beacon/AGENTS.md",
+        "exists": true,
+        "marker_integrity": "ok",
+        "managed_version": "v1.3.8",
+        "managed_docs_version": "v1.3.8",
+        "version_drift": false
+      }
+    }
+  },
+  "status": "planned",
+  "reason_code": "",
+  "recommended_command": "",
+  "write_actions": [],
+  "rollback_plan": []
+}

@@ -1,9 +1,9 @@
-# 线框草图汇总：Prototype Design Intelligence And Governed Rendering Separation
+# 线框草图汇总：prototype-design-intelligence-and-governed-rendering-separation
 
 **Feature**: `prototype-design-intelligence-and-governed-rendering-separation`
 **Version**: `v1.3.11`
 **Mode**: `wireframe`
-**Generated At**: `2026-05-02T15:13:51Z`
+**Generated At**: `2026-05-04T23:16:42Z`
 
 ## 页面清单
 

@@ -19,11 +19,13 @@ from beacon.utils.learning_loop import load_latest_evo_experiment
 from beacon.utils.qa_precision import load_feature_qa_scorecard
 from beacon.utils.qa_runtime import load_qa_status
 from beacon.utils.requirement_clarity import build_requirement_clarity_gate_payload, load_requirement_clarity_state
+from beacon.utils.requirement_deepening import build_requirement_completeness_gate
 from beacon.utils.revision_state import load_revision_state
 from beacon.utils.semantic_runtime import evaluate_semantic_contract
 from beacon.utils.story_state import feature_slug
 from beacon.utils.technical_review_contract import build_technical_review_gate_payload, load_technical_review_state
 from beacon.utils.prototype_support import version_requires_prototype
+from beacon.utils.prototype_support import prototype_status
 from beacon.utils.versioning import (
     project_runtime_feature_enabled,
     resolve_runtime_version,
@@ -41,6 +43,18 @@ def _load_json(path: Path) -> dict[str, Any]:
     except Exception:  # noqa: BLE001
         return {}
     return payload if isinstance(payload, dict) else {}
+
+
+def _json_safe(value: Any) -> Any:
+    if isinstance(value, Path):
+        return str(value)
+    if isinstance(value, dict):
+        return {str(key): _json_safe(item) for key, item in value.items()}
+    if isinstance(value, list):
+        return [_json_safe(item) for item in value]
+    if isinstance(value, tuple):
+        return [_json_safe(item) for item in value]
+    return value
 
 
 def _state_sort_key(path: Path, payload: dict[str, Any]) -> tuple[str, str, str, str, str, str, int, str]:
@@ -92,6 +106,9 @@ def _latest_revision_feature(project_root: Path, *, version: str) -> str:
 
 
 def _resolve_scorecard_feature(project_root: Path, *, version: str, qa_status: dict[str, Any]) -> str:
+    revision_feature = _latest_revision_feature(project_root, version=version)
+    if revision_feature:
+        return revision_feature
     release_ready_feature = _latest_release_ready_feature(project_root, version=version)
     if release_ready_feature:
         return release_ready_feature
@@ -393,6 +410,7 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
     exhaustiveness = load_exhaustiveness_report(project_root, feature=feature) if feature else {}
     feature_scorecard = load_feature_qa_scorecard(project_root, feature=feature) if feature else {}
     acceptance_envelope = _acceptance_envelope_payload(project_root, version=resolved_version, feature=feature) if feature else {}
+    prototype_projection = _json_safe(prototype_status(project_root, resolved_version, feature)) if feature else {}
     implementation_plan = (
         load_implementation_plan_progress(project_root, version=resolved_version, feature=feature)
         if feature and implementation_plan_supported(resolved_version)
@@ -409,6 +427,12 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
     revision_binding = _revision_binding(revision_state)
     feature_change = _feature_change_payload(project_root, version=resolved_version, feature=feature) if feature else {}
     delivery_type = _delivery_type(revision_state, feature_change) if feature else ""
+    requirement_completeness_gate = build_requirement_completeness_gate(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        target_stage="release",
+    ) if feature else {}
     requirement_clarity_gate = build_requirement_clarity_gate_payload(project_root, version=resolved_version, feature=feature) if feature else {}
     requirement_clarity_state = load_requirement_clarity_state(project_root, feature=feature) if feature else {}
     technical_review_gate = (
@@ -530,6 +554,7 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
             and bool(change_documents.get("json_exists", False))
             and bool(change_documents.get("version_match", False))
             and bool(change_documents.get("includes_current_feature", False))
+            and str(requirement_completeness_gate.get("status") or "pass") in {"pass", "pass_with_downgrade"}
         )
     if project_runtime_feature_enabled(
         project_root,
@@ -538,6 +563,8 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
         runtime_version=resolved_runtime,
     ):
         release_ready = release_ready and str(acceptance_transaction.get("status") or "warn").strip().lower() == "pass"
+    if feature and requirement_completeness_gate:
+        release_ready = release_ready and str(requirement_completeness_gate.get("status") or "pass") in {"pass", "pass_with_downgrade"}
     if (
         runtime_feature_supported("v1.1.10", runtime_version=resolved_runtime)
         and gate_pass
@@ -622,6 +649,8 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
     host_native_reason_codes = list(release_delivery_read_model.get("risk_flags") or [])
     if semantic and not semantic_pass:
         host_native_reason_codes.append(str(semantic.get("reason_code") or "semantic_not_ready"))
+    if requirement_completeness_gate and str(requirement_completeness_gate.get("status") or "") == "blocked":
+        host_native_reason_codes.append(str(requirement_completeness_gate.get("reason_code") or "requirement_completeness_blocked"))
     host_native_delivery = {
         "schema_version": "1.0",
         "implement": (release_delivery_read_model.get("implement") or {}).get("delivery_contract", {}),
@@ -677,6 +706,7 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
         "acceptance": acceptance,
         "acceptance_transaction": acceptance_transaction if isinstance(acceptance_transaction, dict) else {},
         "feature_qa_scorecard": feature_scorecard if isinstance(feature_scorecard, dict) else {},
+        "prototype_projection": prototype_projection if isinstance(prototype_projection, dict) else {},
         "implementation_plan": implementation_plan if isinstance(implementation_plan, dict) else {},
         "git_workflow": {
             "count": len(git_workflow_contracts),
@@ -693,6 +723,7 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
             "report_json_path": str(requirement_clarity_gate.get("report_json_path") or ""),
             "report_markdown_path": str(requirement_clarity_gate.get("report_markdown_path") or ""),
         },
+        "requirement_completeness": requirement_completeness_gate if isinstance(requirement_completeness_gate, dict) else {},
         "technical_review": {
             "status": str(technical_review_gate.get("status") or "not_required"),
             "blocked": bool(technical_review_gate.get("blocked", False)),
@@ -724,10 +755,12 @@ def summarize_release_scorecard(scorecard: dict[str, Any] | None) -> dict[str, A
     acceptance = payload.get("acceptance") if isinstance(payload.get("acceptance"), dict) else {}
     exhaustiveness = payload.get("exhaustiveness") if isinstance(payload.get("exhaustiveness"), dict) else {}
     feature_scorecard = payload.get("feature_qa_scorecard") if isinstance(payload.get("feature_qa_scorecard"), dict) else {}
+    prototype_projection = payload.get("prototype_projection") if isinstance(payload.get("prototype_projection"), dict) else {}
     learning = payload.get("learning_scorecard") if isinstance(payload.get("learning_scorecard"), dict) else {}
     implementation_plan = payload.get("implementation_plan") if isinstance(payload.get("implementation_plan"), dict) else {}
     git_workflow = payload.get("git_workflow") if isinstance(payload.get("git_workflow"), dict) else {}
     requirement_clarity = payload.get("requirement_clarity") if isinstance(payload.get("requirement_clarity"), dict) else {}
+    requirement_completeness = payload.get("requirement_completeness") if isinstance(payload.get("requirement_completeness"), dict) else {}
     technical_review = payload.get("technical_review") if isinstance(payload.get("technical_review"), dict) else {}
     prompt_boundary = payload.get("prompt_boundary") if isinstance(payload.get("prompt_boundary"), dict) else {}
     change_documents = payload.get("change_documents") if isinstance(payload.get("change_documents"), dict) else {}
@@ -755,6 +788,10 @@ def summarize_release_scorecard(scorecard: dict[str, Any] | None) -> dict[str, A
         "exhaustiveness_threshold": exhaustiveness.get("threshold"),
         "release_confidence_min": feature_scorecard.get("release_confidence_min"),
         "release_confidence_avg": feature_scorecard.get("release_confidence_avg"),
+        "prototype_status": str(prototype_projection.get("status") or ""),
+        "prototype_review_status": str(prototype_projection.get("review_status") or ""),
+        "prototype_gate_ready": bool(prototype_projection.get("gate_ready", False)),
+        "prototype_drift_status": str(prototype_projection.get("drift_status") or ""),
         "review_required_count": int(feature_scorecard.get("review_required_count") or 0),
         "needs_replay_count": int(feature_scorecard.get("needs_replay_count") or 0),
         "false_complete_risk": feature_scorecard.get("false_complete_risk"),
@@ -779,6 +816,9 @@ def summarize_release_scorecard(scorecard: dict[str, Any] | None) -> dict[str, A
         "requirement_clarity_status": str(requirement_clarity.get("status") or ""),
         "requirement_clarity_blocked": bool(requirement_clarity.get("blocked", False)),
         "requirement_clarity_finding_count": int(requirement_clarity.get("finding_count") or 0),
+        "requirement_completeness_status": str(requirement_completeness.get("status") or ""),
+        "requirement_completeness_blocked": bool(requirement_completeness.get("blocked", False)),
+        "requirement_completeness_reason_code": str(requirement_completeness.get("reason_code") or ""),
         "technical_review_status": str(technical_review.get("status") or ""),
         "technical_review_blocked": bool(technical_review.get("blocked", False)),
         "technical_review_review_status": str(technical_review.get("review_status") or ""),

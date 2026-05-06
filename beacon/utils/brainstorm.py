@@ -2,11 +2,13 @@
 
 from __future__ import annotations
 
+import re
 from pathlib import Path
 from typing import Any
 
 from beacon.utils.archive_governance import load_archive_read_model
 from beacon.utils.diagram_truth import load_feature_diagram_truth
+from beacon.utils.help_support import build_help_payload
 from beacon.utils.project_metadata import metadata_machine_path, resolve_project_metadata_view
 from beacon.utils.runtime import now_iso
 from beacon.utils.story_state import feature_slug
@@ -19,6 +21,12 @@ MODES = (
     "implementation-readiness",
     "scope-simplification",
 )
+
+_MODE_ALIASES = {
+    "frozen-truth-delta": "implementation-readiness",
+    "evolution-exploration": "project-evolution",
+    "redundancy-pruning": "scope-simplification",
+}
 
 _TRUTH_DIR_PARTS = (
     ("docs", "beacon", "{version}", "prd"),
@@ -111,13 +119,49 @@ def _line_contains_any(text: str, words: tuple[str, ...]) -> list[str]:
     return out
 
 
-def resolve_brainstorm_output_path(project_root: Path, *, prompt: str, output: str = "") -> Path:
+def _prompt_targets_external_context(prompt: str) -> bool:
+    lowered = prompt.lower()
+    external_markers = (
+        "/users/",
+        "shopxo",
+        "rolo",
+        "symphony",
+        "oss-sync",
+        "vibe-kanban",
+        "third-party",
+        "第三方",
+        "供应商",
+        "provider",
+    )
+    return any(marker in lowered for marker in external_markers)
+
+
+def _path_safe_slug(text: str, *, fallback: str) -> str:
+    slug = feature_slug(text)
+    slug = re.sub(r"[\\\\/:]+", "-", slug)
+    slug = re.sub(r"[^0-9a-zA-Z\u4e00-\u9fff._-]+", "-", slug)
+    slug = re.sub(r"-{2,}", "-", slug).strip("-._")
+    return slug or fallback
+
+
+def resolve_brainstorm_output_path(
+    project_root: Path,
+    *,
+    prompt: str,
+    feature: str = "",
+    output: str = "",
+) -> Path:
     if output:
         path = Path(output)
         return path if path.is_absolute() else project_root / path
     date = now_iso()[:10]
-    slug = feature_slug(prompt)[:80] or "beacon-brainstorm"
-    return project_root / "docs" / "brainstorms" / f"{date}-{slug}.md"
+    if feature.strip():
+        slug = _path_safe_slug(feature, fallback="beacon-brainstorm")[:96]
+        return project_root / "docs" / "brainstorms" / f"{date}-{slug}-brainstorm.md"
+    slug = _path_safe_slug(prompt, fallback="beacon-brainstorm")[:80]
+    if _prompt_targets_external_context(prompt):
+        return project_root / "docs" / "brainstorms" / "external" / f"{date}-{slug}.md"
+    return project_root / "docs" / "brainstorms" / f"{date}-beacon-brainstorm-{slug}.md"
 
 
 def assert_not_requirement_truth_path(path: Path, *, project_root: Path, version: str) -> None:
@@ -134,17 +178,18 @@ def assert_not_requirement_truth_path(path: Path, *, project_root: Path, version
 
 
 def _mode_recommendation(mode: str) -> tuple[str, str]:
-    if mode == "project-evolution":
+    canonical_mode = _MODE_ALIASES.get(mode, mode)
+    if canonical_mode == "project-evolution":
         return (
             "Treat this as an evolution candidate. Capture options in brainstorm output first, then route accepted scope through beacon-prd or beacon-change.",
             "beacon-prd or beacon-change",
         )
-    if mode == "implementation-readiness":
+    if canonical_mode == "implementation-readiness":
         return (
             "Use this only as a pre-implementation reasoning check. If frozen PRD/user-story/test-case drift is found, stop and route through beacon-change before implement.",
             "beacon-implement after drift is resolved",
         )
-    if mode == "scope-simplification":
+    if canonical_mode == "scope-simplification":
         return (
             "Cut any idea that does not preserve the frozen user outcome or acceptance evidence. Prefer the smallest requirement delta.",
             "beacon-change if scope changes are needed",
@@ -155,6 +200,103 @@ def _mode_recommendation(mode: str) -> tuple[str, str]:
     )
 
 
+def _string_list(values: object) -> list[str]:
+    if not isinstance(values, list):
+        return []
+    return [str(item).strip() for item in values if str(item).strip()]
+
+
+def _load_convergence_contract(
+    project_root: Path,
+    *,
+    version: str,
+    feature: str,
+    prompt: str,
+    requirement_gap_digest: dict[str, Any] | None = None,
+    brainstorm_hint: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    if not feature.strip():
+        return {}
+    payload = build_help_payload(project_root, version=version, feature=feature)
+    digest = requirement_gap_digest if isinstance(requirement_gap_digest, dict) else payload.get("requirement_gap_digest", {})
+    hint = brainstorm_hint if isinstance(brainstorm_hint, dict) else payload.get("brainstorm_hint", {})
+    change_loop = payload.get("change_loop", {}) if isinstance(payload.get("change_loop"), dict) else {}
+    completeness = payload.get("requirement_completeness", {}) if isinstance(payload.get("requirement_completeness"), dict) else {}
+    digest = digest if isinstance(digest, dict) else {}
+    hint = hint if isinstance(hint, dict) else {}
+    gap_dimensions = _string_list(digest.get("gap_dimensions"))
+    focus_areas = _string_list(hint.get("focus_areas")) or _string_list(completeness.get("focus_areas"))
+    open_questions = _string_list(hint.get("open_questions"))
+    if not open_questions and focus_areas:
+        open_questions = [f"补齐 `{item}` 是否会影响冻结后的验收闭环？" for item in focus_areas[:4]]
+    has_followup = bool(digest.get("human_followup_needed")) or bool(change_loop.get("recommended", False))
+    if not has_followup:
+        recommended_route = str(digest.get("recommended_route") or "beacon-brainstorm")
+        route_reason = str(digest.get("gap_summary") or "no requirement gap requires follow-up")
+        target_artifact = ""
+    elif bool(change_loop.get("recommended", False)) or str(digest.get("recommended_route") or "") == "beacon-change":
+        recommended_route = "beacon-change"
+        route_reason = str(change_loop.get("reason") or digest.get("gap_summary") or "change loop is required")
+        target_artifact = ""
+    else:
+        prompt_text = f"{prompt} {' '.join(gap_dimensions)} {' '.join(focus_areas)}".lower()
+        test_markers = ("test", "case", "coverage", "scenario", "ac", "验证", "测试", "覆盖", "场景")
+        story_markers = ("story", "user", "role", "persona", "boundary", "exception", "用户", "角色", "边界", "异常", "状态机", "风险")
+        if any(marker in prompt_text for marker in test_markers):
+            target_artifact = "test-case"
+            recommended_route = "beacon-test-case"
+            route_reason = "gap is coverage-heavy and should be deepened in test-case"
+        elif any(marker in prompt_text for marker in story_markers):
+            target_artifact = "user-story"
+            recommended_route = "beacon-user-story"
+            route_reason = "gap is outcome/role-heavy and should be deepened in user-story"
+        elif "coverage" in " ".join(gap_dimensions).lower() or "test" in " ".join(gap_dimensions).lower():
+            target_artifact = "test-case"
+            recommended_route = "beacon-test-case"
+            route_reason = "gap dimensions indicate missing verification coverage"
+        else:
+            target_artifact = "user-story"
+            recommended_route = "beacon-user-story"
+            route_reason = "gap dimensions indicate missing product behavior or role detail"
+
+    source_truth_ref = str(digest.get("source_truth_ref") or f"docs/beacon/{version}/prd/{feature_slug(feature)}.md")
+    writeback_target = (
+        f"docs/beacon/{version}/{target_artifact}/{feature_slug(feature)}.md"
+        if target_artifact
+        else ""
+    )
+    supplement_task = {
+        "feature": feature,
+        "version": version,
+        "target_artifact": target_artifact,
+        "writeback_target": writeback_target,
+        "candidate_kind": "supplement_task" if target_artifact else "",
+        "candidate_payload": {
+            "gap_dimensions": gap_dimensions,
+            "focus_areas": focus_areas,
+            "open_questions": open_questions,
+        }
+        if target_artifact
+        else {},
+        "source_truth_ref": source_truth_ref,
+        "rationale": route_reason,
+        "confidence": "medium" if target_artifact else "low",
+        "human_decision": "pending",
+        "audit_trail_required": bool(target_artifact),
+        "recommended_route": recommended_route,
+    }
+    return {
+        "feature": feature,
+        "version": version,
+        "gap_digest": digest,
+        "brainstorm_hint": hint,
+        "change_loop": change_loop,
+        "supplement_task": supplement_task,
+        "route_reason": route_reason,
+        "recommended_route": recommended_route,
+    }
+
+
 def run_beacon_brainstorm(
     project_root: Path,
     *,
@@ -163,17 +305,31 @@ def run_beacon_brainstorm(
     mode: str = "requirement-convergence",
     feature: str = "",
     output: str = "",
+    requirement_gap_digest: dict[str, Any] | None = None,
+    brainstorm_hint: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    if mode not in MODES:
+    canonical_mode = _MODE_ALIASES.get(mode, mode)
+    if canonical_mode not in MODES:
         raise ValueError(f"unsupported brainstorm mode: {mode}")
-    resolved_version = resolve_target_version(project_root, version)
+    resolved_version = _resolve_brainstorm_version(project_root, version=version, feature=feature, prompt=prompt)
     materials = collect_version_materials(project_root, version=resolved_version, feature=feature)
     source_text = _joined_excerpts(materials)
     archive_boundary = load_archive_read_model(project_root, version=resolved_version, feature=feature) if feature else {}
     diagram_truth = load_feature_diagram_truth(project_root, version=resolved_version, feature=feature) if feature else {}
     resolved_metadata_view = resolve_project_metadata_view(project_root, version=resolved_version)
     metadata_path = metadata_machine_path(project_root)
-    recommendation, next_route = _mode_recommendation(mode)
+    recommendation, next_route = _mode_recommendation(canonical_mode)
+    convergence_contract = _load_convergence_contract(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        prompt=prompt,
+        requirement_gap_digest=requirement_gap_digest,
+        brainstorm_hint=brainstorm_hint,
+    )
+    contract_gap_digest = convergence_contract.get("gap_digest", {}) if isinstance(convergence_contract.get("gap_digest"), dict) else {}
+    contract_brainstorm_hint = convergence_contract.get("brainstorm_hint", {}) if isinstance(convergence_contract.get("brainstorm_hint"), dict) else {}
+    contract_supplement_task = convergence_contract.get("supplement_task", {}) if isinstance(convergence_contract.get("supplement_task"), dict) else {}
     facts = [
         f"Beacon version material root is docs/beacon/{resolved_version}.",
         "This sidecar is read-only against Beacon requirement truth.",
@@ -195,6 +351,10 @@ def run_beacon_brainstorm(
     selected_branch = str(resolved_metadata_view.get("selected_branch") or "").strip()
     if selected_branch:
         facts.append(f"Resolved canonical branch: {selected_branch}.")
+    if contract_gap_digest.get("human_followup_needed"):
+        facts.append(
+            f"Convergence route resolved: {contract_supplement_task.get('recommended_route') or contract_gap_digest.get('recommended_route') or 'beacon-brainstorm'}."
+        )
     assumptions = [
         "The prompt may represent a requirement gap, an evolution idea, or implementation-risk question until mapped to frozen evidence.",
         "Any accepted requirement change must be routed through the Beacon requirement/change loop before implementation.",
@@ -220,13 +380,14 @@ def run_beacon_brainstorm(
         source_text,
         ("fr-", "ac-", "tc-", "non-goal", "boundary", "baseline", "brainstorm", "implement"),
     )
-    output_path = resolve_brainstorm_output_path(project_root, prompt=prompt, output=output)
+    output_path = resolve_brainstorm_output_path(project_root, prompt=prompt, feature=feature, output=output)
     assert_not_requirement_truth_path(output_path, project_root=project_root, version=resolved_version)
     payload = {
         "schema_version": "1.0",
         "artifact": "beacon_brainstorm",
         "version": resolved_version,
         "mode": mode,
+        "canonical_mode": canonical_mode,
         "prompt_summary": prompt.strip(),
         "feature": feature,
         "feature_slug": feature_slug(feature) if feature else "",
@@ -246,14 +407,43 @@ def run_beacon_brainstorm(
         "diagram_truth": diagram_truth,
         "resolved_metadata_view": resolved_metadata_view,
         "metadata_ref": _rel(project_root, metadata_path) if metadata_path.exists() else "",
+        "requirement_gap_digest": contract_gap_digest,
+        "brainstorm_hint": contract_brainstorm_hint,
+        "supplement_task": contract_supplement_task,
+        "convergence_contract": convergence_contract,
         "converged_recommendation": recommendation,
-        "next_route": next_route,
+        "next_route": "brainstorm closed" if not contract_supplement_task.get("target_artifact") and not contract_gap_digest.get("human_followup_needed") else next_route,
+        "recommended_route": str(
+            contract_supplement_task.get("recommended_route")
+            or contract_gap_digest.get("recommended_route")
+            or next_route
+        ),
         "output_path": _rel(project_root, output_path),
         "generated_at": now_iso(),
     }
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(render_brainstorm_markdown(payload), encoding="utf-8")
     return payload
+
+
+def _resolve_brainstorm_version(project_root: Path, *, version: str, feature: str, prompt: str) -> str:
+    resolved = resolve_target_version(project_root, version)
+    if str(version or "").strip() != "auto":
+        return resolved
+    feature_version = _extract_version_from_feature(feature) or _extract_version_from_prompt(prompt)
+    if feature_version:
+        return resolve_target_version(project_root, feature_version)
+    return resolved
+
+
+def _extract_version_from_feature(feature: str) -> str:
+    match = re.search(r"v\d+\.\d+\.\d+", feature or "")
+    return match.group(0) if match else ""
+
+
+def _extract_version_from_prompt(prompt: str) -> str:
+    match = re.search(r"v\d+\.\d+\.\d+", prompt or "")
+    return match.group(0) if match else ""
 
 
 def render_brainstorm_markdown(payload: dict[str, Any]) -> str:
@@ -280,6 +470,7 @@ def render_brainstorm_markdown(payload: dict[str, Any]) -> str:
         "",
         f"- version: `{payload.get('version', '')}`",
         f"- mode: `{payload.get('mode', '')}`",
+        f"- canonical_mode: `{payload.get('canonical_mode', '')}`",
         f"- feature: `{payload.get('feature', '')}`",
         "",
     ]
@@ -290,6 +481,24 @@ def render_brainstorm_markdown(payload: dict[str, Any]) -> str:
     lines.extend(list_block("socratic_questions", payload.get("socratic_questions", [])))
     lines.extend(list_block("redundancy_cuts", payload.get("redundancy_cuts", [])))
     lines.extend(list_block("material_signals", payload.get("material_signals", [])))
+    gap_digest = payload.get("requirement_gap_digest") if isinstance(payload.get("requirement_gap_digest"), dict) else {}
+    brainstorm_hint = payload.get("brainstorm_hint") if isinstance(payload.get("brainstorm_hint"), dict) else {}
+    supplement_task = payload.get("supplement_task") if isinstance(payload.get("supplement_task"), dict) else {}
+    if gap_digest or brainstorm_hint or supplement_task:
+        lines.extend(
+            [
+                "## convergence_contract",
+                f"- recommended_route: `{payload.get('recommended_route', '')}`",
+                f"- route_reason: `{(payload.get('convergence_contract', {}) or {}).get('route_reason', '') if isinstance(payload.get('convergence_contract'), dict) else ''}`",
+                "",
+            ]
+        )
+        if gap_digest:
+            lines.extend(list_block("requirement_gap_digest", [f"{k}: {v}" for k, v in gap_digest.items()]))
+        if brainstorm_hint:
+            lines.extend(list_block("brainstorm_hint", [f"{k}: {v}" for k, v in brainstorm_hint.items()]))
+        if supplement_task:
+            lines.extend(list_block("supplement_task", [f"{k}: {v}" for k, v in supplement_task.items()]))
     archive_boundary = payload.get("archive_boundary") if isinstance(payload.get("archive_boundary"), dict) else {}
     archive_feature = archive_boundary.get("feature") if isinstance(archive_boundary.get("feature"), dict) else {}
     if archive_feature:

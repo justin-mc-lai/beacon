@@ -1,4 +1,4 @@
-# UX PRD：Prototype Design Intelligence And Governed Rendering Separation
+# UX PRD：prototype-design-intelligence-and-governed-rendering-separation
 
 **Feature**: `prototype-design-intelligence-and-governed-rendering-separation`
 **Version**: `v1.3.11`

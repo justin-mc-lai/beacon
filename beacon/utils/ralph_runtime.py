@@ -156,6 +156,34 @@ def _normalize_ralph_action(raw_action: str, raw_command: str, *, review_gate_re
     return "human_review"
 
 
+def _requirement_gate_handoff(payload: dict[str, Any]) -> tuple[str, str, str]:
+    if not isinstance(payload, dict) or not payload:
+        return "", "", ""
+    requirement_gate = (
+        payload.get("requirement_completeness_gate")
+        if isinstance(payload.get("requirement_completeness_gate"), dict)
+        else payload.get("requirement_completeness")
+        if isinstance(payload.get("requirement_completeness"), dict)
+        else {}
+    )
+    if not isinstance(requirement_gate, dict) or not requirement_gate:
+        return "", "", ""
+    if not bool(requirement_gate.get("blocked")) and str(requirement_gate.get("status") or "").strip().lower() != "blocked":
+        return "", "", ""
+    handoff = requirement_gate.get("human_loop_handoff") if isinstance(requirement_gate.get("human_loop_handoff"), dict) else {}
+    reason = str(requirement_gate.get("reason_code") or "requirement_completeness_blocked").strip()
+    command = str(handoff.get("recommended_command") or requirement_gate.get("recommended_command") or "").strip()
+    next_action = _normalize_ralph_action(
+        str(handoff.get("action") or ""),
+        command,
+        review_gate_ready=False,
+        continue_decision=reason,
+    )
+    if next_action == "":
+        next_action = "human_review"
+    return reason, next_action, command
+
+
 def finalize_ralph_state(
     project_root: Path,
     *,
@@ -173,6 +201,8 @@ def finalize_ralph_state(
     review_gate_ready = bool(review_payload.get("gate_ready", False))
     gate_payload = gate_release.get("payload") if isinstance(gate_release, dict) and isinstance(gate_release.get("payload"), dict) else {}
     gate_pass = str(gate_payload.get("status", "") or "").strip().lower() == "pass"
+    qa_requirement_reason, qa_requirement_next_action, qa_requirement_command = _requirement_gate_handoff(qa_payload)
+    release_requirement_reason, release_requirement_next_action, release_requirement_command = _requirement_gate_handoff(gate_payload)
     prior_failure_streak = int(state.get("failure_streak", 0) or 0)
     prior_no_delta_streak = int(state.get("no_delta_streak", 0) or 0)
     no_delta_streak = prior_no_delta_streak + 1 if _scorecard_no_delta(feature_scorecard) else 0
@@ -199,11 +229,23 @@ def finalize_ralph_state(
             next_action = "human_review"
             current_blocker = "ralph reached max rounds without release_ready"
             failure_streak = prior_failure_streak + 1
-        elif continue_decision == "ready_for_release" and review_gate_ready and not gate_pass:
+        elif qa_requirement_reason:
             stop_state = "human_blocked"
-            next_action = "release"
-            recommended_command = f"beacon gate check release --project-root {project_root} --version {state.get('version', '')}"
-            current_blocker = "gate_release_blocked"
+            next_action = qa_requirement_next_action or "human_review"
+            recommended_command = qa_requirement_command
+            current_blocker = qa_requirement_reason
+            failure_streak = prior_failure_streak + 1
+        elif continue_decision == "ready_for_release" and review_gate_ready and not gate_pass:
+            if release_requirement_reason:
+                stop_state = "human_blocked"
+                next_action = release_requirement_next_action or "human_review"
+                recommended_command = release_requirement_command
+                current_blocker = release_requirement_reason
+            else:
+                stop_state = "human_blocked"
+                next_action = "release"
+                recommended_command = f"beacon gate check release --project-root {project_root} --version {state.get('version', '')}"
+                current_blocker = "gate_release_blocked"
             failure_streak = prior_failure_streak + 1
         elif continue_decision == "ready_for_release" and not review_gate_ready:
             stop_state = "human_blocked"

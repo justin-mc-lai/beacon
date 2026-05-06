@@ -1,0 +1,147 @@
+{
+  "schema_version": "1.0",
+  "run_id": "prd-bootstrap-20260422T081800Z",
+  "feature": "beacon-v1.3.6-lifecycle-foundation-transaction-consistent-dual-write-and-memory-convergence",
+  "feature_slug": "beacon-v1.3.6-lifecycle-foundation-transaction-consistent-dual-write-and-memory-convergence",
+  "description": "在 v1.3.6 建立 Beacon 生命周期基座统一改造线：把全局规范、版本物料、生命周期状态机、记忆体基座、LLM 规划、人机事务型强一致双写收口到同一套 canonical foundation。要求人类只看到最少必要信息，机器内部保持自由编排，但 human/machine/runtime 多面必须由同一 canonical envelope 单向投影并强一致提交，防止 prototype/implement/qa/release 与 memory/writeback 漂移。",
+  "version": "v1.3.6",
+  "generated_at": "2026-04-22T08:18:00.289911+00:00",
+  "mode": "apply",
+  "dry_run": false,
+  "no_overwrite": false,
+  "strict_context_verify": true,
+  "targets": {
+    "prd": "docs/beacon/v1.3.6/prd/beacon-v1.3.6-lifecycle-foundation-transaction-consistent-dual-write-and-memory-convergence.md",
+    "user_story": "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-lifecycle-foundation-transaction-consistent-dual-write-and-memory-convergence.md",
+    "test_case": "docs/beacon/v1.3.6/qa/test-cases/beacon-v1.3.6-lifecycle-foundation-transaction-consistent-dual-write-and-memory-convergence.md"
+  },
+  "quality": {
+    "max_placeholders": 0,
+    "total_placeholders": 0,
+    "per_doc": {
+      "prd": 0,
+      "user_story": 0,
+      "test_case": 0
+    },
+    "ok": true
+  },
+  "consistency": {
+    "story_ac_ids": [
+      "AC-001",
+      "AC-002",
+      "AC-003",
+      "AC-004",
+      "AC-005"
+    ],
+    "test_case_ac_ids": [
+      "AC-001",
+      "AC-002",
+      "AC-003",
+      "AC-004",
+      "AC-005"
+    ],
+    "missing_in_test_case": [],
+    "ok": true
+  },
+  "context_verify": {
+    "project_root": "/Users/apple/Developer/Personal/products/beacon",
+    "runtime_version": "v1.3.6",
+    "strict": true,
+    "status": "pass",
+    "ok": true,
+    "checks": [
+      {
+        "name": "context_files_presence",
+        "status": "pass",
+        "details": {
+          "missing": []
+        }
+      },
+      {
+        "name": "managed_block_integrity",
+        "status": "pass",
+        "details": {
+          "issues": []
+        }
+      },
+      {
+        "name": "managed_block_version_drift",
+        "status": "pass",
+        "details": {
+          "drifted": [],
+          "unknown": []
+        }
+      },
+      {
+        "name": "global_boundaries_presence",
+        "status": "pass",
+        "details": {
+          "path": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/global-boundaries.md",
+          "exists": true
+        }
+      },
+      {
+        "name": "global_boundaries_inheritance",
+        "status": "pass",
+        "details": {
+          "missing_references": []
+        }
+      }
+    ],
+    "files": {
+      "CLAUDE.md": {
+        "path": "/Users/apple/Developer/Personal/products/beacon/CLAUDE.md",
+        "exists": true,
+        "marker_integrity": "ok",
+        "managed_version": "v1.3.6",
+        "managed_docs_version": "v1.3.6",
+        "version_drift": false
+      },
+      "AGENTS.md": {
+        "path": "/Users/apple/Developer/Personal/products/beacon/AGENTS.md",
+        "exists": true,
+        "marker_integrity": "ok",
+        "managed_version": "v1.3.6",
+        "managed_docs_version": "v1.3.6",
+        "version_drift": false
+      }
+    }
+  },
+  "status": "applied",
+  "reason_code": "",
+  "recommended_command": "",
+  "write_actions": [
+    {
+      "target": "prd",
+      "path": "docs/beacon/v1.3.6/prd/beacon-v1.3.6-lifecycle-foundation-transaction-consistent-dual-write-and-memory-convergence.md",
+      "action": "created",
+      "backup_path": ""
+    },
+    {
+      "target": "user_story",
+      "path": "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-lifecycle-foundation-transaction-consistent-dual-write-and-memory-convergence.md",
+      "action": "created",
+      "backup_path": ""
+    },
+    {
+      "target": "test_case",
+      "path": "docs/beacon/v1.3.6/qa/test-cases/beacon-v1.3.6-lifecycle-foundation-transaction-consistent-dual-write-and-memory-convergence.md",
+      "action": "created",
+      "backup_path": ""
+    }
+  ],
+  "rollback_plan": [
+    {
+      "action": "delete",
+      "path": "docs/beacon/v1.3.6/prd/beacon-v1.3.6-lifecycle-foundation-transaction-consistent-dual-write-and-memory-convergence.md"
+    },
+    {
+      "action": "delete",
+      "path": "docs/beacon/v1.3.6/user-story/beacon-v1.3.6-lifecycle-foundation-transaction-consistent-dual-write-and-memory-convergence.md"
+    },
+    {
+      "action": "delete",
+      "path": "docs/beacon/v1.3.6/qa/test-cases/beacon-v1.3.6-lifecycle-foundation-transaction-consistent-dual-write-and-memory-convergence.md"
+    }
+  ]
+}

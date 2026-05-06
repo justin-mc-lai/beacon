@@ -1,4 +1,4 @@
-# Prototype Review: Beacon Execution Runtime Kernel
+# Prototype Review: beacon-execution-runtime-kernel
 
 **Overall Status**: `pass`
 **Prototype Mode**: `wireframe`
@@ -6,7 +6,7 @@
 **Machine Contract Status**: `pass`
 **SQLite Projection Status**: `pass`
 **Drift Status**: `consistent`
-**Generated At**: `2026-05-02T15:22:57Z`
+**Generated At**: `2026-05-03T15:08:30Z`
 
 | Check | Status | Message |
 |-------|--------|---------|

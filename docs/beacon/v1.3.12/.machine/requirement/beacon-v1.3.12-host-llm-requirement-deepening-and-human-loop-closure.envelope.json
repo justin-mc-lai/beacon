@@ -1,0 +1,131 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure",
+  "feature_slug": "beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure",
+  "version": "v1.3.12",
+  "generated_at": "2026-05-06T01:20:47.909037+00:00",
+  "sources": {
+    "prd": "prd:docs/beacon/v1.3.12/prd/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md",
+    "user_story": "user-story:docs/beacon/v1.3.12/user-story/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md",
+    "qa": "qa:test-cases:docs/beacon/v1.3.12/qa/test-cases/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md"
+  },
+  "dimensions": {
+    "actors": [
+      {
+        "name": "operator",
+        "source_truth_ref": "prd:docs/beacon/v1.3.12/prd/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md",
+        "rationale": "derived from PRD and current requirement package"
+      },
+      {
+        "name": "user",
+        "source_truth_ref": "prd:docs/beacon/v1.3.12/prd/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md",
+        "rationale": "derived from PRD and current requirement package"
+      }
+    ],
+    "capability_differences": [
+      {
+        "name": "role-specific capability differences",
+        "source_truth_ref": "prd:docs/beacon/v1.3.12/prd/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md",
+        "rationale": "v1.3.12 requires role and capability variance discovery"
+      }
+    ],
+    "state_machine": [
+      {
+        "name": "draft -> supplemented -> refrozen -> delivery-consumed",
+        "source_truth_ref": "prd:docs/beacon/v1.3.12/prd/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md",
+        "rationale": "requirement deepening adds explicit human-loop refreeze semantics"
+      }
+    ],
+    "happy_paths": [
+      {
+        "name": "PRD deepened into story/test-case and consumed by implement/qa",
+        "source_truth_ref": "prd:docs/beacon/v1.3.12/prd/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md",
+        "rationale": "main requirement closure path"
+      }
+    ],
+    "negative_paths": [
+      {
+        "name": "host deepening unavailable and rule fallback used",
+        "source_truth_ref": "prd:docs/beacon/v1.3.12/prd/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md",
+        "rationale": "downgrade path must stay auditable"
+      }
+    ],
+    "boundary_conditions": [
+      {
+        "name": "no new public lifecycle stage or command",
+        "source_truth_ref": "prd:docs/beacon/v1.3.12/prd/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md",
+        "rationale": "global boundary constraint"
+      }
+    ],
+    "exceptions": [
+      {
+        "name": "manual markdown patch without decision trail",
+        "source_truth_ref": "user-story:docs/beacon/v1.3.12/user-story/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md",
+        "rationale": "must fail closed for silent truth mutation"
+      }
+    ],
+    "recovery_paths": [
+      {
+        "name": "decision_log -> writeback_projection -> truth_refreeze",
+        "source_truth_ref": "prd:docs/beacon/v1.3.12/prd/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md",
+        "rationale": "formal recovery/writeback contract"
+      }
+    ],
+    "risks": [
+      {
+        "name": "scope creep from uncontrolled LLM expansion",
+        "source_truth_ref": "prd:docs/beacon/v1.3.12/prd/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md",
+        "rationale": "accepted/rejected/deferred decisions required"
+      }
+    ],
+    "open_questions": [
+      {
+        "name": "Requirement package must keep accepted/rejected/deferred decisions queryable.",
+        "source_truth_ref": "prd:docs/beacon/v1.3.12/prd/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md",
+        "rationale": "carry unresolved clarification into machine-readable envelope"
+      }
+    ]
+  },
+  "source_excerpt": {
+    "prd": [
+      "Feature**: `beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure`",
+      "Version**: `v1.3.12`",
+      "Date**: `2026-05-05`",
+      "Status**: `freeze-ready`",
+      "Track**: `main`",
+      "Scenario**: `requirement_package_governance + host_native_semantic_runtime`",
+      "Template**: `主 PRD / requirement-deepening`",
+      " Global boundaries: `docs/beacon/global-boundaries.md`",
+      " Prior version summary: `docs/beacon/v1.3.11/SUMMARY.md`",
+      " Prior execution index: `docs/beacon/v1.3.11/execution/index.md`",
+      " Prior runtime governance PRD:",
+      " `docs/beacon/v1.3.11/prd/beacon-v1-3-11-orchestration-runtime-and-long-running-execution-governance.md`",
+      " Prior PRD anti-drift PRD:",
+      " `docs/beacon/v1.3.11/prd/beacon-v1.3.11-prd-freeze-anti-drift-and-machine-mirror-reconciliation.md`"
+    ],
+    "user_story": [
+      " version: `v1.3.12`",
+      " feature: `beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure`",
+      " status: `freeze-ready`",
+      " upstream_prd: `docs/beacon/v1.3.12/prd/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md`",
+      " current_revision: `R1`",
+      " source_revision: `R0`",
+      "本故事线覆盖 Beacon 在 `v1.3.12` 中把 `prd / user-story / test-case` 从 formal package projection 提升为 host-assisted requirement deepening closure。它不新增公开 stage，不替代 `implement / qa / release`，而是要求现有 `beacon-prd / beacon-user-story / beacon-test-case` 成为统一的人机补齐主面，并把补齐结果重新冻结进三份正式 requirement 文档。",
+      " `branch-flow`",
+      " 人类补齐与回流必须经过 `prd -> brainstorm -> user-story -> test-case -> implement -> qa -> release` 的显式分支路由",
+      " `change` 只接收需要改 truth 的分支，不接收单纯补覆盖的候选"
+    ],
+    "qa": [
+      "Feature**: Beacon v1.3.12 host-LLM requirement deepening and human-loop closure",
+      "Test Type**: ALL",
+      "Version**: v1.3.12",
+      "Generated**: 2026-05-05 18:30",
+      "Requested Mode**: auto",
+      "Effective Mode**: host-or-rule",
+      "Fallback Reason**: capability-dependent",
+      "Memory Context**: v1.3.11 requirement closure + host-native semantic runtime",
+      "AC Matrix JSON**: docs/beacon/v1.3.12/.machine/qa/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.ac-test-matrix.json",
+      "QA9 Matrix JSON**: docs/beacon/v1.3.12/.machine/qa/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.qa9-matrix.json"
+    ]
+  }
+}

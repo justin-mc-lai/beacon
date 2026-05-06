@@ -1,4 +1,4 @@
-# 导航图：Prototype Design Intelligence And Governed Rendering Separation
+# 导航图：prototype-design-intelligence-and-governed-rendering-separation
 
 **Primary Entry**: `home`
 **Primary Exit**: `material-viewer`

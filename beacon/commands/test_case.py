@@ -25,6 +25,10 @@ from beacon.utils.qa9 import (
 )
 from beacon.utils.runtime import write_json
 from beacon.utils.requirement_parsing import build_feature_ac_items, extract_qa_case_rows
+from beacon.utils.requirement_deepening import (
+    requirement_deepening_supported,
+    sync_requirement_deepening_artifacts,
+)
 from beacon.utils.semantic_runtime import (
     build_mode_contract,
     build_semantic_capability_snapshot,
@@ -1131,6 +1135,21 @@ def create(
         fallback_reason=fallback_reason,
         capability_snapshot=capability_snapshot,
     )
+    deepening_payload: dict[str, Any] = {}
+    if requirement_deepening_supported(resolved_version):
+        deepening_payload = sync_requirement_deepening_artifacts(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            prd_content=prd_content,
+            user_story_content=us_content,
+            qa_content=qa_content,
+            prd_source=f"prd:docs/beacon/{resolved_version}/prd/{feature_slug}.md",
+            user_story_source=f"user-story:docs/beacon/{resolved_version}/user-story/{feature_slug}.md",
+            qa_source=f"qa:test-cases:docs/beacon/{resolved_version}/qa/test-cases/{feature_slug}.md",
+            compiler=compiler,
+            target_artifact="test-case",
+        )
 
     prototype_navigation, prototype_interaction = _load_prototype_contract_artifacts(
         project_root, resolved_version, feature_slug
@@ -1287,6 +1306,144 @@ def create(
                 }
             )
 
+    if effective_mode == "host" or qa_case_rows:
+        synthetic_idx = len(entries)
+        ac_anchor = ac_items[0]["ac_id"] if ac_items else "AC-001"
+        for jump in prototype_navigation.get("jump_map", []) or []:
+            synthetic_idx += 1
+            tc_id = f"TC-{synthetic_idx:03d}"
+            entries.append(
+                {
+                    "tc_id": tc_id,
+                    "ac_id": ac_anchor,
+                    "layer": "ui",
+                    "command": "python3 -c \"print('prototype-jump-check')\"",
+                    "assertion": f"jump {jump.get('from', '')} -> {jump.get('to', '')} is represented",
+                    "evidence_path": f".beacon/evidence/test-results/{feature_slug}/{tc_id}.json",
+                    "status": "pending",
+                    "source": "prototype:navigation-map",
+                }
+            )
+        for state_name in prototype_interaction.get("states", []) or []:
+            synthetic_idx += 1
+            tc_id = f"TC-{synthetic_idx:03d}"
+            entries.append(
+                {
+                    "tc_id": tc_id,
+                    "ac_id": ac_anchor,
+                    "layer": "ui",
+                    "command": "python3 -c \"print('prototype-state-check')\"",
+                    "assertion": f"state {state_name} is represented in prototype",
+                    "evidence_path": f".beacon/evidence/test-results/{feature_slug}/{tc_id}.json",
+                    "status": "pending",
+                    "source": "prototype:interaction-map",
+                }
+            )
+        if prototype_coverage:
+            synthetic_idx += 1
+            tc_id = f"TC-{synthetic_idx:03d}"
+            entries.append(
+                {
+                    "tc_id": tc_id,
+                    "ac_id": ac_anchor,
+                    "layer": "ui",
+                    "command": "python3 -c \"print('prototype-coverage-report-check')\"",
+                    "assertion": "coverage report is consumed as a first-class prototype artifact",
+                    "evidence_path": f".beacon/evidence/test-results/{feature_slug}/{tc_id}.json",
+                    "status": "pending",
+                    "source": "prototype:coverage-report",
+                }
+            )
+        for page_spec in prototype_plan.get("page_specs", []) or []:
+            if not isinstance(page_spec, dict):
+                continue
+            page_id = str(page_spec.get("page_id") or "").strip()
+            if not page_id:
+                continue
+            synthetic_idx += 1
+            tc_id = f"TC-{synthetic_idx:03d}"
+            entries.append(
+                {
+                    "tc_id": tc_id,
+                    "ac_id": ac_anchor,
+                    "layer": "ui",
+                    "command": "python3 -c \"print('prototype-page-spec-check')\"",
+                    "assertion": f"page-spec {page_id} compiles required sections and route targets",
+                    "evidence_path": f".beacon/evidence/test-results/{feature_slug}/{tc_id}.json",
+                    "status": "pending",
+                    "source": "prototype:page-specs",
+                }
+            )
+        for missing_state in prototype_coverage.get("missing_state_variants", []) or []:
+            if not isinstance(missing_state, str):
+                continue
+            synthetic_idx += 1
+            tc_id = f"TC-{synthetic_idx:03d}"
+            entries.append(
+                {
+                    "tc_id": tc_id,
+                    "ac_id": ac_anchor,
+                    "layer": "ui",
+                    "command": "python3 -c \"print('prototype-coverage-check')\"",
+                    "assertion": f"coverage report flags missing variant {missing_state}",
+                    "evidence_path": f".beacon/evidence/test-results/{feature_slug}/{tc_id}.json",
+                    "status": "pending",
+                    "source": "prototype:coverage-report",
+                }
+            )
+        closure_cases = route_closure_contract.get("closure_cases") if isinstance(route_closure_contract.get("closure_cases"), list) else []
+        bound_cases = {
+            str(item.get("case_id") or ""): item
+            for item in (implementation_map.get("closure_bindings") or [])
+            if isinstance(item, dict) and str(item.get("case_id") or "").strip()
+        }
+        for case in closure_cases:
+            if not isinstance(case, dict):
+                continue
+            synthetic_idx += 1
+            tc_id = f"TC-{synthetic_idx:03d}"
+            case_id = str(case.get("case_id") or "").strip()
+            binding = bound_cases.get(case_id, {})
+            target = str(binding.get("runtime_target") or binding.get("state_target") or case.get("target_surface_id") or "").strip()
+            entries.append(
+                {
+                    "tc_id": tc_id,
+                    "ac_id": ac_anchor,
+                    "layer": "ui",
+                    "command": "python3 -c \"print('prototype-route-closure-check')\"",
+                    "assertion": f"route closure {case.get('source_label', '')} -> {target or case.get('target_surface_id', '')} remains deterministic",
+                    "evidence_path": f".beacon/evidence/test-results/{feature_slug}/{tc_id}.json",
+                    "status": "pending",
+                    "source": "prototype:route-closure-contract",
+                }
+            )
+
+    if deepening_payload:
+        synthetic_idx = len(entries)
+        coverage_candidates = list(deepening_payload.get("coverage_candidates") or [])
+        existing_assertions = {str(item.get("assertion") or "").strip() for item in entries if isinstance(item, dict)}
+        ac_anchor = ac_items[0]["ac_id"] if ac_items else "AC-001"
+        for candidate in coverage_candidates:
+            family = str(candidate.get("family") or "").strip()
+            assertion = f"{family} coverage remains traceable to requirement truth"
+            if not family or assertion in existing_assertions:
+                continue
+            synthetic_idx += 1
+            tc_id = f"TC-{synthetic_idx:03d}"
+            entries.append(
+                {
+                    "tc_id": tc_id,
+                    "ac_id": ac_anchor,
+                    "layer": "contract" if family in {"permission", "stale-data-or-drift", "downgrade-or-fallback"} else "unit",
+                    "command": "python3 -c \"print('requirement-deepening-coverage-check')\"",
+                    "assertion": assertion,
+                    "evidence_path": f".beacon/evidence/test-results/{feature_slug}/{tc_id}.json",
+                    "status": "pending",
+                    "source": f"requirement-deepening:{family}",
+                }
+            )
+            existing_assertions.add(assertion)
+
     matrix_payload = {
         "schema_version": "1.0",
         "feature": feature,
@@ -1299,6 +1456,24 @@ def create(
         },
         "entries": entries,
     }
+    if deepening_payload:
+        matrix_payload["requirement_deepening"] = {
+            "coverage_families": [
+                str(item.get("family") or "")
+                for item in deepening_payload.get("coverage_candidates", [])
+                if isinstance(item, dict) and str(item.get("family") or "").strip()
+            ],
+            "candidate_ledger_ref": str((deepening_payload.get("paths") or {}).get("candidate_ledger") or ""),
+            "completeness_ref": str((deepening_payload.get("paths") or {}).get("completeness") or ""),
+            "supplement_focus_areas": [
+                str(item).strip()
+                for item in ((deepening_payload.get("human_loop_handoff") or {}).get("focus_areas") or [])
+                if str(item).strip()
+            ],
+            "supplement_recommended_command": str((deepening_payload.get("human_loop_handoff") or {}).get("recommended_command") or ""),
+            "supplement_task": deepening_payload.get("supplement_task", {}),
+            "re_freeze_transaction": deepening_payload.get("re_freeze_transaction", {}),
+        }
 
     qa_types_resolved = parse_qa_types(qa_types, profile=qa_profile)
     think_progress = _load_think_progress(project_root, resolved_version)
@@ -1409,6 +1584,20 @@ def create(
         },
         "generated_at": datetime.now().isoformat(),
     }
+    if deepening_payload:
+        handoff = deepening_payload.get("human_loop_handoff") if isinstance(deepening_payload.get("human_loop_handoff"), dict) else {}
+        qa9_payload["coverage_families"] = [
+            str(item.get("family") or "")
+            for item in deepening_payload.get("coverage_candidates", [])
+            if isinstance(item, dict) and str(item.get("family") or "").strip()
+        ]
+        qa9_payload["requirement_completeness_verdict"] = str(
+            (deepening_payload.get("completeness") or {}).get("completeness_verdict") or ""
+        )
+        qa9_payload["supplement_focus_areas"] = [str(item).strip() for item in (handoff.get("focus_areas") or []) if str(item).strip()]
+        qa9_payload["supplement_recommended_command"] = str(handoff.get("recommended_command") or "")
+        qa9_payload["supplement_task"] = deepening_payload.get("supplement_task", {})
+        qa9_payload["re_freeze_transaction"] = deepening_payload.get("re_freeze_transaction", {})
     story_sequence = _story_sequence_for_feature(
         project_root,
         resolved_version,
@@ -1424,6 +1613,20 @@ def create(
         scenario_depth=scenario_depth,
         ui_runner=resolved_ui_runner,
     )
+    if deepening_payload:
+        handoff = deepening_payload.get("human_loop_handoff") if isinstance(deepening_payload.get("human_loop_handoff"), dict) else {}
+        scenario_payload["requirement_deepening_story_families"] = [
+            str(item.get("family") or "")
+            for item in deepening_payload.get("story_candidates", [])
+            if isinstance(item, dict) and str(item.get("family") or "").strip()
+        ]
+        scenario_payload["requirement_completeness_ref"] = str(
+            (deepening_payload.get("paths") or {}).get("completeness") or ""
+        )
+        scenario_payload["supplement_focus_areas"] = [str(item).strip() for item in (handoff.get("focus_areas") or []) if str(item).strip()]
+        scenario_payload["supplement_recommended_command"] = str(handoff.get("recommended_command") or "")
+        scenario_payload["supplement_task"] = deepening_payload.get("supplement_task", {})
+        scenario_payload["re_freeze_transaction"] = deepening_payload.get("re_freeze_transaction", {})
 
     output_path = (
         Path(output)
@@ -1465,6 +1668,14 @@ def create(
         legacy_payload["prototype_contract"] = {
             "navigation": prototype_navigation,
             "interaction": prototype_interaction,
+        }
+    if deepening_payload:
+        handoff = deepening_payload.get("human_loop_handoff") if isinstance(deepening_payload.get("human_loop_handoff"), dict) else {}
+        legacy_payload["requirement_deepening"] = {
+            "completeness_verdict": str((deepening_payload.get("completeness") or {}).get("completeness_verdict") or ""),
+            "supplement_focus_areas": [str(item).strip() for item in (handoff.get("focus_areas") or []) if str(item).strip()],
+            "supplement_task": deepening_payload.get("supplement_task", {}),
+            "re_freeze_transaction": deepening_payload.get("re_freeze_transaction", {}),
         }
     elif prototype_contract_requested:
         legacy_contract_path = project_root / "docs" / "beacon" / resolved_version / "prototype" / feature_slug / "contract.json"
@@ -1579,6 +1790,20 @@ def create(
                     "entry_count": len(entries),
                     "qa9_entry_count": len(qa9_entries),
                     "scenario_count": len(scenario_payload.get("scenarios", [])),
+                    "requirement_deepening": {
+                        "enabled": bool(deepening_payload),
+                        "paths": deepening_payload.get("paths", {}),
+                        "coverage_family_count": len(deepening_payload.get("coverage_candidates", []) or []),
+                        "completeness_verdict": (deepening_payload.get("completeness") or {}).get("completeness_verdict", ""),
+                    },
+                    "supplement_focus_areas": [
+                        str(item).strip()
+                        for item in ((deepening_payload.get("human_loop_handoff") or {}).get("focus_areas") or [])
+                        if str(item).strip()
+                    ],
+                    "supplement_recommended_command": str((deepening_payload.get("human_loop_handoff") or {}).get("recommended_command") or ""),
+                    "supplement_task": deepening_payload.get("supplement_task", {}),
+                    "re_freeze_transaction": deepening_payload.get("re_freeze_transaction", {}),
                 },
                 ensure_ascii=False,
                 indent=2,

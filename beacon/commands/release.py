@@ -1161,6 +1161,23 @@ def scorecard(
         typer.echo(
             f"Continue decision: {feature_scorecard.get('continue_decision', '')} backfill_required={feature_scorecard.get('test_case_backfill_required', False)}"
         )
+    prototype_projection = payload.get("prototype_projection", {})
+    if isinstance(prototype_projection, dict) and prototype_projection:
+        typer.echo(
+            "Prototype Projection: "
+            f"status={prototype_projection.get('status')} "
+            f"review_status={prototype_projection.get('review_status')} "
+            f"gate_ready={prototype_projection.get('gate_ready')} "
+            f"drift_status={prototype_projection.get('drift_status')}"
+        )
+    requirement_completeness = payload.get("requirement_completeness", {})
+    if isinstance(requirement_completeness, dict) and requirement_completeness:
+        typer.echo(
+            "Requirement Completeness: "
+            f"status={requirement_completeness.get('status')} "
+            f"blocked={requirement_completeness.get('blocked')} "
+            f"reason={requirement_completeness.get('reason_code') or '-'}"
+        )
     decision_summary = payload.get("learning_scorecard", {}).get("decision_summary", {}) if isinstance(payload.get("learning_scorecard"), dict) else {}
     typer.echo(
         "Learning scorecard: "

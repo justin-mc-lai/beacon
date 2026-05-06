@@ -1,4 +1,4 @@
-# 自动化优先级矩阵：Beacon Execution Runtime Kernel
+# 自动化优先级矩阵：beacon-execution-runtime-kernel
 
 | Target ID | Target Type | Priority Class | Reason | AC Refs | TC Refs |
 |---|---|---|---|---|---|

@@ -135,6 +135,10 @@ def test_v137_brainstorm_run_should_read_beacon_version_materials(tmp_path: Path
     assert any(path.endswith("/prd/beacon-v1.3.7-beacon-brainstorm-built-in-convergence-and-evolution-thinking.md") for path in refs)
     output = tmp_path / payload["output_path"]
     assert output.exists()
+    assert payload["output_path"].startswith("docs/brainstorms/")
+    assert payload["output_path"].endswith(
+        "beacon-v1.3.7-beacon-brainstorm-built-in-convergence-and-evolution-thinking-brainstorm.md"
+    )
     text = output.read_text(encoding="utf-8")
     for section in (
         "## prompt_summary",
@@ -142,6 +146,7 @@ def test_v137_brainstorm_run_should_read_beacon_version_materials(tmp_path: Path
         "## first_principles_breakdown",
         "## socratic_questions",
         "## redundancy_cuts",
+        "## convergence_contract",
         "## converged_recommendation",
         "## next_route",
     ):
@@ -169,6 +174,35 @@ def test_v137_brainstorm_modes_should_run(tmp_path: Path) -> None:
         assert json.loads(result.stdout)["mode"] == mode
 
 
+def test_v137_brainstorm_old_mode_aliases_should_map_to_canonical_modes(tmp_path: Path) -> None:
+    _seed_v137_docs(tmp_path)
+    aliases = {
+        "frozen-truth-delta": "implementation-readiness",
+        "evolution-exploration": "project-evolution",
+        "redundancy-pruning": "scope-simplification",
+    }
+    for alias, canonical in aliases.items():
+        result = _invoke(
+            [
+                "brainstorm",
+                "run",
+                f"mode {alias}",
+                "--project-root",
+                str(tmp_path),
+                "--version",
+                "v1.3.7",
+                "--mode",
+                alias,
+                "--json",
+            ]
+        )
+        assert result.exit_code == 0, result.stdout
+        payload = json.loads(result.stdout)
+        assert payload["mode"] == alias
+        assert payload["canonical_mode"] == canonical
+        assert payload["converged_recommendation"]
+
+
 def test_v137_brainstorm_should_emit_resolved_project_metadata_view(tmp_path: Path) -> None:
     _seed_v137_docs(tmp_path)
     _seed_project_metadata(tmp_path, version="v1.3.7", service="api", branch="beacon/v1.3.7")
@@ -193,6 +227,73 @@ def test_v137_brainstorm_should_emit_resolved_project_metadata_view(tmp_path: Pa
     text = (tmp_path / payload["output_path"]).read_text(encoding="utf-8")
     assert "## project_metadata" in text
     assert "- selected_branch: `beacon/v1.3.7`" in text
+
+
+def test_v137_brainstorm_auto_version_should_prefer_feature_version_semantics(tmp_path: Path) -> None:
+    _seed_v137_docs(tmp_path)
+    result = _invoke(
+        [
+            "brainstorm",
+            "run",
+            "复盘 Beacon v1.3.7 的头暴语义",
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            "auto",
+            "--feature",
+            "Beacon v1.3.7 beacon-brainstorm built-in convergence and evolution thinking",
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["version"] == "v1.3.7"
+    assert payload["missing_refs"] == []
+    assert payload["next_route"] == "brainstorm closed"
+
+
+def test_v137_brainstorm_should_quarantine_external_project_outputs(tmp_path: Path) -> None:
+    _seed_v137_docs(tmp_path)
+    result = _invoke(
+        [
+            "brainstorm",
+            "run",
+            "针对 shopxo_canada 的第三方能力治理做收敛分析，不改 Beacon frozen truth",
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            "v1.3.7",
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["output_path"].startswith("docs/brainstorms/external/")
+    output = tmp_path / payload["output_path"]
+    assert output.exists()
+
+
+def test_v137_brainstorm_should_flatten_prompt_paths_in_output_slug(tmp_path: Path) -> None:
+    _seed_v137_docs(tmp_path)
+    result = _invoke(
+        [
+            "brainstorm",
+            "run",
+            "分析生产出现的直推、间推数据错误问题。输入材料：docs/debug/01_relation_type_mismatch_fix.sql。目标：给出最小闭环排查路径。",
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            "v1.3.7",
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["output_path"].startswith("docs/brainstorms/")
+    assert "/docs/" not in payload["output_path"]
+    assert "docs-debug-01_relation_type_mismatch_fix.sql" in payload["output_path"]
+    output = tmp_path / payload["output_path"]
+    assert output.exists()
 
 
 def test_v137_brainstorm_should_refuse_requirement_truth_output(tmp_path: Path) -> None:

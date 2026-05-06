@@ -1,16 +1,16 @@
 {
   "schema_version": "1.0",
-  "feature": "Beacon Execution Runtime Kernel",
+  "feature": "beacon-execution-runtime-kernel",
   "feature_slug": "beacon-execution-runtime-kernel",
   "version": "v1.3.11",
-  "generated_at": "2026-05-02T15:22:23Z",
+  "generated_at": "2026-05-03T15:08:25Z",
   "prototype_mode": "wireframe",
   "ui_kit": "wireframe-markdown-v1",
   "source_documents": [
     {
       "type": "user-story",
       "path": "docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md",
-      "fingerprint": "4dc1a2c55819146158d4a3f2bf396f67c861cfb008a1bb80de9e10cb48f6507c"
+      "fingerprint": "edb8d336e24f5e7984aabb62ee4fc4949334f29ffb6c140d1b60e2e1a6c934f8"
     },
     {
       "type": "prd",
@@ -20,7 +20,7 @@
     {
       "type": "test-case",
       "path": "docs/beacon/v1.3.11/qa/test-cases/beacon-execution-runtime-kernel.md",
-      "fingerprint": "8da617c7f3e9bb7c79a24f961f43b3282fdeee9c9358e8a477c6ca654a7b1119"
+      "fingerprint": "138cbc0229cc8ec04ab360a5bb5fb38516ddb7b3dfa29eb06fa4bcfd28d569f1"
     }
   ],
   "required_pages": [
@@ -86,7 +86,11 @@
       "AC-501",
       "AC-502",
       "AC-503",
-      "AC-504"
+      "AC-504",
+      "AC-601",
+      "AC-602",
+      "AC-603",
+      "AC-604"
     ],
     "tc_ids": [
       "TC-001",
@@ -116,7 +120,11 @@
       "TC-025",
       "TC-026",
       "TC-027",
-      "TC-028"
+      "TC-028",
+      "TC-029",
+      "TC-030",
+      "TC-031",
+      "TC-032"
     ]
   },
   "page_specs": [
@@ -6943,15 +6951,15 @@
           "source": "requirement_truth"
         },
         {
-          "label": "Beacon Execution Runtime Kernel",
+          "label": "beacon-execution-runtime-kernel",
           "slug": "beacon-execution-runtime-kernel",
           "source": "requirement_truth"
         }
       ],
       "status_labels": [
+        "阻塞",
         "错误",
         "正常",
-        "阻塞",
         "加载中"
       ],
       "module_labels": [
@@ -6967,16 +6975,16 @@
         "任一关键状态"
       ],
       "action_labels": [
+        "恢复路径",
+        "重试或回修",
+        "恢复处理环境",
         "恢复",
         "重试仍依赖人工心智",
         "恢复面",
         "重试等稳定",
         "恢复语义",
         "恢复场景提供稳定的",
-        "恢复策略",
-        "恢复路径",
-        "恢复顺序必须优先",
-        "恢复路径明确且可重放"
+        "恢复策略"
       ],
       "preferred_terms": [
         {
@@ -7133,11 +7141,16 @@
       "schema_version": "1.0",
       "command_name": "prototype",
       "host_runtime": "codex",
-      "host_bridge_declared": false,
+      "host_runtime_supported": true,
+      "host_bridge_declared": true,
+      "host_bridge_command_available": true,
+      "host_bridge_command_source": "env_cmd",
+      "host_bridge_command_env": "BEACON_HOST_PROTOTYPE_BRIDGE_CMD",
       "host_response_available": false,
       "host_response_source": "none",
       "host_response_path": "",
-      "host_semantic_ready": false,
+      "host_transport": "command-bridge",
+      "host_semantic_ready": true,
       "provider_available": false,
       "provider_key_present": false,
       "llm_disabled": false,
@@ -7158,5 +7171,6 @@
     "primary": "#0071E3",
     "secondary": "#F5F5F7",
     "surface_note": "Wireframe freeze uses Apple-inspired quiet neutrals and restrained accent metadata, not high-fidelity HTML surfaces."
-  }
+  },
+  "canonical_truth_source": "prototype-brief"
 }

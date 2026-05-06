@@ -25,6 +25,17 @@ This package is the canonical `skills/beacon/` wrapper for Codex and Claude. It 
 - **Wireframe predecessor line**: `v1.3.5` froze `prototype` as the formal wireframe-freeze stage
 - **Current runtime architecture**: `v1.3.9` promotes the host-native kernel with canonical delivery baseline enforcement, prompt-boundary gating, and archive governance
 
+## Latest Requirement Closure Line
+
+- **Requirement deepening line**: `v1.3.12`
+- **Current requirement theme**: `host-llm requirement deepening and human-loop closure`
+- **Closed-loop additions**:
+  - `requirement_gap_digest`
+  - `brainstorm_hint`
+  - `supplement_task`
+  - `re_freeze_transaction`
+  - board jump links to story/test-case supplement entries
+
 `v1.3.9` keeps Beacon lightweight:
 
 ```text
@@ -113,14 +124,22 @@ Optional supplemental skills:
 - **Support/read model convergence**: `help / status / doctor / archive` 读取同一 delivery read model 与 surface explanation。
 - **Provider fallback demotion**: `BEACON_LLM_API_KEY` 仅保留给纯 CLI / provider fallback，不再作为 requirement surface 默认主路径。
 
+## Current v1.3.12 Requirement Closure Line
+
+- `prd / user-story / test-case` now share a unified convergence contract for deepening, supplement, refreeze, and revalidate.
+- `brainstorm` stays read-only but can emit gap-aware supplement routing instead of acting as an isolated divergent lane.
+- `help / status / board` surface the current gap, supplement target, and re-freeze transaction state.
+- `implement / qa / release` still only consume frozen requirement completeness.
+
 ## Quick Start
 
 Start with the minimal workflow:
 
 ```bash
 bash skills/beacon/scripts/run_beacon.sh prd create "My Feature" --project . --version v1.3.9
-bash skills/beacon/scripts/run_beacon.sh user-story create "My Feature" --project . --version v1.3.9
-bash skills/beacon/scripts/run_beacon.sh test-case create "My Feature" --project . --version v1.3.9
+bash skills/beacon/scripts/run_beacon.sh user-story create "My Feature" --project . --version v1.3.12
+bash skills/beacon/scripts/run_beacon.sh test-case create "My Feature" --project . --version v1.3.12
+bash skills/beacon/scripts/run_beacon.sh brainstorm run "补齐 PRD 缺口" --project-root . --version auto --mode requirement-convergence --json
 bash skills/beacon/scripts/run_beacon.sh implement plan "My Feature" --project . --version v1.3.9 --json
 bash skills/beacon/scripts/run_beacon.sh qa run "My Feature" --project . --version v1.3.9 --json
 bash skills/beacon/scripts/run_beacon.sh release check v1.3.9 --project .

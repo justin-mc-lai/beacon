@@ -1,4 +1,4 @@
-# Semantic Dictionary: Prototype Design Intelligence And Governed Rendering Separation
+# Semantic Dictionary: prototype-design-intelligence-and-governed-rendering-separation
 
 ## 官方页面名
 
@@ -22,6 +22,7 @@
 ## 官方模块名
 
 - 推导出的页面目标与状态
+- 是实现层默认且唯一允许读取的入口
 - 状态文案只描述状态
 - 必要状态反馈
 - 当前状态
@@ -29,12 +30,12 @@
 - 当页面状态
 - 允许显示恢复信息
 - 恢复信息
-- 主动作和必要状态反馈
-- 仅当页面状态
+- 实现层必须默认只从以下入口
 
 ## 官方动作名
 
 - 进入
+- 进入最终渲染与实现消费链
 - 恢复路径
 - 恢复信息
 - 恢复信息必须由
@@ -43,7 +44,6 @@
 - 恢复信息只包含
 - 查看详情
 - 进入详情
-- 返回总览
 
 ## 禁用词
 

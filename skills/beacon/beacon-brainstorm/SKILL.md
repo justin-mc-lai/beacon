@@ -18,6 +18,7 @@ prd -> user-story -> test-case -> prototype -> implement -> qa -> release
 - Continuing requirement brainstorming from `docs/beacon/<version>/`.
 - Finding missing questions before editing PRD, user-story, or test-case materials.
 - Exploring project evolution ideas before promoting them into a formal Beacon change.
+- Returning `brainstorm closed` when the gap is stable and no further supplement is needed.
 - Checking implementation prompts against frozen requirement evidence before `beacon-implement`.
 
 ## Thinking Protocol
@@ -35,10 +36,16 @@ Prefer the labs/hidden command:
 ```bash
 bash skills/beacon/scripts/run_beacon.sh brainstorm run "<prompt>" \
   --project-root . \
-  --version v1.3.8 \
+  --version auto \
   --mode requirement-convergence \
   --json
 ```
+
+默认规则：
+
+- Beacon 自身 requirement / evolution 头暴默认写入 `docs/brainstorms/`
+- 外部项目或外部仓库分析会自动隔离到 `docs/brainstorms/external/`
+- 如果需要写到明确目标位置，始终显式传 `--output`
 
 Supported modes:
 
@@ -46,6 +53,12 @@ Supported modes:
 - `project-evolution`
 - `implementation-readiness`
 - `scope-simplification`
+
+Legacy aliases:
+
+- `frozen-truth-delta` -> `implementation-readiness`
+- `evolution-exploration` -> `project-evolution`
+- `redundancy-pruning` -> `scope-simplification`
 
 ## Boundary
 

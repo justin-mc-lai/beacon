@@ -1,17 +1,17 @@
-# Semantic Dictionary: Beacon Execution Runtime Kernel
+# Semantic Dictionary: beacon-execution-runtime-kernel
 
 ## 官方页面名
 
 - 证明执行工作台
 - 式控制台页面
 - 暴露的运行态总览
-- Beacon Execution Runtime Kernel
+- beacon-execution-runtime-kernel
 
 ## 官方状态名
 
+- 阻塞
 - 错误
 - 正常
-- 阻塞
 - 加载中
 
 ## 官方模块名
@@ -29,6 +29,9 @@
 
 ## 官方动作名
 
+- 恢复路径
+- 重试或回修
+- 恢复处理环境
 - 恢复
 - 重试仍依赖人工心智
 - 恢复面
@@ -36,9 +39,6 @@
 - 恢复语义
 - 恢复场景提供稳定的
 - 恢复策略
-- 恢复路径
-- 恢复顺序必须优先
-- 恢复路径明确且可重放
 
 ## 禁用词
 

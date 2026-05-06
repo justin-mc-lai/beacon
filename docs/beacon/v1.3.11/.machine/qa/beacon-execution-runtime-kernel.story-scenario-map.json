@@ -3,7 +3,7 @@
   "feature": "beacon-execution-runtime-kernel",
   "feature_slug": "beacon-execution-runtime-kernel",
   "version": "v1.3.11",
-  "generated_at": "2026-05-02T05:32:07.797441+00:00",
+  "generated_at": "2026-05-03T15:12:15.314938+00:00",
   "expansion_profile": "pua-web",
   "scenario_depth": "standard",
   "families_required": [
@@ -19,11 +19,9 @@
       "theme": "runtime-domain-model",
       "text": "Beacon 正式定义 `WorkItem / Run / Workspace / AgentSession / RetryEntry / ExecutionHost / OperatorAction` 七类运行实体，并为每类实体保留稳定 machine projection。",
       "scenario_ids": [
-        "SC-001",
-        "SC-002"
+        "SC-001"
       ],
       "scenario_families": [
-        "primary",
         "primary"
       ],
       "required_families": [],
@@ -36,15 +34,6 @@
           "qa_type": "unit",
           "browser_required": false,
           "replay_required": false
-        },
-        {
-          "scenario_id": "SC-002",
-          "source_tc_id": "TC-029",
-          "tc_id": "TC-029-PRIMARY",
-          "scenario_family": "primary",
-          "qa_type": "interface",
-          "browser_required": false,
-          "replay_required": false
         }
       ]
     },
@@ -53,30 +42,19 @@
       "theme": "entity-core-fields",
       "text": "每类核心运行实体至少具备 `version / feature_slug / revision_id / status / source_hash-or-transaction / evidence_refs` 字段，保证可追溯。",
       "scenario_ids": [
-        "SC-003",
-        "SC-004"
+        "SC-002"
       ],
       "scenario_families": [
-        "primary",
         "primary"
       ],
       "required_families": [],
       "scenarios": [
         {
-          "scenario_id": "SC-003",
+          "scenario_id": "SC-002",
           "source_tc_id": "TC-002",
           "tc_id": "TC-002-PRIMARY",
           "scenario_family": "primary",
           "qa_type": "unit",
-          "browser_required": false,
-          "replay_required": false
-        },
-        {
-          "scenario_id": "SC-004",
-          "source_tc_id": "TC-030",
-          "tc_id": "TC-030-PRIMARY",
-          "scenario_family": "primary",
-          "qa_type": "contract",
           "browser_required": false,
           "replay_required": false
         }
@@ -87,30 +65,19 @@
       "theme": "execution-host",
       "text": "Beacon 维护统一 execution host，而不是由 `implement / qa / team / ralph / validation` 各自保留一套“当前运行态”。",
       "scenario_ids": [
-        "SC-005",
-        "SC-006"
+        "SC-003"
       ],
       "scenario_families": [
-        "primary",
         "primary"
       ],
       "required_families": [],
       "scenarios": [
         {
-          "scenario_id": "SC-005",
+          "scenario_id": "SC-003",
           "source_tc_id": "TC-003",
           "tc_id": "TC-003-PRIMARY",
           "scenario_family": "primary",
           "qa_type": "unit",
-          "browser_required": false,
-          "replay_required": false
-        },
-        {
-          "scenario_id": "SC-006",
-          "source_tc_id": "TC-031",
-          "tc_id": "TC-031-PRIMARY",
-          "scenario_family": "primary",
-          "qa_type": "integration",
           "browser_required": false,
           "replay_required": false
         }
@@ -121,30 +88,19 @@
       "theme": "truth-consumption-only",
       "text": "runtime domain model 只消费冻结 requirement truth，不直接回写 `prd / user-story / test-case / prototype`。",
       "scenario_ids": [
-        "SC-007",
-        "SC-008"
+        "SC-004"
       ],
       "scenario_families": [
-        "primary",
         "primary"
       ],
       "required_families": [],
       "scenarios": [
         {
-          "scenario_id": "SC-007",
+          "scenario_id": "SC-004",
           "source_tc_id": "TC-004",
           "tc_id": "TC-004-PRIMARY",
           "scenario_family": "primary",
           "qa_type": "unit",
-          "browser_required": false,
-          "replay_required": false
-        },
-        {
-          "scenario_id": "SC-008",
-          "source_tc_id": "TC-032",
-          "tc_id": "TC-032-PRIMARY",
-          "scenario_family": "primary",
-          "qa_type": "functional",
           "browser_required": false,
           "replay_required": false
         }
@@ -155,7 +111,7 @@
       "theme": "version-level-baseline-host",
       "text": "Beacon 维护版本级 baseline host，至少注册 `feature_slug / revision_id / baseline_ref / writable_services / depends_on_features / target_branch`。",
       "scenario_ids": [
-        "SC-009"
+        "SC-005"
       ],
       "scenario_families": [
         "primary"
@@ -163,9 +119,9 @@
       "required_families": [],
       "scenarios": [
         {
-          "scenario_id": "SC-009",
-          "source_tc_id": "TC-025",
-          "tc_id": "TC-025-PRIMARY",
+          "scenario_id": "SC-005",
+          "source_tc_id": "TC-029",
+          "tc_id": "TC-029-PRIMARY",
           "scenario_family": "primary",
           "qa_type": "unit",
           "browser_required": false,
@@ -178,7 +134,7 @@
       "theme": "multi-feature-coexistence",
       "text": "同版本多个 feature baseline 可以稳定共存，不会因共享单一 blueprint container 而互相覆盖。",
       "scenario_ids": [
-        "SC-010"
+        "SC-006"
       ],
       "scenario_families": [
         "primary"
@@ -186,9 +142,9 @@
       "required_families": [],
       "scenarios": [
         {
-          "scenario_id": "SC-010",
-          "source_tc_id": "TC-026",
-          "tc_id": "TC-026-PRIMARY",
+          "scenario_id": "SC-006",
+          "source_tc_id": "TC-030",
+          "tc_id": "TC-030-PRIMARY",
           "scenario_family": "primary",
           "qa_type": "unit",
           "browser_required": false,
@@ -201,7 +157,7 @@
       "theme": "host-driven-ordering",
       "text": "Beacon 能基于 `depends_on_features / writable_services / direct delivery services / branch target` 自动生成 `ordered_feature_slugs / waves / conflict_reason_codes`。",
       "scenario_ids": [
-        "SC-011"
+        "SC-007"
       ],
       "scenario_families": [
         "primary"
@@ -209,9 +165,9 @@
       "required_families": [],
       "scenarios": [
         {
-          "scenario_id": "SC-011",
-          "source_tc_id": "TC-027",
-          "tc_id": "TC-027-PRIMARY",
+          "scenario_id": "SC-007",
+          "source_tc_id": "TC-031",
+          "tc_id": "TC-031-PRIMARY",
           "scenario_family": "primary",
           "qa_type": "unit",
           "browser_required": false,
@@ -224,7 +180,7 @@
       "theme": "ordering-fail-closed",
       "text": "当 feature 依赖不完整、baseline host stale 或 writable scope 冲突无法解析时，系统必须阻断继续执行并给出明确人工介入理由。",
       "scenario_ids": [
-        "SC-012"
+        "SC-008"
       ],
       "scenario_families": [
         "primary"
@@ -232,9 +188,9 @@
       "required_families": [],
       "scenarios": [
         {
-          "scenario_id": "SC-012",
-          "source_tc_id": "TC-028",
-          "tc_id": "TC-028-PRIMARY",
+          "scenario_id": "SC-008",
+          "source_tc_id": "TC-032",
+          "tc_id": "TC-032-PRIMARY",
           "scenario_family": "primary",
           "qa_type": "unit",
           "browser_required": false,
@@ -388,6 +344,42 @@
     },
     {
       "ac_id": "AC-025",
+      "theme": "prototype-host-admission",
+      "text": "prototype capability snapshot 必须把 host runtime support 与 host execution transport 分开表达，不能再把 `host_response_available` 直接当作唯一 host-ready 判据。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-026",
+      "theme": "provider-backed-host",
+      "text": "当 `codex",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-027",
+      "theme": "legacy-injection-compatibility",
+      "text": "旧的 env/file response transport 仅作为兼容输入面保留，不能继续冒充默认 host-native execution 模式。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-028",
+      "theme": "prototype-host-precedence",
+      "text": "`prototype create` 在 `auto` 模式下必须遵循 `host-native -> provider-backed host -> rule fallback` 的优先级，并输出稳定 `fallback_reason / inference_mode / capability_snapshot`。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-029",
       "theme": "general",
       "text": "Shared Runtime Contract",
       "scenario_ids": [],
@@ -396,7 +388,7 @@
       "scenarios": []
     },
     {
-      "ac_id": "AC-026",
+      "ac_id": "AC-030",
       "theme": "general",
       "text": "Workbench-Ready Read Model",
       "scenario_ids": [],
@@ -405,7 +397,7 @@
       "scenarios": []
     },
     {
-      "ac_id": "AC-027",
+      "ac_id": "AC-031",
       "theme": "general",
       "text": "Shared Reason Code Contract",
       "scenario_ids": [],
@@ -414,7 +406,7 @@
       "scenarios": []
     },
     {
-      "ac_id": "AC-028",
+      "ac_id": "AC-032",
       "theme": "general",
       "text": "Cross-Surface Host Consistency",
       "scenario_ids": [],
@@ -432,7 +424,7 @@
       "qa_type": "unit",
       "layer": "unit",
       "scenario_family": "primary",
-      "title": "AC-001 primary path :: All unit assertions pass",
+      "title": "AC-001 primary path :: Beacon 正式定义 `WorkItem / Run / Workspace / AgentSession / RetryEntry / ExecutionHost / OperatorAc",
       "browser_required": false,
       "replay_required": false,
       "exploratory_runner": "native",
@@ -450,7 +442,7 @@
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
       "assertion": "All unit assertions pass",
       "priority": "P1",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/{run_id}/TC-001-PRIMARY.json",
+      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-001-PRIMARY.json",
       "required_files": [
         "command.txt",
         "stdout.log",
@@ -461,13 +453,13 @@
     },
     {
       "scenario_id": "SC-002",
-      "source_tc_id": "TC-029",
-      "tc_id": "TC-029-PRIMARY",
-      "ac_id": "AC-001",
-      "qa_type": "interface",
-      "layer": "api-curl",
+      "source_tc_id": "TC-002",
+      "tc_id": "TC-002-PRIMARY",
+      "ac_id": "AC-002",
+      "qa_type": "unit",
+      "layer": "unit",
       "scenario_family": "primary",
-      "title": "AC-001 primary path :: HTTP status and schema assertions pass",
+      "title": "AC-002 primary path :: 每类核心运行实体至少具备 `version / feature_slug / revision_id / status / source_hash-or-transaction / evide",
       "browser_required": false,
       "replay_required": false,
       "exploratory_runner": "native",
@@ -476,16 +468,16 @@
       "replay_command": "",
       "coverage_axes": [
         "primary",
-        "interface",
+        "unit",
         "non-browser"
       ],
       "depends_on": [],
       "stop_on_fail": false,
       "automation": "auto",
-      "command": "python3 -m pytest -q -k interface --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "HTTP status and schema assertions pass",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
       "priority": "P1",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/{run_id}/TC-029-PRIMARY.json",
+      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-002-PRIMARY.json",
       "required_files": [
         "command.txt",
         "stdout.log",
@@ -496,13 +488,13 @@
     },
     {
       "scenario_id": "SC-003",
-      "source_tc_id": "TC-002",
-      "tc_id": "TC-002-PRIMARY",
-      "ac_id": "AC-002",
+      "source_tc_id": "TC-003",
+      "tc_id": "TC-003-PRIMARY",
+      "ac_id": "AC-003",
       "qa_type": "unit",
       "layer": "unit",
       "scenario_family": "primary",
-      "title": "AC-002 primary path :: All unit assertions pass",
+      "title": "AC-003 primary path :: Beacon 维护统一 execution host，而不是由 `implement / qa / team / ralph / validation` 各自保留一套“当前运行态”。",
       "browser_required": false,
       "replay_required": false,
       "exploratory_runner": "native",
@@ -520,7 +512,7 @@
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
       "assertion": "All unit assertions pass",
       "priority": "P1",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/{run_id}/TC-002-PRIMARY.json",
+      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-003-PRIMARY.json",
       "required_files": [
         "command.txt",
         "stdout.log",
@@ -531,13 +523,13 @@
     },
     {
       "scenario_id": "SC-004",
-      "source_tc_id": "TC-030",
-      "tc_id": "TC-030-PRIMARY",
-      "ac_id": "AC-002",
-      "qa_type": "contract",
-      "layer": "contract",
+      "source_tc_id": "TC-004",
+      "tc_id": "TC-004-PRIMARY",
+      "ac_id": "AC-004",
+      "qa_type": "unit",
+      "layer": "unit",
       "scenario_family": "primary",
-      "title": "AC-002 primary path :: Provider/consumer contract assertions pass",
+      "title": "AC-004 primary path :: runtime domain model 只消费冻结 requirement truth，不直接回写 `prd / user-story / test-case / prototype`。",
       "browser_required": false,
       "replay_required": false,
       "exploratory_runner": "native",
@@ -546,16 +538,16 @@
       "replay_command": "",
       "coverage_axes": [
         "primary",
-        "contract",
+        "unit",
         "non-browser"
       ],
       "depends_on": [],
       "stop_on_fail": false,
       "automation": "auto",
-      "command": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "Provider/consumer contract assertions pass",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
       "priority": "P1",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/{run_id}/TC-030-PRIMARY.json",
+      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-004-PRIMARY.json",
       "required_files": [
         "command.txt",
         "stdout.log",
@@ -566,13 +558,13 @@
     },
     {
       "scenario_id": "SC-005",
-      "source_tc_id": "TC-003",
-      "tc_id": "TC-003-PRIMARY",
-      "ac_id": "AC-003",
+      "source_tc_id": "TC-029",
+      "tc_id": "TC-029-PRIMARY",
+      "ac_id": "AC-005",
       "qa_type": "unit",
       "layer": "unit",
       "scenario_family": "primary",
-      "title": "AC-003 primary path :: All unit assertions pass",
+      "title": "AC-005 primary path :: Shared Runtime Contract",
       "browser_required": false,
       "replay_required": false,
       "exploratory_runner": "native",
@@ -590,7 +582,7 @@
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
       "assertion": "All unit assertions pass",
       "priority": "P1",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/{run_id}/TC-003-PRIMARY.json",
+      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-029-PRIMARY.json",
       "required_files": [
         "command.txt",
         "stdout.log",
@@ -601,48 +593,13 @@
     },
     {
       "scenario_id": "SC-006",
-      "source_tc_id": "TC-031",
-      "tc_id": "TC-031-PRIMARY",
-      "ac_id": "AC-003",
-      "qa_type": "integration",
-      "layer": "integration",
-      "scenario_family": "primary",
-      "title": "AC-003 primary path :: Integration flow assertions pass",
-      "browser_required": false,
-      "replay_required": false,
-      "exploratory_runner": "native",
-      "deterministic_runner": "native",
-      "explore_command": "",
-      "replay_command": "",
-      "coverage_axes": [
-        "primary",
-        "integration",
-        "non-browser"
-      ],
-      "depends_on": [],
-      "stop_on_fail": false,
-      "automation": "auto",
-      "command": "python3 -m pytest -q -k integration --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "Integration flow assertions pass",
-      "priority": "P1",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/{run_id}/TC-031-PRIMARY.json",
-      "required_files": [
-        "command.txt",
-        "stdout.log",
-        "stderr.log",
-        "result.json",
-        "junit.xml"
-      ]
-    },
-    {
-      "scenario_id": "SC-007",
-      "source_tc_id": "TC-004",
-      "tc_id": "TC-004-PRIMARY",
-      "ac_id": "AC-004",
+      "source_tc_id": "TC-030",
+      "tc_id": "TC-030-PRIMARY",
+      "ac_id": "AC-006",
       "qa_type": "unit",
       "layer": "unit",
       "scenario_family": "primary",
-      "title": "AC-004 primary path :: All unit assertions pass",
+      "title": "AC-006 primary path :: Workbench-Ready Read Model",
       "browser_required": false,
       "replay_required": false,
       "exploratory_runner": "native",
@@ -660,7 +617,42 @@
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
       "assertion": "All unit assertions pass",
       "priority": "P1",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/{run_id}/TC-004-PRIMARY.json",
+      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-030-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-007",
+      "source_tc_id": "TC-031",
+      "tc_id": "TC-031-PRIMARY",
+      "ac_id": "AC-007",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "primary",
+      "title": "AC-007 primary path :: Shared Reason Code Contract",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-031-PRIMARY.json",
       "required_files": [
         "command.txt",
         "stdout.log",
@@ -673,151 +665,11 @@
       "scenario_id": "SC-008",
       "source_tc_id": "TC-032",
       "tc_id": "TC-032-PRIMARY",
-      "ac_id": "AC-004",
-      "qa_type": "functional",
-      "layer": "ui",
-      "scenario_family": "primary",
-      "title": "AC-004 primary path :: Critical path assertions pass",
-      "browser_required": false,
-      "replay_required": false,
-      "exploratory_runner": "native",
-      "deterministic_runner": "native",
-      "explore_command": "",
-      "replay_command": "",
-      "coverage_axes": [
-        "primary",
-        "functional",
-        "non-browser"
-      ],
-      "depends_on": [],
-      "stop_on_fail": false,
-      "automation": "auto",
-      "command": "python3 -m pytest -q -m smoke --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "Web UI assertions and key actions pass",
-      "priority": "P1",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/{run_id}/TC-032-PRIMARY.json",
-      "required_files": [
-        "command.txt",
-        "stdout.log",
-        "stderr.log",
-        "result.json",
-        "junit.xml"
-      ]
-    },
-    {
-      "scenario_id": "SC-009",
-      "source_tc_id": "TC-025",
-      "tc_id": "TC-025-PRIMARY",
-      "ac_id": "AC-005",
-      "qa_type": "unit",
-      "layer": "unit",
-      "scenario_family": "primary",
-      "title": "AC-005 primary path :: All unit assertions pass",
-      "browser_required": false,
-      "replay_required": false,
-      "exploratory_runner": "native",
-      "deterministic_runner": "native",
-      "explore_command": "",
-      "replay_command": "",
-      "coverage_axes": [
-        "primary",
-        "unit",
-        "non-browser"
-      ],
-      "depends_on": [],
-      "stop_on_fail": false,
-      "automation": "auto",
-      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
-      "priority": "P1",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/{run_id}/TC-025-PRIMARY.json",
-      "required_files": [
-        "command.txt",
-        "stdout.log",
-        "stderr.log",
-        "result.json",
-        "junit.xml"
-      ]
-    },
-    {
-      "scenario_id": "SC-010",
-      "source_tc_id": "TC-026",
-      "tc_id": "TC-026-PRIMARY",
-      "ac_id": "AC-006",
-      "qa_type": "unit",
-      "layer": "unit",
-      "scenario_family": "primary",
-      "title": "AC-006 primary path :: All unit assertions pass",
-      "browser_required": false,
-      "replay_required": false,
-      "exploratory_runner": "native",
-      "deterministic_runner": "native",
-      "explore_command": "",
-      "replay_command": "",
-      "coverage_axes": [
-        "primary",
-        "unit",
-        "non-browser"
-      ],
-      "depends_on": [],
-      "stop_on_fail": false,
-      "automation": "auto",
-      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
-      "priority": "P1",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/{run_id}/TC-026-PRIMARY.json",
-      "required_files": [
-        "command.txt",
-        "stdout.log",
-        "stderr.log",
-        "result.json",
-        "junit.xml"
-      ]
-    },
-    {
-      "scenario_id": "SC-011",
-      "source_tc_id": "TC-027",
-      "tc_id": "TC-027-PRIMARY",
-      "ac_id": "AC-007",
-      "qa_type": "unit",
-      "layer": "unit",
-      "scenario_family": "primary",
-      "title": "AC-007 primary path :: All unit assertions pass",
-      "browser_required": false,
-      "replay_required": false,
-      "exploratory_runner": "native",
-      "deterministic_runner": "native",
-      "explore_command": "",
-      "replay_command": "",
-      "coverage_axes": [
-        "primary",
-        "unit",
-        "non-browser"
-      ],
-      "depends_on": [],
-      "stop_on_fail": false,
-      "automation": "auto",
-      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
-      "priority": "P1",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/{run_id}/TC-027-PRIMARY.json",
-      "required_files": [
-        "command.txt",
-        "stdout.log",
-        "stderr.log",
-        "result.json",
-        "junit.xml"
-      ]
-    },
-    {
-      "scenario_id": "SC-012",
-      "source_tc_id": "TC-028",
-      "tc_id": "TC-028-PRIMARY",
       "ac_id": "AC-008",
       "qa_type": "unit",
       "layer": "unit",
       "scenario_family": "primary",
-      "title": "AC-008 primary path :: All unit assertions pass",
+      "title": "AC-008 primary path :: Cross-Surface Host Consistency",
       "browser_required": false,
       "replay_required": false,
       "exploratory_runner": "native",
@@ -835,7 +687,7 @@
       "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
       "assertion": "All unit assertions pass",
       "priority": "P1",
-      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/{run_id}/TC-028-PRIMARY.json",
+      "evidence_path": ".beacon/evidence/test-results/beacon-execution-runtime-kernel/TC-032-PRIMARY.json",
       "required_files": [
         "command.txt",
         "stdout.log",

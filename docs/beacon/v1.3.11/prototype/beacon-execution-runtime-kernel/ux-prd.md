@@ -1,4 +1,4 @@
-# UX PRD：Beacon Execution Runtime Kernel
+# UX PRD：beacon-execution-runtime-kernel
 
 **Feature**: `beacon-execution-runtime-kernel`
 **Version**: `v1.3.11`

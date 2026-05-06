@@ -10,6 +10,10 @@ import os
 from beacon.utils.versioning import resolve_operational_docs_version, resolve_target_version
 from beacon.utils.revision_state import load_revision_state
 from beacon.utils.requirement_parsing import build_feature_ac_items, extract_qa_case_rows
+from beacon.utils.requirement_deepening import (
+    requirement_deepening_supported,
+    sync_requirement_deepening_artifacts,
+)
 from beacon.utils.semantic_runtime import (
     build_mode_contract,
     build_semantic_capability_snapshot,
@@ -281,7 +285,10 @@ def create(
         effective_mode = "rule"
         fallback_reason = "llm_unavailable"
 
+    slug = feature_slug(feature)
     story = generate_user_story(feature, project_root, semantic_payload=semantic_payload)
+
+    user_story_text, prd_text, qa_text = _read_requirement_truth(project_root, resolved_version, feature)
 
     memory_context_path = os.environ.get("BEACON_STAGE_CONTEXT_PATH", "").strip()
     compiler = build_mode_contract(
@@ -290,6 +297,21 @@ def create(
         fallback_reason=fallback_reason,
         capability_snapshot=capability_snapshot,
     )
+    deepening_payload: dict = {}
+    if requirement_deepening_supported(resolved_version):
+        deepening_payload = sync_requirement_deepening_artifacts(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            prd_content=prd_text,
+            user_story_content=user_story_text,
+            qa_content=qa_text,
+            prd_source=f"prd:docs/beacon/{resolved_version}/prd/{slug}.md",
+            user_story_source=f"user-story:docs/beacon/{resolved_version}/user-story/{slug}.md",
+            qa_source=f"qa:test-cases:docs/beacon/{resolved_version}/qa/test-cases/{slug}.md",
+            compiler=compiler,
+            target_artifact="user-story",
+        )
     md_content = f"""# User Story: {story['title']}
 
 ## Story
@@ -321,8 +343,6 @@ def create(
 | Fallback Reason | {compiler['fallback_reason'] or 'N/A'} |
 | Memory Context | {memory_context_path or 'N/A'} |
 """
-
-    slug = feature_slug(feature)
     if output:
         output_path = Path(output)
         output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -345,6 +365,23 @@ def create(
             },
         }
     )
+    if deepening_payload:
+        handoff = deepening_payload.get("human_loop_handoff") if isinstance(deepening_payload.get("human_loop_handoff"), dict) else {}
+        active_story["supplement_contract"] = {
+            "allowed_decisions": ["accepted", "rejected", "deferred"],
+            "required_machine_trail": True,
+            "writeback_required": True,
+        }
+        active_story["story_candidates"] = list(deepening_payload.get("story_candidates") or [])
+        active_story["requirement_deepening_refs"] = dict(deepening_payload.get("paths") or {})
+        active_story["requirement_completeness_verdict"] = str(
+            (deepening_payload.get("completeness") or {}).get("completeness_verdict") or ""
+        )
+        active_story["supplement_focus_areas"] = [str(item).strip() for item in (handoff.get("focus_areas") or []) if str(item).strip()]
+        active_story["supplement_recommended_command"] = str(handoff.get("recommended_command") or "")
+        active_story["supplement_next_action"] = str(handoff.get("action") or "")
+        active_story["supplement_task"] = dict(deepening_payload.get("supplement_task") or {})
+        active_story["re_freeze_transaction"] = dict(deepening_payload.get("re_freeze_transaction") or {})
     save_story_state(project_root, version=resolved_version, feature=feature, state=active_story)
     load_revision_state(project_root, version=resolved_version, feature=feature, create_if_missing=True)
 
@@ -359,6 +396,20 @@ def create(
                     "model": model,
                     **compiler,
                     "output_path": str(output_path),
+                    "requirement_deepening": {
+                        "enabled": bool(deepening_payload),
+                        "paths": deepening_payload.get("paths", {}),
+                        "story_candidate_count": len(deepening_payload.get("story_candidates", []) or []),
+                        "completeness_verdict": (deepening_payload.get("completeness") or {}).get("completeness_verdict", ""),
+                    },
+                    "supplement_focus_areas": [
+                        str(item).strip()
+                        for item in ((deepening_payload.get("human_loop_handoff") or {}).get("focus_areas") or [])
+                        if str(item).strip()
+                    ],
+                    "supplement_recommended_command": str((deepening_payload.get("human_loop_handoff") or {}).get("recommended_command") or ""),
+                    "supplement_task": deepening_payload.get("supplement_task", {}),
+                    "re_freeze_transaction": deepening_payload.get("re_freeze_transaction", {}),
                 },
                 ensure_ascii=False,
                 indent=2,

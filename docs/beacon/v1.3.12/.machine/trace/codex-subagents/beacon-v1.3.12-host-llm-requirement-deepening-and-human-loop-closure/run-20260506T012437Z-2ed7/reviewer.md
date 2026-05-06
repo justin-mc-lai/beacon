@@ -1,0 +1,83 @@
+# Native Team Role Report: reviewer
+
+- role: `reviewer`
+- status: `pass`
+- revision_id: `R1`
+- summary: reviewed native-team implementation against frozen revision scope
+
+## implemented_item_ids
+- `AC-001`
+- `AC-002`
+- `AC-003`
+- `AC-004`
+- `AC-005`
+- `AC-006`
+- `AC-007`
+- `AC-008`
+- `AC-009`
+- `AC-010`
+- `AC-011`
+- `AC-012`
+- `AC-013`
+- `AC-014`
+- `AC-015`
+- `AC-016`
+- `AC-017`
+- `AC-018`
+- `AC-019`
+- `AC-020`
+- `AC-021`
+- `AC-022`
+- `AC-023`
+- `AC-024`
+- `AC-025`
+- `AC-026`
+- `AC-027`
+- `TASK-001`
+
+## changed_files
+- `.beacon/evidence-manifest.json`
+- `.beacon/metadata/project-version-metadata.json`
+- `.beacon/metadata/project-version-metadata.md`
+- `.beacon/state/project-metadata/latest.json`
+- `.gitignore`
+- `AGENTS.md`
+- `CLAUDE.md`
+- `beacon/commands/help.py`
+- `beacon/commands/implement.py`
+- `beacon/commands/implement/ralph.py`
+- `beacon/commands/prototype.py`
+- `beacon/commands/qa.py`
+- `beacon/commands/release.py`
+- `beacon/commands/status.py`
+- `beacon/commands/test_case.py`
+- `beacon/commands/user_story.py`
+- `beacon/utils/board_launcher.py`
+- `beacon/utils/brainstorm.py`
+- `beacon/utils/help_support.py`
+- `beacon/utils/material_audit.py`
+- `beacon/utils/material_sync.py`
+- `beacon/utils/prototype_utils.py`
+- `beacon/utils/ralph_runtime.py`
+- `beacon/utils/release_scorecard.py`
+- `beacon/utils/runtime_projection.py`
+- `skills/beacon/SKILL.md`
+- `skills/beacon/beacon-brainstorm/SKILL.md`
+- `skills/beacon/beacon-help/SKILL.md`
+- `skills/beacon/beacon-implement/SKILL.md`
+- `skills/beacon/beacon-prd/SKILL.md`
+- `skills/beacon/beacon-status/SKILL.md`
+- `skills/beacon/beacon-test-case/SKILL.md`
+- `skills/beacon/beacon-user-story/SKILL.md`
+- `skills/beacon/using-beacon/SKILL.md`
+- `tests/test_v114_implement_command.py`
+- `tests/test_v1311_board_launcher.py`
+- `tests/test_v133_ralph_resume_state_refresh.py`
+- `tests/test_v137_beacon_brainstorm.py`
+- `tests/test_v138_release_scorecard_gate_alignment.py`
+
+## issues
+- none
+
+## recommendations
+- Proceed to tester verification.

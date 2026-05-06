@@ -64,6 +64,7 @@ from beacon.utils.revision_delta import load_revision_delta
 from beacon.utils.semantic_runtime import load_or_build_semantic_layer
 from beacon.utils.skill_admission import admit_runtime_skill
 from beacon.utils.project_metadata import resolve_project_metadata_view
+from beacon.utils.requirement_deepening import load_requirement_completeness, requirement_paths
 from beacon.utils.ralph_runtime import (
     append_ralph_round,
     finalize_ralph_state,
@@ -349,6 +350,9 @@ def _refresh_ralph_state_after_resume(
     elif resumed_action == "release":
         gate_status = str(payload.get("status", "") or "").strip().lower()
         release_check_cmd = f"beacon gate check release --project-root {project_root} --version {version}" if version else ""
+        requirement_gate = payload.get("requirement_completeness") if isinstance(payload.get("requirement_completeness"), dict) else {}
+        if not requirement_gate and isinstance(payload.get("requirement_completeness_gate"), dict):
+            requirement_gate = payload.get("requirement_completeness_gate")
         if gate_status == "pass":
             state.update(
                 {
@@ -362,13 +366,25 @@ def _refresh_ralph_state_after_resume(
             )
             updated = True
         elif gate_status:
+            requirement_blocked = (
+                isinstance(requirement_gate, dict)
+                and (
+                    bool(requirement_gate.get("blocked"))
+                    or str(requirement_gate.get("status") or "").strip().lower() == "blocked"
+                )
+            )
+            requirement_handoff = requirement_gate.get("human_loop_handoff") if isinstance(requirement_gate.get("human_loop_handoff"), dict) else {}
             state.update(
                 {
                     "gate_release_status": gate_status,
                     "stop_state": "human_blocked",
-                    "current_blocker": "gate_release_blocked",
-                    "next_action": "release",
-                    "recommended_command": release_check_cmd,
+                    "current_blocker": str(requirement_gate.get("reason_code") or "gate_release_blocked") if requirement_blocked else "gate_release_blocked",
+                    "next_action": "human_review" if requirement_blocked else "release",
+                    "recommended_command": (
+                        str(requirement_handoff.get("recommended_command") or requirement_gate.get("recommended_command") or "")
+                        if requirement_blocked
+                        else release_check_cmd
+                    ),
                     "updated_at": now_iso(),
                 }
             )
@@ -2018,6 +2034,15 @@ def run_implement_stage(  # noqa: PLR0913
     if rendered_skill:
         task_prompt = f"{rendered_skill}\n{task_prompt}"
     context["task_prompt"] = task_prompt
+    if not prompt_boundary_payload:
+        prompt_boundary_payload = evaluate_implement_prompt_boundary(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            host_prompt=task_prompt,
+        )
+        if prompt_boundary_payload:
+            prompt_boundary_payload["surface"] = "task_prompt"
 
     request_delivery_contract = build_delivery_contract(
         feature=feature,
@@ -2210,6 +2235,7 @@ def run_implement_stage(  # noqa: PLR0913
         summary_paths = _summary_paths(project_root, resolved_version, feature)
         archive_paths = _technical_archive_paths(project_root, resolved_version, feature)
         story_state = load_story_state(project_root, version=resolved_version, feature=feature, create_if_missing=True) or {}
+        requirement_completeness = load_requirement_completeness(project_root, resolved_version, feature)
         marker = project_root / ".beacon" / "state" / f"implementation-{feature_slug}.json"
         write_json(marker, {
             "schema_version": "1.0",
@@ -2233,6 +2259,10 @@ def run_implement_stage(  # noqa: PLR0913
             "user_story": artifacts["user_story"],
             "test_case": artifacts["test_case"],
             "ac_matrix": artifacts["ac_matrix"],
+            "requirement_completeness_ref": str(
+                requirement_paths(project_root, resolved_version, feature)["completeness"].relative_to(project_root)
+            ) if requirement_completeness else "",
+            "requirement_completeness_verdict": str(requirement_completeness.get("completeness_verdict") or ""),
             "revision_id": str(story_state.get("revision_id", "") or story_state.get("current_revision_id", "") or ""),
             "implemented_item_ids": implemented_item_ids,
             "implemented_task_ids": implemented_task_ids,
@@ -2699,6 +2729,7 @@ def run_implement_stage(  # noqa: PLR0913
     archive_paths = _technical_archive_paths(project_root, resolved_version, feature)
     change_paths = _change_document_paths(project_root, resolved_version, feature)
     story_state = load_story_state(project_root, version=resolved_version, feature=feature, create_if_missing=True) or {}
+    requirement_completeness = load_requirement_completeness(project_root, resolved_version, feature)
     implemented_item_ids = [str(item) for item in _normalize_string_list(result_payload.get("implemented_items"))]
     if not implemented_item_ids:
         implemented_item_ids = _story_item_ids(story_state, kinds={"ac", "task"})
@@ -2719,6 +2750,10 @@ def run_implement_stage(  # noqa: PLR0913
         "user_story": artifacts["user_story"],
         "test_case": artifacts["test_case"],
         "ac_matrix": artifacts["ac_matrix"],
+        "requirement_completeness_ref": str(
+            requirement_paths(project_root, resolved_version, feature)["completeness"].relative_to(project_root)
+        ) if requirement_completeness else "",
+        "requirement_completeness_verdict": str(requirement_completeness.get("completeness_verdict") or ""),
         "revision_id": str(story_state.get("revision_id", "") or story_state.get("current_revision_id", "") or ""),
         "implemented_item_ids": implemented_item_ids,
         "implemented_task_ids": implemented_task_ids,
@@ -3745,6 +3780,7 @@ def status(
     output["implementation_plan_markdown_exists"] = implementation_plan_markdown_path(project_root, resolved_version, slug).exists()
     output["implementation_plan_progress_exists"] = implementation_plan_progress_path(project_root, resolved_version, slug).exists()
     output["implementation_plan_progress"] = load_implementation_plan_progress(project_root, version=resolved_version, feature=slug)
+    output["requirement_completeness"] = load_requirement_completeness(project_root, resolved_version, slug)
     if json_output:
         typer.echo(json.dumps(output, ensure_ascii=False, indent=2))
         return

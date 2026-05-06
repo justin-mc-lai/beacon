@@ -120,6 +120,37 @@ def test_v1311_board_dry_run_should_emit_ready_launcher_contract(tmp_path: Path)
     assert all(item["governance"] for item in actions)
 
 
+def test_v1311_board_should_surface_supplement_jump_links(tmp_path: Path) -> None:
+    version = "v1.3.11"
+    feature = "Beacon Operator Workbench And Board Launcher"
+    feature_slug = "beacon-operator-workbench-and-board-launcher"
+    _prepare_sources(tmp_path, feature_slug, version)
+    _freeze_bundle(tmp_path, version, feature)
+
+    contract = _invoke(
+        [
+            "board",
+            "--project",
+            str(tmp_path),
+            "--version",
+            version,
+            "--feature",
+            feature,
+            "--dry-run",
+            "--json",
+        ]
+    )
+    assert contract.exit_code == 0, contract.stdout
+    payload = json.loads(contract.stdout)
+    workbench = payload["operator_workbench"]
+    assert "supplement_task" in workbench["feature_detail"]
+    assert "re_freeze_transaction" in workbench["feature_detail"]
+    bundle_root = Path(payload["bundle_root"])
+    html = (bundle_root / "index.html").read_text(encoding="utf-8")
+    assert "补料跳转" in html
+    assert "jump-link" in html
+
+
 def test_v1311_board_dry_run_should_reuse_persistent_bundle_and_serve_index(tmp_path: Path) -> None:
     version = "v1.3.11"
     feature = "Reusable Board Bundle"

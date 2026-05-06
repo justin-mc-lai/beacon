@@ -1,36 +1,36 @@
 {
   "schema_version": "1.0",
-  "feature": "Prototype Design Intelligence And Governed Rendering Separation",
+  "feature": "prototype-design-intelligence-and-governed-rendering-separation",
   "feature_slug": "prototype-design-intelligence-and-governed-rendering-separation",
   "version": "v1.3.11",
   "prototype_mode": "wireframe",
-  "source_hash": "5784cca08dac8b278a2b8ee0b7b1f8e9a994ad20892ff592ea46cbd9ad5f342f",
-  "projection_seq": "pp-5784cca08dac8b27",
-  "transaction_id": "tx-prototype-design-intelligence-and-governed-rendering-separation-pp-5784cca08dac8b27",
-  "committed_at": "2026-05-02T15:13:51Z",
+  "source_hash": "237040d01c71c405b4db1030100d1b3ed44ca4a35e1c28075bfe66db02ac06c6",
+  "projection_seq": "pp-237040d01c71c405",
+  "transaction_id": "tx-prototype-design-intelligence-and-governed-rendering-separation-pp-237040d01c71c405",
+  "committed_at": "2026-05-04T23:17:17Z",
   "plan": {
     "schema_version": "1.0",
-    "feature": "Prototype Design Intelligence And Governed Rendering Separation",
+    "feature": "prototype-design-intelligence-and-governed-rendering-separation",
     "feature_slug": "prototype-design-intelligence-and-governed-rendering-separation",
     "version": "v1.3.11",
-    "generated_at": "2026-05-02T15:13:51Z",
+    "generated_at": "2026-05-04T23:16:42Z",
     "prototype_mode": "wireframe",
     "ui_kit": "wireframe-markdown-v1",
     "source_documents": [
       {
         "type": "user-story",
         "path": "docs/beacon/v1.3.11/user-story/prototype-design-intelligence-and-governed-rendering-separation.md",
-        "fingerprint": "6bb40d8c88f2c9e9da6ce559999ead0a1ddab2aa32e2f0646c6db9ad00f463c9"
+        "fingerprint": "90fe9678157057f384b8df4b1f9be14460f77cd862cd92a21e939179f305252e"
       },
       {
         "type": "prd",
         "path": "docs/beacon/v1.3.11/prd/prototype-design-intelligence-and-governed-rendering-separation.md",
-        "fingerprint": "58558745b9b7fae549720872511279588995c5c84ff9e941782acf615d7c1ed8"
+        "fingerprint": "1bfbef8dcac7d2d1034a8f2956cf4594b34fb7985a97ba094800f39a01e63cfd"
       },
       {
         "type": "test-case",
         "path": "docs/beacon/v1.3.11/qa/test-cases/prototype-design-intelligence-and-governed-rendering-separation.md",
-        "fingerprint": "174917fd42babf5c4fe745f7fb3691f41dc13dbc65de65c03df32f47d3be9d7a"
+        "fingerprint": "b7024b0f9850c96e34c41354aaa0ecb15cf6c7386e12f38e0ae2cb488dcf60a7"
       }
     ],
     "required_pages": [
@@ -82,6 +82,7 @@
         "AC-202",
         "AC-203",
         "AC-204",
+        "AC-205",
         "AC-301",
         "AC-302",
         "AC-303",
@@ -90,10 +91,12 @@
         "AC-402",
         "AC-403",
         "AC-404",
+        "AC-405",
         "AC-501",
         "AC-502",
         "AC-503",
-        "AC-504"
+        "AC-504",
+        "AC-505"
       ],
       "tc_ids": [
         "TC-001",
@@ -120,7 +123,10 @@
         "TC-022",
         "TC-023",
         "TC-024",
-        "TC-025"
+        "TC-025",
+        "TC-026",
+        "TC-027",
+        "TC-028"
       ]
     },
     "page_specs": [
@@ -6980,6 +6986,7 @@
         ],
         "module_labels": [
           "推导出的页面目标与状态",
+          "是实现层默认且唯一允许读取的入口",
           "状态文案只描述状态",
           "必要状态反馈",
           "当前状态",
@@ -6987,11 +6994,11 @@
           "当页面状态",
           "允许显示恢复信息",
           "恢复信息",
-          "主动作和必要状态反馈",
-          "仅当页面状态"
+          "实现层必须默认只从以下入口"
         ],
         "action_labels": [
           "进入",
+          "进入最终渲染与实现消费链",
           "恢复路径",
           "恢复信息",
           "恢复信息必须由",
@@ -6999,8 +7006,7 @@
           "返回阻断结果与",
           "恢复信息只包含",
           "查看详情",
-          "进入详情",
-          "返回总览"
+          "进入详情"
         ],
         "preferred_terms": [
           {
@@ -7157,11 +7163,16 @@
         "schema_version": "1.0",
         "command_name": "prototype",
         "host_runtime": "codex",
-        "host_bridge_declared": false,
+        "host_runtime_supported": true,
+        "host_bridge_declared": true,
+        "host_bridge_command_available": true,
+        "host_bridge_command_source": "env_cmd",
+        "host_bridge_command_env": "BEACON_HOST_PROTOTYPE_BRIDGE_CMD",
         "host_response_available": false,
         "host_response_source": "none",
         "host_response_path": "",
-        "host_semantic_ready": false,
+        "host_transport": "command-bridge",
+        "host_semantic_ready": true,
         "provider_available": false,
         "provider_key_present": false,
         "llm_disabled": false,
@@ -7182,7 +7193,8 @@
       "primary": "#0071E3",
       "secondary": "#F5F5F7",
       "surface_note": "Wireframe freeze uses Apple-inspired quiet neutrals and restrained accent metadata, not high-fidelity HTML surfaces."
-    }
+    },
+    "canonical_truth_source": "prototype-brief"
   },
   "navigation_map": {
     "primary_entry": "home",
@@ -16336,7 +16348,7 @@
   },
   "coverage_report": {
     "schema_version": "1.0",
-    "feature": "Prototype Design Intelligence And Governed Rendering Separation",
+    "feature": "prototype-design-intelligence-and-governed-rendering-separation",
     "feature_slug": "prototype-design-intelligence-and-governed-rendering-separation",
     "prototype_mode": "wireframe",
     "required_pages": [
@@ -16389,7 +16401,7 @@
   },
   "source_map": {
     "schema_version": "1.0",
-    "feature": "Prototype Design Intelligence And Governed Rendering Separation",
+    "feature": "prototype-design-intelligence-and-governed-rendering-separation",
     "feature_slug": "prototype-design-intelligence-and-governed-rendering-separation",
     "derived_from": [
       "user-story",
@@ -16400,17 +16412,17 @@
       {
         "type": "user-story",
         "path": "docs/beacon/v1.3.11/user-story/prototype-design-intelligence-and-governed-rendering-separation.md",
-        "fingerprint": "6bb40d8c88f2c9e9da6ce559999ead0a1ddab2aa32e2f0646c6db9ad00f463c9"
+        "fingerprint": "90fe9678157057f384b8df4b1f9be14460f77cd862cd92a21e939179f305252e"
       },
       {
         "type": "prd",
         "path": "docs/beacon/v1.3.11/prd/prototype-design-intelligence-and-governed-rendering-separation.md",
-        "fingerprint": "58558745b9b7fae549720872511279588995c5c84ff9e941782acf615d7c1ed8"
+        "fingerprint": "1bfbef8dcac7d2d1034a8f2956cf4594b34fb7985a97ba094800f39a01e63cfd"
       },
       {
         "type": "test-case",
         "path": "docs/beacon/v1.3.11/qa/test-cases/prototype-design-intelligence-and-governed-rendering-separation.md",
-        "fingerprint": "174917fd42babf5c4fe745f7fb3691f41dc13dbc65de65c03df32f47d3be9d7a"
+        "fingerprint": "b7024b0f9850c96e34c41354aaa0ecb15cf6c7386e12f38e0ae2cb488dcf60a7"
       }
     ],
     "page_requirements": [
@@ -16513,7 +16525,7 @@
         }
       }
     ],
-    "generated_at": "2026-05-02T15:13:51Z"
+    "generated_at": "2026-05-04T23:16:42Z"
   },
   "design_context": {
     "target_audience": "Beacon 产品 owner、原型编译维护者、implement renderer 维护者",
@@ -16684,6 +16696,7 @@
       ],
       "module_labels": [
         "推导出的页面目标与状态",
+        "是实现层默认且唯一允许读取的入口",
         "状态文案只描述状态",
         "必要状态反馈",
         "当前状态",
@@ -16691,11 +16704,11 @@
         "当页面状态",
         "允许显示恢复信息",
         "恢复信息",
-        "主动作和必要状态反馈",
-        "仅当页面状态"
+        "实现层必须默认只从以下入口"
       ],
       "action_labels": [
         "进入",
+        "进入最终渲染与实现消费链",
         "恢复路径",
         "恢复信息",
         "恢复信息必须由",
@@ -16703,8 +16716,7 @@
         "返回阻断结果与",
         "恢复信息只包含",
         "查看详情",
-        "进入详情",
-        "返回总览"
+        "进入详情"
       ],
       "preferred_terms": [
         {
@@ -16750,5 +16762,78 @@
         "projection_seq"
       ]
     }
+  },
+  "software_semantic_profile": {
+    "tone": "formal-restrained-precise",
+    "title_rule": "标题仅陈述对象或状态，不解释设计意图。",
+    "state_rule": "状态文案必须先说明当前状态，再说明允许动作或禁止动作。",
+    "action_rule": "动作名称必须使用可执行动词，不使用泛化 SaaS 词汇。",
+    "field_rule": "字段与输入说明必须显式约束类型、非空、枚举或默认值。",
+    "exception_rule": "异常文案必须同时给出当前失败与恢复路径。",
+    "banned_terms": [
+      "implementation",
+      "verify",
+      "review",
+      "delivery",
+      "machine contract",
+      "canonical-envelope",
+      "raw runtime log",
+      "transaction_id",
+      "projection_seq"
+    ],
+    "preferred_terms": [
+      {
+        "from": "implementation",
+        "to": "implement",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "verify",
+        "to": "qa",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "review",
+        "to": "qa",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "delivery",
+        "to": "release",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "raw runtime log",
+        "to": "运行摘要",
+        "scope": "product_copy"
+      },
+      {
+        "from": "machine contract",
+        "to": "机器内部契约",
+        "scope": "product_copy"
+      }
+    ],
+    "production_banned_copy": [
+      "当前状态",
+      "下一步动作",
+      "恢复路径",
+      "design asset catalog",
+      "review guidance",
+      "why/reasoning",
+      "transaction_id",
+      "projection_seq"
+    ],
+    "page_count": 7
+  },
+  "theme": {
+    "ui_kit": "wireframe-markdown-v1",
+    "design_preset": "apple-inspired-design-md",
+    "product_surface_type": "",
+    "design_preset_override_reason": "",
+    "design_preset_overridden": false,
+    "prototype_archetype": "generic-wireframe",
+    "primary": "#0071E3",
+    "secondary": "#F5F5F7",
+    "surface_note": "Wireframe freeze uses Apple-inspired quiet neutrals and restrained accent metadata, not high-fidelity HTML surfaces."
   }
 }

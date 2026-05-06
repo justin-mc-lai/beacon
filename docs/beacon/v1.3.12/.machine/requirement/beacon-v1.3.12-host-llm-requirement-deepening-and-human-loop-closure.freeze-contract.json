@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.0",
+  "version": "v1.3.12",
+  "feature": "beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure",
+  "revision_id": "R1",
+  "status": "freeze-ready",
+  "truth_sources": {
+    "prd": "docs/beacon/v1.3.12/prd/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md",
+    "user_story": "docs/beacon/v1.3.12/user-story/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md",
+    "test_cases": "docs/beacon/v1.3.12/qa/test-cases/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md"
+  },
+  "minimum_machine_assets": [
+    ".machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.freeze-contract.json",
+    ".machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.completeness.json",
+    ".machine/user-story/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.json",
+    ".machine/qa/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.ac-test-matrix.json",
+    ".machine/qa/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.qa9-matrix.json",
+    ".machine/qa/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.story-scenario-map.json"
+  ],
+  "human_supplement_contract": {
+    "allowed_decisions": [
+      "accepted",
+      "rejected",
+      "deferred"
+    ],
+    "required_fields": [
+      "gap_id",
+      "source_truth_ref",
+      "candidate_kind",
+      "rationale",
+      "human_decision",
+      "decision_reason",
+      "writeback_target",
+      "revision_id"
+    ],
+    "writeback_flow": [
+      "decision_log",
+      "writeback_projection",
+      "truth_refreeze"
+    ]
+  },
+  "blocking_rules": [
+    "high_severity_unresolved_gap",
+    "critical_coverage_family_missing",
+    "host_downgrade_without_explicit_fallback_contract",
+    "truth_writeback_without_machine_decision_trail"
+  ],
+  "downgrade_rules": [
+    "host_runtime_unavailable_but_rule_fallback_auditable",
+    "deferred_low_or_medium_risk_gap_with_reason"
+  ],
+  "freeze_verdict": "pass",
+  "implementation_verdict": "pending",
+  "qa_execution_verdict": "pending",
+  "updated_at": "2026-05-06T01:20:47.910072+00:00"
+}

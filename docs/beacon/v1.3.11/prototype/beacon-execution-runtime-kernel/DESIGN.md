@@ -1,4 +1,4 @@
-# DESIGN.md: Beacon Execution Runtime Kernel
+# DESIGN.md: beacon-execution-runtime-kernel
 
 ## Visual Theme
 - Design Preset: `apple-inspired-design-md`

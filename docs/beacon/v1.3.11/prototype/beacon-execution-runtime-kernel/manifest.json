@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "feature": "Beacon Execution Runtime Kernel",
+  "feature": "beacon-execution-runtime-kernel",
   "feature_slug": "beacon-execution-runtime-kernel",
   "version": "v1.3.11",
   "prototype_mode": "wireframe",
@@ -18,11 +18,16 @@
       "schema_version": "1.0",
       "command_name": "prototype",
       "host_runtime": "codex",
-      "host_bridge_declared": false,
+      "host_runtime_supported": true,
+      "host_bridge_declared": true,
+      "host_bridge_command_available": true,
+      "host_bridge_command_source": "env_cmd",
+      "host_bridge_command_env": "BEACON_HOST_PROTOTYPE_BRIDGE_CMD",
       "host_response_available": false,
       "host_response_source": "none",
       "host_response_path": "",
-      "host_semantic_ready": false,
+      "host_transport": "command-bridge",
+      "host_semantic_ready": true,
       "provider_available": false,
       "provider_key_present": false,
       "llm_disabled": false,
@@ -34,19 +39,19 @@
     "downgrade_blocking": false
   },
   "source_fingerprints": {
-    "user-story": "4dc1a2c55819146158d4a3f2bf396f67c861cfb008a1bb80de9e10cb48f6507c",
+    "user-story": "edb8d336e24f5e7984aabb62ee4fc4949334f29ffb6c140d1b60e2e1a6c934f8",
     "prd": "fb54921acc26354df2d15750f395c78522f40858e2f30d247dc5cec67c4f5371",
-    "test-case": "8da617c7f3e9bb7c79a24f961f43b3282fdeee9c9358e8a477c6ca654a7b1119"
+    "test-case": "138cbc0229cc8ec04ab360a5bb5fb38516ddb7b3dfa29eb06fa4bcfd28d569f1"
   },
   "transaction": {
-    "source_hash": "80cf3ef8c8919689e64648af4ef0ea59dc82a1fa2bb1369d9559106809e45860",
-    "projection_seq": "pp-80cf3ef8c8919689",
-    "transaction_id": "tx-beacon-execution-runtime-kernel-pp-80cf3ef8c8919689",
-    "committed_at": "2026-05-02T15:22:23Z",
+    "source_hash": "6448e1af4c856a121d490d6194b2815f49e89b1c28b3c529d466bea90f7d0ce7",
+    "projection_seq": "pp-6448e1af4c856a12",
+    "transaction_id": "tx-beacon-execution-runtime-kernel-pp-6448e1af4c856a12",
+    "committed_at": "2026-05-03T16:46:29Z",
     "sink_checksums": {
-      "human": "8f33ea714c692f8ebff72882541fa464bbeb7ffc179f9dec3c04ac8918396db1",
-      "machine": "7a77ff29eb6a03a7a29c901a57e79e0d7e8cbe643aca3eac709e49be9bb543f8",
-      "sqlite": "75e396396c06e4cb9fd18dfc3d78c5ef6be8c72ddec701a1813ef09b905aae78"
+      "human": "291ff9d8c4d0315077949260acfbb6ad73001a4648d6efadc4317071b911cb55",
+      "machine": "2426ea3fda631e6f265cade7d255ab54f8df9581aadedf526df1de2559b10f03",
+      "sqlite": "16bd2b2d51607aaea00837e1146e8419a59f7131744ef6c21236aa719138e01c"
     },
     "sqlite_write": {
       "status": "committed",
@@ -225,15 +230,15 @@
           "source": "requirement_truth"
         },
         {
-          "label": "Beacon Execution Runtime Kernel",
+          "label": "beacon-execution-runtime-kernel",
           "slug": "beacon-execution-runtime-kernel",
           "source": "requirement_truth"
         }
       ],
       "status_labels": [
+        "阻塞",
         "错误",
         "正常",
-        "阻塞",
         "加载中"
       ],
       "module_labels": [
@@ -249,16 +254,16 @@
         "任一关键状态"
       ],
       "action_labels": [
+        "恢复路径",
+        "重试或回修",
+        "恢复处理环境",
         "恢复",
         "重试仍依赖人工心智",
         "恢复面",
         "重试等稳定",
         "恢复语义",
         "恢复场景提供稳定的",
-        "恢复策略",
-        "恢复路径",
-        "恢复顺序必须优先",
-        "恢复路径明确且可重放"
+        "恢复策略"
       ],
       "preferred_terms": [
         {
@@ -309,5 +314,67 @@
   "machine_contract_status": "pass",
   "sqlite_projection_status": "pass",
   "drift_status": "consistent",
-  "frozen_at": "2026-05-02T15:23:05Z"
+  "frozen_at": "2026-05-03T16:47:32Z",
+  "software_semantic_profile": {
+    "tone": "formal-restrained-precise",
+    "title_rule": "标题仅陈述对象或状态，不解释设计意图。",
+    "state_rule": "状态文案必须先说明当前状态，再说明允许动作或禁止动作。",
+    "action_rule": "动作名称必须使用可执行动词，不使用泛化 SaaS 词汇。",
+    "field_rule": "字段与输入说明必须显式约束类型、非空、枚举或默认值。",
+    "exception_rule": "异常文案必须同时给出当前失败与恢复路径。",
+    "banned_terms": [
+      "implementation",
+      "verify",
+      "review",
+      "delivery",
+      "machine contract",
+      "canonical-envelope",
+      "raw runtime log",
+      "transaction_id",
+      "projection_seq"
+    ],
+    "preferred_terms": [
+      {
+        "from": "implementation",
+        "to": "implement",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "verify",
+        "to": "qa",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "review",
+        "to": "qa",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "delivery",
+        "to": "release",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "raw runtime log",
+        "to": "运行摘要",
+        "scope": "product_copy"
+      },
+      {
+        "from": "machine contract",
+        "to": "机器内部契约",
+        "scope": "product_copy"
+      }
+    ],
+    "production_banned_copy": [
+      "当前状态",
+      "下一步动作",
+      "恢复路径",
+      "design asset catalog",
+      "review guidance",
+      "why/reasoning",
+      "transaction_id",
+      "projection_seq"
+    ],
+    "page_count": 7
+  }
 }

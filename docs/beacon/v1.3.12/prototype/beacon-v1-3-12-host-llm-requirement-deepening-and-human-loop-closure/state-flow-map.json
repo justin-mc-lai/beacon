@@ -1,0 +1,1033 @@
+{
+  "schema_version": "1.0",
+  "node_count": 40,
+  "edge_count": 46,
+  "nodes": [
+    {
+      "state_key": "home:ready",
+      "page_id": "home",
+      "state_id": "ready",
+      "label": "正常总览",
+      "description": "展示项目数、阻塞数、当前交付和下一步。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "home:blocked",
+      "page_id": "home",
+      "state_id": "blocked",
+      "label": "阻塞高亮",
+      "description": "把阻塞项目和介入点提升到首屏。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "home:intervention-needed",
+      "page_id": "home",
+      "state_id": "intervention-needed",
+      "label": "需介入",
+      "description": "强调需要 CEO / 负责人介入的项目。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "home:loading",
+      "page_id": "home",
+      "state_id": "loading",
+      "label": "加载中",
+      "description": "首页摘要数据仍在汇总。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "home:empty",
+      "page_id": "home",
+      "state_id": "empty",
+      "label": "空状态",
+      "description": "当前没有受管项目。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "home:error",
+      "page_id": "home",
+      "state_id": "error",
+      "label": "错误",
+      "description": "摘要聚合失败，但提示可以进入详情或 doctor。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "management-overview:ready",
+      "page_id": "management-overview",
+      "state_id": "ready",
+      "label": "多项目已加载",
+      "description": "密集展示多项目当前状态。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "management-overview:filtered",
+      "page_id": "management-overview",
+      "state_id": "filtered",
+      "label": "已筛选",
+      "description": "按阶段、版本、健康态筛选项目。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "management-overview:empty",
+      "page_id": "management-overview",
+      "state_id": "empty",
+      "label": "无项目",
+      "description": "没有任何受管项目进入注册表。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "management-overview:loading",
+      "page_id": "management-overview",
+      "state_id": "loading",
+      "label": "加载中",
+      "description": "项目注册表正在聚合。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "management-overview:error",
+      "page_id": "management-overview",
+      "state_id": "error",
+      "label": "错误",
+      "description": "总览聚合失败但保留恢复提示。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "project-detail:ready",
+      "page_id": "project-detail",
+      "state_id": "ready",
+      "label": "可接力",
+      "description": "版本、PRD、需求闭环和下一步信息完整。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "project-detail:requirement-missing",
+      "page_id": "project-detail",
+      "state_id": "requirement-missing",
+      "label": "需求缺口",
+      "description": "PRD / user-story / test-case 存在缺口。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "project-detail:draft",
+      "page_id": "project-detail",
+      "state_id": "draft",
+      "label": "需求草稿",
+      "description": "需求已建立但未冻结。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "project-detail:frozen",
+      "page_id": "project-detail",
+      "state_id": "frozen",
+      "label": "需求冻结",
+      "description": "需求链与 prototype 都已冻结。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "project-detail:runtime-active",
+      "page_id": "project-detail",
+      "state_id": "runtime-active",
+      "label": "运行中",
+      "description": "存在 single / team / ralph 运行摘要。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "project-detail:loading",
+      "page_id": "project-detail",
+      "state_id": "loading",
+      "label": "加载中",
+      "description": "项目详情正在聚合。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "project-detail:error",
+      "page_id": "project-detail",
+      "state_id": "error",
+      "label": "错误",
+      "description": "详情聚合失败但给出恢复链路。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "runtime-center:single-active",
+      "page_id": "runtime-center",
+      "state_id": "single-active",
+      "label": "Single 运行",
+      "description": "展示单进程执行摘要和 linked run。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "runtime-center:team-active",
+      "page_id": "runtime-center",
+      "state_id": "team-active",
+      "label": "Team 运行",
+      "description": "展示 agent 数、角色、状态和 host session metadata。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "runtime-center:ralph-active",
+      "page_id": "runtime-center",
+      "state_id": "ralph-active",
+      "label": "Ralph 闭环",
+      "description": "展示 round_count、failure_streak、next_action、blocker。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "runtime-center:idle",
+      "page_id": "runtime-center",
+      "state_id": "idle",
+      "label": "无活跃运行",
+      "description": "当前没有任何 active runtime。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "runtime-center:loading",
+      "page_id": "runtime-center",
+      "state_id": "loading",
+      "label": "加载中",
+      "description": "运行态数据仍在读取。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "runtime-center:error",
+      "page_id": "runtime-center",
+      "state_id": "error",
+      "label": "错误",
+      "description": "运行态投影异常，需要回到诊断页。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "recovery-diagnostics:healthy-warning",
+      "page_id": "recovery-diagnostics",
+      "state_id": "healthy-warning",
+      "label": "健康但预警",
+      "description": "当前系统可用但存在恢复风险提示。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "recovery-diagnostics:degraded",
+      "page_id": "recovery-diagnostics",
+      "state_id": "degraded",
+      "label": "降级",
+      "description": "SQLite 或 PocketBase 缺失，但 truth 仍可从文档恢复。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "recovery-diagnostics:rebuild-suggested",
+      "page_id": "recovery-diagnostics",
+      "state_id": "rebuild-suggested",
+      "label": "建议重建",
+      "description": "投影层需要重建。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "recovery-diagnostics:doctor-suggested",
+      "page_id": "recovery-diagnostics",
+      "state_id": "doctor-suggested",
+      "label": "建议 doctor",
+      "description": "推荐执行 doctor 修复上下文。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "recovery-diagnostics:loading",
+      "page_id": "recovery-diagnostics",
+      "state_id": "loading",
+      "label": "加载中",
+      "description": "诊断结果仍在采集。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "recovery-diagnostics:error",
+      "page_id": "recovery-diagnostics",
+      "state_id": "error",
+      "label": "错误",
+      "description": "诊断页本身无法完成聚合。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "material-viewer:ready",
+      "page_id": "material-viewer",
+      "state_id": "ready",
+      "label": "可浏览",
+      "description": "版本树和文档列表已加载。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "material-viewer:document-open",
+      "page_id": "material-viewer",
+      "state_id": "document-open",
+      "label": "文档已打开",
+      "description": "右侧阅读区显示当前文档正文。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "material-viewer:source-missing",
+      "page_id": "material-viewer",
+      "state_id": "source-missing",
+      "label": "来源缺失",
+      "description": "目标文档不存在或暂不可读。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "material-viewer:loading",
+      "page_id": "material-viewer",
+      "state_id": "loading",
+      "label": "加载中",
+      "description": "文档列表或内容仍在加载。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "material-viewer:empty",
+      "page_id": "material-viewer",
+      "state_id": "empty",
+      "label": "空状态",
+      "description": "该版本或类型下没有可读文档。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "material-viewer:error",
+      "page_id": "material-viewer",
+      "state_id": "error",
+      "label": "错误",
+      "description": "文档读取失败。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "material-document-detail:ready",
+      "page_id": "material-document-detail",
+      "state_id": "ready",
+      "label": "文档已打开",
+      "description": "显示文档正文与来源路径。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "material-document-detail:sibling-switch",
+      "page_id": "material-document-detail",
+      "state_id": "sibling-switch",
+      "label": "切换同类文档",
+      "description": "在阅读区切换相邻文档。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "material-document-detail:version-switch",
+      "page_id": "material-document-detail",
+      "state_id": "version-switch",
+      "label": "切换版本",
+      "description": "切换到同类型的其他版本文档。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "material-document-detail:source-missing",
+      "page_id": "material-document-detail",
+      "state_id": "source-missing",
+      "label": "来源缺失",
+      "description": "文档不存在或来源路径不可达。",
+      "ac_refs": [],
+      "tc_refs": []
+    }
+  ],
+  "edges": [
+    {
+      "from": "home:loading",
+      "to": "home:ready",
+      "event": "data_loaded",
+      "guard": "data_fetch_success",
+      "kind": "intra-page",
+      "fallback": null,
+      "ac_refs": [],
+      "test_refs": [
+        "TC-001",
+        "TC-002"
+      ]
+    },
+    {
+      "from": "home:ready",
+      "to": "home:error",
+      "event": "data_failure",
+      "guard": "runtime_or_projection_error",
+      "kind": "intra-page",
+      "fallback": "recovery-diagnostics:ready",
+      "ac_refs": [],
+      "test_refs": [
+        "TC-001",
+        "TC-002"
+      ]
+    },
+    {
+      "from": "home:ready",
+      "to": "home:blocked",
+      "event": "enter_blocked",
+      "guard": "business_condition_detected",
+      "kind": "intra-page-business",
+      "fallback": "home:ready",
+      "ac_refs": [],
+      "test_refs": []
+    },
+    {
+      "from": "home:ready",
+      "to": "home:intervention-needed",
+      "event": "enter_intervention_needed",
+      "guard": "business_condition_detected",
+      "kind": "intra-page-business",
+      "fallback": "home:ready",
+      "ac_refs": [],
+      "test_refs": []
+    },
+    {
+      "from": "home:ready",
+      "to": "home:empty",
+      "event": "enter_empty",
+      "guard": "business_condition_detected",
+      "kind": "intra-page-business",
+      "fallback": "home:ready",
+      "ac_refs": [],
+      "test_refs": []
+    },
+    {
+      "from": "management-overview:loading",
+      "to": "management-overview:ready",
+      "event": "data_loaded",
+      "guard": "data_fetch_success",
+      "kind": "intra-page",
+      "fallback": null,
+      "ac_refs": [],
+      "test_refs": [
+        "TC-001",
+        "TC-002"
+      ]
+    },
+    {
+      "from": "management-overview:ready",
+      "to": "management-overview:error",
+      "event": "data_failure",
+      "guard": "runtime_or_projection_error",
+      "kind": "intra-page",
+      "fallback": "recovery-diagnostics:ready",
+      "ac_refs": [],
+      "test_refs": [
+        "TC-001",
+        "TC-002"
+      ]
+    },
+    {
+      "from": "management-overview:ready",
+      "to": "management-overview:filtered",
+      "event": "enter_filtered",
+      "guard": "business_condition_detected",
+      "kind": "intra-page-business",
+      "fallback": "management-overview:ready",
+      "ac_refs": [],
+      "test_refs": []
+    },
+    {
+      "from": "management-overview:ready",
+      "to": "management-overview:empty",
+      "event": "enter_empty",
+      "guard": "business_condition_detected",
+      "kind": "intra-page-business",
+      "fallback": "management-overview:ready",
+      "ac_refs": [],
+      "test_refs": []
+    },
+    {
+      "from": "project-detail:loading",
+      "to": "project-detail:ready",
+      "event": "data_loaded",
+      "guard": "data_fetch_success",
+      "kind": "intra-page",
+      "fallback": null,
+      "ac_refs": [],
+      "test_refs": [
+        "TC-001",
+        "TC-002"
+      ]
+    },
+    {
+      "from": "project-detail:ready",
+      "to": "project-detail:error",
+      "event": "data_failure",
+      "guard": "runtime_or_projection_error",
+      "kind": "intra-page",
+      "fallback": "recovery-diagnostics:ready",
+      "ac_refs": [],
+      "test_refs": [
+        "TC-001",
+        "TC-002"
+      ]
+    },
+    {
+      "from": "project-detail:ready",
+      "to": "project-detail:requirement-missing",
+      "event": "enter_requirement_missing",
+      "guard": "business_condition_detected",
+      "kind": "intra-page-business",
+      "fallback": "project-detail:ready",
+      "ac_refs": [],
+      "test_refs": []
+    },
+    {
+      "from": "project-detail:ready",
+      "to": "project-detail:draft",
+      "event": "enter_draft",
+      "guard": "business_condition_detected",
+      "kind": "intra-page-business",
+      "fallback": "project-detail:ready",
+      "ac_refs": [],
+      "test_refs": []
+    },
+    {
+      "from": "project-detail:ready",
+      "to": "project-detail:frozen",
+      "event": "enter_frozen",
+      "guard": "business_condition_detected",
+      "kind": "intra-page-business",
+      "fallback": "project-detail:ready",
+      "ac_refs": [],
+      "test_refs": []
+    },
+    {
+      "from": "project-detail:ready",
+      "to": "project-detail:runtime-active",
+      "event": "enter_runtime_active",
+      "guard": "business_condition_detected",
+      "kind": "intra-page-business",
+      "fallback": "project-detail:ready",
+      "ac_refs": [],
+      "test_refs": []
+    },
+    {
+      "from": "runtime-center:ready",
+      "to": "runtime-center:single-active",
+      "event": "enter_single_active",
+      "guard": "business_condition_detected",
+      "kind": "intra-page-business",
+      "fallback": "runtime-center:ready",
+      "ac_refs": [],
+      "test_refs": []
+    },
+    {
+      "from": "runtime-center:ready",
+      "to": "runtime-center:team-active",
+      "event": "enter_team_active",
+      "guard": "business_condition_detected",
+      "kind": "intra-page-business",
+      "fallback": "runtime-center:ready",
+      "ac_refs": [],
+      "test_refs": []
+    },
+    {
+      "from": "runtime-center:ready",
+      "to": "runtime-center:ralph-active",
+      "event": "enter_ralph_active",
+      "guard": "business_condition_detected",
+      "kind": "intra-page-business",
+      "fallback": "runtime-center:ready",
+      "ac_refs": [],
+      "test_refs": []
+    },
+    {
+      "from": "runtime-center:ready",
+      "to": "runtime-center:idle",
+      "event": "enter_idle",
+      "guard": "business_condition_detected",
+      "kind": "intra-page-business",
+      "fallback": "runtime-center:ready",
+      "ac_refs": [],
+      "test_refs": []
+    },
+    {
+      "from": "recovery-diagnostics:ready",
+      "to": "recovery-diagnostics:healthy-warning",
+      "event": "enter_healthy_warning",
+      "guard": "business_condition_detected",
+      "kind": "intra-page-business",
+      "fallback": "recovery-diagnostics:ready",
+      "ac_refs": [],
+      "test_refs": []
+    },
+    {
+      "from": "recovery-diagnostics:ready",
+      "to": "recovery-diagnostics:degraded",
+      "event": "enter_degraded",
+      "guard": "business_condition_detected",
+      "kind": "intra-page-business",
+      "fallback": "recovery-diagnostics:ready",
+      "ac_refs": [],
+      "test_refs": []
+    },
+    {
+      "from": "recovery-diagnostics:ready",
+      "to": "recovery-diagnostics:rebuild-suggested",
+      "event": "enter_rebuild_suggested",
+      "guard": "business_condition_detected",
+      "kind": "intra-page-business",
+      "fallback": "recovery-diagnostics:ready",
+      "ac_refs": [],
+      "test_refs": []
+    },
+    {
+      "from": "recovery-diagnostics:ready",
+      "to": "recovery-diagnostics:doctor-suggested",
+      "event": "enter_doctor_suggested",
+      "guard": "business_condition_detected",
+      "kind": "intra-page-business",
+      "fallback": "recovery-diagnostics:ready",
+      "ac_refs": [],
+      "test_refs": []
+    },
+    {
+      "from": "material-viewer:loading",
+      "to": "material-viewer:ready",
+      "event": "data_loaded",
+      "guard": "data_fetch_success",
+      "kind": "intra-page",
+      "fallback": null,
+      "ac_refs": [],
+      "test_refs": [
+        "TC-001",
+        "TC-002"
+      ]
+    },
+    {
+      "from": "material-viewer:ready",
+      "to": "material-viewer:error",
+      "event": "data_failure",
+      "guard": "runtime_or_projection_error",
+      "kind": "intra-page",
+      "fallback": "recovery-diagnostics:ready",
+      "ac_refs": [],
+      "test_refs": [
+        "TC-001",
+        "TC-002"
+      ]
+    },
+    {
+      "from": "material-viewer:ready",
+      "to": "material-viewer:document-open",
+      "event": "enter_document_open",
+      "guard": "business_condition_detected",
+      "kind": "intra-page-business",
+      "fallback": "material-viewer:ready",
+      "ac_refs": [],
+      "test_refs": []
+    },
+    {
+      "from": "material-viewer:ready",
+      "to": "material-viewer:source-missing",
+      "event": "enter_source_missing",
+      "guard": "business_condition_detected",
+      "kind": "intra-page-business",
+      "fallback": "material-viewer:ready",
+      "ac_refs": [],
+      "test_refs": []
+    },
+    {
+      "from": "material-viewer:ready",
+      "to": "material-viewer:empty",
+      "event": "enter_empty",
+      "guard": "business_condition_detected",
+      "kind": "intra-page-business",
+      "fallback": "material-viewer:ready",
+      "ac_refs": [],
+      "test_refs": []
+    },
+    {
+      "from": "material-document-detail:ready",
+      "to": "material-document-detail:sibling-switch",
+      "event": "enter_sibling_switch",
+      "guard": "business_condition_detected",
+      "kind": "intra-page-business",
+      "fallback": "material-document-detail:ready",
+      "ac_refs": [],
+      "test_refs": []
+    },
+    {
+      "from": "material-document-detail:ready",
+      "to": "material-document-detail:version-switch",
+      "event": "enter_version_switch",
+      "guard": "business_condition_detected",
+      "kind": "intra-page-business",
+      "fallback": "material-document-detail:ready",
+      "ac_refs": [],
+      "test_refs": []
+    },
+    {
+      "from": "material-document-detail:ready",
+      "to": "material-document-detail:source-missing",
+      "event": "enter_source_missing",
+      "guard": "business_condition_detected",
+      "kind": "intra-page-business",
+      "fallback": "material-document-detail:ready",
+      "ac_refs": [],
+      "test_refs": []
+    },
+    {
+      "from": "home:ready",
+      "to": "management-overview:ready",
+      "from_page": "home",
+      "from_state": "ready",
+      "to_page": "management-overview",
+      "to_state": "ready",
+      "event": "点击项目组合入口",
+      "guard": "route_allowed",
+      "kind": "cross-page-transition",
+      "fallback": "home:ready",
+      "route_or_runtime_evidence": [
+        "navigation-map:home->management-overview",
+        "implementation:management-overview"
+      ],
+      "ac_refs": [
+        "AC-001"
+      ],
+      "test_refs": [
+        "TC-001"
+      ]
+    },
+    {
+      "from": "home:ready",
+      "to": "project-detail:ready",
+      "from_page": "home",
+      "from_state": "ready",
+      "to_page": "project-detail",
+      "to_state": "ready",
+      "event": "点击重点项目卡片",
+      "guard": "route_allowed",
+      "kind": "cross-page-transition",
+      "fallback": "home:ready",
+      "route_or_runtime_evidence": [
+        "navigation-map:home->project-detail",
+        "implementation:project-detail"
+      ],
+      "ac_refs": [
+        "AC-001"
+      ],
+      "test_refs": [
+        "TC-001"
+      ]
+    },
+    {
+      "from": "management-overview:ready",
+      "to": "project-detail:ready",
+      "from_page": "management-overview",
+      "from_state": "ready",
+      "to_page": "project-detail",
+      "to_state": "ready",
+      "event": "点击项目行/卡片",
+      "guard": "route_allowed",
+      "kind": "cross-page-transition",
+      "fallback": "management-overview:ready",
+      "route_or_runtime_evidence": [
+        "navigation-map:management-overview->project-detail",
+        "implementation:project-detail"
+      ],
+      "ac_refs": [
+        "AC-001"
+      ],
+      "test_refs": [
+        "TC-001"
+      ]
+    },
+    {
+      "from": "management-overview:ready",
+      "to": "home:ready",
+      "from_page": "management-overview",
+      "from_state": "ready",
+      "to_page": "home",
+      "to_state": "ready",
+      "event": "点击首页导航",
+      "guard": "route_allowed",
+      "kind": "cross-page-transition",
+      "fallback": "management-overview:ready",
+      "route_or_runtime_evidence": [
+        "navigation-map:management-overview->home",
+        "implementation:home"
+      ],
+      "ac_refs": [
+        "AC-001"
+      ],
+      "test_refs": [
+        "TC-001"
+      ]
+    },
+    {
+      "from": "project-detail:ready",
+      "to": "runtime-center:ready",
+      "from_page": "project-detail",
+      "from_state": "ready",
+      "to_page": "runtime-center",
+      "to_state": "ready",
+      "event": "点击运行态摘要",
+      "guard": "route_allowed",
+      "kind": "cross-page-transition",
+      "fallback": "project-detail:ready",
+      "route_or_runtime_evidence": [
+        "navigation-map:project-detail->runtime-center",
+        "implementation:runtime-center"
+      ],
+      "ac_refs": [
+        "AC-001"
+      ],
+      "test_refs": [
+        "TC-001"
+      ]
+    },
+    {
+      "from": "project-detail:ready",
+      "to": "recovery-diagnostics:ready",
+      "from_page": "project-detail",
+      "from_state": "ready",
+      "to_page": "recovery-diagnostics",
+      "to_state": "ready",
+      "event": "点击恢复诊断入口",
+      "guard": "route_allowed",
+      "kind": "cross-page-transition",
+      "fallback": "project-detail:ready",
+      "route_or_runtime_evidence": [
+        "navigation-map:project-detail->recovery-diagnostics",
+        "implementation:recovery-diagnostics"
+      ],
+      "ac_refs": [
+        "AC-001"
+      ],
+      "test_refs": [
+        "TC-001"
+      ]
+    },
+    {
+      "from": "project-detail:ready",
+      "to": "material-viewer:ready",
+      "from_page": "project-detail",
+      "from_state": "ready",
+      "to_page": "material-viewer",
+      "to_state": "ready",
+      "event": "点击文档查看入口",
+      "guard": "route_allowed",
+      "kind": "cross-page-transition",
+      "fallback": "project-detail:ready",
+      "route_or_runtime_evidence": [
+        "navigation-map:project-detail->material-viewer",
+        "implementation:material-viewer"
+      ],
+      "ac_refs": [
+        "AC-001"
+      ],
+      "test_refs": [
+        "TC-001"
+      ]
+    },
+    {
+      "from": "project-detail:ready",
+      "to": "management-overview:ready",
+      "from_page": "project-detail",
+      "from_state": "ready",
+      "to_page": "management-overview",
+      "to_state": "ready",
+      "event": "点击返回",
+      "guard": "route_allowed",
+      "kind": "cross-page-transition",
+      "fallback": "project-detail:ready",
+      "route_or_runtime_evidence": [
+        "navigation-map:project-detail->management-overview",
+        "implementation:management-overview"
+      ],
+      "ac_refs": [
+        "AC-001"
+      ],
+      "test_refs": [
+        "TC-001"
+      ]
+    },
+    {
+      "from": "runtime-center:ready",
+      "to": "project-detail:ready",
+      "from_page": "runtime-center",
+      "from_state": "ready",
+      "to_page": "project-detail",
+      "to_state": "ready",
+      "event": "点击返回",
+      "guard": "route_allowed",
+      "kind": "cross-page-transition",
+      "fallback": "runtime-center:ready",
+      "route_or_runtime_evidence": [
+        "navigation-map:runtime-center->project-detail",
+        "implementation:project-detail"
+      ],
+      "ac_refs": [
+        "AC-001"
+      ],
+      "test_refs": [
+        "TC-001"
+      ]
+    },
+    {
+      "from": "runtime-center:ready",
+      "to": "management-overview:ready",
+      "from_page": "runtime-center",
+      "from_state": "ready",
+      "to_page": "management-overview",
+      "to_state": "ready",
+      "event": "点击面包屑",
+      "guard": "route_allowed",
+      "kind": "cross-page-transition",
+      "fallback": "runtime-center:ready",
+      "route_or_runtime_evidence": [
+        "navigation-map:runtime-center->management-overview",
+        "implementation:management-overview"
+      ],
+      "ac_refs": [
+        "AC-001"
+      ],
+      "test_refs": [
+        "TC-001"
+      ]
+    },
+    {
+      "from": "recovery-diagnostics:ready",
+      "to": "project-detail:ready",
+      "from_page": "recovery-diagnostics",
+      "from_state": "ready",
+      "to_page": "project-detail",
+      "to_state": "ready",
+      "event": "点击返回",
+      "guard": "route_allowed",
+      "kind": "cross-page-transition",
+      "fallback": "recovery-diagnostics:ready",
+      "route_or_runtime_evidence": [
+        "navigation-map:recovery-diagnostics->project-detail",
+        "implementation:project-detail"
+      ],
+      "ac_refs": [
+        "AC-001"
+      ],
+      "test_refs": [
+        "TC-001"
+      ]
+    },
+    {
+      "from": "recovery-diagnostics:ready",
+      "to": "runtime-center:ready",
+      "from_page": "recovery-diagnostics",
+      "from_state": "ready",
+      "to_page": "runtime-center",
+      "to_state": "ready",
+      "event": "点击运行态关联",
+      "guard": "route_allowed",
+      "kind": "cross-page-transition",
+      "fallback": "recovery-diagnostics:ready",
+      "route_or_runtime_evidence": [
+        "navigation-map:recovery-diagnostics->runtime-center",
+        "implementation:runtime-center"
+      ],
+      "ac_refs": [
+        "AC-001"
+      ],
+      "test_refs": [
+        "TC-001"
+      ]
+    },
+    {
+      "from": "material-viewer:ready",
+      "to": "project-detail:ready",
+      "from_page": "material-viewer",
+      "from_state": "ready",
+      "to_page": "project-detail",
+      "to_state": "ready",
+      "event": "点击返回",
+      "guard": "route_allowed",
+      "kind": "cross-page-transition",
+      "fallback": "material-viewer:ready",
+      "route_or_runtime_evidence": [
+        "navigation-map:material-viewer->project-detail",
+        "implementation:project-detail"
+      ],
+      "ac_refs": [
+        "AC-001"
+      ],
+      "test_refs": [
+        "TC-001"
+      ]
+    },
+    {
+      "from": "material-viewer:ready",
+      "to": "material-document-detail:ready",
+      "from_page": "material-viewer",
+      "from_state": "ready",
+      "to_page": "material-document-detail",
+      "to_state": "ready",
+      "event": "点击文档列表项",
+      "guard": "route_allowed",
+      "kind": "cross-page-transition",
+      "fallback": "material-viewer:ready",
+      "route_or_runtime_evidence": [
+        "navigation-map:material-viewer->material-document-detail",
+        "implementation:material-document-detail"
+      ],
+      "ac_refs": [
+        "AC-001"
+      ],
+      "test_refs": [
+        "TC-001"
+      ]
+    },
+    {
+      "from": "material-document-detail:ready",
+      "to": "material-viewer:ready",
+      "from_page": "material-document-detail",
+      "from_state": "ready",
+      "to_page": "material-viewer",
+      "to_state": "ready",
+      "event": "点击返回",
+      "guard": "route_allowed",
+      "kind": "cross-page-transition",
+      "fallback": "material-document-detail:ready",
+      "route_or_runtime_evidence": [
+        "navigation-map:material-document-detail->material-viewer",
+        "implementation:material-viewer"
+      ],
+      "ac_refs": [
+        "AC-001"
+      ],
+      "test_refs": [
+        "TC-001"
+      ]
+    }
+  ]
+}

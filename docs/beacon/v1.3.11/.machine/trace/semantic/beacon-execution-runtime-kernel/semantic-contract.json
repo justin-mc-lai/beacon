@@ -1,38 +1,38 @@
 {
   "schema_version": "1.0",
   "semantic_contract_version": "1.0",
-  "feature": "Beacon Execution Runtime Kernel",
+  "feature": "beacon-execution-runtime-kernel",
   "feature_slug": "beacon-execution-runtime-kernel",
   "version": "v1.3.11",
   "stage": "prototype",
-  "generated_at": "2026-05-02T15:21:29.818773+00:00",
-  "source_hash": "e513c749781b0e51781744ae8418842604f038a4e3f118ecdc63b41f4e8ab6fc",
-  "projection_seq": "semantic-e513c749781b0e51",
-  "transaction_id": "tx-semantic-beacon-execution-runtime-kernel-semantic-e513c749781b0e51",
+  "generated_at": "2026-05-03T15:07:19.417295+00:00",
+  "source_hash": "20d16fe676ae01f1c42aa0f1029941b2db36f182a8ccb1ffd6c1cbad0732856a",
+  "projection_seq": "semantic-20d16fe676ae01f1",
+  "transaction_id": "tx-semantic-beacon-execution-runtime-kernel-semantic-20d16fe676ae01f1",
   "source_documents": [
     {
       "type": "prd",
       "path": "docs/beacon/v1.3.11/prd/beacon-execution-runtime-kernel.md",
-      "fingerprint": "86b3e1821bb331ad0542bf2596ced0faaa3957fee442b141f3054c623ea0f9f6"
+      "fingerprint": "fb54921acc26354df2d15750f395c78522f40858e2f30d247dc5cec67c4f5371"
     },
     {
       "type": "user-story",
       "path": "docs/beacon/v1.3.11/user-story/beacon-execution-runtime-kernel.md",
-      "fingerprint": "4dc1a2c55819146158d4a3f2bf396f67c861cfb008a1bb80de9e10cb48f6507c"
+      "fingerprint": "edb8d336e24f5e7984aabb62ee4fc4949334f29ffb6c140d1b60e2e1a6c934f8"
     },
     {
       "type": "test-case",
       "path": "docs/beacon/v1.3.11/qa/test-cases/beacon-execution-runtime-kernel.md",
-      "fingerprint": "8da617c7f3e9bb7c79a24f961f43b3282fdeee9c9358e8a477c6ca654a7b1119"
+      "fingerprint": "138cbc0229cc8ec04ab360a5bb5fb38516ddb7b3dfa29eb06fa4bcfd28d569f1"
     }
   ],
   "stage_context": {
     "schema_version": "1.0",
     "run_id": "",
     "stage": "prototype",
-    "feature": "Beacon Execution Runtime Kernel",
+    "feature": "beacon-execution-runtime-kernel",
     "version": "v1.3.11",
-    "generated_at": "2026-05-02T15:21:29.811759+00:00",
+    "generated_at": "2026-05-03T15:07:19.408630+00:00",
     "memory_recall": [],
     "lifecycle_events": [],
     "requirement_refs": [
@@ -72,15 +72,15 @@
         "source": "requirement_truth"
       },
       {
-        "label": "Beacon Execution Runtime Kernel",
+        "label": "beacon-execution-runtime-kernel",
         "slug": "beacon-execution-runtime-kernel",
         "source": "requirement_truth"
       }
     ],
     "status_labels": [
+      "阻塞",
       "错误",
       "正常",
-      "阻塞",
       "加载中"
     ],
     "module_labels": [
@@ -96,16 +96,16 @@
       "任一关键状态"
     ],
     "action_labels": [
+      "恢复路径",
+      "重试或回修",
+      "恢复处理环境",
       "恢复",
       "重试仍依赖人工心智",
       "恢复面",
       "重试等稳定",
       "恢复语义",
       "恢复场景提供稳定的",
-      "恢复策略",
-      "恢复路径",
-      "恢复顺序必须优先",
-      "恢复路径明确且可重放"
+      "恢复策略"
     ],
     "preferred_terms": [
       {
@@ -181,11 +181,16 @@
       "schema_version": "1.0",
       "command_name": "prototype",
       "host_runtime": "codex",
-      "host_bridge_declared": false,
+      "host_runtime_supported": true,
+      "host_bridge_declared": true,
+      "host_bridge_command_available": true,
+      "host_bridge_command_source": "env_cmd",
+      "host_bridge_command_env": "BEACON_HOST_PROTOTYPE_BRIDGE_CMD",
       "host_response_available": false,
       "host_response_source": "none",
       "host_response_path": "",
-      "host_semantic_ready": false,
+      "host_transport": "command-bridge",
+      "host_semantic_ready": true,
       "provider_available": false,
       "provider_key_present": false,
       "llm_disabled": false,

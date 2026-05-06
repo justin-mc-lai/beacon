@@ -1,4 +1,4 @@
-# 自动化优先级矩阵：Prototype Design Intelligence And Governed Rendering Separation
+# 自动化优先级矩阵：prototype-design-intelligence-and-governed-rendering-separation
 
 | Target ID | Target Type | Priority Class | Reason | AC Refs | TC Refs |
 |---|---|---|---|---|---|
