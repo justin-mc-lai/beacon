@@ -98,7 +98,7 @@ Optional supplemental skills:
 - `beacon-prd-bootstrap`: one-click PRD + user-story + test-case bootstrap with safe defaults
 - `beacon-brainstorm`: read-only first-principles / Socratic / Occam sidecar for requirement convergence and project evolution thinking
 - `beacon-archive`: formal archive governance for isolating active truth from historical truth
-- `beacon-toolkit-lighthouse`: fast single-file analysis without entering the main workflow
+- `beacon-toolkit-lighthouse`: fast single-file, diagram-first analysis without entering the main workflow
 - `beacon-toolkit-metadata`: deterministic metadata toolkit for project/version topology, branch binding, CRUD, and verify
 - `beacon-friction-intake`: host-visible friction intake entry for scan/capture plus sqlite queue governance
 - `beacon-real-project-validation`: prove Beacon works against a real target project
@@ -110,6 +110,7 @@ Optional supplemental skills:
 - **Archive governance**: `beacon archive plan/apply/status/explain` is now part of the public support surface with `beacon-archive` routing.
 - **Canonical delivery baseline**: implementation-plan, deterministic implementation contract, and git workflow still project from one canonical baseline envelope.
 - **Built-in brainstorm sidecar**: `beacon-brainstorm` remains read-only and feeds change/refreeze instead of mutating frozen truth.
+- **Toolkit Lighthouse**: single-page, Mermaid-first analysis surface with strict fact/inference separation.
 - **Minimal HUD and host traceability**: Codex HUD hook and host prompt trace keep current runtime execution auditable.
 
 ## Current v1.3.9 Runtime Line
