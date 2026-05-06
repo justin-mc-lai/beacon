@@ -33,6 +33,11 @@ from beacon.utils.qa_runtime import load_current_qa_session, load_qa_status
 from beacon.utils.qa_precision import load_feature_qa_scorecard
 from beacon.utils.release_scorecard import build_release_scorecard, summarize_release_scorecard
 from beacon.utils.ralph_runtime import load_ralph_state
+from beacon.utils.requirement_deepening import (
+    build_requirement_completeness_gate,
+    load_requirement_completeness,
+    requirement_paths,
+)
 from beacon.utils.requirement_clarity import build_requirement_clarity_gate_payload
 from beacon.utils.revision_state import load_revision_state
 from beacon.utils.runtime import load_run_state
@@ -134,6 +139,8 @@ _STAGE_SKILL_KEYS = {
     "release": ("release", "delivery", "gate"),
 }
 
+_REQUIREMENT_COMPLETENESS_TARGET_STAGES = {"prototype", "qa", "release"}
+
 
 def canonicalize_lifecycle_stage(value: str | None) -> str:
     text = str(value or "").strip()
@@ -197,6 +204,214 @@ def _stage_skill_keys(stage: str) -> tuple[str, ...]:
     canonical = canonicalize_lifecycle_stage(stage)
     keys = _STAGE_SKILL_KEYS.get(canonical, (canonical or stage,))
     return tuple(key for key in keys if key)
+
+
+def _requirement_completeness_target_stage(*, current_stage: str, next_action: str) -> str:
+    action_stage = canonicalize_lifecycle_action(next_action)
+    if action_stage in _REQUIREMENT_COMPLETENESS_TARGET_STAGES:
+        return action_stage
+    current = canonicalize_lifecycle_stage(current_stage)
+    if current in {"release", "accepted"}:
+        return "release"
+    if current in {"qa", "implement"}:
+        return "qa"
+    return "prototype"
+
+
+def _build_requirement_completeness_surface(
+    *,
+    gate: dict[str, Any],
+    current_stage: str,
+) -> dict[str, Any]:
+    if not isinstance(gate, dict) or not gate:
+        return {
+            "enabled": False,
+            "status": "pass",
+            "blocked": False,
+            "reason_code": "",
+            "current_stage": current_stage,
+            "target_stage": "",
+            "blocked_subgates": [],
+            "downgraded_subgates": [],
+            "passed_subgates": [],
+            "focus_areas": [],
+            "recommended_command": "",
+            "trace_loop_status": "not_enabled",
+            "human_loop_handoff": {},
+        }
+
+    stage_gates = gate.get("stage_gates") if isinstance(gate.get("stage_gates"), dict) else {}
+    blocked_subgates: list[str] = []
+    downgraded_subgates: list[str] = []
+    passed_subgates: list[str] = []
+    for gate_name, payload in stage_gates.items():
+        status = str((payload or {}).get("status") or "").strip()
+        if status == "blocked":
+            blocked_subgates.append(str(gate_name))
+        elif status == "pass_with_downgrade":
+            downgraded_subgates.append(str(gate_name))
+        elif status == "pass":
+            passed_subgates.append(str(gate_name))
+
+    handoff = gate.get("human_loop_handoff") if isinstance(gate.get("human_loop_handoff"), dict) else {}
+    focus_areas = [str(item).strip() for item in (handoff.get("focus_areas") or []) if str(item).strip()]
+    status = str(gate.get("status") or "pass").strip()
+    trace_loop_status = (
+        "supplement_required"
+        if status == "blocked"
+        else "refreeze_and_revalidate"
+        if status == "pass_with_downgrade"
+        else "frozen_and_revalidatable"
+    )
+    return {
+        "enabled": bool(gate.get("enabled", False)),
+        "status": status,
+        "blocked": bool(gate.get("blocked", False)),
+        "reason_code": str(gate.get("reason_code") or ""),
+        "current_stage": current_stage,
+        "target_stage": str(gate.get("target_stage") or ""),
+        "blocked_subgates": blocked_subgates,
+        "downgraded_subgates": downgraded_subgates,
+        "passed_subgates": passed_subgates,
+        "missing_dimensions": list(gate.get("missing_dimensions") or []),
+        "coverage_dimension_statuses": dict(gate.get("coverage_dimension_statuses") or {}),
+        "focus_areas": focus_areas,
+        "recommended_command": str(gate.get("recommended_command") or ""),
+        "next_action": str(gate.get("next_action") or ""),
+        "trace_loop_status": trace_loop_status,
+        "human_loop_handoff": handoff,
+    }
+
+
+def _dedupe_strings(values: list[str]) -> list[str]:
+    seen: set[str] = set()
+    ordered: list[str] = []
+    for value in values:
+        text = str(value or "").strip()
+        if not text or text in seen:
+            continue
+        seen.add(text)
+        ordered.append(text)
+    return ordered
+
+
+def _build_requirement_gap_digest(
+    *,
+    feature: str,
+    version: str,
+    revision_id: str,
+    requirement_completeness: dict[str, Any],
+    change_loop: dict[str, Any],
+) -> dict[str, Any]:
+    completeness = requirement_completeness if isinstance(requirement_completeness, dict) else {}
+    change_loop = change_loop if isinstance(change_loop, dict) else {}
+    blocked_subgates = [str(item).strip() for item in (completeness.get("blocked_subgates") or []) if str(item).strip()]
+    downgraded_subgates = [str(item).strip() for item in (completeness.get("downgraded_subgates") or []) if str(item).strip()]
+    missing_dimensions = [str(item).strip() for item in (completeness.get("missing_dimensions") or []) if str(item).strip()]
+    focus_areas = [str(item).strip() for item in (completeness.get("focus_areas") or []) if str(item).strip()]
+    high_risk = [str(item).strip() for item in (completeness.get("human_loop_handoff", {}) or {}).get("focus_areas", []) if str(item).strip()] if isinstance(completeness.get("human_loop_handoff"), dict) else []
+    gap_dimensions = _dedupe_strings([
+        *missing_dimensions,
+        *blocked_subgates,
+        *downgraded_subgates,
+    ])
+    human_followup_needed = bool(gap_dimensions or focus_areas or bool(change_loop.get("recommended", False)))
+    gap_type = "change_request" if bool(change_loop.get("recommended", False)) else "requirement_deepening"
+    if bool(completeness.get("blocked", False)):
+        gap_severity = "high"
+    elif str(completeness.get("status") or "") == "pass_with_downgrade":
+        gap_severity = "medium"
+    elif human_followup_needed:
+        gap_severity = "low"
+    else:
+        gap_severity = "none"
+    gap_summary_parts = [
+        str(completeness.get("reason_code") or "").strip(),
+        *gap_dimensions[:3],
+    ]
+    gap_summary = " / ".join([item for item in gap_summary_parts if item]) or "requirement completeness is stable"
+    recommended_route = (
+        "beacon-change"
+        if bool(change_loop.get("recommended", False))
+        else "beacon-brainstorm"
+        if human_followup_needed
+        else ""
+    )
+    candidate_targets = (
+        ["beacon-change"]
+        if recommended_route == "beacon-change"
+        else ["beacon-brainstorm", "beacon-user-story", "beacon-test-case"]
+        if human_followup_needed
+        else []
+    )
+    return {
+        "feature": feature,
+        "version": version,
+        "revision_id": revision_id,
+        "source_truth_ref": f"docs/beacon/{version}/prd/{feature_slug(feature)}.md" if feature else "",
+        "gap_id": f"gap-{feature_slug(feature) or 'feature'}-{str(completeness.get('reason_code') or 'none').replace('_', '-')}",
+        "gap_type": gap_type,
+        "gap_severity": gap_severity,
+        "gap_summary": gap_summary,
+        "gap_dimensions": gap_dimensions,
+        "missing_dimensions": missing_dimensions,
+        "blocked_subgates": blocked_subgates,
+        "candidate_targets": candidate_targets,
+        "human_followup_needed": human_followup_needed,
+        "recommended_route": recommended_route,
+        "trigger_reason": str(change_loop.get("reason") or completeness.get("reason_code") or gap_summary),
+    }
+
+
+def _build_brainstorm_hint(
+    *,
+    requirement_gap_digest: dict[str, Any],
+    requirement_completeness: dict[str, Any],
+    change_loop: dict[str, Any],
+) -> dict[str, Any]:
+    digest = requirement_gap_digest if isinstance(requirement_gap_digest, dict) else {}
+    completeness = requirement_completeness if isinstance(requirement_completeness, dict) else {}
+    change_loop = change_loop if isinstance(change_loop, dict) else {}
+    gap_dimensions = [str(item).strip() for item in (digest.get("gap_dimensions") or []) if str(item).strip()]
+    focus_areas = [str(item).strip() for item in (completeness.get("focus_areas") or []) if str(item).strip()]
+    if not focus_areas:
+        focus_areas = gap_dimensions
+    open_questions = _dedupe_strings(
+        [
+            *(f"哪些 `{item}` 还没有被冻结成正式 truth？" for item in gap_dimensions[:5]),
+            *(f"是否需要把 `{item}` 继续拆成 story / test-case 候选？" for item in focus_areas[:5]),
+            "这次 gap 是否应该进入 change loop，而不是继续补料？",
+        ]
+    )
+    recommended_route = str(digest.get("recommended_route") or "").strip() or (
+        "beacon-change" if bool(change_loop.get("recommended", False)) else "beacon-brainstorm"
+    )
+    recommended_mode = (
+        "scope-simplification"
+        if recommended_route == "beacon-change"
+        else "requirement-convergence"
+    )
+    recommended_output = (
+        "docs/brainstorms/"
+        if recommended_route == "beacon-brainstorm"
+        else f"docs/beacon/{str(digest.get('version') or '')}/"
+    )
+    trigger_reason = str(
+        digest.get("gap_summary")
+        or change_loop.get("reason")
+        or completeness.get("reason_code")
+        or "requirement gap detected"
+    )
+    return {
+        "feature": str(digest.get("feature") or ""),
+        "version": str(digest.get("version") or ""),
+        "trigger_reason": trigger_reason,
+        "focus_areas": focus_areas,
+        "open_questions": open_questions,
+        "recommended_mode": recommended_mode,
+        "recommended_output": recommended_output,
+        "recommended_route": recommended_route,
+    }
 
 
 def _read_json(path: Path) -> dict[str, Any]:
@@ -1286,6 +1501,84 @@ def build_help_payload(
             "reason": "post-freeze execution contract requires Ralph after implement-team before QA/release closure",
             "command": f"beacon implement run {quoted_feature} --project {project_root} --version {resolved_version} --mode ralph",
         }
+    requirement_completeness_gate = (
+        build_requirement_completeness_gate(
+            project_root,
+            version=resolved_version,
+            feature=feature_name,
+            target_stage=_requirement_completeness_target_stage(
+                current_stage=current_stage,
+                next_action=str(next_step.get("action", "") or ""),
+            ),
+        )
+        if feature_name
+        else {}
+    )
+    requirement_completeness = _build_requirement_completeness_surface(
+        gate=requirement_completeness_gate,
+        current_stage=current_stage,
+    )
+    requirement_deepening_paths = requirement_paths(project_root, resolved_version, feature_name) if feature_name else {}
+    supplement_task = _read_json(requirement_deepening_paths["supplement_task"]) if feature_name and requirement_deepening_paths.get("supplement_task") else {}
+    re_freeze_transaction = _read_json(requirement_deepening_paths["re_freeze_transaction"]) if feature_name and requirement_deepening_paths.get("re_freeze_transaction") else {}
+    if not supplement_task and feature_name:
+        deepening_completeness = load_requirement_completeness(project_root, resolved_version, feature_name)
+        handoff = requirement_completeness.get("human_loop_handoff", {}) if isinstance(requirement_completeness.get("human_loop_handoff"), dict) else {}
+        if handoff.get("recommended_command") or deepening_completeness:
+            supplement_task = {
+                "feature": feature_name,
+                "version": resolved_version,
+                "target_artifact": "test-case" if "test-case" in str(handoff.get("recommended_command") or "").lower() else "user-story",
+                "writeback_target": "",
+                "candidate_kind": "supplement_task",
+                "candidate_payload": {
+                    "focus_areas": list(handoff.get("focus_areas") or []),
+                    "open_questions": [],
+                },
+                "source_truth_ref": f"docs/beacon/{resolved_version}/prd/{feature_slug(feature_name)}.md",
+                "rationale": str(handoff.get("reason") or requirement_completeness.get("reason_code") or "requirement supplement required"),
+                "confidence": "low",
+                "human_decision": "pending",
+                "audit_trail_required": True,
+                "recommended_route": "beacon-test-case" if "test-case" in str(handoff.get("recommended_command") or "").lower() else "beacon-user-story",
+            }
+    requirement_gap_digest = _build_requirement_gap_digest(
+        feature=feature_name,
+        version=resolved_version,
+        revision_id=str(revision_state.get("revision_id", "") or ""),
+        requirement_completeness=requirement_completeness,
+        change_loop=change_loop,
+    )
+    brainstorm_hint = _build_brainstorm_hint(
+        requirement_gap_digest=requirement_gap_digest,
+        requirement_completeness=requirement_completeness,
+        change_loop=change_loop,
+    )
+    if bool(requirement_completeness_gate.get("blocked")):
+        blocking = _unique_reasons_in_order(
+            [str(requirement_completeness_gate.get("reason_code") or "").strip(), *blocking]
+        )
+        blocking_display = _canonicalize_reason_list(blocking)
+        blocked = True
+        handoff = (
+            requirement_completeness_gate.get("human_loop_handoff")
+            if isinstance(requirement_completeness_gate.get("human_loop_handoff"), dict)
+            else {}
+        )
+        next_step = {
+            "action": str(handoff.get("action") or "human_review"),
+            "reason": str(
+                handoff.get("reason")
+                or requirement_completeness_gate.get("reason_code")
+                or "requirement completeness review required"
+            ),
+            "command": str(
+                handoff.get("recommended_command")
+                or requirement_completeness_gate.get("recommended_command")
+                or next_step.get("command")
+                or ""
+            ),
+        }
     plan_counts = implementation_plan_progress.get("counts") if isinstance(implementation_plan_progress.get("counts"), dict) else {}
     progress_total = int(plan_counts.get("total", 0) or 0)
     progress_done = int(plan_counts.get("completed", 0) or 0)
@@ -1408,6 +1701,27 @@ def build_help_payload(
             "reason_code": str(semantic_contract.get("reason_code", "") or ""),
             "artifacts": dict(semantic_contract.get("artifacts", {})) if isinstance(semantic_contract.get("artifacts"), dict) else {},
         },
+        {
+            "step": "requirement_completeness",
+            "status": str(requirement_completeness.get("status", "pass") or "pass"),
+            "reason_code": str(requirement_completeness.get("reason_code", "") or ""),
+            "target_stage": str(requirement_completeness.get("target_stage", "") or ""),
+            "blocked_subgates": list(requirement_completeness.get("blocked_subgates", [])),
+            "focus_areas": list(requirement_completeness.get("focus_areas", [])),
+        },
+        {
+            "step": "requirement_gap_digest",
+            "status": "ready" if bool(requirement_gap_digest.get("human_followup_needed")) else "stable",
+            "gap_type": str(requirement_gap_digest.get("gap_type", "") or ""),
+            "gap_severity": str(requirement_gap_digest.get("gap_severity", "") or ""),
+            "recommended_route": str(requirement_gap_digest.get("recommended_route", "") or ""),
+        },
+        {
+            "step": "brainstorm_hint",
+            "status": "recommended" if str(brainstorm_hint.get("recommended_route", "") or "") == "beacon-brainstorm" else "routed",
+            "recommended_mode": str(brainstorm_hint.get("recommended_mode", "") or ""),
+            "recommended_route": str(brainstorm_hint.get("recommended_route", "") or ""),
+        },
     ]
     scores = {
         "test_score": compute_test_score(coverage, auto_test_status=auto_test, story_summary=story_summary),
@@ -1510,6 +1824,12 @@ def build_help_payload(
         "implementation_plan_gate": implementation_plan_gate,
         "implementation_plan_progress": implementation_plan_progress,
         "requirement_clarity_gate": requirement_clarity_gate,
+        "requirement_completeness_gate": requirement_completeness_gate,
+        "requirement_completeness": requirement_completeness,
+        "requirement_gap_digest": requirement_gap_digest,
+        "brainstorm_hint": brainstorm_hint,
+        "supplement_task": supplement_task,
+        "re_freeze_transaction": re_freeze_transaction,
         "requirement_package_gate": requirement_package_gate,
         "semantic": semantic_contract,
         "decision_trace": decision_trace,

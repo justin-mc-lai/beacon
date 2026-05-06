@@ -7,7 +7,7 @@ description: Use when the user wants to plan or run implementation through Beaco
 
 This skill routes execution work through Beacon's `implement` surface.
 
-The public command stays on the `v1.3.9` runtime line while `v1.3.9` defines the shared delivery kernel and host-native execution contract.
+The public command stays on the `v1.3.9` runtime line while `v1.3.12` defines the shared delivery kernel's requirement-closure inputs and host-native execution contract.
 
 ## Use for
 
@@ -15,6 +15,7 @@ The public command stays on the `v1.3.9` runtime line while `v1.3.9` defines the
 - implementation execution
 - implementation progress / handoff checks
 - implementation readiness after freeze and technical review
+- requirement completeness checks before execution
 
 ## Operator rule
 

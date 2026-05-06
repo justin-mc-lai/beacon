@@ -1,0 +1,147 @@
+{
+  "schema_version": "1.0",
+  "run_id": "prd-bootstrap-20260423T033229Z",
+  "feature": "Beacon v1.3.7 implement frozen-truth verification and canonical delivery baseline envelope",
+  "feature_slug": "beacon-v1.3.7-implement-frozen-truth-verification-and-canonical-delivery-baseline-envelope",
+  "description": "在 v1.3.7 中收敛 Beacon implement 极简实现方案：对应版本的 prd、user-story、test-case 冻结后，用户可在 Codex/Claude 内部通过 beacon-implement 指定 version 与提示词直接进入实现；提示词只作为实现意图输入和冻结需求核实输入，不是新的 truth source。系统必须先把提示词与已冻结 requirement truth 做核实，只允许 in-scope implementation 与 scope 内澄清继续实现；如果提示词暗含新增用户故事、调整 AC、扩展测试范围、改变需求边界或与冻结 truth 冲突，则必须阻断并回到 requirement change / refreeze 流程。同时 implement plan 需先生成 canonical 的 implementation delivery baseline envelope，再单向投影到 architecture-blueprint、deterministic implementation contract、git workflow contract、implementation plan，并由 gate 校验 projection 与 canonical 的一致性。",
+  "version": "v1.3.7",
+  "generated_at": "2026-04-23T03:32:29.883558+00:00",
+  "mode": "apply",
+  "dry_run": false,
+  "no_overwrite": true,
+  "strict_context_verify": true,
+  "targets": {
+    "prd": "docs/beacon/v1.3.7/prd/beacon-v1.3.7-implement-frozen-truth-verification-and-canonical-delivery-baseline-envelope.md",
+    "user_story": "docs/beacon/v1.3.7/user-story/beacon-v1.3.7-implement-frozen-truth-verification-and-canonical-delivery-baseline-envelope.md",
+    "test_case": "docs/beacon/v1.3.7/qa/test-cases/beacon-v1.3.7-implement-frozen-truth-verification-and-canonical-delivery-baseline-envelope.md"
+  },
+  "quality": {
+    "max_placeholders": 0,
+    "total_placeholders": 0,
+    "per_doc": {
+      "prd": 0,
+      "user_story": 0,
+      "test_case": 0
+    },
+    "ok": true
+  },
+  "consistency": {
+    "story_ac_ids": [
+      "AC-001",
+      "AC-002",
+      "AC-003",
+      "AC-004",
+      "AC-005"
+    ],
+    "test_case_ac_ids": [
+      "AC-001",
+      "AC-002",
+      "AC-003",
+      "AC-004",
+      "AC-005"
+    ],
+    "missing_in_test_case": [],
+    "ok": true
+  },
+  "context_verify": {
+    "project_root": "/Users/apple/Developer/Personal/products/beacon",
+    "runtime_version": "v1.3.6",
+    "strict": true,
+    "status": "pass",
+    "ok": true,
+    "checks": [
+      {
+        "name": "context_files_presence",
+        "status": "pass",
+        "details": {
+          "missing": []
+        }
+      },
+      {
+        "name": "managed_block_integrity",
+        "status": "pass",
+        "details": {
+          "issues": []
+        }
+      },
+      {
+        "name": "managed_block_version_drift",
+        "status": "pass",
+        "details": {
+          "drifted": [],
+          "unknown": []
+        }
+      },
+      {
+        "name": "global_boundaries_presence",
+        "status": "pass",
+        "details": {
+          "path": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/global-boundaries.md",
+          "exists": true
+        }
+      },
+      {
+        "name": "global_boundaries_inheritance",
+        "status": "pass",
+        "details": {
+          "missing_references": []
+        }
+      }
+    ],
+    "files": {
+      "CLAUDE.md": {
+        "path": "/Users/apple/Developer/Personal/products/beacon/CLAUDE.md",
+        "exists": true,
+        "marker_integrity": "ok",
+        "managed_version": "v1.3.6",
+        "managed_docs_version": "v1.3.6",
+        "version_drift": false
+      },
+      "AGENTS.md": {
+        "path": "/Users/apple/Developer/Personal/products/beacon/AGENTS.md",
+        "exists": true,
+        "marker_integrity": "ok",
+        "managed_version": "v1.3.6",
+        "managed_docs_version": "v1.3.6",
+        "version_drift": false
+      }
+    }
+  },
+  "status": "applied",
+  "reason_code": "",
+  "recommended_command": "",
+  "write_actions": [
+    {
+      "target": "prd",
+      "path": "docs/beacon/v1.3.7/prd/beacon-v1.3.7-implement-frozen-truth-verification-and-canonical-delivery-baseline-envelope.md",
+      "action": "created",
+      "backup_path": ""
+    },
+    {
+      "target": "user_story",
+      "path": "docs/beacon/v1.3.7/user-story/beacon-v1.3.7-implement-frozen-truth-verification-and-canonical-delivery-baseline-envelope.md",
+      "action": "created",
+      "backup_path": ""
+    },
+    {
+      "target": "test_case",
+      "path": "docs/beacon/v1.3.7/qa/test-cases/beacon-v1.3.7-implement-frozen-truth-verification-and-canonical-delivery-baseline-envelope.md",
+      "action": "created",
+      "backup_path": ""
+    }
+  ],
+  "rollback_plan": [
+    {
+      "action": "delete",
+      "path": "docs/beacon/v1.3.7/prd/beacon-v1.3.7-implement-frozen-truth-verification-and-canonical-delivery-baseline-envelope.md"
+    },
+    {
+      "action": "delete",
+      "path": "docs/beacon/v1.3.7/user-story/beacon-v1.3.7-implement-frozen-truth-verification-and-canonical-delivery-baseline-envelope.md"
+    },
+    {
+      "action": "delete",
+      "path": "docs/beacon/v1.3.7/qa/test-cases/beacon-v1.3.7-implement-frozen-truth-verification-and-canonical-delivery-baseline-envelope.md"
+    }
+  ]
+}

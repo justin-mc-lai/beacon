@@ -23,6 +23,7 @@ from beacon.utils.prototype_utils import (
     write_prototype_plan,
     write_prototype_bundle,
 )
+from beacon.utils.requirement_deepening import build_requirement_completeness_gate
 from beacon.utils.versioning import resolve_operational_docs_version, resolve_target_version
 
 app = typer.Typer(name="prototype", help="Generate and manage requirement-driven wireframe freezes")
@@ -98,6 +99,22 @@ def plan(
     """Compile structured wireframe freeze plan from requirement contracts."""
     project_root = Path(project) if project else Path.cwd()
     resolved_version = _resolved_operational_version(project_root, version, "prototype plan")
+    requirement_gate = build_requirement_completeness_gate(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        target_stage="prototype",
+    )
+    if bool(requirement_gate.get("blocked")):
+        typer.echo(json.dumps({
+            "feature": feature,
+            "version": resolved_version,
+            "status": "blocked",
+            "reason_code": str(requirement_gate.get("reason_code") or "requirement_completeness_blocked"),
+            "requirement_completeness_gate": requirement_gate,
+            "recommended_command": str(requirement_gate.get("recommended_command") or "beacon-change"),
+        }, ensure_ascii=False, indent=2))
+        raise typer.Exit(2)
     try:
         result = write_prototype_plan(project_root, resolved_version, feature, mode=mode, model=model)
     except (FileNotFoundError, ValueError) as exc:
@@ -115,6 +132,7 @@ def plan(
         "required_pages": result["plan"].get("required_pages", []),
         "required_states": result["plan"].get("required_states", []),
         "path": str(result["path"].relative_to(project_root)),
+        "requirement_completeness_gate": requirement_gate,
     }
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
@@ -135,6 +153,22 @@ def create(
     """Create a requirement-driven wireframe freeze bundle from requirement contracts."""
     project_root = Path(project) if project else Path.cwd()
     resolved_version = _resolved_operational_version(project_root, version, "prototype create")
+    requirement_gate = build_requirement_completeness_gate(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        target_stage="prototype",
+    )
+    if bool(requirement_gate.get("blocked")):
+        typer.echo(json.dumps({
+            "feature": feature,
+            "version": resolved_version,
+            "status": "blocked",
+            "reason_code": str(requirement_gate.get("reason_code") or "requirement_completeness_blocked"),
+            "requirement_completeness_gate": requirement_gate,
+            "recommended_command": str(requirement_gate.get("recommended_command") or "beacon-change"),
+        }, ensure_ascii=False, indent=2))
+        raise typer.Exit(2)
     try:
         result = write_prototype_bundle(project_root, resolved_version, feature, mode=mode, model=model)
     except FileNotFoundError as exc:
@@ -171,6 +205,7 @@ def create(
         "capability_snapshot": (result["plan"].get("compiler") or {}).get("capability_snapshot", {}),
         "paths": {k: str(v.relative_to(project_root)) for k, v in result["files"].items() if k != "root"},
         "semantic_layer": result.get("semantic_layer", {}),
+        "requirement_completeness_gate": requirement_gate,
     }
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
@@ -290,6 +325,12 @@ def review(
     except (FileNotFoundError, ValueError) as exc:
         typer.echo(str(exc), err=True)
         raise typer.Exit(2)
+    payload["requirement_completeness_gate"] = build_requirement_completeness_gate(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        target_stage="prototype",
+    )
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
         return
@@ -335,11 +376,28 @@ def freeze(
     """Freeze a prototype by persisting source and artifact fingerprints."""
     project_root = Path(project) if project else Path.cwd()
     resolved_version = _resolved_operational_version(project_root, version, "prototype freeze")
+    requirement_gate = build_requirement_completeness_gate(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        target_stage="prototype",
+    )
+    if bool(requirement_gate.get("blocked")):
+        typer.echo(json.dumps({
+            "feature": feature,
+            "version": resolved_version,
+            "status": "blocked",
+            "reason_code": str(requirement_gate.get("reason_code") or "requirement_completeness_blocked"),
+            "requirement_completeness_gate": requirement_gate,
+            "recommended_command": str(requirement_gate.get("recommended_command") or "beacon-change"),
+        }, ensure_ascii=False, indent=2))
+        raise typer.Exit(2)
     try:
         payload = freeze_prototype(project_root, resolved_version, feature)
     except (FileNotFoundError, ValueError) as exc:
         typer.echo(str(exc), err=True)
         raise typer.Exit(2)
+    payload["requirement_completeness_gate"] = requirement_gate
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
         return
@@ -384,6 +442,12 @@ def status(
     project_root = Path(project) if project else Path.cwd()
     resolved_version = _resolved_operational_version(project_root, version, "prototype status")
     payload = evaluate_prototype_status(project_root, resolved_version, feature)
+    payload["requirement_completeness_gate"] = build_requirement_completeness_gate(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        target_stage="prototype",
+    )
     if json_output:
         serializable = dict(payload)
         serializable["root"] = str(payload["root"])
@@ -406,6 +470,7 @@ def status(
     typer.echo(f"machine_view : {payload.get('machine_contract_status')}")
     typer.echo(f"sqlite_view  : {payload.get('sqlite_projection_status')}")
     typer.echo(f"drift        : {payload.get('drift_status')}")
+    typer.echo(f"req_complete : {(payload.get('requirement_completeness_gate') or {}).get('status', 'n/a')}")
     if payload.get("drift_type"):
         typer.echo(f"drift_type   : {payload.get('drift_type')}")
     if payload.get("reason_code"):

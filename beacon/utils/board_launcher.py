@@ -458,6 +458,13 @@ def build_operator_workbench_payload(
     lifecycle = runtime_projection.get("lifecycle") if isinstance(runtime_projection.get("lifecycle"), dict) else {}
     board = runtime_projection.get("board") if isinstance(runtime_projection.get("board"), dict) else {}
     materials = runtime_projection.get("materials") if isinstance(runtime_projection.get("materials"), dict) else {}
+    requirement_completeness = (
+        runtime_projection.get("requirement_completeness")
+        if isinstance(runtime_projection.get("requirement_completeness"), dict)
+        else {}
+    )
+    supplement_task = runtime_projection.get("supplement_task") if isinstance(runtime_projection.get("supplement_task"), dict) else {}
+    re_freeze_transaction = runtime_projection.get("re_freeze_transaction") if isinstance(runtime_projection.get("re_freeze_transaction"), dict) else {}
     operator_actions = _build_operator_actions(
         project_root=project_root,
         version=version,
@@ -478,6 +485,14 @@ def build_operator_workbench_payload(
             "gate_ready": bool(prototype_status.get("gate_ready")),
             "drift_status": str(prototype_status.get("drift_status") or ""),
         },
+        "requirement_completeness": {
+            "status": str(requirement_completeness.get("status") or ""),
+            "target_stage": str(requirement_completeness.get("target_stage") or ""),
+            "blocked_subgates": list(requirement_completeness.get("blocked_subgates") or []),
+            "downgraded_subgates": list(requirement_completeness.get("downgraded_subgates") or []),
+            "focus_areas": list(requirement_completeness.get("focus_areas") or []),
+            "trace_loop_status": str(requirement_completeness.get("trace_loop_status") or ""),
+        },
         "views": [
             "portfolio-board",
             "execution-board",
@@ -493,6 +508,11 @@ def build_operator_workbench_payload(
             "progress_label": str(board.get("progress_label") or lifecycle.get("progress_label") or ""),
             "health_status": str(board.get("health_status") or ""),
             "next_action": str(board.get("next_action") or ""),
+            "requirement_completeness": {
+                "status": str(requirement_completeness.get("status") or ""),
+                "target_stage": str(requirement_completeness.get("target_stage") or ""),
+                "blocked_subgates": list(requirement_completeness.get("blocked_subgates") or []),
+            },
             "materials": {
                 "prd": str(materials.get("prd") or ""),
                 "user_story": str(materials.get("user_story") or ""),
@@ -528,6 +548,16 @@ def build_operator_workbench_payload(
             "blocked": bool(lifecycle.get("blocked")),
             "blocked_reason": str(lifecycle.get("blocked_reason") or ""),
             "next_step": lifecycle.get("next_step", {}),
+            "requirement_completeness": {
+                "status": str(requirement_completeness.get("status") or ""),
+                "target_stage": str(requirement_completeness.get("target_stage") or ""),
+                "blocked_subgates": list(requirement_completeness.get("blocked_subgates") or []),
+                "downgraded_subgates": list(requirement_completeness.get("downgraded_subgates") or []),
+                "focus_areas": list(requirement_completeness.get("focus_areas") or []),
+                "human_loop_handoff": requirement_completeness.get("human_loop_handoff", {}),
+            },
+            "supplement_task": supplement_task,
+            "re_freeze_transaction": re_freeze_transaction,
             "implementation_plan_progress": implementation_plan_progress,
             "git_scopes": runtime_projection.get("git_scopes", []),
             "writable_services": writable_services,
@@ -724,6 +754,40 @@ def _render_kv_list(items: list[tuple[str, Any]]) -> str:
     return "".join(rows)
 
 
+def _render_link_list(items: list[dict[str, Any]]) -> str:
+    if not items:
+        return '<div class="empty">当前没有可跳转的补料项。</div>'
+    rows = []
+    for item in items:
+        label = str(item.get("label") or "").strip() or "补料项"
+        href = str(item.get("href") or "").strip() or "#feature-detail"
+        note = str(item.get("note") or "").strip()
+        rows.append(
+            f'<a class="jump-link" href="{_html_escape(href)}">'
+            f"<strong>{_html_escape(label)}</strong>"
+            f"<span>{_html_escape(note)}</span>"
+            "</a>"
+        )
+    return "".join(rows)
+
+
+def _render_link_list(items: list[dict[str, Any]]) -> str:
+    if not items:
+        return '<div class="empty">当前没有可跳转的补料项。</div>'
+    rows = []
+    for item in items:
+        label = str(item.get("label") or "").strip() or "补料项"
+        href = str(item.get("href") or "").strip() or "#feature-detail"
+        note = str(item.get("note") or "").strip()
+        rows.append(
+            f'<a class="jump-link" href="{_html_escape(href)}">'
+            f"<strong>{_html_escape(label)}</strong>"
+            f"<span>{_html_escape(note)}</span>"
+            "</a>"
+        )
+    return "".join(rows)
+
+
 def render_operator_workbench_html(payload: dict[str, Any]) -> str:
     portfolio = payload.get("portfolio_board") if isinstance(payload.get("portfolio_board"), dict) else {}
     execution = payload.get("execution_board") if isinstance(payload.get("execution_board"), dict) else {}
@@ -743,6 +807,31 @@ def render_operator_workbench_html(payload: dict[str, Any]) -> str:
     next_action = _cn_status(portfolio.get("next_action") or run_detail.get("operator_recommendation") or "doctor-suggested")
     primary_judgment = _cn_reason(feature_detail.get("blocked_reason") or selected_diag.get("reason_code") or portfolio.get("health_status"))
     feature_title = "Beacon 执行工作台"
+    supplement_task = feature_detail.get("supplement_task") if isinstance(feature_detail.get("supplement_task"), dict) else {}
+    re_freeze_transaction = feature_detail.get("re_freeze_transaction") if isinstance(feature_detail.get("re_freeze_transaction"), dict) else {}
+    supplement_links: list[dict[str, Any]] = []
+    if supplement_task.get("target_artifact"):
+        target_artifact = str(supplement_task.get("target_artifact") or "")
+        note = str(supplement_task.get("recommended_route") or "")
+        focus_areas = supplement_task.get("candidate_payload", {}) if isinstance(supplement_task.get("candidate_payload"), dict) else {}
+        if not note:
+            focus_areas_list = focus_areas.get("focus_areas") if isinstance(focus_areas.get("focus_areas"), list) else []
+            note = str(focus_areas_list[0] if focus_areas_list else "")
+        supplement_links.append(
+            {
+                "label": f"跳到 {target_artifact}",
+                "href": f"beacon {target_artifact} create",
+                "note": note or "查看补料提示",
+            }
+        )
+    if re_freeze_transaction:
+        supplement_links.append(
+            {
+                "label": "查看重冻结",
+                "href": "#feature-detail",
+                "note": f"refreeze={re_freeze_transaction.get('refreeze_required')} revalidate={re_freeze_transaction.get('revalidate_required')}",
+            }
+        )
 
     group_summary_cards = []
     for key in ("queued", "active", "blocked", "retry_scheduled", "needs_review"):
@@ -840,6 +929,9 @@ def render_operator_workbench_html(payload: dict[str, Any]) -> str:
     .metric-value {{ font-size: 24px; line-height: 1; }}
     .action-row {{ display: flex; flex-wrap: wrap; gap: 10px; }}
     .action-pill {{ display: inline-flex; align-items: center; gap: 8px; border-radius: 999px; border: 1px solid var(--line); padding: 8px 12px; background: #fff; }}
+    .jump-grid {{ display: grid; gap: 10px; grid-template-columns: repeat(2, minmax(0, 1fr)); }}
+    .jump-link {{ display: grid; gap: 4px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 8px; background: #fff; }}
+    .jump-link span {{ color: var(--muted); font-size: 13px; }}
     details.panel-details {{ border: 1px solid var(--line); border-radius: 8px; background: #fcfcfd; padding: 14px; }}
     details.panel-details > summary {{ cursor: pointer; font-weight: 600; }}
     section.panel {{ background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 18px; display: grid; gap: 14px; }}
@@ -949,6 +1041,10 @@ def render_operator_workbench_html(payload: dict[str, Any]) -> str:
       <div class="grid-2">
         <div>{_render_kv_list([("需求", _cn_feature_label(feature_detail.get("feature"))), ("阶段", _cn_status(feature_detail.get("current_stage"))), ("是否阻塞", "是" if feature_detail.get("blocked") else "否"), ("阻塞原因", _cn_reason(feature_detail.get("blocked_reason")) if feature_detail.get("blocked_reason") else "无")])}</div>
         <div>{_render_kv_list([("计划状态", _cn_status(plan_progress.get("status"))), ("计划编号", plan_progress.get("plan_id") or "未生成"), ("下一任务", plan_progress.get("next_task_id") or "待生成"), ("可写服务", ", ".join(feature_detail.get("writable_services", [])) or "未声明")])}</div>
+      </div>
+      <div>
+        <h3>补料跳转</h3>
+        <div class="jump-grid">{_render_link_list(supplement_links)}</div>
       </div>
     </section>
 

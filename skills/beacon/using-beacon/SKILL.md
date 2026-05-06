@@ -8,7 +8,7 @@ description: Use when Beacon should become the primary workflow router in Codex 
 Use Beacon as a host-native human-facing workflow pack.
 
 The public surface follows the current `v1.3.9` runtime line.
-The `v1.3.9` docs define the active host-native delivery baseline, brainstorm sidecar, archive governance, and shared delivery/read-model behavior.
+The `v1.3.12` requirement closure line defines the active host-native requirement deepening contract, supplement routing, and human-loop re-freeze behavior.
 
 ## Public routing targets
 
@@ -51,6 +51,9 @@ The `v1.3.9` docs define the active host-native delivery baseline, brainstorm si
    use `beacon-toolkit-metadata`
 11. Blocked / lost / next-step questions:
    use `beacon-help`, `beacon-status`, or `beacon-doctor`
+
+12. Need a human-readable supplement jump or re-freeze visibility:
+   use `beacon-help` or `beacon-status`
 
 ## Development pairing
 

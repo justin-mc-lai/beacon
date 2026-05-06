@@ -1,0 +1,100 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure",
+  "feature_slug": "beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure",
+  "version": "v1.3.12",
+  "runtime_version": "v1.3.11",
+  "runtime_capability_line": "v1.3.3",
+  "required": true,
+  "reason_code": "",
+  "blocked": false,
+  "status": "pass",
+  "findings": [],
+  "report_json_path": "docs/beacon/v1.3.12/.machine/execution/requirement-clarity-beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.json",
+  "report_markdown_path": "docs/beacon/v1.3.12/execution/requirement-clarity-beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md",
+  "state_path": ".beacon/state/requirement-clarity-beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.json",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.3.12",
+    "supported": true,
+    "required": true,
+    "ready": true,
+    "diagram_types": [
+      "branch-flow",
+      "state-machine",
+      "decision-priority"
+    ],
+    "state_axes": [
+      "requirement_gap_axis",
+      "unseen_role_difference",
+      "unseen_state_transition",
+      "unseen_boundary_case",
+      "unseen_exception_path",
+      "unseen_recovery_path",
+      "human_decision_axis",
+      "accepted",
+      "rejected",
+      "deferred",
+      "compile_mode_axis",
+      "host_native",
+      "provider_backed_host",
+      "rule_fallback"
+    ],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [
+      "branch-flow",
+      "state-machine",
+      "decision-priority",
+      "state axes"
+    ],
+    "review_gates": [
+      "implementation must cover the declared branch-flow split points",
+      "implementation must preserve the declared state-machine transitions",
+      "implementation must preserve decision-priority ordering",
+      "implementation must keep state axes explicit: requirement_gap_axis, unseen_role_difference, unseen_state_transition, unseen_boundary_case, unseen_exception_path, unseen_recovery_path, human_decision_axis, accepted, rejected, deferred, compile_mode_axis, host_native, provider_backed_host, rule_fallback"
+    ],
+    "qa_coverage_hints": [
+      "cover primary and alternate branch-flow paths",
+      "cover state transitions, illegal transitions, and recovery paths",
+      "cover conflicting conditions using declared decision priority",
+      "cover axis combinations across: requirement_gap_axis, unseen_role_difference, unseen_state_transition, unseen_boundary_case, unseen_exception_path, unseen_recovery_path, human_decision_axis, accepted, rejected, deferred, compile_mode_axis, host_native, provider_backed_host, rule_fallback"
+    ],
+    "evidence_lines": {
+      "branch-flow": [
+        "- `branch-flow`",
+        "- `branch-flow`"
+      ],
+      "state-machine": [
+        "- 状态机",
+        "2. 主动挖出角色能力差异、状态机、边界、异常、风险、恢复与 downgrade 语义",
+        "- 明确该候选属于角色差异、状态机、异常恢复或治理补充中的一种",
+        "- `state-machine`"
+      ],
+      "decision-priority": [
+        "- `decision-priority`",
+        "- `decision-priority`"
+      ],
+      "state-axes": [
+        "- `requirement_gap_axis`",
+        "- `unseen_role_difference`",
+        "- `unseen_state_transition`",
+        "- `unseen_boundary_case`",
+        "- `unseen_exception_path`",
+        "- `unseen_recovery_path`",
+        "- `human_decision_axis`",
+        "- `accepted`"
+      ]
+    },
+    "generated_at": "2026-05-06T01:20:47.346894+00:00",
+    "feature": "beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure",
+    "feature_slug": "beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure",
+    "prd_ref": "docs/beacon/v1.3.12/prd/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md",
+    "user_story_ref": "docs/beacon/v1.3.12/user-story/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md"
+  },
+  "required_artifacts": [],
+  "scanned_files": [
+    "docs/beacon/v1.3.12/prd/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md",
+    "docs/beacon/v1.3.12/user-story/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md"
+  ]
+}

@@ -18,6 +18,7 @@ prd -> user-story -> test-case -> prototype -> implement -> qa -> release
 - Continuing requirement brainstorming from `docs/beacon/<version>/`.
 - Finding missing questions before editing PRD, user-story, or test-case materials.
 - Exploring project evolution ideas before promoting them into a formal Beacon change.
+- Returning `brainstorm closed` when the gap is stable and no further supplement is needed.
 - Checking implementation prompts against frozen requirement evidence before `beacon-implement`.
 
 ## Thinking Protocol
@@ -52,6 +53,12 @@ Supported modes:
 - `project-evolution`
 - `implementation-readiness`
 - `scope-simplification`
+
+Legacy aliases:
+
+- `frozen-truth-delta` -> `implementation-readiness`
+- `evolution-exploration` -> `project-evolution`
+- `redundancy-pruning` -> `scope-simplification`
 
 ## Boundary
 

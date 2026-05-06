@@ -1058,6 +1058,11 @@ def build_runtime_projection(
     implement_state = _latest_implement_state(root, docs_version=resolved_version, feature=primary_feature)
     team_hud_payload = _load_team_hud_payload(root, help_payload)
     ralph_state = help_payload.get("ralph") if isinstance(help_payload.get("ralph"), dict) else {}
+    requirement_completeness = (
+        help_payload.get("requirement_completeness")
+        if isinstance(help_payload.get("requirement_completeness"), dict)
+        else {}
+    )
 
     source_snapshot = {
         "project_root": str(root),
@@ -1079,6 +1084,11 @@ def build_runtime_projection(
         "stage": _derive_stage(help_payload),
         "next_step": (help_payload.get("next_step") or {}).get("action", ""),
         "blocked_reason": help_payload.get("blocked_reason", ""),
+        "requirement_completeness": {
+            "status": str(requirement_completeness.get("status") or ""),
+            "target_stage": str(requirement_completeness.get("target_stage") or ""),
+            "blocked_subgates": list(requirement_completeness.get("blocked_subgates") or []),
+        },
         "runtime_mode": runtime_mode,
         "qa_status": load_qa_status(root),
         "qa_session_id": str(current_session.get("session_id") or ""),
@@ -1239,8 +1249,10 @@ def build_runtime_projection(
             "blocked": bool(help_payload.get("blocked", False)),
             "blocked_reason": str(help_payload.get("blocked_reason") or ""),
             "next_step": help_payload.get("next_step", {}),
+            "requirement_completeness": requirement_completeness,
         },
         "materials": materials,
+        "requirement_completeness": requirement_completeness,
         "runtime": {
             "mode": runtime_mode,
             "execution_surface": help_payload.get("execution_surface", {}),
@@ -1300,6 +1312,12 @@ def build_runtime_projection(
             "debug_state": str(effective_debug_state.get("state") or "no_debug_feed"),
             "runtime_corroboration": str(runtime_corroboration.get("status") or "missing"),
             "health_status": health_status,
+            "requirement_completeness_status": str(requirement_completeness.get("status") or ""),
+            "requirement_target_stage": str(requirement_completeness.get("target_stage") or ""),
+            "requirement_blocked_subgates": list(requirement_completeness.get("blocked_subgates") or []),
+            "requirement_downgraded_subgates": list(requirement_completeness.get("downgraded_subgates") or []),
+            "requirement_focus_areas": list(requirement_completeness.get("focus_areas") or []),
+            "requirement_trace_loop_status": str(requirement_completeness.get("trace_loop_status") or ""),
             "active_runs": len([row for row in runs if str(row.get("status") or "").strip() in active_statuses]),
             "active_agents": len(run_workers),
         },

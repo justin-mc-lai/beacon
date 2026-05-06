@@ -7,7 +7,7 @@ description: Use when the user asks what Beacon should do next, is blocked in th
 
 This skill routes next-step guidance through Beacon's `help` surface.
 
-The public command stays on the current `v1.3.9` runtime line and uses the shared read model and guidance behavior defined by the `v1.3.9` docs.
+The public command stays on the current `v1.3.9` runtime line and uses the shared read model and guidance behavior defined by the `v1.3.12` requirement closure docs.
 
 ## Use for
 
@@ -16,6 +16,7 @@ The public command stays on the current `v1.3.9` runtime line and uses the share
 - blocked workflow progression
 - stage-aware resume guidance
 - frozen feature change-loop guidance
+- requirement gap, supplement, and re-freeze routing
 
 ## Operator rule
 
@@ -26,3 +27,4 @@ Prefer:
 
 Use `beacon-help` before exposing low-level machine lanes or asking the user to reason about Beacon internals.
 When the user is changing a frozen feature, prefer routing to `beacon-change` rather than explaining hidden `reopen/freeze` mechanics directly.
+When a gap is still open but frozen truth is unchanged, prefer `beacon-brainstorm` for read-only convergence and then route to `beacon-user-story` or `beacon-test-case` for补料.

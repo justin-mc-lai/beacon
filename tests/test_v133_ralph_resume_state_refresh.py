@@ -46,7 +46,7 @@ def test_ralph_resume_should_promote_review_quality_gate_ready_to_release(monkey
     )
 
     monkeypatch.setattr(
-        implement_module,
+        implement_module._legacy_cli,
         "_run_beacon_json_command",
         lambda project_root, command: (0, {"status": "warn", "gate_ready": True}),
     )
@@ -85,7 +85,7 @@ def test_ralph_resume_should_mark_release_ready_after_gate_pass(monkeypatch, tmp
     )
 
     monkeypatch.setattr(
-        implement_module,
+        implement_module._legacy_cli,
         "_run_beacon_json_command",
         lambda project_root, command: (0, {"status": "pass"}),
     )
@@ -124,7 +124,7 @@ def test_ralph_resume_should_mark_gate_release_blocked_when_gate_fails(monkeypat
     )
 
     monkeypatch.setattr(
-        implement_module,
+        implement_module._legacy_cli,
         "_run_beacon_json_command",
         lambda project_root, command: (2, {"status": "Blocked"}),
     )
@@ -142,3 +142,58 @@ def test_ralph_resume_should_mark_gate_release_blocked_when_gate_fails(monkeypat
     assert updated["stop_state"] == "human_blocked"
     assert updated["current_blocker"] == "gate_release_blocked"
     assert updated["next_action"] == "release"
+
+
+def test_ralph_resume_should_redirect_to_human_requirement_handoff_when_release_is_blocked_by_completeness(monkeypatch, tmp_path: Path):
+    feature = "beacon-v1.3.12-requirement-completeness-human-handoff"
+    state_path = _write_ralph_state(
+        tmp_path,
+        feature,
+        {
+            "schema_version": "1.1",
+            "feature": feature,
+            "feature_slug": feature,
+            "version": "v1.3.12",
+            "next_action": "release",
+            "recommended_command": "beacon gate check release --project-root . --version v1.3.12",
+            "stop_state": "human_blocked",
+            "current_blocker": "gate_release_pending",
+            "gate_release_status": "",
+        },
+    )
+
+    monkeypatch.setattr(
+        implement_module._legacy_cli,
+        "_run_beacon_json_command",
+        lambda project_root, command: (
+            2,
+            {
+                "status": "Blocked",
+                "requirement_completeness": {
+                    "status": "blocked",
+                    "blocked": True,
+                    "reason_code": "requirement_completeness_blocked",
+                    "recommended_command": "beacon-change",
+                    "human_loop_handoff": {
+                        "action": "human_review",
+                        "recommended_command": "beacon-change",
+                    },
+                },
+            },
+        ),
+    )
+
+    result = runner.invoke(
+        app,
+        ["implement", "ralph-resume", feature, "--project-root", str(tmp_path), "--json"],
+    )
+    assert result.exit_code == 2, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["status"] == "failed"
+
+    updated = _read_json(state_path)
+    assert updated["gate_release_status"] == "blocked"
+    assert updated["stop_state"] == "human_blocked"
+    assert updated["current_blocker"] == "requirement_completeness_blocked"
+    assert updated["next_action"] == "human_review"
+    assert updated["recommended_command"] == "beacon-change"

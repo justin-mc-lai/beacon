@@ -1,30 +1,30 @@
 {
   "scope": "qa9",
-  "timestamp": "2026-05-04T00:43:41.307009",
+  "timestamp": "2026-05-06T09:26:40.342021",
   "project": "/Users/apple/Developer/Personal/products/beacon",
-  "version": "v1.3.11",
-  "run_id": "run-20260504T004341306394",
-  "spec_fingerprint_hash": "d059168b670ccb90af1a69a47d447423db9b334120009884cfc94ab91d51addc",
+  "version": "v1.3.12",
+  "run_id": "run-20260506T092640341315",
+  "spec_fingerprint_hash": "b7ce5e115c96584bd66808c53546bc1544abe7d14678407376bfbef12e00f732",
   "status": "passed",
   "selected_layers": [
     "unit"
   ],
   "execution": {
-    "run_id": "run-20260504T004341306394",
-    "version": "v1.3.11",
-    "evidence_dir": ".beacon/evidence/auto-test/run-20260504T004341306394",
+    "run_id": "run-20260506T092640341315",
+    "version": "v1.3.12",
+    "evidence_dir": ".beacon/evidence/auto-test/run-20260506T092640341315",
     "spec_fingerprint": {
-      "fingerprint_hash": "d059168b670ccb90af1a69a47d447423db9b334120009884cfc94ab91d51addc",
-      "version": "v1.3.11",
-      "generated_at": "2026-05-03T16:45:08.833392+00:00"
+      "fingerprint_hash": "b7ce5e115c96584bd66808c53546bc1544abe7d14678407376bfbef12e00f732",
+      "version": "v1.3.12",
+      "generated_at": "2026-05-06T01:28:08.317601+00:00"
     },
     "layers": [
       {
         "layer": "unit",
-        "command": "python3 -m pytest -q tests/test_v136_prototype_runtime_reconcile.py",
+        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
         "exit_code": 0,
         "status": "passed",
-        "assertion_count": 0,
+        "assertion_count": 2,
         "was_flaky": false,
         "attempt_count": 1,
         "attempts": [
@@ -33,31 +33,32 @@
             "exit_code": 0
           }
         ],
-        "execution_fingerprint": "38ab882a912e363642adfaefc60905d762d579b1cfafa3eaac054a341cc8a733",
-        "started_at": "2026-05-04T00:43:41.307315",
-        "ended_at": "2026-05-04T00:43:44.739401",
-        "junit_path": "",
-        "junit_valid": false,
+        "execution_fingerprint": "447b0ed43ec3ae6d1ae6885fb595575d65cf44f670f2c07abeccf4510ba1e955",
+        "started_at": "2026-05-06T09:26:40.342380",
+        "ended_at": "2026-05-06T09:26:43.508121",
+        "junit_path": ".beacon/evidence/auto-test/run-20260506T092640341315/unit/junit.xml",
+        "junit_valid": true,
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260504T004341306394/unit/command.txt",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/unit/stdout.log",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/unit/stderr.log",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/unit/result.json"
+          ".beacon/evidence/auto-test/run-20260506T092640341315/unit/command.txt",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/unit/stdout.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/unit/stderr.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/unit/junit.xml",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/unit/result.json"
         ]
       }
     ],
     "ui_action_evidence": {},
     "matrix_report": {
       "status": "ok",
-      "matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/prototype-runtime-self-heal-and-reconcile/matrix.qa9.json",
-      "evidence_generated": 24,
-      "entry_count": 24,
+      "matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure/matrix.qa9.json",
+      "evidence_generated": 27,
+      "entry_count": 27,
       "freshness_violations": []
     },
     "artifacts": [
-      ".beacon/evidence/auto-test/run-20260504T004341306394/qa9/tc-execution-map.json",
-      ".beacon/evidence/auto-test/run-20260504T004341306394/qa9/tc-results.json",
-      ".beacon/evidence/auto-test/run-20260504T004341306394/summary.json",
+      ".beacon/evidence/auto-test/run-20260506T092640341315/qa9/tc-execution-map.json",
+      ".beacon/evidence/auto-test/run-20260506T092640341315/qa9/tc-results.json",
+      ".beacon/evidence/auto-test/run-20260506T092640341315/summary.json",
       ".beacon/flaky-history.json",
       ".beacon/evidence-signature-chain.json"
     ],
@@ -74,7 +75,7 @@
     "qa_types": [
       "unit"
     ],
-    "qa_matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/prototype-runtime-self-heal-and-reconcile/matrix.qa9.json",
+    "qa_matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure/matrix.qa9.json",
     "ui_runner": "browser-use",
     "quality_requirements": {
       "require_junit": true,
@@ -87,15 +88,15 @@
       "executed_pairs": []
     },
     "summary": {
-      "cases_total": 24,
-      "passed": 24,
+      "cases_total": 27,
+      "passed": 27,
       "failed": 0,
       "blocked": 0,
       "pending": 0,
       "pass_rate": 1.0,
       "automation_rate": 1.0,
-      "auto_cases_total": 24,
-      "auto_cases_executed": 24,
+      "auto_cases_total": 27,
+      "auto_cases_executed": 27,
       "round_stop_triggered": false,
       "round_stop_reasons": []
     },
@@ -112,21 +113,22 @@
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
-        "assertion_count": 0,
-        "command": "python3 -m pytest -q tests/test_v136_prototype_runtime_reconcile.py",
-        "run_id": "run-20260504T004341306394",
-        "evidence_path": ".beacon/evidence/qa-feature/prototype-runtime-self-heal-and-reconcile/tc-001/__RUN_ID__.json",
+        "assertion_count": 2,
+        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260506T092640341315",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure/tc-001/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-001/command.txt",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-001/stdout.log",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-001/stderr.log",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-001/result.json"
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-001/command.txt",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-001/stdout.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-001/stderr.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-001/junit.xml",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-001/result.json"
         ],
-        "execution_fingerprint": "1d9f9840c00e43fea0161abf6401976cce84b72ce056cda0170a95c6a35e4d8a",
-        "started_at": "2026-05-04T00:43:44.746669",
-        "ended_at": "2026-05-04T00:43:48.171116",
-        "junit_path": "",
-        "junit_valid": false,
+        "execution_fingerprint": "48cf3196050edd70c825b0db836b697b72b038b2d1653ee5365b251c052b9b5c",
+        "started_at": "2026-05-06T09:26:43.513459",
+        "ended_at": "2026-05-06T09:26:46.483224",
+        "junit_path": ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-001/junit.xml",
+        "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
         "replay_required": false,
@@ -148,21 +150,22 @@
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
-        "assertion_count": 0,
-        "command": "python3 -m pytest -q tests/test_v136_prototype_runtime_reconcile.py",
-        "run_id": "run-20260504T004341306394",
-        "evidence_path": ".beacon/evidence/qa-feature/prototype-runtime-self-heal-and-reconcile/tc-002/__RUN_ID__.json",
+        "assertion_count": 2,
+        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260506T092640341315",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure/tc-002/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-002/command.txt",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-002/stdout.log",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-002/stderr.log",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-002/result.json"
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-002/command.txt",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-002/stdout.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-002/stderr.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-002/junit.xml",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-002/result.json"
         ],
-        "execution_fingerprint": "d3c2ae877cfa154cfe6bdb7e1fbf62a7889931f26d1c51ad777af63e7e74b064",
-        "started_at": "2026-05-04T00:43:48.172045",
-        "ended_at": "2026-05-04T00:43:51.592680",
-        "junit_path": "",
-        "junit_valid": false,
+        "execution_fingerprint": "81badf018b74b2177e6f852bef49c5f11b97087c3bba1649e517fc71a3515b8e",
+        "started_at": "2026-05-06T09:26:46.484206",
+        "ended_at": "2026-05-06T09:26:49.727102",
+        "junit_path": ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-002/junit.xml",
+        "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
         "replay_required": false,
@@ -184,21 +187,22 @@
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
-        "assertion_count": 0,
-        "command": "python3 -m pytest -q tests/test_v136_prototype_runtime_reconcile.py",
-        "run_id": "run-20260504T004341306394",
-        "evidence_path": ".beacon/evidence/qa-feature/prototype-runtime-self-heal-and-reconcile/tc-003/__RUN_ID__.json",
+        "assertion_count": 2,
+        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260506T092640341315",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure/tc-003/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-003/command.txt",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-003/stdout.log",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-003/stderr.log",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-003/result.json"
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-003/command.txt",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-003/stdout.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-003/stderr.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-003/junit.xml",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-003/result.json"
         ],
-        "execution_fingerprint": "4ac3ef4f6cced72080419e2501d980ec8ef22b8ba5a56e312dc42f03d43666d0",
-        "started_at": "2026-05-04T00:43:51.593462",
-        "ended_at": "2026-05-04T00:43:55.052519",
-        "junit_path": "",
-        "junit_valid": false,
+        "execution_fingerprint": "065d1741a8bbc33034a82978ddb76ac2df38b12e1d14bced77939dc7ccef6ba8",
+        "started_at": "2026-05-06T09:26:49.727965",
+        "ended_at": "2026-05-06T09:26:52.767164",
+        "junit_path": ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-003/junit.xml",
+        "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
         "replay_required": false,
@@ -220,21 +224,22 @@
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
-        "assertion_count": 0,
-        "command": "python3 -m pytest -q tests/test_v136_prototype_runtime_reconcile.py",
-        "run_id": "run-20260504T004341306394",
-        "evidence_path": ".beacon/evidence/qa-feature/prototype-runtime-self-heal-and-reconcile/tc-004/__RUN_ID__.json",
+        "assertion_count": 2,
+        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260506T092640341315",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure/tc-004/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-004/command.txt",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-004/stdout.log",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-004/stderr.log",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-004/result.json"
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-004/command.txt",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-004/stdout.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-004/stderr.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-004/junit.xml",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-004/result.json"
         ],
-        "execution_fingerprint": "653fccbb8d62e0e60bda3253f6d96c32d5f79ac9dcee0131f736b1302faac520",
-        "started_at": "2026-05-04T00:43:55.053210",
-        "ended_at": "2026-05-04T00:43:58.489884",
-        "junit_path": "",
-        "junit_valid": false,
+        "execution_fingerprint": "212f387dd4b6a2f8970a73a1530d28df59861537539f14a2667f4c4d85a0e1d1",
+        "started_at": "2026-05-06T09:26:52.767989",
+        "ended_at": "2026-05-06T09:26:55.753598",
+        "junit_path": ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-004/junit.xml",
+        "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
         "replay_required": false,
@@ -256,21 +261,22 @@
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
-        "assertion_count": 0,
-        "command": "python3 -m pytest -q tests/test_v136_prototype_runtime_reconcile.py",
-        "run_id": "run-20260504T004341306394",
-        "evidence_path": ".beacon/evidence/qa-feature/prototype-runtime-self-heal-and-reconcile/tc-005/__RUN_ID__.json",
+        "assertion_count": 2,
+        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260506T092640341315",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure/tc-005/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-005/command.txt",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-005/stdout.log",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-005/stderr.log",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-005/result.json"
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-005/command.txt",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-005/stdout.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-005/stderr.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-005/junit.xml",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-005/result.json"
         ],
-        "execution_fingerprint": "aabd71828a2855834191d8630dcebf6207964d4071d15bb34cc180c152277466",
-        "started_at": "2026-05-04T00:43:58.492730",
-        "ended_at": "2026-05-04T00:44:02.037270",
-        "junit_path": "",
-        "junit_valid": false,
+        "execution_fingerprint": "ac93a134ebe72a798dba9de294041914d10c0f84a13e3b95fae90d9f1df6d9eb",
+        "started_at": "2026-05-06T09:26:55.754483",
+        "ended_at": "2026-05-06T09:26:58.938124",
+        "junit_path": ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-005/junit.xml",
+        "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
         "replay_required": false,
@@ -292,21 +298,22 @@
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
-        "assertion_count": 0,
-        "command": "python3 -m pytest -q tests/test_v136_prototype_runtime_reconcile.py",
-        "run_id": "run-20260504T004341306394",
-        "evidence_path": ".beacon/evidence/qa-feature/prototype-runtime-self-heal-and-reconcile/tc-006/__RUN_ID__.json",
+        "assertion_count": 2,
+        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260506T092640341315",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure/tc-006/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-006/command.txt",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-006/stdout.log",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-006/stderr.log",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-006/result.json"
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-006/command.txt",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-006/stdout.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-006/stderr.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-006/junit.xml",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-006/result.json"
         ],
-        "execution_fingerprint": "a828371d2b369375494f462a6c3a4b1876833276005a79f19d16fb2edd180cf5",
-        "started_at": "2026-05-04T00:44:02.038124",
-        "ended_at": "2026-05-04T00:44:05.606809",
-        "junit_path": "",
-        "junit_valid": false,
+        "execution_fingerprint": "1650a303fac777a133ad9576c14982bf2b8db32bdd8a0fd8e996cf98ca7ea4bd",
+        "started_at": "2026-05-06T09:26:58.938948",
+        "ended_at": "2026-05-06T09:27:01.930034",
+        "junit_path": ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-006/junit.xml",
+        "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
         "replay_required": false,
@@ -328,21 +335,22 @@
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
-        "assertion_count": 0,
-        "command": "python3 -m pytest -q tests/test_v136_prototype_runtime_reconcile.py",
-        "run_id": "run-20260504T004341306394",
-        "evidence_path": ".beacon/evidence/qa-feature/prototype-runtime-self-heal-and-reconcile/tc-007/__RUN_ID__.json",
+        "assertion_count": 2,
+        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260506T092640341315",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure/tc-007/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-007/command.txt",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-007/stdout.log",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-007/stderr.log",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-007/result.json"
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-007/command.txt",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-007/stdout.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-007/stderr.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-007/junit.xml",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-007/result.json"
         ],
-        "execution_fingerprint": "6a30405b116bf48ebd44fe0e482bff32d3020232d86e858718989cab63d2a80e",
-        "started_at": "2026-05-04T00:44:05.607785",
-        "ended_at": "2026-05-04T00:44:09.100487",
-        "junit_path": "",
-        "junit_valid": false,
+        "execution_fingerprint": "b15a8e28df163e1b44b9b8cd8523edef7aee2d98b8c54080d468972847c076f5",
+        "started_at": "2026-05-06T09:27:01.930870",
+        "ended_at": "2026-05-06T09:27:04.927744",
+        "junit_path": ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-007/junit.xml",
+        "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
         "replay_required": false,
@@ -364,21 +372,22 @@
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
-        "assertion_count": 0,
-        "command": "python3 -m pytest -q tests/test_v136_prototype_runtime_reconcile.py",
-        "run_id": "run-20260504T004341306394",
-        "evidence_path": ".beacon/evidence/qa-feature/prototype-runtime-self-heal-and-reconcile/tc-008/__RUN_ID__.json",
+        "assertion_count": 2,
+        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260506T092640341315",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure/tc-008/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-008/command.txt",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-008/stdout.log",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-008/stderr.log",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-008/result.json"
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-008/command.txt",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-008/stdout.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-008/stderr.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-008/junit.xml",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-008/result.json"
         ],
-        "execution_fingerprint": "1a66c17a5e2cca298c2cca2c95509ead98f58eccc4fc21c09d6702759f4585b0",
-        "started_at": "2026-05-04T00:44:09.101280",
-        "ended_at": "2026-05-04T00:44:12.545823",
-        "junit_path": "",
-        "junit_valid": false,
+        "execution_fingerprint": "d1f77e33b5958d9706377bdcbaaab2bcb00cc009a154155a3efbe298d9958a6c",
+        "started_at": "2026-05-06T09:27:04.928564",
+        "ended_at": "2026-05-06T09:27:08.014531",
+        "junit_path": ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-008/junit.xml",
+        "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
         "replay_required": false,
@@ -400,21 +409,22 @@
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
-        "assertion_count": 0,
-        "command": "python3 -m pytest -q tests/test_v136_prototype_runtime_reconcile.py",
-        "run_id": "run-20260504T004341306394",
-        "evidence_path": ".beacon/evidence/qa-feature/prototype-runtime-self-heal-and-reconcile/tc-009/__RUN_ID__.json",
+        "assertion_count": 2,
+        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260506T092640341315",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure/tc-009/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-009/command.txt",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-009/stdout.log",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-009/stderr.log",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-009/result.json"
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-009/command.txt",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-009/stdout.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-009/stderr.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-009/junit.xml",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-009/result.json"
         ],
-        "execution_fingerprint": "552591060b23b889bc448d05fc41f0f0b341e435c565d6b67a88172a71aff915",
-        "started_at": "2026-05-04T00:44:12.546612",
-        "ended_at": "2026-05-04T00:44:15.983799",
-        "junit_path": "",
-        "junit_valid": false,
+        "execution_fingerprint": "5fdf0173e27c9c102b886f9e83a51dcf7ff70ad2e72beec28b28a1aa4902dcdf",
+        "started_at": "2026-05-06T09:27:08.015326",
+        "ended_at": "2026-05-06T09:27:11.179005",
+        "junit_path": ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-009/junit.xml",
+        "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
         "replay_required": false,
@@ -436,21 +446,22 @@
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
-        "assertion_count": 0,
-        "command": "python3 -m pytest -q tests/test_v136_prototype_runtime_reconcile.py",
-        "run_id": "run-20260504T004341306394",
-        "evidence_path": ".beacon/evidence/qa-feature/prototype-runtime-self-heal-and-reconcile/tc-010/__RUN_ID__.json",
+        "assertion_count": 2,
+        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260506T092640341315",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure/tc-010/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-010/command.txt",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-010/stdout.log",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-010/stderr.log",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-010/result.json"
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-010/command.txt",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-010/stdout.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-010/stderr.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-010/junit.xml",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-010/result.json"
         ],
-        "execution_fingerprint": "033043a606e972a51faeaf81699f2e3280183855ba85dfbd66bb8a5374a2321a",
-        "started_at": "2026-05-04T00:44:15.985033",
-        "ended_at": "2026-05-04T00:44:19.451283",
-        "junit_path": "",
-        "junit_valid": false,
+        "execution_fingerprint": "4e5a486470cd8a28b02c602973116d018bd94ae9adddfc275a39c485f25c56fb",
+        "started_at": "2026-05-06T09:27:11.179789",
+        "ended_at": "2026-05-06T09:27:14.329729",
+        "junit_path": ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-010/junit.xml",
+        "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
         "replay_required": false,
@@ -472,21 +483,22 @@
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
-        "assertion_count": 0,
-        "command": "python3 -m pytest -q tests/test_v136_prototype_runtime_reconcile.py",
-        "run_id": "run-20260504T004341306394",
-        "evidence_path": ".beacon/evidence/qa-feature/prototype-runtime-self-heal-and-reconcile/tc-011/__RUN_ID__.json",
+        "assertion_count": 2,
+        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260506T092640341315",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure/tc-011/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-011/command.txt",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-011/stdout.log",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-011/stderr.log",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-011/result.json"
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-011/command.txt",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-011/stdout.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-011/stderr.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-011/junit.xml",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-011/result.json"
         ],
-        "execution_fingerprint": "4829c716ea5405c58e884fda1695ac62424ff2b3c0202572842626ddf2fb58a3",
-        "started_at": "2026-05-04T00:44:19.452126",
-        "ended_at": "2026-05-04T00:44:23.045134",
-        "junit_path": "",
-        "junit_valid": false,
+        "execution_fingerprint": "75d775c486d8ddd8842a58e8a4e6d9b535729916b46e82379ceff18b4b1db062",
+        "started_at": "2026-05-06T09:27:14.330546",
+        "ended_at": "2026-05-06T09:27:17.434452",
+        "junit_path": ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-011/junit.xml",
+        "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
         "replay_required": false,
@@ -508,21 +520,22 @@
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
-        "assertion_count": 0,
-        "command": "python3 -m pytest -q tests/test_v136_prototype_runtime_reconcile.py",
-        "run_id": "run-20260504T004341306394",
-        "evidence_path": ".beacon/evidence/qa-feature/prototype-runtime-self-heal-and-reconcile/tc-012/__RUN_ID__.json",
+        "assertion_count": 2,
+        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260506T092640341315",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure/tc-012/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-012/command.txt",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-012/stdout.log",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-012/stderr.log",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-012/result.json"
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-012/command.txt",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-012/stdout.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-012/stderr.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-012/junit.xml",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-012/result.json"
         ],
-        "execution_fingerprint": "a951c8eeb0b39c906a0ad48ce60bd31f57d2674987f3374f130003808e666571",
-        "started_at": "2026-05-04T00:44:23.045788",
-        "ended_at": "2026-05-04T00:44:26.475384",
-        "junit_path": "",
-        "junit_valid": false,
+        "execution_fingerprint": "56fb43bbbc03b371afc0e75cf973c507605dc8acef5cd8ab7ca40715b384ebe6",
+        "started_at": "2026-05-06T09:27:17.435244",
+        "ended_at": "2026-05-06T09:27:20.468797",
+        "junit_path": ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-012/junit.xml",
+        "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
         "replay_required": false,
@@ -544,21 +557,22 @@
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
-        "assertion_count": 0,
-        "command": "python3 -m pytest -q tests/test_v136_prototype_runtime_reconcile.py",
-        "run_id": "run-20260504T004341306394",
-        "evidence_path": ".beacon/evidence/qa-feature/prototype-runtime-self-heal-and-reconcile/tc-013/__RUN_ID__.json",
+        "assertion_count": 2,
+        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260506T092640341315",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure/tc-013/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-013/command.txt",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-013/stdout.log",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-013/stderr.log",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-013/result.json"
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-013/command.txt",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-013/stdout.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-013/stderr.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-013/junit.xml",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-013/result.json"
         ],
-        "execution_fingerprint": "6423cc5f919783a6f84ac6eabb34ce551c7b5e9539ef1d06886ca3a2a18a46b8",
-        "started_at": "2026-05-04T00:44:26.476871",
-        "ended_at": "2026-05-04T00:44:29.885107",
-        "junit_path": "",
-        "junit_valid": false,
+        "execution_fingerprint": "30b18ba1840711dd8ee54ac48f83393540066f4d6974f03e9dc42a3bfd48ebf0",
+        "started_at": "2026-05-06T09:27:20.469612",
+        "ended_at": "2026-05-06T09:27:23.718861",
+        "junit_path": ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-013/junit.xml",
+        "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
         "replay_required": false,
@@ -580,21 +594,22 @@
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
-        "assertion_count": 0,
-        "command": "python3 -m pytest -q tests/test_v136_prototype_runtime_reconcile.py",
-        "run_id": "run-20260504T004341306394",
-        "evidence_path": ".beacon/evidence/qa-feature/prototype-runtime-self-heal-and-reconcile/tc-014/__RUN_ID__.json",
+        "assertion_count": 2,
+        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260506T092640341315",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure/tc-014/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-014/command.txt",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-014/stdout.log",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-014/stderr.log",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-014/result.json"
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-014/command.txt",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-014/stdout.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-014/stderr.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-014/junit.xml",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-014/result.json"
         ],
-        "execution_fingerprint": "fe674f4a7b0752f5e091262b9c1346c43491ac4baf01e8811a38ad7fbb92b87c",
-        "started_at": "2026-05-04T00:44:29.885847",
-        "ended_at": "2026-05-04T00:44:33.283392",
-        "junit_path": "",
-        "junit_valid": false,
+        "execution_fingerprint": "9360e45db803f6523c2f708d5dce529fac339adc2e3672febd6c3e06c3f63a3f",
+        "started_at": "2026-05-06T09:27:23.719655",
+        "ended_at": "2026-05-06T09:27:26.851375",
+        "junit_path": ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-014/junit.xml",
+        "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
         "replay_required": false,
@@ -616,21 +631,22 @@
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
-        "assertion_count": 0,
-        "command": "python3 -m pytest -q tests/test_v136_prototype_runtime_reconcile.py",
-        "run_id": "run-20260504T004341306394",
-        "evidence_path": ".beacon/evidence/qa-feature/prototype-runtime-self-heal-and-reconcile/tc-015/__RUN_ID__.json",
+        "assertion_count": 2,
+        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260506T092640341315",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure/tc-015/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-015/command.txt",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-015/stdout.log",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-015/stderr.log",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-015/result.json"
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-015/command.txt",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-015/stdout.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-015/stderr.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-015/junit.xml",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-015/result.json"
         ],
-        "execution_fingerprint": "64320245d2dcaf7a4532128f17089954bbf79451d28f223863b61499d63cde70",
-        "started_at": "2026-05-04T00:44:33.284212",
-        "ended_at": "2026-05-04T00:44:36.755306",
-        "junit_path": "",
-        "junit_valid": false,
+        "execution_fingerprint": "8951ed39743675fd6217e8905ef8419fab19bdbe9924ad1bebc6792ae9903e49",
+        "started_at": "2026-05-06T09:27:26.852136",
+        "ended_at": "2026-05-06T09:27:29.922007",
+        "junit_path": ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-015/junit.xml",
+        "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
         "replay_required": false,
@@ -652,21 +668,22 @@
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
-        "assertion_count": 0,
-        "command": "python3 -m pytest -q tests/test_v136_prototype_runtime_reconcile.py",
-        "run_id": "run-20260504T004341306394",
-        "evidence_path": ".beacon/evidence/qa-feature/prototype-runtime-self-heal-and-reconcile/tc-016/__RUN_ID__.json",
+        "assertion_count": 2,
+        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260506T092640341315",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure/tc-016/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-016/command.txt",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-016/stdout.log",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-016/stderr.log",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-016/result.json"
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-016/command.txt",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-016/stdout.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-016/stderr.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-016/junit.xml",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-016/result.json"
         ],
-        "execution_fingerprint": "d5ba2ce886b56086ce43d5feed507c7f2323f2d7135cc81894a7789450547c06",
-        "started_at": "2026-05-04T00:44:36.756019",
-        "ended_at": "2026-05-04T00:44:40.203900",
-        "junit_path": "",
-        "junit_valid": false,
+        "execution_fingerprint": "6438a014ae7802b46d40412cdd63d0ce4aea176ceeb4732f219e0f11ac18b023",
+        "started_at": "2026-05-06T09:27:29.922864",
+        "ended_at": "2026-05-06T09:27:33.103831",
+        "junit_path": ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-016/junit.xml",
+        "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
         "replay_required": false,
@@ -688,21 +705,22 @@
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
-        "assertion_count": 0,
-        "command": "python3 -m pytest -q tests/test_v136_prototype_runtime_reconcile.py",
-        "run_id": "run-20260504T004341306394",
-        "evidence_path": ".beacon/evidence/qa-feature/prototype-runtime-self-heal-and-reconcile/tc-017/__RUN_ID__.json",
+        "assertion_count": 2,
+        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260506T092640341315",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure/tc-017/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-017/command.txt",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-017/stdout.log",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-017/stderr.log",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-017/result.json"
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-017/command.txt",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-017/stdout.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-017/stderr.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-017/junit.xml",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-017/result.json"
         ],
-        "execution_fingerprint": "650deb4b333b1c896482e9f4a726f9f5755811ebb91f51cb57796a185e0167f4",
-        "started_at": "2026-05-04T00:44:40.204602",
-        "ended_at": "2026-05-04T00:44:43.712280",
-        "junit_path": "",
-        "junit_valid": false,
+        "execution_fingerprint": "54497844a6e7112f811f8f32191b36e654da948d009b2cd572a3e7d5f3d78c18",
+        "started_at": "2026-05-06T09:27:33.104840",
+        "ended_at": "2026-05-06T09:27:36.292292",
+        "junit_path": ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-017/junit.xml",
+        "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
         "replay_required": false,
@@ -724,21 +742,22 @@
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
-        "assertion_count": 0,
-        "command": "python3 -m pytest -q tests/test_v136_prototype_runtime_reconcile.py",
-        "run_id": "run-20260504T004341306394",
-        "evidence_path": ".beacon/evidence/qa-feature/prototype-runtime-self-heal-and-reconcile/tc-018/__RUN_ID__.json",
+        "assertion_count": 2,
+        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260506T092640341315",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure/tc-018/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-018/command.txt",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-018/stdout.log",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-018/stderr.log",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-018/result.json"
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-018/command.txt",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-018/stdout.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-018/stderr.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-018/junit.xml",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-018/result.json"
         ],
-        "execution_fingerprint": "928457d402a9f7654ce16f2b06d0059fd9bdb13309dccbd04e7dc9ad2756aae1",
-        "started_at": "2026-05-04T00:44:43.712972",
-        "ended_at": "2026-05-04T00:44:47.200657",
-        "junit_path": "",
-        "junit_valid": false,
+        "execution_fingerprint": "390d8a001bb13c1e1e3fa05cda299dd893f3dfe826bed94e9a25e67b07322f64",
+        "started_at": "2026-05-06T09:27:36.293143",
+        "ended_at": "2026-05-06T09:27:39.454798",
+        "junit_path": ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-018/junit.xml",
+        "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
         "replay_required": false,
@@ -760,21 +779,22 @@
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
-        "assertion_count": 0,
-        "command": "python3 -m pytest -q tests/test_v136_prototype_runtime_reconcile.py",
-        "run_id": "run-20260504T004341306394",
-        "evidence_path": ".beacon/evidence/qa-feature/prototype-runtime-self-heal-and-reconcile/tc-019/__RUN_ID__.json",
+        "assertion_count": 2,
+        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260506T092640341315",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure/tc-019/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-019/command.txt",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-019/stdout.log",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-019/stderr.log",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-019/result.json"
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-019/command.txt",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-019/stdout.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-019/stderr.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-019/junit.xml",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-019/result.json"
         ],
-        "execution_fingerprint": "7f0d69a8b219278facaa097ff57b574d9715eed4cb952a7becbe345830c4eb23",
-        "started_at": "2026-05-04T00:44:47.201348",
-        "ended_at": "2026-05-04T00:44:50.617047",
-        "junit_path": "",
-        "junit_valid": false,
+        "execution_fingerprint": "c1db90a000d7b6603a11988c6916f071f254fc8ff8b4cdca42509b6e62dac4fa",
+        "started_at": "2026-05-06T09:27:39.455556",
+        "ended_at": "2026-05-06T09:27:42.575833",
+        "junit_path": ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-019/junit.xml",
+        "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
         "replay_required": false,
@@ -796,21 +816,22 @@
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
-        "assertion_count": 0,
-        "command": "python3 -m pytest -q tests/test_v136_prototype_runtime_reconcile.py",
-        "run_id": "run-20260504T004341306394",
-        "evidence_path": ".beacon/evidence/qa-feature/prototype-runtime-self-heal-and-reconcile/tc-020/__RUN_ID__.json",
+        "assertion_count": 2,
+        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260506T092640341315",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure/tc-020/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-020/command.txt",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-020/stdout.log",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-020/stderr.log",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-020/result.json"
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-020/command.txt",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-020/stdout.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-020/stderr.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-020/junit.xml",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-020/result.json"
         ],
-        "execution_fingerprint": "b83c7b37a600746b6d4ef5ba75c1a78df30be3fbeb114b64f377322a08aa35b8",
-        "started_at": "2026-05-04T00:44:50.617732",
-        "ended_at": "2026-05-04T00:44:54.074297",
-        "junit_path": "",
-        "junit_valid": false,
+        "execution_fingerprint": "c1cde7b4878a3d667f18a677b6fd2ac527d9b005f1df53859a19e14c6dade502",
+        "started_at": "2026-05-06T09:27:42.576656",
+        "ended_at": "2026-05-06T09:27:45.711449",
+        "junit_path": ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-020/junit.xml",
+        "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
         "replay_required": false,
@@ -832,21 +853,22 @@
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
-        "assertion_count": 0,
-        "command": "python3 -m pytest -q tests/test_v136_prototype_runtime_reconcile.py",
-        "run_id": "run-20260504T004341306394",
-        "evidence_path": ".beacon/evidence/qa-feature/prototype-runtime-self-heal-and-reconcile/tc-021/__RUN_ID__.json",
+        "assertion_count": 2,
+        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260506T092640341315",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure/tc-021/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-021/command.txt",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-021/stdout.log",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-021/stderr.log",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-021/result.json"
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-021/command.txt",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-021/stdout.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-021/stderr.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-021/junit.xml",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-021/result.json"
         ],
-        "execution_fingerprint": "4202eefeaceab14d742ca1965d299ecd486bba64bc52cda416903d038af8bbeb",
-        "started_at": "2026-05-04T00:44:54.075181",
-        "ended_at": "2026-05-04T00:44:57.485868",
-        "junit_path": "",
-        "junit_valid": false,
+        "execution_fingerprint": "fcb0b7d747f52720f8959f9c6ccda213e743930f04ddb2023f0d87e1ed51f7ad",
+        "started_at": "2026-05-06T09:27:45.712357",
+        "ended_at": "2026-05-06T09:27:48.817138",
+        "junit_path": ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-021/junit.xml",
+        "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
         "replay_required": false,
@@ -868,21 +890,22 @@
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
-        "assertion_count": 0,
-        "command": "python3 -m pytest -q tests/test_v136_prototype_runtime_reconcile.py",
-        "run_id": "run-20260504T004341306394",
-        "evidence_path": ".beacon/evidence/qa-feature/prototype-runtime-self-heal-and-reconcile/tc-022/__RUN_ID__.json",
+        "assertion_count": 2,
+        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260506T092640341315",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure/tc-022/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-022/command.txt",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-022/stdout.log",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-022/stderr.log",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-022/result.json"
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-022/command.txt",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-022/stdout.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-022/stderr.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-022/junit.xml",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-022/result.json"
         ],
-        "execution_fingerprint": "4eee783a8593539ed5c40d0318a7c1a3a4d1fa17d9b713895db9aae78daffa24",
-        "started_at": "2026-05-04T00:44:57.486546",
-        "ended_at": "2026-05-04T00:45:00.956794",
-        "junit_path": "",
-        "junit_valid": false,
+        "execution_fingerprint": "417d36a56a7c4825128b78ce4895142dfc9b978137c88cd3569903b884f34b69",
+        "started_at": "2026-05-06T09:27:48.817946",
+        "ended_at": "2026-05-06T09:27:52.014443",
+        "junit_path": ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-022/junit.xml",
+        "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
         "replay_required": false,
@@ -904,21 +927,22 @@
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
-        "assertion_count": 0,
-        "command": "python3 -m pytest -q tests/test_v136_prototype_runtime_reconcile.py",
-        "run_id": "run-20260504T004341306394",
-        "evidence_path": ".beacon/evidence/qa-feature/prototype-runtime-self-heal-and-reconcile/tc-023/__RUN_ID__.json",
+        "assertion_count": 2,
+        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260506T092640341315",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure/tc-023/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-023/command.txt",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-023/stdout.log",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-023/stderr.log",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-023/result.json"
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-023/command.txt",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-023/stdout.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-023/stderr.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-023/junit.xml",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-023/result.json"
         ],
-        "execution_fingerprint": "04d0ff2d52bf66b41cfc5bfd0f7426b6f3779cfc9ca4485ed541dd8aa8e324bd",
-        "started_at": "2026-05-04T00:45:00.958137",
-        "ended_at": "2026-05-04T00:45:04.539956",
-        "junit_path": "",
-        "junit_valid": false,
+        "execution_fingerprint": "fc04aa0cda335de58075f24f60a9fb1d75c7ba521b231847f2976d9ef84ed12e",
+        "started_at": "2026-05-06T09:27:52.015175",
+        "ended_at": "2026-05-06T09:27:55.130481",
+        "junit_path": ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-023/junit.xml",
+        "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
         "replay_required": false,
@@ -940,21 +964,133 @@
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
-        "assertion_count": 0,
-        "command": "python3 -m pytest -q tests/test_v136_prototype_runtime_reconcile.py",
-        "run_id": "run-20260504T004341306394",
-        "evidence_path": ".beacon/evidence/qa-feature/prototype-runtime-self-heal-and-reconcile/tc-024/__RUN_ID__.json",
+        "assertion_count": 2,
+        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260506T092640341315",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure/tc-024/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-024/command.txt",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-024/stdout.log",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-024/stderr.log",
-          ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-024/result.json"
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-024/command.txt",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-024/stdout.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-024/stderr.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-024/junit.xml",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-024/result.json"
         ],
-        "execution_fingerprint": "526c531c0f25ec2418fe1c5971765c5e21c4450428f2feb147a395a7f4a8ae30",
-        "started_at": "2026-05-04T00:45:04.540916",
-        "ended_at": "2026-05-04T00:45:08.046243",
-        "junit_path": "",
-        "junit_valid": false,
+        "execution_fingerprint": "5ab554861b46d92eabe96f5bf3a83d757f80ed83b81682471423fda7153ebc51",
+        "started_at": "2026-05-06T09:27:55.131321",
+        "ended_at": "2026-05-06T09:27:58.195027",
+        "junit_path": ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-024/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-025",
+        "ac_id": "AC-005",
+        "source_tc_id": "TC-025",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "unit",
+        "layer": "unit",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 2,
+        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260506T092640341315",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure/tc-025/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-025/command.txt",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-025/stdout.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-025/stderr.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-025/junit.xml",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-025/result.json"
+        ],
+        "execution_fingerprint": "f32ff91b42e59ee63cf3b3d4648547a55e2e4923b16340f9373c083608126e67",
+        "started_at": "2026-05-06T09:27:58.195773",
+        "ended_at": "2026-05-06T09:28:01.279292",
+        "junit_path": ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-025/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-026",
+        "ac_id": "AC-006",
+        "source_tc_id": "TC-026",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "unit",
+        "layer": "unit",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 2,
+        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260506T092640341315",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure/tc-026/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-026/command.txt",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-026/stdout.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-026/stderr.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-026/junit.xml",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-026/result.json"
+        ],
+        "execution_fingerprint": "1d55886d69b84e1cdd2410637762bd9841ccf806b61e0c52c698e7e6fef01959",
+        "started_at": "2026-05-06T09:28:01.280170",
+        "ended_at": "2026-05-06T09:28:04.514653",
+        "junit_path": ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-026/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-027",
+        "ac_id": "AC-007",
+        "source_tc_id": "TC-027",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "unit",
+        "layer": "unit",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 2,
+        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260506T092640341315",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure/tc-027/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-027/command.txt",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-027/stdout.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-027/stderr.log",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-027/junit.xml",
+          ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-027/result.json"
+        ],
+        "execution_fingerprint": "4791befb8979755f4791e4a20b64463497dc29d2001121aadf90a551179c25ee",
+        "started_at": "2026-05-06T09:28:04.515490",
+        "ended_at": "2026-05-06T09:28:07.684892",
+        "junit_path": ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-027/junit.xml",
+        "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
         "replay_required": false,
@@ -966,29 +1102,18 @@
       }
     ]
   },
-  "quality_issues": [
-    {
-      "layer": "unit",
-      "reason_code": "assertion_count_zero_pass",
-      "message": "layer unit passed but assertion_count=0"
-    },
-    {
-      "layer": "unit",
-      "reason_code": "junit_missing_or_invalid",
-      "message": "layer unit missing junit.xml"
-    }
-  ],
+  "quality_issues": [],
   "schema_version": "1.0",
-  "updated_at": "2026-05-03T16:45:08.600330+00:00",
-  "feature": "prototype-runtime-self-heal-and-reconcile",
-  "feature_slug": "prototype-runtime-self-heal-and-reconcile",
+  "updated_at": "2026-05-06T01:28:08.124955+00:00",
+  "feature": "beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure",
+  "feature_slug": "beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure",
   "implementation_done": true,
   "evidence_done": true,
   "story_sequence": [
     {
       "ac_id": "AC-001",
-      "theme": "canonical-truth-source",
-      "text": "prototype runtime 明确单一 canonical truth source，`prototype-plan / manifest / canonical-envelope / freeze` 都只允许从该真相单向投影。",
+      "theme": "requirement-envelope",
+      "text": "Beacon 能围绕单份 PRD 结构化生成 `actors / capability_differences / state_machine / happy_paths / negative_paths / boundary_conditions / exceptions / recovery_paths / risks / open_questions` 十类 requirement 维度。",
       "tc_ids": [
         "TC-001"
       ],
@@ -998,8 +1123,8 @@
     },
     {
       "ac_id": "AC-002",
-      "theme": "no-multi-truth-read",
-      "text": "`review / freeze / status / gate` 不得再各自选择不同 sink 作为真相源。",
+      "theme": "prd-anchored-inference",
+      "text": "envelope 的所有推导都必须绑定明确 `source_truth_ref`，证明其来源于当前 PRD 或同 feature 已冻结 requirement materials，而不是脱离 truth 的自由扩写。",
       "tc_ids": [
         "TC-002"
       ],
@@ -1009,8 +1134,8 @@
     },
     {
       "ac_id": "AC-003",
-      "theme": "sink-drift-detection",
-      "text": "当 `plan / manifest / canonical-envelope / freeze` 任一 sink 与 canonical truth 不一致时，系统必须标记 drift。",
+      "theme": "machine-readable-envelope",
+      "text": "deepening envelope 必须落为 machine-readable artifact，并可被 `user-story / test-case / delivery completeness` 读取。",
       "tc_ids": [
         "TC-003"
       ],
@@ -1020,8 +1145,8 @@
     },
     {
       "ac_id": "AC-004",
-      "theme": "truth-traceability",
-      "text": "canonical truth 与各 sink 都保留 `feature / version / source_hash / transaction_id-or-equivalent` 追溯字段。",
+      "theme": "envelope-not-public-stage",
+      "text": "envelope 是 requirement compile 的内部推导面，不新增新的公开 lifecycle stage，也不要求人类长期理解内部 runtime 细节。",
       "tc_ids": [
         "TC-004"
       ],
@@ -1031,141 +1156,174 @@
     },
     {
       "ac_id": "AC-005",
-      "theme": "reconcile-surface",
-      "text": "Beacon 提供正式 `prototype reconcile` 或等价内部 surface。",
-      "tc_ids": [],
-      "qa_types": []
+      "theme": "story-discovery",
+      "text": "`user-story` 至少能发现主角色目标故事、次角色/对立角色能力差异故事、状态转换故事、异常恢复故事、权限/约束差异故事、治理补充故事六类 candidate。",
+      "tc_ids": [
+        "TC-025"
+      ],
+      "qa_types": [
+        "unit"
+      ]
     },
     {
       "ac_id": "AC-006",
-      "theme": "sink-reprojection",
-      "text": "reconcile 至少能重投影 `prototype-plan.json / manifest.json / canonical-envelope.json / freeze metadata`。",
-      "tc_ids": [],
-      "qa_types": []
+      "theme": "story-candidate-status",
+      "text": "每个 story candidate 至少要区分 `already_frozen / candidate_missing / deferred / rejected` 四类状态，而不是只给出一份匿名建议清单。",
+      "tc_ids": [
+        "TC-026"
+      ],
+      "qa_types": [
+        "unit"
+      ]
     },
     {
       "ac_id": "AC-007",
-      "theme": "fingerprint-refresh",
-      "text": "reconcile 会同步更新 `source_fingerprints / sink fingerprints / transaction headers`。",
-      "tc_ids": [],
-      "qa_types": []
+      "theme": "not-just-ac-reprojection",
+      "text": "对至少一个真实 feature，`user-story` 必须能证明自己产出的新增候选不只是复述当前 markdown 中已有 AC 文本。",
+      "tc_ids": [
+        "TC-027"
+      ],
+      "qa_types": [
+        "unit"
+      ]
     },
     {
       "ac_id": "AC-008",
-      "theme": "no-requirement-writeback",
-      "text": "reconcile 只修复 prototype bundle，不反向改写 `prd / user-story / test-case`。",
+      "theme": "story-writeback-target",
+      "text": "当人类接受某个 story candidate 后，系统必须明确把它写回到 `story boundary / acceptance criteria / metadata scope` 中的正确位置。",
       "tc_ids": [],
       "qa_types": []
     },
     {
       "ac_id": "AC-009",
-      "theme": "pages-protected",
-      "text": "nondestructive refresh 默认不覆盖 `pages/*.md`。",
+      "theme": "risk-coverage-families",
+      "text": "`test-case` 至少显式评估并展开 `happy / negative / boundary / exception / recovery / compatibility / permission / stale-data-or-drift / downgrade-or-fallback` 九类覆盖族群。",
       "tc_ids": [],
       "qa_types": []
     },
     {
       "ac_id": "AC-010",
-      "theme": "preview-protected",
-      "text": "nondestructive refresh 默认不覆盖已有 `preview.html / preview-dark.html`。",
+      "theme": "traceable-coverage-rationale",
+      "text": "每一类新增 coverage candidate 都必须带 `source_truth_ref / rationale / risk_family / writeback_target`，说明为什么要测。",
       "tc_ids": [],
       "qa_types": []
     },
     {
       "ac_id": "AC-011",
-      "theme": "production-copy-protected",
-      "text": "已冻结的 production-visible copy 不得被 machine repair 默认改写。",
+      "theme": "beyond-default-matrix",
+      "text": "对至少一个真实 feature，`test-case` 必须能证明自己补出的覆盖项不只是默认 `AC -> TC` 机械映射。",
       "tc_ids": [],
       "qa_types": []
     },
     {
       "ac_id": "AC-012",
-      "theme": "machine-sink-only",
-      "text": "nondestructive refresh 只更新结构化 machine sink 与必要 metadata。",
+      "theme": "executable-coverage-writeback",
+      "text": "人类接受某个 coverage candidate 后，系统必须能把它写回正式 `qa/test-cases` 文档及对应 machine coverage artifact。",
       "tc_ids": [],
       "qa_types": []
     },
     {
       "ac_id": "AC-013",
-      "theme": "drift-types",
-      "text": "系统至少区分 `source-drift / metadata-only-drift / sink-drift / transaction-header-drift / canonical-truth-missing / destructive-recreate-required`。",
+      "theme": "supplement-contract",
+      "text": "三个 public subskill 至少共享一套 `gap discovery -> human decision -> writeback target -> audit trail` 的补齐协议。",
       "tc_ids": [],
       "qa_types": []
     },
     {
       "ac_id": "AC-014",
-      "theme": "repair-first",
-      "text": "当 drift 属于 `metadata-only-drift` 或 `transaction-header-drift` 时，freeze 必须先走 repair/reconcile，再继续 freeze。",
+      "theme": "stage-appropriate-routing",
+      "text": "PRD-level gap 可以被上游 story/test-case 面引用，但最终写回位置必须明确落在 PRD、Story 或 Test Case 的正确层，而不是任意追加。",
       "tc_ids": [],
       "qa_types": []
     },
     {
       "ac_id": "AC-015",
-      "theme": "reprojection-before-review",
-      "text": "当 drift 属于 `sink-drift` 时，系统先重投影 machine sink，再重跑 review。",
+      "theme": "decision-spectrum",
+      "text": "人类对候选 requirement 的处理至少支持 `accepted / rejected / deferred` 三类决定，并要求记录原因。",
       "tc_ids": [],
       "qa_types": []
     },
     {
       "ac_id": "AC-016",
-      "theme": "recreate-explicit",
-      "text": "仅当属于 `destructive-recreate-required` 时，系统才允许 operator 重新 create，并明确说明覆盖范围。",
+      "theme": "no-silent-manual-patch",
+      "text": "人类补齐 requirement 后，系统必须留下 machine-readable decision log，而不是允许 story/test-case 只在 markdown 里静默手工修改。",
       "tc_ids": [],
       "qa_types": []
     },
     {
       "ac_id": "AC-017",
-      "theme": "shared-reason-codes",
-      "text": "`review / freeze / status / gate / implement-readiness / real-project-validation` 共享同一套 prototype drift `reason_code`。",
+      "theme": "candidate-ledger-fields",
+      "text": "candidate ledger 至少记录 `gap_id / gap_type / source_truth_ref / candidate_kind / candidate_payload / rationale / confidence / human_decision / writeback_target / resolved_at`。",
       "tc_ids": [],
       "qa_types": []
     },
     {
       "ac_id": "AC-018",
-      "theme": "shared-diagnosis",
-      "text": "对同一 drift，相关 surface 返回一致 `diagnosis / next_action / repair_path`。",
+      "theme": "revision-transaction-binding",
+      "text": "当候选被接受并写回 formal truth 时，系统必须能把该决定绑定到 `revision_id / source_hash / transaction_id`，避免后续 re-freeze 无法判断属于哪一轮 truth。",
       "tc_ids": [],
       "qa_types": []
     },
     {
       "ac_id": "AC-019",
-      "theme": "no-surface-local-drift-copy",
-      "text": "不允许不同 surface 各自产生一套 prototype drift 解释话术。",
+      "theme": "anti-drift-preserved",
+      "text": "human-loop 补齐后的 requirement package 仍必须满足 machine mirror 重投影、stale mirror 可审计、断裂时 fail-closed 的 anti-drift 规则。",
       "tc_ids": [],
       "qa_types": []
     },
     {
       "ac_id": "AC-020",
-      "theme": "audit-ready",
-      "text": "reason code 命中结果可进入 audit / board / status read model，作为正式机器证据。",
+      "theme": "future-rounds-queryable",
+      "text": "被 rejected 或 deferred 的 candidate 不得消失在聊天历史中，而必须保留为未来 requirement round 可查询对象。",
       "tc_ids": [],
       "qa_types": []
     },
     {
       "ac_id": "AC-021",
-      "theme": "host-friction-elimination",
-      "text": "对可 repair drift，runtime 必须直接返回正式 repair action，而不是依赖 host 生成分析型操作建议。",
+      "theme": "completeness-read-model",
+      "text": "delivery layer 至少能读取 `unresolved_gap_count / high-risk unresolved categories / downgrade-fallback status / role-state-risk coverage completeness`。",
       "tc_ids": [],
       "qa_types": []
     },
     {
       "ac_id": "AC-022",
-      "theme": "no-manual-json-playbook",
-      "text": "runtime 不再把手工 patch `plan / manifest / canonical-envelope / transaction header` 作为默认操作路径。",
+      "theme": "readiness-verdict",
+      "text": "系统必须明确 requirement completeness 的至少三种 verdict：`pass / pass_with_downgrade / blocked`。",
       "tc_ids": [],
       "qa_types": []
     },
     {
       "ac_id": "AC-023",
-      "theme": "executable-next-action",
-      "text": "对每种 drift，next action 必须可直接映射到 `reconcile / repair / review / freeze / recreate` 之一。",
+      "theme": "deterministic-blocking",
+      "text": "对于 high-severity unresolved gaps、不可接受的 host downgrade、或关键 coverage family 缺失，delivery layer 必须能解释为什么当前不够 `freeze-ready / implement-ready / release-ready`。",
       "tc_ids": [],
       "qa_types": []
     },
     {
       "ac_id": "AC-024",
-      "theme": "real-project-closure",
-      "text": "在真实项目 prototype refresh 中，可 repair drift 能通过正式 runtime 闭环收口，不需要额外人工经验。",
+      "theme": "no-delivery-truth-rewrite",
+      "text": "delivery layer 可以读取 completeness、报告 risk、触发回流，但不得绕过 `prd / user-story / test-case` 主链自行改写 requirement truth。",
+      "tc_ids": [],
+      "qa_types": []
+    },
+    {
+      "ac_id": "AC-025",
+      "theme": "general",
+      "text": "host-native 与 fallback 路径可区分",
+      "tc_ids": [],
+      "qa_types": []
+    },
+    {
+      "ac_id": "AC-026",
+      "theme": "general",
+      "text": "requirement re-freeze 不破坏 anti-drift",
+      "tc_ids": [],
+      "qa_types": []
+    },
+    {
+      "ac_id": "AC-027",
+      "theme": "general",
+      "text": "delivery layer 可读取 requirement completeness",
       "tc_ids": [],
       "qa_types": []
     }
@@ -1173,7 +1331,8 @@
   "targeted_rerun": {
     "required": true,
     "reason_codes": [
-      "no_prior_feature_qa"
+      "spec_fingerprint_changed",
+      "artifact_updates_pending"
     ],
     "targeted_layers": [
       "unit"
@@ -1183,6 +1342,9 @@
       "AC-002",
       "AC-003",
       "AC-004",
+      "AC-005",
+      "AC-006",
+      "AC-007",
       "AC-101",
       "AC-102",
       "AC-103",
@@ -1228,7 +1390,10 @@
       "TC-021",
       "TC-022",
       "TC-023",
-      "TC-024"
+      "TC-024",
+      "TC-025",
+      "TC-026",
+      "TC-027"
     ],
     "targeted_scenario_ids": [],
     "targeted_scenario_families": []
@@ -1238,10 +1403,18 @@
     "assumption_capture_required": true,
     "goal_driven_verification_required": true,
     "targeted_scope_only": true,
-    "verification_item_count": 24
+    "verification_item_count": 27
   },
-  "feature_matrix_path": ".beacon/qa/features/prototype-runtime-self-heal-and-reconcile/matrix.qa9.json",
-  "blocking_artifact_updates": [],
+  "feature_matrix_path": ".beacon/qa/features/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure/matrix.qa9.json",
+  "blocking_artifact_updates": [
+    {
+      "artifact": "review_quality",
+      "required": true,
+      "reason": "run quality review after native implementation",
+      "status": "open",
+      "notes": ""
+    }
+  ],
   "per_item_results": [
     {
       "ac_id": "AC-001",
@@ -1258,10 +1431,11 @@
       "browser_evidence_pack_ref": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-001/result.json"
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-001/result.json"
       ]
     },
     {
@@ -1279,10 +1453,11 @@
       "browser_evidence_pack_ref": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-002/command.txt",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-002/stdout.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-002/stderr.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-002/result.json"
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-002/command.txt",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-002/stdout.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-002/stderr.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-002/junit.xml",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-002/result.json"
       ]
     },
     {
@@ -1300,10 +1475,11 @@
       "browser_evidence_pack_ref": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-003/command.txt",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-003/stdout.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-003/stderr.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-003/result.json"
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-003/command.txt",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-003/stdout.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-003/stderr.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-003/junit.xml",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-003/result.json"
       ]
     },
     {
@@ -1321,10 +1497,11 @@
       "browser_evidence_pack_ref": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-004/command.txt",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-004/stdout.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-004/stderr.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-004/result.json"
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-004/command.txt",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-004/stdout.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-004/stderr.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-004/junit.xml",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-004/result.json"
       ]
     },
     {
@@ -1342,10 +1519,11 @@
       "browser_evidence_pack_ref": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-005/command.txt",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-005/stdout.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-005/stderr.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-005/result.json"
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-005/command.txt",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-005/stdout.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-005/stderr.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-005/junit.xml",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-005/result.json"
       ]
     },
     {
@@ -1363,10 +1541,11 @@
       "browser_evidence_pack_ref": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-006/command.txt",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-006/stdout.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-006/stderr.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-006/result.json"
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-006/command.txt",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-006/stdout.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-006/stderr.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-006/junit.xml",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-006/result.json"
       ]
     },
     {
@@ -1384,10 +1563,11 @@
       "browser_evidence_pack_ref": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-007/command.txt",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-007/stdout.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-007/stderr.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-007/result.json"
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-007/command.txt",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-007/stdout.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-007/stderr.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-007/junit.xml",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-007/result.json"
       ]
     },
     {
@@ -1405,10 +1585,11 @@
       "browser_evidence_pack_ref": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-008/command.txt",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-008/stdout.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-008/stderr.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-008/result.json"
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-008/command.txt",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-008/stdout.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-008/stderr.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-008/junit.xml",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-008/result.json"
       ]
     },
     {
@@ -1426,10 +1607,11 @@
       "browser_evidence_pack_ref": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-009/command.txt",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-009/stdout.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-009/stderr.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-009/result.json"
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-009/command.txt",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-009/stdout.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-009/stderr.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-009/junit.xml",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-009/result.json"
       ]
     },
     {
@@ -1447,10 +1629,11 @@
       "browser_evidence_pack_ref": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-010/command.txt",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-010/stdout.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-010/stderr.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-010/result.json"
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-010/command.txt",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-010/stdout.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-010/stderr.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-010/junit.xml",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-010/result.json"
       ]
     },
     {
@@ -1468,10 +1651,11 @@
       "browser_evidence_pack_ref": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-011/command.txt",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-011/stdout.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-011/stderr.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-011/result.json"
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-011/command.txt",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-011/stdout.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-011/stderr.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-011/junit.xml",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-011/result.json"
       ]
     },
     {
@@ -1489,10 +1673,11 @@
       "browser_evidence_pack_ref": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-012/command.txt",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-012/stdout.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-012/stderr.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-012/result.json"
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-012/command.txt",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-012/stdout.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-012/stderr.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-012/junit.xml",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-012/result.json"
       ]
     },
     {
@@ -1510,10 +1695,11 @@
       "browser_evidence_pack_ref": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-013/command.txt",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-013/stdout.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-013/stderr.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-013/result.json"
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-013/command.txt",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-013/stdout.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-013/stderr.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-013/junit.xml",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-013/result.json"
       ]
     },
     {
@@ -1531,10 +1717,11 @@
       "browser_evidence_pack_ref": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-014/command.txt",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-014/stdout.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-014/stderr.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-014/result.json"
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-014/command.txt",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-014/stdout.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-014/stderr.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-014/junit.xml",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-014/result.json"
       ]
     },
     {
@@ -1552,10 +1739,11 @@
       "browser_evidence_pack_ref": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-015/command.txt",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-015/stdout.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-015/stderr.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-015/result.json"
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-015/command.txt",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-015/stdout.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-015/stderr.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-015/junit.xml",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-015/result.json"
       ]
     },
     {
@@ -1573,10 +1761,11 @@
       "browser_evidence_pack_ref": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-016/command.txt",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-016/stdout.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-016/stderr.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-016/result.json"
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-016/command.txt",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-016/stdout.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-016/stderr.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-016/junit.xml",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-016/result.json"
       ]
     },
     {
@@ -1594,10 +1783,11 @@
       "browser_evidence_pack_ref": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-017/command.txt",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-017/stdout.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-017/stderr.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-017/result.json"
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-017/command.txt",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-017/stdout.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-017/stderr.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-017/junit.xml",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-017/result.json"
       ]
     },
     {
@@ -1615,10 +1805,11 @@
       "browser_evidence_pack_ref": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-018/command.txt",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-018/stdout.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-018/stderr.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-018/result.json"
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-018/command.txt",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-018/stdout.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-018/stderr.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-018/junit.xml",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-018/result.json"
       ]
     },
     {
@@ -1636,10 +1827,11 @@
       "browser_evidence_pack_ref": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-019/command.txt",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-019/stdout.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-019/stderr.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-019/result.json"
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-019/command.txt",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-019/stdout.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-019/stderr.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-019/junit.xml",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-019/result.json"
       ]
     },
     {
@@ -1657,10 +1849,11 @@
       "browser_evidence_pack_ref": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-020/command.txt",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-020/stdout.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-020/stderr.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-020/result.json"
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-020/command.txt",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-020/stdout.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-020/stderr.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-020/junit.xml",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-020/result.json"
       ]
     },
     {
@@ -1678,10 +1871,11 @@
       "browser_evidence_pack_ref": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-021/command.txt",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-021/stdout.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-021/stderr.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-021/result.json"
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-021/command.txt",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-021/stdout.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-021/stderr.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-021/junit.xml",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-021/result.json"
       ]
     },
     {
@@ -1699,10 +1893,11 @@
       "browser_evidence_pack_ref": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-022/command.txt",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-022/stdout.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-022/stderr.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-022/result.json"
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-022/command.txt",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-022/stdout.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-022/stderr.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-022/junit.xml",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-022/result.json"
       ]
     },
     {
@@ -1720,10 +1915,11 @@
       "browser_evidence_pack_ref": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-023/command.txt",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-023/stdout.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-023/stderr.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-023/result.json"
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-023/command.txt",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-023/stdout.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-023/stderr.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-023/junit.xml",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-023/result.json"
       ]
     },
     {
@@ -1741,10 +1937,77 @@
       "browser_evidence_pack_ref": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-024/command.txt",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-024/stdout.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-024/stderr.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-024/result.json"
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-024/command.txt",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-024/stdout.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-024/stderr.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-024/junit.xml",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-024/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-005",
+      "tc_id": "TC-025",
+      "source_tc_id": "TC-025",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-025",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "unit",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-025/command.txt",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-025/stdout.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-025/stderr.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-025/junit.xml",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-025/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-006",
+      "tc_id": "TC-026",
+      "source_tc_id": "TC-026",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-026",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "unit",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-026/command.txt",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-026/stdout.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-026/stderr.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-026/junit.xml",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-026/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-007",
+      "tc_id": "TC-027",
+      "source_tc_id": "TC-027",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-027",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "unit",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-027/command.txt",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-027/stdout.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-027/stderr.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-027/junit.xml",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-027/result.json"
       ]
     }
   ],
@@ -1760,15 +2023,258 @@
   },
   "project_orchestration": {},
   "current_session_id": "",
-  "canonical_matrix_path": "docs/beacon/v1.3.11/.machine/qa/prototype-runtime-self-heal-and-reconcile.qa9-matrix.json",
+  "requirement_completeness_gate": {
+    "schema_version": "1.0",
+    "enabled": true,
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "target_stage": "qa",
+    "feature": "beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure",
+    "version": "v1.3.12",
+    "stage_ready": true,
+    "paths": {
+      "envelope": "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.envelope.json",
+      "candidate_ledger": "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.candidate-ledger.json",
+      "decision_log": "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.supplement-decision-log.json",
+      "freeze_contract": "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.freeze-contract.json",
+      "completeness": "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.completeness.json",
+      "supplement_task": "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.supplement-task.json",
+      "re_freeze_transaction": "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.re-freeze-transaction.json"
+    },
+    "unresolved_gap_count": 0,
+    "high_risk_unresolved_categories": [],
+    "downgrade_fallback_status": "none",
+    "coverage_families": [
+      "happy",
+      "negative",
+      "boundary",
+      "exception",
+      "recovery",
+      "compatibility",
+      "permission",
+      "stale-data-or-drift",
+      "downgrade-or-fallback"
+    ],
+    "decision_count": 15,
+    "candidate_count": 15,
+    "coverage_dimension_statuses": {
+      "actors": "covered",
+      "capability_differences": "covered",
+      "state_machine": "covered",
+      "happy_paths": "",
+      "negative_paths": "",
+      "boundary_conditions": "covered",
+      "exceptions": "covered",
+      "recovery_paths": "covered",
+      "risks": "covered",
+      "open_questions": ""
+    },
+    "missing_dimensions": [
+      "happy_paths",
+      "negative_paths",
+      "open_questions"
+    ],
+    "stage_gates": {
+      "artifact_read_model": {
+        "status": "pass",
+        "blocked": false,
+        "reason_code": "",
+        "summary": "requirement completeness artifacts are readable",
+        "details": {
+          "paths": {
+            "envelope": "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.envelope.json",
+            "candidate_ledger": "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.candidate-ledger.json",
+            "decision_log": "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.supplement-decision-log.json",
+            "freeze_contract": "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.freeze-contract.json",
+            "completeness": "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.completeness.json",
+            "supplement_task": "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.supplement-task.json",
+            "re_freeze_transaction": "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.re-freeze-transaction.json"
+          }
+        }
+      },
+      "decision_traceability": {
+        "status": "pass",
+        "blocked": false,
+        "reason_code": "",
+        "summary": "human supplement decisions remain auditable",
+        "details": {
+          "decision_count": 15,
+          "candidate_count": 15
+        }
+      },
+      "coverage_closure": {
+        "status": "blocked",
+        "blocked": true,
+        "reason_code": "requirement_coverage_closure_blocked",
+        "summary": "role/state/risk coverage closure is evaluated from machine materials",
+        "details": {
+          "coverage_family_count": 9,
+          "coverage_families": [
+            "happy",
+            "negative",
+            "boundary",
+            "exception",
+            "recovery",
+            "compatibility",
+            "permission",
+            "stale-data-or-drift",
+            "downgrade-or-fallback"
+          ],
+          "missing_dimensions": [
+            "happy_paths",
+            "negative_paths",
+            "open_questions"
+          ]
+        }
+      },
+      "unresolved_gap_governance": {
+        "status": "pass",
+        "blocked": false,
+        "reason_code": "",
+        "summary": "unresolved gaps are classified before downstream delivery",
+        "details": {
+          "unresolved_gap_count": 0,
+          "high_risk_unresolved_categories": []
+        }
+      },
+      "downgrade_control": {
+        "status": "pass",
+        "blocked": false,
+        "reason_code": "",
+        "summary": "host fallback and downgrade state remain explicit",
+        "details": {
+          "downgrade_fallback_status": "none"
+        }
+      },
+      "stage_admission": {
+        "status": "pass",
+        "blocked": false,
+        "reason_code": "",
+        "summary": "qa admission evaluated against completeness readiness",
+        "details": {
+          "target_stage": "qa",
+          "stage_ready": true,
+          "stage_key": "implement_ready"
+        }
+      }
+    },
+    "recommended_command": "",
+    "next_action": "qa",
+    "human_loop_handoff": {
+      "action": "qa",
+      "reason": "requirement_completeness_pass",
+      "recommended_command": "",
+      "focus_areas": [
+        "补齐 role/state/risk coverage missing dimensions"
+      ]
+    },
+    "completeness": {
+      "schema_version": "1.0",
+      "feature": "beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure",
+      "feature_slug": "beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure",
+      "version": "v1.3.12",
+      "revision_id": "R1",
+      "completeness_verdict": "pass",
+      "unresolved_gap_count": 0,
+      "high_risk_unresolved_categories": [],
+      "downgrade_fallback_status": "none",
+      "role_state_risk_coverage": {
+        "actors": "covered",
+        "capability_differences": "covered",
+        "state_machine": "covered",
+        "boundary_conditions": "covered",
+        "exceptions": "covered",
+        "recovery_paths": "covered",
+        "risks": "covered",
+        "coverage_families": [
+          "happy",
+          "negative",
+          "boundary",
+          "exception",
+          "recovery",
+          "compatibility",
+          "permission",
+          "stale-data-or-drift",
+          "downgrade-or-fallback"
+        ]
+      },
+      "readiness": {
+        "freeze_ready": true,
+        "prototype_ready": true,
+        "implement_ready": true,
+        "release_ready": true
+      },
+      "generated_at": "2026-05-06T01:20:47.909922+00:00"
+    },
+    "freeze_contract": {
+      "schema_version": "1.0",
+      "version": "v1.3.12",
+      "feature": "beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure",
+      "revision_id": "R1",
+      "status": "freeze-ready",
+      "truth_sources": {
+        "prd": "docs/beacon/v1.3.12/prd/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md",
+        "user_story": "docs/beacon/v1.3.12/user-story/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md",
+        "test_cases": "docs/beacon/v1.3.12/qa/test-cases/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md"
+      },
+      "minimum_machine_assets": [
+        ".machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.freeze-contract.json",
+        ".machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.completeness.json",
+        ".machine/user-story/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.json",
+        ".machine/qa/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.ac-test-matrix.json",
+        ".machine/qa/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.qa9-matrix.json",
+        ".machine/qa/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.story-scenario-map.json"
+      ],
+      "human_supplement_contract": {
+        "allowed_decisions": [
+          "accepted",
+          "rejected",
+          "deferred"
+        ],
+        "required_fields": [
+          "gap_id",
+          "source_truth_ref",
+          "candidate_kind",
+          "rationale",
+          "human_decision",
+          "decision_reason",
+          "writeback_target",
+          "revision_id"
+        ],
+        "writeback_flow": [
+          "decision_log",
+          "writeback_projection",
+          "truth_refreeze"
+        ]
+      },
+      "blocking_rules": [
+        "high_severity_unresolved_gap",
+        "critical_coverage_family_missing",
+        "host_downgrade_without_explicit_fallback_contract",
+        "truth_writeback_without_machine_decision_trail"
+      ],
+      "downgrade_rules": [
+        "host_runtime_unavailable_but_rule_fallback_auditable",
+        "deferred_low_or_medium_risk_gap_with_reason"
+      ],
+      "freeze_verdict": "pass",
+      "implementation_verdict": "pending",
+      "qa_execution_verdict": "pending",
+      "updated_at": "2026-05-06T01:20:47.910072+00:00"
+    }
+  },
+  "requirement_completeness_verdict": "pass",
+  "requirement_completeness_ref": "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.completeness.json",
+  "canonical_matrix_path": "docs/beacon/v1.3.12/.machine/qa/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.qa9-matrix.json",
   "exhaustiveness": {
     "schema_version": "1.0",
-    "feature": "prototype-runtime-self-heal-and-reconcile",
-    "feature_slug": "prototype-runtime-self-heal-and-reconcile",
-    "run_id": "run-20260504T004341306394",
-    "generated_at": "2026-05-03T16:45:08.819792+00:00",
+    "feature": "beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure",
+    "feature_slug": "beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure",
+    "run_id": "run-20260506T092640341315",
+    "generated_at": "2026-05-06T01:28:08.314026+00:00",
     "execution_mode": "feature-aware",
-    "scenario_count": 24,
+    "scenario_count": 27,
     "browser_scenario_count": 0,
     "required_families": [],
     "passed_families": [],
@@ -1792,7 +2298,7 @@
       "tc_id": "TC-001",
       "source_tc_id": "TC-001",
       "ac_id": "AC-001",
-      "feature_slug": "prototype-runtime-self-heal-and-reconcile",
+      "feature_slug": "beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1815,10 +2321,11 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-001/result.json"
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-001/result.json"
       ]
     },
     {
@@ -1826,7 +2333,7 @@
       "tc_id": "TC-002",
       "source_tc_id": "TC-002",
       "ac_id": "AC-002",
-      "feature_slug": "prototype-runtime-self-heal-and-reconcile",
+      "feature_slug": "beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1849,10 +2356,11 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-002/command.txt",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-002/stdout.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-002/stderr.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-002/result.json"
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-002/command.txt",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-002/stdout.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-002/stderr.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-002/junit.xml",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-002/result.json"
       ]
     },
     {
@@ -1860,7 +2368,7 @@
       "tc_id": "TC-003",
       "source_tc_id": "TC-003",
       "ac_id": "AC-003",
-      "feature_slug": "prototype-runtime-self-heal-and-reconcile",
+      "feature_slug": "beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1883,10 +2391,11 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-003/command.txt",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-003/stdout.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-003/stderr.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-003/result.json"
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-003/command.txt",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-003/stdout.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-003/stderr.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-003/junit.xml",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-003/result.json"
       ]
     },
     {
@@ -1894,7 +2403,7 @@
       "tc_id": "TC-004",
       "source_tc_id": "TC-004",
       "ac_id": "AC-004",
-      "feature_slug": "prototype-runtime-self-heal-and-reconcile",
+      "feature_slug": "beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1917,10 +2426,11 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-004/command.txt",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-004/stdout.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-004/stderr.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-004/result.json"
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-004/command.txt",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-004/stdout.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-004/stderr.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-004/junit.xml",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-004/result.json"
       ]
     },
     {
@@ -1928,7 +2438,7 @@
       "tc_id": "TC-005",
       "source_tc_id": "TC-005",
       "ac_id": "AC-101",
-      "feature_slug": "prototype-runtime-self-heal-and-reconcile",
+      "feature_slug": "beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1951,10 +2461,11 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-005/command.txt",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-005/stdout.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-005/stderr.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-005/result.json"
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-005/command.txt",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-005/stdout.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-005/stderr.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-005/junit.xml",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-005/result.json"
       ]
     },
     {
@@ -1962,7 +2473,7 @@
       "tc_id": "TC-006",
       "source_tc_id": "TC-006",
       "ac_id": "AC-102",
-      "feature_slug": "prototype-runtime-self-heal-and-reconcile",
+      "feature_slug": "beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1985,10 +2496,11 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-006/command.txt",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-006/stdout.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-006/stderr.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-006/result.json"
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-006/command.txt",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-006/stdout.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-006/stderr.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-006/junit.xml",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-006/result.json"
       ]
     },
     {
@@ -1996,7 +2508,7 @@
       "tc_id": "TC-007",
       "source_tc_id": "TC-007",
       "ac_id": "AC-103",
-      "feature_slug": "prototype-runtime-self-heal-and-reconcile",
+      "feature_slug": "beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -2019,10 +2531,11 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-007/command.txt",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-007/stdout.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-007/stderr.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-007/result.json"
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-007/command.txt",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-007/stdout.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-007/stderr.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-007/junit.xml",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-007/result.json"
       ]
     },
     {
@@ -2030,7 +2543,7 @@
       "tc_id": "TC-008",
       "source_tc_id": "TC-008",
       "ac_id": "AC-104",
-      "feature_slug": "prototype-runtime-self-heal-and-reconcile",
+      "feature_slug": "beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -2053,10 +2566,11 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-008/command.txt",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-008/stdout.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-008/stderr.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-008/result.json"
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-008/command.txt",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-008/stdout.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-008/stderr.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-008/junit.xml",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-008/result.json"
       ]
     },
     {
@@ -2064,7 +2578,7 @@
       "tc_id": "TC-009",
       "source_tc_id": "TC-009",
       "ac_id": "AC-201",
-      "feature_slug": "prototype-runtime-self-heal-and-reconcile",
+      "feature_slug": "beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -2087,10 +2601,11 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-009/command.txt",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-009/stdout.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-009/stderr.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-009/result.json"
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-009/command.txt",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-009/stdout.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-009/stderr.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-009/junit.xml",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-009/result.json"
       ]
     },
     {
@@ -2098,7 +2613,7 @@
       "tc_id": "TC-010",
       "source_tc_id": "TC-010",
       "ac_id": "AC-202",
-      "feature_slug": "prototype-runtime-self-heal-and-reconcile",
+      "feature_slug": "beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -2121,10 +2636,11 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-010/command.txt",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-010/stdout.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-010/stderr.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-010/result.json"
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-010/command.txt",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-010/stdout.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-010/stderr.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-010/junit.xml",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-010/result.json"
       ]
     },
     {
@@ -2132,7 +2648,7 @@
       "tc_id": "TC-011",
       "source_tc_id": "TC-011",
       "ac_id": "AC-203",
-      "feature_slug": "prototype-runtime-self-heal-and-reconcile",
+      "feature_slug": "beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -2155,10 +2671,11 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-011/command.txt",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-011/stdout.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-011/stderr.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-011/result.json"
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-011/command.txt",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-011/stdout.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-011/stderr.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-011/junit.xml",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-011/result.json"
       ]
     },
     {
@@ -2166,7 +2683,7 @@
       "tc_id": "TC-012",
       "source_tc_id": "TC-012",
       "ac_id": "AC-204",
-      "feature_slug": "prototype-runtime-self-heal-and-reconcile",
+      "feature_slug": "beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -2189,10 +2706,11 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-012/command.txt",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-012/stdout.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-012/stderr.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-012/result.json"
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-012/command.txt",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-012/stdout.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-012/stderr.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-012/junit.xml",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-012/result.json"
       ]
     },
     {
@@ -2200,7 +2718,7 @@
       "tc_id": "TC-013",
       "source_tc_id": "TC-013",
       "ac_id": "AC-301",
-      "feature_slug": "prototype-runtime-self-heal-and-reconcile",
+      "feature_slug": "beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -2223,10 +2741,11 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-013/command.txt",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-013/stdout.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-013/stderr.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-013/result.json"
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-013/command.txt",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-013/stdout.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-013/stderr.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-013/junit.xml",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-013/result.json"
       ]
     },
     {
@@ -2234,7 +2753,7 @@
       "tc_id": "TC-014",
       "source_tc_id": "TC-014",
       "ac_id": "AC-302",
-      "feature_slug": "prototype-runtime-self-heal-and-reconcile",
+      "feature_slug": "beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -2257,10 +2776,11 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-014/command.txt",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-014/stdout.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-014/stderr.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-014/result.json"
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-014/command.txt",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-014/stdout.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-014/stderr.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-014/junit.xml",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-014/result.json"
       ]
     },
     {
@@ -2268,7 +2788,7 @@
       "tc_id": "TC-015",
       "source_tc_id": "TC-015",
       "ac_id": "AC-303",
-      "feature_slug": "prototype-runtime-self-heal-and-reconcile",
+      "feature_slug": "beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -2291,10 +2811,11 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-015/command.txt",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-015/stdout.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-015/stderr.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-015/result.json"
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-015/command.txt",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-015/stdout.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-015/stderr.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-015/junit.xml",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-015/result.json"
       ]
     },
     {
@@ -2302,7 +2823,7 @@
       "tc_id": "TC-016",
       "source_tc_id": "TC-016",
       "ac_id": "AC-304",
-      "feature_slug": "prototype-runtime-self-heal-and-reconcile",
+      "feature_slug": "beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -2325,10 +2846,11 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-016/command.txt",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-016/stdout.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-016/stderr.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-016/result.json"
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-016/command.txt",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-016/stdout.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-016/stderr.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-016/junit.xml",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-016/result.json"
       ]
     },
     {
@@ -2336,7 +2858,7 @@
       "tc_id": "TC-017",
       "source_tc_id": "TC-017",
       "ac_id": "AC-401",
-      "feature_slug": "prototype-runtime-self-heal-and-reconcile",
+      "feature_slug": "beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -2359,10 +2881,11 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-017/command.txt",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-017/stdout.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-017/stderr.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-017/result.json"
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-017/command.txt",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-017/stdout.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-017/stderr.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-017/junit.xml",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-017/result.json"
       ]
     },
     {
@@ -2370,7 +2893,7 @@
       "tc_id": "TC-018",
       "source_tc_id": "TC-018",
       "ac_id": "AC-402",
-      "feature_slug": "prototype-runtime-self-heal-and-reconcile",
+      "feature_slug": "beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -2393,10 +2916,11 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-018/command.txt",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-018/stdout.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-018/stderr.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-018/result.json"
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-018/command.txt",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-018/stdout.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-018/stderr.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-018/junit.xml",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-018/result.json"
       ]
     },
     {
@@ -2404,7 +2928,7 @@
       "tc_id": "TC-019",
       "source_tc_id": "TC-019",
       "ac_id": "AC-403",
-      "feature_slug": "prototype-runtime-self-heal-and-reconcile",
+      "feature_slug": "beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -2427,10 +2951,11 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-019/command.txt",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-019/stdout.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-019/stderr.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-019/result.json"
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-019/command.txt",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-019/stdout.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-019/stderr.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-019/junit.xml",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-019/result.json"
       ]
     },
     {
@@ -2438,7 +2963,7 @@
       "tc_id": "TC-020",
       "source_tc_id": "TC-020",
       "ac_id": "AC-404",
-      "feature_slug": "prototype-runtime-self-heal-and-reconcile",
+      "feature_slug": "beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -2461,10 +2986,11 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-020/command.txt",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-020/stdout.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-020/stderr.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-020/result.json"
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-020/command.txt",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-020/stdout.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-020/stderr.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-020/junit.xml",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-020/result.json"
       ]
     },
     {
@@ -2472,7 +2998,7 @@
       "tc_id": "TC-021",
       "source_tc_id": "TC-021",
       "ac_id": "AC-501",
-      "feature_slug": "prototype-runtime-self-heal-and-reconcile",
+      "feature_slug": "beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -2495,10 +3021,11 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-021/command.txt",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-021/stdout.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-021/stderr.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-021/result.json"
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-021/command.txt",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-021/stdout.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-021/stderr.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-021/junit.xml",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-021/result.json"
       ]
     },
     {
@@ -2506,7 +3033,7 @@
       "tc_id": "TC-022",
       "source_tc_id": "TC-022",
       "ac_id": "AC-502",
-      "feature_slug": "prototype-runtime-self-heal-and-reconcile",
+      "feature_slug": "beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -2529,10 +3056,11 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-022/command.txt",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-022/stdout.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-022/stderr.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-022/result.json"
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-022/command.txt",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-022/stdout.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-022/stderr.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-022/junit.xml",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-022/result.json"
       ]
     },
     {
@@ -2540,7 +3068,7 @@
       "tc_id": "TC-023",
       "source_tc_id": "TC-023",
       "ac_id": "AC-503",
-      "feature_slug": "prototype-runtime-self-heal-and-reconcile",
+      "feature_slug": "beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -2563,10 +3091,11 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-023/command.txt",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-023/stdout.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-023/stderr.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-023/result.json"
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-023/command.txt",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-023/stdout.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-023/stderr.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-023/junit.xml",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-023/result.json"
       ]
     },
     {
@@ -2574,7 +3103,7 @@
       "tc_id": "TC-024",
       "source_tc_id": "TC-024",
       "ac_id": "AC-504",
-      "feature_slug": "prototype-runtime-self-heal-and-reconcile",
+      "feature_slug": "beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -2597,24 +3126,130 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-024/command.txt",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-024/stdout.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-024/stderr.log",
-        ".beacon/evidence/auto-test/run-20260504T004341306394/qa9-tc/TC-024/result.json"
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-024/command.txt",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-024/stdout.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-024/stderr.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-024/junit.xml",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-024/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-025",
+      "tc_id": "TC-025",
+      "source_tc_id": "TC-025",
+      "ac_id": "AC-005",
+      "feature_slug": "beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-025/command.txt",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-025/stdout.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-025/stderr.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-025/junit.xml",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-025/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-026",
+      "tc_id": "TC-026",
+      "source_tc_id": "TC-026",
+      "ac_id": "AC-006",
+      "feature_slug": "beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-026/command.txt",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-026/stdout.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-026/stderr.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-026/junit.xml",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-026/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-027",
+      "tc_id": "TC-027",
+      "source_tc_id": "TC-027",
+      "ac_id": "AC-007",
+      "feature_slug": "beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-027/command.txt",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-027/stdout.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-027/stderr.log",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-027/junit.xml",
+        ".beacon/evidence/auto-test/run-20260506T092640341315/qa9-tc/TC-027/result.json"
       ]
     }
   ],
-  "ac_closure_path": ".beacon/qa/features/prototype-runtime-self-heal-and-reconcile/ac-closure.json",
-  "feature_scorecard_path": ".beacon/qa/features/prototype-runtime-self-heal-and-reconcile/scorecard.json",
+  "ac_closure_path": ".beacon/qa/features/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure/ac-closure.json",
+  "feature_scorecard_path": ".beacon/qa/features/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure/scorecard.json",
   "feature_scorecard": {
     "schema_version": "1.0",
-    "feature": "prototype-runtime-self-heal-and-reconcile",
-    "feature_slug": "prototype-runtime-self-heal-and-reconcile",
-    "run_id": "run-20260504T004341306394",
-    "ac_total": 24,
-    "ac_accepted": 24,
-    "scenario_total": 24,
-    "scenario_passed": 24,
+    "feature": "beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure",
+    "feature_slug": "beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure",
+    "run_id": "run-20260506T092640341315",
+    "ac_total": 27,
+    "ac_accepted": 27,
+    "scenario_total": 27,
+    "scenario_passed": 27,
     "release_confidence_min": 1.0,
     "release_confidence_avg": 1.0,
     "review_required_count": 0,
@@ -2624,8 +3259,8 @@
     "project_profile_gate_status": "not_configured",
     "project_profile_id": "",
     "coverage_current": {
-      "required_scenarios": 24,
-      "executed_scenarios": 24,
+      "required_scenarios": 27,
+      "executed_scenarios": 27,
       "coverage_rate": 1.0,
       "required_scenario_families": [
         "boundary",
@@ -2652,28 +3287,25 @@
       "boundary_principles": [],
       "assumption_capture_required": true,
       "goal_driven_verification_required": true,
-      "verification_item_count": 24,
+      "verification_item_count": 27,
       "targeted_scope_only": true
     },
-    "continue_decision": "stop_for_repair",
-    "stop_reasons": [
-      "assertion_count_zero_pass",
-      "junit_missing_or_invalid"
-    ],
+    "continue_decision": "ready_for_release",
+    "stop_reasons": [],
     "test_case_backfill_required": false,
-    "resume_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.3.11 --feature \"prototype-runtime-self-heal-and-reconcile\"",
+    "resume_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.3.12 --feature \"beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure\"",
     "repair_handoff": {
       "action": "qa-repair",
-      "reason": "assertion_count_zero_pass, junit_missing_or_invalid",
-      "command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.3.11 --feature \"prototype-runtime-self-heal-and-reconcile\""
+      "reason": "qa_round_incomplete",
+      "command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.3.12 --feature \"beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure\""
     },
     "release_ready": true
   },
   "release_ready": true,
   "delivery_contract": {
     "schema_version": "1.0",
-    "feature": "prototype-runtime-self-heal-and-reconcile",
-    "version": "v1.3.11",
+    "feature": "beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure",
+    "version": "v1.3.12",
     "requested_mode": "feature-aware",
     "effective_mode": "feature-aware",
     "generator_mode": "feature-aware",
@@ -2692,15 +3324,17 @@
     },
     "subagent_prechecks": {},
     "requirement_binding": {
-      "source_of_truth_root": "docs/beacon/v1.3.11",
-      "feature_matrix_path": ".beacon/qa/features/prototype-runtime-self-heal-and-reconcile/matrix.qa9.json",
-      "canonical_matrix_path": "docs/beacon/v1.3.11/.machine/qa/prototype-runtime-self-heal-and-reconcile.qa9-matrix.json"
+      "source_of_truth_root": "docs/beacon/v1.3.12",
+      "feature_matrix_path": ".beacon/qa/features/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure/matrix.qa9.json",
+      "canonical_matrix_path": "docs/beacon/v1.3.12/.machine/qa/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.qa9-matrix.json"
     },
     "traceability_refs": [
-      ".beacon/qa/features/prototype-runtime-self-heal-and-reconcile/matrix.qa9.json",
-      "docs/beacon/v1.3.11/.machine/qa/prototype-runtime-self-heal-and-reconcile.qa9-matrix.json",
-      ".beacon/qa/features/prototype-runtime-self-heal-and-reconcile/ac-closure.json",
-      ".beacon/qa/features/prototype-runtime-self-heal-and-reconcile/scorecard.json"
+      ".beacon/qa/features/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure/matrix.qa9.json",
+      "docs/beacon/v1.3.12/.machine/qa/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.qa9-matrix.json",
+      ".beacon/qa/features/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure/ac-closure.json",
+      ".beacon/qa/features/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure/scorecard.json",
+      "docs/beacon/v1.3.12/.machine/execution/implementation-summary-beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.json",
+      "docs/beacon/v1.3.12/.machine/execution/technical-implementation-beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.json"
     ],
     "runner": "",
     "adapter_type": "",
@@ -2713,8 +3347,8 @@
   },
   "host_native_delivery": {
     "schema_version": "1.0",
-    "feature": "prototype-runtime-self-heal-and-reconcile",
-    "version": "v1.3.11",
+    "feature": "beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure",
+    "version": "v1.3.12",
     "requested_mode": "feature-aware",
     "effective_mode": "feature-aware",
     "generator_mode": "feature-aware",
@@ -2733,15 +3367,17 @@
     },
     "subagent_prechecks": {},
     "requirement_binding": {
-      "source_of_truth_root": "docs/beacon/v1.3.11",
-      "feature_matrix_path": ".beacon/qa/features/prototype-runtime-self-heal-and-reconcile/matrix.qa9.json",
-      "canonical_matrix_path": "docs/beacon/v1.3.11/.machine/qa/prototype-runtime-self-heal-and-reconcile.qa9-matrix.json"
+      "source_of_truth_root": "docs/beacon/v1.3.12",
+      "feature_matrix_path": ".beacon/qa/features/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure/matrix.qa9.json",
+      "canonical_matrix_path": "docs/beacon/v1.3.12/.machine/qa/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.qa9-matrix.json"
     },
     "traceability_refs": [
-      ".beacon/qa/features/prototype-runtime-self-heal-and-reconcile/matrix.qa9.json",
-      "docs/beacon/v1.3.11/.machine/qa/prototype-runtime-self-heal-and-reconcile.qa9-matrix.json",
-      ".beacon/qa/features/prototype-runtime-self-heal-and-reconcile/ac-closure.json",
-      ".beacon/qa/features/prototype-runtime-self-heal-and-reconcile/scorecard.json"
+      ".beacon/qa/features/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure/matrix.qa9.json",
+      "docs/beacon/v1.3.12/.machine/qa/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.qa9-matrix.json",
+      ".beacon/qa/features/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure/ac-closure.json",
+      ".beacon/qa/features/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure/scorecard.json",
+      "docs/beacon/v1.3.12/.machine/execution/implementation-summary-beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.json",
+      "docs/beacon/v1.3.12/.machine/execution/technical-implementation-beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.json"
     ],
     "runner": "",
     "adapter_type": "",
@@ -2752,5 +3388,5 @@
     "release_ready": true,
     "risk_flags": []
   },
-  "current_spec_fingerprint_hash": "d059168b670ccb90af1a69a47d447423db9b334120009884cfc94ab91d51addc"
+  "current_spec_fingerprint_hash": "b7ce5e115c96584bd66808c53546bc1544abe7d14678407376bfbef12e00f732"
 }

@@ -1,0 +1,115 @@
+{
+  "schema_version": "1.0",
+  "run_id": "prd-bootstrap-20260428T023035Z",
+  "feature": "Beacon v1.3.9 runtime skill admission and host-validated third-party skill compatibility",
+  "feature_slug": "beacon-v1.3.9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility",
+  "description": "Beacon v1.3.9 需要新增一条并行 requirement 子线，把第三方 skill 的接入从静态 beacon.config.yaml 自动生成，收敛为 runtime skill admission 模型。目标是让 Beacon 在 implement --skill 调用前，借助当前 host runtime（codex 或 claude）直接分析和验证 skill 的可消费性，而不是先信任静态配置。要求：1）Codex/Claude 继续负责 skill 创建，Beacon 不再造 skill create 包装器；2）Beacon 只定义并消费 Beacon-compatible skill contract；3）implement --skill 在运行前必须做 skill discovery、host-runtime compatibility analysis、admission validation、admission cache writeback；4）beacon.config.yaml 只保留最小提示层，不再承担完整 contract truth；5）该模型必须支持非编码实现面，如 storyverse 这类长任务 workbench / content production；6）runtime admission 的结果要能被 qa/release/gate 消费，并进入 evidence/acceptance 闭环。",
+  "version": "v1.3.9",
+  "generated_at": "2026-04-28T02:30:35.442859+00:00",
+  "mode": "dry-run",
+  "dry_run": true,
+  "no_overwrite": true,
+  "strict_context_verify": true,
+  "targets": {
+    "prd": "docs/beacon/v1.3.9/prd/beacon-v1.3.9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility.md",
+    "user_story": "docs/beacon/v1.3.9/user-story/beacon-v1.3.9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility.md",
+    "test_case": "docs/beacon/v1.3.9/qa/test-cases/beacon-v1.3.9-runtime-skill-admission-and-host-validated-third-party-skill-compatibility.md"
+  },
+  "quality": {
+    "max_placeholders": 0,
+    "total_placeholders": 0,
+    "per_doc": {
+      "prd": 0,
+      "user_story": 0,
+      "test_case": 0
+    },
+    "ok": true
+  },
+  "consistency": {
+    "story_ac_ids": [
+      "AC-001",
+      "AC-002",
+      "AC-003",
+      "AC-004",
+      "AC-005"
+    ],
+    "test_case_ac_ids": [
+      "AC-001",
+      "AC-002",
+      "AC-003",
+      "AC-004",
+      "AC-005"
+    ],
+    "missing_in_test_case": [],
+    "ok": true
+  },
+  "context_verify": {
+    "project_root": "/Users/apple/Developer/Personal/products/beacon",
+    "runtime_version": "v1.3.8",
+    "strict": true,
+    "status": "pass",
+    "ok": true,
+    "checks": [
+      {
+        "name": "context_files_presence",
+        "status": "pass",
+        "details": {
+          "missing": []
+        }
+      },
+      {
+        "name": "managed_block_integrity",
+        "status": "pass",
+        "details": {
+          "issues": []
+        }
+      },
+      {
+        "name": "managed_block_version_drift",
+        "status": "pass",
+        "details": {
+          "drifted": [],
+          "unknown": []
+        }
+      },
+      {
+        "name": "global_boundaries_presence",
+        "status": "pass",
+        "details": {
+          "path": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/global-boundaries.md",
+          "exists": true
+        }
+      },
+      {
+        "name": "global_boundaries_inheritance",
+        "status": "pass",
+        "details": {
+          "missing_references": []
+        }
+      }
+    ],
+    "files": {
+      "CLAUDE.md": {
+        "path": "/Users/apple/Developer/Personal/products/beacon/CLAUDE.md",
+        "exists": true,
+        "marker_integrity": "ok",
+        "managed_version": "v1.3.8",
+        "managed_docs_version": "v1.3.8",
+        "version_drift": false
+      },
+      "AGENTS.md": {
+        "path": "/Users/apple/Developer/Personal/products/beacon/AGENTS.md",
+        "exists": true,
+        "marker_integrity": "ok",
+        "managed_version": "v1.3.8",
+        "managed_docs_version": "v1.3.8",
+        "version_drift": false
+      }
+    }
+  },
+  "status": "planned",
+  "reason_code": "",
+  "recommended_command": "",
+  "write_actions": [],
+  "rollback_plan": []
+}

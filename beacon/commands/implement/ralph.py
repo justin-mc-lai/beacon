@@ -53,6 +53,9 @@ def refresh_ralph_state_after_resume(
     elif resumed_action == "release":
         gate_status = str(payload.get("status", "") or "").strip().lower()
         release_check_cmd = f"beacon gate check release --project-root {project_root} --version {version}" if version else ""
+        requirement_gate = payload.get("requirement_completeness") if isinstance(payload.get("requirement_completeness"), dict) else {}
+        if not requirement_gate and isinstance(payload.get("requirement_completeness_gate"), dict):
+            requirement_gate = payload.get("requirement_completeness_gate")
         if gate_status == "pass":
             updated_state = {
                 **state,
@@ -64,13 +67,25 @@ def refresh_ralph_state_after_resume(
                 "updated_at": now_iso(),
             }
         elif gate_status:
+            requirement_blocked = (
+                isinstance(requirement_gate, dict)
+                and (
+                    bool(requirement_gate.get("blocked"))
+                    or str(requirement_gate.get("status") or "").strip().lower() == "blocked"
+                )
+            )
+            requirement_handoff = requirement_gate.get("human_loop_handoff") if isinstance(requirement_gate.get("human_loop_handoff"), dict) else {}
             updated_state = {
                 **state,
                 "gate_release_status": gate_status,
                 "stop_state": "human_blocked",
-                "current_blocker": "gate_release_blocked",
-                "next_action": "release",
-                "recommended_command": release_check_cmd,
+                "current_blocker": str(requirement_gate.get("reason_code") or "gate_release_blocked") if requirement_blocked else "gate_release_blocked",
+                "next_action": "human_review" if requirement_blocked else "release",
+                "recommended_command": (
+                    str(requirement_handoff.get("recommended_command") or requirement_gate.get("recommended_command") or "")
+                    if requirement_blocked
+                    else release_check_cmd
+                ),
                 "updated_at": now_iso(),
             }
 

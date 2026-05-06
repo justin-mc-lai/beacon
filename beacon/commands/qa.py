@@ -17,6 +17,7 @@ from beacon.utils.delivery_kernel import build_delivery_contract
 from beacon.utils.coverage import write_coverage_summary
 from beacon.utils.implement_adapters import format_template
 from beacon.utils.material_audit import build_requirement_package_gate
+from beacon.utils.requirement_deepening import build_requirement_completeness_gate
 from beacon.utils.project_metadata import metadata_machine_path, verify_project_metadata
 from beacon.utils.process_lock import project_process_lock
 from beacon.utils.exhaustiveness import build_exhaustiveness_report, write_exhaustiveness_report
@@ -724,6 +725,28 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
         else:
             typer.echo("Beacon QA blocked: requirement package contract blocked", err=True)
         return 2, blocked_payload
+    requirement_completeness_gate = build_requirement_completeness_gate(
+        project_root,
+        version=version if version != "auto" else "auto",
+        feature=feature or "",
+        target_stage="qa",
+    )
+    if str(requirement_completeness_gate.get("status") or "").lower() == "blocked":
+        blocked_payload = {
+            "schema_version": "1.0",
+            "feature": feature,
+            "version": version,
+            "status": "blocked",
+            "reason_codes": ["requirement_completeness_blocked"],
+            "requirement_package_gate": requirement_package_gate,
+            "requirement_completeness_gate": requirement_completeness_gate,
+            "recommended_command": str(requirement_completeness_gate.get("recommended_command") or "beacon-change"),
+        }
+        if json_output:
+            typer.echo(json.dumps(blocked_payload, ensure_ascii=False, indent=2))
+        else:
+            typer.echo("Beacon QA blocked: requirement completeness gate blocked", err=True)
+        return 2, blocked_payload
 
     def _with_delivery_contract(
         payload: dict[str, Any],
@@ -753,6 +776,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
         )
         payload["delivery_contract"] = contract
         payload["host_native_delivery"] = contract
+        payload["requirement_completeness_gate"] = requirement_completeness_gate
         return payload
 
     project_profile = resolve_profile_for_feature(project_root, version=version, feature=feature)
@@ -1209,6 +1233,11 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
     qa_status["project_profile_gate"] = project_profile_gate if isinstance(project_profile_gate, dict) else {}
     qa_status["project_orchestration"] = project_orchestration if isinstance(project_orchestration, dict) else {}
     qa_status["current_session_id"] = str(current_session.get("session_id") or "")
+    qa_status["requirement_completeness_gate"] = requirement_completeness_gate
+    qa_status["requirement_completeness_verdict"] = str(requirement_completeness_gate.get("status") or "")
+    qa_status["requirement_completeness_ref"] = str(
+        ((requirement_completeness_gate.get("paths") or {}).get("completeness")) or ""
+    )
     canonical_matrix = writeback_feature_matrix_evidence(
         project_root,
         plan=plan,
@@ -1340,35 +1369,42 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
             failed_item_ids=[],
             evidence_ref=manifest_refs,
         )
-        acceptance_result = record_acceptance_writeback(
-            project_root,
-            version=version,
-            feature=feature,
-            accepted_by="qa",
-            verdict="passed",
-            run_id=str(qa_status.get("run_id") or plan.get("implementation_run_id") or "feature-qa"),
-            evidence_ref=manifest_refs,
-            source_command=f'beacon qa run "{feature}" --project-root {project_root} --version {version}',
-            accepted_ac_ids=accepted_ac_ids,
-            accepted_test_ids=accepted_test_ids,
-        )
-        acceptance_writeback = {
-            "status": "completed",
-            "machine_path": str(acceptance_result.get("machine_path") or ""),
-            "markdown_path": str(acceptance_result.get("markdown_path") or ""),
-            "runtime_path": str(acceptance_result.get("runtime_path") or ""),
-            "transaction_id": str(acceptance_result.get("acceptance_envelope", {}).get("transaction_id", "") or ""),
-            "source_hash": str(acceptance_result.get("acceptance_envelope", {}).get("source_hash", "") or ""),
-            "projection_seq": acceptance_result.get("acceptance_envelope", {}).get("projection_seq"),
-            "transaction_status": str(acceptance_result.get("acceptance_envelope", {}).get("transaction_status", "") or ""),
-        }
-        manifest_refs.extend(
-            [
-                str(acceptance_result.get("machine_path") or ""),
-                str(acceptance_result.get("markdown_path") or ""),
-                str(acceptance_result.get("runtime_path") or ""),
-            ]
-        )
+        try:
+            acceptance_result = record_acceptance_writeback(
+                project_root,
+                version=version,
+                feature=feature,
+                accepted_by="qa",
+                verdict="passed",
+                run_id=str(qa_status.get("run_id") or plan.get("implementation_run_id") or "feature-qa"),
+                evidence_ref=manifest_refs,
+                source_command=f'beacon qa run "{feature}" --project-root {project_root} --version {version}',
+                accepted_ac_ids=accepted_ac_ids,
+                accepted_test_ids=accepted_test_ids,
+            )
+        except ValueError as exc:
+            acceptance_writeback = {
+                "status": "skipped",
+                "reason_code": str(exc),
+            }
+        else:
+            acceptance_writeback = {
+                "status": "completed",
+                "machine_path": str(acceptance_result.get("machine_path") or ""),
+                "markdown_path": str(acceptance_result.get("markdown_path") or ""),
+                "runtime_path": str(acceptance_result.get("runtime_path") or ""),
+                "transaction_id": str(acceptance_result.get("acceptance_envelope", {}).get("transaction_id", "") or ""),
+                "source_hash": str(acceptance_result.get("acceptance_envelope", {}).get("source_hash", "") or ""),
+                "projection_seq": acceptance_result.get("acceptance_envelope", {}).get("projection_seq"),
+                "transaction_status": str(acceptance_result.get("acceptance_envelope", {}).get("transaction_status", "") or ""),
+            }
+            manifest_refs.extend(
+                [
+                    str(acceptance_result.get("machine_path") or ""),
+                    str(acceptance_result.get("markdown_path") or ""),
+                    str(acceptance_result.get("runtime_path") or ""),
+                ]
+            )
     payload = {
         **plan,
         "run_id": str(qa_status.get("run_id") or ""),
@@ -1386,6 +1422,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
         "exhaustiveness": exhaustiveness,
         "project_profile": project_profile or {},
         "project_profile_gate": project_profile_gate if isinstance(project_profile_gate, dict) else {},
+        "requirement_completeness_gate": requirement_completeness_gate,
         "current_session_id": str(current_session.get("session_id") or ""),
         "scenario_results_v2": scenario_results_v2,
         "ac_closure": ac_closure,

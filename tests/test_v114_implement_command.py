@@ -10,6 +10,8 @@ from typer.testing import CliRunner
 
 from beacon.main import app
 from beacon.utils.artifact_paths import change_docs_file, change_file_output, execution_file_output
+from beacon.utils.implement_prompt_boundary import evaluate_implement_prompt_boundary
+from beacon.utils.semantic_runtime import load_or_build_semantic_layer
 
 
 runner = CliRunner()
@@ -1244,6 +1246,33 @@ def test_ralph_controller_should_forward_prompt_boundary_to_child_runs(monkeypat
     assert payload["prompt_boundary"]["classification"] == "clarification_within_scope"
 
 
+def test_implement_v1312_should_default_prompt_boundary_and_semantic_layer_from_runtime_context(tmp_path: Path) -> None:
+    _seed_feature_docs(tmp_path, version="v1.3.12", feature="My Feature")
+
+    prompt_boundary = evaluate_implement_prompt_boundary(
+        tmp_path,
+        version="v1.3.12",
+        feature="My Feature",
+        host_prompt="",
+    )
+    semantic_layer = load_or_build_semantic_layer(
+        tmp_path,
+        version="v1.3.12",
+        feature="My Feature",
+        stage="implement",
+        persist=False,
+    )
+
+    assert prompt_boundary["required"] is True
+    assert prompt_boundary["status"] == "not_provided"
+    assert prompt_boundary["blocked"] is False
+    assert semantic_layer["artifacts"]["semantic_contract"]
+    assert semantic_layer["artifacts"]["semantic_dictionary"]
+    assert semantic_layer["artifacts"]["semantic_usage_guidelines"]
+    assert semantic_layer["artifacts"]["semantic_review"]
+    assert semantic_layer["official_language"]["page_names"]
+
+
 def test_ralph_controller_should_ignore_text_completion_without_structured_qa_release(monkeypatch, tmp_path: Path):
     _seed_feature_docs(tmp_path, version="v1.3.2", feature="My Feature")
     calls = {"count": 0}
@@ -1306,6 +1335,68 @@ def test_ralph_controller_should_ignore_text_completion_without_structured_qa_re
     assert ralph["current_blocker"] == "qa still blocked"
     assert ralph["rounds"][0]["continue_decision"] == "stop_for_repair"
     assert ralph["rounds"][0].get("status") != "exit_detector_triggered"
+
+
+def test_ralph_controller_should_surface_requirement_completeness_handoff_when_qa_blocks_before_scorecard(monkeypatch, tmp_path: Path):
+    _seed_feature_docs(tmp_path, version="v1.3.12", feature="My Feature")
+
+    def _fake_run_implement_stage(**kwargs):
+        return 0, {
+            "run_id": kwargs["run_id_override"],
+            "status": "completed",
+            "summary": "runner finished",
+            "review_quality": {
+                "exit_code": 0,
+                "payload": {"gate_ready": False},
+                "paths": {"json": "docs/beacon/v1.3.12/execution/review-quality-my-feature.json"},
+            },
+            "auto_qa": {
+                "enabled": True,
+                "triggered": True,
+                "follow_handoff": False,
+                "max_rounds": 1,
+                "exit_code": 2,
+                "payload": {
+                    "status": "blocked",
+                    "reason_codes": ["requirement_completeness_blocked"],
+                    "requirement_completeness_gate": {
+                        "status": "blocked",
+                        "blocked": True,
+                        "reason_code": "requirement_completeness_blocked",
+                        "recommended_command": "beacon-change",
+                        "human_loop_handoff": {
+                            "action": "human_review",
+                            "recommended_command": "beacon-change",
+                        },
+                    },
+                },
+                "history": [{"step": "qa-run", "round": 1, "exit_code": 2}],
+            },
+        }
+
+    monkeypatch.setattr(implement_cmd._legacy_cli, "run_implement_stage", _fake_run_implement_stage)
+    monkeypatch.setattr(implement_cmd._legacy_cli, "refresh_evidence_manifest", lambda *args, **kwargs: None)
+
+    _, payload = implement_cmd._legacy_cli._run_ralph_controller(  # type: ignore[attr-defined]
+        feature="My Feature",
+        project_root=tmp_path,
+        version="v1.3.12",
+        runner="native-single",
+        skill=None,
+        task_template=None,
+        prompt_boundary=None,
+        timeout_sec=None,
+        auto_switch_branch=None,
+        team_runtime=None,
+        host_runtime="codex",
+        max_rounds=3,
+    )
+
+    ralph = payload["ralph"]
+    assert ralph["stop_state"] == "human_blocked"
+    assert ralph["next_action"] == "human_review"
+    assert ralph["current_blocker"] == "requirement_completeness_blocked"
+    assert ralph["recommended_command"] == "beacon-change"
 
 
 def test_implement_run_should_fail_when_runner_times_out(tmp_path: Path):

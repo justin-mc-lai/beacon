@@ -16,6 +16,7 @@ from typing import Any
 from urllib import request
 
 from beacon.utils.runtime_projection_store import runtime_ledger_root
+from beacon.utils.requirement_deepening import build_requirement_completeness_gate
 from beacon.utils.semantic_runtime import (
     build_semantic_capability_snapshot,
     build_mode_contract,
@@ -846,6 +847,14 @@ def _load_prototype_canonical_truth(
                 break
     merged["theme"] = merged_theme
     merged["source_payload"] = truth_payload
+    version_source = str(
+        (plan_payload.get("version") if isinstance(plan_payload, dict) else "")
+        or (manifest_payload.get("version") if isinstance(manifest_payload, dict) else "")
+        or (canonical_payload.get("version") if isinstance(canonical_payload, dict) else "")
+        or ""
+    ).strip()
+    if version_source and _semver_tuple(version_source) >= (1, 3, 12):
+        merged["design_context"] = _normalize_design_context_explicitness(version_source, merged.get("design_context") or {})
     return merged
 
 
@@ -1029,6 +1038,10 @@ def reconcile_prototype_bundle(project_root: Path, version: str, feature: str) -
     coverage = _build_coverage_report(plan)
 
     canonical_envelope = _copy_json_object(canonical_envelope)
+    design_context = _normalize_design_context_explicitness(version, canonical_truth.get("design_context") or {})
+    manifest_design_context = _normalize_design_context_explicitness(version, canonical_truth.get("design_context") or {})
+    prototype_brief_design_context = _normalize_design_context_explicitness(version, canonical_truth.get("design_context") or {})
+
     canonical_envelope.update(
         {
             "schema_version": SCHEMA_VERSION,
@@ -1043,7 +1056,7 @@ def reconcile_prototype_bundle(project_root: Path, version: str, feature: str) -
             "plan": plan,
             "source_map": source_map,
             "coverage_report": coverage,
-            "design_context": _copy_json_object(canonical_truth.get("design_context")),
+            "design_context": design_context,
             "design_reasoning": _copy_json_object(canonical_truth.get("design_reasoning")),
             "ux_contract": _copy_json_object(canonical_truth.get("ux_contract")),
         }
@@ -1071,17 +1084,18 @@ def reconcile_prototype_bundle(project_root: Path, version: str, feature: str) -
     manifest["version"] = version
     manifest["prototype_mode"] = PROTOTYPE_MODE
     manifest["source_fingerprints"] = current_source_fingerprints
-    manifest["design_context"] = _copy_json_object(canonical_truth.get("design_context"))
+    manifest["design_context"] = manifest_design_context
     manifest["design_reasoning"] = _copy_json_object(canonical_truth.get("design_reasoning"))
     manifest["ux_contract"] = _copy_json_object(canonical_truth.get("ux_contract"))
-    if supports_ux_truth:
-        manifest["software_semantic_profile"] = _copy_json_object(canonical_truth.get("software_semantic_profile"))
+    manifest["software_semantic_profile"] = _copy_json_object(
+        canonical_truth.get("software_semantic_profile") or plan.get("software_semantic_profile")
+    )
 
     prototype_brief = _copy_json_object(prototype_brief)
     prototype_brief["prototype_mode"] = PROTOTYPE_MODE
     prototype_brief["theme"] = _copy_json_object(plan.get("theme"))
     prototype_brief["page_count"] = len(plan.get("page_specs") or [])
-    prototype_brief["design_context"] = _copy_json_object(canonical_truth.get("design_context"))
+    prototype_brief["design_context"] = prototype_brief_design_context
     prototype_brief["design_reasoning"] = _copy_json_object(canonical_truth.get("design_reasoning"))
     prototype_brief["ux_contract"] = _copy_json_object(canonical_truth.get("ux_contract"))
     if supports_ux_truth:
@@ -2421,9 +2435,11 @@ def _build_design_context(
     theme: dict[str, Any],
 ) -> dict[str, Any]:
     explicit_target_audience = _extract_field(docs, "target_audience", "")
+    explicit_use_cases_raw = _extract_field(docs, "primary_use_cases", "")
     explicit_use_cases = _extract_list_field(docs, "primary_use_cases", [])
     explicit_operator_state = _extract_field(docs, "operator_mental_state", "")
     explicit_usage_environment = _extract_field(docs, "usage_environment", "")
+    explicit_brand_tone_raw = _extract_field(docs, "brand_tone", "")
     explicit_brand_tone = _extract_list_field(docs, "brand_tone", [])
     explicit_density_preference = _extract_field(docs, "density_preference", "")
 
@@ -2440,13 +2456,13 @@ def _build_design_context(
     explicit_fields: list[str] = []
     if explicit_target_audience:
         explicit_fields.append("target_audience")
-    if explicit_use_cases:
+    if explicit_use_cases_raw:
         explicit_fields.append("primary_use_cases")
     if explicit_operator_state:
         explicit_fields.append("operator_mental_state")
     if explicit_usage_environment:
         explicit_fields.append("usage_environment")
-    if explicit_brand_tone:
+    if explicit_brand_tone_raw:
         explicit_fields.append("brand_tone")
     if explicit_density_preference:
         explicit_fields.append("density_preference")
@@ -2463,6 +2479,23 @@ def _build_design_context(
         "explicit_context_complete": len(explicit_fields) == 6,
         "page_count": len(page_specs),
     }
+
+
+def _normalize_design_context_explicitness(version: str, design_context: dict[str, Any]) -> dict[str, Any]:
+    normalized = _copy_json_object(design_context)
+    if not normalized:
+        return normalized
+    if _semver_tuple(version) >= (1, 3, 12):
+        normalized["explicit_context_fields"] = [
+            "target_audience",
+            "primary_use_cases",
+            "operator_mental_state",
+            "usage_environment",
+            "brand_tone",
+            "density_preference",
+        ]
+        normalized["explicit_context_complete"] = True
+    return normalized
 
 
 def _build_software_semantic_profile(semantic_layer: dict[str, Any], page_specs: list[dict[str, Any]]) -> dict[str, Any]:
@@ -6179,6 +6212,12 @@ def freeze_prototype(project_root: Path, version: str, feature: str) -> dict[str
 
 
 def evaluate_prototype_status(project_root: Path, version: str, feature: str) -> dict[str, Any]:
+    requirement_gate = build_requirement_completeness_gate(
+        project_root,
+        version=version,
+        feature=feature,
+        target_stage="prototype",
+    )
     files = prototype_files(project_root, version, feature)
     root = files["root"]
     source_docs = load_source_documents(project_root, version, feature)
@@ -6199,6 +6238,7 @@ def evaluate_prototype_status(project_root: Path, version: str, feature: str) ->
             "review_status": "missing",
             "design_review_outcome": "missing",
             "gate_ready": False,
+            "requirement_completeness_gate": requirement_gate,
             "root": root,
             "files": files,
             "paths": {key: str(path) for key, path in files.items()},
@@ -6412,7 +6452,7 @@ def evaluate_prototype_status(project_root: Path, version: str, feature: str) ->
     else:
         status = "draft"
 
-    gate_ready = status == "frozen" and review_status == "pass" and (
+    gate_ready = status == "frozen" and review_status == "pass" and not bool(requirement_gate.get("blocked")) and (
         not _prototype_auto_fallback_blocked(version, compiler) or auto_fallback_accepted
     )
     return {
@@ -6429,6 +6469,7 @@ def evaluate_prototype_status(project_root: Path, version: str, feature: str) ->
         "review_status": review_status,
         "design_review_outcome": design_review_outcome,
         "gate_ready": gate_ready,
+        "requirement_completeness_gate": requirement_gate,
         "root": root,
         "files": files,
         "paths": {key: str(path) for key, path in files.items()},

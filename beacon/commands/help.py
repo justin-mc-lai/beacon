@@ -91,6 +91,8 @@ def _render_human(payload: dict[str, object]) -> str:
         f"- command : {next_step.get('command', '')}",
     ])
     change_loop = payload.get("change_loop", {}) if isinstance(payload.get("change_loop"), dict) else {}
+    requirement_gap_digest = payload.get("requirement_gap_digest", {}) if isinstance(payload.get("requirement_gap_digest"), dict) else {}
+    brainstorm_hint = payload.get("brainstorm_hint", {}) if isinstance(payload.get("brainstorm_hint"), dict) else {}
     requirement_package = payload.get("requirement_package_gate", {}) if isinstance(payload.get("requirement_package_gate"), dict) else {}
     if bool(requirement_package.get("enabled")):
         lines.extend(
@@ -118,6 +120,25 @@ def _render_human(payload: dict[str, object]) -> str:
         ladder = change_loop.get("ladder", []) if isinstance(change_loop.get("ladder"), list) else []
         if ladder:
             lines.append(f"- ladder      : {' -> '.join(str(item) for item in ladder)}")
+    if requirement_gap_digest.get("human_followup_needed") or brainstorm_hint.get("recommended_route"):
+        lines.extend(
+            [
+                "",
+                "requirement convergence",
+                f"- gap_id     : {requirement_gap_digest.get('gap_id', '')}",
+                f"- gap_type   : {requirement_gap_digest.get('gap_type', '')}",
+                f"- severity   : {requirement_gap_digest.get('gap_severity', '')}",
+                f"- route      : {requirement_gap_digest.get('recommended_route', '') or brainstorm_hint.get('recommended_route', '')}",
+            ]
+        )
+        focus_areas = brainstorm_hint.get("focus_areas", []) if isinstance(brainstorm_hint.get("focus_areas"), list) else []
+        if focus_areas:
+            lines.append(f"- focus      : {', '.join(str(item) for item in focus_areas[:4])}")
+        open_questions = brainstorm_hint.get("open_questions", []) if isinstance(brainstorm_hint.get("open_questions"), list) else []
+        if open_questions:
+            lines.append(f"- questions  : {open_questions[0]}")
+        if brainstorm_hint.get("recommended_mode"):
+            lines.append(f"- mode       : {brainstorm_hint.get('recommended_mode')}")
     discovery = payload.get("skill_discovery_hint", {}) if isinstance(payload.get("skill_discovery_hint"), dict) else {}
     if not discovery:
         discovery = payload.get("skill_discovery", {}) if isinstance(payload.get("skill_discovery"), dict) else {}

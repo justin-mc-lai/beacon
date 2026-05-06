@@ -7,7 +7,7 @@ description: Use when the user wants to create, extend, or audit test cases and 
 
 This skill routes acceptance coverage work through Beacon's `test-case` surface.
 
-The public command stays on the current `v1.3.9` runtime line and uses the host-native requirement runtime defined by the `v1.3.9` docs.
+The public command stays on the current `v1.3.9` runtime line and uses the host-native requirement runtime defined by the `v1.3.12` requirement closure docs.
 Default host execution now enters the requirement bridge family before compatibility fallback.
 
 ## Use for
@@ -27,3 +27,4 @@ Prefer:
 
 The public goal is coverage readiness, not exposing internal QA lanes yet.
 When host-native runtime is available, `test-case` should first use the wrapper-provided bridge and project from requirement truth or existing QA rows instead of emitting a generic placeholder matrix.
+If coverage is incomplete, surface the supplement task and re-freeze transaction rather than treating the matrix as final.

@@ -1,0 +1,147 @@
+{
+  "schema_version": "1.0",
+  "run_id": "prd-bootstrap-20260423T045121Z",
+  "feature": "Beacon v1.3.7 feature-intent brainstorm sidecar and frozen-truth routing",
+  "feature_slug": "beacon-v1.3.7-feature-intent-brainstorm-sidecar-and-frozen-truth-routing",
+  "description": "在 v1.3.7 中为 Beacon 增加一个可见但非主流程的 feature-intent 头暴 sidecar skill，用于处理 prompt + 冻结的 prd/user-story/test-case + 可选 prototype + 代码上下文 的联合分析。该 skill 不写 requirement truth、不直接执行 implement，而是输出 scope classification 与 recommended route。它必须把当前用户意图判定为 in_scope_implementation、clarification_within_scope、requirement_change、truth_conflict 四类之一，并且只允许推荐三种路由：继续 beacon-implement、转 beacon-change、回 beacon-prd。该 skill 不能并入 beacon-toolkit-lighthouse，因为 Lighthouse 继续专注于 repo/package/feature-slice 分析；也不能并入 beacon-prd，因为它的核心任务不是 drafting requirement，而是判断当前 prompt 是否仍落在 frozen truth 内。它应生成单一 Markdown 分析产物，可默认写入 .beacon/analysis，并在 Beacon 源迭代时允许同步写入 docs/beacon/v1.3.7/execution。",
+  "version": "v1.3.7",
+  "generated_at": "2026-04-23T04:51:21.585718+00:00",
+  "mode": "apply",
+  "dry_run": false,
+  "no_overwrite": true,
+  "strict_context_verify": true,
+  "targets": {
+    "prd": "docs/beacon/v1.3.7/prd/beacon-v1.3.7-feature-intent-brainstorm-sidecar-and-frozen-truth-routing.md",
+    "user_story": "docs/beacon/v1.3.7/user-story/beacon-v1.3.7-feature-intent-brainstorm-sidecar-and-frozen-truth-routing.md",
+    "test_case": "docs/beacon/v1.3.7/qa/test-cases/beacon-v1.3.7-feature-intent-brainstorm-sidecar-and-frozen-truth-routing.md"
+  },
+  "quality": {
+    "max_placeholders": 0,
+    "total_placeholders": 0,
+    "per_doc": {
+      "prd": 0,
+      "user_story": 0,
+      "test_case": 0
+    },
+    "ok": true
+  },
+  "consistency": {
+    "story_ac_ids": [
+      "AC-001",
+      "AC-002",
+      "AC-003",
+      "AC-004",
+      "AC-005"
+    ],
+    "test_case_ac_ids": [
+      "AC-001",
+      "AC-002",
+      "AC-003",
+      "AC-004",
+      "AC-005"
+    ],
+    "missing_in_test_case": [],
+    "ok": true
+  },
+  "context_verify": {
+    "project_root": "/Users/apple/Developer/Personal/products/beacon",
+    "runtime_version": "v1.3.6",
+    "strict": true,
+    "status": "pass",
+    "ok": true,
+    "checks": [
+      {
+        "name": "context_files_presence",
+        "status": "pass",
+        "details": {
+          "missing": []
+        }
+      },
+      {
+        "name": "managed_block_integrity",
+        "status": "pass",
+        "details": {
+          "issues": []
+        }
+      },
+      {
+        "name": "managed_block_version_drift",
+        "status": "pass",
+        "details": {
+          "drifted": [],
+          "unknown": []
+        }
+      },
+      {
+        "name": "global_boundaries_presence",
+        "status": "pass",
+        "details": {
+          "path": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/global-boundaries.md",
+          "exists": true
+        }
+      },
+      {
+        "name": "global_boundaries_inheritance",
+        "status": "pass",
+        "details": {
+          "missing_references": []
+        }
+      }
+    ],
+    "files": {
+      "CLAUDE.md": {
+        "path": "/Users/apple/Developer/Personal/products/beacon/CLAUDE.md",
+        "exists": true,
+        "marker_integrity": "ok",
+        "managed_version": "v1.3.6",
+        "managed_docs_version": "v1.3.6",
+        "version_drift": false
+      },
+      "AGENTS.md": {
+        "path": "/Users/apple/Developer/Personal/products/beacon/AGENTS.md",
+        "exists": true,
+        "marker_integrity": "ok",
+        "managed_version": "v1.3.6",
+        "managed_docs_version": "v1.3.6",
+        "version_drift": false
+      }
+    }
+  },
+  "status": "applied",
+  "reason_code": "",
+  "recommended_command": "",
+  "write_actions": [
+    {
+      "target": "prd",
+      "path": "docs/beacon/v1.3.7/prd/beacon-v1.3.7-feature-intent-brainstorm-sidecar-and-frozen-truth-routing.md",
+      "action": "created",
+      "backup_path": ""
+    },
+    {
+      "target": "user_story",
+      "path": "docs/beacon/v1.3.7/user-story/beacon-v1.3.7-feature-intent-brainstorm-sidecar-and-frozen-truth-routing.md",
+      "action": "created",
+      "backup_path": ""
+    },
+    {
+      "target": "test_case",
+      "path": "docs/beacon/v1.3.7/qa/test-cases/beacon-v1.3.7-feature-intent-brainstorm-sidecar-and-frozen-truth-routing.md",
+      "action": "created",
+      "backup_path": ""
+    }
+  ],
+  "rollback_plan": [
+    {
+      "action": "delete",
+      "path": "docs/beacon/v1.3.7/prd/beacon-v1.3.7-feature-intent-brainstorm-sidecar-and-frozen-truth-routing.md"
+    },
+    {
+      "action": "delete",
+      "path": "docs/beacon/v1.3.7/user-story/beacon-v1.3.7-feature-intent-brainstorm-sidecar-and-frozen-truth-routing.md"
+    },
+    {
+      "action": "delete",
+      "path": "docs/beacon/v1.3.7/qa/test-cases/beacon-v1.3.7-feature-intent-brainstorm-sidecar-and-frozen-truth-routing.md"
+    }
+  ]
+}

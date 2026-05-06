@@ -146,6 +146,7 @@ def test_v137_brainstorm_run_should_read_beacon_version_materials(tmp_path: Path
         "## first_principles_breakdown",
         "## socratic_questions",
         "## redundancy_cuts",
+        "## convergence_contract",
         "## converged_recommendation",
         "## next_route",
     ):
@@ -173,6 +174,35 @@ def test_v137_brainstorm_modes_should_run(tmp_path: Path) -> None:
         assert json.loads(result.stdout)["mode"] == mode
 
 
+def test_v137_brainstorm_old_mode_aliases_should_map_to_canonical_modes(tmp_path: Path) -> None:
+    _seed_v137_docs(tmp_path)
+    aliases = {
+        "frozen-truth-delta": "implementation-readiness",
+        "evolution-exploration": "project-evolution",
+        "redundancy-pruning": "scope-simplification",
+    }
+    for alias, canonical in aliases.items():
+        result = _invoke(
+            [
+                "brainstorm",
+                "run",
+                f"mode {alias}",
+                "--project-root",
+                str(tmp_path),
+                "--version",
+                "v1.3.7",
+                "--mode",
+                alias,
+                "--json",
+            ]
+        )
+        assert result.exit_code == 0, result.stdout
+        payload = json.loads(result.stdout)
+        assert payload["mode"] == alias
+        assert payload["canonical_mode"] == canonical
+        assert payload["converged_recommendation"]
+
+
 def test_v137_brainstorm_should_emit_resolved_project_metadata_view(tmp_path: Path) -> None:
     _seed_v137_docs(tmp_path)
     _seed_project_metadata(tmp_path, version="v1.3.7", service="api", branch="beacon/v1.3.7")
@@ -197,6 +227,29 @@ def test_v137_brainstorm_should_emit_resolved_project_metadata_view(tmp_path: Pa
     text = (tmp_path / payload["output_path"]).read_text(encoding="utf-8")
     assert "## project_metadata" in text
     assert "- selected_branch: `beacon/v1.3.7`" in text
+
+
+def test_v137_brainstorm_auto_version_should_prefer_feature_version_semantics(tmp_path: Path) -> None:
+    _seed_v137_docs(tmp_path)
+    result = _invoke(
+        [
+            "brainstorm",
+            "run",
+            "复盘 Beacon v1.3.7 的头暴语义",
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            "auto",
+            "--feature",
+            "Beacon v1.3.7 beacon-brainstorm built-in convergence and evolution thinking",
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["version"] == "v1.3.7"
+    assert payload["missing_refs"] == []
+    assert payload["next_route"] == "brainstorm closed"
 
 
 def test_v137_brainstorm_should_quarantine_external_project_outputs(tmp_path: Path) -> None:

@@ -8,6 +8,7 @@ from typing import Any
 
 from beacon.utils.artifact_paths import execution_file_candidates, qa_matrix_candidates
 from beacon.utils.implementation_plan import list_implementation_git_workflow_contracts
+from beacon.utils.requirement_deepening import requirement_paths
 from beacon.utils.revision_state import load_revision_state, revision_state_file
 from beacon.utils.story_state import _baseline_hash, machine_story_path
 from beacon.utils.versioning import normalize_version, release_line_key, resolve_target_version
@@ -105,6 +106,11 @@ def _requirement_package_failure_summary(checks: list[dict[str, Any]]) -> dict[s
                         "machine-user-story": "missing_machine_user_story",
                         "story-scenario-map": "missing_machine_story_scenario_map",
                         "qa9-matrix": "missing_machine_qa9_matrix",
+                        "requirement-freeze-contract": "missing_requirement_freeze_contract",
+                        "requirement-completeness": "missing_requirement_completeness",
+                        "requirement-envelope": "missing_requirement_envelope",
+                        "candidate-ledger": "missing_requirement_candidate_ledger",
+                        "supplement-decision-log": "missing_requirement_decision_log",
                     }.get(str(missing_item), "missing_requirement_artifact")
                     _push(category, {"feature": str(feature), "artifact": str(missing_item)})
         elif name == "change_loop_requirement_package_sync":
@@ -155,6 +161,7 @@ def build_material_audit(project_root: Path | str, *, version: str | None = None
     requires_minimum_closure = _parse_semver_tuple(resolved_version) >= (1, 1, 3)
     requires_change_loop_dual_write = _parse_semver_tuple(resolved_version) >= (1, 3, 10)
     requires_prd_mirror_dual_write = _parse_semver_tuple(resolved_version) >= (1, 3, 11)
+    requires_requirement_deepening = _parse_semver_tuple(resolved_version) >= (1, 3, 12)
     source_root = root / "docs" / "beacon" / resolved_version
     research_dir = source_root / "research"
     us_dir = source_root / "user-story"
@@ -216,6 +223,18 @@ def build_material_audit(project_root: Path | str, *, version: str | None = None
             path.exists() for path in qa_matrix_candidates(root, resolved_version, name, "story-scenario-map")
         ):
             missing.append("story-scenario-map")
+        if requires_requirement_deepening:
+            deepening = requirement_paths(root, resolved_version, name)
+            if not deepening["freeze_contract"].exists():
+                missing.append("requirement-freeze-contract")
+            if not deepening["completeness"].exists():
+                missing.append("requirement-completeness")
+            if not deepening["envelope"].exists():
+                missing.append("requirement-envelope")
+            if not deepening["candidate_ledger"].exists():
+                missing.append("candidate-ledger")
+            if not deepening["decision_log"].exists():
+                missing.append("supplement-decision-log")
         if not requires_minimum_closure and not any(
             path.exists() for path in qa_matrix_candidates(root, resolved_version, name, "qa9-matrix")
         ):
@@ -719,6 +738,11 @@ def build_requirement_package_gate(
         "missing_machine_user_story",
         "missing_machine_story_scenario_map",
         "missing_machine_qa9_matrix",
+        "missing_requirement_freeze_contract",
+        "missing_requirement_completeness",
+        "missing_requirement_envelope",
+        "missing_requirement_candidate_ledger",
+        "missing_requirement_decision_log",
     }
     recommended_action = ""
     recommended_reason = ""

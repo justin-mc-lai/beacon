@@ -77,6 +77,10 @@ def _human_summary(machine: dict[str, Any]) -> str:
         f"- change_documents_status: `{release_summary.get('change_documents_status')}`",
         f"- change_documents_feature_count: `{release_summary.get('change_documents_feature_count')}`",
         f"- change_documents_includes_current_feature: `{release_summary.get('change_documents_includes_current_feature')}`",
+        f"- prototype_status: `{release_summary.get('prototype_status')}`",
+        f"- prototype_review_status: `{release_summary.get('prototype_review_status')}`",
+        f"- prototype_gate_ready: `{release_summary.get('prototype_gate_ready')}`",
+        f"- prototype_drift_status: `{release_summary.get('prototype_drift_status')}`",
         "- note: `release_ready` reflects current-feature closure readiness; change documents and package closure remain version-line governance surfaces.",
         f"- release_confidence_min: `{release_summary.get('release_confidence_min')}`",
         f"- release_confidence_avg: `{release_summary.get('release_confidence_avg')}`",
@@ -714,6 +718,16 @@ def _real_project_overlay(
                     "id": "canonical_delivery_baseline_convergence",
                     "status": "pass" if str(summary.get("host_native_delivery_status") or "").strip().lower() != "blocked" else "blocked",
                     "source": "release_scorecard.host_native_delivery",
+                },
+                {
+                    "id": "prototype_projection_frozen_release_surface",
+                    "status": "pass"
+                    if str(summary.get("prototype_status") or "").strip().lower() == "frozen"
+                    and str(summary.get("prototype_review_status") or "").strip().lower() == "pass"
+                    and bool(summary.get("prototype_gate_ready", False))
+                    and str(summary.get("prototype_drift_status") or "").strip().lower() == "consistent"
+                    else "blocked",
+                    "source": "release_scorecard.prototype_projection",
                 },
             ]
         )

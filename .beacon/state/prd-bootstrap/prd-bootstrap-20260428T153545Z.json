@@ -1,0 +1,115 @@
+{
+  "schema_version": "1.0",
+  "run_id": "prd-bootstrap-20260428T153545Z",
+  "feature": "debuglab-unified-marketing-gateway",
+  "feature_slug": "debuglab-unified-marketing-gateway",
+  "description": "统一 Rolo Debug Lab 调试入口：仅 marketing_sys 保留 UAT 调试入口；其他 rolo 子服务禁止修改 service.yaml 引入新的公网 debug/gateway 路由，不新增 order-svr 等服务的独立 debuglab 网关配置。通过 marketing 后端内网调试能力统一代理数据库只读查询、服务日志查询、受控命令执行与跨子服务 HTTP 调试；非 marketing 子服务仅允许极简单文件实现受控 debug 能力接入，不改变现有业务网关路由。开发车道固定为本地 debug/debuglab 分支，仅允许本地分支合并到 uat/testing，绝对禁止回灌 feature/master/main/prod 正式开发分支。请生成独立 v0.0.1-debug requirement line，并与现有 v1.3.3 业务需求彻底隔离。",
+  "version": "v0.0.1-debug",
+  "generated_at": "2026-04-28T15:35:45.033966+00:00",
+  "mode": "dry-run",
+  "dry_run": true,
+  "no_overwrite": true,
+  "strict_context_verify": true,
+  "targets": {
+    "prd": "docs/beacon/v0.0.1-debug/prd/debuglab-unified-marketing-gateway.md",
+    "user_story": "docs/beacon/v0.0.1-debug/user-story/debuglab-unified-marketing-gateway.md",
+    "test_case": "docs/beacon/v0.0.1-debug/qa/test-cases/debuglab-unified-marketing-gateway.md"
+  },
+  "quality": {
+    "max_placeholders": 0,
+    "total_placeholders": 0,
+    "per_doc": {
+      "prd": 0,
+      "user_story": 0,
+      "test_case": 0
+    },
+    "ok": true
+  },
+  "consistency": {
+    "story_ac_ids": [
+      "AC-001",
+      "AC-002",
+      "AC-003",
+      "AC-004",
+      "AC-005"
+    ],
+    "test_case_ac_ids": [
+      "AC-001",
+      "AC-002",
+      "AC-003",
+      "AC-004",
+      "AC-005"
+    ],
+    "missing_in_test_case": [],
+    "ok": true
+  },
+  "context_verify": {
+    "project_root": "/Users/apple/Developer/Personal/products/beacon",
+    "runtime_version": "v1.3.8",
+    "strict": true,
+    "status": "pass",
+    "ok": true,
+    "checks": [
+      {
+        "name": "context_files_presence",
+        "status": "pass",
+        "details": {
+          "missing": []
+        }
+      },
+      {
+        "name": "managed_block_integrity",
+        "status": "pass",
+        "details": {
+          "issues": []
+        }
+      },
+      {
+        "name": "managed_block_version_drift",
+        "status": "pass",
+        "details": {
+          "drifted": [],
+          "unknown": []
+        }
+      },
+      {
+        "name": "global_boundaries_presence",
+        "status": "pass",
+        "details": {
+          "path": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/global-boundaries.md",
+          "exists": true
+        }
+      },
+      {
+        "name": "global_boundaries_inheritance",
+        "status": "pass",
+        "details": {
+          "missing_references": []
+        }
+      }
+    ],
+    "files": {
+      "CLAUDE.md": {
+        "path": "/Users/apple/Developer/Personal/products/beacon/CLAUDE.md",
+        "exists": true,
+        "marker_integrity": "ok",
+        "managed_version": "v1.3.8",
+        "managed_docs_version": "v1.3.8",
+        "version_drift": false
+      },
+      "AGENTS.md": {
+        "path": "/Users/apple/Developer/Personal/products/beacon/AGENTS.md",
+        "exists": true,
+        "marker_integrity": "ok",
+        "managed_version": "v1.3.8",
+        "managed_docs_version": "v1.3.8",
+        "version_drift": false
+      }
+    }
+  },
+  "status": "planned",
+  "reason_code": "",
+  "recommended_command": "",
+  "write_actions": [],
+  "rollback_plan": []
+}

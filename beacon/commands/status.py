@@ -242,6 +242,12 @@ def _status_impl(
             "approved_by": technical_review_state.get("approved_by", ""),
             "state_path": technical_review_state.get("state_path", ""),
         },
+        "requirement_completeness_gate": help_payload.get("requirement_completeness_gate", {}),
+        "requirement_completeness": help_payload.get("requirement_completeness", {}),
+        "requirement_gap_digest": help_payload.get("requirement_gap_digest", {}),
+        "brainstorm_hint": help_payload.get("brainstorm_hint", {}),
+        "supplement_task": help_payload.get("supplement_task", {}),
+        "re_freeze_transaction": help_payload.get("re_freeze_transaction", {}),
         "semantic": semantic_status,
         "decision_trace": help_payload.get("decision_trace", []),
         "control_plane": resume_contract,
@@ -294,6 +300,38 @@ def _status_impl(
         typer.echo(f"- board.debug_state: {board_summary.get('debug_state') or 'no_debug_feed'}")
         typer.echo(f"- board.runtime_corroboration: {board_summary.get('runtime_corroboration') or 'missing'}")
         typer.echo(f"- board.health: {board_summary.get('health_status') or 'unknown'}")
+        requirement_completeness = payload.get("requirement_completeness", {}) if isinstance(payload.get("requirement_completeness"), dict) else {}
+        if requirement_completeness.get("enabled"):
+            typer.echo(
+                f"- board.requirement_completeness: {requirement_completeness.get('status')} "
+                f"target={requirement_completeness.get('target_stage') or 'none'}"
+            )
+            blocked_subgates = requirement_completeness.get("blocked_subgates", [])
+            downgraded_subgates = requirement_completeness.get("downgraded_subgates", [])
+            focus_areas = requirement_completeness.get("focus_areas", [])
+            if blocked_subgates:
+                typer.echo(f"- board.requirement_blocked_subgates: {', '.join(str(item) for item in blocked_subgates)}")
+            if downgraded_subgates:
+                typer.echo(f"- board.requirement_downgraded_subgates: {', '.join(str(item) for item in downgraded_subgates)}")
+            if focus_areas:
+                typer.echo(f"- board.requirement_focus: {focus_areas[0]}")
+            handoff = requirement_completeness.get("human_loop_handoff", {}) if isinstance(requirement_completeness.get("human_loop_handoff"), dict) else {}
+            if handoff.get("recommended_command"):
+                typer.echo(f"- board.requirement_next: {handoff.get('recommended_command')}")
+        supplement_task = payload.get("supplement_task", {}) if isinstance(payload.get("supplement_task"), dict) else {}
+        if supplement_task.get("target_artifact"):
+            typer.echo(
+                f"- board.supplement_task: target={supplement_task.get('target_artifact') or 'none'} "
+                f"route={supplement_task.get('recommended_route') or 'none'}"
+            )
+            if supplement_task.get("writeback_target"):
+                typer.echo(f"- board.supplement_writeback: {supplement_task.get('writeback_target')}")
+        re_freeze_transaction = payload.get("re_freeze_transaction", {}) if isinstance(payload.get("re_freeze_transaction"), dict) else {}
+        if re_freeze_transaction:
+            typer.echo(
+                f"- board.re_freeze: refreeze={re_freeze_transaction.get('refreeze_required')} "
+                f"revalidate={re_freeze_transaction.get('revalidate_required')}"
+            )
         typer.echo(f"- board.active_runs: {board_summary.get('active_runs') or 0}")
         typer.echo(f"- board.active_agents: {board_summary.get('active_agents') or 0}")
         typer.echo(f"- board.ledger_sync: {runtime_ledger.get('status') or 'unknown'}")
@@ -371,6 +409,33 @@ def _status_impl(
             typer.echo(
                 f"- requirement_clarity: {payload.get('requirement_clarity', {}).get('status')} "
                 f"findings={payload.get('requirement_clarity', {}).get('finding_count')}"
+            )
+        gap_digest = payload.get("requirement_gap_digest", {}) if isinstance(payload.get("requirement_gap_digest"), dict) else {}
+        brainstorm_hint = payload.get("brainstorm_hint", {}) if isinstance(payload.get("brainstorm_hint"), dict) else {}
+        if gap_digest.get("human_followup_needed"):
+            typer.echo(
+                f"- requirement_gap: {gap_digest.get('gap_id') or 'none'} "
+                f"type={gap_digest.get('gap_type') or 'none'} "
+                f"route={gap_digest.get('recommended_route') or 'none'}"
+            )
+        if brainstorm_hint.get("recommended_route"):
+            typer.echo(
+                f"- brainstorm_hint: {brainstorm_hint.get('recommended_mode') or 'none'} "
+                f"route={brainstorm_hint.get('recommended_route') or 'none'}"
+            )
+        supplement_task = payload.get("supplement_task", {}) if isinstance(payload.get("supplement_task"), dict) else {}
+        re_freeze_transaction = payload.get("re_freeze_transaction", {}) if isinstance(payload.get("re_freeze_transaction"), dict) else {}
+        if supplement_task.get("target_artifact"):
+            typer.echo(
+                f"- supplement_task: target={supplement_task.get('target_artifact') or 'none'} "
+                f"route={supplement_task.get('recommended_route') or 'none'}"
+            )
+            if supplement_task.get("writeback_target"):
+                typer.echo(f"- supplement.writeback: {supplement_task.get('writeback_target')}")
+        if re_freeze_transaction:
+            typer.echo(
+                f"- re_freeze_transaction: refreeze={re_freeze_transaction.get('refreeze_required')} "
+                f"revalidate={re_freeze_transaction.get('revalidate_required')}"
             )
         if target_feature:
             typer.echo(
