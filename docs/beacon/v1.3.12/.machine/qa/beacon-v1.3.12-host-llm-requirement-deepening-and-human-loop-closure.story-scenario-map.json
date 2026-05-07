@@ -329,6 +329,106 @@
       "scenarios": []
     },
     {
+      "ac_id": "AC-601",
+      "theme": "unified-acceptance-contract",
+      "text": "系统必须把 `skill-contract / scenario-suite / trace-scorecard / real-project-proof` 作为统一验收底座投影为 machine-readable artifact，并允许 `prd / user-story / test-case / status / board / implement` 共用读取。",
+      "scenario_ids": [
+        "SC-028"
+      ],
+      "scenario_families": [
+        "contract"
+      ],
+      "required_families": [
+        "contract"
+      ],
+      "scenarios": [
+        {
+          "scenario_id": "SC-028",
+          "source_tc_id": "TC-028",
+          "tc_id": "TC-028-PRIMARY",
+          "scenario_family": "contract",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-602",
+      "theme": "layered-verdict-ladder",
+      "text": "系统必须显式产出 `Contract Pass / Scenario Pass / Trace Pass / Real Project Pass / Regression Pass` 五层 verdict，且任何更高层级都不能补偿更低层级失败。",
+      "scenario_ids": [
+        "SC-029"
+      ],
+      "scenario_families": [
+        "contract"
+      ],
+      "required_families": [
+        "contract"
+      ],
+      "scenarios": [
+        {
+          "scenario_id": "SC-029",
+          "source_tc_id": "TC-029",
+          "tc_id": "TC-029-PRIMARY",
+          "scenario_family": "contract",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-701",
+      "theme": "board-gate-projection",
+      "text": "`status / board` 至少必须显示当前卡点、对应补料项、以及可跳回 `user-story / test-case` 的入口。",
+      "scenario_ids": [
+        "SC-030"
+      ],
+      "scenario_families": [
+        "integration"
+      ],
+      "required_families": [
+        "integration"
+      ],
+      "scenarios": [
+        {
+          "scenario_id": "SC-030",
+          "source_tc_id": "TC-030",
+          "tc_id": "TC-030-PRIMARY",
+          "scenario_family": "integration",
+          "qa_type": "integration",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-702",
+      "theme": "real-project-shared-proof",
+      "text": "`real-project-validation`、release proof 与回归检查必须读取同一套 Acceptance Kit 结果与证据链，并把 `real_project_proof` 作为 release 侧正式证明输入。",
+      "scenario_ids": [
+        "SC-031"
+      ],
+      "scenario_families": [
+        "integration"
+      ],
+      "required_families": [
+        "integration"
+      ],
+      "scenarios": [
+        {
+          "scenario_id": "SC-031",
+          "source_tc_id": "TC-031",
+          "tc_id": "TC-031-PRIMARY",
+          "scenario_family": "integration",
+          "qa_type": "integration",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
       "ac_id": "AC-025",
       "theme": "general",
       "text": "host-native 与 fallback 路径可区分",

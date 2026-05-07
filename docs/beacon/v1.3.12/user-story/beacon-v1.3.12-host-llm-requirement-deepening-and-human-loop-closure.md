@@ -99,6 +99,28 @@
 | AC-503 | deterministic-blocking | 对于 high-severity unresolved gaps、不可接受的 host downgrade、或关键 coverage family 缺失，delivery layer 必须能解释为什么当前不够 `freeze-ready / implement-ready / release-ready`。 |
 | AC-504 | no-delivery-truth-rewrite | delivery layer 可以读取 completeness、报告 risk、触发回流，但不得绕过 `prd / user-story / test-case` 主链自行改写 requirement truth。 |
 
+## Story 7: `Beacon Acceptance Kit v1` 必须成为统一验收 contract
+
+作为 Beacon delivery owner，我希望 Beacon 把 `skill-contract / scenario-suite / trace-scorecard / real-project-proof` 收敛成一套统一验收 contract，这样 `prd / user-story / test-case / status / board / implement` 可以共用同一份验收底座，而不是各自理解各自的验收标准。
+
+### Acceptance Criteria
+
+| AC ID | Theme | Description |
+| --- | --- | --- |
+| AC-601 | unified-acceptance-contract | 系统必须把 `skill-contract / scenario-suite / trace-scorecard / real-project-proof` 作为统一验收底座投影为 machine-readable artifact，并允许 `prd / user-story / test-case / status / board / implement` 共用读取。 |
+| AC-602 | layered-verdict-ladder | 系统必须显式产出 `Contract Pass / Scenario Pass / Trace Pass / Real Project Pass / Regression Pass` 五层 verdict，且任何更高层级都不能补偿更低层级失败。 |
+
+## Story 8: `status / board` 与真实项目验证必须投影同一套验收底座
+
+作为人类操作者，我希望 `status / board` 能直接看到卡在哪个子 gate，并能跳回具体补料项；同时真实项目验证、release proof 和回归检查必须消费同一套 Acceptance Kit 结果，这样验收不会在不同面之间打架。
+
+### Acceptance Criteria
+
+| AC ID | Theme | Description |
+| --- | --- | --- |
+| AC-701 | board-gate-projection | `status / board` 至少必须显示当前卡点、对应补料项、以及可跳回 `user-story / test-case` 的入口。 |
+| AC-702 | real-project-shared-proof | `real-project-validation`、release proof 与回归检查必须读取同一套 Acceptance Kit 结果与证据链，并把 `real_project_proof` 作为 release 侧正式证明输入。 |
+
 ## Delivery Notes
 
 - 本故事线是 `v1.3.12` requirement deepening 的正式 story package，不代表已经实现。

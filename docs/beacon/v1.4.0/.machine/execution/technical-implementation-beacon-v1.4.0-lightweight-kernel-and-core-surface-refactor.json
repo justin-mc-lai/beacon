@@ -1,0 +1,192 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor",
+  "feature_slug": "beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor",
+  "version": "v1.4.0",
+  "revision_id": "",
+  "run_id": "run-20260507T013245Z-c0f5",
+  "implemented_at": "2026-05-07T01:32:46.127614+00:00",
+  "runner": "native-single",
+  "skill": "",
+  "profile_id": "",
+  "git_commit": "7a149fcaf347a426ef73454c3f2699f2784af0a1",
+  "services": [],
+  "boundary_principles": [
+    {
+      "id": "explicit_assumptions",
+      "heading": "显式假设与歧义管理"
+    },
+    {
+      "id": "simplicity_first",
+      "heading": "简单优先"
+    },
+    {
+      "id": "surgical_changes",
+      "heading": "外科手术式改动"
+    },
+    {
+      "id": "goal_driven_execution",
+      "heading": "目标驱动验证闭环"
+    },
+    {
+      "id": "trivial_task_exception",
+      "heading": "trivial task 可以轻量处理，但不能越界"
+    }
+  ],
+  "implementation_scope_summary": "native-single implementation completed",
+  "business_goal_summary": "native-single implementation completed",
+  "acceptance_scope": [],
+  "assumptions": [],
+  "simplicity_notes": [],
+  "scope_guard": {
+    "in_scope": true,
+    "summary": "",
+    "allowed_paths": []
+  },
+  "changed_files": [
+    ".beacon/auto-test-status.json",
+    ".beacon/coverage-summary.json",
+    ".beacon/evidence-manifest.json",
+    ".beacon/evidence-signature-chain.json",
+    ".beacon/gate-report.json",
+    ".beacon/metadata/project-version-metadata.json",
+    ".beacon/metadata/project-version-metadata.md",
+    ".beacon/qa/status.json",
+    ".beacon/state/project-metadata/latest.json",
+    "beacon/commands/help.py",
+    "beacon/commands/implement.py",
+    "beacon/commands/implement/adapter.py",
+    "beacon/commands/implement/git.py",
+    "beacon/commands/prd_bootstrap.py",
+    "beacon/commands/report.py",
+    "beacon/commands/status.py",
+    "beacon/commands/test_case.py",
+    "beacon/commands/user_story.py",
+    "beacon/commands/workflow.py",
+    "beacon/utils/board_launcher.py",
+    "beacon/utils/help_support.py",
+    "beacon/utils/implement_prompt_boundary.py",
+    "beacon/utils/implementation_plan.py",
+    "beacon/utils/llm_loop.py",
+    "beacon/utils/prd_bootstrap.py",
+    "beacon/utils/release_scorecard.py",
+    "beacon/utils/requirement_parsing.py",
+    "beacon/utils/runtime_projection.py",
+    "beacon/utils/writeback.py",
+    "docs/beacon/v1.3.12/.machine/qa/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.ac-test-matrix.json",
+    "docs/beacon/v1.3.12/.machine/qa/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.qa9-matrix.json",
+    "docs/beacon/v1.3.12/.machine/qa/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.story-scenario-map.json",
+    "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.candidate-ledger.json",
+    "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.completeness.json",
+    "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.freeze-contract.json",
+    "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.re-freeze-transaction.json",
+    "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.supplement-decision-log.json",
+    "docs/beacon/v1.3.12/.machine/user-story/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.json",
+    "docs/beacon/v1.3.12/change/v1.3.12.md",
+    "docs/beacon/v1.3.12/prd/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md",
+    "docs/beacon/v1.3.12/qa/test-cases/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md",
+    "docs/beacon/v1.3.12/user-story/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md",
+    "skills/beacon/beacon-help/SKILL.md",
+    "skills/beacon/beacon-qa/SKILL.md",
+    "skills/beacon/beacon-release/SKILL.md",
+    "skills/beacon/beacon-status/SKILL.md",
+    "tests/test_real_project_validation_command.py",
+    "tests/test_v112_implementation_plan_runtime.py",
+    "tests/test_v114_implement_command.py",
+    "tests/test_v116_navigator_support.py",
+    "tests/test_v1311_board_launcher.py"
+  ],
+  "modules_touched": [
+    ".beacon/auto-test-status.json",
+    ".beacon/coverage-summary.json",
+    ".beacon/evidence-manifest.json",
+    ".beacon/evidence-signature-chain.json",
+    ".beacon/gate-report.json",
+    ".beacon/metadata",
+    ".beacon/qa",
+    ".beacon/state",
+    "beacon/commands",
+    "beacon/utils",
+    "docs/beacon",
+    "skills/beacon",
+    "tests/test_real_project_validation_command.py",
+    "tests/test_v112_implementation_plan_runtime.py",
+    "tests/test_v114_implement_command.py",
+    "tests/test_v116_navigator_support.py",
+    "tests/test_v1311_board_launcher.py"
+  ],
+  "additions": [],
+  "modifications": [],
+  "deletions": [],
+  "refactors": [],
+  "data_operations": [],
+  "db_changes": {
+    "none": true,
+    "new_tables": [],
+    "altered_tables": [],
+    "indexes": [],
+    "migrations": []
+  },
+  "cache_changes": [],
+  "event_contract_changes": [],
+  "api_changes": {
+    "none": true,
+    "new_endpoints": [],
+    "changed_endpoints": [],
+    "removed_endpoints": []
+  },
+  "external_integrations": [],
+  "queue_or_job_changes": [],
+  "cron_changes": [],
+  "config_changes": [],
+  "env_changes": [],
+  "feature_flags": [],
+  "deployment_notes": [],
+  "verification": [
+    {
+      "command": "beacon implement run --runner native-single",
+      "status": "passed"
+    }
+  ],
+  "verification_signals": {
+    "count": 1,
+    "has_acceptance_scope": false,
+    "has_assumptions": false
+  },
+  "known_risks": [],
+  "rollback_notes": [],
+  "compatibility_notes": [],
+  "artifact_updates": {
+    "user_story": {
+      "required": false,
+      "reason": "story machine state writeback recorded"
+    },
+    "review_quality": {
+      "required": true,
+      "reason": "run quality review after native implementation"
+    },
+    "acceptance": {
+      "required": true,
+      "reason": "acceptance remains a formal post-verify action"
+    }
+  },
+  "revision_cleanup": {
+    "schema_version": "1.0",
+    "revision_id": "R1",
+    "source_revision_id": "",
+    "revision_delta_ref": "docs/beacon/v1.4.0/.machine/execution/revision-delta-beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.json",
+    "revision_delta_markdown_ref": "docs/beacon/v1.4.0/execution/revision-delta-beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md",
+    "cleanup_required": false,
+    "cleanup_review_completed": true,
+    "removed_requirement_surfaces": [],
+    "removed_surfaces": [],
+    "retained_legacy_surfaces": [],
+    "cleanup_rationale": ""
+  },
+  "traceability": {
+    "request_path": ".beacon/implement/run-20260507T013245Z-c0f5/request.json",
+    "result_path": ".beacon/implement/run-20260507T013245Z-c0f5/result.json",
+    "stdout_path": "",
+    "stderr_path": ""
+  }
+}

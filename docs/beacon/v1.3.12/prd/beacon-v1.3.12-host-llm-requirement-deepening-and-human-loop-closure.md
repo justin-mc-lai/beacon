@@ -391,6 +391,48 @@ prd -> user-story -> test-case -> prototype -> implement -> qa -> release
 
 其目标不是让 delivery 层自己补需求，而是让它知道 requirement completeness 的真实边界。
 
+### FR-011 Beacon Acceptance Kit v1 必须作为统一验收 contract 被实现
+
+系统必须把 `Beacon Acceptance Kit v1` 实现为一份可复用的统一验收 contract，至少包含：
+
+- `skill-contract`
+- `scenario-suite`
+- `trace-scorecard`
+- `real-project-proof`
+
+并且必须能把它们投影成同一套 machine-readable 结果，供 `prd / user-story / test-case / status / board / implement` 共用。
+
+### FR-012 Beacon Acceptance Kit v1 必须支持分层 verdict，而不是单分数替代
+
+系统必须支持并显式产出以下 verdict：
+
+- `Contract Pass`
+- `Scenario Pass`
+- `Trace Pass`
+- `Real Project Pass`
+- `Regression Pass`
+
+任一层级失败都不能被更高层级补偿通过，且必须保留失败原因与对应证据链。
+
+### FR-013 `status / board` 必须投影 gate 卡点与补料跳转
+
+系统必须让 `status / board` 至少可见：
+
+- 当前卡在哪个子 gate
+- 卡点对应的补料项
+- 补料项跳回 `user-story / test-case` 的入口
+- 当前 gate 是否被 `blocked / pass_with_downgrade / pass` 影响
+
+### FR-014 `real-project-validation` 与 release proof 必须消费同一套验收底座
+
+系统必须让真实项目验证、release proof、以及回归检查读取同一套 Acceptance Kit 结果与证据链。
+
+其要求是：
+
+- 结构化验收结果必须可落到真实项目证据链
+- 没有真实项目时，Kit 仍可做结构化冻结前检查
+- 有真实项目时，Kit 的 `real_project_proof` 必须成为 release 侧的正式证明输入
+
 ## 6. 数据 / 状态 / 集成
 
 ### 6.1 Truth 来源
@@ -454,6 +496,62 @@ prd -> user-story -> test-case -> prototype -> implement -> qa -> release
 | delivery 层开始反向补需求 | 高 | 明确 prototype/implement/qa/release 只能读取 completeness，不可改写 truth |
 
 ## 8. 验收标准
+
+### 8.0 Beacon Acceptance Kit v1
+
+`Beacon Acceptance Kit v1` 是本版本的统一验收底座，用于把 `prd -> user-story -> test-case -> status/board -> implement` 的验收动作收敛到同一套可复用标准。
+
+它的目标不是替代人类裁决，而是把大部分结构化验收场景标准化，减少验收歧义、漏项和口头判断。
+
+#### 8.0.1 核心构成
+
+1. `skill-contract`
+   - 验证当前 `prd / user-story / test-case` 人类面 subskill 是否按约定产出、路由和回写
+   - 重点看：输入、输出、补料提示、冻结回写、拒绝/延后语义
+2. `scenario-suite`
+   - 验证需求是否覆盖主路径、边界、异常、恢复、降级、权限、状态迁移等关键场景族
+   - 重点看：是否围绕 PRD 主体持续深挖，而不是仅做表面抽取
+3. `trace-scorecard`
+   - 验证每个验收结论是否可追溯到具体 truth、gap、decision、writeback
+   - 重点看：证据链是否可审计、可复跑、可复核
+4. `real-project-proof`
+   - 验证上述结构化结果能否落到真实项目闭环中
+   - 重点看：是否能被 `real-project-validation`、doctor、release proof 等真实项目链路消费
+
+#### 8.0.2 统一评分层
+
+Beacon Acceptance Kit v1 采用五层判定，不以单一分数替代结论：
+
+| 层级 | 含义 | 通过条件 |
+|------|------|------|
+| `Contract Pass` | 契约层通过 | 字段、路由、冻结/回写语义完整 |
+| `Scenario Pass` | 场景层通过 | 主路径、边界、异常、恢复等覆盖成立 |
+| `Trace Pass` | 证据层通过 | 结论可追溯到 truth / gap / decision / writeback |
+| `Real Project Pass` | 真实项目层通过 | 可被真实项目验证链路消费并成立 |
+| `Regression Pass` | 回归层通过 | 旧能力不退化，新增约束不破坏既有闭环 |
+
+#### 8.0.3 门禁规则
+
+- 任一层级失败，都不能被更高层级“补偿通过”
+- `Contract Pass` 是最低门槛，失败即阻断后续冻结
+- `Scenario Pass` 失败但 `Trace Pass` 通过，不视为可交付，只能进入补料
+- `Real Project Pass` 失败时，结构化验收结果只能视为局部成立，不能宣布版本完成
+- `Regression Pass` 失败时，必须优先修复兼容债，再谈版本冻结
+
+#### 8.0.4 与真实项目验证的关系
+
+- `real-project-validation` 是 `Beacon Acceptance Kit v1` 的最高层证明，不是唯一证明
+- 没有真实项目时，Kit 仍可完成结构化验收与冻结前检查
+- 有真实项目时，Kit 的 `real_project_proof` 必须补齐证据链，才能把版本推进到 release 侧
+
+#### 8.0.5 本版本冻结结论
+
+对于 `v1.3.12`，Beacon 必须证明：
+
+- `prd / user-story / test-case` 能被同一套 Kit 统一验收
+- `status / board` 能显示卡在哪个子 gate
+- `implement` 能读取验收结论并据此执行
+- `real-project-validation` 能把结构化验收结果投影到真实项目证据链
 
 ### AC-001 Beacon 能围绕 PRD 产出完整的 requirement deepening envelope
 

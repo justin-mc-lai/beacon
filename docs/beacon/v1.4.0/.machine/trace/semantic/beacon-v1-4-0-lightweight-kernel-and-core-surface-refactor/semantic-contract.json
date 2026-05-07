@@ -1,0 +1,407 @@
+{
+  "schema_version": "1.0",
+  "semantic_contract_version": "1.0",
+  "feature": "beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor",
+  "feature_slug": "beacon-v1-4-0-lightweight-kernel-and-core-surface-refactor",
+  "version": "v1.4.0",
+  "stage": "implement",
+  "generated_at": "2026-05-07T01:32:46.046125+00:00",
+  "source_hash": "22e456554e3f3be72a72d9974dd438122cc20076ba6a7e5b00704ca813e25574",
+  "projection_seq": "semantic-22e456554e3f3be7",
+  "transaction_id": "tx-semantic-beacon-v1-4-0-lightweight-kernel-and-core-surface-refactor-semantic-22e456554e3f3be7",
+  "source_documents": [
+    {
+      "type": "prd",
+      "path": "docs/beacon/v1.4.0/prd/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md",
+      "fingerprint": "41877fef2b54cae1d6bdafb449499d01a195e41a2e409c8317d493da4dd98327"
+    },
+    {
+      "type": "user-story",
+      "path": "docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md",
+      "fingerprint": "42fbe354a56add068a82fe3ba8a8bf95b0b3331df81778a3e3abb58c340ba93c"
+    },
+    {
+      "type": "test-case",
+      "path": "docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md",
+      "fingerprint": "8f355fb104b2d7536951e6004c5666122778a76ef8602149bff94ead227942f6"
+    }
+  ],
+  "stage_context": {
+    "schema_version": "1.0",
+    "run_id": "run-20260507T013245Z-c0f5",
+    "stage": "implement",
+    "feature": "beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor",
+    "version": "v1.4.0",
+    "generated_at": "2026-05-07T01:32:46.022287+00:00",
+    "memory_recall": [
+      {
+        "memory_id": "d9aeb6a4-b34f-4769-878d-572323b760ea",
+        "type": "decision",
+        "status": "active",
+        "content": "[qa] beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration => accepted",
+        "content_hash": "sha256:663ea169f713bfc1566542fee8c0d43f9e7fef7a044e265ca384e5d2afde184d",
+        "source_session_id": "run-20260507T092630720548",
+        "source": "workflow.qa.writeback",
+        "evidence_ref": [
+          ".beacon/auto-test-status.json",
+          ".beacon/qa/status.json",
+          "docs/beacon/v1.4.0/.machine/qa/beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration.qa9-matrix.json",
+          ".beacon/coverage-summary.json",
+          ".beacon/qa/features/beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration/ac-closure.json",
+          ".beacon/qa/features/beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration/scorecard.json"
+        ],
+        "reason_codes": [],
+        "confidence": 0.8,
+        "tags": [
+          "accepted",
+          "qa",
+          "workflow-lifecycle"
+        ],
+        "created_at": "2026-05-07T01:26:31.622058+00:00",
+        "updated_at": "2026-05-07T01:26:31.622058+00:00",
+        "decision": "[qa] beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration => accepted",
+        "run_id": "run-20260507T092630720548",
+        "stage": "qa",
+        "feature": "beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration",
+        "version": "",
+        "transaction_id": "tx-wf-run-20260507T092630720548-qa-memory_writeback-8d8726b2bc12",
+        "source_hash": "8d8726b2bc127ccd2e5894e3ca582bdb668e0e1e9c739aba6e252102773ff29c",
+        "projection_seq": "wf-8d8726b2bc127ccd",
+        "attempt_seq": 1
+      },
+      {
+        "memory_id": "c976f470-4756-4f78-9e6d-900284f66d4e",
+        "type": "decision",
+        "status": "active",
+        "content": "[release.check] version=v1.4.0 status=pass",
+        "content_hash": "sha256:eedeb98eb9f63fdd04482348176fbd1f1b786ad9094cdfd66ec31979aefee7a7",
+        "source_session_id": "release:v1.4.0",
+        "source": "release.check",
+        "evidence_ref": [
+          ".beacon/auto-test-status.json",
+          ".beacon/coverage-summary.json",
+          ".beacon/evidence-manifest.json",
+          ".beacon/gate-report.json",
+          "docs/beacon/v1.4.0/.machine/change/v1.4.0.json",
+          "docs/beacon/v1.4.0/change/v1.4.0.md"
+        ],
+        "reason_codes": [],
+        "confidence": 0.75,
+        "tags": [
+          "gate",
+          "pass",
+          "release"
+        ],
+        "created_at": "2026-05-07T00:58:06.818026+00:00",
+        "updated_at": "2026-05-07T00:58:06.818026+00:00",
+        "decision": "[release.check] version=v1.4.0 status=pass"
+      },
+      {
+        "memory_id": "ff059c1f-fe1a-4ebe-8e91-e472eefba653",
+        "type": "decision",
+        "status": "active",
+        "content": "[release.check] version=v1.4.0 status=pass",
+        "content_hash": "sha256:eedeb98eb9f63fdd04482348176fbd1f1b786ad9094cdfd66ec31979aefee7a7",
+        "source_session_id": "release:v1.4.0",
+        "source": "release.check",
+        "evidence_ref": [
+          ".beacon/auto-test-status.json",
+          ".beacon/coverage-summary.json",
+          ".beacon/evidence-manifest.json",
+          ".beacon/gate-report.json",
+          "docs/beacon/v1.4.0/.machine/change/v1.4.0.json",
+          "docs/beacon/v1.4.0/change/v1.4.0.md"
+        ],
+        "reason_codes": [],
+        "confidence": 0.75,
+        "tags": [
+          "gate",
+          "pass",
+          "release"
+        ],
+        "created_at": "2026-05-06T20:02:07.937141+00:00",
+        "updated_at": "2026-05-06T20:02:07.937141+00:00",
+        "decision": "[release.check] version=v1.4.0 status=pass"
+      },
+      {
+        "memory_id": "1312786b-e239-4e88-b76b-ef75cdf1f254",
+        "type": "decision",
+        "status": "active",
+        "content": "[release.check] version=v1.4.0 status=blocked",
+        "content_hash": "sha256:de1ab456fa9c3c632b573e1115fb0092e50456f70167730c7d895e25261a0206",
+        "source_session_id": "release:v1.4.0",
+        "source": "release.check",
+        "evidence_ref": [
+          ".beacon/auto-test-status.json",
+          ".beacon/coverage-summary.json",
+          ".beacon/evidence-manifest.json",
+          ".beacon/gate-report.json",
+          "docs/beacon/v1.4.0/.machine/change/v1.4.0.json",
+          "docs/beacon/v1.4.0/change/v1.4.0.md"
+        ],
+        "reason_codes": [],
+        "confidence": 0.75,
+        "tags": [
+          "blocked",
+          "gate",
+          "release"
+        ],
+        "created_at": "2026-05-06T19:50:51.377113+00:00",
+        "updated_at": "2026-05-06T19:50:51.377113+00:00",
+        "decision": "[release.check] version=v1.4.0 status=blocked"
+      },
+      {
+        "memory_id": "cf3ddee3-16fc-41ec-846d-60cde71bb2b4",
+        "type": "decision",
+        "status": "active",
+        "content": "[release.create] release checklist created for v1.4.0",
+        "content_hash": "sha256:62955d476da5268ca5dea3b24e8191f90d9ed08975ad7eb7165e7b5a8cce2a9c",
+        "source_session_id": "release:v1.4.0",
+        "source": "release.create",
+        "evidence_ref": [
+          "docs/beacon/v1.4.0/release/checklist-v1.4.0.md",
+          "docs/beacon/v1.4.0/change/v1.4.0.md",
+          "docs/beacon/v1.4.0/.machine/change/v1.4.0.json"
+        ],
+        "reason_codes": [],
+        "confidence": 0.8,
+        "tags": [
+          "release",
+          "workflow-loop"
+        ],
+        "created_at": "2026-05-06T19:48:20.095267+00:00",
+        "updated_at": "2026-05-06T19:48:20.095267+00:00",
+        "decision": "[release.create] release checklist created for v1.4.0"
+      },
+      {
+        "memory_id": "344a710d-ec81-4198-b698-93346f96470f",
+        "type": "decision",
+        "status": "active",
+        "content": "[release.check] version=v1.4.0 status=blocked",
+        "content_hash": "sha256:de1ab456fa9c3c632b573e1115fb0092e50456f70167730c7d895e25261a0206",
+        "source_session_id": "release:v1.4.0",
+        "source": "release.check",
+        "evidence_ref": [
+          ".beacon/auto-test-status.json",
+          ".beacon/coverage-summary.json",
+          ".beacon/evidence-manifest.json",
+          ".beacon/gate-report.json",
+          "docs/beacon/v1.4.0/.machine/change/v1.4.0.json",
+          "docs/beacon/v1.4.0/change/v1.4.0.md"
+        ],
+        "reason_codes": [],
+        "confidence": 0.75,
+        "tags": [
+          "blocked",
+          "gate",
+          "release"
+        ],
+        "created_at": "2026-05-06T19:33:08.367048+00:00",
+        "updated_at": "2026-05-06T19:33:08.367048+00:00",
+        "decision": "[release.check] version=v1.4.0 status=blocked"
+      },
+      {
+        "memory_id": "04d824f4-a2b2-4e2c-975a-9087e11d1644",
+        "type": "decision",
+        "status": "active",
+        "content": "[release.check] version=v1.4.0 status=blocked",
+        "content_hash": "sha256:de1ab456fa9c3c632b573e1115fb0092e50456f70167730c7d895e25261a0206",
+        "source_session_id": "release:v1.4.0",
+        "source": "release.check",
+        "evidence_ref": [
+          ".beacon/auto-test-status.json",
+          ".beacon/coverage-summary.json",
+          ".beacon/evidence-manifest.json",
+          ".beacon/gate-report.json",
+          "docs/beacon/v1.4.0/.machine/change/v1.4.0.json",
+          "docs/beacon/v1.4.0/change/v1.4.0.md"
+        ],
+        "reason_codes": [],
+        "confidence": 0.75,
+        "tags": [
+          "blocked",
+          "gate",
+          "release"
+        ],
+        "created_at": "2026-05-06T19:32:22.568732+00:00",
+        "updated_at": "2026-05-06T19:32:22.568732+00:00",
+        "decision": "[release.check] version=v1.4.0 status=blocked"
+      },
+      {
+        "memory_id": "e4a1cbb6-9ba0-43e7-a578-a286edcec9bb",
+        "type": "decision",
+        "status": "active",
+        "content": "[qa] beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure => accepted",
+        "content_hash": "sha256:2e7643e3e2001ac41762bc210261d37863fe4f2697fa8bc48a2635fb70a90113",
+        "source_session_id": "run-20260507T031949171749",
+        "source": "workflow.qa.writeback",
+        "evidence_ref": [
+          ".beacon/auto-test-status.json",
+          ".beacon/qa/status.json",
+          "docs/beacon/v1.4.0/.machine/qa/beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure.qa9-matrix.json",
+          ".beacon/coverage-summary.json",
+          ".beacon/qa/features/beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure/ac-closure.json",
+          ".beacon/qa/features/beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure/scorecard.json"
+        ],
+        "reason_codes": [],
+        "confidence": 0.8,
+        "tags": [
+          "accepted",
+          "qa",
+          "workflow-lifecycle"
+        ],
+        "created_at": "2026-05-06T19:21:34.653965+00:00",
+        "updated_at": "2026-05-06T19:21:34.653965+00:00",
+        "decision": "[qa] beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure => accepted",
+        "run_id": "run-20260507T031949171749",
+        "stage": "qa",
+        "feature": "beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure",
+        "version": "",
+        "transaction_id": "tx-wf-run-20260507T031949171749-qa-memory_writeback-29ebc70cbc97",
+        "source_hash": "29ebc70cbc9713c8cc3845d6ba135d7a49d37eb6efff1a9b1bd96096e1aab1cc",
+        "projection_seq": "wf-29ebc70cbc9713c8",
+        "attempt_seq": 1
+      }
+    ],
+    "lifecycle_events": [],
+    "requirement_refs": [
+      "docs/beacon/v1.4.0/prd/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md",
+      "docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md",
+      "docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
+    ],
+    "evidence_refs": [],
+    "decision_trace": [],
+    "blockers": [],
+    "transaction_lineage": {
+      "current_transaction_id": "",
+      "projection_seq": "",
+      "source_hash": "",
+      "previous_transaction_id": "",
+      "recent_transaction_ids": [],
+      "attempt_seq": null,
+      "action": ""
+    },
+    "semantic_context_source": "workflow-memory"
+  },
+  "official_language": {
+    "page_names": [
+      {
+        "label": "只做诊断",
+        "slug": "semantic-layer",
+        "source": "requirement_truth"
+      },
+      {
+        "label": "负责显式诊断",
+        "slug": "semantic-layer",
+        "source": "requirement_truth"
+      },
+      {
+        "label": "beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor",
+        "slug": "beacon-v1-4-0-lightweight-kernel-and-core-surface-refactor",
+        "source": "requirement_truth"
+      }
+    ],
+    "status_labels": [
+      "错误",
+      "降级",
+      "正常",
+      "阻塞",
+      "加载中"
+    ],
+    "module_labels": [
+      "事务性双写约束被放大为多处状态",
+      "实现入口",
+      "仍是唯一实现入口",
+      "仍是唯一验收入口",
+      "仍必须是唯一执行入口",
+      "是唯一实现入口",
+      "是唯一验收入口",
+      "把完成状态",
+      "状态与未完成工作摘要",
+      "或等价低摩擦格式显示任务状态"
+    ],
+    "action_labels": [
+      "进入变更回路",
+      "恢复",
+      "恢复等边界仍没有足够轻的人类",
+      "切换",
+      "进入",
+      "进入收尾",
+      "恢复阅读",
+      "进入实现",
+      "进入默认人类面",
+      "恢复边界对人类可见"
+    ],
+    "preferred_terms": [
+      {
+        "from": "implementation",
+        "to": "implement",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "verify",
+        "to": "qa",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "review",
+        "to": "qa",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "delivery",
+        "to": "release",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "raw runtime log",
+        "to": "运行摘要",
+        "scope": "product_copy"
+      },
+      {
+        "from": "machine contract",
+        "to": "机器内部契约",
+        "scope": "product_copy"
+      }
+    ],
+    "banned_terms": [
+      "implementation",
+      "verify",
+      "review",
+      "delivery",
+      "machine contract",
+      "canonical-envelope",
+      "raw runtime log",
+      "transaction_id",
+      "projection_seq"
+    ]
+  },
+  "usage_guidelines": [
+    "先引用 semantic-contract.json，再进入 prototype 或 implement，不要在阶段内临时翻译需求。",
+    "页面名、状态名、模块名优先复用官方词表，避免 implementation / verify / delivery 这类旧阶段词汇出现在前台。",
+    "允许 taste-skill 做设计增强，但不得覆盖 requirement truth 或反向改写 semantic contract。",
+    "发现语义漂移时，优先重建 semantic layer，再继续 prototype freeze 或 implement delivery。"
+  ],
+  "default_design_bridge": {
+    "repo": "https://github.com/Leonxlnx/taste-skill",
+    "skill_id": "taste-skill",
+    "entry": "",
+    "detected": false,
+    "kind": "external-default-bridge",
+    "supported_stages": [
+      "prototype",
+      "implement"
+    ],
+    "capabilities": [
+      "prototype",
+      "implement",
+      "taste-design",
+      "semantic-normalization"
+    ],
+    "install_hint": "npx skills add https://github.com/Leonxlnx/taste-skill --skill taste-skill"
+  },
+  "compiler": {
+    "semantic_context_source": "workflow-memory",
+    "capability_snapshot": {}
+  }
+}

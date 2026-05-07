@@ -1,0 +1,131 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration",
+  "feature_slug": "beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration",
+  "version": "v1.4.0",
+  "generated_at": "2026-05-07T01:26:01.774089+00:00",
+  "sources": {
+    "prd": "prd:docs/beacon/v1.4.0/prd/beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration.md",
+    "user_story": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration.md",
+    "qa": "qa:test-cases:docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration.md"
+  },
+  "dimensions": {
+    "actors": [
+      {
+        "name": "operator",
+        "source_truth_ref": "prd:docs/beacon/v1.4.0/prd/beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration.md",
+        "rationale": "derived from PRD and current requirement package"
+      },
+      {
+        "name": "user",
+        "source_truth_ref": "prd:docs/beacon/v1.4.0/prd/beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration.md",
+        "rationale": "derived from PRD and current requirement package"
+      }
+    ],
+    "capability_differences": [
+      {
+        "name": "role-specific capability differences",
+        "source_truth_ref": "prd:docs/beacon/v1.4.0/prd/beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration.md",
+        "rationale": "v1.3.12 requires role and capability variance discovery"
+      }
+    ],
+    "state_machine": [
+      {
+        "name": "draft -> supplemented -> refrozen -> delivery-consumed",
+        "source_truth_ref": "prd:docs/beacon/v1.4.0/prd/beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration.md",
+        "rationale": "requirement deepening adds explicit human-loop refreeze semantics"
+      }
+    ],
+    "happy_paths": [
+      {
+        "name": "PRD deepened into story/test-case and consumed by implement/qa",
+        "source_truth_ref": "prd:docs/beacon/v1.4.0/prd/beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration.md",
+        "rationale": "main requirement closure path"
+      }
+    ],
+    "negative_paths": [
+      {
+        "name": "host deepening unavailable and rule fallback used",
+        "source_truth_ref": "prd:docs/beacon/v1.4.0/prd/beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration.md",
+        "rationale": "downgrade path must stay auditable"
+      }
+    ],
+    "boundary_conditions": [
+      {
+        "name": "no new public lifecycle stage or command",
+        "source_truth_ref": "prd:docs/beacon/v1.4.0/prd/beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration.md",
+        "rationale": "global boundary constraint"
+      }
+    ],
+    "exceptions": [
+      {
+        "name": "manual markdown patch without decision trail",
+        "source_truth_ref": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration.md",
+        "rationale": "must fail closed for silent truth mutation"
+      }
+    ],
+    "recovery_paths": [
+      {
+        "name": "decision_log -> writeback_projection -> truth_refreeze",
+        "source_truth_ref": "prd:docs/beacon/v1.4.0/prd/beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration.md",
+        "rationale": "formal recovery/writeback contract"
+      }
+    ],
+    "risks": [
+      {
+        "name": "scope creep from uncontrolled LLM expansion",
+        "source_truth_ref": "prd:docs/beacon/v1.4.0/prd/beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration.md",
+        "rationale": "accepted/rejected/deferred decisions required"
+      }
+    ],
+    "open_questions": [
+      {
+        "name": "Requirement package must keep accepted/rejected/deferred decisions queryable.",
+        "source_truth_ref": "prd:docs/beacon/v1.4.0/prd/beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration.md",
+        "rationale": "carry unresolved clarification into machine-readable envelope"
+      }
+    ]
+  },
+  "source_excerpt": {
+    "prd": [
+      "Feature**: `beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration`",
+      "Version**: `v1.4.0`",
+      "Date**: `2026-05-06`",
+      "Status**: `freeze-ready`",
+      "Track**: `optional-support-surface`",
+      "Scenario**: `requirement_closure_orchestration + partial_package_repair + conditional_freeze_promotion`",
+      "Template**: `support-surface / change-refreeze`",
+      " Global boundaries: `docs/beacon/global-boundaries.md`",
+      " Upstream support feature:",
+      " `docs/beacon/v1.4.0/prd/beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure.md`",
+      " `docs/beacon/v1.4.0/user-story/beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure.md`",
+      " `docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure.md`",
+      " Parent kernel blueprint:",
+      " `docs/beacon/v1.4.0/prd/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md`"
+    ],
+    "user_story": [
+      " version: `v1.4.0`",
+      " feature: `beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration`",
+      " status: `freeze-ready`",
+      " upstream_prd: `docs/beacon/v1.4.0/prd/beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration.md`",
+      " current_revision: `R1`",
+      " source_revision: `R0`",
+      "本故事线覆盖对 `beacon-prd-bootstrap` 的 post-freeze 补强：把它从 safe bootstrap initializer 提升成 unified requirement closure entry，但仍然保持 support surface，而不是新的主流程 stage。",
+      " `branch-flow`",
+      " `detect package state -> fill missing layer -> closure analysis -> verdict -> route`",
+      " `reverse-derived truth` 与 `drift repair` 必须单独分支"
+    ],
+    "qa": [
+      "Feature**: beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration",
+      "Test Type**: ALL",
+      "Version**: v1.4.0",
+      "Generated**: 2026-05-07 03:27",
+      "Requested Mode**: auto",
+      "Effective Mode**: host",
+      "Fallback Reason**: N/A",
+      "Memory Context**: N/A",
+      "AC Matrix JSON**: docs/beacon/v1.4.0/.machine/qa/beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration.ac-test-matrix.json",
+      "QA9 Matrix JSON**: docs/beacon/v1.4.0/.machine/qa/beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration.qa9-matrix.json"
+    ]
+  }
+}

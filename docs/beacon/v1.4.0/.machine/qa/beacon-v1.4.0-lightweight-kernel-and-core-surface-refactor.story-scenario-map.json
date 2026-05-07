@@ -1,0 +1,986 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor",
+  "feature_slug": "beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor",
+  "version": "v1.4.0",
+  "generated_at": "2026-05-07T01:10:25.070909+00:00",
+  "expansion_profile": "pua-web",
+  "scenario_depth": "standard",
+  "families_required": [
+    "happy",
+    "negative",
+    "boundary",
+    "recovery",
+    "compatibility"
+  ],
+  "stories": [
+    {
+      "ac_id": "AC-001",
+      "theme": "truth-root",
+      "text": "系统必须继续把 `docs/beacon/<version>/**/*.md` 定义为唯一冻结真相源。",
+      "scenario_ids": [
+        "SC-001"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-001",
+          "source_tc_id": "TC-001",
+          "tc_id": "TC-001-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "unit",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "contract-layer",
+      "text": "系统必须把 `gate / implement / qa / release` 的机器主入口收敛为 compiled contract，而不是继续以碎片 mirror 作为默认主路径。",
+      "scenario_ids": [
+        "SC-002"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-002",
+          "source_tc_id": "TC-002",
+          "tc_id": "TC-002-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "unit",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "projection-demotion",
+      "text": "sqlite / pocketbase / board / legacy mirror 必须被明确标记为 optional projection，而不是主路径 truth closure 依据。",
+      "scenario_ids": [
+        "SC-003"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-003",
+          "source_tc_id": "TC-003",
+          "tc_id": "TC-003-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "unit",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "no-reverse-write",
+      "text": "任意 projection 或 support read-model 都不得反向定义 truth。",
+      "scenario_ids": [
+        "SC-004"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-004",
+          "source_tc_id": "TC-004",
+          "tc_id": "TC-004-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "unit",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "change-identity",
+      "text": "每次 truth 变更都必须拥有稳定的 `change_id`，并能绑定 `target_version / target_feature / baseline_revision`。",
+      "scenario_ids": [
+        "SC-005"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-005",
+          "source_tc_id": "TC-057",
+          "tc_id": "TC-057-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "unit",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-006",
+      "theme": "change-contract",
+      "text": "系统必须存在 machine-readable change contract，至少覆盖 change reason、affected truth refs、affected layers、verification refs、archive status。",
+      "scenario_ids": [
+        "SC-006"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-006",
+          "source_tc_id": "TC-058",
+          "tc_id": "TC-058-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "unit",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-007",
+      "theme": "single-change-thread",
+      "text": "reopen / revise / refreeze / delta implement / delta qa / release recheck 必须沿同一 change identity 继续，而不是重新漂移成多条局部状态线。",
+      "scenario_ids": [
+        "SC-007"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-007",
+          "source_tc_id": "TC-059",
+          "tc_id": "TC-059-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "unit",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-008",
+      "theme": "change-archive",
+      "text": "per-change closure 必须能聚合进 version-level change summary，但 version summary 不能替代 per-change truth。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-009",
+      "theme": "borrow-container-not-cli",
+      "text": "系统必须借鉴 OpenSpec 的单 change 工作单元，但不得因此新增新的公开一级主命令集合。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-010",
+      "theme": "change-visibility",
+      "text": "`help/status/report/gate` 至少要能统一投影当前 change id、change state、blocked reason、next action。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-011",
+      "theme": "no-new-stage",
+      "text": "`beacon-change` 仍是 router，不得被误导为新的 primary lifecycle stage。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-012",
+      "theme": "drift-routing",
+      "text": "当 frozen truth 漂移时，support surface 与 execution surface 必须统一推荐回到 change loop。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-013",
+      "theme": "goal-optional-host-capability",
+      "text": "goal integration 只在 host=codex 且 feature enabled 时生效，非 Codex host 必须有显式 fallback。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-014",
+      "theme": "requirement-to-goal",
+      "text": "goal objective 必须可追溯到 requirement package / implementation plan，而不是自由文本。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-015",
+      "theme": "goal-not-truth",
+      "text": "`goal.complete` 不能单独定义 implement complete、qa pass 或 release pass。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-016",
+      "theme": "budget-limited-closure",
+      "text": "当 goal 进入 `budget_limited` 时，系统必须进入收尾、handoff 或明确阻断，而不是静默继续。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-017",
+      "theme": "goal-aware-ralph",
+      "text": "Ralph 每轮 round 至少能读取当前 goal objective 与 status。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-018",
+      "theme": "unified-stop-semantics",
+      "text": "Ralph 的 `release_ready / human_blocked / budget_exhausted` 必须与 goal state 和 verification state 协同解释。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-019",
+      "theme": "qa-handoff",
+      "text": "当 Ralph 完成实现但未完成 acceptance 时，系统必须能进入明确 QA handoff，而不是直接宣称 release-ready。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-020",
+      "theme": "execution-audit",
+      "text": "Ralph rounds、goal state、QA handoff refs 必须保留为 execution audit evidence。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-021",
+      "theme": "task-ledger-exists",
+      "text": "系统必须为实现阶段生成 human-readable tasks ledger。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-022",
+      "theme": "checkbox-or-equivalent",
+      "text": "task ledger 必须能表达未完成/已完成状态，至少达到 checkbox 或等价低摩擦进度表达。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-023",
+      "theme": "progress-and-blockers",
+      "text": "task ledger 至少能展示 `N/M progress`、current task、blocked tasks、next task。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-024",
+      "theme": "interruption-friendly",
+      "text": "人类或 agent 在中断恢复时，能从 task ledger 快速判断从哪继续。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-025",
+      "theme": "canonical-plan-source",
+      "text": "canonical execution task identity 仍来自 implementation plan json。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-026",
+      "theme": "machine-progress-source",
+      "text": "machine aggregation 仍来自 progress json 或等价 machine progress artifact。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-027",
+      "theme": "task-ledger-human-projection",
+      "text": "`tasks-<feature>.md` 只负责人类面进度与阻断提示，不得单独定义 machine truth。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-028",
+      "theme": "gate-does-not-trust-checkbox-alone",
+      "text": "gate 不得只因为 checkbox 完成就判定实现闭环，而必须继续依赖 evidence、traceability 与 QA closure。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-029",
+      "theme": "human-usable-boundary-surface",
+      "text": "系统必须存在显性人类面入口来操作 global boundary/context。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-030",
+      "theme": "explain-and-calibrate",
+      "text": "该入口至少支持边界解释、越界判断、上下文校准。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-031",
+      "theme": "truth-layer-separation",
+      "text": "该入口必须能区分 global、version、feature 三层约束。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-032",
+      "theme": "no-new-primary-stage",
+      "text": "该入口属于 support surface，不得被误解为新的 lifecycle stage。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-033",
+      "theme": "no-config-drift",
+      "text": "human boundary surface 不得直接把任意临时输入写成 canonical global truth。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-034",
+      "theme": "placement-judgment",
+      "text": "系统必须能判断某条原则应进入 global-boundaries、version PRD，还是只保留在 brainstorm/research。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-035",
+      "theme": "canonical-writeback-route",
+      "text": "若需要正式变更全局边界，必须走明确的 canonical writeback route，而不是 UI/skill 任意修改。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-036",
+      "theme": "boundary-auditability",
+      "text": "任意上位边界变更建议都必须可被审计与追踪。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-037",
+      "theme": "current-artifact-focus",
+      "text": "support surface 至少能回答当前卡在哪个 artifact。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-038",
+      "theme": "next-action-clarity",
+      "text": "support surface 至少能回答下一个动作、原因、建议命令。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-039",
+      "theme": "unlock-visibility",
+      "text": "support surface 至少能说明执行该动作后会 unlock 什么。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-040",
+      "theme": "machine-detail-second",
+      "text": "复杂 machine/read-model 细节应退到 JSON 或 deeper layer，而不是默认人类输出。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-041",
+      "theme": "ready-blocked-completed",
+      "text": "关键 artifact 至少能被表达为 ready / blocked / completed。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-042",
+      "theme": "dependency-visibility",
+      "text": "blocked artifact 必须能说明缺失 dependency。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-043",
+      "theme": "recovery-anchor",
+      "text": "interruption recovery 必须能锚定到 task / artifact 级别，而不是仅靠 run id 推断。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-044",
+      "theme": "no-duplicate-work",
+      "text": "恢复信息必须帮助人类和 agent 避免重复完成已做任务。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-045",
+      "theme": "four-tier-taxonomy",
+      "text": "系统至少定义 `lifecycle core / support core / advanced project-specific / internal maintainer` 四层 taxonomy。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-046",
+      "theme": "shared-consumption",
+      "text": "该 taxonomy 必须能被 docs、router、help/status、skill discovery 共用。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-047",
+      "theme": "audience-model",
+      "text": "每个 skill 至少应具备 intended audience 与 visibility tier。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-048",
+      "theme": "no-flat-skill-list",
+      "text": "Beacon 不得继续把所有 skill 当作同层默认可见人类入口。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-049",
+      "theme": "existence-vs-visibility",
+      "text": "系统必须正式区分 capability existence 与 default human-surface visibility。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-050",
+      "theme": "contextual-recommendation",
+      "text": "advanced/internal skill 应由 support surface 在条件满足时推荐，而不是默认暴露。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-051",
+      "theme": "public-surface-freeze",
+      "text": "默认 public skill surface 必须被正式冻结。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-052",
+      "theme": "visibility-audit",
+      "text": "skill visibility 规则必须可被文档化、验证与演进。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-053",
+      "theme": "iteration-governance-tier",
+      "text": "`beacon-iteration-governance` 必须被标记为 internal/maintainer skill。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-054",
+      "theme": "prototype-reconcile-tier",
+      "text": "`beacon-prototype-reconcile` 必须被标记为 advanced/project-specific skill。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-055",
+      "theme": "not-default-public",
+      "text": "二者都不得进入默认 public skill surface。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-056",
+      "theme": "conditional-routing",
+      "text": "只有在 Beacon self-repo release governance 或 severe prototype drift/takeover 等条件成立时，support/router 才应推荐它们。",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-057",
+      "theme": "general",
+      "text": "core commands 与 plugin commands 有正式边界",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-058",
+      "theme": "general",
+      "text": "metadata / learning / memory / archive 等基座能力仍可用",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    },
+    {
+      "ac_id": "AC-059",
+      "theme": "general",
+      "text": "v1.4.0 保持 Python 主实现路线，并对热点建立性能观察基线",
+      "scenario_ids": [],
+      "scenario_families": [],
+      "required_families": [],
+      "scenarios": []
+    }
+  ],
+  "scenarios": [
+    {
+      "scenario_id": "SC-001",
+      "source_tc_id": "TC-001",
+      "tc_id": "TC-001-PRIMARY",
+      "ac_id": "AC-001",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "primary",
+      "title": "AC-001 primary path :: 系统必须继续把 `docs/beacon/<version>/**/*.md` 定义为唯一冻结真相源。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor/TC-001-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-002",
+      "source_tc_id": "TC-002",
+      "tc_id": "TC-002-PRIMARY",
+      "ac_id": "AC-002",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "primary",
+      "title": "AC-002 primary path :: 系统必须把 `gate / implement / qa / release` 的机器主入口收敛为 compiled contract，而不是继续以碎片 mirror 作为默认主路径。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor/TC-002-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-003",
+      "source_tc_id": "TC-003",
+      "tc_id": "TC-003-PRIMARY",
+      "ac_id": "AC-003",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "primary",
+      "title": "AC-003 primary path :: sqlite / pocketbase / board / legacy mirror 必须被明确标记为 optional projection，而不是主路径 truth closure 依据",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor/TC-003-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-004",
+      "source_tc_id": "TC-004",
+      "tc_id": "TC-004-PRIMARY",
+      "ac_id": "AC-004",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "primary",
+      "title": "AC-004 primary path :: 任意 projection 或 support read-model 都不得反向定义 truth。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor/TC-004-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-005",
+      "source_tc_id": "TC-057",
+      "tc_id": "TC-057-PRIMARY",
+      "ac_id": "AC-005",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "primary",
+      "title": "AC-005 primary path :: core commands 与 plugin commands 有正式边界",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor/TC-057-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-006",
+      "source_tc_id": "TC-058",
+      "tc_id": "TC-058-PRIMARY",
+      "ac_id": "AC-006",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "primary",
+      "title": "AC-006 primary path :: metadata / learning / memory / archive 等基座能力仍可用",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor/TC-058-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-007",
+      "source_tc_id": "TC-059",
+      "tc_id": "TC-059-PRIMARY",
+      "ac_id": "AC-007",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "primary",
+      "title": "AC-007 primary path :: v1.4.0 保持 Python 主实现路线，并对热点建立性能观察基线",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor/TC-059-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    }
+  ],
+  "requirement_deepening_story_families": [
+    "primary_actor_goal",
+    "secondary_or_opposing_role",
+    "state_transition",
+    "exception_recovery",
+    "permission_or_constraint",
+    "governance_extension"
+  ],
+  "requirement_completeness_ref": "docs/beacon/v1.4.0/.machine/requirement/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.completeness.json",
+  "supplement_focus_areas": [
+    "复核 requirement completeness 的补料方向"
+  ],
+  "supplement_recommended_command": "beacon test-case create \"beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor\" --project <project-root> --version v1.4.0 --json",
+  "supplement_task": {
+    "feature": "beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor",
+    "version": "v1.4.0",
+    "target_artifact": "test-case",
+    "candidate_kind": "coverage",
+    "candidate_families": [
+      "happy",
+      "negative",
+      "boundary",
+      "exception",
+      "recovery",
+      "compatibility"
+    ],
+    "candidate_payload": {
+      "focus_areas": [
+        "复核 requirement completeness 的补料方向"
+      ],
+      "open_questions": [
+        "happy 是否需要补成 machine-readable supplement candidate？",
+        "negative 是否需要补成 machine-readable supplement candidate？",
+        "boundary 是否需要补成 machine-readable supplement candidate？",
+        "exception 是否需要补成 machine-readable supplement candidate？"
+      ],
+      "missing_dimensions": [],
+      "high_risk_unresolved_categories": []
+    },
+    "source_truth_ref": "docs/beacon/v1.4.0/prd/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md",
+    "writeback_target": "docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md",
+    "rationale": "pass",
+    "confidence": "medium",
+    "human_decision": "pending",
+    "audit_trail_required": true,
+    "recommended_route": "beacon-test-case",
+    "recommended_command": "beacon test-case create \"beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor\" --project <project-root> --version v1.4.0 --json",
+    "recommended_mode": "requirement-convergence"
+  },
+  "re_freeze_transaction": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor",
+    "version": "v1.4.0",
+    "revision_id": "R1",
+    "accepted_candidates": [
+      "GAP-001",
+      "GAP-002",
+      "GAP-003",
+      "GAP-004",
+      "GAP-005",
+      "GAP-006",
+      "GAP-007",
+      "GAP-008",
+      "GAP-009",
+      "GAP-010",
+      "GAP-011",
+      "GAP-012",
+      "GAP-013",
+      "GAP-014",
+      "GAP-015"
+    ],
+    "rejected_candidates": [],
+    "deferred_candidates": [],
+    "writeback_targets": [
+      "qa/test-cases.executable-matrix",
+      "user-story.acceptance-criteria"
+    ],
+    "machine_mirror_paths": {
+      "dir": "docs/beacon/v1.4.0/.machine/requirement",
+      "envelope": "docs/beacon/v1.4.0/.machine/requirement/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.envelope.json",
+      "candidate_ledger": "docs/beacon/v1.4.0/.machine/requirement/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.candidate-ledger.json",
+      "decision_log": "docs/beacon/v1.4.0/.machine/requirement/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.supplement-decision-log.json",
+      "freeze_contract": "docs/beacon/v1.4.0/.machine/requirement/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.freeze-contract.json",
+      "completeness": "docs/beacon/v1.4.0/.machine/requirement/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.completeness.json",
+      "supplement_task": "docs/beacon/v1.4.0/.machine/requirement/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.supplement-task.json",
+      "re_freeze_transaction": "docs/beacon/v1.4.0/.machine/requirement/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.re-freeze-transaction.json"
+    },
+    "refreeze_required": true,
+    "revalidate_required": true,
+    "decision_count": 15,
+    "generated_at": "2026-05-07T01:10:21.857293+00:00"
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration",
+  "feature_slug": "beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration",
+  "version": "v1.4.0",
+  "runtime_version": "v1.3.11",
+  "runtime_capability_line": "v1.3.3",
+  "required": true,
+  "reason_code": "",
+  "blocked": false,
+  "status": "pass",
+  "findings": [],
+  "report_json_path": "docs/beacon/v1.4.0/.machine/execution/requirement-clarity-beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration.json",
+  "report_markdown_path": "docs/beacon/v1.4.0/execution/requirement-clarity-beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration.md",
+  "state_path": ".beacon/state/requirement-clarity-beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration.json",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.4.0",
+    "supported": true,
+    "required": true,
+    "ready": true,
+    "diagram_types": [
+      "branch-flow",
+      "state-machine",
+      "decision-priority"
+    ],
+    "state_axes": [
+      "package_state",
+      "empty | prd_only | user_story_only | test_case_only | prd_user_story | prd_test_case | user_story_test_case | full_consistent | full_inconsistent",
+      "empty",
+      "prd_only",
+      "user_story_only",
+      "test_case_only",
+      "prd_user_story",
+      "prd_test_case",
+      "user_story_test_case",
+      "full_consistent",
+      "full_inconsistent",
+      "closure_state",
+      "package_detected | missing_layer_routed | reverse_derived_truth | needs_truth_review | supplement_required | drift_repair_required | freeze_ready | implementation_pending",
+      "package_detected",
+      "missing_layer_routed",
+      "reverse_derived_truth",
+      "needs_truth_review",
+      "supplement_required",
+      "drift_repair_required",
+      "freeze_ready",
+      "implementation_pending",
+      "truth_origin_state",
+      "native_truth | derived_from_downstream | needs_truth_review",
+      "native_truth",
+      "derived_from_downstream",
+      "decision_state",
+      "accepted | rejected | deferred",
+      "accepted",
+      "rejected",
+      "deferred",
+      "routing_state",
+      "canonical_compile | reverse_derive | repair_route | conditional_promotion",
+      "canonical_compile",
+      "reverse_derive",
+      "repair_route",
+      "conditional_promotion"
+    ],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [
+      "branch-flow",
+      "decision-priority",
+      "state axes",
+      "state machine"
+    ],
+    "review_gates": [
+      "implementation must cover the declared branch-flow split points",
+      "implementation must preserve the declared state-machine transitions",
+      "implementation must preserve decision-priority ordering",
+      "implementation must keep state axes explicit: package_state, empty | prd_only | user_story_only | test_case_only | prd_user_story | prd_test_case | user_story_test_case | full_consistent | full_inconsistent, empty, prd_only, user_story_only, test_case_only, prd_user_story, prd_test_case, user_story_test_case, full_consistent, full_inconsistent, closure_state, package_detected | missing_layer_routed | reverse_derived_truth | needs_truth_review | supplement_required | drift_repair_required | freeze_ready | implementation_pending, package_detected, missing_layer_routed, reverse_derived_truth, needs_truth_review, supplement_required, drift_repair_required, freeze_ready, implementation_pending, truth_origin_state, native_truth | derived_from_downstream | needs_truth_review, native_truth, derived_from_downstream, decision_state, accepted | rejected | deferred, accepted, rejected, deferred, routing_state, canonical_compile | reverse_derive | repair_route | conditional_promotion, canonical_compile, reverse_derive, repair_route, conditional_promotion"
+    ],
+    "qa_coverage_hints": [
+      "cover primary and alternate branch-flow paths",
+      "cover state transitions, illegal transitions, and recovery paths",
+      "cover conflicting conditions using declared decision priority",
+      "cover axis combinations across: package_state, empty | prd_only | user_story_only | test_case_only | prd_user_story | prd_test_case | user_story_test_case | full_consistent | full_inconsistent, empty, prd_only, user_story_only, test_case_only, prd_user_story, prd_test_case, user_story_test_case, full_consistent, full_inconsistent, closure_state, package_detected | missing_layer_routed | reverse_derived_truth | needs_truth_review | supplement_required | drift_repair_required | freeze_ready | implementation_pending, package_detected, missing_layer_routed, reverse_derived_truth, needs_truth_review, supplement_required, drift_repair_required, freeze_ready, implementation_pending, truth_origin_state, native_truth | derived_from_downstream | needs_truth_review, native_truth, derived_from_downstream, decision_state, accepted | rejected | deferred, accepted, rejected, deferred, routing_state, canonical_compile | reverse_derive | repair_route | conditional_promotion, canonical_compile, reverse_derive, repair_route, conditional_promotion"
+    ],
+    "evidence_lines": {
+      "branch-flow": [
+        "- `branch-flow`"
+      ],
+      "state-machine": [
+        "```mermaid",
+        "stateDiagram-v2",
+        "[*] --> package_detected",
+        "package_detected --> missing_layer_routed: partial package found",
+        "package_detected --> drift_repair_required: full inconsistent package found",
+        "package_detected --> freeze_ready: full consistent package found",
+        "missing_layer_routed --> reverse_derived_truth: downstream truth must be inferred",
+        "reverse_derived_truth --> needs_truth_review"
+      ],
+      "decision-priority": [
+        "- `decision-priority`"
+      ],
+      "state-axes": [
+        "- `package_state`: `empty | prd_only | user_story_only | test_case_only | prd_user_story | prd_test_case | user_story_test_case | full_consistent | full_inconsistent`",
+        "- `closure_state`: `package_detected | missing_layer_routed | reverse_derived_truth | needs_truth_review | supplement_required | drift_repair_required | freeze_ready | implementation_pending`",
+        "- `truth_origin_state`: `native_truth | derived_from_downstream | needs_truth_review`",
+        "- `decision_state`: `accepted | rejected | deferred`",
+        "- `routing_state`: `canonical_compile | reverse_derive | repair_route | conditional_promotion`",
+        "# User Story: Beacon v1.4.0 PRD bootstrap unified requirement closure orchestration"
+      ]
+    },
+    "generated_at": "2026-05-07T01:26:01.286174+00:00",
+    "feature": "beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration",
+    "feature_slug": "beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration",
+    "prd_ref": "docs/beacon/v1.4.0/prd/beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration.md",
+    "user_story_ref": "docs/beacon/v1.4.0/user-story/beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration.md"
+  },
+  "required_artifacts": [],
+  "scanned_files": [
+    "docs/beacon/v1.4.0/prd/beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration.md",
+    "docs/beacon/v1.4.0/user-story/beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration.md"
+  ]
+}

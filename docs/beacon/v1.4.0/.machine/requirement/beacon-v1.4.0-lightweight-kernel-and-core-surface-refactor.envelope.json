@@ -1,0 +1,131 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor",
+  "feature_slug": "beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor",
+  "version": "v1.4.0",
+  "generated_at": "2026-05-07T01:10:21.854492+00:00",
+  "sources": {
+    "prd": "prd:docs/beacon/v1.4.0/prd/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md",
+    "user_story": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md",
+    "qa": "qa:test-cases:docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
+  },
+  "dimensions": {
+    "actors": [
+      {
+        "name": "operator",
+        "source_truth_ref": "prd:docs/beacon/v1.4.0/prd/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md",
+        "rationale": "derived from PRD and current requirement package"
+      },
+      {
+        "name": "user",
+        "source_truth_ref": "prd:docs/beacon/v1.4.0/prd/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md",
+        "rationale": "derived from PRD and current requirement package"
+      }
+    ],
+    "capability_differences": [
+      {
+        "name": "role-specific capability differences",
+        "source_truth_ref": "prd:docs/beacon/v1.4.0/prd/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md",
+        "rationale": "v1.3.12 requires role and capability variance discovery"
+      }
+    ],
+    "state_machine": [
+      {
+        "name": "draft -> supplemented -> refrozen -> delivery-consumed",
+        "source_truth_ref": "prd:docs/beacon/v1.4.0/prd/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md",
+        "rationale": "requirement deepening adds explicit human-loop refreeze semantics"
+      }
+    ],
+    "happy_paths": [
+      {
+        "name": "PRD deepened into story/test-case and consumed by implement/qa",
+        "source_truth_ref": "prd:docs/beacon/v1.4.0/prd/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md",
+        "rationale": "main requirement closure path"
+      }
+    ],
+    "negative_paths": [
+      {
+        "name": "host deepening unavailable and rule fallback used",
+        "source_truth_ref": "prd:docs/beacon/v1.4.0/prd/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md",
+        "rationale": "downgrade path must stay auditable"
+      }
+    ],
+    "boundary_conditions": [
+      {
+        "name": "no new public lifecycle stage or command",
+        "source_truth_ref": "prd:docs/beacon/v1.4.0/prd/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md",
+        "rationale": "global boundary constraint"
+      }
+    ],
+    "exceptions": [
+      {
+        "name": "manual markdown patch without decision trail",
+        "source_truth_ref": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md",
+        "rationale": "must fail closed for silent truth mutation"
+      }
+    ],
+    "recovery_paths": [
+      {
+        "name": "decision_log -> writeback_projection -> truth_refreeze",
+        "source_truth_ref": "prd:docs/beacon/v1.4.0/prd/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md",
+        "rationale": "formal recovery/writeback contract"
+      }
+    ],
+    "risks": [
+      {
+        "name": "scope creep from uncontrolled LLM expansion",
+        "source_truth_ref": "prd:docs/beacon/v1.4.0/prd/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md",
+        "rationale": "accepted/rejected/deferred decisions required"
+      }
+    ],
+    "open_questions": [
+      {
+        "name": "Requirement package must keep accepted/rejected/deferred decisions queryable.",
+        "source_truth_ref": "prd:docs/beacon/v1.4.0/prd/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md",
+        "rationale": "carry unresolved clarification into machine-readable envelope"
+      }
+    ]
+  },
+  "source_excerpt": {
+    "prd": [
+      "Feature**: `beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor`",
+      "Version**: `v1.4.0`",
+      "Date**: `2026-05-06`",
+      "Status**: `freeze-ready`",
+      "Track**: `main`",
+      "Scenario**: `kernel_lightweight_refactor + truth_contract_reduction + core_surface_governance`",
+      "Template**: `主 PRD / architecture-refactor`",
+      " Global boundaries: `docs/beacon/global-boundaries.md`",
+      " Latest runtime line: `docs/beacon/v1.3.12/`",
+      " Source-grounded analysis:",
+      " `docs/brainstorms/2026-05-06-beacon-core-kernel-spec.md`",
+      " `docs/brainstorms/2026-05-06-beacon-capability-gap-map-and-lightweight-evolution.md`",
+      " `docs/brainstorms/2026-05-06-beacon-v2-lightweight-kernel-architecture.md`",
+      " `docs/brainstorms/2026-05-06-beacon-v2-brainstorm-integration-architecture.md`"
+    ],
+    "user_story": [
+      " version: `v1.4.0`",
+      " feature: `beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor`",
+      " status: `freeze-ready`",
+      " upstream_prd: `docs/beacon/v1.4.0/prd/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md`",
+      " current_revision: `R1`",
+      " source_revision: `R0`",
+      "本故事线覆盖 Beacon 在 `v1.4.0` 中完成“减负不减基座”的正式拆解。它要求 Beacon 在保留 frozen truth、gate、implement/qa、host-runtime、learning、meta、memory、archive 等基座能力的前提下，收敛 machine contract、增强 change 与 implement 闭环、补齐人类面任务进度与全局边界操作面，并对 skill 默认可见性做正式治理。",
+      " `branch-flow`",
+      " 人类主流程仍固定为 `prd -> user-story -> test-case -> prototype -> implement -> qa -> release`",
+      " `change` 是 truth 变更路由，不是新 stage"
+    ],
+    "qa": [
+      "Feature**: Beacon v1.4.0 lightweight kernel and core surface refactor",
+      "Test Type**: ALL",
+      "Version**: v1.4.0",
+      "Generated**: 2026-05-06 20:35",
+      "Requested Mode**: auto",
+      "Effective Mode**: requirement-freeze",
+      "Fallback Reason**: machine-contract-not-yet-implemented",
+      "Memory Context**: v1.3.12 runtime closure + v1.4.0 lightweight kernel refactor",
+      "Primary Truth**: docs/beacon/v1.4.0/prd/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md",
+      "Upstream User Story**: docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
+    ]
+  }
+}

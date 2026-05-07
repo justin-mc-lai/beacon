@@ -1,0 +1,1853 @@
+{
+  "schema_version": "1.0",
+  "plan_id": "plan-beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure-r1",
+  "feature": "beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure",
+  "feature_slug": "beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure",
+  "version": "v1.4.0",
+  "revision_id": "R1",
+  "baseline_hash": "sha256:ba8780fc4d25840fc772463a8107ad083651c9f61a1460d8f5ff50dbe050e910",
+  "plan_hash": "sha256:2a4abe0747fa982058b5d4d8572ef607010dbe955a1ea11537e96f346a94df3e",
+  "status": "completed",
+  "source_refs": {
+    "user_story": "docs/beacon/v1.4.0/user-story/beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure.md",
+    "prd": "docs/beacon/v1.4.0/prd/beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure.md",
+    "test_case": "docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure.md",
+    "ac_matrix": "docs/beacon/v1.4.0/.machine/qa/beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure.ac-test-matrix.json",
+    "story_scenario_map": "docs/beacon/v1.4.0/.machine/qa/beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure.story-scenario-map.json",
+    "qa9_matrix": "docs/beacon/v1.4.0/.machine/qa/beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure.qa9-matrix.json"
+  },
+  "architecture_blueprint_ref": "docs/beacon/v1.4.0/execution/architecture-blueprint.md",
+  "boundary_principles": [
+    {
+      "id": "explicit_assumptions",
+      "heading": "显式假设与歧义管理"
+    },
+    {
+      "id": "simplicity_first",
+      "heading": "简单优先"
+    },
+    {
+      "id": "surgical_changes",
+      "heading": "外科手术式改动"
+    },
+    {
+      "id": "goal_driven_execution",
+      "heading": "目标驱动验证闭环"
+    },
+    {
+      "id": "trivial_task_exception",
+      "heading": "trivial task 可以轻量处理，但不能越界"
+    }
+  ],
+  "workstreams": [
+    {
+      "workstream_id": "implementation-main",
+      "title": "Implementation Mainline",
+      "task_ids": [
+        "ITASK-001",
+        "ITASK-002",
+        "ITASK-003",
+        "ITASK-004",
+        "ITASK-005",
+        "ITASK-006",
+        "ITASK-007",
+        "ITASK-008",
+        "ITASK-009",
+        "ITASK-010"
+      ]
+    }
+  ],
+  "task_mapping_source": "prd-sections",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.4.0",
+    "supported": true,
+    "required": true,
+    "ready": true,
+    "diagram_types": [
+      "branch-flow",
+      "state-machine",
+      "decision-priority"
+    ],
+    "state_axes": [
+      "package_state",
+      "empty | prd_only | user_story_only | test_case_only | prd_user_story | prd_test_case | user_story_test_case | full_consistent | full_inconsistent",
+      "empty",
+      "prd_only",
+      "user_story_only",
+      "test_case_only",
+      "prd_user_story",
+      "prd_test_case",
+      "user_story_test_case",
+      "full_consistent",
+      "full_inconsistent",
+      "bootstrap_state",
+      "draft_generated | review_required | supplement_required | drift_repair_required | freeze_ready | implementation_pending",
+      "draft_generated",
+      "review_required",
+      "supplement_required",
+      "drift_repair_required",
+      "freeze_ready",
+      "implementation_pending",
+      "truth_origin_state",
+      "native_truth | derived_from_downstream | needs_truth_review",
+      "native_truth",
+      "derived_from_downstream",
+      "needs_truth_review",
+      "decision_state",
+      "accepted | rejected | deferred",
+      "accepted",
+      "rejected",
+      "deferred",
+      "routing_state",
+      "canonical_compile | reverse_derive | repair_route | freeze_promotion",
+      "canonical_compile",
+      "reverse_derive",
+      "repair_route",
+      "freeze_promotion"
+    ],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [
+      "branch-flow",
+      "decision-priority",
+      "state axes",
+      "state machine"
+    ],
+    "review_gates": [
+      "implementation must cover the declared branch-flow split points",
+      "implementation must preserve the declared state-machine transitions",
+      "implementation must preserve decision-priority ordering",
+      "implementation must keep state axes explicit: package_state, empty | prd_only | user_story_only | test_case_only | prd_user_story | prd_test_case | user_story_test_case | full_consistent | full_inconsistent, empty, prd_only, user_story_only, test_case_only, prd_user_story, prd_test_case, user_story_test_case, full_consistent, full_inconsistent, bootstrap_state, draft_generated | review_required | supplement_required | drift_repair_required | freeze_ready | implementation_pending, draft_generated, review_required, supplement_required, drift_repair_required, freeze_ready, implementation_pending, truth_origin_state, native_truth | derived_from_downstream | needs_truth_review, native_truth, derived_from_downstream, needs_truth_review, decision_state, accepted | rejected | deferred, accepted, rejected, deferred, routing_state, canonical_compile | reverse_derive | repair_route | freeze_promotion, canonical_compile, reverse_derive, repair_route, freeze_promotion"
+    ],
+    "qa_coverage_hints": [
+      "cover primary and alternate branch-flow paths",
+      "cover state transitions, illegal transitions, and recovery paths",
+      "cover conflicting conditions using declared decision priority",
+      "cover axis combinations across: package_state, empty | prd_only | user_story_only | test_case_only | prd_user_story | prd_test_case | user_story_test_case | full_consistent | full_inconsistent, empty, prd_only, user_story_only, test_case_only, prd_user_story, prd_test_case, user_story_test_case, full_consistent, full_inconsistent, bootstrap_state, draft_generated | review_required | supplement_required | drift_repair_required | freeze_ready | implementation_pending, draft_generated, review_required, supplement_required, drift_repair_required, freeze_ready, implementation_pending, truth_origin_state, native_truth | derived_from_downstream | needs_truth_review, native_truth, derived_from_downstream, needs_truth_review, decision_state, accepted | rejected | deferred, accepted, rejected, deferred, routing_state, canonical_compile | reverse_derive | repair_route | freeze_promotion, canonical_compile, reverse_derive, repair_route, freeze_promotion"
+    ],
+    "evidence_lines": {
+      "branch-flow": [
+        "- `branch-flow`"
+      ],
+      "state-machine": [
+        "```mermaid",
+        "stateDiagram-v2",
+        "[*] --> draft_generated",
+        "draft_generated --> review_required: draft package emitted",
+        "review_required --> supplement_required: gap detected",
+        "review_required --> freeze_ready: contract complete",
+        "supplement_required --> review_required: human supplement written back",
+        "supplement_required --> drift_repair_required: conflicting truth detected"
+      ],
+      "decision-priority": [
+        "- `decision-priority`"
+      ],
+      "state-axes": [
+        "- `package_state`: `empty | prd_only | user_story_only | test_case_only | prd_user_story | prd_test_case | user_story_test_case | full_consistent | full_inconsistent`",
+        "- `bootstrap_state`: `draft_generated | review_required | supplement_required | drift_repair_required | freeze_ready | implementation_pending`",
+        "- `truth_origin_state`: `native_truth | derived_from_downstream | needs_truth_review`",
+        "- `decision_state`: `accepted | rejected | deferred`",
+        "- `routing_state`: `canonical_compile | reverse_derive | repair_route | freeze_promotion`",
+        "# User Story: Beacon v1.4.0 PRD bootstrap safe requirement bootstrap and freeze closure"
+      ]
+    },
+    "generated_at": "2026-05-06T19:16:33.548523+00:00",
+    "feature": "beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure",
+    "feature_slug": "beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure",
+    "prd_ref": "docs/beacon/v1.4.0/prd/beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure.md",
+    "user_story_ref": "docs/beacon/v1.4.0/user-story/beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure.md"
+  },
+  "review_gates": [
+    "implementation must cover the declared branch-flow split points",
+    "implementation must preserve the declared state-machine transitions",
+    "implementation must preserve decision-priority ordering",
+    "implementation must keep state axes explicit: package_state, empty | prd_only | user_story_only | test_case_only | prd_user_story | prd_test_case | user_story_test_case | full_consistent | full_inconsistent, empty, prd_only, user_story_only, test_case_only, prd_user_story, prd_test_case, user_story_test_case, full_consistent, full_inconsistent, bootstrap_state, draft_generated | review_required | supplement_required | drift_repair_required | freeze_ready | implementation_pending, draft_generated, review_required, supplement_required, drift_repair_required, freeze_ready, implementation_pending, truth_origin_state, native_truth | derived_from_downstream | needs_truth_review, native_truth, derived_from_downstream, needs_truth_review, decision_state, accepted | rejected | deferred, accepted, rejected, deferred, routing_state, canonical_compile | reverse_derive | repair_route | freeze_promotion, canonical_compile, reverse_derive, repair_route, freeze_promotion"
+  ],
+  "qa_coverage_hints": [
+    "cover primary and alternate branch-flow paths",
+    "cover state transitions, illegal transitions, and recovery paths",
+    "cover conflicting conditions using declared decision priority",
+    "cover axis combinations across: package_state, empty | prd_only | user_story_only | test_case_only | prd_user_story | prd_test_case | user_story_test_case | full_consistent | full_inconsistent, empty, prd_only, user_story_only, test_case_only, prd_user_story, prd_test_case, user_story_test_case, full_consistent, full_inconsistent, bootstrap_state, draft_generated | review_required | supplement_required | drift_repair_required | freeze_ready | implementation_pending, draft_generated, review_required, supplement_required, drift_repair_required, freeze_ready, implementation_pending, truth_origin_state, native_truth | derived_from_downstream | needs_truth_review, native_truth, derived_from_downstream, needs_truth_review, decision_state, accepted | rejected | deferred, accepted, rejected, deferred, routing_state, canonical_compile | reverse_derive | repair_route | freeze_promotion, canonical_compile, reverse_derive, repair_route, freeze_promotion"
+  ],
+  "tasks": [
+    {
+      "task_id": "ITASK-001",
+      "title": "FR-001 Optional Support Surface",
+      "description": "`prd-bootstrap` 必须继续作为 optional support capability 存在，不得升级成公开一级主命令，也不得被叙述为主流程替代。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-001",
+        "AC-002"
+      ],
+      "mapped_test_ids": [
+        "TC-001",
+        "TC-033",
+        "TC-034",
+        "TC-035",
+        "TC-036",
+        "TC-037",
+        "TC-038",
+        "TC-039",
+        "TC-040",
+        "TC-041",
+        "TC-002"
+      ],
+      "mapped_scenario_ids": [
+        "SC-001",
+        "SC-002"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-001",
+        "TC-002"
+      ],
+      "depends_on": [],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: package_state, empty | prd_only | user_story_only | test_case_only | prd_user_story | prd_test_case | user_story_test_case | full_consistent | full_inconsistent, empty, prd_only, user_story_only, test_case_only, prd_user_story, prd_test_case, user_story_test_case, full_consistent, full_inconsistent, bootstrap_state, draft_generated | review_required | supplement_required | drift_repair_required | freeze_ready | implementation_pending, draft_generated, review_required, supplement_required, drift_repair_required, freeze_ready, implementation_pending, truth_origin_state, native_truth | derived_from_downstream | needs_truth_review, native_truth, derived_from_downstream, needs_truth_review, decision_state, accepted | rejected | deferred, accepted, rejected, deferred, routing_state, canonical_compile | reverse_derive | repair_route | freeze_promotion, canonical_compile, reverse_derive, repair_route, freeze_promotion"
+      ],
+      "diagram_state_axes": [
+        "package_state",
+        "empty | prd_only | user_story_only | test_case_only | prd_user_story | prd_test_case | user_story_test_case | full_consistent | full_inconsistent",
+        "empty",
+        "prd_only",
+        "user_story_only",
+        "test_case_only",
+        "prd_user_story",
+        "prd_test_case",
+        "user_story_test_case",
+        "full_consistent",
+        "full_inconsistent",
+        "bootstrap_state",
+        "draft_generated | review_required | supplement_required | drift_repair_required | freeze_ready | implementation_pending",
+        "draft_generated",
+        "review_required",
+        "supplement_required",
+        "drift_repair_required",
+        "freeze_ready",
+        "implementation_pending",
+        "truth_origin_state",
+        "native_truth | derived_from_downstream | needs_truth_review",
+        "native_truth",
+        "derived_from_downstream",
+        "needs_truth_review",
+        "decision_state",
+        "accepted | rejected | deferred",
+        "accepted",
+        "rejected",
+        "deferred",
+        "routing_state",
+        "canonical_compile | reverse_derive | repair_route | freeze_promotion",
+        "canonical_compile",
+        "reverse_derive",
+        "repair_route",
+        "freeze_promotion"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260506T191701Z-fa36",
+        ".beacon/qa/features/beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260507T031949171749",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.4.0/.machine/qa/beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure.qa9-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure/ac-closure.json",
+        ".beacon/qa/features/beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure/scorecard.json",
+        "verify:review.accept"
+      ],
+      "changed_files": [
+        ".beacon/evidence-manifest.json",
+        ".beacon/gate-report.json",
+        ".beacon/metadata/project-version-metadata.json",
+        ".beacon/metadata/project-version-metadata.md",
+        ".beacon/state/project-metadata/latest.json",
+        "beacon/commands/help.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/implement/adapter.py",
+        "beacon/commands/implement/git.py",
+        "beacon/commands/prd_bootstrap.py",
+        "beacon/commands/report.py",
+        "beacon/commands/status.py",
+        "beacon/commands/user_story.py",
+        "beacon/commands/workflow.py",
+        "beacon/utils/board_launcher.py",
+        "beacon/utils/help_support.py",
+        "beacon/utils/implementation_plan.py",
+        "beacon/utils/llm_loop.py",
+        "beacon/utils/prd_bootstrap.py",
+        "beacon/utils/release_scorecard.py",
+        "beacon/utils/runtime_projection.py",
+        "docs/beacon/v1.3.12/.machine/qa/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.ac-test-matrix.json",
+        "docs/beacon/v1.3.12/.machine/qa/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.qa9-matrix.json",
+        "docs/beacon/v1.3.12/.machine/qa/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.story-scenario-map.json",
+        "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.candidate-ledger.json",
+        "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.completeness.json",
+        "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.freeze-contract.json",
+        "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.re-freeze-transaction.json",
+        "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.supplement-decision-log.json",
+        "docs/beacon/v1.3.12/.machine/user-story/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.json",
+        "docs/beacon/v1.3.12/change/v1.3.12.md",
+        "docs/beacon/v1.3.12/prd/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md",
+        "docs/beacon/v1.3.12/qa/test-cases/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md",
+        "docs/beacon/v1.3.12/user-story/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md",
+        "skills/beacon/beacon-help/SKILL.md",
+        "skills/beacon/beacon-qa/SKILL.md",
+        "skills/beacon/beacon-release/SKILL.md",
+        "skills/beacon/beacon-status/SKILL.md",
+        "tests/test_real_project_validation_command.py",
+        "tests/test_v112_implementation_plan_runtime.py",
+        "tests/test_v114_implement_command.py",
+        "tests/test_v1311_board_launcher.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-06T19:17:02.604795+00:00",
+      "completed_at": "2026-05-06T19:17:02.687467+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-002",
+      "title": "FR-002 One-Click Requirement Draft Package",
+      "description": "系统必须支持在一次运行中生成： PRD User Story Test Case 并写入当前版本的 canonical docs tree。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-003"
+      ],
+      "mapped_test_ids": [
+        "TC-003"
+      ],
+      "mapped_scenario_ids": [
+        "SC-003"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-003"
+      ],
+      "depends_on": [
+        "ITASK-001"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: package_state, empty | prd_only | user_story_only | test_case_only | prd_user_story | prd_test_case | user_story_test_case | full_consistent | full_inconsistent, empty, prd_only, user_story_only, test_case_only, prd_user_story, prd_test_case, user_story_test_case, full_consistent, full_inconsistent, bootstrap_state, draft_generated | review_required | supplement_required | drift_repair_required | freeze_ready | implementation_pending, draft_generated, review_required, supplement_required, drift_repair_required, freeze_ready, implementation_pending, truth_origin_state, native_truth | derived_from_downstream | needs_truth_review, native_truth, derived_from_downstream, needs_truth_review, decision_state, accepted | rejected | deferred, accepted, rejected, deferred, routing_state, canonical_compile | reverse_derive | repair_route | freeze_promotion, canonical_compile, reverse_derive, repair_route, freeze_promotion"
+      ],
+      "diagram_state_axes": [
+        "package_state",
+        "empty | prd_only | user_story_only | test_case_only | prd_user_story | prd_test_case | user_story_test_case | full_consistent | full_inconsistent",
+        "empty",
+        "prd_only",
+        "user_story_only",
+        "test_case_only",
+        "prd_user_story",
+        "prd_test_case",
+        "user_story_test_case",
+        "full_consistent",
+        "full_inconsistent",
+        "bootstrap_state",
+        "draft_generated | review_required | supplement_required | drift_repair_required | freeze_ready | implementation_pending",
+        "draft_generated",
+        "review_required",
+        "supplement_required",
+        "drift_repair_required",
+        "freeze_ready",
+        "implementation_pending",
+        "truth_origin_state",
+        "native_truth | derived_from_downstream | needs_truth_review",
+        "native_truth",
+        "derived_from_downstream",
+        "needs_truth_review",
+        "decision_state",
+        "accepted | rejected | deferred",
+        "accepted",
+        "rejected",
+        "deferred",
+        "routing_state",
+        "canonical_compile | reverse_derive | repair_route | freeze_promotion",
+        "canonical_compile",
+        "reverse_derive",
+        "repair_route",
+        "freeze_promotion"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260506T191701Z-fa36",
+        ".beacon/qa/features/beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260507T031949171749",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.4.0/.machine/qa/beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure.qa9-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure/ac-closure.json",
+        ".beacon/qa/features/beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure/scorecard.json",
+        "verify:review.accept"
+      ],
+      "changed_files": [
+        ".beacon/evidence-manifest.json",
+        ".beacon/gate-report.json",
+        ".beacon/metadata/project-version-metadata.json",
+        ".beacon/metadata/project-version-metadata.md",
+        ".beacon/state/project-metadata/latest.json",
+        "beacon/commands/help.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/implement/adapter.py",
+        "beacon/commands/implement/git.py",
+        "beacon/commands/prd_bootstrap.py",
+        "beacon/commands/report.py",
+        "beacon/commands/status.py",
+        "beacon/commands/user_story.py",
+        "beacon/commands/workflow.py",
+        "beacon/utils/board_launcher.py",
+        "beacon/utils/help_support.py",
+        "beacon/utils/implementation_plan.py",
+        "beacon/utils/llm_loop.py",
+        "beacon/utils/prd_bootstrap.py",
+        "beacon/utils/release_scorecard.py",
+        "beacon/utils/runtime_projection.py",
+        "docs/beacon/v1.3.12/.machine/qa/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.ac-test-matrix.json",
+        "docs/beacon/v1.3.12/.machine/qa/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.qa9-matrix.json",
+        "docs/beacon/v1.3.12/.machine/qa/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.story-scenario-map.json",
+        "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.candidate-ledger.json",
+        "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.completeness.json",
+        "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.freeze-contract.json",
+        "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.re-freeze-transaction.json",
+        "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.supplement-decision-log.json",
+        "docs/beacon/v1.3.12/.machine/user-story/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.json",
+        "docs/beacon/v1.3.12/change/v1.3.12.md",
+        "docs/beacon/v1.3.12/prd/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md",
+        "docs/beacon/v1.3.12/qa/test-cases/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md",
+        "docs/beacon/v1.3.12/user-story/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md",
+        "skills/beacon/beacon-help/SKILL.md",
+        "skills/beacon/beacon-qa/SKILL.md",
+        "skills/beacon/beacon-release/SKILL.md",
+        "skills/beacon/beacon-status/SKILL.md",
+        "tests/test_real_project_validation_command.py",
+        "tests/test_v112_implementation_plan_runtime.py",
+        "tests/test_v114_implement_command.py",
+        "tests/test_v1311_board_launcher.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-06T19:17:02.687488+00:00",
+      "completed_at": "2026-05-06T19:17:02.687490+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-003",
+      "title": "FR-003 Safe-by-Default Execution",
+      "description": "默认行为必须保持： 1. `doctor verify-context --strict` 2. `dry-run` 3. `no-overwrite` 4. block on quality / consistency failure",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-010",
+        "AC-011"
+      ],
+      "mapped_test_ids": [
+        "TEST-010",
+        "TEST-011"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-002"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: package_state, empty | prd_only | user_story_only | test_case_only | prd_user_story | prd_test_case | user_story_test_case | full_consistent | full_inconsistent, empty, prd_only, user_story_only, test_case_only, prd_user_story, prd_test_case, user_story_test_case, full_consistent, full_inconsistent, bootstrap_state, draft_generated | review_required | supplement_required | drift_repair_required | freeze_ready | implementation_pending, draft_generated, review_required, supplement_required, drift_repair_required, freeze_ready, implementation_pending, truth_origin_state, native_truth | derived_from_downstream | needs_truth_review, native_truth, derived_from_downstream, needs_truth_review, decision_state, accepted | rejected | deferred, accepted, rejected, deferred, routing_state, canonical_compile | reverse_derive | repair_route | freeze_promotion, canonical_compile, reverse_derive, repair_route, freeze_promotion"
+      ],
+      "diagram_state_axes": [
+        "package_state",
+        "empty | prd_only | user_story_only | test_case_only | prd_user_story | prd_test_case | user_story_test_case | full_consistent | full_inconsistent",
+        "empty",
+        "prd_only",
+        "user_story_only",
+        "test_case_only",
+        "prd_user_story",
+        "prd_test_case",
+        "user_story_test_case",
+        "full_consistent",
+        "full_inconsistent",
+        "bootstrap_state",
+        "draft_generated | review_required | supplement_required | drift_repair_required | freeze_ready | implementation_pending",
+        "draft_generated",
+        "review_required",
+        "supplement_required",
+        "drift_repair_required",
+        "freeze_ready",
+        "implementation_pending",
+        "truth_origin_state",
+        "native_truth | derived_from_downstream | needs_truth_review",
+        "native_truth",
+        "derived_from_downstream",
+        "needs_truth_review",
+        "decision_state",
+        "accepted | rejected | deferred",
+        "accepted",
+        "rejected",
+        "deferred",
+        "routing_state",
+        "canonical_compile | reverse_derive | repair_route | freeze_promotion",
+        "canonical_compile",
+        "reverse_derive",
+        "repair_route",
+        "freeze_promotion"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260506T191701Z-fa36",
+        ".beacon/qa/features/beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260507T031949171749",
+        ".beacon/auto-test-status.json",
+        "verify:review.accept"
+      ],
+      "changed_files": [
+        ".beacon/evidence-manifest.json",
+        ".beacon/gate-report.json",
+        ".beacon/metadata/project-version-metadata.json",
+        ".beacon/metadata/project-version-metadata.md",
+        ".beacon/state/project-metadata/latest.json",
+        "beacon/commands/help.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/implement/adapter.py",
+        "beacon/commands/implement/git.py",
+        "beacon/commands/prd_bootstrap.py",
+        "beacon/commands/report.py",
+        "beacon/commands/status.py",
+        "beacon/commands/user_story.py",
+        "beacon/commands/workflow.py",
+        "beacon/utils/board_launcher.py",
+        "beacon/utils/help_support.py",
+        "beacon/utils/implementation_plan.py",
+        "beacon/utils/llm_loop.py",
+        "beacon/utils/prd_bootstrap.py",
+        "beacon/utils/release_scorecard.py",
+        "beacon/utils/runtime_projection.py",
+        "docs/beacon/v1.3.12/.machine/qa/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.ac-test-matrix.json",
+        "docs/beacon/v1.3.12/.machine/qa/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.qa9-matrix.json",
+        "docs/beacon/v1.3.12/.machine/qa/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.story-scenario-map.json",
+        "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.candidate-ledger.json",
+        "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.completeness.json",
+        "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.freeze-contract.json",
+        "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.re-freeze-transaction.json",
+        "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.supplement-decision-log.json",
+        "docs/beacon/v1.3.12/.machine/user-story/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.json",
+        "docs/beacon/v1.3.12/change/v1.3.12.md",
+        "docs/beacon/v1.3.12/prd/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md",
+        "docs/beacon/v1.3.12/qa/test-cases/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md",
+        "docs/beacon/v1.3.12/user-story/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md",
+        "skills/beacon/beacon-help/SKILL.md",
+        "skills/beacon/beacon-qa/SKILL.md",
+        "skills/beacon/beacon-release/SKILL.md",
+        "skills/beacon/beacon-status/SKILL.md",
+        "tests/test_real_project_validation_command.py",
+        "tests/test_v112_implementation_plan_runtime.py",
+        "tests/test_v114_implement_command.py",
+        "tests/test_v1311_board_launcher.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-06T19:17:02.687505+00:00",
+      "completed_at": "2026-05-06T19:17:02.687509+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-004",
+      "title": "FR-004 Atomic and Recoverable Write",
+      "description": "Apply 模式必须具备： lock atomic write state artifact rollback manifest failure cleanup 不得留下半成品 requirement docs。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-014",
+        "AC-004"
+      ],
+      "mapped_test_ids": [
+        "TEST-014",
+        "TC-004"
+      ],
+      "mapped_scenario_ids": [
+        "SC-004"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-004"
+      ],
+      "depends_on": [
+        "ITASK-003"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: package_state, empty | prd_only | user_story_only | test_case_only | prd_user_story | prd_test_case | user_story_test_case | full_consistent | full_inconsistent, empty, prd_only, user_story_only, test_case_only, prd_user_story, prd_test_case, user_story_test_case, full_consistent, full_inconsistent, bootstrap_state, draft_generated | review_required | supplement_required | drift_repair_required | freeze_ready | implementation_pending, draft_generated, review_required, supplement_required, drift_repair_required, freeze_ready, implementation_pending, truth_origin_state, native_truth | derived_from_downstream | needs_truth_review, native_truth, derived_from_downstream, needs_truth_review, decision_state, accepted | rejected | deferred, accepted, rejected, deferred, routing_state, canonical_compile | reverse_derive | repair_route | freeze_promotion, canonical_compile, reverse_derive, repair_route, freeze_promotion"
+      ],
+      "diagram_state_axes": [
+        "package_state",
+        "empty | prd_only | user_story_only | test_case_only | prd_user_story | prd_test_case | user_story_test_case | full_consistent | full_inconsistent",
+        "empty",
+        "prd_only",
+        "user_story_only",
+        "test_case_only",
+        "prd_user_story",
+        "prd_test_case",
+        "user_story_test_case",
+        "full_consistent",
+        "full_inconsistent",
+        "bootstrap_state",
+        "draft_generated | review_required | supplement_required | drift_repair_required | freeze_ready | implementation_pending",
+        "draft_generated",
+        "review_required",
+        "supplement_required",
+        "drift_repair_required",
+        "freeze_ready",
+        "implementation_pending",
+        "truth_origin_state",
+        "native_truth | derived_from_downstream | needs_truth_review",
+        "native_truth",
+        "derived_from_downstream",
+        "needs_truth_review",
+        "decision_state",
+        "accepted | rejected | deferred",
+        "accepted",
+        "rejected",
+        "deferred",
+        "routing_state",
+        "canonical_compile | reverse_derive | repair_route | freeze_promotion",
+        "canonical_compile",
+        "reverse_derive",
+        "repair_route",
+        "freeze_promotion"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260506T191701Z-fa36",
+        ".beacon/qa/features/beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260507T031949171749",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.4.0/.machine/qa/beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure.qa9-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure/ac-closure.json",
+        ".beacon/qa/features/beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure/scorecard.json",
+        "verify:review.accept"
+      ],
+      "changed_files": [
+        ".beacon/evidence-manifest.json",
+        ".beacon/gate-report.json",
+        ".beacon/metadata/project-version-metadata.json",
+        ".beacon/metadata/project-version-metadata.md",
+        ".beacon/state/project-metadata/latest.json",
+        "beacon/commands/help.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/implement/adapter.py",
+        "beacon/commands/implement/git.py",
+        "beacon/commands/prd_bootstrap.py",
+        "beacon/commands/report.py",
+        "beacon/commands/status.py",
+        "beacon/commands/user_story.py",
+        "beacon/commands/workflow.py",
+        "beacon/utils/board_launcher.py",
+        "beacon/utils/help_support.py",
+        "beacon/utils/implementation_plan.py",
+        "beacon/utils/llm_loop.py",
+        "beacon/utils/prd_bootstrap.py",
+        "beacon/utils/release_scorecard.py",
+        "beacon/utils/runtime_projection.py",
+        "docs/beacon/v1.3.12/.machine/qa/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.ac-test-matrix.json",
+        "docs/beacon/v1.3.12/.machine/qa/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.qa9-matrix.json",
+        "docs/beacon/v1.3.12/.machine/qa/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.story-scenario-map.json",
+        "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.candidate-ledger.json",
+        "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.completeness.json",
+        "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.freeze-contract.json",
+        "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.re-freeze-transaction.json",
+        "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.supplement-decision-log.json",
+        "docs/beacon/v1.3.12/.machine/user-story/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.json",
+        "docs/beacon/v1.3.12/change/v1.3.12.md",
+        "docs/beacon/v1.3.12/prd/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md",
+        "docs/beacon/v1.3.12/qa/test-cases/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md",
+        "docs/beacon/v1.3.12/user-story/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md",
+        "skills/beacon/beacon-help/SKILL.md",
+        "skills/beacon/beacon-qa/SKILL.md",
+        "skills/beacon/beacon-release/SKILL.md",
+        "skills/beacon/beacon-status/SKILL.md",
+        "tests/test_real_project_validation_command.py",
+        "tests/test_v112_implementation_plan_runtime.py",
+        "tests/test_v114_implement_command.py",
+        "tests/test_v1311_board_launcher.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-06T19:17:02.687524+00:00",
+      "completed_at": "2026-05-06T19:17:02.687525+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-005",
+      "title": "FR-005 Bootstrap Output Status Contract",
+      "description": "bootstrap 生成的 requirement package 必须显式标记为： `bootstrap-generated` `review-required` `not-yet-frozen` 禁止默认伪装成： already-frozen truth implementation-complete package",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-005",
+        "AC-017",
+        "AC-018"
+      ],
+      "mapped_test_ids": [
+        "TEST-005",
+        "TEST-017",
+        "TEST-018"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-004"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: package_state, empty | prd_only | user_story_only | test_case_only | prd_user_story | prd_test_case | user_story_test_case | full_consistent | full_inconsistent, empty, prd_only, user_story_only, test_case_only, prd_user_story, prd_test_case, user_story_test_case, full_consistent, full_inconsistent, bootstrap_state, draft_generated | review_required | supplement_required | drift_repair_required | freeze_ready | implementation_pending, draft_generated, review_required, supplement_required, drift_repair_required, freeze_ready, implementation_pending, truth_origin_state, native_truth | derived_from_downstream | needs_truth_review, native_truth, derived_from_downstream, needs_truth_review, decision_state, accepted | rejected | deferred, accepted, rejected, deferred, routing_state, canonical_compile | reverse_derive | repair_route | freeze_promotion, canonical_compile, reverse_derive, repair_route, freeze_promotion"
+      ],
+      "diagram_state_axes": [
+        "package_state",
+        "empty | prd_only | user_story_only | test_case_only | prd_user_story | prd_test_case | user_story_test_case | full_consistent | full_inconsistent",
+        "empty",
+        "prd_only",
+        "user_story_only",
+        "test_case_only",
+        "prd_user_story",
+        "prd_test_case",
+        "user_story_test_case",
+        "full_consistent",
+        "full_inconsistent",
+        "bootstrap_state",
+        "draft_generated | review_required | supplement_required | drift_repair_required | freeze_ready | implementation_pending",
+        "draft_generated",
+        "review_required",
+        "supplement_required",
+        "drift_repair_required",
+        "freeze_ready",
+        "implementation_pending",
+        "truth_origin_state",
+        "native_truth | derived_from_downstream | needs_truth_review",
+        "native_truth",
+        "derived_from_downstream",
+        "needs_truth_review",
+        "decision_state",
+        "accepted | rejected | deferred",
+        "accepted",
+        "rejected",
+        "deferred",
+        "routing_state",
+        "canonical_compile | reverse_derive | repair_route | freeze_promotion",
+        "canonical_compile",
+        "reverse_derive",
+        "repair_route",
+        "freeze_promotion"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260506T191701Z-fa36",
+        ".beacon/qa/features/beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260507T031949171749",
+        ".beacon/auto-test-status.json",
+        "verify:review.accept"
+      ],
+      "changed_files": [
+        ".beacon/evidence-manifest.json",
+        ".beacon/gate-report.json",
+        ".beacon/metadata/project-version-metadata.json",
+        ".beacon/metadata/project-version-metadata.md",
+        ".beacon/state/project-metadata/latest.json",
+        "beacon/commands/help.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/implement/adapter.py",
+        "beacon/commands/implement/git.py",
+        "beacon/commands/prd_bootstrap.py",
+        "beacon/commands/report.py",
+        "beacon/commands/status.py",
+        "beacon/commands/user_story.py",
+        "beacon/commands/workflow.py",
+        "beacon/utils/board_launcher.py",
+        "beacon/utils/help_support.py",
+        "beacon/utils/implementation_plan.py",
+        "beacon/utils/llm_loop.py",
+        "beacon/utils/prd_bootstrap.py",
+        "beacon/utils/release_scorecard.py",
+        "beacon/utils/runtime_projection.py",
+        "docs/beacon/v1.3.12/.machine/qa/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.ac-test-matrix.json",
+        "docs/beacon/v1.3.12/.machine/qa/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.qa9-matrix.json",
+        "docs/beacon/v1.3.12/.machine/qa/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.story-scenario-map.json",
+        "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.candidate-ledger.json",
+        "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.completeness.json",
+        "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.freeze-contract.json",
+        "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.re-freeze-transaction.json",
+        "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.supplement-decision-log.json",
+        "docs/beacon/v1.3.12/.machine/user-story/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.json",
+        "docs/beacon/v1.3.12/change/v1.3.12.md",
+        "docs/beacon/v1.3.12/prd/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md",
+        "docs/beacon/v1.3.12/qa/test-cases/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md",
+        "docs/beacon/v1.3.12/user-story/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md",
+        "skills/beacon/beacon-help/SKILL.md",
+        "skills/beacon/beacon-qa/SKILL.md",
+        "skills/beacon/beacon-release/SKILL.md",
+        "skills/beacon/beacon-status/SKILL.md",
+        "tests/test_real_project_validation_command.py",
+        "tests/test_v112_implementation_plan_runtime.py",
+        "tests/test_v114_implement_command.py",
+        "tests/test_v1311_board_launcher.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-06T19:17:02.687539+00:00",
+      "completed_at": "2026-05-06T19:17:02.687540+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-006",
+      "title": "FR-006 Traceability Contract",
+      "description": "bootstrap 产物必须共享统一的： feature slug version source description AC/TC traceability generation timestamp 并可被后续 `change / review / refreeze / gate` 读取。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-022",
+        "AC-007"
+      ],
+      "mapped_test_ids": [
+        "TEST-022",
+        "TEST-007"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-005"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: package_state, empty | prd_only | user_story_only | test_case_only | prd_user_story | prd_test_case | user_story_test_case | full_consistent | full_inconsistent, empty, prd_only, user_story_only, test_case_only, prd_user_story, prd_test_case, user_story_test_case, full_consistent, full_inconsistent, bootstrap_state, draft_generated | review_required | supplement_required | drift_repair_required | freeze_ready | implementation_pending, draft_generated, review_required, supplement_required, drift_repair_required, freeze_ready, implementation_pending, truth_origin_state, native_truth | derived_from_downstream | needs_truth_review, native_truth, derived_from_downstream, needs_truth_review, decision_state, accepted | rejected | deferred, accepted, rejected, deferred, routing_state, canonical_compile | reverse_derive | repair_route | freeze_promotion, canonical_compile, reverse_derive, repair_route, freeze_promotion"
+      ],
+      "diagram_state_axes": [
+        "package_state",
+        "empty | prd_only | user_story_only | test_case_only | prd_user_story | prd_test_case | user_story_test_case | full_consistent | full_inconsistent",
+        "empty",
+        "prd_only",
+        "user_story_only",
+        "test_case_only",
+        "prd_user_story",
+        "prd_test_case",
+        "user_story_test_case",
+        "full_consistent",
+        "full_inconsistent",
+        "bootstrap_state",
+        "draft_generated | review_required | supplement_required | drift_repair_required | freeze_ready | implementation_pending",
+        "draft_generated",
+        "review_required",
+        "supplement_required",
+        "drift_repair_required",
+        "freeze_ready",
+        "implementation_pending",
+        "truth_origin_state",
+        "native_truth | derived_from_downstream | needs_truth_review",
+        "native_truth",
+        "derived_from_downstream",
+        "needs_truth_review",
+        "decision_state",
+        "accepted | rejected | deferred",
+        "accepted",
+        "rejected",
+        "deferred",
+        "routing_state",
+        "canonical_compile | reverse_derive | repair_route | freeze_promotion",
+        "canonical_compile",
+        "reverse_derive",
+        "repair_route",
+        "freeze_promotion"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260506T191701Z-fa36",
+        ".beacon/qa/features/beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260507T031949171749",
+        ".beacon/auto-test-status.json",
+        "verify:review.accept"
+      ],
+      "changed_files": [
+        ".beacon/evidence-manifest.json",
+        ".beacon/gate-report.json",
+        ".beacon/metadata/project-version-metadata.json",
+        ".beacon/metadata/project-version-metadata.md",
+        ".beacon/state/project-metadata/latest.json",
+        "beacon/commands/help.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/implement/adapter.py",
+        "beacon/commands/implement/git.py",
+        "beacon/commands/prd_bootstrap.py",
+        "beacon/commands/report.py",
+        "beacon/commands/status.py",
+        "beacon/commands/user_story.py",
+        "beacon/commands/workflow.py",
+        "beacon/utils/board_launcher.py",
+        "beacon/utils/help_support.py",
+        "beacon/utils/implementation_plan.py",
+        "beacon/utils/llm_loop.py",
+        "beacon/utils/prd_bootstrap.py",
+        "beacon/utils/release_scorecard.py",
+        "beacon/utils/runtime_projection.py",
+        "docs/beacon/v1.3.12/.machine/qa/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.ac-test-matrix.json",
+        "docs/beacon/v1.3.12/.machine/qa/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.qa9-matrix.json",
+        "docs/beacon/v1.3.12/.machine/qa/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.story-scenario-map.json",
+        "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.candidate-ledger.json",
+        "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.completeness.json",
+        "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.freeze-contract.json",
+        "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.re-freeze-transaction.json",
+        "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.supplement-decision-log.json",
+        "docs/beacon/v1.3.12/.machine/user-story/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.json",
+        "docs/beacon/v1.3.12/change/v1.3.12.md",
+        "docs/beacon/v1.3.12/prd/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md",
+        "docs/beacon/v1.3.12/qa/test-cases/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md",
+        "docs/beacon/v1.3.12/user-story/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md",
+        "skills/beacon/beacon-help/SKILL.md",
+        "skills/beacon/beacon-qa/SKILL.md",
+        "skills/beacon/beacon-release/SKILL.md",
+        "skills/beacon/beacon-status/SKILL.md",
+        "tests/test_real_project_validation_command.py",
+        "tests/test_v112_implementation_plan_runtime.py",
+        "tests/test_v114_implement_command.py",
+        "tests/test_v1311_board_launcher.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-06T19:17:02.687554+00:00",
+      "completed_at": "2026-05-06T19:17:02.687555+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-007",
+      "title": "FR-007 Quality and Consistency Gate",
+      "description": "bootstrap 运行必须阻断以下情况： placeholder 超阈值 story AC 与 test-case AC 映射不完整 context verify 失败 overwrite 风险未显式允许 lock 已存在",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-012",
+        "AC-026",
+        "AC-009",
+        "AC-013"
+      ],
+      "mapped_test_ids": [
+        "TEST-012",
+        "TEST-026",
+        "TEST-009",
+        "TEST-013"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-006"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: package_state, empty | prd_only | user_story_only | test_case_only | prd_user_story | prd_test_case | user_story_test_case | full_consistent | full_inconsistent, empty, prd_only, user_story_only, test_case_only, prd_user_story, prd_test_case, user_story_test_case, full_consistent, full_inconsistent, bootstrap_state, draft_generated | review_required | supplement_required | drift_repair_required | freeze_ready | implementation_pending, draft_generated, review_required, supplement_required, drift_repair_required, freeze_ready, implementation_pending, truth_origin_state, native_truth | derived_from_downstream | needs_truth_review, native_truth, derived_from_downstream, needs_truth_review, decision_state, accepted | rejected | deferred, accepted, rejected, deferred, routing_state, canonical_compile | reverse_derive | repair_route | freeze_promotion, canonical_compile, reverse_derive, repair_route, freeze_promotion"
+      ],
+      "diagram_state_axes": [
+        "package_state",
+        "empty | prd_only | user_story_only | test_case_only | prd_user_story | prd_test_case | user_story_test_case | full_consistent | full_inconsistent",
+        "empty",
+        "prd_only",
+        "user_story_only",
+        "test_case_only",
+        "prd_user_story",
+        "prd_test_case",
+        "user_story_test_case",
+        "full_consistent",
+        "full_inconsistent",
+        "bootstrap_state",
+        "draft_generated | review_required | supplement_required | drift_repair_required | freeze_ready | implementation_pending",
+        "draft_generated",
+        "review_required",
+        "supplement_required",
+        "drift_repair_required",
+        "freeze_ready",
+        "implementation_pending",
+        "truth_origin_state",
+        "native_truth | derived_from_downstream | needs_truth_review",
+        "native_truth",
+        "derived_from_downstream",
+        "needs_truth_review",
+        "decision_state",
+        "accepted | rejected | deferred",
+        "accepted",
+        "rejected",
+        "deferred",
+        "routing_state",
+        "canonical_compile | reverse_derive | repair_route | freeze_promotion",
+        "canonical_compile",
+        "reverse_derive",
+        "repair_route",
+        "freeze_promotion"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260506T191701Z-fa36",
+        ".beacon/qa/features/beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260507T031949171749",
+        ".beacon/auto-test-status.json",
+        "verify:review.accept"
+      ],
+      "changed_files": [
+        ".beacon/evidence-manifest.json",
+        ".beacon/gate-report.json",
+        ".beacon/metadata/project-version-metadata.json",
+        ".beacon/metadata/project-version-metadata.md",
+        ".beacon/state/project-metadata/latest.json",
+        "beacon/commands/help.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/implement/adapter.py",
+        "beacon/commands/implement/git.py",
+        "beacon/commands/prd_bootstrap.py",
+        "beacon/commands/report.py",
+        "beacon/commands/status.py",
+        "beacon/commands/user_story.py",
+        "beacon/commands/workflow.py",
+        "beacon/utils/board_launcher.py",
+        "beacon/utils/help_support.py",
+        "beacon/utils/implementation_plan.py",
+        "beacon/utils/llm_loop.py",
+        "beacon/utils/prd_bootstrap.py",
+        "beacon/utils/release_scorecard.py",
+        "beacon/utils/runtime_projection.py",
+        "docs/beacon/v1.3.12/.machine/qa/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.ac-test-matrix.json",
+        "docs/beacon/v1.3.12/.machine/qa/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.qa9-matrix.json",
+        "docs/beacon/v1.3.12/.machine/qa/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.story-scenario-map.json",
+        "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.candidate-ledger.json",
+        "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.completeness.json",
+        "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.freeze-contract.json",
+        "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.re-freeze-transaction.json",
+        "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.supplement-decision-log.json",
+        "docs/beacon/v1.3.12/.machine/user-story/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.json",
+        "docs/beacon/v1.3.12/change/v1.3.12.md",
+        "docs/beacon/v1.3.12/prd/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md",
+        "docs/beacon/v1.3.12/qa/test-cases/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md",
+        "docs/beacon/v1.3.12/user-story/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md",
+        "skills/beacon/beacon-help/SKILL.md",
+        "skills/beacon/beacon-qa/SKILL.md",
+        "skills/beacon/beacon-release/SKILL.md",
+        "skills/beacon/beacon-status/SKILL.md",
+        "tests/test_real_project_validation_command.py",
+        "tests/test_v112_implementation_plan_runtime.py",
+        "tests/test_v114_implement_command.py",
+        "tests/test_v1311_board_launcher.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-06T19:17:02.687569+00:00",
+      "completed_at": "2026-05-06T19:17:02.687570+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-008",
+      "title": "FR-008 Human-Readable Next-Step Guidance",
+      "description": "bootstrap 输出必须告诉操作者： 当前状态 阻断原因 下一步动作 建议命令 进入 freeze 主链前还缺什么",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-024",
+        "AC-031",
+        "AC-008"
+      ],
+      "mapped_test_ids": [
+        "TEST-024",
+        "TEST-031",
+        "TEST-008"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-007"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: package_state, empty | prd_only | user_story_only | test_case_only | prd_user_story | prd_test_case | user_story_test_case | full_consistent | full_inconsistent, empty, prd_only, user_story_only, test_case_only, prd_user_story, prd_test_case, user_story_test_case, full_consistent, full_inconsistent, bootstrap_state, draft_generated | review_required | supplement_required | drift_repair_required | freeze_ready | implementation_pending, draft_generated, review_required, supplement_required, drift_repair_required, freeze_ready, implementation_pending, truth_origin_state, native_truth | derived_from_downstream | needs_truth_review, native_truth, derived_from_downstream, needs_truth_review, decision_state, accepted | rejected | deferred, accepted, rejected, deferred, routing_state, canonical_compile | reverse_derive | repair_route | freeze_promotion, canonical_compile, reverse_derive, repair_route, freeze_promotion"
+      ],
+      "diagram_state_axes": [
+        "package_state",
+        "empty | prd_only | user_story_only | test_case_only | prd_user_story | prd_test_case | user_story_test_case | full_consistent | full_inconsistent",
+        "empty",
+        "prd_only",
+        "user_story_only",
+        "test_case_only",
+        "prd_user_story",
+        "prd_test_case",
+        "user_story_test_case",
+        "full_consistent",
+        "full_inconsistent",
+        "bootstrap_state",
+        "draft_generated | review_required | supplement_required | drift_repair_required | freeze_ready | implementation_pending",
+        "draft_generated",
+        "review_required",
+        "supplement_required",
+        "drift_repair_required",
+        "freeze_ready",
+        "implementation_pending",
+        "truth_origin_state",
+        "native_truth | derived_from_downstream | needs_truth_review",
+        "native_truth",
+        "derived_from_downstream",
+        "needs_truth_review",
+        "decision_state",
+        "accepted | rejected | deferred",
+        "accepted",
+        "rejected",
+        "deferred",
+        "routing_state",
+        "canonical_compile | reverse_derive | repair_route | freeze_promotion",
+        "canonical_compile",
+        "reverse_derive",
+        "repair_route",
+        "freeze_promotion"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260506T191701Z-fa36",
+        ".beacon/qa/features/beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260507T031949171749",
+        ".beacon/auto-test-status.json",
+        "verify:review.accept"
+      ],
+      "changed_files": [
+        ".beacon/evidence-manifest.json",
+        ".beacon/gate-report.json",
+        ".beacon/metadata/project-version-metadata.json",
+        ".beacon/metadata/project-version-metadata.md",
+        ".beacon/state/project-metadata/latest.json",
+        "beacon/commands/help.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/implement/adapter.py",
+        "beacon/commands/implement/git.py",
+        "beacon/commands/prd_bootstrap.py",
+        "beacon/commands/report.py",
+        "beacon/commands/status.py",
+        "beacon/commands/user_story.py",
+        "beacon/commands/workflow.py",
+        "beacon/utils/board_launcher.py",
+        "beacon/utils/help_support.py",
+        "beacon/utils/implementation_plan.py",
+        "beacon/utils/llm_loop.py",
+        "beacon/utils/prd_bootstrap.py",
+        "beacon/utils/release_scorecard.py",
+        "beacon/utils/runtime_projection.py",
+        "docs/beacon/v1.3.12/.machine/qa/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.ac-test-matrix.json",
+        "docs/beacon/v1.3.12/.machine/qa/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.qa9-matrix.json",
+        "docs/beacon/v1.3.12/.machine/qa/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.story-scenario-map.json",
+        "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.candidate-ledger.json",
+        "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.completeness.json",
+        "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.freeze-contract.json",
+        "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.re-freeze-transaction.json",
+        "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.supplement-decision-log.json",
+        "docs/beacon/v1.3.12/.machine/user-story/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.json",
+        "docs/beacon/v1.3.12/change/v1.3.12.md",
+        "docs/beacon/v1.3.12/prd/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md",
+        "docs/beacon/v1.3.12/qa/test-cases/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md",
+        "docs/beacon/v1.3.12/user-story/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md",
+        "skills/beacon/beacon-help/SKILL.md",
+        "skills/beacon/beacon-qa/SKILL.md",
+        "skills/beacon/beacon-release/SKILL.md",
+        "skills/beacon/beacon-status/SKILL.md",
+        "tests/test_real_project_validation_command.py",
+        "tests/test_v112_implementation_plan_runtime.py",
+        "tests/test_v114_implement_command.py",
+        "tests/test_v1311_board_launcher.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-06T19:17:02.687584+00:00",
+      "completed_at": "2026-05-06T19:17:02.687586+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-009",
+      "title": "FR-009 No Reverse Truth Drift",
+      "description": "bootstrap 输出不得通过 state artifact、support surface 或 runtime projection 反向定义 frozen truth。 只有正式 review / refreeze 路由，才能把 bootstrap draft 提升为正式冻结材料。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-028"
+      ],
+      "mapped_test_ids": [
+        "TEST-028"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-008"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: package_state, empty | prd_only | user_story_only | test_case_only | prd_user_story | prd_test_case | user_story_test_case | full_consistent | full_inconsistent, empty, prd_only, user_story_only, test_case_only, prd_user_story, prd_test_case, user_story_test_case, full_consistent, full_inconsistent, bootstrap_state, draft_generated | review_required | supplement_required | drift_repair_required | freeze_ready | implementation_pending, draft_generated, review_required, supplement_required, drift_repair_required, freeze_ready, implementation_pending, truth_origin_state, native_truth | derived_from_downstream | needs_truth_review, native_truth, derived_from_downstream, needs_truth_review, decision_state, accepted | rejected | deferred, accepted, rejected, deferred, routing_state, canonical_compile | reverse_derive | repair_route | freeze_promotion, canonical_compile, reverse_derive, repair_route, freeze_promotion"
+      ],
+      "diagram_state_axes": [
+        "package_state",
+        "empty | prd_only | user_story_only | test_case_only | prd_user_story | prd_test_case | user_story_test_case | full_consistent | full_inconsistent",
+        "empty",
+        "prd_only",
+        "user_story_only",
+        "test_case_only",
+        "prd_user_story",
+        "prd_test_case",
+        "user_story_test_case",
+        "full_consistent",
+        "full_inconsistent",
+        "bootstrap_state",
+        "draft_generated | review_required | supplement_required | drift_repair_required | freeze_ready | implementation_pending",
+        "draft_generated",
+        "review_required",
+        "supplement_required",
+        "drift_repair_required",
+        "freeze_ready",
+        "implementation_pending",
+        "truth_origin_state",
+        "native_truth | derived_from_downstream | needs_truth_review",
+        "native_truth",
+        "derived_from_downstream",
+        "needs_truth_review",
+        "decision_state",
+        "accepted | rejected | deferred",
+        "accepted",
+        "rejected",
+        "deferred",
+        "routing_state",
+        "canonical_compile | reverse_derive | repair_route | freeze_promotion",
+        "canonical_compile",
+        "reverse_derive",
+        "repair_route",
+        "freeze_promotion"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260506T191701Z-fa36",
+        ".beacon/qa/features/beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260507T031949171749",
+        ".beacon/auto-test-status.json",
+        "verify:review.accept"
+      ],
+      "changed_files": [
+        ".beacon/evidence-manifest.json",
+        ".beacon/gate-report.json",
+        ".beacon/metadata/project-version-metadata.json",
+        ".beacon/metadata/project-version-metadata.md",
+        ".beacon/state/project-metadata/latest.json",
+        "beacon/commands/help.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/implement/adapter.py",
+        "beacon/commands/implement/git.py",
+        "beacon/commands/prd_bootstrap.py",
+        "beacon/commands/report.py",
+        "beacon/commands/status.py",
+        "beacon/commands/user_story.py",
+        "beacon/commands/workflow.py",
+        "beacon/utils/board_launcher.py",
+        "beacon/utils/help_support.py",
+        "beacon/utils/implementation_plan.py",
+        "beacon/utils/llm_loop.py",
+        "beacon/utils/prd_bootstrap.py",
+        "beacon/utils/release_scorecard.py",
+        "beacon/utils/runtime_projection.py",
+        "docs/beacon/v1.3.12/.machine/qa/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.ac-test-matrix.json",
+        "docs/beacon/v1.3.12/.machine/qa/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.qa9-matrix.json",
+        "docs/beacon/v1.3.12/.machine/qa/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.story-scenario-map.json",
+        "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.candidate-ledger.json",
+        "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.completeness.json",
+        "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.freeze-contract.json",
+        "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.re-freeze-transaction.json",
+        "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.supplement-decision-log.json",
+        "docs/beacon/v1.3.12/.machine/user-story/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.json",
+        "docs/beacon/v1.3.12/change/v1.3.12.md",
+        "docs/beacon/v1.3.12/prd/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md",
+        "docs/beacon/v1.3.12/qa/test-cases/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md",
+        "docs/beacon/v1.3.12/user-story/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md",
+        "skills/beacon/beacon-help/SKILL.md",
+        "skills/beacon/beacon-qa/SKILL.md",
+        "skills/beacon/beacon-release/SKILL.md",
+        "skills/beacon/beacon-status/SKILL.md",
+        "tests/test_real_project_validation_command.py",
+        "tests/test_v112_implementation_plan_runtime.py",
+        "tests/test_v114_implement_command.py",
+        "tests/test_v1311_board_launcher.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-06T19:17:02.687599+00:00",
+      "completed_at": "2026-05-06T19:17:02.687600+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-010",
+      "title": "FR-010 v1.4.0 Format Alignment",
+      "description": "bootstrap 生成的三件套必须对齐 `v1.4.0` 的正式文档规范，至少包括： metadata fields status fields acceptance structure execution handoff compatibility ## 8. 验收标准 `prd-bootstrap` 仍是 optional support skill 三件套 draft package 可一次生成 默认行为保持 strict verify / dry-run / no-overwrite 输出明确标记 `bootstrap-generated / review-required / not-yet-frozen` 失败时给出可执行的下一步命令 ## 5. 设计原则 support surface only safe by default canonical truth first auditability over convenience ## 6. 范围 in scope: safe bootstrap draft generation review and freeze closure guidance AC/TC traceability out of scope: new public lifecycle stage automatic freeze truth promotion non-canonical truth roots ## 7. 验收标准 `prd-bootstrap` 仍是 optional support skill 三件套 draft package 可一次生成 默认行为保持 strict verify / dry-run / no-overwrite 输出明确标记 `bootstrap-generated / review-required / not-yet-frozen` 失败时给出可执行的下一步命令 避免继续生成只适用于旧版本的模板。 ## 8. 风险与缓解 | 风险 | 影响 | 缓解 | | --- | --- | --- | | bootstrap 被误解为主流程替代 | 高 | 明确 optional support 定位，禁止新增公开一级主命令 | | 自动生成文档被误认作已冻结 truth | 高 | 强制 `bootstrap-generated / review-required / not-yet-frozen` 状态语义 | | 覆盖既有 requirement docs 导致真相漂移 | 高 | 默认 `no-overwrite`，只在显式允许时 apply | | 上下文不完整时生成错误版本路径 | 高 | 强制 `doctor verify-context --strict` | | 产物模板化过强，无法进入后续 implement | 中 | 增加 `v1.4.0` 结构对齐与 quality gate | | state artifact 成为第二真相源 | 高 | 明确 state artifact 只做 run audit，不做 truth source | ## 9. 成功标准 1. `beacon-prd-bootstrap` 在 `v1.4.0` 中拥有正式 PRD / user-story / test-case 2. 它继续是 optional support skill，而不是新的主流程 3. 默认安全防线完整保留 4. bootstrap 产物状态明确，不会伪装成 frozen truth 5. support output 可以清晰引导下一步 review/refreeze 6. 产物可以顺畅进入后续 `prototype / implement / qa` 7. feature 状态可进入：`requirement-freeze-ready / implementation-pending` ## 10. 冻结结论 本 PRD 的冻结目标不是证明实现已完成，而是明确： `prd-bootstrap` 作为可选 bootstrap capability 应继续保留 它必须按照 `v1.4.0` 轻量内核边界重新规范 它已经达到 requirement closure 粒度 可作为后续实现与回归验证的正式上游物料 ## 11. State Machine Truth ```mermaid stateDiagram-v2 [*] --> draft_generated draft_generated --> review_required: draft package emitted review_required --> supplement_required: gap detected review_required --> freeze_ready: contract complete supplement_required --> review_required: human supplement written back supplement_required --> drift_repair_required: conflicting truth detected drift_repair_required --> review_required: repair route completed freeze_ready --> implementation_pending: re-freeze accepted implementation_pending --> [*] ``` ### 11.1 State Axes `package_state`: `empty | prd_only | user_story_only | test_case_only | prd_user_story | prd_test_case | user_story_test_case | full_consistent | full_inconsistent` `bootstrap_state`: `draft_generated | review_required | supplement_required | drift_repair_required | freeze_ready | implementation_pending` `truth_origin_state`: `native_truth | derived_from_downstream | needs_truth_review` `decision_state`: `accepted | rejected | deferred` `routing_state`: `canonical_compile | reverse_derive | repair_route | freeze_promotion`",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-023",
+        "AC-006",
+        "AC-015",
+        "AC-016",
+        "AC-019",
+        "AC-020",
+        "AC-021",
+        "AC-025",
+        "AC-027",
+        "AC-029",
+        "AC-030",
+        "AC-032"
+      ],
+      "mapped_test_ids": [
+        "TEST-023",
+        "TEST-006",
+        "TEST-015",
+        "TEST-016",
+        "TEST-019",
+        "TEST-020",
+        "TEST-021",
+        "TEST-025",
+        "TEST-027",
+        "TEST-029",
+        "TEST-030",
+        "TEST-032"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-009"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: package_state, empty | prd_only | user_story_only | test_case_only | prd_user_story | prd_test_case | user_story_test_case | full_consistent | full_inconsistent, empty, prd_only, user_story_only, test_case_only, prd_user_story, prd_test_case, user_story_test_case, full_consistent, full_inconsistent, bootstrap_state, draft_generated | review_required | supplement_required | drift_repair_required | freeze_ready | implementation_pending, draft_generated, review_required, supplement_required, drift_repair_required, freeze_ready, implementation_pending, truth_origin_state, native_truth | derived_from_downstream | needs_truth_review, native_truth, derived_from_downstream, needs_truth_review, decision_state, accepted | rejected | deferred, accepted, rejected, deferred, routing_state, canonical_compile | reverse_derive | repair_route | freeze_promotion, canonical_compile, reverse_derive, repair_route, freeze_promotion"
+      ],
+      "diagram_state_axes": [
+        "package_state",
+        "empty | prd_only | user_story_only | test_case_only | prd_user_story | prd_test_case | user_story_test_case | full_consistent | full_inconsistent",
+        "empty",
+        "prd_only",
+        "user_story_only",
+        "test_case_only",
+        "prd_user_story",
+        "prd_test_case",
+        "user_story_test_case",
+        "full_consistent",
+        "full_inconsistent",
+        "bootstrap_state",
+        "draft_generated | review_required | supplement_required | drift_repair_required | freeze_ready | implementation_pending",
+        "draft_generated",
+        "review_required",
+        "supplement_required",
+        "drift_repair_required",
+        "freeze_ready",
+        "implementation_pending",
+        "truth_origin_state",
+        "native_truth | derived_from_downstream | needs_truth_review",
+        "native_truth",
+        "derived_from_downstream",
+        "needs_truth_review",
+        "decision_state",
+        "accepted | rejected | deferred",
+        "accepted",
+        "rejected",
+        "deferred",
+        "routing_state",
+        "canonical_compile | reverse_derive | repair_route | freeze_promotion",
+        "canonical_compile",
+        "reverse_derive",
+        "repair_route",
+        "freeze_promotion"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260506T191701Z-fa36",
+        ".beacon/qa/features/beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260507T031949171749/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260507T031949171749",
+        ".beacon/auto-test-status.json",
+        "verify:review.accept"
+      ],
+      "changed_files": [
+        ".beacon/evidence-manifest.json",
+        ".beacon/gate-report.json",
+        ".beacon/metadata/project-version-metadata.json",
+        ".beacon/metadata/project-version-metadata.md",
+        ".beacon/state/project-metadata/latest.json",
+        "beacon/commands/help.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/implement/adapter.py",
+        "beacon/commands/implement/git.py",
+        "beacon/commands/prd_bootstrap.py",
+        "beacon/commands/report.py",
+        "beacon/commands/status.py",
+        "beacon/commands/user_story.py",
+        "beacon/commands/workflow.py",
+        "beacon/utils/board_launcher.py",
+        "beacon/utils/help_support.py",
+        "beacon/utils/implementation_plan.py",
+        "beacon/utils/llm_loop.py",
+        "beacon/utils/prd_bootstrap.py",
+        "beacon/utils/release_scorecard.py",
+        "beacon/utils/runtime_projection.py",
+        "docs/beacon/v1.3.12/.machine/qa/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.ac-test-matrix.json",
+        "docs/beacon/v1.3.12/.machine/qa/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.qa9-matrix.json",
+        "docs/beacon/v1.3.12/.machine/qa/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.story-scenario-map.json",
+        "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.candidate-ledger.json",
+        "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.completeness.json",
+        "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.freeze-contract.json",
+        "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.re-freeze-transaction.json",
+        "docs/beacon/v1.3.12/.machine/requirement/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.supplement-decision-log.json",
+        "docs/beacon/v1.3.12/.machine/user-story/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.json",
+        "docs/beacon/v1.3.12/change/v1.3.12.md",
+        "docs/beacon/v1.3.12/prd/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md",
+        "docs/beacon/v1.3.12/qa/test-cases/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md",
+        "docs/beacon/v1.3.12/user-story/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md",
+        "skills/beacon/beacon-help/SKILL.md",
+        "skills/beacon/beacon-qa/SKILL.md",
+        "skills/beacon/beacon-release/SKILL.md",
+        "skills/beacon/beacon-status/SKILL.md",
+        "tests/test_real_project_validation_command.py",
+        "tests/test_v112_implementation_plan_runtime.py",
+        "tests/test_v114_implement_command.py",
+        "tests/test_v1311_board_launcher.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-06T19:17:02.687616+00:00",
+      "completed_at": "2026-05-06T19:17:02.687617+00:00",
+      "active_run_id": ""
+    }
+  ],
+  "revision_delta": {},
+  "revision_delta_ref": "",
+  "revision_delta_markdown_ref": "",
+  "team_mode": {
+    "preferred_surface": "implement-team",
+    "preferred_runner": "codex-subagents",
+    "plan_command": "beacon implement team-plan \"beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure\" --project-root . --version v1.4.0",
+    "run_command": "beacon implement team-run \"beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure\" --project . --version v1.4.0",
+    "dev_run_command": "beacon implement dev-run \"beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure\" --project . --version v1.4.0",
+    "ralph_command": "beacon implement run \"beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure\" --project . --version v1.4.0 --mode ralph",
+    "qa_team_command": "beacon qa team-run \"beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure\" --project . --version v1.4.0",
+    "roles": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "context_isolation": {
+      "role_plane": "implementation",
+      "isolated_from": [
+        "qa-team"
+      ],
+      "shared_inputs": [
+        "docs",
+        "implementation_plan",
+        "evidence_refs"
+      ],
+      "shared_outputs": [
+        "implementation_summary",
+        "technical_archive",
+        "repair_handoff"
+      ],
+      "rule": "qa_must_not_inherit_implement_private_context",
+      "implement_surface": "implement-team",
+      "qa_surface": "qa-team"
+    },
+    "config_source": "beacon/team_roles/implement-team.json",
+    "post_freeze_sequence": [
+      "freeze-pass",
+      "implement-team-plan",
+      "implement-team-run",
+      "implement-ralph",
+      "qa",
+      "release"
+    ],
+    "role_semantics": {
+      "team_reviewer": "checks implementation/spec drift before Ralph or QA closure",
+      "team_tester": "checks implementation evidence and verification readiness before Ralph or QA closure",
+      "ralph": "post-freeze controller that drives next-action routing across implementation, review, qa, and release"
+    },
+    "execution_order": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "formal_writeback_roles": [
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "role_contracts": {
+      "planner": {
+        "purpose": "Compile execution-ready task scope from the frozen revision baseline.",
+        "writes_to_formal_truth": false,
+        "outputs": [
+          "execution_plan_note"
+        ]
+      },
+      "implementation-architect": {
+        "purpose": "Translate frozen requirement truth into implementation-safe module boundaries and service ownership guidance.",
+        "writes_to_formal_truth": false,
+        "reads": [
+          "docs/beacon/<version>/user-story",
+          "docs/beacon/<version>/prd",
+          "docs/beacon/<version>/qa/test-cases",
+          "docs/beacon/<version>/execution/architecture-blueprint.md",
+          "implementation_plan",
+          "git_workflow_contract"
+        ],
+        "outputs": [
+          "implementation_architecture_note"
+        ],
+        "restrictions": [
+          "must_not_modify_frozen_requirement_materials",
+          "must_not_overwrite_architecture_blueprint"
+        ]
+      },
+      "implementer": {
+        "purpose": "Write code inside the frozen scope and the implementation architecture note.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "story_writeback",
+          "implementation_summary"
+        ]
+      },
+      "reviewer": {
+        "purpose": "Review implementation/spec drift and architecture-boundary drift.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_spec"
+        ]
+      },
+      "tester": {
+        "purpose": "Check implementation evidence and verification readiness before acceptance.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_quality"
+        ]
+      }
+    }
+  },
+  "git_workflow": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure",
+    "feature_slug": "beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure",
+    "version": "v1.4.0",
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.4.0",
+    "branch_prefix": "beacon/",
+    "base_branch": "main",
+    "use_git_worktree": false,
+    "require_clean_worktree_for_switch": true,
+    "service_directories": [
+      "."
+    ],
+    "direct_delivery_services": [
+      "."
+    ],
+    "writable_services": [
+      "."
+    ],
+    "reference_only_services": [
+      "docs"
+    ],
+    "git_roots": [
+      "."
+    ],
+    "worktree_root": ".",
+    "implementation_preflight": [
+      "Before implementation, verify the target service belongs to: .",
+      "Before implementation, verify the current branch is beacon/v1.4.0.",
+      "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+    ],
+    "source": "technical_review_contract",
+    "generated_at": "2026-05-06T19:16:33.548714+00:00",
+    "baseline_id": "impl-delivery-baseline-v1.4.0-beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure-R1",
+    "transaction_id": "tx-45185092e24bb53aa",
+    "source_hash": "sha256:19079fd10c3d9e6669f797d8c72ef639b050af6015e999e547556ec7d1da93c9",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.4.0/.machine/execution/implementation-delivery-baseline-beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "git_workflow_ref": "docs/beacon/v1.4.0/.machine/execution/git-workflow-beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure.json",
+  "git_workflow_markdown_ref": "docs/beacon/v1.4.0/execution/git-workflow-beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure.md",
+  "base_branch": "main",
+  "target_branch": "beacon/v1.4.0",
+  "branch_prefix": "beacon/",
+  "use_git_worktree": false,
+  "worktree_root": ".",
+  "direct_delivery_services": [
+    "."
+  ],
+  "writable_services": [
+    "."
+  ],
+  "reference_only_services": [
+    "docs"
+  ],
+  "technical_delta": {
+    "project_mode": "greenfield",
+    "source_refs": {
+      "prd": "docs/beacon/v1.4.0/prd/beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure.md",
+      "user_story": "docs/beacon/v1.4.0/user-story/beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure.md",
+      "test_case": "docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure.md"
+    },
+    "current_state": {},
+    "refactor_boundaries": {},
+    "feature_sections": [],
+    "change_surface": []
+  },
+  "delivery_baseline": {
+    "baseline_id": "impl-delivery-baseline-v1.4.0-beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure-R1",
+    "transaction_id": "tx-45185092e24bb53aa",
+    "source_hash": "sha256:19079fd10c3d9e6669f797d8c72ef639b050af6015e999e547556ec7d1da93c9",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.4.0/.machine/execution/implementation-delivery-baseline-beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "canonical_envelope_ref": "docs/beacon/v1.4.0/.machine/execution/implementation-delivery-baseline-beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure.json",
+  "generated_at": "2026-05-06T19:16:33.621956+00:00",
+  "baseline_id": "impl-delivery-baseline-v1.4.0-beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure-R1",
+  "transaction_id": "tx-45185092e24bb53aa",
+  "source_hash": "sha256:19079fd10c3d9e6669f797d8c72ef639b050af6015e999e547556ec7d1da93c9",
+  "projection_seq": 1,
+  "projection_source": "implementation_delivery_baseline_envelope",
+  "updated_at": "2026-05-06T19:32:19.902855+00:00",
+  "accepted_at": "2026-05-06T19:32:19.902837+00:00",
+  "accepted_by": "qa"
+}

@@ -1,0 +1,516 @@
+{
+  "feature": "beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor",
+  "feature_slug": "beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor",
+  "version": "v1.4.0",
+  "ac_to_tc_mapping": {
+    "AC-001": [
+      "TC-068"
+    ],
+    "AC-002": [
+      "TC-002"
+    ],
+    "AC-003": [
+      "TC-003"
+    ],
+    "AC-004": [
+      "TC-004"
+    ],
+    "AC-101": [
+      "TC-005"
+    ],
+    "AC-102": [
+      "TC-006"
+    ],
+    "AC-103": [
+      "TC-007"
+    ],
+    "AC-104": [
+      "TC-008"
+    ],
+    "AC-201": [
+      "TC-009"
+    ],
+    "AC-202": [
+      "TC-010"
+    ],
+    "AC-203": [
+      "TC-011"
+    ],
+    "AC-204": [
+      "TC-012"
+    ],
+    "AC-301": [
+      "TC-013"
+    ],
+    "AC-302": [
+      "TC-014"
+    ],
+    "AC-303": [
+      "TC-015"
+    ],
+    "AC-304": [
+      "TC-016"
+    ],
+    "AC-401": [
+      "TC-017"
+    ],
+    "AC-402": [
+      "TC-018"
+    ],
+    "AC-403": [
+      "TC-019"
+    ],
+    "AC-404": [
+      "TC-020"
+    ],
+    "AC-501": [
+      "TC-021"
+    ],
+    "AC-502": [
+      "TC-022"
+    ],
+    "AC-503": [
+      "TC-023"
+    ],
+    "AC-504": [
+      "TC-024"
+    ],
+    "AC-601": [
+      "TC-025"
+    ],
+    "AC-602": [
+      "TC-026"
+    ],
+    "AC-603": [
+      "TC-027"
+    ],
+    "AC-604": [
+      "TC-028"
+    ],
+    "AC-701": [
+      "TC-029"
+    ],
+    "AC-702": [
+      "TC-030"
+    ],
+    "AC-703": [
+      "TC-031"
+    ],
+    "AC-704": [
+      "TC-032"
+    ],
+    "AC-801": [
+      "TC-033"
+    ],
+    "AC-802": [
+      "TC-034"
+    ],
+    "AC-803": [
+      "TC-035"
+    ],
+    "AC-804": [
+      "TC-036"
+    ],
+    "AC-901": [
+      "TC-037"
+    ],
+    "AC-902": [
+      "TC-038"
+    ],
+    "AC-903": [
+      "TC-039"
+    ],
+    "AC-904": [
+      "TC-040"
+    ],
+    "AC-1001": [
+      "TC-041"
+    ],
+    "AC-1002": [
+      "TC-042"
+    ],
+    "AC-1003": [
+      "TC-043"
+    ],
+    "AC-1004": [
+      "TC-044"
+    ],
+    "AC-1101": [
+      "TC-045"
+    ],
+    "AC-1102": [
+      "TC-046"
+    ],
+    "AC-1103": [
+      "TC-047"
+    ],
+    "AC-1104": [
+      "TC-048"
+    ],
+    "AC-1201": [
+      "TC-049"
+    ],
+    "AC-1202": [
+      "TC-050"
+    ],
+    "AC-1203": [
+      "TC-051"
+    ],
+    "AC-1204": [
+      "TC-052"
+    ],
+    "AC-1301": [
+      "TC-053"
+    ],
+    "AC-1302": [
+      "TC-054"
+    ],
+    "AC-1303": [
+      "TC-055"
+    ],
+    "AC-1304": [
+      "TC-056"
+    ],
+    "AC-005": [
+      "TC-057"
+    ],
+    "AC-006": [
+      "TC-058"
+    ],
+    "AC-007": [
+      "TC-059"
+    ]
+  },
+  "scenarios": [
+    {
+      "scenario_id": "SC-001",
+      "source_tc_id": "TC-001",
+      "tc_id": "TC-001-PRIMARY",
+      "ac_id": "AC-001",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "primary",
+      "title": "AC-001 primary path :: 系统必须继续把 `docs/beacon/<version>/**/*.md` 定义为唯一冻结真相源。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor/TC-001-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-002",
+      "source_tc_id": "TC-002",
+      "tc_id": "TC-002-PRIMARY",
+      "ac_id": "AC-002",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "primary",
+      "title": "AC-002 primary path :: 系统必须把 `gate / implement / qa / release` 的机器主入口收敛为 compiled contract，而不是继续以碎片 mirror 作为默认主路径。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor/TC-002-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-003",
+      "source_tc_id": "TC-003",
+      "tc_id": "TC-003-PRIMARY",
+      "ac_id": "AC-003",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "primary",
+      "title": "AC-003 primary path :: sqlite / pocketbase / board / legacy mirror 必须被明确标记为 optional projection，而不是主路径 truth closure 依据",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor/TC-003-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-004",
+      "source_tc_id": "TC-004",
+      "tc_id": "TC-004-PRIMARY",
+      "ac_id": "AC-004",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "primary",
+      "title": "AC-004 primary path :: 任意 projection 或 support read-model 都不得反向定义 truth。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor/TC-004-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-005",
+      "source_tc_id": "TC-057",
+      "tc_id": "TC-057-PRIMARY",
+      "ac_id": "AC-005",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "primary",
+      "title": "AC-005 primary path :: core commands 与 plugin commands 有正式边界",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor/TC-057-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-006",
+      "source_tc_id": "TC-058",
+      "tc_id": "TC-058-PRIMARY",
+      "ac_id": "AC-006",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "primary",
+      "title": "AC-006 primary path :: metadata / learning / memory / archive 等基座能力仍可用",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor/TC-058-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-007",
+      "source_tc_id": "TC-059",
+      "tc_id": "TC-059-PRIMARY",
+      "ac_id": "AC-007",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "primary",
+      "title": "AC-007 primary path :: v1.4.0 保持 Python 主实现路线，并对热点建立性能观察基线",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor/TC-059-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    }
+  ],
+  "requirement_deepening": {
+    "completeness_verdict": "pass",
+    "supplement_focus_areas": [
+      "复核 requirement completeness 的补料方向"
+    ],
+    "supplement_task": {
+      "feature": "beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor",
+      "version": "v1.4.0",
+      "target_artifact": "test-case",
+      "candidate_kind": "coverage",
+      "candidate_families": [
+        "happy",
+        "negative",
+        "boundary",
+        "exception",
+        "recovery",
+        "compatibility"
+      ],
+      "candidate_payload": {
+        "focus_areas": [
+          "复核 requirement completeness 的补料方向"
+        ],
+        "open_questions": [
+          "happy 是否需要补成 machine-readable supplement candidate？",
+          "negative 是否需要补成 machine-readable supplement candidate？",
+          "boundary 是否需要补成 machine-readable supplement candidate？",
+          "exception 是否需要补成 machine-readable supplement candidate？"
+        ],
+        "missing_dimensions": [],
+        "high_risk_unresolved_categories": []
+      },
+      "source_truth_ref": "docs/beacon/v1.4.0/prd/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md",
+      "writeback_target": "docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md",
+      "rationale": "pass",
+      "confidence": "medium",
+      "human_decision": "pending",
+      "audit_trail_required": true,
+      "recommended_route": "beacon-test-case",
+      "recommended_command": "beacon test-case create \"beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor\" --project <project-root> --version v1.4.0 --json",
+      "recommended_mode": "requirement-convergence"
+    },
+    "re_freeze_transaction": {
+      "schema_version": "1.0",
+      "feature": "beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor",
+      "version": "v1.4.0",
+      "revision_id": "R1",
+      "accepted_candidates": [
+        "GAP-001",
+        "GAP-002",
+        "GAP-003",
+        "GAP-004",
+        "GAP-005",
+        "GAP-006",
+        "GAP-007",
+        "GAP-008",
+        "GAP-009",
+        "GAP-010",
+        "GAP-011",
+        "GAP-012",
+        "GAP-013",
+        "GAP-014",
+        "GAP-015"
+      ],
+      "rejected_candidates": [],
+      "deferred_candidates": [],
+      "writeback_targets": [
+        "qa/test-cases.executable-matrix",
+        "user-story.acceptance-criteria"
+      ],
+      "machine_mirror_paths": {
+        "dir": "docs/beacon/v1.4.0/.machine/requirement",
+        "envelope": "docs/beacon/v1.4.0/.machine/requirement/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.envelope.json",
+        "candidate_ledger": "docs/beacon/v1.4.0/.machine/requirement/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.candidate-ledger.json",
+        "decision_log": "docs/beacon/v1.4.0/.machine/requirement/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.supplement-decision-log.json",
+        "freeze_contract": "docs/beacon/v1.4.0/.machine/requirement/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.freeze-contract.json",
+        "completeness": "docs/beacon/v1.4.0/.machine/requirement/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.completeness.json",
+        "supplement_task": "docs/beacon/v1.4.0/.machine/requirement/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.supplement-task.json",
+        "re_freeze_transaction": "docs/beacon/v1.4.0/.machine/requirement/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.re-freeze-transaction.json"
+      },
+      "refreeze_required": true,
+      "revalidate_required": true,
+      "decision_count": 15,
+      "generated_at": "2026-05-07T01:10:21.857293+00:00"
+    }
+  }
+}

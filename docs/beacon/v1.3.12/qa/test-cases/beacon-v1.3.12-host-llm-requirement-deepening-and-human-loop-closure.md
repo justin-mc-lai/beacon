@@ -48,6 +48,10 @@
 | AC-502 | TC-022 | contract | `python3 -m pytest -q tests/test_v1312_delivery_completeness.py -k "readiness_verdicts"` | Requirement completeness emits deterministic pass, pass_with_downgrade, and blocked verdicts | `.beacon/evidence/test-results/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure/TC-022.json` |
 | AC-503 | TC-023 | integration | `python3 -m pytest -q tests/test_v1312_delivery_completeness.py -k "deterministic_blocking"` | High-severity gaps and unacceptable downgrade states block readiness with explicit reasons | `.beacon/evidence/test-results/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure/TC-023.json` |
 | AC-504 | TC-024 | contract | `python3 -m pytest -q tests/test_v1312_delivery_completeness.py -k "no_delivery_truth_rewrite"` | Delivery surfaces can read completeness but cannot bypass requirement truth ownership | `.beacon/evidence/test-results/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure/TC-024.json` |
+| AC-601 | TC-028 | contract | `python3 -m pytest -q tests/test_v1312_acceptance_kit.py -k "unified_acceptance_contract"` | Acceptance Kit v1 is emitted as a shared machine-readable contract for all requirement surfaces | `.beacon/evidence/test-results/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure/TC-028.json` |
+| AC-602 | TC-029 | contract | `python3 -m pytest -q tests/test_v1312_acceptance_kit.py -k "layered_verdict_ladder"` | Acceptance Kit v1 emits the five verdict layers and enforces fail-fast ordering | `.beacon/evidence/test-results/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure/TC-029.json` |
+| AC-701 | TC-030 | integration | `python3 -m pytest -q tests/test_v1312_board_projection.py -k "gate_projection_and_jumpback"` | status / board surfaces expose gate card points and jump-back links to supplement items | `.beacon/evidence/test-results/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure/TC-030.json` |
+| AC-702 | TC-031 | integration | `python3 -m pytest -q tests/test_v1312_real_project_proof.py -k "shared_acceptance_proof"` | real-project-validation, release proof, and regression checks consume the same Acceptance Kit evidence chain | `.beacon/evidence/test-results/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure/TC-031.json` |
 
 ---
 
@@ -79,6 +83,10 @@
 | TC-022 | Pending | from AC-502 |
 | TC-023 | Pending | from AC-503 |
 | TC-024 | Pending | from AC-504 |
+| TC-028 | Pending | from AC-601 |
+| TC-029 | Pending | from AC-602 |
+| TC-030 | Pending | from AC-701 |
+| TC-031 | Pending | from AC-702 |
 
 ---
 

@@ -78,6 +78,22 @@
         "AC-503",
         "AC-504"
       ]
+    },
+    {
+      "story_id": "US-007",
+      "title": "Beacon Acceptance Kit",
+      "acceptance_ids": [
+        "AC-601",
+        "AC-602"
+      ]
+    },
+    {
+      "story_id": "US-008",
+      "title": "Board projection and real project proof",
+      "acceptance_ids": [
+        "AC-701",
+        "AC-702"
+      ]
     }
   ],
   "supplement_contract": {
@@ -499,6 +515,66 @@
           "accepted_at": null,
           "changed_in_revision": "R1",
           "story_id": "",
+          "details": [],
+          "source": "prd:docs/beacon/v1.3.12/prd/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md"
+        },
+        {
+          "id": "AC-601",
+          "kind": "ac",
+          "theme": "unified-acceptance-contract",
+          "text": "系统必须把 `skill-contract / scenario-suite / trace-scorecard / real-project-proof` 作为统一验收底座投影为 machine-readable artifact，并允许 `prd / user-story / test-case / status / board / implement` 共用读取。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260506T012437Z-2ed7",
+          "verified_by_run_id": "run-20260506T092640341315",
+          "accepted_at": "2026-05-06T09:20:00+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "US-007",
+          "details": [],
+          "source": "prd:docs/beacon/v1.3.12/prd/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md"
+        },
+        {
+          "id": "AC-602",
+          "kind": "ac",
+          "theme": "layered-verdict-ladder",
+          "text": "系统必须显式产出 `Contract Pass / Scenario Pass / Trace Pass / Real Project Pass / Regression Pass` 五层 verdict，且任何更高层级都不能补偿更低层级失败。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260506T012437Z-2ed7",
+          "verified_by_run_id": "run-20260506T092640341315",
+          "accepted_at": "2026-05-06T09:20:00+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "US-007",
+          "details": [],
+          "source": "prd:docs/beacon/v1.3.12/prd/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md"
+        },
+        {
+          "id": "AC-701",
+          "kind": "ac",
+          "theme": "board-gate-projection",
+          "text": "`status / board` 至少必须显示当前卡点、对应补料项、以及可跳回 `user-story / test-case` 的入口。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260506T012437Z-2ed7",
+          "verified_by_run_id": "run-20260506T092640341315",
+          "accepted_at": "2026-05-06T09:20:00+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "US-008",
+          "details": [],
+          "source": "prd:docs/beacon/v1.3.12/prd/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md"
+        },
+        {
+          "id": "AC-702",
+          "kind": "ac",
+          "theme": "real-project-shared-proof",
+          "text": "`real-project-validation`、release proof 与回归检查必须读取同一套 Acceptance Kit 结果与证据链，并把 `real_project_proof` 作为 release 侧正式证明输入。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260506T012437Z-2ed7",
+          "verified_by_run_id": "run-20260506T092640341315",
+          "accepted_at": "2026-05-06T09:20:00+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "US-008",
           "details": [],
           "source": "prd:docs/beacon/v1.3.12/prd/beacon-v1.3.12-host-llm-requirement-deepening-and-human-loop-closure.md"
         },

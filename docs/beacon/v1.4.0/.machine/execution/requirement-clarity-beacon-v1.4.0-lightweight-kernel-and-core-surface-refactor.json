@@ -1,0 +1,131 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor",
+  "feature_slug": "beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor",
+  "version": "v1.4.0",
+  "runtime_version": "v1.3.11",
+  "runtime_capability_line": "v1.3.3",
+  "required": true,
+  "reason_code": "",
+  "blocked": false,
+  "status": "pass",
+  "findings": [],
+  "report_json_path": "docs/beacon/v1.4.0/.machine/execution/requirement-clarity-beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.json",
+  "report_markdown_path": "docs/beacon/v1.4.0/execution/requirement-clarity-beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md",
+  "state_path": ".beacon/state/requirement-clarity-beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.json",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.4.0",
+    "supported": true,
+    "required": true,
+    "ready": true,
+    "diagram_types": [
+      "branch-flow",
+      "state-machine",
+      "decision-priority"
+    ],
+    "state_axes": [
+      "truth_state",
+      "draft | frozen | changed | archived",
+      "draft",
+      "frozen",
+      "changed",
+      "archived",
+      "contract_state",
+      "missing | compiled | stale | blocked",
+      "missing",
+      "compiled",
+      "stale",
+      "blocked",
+      "gate_state",
+      "pass | blocked | downgrade",
+      "pass",
+      "downgrade",
+      "projection_state",
+      "not_configured | healthy | drifted | failed",
+      "not_configured",
+      "healthy",
+      "drifted",
+      "failed",
+      "brainstorm_state",
+      "brainstorm_closed | supplement_required | change_required | truth_ready",
+      "brainstorm_closed",
+      "supplement_required",
+      "change_required",
+      "truth_ready",
+      "change_state",
+      "proposed | approved | refreezing | implementing | verifying | archived",
+      "proposed",
+      "approved",
+      "refreezing",
+      "implementing",
+      "verifying",
+      "goal_state",
+      "none | active | paused | budget_limited | complete | unsupported",
+      "none",
+      "active",
+      "paused",
+      "budget_limited",
+      "complete",
+      "unsupported"
+    ],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [
+      "branch-flow",
+      "state-machine",
+      "decision-priority",
+      "state axes",
+      "state machine"
+    ],
+    "review_gates": [
+      "implementation must cover the declared branch-flow split points",
+      "implementation must preserve the declared state-machine transitions",
+      "implementation must preserve decision-priority ordering",
+      "implementation must keep state axes explicit: truth_state, draft | frozen | changed | archived, draft, frozen, changed, archived, contract_state, missing | compiled | stale | blocked, missing, compiled, stale, blocked, gate_state, pass | blocked | downgrade, pass, downgrade, projection_state, not_configured | healthy | drifted | failed, not_configured, healthy, drifted, failed, brainstorm_state, brainstorm_closed | supplement_required | change_required | truth_ready, brainstorm_closed, supplement_required, change_required, truth_ready, change_state, proposed | approved | refreezing | implementing | verifying | archived, proposed, approved, refreezing, implementing, verifying, goal_state, none | active | paused | budget_limited | complete | unsupported, none, active, paused, budget_limited, complete, unsupported"
+    ],
+    "qa_coverage_hints": [
+      "cover primary and alternate branch-flow paths",
+      "cover state transitions, illegal transitions, and recovery paths",
+      "cover conflicting conditions using declared decision priority",
+      "cover axis combinations across: truth_state, draft | frozen | changed | archived, draft, frozen, changed, archived, contract_state, missing | compiled | stale | blocked, missing, compiled, stale, blocked, gate_state, pass | blocked | downgrade, pass, downgrade, projection_state, not_configured | healthy | drifted | failed, not_configured, healthy, drifted, failed, brainstorm_state, brainstorm_closed | supplement_required | change_required | truth_ready, brainstorm_closed, supplement_required, change_required, truth_ready, change_state, proposed | approved | refreezing | implementing | verifying | archived, proposed, approved, refreezing, implementing, verifying, goal_state, none | active | paused | budget_limited | complete | unsupported, none, active, paused, budget_limited, complete, unsupported"
+    ],
+    "evidence_lines": {
+      "branch-flow": [
+        "- `branch-flow`"
+      ],
+      "state-machine": [
+        "```mermaid",
+        "stateDiagram-v2",
+        "[*] --> DraftTruth",
+        "DraftTruth --> FrozenTruth: freeze",
+        "FrozenTruth --> ChangedTruth: reopen / truth drift",
+        "ChangedTruth --> Refreezing: reconcile + sync",
+        "Refreezing --> FrozenTruth: freeze baseline updated",
+        "FrozenTruth --> Implementing: implement plan/run"
+      ],
+      "decision-priority": [
+        "- `decision-priority`"
+      ],
+      "state-axes": [
+        "- `truth_state`: `draft | frozen | changed | archived`",
+        "- `contract_state`: `missing | compiled | stale | blocked`",
+        "- `gate_state`: `pass | blocked | downgrade`",
+        "- `projection_state`: `not_configured | healthy | drifted | failed`",
+        "- `brainstorm_state`: `brainstorm_closed | supplement_required | change_required | truth_ready`",
+        "- `change_state`: `proposed | approved | refreezing | implementing | verifying | archived`",
+        "- `goal_state`: `none | active | paused | budget_limited | complete | unsupported`"
+      ]
+    },
+    "generated_at": "2026-05-07T01:10:21.305022+00:00",
+    "feature": "beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor",
+    "feature_slug": "beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor",
+    "prd_ref": "docs/beacon/v1.4.0/prd/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md",
+    "user_story_ref": "docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
+  },
+  "required_artifacts": [],
+  "scanned_files": [
+    "docs/beacon/v1.4.0/prd/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md",
+    "docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
+  ]
+}
