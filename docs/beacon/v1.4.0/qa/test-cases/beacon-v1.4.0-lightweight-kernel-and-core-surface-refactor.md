@@ -5,11 +5,12 @@
 **Feature**: Beacon v1.4.0 lightweight kernel and core surface refactor
 **Test Type**: ALL
 **Version**: v1.4.0
-**Generated**: 2026-05-06 20:35
+**Generated**: 2026-05-07 11:20
+**Status**: `frozen-pending-implementation`
 **Requested Mode**: auto
 **Effective Mode**: requirement-freeze
 **Fallback Reason**: machine-contract-not-yet-implemented
-**Memory Context**: v1.3.12 runtime closure + v1.4.0 lightweight kernel refactor
+**Memory Context**: v1.3.12 runtime closure + v1.4.0 lightweight kernel refactor + source version drift governance
 **Primary Truth**: docs/beacon/v1.4.0/prd/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md
 **Upstream User Story**: docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md
 **Global Boundary Truth**: docs/beacon/global-boundaries.md
@@ -35,6 +36,10 @@
 | AC-102 | TC-006 | contract | `python3 -m pytest -q tests/test_v140_change_kernel.py -k "change_contract_fields"` | machine-readable change contract contains reason, affected refs, layers, verification refs, and archive status | `.beacon/evidence/test-results/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor/TC-006.json` |
 | AC-103 | TC-007 | integration | `python3 -m pytest -q tests/test_v140_change_kernel.py -k "single_change_thread"` | reopen, revise, refreeze, delta implement, delta qa, and release recheck stay on one change thread | `.beacon/evidence/test-results/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor/TC-007.json` |
 | AC-104 | TC-008 | integration | `python3 -m pytest -q tests/test_v140_change_kernel.py -k "per_change_archive_and_version_rollup"` | per-change closure rolls up into version summary without losing per-change canonical truth | `.beacon/evidence/test-results/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor/TC-008.json` |
+| AC-105 | TC-008A | contract | `python3 -m pytest -q tests/test_v140_version_surface_governance.py -k "single_canonical_release_manifest"` | Beacon self-repo has one canonical release manifest for package/runtime/docs/release truth | `.beacon/evidence/test-results/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor/TC-008A.json` |
+| AC-106 | TC-008B | integration | `python3 -m pytest -q tests/test_v140_version_surface_governance.py -k "version_surfaces_are_projected_from_manifest"` | `__init__`, compatibility truth tables, skill/rules markers, and runtime version outputs are projected from the same manifest | `.beacon/evidence/test-results/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor/TC-008B.json` |
+| AC-107 | TC-008C | integration | `python3 -m pytest -q tests/test_v140_version_surface_governance.py -k "sync_version_surfaces_repairs_drift"` | `beacon doctor sync-version-surfaces` refreshes drifted managed version surfaces from the canonical manifest | `.beacon/evidence/test-results/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor/TC-008C.json` |
+| AC-108 | TC-008D | regression | `python3 -m pytest -q tests/test_v140_version_surface_governance.py -k "verify_version_surfaces_blocks_drift_strictly"` | `beacon doctor verify-version-surfaces --strict` blocks when any managed version surface drifts from the manifest | `.beacon/evidence/test-results/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor/TC-008D.json` |
 | AC-201 | TC-009 | contract | `python3 -m pytest -q tests/test_v140_change_surface.py -k "borrow_container_not_public_cli_sprawl"` | Beacon borrows change-container semantics without adding a new public primary command family | `.beacon/evidence/test-results/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor/TC-009.json` |
 | AC-202 | TC-010 | integration | `python3 -m pytest -q tests/test_v140_change_surface.py -k "support_surface_projects_change_state"` | `help / status / report / gate` project current change id, change state, blocked reason, and next action | `.beacon/evidence/test-results/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor/TC-010.json` |
 | AC-203 | TC-011 | regression | `python3 -m pytest -q tests/test_v140_change_surface.py -k "change_is_router_not_stage"` | `beacon-change` remains a routing surface and is not exposed as a new lifecycle stage | `.beacon/evidence/test-results/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor/TC-011.json` |
@@ -98,6 +103,10 @@
 | TC-006 | Pending | from AC-102 |
 | TC-007 | Pending | from AC-103 |
 | TC-008 | Pending | from AC-104 |
+| TC-008A | Pending | from AC-105 |
+| TC-008B | Pending | from AC-106 |
+| TC-008C | Pending | from AC-107 |
+| TC-008D | Pending | from AC-108 |
 | TC-009 | Pending | from AC-201 |
 | TC-010 | Pending | from AC-202 |
 | TC-011 | Pending | from AC-203 |
@@ -154,6 +163,7 @@
 - 当前 QA 包已经把 `v1.4.0` 的减负目标落成正式验收对象，而不是停留在架构偏好：
   - `truth / contract / projection` 分层已进入 fail-closed 检查面
   - `change` 已被编译成事务内核而不是松散 change loop
+  - `version manifest -> projected surfaces -> sync/verify` 已进入 Beacon 自仓库版本治理检查面
   - `goal -> Ralph -> QA handoff -> gate` 的执行闭环已进入统一断言面
   - `tasks ledger` 被明确限制为人类投影，不得升级为第二执行真相源
   - `global-boundaries` 人类面只允许解释、校准、路由，不允许自由改写 canonical truth

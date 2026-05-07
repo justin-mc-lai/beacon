@@ -1,6 +1,6 @@
 """Beacon release command - Release checklist"""
 import typer
-from typing import Optional
+from typing import Any, Optional
 from pathlib import Path
 from datetime import datetime
 import json
@@ -17,6 +17,7 @@ from beacon.utils.revision_state import load_revision_state
 from beacon.utils.runtime_projection_store import runtime_projection_transaction_contract
 from beacon.utils.story_state import feature_slug
 from beacon.utils.technical_review_contract import load_technical_review_contract
+from beacon.utils.version_surface import version_surface_repair_commands
 from beacon.utils.writeback import acceptance_projection_transaction_contract
 from beacon.utils.versioning import project_runtime_feature_enabled, resolve_runtime_version, resolve_target_version
 from beacon.utils.workflow_memory import append_lifecycle_event
@@ -658,6 +659,11 @@ def check(
     release_scorecard = build_release_scorecard(project_root, version=resolved_version)
     change_documents = release_scorecard.get("change_documents") if isinstance(release_scorecard.get("change_documents"), dict) else {}
     prompt_boundary = release_scorecard.get("prompt_boundary") if isinstance(release_scorecard.get("prompt_boundary"), dict) else {}
+    version_surface_governance = (
+        release_scorecard.get("version_surface_governance")
+        if isinstance(release_scorecard.get("version_surface_governance"), dict)
+        else {}
+    )
     feature_qa_scorecard = (
         release_scorecard.get("feature_qa_scorecard")
         if isinstance(release_scorecard.get("feature_qa_scorecard"), dict)
@@ -1034,6 +1040,21 @@ def check(
                     f"status={semantic_status}, reason={semantic_reason or '-'}",
                 )
             )
+
+    if bool(version_surface_governance.get("configured", False)):
+        repair_commands = version_surface_repair_commands(project_root)
+        checks.append(
+            (
+                "version surface governance pass",
+                not bool(version_surface_governance.get("blocked", False)),
+                (
+                    f"status={version_surface_governance.get('status') or 'unknown'}, "
+                    f"reason={version_surface_governance.get('reason_code') or '-'}, "
+                    f"manifest_path={version_surface_governance.get('manifest_path') or 'missing'}, "
+                    f"repair={repair_commands[0]}, verify={repair_commands[1]}"
+                ),
+            )
+        )
 
     if enforce_prompt_boundary:
         prompt_boundary_status = str(prompt_boundary.get("status") or "missing")

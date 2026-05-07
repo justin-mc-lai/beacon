@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Any, Callable
 
 from beacon.utils.codex_hud_hook import setup_codex_hud_hook, verify_codex_hud_hook
+from beacon.utils.agent_surface import setup_agent_surface, verify_agent_surface
 from beacon.utils.context_files import setup_context_files, verify_context_files
 from beacon.utils.doctor_diagnostics import build_doctor_payload
 from beacon.utils.doctor_setup import install_launchers, uninstall_launchers
@@ -22,6 +23,7 @@ from beacon.utils.runtime import now_iso, write_json
 from beacon.utils.source_architecture import current_source_architecture_status
 from beacon.utils.subagent_readiness import delegation_readiness_precheck, runtime_readiness_precheck
 from beacon.utils.technical_review_contract import materialize_technical_review_contract
+from beacon.utils.version_surface import sync_version_surfaces, verify_version_surfaces
 from beacon.utils.v115_delivery import repair_v115_delivery_package
 from beacon.utils.versioning import load_project_onboarding_state, runtime_capability_lines
 from beacon.utils.version_package_upgrade import upgrade_version_package
@@ -381,6 +383,56 @@ def _host_verify_codex_hud_hook(
     return verify_codex_hud_hook(project_root, version=version, events=events)
 
 
+def _host_setup_agent_surface(
+    *,
+    project_root: Path,
+    agent: str,
+    runtime_version: str,
+    docs_version: str,
+    dry_run: bool,
+    force: bool,
+) -> dict[str, Any]:
+    return setup_agent_surface(
+        project_root,
+        agent=agent,
+        runtime_version=runtime_version,
+        docs_version=docs_version,
+        dry_run=dry_run,
+        force=force,
+    )
+
+
+def _host_verify_agent_surface(
+    *,
+    project_root: Path,
+    agent: str,
+    runtime_version: str,
+    strict: bool,
+) -> dict[str, Any]:
+    return verify_agent_surface(
+        project_root,
+        agent=agent,
+        runtime_version=runtime_version,
+        strict=strict,
+    )
+
+
+def _host_sync_version_surfaces(
+    *,
+    project_root: Path,
+    dry_run: bool,
+) -> dict[str, Any]:
+    return sync_version_surfaces(project_root, dry_run=dry_run)
+
+
+def _host_verify_version_surfaces(
+    *,
+    project_root: Path,
+    strict: bool,
+) -> dict[str, Any]:
+    return verify_version_surfaces(project_root, strict=strict)
+
+
 @lru_cache(maxsize=1)
 def get_doctor_registry() -> dict[str, DoctorHandlerSpec]:
     """Return the doctor execution registry."""
@@ -709,6 +761,58 @@ def get_doctor_registry() -> dict[str, DoctorHandlerSpec]:
             supports_dry_run=False,
             participates_in_parent_flows=("verify-codex-hud-hook",),
             handler=_host_verify_codex_hud_hook,
+        ),
+        DoctorHandlerSpec(
+            key="host.setup.agent-surface",
+            domain="host",
+            action="setup",
+            handler_id="agent-surface",
+            description="Materialize Beacon host-visible skills into a project-local agent surface.",
+            reads=("project_root", "agent", "runtime_version", "docs_version"),
+            writes=(".trae/skills", ".trae/rules/project_rules.md", ".beacon/state/agent-surfaces.json"),
+            safe_by_default=True,
+            supports_dry_run=True,
+            participates_in_parent_flows=("setup-agent-surface",),
+            handler=_host_setup_agent_surface,
+        ),
+        DoctorHandlerSpec(
+            key="host.verify.agent-surface",
+            domain="host",
+            action="verify",
+            handler_id="agent-surface",
+            description="Verify project-local Beacon agent surface materialization and drift.",
+            reads=("project_root", "agent", "runtime_version"),
+            writes=(),
+            safe_by_default=True,
+            supports_dry_run=False,
+            participates_in_parent_flows=("verify-agent-surface",),
+            handler=_host_verify_agent_surface,
+        ),
+        DoctorHandlerSpec(
+            key="host.sync.version-surfaces",
+            domain="host",
+            action="sync",
+            handler_id="version-surfaces",
+            description="Sync Beacon self-repo version surfaces from the canonical release manifest.",
+            reads=("project_root",),
+            writes=("beacon/version-truth.json", "beacon/__init__.py", "skills/beacon/metadata.json", "SKILL.md", ".trae/rules/project_rules.md", ".beacon/state/agent-surfaces.json"),
+            safe_by_default=True,
+            supports_dry_run=True,
+            participates_in_parent_flows=("sync-version-surfaces",),
+            handler=_host_sync_version_surfaces,
+        ),
+        DoctorHandlerSpec(
+            key="host.verify.version-surfaces",
+            domain="host",
+            action="verify",
+            handler_id="version-surfaces",
+            description="Verify Beacon self-repo version surfaces against the canonical release manifest.",
+            reads=("project_root",),
+            writes=(),
+            safe_by_default=True,
+            supports_dry_run=False,
+            participates_in_parent_flows=("verify-version-surfaces",),
+            handler=_host_verify_version_surfaces,
         ),
     ]
     return {spec.key: spec for spec in specs}

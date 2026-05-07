@@ -446,3 +446,60 @@ def test_release_check_should_fail_when_scorecard_gate_is_blocked_even_if_gate_r
     assert result.exit_code == 1, result.stdout
     assert "gate report pass" in result.stdout
     assert "status=Blocked" in result.stdout
+
+
+def test_release_check_should_fail_when_version_surface_governance_drift_exists(tmp_path: Path, monkeypatch):
+    version = "v1.4.0"
+    _seed_release_artifacts(tmp_path, version=version, coverage_version=version)
+
+    monkeypatch.setattr(
+        release_command,
+        "build_release_scorecard",
+        lambda *_args, **_kwargs: {
+            "release_ready": False,
+            "qa": {"feature": "feature-a", "status": "passed", "evidence_done": True},
+            "semantic": {"status": "pass", "reason_code": ""},
+            "feature_qa_scorecard": {
+                "release_ready": True,
+                "continue_decision": "ready_for_release",
+                "coverage_current": {
+                    "required_scenarios": 1,
+                    "executed_scenarios": 1,
+                    "coverage_rate": 1.0,
+                },
+            },
+            "change_documents": {
+                "markdown_exists": True,
+                "json_exists": True,
+                "version_match": True,
+                "includes_current_feature": True,
+                "markdown_path": f"docs/beacon/{version}/change/{version}.md",
+                "json_path": f"docs/beacon/{version}/.machine/change/{version}.json",
+                "current_feature_slug": "feature-a",
+                "feature_count": 1,
+            },
+            "prompt_boundary": {
+                "required": True,
+                "status": "pass",
+                "blocked": False,
+                "classification": "in_scope_implementation",
+                "reason_code": "",
+                "surface": "host_prompt",
+            },
+            "version_surface_governance": {
+                "configured": True,
+                "status": "fail",
+                "blocked": True,
+                "reason_code": "version_surface_governance_drift",
+                "manifest_path": "beacon/version-truth.json",
+            },
+        },
+    )
+
+    result = _invoke(["release", "check", version, "--project", str(tmp_path)])
+
+    assert result.exit_code == 1, result.stdout
+    assert "version surface governance pass" in result.stdout
+    assert "version_surface_governance_drift" in result.stdout
+    assert f"repair=beacon doctor sync-version-surfaces --project-root {tmp_path}" in result.stdout
+    assert f"verify=beacon doctor verify-version-surfaces --project-root {tmp_path} --strict" in result.stdout

@@ -24,6 +24,12 @@ from beacon.utils.versioning import (
     release_line_key,
     resolve_docs_version,
 )
+from beacon.utils.version_surface import (
+    format_governance_diagnostic,
+    get_version_surface_governance_payload,
+    verify_version_surfaces,
+    version_surface_repair_commands,
+)
 from beacon.utils.workflow_memory import compute_workflow_progress
 
 _SKILL_VERSION_PATTERNS = (
@@ -726,6 +732,8 @@ def collect_compatibility_checks(
         version_context=version_context,
     )
     install_copy_versions = _collect_install_copy_versions(runtime_skill_version)
+    version_surface_gov = get_version_surface_governance_payload(project_root, strict=True)
+    version_surface_diag = format_governance_diagnostic(version_surface_gov)
     docs_backed_by_delivery_package = docs_have_progress and not run_id and bool(delivery_provenance.get("has_formal_package"))
     runless_docs_only_status = "PASS"
     if docs_have_progress and not run_id and not docs_backed_by_delivery_package:
@@ -909,6 +917,7 @@ def collect_compatibility_checks(
                 "Update `SKILL.md` version declaration to the active runtime version.",
             ],
         },
+        "version_surface_governance": version_surface_diag,
         "installed_skill_copy_drift": {
             "status": "WARN" if install_copy_versions.get("drift_detected") else "PASS",
             "severity": "medium",
@@ -931,6 +940,7 @@ def _compatibility_checks_to_incompatibilities(
 ) -> list[dict[str, Any]]:
     check_code_map = {
         "runtime_version_consistency": "COMP-101",
+        "version_surface_governance": "COMP-102",
         "runless_docs_only": "COMP-201",
         "status_memory_divergence": "COMP-202",
         "stale_ptk_version_refs": "COMP-203",
@@ -1063,6 +1073,7 @@ def build_doctor_payload(
             "stale_ptk_version_refs": {"status": "UNKNOWN", "severity": "medium", "summary": "project root unavailable"},
             "legacy_skill_trigger_syntax": {"status": "UNKNOWN", "severity": "medium", "summary": "project root unavailable"},
             "runtime_version_consistency": {"status": "UNKNOWN", "severity": "medium", "summary": "project root unavailable"},
+            "version_surface_governance": {"status": "UNKNOWN", "severity": "high", "summary": "project root unavailable"},
             "installed_skill_copy_drift": {"status": "UNKNOWN", "severity": "medium", "summary": "project root unavailable"},
             "global_boundaries_source": {"status": "UNKNOWN", "severity": "high", "summary": "project root unavailable"},
             "global_boundaries_inheritance": {"status": "UNKNOWN", "severity": "high", "summary": "project root unavailable"},

@@ -32,6 +32,10 @@ from beacon.utils.implementation_plan import (
 )
 from beacon.utils.qa_precision import load_feature_qa_ac_closure, load_feature_qa_scorecard
 from beacon.utils.release_scorecard import build_release_scorecard
+from beacon.utils.version_surface import (
+    VERSION_SURFACE_GOVERNANCE_REASON_CODE,
+    version_surface_repair_commands,
+)
 from beacon.utils.prototype_support import feature_requires_route_closure, prototype_status, version_requires_prototype
 from beacon.utils.runtime_projection_store import runtime_projection_transaction_contract
 from beacon.utils.writeback import acceptance_projection_transaction_contract
@@ -249,6 +253,7 @@ REASON_CODES = [
     "implement_prompt_boundary_invalid",
     "implement_prompt_requirement_change",
     "implement_prompt_truth_conflict",
+    VERSION_SURFACE_GOVERNANCE_REASON_CODE,
 ]
 
 # Default gate evaluation stages
@@ -2127,12 +2132,42 @@ def check_v110_precision_contract(
 
     if _parse_semver_tuple(resolved_version) >= (1, 3, 9):
         release_scorecard = build_release_scorecard(project_root, version=resolved_version)
+        version_surface_governance = (
+            release_scorecard.get("version_surface_governance")
+            if isinstance(release_scorecard.get("version_surface_governance"), dict)
+            else {}
+        )
         acceptance = (
             release_scorecard.get("acceptance")
             if isinstance(release_scorecard.get("acceptance"), dict)
             else {}
         )
         qa_summary = release_scorecard.get("qa") if isinstance(release_scorecard.get("qa"), dict) else {}
+
+        if bool(version_surface_governance.get("blocked", False)):
+            manifest_path = str(version_surface_governance.get("manifest_path") or "beacon/version-truth.json").strip()
+            repair_commands = list(version_surface_governance.get("repair_commands") or [])
+            issues.append(
+                {
+                    "reason_code": str(
+                        version_surface_governance.get("reason_code") or VERSION_SURFACE_GOVERNANCE_REASON_CODE
+                    ),
+                    "severity": "critical",
+                    "message": (
+                        "Beacon self-repo version surface governance drift detected; "
+                        f"manifest_path={manifest_path}"
+                    ),
+                    "blocked": True,
+                    "recommended_command": repair_commands[0] if repair_commands else "",
+                    "repair": repair_commands,
+                    "details": {
+                        "manifest_path": manifest_path,
+                        "repair": repair_commands,
+                        "verify_command": str(version_surface_governance.get("verify_command") or ""),
+                        "checks": list(version_surface_governance.get("checks") or []),
+                    },
+                }
+            )
 
         if not acceptance or str(acceptance.get("source") or "").strip() in {"", "none"}:
             issues.append(
@@ -4224,6 +4259,22 @@ def run_gate_checks(
     }
 
 
+def _issue_repair_lines(issue: dict[str, Any]) -> list[str]:
+    repairs: list[str] = []
+    for candidate in (issue.get("repair"), ((issue.get("details") or {}) if isinstance(issue.get("details"), dict) else {}).get("repair")):
+        if isinstance(candidate, list):
+            for item in candidate:
+                text = str(item or "").strip()
+                if text and text not in repairs:
+                    repairs.append(text)
+    recommended_command = str(issue.get("recommended_command") or "").strip()
+    if not recommended_command and isinstance(issue.get("details"), dict):
+        recommended_command = str(issue["details"].get("recommended_command") or "").strip()
+    if recommended_command and recommended_command not in repairs:
+        repairs.insert(0, recommended_command)
+    return repairs
+
+
 def _run_check_command(
     stage: str,
     strict: bool = False,
@@ -4285,6 +4336,8 @@ def _run_check_command(
             for issue in result["issues"]:
                 if issue.get("blocked"):
                     typer.echo(f"  - {issue['reason_code']}: {issue['message']}")
+                    for repair in _issue_repair_lines(issue):
+                        typer.echo(f"    repair: {repair}")
         else:
             is_warn = result["status"] == "Warn"
             if force:
@@ -4302,6 +4355,8 @@ def _run_check_command(
             typer.echo(f"Warnings: {len(result['issues'])}")
             for issue in result["issues"]:
                 typer.echo(f"  - {issue['reason_code']}: {issue['message']}")
+                for repair in _issue_repair_lines(issue):
+                    typer.echo(f"    repair: {repair}")
 
     if is_debug_mode_enabled(root):
         blocked = result["status"] == "Blocked"

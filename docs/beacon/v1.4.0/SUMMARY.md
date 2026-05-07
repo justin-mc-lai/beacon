@@ -4,7 +4,7 @@
 
 - `v1.4.0` 当前主题是：`lightweight kernel and core surface refactor`
 - 当前版本不是做“能力删除”，而是做“能力分层、减重、真相收敛”
-- 当前版本材料状态：`three-feature-accepted / release-pending / branch-governance-requirement-frozen`
+- 当前版本材料状态：`two-feature-accepted / main-kernel-feature-refrozen-pending-implementation / branch-governance-requirement-frozen`
 
 ## 版本目标
 
@@ -51,7 +51,7 @@
 ## 当前冻结判断
 
 - `beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor`
-  - `prd-freeze-ready / story-freeze-ready / test-case-freeze-ready / execution-blueprint-frozen / implementation-completed / qa-passed / acceptance-accepted`
+  - `prd-frozen-pending-implementation / story-frozen-pending-implementation / test-case-frozen-pending-implementation / revision-r2-ready`
 - `beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure`
   - `prd-freeze-ready / story-freeze-ready / test-case-freeze-ready / support-surface-frozen / implementation-completed / qa-passed / acceptance-accepted`
 - `beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration`
@@ -66,11 +66,11 @@
 - `v1.4.0` 不新增公开一级主命令
 - `beacon-prd-bootstrap` 继续存在，但只作为 optional support skill
 - 新增 branch governance requirement 子线，目标是在不扩张主流程的前提下补齐人类面 git workflow / implement gate 治理缺口
+- 主内核重构线已按 `beacon-change` 回路重新补齐“版本号/版本元信息漂移治理” requirement，并重新冻结到待实现
 - bootstrap 可以降低 requirement 启动摩擦，但不能伪装成 frozen truth 或绕过主链
 - `beacon-prd-bootstrap` 当前已进一步被补强为 unified requirement closure entry 候选，但仍是 support surface，不是主流程替代
-- 当前版本 requirement closure 已进入正式实现与验收阶段
-- 三条正式子线都已经形成 implementation / QA / acceptance 证据链
-- `Beacon Acceptance Kit v1` 在三条子线上都已经投影为 `Contract Pass`
+- 当前版本有两条 support 子线已形成 implementation / QA / acceptance 证据链
+- 主内核重构线与 branch governance 子线当前都处于 requirement 已冻结、待实现状态
 - branch governance 新子线当前 requirement package 已冻结，尚未进入 implementation / QA execution
 
 ## 当前冻结基线
@@ -85,33 +85,37 @@
 
 ## 当前收口判断
 
-- 当前版本已经完成三条 requirement 子线的正式实现闭环：
-  - 主内核重构线已实现并验收
+- 当前版本已经完成两条 requirement 子线的正式实现闭环：
   - `prd-bootstrap` safe bootstrap/freeze closure 已实现并验收
   - `prd-bootstrap unified closure orchestration` 已实现并验收
+- 当前版本有两条 requirement 子线处于冻结待实现：
+  - 主内核重构线已补齐版本漂移治理 requirement，并完成 R2 冻结
+  - branch governance 子线 requirement package 已冻结，尚未进入 implementation / QA execution
 - 当前版本尚未进入“版本发布完成”：
   - release scorecard 仍未到 `release_ready`
   - release gate 仍有版本级阻断需要收口
-  - 当前结论是：`feature-accepted / release-pending`
+  - 当前结论是：`mixed feature state / release-pending`
 
 ## 当前真实状态
 
-- 截至 `2026-05-07`，三条正式 feature 的 machine acceptance transaction 都已写回
-- 三条正式 feature 的 `artifact-update-obligations` 都已 `open_count=0`
-- 三条正式 feature 的 `Acceptance Kit v1` 四层 verdict 都是：
+- 截至 `2026-05-07`，两条 bootstrap feature 的 machine acceptance transaction 都已写回
+- 两条 bootstrap feature 的 `artifact-update-obligations` 都已 `open_count=0`
+- 两条 bootstrap feature 的 `Acceptance Kit v1` 四层 verdict 都是：
   - `skill-contract=pass`
   - `scenario-suite=pass`
   - `trace-scorecard=pass`
   - `real-project-proof=pass`
-- 版本级仍不应直接宣称发布完成，当前主要差项是 release governance，而不是 feature 实现缺口
+- 主内核重构线当前已因 requirement 变更进入 `R2`，并新增版本表面漂移治理待实现项
+- 版本级仍不应直接宣称发布完成，当前主要差项同时包括 release governance 与未完成 feature implementation
 
 ## 当前版本级阻断
 
 - `release scorecard v1.4.0` 仍显示 `release_ready=false`
-- 当前主要版本级阻断来自 release gate / evidence governance，而不是三条 feature 的实现未闭环
+- 当前主要版本级阻断来自 release gate / evidence governance，以及主内核与 branch governance 两条 feature 的实现未闭环
 - 因此本版本当前应被表述为：
-  - `three feature packages accepted`
-  - `Beacon Acceptance Kit v1 passed on all three`
+  - `two feature packages accepted`
+  - `main kernel feature requirement-refrozen to pending implementation`
+  - `branch-governance feature requirement-frozen`
   - `version release still pending final governance closure`
 
 ## 关键验收锚点
@@ -133,6 +137,12 @@
 - `skills/beacon/beacon-prd-bootstrap/SKILL.md`
 - `beacon/commands/prd_bootstrap.py`
 - `beacon/utils/prd_bootstrap.py`
+
+## 研究与对标
+
+- 与 **OpenSpec**、**GitHub Spec Kit** 的结构层对比，及 Beacon **可交付设计**（极简人类面、完备交付闭环、职责分层）：[`research/beacon-openspec-speckit-comparison-and-deliverable-design.md`](./research/beacon-openspec-speckit-comparison-and-deliverable-design.md)
+- **Spec Kit 多 Agent / Trae skills** 安装机制与 Beacon **宿主材质化**对齐（为何 Trae 人类面看不到子技能、建议 `beacon doctor` 侧实现要点）：[`research/beacon-agent-surface-speckit-trae-alignment.md`](./research/beacon-agent-surface-speckit-trae-alignment.md)
+- **OpenSpec 归档**（主 spec、delta 变更包、`archive` 合并语义）与 Beacon **版本演进中的「实现真相」缺口**：[`research/openspec-archive-vs-beacon-version-evolution.md`](./research/openspec-archive-vs-beacon-version-evolution.md)
 
 ## 版本主题图
 

@@ -2,8 +2,8 @@
 
 **Feature**: `beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor`  
 **Version**: `v1.4.0`  
-**Date**: `2026-05-06`  
-**Status**: `freeze-ready`  
+**Date**: `2026-05-07`  
+**Status**: `frozen-pending-implementation`  
 **Track**: `main`  
 **Scenario**: `kernel_lightweight_refactor + truth_contract_reduction + core_surface_governance`  
 **Template**: `主 PRD / architecture-refactor`
@@ -36,6 +36,10 @@
   - `beacon/commands/gate.py`
   - `beacon/commands/implement.py`
   - `beacon/commands/qa.py`
+- Version drift evidence:
+  - `beacon/__init__.py`
+  - `beacon/version-truth.json`
+  - `beacon/version-semantics.json`
 - Key kernel utilities:
   - `beacon/utils/semantic_runtime.py`
   - `beacon/utils/project_metadata.py`
@@ -222,6 +226,25 @@ Out of scope:
 
 > 正式建立 skill taxonomy 与 visibility governance。
 
+### 1.9 Beacon 源码仓已经暴露版本号与版本元信息漂移
+
+最近针对 Beacon 自仓库的核验表明，版本相关表面已经出现了“同一发布事实被多处手工维护”的问题，例如：
+
+- `beacon/__init__.py` 已声明 `1.4.0 / v1.4.0`
+- `beacon/version-truth.json` 仍停留在 `1.3.11 / v1.3.11`
+- `version-semantics` 虽定义了字段含义，但没有强制所有消费面都回到单一 canonical source
+
+这类漂移的直接风险包括：
+
+1. `doctor`、`help`、`status`、`setup-context`、skill materialization 等表面对版本解释不一致
+2. 发布、文档、rules managed block、host-visible skill 元信息可能引用不同版本值
+3. 自仓库迭代时，用户会误判当前 runtime line、docs line、release truth line
+4. 后续每次升级都需要多点手工同步，继续放大隐藏漂移
+
+因此，`v1.4.0` 不仅要做 truth/contract/projection 的大分层，也必须补上一条更具体的治理：
+
+> 版本号、docs line、runtime line、skill/rules 版本标记必须回到单一 canonical release manifest，再由它单向投影到各个源码表面。
+
 ## 2. 目标
 
 ### 2.1 主要目标
@@ -242,6 +265,7 @@ Out of scope:
 12. 为 `global-boundaries` 增加显性的人类面上下文/边界操作子 skill
 13. 让 `help/status/archive` 更偏 action-oriented human projection，而不是暴露底层复杂度
 14. 为 Beacon skill 建立正式的人类面分层与默认可见性治理
+15. 为 Beacon 自仓库建立单一 canonical release manifest，并把版本号/元信息表面的同步与验漂移纳入正式治理
 
 ### 2.2 非目标
 
@@ -254,6 +278,7 @@ Out of scope:
 - 不因为“追求高性能”而仓促迁移出 Python
 - 不照搬 OpenSpec 的公开命令面
 - 不要求所有 host runtime 都必须实现 Codex goal 语义才能执行 implement
+- 不继续容忍多个手工维护的版本真相文件长期并存
 
 ### 2.3 核心判断
 
@@ -304,6 +329,13 @@ Out of scope:
 - 现阶段继续沿用 Python
 - 先通过架构减耦、artifact 减量、compile 单向化解决 80% 问题
 - 只有在真实 profiling 证明 Python 成为瓶颈时，才讨论局部重写
+
+### 3.7 Version Truth Must Be Canonical And Projected
+
+- package version、runtime version、docs default line、release truth line 必须从同一 canonical release manifest 解析
+- `__init__`、version truth 表、skill/rules 版本标记、doctor/context 输出只能作为投影或兼容表面
+- 版本表面允许兼容存在，但不允许再各自成为独立编辑点
+- 对 Beacon 自仓库而言，版本漂移是 requirement truth 漂移的一部分，必须可被 sync/verify/gate 识别
 
 ## 4. 范围
 
@@ -590,6 +622,54 @@ Beacon 不应照搬为：
 - metadata transaction consistency
 
 没有 metadata 的版本线，不应被视为完整工程交付面。
+
+### FR-009A Beacon 必须把版本号与发布元信息收敛到单一 canonical release manifest
+
+`v1.4.0` 必须为 Beacon 自仓库定义一个正式的单文件 canonical release manifest。它可以是升级后的 `beacon/version-truth.json`，也可以是等价的新 manifest，但必须满足：
+
+- package/runtime/docs/release truth 只由这一处维护
+- 允许声明兼容字段与历史 line 状态
+- 明确字段语义，避免 `package_version`、`runtime_version`、`docs_default_line`、`current_runtime_release_line` 被命令面各自重解释
+- 允许对历史 release line、planning line、supplement line 做结构化表达
+
+该 manifest 至少应覆盖：
+
+- `package_version`
+- `runtime_version`
+- `docs_default_line`
+- `current_runtime_release_line`
+- `lines[*].status`
+- `schema_version`
+
+### FR-009B 所有版本相关源码表面必须由 canonical release manifest 单向投影
+
+以下表面不得继续被视为并列手工真相源，而必须由 canonical release manifest 单向生成、校准或兼容映射：
+
+- `beacon/__init__.py` 中的 `__version__` / `__toolkit_version__`
+- version truth / compatibility json surface
+- `doctor`、`help`、`status`、`setup-context` 等运行期版本解析输出
+- host-visible skills、rules managed block、agent surface state 中的版本标记
+- 需要声明当前 Beacon runtime/docs line 的人类面摘要与元信息投影
+
+要求：
+
+- 投影失败必须显式可见
+- 兼容 surface 允许保留，但不能绕过 manifest 直接改值
+- 同一版本事实不得再要求操作者手工同步多个文件
+
+### FR-009C Beacon 必须提供正式的 version surface sync / verify 治理
+
+`v1.4.0` 必须补齐 Beacon 自仓库版本表面的显式治理命令，至少包括：
+
+- `beacon doctor sync-version-surfaces`
+- `beacon doctor verify-version-surfaces`
+
+其中：
+
+- `sync-version-surfaces` 负责根据 canonical release manifest 重写或刷新受管投影
+- `verify-version-surfaces` 负责报告 manifest 与各投影表面的差异
+- `--strict` 模式下，发现 drift 时必须返回阻断 verdict，而不是只给 warning
+- release-facing、自仓库迭代治理、agent surface materialization、setup-context 等关键路径必须复用同一 version verification contract
 
 ### FR-010 Memory / Workflow Memory Kernel 必须保留统一 envelope
 
@@ -1089,6 +1169,7 @@ Change kernel 建议至少形成以下单元：
 | Brainstorm 重新膨胀成平行 truth 面 | 高 | 强制只读边界与 route-only contract |
 | plugin/domain 再次侵入 core CLI | 中 | 明确 core command inventory 与插件边界 |
 | 误判 Python 为主瓶颈而启动高风险重写 | 中 | 先 profiling，再做热点级优化 |
+| package/runtime/docs/skill/rules 继续各自维护版本值 | 高 | 引入 canonical release manifest，并通过 sync/verify 把其他表面降为投影 |
 | `change` 仍然停留在路由层，导致变更闭环不稳定 | 高 | 引入正式 change contract 与 archive/verify 语义 |
 | Codex goal 与 Ralph 两条执行状态链各自为政 | 高 | 建立统一状态映射与 handoff contract |
 | 新增 `tasks.md` 进度账本后变成第二执行真相源 | 高 | 强制声明它是 implementation-plan 的 human projection，只做单向投影 |
@@ -1176,6 +1257,13 @@ Change kernel 建议至少形成以下单元：
 - memory/workflow 仍保留统一 envelope
 - archive/support 仍可报告 active vs historical 状态
 
+### AC-006A Beacon 自仓库的版本真相与版本投影已形成正式治理闭环
+
+- Beacon 存在且只存在一个 canonical release manifest 作为 package/runtime/docs/release truth 的编辑源
+- `beacon/__init__.py`、version truth 兼容表面、host skill/rules 版本标记与运行期版本输出都可回溯到同一 manifest
+- `beacon doctor sync-version-surfaces` 能把 manifest 重新投影到受管表面
+- `beacon doctor verify-version-surfaces --strict` 在检测到 drift 时会阻断通过
+
 ### AC-007 v1.4.0 保持 Python 主实现路线，并对热点建立性能观察基线
 
 - 没有因为本 PRD 触发全量语言重写
@@ -1193,6 +1281,7 @@ Change kernel 建议至少形成以下单元：
 - 辅指标：implement 进度对人类与 agent 都更直观，不再只依赖 machine JSON
 - 辅指标：global boundaries 不再只是内核文档，而是具备显性 human-usable context surface
 - 辅指标：internal/advanced skill 不再污染默认用户心智面
+- 辅指标：Beacon 自仓库版本升级时不再需要手工同步多个版本表面，drift 能被 sync/verify 显式识别
 
 ## 10. 依赖与冻结决策
 
@@ -1204,6 +1293,7 @@ Change kernel 建议至少形成以下单元：
   - `test-case`
   - `execution/architecture-blueprint`
 - 迁移实施前需要补齐：
+  - canonical release manifest schema
   - minimal contract compiler spec
   - change kernel spec
   - route engine spec
@@ -1211,19 +1301,23 @@ Change kernel 建议至少形成以下单元：
   - implement task-ledger projection spec
   - global-boundary human-surface spec
   - skill taxonomy and visibility governance spec
+  - version surface inventory and projection map
+  - version surface sync / verify blocking checklist
   - command migration checklist
   - rollout / rollback 验证清单
 
 ### 10.2 Requirement Freeze Verdict
 
-- Verdict: `freeze-ready`
+- Verdict: `frozen-pending-implementation`
 - Reason:
   - 方向已通过源码与全局边界双重收敛
   - 核心保留项与迁移项边界已足够清晰
   - Python 路线判断具备高置信度
+  - 版本号与发布元信息漂移已经被吸收进正式 requirement，而不再停留在分析结论
+  - `sync-version-surfaces / verify-version-surfaces` 已被定义为 required governance surface
 - Follow-up:
-  - 进入 `user-story` 拆解核心 epic 与 migration lane
-  - 进入 `test-case` 定义 contract/gate/migration 验收集
+  - 进入 `implement`，落地 canonical release manifest 与 version surface projection contract
+  - 进入 `test-case` / `doctor` 实现 version drift sync/verify 验收闭环
 
 ## 11. Diagram Truth Layer
 

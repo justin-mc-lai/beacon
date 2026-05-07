@@ -709,3 +709,49 @@ def test_v138_gate_precision_contract_should_consume_converged_release_acceptanc
     )
 
     assert issues == []
+
+
+def test_v138_gate_precision_contract_should_report_version_surface_governance_drift_for_v140(
+    tmp_path,
+    monkeypatch,
+):
+    version = "v1.4.0"
+    monkeypatch.setattr(gate_module, "_resolved_gate_version", lambda *_args, **_kwargs: version)
+    monkeypatch.setattr(
+        gate_module,
+        "build_release_scorecard",
+        lambda *_args, **_kwargs: {
+            "qa": {
+                "feature": "feature-a",
+                "project_profile_gate_status": "pass",
+            },
+            "acceptance": {
+                "source": "qa_status",
+                "feature": "feature-a",
+                "release_ready": True,
+                "continue_decision": "ready_for_release",
+                "project_profile_gate_status": "pass",
+                "unresolved_closure_outcomes": [],
+                "review_required_count": 0,
+                "needs_replay_count": 0,
+                "release_confidence_min": 0.95,
+            },
+            "version_surface_governance": {
+                "configured": True,
+                "status": "fail",
+                "blocked": True,
+                "reason_code": "version_surface_governance_drift",
+                "manifest_path": "beacon/version-truth.json",
+            },
+        },
+    )
+
+    issues = gate_module.check_v110_precision_contract(
+        tmp_path,
+        gate_module.GateMode.STRICT,
+        "release",
+        version,
+    )
+
+    reason_codes = {item["reason_code"] for item in issues}
+    assert "version_surface_governance_drift" in reason_codes

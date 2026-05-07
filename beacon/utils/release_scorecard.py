@@ -28,6 +28,13 @@ from beacon.utils.story_state import feature_slug
 from beacon.utils.technical_review_contract import build_technical_review_gate_payload, load_technical_review_state
 from beacon.utils.prototype_support import version_requires_prototype
 from beacon.utils.prototype_support import prototype_status
+from beacon.utils.version_surface import (
+    VERSION_SURFACE_GOVERNANCE_REASON_CODE,
+    get_version_surface_governance_payload,
+    verify_version_surfaces,
+    version_surface_manifest_path,
+    version_surface_repair_commands,
+)
 from beacon.utils.versioning import (
     project_runtime_feature_enabled,
     resolve_runtime_version,
@@ -421,6 +428,10 @@ def _resolve_acceptance_truth(
     }
 
 
+def _version_surface_governance(project_root: Path) -> dict[str, Any]:
+    return dict(get_version_surface_governance_payload(project_root, strict=True))
+
+
 def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, Any]:
     resolved_version = resolve_target_version(project_root, version)
     resolved_runtime = resolve_runtime_version(project_root, "auto")
@@ -551,6 +562,8 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
     acceptance_kit = build_acceptance_kit_projection(project_root, version=resolved_version, feature=feature) if feature else {}
     acceptance_kit_summary = acceptance_kit.get("summary") if isinstance(acceptance_kit.get("summary"), dict) else {}
     acceptance_kit_pass = (not acceptance_kit) or bool(acceptance_kit_summary.get("all_layers_passed", False))
+    version_surface_governance = _version_surface_governance(project_root)
+    version_surface_governance_pass = not bool(version_surface_governance.get("blocked", False))
     if runtime_feature_supported("v1.1.10", runtime_version=resolved_runtime):
         release_ready = (
             gate_pass
@@ -597,6 +610,7 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
         release_ready = release_ready and str(acceptance_transaction.get("status") or "warn").strip().lower() == "pass"
     if feature and requirement_completeness_gate:
         release_ready = release_ready and str(requirement_completeness_gate.get("status") or "pass") in {"pass", "pass_with_downgrade"}
+    release_ready = release_ready and version_surface_governance_pass
     if (
         runtime_feature_supported("v1.1.10", runtime_version=resolved_runtime)
         and gate_pass
@@ -617,6 +631,7 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
             )
             or str(acceptance_transaction.get("status") or "warn").strip().lower() == "pass"
         )
+        and version_surface_governance_pass
     ):
         release_ready = True
     release_delivery_read_model = load_delivery_read_model(
@@ -633,7 +648,14 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
             },
             "semantic": semantic if isinstance(semantic, dict) else {},
             "revision_binding": revision_binding,
-            "risk_flags": [str(semantic.get("reason_code") or "").strip()] if semantic and not semantic_pass else [],
+            "risk_flags": [
+                *([str(semantic.get("reason_code") or "").strip()] if semantic and not semantic_pass else []),
+                *(
+                    [str(version_surface_governance.get("reason_code") or "").strip()]
+                    if version_surface_governance.get("blocked")
+                    else []
+                ),
+            ],
         },
     ) if feature else {
         "schema_version": "1.0",
@@ -649,7 +671,14 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
             "revision_binding": revision_binding,
         },
         "traceability": {"requirement_binding": {}, "requirement_refs": [], "runtime_refs": []},
-        "risk_flags": [str(semantic.get("reason_code") or "").strip()] if semantic and not semantic_pass else [],
+        "risk_flags": [
+            *([str(semantic.get("reason_code") or "").strip()] if semantic and not semantic_pass else []),
+            *(
+                [str(version_surface_governance.get("reason_code") or "").strip()]
+                if version_surface_governance.get("blocked")
+                else []
+            ),
+        ],
     }
     prompt_boundary = (
         ((release_delivery_read_model.get("implement") or {}).get("prompt_boundary"))
@@ -689,6 +718,10 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
         host_native_reason_codes.append(str(semantic.get("reason_code") or "semantic_not_ready"))
     if requirement_completeness_gate and str(requirement_completeness_gate.get("status") or "") == "blocked":
         host_native_reason_codes.append(str(requirement_completeness_gate.get("reason_code") or "requirement_completeness_blocked"))
+    if version_surface_governance.get("blocked"):
+        host_native_reason_codes.append(
+            str(version_surface_governance.get("reason_code") or VERSION_SURFACE_GOVERNANCE_REASON_CODE)
+        )
     host_native_delivery = {
         "schema_version": "1.0",
         "implement": (release_delivery_read_model.get("implement") or {}).get("delivery_contract", {}),
@@ -698,7 +731,7 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
             "pass"
             if release_ready
             else "blocked"
-            if list(release_delivery_read_model.get("risk_flags") or [])
+            if any(str(code).strip() for code in host_native_reason_codes)
             else "warn"
         ),
         "reason_codes": sorted({code for code in host_native_reason_codes if str(code).strip()}),
@@ -746,6 +779,7 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
         "acceptance_transaction": acceptance_transaction if isinstance(acceptance_transaction, dict) else {},
         "feature_qa_scorecard": feature_scorecard if isinstance(feature_scorecard, dict) else {},
         "prototype_projection": prototype_projection if isinstance(prototype_projection, dict) else {},
+        "version_surface_governance": version_surface_governance,
         "implementation_plan": implementation_plan if isinstance(implementation_plan, dict) else {},
         "git_workflow": {
             "count": len(git_workflow_contracts),
@@ -805,6 +839,11 @@ def summarize_release_scorecard(scorecard: dict[str, Any] | None) -> dict[str, A
     technical_review = payload.get("technical_review") if isinstance(payload.get("technical_review"), dict) else {}
     prompt_boundary = payload.get("prompt_boundary") if isinstance(payload.get("prompt_boundary"), dict) else {}
     change_documents = payload.get("change_documents") if isinstance(payload.get("change_documents"), dict) else {}
+    version_surface_governance = (
+        payload.get("version_surface_governance")
+        if isinstance(payload.get("version_surface_governance"), dict)
+        else {}
+    )
     delivery = payload.get("delivery") if isinstance(payload.get("delivery"), dict) else {}
     semantic = payload.get("semantic") if isinstance(payload.get("semantic"), dict) else {}
     revision_binding = payload.get("revision_binding") if isinstance(payload.get("revision_binding"), dict) else {}
@@ -886,6 +925,12 @@ def summarize_release_scorecard(scorecard: dict[str, Any] | None) -> dict[str, A
         "change_documents_version_match": bool(change_documents.get("version_match", False)),
         "change_documents_feature_count": int(change_documents.get("feature_count") or 0),
         "change_documents_includes_current_feature": bool(change_documents.get("includes_current_feature", False)),
+        "version_surface_governance_configured": bool(version_surface_governance.get("configured", False)),
+        "version_surface_governance_status": str(version_surface_governance.get("status") or ""),
+        "version_surface_governance_blocked": bool(version_surface_governance.get("blocked", False)),
+        "version_surface_governance_ok": bool(version_surface_governance.get("ok", False)),
+        "version_surface_governance_reason_code": str(version_surface_governance.get("reason_code") or ""),
+        "version_surface_governance_repair": list(version_surface_governance.get("repair_commands") or []),
         "host_native_delivery_status": str(host_native_delivery.get("status") or ""),
         "host_native_delivery_reason_codes": list(host_native_delivery.get("reason_codes") or []),
     }

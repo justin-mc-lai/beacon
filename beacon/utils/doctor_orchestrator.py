@@ -945,6 +945,123 @@ def run_codex_hud_hook_verify(
     return DoctorExecutionResult(payload=payload, exit_code=exit_code)
 
 
+def run_agent_surface_setup(
+    *,
+    project_root: str,
+    version: str,
+    agent: str,
+    dry_run: bool,
+    force: bool,
+) -> DoctorExecutionResult:
+    """Materialize project-local Beacon agent surface files."""
+    ctx = build_doctor_execution_context(project_root, version=version or None, dry_run=dry_run)
+    version_context = ctx.version_context or {}
+    docs_version = str(version_context.get("docs_version", "") or ctx.runtime_version)
+    result = run_doctor_handler(
+        "host.setup.agent-surface",
+        project_root=ctx.project_root,
+        agent=agent,
+        runtime_version=ctx.runtime_version,
+        docs_version=docs_version,
+        dry_run=dry_run,
+        force=force,
+    )
+    payload = {
+        "schema_version": "2.0",
+        "action": "setup-agent-surface",
+        "status": "PASS",
+        "runtime_version": ctx.runtime_version,
+        "docs_version": docs_version,
+        "version_context": version_context,
+        "version_semantics": version_context.get("version_semantics", {}),
+        "result": result,
+    }
+    return DoctorExecutionResult(payload=payload, exit_code=0)
+
+
+def run_agent_surface_verify(
+    *,
+    project_root: str,
+    version: str,
+    agent: str,
+    strict: bool,
+) -> DoctorExecutionResult:
+    """Verify project-local Beacon agent surface files."""
+    ctx = build_doctor_execution_context(project_root, version=version or None, strict=strict)
+    result = run_doctor_handler(
+        "host.verify.agent-surface",
+        project_root=ctx.project_root,
+        agent=agent,
+        runtime_version=ctx.runtime_version,
+        strict=strict,
+    )
+    payload = {
+        "schema_version": "2.0",
+        "action": "verify-agent-surface",
+        "status": _map_verify_status(str(result.get("status", "warn")).lower()),
+        "runtime_version": ctx.runtime_version,
+        "docs_version": str((ctx.version_context or {}).get("docs_version", "") or ctx.runtime_version),
+        "version_context": ctx.version_context or {},
+        "version_semantics": (ctx.version_context or {}).get("version_semantics", {}),
+        "result": result,
+    }
+    if strict and payload["status"] == "WARN":
+        payload["status"] = "BLOCKED"
+    return DoctorExecutionResult(payload=payload, exit_code=0 if payload["status"] != "BLOCKED" else 2)
+
+
+def run_version_surfaces_sync(
+    *,
+    project_root: str,
+    dry_run: bool,
+) -> DoctorExecutionResult:
+    """Sync Beacon self-repo version surfaces from canonical version truth."""
+    ctx = build_doctor_execution_context(project_root, dry_run=dry_run)
+    result = run_doctor_handler(
+        "host.sync.version-surfaces",
+        project_root=ctx.project_root,
+        dry_run=dry_run,
+    )
+    payload = {
+        "schema_version": "2.0",
+        "action": "sync-version-surfaces",
+        "status": "PASS",
+        "runtime_version": str(result.get("manifest", {}).get("runtime_version", "") or ctx.runtime_version),
+        "docs_version": str(result.get("manifest", {}).get("docs_default_line", "") or ""),
+        "version_context": ctx.version_context or {},
+        "version_semantics": (ctx.version_context or {}).get("version_semantics", {}),
+        "result": result,
+    }
+    return DoctorExecutionResult(payload=payload, exit_code=0)
+
+
+def run_version_surfaces_verify(
+    *,
+    project_root: str,
+    strict: bool,
+) -> DoctorExecutionResult:
+    """Verify Beacon self-repo version surfaces against canonical version truth."""
+    ctx = build_doctor_execution_context(project_root, strict=strict)
+    result = run_doctor_handler(
+        "host.verify.version-surfaces",
+        project_root=ctx.project_root,
+        strict=strict,
+    )
+    payload = {
+        "schema_version": "2.0",
+        "action": "verify-version-surfaces",
+        "status": _map_verify_status(str(result.get("status", "warn")).lower()),
+        "runtime_version": str(result.get("manifest", {}).get("runtime_version", "") or ctx.runtime_version),
+        "docs_version": str(result.get("manifest", {}).get("docs_default_line", "") or ""),
+        "version_context": ctx.version_context or {},
+        "version_semantics": (ctx.version_context or {}).get("version_semantics", {}),
+        "result": result,
+    }
+    if strict and payload["status"] == "WARN":
+        payload["status"] = "BLOCKED"
+    return DoctorExecutionResult(payload=payload, exit_code=0 if payload["status"] != "BLOCKED" else 2)
+
+
 def run_doctor_fix_flow(project_root: str) -> None:
     """Apply the existing doctor --fix composite flow via doctor orchestration."""
     root = resolve_doctor_project_root(project_root)

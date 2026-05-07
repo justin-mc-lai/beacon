@@ -4,12 +4,12 @@
 
 - version: `v1.4.0`
 - feature: `beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor`
-- status: `freeze-ready`
+- status: `frozen-pending-implementation`
 - upstream_prd: `docs/beacon/v1.4.0/prd/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md`
-- current_revision: `R1`
-- source_revision: `R0`
+- current_revision: `R2`
+- source_revision: `R1`
 
-本故事线覆盖 Beacon 在 `v1.4.0` 中完成“减负不减基座”的正式拆解。它要求 Beacon 在保留 frozen truth、gate、implement/qa、host-runtime、learning、meta、memory、archive 等基座能力的前提下，收敛 machine contract、增强 change 与 implement 闭环、补齐人类面任务进度与全局边界操作面，并对 skill 默认可见性做正式治理。
+本故事线覆盖 Beacon 在 `v1.4.0` 中完成“减负不减基座”的正式拆解。它要求 Beacon 在保留 frozen truth、gate、implement/qa、host-runtime、learning、meta、memory、archive 等基座能力的前提下，收敛 machine contract、增强 change 与 implement 闭环、补齐人类面任务进度与全局边界操作面，并对 skill 默认可见性与自仓库版本元信息漂移做正式治理。
 
 ## Diagram Truth
 
@@ -51,6 +51,19 @@
 | AC-102 | change-contract | 系统必须存在 machine-readable change contract，至少覆盖 change reason、affected truth refs、affected layers、verification refs、archive status。 |
 | AC-103 | single-change-thread | reopen / revise / refreeze / delta implement / delta qa / release recheck 必须沿同一 change identity 继续，而不是重新漂移成多条局部状态线。 |
 | AC-104 | change-archive | per-change closure 必须能聚合进 version-level change summary，但 version summary 不能替代 per-change truth。 |
+
+## Story 2A: Beacon 必须把源码仓版本真相收敛到单一 release manifest
+
+作为 Beacon maintainer，我希望 package version、runtime version、docs line、release truth line 不再分散在多个手工编辑文件中，而是统一收口到一个 canonical release manifest，再向各表面单向投影，这样版本升级不会继续产生隐藏漂移。
+
+### Acceptance Criteria
+
+| AC ID | Theme | Description |
+| --- | --- | --- |
+| AC-105 | single-manifest | Beacon 自仓库必须存在一个 canonical release manifest，作为 package/runtime/docs/release truth 的唯一编辑源。 |
+| AC-106 | projected-surfaces | `beacon/__init__.py`、version truth 兼容表面、skill/rules 版本标记、运行期版本解析输出都必须可回溯到同一 manifest。 |
+| AC-107 | sync-version-surfaces | 系统必须提供显式的 `sync-version-surfaces` 治理能力，把 drifted 版本表面重新校准到 manifest。 |
+| AC-108 | verify-version-surfaces | 系统必须提供显式的 `verify-version-surfaces` 治理能力，并在 strict 模式下对 drift 返回阻断 verdict。 |
 
 ## Story 3: Beacon 必须借鉴 OpenSpec 的 change container 可见性，但不能照搬公开命令面
 
@@ -211,7 +224,7 @@
 ## Delivery Notes
 
 - 本 story package 的目标不是展开所有实现细节，而是把 `v1.4.0` PRD 中新增的减负与人类面治理要求编译成可执行故事。
-- `change kernel`、`goal/Ralph`、`task ledger`、`global-boundaries human surface`、`skill visibility governance` 是本轮必须覆盖的主轴。
+- `change kernel`、`goal/Ralph`、`task ledger`、`global-boundaries human surface`、`skill visibility governance`、`version surface governance` 是本轮必须覆盖的主轴。
 - 下一阶段应基于本 story package 进入 `test-case`，产出对应 contract、projection、routing、gate、audit 的验收矩阵。
 
 ## Freeze Notes
@@ -226,6 +239,7 @@
   - change contract
   - goal/Ralph mapping
   - skill visibility governance
+  - canonical release manifest / sync-version-surfaces / verify-version-surfaces
   做成正式验收对象，则本 story package 应从 `freeze-ready` 退回 `blocked`。
 
 ## Metadata
@@ -234,6 +248,6 @@
 | --- | --- |
 | Priority | high |
 | Story Points | 21 |
-| Status | freeze-ready-lightweight-kernel-r1 |
+| Status | frozen-pending-implementation-lightweight-kernel-r2 |
 | Created | 2026-05-06 |
-| Change Scope | lightweight-kernel / change-kernel / codex-goal / ralph-closure / task-ledger / global-boundary-surface / support-projection / skill-taxonomy / visibility-governance |
+| Change Scope | lightweight-kernel / change-kernel / version-surface-governance / codex-goal / ralph-closure / task-ledger / global-boundary-surface / support-projection / skill-taxonomy / visibility-governance |

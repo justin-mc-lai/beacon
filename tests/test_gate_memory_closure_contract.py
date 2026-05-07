@@ -234,6 +234,132 @@ def test_gate_release_should_allow_authoritative_acceptance_without_workflow_mem
     assert gate_module.check_release_memory_profile(tmp_path, gate_module.GateMode.STRICT, "release", "v1.0.0") == []
 
 
+def test_gate_release_json_should_expose_version_surface_governance_drift(tmp_path: Path, monkeypatch):
+    execution = tmp_path / "docs" / "beacon" / "v1.4.0" / "execution"
+    execution.mkdir(parents=True, exist_ok=True)
+    (execution / "boundaries.md").write_text("# boundaries\n", encoding="utf-8")
+    (execution / "terminal.json").write_text('{"status":"Pass","traceability":{}}', encoding="utf-8")
+
+    beacon_state = tmp_path / ".beacon"
+    beacon_state.mkdir(parents=True, exist_ok=True)
+    (beacon_state / "raw-command-log.jsonl").write_text('{"cmd":"workflow"}\n', encoding="utf-8")
+    sha = hashlib.sha256((execution / "boundaries.md").read_bytes()).hexdigest()
+    (beacon_state / "evidence-manifest.json").write_text(
+        json.dumps({"entries": [{"path": "docs/beacon/v1.4.0/execution/boundaries.md", "sha256": sha}]}),
+        encoding="utf-8",
+    )
+
+    monkeypatch.setattr(
+        gate_module,
+        "build_release_scorecard",
+        lambda *_args, **_kwargs: {
+            "release_ready": False,
+            "qa": {
+                "feature": "feature-a",
+                "project_profile_gate_status": "pass",
+            },
+            "acceptance": {
+                "source": "qa_status",
+                "feature": "feature-a",
+                "release_ready": True,
+                "continue_decision": "ready_for_release",
+                "project_profile_gate_status": "pass",
+                "unresolved_closure_outcomes": [],
+                "review_required_count": 0,
+                "needs_replay_count": 0,
+                "release_confidence_min": 0.95,
+            },
+            "version_surface_governance": {
+                "configured": True,
+                "status": "fail",
+                "blocked": True,
+                "reason_code": "version_surface_governance_drift",
+                "manifest_path": "beacon/version-truth.json",
+                "repair_commands": [
+                    f"beacon doctor sync-version-surfaces --project-root {tmp_path}",
+                    f"beacon doctor verify-version-surfaces --project-root {tmp_path} --strict",
+                ],
+                "verify_command": f"beacon doctor verify-version-surfaces --project-root {tmp_path} --strict",
+            },
+            "acceptance_transaction": {"status": "pass"},
+        },
+    )
+
+    result = _invoke(
+        ["gate", "check", "release", "--mode", "strict", "--json", "--project-root", str(tmp_path), "--version", "v1.4.0"]
+    )
+    assert result.exit_code == 2, result.stdout
+    payload = json.loads(result.stdout)
+    reason_codes = {item["reason_code"] for item in payload["issues"]}
+    assert "version_surface_governance_drift" in reason_codes
+    issue = next(item for item in payload["issues"] if item["reason_code"] == "version_surface_governance_drift")
+    assert issue["recommended_command"] == f"beacon doctor sync-version-surfaces --project-root {tmp_path}"
+    assert issue["repair"] == [
+        f"beacon doctor sync-version-surfaces --project-root {tmp_path}",
+        f"beacon doctor verify-version-surfaces --project-root {tmp_path} --strict",
+    ]
+
+
+def test_gate_release_text_should_print_version_surface_governance_repair_route(tmp_path: Path, monkeypatch):
+    execution = tmp_path / "docs" / "beacon" / "v1.4.0" / "execution"
+    execution.mkdir(parents=True, exist_ok=True)
+    (execution / "boundaries.md").write_text("# boundaries\n", encoding="utf-8")
+    (execution / "terminal.json").write_text('{"status":"Pass","traceability":{}}', encoding="utf-8")
+
+    beacon_state = tmp_path / ".beacon"
+    beacon_state.mkdir(parents=True, exist_ok=True)
+    (beacon_state / "raw-command-log.jsonl").write_text('{"cmd":"workflow"}\n', encoding="utf-8")
+    sha = hashlib.sha256((execution / "boundaries.md").read_bytes()).hexdigest()
+    (beacon_state / "evidence-manifest.json").write_text(
+        json.dumps({"entries": [{"path": "docs/beacon/v1.4.0/execution/boundaries.md", "sha256": sha}]}),
+        encoding="utf-8",
+    )
+
+    monkeypatch.setattr(
+        gate_module,
+        "build_release_scorecard",
+        lambda *_args, **_kwargs: {
+            "release_ready": False,
+            "qa": {
+                "feature": "feature-a",
+                "project_profile_gate_status": "pass",
+            },
+            "acceptance": {
+                "source": "qa_status",
+                "feature": "feature-a",
+                "release_ready": True,
+                "continue_decision": "ready_for_release",
+                "project_profile_gate_status": "pass",
+                "unresolved_closure_outcomes": [],
+                "review_required_count": 0,
+                "needs_replay_count": 0,
+                "release_confidence_min": 0.95,
+            },
+            "version_surface_governance": {
+                "configured": True,
+                "status": "fail",
+                "blocked": True,
+                "reason_code": "version_surface_governance_drift",
+                "manifest_path": "beacon/version-truth.json",
+                "repair_commands": [
+                    f"beacon doctor sync-version-surfaces --project-root {tmp_path}",
+                    f"beacon doctor verify-version-surfaces --project-root {tmp_path} --strict",
+                ],
+                "verify_command": f"beacon doctor verify-version-surfaces --project-root {tmp_path} --strict",
+            },
+            "acceptance_transaction": {"status": "pass"},
+        },
+    )
+
+    result = _invoke(
+        ["gate", "check", "release", "--mode", "strict", "--project-root", str(tmp_path), "--version", "v1.4.0"]
+    )
+    assert result.exit_code == 2, result.stdout
+    assert "version_surface_governance_drift" in result.stdout
+    assert f"repair: beacon doctor sync-version-surfaces --project-root {tmp_path}" in result.stdout
+    assert f"repair: beacon doctor verify-version-surfaces --project-root {tmp_path} --strict" in result.stdout
+
+
 def test_gate_release_should_fallback_from_gate_report_run_to_repair_workflow_run(tmp_path: Path):
     version = "v1.0.0"
     feature = "repair-feature"

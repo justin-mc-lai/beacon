@@ -10,6 +10,8 @@ import typer
 
 from beacon.utils.branch_governance import render_branch_governance_markdown
 from beacon.utils.doctor_orchestrator import (
+    run_agent_surface_setup,
+    run_agent_surface_verify,
     run_codex_hud_hook_setup,
     run_codex_hud_hook_verify,
     run_config_verify,
@@ -36,6 +38,8 @@ from beacon.utils.doctor_orchestrator import (
     run_subagent_delegation_verify,
     run_subagent_runtime_verify,
     run_technical_review_contract_sync,
+    run_version_surfaces_sync,
+    run_version_surfaces_verify,
 )
 from beacon.utils.project_metadata import (
     create_or_update_project_metadata,
@@ -273,6 +277,66 @@ def _print_codex_hud_hook_verify_result(payload: dict[str, Any]) -> None:
         else:
             state = "WARN"
         typer.echo(f"- {state}: {item.get('name')} ({item.get('detail')})")
+
+
+def _print_agent_surface_result(title: str, payload: dict[str, Any]) -> None:
+    typer.echo(title)
+    typer.echo("=" * len(title))
+    typer.echo(f"agent          : {payload.get('agent', '')}")
+    typer.echo(f"surface_root   : {payload.get('surface_root', '')}")
+    typer.echo(f"rules_path     : {payload.get('rules_path', '') or 'N/A'}")
+    installed = payload.get("installed", [])
+    typer.echo(f"installed      : {len(installed)}")
+    for item in installed:
+        if not isinstance(item, dict):
+            continue
+        typer.echo(f"- {item.get('id')}: {item.get('action')} ({item.get('path')})")
+    removed = payload.get("removed", [])
+    if removed:
+        typer.echo(f"removed        : {len(removed)}")
+        for item in removed:
+            typer.echo(f"- {item}")
+    skipped = payload.get("skipped", [])
+    if skipped:
+        typer.echo(f"skipped        : {len(skipped)}")
+        for item in skipped:
+            typer.echo(f"- {item.get('id')}: {item.get('reason')}")
+    for warning in payload.get("warnings", []):
+        typer.echo(f"⚠ {warning}")
+
+
+def _print_agent_surface_verify_result(payload: dict[str, Any]) -> None:
+    typer.echo("Beacon Doctor Agent Surface Verify")
+    typer.echo("=" * 33)
+    typer.echo(f"agent        : {payload.get('agent', '')}")
+    typer.echo(f"surface_root : {payload.get('surface_root', '')}")
+    for item in payload.get("checks", []):
+        status = str(item.get("status", "warn")).upper()
+        typer.echo(f"- {status}: {item.get('name')} ({json.dumps(item.get('details', {}), ensure_ascii=False)})")
+    typer.echo(f"Overall: {str(payload.get('status', 'warn')).upper()}")
+
+
+def _print_version_surface_sync_result(payload: dict[str, Any]) -> None:
+    typer.echo("Beacon Doctor Version Surface Sync")
+    typer.echo("=" * 34)
+    typer.echo(f"manifest_path : {payload.get('manifest_path', '')}")
+    manifest = payload.get("manifest") if isinstance(payload.get("manifest"), dict) else {}
+    if manifest:
+        typer.echo(f"package_version: {manifest.get('package_version', '')}")
+        typer.echo(f"runtime_version: {manifest.get('runtime_version', '')}")
+        typer.echo(f"docs_version   : {manifest.get('docs_default_line', '')}")
+    for item in payload.get("surfaces", []):
+        typer.echo(f"- {item.get('id')}: {item.get('action')} ({item.get('path')})")
+
+
+def _print_version_surface_verify_result(payload: dict[str, Any]) -> None:
+    typer.echo("Beacon Doctor Version Surface Verify")
+    typer.echo("=" * 36)
+    typer.echo(f"manifest_path : {payload.get('manifest_path', '')}")
+    for item in payload.get("checks", []):
+        status = str(item.get("status", "warn")).upper()
+        typer.echo(f"- {status}: {item.get('name')} ({json.dumps(item.get('details', {}), ensure_ascii=False)})")
+    typer.echo(f"Overall: {str(payload.get('status', 'warn')).upper()}")
 
 
 def _print_project_metadata_result(title: str, result: dict[str, Any]) -> None:
@@ -1227,4 +1291,90 @@ def verify_codex_hud_hook_command(
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
     else:
         _print_codex_hud_hook_verify_result(payload.get("result", {}))
+    raise typer.Exit(code=execution.exit_code)
+
+
+@app.command("setup-agent-surface")
+def setup_agent_surface_command(
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    version: str = typer.Option("auto", "--version", "-v", help="Target docs version"),
+    agent: str = typer.Option("trae", "--agent", help="Agent host: trae|claude|codex"),
+    dry_run: bool = typer.Option(False, "--dry-run", help="Preview without writing files"),
+    force: bool = typer.Option(False, "--force", help="Overwrite unmanaged Beacon skill directories if needed"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Materialize Beacon host-visible skills into a project-local agent surface."""
+    execution = run_agent_surface_setup(
+        project_root=project_root,
+        version=version,
+        agent=agent,
+        dry_run=dry_run,
+        force=force,
+    )
+    payload = execution.payload
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        _print_agent_surface_result("Beacon Doctor Agent Surface Setup", payload.get("result", {}))
+    raise typer.Exit(code=execution.exit_code)
+
+
+@app.command("verify-agent-surface")
+def verify_agent_surface_command(
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    version: str = typer.Option("auto", "--version", "-v", help="Target docs version"),
+    agent: str = typer.Option("trae", "--agent", help="Agent host: trae|claude|codex"),
+    strict: bool = typer.Option(False, "--strict", help="Treat warnings as blocked"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Verify Beacon host-visible skills on a project-local agent surface."""
+    execution = run_agent_surface_verify(
+        project_root=project_root,
+        version=version,
+        agent=agent,
+        strict=strict,
+    )
+    payload = execution.payload
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        _print_agent_surface_verify_result(payload.get("result", {}))
+    raise typer.Exit(code=execution.exit_code)
+
+
+@app.command("sync-version-surfaces")
+def sync_version_surfaces_command(
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    dry_run: bool = typer.Option(False, "--dry-run", help="Preview without writing files"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Sync Beacon self-repo version surfaces from the canonical release manifest."""
+    execution = run_version_surfaces_sync(
+        project_root=project_root,
+        dry_run=dry_run,
+    )
+    payload = execution.payload
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        _print_version_surface_sync_result(payload.get("result", {}))
+    raise typer.Exit(code=execution.exit_code)
+
+
+@app.command("verify-version-surfaces")
+def verify_version_surfaces_command(
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    strict: bool = typer.Option(False, "--strict", help="Treat warnings as blocked"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Verify Beacon self-repo version surfaces against the canonical release manifest."""
+    execution = run_version_surfaces_verify(
+        project_root=project_root,
+        strict=strict,
+    )
+    payload = execution.payload
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        _print_version_surface_verify_result(payload.get("result", {}))
     raise typer.Exit(code=execution.exit_code)
