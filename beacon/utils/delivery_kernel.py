@@ -276,6 +276,8 @@ def _normalize_prompt_boundary(payload: dict[str, Any] | None, *, version: str) 
         "next_action": "",
         "recommended_command": "",
         "surface": "",
+        "prompt": "",
+        "matched_signals": [],
     }
     if not required:
         return normalized
@@ -302,6 +304,8 @@ def _normalize_prompt_boundary(payload: dict[str, Any] | None, *, version: str) 
             "next_action": _clean_str(raw.get("next_action")),
             "recommended_command": _clean_str(raw.get("recommended_command")),
             "surface": _clean_str(raw.get("surface")) or "host_prompt",
+            "prompt": _clean_str(raw.get("prompt")),
+            "matched_signals": _clean_list(raw.get("matched_signals")),
         }
     )
     return normalized

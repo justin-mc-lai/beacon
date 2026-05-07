@@ -10,6 +10,7 @@ from beacon.utils.artifact_paths import change_docs_file, change_file_output, ma
 from beacon.utils.delivery_kernel import load_delivery_read_model
 from beacon.utils.evidence_manifest import validate_evidence_manifest
 from beacon.utils.exhaustiveness import load_exhaustiveness_report
+from beacon.utils.implement_prompt_boundary import evaluate_implement_prompt_boundary
 from beacon.utils.implementation_plan import (
     implementation_plan_supported,
     list_implementation_git_workflow_contracts,
@@ -44,6 +45,31 @@ def _load_json(path: Path) -> dict[str, Any]:
     except Exception:  # noqa: BLE001
         return {}
     return payload if isinstance(payload, dict) else {}
+
+
+def _normalize_prompt_boundary(
+    project_root: Path,
+    *,
+    version: str,
+    feature: str,
+    prompt_boundary: dict[str, Any],
+) -> dict[str, Any]:
+    if not isinstance(prompt_boundary, dict) or not prompt_boundary:
+        return {}
+    prompt = str(prompt_boundary.get("prompt") or "").strip()
+    if not prompt or not feature:
+        return prompt_boundary
+    reevaluated = evaluate_implement_prompt_boundary(
+        project_root,
+        version=version,
+        feature=feature,
+        host_prompt=prompt,
+    )
+    if not isinstance(reevaluated, dict) or not reevaluated:
+        return prompt_boundary
+    if str(prompt_boundary.get("surface") or "").strip() and not str(reevaluated.get("surface") or "").strip():
+        reevaluated["surface"] = str(prompt_boundary.get("surface") or "").strip()
+    return reevaluated
 
 
 def _json_safe(value: Any) -> Any:
@@ -631,6 +657,12 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
         else {}
     )
     prompt_boundary = prompt_boundary if isinstance(prompt_boundary, dict) else {}
+    prompt_boundary = _normalize_prompt_boundary(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        prompt_boundary=prompt_boundary,
+    )
     prompt_boundary_ok = (not prompt_boundary) or (
         (not bool(prompt_boundary.get("required", False)))
         or (

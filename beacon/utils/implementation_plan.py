@@ -577,6 +577,34 @@ def _plan_matches_revision_identity(
     )
 
 
+def _plan_matches_revision_context(
+    plan: dict[str, Any] | None,
+    *,
+    feature: str,
+    version: str,
+    revision_id: str,
+) -> bool:
+    if not isinstance(plan, dict) or not plan:
+        return False
+    return (
+        str(plan.get("feature", "") or "") == feature
+        and str(plan.get("version", "") or "") == version
+        and str(plan.get("revision_id", "") or "") == revision_id
+    )
+
+
+def _plan_has_meaningful_progress(plan: dict[str, Any] | None) -> bool:
+    if not isinstance(plan, dict) or not plan:
+        return False
+    tasks = [task for task in plan.get("tasks", []) if isinstance(task, dict)]
+    if not tasks:
+        return False
+    return any(
+        str(task.get("status", "") or "").strip().lower() in {"in_progress", "blocked", "completed"}
+        for task in tasks
+    )
+
+
 def _load_git_head_implementation_plan(project_root: Path, *, version: str, feature: str) -> dict[str, Any]:
     plan_path = implementation_plan_json_path(project_root, version, feature)
     try:
@@ -616,7 +644,16 @@ def _recover_progress_source_plan(
         baseline_hash=baseline_hash,
     ):
         existing_tasks = [task for task in existing_plan.get("tasks", []) if isinstance(task, dict)]
-        if _plan_is_completed(existing_plan, existing_tasks):
+        if _plan_is_completed(existing_plan, existing_tasks) or _plan_has_meaningful_progress(existing_plan):
+            return existing_plan
+    if _plan_matches_revision_context(
+        existing_plan,
+        feature=feature,
+        version=version,
+        revision_id=revision_id,
+    ):
+        existing_tasks = [task for task in existing_plan.get("tasks", []) if isinstance(task, dict)]
+        if _plan_is_completed(existing_plan, existing_tasks) or _plan_has_meaningful_progress(existing_plan):
             return existing_plan
     head_plan = _load_git_head_implementation_plan(project_root, version=version, feature=feature)
     if not _plan_matches_revision_identity(
@@ -626,9 +663,15 @@ def _recover_progress_source_plan(
         revision_id=revision_id,
         baseline_hash=baseline_hash,
     ):
-        return existing_plan
+        if not _plan_matches_revision_context(
+            head_plan,
+            feature=feature,
+            version=version,
+            revision_id=revision_id,
+        ):
+            return existing_plan
     head_tasks = [task for task in head_plan.get("tasks", []) if isinstance(task, dict)]
-    if _plan_is_completed(head_plan, head_tasks):
+    if _plan_is_completed(head_plan, head_tasks) or _plan_has_meaningful_progress(head_plan):
         return head_plan
     return existing_plan
 
@@ -1856,6 +1899,11 @@ def compile_implementation_plan(project_root: Path, *, version: str = "auto", fe
         version=resolved_version,
         revision_id=str(revision.get("revision_id", "") or ""),
         baseline_hash=str(revision.get("baseline_hash", "") or ""),
+    ) or _plan_matches_revision_context(
+        progress_source_plan,
+        feature=feature,
+        version=resolved_version,
+        revision_id=str(revision.get("revision_id", "") or ""),
     ):
         if revision_delta:
             progress_source_plan = _normalize_legacy_revision_cleanup_plan(

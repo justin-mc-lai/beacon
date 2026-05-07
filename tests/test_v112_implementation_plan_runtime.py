@@ -14,6 +14,7 @@ from beacon.utils.implementation_plan import (
     load_implementation_plan,
     load_implementation_plan_progress,
 )
+from beacon.utils.revision_state import load_revision_state, save_revision_state
 from beacon.utils.writeback import record_implementation_writeback, record_verification_writeback
 
 
@@ -713,6 +714,39 @@ def test_v112_replanning_same_revision_should_preserve_completed_task_progress(t
 
     progress_before = load_implementation_plan_progress(tmp_path, version=VERSION, feature=FEATURE)
     assert progress_before["counts"]["completed"] == 2
+
+    assert _invoke(["implement", "plan", FEATURE, "--project-root", str(tmp_path), "--version", VERSION]).exit_code == 0
+
+    progress_after = load_implementation_plan_progress(tmp_path, version=VERSION, feature=FEATURE)
+    assert progress_after["counts"]["completed"] == 2
+    assert progress_after["counts"]["planned"] == 0
+    assert progress_after["status"] == "completed"
+    issues = check_v112_implementation_plan_contract(tmp_path, GateMode.STRICT, "release", VERSION)
+    assert issues == []
+
+
+def test_v112_replanning_after_baseline_refresh_should_preserve_completed_task_progress(tmp_path: Path):
+    _seed_docs(tmp_path)
+    _seed_release_contract_artifacts(tmp_path)
+    assert _invoke(["freeze", FEATURE, "--project", str(tmp_path), "--version", VERSION]).exit_code == 0
+    assert _invoke(["implement", "plan", FEATURE, "--project-root", str(tmp_path), "--version", VERSION]).exit_code == 0
+
+    record_implementation_writeback(
+        tmp_path,
+        version=VERSION,
+        feature=FEATURE,
+        run_id="run-impl",
+        implemented_item_ids=["AC-001", "AC-002"],
+        task_ids=["ITASK-001", "ITASK-002"],
+        changed_files=["beacon/commands/implement.py"],
+    )
+
+    progress_before = load_implementation_plan_progress(tmp_path, version=VERSION, feature=FEATURE)
+    assert progress_before["counts"]["completed"] == 2
+
+    revision = load_revision_state(tmp_path, version=VERSION, feature=FEATURE, create_if_missing=True)
+    revision["baseline_hash"] = "sha256:refreshed-baseline"
+    save_revision_state(tmp_path, version=VERSION, feature=FEATURE, state=revision)
 
     assert _invoke(["implement", "plan", FEATURE, "--project-root", str(tmp_path), "--version", VERSION]).exit_code == 0
 

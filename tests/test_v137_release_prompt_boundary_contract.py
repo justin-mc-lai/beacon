@@ -6,6 +6,7 @@ from pathlib import Path
 from beacon.commands.gate import GateMode, check_v137_implement_prompt_boundary_contract
 from beacon.utils import release_scorecard as release_scorecard_module
 from beacon.utils.delivery_kernel import build_delivery_read_model
+from beacon.utils.implement_adapters import build_default_task_prompt
 from beacon.utils.release_scorecard import build_release_scorecard
 
 
@@ -195,6 +196,37 @@ def test_v137_release_scorecard_should_allow_release_when_prompt_boundary_passes
 
     assert payload["release_ready"] is True
     assert payload["prompt_boundary"]["status"] == "pass"
+    assert payload["prompt_boundary"]["classification"] == "in_scope_implementation"
+
+
+def test_v137_release_scorecard_should_reevaluate_stale_prompt_boundary_from_prompt(monkeypatch, tmp_path: Path) -> None:
+    prompt = build_default_task_prompt(
+        feature=FEATURE,
+        version=VERSION,
+        source_of_truth_root=f"docs/beacon/{VERSION}",
+        feature_slug="prompt-boundary-feature",
+        result_file=".beacon/implement/run-001/result.json",
+        implementation_plan_file=f"docs/beacon/{VERSION}/.machine/execution/implementation-plan-prompt-boundary-feature.json",
+        operator_prompt="",
+    )
+    _patch_passing_release_scorecard_world(
+        monkeypatch,
+        prompt_boundary={
+            "required": True,
+            "status": "blocked",
+            "blocked": True,
+            "classification": "requirement_change",
+            "reason_code": "implement_prompt_requirement_change",
+            "surface": "task_prompt",
+            "prompt": prompt,
+        },
+    )
+
+    payload = build_release_scorecard(tmp_path, version=VERSION)
+
+    assert payload["release_ready"] is True
+    assert payload["prompt_boundary"]["status"] == "pass"
+    assert payload["prompt_boundary"]["blocked"] is False
     assert payload["prompt_boundary"]["classification"] == "in_scope_implementation"
 
 
