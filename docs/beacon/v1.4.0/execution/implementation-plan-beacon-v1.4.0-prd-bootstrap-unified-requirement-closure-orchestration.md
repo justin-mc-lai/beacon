@@ -7,8 +7,8 @@
 - baseline_hash: `sha256:1174849126ad499d60f21c90e5a035c7366f34a544e753abb831e0cc9bfb642d`
 - delivery_baseline_id: `impl-delivery-baseline-v1.4.0-beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration-R1`
 - delivery_baseline_source_hash: `sha256:108cfb84612b60249a8d6b133707d82e04d05e3d760f0902d3f5d0ae40a598b8`
-- plan_hash: `sha256:998bea58171727e057ae7e47557ced2fa6e0dd97633985870244c4c2e5ee0f24`
-- status: `blocked`
+- plan_hash: `sha256:b421b695904489acdb09ea4d4e8afd7962b9f0f1fdd5c408807b19aa713059a6`
+- status: `completed`
 
 ## Source Refs
 - user_story: `docs/beacon/v1.4.0/user-story/beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration.md`
@@ -165,7 +165,7 @@
 - diagram_review_gates: implementation must cover the declared branch-flow split points, implementation must preserve the declared state-machine transitions, implementation must preserve decision-priority ordering, implementation must keep state axes explicit: package_state, empty | prd_only | user_story_only | test_case_only | prd_user_story | prd_test_case | user_story_test_case | full_consistent | full_inconsistent, empty, prd_only, user_story_only, test_case_only, prd_user_story, prd_test_case, user_story_test_case, full_consistent, full_inconsistent, closure_state, package_detected | missing_layer_routed | reverse_derived_truth | needs_truth_review | supplement_required | drift_repair_required | freeze_ready | implementation_pending, package_detected, missing_layer_routed, reverse_derived_truth, needs_truth_review, supplement_required, drift_repair_required, freeze_ready, implementation_pending, truth_origin_state, native_truth | derived_from_downstream | needs_truth_review, native_truth, derived_from_downstream, decision_state, accepted | rejected | deferred, accepted, rejected, deferred, routing_state, canonical_compile | reverse_derive | repair_route | conditional_promotion, canonical_compile, reverse_derive, repair_route, conditional_promotion
 
 ### ITASK-010 — FR-010 Reuse Existing Truth Tree
-- status: `blocked`
+- status: `completed`
 - mapped_ac_ids: AC-003, AC-010, AC-011, AC-007, AC-008, AC-014, AC-015, AC-016, AC-018, AC-020, AC-021, AC-023, AC-024, AC-026, AC-028
 - mapped_test_ids: TC-003, TEST-010, TEST-011, TEST-007, TEST-008, TEST-014, TEST-015, TEST-016, TEST-018, TEST-020, TEST-021, TEST-023, TEST-024, TEST-026, TEST-028
 - mapped_scenario_ids: SC-003
