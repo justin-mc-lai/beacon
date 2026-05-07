@@ -1,0 +1,377 @@
+{
+  "page_id": "management-overview",
+  "name": "管理总览",
+  "priority": "P0",
+  "platforms": [
+    "Web",
+    "PC"
+  ],
+  "responsibility": "提供多项目密集管理视图，稳定扫描版本、阶段、进度、健康态和下一步。",
+  "sections": [
+    "筛选与排序条",
+    "项目注册表",
+    "阶段分布摘要",
+    "风险与调试摘要",
+    "推荐 skill 区"
+  ],
+  "actions": [
+    {
+      "label": "进入项目详情",
+      "target": "project-detail",
+      "trigger": "点击项目行或卡片"
+    },
+    {
+      "label": "返回首页",
+      "target": "home",
+      "trigger": "点击首页导航"
+    }
+  ],
+  "states": [
+    {
+      "id": "ready",
+      "label": "多项目已加载",
+      "description": "密集展示多项目当前状态。",
+      "state_visibility_contract": {
+        "user_question": "管理总览 当前发生了什么，我下一步该做什么？",
+        "required_feedback": [
+          "密集展示多项目当前状态。"
+        ],
+        "primary_actions": [
+          "进入项目详情",
+          "返回首页"
+        ],
+        "recovery_actions": [
+          "继续主要操作",
+          "进入下一层或返回上层"
+        ],
+        "acceptance_refs": {
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        "forbidden_feedback": [
+          "完成状态仍要求用户猜下一步"
+        ]
+      }
+    },
+    {
+      "id": "filtered",
+      "label": "已筛选",
+      "description": "按阶段、版本、健康态筛选项目。",
+      "state_visibility_contract": {
+        "user_question": "管理总览 当前发生了什么，我下一步该做什么？",
+        "required_feedback": [
+          "按阶段、版本、健康态筛选项目。"
+        ],
+        "primary_actions": [
+          "进入项目详情",
+          "返回首页"
+        ],
+        "recovery_actions": [
+          "返回上一层",
+          "重试当前动作"
+        ],
+        "acceptance_refs": {
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        "forbidden_feedback": [
+          "只显示技术错误码",
+          "隐藏下一步动作"
+        ]
+      }
+    },
+    {
+      "id": "empty",
+      "label": "无项目",
+      "description": "没有任何受管项目进入注册表。",
+      "state_visibility_contract": {
+        "user_question": "管理总览 当前发生了什么，我下一步该做什么？",
+        "required_feedback": [
+          "没有任何受管项目进入注册表。",
+          "解释为什么为空，以及回到哪里继续。"
+        ],
+        "primary_actions": [
+          "进入项目详情",
+          "返回首页"
+        ],
+        "recovery_actions": [
+          "返回上一层",
+          "重试当前动作"
+        ],
+        "acceptance_refs": {
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        "forbidden_feedback": [
+          "只显示技术错误码",
+          "隐藏下一步动作"
+        ]
+      }
+    },
+    {
+      "id": "loading",
+      "label": "加载中",
+      "description": "项目注册表正在聚合。",
+      "state_visibility_contract": {
+        "user_question": "管理总览 当前发生了什么，我下一步该做什么？",
+        "required_feedback": [
+          "项目注册表正在聚合。"
+        ],
+        "primary_actions": [
+          "进入项目详情",
+          "返回首页"
+        ],
+        "recovery_actions": [
+          "继续等待数据加载",
+          "返回上一层"
+        ],
+        "acceptance_refs": {
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        "forbidden_feedback": [
+          "页面结构抖动",
+          "空白无提示"
+        ]
+      }
+    },
+    {
+      "id": "error",
+      "label": "错误",
+      "description": "总览聚合失败但保留恢复提示。",
+      "state_visibility_contract": {
+        "user_question": "管理总览 当前发生了什么，我下一步该做什么？",
+        "required_feedback": [
+          "总览聚合失败但保留恢复提示。",
+          "明确恢复动作与回退路径。"
+        ],
+        "primary_actions": [
+          "进入项目详情",
+          "返回首页"
+        ],
+        "recovery_actions": [
+          "返回上一层",
+          "重试当前动作"
+        ],
+        "acceptance_refs": {
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        "forbidden_feedback": [
+          "只显示技术错误码",
+          "隐藏下一步动作"
+        ]
+      }
+    }
+  ],
+  "requirement_refs": {
+    "user-story": [
+      "docs/beacon/v1.4.0/user-story/beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration.md"
+    ],
+    "prd": [
+      "docs/beacon/v1.4.0/prd/beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration.md"
+    ],
+    "test-case": [
+      "docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration.md"
+    ]
+  },
+  "outbound_transitions": [
+    {
+      "from": "management-overview",
+      "to": "project-detail",
+      "trigger": "点击项目行/卡片",
+      "type": "primary"
+    },
+    {
+      "from": "management-overview",
+      "to": "home",
+      "trigger": "点击首页导航",
+      "type": "return"
+    }
+  ],
+  "visible_contract": {
+    "title": "管理总览",
+    "subtitle": "多项目之间谁健康、谁阻塞、谁接近可发布。",
+    "must_show_sections": [
+      "筛选与排序条",
+      "项目注册表",
+      "阶段分布摘要"
+    ],
+    "primary_actions": [
+      "进入项目详情",
+      "返回首页"
+    ],
+    "visible_states": [
+      {
+        "id": "ready",
+        "label": "多项目已加载",
+        "description": "密集展示多项目状态摘要。"
+      },
+      {
+        "id": "filtered",
+        "label": "已筛选",
+        "description": "按阶段、版本、健康态筛选项目。"
+      },
+      {
+        "id": "empty",
+        "label": "无项目",
+        "description": "没有任何受管项目进入注册表。"
+      },
+      {
+        "id": "loading",
+        "label": "加载中",
+        "description": "项目注册表正在聚合。"
+      },
+      {
+        "id": "error",
+        "label": "错误",
+        "description": "总览聚合失败但保留恢复提示。"
+      }
+    ],
+    "secondary_disclosure_only": [
+      "run list",
+      "workspace path",
+      "artifact path",
+      "history timeline",
+      "machine trace detail"
+    ]
+  },
+  "internal_governance": {
+    "page_intent_contract": {
+      "why_this_page_exists": "提供多项目密集管理视图，稳定扫描版本、阶段、进度、健康态和下一步。",
+      "decision_supported": "多项目之间谁健康、谁阻塞、谁接近可发布。",
+      "must_show_first": [
+        "筛选与排序条",
+        "项目注册表"
+      ],
+      "must_not_show": [
+        "transaction_id",
+        "projection metadata",
+        "无边界 runtime 明细"
+      ],
+      "entry_conditions": [
+        "用户进入 `management-overview` 需要先获得当前上下文。",
+        "当前 requirement truth 已经明确该页承担的主判断。"
+      ],
+      "exit_actions": [
+        {
+          "label": "进入项目详情",
+          "target": "project-detail"
+        },
+        {
+          "label": "返回首页",
+          "target": "home"
+        }
+      ]
+    },
+    "first_screen_contract": {
+      "primary_status": "密集展示多项目当前状态。",
+      "primary_blocker": "总览聚合失败但保留恢复提示。",
+      "next_actions": [
+        "进入项目详情",
+        "返回首页"
+      ],
+      "recovery_path": "优先进入恢复路径或返回上一层，不允许停留在无动作状态。",
+      "secondary_disclosure_only": [
+        "run list",
+        "workspace path",
+        "artifact path",
+        "history timeline",
+        "machine trace detail"
+      ]
+    },
+    "review_principles": [
+      "工具栏必须紧贴项目注册表，减少扫描跳跃。",
+      "项目注册表承担密集比较，不承担深度解释。",
+      "风险、debug、推荐 skill 放在表格侧边或下方收口，不抢主扫描节奏。"
+    ],
+    "layout_breakdown": [
+      {
+        "section": "筛选与排序条",
+        "purpose": "帮助用户先收窄范围，再进入对比与下钻。",
+        "display_zone": "首屏"
+      },
+      {
+        "section": "项目注册表",
+        "purpose": "支持快速扫描和定位下一层下钻入口。",
+        "display_zone": "主体区"
+      },
+      {
+        "section": "阶段分布摘要",
+        "purpose": "先建立上下文，让人快速判断当前局面。",
+        "display_zone": "主体区"
+      },
+      {
+        "section": "风险与调试摘要",
+        "purpose": "先建立上下文，让人快速判断当前局面。",
+        "display_zone": "主体区"
+      },
+      {
+        "section": "推荐 skill 区",
+        "purpose": "把观察收口成明确动作，避免用户看完后不知道去哪里。",
+        "display_zone": "收口区"
+      }
+    ],
+    "interaction_contract": [
+      "- `进入项目详情`: 通过 点击项目行或卡片 进入 `project-detail`，把当前判断转交到下一层页面完成。",
+      "- `返回首页`: 通过 点击首页导航 回到 `home`，用于撤销下钻并保留上层判断。"
+    ],
+    "state_contract": [
+      "- `多项目已加载`: 密集展示多项目当前状态。",
+      "- `已筛选`: 按阶段、版本、健康态筛选项目。",
+      "- `无项目`: 没有任何受管项目进入注册表。 空态要说明为什么为空，以及下一步该回哪里。",
+      "- `加载中`: 项目注册表正在聚合。 加载态只保留骨架结构，避免造成页面重新排版。",
+      "- `错误`: 总览聚合失败但保留恢复提示。 页面要优先给出回退或恢复入口，而不是只报错。"
+    ],
+    "noise_guardrail": "总览页只展示管理判断信号，不直接展开 doctor 或 runtime 原始上下文。"
+  },
+  "ui_copy_policy": {
+    "page_id": "management-overview",
+    "first_screen_copy": {
+      "title": "管理总览",
+      "primary_statement": "多项目之间谁健康、谁阻塞、谁接近可发布。",
+      "must_show_first": [
+        "筛选与排序条",
+        "项目注册表"
+      ],
+      "next_actions": [
+        "进入项目详情",
+        "返回首页"
+      ]
+    },
+    "secondary_disclosure": [
+      "workspace path",
+      "artifact path",
+      "history timeline",
+      "machine trace detail"
+    ],
+    "forbidden_first_screen_copy": [
+      "design asset catalog wording",
+      "why/reasoning explanation",
+      "review guidance",
+      "machine contract detail"
+    ]
+  },
+  "production_ui_copy_profile": {
+    "page_id": "management-overview",
+    "title": "管理总览",
+    "subtitle": "多项目之间谁健康、谁阻塞、谁接近可发布。",
+    "primary_actions": [
+      "进入项目详情",
+      "返回首页"
+    ],
+    "allowed_recovery_surface_states": [
+      "blocked",
+      "failed",
+      "empty-risk"
+    ],
+    "forbidden_first_screen_terms": [
+      "当前状态",
+      "下一步动作",
+      "恢复路径",
+      "design asset catalog",
+      "review guidance",
+      "why/reasoning"
+    ]
+  }
+}

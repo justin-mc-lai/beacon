@@ -1,0 +1,370 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration",
+  "feature_slug": "beacon-v1-4-0-prd-bootstrap-unified-requirement-closure-orchestration",
+  "version": "v1.4.0",
+  "prototype_mode": "wireframe",
+  "generated_at": "2026-05-07T03:01:46Z",
+  "overall_status": "pass",
+  "design_review_outcome": "pass",
+  "checks": [
+    {
+      "name": "prototype_mode_wireframe",
+      "status": "pass",
+      "message": "prototype mode must be wireframe only",
+      "blocking": true
+    },
+    {
+      "name": "wireframe_summary_present",
+      "status": "pass",
+      "message": "wireframe-summary.md should exist",
+      "blocking": true
+    },
+    {
+      "name": "wireframe_manifest_present",
+      "status": "pass",
+      "message": "wireframe-manifest.json should exist",
+      "blocking": true
+    },
+    {
+      "name": "navigation_map_present",
+      "status": "pass",
+      "message": "navigation-map.md/json should exist",
+      "blocking": true
+    },
+    {
+      "name": "state_flow_map_present",
+      "status": "pass",
+      "message": "state-flow-map.md/json should exist",
+      "blocking": true
+    },
+    {
+      "name": "component_catalog_present",
+      "status": "pass",
+      "message": "component-catalog.md/json should exist",
+      "blocking": true
+    },
+    {
+      "name": "automation_priority_matrix_present",
+      "status": "pass",
+      "message": "automation-priority-matrix.md/json should exist",
+      "blocking": true
+    },
+    {
+      "name": "pages_directory_present",
+      "status": "pass",
+      "message": "pages directory should exist",
+      "blocking": true
+    },
+    {
+      "name": "interaction_map_present",
+      "status": "pass",
+      "message": "interaction-map.json should exist",
+      "blocking": true
+    },
+    {
+      "name": "coverage_report_present",
+      "status": "pass",
+      "message": "coverage-report.json should exist",
+      "blocking": true
+    },
+    {
+      "name": "canonical_envelope_present",
+      "status": "pass",
+      "message": "canonical-envelope.json should exist",
+      "blocking": true
+    },
+    {
+      "name": "page_specs_present",
+      "status": "pass",
+      "message": "page-specs directory should exist",
+      "blocking": true
+    },
+    {
+      "name": "html_high_fidelity_removed",
+      "status": "pass",
+      "message": "high-fidelity HTML prototype output must be removed",
+      "blocking": true
+    },
+    {
+      "name": "required_pages_materialized",
+      "status": "pass",
+      "message": "all required page markdown files should exist",
+      "blocking": true
+    },
+    {
+      "name": "forbidden_page_inventory_clear",
+      "status": "pass",
+      "message": "required page inventory excludes forbidden pages",
+      "blocking": true
+    },
+    {
+      "name": "required_states_defined",
+      "status": "pass",
+      "message": "page states should be frozen for each page",
+      "blocking": true
+    },
+    {
+      "name": "requirement_traceability_complete",
+      "status": "pass",
+      "message": "all pages trace back to prd / user-story / test-case",
+      "blocking": true
+    },
+    {
+      "name": "navigation_transitions_present",
+      "status": "pass",
+      "message": "route closure / navigation transitions should be frozen",
+      "blocking": true
+    },
+    {
+      "name": "route_closure_binding_complete",
+      "status": "pass",
+      "message": "route closure binding is optional for current wireframe package",
+      "blocking": false
+    },
+    {
+      "name": "source_map_present",
+      "status": "pass",
+      "message": "source-map.json should record requirement sources",
+      "blocking": true
+    },
+    {
+      "name": "state_flow_usable",
+      "status": "pass",
+      "message": "state-flow map should contain nodes and edges",
+      "blocking": true
+    },
+    {
+      "name": "artifact_topology_present",
+      "status": "pass",
+      "message": "artifact-topology.json must declare authoring/review/projection/implementation layers",
+      "blocking": true
+    },
+    {
+      "name": "implementation_default_entry_present",
+      "status": "pass",
+      "message": "implementation index must expose a fail-closed default entry rooted in machine-view and implementation-map",
+      "blocking": true
+    },
+    {
+      "name": "review_only_materials_demoted",
+      "status": "pass",
+      "message": "review-only human-readable materials must be demoted out of the default implementation surface",
+      "blocking": true
+    },
+    {
+      "name": "component_contract_traceability",
+      "status": "pass",
+      "message": "component catalog should map state + AC + TC",
+      "blocking": true
+    },
+    {
+      "name": "cross_page_transition_contract_complete",
+      "status": "pass",
+      "message": "cross-page business transitions should expose explicit state/event/fallback/evidence contracts",
+      "blocking": true
+    },
+    {
+      "name": "automation_priority_matrix_complete",
+      "status": "pass",
+      "message": "automation priority matrix should assign valid priority classes to generated targets",
+      "blocking": true
+    },
+    {
+      "name": "transaction_metadata_present",
+      "status": "pass",
+      "message": "manifest transaction metadata should include source_hash/projection_seq/transaction_id/committed_at/sink_checksums",
+      "blocking": true
+    },
+    {
+      "name": "sqlite_projection_written",
+      "status": "pass",
+      "message": "sqlite projection should record the same transaction",
+      "blocking": true
+    },
+    {
+      "name": "transaction_sink_checksum_consistent",
+      "status": "pass",
+      "message": "sink checksums should include human/machine/sqlite",
+      "blocking": true
+    },
+    {
+      "name": "manifest_consistency",
+      "status": "pass",
+      "message": "manifest should stay aligned with wireframe mode",
+      "blocking": true
+    },
+    {
+      "name": "canonical_manifest_consistency",
+      "status": "pass",
+      "message": "canonical envelope and manifest transaction metadata should stay consistent",
+      "blocking": true
+    },
+    {
+      "name": "design_context_complete",
+      "status": "pass",
+      "message": "design context must include all required fields",
+      "blocking": true
+    },
+    {
+      "name": "design_context_explicit",
+      "status": "pass",
+      "message": "design context is explicitly frozen in requirement truth",
+      "blocking": true
+    },
+    {
+      "name": "design_reasoning_complete",
+      "status": "pass",
+      "message": "design reasoning must freeze layout logic, anti-patterns, and review checklist",
+      "blocking": true
+    },
+    {
+      "name": "ux_contract_complete",
+      "status": "pass",
+      "message": "ux contract must freeze first glance, decision, action hierarchy, and machine-noise boundary",
+      "blocking": true
+    },
+    {
+      "name": "ux_prd_present",
+      "status": "pass",
+      "message": "ux-prd.md should exist",
+      "blocking": true
+    },
+    {
+      "name": "design_assets_present",
+      "status": "pass",
+      "message": "DESIGN.md and preview assets should exist",
+      "blocking": true
+    },
+    {
+      "name": "default_design_preset_stable",
+      "status": "pass",
+      "message": "design preset must default to apple-inspired-design-md or record an explicit override reason",
+      "blocking": true
+    },
+    {
+      "name": "semantic_profile_complete",
+      "status": "pass",
+      "message": "software semantic profile must freeze title, state, action, and exception rules",
+      "blocking": true
+    },
+    {
+      "name": "design_artifacts_present",
+      "status": "pass",
+      "message": "design artifact contract should emit the required structured artifacts",
+      "blocking": true
+    },
+    {
+      "name": "visible_contract_complete",
+      "status": "pass",
+      "message": "every page exposes a visible_contract",
+      "blocking": true
+    },
+    {
+      "name": "page_intent_contract_complete",
+      "status": "pass",
+      "message": "every page exposes an internal governance contract",
+      "blocking": true
+    },
+    {
+      "name": "state_visibility_contract_complete",
+      "status": "pass",
+      "message": "every state exposes a state_visibility_contract",
+      "blocking": true
+    },
+    {
+      "name": "production_ui_copy_profile_complete",
+      "status": "pass",
+      "message": "every page exposes a production_ui_copy_profile",
+      "blocking": true
+    },
+    {
+      "name": "heuristic_system_status",
+      "status": "pass",
+      "message": "pages should expose visible status transitions",
+      "blocking": true
+    },
+    {
+      "name": "heuristic_real_world_match",
+      "status": "pass",
+      "message": "page analysis should describe human goals rather than machine internals",
+      "blocking": true
+    },
+    {
+      "name": "heuristic_user_control",
+      "status": "pass",
+      "message": "prototype should offer controlled next-step or return actions",
+      "blocking": true
+    },
+    {
+      "name": "heuristic_recognition_over_recall",
+      "status": "pass",
+      "message": "recognition-over-recall rules should be explicitly frozen",
+      "blocking": true
+    },
+    {
+      "name": "heuristic_minimalist_discipline",
+      "status": "pass",
+      "message": "design reasoning should explicitly block generic marketing-dashboard answers",
+      "blocking": true
+    },
+    {
+      "name": "heuristic_error_recovery_clarity",
+      "status": "pass",
+      "message": "prototype should define error/blocked/stale recovery semantics",
+      "blocking": true
+    },
+    {
+      "name": "heuristic_preview_not_asset_catalog",
+      "status": "pass",
+      "message": "preview must render operator workbench judgment, not a design asset catalog",
+      "blocking": true
+    },
+    {
+      "name": "heuristic_first_screen_contract",
+      "status": "pass",
+      "message": "every page should freeze first-screen status, blocker, next action, and recovery path",
+      "blocking": true
+    },
+    {
+      "name": "governance_copy_leak",
+      "status": "pass",
+      "message": "preview must not render governance copy or explanatory contract wording in first-screen UI",
+      "blocking": true
+    },
+    {
+      "name": "first_screen_over_explanation",
+      "status": "pass",
+      "message": "preview first screen should not default to explanation panels",
+      "blocking": true
+    },
+    {
+      "name": "page_explanation_section_leak",
+      "status": "pass",
+      "message": "page markdown must not render explanation sections or governance headings",
+      "blocking": true
+    },
+    {
+      "name": "review_copy_rendered_as_production_ui",
+      "status": "pass",
+      "message": "page markdown should render production-visible copy, not review or recovery explanation blocks",
+      "blocking": true
+    },
+    {
+      "name": "design_context_explicit_block",
+      "status": "pass",
+      "message": "design context must stay explicit before production rendering can proceed",
+      "blocking": true
+    }
+  ],
+  "blocking_failures": [],
+  "human_view_status": "pass",
+  "machine_contract_status": "pass",
+  "sqlite_projection_status": "pass",
+  "drift_status": "consistent",
+  "canonical_truth_source": "prototype-brief",
+  "artifacts": {
+    "json": "docs/beacon/v1.4.0/prototype/beacon-v1-4-0-prd-bootstrap-unified-requirement-closure-orchestration/prototype-review.json",
+    "md": "docs/beacon/v1.4.0/prototype/beacon-v1-4-0-prd-bootstrap-unified-requirement-closure-orchestration/prototype-review.md"
+  }
+}

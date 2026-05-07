@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration Design Preview Light</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #F5F5F7;
+      --fg: #1D1D1F;
+      --card: #FFFFFF;
+      --border: #D2D2D7;
+      --accent: #0071E3;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif; background: var(--bg); color: var(--fg); }
+    main { max-width: 1100px; margin: 0 auto; padding: 32px 20px 56px; }
+    .hero { display: grid; gap: 12px; margin-bottom: 24px; }
+    .eyebrow { font-size: 12px; color: var(--accent); text-transform: uppercase; }
+    h1, h2 { margin: 0; font-weight: 600; }
+    p, li { line-height: 1.5; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 16px; display: grid; gap: 10px; }
+    .alert { border-color: var(--accent); }
+    .actions { display: flex; flex-wrap: wrap; gap: 8px; }
+    .action-pill { border: 1px solid var(--border); border-radius: 999px; padding: 6px 10px; font-size: 13px; }
+    .muted { color: #6E6E73; font-size: 13px; }
+    ul { margin: 0; padding-left: 18px; }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="hero">
+      <div class="eyebrow">apple-inspired-design-md · Light preview</div>
+      <h1>首页</h1>
+      <p>今天先盯哪些项目，而不是先看所有项目明细。</p>
+    </section>
+    <section class="card" style="margin-bottom:16px;">
+      <div class="eyebrow">主动作</div>
+      <div class="actions"><span class="action-pill">查看管理总览</span><span class="action-pill">进入重点项目</span></div>
+    </section>
+    
+    <section class="card alert" style="margin-bottom:16px;">
+      <div class="eyebrow">恢复判断</div>
+      <h2>把阻塞项目和介入点提升到首屏。</h2>
+      <p>优先进入恢复入口或返回上一层，不允许停留在无动作状态。</p>
+    </section>
+
+    <section class="grid">
+      
+            <section class="card">
+              <div class="eyebrow">P0 · Web, PC</div>
+              <h2>首页</h2>
+              <p>今天先盯哪些项目，而不是先看所有项目明细。</p>
+              <div class="actions"><span class="action-pill">查看管理总览</span><span class="action-pill">进入重点项目</span></div>
+            </section>
+            
+            <section class="card">
+              <div class="eyebrow">P0 · Web, PC</div>
+              <h2>管理总览</h2>
+              <p>多项目之间谁健康、谁阻塞、谁接近可发布。</p>
+              <div class="actions"><span class="action-pill">进入项目详情</span><span class="action-pill">返回首页</span></div>
+            </section>
+            
+            <section class="card">
+              <div class="eyebrow">P0 · Web, PC, App</div>
+              <h2>项目详情</h2>
+              <p>这条版本线当前停在哪个阶段，下一步应该推进哪里。</p>
+              <div class="actions"><span class="action-pill">查看运行中心</span><span class="action-pill">查看恢复诊断</span><span class="action-pill">查看项目物料</span></div>
+            </section>
+            
+            <section class="card">
+              <div class="eyebrow">P1 · Web, PC</div>
+              <h2>运行中心</h2>
+              <p>当前到底是 single、team 还是 ralph 在推进。</p>
+              <div class="actions"><span class="action-pill">返回项目详情</span><span class="action-pill">返回管理总览</span></div>
+            </section>
+            
+            <section class="card">
+              <div class="eyebrow">P2 · Web, PC</div>
+              <h2>恢复诊断</h2>
+              <p>当前是 degraded、rebuild 还是 doctor 场景。</p>
+              <div class="actions"><span class="action-pill">返回项目详情</span><span class="action-pill">前往运行中心</span></div>
+            </section>
+            
+            <section class="card">
+              <div class="eyebrow">P1 · Web, PC</div>
+              <h2>项目物料查看器</h2>
+              <p>当前要看哪个版本、哪类文档、哪个 feature。</p>
+              <div class="actions"><span class="action-pill">打开文档</span><span class="action-pill">返回项目详情</span></div>
+            </section>
+            
+    </section>
+  </main>
+</body>
+</html>
