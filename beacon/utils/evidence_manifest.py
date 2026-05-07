@@ -15,6 +15,10 @@ _ROLLING_POINTER_PREFIXES = (
     ".beacon/state/baselines/",
 )
 
+_VOLATILE_EVIDENCE_PATHS = {
+    ".beacon/raw-command-log.jsonl",
+}
+
 
 def _issue(reason_code: str, message: str, *, blocked: bool, severity: str) -> dict[str, Any]:
     return {
@@ -28,6 +32,8 @@ def _issue(reason_code: str, message: str, *, blocked: bool, severity: str) -> d
 def build_manifest_entry(project_root: Path, rel_path: str) -> dict[str, Any] | None:
     normalized = str(rel_path or "").strip()
     if not normalized or normalized.startswith("/") or "\\" in normalized:
+        return None
+    if normalized in _VOLATILE_EVIDENCE_PATHS:
         return None
     full_path = project_root / normalized
     if not full_path.exists() or not full_path.is_file():
@@ -161,6 +167,9 @@ def validate_evidence_manifest(project_root: Path) -> dict[str, Any]:
                     severity="medium",
                 )
             )
+            continue
+
+        if rel_path in _VOLATILE_EVIDENCE_PATHS:
             continue
 
         if rel_path.endswith("/latest.json") and rel_path.startswith(_ROLLING_POINTER_PREFIXES):

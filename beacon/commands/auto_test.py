@@ -1779,6 +1779,50 @@ def _collect_required_file_issues(
     return issues
 
 
+def _build_gate_report_issues(
+    *,
+    test_status: dict[str, Any],
+    layer_results: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    issues = [
+        {
+            "reason_code": str(item.get("reason_code") or "auto_test_issue"),
+            "message": str(item.get("message") or item.get("reason_code") or "auto-test quality issue"),
+            "blocked": True,
+        }
+        for item in (test_status.get("quality_issues") or [])
+        if isinstance(item, dict)
+    ]
+    if issues or str(test_status.get("status") or "").strip().lower() == "passed":
+        return issues
+
+    for layer in layer_results:
+        layer_status = str(layer.get("status") or "").strip().lower()
+        if layer_status not in {"failed", "blocked", "cancelled", "error"}:
+            continue
+        layer_name = normalize_qa_type(str(layer.get("layer") or "unknown"))
+        exit_code = layer.get("exit_code")
+        detail = f"exit_code={exit_code}" if exit_code not in ("", None) else f"status={layer_status}"
+        issues.append(
+            {
+                "reason_code": "auto_test_layer_failed",
+                "message": f"layer {layer_name} {layer_status} ({detail})",
+                "blocked": True,
+            }
+        )
+
+    if issues:
+        return issues
+
+    return [
+        {
+            "reason_code": "auto_test_failed",
+            "message": f"auto-test status={str(test_status.get('status') or 'failed').strip().lower()}",
+            "blocked": True,
+        }
+    ]
+
+
 @app.command()
 def create(
     scope: str = typer.Argument("all", help="Test scope: ui/api-curl/unit/smoke/visual/all/full"),
@@ -2415,16 +2459,8 @@ def create(
     )
 
     gate_report_path = project_root / ".beacon" / "gate-report.json"
-    gate_issues = [
-        {
-            "reason_code": str(item.get("reason_code") or "auto_test_issue"),
-            "message": str(item.get("message") or item.get("reason_code") or "auto-test quality issue"),
-            "blocked": True,
-        }
-        for item in test_status.get("quality_issues", [])
-        if isinstance(item, dict)
-    ]
     gate_status = "Pass" if str(test_status.get("status")) == "passed" else "Blocked"
+    gate_issues = _build_gate_report_issues(test_status=test_status, layer_results=layer_results)
     write_json(
         gate_report_path,
         {

@@ -722,6 +722,11 @@ def check_evidence_chain(project_root: Path, mode: GateMode) -> List[Dict[str, A
                     # rolling pointers are validated separately by spec-consistency;
                     # do not fail release gate on mutable alias hash drift here.
                     continue
+                if rel_path == ".beacon/raw-command-log.jsonl":
+                    # This file is intentionally append-only and mutates during
+                    # normal command execution, so it is not a stable release
+                    # evidence hash target.
+                    continue
 
                 # Verify file exists and hash matches
                 file_path = project_root / rel_path
