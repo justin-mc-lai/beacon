@@ -2,7 +2,7 @@
 
 **Version**: v1.4.0
 **Created**: 2026-05-07 03:48
-**Status**: Pending
+**Status**: Feature Closure Complete / Release Pending
 
 ---
 
@@ -13,7 +13,7 @@
 - [ ] No critical bugs open
 - [ ] Security scan completed
 - [ ] Performance benchmarks passed
-- [ ] Documentation updated
+- [x] Documentation updated
 
 ## Build
 
@@ -43,3 +43,11 @@
 
 ## Notes
 
+- 截至 `2026-05-07`，`v1.4.0` 并行三条正式需求都已完成实现、QA 和 formal acceptance：
+  - `beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor`
+  - `beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure`
+  - `beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration`
+- 三条 feature 的 `artifact-update-obligations` 已全部收口为 `open_count=0`
+- 三条 feature 的 `Beacon Acceptance Kit v1` 均为 `Contract Pass`
+- 当前不勾选版本级 release 项，是因为 release scorecard 仍未到 `release_ready`
+- 当前版本级阻断不在 feature 验收，而在 release governance / gate 收口
