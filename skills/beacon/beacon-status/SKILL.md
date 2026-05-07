@@ -24,7 +24,7 @@ The public command stays on the `v1.3.9` runtime line while `v1.3.12` defines th
 Prefer:
 
 - `beacon status ...`
-- or `bash skills/beacon/scripts/run_beacon.sh status ...`
+- or `beacon status ...` (optional vendored wrapper: `bash skills/beacon/scripts/run_beacon.sh status ...`)
 
 Use status for visibility, not as a substitute for PRD, story, QA, or release decisions.
 When status shows a frozen feature that now needs scope adjustment, pair it with `beacon-change`.

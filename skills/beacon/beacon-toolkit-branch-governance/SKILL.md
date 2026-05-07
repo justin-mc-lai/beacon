@@ -22,7 +22,7 @@ Prefer:
 
 - `beacon doctor branch-governance show ...`
 - `beacon doctor branch-governance verify ...`
-- or `bash skills/beacon/scripts/run_beacon.sh doctor branch-governance ...`
+- or `beacon doctor branch-governance ...` (optional vendored wrapper: `bash skills/beacon/scripts/run_beacon.sh doctor branch-governance ...`)
 
 Default expectations:
 

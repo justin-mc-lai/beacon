@@ -23,7 +23,7 @@ Default host execution now enters the requirement bridge family before compatibi
 Prefer:
 
 - `beacon user-story ...`
-- or `bash skills/beacon/scripts/run_beacon.sh user-story ...`
+- or `beacon user-story ...` (optional vendored wrapper: `bash skills/beacon/scripts/run_beacon.sh user-story ...`)
 
 Keep the human on the `user-story -> test-case` path. Treat internal critique and research as background machine support, not public stages.
 When host-native runtime is available, `user-story` should first use the wrapper-provided bridge and project from requirement truth instead of falling back to a generic template.

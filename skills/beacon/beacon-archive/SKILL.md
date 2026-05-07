@@ -28,6 +28,6 @@ Use archive when historical requirement truth must stay traceable but stop conta
 Prefer:
 
 - `beacon archive ...`
-- or `bash skills/beacon/scripts/run_beacon.sh archive ...`
+- or `beacon archive ...` (optional vendored wrapper: `bash skills/beacon/scripts/run_beacon.sh archive ...`)
 
 Keep brainstorm read-only. If the task is still discussing archival strategy, stay on `beacon-brainstorm`. Once the user wants formal archive truth written, route to `beacon-archive`.

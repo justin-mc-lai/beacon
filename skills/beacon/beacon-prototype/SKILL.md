@@ -24,7 +24,7 @@ The public command stays on the `v1.3.9` runtime line while `v1.3.9` keeps proto
 Prefer:
 
 - `beacon prototype ...`
-- or `bash skills/beacon/scripts/run_beacon.sh prototype ...`
+- or `beacon prototype ...` (optional vendored wrapper: `bash skills/beacon/scripts/run_beacon.sh prototype ...`)
 
 Treat `prototype` as the formal stage between `test-case` and `implement`.
 Keep `prototype` inside the requirement stage:

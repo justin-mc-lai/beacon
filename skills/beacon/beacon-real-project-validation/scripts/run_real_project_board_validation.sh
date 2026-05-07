@@ -4,7 +4,11 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SKILL_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
 ROOT_DIR="$(cd "${SKILL_DIR}/../../.." && pwd)"
-BEACON_RUNNER="${ROOT_DIR}/skills/beacon/scripts/run_beacon.sh"
+if command -v beacon >/dev/null 2>&1; then
+  BEACON_RUNNER="$(command -v beacon)"
+else
+  BEACON_RUNNER="${ROOT_DIR}/skills/beacon/scripts/run_beacon.sh"
+fi
 
 REQUESTED_VERSION="auto"
 TIMESTAMP="$(date +%Y%m%dT%H%M%S)"
@@ -91,7 +95,11 @@ run_capture() {
     set +e
     if [[ "${1:-}" == "${BEACON_RUNNER}" ]]; then
       shift
-      BEACON_RUNTIME_LEDGER_ROOT="${LEDGER_ROOT}" bash "${BEACON_RUNNER}" "$@" >"${output_file}" 2>&1
+      if [[ "${BEACON_RUNNER}" == *.sh ]]; then
+        BEACON_RUNTIME_LEDGER_ROOT="${LEDGER_ROOT}" bash "${BEACON_RUNNER}" "$@" >"${output_file}" 2>&1
+      else
+        BEACON_RUNTIME_LEDGER_ROOT="${LEDGER_ROOT}" "${BEACON_RUNNER}" "$@" >"${output_file}" 2>&1
+      fi
     else
       BEACON_RUNTIME_LEDGER_ROOT="${LEDGER_ROOT}" "$@" >"${output_file}" 2>&1
     fi

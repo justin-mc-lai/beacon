@@ -60,19 +60,17 @@ To avoid drift, both skill docs must keep the same semantic section slots:
 
 The packaged document may be shorter or may merge adjacent sections, but it must not invent a separate product structure.
 
-## Rule 4: Script-first trigger is supported
+## Rule 4: CLI-first trigger (wrapper optional)
 
-The standard wrapper script is:
+**Prefer the installed CLI** in any project directory:
 
-- `skills/beacon/scripts/run_beacon.sh`
+- `beacon ...` (same as `python3 -m beacon.main ...`)
 
-It delegates to:
+The optional repo-local wrapper script remains for vendored skill packs:
 
-```bash
-python3 -m beacon.main "$@"
-```
+- `skills/beacon/scripts/run_beacon.sh` → delegates to `python3 -m beacon.main "$@"` after `cd` to the repo root that contains `skills/`.
 
-For host-native requirement execution, the wrapper must also export:
+For host-native requirement execution, the wrapper (when used) also exports:
 
 - `BEACON_HOST_RUNTIME`
 - `BEACON_HOST_PRD_BRIDGE_CMD`
@@ -80,13 +78,13 @@ For host-native requirement execution, the wrapper must also export:
 - `BEACON_HOST_TEST_CASE_BRIDGE_CMD`
 - `BEACON_HOST_PROTOTYPE_BRIDGE_CMD`
 
-Default requirement bridge targets:
+Default requirement bridge targets (CLI form; works whenever `beacon` is on `PATH`):
 
 ```bash
-bash skills/beacon/scripts/run_beacon.sh prd host-bridge
-bash skills/beacon/scripts/run_beacon.sh user-story host-bridge
-bash skills/beacon/scripts/run_beacon.sh test-case host-bridge
-bash skills/beacon/scripts/run_beacon.sh prototype host-bridge
+beacon prd host-bridge
+beacon user-story host-bridge
+beacon test-case host-bridge
+beacon prototype host-bridge
 ```
 
 ## Rule 5: Source of truth is still docs/beacon

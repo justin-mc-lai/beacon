@@ -30,7 +30,7 @@ The public command stays on the current `v1.3.9` runtime line and uses the share
 Prefer:
 
 - `beacon help ...`
-- or `bash skills/beacon/scripts/run_beacon.sh help ...`
+- or `beacon help ...` (optional vendored wrapper: `bash skills/beacon/scripts/run_beacon.sh help ...`)
 
 Use `beacon-help` before exposing low-level machine lanes or asking the user to reason about Beacon internals.
 When the user is changing a frozen feature, prefer routing to `beacon-change` rather than explaining hidden `reopen/freeze` mechanics directly.

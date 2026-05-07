@@ -22,9 +22,11 @@ This optional skill reduces requirement startup friction while keeping Beacon sa
 
 ## Operator rule
 
-Prefer the packaged wrapper:
+Prefer the installed CLI (hidden command surface):
 
-- `bash skills/beacon/scripts/run_beacon_prd_bootstrap.sh run "<feature>" --desc "<需求描述>" --version <version> --dry-run`
-- `bash skills/beacon/scripts/run_beacon_prd_bootstrap.sh run "<feature>" --desc "<需求描述>" --version <version> --apply --allow-overwrite`
+- `beacon prd-bootstrap run "<feature>" --desc "<需求描述>" --version <version> --dry-run --json`
+- `beacon prd-bootstrap run "<feature>" --desc "<需求描述>" --version <version> --apply --allow-overwrite`
+
+Optional repo-local shell wrappers under `skills/beacon/scripts/` remain supported only when that skill pack is vendored into the repo.
 
 Do not treat this as Beacon mainline replacement.

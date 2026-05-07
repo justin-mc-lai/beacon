@@ -23,7 +23,7 @@ Default host execution now enters the requirement bridge family before compatibi
 Prefer:
 
 - `beacon test-case ...`
-- or `bash skills/beacon/scripts/run_beacon.sh test-case ...`
+- or `beacon test-case ...` (optional vendored wrapper: `bash skills/beacon/scripts/run_beacon.sh test-case ...`)
 
 The public goal is coverage readiness, not exposing internal QA lanes yet.
 When host-native runtime is available, `test-case` should first use the wrapper-provided bridge and project from requirement truth or existing QA rows instead of emitting a generic placeholder matrix.

@@ -23,7 +23,7 @@ Keep this skill outside the main workflow by default.
 Prefer:
 
 - `beacon friction-intake run ...`
-- or `bash skills/beacon/scripts/run_beacon.sh friction-intake run ...`
+- optional vendored wrapper: `bash skills/beacon/scripts/run_beacon.sh friction-intake run ...`
 
 Default expectations:
 
@@ -47,17 +47,17 @@ unless the user explicitly accepts the item for requirement/change routing.
 ## Recommended command shapes
 
 ```bash
-bash skills/beacon/scripts/run_beacon.sh friction-intake run \
+beacon friction-intake run \
   --project-root . \
-  --version v1.3.9 \
+  --version v1.4.0 \
   --mode scan \
   --json
 ```
 
 ```bash
-bash skills/beacon/scripts/run_beacon.sh friction-intake run \
+beacon friction-intake run \
   --project-root . \
-  --version v1.3.9 \
+  --version v1.4.0 \
   --mode capture \
   --note "QA run is blocked because acceptance dual-write did not materialize" \
   --json

@@ -1,9 +1,9 @@
 ---
 name: beacon
-description: Use when you need Beacon's evidence-first product workflow through the current v1.3.9 runtime line and its host-native orchestration kernel.
+description: Use when you need Beacon's evidence-first product workflow through the current v1.4.0 runtime line and its host-native orchestration kernel.
 metadata:
   author: Beacon CLI
-  version: "1.3.9"
+  version: "1.4.0"
   organization: Beacon
   date: April 2026
   abstract: Standard skill package wrapper for Beacon CLI workflow, lightweight HUD, host-native orchestration runtime, PRD bootstrap, implementation, QA, and release operations.
@@ -13,14 +13,14 @@ metadata:
 
 Beacon is an **evidence-first product workflow kernel** for keeping requirements, implementation, QA evidence, and release decisions in one versioned system.
 
-This package is the canonical `skills/beacon/` wrapper for Codex and Claude. It delegates real work to `beacon`, `python3 -m beacon.main`, or `skills/beacon/scripts/run_beacon.sh`.
+This package is the canonical `skills/beacon/` wrapper for Codex and Claude. **Prefer the installed `beacon` CLI** (`beacon --version` → e.g. `Beacon CLI v1.4.0`). Same entrypoints also work via `python3 -m beacon.main`. The optional repo-local wrapper `skills/beacon/scripts/run_beacon.sh` only exists when this skill pack is vendored; it is **not** created by `pip install` in arbitrary target repos.
 
 ## Current Release Line
 
-- **Current release line**: `v1.3.9`
-- **Current package version**: `1.3.9`
-- **Latest accepted docs line**: `docs/beacon/v1.3.9/`
-- **Release status**: `release check v1.3.9` passed in-repo
+- **Current release line**: `v1.4.0` (`beacon --version`)
+- **Current package version**: `1.4.0`
+- **Latest accepted docs line**: `docs/beacon/v1.4.0/` (follow project `docs/beacon/VERSION` when pinned differently)
+- **Release status**: follow `release check v1.4.0` / pinned docs version for your repo
 - **Core theme**: truth lifecycle governance
 - **Wireframe predecessor line**: `v1.3.5` froze `prototype` as the formal wireframe-freeze stage
 - **Current runtime architecture**: `v1.3.9` promotes the host-native kernel with canonical delivery baseline enforcement, prompt-boundary gating, and archive governance
@@ -117,7 +117,7 @@ Optional supplemental skills:
 ## Current v1.3.9 Runtime Line
 
 - **Host-native requirement compile**: `prd / user-story / test-case / prototype` 默认优先复用宿主原生语义能力。
-- **Requirement bridge family**: `skills/beacon/scripts/run_beacon.sh` 默认导出 `prd / user-story / test-case / prototype` 四条 host bridge 命令，requirement surface 先走 command bridge，再退回兼容注入面。
+- **Requirement bridge family**: host bridge 默认指向 `beacon prd|user-story|test-case|prototype host-bridge`（由 CLI/`run_beacon.sh` 注入 `BEACON_HOST_*_BRIDGE_CMD`），requirement surface 先走 command bridge，再退回兼容注入面。
 - **Truth-projected story and QA compile**: `user-story / test-case` 不再只走最小模板占位；bridge 现在会回读目标项目的 requirement truth，生成更贴近冻结材料的 story payload 与 test entries。
 - **Delivery kernel convergence**: `implement / qa / release` 统一落到共享 delivery contract。
 - **Canonical projection governance**: implementation projections are single-source and gate-verifiable against the canonical delivery baseline.
@@ -138,61 +138,68 @@ Optional supplemental skills:
 Start with the minimal workflow:
 
 ```bash
-bash skills/beacon/scripts/run_beacon.sh prd create "My Feature" --project . --version v1.3.9
-bash skills/beacon/scripts/run_beacon.sh user-story create "My Feature" --project . --version v1.3.12
-bash skills/beacon/scripts/run_beacon.sh test-case create "My Feature" --project . --version v1.3.12
-bash skills/beacon/scripts/run_beacon.sh brainstorm run "补齐 PRD 缺口" --project-root . --version auto --mode requirement-convergence --json
-bash skills/beacon/scripts/run_beacon.sh implement plan "My Feature" --project . --version v1.3.9 --json
-bash skills/beacon/scripts/run_beacon.sh qa run "My Feature" --project . --version v1.3.9 --json
-bash skills/beacon/scripts/run_beacon.sh release check v1.3.9 --project .
+beacon prd create "My Feature" --project . --version v1.4.0
+beacon user-story create "My Feature" --project . --version v1.3.12
+beacon test-case create "My Feature" --project . --version v1.3.12
+beacon brainstorm run "补齐 PRD 缺口" --project-root . --version auto --mode requirement-convergence --json
+beacon implement plan "My Feature" --project . --version v1.4.0 --json
+beacon qa run "My Feature" --project . --version v1.4.0 --json
+beacon release check v1.4.0 --project .
 ```
 
 Ask Beacon what to do next:
 
 ```bash
-bash skills/beacon/scripts/run_beacon.sh status --board --project-root . --version v1.3.9
-bash skills/beacon/scripts/run_beacon.sh help --project-root . --version v1.3.9 --feature "My Feature" --json
+beacon status --board --project-root . --version v1.4.0
+beacon help --project-root . --version v1.4.0 --feature "My Feature" --json
 ```
 
 Bootstrap requirement materials safely:
 
 ```bash
-bash skills/beacon/scripts/run_beacon.sh prd bootstrap "My Feature" --project-root . --version v1.3.9 --dry-run --json
+beacon prd-bootstrap run "My Feature" \
+  --desc "补齐 PRD / user-story / test-case 闭环材料" \
+  --project-root . \
+  --version v1.4.0 \
+  --dry-run \
+  --json
 ```
 
 Inject Codex fixed HUD context:
 
 ```bash
-printf '%s' '{"hook_event_name":"UserPromptSubmit","prompt":"继续推进 Beacon v1.3.9"}' \
-  | bash skills/beacon/scripts/run_beacon.sh debug codex-fixed-hud --project-root . --version v1.3.9 --json
+printf '%s' '{"hook_event_name":"UserPromptSubmit","prompt":"继续推进 Beacon v1.4.0"}' \
+  | beacon debug codex-fixed-hud --project-root . --version v1.4.0 --json
 ```
 
 Run final release checks:
 
 ```bash
-bash skills/beacon/scripts/run_beacon.sh gate check release --project-root . --version v1.3.9 --json
-bash skills/beacon/scripts/run_beacon.sh release check v1.3.9 --project .
+beacon gate check release --project-root . --version v1.4.0 --json
+beacon release check v1.4.0 --project .
 ```
 
 Optional analysis surface:
 
 ```bash
-bash skills/beacon/scripts/run_beacon.sh friction-intake run \
+beacon friction-intake run \
   --project-root . \
-  --version v1.3.9 \
+  --version v1.4.0 \
   --mode scan \
-  --json
-```bash
-bash skills/beacon/scripts/run_beacon.sh doctor metadata show \
-  --project-root . \
-  --version v1.3.9 \
   --json
 ```
 
 ```bash
-bash skills/beacon/scripts/run_beacon.sh doctor branch-governance show \
+beacon doctor metadata show \
   --project-root . \
-  --version v1.3.9 \
+  --version v1.4.0 \
+  --json
+```
+
+```bash
+beacon doctor branch-governance show \
+  --project-root . \
+  --version v1.4.0 \
   --json
 ```
 
@@ -224,26 +231,26 @@ For human routing, prefer the minimal 7+3 surface. Do not expose team/subagent/R
 
 ## Reading Order
 
-Read current v1.3.9 materials in this order:
+Read current v1.4.0 materials in this order:
 
-1. [`docs/beacon/v1.3.9/SUMMARY.md`](../../docs/beacon/v1.3.9/SUMMARY.md)
-2. [`docs/beacon/v1.3.9/execution/index.md`](../../docs/beacon/v1.3.9/execution/index.md)
-3. [`docs/beacon/v1.3.9/execution/architecture-blueprint.md`](../../docs/beacon/v1.3.9/execution/architecture-blueprint.md)
-4. [`docs/beacon/v1.3.9/execution/project-skill-qa-evolution-blueprint.md`](../../docs/beacon/v1.3.9/execution/project-skill-qa-evolution-blueprint.md)
-5. [`docs/beacon/v1.3.9/execution/boundaries.md`](../../docs/beacon/v1.3.9/execution/boundaries.md)
-6. [`docs/beacon/v1.3.9/release/v1.3.9.md`](../../docs/beacon/v1.3.9/release/v1.3.9.md)
+1. [`docs/beacon/v1.4.0/SUMMARY.md`](../../docs/beacon/v1.4.0/SUMMARY.md)
+2. [`docs/beacon/v1.4.0/execution/index.md`](../../docs/beacon/v1.4.0/execution/index.md)
+3. [`docs/beacon/v1.4.0/execution/architecture-blueprint.md`](../../docs/beacon/v1.4.0/execution/architecture-blueprint.md)
+4. [`docs/beacon/v1.4.0/execution/project-skill-qa-evolution-blueprint.md`](../../docs/beacon/v1.4.0/execution/project-skill-qa-evolution-blueprint.md)
+5. [`docs/beacon/v1.4.0/execution/boundaries.md`](../../docs/beacon/v1.4.0/execution/boundaries.md)
+6. [`docs/beacon/v1.4.0/release/v1.4.0.md`](../../docs/beacon/v1.4.0/release/v1.4.0.md)
 
 For host-native runtime architecture detail, then read:
 
-1. [`docs/beacon/v1.3.9/execution/architecture-blueprint.md`](../../docs/beacon/v1.3.9/execution/architecture-blueprint.md)
-2. [`docs/beacon/v1.3.9/execution/project-skill-qa-evolution-blueprint.md`](../../docs/beacon/v1.3.9/execution/project-skill-qa-evolution-blueprint.md)
-3. [`docs/beacon/v1.3.9/release/v1.3.9.md`](../../docs/beacon/v1.3.9/release/v1.3.9.md)
+1. [`docs/beacon/v1.4.0/execution/architecture-blueprint.md`](../../docs/beacon/v1.4.0/execution/architecture-blueprint.md)
+2. [`docs/beacon/v1.4.0/execution/project-skill-qa-evolution-blueprint.md`](../../docs/beacon/v1.4.0/execution/project-skill-qa-evolution-blueprint.md)
+3. [`docs/beacon/v1.4.0/release/v1.4.0.md`](../../docs/beacon/v1.4.0/release/v1.4.0.md)
 
 Feature package roots:
 
-- [`docs/beacon/v1.3.9/prd/`](../../docs/beacon/v1.3.9/prd/)
-- [`docs/beacon/v1.3.9/user-story/`](../../docs/beacon/v1.3.9/user-story/)
-- [`docs/beacon/v1.3.9/qa/test-cases/`](../../docs/beacon/v1.3.9/qa/test-cases/)
+- [`docs/beacon/v1.4.0/prd/`](../../docs/beacon/v1.4.0/prd/)
+- [`docs/beacon/v1.4.0/user-story/`](../../docs/beacon/v1.4.0/user-story/)
+- [`docs/beacon/v1.4.0/qa/test-cases/`](../../docs/beacon/v1.4.0/qa/test-cases/)
 
 ## Routing Rules
 
@@ -262,9 +269,9 @@ Feature package roots:
 ## Troubleshooting
 
 - Materials inconsistent: `beacon doctor verify-context --project-root . --strict --json`
-- Runtime upgraded: `beacon doctor sync-materials --project-root . --version v1.3.9 --all-features --json`
-- Need current next step: `beacon help --project-root . --version v1.3.9 --feature "<feature>" --json`
-- Release confusion: `beacon gate check release --project-root . --version v1.3.9 --json`
+- Runtime upgraded: `beacon doctor sync-materials --project-root . --version v1.4.0 --all-features --json`
+- Need current next step: `beacon help --project-root . --version v1.4.0 --feature "<feature>" --json`
+- Release confusion: `beacon gate check release --project-root . --version v1.4.0 --json`
 - Skill drift: `python3 scripts/check_skill_drift.py --project-root . --json`
 - QA prompt contract must follow first principles before doing browser-use or test-case backfill.
 

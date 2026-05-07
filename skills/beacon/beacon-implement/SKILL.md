@@ -22,6 +22,6 @@ The public command stays on the `v1.3.9` runtime line while `v1.3.12` defines th
 Prefer:
 
 - `beacon implement ...`
-- or `bash skills/beacon/scripts/run_beacon.sh implement ...`
+- or `beacon implement ...` (optional vendored wrapper: `bash skills/beacon/scripts/run_beacon.sh implement ...`)
 
 Do not expose `implement-team`, planner/implementer/tester roles, or lane-level runtime details unless the user explicitly asks for internals.

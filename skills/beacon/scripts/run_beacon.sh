@@ -26,16 +26,16 @@ if [[ "${HOST_RUNTIME}" != "unknown" ]]; then
 fi
 
 if [[ -z "${BEACON_HOST_PROTOTYPE_BRIDGE_CMD:-}" && "${HOST_RUNTIME}" != "unknown" ]]; then
-  export BEACON_HOST_PROTOTYPE_BRIDGE_CMD="bash ${ROOT_DIR}/skills/beacon/scripts/run_beacon.sh prototype host-bridge"
+  export BEACON_HOST_PROTOTYPE_BRIDGE_CMD="beacon prototype host-bridge"
 fi
 if [[ -z "${BEACON_HOST_PRD_BRIDGE_CMD:-}" && "${HOST_RUNTIME}" != "unknown" ]]; then
-  export BEACON_HOST_PRD_BRIDGE_CMD="bash ${ROOT_DIR}/skills/beacon/scripts/run_beacon.sh prd host-bridge"
+  export BEACON_HOST_PRD_BRIDGE_CMD="beacon prd host-bridge"
 fi
 if [[ -z "${BEACON_HOST_USER_STORY_BRIDGE_CMD:-}" && "${HOST_RUNTIME}" != "unknown" ]]; then
-  export BEACON_HOST_USER_STORY_BRIDGE_CMD="bash ${ROOT_DIR}/skills/beacon/scripts/run_beacon.sh user-story host-bridge"
+  export BEACON_HOST_USER_STORY_BRIDGE_CMD="beacon user-story host-bridge"
 fi
 if [[ -z "${BEACON_HOST_TEST_CASE_BRIDGE_CMD:-}" && "${HOST_RUNTIME}" != "unknown" ]]; then
-  export BEACON_HOST_TEST_CASE_BRIDGE_CMD="bash ${ROOT_DIR}/skills/beacon/scripts/run_beacon.sh test-case host-bridge"
+  export BEACON_HOST_TEST_CASE_BRIDGE_CMD="beacon test-case host-bridge"
 fi
 
 cd "${ROOT_DIR}"

@@ -31,7 +31,19 @@ Always apply:
 
 ## Operator Rule
 
-Prefer the labs/hidden command:
+Prefer the installed CLI (works in any project directory once `beacon` is on `PATH`; does **not** depend on `skills/beacon/scripts/` being vendored):
+
+```bash
+beacon brainstorm run "<prompt>" \
+  --project-root . \
+  --version auto \
+  --mode requirement-convergence \
+  --json
+```
+
+Runtime note: current CLI line reports **`Beacon CLI v1.4.0`**. Adjust `--version` / docs paths if your project pins a different docs line.
+
+Optional compatibility (Beacon repo or vendored skill pack only):
 
 ```bash
 bash skills/beacon/scripts/run_beacon.sh brainstorm run "<prompt>" \

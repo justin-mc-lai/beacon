@@ -28,7 +28,7 @@ Prefer:
 - `beacon doctor metadata update ...`
 - `beacon doctor metadata delete ...`
 - `beacon doctor metadata verify ...`
-- or `bash skills/beacon/scripts/run_beacon.sh doctor metadata ...`
+- or `beacon doctor metadata ...` (optional vendored wrapper: `bash skills/beacon/scripts/run_beacon.sh doctor metadata ...`)
 
 Default expectations:
 
