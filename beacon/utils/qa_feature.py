@@ -238,7 +238,12 @@ def _build_story_scenario_map(
     if docs_path.exists():
         payload = _load_json(docs_path)
         if isinstance(payload.get("scenarios"), list):
-            return payload
+            return _augment_story_scenario_map(
+                feature=feature,
+                payload=payload,
+                story_sequence=story_sequence,
+                entries=entries,
+            )
     return expand_story_scenarios(
         feature=feature,
         version=version,
@@ -248,6 +253,106 @@ def _build_story_scenario_map(
         scenario_depth="standard",
         ui_runner="browser-use",
     )
+
+
+def _augment_story_scenario_map(
+    *,
+    feature: str,
+    payload: dict[str, Any],
+    story_sequence: list[dict[str, Any]],
+    entries: list[dict[str, Any]],
+) -> dict[str, Any]:
+    normalized = dict(payload)
+    scenarios = [dict(item) for item in (payload.get("scenarios") or []) if isinstance(item, dict)]
+    stories = [dict(item) for item in (payload.get("stories") or []) if isinstance(item, dict)]
+    normalized["scenarios"] = scenarios
+    normalized["stories"] = stories
+
+    existing_source_tc_ids = {
+        str(item.get("source_tc_id") or item.get("tc_id") or "").strip()
+        for item in scenarios
+        if str(item.get("source_tc_id") or item.get("tc_id") or "").strip()
+    }
+    story_by_ac = {
+        str(item.get("ac_id") or "").strip(): item
+        for item in stories
+        if str(item.get("ac_id") or "").strip()
+    }
+    story_sequence_by_ac = {
+        str(item.get("ac_id") or "").strip(): item
+        for item in story_sequence
+        if isinstance(item, dict) and str(item.get("ac_id") or "").strip()
+    }
+
+    for entry in entries:
+        if not isinstance(entry, dict):
+            continue
+        source_tc_id = str(entry.get("source_tc_id") or entry.get("tc_id") or "").strip()
+        if not source_tc_id or source_tc_id in existing_source_tc_ids:
+            continue
+        ac_id = str(entry.get("ac_id") or "").strip()
+        qa_type = str(entry.get("qa_type") or entry.get("layer") or "contract").strip()
+        scenario_id = f"SC-AUTO-{source_tc_id}"
+        scenario = {
+            "scenario_id": scenario_id,
+            "source_tc_id": source_tc_id,
+            "tc_id": f"{source_tc_id}-PRIMARY",
+            "ac_id": ac_id,
+            "qa_type": qa_type,
+            "layer": str(entry.get("layer") or qa_type).strip() or qa_type,
+            "scenario_family": "primary",
+            "title": str(entry.get("assertion") or entry.get("title") or source_tc_id).strip(),
+            "browser_required": bool(entry.get("browser_required")),
+            "replay_required": bool(entry.get("replay_required")),
+            "exploratory_runner": str(entry.get("exploratory_runner") or "native").strip() or "native",
+            "deterministic_runner": str(entry.get("deterministic_runner") or "native").strip() or "native",
+            "explore_command": str(entry.get("explore_command") or "").strip(),
+            "replay_command": str(entry.get("replay_command") or "").strip(),
+            "coverage_axes": [axis for axis in ("primary", qa_type, "non-browser") if axis],
+            "depends_on": list(entry.get("depends_on") or []),
+            "stop_on_fail": bool(entry.get("stop_on_fail", False)),
+            "automation": str(entry.get("automation") or "auto").strip() or "auto",
+            "command": str(entry.get("command") or "").strip(),
+            "assertion": str(entry.get("assertion") or "").strip(),
+            "priority": str(entry.get("priority") or "P1").strip() or "P1",
+            "evidence_path": str(entry.get("evidence_path") or "").strip(),
+            "required_files": list(entry.get("required_files") or ["command.txt", "stdout.log", "stderr.log", "result.json", "junit.xml"]),
+        }
+        scenarios.append(scenario)
+        existing_source_tc_ids.add(source_tc_id)
+
+        story_row = story_by_ac.get(ac_id)
+        if story_row is None:
+            sequence_row = story_sequence_by_ac.get(ac_id, {})
+            story_row = {
+                "ac_id": ac_id,
+                "theme": str(sequence_row.get("theme") or "").strip(),
+                "text": str(sequence_row.get("text") or entry.get("assertion") or "").strip(),
+                "scenario_ids": [],
+                "scenario_families": [],
+                "required_families": list(sequence_row.get("required_families") or []),
+                "scenarios": [],
+            }
+            stories.append(story_row)
+            story_by_ac[ac_id] = story_row
+        story_row.setdefault("scenario_ids", [])
+        story_row.setdefault("scenario_families", [])
+        story_row.setdefault("scenarios", [])
+        if scenario_id not in story_row["scenario_ids"]:
+            story_row["scenario_ids"].append(scenario_id)
+        story_row["scenario_families"].append("primary")
+        story_row["scenarios"].append(
+            {
+                "scenario_id": scenario_id,
+                "source_tc_id": source_tc_id,
+                "tc_id": f"{source_tc_id}-PRIMARY",
+                "scenario_family": "primary",
+                "qa_type": qa_type,
+                "browser_required": bool(entry.get("browser_required")),
+                "replay_required": bool(entry.get("replay_required")),
+            }
+        )
+    return normalized
 
 
 def _expand_targeted_entries_for_mode(
@@ -453,13 +558,58 @@ def build_feature_qa_plan(
         story_sequence=story_sequence,
         entries=derived_entries,
     )
+    exhaustive_source_entries = derived_entries if implementation_done and str(execution_mode or "").strip().lower() == "story-exhaustive" else (targeted_source_entries if implementation_done else [])
     targeted_entries, targeted_scenario_ids, targeted_scenario_families = _expand_targeted_entries_for_mode(
         execution_mode=execution_mode,
         feature=feature,
         story_sequence=story_sequence,
-        targeted_entries=targeted_source_entries if implementation_done else [],
+        targeted_entries=exhaustive_source_entries,
         scenario_map=scenario_map,
     )
+    if implementation_done and str(execution_mode or "").strip().lower() == "story-exhaustive":
+        previous_targeted_source_tc_ids = sorted(
+            {
+                str(item).strip()
+                for item in (
+                    previous_status.get("targeted_source_tc_ids")
+                    or previous_status.get("targeted_rerun", {}).get("targeted_tc_ids")
+                    or previous_status.get("targeted_tc_ids")
+                    or []
+                )
+                if str(item).strip()
+            }
+        ) if isinstance(previous_status, dict) else []
+        expected_targeted_source_tc_ids = sorted(
+            {
+                str(item.get("source_tc_id") or item.get("tc_id") or "").strip()
+                for item in targeted_entries
+                if isinstance(item, dict) and str(item.get("source_tc_id") or item.get("tc_id") or "").strip()
+            }
+        )
+        previous_targeted_scenario_ids = sorted(
+            {
+                str(item).strip()
+                for item in (
+                    previous_status.get("targeted_scenario_ids")
+                    or previous_status.get("targeted_rerun", {}).get("targeted_scenario_ids")
+                    or []
+                )
+                if str(item).strip()
+            }
+        ) if isinstance(previous_status, dict) else []
+        expected_targeted_scenario_ids = sorted({str(item).strip() for item in targeted_scenario_ids if str(item).strip()})
+        previous_execution_mode = str(previous_status.get("execution_mode") or "").strip().lower() if isinstance(previous_status, dict) else ""
+        if previous_execution_mode != "story-exhaustive":
+            reason_codes.append("execution_mode_changed")
+        if previous_targeted_source_tc_ids != expected_targeted_source_tc_ids:
+            reason_codes.append("targeted_source_tc_ids_changed")
+        if previous_targeted_scenario_ids != expected_targeted_scenario_ids:
+            reason_codes.append("targeted_scenario_ids_changed")
+        if any(
+            code in {"execution_mode_changed", "targeted_source_tc_ids_changed", "targeted_scenario_ids_changed"}
+            for code in reason_codes
+        ):
+            status = "rerun_required"
     evidence_done = implementation_done and bool(previous_status.get("evidence_done", False)) and status == "up_to_date"
     if status == "up_to_date" and not previous_status:
         evidence_done = False

@@ -169,6 +169,80 @@ def test_v119_qa_run_help_should_expose_feature_aware_options():
     assert "--json" in result.stdout
 
 
+def test_v119_qa_evolve_story_exhaustive_should_backfill_missing_scenarios_from_matrix_entries(tmp_path: Path):
+    _seed_feature_docs(tmp_path)
+    _mark_implemented(tmp_path)
+    _seed_story_scenario_map(
+        tmp_path,
+        {
+            "schema_version": "1.0",
+            "feature": FEATURE,
+            "feature_slug": SLUG,
+            "version": VERSION,
+            "scenarios": [
+                {
+                    "scenario_id": "SC-001",
+                    "source_tc_id": "TC-001",
+                    "tc_id": "TC-001-PRIMARY",
+                    "ac_id": "AC-001",
+                    "scenario_family": "primary",
+                    "qa_type": "contract",
+                    "browser_required": False,
+                    "replay_required": False,
+                }
+            ],
+            "stories": [
+                {
+                    "ac_id": "AC-001",
+                    "theme": "Control",
+                    "text": "Feature-aware QA plan exists",
+                    "scenario_ids": ["SC-001"],
+                    "scenario_families": ["primary"],
+                    "required_families": [],
+                    "scenarios": [
+                        {
+                            "scenario_id": "SC-001",
+                            "source_tc_id": "TC-001",
+                            "tc_id": "TC-001-PRIMARY",
+                            "scenario_family": "primary",
+                            "qa_type": "contract",
+                            "browser_required": False,
+                            "replay_required": False,
+                        }
+                    ],
+                }
+            ],
+        },
+    )
+    matrix_path = tmp_path / "docs" / "beacon" / VERSION / ".machine" / "qa" / f"{SLUG}.ac-test-matrix.json"
+    matrix = json.loads(matrix_path.read_text(encoding="utf-8"))
+    matrix["entries"][1]["ac_id"] = "AC-101"
+    matrix_path.write_text(json.dumps(matrix, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    result = _invoke(
+        [
+            "qa",
+            "evolve",
+            FEATURE,
+            "--project",
+            str(tmp_path),
+            "--version",
+            VERSION,
+            "--mode",
+            "story-exhaustive",
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["execution_mode"] == "story-exhaustive"
+    assert sorted(payload["targeted_source_tc_ids"]) == ["TC-001", "TC-002"]
+    assert sorted(payload["targeted_scenario_ids"]) == ["SC-001", "SC-AUTO-TC-002"]
+    stories = payload["story_scenarios"]["stories"]
+    ac_101 = next(item for item in stories if item["ac_id"] == "AC-101")
+    assert ac_101["scenario_ids"] == ["SC-AUTO-TC-002"]
+
+
 def test_v119_qa_evolve_no_write_matrix_should_not_materialize_state_files(tmp_path: Path):
     _seed_feature_docs(tmp_path)
     _mark_implemented(tmp_path)

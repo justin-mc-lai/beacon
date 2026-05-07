@@ -998,6 +998,74 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
             "team_contract": team_contract,
             "implement_to_qa_handoff": handoff,
         }
+        precision_status = dict(existing_status)
+        precision_status["status"] = "passed"
+        precision_status["evidence_done"] = True
+        precision_status["feature"] = feature
+        precision_status["feature_slug"] = str(plan.get("feature_slug") or "")
+        precision_status["execution_mode"] = str(plan.get("execution_mode") or mode)
+        precision_status["targeted_rerun"] = {
+            "required": True,
+            "reason_codes": plan.get("reason_codes", []),
+            "targeted_layers": plan.get("targeted_layers", []),
+            "targeted_ac_ids": plan.get("targeted_ac_ids", []),
+            "targeted_tc_ids": plan.get("targeted_tc_ids", []),
+            "targeted_scenario_ids": plan.get("targeted_scenario_ids", []),
+            "targeted_scenario_families": plan.get("targeted_scenario_families", []),
+        }
+        verified_ids, failed_ids, per_item_results = collect_verification_writeback(
+            plan=plan,
+            qa_status={"status": "passed"},
+        )
+        precision_status["per_item_results"] = per_item_results
+        canonical_matrix = writeback_feature_matrix_evidence(
+            project_root,
+            plan=plan,
+            per_item_results=per_item_results,
+            run_id=current_run_id,
+        )
+        if canonical_matrix is not None:
+            precision_status["canonical_matrix_path"] = str(canonical_matrix.relative_to(project_root))
+        exhaustiveness = build_exhaustiveness_report(
+            project_root,
+            feature=feature,
+            run_id=current_run_id or plan.get("implementation_run_id") or "feature-qa",
+            plan=plan,
+            qa_status=precision_status,
+        )
+        write_exhaustiveness_report(project_root, feature=feature, payload=exhaustiveness)
+        precision_status["exhaustiveness"] = exhaustiveness
+        scenario_results_v2, ac_closure, feature_scorecard, ac_closure_path, feature_scorecard_path = build_feature_qa_precision_artifacts(
+            project_root,
+            feature=feature,
+            run_id=current_run_id or plan.get("implementation_run_id") or "feature-qa",
+            plan=plan,
+            per_item_results=per_item_results,
+            project_profile_gate={},
+            qa_status=precision_status,
+            exhaustiveness=exhaustiveness,
+        )
+        precision_status["scenario_results_v2"] = scenario_results_v2
+        precision_status["ac_closure_path"] = str(ac_closure_path.relative_to(project_root))
+        precision_status["feature_scorecard_path"] = str(feature_scorecard_path.relative_to(project_root))
+        precision_status["feature_scorecard"] = feature_scorecard
+        precision_status["release_ready"] = bool(feature_scorecard.get("release_ready", False))
+        precision_status["verified_item_ids"] = verified_ids
+        precision_status["failed_item_ids"] = failed_ids
+        payload.update(
+            {
+                "scenario_results_v2": scenario_results_v2,
+                "ac_closure": ac_closure,
+                "feature_scorecard": feature_scorecard,
+                "ac_closure_path": str(ac_closure_path.relative_to(project_root)),
+                "feature_scorecard_path": str(feature_scorecard_path.relative_to(project_root)),
+                "release_ready": bool(feature_scorecard.get("release_ready", False)),
+                "verified_item_ids": verified_ids,
+                "failed_item_ids": failed_ids,
+                "exhaustiveness": exhaustiveness,
+                "canonical_matrix_path": str(canonical_matrix.relative_to(project_root)) if canonical_matrix is not None else str(payload.get("canonical_matrix_path") or ""),
+            }
+        )
         _with_delivery_contract(
             payload,
             requirement_binding={
@@ -1022,7 +1090,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
             )
             payload["execution_surface"] = "qa-team"
             payload["context_isolation"] = payload["team_execution"].get("context_isolation", {})
-        feature_status_path = write_feature_qa_status(project_root, feature=feature, payload=payload)
+        feature_status_path = write_feature_qa_status(project_root, feature=feature, payload=precision_status)
         manifest_refs = [
             str(feature_status_path.relative_to(project_root)),
             str(feature_qa_plan_path(project_root, feature=feature).relative_to(project_root)),
