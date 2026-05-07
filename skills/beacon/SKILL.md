@@ -100,6 +100,7 @@ Optional supplemental skills:
 - `beacon-archive`: formal archive governance for isolating active truth from historical truth
 - `beacon-toolkit-lighthouse`: fast single-file, diagram-first analysis without entering the main workflow
 - `beacon-toolkit-metadata`: deterministic metadata toolkit for project/version topology, branch binding, CRUD, and verify
+- `beacon-toolkit-branch-governance`: deterministic git branch/worktree governance view with flow diagram and implement-facing contract checks
 - `beacon-friction-intake`: host-visible friction intake entry for scan/capture plus sqlite queue governance
 - `beacon-real-project-validation`: prove Beacon works against a real target project
 
@@ -183,6 +184,13 @@ bash skills/beacon/scripts/run_beacon.sh friction-intake run \
   --json
 ```bash
 bash skills/beacon/scripts/run_beacon.sh doctor metadata show \
+  --project-root . \
+  --version v1.3.9 \
+  --json
+```
+
+```bash
+bash skills/beacon/scripts/run_beacon.sh doctor branch-governance show \
   --project-root . \
   --version v1.3.9 \
   --json

@@ -1,0 +1,98 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.4.0-branch-governance-human-surface-and-implement-gate",
+  "feature_slug": "beacon-v1.4.0-branch-governance-human-surface-and-implement-gate",
+  "version": "v1.4.0",
+  "runtime_version": "v1.3.11",
+  "runtime_capability_line": "v1.3.3",
+  "required": true,
+  "reason_code": "",
+  "blocked": false,
+  "status": "pass",
+  "findings": [],
+  "report_json_path": "docs/beacon/v1.4.0/.machine/execution/requirement-clarity-beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.json",
+  "report_markdown_path": "docs/beacon/v1.4.0/execution/requirement-clarity-beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md",
+  "state_path": ".beacon/state/requirement-clarity-beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.json",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.4.0",
+    "supported": true,
+    "required": true,
+    "ready": true,
+    "diagram_types": [
+      "branch-flow",
+      "state-machine",
+      "decision-priority"
+    ],
+    "state_axes": [
+      "contract_state",
+      "missing | resolved | verified | blocked | switch_ready",
+      "workspace_state",
+      "unresolved | wrong_branch | wrong_worktree | compliant",
+      "execution_state",
+      "preflight_pending | blocked | switched | implement_ready",
+      "evidence_state",
+      "missing | partial | complete"
+    ],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [
+      "归属",
+      "branch-flow",
+      "state-machine",
+      "decision-priority",
+      "state axes"
+    ],
+    "review_gates": [
+      "implementation must cover the declared branch-flow split points",
+      "implementation must preserve the declared state-machine transitions",
+      "implementation must preserve decision-priority ordering",
+      "implementation must keep state axes explicit: contract_state, missing | resolved | verified | blocked | switch_ready, workspace_state, unresolved | wrong_branch | wrong_worktree | compliant, execution_state, preflight_pending | blocked | switched | implement_ready, evidence_state, missing | partial | complete"
+    ],
+    "qa_coverage_hints": [
+      "cover primary and alternate branch-flow paths",
+      "cover state transitions, illegal transitions, and recovery paths",
+      "cover conflicting conditions using declared decision priority",
+      "cover axis combinations across: contract_state, missing | resolved | verified | blocked | switch_ready, workspace_state, unresolved | wrong_branch | wrong_worktree | compliant, execution_state, preflight_pending | blocked | switched | implement_ready, evidence_state, missing | partial | complete"
+    ],
+    "evidence_lines": {
+      "branch-flow": [
+        "- 为人类面提供清楚的分支流程图与治理摘要。",
+        "- `branch-flow`",
+        "- 为人类面提供清楚的分支流程图与治理摘要。",
+        "当前 branch 相关信息分散在：",
+        "- project metadata",
+        "- execution 产物",
+        "- friction 报告",
+        "- 目标项目 AGENTS 规则"
+      ],
+      "state-machine": [
+        "- `state-machine`"
+      ],
+      "decision-priority": [
+        "- `decision-priority`",
+        "- `decision-priority`"
+      ],
+      "state-axes": [
+        "- `contract_state`",
+        "- `missing | resolved | verified | blocked | switch_ready`",
+        "- `workspace_state`",
+        "- `unresolved | wrong_branch | wrong_worktree | compliant`",
+        "- `execution_state`",
+        "- `preflight_pending | blocked | switched | implement_ready`",
+        "- `evidence_state`",
+        "- `missing | partial | complete`"
+      ]
+    },
+    "generated_at": "2026-05-07T06:48:03.117979+00:00",
+    "feature": "beacon-v1.4.0-branch-governance-human-surface-and-implement-gate",
+    "feature_slug": "beacon-v1.4.0-branch-governance-human-surface-and-implement-gate",
+    "prd_ref": "docs/beacon/v1.4.0/prd/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md",
+    "user_story_ref": "docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+  },
+  "required_artifacts": [],
+  "scanned_files": [
+    "docs/beacon/v1.4.0/prd/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md",
+    "docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+  ]
+}

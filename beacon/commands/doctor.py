@@ -4,10 +4,11 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Any
+from typing import Any, Optional
 
 import typer
 
+from beacon.utils.branch_governance import render_branch_governance_markdown
 from beacon.utils.doctor_orchestrator import (
     run_codex_hud_hook_setup,
     run_codex_hud_hook_verify,
@@ -51,7 +52,9 @@ app = typer.Typer(
     no_args_is_help=False,
 )
 metadata_app = typer.Typer(name="metadata", help="Manage project topology and version metadata.")
+branch_governance_app = typer.Typer(name="branch-governance", help="Inspect branch-governance contracts.")
 app.add_typer(metadata_app, name="metadata")
+app.add_typer(branch_governance_app, name="branch-governance")
 
 
 def _print_doctor_report(payload: dict[str, Any]) -> None:
@@ -289,6 +292,12 @@ def _print_project_metadata_result(title: str, result: dict[str, Any]) -> None:
         typer.echo(f"selected_branch: {resolved.get('selected_branch', '')}")
 
 
+def _print_branch_governance_result(title: str, result: dict[str, Any]) -> None:
+    typer.echo(title)
+    typer.echo("=" * len(title))
+    typer.echo(render_branch_governance_markdown(result).rstrip())
+
+
 @app.callback(invoke_without_command=True)
 def doctor_callback(
     ctx: typer.Context,
@@ -368,6 +377,17 @@ def metadata_upsert(
     branch: str = typer.Option("", "--branch", help="Canonical branch for the service under the version"),
     branch_guard_mode: str = typer.Option("strict", "--branch-guard-mode", help="Branch guard mode"),
     validation_state: str = typer.Option("active", "--validation-state", help="Validation state"),
+    branch_governance_template: str = typer.Option("", "--branch-governance-template", help="Governance template name"),
+    previous_version_baseline_branch: str = typer.Option("", "--previous-version-baseline-branch", help="Previous-version baseline branch"),
+    next_version_feature_branch: str = typer.Option("", "--next-version-feature-branch", help="Next-version feature branch"),
+    hotfix_branch_naming_rule: str = typer.Option("", "--hotfix-branch-naming-rule", help="Hotfix branch naming rule"),
+    allow_worktree_when_feature_dirty: Optional[bool] = typer.Option(None, "--allow-worktree-when-feature-dirty/--disallow-worktree-when-feature-dirty", help="Whether worktree use is allowed when the feature lane is dirty"),
+    merge_direction_policy: list[str] = typer.Option(None, "--merge-direction-policy", help="Allowed merge direction, repeatable"),
+    forbidden_directions: list[str] = typer.Option(None, "--forbidden-direction", help="Forbidden direction, repeatable"),
+    evidence_contract: list[str] = typer.Option(None, "--evidence-contract", help="Required evidence field, repeatable"),
+    evidence_field: list[str] = typer.Option(None, "--evidence-field", help="Evidence value in key=value form, repeatable"),
+    worktree_mode: str = typer.Option("", "--worktree-mode", help="branch-only|dedicated-worktree"),
+    worktree_path: str = typer.Option("", "--worktree-path", help="Expected governed worktree path"),
     json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
 ):
     """Create or update project-version metadata."""
@@ -385,6 +405,23 @@ def metadata_upsert(
         branch=branch,
         branch_guard_mode=branch_guard_mode,
         validation_state=validation_state,
+        branch_governance_template=branch_governance_template,
+        previous_version_baseline_branch=previous_version_baseline_branch,
+        next_version_feature_branch=next_version_feature_branch,
+        hotfix_branch_naming_rule=hotfix_branch_naming_rule,
+        allow_worktree_when_feature_dirty=allow_worktree_when_feature_dirty,
+        merge_direction_policy=list(merge_direction_policy or []),
+        forbidden_directions=list(forbidden_directions or []),
+        evidence_contract=list(evidence_contract or []),
+        evidence={
+            key.strip(): value.strip()
+            for item in (evidence_field or [])
+            if "=" in str(item)
+            for key, value in [str(item).split("=", 1)]
+            if key.strip()
+        },
+        worktree_mode=worktree_mode,
+        worktree_path=worktree_path,
         event_type="update",
     )
     payload = {"schema_version": "1.0", "action": "doctor-metadata-upsert", "result": result}
@@ -432,6 +469,45 @@ def metadata_verify(
     else:
         _print_verification_result("Beacon Doctor Metadata Verify", result)
     raise typer.Exit(code=0 if result.get("status") != "fail" else 2)
+
+
+@branch_governance_app.command("show")
+def branch_governance_show(
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    version: str = typer.Option("", "--version", "-v", help="Version contract key"),
+    feature: str = typer.Option("", "--feature", help="Optional feature name"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Show the resolved branch-governance human surface."""
+    root = Path(project_root).expanduser().resolve() if project_root else Path.cwd()
+    view = resolve_project_metadata_view(root, version=version)
+    result = view.get("branch_governance") if isinstance(view.get("branch_governance"), dict) else {}
+    if feature and result:
+        result = {**result, "feature": feature}
+    payload = {"schema_version": "1.0", "action": "doctor-branch-governance-show", "result": result}
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        _print_branch_governance_result("Beacon Doctor Branch Governance Show", result)
+    raise typer.Exit(code=0)
+
+
+@branch_governance_app.command("verify")
+def branch_governance_verify(
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    version: str = typer.Option("", "--version", "-v", help="Version contract key"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Verify the resolved branch-governance contract."""
+    root = Path(project_root).expanduser().resolve() if project_root else Path.cwd()
+    view = resolve_project_metadata_view(root, version=version)
+    result = view.get("branch_governance") if isinstance(view.get("branch_governance"), dict) else {}
+    payload = {"schema_version": "1.0", "action": "doctor-branch-governance-verify", "result": result}
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        _print_branch_governance_result("Beacon Doctor Branch Governance Verify", result)
+    raise typer.Exit(code=0 if not result.get("blocked") else 2)
 
 
 @app.command("diagnose")

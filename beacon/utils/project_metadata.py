@@ -8,6 +8,7 @@ import subprocess
 from pathlib import Path
 from typing import Any
 
+from beacon.utils.branch_governance import resolve_branch_governance_view
 from beacon.utils.runtime import now_iso, read_json, write_json
 from beacon.utils.runtime_projection_store import _connect, runtime_ledger_db_path
 
@@ -140,6 +141,17 @@ def _render_human(payload: dict[str, Any]) -> str:
             if isinstance(per_service, dict):
                 for service_key, branch in sorted(per_service.items()):
                     lines.append(f"  - `{service_key}` -> `{branch}`")
+            governance = contract.get("branch_governance") if isinstance(contract.get("branch_governance"), dict) else {}
+            template_name = str(contract.get("branch_governance_template") or governance.get("template_name") or "").strip()
+            previous_baseline = str(contract.get("previous_version_baseline_branch") or governance.get("previous_version_baseline_branch") or "").strip()
+            next_feature = str(contract.get("next_version_feature_branch") or governance.get("next_version_feature_branch") or "").strip()
+            if template_name or previous_baseline or next_feature:
+                lines.append(
+                    "  - "
+                    f"template=`{template_name}` "
+                    f"previous=`{previous_baseline}` "
+                    f"next=`{next_feature}`"
+                )
     return "\n".join(lines) + "\n"
 
 
@@ -283,6 +295,17 @@ def _upsert_version_contract(
     branch: str,
     branch_guard_mode: str,
     validation_state: str,
+    branch_governance_template: str = "",
+    previous_version_baseline_branch: str = "",
+    next_version_feature_branch: str = "",
+    hotfix_branch_naming_rule: str = "",
+    allow_worktree_when_feature_dirty: bool | None = None,
+    merge_direction_policy: list[str] | None = None,
+    forbidden_directions: list[str] | None = None,
+    evidence_contract: list[str] | None = None,
+    evidence: dict[str, str] | None = None,
+    worktree_mode: str = "",
+    worktree_path: str = "",
 ) -> dict[str, Any]:
     contract = version_map.get(version)
     if not isinstance(contract, dict):
@@ -296,12 +319,45 @@ def _upsert_version_contract(
     per_service = dict(per_service) if isinstance(per_service, dict) else {}
     if service_key and branch:
         per_service[service_key] = branch
+    current_governance = contract.get("branch_governance") if isinstance(contract.get("branch_governance"), dict) else {}
+    normalized_governance = {
+        **current_governance,
+        "template_name": str(branch_governance_template or current_governance.get("template_name") or contract.get("branch_governance_template") or "").strip(),
+        "previous_version_baseline_branch": str(previous_version_baseline_branch or current_governance.get("previous_version_baseline_branch") or contract.get("previous_version_baseline_branch") or "").strip(),
+        "next_version_feature_branch": str(next_version_feature_branch or current_governance.get("next_version_feature_branch") or contract.get("next_version_feature_branch") or "").strip(),
+        "hotfix_branch_naming_rule": str(hotfix_branch_naming_rule or current_governance.get("hotfix_branch_naming_rule") or contract.get("hotfix_branch_naming_rule") or "").strip(),
+        "allow_worktree_when_feature_dirty": (
+            bool(allow_worktree_when_feature_dirty)
+            if allow_worktree_when_feature_dirty is not None
+            else bool(current_governance.get("allow_worktree_when_feature_dirty", contract.get("allow_worktree_when_feature_dirty", False)))
+        ),
+        "merge_direction_policy": [str(item).strip() for item in (merge_direction_policy or current_governance.get("merge_direction_policy") or contract.get("merge_direction_policy") or []) if str(item).strip()],
+        "forbidden_directions": [str(item).strip() for item in (forbidden_directions or current_governance.get("forbidden_directions") or contract.get("forbidden_directions") or []) if str(item).strip()],
+        "evidence_contract": [str(item).strip() for item in (evidence_contract or current_governance.get("evidence_contract") or contract.get("evidence_contract") or []) if str(item).strip()],
+        "evidence": {
+            str(key).strip(): str(value).strip()
+            for key, value in (evidence or current_governance.get("evidence") or contract.get("evidence") or {}).items()
+            if str(key).strip()
+        },
+        "worktree_mode": str(worktree_mode or current_governance.get("worktree_mode") or "").strip(),
+        "worktree_path": str(worktree_path or current_governance.get("worktree_path") or "").strip(),
+    }
     version_map[version] = {
         "version": version,
         "participating_services": services,
         "per_service_canonical_branch": per_service,
         "branch_guard_mode": str(branch_guard_mode or contract.get("branch_guard_mode") or "strict").strip() or "strict",
         "validation_state": str(validation_state or contract.get("validation_state") or "active").strip() or "active",
+        "branch_governance_template": normalized_governance.get("template_name", ""),
+        "previous_version_baseline_branch": normalized_governance.get("previous_version_baseline_branch", ""),
+        "next_version_feature_branch": normalized_governance.get("next_version_feature_branch", ""),
+        "hotfix_branch_naming_rule": normalized_governance.get("hotfix_branch_naming_rule", ""),
+        "allow_worktree_when_feature_dirty": normalized_governance.get("allow_worktree_when_feature_dirty", False),
+        "merge_direction_policy": normalized_governance.get("merge_direction_policy", []),
+        "forbidden_directions": normalized_governance.get("forbidden_directions", []),
+        "evidence_contract": normalized_governance.get("evidence_contract", []),
+        "evidence": normalized_governance.get("evidence", {}),
+        "branch_governance": normalized_governance,
     }
     return version_map
 
@@ -320,6 +376,17 @@ def create_or_update_project_metadata(
     branch: str = "",
     branch_guard_mode: str = "strict",
     validation_state: str = "active",
+    branch_governance_template: str = "",
+    previous_version_baseline_branch: str = "",
+    next_version_feature_branch: str = "",
+    hotfix_branch_naming_rule: str = "",
+    allow_worktree_when_feature_dirty: bool | None = None,
+    merge_direction_policy: list[str] | None = None,
+    forbidden_directions: list[str] | None = None,
+    evidence_contract: list[str] | None = None,
+    evidence: dict[str, str] | None = None,
+    worktree_mode: str = "",
+    worktree_path: str = "",
     event_type: str = "update",
 ) -> dict[str, Any]:
     root = project_root.expanduser().resolve()
@@ -354,6 +421,17 @@ def create_or_update_project_metadata(
             branch=branch,
             branch_guard_mode=branch_guard_mode,
             validation_state=validation_state,
+            branch_governance_template=branch_governance_template,
+            previous_version_baseline_branch=previous_version_baseline_branch,
+            next_version_feature_branch=next_version_feature_branch,
+            hotfix_branch_naming_rule=hotfix_branch_naming_rule,
+            allow_worktree_when_feature_dirty=allow_worktree_when_feature_dirty,
+            merge_direction_policy=merge_direction_policy,
+            forbidden_directions=forbidden_directions,
+            evidence_contract=evidence_contract,
+            evidence=evidence,
+            worktree_mode=worktree_mode,
+            worktree_path=worktree_path,
         )
     payload["version_scoped_metadata"] = versions
     summary = _commit_payload(root, payload, event_type=event_type)
@@ -402,7 +480,7 @@ def resolve_project_metadata_view(project_root: Path, *, version: str = "") -> d
     if not selected_service and isinstance(version_contract.get("participating_services"), list) and version_contract["participating_services"]:
         selected_service = str(version_contract["participating_services"][0] or "").strip()
     per_service = version_contract.get("per_service_canonical_branch") if isinstance(version_contract.get("per_service_canonical_branch"), dict) else {}
-    return {
+    result = {
         "project_root": str(root),
         "topology_kind": str(global_meta.get("topology_kind") or "").strip(),
         "default_execution_service": default_service,
@@ -420,6 +498,13 @@ def resolve_project_metadata_view(project_root: Path, *, version: str = "") -> d
         },
         "transaction": payload.get("transaction", {}),
     }
+    if version:
+        result["branch_governance"] = resolve_branch_governance_view(
+            project_root=root,
+            version=version,
+            metadata_view=result,
+        )
+    return result
 
 
 def _git_branch(repo_root: Path) -> str:
@@ -481,6 +566,19 @@ def verify_project_metadata(project_root: Path, *, version: str = "") -> dict[st
                         "repo_root": str(repo_root or ""),
                         "expected_branch": expected_branch,
                         "current_branch": current_branch,
+                    },
+                }
+            )
+        branch_governance = view.get("branch_governance") if isinstance(view.get("branch_governance"), dict) else {}
+        if branch_governance:
+            checks.append(
+                {
+                    "status": "pass" if not branch_governance.get("blocked") else "fail",
+                    "name": "branch_governance",
+                    "details": {
+                        "template_name": branch_governance.get("template_name", ""),
+                        "blocked_reason": branch_governance.get("blocked_reason", ""),
+                        "reason_codes": branch_governance.get("reason_codes", []),
                     },
                 }
             )

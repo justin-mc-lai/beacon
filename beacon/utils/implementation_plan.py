@@ -11,6 +11,7 @@ import subprocess
 from typing import Any, Iterable
 
 from beacon.utils.artifact_paths import human_execution_file, machine_execution_file, qa_matrix_candidates
+from beacon.utils.branch_governance import render_branch_governance_markdown, resolve_branch_governance_view
 from beacon.utils.delivery_baseline import (
     baseline_revision_id,
     load_implementation_delivery_baseline,
@@ -23,6 +24,7 @@ from beacon.utils.diagram_truth import load_feature_diagram_truth
 from beacon.utils.global_boundaries import global_boundary_principle_summaries
 from beacon.utils.implement_adapters import load_beacon_config
 from beacon.utils.implementation_design import extract_prd_feature_sections
+from beacon.utils.project_metadata import resolve_project_metadata_view
 from beacon.utils.revision_delta import (
     load_revision_delta,
     materialize_revision_delta,
@@ -357,6 +359,23 @@ def _default_git_workflow_contract(
         "source": "project_config_seed" if branch_guard_cfg else "version_default",
         "generated_at": now_iso(),
     }
+    metadata_view = resolve_project_metadata_view(project_root, version=version)
+    branch_governance = resolve_branch_governance_view(
+        project_root=project_root,
+        version=version,
+        feature=feature,
+        metadata_view=metadata_view,
+        git_workflow=payload,
+    )
+    if branch_governance.get("target_branch"):
+        payload["expected_branch"] = str(branch_governance.get("target_branch") or "")
+        if "/" in payload["expected_branch"]:
+            payload["branch_prefix"] = payload["expected_branch"].split("/", 1)[0] + "/"
+    if branch_governance.get("worktree_mode") == "dedicated-worktree":
+        payload["use_git_worktree"] = True
+    if branch_governance.get("worktree_path"):
+        payload["worktree_path"] = str(branch_governance.get("worktree_path") or "")
+    payload["branch_governance"] = branch_governance
     envelope = load_implementation_delivery_baseline(project_root, version=version, feature=feature)
     if not envelope and materialize_baseline:
         envelope = materialize_implementation_delivery_baseline(project_root, version=version, feature=feature, seed=payload)
@@ -407,6 +426,9 @@ def _render_git_workflow_markdown(payload: dict[str, Any]) -> str:
                 expected_branch=str(payload.get("expected_branch", "") or ""),
             )
         )
+    branch_governance = payload.get("branch_governance") if isinstance(payload.get("branch_governance"), dict) else {}
+    if branch_governance:
+        lines.extend(["", render_branch_governance_markdown(branch_governance).rstrip()])
     return "\n".join(lines) + "\n"
 
 

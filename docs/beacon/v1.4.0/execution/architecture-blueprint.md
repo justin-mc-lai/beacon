@@ -584,20 +584,6 @@ It is a simplification-by-separation release:
 - gates must block if projection metadata or service/branch/worktree fields drift.
 <!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor:END -->
 
-<!-- BEACON:IMPLEMENTATION-DELIVERY-HOST:START -->
-## Implementation Delivery Host
-
-- version: `v1.4.0`
-- feature_count: `3`
-- transaction_id: `tx-9d6349f422f58ac68`
-- source_hash: `sha256:af175be65775f95a1f180cd05cbd8e48627460c2ac8005715d31df446b29d9e5`
-
-### Registered Feature Baselines
-- `beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor` | revision=`R1` | branch=`beacon/v1.4.0` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.4.0/.machine/execution/implementation-delivery-baseline-beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.json`
-- `beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure` | revision=`R1` | branch=`beacon/v1.4.0` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.4.0/.machine/execution/implementation-delivery-baseline-beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure.json`
-- `beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration` | revision=`R1` | branch=`beacon/v1.4.0` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.4.0/.machine/execution/implementation-delivery-baseline-beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration.json`
-<!-- BEACON:IMPLEMENTATION-DELIVERY-HOST:END -->
-
 <!-- BEACON:TECHNICAL-DELTA-BLUEPRINT:beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration:START -->
 ## Technical Delta Blueprint
 
@@ -666,3 +652,87 @@ It is a simplification-by-separation release:
 - deterministic implementation contract, git workflow contract, and implementation plan are projections.
 - gates must block if projection metadata or service/branch/worktree fields drift.
 <!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration:END -->
+
+<!-- BEACON:IMPLEMENTATION-DELIVERY-HOST:START -->
+## Implementation Delivery Host
+
+- version: `v1.4.0`
+- feature_count: `4`
+- transaction_id: `tx-94cb0cffdb226d37e`
+- source_hash: `sha256:f7f5b5e42eba71b283a558a5ce09831431da952d82316527da5e81d6232557c8`
+
+### Registered Feature Baselines
+- `beacon-v1.4.0-branch-governance-human-surface-and-implement-gate` | revision=`R1` | branch=`beacon/v1.4.0` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.4.0/.machine/execution/implementation-delivery-baseline-beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.json`
+- `beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor` | revision=`R1` | branch=`beacon/v1.4.0` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.4.0/.machine/execution/implementation-delivery-baseline-beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.json`
+- `beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure` | revision=`R1` | branch=`beacon/v1.4.0` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.4.0/.machine/execution/implementation-delivery-baseline-beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure.json`
+- `beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration` | revision=`R1` | branch=`beacon/v1.4.0` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.4.0/.machine/execution/implementation-delivery-baseline-beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration.json`
+<!-- BEACON:IMPLEMENTATION-DELIVERY-HOST:END -->
+
+<!-- BEACON:TECHNICAL-DELTA-BLUEPRINT:beacon-v1.4.0-branch-governance-human-surface-and-implement-gate:START -->
+## Technical Delta Blueprint
+
+- project_mode: `greenfield`
+- feature: `beacon-v1.4.0-branch-governance-human-surface-and-implement-gate`
+- version: `v1.4.0`
+
+### Source Refs
+- prd: `docs/beacon/v1.4.0/prd/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md`
+- user_story: `docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md`
+- test_case: `docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md`
+
+### Delivery Change Surface
+- none
+### Available Entry Surfaces
+- none
+### Current Service Facts
+- none
+
+### Must Change
+- none
+
+### Can Reuse
+- none
+
+### No-Expand Guardrails
+- none
+
+### Compatibility Rules
+- none
+
+### Delivery Constraints
+- none
+
+### Implement Handoff
+- none
+<!-- BEACON:TECHNICAL-DELTA-BLUEPRINT:beacon-v1.4.0-branch-governance-human-surface-and-implement-gate:END -->
+
+<!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:beacon-v1.4.0-branch-governance-human-surface-and-implement-gate:START -->
+## Implementation Delivery Baseline
+
+- baseline_id: `impl-delivery-baseline-v1.4.0-beacon-v1.4.0-branch-governance-human-surface-and-implement-gate-R1`
+- transaction_id: `tx-8f6ae088096a54078`
+- source_hash: `sha256:9e8702074a9dc7e86ccf1076605a17810f4509443bdb8e0fa02a5220993d8406`
+- projection_seq: `1`
+- version: `v1.4.0`
+- feature: `beacon-v1.4.0-branch-governance-human-surface-and-implement-gate`
+- lifecycle_role: `pre-implement delivery blueprint projection`
+- projection_refresh_trigger: `implement plan against the active frozen revision`
+- branch_strategy: `single-branch`
+- base_branch: `main`
+- default_target_branch: `beacon/v1.4.0`
+- branch_prefix: `beacon/`
+- use_git_worktree: `False`
+- worktree_root: `.`
+- workspace_root: `.`
+
+### Delivery Service Scope
+- direct_delivery_services: .
+- writable_services: .
+- reference_only_services: docs
+- depends_on_features: -
+
+### Plan-Time Gate Contract
+- canonical envelope is the only delivery baseline source.
+- deterministic implementation contract, git workflow contract, and implementation plan are projections.
+- gates must block if projection metadata or service/branch/worktree fields drift.
+<!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:beacon-v1.4.0-branch-governance-human-surface-and-implement-gate:END -->

@@ -4,7 +4,7 @@
 
 - `v1.4.0` 当前主题是：`lightweight kernel and core surface refactor`
 - 当前版本不是做“能力删除”，而是做“能力分层、减重、真相收敛”
-- 当前版本材料状态：`requirement-frozen / feature-implemented / feature-accepted / release-pending`
+- 当前版本材料状态：`three-feature-accepted / release-pending / branch-governance-requirement-frozen`
 
 ## 版本目标
 
@@ -25,14 +25,17 @@
   - `docs/beacon/v1.4.0/prd/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md`
   - `docs/beacon/v1.4.0/prd/beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure.md`
   - `docs/beacon/v1.4.0/prd/beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration.md`
+  - `docs/beacon/v1.4.0/prd/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md`
 - User Story
   - `docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md`
   - `docs/beacon/v1.4.0/user-story/beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure.md`
   - `docs/beacon/v1.4.0/user-story/beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration.md`
+  - `docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md`
 - Test Cases
   - `docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md`
   - `docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure.md`
   - `docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration.md`
+  - `docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md`
 - Execution
   - `docs/beacon/v1.4.0/execution/index.md`
   - `docs/beacon/v1.4.0/execution/boundaries.md`
@@ -43,6 +46,7 @@
 - `beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor`
 - `beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure`
 - `beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration`
+- `beacon-v1.4.0-branch-governance-human-surface-and-implement-gate`
 
 ## 当前冻结判断
 
@@ -52,6 +56,8 @@
   - `prd-freeze-ready / story-freeze-ready / test-case-freeze-ready / support-surface-frozen / implementation-completed / qa-passed / acceptance-accepted`
 - `beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration`
   - `prd-freeze-ready / story-freeze-ready / test-case-freeze-ready / change-refreeze-frozen / implementation-completed / qa-passed / acceptance-accepted`
+- `beacon-v1.4.0-branch-governance-human-surface-and-implement-gate`
+  - `prd-freeze-ready / story-freeze-ready / test-case-freeze-ready / implementation-not-started / qa-not-started`
 
 ## 当前收口结论
 
@@ -59,11 +65,13 @@
   - `prd -> user-story -> test-case -> prototype -> implement -> qa -> release`
 - `v1.4.0` 不新增公开一级主命令
 - `beacon-prd-bootstrap` 继续存在，但只作为 optional support skill
+- 新增 branch governance requirement 子线，目标是在不扩张主流程的前提下补齐人类面 git workflow / implement gate 治理缺口
 - bootstrap 可以降低 requirement 启动摩擦，但不能伪装成 frozen truth 或绕过主链
 - `beacon-prd-bootstrap` 当前已进一步被补强为 unified requirement closure entry 候选，但仍是 support surface，不是主流程替代
 - 当前版本 requirement closure 已进入正式实现与验收阶段
 - 三条正式子线都已经形成 implementation / QA / acceptance 证据链
 - `Beacon Acceptance Kit v1` 在三条子线上都已经投影为 `Contract Pass`
+- branch governance 新子线当前 requirement package 已冻结，尚未进入 implementation / QA execution
 
 ## 当前冻结基线
 
@@ -119,6 +127,9 @@
 - `docs/beacon/v1.4.0/prd/beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration.md`
 - `docs/beacon/v1.4.0/user-story/beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration.md`
 - `docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration.md`
+- `docs/beacon/v1.4.0/prd/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md`
+- `docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md`
+- `docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md`
 - `skills/beacon/beacon-prd-bootstrap/SKILL.md`
 - `beacon/commands/prd_bootstrap.py`
 - `beacon/utils/prd_bootstrap.py`

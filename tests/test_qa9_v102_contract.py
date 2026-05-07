@@ -54,6 +54,40 @@ def test_test_case_create_should_generate_qa9_matrix(tmp_path: Path):
     assert isinstance(payload.get("entries"), list) and payload["entries"]
 
 
+def test_test_case_create_should_add_junit_to_explicit_pytest_commands(tmp_path: Path):
+    feature = "QA9 Feature"
+    slug = "qa9-feature"
+
+    us_dir = tmp_path / "docs" / "beacon" / "v1.0.2" / "user-story"
+    prd_dir = tmp_path / "docs" / "beacon" / "v1.0.2" / "prd"
+    qa_dir = tmp_path / "docs" / "beacon" / "v1.0.2" / "qa" / "test-cases"
+    us_dir.mkdir(parents=True, exist_ok=True)
+    prd_dir.mkdir(parents=True, exist_ok=True)
+    qa_dir.mkdir(parents=True, exist_ok=True)
+    (us_dir / f"{slug}.md").write_text("| ID | 标准 |\n| AC-001 | 功能工作 |\n", encoding="utf-8")
+    (prd_dir / f"{slug}.md").write_text("| ID | 标准 |\n| AC-002 | 接口返回200 |\n", encoding="utf-8")
+    (qa_dir / f"{slug}.md").write_text(
+        "# Test Cases: QA9 Feature\n\n"
+        "## Executable AC Test Matrix\n\n"
+        "| AC ID | TC ID | Layer | Command | Assertion | Evidence Path |\n"
+        "|-------|-------|-------|---------|-----------|---------------|\n"
+        '| AC-001 | TC-001 | contract | `python3 -m pytest -q tests/test_demo.py -k "demo_case"` | demo assertion | `.beacon/evidence/test-results/qa9-feature/TC-001.json` |\n',
+        encoding="utf-8",
+    )
+
+    result = runner.invoke(
+        app,
+        ["test-case", "create", feature, "--project", str(tmp_path), "--version", "v1.0.2"],
+    )
+    assert result.exit_code == 0, result.stdout
+
+    qa9_path = qa_matrix_output(tmp_path, "v1.0.2", slug, "qa9-matrix")
+    payload = json.loads(qa9_path.read_text(encoding="utf-8"))
+    entry = next(item for item in payload["entries"] if item["tc_id"] == "TC-001")
+    assert "--junitxml" in entry["command"]
+    assert "BEACON_JUNIT_PATH" in entry["command"]
+
+
 def test_auto_test_qa9_should_execute_and_write_matrix_evidence(tmp_path: Path):
     matrix_path = qa_matrix_output(tmp_path, "v1.0.2", "qa9-feature", "qa9-matrix")
     matrix_path.parent.mkdir(parents=True, exist_ok=True)

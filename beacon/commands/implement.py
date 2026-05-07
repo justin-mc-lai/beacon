@@ -21,6 +21,7 @@ from beacon.utils.artifact_paths import (
     machine_trace_file,
     qa_matrix_candidates,
 )
+from beacon.utils.branch_governance import evaluate_branch_governance
 from beacon.utils.archive_governance import load_feature_archive_boundary
 from beacon.utils.circuit_breaker import CircuitBreaker
 from beacon.utils.artifact_update_obligations import write_artifact_update_obligations
@@ -28,6 +29,7 @@ from beacon.utils.delivery_baseline import load_implementation_delivery_host
 from beacon.utils.delivery_kernel import build_delivery_contract
 from beacon.utils.git_alignment import (
     build_implement_branch_guard_payload,
+    ensure_expected_worktree_lane,
     switch_to_expected_branch,
 )
 from beacon.utils.governance import evaluate_takeover_baseline_gate
@@ -1600,6 +1602,7 @@ def _run_branch_preflight(
     base_branch: str = "main",
     git_roots: list[str] | None = None,
     direct_delivery_services: list[str] | None = None,
+    branch_governance: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     feature_slug = _slug(feature)
     branch_preflight = build_implement_branch_guard_payload(
@@ -1620,9 +1623,39 @@ def _run_branch_preflight(
             "generated_at": now_iso(),
         }
     )
+    if isinstance(branch_governance, dict) and branch_governance:
+        governance_payload = evaluate_branch_governance(
+            {
+                **branch_governance,
+                "current_branch": str(branch_preflight.get("current_branch", "") or branch_governance.get("current_branch", "")),
+                "target_branch": str(branch_preflight.get("expected_branch", "") or branch_governance.get("target_branch", "")),
+                "current_worktree_path": str(project_root),
+            }
+        )
+        branch_preflight["branch_governance"] = governance_payload
+        if governance_payload.get("blocked"):
+            branch_preflight["blocked"] = True
+            branch_preflight["status"] = "blocked"
+            branch_preflight["summary"] = str(governance_payload.get("blocked_reason") or branch_preflight.get("summary") or "")
+            branch_preflight["reason_codes"] = list(
+                dict.fromkeys([*list(branch_preflight.get("reason_codes", [])), *list(governance_payload.get("reason_codes", []))])
+            )
+            if governance_payload.get("recommended_action"):
+                branch_preflight["recommended_command"] = str(governance_payload.get("recommended_action") or "")
     if branch_preflight.get("blocked") and auto_switch_branch:
         dirty_worktree = bool(branch_preflight.get("dirty_worktree"))
-        if not (dirty_worktree and require_clean_worktree_for_switch):
+        governance_payload = branch_preflight.get("branch_governance") if isinstance(branch_preflight.get("branch_governance"), dict) else {}
+        if "branch_governance_worktree_required" in branch_preflight.get("reason_codes", []) and governance_payload.get("worktree_path"):
+            worktree_attempt = ensure_expected_worktree_lane(
+                project_root,
+                str(branch_preflight.get("expected_branch", "") or ""),
+                worktree_path=str(governance_payload.get("worktree_path", "") or ""),
+                base_branch=base_branch,
+            )
+            branch_preflight["worktree_attempt"] = worktree_attempt
+            if worktree_attempt.get("status") in {"created", "switched"}:
+                branch_preflight["recommended_command"] = f"cd {worktree_attempt.get('worktree_path', '')} && beacon implement run \"{feature}\" --project {worktree_attempt.get('worktree_path', '')} --version {version}"
+        elif not (dirty_worktree and require_clean_worktree_for_switch):
             switch_payload = switch_to_expected_branch(
                 project_root,
                 str(branch_preflight.get("expected_branch", "") or ""),
@@ -1650,6 +1683,25 @@ def _run_branch_preflight(
                     "auto_switch_branch": True,
                 }
             )
+            if isinstance(branch_governance, dict) and branch_governance:
+                refreshed_governance = evaluate_branch_governance(
+                    {
+                        **branch_governance,
+                        "current_branch": str(refreshed.get("current_branch", "") or branch_governance.get("current_branch", "")),
+                        "target_branch": str(refreshed.get("expected_branch", "") or branch_governance.get("target_branch", "")),
+                        "current_worktree_path": str(project_root),
+                    }
+                )
+                refreshed["branch_governance"] = refreshed_governance
+                if refreshed_governance.get("blocked"):
+                    refreshed["blocked"] = True
+                    refreshed["status"] = "blocked"
+                    refreshed["summary"] = str(refreshed_governance.get("blocked_reason") or refreshed.get("summary") or "")
+                    refreshed["reason_codes"] = list(
+                        dict.fromkeys([*list(refreshed.get("reason_codes", [])), *list(refreshed_governance.get("reason_codes", []))])
+                    )
+                    if refreshed_governance.get("recommended_action"):
+                        refreshed["recommended_command"] = str(refreshed_governance.get("recommended_action") or "")
             if switch_payload.get("status") == "failed" and refreshed.get("blocked"):
                 refreshed["reason_codes"] = list(
                     dict.fromkeys([*list(refreshed.get("reason_codes", [])), "implement_branch_switch_failed"])
@@ -1673,6 +1725,7 @@ def _branch_guard_inputs(project_root: Path, *, version: str, feature: str) -> d
     )
     payload = {
         "git_workflow": contract,
+        "branch_governance": contract.get("branch_governance", {}),
         "expected_branch": expected_branch,
         "branch_prefix": branch_prefix,
         "base_branch": base_branch,
@@ -1704,6 +1757,8 @@ def _branch_guard_inputs(project_root: Path, *, version: str, feature: str) -> d
             if str(metadata_view.get("topology_kind") or "").strip() == "single_repo":
                 repo_aliases = [Path(item).name for item in git_roots if str(item).strip()]
                 payload["direct_delivery_services"] = list(dict.fromkeys(repo_aliases or payload["direct_delivery_services"]))
+        if isinstance(metadata_view.get("branch_governance"), dict):
+            payload["branch_governance"] = metadata_view.get("branch_governance", {})
         payload["metadata_contract"] = {
             "project_root": metadata_view.get("project_root", ""),
             "topology_kind": metadata_view.get("topology_kind", ""),
@@ -1884,6 +1939,7 @@ def run_implement_stage(  # noqa: PLR0913
         base_branch=base_branch_override,
         git_roots=workspace_git_roots,
         direct_delivery_services=direct_delivery_services,
+        branch_governance=branch_guard_inputs.get("branch_governance", {}),
     )
     branch_preflight["git_workflow"] = git_workflow_contract
     branch_preflight["branch_preflight_path"] = str(branch_preflight_path)
@@ -3344,6 +3400,7 @@ def check_branch(
         base_branch=base_branch_override,
         git_roots=workspace_git_roots,
         direct_delivery_services=direct_delivery_services,
+        branch_governance=branch_guard_inputs.get("branch_governance", {}),
     )
     payload["git_workflow"] = branch_guard_inputs.get("git_workflow", {})
     payload["branch_preflight_path"] = str(_branch_preflight_path(run_id))
@@ -3453,6 +3510,7 @@ def dev_run(
         base_branch=str(branch_guard_inputs.get("base_branch", "main") or "main").strip() or "main",
         git_roots=[str(item) for item in _normalize_string_list(branch_guard_inputs.get("git_roots"))],
         direct_delivery_services=[str(item) for item in _normalize_string_list(branch_guard_inputs.get("direct_delivery_services"))],
+        branch_governance=branch_guard_inputs.get("branch_governance", {}),
     )
     preflight_resolution["steps"].append(
         {

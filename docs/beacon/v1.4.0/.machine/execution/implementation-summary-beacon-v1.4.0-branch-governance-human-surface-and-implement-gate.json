@@ -1,0 +1,959 @@
+{
+  "schema_version": "1.0",
+  "run_id": "run-20260507T063258Z-ee19",
+  "feature": "beacon-v1.4.0-branch-governance-human-surface-and-implement-gate",
+  "feature_slug": "beacon-v1.4.0-branch-governance-human-surface-and-implement-gate",
+  "version": "v1.4.0",
+  "mode": "",
+  "host_runtime": "codex",
+  "runner": "native-single",
+  "adapter_type": "native",
+  "request_path": ".beacon/implement/run-20260507T063258Z-ee19/request.json",
+  "result_path": ".beacon/implement/run-20260507T063258Z-ee19/result.json",
+  "branch_preflight_path": ".beacon/implement/run-20260507T063258Z-ee19/branch-preflight.json",
+  "plan_preflight_path": ".beacon/implement/run-20260507T063258Z-ee19/plan-preflight.json",
+  "revision_delta": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1.4.0-branch-governance-human-surface-and-implement-gate",
+    "feature_slug": "beacon-v1.4.0-branch-governance-human-surface-and-implement-gate",
+    "version": "v1.4.0",
+    "revision_id": "R1",
+    "source_revision_id": "",
+    "status": "not_applicable",
+    "cleanup_required": false,
+    "removed_requirement_count": 0,
+    "added_requirement_count": 0,
+    "retained_requirement_count": 0,
+    "removed_requirement_surfaces": [],
+    "added_requirement_surfaces": [],
+    "retained_requirement_surfaces": [],
+    "current_baseline_hash": "sha256:40b86cbd37b90026f98a640f4366b7e908555017f5875f18bac154498932d136",
+    "source_baseline_hash": "",
+    "story_state_ref": "docs/beacon/v1.4.0/.machine/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.json",
+    "generated_at": "2026-05-07T06:32:38.981105+00:00",
+    "json_ref": "docs/beacon/v1.4.0/.machine/execution/revision-delta-beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.json",
+    "markdown_ref": "docs/beacon/v1.4.0/execution/revision-delta-beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+  },
+  "git_workflow": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1.4.0-branch-governance-human-surface-and-implement-gate",
+    "feature_slug": "beacon-v1.4.0-branch-governance-human-surface-and-implement-gate",
+    "version": "v1.4.0",
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.4.0",
+    "branch_prefix": "beacon/",
+    "base_branch": "main",
+    "use_git_worktree": false,
+    "require_clean_worktree_for_switch": true,
+    "service_directories": [
+      "."
+    ],
+    "direct_delivery_services": [
+      "."
+    ],
+    "writable_services": [
+      "."
+    ],
+    "reference_only_services": [
+      "docs"
+    ],
+    "git_roots": [
+      "."
+    ],
+    "worktree_root": ".",
+    "implementation_preflight": [
+      "Before implementation, verify the target service belongs to: .",
+      "Before implementation, verify the current branch is beacon/v1.4.0.",
+      "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+    ],
+    "source": "technical_review_contract",
+    "generated_at": "2026-05-07T06:32:58.835937+00:00",
+    "baseline_id": "impl-delivery-baseline-v1.4.0-beacon-v1.4.0-branch-governance-human-surface-and-implement-gate-R1",
+    "transaction_id": "tx-8f6ae088096a54078",
+    "source_hash": "sha256:9e8702074a9dc7e86ccf1076605a17810f4509443bdb8e0fa02a5220993d8406",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.4.0/.machine/execution/implementation-delivery-baseline-beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "generated_at": "2026-05-07T06:32:59.420200+00:00",
+  "status": "completed",
+  "subagent_prechecks": {
+    "required": false,
+    "host_runtime": "codex",
+    "runtime_readiness": {},
+    "delegation_readiness": {}
+  },
+  "semantic_layer": {
+    "artifacts": {
+      "semantic_contract": "docs/beacon/v1.4.0/.machine/trace/semantic/beacon-v1-4-0-branch-governance-human-surface-and-implement-gate/semantic-contract.json",
+      "semantic_dictionary": "docs/beacon/v1.4.0/.machine/trace/semantic/beacon-v1-4-0-branch-governance-human-surface-and-implement-gate/semantic-dictionary.md",
+      "semantic_usage_guidelines": "docs/beacon/v1.4.0/.machine/trace/semantic/beacon-v1-4-0-branch-governance-human-surface-and-implement-gate/semantic-usage-guidelines.md",
+      "semantic_review": "docs/beacon/v1.4.0/.machine/trace/semantic/beacon-v1-4-0-branch-governance-human-surface-and-implement-gate/semantic-review.json"
+    },
+    "default_design_bridge": {
+      "repo": "https://github.com/Leonxlnx/taste-skill",
+      "skill_id": "taste-skill",
+      "entry": "",
+      "detected": false,
+      "kind": "external-default-bridge",
+      "supported_stages": [
+        "prototype",
+        "implement"
+      ],
+      "capabilities": [
+        "prototype",
+        "implement",
+        "taste-design",
+        "semantic-normalization"
+      ],
+      "install_hint": "npx skills add https://github.com/Leonxlnx/taste-skill --skill taste-skill"
+    }
+  },
+  "skill_admission": {},
+  "delivery_contract": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1.4.0-branch-governance-human-surface-and-implement-gate",
+    "version": "v1.4.0",
+    "requested_mode": "single",
+    "effective_mode": "single",
+    "generator_mode": "single",
+    "execution_mode": "single",
+    "runner_mode": "native-single",
+    "host_runtime": "codex",
+    "fallback_reason": "",
+    "capability_snapshot": {
+      "skill_admission_status": "",
+      "skill_admission_mode": "",
+      "skill_id": "",
+      "skill_surface_kind": "",
+      "skill_non_code_supported": false,
+      "schema_version": "1.0",
+      "host_runtime": "codex",
+      "subagent_required": false,
+      "subagent_runtime_status": "",
+      "subagent_delegation_status": "",
+      "host_semantic_ready": false,
+      "provider_available": false
+    },
+    "subagent_prechecks": {
+      "required": false,
+      "host_runtime": "codex",
+      "runtime_readiness": {},
+      "delegation_readiness": {}
+    },
+    "requirement_binding": {
+      "source_of_truth_root": "docs/beacon/v1.4.0",
+      "prd": "docs/beacon/v1.4.0/prd/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md",
+      "user_story": "docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md",
+      "test_case": "docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md",
+      "ac_matrix": "docs/beacon/v1.4.0/.machine/qa/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.ac-test-matrix.json",
+      "requirement_completeness_ref": "docs/beacon/v1.4.0/.machine/requirement/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.completeness.json",
+      "requirement_completeness_verdict": "pass",
+      "revision_id": "R1",
+      "implemented_item_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013",
+        "AC-014",
+        "AC-015",
+        "AC-016",
+        "AC-017",
+        "AC-018",
+        "AC-019",
+        "AC-020",
+        "AC-021",
+        "AC-022",
+        "AC-023",
+        "AC-024",
+        "AC-025",
+        "AC-026",
+        "AC-027",
+        "AC-028",
+        "AC-029",
+        "AC-030",
+        "AC-031",
+        "AC-032",
+        "TASK-001"
+      ],
+      "implemented_task_ids": [],
+      "verified_task_ids": []
+    },
+    "traceability_refs": [
+      "docs/beacon/v1.4.0/prd/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md",
+      "docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md",
+      "docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md",
+      "docs/beacon/v1.4.0/.machine/qa/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.ac-test-matrix.json",
+      "docs/beacon/v1.4.0/.machine/execution/revision-delta-beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.json",
+      ".beacon/implement/run-20260507T063258Z-ee19/request.json",
+      ".beacon/implement/run-20260507T063258Z-ee19/result.json"
+    ],
+    "runner": "native-single",
+    "adapter_type": "native",
+    "execution_surface": "native-single",
+    "team_mode": false,
+    "qa_status": "",
+    "gate_status": "",
+    "release_ready": false,
+    "risk_flags": []
+  },
+  "host_native_delivery": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1.4.0-branch-governance-human-surface-and-implement-gate",
+    "version": "v1.4.0",
+    "requested_mode": "single",
+    "effective_mode": "single",
+    "generator_mode": "single",
+    "execution_mode": "single",
+    "runner_mode": "native-single",
+    "host_runtime": "codex",
+    "fallback_reason": "",
+    "capability_snapshot": {
+      "skill_admission_status": "",
+      "skill_admission_mode": "",
+      "skill_id": "",
+      "skill_surface_kind": "",
+      "skill_non_code_supported": false,
+      "schema_version": "1.0",
+      "host_runtime": "codex",
+      "subagent_required": false,
+      "subagent_runtime_status": "",
+      "subagent_delegation_status": "",
+      "host_semantic_ready": false,
+      "provider_available": false
+    },
+    "subagent_prechecks": {
+      "required": false,
+      "host_runtime": "codex",
+      "runtime_readiness": {},
+      "delegation_readiness": {}
+    },
+    "requirement_binding": {
+      "source_of_truth_root": "docs/beacon/v1.4.0",
+      "prd": "docs/beacon/v1.4.0/prd/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md",
+      "user_story": "docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md",
+      "test_case": "docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md",
+      "ac_matrix": "docs/beacon/v1.4.0/.machine/qa/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.ac-test-matrix.json",
+      "requirement_completeness_ref": "docs/beacon/v1.4.0/.machine/requirement/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.completeness.json",
+      "requirement_completeness_verdict": "pass",
+      "revision_id": "R1",
+      "implemented_item_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013",
+        "AC-014",
+        "AC-015",
+        "AC-016",
+        "AC-017",
+        "AC-018",
+        "AC-019",
+        "AC-020",
+        "AC-021",
+        "AC-022",
+        "AC-023",
+        "AC-024",
+        "AC-025",
+        "AC-026",
+        "AC-027",
+        "AC-028",
+        "AC-029",
+        "AC-030",
+        "AC-031",
+        "AC-032",
+        "TASK-001"
+      ],
+      "implemented_task_ids": [],
+      "verified_task_ids": []
+    },
+    "traceability_refs": [
+      "docs/beacon/v1.4.0/prd/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md",
+      "docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md",
+      "docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md",
+      "docs/beacon/v1.4.0/.machine/qa/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.ac-test-matrix.json",
+      "docs/beacon/v1.4.0/.machine/execution/revision-delta-beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.json",
+      ".beacon/implement/run-20260507T063258Z-ee19/request.json",
+      ".beacon/implement/run-20260507T063258Z-ee19/result.json"
+    ],
+    "runner": "native-single",
+    "adapter_type": "native",
+    "execution_surface": "native-single",
+    "team_mode": false,
+    "qa_status": "",
+    "gate_status": "",
+    "release_ready": false,
+    "risk_flags": []
+  },
+  "prompt_boundary": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1.4.0-branch-governance-human-surface-and-implement-gate",
+    "feature_slug": "beacon-v1.4.0-branch-governance-human-surface-and-implement-gate",
+    "version": "v1.4.0",
+    "required": true,
+    "prompt": "Implement the scoped Beacon feature.\nFeature: beacon-v1.4.0-branch-governance-human-surface-and-implement-gate\nVersion: v1.4.0\nRead Beacon source of truth:\n- docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md\n- docs/beacon/v1.4.0/prd/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md\n- docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md\n- docs/beacon/v1.4.0/.machine/execution/implementation-plan-beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.json\nReuse Beacon semantic layer:\n- docs/beacon/v1.4.0/.machine/trace/semantic/beacon-v1-4-0-branch-governance-human-surface-and-implement-gate/semantic-contract.json\n- docs/beacon/v1.4.0/.machine/trace/semantic/beacon-v1-4-0-branch-governance-human-surface-and-implement-gate/semantic-dictionary.md\n- docs/beacon/v1.4.0/.machine/trace/semantic/beacon-v1-4-0-branch-governance-human-surface-and-implement-gate/semantic-usage-guidelines.md\nDefault design bridge (augmentation only): taste-skill @ https://github.com/Leonxlnx/taste-skill\nFollow Beacon boundary defaults:\n- Record explicit assumptions and ambiguity tradeoffs instead of silently picking one interpretation.\n- Prefer the smallest correct change; avoid speculative abstraction or future-facing config unless required.\n- Keep changes surgical; only touch files in the current scope and only clean up orphan artifacts you introduce.\n- Bind work to verification signals; include acceptance/test mapping or concrete evidence for non-trivial tasks.\n- For obvious typo or single-line copy fixes, stay lightweight but do not expand scope or touch unrelated files.\nImplement only against the frozen PRD, user-story, and test-case truth above.\nDo not invent new user stories, acceptance criteria, or test scope.\nIf the work would require requirement change or conflicts with frozen truth, stop and route to beacon-change/refreeze instead of coding around it.\nStructured result should include: assumptions, simplicity_notes, scope_guard, verification.\nFor changed revisions with cleanup obligation, structured result must also include: cleanup_review_completed, removed_surfaces, retained_legacy_surfaces, cleanup_rationale.\nRun relevant verification.\nWrite structured result to .beacon/implement/run-20260507T063258Z-ee19/result.json",
+    "classification": "in_scope_implementation",
+    "blocked": false,
+    "status": "pass",
+    "reason_code": "",
+    "next_action": "",
+    "recommended_command": "",
+    "matched_signals": [],
+    "frozen_refs": [
+      "docs/beacon/v1.4.0/prd/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md",
+      "docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md",
+      "docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+    ],
+    "surface": "task_prompt"
+  },
+  "skill": "",
+  "summary": "native-single implementation completed",
+  "changed_files": [
+    ".beacon/auto-test-status.json",
+    ".beacon/coverage-summary.json",
+    ".beacon/evidence-manifest.json",
+    ".beacon/evidence-signature-chain.json",
+    ".beacon/gate-report.json",
+    ".beacon/qa/status.json",
+    "beacon/commands/doctor.py",
+    "beacon/commands/implement.py",
+    "beacon/utils/git_alignment.py",
+    "beacon/utils/implementation_plan.py",
+    "beacon/utils/project_metadata.py",
+    "docs/beacon/v1.4.0/.machine/execution/implementation-delivery-host.json",
+    "docs/beacon/v1.4.0/SUMMARY.md",
+    "docs/beacon/v1.4.0/change/v1.4.0.md",
+    "docs/beacon/v1.4.0/execution/architecture-blueprint.md",
+    "docs/beacon/v1.4.0/qa/test-cases/index.md",
+    "skills/beacon/SKILL.md",
+    "skills/beacon/using-beacon/SKILL.md"
+  ],
+  "verification": [
+    {
+      "command": "beacon implement run --runner native-single",
+      "status": "passed"
+    }
+  ],
+  "implemented_task_ids": [],
+  "verified_task_ids": [],
+  "blocked_task_ids": [],
+  "failed_task_ids": [],
+  "artifact_updates": {
+    "user_story": {
+      "required": false,
+      "reason": "story machine state writeback recorded"
+    },
+    "review_quality": {
+      "required": true,
+      "reason": "run quality review after native implementation"
+    },
+    "acceptance": {
+      "required": true,
+      "reason": "acceptance remains a formal post-verify action"
+    }
+  },
+  "branch_preflight": {
+    "schema_version": "1.0",
+    "status": "pass",
+    "summary": "implement branch preflight passed on workspace branch main",
+    "blocked": false,
+    "version": "v1.4.0",
+    "expected_branch": "main",
+    "current_branch": "main",
+    "current_tag": "",
+    "branch_exists": true,
+    "dirty_worktree": true,
+    "require_clean_worktree_for_switch": true,
+    "recommended_command": "",
+    "recommended_commands": [],
+    "direct_delivery_services": [
+      "beacon"
+    ],
+    "service_scope": {
+      "status": "pass",
+      "direct_delivery_services": [
+        "beacon"
+      ],
+      "verified_roots": [
+        "/Users/apple/Developer/Personal/products/beacon"
+      ],
+      "unresolved_services": []
+    },
+    "reason_codes": [
+      "git_branch_prefix_mismatch"
+    ],
+    "git_alignment": {
+      "mode": "workspace",
+      "repo_detected": true,
+      "target_branch": "main",
+      "worktree_path": ".",
+      "workspace_repos": [
+        {
+          "repo_root": "/Users/apple/Developer/Personal/products/beacon",
+          "relative_root": "/Users/apple/Developer/Personal/products/beacon",
+          "dirty_worktree": true,
+          "repo_url": "https://github.com/justin-mc-lai/beacon.git",
+          "base_branch": "main",
+          "target_branch": "main",
+          "current_branch": "main",
+          "current_commit": "5ed1a0600c22860e1654a2c71d32a0cf88e29760",
+          "current_tag": "",
+          "worktree_path": "/Users/apple/Developer/Personal/products/beacon",
+          "version_ref": "v1.4.0",
+          "allowed_refs": [
+            "branch"
+          ],
+          "enforce_branch_prefix": "beacon/",
+          "branch_matches_target": true,
+          "branch_has_required_prefix": false,
+          "tag_matches_version": false,
+          "version_ref_satisfied": true,
+          "reason_codes": [
+            "git_branch_prefix_mismatch"
+          ],
+          "blocked": false,
+          "detached_head": false,
+          "repo_detected": true
+        }
+      ],
+      "blocked": false,
+      "reason_codes": [
+        "git_branch_prefix_mismatch"
+      ]
+    },
+    "run_id": "run-20260507T063258Z-ee19",
+    "feature": "beacon-v1.4.0-branch-governance-human-surface-and-implement-gate",
+    "feature_slug": "beacon-v1.4.0-branch-governance-human-surface-and-implement-gate",
+    "generated_at": "2026-05-07T06:32:59.337634+00:00",
+    "branch_governance": {
+      "schema_version": "1.0",
+      "tool_name": "beacon-toolkit-branch-governance",
+      "feature": "",
+      "version": "v1.4.0",
+      "template_name": "standard-feature",
+      "template_source": "default",
+      "service_key": "beacon",
+      "repo_root": "/Users/apple/Developer/Personal/products/beacon",
+      "base_branch": "main",
+      "current_branch": "main",
+      "target_branch": "main",
+      "worktree_mode": "branch-only",
+      "worktree_path": "/Users/apple/Developer/Personal/products/beacon",
+      "current_worktree_path": ".",
+      "previous_version_baseline_branch": "",
+      "next_version_feature_branch": "",
+      "hotfix_branch_naming_rule": "",
+      "allow_worktree_when_feature_dirty": false,
+      "merge_direction_policy": [],
+      "forbidden_directions": [],
+      "evidence_contract": [],
+      "evidence": {},
+      "status": "pass",
+      "blocked": false,
+      "reason_codes": [],
+      "blocked_reason": "",
+      "recommended_action": "",
+      "missing_evidence_fields": [],
+      "evidence_contract_status": "pass",
+      "human_markdown": "## Branch Governance\n\n- toolkit: `beacon-toolkit-branch-governance`\n- template_name: `standard-feature`\n- template_source: `default`\n- service_key: `beacon`\n- repo_root: `/Users/apple/Developer/Personal/products/beacon`\n- base_branch: `main`\n- current_branch: `main`\n- target_branch: `main`\n- worktree_mode: `branch-only`\n- worktree_path: `/Users/apple/Developer/Personal/products/beacon`\n- evidence_contract_status: `pass`\n- blocked_reason: ``\n- recommended_action: ``\n\n### Flow Diagram\n```text\nmain [current]\n    -> main [current]\n    -> uat\n```\n\n### Allowed Paths\n- `base_branch->feature_branch`\n\n### Forbidden Paths\n- none\n\n### Evidence Contract\n- none\n"
+    },
+    "git_workflow": {
+      "schema_version": "1.0",
+      "feature": "beacon-v1.4.0-branch-governance-human-surface-and-implement-gate",
+      "feature_slug": "beacon-v1.4.0-branch-governance-human-surface-and-implement-gate",
+      "version": "v1.4.0",
+      "mode": "single-repo",
+      "expected_branch": "beacon/v1.4.0",
+      "branch_prefix": "beacon/",
+      "base_branch": "main",
+      "use_git_worktree": false,
+      "require_clean_worktree_for_switch": true,
+      "service_directories": [
+        "."
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "writable_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "git_roots": [
+        "."
+      ],
+      "worktree_root": ".",
+      "implementation_preflight": [
+        "Before implementation, verify the target service belongs to: .",
+        "Before implementation, verify the current branch is beacon/v1.4.0.",
+        "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+      ],
+      "source": "technical_review_contract",
+      "generated_at": "2026-05-07T06:32:58.835937+00:00",
+      "baseline_id": "impl-delivery-baseline-v1.4.0-beacon-v1.4.0-branch-governance-human-surface-and-implement-gate-R1",
+      "transaction_id": "tx-8f6ae088096a54078",
+      "source_hash": "sha256:9e8702074a9dc7e86ccf1076605a17810f4509443bdb8e0fa02a5220993d8406",
+      "projection_seq": 1,
+      "canonical_envelope_ref": "docs/beacon/v1.4.0/.machine/execution/implementation-delivery-baseline-beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.json",
+      "projection_source": "implementation_delivery_baseline_envelope"
+    },
+    "branch_preflight_path": ".beacon/implement/run-20260507T063258Z-ee19/branch-preflight.json"
+  },
+  "plan_preflight": {
+    "schema_version": "1.0",
+    "run_id": "run-20260507T063258Z-ee19",
+    "feature": "beacon-v1.4.0-branch-governance-human-surface-and-implement-gate",
+    "feature_slug": "beacon-v1.4.0-branch-governance-human-surface-and-implement-gate",
+    "version": "v1.4.0",
+    "expected_plan": "docs/beacon/v1.4.0/.machine/execution/implementation-plan-beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.json",
+    "expected_revision_id": "R1",
+    "baseline_hash": "sha256:40b86cbd37b90026f98a640f4366b7e908555017f5875f18bac154498932d136",
+    "recommended_command": "beacon implement plan \"beacon-v1.4.0-branch-governance-human-surface-and-implement-gate\" --project-root . --version v1.4.0",
+    "generated_at": "2026-05-07T06:32:59.338506+00:00",
+    "architecture_blueprint_projection_gate": {
+      "status": "pass",
+      "blocked": false,
+      "reason_code": "",
+      "path": "docs/beacon/v1.4.0/execution/architecture-blueprint.md",
+      "feature": "beacon-v1.4.0-branch-governance-human-surface-and-implement-gate",
+      "version": "v1.4.0",
+      "issues": []
+    },
+    "status": "pass",
+    "blocked": false,
+    "plan_id": "plan-beacon-v1.4.0-branch-governance-human-surface-and-implement-gate-r1",
+    "plan_path": "docs/beacon/v1.4.0/.machine/execution/implementation-plan-beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.json",
+    "progress_path": "docs/beacon/v1.4.0/.machine/execution/implementation-plan-beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.progress.json"
+  },
+  "implementation_marker": ".beacon/state/implementation-beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.json",
+  "technical_archive": {
+    "json": "docs/beacon/v1.4.0/.machine/execution/technical-implementation-beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.json",
+    "md": "docs/beacon/v1.4.0/.machine/trace/implementation/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate/technical-implementation-beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+  },
+  "implementation_plan": "docs/beacon/v1.4.0/.machine/execution/implementation-plan-beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.json",
+  "implementation_plan_progress": {
+    "schema_version": "1.0",
+    "plan_id": "plan-beacon-v1.4.0-branch-governance-human-surface-and-implement-gate-r1",
+    "feature": "beacon-v1.4.0-branch-governance-human-surface-and-implement-gate",
+    "version": "v1.4.0",
+    "revision_id": "R1",
+    "plan_path": "docs/beacon/v1.4.0/.machine/execution/implementation-plan-beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.json",
+    "progress_path": "docs/beacon/v1.4.0/.machine/execution/implementation-plan-beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.progress.json",
+    "status": "completed",
+    "counts": {
+      "total": 10,
+      "draft": 0,
+      "planned": 0,
+      "in_progress": 0,
+      "blocked": 0,
+      "completed": 10
+    },
+    "blocked_task_ids": [],
+    "blocked_task_titles": [],
+    "completed_task_ids": [
+      "ITASK-001",
+      "ITASK-002",
+      "ITASK-003",
+      "ITASK-004",
+      "ITASK-005",
+      "ITASK-006",
+      "ITASK-007",
+      "ITASK-008",
+      "ITASK-009",
+      "ITASK-010"
+    ],
+    "next_task_id": "",
+    "next_task_title": "",
+    "task_states": [
+      {
+        "task_id": "ITASK-001",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-001"
+        ],
+        "mapped_test_ids": [
+          "TC-001",
+          "TC-033",
+          "TC-034",
+          "TC-035",
+          "TC-036",
+          "TC-037",
+          "TC-038",
+          "TC-039",
+          "TC-040",
+          "TC-041"
+        ],
+        "mapped_scenario_ids": [
+          "SC-001"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-001"
+        ]
+      },
+      {
+        "task_id": "ITASK-002",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-002",
+          "AC-010",
+          "AC-025",
+          "AC-029"
+        ],
+        "mapped_test_ids": [
+          "TC-002",
+          "TEST-010",
+          "TEST-025",
+          "TEST-029"
+        ],
+        "mapped_scenario_ids": [
+          "SC-002"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-002"
+        ]
+      },
+      {
+        "task_id": "ITASK-003",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-012"
+        ],
+        "mapped_test_ids": [
+          "TEST-012"
+        ],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-004",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-004"
+        ],
+        "mapped_test_ids": [
+          "TC-004"
+        ],
+        "mapped_scenario_ids": [
+          "SC-004"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-004"
+        ]
+      },
+      {
+        "task_id": "ITASK-005",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-020",
+          "AC-019"
+        ],
+        "mapped_test_ids": [
+          "TEST-020",
+          "TEST-019"
+        ],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-006",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-022",
+          "AC-021"
+        ],
+        "mapped_test_ids": [
+          "TEST-022",
+          "TEST-021"
+        ],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-007",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-011",
+          "AC-026",
+          "AC-007"
+        ],
+        "mapped_test_ids": [
+          "TEST-011",
+          "TEST-026",
+          "TEST-007"
+        ],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-008",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-008",
+          "AC-030",
+          "AC-031",
+          "AC-003",
+          "AC-015",
+          "AC-017",
+          "AC-018"
+        ],
+        "mapped_test_ids": [
+          "TEST-008",
+          "TEST-030",
+          "TEST-031",
+          "TC-003",
+          "TEST-015",
+          "TEST-017",
+          "TEST-018"
+        ],
+        "mapped_scenario_ids": [
+          "SC-003"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-003"
+        ]
+      },
+      {
+        "task_id": "ITASK-009",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-023"
+        ],
+        "mapped_test_ids": [
+          "TEST-023"
+        ],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-010",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-028",
+          "AC-009",
+          "AC-005",
+          "AC-006",
+          "AC-013",
+          "AC-014",
+          "AC-016",
+          "AC-024",
+          "AC-027",
+          "AC-032"
+        ],
+        "mapped_test_ids": [
+          "TEST-028",
+          "TEST-009",
+          "TEST-005",
+          "TEST-006",
+          "TEST-013",
+          "TEST-014",
+          "TEST-016",
+          "TEST-024",
+          "TEST-027",
+          "TEST-032"
+        ],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      }
+    ],
+    "updated_at": "2026-05-07T06:32:59.415845+00:00",
+    "task_ledger_path": "docs/beacon/v1.4.0/execution/tasks-beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+  },
+  "implementation_order": {
+    "status": "analyzed",
+    "feature_count": 3,
+    "ordered_feature_slugs": [
+      "beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor",
+      "beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure",
+      "beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration"
+    ],
+    "waves": [
+      {
+        "wave": 1,
+        "parallelizable": false,
+        "features": [
+          {
+            "feature": "beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor",
+            "feature_slug": "beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor",
+            "depends_on_features": []
+          }
+        ]
+      },
+      {
+        "wave": 2,
+        "parallelizable": false,
+        "features": [
+          {
+            "feature": "beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure",
+            "feature_slug": "beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure",
+            "depends_on_features": []
+          }
+        ]
+      },
+      {
+        "wave": 3,
+        "parallelizable": false,
+        "features": [
+          {
+            "feature": "beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration",
+            "feature_slug": "beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration",
+            "depends_on_features": []
+          }
+        ]
+      }
+    ]
+  },
+  "requirement_traceability": {
+    "source_of_truth_root": "docs/beacon/v1.4.0",
+    "prd": "docs/beacon/v1.4.0/prd/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md",
+    "user_story": "docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md",
+    "test_case": "docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md",
+    "ac_matrix": "docs/beacon/v1.4.0/.machine/qa/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.ac-test-matrix.json",
+    "requirement_completeness_ref": "docs/beacon/v1.4.0/.machine/requirement/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.completeness.json",
+    "requirement_completeness_verdict": "pass",
+    "revision_id": "R1",
+    "implemented_item_ids": [
+      "AC-001",
+      "AC-002",
+      "AC-003",
+      "AC-004",
+      "AC-005",
+      "AC-006",
+      "AC-007",
+      "AC-008",
+      "AC-009",
+      "AC-010",
+      "AC-011",
+      "AC-012",
+      "AC-013",
+      "AC-014",
+      "AC-015",
+      "AC-016",
+      "AC-017",
+      "AC-018",
+      "AC-019",
+      "AC-020",
+      "AC-021",
+      "AC-022",
+      "AC-023",
+      "AC-024",
+      "AC-025",
+      "AC-026",
+      "AC-027",
+      "AC-028",
+      "AC-029",
+      "AC-030",
+      "AC-031",
+      "AC-032",
+      "TASK-001"
+    ],
+    "implemented_task_ids": [],
+    "verified_task_ids": []
+  },
+  "delivery_surfaces": {
+    "runtime_mode": "single",
+    "shipped_surfaces": [],
+    "partial_surfaces": [],
+    "deferred_surfaces": [],
+    "downgrade_rationale": ""
+  },
+  "revision_cleanup": {
+    "schema_version": "1.0",
+    "revision_id": "R1",
+    "source_revision_id": "",
+    "revision_delta_ref": "docs/beacon/v1.4.0/.machine/execution/revision-delta-beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.json",
+    "revision_delta_markdown_ref": "docs/beacon/v1.4.0/execution/revision-delta-beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md",
+    "cleanup_required": false,
+    "cleanup_review_completed": true,
+    "removed_requirement_surfaces": [],
+    "removed_surfaces": [],
+    "retained_legacy_surfaces": [],
+    "cleanup_rationale": ""
+  },
+  "traceability_refs": [
+    "docs/beacon/v1.4.0/prd/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md",
+    "docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md",
+    "docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md",
+    "docs/beacon/v1.4.0/.machine/qa/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.ac-test-matrix.json",
+    "docs/beacon/v1.4.0/.machine/execution/revision-delta-beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.json",
+    ".beacon/implement/run-20260507T063258Z-ee19/request.json",
+    ".beacon/implement/run-20260507T063258Z-ee19/result.json"
+  ],
+  "implemented_items": [
+    "AC-001",
+    "AC-002",
+    "AC-003",
+    "AC-004",
+    "AC-005",
+    "AC-006",
+    "AC-007",
+    "AC-008",
+    "AC-009",
+    "AC-010",
+    "AC-011",
+    "AC-012",
+    "AC-013",
+    "AC-014",
+    "AC-015",
+    "AC-016",
+    "AC-017",
+    "AC-018",
+    "AC-019",
+    "AC-020",
+    "AC-021",
+    "AC-022",
+    "AC-023",
+    "AC-024",
+    "AC-025",
+    "AC-026",
+    "AC-027",
+    "AC-028",
+    "AC-029",
+    "AC-030",
+    "AC-031",
+    "AC-032",
+    "TASK-001"
+  ],
+  "verified_items": [],
+  "blocked_items": [],
+  "runner_mode": "single",
+  "revision_id": "R1",
+  "artifact_writeback_obligations": ".beacon/state/artifact-update-obligations/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.json",
+  "artifact_writeback_open_count": 2,
+  "requirement_rewrite_input": "docs/beacon/v1.4.0/.machine/execution/requirement-rewrite-input-beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.json",
+  "implement_to_qa_handoff": ".beacon/handoffs/implement-to-qa/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate/run-20260507T063258Z-ee19.json",
+  "auto_qa": {
+    "enabled": false,
+    "triggered": false,
+    "args": [],
+    "follow_handoff": false,
+    "max_rounds": 2
+  }
+}

@@ -328,6 +328,19 @@ def _qa_case_automation(execution: str) -> str:
     return "auto"
 
 
+_BEACON_JUNIT_ARG = '--junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"'
+
+
+def _ensure_pytest_junit_command(command: str) -> str:
+    raw = str(command or "").strip()
+    if not raw:
+        return raw
+    lowered = raw.lower()
+    if "pytest" not in lowered or "--junitxml" in lowered:
+        return raw
+    return f"{raw} {_BEACON_JUNIT_ARG}"
+
+
 def _build_entries_from_qa_case_rows(
     *,
     feature: str,
@@ -365,6 +378,7 @@ def _build_entries_from_qa_case_rows(
             or default_command_for_qa_type(qa_type, ui_runner=ui_runner)
             )
         ) or default_command_for_qa_type(qa_type, ui_runner=ui_runner)
+        command = _ensure_pytest_junit_command(command)
         evidence_path = _strip_markdown_ticks(
             str(
             row.get("explicit_evidence_path")
@@ -580,7 +594,9 @@ def _normalize_existing_qa9_entries(
                 "title": str(item.get("title") or f"{feature} {qa_type} :: {str(item.get('assertion') or ac.get('text') or '').strip()[:80]}"),
                 "priority": str(item.get("priority") or _default_priority_for_qa_type(qa_type)),
                 "automation": str(item.get("automation") or "auto"),
-                "command": str(item.get("command") or "").strip() or default_command_for_qa_type(qa_type, ui_runner=ui_runner),
+                "command": _ensure_pytest_junit_command(
+                    str(item.get("command") or "").strip() or default_command_for_qa_type(qa_type, ui_runner=ui_runner)
+                ),
                 "assertion": assertion,
                 "evidence_path": str(item.get("evidence_path") or f".beacon/evidence/test-results/{feature_slug}/{{run_id}}/{tc_id}.json"),
                 "required_files": item.get("required_files") if isinstance(item.get("required_files"), list) else ["command.txt", "stdout.log", "stderr.log", "result.json", "junit.xml"],
@@ -726,7 +742,9 @@ def _normalize_host_matrix_entries(
                 "tc_id": tc_id,
                 "ac_id": str(item.get("ac_id") or ac.get("ac_id") or "AC-001").strip() or "AC-001",
                 "layer": layer,
-                "command": str(item.get("command") or _default_command_for_layer(layer)).strip() or _default_command_for_layer(layer),
+                "command": _ensure_pytest_junit_command(
+                    str(item.get("command") or _default_command_for_layer(layer)).strip() or _default_command_for_layer(layer)
+                ),
                 "assertion": str(item.get("assertion") or _default_assertion_for_layer(layer)).strip() or _default_assertion_for_layer(layer),
                 "evidence_path": str(item.get("evidence_path") or f".beacon/evidence/test-results/{feature_slug}/{tc_id}.json"),
                 "status": str(item.get("status") or "pending"),

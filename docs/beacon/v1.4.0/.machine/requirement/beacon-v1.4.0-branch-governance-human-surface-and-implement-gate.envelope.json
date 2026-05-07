@@ -1,0 +1,131 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.4.0-branch-governance-human-surface-and-implement-gate",
+  "feature_slug": "beacon-v1.4.0-branch-governance-human-surface-and-implement-gate",
+  "version": "v1.4.0",
+  "generated_at": "2026-05-07T06:48:03.722204+00:00",
+  "sources": {
+    "prd": "prd:docs/beacon/v1.4.0/prd/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md",
+    "user_story": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md",
+    "qa": "qa:test-cases:docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+  },
+  "dimensions": {
+    "actors": [
+      {
+        "name": "operator",
+        "source_truth_ref": "prd:docs/beacon/v1.4.0/prd/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md",
+        "rationale": "derived from PRD and current requirement package"
+      },
+      {
+        "name": "user",
+        "source_truth_ref": "prd:docs/beacon/v1.4.0/prd/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md",
+        "rationale": "derived from PRD and current requirement package"
+      }
+    ],
+    "capability_differences": [
+      {
+        "name": "role-specific capability differences",
+        "source_truth_ref": "prd:docs/beacon/v1.4.0/prd/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md",
+        "rationale": "v1.3.12 requires role and capability variance discovery"
+      }
+    ],
+    "state_machine": [
+      {
+        "name": "draft -> supplemented -> refrozen -> delivery-consumed",
+        "source_truth_ref": "prd:docs/beacon/v1.4.0/prd/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md",
+        "rationale": "requirement deepening adds explicit human-loop refreeze semantics"
+      }
+    ],
+    "happy_paths": [
+      {
+        "name": "PRD deepened into story/test-case and consumed by implement/qa",
+        "source_truth_ref": "prd:docs/beacon/v1.4.0/prd/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md",
+        "rationale": "main requirement closure path"
+      }
+    ],
+    "negative_paths": [
+      {
+        "name": "host deepening unavailable and rule fallback used",
+        "source_truth_ref": "prd:docs/beacon/v1.4.0/prd/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md",
+        "rationale": "downgrade path must stay auditable"
+      }
+    ],
+    "boundary_conditions": [
+      {
+        "name": "no new public lifecycle stage or command",
+        "source_truth_ref": "prd:docs/beacon/v1.4.0/prd/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md",
+        "rationale": "global boundary constraint"
+      }
+    ],
+    "exceptions": [
+      {
+        "name": "manual markdown patch without decision trail",
+        "source_truth_ref": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md",
+        "rationale": "must fail closed for silent truth mutation"
+      }
+    ],
+    "recovery_paths": [
+      {
+        "name": "decision_log -> writeback_projection -> truth_refreeze",
+        "source_truth_ref": "prd:docs/beacon/v1.4.0/prd/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md",
+        "rationale": "formal recovery/writeback contract"
+      }
+    ],
+    "risks": [
+      {
+        "name": "scope creep from uncontrolled LLM expansion",
+        "source_truth_ref": "prd:docs/beacon/v1.4.0/prd/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md",
+        "rationale": "accepted/rejected/deferred decisions required"
+      }
+    ],
+    "open_questions": [
+      {
+        "name": "Requirement package must keep accepted/rejected/deferred decisions queryable.",
+        "source_truth_ref": "prd:docs/beacon/v1.4.0/prd/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md",
+        "rationale": "carry unresolved clarification into machine-readable envelope"
+      }
+    ]
+  },
+  "source_excerpt": {
+    "prd": [
+      "Feature**: `beacon-v1.4.0-branch-governance-human-surface-and-implement-gate`",
+      "Version**: `v1.4.0`",
+      "Date**: `2026-05-07`",
+      "Status**: `freeze-ready`",
+      "Track**: `support-surface + implement-governance`",
+      "Scenario**: `branch_governance_contract + human_git_surface + implement_preflight_gate`",
+      "Template**: `parallel toolkit PRD / support-skill + execution-governance`",
+      " Global boundaries: `docs/beacon/global-boundaries.md`",
+      " Version package: `docs/beacon/v1.4.0/SUMMARY.md`",
+      " Execution boundaries: `docs/beacon/v1.4.0/execution/index.md`",
+      " Architecture blueprint: `docs/beacon/v1.4.0/execution/architecture-blueprint.md`",
+      " Related PRD:",
+      " `docs/beacon/v1.4.0/prd/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md`",
+      " `docs/beacon/v1.4.0/prd/beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure.md`"
+    ],
+    "user_story": [
+      " version: `v1.4.0`",
+      " feature: `beacon-v1.4.0-branch-governance-human-surface-and-implement-gate`",
+      " status: `freeze-ready`",
+      " upstream_prd: `docs/beacon/v1.4.0/prd/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md`",
+      " current_revision: `R1`",
+      " source_revision: `R0`",
+      "本故事线覆盖 Beacon 在 `v1.4.0` 中新增一条并排 toolkit/support 子线：`beacon-toolkit-branch-governance`。目标不是新增 Git 主流程，而是把 branch governance 收敛成一个清楚的人类面、一个稳定的模板 contract、以及一个 `implement` 内嵌 preflight gate。",
+      " `branch-flow`",
+      " `project default workflow -> task-specific override -> branch governance contract -> implement preflight -> compliant branch/worktree -> implementation`",
+      " `previous baseline -> hotfix -> uat -> forward-port -> next feature`"
+    ],
+    "qa": [
+      "Feature**: beacon-v1.4.0-branch-governance-human-surface-and-implement-gate",
+      "Test Type**: ALL",
+      "Version**: v1.4.0",
+      "Generated**: 2026-05-07 14:45",
+      "Requested Mode**: auto",
+      "Effective Mode**: host",
+      "Fallback Reason**: N/A",
+      "Memory Context**: N/A",
+      "AC Matrix JSON**: docs/beacon/v1.4.0/.machine/qa/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.ac-test-matrix.json",
+      "QA9 Matrix JSON**: docs/beacon/v1.4.0/.machine/qa/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.qa9-matrix.json"
+    ]
+  }
+}

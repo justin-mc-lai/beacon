@@ -402,3 +402,75 @@ def switch_to_expected_branch(
         "expected_branch": expected_branch,
         "attempts": attempts,
     }
+
+
+def ensure_expected_worktree_lane(
+    project_root: Path,
+    expected_branch: str,
+    *,
+    worktree_path: str,
+    base_branch: str = "main",
+) -> dict[str, Any]:
+    target_path = Path(worktree_path).expanduser().resolve()
+    root = project_root.expanduser().resolve()
+    if not expected_branch:
+        return {
+            "status": "failed",
+            "reason": "missing_expected_branch",
+            "worktree_path": str(target_path),
+        }
+    if target_path == root:
+        switch_payload = switch_to_expected_branch(root, expected_branch, create_if_missing=True)
+        return {
+            "status": "switched" if switch_payload.get("status") == "switched" else "failed",
+            "expected_branch": expected_branch,
+            "worktree_path": str(target_path),
+            "switch_attempt": switch_payload,
+        }
+    if target_path.exists() and git_repo_exists(target_path):
+        switch_payload = switch_to_expected_branch(target_path, expected_branch, create_if_missing=True)
+        return {
+            "status": "switched" if switch_payload.get("status") == "switched" else "failed",
+            "expected_branch": expected_branch,
+            "worktree_path": str(target_path),
+            "switch_attempt": switch_payload,
+        }
+    commands = [
+        ["git", "worktree", "add", str(target_path), expected_branch],
+        ["git", "worktree", "add", "-b", expected_branch, str(target_path), base_branch],
+    ]
+    attempts: list[dict[str, Any]] = []
+    for command in commands:
+        try:
+            result = subprocess.run(
+                command,
+                cwd=root,
+                capture_output=True,
+                text=True,
+                timeout=20,
+                check=False,
+            )
+        except Exception as exc:  # noqa: BLE001
+            attempts.append({"command": command, "exit_code": None, "stderr": str(exc)})
+            continue
+        attempts.append(
+            {
+                "command": command,
+                "exit_code": result.returncode,
+                "stdout": str(result.stdout or "").strip(),
+                "stderr": str(result.stderr or "").strip(),
+            }
+        )
+        if result.returncode == 0:
+            return {
+                "status": "created",
+                "expected_branch": expected_branch,
+                "worktree_path": str(target_path),
+                "attempts": attempts,
+            }
+    return {
+        "status": "failed",
+        "expected_branch": expected_branch,
+        "worktree_path": str(target_path),
+        "attempts": attempts,
+    }

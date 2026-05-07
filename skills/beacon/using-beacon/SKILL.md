@@ -26,6 +26,7 @@ The `v1.3.12` requirement closure line defines the active host-native requiremen
 - `beacon-doctor`
 - `beacon-archive`
 - `beacon-toolkit-metadata`
+- `beacon-toolkit-branch-governance`
 
 ## Routing rules
 
@@ -49,10 +50,12 @@ The `v1.3.12` requirement closure line defines the active host-native requiremen
    use `beacon-archive`
 10. Project/version metadata inspection, CRUD, or contract verification:
    use `beacon-toolkit-metadata`
-11. Blocked / lost / next-step questions:
+11. Human-readable branch flow, worktree lane, or implement git governance checks:
+   use `beacon-toolkit-branch-governance`
+12. Blocked / lost / next-step questions:
    use `beacon-help`, `beacon-status`, or `beacon-doctor`
 
-12. Need a human-readable supplement jump or re-freeze visibility:
+13. Need a human-readable supplement jump or re-freeze visibility:
    use `beacon-help` or `beacon-status`
 
 ## Development pairing
